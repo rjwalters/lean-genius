@@ -57,12 +57,13 @@
       "badziahin_velani_padic: partial result for p-adic case"
     ],
     "axiomCount": 7,
-    "lineCount": 188
+    "lineCount": 188,
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Littlewood conjecture, posed around 1930 by John Edensor Littlewood, is one of the most famous open problems in Diophantine approximation. It asks whether every pair of real numbers can be simultaneously well-approximated by rationals in a multiplicative sense: for all α, β ∈ ℝ, is lim inf n·‖nα‖·‖nβ‖ = 0?\n\nThe conjecture sits at the intersection of number theory, dynamical systems, and ergodic theory. Early progress came from Cassels and Swinnerton-Dyer (1955), who proved it for pairs of numbers in the same cubic number field. The problem was featured in Erdős's collection as Problem #495, referenced in [Er61].\n\nThe most dramatic breakthrough was by Einsiedler, Katok, and Lindenstrauss (2006), who proved that the set of counterexamples — if any exist — has Hausdorff dimension zero. Their proof, using the classification of invariant measures for diagonal actions on SL(3,ℝ)/SL(3,ℤ), earned Elon Lindenstrauss the 2010 Fields Medal. Despite this, the conjecture remains fully open: no single pair of algebraically independent reals has been verified.",
     "problemStatement": "Let $\\alpha, \\beta \\in \\mathbb{R}$. Is it true that\n$$\\liminf_{n \\to \\infty} n \\| n\\alpha \\| \\| n\\beta \\| = 0$$\nwhere $\\|x\\|$ denotes the distance from $x$ to the nearest integer?\n\n**Status: OPEN.** No counterexample is known, but the full conjecture has not been proved.",
-    "text": "For all real \u03b1, \u03b2, is lim inf n\u00b7\u2016n\u03b1\u2016\u00b7\u2016n\u03b2\u2016 = 0? The Littlewood conjecture on multiplicative Diophantine approximation, open since c. 1930.",
+    "text": "For all real α, β, is lim inf n·‖nα‖·‖nβ‖ = 0? The Littlewood conjecture on multiplicative Diophantine approximation, open since c. 1930.",
     "proofStrategy": "We formalize the Littlewood conjecture and its key partial results using axioms, since the conjecture is open and the known partial results rely on deep ergodic-theoretic and number-theoretic machinery beyond Mathlib.\n\n1. **Definitions:** We define distInt (distance to nearest integer) and the Littlewood product L(n, α, β) = n · ‖nα‖ · ‖nβ‖.\n\n2. **The Conjecture:** Stated as an infinitely-often condition — for every ε > 0 and every N, there exists n ≥ N with L(n, α, β) < ε.\n\n3. **Special Cases:** The rational case (trivial: ‖qα‖ = 0 when α = p/q) and Cassels–Swinnerton-Dyer (cubic number fields) are axiomatized.\n\n4. **The EKL Theorem:** Axiomatized as the statement that counterexamples have Hausdorff dimension zero.\n\n5. **p-adic Variant:** The de Mathan–Teulié conjecture and Badziahin–Velani partial result.",
     "keyInsights": [
       "**Multiplicative vs Additive:** The Littlewood conjecture concerns multiplicative simultaneous approximation, which is much harder than the additive version (Dirichlet's theorem)",

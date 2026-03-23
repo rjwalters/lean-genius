@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/390",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 171
+    "lineCount": 171,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham first discussed this problem in their 1980 monograph. The key breakthrough came in the 1982 paper by Erdős, Richard Guy, and John Selfridge ('Another property of 239 and some related questions', Congress. Numer. 35), which established that the excess $f(n) - 2n$ has order of magnitude $n/\\log n$. The title refers to the surprising fact that $239$ is the smallest prime $p$ such that $p \\cdot (p+1)/2$ is not a product of primes $\\leq p$ — a related factorization curiosity. The problem asks whether the normalized excess $(f(n) - 2n) \\cdot \\log n / n$ converges to a specific constant, which would reveal the precise structure of optimal large-factor factorizations of $n!$. The function $f(n)$ is recorded as OEIS sequence A193429. This problem sits at the intersection of factorial arithmetic, prime number theory, and optimization over integer partitions.",
     "problemStatement": "Let $f(n)$ be the minimal $m$ such that $n! = a_1 \\cdot a_2 \\cdots a_k$ with $n < a_1 < a_2 < \\cdots < a_k = m$. Does $\\lim_{n \\to \\infty} (f(n) - 2n) \\cdot \\log n / n = c$ exist for some positive constant $c$?",
-    "text": "Let f(n) = min m such that n! = a\u2081\u22efa\u2096 with n < a\u2081 < \u22ef < a\u2096 = m. Known: f(n) - 2n \u224d n/log n (EGS 1982). Is there c with f(n) - 2n ~ c\u00b7n/log n? OPEN.",
+    "text": "Let f(n) = min m such that n! = a₁⋯aₖ with n < a₁ < ⋯ < aₖ = m. Known: f(n) - 2n ≍ n/log n (EGS 1982). Is there c with f(n) - 2n ~ c·n/log n? OPEN.",
     "proofStrategy": "We define `ValidFactorization` as a proof-carrying structure (sorted factors $> n$ with product $= n!$), compute $f(n)$ as the infimum of maximum factors, provide explicit witnesses for $n = 3, 5, 6, 7$ with full proofs for $n = 3$, prove structural properties ($f(n) > n$, $f(n) \\leq n!$), axiomatize the Erdős–Guy–Selfridge two-sided bound, and state the open conjecture using `Filter.Tendsto`.",
     "keyInsights": [
       "**The interval $(n, 2n]$ is central**: The $n$ integers in $(n, 2n]$ have product $(2n)!/n!$, which is close to $n!$ — the excess $f(n) - 2n$ measures how far beyond $2n$ one must go to redistribute prime factors",

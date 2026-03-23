@@ -76,12 +76,13 @@
       }
     ],
     "axiomCount": 1,
-    "lineCount": 203
+    "lineCount": 203,
+    "assumptions": "1 axiom(s) and 5 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's 1974 work on irrationality of series [Er74b], further developed in the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' with Graham [ErGr80]. It explores a fundamental question at the boundary of analysis and number theory: when does a lacunary (sparse) series produce an irrational sum?\n\nErdős proved that irrationality holds under the stronger condition that the gaps a_{n+1} − aₙ tend to infinity. He also showed irrationality when aₙ grows superlogarithmically, specifically when aₙ ≫ n√(log n · log log n). These partial results demonstrate that 'sufficiently fast' growth guarantees irrationality, but the full conjecture — that the mere condition aₙ/n → ∞ suffices — remains open.\n\nThe problem has an appealing simplicity: the series ∑ aₙ/2^{aₙ} converges absolutely for any increasing sequence (the terms decrease exponentially), so the question is purely about the arithmetic nature of the limit. Erdős and Graham speculated that even having limsup of the gaps being infinite might not suffice for irrationality, but no counterexample has been found. The problem connects to the theory of lacunary series, normal numbers, and the Lindemann-Weierstrass theorem.",
     "problemStatement": "Let $a_1 < a_2 < \\cdots$ be an increasing sequence of natural numbers with $a_n/n \\to \\infty$. Is the sum $\\sum_{n=1}^{\\infty} a_n / 2^{a_n}$ necessarily irrational?",
-    "text": "If a\u2081 < a\u2082 < \u22ef is increasing with a\u2099/n \u2192 \u221e, is \u2211 a\u2099/2^{a\u2099} necessarily irrational?",
+    "text": "If a₁ < a₂ < ⋯ is increasing with aₙ/n → ∞, is ∑ aₙ/2^{aₙ} necessarily irrational?",
     "proofStrategy": "We formalize several growth conditions on sequences: IncreasingSeq (strictly increasing), FastGrowth (aₙ/n → ∞), GapsToInfinity (gaps → ∞), and SuperlogarithmicGrowth. The series and its convergence are defined. Erdős's known partial results (irrationality under gaps-to-infinity and superlogarithmic growth) are stated as theorems with sorry. The sequence aₙ = n² is developed as a concrete example. The main conjecture is stated as an axiom.",
     "keyInsights": [
       "**Gaps-to-Infinity Theorem**: Erdős proved that if a_{n+1} − aₙ → ∞, the series is irrational. This uses approximation by rational numbers and gap separation",

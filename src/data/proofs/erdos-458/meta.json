@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/458",
     "erdosProblemStatus": "open",
     "axiomCount": 8,
-    "lineCount": 181
+    "lineCount": 181,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #458** originates in Erdős and Graham's study of LCM growth between consecutive primes. The LCM function $\\text{lcm}(1, \\ldots, n)$ is deeply connected to prime distribution: $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) \\sim n$ by Chebyshev's theorem (and PNT). The conjecture asks whether the multiplicative growth factor from $p_k$ to $p_{k+1}$ is at most $p_k$.\n\nErdős and Graham described this as **'almost certainly true'** but noted that any proof would require controlling prime gaps at a level close to **Legendre's conjecture** (that there is always a prime between $n^2$ and $(n+1)^2$). The key obstacle: primes $q$ with $p_k < q^2 < p_{k+1}$ contribute factors that must be carefully bounded. The problem remains **open** as of 2025.",
     "problemStatement": "Let [1,...,n] denote the least common multiple of {1,...,n}. Let p_k be the k-th prime. Is it true that for all k ≥ 1: lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k)?",
-    "text": "Let lcm(1,...,n) denote the least common multiple of {1,...,n}. Is it true that for all k \u2265 1, lcm(1,...,p_{k+1}-1) < p_k \u00b7 lcm(1,...,p_k)? Erd\u0151s and Graham call this 'almost certainly' true, but proving it requires something close to Legendre's conjecture.",
+    "text": "Let lcm(1,...,n) denote the least common multiple of {1,...,n}. Is it true that for all k ≥ 1, lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k)? Erdős and Graham call this 'almost certainly' true, but proving it requires something close to Legendre's conjecture.",
     "proofStrategy": "We define lcm_upto using Finset.lcm and the nth prime using Nat.nth. The main conjecture is expressed as a Prop. We verify small cases (k=1,2) computationally. The connection to Legendre's conjecture is formalized: we need to control primes q with p_k < q² < p_{k+1}.",
     "keyInsights": [
       "Between consecutive primes $p_k$ and $p_{k+1}$, the LCM only grows by composite factors (powers of primes already present), making the bound plausible but hard to prove.",

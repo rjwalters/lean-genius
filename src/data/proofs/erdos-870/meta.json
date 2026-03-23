@@ -64,12 +64,13 @@
       "Logarithmic growth and asymptotic analysis",
       "Set theory (subsets, cardinality, Zorn's lemma for minimality)"
     ],
-    "lineCount": 323
+    "lineCount": 323,
+    "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem asks about additive bases — sets A ⊆ N where every large integer is a sum of at most k elements from A. A minimal basis has no proper subset that is also a basis. Erdős and Nathanson (1979) proved that for k = 2, if representations grow logarithmically, the basis contains a minimal basis. Härtter (1956) and Nathanson (1974) showed that without growth conditions, bases may contain no minimal bases. The theory of additive bases originates with Waring's problem (1770) and Goldbach's conjecture (1742); Lagrange's four-square theorem (1770) shows the squares form a basis of order 4. The distinction between bases and minimal bases captures a fundamental redundancy phenomenon: most natural bases (squares, cubes, primes) are far from minimal.",
     "problemStatement": "**Question:** For k ≥ 3, does there exist c = c(k) > 0 such that any additive basis A of order k with r(n) ≥ c log n for large n must contain a minimal basis of order k?\n\n**Status: OPEN**\n\nHere r(n) counts representations of n as sums of at most k elements from A.",
-    "text": "For k \u2265 3, if A is an additive basis of order k with r(n) \u2265 c log n for large n, must A contain a minimal basis of order k? Known for k = 2 (Erd\u0151s-Nathanson 1979). Status: OPEN.",
+    "text": "For k ≥ 3, if A is an additive basis of order k with r(n) ≥ c log n for large n, must A contain a minimal basis of order k? Known for k = 2 (Erdős-Nathanson 1979). Status: OPEN.",
     "proofStrategy": "We formalize:\n\n1. **AdditiveSet, KRepresentation:** Basic structures for additive number theory\n2. **IsAdditiveBasis:** Definition of basis of order k\n3. **IsMinimalBasis:** Basis where every element is essential\n4. **HasLogarithmicGrowth:** The key condition r(n) ≥ c log n\n5. **Known results:** Erdős-Nathanson for k = 2, Härtter-Nathanson counterexamples\n6. **Main conjecture:** ErdosConjecture870 for k ≥ 3",
     "keyInsights": [
       "**Additive basis:** Every large n is a sum of ≤ k elements from A",

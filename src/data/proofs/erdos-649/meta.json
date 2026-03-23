@@ -51,12 +51,13 @@
       "Positive examples: (2,3) and (3,2) work"
     ],
     "axiomCount": 17,
-    "lineCount": 328
+    "lineCount": 328,
+    "assumptions": "17 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #649**\n\nThis problem asks whether all prime pairs can be realized as greatest prime factors of consecutive integers.\n\n**Key History:**\n- Erdős believed the problem was 'probably hopelessly difficult'\n- Multiple counterexamples discovered via modular arithmetic\n- Tong proved infinitely many pairs fail for any fixed p\n- Mahler (1935) studied growth of P(n(n+1))\n\n**The Counterexamples:**\n- (2, 7): 2^k ≢ -1 (mod 7) since ord_7(2) = 3 is odd\n- (19, 2): 2 is a primitive root mod 19\n- Infinitely many pairs via quadratic reciprocity obstructions",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet P(m) denote the greatest prime factor of m.\n\nIs it true that for any two primes p, q, there exists n such that:\n- P(n) = p\n- P(n+1) = q\n\n**Answer: NO**\n\nThe pair (p, q) = (2, 7) has no solution, and infinitely many other pairs fail.",
-    "text": "Can any two primes p, q be achieved as P(n) = p and P(n+1) = q for some n? DISPROVED: The pair (2, 7) fails since 2^k \u2262 -1 (mod 7) for all k.",
+    "text": "Can any two primes p, q be achieved as P(n) = p and P(n+1) = q for some n? DISPROVED: The pair (2, 7) fails since 2^k ≢ -1 (mod 7) for all k.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Greatest Prime Factor:** Axiomatize P(m) with key properties\n\n2. **Erdős Conjecture:** Define as ∀ p q prime, ∃ n with P(n) = p, P(n+1) = q\n\n3. **Counterexample (2, 7):**\n   - If P(n) = 2, then n = 2^k for some k\n   - If P(2^k + 1) = 7, then 7 | (2^k + 1)\n   - But 2^k cycles {1, 2, 4} mod 7, never reaching 6 ≡ -1\n   - Contradiction\n\n4. **Main Theorem:** Apply the counterexample to disprove the conjecture\n\n5. **Extensions:** Tong's theorem on infinitely many failures",
     "keyInsights": [
       "**Powers of 2 mod 7:** The cycle {1, 2, 4} has period 3, never hitting 6 ≡ -1",

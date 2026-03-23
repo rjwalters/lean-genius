@@ -45,12 +45,13 @@
       "Connection to Cramér's conjecture on individual prime gaps"
     ],
     "axiomCount": 6,
-    "lineCount": 160
+    "lineCount": 160,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of prime gaps dₙ = pₙ₊₁ - pₙ. The prime number theorem tells us that the average gap near x is approximately log x, but individual gaps can be much larger or smaller.\n\nThe conjecture that Σ dₙ² ≪ N(log N)² is sometimes attributed to Heath-Brown. It says that, on average, prime gaps are 'typically' of size log p - the squares don't accumulate faster than expected.\n\nCramér (1936) proved that, assuming the Riemann Hypothesis, Σ dₙ² = O(N(log N)⁴). Selberg (1943) improved this to Σ dₙ²/n = O((log N)⁴). The prime number theorem immediately gives the matching lower bound N(log N)², so the gap between lower and upper bounds is (log N)².\n\nThis problem is intimately connected to Cramér's famous conjecture that dₙ = O((log pₙ)²), which remains one of the most important open problems about prime gaps.",
     "problemStatement": "Let $d_n = p_{n+1} - p_n$ denote the $n$-th prime gap. Prove that\n$$\\sum_{n \\leq N} d_n^2 \\ll N(\\log N)^2.$$\n\n**Status:** OPEN\n\n**Known bounds:**\n- Lower bound: $\\sum d_n^2 \\gg N(\\log N)^2$ (unconditional, from PNT)\n- Upper bound: $\\sum d_n^2 \\ll N(\\log N)^4$ (conditional on RH, Cramér 1936)",
-    "text": "Prove that the sum of squares of prime gaps satisfies \u03a3 d\u2099\u00b2 \u226a N(log N)\u00b2, where d\u2099 = p\u2099\u208a\u2081 - p\u2099 is the n-th prime gap.",
+    "text": "Prove that the sum of squares of prime gaps satisfies Σ dₙ² ≪ N(log N)², where dₙ = pₙ₊₁ - pₙ is the n-th prime gap.",
     "proofStrategy": "We formalize the conjecture and all known partial results:\n\n1. **Definitions**: The n-th prime via Nat.nth, prime gap function, and sum of squares\n2. **Lower bound**: Axiomatized from the prime number theorem\n3. **Cramér's upper bound**: Axiomatized conditional result assuming RH\n4. **Selberg's improvement**: The weighted sum variant\n5. **Cramér's conjecture**: Defined and shown to imply the main conjecture\n\nThe main conjecture itself is stated but cannot be proved - it remains an open problem.",
     "keyInsights": [
       "**Prime Gap Statistics**: The conjecture is about the 'second moment' of prime gaps - how their squares accumulate",

@@ -70,7 +70,8 @@
       "Grid constructions in discrete geometry"
     ],
     "crossReferences": [],
-    "relatedProofs": []
+    "relatedProofs": [],
+    "assumptions": "5 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #733**\n\nThis problem concerns the combinatorics of point-line incidences.\n\n**Key History:**\n- Erdos posed the problem about counting line-compatible sequences\n- He noted the lower bound exp(c*sqrt(n)) was 'easy' via grid constructions\n- Szemeredi-Trotter (1983) proved the matching upper bound\n\n**Related Problems:**\n- Problem #607: Similar problem without multiplicities\n- Problem #732: Related incidence problem\n\n**The Szemeredi-Trotter Theorem:**\nThe key tool is their incidence theorem: n points and m lines have O(n^{2/3}m^{2/3} + n + m) incidences.",

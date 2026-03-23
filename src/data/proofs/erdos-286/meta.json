@@ -52,12 +52,13 @@
       "Defined IsEgyptianFraction and proved equivalence with IsUnitFractionSum"
     ],
     "axiomCount": 5,
-    "lineCount": 245
+    "lineCount": 245,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem originates from the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erdős and Graham (1980, p. 33). It asks whether 1 can be expressed as a sum of k distinct unit fractions 1/n₁ + ... + 1/nₖ where all denominators lie in a 'short' interval of width approximately (e-1)k.\n\nThe constant (e-1) ≈ 1.718 arises naturally: if one chooses denominators uniformly from an interval [a, a+w], the expected reciprocal sum is approximately (w/a)·(1/a) summed over the interval, and optimizing this leads to the exponential constant. The problem is a deep question about the combinatorial structure of Egyptian fractions under interval constraints.\n\nCroot (2001) proved the affirmative answer in his Acta Arithmetica paper 'On unit fractions with denominators in short intervals.' His proof uses the greedy algorithm with careful interval management. He also proved that the constant (e-1) is asymptotically optimal — one cannot do better than (e-1-ε)k for any ε > 0. The case k = 2 is impossible (1/a + 1/b = 1 with distinct positive integers has no solution), but k ≥ 3 always admits representations.",
     "problemStatement": "Let k ≥ 2. Is it true that there exists an interval I of width (e-1+o(1))k and integers n₁ < ... < nₖ ∈ I such that 1 = 1/n₁ + ... + 1/nₖ?",
-    "text": "For k \u2265 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
+    "text": "For k ≥ 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
     "proofStrategy": "We formalize unit-fraction sums, interval representations, and the main problem. Concrete examples for k=3 and k=4 are proved. The Erdős-Graham constant (e-1) is defined with bounds. Croot's theorem and asymptotic optimality are stated. The main theorem erdos_286 combines the examples with Croot's theorem via representation_monotone to handle all k ≥ 3.",
     "keyInsights": [
       "**Erdős-Graham Constant**: (e-1) ≈ 1.718 is the asymptotically optimal width coefficient — both achievable and unimprovable",

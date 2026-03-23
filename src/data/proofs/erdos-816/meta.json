@@ -69,12 +69,13 @@
       "pigeonhole_degrees: degree pigeonhole axiom"
     ],
     "axiomCount": 5,
-    "lineCount": 228
+    "lineCount": 228,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #816: Equal-Degree Paths**\n\nThis problem was posed by Erdős and Hajnal and concerns the interplay between degree sequences and path connectivity in graphs.\n\n**The Question:**\nGiven enough edges, must a graph contain two vertices of the same degree that are connected by a path of length 3?\n\n**Key Insight:**\nThe complete bipartite graph K_{n,n+1} has exactly n² + n edges and fails this property: vertices of equal degree are in the same part, but paths of length 3 between same-part vertices don't exist (paths alternate between parts).\n\n**Resolution:**\nChen and Ma (2025, arXiv:2503.19569) proved that one additional edge (n² + n + 1 total) forces the property. They proved the stronger result that for n ≥ 600, even n² + n edges suffice except for K_{n,n+1}.",
     "problemStatement": "**Problem Statement**\n\nLet $G$ be a graph with $2n+1$ vertices and $n^2 + n + 1$ edges.\n\n**Question:** Must $G$ contain two vertices of the same degree which are joined by a path of length 3?\n\n**Answer:** YES\n\n**Threshold:** The complete bipartite graph $K_{n,n+1}$ has exactly $n^2 + n$ edges and fails this property, showing the threshold is tight.\n\n**Stronger Result (Chen-Ma 2025):**\nFor $n \\geq 600$, all graphs with $2n+1$ vertices and at least $n^2 + n$ edges contain such a pair, except $K_{n,n+1}$.",
-    "text": "Let G be a graph with 2n+1 vertices and n\u00b2 + n + 1 edges. Must G contain two vertices of the same degree joined by a path of length 3? YES - proved by Chen-Ma (2025).",
+    "text": "Let G be a graph with 2n+1 vertices and n² + n + 1 edges. Must G contain two vertices of the same degree joined by a path of length 3? YES - proved by Chen-Ma (2025).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Basics:** Define vertex count, edge count, and degree using Mathlib's SimpleGraph\n\n2. **Path of Length 3:** Define hasPath3 with a constructive symmetry proof\n\n3. **Equal-Degree Pair:** Define sameDegree and hasEqualDegreePath3Pair\n\n4. **Conditions:** Define the Erdős-Hajnal and weaker Chen-Ma conditions\n\n5. **Counterexample:** Define complete bipartite graph and state it fails with n² + n edges\n\n6. **Chen-Ma Theorem:** Axiomatize the 2025 result for n ≥ 600\n\n7. **Main Result:** State the full answer as an axiom",
     "keyInsights": [
       "**K_{n,n+1} as Extremal Graph:** The complete bipartite graph K_{n,n+1} is the unique extremal example—it has exactly n² + n edges and fails the property.",

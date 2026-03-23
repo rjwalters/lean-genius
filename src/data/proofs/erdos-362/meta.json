@@ -62,12 +62,13 @@
       "erdos_362_summary theorem: main results combined"
     ],
     "axiomCount": 8,
-    "lineCount": 193
+    "lineCount": 193,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #362** is about the concentration function in additive combinatorics. Given a finite set A, how many of its subsets can sum to a fixed target t?\n\n**Historical Development:**\n- **Erdős-Moser (1965):** First proved a bound of O(2^N / N^(3/2) · (log N)^(3/2))\n- **Sárközy-Szemerédi (1965):** Removed the log factor, giving the sharp bound 2^N / N^(3/2)\n- **Halász (1977):** With fixed cardinality constraint, proved 2^N / N²\n- **Stanley (1980):** Using algebraic geometry (hard Lefschetz), showed the symmetric set centered at 0 maximizes concentration\n\n**Key Insight:** The Central Limit Theorem explains why concentration is ~2^N / N^(3/2): subset sums are approximately Gaussian with variance ~N, so the peak height is ~1/√N, giving N^(3/2) in the denominator.",
     "problemStatement": "**Problem Statement**\n\nLet $A \\subseteq \\mathbb{N}$ be a finite set of size $N$.\n\n**Question 1:** Is it true that for any fixed $t$, there are\n$$\\ll \\frac{2^N}{N^{3/2}}$$\nsubsets $S \\subseteq A$ such that $\\sum_{n \\in S} n = t$?\n\n**Question 2:** If we further require $|S| = l$ (for any fixed $l$), is the number of solutions\n$$\\ll \\frac{2^N}{N^2}$$\nwith the implied constant independent of $l$ and $t$?\n\n**Answers:** YES to both!\n- Q1 solved by Sárközy-Szemerédi (1965)\n- Q2 solved by Halász (1977)",
-    "text": "For a finite set A of size N, how many subsets can sum to a fixed value t? S\u00e1rk\u00f6zy-Szemer\u00e9di (1965) proved the bound 2^N / N^(3/2). With fixed cardinality, Hal\u00e1sz (1977) proved 2^N / N\u00b2. Stanley (1980) found the extremal set.",
+    "text": "For a finite set A of size N, how many subsets can sum to a fixed value t? Sárközy-Szemerédi (1965) proved the bound 2^N / N^(3/2). With fixed cardinality, Halász (1977) proved 2^N / N². Stanley (1980) found the extremal set.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** setSum, subsetsWithSum, countSubsetsWithSum, concentrationFunction\n\n2. **Question 1:** Axiomatize Sárközy-Szemerédi's 2^N/N^(3/2) bound\n\n3. **Question 2:** Axiomatize Halász's 2^N/N² bound with fixed cardinality\n\n4. **Extremal Result:** Stanley's theorem that symmetric set maximizes\n\n5. **CLT Connection:** Explain the Gaussian approximation to subset sum distribution\n\n6. **Connections:** Littlewood-Offord problem, Fourier analysis, algorithmic aspects",
     "keyInsights": [
       "**Concentration Function:** The maximum number of subsets summing to any single value is O(2^N / N^(3/2)).",

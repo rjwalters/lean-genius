@@ -55,12 +55,13 @@
       "erdos_826_main theorem: well-definedness and implications"
     ],
     "axiomCount": 4,
-    "lineCount": 307
+    "lineCount": 307,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #826 was posed by Paul Erdős in 1974 (referenced as [Er74b]). It asks a fundamental question about the growth of the divisor function τ(n) = σ₀(n) along arithmetic shifts: can we find infinitely many starting points n where τ(n+k) grows at most linearly in k? The problem is described as a stronger form of Erdős Problem #248.\n\nThe divisor function τ(n) counts the number of positive divisors of n. Its average order is log(n), established by Dirichlet's divisor problem, while its maximum order is much larger — roughly 2^{log(n)/log(log(n))} — achieved by highly composite numbers. The interplay between typical and extremal behavior is central to understanding this problem.\n\nTerence Tao has noted that Problem #826 appears difficult. The challenge lies in simultaneously controlling divisor counts across all shifts k ≥ 1 from a single starting point. While the constraint becomes easier for large k (since Ck grows), the constraint at k = 1 is extremely restrictive: it requires τ(n+1) ≤ C, meaning n+1 must have very few divisors. Standard sieve methods and analytic number theory techniques have not yet yielded a resolution.",
     "problemStatement": "Are there infinitely many $n$ such that, for all $k \\geq 1$,\n$$\\tau(n + k) \\ll k?$$\n\nEquivalently: does there exist $C > 0$ such that the set\n$$S(C) = \\{n \\in \\mathbb{N} : \\tau(n+k) \\leq Ck \\text{ for all } k \\geq 1\\}$$\nis infinite?\n\n**Status:** OPEN",
-    "text": "Are there infinitely many n such that \u03c4(n+k) \u226a k for all k \u2265 1? This open problem asks whether the divisor function can be controlled linearly along shifted sequences from infinitely many starting points.",
+    "text": "Are there infinitely many n such that τ(n+k) ≪ k for all k ≥ 1? This open problem asks whether the divisor function can be controlled linearly along shifted sequences from infinitely many starting points.",
     "proofStrategy": "The formalization builds a comprehensive framework for Problem #826 in ten parts:\n\n1. **Divisor function:** Define τ via Mathlib's σ 0 with examples and growth bounds.\n\n2. **Growth theory:** Axiomatize the average order (~ log n) and maximum order of τ.\n\n3. **Core condition:** Define linearBoundCondition and goodStartingPoints — the central objects.\n\n4. **Formal conjecture:** State the problem as ∃ C > 0, S(C) is infinite.\n\n5. **Relations:** Show #826 implies the weaker Problem #248.\n\n6. **Observations:** Analyze the constraint at small k and the role of primes.\n\n7. **Heuristics and smooth numbers:** Explain why the conjecture is plausible but hard to prove.\n\n8. **Difficulty analysis:** Document Tao's assessment and the structural challenges.",
     "keyInsights": [
       "**Linear Control:** The condition τ(n+k) ≤ Ck is strong — it requires simultaneous control at all shifts, with the tightest constraint at k = 1.",

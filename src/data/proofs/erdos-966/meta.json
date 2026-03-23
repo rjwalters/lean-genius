@@ -57,12 +57,13 @@
       "AP_card theorem: cardinality of arithmetic progressions"
     ],
     "axiomCount": 10,
-    "lineCount": 310
+    "lineCount": 310,
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #966**\n\nThis problem combines arithmetic progressions with Ramsey-type coloring questions, bridging additive combinatorics and Ramsey theory.\n\n**Key History:**\n- Van der Waerden (1927): Proved any r-coloring of ℕ contains arbitrarily long monochromatic APs\n- Erdős [Er75b] (1975): Posed this refined question about (k+1)-AP-free sets\n- Spencer (~1975): Proved the affirmative answer, as reported by Erdős\n\n**Mathematical Setting:**\nThe problem asks whether we can find sets that are \"barely\" AP-free: they avoid (k+1)-term progressions but still force k-term monochromatic progressions in any coloring. This is a delicate balance between structure and randomness.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet $k, r \\geq 2$. Does there exist a set $A \\subseteq \\mathbb{N}$ such that:\n1. $A$ contains no non-trivial arithmetic progression of length $k+1$\n2. In any $r$-coloring of $A$, there exists a monochromatic arithmetic progression of length $k$\n\n**Answer: YES**\n\nSpencer showed (~1975) that such sets exist for all $k, r \\geq 2$. This is an arithmetic analogue of Folkman's theorem (Erdős Problem #924) about cliques in graphs.",
-    "text": "For k, r \u2265 2, does there exist a set A \u2286 \u2115 with no (k+1)-term arithmetic progression, yet every r-coloring has a monochromatic k-term AP? YES, proved by Spencer (~1975).",
+    "text": "For k, r ≥ 2, does there exist a set A ⊆ ℕ with no (k+1)-term arithmetic progression, yet every r-coloring has a monochromatic k-term AP? YES, proved by Spencer (~1975).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Progressions:** Define the set {a, a+d, ..., a+(k-1)d} as a Finset\n\n2. **AP-Free Sets:** A set is k-AP-free if it contains no arithmetic progression of length k with positive common difference\n\n3. **Colorings:** An r-coloring partitions elements into r color classes\n\n4. **Ramsey Property:** A set forces monochromatic k-APs if every r-coloring has some color class containing a k-AP\n\n5. **Main Axiom:** Spencer's theorem asserts existence of sets with both properties\n\n6. **Connections:** Van der Waerden's theorem, Roth's theorem, and Erdős #924",
     "keyInsights": [
       "**Ramsey Theory:** The problem blends Ramsey-type coloring results with AP-avoidance constraints",

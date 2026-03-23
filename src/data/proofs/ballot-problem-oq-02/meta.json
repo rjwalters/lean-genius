@@ -49,12 +49,13 @@
       "Gaussian distributions and the normal CDF",
       "Lévy's arcsine law and occupation times"
     ],
-    "lineCount": 339
+    "lineCount": 339,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The classical ballot problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes with $p > q$, the probability A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the reflection principle for lattice paths. The continuous-time version emerged from Louis Bachelier's 1900 thesis on stock price fluctuations — the first mathematical treatment of Brownian motion, predating Einstein's 1905 paper. Paul Lévy (1939) rigorously developed the reflection principle for Brownian motion, proving $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$, and discovered the arcsine law for the fraction of time BM spends positive. Monroe Donsker's 1951 invariance principle (functional CLT) formally connected discrete and continuous ballot theorems: the rescaled random walk converges in distribution to Brownian motion, making the discrete formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle.",
     "problemStatement": "**Continuous Ballot Problem**: For standard Brownian motion W on [0,T]:\n\n1. **Reflection Principle** (Lévy 1939): P(max_{s≤T} W_s ≥ a) = 2·P(W_T ≥ a)\n2. **First Passage CDF**: P(τ_a ≤ T) = 2·P(W_T ≥ a) = 2(1 - Φ(a/√T))\n3. **Arcsine Law**: The fraction of [0,T] where W > 0 has the arcsine distribution\n\nThese give the complete probabilistic description of Brownian motion relative to a level.",
-    "text": "Continuous-time versions of the ballot problem, connecting to Brownian motion and the reflection principle. Formalizes the reflection principle, first passage time distributions, and L\u00e9vy's Arcsine Law.",
+    "text": "Continuous-time versions of the ballot problem, connecting to Brownian motion and the reflection principle. Formalizes the reflection principle, first passage time distributions, and Lévy's Arcsine Law.",
     "proofStrategy": "**Axiomatic Approach**: Since Mathlib 4.26.0 lacks full Brownian motion formalization, we axiomatize the key properties:\n\n1. Define BrownianMotion structure with measurability, Gaussian marginals, and symmetry\n2. Prove symmetry theorems from the structure axioms\n3. Take the reflection principle as an axiom (requires strong Markov property)\n4. Derive the first passage CDF from the reflection principle\n5. Axiomatize the Arcsine Law (requires deep analysis)\n6. Connect to the classical discrete ballot theorem via explicit arithmetic",
     "keyInsights": [
       "The reflection principle $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ is the continuous analog of André's lattice path reflection",

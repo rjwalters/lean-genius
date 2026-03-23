@@ -24,12 +24,13 @@
     "erdosProblemStatus": "solved",
     "relatedProofs": [],
     "axiomCount": 2,
-    "lineCount": 243
+    "lineCount": 243,
+    "assumptions": "2 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
     "historicalContext": "Erdős studied $L^1$ norms of trigonometric polynomials from the 1940s onward, publishing related results in 1940, 1957, and 1961. The specific conjecture — that $\\|f\\|_1 \\leq 4$ when all roots lie on the unit circle and $\\|f\\|_\\infty = 1$ — was listed by W.K. Hayman as Problem 4.20 in his influential 1974 survey *Research Problems in Function Theory*. The problem was solved independently: Saff and Sheil-Small (1973) proved it for polynomials with complex coefficients, and Kristiansen (1974) for real coefficients. The bound 4 is sharp. Notably, the automated proof search tool Aristotle discovered a formalization bug in this entry: constant polynomials vacuously satisfy the 'all roots on the unit circle' condition (having no roots), but have $L^1$ norm $2\\pi > 4$, contradicting the formalized statement. The mathematical theorem implicitly requires degree $\\geq 1$.",
     "problemStatement": "Let $f(\\theta) = \\sum_{k=0}^{n} c_k e^{ik\\theta}$ be a trigonometric polynomial all of whose roots are real (i.e., lie on the unit circle), such that $\\max|f(\\theta)| = 1$. Then $\\int_0^{2\\pi} |f(\\theta)| \\, d\\theta \\leq 4$.",
-    "text": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L\u00b9 norm is at most 4.",
+    "text": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
     "proofStrategy": "The formalization defines trigonometric polynomials as `Fin (n+1) → ℂ`, with evaluation via `Complex.exp`. The unit-circle-roots condition requires all roots of $P(z) = \\sum c_k z^k$ to satisfy $\\|z\\| = 1$. Norms use Mathlib's `iSup` and Bochner integration. The main theorem has a `sorry` due to the constant-polynomial formalization bug. Aristotle proved optimality and the supremum equivalence theorem.",
     "keyInsights": [
       "**Terminological trap**: 'Real roots' means roots on the unit circle $|z| = 1$, not roots in $\\mathbb{R}$ — a common source of confusion in the literature",

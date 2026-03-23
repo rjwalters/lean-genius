@@ -28,12 +28,13 @@
       "Additive complements",
       "Waring's problem for squares",
       "Asymptotic density"
-    ]
+    ],
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem concerns 'additive complements of squares' - sets A ⊆ ℕ such that every natural number can be written as n² + a for some a ∈ A. Erdős asked: how sparse can such a set be?\n\nMoser (1965) proved the first quantitative lower bound: liminf |A ∩ {1,...,N}|/√N > 1.06. This was improved by Cilleruelo (1993), Habsieger (1995), and Balasubramanian-Ramana (2001) to the current best bound of 4/π ≈ 1.273.\n\nFor upper bounds, Van Doorn constructed a set achieving limsup ≤ 2φ^(5/2) ≈ 6.66 where φ is the golden ratio. The exact minimum of the limsup remains open.",
     "problemStatement": "Let A ⊆ ℕ be such that every integer can be written as n² + a for some a ∈ A and n ≥ 0. What is the smallest possible value of limsup |A ∩ {1,...,N}|/√N? Is liminf |A ∩ {1,...,N}|/√N > 1?\n\n**Status**: Partially solved. Best bounds: liminf ≥ 4/π ≈ 1.273, limsup ≤ 2φ^(5/2) ≈ 6.66. Exact minimum OPEN.",
-    "text": "For sets A such that every integer is n\u00b2 + a for some a \u2208 A, what is the minimum possible density? Best known: liminf \u2265 4/\u03c0 \u2248 1.273 and limsup \u2264 2\u03c6^(5/2) \u2248 6.66.",
+    "text": "For sets A such that every integer is n² + a for some a ∈ A, what is the minimum possible density? Best known: liminf ≥ 4/π ≈ 1.273 and limsup ≤ 2φ^(5/2) ≈ 6.66.",
     "proofStrategy": "The formalization defines additive complements of squares and the normalized density function |A ∩ {1,...,N}|/√N. We axiomatize:\n\n1. **Moser's bound**: liminf > 1.06 for any such A\n2. **Best lower bound**: liminf ≥ 4/π (Cilleruelo-Habsieger)\n3. **Van Doorn's construction**: There exists A with limsup ≤ 2φ^(5/2)\n\nWe also prove the golden ratio satisfies φ² = φ + 1 and derive that liminf > 1 from the 4/π bound.",
     "keyInsights": [
       "**Additive complement**: A set A 'completes' the squares if every integer is a square plus something from A",

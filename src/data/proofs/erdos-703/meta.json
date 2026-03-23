@@ -45,7 +45,8 @@
       "erdos_703_solved: combined resolution theorem"
     ],
     "axiomCount": 8,
-    "lineCount": 282
+    "lineCount": 282,
+    "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "crossReferences": [
     {
@@ -127,7 +128,7 @@
   "overview": {
     "historicalContext": "Intersection problems for set families are fundamental in extremal combinatorics, originating with the Erdős-Ko-Rado theorem (1961) on intersecting families. Erdős extended this to forbidden r-intersection, asking how large a family can be if no two sets share exactly r elements. For r = 0, the answer T(n,0) = 2^{n-1} is classical. Frankl (1977) solved the r = 1 case. Frankl-Füredi (1984) determined T(n,r) exactly for fixed r and large n, showing the optimal families consist of very large and very small sets. The key open question — whether T(n,r) < (2-δ)^n for r in the 'middle range' εn < r < (1/2-ε)n — carried a $250 Erdős prize. Frankl and Rödl (1987) resolved this affirmatively using the 'nibble method', now a fundamental technique in probabilistic combinatorics. The result connects to geometry: it implies exponential chromatic number for the unit distance graph in ℝ^n, also proved independently by Frankl-Wilson (1981) via modular algebraic methods.",
     "problemStatement": "Let T(n,r) be the maximum size of a family F of subsets of {1,...,n} such that |A ∩ B| ≠ r for all A, B in F. Estimate T(n,r). In particular, for every ε > 0, is there δ > 0 such that T(n,r) < (2 - δ)^n for εn < r < (1/2 - ε)n?",
-    "text": "Define T(n,r) as the maximum family size avoiding r-intersection. Is T(n,r) < (2-\u03b4)^n for \u03b5n < r < (1/2-\u03b5)n? SOLVED: YES (Frankl-R\u00f6dl 1987). Exact values known for small r (Frankl-F\u00fcredi 1984).",
+    "text": "Define T(n,r) as the maximum family size avoiding r-intersection. Is T(n,r) < (2-δ)^n for εn < r < (1/2-ε)n? SOLVED: YES (Frankl-Rödl 1987). Exact values known for small r (Frankl-Füredi 1984).",
     "proofStrategy": "The formalization builds up from basic definitions (r-intersection, r-avoiding families, T(n,r)) through known results (T(n,0) = 2^{n-1}, Frankl 1977, Frankl-Füredi 1984) to the main Frankl-Rödl theorem. Deep results are axiomatized; the connections to chromatic numbers and the Frankl-Wilson theorem are also formalized.",
     "keyInsights": [
       "**Base case T(n,0) = 2^{n-1}**: The r = 0 case reduces to classical intersecting families, connecting to the Erdős-Ko-Rado framework",

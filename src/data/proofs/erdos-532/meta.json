@@ -59,12 +59,13 @@
       "Finite Hindman theorem axiom and Hindman numbers definition"
     ],
     "axiomCount": 5,
-    "lineCount": 329
+    "lineCount": 329,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #532: Hindman's Theorem (IP Sets)**\n\nThis fundamental problem in Ramsey theory was posed by Graham and Rothschild in the early 1970s. It asks whether, for any finite coloring of the natural numbers, some color class must contain an 'IP set' - a set containing all finite sums from some infinite sequence.\n\n**Historical Development:**\n- **1971:** Graham and Rothschild posed the question in their work on Ramsey theory\n- **1974:** Neil Hindman proved the affirmative answer for any number of colors\n- **1975+:** Ultrafilter proofs discovered, connecting to topological dynamics\n- **Modern:** Hindman's theorem is now central to combinatorics and ergodic theory",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nIf ℕ is 2-colored, must there exist an infinite set A ⊆ ℕ such that all finite subset sums Σ_{n∈S} n (as S ranges over non-empty finite subsets of A) are monochromatic?\n\nIn other words: must some color class be an IP set?\n\n**Solution (Hindman 1974):**\nYES! For any finite coloring (not just 2 colors), there exists an infinite set A such that FS(A) = {all finite subset sums of A} is monochromatic.\n\nThis result, now called Hindman's Theorem, is one of the most important results in Ramsey theory.",
-    "text": "If \u2115 is finitely colored, must some color class be an IP set? Proved by Hindman (1974): YES, for any finite coloring there exists an infinite set A such that all finite subset sums of A are monochromatic.",
+    "text": "If ℕ is finitely colored, must some color class be an IP set? Proved by Hindman (1974): YES, for any finite coloring there exists an infinite set A such that all finite subset sums of A are monochromatic.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Colorings:** Define k-colorings as functions ℕ → Fin k.\n\n2. **Finite Sums (FS):** Define FS(A) as the set of all finite non-empty subset sums from A.\n\n3. **IP Sets:** Define IP sets as sets containing FS(A) for some infinite A.\n\n4. **Hindman's Theorem:** Axiomatize the main result: for any k-coloring, ∃ infinite A with FS(A) monochromatic.\n\n5. **Color Class Form:** Derive that some color class contains an IP set.\n\n6. **Properties:** Prove basic properties: singleton membership, disjoint sum closure.\n\n7. **Modern Methods:** Sketch the ultrafilter proof via idempotent ultrafilters in (βℕ, +).",
     "keyInsights": [
       "**IP = Infinite Parallelepiped:** The name comes from 'infinite-dimensional parallelepiped' or 'idempotent' (in ultrafilter theory)",

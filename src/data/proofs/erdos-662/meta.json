@@ -21,7 +21,8 @@
       "erdos-660",
       "erdos-661"
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "assumptions": "No axioms. 4 sorry(s) remain in the formalization."
   },
   "sections": [
     {
@@ -84,7 +85,7 @@
   "overview": {
     "historicalContext": "Erdős, Lovász, and Vesztergombi posed this problem in their 1997 paper 'Problems and results on the grid,' asking whether the triangular lattice universally maximizes short-range pair interactions among 1-separated point sets. The question extends a classical line of inquiry beginning with Thue's 1910 proof that the hexagonal lattice gives the densest circle packing in the plane, later made rigorous by Fejes Tóth (1940). The t = 1 case reduces to the contact number problem — how many unit-distance pairs can occur in a 1-separated set — which was resolved by Harborth (1974), who showed the exact answer is ⌊3n − √(12n − 3)⌋, achieved by hexagonal configurations. For general t, the problem connects to the Gauss circle problem for the Loeschian quadratic form a² + ab + b² (the norm form of the Eisenstein integers ℤ[ω]), since counting lattice points within distance t is equivalent to counting representations by this form. Despite nearly three decades since its posing, the conjecture remains open for all t > 1.",
     "problemStatement": "For $n$ points in $\\mathbb{R}^2$ with all pairwise distances $\\ge 1$, is the number of pairs at distance $\\le t$ maximized (for each $t \\ge 1$ and $n$ sufficiently large) by the triangular lattice configuration? That is, does $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ hold, where $f(t)$ is the coordination number of the triangular lattice at radius $t$?",
-    "text": "For 1-separated points in \u211d\u00b2, is the number of pairs at distance \u2264 t maximized by the triangular lattice? f(1)=6, f(\u221a3)=12, f(3)=18. Erd\u0151s\u2013Lov\u00e1sz\u2013Vesztergombi. Open.",
+    "text": "For 1-separated points in ℝ², is the number of pairs at distance ≤ t maximized by the triangular lattice? f(1)=6, f(√3)=12, f(3)=18. Erdős–Lovász–Vesztergombi. Open.",
     "proofStrategy": "The formalization defines 1-separated point sets and the pair count function, constructs the triangular lattice with basis vectors $(1, 0)$ and $(1/2, \\sqrt{3}/2)$, and axiomatizes the lattice count function. It establishes the Loeschian distance formula $d^2 = a^2 + ab + b^2$ and known coordination shell values. The t = 1 case is proved via the per-vertex bound of 6 neighbors (2D kissing number), giving the contact number bound 3n.",
     "keyInsights": [
       "**Loeschian quadratic form**: Distances in the triangular lattice are governed by $a^2 + ab + b^2$, the norm form of the Eisenstein integers $\\mathbb{Z}[\\omega]$, connecting discrete geometry to algebraic number theory",

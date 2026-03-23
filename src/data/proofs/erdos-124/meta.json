@@ -39,12 +39,13 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 97
+    "lineCount": 97,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Burr, Erdős, Graham, and Li (1996) [BEGL96] studied when digit-restricted numbers in multiple bases form complete sequences — i.e., represent all sufficiently large integers. A number has 'binary digits in base d' if all its base-d digits are 0 or 1, making it a sum of distinct powers of d. The key threshold is the reciprocal condition Σ1/(d_i - 1) ≥ 1. Pomerance proved this condition is NECESSARY: below the threshold, infinitely many integers are unrepresentable. The sufficiency (Q1) was proved via Alexeev's method and formalized in Lean. The stronger Q2 — using digits only from position k onward, with a coprimality condition — remains open, though verified for bases {3, 4, 7} where Σ1/(d_i - 1) = 1/2 + 1/3 + 1/6 = 1 exactly.",
     "problemStatement": "For integers 3 ≤ d₁ < ... < dᵣ with Σ 1/(dᵢ-1) ≥ 1, can all sufficiently large integers be represented as Σ cᵢaᵢ where cᵢ ∈ {0,1} and aᵢ uses only digits {0,1} in base dᵢ?",
-    "text": "For bases 3 \u2264 d\u2081 < ... < d\u1d63 with \u03a31/(d\u1d62-1) \u2265 1, can all large integers be written as \u03a3c\u1d62a\u1d62 with c\u1d62 \u2208 {0,1} and a\u1d62 having only digits {0,1} in base d\u1d62? Q1 PROVED. Q2 open (proved for {3,4,7}).",
+    "text": "For bases 3 ≤ d₁ < ... < dᵣ with Σ1/(dᵢ-1) ≥ 1, can all large integers be written as Σcᵢaᵢ with cᵢ ∈ {0,1} and aᵢ having only digits {0,1} in base dᵢ? Q1 PROVED. Q2 open (proved for {3,4,7}).",
     "proofStrategy": "Full rewrite from formal-conjectures. Defines digit-restricted numbers (P(d,k) and binaryDigitsInBase), the reciprocal condition, and representation properties at level 0 and level k. States Pomerance's necessity result, the proved first question, and the open second question with the {3,4,7} verification.",
     "keyInsights": [
       "The reciprocal condition Σ1/(d_i-1) ≥ 1 is a sharp threshold: necessary (Pomerance) and sufficient (Q1 proved) for completeness at level 0",

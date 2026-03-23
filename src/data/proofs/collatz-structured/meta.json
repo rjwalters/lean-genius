@@ -31,7 +31,8 @@
     ],
     "dateAdded": "2025-12-31",
     "axiomCount": 1,
-    "lineCount": 207
+    "lineCount": 207,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Collatz conjecture was proposed by Lothar Collatz in 1937, though he didn't publish it until years later. It has many names: the 3n+1 problem, the Syracuse problem, Kakutani's problem, Hasse's algorithm, and Ulam's problem.\n\nDespite its simple statement, the conjecture has resisted all proof attempts. Paul Erdos famously said: 'Mathematics is not yet ready for such problems.' It's been verified for all n up to 2^68 (about 10^20) by computation.\n\nTerence Tao proved in 2019 that almost all Collatz orbits attain almost bounded values, the strongest result toward the conjecture to date.",

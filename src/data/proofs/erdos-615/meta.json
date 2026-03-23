@@ -59,7 +59,8 @@
       "erdos_615 theorem: main result (conjecture is false)"
     ],
     "axiomCount": 8,
-    "lineCount": 315
+    "lineCount": 315,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #615**\n\nThis is a fundamental problem in Ramsey-Turan theory, combining ideas from extremal graph theory and Ramsey theory.\n\n**Key History:**\n- Erdos-Hajnal-Simonovits-Sos-Szemeredi [EHSSS93] posed the problem (1993)\n- Erdos-Hajnal-Sos-Szemeredi [EHSS83] proved rt(n; 4, en) < (1/8 + o(1))n^2 (1983)\n- Sudakov [Su03] proved rt is subquadratic for very slow growth (2003)\n- Fox-Loh-Zhao [FLZ15] resolved it negatively (2015)\n\n**The Ramsey-Turan Number:**\nrt(n; k, l) = max edges in n-vertex graph with no K_k and no independent set of size l.\n\nThis combines Ramsey theory (avoiding monochromatic structures) with Turan theory (maximizing edges).",

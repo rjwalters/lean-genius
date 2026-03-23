@@ -24,12 +24,13 @@
     "erdosUrl": "https://erdosproblems.com/589",
     "erdosProblemStatus": "solved",
     "axiomCount": 6,
-    "lineCount": 343
+    "lineCount": 343,
+    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erdős originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (Füredi)**: Proved g(n) ≥ c·√n·log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) ≤ n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",
     "problemStatement": "**Problem:** Let g(n) be maximal such that in any set of n points in ℝ² with no four collinear, there exists a subset of g(n) points with no three collinear. Estimate g(n).\n\n**Terminology:**\n- General position = no 3 collinear\n- Almost general position = no 4 collinear\n\n**Erdős's Belief (WRONG):** g(n) = Ω(n)\n\n**Known Bounds:**\n- Lower: g(n) ≥ c·√n·log n (Füredi 1991)\n- Upper: g(n) ≤ n^(5/6+o(1)) (Balogh-Solymosi 2018)\n- Trivial: g(n) ≥ c·√n (greedy algorithm)\n\n**Status:** Partially resolved - bounds established but exact asymptotics unknown.",
-    "text": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erd\u0151s thought g(n) = \u03a9(n), but actually n^(1/2)\u00b7log n \u226a g(n) \u2264 n^(5/6+o(1)).",
+    "text": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erdős thought g(n) = Ω(n), but actually n^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1)).",
     "proofStrategy": "The formalization defines collinearity predicates, general and almost general position, and the function g(n). Erdős's false belief is stated and shown to contradict the density Hales-Jewett theorem. Füredi's 1991 bounds and Balogh-Solymosi's 2018 upper bound are axiomatized. The main summary theorem combines all results.",
     "keyInsights": [
       "Erdős's linear growth belief was wrong - g(n) = o(n)",

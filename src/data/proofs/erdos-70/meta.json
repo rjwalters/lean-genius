@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/70",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 225
+    "lineCount": 225,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #70 belongs to partition calculus, the infinitary extension of Ramsey theory developed by Erdős and Rado in their foundational 1956 paper 'A partition calculus in set theory'. The arrow notation κ → (α, β)_k^n captures the idea that coloring n-element subsets of a κ-sized set forces monochromatic subsets of specified types. Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for 2 ≤ n < ω, establishing that the continuum satisfies non-trivial partition relations for 3-element subsets. The proof uses the stepping-up lemma, converting 2-dimensional partition relations to 3-dimensional ones at the cost of enlarging the ordinal parameter. The general case — whether 𝔠 → (β, n)₂³ holds for all countable ordinals β — remains completely open. This connects to deep questions about the combinatorial structure of the continuum. Under GCH, stronger partition relations hold, but the problem is formulated in ZFC. Todorčević's work on partition relations and Shelah's pcf theory have provided partial insights, but the gap between ω+n and arbitrary countable ordinals has not been bridged.",
     "problemStatement": "Let 𝔠 be the cardinality of the continuum (= 2^ℵ₀), β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? That is, for any 2-coloring of 3-element subsets of a continuum-sized set, is there either a homogeneous set of order type β for color 0 or a homogeneous set of size n for color 1?",
-    "text": "Let \ud835\udd20 be the cardinality of the continuum, \u03b2 be any countable ordinal, and 2 \u2264 n < \u03c9. Is it true that \ud835\udd20 \u2192 (\u03b2, n)\u2082\u00b3? OPEN.",
+    "text": "Let 𝔠 be the cardinality of the continuum, β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? OPEN.",
     "proofStrategy": "The formalization defines colorings of n-element subsets, homogeneous sets, order types, and the partition arrow notation κ → (α, m)₂³. The main conjecture is stated for all countable ordinals β. Special cases for β = ω, ω², and ω^ω are defined. The Erdős-Rado partial result is axiomatized. Monotonicity properties and countability proofs for ordinal arithmetic (ω+n, ω²) are proved from Mathlib's ordinal/cardinal API.",
     "keyInsights": [
       "**Erdős-Rado stepping-up**: $\\mathfrak{c} \\to (\\omega+n, 4)_2^3$ for $2 \\le n < \\omega$, proved by converting the 2-dimensional relation $\\mathfrak{c} \\to (\\omega, 3)_2^2$ to dimension 3 via the stepping-up lemma",

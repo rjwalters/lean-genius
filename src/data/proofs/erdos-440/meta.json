@@ -60,12 +60,13 @@
       "erdos_440_solved main theorem"
     ],
     "axiomCount": 5,
-    "lineCount": 211
+    "lineCount": 211,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #440 originated from a problem in the American Mathematical Monthly. It asks about the growth of a counting function A(x) that measures how many consecutive pairs in an infinite sequence have small least common multiple. Erdős and Szemerédi solved it completely in their 1980 paper published in Mat. Lapok.\n\nThe key insight is that the natural numbers form the extremal sequence: for A = ℕ, consecutive integers n and n+1 are always coprime, so lcm(n, n+1) = n(n+1). This gives A(x) ≈ √x, and the liminf of A(x)/√x equals 1. Erdős and Szemerédi proved that no sequence can consistently exceed this — liminf A(x)/√x ≤ 1 for every sequence.\n\nTerence Tao later provided an elegant elementary proof of the O(√x) bound using a GCD decomposition argument. Wouter van Doorn established the sharp constant: A(x) ≤ (c + o(1))√x where c = Σ_{n≥1} 1/(√n(n+1)) ≈ 1.86, confirming and refining the Erdős-Szemerédi result.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $A = \\{a_1 < a_2 < \\cdots\\} \\subseteq \\mathbb{N}$ be an infinite increasing sequence. Let $A(x)$ count the number of indices $i$ for which $\\mathrm{lcm}(a_i, a_{i+1}) \\leq x$.\n\n**Questions:** (1) Is $A(x) = O(x^{1/2})$? (2) How large can $\\liminf A(x)/x^{1/2}$ be?\n\n**Answer:** YES to (1), and $\\liminf A(x)/\\sqrt{x} \\leq 1$ always, with equality for $A = \\mathbb{N}$. The sharp bound is $A(x) \\leq (c + o(1))\\sqrt{x}$ where $c \\approx 1.86$.",
-    "text": "For infinite sequence A, let A(x) count indices i with lcm(a\u1d62, a\u1d62\u208a\u2081) \u2264 x. Is A(x) = O(\u221ax)? YES, and liminf A(x)/\u221ax \u2264 1 always, with equality for A = \u2115 (Erd\u0151s-Szemer\u00e9di 1980).",
+    "text": "For infinite sequence A, let A(x) count indices i with lcm(aᵢ, aᵢ₊₁) ≤ x. Is A(x) = O(√x)? YES, and liminf A(x)/√x ≤ 1 always, with equality for A = ℕ (Erdős-Szemerédi 1980).",
     "proofStrategy": "The formalization defines increasing sequences, the counting function A(x), and the normalized ratio. The lcm_consecutive theorem is proved constructively using Nat.coprime_self_add_one. The O(√x) bound (Tao), sharp constant (van Doorn), and liminf bound (Erdős-Szemerédi) are axiomatized. The main theorems erdos_szemeredi_summary and erdos_440_solved combine these results.",
     "keyInsights": [
       "**Coprimality is key:** lcm(n, n+1) = n(n+1) because consecutive integers are coprime",

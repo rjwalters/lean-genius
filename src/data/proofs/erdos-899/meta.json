@@ -46,12 +46,13 @@
       "Connection to additive combinatorics"
     ],
     "axiomCount": 1,
-    "lineCount": 140
+    "lineCount": 140,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem 899 concerns the growth rate of difference sets, a fundamental question in additive combinatorics. Given a set A of natural numbers, the difference set A - A consists of all integers of the form a - b where a, b ∈ A.\n\nThe question asks: if A is sparse (has zero density), can A - A also be sparse relative to A? Intuitively, if A has large gaps, the differences should spread out, forcing A - A to be much larger than A.\n\nImre Ruzsa proved in 1978 that the answer is no—the ratio |A - A| / |A| must tend to infinity. This result is foundational in additive combinatorics and connects to the study of sumsets, Freiman's theorem, and the structure of sets with small doubling.",
     "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be an infinite set such that $|A \\cap \\{1, \\ldots, N\\}| = o(N)$. Is it true that\n$$\\limsup_{N \\to \\infty} \\frac{|(A - A) \\cap \\{1, \\ldots, N\\}|}{|A \\cap \\{1, \\ldots, N\\}|} = \\infty?$$\n\nThe answer is **yes**, proved by Ruzsa (1978).",
-    "text": "If A \u2286 \u2115 has zero density, must the difference set A - A grow much faster than A? Ruzsa proved yes in 1978.",
+    "text": "If A ⊆ ℕ has zero density, must the difference set A - A grow much faster than A? Ruzsa proved yes in 1978.",
     "proofStrategy": "Ruzsa's proof uses sophisticated combinatorial arguments. The key ideas include:\n\n1. **Counting pairs:** If A has k elements up to N, there are roughly k² pairs (a, b) with a, b ∈ A.\n\n2. **Pigeonhole principle:** These pairs produce differences in a bounded range, so many must collide if A - A is small.\n\n3. **Structure theory:** Too many collisions forces A to have additive structure, contradicting zero density.\n\nOur formalization states the theorem as an axiom and provides definitions and examples to illustrate the concepts.",
     "keyInsights": [
       "**Difference sets:** A - A = {a - b : a, b ∈ A} captures the \"additive structure\" of A.",

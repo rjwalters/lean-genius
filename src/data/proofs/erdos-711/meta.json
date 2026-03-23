@@ -63,12 +63,13 @@
       "Connection to Problem #710 bounds and asymptotic dominance analysis"
     ],
     "axiomCount": 9,
-    "lineCount": 345
+    "lineCount": 345,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Pomerance (1980) introduced the two-parameter function f(n,m) generalizing f(n) = f(n,n) from Problem #710. While Problem #710 fixes the starting point at m = n, Problem #711 asks how the starting point affects the required interval length. They proved the uniform bound max_m f(n,m) ≪ n^{3/2} using a greedy construction, and Erdős offered 1000 rupees (~$78 in 1992) for proving either of two conjectures. In 2026, van Doorn resolved the second conjecture by proving f(n,m) - f(n,n) ≫ n·(log n / log log n) for suitably chosen m, published in Integers #A7. This quantitative bound shows the difference can actually dominate f(n,n) itself for large n, since log n / log log n ≫ √(log n). The first conjecture — improving n^{3/2} to n^{1+o(1)} — remains open and is one of the outstanding problems in multiplicative number theory.",
     "problemStatement": "**Erdős Problem #711** (Erdős-Pomerance, 1980; partially solved):\n\nLet f(n,m) be minimal such that (m, m+f(n,m)) contains distinct integers a₁,...,aₙ with k | aₖ for all 1 ≤ k ≤ n.\n\n**Conjecture 1** (OPEN): max_m f(n,m) ≤ n^{1+o(1)}\n**Conjecture 2** (SOLVED): max_m (f(n,m) - f(n,n)) → ∞\n\n**Known**: max_m f(n,m) ≪ n^{3/2} (Erdős-Pomerance 1980); f(n,m) - f(n,n) ≫ n·(log n / log log n) for some m (van Doorn 2026)",
-    "text": "Let f(n,m) be minimal such that (m, m+f(n,m)) contains distinct a\u2081,...,a\u2099 with k|a\u2096. Prove max_m f(n,m) \u2264 n^{1+o(1)} [OPEN] and max_m(f(n,m)-f(n,n))\u2192\u221e [SOLVED by van Doorn 2026].",
+    "text": "Let f(n,m) be minimal such that (m, m+f(n,m)) contains distinct a₁,...,aₙ with k|aₖ. Prove max_m f(n,m) ≤ n^{1+o(1)} [OPEN] and max_m(f(n,m)-f(n,n))→∞ [SOLVED by van Doorn 2026].",
     "proofStrategy": "The formalization proceeds in layers: (1) Define IsValidSelection extending Problem #710's setup with variable starting point m; (2) Define f(n,m) = minimalIntervalLength via Nat.find; (3) Axiomatize the Erdős-Pomerance n^{3/2} uniform bound; (4) Define both conjectures formally — firstConjecture as ∀ε>0 ∃N ∀n≥N ∀m, secondConjecture as ∀K ∃N ∀n≥N ∃m; (5) Axiomatize van Doorn's quantitative bound and derive secondConjecture from it; (6) Analyze why m matters via residue class effects (multiplesInInterval, residue_class_effect); (7) Prove three concrete examples for n=2 with different m values; (8) Combine all results in erdos_711_summary theorem.",
     "keyInsights": [
       "The starting point m fundamentally affects the optimization: multiples of k in (m, m+L) depend on m mod k, creating residue class interference effects",

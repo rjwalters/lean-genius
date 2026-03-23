@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/153",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 130
+    "lineCount": 130,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Sidon sets originate from Simon Sidon's 1932 question to Erdős about sets of natural numbers whose pairwise sums are all distinct. Erdős and Turán (1941) proved the foundational density bound: a Sidon set in $\\{1,\\ldots,N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, and perfect difference set constructions (Singer 1938, using projective planes over finite fields) show this is essentially tight. Problem 153 was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I', where they initiated a systematic study of the fine structure of sumsets $A+A$ for Sidon sets $A$. While the average gap in such sumsets is bounded ($\\Theta(1)$ for maximal Sidon sets), they conjectured that the second moment — the mean squared gap — must diverge. This question sits at the intersection of additive combinatorics and the statistical theory of gap distributions, connecting to broader phenomena like the pair correlation conjecture for zeros of the Riemann zeta function and the study of level spacing in random matrix theory.",
     "problemStatement": "Let $A$ be a finite Sidon set and $A+A = \\{s_1 < s_2 < \\cdots < s_t\\}$. Is it true that $\\frac{1}{t} \\sum_{i=1}^{t-1} (s_{i+1} - s_i)^2 \\to \\infty$ as $|A| \\to \\infty$?",
-    "text": "Let A be a finite Sidon set and A+A = {s\u2081 < ... < s\u209c}. Is it true that (1/t) \u00b7 \u03a3 (s_{i+1} - s_i)\u00b2 \u2192 \u221e as |A| \u2192 \u221e? The mean squared gap in sumsets of Sidon sets should diverge. OPEN.",
+    "text": "Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that (1/t) · Σ (s_{i+1} - s_i)² → ∞ as |A| → ∞? The mean squared gap in sumsets of Sidon sets should diverge. OPEN.",
     "proofStrategy": "The formalization defines Sidon sets as finite subsets of $\\mathbb{N}$ with all pairwise sums distinct, constructs the sumset $A+A$ via Cartesian product image, sorts it into a list for gap computation, and defines the sum of squared gaps using a fold over consecutive pairs. The mean squared gap divides by the number of gaps. The conjecture ErdosProblem153 is stated as: for every $M > 0$ there exists $N_0$ such that all Sidon sets of size $\\ge N_0$ have mean squared gap exceeding $M$. Key structural properties (sumset cardinality $\\ge n(n+1)/2$, range bound, bounded average gap) are axiomatized, along with the Erdős–Sárközy–Sós positive lower bound. The infinite Sidon set variant is also formalized.",
     "keyInsights": [
       "**Sidon property forces quadratic sumset growth**: A Sidon set of size $n$ has $|A+A| \\ge n(n+1)/2$ — every unordered pair yields a distinct sum, so the sumset is as large as possible given the representation constraint",

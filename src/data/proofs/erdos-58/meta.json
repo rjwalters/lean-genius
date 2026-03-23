@@ -29,12 +29,13 @@
       "Odd cycles and graph parity",
       "Girth of graphs",
       "Probabilistic method in graph theory"
-    ]
+    ],
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Bollobás and Erdős conjectured that a graph with at most k distinct odd cycle lengths satisfies χ(G) ≤ 2k+2. The case k=0 is the classical bipartite characterization (χ ≤ 2 iff no odd cycles). Bollobás and Shelah proved the k=1 case: at most one odd cycle length implies χ ≤ 4. Gyárfás solved the general conjecture in 1992 using an inductive argument powered by a structural dichotomy for 2-connected graphs: either the graph contains K_{2k+2} or has a low-degree vertex (degree ≤ 2k). He also characterized equality: χ(G) = 2k+2 iff K_{2k+2} ⊆ G. In 2021, Gao, Huo, and Ma substantially strengthened the result: if χ(G) ≥ 2k+3, then G contains k+1 consecutive odd cycle lengths {2m+1, 2m+3, ..., 2m+2k+1} for some m. This is strictly stronger than just having k+1 distinct odd lengths. The problem is closely related to Problem #57 (Liu-Montgomery 2020), which handles the infinite chromatic number case: χ(G) = ∞ implies ∑ 1/aᵢ = ∞ over odd cycle lengths.",
     "problemStatement": "If $G$ is a graph which contains odd cycles of $\\leq k$ different lengths, then $\\chi(G) \\leq 2k+2$, with equality if and only if $G$ contains $K_{2k+2}$.",
-    "text": "If G has at most k distinct odd cycle lengths, then \u03c7(G) \u2264 2k+2, with equality iff G contains K_{2k+2}. Solved by Gy\u00e1rf\u00e1s (1992).",
+    "text": "If G has at most k distinct odd cycle lengths, then χ(G) ≤ 2k+2, with equality iff G contains K_{2k+2}. Solved by Gyárfás (1992).",
     "proofStrategy": "The formalization axiomatizes the chromatic number with a specification (existence + minimality). Gyárfás' theorem is stated as three axioms: the upper bound χ ≤ 2k+2, the equality characterization via K_{2k+2}, and the structural dichotomy for 2-connected graphs. Four theorems are proved: the Bollobás-Shelah case (k=1), the bipartite case (k=0), a χ ≥ 5 corollary, and the equality-implies-clique direction — all by combining the axioms with omega. The Gao-Huo-Ma consecutive odd lengths strengthening is axiomatized.",
     "keyInsights": [
       "The bound χ ≤ 2k+2 is tight: K_{2k+2} has exactly k odd cycle lengths {3, 5, ..., 2k+1} and χ(K_{2k+2}) = 2k+2",

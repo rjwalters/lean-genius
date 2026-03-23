@@ -54,12 +54,13 @@
       "Independent sets",
       "Basic combinatorics and extremal graph theory"
     ],
-    "lineCount": 249
+    "lineCount": 249,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The cochromatic number ζ(G) is the minimum colors needed where each color class induces either a complete graph or independent set. Erdős, Gimbel, and Straight (1990) conjectured that χ(G) ≤ ζ(G) + 2 for K₅-free graphs with ζ(G) ≥ 4. This was disproved by Steiner in 2024. The cochromatic number was introduced by Erdős and Gimbel in the late 1980s as a natural relaxation of proper coloring, and the EGS paper established the general bounded-gap result χ(G) ≤ ζ(G) + f(ω(G)) for some function f. Determining the optimal function f remains open; Steiner's 2024 counterexample showed f(4) ≥ 3, ruling out the originally conjectured value of 2.",
     "problemStatement": "**Conjecture (Erdős-Gimbel-Straight 1990):**\nIf G has no K₅ (ω(G) ≤ 4) and ζ(G) ≥ 4, then χ(G) ≤ ζ(G) + 2.\n\n**Answer:** NO (Steiner 2024)\n\n**Counterexample:** A graph G with ω(G) = 4, ζ(G) = 4, and χ(G) = 7.\nThis gives χ = 7 > 6 = ζ + 2, disproving the conjecture.",
-    "text": "Is \u03c7(G) \u2264 \u03b6(G) + 2 when G has no K\u2085 and \u03b6(G) \u2265 4? DISPROVED by Steiner (2024) who constructed a graph with \u03c9=4, \u03b6=4, \u03c7=7.",
+    "text": "Is χ(G) ≤ ζ(G) + 2 when G has no K₅ and ζ(G) ≥ 4? DISPROVED by Steiner (2024) who constructed a graph with ω=4, ζ=4, χ=7.",
     "proofStrategy": "The formalization defines cochromatic coloring (each color class is a clique or independent set), states the EGS conjecture, axiomatizes Steiner's counterexample, and derives the falsity of the conjecture. The general bounded gap theorem (EGS 1990) is also formalized.",
     "keyInsights": [
       "**Cochromatic Number:** ζ(G) allows color classes to be cliques OR independent sets",

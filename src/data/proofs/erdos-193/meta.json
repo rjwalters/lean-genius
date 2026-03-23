@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/193",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 80
+    "lineCount": 80,
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Joseph Gerver and L. Thomas Ramsey posed this problem in 1979 while studying self-avoiding walks on integer lattices with bounded step sets. They proved that in $\\mathbb{Z}^2$, every infinite injective $S$-walk must contain three collinear points, using a pigeonhole argument on the finitely many directions determined by the step set. The argument exploits the fact that in two dimensions, finitely many step directions constrain visited points to finitely many slopes from the origin, forcing three points to lie on a common line. Erdős recorded the problem and highlighted the open three-dimensional case, where the vastly larger direction space ($S^2$ vs. $S^1$) prevents the same pigeonhole approach. The problem connects to broader questions about unavoidable geometric patterns in discrete walks, a theme running through Erdős's work on combinatorial geometry from the 1970s onward. The 3D case has resisted all approaches for over 40 years and remains one of the most accessible yet stubbornly open problems in lattice combinatorics.",
     "problemStatement": "Given a finite set $S \\subseteq \\mathbb{Z}^3$ and an infinite injective $S$-walk $w: \\mathbb{N} \\to \\mathbb{Z}^3$ with $w(i+1) - w(i) \\in S$ for all $i$, must $w$ contain three collinear points $w(i), w(j), w(k)$ with $i < j < k$?",
-    "text": "Let S \u2286 \u2124\u00b3 be a finite step set and A an infinite S-walk in \u2124\u00b3. Must A contain three collinear points? Proved for \u2124\u00b2 by Gerver\u2013Ramsey; the \u2124\u00b3 case remains open.",
+    "text": "Let S ⊆ ℤ³ be a finite step set and A an infinite S-walk in ℤ³. Must A contain three collinear points? Proved for ℤ² by Gerver–Ramsey; the ℤ³ case remains open.",
     "proofStrategy": "The formalization defines lattice points as $\\text{Fin}\\,d \\to \\mathbb{Z}$ (dimension-generic), step walks via membership $w(i+1) - w(i) \\in S$, and collinearity via integer parallelism: $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq (0,0), \\forall j: a(q_j - p_j) = b(r_j - p_j)$. The open 3D conjecture and the known Gerver–Ramsey 2D result are stated as axioms. Basic collinearity properties (reflexivity, symmetry, constant-walk degeneracy) are proved to validate the definition.",
     "keyInsights": [
       "**Gerver–Ramsey (1979)**: In $\\mathbb{Z}^2$, every infinite injective $S$-walk contains three collinear points, proved via pigeonhole on the finitely many step directions",

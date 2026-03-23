@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/386",
     "erdosProblemStatus": "open",
     "axiomCount": 10,
-    "lineCount": 158
+    "lineCount": 158,
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 74), asking whether binomial coefficients C(n,k) can equal products of consecutive primes p_i · p_{i+1} · ⋯ · p_j infinitely often. The question sits at the intersection of two deep streams: the prime factorization structure of binomial coefficients (studied since Kummer's 1852 theorem on p-adic valuations via carries in base-p addition) and the distribution of primorial quotients (products of consecutive primes). The known examples — C(21,2) = 210 = 2·3·5·7, C(7,3) = 35 = 5·7, C(10,4) = 210, C(14,4) = 1001 = 7·11·13, and C(15,6) = 5005 = 5·7·11·13 — all have small k ≤ 6 and n ≤ 21. The Sylvester–Schur theorem (1934) guarantees that C(n,k) always has a prime factor > k, providing a lower bound on the 'reach' of its prime factorization. Granville's work on the multiplicative structure of binomial coefficients (2000s) shows they are 'almost always' squarefree, but being a product of *consecutive* primes is a much stronger constraint that remains poorly understood.",
     "problemStatement": "Let 2 ≤ k ≤ n − 2. Can C(n,k) be the product of consecutive primes p_i · p_{i+1} · ⋯ · p_j for infinitely many n? Known examples: C(21,2) = 210 = 2·3·5·7, C(7,3) = 35 = 5·7, C(10,4) = 210 = 2·3·5·7, C(14,4) = 1001 = 7·11·13, C(15,6) = 5005 = 5·7·11·13.",
-    "text": "Let 2 \u2264 k \u2264 n \u2212 2. Can C(n,k) be the product of consecutive primes infinitely often? Known examples include C(21,2) = 2\u00b73\u00b75\u00b77, C(7,3) = 5\u00b77, and C(15,6) = 5\u00b77\u00b711\u00b713. OPEN.",
+    "text": "Let 2 ≤ k ≤ n − 2. Can C(n,k) be the product of consecutive primes infinitely often? Known examples include C(21,2) = 2·3·5·7, C(7,3) = 5·7, and C(15,6) = 5·7·11·13. OPEN.",
     "proofStrategy": "We define prime enumeration via Mathlib's countability of primes, the product of consecutive primes as a Finset.Ico product, and the predicate IsProductOfConsecutivePrimes via existential quantification. Known examples are axiomatized. The main conjecture ErdosProblem386 universally quantifies over k ≥ 2. Squarefreeness of consecutive prime products is axiomatized, and the structural consequence choose_consec_primes_squarefree is proved. The k = 2 reduction and the Erdős–Graham bound on largest prime factors are included as contextual results.",
     "keyInsights": [
       "A product of consecutive primes is necessarily squarefree, so squarefreeness of C(n,k) is a necessary condition — this filters the search space but is far from sufficient",

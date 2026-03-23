@@ -57,12 +57,13 @@
       "sigma_ge_succ: σ(m) ≥ m + 1 for m ≥ 2"
     ],
     "axiomCount": 2,
-    "lineCount": 234
+    "lineCount": 234,
+    "assumptions": "2 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1054 concerns the function f(n): the minimal m such that n appears as a partial sum of the divisors of m (sorted ascending). Erdős asked three questions:\n\n1. Is f(n) = o(n) for all n? (DISPROVED by Tao)\n2. Is f(n) = o(n) for almost all n? (OPEN)\n3. Is limsup f(n)/n = ∞? (OPEN)\n\nTerry Tao's disproof of Part I showed that the density of {n : f(n) ≤ δn} is at most O(δ²), so many values of n have f(n) ≈ n. But this is consistent with f(n)/n → 0 for 'most' n.\n\nThe key tool for the 'almost all' version is the sigma bound: since σ(m) is always a partial divisor sum of m, we have f(σ(m)) ≤ m. When σ(m)/m → ∞ (which happens for superabundant numbers via Gronwall's theorem), f(σ(m))/σ(m) → 0.",
     "problemStatement": "Let $f(n)$ be the minimal $m \\geq 1$ such that $n$ is a partial sum of the divisors of $m$ (sorted in increasing order). Part II of Erdős Problem 1054 asks:\n\n$$\\text{For each } \\varepsilon > 0, \\text{ does } \\frac{|\\{k \\leq N : f(k)/k \\geq \\varepsilon\\}|}{N} \\to 0?$$\n\nEquivalently: does $\\{n : f(n)/n \\geq \\varepsilon\\}$ have natural density 0 for each $\\varepsilon > 0$?\n\n**Status**: OPEN after Tao's disproof of the unconditional form.",
-    "text": "Erd\u0151s asked whether the function f(n) \u2014 the minimal m whose partial divisor sums include n \u2014 satisfies f(n) = o(n) for almost all n. Tao disproved the unconditional form, but the 'almost all' version remains open. We formalize the density framework and prove accessible bounds via the sigma bound f(\u03c3(m)) \u2264 m, showing the ratio m/\u03c3(m) \u2192 0 along superabundant numbers.",
+    "text": "Erdős asked whether the function f(n) — the minimal m whose partial divisor sums include n — satisfies f(n) = o(n) for almost all n. Tao disproved the unconditional form, but the 'almost all' version remains open. We formalize the density framework and prove accessible bounds via the sigma bound f(σ(m)) ≤ m, showing the ratio m/σ(m) → 0 along superabundant numbers.",
     "proofStrategy": "The sigma bound approach:\n\n1. **Define f via IsRepresentable**: n is representable with witness m if n ∈ partialDivisorSums(m)\n\n2. **Key bound**: σ(m) ∈ partialDivisorSums(m) (last partial sum = total), so f(σ(m)) ≤ m\n\n3. **Ratio shrinks**: f(σ(m))/σ(m) ≤ m/σ(m) = 1/(σ(m)/m)\n\n4. **Superabundant numbers**: For m ∈ {6, 12, 120, 720, 5040, ...}, σ(m)/m > 2, giving ratio < 1/2\n\n5. **Gronwall's theorem**: σ(m)/m → ∞ for primorials m_k (Mertens' theorem), so ratio → 0\n\nBlocking step: proving density 0 (not just liminf = 0) requires Mertens theorem not yet in Mathlib.",
     "keyInsights": [
       "**Sigma bound**: σ(m) = sum of ALL divisors is a partial divisor sum, so f(σ(m)) ≤ m always",

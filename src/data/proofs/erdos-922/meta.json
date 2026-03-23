@@ -22,7 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/922",
     "erdosProblemStatus": "solved",
     "axiomCount": 7,
-    "lineCount": 237
+    "lineCount": 237,
+    "assumptions": "7 axiom(s) and 4 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Hajnal in 1967 as they studied connections between local graph properties and chromatic number. The condition that every subgraph has a large independent set is a strong structural constraint. Surprisingly, they could not prove even the k=1 case, though k=0 is trivial (it implies bipartiteness). Jon Folkman proved the general result in 1970, establishing that the chromatic bound k+2 always holds. This is a beautiful example of how local constraints (subgraph structure) control global properties (chromatic number).",

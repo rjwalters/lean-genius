@@ -28,12 +28,13 @@
       "erdos-289"
     ],
     "axiomCount": 8,
-    "lineCount": 102
+    "lineCount": 102,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #142 is one of the most celebrated open problems in combinatorics, carrying Erdős's largest prize ($10,000) for a problem in the field. The story begins with van der Waerden's theorem (1927) guaranteeing monochromatic $k$-APs in any finite coloring of the integers, and Erdős and Turán's 1936 conjecture that $r_k(N) = o(N)$. Roth (1953) proved the $k = 3$ case using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$, introducing the circle method to combinatorics. Szemerédi's celebrated theorem (1975) settled the general case via a monumental combinatorial argument and the Szemerédi regularity lemma, earning him the Abel Prize. The quantitative frontier advanced through Furstenberg's ergodic proof (1977), Gowers's introduction of uniformity norms (2001), and a remarkable succession of improvements for $k = 3$: Heath-Brown–Szemerédi, Bourgain, Sanders, Bloom, Bloom–Sisask. The 2023 breakthrough by Kelley and Meka — proving $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$ — was the first sub-polynomial density decay, yet the gap from Behrend's 1946 lower bound $N \\cdot \\exp(-C\\sqrt{\\log N})$ remains vast, illustrating how far we are from an asymptotic formula.",
     "problemStatement": "Prove an asymptotic formula for $r_k(N)$, the largest size of a subset of $\\{1,\\ldots,N\\}$ containing no non-trivial $k$-term arithmetic progression. Even the correct order of magnitude of $r_3(N)$ is unknown.",
-    "text": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley\u2013Meka's upper bound remains enormous even for k=3. Open ($10,000).",
+    "text": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley–Meka's upper bound remains enormous even for k=3. Open ($10,000).",
     "proofStrategy": "We define AP-$k$-free sets and $r_k(N)$ using `Finset.powerset` and `Finset.sup`. Szemerédi's theorem and Roth's theorem are axiomatized as qualitative bounds ($r_k(N) = o(N)$). Behrend's lower bound ($\\exp(-C\\sqrt{\\log N})$) and Kelley–Meka's upper bound ($\\exp(-c(\\log N)^{1/12})$) are axiomatized with explicit constants. The main open question is stated as the existence of an asymptotic formula $f_k(N) \\sim r_k(N)$, and Erdős's $\\$5{,}000$ sub-question $r_k(N) = o(N/\\log N)$ is separately axiomatized.",
     "keyInsights": [
       "**Enormous gap persists for $k = 3$**: Behrend's lower bound $\\exp(-C\\sqrt{\\log N})$ and Kelley–Meka's upper bound $\\exp(-c(\\log N)^{1/12})$ differ by a power in the exponent — the correct answer lies somewhere between $N^{1-o(1)}$ and $N \\cdot e^{-c\\sqrt{\\log N}}$",

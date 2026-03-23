@@ -87,12 +87,13 @@
       }
     ],
     "axiomCount": 9,
-    "lineCount": 228
+    "lineCount": 228,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem was a conjecture of Erdős and Sós about block designs. A block design on {1,...,n} is a collection of subsets (blocks) such that every pair of distinct elements is contained in exactly one block — equivalently, a pairwise balanced design (PBD).\n\nThe classic projective plane construction shows t = n is achievable when n = p² + p + 1 for prime power p. The de Bruijn-Erdős theorem (1948) established that t ≥ n for any block design, using a double-counting argument with Cauchy-Schwarz applied to the replication numbers r_x.\n\nErdős and Sós conjectured that there is a 'gap': if t > n, then t ≥ n + p. This was proved by Erdős, Fowler, Sós, and Wilson (1985) in the Proceedings of the London Mathematical Society, who further showed that unless the design comes from a projective plane with one line 'broken up' into singletons, we have t ≥ n + cp where c ≈ 1.148.\n\nThe problem connects to fundamental questions in finite geometry: the prime power conjecture (projective planes exist iff the order is a prime power), the Bruck-Ryser non-existence theorem, and the classification of near-minimal designs.",
     "problemStatement": "**Problem**: Let $n = p^2 + p + 1$ for some prime power $p$, and let $A_1, \\ldots, A_t \\subseteq \\{1,\\ldots,n\\}$ be a block design (every pair $x, y \\in \\{1,\\ldots,n\\}$ is contained in exactly one $A_i$).\n\nIs it true that if $t > n$ then $t \\geq n + p$?\n\n**Answer**: YES\n\n**Key Results**:\n- de Bruijn-Erdős (1948): $t \\geq n$\n- Projective plane: $t = n$ is achievable\n- EFSW (1985): $t > n \\Rightarrow t \\geq n + p$\n- Stronger: $t \\geq n + 1.148p$ unless broken projective plane",
-    "text": "For n = p\u00b2 + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t \u2265 n + p. Proved by Erd\u0151s-Fowler-S\u00f3s-Wilson (1985).",
+    "text": "For n = p² + p + 1 with p a prime power, if a block design on n points has t > n blocks, then t ≥ n + p. Proved by Erdős-Fowler-Sós-Wilson (1985).",
     "proofStrategy": "The formalization defines BlockDesign as a structure with blocks (finite sets of finite sets) satisfying the pair coverage property. ProjectivePlane is formalized with its classical axioms (point/line incidence). The de Bruijn-Erdős theorem and EFSW theorem are axiomatized (the combinatorial proofs require machinery beyond current Lean/Mathlib capabilities). The gap structure is captured by showing values in (n, n+p) are not achievable, with a proved theorem `first_above_n` that the first achievable value above n is at least n + p. The summary theorem `erdos_903_summary` combines all three main results into a single proved statement.",
     "keyInsights": [
       "**Pair coverage as linear space**: Every pair of distinct elements in exactly one block — the blocks form the lines of a linear space. This viewpoint connects to finite geometry via the Lenz-Barlotti classification.",

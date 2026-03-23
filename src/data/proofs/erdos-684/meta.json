@@ -58,12 +58,13 @@
       "fGeneral definition: generalized problem"
     ],
     "axiomCount": 8,
-    "lineCount": 245
+    "lineCount": 245,
+    "assumptions": "8 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er79d]. For binomial coefficient C(n,k), we decompose it as u·v where u is the k-smooth part (primes ≤ k) and v is the k-rough part (primes > k).\n\nThe function f(n) asks: how small can k be while still having the smooth part exceed n²?\n\nMahler's classical theorem gives an ineffective bound. Recent work by Tang & ChatGPT (2026) proved f(n) ≤ n^{30/43+o(1)}, with n^{2/3+o(1)} conditional on the Riemann Hypothesis.\n\nRemarkably, heuristic arguments by Sothanaphan & ChatGPT suggest f(n) ~ 2 log n for most n - vastly smaller than proven bounds!\n\nThe sequence f(n) is recorded in OEIS A392019.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nFor binomial coefficient C(n,k), decompose C(n,k) = u·v where:\n- u contains only prime factors from [2, k] (the k-smooth part)\n- v contains only prime factors from (k, n] (the k-rough part)\n\nLet f(n) be the smallest k such that u > n².\n\n**Question:** What are the bounds on f(n)?\n\n**Known Bounds:**\n- Upper: f(n) ≤ n^{30/43+o(1)} (Tang-ChatGPT)\n- Conditional: f(n) ≤ n^{2/3+o(1)} under RH",
-    "text": "Find bounds on f(n) = smallest k such that the k-smooth part of C(n,k) exceeds n\u00b2.",
+    "text": "Find bounds on f(n) = smallest k such that the k-smooth part of C(n,k) exceeds n².",
     "proofStrategy": "**Formalization Approach**\n\n1. **Smooth Part:** Define smoothPart using prime factorization and filtering\n\n2. **The Function f:** Define f(n) as minimum k with smooth part > n²\n\n3. **Mahler's Bound:** Axiomatize the classical (ineffective) bound\n\n4. **Modern Bounds:** Axiomatize Tang-ChatGPT and RH-conditional results\n\n5. **Heuristic:** State the conjectured f(n) ~ 2 log n\n\n6. **Kummer's Theorem:** Connect to prime powers in binomial coefficients",
     "keyInsights": [
       "**Smooth Decomposition:** C(n,k) = (k-smooth part) × (k-rough part)",

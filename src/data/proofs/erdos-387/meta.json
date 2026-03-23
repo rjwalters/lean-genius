@@ -46,12 +46,13 @@
       "Proved the 'easy' result: C(n,k) always has a divisor in [n/k, n]"
     ],
     "axiomCount": 1,
-    "lineCount": 103
+    "lineCount": 103,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #387 concerns divisibility properties of binomial coefficients. The question asks whether there is a universal constant c > 0 such that C(n,k) always has a divisor 'close to n'—specifically in the interval (cn, n].\n\nErdős originally conjectured the stronger statement that C(n,k) must have a divisor in (n-k, n]. This was disproved by Andrzej Schinzel in 1958, who found the counterexample n = 99215, k = 15. None of the 15 integers from 99201 to 99215 divide C(99215, 15).\n\nThe weaker question—whether some fixed constant c works—remains open. Guy's 'Unsolved Problems in Number Theory' (2004) discusses this as problems B33-B34, noting that Erdős conjectured it holds for any c < 1 when n is sufficiently large.",
     "problemStatement": "Is there an absolute constant $c > 0$ such that, for all $1 \\leq k < n$, the binomial coefficient $\\binom{n}{k}$ has a divisor $d$ with $cn < d \\leq n$?\n\n**Status**: OPEN — The main conjecture remains unresolved.\n\n**Related Results**:\n- Original conjecture with $c = 1 - k/n$ is FALSE (Schinzel's counterexample)\n- It is always true that $\\binom{n}{k}$ has a divisor in $[n/k, n]$ (easy result)",
-    "text": "Is there an absolute constant c > 0 such that for all 1 \u2264 k < n, the binomial coefficient C(n,k) has a divisor in the interval (cn, n]?",
+    "text": "Is there an absolute constant c > 0 such that for all 1 ≤ k < n, the binomial coefficient C(n,k) has a divisor in the interval (cn, n]?",
     "proofStrategy": "We formalize three components:\n\n1. **Schinzel's Counterexample**: We verify by computation that none of 99215-i for i ∈ {0,...,14} divides C(99215, 15). This uses `native_decide` to check divisibility for each case.\n\n2. **The Easy Bound**: We prove that gcd(C(n,k), n) always lies in [n/k, n]. The key is the identity n · C(n-1, k-1) = k · C(n,k), which implies n divides k · C(n,k). Therefore gcd(C(n,k), n) · k ≥ n, giving gcd ≥ n/k.\n\n3. **The Main Conjecture**: Stated as an axiom since it remains open.",
     "keyInsights": [
       "**Binomial coefficients**: C(n,k) = n!/(k!(n-k)!) counts ways to choose k items from n. These numbers have rich divisibility properties.",

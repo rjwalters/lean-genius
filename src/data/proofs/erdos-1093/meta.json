@@ -20,12 +20,13 @@
     "erdosUrl": "https://erdosproblems.com/1093",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 107
+    "lineCount": 107,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős, Lacampagne, and Selfridge developed this problem across two papers (1988, 1993) and first presented it at the 1986 West Coast Number Theory conference. The question arose from their broader investigation into the prime factorization of binomial coefficients, specifically when $\\binom{n}{k}$ has no 'small' prime factors (all primes dividing it exceed $k$). Under this condition, the falling factorial $n(n-1)\\cdots(n-k+1)$ has a delicate balance: the small prime factors must cancel exactly with $k!$, and the 'deficiency' measures excess smoothness. The ELS upper bound $n \\ll 2^k \\sqrt{k}$ (1993) constrains the search space but leaves both parts of the conjecture open. The problem connects to Dickman's function ($\\Psi(x, y)$ counting $y$-smooth numbers up to $x$), Kummer's theorem (1852) on carries in base-$p$ addition characterizing $v_p(\\binom{n}{k})$, and the broader Erdős program on arithmetic properties of binomial coefficients. The record deficiency of 9 for $\\binom{284}{28}$ has stood since the original investigation, and computational searches have found at least 58 deficiency-1 examples for $n \\leq 10^5$.",
     "problemStatement": "For $n \\geq 2k$, if $\\binom{n}{k}$ has no prime factor $\\leq k$, the deficiency $d(n,k) = |\\{0 \\leq i < k : n - i \\text{ is } k\\text{-smooth}\\}|$. (i) Is $\\{(n,k) : d(n,k) = 1\\}$ infinite? (ii) Is $\\{(n,k) : d(n,k) > 1\\}$ finite?",
-    "text": "For n \u2265 2k with C(n,k) having no prime factor \u2264 k, the deficiency counts k-smooth terms among n, n-1, ..., n-k+1. Are there infinitely many with deficiency 1? Only finitely many with deficiency > 1? OPEN.",
+    "text": "For n ≥ 2k with C(n,k) having no prime factor ≤ k, the deficiency counts k-smooth terms among n, n-1, ..., n-k+1. Are there infinitely many with deficiency 1? Only finitely many with deficiency > 1? OPEN.",
     "proofStrategy": "The formalization defines `IsKSmooth` (all prime factors $\\leq k$), `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$), and `deficiency` as a `Finset.filter` cardinality. Both parts of the conjecture are stated as `Prop`s using `Set.Infinite` and `Set.Finite`. Known examples, the ELS bound, and a computational census ($\\geq 58$ examples) are axiomatized. One theorem is fully proved: large prime factors exclude terms from the deficiency count.",
     "keyInsights": [
       "The deficiency measures 'excess smoothness' in the falling factorial: terms $n - i$ that are $k$-smooth contribute to $d(n,k)$, and these smooth terms are the ones whose prime factors cancel with $k!$ in $\\binom{n}{k} = \\prod(n-i)/k!$",

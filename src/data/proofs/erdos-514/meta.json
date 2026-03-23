@@ -64,12 +64,13 @@
       "erdos_514_summary: Part 1 resolved theorem"
     ],
     "axiomCount": 13,
-    "lineCount": 355
+    "lineCount": 355,
+    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #514**\n\nThis problem explores the growth behavior of transcendental entire functions along paths to infinity in the complex plane.\n\n**Key History:**\n- Erdős posed this problem in [Er61, p.249] and [Er82e]\n- The problem has three parts, addressing different aspects of growth along paths\n- Boas (unpublished) proved Part 1: such a path always exists\n- Parts 2 and 3 remain open, concerning path length estimates and M(r)^ε growth\n\n**Mathematical Setting:**\n- An entire function is one that is analytic on all of ℂ\n- A transcendental entire function grows faster than any polynomial\n- M(r) = max_{|z|=r}|f(z)| is the maximum modulus function\n- The problem asks about the existence of special paths along which growth is exceptionally fast",
     "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet f(z) be a transcendental entire function.\n\n**Part 1:** Does there exist a path L such that for every n, |f(z)/z^n| → ∞ as z → ∞ along L?\n\n**Answer: YES** (Boas, unpublished)\n\n**Part 2:** Can the length of this path be estimated in terms of M(r)?\n\n**Status: OPEN**\n\n**Part 3:** Does there exist a path along which |f(z)| grows faster than M(r)^ε for any fixed ε > 0?\n\n**Status: OPEN**",
-    "text": "For a transcendental entire function f(z), does there exist a path L such that |f(z)/z^n| \u2192 \u221e as z \u2192 \u221e along L for every n? Part 1 proved by Boas (unpublished); parts 2 and 3 remain open.",
+    "text": "For a transcendental entire function f(z), does there exist a path L such that |f(z)/z^n| → ∞ as z → ∞ along L for every n? Part 1 proved by Boas (unpublished); parts 2 and 3 remain open.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire via DifferentiableAt at every point\n\n2. **Maximum Modulus:** Define M(r) as supremum over circles of radius r\n\n3. **Transcendental Functions:** Define as entire functions dominating all polynomial growth\n\n4. **Paths to Infinity:** Define as continuous curves with |γ(t)| → ∞\n\n5. **Super-Polynomial Growth:** Define HasSuperPolynomialGrowth for paths where |f(γ(t))/γ(t)^n| → ∞ for all n\n\n6. **Boas's Result:** Axiomatize existence of such path for transcendental functions\n\n7. **Open Problems:** Mark Parts 2 and 3 as open with placeholder axioms\n\n8. **Examples:** Include exponential and sine as classical transcendental entire functions",
     "keyInsights": [
       "**Entire Functions:** A function f : ℂ → ℂ is entire if it is differentiable at every point, having a globally convergent Taylor series",

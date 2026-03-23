@@ -61,12 +61,13 @@
       "erdos_595_summary theorem: combines Folkman and C₄-free results"
     ],
     "axiomCount": 3,
-    "lineCount": 229
+    "lineCount": 229,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem originated from Erdős and Hajnal around 1967, exploring the chromatic properties of infinite graphs. It asks whether a 'local' constraint (K₄-free) can coexist with 'global' resistance to decomposition into countably many triangle-free parts.\n\nThe finite case is completely solved: Folkman (1970) and Nešetřil-Rödl (1975) proved that for every n ≥ 1, there exists a K₄-free graph that cannot be covered by n triangle-free graphs. The jump to countably infinite covers introduces fundamentally new difficulties.\n\nThe problem connects to a broader family of questions about (G₁, G₂) decomposition pairs (Problem #596) and to Folkman numbers (Problem #582). Erdős offered a $250 prize, reflecting the problem's significance and difficulty.",
     "problemStatement": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs?\n\n**Known Results:**\n- For every finite n, there exists a finite K₄-free graph not coverable by n triangle-free graphs (Folkman 1970, Nešetřil-Rödl 1975)\n- Every C₄-free graph IS a countable union of trees, hence countably coverable (Erdős-Hajnal)\n- The K₄-free countable case remains OPEN",
-    "text": "Is there an infinite graph G which contains no K\u2084 and is not the union of countably many triangle-free graphs? A fundamental question by Erd\u0151s and Hajnal about the chromatic structure of infinite graphs. OPEN, $250 prize.",
+    "text": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs? A fundamental question by Erdős and Hajnal about the chromatic structure of infinite graphs. OPEN, $250 prize.",
     "proofStrategy": "The formalization defines cliques and covering for infinite graphs using Set.ncard. The conjecture is stated as erdos595_conjecture and equivalently as problem595_reformulated. Finite analogues are axiomatized via folkman_finite_resistance and nesetril_rodl_finite_resistance. The contrast result c4_free_countable_trees shows C₄-free graphs are coverable. The summary theorem erdos_595_summary combines Folkman's finite resistance with the C₄-free coverability result.",
     "keyInsights": [
       "**Finite resistance does not imply countable resistance**: for each n, K₄-free graphs resist n-covers, but this doesn't extend to countable covers",

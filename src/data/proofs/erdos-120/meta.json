@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/120",
     "erdosProblemStatus": "open",
     "axiomCount": 7,
-    "lineCount": 331
+    "lineCount": 331,
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Similarity Problem asks whether infinite sets are 'avoidable' — whether positive-measure sets can be constructed that contain no translated-scaled copy. Steinhaus (1920) showed finite sets are universal: every positive-measure set contains a similar copy of any finite set.\n\nErdős conjectured that infinite sets behave fundamentally differently and offered a $100 prize. Unbounded sets and sets dense in intervals are known to be avoidable. The hard case is bounded, nowhere-dense infinite sets, with the geometric sequence {1, 1/2, 1/4, ...} as the key test case (also Problem 94 on Ben Green's list).\n\nSvetic (2000) surveyed the problem comprehensively. Jung, Lai, and Mooroogen (2024) provided recent progress. The problem connects measure theory, Ramsey-type combinatorics, and the fine structure of the real line.",
     "problemStatement": "Given an infinite set A ⊆ ℝ, must there exist a set E ⊆ ℝ of positive Lebesgue measure containing no similar copy of A (no set of the form aA + b with a ≠ 0)?",
-    "text": "For every infinite A \u2286 \u211d, must there exist a set E of positive Lebesgue measure containing no similar copy aA + b (a \u2260 0)?",
+    "text": "For every infinite A ⊆ ℝ, must there exist a set E of positive Lebesgue measure containing no similar copy aA + b (a ≠ 0)?",
     "proofStrategy": "The formalization defines similar copies, containment, avoidance, and universality. Steinhaus's result for finite sets and known avoidable cases are axioms. The conjecture is stated with an equivalent reformulation (no infinite set is universal). Two proved theorems demonstrate ratio preservation and the universal/avoidable duality. The geometric sequence is defined as the key test case.",
     "keyInsights": [
       "A similar copy of A is aA + b = {a·x + b : x ∈ A} for a ≠ 0; ratios of differences are preserved",

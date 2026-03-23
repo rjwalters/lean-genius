@@ -59,7 +59,8 @@
       "Verified theorem: powers_of_two_sidon"
     ],
     "axiomCount": 2,
-    "lineCount": 180
+    "lineCount": 180,
+    "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Sidon sets** (B₂ sequences) have all pairwise sums distinct. **Erdős-Turán (1941)** proved they grow at most like √N, making them fundamentally sparse.\n\n**Asymptotic bases** of order k represent all large integers with at most k terms. They require density at least N^{1/k}.\n\n**The Question**: Can these competing constraints coexist? Order 2 is impossible (density mismatch). **Pilatte (2023)** proved order 3 works, settling Erdős's conjecture affirmatively.\n\n**Verified Content**: This formalization includes two complete proofs:\n1. `sidon_iff_sidon_alt`: Equivalence of Sidon definitions\n2. `powers_of_two_sidon`: {2^k} is a Sidon set",

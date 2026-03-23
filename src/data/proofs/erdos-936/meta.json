@@ -62,12 +62,13 @@
       "erdos_936_summary: complete status of the problem"
     ],
     "axiomCount": 7,
-    "lineCount": 343
+    "lineCount": 343,
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #936**\n\nThis problem was posed by Paul Erdős in 1976 [Er76d, p.32] and concerns powerful numbers near special sequences.\n\n**Key History:**\n- Erdős (1976): Original problem formulation\n- Cushing-Pascoe (2016): Proved n! ± 1 case assuming ABC conjecture\n- CrowdMath (2020): Extended to 2^n ± 1 case assuming ABC conjecture\n\n**Mathematical Setting:**\nA number m is *powerful* if whenever a prime p divides m, then p² also divides m. Equivalently, m = a²b³ for positive integers a, b. The powerful numbers begin: 1, 4, 8, 9, 16, 25, 27, 32, 36, ...\n\nThe problem asks whether the sequences 2^n + 1, 2^n - 1, n! + 1, and n! - 1 are powerful for only finitely many n. This is connected to the ABC conjecture, one of the deepest unsolved problems in number theory.",
     "problemStatement": "**Problem Statement (Open)**\n\nAre $2^n \\pm 1$ and $n! \\pm 1$ powerful for only finitely many $n$?\n\n**Conditional Answer: YES** (assuming ABC conjecture)\n\n**Known Results:**\n- Cushing-Pascoe (2016): Assuming ABC, $n! \\pm 1$ is powerful for only finitely many $n$\n- CrowdMath (2020): Assuming ABC, $2^n \\pm 1$ is powerful for only finitely many $n$\n\n**Unconditional Status:** OPEN\n\nNo powerful values are known for these sequences beyond trivial cases (like $2^1 - 1 = 1$).",
-    "text": "Are 2^n \u00b1 1 and n! \u00b1 1 powerful for only finitely many n? Conditionally YES assuming the ABC conjecture (Cushing-Pascoe 2016, CrowdMath 2020).",
+    "text": "Are 2^n ± 1 and n! ± 1 powerful for only finitely many n? Conditionally YES assuming the ABC conjecture (Cushing-Pascoe 2016, CrowdMath 2020).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Powerful Definition:** Define Powerful(n) as all prime factors having exponent >= 2\n\n2. **Basic Properties:**\n   - 1 is powerful (vacuously)\n   - Perfect squares are powerful\n   - Primes are NOT powerful\n\n3. **EventuallyNotPowerful:** Use Filter.atTop to express \"for all sufficiently large n\"\n\n4. **Concrete Examples:** Verify small cases computationally\n\n5. **ABC Connection:** Axiomatize the conditional results\n\n6. **Summary Theorem:** Combine all results showing the conditional resolution",
     "keyInsights": [
       "**Powerful Numbers:** Numbers where every prime factor appears with exponent >= 2. Examples: 1, 4, 8, 9, 16, 25, 27, 32, 36",

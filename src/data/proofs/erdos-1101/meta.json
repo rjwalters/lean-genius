@@ -54,12 +54,13 @@
       "Connection to Problem #208 (prime squares conjecture)"
     ],
     "axiomCount": 5,
-    "lineCount": 139
+    "lineCount": 139,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem connects sieve theory with questions about the growth rates of multiplicative sequences. Given a sequence u = {u₁ < u₂ < ...} of pairwise coprime integers with Σ1/uᵢ < ∞, consider the integers A = {a₁ < a₂ < ...} not divisible by any uᵢ.\n\nThe 'density' of A is given by ∏(1 - 1/uᵢ), and sieve theory shows that gaps between consecutive elements of A are at least (1+o(1))·tₓ·∏(1-1/uᵢ)⁻¹. Erdős called u 'good' if the gaps are also bounded ABOVE by (1+ε)·tₓ·∏(1-1/uᵢ)⁻¹.\n\nErdős proved that SOME good sequence exists (using all primes), but the question of which growth rates are achievable remains open. He conjectured that polynomial growth is impossible but sub-exponential growth is achievable.",
     "problemStatement": "Let $u = \\{u_1 < u_2 < \\cdots\\}$ be a sequence with $(u_i, u_j) = 1$ for $i \\neq j$ and $\\sum 1/u_i < \\infty$. Let $A = \\{a_1 < a_2 < \\cdots\\}$ be integers not divisible by any $u_i$. Define $t_x$ by $u_1 \\cdots u_{t_x} \\leq x < u_1 \\cdots u_{t_x+1}$.\n\nCall $u$ **good** if for all $\\epsilon > 0$ and large $x$:\n$$\\max_{a_k < x}(a_{k+1} - a_k) < (1+\\epsilon) t_x \\prod_i (1 - 1/u_i)^{-1}$$\n\n**Questions**:\n1. Is there a good sequence with $u_n < n^{O(1)}$? (Conjectured NO)\n2. Is there a good sequence with $u_n \\leq e^{o(n)}$? (Conjectured YES)\n\n**Status**: OPEN — Both questions remain unresolved.",
-    "text": "Given a pairwise coprime sequence u with convergent reciprocal series, when do the integers not divisible by any u\u1d62 have gaps bounded by the product formula?",
+    "text": "Given a pairwise coprime sequence u with convergent reciprocal series, when do the integers not divisible by any uᵢ have gaps bounded by the product formula?",
     "proofStrategy": "We formalize this problem by:\n\n1. **Defining the sieved set**: `ASet u` is the set of integers not divisible by any uᵢ\n\n2. **Defining the enumeration**: `A u n` is the n-th element of the sieved set using `Nat.nth`\n\n3. **Defining the index function**: `t u x` is the largest k such that the product u₀·...·uₖ₋₁ ≤ x\n\n4. **Defining 'good'**: The predicate `IsGood u` combines strict monotonicity, pairwise coprimality, series convergence, and the gap bound\n\n5. **Stating conjectures as axioms**: Both the 'no polynomial' and 'yes subexponential' conjectures",
     "keyInsights": [
       "**Sieve theory connection**: The integers not divisible by coprime moduli form a natural sieved set. The density ∏(1-1/uᵢ) determines how sparse this set is.",

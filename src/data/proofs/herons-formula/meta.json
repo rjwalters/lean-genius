@@ -31,12 +31,13 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 57,
     "axiomCount": 0,
-    "lineCount": 275
+    "lineCount": 275,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "**Hero of Alexandria** (c. 10-70 AD) described this formula in his treatise *Metrica*, discovered in 1896 in Constantinople. However, **Archimedes** (c. 287-212 BC) likely knew an equivalent form, as suggested by fragments in the Arabic mathematical tradition. The formula was independently rediscovered by Chinese mathematicians — **Qin Jiushao** stated it in his 1247 *Mathematical Treatise in Nine Sections* using a different algebraic form.\n\nThe formula connects three fundamental areas of mathematics: (1) **Euclidean geometry** — it is equivalent to the law of cosines combined with the sine area formula $\\frac{1}{2}ab\\sin C$; (2) **algebra** — the product $s(s-a)(s-b)(s-c)$ is a symmetric polynomial in the side lengths; and (3) **analysis** — the non-negativity of this product is equivalent to the triangle inequality.\n\n**Brahman Sphuta Siddhanta** (628 AD) by **Brahmagupta** generalized Heron's formula to cyclic quadrilaterals: $\\text{Area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$ where $s = (a+b+c+d)/2$. The Cayley-Menger determinant provides a further generalization to simplices in arbitrary dimensions.\n\nThis is #57 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",
     "problemStatement": "**Heron's Formula**:\n\nFor a triangle with sides $a, b, c$ and semi-perimeter $s = (a+b+c)/2$:\n$$\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$$\n\nEquivalently, starting from the trigonometric area formula:\n$$\\frac{1}{2}ab\\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$$",
-    "text": "Area = \u221a(s(s-a)(s-b)(s-c)) where s is the semi-perimeter. Computes triangle area from side lengths alone.",
+    "text": "Area = √(s(s-a)(s-b)(s-c)) where s is the semi-perimeter. Computes triangle area from side lengths alone.",
     "proofStrategy": "The formalization builds on Mathlib's `Theorems100.heron` from the Archive, which proves the identity $\\frac{1}{2}ab\\sin C = \\sqrt{s(s-a)(s-b)(s-c)}$ in abstract inner product spaces using `EuclideanGeometry.angle` and `dist`. The proof works in any `NormedAddTorsor V P` where $V$ is a real inner product space. The formalization then provides: (1) the semi-perimeter and Heron product as computable definitions, (2) an algebraic expansion $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ proved by `ring`, (3) concrete verifications for 3-4-5, equilateral, and 5-12-13 triangles using `norm_num` and `sqrt_sq`, and (4) a non-negativity proof via the triangle inequality using `linarith`.",
     "keyInsights": [
       "**No heights or angles needed**: Heron's formula computes area from side lengths alone — the three distances $a, b, c$ completely determine the triangle up to congruence, and hence its area",

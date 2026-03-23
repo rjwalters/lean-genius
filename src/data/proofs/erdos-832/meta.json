@@ -48,12 +48,13 @@
     ],
     "dateAdded": "2026-01-18",
     "axiomCount": 6,
-    "lineCount": 155
+    "lineCount": 155,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős conjectured that for r ≥ 3 and k sufficiently large, every r-uniform hypergraph with chromatic number k must have at least C((r-1)(k-1)+1, r) edges, with equality only for the complete hypergraph. For graphs (r = 2), this reduces to the classical result that chromatic number k implies at least C(k, 2) edges, achieved by the complete graph K_k.\n\nAlon disproved the conjecture for r ≥ 4 in 1985, using connections to Turán numbers to construct r-uniform hypergraphs with high chromatic number but only (7/8)^r times the conjectured number of edges. For r = 3, the Fano plane (a Steiner triple system on 7 vertices with 7 edges and chromatic number 3) provides a small counterexample, since the conjecture predicts C(5,3) = 10 edges. Whether the conjecture holds for r = 3 with large k remains open.\n\nSubsequent work established the asymptotic behavior of m(r, k), the minimum number of edges in an r-uniform hypergraph with chromatic number exceeding k. Akolzin and Shabanov (2016) proved (r/log r) · k^r ≪ m(r,k) ≪ (r³ log r) · k^r, and Cherkashin and Petrov (2020) showed that m(r,k)/k^r converges to a constant c_r for each fixed r.",
     "problemStatement": "Let r ≥ 3 and k sufficiently large. Must every r-uniform hypergraph with chromatic number k have at least C((r-1)(k-1)+1, r) edges?\n\n**Answer: NO** for r ≥ 4 (Alon 1985). The r = 3 case remains partially open.",
-    "text": "For r-uniform hypergraphs with chromatic number k, must there be \u2265 C((r-1)(k-1)+1, r) edges? NO for r \u2265 4 (Alon 1985). Asymptotic: m(r,k) ~ c_r \u00b7 k^r.",
+    "text": "For r-uniform hypergraphs with chromatic number k, must there be ≥ C((r-1)(k-1)+1, r) edges? NO for r ≥ 4 (Alon 1985). Asymptotic: m(r,k) ~ c_r · k^r.",
     "proofStrategy": "The Lean formalization defines r-uniform hypergraphs, proper colourings, and chromatic number predicates. Alon's disproof and the Steiner counterexample are axiomatized. The function m(r,k) is axiomatized with bounds from Akolzin-Shabanov and the limit theorem of Cherkashin-Petrov. The summary theorem packages the disproof and asymptotics via exact.",
     "keyInsights": [
       "Fano plane: 7 edges with χ = 3, vs C(5,3) = 10 predicted — counterexample for r = 3, k = 3",

@@ -55,12 +55,13 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 12,
-    "lineCount": 146
+    "lineCount": 146,
+    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Egyptian fractions — sums of distinct unit fractions — have been studied since the Rhind Mathematical Papyrus (c. 1650 BCE). Erdős and Bleicher initiated the modern study of which denominators can appear in k-term decompositions of 1 in their 1975 paper, proving that v(k) grows at least as fast as k!.\n\nThe function v(k) captures a subtle combinatorial question: given k terms, what is the smallest denominator that is 'too large' to ever participate in a unit fraction decomposition of 1? The answer depends on the intricate interplay between denominator sizes and the constraint that their unit fractions sum to exactly 1.\n\nRecent progress by van Doorn and Tang (2025) dramatically improved the lower bound to e^{ck²}, far exceeding the factorial bound. However, the upper bound v(k) ≤ k · c₀^{2^k} (where c₀ ≈ 1.26408 is the Vardi constant) remains exponentially larger. The gap between e^{k²} and e^{2^k} is one of the largest in combinatorics, and Erdős conjectured the true growth rate is doubly exponential.",
     "problemStatement": "Let v(k) be the minimal positive integer not appearing as a denominator in any k-term Egyptian fraction decomposition 1 = 1/n₁ + ... + 1/nₖ with distinct n₁ < ... < nₖ. Estimate v(k).\n\n**Status: OPEN** — current bounds: e^{ck²} ≤ v(k) ≤ k · c₀^{2^k}.",
-    "text": "Let v(k) be the smallest integer not appearing in any k-term Egyptian fraction decomposition of 1. Current bounds: e^{ck\u00b2} \u2264 v(k) \u2264 k\u00b7c\u2080^{2^k}. The enormous gap remains open.",
+    "text": "Let v(k) be the smallest integer not appearing in any k-term Egyptian fraction decomposition of 1. Current bounds: e^{ck²} ≤ v(k) ≤ k·c₀^{2^k}. The enormous gap remains open.",
     "proofStrategy": "The formalization axiomatizes v(k) with three properties (positivity, non-membership, minimality) instead of using Nat.find with sorry. The Vardi sequence and constant are defined constructively, with vardiSeq_values proved by simp. Both lower bounds (Bleicher-Erdős and van Doorn-Tang) and the upper bound are axiomatized. The summary theorem packages both bounds via exact.",
     "keyInsights": [
       "**The Vardi sequence** uₙ = uₙ₋₁(uₙ₋₁ + 1) controls the upper bound via the Vardi constant c₀ ≈ 1.26408",

@@ -55,12 +55,13 @@
       "erdos_1076 and erdos_1076_solved: main result theorems"
     ],
     "axiomCount": 13,
-    "lineCount": 229
+    "lineCount": 229,
+    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Brown, Erdős, and Sós (1973) studied extremal problems for r-graphs (hypergraphs). They defined F_k as the family of 3-uniform hypergraphs with k vertices and k-2 edges, and conjectured that ex₃(n, F_k) ~ n²/6 for all k ≥ 5. They proved the k=4 case and showed ex₃(n, F_k) = Θ_k(n²) for all k ≥ 4.\n\nErdős (1974) provided supporting evidence: any 3-uniform hypergraph on n vertices with more than (1/3)C(n,2) edges must contain a member of F_5 or F_6. He also noted that the conjecture 'may easily turn out to be nonsense', highlighting the difficulty of the problem.\n\nThe conjecture was independently proved by Bohman and Warnke (2019) using large girth approximate Steiner triple system constructions, and by Glock, Kühn, Lo, and Osthus (2020). The key insight is that the extremal density n²/6 matches Steiner triple system density — extremal F_k-free hypergraphs resemble approximate Steiner systems with large girth, avoiding short cycles that would create F_k subgraphs.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet k ≥ 5 and let $\\mathcal{F}_k$ be the family of all 3-uniform hypergraphs with k vertices and k-2 edges.\n\n**Question:** Is $\\text{ex}_3(n, \\mathcal{F}_k) \\sim n^2/6$?\n\n**Answer: YES**\n\n- Brown-Erdős-Sós (1973): Proved for k=4, showed $\\Theta_k(n^2)$ bounds\n- Bohman-Warnke (2019): Proved asymptotic for all k ≥ 5\n- Glock-Kühn-Lo-Osthus (2020): Independent proof\n\nThe extremal number is asymptotically $n^2/6$, matching Steiner triple system density.",
-    "text": "For k \u2265 5, let F_k be all 3-uniform hypergraphs with k vertices and k-2 edges. Is ex\u2083(n, F_k) ~ n\u00b2/6? SOLVED: YES (Bohman-Warnke 2019, Glock-K\u00fchn-Lo-Osthus 2020).",
+    "text": "For k ≥ 5, let F_k be all 3-uniform hypergraphs with k vertices and k-2 edges. Is ex₃(n, F_k) ~ n²/6? SOLVED: YES (Bohman-Warnke 2019, Glock-Kühn-Lo-Osthus 2020).",
     "proofStrategy": "The formalization defines 3-uniform hypergraphs via ordered triples, the family F_k, subgraph containment (with all 6 permutations of a triple), and the extremal number ex₃(n, F_k) as an axiom with achieved/maximum properties. Historical results from Brown-Erdős-Sós and Erdős are stated as axioms. The main conjecture is formalized using Filter.Tendsto for asymptotic convergence. Bohman-Warnke and Glock-Kühn-Lo-Osthus theorems resolve it. The connection to Steiner triple systems explains why n²/6 is the right constant.",
     "keyInsights": [
       "**F_k Family**: 3-uniform hypergraphs with k vertices and k-2 edges — the forbidden configurations whose avoidance gives the extremal number.",

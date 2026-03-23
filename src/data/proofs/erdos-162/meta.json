@@ -23,12 +23,13 @@
     "dateAdded": "2025-01-01",
     "mathlib_version": "4.x",
     "axiomCount": 7,
-    "lineCount": 186
+    "lineCount": 186,
+    "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem around 1990, asking for the precise asymptotic of F(n, α) — the largest k such that some 2-colouring of K_n has every induced subgraph on at least k vertices α-balanced (each colour appears on more than α fraction of edges). The problem sits at the intersection of Ramsey theory and discrepancy theory.\n\nThe probabilistic method readily establishes that F(n, α) = Θ(log n) for each fixed 0 < α ≤ 1/2: a random 2-colouring of K_n is α-balanced on all sets of size ≤ c₁ log n with positive probability (via Chernoff bounds and a union bound over subsets), while a Ramsey-type counting argument shows any colouring must have an imbalanced induced subgraph of size ≤ c₂ log n.\n\nThe conjecture goes beyond these order-of-magnitude bounds to assert that the ratio F(n, α)/log n converges to a definite limit c_α. Determining this constant as a function of α would give a precise quantitative understanding of how balanced large 2-colourings can be. The case α = 1/2 is extremal (requiring near-equal colour distribution) and is related to Problems #161, #163, and #617 on balanced colourings. The formalization at 187 lines includes 2 sorries for counting lemmas and computational verification examples.",
     "problemStatement": "Prove that F(n, α) ~ c_α log n for some constant c_α depending on α.",
-    "text": "For 0 < \u03b1 \u2264 1/2, is F(n, \u03b1) ~ c_\u03b1 log n, where F(n, \u03b1) is the largest k such that some 2-colouring of K_n has every k-vertex subgraph \u03b1-balanced?",
+    "text": "For 0 < α ≤ 1/2, is F(n, α) ~ c_α log n, where F(n, α) is the largest k such that some 2-colouring of K_n has every k-vertex subgraph α-balanced?",
     "proofStrategy": "The formalization defines EdgeColouring as a symmetric Bool-valued function on pairs, IsBalancedOn requiring each colour class to exceed α · C(|S|,2) edges, and IsKBalanced for all subsets of size ≥ k. The function discrepancyF is axiomatized with characterization spec and monotonicity properties. Logarithmic bounds from the probabilistic method are stated. The main conjecture asserts ε-δ convergence of F(n,α)/log n to c_α.",
     "keyInsights": [
       "**F(n, α) measures discrepancy-free vertex sets**: The function F captures the largest substructure on which a 2-colouring remains α-balanced — no large monochromatic or near-monochromatic induced subgraph exists.",

@@ -58,12 +58,13 @@
       "Open density conjectures formalized"
     ],
     "axiomCount": 4,
-    "lineCount": 156
+    "lineCount": 156,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1074**\n\nThis problem concerns special relationships between factorials and prime divisors.\n\n**Key History:**\n- Pillai (1930): First asked whether any primes p exist with p | m! + 1 and p ≢ 1 (mod m)\n- Chowla: Answered Pillai by showing 23 | 14! + 1 and 23 ≢ 1 (mod 14)\n- Erdős, Hardy, Subbarao: Named these sets 'EHS numbers' and 'Pillai primes', proved both infinite\n- Hardy-Subbarao: Computed EHS numbers up to 2^10, conjectured density is 1\n\n**Mathematical Setting:**\n- m! + 1 has prime factors that satisfy Wilson's theorem conditions\n- The condition p ≢ 1 (mod m) excludes the 'trivial' case where p - 1 | m\n- EHS numbers tend to occur in long consecutive runs",
     "problemStatement": "**Problem Statement (Partially Open)**\n\nLet S = {m ≥ 1 | ∃ prime p ≢ 1 (mod m) with p | m! + 1} (EHS numbers).\nLet P = {p prime | ∃ m with p ≢ 1 (mod m) and p | m! + 1} (Pillai primes).\n\n**Questions:**\n1. Does lim |S ∩ [1,x]| / x exist? If so, what is it?\n2. Does lim |P ∩ [1,x]| / π(x) exist? If so, what is it?\n\n**Known Results:**\n- Both S and P are infinite (Erdős-Hardy-Subbarao)\n- S begins: 8, 9, 13, 14, 15, 16, 17, ... (OEIS A064164)\n- P begins: 23, 29, 59, 61, 67, 71, ... (OEIS A063980)\n\n**Conjectures:**\n- Hardy-Subbarao: Density of S is 1\n- Density of P may be between 0.5 and 1",
-    "text": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erd\u0151s-Hardy-Subbarao), but density questions remain OPEN.",
+    "text": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erdős-Hardy-Subbarao), but density questions remain OPEN.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Set Definitions:** Define EHSNumbers and PillaiPrimes as subsets of ℕ\n\n2. **Verified Examples:**\n   - 23 ∈ PillaiPrimes via 14! + 1 ≡ 0 (mod 23) (Chowla)\n   - 8 ∈ EHSNumbers via 61 | 8! + 1 (first EHS number)\n   - 9 ∈ EHSNumbers via 71 | 9! + 1\n\n3. **Infinitude Results:** State as axioms (deep number theory)\n\n4. **Open Problems:** State density conjectures formally\n\nThe verified examples use native_decide to computationally check divisibility and congruence conditions.",
     "keyInsights": [
       "**Wilson's Theorem Connection:** For prime p, (p-1)! ≡ -1 (mod p), so p | (p-1)! + 1",

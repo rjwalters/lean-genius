@@ -53,12 +53,13 @@
       "Weierstrass product theorem and interpolation",
       "Algebraic number theory (rationality of polynomial values)"
     ],
-    "lineCount": 289
+    "lineCount": 289,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The question of arithmetic control over analytic functions dates to Stäckel (1895), who showed a transcendental entire function can take rational values at all rationals — but his construction did not control irrational inputs. Erdős sharpened this to an $\\textit{if and only if}$ question: can $f(x) \\in \\mathbb{Q} \\Leftrightarrow x \\in \\mathbb{Q}$? Hayman included it as Problem 2.31 in his 1974 collection, attributing it to Erdős. Barth and Schneider solved it affirmatively in 1970, proving the much stronger result that for ANY countable dense $A, B \\subset \\mathbb{R}$, a transcendental entire $f$ with $f(A) = B$ exists — and can be made strictly monotone on $\\mathbb{R}$. Their 1971 follow-up extended this to countable dense subsets of $\\mathbb{C}$. The construction uses Weierstrass products and careful interpolation on the countable dense set.",
     "problemStatement": "Is there an entire non-linear function f : ℂ → ℂ such that for all x ∈ ℝ, x ∈ ℚ ↔ f(x) ∈ ℚ? More generally, for any countable dense A, B ⊆ ℝ, does an entire function with f(A) = B exist? SOLVED: YES (Barth-Schneider, 1970).",
-    "text": "Is there an entire non-linear function f such that x \u2208 \u211a \u2194 f(x) \u2208 \u211a for all real x? SOLVED: YES by Barth-Schneider (1970). For any two countable dense sets A, B \u2282 \u211d, a transcendental entire function mapping A to B exists.",
+    "text": "Is there an entire non-linear function f such that x ∈ ℚ ↔ f(x) ∈ ℚ for all real x? SOLVED: YES by Barth-Schneider (1970). For any two countable dense sets A, B ⊂ ℝ, a transcendental entire function mapping A to B exists.",
     "proofStrategy": "The formalization axiomatizes the Barth-Schneider existence theorem and derives both the original and generalized answers. The key proof step in `erdos_question_affirmative` instantiates the axiom with $A = B = \\mathbb{Q}$ (via `rationals_countable_dense`), then shows transcendental $\\Rightarrow$ non-linear by encoding any linear function $f(z) = az + b$ as a degree-1 polynomial, contradicting transcendence. The `general_question_affirmative` follows directly. The formalization also axiomatizes the $\\mathbb{C}$ extension and the impossibility of polynomial solutions.",
     "keyInsights": [
       "The function must be transcendental — no polynomial can preserve rationality while being non-linear",

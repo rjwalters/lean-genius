@@ -20,12 +20,13 @@
     "erdosUrl": "https://erdosproblems.com/585",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 99
+    "lineCount": 99,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976, asking for the maximum number of edges in a graph on n vertices that contains no two edge-disjoint cycles on the same vertex set. The condition is equivalent to saying that no subset S of vertices supports two distinct Hamiltonian cycles with disjoint edge sets. The problem remained wide open for nearly two decades until Pyber, Rödl, and Szemerédi (1995) established the lower bound f(n) = Ω(n log log n) using an intricate probabilistic and Ramsey-theoretic construction. Their iterated-logarithm growth rate revealed the extremal function to be only barely superlinear. Progress on upper bounds was slower: the first nontrivial bound of O(n√(log n)) was eventually improved dramatically by Chakraborti, Janzer, Methuku, and Montgomery in 2024, who proved f(n) ≤ O(n(log n)^C) using structural graph decomposition and dependent random choice. Their result also generalized to k pairwise edge-disjoint cycles for any fixed k ≥ 2. The remaining gap between log log n and (log n)^C is one of the most tantalizing open problems in extremal graph theory.",
     "problemStatement": "What is the maximum number of edges $f(n)$ in an $n$-vertex graph with no two edge-disjoint cycles sharing the same vertex set?",
-    "text": "What is the maximum number of edges in an n-vertex graph with no two edge-disjoint cycles on the same vertex set? Known: \u03a9(n log log n) \u2264 f(n) \u2264 O(n(log n)^C). The gap remains open.",
+    "text": "What is the maximum number of edges in an n-vertex graph with no two edge-disjoint cycles on the same vertex set? Known: Ω(n log log n) ≤ f(n) ≤ O(n(log n)^C). The gap remains open.",
     "proofStrategy": "The formalization defines cycles in simple graphs via injective vertex sequences with consecutive adjacencies, edge-disjointness on the same vertex set, and the extremal function f(n) as a supremum. It then axiomatizes the Pyber–Rödl–Szemerédi lower bound and the CJMM upper bound using Lean's Filter.atTop for asymptotic statements, and includes the k-cycle generalization.",
     "keyInsights": [
       "The forbidden configuration — two edge-disjoint Hamiltonian cycles on some vertex subset — is a global structural condition, unlike classical Turán-type forbidden subgraph problems",

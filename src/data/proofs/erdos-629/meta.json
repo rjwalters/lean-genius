@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/629",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 912
+    "lineCount": 912,
+    "assumptions": "No axioms. 8 sorry(s) remain in the formalization."
   },
   "overview": {
     "historicalContext": "Erdős, Rubin, and Taylor introduced the concept of list coloring (choosability) in their landmark 1979/1980 paper, which revealed a fundamental surprise: bipartite graphs, though 2-colorable, can have arbitrarily large list chromatic number. They proved the first bounds $2^{k-1} < n(k) < k^2 \\cdot 2^{k+2}$ and computed $n(2) = 6$ using $K_{3,3}$ with a clever adversarial list assignment. Hanson, MacGillivray, and Toft (1996) determined $n(3) = 14$ through exhaustive case analysis and gave the recursive bound $n(k) \\leq k \\cdot n(k-2) + 2^k$. Radhakrishnan and Srinivasan (2000) improved the lower bound to $n(k) \\geq c \\cdot 2^k \\sqrt{k/\\ln k}$ using an entropy-based refinement of the probabilistic method. Galvin's 1995 theorem that $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$, proved via the kernel method, provides the key structural result for complete bipartite graphs. The problem connects to Property B (Erdős Problem #901) via the sandwich inequality $m(k) \\leq n(k) \\leq m(k+1)$, linking list coloring to hypergraph 2-coloring theory.",
     "problemStatement": "The list chromatic number $\\chi_L(G)$ is the minimal $k$ such that for any assignment of lists of $k$ colors to vertices, a proper coloring exists from the lists. Find $n(k) =$ minimum number of vertices in a bipartite graph $G$ with $\\chi_L(G) > k$.",
-    "text": "Find n(k) = minimal vertices in bipartite G with list chromatic number \u03c7_L(G) > k. Surprisingly, \u03c7_L can be arbitrarily large even though \u03c7 \u2264 2!",
+    "text": "Find n(k) = minimal vertices in bipartite G with list chromatic number χ_L(G) > k. Surprisingly, χ_L can be arbitrarily large even though χ ≤ 2!",
     "proofStrategy": "The formalization builds on Mathlib's `SimpleGraph` and defines list coloring from scratch: `ColorListAssignment`, `RespectsLists`, `IsKListColorable`, and `listChromaticNumber` via infimum. The function $n(k)$ is defined as the infimum over bipartite witnesses. Aristotle proved 6 key results: `bipartite_chromatic_le_two`, `bipartite_list_chromatic_unbounded` (via the hitting-set construction on $(k+1)$-subsets), `n_well_defined`, `n_mono`, `n_2_eq_6` (using $K_{3,3}$ + case analysis), and `ert_lower_bound` (via the probabilistic method with random 2-coloring of colors). The remaining 8 sorries include $n(3) = 14$, the upper bound, improved bounds, Property B connection, and asymptotic results.",
     "keyInsights": [
       "**The choosability surprise**: Bipartite graphs have $\\chi(G) \\leq 2$ but $\\chi_L(G)$ can be arbitrarily large — list coloring is fundamentally harder than ordinary coloring because an adversary controls the color lists",

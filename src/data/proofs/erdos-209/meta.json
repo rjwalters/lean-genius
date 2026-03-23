@@ -50,12 +50,13 @@
       "erdos_209 theorem: main disproof"
     ],
     "axiomCount": 6,
-    "lineCount": 274
+    "lineCount": 274,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #209** is a question in incidence geometry about the structure of line arrangements. The classical Sylvester-Gallai theorem (1893) guarantees that any finite set of points not all collinear determines at least one \"ordinary line\" (containing exactly 2 points). Erdős asked: can we extend this to triangles?\n\n**Historical Development:**\n- **1893 (Sylvester-Gallai):** Ordinary points/lines must exist.\n- **1984 (Füredi-Palásti):** Disproved the conjecture for most d.\n- **2016 (Escudero):** Completed the disproof for ALL d ≥ 4.\n\n**Key Insight:** While ordinary points always exist, they can be positioned to avoid forming triangles with only ordinary vertices.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A$ be a finite collection of $d \\geq 4$ non-parallel lines in $\\mathbb{R}^2$ such that no point lies on 4 or more lines. Must there exist a **Gallai triangle** (or **ordinary triangle**): three lines from $A$ that form a triangle where each vertex involves exactly two lines?\n\n**Answer: NO!**\n\n**Resolution:**\n- Füredi-Palásti (1984): No for $d$ not divisible by 9\n- Escudero (2016): No for ALL $d \\geq 4$\n\n**Dual Formulation:** Given $n$ points with no 4 collinear, must there exist 3 points where each pair determines an ordinary line?",
-    "text": "Must every line arrangement (d \u2265 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by F\u00fcredi-Pal\u00e1sti (1984) and Escudero (2016).",
+    "text": "Must every line arrangement (d ≥ 4 lines, no parallels, no 4-concurrent) have a Gallai triangle? NO, disproved by Füredi-Palásti (1984) and Escudero (2016).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Lines and Arrangements:** Define lines via coefficients, parallel criterion, and line arrangements as finite sets.\n\n2. **Incidence Properties:** Define ordinary points (2 lines), 3-rich points (3+ lines), and Gallai triangles.\n\n3. **Sylvester-Gallai:** Axiomatize that ordinary points always exist.\n\n4. **Counterexamples:** Axiomatize Füredi-Palásti (1984) and Escudero (2016) constructions.\n\n5. **Main Result:** Prove the conjecture is false for all d ≥ 4.\n\n6. **Dual Problem:** Explain the point-line duality.",
     "keyInsights": [
       "**Ordinary Points Exist:** Sylvester-Gallai guarantees at least one point where exactly 2 lines meet.",

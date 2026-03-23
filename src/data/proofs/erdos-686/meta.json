@@ -31,12 +31,13 @@
       "Set.Infinite",
       "native_decide"
     ],
-    "lineCount": 174
+    "lineCount": 174,
+    "assumptions": "2 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #686 appears in [Er79d] and was further discussed in the influential monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erdős and Graham (1980). The question explores the surprising representational power of products of consecutive integers — structures intimately connected to factorials, binomial coefficients, and the Gamma function. Products of $k$ consecutive integers satisfy $\\prod_{i=1}^k (n+i) = (n+k)!/n! = k! \\binom{n+k}{k}$, linking this problem to deep divisibility theory of binomial coefficients. The related Problem #677 asks the simpler question of which integers are products of consecutive integers (no ratio). Bertrand's postulate (Chebyshev, 1850) guarantees a prime in $(n, 2n)$, which constrains which integers can appear as such products. The ratio formulation in #686 is strictly more general, as demonstrated by the `product_implies_ratio` reduction in the formalization.",
     "problemStatement": "Can every integer N ≥ 2 be written as ∏_{i=1}^k (m+i) / ∏_{i=1}^k (n+i) for some k ≥ 2 and m ≥ n + k? The constraints ensure non-trivial non-overlapping ranges with ratio > 1. OPEN.",
-    "text": "Can every integer N \u2265 2 be written as \u220f(m+i) / \u220f(n+i) for some k \u2265 2 and m \u2265 n + k? OPEN.",
+    "text": "Can every integer N ≥ 2 be written as ∏(m+i) / ∏(n+i) for some k ≥ 2 and m ≥ n + k? OPEN.",
     "proofStrategy": "The formalization has four layers:\n\n1. **Foundation**: `consecutiveProduct(n,k)` via `Finset.prod`, with proved identities linking to factorials (`consecutiveProduct_eq_factorial`, by induction on $k$) and binomial coefficients (`product_binomial_relation`, using `Nat.choose_mul_factorial_mul_factorial`)\n\n2. **Ratio machinery**: `ratioExpression` over $\\mathbb{Q}$ for exact division, `ratio_as_binomials` proving it equals $\\binom{m+k}{k}/\\binom{n+k}{k}$ via `field_simp`\n\n3. **Structural properties**: `numerator_gt_denominator` (proved via `Finset.prod_lt_prod_of_nonempty`), `consecutiveProduct_pos`, `consecutiveProduct_mono`\n\n4. **Conjecture**: `erdos_686_conjecture` axiomatized; `representable_set_infinite` axiomatized; verified examples for $N = 2$ and $N = 6$",
     "keyInsights": [
       "P(n,k) = (n+k)!/n! = k! * C(n+k, k)",

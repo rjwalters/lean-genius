@@ -23,12 +23,13 @@
     "erdosUrl": "https://erdosproblems.com/485",
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
-    "lineCount": 281
+    "lineCount": 281,
+    "assumptions": "2 axiom(s) and 10 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
     "historicalContext": "The problem originates in the 1947 investigation by Rényi and Rédei on the multiplicative structure of polynomial term counts.  Erdős (1949) proved the upper bound f(k) < k^{1-c} for some c > 0, demonstrating that squaring can achieve genuinely sublinear term compression.  The conjecture that f(k) → ∞ is attributed to Erdős and Rényi, appearing as Problem 4.4 in Hayman's 'Research Problems in Function Theory' (1974).  Schinzel (1987) resolved the conjecture affirmatively, proving f(k) > (log log k)/log 2 via an algebraic height argument that bounds the number of coefficient cancellations by the algebraic complexity of the support set.  Schinzel and Zannier (2009) significantly improved this to f(k) ≫ log k, using the Skolem–Mahler–Lech theorem on zeros of linear recurrence sequences and techniques from the geometry of numbers.  The precise growth rate of f(k) remains unknown: the gap between the log k lower bound and the k^{1-c} upper bound is exponential.",
     "problemStatement": "Let f(k) be the minimum number of terms in P(x)², where P ∈ ℚ[x] ranges over all polynomials with exactly k non-zero terms. Is it true that f(k) → ∞ as k → ∞?",
-    "text": "Let f(k) be the minimum number of terms in P(x)\u00b2, where P ranges over polynomials with exactly k non-zero terms. Is f(k) \u2192 \u221e as k \u2192 \u221e?",
+    "text": "Let f(k) be the minimum number of terms in P(x)², where P ranges over polynomials with exactly k non-zero terms. Is f(k) → ∞ as k → ∞?",
     "proofStrategy": "The formalization defines termCount via Polynomial.support.card, then f(k) as sInf over k-term polynomials.  Base cases f(1) = 1 (monomials) and f(2) = 3 (binomials) are fully proved by Aristotle automated proof search, including the nontrivial lower bound for f(2) which shows every binomial square has exactly 3 terms.  The main results — Erdős's upper bound, Schinzel's lower bound, and the Schinzel–Zannier improvement — are axiomatized as theorem sorries since the proofs require deep algebraic techniques beyond current Mathlib automation.  The formalization also treats the generalization g(k,n) for P^n.",
     "keyInsights": [
       "The term count of P² connects to sumset theory: termCount(P²) = |supp(P) + supp(P)| minus cancellations, linking the problem to additive combinatorics",

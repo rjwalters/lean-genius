@@ -56,12 +56,13 @@
       "Kővári-Sós-Turán bound on C₄-free graphs"
     ],
     "axiomCount": 4,
-    "lineCount": 197
+    "lineCount": 197,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem concerns the extremal theory of even cycles in graphs. The 4-cycle (C₄) is the simplest even cycle and appears throughout graph theory, including the Kővári–Sós–Turán theorem and the Zarankiewicz problem.\n\nLet f(n) be the smallest integer such that every n-vertex graph with minimum degree at least f(n) contains a 4-cycle. It is known that f(n) = (1 + o(1))√n asymptotically.\n\nErdős asked whether f is eventually monotone: does f(n+1) ≥ f(n) hold for all sufficiently large n? This subtle question remains open. Adding vertices to a graph might create 'room' for high minimum-degree configurations that avoid 4-cycles.",
     "problemStatement": "**Erdős Problem #85 (OPEN)**\n\nLet $f(n)$ be the minimum degree threshold such that every $n$-vertex graph with minimum degree $\\geq f(n)$ contains a 4-cycle.\n\n**Question**: Is $f(n+1) \\geq f(n)$ for all sufficiently large $n$?\n\n**Known Results**:\n- $f(n) = (1 + o(1))\\sqrt{n}$ asymptotically\n- $f(n) < \\sqrt{n} + 1$ for $n \\geq 4$\n- $f(4) = 2$\n- Connected to Ramsey number $R(C_4, K_{1,n})$",
-    "text": "Is the minimum degree threshold f(n) for forcing a 4-cycle monotone? That is, is f(n+1) \u2265 f(n) for all large n?",
+    "text": "Is the minimum degree threshold f(n) for forcing a 4-cycle monotone? That is, is f(n+1) ≥ f(n) for all large n?",
     "proofStrategy": "We formalize the key concepts and known results:\n\n1. **C4**: The 4-cycle graph on Fin 4\n\n2. **containsC4**: Predicate for C₄ appearing as a subgraph\n\n3. **minDegreeForC4**: The threshold function f(n)\n\n4. **Erdos85Question**: The open monotonicity question\n\n5. **Known bounds** (axioms): f(n) < √n + 1, f(n) ~ √n\n\n6. **Ramsey connection**: Relation to R(C₄, K_{1,n})\n\n7. **Kővári-Sós-Turán**: Upper bound on C₄-free graphs",
     "keyInsights": [
       "**Minimum degree forces structure**: High minimum degree in a graph forces certain subgraphs to appear. The threshold for C₄ is well-understood asymptotically.",

@@ -52,12 +52,13 @@
     "mathlib_version": "4.15.0",
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
-    "lineCount": 214
+    "lineCount": 214,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Bollobás, Erdős, and Szemerédi conjectured in 1975 that in balanced r-partite graphs, minimum degree at least (r - 3/2 - o(1))n forces a complete r-clique K_r. They also constructed examples showing the constant r - 3/2 is best possible, with extremal graphs avoiding K_r via subtle parity arguments.\n\nHaxell proved the conjecture in 2001 using connections to list coloring theory. Her proof showed that the minimum degree condition forces a rainbow clique through a reduction to vertex list coloring problems, resolving the question after 25 years.\n\nHaxell and Szabó determined the exact sharp threshold in 2006: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋. This precise formula reveals the role of parity in the problem — the floor of r/2 appears because the extremal constructions depend on whether r is even or odd. Asymptotically, ⌈sn/(2s-1)⌉ ≈ n/2, recovering the (r - 3/2)n threshold.",
     "problemStatement": "Let G be an r-partite graph with n vertices in each part. If G has minimum degree ≥ (r - 3/2 - o(1))n, must G contain K_r? Answer: YES (Haxell 2001). Sharp threshold: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋ (Haxell-Szabó 2006).",
-    "text": "In r-partite graphs with n vertices per part, min degree \u2265 (r-3/2-o(1))n implies K_r exists. SOLVED by Haxell (2001). Sharp threshold by Haxell-Szab\u00f3 (2006).",
+    "text": "In r-partite graphs with n vertices per part, min degree ≥ (r-3/2-o(1))n implies K_r exists. SOLVED by Haxell (2001). Sharp threshold by Haxell-Szabó (2006).",
     "proofStrategy": "The formalization defines r-partite graphs as structures with r equal-size parts and edges only between parts. The BES conjecture is stated as a Prop, and Haxell's theorem is axiomatized. The Haxell-Szabó sharp threshold is formalized with both the sufficiency theorem and sharpness (counterexamples exist at the threshold). Special cases for r = 2, 3, 4 are computed. The summary theorem combines all four main results.",
     "keyInsights": [
       "The threshold (r - 3/2)n involves a half-integer, suggesting parity plays a role",

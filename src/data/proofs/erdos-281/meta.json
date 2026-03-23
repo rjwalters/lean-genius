@@ -42,12 +42,13 @@
       "Biconditional equivalence combining both directions"
     ],
     "axiomCount": 3,
-    "lineCount": 262
+    "lineCount": 262,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Covering systems were introduced by Erdős in the 1950s. A covering system of congruences is a finite set of residue classes whose union is all integers; Erdős conjectured (and it was proved by Hough in 2015) that no covering system exists with all moduli distinct and greater than any given bound. Problem 281 is a density-theoretic variant: Erdős asked in 1980 whether the full-covering condition (every choice of congruence classes leaves density-0 uncovered) automatically gives *uniform* finite approximation. The affirmative resolution uses the Davenport–Erdős theorem (1951) — that upper and lower density coincide for divisibility-defined sets — and Rogers' maximization theorem from Halberstam–Roth's 'Sequences' (1966).",
     "problemStatement": "Let n₁ < n₂ < ⋯ be such that for any choice of classes aᵢ (mod nᵢ), the uncovered integers have density 0. Must there exist, for every ε > 0, a finite k achieving density < ε uniformly over all choices?",
-    "text": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < \u03b5 for every \u03b5 > 0?",
+    "text": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < ε for every ε > 0?",
     "proofStrategy": "The formalization defines congruence class assignments, coverage, and uncovered density. It axiomatises the divergence of reciprocals, the coprime special case, and the main theorem that full covering implies uniform finite approximation.",
     "keyInsights": [
       "Full covering implies Σ 1/nᵢ = ∞",

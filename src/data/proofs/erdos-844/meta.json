@@ -57,12 +57,13 @@
       "erdos_844_characterization theorem: complete characterization"
     ],
     "axiomCount": 16,
-    "lineCount": 246
+    "lineCount": 246,
+    "assumptions": "16 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #844: Non-Squarefree Products**\n\nThis problem appears in Erdős-Sárközy [Er92b, p.239] and concerns extremal sets with multiplicative constraints.\n\n**Key History:**\n- **Erdős-Sárközy (1992):** Posed the original problem\n- **Weisenberg:** First proof using Chvátal's intersecting families result\n- **Alexeev-Mixon-Sawin [AMS25]:** Independent alternative proof\n\n**The Connection:**\nThe problem reduces to finding the largest 'intersecting family' of squarefree numbers - subsets where any two elements share a prime factor. Chvátal's 1974 result on intersecting hypergraph families provides the answer.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet A ⊆ {1,...,N} such that for all a, b ∈ A, the product ab is not squarefree.\n\nIs the maximum size of A achieved by taking:\n- All even numbers (2, 4, 6, ...)\n- All odd non-squarefree numbers (9, 25, 27, ...)\n\n**Answer: YES**\n\nEquivalently: the optimal A consists of all numbers EXCEPT odd squarefree numbers.",
-    "text": "Let A \u2286 {1,...,N} such that for all a,b \u2208 A, ab is not squarefree. Is the maximum achieved by A = even numbers \u222a odd non-squarefree? Answer: YES (Weisenberg; Alexeev-Mixon-Sawin).",
+    "text": "Let A ⊆ {1,...,N} such that for all a,b ∈ A, ab is not squarefree. Is the maximum achieved by A = even numbers ∪ odd non-squarefree? Answer: YES (Weisenberg; Alexeev-Mixon-Sawin).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - HasNonSquarefreeProducts: ∀ a,b ∈ A, ¬Squarefree(ab)\n   - optimalSet = evenNumbers ∪ oddNonSquarefreeNumbers\n\n2. **Key Lemmas:**\n   - even_product_not_squarefree: product of two even numbers is divisible by 4\n   - nonsquarefree_product: product with a non-squarefree factor is non-squarefree\n\n3. **Reduction:**\n   - Maximal A must contain all non-squarefree numbers\n   - Among squarefree numbers, need 'intersecting family'\n\n4. **Chvátal's Result:**\n   - Maximum intersecting family of squarefree numbers = even squarefree numbers\n\n5. **Conclusion:**\n   - Optimal = non-squarefree ∪ even squarefree = all except odd squarefree",
     "keyInsights": [
       "**Product Property:** If a is not squarefree, ab inherits non-squarefreeness for any b > 0",

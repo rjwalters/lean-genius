@@ -61,12 +61,13 @@
       "convex_distinct_distances/convex_max_multiplicity/convex_unit_distance: related bounds"
     ],
     "axiomCount": 0,
-    "lineCount": 433
+    "lineCount": 433,
+    "assumptions": "No axioms. 12 sorry(s) remain in the formalization."
   },
   "overview": {
     "historicalContext": "Erdős posed this $44 prize problem asking whether $\\sum f(u_i)^2 = O(n^3)$ for $n$ points in convex position, where $f(u)$ counts pairs at distance $u$. The question connects to the broader study of distance distributions in discrete geometry. Fishburn resolved it affirmatively, establishing the cubic upper bound. Lefmann and Theile (1995) strengthened the result by proving the same bound under the weaker assumption that no three points are collinear — a strict generalization since convex position implies no-three-collinear but not conversely. The trivial identity $\\sum f(u) = \\binom{n}{2}$ means the problem asks about the 'concentration' of distances: by Cauchy-Schwarz, $\\sum f(u)^2 \\geq \\binom{n}{2}^2 / |d(P)|$, so the $O(n^3)$ bound constrains how clustered the distance distribution can be. Erdős and Fishburn conjectured that the regular $n$-gon maximizes $\\sum f(u)^2$ among all convex $n$-gons for large $n$, verified computationally for $n \\leq 10$ (OEIS A387858). The formalization includes an Aristotle-proved theorem ($\\sum f(u) = \\binom{n}{2}$) alongside 12 axiomatized results.",
     "problemStatement": "Suppose $n$ points in $\\mathbb{R}^2$ form the vertices of a convex polygon. Let $f(u)$ count the number of pairs at distance $u$. Prove that $\\sum_u f(u)^2 = O(n^3)$. Note: trivially $\\sum f(u) = \\binom{n}{2}$.",
-    "text": "For n points forming a convex polygon with distance multiplicities f(u), prove \u2211 f(u)\u00b2 = O(n\u00b3). Solved by Fishburn, strengthened by Lefmann-Theile (1995) to 'no three collinear'. Regular n-gon achieves \u0398(n\u00b3). Erd\u0151s-Fishburn conjecture: regular n-gon is extremal.",
+    "text": "For n points forming a convex polygon with distance multiplicities f(u), prove ∑ f(u)² = O(n³). Solved by Fishburn, strengthened by Lefmann-Theile (1995) to 'no three collinear'. Regular n-gon achieves Θ(n³). Erdős-Fishburn conjecture: regular n-gon is extremal.",
     "proofStrategy": "The formalization defines point configurations in $\\mathbb{R}^2$ via `EuclideanSpace ℝ (Fin 2)`, distance multiplicities via `Finset.product` and `Finset.filter`, and the sum of squared multiplicities as the central quantity. Convex position uses `convexHull ℝ`, and the no-three-collinear condition uses `Collinear ℝ`. The main theorems (Fishburn, Lefmann-Theile, regular $n$-gon bounds) are axiomatized. The sum-of-multiplicities identity $\\sum f(u) = \\binom{n}{2}$ is fully proved by Aristotle via a double-counting argument with an involution-based evenness proof.",
     "keyInsights": [
       "**Double counting gives $\\sum f(u) = \\binom{n}{2}$**: Each unordered pair $(p,q)$ has exactly one distance, so the multiplicities partition $\\binom{n}{2}$ pairs. The Lean proof by Aristotle establishes this via `Finset.sum_image'` and an involution argument for evenness.",

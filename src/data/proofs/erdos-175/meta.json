@@ -71,12 +71,13 @@
         "url": "https://doi.org/10.1515/crll.1852.44.93",
         "description": "Kummer's classical theorem relating p-adic valuations of binomial coefficients to carries in base-p arithmetic"
       }
-    ]
+    ],
+    "assumptions": "15 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős first asked whether $\\binom{2n}{n}$ is squarefree for infinitely many $n$ in the 1970s, noting the connection to prime power divisibility of factorials via Legendre's formula. The question traces back to Kummer's 1852 theorem relating $v_p\\binom{m+n}{m}$ to carries in base-$p$ addition — one of the earliest results in $p$-adic number theory. Sárközy (1985) proved $\\binom{2n}{n}$ is not squarefree for all sufficiently large $n$ using analytic estimates on smooth numbers and the distribution of prime powers. Granville and Ramaré (1996) completed the proof for all $n \\ge 5$ by combining Sárközy's asymptotic result with direct verification of small cases and a delicate analysis of the power-of-2 case. The associated function $f(n) = \\max_p v_p\\binom{2n}{n}$ was studied by Sander (1992, 1995), who proved $f(n) \\to \\infty$ with lower bound $(\\log n)^{1/10}$, later improved to $(\\log n)^{1/4}$ by Erdős and Kolesnik (1999). The upper bound $f(n) = O(\\log n)$ is immediate from Kummer's theorem, and the gap between $(\\log n)^{1/4}$ and $\\log n$ remains open.",
     "problemStatement": "Show that for any $n \\ge 5$, the central binomial coefficient $\\binom{2n}{n}$ is not squarefree. Furthermore, characterize the growth of $f(n) = \\max_p v_p\\binom{2n}{n}$.",
-    "text": "Show that for n \u2265 5, C(2n,n) is not squarefree. Proved by Granville-Ramar\u00e9 (1996). The function f(n) = max prime power exponent satisfies (log n)^{1/4} \u226a f(n) \u226a log n.",
+    "text": "Show that for n ≥ 5, C(2n,n) is not squarefree. Proved by Granville-Ramaré (1996). The function f(n) = max prime power exponent satisfies (log n)^{1/4} ≪ f(n) ≪ log n.",
     "proofStrategy": "The proof splits into two cases based on the binary structure of $n$. **Case 1**: If $n$ is not a power of 2, then $s_2(n) \\ge 2$, so by Kummer's theorem $v_2\\binom{2n}{n} \\ge 2$, meaning $4 \\mid \\binom{2n}{n}$ and it is not squarefree. **Case 2**: If $n = 2^k$, then $v_2\\binom{2n}{n} = 1$ (no help from 2), but Granville–Ramaré showed an odd prime $p$ with $p^2 \\mid \\binom{2n}{n}$ exists for $k \\ge 3$. The small cases $n \\in \\{5, 6, 7\\}$ are verified directly. The formalization axiomatizes the deep results (Kummer, Granville–Ramaré, Sander, Erdős–Kolesnik) and assembles them into the complete statement.",
     "keyInsights": [
       "**Binary digit structure governs 2-divisibility**: $v_2\\binom{2n}{n} = s_2(n)$ (popcount), so $4 \\mid \\binom{2n}{n}$ precisely when $n$ has $\\ge 2$ ones in binary — this immediately handles all non-powers of 2",

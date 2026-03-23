@@ -15,7 +15,7 @@
       "trigonometry",
       "triangles"
     ],
-    "mathContext": "See annotation content for formal details of generalizing pythagoras"
+    "mathContext": "For a triangle with sides $a, b, c$ and angle $C$ opposite side $c$: $c^2 = a^2 + b^2 - 2ab\\cos C$. When $C = \\pi/2$, $\\cos C = 0$ and the formula reduces to the Pythagorean theorem $c^2 = a^2 + b^2$."
   },
   {
     "id": "ann-inner-product",
@@ -104,7 +104,7 @@
       "special triangles",
       "cosine values"
     ],
-    "mathContext": "See annotation content for formal details of worked examples"
+    "mathContext": "For the equilateral case $a = b = 1$, $C = 60°$: $c^2 = 1 + 1 - 2\\cdot\\frac{1}{2} = 1$, so $c = 1$. For the 3-4-5 right triangle: $c^2 = 9 + 16 - 0 = 25$. For the obtuse case $a=b=1$, $C=120°$: $c^2 = 2 + 1 = 3$, so $c = \\sqrt{3}$."
   },
   {
     "id": "ann-historical",
@@ -121,6 +121,6 @@
       "history of mathematics",
       "Euclid's Elements"
     ],
-    "mathContext": "See annotation content for formal details of from euclid to al-kashi"
+    "mathContext": "Euclid's Prop II.12 (obtuse case): $c^2 = a^2 + b^2 + 2a \\cdot BD$ where $D$ is the foot of the altitude. Prop II.13 (acute case): $c^2 = a^2 + b^2 - 2a \\cdot BD$. Al-Kashi (1427) unified these as $c^2 = a^2 + b^2 - 2ab\\cos C$ using the cosine ratio."
   }
 ]

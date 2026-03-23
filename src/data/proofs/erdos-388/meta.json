@@ -26,12 +26,13 @@
       "erdos-931"
     ],
     "axiomCount": 4,
-    "lineCount": 110
+    "lineCount": 110,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Paul Erdős posed this problem in the 1970s–1980s as part of his systematic investigation of Diophantine equations involving products of consecutive integers. The foundational result in this area is the Erdős–Selfridge theorem (1975, Illinois J. Math.), which proved that a product of two or more consecutive positive integers is never a perfect power — settling a conjecture that had been open since the 19th century (partial results by Obláth, 1956). Problem #388 asks the next natural question: when can two *disjoint* blocks of consecutive integers have the same product? The connection to factorials $(m+1) \\cdots (m+k) = (m+k)!/m!$ means this is equivalent to asking when two factorial ratios can be equal. The threshold $k > 3$ is essential because for small $k$, parametric families of solutions exist. The problem also connects to the Brocard–Ramanujan problem ($n! + 1 = m^2$) and to Erdős Problems #363 and #931 on related product identities.",
     "problemStatement": "Are there only finitely many solutions to $\\prod_{i=1}^{k_1}(m_1+i) = \\prod_{j=1}^{k_2}(m_2+j)$ with $k_1, k_2 > 3$ and $m_1 + k_1 \\leq m_2$ (disjoint blocks)?",
-    "text": "Can one classify all solutions of \u220f(m\u2081+i) = \u220f(m\u2082+j) where k\u2081, k\u2082 > 3 and the blocks are disjoint? Erd\u0151s conjectured only finitely many solutions exist. Generalizes to proportional products a\u00b7\u220f(m\u2081+i) = b\u00b7\u220f(m\u2082+j).",
+    "text": "Can one classify all solutions of ∏(m₁+i) = ∏(m₂+j) where k₁, k₂ > 3 and the blocks are disjoint? Erdős conjectured only finitely many solutions exist. Generalizes to proportional products a·∏(m₁+i) = b·∏(m₂+j).",
     "proofStrategy": "We formalize the consecutive product $\\prod_{i=1}^k (m+i)$ via `Finset.Icc`, encode solutions as proof-carrying structures (with $k > 3$, disjointness, and product equality baked in), state the finiteness conjecture, generalize to proportional products $a \\cdot \\prod = b \\cdot \\prod$, and connect to the Erdős–Selfridge theorem and factorial identities.",
     "keyInsights": [
       "**Factorial ratio reformulation**: The equal-products equation $\\prod(m_1+i) = \\prod(m_2+j)$ is equivalent to $(m_1+k_1)!/m_1! = (m_2+k_2)!/m_2!$, transforming a combinatorial question into one about factorial ratios",

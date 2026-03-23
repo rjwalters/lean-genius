@@ -51,12 +51,13 @@
       "Analytic number theory basics (divisibility, prime distributions)",
       "Real analysis (exponential and logarithmic functions)"
     ],
-    "lineCount": 280
+    "lineCount": 280,
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #784 studies the fundamental question of how effectively a set $A$ with bounded reciprocal sum $\\sum_{n \\in A} 1/n \\leq C$ can sieve the integers. The problem traces to Andrzej Schinzel and George Szekeres (1959), who constructed sets showing the $x/(\\log x)^c$ bound is the natural boundary. Imre Ruzsa (1982) made the decisive breakthrough: he proved the lower bound $H_1(x) \\geq K \\cdot x/\\log x$ for the critical case $C = 1$, and showed the answer is NO for $C > 1$ by establishing $H_C(x) = x^{e^{1-C}+o(1)}$ — a sublinear growth rate when $C > 1$. Éric Saias (1998) closed the $C = 1$ case by proving the matching upper bound $H_1(x) \\leq K \\cdot x/\\log x$, 16 years after Ruzsa's lower bound. Most recently, Andreas Weingartner (2025) gave precise asymptotics for all $C > 1$: $H_C(x) \\asymp x^{e^{1-C}}/\\log x$, specifying the $\\log$ correction factor. The result reveals a sharp phase transition at $C = 1$: below this threshold, sieving is too constrained to eliminate many elements; above it, sieving becomes powerful enough to leave only a sublinear residue.",
     "problemStatement": "Let C > 0. Does there exist c > 0 (depending on C) such that, for all sufficiently large x, if A ⊆ [1,x] has Σ_{n∈A} 1/n ≤ C then #{m ≤ x : a ∤ m for all a ∈ A} ≫ x/(log x)^c?",
-    "text": "Given C > 0, does there exist c > 0 such that sets A with \u03a3 1/n \u2264 C leave \u226b x/(log x)^c unsieved elements? Answer: YES for C \u2264 1, NO for C > 1.",
+    "text": "Given C > 0, does there exist c > 0 such that sets A with Σ 1/n ≤ C leave ≫ x/(log x)^c unsieved elements? Answer: YES for C ≤ 1, NO for C > 1.",
     "proofStrategy": "The answer depends critically on whether C ≤ 1 or C > 1. For C ≤ 1, the reciprocal sum constraint is strong enough that a polynomial-in-log bound holds. For C = 1 specifically, H₁(x) ≍ x/log x. For C > 1, the constraint is too weak: H_C(x) ≍ x^{e^{1-C}}/log x, which is sublinear and doesn't satisfy any polynomial-log bound.",
     "keyInsights": [
       "The transition point is C = 1—a sharp phase transition in sieving behavior",

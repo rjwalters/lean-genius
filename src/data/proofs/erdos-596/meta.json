@@ -47,12 +47,13 @@
       "SimpleGraph in Mathlib",
       "Nešetřil-Rödl theorem (structural Ramsey theory)"
     ],
-    "lineCount": 146
+    "lineCount": 146,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #596 from [Er87] asks for a characterization of graph pairs (G₁, G₂) satisfying a finite/countable Ramsey-type dichotomy. Erdős and Hajnal originally conjectured no such pairs exist, but Nešetřil-Rödl and Erdős-Hajnal showed that (C₄, C₆) is a valid pair. The related Problem #595 asks specifically about (K₄, K₃). The structural Ramsey theory context here traces back to the Nešetřil-Rödl theorem of the 1970s, which proved that for any graph H there exist graphs with arbitrarily high chromatic number containing no odd cycle shorter than any fixed length. Erdős and Hajnal's result that C₄-free graphs decompose into countably many trees (a consequence of their work on sparse graphs) provided the key tool for the countable coloring half of the (C₄, C₆) dichotomy.",
     "problemStatement": "For which pairs (G₁, G₂) is it true that (1) for every n, there exists a G₁-free graph H such that every n-coloring of H's edges contains a monochromatic G₂, and (2) every G₁-free graph H admits a countable edge coloring with no monochromatic G₂? OPEN.",
-    "text": "For which pairs (G\u2081, G\u2082) is it true that for every n there exists a G\u2081-free graph whose n-colorings contain monochromatic G\u2082, yet every G\u2081-free graph admits a countable coloring avoiding monochromatic G\u2082? OPEN.",
+    "text": "For which pairs (G₁, G₂) is it true that for every n there exists a G₁-free graph whose n-colorings contain monochromatic G₂, yet every G₁-free graph admits a countable coloring avoiding monochromatic G₂? OPEN.",
     "proofStrategy": "The formalization defines GraphProperty, FiniteRamseyProperty, CountableColoringProperty, and HasDichotomy. The known pair (C₄, C₆) is proved to satisfy the dichotomy from axioms of Nešetřil-Rödl and Erdős-Hajnal. The main problem asks for a complete characterization.",
     "keyInsights": [
       "The dichotomy combines a finite Ramsey property with a countable coloring property",

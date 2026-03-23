@@ -57,12 +57,13 @@
       "primes_mod_4_connection axiom: relation to primes ≡ 1 (mod 4)"
     ],
     "axiomCount": 6,
-    "lineCount": 239
+    "lineCount": 239,
+    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem is notably NOT actually an Erdős problem. According to Erdős himself, the conjecture originated with Theodore Motzkin, Basil Gordon, and others at a 1963 Pasadena number theory meeting. Erdős popularized it by sharing it widely, and the attribution was eventually forgotten.\n\nThe 'Gaussian moat' refers to prime-free regions in ℤ[i]. The question asks whether one can 'walk' from 0 to infinity on Gaussian primes with bounded step size.\n\nKnown results:\n- Jordan and Rabung (1970): No walk with steps ≤ 2\n- Tsuchimura (2005): No walk with steps ≤ √26\n- Gethner et al.: Step size 4 insufficient\n\nTerence Tao has indicated this problem appears quite difficult.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nIs there an infinite sequence of distinct Gaussian primes x₁, x₂, ... such that |x_{n+1} - xₙ| ≪ 1?\n\nEquivalently: Can we walk from 0 to infinity on Gaussian primes using steps of bounded length?\n\n**Background:**\n- Gaussian integers: ℤ[i] = {a + bi : a, b ∈ ℤ}\n- Gaussian primes: irreducible elements in the UFD ℤ[i]\n- The 'moat' is a prime-free annulus preventing escape",
-    "text": "Is there an infinite sequence of distinct Gaussian primes x\u2081, x\u2082, ... with bounded gaps |x_{n+1} - x\u2099| \u226a 1?",
+    "text": "Is there an infinite sequence of distinct Gaussian primes x₁, x₂, ... with bounded gaps |x_{n+1} - xₙ| ≪ 1?",
     "proofStrategy": "**Formalization Approach**\n\n1. **Gaussian Primes:** Use Mathlib's GaussianInt and Prime\n\n2. **Classification:** Define IsNorm2Prime, IsInertPrime, IsSplitPrime\n\n3. **Walk Definition:** IsInfiniteGaussianPrimeWalk as injective prime sequence\n\n4. **Bounded Gaps:** HasBoundedGaps requires norm differences < C\n\n5. **Known Results:** Axiomatize Jordan-Rabung, Tsuchimura bounds\n\n6. **Moat Width:** CanEscapeMoat and criticalMoatWidth",
     "keyInsights": [
       "**Misattribution:** Not actually Erdős's problem - originated with Motzkin, Gordon (1963)",

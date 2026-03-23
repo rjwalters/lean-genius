@@ -47,12 +47,13 @@
       "Stated Erdős–Purdy origin connection"
     ],
     "axiomCount": 6,
-    "lineCount": 103
+    "lineCount": 103,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Purdy posed this problem in their foundational surveys of combinatorial geometry in the 1970s–1980s, building on the Sylvester–Gallai tradition of studying collinearity in finite point sets. The question asks: if a planar point set of size $n$ has 'many' rich lines (at least $cn^2$ lines each containing $\\ge 4$ points), how large must the maximum collinear subset be?\n\nErdős conjectured that $h_c(n) \\gg \\sqrt{n}$, meaning that many rich lines force a large collinear subset of roughly square-root size. This was disproved by Zach Hunter, who constructed lattice-point configurations in $\\{1,\\ldots,m\\}^d$ showing $h_c(n) \\ll n^{1/\\log(1/c)}$ — much slower growth than $\\sqrt{n}$ for small $c$. Hunter's construction exploits the arithmetic structure of integer lattice points and the abundance of collinear quadruples in high-dimensional lattices projected to the plane.\n\nThe upper bound $h_c(n) \\le C\\sqrt{n}$ follows from the Szemerédi–Trotter incidence theorem (1983), the landmark result of Endre Szemerédi and William T. Trotter bounding point-line incidences by $O(n^{2/3}m^{2/3} + n + m)$. This was later reproved by László Székely (1997) using the crossing number inequality, and is now one of the central tools in discrete geometry. The fundamental question — whether $h_c(n) \\to \\infty$ at all for fixed $c$ — remains open and is closely connected to Problem #101 about the count of 4-point lines, to Problem #588 on $k$-rich lines, and to the Orchard Problem (#669).",
     "problemStatement": "Given $n$ points in $\\mathbb{R}^2$ with at least $cn^2$ lines containing $\\ge 4$ points, estimate $h_c(n)$, the maximum number of collinear points. Is $h_c(n) \\to \\infty$?",
-    "text": "Given n points with cn\u00b2 lines containing \u2265 4 points, estimate h_c(n) = max collinear. Known: \u2264 C\u221an. Erd\u0151s's \u221an lower conjecture disproved by Hunter. Open.",
+    "text": "Given n points with cn² lines containing ≥ 4 points, estimate h_c(n) = max collinear. Known: ≤ C√n. Erdős's √n lower conjecture disproved by Hunter. Open.",
     "proofStrategy": "The formalization introduces `PointConfig` for planar point sets, `collinear₃` via the cross-product determinant criterion, `richLineCount` counting 4-rich lines, and `maxCollinear` as the supremum of collinear subset sizes. The divergence question, the $O(\\sqrt{n})$ upper bound, Hunter's counterexample, the implication to Problem #101, the Szemerédi–Trotter context, and the Erdős–Purdy connection are all axiomatized as separate statements.",
     "keyInsights": [
       "**Szemerédi–Trotter upper bound**: $h_c(n) \\le C\\sqrt{n}$ follows because $cn^2$ rich lines produce $\\ge 4cn^2$ incidences, and the ST bound $I(P,L) \\le C(n^{2/3}m^{2/3} + n + m)$ forces the richest line to carry $\\ge C'\\sqrt{n}$ points only if the line count is $\\Omega(n^2)$",

@@ -61,12 +61,13 @@
       "Basic properties of Sidon sets (B2 sequences)",
       "Covering and representation problems in additive number theory"
     ],
-    "lineCount": 315
+    "lineCount": 315,
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem belongs to the broader study of additive bases in combinatorial number theory, going back to Waring's problem (1770) and Schnirelmann's theorem (1933) on sumset density. Erdős and Newman (1977) studied the fundamental question: given a set $A \\subseteq \\mathbb{N}$, how sparse can $B$ be while still ensuring $A \\subseteq B + B$?\n\nThey proved two key results: (1) perfect squares can be represented as $B + B$ with $|B \\cap [1,N]| = o(\\sqrt{N})$, and (2) there exist zero-density sets $A$ where any covering $B$ must satisfy $|B \\cap [1,N]| \\geq c\\sqrt{N}$ infinitely often. Theorem 2 actually implies a negative answer to Problem #333, but this connection was apparently overlooked when Erdős and Graham stated the problem in [ErGr80]. The problem is related to Sidon sets ($B_2$ sequences), where $|B \\cap [1,N]| \\sim \\sqrt{N}$ is optimal.",
     "problemStatement": "**Question:** Let A ⊆ ℕ have density zero. Does there exist B such that A ⊆ B+B and |B ∩ {1,...,N}| = o(N^{1/2})?\n\n**Answer: NO** (Erdős-Newman 1977, Theorem 2)\n\nSome zero-density sets require any covering B to have |B| ≈ √N.",
-    "text": "For any zero-density A \u2286 \u2115, does there exist B with A \u2286 B+B and |B \u2229 [1,N]| = o(\u221aN)? NO - Erd\u0151s-Newman (1977) Theorem 2 implies counterexamples exist, though this was overlooked.",
+    "text": "For any zero-density A ⊆ ℕ, does there exist B with A ⊆ B+B and |B ∩ [1,N]| = o(√N)? NO - Erdős-Newman (1977) Theorem 2 implies counterexamples exist, though this was overlooked.",
     "proofStrategy": "We formalize:\n\n1. **Counting functions and density:** countingFunction, hasZeroDensity\n2. **Sumsets:** sumset B + B, isCoveredBySumset\n3. **Sparsity conditions:** hasSubsqrtGrowth for o(√N) growth\n4. **The conjecture:** ErdosConjecture333\n5. **Positive case:** Squares (erdos_newman_squares)\n6. **Negative case:** existence_of_counterexample, erdos_333_false",
     "keyInsights": [
       "**Sumset covering:** A ⊆ B+B means every element of A is a sum of two elements from B",

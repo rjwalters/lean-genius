@@ -18,7 +18,8 @@
     "sourceUrl": "https://erdosproblems.com/562",
     "erdosUrl": "https://erdosproblems.com/562",
     "axiomCount": 7,
-    "badge": "axiom"
+    "badge": "axiom",
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -88,7 +89,7 @@
   "overview": {
     "historicalContext": "Erdős, Hajnal, and Rado formulated this conjecture in 1965 as the central question in hypergraph Ramsey theory. The story begins with the 1935 Erdős-Szekeres theorem establishing that graph Ramsey numbers R(n,n) grow exponentially — as a tower of height 1. The Erdős-Rado stepping-up lemma (1952) showed that each increase in uniformity r adds one tower level, giving R_r(n) ≤ twr_{r-1}(c·n²). For the lower bound, Erdős and Hajnal proved R_3(n) ≥ twr_2(c·n²), matching the upper bound for r=3. The general lower bound twr_{r-1}(Ω(n)) establishes the tower height as exactly r-1, but with a polynomial gap (linear vs quadratic) in the argument. The conjecture asks whether this gap can be closed to linear. For r=3, the answer is now known to be quadratic (Θ(n²)), so the strongest form of the linear conjecture is false. The problem remains open for r ≥ 4 and is considered one of the most fundamental challenges in combinatorics. Recent progress on graph Ramsey numbers by Campos-Griffiths-Morris-Sahasrabudhe (2023) has renewed interest in hypergraph analogues.",
     "problemStatement": "For r ≥ 3, prove that the (r-1)-fold iterated logarithm of R_r(n) is Θ(n). Equivalently, R_r(n) = twr_{r-1}(Θ(n)).",
-    "text": "For r \u2265 3, prove that log_{r-1} R_r(n) \u224d n, where R_r(n) is the r-uniform hypergraph Ramsey number. Upper bound: twr_{r-1}(O(n\u00b2)) from Erd\u0151s\u2013Rado. Lower: twr_{r-1}(\u03a9(n)). Status: OPEN.",
+    "text": "For r ≥ 3, prove that log_{r-1} R_r(n) ≍ n, where R_r(n) is the r-uniform hypergraph Ramsey number. Upper bound: twr_{r-1}(O(n²)) from Erdős–Rado. Lower: twr_{r-1}(Ω(n)). Status: OPEN.",
     "proofStrategy": "We formalize the tower function twr(k,n) by recursion on k, define hypergraph Ramsey numbers R_r(n) via sInf over valid 2-colorings of r-uniform hypergraphs, state the Erdős-Szekeres graph bounds as axioms, prove their conjunction as a theorem, state the Erdős-Rado stepping-up upper bound and the Erdős-Hajnal lower bounds as axioms, and formalize the main conjecture as an axiom asserting the existence of constants c₁, c₂ bounding the tower argument.",
     "keyInsights": [
       "**Tower hierarchy**: Each increase in uniformity $r$ adds one level to the tower: $R_2(n) = 2^{\\Theta(n)}$, $R_3(n) = 2^{2^{\\Theta(n^2)}}$, and conjecturally $R_r(n) = \\mathrm{twr}_{r-1}(\\Theta(n^?))$",

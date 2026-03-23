@@ -49,12 +49,13 @@
       "erdos_195_summary: combining upper and lower bounds"
     ],
     "axiomCount": 3,
-    "lineCount": 134
+    "lineCount": 134,
+    "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #195: Monotone Arithmetic Progressions in Permutations**\n\nPosed by Erdős and Graham around 1979-1980, this problem asks about unavoidable patterns in permutations of the integers. A monotone arithmetic progression (MAP) is a sequence a, a+d, a+2d, ..., a+(k-1)d that appears in increasing order of position in the permutation.\n\n**Progress:** The problem saw no significant progress for decades until Geneson (2019) proved k ≤ 5 by constructing a permutation of ℤ that avoids 6-term MAPs. Adenwalla (2022) improved this to k ≤ 4. The lower bound k ≥ 3 (every permutation has a 3-term MAP) is believed true but non-trivial.\n\n**Current State:** The exact value of k satisfies 3 ≤ k ≤ 4. Determining whether k = 3 or k = 4 remains the central open question. This connects to Ramsey-type phenomena: which patterns are unavoidable in combinatorial structures?",
     "problemStatement": "**Problem Statement (OPEN)**\n\nWhat is the largest $k$ such that in any permutation of $\\mathbb{Z}$ there must exist a monotone $k$-term arithmetic progression $x_1 < x_2 < \\cdots < x_k$?\n\n**Known:** $3 \\leq k \\leq 4$\n- Upper bound: Adenwalla (2022) constructed a permutation avoiding 5-term MAPs\n- Lower bound: Every permutation is believed to have 3-term MAPs",
-    "text": "What is the largest k such that every permutation of \u2124 must contain a monotone k-term arithmetic progression? Known: 3 \u2264 k \u2264 4. The exact value is OPEN.",
+    "text": "What is the largest k such that every permutation of ℤ must contain a monotone k-term arithmetic progression? Known: 3 ≤ k ≤ 4. The exact value is OPEN.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Clean Definitions:** IsPermutation via Function.Bijective, IsAP with nonzero common difference, IsMonotoneAP combining AP structure with position ordering.\n\n2. **Upper Bounds as Axioms:** Geneson and Adenwalla results are axiomatized since they involve complex explicit constructions.\n\n3. **Lower Bound as Axiom:** The 3-MAP lower bound is axiomatized since the proof requires careful combinatorial arguments on infinite permutations.\n\n4. **Concrete Examples:** Identity and negation permutations with proved bijectivity, showing the definitions are instantiatable.\n\n5. **Summary Theorem:** erdos_195_summary combines both bounds into a single proved statement.",
     "keyInsights": [
       "**Dual Requirement:** A MAP must be both an arithmetic progression (values evenly spaced) AND monotone in the permutation (positions increasing)",

@@ -50,12 +50,13 @@
       "PrimeKTupleConjecture definition"
     ],
     "axiomCount": 7,
-    "lineCount": 312
+    "lineCount": 312,
+    "assumptions": "7 axiom(s) and 8 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem asks whether consecutive divisor function values can have any prescribed ratio. The prime k-tuple conjecture would imply YES, but Eberhard (2025) proved it unconditionally. In fact, Eberhard proved the stronger result that ALL positive rationals appear as τ(n+1)/τ(n). The divisor function τ has been central to analytic number theory since Dirichlet's 1849 work on the average order τ(1)+⋯+τ(n) ≈ n log n. Questions about the range and distribution of τ(n+1)/τ(n) are part of a broader study of multiplicative functions at consecutive integers, a notoriously difficult area since τ is not additive and consecutive integers are coprime.",
     "problemStatement": "**Question:** Is {τ(n+1)/τ(n) : n ≥ 1} everywhere dense in (0, ∞)?\n\n**Answer: YES** (Eberhard 2025)\n\nEven stronger: ALL positive rationals p/q appear as τ(n+1)/τ(n).",
-    "text": "Is {\u03c4(n+1)/\u03c4(n) : n \u2265 1} dense in (0, \u221e)? YES - Eberhard (2025) proved all positive rationals appear as such ratios.",
+    "text": "Is {τ(n+1)/τ(n) : n ≥ 1} dense in (0, ∞)? YES - Eberhard (2025) proved all positive rationals appear as such ratios.",
     "proofStrategy": "We formalize:\n\n1. **Divisor function:** τ(n) = number of divisors\n2. **Divisor ratio:** divisorRatio(n) = τ(n+1)/τ(n)\n3. **Density:** isDenseInPositives via ε-δ\n4. **Eberhard's theorem:** All rationals appear\n5. **Main result:** Density follows from rationals being dense",
     "keyInsights": [
       "**τ(n) is multiplicative:** τ(mn) = τ(m)τ(n) for coprime m, n",

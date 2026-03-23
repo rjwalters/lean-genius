@@ -55,12 +55,13 @@
       "erdos_921_status theorem: main result combining all components"
     ],
     "axiomCount": 9,
-    "lineCount": 184
+    "lineCount": 184,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #921**\n\nThis problem, posed jointly by Erdős and Gallai, explores the fundamental tension between a graph's chromatic number and its odd cycle structure.\n\n**Key History:**\n- **Gallai (1963):** Initiated the study by proving f_4(n) ≫ n^{1/2}, constructing explicit 4-chromatic graphs with large odd girth\n- **Erdős (unpublished):** Proved the matching upper bound f_4(n) ≪ n^{1/2}, showing the k=4 case is completely characterized\n- **Kierstead-Szemerédi-Trotter (1984):** Resolved the full conjecture for all k ≥ 4, proving f_k(n) ≍ n^{1/(k-2)}\n\n**Mathematical Significance:**\nThe result quantifies a deep principle: high chromatic number forces short odd cycles. A bipartite graph (χ = 2) has no odd cycles at all. As chromatic number increases, some odd cycles must appear, and this problem determines exactly how short they must be.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet k ≥ 4 and let f_k(n) be the largest m such that there exists a graph on n vertices with chromatic number k in which every odd cycle has length > m.\n\n**Conjecture:** f_k(n) ≍ n^{1/(k-2)}\n\n**Answer: YES**\n\nKierstead, Szemerédi, and Trotter (1984) proved that for all k ≥ 4:\n- Lower bound: f_k(n) ≥ c_k · n^{1/(k-2)} for some c_k > 0\n- Upper bound: f_k(n) ≤ C_k · n^{1/(k-2)} for some C_k > 0",
-    "text": "For k \u2265 4, let f_k(n) be the largest m such that there exists an n-vertex graph with \u03c7 = k where all odd cycles have length > m. SOLVED: f_k(n) \u224d n^{1/(k-2)} by Kierstead-Szemer\u00e9di-Trotter (1984).",
+    "text": "For k ≥ 4, let f_k(n) be the largest m such that there exists an n-vertex graph with χ = k where all odd cycles have length > m. SOLVED: f_k(n) ≍ n^{1/(k-2)} by Kierstead-Szemerédi-Trotter (1984).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define graph structure with adjacency, symmetry, and looplessness\n\n2. **Key Concepts:**\n   - Chromatic number χ(G): minimum k for proper k-coloring (axiomatized)\n   - Odd girth: length of shortest odd cycle (axiomatized)\n   - f(k,n): maximum odd girth - 1 among k-chromatic n-vertex graphs\n\n3. **Conjecture Formalization:** The Erdős-Gallai conjecture expressed as existence of constants c₁, c₂\n\n4. **Main Results:**\n   - Kierstead-Szemerédi-Trotter theorem (axiom): conjecture holds for all k ≥ 4\n   - Constructive k=4 case from Gallai and Erdős bounds\n\n5. **Why Axioms:** The proof requires deep results in extremal graph theory and regularity methods beyond current Mathlib scope",
     "keyInsights": [
       "**Bipartite = No Odd Cycles:** A graph is 2-colorable iff it has no odd cycles, so χ ≥ 3 forces odd cycles",

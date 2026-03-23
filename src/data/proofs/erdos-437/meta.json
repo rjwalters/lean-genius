@@ -64,12 +64,13 @@
       "hyperelliptic_connection: link to algebraic curves"
     ],
     "axiomCount": 8,
-    "lineCount": 300
+    "lineCount": 300,
+    "assumptions": "8 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #437**\n\nThis problem asks about the multiplicative structure of increasing sequences. Given a sequence a₁ < a₂ < ... < aₖ ≤ x, we form partial products a₁, a₁a₂, a₁a₂a₃, etc. The question: how many can be perfect squares?\n\n**Key History:**\n- Erdős-Graham [ErGr80]: Original problem, noted L(x) = o(x) is 'trivial' via Siegel\n- Bui-Pratt-Zaharescu [BPZ24]: Proved the affirmative answer using hyperelliptic curves\n- Tao (blog post): Established precise asymptotic bounds\n\n**Mathematical Setting:**\n- Related to problems about integral points on algebraic curves\n- Connection to Siegel's theorem on elliptic curves\n- Involves analysis of squarefree parts and multiplicative structure",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet $1 \\leq a_1 < \\cdots < a_k \\leq x$. How many of the partial products\n$$a_1, a_1a_2, \\ldots, a_1 \\cdots a_k$$\ncan be perfect squares?\n\nIs it true that for any $\\epsilon > 0$, there can be more than $x^{1-\\epsilon}$ squares?\n\n**Answer: YES**\n\n**Precise bounds on $L(x)$ (max square count):**\n$$x \\cdot \\exp\\left(-(\\sqrt{2}+o(1))u(x)\\right) \\leq L(x) \\leq x \\cdot \\exp\\left(-\\left(\\frac{1}{\\sqrt{2}}+o(1)\\right)u(x)\\right)$$\nwhere $u(x) = \\sqrt{\\log x \\cdot \\log\\log x}$.",
-    "text": "For 1 \u2264 a\u2081 < ... < a\u2096 \u2264 x, how many partial products can be squares? Can there be > x^(1-\u03b5) squares? YES, proved by Bui-Pratt-Zaharescu (2024) with precise bounds via hyperelliptic curves.",
+    "text": "For 1 ≤ a₁ < ... < aₖ ≤ x, how many partial products can be squares? Can there be > x^(1-ε) squares? YES, proved by Bui-Pratt-Zaharescu (2024) with precise bounds via hyperelliptic curves.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Sequence Setup:** Define strictly increasing sequences, boundedness, and partial products.\n\n2. **Square Detection:** Define isSquare predicate and squareCount function.\n\n3. **L(x) Function:** Define L as the supremum of squareCount over valid sequences.\n\n4. **u(x) Scale:** The natural scale is u(x) = √(log x · log log x).\n\n5. **Bounds:** Axiomatize the Erdős-Graham o(x) bound and Bui-Pratt-Zaharescu precise bounds.\n\n6. **Main Result:** The conjecture erdos437Conjecture is TRUE.\n\n7. **Proof Ingredients:** Connection to hyperelliptic curves and Siegel's theorem.",
     "keyInsights": [
       "**Partial Products as Multiplicative Sums:** Each partial product accumulates prime factors multiplicatively",

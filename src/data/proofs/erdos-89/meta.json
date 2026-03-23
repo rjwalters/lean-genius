@@ -56,12 +56,13 @@
       "Historical bounds from Chung and Tardos"
     ],
     "axiomCount": 6,
-    "lineCount": 234
+    "lineCount": 234,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The distinct distances problem is one of Erdős's most famous problems in combinatorial geometry, posed in 1946. Given n points in the plane, how many distinct pairwise distances must exist?\n\nThe √n × √n integer grid has only O(n/√(log n)) distinct distances, showing this bound would be tight if true. Erdős offered $500 for a proof.\n\nAfter decades of progress (Chung 1992, Solymosi-Tóth 2001, Tardos 2004), Guth and Katz made a breakthrough in 2015, proving Ω(n/log n) distinct distances using algebraic methods. This is tantalizingly close to Erdős's conjecture, differing only by a factor of √(log n).",
     "problemStatement": "**Erdős Problem #89 (OPEN)**\n\nDoes every set of $n$ distinct points in $\\mathbb{R}^2$ determine at least $\\Omega(n/\\sqrt{\\log n})$ distinct distances?\n\n**Known Results**:\n- Guth-Katz (2015): $\\Omega(n/\\log n)$ distinct distances\n- Grid construction: $O(n/\\sqrt{\\log n})$ is achievable\n\n**Prize**: $500",
-    "text": "Does every set of n distinct points in \u211d\u00b2 determine \u226b n/\u221a(log n) many distinct distances?",
+    "text": "Does every set of n distinct points in ℝ² determine ≫ n/√(log n) many distinct distances?",
     "proofStrategy": "We formalize the key concepts and partial results:\n\n1. **distinctDistances**: Set of pairwise distances for a point set\n\n2. **minDistinctDistances**: Minimum over all n-point sets\n\n3. **Erdos89Conjecture**: The Ω(n/√(log n)) lower bound\n\n4. **guthKatz** (axiom): The Ω(n/log n) partial result\n\n5. **gridUpperBound** (axiom): The O(n/√(log n)) construction\n\n6. **conjecture_implies_guthKatz**: Conjecture implies Guth-Katz",
     "keyInsights": [
       "**The grid construction**: A √n × √n integer grid achieves O(n/√(log n)) distinct distances, showing the conjecture would be tight.",

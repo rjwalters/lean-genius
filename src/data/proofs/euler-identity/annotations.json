@@ -15,7 +15,7 @@
       "mathematical beauty",
       "complex analysis"
     ],
-    "mathContext": "See annotation content for formal details of the most beautiful equation"
+    "mathContext": "Euler's identity $e^{i\\pi} + 1 = 0$ is the special case $\\theta = \\pi$ of Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$. Substituting $\\cos\\pi = -1$ and $\\sin\\pi = 0$ gives $e^{i\\pi} = -1$, hence $e^{i\\pi} + 1 = 0$."
   },
   {
     "id": "ann-complex-def",
@@ -165,7 +165,7 @@
       "Argand diagram",
       "rotation matrix"
     ],
-    "mathContext": "See annotation content for formal details of geometry: exponentials as rotation"
+    "mathContext": "For $\\theta \\in \\mathbb{R}$, $e^{i\\theta} = (\\cos\\theta, \\sin\\theta) \\in \\mathbb{C}$ lies on the unit circle $|z| = 1$. Multiplying $z \\in \\mathbb{C}$ by $e^{i\\theta}$ rotates $z$ counterclockwise by $\\theta$ radians: $|e^{i\\theta} z| = |z|$ and $\\arg(e^{i\\theta} z) = \\arg z + \\theta$."
   },
   {
     "id": "ann-quarter-turn",
@@ -201,6 +201,6 @@
       "quantum mechanics",
       "phasors"
     ],
-    "mathContext": "See annotation content for formal details of why this matters"
+    "mathContext": "The Fourier transform $\\hat{f}(\\xi) = \\int_{-\\infty}^{\\infty} f(x)\\, e^{-2\\pi i x \\xi}\\, dx$ decomposes functions into complex exponentials. Euler's formula explains why: $e^{-2\\pi i x \\xi} = \\cos(2\\pi x\\xi) - i\\sin(2\\pi x\\xi)$, so the transform measures the amplitude of each frequency $\\xi$ in $f$."
   }
 ]

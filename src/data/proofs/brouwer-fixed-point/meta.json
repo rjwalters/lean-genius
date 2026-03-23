@@ -58,6 +58,7 @@
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 36,
     "axiomCount": 2,
+    "assumptions": "Two axioms: (1) no_retraction_axiom — asserts there is no continuous retraction from the closed n-ball to the (n-1)-sphere (the 'no-retraction theorem'), and (2) retraction_construction — asserts that a continuous self-map of the ball without fixed points yields a retraction. These encode the topological content (homology or degree theory) that is not yet available in Mathlib. The 1D case is proved axiom-free via the intermediate value theorem.",
     "prerequisites": [
       "Point-set topology (compactness, continuity, metric spaces)",
       "Algebraic topology: homology groups and the no-retraction theorem",

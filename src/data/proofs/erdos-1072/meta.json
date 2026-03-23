@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/1072",
     "erdosProblemStatus": "open",
     "axiomCount": 11,
-    "lineCount": 113
+    "lineCount": 113,
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős, Hardy, and Subbarao posed this problem in their 2002 American Mathematical Monthly paper on problems involving factorials. The question builds directly on Wilson's theorem—proved by Lagrange in 1771 and named after John Wilson—which guarantees that $(p-1)! \\equiv -1 \\pmod{p}$ for every prime $p$. The natural follow-up is: can this congruence be achieved earlier? The function $f(p) = \\min\\{n \\geq 1 : n! \\equiv -1 \\pmod{p}\\}$ measures how early the Wilson congruence first appears. Computational evidence (OEIS A154554) shows that $f(p)$ is often much smaller than $p-1$: for instance $f(7) = 3$ since $3! + 1 = 7$, and $f(23) = 14$. Hardy and Subbarao conjectured that Wilson-maximal primes (where $f(p) = p-1$) have density zero among all primes, paralleling the sparsity conjectures for twin primes and Wilson primes. The problem also connects to Guy's *Unsolved Problems in Number Theory* (Problem A2) and to the broader Erdős program of understanding the arithmetic of factorials. The question about Wilson primes—primes $p$ with $p^2 \\mid (p-1)! + 1$—is a related but much harder condition; only three Wilson primes ($5, 13, 563$) are known despite searches to $5 \\times 10^{17}$.",
     "problemStatement": "For prime $p$, define $f(p) = \\min\\{n \\geq 1 : n! \\equiv -1 \\pmod{p}\\}$. (1) Are there infinitely many primes with $f(p) = p - 1$? (2) Does $f(p)/p \\to 0$ for almost all primes?",
-    "text": "For prime p, let f(p) be the least n with n! + 1 \u2261 0 (mod p). By Wilson's theorem, f(p) \u2264 p-1. Are there infinitely many p with f(p) = p-1? Is f(p)/p \u2192 0 for almost all p? Status: OPEN.",
+    "text": "For prime p, let f(p) be the least n with n! + 1 ≡ 0 (mod p). By Wilson's theorem, f(p) ≤ p-1. Are there infinitely many p with f(p) = p-1? Is f(p)/p → 0 for almost all p? Status: OPEN.",
     "proofStrategy": "The formalization defines $f(p)$ via Lean's `sInf` on the set $\\{n > 0 : p \\mid n! + 1\\}$, which is well-defined by Wilson's theorem. Wilson-maximality (`isWilsonMaximal`) captures $f(p) = p-1$. The upper bound $f(p) \\leq p-1$ and lower bound $f(p) \\geq 1$ (for $p \\geq 3$) are axiomatized. Both main conjectures are stated as axioms, along with the Hardy-Subbarao density belief. Small examples ($f(2)=1, f(3)=2, f(5)=4, f(7)=3$) are recorded, and the relationship to Wilson primes is formalized: every Wilson prime is Wilson-maximal.",
     "keyInsights": [
       "Wilson's theorem guarantees $f(p) \\leq p-1$ for all primes, but the function $f(p)$ captures how far below this bound the first factorial hit occurs—the 'Wilson gap' $p - 1 - f(p)$ measures how much slack exists",

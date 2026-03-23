@@ -51,12 +51,13 @@
       "Special cases: trees, paths, cycles, planar graphs"
     ],
     "axiomCount": 20,
-    "lineCount": 311
+    "lineCount": 311,
+    "assumptions": "20 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Burr-Erdős Conjecture was posed by Stefan Burr and Paul Erdős in 1975, asking whether $d$-degenerate graphs have linear Ramsey numbers. It became one of the most influential open problems in Ramsey theory, remaining unsolved for 42 years. The conjecture was motivated by the observation that cliques $K_n$ have exponentially large Ramsey numbers ($2^{n/2} \\le R(K_n) \\le 4^n$, Erdős–Szekeres 1935), while sparse graphs like paths satisfy $R(P_n) = n$ exactly.\n\nPartial results accumulated over decades. Chvátal, Rödl, Szemerédi, and Trotter (1983) proved the conjecture for bounded-degree graphs using the regularity lemma. Kostochka and Sudakov (2003) established it for graphs of bounded pathwidth. The general case was finally resolved by Choongbum Lee in 2017, who proved $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$ on $n$ vertices. Lee's proof combined the Szemerédi regularity lemma with the dependent random choice technique, a powerful probabilistic method popularized by Fox and Sudakov.\n\nThe constant $C_d = 2^{2^{O(d)}}$ in Lee's bound is doubly exponential in $d$. It is conjectured that the optimal bound is singly exponential: $R(H) \\le 2^{O(d)} \\cdot n$. Closing this gap remains a major open problem in extremal graph theory.",
     "problemStatement": "For any $d \\ge 1$, does there exist a constant $C_d$ (depending only on $d$) such that every $d$-degenerate graph $H$ on $n$ vertices satisfies $R(H) \\le C_d \\cdot n$?",
-    "text": "For d-degenerate graph H on n vertices, is R(H) = O(n)? SOLVED: YES, R(H) \u2264 2^{2^{O(d)}} \u00b7 n (Lee, 2017).",
+    "text": "For d-degenerate graph H on n vertices, is R(H) = O(n)? SOLVED: YES, R(H) ≤ 2^{2^{O(d)}} · n (Lee, 2017).",
     "proofStrategy": "The formalization defines $d$-degeneracy via two equivalent characterizations: the subgraph minimum-degree condition and the degeneracy ordering. The Ramsey number is defined abstractly, and the Burr-Erdős Conjecture is stated along with equivalent formulations (forest unions, bounded average degree). Lee's theorem is axiomatized with both the main bound and a refined chromatic-number-dependent version. The conjecture is then proved by applying Lee's theorem directly. Special cases (trees, paths, cycles, planar graphs) and the conjectured optimal bound $2^{O(d)} \\cdot n$ are recorded as context.",
     "keyInsights": [
       "**Degeneracy captures the right notion of sparseness for Ramsey theory**: Unlike chromatic number, maximum degree, or treewidth, degeneracy (minimum degree in worst subgraph) is the precise parameter that controls whether Ramsey numbers grow linearly. Every subgraph having a low-degree vertex allows iterative embedding strategies.",

@@ -52,7 +52,8 @@
       "Axiomatized primitive counting bound |A ∩ [N]| ≤ C·N/√(log N)"
     ],
     "axiomCount": 4,
-    "lineCount": 121
+    "lineCount": 121,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -101,7 +102,7 @@
   "overview": {
     "historicalContext": "Primitive sets (antichains in the divisibility poset) have been central to combinatorial number theory since Behrend (1935) and Erdős (1935). Erdős proved in 1935 that for any primitive sequence $a_1 < a_2 < \\cdots$ with $a_n \\geq 2$, the series $\\sum 1/(a_n \\log a_n)$ converges — a remarkable density constraint showing primitive sequences are 'thin.' Problem 892, posed by Erdős, Sárközy, and Szemerédi in 1968, asks: given a target growth rate $b$, when can we find a primitive sequence growing at rate $\\ll b$? The convergence result gives a necessary condition: $\\sum 1/(b_n \\log b_n) < \\infty$. Erdős, Sárközy, and Szemerédi (1967) strengthened this to a partial sum growth condition: $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$. A sufficient condition remains elusive. The GCD-free variant asks whether the condition $\\gcd(b_i, b_j) \\neq b_k$ (which prevents divisibility obstructions) suffices.",
     "problemStatement": "Given $b_1 < b_2 < \\cdots$, find necessary and sufficient conditions for the existence of a primitive sequence $a_1 < a_2 < \\cdots$ (no $a_i \\mid a_j$) with $a_n \\ll b_n$.",
-    "text": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with a\u2099 \u226a b\u2099. Known: \u03a3 1/(b\u2099 log b\u2099) < \u221e is necessary. OPEN.",
+    "text": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with aₙ ≪ bₙ. Known: Σ 1/(bₙ log bₙ) < ∞ is necessary. OPEN.",
     "proofStrategy": "The formalization models sequences as functions $\\mathbb{N} \\to \\mathbb{N}$, defines primitivity via pairwise non-divisibility, domination via an explicit constant, and the problem as an existential quantification. Necessary conditions are axiomatized with explicit partial sum bounds using `Finset.range` and `Real.log`. The GCD-free variant introduces an alternative sufficient condition. No theorems are proved; all deep results are axioms.",
     "keyInsights": [
       "Primitive sequences are antichains in the divisibility partial order: $a_i \\nmid a_j$ for $i \\neq j$. They are sparse — the primes form the densest primitive sequence",

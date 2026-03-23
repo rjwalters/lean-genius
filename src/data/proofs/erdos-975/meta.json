@@ -48,7 +48,8 @@
       "Verified divisor counts: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6, τ(p)=2 for prime p"
     ],
     "axiomCount": 7,
-    "lineCount": 200
+    "lineCount": 200,
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The divisor function τ(n) counts how many positive integers divide n. Erdős Problem #975 asks whether the sum Σ_{n≤x} τ(f(n)) for an irreducible polynomial f has a precise asymptotic formula of the form c·x·log(x) for some constant c > 0.\n\nVan der Corput (1939) established the lower bound, showing the sum grows at least as fast as x log x. Erdős (1952) proved the matching upper bound using elementary methods, establishing that the growth is Θ(x log x).\n\nChristopher Hooley (1963) resolved the problem for irreducible quadratic polynomials, showing that an asymptotic formula exists with an explicit (though complicated) constant. The general case for higher-degree polynomials remains open.",

@@ -59,12 +59,13 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 7,
-    "lineCount": 103
+    "lineCount": 103,
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Hans Heilbronn posed the triangle problem in the 1940s while at the University of Bristol: given $n$ points in a convex region, how small must the smallest triangle area be? Erdős quickly observed the lower bound $\\alpha(n) \\geq c/n^2$ via a greedy placement argument and conjectured that the true order should be closer to $1/n^2$ than to $1/n$. The problem attracted attention from some of the strongest combinatorialists of the 20th century. In 1981, Komlós, Pintz, and Szemerédi [KPS81] achieved the first breakthrough on the upper bound side, proving $\\alpha(n) \\leq C/n^{8/7}$ using Szemerédi's regularity lemma—one of the early geometric applications of this fundamental tool. The following year, the same trio [KPS82] improved the lower bound to $\\alpha(n) \\geq c(\\log n)/n^2$ using a sophisticated probabilistic argument involving the Lovász Local Lemma. Remarkably, both bounds stood essentially unchanged for over 40 years. In 2024, Cohen, Pohoata, and Zakharov [CPZ24] finally improved the upper bound to $\\alpha(n) \\leq C/n^{7/6+o(1)}$ using incidence geometry and the polynomial method of Guth and Katz. The gap between the lower bound exponent 2 and upper bound exponent 7/6 remains enormous, making this one of the most fundamental open problems in combinatorial geometry.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $\\alpha(n)$ be the largest value such that every set of $n$ points in the unit disk contains three points forming a triangle of area $\\leq \\alpha(n)$. Estimate $\\alpha(n)$.\n\n**Best bounds:** $c \\cdot \\frac{\\log n}{n^2} \\leq \\alpha(n) \\leq \\frac{C}{n^{7/6+o(1)}}$.\n\n**Exponent:** Writing $\\alpha(n) = n^{-\\beta+o(1)}$, we have $7/6 \\leq \\beta \\leq 2$.",
-    "text": "Estimate \u03b1(n), the smallest area such that every n-point set in the unit disk contains a triangle of area \u2264 \u03b1(n). Best bounds: (log n)/n\u00b2 \u226a \u03b1(n) \u226a 1/n^{7/6+o(1)}. Status: OPEN.",
+    "text": "Estimate α(n), the smallest area such that every n-point set in the unit disk contains a triangle of area ≤ α(n). Best bounds: (log n)/n² ≪ α(n) ≪ 1/n^{7/6+o(1)}. Status: OPEN.",
     "proofStrategy": "The formalization defines the triangle area via the determinant formula, point configurations in the unit disk, and the Heilbronn function $\\alpha(n)$ as the supremum of minimum triangle areas. The trivial bounds ($1/n^2$ and $1/n$), the KPS improvements ($(\\log n)/n^2$ and $n^{-8/7}$), and the CPZ breakthrough ($n^{-7/6}$) are axiomatized. The exponent range theorem and a higher-dimensional analog are also stated.",
     "keyInsights": [
       "**Minimax formulation:** Heilbronn's function $\\alpha(n)$ is a minimax: maximize (over configurations) the minimum (over triples) triangle area—a natural extremal geometry problem",

@@ -48,7 +48,8 @@
       "Classical logic: law of excluded middle (for orbit classification)",
       "Function.Embedding and Equiv types in Lean/Mathlib"
     ],
-    "lineCount": 198
+    "lineCount": 198,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "The Schroeder-Bernstein theorem has a rich history with multiple independent discoveries:\n\n- **Richard Dedekind (1887)**: First proved the theorem but did not publish\n- **Ernst Schroder (1896)**: Published a flawed proof\n- **Felix Bernstein (1898)**: Published the first correct proof as a 19-year-old student\n- **Cantor**: Knew the result was true and used it, but did not prove it himself\n\nThe theorem is fundamental to cardinal arithmetic, establishing that the cardinality relation is antisymmetric: if |A| <= |B| and |B| <= |A|, then |A| = |B|. This allows us to compare infinite sets using injections rather than explicit bijections.",

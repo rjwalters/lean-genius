@@ -22,12 +22,13 @@
     "erdosUrl": "https://erdosproblems.com/371",
     "erdosProblemStatus": "solved",
     "axiomCount": 12,
-    "lineCount": 371
+    "lineCount": 371,
+    "assumptions": "12 axiom(s) and 16 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Erdős and Pomerance in 1978. They proved that both the set {n : P(n) < P(n+1)} and its complement have positive upper density, but couldn't establish the exact density. The problem attracted significant attention from analytic number theorists.\n\nTeräväinen (2018) proved that the logarithmic density is exactly 1/2. Tao and Teräväinen (2019) showed the asymptotic density is 1/2 at 'almost all scales'. Finally, Wang (2021) proved the full result (natural density = 1/2) conditionally on the Elliott-Halberstam conjecture for friable integers.\n\nThe best unconditional lower bound is due to Lü and Wang (2025), who proved that both sets have density at least 0.2017. The sequence of n with P(n) < P(n+1) is A070089 in OEIS.",
     "problemStatement": "Let P(n) denote the largest prime factor of n. Show that the set {n : P(n) < P(n+1)} has natural density 1/2.\n\n**Status**: Conditionally SOLVED (Wang 2021 under Elliott-Halberstam); Logarithmically SOLVED (Teräväinen 2018)",
-    "text": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Ter\u00e4v\u00e4inen (2018).",
+    "text": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Teräväinen (2018).",
     "proofStrategy": "We formalize the greatest prime factor function P(n), various notions of density (natural, logarithmic, at almost all scales), and the main sets. The key results are axiomatized: Erdős-Pomerance positive upper density, Teräväinen logarithmic density 1/2, Tao-Teräväinen almost all scales, and Wang's conditional full result. We also formalize the generalized problem with parameter α and its connection to the Dickman function.",
     "keyInsights": [
       "**Density hierarchy**: The problem admits four progressively stronger results — positive upper density (Erdős-Pomerance 1978), lower density $\\ge 0.2017$ (Lü-Wang 2025), logarithmic density $= 1/2$ (Teräväinen 2018), and conditional natural density $= 1/2$ (Wang 2021). Each step requires fundamentally new techniques.",

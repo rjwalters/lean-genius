@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
     "axiomCount": 16,
-    "lineCount": 104
+    "lineCount": 104,
+    "assumptions": "16 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "crossReferences": [
     {
@@ -98,7 +99,7 @@
   "overview": {
     "historicalContext": "Erdős posed this problem in 1971 [Er71], asking whether Ramsey numbers grow smoothly as the second parameter increases. The question emerges from the Erdős-Szekeres (1935) upper bound R(k,l) ≤ C(k+l-2,k-1), which gives polynomial growth for fixed k, but says nothing about the regularity of that growth. For k=3, the landmark results of Ajtai-Komlós-Szemerédi (1980) establishing R(3,l) ≤ c·l²/log l and Kim (1995) proving the matching lower bound R(3,l) ≥ c'·l²/log l showed the order of magnitude is l²/log l. Mattheus-Verstraëte (2024) further improved the lower bound constant. Despite these advances, the ratio R(3,l+1)/R(3,l) → 1 remains unproved because the implicit constants c and c' in the upper and lower bounds differ, preventing direct comparison of consecutive values. This is one of the most natural open questions in Ramsey theory.",
     "problemStatement": "For fixed k ≥ 3, prove R(k, l+1)/R(k, l) → 1 as l → ∞.",
-    "text": "For fixed k \u2265 3, prove that R(k, l+1)/R(k, l) \u2192 1 as l \u2192 \u221e, where R(k, l) is the Ramsey number. Open even for k = 3. Status: OPEN.",
+    "text": "For fixed k ≥ 3, prove that R(k, l+1)/R(k, l) → 1 as l → ∞, where R(k, l) is the Ramsey number. Open even for k = 3. Status: OPEN.",
     "proofStrategy": "We axiomatize the Ramsey number R(k,l) with basic properties (symmetry, monotonicity, recurrence), state classical bounds for R(3,l), and show the conjecture follows from precise enough asymptotics. The equivalence with the difference condition R(k,l+1) - R(k,l) = o(R(k,l)) is formalized, providing an alternative attack surface.",
     "keyInsights": [
       "**Smooth growth conjecture**: R(k,l+1)/R(k,l) → 1 asserts that Ramsey numbers grow regularly, without large jumps between consecutive values",

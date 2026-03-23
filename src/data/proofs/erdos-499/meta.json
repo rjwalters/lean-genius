@@ -62,12 +62,13 @@
       "birkhoff_von_neumann axiom: convex hull characterization"
     ],
     "axiomCount": 8,
-    "lineCount": 288
+    "lineCount": 288,
+    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #499**\n\nThis problem asks about finding large diagonal products in doubly stochastic matrices, connecting to the famous van der Waerden conjecture.\n\n**Key History:**\n- Marcus & Ree (1959): Proved weaker version (sum of diagonal ≥ 1)\n- Marcus & Minc (1962): Proved this problem (product ≥ n^{-n})\n- Gyires (1980), Egorychev (1981), Falikman (1981): Proved van der Waerden conjecture (permanent ≥ n^{-n} · n!)\n\n**Mathematical Setting:**\nA doubly stochastic matrix has non-negative entries with each row and column summing to 1. The Birkhoff-von Neumann theorem shows these are exactly the convex combinations of permutation matrices. The question is whether every such matrix has a \"good\" diagonal.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $M$ be an $n \\times n$ doubly stochastic matrix. Does there exist a permutation $\\sigma \\in S_n$ such that\n$$\\prod_{i=1}^{n} M_{i,\\sigma(i)} \\geq n^{-n}?$$\n\n**Answer: YES**\n\nMarcus and Minc proved this in 1962. The bound n^{-n} is tight: the uniform matrix (all entries 1/n) achieves exactly this bound for every diagonal.",
-    "text": "Does every n\u00d7n doubly stochastic matrix have a diagonal with product \u2265 n^{-n}? YES, proved by Marcus-Minc (1962).",
+    "text": "Does every n×n doubly stochastic matrix have a diagonal with product ≥ n^{-n}? YES, proved by Marcus-Minc (1962).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Doubly Stochastic Matrices:**\n   - Define IsDoublyStochastic predicate\n   - Define the uniform matrix as the extremal example\n\n2. **Diagonal Products:**\n   - For each permutation σ, compute ∏ᵢ M_{i,σ(i)}\n   - The problem asks for at least one permutation achieving ≥ n^{-n}\n\n3. **The Permanent:**\n   - perm(M) = ∑_σ ∏ᵢ M_{i,σ(i)}\n   - Van der Waerden: perm(M) ≥ n^{-n} · n!\n   - By averaging, some diagonal must be ≥ n^{-n}\n\n4. **Structural Results:**\n   - Birkhoff-von Neumann theorem\n   - 2×2 case verification",
     "keyInsights": [
       "**Doubly Stochastic Matrices:** Non-negative entries, rows and columns sum to 1. They model probability transitions and averaging operations",

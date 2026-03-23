@@ -20,7 +20,8 @@
     "erdosUrl": "https://erdosproblems.com/661",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 84
+    "lineCount": 84,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -83,7 +84,7 @@
   "overview": {
     "historicalContext": "Erdős and Pach posed Problem #661 around 1990, asking whether bipartite point configurations in ℝ² can have asymptotically fewer distinct cross-distances than general configurations. The question is deeply connected to the celebrated Erdős distinct distances problem (Problem #89), essentially resolved by Guth and Katz in 2015 using the polynomial method and algebraic geometry of ruled surfaces. Their proof showed f(2n) ≥ Ω(n/log n), matching the lattice upper bound f(2n) ≤ O(n/√(log n)) up to a √(log n) factor. For the bipartite variant, Lenz demonstrated that in ℝ⁴, placing points on two orthogonal circles yields F(2n) = 1 — a maximal saving. Whether any analogous saving is possible in ℝ² remains completely open, making this one of the outstanding problems in combinatorial geometry. The problem connects to the Szemerédi–Trotter incidence theorem, Elekes–Rónyai type results on expanding polynomials, and the sum-product phenomenon.",
     "problemStatement": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² such that the number of distinct distances d(xᵢ,yⱼ) is o(n/√(log n))?",
-    "text": "Do there exist point sets x\u2081,...,x\u2099 and y\u2081,...,y\u2099 in \u211d\u00b2 with o(n/\u221alog n) distinct bipartite distances? Is F(2n) = o(f(2n))? In \u211d\u2074 all distances can be equal (Lenz). $50 reward. Open.",
+    "text": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² with o(n/√log n) distinct bipartite distances? Is F(2n) = o(f(2n))? In ℝ⁴ all distances can be equal (Lenz). $50 reward. Open.",
     "proofStrategy": "We define ℝ² points and squared Euclidean distance, then construct the bipartite distance set via Finset product. The extremal functions F(2n) and f(2n) are axiomatized. The main conjecture, Guth–Katz lower bound, lattice upper bound, and Lenz's ℝ⁴ construction are formalized as axioms. The structure separates definitions (computable) from deep results (axiomatized).",
     "keyInsights": [
       "**Guth–Katz polynomial method**: Their 2015 proof that $f(2n) \\ge \\Omega(n/\\log n)$ used the Elekes–Sharir framework, reducing distinct distances to counting point-line incidences in 3D, then bounding these via algebraic geometry of ruled surfaces",

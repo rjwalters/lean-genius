@@ -34,7 +34,8 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
-    "lineCount": 453
+    "lineCount": 453,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Minkowski first presented his convex body theorem in 1889 in 'Geometrie der Zahlen,' founding the field now called the geometry of numbers. The idea was revolutionary: purely geometric reasoning about volumes and convex sets could yield arithmetic conclusions about integer points. Minkowski's theorem was instrumental in Hilbert's proof of the finiteness of the class number of algebraic number fields. The classical proof via the pigeonhole principle on lattice translates was refined by Blichfeldt (1914) into a counting generalization. Siegel later extended these ideas to adelic settings. Today the theorem underpins lattice-based cryptography (LWE, NTRU), where the guaranteed existence of short lattice vectors is central to security analysis.",

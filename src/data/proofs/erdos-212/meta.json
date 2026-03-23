@@ -47,12 +47,13 @@
       "Axiomatization of Solymosi-de Zeeuw finiteness result"
     ],
     "axiomCount": 4,
-    "lineCount": 139
+    "lineCount": 139,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Erdős-Ulam problem is one of the most famous unsolved problems in combinatorial geometry. It was originally posed by Stanisław Ulam, and Erdős took interest in it, believing that no such dense rational distance set could exist.\n\nThe problem asks: Is there a dense subset S ⊆ ℝ² such that for every pair of distinct points p, q ∈ S, the Euclidean distance d(p,q) is a rational number?\n\nTerence Tao (2014) and Jafar Shaffaf (2018) independently proved that the answer is NO, assuming the Bombieri-Lang conjecture from arithmetic geometry. This deep conjecture concerns rational points on varieties of general type.\n\nUnconditionally, Shaffaf and Tao proved that any rational distance set must be contained in a finite union of real algebraic curves. Solymosi and de Zeeuw (2010) showed that rational distance sets in algebraic curves must be finite, unless the curve contains a line or circle.",
     "problemStatement": "**Question**: Is there a dense subset $S \\subseteq \\mathbb{R}^2$ such that all pairwise distances are rational?\n\nFormally: Does there exist $S \\subseteq \\mathbb{R}^2$ such that:\n1. $S$ is dense (its closure is all of $\\mathbb{R}^2$)\n2. For all distinct $p, q \\in S$: $d(p,q) \\in \\mathbb{Q}$\n\n**Conjecture**: NO (Ulam, supported by Erdős)\n\n**Status**: OPEN (conditionally solved assuming Bombieri-Lang)",
-    "text": "Is there a dense subset of \u211d\u00b2 such that all pairwise distances are rational? Conjectured NO by Ulam.",
+    "text": "Is there a dense subset of ℝ² such that all pairwise distances are rational? Conjectured NO by Ulam.",
     "proofStrategy": "We formalize the problem and the main known results as axioms:\n\n1. **HasRationalDistances**: Definition of sets with all pairwise distances rational\n2. **Erdos212Conjecture**: The conjecture that no dense rational distance set exists\n3. **BombieriLangConjecture**: Placeholder for the deep arithmetic geometry conjecture\n4. **tao_shaffaf_conditional**: Bombieri-Lang implies the conjecture\n5. **shaffaf_tao_algebraic_curves**: Unconditional containment in algebraic curves\n6. **solymosi_de_zeeuw**: Finiteness for sets in algebraic curves",
     "keyInsights": [
       "**The question**: Can we densely pack points in the plane such that every pair has rational distance?",

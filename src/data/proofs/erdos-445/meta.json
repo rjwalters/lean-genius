@@ -50,12 +50,13 @@
       "erdos_445_summary: two-part conjunction of known results"
     ],
     "axiomCount": 5,
-    "lineCount": 141
+    "lineCount": 141,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős asked whether for any c > 1/2, a sufficiently large prime p guarantees that every interval (n, n + p^c) contains a pair a, b with ab ≡ 1 (mod p). The heuristic reasoning is compelling: an interval of length L = p^c contains roughly L²/p = p^{2c-1} inverse pairs, which exceeds 1 exactly when c > 1/2.\n\nHeilbronn proved this for c sufficiently close to 1 in an unpublished result, establishing that the conjecture holds above some threshold c₀ < 1. The breakthrough came from Heath-Brown in 2000, who used Kloosterman sum estimates — particularly the Weil bound |K(m,n;p)| ≤ 2√p — combined with careful averaging arguments to push the threshold down to c > 3/4.\n\nThe gap c ∈ (1/2, 3/4] remains completely open. Closing this gap would likely require new estimates for exponential sums or entirely different counting methods. The problem connects to the broader theme of how multiplicative structure modulo primes distributes across short intervals, a central question in analytic number theory.",
     "problemStatement": "**Problem Statement (Open)**\n\nFor any $c > 1/2$, if $p$ is a sufficiently large prime, then for any $n \\geq 0$, there exist $a, b \\in (n, n + p^c)$ such that $ab \\equiv 1 \\pmod{p}$.\n\n**Known Results:**\n- **Heilbronn** (unpublished): True for $c$ sufficiently close to 1\n- **Heath-Brown** (2000): True for all $c > 3/4$\n\n**Status: OPEN** for $c \\in (1/2, 3/4]$.",
-    "text": "For c > 1/2, can we find a,b \u2208 (n, n+p^c) with ab \u2261 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c \u2208 (1/2, 3/4] remains OPEN.",
+    "text": "For c > 1/2, can we find a,b ∈ (n, n+p^c) with ab ≡ 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c ∈ (1/2, 3/4] remains OPEN.",
     "proofStrategy": "The formalization defines HasInverse (ab ≡ 1 mod p) and HasInversePairInInterval for intervals of length p^c. The main conjecture and a stronger version (c = 1/2 exact threshold) are stated as Prop definitions. Heilbronn's result is axiomatized with an existential threshold, and Heath-Brown's c > 3/4 result is a separate axiom. Kloosterman sums are axiomatized with the Weil bound. Two theorems are proved: heath_brown_threshold (c₀ = 3/4) and current_knowledge (Heath-Brown + range inclusion). The summary combines both known results.",
     "keyInsights": [
       "**Heuristic threshold at c = 1/2:** An interval of length p^c contains ~p^{2c-1} inverse pairs, exceeding 1 when c > 1/2",

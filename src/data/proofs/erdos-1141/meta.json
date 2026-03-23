@@ -66,12 +66,13 @@
       "not_good_16"
     ],
     "axiomCount": 1,
-    "lineCount": 158
+    "lineCount": 158,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1141 asks whether infinitely many natural numbers n have the property that n - k² is prime for every k coprime to n with k² < n. The problem connects primality testing to quadratic residues and coprimality structure, sitting at the intersection of additive and multiplicative number theory.\n\nThe known good values form OEIS sequence A214583, comprising 41 terms: 3, 4, 6, 8, 12, ..., 930, 1722. Strikingly, all known good values except 3 are even, and many are highly composite numbers (24, 30, 60, 90, 180, 252, 360, 570). This pattern has a natural explanation: highly composite n have small Euler totient ratio φ(n)/n, meaning fewer coprime k values, and hence fewer simultaneous primality conditions to satisfy.\n\nAn exhaustive computational search found no further good values between 1722 and 10^10, suggesting the sequence may be finite. ChatGPT-Tang proved that the counting function satisfies #{n ≤ N : IsGood(n)} = O(N^{1/2+o(1)}), a density bound consistent with finiteness but insufficient to prove it. The sparse distribution and gap beyond 1722 make this one of the more enigmatic Erdős problems — the answer 'finitely many' seems likely but is unproved.",
     "problemStatement": "**Erdős Problem #1141**:\n\nAre there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\n**Formally**: Does the set $\\{n \\in \\mathbb{N} : \\forall k,\\; \\gcd(n,k) = 1 \\wedge k^2 < n \\Rightarrow (n - k^2) \\text{ is prime}\\}$ have infinitely many elements?",
-    "text": "Are there infinitely many n such that n - k\u00b2 is prime for all k with gcd(n, k) = 1 and k\u00b2 < n?",
+    "text": "Are there infinitely many n such that n - k² is prime for all k with gcd(n, k) = 1 and k² < n?",
     "proofStrategy": "The formalization defines the Erdős-1141 property using bounded quantification over Finset.range for decidability, proves equivalence with the unbounded mathematical formulation, computationally verifies 8 small good values (by `decide`) and 9 larger ones up to 1722 (by `native_decide`), establishes structural results (good n ≥ 2 implies n-1 prime), and states the infinitude conjecture as an axiom. The key structural theorem `good_implies_pred_prime` provides a necessary condition constraining good values.",
     "keyInsights": [
       "**Highly composite advantage**: Good values cluster among highly composite numbers because these have the fewest coprime residues (low φ(n)/n ratio), minimizing the number of independent primality conditions n - k² must satisfy.",

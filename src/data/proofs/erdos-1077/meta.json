@@ -46,12 +46,13 @@
       "Connection to extremal graph theory"
     ],
     "axiomCount": 2,
-    "lineCount": 155
+    "lineCount": 155,
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem 1077 was posed by Erdős and Simonovits (1970) in the context of extremal graph theory. A graph is D-balanced if the ratio of maximum to minimum degree is at most D. The question asks: given a dense graph (one with n^{1+α} edges), how large a balanced subgraph can we guarantee?\n\nThe original statement had ambiguities: the exponent 1-α suggested in [ErSi70] decreases as α increases, which is counterintuitive. The erdosproblems.com entry clarifies that this was likely a typo.\n\nJiang and Longbrake (2025) provided a complete resolution: the optimal number of vertices is Θ(n^α). They proved every such graph has a 6-balanced subgraph on Ω(n^α) vertices, and complete bipartite graphs show this is tight.",
     "problemStatement": "A graph is **D-balanced** if max_degree ≤ D · min_degree.\n\nLet $\\alpha > 0$. If $G$ has $n$ vertices and at least $n^{1+\\alpha}$ edges, how large a D-balanced subgraph can we guarantee?\n\n**Answer:** The optimal size is $\\Theta(n^\\alpha)$ vertices (Jiang-Longbrake 2025).",
-    "text": "Must dense graphs contain large balanced subgraphs? Jiang-Longbrake (2025) showed the optimal size is \u0398(n^\u03b1) vertices, resolving ambiguities in the original problem.",
+    "text": "Must dense graphs contain large balanced subgraphs? Jiang-Longbrake (2025) showed the optimal size is Θ(n^α) vertices, resolving ambiguities in the original problem.",
     "proofStrategy": "The resolution has two parts:\n\n**Upper Bound:** Complete bipartite graphs K_{n^α, n^{1-α}} have n^{1+α-α} = n edges from the small side. Any balanced subgraph can only use O(n^α) vertices from the small side.\n\n**Lower Bound:** Jiang-Longbrake show that iterative regularization produces a 6-balanced subgraph on Ω(n^α) vertices. The key is that removing high-degree vertices while preserving edges eventually produces regularity.",
     "keyInsights": [
       "**D-balanced graphs:** Graphs where degree variation is bounded by factor D. 1-balanced = regular.",

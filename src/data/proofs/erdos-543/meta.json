@@ -65,12 +65,13 @@
       "erdos_543_summary: combines disproof and negation"
     ],
     "axiomCount": 8,
-    "lineCount": 192
+    "lineCount": 192,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Rényi introduced this question in 1965 while developing probabilistic methods in group theory. They proved that f(N) ≤ log₂ N + O(log log N), where f(N) is the minimal random subset size needed to span an abelian group of size N via subset sums with probability at least 1/2. Erdős asked whether the O(log log N) term could be improved to o(log log N), but believed the answer was no.\n\nIn 1978, Erdős and Hall showed that the bound cannot even be improved to o(log log log N), providing evidence that the log log N term is inherent. This intermediate result foreshadowed the full resolution.\n\nThe conjecture was ultimately disproved by ChatGPT and Tang, who confirmed Erdős's prediction: the O(log log N) term in the Erdős-Rényi bound is optimal and cannot be improved to o(log log N). For sufficiently large primes p, a random subset of F_p of the prescribed size fails to generate all elements under subset sums. This resolves the problem in the negative.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nDefine $f(N)$ as the minimal $k$ such that if $G$ is an abelian group of size $N$ and $A \\subseteq G$ is a random $k$-subset, then with probability $\\geq 1/2$, every element of $G$ is a subset sum of $A$.\n\n**Question:** Is $f(N) \\leq \\log_2 N + o(\\log\\log N)$?\n\n**Answer: NO.** The $O(\\log\\log N)$ term is optimal (ChatGPT-Tang).",
-    "text": "Is f(N) \u2264 log\u2082 N + o(log log N), where f(N) is the minimal random subset size to span an abelian group via subset sums? DISPROVED \u2014 the O(log log N) term is optimal.",
+    "text": "Is f(N) ≤ log₂ N + o(log log N), where f(N) is the minimal random subset size to span an abelian group via subset sums? DISPROVED — the O(log log N) term is optimal.",
     "proofStrategy": "The formalization axiomatizes the function f(N) and the key results. The core definitions (subsetSums, IsSpanningSet, spanningProbability) are constructive. The Erdős-Rényi upper bound, information-theoretic lower bound, Erdős-Hall intermediate bound, and ChatGPT-Tang disproof are axiomatized. The logical equivalence between LittleOConjecture and ¬ErdosCounterConjecture is proved via push_neg. The summary theorem combines the disproof with its logical consequence.",
     "keyInsights": [
       "**Erdős-Rényi Bound:** f(N) ≤ log₂ N + O(log log N) gives the baseline. The log₂ N term is information-theoretic (2^k subset sums must cover N elements), and the log log N correction handles collisions.",

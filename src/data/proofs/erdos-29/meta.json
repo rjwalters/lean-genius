@@ -28,12 +28,13 @@
       "Explicit vs. probabilistic constructions",
       "Schnirelmann density",
       "Computational number theory"
-    ]
+    ],
+    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "In 1932, the Hungarian mathematician Simon Sidon posed a question to Paul Erdős: can one explicitly construct a set $A \\subseteq \\mathbb{N}$ that is simultaneously an additive basis of order 2 ($A + A = \\mathbb{N}$) and 'economical' (the representation function $r_A(n)$ grows slower than any polynomial)?\n\nErdős, one of the most prolific mathematicians of the 20th century, proved that such sets **exist** using the probabilistic method: include $n \\in A$ with probability $p_n \\approx n^{-1/2+o(1)}$. A second-moment calculation shows that with positive probability, the random set satisfies both properties simultaneously. However, this argument is **non-constructive** — it guarantees existence without providing an algorithm to compute $A$.\n\nFor 90+ years, no explicit construction was known. The problem appeared on Erdős's list of $100 prize problems. The difficulty is that the two requirements — coverage (basis) and sparsity (economical) — pull in opposite directions: making $A$ denser helps coverage but hurts the representation count.\n\nIn 2024, Siddharth Jain, Huy Tuan Pham, Mehtaab Sawhney, and Dmitriy Zakharov (JPSZ) solved the problem with a breakthrough construction (arXiv:2405.08650). Their approach derandomizes Erdős's probabilistic argument using a carefully designed hash function, yielding a computable set with $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$ — far stronger than the required $o(n^\\varepsilon)$ for all $\\varepsilon > 0$. This resolved a 90+ year open problem and claimed Erdős's $100 prize.",
     "problemStatement": "Is there an explicit construction of a set A ⊆ ℕ such that A + A = ℕ (additive basis) but r_A(n) = o(n^ε) for every ε > 0 (economical)?",
-    "text": "Is there an explicit construction of A \u2286 \u2115 such that A + A = \u2115 but r_A(n) = o(n^\u03b5) for every \u03b5 > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
+    "text": "Is there an explicit construction of A ⊆ ℕ such that A + A = ℕ but r_A(n) = o(n^ε) for every ε > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
     "proofStrategy": "The formalization defines sumsets, representation functions, and the economical condition. Key comparisons: ℕ is a basis but not economical (r(n) = n+1), Sidon sets are economical but not bases. The JPSZ construction achieves both properties with r_A(n) ≤ exp(C√(log n)).",
     "keyInsights": [
       "**The Goldilocks Problem:** Two constraints pull in opposite directions — thick enough to be a basis ($A+A=\\mathbb{N}$) vs. thin enough to be economical ($r_A(n) = o(n^\\varepsilon)$). ℕ fails economical ($r_\\mathbb{N}(n) = n+1$); Sidon sets fail basis ($|A \\cap [1,N]| = O(\\sqrt{N})$ is too sparse). JPSZ threads the needle.",

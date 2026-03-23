@@ -57,12 +57,13 @@
       "Verified basic properties (empty, singleton, monotone, cardinality)"
     ],
     "axiomCount": 3,
-    "lineCount": 91
+    "lineCount": 91,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Egyptian fractions** — representations $n = \\sum 1/a_i$ with distinct denominators — date to ancient Egypt (Rhind Papyrus, c. 1650 BCE). Erdős posed this problem in the 1970s, asking whether every finite partition of $\\mathbb{N}$ contains a monochromatic Egyptian fraction representation of 1. This connects two major areas: **Ramsey theory** (partition regularity of combinatorial structures) and **additive number theory** (representations by unit fractions). **Croot** (2003) proved the conjecture affirmatively using the **density Hales–Jewett theorem** — a powerful Ramsey-theoretic tool. His proof shows that among integers in $[N, 2N]$, the number of Egyptian fraction representations of 1 is large enough that pigeonhole forces monochromaticity. The Erdős–Graham generalization to arbitrary positive rationals follows from Croot's stronger infinitely-many-disjoint-solutions result.",
     "problemStatement": "Does every finite colouring of ℕ have a monochromatic set S ⊆ {n | 2 ≤ n} with ∑_{n ∈ S} 1/n = 1?",
-    "text": "Does every finite colouring of \u2115 have a monochromatic solution to 1 = \u03a3 1/n\u1d62? Proved by Croot. Erd\u0151s\u2013Graham generalization to arbitrary rationals also holds.",
+    "text": "Does every finite colouring of ℕ have a monochromatic solution to 1 = Σ 1/nᵢ? Proved by Croot. Erdős–Graham generalization to arbitrary rationals also holds.",
     "proofStrategy": "We define IsUnitFractionRepr and IsRatFractionRepr for Egyptian fraction sums, FiniteColouring for r-colourings, and IsMonochromatic for uniform colour. The main theorem, infinite-disjoint variant, and Erdős–Graham rational generalization are stated as Prop. Basic properties of monochromaticity are proved.",
     "keyInsights": [
       "**Partition regularity**: Egyptian fraction representations of $1$ persist under any finite colouring of $\\mathbb{N}$ — proved by Croot (2003) via the density Hales–Jewett theorem",

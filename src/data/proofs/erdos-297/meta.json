@@ -62,12 +62,13 @@
       "at_least_three_representations: verified examples {1}, {2,3,6}, {2,4,5,20}"
     ],
     "axiomCount": 14,
-    "lineCount": 301
+    "lineCount": 301,
+    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #297: Egyptian Fractions Summing to 1**\n\nThis problem, originally posed by Erdős and Graham [ErGr80, p.36], asks a deceptively simple counting question: among all subsets of {1,...,N}, how many have the property that the sum of their reciprocals equals exactly 1? Examples include {1}, {2,3,6}, and {2,4,5,20}.\n\nThe key question was the exponential growth rate: does the count grow like 2^{cN} for some constant c < 1 (meaning exponentially fewer than all 2^N subsets), or does it approach 2^N (meaning \"most\" subsets work)? The intuition that c < 1 comes from the divergence of the harmonic series: since the expected harmonic sum of a random subset is approximately (log N)/2, which grows without bound, most random subsets vastly overshoot the target of 1.\n\nA precursor appeared on MathOverflow in 2017, when Mikhail Tikhomirov asked about subsets with sum at most 1. Lucia, RaphaelB4, and js21 sketched proofs of the correct asymptotic for that variant, building confidence that c < 1 for the exact-sum version too.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $N \\geq 1$. How many $A \\subseteq \\{1,\\ldots,N\\}$ are there such that $\\sum_{n \\in A} \\frac{1}{n} = 1$?\n\n**Answer:** The count is $2^{(c + o(1))N}$ where $c \\approx 0.91\\ldots$ is defined by an integral equation.\n\n**Key Result:** $c < 1$, so the count is exponentially smaller than $2^N$. Despite having $2^N$ possible subsets, only about $2^{0.91N}$ have unit fraction sum exactly 1.",
-    "text": "How many A \u2286 {1,...,N} satisfy \u03a3 1/n = 1? Answer: 2^{(0.91...+o(1))N}. Solved independently by three teams in 2024.",
+    "text": "How many A ⊆ {1,...,N} satisfy Σ 1/n = 1? Answer: 2^{(0.91...+o(1))N}. Solved independently by three teams in 2024.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** harmonicSum computes the unit fraction sum over a set; egyptianCount counts valid subsets via Finset.filter.\n\n2. **Verified Examples:** The representations {1}, {2,3,6}, {2,4,5,20}, and {2,3,7,42} are established (the first by simp, the rest axiomatized).\n\n3. **The Question:** hasSubexponentialGrowth formalizes whether c < 1 exists.\n\n4. **Three 2024 Results:** Steinerberger's 2^{0.93N} upper bound, Liu-Sawhney's full asymptotic with c ≈ 0.91..., and Conlon et al.'s independent proof with generalization to arbitrary rational targets.\n\n5. **Main Theorems:** erdos_297_main proves the asymptotic via Liu-Sawhney; erdos_297_answer proves hasSubexponentialGrowth.\n\n6. **Heuristic:** The expected harmonic sum of a random subset grows like (log N)/2, explaining why c < 1.",
     "keyInsights": [
       "**Subexponential Growth:** The count 2^{0.91N} is exponentially smaller than the naive 2^N bound, meaning the vast majority of subsets overshoot 1",

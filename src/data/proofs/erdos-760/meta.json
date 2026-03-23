@@ -70,12 +70,13 @@
       "Basic combinatorics (Finset, cardinality bounds)",
       "Logarithmic functions and asymptotic notation"
     ],
-    "lineCount": 270
+    "lineCount": 270,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The cochromatic number ζ(G) is the minimum number of colors needed to color vertices so each color class is either a clique or an independent set (a 'homogeneous' set). Erdős and Gimbel posed this problem in 1993, asking whether graphs with high chromatic number must contain subgraphs with high cochromatic number. They proved a weaker bound √(m / log m). The full bound m / log m was proved by Alon, Krivelevich, and Sudakov in 1997 using Ramsey-theoretic techniques. Their proof exploits the fact that any graph on n vertices contains a homogeneous set (clique or independent set) of size Ω(log n) by Ramsey's theorem; iterating this extraction yields a cochromatic coloring of size O(n / log n), and applying this to subgraphs of a graph with chromatic number m gives a subgraph with cochromatic number Ω(m / log m). The tightness comes from the complete graph K_m, which has ζ(K_m) = 1 but requires m colors for a proper coloring.",
     "problemStatement": "If G is a graph with chromatic number χ(G) = m, must G contain a subgraph H with ζ(H) ≫ m / log m?\n\n**Answer:** YES (Alon-Krivelevich-Sudakov 1997)\n\nThe bound m / log m is optimal - complete graphs achieve it.",
-    "text": "If G is a graph with chromatic number \u03c7(G) = m, must G contain a subgraph H with cochromatic number \u03b6(H) \u226b m / log m? YES, proved by Alon-Krivelevich-Sudakov (1997).",
+    "text": "If G is a graph with chromatic number χ(G) = m, must G contain a subgraph H with cochromatic number ζ(H) ≫ m / log m? YES, proved by Alon-Krivelevich-Sudakov (1997).",
     "proofStrategy": "The solution uses Ramsey-theoretic methods:\n\n1. **Homogeneous sets from Ramsey theory:** Any graph on n vertices has a homogeneous set (clique or independent set) of size ~ log n.\n\n2. **Recursive decomposition:** Find a large homogeneous set, remove it, and recurse.\n\n3. **The key bound:** The cochromatic number of the subgraph built this way is ≥ cm / log m.\n\n4. **Tightness:** Complete graphs show the bound is best possible.",
     "keyInsights": [
       "Cochromatic number allows cliques OR independent sets as color classes",

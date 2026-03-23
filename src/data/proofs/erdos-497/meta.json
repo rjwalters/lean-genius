@@ -50,12 +50,13 @@
       "Defined ErdosProblem497 combining both bounds"
     ],
     "axiomCount": 10,
-    "lineCount": 86
+    "lineCount": 86,
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Counting antichains in the power set of [n] is one of the oldest problems in combinatorics, going back to Dedekind (1897) who first studied monotone Boolean functions — equivalent to counting antichains. The sequence D(0) = 2, D(1) = 3, D(2) = 6, D(3) = 20, D(4) = 168, D(5) = 7581, ... (OEIS A000372) grows extremely rapidly, and computing even a single new term is a major computational feat. Pashkov and Shmulevich computed D(9) = 7,828,354 in 2023, a landmark calculation.\n\nSperner's theorem (1928) provides the key structural insight: the largest antichain in P([n]) has size C(n, ⌊n/2⌋), achieved by the middle layer. This immediately gives the trivial upper bound D(n) ≤ 2^{C(n, ⌊n/2⌋)}, since every antichain is a subset of all possible antichains and the middle layer dominates.\n\nKleitman (1969) proved the remarkable result that this trivial bound is essentially tight: log₂ D(n) = (1 + o(1)) · C(n, ⌊n/2⌋). His proof uses a correlation inequality showing that 'most' antichains concentrate near the middle layers. This resolved Erdős's question about the logarithmic order of D(n), though the exact second-order term remains unknown.",
     "problemStatement": "How many antichains (Sperner families) exist in the power set of [n]?",
-    "text": "How many antichains exist in P([n])? Kleitman (1969) proved the answer is 2^{(1+o(1))\u00b7C(n, \u230an/2\u230b)}, determining the logarithmic order of the Dedekind numbers.",
+    "text": "How many antichains exist in P([n])? Kleitman (1969) proved the answer is 2^{(1+o(1))·C(n, ⌊n/2⌋)}, determining the logarithmic order of the Dedekind numbers.",
     "proofStrategy": "The formalization defines antichains in P([n]) using Finset (Fin n) and counts them. Sperner's theorem and the maximum antichain are axiomatised. Known small Dedekind numbers D(0) through D(4) are stated. The trivial upper bound and Kleitman's asymptotic formula are stated, with the main result combining both directions into ErdosProblem497.",
     "keyInsights": [
       "**Antichain Structure**: An antichain in P([n]) is a family where no member contains another — the natural generalization of Sperner families to all sizes",

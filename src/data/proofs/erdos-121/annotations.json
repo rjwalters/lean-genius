@@ -33,6 +33,7 @@
     "title": "Perfect Square",
     "content": "**`IsSquare n`** holds when n = m\u00b2 for some m. This is the target property that k-element products must avoid.",
     "significance": "supporting",
+    "mathContext": "An integer $n$ is a perfect square iff $v_p(n)$ is even for every prime $p$, where $v_p$ is the $p$-adic valuation. Equivalently, the squarefree part $\\mathrm{sqf}(n) = \\prod_{p:\\, v_p(n)\\text{ odd}} p$ equals $1$.",
     "relatedConcepts": [
       "perfect-square",
       "quadratic-residues"
@@ -121,6 +122,7 @@
     "title": "F_3 Has Full Density",
     "content": "F_3(N) = (1 - o(1))N: for 3-element products, almost all integers can be included. The density loss is o(1), so asymptotically the full set works.",
     "significance": "key",
+    "mathContext": "$F_3(N) = (1 - o(1))N$ as $N \\to \\infty$. The key is that in $\\mathbb{F}_2^r$, any 3-element subset $\\{u, v, w\\}$ sums to zero only if $u + v + w = 0$, and this constraint is sparse enough to allow density 1. Contrast with $F_2(N) \\approx (6/\\pi^2)N < N$, where the constraint is denser.",
     "relatedConcepts": [
       "full-density",
       "three-products"
@@ -206,6 +208,7 @@
     "title": "Monotonicity Properties",
     "content": "F_k is monotone in N (more elements available) and anti-monotone in k (more elements required to form a product makes squares easier to avoid). Both are axiomatized.",
     "significance": "supporting",
+    "mathContext": "$F_k(N) \\leq F_k(N+1)$ (adding an element can only increase the maximum) and $F_{k+1}(N) \\geq F_k(N)$ (a $(k+1)$-square-free set is not necessarily $k$-square-free, but the constraint is weaker). Formally: $\\{1,\\ldots,N\\} \\subseteq \\{1,\\ldots,N+1\\}$ and any $k$-square-free set is $(k+1)$-square-free.",
     "relatedConcepts": [
       "monotonicity",
       "structural-properties"

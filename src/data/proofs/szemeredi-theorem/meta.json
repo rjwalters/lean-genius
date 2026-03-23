@@ -43,7 +43,8 @@
     ],
     "dateAdded": "2025-12-31",
     "axiomCount": 1,
-    "lineCount": 335
+    "lineCount": 335,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Szemeredi's theorem is one of the crown jewels of combinatorics. The progression of proofs reflects major developments:\n\n- 1936: Erdos-Turan conjecture formulated\n- 1953: Roth proves k=3 (analytic method)\n- 1969: Szemeredi proves k=4 (combinatorial tour de force)\n- 1975: Szemeredi proves general case (regularity lemma)\n- 1977: Furstenberg proves via ergodic theory\n- 2001: Gowers proves with improved bounds (Fourier analysis)\n\nThe regularity lemma, developed for this proof, became a fundamental tool in combinatorics.",

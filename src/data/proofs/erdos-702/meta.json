@@ -91,12 +91,13 @@
       "erdos_702: main theorem as application of frankl_theorem"
     ],
     "axiomCount": 4,
-    "lineCount": 178
+    "lineCount": 178,
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Sós conjectured that for k ≥ 4, any k-uniform family over {1,...,n} with more than C(n-2, k-2) sets must contain two sets sharing exactly one element. The bound C(n-2, k-2) is natural: fixing two elements x, y and taking all k-sets containing both gives a family of this size where every pair shares at least {x, y}.\n\nKatona first proved the k = 4 case (unpublished). Frankl resolved the full conjecture in 1977 using the shifting (compression) technique — a method that systematically simplifies set families while preserving structural properties. His proof established the shifting technique as a central tool in extremal set theory.\n\nThe condition k ≥ 4 is necessary: for k = 3, large families avoiding singleton intersections exist beyond the C(n-2, 1) = n-2 bound, due to combinatorial designs (Steiner triple systems). The problem is closely related to #703, where Frankl and Rödl extended to general r-intersection avoidance.",
     "problemStatement": "Let k ≥ 4. If F is a family of k-subsets of {1,...,n} with |F| > C(n-2, k-2), then there exist A, B ∈ F with |A ∩ B| = 1. Answer: YES (Frankl 1977). The bound C(n-2, k-2) is tight.",
-    "text": "For k \u2265 4, if F is a k-uniform family over {1,...,n} with |F| > C(n-2, k-2), must some pair have |A \u2229 B| = 1? SOLVED by Frankl (1977): YES, the bound is tight.",
+    "text": "For k ≥ 4, if F is a k-uniform family over {1,...,n} with |F| > C(n-2, k-2), must some pair have |A ∩ B| = 1? SOLVED by Frankl (1977): YES, the bound is tight.",
     "proofStrategy": "The formalization defines k-uniform families over a ground set, introduces SingletonIntersection and avoidance predicates, axiomatizes the extremal construction (all k-sets through two fixed points), axiomatizes Frankl's theorem and Katona's k = 4 case, records the k = 3 failure, and derives the main theorem erdos_702 from frankl_theorem.",
     "keyInsights": [
       "Extremal construction: all k-sets containing two fixed elements give C(n-2, k-2) sets avoiding singleton intersections",

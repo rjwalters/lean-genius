@@ -54,12 +54,13 @@
       "erdos_231_disproved axiom: NO for k ≥ 4"
     ],
     "axiomCount": 9,
-    "lineCount": 248
+    "lineCount": 248,
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #231**\n\nThis problem concerns abelian squares in combinatorics on words.\n\n**History:**\n- Erdős initially conjectured YES: strings of length 2^k - 1 over k letters must contain abelian squares\n- De Bruijn and Erdős found counterexamples for k = 4\n- The question evolved: can infinite abelian-square-free strings exist?\n- Keränen (1992) constructed an infinite abelian-square-free string over 4 letters\n\n**Context:**\n- Thue (early 1900s) showed squarefree strings exist over 3 letters\n- Abelian-square-free is a STRONGER property\n- 4 letters are both necessary and sufficient for abelian-square-free strings",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet S be a string of length 2^k - 1 formed from an alphabet of k characters.\n\n**Question:** Must S contain an abelian square (two consecutive blocks where one is a permutation of the other)?\n\n**Answer:**\n- For k = 2, 3: YES (all such strings contain abelian squares)\n- For k ≥ 4: NO (Keränen 1992)\n\nAn abelian square is xy where x and y have the same letter counts (same Parikh vector).",
-    "text": "Must a string of length 2^k - 1 over k letters contain an abelian square? NO for k \u2265 4 (Ker\u00e4nen 1992).",
+    "text": "Must a string of length 2^k - 1 over k letters contain an abelian square? NO for k ≥ 4 (Keränen 1992).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Word Basics:** Use List α for strings\n\n2. **Key Definitions:**\n   - parikhVector: character count function\n   - abelianEquiv: same Parikh vector\n   - isAbelianSquare: consecutive permuted blocks\n   - isAbelianSquareFree: no abelian squares\n\n3. **Comparison with Squarefree:**\n   - Square: w = xx (exact repetition)\n   - Abelian square: w = xy where y ~ x (permutation)\n   - Abelian-square-free ⟹ squarefree\n\n4. **Main Results:**\n   - thue_squarefree: 3 letters suffice for squarefree\n   - keranen_1992: 4 letters suffice for abelian-square-free\n   - erdos_231_disproved: NO for k ≥ 4\n\n**Why Axioms:** The Keränen construction is a specific 85-letter morphism beyond algorithmic verification.",
     "keyInsights": [
       "**Parikh Vector:** The key invariant - two words are abelian equivalent iff they have the same character counts.",

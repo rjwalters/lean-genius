@@ -19,7 +19,8 @@
     "erdosUrl": "https://erdosproblems.com/469",
     "axiomCount": 2,
     "badge": "axiom",
-    "lineCount": 227
+    "lineCount": 227,
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -61,7 +62,7 @@
   "overview": {
     "historicalContext": "**Erdős Problem #469** concerns **primitive pseudoperfect numbers** (also called semiperfect numbers). A number $n$ is **pseudoperfect** if it equals the sum of a subset of its proper divisors. It is **primitive** pseudoperfect if no proper divisor of $n$ is pseudoperfect.\n\nThe sequence was studied by Erdős (1970) and Benkoski–Erdős (1974), beginning $6, 20, 28, 88, 104, 272, 304, 350, \\ldots$ (OEIS A006036). Every **perfect number** (where $\\sigma(n) = 2n$, meaning all proper divisors sum to $n$) is pseudoperfect. Since perfect numbers are the 'base case' of pseudoperfect, the first primitive pseudoperfect number is $6$ (the smallest perfect number). The problem asks whether the sum $\\sum_{n \\in A} 1/n$ over all primitive pseudoperfect numbers $A$ **converges**. This remains **open** as of 2025.",
     "problemStatement": "Does the sum Σ_{n ∈ A} 1/n converge, where A is the set of primitive pseudoperfect numbers?",
-    "text": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does \u03a3_{n \u2208 A} 1/n converge? OEIS A006036. Open.",
+    "text": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does Σ_{n ∈ A} 1/n converge? OEIS A006036. Open.",
     "proofStrategy": "We define IsPseudoperfect using Finset subsets of properDivisors, define primitivity by requiring no proper divisor to be pseudoperfect, and record basic structural results. The convergence question is formalized as a bounded partial sums condition.",
     "keyInsights": [
       "Every perfect number (σ(n) = 2n) is pseudoperfect: the proper divisors sum to n",

@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/1051",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 98
+    "lineCount": 98,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p.64), as part of a broader investigation into when series with integer terms produce irrational sums. The growth condition $\\liminf a_n^{1/2^n} > 1$ captures sequences growing at least doubly exponentially—a natural threshold since slower-growing sequences can yield rational sums (e.g., arithmetic progressions give telescoping sums). Erdős made partial progress in a 1988 paper, proving irrationality for sequences satisfying the stronger condition $a_{n+1} \\geq C \\cdot a_n^2$. The proof technique uses rapid convergence of partial sums to derive contradictions from the assumption of rationality, building on methods going back to Liouville's 1844 construction of transcendental numbers. The gap between this quadratic recurrence condition and the general $\\liminf$ condition remains the central open challenge. The problem connects to the Erdős–Graham program of understanding irrationality of series involving integer sequences, and to classical work on Sylvester–Fibonacci expansions and Egyptian fraction representations by Kellogg (1921) and Curtiss (1922).",
     "problemStatement": "If $a_1 < a_2 < \\cdots$ is a strictly increasing integer sequence with $\\liminf a_n^{1/2^n} > 1$, is $\\sum_{n=1}^{\\infty} \\frac{1}{a_n \\cdot a_{n+1}}$ irrational?",
-    "text": "If a\u2081 < a\u2082 < \u22ef are integers with lim inf a\u2099^{1/2\u207f} > 1, is \u03a3 1/(a\u2099\u00b7a\u2099\u208a\u2081) irrational? Known for rapid growth a\u2099\u208a\u2081 \u2265 C\u00b7a\u2099\u00b2. OPEN in general.",
+    "text": "If a₁ < a₂ < ⋯ are integers with lim inf aₙ^{1/2ⁿ} > 1, is Σ 1/(aₙ·aₙ₊₁) irrational? Known for rapid growth aₙ₊₁ ≥ C·aₙ². OPEN in general.",
     "proofStrategy": "The formalization defines the growth condition via Mathlib's `Filter.liminf` and the series via `tsum`. The main conjecture `ErdosProblem1051` is stated as a `Prop` (not an axiom), reflecting its status as an open problem awaiting proof. The solved rapid growth case ($a_{n+1} \\geq C \\cdot a_n^2$), convergence, positivity, and related results are axiomatized. The structure cleanly separates the open conjecture from established partial results, making clear what remains to be proved. The related simple reciprocal series $\\sum 1/a_n$ is also formalized, and a Sylvester–Fibonacci example provides an existential witness confirming non-vacuity.",
     "keyInsights": [
       "The condition $\\liminf a_n^{1/2^n} > 1$ implies doubly exponential growth: $a_n \\geq c^{2^n}$ for some $c > 1$, which is faster than any fixed tower of exponentials—the sequence survives repeated square-rooting",

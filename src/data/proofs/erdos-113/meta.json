@@ -54,12 +54,13 @@
       "Main theorem: ¬ErdosSimonovitsConjecture"
     ],
     "axiomCount": 21,
-    "lineCount": 271
+    "lineCount": 271,
+    "assumptions": "21 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**The Erdős-Simonovits Conjecture (1984)**\n\nThis conjecture characterized which bipartite graphs have sub-quadratic extremal numbers. The extremal number ex(n;H) is the maximum number of edges in an n-vertex graph containing no copy of H.\n\n**Timeline:**\n- **1954**: Kővári-Sós-Turán prove ex(n; K_{s,t}) = O(n^{2-1/s})\n- **1984**: Erdős-Simonovits conjecture the 2-degeneracy characterization\n- **1996**: Füredi establishes tight bounds for complete bipartite graphs\n- **2023**: Janzer disproves the conjecture with a 3-regular counterexample\n\n**Prize History:**\n- Erdős originally offered $250 for a proof, $100 for a counterexample\n- Later increased to $500 for a counterexample\n- Janzer claimed the $500 prize in 2023",
     "problemStatement": "**Conjecture Statement (Disproved)**\n\nFor a bipartite graph G:\n  ex(n; G) ≪ n^{3/2} if and only if G is 2-degenerate.\n\n**Key Definitions:**\n- ex(n; G) = maximum edges in n-vertex H-free graph\n- G is k-degenerate if every subgraph has a vertex of degree ≤ k\n- 2-degenerate means no induced subgraph has minimum degree ≥ 3\n\n**The Directions:**\n- Forward (TRUE): 2-degenerate bipartite → ex ≪ n^{3/2}\n- Backward (DISPROVED): ex ≪ n^{3/2} → 2-degenerate",
-    "text": "The Erd\u0151s-Simonovits Conjecture (1984) claimed: for bipartite G, ex(n;G) \u226a n^{3/2} if and only if G is 2-degenerate. DISPROVED by Janzer (2023) who constructed 3-regular bipartite H with ex(n;H) \u226a n^{4/3+\u03b5}.",
+    "text": "The Erdős-Simonovits Conjecture (1984) claimed: for bipartite G, ex(n;G) ≪ n^{3/2} if and only if G is 2-degenerate. DISPROVED by Janzer (2023) who constructed 3-regular bipartite H with ex(n;H) ≪ n^{4/3+ε}.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Extremal Numbers:** Axiomatize ex(n;k) with monotonicity and trivial upper bound\n\n2. **Graph Degeneracy:** Axiomatize k-degeneracy with existence and monotonicity properties\n\n3. **Bipartite Graphs:** Axiomatize bipartiteness and complete bipartite graph encoding\n\n4. **Kővári-Sós-Turán:** State the classical upper bound theorem\n\n5. **Asymptotic Notation:** Define f ≪ g for big-O comparison\n\n6. **The Conjecture:** Define ErdosSimonovitsConjecture as a biconditional\n\n7. **Janzer's Counterexample:** 3-regular bipartite H with ex(n;H) ≪ n^{4/3+ε}\n\n8. **Main Theorem:** Prove ¬ErdosSimonovitsConjecture using the counterexample",
     "keyInsights": [
       "**Forward Direction is True:** 2-degenerate bipartite graphs have sparse extremal numbers",

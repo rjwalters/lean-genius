@@ -58,12 +58,13 @@
       "erdos_999_summary: proved conjunction of main results"
     ],
     "axiomCount": 8,
-    "lineCount": 166
+    "lineCount": 166,
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Duffin-Schaeffer conjecture (1941) was one of the most famous open problems in metric number theory for nearly 80 years. It generalizes Khintchine's theorem (1924) to non-monotone approximation functions. Erdős proved the special case where f(q)·q is bounded. The easy direction (approximability implies divergence) follows from Borel-Cantelli. The hard direction was finally proved by Koukoulopoulos and Maynard in 2020, published in the Annals of Mathematics. Their proof introduced a remarkable new method combining graph theory and sieve techniques to estimate the measure of limsup sets, going far beyond standard Borel-Cantelli and resolving a problem that had resisted all previous attempts since Duffin and Schaeffer first formulated it.",
     "problemStatement": "For any function f: ℕ → ℕ, the following are equivalent: (1) For almost all α ∈ [0,1], there exist infinitely many coprime pairs (p,q) with |α - p/q| < f(q)/q; (2) The series ∑_{q≥1} φ(q)·f(q)/q diverges. Here φ is Euler's totient function.",
-    "text": "For any f: \u2115 \u2192 \u2115, almost all \u03b1 have infinitely many coprime approximations |\u03b1 - p/q| < f(q)/q iff \u2211 \u03c6(q)\u00b7f(q)/q = \u221e. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
+    "text": "For any f: ℕ → ℕ, almost all α have infinitely many coprime approximations |α - p/q| < f(q)/q iff ∑ φ(q)·f(q)/q = ∞. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
     "proofStrategy": "The formalization defines approximability, the Duffin-Schaeffer sum, and the divergence/convergence conditions. It axiomatizes both directions of the equivalence separately (easy via Borel-Cantelli, hard via Koukoulopoulos-Maynard 2020), includes Erdős's partial result for bounded f·q, states the zero-one law, the convergence case, continued fractions, and connects to Khintchine's theorem for monotone functions. The summary theorem proves the conjunction of the main results.",
     "keyInsights": [
       "The coprimality condition (p,q)=1 is essential - without it, the equivalence fails",

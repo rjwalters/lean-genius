@@ -52,12 +52,13 @@
       "Kovač-Predojević cyclic quadrilateral theorem"
     ],
     "axiomCount": 8,
-    "lineCount": 390
+    "lineCount": 390,
+    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #353**\n\nThis problem explores what geometric configurations must appear in sets of infinite measure in the plane.\n\n**Key History:**\n- Erdős-Mauldin (unpublished): Claimed true for trapezoids\n- Kovač (2023): Proved trapezoids work; showed parallelograms can fail\n- Kovač-Predojević (2024): Proved cyclic quadrilaterals; congruent sides counterexample\n- Koizumi (2025): Complete resolution for isosceles trapezoids, triangles, and right triangles\n\n**Mathematical Setting:**\nThe problem connects geometric measure theory with combinatorial geometry. Infinite measure ensures sufficient point density to guarantee configurations.",
     "problemStatement": "**Problem Statement**\n\nLet $A \\subseteq \\mathbb{R}^2$ be a measurable set with infinite Lebesgue measure.\n\nMust $A$ contain the vertices of:\n1. An isosceles trapezoid of area 1?\n2. An isosceles triangle of area 1?\n3. A right-angled triangle of area 1?\n4. A cyclic quadrilateral of area 1?\n5. A polygon with congruent sides of area 1?\n\n**Answers:**\n- Isosceles trapezoid: **YES** (Koizumi 2025)\n- Isosceles triangle: **YES** (Koizumi 2025)\n- Right-angled triangle: **YES** (Koizumi 2025)\n- Cyclic quadrilateral: **YES** (Kovač-Predojević 2024)\n- Parallelogram: **NO** (Kovač 2023)\n- Congruent-sided polygon: **NOT ALWAYS** (Kovač-Predojević 2024)",
-    "text": "Let A \u2286 \u211d\u00b2 have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kova\u010d 2023).",
+    "text": "Let A ⊆ ℝ² have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kovač 2023).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Measure Setup:** Define HasInfiniteMeasure using Lebesgue measure\n\n2. **Geometric Predicates:** Define triangleArea, quadrilateralArea, and shape predicates\n\n3. **Configuration Existence:** Predicates for shapes with vertices in A of given area\n\n4. **Main Theorems:** State Koizumi's results as axioms\n\n5. **Counterexamples:** Kovač's parallelogram and congruent sides results\n\n6. **Scaling:** Show area can be any positive value, not just 1",
     "keyInsights": [
       "**Infinite Measure is Key:** Ensures enough points exist to form configurations",

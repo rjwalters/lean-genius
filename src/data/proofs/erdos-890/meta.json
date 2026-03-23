@@ -21,12 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/890",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 172
+    "lineCount": 172,
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Selfridge studied $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$ in their 1967 paper [ErSe67], where $\\omega(m)$ counts the distinct prime divisors of $m$. The Hardy-Ramanujan theorem (1917) established that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erdős-Kac theorem (1940) showed $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n}$ is asymptotically normal. For the cumulative function $S_k(n)$, Erdős and Selfridge proved the lower bound $\\liminf_{n \\to \\infty} S_k(n) \\geq k + \\pi(k) - 1$ using Pólya's 1918 theorem that $k$-smooth numbers (those with all prime factors $\\leq k$) have unbounded gaps: among $n, n+1, \\ldots, n+k-1$, all but at most one must have a prime factor $> k$. This yields at least $k + \\pi(k) - 1$ distinct prime factors in total. The two open conjectures sharpen this: (1) $\\liminf S_k(n) \\leq k + \\pi(k)$, which combined with the lower bound would pin the liminf to $k + \\pi(k) - 1$ or $k + \\pi(k)$; and (2) $\\limsup S_k(n) \\cdot \\log\\log n / \\log n = 1$, generalizing the classical single-integer result to consecutive blocks. The problem connects to Jacobsthal's function $g(k)$ (the maximal gap in $\\{1, \\ldots, m\\}$ coprime to the first $k$ primes) and to recent work on the distribution of $\\omega$ in short intervals.",
     "problemStatement": "Let $\\omega(n)$ denote the number of distinct prime factors of $n$, and define $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$. Two conjectures: (1) For every $k \\geq 1$, $\\liminf_{n \\to \\infty} S_k(n) \\leq k + \\pi(k)$. (2) $\\limsup_{n \\to \\infty} S_k(n) \\cdot \\frac{\\log\\log n}{\\log n} = 1$. Both remain open.",
-    "text": "Is lim inf S_k(n) \u2264 k + \u03c0(k) where S_k(n) = \u2211 \u03c9(n+i)? Is lim sup S_k(n) \u00b7 log log n / log n = 1? Known: lim inf \u2265 k + \u03c0(k) \u2212 1 (Erd\u0151s\u2013Selfridge). OPEN.",
+    "text": "Is lim inf S_k(n) ≤ k + π(k) where S_k(n) = ∑ ω(n+i)? Is lim sup S_k(n) · log log n / log n = 1? Known: lim inf ≥ k + π(k) − 1 (Erdős–Selfridge). OPEN.",
     "proofStrategy": "The formalization defines `cumulativeOmega k n` using Mathlib's `ArithmeticFunction.omega` and `Finset.range k`. Liminf and limsup are captured by custom predicates `LiminfAtMost`, `LiminfAtLeast`, and `LimsupRatioIsOne` (using $\\varepsilon$-neighborhoods with `Real.log`). The Erdős-Selfridge lower bound and Hardy-Ramanujan $\\omega$ limsup are axiomatized. Four theorems are proved in Lean: monotonicity $S_{k+1}(n) \\geq S_k(n)$ via `Finset.sum_le_sum_of_subset`, the lower bound at $k=1$, the sandwich theorem conditional on Conjecture 1, and a restated lower bound.",
     "keyInsights": [
       "**Cumulative prime factors**: $S_k(n) = \\sum_{i<k} \\omega(n+i)$ counts total distinct prime factors across $k$ consecutive integers. For $k = 1$, this reduces to $\\omega(n)$ itself.",

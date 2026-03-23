@@ -54,12 +54,13 @@
       "erdos_312_status summary theorem"
     ],
     "axiomCount": 1,
-    "lineCount": 515
+    "lineCount": 515,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #312: Subset Sums of Unit Fractions**\n\nThis problem, posed by Erdős and Graham [ErGr80], explores the precision with which subset sums of unit fractions can approximate 1.\n\nThe key question is about *exponential* precision: given a multiset of positive integers whose reciprocals sum to more than K, can we always find a subset whose reciprocal sum is within exp(-cK) of 1? The closer to 1, the better the approximation.\n\n**Known Results:** Erdős and Graham proved the weaker *polynomial* bound: for some constant c > 0, one can always find a subset summing to within c/K² of 1. The gap between the polynomial bound c/K² and the conjectured exponential bound exp(-cK) is enormous for large K, making this a significant open problem in combinatorial number theory.\n\nThe problem connects to the classical theory of Egyptian fractions (representing rationals as sums of distinct unit fractions) and to computational subset sum problems.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nDoes there exist a constant $c > 0$ such that, for any $K > 1$, whenever $A$ is a sufficiently large finite multiset of positive integers with $\\sum_{n \\in A} 1/n > K$, there exists a subset $S \\subseteq A$ with:\n$$1 - e^{-cK} < \\sum_{n \\in S} 1/n \\leq 1$$\n\n**Known:** Erdős-Graham proved this with $e^{-cK}$ replaced by $c/K^2$ (polynomial precision).",
-    "text": "Does there exist c > 0 such that for K > 1, every large multiset with reciprocal sum > K has a subset summing to within exp(-cK) of 1? Known: polynomial bound c/K\u00b2 holds (Erd\u0151s-Graham). OPEN.",
+    "text": "Does there exist c > 0 such that for K > 1, every large multiset with reciprocal sum > K has a subset summing to within exp(-cK) of 1? Known: polynomial bound c/K² holds (Erdős-Graham). OPEN.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Clean Definitions:** reciprocalSum and subsetReciprocalSum as noncomputable functions using Finset.sum and inverse.\n\n2. **Precision Properties:** Separate definitions for exponential (exp(-cK)) and polynomial (c/K²) precision, making the comparison explicit.\n\n3. **Main Conjecture as Def:** The open conjecture is a Prop definition, not a theorem with sorry, since it's genuinely unknown.\n\n4. **Known Result as Axiom:** The Erdős-Graham polynomial bound is axiomatized since the proof uses deep analytic number theory.\n\n5. **Proved Theorem:** conjecture_implies_known shows the logical implication: exponential precision → the subset sum is ≤ 1, proved by extracting the upper bound from the exponential property.",
     "keyInsights": [
       "**Exponential vs Polynomial:** For K = 100, exp(-cK) ≈ 10^{-43} while c/K² = c/10000 — the exponential bound is astronomically tighter",

@@ -15,7 +15,7 @@
       "fixed point theory",
       "renormalization group"
     ],
-    "mathContext": "See annotation content for formal details of dual perspectives on clt"
+    "mathContext": "The CLT states: if $X_1, X_2, \\ldots$ are i.i.d. with mean $\\mu$ and variance $\\sigma^2 < \\infty$, then $\\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0,1)$ as $n \\to \\infty$."
   },
   {
     "id": "ann-clt-imports",
@@ -33,7 +33,7 @@
       "measure theory",
       "Fourier analysis"
     ],
-    "mathContext": "See annotation content for formal details of mathlib dependencies"
+    "mathContext": "The Gaussian measure $\\mathcal{N}(\\mu, \\sigma^2)$ has density $p(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}$. Mathlib formalizes it as a Borel probability measure on $\\mathbb{R}$."
   },
   {
     "id": "ann-clt-charfun-def",
@@ -86,7 +86,7 @@
       "moments",
       "cumulants"
     ],
-    "mathContext": "See annotation content for formal details of moments from derivatives"
+    "mathContext": "For a standardized variable ($\\mu = 0$, $\\sigma^2 = 1$), the expansion simplifies to $\\varphi_X(t) = 1 - \\frac{t^2}{2} + O(t^3)$, matching the Gaussian $\\varphi_{N(0,1)}(t) = e^{-t^2/2} = 1 - \\frac{t^2}{2} + \\frac{t^4}{8} - \\cdots$ to second order."
   },
   {
     "id": "ann-clt-taylor-theorem",
@@ -125,7 +125,7 @@
       "compound interest",
       "Euler's definition of e"
     ],
-    "mathContext": "See annotation content for formal details of the product-to-exponential limit"
+    "mathContext": "The chain: $\\varphi_{S_n}(t) = \\left[\\varphi_X\\!\\left(\\tfrac{t}{\\sqrt{n}}\\right)\\right]^n \\approx \\left(1 - \\frac{t^2}{2n}\\right)^n \\xrightarrow{n \\to \\infty} e^{-t^2/2} = \\varphi_{N(0,1)}(t)$, establishing pointwise convergence of characteristic functions."
   },
   {
     "id": "ann-clt-key-convergence",
@@ -205,7 +205,7 @@
       "fixed point theory",
       "renormalization group"
     ],
-    "mathContext": "See annotation content for formal details of the topological viewpoint"
+    "mathContext": "Define the renormalization map $T: \\mathcal{P}_2(\\mathbb{R}) \\to \\mathcal{P}_2(\\mathbb{R})$ by $T(\\mu) = \\text{law}\\!\\left(\\frac{X_1 + X_2}{\\sqrt{2}}\\right)$ where $X_1, X_2 \\overset{\\text{i.i.d.}}{\\sim} \\mu$. The Gaussian $\\mathcal{N}(0,\\sigma^2)$ satisfies $T(\\mathcal{N}(0,\\sigma^2)) = \\mathcal{N}(0,\\sigma^2)$, making it a fixed point."
   },
   {
     "id": "ann-clt-wasserstein",
@@ -335,6 +335,6 @@
       "emergence",
       "mathematical inevitability"
     ],
-    "mathContext": "See annotation content for formal details of synthesis: why the gaussian is universal"
+    "mathContext": "Four equivalent characterizations converge on $\\mathcal{N}(0,\\sigma^2)$: (1) fixed point of $T_n(\\mu)$ in $W_2$, (2) $\\arg\\max_{\\text{Var}=\\sigma^2} H(\\mu)$, (3) $\\hat{f} = f$ under Fourier, (4) unique $\\alpha$-stable law with $\\alpha = 2$. Each perspective illuminates a different facet of universality."
   }
 ]

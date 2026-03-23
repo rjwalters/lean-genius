@@ -51,12 +51,13 @@
       "linear_threshold_is_sharp theorem: optimality from Folkman"
     ],
     "axiomCount": 3,
-    "lineCount": 158
+    "lineCount": 158,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #343 is a problem of Folkman about subcompleteness of dense multisets. A set A ⊆ ℕ is called subcomplete if its sumset P(A) = {finite subset sums} contains an infinite arithmetic progression.\n\nFolkman (1966) proved that superlinear density (|A ∩ {1,...,N}| ≫ N^{1+ε}) implies subcompleteness. He also showed the opposite direction: for any ε > 0, there exist multisets with density ~N^{1-ε} that are NOT subcomplete. This left open the critical case of linear density.\n\nSzemerédi and Vu (2006) resolved the problem in their influential paper 'Long arithmetic progressions in sumsets: thresholds and bounds', proving that linear density suffices. This completed the characterization: linear density is the sharp threshold.",
     "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be a multiset with $|A \\cap \\{1,\\ldots,N\\}| \\gg N$ for all $N$.\n\nMust $A$ be subcomplete? That is, must $P(A) = \\{\\sum_{n \\in B} n : B \\subseteq A \\text{ finite}\\}$ contain an infinite arithmetic progression?\n\n**Answer:** YES (Szemerédi-Vu 2006)\n\n**Sharpness:** Folkman (1966) showed this is optimal - for any $\\varepsilon > 0$, there exist multisets with density $\\sim N^{1-\\varepsilon}$ that are NOT subcomplete.",
-    "text": "If A \u2286 \u2115 has positive lower density (|A \u2229 {1,...,N}| \u226b N), must P(A) contain an infinite arithmetic progression? SOLVED: YES (Szemer\u00e9di-Vu 2006), threshold is sharp (Folkman 1966).",
+    "text": "If A ⊆ ℕ has positive lower density (|A ∩ {1,...,N}| ≫ N), must P(A) contain an infinite arithmetic progression? SOLVED: YES (Szemerédi-Vu 2006), threshold is sharp (Folkman 1966).",
     "proofStrategy": "The Lean formalization defines the counting function, positive lower density, sumsets, arithmetic progressions, and subcompleteness. Folkman's results are axiomatized: superlinear density implies subcompleteness, and sublinear density can fail to imply subcompleteness. The main theorem of Szemerédi-Vu (2006) is axiomatized: linear density suffices for subcompleteness.",
     "keyInsights": [
       "**Subcompleteness:** A set is subcomplete if its sumset P(A) contains an infinite arithmetic progression",

@@ -68,12 +68,13 @@
       "erdos_904_main: instantiated main theorem"
     ],
     "axiomCount": 6,
-    "lineCount": 198
+    "lineCount": 198,
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Turán's theorem (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Any graph exceeding this threshold must contain a triangle.\n\nBéla Bollobás and Paul Erdős asked a deeper question: can we find not just ANY triangle, but one whose vertices have high combined degree? Specifically, they conjectured that any graph with $n$ vertices and more than $n^2/4$ edges contains a triangle $\\{x, y, z\\}$ with $d(x) + d(y) + d(z) \\geq \\frac{3}{2}n$. C.S. Edwards (1978) [Ed78] proved this conjecture using degree counting arguments and careful vertex selection.\n\nThe constant $\\frac{3}{2}$ is optimal: for any $\\varepsilon > 0$ and large $n$, there exist dense graphs where some triangle has degree sum below $(\\frac{3}{2}+\\varepsilon)n$. The result is an early example of 'structured extremal' results—not just proving existence of a subgraph, but finding one with additional properties. It prefigures modern supersaturation and stability results in extremal combinatorics.",
     "problemStatement": "If $G$ is a graph with $n$ vertices and more than $n^2/4$ edges, then $G$ contains a triangle on vertices $x, y, z$ such that\n$$d(x) + d(y) + d(z) \\geq \\frac{3}{2}n$$\nwhere $d(v)$ denotes the degree of vertex $v$ in $G$.\n\n**Solved** by Edwards (1978). The constant $\\frac{3}{2}$ is best possible.",
-    "text": "If G is a graph with n vertices and more than n\u00b2/4 edges, then it contains a triangle on vertices x, y, z such that d(x) + d(y) + d(z) \u2265 (3/2)n. This was conjectured by Bollob\u00e1s and Erd\u0151s and proved by Edwards in 1978.",
+    "text": "If G is a graph with n vertices and more than n²/4 edges, then it contains a triangle on vertices x, y, z such that d(x) + d(y) + d(z) ≥ (3/2)n. This was conjectured by Bollobás and Erdős and proved by Edwards in 1978.",
     "proofStrategy": "The formalization uses Mathlib's `SimpleGraph` framework. The key definitions are `IsDense G` (edgeCount > $n^2/4$), `IsTriangle G x y z` (three mutually adjacent vertices), and `HasHighDegreeSum G x y z` ($2(d(x)+d(y)+d(z)) \\geq 3n$, avoiding fractions). Edwards' theorem is axiomatized as `BollobasErdosConjecture`, with supporting results on sharpness (complete bipartite graph achieves the threshold), Turán extremality, degree sum tightness ($\\frac{3}{2}$ is optimal), and supersaturation (many triangles above threshold).",
     "keyInsights": [
       "**Turán foundation**: $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$; exceeding this forces a triangle. The Bollobás-Erdős conjecture asks for a STRUCTURED triangle",

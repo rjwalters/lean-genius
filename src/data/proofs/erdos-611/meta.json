@@ -53,12 +53,13 @@
       "Lower bound k_c(n) ≥ n^{c'/log log n}"
     ],
     "axiomCount": 5,
-    "lineCount": 245
+    "lineCount": 245,
+    "assumptions": "5 axiom(s) and 13 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #611 refines Problem #610 by asking how large clique sizes constrain the clique transversal number τ(G). Erdős, Gallai, and Tuza (1992) proved the key inequality: if every maximal clique has ≥ k vertices, then τ ≤ n - √(kn). For linear clique size k = cn, this gives τ ≤ (1-√c)n, answering Question 1 affirmatively. The deeper Question 2 asks for the threshold function k_c(n) — the minimum clique size forcing τ < (1-c)n. The lower bound k_c(n) ≥ n^{c'/log log n} comes from probabilistic constructions (random graphs with controlled clique sizes). Bollobás and Erdős found the exact threshold for the extreme case τ = 1: if all cliques have ≥ n + 3 - 2√n vertices, a single vertex hits every clique. This threshold is optimal — the constant 3 is exact, with extremal graphs showing τ = 2 just below the threshold. The problem connects clique structure to hypergraph transversal theory and the probabilistic method.",
     "problemStatement": "**Question 1:** If all maximal cliques have size $\\geq cn$, is $\\tau(G) = o_c(n)$?\n\n**Question 2:** For $c > 0$, estimate $k_c(n)$ such that cliques of size $\\geq k_c(n)$ force $\\tau < (1-c)n$.",
-    "text": "If all maximal cliques have size \u2265 cn, is \u03c4(G) = o(n)? Estimate k_c(n) such that cliques of size \u2265 k_c(n) force \u03c4 < (1-c)n. Bollob\u00e1s-Erd\u0151s: cliques \u2265 n+3-2\u221an give \u03c4 = 1.",
+    "text": "If all maximal cliques have size ≥ cn, is τ(G) = o(n)? Estimate k_c(n) such that cliques of size ≥ k_c(n) force τ < (1-c)n. Bollobás-Erdős: cliques ≥ n+3-2√n give τ = 1.",
     "proofStrategy": "The formalization defines IsClique, IsMaximalClique, IsCliqueTransversal, and cliqueTransversalNumber τ(G) (sorry for minimum definition). AllCliquesLarge G k and AllCliquesLinear G c capture clique size constraints. Question1_LinearCliques and Question2_ThresholdEstimate state the two problems formally. The EGT bound erdos_gallai_tuza_large_cliques is axiomatized; linear_cliques_sublinear derives the (1-√c)n consequence (sorry). The Bollobás-Erdős threshold n + 3 - 2√n is defined as bollobas_erdos_threshold with bollobas_erdos_tau_one and bollobas_erdos_optimal (axioms). Special cases (complete, bipartite, Turán), probabilistic lower bounds, and the relationship to #610 round out the formalization. erdos_611_status combines the two main results.",
     "keyInsights": [
       "The EGT bound τ ≤ n - √(kn) is proved by a pigeonhole/counting argument: large cliques force heavy overlap with any transversal, and the √(kn) term captures this geometric mean relationship between clique size k and graph order n",

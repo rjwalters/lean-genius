@@ -91,12 +91,13 @@
         "context": "Both problems concern the irrationality of values of Lambert-type series"
       }
     ],
-    "lineCount": 280
+    "lineCount": 280,
+    "assumptions": "6 axiom(s) and 16 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The study of arithmetic properties of the series S(t) = sum 1/(t^n - 1) originates in classical analytic number theory. The series naturally arises as a Lambert series with constant coefficients, connecting it to the divisor function tau(n) via the identity S(t) = sum tau(n)/t^n. In 1948, Paul Erdos published 'On arithmetical properties of Lambert series' in the Journal of the Indian Mathematical Society, proving that S(t) is irrational whenever t is an integer >= 2. His proof used careful analysis of the p-adic structure of partial sums. Sarvadaman Chowla conjectured that the irrationality should hold for all rational t > 1, not just integers. This conjecture remains open and connects to broader questions about Lambert series, transcendence theory, and the Erdos-Borwein constant E = S(2) ~ 1.606695. The problem appears as #1049 in the Erdos problems collection and is closely related to #1048 (Lambert series generalizations) and #1050 (related irrationality questions).",
     "problemStatement": "For a rational number t > 1, is the sum S(t) = sum_{n>=1} 1/(t^n - 1) irrational? By the classical identity, this equals sum_{n>=1} tau(n)/t^n where tau(n) counts the divisors of n. Status: OPEN. Partial result: Erdos (1948) proved S(t) is irrational for integer t >= 2. Chowla conjectured the result holds for all rational t > 1.",
-    "text": "For rational t > 1, is \u2211_{n\u22651} 1/(t^n - 1) = \u2211_{n\u22651} \u03c4(n)/t^n irrational? OPEN: Erd\u0151s proved YES for integer t \u2265 2. Chowla's conjecture for all rationals unresolved.",
+    "text": "For rational t > 1, is ∑_{n≥1} 1/(t^n - 1) = ∑_{n≥1} τ(n)/t^n irrational? OPEN: Erdős proved YES for integer t ≥ 2. Chowla's conjecture for all rationals unresolved.",
     "proofStrategy": "The formalization defines the divisor function tau(n) = |{d : d | n}| using Mathlib's Nat.divisors.card and proves basic properties (tau(1)=1, multiplicativity). The series S(t) and the divisor series D(t) are defined as tsum over natural numbers. The classical identity S(t) = D(t) is stated with a proof outline via double-sum interchange: sum tau(n)/t^n = sum_{d,m} 1/t^{dm} = sum_d 1/(t^d - 1). Erdos's irrationality result for integer t >= 2 is axiomatized, with derived corollaries S(2) and S(3) irrational. Chowla's conjecture is formally stated, and stronger conjectures about transcendentality and algebraic independence are formulated. The connection to Lambert series is made explicit.",
     "keyInsights": [
       "The identity sum 1/(t^n-1) = sum tau(n)/t^n follows from interchanging a double sum: each 1/(t^d-1) = sum_m 1/t^{dm}, and grouping by n=dm collects tau(n) terms",

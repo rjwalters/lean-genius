@@ -26,7 +26,8 @@
       "erdos-1004"
     ],
     "axiomCount": 3,
-    "lineCount": 204
+    "lineCount": 204,
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "sections": [
     {
@@ -89,7 +90,7 @@
   "overview": {
     "historicalContext": "**Factorial Residues and Multiplicatively Trivial Intervals**\n\nIn 1979, Erdős observed a remarkable congruence: $3 \\cdot 4 = 12 \\equiv 1 \\pmod{11}$ and $5 \\cdot 6 \\cdot 7 = 210 \\equiv 1 \\pmod{11}$. Two consecutive intervals $[3,5)$ and $[5,8)$ both have products congruent to 1 modulo the same prime. In the language of factorials: $2! \\equiv 4! \\equiv 7! \\pmod{11}$.\n\nMakowski (1983) extended this to $k = 3$ intervals modulo $p = 17$: $2 \\cdot 3 \\cdot 4 \\cdot 5 \\equiv 6 \\cdot 7 \\cdot 8 \\cdot 9 \\cdot 10 \\cdot 11 \\equiv 12 \\cdot 13 \\cdot 14 \\cdot 15 \\equiv 1 \\pmod{17}$. Erdős then asked: can this be done for arbitrarily many intervals?\n\nThe problem connects to the distribution of the **factorial residue function** $n \\mapsto n! \\pmod{p}$ on $\\{0, 1, \\ldots, p-1\\}$. By Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$, the factorial function cannot be constant on all of $\\{0, \\ldots, p-1\\}$, but collisions among factorial values are expected to become more frequent as $p$ grows. Noll and Simmons formalized this as: for every $k$, do there exist $k$ values $q_1 < \\cdots < q_k < p$ with $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$? The problem appears as A15 in Guy's *Unsolved Problems in Number Theory*.",
     "problemStatement": "For every k ≥ 2, does there exist a prime p and k consecutive intervals I₁, ..., Iₖ (partitioning a range of integers) such that the product of integers in each interval is ≡ 1 (mod p)?",
-    "text": "For k \u2265 2, does there exist a prime p and k consecutive intervals whose products are all \u2261 1 (mod p)? Known for k=2 (p=11, Erd\u0151s 1979) and k=3 (p=17, Makowski 1983). Guy's Problem A15. Status: OPEN.",
+    "text": "For k ≥ 2, does there exist a prime p and k consecutive intervals whose products are all ≡ 1 (mod p)? Known for k=2 (p=11, Erdős 1979) and k=3 (p=17, Makowski 1983). Guy's Problem A15. Status: OPEN.",
     "proofStrategy": "We formalize interval products, define solutions as prime-boundary pairs satisfying the congruence, verify the known k=2 and k=3 examples via native_decide, state the main conjecture, and connect to Wilson's theorem and the Noll–Simmons factorial generalization.",
     "keyInsights": [
       "The condition $\\prod_{i=a}^{b-1} i \\equiv 1 \\pmod{p}$ is equivalent to $a! \\equiv b! \\pmod{p}$, transforming the interval product problem into one about collisions of the factorial residue function $n \\mapsto n! \\bmod p$",

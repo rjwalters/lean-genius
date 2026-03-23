@@ -59,12 +59,13 @@
       "basis_monotone theorem: superset of basis is a basis"
     ],
     "axiomCount": 7,
-    "lineCount": 300
+    "lineCount": 300,
+    "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #869: Minimal Additive Bases**\n\nThis problem in additive combinatorics asks about the structure of additive bases formed from disjoint unions.\n\n**Background:**\n- **Additive basis of order 2**: A set B where B + B (all pairwise sums) contains all sufficiently large integers\n- **Minimal basis**: A basis where removing any element leaves infinitely many integers unrepresentable\n\n**Key Prior Results:**\n- **Härtter (1956)**: Proved there exist additive bases containing no minimal sub-basis\n- **Nathanson (1974)**: Extended this result with further constructions\n- **Erdős-Nathanson (1988)**: Posed this question about disjoint bases\n\n**The Key Insight:**\nWhile arbitrary bases may lack minimal sub-bases, the question is whether the special structure of arising from two disjoint bases forces the existence of a minimal sub-basis.",
     "problemStatement": "**Problem Statement (Open)**\n\nIf $A_1, A_2$ are disjoint additive bases of order 2 (i.e., $A_i + A_i$ contains all large integers), then must $A = A_1 \\cup A_2$ contain a minimal additive basis of order 2?\n\nA minimal additive basis is one such that deleting any element creates infinitely many $n \\notin A + A$.\n\n**Status: OPEN**\n\nThe problem cannot be resolved by finite computation.",
-    "text": "If A\u2081, A\u2082 are disjoint additive bases of order 2, must A\u2081 \u222a A\u2082 contain a minimal additive basis?",
+    "text": "If A₁, A₂ are disjoint additive bases of order 2, must A₁ ∪ A₂ contain a minimal additive basis?",
     "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Formalize sumsets, additive bases of order 2, essential elements, and minimal bases\n\n2. **Key Concepts:**\n   - containsAllLarge: complement is finite\n   - isEssential: removal breaks cofiniteness\n   - isMinimalBasis: every element is essential\n\n3. **Known Results:** Axiomatize Härtter-Nathanson theorem (bases without minimal sub-bases exist)\n\n4. **Structural Theorems:** Prove union of disjoint bases is a basis, basis monotonicity\n\n5. **Conjecture:** State the open problem as a Prop definition\n\n6. **Challenges:** Highlight why disjointness might matter",
     "keyInsights": [
       "**Additive Basis of Order 2**: Set B where B + B contains all large integers",

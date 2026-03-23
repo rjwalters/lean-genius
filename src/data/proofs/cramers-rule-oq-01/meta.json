@@ -58,12 +58,13 @@
     "dateAdded": "2026-02-23",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 282
+    "lineCount": 282,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "**The Unified Algebraic Identity**\n\nBoth Cramer's Rule and the Cayley-Hamilton theorem rest on the same algebraic foundation: the adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$. **Cayley** (1858) developed systematic matrix algebra in a paper that encompasses both results. The adjugate matrix — whose entries are signed minors (cofactors) — simultaneously provides explicit solution formulas for linear systems (Cramer's Rule) and the mechanism for proving that matrices annihilate their own characteristic polynomials (Cayley-Hamilton).\n\n**The Connection**\n\nThe classical proof of Cayley-Hamilton applies Cramer's adjugate identity to the \"characteristic matrix\" $\\lambda I - M$ (which has polynomial entries). The determinant of $\\lambda I - M$ is exactly $\\text{charpoly}(M)(\\lambda)$. Applying the adjugate identity and then evaluating at $\\lambda = M$ yields the zero matrix — which is Cayley-Hamilton.\n\n**The Formalization**\n\nThis formalization makes the connection explicit and checkable in Lean 4. It demonstrates that the research question \"Can Cayley-Hamilton be derived from Cramer's Rule?\" has the answer **YES** — and the proof is clean and self-contained.",
     "problemStatement": "**The Open Question**\n\nCan the formalization of Cramer's Rule be extended to include the Cayley-Hamilton theorem as a corollary?\n\n**Answer: YES**\n\nThe adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ (the core of Cramer's Rule) directly implies the Cayley-Hamilton theorem when applied to the characteristic matrix $\\lambda I - M$.",
-    "text": "A formal proof that the Cayley-Hamilton theorem \u2014 every matrix satisfies its characteristic polynomial \u2014 follows as a direct corollary of the adjugate identity at the heart of Cramer's Rule: A * adj(A) = det(A) * I.",
+    "text": "A formal proof that the Cayley-Hamilton theorem — every matrix satisfies its characteristic polynomial — follows as a direct corollary of the adjugate identity at the heart of Cramer's Rule: A * adj(A) = det(A) * I.",
     "proofStrategy": "**Formalization Strategy**\n\n1. **Cramer's adjugate identity**: `adj(charmatrix M) * charmatrix M = charpoly(M) * I` (applying `adjugate_mul` to the polynomial matrix `charmatrix M = λI - M`).\n2. **matPolyEquiv transfer**: Via the algebra isomorphism `matPolyEquiv : Matrix n n R[X] ≃ₐ[R] (Matrix n n R)[X]`, we convert to `B(X) * (X - M) = charpoly(M).map(algebraMap)` in `(Matrix n n R)[X]`.\n3. **Evaluation at M**: The key identity `eval_mul_X_sub_C` gives `(B * (X - M)).eval M = 0`.\n4. **Conclude**: `aeval M (charpoly M) = 0` via the connection between `eval` of mapped polynomials and `aeval`.",
     "keyInsights": [
       "**Same Identity, Different Context**: Cramer's Rule and Cayley-Hamilton are both consequences of the adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ applied to different matrices.",

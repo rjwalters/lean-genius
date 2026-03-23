@@ -93,12 +93,13 @@
       }
     ],
     "axiomCount": 5,
-    "lineCount": 317
+    "lineCount": 317,
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "A question posed by Erdős and Hajnal in Ramsey theory, asking whether graphs can exhibit Ramsey-type behavior while avoiding large cliques.\n\nThe classical Ramsey theorem (1930) guarantees that sufficiently large complete graphs K_n force monochromatic K_l in any k-coloring. But K_n contains all cliques up to K_n. The Erdős-Hajnal question asks: can we achieve the same Ramsey forcing while forbidding K_{l+1}?\n\nFolkman (1970) proved the k = 2 case using shift graph constructions, introducing what are now called 'Folkman graphs'. His paper was published posthumously — Folkman died in 1969. Nešetřil and Rödl (1976) proved the general case for all k ≥ 2 using the Hales-Jewett theorem and partite constructions.\n\nThe Folkman number f(l; k) — the minimum vertices needed — has been an active area of research. The most-studied case f(3; 2) = 786 was determined through decades of work by Graham, Spencer, Frankl-Rödl, Dudek-Rödl, Lange-Radziszowski-Xu, and others.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet k ≥ 2 and l ≥ 3. Does there exist a graph G which contains no K_{l+1} (clique of size l+1) such that every k-coloring of the edges of G contains a monochromatic copy of K_l?\n\n**Answer: YES** (Folkman 1970 for k=2, Nešetřil-Rödl 1976 for general k)\n\nSuch graphs are called **Folkman graphs**. The key insight is that Ramsey-type forcing can occur without large clique substructures.",
-    "text": "For k \u2265 2 and l \u2265 3, does there exist a K_{l+1}-free graph G such that every k-coloring of G's edges contains monochromatic K_l? SOLVED: YES by Folkman (1970, k=2) and Ne\u0161et\u0159il-R\u00f6dl (1976, general).",
+    "text": "For k ≥ 2 and l ≥ 3, does there exist a K_{l+1}-free graph G such that every k-coloring of G's edges contains monochromatic K_l? SOLVED: YES by Folkman (1970, k=2) and Nešetřil-Rödl (1976, general).",
     "proofStrategy": "The formalization builds from basic graph theory to the main result in layers: (1) Define cliques and K_n-freeness using Mathlib's SimpleGraph, (2) Define edge colorings as functions G.edgeSet → Fin k, (3) Construct monochromatic subgraphs (color classes) as SimpleGraph instances with verified symmetry and looplessness, (4) Define the Ramsey property and Erdős-Hajnal question, (5) Axiomatize Folkman's 1970 theorem (k=2) and the Nešetřil-Rödl 1976 theorem (general k), (6) Prove erdos_924 = nesetril_rodl_1976. The summary theorem combines all three key results (general, k=2, and f(3;2) existence).",
     "keyInsights": [
       "**Ramsey without density**: Complete graphs trivially have the Ramsey property by being large enough. Folkman graphs achieve the same forcing while keeping ω(G) ≤ l — demonstrating that Ramsey phenomena arise from graph structure, not mere size or density.",

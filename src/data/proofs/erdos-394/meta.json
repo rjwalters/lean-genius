@@ -60,12 +60,13 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 13,
-    "lineCount": 306
+    "lineCount": 306,
+    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #394 studies the function t_k(n), defined as the least positive integer m such that n divides the product m(m+1)(m+2)···(m+k-1) of k consecutive integers starting at m. This function captures how far one must search among consecutive integer products to find one divisible by n. Erdős originally conjectured that the sum Σ_{n≤x} t₂(n) = o(x²), meaning the average value of t₂(n) grows slower than linearly.\n\nIn their landmark 1978 paper 'On some unconventional problems on the integers,' Erdős and Hall proved a much stronger result: Σ_{n≤x} t₂(n) ≪ (log log log x / log log x) x². The appearance of triply-iterated logarithms reflects the deep sieve-theoretic methods used. They further conjectured that Σ t₂(n) = o(x²/(log x)^c) for any c < log 2, with the threshold log 2 being optimal since the contribution from primes alone (t₂(p) = p - 1) gives the lower bound Σ t₂(n) ≫ x²/log x.\n\nErdős, Hall, and Selfridge also investigated the behavior of t_k for factorial arguments, showing t_{n-1}(n!) = 2 and t_{n-2}(n!) ≪ n with the latter being sharp for n = 2^r. They verified a strict decrease property for n = 10 and posed the hierarchy question: does Σ t_{k+1}(n) = o(Σ t_k(n)) for k ≥ 2? Both the power-saving conjecture and the hierarchy question remain open as of 2025.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED / OPEN)**\n\nLet t_k(n) = least m ≥ 1 such that n | m(m+1)(m+2)···(m+k-1).\n\n**Question 1:** Is Σ_{n≤x} t₂(n) ≪ x²/(log x)^c for some c > 0?\n\n**Question 2:** For k ≥ 2, is Σ_{n≤x} t_{k+1}(n) = o(Σ_{n≤x} t_k(n))?\n\n**Known:** Erdős-Hall (1978): Σ t₂(n) ≪ (log log log x / log log x)x²\n\n**Lower bound:** Σ t₂(n) ≫ x²/log x (from primes, t₂(p) = p-1)",
-    "text": "Let t_k(n) be the least m with n | m(m+1)\u00b7\u00b7\u00b7(m+k-1). Erd\u0151s-Hall (1978) proved \u03a3 t\u2082(n) \u226a (log log log x / log log x)x\u00b2. Questions about x\u00b2/(log x)^c bounds and hierarchy \u03a3 t_{k+1} = o(\u03a3 t_k) remain OPEN.",
+    "text": "Let t_k(n) be the least m with n | m(m+1)···(m+k-1). Erdős-Hall (1978) proved Σ t₂(n) ≪ (log log log x / log log x)x². Questions about x²/(log x)^c bounds and hierarchy Σ t_{k+1} = o(Σ t_k) remain OPEN.",
     "proofStrategy": "The formalization defines t_k(n) and the sum S_k(x). The trivial lower bound from primes is stated. Erdős-Hall's upper bound with triple-log is axiomatized. The hierarchy conjecture and factorial special cases are formalized. The Selfridge result for n=10 is included.",
     "keyInsights": [
       "**t₂(p) = p - 1:** For primes, need to start at p-1 to get p in the product",

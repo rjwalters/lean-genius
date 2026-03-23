@@ -44,12 +44,13 @@
       "Analysis of exceptional values n = 2 and n = 5"
     ],
     "axiomCount": 1,
-    "lineCount": 612
+    "lineCount": 612,
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and appears as Problem B2 in Richard Guy's influential book 'Unsolved Problems in Number Theory' (2004). The function f(n) computes the minimal m such that n can be written as a sum of the k smallest divisors of m.\n\nThe function has a curious property: it is undefined for exactly two values, n = 2 and n = 5. These are the only positive integers that cannot be expressed as a partial sum of divisors. This follows from a careful analysis of divisor structure.\n\nTerry Tao made significant progress on this problem by showing that the strong conjecture f(n) = o(n) is FALSE. He proved that the density of {n : f(n) ≤ δn} is at most O(δ²), meaning there are many n where f(n) is at least a constant fraction of n.\n\nHowever, the weaker question—whether f(n) = o(n) for ALMOST ALL n—remains open, as does the question of whether limsup f(n)/n = ∞.",
     "problemStatement": "Let $f(n)$ be the minimal integer $m$ such that $n$ is the sum of the $k$ smallest divisors of $m$ for some $k \\geq 1$.\n\n**Questions**:\n1. Is it true that $f(n) = o(n)$?\n2. Is it true that $f(n) = o(n)$ for almost all $n$?\n3. Is $\\limsup_{n \\to \\infty} f(n)/n = \\infty$?\n\n**Status**: OPEN — Tao disproved Part I, but Parts II and III remain unresolved.\n\n**Special Cases**: $f$ is undefined at $n = 2$ and $n = 5$ (returns 0 as junk value).",
-    "text": "Let f(n) be the minimal integer m such that n equals the sum of the k smallest divisors of m for some k \u2265 1. Is f(n) = o(n)? Or is this true only for almost all n, with limsup f(n)/n = \u221e?",
+    "text": "Let f(n) be the minimal integer m such that n equals the sum of the k smallest divisors of m for some k ≥ 1. Is f(n) = o(n)? Or is this true only for almost all n, with limsup f(n)/n = ∞?",
     "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Axiomatizing f(n)**: Define the function f(n) as the minimal m whose k smallest divisors sum to n, returning 0 when undefined\n\n2. **Defining representability**: The predicate IsRepresentable(n) captures when n can be expressed as a partial divisor sum\n\n3. **Stating the three open questions**: Each as a precise mathematical proposition\n   - Part I: ∀ε > 0, ∃N, ∀n ≥ N: f(n) < εn\n   - Part II: The density 1 version of Part I\n   - Part III: ∀C, ∃n: f(n) ≥ Cn\n\n4. **Recording Tao's result**: Part I is false (axiom tao_disproves_part_i)\n\n5. **Proving undefined cases**: f(2) = 0 and f(5) = 0 follow from non-representability",
     "keyInsights": [
       "**Divisor sums are constrained**: The smallest divisor is always 1, so partial sums are 1, 1+d₂, 1+d₂+d₃, etc. This severely limits achievable values.",

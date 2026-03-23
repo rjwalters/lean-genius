@@ -58,7 +58,8 @@
       "existential_constant_is_projCoeff: bridge to base CauchySchwarz.lean existential result"
     ],
     "dateAdded": "2026-03-19",
-    "lineCount": 288
+    "lineCount": 288,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "The Cauchy-Schwarz inequality $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ is one of the most important inequalities in mathematics. Its equality condition -- that the vectors must be proportional -- is well-known, but the **exact proportionality constant** $c = \\langle u,v\\rangle/\\|v\\|^2$ is often stated informally. This formalization makes the constant precise: when equality holds, $u$ equals exactly the orthogonal projection of $u$ onto $v$, with the scalar being the projection coefficient.\n\nThe projection coefficient $\\text{projCoeff}(u,v) = \\langle u,v\\rangle/\\|v\\|^2$ appears throughout functional analysis, statistics (regression coefficients), and signal processing (matched filtering). This formalization proves its defining properties and shows it is the unique scalar satisfying the equality condition.",

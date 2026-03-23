@@ -72,12 +72,13 @@
       "Unit group of ZMod n and its structure",
       "Chebyshev polynomials and cos(2pi/n)",
       "Galois theory of cyclotomic extensions"
-    ]
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "**Gauss-Wantzel Theorem and Cyclotomic Fields**\n\nThe Gauss-Wantzel theorem (Gauss 1796, Wantzel 1837) characterizes which regular polygons are constructible: a regular n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes. The key algebraic fact is that cos(2π/n) is constructible iff its minimal polynomial has degree a power of 2, and this degree equals φ(n)/2.\n\nThis file bridges the axiomized Gauss-Wantzel theorem to Mathlib's cyclotomic field infrastructure, proving the connection between exp(2πi/n), cyclotomic polynomials, and cos(2π/n).",
     "problemStatement": "**Theorem**: cos(2π/n) is algebraic over ℚ with minimal polynomial of degree φ(n)/2. This degree determines constructibility: a regular n-gon is constructible iff φ(n)/2 is a power of 2.",
-    "text": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Proves \u03b6\u2099 = exp(2\u03c0i/n) properties, Chebyshev polynomial connections, complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod, and derives cos(2\u03c0/n) algebraicity from cyclotomic theory. 740 lines, 0 axioms, 0 sorries \u2014 all former axioms eliminated.",
+    "text": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Proves ζₙ = exp(2πi/n) properties, Chebyshev polynomial connections, complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod, and derives cos(2π/n) algebraicity from cyclotomic theory. 740 lines, 0 axioms, 0 sorries — all former axioms eliminated.",
     "proofStrategy": "The proof connects several mathematical theories:\n\n1. **Euler's formula**: ζₙ = exp(2πi/n) = cos(2π/n) + i·sin(2π/n)\n2. **Root of unity**: ζₙⁿ = 1, hence ζₙ is algebraic over ℚ\n3. **Cyclotomic bridge**: cos(2π/n) = (ζₙ + ζₙ⁻¹)/2\n4. **Galois theory**: Gal(ℚ(ζₙ)/ℚ) ≃ (ℤ/nℤ)* has order φ(n)\n5. **Complex conjugation**: the element -1 ∈ (ℤ/nℤ)* gives an order-2 automorphism\n6. **Fixed field**: the maximal real subfield has degree φ(n)/2 over ℚ\n\nThe key proved result is `complex_conj_order_two`, which uses `galCyclotomicEquivUnitsZMod` to identify the conjugation automorphism with -1 in the units group.",
     "keyInsights": [
       "The bridge ζₙ + ζₙ⁻¹ = 2cos(2π/n) connects cyclotomic fields to real cosines",

@@ -78,12 +78,13 @@
       "erdos_650: main theorem restating the known lower bound"
     ],
     "axiomCount": 2,
-    "lineCount": 92
+    "lineCount": 92,
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős and Sarányi posed this problem in 1959, establishing the lower bound f(m) ≥ c√m using a pigeonhole argument. The question asks: given a set A of m integers in {1,...,N}, how many integers in any interval of length 2N must be divisible by some element of A?\n\nThe lower bound proof counts the total number of (divisor, multiple) pairs and uses the constraint that each integer has a bounded number of divisors to extract √m distinct covered integers. The matching upper bound — that f(m) ≤ C√m for some constant C — remains open, making this one of the longer-standing open problems in multiplicative number theory.\n\nThe problem connects to several areas: sieve theory (counting integers with prescribed divisibility), extremal combinatorics (finding worst-case sets), and multiplicative number theory (distribution of multiples in intervals). The √m threshold appears naturally from the harmonic sum structure of divisor counts.",
     "problemStatement": "Let f(m) be such that if A ⊆ {1,...,N} has |A| = m, then every interval in [1,∞) of length 2N contains ≥ f(m) distinct integers b₁,...,bᵣ where each bᵢ is divisible by some aᵢ ∈ A, with all aᵢ distinct. Estimate f(m). Is f(m) ≪ m^{1/2}?",
-    "text": "If A \u2286 {1,...,N} with |A| = m, every interval of length 2N contains \u2265 f(m) integers divisible by distinct elements of A. Known: f(m) \u226b \u221am. Open: Is f(m) \u226a \u221am?",
+    "text": "If A ⊆ {1,...,N} with |A| = m, every interval of length 2N contains ≥ f(m) integers divisible by distinct elements of A. Known: f(m) ≫ √m. Open: Is f(m) ≪ √m?",
     "proofStrategy": "The formalization defines countDivisible (counting multiples in intervals via Finset.filter), minCoverage (worst-case over interval positions via sInf), and f(m,N) (extremal over all sets A). The Erdős-Sarányi lower bound is axiomatized, the open upper bound conjecture is stated, and the main theorem records the current state of knowledge.",
     "keyInsights": [
       "f(m) ≥ c√m for some c > 0 (Erdős-Sarányi 1959) via pigeonhole counting",
