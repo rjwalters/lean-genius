@@ -27,6 +27,7 @@
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Hajnal in 1967 as they studied connections between local graph properties and chromatic number. The condition that every subgraph has a large independent set is a strong structural constraint. Surprisingly, they could not prove even the k=1 case, though k=0 is trivial (it implies bipartiteness). Jon Folkman proved the general result in 1970, establishing that the chromatic bound k+2 always holds. This is a beautiful example of how local constraints (subgraph structure) control global properties (chromatic number).",
     "problemStatement": "Let k ≥ 0. Let G be a graph such that every subgraph H contains an independent set of size at least (n-k)/2, where n is the number of vertices of H. Must G have chromatic number at most k+2? Answer: YES.",
+    "text": "If every subgraph H of a graph G contains an independent set of size at least (n-k)/2, must G have chromatic number at most k+2? Answer: YES, proved by Folkman (1970).",
     "proofStrategy": "The formalization defines the 'Folkman property' with parameter k: every induced subgraph on vertex set W has an independent set of size at least (|W|-k)/2. Folkman's theorem is stated as an axiom: this property implies χ(G) ≤ k+2. Special cases are explored: k=0 gives bipartiteness (χ ≤ 2), k=1 gives χ ≤ 3. The bound k+2 is shown to be tight via an axiom asserting existence of tight examples.",
     "keyInsights": [
       "The k=0 case forces bipartiteness: every subgraph has α ≥ n/2 means no odd cycles",

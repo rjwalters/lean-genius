@@ -39,6 +39,7 @@
   "overview": {
     "historicalContext": "Minkowski first presented his convex body theorem in 1889 in 'Geometrie der Zahlen,' founding the field now called the geometry of numbers. The idea was revolutionary: purely geometric reasoning about volumes and convex sets could yield arithmetic conclusions about integer points. Minkowski's theorem was instrumental in Hilbert's proof of the finiteness of the class number of algebraic number fields. The classical proof via the pigeonhole principle on lattice translates was refined by Blichfeldt (1914) into a counting generalization. Siegel later extended these ideas to adelic settings. Today the theorem underpins lattice-based cryptography (LWE, NTRU), where the guaranteed existence of short lattice vectors is central to security analysis.",
     "problemStatement": "**Minkowski's Theorem**: Let S be a convex set in R^n that is symmetric about the origin (x in S implies -x in S). If vol(S) > 2^n, then S contains a non-zero integer lattice point.",
+    "text": "A convex, centrally symmetric body with volume greater than 2^n contains a non-zero lattice point. Foundational for the geometry of numbers.",
     "proofStrategy": "Consider the set S/2 (scaled by 1/2). By the pigeonhole principle applied to translates of S/2 by lattice vectors, two distinct lattice translates must overlap. Their difference gives a non-zero lattice point in S.",
     "keyInsights": [
       "The volume bound $2^n$ is sharp: the open cube $(-1,1)^n$ has volume exactly $2^n$ and contains no nonzero integer points",

@@ -61,6 +61,7 @@
   "overview": {
     "historicalContext": "Erdős and Moser conjectured that a convex n-gon has O(n) unit distance pairs. Despite progress from O(n log n) bounds (Füredi 1990, Aggarwal 2015), the conjecture remains open. The Edelsbrunner-Hajnal (1991) lower bound of 2n - 7 suggests the Erdős-Fishburn conjecture of exactly 2n may be tight. The unit distance problem for general point sets (Erdős Problem #89, 1946) asks for the maximum number of unit distance pairs among n points in the plane, with best known bounds Ω(n^{1+c/log log n}) and O(n^{4/3}). The convex restriction dramatically simplifies the problem: in a convex polygon, each distance can appear at most twice on each side, giving much sharper bounds.",
     "problemStatement": "If n points in ℝ² form a convex polygon, prove there are O(n) pairs at distance 1 apart. OPEN.",
+    "text": "In a convex n-gon, are there only O(n) pairs at unit distance? Conjectured by Erd\u0151s-Moser. Best upper: n log n (Aggarwal 2015), lower: 2n-7 (Edelsbrunner-Hajnal 1991). OPEN.",
     "proofStrategy": "The formalization defines unit distance pairs and convex position using Mathlib's EuclideanSpace and convexHull. Known bounds are axiomatized: Füredi's O(n log n), Aggarwal's improvement, and the Edelsbrunner-Hajnal construction. The lower_bound theorem is proved from the construction axiom. The summary theorem combines upper and lower bounds.",
     "keyInsights": [
       "Convexity should restrict unit distances to O(n), but proving this is hard",
