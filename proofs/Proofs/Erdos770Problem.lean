@@ -220,8 +220,32 @@ axiom erdos_770_largest_prime :
 
 -- ## Structural property
 
+/-- The gcd fold value divides any individual term. -/
+private theorem fold_gcd_dvd_mem {S : Finset ℕ} {a : ℕ} (ha : a ∈ S) (f : ℕ → ℕ) :
+    S.fold Nat.gcd 0 f ∣ f a := by
+  induction S using Finset.cons_induction with
+  | empty => exact absurd ha (Finset.not_mem_empty _)
+  | cons b S' hb ih =>
+    rw [Finset.fold_cons hb]
+    rcases Finset.mem_cons.mp ha with rfl | ha'
+    · exact Nat.gcd_dvd_left _ _
+    · exact dvd_trans (Nat.gcd_dvd_right _ _) (ih ha')
+
+/-- The gcd fold over a superset divides the fold over a subset. -/
+private theorem fold_gcd_dvd_of_subset {S T : Finset ℕ} (hST : S ⊆ T) (f : ℕ → ℕ) :
+    T.fold Nat.gcd 0 f ∣ S.fold Nat.gcd 0 f := by
+  induction S using Finset.cons_induction with
+  | empty => simp [Finset.fold_empty]
+  | cons a S' ha ih =>
+    rw [Finset.fold_cons ha]
+    apply Nat.dvd_gcd
+    · exact fold_gcd_dvd_mem (hST (Finset.mem_cons_self a S')) f
+    · exact ih (fun x hx => hST (Finset.mem_cons_of_mem hx))
+
 /-- Once gcd reaches 1, it stays 1. Adding more terms to a gcd that is
     already 1 keeps it at 1. -/
 theorem gcdPowerSeq_stable (n k j : ℕ) (hk : gcdPowerSeq n k = 1) (hj : k ≤ j) :
     gcdPowerSeq n j = 1 := by
-  sorry
+  apply Nat.eq_one_of_dvd_one
+  rw [← hk]
+  exact fold_gcd_dvd_of_subset (Finset.Icc_subset_Icc_right hj) _

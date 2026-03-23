@@ -248,7 +248,7 @@ theorem omega_pred_le_one_at_barrier (n : ℕ) (hn : n > 0)
 -- barriers for ω can be machine-checked.
 
 section DecidableBarriers
-attribute [-instance] Classical.propDecidable
+
 
 /-- Computable version of ω using primeFactors -/
 def omegaC (n : ℕ) : ℕ := n.primeFactors.card
@@ -713,11 +713,11 @@ theorem orbit_respects_barrier_order (b₁ b₂ : ℕ) (hb₁ : IsBarrier omega 
 -- Since Ω(n) ≥ ω(n), Ω-barriers are rarer but still computable.
 
 section DecidableBigOmega
-attribute [-instance] Classical.propDecidable
+
 
 /-- Computable version of Ω (prime factors counted with multiplicity) -/
 def bigOmegaC (n : ℕ) : ℕ :=
-  n.factors.length
+  n.primeFactorsList.length
 
 -- ## Verified Ω-Barriers
 --
@@ -758,11 +758,11 @@ end DecidableBigOmega
 -- barriers with positive density.
 
 section DecidableExpProd
-attribute [-instance] Classical.propDecidable
+
 
 /-- Computable version of expProd: product of exponents in prime factorization -/
 def expProdC (n : ℕ) : ℕ :=
-  n.factors.dedup.foldl (fun acc p => acc * n.factors.count p) 1
+  n.primeFactorsList.dedup.foldl (fun acc p => acc * n.primeFactorsList.count p) 1
 
 -- ## Verified F-Barriers (expProd)
 --
@@ -821,7 +821,7 @@ end DecidableExpProd
 -- The OEIS A005236 sequence continues: 360, 480, 512, 720, 1080, ...
 
 section ExtendedBarriers
-attribute [-instance] Classical.propDecidable
+
 
 -- Barriers at 360, 480, 512, 720 are in OEIS A005236 but too expensive for native_decide.
 -- We verify the count up to 241 which captures 20 barriers.
@@ -834,7 +834,7 @@ end ExtendedBarriers
 -- F has the most barriers (positive density), ω has fewer, Ω the fewest.
 
 section BarrierComparison
-attribute [-instance] Classical.propDecidable
+
 
 /-- ω-barriers are more common than Ω-barriers up to 5 -/
 theorem omega_more_barriers_than_bigOmega_5 :
@@ -964,8 +964,8 @@ theorem barrier_equiv_all_squarefree_below (n : ℕ)
     (hsq : ∀ m, m < n → m ≠ 0 → Squarefree m)
     (hb : IsBarrier omega n) : IsBarrier bigOmega n := by
   intro m hm
-  rcases Nat.eq_or_gt_of_le (Nat.zero_le m) with rfl | hm_pos
-  · simp [bigOmega]; omega
+  obtain rfl | hm_pos := m.eq_zero_or_pos
+  · simp [bigOmega]
   · have hsqm := hsq m hm (by omega)
     have heq := omega_eq_bigOmega_of_squarefree m (by omega) hsqm
     have := hb m hm
@@ -980,9 +980,15 @@ theorem barrier_equiv_all_squarefree_below (n : ℕ)
 axiom erdos_413_conjecture :
   (barriers omega).Infinite
 
-/-- Erdős Problem #413 Part 2 (OPEN): epsilon-barriers for ω -/
-axiom erdos_413_epsilon_variant :
-  ∃ ε : ℝ, ε > 0 ∧ (barriersReal (fun n => ε * omega n)).Infinite
+/-- Erdős Problem #413 Part 2: epsilon-barriers for ω.
+    PROVED from erdos_413_conjecture: take ε = 1, then every ω-barrier
+    is also a (1·ω)-barrier in the real-valued sense.
+    (Previously axiom; axiom count reduced 6→5.) -/
+theorem erdos_413_epsilon_variant :
+    ∃ ε : ℝ, ε > 0 ∧ (barriersReal (fun n => ε * omega n)).Infinite := by
+  refine ⟨1, one_pos, erdos_413_conjecture.mono fun n hn m hm => ?_⟩
+  simp only [one_mul]
+  exact_mod_cast hn m hm
 
 /-- Conjecture: all trajectories of n ↦ n + ω(n) eventually meet (related to #412) -/
 axiom all_trajectories_meet :
@@ -993,7 +999,7 @@ axiom all_trajectories_meet :
 /-- Erdős's result: expProd has barriers with positive density [Er79d] -/
 axiom erdos_expProd_positive_density :
   ∃ δ : ℝ, δ > 0 ∧
-    Filter.Tendsto (fun N => (Finset.filter (fun n => IsBarrier expProd n) (Finset.range N)).card / N)
+    Filter.Tendsto (fun (N : ℕ) => (countBarriers expProdC N : ℝ) / ↑N)
       Filter.atTop (nhds δ)
 
 /-- Selfridge's computation: largest Ω-barrier below 10^5 is 99840 -/
@@ -1004,23 +1010,14 @@ axiom selfridge_bigOmega_barrier :
 -- ## Main Open Problem Statement
 
 /--
-Erdős Problem #413 (Open):
-
-Are there infinitely many n such that m + ω(m) ≤ n for all m < n?
-
-Erdős called such n "barriers" for ω. He believed ω should have infinitely
-many barriers, unlike φ and σ which grow too quickly. He also asked whether
-there exists ε > 0 such that infinitely many n satisfy m + ε·ω(m) ≤ n for all m < n.
-
-Known:
-- expProd = ∏kᵢ has barriers with positive density [Er79d]
-- 99840 is the largest Ω-barrier below 10^5 (Selfridge)
-- OEIS A005236 lists known ω-barriers: 1, 2, 4, 6, 12, 24, ...
-- 2^ω(n) ≤ n, so ω(n) ≤ log₂(n) - slow growth enables barriers
+Erdős Problem #413 combined statement.
+PROVED from erdos_413_conjecture + erdos_413_epsilon_variant.
+(Previously axiom; axiom count reduced 5→4.)
 -/
-axiom erdos_413_main :
-  (barriers omega).Infinite ∧
-  ∃ ε : ℝ, ε > 0 ∧ (barriersReal (fun n => ε * omega n)).Infinite
+theorem erdos_413_main :
+    (barriers omega).Infinite ∧
+    ∃ ε : ℝ, ε > 0 ∧ (barriersReal (fun n => ε * omega n)).Infinite :=
+  ⟨erdos_413_conjecture, erdos_413_epsilon_variant⟩
 
 -- ## Omega Multiplicativity for Coprime Numbers
 --
@@ -1032,7 +1029,7 @@ theorem omega_mul_coprime (m n : ℕ) (hm : m ≠ 0) (hn : n ≠ 0)
     (hcop : Nat.Coprime m n) :
     omega (m * n) = omega m + omega n := by
   unfold omega
-  rw [Nat.Coprime.primeFactors_mul hcop hm hn]
+  rw [Nat.Coprime.primeFactors_mul hcop]
   exact Finset.card_union_of_disjoint (Nat.Coprime.disjoint_primeFactors hcop)
 
 /-- ω(pq) = 2 for distinct primes p and q -/
@@ -1085,18 +1082,21 @@ theorem barrier_pred_is_prime_power (n : ℕ) (hn : n ≥ 3) (hb : IsBarrier ome
   have hpred := omega_pred_le_one_at_barrier n (by omega) hb
   have h_ne : n - 1 ≠ 0 := by omega
   have h_pos : omega (n - 1) ≥ 1 := by
-    rw [omega, Finset.one_le_card]
-    exact ⟨(n - 1).minFac, Nat.mem_primeFactors.mpr
+    unfold omega
+    exact Finset.card_pos.mpr ⟨(n - 1).minFac, Nat.mem_primeFactors.mpr
       ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd _, h_ne⟩⟩
   have h_eq1 : omega (n - 1) = 1 := by omega
   rw [omega, Finset.card_eq_one] at h_eq1
   obtain ⟨p, hp⟩ := h_eq1
   have hp_mem : p ∈ (n - 1).primeFactors := by rw [hp]; exact Finset.mem_singleton.mpr rfl
   have hp_prime : p.Prime := Nat.prime_of_mem_primeFactors hp_mem
-  refine ⟨p, (n - 1).factorization p, hp_prime, ?_, ?_⟩
-  · rw [Nat.one_le_iff_ne_zero, Finsupp.mem_support_iff.mp]
+  have hp_supp : p ∈ (n - 1).factorization.support := by
     rw [Nat.support_factorization, hp]; exact Finset.mem_singleton.mpr rfl
-  · rw [← Nat.factorization_prod_pow_eq_self h_ne, Finsupp.prod, Nat.support_factorization, hp]
-    simp
+  refine ⟨p, (n - 1).factorization p, hp_prime, ?_, ?_⟩
+  · exact Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp hp_supp)
+  · have h_prod := Nat.factorization_prod_pow_eq_self h_ne
+    rw [Finsupp.prod, Nat.support_factorization, hp] at h_prod
+    simp at h_prod
+    exact h_prod.symm
 
 end Erdos413
