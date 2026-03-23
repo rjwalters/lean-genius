@@ -40,13 +40,14 @@
   "overview": {
     "historicalContext": "The transfer matrix method was introduced to lattice gauge theory by Wilson (1974) and developed into a rigorous tool by Osterwalder and Seiler (1978) and Creutz (1983). The key insight is that the Euclidean lattice partition function $Z = \\operatorname{Tr}(T^{N_t})$ connects to Hamiltonian quantum mechanics through the Perron-Frobenius theorem: the transfer matrix $T$ is a strictly positive operator, so it has a unique largest eigenvalue $\\lambda_0$ (the vacuum) with a spectral gap to $\\lambda_1$ (the first excited state). Kogut and Susskind (1975) established the Hamiltonian formulation, decomposing $T = T_E^{1/2} T_B T_E^{1/2}$ into electric (kinetic) and magnetic (potential) parts. Glimm and Jaffe (1987) placed the mass gap extraction on firm mathematical footing in their constructive QFT framework. The finite-volume mass gap is a theorem for any coupling; the Clay Millennium Prize asks whether it persists in the continuum and infinite-volume limits.",
     "problemStatement": "Given a lattice gauge theory with transfer matrix $T$ having eigenvalues $\\lambda_0 > \\lambda_1 > 0$, prove that the mass gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a > 0$.",
-    "text": "Proven finite-volume mass gap via transfer matrix eigenvalue ratio. This is the strongest rigorous result in the Yang-Mills formalization.",
+    "text": "Proves the finite-volume mass gap is strictly positive for any lattice gauge theory: given Perron-Frobenius eigenvalues $\\lambda_0 > \\lambda_1 > 0$, the gap $\\Delta = \\log(\\lambda_0/\\lambda_1)/a > 0$ follows by logarithmic monotonicity. Includes correlation decay equivalence and explicit strong coupling computation.",
     "proofStrategy": "The proof is direct: given $\\lambda_0 > \\lambda_1 > 0$, we have $\\lambda_1/\\lambda_0 < 1$, so $\\ln(\\lambda_1/\\lambda_0) < 0$, so $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a > 0$ for positive lattice spacing $a > 0$. The physical content is that the transfer matrix eigenvalue gap implies exponential decay of correlation functions.",
     "keyInsights": [
       "The mass gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$ is a THEOREM for finite-volume lattice gauge theory",
       "What remains OPEN is whether this gap survives the infinite-volume and continuum ($a \\to 0$) limits",
       "Correlation functions decay as $e^{-\\Delta t}$ where $t$ is Euclidean time separation",
-      "In strong coupling ($\\beta \\ll 1$), the mass gap is large and computable: $\\Delta \\approx -\\ln(\\beta/(2N^2))/a$"
+      "In strong coupling ($\\beta \\ll 1$), the mass gap is large and computable: $\\Delta \\approx -\\ln(\\beta/(2N^2))/a$",
+      "The Kogut-Susskind decomposition $T = T_E^{1/2} T_B T_E^{1/2}$ separates gauge kinetic energy ($E^2$) from magnetic potential energy (plaquettes), making the positivity of $T$ manifest since both factors are positive operators"
     ],
     "prerequisites": [
       "Spectral theory (eigenvalues, Perron-Frobenius theorem)",
@@ -97,6 +98,13 @@
       "summary": "At strong coupling, eigenvalues are $\\lambda_R = e^{-ag^2 C_2(R)/2}$. Proves the gap $\\Delta = ag^2 C_2(\\text{fund})/2$ with concrete values for SU(2) and SU(3).",
       "startLine": 5463,
       "endLine": 5507
+    },
+    {
+      "id": "grand-summary",
+      "title": "Grand Summary: Mass Gap Problem Status (Part LVII)",
+      "summary": "Summarizes 56+ parts of formal development covering classical Yang-Mills, 2D exact solutions, non-perturbative mechanisms, perturbative framework, lattice gauge theory, advanced approaches (large-N, SUSY, AdS/CFT, constructive QFT), and topological aspects. The transfer matrix mass gap is highlighted as one of two fully proven results (alongside 2D mass gap).",
+      "startLine": 5509,
+      "endLine": 5558
     }
   ],
   "conclusion": {
