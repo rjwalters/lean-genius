@@ -96,9 +96,9 @@
     {
       "id": "header",
       "title": "Module Header and Imports",
-      "summary": "Module docstring covering Problem #4 history (Rankin 1938 through FGKMT 2018). Single `import Mathlib` for all dependencies. Opens `Set`, `Nat`, `Real` namespaces.",
+      "summary": "Module docstring (lines 1-23) covering Problem #4 history (Rankin 1938 through FGKMT 2018), the $10,000 prize, and SOLVED status. Single `import Mathlib` (line 25) for all dependencies. Opens `Set`, `Nat`, `Real` namespaces (lines 27-29).",
       "mathContext": "Imports all of Mathlib. Uses `Nat.nth Nat.Prime` for the $n$th prime, `Real.log` for iterated logarithms, `Set.Infinite` for infinitude statements.",
-      "startLine": 25,
+      "startLine": 1,
       "endLine": 29
     },
     {
@@ -196,6 +196,14 @@
       "mathContext": "Erdős \\$10K: $\\exists c > 0: g_n > (\\log n)^{1+c}$ infinitely often (OPEN). Firoozbakht: $p_n^{1/n}$ strictly decreasing (OPEN, implies $g_n < (\\log p_n)^2 - \\log p_n$).",
       "startLine": 194,
       "endLine": 215
+    },
+    {
+      "id": "summary-comment",
+      "title": "Summary and References",
+      "startLine": 216,
+      "endLine": 243,
+      "summary": "Closing commentary summarizing the SOLVED status, key results from Rankin through FGKMT, and remaining open questions (Cramér's conjecture, growth rate $> (\\log n)^{1+c}$). Closes the Erdos4 namespace.",
+      "mathContext": "SOLVED: $\\forall C > 0$, infinitely many $n$ with $p_{n+1} - p_n > C \\cdot R(n)$ where $R(n)$ is the Rankin function. Remaining open: Cramér ($g_n \\sim (\\log p_n)^2$) and Erdős's $\\$10{,}000$ ($g_n > (\\log n)^{1+c}$)."
     }
   ],
   "overview": {
