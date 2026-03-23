@@ -48,6 +48,7 @@
   ],
   "relatedProofs": [
     "fourier-series",
+    "fourier-series-oq-02",
     "fourier-series-oq-03"
   ],
   "references": {
@@ -71,6 +72,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02.lean",
+      "filename": "FourierSeriesOQ02.lean",
+      "lineCount": 329,
+      "theoremCount": 12,
+      "axiomCount": 7,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },
     {
       "path": "Proofs/FourierSeriesOQ03.lean",
