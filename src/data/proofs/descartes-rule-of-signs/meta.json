@@ -127,11 +127,46 @@
     "summary": "Descartes' Rule of Signs provides an elegant and computationally simple method to bound the number of positive and negative real roots of a polynomial. The formalization introduces sign change counting for coefficient sequences, states the main bound and parity results, and extends to negative roots via substitution.",
     "implications": "**Theoretical Significance:**\n\n**1. Historical Importance**\nOne of the earliest general results about polynomial roots, published in 1637 before the Fundamental Theorem of Algebra was proven.\n\n**2. Algorithmic Applications**\nForms the basis for real root isolation algorithms like Sturm's theorem, Vincent's theorem, and the Continued Fraction method used in computer algebra systems.\n\n**3. Educational Value**\nDemonstrates the deep connection between algebraic properties (coefficient signs) and analytic properties (root locations).\n\n**4. Practical Use**\nQuickly determines existence or non-existence of positive/negative roots without solving.",
     "openQuestions": [
-      "How can the full proof be formalized using Mathlib's analysis library?",
-      "What is the relationship to Budan's theorem and the Budan-Fourier theorem?",
-      "Can the proof be made constructive to extract root bounds?"
+      "Can the full proof via Rolle's theorem be completed in Lean? The file imports `Mathlib.Analysis.Calculus.LocalExtr.Rolle` but the main theorem currently uses axioms — completing the proof would require formalizing the induction on degree with Rolle's theorem supplying intermediate roots of the derivative.",
+      "Budan's theorem (1807) generalizes Descartes's rule: the number of roots in an interval $(a,b)$ is bounded by $V(a) - V(b)$ where $V$ counts sign variations in the Taylor expansion. Can this be formalized as a strict generalization of Descartes's rule?",
+      "Sturm's theorem (1829) gives the *exact* number of real roots in an interval, not just an upper bound. Can the Sturm chain construction be formalized in Lean, showing it refines Descartes's estimate to equality?",
+      "Can the algebraic proof (without Rolle's theorem, using only polynomial division and induction) be formalized alongside the analytic proof, demonstrating two independent proof paths for the same result?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The intermediate value theorem guarantees that sign changes in polynomial values correspond to real roots — a prerequisite for Descartes's rule, which refines this by counting sign changes in *coefficients* rather than values"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "Rolle's theorem (a special case of MVT) is the key lemma: between any two roots of $p(x)$, there exists a root of $p'(x)$. This connects the root count of $p$ to the root count of $p'$, enabling the inductive proof"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both concern polynomial roots: Descartes's rule bounds how many positive roots exist, while Abel-Ruffini shows those roots cannot always be expressed by radicals. Together they illustrate what can and cannot be determined about polynomial roots from their coefficients"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial coefficients arise in the Taylor expansion approach to Descartes's rule (Budan's generalization), and the alternating sign patterns of binomial coefficients provide key examples for the rule"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Both are Wiedijk-100 results about polynomial structure: Faulhaber's formulas concern polynomial evaluation (power sums as polynomials in $n$), while Descartes's rule concerns polynomial root counting — complementary perspectives on polynomial analysis"
+    }
+  ],
+  "relatedProofs": [
+    "intermediate-value-theorem",
+    "mean-value-theorem",
+    "abel-ruffini",
+    "binomial-theorem",
+    "sum-of-kth-powers"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Algebra.Polynomial.Basic",
@@ -167,6 +202,27 @@
       "year": "1918",
       "venue": "Annals of Mathematics 19(4), 251–278",
       "note": "Historical survey and extensions to more general settings"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Beweis eines algebraischen Lehrsatzes",
+      "year": "1828",
+      "venue": "Journal für die reine und angewandte Mathematik 3, 1–4",
+      "note": "Provided the first rigorous proof of Descartes's rule and characterized exactly when the bound is tight — the number of positive roots equals the sign change count minus an even number"
+    },
+    {
+      "authors": "Sturm, Jacques Charles François",
+      "title": "Mémoire sur la résolution des équations numériques",
+      "year": "1835",
+      "venue": "Mémoires présentés par divers savants à l'Académie royale des Sciences 6, 271–318",
+      "note": "Extended Descartes's approach to give the exact number of real roots in any interval via Sturm chains — the first complete real root isolation algorithm"
+    },
+    {
+      "authors": "Grabiner, Sandy",
+      "title": "Descartes' Rule of Signs: Another Construction",
+      "year": "1999",
+      "venue": "American Mathematical Monthly 106(9), 854–856",
+      "note": "Elementary proof of Descartes's rule using only polynomial division and induction, avoiding Rolle's theorem"
     }
   ]
 }
