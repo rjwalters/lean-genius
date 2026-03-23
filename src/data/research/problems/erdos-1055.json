@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1055",
-  "title": "Erdős #1055",
-  "phase": "ACT",
+  "title": "Erd\u0151s #1055",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T14:31:40.057Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "WF refactoring complete; 2 routine sorries remain",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,45 +29,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Migrated primeClass to well-founded definition (primeClassWF). Eliminated the fuel-based class_of_factor_lt sorry by proving it from the WF version. Rewrote class_one_iff_smooth and primeClass_pos_of_prime to use WF structure. File: 0 sorries, 4 axioms (all OPEN conjectures), 36 theorems, 305 lines.",
+    "progressSummary": "PROGRESS: Refactored primeClass to use well-founded recursion (eliminating fuel limitation). nonSmooth_factor_lt proved. class_of_factor_lt reduced to routine foldl bound sorry. class_one_iff_smooth sorry (not main target). All native_decide theorems pass. Axiom count unchanged (4 open conjectures).",
     "builtItems": [
-      "theorem nonSmooth_factor_lt: q < p for nonSmooth factors (Erdos1055Problem.lean)",
-      "def primeClassWF: well-founded prime class via termination_by p (Erdos1055Problem.lean)",
-      "theorem class_of_factor_lt_wf: primeClassWF q < primeClassWF p (fully proved)",
-      "private theorem foldl_guarded_max_mono and foldl_guarded_max_ge: helper lemmas",
-      "private theorem mem_nonSmooth_of_dvd: q is in the nonSmooth list",
-      "private theorem primeClassWF_ge_succ_factor: lower bound on primeClassWF p",
-      "native_decide verifications: primeClassWF agrees with primeClass on p=2,13,37,73,1021",
-      "primeClass migrated to primeClassWF (well-founded recursion)",
-      "class_of_factor_lt: PROVED (was sorry, fuel convergence eliminated)",
-      "class_one_iff_smooth: rewritten for WF definition",
-      "primeClass_pos_of_prime: rewritten for WF definition",
-      "primeClass_ge_succ_factor: NEW theorem (key lower bound for WF monotonicity)"
+      "def primeClass: WF recursion via termination_by p (replaces fuel-based primeClassAux)",
+      "lemma nonSmooth_factor_lt: q < p for nonSmooth prime factors of p+1 (fully proved)",
+      "theorem primeClass_pos_of_prime: primeClass p >= 1 for primes (proved)",
+      "theorem class_of_factor_lt: structural - reduced to foldl bound sorry",
+      "private foldl_max_ge_init, foldl_max_ge_of_mem: helper lemmas (term-mode)",
+      "All native_decide class values verified (class 1-5, OEIS A005113)"
     ],
     "insights": [
-      "class_of_factor_lt needs fuel convergence: primeClassAux 30 p ≥ 1 + primeClassAux 29 q from definition, but primeClass q = primeClassAux 30 q needs to equal primeClassAux 29 q",
-      "For prime p≥5 (odd), p+1 is even, so nonSmooth prime factors q of p+1 satisfy q ≤ (p+1)/2 < p",
-      "primeClassAux f p ≤ f for all f,p (bounded by fuel) — needed for convergence argument",
+      "class_of_factor_lt needs fuel convergence: primeClassAux 30 p \u2265 1 + primeClassAux 29 q from definition, but primeClass q = primeClassAux 30 q needs to equal primeClassAux 29 q",
+      "For prime p\u22655 (odd), p+1 is even, so nonSmooth prime factors q of p+1 satisfy q \u2264 (p+1)/2 < p",
+      "primeClassAux f p \u2264 f for all f,p (bounded by fuel) \u2014 needed for convergence argument",
       "Fix options: (1) prove convergence by strong induction on p, (2) refactor to well-founded recursion, (3) add convergence hypothesis",
       "primeClassWF: well-founded definition using termination_by p, avoids fuel convergence entirely",
       "nonSmooth_factor_lt proved: for prime p, any nonSmooth prime factor q of (p+1) satisfies q < p",
       "class_of_factor_lt_wf fully proved for primeClassWF (0 sorries)",
       "Fuel-based class_of_factor_lt cannot be proved without fuel convergence (primeClassAux 29 q = primeClassAux 30 q)",
       "primeClassWF.eq_1 is the auto-generated equation lemma for WF unfolding",
-      "primeClassWF_ge_succ_factor proof broke with Mathlib API change - equation lemma unfolding + simp produces goals omega cannot close",
-      "File previously could not compile; now compiles with 2 sorries (fuel-based class_of_factor_lt + broken WF helper)",
-      "dite/ite mismatch: WF definition uses dite for termination proof, but congr tactic bridges the gap since they are definitionally equal",
-      "simp_all can close isEmpty contradictions but may need one more step (rename_i to access the universal hypothesis it generates)",
-      "simp only [] (empty simp set) effectively unfolds let bindings without normalizing other terms",
-      "fuel-based primeClassAux is fundamentally limited: cannot prove convergence in general without bounding maximum class"
+      "WF recursion eliminates fuel limitation entirely - class_of_factor_lt no longer needs fuel convergence",
+      "foldl with have proof term is definitionally equal to version without have, but Lean type checker needs explicit help to see this"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "File is complete: 0 sorries, 4 justified axioms (OPEN conjectures)",
-      "Consider proving class_density_subpolynomial (stated as easy by Erdős)",
-      "Future: remove primeClassAux entirely (currently unused after migration)"
+      "Fill in foldl bound sorry in class_of_factor_lt (routine: foldl max >= element for member)",
+      "Prove class_one_iff_smooth using the WF definition (unfold + isEmpty reasoning)",
+      "Consider submitting foldl bound to Aristotle as companion file"
     ],
-    "markdown": "# Erdős #1055 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.\n\nAre there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?\n\n\n\nA classification due to Erd\\H{o}s and Selfridge. It is easy to prove that the number of primes $\\leq n$ in class $r$ is at most $n^{o(1)}$.\n\nThe sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\\H{o}s thought $p_r^{1/r}\\to \\infty$, while Selfridge thought it quite likely to be bounded.\n\nA similar question can be asked replacing $p+1$ with $p-1$.\n\nThis is problem A18 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1054\n- Problem #1056\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1055 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.\n\nAre there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?\n\n\n\nA classification due to Erd\\H{o}s and Selfridge. It is easy to prove that the number of primes $\\leq n$ in class $r$ is at most $n^{o(1)}$.\n\nThe sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\\H{o}s thought $p_r^{1/r}\\to \\infty$, while Selfridge thought it quite likely to be bounded.\n\nA similar question can be asked replacing $p+1$ with $p-1$.\n\nThis is problem A18 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1054\n- Problem #1056\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
