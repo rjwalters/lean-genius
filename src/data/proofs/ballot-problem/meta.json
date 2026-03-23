@@ -45,33 +45,32 @@
     ],
     "axiomCount": 0,
     "lineCount": 255,
-    "references": [
+    "relatedProblems": [
       {
-        "key": "Be87",
-        "citation": "Bertrand, J., Solution d'un problème, Comptes Rendus de l'Académie des Sciences de Paris 105 (1887), 369.",
-        "type": "paper"
+        "id": "ballot-problem-oq-01",
+        "relationship": "Extension of the ballot problem"
       },
       {
-        "key": "An87",
-        "citation": "André, D., Solution directe du problème résolu par M. Bertrand, Comptes Rendus de l'Académie des Sciences de Paris 105 (1887), 436–437.",
-        "type": "paper"
+        "id": "ballot-problem-oq-02",
+        "relationship": "Further generalization of ballot counting"
       },
       {
-        "key": "Fe68",
-        "citation": "Feller, W., An Introduction to Probability Theory and Its Applications, vol. 1, 3rd ed., Wiley (1968), Chapter III.",
-        "type": "book"
-      },
-      {
-        "key": "Ta62",
-        "citation": "Takács, L., Ballot Problems, Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete 1 (1962), 154–158.",
-        "type": "paper"
-      },
-      {
-        "key": "Re92",
-        "citation": "Renault, M., Four Proofs of the Ballot Problem, Mathematics Magazine 80(5) (2007), 345–352.",
-        "type": "paper"
+        "id": "ballot-problem-oq-03",
+        "relationship": "Additional ballot problem variants"
       }
-    ]
+    ],
+    "leanFile": {
+      "lineCount": 255,
+      "structureCount": 0,
+      "axiomCount": 0,
+      "theoremCount": 8,
+      "lemmaCount": 0,
+      "defCount": 1,
+      "imports": [
+        "Archive.Wiedijk100Theorems.BallotProblem",
+        "Mathlib.Tactic"
+      ]
+    }
   },
   "overview": {
     "historicalContext": "The Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus* of the French Academy of Sciences, and solved by Désiré André in the very next issue of the same journal. It asks: in an election where candidate A receives $p$ votes and candidate B receives $q$ votes (with $p > q$), what is the probability that A is ahead of B throughout the entire counting process?\n\nThe answer is the elegant formula $(p-q)/(p+q)$. André's proof introduced the **reflection principle** — a bijective argument that pairs each 'bad' vote sequence (where A falls behind or ties) with a reflected path. The reflection principle has since become one of the most powerful tools in enumerative combinatorics, applied to Catalan numbers, random walks, queueing theory, and financial mathematics.\n\nThe problem has a rich genealogy: it was studied independently by Émile Barbier (1887), rediscovered by Aeppli (1924), and generalized by Takács (1962) and others. William Feller popularized it in his classic textbook *An Introduction to Probability Theory and Its Applications* (1968), where it appears as a gateway to the theory of random walks and fluctuation theory.\n\nThe result appears as Theorem #30 in Wiedijk's Formalizing 100 Theorems list, and was formalized in Mathlib by Sébastien Gouëzel.",
