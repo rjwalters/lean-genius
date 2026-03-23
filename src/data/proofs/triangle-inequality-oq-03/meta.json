@@ -71,27 +71,37 @@
     {
       "id": "ultrametric-fundamentals",
       "title": "Ultrametric Fundamentals",
-      "content": "The ultrametric inequality d(x,z) ≤ max(d(x,y), d(y,z)) implies the standard triangle inequality since max(a,b) ≤ a + b for nonneg values."
+      "startLine": 31,
+      "endLine": 46,
+      "summary": "The ultrametric inequality d(x,z) ≤ max(d(x,y), d(y,z)) implies the standard triangle inequality since max(a,b) ≤ a + b for nonneg values."
     },
     {
       "id": "isosceles-triangle",
       "title": "Isosceles Triangle Theorem",
-      "content": "In an ultrametric space, if d(x,y) < d(y,z), then d(x,z) = d(y,z). Consequently, every triangle is isosceles: at least two of the three pairwise distances must be equal."
+      "startLine": 47,
+      "endLine": 130,
+      "summary": "In an ultrametric space, if d(x,y) < d(y,z), then d(x,z) = d(y,z). Consequently, every triangle is isosceles: at least two of the three pairwise distances must be equal."
     },
     {
       "id": "ball-structure",
       "title": "Ball Structure",
-      "content": "Ultrametric balls exhibit remarkable properties: every interior point is a center, distinct equal-radius balls are disjoint, and all balls are clopen with empty frontier."
+      "startLine": 131,
+      "endLine": 174,
+      "summary": "Ultrametric balls exhibit remarkable properties: every interior point is a center, distinct equal-radius balls are disjoint, and all balls are clopen with empty frontier."
     },
     {
       "id": "padic-instance",
       "title": "The p-adic Triangle Inequality",
-      "content": "The p-adic norm |·|_p on ℚ satisfies the ultrametric inequality: |x+y|_p ≤ max(|x|_p, |y|_p). This means all integers are p-adically bounded: |n|_p ≤ 1."
+      "startLine": 175,
+      "endLine": 224,
+      "summary": "The p-adic norm on ℚ satisfies the ultrametric inequality: |x+y|_p ≤ max(|x|_p, |y|_p). This means all integers are p-adically bounded: |n|_p ≤ 1."
     },
     {
       "id": "comparison",
       "title": "Archimedean vs Non-Archimedean Comparison",
-      "content": "The Archimedean property (for any x > 0, some n ∈ ℕ satisfies nx > 1) holds in ℝ but fails in p-adic fields, where |n|_p ≤ 1 for all integers."
+      "startLine": 225,
+      "endLine": 255,
+      "summary": "The Archimedean property (for any x > 0, some n ∈ ℕ satisfies nx > 1) holds in ℝ but fails in p-adic fields, where |n|_p ≤ 1 for all integers."
     }
   ],
   "crossReferences": [
