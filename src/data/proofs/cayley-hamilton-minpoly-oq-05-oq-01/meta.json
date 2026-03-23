@@ -77,7 +77,8 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 270
+    "lineCount": 270,
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Uses Classical.propDecidable as a local instance for decidability of propositions. All 5 theorems and 2 definitions are proved from Mathlib's UniqueFactorizationMonoid, EuclideanDomain, and linear algebra infrastructure."
   },
   "overview": {
     "historicalContext": "The theory of nonderogatory matrices (those whose minimal polynomial equals the characteristic polynomial) is central to the rational canonical form theorem. A matrix is nonderogatory if and only if it has a cyclic vector — a vector whose orbit under M spans the entire space. This characterization, due to Hoffman and Kunze, provides the bridge between algebraic (minpoly = charpoly) and geometric (cyclic vector existence) descriptions. The proof over infinite fields uses a beautiful union avoidance argument: the set of non-cyclic vectors is contained in a finite union of proper subspaces (one for each irreducible factor of the minimal polynomial), and over an infinite field, such a union cannot cover the whole space.",
@@ -143,5 +144,56 @@
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "extends",
+      "description": "Cayley-Hamilton ($\\chi_M(M) = 0$) implies $\\mu_M | \\chi_M$. This proof shows that when equality holds (nonderogatory), the matrix has a cyclic vector — connecting the algebraic condition to the geometric structure of the Krylov space"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Root entry for the minimal polynomial/Cayley-Hamilton family. This OQ-05-OQ-01 result completes the backward direction of the nonderogatory characterization"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "uses",
+      "description": "Bezout's identity in Euclidean domains ($d = ap + b\\mu$) is the key algebraic tool: it converts the GCD into a linear combination that annihilates the vector via $d(M)v = a(M)p(M)v + b(M)\\mu(M)v = 0$"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "uses",
+      "description": "Unique factorization in $K[X]$ (a Euclidean domain, hence UFD) provides the irreducible factor decomposition of the minimal polynomial, which drives the union avoidance construction"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "bezout-identity",
+    "fundamental-arithmetic"
+  ],
+  "references": [
+    {
+      "authors": "Hoffman, Kenneth; Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "Prentice-Hall, 2nd edition",
+      "note": "Standard reference for the nonderogatory/cyclic vector equivalence (Chapter 7), including the union avoidance argument over infinite fields"
+    },
+    {
+      "authors": "Horn, Roger A.; Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Comprehensive treatment of nonderogatory matrices, rational canonical form, and the relationship between minimal/characteristic polynomials"
+    },
+    {
+      "authors": "Roman, Steven",
+      "title": "Advanced Linear Algebra",
+      "year": "2008",
+      "venue": "Springer GTM 135, 3rd edition",
+      "note": "Graduate text with a thorough development of the cyclic decomposition theorem and its connection to the rational canonical form via invariant factors"
+    }
+  ]
 }
