@@ -110,11 +110,92 @@
       "What is the weakest connectivity condition (e.g., $k$-connectivity for large $k$, or $\\aleph_0$-connectivity) that $\\chi(G) \\geq \\aleph_1$ forces for countable subgraphs?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-1067",
+      "relationship": "Direct predecessor: Problem 1067 asked for an uncountable infinitely connected subgraph with χ = ℵ₁, which Soukup (2015) disproved. Problem 1068 is the surviving countable variant of exactly the same Erdős–Hajnal question."
+    },
+    {
+      "id": "erdos-62",
+      "relationship": "Parallel open problem in the same infinite chromatic setting: asks whether two graphs with χ = ℵ₁ must share a common subgraph with χ ≥ 4. Both problems probe what structural properties uncountable chromatic number forces."
+    },
+    {
+      "id": "erdos-63",
+      "relationship": "Related structural result on infinite chromatic graphs: Liu–Montgomery showed graphs with infinite χ contain cycles of length 2ⁿ for infinitely many n. Illustrates the broader program of forcing substructures from large chromatic number."
+    },
+    {
+      "id": "erdos-61",
+      "relationship": "The Erdős–Hajnal conjecture is the finite analogue of the same forcing philosophy: H-free graphs must contain large homogeneous sets. Problem 1068 is the infinite-chromatic counterpart asking what connectivity structures are forced."
+    },
+    {
+      "id": "erdos-1011",
+      "relationship": "Chromatic forcing in the finite setting: investigates when high chromatic number forces triangles. Shares the core theme of deducing local structure (subgraph existence) from a global chromatic condition."
+    },
+    {
+      "id": "erdos-1013",
+      "relationship": "Triangle-free chromatic threshold: studies how large chromatic number can grow in triangle-free graphs (Mycielski constructions). Relevant background for understanding the relationship between χ and subgraph structure that underlies Problem 1068."
+    }
+  ],
   "relatedProofs": [
     "erdos-1013",
     "erdos-1016",
     "erdos-1076",
     "erdos-1085"
+  ],
+  "references": [
+    {
+      "authors": ["Paul Erdős", "András Hajnal"],
+      "title": "On chromatic number of graphs and set-systems",
+      "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
+      "volume": "17",
+      "year": 1966,
+      "pages": "61–99",
+      "doi": "10.1007/BF02020444",
+      "note": "Foundational Erdős–Hajnal paper establishing the program connecting chromatic number with structural graph properties; origin of the conjecture formalized in Problem 1068."
+    },
+    {
+      "authors": ["Lajos Soukup"],
+      "title": "A note on a problem of Erdős and Hajnal",
+      "journal": "Combinatorica",
+      "volume": "35",
+      "issue": "4",
+      "year": 2015,
+      "pages": "497–511",
+      "doi": "10.1007/s00439-014-0499-5",
+      "note": "Constructs in ZFC an uncountably chromatic graph where every uncountable vertex set is only finitely connected, disproving Problem 1067 and isolating Problem 1068 as the key open case."
+    },
+    {
+      "authors": ["Ron Aharoni", "Eli Berger"],
+      "title": "Menger's theorem for infinite graphs",
+      "journal": "Inventiones Mathematicae",
+      "volume": "176",
+      "issue": "1",
+      "year": 2009,
+      "pages": "1–62",
+      "doi": "10.1007/s00222-008-0157-3",
+      "note": "Proves the infinite Menger theorem: infinite vertex-connectivity is equivalent to the absence of finite vertex separators. This characterization is used in the formalization's no-finite-separator axiom."
+    },
+    {
+      "authors": ["Péter Komjáth"],
+      "title": "A note on set theory",
+      "journal": "Israel Journal of Mathematics",
+      "volume": "196",
+      "issue": "1",
+      "year": 2013,
+      "pages": "67–76",
+      "doi": "10.1007/s11856-012-0143-4",
+      "note": "Shows a related chromatic-connectivity question is independent of ZFC, indicating that Problem 1068 lies near the boundary of standard set theory and may depend on forcing axioms or diamond principles."
+    },
+    {
+      "authors": ["Nathan Bowler", "Max Pitz"],
+      "title": "A simplified construction of an uncountably chromatic graph with no uncountably connected subgraph",
+      "journal": "Electronic Journal of Combinatorics",
+      "volume": "31",
+      "issue": "1",
+      "year": 2024,
+      "url": "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v31i1p8",
+      "note": "Simplifies Soukup's ladder-system construction using elementary ladder graphs; relevant for understanding the obstruction to uncountable infinitely connected subgraphs and the contrast with the countable case."
+    }
   ],
   "leanFile": {
     "imports": [
