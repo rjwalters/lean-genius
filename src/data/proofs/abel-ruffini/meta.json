@@ -293,6 +293,11 @@
       "targetId": "hilbert-9-reciprocity",
       "relationship": "extends",
       "description": "Hilbert's 9th problem (the most general reciprocity law) led to class field theory and Artin reciprocity — a far-reaching generalization of both quadratic reciprocity and the abelian case of Galois theory. Class field theory classifies all abelian extensions of number fields, extending Galois's criterion that abelian (hence solvable) Galois groups correspond to radical solvability. The non-abelian Langlands program seeks the analogous classification for non-solvable groups like $S_5$"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n)$ gives the order of $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, which is isomorphic to $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ — the Galois group of the $n$th cyclotomic extension. Cyclotomic extensions are the essential prerequisite for radical extensions: by Kummer theory, adjoining $\\sqrt[n]{a}$ to a field containing $\\zeta_n$ produces a cyclic extension of degree dividing $n$. The solvability of cyclic groups is what makes each radical step work; Abel-Ruffini fails because $S_5$ cannot be decomposed into cyclic pieces"
     }
   ],
   "relatedProofs": [
@@ -324,7 +329,8 @@
     "vietas-formulas",
     "primitive-roots",
     "hurwitz-theorem",
-    "hilbert-9-reciprocity"
+    "hilbert-9-reciprocity",
+    "euler-totient"
   ],
   "references": [
     {
