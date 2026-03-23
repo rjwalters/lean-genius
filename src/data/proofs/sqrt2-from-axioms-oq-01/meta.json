@@ -1,0 +1,128 @@
+{
+  "id": "sqrt2-from-axioms-oq-01",
+  "title": "Irrationality of \u221ap for Any Prime p (From Axioms)",
+  "slug": "sqrt2-from-axioms-oq-01",
+  "description": "Generalizes the \u221a2 irrationality proof to all primes: for any prime p, there are no coprime a, b with a\u00b2 = p\u00b7b\u00b2. Built from scratch using Euclid's criterion for primality.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "",
+    "date": "2026-03-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Sqrt2FromAxiomsOQ01.lean",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "pedagogical",
+      "first-principles",
+      "primes",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.mul_mod",
+        "description": "(a * b) % n = ((a % n) * (b % n)) % n",
+        "module": "Init.Data.Nat.Lemmas"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_mul",
+        "description": "Bridge: Mathlib primes satisfy Euclid's criterion",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Custom Divides, EuclidPrime, CoprimeMod definitions built from scratch",
+      "Verification that 2, 3, 5 are Euclid primes via modular arithmetic",
+      "Key lemma: p prime and p | n\u00b2 implies p | n (from Euclid's criterion)",
+      "Main theorem: \u221ap is irrational for any Euclid prime p",
+      "Bridge theorem: every Nat.Prime is an EuclidPrime",
+      "Concrete instances: \u221a2, \u221a3, \u221a5 irrationality as corollaries"
+    ],
+    "dateAdded": "2026-03-22",
+    "axiomCount": 0,
+    "lineCount": 365
+  },
+  "overview": {
+    "historicalContext": "The irrationality of $\\sqrt{2}$ was first proved by the ancient Greeks, traditionally attributed to Hippasus of Metapontum (~500 BCE). The proof by contradiction\u2014assuming $\\sqrt{2} = a/b$ in lowest terms and deriving that both $a$ and $b$ must be even\u2014is one of the most celebrated arguments in mathematics.\n\nThe generalization to $\\sqrt{p}$ for any prime $p$ was known to the ancient Greeks as well. The key insight is that the proof works not because of any special property of the number 2, but because 2 is **prime**. The 'even/odd' trick is secretly using Euclid's lemma (Elements VII.30, ~300 BCE): if a prime divides a product, it divides one of the factors.\n\nThis formalization makes the connection explicit by defining primality via Euclid's criterion (the multiplicative property) rather than the divisor property, revealing why the $\\sqrt{2}$ proof generalizes immediately to all primes.",
+    "problemStatement": "**Open Question**: Can the pedagogical $\\sqrt{2}$ irrationality proof be generalized to $\\sqrt{p}$ for any prime $p$?\n\n**Answer**: Yes. The proof structure is identical once we replace 'even/odd' (divisibility by 2) with 'divisible by $p$ / not divisible by $p$'. The key ingredient is Euclid's lemma: $p \\mid n^2 \\Rightarrow p \\mid n$ for prime $p$.\n\nWe formalize this completely from scratch, building divisibility, primality, and the main theorem without relying on Mathlib's number theory.",
+    "proofStrategy": "The proof generalizes the classical $\\sqrt{2}$ argument in three steps:\n\n1. **Define EuclidPrime**: $p > 1$ and $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$\n2. **Key lemma**: $p$ prime, $p \\mid n^2 \\Rightarrow p \\mid n$ (trivial from definition since $n^2 = n \\cdot n$)\n3. **Main theorem**: If $a^2 = p \\cdot b^2$ with $b > 0$, then $p \\mid a$ and $p \\mid b$ (so $a/b$ is not in lowest terms)\n\nThe magic is step 2: with Euclid's criterion as the *definition* of prime, the key lemma that took 20 lines for $p=2$ becomes a one-liner for all primes.",
+    "keyInsights": [
+      "**The even/odd trick IS Euclid's lemma for p=2**: The parent proof's 'n\u00b2 even implies n even' is exactly the statement '2 | n\u00b2 implies 2 | n', which is Euclid's lemma for the prime 2",
+      "**The right definition of prime**: For irrationality proofs, the multiplicative property (Euclid's criterion) is more natural than the divisor property. The two are equivalent via Bezout's identity, but the multiplicative form directly gives the key lemma",
+      "**From 20 lines to 2 lines**: The parent proof needs Even/Odd definitions, parity lemmas, and case analysis to prove 'n\u00b2 even implies n even'. With Euclid's criterion, this becomes: p | n*n implies p | n or p | n, so p | n. QED.",
+      "**Modular arithmetic verification**: Small primes (2, 3, 5) are verified as EuclidPrime by checking that nonzero residues mod p form a multiplicative group (no zero divisors)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisibility",
+      "title": "Divisibility (Built from Scratch)",
+      "startLine": 48,
+      "endLine": 82,
+      "summary": "Defines `Divides p n` as $\\exists k, n = p \\cdot k$ with basic lemmas: every number divides 0 and itself, divisibility through multiplication, and small numbers less than $p$ are not divisible by $p$"
+    },
+    {
+      "id": "primality",
+      "title": "Primality via Euclid's Criterion",
+      "startLine": 84,
+      "endLine": 96,
+      "summary": "Defines `EuclidPrime p` as $p > 1$ and $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$. This is the exact property needed for irrationality proofs, equivalent to classical primality via Bezout's identity"
+    },
+    {
+      "id": "small-primes",
+      "title": "Verifying Small Primes",
+      "startLine": 98,
+      "endLine": 152,
+      "summary": "Proves 2, 3, and 5 satisfy Euclid's criterion using modular arithmetic (`Nat.mul_mod`). For prime $p$, the verification reduces to checking that $\\mathbb{Z}/p\\mathbb{Z}$ has no zero divisors"
+    },
+    {
+      "id": "bridge",
+      "title": "Bridge to Mathlib",
+      "startLine": 154,
+      "endLine": 172,
+      "summary": "Proves every `Nat.Prime` is an `EuclidPrime`, connecting our from-axioms development to Mathlib's library for users who need the classical definition"
+    },
+    {
+      "id": "key-lemma",
+      "title": "Key Lemma: Prime Divides Square Implies Divides Base",
+      "startLine": 174,
+      "endLine": 195,
+      "summary": "Proves $p$ prime and $p \\mid n^2 \\Rightarrow p \\mid n$. With Euclid's criterion as definition, this is a two-line proof: $p \\mid n \\cdot n$ gives $p \\mid n \\lor p \\mid n$, so $p \\mid n$"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: \u221ap is Irrational",
+      "startLine": 197,
+      "endLine": 260,
+      "summary": "Proves that for any Euclid prime $p$, if $a^2 = p \\cdot b^2$ with $b > 0$, then $p$ divides both $a$ and $b$. Includes helper lemmas for the arithmetic cancellation step ($p^2k^2 = pb^2 \\Rightarrow pk^2 = b^2$)"
+    },
+    {
+      "id": "instances",
+      "title": "Concrete Instances and Applications",
+      "startLine": 262,
+      "endLine": 300,
+      "summary": "Derives $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt{5}$ irrationality as immediate corollaries, plus a general bridge theorem for any Mathlib-certified prime"
+    }
+  ],
+  "conclusion": {
+    "summary": "The irrationality of \u221ap for prime p is proved completely from scratch, revealing that the classical \u221a2 proof secretly uses Euclid's lemma. By defining primality via the multiplicative property (Euclid's criterion), the key lemma becomes trivial and the proof generalizes to all primes with zero additional effort.",
+    "implications": "**Key correspondence:**\n\n| \u221a2 proof concept | General \u221ap concept |\n|---|---|\n| n is even | p divides n |\n| n is odd | p does not divide n |\n| n\u00b2 even \u2192 n even | p \\| n\u00b2 \u2192 p \\| n (Euclid) |\n| coprime = not both even | coprime = not both div by p |\n\nThe generalization shows that parity is not the essential ingredient\u2014primality is.",
+    "openQuestions": [
+      "Prove equivalence of Euclid's criterion with the classical prime definition (requires building Bezout's identity from scratch)",
+      "Extend to \u221an for any non-square n (requires unique factorization or alternative approach)",
+      "Build the p-adic valuation from scratch and prove multiplicativity"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "SqrtPrimeFromAxioms",
+    "lineCount": 365,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 3
+  }
+}
