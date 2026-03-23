@@ -76,6 +76,13 @@
         "year": "1962",
         "venue": "Proceedings of the London Mathematical Society 12, pp. 400-424",
         "note": "Computed g_3(3) = 7 — the largest known exact value of the threshold function"
+      },
+      {
+        "authors": "Solymosi, József; Vu, Van",
+        "title": "Near optimal bounds for the Erdős distinct distances problem in high dimensions",
+        "year": "2008",
+        "venue": "Combinatorica 28, pp. 113-125",
+        "note": "Best known bounds for distinct distances in high dimensions using polynomial method techniques"
       }
     ],
     "prerequisites": [
@@ -186,6 +193,21 @@
       "targetId": "combinations-formula",
       "relationship": "supports",
       "description": "The number of pairwise distances from $n$ points is $\\binom{n}{2}$, so $|\\Delta(P)| \\leq \\binom{n}{2}$. The combinatorial counting of pairs is the starting point for all distinct distance bounds"
+    },
+    {
+      "targetId": "erdos-1082",
+      "relationship": "related",
+      "description": "Both concern distinct distances in Euclidean space. Problem #1082 studies points in general position (no three collinear) in $\\mathbb{R}^d$, while #1089 studies all configurations. General position constraints can tighten the bounds"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Distinct distance subsets in high dimensions: #1088 asks for the largest subset of $n$ points with all pairwise distances distinct, dual to #1089 which asks for the minimum points guaranteeing $n$ distinct distances. Both probe how dimension affects distance structure"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "The distinct distances threshold $g_d(n)$ is a Ramsey-type quantity: it asks for the minimum set size guaranteeing a structured subset (many distinct distances). The polynomial lower bound $g_d(n) \\gg d^{n-1}$ parallels Ramsey-type tower growth phenomena in combinatorics"
     }
   ],
   "conclusion": {
@@ -202,7 +224,10 @@
   "relatedProofs": [
     "erdos-1083",
     "szemeredi-regularity",
-    "combinations-formula"
+    "combinations-formula",
+    "erdos-1082",
+    "erdos-1088",
+    "ramseys-theorem"
   ],
   "leanFile": {
     "imports": [
