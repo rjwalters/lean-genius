@@ -31,7 +31,7 @@
     "type": "concept",
     "title": "Imports and Setup",
     "content": "We import Mathlib and open the **Finset** namespace for interval operations and **Nat** for natural number arithmetic. Products over intervals use `Finset.prod` and `Finset.Icc`.",
-    "mathContext": "Formalizes the concept of imports and setup",
+    "mathContext": "Formalizes: Imports and Setup",
     "significance": "supporting",
     "prerequisites": [
       "Finset API",
@@ -217,7 +217,7 @@
     "type": "concept",
     "title": "Verified Examples",
     "content": "We verify specific perfect powers:\n- **4 = 2²** is a perfect power\n- **8 = 2³** is a perfect power\n- **27 = 3³** is a perfect power",
-    "mathContext": "Formalizes the concept of verified examples",
+    "mathContext": "Formalizes: Verified Examples",
     "significance": "supporting",
     "prerequisites": [
       "computation",

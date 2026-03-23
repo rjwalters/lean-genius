@@ -243,7 +243,7 @@
     "type": "concept",
     "title": "Voisin's Kähler Counterexample",
     "content": "**Voisin (2002)**: Hodge Conjecture fails for Kähler manifolds!\n\n- Constructed a complex torus (Kähler but not projective)\n- Has Hodge classes that are NOT rational combinations of analytic subvariety classes\n- Shows **projectivity is essential**\n\nThe Hodge Conjecture is very precise in its hypotheses:\n- Must be projective (not just Kähler)\n- Must use rational coefficients (not integral)\n- Must be over ℂ (not other fields)",
-    "mathContext": "Formalizes the concept of voisin's kähler counterexample",
+    "mathContext": "Formalizes: Voisin's Kähler Counterexample",
     "significance": "supporting",
     "prerequisites": [
       "Kähler manifold",
@@ -267,7 +267,7 @@
     "type": "concept",
     "title": "Related Conjectures",
     "content": "**Web of Conjectures**:\n\n**Grothendieck's Standard Conjectures** (1968):\n- (B) Lefschetz: Lefschetz operator is algebraic\n- (C) Künneth: projectors are algebraic\n- (D) Hodge: intersection pairing positive on primitives\n- **Imply Hodge Conjecture!**\n\n**Mumford-Tate Conjecture**:\n- Relates Hodge structure to Galois action on abelian varieties\n- **Hodge ⟹ Mumford-Tate** (proved as implication)\n\nAll remain open and deeply connected!",
-    "mathContext": "Formalizes the concept of related conjectures",
+    "mathContext": "Formalizes: Related Conjectures",
     "significance": "context",
     "prerequisites": [
       "Mumford-Tate",
@@ -314,7 +314,7 @@
     "type": "concept",
     "title": "Problem Status: OPEN",
     "content": "**Hodge Conjecture: Still OPEN since 1950**\n\n**PROVEN cases**:\n- Curves (trivial) ✓\n- Surfaces (Lefschetz + dimension) ✓\n- Divisors on any variety (Lefschetz 1,1) ✓\n- Special abelian varieties (Deligne) ✓\n\n**PROVED properties**:\n- Hodge symmetry h^{p,q} = h^{q,p} ✓\n- Integral ⟹ rational ✓\n\n**FAILS for**:\n- Kähler manifolds (must be projective)\n- Integral coefficients (must use ℚ)\n\n**Prize**: $1,000,000 Millennium Prize awaits!",
-    "mathContext": "Formalizes the concept of problem status: open",
+    "mathContext": "Formalizes: Problem Status: OPEN",
     "significance": "context",
     "prerequisites": [
       "known cases",

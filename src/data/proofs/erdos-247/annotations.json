@@ -198,7 +198,7 @@
     "type": "technique",
     "title": "Transcendental Lacunary Sums",
     "content": "**factorial_sum_transcendental** and **pow2_sum_transcendental**: As corollaries of Erdős's theorem, both Σ 1/2^{k!} and Σ 1/2^{2^k} are transcendental. These are famous examples of explicit transcendental numbers.",
-    "mathContext": "Formalizes the concept of transcendental lacunary sums",
+    "mathContext": "Formalizes: Transcendental Lacunary Sums",
     "significance": "key",
     "prerequisites": [
       "Liouville constant",
@@ -244,7 +244,7 @@
     "type": "technique",
     "title": "Square Sequence Monotonicity",
     "content": "**square_strictMono**: The sequence k ↦ (k+1)² is strictly increasing. This shows the square sequence is a valid index sequence for Erdős's problem, even though we can't prove transcendence of the resulting sum.",
-    "mathContext": "Formalizes the concept of square sequence monotonicity",
+    "mathContext": "Lean: `theorem pow2_strong_growth : HasStrongGrowth (fun k => 2 ^ k)`",
     "significance": "supporting",
     "prerequisites": [
       "Nat.pow_lt_pow_left",
@@ -267,7 +267,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**problem_247_summary**: Packages the main results: (1) Erdős's theorem for strong growth, (2) transcendence of the factorial sum, (3) transcendence of the double-exponential sum. This provides a clean interface to the file's main contributions.",
-    "mathContext": "Formalizes the concept of summary theorem",
+    "mathContext": "Formalizes: Summary Theorem",
     "significance": "key",
     "prerequisites": [
       "API design",

@@ -33,7 +33,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import:\n- **Nat.Prime.Basic**: Primality predicate\n- **Set.Finite.Basic**: For Set.Infinite predicate\n- **BigOperators.Group.Finset.Basic**: Summing over finite sets\n- **Nat.ModEq**: Modular equivalence notation\n- **Order.Interval.Finset.Nat**: Finset.Ico for integer intervals",
-    "mathContext": "Formalizes the concept of mathlib imports",
+    "mathContext": "Formalizes: Mathlib Imports",
     "significance": "supporting",
     "prerequisites": [
       "Finset API",

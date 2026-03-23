@@ -34,7 +34,7 @@
     "type": "definition",
     "title": "Random Graph Model G(n, p)",
     "content": "**RandomGraphModel:**\n\nA structure representing the Erdős-Rényi random graph model G(n, p).\n\n**Parameters:**\n- n: number of vertices\n- p: probability each edge is included (independent)\n- Constraints: 0 ≤ p ≤ 1\n\nThis is the foundational model in random graph theory, introduced by Erdős and Rényi in 1959-1960.",
-    "mathContext": "Formalizes the concept of random graph model g(n, p)",
+    "mathContext": "Lean: `structure RandomGraphModel`",
     "significance": "key",
     "prerequisites": [
       "Erdős-Rényi model",

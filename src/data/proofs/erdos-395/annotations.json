@@ -58,7 +58,7 @@
     "type": "definition",
     "title": "Probability of Small Sums",
     "content": "countSmallSums z: the number of sign vectors ε with |Σ εᵢzᵢ| ≤ √2, out of 2ⁿ total. probSmallSum z = countSmallSums / 2ⁿ: the probability under uniform random signs. The central question is whether this probability is always at least c/n for unit vectors.",
-    "mathContext": "Formalizes the concept of probability of small sums",
+    "mathContext": "Formalizes: Probability of Small Sums",
     "significance": "key",
     "prerequisites": [
       "Probability",

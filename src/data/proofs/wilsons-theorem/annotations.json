@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "A Primality Characterization",
     "content": "Wilson's theorem gives a complete characterization of prime numbers in terms of factorials:\n\n$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$\n\nThis is remarkable because:\n- It provides an *exact* test for primality (not probabilistic)\n- The condition involves only modular arithmetic\n- It reveals deep structure about how primes behave\n\nHowever, computing $(n-1)!$ is computationally expensive, making this impractical for actual primality testing.",
-    "mathContext": "Overview: Wilson's theorem gives a complete characterization of prime numbers in terms of factorials:",
+    "mathContext": "$$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$$",
     "significance": "critical",
     "prerequisites": [
       "factorial",

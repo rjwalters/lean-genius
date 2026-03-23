@@ -312,7 +312,7 @@
     "type": "definition",
     "title": "Connection to Problem #90",
     "content": "**Relationship to u(n):**\n\nProblem #668 builds on Problem #90 (maximum unit distances).\n\n**Key bounds on u(n):**\n- Lower: u(n) >= n - 1\n- Upper: u(n) < c * n^(4/3) (Erdos)\n\nUnderstanding u(n) is prerequisite to studying f(n).",
-    "mathContext": "Formalizes the concept of connection to problem #90",
+    "mathContext": "Formalizes: Connection to Problem #90",
     "significance": "key",
     "prerequisites": [
       "Erdos Problem #90",

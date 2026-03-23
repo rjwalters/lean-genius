@@ -394,7 +394,7 @@
     "type": "definition",
     "title": "geometricProgression",
     "content": "GP: {1, a, a², ..., a^{n-1}}.",
-    "mathContext": "Formalizes the concept of geometricprogression",
+    "mathContext": "Lean: `axiom gp_quotient_size (a n : ℕ) (ha : a ≥ 2) (hn : n ≥ 1) :`",
     "significance": "supporting",
     "tags": [
       "geometric-progression",

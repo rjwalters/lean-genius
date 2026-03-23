@@ -54,7 +54,7 @@
     "type": "definition",
     "title": "Affine Parameters",
     "content": "The AffineParams structure bundles r transformations with their (aᵢ, bᵢ) pairs. The constraint aᵢ > 0 ensures the transformations are non-degenerate.",
-    "mathContext": "Formalizes the concept of affine parameters",
+    "mathContext": "Lean: `structure AffineParams`",
     "relatedConcepts": [
       "formal mathematics"
     ],

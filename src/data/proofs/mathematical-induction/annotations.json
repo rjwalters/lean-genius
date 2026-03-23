@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "The Foundation of Recursive Reasoning",
     "content": "Mathematical induction is the principle that allows us to prove statements about all natural numbers by:\n\n1. **Base Case**: Prove the statement holds for 0\n2. **Inductive Step**: Prove that if it holds for $n$, it holds for $n+1$\n\n$$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$$\n\nThis is Peano's fifth axiom, and it's what distinguishes the natural numbers from other structures.",
-    "mathContext": "Introduction to the formalization of The Foundation of Recursive Reasoning",
+    "mathContext": "Formalizes: The Foundation of Recursive Reasoning",
     "significance": "critical",
     "prerequisites": [
       "Peano axioms",

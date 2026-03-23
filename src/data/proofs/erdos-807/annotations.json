@@ -57,7 +57,7 @@
     "type": "definition",
     "title": "Complete Bipartite Subgraph",
     "content": "**CompleteBipartite:**\n\nA structure representing a complete bipartite subgraph of G.\n\n**Fields:**\n- left, right: Disjoint vertex sets\n- disjoint: Proof that left and right are disjoint\n- edges_complete: Every vertex in left is adjacent to every vertex in right\n\nThese are the building blocks for bipartite decomposition.",
-    "mathContext": "Formalizes the concept of complete bipartite subgraph",
+    "mathContext": "Lean: `structure CompleteBipartite (G : SimpleGraph V)`",
     "significance": "key",
     "prerequisites": [
       "Bipartite graphs",
@@ -81,7 +81,7 @@
     "type": "definition",
     "title": "Edge-Disjoint Bipartite Cover",
     "content": "**BipartiteCover:**\n\nA collection of complete bipartite subgraphs that:\n1. Are pairwise edge-disjoint (no edge in multiple subgraphs)\n2. Cover all edges of G (union equals G)\n\nThe bipartition number is the minimum size of such a cover.",
-    "mathContext": "Formalizes the concept of edge-disjoint bipartite cover",
+    "mathContext": "Lean: `structure BipartiteCover (G : SimpleGraph V)`",
     "significance": "key",
     "prerequisites": [
       "Edge covering",

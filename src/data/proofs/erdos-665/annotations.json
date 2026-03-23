@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #665** asks: can pairwise balanced designs always have blocks close to √n in size?\n\nA PBD on {1,...,n} is a collection of blocks where every pair appears in exactly one block, with block sizes between 2 and n-1.\n\n**The question**: Does h(n) = O(1), where h(n) measures how far below √n the smallest block must be?\n\n**Status**: OPEN. The answer depends on projective plane existence and prime gap bounds.",
-    "mathContext": "Formalizes the concept of problem overview",
+    "mathContext": "Formalizes: Problem Overview",
     "significance": "key",
     "prerequisites": [
       "block designs",

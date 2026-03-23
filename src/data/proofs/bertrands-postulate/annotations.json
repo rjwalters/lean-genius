@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Primes Are Never Far Apart",
     "content": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime.\n\n$$\\forall n > 0, \\exists p \\text{ prime}: n < p \\leq 2n$$\n\nThis means:\n- After 2, the next prime (3) is at most 4\n- After 100, there's a prime before 200\n- Prime gaps grow, but not too fast",
-    "mathContext": "Introduction to the formalization of Primes Are Never Far Apart",
+    "mathContext": "$$$\\forall n > 0, \\exists p \\text{ prime}: n < p \\leq 2n$$$",
     "significance": "critical",
     "prerequisites": [
       "prime distribution",

@@ -34,7 +34,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import:\n- **GCD/LCM basics**: For lcm function and properties\n- **BigOperators**: For finite sums over sets\n- **SpecialFunctions**: For Real.log and Real.exp\n- **Filter**: For limits (Tendsto, atTop)\n- **Classical**: For decidability on arbitrary sets",
-    "mathContext": "Formalizes the concept of mathlib imports",
+    "mathContext": "Formalizes: Mathlib Imports",
     "significance": "supporting",
     "prerequisites": [
       "GCD theory",
@@ -293,7 +293,7 @@
     "type": "technique",
     "title": "Verified Examples",
     "content": "We verify LCM computations:\n- **lcm(6, 10) = 30**: 6 = 2·3, 10 = 2·5, so lcm = 2·3·5 = 30\n- **gcd(6, 10) = 2**: The shared factor\n- **lcm(3, 5) = 15**: Coprime case, lcm = product\n\nThese are checked by `native_decide`, which computes the values.",
-    "mathContext": "Formalizes the concept of verified examples",
+    "mathContext": "Formalizes: Verified Examples",
     "significance": "supporting",
     "prerequisites": [
       "GCD theory",
@@ -340,7 +340,7 @@
     "type": "concept",
     "title": "Historical Significance",
     "content": "This formalization captures a 44-year-old problem from Erdős-Graham (1980), resolved by Terence Tao in July 2024.\n\n**Key takeaways**:\n1. The threshold exp(C√(log log x)·log log log x) is exact\n2. Structure (controlled prime factorizations) can defeat density\n3. The construction uses sophisticated smooth number techniques\n\nThe arXiv paper (2407.04226) contains the full details.",
-    "mathContext": "Formalizes the concept of historical significance",
+    "mathContext": "Formalizes: Historical Significance",
     "significance": "supporting",
     "prerequisites": [
       "Erdős-Graham",

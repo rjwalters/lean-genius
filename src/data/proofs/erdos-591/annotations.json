@@ -33,7 +33,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import **ordinal arithmetic** from Mathlib's set theory library. This gives us the ordinal ω and ordinal exponentiation ω^α.",
-    "mathContext": "Formalizes the concept of mathlib imports",
+    "mathContext": "Formalizes: Mathlib Imports",
     "significance": "supporting",
     "prerequisites": [
       "Mathlib",
@@ -176,7 +176,7 @@
     "type": "concept",
     "title": "The Solved Problem Context",
     "content": "The known results now complete the pattern:\n- ω² works (Specker)\n- ω³, ω⁴, ..., ω^n fail for n ≥ 3 (Specker)\n- ω^ω works (Chang)\n- ω^(ω²) works (Schipperus 2010, Darby)\n\nThe pattern is confirmed: limit ordinal exponents restore the Ramsey property!",
-    "mathContext": "Formalizes the concept of the solved problem context",
+    "mathContext": "Formalizes: The Solved Problem Context",
     "significance": "key",
     "prerequisites": [
       "Ramsey theory",

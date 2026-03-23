@@ -66,7 +66,7 @@
     "type": "definition",
     "title": "Pinned Distance Count",
     "content": "The cardinality of the pinned distance set. This is the number of distinct distances that point x 'sees' to other points in A.\n\nFor a point in general position, this could be as high as n-1 (all distances distinct). The conjecture asks: must some point achieve close to this maximum?",
-    "mathContext": "Formalizes the concept of pinned distance count",
+    "mathContext": "Formalizes: Pinned Distance Count",
     "relatedConcepts": [
       "formal mathematics"
     ],
@@ -120,7 +120,7 @@
     "type": "definition",
     "title": "Strong Pinned Distance Conjecture",
     "content": "**Strong Form:**\n\nThere exists c > 0 such that every n-point set has a point seeing at least c·n/√(log n) distinct distances.\n\nThis matches the integer lattice construction, suggesting it's the truth. If true, the weak form follows immediately.",
-    "mathContext": "Formalizes the concept of strong pinned distance conjecture",
+    "mathContext": "Formalizes: Strong Pinned Distance Conjecture",
     "relatedConcepts": [
       "lattice theory",
       "order theory"
@@ -372,7 +372,7 @@
     "type": "technique",
     "title": "Open Problem Marker",
     "content": "**Status: OPEN**\n\nThis reflexive statement `pinnedDistanceConjecture ↔ pinnedDistanceConjecture` serves as a marker that the conjecture remains unproven.\n\nThe $500 prize awaits whoever proves the exponent approaches 1.",
-    "mathContext": "Formalizes the concept of open problem marker",
+    "mathContext": "Lean: `noncomputable def katzTardosExponent : ℝ`",
     "relatedConcepts": [
       "formal mathematics"
     ],

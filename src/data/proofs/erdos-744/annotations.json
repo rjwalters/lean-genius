@@ -105,7 +105,7 @@
     "type": "definition",
     "title": "Bipartition Number and f_k(n)",
     "content": "**bipartitionNumber(G):** The minimum number of edges whose removal makes G bipartite. Also known as the odd cycle edge transversal number.\n\n**f_k(n):** The minimum of bipartitionNumber over all k-critical graphs on n vertices. This is the central function studied in Problem #744.\n\nThe definition encodes the Rödl-Tuza result directly:\n- f(k, n) = 0 for k < 3 (already bipartite or nearly so)\n- f(3, n) = 1 (odd cycles)\n- f(k, n) = (k-1)(k-2)/2 for k ≥ 4 (the eventual constant)",
-    "mathContext": "Formalizes the concept of bipartition number and f_k(n)",
+    "mathContext": "Formalizes: Bipartition Number and f_k(n)",
     "significance": "key",
     "prerequisites": [
       "basic set theory",

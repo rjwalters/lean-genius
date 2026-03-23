@@ -33,7 +33,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import all of Mathlib for access to **Nat.nth** (enumerating elements satisfying a predicate), **Summable** (convergent series), **StrictMono** (strictly increasing functions), and **Nat.Coprime** (coprimality).",
-    "mathContext": "Formalizes the concept of mathlib imports",
+    "mathContext": "Formalizes: Mathlib Imports",
     "significance": "supporting",
     "prerequisites": [
       "Mathlib",
@@ -81,7 +81,7 @@
     "type": "definition",
     "title": "Enumeration Function A",
     "content": "**A u n** gives the (n+1)-th element of ASet u in increasing order, using Mathlib's **Nat.nth** function.\n\nThis lets us talk about gaps between consecutive elements: the gap at position k is A(k+1) - A(k).",
-    "mathContext": "Formalizes the concept of enumeration function a",
+    "mathContext": "Lean: `noncomputable def A (u : ℕ → ℕ) (n : ℕ) : ℕ`",
     "significance": "key",
     "prerequisites": [
       "basic set theory",

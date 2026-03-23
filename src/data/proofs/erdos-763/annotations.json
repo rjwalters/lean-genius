@@ -255,7 +255,7 @@
     "type": "concept",
     "title": "Variance Accumulation",
     "content": "**Key Insight:**\n\nThe representation function r(n) has inherent variability that cannot average out.\n\nHeuristically:\n- If A has density alpha, then r(n) is approximately alpha^2 * n locally\n- But fluctuations are of order sqrt(n)\n- The Fourier analysis shows cumulative error is Theta(N^{1/4})",
-    "mathContext": "Formalizes the concept of variance accumulation",
+    "mathContext": "Formalizes: Variance Accumulation",
     "relatedConcepts": [
       "asymptotic analysis",
       "density"

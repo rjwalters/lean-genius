@@ -99,7 +99,7 @@
     "type": "definition",
     "title": "Reciprocal Power Term",
     "content": "**reciprocalPow(a, t) = 1/a^(1+it):**\n\nThe term in the generalized Dirichlet sum. Has magnitude 1/a and phase -t·log(a).",
-    "mathContext": "Formalizes the concept of reciprocal power term",
+    "mathContext": "Lean: `noncomputable def reciprocalPow (a : ℕ) (t : ℝ) : ℂ`",
     "relatedConcepts": [
       "formal mathematics"
     ],

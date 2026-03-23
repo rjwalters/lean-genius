@@ -38,7 +38,7 @@
     "type": "definition",
     "title": "Color Type",
     "content": "**Color:**\n\nAn inductive type with two constructors:\n- `Color.Red`\n- `Color.Blue`\n\nThis models the two colors available for edge coloring. The `deriving DecidableEq` clause enables decidable equality checking.",
-    "mathContext": "Formalizes the concept of color type",
+    "mathContext": "Formalizes: Color Type",
     "significance": "supporting",
     "relatedConcepts": [
       "Inductive types",

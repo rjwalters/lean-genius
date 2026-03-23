@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "The Hierarchy of Infinities",
     "content": "Cantor's theorem establishes that **not all infinities are equal**. For any set A:\n\n$$|A| < |\\mathcal{P}(A)| = 2^{|A|}$$\n\nThis means:\n- There are strictly more subsets of N than there are natural numbers\n- There are strictly more real numbers than rationals\n- The hierarchy continues: $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{N}))| < ...$\n\nThe proof uses the **diagonal argument**, which constructs an explicit witness to the non-surjectivity of any proposed function.",
-    "mathContext": "Overview: Cantor's theorem establishes that **not all infinities are equal**. For any set A:",
+    "mathContext": "$$$|A| < |\\mathcal{P}(A)| = 2^{|A|}$$$",
     "significance": "critical",
     "prerequisites": [
       "cardinal numbers",

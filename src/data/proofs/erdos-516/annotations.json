@@ -32,7 +32,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import:\n- **Complex.Basic**: Complex number foundations\n- **Calculus.FDeriv**: Differentiability for entire functions\n- **Pow.Real, Log.Basic**: Real powers and logarithms for the modulus ratio\n- **InfiniteSum**: For power series HasSum predicate",
-    "mathContext": "Formalizes the concept of mathlib imports",
+    "mathContext": "Formalizes: Mathlib Imports",
     "significance": "supporting",
     "prerequisites": [
       "complex numbers",
@@ -145,7 +145,7 @@
     "type": "definition",
     "title": "Order of an Entire Function",
     "content": "**orderOf(f)** = inf{ a ≥ 0 : |f(z)| ≤ c·exp(|z|^a) for some c }.\n\nThis is the precise growth rate of the function. The main theorems assume finite order, meaning orderOf(f) < ∞.",
-    "mathContext": "Formalizes the concept of order of an entire function",
+    "mathContext": "Lean: `noncomputable def orderOf (f : ℂ → ℂ) : ℝ`",
     "significance": "supporting",
     "prerequisites": [
       "basic set theory",

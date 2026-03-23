@@ -166,7 +166,7 @@
     "type": "technique",
     "title": "Computational Examples",
     "content": "**√1000 = 31** and **√1000000 = 1000** verified via native_decide, illustrating the scale of bounds at moderate n. At n = 1000: lower ≈ 19, upper ≈ 32. At n = 10^6: lower ≈ 239, upper = 1000.",
-    "mathContext": "Formalizes the concept of computational examples",
+    "mathContext": "Formalizes: Computational Examples",
     "significance": "supporting",
     "prerequisites": [
       "Numerical verification",
@@ -188,7 +188,7 @@
     "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_789**: The main theorem combines lower bound (n log n)^{1/3} and upper bound √n. Proved by exact ⟨erdos_choi_1974_lower, straus_1966_upper⟩. Problem remains OPEN — the true growth rate of h(n) is unknown.",
-    "mathContext": "Formalizes the concept of main theorem",
+    "mathContext": "Formalizes: Main Theorem",
     "significance": "key",
     "prerequisites": [
       "Open problem",

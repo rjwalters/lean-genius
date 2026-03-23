@@ -56,7 +56,7 @@
     "type": "definition",
     "title": "Count Subgraph Copies",
     "content": "**CountSubgraphCopies G H:**\n\nThe number of distinct ways to embed H as a subgraph of G.\n\nThis counts all injective edge-preserving maps from H to G.",
-    "mathContext": "Formalizes the concept of count subgraph copies",
+    "mathContext": "Lean: `noncomputable def CountSubgraphCopies (G : SimpleGraph V) (H : SimpleGraph W)`",
     "significance": "key",
     "prerequisites": [
       "Counting functions",
@@ -148,7 +148,7 @@
     "type": "concept",
     "title": "Entringer-Erdős (1972)",
     "content": "**entringer_erdos_1972:**\n\nFirst construction achieving 2^{(n choose 2) - O(n^{3/2+o(1)})} unique subgraphs.\n\nThis was the starting point for the problem.",
-    "mathContext": "Formalizes the concept of entringer-erdős (1972)",
+    "mathContext": "Formalizes: Entringer-Erdős (1972)",
     "significance": "key",
     "prerequisites": [
       "Historical",
@@ -303,7 +303,7 @@
     "type": "concept",
     "title": "Why Unique Subgraphs Are Rare",
     "content": "**Key Insights:**\n\n1. **Automorphisms:** Graphs with symmetries create multiple embeddings\n2. **Structural regularity:** Repeated patterns prevent uniqueness\n3. **The gap:** Brouwer loses 2^{O(n)} from the naive bound\n4. **Unavoidable:** Even the naive bound is unreachable\n\nUniqueness requires that every embedding produces a distinct 'fingerprint'.",
-    "mathContext": "Formalizes the concept of why unique subgraphs are rare",
+    "mathContext": "Formalizes: Why Unique Subgraphs Are Rare",
     "significance": "key",
     "prerequisites": [
       "Automorphisms",

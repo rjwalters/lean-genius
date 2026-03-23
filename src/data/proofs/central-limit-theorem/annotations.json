@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Dual Perspectives on CLT",
     "content": "This proof presents the Central Limit Theorem through two complementary lenses. The **classical approach** uses characteristic functions (Fourier transforms) to show convergence. The **topological approach** reveals why the Gaussian emerges: it is a fixed-point attractor in the dynamics of averaging.",
-    "mathContext": "Introduction to the formalization of Dual Perspectives on CLT",
+    "mathContext": "Formalizes: Dual Perspectives on CLT",
     "significance": "critical",
     "prerequisites": [
       "characteristic functions",
@@ -31,7 +31,7 @@
     "type": "concept",
     "title": "Mathlib Dependencies",
     "content": "We import from multiple Mathlib domains: **Probability.Distributions.Gaussian** for the Gaussian measure, **Fourier.FourierTransform** for characteristic functions, and **Topology.MetricSpace** for the geometric interpretation. This interdisciplinary foundation reflects the theorem's broad reach.",
-    "mathContext": "Introduction to the formalization of Mathlib Dependencies",
+    "mathContext": "Formalizes: Mathlib Dependencies",
     "significance": "supporting",
     "prerequisites": [
       "Mathlib",
@@ -235,7 +235,7 @@
     "type": "concept",
     "title": "The Topological Viewpoint",
     "content": "Now we shift perspective: instead of computing limits, we ask WHY the Gaussian emerges. The answer: **it is a fixed point attractor** of the renormalization group flow on the space of probability distributions.\n\nThis dynamical systems perspective reveals that CLT is not an accident of computation but a consequence of the structure of the convolution operation.",
-    "mathContext": "Introduction to the formalization of The Topological Viewpoint",
+    "mathContext": "Formalizes: The Topological Viewpoint",
     "significance": "critical",
     "prerequisites": [
       "dynamical systems",

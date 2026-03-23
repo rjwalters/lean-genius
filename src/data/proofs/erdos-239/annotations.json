@@ -421,7 +421,7 @@
     "type": "definition",
     "title": "The Answer",
     "content": "**erdos_239_answer:**\n\n\"YES - Every multiplicative {-1,1}-valued function has a convergent mean (Wirsing 1967)\"\n\nThe problem is completely solved.",
-    "mathContext": "Formalizes the concept of the answer",
+    "mathContext": "Lean: `def erdos_239_answer : String`",
     "significance": "key",
     "prerequisites": [
       "Solved problems",

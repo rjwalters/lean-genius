@@ -39,7 +39,7 @@
     "type": "definition",
     "title": "Alternative Definition",
     "content": "An equivalent definition using `Finset.Icc` (closed interval) directly:\n\nlcm over {n+1, ..., n+k}\n\nThis is sometimes more natural for proofs involving interval membership.",
-    "mathContext": "Formalizes the concept of alternative definition",
+    "mathContext": "Formalizes: Alternative Definition",
     "relatedConcepts": [
       "formal mathematics"
     ],
@@ -66,7 +66,7 @@
     "type": "technique",
     "title": "Base Cases",
     "content": "**Empty interval:** M(n,0) = 1 (lcm of nothing is 1)\n\n**Single element:** M(n,1) = n+1 (lcm of one number is itself)\n\nThese base cases are proved by unfolding definitions and using `Finset.fold` properties.",
-    "mathContext": "Formalizes the concept of base cases",
+    "mathContext": "Formalizes: Base Cases",
     "relatedConcepts": [
       "formal mathematics"
     ],
@@ -283,7 +283,7 @@
     "type": "technique",
     "title": "Prime Power Divisibility",
     "content": "**Key mechanism:**\n\nIf an interval contains a prime power p^a, then p^a divides the interval's LCM.\n\nFor example, {97,...,103} contains no power of 2 larger than 2^2 = 4 (since 64 and 128 are outside), while {105,...,112} contains 112 = 16×7, contributing 2^4.\n\nBut the crucial factor is which PRIMES appear, not just prime powers.",
-    "mathContext": "Formalizes the concept of prime power divisibility",
+    "mathContext": "Formalizes: Prime Power Divisibility",
     "significance": "key",
     "prerequisites": [
       "LCM structure",
@@ -370,7 +370,7 @@
     "type": "definition",
     "title": "Minimal Starting Point",
     "content": "**Erdős's observation:**\n\nLet n_k be the minimal n for which some m exists with M(n,k) > M(m,k+1).\n\nErdős proved n_k/k → ∞, meaning valid examples require increasingly large starting points relative to interval length.\n\nHe knew no good upper bounds for n_k.",
-    "mathContext": "Formalizes the concept of minimal starting point",
+    "mathContext": "$Let n_k be the minimal n for which some m exists with M(n,k) > M(m,k+1).$",
     "relatedConcepts": [
       "bounds",
       "inequalities"

@@ -32,7 +32,7 @@
     "type": "concept",
     "title": "Imports and Setup",
     "content": "We import Mathlib and open namespaces for **MeasureTheory** (probability measures, integration), **ProbabilityTheory** (independence), **Nat** (natural numbers), **Real** (logarithms), and **Filter** (limits).",
-    "mathContext": "Formalizes the concept of imports and setup",
+    "mathContext": "Formalizes: Imports and Setup",
     "significance": "supporting",
     "prerequisites": [
       "filter theory",
@@ -79,7 +79,7 @@
     "type": "definition",
     "title": "Partial Sum",
     "content": "**partialSum f N ω** computes S_N(ω) = ∑_{m ∈ [1,N]} f(m, ω).\n\nThis is the main object of study. Its fluctuations around zero are controlled by the multiplicative structure.",
-    "mathContext": "Formalizes the concept of partial sum",
+    "mathContext": "Lean: `noncomputable def partialSum (f : ℕ → Ω → ℝ) (N : ℕ) (ω : Ω) : ℝ`",
     "significance": "key",
     "prerequisites": [
       "basic set theory",

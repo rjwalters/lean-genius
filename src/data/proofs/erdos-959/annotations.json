@@ -58,7 +58,7 @@
     },
     "title": "Distinct Distances",
     "content": "**distinctDistances A** computes the set of positive real distances realized by the point set A, by imaging the distance function over A x A and filtering out zero.",
-    "mathContext": "Formalizes the concept of distinct distances",
+    "mathContext": "Lean: `noncomputable def distinctDistances (A : Finset (EuclideanSpace ℝ (Fin 2))) : Finset ℝ`",
     "significance": "supporting",
     "prerequisites": [
       "Erdos distinct distances problem",
@@ -221,7 +221,7 @@
     },
     "title": "Empty Set Base Case",
     "content": "**frequencyGap of the empty set is 0**, proved by unfolding definitions and simplifying the empty product. This serves as a base case for structural reasoning about the frequency gap.",
-    "mathContext": "Formalizes the concept of empty set base case",
+    "mathContext": "Lean: `theorem frequencyGap_empty : frequencyGap ∅ = 0`",
     "significance": "supporting",
     "prerequisites": [
       "base case",

@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "The Most Famous 'Trivial' Proof",
     "content": "The claim that Principia Mathematica took 362 pages to prove $1+1=2$ has become legendary—and somewhat misleading. Those pages weren't proving a single equation; they were constructing the entire logical framework needed to give rigorous meaning to the symbols '1', '+', '=', and '2'.\n\nIn modern type theory, this proof is definitionally true: the computation $1+1$ *reduces to* $2$ by the very definitions of the symbols involved. The `rfl` tactic (reflexivity) captures this.",
-    "mathContext": "Introduction to the formalization of The Most Famous 'Trivial' Proof",
+    "mathContext": "Formalizes: The Most Famous 'Trivial' Proof",
     "significance": "key",
     "prerequisites": [
       "Principia Mathematica",

@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdos Problem #245** asks about the growth rate of sumsets for sparse sequences.\n\nFor an infinite set A with **zero density** (meaning |A ∩ {1,...,N}| grows slower than N), how much bigger is the sumset A+A compared to A?\n\nThe answer: at least 3 times as big (asymptotically).\n\nThis was proved by G.A. Freiman in 1973 as part of his foundational work on additive combinatorics.",
-    "mathContext": "Formalizes the concept of problem overview",
+    "mathContext": "Formalizes: Problem Overview",
     "significance": "key",
     "prerequisites": [
       "Freiman's theorem",

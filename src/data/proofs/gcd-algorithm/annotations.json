@@ -9,7 +9,7 @@
     "type": "context",
     "title": "The Oldest Algorithm",
     "content": "The Euclidean algorithm is arguably the oldest non-trivial algorithm still in common use:\n\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\n**Why it matters**:\n- Over 2,300 years old (Euclid's Elements, c. 300 BCE)\n- Foundation of modern cryptography (RSA, Diffie-Hellman)\n- Remarkably efficient: O(log min(a, b)) steps\n- Extends to polynomials, Gaussian integers, and more\n\nThe algorithm terminates because $a \\mod b < b$, giving a strictly decreasing sequence.",
-    "mathContext": "Introduction to the formalization of The Oldest Algorithm",
+    "mathContext": "$$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$$",
     "significance": "critical",
     "prerequisites": [
       "GCD theory",

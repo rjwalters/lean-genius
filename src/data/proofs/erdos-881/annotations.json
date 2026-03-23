@@ -142,7 +142,7 @@
     "type": "definition",
     "title": "Weak Version",
     "content": "**erdos881Weak**: A weaker question asks if we can increase the order by SOME finite amount m > 0, not necessarily 1. This is easier than the main conjecture but still open.",
-    "mathContext": "Formalizes the concept of weak version",
+    "mathContext": "Formalizes: Weak Version",
     "significance": "key",
     "prerequisites": [
       "basic set theory",
@@ -164,7 +164,7 @@
     "type": "technique",
     "title": "Strong Implies Weak",
     "content": "**strong_implies_weak**: The main conjecture (m=1) implies the weak version (any m). This is proved by taking m=1 and using the strong conjecture's witness. A clean, fully proved theorem.",
-    "mathContext": "Formalizes the concept of strong implies weak",
+    "mathContext": "Formalizes: Strong Implies Weak",
     "significance": "key",
     "prerequisites": [
       "implication",

@@ -53,7 +53,7 @@
     "type": "definition",
     "title": "Counting Functions",
     "content": "**T₆ᵘ(n):**\n\nMaximum number of unit equilateral triangles formed by n points in ℝ⁶.\n\n**T₆(n):**\n\nMaximum number of equilateral triangles of ANY size formed by n points in ℝ⁶.\n\n**T_d(n):**\n\nGeneral dimension version for d-dimensional space.\n\nThese are defined as suprema over all n-point configurations.",
-    "mathContext": "Formalizes the concept of counting functions",
+    "mathContext": "Lean: `noncomputable def T6_unit (n : ℕ) : ℕ`",
     "significance": "key",
     "prerequisites": [
       "Counting problems",

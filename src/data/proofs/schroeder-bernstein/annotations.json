@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Antisymmetry of Cardinality",
     "content": "The Schroeder-Bernstein theorem establishes that cardinality is **antisymmetric**: if we can inject A into B and B into A, then A and B have the same size.\n\nThis is remarkable because:\n- We only need *injections* (one-to-one functions), not *bijections* (one-to-one and onto)\n- The bijection is guaranteed to exist, even though we don't explicitly construct it\n- This works for *infinite* sets, where counting elements doesn't make sense\n\nThe theorem allows indirect proofs of equicardinality: instead of building a bijection directly, we can find injections in both directions.",
-    "mathContext": "Overview: The Schroeder-Bernstein theorem establishes that cardinality is **antisymmetric**: if we can inject A into B and B into A, then A and B have the same size.",
+    "mathContext": "Formalizes: Antisymmetry of Cardinality",
     "significance": "critical",
     "prerequisites": [
       "cardinal arithmetic",

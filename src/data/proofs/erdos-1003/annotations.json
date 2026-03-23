@@ -33,7 +33,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import:\n- **Nat.Totient**: Euler's totient function φ\n- **Set.Finite.Basic**: Predicates for infinite sets\n- **Filter.AtTopBot**: The 'eventually' quantifier for asymptotic statements\n- **SpecialFunctions.Pow.Real**: Real exponentiation for bounds\n- **SpecialFunctions.Log.Basic**: Logarithms for the EPS bound",
-    "mathContext": "Formalizes the concept of mathlib imports",
+    "mathContext": "Formalizes: Mathlib Imports",
     "significance": "supporting",
     "prerequisites": [
       "Euler's work",
@@ -287,7 +287,7 @@
     "type": "concept",
     "title": "Why φ(104) = φ(105)",
     "content": "**The 104/105 coincidence**:\n\n- 104 = 2³ × 13 → φ(104) = 4 × 12 = **48**\n- 105 = 3 × 5 × 7 → φ(105) = 2 × 4 × 6 = **48**\n\nHere a prime power (2³) paired with prime 13 matches a product of three small primes.",
-    "mathContext": "Formalizes the concept of why φ(104) = φ(105)",
+    "mathContext": "Formalizes: Why φ(104) = φ(105)",
     "significance": "supporting",
     "prerequisites": [
       "prime factorization",

@@ -93,7 +93,7 @@
     "type": "definition",
     "title": "Favorite Count",
     "content": "**favoriteCount A x:**\n\nThe maximum over all distances r of |equidistantSet A x r|.\n\nThis is the largest number of points equidistant from x at any single distance - the 'favorite distance' achieves this count.",
-    "mathContext": "Formalizes the concept of favorite count",
+    "mathContext": "Lean: `noncomputable def favoriteCount {d n : ℕ} (A : PointConfig d n) (x : Fin n) : ℕ`",
     "significance": "key",
     "prerequisites": [
       "Distance counting",

@@ -104,7 +104,7 @@
     "type": "definition",
     "title": "Symmetric Coloring Structure",
     "content": "A **symmetric coloring** packages a color function f : V → V → C with a proof that f(v,w) = f(w,v). This reflects the fact that edge colorings assign a single color to each unordered edge {v,w}. The structure ensures well-definedness without needing to work with unordered pairs directly.",
-    "mathContext": "Formalizes the concept of symmetric coloring structure",
+    "mathContext": "Lean: `structure SymmetricColoring (V C : Type*)`",
     "significance": "supporting",
     "prerequisites": [
       "basic set theory",
@@ -366,7 +366,7 @@
     "type": "concept",
     "title": "Open Status Summary",
     "content": "Both parts of Problem 1174 remain **open in ZFC**. The known landscape: (1) Nešetřil-Rödl handles finitely many colors, (2) Shelah shows consistency, (3) no ZFC proof or refutation is known. The problem connects three major areas: finite Ramsey theory (partition properties of sparse graphs), infinite combinatorics (transfinite generalizations), and set-theoretic independence (forcing and consistency).",
-    "mathContext": "Formalizes the concept of open status summary",
+    "mathContext": "Formalizes: Open Status Summary",
     "significance": "key",
     "prerequisites": [
       "Ramsey theory",

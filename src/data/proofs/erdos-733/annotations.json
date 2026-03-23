@@ -31,7 +31,7 @@
     "type": "definition",
     "title": "Point Configuration",
     "content": "**PointSet:**\n\nA finite set of points in the plane R^2.\n\n**Type:** Finset (R x R)\n\nThe basic object of study - we count line-compatible sequences for n-point configurations.",
-    "mathContext": "Formalizes the concept of point configuration",
+    "mathContext": "Formalizes: Point Configuration",
     "significance": "key",
     "prerequisites": [
       "Finset API",
@@ -98,7 +98,7 @@
     "type": "definition",
     "title": "Counting Function f(n)",
     "content": "**countLineCompatible f(n):**\n\nThe number of distinct line-compatible sequences for n points.\n\nThe problem asks for bounds on f(n).",
-    "mathContext": "Formalizes the concept of counting function f(n)",
+    "mathContext": "Lean: `noncomputable def countLineCompatible (n : ℕ) : ℕ`",
     "relatedConcepts": [
       "bounds",
       "inequalities"

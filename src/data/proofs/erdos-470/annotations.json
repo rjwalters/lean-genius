@@ -32,7 +32,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import:\n- **NumberTheory.Divisors**: Provides `Nat.divisors` and `Nat.properDivisors`\n- **BigOperators.Group.Finset.Basic**: For summing over finite sets\n- **Set.Finite.Basic**: For the `Set.Infinite` predicate\n- **Finset.Powerset**: For subset enumeration (used conceptually)\n- **SpecialFunctions.Pow.Real**: For real exponentiation in density bounds",
-    "mathContext": "Formalizes the concept of mathlib imports",
+    "mathContext": "Formalizes: Mathlib Imports",
     "significance": "supporting",
     "prerequisites": [
       "Finset API",

@@ -294,7 +294,7 @@
     "type": "technique",
     "title": "Computational Examples",
     "content": "**Numerical verification with native_decide:**\n\nConcrete calculations for specific values:\n- g_1(10) = 16 (= 2*10 - 4)\n- g_2(15) = 36 (= 3*15 - 9)\n- g_3(20) = 64 (= 4*20 - 16)\n- g_5(30) = 144 (= 6*30 - 36)\n\nThese are verified computationally by Lean's native_decide tactic, providing additional confidence in the formula.",
-    "mathContext": "Formalizes the concept of computational examples",
+    "mathContext": "Formalizes: Computational Examples",
     "relatedConcepts": [
       "formal mathematics"
     ],

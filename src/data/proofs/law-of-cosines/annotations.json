@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Generalizing Pythagoras",
     "content": "The **Law of Cosines** generalizes the Pythagorean theorem to all triangles, not just right triangles:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\nWhen $C = 90°$, we have $\\cos(90°) = 0$, so:\n$$c^2 = a^2 + b^2$$\n\nThis is precisely the Pythagorean theorem! The Law of Cosines adds a correction term $-2ab\\cos(C)$ that accounts for non-right angles.",
-    "mathContext": "Overview: The **Law of Cosines** generalizes the Pythagorean theorem to all triangles, not just right triangles:",
+    "mathContext": "$$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$$",
     "significance": "critical",
     "prerequisites": [
       "Pythagorean theorem",

@@ -33,7 +33,7 @@
     "type": "definition",
     "title": "Independence Number",
     "content": "**independenceNumber G = α(G):**\n\nThe size of the largest independent set in G.\n\n**Properties:**\n- α(Kₙ) = 1 (complete graph: only singletons)\n- α(empty graph on n vertices) = n\n- χ(G) ≥ n/α(G) (lower bound on chromatic number)",
-    "mathContext": "Formalizes the concept of independence number",
+    "mathContext": "Lean: `noncomputable def independenceNumber : ℕ`",
     "significance": "key",
     "prerequisites": [
       "Clique number",

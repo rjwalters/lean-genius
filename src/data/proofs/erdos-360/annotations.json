@@ -169,7 +169,7 @@
     "type": "concept",
     "title": "Why Cube-Root Growth?",
     "content": "**Intuition for n^{1/3}:**\n\nIf a class contains elements up to size ~n^{1/3}, then choosing 3 such elements can easily sum to n. This gives a rough lower bound of n^{1/3} classes.\n\n**The n/φ(n) Factor:**\n\nWhen n has many small prime factors:\n- φ(n) is much smaller than n\n- n/φ(n) becomes large\n- More arithmetic progressions with common factors create sum constraints\n- More partitions are needed\n\n**Example:** For primorials (products of first k primes), n/φ(n) ~ log log n.",
-    "mathContext": "Formalizes the concept of why cube-root growth?",
+    "mathContext": "Formalizes: Why Cube-Root Growth?",
     "significance": "key",
     "prerequisites": [
       "Greedy bounds",
@@ -237,7 +237,7 @@
     "type": "concept",
     "title": "Connections to Related Problems",
     "content": "**Related Problems:**\n\n1. **Sum-free sets:** Sets where no element is a sum of two others (x + y ≠ z)\n\n2. **Schur numbers:** Minimum k such that {1,...,n} can be k-colored avoiding monochromatic x + y = z\n\n3. **Complete sequences:** Sequences where every sufficiently large n is representable as a sum\n\n4. **Subset sum problem:** NP-complete decision problem\n\nThe logarithmic correction terms (log n)^{1/3}(log log n)^{2/3} reflect deep analytic structure.",
-    "mathContext": "Formalizes the concept of connections to related problems",
+    "mathContext": "$1. **Sum-free sets:** Sets where no element is a sum of two others (x + y ≠ z)$",
     "significance": "key",
     "prerequisites": [
       "NP-completeness",
