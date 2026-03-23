@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Wrote proof for h_wp (within-part edge bound ≤ δ/4·n², ~60 lines) but CANNOT VERIFY: SzemerediCounting.lean and SzemerediRegularity.lean have 20+ pre-existing Mathlib API compatibility errors (pow_lt_pow_left renamed, ▸ notation changes, etc.). File needs comprehensive Mathlib API update before any new proofs can be verified.",
+    "progressSummary": "PROGRESS: 987 lines, 2 sorries remain (h_irreg line 816, h_sparse line 820). Full counting lemma proved. Triangle removal skeleton complete with within-part budget proved. Both remaining sorries are partition cleanup budget lemmas — same pattern, use generic sum_pairCount_le helper.",
     "builtItems": [
       "counting_lemma: fully proved (Part I, ~200 lines)",
       "bad_vertices_small: fully proved (key bridge lemma)",
@@ -55,9 +55,11 @@
       "Need clean Lean idiom for: Finpartition sum of part sizes = universe card"
     ],
     "nextSteps": [
-      "CRITICAL: Fix Mathlib API compatibility in SzemerediRegularity.lean and SzemerediCounting.lean (20+ errors from API renames)",
-      "After API fix: verify h_wp proof (already written), then adapt for h_irreg and h_sparse",
-      "Consider filing an issue for comprehensive Mathlib API update of Szemeredi files"
+      "Prove generic sum_pairCount_le helper: bound Σ edge pairs over partition pairs given per-pair density + part size bounds",
+      "Apply to h_irreg (line 816): d=1, S.card ≤ ε·k² (from IsRegularPartition), m = n/k+1 → total ≤ 4ε·n² ≤ (δ/2)·n²",
+      "Apply to h_sparse (line 820): d=2ε, S.card ≤ k², m = n/k+1 → total ≤ 2ε·n² ≤ (δ/4)·n²",
+      "For h_irreg: unfold IsRegularPartition to get bound on irregular pair count. Use Finset.card_biUnion_le pattern (same as within-part proof lines 731-746)",
+      "For h_sparse: use card_mul_edgeDensity from SzemerediRegularity.lean for density↔count conversion"
     ]
   },
   "tags": [
