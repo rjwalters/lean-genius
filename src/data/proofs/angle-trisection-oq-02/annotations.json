@@ -83,7 +83,7 @@
     },
     "type": "technique",
     "title": "Wantzel-Galois Theorem: Constructibility ↔ 2-Group Galois",
-    "content": "`wantzel_galois_characterization` is the main axiom: `IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal`. The docstring explains both proof directions: (→) α in a degree-2 tower gives a splitting field K with [K:ℚ] = 2^m, so Gal(K/ℚ) is a 2-group, and Gal(minpoly) embeds as a subgroup. (←) A 2-group Galois group has a composition series with ℤ/2ℤ quotients — by the Galois correspondence, this gives a degree-2 extension tower, so α is constructible. Axiomatized because the full proof needs the Galois correspondence.",
+    "content": "`wantzel_galois_characterization` is the main axiom: `IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal`. The docstring explains both proof directions: (→) α in a degree-2 tower gives a splitting field K with [K:ℚ] = 2^m, so Gal(K/ℚ) is a 2-group, and Gal(minpoly) embeds as a subgroup. (←) A 2-group Galois group has a composition series with ℤ/2ℤ quotients — by the Galois correspondence, this gives a degree-2 extension tower, so α is constructible. Axiomatized because the full proof needs the Galois correspondence.\n\n**Hierarchy of expressibility:** Constructibility (2-group Galois) is strictly more restrictive than solvability by radicals (solvable Galois group, per Abel-Ruffini). Every 2-group is solvable (composition factors are ℤ/2ℤ, which is abelian), but not every solvable group is a 2-group. Example: Gal(x⁵-2/ℚ) ≅ F₂₀ (Frobenius group of order 20 = 4·5) is solvable (with derived series F₂₀ ▷ ℤ/5ℤ ▷ {e}), so ⁵√2 is solvable by radicals, but F₂₀ is not a 2-group, so ⁵√2 is NOT constructible.\n\n**Fermat prime connection:** For the celebrated regular polygon problem: cos(2π/p) is constructible iff Gal(ℚ(ζₚ)/ℚ) ≅ ℤ/(p-1)ℤ is a 2-group, i.e., p-1 = 2ⁿ, i.e., p is a Fermat prime. Only 5 Fermat primes are known (3, 5, 17, 257, 65537), and it remains open whether there are finitely or infinitely many.",
     "mathContext": "**Wantzel-Galois**: $\\alpha \\in \\mathbb{R}$ algebraic over $\\mathbb{Q}$ is constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha)/\\mathbb{Q})$ is a 2-group. Proof sketch ($\\Leftarrow$): 2-groups are solvable; by Jordan-Hölder, composition factors are $\\mathbb{Z}/2\\mathbb{Z}$; by Galois correspondence, each factor corresponds to a degree-2 extension — exactly what compass-and-straightedge produces. The `.Gal` in `(minpoly ℚ α).Gal` is `Polynomial.Gal`: the Galois group of the splitting field of a polynomial over the base field.",
     "significance": "key",
     "prerequisites": [
@@ -98,7 +98,10 @@
       "Galois correspondence",
       "composition series",
       "solvable group",
-      "ℤ/2ℤ factors"
+      "ℤ/2ℤ factors",
+      "Fermat primes",
+      "regular polygon constructibility",
+      "expressibility hierarchy"
     ]
   },
   {
