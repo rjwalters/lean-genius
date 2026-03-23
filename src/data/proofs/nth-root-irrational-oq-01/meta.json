@@ -53,20 +53,34 @@
     "references": [
       {
         "key": "La02",
-        "citation": "Lang, S. (2002). Algebra. Ch. IV (Polynomials).",
+        "citation": "Lang, S. (2002). Algebra, 3rd ed. Springer GTM 211, Chapter IV (Polynomials).",
         "type": "book"
       },
       {
         "key": "DF04",
-        "citation": "Dummit, D. S. and Foote, R. M. (2004). Abstract Algebra. Section 9.4 (Irreducibility Criteria).",
+        "citation": "Dummit, D. S. and Foote, R. M. (2004). Abstract Algebra, 3rd ed. Wiley, Section 9.4 (Irreducibility Criteria).",
+        "type": "book"
+      },
+      {
+        "key": "Ei50",
+        "citation": "Eisenstein, G. (1850). Uber die Irreductibilitat und einige andere Eigenschaften der Gleichung, von welcher die Theilung der ganzen Lemniscate abhangt. Journal fur die reine und angewandte Mathematik, 39, 160-179.",
+        "type": "paper"
+      },
+      {
+        "key": "Ga01",
+        "citation": "Gauss, C. F. (1801). Disquisitiones Arithmeticae. Article 42 (Gauss's lemma on primitive polynomials).",
         "type": "book"
       }
     ],
     "relatedProofs": [
       "inverse-galois",
-      "inverse-galois-d4",
-      "inverse-galois-f20",
-      "angle-trisection-oq-02"
+      "angle-trisection-oq-02",
+      "sqrt2-irrational",
+      "nth-root-irrational",
+      "hermite-lindemann",
+      "abel-ruffini",
+      "e-transcendental",
+      "pi-transcendental"
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
@@ -142,22 +156,37 @@
     {
       "targetId": "inverse-galois",
       "relationship": "foundational",
-      "description": "Provides irrationality and irreducibility infrastructure imported by the Inverse Galois Problem formalization for Galois group computations over Q"
-    },
-    {
-      "targetId": "inverse-galois-d4",
-      "relationship": "foundational",
-      "description": "Imported by the D4 Galois realization (X^4-2) which uses Eisenstein irreducibility for its polynomial"
-    },
-    {
-      "targetId": "inverse-galois-f20",
-      "relationship": "foundational",
-      "description": "Imported by the F20 Frobenius group realization (X^5-2) which uses Eisenstein irreducibility"
+      "description": "Provides irrationality and irreducibility infrastructure imported by the Inverse Galois Problem formalization for Galois group computations over Q. Eisenstein irreducibility of X^n - p is the starting point for computing Galois groups of radical extensions"
     },
     {
       "targetId": "angle-trisection-oq-02",
       "relationship": "foundational",
-      "description": "Imported by the angle trisection impossibility proof for algebraic degree bounds on constructible numbers"
+      "description": "Imported by the angle trisection impossibility proof: constructibility requires the minimal polynomial to have degree a power of 2, and this module provides the algebraic degree machinery to establish that trisecting 60 degrees requires solving a degree-3 irreducible polynomial"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "extends",
+      "description": "The base sqrt(2) irrationality proof uses a direct parity/counting argument (Level 1-2). This module provides a strictly more general algebraic proof (Level 3) via irreducibility of X^2 - 2, subsuming the classical argument"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "extends",
+      "description": "The base nth-root irrationality uses irrational_nrt_of_notint_nrt (counting argument). This module provides the algebraic alternative via irreducible polynomials, which extends naturally to non-radical algebraic numbers"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Hermite-Lindemann proves e^alpha is transcendental for algebraic alpha != 0, a strictly stronger result than irrationality. Both sit in the hierarchy: algebraic irrationality (this module) < transcendence (Hermite-Lindemann)"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini uses the irreducibility of the generic polynomial to prove radical unsolvability. This module's Eisenstein criterion is the workhorse for establishing irreducibility of X^n - p, which generates the non-solvable extensions central to Abel-Ruffini"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of e implies e is not a root of any polynomial over Q, a strictly stronger statement than irrationality. This module's approach (irreducible polynomial -> irrational) is the first step in the algebraic hierarchy that culminates in transcendence theory"
     }
   ],
   "conclusion": {
