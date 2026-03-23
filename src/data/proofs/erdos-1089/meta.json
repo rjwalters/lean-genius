@@ -238,12 +238,7 @@
   ],
   "conclusion": {
     "summary": "The threshold function g_d(n) captures how many points in ℝ^d guarantee n distinct distances. The cube construction shows g_d(d+1) > 2^d, while Erdős proved g_d(n) ≫ d^{n-1}. The Erdős-Straus upper bound g_d(n) ≤ c^{d^{1-b_n}} leaves a vast gap between polynomial and stretched-exponential growth. Whether g_d(n)/d^{n-1} converges as d → ∞ remains the central open question.",
-    "implications": [
-      "Connects to the famous planar distinct distances problem (Guth-Katz 2015) by studying how distance structure changes with dimension rather than with point count",
-      "Probes the fundamental geometry of high-dimensional Euclidean space: whether distance configurations stabilize as dimension grows",
-      "The polynomial-vs-stretched-exponential gap in g_d(n) bounds reflects a deep open question about whether high-dimensional distance structure is polynomial or super-polynomial in nature",
-      "Resolution would inform extremal combinatorial geometry, coding theory (distance codes), and the theory of finite metric spaces"
-    ],
+    "implications": "Connects to the famous planar distinct distances problem (Guth-Katz 2015) by studying how distance structure changes with dimension rather than with point count. Probes the fundamental geometry of high-dimensional Euclidean space: whether distance configurations stabilize as dimension grows. The polynomial-vs-stretched-exponential gap in g_d(n) bounds reflects a deep open question about whether high-dimensional distance structure is polynomial or super-polynomial in nature. Resolution would inform extremal combinatorial geometry, coding theory (distance codes), and the theory of finite metric spaces",
     "openQuestions": [
       "Does lim_{d→∞} g_d(n)/d^{n-1} exist for each fixed n ≥ 2?",
       "What is the true growth rate of g_d(n): closer to d^{n-1} or to the stretched exponential?",
