@@ -1,0 +1,114 @@
+{
+  "id": "szemeredi-core",
+  "title": "Szemeredi Core Definitions",
+  "slug": "szemeredi-core",
+  "description": "Shared definitions and basic lemmas for the Szemeredi regularity pipeline: edge density, epsilon-regular pairs, regular partitions, and partition energy. Imported by both SzemerediRegularity and SzemerediCounting.",
+  "meta": {
+    "author": "Szemeredi (1975), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di_regularity_lemma",
+    "date": "1975",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SzemerediCore.lean",
+    "tags": [
+      "szemeredi",
+      "combinatorics",
+      "graph-theory",
+      "regularity",
+      "infrastructure"
+    ],
+    "badge": "infrastructure",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for vertex and edge operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.product",
+        "description": "Cartesian product for edge counting between subsets",
+        "module": "Mathlib.Data.Finset.Product"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite types for partition energy normalization",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "Edge density definition for SimpleGraph bipartite subgraphs",
+      "Epsilon-regular pair definition with quantified subset condition",
+      "Regular partition definition combining equitability and bounded irregularity",
+      "Size-weighted partition energy following Komlos-Simonovits (1996)",
+      "Proved: edgeDensity_nonneg, edgeDensity_le_one, partitionEnergy_nonneg"
+    ],
+    "dateAdded": "03/22/26",
+    "axiomCount": 0,
+    "lineCount": 110
+  },
+  "overview": {
+    "historicalContext": "The definitions in this module form the foundation of the Szemeredi regularity pipeline. Edge density, epsilon-regularity, and partition energy were introduced in Szemeredi's 1975 proof of his theorem on arithmetic progressions, and later refined by Komlos and Simonovits (1996) into the standard toolkit for regularity-based arguments.\n\nBy extracting these shared definitions into a core module, both the regularity lemma and the counting/removal lemma files can import a single source of truth, preventing definition drift across the pipeline.",
+    "problemStatement": "Define the fundamental concepts for graph regularity:\n\n- **Edge density** $d(A,B) = |E(A,B)| / (|A| \\cdot |B|)$ between vertex subsets\n- **Epsilon-regular pair**: $(A,B)$ is $\\varepsilon$-regular if all large sub-pairs have density within $\\varepsilon$ of $d(A,B)$\n- **Regular partition**: at most $\\varepsilon \\binom{k}{2}$ pairs are irregular\n- **Partition energy**: $q(\\mathcal{P}) = \\sum_{i,j} \\frac{|P_i||P_j|}{n^2} d(P_i,P_j)^2$\n\nProve that edge density lies in $[0,1]$ and partition energy is non-negative.",
+    "proofStrategy": "The module provides definitions and three proved lemmas:\n\n1. **edgeDensity_nonneg**: By positivity of the numerator and denominator.\n2. **edgeDensity_le_one**: The number of edges between $A$ and $B$ is at most $|A| \\cdot |B|$ (every pair in the product can contribute at most one edge).\n3. **partitionEnergy_nonneg**: Each summand is a product of non-negative factors (cardinalities, squares).",
+    "keyInsights": [
+      "Centralizing definitions prevents the regularity and counting modules from using incompatible variants of edge density or regularity",
+      "Edge density bounds (0 to 1) are fundamental sanity checks used throughout the regularity pipeline",
+      "Partition energy is the key potential function: bounded above by 1 and increasing with each refinement step"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring listing all definitions and lemmas. Imports Mathlib, opens Classical, and declares finite vertex type variables."
+    },
+    {
+      "id": "edge-density",
+      "title": "Edge Density Definition",
+      "startLine": 29,
+      "endLine": 34,
+      "summary": "Defines edgeDensity G A B as |{(a,b) in A x B : G.Adj a b}| / (|A| * |B|), handling the zero case."
+    },
+    {
+      "id": "regularity-defs",
+      "title": "Epsilon-Regularity and Regular Partitions",
+      "startLine": 36,
+      "endLine": 56,
+      "summary": "Defines IsEpsilonRegular (all large sub-pairs have density within epsilon) and IsRegularPartition (equitable with bounded irregular pairs)."
+    },
+    {
+      "id": "partition-energy",
+      "title": "Partition Energy",
+      "startLine": 58,
+      "endLine": 68,
+      "summary": "Defines the size-weighted partition energy q(P) following Komlos-Simonovits (1996)."
+    },
+    {
+      "id": "basic-lemmas",
+      "title": "Basic Lemmas",
+      "startLine": 70,
+      "endLine": 110,
+      "summary": "Proves edgeDensity_nonneg, edgeDensity_le_one (via card_filter_le and card_product), and partitionEnergy_nonneg (via sum_nonneg)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "szemeredi-regularity",
+      "relationship": "Provides core definitions imported by the regularity lemma"
+    },
+    {
+      "proofId": "szemeredi-counting",
+      "relationship": "Provides core definitions imported by the counting and removal lemmas"
+    }
+  ],
+  "conclusion": {
+    "summary": "This module provides the shared mathematical vocabulary for the Szemeredi regularity pipeline. All definitions are sorry-free and axiom-free, with basic properties proved.",
+    "implications": "By centralizing edge density, epsilon-regularity, regular partitions, and partition energy in a single module, the full Szemeredi pipeline (regularity, counting, removal, and the full theorem) can share definitions without drift.",
+    "openQuestions": [
+      "Should the module also include the energy increment lemma statement?",
+      "Can these definitions be generalized to weighted graphs or hypergraphs?"
+    ]
+  }
+}

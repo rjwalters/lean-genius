@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, MessageSquare, AlertCircle, Lightbulb } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ChevronDown, ChevronUp, MessageSquare, AlertCircle, Lightbulb, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
-import type { Proof } from '@/types/proof'
+import type { Proof, CrossReference } from '@/types/proof'
 
 interface ProofConclusionProps {
   proof: Proof
@@ -171,6 +172,37 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
                   )}
                 </div>
               )}
+            </section>
+          )}
+
+          {/* Related Proofs */}
+          {(proof.crossReferences ?? []).length > 0 && (
+            <section>
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+                Related Proofs
+              </h3>
+              <ul className="space-y-2">
+                {(proof.crossReferences ?? []).map((ref: CrossReference, i: number) => {
+                  const refSlug = ref.proofId ?? ref.targetId
+                  if (!refSlug) return null
+                  return (
+                    <li key={i}>
+                      <Link
+                        to={`/proof/${refSlug}`}
+                        className="group flex items-start gap-3 text-sm bg-muted/20 rounded-lg p-3 border border-border/50 hover:border-annotation/30 hover:bg-muted/30 transition-colors"
+                      >
+                        <ArrowRight className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground group-hover:text-annotation transition-colors" />
+                        <div>
+                          <span className="font-medium text-annotation group-hover:underline">{refSlug}</span>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {ref.description ?? ref.relationship}
+                          </p>
+                        </div>
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
             </section>
           )}
 

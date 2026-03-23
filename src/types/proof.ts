@@ -1,3 +1,18 @@
+/**
+ * Cross-reference linking one proof to another with a description of the relationship.
+ * Existing meta.json files use either `proofId` or `targetId` for the linked proof's slug.
+ */
+export interface CrossReference {
+  /** Slug of the related proof (preferred field name) */
+  proofId?: string
+  /** Slug of the related proof (legacy field name, treated as alias for proofId) */
+  targetId?: string
+  /** Human-readable description of the relationship */
+  relationship: string
+  /** Optional extended description */
+  description?: string
+}
+
 export interface Proof {
   id: string
   title: string
@@ -8,6 +23,8 @@ export interface Proof {
   meta: ProofMeta
   overview?: ProofOverview
   conclusion?: ProofConclusion
+  /** Links to related proofs with relationship descriptions */
+  crossReferences?: CrossReference[]
 }
 
 export interface ProofOverview {
@@ -46,6 +63,7 @@ export type ProofBadge =
   | 'wip'                // 🚧 Has sorries or incomplete sections
   | 'ai-solved'          // 🤖 Open problem solved by AI
   | 'axiom'              // 📜 States key results as axioms (axiomatized formalization)
+  | 'infrastructure'     // 🧱 Shared library providing reusable definitions for other proofs
 
 /**
  * Display information for proof badges
@@ -98,6 +116,12 @@ export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; colo
     label: 'Axiomatized',
     color: '#A855F7',
     description: 'States key results as axioms for formalization'
+  },
+  'infrastructure': {
+    emoji: '🧱',
+    label: 'Infrastructure',
+    color: '#64748B',
+    description: 'Shared library providing reusable definitions for other proofs'
   }
 }
 

@@ -1,0 +1,59 @@
+[
+  {
+    "id": "szemeredi-core-edge-density",
+    "proofId": "szemeredi-core",
+    "range": { "startLine": 29, "endLine": 34 },
+    "type": "definition",
+    "title": "Edge Density",
+    "content": "The edge density d(A,B) counts the fraction of possible edges between vertex subsets A and B that are actually present. Returns 0 when either set is empty.",
+    "mathContext": "d(A,B) = |{(a,b) in A x B : a ~ b}| / (|A| * |B|). Fundamental to all regularity arguments.",
+    "significance": "critical"
+  },
+  {
+    "id": "szemeredi-core-epsilon-regular",
+    "proofId": "szemeredi-core",
+    "range": { "startLine": 36, "endLine": 45 },
+    "type": "definition",
+    "title": "Epsilon-Regular Pair",
+    "content": "A pair (A, B) is epsilon-regular if every sufficiently large sub-pair has edge density close to d(A,B). This captures the notion that the pair behaves like a random bipartite graph.",
+    "mathContext": "For all A' subset A, B' subset B with |A'| >= eps*|A| and |B'| >= eps*|B|: |d(A',B') - d(A,B)| <= eps.",
+    "significance": "critical"
+  },
+  {
+    "id": "szemeredi-core-regular-partition",
+    "proofId": "szemeredi-core",
+    "range": { "startLine": 47, "endLine": 56 },
+    "type": "definition",
+    "title": "Regular Partition",
+    "content": "An equitable partition where at most epsilon * C(k,2) pairs are not epsilon-regular. The regularity lemma guarantees such partitions exist for any epsilon > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "szemeredi-core-partition-energy",
+    "proofId": "szemeredi-core",
+    "range": { "startLine": 58, "endLine": 68 },
+    "type": "definition",
+    "title": "Partition Energy",
+    "content": "The size-weighted energy q(P) = sum of (|Pi|*|Pj|/n^2) * d(Pi,Pj)^2 over all pairs. This potential function drives the regularity lemma proof: it increases by at least eps^5 at each refinement step and is bounded by 1.",
+    "mathContext": "q(P) in [0,1] and monotone under refinement. The key insight: bounded energy + positive increment = termination.",
+    "significance": "critical"
+  },
+  {
+    "id": "szemeredi-core-density-bounds",
+    "proofId": "szemeredi-core",
+    "range": { "startLine": 70, "endLine": 92 },
+    "type": "theorem",
+    "title": "Edge Density Bounds",
+    "content": "Edge density lies in [0,1]. The upper bound uses that the number of edges between A and B is at most |A|*|B| (every pair contributes at most one edge).",
+    "significance": "key"
+  },
+  {
+    "id": "szemeredi-core-energy-nonneg",
+    "proofId": "szemeredi-core",
+    "range": { "startLine": 94, "endLine": 109 },
+    "type": "theorem",
+    "title": "Partition Energy Non-negativity",
+    "content": "Each summand in the partition energy is a product of non-negative factors (natural number casts, squares), so the sum is non-negative.",
+    "significance": "supporting"
+  }
+]
