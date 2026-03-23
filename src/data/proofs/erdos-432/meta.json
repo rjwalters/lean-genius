@@ -65,7 +65,7 @@
       }
     ],
     "axiomCount": 3,
-    "assumptions": "prime_divides_at_most_one (each prime divides at most one element of a pairwise coprime sumset A+B), coprime_set_bound (a pairwise coprime subset of [1,n] has at most pi(n)+1 elements), ostmann_connection (link to Ostmann's additive complement problem #431)",
+    "assumptions": "3 axiom declarations: (1) prime_divides_at_most_one — genuine mathematical content: each prime divides at most one element of a pairwise coprime sumset, (2) coprime_set_bound — TRIVIAL: states countingFn S n ≤ n (true for any set), does NOT formalize the intended π(n)+1 bound, (3) ostmann_connection — PLACEHOLDER: declares True, contributes no content",
     "relatedProblems": [
       {
         "id": "ramseys-theorem",
@@ -138,7 +138,8 @@
       "**The real question**: does the sumset structure A + B force density below π(n)? A 'free' coprime set can achieve π(n) + 1, but the additive constraint may prevent this",
       "**Additive-multiplicative barrier**: the problem requires combining sumset theory (additive) with sieve methods (multiplicative) — two largely disjoint toolkits",
       "**Three scenarios**: density could be Θ(π(n)), O(n^α) for α < 1, or O((log n)^k) — even the correct order of magnitude is unknown",
-      "**Tao's assessment**: 'looks difficult' — suggesting current techniques are insufficient"
+      "**Tao's assessment**: 'looks difficult' — suggesting current techniques are insufficient",
+      "**Axiom quality issues**: Of 3 axioms, `coprime_set_bound` states the trivial bound `countingFn S n ≤ n` rather than the meaningful π(n) + 1 bound described in the documentation, and `ostmann_connection : True` is a content-free placeholder. Only `prime_divides_at_most_one` states genuine mathematical content. The formalization would benefit from correcting `coprime_set_bound` to use `Nat.primeCounting`"
     ],
     "prerequisites": [
       "Additive combinatorics: sumsets ($A + B$), Cauchy-Davenport theorem, Plünnecke-Ruzsa inequality",
