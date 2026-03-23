@@ -130,6 +130,16 @@
       "targetId": "harmonic-divergence",
       "relationship": "related",
       "description": "The harmonic mean HM = (∑ wᵢ/zᵢ)⁻¹ = M_{-1} is the r = -1 case of the power mean family. This limit result establishes M_0 = GM, bridging the gap between HM and AM in the chain HM ≤ GM ≤ AM. The harmonic series divergence proof formalizes the arithmetic of reciprocals that underpins the HM ≤ GM step via the inversion trick"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "foundational",
+      "description": "The derivative-based limit technique used here — f(r)/r → f'(0) when f(0) = 0 — is the first-order case of Taylor's theorem: f(r) = f(0) + f'(0)r + O(r²), so f(r)/r = f'(0) + O(r) → f'(0). Taylor's theorem provides the broader framework for understanding why the power mean limit works: the exp/log representation makes log M_r a smooth function of r whose Taylor expansion at r = 0 reveals the geometric mean as the leading coefficient"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity e^(iπ) + 1 = 0 showcases the exp function that is central to this proof. The power mean limit M_r → GM relies on the exp/log representation M_r = exp(f(r)/r) and the continuity of exp to pass limits through the exponential — the same analytic properties of exp that make Euler's identity possible"
     }
   ],
   "overview": {
@@ -248,7 +258,9 @@
     "cauchy-schwarz",
     "sum-of-kth-powers",
     "fundamental-theorem-calculus",
-    "harmonic-divergence"
+    "harmonic-divergence",
+    "taylor-theorem",
+    "euler-identity"
   ],
   "references": [
     {
