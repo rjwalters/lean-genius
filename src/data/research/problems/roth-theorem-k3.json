@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-21",
     "iteration": 4,
-    "focus": "Proved conj_psi (conjugate character identity). 4 sorries remain.",
+    "focus": "Proved conj_psi AND parseval_on_zmod. 3 sorries remain.",
     "blockers": [
       "None. Independent problem, can start immediately."
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4 sorries remain (was 5). Proved conj_psi: star(ψ(x)) = ψ(-x) via cancellation argument (ψ(x)·ψ(-x)=1 and ψ(x)·conj(ψ(x))=1 from exp of purely imaginary). Key: exp_conj + z+conj(z)=0 for purely imaginary z.",
+    "progressSummary": "PROGRESS: 3 sorries remain (was 5). Proved conj_psi and parseval_on_zmod. Remaining: triple_count_fourier, fourier_large_coefficient, density_increment_lemma.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -41,7 +41,8 @@
       "Proved char_sum_int: ∑_{j=0}^{N-1} exp(2πij·m/N) = N·δ(N|m) via geometric series + root_unity_sum_zero + exp_eq_one_iff",
       "Fixed psi_add: original proof used ring for false equation (k%N)/N ≠ val(a)/N + val(b)/N. Fix: combine RHS fractions, decompose k/N, absorb integer part",
       "Proved conj_psi: starRingEnd ℂ (ψ x) = ψ (-x) via psi_add + norm_eq_one + mul_left_cancel",
-      "conj_psi: proved via cancellation (psi_add gives inverse, conj(exp) + purely imaginary gives same inverse)"
+      "conj_psi: proved via cancellation (psi_add gives inverse, conj(exp) + purely imaginary gives same inverse)",
+      "parseval_on_zmod: proved via suffices in ℂ, expand fourierCoeff, conj_psi+psi_add, sum_comm, char_orthogonality, diagonal sum"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -82,7 +83,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T00:10:00Z",
+  "lastUpdate": "2026-03-23T00:20:00Z",
   "significance": 9,
   "tractability": 6
 }

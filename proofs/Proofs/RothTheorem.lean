@@ -358,13 +358,34 @@ private lemma char_sum_int {N : ℕ} [NeZero N] (m : ℤ) :
 
 theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) = A.card * N := by
-  -- Proof plan (all ingredients proved in this file):
-  -- 1. Cast to ℂ: ↑(‖z‖²) = z * conj z (via Complex.mul_conj + normSq)
-  -- 2. Expand Â(r) = ∑_{x∈A} ψ(rx), distribute product via Finset.sum_mul/mul_sum
-  -- 3. conj(ψ(ry)) = ψ(-ry) [conj_psi], ψ(rx)·ψ(-ry) = ψ(r(x-y)) [psi_add]
-  -- 4. Swap sums via Finset.sum_comm, apply char_orthogonality: ∑_r ψ(r(x-y)) = N·δ(x,y)
-  -- 5. Diagonal sum: ∑_{x∈A} N = |A|·N
-  sorry
+  -- Prove equivalent statement in ℂ: ∑_r Â(r)·conj(Â(r)) = |A|·N
+  suffices hC : Finset.univ.sum (fun r : ZMod N =>
+      fourierCoeff A r * starRingEnd ℂ (fourierCoeff A r)) = ↑(A.card) * ↑N by
+    -- Convert ℂ equation to ℝ: ↑(‖z‖²) = z·conj(z) via normSq
+    have h_eq : ∀ r : ZMod N, (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) =
+        fourierCoeff A r * starRingEnd ℂ (fourierCoeff A r) := by
+      intro r; rw [Complex.ofReal_pow, sq, ← Complex.normSq_eq_abs, Complex.ofReal_normSq]
+    have h1 : (↑(Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) : ℂ) =
+        ↑(↑A.card * ↑N : ℝ) := by
+      push_cast; simp_rw [h_eq]; exact hC
+    exact_mod_cast h1
+  -- Step 1: Expand Â(r) = ∑ ψ(rx), distribute conj over sum, multiply out
+  simp_rw [fourierCoeff_eq_sum_psi, map_sum, Finset.sum_mul, Finset.mul_sum]
+  -- Step 2: conj(ψ(ry)) = ψ(-ry), ψ(rx)·ψ(-ry) = ψ(rx + (-ry)) = ψ(r(x-y))
+  simp_rw [conj_psi, ← psi_add,
+    show ∀ (r x y : ZMod N), r * x + -(r * y) = r * (x + -y) from fun r x y => by ring]
+  -- Step 3: Swap sums ∑_r ∑_x ∑_y → ∑_x ∑_y ∑_r
+  rw [Finset.sum_comm]
+  simp_rw [Finset.sum_comm (s := Finset.univ) (t := A)]
+  -- Step 4: Apply char_orthogonality: ∑_r ψ(r·(x-y)) = N·δ(x-y,0)
+  simp_rw [char_orthogonality]
+  -- Step 5: x + -y = 0 ↔ x = y, then diagonal sum = |A|·N
+  simp_rw [add_neg_eq_zero,
+    show ∀ (x y : ZMod N), (x = y) = (y = x) from fun x y => propext eq_comm,
+    Finset.sum_ite_eq']
+  -- Goal: A.sum (fun x => if x ∈ A then ↑N else 0) = ↑|A| * ↑N
+  exact (Finset.sum_congr rfl fun x hx => if_pos hx).trans
+    (by rw [Finset.sum_const, smul_eq_mul])
 
 /-- The Fourier identity for AP counting:
     Λ₃(A) = N⁻¹ · Σ_r Â(r)² · conj(Â(2r))
