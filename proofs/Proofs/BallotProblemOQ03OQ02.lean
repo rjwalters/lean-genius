@@ -1293,23 +1293,36 @@ private lemma colEntry_prefix_eq (pfx sfx₁ sfx₂ : LPath) (k : ℕ)
 
     **Proof structure** (via `Finset.sum_involution`):
     The GV involution maps (σ, P) ↦ (σ * swap(ci,cj), P') where:
-    - (ci, cj) is the canonical first crossing pair (determined by the paths)
+    - (ci, cj) is the canonical first crossing pair
     - P' tail-swaps paths ci, cj at their first shared lattice point
     - Other paths are unchanged
 
-    Self-inverse follows from:
-    (1) σ * swap(ci,cj) * swap(ci,cj) = σ
-    (2) Double tail-swap = identity (List.take_append_drop)
-    (3) Canonical crossing preserved: `northBeforeEast_prefix` ensures colEntry
-        values at columns ≤ crossing column are unchanged by the tail swap.
-        New shared points from expanded ranges are all above y₀ (the canonical
-        shared row), so the lex-min (column, row, pair) datum is preserved.
+    **Required components** (all proved except self-inverse):
+    1. Sign reversal: sign(σ * swap) = -sign(σ) [proved: gvInvolution_sign_reversal]
+    2. No fixed points: σ * swap(i,j) ≠ σ when i < j [proved: gvInvolution_no_fixed]
+    3. Membership: g(t) is cancellable [proved: gvInvolution_membership]
+    4. Self-inverse: g(g(t)) = t — THE KEY REMAINING CHALLENGE
 
-    Infrastructure proved: sign reversal (gvInvolution_sign_reversal),
-    no fixed points (gvInvolution_no_fixed), membership (gvInvolution_membership),
-    prefix lemma (northBeforeEast_prefix). The tail-swap construction requires
-    PathMN validity (from take_east_count_within_column + swapTailsAt) and
-    canonical crossing pair (from Finset.min' on overlapping pairs). -/
+    **Self-inverse proof strategy**:
+    - Permutation part: σ * swap(ci,cj) * swap(ci,cj) = σ (trivial from swap²=1)
+    - Path part: double tail-swap at the same point = identity (List.take_append_drop)
+    - Canonical crossing preserved: use (c, y, i, j) lex ordering where
+      c = crossing column, y = max(lower bounds). After tail-swap:
+      (a) At (c', y') < (c₀, y₀) lex: path prefixes unchanged → same crossings
+      (b) At (c₀, y₀): both paths still share this point (prefix preserved)
+      (c) No pair (i', j') < (i₀, j₀) newly shares (c₀, y₀) [proved by minimality]
+      → canonical crossing = same (c₀, y₀, i₀, j₀) for g(t) and t
+
+    **Implementation note**: The current gvInvolutionFn uses northThenEastPath
+    (which is NOT self-inverse). The correct implementation requires constructing
+    PathMN from tail-swap (take(P_i, k_i) ++ drop(P_j, k_j)) with validity proofs
+    for length and East count. Infrastructure: take_east_count_within_column,
+    swapTailsAt, northBeforeEast_prefix. Estimated: ~150 lines of new code.
+
+    **Critical discovery**: cancellable σ=1 tuples CAN have crossings only at the
+    final column (not at any c < m). The canonical crossing must handle both
+    interior (c < m) and final (c = m) columns. The tail-swap works for both:
+    at c = m, the suffix is pure North steps. -/
 private theorem cancellable_sum_eq_zero {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :
     (Finset.sum (Finset.univ.filter

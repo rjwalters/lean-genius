@@ -332,3 +332,99 @@ double tail-swap = identity (via List.take_append_drop).
 ### Files Modified
 - `proofs/Proofs/BallotProblemOQ03OQ02.lean` (+35 lines: northBeforeEast_prefix, colEntry_prefix_eq)
 - `research/problems/ballot-problem-oq-03-oq-02/knowledge.md` (this session)
+
+---
+
+## Session 2026-03-23 (researcher-1, session 3) - Deep Analysis of Self-Inverse
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 62)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: in-progress, ACT phase, 1 sorry (cancellable_sum_eq_zero)
+
+### Deep Analysis Performed
+
+Extensive analysis of the self-inverse proof for `cancellable_sum_eq_zero`:
+
+1. **Current gvInvolutionFn is NOT self-inverse**: It replaces ALL paths with
+   `northThenEastPath`, so g(g(t)).2 = NTE ≠ t.2. No workaround exists for NTE —
+   the correct approach MUST use actual tail-swap (prefix + suffix joining).
+
+2. **Tail-swap PathMN construction**: Joining take(P_i, k_i) ++ drop(P_j, k_j) gives
+   a valid PathMN m n' where n' = k_i + n_j - k_j = target(σ(j)) - source(i). ✓
+   - Length: k_i + (m + n_j - k_j) = m + n'
+   - East count: c + (m - c) = m (from take_east_count_within_column + countP_drop)
+   - Double swap: take(take(P,k) ++ drop(Q,k'), k) ++ drop(take(Q,k') ++ drop(P,k), k')
+     = take(P,k) ++ drop(P,k) = P (by List.take_left + List.drop_left + List.take_append_drop)
+
+3. **Canonical crossing ordering — (i,j) lex is INSUFFICIENT**: After tail-swap at (c₀, y₀)
+   between paths i₀ and j₀, a pair (i', j₀) with i' < i₀ can newly cross at column c₀
+   because path j₀'s y-range at c₀ changes (upper bound becomes source(i₀) + colEntry(P_i₀, c₀+1)
+   instead of source(j₀) + colEntry(P_j₀, c₀+1)). So lex-min (i,j) is NOT preserved.
+
+4. **Correct ordering: (c, y, i, j) with column+row first**: After tail-swap at (c₀, y₀):
+   - At (c', y') < (c₀, y₀) lex: path prefixes up to (c₀, y₀) are unchanged → same crossings
+   - (c₀, y₀, i₀, j₀) still valid: both paths have same prefix → same lower bounds at c₀ →
+     same y₀ = max(lower bounds). Both paths visit y₀ (join point of prefix + suffix).
+   - No (c₀, y₀, i', j') < (c₀, y₀, i₀, j₀) newly valid: path i' (or j') either unchanged
+     (if not i₀ or j₀) or didn't visit (c₀, y₀) before (by minimality of canonical crossing).
+   → Canonical crossing (c₀, y₀, i₀, j₀) is PRESERVED. ✓
+
+5. **CRITICAL DISCOVERY: `cancellable_has_interior_crossing` is FALSE**: For σ = 1 with
+   strictly ordered sources/targets, cancellable tuples CAN have crossings only at the
+   final column (c = m), not at any interior column. Example: when path i stays below
+   path j at all interior columns but overlaps at the final column boundary where
+   target(i) ≥ source(j) + colEntry(P_j, m).
+
+   **Fix**: The canonical crossing must include c = m (final column). At c = m, the
+   y-range is [source(i) + colEntry(P_i, m), target(σ(i))]. The upper bound depends
+   on σ (via target), but the LOWER bound (colEntry at m) depends only on the path prefix.
+   The tail-swap at c = m swaps pure-North suffixes, which is valid. Self-inverse works
+   because colEntry at m is preserved (same prefix with m East steps) and y₀ = max(lower
+   bounds at m) is preserved.
+
+6. **Updated docstring** in `cancellable_sum_eq_zero` with full proof strategy and
+   remaining work specification.
+
+### What Was NOT Done (Due to Complexity)
+
+The full tail-swap involution implementation (~200 lines) was not completed due to:
+- Complex type-level Lean 4 code for PathMN construction from tail-swap
+- Need for Finset on (c, y, i, j) quadruples (requires bounded y via Fintype)
+- Self-inverse proof requires careful argument about crossing preservation at both
+  interior and final columns
+
+### Concrete Implementation Plan for Next Session
+
+**Step 1** (~30 lines): Build `tailSwapPathMN` — construct PathMN from prefix+suffix
+- Input: P : PathMN m n₁, Q : PathMN m n₂, split positions k_i, k_j
+- Output: PathMN m (k_i + n₂ - k_j)
+- Needs: List.countP_append, countP_drop helper
+
+**Step 2** (~40 lines): Define canonical crossing using Nat encoding
+- Encode (c, y, i, j) → ℕ with bound B = max(targets) + 1
+- Define predicate "n encodes a crossing quadruple for tuple t"
+- Use Nat.find for canonical choice (deterministic, well-founded)
+
+**Step 3** (~20 lines): Define `gvProperInvolution` using Steps 1-2
+- New permutation: σ * swap(ci, cj)
+- New paths: tail-swap at ci, cj; identity elsewhere
+- Cast between PathMN types (σ'(k) = σ(k) for k ≠ ci, cj)
+
+**Step 4** (~10 lines): Prove sign_reversal and no_fixed
+- Only depend on permutation component, carry over from existing proofs
+
+**Step 5** (~30 lines): Prove membership
+- σ' ≠ 1: trivially cancellable
+- σ' = 1: tail-swapped paths still share (c₀, y₀) → ¬NI
+
+**Step 6** (~50 lines): Prove self-inverse
+- Show Nat.find gives same value for g(t): the key preservation argument
+  (crossings at (c', y') < (c₀, y₀) unchanged; (c₀, y₀, i₀, j₀) preserved)
+- Show double tail-swap = identity: List.take_left + List.drop_left + take_append_drop
+- Combine via Sigma.ext
+
+**Step 7** (~10 lines): Wire into Finset.sum_involution
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (updated docstring for cancellable_sum_eq_zero)
+- `research/problems/ballot-problem-oq-03-oq-02/knowledge.md` (this session)

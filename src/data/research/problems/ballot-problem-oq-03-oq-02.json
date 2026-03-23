@@ -35,7 +35,10 @@
       "REPLACED Classical.choice with northThenEastPath: canonical all-North-then-all-East path constructor. This ensures image paths cross at column 0 under wellFormed.",
       "northThenEast_not_NI PROVED: two northThenEast paths from different sources cross at column 0 when sources(i) ≤ targets(j)",
       "Self-inverse requires CANONICAL crossing (lex-min on (c,y,i,j)), NOT firstNonFixed (shown by 3-cycle counterexample)",
-      "Range expansion in GV tail-swap only adds shared points above y₀ (canonical row) — key for self-inverse preservation"
+      "Range expansion in GV tail-swap only adds shared points above y₀ (canonical row) — key for self-inverse preservation",
+      "CRITICAL: cancellable_has_interior_crossing is FALSE — σ=1 tuples CAN have crossings only at the final column. The canonical crossing must handle c=m (final) as well as c<m (interior).",
+      "Self-inverse requires (c,y,i,j) lex ordering with column+row first, NOT just (i,j). The (i,j) lex ordering fails because tail-swap can create new crossings at (i2,j0) with i2<i0 at columns >= c0.",
+      "The correct self-inverse argument: at (c2,y2) < (c0,y0) lex, path prefixes unchanged → same crossings. At (c0,y0), both paths still visit y0 (join point). No (i2,j2) < (i0,j0) newly visits (c0,y0) by minimality."
     ],
     "builtItems": [
       "BallotProblemOQ03OQ02.lean: r×r LGV lemma formalization (~1100 lines, expanded from 1050)",
@@ -72,11 +75,15 @@
       "Mathlib version drift: take_at_column_entry/take_east_count_within_column have pre-existing compat errors (~14 errors)"
     ],
     "nextSteps": [
-      "Build canonical crossing pair finder (Finset.min with sharedRow ordering)",
-      "Construct PathMN from tail-swapped lists (length + East count proofs)",
-      "Apply Finset.sum_involution with all 4 properties proved"
+      "Step 1 (~30 lines): Build tailSwapPathMN from prefix+suffix with length+East proofs",
+      "Step 2 (~40 lines): Canonical crossing via Nat encoding + Nat.find (handles c≤m)",
+      "Step 3 (~20 lines): gvProperInvolution using Steps 1-2",
+      "Step 4 (~10 lines): sign_reversal + no_fixed (perm-only, carry over)",
+      "Step 5 (~30 lines): Membership proof (σ≠1 trivial; σ=1 tail-swap still shares crossing)",
+      "Step 6 (~50 lines): Self-inverse via (c,y,i,j) preservation + double tail-swap = id",
+      "Step 7 (~10 lines): Wire into Finset.sum_involution → cancellable_sum_eq_zero"
     ],
-    "progressSummary": "PROGRESS: Membership sorry PROVED. 1 sorry remains (cancellable_sum_eq_zero — needs self-inverse involution via suffix-swap, ~200 lines). Pre-existing Mathlib compat errors in take_at_column_entry block suffix-swap work."
+    "progressSummary": "PROGRESS: Deep analysis of self-inverse completed. Current NTE-based involution cannot be self-inverse (paths lost). Full tail-swap + canonical (c,y,i,j) crossing needed. Critical discovery: final-column crossings must be handled. Estimated ~200 lines remaining."
   },
   "lastUpdate": "2026-03-23T22:00:00Z",
   "leanFiles": [
