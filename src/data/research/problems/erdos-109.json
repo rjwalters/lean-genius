@@ -29,11 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved all 5 sorries in Erdos1098Problem.lean (non-commuting graphs). Fixed broken import (Subgroup.Basic → Mathlib), fixed pre-existing API issues (mem_center_iff, conjugacyClass, quotient syntax, centerHasFiniteIndex). File now builds clean with 0 sorries.",
+    "builtItems": [
+      "same_coset_commute: proved via center commutativity (mul_assoc + mem_center_iff)",
+      "clique_different_cosets: proved via QuotientGroup.eq + same_coset_commute",
+      "clique_size_bound: proved via neumann_bound axiom",
+      "finite_index_implies_finite_clique: proved via neumann_bound",
+      "finite_group_finite_index: proved via Subgroup.index_ne_zero_of_finite",
+      "abelian_no_edges: fixed pre-existing API issue (mem_center_iff direction)"
+    ],
+    "insights": [
+      "Erdos1098Problem.lean had broken import Mathlib.GroupTheory.Subgroup.Basic (moved to Mathlib.Algebra.Group.Subgroup.Basic in newer Mathlib)",
+      "centerHasFiniteIndex should use index ≠ 0 (not ≠ ⊤) since Subgroup.index returns ℕ",
+      "same_coset_commute follows from mul_assoc + center element commutativity",
+      "neumann_bound axiom with rfl gives clique_size_bound and finite_index_implies_finite_clique directly",
+      "conjugacyClass not in scope — replaced with Set.Finite {h | IsConj g h} for isBFCGroup"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Consider proving Erdos1090Problem.lean sorry (ramsey_lower_bound - requires fixing ramseyNumber definition)",
+      "Consider proving Erdos1095Problem.lean sorries (binomIsKRough existence proofs)",
+      "Erdos1098 remaining axioms are deep results (neumann_theorem, neumann_bound) — appropriate to keep axiomatized"
+    ]
   },
   "tags": [
     "erdos",
