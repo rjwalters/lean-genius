@@ -38,7 +38,7 @@
   {
     "id": "ann-1059-bound101",
     "proofId": "erdos-1059",
-    "range": { "startLine": 56, "endLine": 69 },
+    "range": { "startLine": 57, "endLine": 69 },
     "type": "theorem",
     "title": "Factorial Growth Bounds for Finite Case Reduction",
     "content": "Two auxiliary lemmas reduce the infinite universal quantifier to finite case analysis. `factorial_lt_bound` proves $k! < 101 \\implies k \\leq 4$ and `factorial_lt_bound_211` proves $k! < 211 \\implies k \\leq 5$. Both use the same pattern: assume for contradiction $k \\geq 5$ (or 6), apply `Nat.factorial_le` for monotonicity ($m \\leq n \\implies m! \\leq n!$), compute $5! = 120 > 101$ (or $6! = 720 > 211$), and derive contradiction via `omega`.",
