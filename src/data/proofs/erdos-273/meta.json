@@ -77,8 +77,10 @@
       "The problem connects prime distribution (which integers are $p - 1$ for prime $p$?) to the combinatorics of residue class coverings"
     ],
     "prerequisites": [
-      "Number theory fundamentals",
-      "Combinatorial analysis"
+      "Modular arithmetic: congruences, residue classes, Chinese Remainder Theorem",
+      "Prime number theory: distribution, Mertens' theorem, sieve methods",
+      "Covering systems: construction techniques, reciprocal sum conditions",
+      "Familiarity with Lean 4 structures and Mathlib integer API"
     ]
   },
   "sections": [
@@ -87,42 +89,48 @@
       "title": "Covering Systems",
       "startLine": 21,
       "endLine": 37,
-      "summary": "Defines `CoveringSystem` as a structure with `Fin n`-indexed moduli ($m_i \\geq 2$), residues, and the covering property $\\forall z \\in \\mathbb{Z},\\, \\exists i,\\, z \\equiv r_i \\pmod{m_i}$. Uses integer modular arithmetic directly rather than `ZMod`."
+      "summary": "Defines `CoveringSystem` as a structure with `Fin n`-indexed moduli ($m_i \\geq 2$), residues, and the covering property $\\forall z \\in \\mathbb{Z},\\, \\exists i,\\, z \\equiv r_i \\pmod{m_i}$. Uses integer modular arithmetic directly rather than `ZMod`.",
+      "mathContext": "$\\forall z \\in \\mathbb{Z},\\, \\exists i \\in [n],\\, m_i \\mid (z - r_i)$, with $m_i \\geq 2$. Covering: $\\mathbb{Z} = \\bigcup_{i=1}^{n} (r_i + m_i\\mathbb{Z})$."
     },
     {
       "id": "prime-minus-one",
       "title": "Prime-Minus-One Moduli",
       "startLine": 39,
       "endLine": 49,
-      "summary": "Defines `IsPrimeMinusOne k m` ($m = p - 1$ for prime $p \\geq k$) and `AllModuliPrimeMinusOne k cs`. The parameter $k$ unifies Selfridge's solved case ($k = 3$) and Erdős's open question ($k = 5$)."
+      "summary": "Defines `IsPrimeMinusOne k m` ($m = p - 1$ for prime $p \\geq k$) and `AllModuliPrimeMinusOne k cs`. The parameter $k$ unifies Selfridge's solved case ($k = 3$) and Erdős's open question ($k = 5$).",
+      "mathContext": "$\\text{IsPrimeMinusOne}(k, m) \\iff \\exists p \\geq k,\\, p \\text{ prime},\\, m = p - 1$. For $k=5$: allowed $m \\in \\{4,6,10,12,16,18,22,\\ldots\\}$."
     },
     {
       "id": "main-problem",
       "title": "The Main Problem",
       "startLine": 51,
       "endLine": 61,
-      "summary": "States `ErdosProblem273 : Prop` as $\\exists cs : \\text{CoveringSystem},\\, \\text{AllModuliPrimeMinusOne}\\, 5\\, cs$. The allowed moduli are $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\}$."
+      "summary": "States `ErdosProblem273 : Prop` as $\\exists cs : \\text{CoveringSystem},\\, \\text{AllModuliPrimeMinusOne}\\, 5\\, cs$. The allowed moduli are $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\}$.",
+      "mathContext": "$\\exists n,\\, \\exists (m_i, r_i)_{i=1}^{n}: \\mathbb{Z} = \\bigcup r_i + m_i\\mathbb{Z}$ with each $m_i = p_i - 1$, $p_i$ prime $\\geq 5$."
     },
     {
       "id": "selfridge-example",
       "title": "The Selfridge Example (p ≥ 3)",
       "startLine": 63,
       "endLine": 72,
-      "summary": "Axiomatizes Selfridge's covering system for $p \\geq 3$ using divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$. The key modulus $2 = 3 - 1$ enables coverage of all parities."
+      "summary": "Axiomatizes Selfridge's covering system for $p \\geq 3$ using divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$. The key modulus $2 = 3 - 1$ enables coverage of all parities.",
+      "mathContext": "Selfridge: covering with moduli $\\mid 360 = 2^3 \\cdot 3^2 \\cdot 5$. Key: $2 = 3 - 1$ covers all parities."
     },
     {
       "id": "covering-basics",
       "title": "Covering System Basics",
       "startLine": 74,
       "endLine": 92,
-      "summary": "Defines `CoveringSystem.lcm` for periodicity reduction, axiomatizes $\\sum 1/m_i \\geq 1$ over $\\mathbb{Q}$, and defines `IsDistinct` (injective moduli) connecting to Hough's minimum modulus theorem."
+      "summary": "Defines `CoveringSystem.lcm` for periodicity reduction, axiomatizes $\\sum 1/m_i \\geq 1$ over $\\mathbb{Q}$, and defines `IsDistinct` (injective moduli) connecting to Hough's minimum modulus theorem.",
+      "mathContext": "Necessary condition: $\\sum_{i=1}^{n} 1/m_i \\geq 1$. Periodicity: covering is determined by behavior on $[0, \\text{lcm}(m_i))$."
     },
     {
       "id": "connections",
       "title": "Connection to Other Problems",
       "startLine": 94,
       "endLine": 115,
-      "summary": "Enumerates `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$ (primes $p \\geq 5$ with $(p-1) \\mid 360$) and axiomatizes the key constraints: all moduli $> 2$ and $\\geq 4$ when restricted to $p \\geq 5$."
+      "summary": "Enumerates `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$ (primes $p \\geq 5$ with $(p-1) \\mid 360$) and axiomatizes the key constraints: all moduli $> 2$ and $\\geq 4$ when restricted to $p \\geq 5$.",
+      "mathContext": "Easy primes: $\\{p \\geq 5 : (p-1) \\mid 360\\} = \\{5,7,13,19,37,61,181\\}$. Constraint: all $m_i \\geq 4$ for $p \\geq 5$."
     }
   ],
   "conclusion": {
@@ -151,11 +159,43 @@
     "theoremCount": 0,
     "definitionCount": 6
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Problem #23 asks about the minimum modulus of covering systems with distinct moduli — directly related to the structural constraints on covering systems in #273. Hough's resolution of the minimum modulus conjecture constrains both problems"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem is the key tool for constructing covering systems from residue classes. Any covering system modulo coprime m_i can be verified by checking finitely many residues mod lcm(m_i)"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-23",
+    "chinese-remainder-constructive"
+  ],
   "references": [
-    "Erdős–Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', p.24",
-    "Selfridge: covering system with moduli dividing 360 (when p ≥ 3 allowed)",
-    "Hough (2015): 'Solution of the minimum modulus problem for covering systems', Annals of Mathematics 181(1), 361–382",
-    "Filaseta–Ford–Konyagin–Pomerance–Yu (2007): partial results toward minimum modulus conjecture",
-    "https://erdosproblems.com/273"
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva, p. 24",
+      "note": "Original source for Problem #273; discusses the Selfridge example and the open p ≥ 5 case"
+    },
+    {
+      "authors": "Hough, Bob",
+      "title": "Solution of the minimum modulus problem for covering systems",
+      "year": "2015",
+      "venue": "Annals of Mathematics, vol. 181(1), pp. 361–382",
+      "note": "Proved that the minimum modulus of a covering system with distinct moduli is bounded, resolving a conjecture of Erdős. Constrains possible approaches to Problem #273"
+    },
+    {
+      "authors": "Filaseta, Michael; Ford, Kevin; Konyagin, Sergei; Pomerance, Carl; Yu, Gang",
+      "title": "Sieving by large integers and covering systems of congruences",
+      "year": "2007",
+      "venue": "Journal of the AMS, vol. 20(2), pp. 495–517",
+      "note": "Partial results toward the minimum modulus conjecture using sieve methods; relevant to the structural constraints on covering systems in Problem #273"
+    }
   ]
 }

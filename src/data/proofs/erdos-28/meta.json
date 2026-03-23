@@ -20,6 +20,7 @@
     "relatedProofs": [
       "erdos-40"
     ],
+    "proofRepoPath": "Proofs/Erdos28Problem.lean",
     "axiomCount": 8,
     "assumptions": "8 axiom declarations: erdos_turan_conjecture (main conjecture r(n) unbounded), erdos_turan_strong (logarithmic growth form), erdos_turan_density_version (density hypothesis variant), basis_counting_lower (sqrt(N) density lower bound), sidon_not_basis (Sidon sets too sparse), erdos_40_from_28 (B_2[g] implication), erdos_fuchs_theorem (cumulative sum fluctuation), average_rep_unbounded (average divergence)",
     "badge": "axiom",
@@ -36,56 +37,64 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Module docstring stating the conjecture and its $500 bounty, followed by Mathlib imports for additive combinatorics (`SumConv`), Finset operations, filter convergence (`atTop`, `Tendsto`), and real analysis (`Real.log`, `Real.sqrt`). Opens `Filter` and `Set` namespaces with `Pointwise` scoping for $A + A$ notation."
+      "summary": "Module docstring stating the conjecture and its $500 bounty, followed by Mathlib imports for additive combinatorics (`SumConv`), Finset operations, filter convergence (`atTop`, `Tendsto`), and real analysis (`Real.log`, `Real.sqrt`). Opens `Filter` and `Set` namespaces with `Pointwise` scoping for $A + A$ notation.",
+      "mathContext": "Imports: `SumConv` for Minkowski sum $A + A$, `Filter.atTop` for $\\lim_{N \\to \\infty}$, `Pointwise` for set addition notation."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 31,
       "endLine": 45,
-      "summary": "Three foundational definitions: the **representation function** $r_A(n) = |\\{(a,b) : a+b=n, a \\leq b, a,b \\in A\\}|$, the **asymptotic basis** condition $(A+A)^c$ finite, and the **counting function** $A(N) = |A \\cap [1,N]|$. These encode the core objects of the Erdős–Turán conjecture in Lean 4."
+      "summary": "Three foundational definitions: the **representation function** $r_A(n) = |\\{(a,b) : a+b=n, a \\leq b, a,b \\in A\\}|$, the **asymptotic basis** condition $(A+A)^c$ finite, and the **counting function** $A(N) = |A \\cap [1,N]|$. These encode the core objects of the Erdős–Turán conjecture in Lean 4.",
+      "mathContext": "$r_A(n) = |\\{(a,b) : a+b=n,\\, a \\leq b,\\, a,b \\in A\\}|$; $A$ basis iff $(A+A)^c$ finite; $A(N) = |A \\cap [1,N]|$."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 47,
       "endLine": 56,
-      "summary": "The Erdős–Turán conjecture (1941): $\\forall B, \\exists n: r_A(n) \\geq B$ whenever $A$ is an asymptotic basis of order 2. Stated as an axiom since the problem remains **OPEN** with a \\$500 bounty. Equivalent to $\\limsup r_A(n) = \\infty$."
+      "summary": "The Erdős–Turán conjecture (1941): $\\forall B, \\exists n: r_A(n) \\geq B$ whenever $A$ is an asymptotic basis of order 2. Stated as an axiom since the problem remains **OPEN** with a \\$500 bounty. Equivalent to $\\limsup r_A(n) = \\infty$.",
+      "mathContext": "$\\text{IsAsymptoticBasis2}(A) \\Rightarrow \\limsup_{n \\to \\infty} r_A(n) = \\infty$. Axiom: open conjecture with \\$500 bounty."
     },
     {
       "id": "stronger-forms",
       "title": "Stronger Forms of the Conjecture",
       "startLine": 58,
       "endLine": 70,
-      "summary": "Two strengthenings: (1) the **logarithmic form** $\\limsup r_A(n)/\\log n > 0$, motivated by probabilistic heuristics showing $\\mathbb{E}[r_A(n)] \\sim \\log n$ for random sets of density $\\sqrt{N}$; (2) the **density version** replacing the basis hypothesis with $A(N) \\geq c\\sqrt{N}$, which is strictly weaker than being a basis."
+      "summary": "Two strengthenings: (1) the **logarithmic form** $\\limsup r_A(n)/\\log n > 0$, motivated by probabilistic heuristics showing $\\mathbb{E}[r_A(n)] \\sim \\log n$ for random sets of density $\\sqrt{N}$; (2) the **density version** replacing the basis hypothesis with $A(N) \\geq c\\sqrt{N}$, which is strictly weaker than being a basis.",
+      "mathContext": "Strong form: $\\limsup r_A(n)/\\log n > 0$. Density version: $A(N) \\geq c\\sqrt{N} \\Rightarrow \\limsup r_A(n) = \\infty$."
     },
     {
       "id": "counting-bounds",
       "title": "Counting Lower Bounds",
       "startLine": 72,
       "endLine": 77,
-      "summary": "Necessary density condition: any basis of order 2 has $A(N) \\gg \\sqrt{N}$ by a pigeonhole/counting argument. Since $|A+A| \\leq \\binom{A(N)+1}{2}$ and $A+A$ must cover $\\sim N$ integers, we get $A(N) \\geq \\sqrt{2N} - 1$."
+      "summary": "Necessary density condition: any basis of order 2 has $A(N) \\gg \\sqrt{N}$ by a pigeonhole/counting argument. Since $|A+A| \\leq \\binom{A(N)+1}{2}$ and $A+A$ must cover $\\sim N$ integers, we get $A(N) \\geq \\sqrt{2N} - 1$.",
+      "mathContext": "$N \\leq \\binom{A(N)+1}{2} \\Rightarrow A(N) \\geq \\sqrt{2N} - 1$. Tight for Sidon sets."
     },
     {
       "id": "sidon-sets",
       "title": "Sidon Sets and Extremal Case",
       "startLine": 79,
       "endLine": 84,
-      "summary": "Sidon sets ($B_2$ sets) have $r_A(n) \\leq 1$, making them too sparse ($A(N) \\leq \\sqrt{N} + O(N^{1/4})$) to be bases. This confirms the conjecture vacuously for the extremal case $r \\leq 1$."
+      "summary": "Sidon sets ($B_2$ sets) have $r_A(n) \\leq 1$, making them too sparse ($A(N) \\leq \\sqrt{N} + O(N^{1/4})$) to be bases. This confirms the conjecture vacuously for the extremal case $r \\leq 1$.",
+      "mathContext": "Sidon: $r_A(n) \\leq 1 \\Rightarrow A(N) \\leq \\sqrt{N} + O(N^{1/4})$, too sparse for basis."
     },
     {
       "id": "problem-40-connection",
       "title": "Connection to Problem #40",
       "startLine": 86,
       "endLine": 93,
-      "summary": "Problem #40 generalizes the Sidon observation: can any $B_2[g]$ set (with $r_A(n) \\leq g$) be a basis? The Erdős–Turán conjecture implies the answer is **no** for every finite $g$. This formalizes the implication #28 $\\Rightarrow$ #40."
+      "summary": "Problem #40 generalizes the Sidon observation: can any $B_2[g]$ set (with $r_A(n) \\leq g$) be a basis? The Erdős–Turán conjecture implies the answer is **no** for every finite $g$. This formalizes the implication #28 $\\Rightarrow$ #40.",
+      "mathContext": "#28 $\\Rightarrow$ #40: $\\limsup r_A(n) = \\infty$ implies no $B_2[g]$ set can be a basis for any finite $g$."
     },
     {
       "id": "partial-results",
       "title": "Partial Results: Erdős–Fuchs and Averages",
       "startLine": 95,
       "endLine": 112,
-      "summary": "Two key partial results: (1) the **Erdős–Fuchs theorem** (1956) showing $\\sum_{n \\leq N} r_A(n) \\neq cN + o(N^{1/4}/\\sqrt{\\log N})$ — representations must oscillate, but this doesn't imply individual unboundedness; (2) **Halberstam–Roth** showing the average $\\frac{1}{N}\\sum r_A(n) \\to \\infty$, which also falls short of proving the conjecture."
+      "summary": "Two key partial results: (1) the **Erdős–Fuchs theorem** (1956) showing $\\sum_{n \\leq N} r_A(n) \\neq cN + o(N^{1/4}/\\sqrt{\\log N})$ — representations must oscillate, but this doesn't imply individual unboundedness; (2) **Halberstam–Roth** showing the average $\\frac{1}{N}\\sum r_A(n) \\to \\infty$, which also falls short of proving the conjecture.",
+      "mathContext": "Erdős–Fuchs: $\\sum_{n \\leq N} r_A(n) - cN = \\Omega(N^{1/4}/\\sqrt{\\log N})$. Halberstam–Roth: $\\frac{1}{N}\\sum r_A(n) \\to \\infty$."
     }
   ],
   "overview": {
@@ -173,11 +182,13 @@
       "venue": "Oxford University Press",
       "note": "Comprehensive reference for additive bases and representation functions, including the average divergence result"
     },
-    "Erdős–Turán (1941): 'On a problem of Sidon in additive number theory and some related problems', J. London Math. Soc.",
-    "Erdős–Fuchs (1956): 'On a problem of additive number theory', J. London Math. Soc.",
-    "Halberstam–Roth (1966): 'Sequences', Oxford University Press",
-    "Montgomery–Vaughan (1990): sharpened Erdős–Fuchs with optimal exponent",
-    "https://erdosproblems.com/28"
+    {
+      "authors": "Nathanson, Melvyn B.",
+      "title": "Additive Number Theory: The Classical Bases",
+      "year": "1996",
+      "venue": "Springer GTM 164",
+      "note": "Chapter 1 covers additive bases and Sidon sets; Chapter 2 treats Waring's problem; comprehensive modern reference for the Erdős–Turán conjecture and related problems"
+    }
   ],
   "relatedProofs": [
     "erdos-1",
@@ -186,5 +197,22 @@
     "erdos-40",
     "erdos-41",
     "erdos-42"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Additive.SumConv",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Order.Filter.ENNReal",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Filter", "Set", "Pointwise"],
+    "namespace": "",
+    "lineCount": 111,
+    "axiomCount": 8,
+    "theoremCount": 0,
+    "definitionCount": 3
+  }
 }
