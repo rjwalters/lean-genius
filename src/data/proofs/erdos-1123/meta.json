@@ -121,6 +121,73 @@
       "Connections to forcing and cardinal characteristics"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "depends-on",
+      "description": "The Just-Krawczyk isomorphism B₁ ≅ B₂ holds precisely under the Continuum Hypothesis (CH). The independence of CH from ZFC — proved by Gödel and Cohen — directly explains why this problem is set-theoretically undecidable. Understanding CH independence is prerequisite to interpreting the conditional result."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "related-concept",
+      "description": "The CH question (is |ℝ| = ℵ₁?) bears directly on the cardinality and saturation properties of P(ℕ)/I₁ and P(ℕ)/I₂. Under CH both quotient algebras have cardinality ℵ₁ and become ω₁-saturated, which is the mechanism enabling Just-Krawczyk's isomorphism proof."
+    },
+    {
+      "targetId": "erdos-1102",
+      "relationship": "uses-same-technique",
+      "description": "Erdős #1102 also studies density-zero subsets of ℕ, analyzing how squarefree properties interact with natural density. Both problems use the natural density framework d(A) = lim |A ∩ {1,…,N}|/N and the ideal of density-zero sets as a central object."
+    },
+    {
+      "targetId": "erdos-47",
+      "relationship": "related-concept",
+      "description": "Erdős #47 (Bloom 2021) works with subsets of ℕ satisfying density-type conditions (∑ 1/a > δ log N). The density-zero ideal I₁ used in Problem #1123 is closely related: both probe the structure of large and small subsets of ℕ under different notions of size."
+    },
+    {
+      "targetId": "erdos-532",
+      "relationship": "related-concept",
+      "description": "Hindman's theorem (Erdős #532) is deeply connected to the combinatorial structure of P(ℕ): its algebraic proof uses the Stone-Čech compactification βℕ, whose points are ultrafilters on ℕ. Ultrafilter quotients of P(ℕ) are closely related to the Boolean algebra quotients P(ℕ)/I studied in Problem #1123."
+    }
+  ],
+  "relatedProofs": [
+    "continuum-hypothesis",
+    "cantor-diagonalization-oq-01",
+    "erdos-1102",
+    "erdos-47",
+    "erdos-532"
+  ],
+  "references": [
+    {
+      "key": "JK84",
+      "citation": "Just, W. and Krawczyk, A., On certain Boolean algebras P(ω)/I, Trans. Amer. Math. Soc. 285 (1984), 411–429.",
+      "type": "paper",
+      "doi": "10.2307/1999488",
+      "notes": "The key paper proving B₁ ≅ B₂ under CH; also establishes the σ-ideal properties of both density ideals."
+    },
+    {
+      "key": "She82",
+      "citation": "Shelah, S., Proper Forcing, Lecture Notes in Mathematics 940, Springer, Berlin, 1982.",
+      "type": "book",
+      "notes": "Contains forcing arguments showing non-isomorphism of P(ω)/I-type algebras is consistent with ZFC, complementing the Just-Krawczyk CH result."
+    },
+    {
+      "key": "vM84",
+      "citation": "van Mill, J., An introduction to βω, in: Handbook of Set-Theoretic Topology (Kunen, Vaughan, eds.), North-Holland, Amsterdam, 1984, pp. 503–567.",
+      "type": "book-chapter",
+      "notes": "Comprehensive survey of the set-theoretic topology of P(ω)/fin and related Boolean algebras, including saturation properties that underpin isomorphism results under CH."
+    },
+    {
+      "key": "Fre84",
+      "citation": "Fremlin, D. H., Consequences of Martin's Axiom, Cambridge Tracts in Mathematics 84, Cambridge University Press, 1984.",
+      "type": "book",
+      "notes": "Discusses cardinal characteristics of the continuum and their relationship to Boolean algebra quotients P(ω)/I; includes density-zero ideals as examples."
+    },
+    {
+      "key": "Par63",
+      "citation": "Parovičenko, I. I., On a universal bicompactum of weight ℵ, Dokl. Akad. Nauk SSSR 150 (1963), 36–39.",
+      "type": "paper",
+      "notes": "Proved under CH that every Boolean algebra of weight ≤ ℵ₁ embeds into P(ω)/fin, providing the technical foundation for CH-based isomorphism results for density quotient algebras."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
