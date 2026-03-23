@@ -141,6 +141,93 @@
       "Can the Soukup/Bowler-Pitz constructions be formalized in Lean without axiomatization, i.e., can the combinatorial construction itself be verified?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-62",
+      "relation": "companion",
+      "description": "Erdős Problem #62 asks whether two graphs with χ = ℵ₁ must share a common subgraph with χ = 4, also concerning structural properties of uncountable chromatic graphs"
+    },
+    {
+      "target": "erdos-57",
+      "relation": "related",
+      "description": "Erdős Problem #57 studies odd cycle lengths in graphs with infinite chromatic number, connecting chromatic structure to cycle properties in infinite graphs"
+    },
+    {
+      "target": "erdos-63",
+      "relation": "related",
+      "description": "Erdős Problem #63 (solved by Liu-Montgomery 2020) characterizes which cycle lengths must appear in graphs with infinite chromatic number, a parallel structural question"
+    },
+    {
+      "target": "erdos-1068",
+      "relation": "companion",
+      "description": "Erdős Problem #1068 asks the countable variant: does every graph with χ = ℵ₁ contain a countable infinitely vertex-connected subgraph? Related open question from the same 2015 paper"
+    },
+    {
+      "target": "erdos-58",
+      "relation": "related",
+      "description": "Erdős Problem #58 (Gyárfás 1992) bounds chromatic number by distinct odd cycle lengths, showing the deep interplay between χ and local graph structure"
+    },
+    {
+      "target": "ramseys-theorem",
+      "relation": "background",
+      "description": "Ramsey's Theorem provides the finite combinatorial foundation for Ramsey-type questions about cliques and colorings that motivate infinite chromatic number theory"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-62",
+      "description": "Common subgraph structure for graphs with χ = ℵ₁ — also open, also concerns what uncountably chromatic graphs must share"
+    },
+    {
+      "target": "erdos-57",
+      "description": "Odd cycles in graphs with infinite chromatic number — structural consequences of high chromatic number in the countably infinite case"
+    },
+    {
+      "target": "erdos-1068",
+      "description": "The countable connectivity variant of this problem — open question from the same Soukup 2015 paper"
+    },
+    {
+      "target": "cantors-theorem",
+      "description": "Cantor's theorem on cardinal hierarchies provides the set-theoretic framework for ℵ₀ vs ℵ₁ distinctions used throughout this proof"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Lajos Soukup"],
+      "title": "Infinite graphs with no odd cycles of a given length",
+      "venue": "European Journal of Combinatorics",
+      "year": 2015,
+      "note": "Constructs the ZFC counterexample to the Erdős-Hajnal question, building ladder-tree graphs with χ = ℵ₁ but no infinitely connected subgraph of uncountable chromatic number"
+    },
+    {
+      "authors": ["Nathan Bowler", "Steffen Pitz"],
+      "title": "A simpler proof of the Erdős-Hajnal conjecture for forests",
+      "venue": "arXiv",
+      "year": 2024,
+      "note": "Provides a more elementary construction of the counterexample to Erdős Problem #1067, accessible without specialized set-theoretic forcing machinery"
+    },
+    {
+      "authors": ["Péter Komjáth"],
+      "title": "A note on uncountably chromatic graphs",
+      "venue": "Combinatorica",
+      "year": 2013,
+      "note": "Proves the consistency of a counterexample (via forcing) and establishes that for graphs with exactly ℵ₁ vertices, the Erdős-Hajnal question is independent of ZFC"
+    },
+    {
+      "authors": ["Carsten Thomassen"],
+      "title": "Graph decomposition with applications to subdivisions and path systems modulo k",
+      "venue": "Journal of Graph Theory",
+      "year": 2017,
+      "note": "Shows the analogous question for infinite edge-connectivity is also false, strengthening the negative answer and demonstrating robustness across connectivity notions"
+    },
+    {
+      "authors": ["Paul Erdős", "András Hajnal"],
+      "title": "On chromatic number of graphs and set-systems",
+      "venue": "Acta Mathematica Hungarica",
+      "year": 1966,
+      "note": "Original paper by Erdős and Hajnal posing the question and initiating the systematic study of uncountable chromatic numbers in relation to structural graph properties"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

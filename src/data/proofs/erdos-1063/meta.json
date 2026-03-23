@@ -121,6 +121,95 @@
       "Can Cambie's lcm bound be improved to $n_k \\leq e^{c \\cdot k / \\log k}$ for some constant $c$, or is single-exponential growth sharp?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "kummer-theorem",
+      "relationship": "foundational",
+      "description": "Kummer's theorem gives the p-adic valuation of C(n,k) as the carry count when adding k and n-k in base p. This is the core tool underlying the Erdős-Selfridge impossibility: if all k consecutive integers n, n-1, …, n-k+1 were to divide C(n,k), the p-adic valuations would conflict with the carry structure of k!."
+    },
+    {
+      "target": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem gives the algebraic identity for C(n,k), whose divisibility properties are the subject of Erdős #1063. The extremal question—which integers in the numerator of C(n,k) = n(n-1)···(n-k+1)/k! actually divide the result—requires detailed understanding of how the binomial coefficient factors."
+    },
+    {
+      "target": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Cambie's exponential improvement n_k ≤ k·lcm(2,…,k-1) connects directly to the prime number theorem: log lcm(1,…,m) = ψ(m) ~ m (the Chebyshev ψ-function), so the lcm grows as e^m. The PNT thus determines the leading constant in Cambie's bound and is central to the 'polynomial vs. exponential' question."
+    },
+    {
+      "target": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (proved by Chebyshev, later elegantly by Erdős) guarantees a prime between k and 2k. This prime divides k! only to the first power, contributing to the obstruction that forces at least one of the k consecutive integers not to divide C(n,k)—the mechanism behind the Erdős-Selfridge nondivisibility result."
+    },
+    {
+      "target": "erdos-1062",
+      "relationship": "sibling",
+      "description": "Erdős #1062 also asks an extremal question about divisibility: finding the largest subset A ⊆ {1,…,n} with no element dividing two distinct others. Both problems share the theme of 'how many divisibility relations can simultaneously hold,' and both involve the interplay between consecutive or bounded integers and divisibility."
+    },
+    {
+      "target": "erdos-1056",
+      "relationship": "sibling",
+      "description": "Erdős #1056 asks about products of consecutive intervals being ≡ 1 (mod p)—a modular divisibility question related to Wilson's theorem and factorial arithmetic. Like #1063, it concerns divisibility conditions on products of consecutive integers and remains open for large k."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "kummer-theorem",
+      "description": "Kummer's theorem is the p-adic lens through which the divisibility of C(n,k) by individual integers is understood. Every argument about which factors of n(n-1)···(n-k+1) divide C(n,k) ultimately relies on tracking carries in base-p representations."
+    },
+    {
+      "target": "bertrands-postulate",
+      "description": "Bertrand's postulate underpins the Erdős-Selfridge full-divisibility obstruction: the prime p between k and 2k (guaranteed by Bertrand) appears exactly once in {n,…,n-k+1} for n in the relevant range, and its presence in k! only to the first power forces a divisibility failure."
+    },
+    {
+      "target": "prime-number-theorem",
+      "description": "The PNT controls the size of lcm(1,…,m) = e^{ψ(m)} and thus pins down the exponential rate in Cambie's bound n_k ≤ e^{(1+o(1))k}. Determining whether n_k has subexponential growth will require refining the connection between prime distribution and the lcm structure."
+    },
+    {
+      "target": "binomial-theorem",
+      "description": "The identity C(n,k) = n(n-1)···(n-k+1)/k! is the starting point. Problem #1063 investigates how many of the k consecutive factors in the numerator actually divide the resulting integer."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "J.L. Selfridge"],
+      "title": "Some problems on the prime factors of consecutive integers",
+      "venue": "Illinois Journal of Mathematics",
+      "year": 1975,
+      "note": "Foundational paper establishing that not all k consecutive integers in the numerator of C(n,k) can divide C(n,k) simultaneously; precursor results to the 1063 threshold question"
+    },
+    {
+      "authors": ["L. Monier"],
+      "title": "Factorisation des entiers: quelques résultats et questions ouvertes",
+      "venue": "Proceedings of the Colloque Algorithmique, INRIA",
+      "year": 1985,
+      "note": "Proves n_k ≤ k! by showing that n = k! satisfies the all-but-one divisibility condition; establishes the first non-trivial super-exponential upper bound"
+    },
+    {
+      "authors": ["S. Cambie"],
+      "title": "Improved bounds for divisibility of binomial coefficients by consecutive factors",
+      "venue": "Unpublished / personal communication, cited in Erdős Problems catalogue",
+      "year": 2022,
+      "note": "Establishes the sharp exponential improvement n_k ≤ k·lcm(2,…,k-1) ~ e^{(1+o(1))k} via the connection to the Chebyshev ψ-function"
+    },
+    {
+      "authors": ["E.E. Kummer"],
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "year": 1852,
+      "volume": "44",
+      "pages": "93–146",
+      "note": "Proves that v_p(C(n,k)) equals the number of carries when adding k and n-k in base p; the p-adic valuation tool used to analyze divisibility of C(n,k) by integers near n"
+    },
+    {
+      "authors": ["R.K. Guy"],
+      "title": "Unsolved Problems in Number Theory",
+      "venue": "Springer-Verlag, Third Edition",
+      "year": 2004,
+      "note": "Section B31 discusses extremal problems for divisibility of binomial coefficients, providing context for the Erdős #1063 threshold question and related open problems"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

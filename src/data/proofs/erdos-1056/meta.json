@@ -126,6 +126,86 @@
       "Is there a constructive algorithm to produce solutions for given $k$, or must they be found by exhaustive search?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "wilsons-theorem",
+      "relationship": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is the primary structural obstruction in this problem: intervals cannot partition all of $\\{1, \\ldots, p-1\\}$, and the proof verifies Wilson's identity computationally for $p = 11$ and $p = 17$."
+    },
+    {
+      "target": "erdos-1058",
+      "relationship": "Both problems concern factorial values modulo primes. Erdős #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1056 studies collisions among $n! \\bmod p$; both probe the residue distribution of the factorial function."
+    },
+    {
+      "target": "primitive-roots",
+      "relationship": "The multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. A primitive root generates this group, giving the algebraic setting in which interval products $\\equiv 1$ must be understood as elements of order dividing $p-1$."
+    },
+    {
+      "target": "erdos-1055",
+      "relationship": "Erdős #1055 classifies primes by the factorization depth of $p+1$ using smooth-number analysis. The smoothness of $p-1$ controls the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, which in turn constrains which products of consecutive integers can equal 1 modulo $p$."
+    },
+    {
+      "target": "erdos-945",
+      "relationship": "Erdős #945 asks about consecutive integers with distinct divisor counts, sharing the theme of structured behavior in consecutive-integer ranges. Both problems seek patterns in how multiplicative properties vary across consecutive integers."
+    },
+    {
+      "target": "chinese-remainder-constructive",
+      "relationship": "The Chinese Remainder Theorem provides tools for constructing simultaneous congruence solutions. Multi-interval congruence conditions of the form $\\prod_{i=a_j}^{b_j-1} i \\equiv 1 \\pmod{p}$ can be analyzed via CRT when multiple primes are considered."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "wilsons-theorem",
+      "note": "Directly invoked in the Wilson connection section; verified computationally for the solution primes $p = 11$ and $p = 17$."
+    },
+    {
+      "target": "primitive-roots",
+      "note": "The cyclic structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ underlies the algebra of interval products modulo $p$ and the existence of elements of order 1."
+    },
+    {
+      "target": "erdos-1058",
+      "note": "Companion problem on factorial residues modulo primes; Luca (2001) resolved the analogous finite case for $n!+1$."
+    },
+    {
+      "target": "erdos-1055",
+      "note": "Smooth-number classification of primes by $p+1$ factorization depth; smooth structure of $p-1$ constrains the multiplicative group relevant to interval products."
+    },
+    {
+      "target": "chinese-remainder-constructive",
+      "note": "CRT framework for simultaneous modular constraints, applicable when lifting local solutions to families of primes."
+    }
+  ],
+  "references": [
+    {
+      "key": "Er79",
+      "citation": "Erdős, P. (1979). Personal communication. k=2 example: 3·4 ≡ 5·6·7 ≡ 1 (mod 11).",
+      "type": "paper"
+    },
+    {
+      "key": "Ma83",
+      "citation": "Makowski, A. (1983). k=3 solution with p=17 for the Erdős interval product problem.",
+      "type": "paper"
+    },
+    {
+      "key": "Gu04",
+      "citation": "Guy, R.K. (2004). Unsolved Problems in Number Theory, 3rd ed. Springer. Section A15.",
+      "type": "book"
+    },
+    {
+      "key": "NS96",
+      "citation": "Noll, L.C. and Simmons, G.J. (1996). On the distribution of factorial residues modulo primes. Manuscript. Generalizes the interval product conjecture to non-consecutive factorial collisions.",
+      "type": "paper"
+    },
+    {
+      "key": "Gr97",
+      "citation": "Granville, A. (1997). Smooth numbers: computational number theory and beyond. In Algorithmic Number Theory, MSRI Publications, vol. 44, pp. 267–323. Cambridge University Press. Background on smooth-number distribution relevant to the structure of $p-1$ and cyclic groups.",
+      "type": "paper"
+    },
+    {
+      "key": "IK04",
+      "citation": "Iwaniec, H. and Kowalski, E. (2004). Analytic Number Theory. American Mathematical Society Colloquium Publications, vol. 53. Covers multiplicative characters, character sums, and distribution of residues modulo primes relevant to factorial residue analysis.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

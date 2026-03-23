@@ -119,6 +119,102 @@
       "Does the analogous problem in $\\mathbb{R}^d$ for $d \\geq 3$ exhibit similar density barriers? The Larman-Rogers argument generalizes, but the Fourier analysis becomes significantly more complex in higher dimensions."
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-508",
+      "relationship": "The Hadwiger-Nelson problem asks for the chromatic number χ(ℝ²); since any independent set in a unit distance graph is a color class, f(n) ≥ n/χ(ℝ²). The current bounds 5 ≤ χ ≤ 7 yield n/7 ≤ f(n), and resolving the chromatic number would immediately sharpen the independence bound."
+    },
+    {
+      "target": "erdos-232",
+      "relationship": "The maximum density m₁ of a measurable unit-distance-free set in ℝ² is the continuous counterpart of f(n)/n. The Larman-Rogers theorem f(n) ≥ m₁·n connects both problems; the ACMVZ result m₁ ≤ 0.247 < 1/4 (formalized in erdos-232) provides the density barrier central to this formalization."
+    },
+    {
+      "target": "erdos-1066",
+      "relationship": "The strict variant: n points in ℝ² with all pairwise distances ≥ 1, edges between points at distance exactly 1. Relaxing the 'no two points closer than 1' constraint changes the extremal behavior and leads to different bounds on the independence number."
+    },
+    {
+      "target": "erdos-1069",
+      "relationship": "The Szemerédi-Trotter theorem on k-rich lines is proved via incidence geometry techniques in ℝ². Both problems concern extremal properties of finite point configurations in the Euclidean plane, and Szemerédi-Trotter machinery has been applied to bounding distances and independence in discrete geometry."
+    },
+    {
+      "target": "four-color-theorem",
+      "relationship": "Graph colorings of planar graphs satisfy χ ≤ 4; unit distance graphs in ℝ² are not in general planar, but both problems study the tension between graph structure and geometric embedding. The Moser spindle, which gives the upper bound f(n) ≤ 2n/7, is also a graph with chromatic number 4."
+    },
+    {
+      "target": "prob-method-expectation",
+      "relationship": "The Larman-Rogers theorem — the key lower bound f(n) ≥ m₁·n — is proved via a first-moment probabilistic argument: a random translate of a high-density unit-distance-free set captures at least m₁·n of any given n points in expectation, so some translate achieves this bound deterministically."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-508",
+      "note": "Hadwiger-Nelson chromatic number of the plane"
+    },
+    {
+      "target": "erdos-232",
+      "note": "Maximum density of unit-distance-free sets; the m₁ constant"
+    },
+    {
+      "target": "erdos-1066",
+      "note": "Strict variant with minimum pairwise distance ≥ 1"
+    },
+    {
+      "target": "erdos-1069",
+      "note": "Szemerédi-Trotter incidence geometry in ℝ²"
+    },
+    {
+      "target": "prob-method-expectation",
+      "note": "First moment method underlying Larman-Rogers theorem"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["D. G. Larman", "C. A. Rogers"],
+      "title": "The realization of distances within sets in Euclidean space",
+      "venue": "Mathematika",
+      "year": 1972,
+      "volume": "19",
+      "pages": "1–24",
+      "doi": "10.1112/S0025579300004903",
+      "note": "Proves the key bridge f(n) ≥ m₁·n via a probabilistic translation argument, reducing the discrete independence problem to the continuous density optimization."
+    },
+    {
+      "authors": ["H. T. Croft"],
+      "title": "Incidence incidents",
+      "venue": "Eureka (Cambridge)",
+      "year": 1967,
+      "volume": "30",
+      "pages": "22–26",
+      "note": "Constructs an explicit hexagonal-lattice-based unit-distance-free set achieving density ≥ 0.22936, establishing the best-known lower bound on m₁ and hence on f(n)/n."
+    },
+    {
+      "authors": ["G. Ambrus", "M. Csiszárik", "M. Matolcsi", "D. Varga", "P. Zsámboki"],
+      "title": "On the density of sets avoiding unit distances in Euclidean and hyperbolic spaces",
+      "venue": "Discrete and Computational Geometry",
+      "year": 2023,
+      "doi": "10.1007/s00454-023-00566-3",
+      "note": "Proves m₁ ≤ 0.247 via Fourier-analytic methods and Bessel function zeros, establishing that density-based arguments cannot prove f(n) ≥ n/4 — the ACMVZ barrier formalized as density_insufficient_for_quarter."
+    },
+    {
+      "authors": ["Leo Moser", "William Moser"],
+      "title": "Solution to problem 10",
+      "venue": "Canadian Mathematical Bulletin",
+      "year": 1961,
+      "volume": "4",
+      "pages": "187–189",
+      "note": "Introduces the 7-vertex Moser spindle unit distance graph with independence number 2, which by tiling gives the upper bound f(n) ≤ 2n/7 ≈ 0.286n."
+    },
+    {
+      "authors": ["Aubrey D. N. J. de Grey"],
+      "title": "The chromatic number of the plane is at least 5",
+      "venue": "Geombinatorics",
+      "year": 2018,
+      "volume": "28",
+      "pages": "18–31",
+      "arxiv": "1804.02385",
+      "note": "Constructs a unit distance graph with chromatic number 5, improving the lower bound χ(ℝ²) ≥ 5, and demonstrating that sophisticated finite UDG constructions (1581 vertices) can yield structural coloring information relevant to independence bounds."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
