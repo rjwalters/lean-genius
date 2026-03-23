@@ -156,6 +156,117 @@
       "Are there connections to the polynomial partitioning method?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-95",
+      "title": "Erdős Problem #95: Sum of Squared Distance Multiplicities",
+      "relationship": "Directly connected: Problem #95 asks for ∑f(uᵢ)² ≪ n^{3+ε}, which Guth-Katz proved with the tight bound n³ log n. This is precisely the lower bound construction for f(n) in Problem #1087 — an integer lattice achieves Ω(n³ log n) degenerate quadruples via pairs of points at the same distance."
+    },
+    {
+      "slug": "erdos-1085",
+      "title": "Erdős Problem #1085: The Unit Distance Problem",
+      "relationship": "The unit distance problem is the foundational ancestor of Problem #1087. If distance d appears u(n) times among n points, each such distance contributes O(u(n)²) degenerate quadruples. The connection is formalized in the related_concepts section as the unit_distance_connection lemma."
+    },
+    {
+      "slug": "erdos-1086",
+      "title": "Erdős Problem #1086: Triangles of Equal Area",
+      "relationship": "Both problems appeared in the same Erdős-Purdy 1971 paper on extremal problems in geometry. Each asks for the maximum count of a geometric pattern (degenerate quadruples vs. equal-area triangles) with nearly identical techniques: the lower bound uses integer lattice constructions and the upper bound uses incidence-geometry arguments."
+    },
+    {
+      "slug": "erdos-1069",
+      "title": "Erdős Problem #1069: Szemerédi-Trotter Theorem on k-Rich Lines",
+      "relationship": "The Szemerédi-Trotter incidence theorem is a key tool for the upper bound f(n) ≪ n^{7/2}. Problem #1069 formalizes the k-rich-line variant of this theorem, the same incidence geometry machinery cited in the upper_bound_technique section of this formalization."
+    },
+    {
+      "slug": "erdos-1082",
+      "title": "Erdős Problem #1082: Distinct Distances in General Position",
+      "relationship": "The Guth-Katz polynomial partitioning framework that resolved the distinct distances problem provides context for the open gap in Problem #1087. Both problems sit at the frontier of discrete geometry with exponent gaps that the polynomial method has partially (but not fully) closed."
+    },
+    {
+      "slug": "erdos-90",
+      "title": "Erdős Problem #90: The Unit Distance Problem",
+      "relationship": "The unit distance function u(n) ≤ O(n^{4/3}) appears directly in the upper bound argument for f(n). If the unit distance conjecture u(n) = n^{1+o(1)} holds, it would give additional structure to the degenerate quadruple count, tightening the bound in the erdosConjecture statement."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-132",
+      "title": "Erdős Problem #132: Distance Multiplicities in Planar Point Sets",
+      "relationship": "Studies which distance values can have high multiplicity among n planar points. The multiplicity structure of distances is what drives the degenerate quadruple count in Problem #1087, making the two problems complementary aspects of the same extremal distance geometry."
+    },
+    {
+      "slug": "erdos-507",
+      "title": "Erdős Problem #507: Heilbronn's Triangle Problem",
+      "relationship": "Both Heilbronn's triangle problem and Problem #1087 ask for extremal counts of geometric subconfigurations (small-area triangles vs. degenerate quadruples) in n-point sets, and both have a characteristic gap between known lower and upper bounds where the true answer is unknown."
+    },
+    {
+      "slug": "erdos-1086",
+      "title": "Erdős Problem #1086: Triangles of Equal Area",
+      "relationship": "The closest sibling problem: both ask for the maximum number of a specific 4-point or 3-point pattern in n-point sets, both are from Erdős-Purdy 1971, and both have open gaps between the best lower and upper bounds."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "P. Erdős",
+        "G. Purdy"
+      ],
+      "title": "Some extremal problems in geometry",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "year": 1971,
+      "volume": "10",
+      "pages": "246–252",
+      "note": "The original paper establishing the bounds n³ log n ≪ f(n) ≪ n^{7/2} for degenerate quadruples, and posing the question whether f(n) ≤ n^{3+o(1)}."
+    },
+    {
+      "authors": [
+        "L. Guth",
+        "N. H. Katz"
+      ],
+      "title": "On the Erdős distinct distances problem in the plane",
+      "venue": "Annals of Mathematics",
+      "year": 2015,
+      "volume": "181",
+      "pages": "155–190",
+      "note": "Proves the sharp bound ∑f(uᵢ)² = O(n³ log n) and resolves Erdős Problem #89 on distinct distances. The n³ log n bound matches the lower bound construction in Problem #1087 and shows the integer lattice is near-optimal for sum-of-squares of distance multiplicities."
+    },
+    {
+      "authors": [
+        "E. Szemerédi",
+        "W. T. Trotter Jr."
+      ],
+      "title": "Extremal problems in discrete geometry",
+      "venue": "Combinatorica",
+      "year": 1983,
+      "volume": "3",
+      "pages": "381–392",
+      "note": "Proves the O(n^{2/3}m^{2/3} + n + m) point-line incidence bound. This is the primary tool for deriving the upper bound f(n) ≪ n^{7/2} via the incidence reduction argument formalized in the erdos_purdy_upper_bound axiom."
+    },
+    {
+      "authors": [
+        "J. Spencer",
+        "E. Szemerédi",
+        "W. T. Trotter Jr."
+      ],
+      "title": "Unit distances in the Euclidean plane",
+      "venue": "Graph Theory and Combinatorics (B. Bollobás, ed.), Academic Press",
+      "year": 1984,
+      "pages": "293–303",
+      "note": "Establishes the O(n^{4/3}) upper bound on unit distance pairs. The unit_distance_connection lemma in this formalization cites this bound to bound the contribution of each repeated distance to the degenerate quadruple count."
+    },
+    {
+      "authors": [
+        "P. Brass",
+        "W. O. J. Moser",
+        "J. Pach"
+      ],
+      "title": "Research Problems in Discrete Geometry",
+      "venue": "Springer",
+      "year": 2005,
+      "pages": "457–480",
+      "note": "Chapter 5 surveys distance problems in the plane including degenerate quadruples, repeated distances, and the connections between Problems #1085, #1086, and #1087. Provides historical context for the Erdős-Purdy bounds and the open conjecture."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.PiL2",

@@ -151,6 +151,112 @@
       "Analogous questions for other classes of arithmetic numbers"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-940",
+      "title": "Erdős #940: Sums of r-Powerful Numbers",
+      "relationship": "Direct generalization: Problem #940 asks whether sums of r r-powerful numbers have density 0 for r ≥ 3, directly extending the squarefull (r=2) setting of Problem #1081. Baker-Brüdern (1994) contributed to both problems."
+    },
+    {
+      "id": "prime-number-theorem",
+      "title": "The Prime Number Theorem",
+      "relationship": "The asymptotic π(x) ~ x/ln(x) is a prototype for counting-function asymptotics in analytic number theory; the methods of Dirichlet series, complex analysis, and log-power exponents used to prove PNT are the same toolkit Blomer-Granville deploy to obtain the exponent α for A(x)."
+    },
+    {
+      "id": "fermat-two-squares",
+      "title": "Fermat's Sum of Two Squares",
+      "relationship": "Fermat's theorem characterizes primes expressible as sums of two squares via quadratic forms. The Blomer-Granville proof of the correct A(x) exponent relies on representation counts of binary quadratic forms, making this a foundational technical precursor."
+    },
+    {
+      "id": "lagrange-four-squares",
+      "title": "Lagrange's Four Squares Theorem",
+      "relationship": "Every integer is a sum of four squares; studying which integers are sums of structured sets (squares, squarefull numbers) is a common analytic number theory theme. Lagrange's result anchors the broader programme of additive representations that includes Problem #1081."
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "title": "Fundamental Theorem of Arithmetic",
+      "relationship": "The definition of squarefull (every prime factor p satisfies p² | m) depends critically on unique prime factorization. The Fundamental Theorem of Arithmetic underpins all structural properties of squarefull numbers used in this formalization."
+    },
+    {
+      "id": "riemann-hypothesis",
+      "title": "The Riemann Hypothesis",
+      "relationship": "The density of squarefull numbers S(x) ~ c√x and the exact leading constant in A(x) both involve the Riemann zeta function ζ(3/2)/ζ(3). Conditional results on A(x) error terms connect to the zero-free region of ζ(s), making RH relevant to the open questions in this problem."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-940",
+      "title": "Erdős #940: Sums of r-Powerful Numbers",
+      "relevance": "Nearest relative: generalizes squarefull sums (r=2, p²|m) to r-powerful sums (pʳ|m). Shares the Baker-Brüdern (1994) result and the same density/asymptotic framework."
+    },
+    {
+      "id": "prime-number-theorem",
+      "title": "The Prime Number Theorem",
+      "relevance": "The PNT is the canonical example of a counting-function asymptotic with a log-power correction. The exponent α = 1 − 2^(−1/3) in A(x) ~ x/(log x)^α mirrors the PNT structure and is derived with similar analytic techniques."
+    },
+    {
+      "id": "fermat-two-squares",
+      "title": "Fermat's Sum of Two Squares",
+      "relevance": "The Blomer-Granville proof reduces A(x) asymptotics to counting representations by binary quadratic forms, the same objects central to Fermat's theorem and its generalisations."
+    },
+    {
+      "id": "lagrange-four-squares",
+      "title": "Lagrange's Four Squares Theorem",
+      "relevance": "Both results ask: which integers are sums of structured numbers? Lagrange (squares) and Problem #1081 (squarefull) are complementary case studies in additive representation theory."
+    },
+    {
+      "id": "riemann-hypothesis",
+      "title": "The Riemann Hypothesis",
+      "relevance": "The constant c in S(x) ~ c√x involves ζ(3/2)/ζ(3), and sharper error terms for A(x) are sensitive to zeta zero distribution, linking this problem to the central open question in analytic number theory."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["R. W. K. Odoni"],
+      "title": "On the norms of algebraic integers",
+      "journal": "Mathematika",
+      "volume": "22",
+      "year": 1975,
+      "pages": "71–80",
+      "note": "Contains Odoni's foundational work leading to the 1981 disproof; provides the lower bound showing A(x) grows faster than c·x/√(log x)."
+    },
+    {
+      "authors": ["R. C. Baker", "J. Brüdern"],
+      "title": "Sums of two squareful numbers",
+      "journal": "Acta Arithmetica",
+      "volume": "69",
+      "year": 1995,
+      "pages": "369–374",
+      "note": "Establishes intermediate bounds for A(x) improving on Odoni; a key step between the original disproof and the Blomer-Granville refinement."
+    },
+    {
+      "authors": ["V. Blomer"],
+      "title": "Ternary quadratic forms with rational zeros",
+      "journal": "Journal de Théorie des Nombres de Bordeaux",
+      "volume": "16",
+      "year": 2004,
+      "pages": "293–313",
+      "note": "Blomer's solo work using quadratic forms to tighten bounds on A(x); directly precedes the 2006 joint paper with Granville."
+    },
+    {
+      "authors": ["V. Blomer", "A. Granville"],
+      "title": "Estimates for representation numbers of quadratic forms",
+      "journal": "Duke Mathematical Journal",
+      "volume": "135",
+      "year": 2006,
+      "pages": "261–302",
+      "doi": "10.1215/S0012-7094-06-13522-6",
+      "note": "Definitive paper proving the correct exponent α = 1 − 2^(−1/3) for A(x) ~ x/(log x)^α via representation theory of binary quadratic forms."
+    },
+    {
+      "authors": ["G. Tenenbaum"],
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "publisher": "Cambridge University Press",
+      "edition": "3rd",
+      "year": 2015,
+      "note": "Standard reference for multiplicative number theory, counting functions, and the analytic methods (Dirichlet series, saddle-point) underlying the asymptotic results in this problem."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

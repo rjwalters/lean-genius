@@ -159,6 +159,107 @@
       "Close the gap between n^(16/15) and n^(10/9)"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-1008",
+      "title": "Erdős Problem #1008: C₄-Free Subgraphs",
+      "relationship": "Shares the C_4-free constraint: Problem #1080 studies C_4,C_6-free bipartite graphs while Problem #1008 asks about maximum C_4-free subgraphs. Both probe the extremal density achievable by forbidding short even cycles."
+    },
+    {
+      "slug": "erdos-1021",
+      "title": "Erdős Problem #1021: Extremal Numbers for Bipartite Pair Graphs",
+      "relationship": "Both problems involve bipartite extremal numbers ex(n; H) for specific forbidden bipartite subgraphs. Problem #1021 studies the ex(n, G_k) threshold near n^{3/2}, paralleling the superlinear growth of f(n, ⌊n^{2/3}⌋) in Problem #1080."
+    },
+    {
+      "slug": "erdos-113",
+      "title": "Erdős Problem #113: Extremal Numbers and Degeneracy of Bipartite Graphs",
+      "relationship": "Directly in the same research area: forbidden bipartite subgraph extremal theory. The Janzer (2023) disproof of the Erdős–Simonovits Conjecture uses constructions akin to the algebraic incidence graph methods in Problem #1080."
+    },
+    {
+      "slug": "erdos-1079",
+      "title": "Erdős Problem #1079: Turán Density in Neighborhoods",
+      "relationship": "Adjacent Turán-type problem: both concern whether local or global edge density forces a specific substructure (a cycle or a complete subgraph). The Bollobás–Thomason framework applies to the same extremal graph toolkit."
+    },
+    {
+      "slug": "erdos-65",
+      "title": "Erdős Problem #65: Cycle Lengths in Dense Graphs",
+      "relationship": "Complementary cycle-forcing problem: Problem #65 asks which cycle lengths are guaranteed in graphs with kn edges; Problem #1080 pinpoints the transition from C_6 (not forced linearly) to C_8 (forced) in bipartite graphs with ⌊n^{2/3}⌋ vertices in one part."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-1008",
+      "description": "C_4-free subgraph density problem; shares the Conlon–Fox–Sudakov extremal framework"
+    },
+    {
+      "slug": "erdos-1021",
+      "description": "Bipartite pair graph extremal numbers; studies the same n^{3/2} threshold regime"
+    },
+    {
+      "slug": "erdos-113",
+      "description": "Bipartite degeneracy conjecture (Erdős–Simonovits); algebraic construction techniques overlap"
+    },
+    {
+      "slug": "erdos-1079",
+      "description": "Turán density in vertex neighborhoods; adjacent extremal graph theory"
+    },
+    {
+      "slug": "erdos-65",
+      "description": "Cycle-length forcing in dense graphs; includes the complete bipartite extremal case"
+    }
+  ],
+  "references": [
+    {
+      "authors": "De Caen, D. and Székely, L. A.",
+      "title": "The maximum size of 4- and 6-cycle-free bipartite graphs on n vertices",
+      "venue": "Sets, Graphs and Numbers (Budapest, 1991), Colloq. Math. Soc. János Bolyai, Vol. 60, North-Holland",
+      "year": 1992,
+      "pages": "135–142",
+      "note": "Primary source: disproves Erdős's conjecture and establishes the O(n^{10/9}) upper and Ω(n^{58/57}) lower bounds for f(n, ⌊n^{2/3}⌋)."
+    },
+    {
+      "authors": "Lazebnik, F., Ustimenko, V. A., and Woldar, A. J.",
+      "title": "A new series of dense graphs of high girth",
+      "venue": "Bulletin of the American Mathematical Society",
+      "year": 1995,
+      "volume": 32,
+      "number": 1,
+      "pages": "73–79",
+      "doi": "10.1090/S0273-0979-1995-00569-0",
+      "note": "Improves the lower bound to Ω(n^{16/15}) using algebraic constructions from finite geometry (incidence graphs of projective planes); cited as Lazebnik–Ustimenko–Woldar (1994/1995) in the formalization."
+    },
+    {
+      "authors": "Kővári, T., Sós, V. T., and Turán, P.",
+      "title": "On a problem of K. Zarankiewicz",
+      "venue": "Colloquium Mathematicum",
+      "year": 1954,
+      "volume": 3,
+      "pages": "50–57",
+      "note": "Classical theorem bounding the number of edges in K_{s,t}-free bipartite graphs; the formalization includes a kovari_sos_turan theorem as a related extremal result."
+    },
+    {
+      "authors": "Faudree, R. J. and Simonovits, M.",
+      "title": "On a class of degenerate extremal graph problems",
+      "venue": "Combinatorica",
+      "year": 1983,
+      "volume": 3,
+      "number": "1",
+      "pages": "83–93",
+      "doi": "10.1007/BF02579343",
+      "note": "Proved the general O(n^{10/9}) upper bound for C_4,C_6-free bipartite graphs independently of De Caen–Székely; cited in the formalization as the Faudree–Simonovits general bound."
+    },
+    {
+      "authors": "Bondy, J. A. and Simonovits, M.",
+      "title": "Cycles of even length in graphs",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "year": 1974,
+      "volume": 16,
+      "number": 2,
+      "pages": "97–105",
+      "doi": "10.1016/0095-8956(74)90052-5",
+      "note": "Foundational result showing that graphs with Ω(n^{1+1/k}) edges contain a C_{2k}; provides the theoretical context for why C_8 is forced by cn edges while C_6 is not in the imbalanced bipartite setting."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

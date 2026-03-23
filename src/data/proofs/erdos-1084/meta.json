@@ -117,6 +117,64 @@
       "Does the optimal configuration for f₃(n) converge to FCC/HCP packing as n → ∞?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "kepler-conjecture",
+      "relationship": "The Kepler conjecture (FCC sphere packing optimality) directly governs the large-n behavior of f₃(n): the conjectured lower bound f₃(n) ≥ 6n - Θ(n^{2/3}) would follow from understanding how finite FCC/HCP clusters approach the infinite-volume limit, making the Kepler structure the conjectured optimal configuration."
+    },
+    {
+      "slug": "erdos-1085",
+      "relationship": "Erdős Problem #1085 studies the unit distance problem without the separation constraint (f_d(n) for arbitrary point sets). Problem #1084 imposes the additional ≥1 separation condition, which converts a graph-theoretic extremal problem into a sphere-packing one. The two problems share notation but differ sharply in difficulty and techniques."
+    },
+    {
+      "slug": "erdos-1083",
+      "relationship": "Erdős Problem #1083 asks for the minimum number of distinct distances among n points in ℝ^d (f_d(n) = n^{2/d - o(1)}). Both problems use the same dimension-indexed function f_d(n) and the same Euclidean setup, and both exhibit an isoperimetric correction term of order n^{(d-1)/d} in the sub-leading behavior."
+    },
+    {
+      "slug": "erdos-1086",
+      "relationship": "Erdős Problem #1086 on triangles of equal area is a neighboring extremal combinatorial geometry problem sharing the same era (1971), the same authors (Erdős–Purdy), and the same incidence-geometry toolkit (Szemerédi–Trotter, algebraic methods). The techniques for bounding repeated distances and repeated areas overlap substantially."
+    },
+    {
+      "slug": "erdos-97",
+      "relationship": "Erdős Problem #97 on equidistant vertices in convex polygons is another discrete-geometry problem about distance multiplicity in point configurations. The kissing-number constraint τ(2) = 6 that drives f₂(n) ≤ 3n also bounds the number of vertices equidistant from a given point in convex position, linking the two problems via the hexagonal lattice geometry."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "kepler-conjecture",
+      "note": "The FCC packing (Hales 1998, Flyspeck 2014) is the conjectured optimal configuration achieving f₃(n) ~ 6n - Θ(n^{2/3}). This gallery entry formalizes the infinite-volume sphere packing density; #1084 concerns the finite-n contact count for the same geometry."
+    },
+    {
+      "slug": "erdos-1085",
+      "note": "The unseparated unit distance problem. Removing the pairwise-distance ≥ 1 constraint transforms sphere-packing combinatorics into incidence geometry; the two Lean formalizations use the same SeparatedConfig / EuclideanSpace setup but diverge in the bound type (linear vs. superlinear in n)."
+    },
+    {
+      "slug": "erdos-1083",
+      "note": "Distinct distances in ℝ^d. The Lean formalization shares the EuclideanSpace ℝ (Fin d) type infrastructure and uses the same dimension-indexed counting framework, making it a natural companion for understanding the full geometry of distance distributions in high-dimensional point sets."
+    }
+  ],
+  "references": [
+    {
+      "citation": "Harborth, H. (1974). Lösung zu Problem 664A. Elemente der Mathematik, 29, 14–15.",
+      "note": "Proves the exact formula f₂(n) = ⌊3n - √(12n-3)⌋ for separated points in ℝ², showing the triangular lattice A₂ is optimal."
+    },
+    {
+      "citation": "Bezdek, K. and Reid, S. (2013). Contact graphs of unit sphere packings revisited. Journal of Geometry, 104(1), 57–83.",
+      "note": "Establishes the upper bound f₃(n) < 6n - 0.926·n^{2/3} using the isoperimetric method for finite sphere packings in ℝ³."
+    },
+    {
+      "citation": "Kabatyansky, G. A. and Levenshtein, V. I. (1978). Bounds for packings on the sphere and in space. Problemy Peredachi Informatsii, 14(1), 3–25.",
+      "note": "Provides the exponential upper bound τ(d) ≤ 2^{0.401d} on kissing numbers in d dimensions, giving the upper bound f_d(n) ≤ 2^{O(d)}·n."
+    },
+    {
+      "citation": "Erdős, P. (1946). On sets of distances of n points. American Mathematical Monthly, 53(5), 248–250.",
+      "note": "Foundational paper introducing the problem of unit distances among n points, the precursor to the separated-points variant formalized here."
+    },
+    {
+      "citation": "Schütte, K. and van der Waerden, B. L. (1953). Das Problem der dreizehn Kugeln. Mathematische Annalen, 125, 325–334.",
+      "note": "Resolves the Newton–Gregory kissing number dispute by proving τ(3) = 12, establishing the leading coefficient 6 in f₃(n) ~ 6n."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.Basic",
