@@ -85,29 +85,33 @@
       "id": "step1",
       "title": "Step 1: Doubling arctan(1/5)",
       "startLine": 34,
-      "endLine": 39,
-      "summary": "Proves $\\arctan(1/5) + \\arctan(1/5) = \\arctan(5/12)$ via the addition formula with $xy = 1/25 < 1$. The rational arithmetic $(2/5)/(24/25) = 5/12$ is verified by `norm_num`."
+      "endLine": 49,
+      "summary": "Proves $\\arctan(1/5) + \\arctan(1/5) = \\arctan(5/12)$ via the addition formula with $xy = 1/25 < 1$. The rational arithmetic $(2/5)/(24/25) = 5/12$ is verified by `norm_num`.",
+      "mathContext": "$\\arctan\\frac{1}{5} + \\arctan\\frac{1}{5} = \\arctan\\frac{5}{12}$ via $\\frac{2/5}{1 - 1/25} = \\frac{2/5}{24/25} = \\frac{5}{12}$."
     },
     {
       "id": "step2",
       "title": "Step 2: Doubling to arctan(120/119)",
-      "startLine": 41,
-      "endLine": 53,
-      "summary": "Proves $4 \\cdot \\arctan(1/5) = \\arctan(120/119)$ by expressing $4 \\cdot \\arctan(1/5) = 2 \\cdot \\arctan(5/12)$ and applying the addition formula again with $xy = 25/144 < 1$."
+      "startLine": 51,
+      "endLine": 65,
+      "summary": "Proves $4 \\cdot \\arctan(1/5) = \\arctan(120/119)$ by expressing $4 \\cdot \\arctan(1/5) = 2 \\cdot \\arctan(5/12)$ and applying the addition formula again with $xy = 25/144 < 1$.",
+      "mathContext": "$4\\arctan\\frac{1}{5} = 2\\arctan\\frac{5}{12} = \\arctan\\frac{120}{119}$ via $\\frac{10/12}{119/144} = \\frac{120}{119}$."
     },
     {
       "id": "step3",
       "title": "Step 3: Subtracting arctan(1/239)",
-      "startLine": 55,
-      "endLine": 70,
-      "summary": "Proves $\\arctan(120/119) - \\arctan(1/239) = \\arctan(1)$ by rewriting the subtraction as addition of $\\arctan(-1/239)$ and applying arctan_add. The key computation: $(28561/28441)/(28561/28441) = 1$."
+      "startLine": 67,
+      "endLine": 84,
+      "summary": "Proves $\\arctan(120/119) - \\arctan(1/239) = \\arctan(1)$ by rewriting the subtraction as addition of $\\arctan(-1/239)$ and applying arctan_add. The key computation: $(28561/28441)/(28561/28441) = 1$.",
+      "mathContext": "$\\frac{120/119 - 1/239}{1 + 120/(119 \\cdot 239)} = \\frac{28561/28441}{28561/28441} = 1$ where $28561 = 169^2$."
     },
     {
       "id": "main",
       "title": "Machin's Formula",
-      "startLine": 72,
-      "endLine": 79,
-      "summary": "Combines Steps 1-3 to prove $4 \\cdot \\arctan(1/5) - \\arctan(1/239) = \\pi/4$ in one line: rewrite via `four_arctan_inv_5` and `arctan_diff_eq_arctan_one`, then apply `arctan_one`."
+      "startLine": 86,
+      "endLine": 97,
+      "summary": "Combines Steps 1-3 to prove $4 \\cdot \\arctan(1/5) - \\arctan(1/239) = \\pi/4$ in one line: rewrite via `four_arctan_inv_5` and `arctan_diff_eq_arctan_one`, then apply `arctan_one`.",
+      "mathContext": "$\\frac{\\pi}{4} = 4\\arctan\\frac{1}{5} - \\arctan\\frac{1}{239}$ — Machin's formula (1706)."
     }
   ],
   "conclusion": {
