@@ -65,7 +65,7 @@
     "range": { "startLine": 41, "endLine": 42 },
     "type": "concept",
     "title": "Conjecture B: Infinitely Many $2^k 3^l q + 1$ Primes",
-    "content": "The weaker variant of Problem #1065: the set of primes $p$ with $p - 1 = 2^k \\cdot 3^l \\cdot q$ ($q$ prime) is infinite. This is implied by Conjecture A (set $l = 0$). The extra factor of $3^l$ significantly enlarges the candidate set — for example, $p = 61$ satisfies Form B but not Form A.",
+    "content": "The weaker variant of Problem #1065: the set of primes $p$ with $p - 1 = 2^k \\cdot 3^l \\cdot q$ ($q$ prime) is infinite. This is implied by Conjecture A (set $l = 0$). The extra factor of $3^l$ significantly enlarges the candidate set — for example, $p = 61$ satisfies Form B ($60 = 2^2 \\cdot 3 \\cdot 5$) but not Form A.\n\n**Why 3 is special:** The choice of 3 as the additional smooth factor is natural: the $\\{2,3\\}$-smooth numbers (regular numbers, studied since Babylonian mathematics) are the densest smooth number set after powers of 2. Requiring $p - 1$ to be $\\{2,3\\}$-smooth times a prime is the mildest relaxation of Form A's $2$-smooth condition, and the density of Form B primes among all primes is predicted to exceed Form A's by a factor reflecting the additional ways to factor $p - 1$ via powers of 3.",
     "mathContext": "$|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, k, l \\in \\mathbb{N}: p = 2^k \\cdot 3^l \\cdot q + 1\\}| = \\infty$.",
     "significance": "key",
     "relatedConcepts": ["smooth-shifted primes", "Dickman function", "friable numbers"],
