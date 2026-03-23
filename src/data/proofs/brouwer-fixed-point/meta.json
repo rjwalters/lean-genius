@@ -103,6 +103,12 @@
       "**Dimension Sensitivity via Homology:** The closed ball $B^n$ is contractible ($H_k(B^n) = 0$ for $k > 0$), while the sphere $S^{n-1}$ has $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$. This algebraic difference is the obstruction: a retraction would force a non-trivial group to factor through a trivial one.",
       "**Non-Constructive Existence:** The proof shows $\\exists x$ with $f(x) = x$ without computing $x$. Computationally, finding an $\\epsilon$-approximate fixed point is PPAD-complete — the class of problems reducible to finding Nash equilibria, believed not to be in P.",
       "**Universal Applications:** Brouwer's theorem underlies Nash's equilibrium theorem (every finite game has a mixed strategy equilibrium), the existence of market equilibria (Arrow-Debreu), and Kakutani's fixed point theorem for set-valued maps used throughout economics and game theory."
+    ],
+    "prerequisites": [
+      "Point-set topology (compactness, continuity, metric spaces)",
+      "Algebraic topology: homology groups and the no-retraction theorem",
+      "Euclidean geometry: closed balls, spheres, ray-casting constructions",
+      "Proof by contradiction"
     ]
   },
   "sections": [
@@ -202,7 +208,7 @@
   ],
   "conclusion": {
     "summary": "The Brouwer Fixed Point Theorem demonstrates that every continuous self-map of a closed ball has a fixed point. The proof ingeniously transforms this dynamical question into a topological one: if no fixed point existed, we could construct a retraction from the ball to its boundary, which is impossible.",
-    "implications": "This theorem has far-reaching consequences: Nash's Nobel Prize-winning proof of equilibrium existence in game theory relies on it; solutions to many differential equations are guaranteed by it; and it reveals deep connections between topology and dynamics. Computationally, finding fixed points is PPAD-complete, explaining why equilibrium computation is hard. The theorem beautifully illustrates how abstract topology answers concrete questions about continuous processes.",
+    "implications": "**Theoretical Significance**: This theorem has far-reaching consequences: Nash's Nobel Prize-winning proof of equilibrium existence in game theory relies on it; solutions to many differential equations are guaranteed by it; and it reveals deep connections between topology and dynamics.\n\n**Broader Connections**: Computationally, finding fixed points is PPAD-complete, explaining why equilibrium computation is hard. The theorem beautifully illustrates how abstract topology answers concrete questions about continuous processes.",
     "openQuestions": [
       "Can the No-Retraction Theorem be formalized without axioms once Mathlib gains homology theory? The proof requires $H_{n-1}(B^n) = 0$ (ball contractible) and $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ (sphere has non-trivial homology), plus functoriality of $H_{n-1}$.",
       "Can the ray-casting retraction construction (`retraction_construction` axiom) be formalized? It requires solving the quadratic $\\|f(x) + t(x - f(x))\\|^2 = 1$ for $t > 0$ and proving the resulting map is continuous via the implicit function theorem.",

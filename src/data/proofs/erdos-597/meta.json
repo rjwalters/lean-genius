@@ -65,7 +65,8 @@
       "**Both Conditions Essential**: K_{ℵ₀,ℵ₀} is K₄-free (bipartite), so the K_{ℵ₀,ℵ₀}-free condition is independently needed",
       "**Finite Subproblem**: Whether the relation holds for all finite K₄-free G is itself open",
       "**Set-Theoretic Sensitivity**: The answer may depend on axioms like CH or Martin's Axiom"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -120,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #597 remains OPEN. The formalization captures the two known partial results: Erdős-Hajnal proved ω₁² → (ω₁ω, 3)² (triangle case positive), and Baumgartner proved ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})² (infinite bipartite case negative). The main question — whether the relation holds for all K₄-free, K_{ℵ₀,ℵ₀}-free graphs on ≤ℵ₁ vertices — sits in the gap between these results.",
-    "implications": "A positive answer would significantly extend the Erdős-Hajnal result from triangles to a broad class of graphs. A negative answer would require a subtle counterexample that is both K₄-free and K_{ℵ₀,ℵ₀}-free. The problem connects partition calculus, graph Ramsey theory, and set-theoretic independence, making it a central question in infinite combinatorics.",
+    "implications": "**Theoretical Significance**: A positive answer would significantly extend the Erdős-Hajnal result from triangles to a broad class of graphs.\n\n**Broader Connections**: A negative answer would require a subtle counterexample that is both K₄-free and K_{ℵ₀,ℵ₀}-free. The problem connects partition calculus, graph Ramsey theory, and set-theoretic independence, making it a central question in infinite combinatorics.",
     "openQuestions": [
       "Does ω₁² → (ω₁ω, G)² hold for all finite K₄-free graphs G?",
       "Is the answer to Problem #597 independent of ZFC?",

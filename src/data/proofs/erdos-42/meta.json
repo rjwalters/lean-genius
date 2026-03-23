@@ -39,6 +39,12 @@
       "**Pigeonhole for M = 2**: Sedov's proof exploits that N² pairs vastly outnumber the ≈N forbidden differences, guaranteeing a valid pair by counting",
       "**M = 3 barrier**: The jump from pairs to triples requires avoiding six differences simultaneously while maintaining Sidon within {b₁,b₂,b₃}, making simple counting insufficient",
       "**Constructive threshold**: Even for proved cases, the dependence of N₀ on M is unknown—polynomial growth would suggest different proof techniques than exponential growth"
+    ],
+    "prerequisites": [
+      "Sidon sets (B₂ sequences) and their properties",
+      "Difference sets of finite sets",
+      "Extremal combinatorics and Ramsey theory",
+      "Finite field constructions (Singer difference sets)"
     ]
   },
   "sections": [

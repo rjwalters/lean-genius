@@ -53,7 +53,8 @@
       "**Why k = 4 is hard**: The constraints are very tight. A 4-vertex-critical graph must be quite dense (min degree 3), leaving little room for non-critical edges.",
       "**Quantitative version**: Erdős asked about f_k(n) = largest r for n-vertex k-critical graphs. Skottova-Steiner showed n^{1/3} ≪ f_k(n) ≪ n/(log n)^C for k ≥ 5.",
       "**Gap in understanding**: The jump from k = 4 to k = 5 represents a fundamental structural difference that remains unexplained."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -108,7 +109,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #944 about the existence of k-vertex-critical graphs where every critical edge set is large. Dirac (1970) conjectured this for r = 1; it's now proven for all k ≥ 5 (Jensen 2002) and for large k with any r (Martinsson-Steiner 2025). The case k = 4 remains OPEN.",
-    "implications": "This problem reveals deep structure in graph coloring. The question of whether vertex-criticality and edge-criticality can be decoupled connects to fundamental questions about the 'redundancy' in graph colorings. Understanding k = 4 could illuminate the transition from small to large chromatic numbers.",
+    "implications": "**Theoretical Significance**: This problem reveals deep structure in graph coloring.\n\n**Broader Connections**: The question of whether vertex-criticality and edge-criticality can be decoupled connects to fundamental questions about the 'redundancy' in graph colorings. Understanding k = 4 could illuminate the transition from small to large chromatic numbers.",
     "openQuestions": [
       "Does there exist a 4-vertex-critical graph with no critical edges?",
       "What is the exact asymptotic behavior of f_k(n) for k ≥ 5?",

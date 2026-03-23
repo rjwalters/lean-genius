@@ -72,7 +72,8 @@
       "**Gap Between G and H:** The gap H(n) - G(n) lies between n^{1+o(1)} (conjectured) and n^{3/2-o(1)} (proved), with the exact exponent unknown",
       "**Connection to Prime Distribution:** Question 1 holds under assumptions about prime gaps related to the twin prime conjecture",
       "**Structural Complexity of Optimal Sets:** As n grows, optimal admissible sets must include composites with increasingly many prime factors (proved for k=2, open for k≥3)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #879 asks about the maximum sum G(n) of pairwise coprime subsets of {1,...,n}. Erdős-Van Lint proved the bounds H(n) - n^{3/2} < G(n) < H(n) and that the gap grows superlinearly. The formalization axiomatizes these bounds and the solved k=2 case of Question 2, while constructively proving that the set of primes is admissible.",
-    "implications": "**Number Theory Connections**\n\n1. **Prime Distribution:** Question 1 connects to assumptions about prime gaps and the twin prime conjecture\n\n2. **Additive Combinatorics:** The optimization problem over coprime sets bridges number theory and extremal combinatorics\n\n3. **Structure of Extremal Sets:** Question 2 reveals that optimal coprime sets have rich composite structure, not just primes\n\n4. **Asymptotic Analysis:** H(n) ~ n²/(2 ln n) by the prime number theorem, placing G(n) in the same asymptotic regime",
+    "implications": "**Theoretical Significance**: **Number Theory Connections**\n\n1. **Prime Distribution:** Question 1 connects to assumptions about prime gaps and the twin prime conjecture\n\n2.\n\n**Broader Connections**: **Additive Combinatorics:** The optimization problem over coprime sets bridges number theory and extremal combinatorics\n\n3. **Structure of Extremal Sets:** Question 2 reveals that optimal coprime sets have rich composite structure, not just primes\n\n4. **Asymptotic Analysis:** H(n) ~ n²/(2 ln n) by the prime number theorem, placing G(n) in the same asymptotic regime.",
     "openQuestions": [
       "Is G(n) > H(n) - n^{1+o(1)}? (Question 1, open)",
       "Does the optimal set contain integers with k ≥ 3 prime factors? (Question 2 for k ≥ 3, open)",

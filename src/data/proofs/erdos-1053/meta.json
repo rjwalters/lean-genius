@@ -100,11 +100,14 @@
       "The gap between $O(\\log\\log n)$ (conditional on RH) and $o(\\log\\log n)$ (Erdős's question) is the precise frontier: can $k$-perfect numbers approach the Gronwall bound?",
       "Guy's finiteness conjecture (each $k \\geq 3$ has finitely many $k$-perfect numbers) is strictly stronger and would resolve Erdős's question trivially",
       "No $k = 12$ perfect number is known despite exhaustive search, suggesting the frontier of computability has been reached near $k = 11$"
+    ],
+    "prerequisites": [
+      "Mathematical prerequisites vary by topic"
     ]
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1053 and its mathematical context: the growth rate of the perfection multiplicity $k$ for $k$-perfect numbers. The key tension is between Gronwall's theorem (showing $\\sigma(n)/n$ can reach $\\sim e^\\gamma \\cdot \\log\\log n$) and the open question of whether $k$-perfect numbers — where $\\sigma(n)/n$ is exactly an integer — can saturate this bound. Robin's inequality gives $k = O(\\log\\log n)$ conditional on RH; the $o(\\log\\log n)$ question remains open.",
-    "implications": "A resolution would reveal deep structural constraints on when $\\sigma(n)/n$ can be an integer versus merely large. A proof of $k = o(\\log\\log n)$ would show that the multiplicative structure required for exact divisibility by $n$ prevents $\\sigma(n)$ from approaching its theoretical maximum. This connects to the distribution of smooth numbers, the anatomy of colossally abundant numbers, and ultimately to the Riemann Hypothesis through Robin's criterion.",
+    "implications": "**Theoretical Significance**: A resolution would reveal deep structural constraints on when $\\sigma(n)/n$ can be an integer versus merely large.\n\n**Broader Connections**: A proof of $k = o(\\log\\log n)$ would show that the multiplicative structure required for exact divisibility by $n$ prevents $\\sigma(n)$ from approaching its theoretical maximum. This connects to the distribution of smooth numbers, the anatomy of colossally abundant numbers, and ultimately to the Riemann Hypothesis through Robin's criterion.",
     "openQuestions": [
       "Must $k = o(\\log\\log n)$ for $k$-perfect numbers? (Erdős Problem #1053)",
       "Are there only finitely many $k$-perfect numbers for each $k \\geq 3$? (Guy's conjecture, strictly stronger)",

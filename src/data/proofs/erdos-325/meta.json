@@ -60,7 +60,8 @@
       "**Wooley's gap**: For cubes (k=3), the conjecture predicts x^1 but Wooley only achieved x^{0.917}. Closing this gap is a major open problem.",
       "**Two vs three terms**: The two-term case f_{k,2}(x) ≫ x^{2/k} was proved in 1938. Three terms is significantly harder.",
       "**Asymptotic notation**: We use Mathlib's `IsBigO` to express f ≫ g as 'g = O(f)', meaning f grows at least as fast as g."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -108,7 +109,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #325 on the density of sums of three k-th powers. The conjecture f_{k,3}(x) ≫ x^{3/k} remains OPEN. We define the counting function, verify concrete examples, state the main conjecture and its variants as axioms, and provide context via the solved two-term analogue.",
-    "implications": "This problem lies at the intersection of additive number theory and analytic methods. A proof would establish that sums of three powers have the 'expected' density, with implications for understanding the structure of power sums. Progress here often involves the Hardy-Littlewood circle method and mean value estimates.",
+    "implications": "**Theoretical Significance**: This problem lies at the intersection of additive number theory and analytic methods.\n\n**Broader Connections**: A proof would establish that sums of three powers have the 'expected' density, with implications for understanding the structure of power sums. Progress here often involves the Hardy-Littlewood circle method and mean value estimates.",
     "openQuestions": [
       "Can Wooley's x^{0.917} bound for three cubes be improved toward x^1?",
       "Does the weaker form f_{k,3}(x) ≫_ε x^{3/k - ε} hold for all ε > 0?",

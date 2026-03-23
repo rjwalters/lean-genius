@@ -63,7 +63,8 @@
       "**Super-Exponential Upper Bound:** c(n) is at most O(n^n) or O(n^{n+1}) depending on whether n+1 is prime",
       "**Huge Gap:** The gap between 2^n and n^n grows rapidly — the main question asks which is closer to the truth",
       "**Packing vs Volume:** The constraint is not just volume (Σ aᵢⁿ = 1) but geometric packing"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -132,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #769 remains open. We know c(2) = 6 exactly, and have bounds 2^{n+1} - 1 ≤ c(n) ≤ O(n^{n+1}) for n ≥ 3. The main question asks whether c(n) ≫ n^n, with Erdős believing c(n) > n^n when n+1 is prime. The gap between exponential and super-exponential growth is the central mystery.",
-    "implications": "Understanding cube dissections reveals fundamental constraints in geometric packing theory. The function c(n) captures how geometric constraints become more restrictive in higher dimensions. The dependence on whether n+1 is prime suggests deep connections to number theory.",
+    "implications": "**Theoretical Significance**: Understanding cube dissections reveals fundamental constraints in geometric packing theory.\n\n**Broader Connections**: The function c(n) captures how geometric constraints become more restrictive in higher dimensions. The dependence on whether n+1 is prime suggests deep connections to number theory.",
     "openQuestions": [
       "Is c(n) ≫ n^n? (The main question)",
       "Is c(n) > n^n when n+1 is prime? (Erdős's conjecture)",

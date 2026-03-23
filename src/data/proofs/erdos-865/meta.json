@@ -67,7 +67,8 @@
       "**Limit 2/3:** As k → ∞, the Erdős-Sós threshold approaches 2/3 since Σ 1/4^r → 1/3.",
       "**CES Gap:** The known bound (2/3 - ε) from 1975 is weaker than the conjectured 5/8.",
       "**Connection to Sum-Free:** Complementary to sum-free set problems where no a+b = c."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #865 is OPEN. The conjecture states that |A| ≥ (5/8)N + C guarantees a pairwise sum triple. The lower bound construction [N/8, N/4] ∪ [N/2, N] shows 5/8 is optimal. Choi-Erdős-Szemerédi (1975) proved the weaker bound f_k(N) ≤ (2/3 - ε_k)N. The sharp 5/8 threshold remains unproven.",
-    "implications": "This problem connects density arguments in additive combinatorics with extremal set theory. The gap between the conjectured 5/8 threshold and the proven 2/3 - ε bound highlights the difficulty of obtaining sharp density results. The Erdős-Sós conjecture for general k gives a complete picture of how the threshold evolves.",
+    "implications": "**Theoretical Significance**: This problem connects density arguments in additive combinatorics with extremal set theory.\n\n**Broader Connections**: The gap between the conjectured 5/8 threshold and the proven 2/3 - ε bound highlights the difficulty of obtaining sharp density results. The Erdős-Sós conjecture for general k gives a complete picture of how the threshold evolves.",
     "openQuestions": [
       "Prove the 5/8 conjecture for k=3",
       "Prove the Erdős-Sós conjecture for general k",

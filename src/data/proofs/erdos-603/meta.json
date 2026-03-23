@@ -75,6 +75,12 @@
       "**Lower bound technique:** The lower bound proof argues that with $< 2$ colors (i.e., 0 or 1), any infinite set $A_i$ is automatically monochromatic — a pigeonhole argument on cardinal arithmetic",
       "**Hypergraph reformulation:** Recasting as weak chromatic number of a hypergraph (vertices = $\\bigcup A_i$, hyperedges = $\\{A_i\\}$) connects to the rich theory of Property B (2-colorability of hypergraphs), studied by Erdős and Hajnal",
       "**Cardinal dichotomy:** The key open question reduces to a dichotomy: either some finite $n$ suffices for all valid families (`CanDoBetterThanAleph0`), or no finite number works (`Aleph0Necessary`) — there is no middle ground"
+    ],
+    "prerequisites": [
+      "Basic set theory (countable and infinite sets)",
+      "Cardinal arithmetic (aleph numbers, cardinal ordering)",
+      "Graph and hypergraph coloring (chromatic number, proper coloring)",
+      "Combinatorics of set families (intersection properties)"
     ]
   },
   "sections": [

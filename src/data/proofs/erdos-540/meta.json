@@ -68,7 +68,8 @@
       "**Optimal Constant √2:** For primes, √(2p) is exact (Balandraud). Sets of size < √(2p) can avoid zero-sums by choosing elements from a sum-free-like configuration.",
       "**Abelian Generalization:** The result extends beyond cyclic groups to all finite abelian groups G with threshold √|G|.",
       "**Polynomial Method:** Olson's original proof for primes uses the Chevalley–Warning theorem and polynomial arguments over finite fields."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -137,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #540 is SOLVED. The Erdős-Heilbronn conjecture (1964) was proved by Szemerédi (1970): large subsets of ℤ/Nℤ necessarily contain zero-sum subsets. The optimal threshold is √(2N) for primes (Balandraud 2012) and asymptotically (1+o(1))√(2N) for all N (Hamidoune–Zémor 1996). The result extends to arbitrary finite abelian groups.",
-    "implications": "This result is foundational in additive combinatorics. It shows that large subsets of cyclic groups cannot avoid zero-sum configurations, with precise thresholds now known. The √N threshold (versus the linear Davenport bound) highlights the power of subset combinatorics over sequence combinatorics.",
+    "implications": "**Theoretical Significance**: This result is foundational in additive combinatorics.\n\n**Broader Connections**: It shows that large subsets of cyclic groups cannot avoid zero-sum configurations, with precise thresholds now known. The √N threshold (versus the linear Davenport bound) highlights the power of subset combinatorics over sequence combinatorics.",
     "openQuestions": [
       "What is the exact threshold for composite N (non-prime)?",
       "Can the proof for general N be made elementary?",

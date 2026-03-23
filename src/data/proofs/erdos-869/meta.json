@@ -72,7 +72,8 @@
       "**Disjointness Structure**: A₁ ∩ A₂ = ∅ adds extra constraints",
       "**Cross-Sums**: In A₁ ∪ A₂, we get new sums a₁ + a₂ with a₁ ∈ A₁, a₂ ∈ A₂",
       "**The Question**: Does disjoint union structure force minimal sub-bases to exist?"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -141,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #869 asks whether the union of two disjoint additive bases of order 2 must contain a minimal additive basis. The problem remains OPEN. While Härtter-Nathanson showed that some bases contain no minimal sub-bases, the question is whether the special structure of disjoint union forces such a sub-basis to exist.",
-    "implications": "**Additive Combinatorics Significance**\n\n1. **Basis Structure**: Understanding when minimal bases exist within larger bases\n\n2. **Disjointness Constraints**: How structural conditions affect sub-basis existence\n\n3. **Essential Elements**: Which elements are truly necessary for representation\n\n4. **Partition Theory**: Connections to partitioning bases into disjoint pieces\n\n5. **Representation Theory**: How integers can be represented as sums",
+    "implications": "**Theoretical Significance**: **Additive Combinatorics Significance**\n\n1. **Basis Structure**: Understanding when minimal bases exist within larger bases\n\n2. **Disjointness Constraints**: How structural conditions affect sub-basis existence\n\n3.\n\n**Broader Connections**: **Essential Elements**: Which elements are truly necessary for representation\n\n4. **Partition Theory**: Connections to partitioning bases into disjoint pieces\n\n5. **Representation Theory**: How integers can be represented as sums.",
     "openQuestions": [
       "Does the conjecture hold? (The main question)",
       "Can Härtter-Nathanson examples arise from disjoint unions?",

@@ -137,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1096 asks whether gaps in the sequence of q-representable numbers tend to 0 for q close to 1. Erdős and Joó conjectured the threshold is q₀ ≈ 1.3247, the smallest Pisot number. It's known that Pisot numbers do NOT have this property and that gaps are bounded by 1 for all q ≤ 2, but the exact threshold remains open.",
-    "implications": "**Implications for Number Theory**\n\n1. **Pisot Numbers:** The problem reveals deep connections between gaps in q-expansions and algebraic properties of q.\n\n2. **Expansion Structure:** Understanding which q give gaps → 0 illuminates the structure of digital expansions.\n\n3. **Ergodic Theory:** Related to β-expansions and the dynamics of T: x ↦ βx mod 1.\n\n4. **Unique Representations:** Connected to when 1 has a unique expansion, which characterizes Pisot numbers.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Pisot Numbers:** The problem reveals deep connections between gaps in q-expansions and algebraic properties of q.\n\n2.\n\n**Broader Connections**: **Expansion Structure:** Understanding which q give gaps → 0 illuminates the structure of digital expansions.\n\n3. **Ergodic Theory:** Related to β-expansions and the dynamics of T: x ↦ βx mod 1.\n\n4. **Unique Representations:** Connected to when 1 has a unique expansion, which characterizes Pisot numbers.",
     "openQuestions": [
       "Does every 1 < q < q₀ have the gap property (gaps → 0)?",
       "What is the exact threshold behavior at q₀?",

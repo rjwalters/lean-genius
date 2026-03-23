@@ -69,7 +69,8 @@
       "The formalization uses cardinal-valued chromatic numbers ($\\chi(G) = \\inf\\{\\kappa : G$ is $\\kappa$-colorable$\\}$) rather than natural-number-valued ones, enabling treatment of uncountable chromatic numbers via Mathlib's cardinal arithmetic.",
       "The structural result $\\chi(G) = \\aleph_1 \\implies$ no proper $\\mathbb{N}$-coloring exists is proved cleanly using `ciInf₂_le` and the strict inequality $\\aleph_0 < \\aleph_1$, showing that any countable vertex coloring must fail to be proper.",
       "Two reformulations — strong domination (every nonempty class sees all colors) and domination via color classes (some class intersects every nonempty edge color class) — illuminate different structural aspects and connect to infinite partition calculus."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -138,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1176 in 224 lines of Lean 4, encoding the question of whether graphs with chromatic number $\\aleph_1$ admit edge colorings whose color structure dominates all countable vertex colorings. The formalization includes cardinal-valued chromatic number definitions, the domination property, structural consequences of uncountable chromatic number, the Hajnal-Komjáth consistency axiom, and two reformulations connecting to partition calculus.",
-    "implications": "The formalization highlights the deep connections between infinite graph coloring and set-theoretic independence. The Hajnal-Komjáth consistency result suggests the problem may join the ranks of statements independent of ZFC. The partition calculus reformulation connects vertex-edge coloring interactions to the broader Erdős-Rado partition calculus framework, which has been central to infinite combinatorics since the 1950s.",
+    "implications": "**Theoretical Significance**: The formalization highlights the deep connections between infinite graph coloring and set-theoretic independence.\n\n**Broader Connections**: The Hajnal-Komjáth consistency result suggests the problem may join the ranks of statements independent of ZFC. The partition calculus reformulation connects vertex-edge coloring interactions to the broader Erdős-Rado partition calculus framework, which has been central to infinite combinatorics since the 1950s.",
     "openQuestions": [
       "Is ErdosProblem1176 provable in ZFC, or is it independent? A negative consistency result (showing the negation is also consistent) would establish full independence.",
       "Does the strong domination property (every nonempty vertex class sees all edge colors) hold consistently, or is it strictly stronger than the original?",

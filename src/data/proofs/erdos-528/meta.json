@@ -82,7 +82,8 @@
       "**2D Mystery:** Despite 70+ years of study and C_2 computed to 12+ decimal places, no exact closed form for C_2 is known",
       "**Honeycomb Breakthrough:** Duminil-Copin and Smirnov (Fields Medal) proved μ_honeycomb = √(2+√2) exactly using discrete holomorphicity — the only exact result for any lattice",
       "**Physical Applications:** SAWs model polymer chains; the critical exponent γ (conjectured 43/32 in 2D) governs sub-exponential corrections f(n,k) ~ A·μ_k^n·n^{γ-1}"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -172,7 +173,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #528 asks to determine the connective constant C_k for self-avoiding walks in ℤ^k. The limit EXISTS (Hammersley-Morton 1954) by submultiplicativity, with bounds k ≤ C_k ≤ 2k-1 and Kesten's asymptotic C_k = 2k-1-1/(2k)+O(1/k²). The 2D value C_2 = 2.6381585... is known numerically to high precision, and the honeycomb lattice has exact value √(2+√2) (Duminil-Copin/Smirnov 2012). However, exact closed forms remain OPEN for all square lattice dimensions.",
-    "implications": "**Implications for Mathematics and Physics**\n\n1. **Polymer Physics:** The connective constant governs the exponential growth rate of polymer configurations — C_k determines how many distinct polymer shapes exist at each length scale\n\n2. **Fekete's Lemma:** The proof that the limit exists is a foundational application of submultiplicativity → Fekete's lemma, a technique used throughout combinatorics and analysis\n\n3. **Conformal Field Theory:** The Duminil-Copin/Smirnov honeycomb result uses discrete holomorphicity, connecting combinatorics to complex analysis and theoretical physics\n\n4. **Critical Exponents:** The sub-exponential correction f(n,k) ~ A·μ_k^n·n^{γ-1} connects to universality in statistical mechanics — the exponent γ = 43/32 (conjectured for 2D) is predicted by conformal field theory\n\n5. **Computational Complexity:** Exact SAW enumeration is #P-complete, making numerical computation the primary tool for studying f(n,k) for specific n",
+    "implications": "**Theoretical Significance**: **Implications for Mathematics and Physics**\n\n1. **Polymer Physics:** The connective constant governs the exponential growth rate of polymer configurations — C_k determines how many distinct polymer shapes exist at each length scale\n\n2. **Fekete's Lemma:** The proof that the limit exists is a foundational application of submultiplicativity → Fekete's lemma, a technique used throughout combinatorics and analysis\n\n3.\n\n**Broader Connections**: **Conformal Field Theory:** The Duminil-Copin/Smirnov honeycomb result uses discrete holomorphicity, connecting combinatorics to complex analysis and theoretical physics\n\n4. **Critical Exponents:** The sub-exponential correction f(n,k) ~ A·μ_k^n·n^{γ-1} connects to universality in statistical mechanics — the exponent γ = 43/32 (conjectured for 2D) is predicted by conformal field theory\n\n5. **Computational Complexity:** Exact SAW enumeration is #P-complete, making numerical computation the primary tool for studying f(n,k) for specific n.",
     "openQuestions": [
       "Is there a closed form for C_2 (the square lattice connective constant)?",
       "Is C_k irrational for k ≥ 2? (Unknown for any k)",

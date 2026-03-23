@@ -37,7 +37,8 @@
       "**Flag algebras for the upper bound**: Baber's bound $0.60318$ uses Razborov's flag algebra framework, reducing the extremal problem to a semidefinite program. The method analyzes local statistics (subgraph densities) of $C_4$-free hypercube subgraphs to derive a global edge density bound.",
       "**The $1/2$ barrier**: The conjectured threshold $1/2$ is natural: in a random half-edges subgraph of $Q_n$, the expected number of $C_4$'s is $\\Theta(n^2)$, which can be destroyed by removing $o(n \\cdot 2^{n-1})$ edges. This suggests $1/2$ is achievable, but the constructive direction is harder.",
       "**Connections to coding theory and Boolean functions**: $C_4$-free subgraphs of $Q_n$ relate to error-correcting codes (pairs of codewords at distance $\\leq 2$), Boolean function complexity (monotone circuits), and isoperimetric inequalities on the hypercube."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -78,7 +79,7 @@
   ],
   "conclusion": {
     "summary": "Erdős's 1991 conjecture that $f(n) = (1/2 + o(1)) \\cdot n \\cdot 2^{n-1}$ remains OPEN, with $\\$100$ prize. The formalization captures the hypercube graph (with proved symmetry/looplessness and vertex count), the $C_4$-freeness condition, the extremal function $f(n)$, all known bounds ($1/2 < f(n)/e(Q_n) \\leq 0.60318$), the conjecture via `Filter.Tendsto`, and a proved implication theorem.",
-    "implications": "This is a fundamental Turán-type problem on a structured host graph. Unlike classical Turán theory (on complete graphs), Turán problems on $Q_n$ remain largely open. The flag algebra techniques that gave the best upper bound represent the frontier of computational extremal combinatorics. Connections to coding theory (error-correcting codes), Boolean function analysis (influence and noise sensitivity), and theoretical computer science make this problem significant across multiple areas.",
+    "implications": "**Theoretical Significance**: This is a fundamental Turán-type problem on a structured host graph. Unlike classical Turán theory (on complete graphs), Turán problems on $Q_n$ remain largely open.\n\n**Broader Connections**: The flag algebra techniques that gave the best upper bound represent the frontier of computational extremal combinatorics. Connections to coding theory (error-correcting codes), Boolean function analysis (influence and noise sensitivity), and theoretical computer science make this problem significant across multiple areas.",
     "openQuestions": [
       "Does $f(n)/(n \\cdot 2^{n-1}) \\to 1/2$ as $n \\to \\infty$? This is Erdős Problem #86 with $\\$100$ prize.",
       "Can the Baber upper bound $0.60318$ be improved, perhaps below $0.6$ or even below $0.55$?",

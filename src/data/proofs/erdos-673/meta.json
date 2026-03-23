@@ -113,7 +113,8 @@
       "**Erdős-Tenenbaum distribution**: $G(n)/\\tau(n)$ has a continuous distribution function $F$ — the 'efficiency' of divisor ratio accumulation has well-defined statistics across integers",
       "**Asymptotic formula**: $\\sum_{n \\le X} G(n) \\sim c X \\log X$ for some $c > 0$, paralleling Dirichlet's classical $\\sum \\tau(n) \\sim X \\log X$",
       "**Non-multiplicativity**: $G$ is not multiplicative ($G(ab) \\neq G(a)G(b)$ in general) but is superadditive: $G(mn) \\ge G(m) + G(n)$ for coprime $m, n$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

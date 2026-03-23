@@ -35,7 +35,8 @@
       "**Full pigeonhole proof**: the formalization includes a standalone ~20-line proof of the finitary pigeonhole principle via contradiction, using `Finset.card_biUnion` for fiber decomposition and `omega` for the final inequality",
       "**Easy direction fully proved**: a ~45-line proof that $A \\subseteq \\bigcup_{i=1}^k S_i$ with each $S_i$ non-collinear implies $A$ is $(1/k)$-non-trilinear, using `classical` choice for the assignment function and pigeonhole for fiber selection",
       "**The hard direction is the open problem**: going from density ($\\varepsilon$-non-trilinear) to structure (finite union of non-collinear sets) requires fundamentally different techniques—the density condition provides local existence but not a global decomposition"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

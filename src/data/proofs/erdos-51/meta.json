@@ -94,6 +94,12 @@
       "**Inverse totient difficulty**: The smallest preimage depends on whether ka+1 is prime for small k — a Diophantine condition on arithmetic progressions",
       "**Ford's distribution theorem**: The counting function |φ⁻¹(a)| takes every positive integer value infinitely often — but this says nothing about min(φ⁻¹(a))",
       "**Structural tension**: Most totient values have small preimage ratios (close to 1), but the conjecture asks whether rare exceptions with large ratios exist infinitely often"
+    ],
+    "prerequisites": [
+      "Euler's totient function φ(n)",
+      "Preimage counting in arithmetic functions",
+      "Multiplicative number theory",
+      "Distribution of totient values"
     ]
   },
   "conclusion": {

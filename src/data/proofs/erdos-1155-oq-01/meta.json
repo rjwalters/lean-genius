@@ -204,6 +204,13 @@
       "**Mantel connection**: the naive bound $f(n) \\leq n^2/4$ from extremal graph theory is vastly improved by BFL's $n^{7/4}$, and the conjecture's $n^{3/2}$ is tighter still",
       "**Axiomatization strategy**: The 5 axioms encode externally established results ($f(n)$ definition, BFL bounds, Mantel's theorem) while all *structural* theorems (decomposition, hierarchy, tightness) are fully proved from these axioms with 0 sorries — cleanly separating the hard analysis from the combinatorial-logical structure",
       "**ODE-to-asymptotics pipeline**: BFL's proof tracks edge density $e(t)$ and triangle density $t(t)$ as coupled ODEs $e' = -3t/\\binom{e}{3}$, valid while $e \\gg n^{3/2}$. The ODE breaks down precisely at $e \\approx n^{3/2}$, producing the $n^{3/2+o(1)}$ bound. Extracting constants from this breakdown region is the key to resolving Erdős's conjecture"
+    ],
+    "prerequisites": [
+      "Filter-based asymptotics (Filter.Eventually, atTop)",
+      "Real powers (Real.rpow) and their monotonicity properties",
+      "Simple graph theory (SimpleGraph, CliqueFree)",
+      "Topological convergence (Filter.Tendsto, nhds)",
+      "Asymptotic notation (Θ, O, Ω)"
     ]
   },
   "crossReferences": [
@@ -326,180 +333,6 @@
       "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Turán bound"
     }
   ],
-  "references": [
-    {
-      "authors": "Bohman, Tom; Frieze, Alan; Lubetzky, Eyal",
-      "title": "Random triangle removal",
-      "year": "2015",
-      "venue": "Advances in Mathematics, vol. 280, pp. 379–438",
-      "note": "Proved f(n) = n^{3/2+o(1)} almost surely, confirming the exponent 3/2 conjectured by Erdős but with sub-polynomial rather than constant multiplicative bounds"
-    },
-    {
-      "authors": "Grable, Daniel",
-      "title": "On random greedy triangle packing",
-      "year": "1997",
-      "venue": "Electronic Journal of Combinatorics, vol. 4, R11",
-      "note": "Earlier upper bound of n^{7/4+ε} for the triangle removal process, superseded by the BFL result"
-    },
-    {
-      "authors": "Erdős, Paul",
-      "title": "Problems and results in combinatorial analysis and graph theory",
-      "year": "1981",
-      "venue": "Discrete Mathematics, vol. 36, pp. 69–73",
-      "note": "Original conjecture that f(n) = Θ(n^{3/2}) for the triangle removal process"
-    },
-    {
-      "authors": "Mantel, Willem",
-      "title": "Problem 28",
-      "year": "1907",
-      "venue": "Wiskundige Opgaven, vol. 10, pp. 60–61",
-      "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
-    },
-    {
-      "authors": "Wormald, Nicholas",
-      "title": "Differential equations for random processes and random graphs",
-      "year": "1995",
-      "venue": "Annals of Applied Probability, vol. 5, pp. 1217–1235",
-      "note": "Foundational method for analyzing random graph processes via ODEs; the technique underlying BFL's proof"
-    },
-    {
-      "authors": "Alon, Noga; Spencer, Joel H.",
-      "title": "The Probabilistic Method",
-      "year": "2016",
-      "venue": "Wiley, 4th edition",
-      "note": "Standard reference for probabilistic combinatorics; Chapter 14 covers random graph processes"
-    },
-    {
-      "authors": "Razborov, Alexander",
-      "title": "On the minimal density of triangles in graphs",
-      "year": "2010",
-      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–214",
-      "note": "Flag algebra proof of the exact triangle density threshold in dense graphs; the supersaturation phenomenon governs the early stages of the triangle removal process"
-    },
-    {
-      "authors": "Turán, Pál",
-      "title": "Eine Extremalaufgabe aus der Graphentheorie",
-      "year": "1941",
-      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
-      "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Turán bound"
-    }
-  ],
-  "references": [
-    {
-      "authors": "Bohman, Tom; Frieze, Alan; Lubetzky, Eyal",
-      "title": "Random triangle removal",
-      "year": "2015",
-      "venue": "Advances in Mathematics, vol. 280, pp. 379–438",
-      "note": "Proved f(n) = n^{3/2+o(1)} almost surely, confirming the exponent 3/2 conjectured by Erdős but with sub-polynomial rather than constant multiplicative bounds"
-    },
-    {
-      "authors": "Grable, Daniel",
-      "title": "On random greedy triangle packing",
-      "year": "1997",
-      "venue": "Electronic Journal of Combinatorics, vol. 4, R11",
-      "note": "Earlier upper bound of n^{7/4+ε} for the triangle removal process, superseded by the BFL result"
-    },
-    {
-      "authors": "Erdős, Paul",
-      "title": "Problems and results in combinatorial analysis and graph theory",
-      "year": "1981",
-      "venue": "Discrete Mathematics, vol. 36, pp. 69–73",
-      "note": "Original conjecture that f(n) = Θ(n^{3/2}) for the triangle removal process"
-    },
-    {
-      "authors": "Mantel, Willem",
-      "title": "Problem 28",
-      "year": "1907",
-      "venue": "Wiskundige Opgaven, vol. 10, pp. 60–61",
-      "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
-    },
-    {
-      "authors": "Wormald, Nicholas",
-      "title": "Differential equations for random processes and random graphs",
-      "year": "1995",
-      "venue": "Annals of Applied Probability, vol. 5, pp. 1217–1235",
-      "note": "Foundational method for analyzing random graph processes via ODEs; the technique underlying BFL's proof"
-    },
-    {
-      "authors": "Alon, Noga; Spencer, Joel H.",
-      "title": "The Probabilistic Method",
-      "year": "2016",
-      "venue": "Wiley, 4th edition",
-      "note": "Standard reference for probabilistic combinatorics; Chapter 14 covers random graph processes"
-    },
-    {
-      "authors": "Razborov, Alexander",
-      "title": "On the minimal density of triangles in graphs",
-      "year": "2010",
-      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–214",
-      "note": "Flag algebra proof of the exact triangle density threshold in dense graphs; the supersaturation phenomenon governs the early stages of the triangle removal process"
-    },
-    {
-      "authors": "Turán, Pál",
-      "title": "Eine Extremalaufgabe aus der Graphentheorie",
-      "year": "1941",
-      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
-      "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Turán bound"
-    }
-  ],
-  "references": [
-    {
-      "authors": "Bohman, Tom; Frieze, Alan; Lubetzky, Eyal",
-      "title": "Random triangle removal",
-      "year": "2015",
-      "venue": "Advances in Mathematics, vol. 280, pp. 379–438",
-      "note": "Proved f(n) = n^{3/2+o(1)} almost surely, confirming the exponent 3/2 conjectured by Erdős but with sub-polynomial rather than constant multiplicative bounds"
-    },
-    {
-      "authors": "Grable, Daniel",
-      "title": "On random greedy triangle packing",
-      "year": "1997",
-      "venue": "Electronic Journal of Combinatorics, vol. 4, R11",
-      "note": "Earlier upper bound of n^{7/4+ε} for the triangle removal process, superseded by the BFL result"
-    },
-    {
-      "authors": "Erdős, Paul",
-      "title": "Problems and results in combinatorial analysis and graph theory",
-      "year": "1981",
-      "venue": "Discrete Mathematics, vol. 36, pp. 69–73",
-      "note": "Original conjecture that f(n) = Θ(n^{3/2}) for the triangle removal process"
-    },
-    {
-      "authors": "Mantel, Willem",
-      "title": "Problem 28",
-      "year": "1907",
-      "venue": "Wiskundige Opgaven, vol. 10, pp. 60–61",
-      "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
-    },
-    {
-      "authors": "Wormald, Nicholas",
-      "title": "Differential equations for random processes and random graphs",
-      "year": "1995",
-      "venue": "Annals of Applied Probability, vol. 5, pp. 1217–1235",
-      "note": "Foundational method for analyzing random graph processes via ODEs; the technique underlying BFL's proof"
-    },
-    {
-      "authors": "Alon, Noga; Spencer, Joel H.",
-      "title": "The Probabilistic Method",
-      "year": "2016",
-      "venue": "Wiley, 4th edition",
-      "note": "Standard reference for probabilistic combinatorics; Chapter 14 covers random graph processes"
-    },
-    {
-      "authors": "Razborov, Alexander",
-      "title": "On the minimal density of triangles in graphs",
-      "year": "2010",
-      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–214",
-      "note": "Flag algebra proof of the exact triangle density threshold in dense graphs; the supersaturation phenomenon governs the early stages of the triangle removal process"
-    },
-    {
-      "authors": "Turán, Pál",
-      "title": "Eine Extremalaufgabe aus der Graphentheorie",
-      "year": "1941",
-      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
-      "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Turán bound"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -517,7 +350,7 @@
   },
   "conclusion": {
     "summary": "Complete formalization of the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. All theorems fully proved (0 sorries). Includes BFL sandwich, exact exponent characterization, conjecture decomposition, Mantel connection, hierarchy of bounds, and ratio tightness characterization.",
-    "implications": "Any proof of the full conjecture must establish that $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ — a qualitative strengthening of BFL's sub-polynomial bounds. The $O$ and $\\Omega$ bounds can be pursued independently; proving either one constitutes progress toward the full conjecture. The hierarchy Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants. Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants.",
+    "implications": "**Theoretical Significance**: Any proof of the full conjecture must establish that $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ — a qualitative strengthening of BFL's sub-polynomial bounds. The $O$ and $\\Omega$ bounds can be pursued independently; proving either one constitutes progress toward the full conjecture.\n\n**Broader Connections**: The hierarchy Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants. Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants.",
     "openQuestions": [
       "Does f(n)/n^{3/2} converge to a limit L? If so, what is L? Simulations suggest L ≈ 1.2 but this is not rigorously established.",
       "Can the lower Θ-bound Ω(n^{3/2}) be established independently of the upper? The BFL proof establishes both bounds simultaneously via a single differential equation analysis.",

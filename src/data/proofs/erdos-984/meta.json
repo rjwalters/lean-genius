@@ -58,7 +58,8 @@
       "The proof that 1 color fails is the only constructive argument in the file, using the trivial observation that Fin 1 has a unique element",
       "The quantifier difference between two_colors_suffice_for_power_bound (coloring depends on ε) and hunter_theorem (single coloring for all ε) captures a subtle but important uniformity distinction",
       "The inverse van der Waerden function W⁻¹ in Spencer's bound grows so slowly that even its existence requires the extremal growth of W(r,k), connecting this problem to fundamental questions about Ramsey function growth rates"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #984 is solved affirmatively: ℕ can be 2-colored such that any k-term monochromatic AP starting at a satisfies k ≪_ε a^ε. This improves Spencer's 3-color result and Erdős's partial construction, establishing 2 as the exact chromatic number for this growth condition.",
-    "implications": "Hunter's resolution demonstrates that probabilistic methods can push coloring results beyond the barrier that Erdős encountered with deterministic constructions. The result connects to the broader question of how much structure finite colorings of ℕ must contain: van der Waerden forces monochromatic APs to exist, but their lengths can be made to grow subpolynomially. This places the problem precisely in the landscape between van der Waerden theory (unavoidable structure) and density Ramsey theory (avoidable structure).",
+    "implications": "**Theoretical Significance**: Hunter's resolution demonstrates that probabilistic methods can push coloring results beyond the barrier that Erdős encountered with deterministic constructions.\n\n**Broader Connections**: The result connects to the broader question of how much structure finite colorings of ℕ must contain: van der Waerden forces monochromatic APs to exist, but their lengths can be made to grow subpolynomially. This places the problem precisely in the landscape between van der Waerden theory (unavoidable structure) and density Ramsey theory (avoidable structure).",
     "openQuestions": [
       "Can an explicit (deterministic) 2-coloring achieving k ≪_ε a^ε be constructed, or is the result inherently probabilistic?",
       "What is the optimal exponent c in Erdős's weaker bound k ≤ C·a^{1-c}?",

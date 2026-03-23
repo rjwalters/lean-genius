@@ -74,7 +74,8 @@
       "**Probabilistic Method:** Random subsampling with probability n^{-1/3} balances subset size with quadruple elimination",
       "**Optimal Exponent:** The answer 2/3 = 1/2 + 1/6 shows H_k(n) grows strictly faster than √n",
       "**Constant Dependence:** The upper bound constant is absolute, but the lower bound constant depends on k"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -143,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #772 asked whether H_k(n)/√n → ∞ for sets with bounded convolution. The answer is YES, proved by Alon and Erdős in 1985. The optimal result is H_k(n) = Θ(n^{2/3}), showing that the exponent 2/3 = 1/2 + 1/6 gives the correct growth rate, answering Erdős's question about whether H_k(n) > n^{1/2+c} for some c > 0.",
-    "implications": "**Implications in Additive Combinatorics**\n\n1. **Structure vs Randomness:** Sets with bounded convolution retain enough Sidon structure\n\n2. **Probabilistic Method:** Random subsampling is optimal for finding Sidon subsets\n\n3. **Exponent Gap:** The gap between 1/2 (trivial) and 2/3 (optimal) is substantial\n\n4. **Dependence on k:** Lower bound constant depends on k, upper bound does not\n\n5. **Connection to #530:** The basic √n bound for all sets is far from optimal here",
+    "implications": "**Theoretical Significance**: **Implications in Additive Combinatorics**\n\n1. **Structure vs Randomness:** Sets with bounded convolution retain enough Sidon structure\n\n2. **Probabilistic Method:** Random subsampling is optimal for finding Sidon subsets\n\n3.\n\n**Broader Connections**: **Exponent Gap:** The gap between 1/2 (trivial) and 2/3 (optimal) is substantial\n\n4. **Dependence on k:** Lower bound constant depends on k, upper bound does not\n\n5. **Connection to #530:** The basic √n bound for all sets is far from optimal here.",
     "openQuestions": [
       "Explicit construction achieving the n^{2/3} bound (avoiding probabilistic method)",
       "Optimal dependence of the constant on k in the lower bound",

@@ -51,6 +51,13 @@
       "The theorem is equivalent to $p^2 \\mid \\text{numerator}(H_{p-1})$ and to $q_p(2) \\equiv 0 \\pmod{p}$ where $q_p(a) = (a^{p-1}-1)/p$ is the Fermat quotient — connecting binomial coefficients, harmonic sums, and $p$-adic analysis",
       "Wolstenholme primes ($p^4$ divides the binomial coefficient) are extraordinarily rare: only 16843 and 2124679 are known below $10^9$, suggesting a density of roughly $1/\\log p$",
       "The computational verification approach (native_decide for small primes) demonstrates correctness for $p = 5, 7, 11, 13$ while the full theorem for all $p \\geq 5$ requires harmonic sum analysis axiomatized in the formalization"
+    ],
+    "prerequisites": [
+      "Binomial coefficients and central binomial coefficients",
+      "Modular arithmetic and congruences mod p^3",
+      "Harmonic numbers and their p-adic divisibility",
+      "Fermat quotients and p-adic analysis",
+      "Babbage's theorem (mod p^2 congruence)"
     ]
   },
   "sections": [
@@ -97,7 +104,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides computational verification of Wolstenholme's theorem for small primes, demonstrates the necessity of the p >= 5 bound, and establishes the framework for Wolstenholme primes.\n\nThe full analytic proof (involving harmonic sum divisibility) is stated as an axiom, as it requires number-theoretic machinery beyond current Mathlib.",
-    "implications": "**Theoretical Significance**\n\n1. **Fermat Quotients**: Wolstenholme's theorem is related to the Fermat quotient q_p(2) = (2^{p-1} - 1)/p\n\n2. **Irregular Primes**: Connected to the study of irregular primes and Bernoulli numbers\n\n3. **ABC Conjecture**: Wolstenholme primes are related to solutions of certain Diophantine equations\n\n**Wolstenholme Primes**\n\nIf C(2p-1, p-1) = 1 (mod p^4), p is a Wolstenholme prime. Only two are known:\n- 16843\n- 2124679\n\nNo others exist below 10^9.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Fermat Quotients**: Wolstenholme's theorem is related to the Fermat quotient q_p(2) = (2^{p-1} - 1)/p\n\n2.\n\n**Broader Connections**: **Irregular Primes**: Connected to the study of irregular primes and Bernoulli numbers\n\n3. **ABC Conjecture**: Wolstenholme primes are related to solutions of certain Diophantine equations\n\n**Wolstenholme Primes**\n\nIf C(2p-1, p-1) = 1 (mod p^4), p is a Wolstenholme prime. Only two are known:\n- 16843\n- 2124679\n\nNo others exist below 10^9.",
     "openQuestions": [
       "Are there infinitely many Wolstenholme primes?",
       "Is there a Wolstenholme prime with p = 1 (mod 4)?",

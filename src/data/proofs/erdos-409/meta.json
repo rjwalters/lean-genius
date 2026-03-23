@@ -34,7 +34,8 @@
       "**Parity constraint**: For $n \\geq 3$, $\\varphi(n)$ is even, so $T(n) = \\varphi(n) + 1$ is odd --- the orbit enters odd integers after at most one step, and can only terminate at odd primes (except for the fixed point 2)",
       "**Heuristic logarithmic bound**: Since the average value of $\\varphi(n)/n$ is $6/\\pi^2$, each step typically multiplies by $\\approx 0.608$, suggesting $F(n) = O(\\log n)$ rather than the trivial $o(n)$",
       "**Sigma variant divergence**: The companion map $n \\mapsto \\sigma(n) - 1$ satisfies $\\sigma(n) - 1 \\geq n$ for composites, creating a fundamentally different (non-decreasing) dynamical system where termination is not guaranteed"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -103,7 +104,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdos Problem #409 on the discrete dynamical system $T(n) = \\varphi(n) + 1$ and the stopping time $F(n)$ to reach a prime. The three parts --- asymptotic bounds on $F(n)$, existence of infinite basins, and natural densities --- probe the interplay between Euler's totient function and prime distribution. The sigma variant $n \\mapsto \\sigma(n) - 1$ provides a contrasting dynamical system where orbits grow rather than descend.",
-    "implications": "Understanding the iteration dynamics of $T(n) = \\varphi(n) + 1$ connects the multiplicative structure of $\\varphi$ (via Euler's product formula) to the additive structure of primes. The basin densities $\\alpha(p)$, if they exist, would give a 'probability distribution' over primes determined purely by the totient function. The sigma variant connects to the Catalan--Dickson conjecture on aliquot sequences.",
+    "implications": "**Theoretical Significance**: Understanding the iteration dynamics of $T(n) = \\varphi(n) + 1$ connects the multiplicative structure of $\\varphi$ (via Euler's product formula) to the additive structure of primes.\n\n**Broader Connections**: The basin densities $\\alpha(p)$, if they exist, would give a 'probability distribution' over primes determined purely by the totient function. The sigma variant connects to the Catalan--Dickson conjecture on aliquot sequences.",
     "openQuestions": [
       "Is $F(n) = O(\\log n)$? Can one prove any bound sharper than $F(n) = o(n)$?",
       "Does every prime have an infinite basin of attraction under $T$, or only finitely many primes?",

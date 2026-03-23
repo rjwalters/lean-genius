@@ -43,7 +43,8 @@
       "The converse is spectacularly false: $n | |G|$ does not guarantee a subgroup of order $n$. The alternating group $A_4$ has order 12 but no subgroup of order 6. This failure motivates the Sylow theorems, which guarantee subgroups of prime-power order, and Hall's theorem for solvable groups.",
       "For groups of prime order $p$, Lagrange immediately implies the group is cyclic: any non-identity element $g$ generates a subgroup $\\langle g \\rangle$ of order dividing $p$, and since $\\text{ord}(g) > 1$, we must have $\\text{ord}(g) = p$, so $\\langle g \\rangle = G$.",
       "The index $[G:H]$ counts the number of distinct cosets and satisfies the tower law: for $K \\leq H \\leq G$, we have $[G:K] = [G:H] \\cdot [H:K]$. This multiplicativity of the index is the algebraic backbone of the orbit-stabilizer theorem and the class equation."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -105,7 +106,7 @@
   ],
   "conclusion": {
     "summary": "This formalization verifies Lagrange's Theorem (Wiedijk #71) with the core divisibility result, the product formula, and six corollaries: element order divides group order, power-by-group-order, Fermat's little theorem, index properties, prime-order simplicity, and prime-order cyclicity.",
-    "implications": "Lagrange's theorem is the starting point for the structural theory of finite groups. It leads directly to the Sylow theorems (existence of p-subgroups), the orbit-stabilizer theorem (|G| = |Orb(x)| × |Stab(x)|), and the class equation. In number theory, it yields Fermat's little theorem, Euler's theorem, and Wilson's theorem. In cryptography, the relationship between element orders and group orders underpins the security of RSA, Diffie-Hellman, and elliptic curve cryptography.",
+    "implications": "**Theoretical Significance**: Lagrange's theorem is the starting point for the structural theory of finite groups. It leads directly to the Sylow theorems (existence of p-subgroups), the orbit-stabilizer theorem (|G| = |Orb(x)| × |Stab(x)|), and the class equation.\n\n**Broader Connections**: In number theory, it yields Fermat's little theorem, Euler's theorem, and Wilson's theorem. In cryptography, the relationship between element orders and group orders underpins the security of RSA, Diffie-Hellman, and elliptic curve cryptography.",
     "openQuestions": [
       "Can the Sylow theorems (partial converse of Lagrange) be formalized, showing that subgroups of order p^k exist for every prime power p^k dividing |G|?",
       "Can the orbit-stabilizer theorem be formalized as a generalization of Lagrange's theorem, with Lagrange recovered as the special case of the action of G on cosets of H?",

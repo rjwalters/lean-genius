@@ -150,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1080 asked whether O(n) edges guarantee a C_6 in bipartite graphs with ⌊n^(2/3)⌋ vertices in one part. The answer is NO, as shown by De Caen and Székely in 1992. The extremal function f(n, ⌊n^(2/3)⌋) grows superlinearly: between Ω(n^(16/15)) and O(n^(10/9)). However, Erdős observed that C_8 IS guaranteed by O(n) edges.",
-    "implications": "**Extremal Graph Theory Connections**\n\n1. **Cycle Forcing Thresholds:** Different cycle lengths have different edge thresholds\n\n2. **Algebraic Constructions:** Incidence graphs of projective planes give optimal C_4,C_6-free graphs\n\n3. **Turán-Type Problems:** Generalizes classical forbidden subgraph questions\n\n4. **Partition Constraints:** Imbalanced bipartitions create distinct extremal behavior\n\n5. **Asymptotic Gaps:** The gap between upper and lower bounds (10/9 vs 16/15) remains open",
+    "implications": "**Theoretical Significance**: **Extremal Graph Theory Connections**\n\n1. **Cycle Forcing Thresholds:** Different cycle lengths have different edge thresholds\n\n2. **Algebraic Constructions:** Incidence graphs of projective planes give optimal C_4,C_6-free graphs\n\n3.\n\n**Broader Connections**: **Turán-Type Problems:** Generalizes classical forbidden subgraph questions\n\n4. **Partition Constraints:** Imbalanced bipartitions create distinct extremal behavior\n\n5. **Asymptotic Gaps:** The gap between upper and lower bounds (10/9 vs 16/15) remains open.",
     "openQuestions": [
       "Determine the exact exponent for f(n, ⌊n^(2/3)⌋)",
       "Characterize optimal C_4,C_6-free bipartite graphs",

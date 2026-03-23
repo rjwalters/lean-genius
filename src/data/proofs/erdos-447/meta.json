@@ -109,7 +109,8 @@
       "**Compression Method**: Kleitman's technique of shifting set families toward the middle layer without creating unions became foundational in extremal set theory",
       "**Combinatorics-to-Number-Theory Bridge**: Via prime factorization encoding ($S \\mapsto \\prod_{i \\in S} p_i$, union $\\leftrightarrow$ lcm), the union-free bound implies LCM representations in positive-density sets (Problem 487)",
       "**Hierarchy of Conditions**: `IsUnionFree` (2-union-free) generalizes to $k$-union-free (Frankl-Füredi) and strong union-free (Problem 1023), creating a rich family of extremal problems"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -185,7 +186,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #447 is SOLVED. Kleitman (1971) proved that union-free collections have size at most $(1+o(1)) \\binom{n}{\\lfloor n/2 \\rfloor}$, matching the middle layer construction. The formalization axiomatizes 7 deep results and verifies the summary theorem combining upper and lower bounds. The 165-line proof connects to Problem 487 via prime factorization encoding and develops generalizations to $k$-union-free families.",
-    "implications": "Kleitman's resolution establishes that union-free families are essentially antichain-like: the Sperner bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ governs their maximum size. The compression technique became foundational in extremal set theory. The connection to Problem 487 (LCM representations) via prime factorization encoding demonstrates Erdős's signature approach of bridging combinatorics and number theory.",
+    "implications": "**Theoretical Significance**: Kleitman's resolution establishes that union-free families are essentially antichain-like: the Sperner bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ governs their maximum size.\n\n**Broader Connections**: The compression technique became foundational in extremal set theory. The connection to Problem 487 (LCM representations) via prime factorization encoding demonstrates Erdős's signature approach of bridging combinatorics and number theory.",
     "openQuestions": [
       "What is the exact maximum maxUnionFreeSize(n) for small n? The $(1+o(1))$ factor hides lower-order terms",
       "What is the maximum size of $k$-union-free families for general $k$? (Frankl-Füredi bounds)",

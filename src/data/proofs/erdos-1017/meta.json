@@ -35,7 +35,8 @@
       "**$K_4$-free case: triangles as the bottleneck**: When $K_4$ is forbidden, the only cliques are edges and triangles. Each 'extra' edge beyond $n^2/4$ must belong to a triangle, and Győri-Keszegh showed these triangles can be found edge-disjointly. The partition count drops linearly: $\\lfloor n^2/4 \\rfloor - m$ for $m$ extra edges.",
       "**Covering vs. partitioning**: Lovász's 1968 result bounds the number of cliques in a *covering* (edges can be shared). The gap between covering and partitioning is the core difficulty—partition requires the edge-disjointness constraint, which makes the optimization much harder.",
       "**Larger cliques create competing savings**: A $K_4$ replaces $\\binom{4}{2} = 6$ edges with 1 clique (saving 5), while a triangle saves only 2. But edges may lie in multiple potential $K_4$'s, and choosing one $K_4$ may destroy others. This makes the general case a complex optimization problem, possibly related to maximum weighted clique packing."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -111,7 +112,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1017 on clique partitions of graphs in a ~250-line Lean file spanning 10 sections. The framework builds from Mathlib's `SimpleGraph` to define clique partitions, the partition number $f(n,k)$, and the EGP bound $f(n,k) \\le \\lfloor n^2/4 \\rfloor$. The extremal example $K_{n/2,n/2}$ shows tightness for sparse graphs, while the Győri-Keszegh theorem resolves the $K_4$-free case. The general question—whether dense graphs with $K_4$ allow improvement—remains open.",
-    "implications": "The clique partition problem has connections across several areas of mathematics and computer science:\n\n1. **Extremal graph theory**: The EGP bound $\\lfloor n^2/4 \\rfloor$ is exactly the Turán number $\\text{ex}(n, K_3)$, revealing a deep connection between clique partitions and Turán-type extremal problems. Understanding $f(n,k)$ for $k > n^2/4$ would extend this connection to supersaturation phenomena.\n\n2. **Graph decomposition**: Clique partitions are a special case of $H$-decompositions (partitioning edges into copies of a fixed graph $H$). The Wilson-Baranyai theorem gives conditions for exact $K_r$-decompositions; the EGP problem asks about the approximate version.\n\n3. **Computational complexity**: The minimum clique partition problem is NP-hard in general (it generalizes graph coloring of the complement). The EGP bound provides a polynomial-time achievable upper bound, and the open question asks whether structure in dense graphs enables better polynomial-time partitions.\n\n4. **Intersection graphs**: Clique partitions of $G$ correspond to edge colorings of the complement $\\bar{G}$. The clique partition number equals the chromatic index $\\chi'(\\bar{G})$, connecting to Vizing's theorem and edge-coloring theory.",
+    "implications": "**Theoretical Significance**: The clique partition problem has connections across several areas of mathematics and computer science:\n\n1. **Extremal graph theory**: The EGP bound $\\lfloor n^2/4 \\rfloor$ is exactly the Turán number $\\text{ex}(n, K_3)$, revealing a deep connection between clique partitions and Turán-type extremal problems. Understanding $f(n,k)$ for $k > n^2/4$ would extend this connection to supersaturation phenomena.\n\n2. **Graph decomposition**: Clique partitions are a special case of $H$-decompositions (partitioning edges into copies of a fixed graph $H$).\n\n**Broader Connections**: The Wilson-Baranyai theorem gives conditions for exact $K_r$-decompositions; the EGP problem asks about the approximate version.\n\n3. **Computational complexity**: The minimum clique partition problem is NP-hard in general (it generalizes graph coloring of the complement). The EGP bound provides a polynomial-time achievable upper bound, and the open question asks whether structure in dense graphs enables better polynomial-time partitions.\n\n4. **Intersection graphs**: Clique partitions of $G$ correspond to edge colorings of the complement $\\bar{G}$. The clique partition number equals the chromatic index $\\chi'(\\bar{G})$, connecting to Vizing's theorem and edge-coloring theory.",
     "openQuestions": [
       "Can $f(n,k) < \\lfloor n^2/4 \\rfloor$ when $k > n^2/4$ and $K_4$ subgraphs are present? The Győri-Keszegh result shows yes in the $K_4$-free case; the general case is the core of Erdős #1017.",
       "What is the exact value of $f(n,k)$ as a function of both $n$ and $k$ for $k > n^2/4$? Is there a formula analogous to the Győri-Keszegh result for general graphs?",
@@ -162,35 +163,49 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "A. W. Goodman", "L. Pósa"],
+      "authors": [
+        "P. Erdős",
+        "A. W. Goodman",
+        "L. Pósa"
+      ],
       "title": "The representation of a graph by set intersections",
       "year": 1966,
       "venue": "Canadian Journal of Mathematics",
       "note": "Proves f(n,k) ≤ ⌊n²/4⌋ using only edges and triangles; establishes the completebbipartite extremal graph."
     },
     {
-      "authors": ["E. Győri", "B. Keszegh"],
+      "authors": [
+        "E. Győri",
+        "B. Keszegh"
+      ],
       "title": "On the number of edge-disjoint triangles in K₄-free graphs",
       "year": 2017,
       "venue": "Combinatorica",
       "note": "Resolves the K₄-free case: a K₄-free graph with ⌊n²/4⌋+m edges contains m edge-disjoint triangles, giving f(n,k)=⌊n²/4⌋−m."
     },
     {
-      "authors": ["L. Lovász"],
+      "authors": [
+        "L. Lovász"
+      ],
       "title": "On covering of graphs",
       "year": 1968,
       "venue": "Theory of Graphs (Proceedings of the Colloquium, Tihany, 1966)",
       "note": "Establishes the covering bound used as a comparison in Problem #1017: G is covered by ⌊n²/4⌋ − k + t cliques where t measures the triangle density."
     },
     {
-      "authors": ["P. Turán"],
+      "authors": [
+        "P. Turán"
+      ],
       "title": "On an extremal problem in graph theory",
       "year": 1941,
       "venue": "Matematikai és Fizikai Lapok",
       "note": "Turán's theorem implies ex(n,K₃)=⌊n²/4⌋, establishing that the EGP bound is tight and that K_{n/2,n/2} is the unique extremal graph."
     },
     {
-      "authors": ["F. R. K. Chung", "R. L. Graham"],
+      "authors": [
+        "F. R. K. Chung",
+        "R. L. Graham"
+      ],
       "title": "Erdős on Graphs: His Legacy of Unsolved Problems",
       "year": 1998,
       "venue": "A K Peters/CRC Press",

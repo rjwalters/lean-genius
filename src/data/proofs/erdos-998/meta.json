@@ -71,7 +71,8 @@
       "**Three-distance theorem as structural backbone:** The gaps between consecutive orbit points $\\{k\\alpha\\}$ have at most 3 distinct lengths (Sós 1958), related to continued fraction convergents. Orbit-aligned intervals respect this gap structure, which is why their counts stay bounded.",
       "**Kesten's converse via continued fractions:** Kesten showed that if an endpoint $u$ is NOT of the form $\\{k\\alpha\\}$, it falls in the interior of a gap, disrupting the count by an amount that grows with the continued fraction denominators.",
       "**Connection to Ostrowski representation:** Every positive integer $n$ has a unique representation using continued fraction denominators of $\\alpha$ (Ostrowski numeration). This number-theoretic structure underlies the precise counting arguments in both Hecke-Ostrowski and Kesten's proofs."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -133,7 +134,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #998 was SOLVED by Kesten (1966). An interval $[u,v) \\subseteq [0,1)$ has $O(1)$ discrepancy for the irrational rotation $m \\mapsto \\{m\\alpha\\}$ if and only if both endpoints are fractional parts of integer multiples of $\\alpha$. The formalization captures this as a clean biconditional, with the deep theorems of Hecke-Ostrowski (1922-1930) and Kesten (1966) axiomatized.",
-    "implications": "This characterization reveals the special structure of irrational rotations on the circle. Only orbit-aligned intervals achieve minimal discrepancy, connecting number theory (continued fractions, Ostrowski representations) to dynamical systems (irrational rotations, bounded remainder sets). The result has modern extensions to higher-dimensional rotations, substitution systems, and Rauzy fractals.",
+    "implications": "**Theoretical Significance**: This characterization reveals the special structure of irrational rotations on the circle.\n\n**Broader Connections**: Only orbit-aligned intervals achieve minimal discrepancy, connecting number theory (continued fractions, Ostrowski representations) to dynamical systems (irrational rotations, bounded remainder sets). The result has modern extensions to higher-dimensional rotations, substitution systems, and Rauzy fractals.",
     "openQuestions": [
       "What is the optimal constant $C$ in $|N(n,u,v,\\alpha) - n(v-u)| \\leq C$ for specific classes of $\\alpha$ (e.g., golden ratio, algebraic irrationals)?",
       "Can the Hecke-Ostrowski direction be fully proved in Lean using Mathlib's continued fraction library?",

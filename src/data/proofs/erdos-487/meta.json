@@ -43,6 +43,15 @@
       "Kleitman's bound on union-free collections is (1+o(1))·C(n, ⌊n/2⌋) = o(2^n)",
       "Positive density sets have ~δN elements up to N, but union-free collections have o(N) elements",
       "The contradiction proves LCM triples must exist in any dense set"
+    ],
+    "prerequisites": [
+      "Natural number density (upper and lower)",
+      "Least common multiple (LCM)",
+      "Prime factorization and fundamental theorem of arithmetic",
+      "Extremal combinatorics (union-free collections)",
+      "Kleitman's theorem on union-free families",
+      "Davenport-Erdős theorem on divisibility chains",
+      "Asymptotic notation (little-o)"
     ]
   },
   "sections": [

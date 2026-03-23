@@ -35,7 +35,8 @@
       "**Sunflower Reduction:** Viewing integers via their prime factor sets, $\\gcd$-cliques correspond to sunflowers, so the conjecture $f_r(N) \\leq N^{c/\\log \\log N}$ would follow from removing the factorial in the Erdős-Rado bound",
       "**Additive-Multiplicative Dichotomy:** The fundamental barrier: $\\gcd$ is multiplicative but cardinality counting is additive, preventing direct application of either additive or multiplicative number theory tools",
       "**Smooth Number Constructions:** The lower bound uses numbers with $\\leq k$ prime factors (smooth numbers) for $k \\sim \\log \\log N$, exploiting the multiplicative structure to avoid $\\gcd$-cliques while maximizing set size"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

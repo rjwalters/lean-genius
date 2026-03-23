@@ -68,6 +68,12 @@
       "**Equality families**: $\\{1,\\ldots,n\\}$, $\\{L/1,\\ldots,L/n\\}$, and $\\{2,3,4,6\\}$ are primitive sets achieving equality",
       "**Counterexample discovery**: Aristotle proved that $\\{1,2,4\\}$ satisfies the equality condition but is not a Graham equality case — the characterization is incomplete",
       "**Equivalent rational form**: $\\exists a,b \\in A: \\gcd(a,b)/a \\le 1/|A|$ — cleaner formulation avoiding the floor function, proved by Aristotle from the main conjecture"
+    ],
+    "prerequisites": [
+      "GCD and Nat.gcd from Mathlib",
+      "Combinatorial number theory",
+      "Finset operations for GCD matrices",
+      "Divisibility theory"
     ]
   },
   "sections": [

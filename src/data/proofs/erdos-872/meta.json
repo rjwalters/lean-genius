@@ -90,7 +90,8 @@
       "**Saturation game paradigm**: This belongs to the family of games where players build maximal structures, connecting to Hajnal's triangle-free game and Ramsey-type games",
       "**First player matters**: Erdős notes the answer may depend on which player moves first — different maximal antichains can have different sizes",
       "**Graph vs number theory**: The triangle-free graph game has Omega(n log n) lower bound, but whether a similar result holds for divisibility antichains is unknown"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -159,7 +160,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #872 asks about the guaranteed length of a two-player saturation game on divisibility antichains in {2,...,n}. The formalization defines the complete game structure, proves primes form antichains (the key constructive result), axiomatizes bounds (max antichain size n/2, prime lower bound), and formalizes both of Erdős's open questions with properly typed game-length functions. All True := trivial placeholders and sorry proofs have been replaced with meaningful axioms.",
-    "implications": "Understanding the game value would connect primitive set theory with combinatorial game theory. The problem sits at the intersection of number theory (divisibility structure), extremal combinatorics (maximal antichains), and game theory (minimax analysis). Resolution would likely require new techniques beyond those used for the triangle-free graph game.",
+    "implications": "**Theoretical Significance**: Understanding the game value would connect primitive set theory with combinatorial game theory.\n\n**Broader Connections**: The problem sits at the intersection of number theory (divisibility structure), extremal combinatorics (maximal antichains), and game theory (minimax analysis). Resolution would likely require new techniques beyond those used for the triangle-free graph game.",
     "openQuestions": [
       "Does the game last Theta(n) moves under optimal play?",
       "Can the maximizing player guarantee (1-epsilon)n/2 moves?",

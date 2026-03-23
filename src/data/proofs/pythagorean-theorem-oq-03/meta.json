@@ -77,7 +77,8 @@
       "**Minkowski as anti-Pythagorean**: In Minkowski spacetime, $\\tau^2 = t^2 - x^2$ reverses the sign, making proper time SHORTER than coordinate time (time dilation) and reversing the triangle inequality (twin paradox)",
       "**Lorentz boosts as hyperbolic rotations**: Rapidity parameterization $\\beta = \\tanh(\\phi)$ shows boosts use $\\cosh/\\sinh$ exactly as rotations use $\\cos/\\sin$, with $\\cosh^2 - \\sinh^2 = 1$ preserving the interval",
       "**111 theorems, zero sorries, zero axioms**: Every result follows from Mathlib's exponential and trigonometric library. The structural approach (encoding the law as a structure field) enables clean derivation of all consequences from the core identity"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -195,7 +196,7 @@
   ],
   "conclusion": {
     "summary": "This formalization establishes the Pythagorean theorem across four geometries: spherical, Euclidean, hyperbolic, and Minkowski spacetime. With 111 fully proved theorems (zero sorries, zero axioms), it demonstrates the deep structural unity of metric geometry.\n\nThe key insight is that all Pythagorean-type theorems encode the metric: f(c) = f(a)·f(b) for curved geometries (cos/cosh), c² = a² + b² for flat, and τ² = t² − x² for Minkowski. The Minkowski extension reveals that changing the metric signature (rather than curvature) reverses the triangle inequality and produces time dilation.",
-    "implications": "The Pythagorean theorems across geometries are foundational in:\n\n1. **General Relativity**: Spacetime geometry near massive objects is non-Euclidean; the Minkowski interval is the local flat-space limit.\n2. **Special Relativity**: Time dilation, length contraction, and the twin paradox all follow from τ² = t² − x².\n3. **Navigation**: Spherical trigonometry governs great-circle distances on Earth.\n4. **Cosmology**: The large-scale geometry depends on curvature (spherical/flat/hyperbolic) while local physics uses Minkowski.\n5. **Network Science**: Hyperbolic geometry provides natural embeddings for hierarchical and scale-free networks.",
+    "implications": "**Theoretical Significance**: The Pythagorean theorems across geometries are foundational in:\n\n1. **General Relativity**: Spacetime geometry near massive objects is non-Euclidean; the Minkowski interval is the local flat-space limit.\n2. **Special Relativity**: Time dilation, length contraction, and the twin paradox all follow from τ² = t² − x².\n3.\n\n**Broader Connections**: **Navigation**: Spherical trigonometry governs great-circle distances on Earth.\n4. **Cosmology**: The large-scale geometry depends on curvature (spherical/flat/hyperbolic) while local physics uses Minkowski.\n5. **Network Science**: Hyperbolic geometry provides natural embeddings for hierarchical and scale-free networks.",
     "openQuestions": [
       "Can we formalize the full 3+1 dimensional Minkowski metric and connect to the YangMillsMassGap.lean infrastructure?",
       "Can we prove the strong reversed triangle inequality with square roots (Cauchy-Schwarz for Minkowski inner product)?",

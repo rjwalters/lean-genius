@@ -74,7 +74,8 @@
       "**Reduction to t ≤ c:** Suffices to prove conjecture when clique bound ≤ chromatic target",
       "**Exact vs Existence:** Existence is essentially known, but exact values of d(t, c) are hard",
       "**NSS Strengthening:** Can additionally require A has minimum degree ≥ c"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1111 asks for the function d(t, c): the minimal chromatic number guaranteeing anticomplete high-chromatic subsets in graphs with bounded clique number. Some exact values are known (d(2,2)=2, d(3,2)=4, d(4,2)=5), and upper bounds exist, but determining d(t, c) for general t, c remains open.",
-    "implications": "**Connections and Applications**\n\n1. **χ-Boundedness:** Structure of high-chromatic, low-clique graphs\n\n2. **Ramsey Theory:** Structural Ramsey-type results\n\n3. **Graph Coloring:** Understanding what substructures high chromatic number forces\n\n4. **Extremal Graph Theory:** Interplay between chromatic and clique numbers",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **χ-Boundedness:** Structure of high-chromatic, low-clique graphs\n\n2.\n\n**Broader Connections**: **Ramsey Theory:** Structural Ramsey-type results\n\n3. **Graph Coloring:** Understanding what substructures high chromatic number forces\n\n4. **Extremal Graph Theory:** Interplay between chromatic and clique numbers.",
     "openQuestions": [
       "What is d(t, c) for general t, c?",
       "Is d(3, 3) exactly 8?",

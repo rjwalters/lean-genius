@@ -68,6 +68,10 @@
       "In octal: 8 ≡ 1 (mod 7), enabling mod-7 tests",
       "Cross-base: 3 | n can be tested via digit sums in base 10, 16, or any base where 3 | (b-1)",
       "The formalization uses native_decide for computational verification, bridging abstract modular arithmetic with concrete number-theoretic examples"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "digit representation"
     ]
   },
   "sections": [

@@ -69,7 +69,8 @@
       "**Lower Bound Construction:** Erdős-Freud achieve 3N/8 using sets with controlled additive structure that distribute sums efficiently across [1,N]",
       "**Quasi-Sidon Connection:** If A has few sum coincidences (quasi-Sidon), then |A+A| is large. Better quasi-Sidon sets could improve the lower bound",
       "**AP Suboptimality:** Arithmetic progressions give only ~2√N sums (far below 0.375N), showing that too much additive structure is detrimental"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -138,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #819 remains OPEN. Erdős and Freud (1991) established bounds (3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N for the maximum restricted sumset size of √N-sized sets in [1,N]. The gap of N/8 between bounds has not been closed.",
-    "implications": "Understanding f(N) would illuminate the fundamental trade-off between set size and sumset coverage in additive combinatorics. The connection to quasi-Sidon sets (Problem #840) suggests that controlling sum representations is key to optimal constructions. Progress here would impact the broader theory of sumset estimates.",
+    "implications": "**Theoretical Significance**: Understanding f(N) would illuminate the fundamental trade-off between set size and sumset coverage in additive combinatorics.\n\n**Broader Connections**: The connection to quasi-Sidon sets (Problem #840) suggests that controlling sum representations is key to optimal constructions. Progress here would impact the broader theory of sumset estimates.",
     "openQuestions": [
       "What is the true asymptotic constant c where f(N) ~ cN?",
       "Can the lower bound 3/8 be improved using better constructions?",

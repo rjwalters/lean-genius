@@ -160,11 +160,19 @@
       "**Three levels of difficulty**: Infinitely many (proved, Balog-Wooley 1998) < positive lower density (open) < all sufficiently large $n$ (open, the full conjecture)",
       "**Sieve method limitations**: The Balog-Wooley proof uses Selberg sieve + exponential sums; these detect infinitely many but cannot show the gaps are $o(n)$",
       "**abc connection**: Effective forms of the abc conjecture would constrain how simultaneously smooth $n$ and $n+1$ can be, potentially providing alternative approaches"
+    ],
+    "prerequisites": [
+      "smooth-numbers",
+      "Dickman-function",
+      "sieve-methods",
+      "analytic-number-theory",
+      "prime-factorization",
+      "abc-conjecture"
     ]
   },
   "conclusion": {
     "summary": "Erdős Problem #369 asks whether $k$ consecutive smooth numbers exist in $\\{1,\\ldots,n\\}$ for all sufficiently large $n$. Open even for $k = 2$. The Balog-Wooley theorem (1998) proves infinitely many pairs of consecutive smooth numbers exist, but the gap to 'all large $n$' reflects deep limitations of current sieve methods.",
-    "implications": "A positive resolution would reveal that smooth numbers are sufficiently well-distributed among consecutive integers to guarantee local clustering — a statement with implications for factoring algorithms (which rely on finding smooth numbers), cryptographic security assumptions (smooth number density near composites), and the structure of multiplicative functions on short intervals. The problem also connects to the abc conjecture, which constrains the simultaneous smoothness of $a + b = c$.",
+    "implications": "**1. Smooth Number Theory**: A positive resolution would reveal that smooth numbers are sufficiently well-distributed among consecutive integers to guarantee local clustering — a statement with implications for factoring algorithms (which rely on finding smooth numbers), cryptographic security assumptions (smooth number density near composites), and the structure of multiplicative functions on short intervals. Understanding the distribution of consecutive smooth numbers connects to factoring algorithms (Pollard's p-1, quadratic sieve, number field sieve) which critically depend on smooth number density near specific integers.\n\n**2. Cryptographic Applications**: The density of smooth numbers directly impacts the efficiency of subexponential factoring algorithms. If consecutive smooth numbers cluster more tightly than expected, it would improve the practical running time of algorithms like the general number field sieve, the fastest known factoring algorithm.\n\n**3. Multiplicative Number Theory**: The problem connects to the Dickman function $\\rho(u)$ which governs the probability that a random integer near $x$ is $x^{1/u}$-smooth. Understanding consecutive smooth numbers requires joint distribution results beyond the single-variable Dickman analysis.\n\n**4. Computational Complexity**: Smooth number bounds appear in the analysis of algebraic algorithms (discrete logarithm computation, integer factorization), and improvements in understanding consecutive smooth numbers could have implications for the security of RSA and related cryptosystems.\n\n**5. Additive Combinatorics Connection**: The problem of finding consecutive integers that are simultaneously smooth has structural parallels with finding arithmetic patterns in multiplicatively defined sets, connecting to questions in additive combinatorics.",
     "openQuestions": [
       "Can the Balog-Wooley result be strengthened to show positive lower density for the set of n with consecutive smooth pairs?",
       "Does the abc conjecture (effective form) imply or obstruct the conjecture?",

@@ -58,7 +58,8 @@
       "**The paradox resolved**: High girth graphs CAN have high chromatic number (Mycielski's construction), and this result shows such subgraphs are forced to exist in ANY highly chromatic graph.",
       "**Rödl's r=4 case**: Every graph with χ(G) ≥ f(k,4) contains a triangle-free subgraph with χ ≥ k. This is the most important special case.",
       "**Open question**: The infinite version (whether graphs of infinite chromatic number contain subgraphs of infinite chromatic number and arbitrarily large girth) remains unsolved."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -99,7 +100,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #108, which asks whether high chromatic number forces highly chromatic subgraphs of large girth. The answer is YES, first proved by Rödl for the r=4 case in 1977. We axiomatize the general Erdős-Hajnal-Rödl theorem and derive the key special cases.",
-    "implications": "This result reveals a deep connection between global (chromatic number) and local (girth) graph properties. It shows that chromatic complexity cannot be 'explained away' by local density—even locally tree-like subgraphs can require many colors. The proof techniques (probabilistic method, Ramsey theory) are central to modern combinatorics.",
+    "implications": "**Theoretical Significance**: This result reveals a deep connection between global (chromatic number) and local (girth) graph properties.\n\n**Broader Connections**: It shows that chromatic complexity cannot be 'explained away' by local density—even locally tree-like subgraphs can require many colors. The proof techniques (probabilistic method, Ramsey theory) are central to modern combinatorics.",
     "openQuestions": [
       "What are the best explicit bounds for f(k,r)?",
       "Does every graph of infinite chromatic number contain a subgraph of infinite chromatic number and girth > k for all k?",
@@ -147,7 +148,9 @@
   ],
   "references": [
     {
-      "authors": ["V. Rödl"],
+      "authors": [
+        "V. Rödl"
+      ],
       "title": "On the chromatic number of subgraphs of a given graph",
       "venue": "Proceedings of the American Mathematical Society",
       "year": 1977,
@@ -157,7 +160,10 @@
       "note": "Proves the r=4 case: every graph with sufficiently high chromatic number contains a triangle-free subgraph of chromatic number ≥ k."
     },
     {
-      "authors": ["P. Erdős", "A. Hajnal"],
+      "authors": [
+        "P. Erdős",
+        "A. Hajnal"
+      ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Hungarica",
       "year": 1966,
@@ -167,7 +173,9 @@
       "note": "Original paper posing the problem of high-chromatic subgraphs with large girth, establishing the foundational questions addressed in Erdős Problem #108."
     },
     {
-      "authors": ["J. Mycielski"],
+      "authors": [
+        "J. Mycielski"
+      ],
       "title": "Sur le coloriage des graphs",
       "venue": "Colloquium Mathematicum",
       "year": 1955,
@@ -177,7 +185,9 @@
       "note": "Mycielski's construction of triangle-free graphs with arbitrarily high chromatic number, a key precursor showing that high girth and high chromatic number are compatible."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Graph theory and probability",
       "venue": "Canadian Journal of Mathematics",
       "year": 1959,
@@ -187,7 +197,10 @@
       "note": "Erdős's seminal paper introducing the probabilistic method in graph theory, used to construct graphs with high girth and high chromatic number, directly motivating the problem in #108."
     },
     {
-      "authors": ["N. Alon", "J. H. Spencer"],
+      "authors": [
+        "N. Alon",
+        "J. H. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "venue": "Wiley-Interscience",
       "year": 2016,

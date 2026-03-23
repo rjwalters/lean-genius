@@ -97,7 +97,8 @@
       "**Cochromatic coloring** relaxes proper coloring by allowing cliques as color classes; $\\zeta(G) \\le \\chi(G)$ since independent sets are trivially cochromatic classes",
       "**Question 2 implies Question 1** via the chain: large $\\chi(G) \\Rightarrow$ large $\\zeta(G) \\Rightarrow \\exists H \\subseteq G$ with large $\\delta(H) \\Rightarrow$ large $\\delta(G)$ by monotonicity",
       "For complete graphs $\\delta(K_n) = \\lfloor n/2 \\rfloor + 1 \\ll n = \\chi(K_n)$, showing dichromatic number can be **dramatically smaller** than chromatic number"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #761 remains OPEN. Both questions about the relationship between dichromatic number and chromatic/cochromatic number are unresolved. The formalization captures the key definitions, the implication hierarchy (Q2 ⟹ Q1), known cases for complete graphs and odd cycles, and structural results including subgraph monotonicity.",

@@ -74,6 +74,13 @@
       "Kierstead-Penrice (1994) proved the conjecture for radius-$2$ trees using a greedy embedding argument from the center outward, exploiting the high chromatic number to find leaves in distinct color classes",
       "The finite-to-infinite reduction: if for each tree $T$ there exists $N(T)$ such that $\\chi(G) > N(T)$ forces an induced copy, then $\\chi(G) = \\infty$ implies all trees are present. This is formalized as `finite_implies_infinite_version`",
       "The conjecture generalizes to $\\chi$-bounded classes: a class of graphs is $\\chi$-bounded if $\\chi$ is bounded by a function of $\\omega$ (clique number). Triangle-free graphs ($\\omega \\leq 2$) with unbounded $\\chi$ form the critical test case"
+    ],
+    "prerequisites": [
+      "SimpleGraph type and adjacency from Mathlib",
+      "Graph coloring (SimpleGraph.Coloring) and chromatic number",
+      "CliqueFree and triangle-free predicates",
+      "Induced subgraph embeddings",
+      "Finite tree definitions (paths, stars, caterpillars)"
     ]
   },
   "sections": [

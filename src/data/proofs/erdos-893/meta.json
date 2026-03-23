@@ -70,7 +70,8 @@
       "Mersenne primes contribute $\\tau = 2$ (minimal), while composite $2^k - 1$ can have many divisors: $\\tau(2^{12} - 1) = \\tau(4095) = 24$, making the growth of $f$ highly non-uniform",
       "The gap between $\\limsup = \\infty$ (Kovac-Luca) and $\\lim = \\infty$ (the conjecture) requires showing the ratio cannot persistently drop back, which seems to need new ideas about Mersenne factorizations",
       "Computational evidence ($f(8)/f(4) = 3$, verified values) supports divergence, but the erratic behavior of $\\tau(2^k - 1)$ prevents simple asymptotic arguments"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

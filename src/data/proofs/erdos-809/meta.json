@@ -66,7 +66,8 @@
       "**Anti-Ramsey Theory:** Rainbow colorings (no repeated colors) are dual to Ramsey-type monochromatic structures",
       "**Open Gap:** The exact constant c in F_k(n) ~ c·n² is unknown — conjectured to be 1/8",
       "**Companion Problem:** Problem #810 studies related rainbow constraints on the same graph class"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -121,7 +122,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #809 remains OPEN. The conjecture F_k(n) ~ n²/8 is unresolved. Known: F_k(n) ≫ n² (Burr-Erdős-Graham-Sós).",
-    "implications": "**Connections**\n\n1. **Extremal Graph Theory:** Understanding F_k(n) reveals how graph density forces chromatic structure\n\n2. **Anti-Ramsey Theory:** The rainbow condition is dual to classical Ramsey monochromatic conditions\n\n3. **Turán Theory:** The 1/8 constant being half of 1/4 suggests a deep structural duality\n\n4. **Asymptotic Combinatorics:** Determining the exact constant would advance techniques for extremal coloring problems",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Extremal Graph Theory:** Understanding F_k(n) reveals how graph density forces chromatic structure\n\n2.\n\n**Broader Connections**: **Anti-Ramsey Theory:** The rainbow condition is dual to classical Ramsey monochromatic conditions\n\n3. **Turán Theory:** The 1/8 constant being half of 1/4 suggests a deep structural duality\n\n4. **Asymptotic Combinatorics:** Determining the exact constant would advance techniques for extremal coloring problems.",
     "openQuestions": [
       "Prove or disprove F_k(n) ~ n²/8",
       "Determine the exact constant in F_k(n) = c·n² + o(n²)",

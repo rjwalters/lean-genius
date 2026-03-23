@@ -71,7 +71,8 @@
       "**Conway's backward construction**: Starting from the equilateral Morley triangle and reconstructing the original avoids the computational complexity of the direct proof",
       "**Complex coordinates**: Using $\\mathbb{C}$ as the Euclidean plane, with cube roots of unity for the equilateral vertices, elegantly combines algebra and geometry",
       "**Connection to trisection impossibility**: The theorem requires constructing angle trisectors (cubic field extensions), explaining why the ancient Greeks never found it"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -140,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "Morley's theorem is formalized using Conway's backward proof in complex coordinates. The TriangleAngles structure captures the angle-sum constraint, cube roots of unity define the equilateral Morley triangle, and the symmetric side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) encodes the equilateral property. Two trigonometric identities are proved from Mathlib; the main theorem is axiomatized.",
-    "implications": "The formalization demonstrates how complex coordinates elegantly combine algebraic and geometric reasoning. The TriangleAngles structure and backward construction provide a reusable framework for formalizing other triangle-center theorems (Napoleon's theorem, Feuerbach's theorem). The connection between Morley's theorem and angle trisection impossibility links classical geometry to Galois theory.",
+    "implications": "**Theoretical Significance**: The formalization demonstrates how complex coordinates elegantly combine algebraic and geometric reasoning.\n\n**Broader Connections**: The TriangleAngles structure and backward construction provide a reusable framework for formalizing other triangle-center theorems (Napoleon's theorem, Feuerbach's theorem). The connection between Morley's theorem and angle trisection impossibility links classical geometry to Galois theory.",
     "openQuestions": [
       "Can the morleys_theorem_axiom be proved by formalizing the full Conway backward construction verification?",
       "Can the equilateral_side_length_axiom be proved by computing |e^(i·2π/3) - 1| = √3?",

@@ -32,7 +32,8 @@
       "The file has 12 sorries: ramseyNumber existence witness, ramseyNumberGraph full definition, decomposeEdges, sudakov_upper_bound, 4 classical Ramsey values, 2 quantitative bounds, and 2 monotonicity results",
       "The Ramsey number's monotonicity under subgraph inclusion is the structural backbone of the conjecture: it asks which $m$-edge graph sits 'highest' in the subgraph partial order with respect to Ramsey numbers",
       "The problem connects to Problem #546 (Sudakov's bound) and the general program of understanding Ramsey numbers for sparse vs dense graphs"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -101,7 +102,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem #545 on whether the maximally complete graph $H_m$ (where $m = \\binom{n}{2} + t$) maximizes the Ramsey number among all $m$-edge graphs. The surprising counterexamples for $m \\in \\{2,3,4,5,7,8,9\\}$ disprove the general conjecture, while the asymptotic version and Sudakov's universal bound $R(G) \\leq 2^{C\\sqrt{m}}$ frame the current state of knowledge. All 12 sorries involve non-trivial results from Ramsey theory.",
-    "implications": "Understanding which graphs maximize Ramsey numbers for a given edge count would illuminate the structure of extremal Ramsey graphs. The counterexamples show that 'completeness' is not always the hardest structure for 2-colorings to handle. Sudakov's dependent random choice technique provides a powerful but non-extremal approach. The connection to Problem #546 suggests a unified theory of Ramsey numbers in terms of edge density.",
+    "implications": "**Theoretical Significance**: Understanding which graphs maximize Ramsey numbers for a given edge count would illuminate the structure of extremal Ramsey graphs. The counterexamples show that 'completeness' is not always the hardest structure for 2-colorings to handle.\n\n**Broader Connections**: Sudakov's dependent random choice technique provides a powerful but non-extremal approach. The connection to Problem #546 suggests a unified theory of Ramsey numbers in terms of edge density.",
     "openQuestions": [
       "Does the Erdős-Graham conjecture hold for all sufficiently large $m$?",
       "What is the smallest $M$ such that no counterexamples exist for $m \\geq M$?",

@@ -68,7 +68,8 @@
       "**Exponential distribution:** Normalized gaps follow f(c) = 1 - e^{-c}",
       "**Memoryless property:** Exponential is the unique memoryless distribution",
       "**Uniform convergence:** Error is O(1/log k)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -144,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #235 asked whether gaps between integers coprime to primorials have a limiting distribution. Hooley (1965) proved the answer is YES, with f(c) = 1 - e^{-c} (exponential distribution). This connects to Mertens' theorem via the average gap asymptotics.",
-    "implications": "**Number Theory Connections:**\n\n1. **Primorial structure:** Coprimes to Nₖ form a well-studied sequence.\n\n2. **Mertens' theorem:** Provides the average gap asymptotics via φ(Nₖ)/Nₖ.\n\n3. **Jacobsthal function:** Maximum gaps are of independent interest.\n\n4. **Sieve methods:** Techniques from prime gap theory apply here.\n\n5. **Probabilistic interpretation:** Normalized gaps behave like exponential random variables.",
+    "implications": "**Theoretical Significance**: **Number Theory Connections:**\n\n1. **Primorial structure:** Coprimes to Nₖ form a well-studied sequence.\n\n2. **Mertens' theorem:** Provides the average gap asymptotics via φ(Nₖ)/Nₖ.\n\n3.\n\n**Broader Connections**: **Jacobsthal function:** Maximum gaps are of independent interest.\n\n4. **Sieve methods:** Techniques from prime gap theory apply here.\n\n5. **Probabilistic interpretation:** Normalized gaps behave like exponential random variables.",
     "openQuestions": [
       "Higher moments of the gap distribution?",
       "Correlations between consecutive gaps?",

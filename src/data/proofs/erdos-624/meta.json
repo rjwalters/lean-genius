@@ -69,7 +69,8 @@
       "Alon's results pin down the coverage fraction to between 1/4 and (1-c) of the theoretical maximum 2^k, showing covering functions are inherently imperfect",
       "Even the weaker conjecture H(2^k) ≥ k+1 — that the covering number exceeds log₂(n) by at least 1 at powers of 2 — remains open",
       "The gap between the lower and upper bounds is O(log log n); determining whether this gap is bounded or unbounded is the core open question"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -138,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the complete state of knowledge on Erdős Problem #624. The covering number H(n) — the minimum subset size guaranteeing full coverage under an optimal function — is known to satisfy log₂(n) + Ω(1) ≤ H(n) < log₂(n) + O(log log n). The lower bound counting argument is fully proved (covering_lower_bound and coveringNumber_ge_log completed by Aristotle), while the upper bound and structural results are axiomatized. The main conjecture that H(n) - log₂(n) → ∞ remains one of the oldest open problems in combinatorial set theory.",
-    "implications": "Understanding covering numbers connects to coding theory (covering codes), combinatorial optimization, and the structure of functions on power sets. The question of whether every covering function has inherent inefficiency (Alon's result) has implications for the design of hashing and covering schemes. The O(log log n) gap mirrors similar phenomena in probabilistic combinatorics where random constructions achieve near-optimal bounds.",
+    "implications": "**Theoretical Significance**: Understanding covering numbers connects to coding theory (covering codes), combinatorial optimization, and the structure of functions on power sets.\n\n**Broader Connections**: The question of whether every covering function has inherent inefficiency (Alon's result) has implications for the design of hashing and covering schemes. The O(log log n) gap mirrors similar phenomena in probabilistic combinatorics where random constructions achieve near-optimal bounds.",
     "openQuestions": [
       "Main conjecture: prove H(n) - log₂(n) → ∞ (the gap between covering number and logarithmic lower bound is unbounded)",
       "Weaker conjecture: prove H(2^k) ≥ k + 1 (covering number exceeds log₂(n) by at least 1 at powers of 2)",

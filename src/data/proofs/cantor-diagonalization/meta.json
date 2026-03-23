@@ -61,6 +61,12 @@
       "The same argument proves $|P(S)| > |S|$ for any set $S$ (the power set is always strictly larger)",
       "This technique reappears in the halting problem, Godel's incompleteness, and Rice's theorem",
       "In Lean 4, the proof is remarkably concise: `funext` reduces function inequality to pointwise disagreement, and `Bool.eq_not_iff` handles the bit-flip contradiction — showing how type theory naturally captures the diagonal argument"
+    ],
+    "prerequisites": [
+      "Functions and surjectivity (Function.Surjective)",
+      "Bool type and negation (!b)",
+      "Proof by contradiction (absurd)",
+      "Set theory and power sets (Set, Set.powerset)"
     ]
   },
   "sections": [
@@ -115,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "Cantor's diagonal argument is one of the most elegant proofs in mathematics. In just a few lines, it establishes that infinity comes in different sizes, a counterintuitive result that revolutionized our understanding of the infinite.\n\nThe proof's power lies in its self-referential construction: by looking at the diagonal, we create a witness that must differ from every sequence in the list. This technique is now a standard tool in mathematical logic.\n\nThe formalization shows how naturally this argument translates to type theory. Binary sequences are simply functions Nat → Bool, and the diagonal is constructed by function application and negation.",
-    "implications": "Cantor's theorem has profound implications across mathematics and computer science:\n\n1. Hierarchy of Infinities - There are infinitely many distinct infinite cardinalities: $|\\mathbb{N}| < |\\mathbb{R}| < |P(\\mathbb{R})| < \\ldots$\n\n2. Computability Limits - The uncountability of reals implies most real numbers are not computable (only countably many programs exist)\n\n3. The Continuum Hypothesis - Cantor conjectured that no cardinality lies strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. This was proven independent of ZFC by Godel (1940) and Cohen (1963)\n\n4. Diagonalization Everywhere - The technique proves:\n   - Halting problem undecidability (Turing, 1936)\n   - Godel's incompleteness theorems (1931)\n   - Russell's paradox (naive set theory is inconsistent)\n   - Rice's theorem (semantic properties of programs are undecidable)",
+    "implications": "**Theoretical Significance**: Cantor's theorem has profound implications across mathematics and computer science:\n\n1. Hierarchy of Infinities - There are infinitely many distinct infinite cardinalities: $|\\mathbb{N}| < |\\mathbb{R}| < |P(\\mathbb{R})| < \\ldots$\n\n2. Computability Limits - The uncountability of reals implies most real numbers are not computable (only countably many programs exist)\n\n3.\n\n**Broader Connections**: The Continuum Hypothesis - Cantor conjectured that no cardinality lies strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. This was proven independent of ZFC by Godel (1940) and Cohen (1963)\n\n4. Diagonalization Everywhere - The technique proves:\n   - Halting problem undecidability (Turing, 1936)\n   - Godel's incompleteness theorems (1931)\n   - Russell's paradox (naive set theory is inconsistent)\n   - Rice's theorem (semantic properties of programs are undecidable).",
     "openQuestions": [
       "Formalize in Lean that the diagonal argument implies $|S| < |\\mathcal{P}(S)|$ as a strict cardinal inequality (not just non-surjectivity), using Mathlib's cardinal arithmetic to establish $\\aleph_0 < \\mathfrak{c}$",
       "Formalize Cantor's 1874 nested-intervals proof of uncountability (the original proof, not the 1891 diagonal argument) and show the two proofs yield the same theorem via different methods",

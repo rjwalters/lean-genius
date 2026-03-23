@@ -35,7 +35,8 @@
       "**Loss of independence**: Fixing $\\beta = 0$ eliminates the averaging over the shift parameter that provides the crucial ergodic independence in Kesten's proof",
       "**Continued fraction connection**: The behavior of $f(\\alpha, n)$ depends on $\\alpha$'s continued fraction partial quotients — large quotients cause large oscillations in the sum",
       "**Open status**: Neither the existence of a limiting distribution nor its form (Cauchy or otherwise) is known for the one-parameter case"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -111,7 +112,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1002 asks whether the weighted fractional part sum f(α,n) = (1/log n) Σ (1/2 - {αk}) has an asymptotic distribution function. While Kesten (1960) proved the two-parameter variant has Cauchy distribution, the one-parameter case (fixing β = 0) remains open. The difficulty lies in the loss of independence when the shift parameter is fixed.",
-    "implications": "**Theoretical Significance**\n\n1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n2. **Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of α",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n2.\n\n**Broader Connections**: **Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of α.",
     "openQuestions": [
       "Does f(α,n) have an asymptotic distribution for Lebesgue-almost all α?",
       "If a distribution exists, is it the same Cauchy distribution as Kesten's result?",
@@ -170,7 +171,9 @@
   ],
   "references": [
     {
-      "authors": ["H. Kesten"],
+      "authors": [
+        "H. Kesten"
+      ],
       "title": "On a conjecture of Erdős and Szüsz related to uniform distribution mod 1",
       "venue": "Acta Arithmetica",
       "year": 1960,
@@ -179,7 +182,9 @@
       "notes": "Proves the two-parameter variant f(α,β,n) has Cauchy limit distribution using ergodic properties of the natural extension of the Gauss map; the foundational result for Problem #1002"
     },
     {
-      "authors": ["H. Weyl"],
+      "authors": [
+        "H. Weyl"
+      ],
       "title": "Über die Gleichverteilung von Zahlen mod. Eins",
       "venue": "Mathematische Annalen",
       "year": 1916,
@@ -188,7 +193,9 @@
       "notes": "Weyl's equidistribution theorem: {kα} is uniformly distributed mod 1 for irrational α; the foundational result that justifies the log n normalization in f(α,n)"
     },
     {
-      "authors": ["R. Lyons"],
+      "authors": [
+        "R. Lyons"
+      ],
       "title": "Strong laws of large numbers for weakly correlated random variables",
       "venue": "Michigan Mathematical Journal",
       "year": 1988,
@@ -197,14 +204,19 @@
       "notes": "Ergodic and probabilistic framework for sums of weakly dependent sequences, directly relevant to the one-parameter case where the shift average is absent"
     },
     {
-      "authors": ["J. Beck"],
+      "authors": [
+        "J. Beck"
+      ],
       "title": "Probabilistic Diophantine approximation: randomness in lattice point counting",
       "venue": "Springer Monographs in Mathematics",
       "year": 2014,
       "notes": "Comprehensive treatment of distribution and fluctuation questions for fractional-part sums, including Cauchy and non-Cauchy limit laws and connections to continued fractions"
     },
     {
-      "authors": ["P. Liardet", "P. Volný"],
+      "authors": [
+        "P. Liardet",
+        "P. Volný"
+      ],
       "title": "Sums of continuous and differentiable functions in dynamical systems",
       "venue": "Israel Journal of Mathematics",
       "year": 1997,

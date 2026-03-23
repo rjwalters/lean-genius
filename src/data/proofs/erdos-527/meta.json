@@ -81,7 +81,8 @@
       "**Fractal Convergence Set:** The convergence set has Hausdorff dimension 1 (as large as the circle) but Lebesgue measure zero — a fractal phenomenon",
       "**Recent Resolution:** Solved in 2025 by Michelen and Sawhney after being open for over 60 years, using probabilistic analysis and metric geometry",
       "**Canonical Example:** aₙ = 1/(√n log n) satisfies both conditions — divergent squares and the o(1/√n) decay"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #527 is SOLVED by Michelen and Sawhney (2025). For coefficient sequences aₙ with Σ|aₙ|² = ∞ and |aₙ| = o(1/√n), almost all random sign choices yield a nonempty convergence set on the unit circle, and this set has Hausdorff dimension 1. The result resolves a problem open for over 60 years and reveals a striking fractal phenomenon: convergence persists on a geometrically rich set despite generic divergence.",
-    "implications": "The result deepens our understanding of random power series and the interplay between harmonic analysis, probability, and fractal geometry. The sharp threshold at |aₙ| = o(1/√n), established by Dvoretzky-Erdős (1959), is now complemented by the full convergence picture above this threshold. The methods connect to metric entropy, martingale theory, and the geometry of Hausdorff dimension.",
+    "implications": "**Theoretical Significance**: The result deepens our understanding of random power series and the interplay between harmonic analysis, probability, and fractal geometry.\n\n**Broader Connections**: The sharp threshold at |aₙ| = o(1/√n), established by Dvoretzky-Erdős (1959), is now complemented by the full convergence picture above this threshold. The methods connect to metric entropy, martingale theory, and the geometry of Hausdorff dimension.",
     "openQuestions": [
       "What is the exact structure (e.g., topological type) of the convergence set?",
       "What happens at the boundary case |aₙ| = c/√n for different constants c?",

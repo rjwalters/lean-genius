@@ -75,7 +75,8 @@
       "**No Known Powerful Values:** Despite extensive computation, no powerful value of 2^n + 1, n! + 1, or n! - 1 is known (beyond 2^1 - 1 = 1)",
       "**OEIS A146968:** The sequence of n where n! ± 1 is powerful appears to be empty for n > 1",
       "**Open Problem:** While conditionally resolved, unconditional proofs remain out of reach without progress on ABC"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -130,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #936 asks whether 2^n ± 1 and n! ± 1 are powerful for only finitely many n. The conditional answer is YES assuming the ABC conjecture, proved by Cushing-Pascoe (2016) for factorials and CrowdMath (2020) for powers of 2. The unconditional problem remains OPEN, making it one of the few Erdős problems where the answer is \"known\" but not fully proven.",
-    "implications": "**Connections and Implications**\n\n1. **ABC Conjecture:** Progress on Erdős #936 is tied to one of the deepest open problems in mathematics\n\n2. **Powerful Number Distribution:** Understanding which numbers can be powerful helps characterize prime factorization patterns\n\n3. **Squarefree Numbers:** The stronger result that n! ± 1 is squarefree for large n (assuming ABC) has implications for random matrix theory\n\n4. **Computational Mathematics:** Despite no theoretical proof, extensive computation suggests the conjecture is true\n\n5. **Polymath Collaboration:** The CrowdMath result demonstrates the power of collaborative mathematics",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **ABC Conjecture:** Progress on Erdős #936 is tied to one of the deepest open problems in mathematics\n\n2. **Powerful Number Distribution:** Understanding which numbers can be powerful helps characterize prime factorization patterns\n\n3.\n\n**Broader Connections**: **Squarefree Numbers:** The stronger result that n! ± 1 is squarefree for large n (assuming ABC) has implications for random matrix theory\n\n4. **Computational Mathematics:** Despite no theoretical proof, extensive computation suggests the conjecture is true\n\n5. **Polymath Collaboration:** The CrowdMath result demonstrates the power of collaborative mathematics.",
     "openQuestions": [
       "Unconditional proof that 2^n + 1 is not powerful for n > 0",
       "Unconditional proof that n! + 1 is not powerful for n > 0",

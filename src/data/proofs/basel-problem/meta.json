@@ -74,6 +74,12 @@
       "Unlike $\\zeta(2), \\zeta(4), \\ldots$, the odd zeta values $\\zeta(3), \\zeta(5), \\ldots$ have no known closed form — Apéry's 1978 proof that $\\zeta(3)$ is irrational was a major surprise, and infinitely many odd zeta values are known to be irrational (Rivoal 2000)",
       "The Lean proof is a one-line invocation of `hasSum_zeta_two`, but this brevity conceals deep Mathlib infrastructure: Bernoulli polynomial theory, Fourier series convergence, and the evaluation of periodic zeta functions — hundreds of lemmas supporting a single `exact`",
       "The Basel identity has a striking probabilistic interpretation: the probability that two independently chosen positive integers are coprime is $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2 \\approx 0.6079$, connecting the sum over squares to the Euler product and the randomness of prime factorization"
+    ],
+    "prerequisites": [
+      "Real analysis and series convergence",
+      "Partial fraction decomposition",
+      "Trigonometric identities and sin(x)/x product",
+      "Finset.sum and limits from Mathlib"
     ]
   },
   "sections": [
@@ -305,7 +311,13 @@
       "Mathlib.Analysis.PSeries",
       "Mathlib.Tactic"
     ],
-    "opens": ["Finset", "BigOperators", "Filter", "Topology", "Real"],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Topology",
+      "Real"
+    ],
     "namespace": "BaselProblem",
     "lineCount": 164,
     "axiomCount": 0,

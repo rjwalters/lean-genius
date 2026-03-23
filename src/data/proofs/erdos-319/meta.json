@@ -69,7 +69,8 @@
       "The constant $1 - 1/e$ arises because denominators must lie in $[(1/e)N, N]$ for the unit-fraction sum to work, leaving an interval of length $(1 - 1/e)N$ for the set $B$",
       "Croot's (2001) theorem that every positive integer $\\leq N$ is a sum of distinct unit fractions from $\\{1,\\ldots,N\\}$ is a deep result in the theory of Egyptian fractions, connecting Problem #319 to the broader Erdős-Graham program",
       "The trivial upper bound $c(N) \\leq N$ (since $A \\subseteq \\{1,\\ldots,N\\}$) and the gap to the lower bound $(1 - 1/e)N$ leaves room for improvement in either direction"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -110,7 +111,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #319 with precise definitions of signing, signed unit-fraction sum, irreducibility, and the extremal function $c(N)$. The Adenwalla/Croot lower bound $(1 - 1/e + o(1))N$, the trivial upper bound $N$, and Croot's unit-fraction theorem are axiomatized. The exact asymptotic constant remains open.",
-    "implications": "**Theoretical Significance**\n\n1. **Egyptian Fraction Theory**: Resolving this problem would advance the Erdős-Graham program on unit-fraction decompositions, illuminating the structure of rational linear dependences among reciprocals\n\n2. **Signed Sum Structure**: The irreducibility condition captures a fundamental notion in linear algebra over $\\mathbb{Q}$: minimal dependence relations among the vectors $1/n$\n\n3. **Croot's Theorem Applications**: The connection to Croot's unit-fraction theorem demonstrates how deep results on Egyptian fractions can be leveraged for combinatorial optimization\n\n4. **Additive Combinatorics**: Understanding $c(N)$ relates to the broader question of how signed sums of structured sets (reciprocals) can be controlled",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Egyptian Fraction Theory**: Resolving this problem would advance the Erdős-Graham program on unit-fraction decompositions, illuminating the structure of rational linear dependences among reciprocals\n\n2.\n\n**Broader Connections**: **Signed Sum Structure**: The irreducibility condition captures a fundamental notion in linear algebra over $\\mathbb{Q}$: minimal dependence relations among the vectors $1/n$\n\n3. **Croot's Theorem Applications**: The connection to Croot's unit-fraction theorem demonstrates how deep results on Egyptian fractions can be leveraged for combinatorial optimization\n\n4. **Additive Combinatorics**: Understanding $c(N)$ relates to the broader question of how signed sums of structured sets (reciprocals) can be controlled.",
     "openQuestions": [
       "Is c(N) = (1−o(1))N? Or is there a strict constant gap below N?",
       "What is the exact asymptotic constant for c(N)?",

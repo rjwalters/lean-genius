@@ -63,6 +63,12 @@
       "**Liouville's Key Role:** If $p(z) \\neq 0$ everywhere, then $f(z) = 1/p(z)$ is entire. Since $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, $f$ is bounded. Liouville's theorem (bounded + entire $\\Rightarrow$ constant) forces $p$ to be constant — contradiction.",
       "**No Further Extension Needed:** $\\mathbb{C}$ is the algebraic closure of $\\mathbb{R}$: solving $x^2 + 1 = 0$ creates $\\mathbb{C} = \\mathbb{R}[i]$, and this single extension suffices for ALL polynomial equations. Compare: extending $\\mathbb{Q}$ by $\\sqrt{2}$ doesn't close it.",
       "**Gauss's Four Proofs:** Gauss gave four proofs (1799, 1816, 1816, 1849), each using different techniques. The Mathlib proof via Liouville's theorem is closest to the complex-analytic approach, leveraging Mathlib's infrastructure for holomorphic functions."
+    ],
+    "prerequisites": [
+      "Complex numbers and polynomial evaluation (Polynomial.eval₂)",
+      "Algebraic closure and splitting fields",
+      "Liouville's theorem from complex analysis",
+      "Polynomial degree and leading coefficient"
     ]
   },
   "sections": [
@@ -133,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "The Fundamental Theorem of Algebra establishes that every non-constant polynomial with complex coefficients has a root in the complex numbers. This makes the complex numbers algebraically closed - the natural 'completion' of algebra. No matter how complicated a polynomial equation, its solutions always live in the complex plane.",
-    "implications": "This theorem is foundational to all of modern algebra. It tells us that the complex numbers are the right setting for polynomial algebra - we never need to extend further. Every polynomial of degree n has exactly n roots (with multiplicity), enabling complete factorization. The theorem connects algebra with analysis and topology, demonstrating the deep unity of mathematics.",
+    "implications": "**Theoretical Significance**: This theorem is foundational to all of modern algebra. It tells us that the complex numbers are the right setting for polynomial algebra - we never need to extend further.\n\n**Broader Connections**: Every polynomial of degree n has exactly n roots (with multiplicity), enabling complete factorization. The theorem connects algebra with analysis and topology, demonstrating the deep unity of mathematics.",
     "openQuestions": [
       "Can a purely algebraic proof of FTA be found? Every known proof uses the completeness of $\\mathbb{R}$ (via Liouville's theorem, winding numbers, or the intermediate value theorem). The fact that $\\mathbb{Q}_p$ (the $p$-adic numbers) is complete but NOT algebraically closed shows completeness alone is insufficient — some topological property specific to $\\mathbb{R}$ (connectedness? the archimedean property?) seems essential.",
       "The Mathlib proof uses Liouville's theorem. Can we formalize Gauss's purely algebraic proof (1849), which only uses the intermediate value theorem for odd-degree real polynomials plus the fact that every complex number has a square root? This would reduce the analytic prerequisites to the minimum.",

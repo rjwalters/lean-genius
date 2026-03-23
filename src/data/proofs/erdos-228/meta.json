@@ -66,7 +66,8 @@
       "**Flatness constraint**: The polynomial must have |P(z)| ≈ √n for ALL z on the unit circle—not just on average, but uniformly.",
       "**BBMST (2019)**: Resolved Littlewood's 50-year-old conjecture using probabilistic construction with derandomization.",
       "**Hayman's question**: A related open problem asks if max|P(z)| must exceed (1+c)√n for some absolute c > 0."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -121,7 +122,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #228 on the existence of flat Littlewood polynomials. The BBMST theorem (2019) proves they exist: for every n ≥ 2, there is a degree-n polynomial with ±1 coefficients whose magnitude on the unit circle is uniformly between c₁√n and c₂√n.",
-    "implications": "The resolution of Littlewood's conjecture is a major achievement in harmonic analysis and combinatorics. It shows that despite the binary constraint on coefficients, the 'random' magnitude behavior can be achieved deterministically. The techniques developed have applications to other problems in Fourier analysis and signal processing.",
+    "implications": "**Theoretical Significance**: The resolution of Littlewood's conjecture is a major achievement in harmonic analysis and combinatorics.\n\n**Broader Connections**: It shows that despite the binary constraint on coefficients, the 'random' magnitude behavior can be achieved deterministically. The techniques developed have applications to other problems in Fourier analysis and signal processing.",
     "openQuestions": [
       "What are the optimal constants c₁ and c₂?",
       "Is max|P(z)| > (1+c)√n for some absolute c > 0? (Hayman's question)",

@@ -32,7 +32,8 @@
       "Pólya's classical result provides a sharp upper bound: $\\mu(S_p) \\leq \\pi$ with equality only when all roots coincide, making $S_p$ a round disk. This connects to the isoperimetric properties of lemniscates.",
       "The remaining gap between the lower bound $c/\\log n$ and the KLR upper bound $C/\\log\\log n$ is a genuinely open problem: it is unknown whether the true minimum is $\\Theta(1/\\log n)$ or $\\Theta(1/\\log\\log n)$ or something in between.",
       "The `UnitDiskPoly` structure elegantly bundles the roots and their disk containment proofs, avoiding the need to work with the polynomial ring directly and instead treating the polynomial through its root factorization $p(z) = \\prod(z - z_i)$."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -94,7 +95,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the complete landscape of Erdős Problem #116 in 99 lines of Lean 4: from the `UnitDiskPoly` definition through four major bounds (Pommerenke $c/n^4$, KLR $c/\\log n$, KLR $C/\\log\\log n$, Pólya $\\pi$) to the formal resolution. The problem is PROVED with the optimal $c/\\log n$ lower bound.",
-    "implications": "The resolution connects polynomial geometry to measure theory through the study of lemniscates. The techniques of Krishnapur, Lundberg, and Ramachandran combine probabilistic methods with potential-theoretic estimates, suggesting new approaches to related extremal problems about polynomial level sets. The result also has implications for numerical analysis, where sublevel set sizes affect condition number estimates.",
+    "implications": "**Theoretical Significance**: The resolution connects polynomial geometry to measure theory through the study of lemniscates.\n\n**Broader Connections**: The techniques of Krishnapur, Lundberg, and Ramachandran combine probabilistic methods with potential-theoretic estimates, suggesting new approaches to related extremal problems about polynomial level sets. The result also has implications for numerical analysis, where sublevel set sizes affect condition number estimates.",
     "openQuestions": [
       "What is the exact asymptotic minimum of $\\mu(S_P)$ over degree-$n$ unit disk polynomials? The gap between $c/\\log n$ and $C/\\log\\log n$ is open.",
       "Which root configurations minimize the sublevel set measure for each degree $n$? Are the extremal polynomials related to Fekete points or other classical point configurations?",

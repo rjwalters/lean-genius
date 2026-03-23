@@ -59,7 +59,8 @@
       "**K₅ non-planarity is the heart of the Five Color Theorem**: It guarantees that the 5 neighbors of a degree-5 vertex in a planar graph contain a non-adjacent pair, enabling the Kempe chain argument",
       "**Mathlib's SimpleGraph API gap**: The main barrier to a fully axiom-free proof is vertex deletion with Fintype/DecidableRel preservation, not the mathematical argument itself",
       "**Four vs Five Color**: The five color theorem uses essentially the same Kempe chain technique as the four color theorem, but avoids the massive case analysis — making it an ideal formalization target that captures the key ideas without combinatorial explosion"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -107,7 +108,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves all combinatorial ingredients of the Five Color Theorem: Kempe chain swap correctness (via Equiv.swap), K₅ non-planarity, color counting arguments, and the complete inductive proof structure. The 4 axioms encode planarity-specific facts that Mathlib currently lacks (subgraph planarity, Kempe chain separation, vertex deletion). 0 sorries.",
-    "implications": "The Five Color Theorem sits between the elementary Six Color Theorem (fully proved in OQ-01) and the deep Four Color Theorem (requiring computer verification). The Kempe chain technique formalized here is fundamental to graph coloring theory and is used in various generalizations. The Equiv.swap approach to color transpositions provides a clean, reusable pattern for future coloring formalizations.",
+    "implications": "**Theoretical Significance**: The Five Color Theorem sits between the elementary Six Color Theorem (fully proved in OQ-01) and the deep Four Color Theorem (requiring computer verification).\n\n**Broader Connections**: The Kempe chain technique formalized here is fundamental to graph coloring theory and is used in various generalizations. The Equiv.swap approach to color transpositions provides a clean, reusable pattern for future coloring formalizations.",
     "openQuestions": [
       "Can vertex deletion with Fintype preservation be formalized in Mathlib to eliminate the five_color_axiom?",
       "Can Kempe chain separation be proved from a formal planarity definition rather than axiomatized?",

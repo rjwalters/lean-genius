@@ -142,6 +142,12 @@
       "The elemSymm definition via Finset.powersetCard is mathematically natural but makes algebraic manipulation harder than the standard multivariate polynomial definition.",
       "amgm_from_maclaurin (AM-GM) follows immediately from Real.geom_mean_le_arith_mean_weighted with uniform weights 1/n.",
       "The Maclaurin means $M_k$ are **Schur-concave** functions of $(x_1,\\ldots,x_n)$: if $x$ majorizes $y$ (i.e., $x$ is 'more spread out'), then $M_k(x) \\leq M_k(y)$. This Schur-concavity implies the Maclaurin chain as a special case, since $(M_1, 0, \\ldots, 0)$ majorizes $(x_1/n, \\ldots, x_n/n)$ and Schur-concavity forces means to increase as inputs become more equal. The connection to Lorentzian polynomials (Brändén-Huh 2020) suggests a deeper algebraic-geometric explanation for Newton's log-concavity."
+    ],
+    "prerequisites": [
+      "Elementary symmetric polynomials and their basic properties",
+      "Cauchy-Schwarz inequality and sum-of-squares methods",
+      "Real analysis (rpow, sqrt, mean inequalities)",
+      "Finset combinatorics (powersetCard, sum, prod)"
     ]
   },
   "sections": [

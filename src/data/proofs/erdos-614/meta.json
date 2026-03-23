@@ -65,7 +65,8 @@
       "**Trivial Bounds:** 0 ≤ f(n,k) ≤ n(n-1)/2 — from empty graph to complete graph",
       "**Special Cases:** f(n,0) = 0 trivially; f(n,n-2) = n(n-1)/2 forces the complete graph",
       "**Monotonicity:** f is non-decreasing in k — stronger degree requirements need more edges"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

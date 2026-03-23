@@ -79,6 +79,12 @@
       "**The k=3 bound**: X^(1/3) log X is the critical exponent for 3 consecutive terms. The conjecture asks if any exponent is achievable for large enough k.",
       "**Open question**: Despite decades of study, we don't know if subpolynomial growth F(A,X,k) < X^ε is always achievable.",
       "**Connection to smooth numbers**: Tuples with small LCM correspond to tuples whose terms share many prime factors. Counting these relates to the distribution of smooth numbers (numbers with only small prime factors) in arithmetic sequences."
+    ],
+    "prerequisites": [
+      "LCM and GCD from Mathlib",
+      "Finset.lcm for computing LCM over finite sets",
+      "Asymptotic notation and growth rate analysis",
+      "Prime factorization and multiplicative functions"
     ]
   },
   "sections": [

@@ -77,7 +77,8 @@
       "**Connection to #729**: The same Barreto-Leeham construction proves both problems, showing deep structural similarity.",
       "**AI-assisted proof**: Both the positive result (Barreto-Leeham) and the counterexample (Sothanaphan) were found with AI assistance.",
       "**The g-function viewpoint**: Reformulating via g₂_modified makes clear that we're asking if the modified function can grow faster than C·log(n)."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -153,7 +154,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #401 on factorial divisibility with prime products. The problem asks whether adding factors 2ⁿ3ⁿ...p_rⁿ to n! allows exceeding the Erdős-Graham bound by an unbounded amount. The answer is YES for infinitely many n (Barreto-Leeham 2026), but NO for all large n (Sothanaphan counterexample).",
-    "implications": "This problem illustrates the subtle role of quantifiers in number theory conjectures. The extra prime power factors fundamentally change the factorial divisibility structure. The AI-assisted resolution of both the main conjecture and its negation demonstrates the power of computational approaches to Erdős problems.",
+    "implications": "**Theoretical Significance**: This problem illustrates the subtle role of quantifiers in number theory conjectures.\n\n**Broader Connections**: The extra prime power factors fundamentally change the factorial divisibility structure. The AI-assisted resolution of both the main conjecture and its negation demonstrates the power of computational approaches to Erdős problems.",
     "openQuestions": [
       "What is the optimal growth rate of f(r)?",
       "Can the construction be made explicit (avoiding existence proofs)?",

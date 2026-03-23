@@ -97,11 +97,15 @@
       "**Isoperimetric exponent** $n^{2/3}$ in $d = 3$ reflects the surface-to-volume ratio: a ball of volume $n$ has surface area $\\Theta(n^{2/3})$, and surface spheres lose contacts",
       "**Two machine-verified theorems** establish the 1D degree bound: the triangle lemma and the 3-neighbor impossibility, both proved by exhaustive case analysis in Lean 4",
       "**Exponential gap** in general $d$: between $f_d(n) \\ge dn$ from $\\mathbb{Z}^d$ and $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky–Levenshtein — closing this is a major open problem"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "conclusion": {
     "summary": "Erdős Problem #1084 asks for the maximum number of unit-distance pairs among separated points. The problem is fully solved for d = 1 (f₁(n) = n - 1, with key lemmas machine-verified) and d = 2 (Harborth's elegant formula using the triangular lattice). For d = 3, the leading coefficient 6 is established via the kissing number τ(3) = 12, and Bezdek–Reid proved the n^{2/3} correction in the upper bound, but the matching lower bound — Erdős's conjecture f₃(n) = 6n - Θ(n^{2/3}) — remains open.",
-    "implications": "Understanding f_d(n) precisely would reveal the fine structure of finite sphere packings, connect to the Kepler conjecture and sphere packing rigidity, and illuminate the transition between lattice and non-lattice optimal packings. The exponential gap between upper and lower bounds in high dimensions is intimately connected to the long-standing open problem of determining the kissing number τ(d) for large d.",
+    "implications": "**Theoretical Significance**: Understanding f_d(n) precisely would reveal the fine structure of finite sphere packings, connect to the Kepler conjecture and sphere packing rigidity, and illuminate the transition between lattice and non-lattice optimal packings.\n\n**Broader Connections**: The exponential gap between upper and lower bounds in high dimensions is intimately connected to the long-standing open problem of determining the kissing number τ(d) for large d.",
     "openQuestions": [
       "Is f₃(n) = 6n - Θ(n^{2/3})? Specifically, does the lower bound f₃(n) ≥ 6n - c₁·n^{2/3} hold?",
       "What are the exact constants c₁, c₂ in the 3D correction term?",

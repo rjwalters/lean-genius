@@ -34,7 +34,8 @@
       "**Global-local tension**: Uncountable chromatic number is a global property, but the conjecture constrains every finite subgraph—this tension is the core difficulty",
       "**Near-linear vs linear**: The basic form asks for α > n^{1-ε} (almost linear), while the strong form asks for α ≥ cn (truly linear)—the gap between these is meaningful",
       "**Simplified formalization**: The n^{1-ε} bound is approximated by 0 < α(H) in the Lean code, since rational exponentiation n^{1-ε} would require substantial infrastructure"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

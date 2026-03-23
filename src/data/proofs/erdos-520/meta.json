@@ -66,7 +66,8 @@
       "**Second moment**: E[S_N²] = #{square-free m ≤ N} ~ (6/π²)N. This is because E[f(m)f(n)] = 1 only when m = n and square-free.",
       "**Harper's counterconjecture**: Harper suggests the sum might grow SLOWER than √(N log log N), with exponent (log log N)^{1/4} instead.",
       "**Square-free density**: About 6/π² ≈ 60.8% of integers are square-free. This density drives the variance calculation."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -128,7 +129,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #520 about the limsup behavior of partial sums of Rademacher multiplicative functions. The problem asks whether there's a universal constant c such that S_N/√(N log log N) → c almost surely. Despite significant recent progress on upper and lower bounds, the exact behavior remains OPEN.",
-    "implications": "This problem sits at the intersection of probabilistic number theory and random matrix theory. Understanding the fluctuations of random multiplicative functions has applications to L-functions, sieve methods, and the distribution of prime factors. The techniques involve moment methods, sieve combinatorics, and probabilistic inequalities.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of probabilistic number theory and random matrix theory.\n\n**Broader Connections**: Understanding the fluctuations of random multiplicative functions has applications to L-functions, sieve methods, and the distribution of prime factors. The techniques involve moment methods, sieve combinatorics, and probabilistic inequalities.",
     "openQuestions": [
       "Does the conjectured constant c exist, and if so, what is its value?",
       "Is Harper's counterconjecture correct—does the sum grow slower than √(N log log N)?",

@@ -33,7 +33,8 @@
       "The gap between the best known lower bound ($x^{0.9777}$, sub-linear) and positive density ($x^1$, linear) is small but fundamental. Closing it requires understanding not just how many elements $C$ contains, but how they distribute — whether they cluster or spread uniformly across residue classes.",
       "The upper density bound $\\overline{d}(C) \\leq 0.696$ reveals genuine number-theoretic obstructions: certain residue classes modulo powers of 3 and 4 are underrepresented in $C$. This means the density, if positive, lies strictly between 0 and 0.696.",
       "The generalization to $k$ bases with $\\sum_{i=1}^k \\log_{n_i}(2) > 1$ connects to a broad conjecture in fractal additive combinatorics. For three or more bases exceeding the dimension threshold, the problem is wide open — even the counting function bounds have not been established."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -95,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #125 in 107 lines of Lean 4, encoding the Cantor set integers via `Nat.digits`, the sumset and its counting function, the open conjecture on positive lower density, the best known bounds (Melfi $x^{0.965}$, Hasler-Melfi $x^{0.9777}$, upper density $\\leq 0.696$), and the generalization to multiple bases with the Hausdorff dimension condition. Zero sorries; deep results axiomatized.",
-    "implications": "Resolution would establish a deep connection between digital structure (base representations) and additive number theory (sumset density), with implications for fractal geometry. A proof would likely require new techniques bridging the Marstrand-type projection arguments from geometric measure theory with the arithmetic structure of digit-restricted sets. The techniques could extend to the general multi-base conjecture and to understanding sumsets of other fractal-like integer sequences.",
+    "implications": "**Theoretical Significance**: Resolution would establish a deep connection between digital structure (base representations) and additive number theory (sumset density), with implications for fractal geometry.\n\n**Broader Connections**: A proof would likely require new techniques bridging the Marstrand-type projection arguments from geometric measure theory with the arithmetic structure of digit-restricted sets. The techniques could extend to the general multi-base conjecture and to understanding sumsets of other fractal-like integer sequences.",
     "openQuestions": [
       "Does $A + B$ have positive lower density? This is the central open question, with the exponent gap $0.9777 < 1$ being the remaining obstacle.",
       "If $\\underline{d}(C) > 0$, what is its exact value? The upper density bound $\\overline{d}(C) \\leq 0.696$ constrains it, but no lower bound on the density itself is known.",

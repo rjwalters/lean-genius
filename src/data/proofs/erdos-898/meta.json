@@ -60,7 +60,8 @@
       "The inequality has a stronger weighted form: $a \\cdot PA + b \\cdot PB + c \\cdot PC \\ge 2(a \\cdot PX + b \\cdot PY + c \\cdot PZ)$ where $a, b, c$ are side lengths",
       "Multiple elegant proofs exist: trigonometric (Mordell), elementary (Barrow), law of cosines (Kazarinoff), and simplified (Bankoff), reflecting the depth of the result",
       "The inequality generalizes to tetrahedra in $\\mathbb{R}^3$ and to regular $n$-gons, suggesting a deeper principle about convex bodies and their duals"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #898 is SOLVED. The Erdos-Mordell inequality $PA + PB + PC \\ge 2(PX + PY + PZ)$ holds for any interior point $P$ of a triangle, with equality iff the triangle is equilateral and $P$ is its center. The formalization captures the main theorem, equality condition, weighted generalization, four proof approaches, extensions to higher dimensions, and connections to Viviani and Weitzenbock. The file has 8 sorries (definition-level: IsInteriorPoint, perpendicularFoot, incenter, ErdosMordellTetrahedron, erdos_mordell_polygon, triangle_inequality, viviani_theorem, weitzenbock_inequality).",
-    "implications": "The Erdos-Mordell inequality is a cornerstone of geometric inequalities. It connects triangle geometry (pedal triangles, triangle centers) to optimization on convex sets. The weighted generalization and higher-dimensional extensions suggest deep structural principles about distances in convex bodies. The multiplicity of proofs (trigonometric, algebraic, elementary) reflects the result's centrality.",
+    "implications": "**Theoretical Significance**: The Erdos-Mordell inequality is a cornerstone of geometric inequalities. It connects triangle geometry (pedal triangles, triangle centers) to optimization on convex sets.\n\n**Broader Connections**: The weighted generalization and higher-dimensional extensions suggest deep structural principles about distances in convex bodies. The multiplicity of proofs (trigonometric, algebraic, elementary) reflects the result's centrality.",
     "openQuestions": [
       "What are the optimal constants for the Erdos-Mordell inequality on non-regular polygons?",
       "Can the inequality be extended to arbitrary convex bodies with sharp bounds?",

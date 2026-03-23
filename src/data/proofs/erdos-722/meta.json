@@ -63,7 +63,8 @@
       "**From special to general**: The problem was solved incrementally over 167 years: Kirkman (1847) for $S(2,3,n)$, Hanani (1961) for several $(r,k)$ pairs, Wilson (1972) for all $r = 2$, and finally Keevash (2014) for all $r$. Each step required fundamentally new techniques.",
       "**Randomized algebraic construction**: Keevash's proof combines three powerful techniques: (1) random greedy algorithms for initial partial designs, (2) algebraic nibble methods for iterative refinement, (3) absorbing methods for completing partial designs to exact ones.",
       "**Packing-covering duality**: A Steiner system is simultaneously an optimal packing (every $r$-set in at most one block) and a perfect covering (every $r$-set in at least one block). This duality connects to coding theory (perfect codes) and sphere packing."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -172,7 +173,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #722 is SOLVED. Keevash (2014) proved that Steiner systems $S(r,k,n)$ exist for all sufficiently large $n$ satisfying the divisibility conditions $\\binom{k-i}{r-i} \\mid \\binom{n-i}{r-i}$ for $0 \\leq i < r$. This resolved a century-old open problem in combinatorial design theory, building on progressive results by Kirkman (1847), Hanani (1961), and Wilson (1972).",
-    "implications": "Keevash's result completes the existence theory for block designs, confirming that the obvious necessary divisibility conditions are also sufficient for large $n$. His randomized algebraic construction introduced powerful new techniques—combining probabilistic methods with algebraic absorption—that have since influenced work on hypergraph decompositions, Latin squares, and edge-coloring. The result also connects to coding theory (perfect codes correspond to certain Steiner systems) and finite geometry (projective and affine planes are Steiner systems).",
+    "implications": "**Theoretical Significance**: Keevash's result completes the existence theory for block designs, confirming that the obvious necessary divisibility conditions are also sufficient for large $n$.\n\n**Broader Connections**: His randomized algebraic construction introduced powerful new techniques—combining probabilistic methods with algebraic absorption—that have since influenced work on hypergraph decompositions, Latin squares, and edge-coloring. The result also connects to coding theory (perfect codes correspond to certain Steiner systems) and finite geometry (projective and affine planes are Steiner systems).",
     "openQuestions": [
       "What is the smallest $N_0(r,k)$ such that $S(r,k,n)$ exists for all $n \\geq N_0$ satisfying divisibility? Keevash's bound is not explicit.",
       "How many non-isomorphic Steiner systems $S(r,k,n)$ exist for given parameters? For $S(2,3,n)$, the count grows super-exponentially.",

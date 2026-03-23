@@ -158,7 +158,8 @@
       "**Normalization reduction**: dividing by $L^p/L^q$ norms reduces general Holder equality to the unit-norm case where the target sum/integral equals 1, transforming a scale-dependent problem into a scale-free one",
       "**Measure-theoretic lifting**: replacing finite `sum_eq_zero_iff_of_nonneg` with Mathlib's `integral_eq_zero_iff_of_nonneg_ae` gives almost-everywhere proportionality — the same argument works verbatim with sums replaced by integrals",
       "**Holder-to-CS specialization**: at $p = q = 2$, power proportionality $f_i^2 = c \\cdot g_i^2$ reduces to linear proportionality $f_i = \\sqrt{c} \\cdot g_i$ for non-negative functions, closing the circle from general Holder back to classical Cauchy-Schwarz"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Complete formalization of equality characterizations for Cauchy-Schwarz, general Hölder, and integral Hölder inequalities. CS via Lagrange identity with full iff proportionality. Hölder via Young deficit reduction with both directions. Integral case via normalization and integral_eq_zero_iff_of_nonneg_ae. All 835 lines, zero axioms, zero sorries.",

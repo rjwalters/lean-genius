@@ -111,6 +111,12 @@
       "**Sharp constant via Hilbert transforms**: After 70 years, the optimal constant was found by connecting the problem to the operator norm of a modified Hilbert transform — an unexpected link between polynomial root theory and harmonic analysis.",
       "**One-sided improvement (Erdélyi)**: Roots cannot *exceed* the expected count by more than C√(d log M) in any sector, even though the two-sided bound is the standard formulation.",
       "**Lower bound tightness**: There exist polynomials with discrepancy ≥ (1/10)√d, showing the √d dependence is necessary."
+    ],
+    "prerequisites": [
+      "Polynomial roots and their distribution",
+      "Equidistribution on the unit circle",
+      "Complex analysis fundamentals",
+      "Discrepancy theory"
     ]
   },
   "sections": [

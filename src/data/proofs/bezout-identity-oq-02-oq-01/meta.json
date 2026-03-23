@@ -80,7 +80,8 @@
       "**List.perm_cons_erase is the right tool**: When p ∈ l₂, `List.perm_cons_erase` gives `l₂.Perm (p :: l₂.erase p)`, letting us 'remove' p and apply induction to the shorter list.",
       "**Products and permutations**: `List.Perm.prod_eq` and `Nat.eq_of_mul_eq_mul_left` handle the algebraic manipulation of products under permutation.",
       "**Nat.primeFactorsList provides existence for free**: Mathlib already has the existence direction, so we only need to add uniqueness via our inductive proof."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -135,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "This formalization answers bezout-identity-oq-02-oq-01 affirmatively: YES, the Fundamental Theorem of Arithmetic can be derived explicitly from euclids_lemma_prime. The proof chain (Bézout → Euclid's Lemma → FTA) is made completely transparent. Zero sorries, zero axioms.",
-    "implications": "Completes the bezout-identity family: BezoutIdentity → BezoutIdentityOQ02 (Euclid's Lemma) → BezoutIdentityOQ02OQ01 (FTA). The uniqueness of prime factorization is the cornerstone of elementary number theory, underlying the theory of GCDs, LCMs, congruences, and Dirichlet series. The algebraic structure (UFDs) abstracts this to polynomial rings and beyond.",
+    "implications": "**Theoretical Significance**: Completes the bezout-identity family: BezoutIdentity → BezoutIdentityOQ02 (Euclid's Lemma) → BezoutIdentityOQ02OQ01 (FTA).\n\n**Broader Connections**: The uniqueness of prime factorization is the cornerstone of elementary number theory, underlying the theory of GCDs, LCMs, congruences, and Dirichlet series. The algebraic structure (UFDs) abstracts this to polynomial rings and beyond.",
     "openQuestions": [
       "Can fta_uniqueness be adapted to prove uniqueness in polynomial rings (over a field), giving the Fundamental Theorem for k[X]?",
       "Can the approach generalize to Euclidean domains or PIDs using Mathlib's UniqueFactorizationDomain typeclass?",

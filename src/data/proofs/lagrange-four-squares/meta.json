@@ -52,6 +52,13 @@
       "**Reduction to primes**: Since sums-of-four-squares are closed under multiplication (Euler's identity), the theorem reduces to proving every prime is a sum of four squares, then extending via unique factorization.",
       "**Frobenius's theorem**: The success of four squares and failure of three reflects a deep algebraic fact: the only finite-dimensional associative division algebras over $\\mathbb{R}$ are $\\mathbb{R}$ (dim 1), $\\mathbb{C}$ (dim 2), and $\\mathbb{H}$ (dim 4). There is no dim-3 analog.",
       "**Waring's problem connection**: Lagrange's theorem is the case $g(2) = 4$ of Waring's problem: every natural number is a sum of at most $g(k)$ perfect $k$th powers. Hilbert proved $g(k)$ exists for all $k$ in 1909."
+    ],
+    "prerequisites": [
+      "Quaternion algebra and norm multiplicativity",
+      "Euler's four-square identity",
+      "Quadratic residues and Fermat's descent",
+      "Sum of squares representations and unique factorization",
+      "Waring's problem and additive number theory"
     ]
   },
   "sections": [

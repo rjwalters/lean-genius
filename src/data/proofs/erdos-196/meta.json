@@ -33,7 +33,8 @@
       "**Non-extendability**: If no monotone 4-AP exists, every 3-AP forbids a specific value at all later monotone positions, creating cumulative constraints that may force a contradiction",
       "**Erdős–Szekeres gap**: The theorem guarantees long monotone subsequences of length $\\Theta(\\sqrt{n})$ but provides no arithmetic structure — a monotone subsequence need not contain a 4-AP",
       "**Proved implication**: The 4-AP conjecture implies the 3-AP theorem, verified in Lean by extracting three terms from a 4-AP and using `omega` for the arithmetic"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

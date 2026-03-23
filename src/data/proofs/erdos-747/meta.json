@@ -80,7 +80,8 @@
       "**Universal Threshold:** Same n log n threshold for all uniformities r ≥ 2",
       "**Erdős's Intuition:** Even Erdős couldn't guess this answer - unusual for random structures",
       "**Probabilistic Methods:** Proof uses nibble method, second moment, regularity"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -156,7 +157,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #747 (Shamir's Problem) asked for the threshold ℓ(n) such that a random 3-uniform hypergraph on 3n vertices with ℓ(n) edges almost surely has a perfect matching (n disjoint edges). The answer is ℓ(n) ~ n log n. Johansson-Kahn-Vu (2008) proved the threshold is ≍ n log n, and Kahn (2023) determined the precise asymptotic. Remarkably, the same threshold holds for all r-uniform hypergraphs.",
-    "implications": "**Random Hypergraph Theory**\n\n1. **Perfect Matching Theory:** Complete understanding of when matchings exist\n\n2. **Threshold Phenomena:** Example of sharp threshold in random structures\n\n3. **Uniformity Independence:** Surprising that r doesn't affect the threshold\n\n4. **Probabilistic Methods:** Advanced techniques (nibble, regularity) needed\n\n5. **Factor Problems:** Connects to general subgraph containment problems",
+    "implications": "**Theoretical Significance**: **Random Hypergraph Theory**\n\n1. **Perfect Matching Theory:** Complete understanding of when matchings exist\n\n2. **Threshold Phenomena:** Example of sharp threshold in random structures\n\n3.\n\n**Broader Connections**: **Uniformity Independence:** Surprising that r doesn't affect the threshold\n\n4. **Probabilistic Methods:** Advanced techniques (nibble, regularity) needed\n\n5. **Factor Problems:** Connects to general subgraph containment problems.",
     "openQuestions": [
       "What about higher-order matching constraints?",
       "Precise constants in the threshold?",

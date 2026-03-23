@@ -85,6 +85,12 @@
       "The EFRS bound c(p, C(p-1,2)) ≤ 1/2 combined with c(p, C(p-1,2)+1) = 1 shows the last edge requirement at least doubles the exponent — a dramatic phase transition",
       "For p=3, q ranges over {1,2} and the conjecture reduces to c(3,1) < c(3,2)=1, which follows immediately from the Ramsey upper bound 2/(3+1) = 1/2 < 1",
       "The difficulty concentrates in the middle of the q-range: at the endpoints c is determined, and at the top it jumps; the question is whether intermediate steps also produce strict increases"
+    ],
+    "prerequisites": [
+      "Graph theory: simple graphs, cliques, induced subgraphs",
+      "Ramsey theory: classical Ramsey numbers R(p,m) and their bounds",
+      "Extremal graph theory: Turán-type density conditions",
+      "Combinatorics: binomial coefficients C(n,k)"
     ]
   },
   "sections": [

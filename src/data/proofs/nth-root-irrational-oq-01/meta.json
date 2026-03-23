@@ -81,6 +81,12 @@
       "This module serves as shared infrastructure for Galois theory proofs, where knowing that nth roots of primes generate non-trivial field extensions is a foundational fact",
       "The proof that $p^2 \\nmid p$ for prime $p$ -- the most delicate Eisenstein condition -- is dispatched by nlinarith using the inequality $(p-1)^2 \\geq 0$, which expands to $p^2 - 2p + 1 \\geq 0$ and thus $p^2 \\geq 2p - 1 > p$ for $p \\geq 2$",
       "Real power arithmetic ($\\texttt{rpow\\_natCast}$, $\\texttt{rpow\\_mul}$) handles the root verification $(p^{1/n})^n = p$, bridging between the algebraic world ($\\mathbb{Q}[X]$) and the analytic world ($\\mathbb{R}$) where irrationality is defined"
+    ],
+    "prerequisites": [
+      "Polynomial algebra over Q (irreducibility, roots, degree)",
+      "Eisenstein's criterion and the Gauss lemma",
+      "Minimal polynomials and algebraic elements",
+      "Real analysis (irrational numbers, algebraMap Q R)"
     ]
   },
   "sections": [

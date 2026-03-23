@@ -61,7 +61,8 @@
       "**Lower Bound Difficulty:** Showing every permutation has 3-MAPs requires arguing about infinite structures — the pigeonhole principle applies but needs care",
       "**The Gap:** Knowing 3 ≤ k ≤ 4 but not which, reflects a fundamental difficulty in distinguishing avoidability at this threshold",
       "**Connection to Ramsey Theory:** Like Ramsey numbers, the question asks which patterns are unavoidable in large combinatorial structures"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -123,7 +124,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #195 asks for the largest k such that every permutation of ℤ has a k-term monotone arithmetic progression. The answer satisfies 3 ≤ k ≤ 4 but the exact value remains OPEN.",
-    "implications": "**Connections**\n\n1. **Ramsey Theory:** Which patterns are unavoidable in infinite combinatorial structures?\n\n2. **Permutation Patterns:** Part of the broader study of forbidden patterns in permutations\n\n3. **Additive Combinatorics:** Arithmetic progressions in structured sets are central to Szemerédi's theorem and related results\n\n4. **Related Problems:** Erdős #194 asks the finite version for permutations of {1,...,n}",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Ramsey Theory:** Which patterns are unavoidable in infinite combinatorial structures?\n\n2.\n\n**Broader Connections**: **Permutation Patterns:** Part of the broader study of forbidden patterns in permutations\n\n3. **Additive Combinatorics:** Arithmetic progressions in structured sets are central to Szemerédi's theorem and related results\n\n4. **Related Problems:** Erdős #194 asks the finite version for permutations of {1,...,n}.",
     "openQuestions": [
       "Is k = 3 or k = 4?",
       "Does every permutation of ℤ have a 4-term MAP?",

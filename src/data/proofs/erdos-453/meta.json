@@ -112,7 +112,8 @@
       "**Counterexample Infinitude:** The counterexample set $\\{n \\mid \\forall i < n : p_n^2 > p_{n+i}p_{n-i}\\}$ is not just nonempty but **cofinal** in $\\mathbb{N}$ — proved formally via `Set.infinite_iff_nat_lt`.",
       "**Geometry Resolves Arithmetic:** Pomerance's short proof is a masterclass in converting a number-theoretic question ($p_n^2$ vs $p_{n+i}p_{n-i}$) into a geometric one (convex hull vertices of a planar curve).",
       "**Mutual Exclusivity in Lean:** `conjectures_mutually_exclusive` is a genuine Lean proof (no axioms) using `omega` — the only fully proved result aside from `counterexample_set_infinite` and `log_convexity_iff_vertex`."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -181,7 +182,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #453 is SOLVED. The answer is NO. Pomerance (1979) proved there are infinitely many n such that p_n² > p_{n+i}·p_{n-i} for ALL i < n, contradicting the Erdős-Straus conjecture and confirming Selfridge's intuition.",
-    "implications": "The prime number graph provides geometric insight into prime distribution. Convex hull analysis is a powerful tool for studying multiplicative properties of primes. The technique of converting arithmetic questions into geometric ones via logarithms is broadly applicable.",
+    "implications": "**Theoretical Significance**: The prime number graph provides geometric insight into prime distribution.\n\n**Broader Connections**: Convex hull analysis is a powerful tool for studying multiplicative properties of primes. The technique of converting arithmetic questions into geometric ones via logarithms is broadly applicable.",
     "openQuestions": [
       "What is the natural density of $\\{n \\mid \\forall\\, 0 < i < n : p_n^2 > p_{n+i}p_{n-i}\\}$ in $\\mathbb{N}$? Pomerance proved infinitude but not a density estimate.",
       "Can `convexity_implies_product_bound` be proved in Lean without `sorry`? It requires `Real.log_mul` and `Real.exp_lt_exp` — straightforward but not yet formalized.",

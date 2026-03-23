@@ -78,6 +78,13 @@
       "**Neumann series and operator theory:** For a bounded linear operator $T$ with $\\|T\\| < 1$, the series $\\sum_{k=0}^{\\infty} T^k$ converges to $(I - T)^{-1}$. This is the operator-valued geometric series, and it is the foundation of perturbation theory, resolvent estimates, and the proof that the set of invertible operators is open in the operator norm topology.",
       "**Partial sums as rational approximations:** The finite partial sums $S_n = (1 - r^n)/(1 - r)$ provide rational approximations to the irrational limit $1/(1 - r)$. The `finite_to_infinite` theorem formalizes this convergence: `Filter.Tendsto` applied to $S_n$ with target $\\text{nhds}((1-r)^{-1})$, connecting the algebraic finite formula to the topological notion of limit via `HasSum.tendsto_sum_nat`.",
       "**Connection to the Riemann zeta function:** Setting $r = p^{-s}$ for a prime $p$ gives $\\sum_{k=0}^{\\infty} p^{-ks} = (1 - p^{-s})^{-1}$, and multiplying over all primes yields the Euler product $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$. The convergence of each geometric factor for $\\operatorname{Re}(s) > 1$ underlies the analytic continuation of $\\zeta(s)$ and connects this elementary series to the deepest problems in number theory."
+    ],
+    "prerequisites": [
+      "Ring and field operations (commutativity, distributivity, division)",
+      "Finite sums and summation notation (Finset.range, BigOperators)",
+      "Absolute value and the real number line",
+      "Convergence of sequences and series (limits, partial sums)",
+      "Summability (absolute convergence, tsum in Mathlib)"
     ]
   },
   "sections": [

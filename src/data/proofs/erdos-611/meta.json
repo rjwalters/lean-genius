@@ -65,7 +65,8 @@
       "The Bollobás-Erdős threshold n + 3 - 2√n for τ = 1 is an exact result where the additive constant 3 is sharp: extremal constructions with two nearly-disjoint cliques of size n + 2 - 2√n achieve τ = 2",
       "Question 1 is answered (τ ≤ (1-√c)n), but the answer is Θ(n) not o(n) — the bound is sublinear only in the ratio τ/n < 1, not in absolute terms",
       "The relationship to #610: setting k = 2 (trivial clique size) recovers the general τ bound, while larger k progressively improves it"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

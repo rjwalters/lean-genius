@@ -74,7 +74,8 @@
       "The trivial lower bound $R(Q_n) \\geq 2^n$ comes from the vertex count: any host graph must have at least $2^n$ vertices to embed $Q_n$. The conjecture asserts $R(Q_n)$ is only a constant factor above this.",
       "The bit-level formalization of hypercube adjacency via $\\exists! i : \\text{Fin } n$ with $(x / 2^i) \\bmod 2 \\neq (y / 2^i) \\bmod 2$ captures the Hamming distance-1 condition using integer arithmetic on `Fin (2^n)`",
       "The Erdős-Sós question ($R(Q_n)/2^n \\to \\infty$?) is logically complementary to the conjecture: if the conjecture holds, the ratio is bounded; if the ratio diverges, the conjecture is false"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -115,7 +116,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #181 with both proved and axiomatized results: the hypercube adjacency via bit arithmetic with proved symmetry and irreflexivity, the Ramsey number $R(Q_n)$ via `sInf` with proved base case $R(Q_0) \\leq 1$, the Burr-Erdős conjecture $R(Q_n) \\leq C \\cdot 2^n$, Tikhomirov's best bound $2^{(2-c)n}$, and the Erdős-Sós divergence question. The exponent gap between 1 and $2-c \\approx 1.964$ is the central open challenge.",
-    "implications": "**Theoretical Significance**\n\n1. **Ramsey Theory Frontier**: Resolving this conjecture would extend Ramsey-linear behavior beyond bounded-degree graphs to the logarithmic-degree regime, a qualitative advance in understanding when $R(G) = O(|V(G)|)$\n\n2. **Regularity Methods**: Current approaches (Tikhomirov) use the regularity lemma and embedding techniques. A proof of the conjecture would likely require new embedding methods for structured sparse graphs\n\n3. **Burr-Erdős Program**: This is the most prominent remaining case of the general Burr-Erdős question about Ramsey numbers of sparse graphs, after Lee's resolution of the bounded-degree case\n\n4. **Combinatorial Optimization**: The hypercube is a fundamental object in computer science (Boolean lattice, error-correcting codes); understanding its Ramsey properties has implications for coding theory and network design",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Ramsey Theory Frontier**: Resolving this conjecture would extend Ramsey-linear behavior beyond bounded-degree graphs to the logarithmic-degree regime, a qualitative advance in understanding when $R(G) = O(|V(G)|)$\n\n2. **Regularity Methods**: Current approaches (Tikhomirov) use the regularity lemma and embedding techniques.\n\n**Broader Connections**: A proof of the conjecture would likely require new embedding methods for structured sparse graphs\n\n3. **Burr-Erdős Program**: This is the most prominent remaining case of the general Burr-Erdős question about Ramsey numbers of sparse graphs, after Lee's resolution of the bounded-degree case\n\n4. **Combinatorial Optimization**: The hypercube is a fundamental object in computer science (Boolean lattice, error-correcting codes); understanding its Ramsey properties has implications for coding theory and network design.",
     "openQuestions": [
       "Is R(Q_n) ≪ 2^n? Can the Tikhomirov exponent 2-c be improved toward 1?",
       "Does R(Q_n)/2^n → ∞ (Erdős-Sós question)?",

@@ -44,7 +44,8 @@
       "**The mass gap is spectral**: $\\Delta > 0$ means the Hamiltonian spectrum has a gap between the vacuum ($E_0 = 0$) and the first excited state ($E_1 \\geq \\Delta$), implying exponential decay of correlation functions $\\sim e^{-\\Delta|x|}$ and explaining why the strong force is short-range",
       "**2D Yang-Mills is exactly solvable**: Migdal's formula gives the exact Wilson loop expectation $\\langle W_R(C)\\rangle = (\\dim R) \\cdot e^{-g^2 A C_2(R)/(2\\dim R)}$, establishing area law confinement with computable string tension $\\sigma = g^2 C_2(R)/(2\\dim R)$",
       "**Transfer matrix connects lattice to Hamiltonian**: the mass gap equals $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$ where $\\lambda_0 > \\lambda_1$ are the two largest transfer matrix eigenvalues, bridging the Euclidean path integral to the quantum mechanical spectrum"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

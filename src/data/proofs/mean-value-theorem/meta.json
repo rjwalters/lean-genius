@@ -71,7 +71,8 @@
       "**Cauchy's MVT avoids division**: The ratio form $(g(b) - g(a))f'(c) = (f(b) - f(a))g'(c)$ elegantly avoids dividing by $g'(c)$ or $g(b) - g(a)$, which might be zero. This multiplicative formulation is cleaner for formalization and is the form used in proving L'Hôpital's rule",
       "**Zero derivative implies constant is a genuine proof**: Unlike the MVT wrappers (which are one-line applications of Mathlib lemmas), `constant_of_deriv_zero` is proved from scratch: obtain the MVT point, substitute the zero-derivative hypothesis, use `field_simp` to clear the denominator, and `linarith` to conclude equality",
       "**The secant-tangent parallel is the geometric core**: MVT says that for any chord of a smooth curve, there is a point where the tangent is parallel. This is why MVT is sometimes called the 'tangent-chord theorem' — it connects local differential information (the tangent slope) to global finite-difference information (the secant slope)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -140,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "This 164-line formalization of the Mean Value Theorem (Wiedijk #75) provides three wrapper theorems around Mathlib's MVT infrastructure — Lagrange's MVT in both `deriv` and `HasDerivAt` forms, and Cauchy's generalized MVT — plus one original proof that zero derivative implies constant. With 0 sorries and clean Mathlib integration, it demonstrates how a well-developed library enables concise formalization of classical analysis results.",
-    "implications": "The MVT is the workhorse of single-variable analysis. Its formalization in Lean 4 via Mathlib enables downstream formalizations of L'Hôpital's rule, Taylor's theorem, and monotonicity criteria. The Cauchy generalization is particularly important: it is the key lemma in any rigorous proof of L'Hôpital's rule, which itself is one of the most-used tools in applied mathematics. The `constant_of_deriv_zero` corollary, while simple, is the formal engine behind the uniqueness clause of the fundamental theorem of calculus.",
+    "implications": "**Theoretical Significance**: The MVT is the workhorse of single-variable analysis. Its formalization in Lean 4 via Mathlib enables downstream formalizations of L'Hôpital's rule, Taylor's theorem, and monotonicity criteria.\n\n**Broader Connections**: The Cauchy generalization is particularly important: it is the key lemma in any rigorous proof of L'Hôpital's rule, which itself is one of the most-used tools in applied mathematics. The `constant_of_deriv_zero` corollary, while simple, is the formal engine behind the uniqueness clause of the fundamental theorem of calculus.",
     "openQuestions": [
       "Can the formalization be extended to prove L'Hôpital's rule as a direct corollary of Cauchy's MVT?",
       "Is there a Mathlib-compatible formalization of the higher-order MVT (Taylor's theorem with Lagrange remainder)?",

@@ -53,7 +53,8 @@
       "**From 20 lines to 2 lines**: The parent proof needs Even/Odd definitions, parity lemmas, and case analysis to prove 'n² even implies n even'. With Euclid's criterion, this becomes: p | n*n implies p | n or p | n, so p | n. QED.",
       "**Modular arithmetic verification**: Small primes (2, 3, 5) are verified as EuclidPrime by checking that nonzero residues mod p form a multiplicative group (no zero divisors)",
       "**Prime vs irreducible distinction**: In general rings, \"prime\" (Euclid's criterion: p | ab → p | a or p | b) and \"irreducible\" (only trivial factorizations) are different properties. They coincide for ℕ (and all UFDs), but this proof reveals that it is the *prime* property—not irreducibility—that drives irrationality arguments"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -129,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "The irrationality of √p for prime p is proved completely from scratch, revealing that the classical √2 proof secretly uses Euclid's lemma. By defining primality via the multiplicative property (Euclid's criterion), the key lemma becomes trivial and the proof generalizes to all primes with zero additional effort.",
-    "implications": "**Key correspondence:**\n\n| √2 proof concept | General √p concept |\n|---|---|\n| n is even | p divides n |\n| n is odd | p does not divide n |\n| n² even → n even | p | n² → p | n (Euclid) |\n| coprime = not both even | coprime = not both div by p |\n\nThe generalization shows that parity is not the essential ingredient—primality is. This is the same insight that drives modern algebraic number theory: the prime elements of a ring (those satisfying Euclid's criterion) are the building blocks of its multiplicative structure. In a unique factorization domain, prime and irreducible elements coincide, but the *prime* property is what makes descent arguments work.",
+    "implications": "**Theoretical Significance**: **Key correspondence:**\n\n| √2 proof concept | General √p concept |\n|---|---|\n| n is even | p divides n |\n| n is odd | p does not divide n |\n| n² even → n even | p | n² → p | n (Euclid) |\n| coprime = not both even | coprime = not both div by p |\n\nThe generalization shows that parity is not the essential ingredient—primality is.\n\n**Broader Connections**: This is the same insight that drives modern algebraic number theory: the prime elements of a ring (those satisfying Euclid's criterion) are the building blocks of its multiplicative structure. In a unique factorization domain, prime and irreducible elements coincide, but the *prime* property is what makes descent arguments work.",
     "openQuestions": [
       "Prove equivalence of Euclid's criterion with the classical prime definition (requires building Bézout's identity from scratch—see the gallery's bezout-identity formalization)",
       "Extend to √n for any non-square n (requires unique factorization: if n = p₁^{a₁} · ··· · pₖ^{aₖ} with some aᵢ odd, then √n is irrational)",

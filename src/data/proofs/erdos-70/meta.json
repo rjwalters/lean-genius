@@ -34,7 +34,8 @@
       "**Monotonicity**: Partition arrows are monotone: $\\kappa \\to (\\beta, m)_k^n$ and $\\alpha \\le \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$. Similarly for the finite parameter $m$",
       "**Ordinal arithmetic**: $\\omega + n$, $\\omega^2$, and $\\omega^\\omega$ are all countable, proved via $|\\omega + n| = \\aleph_0$, $|\\omega^2| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$",
       "**Connection to CH**: Under GCH ($\\mathfrak{c} = \\aleph_1$), stronger partition relations hold by the Erdős-Rado theorem. The problem in ZFC alone is more delicate"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -152,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. The 226-line formalization captures colorings, homogeneous sets, partition arrows, the Erdős-Rado partial result, monotonicity, and countability proofs for ordinal arithmetic. Several properties are proved from Mathlib's API; deep results are axiomatized.",
-    "implications": "This problem connects infinite Ramsey theory to the combinatorial structure of the continuum. A positive answer would establish that the continuum satisfies strong partition properties for all countable ordinals. The problem may depend on set-theoretic axioms beyond ZFC, and its resolution could involve forcing, pcf theory, or new stepping-up techniques.",
+    "implications": "**Theoretical Significance**: This problem connects infinite Ramsey theory to the combinatorial structure of the continuum.\n\n**Broader Connections**: A positive answer would establish that the continuum satisfies strong partition properties for all countable ordinals. The problem may depend on set-theoretic axioms beyond ZFC, and its resolution could involve forcing, pcf theory, or new stepping-up techniques.",
     "openQuestions": [
       "Does 𝔠 → (ω², n)₂³ hold? This is the first case beyond the Erdős-Rado theorem",
       "Does 𝔠 → (ω^ω, n)₂³ hold? ω^ω is the supremum of ω, ω², ω³, ...",

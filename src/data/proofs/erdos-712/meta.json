@@ -72,7 +72,8 @@
       "Even simplest hypergraph case K_4^3 is unsolved after 80+ years",
       "Flag algebras give best upper bounds but can't close the gap",
       "Turán's conjecture: π_3(K_4^3) = 5/9 from balanced partition"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -155,7 +156,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #712 remains one of the most famous open problems in combinatorics. While Turán solved the graph case (r=2) in 1941, determining hypergraph Turán densities for any k > r > 2 is completely open. Even the simplest case K_4^3 has resisted 80+ years of effort. Current bounds: 5/9 ≤ π_3(K_4^3) ≤ 0.5616.",
-    "implications": "A solution would be a major breakthrough in extremal combinatorics. The problem connects to Ramsey theory, coding theory, and property testing. Flag algebra methods have improved bounds but cannot close the gap.",
+    "implications": "**Theoretical Significance**: A solution would be a major breakthrough in extremal combinatorics.\n\n**Broader Connections**: The problem connects to Ramsey theory, coding theory, and property testing. Flag algebra methods have improved bounds but cannot close the gap.",
     "openQuestions": [
       "Is π_3(K_4^3) = 5/9 (Turán's conjecture)?",
       "What is the structure of extremal hypergraphs?",

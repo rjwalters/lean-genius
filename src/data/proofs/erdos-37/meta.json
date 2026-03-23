@@ -98,6 +98,12 @@
       "**The boundary case**: Sets growing as (log N)^k for k ≤ 1 cannot be essential. The question for (log N)² (smooth 2-3 numbers) remains open.",
       "**Schnirelmann vs natural density**: The infimum-based Schnirelmann density is better suited for sumset problems than limit-based natural density.",
       "**Classical context**: Schnirelmann's theorem (d_s(A) + d_s(B) ≥ 1 ⟹ A + B = ℕ⁺) and Mann's theorem underpin this area."
+    ],
+    "prerequisites": [
+      "Essential components in additive number theory",
+      "Lacunary sequences and their properties",
+      "Schnirelmann density",
+      "Sumset theory"
     ]
   },
   "sections": [
@@ -174,7 +180,7 @@
   ],
   "conclusion": {
     "summary": "This formalization resolves Erdős Problem #37 in the negative: lacunary sets cannot be essential components. Ruzsa's (1987) tight characterization — essential components need $|A \\cap [1,N]| \\ge (\\log N)^{1+c}$ growth, but lacunary sets have only $O(\\log N)$ — is the core argument. Four of the file's theorems were proved automatically by Aristotle (Harmonic). The remaining deep results (Ruzsa's bounds) are axiomatized. The file is complete with 0 sorries.",
-    "implications": "Ruzsa's characterization draws a sharp line between sets that are 'additively helpful' and those that are too sparse. The threshold $(\\log N)^{1+c}$ sits between polynomial sparsity and logarithmic sparsity, precisely at the boundary where additive structure can boost Schnirelmann density. The tight construction shows this boundary is optimal — no simpler characterization exists.",
+    "implications": "**Theoretical Significance**: Ruzsa's characterization draws a sharp line between sets that are 'additively helpful' and those that are too sparse.\n\n**Broader Connections**: The threshold $(\\log N)^{1+c}$ sits between polynomial sparsity and logarithmic sparsity, precisely at the boundary where additive structure can boost Schnirelmann density. The tight construction shows this boundary is optimal — no simpler characterization exists.",
     "openQuestions": [
       "Is $\\{2^m \\cdot 3^n : m,n \\in \\mathbb{N}\\}$ an essential component? Its growth $(\\log N)^2$ is exactly at Ruzsa's threshold with $c = 1$ (Ruzsa 1999).",
       "For $k$-smooth numbers $\\{p_1^{a_1} \\cdots p_k^{a_k}\\}$ with counting function $\\sim C(\\log N)^k$, for which $k$ is the set essential?",

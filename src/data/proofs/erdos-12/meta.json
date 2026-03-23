@@ -111,6 +111,12 @@
       "The Elsholtz-Planitzer construction √N/(√(log N)·(log log N)²) misses √N by only iterated logarithmic factors — closing this gap is the core of Question 1",
       "The coprime case is dramatically stronger (O(N^{2/3}/log N) vs √N), showing that shared factors among elements enable much larger divisibility-free sets",
       "The hierarchy Q3 ⟹ Q2 ⟹ ¬Q1 means a positive answer to Q3 would settle all three questions — but convergent reciprocal sum is the hardest to prove"
+    ],
+    "prerequisites": [
+      "Divisibility and the divisor lattice",
+      "Extremal set theory",
+      "Dilworth's theorem (for antichain bounds)",
+      "Multiplicative number theory"
     ]
   },
   "sections": [
@@ -173,7 +179,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #12 asks three OPEN questions about divisibility-free sets — sets where no element divides the sum of two larger elements. The Lean formalization includes fully-proved theorems establishing the primeSquares3mod4 construction (using quadratic reciprocity and ZMod arithmetic), a counterexample disproving the natural powers-of-2 guess, and formal statements of all three questions with axiomatized known bounds.",
-    "implications": "**Theoretical Significance**\n\n1. **Multiplicative-Additive Interaction**: The problem sits at the intersection of multiplicative (divisibility) and additive (sums) number theory. The residue class interpretation — {b mod a} must be sum-free — bridges these worlds.\n\n2. **Quadratic Reciprocity in Combinatorics**: The primeSquares3mod4 construction is a striking application of the first supplementary law of QR to a combinatorial extremal problem. The proof that -1 is a QNR mod p ≡ 3 (mod 4) prevents p from dividing q²+r² for distinct primes — an algebraic argument with combinatorial consequences.\n\n3. **The √N Barrier**: The gap between the best construction √N/(√log N · (log log N)²) and the √N threshold is one of the most tantalizing open problems in additive combinatorics. Closing it would either yield a fundamentally new construction or a new upper bound technique.\n\n4. **Coprime vs General**: The dramatic difference between the coprime case (N^{2/3}) and general case (close to √N) shows that shared prime factors create divisibility-free structure — elements sharing a factor a can both avoid having their sum divisible by a.\n\n5. **Hierarchy of Sparseness**: The Q3 ⟹ Q2 ⟹ ¬Q1 chain means a single answer to Q3 would resolve all three questions, but the convergent reciprocal sum condition is the hardest to prove, requiring control of A(N) at all scales simultaneously.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Multiplicative-Additive Interaction**: The problem sits at the intersection of multiplicative (divisibility) and additive (sums) number theory. The residue class interpretation — {b mod a} must be sum-free — bridges these worlds.\n\n2. **Quadratic Reciprocity in Combinatorics**: The primeSquares3mod4 construction is a striking application of the first supplementary law of QR to a combinatorial extremal problem.\n\n**Broader Connections**: The proof that -1 is a QNR mod p ≡ 3 (mod 4) prevents p from dividing q²+r² for distinct primes — an algebraic argument with combinatorial consequences.\n\n3. **The √N Barrier**: The gap between the best construction √N/(√log N · (log log N)²) and the √N threshold is one of the most tantalizing open problems in additive combinatorics. Closing it would either yield a fundamentally new construction or a new upper bound technique.\n\n4. **Coprime vs General**: The dramatic difference between the coprime case (N^{2/3}) and general case (close to √N) shows that shared prime factors create divisibility-free structure — elements sharing a factor a can both avoid having their sum divisible by a.\n\n5. **Hierarchy of Sparseness**: The Q3 ⟹ Q2 ⟹ ¬Q1 chain means a single answer to Q3 would resolve all three questions, but the convergent reciprocal sum condition is the hardest to prove, requiring control of A(N) at all scales simultaneously.",
     "openQuestions": [
       "Can any divisibility-free set achieve √N density? The Elsholtz-Planitzer construction misses by logarithmic factors.",
       "Must A(N) < N^{1-c} infinitely often? Even proving A(N) < N/log N i.o. would be significant progress.",

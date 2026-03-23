@@ -68,6 +68,12 @@
       "The proof gives equidistribution: primes are roughly equally distributed among the phi(q) coprime residue classes",
       "Mathlib's proof uses modern machinery: analytic continuation, Euler products, and functional equations",
       "The special cases (primes 1 mod 4, 3 mod 4, etc.) serve as concrete instantiations — the 3 mod 4 case even admits an elementary proof via Euclid-style argument"
+    ],
+    "prerequisites": [
+      "Dirichlet characters and L-functions",
+      "Arithmetic progressions and modular arithmetic",
+      "Analytic continuation and complex analysis",
+      "Euler products and prime counting"
     ]
   },
   "sections": [

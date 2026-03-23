@@ -151,6 +151,12 @@
       "no_subgroup_order_30 in S₅: uses A₅ simplicity — any index-2 subgroup of A₅ would be normal, contradicting simplicity",
       "The A₅ case demonstrates that going beyond Shafarevich's theorem requires fundamentally different techniques",
       "The general case reduces to the question: does Gal(ℚ̄/ℚ) surject onto all finite groups?"
+    ],
+    "prerequisites": [
+      "Galois theory (field extensions, Galois groups, splitting fields)",
+      "Cyclotomic fields and Kronecker-Weber theorem",
+      "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
+      "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ]
   },
   "sections": [
@@ -224,7 +230,7 @@
   ],
   "conclusion": {
     "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. Across 5735 lines in 6 files (374 theorems, 3 axiom declarations, 2 sorries), we formalize: the IGP conjecture, cyclotomic Galois theory with Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ, explicit realizations for S₃ (X³-2), D₄ (X⁴-2), F₂₀ (X⁵-2), and A₅ (x⁵-5x⁴+10x³-10x²+25x-5), the sharp solvability threshold S_n solvable iff n ≤ 4, and a comprehensive census of 23 groups. The A₅ realization (1924 lines, 0 sorries, 1 axiom) is the crown jewel: the first non-solvable group realized, using Eisenstein's criterion, Sylow theory, Vandermonde discriminant analysis via ℂ embedding and Sophie Germain identity, and the uniqueness of the index-2 subgroup A₅ in S₅. The 3 remaining axioms represent well-known theorems blocked on Mathlib infrastructure (Kronecker-Weber, Shafarevich, Dedekind's theorem).",
-    "implications": "The IGP has profound implications:\n\n1. **ABSOLUTE GALOIS GROUP**: A positive answer would mean the absolute Galois group Gal(ℚ̄/ℚ) surjects onto every finite group — revealing its structure.\n\n2. **GALOIS REPRESENTATIONS**: The IGP is connected to the theory of Galois representations, central to the Langlands program and the proof of Fermat's Last Theorem.\n\n3. **ARITHMETIC GEOMETRY**: Via Grothendieck's programme, the IGP connects to the study of algebraic curves and their fundamental groups.\n\n4. **ALGORITHM DESIGN**: Positive answers might come with explicit polynomial constructions, useful for cryptography and computation.\n\n5. **DIFFERENTIAL GALOIS THEORY**: The analogous question for differential equations (Kovacic's problem) has been solved, suggesting approaches for the classical case.",
+    "implications": "**Theoretical Significance**: The IGP has profound implications:\n\n1. **ABSOLUTE GALOIS GROUP**: A positive answer would mean the absolute Galois group Gal(ℚ̄/ℚ) surjects onto every finite group — revealing its structure.\n\n2. **GALOIS REPRESENTATIONS**: The IGP is connected to the theory of Galois representations, central to the Langlands program and the proof of Fermat's Last Theorem.\n\n3.\n\n**Broader Connections**: **ARITHMETIC GEOMETRY**: Via Grothendieck's programme, the IGP connects to the study of algebraic curves and their fundamental groups.\n\n4. **ALGORITHM DESIGN**: Positive answers might come with explicit polynomial constructions, useful for cryptography and computation.\n\n5. **DIFFERENTIAL GALOIS THEORY**: The analogous question for differential equations (Kovacic's problem) has been solved, suggesting approaches for the classical case.",
     "openQuestions": [
       "Does every finite group appear as a Galois group over ℚ?",
       "Is the Mathieu group M₂₃ realizable over ℚ?",

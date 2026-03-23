@@ -64,6 +64,12 @@
       "Zagier's proof uses the pigeonhole principle via involutions on a finite set of odd cardinality",
       "The connection to Gaussian integers: $p = a^2 + b^2$ iff $p$ splits in $\\mathbb{Z}[i]$",
       "The representation $p = a^2 + b^2$ is essentially unique for primes $p \\equiv 1 \\pmod{4}$ (unique up to order and signs of $a, b$), a fact that follows from unique factorization in $\\mathbb{Z}[i]$ — this connects the theorem to the structure theory of Euclidean domains"
+    ],
+    "prerequisites": [
+      "Modular arithmetic and ZMod from Mathlib",
+      "Nat.Prime and prime characterizations",
+      "Gaussian integers ℤ[i]",
+      "Sum of two squares representation"
     ]
   },
   "sections": [

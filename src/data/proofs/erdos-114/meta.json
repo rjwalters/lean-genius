@@ -68,7 +68,8 @@
       "**Exact length via Gamma function:** $L(z^n - 1) = \\frac{2n \\cdot \\Gamma(1/(2n))^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/n)} \\sim 2n$ as $n \\to \\infty$. For $n = 2$, this gives the Bernoulli lemniscate length $\\approx 7.416$, expressible via elliptic integrals.",
       "**Tao's reduction to finite verification:** Tao (2025) proved global optimality for $n \\geq N_0$, meaning the full conjecture reduces to checking finitely many small $n$. The value of $N_0$ is not explicitly determined.",
       "**Dihedral symmetry as optimality heuristic:** The lemniscate $\\{|z^n - 1| = 1\\}$ has symmetry group $D_n$ (rotation by $2\\pi/n$ and conjugation). Many isoperimetric problems have symmetric optimizers, lending heuristic support to the conjecture."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

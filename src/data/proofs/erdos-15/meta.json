@@ -47,6 +47,12 @@
       "**No absolute convergence**: $\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (diverges by comparison with the logarithmic integral $\\text{Li}(x)$), so any convergence must be conditional",
       "**Zhang (2014) resolves related conjecture**: Bounded gaps ($\\liminf g_n \\le 246$, Maynard) imply $\\sum (-1)^n / g_n$ diverges, since $|1/g_n| \\ge 1/246$ infinitely often",
       "**Empirical evidence**: Partial sums oscillate around $\\approx -1$, but numerical computation cannot prove convergence"
+    ],
+    "prerequisites": [
+      "Prime numbers and the prime number theorem",
+      "Alternating series and conditional convergence",
+      "Analytic number theory",
+      "Distribution of primes in arithmetic progressions"
     ]
   },
   "sections": [
@@ -109,7 +115,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #15 asks whether Σ(-1)^n · n/p_n converges. Tao (2023) proved conditional convergence assuming Hardy–Littlewood. The main difficulty is that n/p_n is not monotonically decreasing (due to twin primes), so the Leibniz test fails, and convergence depends on the deep structure of prime distribution. The formalization captures the state of the art: PNT consequences, non-monotonicity, Tao's conditional result, and related gap series conjectures (one proved via Zhang's bounded gaps, one still open).",
-    "implications": "This problem lies at the intersection of analytic number theory and classical analysis. Its resolution would require understanding the precise cancellation pattern in alternating sums over primes, which in turn requires information about the fine distribution of prime gaps beyond what current unconditional methods provide. The conditional nature of Tao's result highlights the interconnectedness of deep conjectures in prime number theory.",
+    "implications": "**Theoretical Significance**: This problem lies at the intersection of analytic number theory and classical analysis.\n\n**Broader Connections**: Its resolution would require understanding the precise cancellation pattern in alternating sums over primes, which in turn requires information about the fine distribution of prime gaps beyond what current unconditional methods provide. The conditional nature of Tao's result highlights the interconnectedness of deep conjectures in prime number theory.",
     "openQuestions": [
       "Does the series converge unconditionally, without assuming Hardy–Littlewood?",
       "Can the Hardy–Littlewood hypothesis be weakened (e.g., to Elliott–Halberstam or Bombieri–Vinogradov) while preserving convergence?",

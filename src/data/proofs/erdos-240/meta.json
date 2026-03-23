@@ -84,6 +84,14 @@
       "For infinite P, making the primes grow sufficiently fast (e.g., super-exponentially) keeps P-smooth numbers sparse enough for gap divergence",
       "The singleton P = {p} is the simplest case: P-smooth numbers are 1, p, p², ... with gaps growing geometrically as $p^n(p-1)$",
       "Størmer's 1897 theorem (only finitely many consecutive P-smooth pairs for finite P) provides an independent route to gap divergence via Pell equation theory"
+    ],
+    "prerequisites": [
+      "Prime numbers and prime factorization",
+      "Divisibility and smooth numbers",
+      "Set theory (infinite sets, finite sets)",
+      "Real analysis (limits, sequences)",
+      "Polynomial arithmetic (quadratic forms)",
+      "Pólya's theorem on prime factors of polynomials"
     ]
   },
   "sections": [

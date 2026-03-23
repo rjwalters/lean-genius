@@ -98,11 +98,12 @@
       "**Near-resolution of H₅**: The Bradač–Gishboliner–Sudakov result on $K_4$-subdivisions with $\\ge 6$ vertices comes within one vertex of resolving $H_5$, which has exactly 5 vertices",
       "**Bipartite specialization**: $K_{3,3}$ is both bipartite and non-planar (Kuratowski), and bipartite Ramsey theory has its own rich structure (Zarankiewicz, Kővári–Sós–Turán), potentially offering alternative proof strategies",
       "**Symmetry as evidence**: $Q_3$ is vertex-transitive, edge-transitive, and arc-transitive — highly symmetric graphs often have favorable Ramsey properties, providing heuristic evidence for linearity"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "This formalization captures the three concrete open questions of Erdős Problem #567 — whether $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear — alongside partial results that bracket the current state of knowledge. Each graph is constructed explicitly in Lean with proved symmetry and irreflexivity, providing a rigorous foundation for future proof attempts.",
-    "implications": "Resolution of any one case would extend the frontier of known Ramsey size linear graphs beyond the EFRS threshold. The $H_5$ case, in particular, would complement the Bradač–Gishboliner–Sudakov result and potentially complete the classification for $K_4$-subdivisions. A unified resolution of all three would strongly support the general conjecture (Problem #566) that $(2k-3)$-sparsity characterizes Ramsey size linearity.",
+    "implications": "**Theoretical Significance**: Resolution of any one case would extend the frontier of known Ramsey size linear graphs beyond the EFRS threshold.\n\n**Broader Connections**: The $H_5$ case, in particular, would complement the Bradač–Gishboliner–Sudakov result and potentially complete the classification for $K_4$-subdivisions. A unified resolution of all three would strongly support the general conjecture (Problem #566) that $(2k-3)$-sparsity characterizes Ramsey size linearity.",
     "openQuestions": [
       "Can the Bradač–Gishboliner–Sudakov $K_4$-subdivision result be extended to include 5-vertex subdivisions, resolving the $H_5$ case?",
       "Does the vertex-transitivity or bipartiteness of $Q_3$ provide a foothold for proving its Ramsey size linearity?",

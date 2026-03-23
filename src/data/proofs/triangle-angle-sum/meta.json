@@ -56,7 +56,8 @@
       "**Degenerate vs non-degenerate triangles**: The main theorem only requires $p_2 \\neq p_1$ and $p_3 \\neq p_1$, allowing collinear points. For non-degenerate triangles (all three vertices distinct), the result strengthens: each angle is strictly between $0$ and $\\pi$",
       "**Linear arithmetic does the work**: All corollaries follow from $\\alpha + \\beta + \\gamma = \\pi$ by linear algebra — no geometric reasoning needed once the main identity is established. The `linarith` tactic automates this completely",
       "**Angular defect and curvature**: The quantity $\\pi - (\\alpha + \\beta + \\gamma)$ is the *angular defect*, which equals the integral of Gaussian curvature over the triangle (Gauss-Bonnet theorem). For Euclidean space, curvature is zero, so the defect is zero — recovering our theorem"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -125,7 +126,7 @@
   ],
   "conclusion": {
     "summary": "This formalization verifies the triangle angle sum theorem (Wiedijk #27) and derives a rich family of corollaries: angle bounds, third angle determination, the right triangle property, the exterior angle theorem, and degree conversion. Working in an abstract inner product affine space, the result holds for all Euclidean spaces of dimension ≥ 2.",
-    "implications": "The triangle angle sum theorem is the simplest characterization of Euclidean geometry and the starting point for understanding curvature. Its failure in non-Euclidean geometries (Bolyai-Lobachevsky, Riemann) sparked the revolution in differential geometry that led to general relativity. In education, it is typically the first 'non-trivial' theorem students encounter, making it an ideal gateway to formal proof.",
+    "implications": "**Theoretical Significance**: The triangle angle sum theorem is the simplest characterization of Euclidean geometry and the starting point for understanding curvature.\n\n**Broader Connections**: Its failure in non-Euclidean geometries (Bolyai-Lobachevsky, Riemann) sparked the revolution in differential geometry that led to general relativity. In education, it is typically the first 'non-trivial' theorem students encounter, making it an ideal gateway to formal proof.",
     "openQuestions": [
       "Can Lean formalize the converse: if the angle sum of every triangle in a geometry equals π, must the geometry be Euclidean (i.e., satisfy the parallel postulate)?",
       "Can the Gauss-Bonnet theorem be formalized in Lean, connecting the angular defect π - (α + β + γ) to the integral of Gaussian curvature?",

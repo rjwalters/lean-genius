@@ -66,6 +66,12 @@
       "This fills a known Mathlib gap: the generalized mean inequality for negative exponents",
       "The explicit inversion proof (A ≤ B → B⁻¹ ≤ A⁻¹) avoids Mathlib's inv_le_inv_of_le by building the inequality from multiplicative primitives — a technique useful whenever the reciprocal lemma has inconvenient hypotheses",
       "The duality $M_r(z) = M_{-r}(z^{-1})^{-1}$ is an involution on the parameter space: applying it twice returns to $M_r$. This means the entire power mean theory for negative $r$ is formally *redundant* — every statement about $M_r$ for $r < 0$ can be mechanically derived from the corresponding statement for $r > 0$ on inverted values. The proof here exploits this systematically, suggesting a general Lean metaprogram for duality reductions"
+    ],
+    "prerequisites": [
+      "Power mean definitions and positive monotonicity (from parent file)",
+      "Real power function (rpow) arithmetic: inv_rpow, rpow_neg, rpow_mul",
+      "Finset positivity (single_le_sum, sum_pos)",
+      "Jensen's inequality for convex functions"
     ]
   },
   "sections": [

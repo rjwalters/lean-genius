@@ -53,7 +53,8 @@
       "The k=2 classical recovery uses Finset.one_lt_card to extract two distinct elements from a fiber, connecting fiber size >= 2 to non-injectivity",
       "Monotonicity in k is immediate: if some day has >= k people, it certainly has >= k' people for k' <= k",
       "The probability monotonicity follows from set containment: fewer safe assignments for smaller k means higher collision probability"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

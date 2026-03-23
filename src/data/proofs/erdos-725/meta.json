@@ -111,7 +111,8 @@
       "**Regime progression**: The validity of the Erdős-Kaplansky formula has been steadily extended: $(\\log n)^{3/2}$ (1946) → $n^{1/3}$ (1951) → $n^{6/7}$ (2005), with each extension requiring increasingly sophisticated techniques from permanent theory.",
       "**Permanent bridge**: The permanent $\\text{perm}(A) = \\sum_{\\sigma} \\prod_i A_{i,\\sigma(i)}$ naturally counts Latin rectangle extensions. Van der Waerden's conjecture (proved 1981) provides the lower bound on permanents of doubly stochastic matrices that underpins the Godsil-McKay analysis.",
       "**OEIS verification**: Computed values like $L(3,4) = 3456$ (OEIS A001009) provide concrete checks against the asymptotic formula and the formalization's definitions."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

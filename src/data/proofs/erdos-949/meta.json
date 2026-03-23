@@ -53,7 +53,8 @@
       "Continuum case ($|S| = \\mathfrak{c}$): the shift construction $A = ((S \\setminus \\{a\\}) - a/2) \\setminus S$ works because the Sidon property limits $|A \\cap S|$ to at most one element",
       "Sidon sets are NOT sum-free: $\\{1, 2, 4\\}$ is Sidon but $1 + 1 = 2 \\in S$; this corrects a previous unsound axiom in the formalization",
       "The density gap between Sidon and sum-free sets ($\\sqrt{n}$ vs. $n/2$ in $[n]$) is the fundamental obstacle to extending the Sidon technique to the general case"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

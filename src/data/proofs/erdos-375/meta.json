@@ -72,7 +72,8 @@
       "**Small Primes Problem:** Many consecutive composites share small prime factors (2, 3, 5...)",
       "**Best Bound:** k << (log n / log log n)^3 allows handling moderately long composite runs",
       "**Difficulty:** The problem is hard precisely because it implies unproven prime gap bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -141,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #375, known as Grimm's Conjecture, asks whether any k consecutive composite numbers can be assigned distinct prime divisors. The conjecture remains OPEN. Best partial results show it holds for k << (log n / log log n)^3. The problem is deeply connected to prime gaps - proving Grimm's conjecture would imply bounds stronger than Legendre's conjecture.",
-    "implications": "**Connections and Implications**\n\n1. **Prime Gaps:** Grimm implies p_{n+1} - p_n < p_n^{1/2-c}\n\n2. **Legendre's Conjecture:** Would follow from Grimm's conjecture\n\n3. **Hall's Matching:** Equivalent to a bipartite matching condition\n\n4. **Combinatorial Number Theory:** Bridges divisibility and matching theory\n\n5. **Computational Interest:** Verifying specific instances is tractable",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Prime Gaps:** Grimm implies p_{n+1} - p_n < p_n^{1/2-c}\n\n2. **Legendre's Conjecture:** Would follow from Grimm's conjecture\n\n3.\n\n**Broader Connections**: **Hall's Matching:** Equivalent to a bipartite matching condition\n\n4. **Combinatorial Number Theory:** Bridges divisibility and matching theory\n\n5. **Computational Interest:** Verifying specific instances is tractable.",
     "openQuestions": [
       "Is Grimm's conjecture true?",
       "Can the RST bound (log n / log log n)^3 be improved?",

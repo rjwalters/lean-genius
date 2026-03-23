@@ -38,7 +38,8 @@
       "**Ma-Tang upper bound**: $h(n) \\le (2 - \\sqrt{5/2})n \\approx 0.419n$ from explicit counterexample construction (2020)",
       "**Book lemma lower bound**: $h(n) \\ge n/6$ because every dense graph has a triangle with $\\ge n/6$ vertices adjacent to all three vertices",
       "**$K_4$-free variant**: the bound improves to $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ — counterintuitively, forbidding $K_4$ allows *more* good neighbors"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -135,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the complete resolution of Erdős Problem #1034. The Erdős-Faudree conjecture — that every graph with $> n^2/4$ edges contains a triangle with $> (1/2 - o(1))n$ good neighbors — is **false**. Ma and Tang (2020) constructed counterexample families achieving at most $(2 - \\sqrt{5/2})n \\approx 0.419n$ good neighbors per triangle. The book lemma provides a matching lower bound of $h(n) \\geq n/6$. Four theorems were proved by Aristotle (Harmonic): numerical verifications of the Ma-Tang and $K_4$-free constants, the gap bound, and the conjecture negation.",
-    "implications": "**Theoretical Significance**\n\n1. **Limits of Turán-type conjectures**: The disproof shows that dense graph structure is more subtle than initially conjectured — exceeding the Turán threshold forces triangles but cannot force triangle neighborhoods to cover half the graph.\n\n2. **Book lemma as a universal tool**: The lower bound $h(n) \\geq n/6$ via the book lemma demonstrates that common-neighbor counting (a.k.a. codegree arguments) gives non-trivial structural information for any triangle in a dense graph.\n\n3. **$K_4$-free phenomena**: The higher bound $(2\\sqrt{3} - 3)n \\approx 0.464n$ in $K_4$-free graphs reveals that forbidding higher cliques paradoxically *increases* the good neighbor guarantee — the Turán graph $T(n,3)$ distributes edges more uniformly.\n\n4. **Connection to Erdős Problem #905**: The formalized implication $h(n) \\geq 1 \\implies$ Problem #905 places this result in the network of Erdős problems on triangle structure in dense graphs.\n\n5. **Formalization approach**: The axiomatization of the Ma-Tang construction and book lemma separates the combinatorial existence claims from the quantitative verification, allowing Aristotle to handle the numerical components automatically.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Limits of Turán-type conjectures**: The disproof shows that dense graph structure is more subtle than initially conjectured — exceeding the Turán threshold forces triangles but cannot force triangle neighborhoods to cover half the graph.\n\n2. **Book lemma as a universal tool**: The lower bound $h(n) \\geq n/6$ via the book lemma demonstrates that common-neighbor counting (a.k.a.\n\n**Broader Connections**: codegree arguments) gives non-trivial structural information for any triangle in a dense graph.\n\n3. **$K_4$-free phenomena**: The higher bound $(2\\sqrt{3} - 3)n \\approx 0.464n$ in $K_4$-free graphs reveals that forbidding higher cliques paradoxically *increases* the good neighbor guarantee — the Turán graph $T(n,3)$ distributes edges more uniformly.\n\n4. **Connection to Erdős Problem #905**: The formalized implication $h(n) \\geq 1 \\implies$ Problem #905 places this result in the network of Erdős problems on triangle structure in dense graphs.\n\n5. **Formalization approach**: The axiomatization of the Ma-Tang construction and book lemma separates the combinatorial existence claims from the quantitative verification, allowing Aristotle to handle the numerical components automatically.",
     "openQuestions": [
       "What is the exact asymptotic constant $c = \\lim_{n \\to \\infty} h(n)/n$? It lies in $[1/6, 2 - \\sqrt{5/2}] \\approx [0.167, 0.419]$.",
       "Can the lower bound be improved beyond $n/6$ using techniques beyond the book lemma (e.g., flag algebras or regularity lemma)?",
@@ -182,35 +183,50 @@
   ],
   "references": [
     {
-      "authors": ["Jie Ma", "Zixiang Tang"],
+      "authors": [
+        "Jie Ma",
+        "Zixiang Tang"
+      ],
       "title": "On the structure of graphs with given odd girth and large minimum degree",
       "venue": "Journal of Graph Theory",
       "year": 2020,
       "note": "Disproves the Erdős-Faudree conjecture by constructing graphs with $> n^2/4$ edges where every triangle has at most $(2 - \\sqrt{5/2} + o(1))n$ good neighbors; establishes the upper bound $h(n) \\le (2 - \\sqrt{5/2})n$."
     },
     {
-      "authors": ["Paul Erdős", "Ralph Faudree"],
+      "authors": [
+        "Paul Erdős",
+        "Ralph Faudree"
+      ],
       "title": "Problems and results in graph theory",
       "venue": "The Theory and Applications of Graphs (Kalamazoo, MI, 1980), Wiley",
       "year": 1981,
       "note": "Source of the Erdős-Faudree conjecture that every above-Turán graph contains a triangle with $> (1/2 - o(1))n$ good neighbors; Erdős himself noted the conjecture 'may be a bit too optimistic'."
     },
     {
-      "authors": ["Pál Turán"],
+      "authors": [
+        "Pál Turán"
+      ],
       "title": "On an extremal problem in graph theory",
       "venue": "Matematikai és Fizikai Lapok",
       "year": 1941,
       "note": "Establishes Turán's theorem: the maximum triangle-free graph on $n$ vertices has $\\lfloor n^2/4 \\rfloor$ edges (the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$), fixing the threshold above which #1034 operates."
     },
     {
-      "authors": ["David Conlon", "Jacob Fox", "Benny Sudakov"],
+      "authors": [
+        "David Conlon",
+        "Jacob Fox",
+        "Benny Sudakov"
+      ],
       "title": "An approximate version of Sidorenko's conjecture",
       "venue": "Geometric and Functional Analysis",
       "year": 2010,
       "note": "Develops the flag algebra and blow-up construction techniques used in Ma-Tang's extremal graph families; the blow-up methodology for producing graphs maximizing a forbidden-neighborhood parameter is central to the upper bound in #1034."
     },
     {
-      "authors": ["Paul Erdős", "Miklós Simonovits"],
+      "authors": [
+        "Paul Erdős",
+        "Miklós Simonovits"
+      ],
       "title": "Supersaturated graphs and hypergraphs",
       "venue": "Combinatorica",
       "year": 1983,

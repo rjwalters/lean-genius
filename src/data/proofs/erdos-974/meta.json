@@ -70,7 +70,8 @@
       "**Roots of Unity Property:** For ζ = nth root of unity, sₖ = n if n|k, else sₖ = 0. So any n-1 consecutive sums starting away from multiples of n are zero.",
       "**The 'Essentially' Qualifier:** Power sums are symmetric — permuting the zᵢ doesn't change sₖ. For even n, two rotated (n/2)-gons also work.",
       "**Stronger Than Expected:** Erdős speculated 2 tuples might suffice. Tijdeman proved this, showing the constraint is remarkably rigid."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -146,7 +147,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #974 asked whether configurations with infinitely many (n-1)-tuples of consecutive zero power sums must be roots of unity. Tijdeman (1966) proved YES, and showed only TWO such tuples suffice. The characterization depends on n's parity.",
-    "implications": "**Connections and Applications**\n\n1. **Polynomial Theory:** Via Newton's identities, power sums determine the minimal polynomial of the configuration\n\n2. **Algebraic Geometry:** Roots of unity appear as special points on algebraic varieties\n\n3. **Signal Processing:** Power sums relate to discrete Fourier transforms\n\n4. **Number Theory:** Deep connections to cyclotomic fields and Galois theory\n\n5. **Symmetric Functions:** Power sums form a basis for symmetric polynomials",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Polynomial Theory:** Via Newton's identities, power sums determine the minimal polynomial of the configuration\n\n2. **Algebraic Geometry:** Roots of unity appear as special points on algebraic varieties\n\n3.\n\n**Broader Connections**: **Signal Processing:** Power sums relate to discrete Fourier transforms\n\n4. **Number Theory:** Deep connections to cyclotomic fields and Galois theory\n\n5. **Symmetric Functions:** Power sums form a basis for symmetric polynomials.",
     "openQuestions": [
       "Can one tuple suffice for some special n?",
       "Quantitative versions: how close to roots of unity with k zeros?",

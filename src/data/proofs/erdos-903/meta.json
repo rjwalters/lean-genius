@@ -99,7 +99,8 @@
       "**The gap phenomenon**: There are no block designs with t blocks where n < t < n + p — these values are 'forbidden'. This is analogous to spectral gaps in graph theory (e.g., the gap between Turán graphs and the next achievable edge count).",
       "**Broken projective planes**: The only designs with t in [n+p, n+⌈1.148p⌉) come from breaking one line of a projective plane into singletons. This yields exactly t = n + q blocks (replacing one (q+1)-block by q+1 singletons).",
       "**Fisher's inequality connection**: For uniform block designs (2-designs), Fisher's inequality b ≥ v is equivalent to de Bruijn-Erdős. Fisher's proof uses the incidence matrix NN^T = (r-λ)I + λJ and rank arguments."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -161,7 +162,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #903 asks whether block designs on n = p² + p + 1 points with more than n blocks must have at least n + p blocks. The answer is YES, proved by Erdős-Fowler-Sós-Wilson (1985). The projective plane achieves the minimum t = n, and there is a gap: no designs exist with t in (n, n+p). The formalization captures this via axiomatized theorems and a proved summary combining all three key results.",
-    "implications": "This result reveals the rigid structure of block designs near the de Bruijn-Erdős minimum. The gap phenomenon shows that slightly exceeding the minimum forces a significant jump in the number of blocks — a form of combinatorial rigidity. This connects to the broader theme of *stability* in extremal combinatorics: extremal configurations are often not merely optimal but isolated, with nearby configurations forced to be far away. The result has implications for finite geometry (structure of near-projective-plane designs), coding theory (bounds on error-correcting codes from design parameters), and the classification of linear spaces.",
+    "implications": "**Theoretical Significance**: This result reveals the rigid structure of block designs near the de Bruijn-Erdős minimum. The gap phenomenon shows that slightly exceeding the minimum forces a significant jump in the number of blocks — a form of combinatorial rigidity.\n\n**Broader Connections**: This connects to the broader theme of *stability* in extremal combinatorics: extremal configurations are often not merely optimal but isolated, with nearby configurations forced to be far away. The result has implications for finite geometry (structure of near-projective-plane designs), coding theory (bounds on error-correcting codes from design parameters), and the classification of linear spaces.",
     "openQuestions": [
       "What are all achievable values of t for general n? (Only known for small cases like n = 7)",
       "Can the constant c ≈ 1.148 in the EFSW strong bound be improved?",

@@ -32,7 +32,8 @@
       "The difficulty lies in controlling the *local* structure of the sumset. Pigeonhole arguments show that gaps exist and are numerous ($\\sim 3n^2/2$ total gaps), but converting gaps into isolated elements requires that gaps are not all clustered together — they must be well-distributed throughout the sumset.",
       "The problem connects to deeper questions about the additive energy of Sidon sets and the distribution of gaps in sumsets. Random Sidon-like sets would have isolated elements in proportion to $n^2$, suggesting the conjecture is true, but deterministic Sidon sets could potentially have more structured gap patterns.",
       "The infinite version is related but distinct: for infinite Sidon sets $A \\subset \\mathbb{N}$, the truncations $A \\cap [1,N]$ are finite Sidon sets of growing size ($\\sim \\sqrt{N}$), so the finite conjecture would imply unbounded isolated counts for truncations. However, the infinite version might be provable with weaker methods."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -94,7 +95,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #152 in 109 lines of Lean 4, encoding the isolated element counting problem for Sidon sumsets with both weak (unbounded) and strong ($\\gg |A|^2$) forms, the exact sumset size identity, range bounds, pigeonhole existence, and the infinite version. Zero sorries; structural results axiomatized.",
-    "implications": "Resolution would reveal the fine structure of Sidon sumsets beyond mere counting. The strong form would establish that Sidon sumsets are inherently 'lacunary' — not just sparse on average, but with many isolated points. This connects to the theory of $B_2$ sequences, additive energy bounds, and the broader question of how arithmetic structure (the Sidon property) constrains the distribution of sums.",
+    "implications": "**Theoretical Significance**: Resolution would reveal the fine structure of Sidon sumsets beyond mere counting.\n\n**Broader Connections**: The strong form would establish that Sidon sumsets are inherently 'lacunary' — not just sparse on average, but with many isolated points. This connects to the theory of $B_2$ sequences, additive energy bounds, and the broader question of how arithmetic structure (the Sidon property) constrains the distribution of sums.",
     "openQuestions": [
       "Does $I(A) \\to \\infty$ as $|A| \\to \\infty$ over Sidon sets? This is the weak form, still open.",
       "Is $I(A) \\geq c|A|^2$ for some absolute $c > 0$? This is the strong form. What is the optimal constant $c$?",

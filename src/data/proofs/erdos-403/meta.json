@@ -68,6 +68,9 @@
       "**Dual Results for Powers of 3:** Lin's analysis for $3^m$ is complete: exactly $m \\in \\{0,1,2,3,6\\}$ work, with the gap at $m=4,5$ reflecting the 3-adic structure of factorial sums",
       "**Axiom-Theorem Architecture:** The formalization cleanly separates what is computable (explicit witnesses via `native_decide`) from what requires deep analysis (Lin's bounds, axiomatized), making the proof structure pedagogically transparent",
       "**Problem 404 Generalization:** The function $f(a,p) = \\sup\\{k : \\exists S \\ni a,\\ p^k \\mid \\sum_{x \\in S} x!\\}$ unifies Problems 403 and 404; Problem 403 is the instance $f(2,2) \\leq 254$, while the general $f(a,p)$ remains open for most values"
+    ],
+    "prerequisites": [
+      "Mathematical prerequisites vary by topic"
     ]
   },
   "sections": [
@@ -137,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #403 is SOLVED. The equation 2^m = Σaᵢ! (distinct aᵢ) has only finitely many solutions, with 2^7 = 2! + 3! + 5! = 128 being maximal. Lin (1976) proved this via 2-adic analysis, showing the 2-adic valuation is bounded by 254. Frankl obtained the result independently. For powers of 3, there are exactly 5 solutions.",
-    "implications": "**Number-Theoretic Significance**\n\n1. **Factorial Structure:** Sums of distinct factorials have limited divisibility properties\n\n2. **Growth Rates:** Factorial growth dominates exponential, severely limiting solutions\n\n3. **2-adic Methods:** The proof relies on analyzing 2-adic valuations\n\n4. **Generalization:** Problem 404 asks about f(a,p) for general primes\n\n5. **Computational Aspect:** Small solutions can be verified explicitly",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Factorial Structure:** Sums of distinct factorials have limited divisibility properties\n\n2.\n\n**Broader Connections**: **Growth Rates:** Factorial growth dominates exponential, severely limiting solutions\n\n3.\n\n**Broader Connections**: **2-adic Methods:** The proof relies on analyzing 2-adic valuations\n\n4. **Generalization:** Problem 404 asks about f(a,p) for general primes\n\n5. **Computational Aspect:** Small solutions can be verified explicitly.",
     "openQuestions": [
       "What are the exact values of f(a,p) for general a and prime p beyond the Lin bounds (Erdős Problem 404)?",
       "Can Lin's 2-adic bound of 254 be sharpened — is the true maximum of v₂(Σa!) significantly smaller?",

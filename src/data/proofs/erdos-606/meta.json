@@ -33,7 +33,8 @@
       "The Szemerédi-Trotter bound implies that for 'sparse' configurations ($\\le \\sqrt{n}$ points per line), the number of lines must be $\\Omega(n^2/\\log n)$, leaving only 'dense' configurations to fill the lower range",
       "Grid configurations provide a bridge between the collinear extreme ($f = 1$) and general position ($f = \\binom{n}{2}$), with line counts varying by $\\Theta(m^3)$ as grid parameters change",
       "The Erdős-Salamon result is a 'spectrum theorem' — analogous to inverse problems in additive combinatorics, where one characterizes which structural parameters are realizable"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -116,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #606 completely characterizes which line counts are achievable for $n$ points in the plane. The Erdős-Salamon theorem (1988) shows that for sufficiently large $n$, the achievable set is $\\{1\\} \\cup [n, \\binom{n}{2}] \\setminus \\{\\binom{n}{2}-1, \\binom{n}{2}-3\\}$. The two gaps arise from a number-theoretic constraint: collinearities reduce line counts by $\\binom{k}{2}-1 \\ge 2$, making reductions of 1 and 3 impossible.",
-    "implications": "**Theoretical Significance**\n\n1. **Discrete Geometry**: Provides a complete answer to one of the most natural counting questions about points and lines, resolving a problem that connects to the Sylvester-Gallai tradition going back to 1893.\n\n2. **Spectrum Theorems**: The result is a prototype for 'spectrum problems' in combinatorics — characterizing which parameter values are realizable. Similar questions arise for graph properties, hypergraph colorings, and additive structures.\n\n3. **Incidence Geometry**: The proof weaves together Beck's theorem and the Szemerédi-Trotter bound, demonstrating how modern incidence-geometric tools solve classical problems.\n\n4. **Algebraic Methods**: The constructions achieving intermediate line counts use algebraic curves and lattice structures, showing the interplay between geometry and algebra.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Discrete Geometry**: Provides a complete answer to one of the most natural counting questions about points and lines, resolving a problem that connects to the Sylvester-Gallai tradition going back to 1893.\n\n2. **Spectrum Theorems**: The result is a prototype for 'spectrum problems' in combinatorics — characterizing which parameter values are realizable.\n\n**Broader Connections**: Similar questions arise for graph properties, hypergraph colorings, and additive structures.\n\n3. **Incidence Geometry**: The proof weaves together Beck's theorem and the Szemerédi-Trotter bound, demonstrating how modern incidence-geometric tools solve classical problems.\n\n4. **Algebraic Methods**: The constructions achieving intermediate line counts use algebraic curves and lattice structures, showing the interplay between geometry and algebra.",
     "openQuestions": [
       "What is the exact threshold $N_0$ for which the Erdős-Salamon characterization holds? The proof gives an existence result without computing the constant.",
       "For small $n$ (say $n \\le 20$), what is the complete list of achievable values? The problem becomes finite-combinatorial but computationally challenging.",

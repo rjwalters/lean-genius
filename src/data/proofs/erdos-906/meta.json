@@ -66,7 +66,8 @@
       "**Why exp fails**: All derivatives of e^z equal e^z, which is never zero. So the zero set is empty for any subsequence.",
       "**The density requirement**: Dense means the closure is ℂ. Every neighborhood must contain a zero of some f^{(nₖ)}. This is very strong.",
       "**Historical mystery**: Erdős claimed this was solved but gave no reference. The attributed paper by Barth-Schneider doesn't contain this result."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -149,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #906 on dense zeros of derivative subsequences. The question asks whether a transcendental entire function exists such that for ANY subsequence of derivative orders, the union of zeros is dense. Polynomials trivially satisfy this (high derivatives vanish), but exp fails (no zeros). Erdős claimed this was solved before 1972 but no proof is known, so we treat it as open.",
-    "implications": "This problem connects to:\n\n1. **Complex analysis**: Distribution of zeros of entire functions\n2. **Derivative theory**: How zeros of successive derivatives relate\n3. **Topology**: Density conditions on sets in ℂ\n4. **Weierstrass factorization**: Constructing functions with prescribed zeros\n5. **Pólya's shire theorem**: Zeros of polynomial derivatives stay in convex hull",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Complex analysis**: Distribution of zeros of entire functions\n2. **Derivative theory**: How zeros of successive derivatives relate\n3.\n\n**Broader Connections**: **Topology**: Density conditions on sets in ℂ\n4. **Weierstrass factorization**: Constructing functions with prescribed zeros\n5. **Pólya's shire theorem**: Zeros of polynomial derivatives stay in convex hull.",
     "openQuestions": [
       "Does there exist a transcendental entire f with the dense derivative zeros property?",
       "What construction could produce such a function?",

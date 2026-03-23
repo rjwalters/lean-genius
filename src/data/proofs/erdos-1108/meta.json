@@ -63,7 +63,8 @@
       "**Why this is hard**: The rapid growth of factorials (n! >> n) makes the structure of A very different from polynomial sequences, yet hard to analyze.",
       "**Brindza-Erdős insight**: For fixed number of terms, there's a finite check. But the unbounded case remains open.",
       "**Mahler's dichotomy**: Small bases (k <= 4) give infinitely many squares, while large bases (k >= 5) seem to give very few. Factorials are 'in between'."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -132,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1108, two OPEN questions about finite sums of distinct factorials. Question 1 asks whether only finitely many k-th powers (k >= 2) can be expressed as such sums. Question 2 asks the same for powerful numbers. The Brindza-Erdős bound (1991) provides a partial result: for fixed number of terms, the largest factorial index is bounded. The problem connects to Mahler's similar questions about sums of powers.",
-    "implications": "This problem connects several areas:\n\n1. **Diophantine equations**: Equations involving factorials and powers\n2. **Analytic number theory**: Growth rates of factorials vs powers\n3. **Computational number theory**: Searching for solutions\n4. **Transcendence theory**: Mahler's original motivations",
+    "implications": "**Theoretical Significance**: This problem connects several areas:\n\n1. **Diophantine equations**: Equations involving factorials and powers\n2.\n\n**Broader Connections**: **Analytic number theory**: Growth rates of factorials vs powers\n3. **Computational number theory**: Searching for solutions\n4. **Transcendence theory**: Mahler's original motivations.",
     "openQuestions": [
       "Are there only finitely many perfect squares in factorial sums?",
       "Are there only finitely many powerful numbers in factorial sums?",
@@ -187,7 +188,10 @@
   ],
   "references": [
     {
-      "authors": ["B. Brindza", "P. Erdős"],
+      "authors": [
+        "B. Brindza",
+        "P. Erdős"
+      ],
       "title": "On some Diophantine problems involving powers and factorials",
       "journal": "Journal of the Australian Mathematical Society",
       "volume": "51",
@@ -198,7 +202,9 @@
       "note": "Proves the key partial result: for any fixed number of terms r, if n₁! + ⋯ + nᵣ! is powerful then n₁ ≤ C(r)."
     },
     {
-      "authors": ["K. Mahler"],
+      "authors": [
+        "K. Mahler"
+      ],
       "title": "Note on hypothesis K of Hardy and Littlewood",
       "journal": "Journal of the London Mathematical Society",
       "volume": "11",
@@ -209,7 +215,9 @@
       "note": "Studies finite sums of powers of a base k and squares; Mahler's results on k ≤ 4 vs k ≥ 5 directly motivate the factorial analog in Problem #1108."
     },
     {
-      "authors": ["S. S. Pillai"],
+      "authors": [
+        "S. S. Pillai"
+      ],
       "title": "On a^x - b^y = c",
       "journal": "Journal of the Indian Mathematical Society",
       "volume": "2",
@@ -218,10 +226,14 @@
       "note": "Foundational result on exponential Diophantine equations; the finiteness techniques are prototypes for the methods applied to factorial-power intersections."
     },
     {
-      "authors": ["A. Granville"],
+      "authors": [
+        "A. Granville"
+      ],
       "title": "On the number of solutions to the generalized Fermat equation",
       "booktitle": "Number Theory: Fourth Conference of the Canadian Number Theory Association",
-      "editors": ["K. Dilcher"],
+      "editors": [
+        "K. Dilcher"
+      ],
       "series": "CMS Conference Proceedings",
       "volume": "15",
       "year": 1995,
@@ -229,7 +241,10 @@
       "note": "Surveys the ABC conjecture's implications for Diophantine equations of the form x^p + y^q = z^r; the same circle of ideas governs why factorial sums are expected to avoid perfect powers."
     },
     {
-      "authors": ["P. Erdős", "R. Obláth"],
+      "authors": [
+        "P. Erdős",
+        "R. Obláth"
+      ],
       "title": "Über diophantische Gleichungen der Form n! = x^p ± y^p und n! ± m! = x^p",
       "journal": "Acta Szeged",
       "volume": "8",

@@ -70,7 +70,8 @@
       "**Multiplicative number theory connection**: Sárközy's proof uses techniques from multiplicative number theory, counting representations of integers as products.",
       "**Squarefree variant**: Restricting to squarefree numbers might simplify the problem, as their prime factorizations are simpler.",
       "**Connection to Problem 121**: Related multiplicative constraints appear in Erdős Problem #121."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -125,7 +126,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #888, which asks for the maximum size of A ⊆ {1,...,n} such that ordered quadruples with square product satisfy ad = bc. The exact answer is OPEN, but we capture the known bounds: Sárközy's o(n) upper bound and the prime construction giving n/log n lower bound.",
-    "implications": "This problem connects combinatorial number theory with multiplicative structure. The constraint ad = bc relates to geometric progressions and imposes strong restrictions on how elements can interact multiplicatively. Understanding the exact maximum would reveal deep facts about the distribution of square-free numbers and prime factorizations.",
+    "implications": "**Theoretical Significance**: This problem connects combinatorial number theory with multiplicative structure.\n\n**Broader Connections**: The constraint ad = bc relates to geometric progressions and imposes strong restrictions on how elements can interact multiplicatively. Understanding the exact maximum would reveal deep facts about the distribution of square-free numbers and prime factorizations.",
     "openQuestions": [
       "What is the exact asymptotic formula for maxValidSize(n)?",
       "Is there a construction better than primes achieving ω(n/log n)?",

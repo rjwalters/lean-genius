@@ -62,6 +62,13 @@
       "The problem is open even when I₂ has a single element",
       "A natural generalization asks about k intervals for any k",
       "Connected to Egyptian fraction representations and unit fractions"
+    ],
+    "prerequisites": [
+      "Rational number arithmetic (ℚ)",
+      "Harmonic series and partial sums",
+      "Egyptian fraction representations",
+      "Set finiteness (Set.Finite in Lean 4)",
+      "Finset.sum over intervals"
     ]
   },
   "sections": [

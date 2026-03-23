@@ -58,7 +58,8 @@
       "**Known small values**: R₃(3) = 4 and R₃(4) = 13 are known exactly. These small values give no hint about asymptotic behavior.",
       "**4-colour evidence**: The doubly exponential lower bound for 4 colours suggests the 2-colour case might also have tower height 2.",
       "**Bounds gap**: For n = 10, the lower bound ~2^{100} and upper bound 2^{1024} differ by a factor of 2^{924} — illustrating the massive uncertainty."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -134,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #564, an OPEN question with a $500 prize asking whether R₃(n) ≥ 2^{2^{cn}} for some c > 0. We axiomatize the hypergraph Ramsey function, state the known Erdős-Hajnal-Rado bounds, and define tower functions to clarify the growth rate hierarchy. The problem asks whether hypergraph Ramsey numbers have 'tower height' 2 (doubly exponential) or remain closer to tower height 1 (singly exponential).",
-    "implications": "A resolution would fundamentally characterize the growth rate of hypergraph Ramsey numbers. A positive answer (YES) would show they're doubly exponential, with profound implications for combinatorics and theoretical computer science. A negative answer would suggest an interesting 'intermediate' growth rate between singly and doubly exponential.",
+    "implications": "**Theoretical Significance**: A resolution would fundamentally characterize the growth rate of hypergraph Ramsey numbers.\n\n**Broader Connections**: A positive answer (YES) would show they're doubly exponential, with profound implications for combinatorics and theoretical computer science. A negative answer would suggest an interesting 'intermediate' growth rate between singly and doubly exponential.",
     "openQuestions": [
       "Does R₃(n) ≥ 2^{2^{cn}} hold for some c > 0? ($500 prize)",
       "What is the exact tower height of R_k(n) for general k?",

@@ -33,7 +33,8 @@
       "**Narrow growth window**: If both conjectures hold, $h(x)$ grows faster than $(\\log x)^c$ for some $c > 0$ but slower than $\\log x$. This places $h(x)$ in a narrow band — much faster than $\\log\\log x$ but sub-logarithmic.",
       "**Pigeonhole ceiling**: Since gaps among primes $p \\leq x$ satisfy $d_n \\leq x$, at most $x$ distinct positive values exist, giving the trivial bound $h(x) \\leq x$. The conjectured $o(\\log x)$ is vastly stronger.",
       "**Connection to Poisson model**: Gallagher (1976) showed normalized prime gaps follow a Poisson distribution on average. If gaps were truly independent Poisson, $h(x)$ would grow like $\\log x / \\log\\log x$ — between the two conjectured bounds."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -95,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #852 formalizes two open questions about the growth rate of maximal distinct-gap runs among consecutive primes. The Lean file includes genuine proofs of gap positivity, monotonicity, downward-closure, h(x) ≥ 1, h-monotonicity, and Brun's divergence in filter form. Deep results (Brun's sieve, pigeonhole, the conjectures) are axiomatized.",
-    "implications": "Resolution would quantify the local variability of prime gaps — a fundamental question at the intersection of sieve theory and probabilistic number theory. The conjectured $o(\\log x)$ upper bound would mean prime gaps become repetitive at the $\\log x$ scale, while the $(\\log x)^c$ lower bound would ensure substantial diversity persists. This connects to Maier's phenomenon (unexpected irregularities in prime distribution), the Hardy–Littlewood $k$-tuples conjecture (which gap patterns occur), and Gallagher's Poisson model for normalized gaps.",
+    "implications": "**Theoretical Significance**: Resolution would quantify the local variability of prime gaps — a fundamental question at the intersection of sieve theory and probabilistic number theory.\n\n**Broader Connections**: The conjectured $o(\\log x)$ upper bound would mean prime gaps become repetitive at the $\\log x$ scale, while the $(\\log x)^c$ lower bound would ensure substantial diversity persists. This connects to Maier's phenomenon (unexpected irregularities in prime distribution), the Hardy–Littlewood $k$-tuples conjecture (which gap patterns occur), and Gallagher's Poisson model for normalized gaps.",
     "openQuestions": [
       "Is $h(x) > (\\log x)^c$ for some constant $c > 0$? Even $c = 1/2$ would be significant.",
       "Is $h(x) = o(\\log x)$? If so, what is the correct order — perhaps $\\log x / \\log\\log x$?",

@@ -63,7 +63,8 @@
       "**S-unit equation connection:** The equation $2^k = \\sum_{i \\in S} 3^i$ is an S-unit equation with $S = \\{2, 3\\}$. The Evertse-Schlickewei-Schmidt theorem guarantees finitely many non-degenerate solutions to general S-unit equations.",
       "**ABC conjecture implication:** An effective ABC conjecture would force the radical of $2^k - \\sum 3^{a_i}$ to grow, eventually requiring all three ternary digits.",
       "**Saye's massive computation (2022):** Verified no new examples for $n \\leq 5.9 \\times 10^{21}$ using incremental ternary digit extraction — avoiding full computation of $2^n$, only tracking its base-3 digits."
-    ]
+    ],
+    "prerequisites": []
   },
   "leanFile": {
     "imports": [

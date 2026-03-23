@@ -79,6 +79,13 @@
       "**Heawood Connection:** Chromatic number on surfaces is Θ(√n)",
       "**Girth Role:** High-girth graphs achieve lower bound",
       "**Planar Case:** z(S_0) is bounded (constant)"
+    ],
+    "prerequisites": [
+      "Basic graph theory (cliques, independent sets, chromatic number)",
+      "Topological graph theory (surface genus, graph embeddings, Euler formula)",
+      "Cochromatic number and cochromatic coloring",
+      "Asymptotic notation (Theta, Big-O, Big-Omega)",
+      "Heawood number and the map coloring problem on surfaces"
     ]
   },
   "sections": [
@@ -165,7 +172,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #759 asks for the growth rate of z(S_n), the maximum cochromatic number on genus-n surfaces. Gimbel (1986) showed √n/log n ≪ z(S_n) ≪ √n. Gimbel-Thomassen (1997) proved z(S_n) ≍ √n/log n, showing the lower bound is tight.",
-    "implications": "**Connections and Impact**\n\n1. **Chromatic vs Cochromatic:** Different growth rates (√n vs √n/log n)\n\n2. **Heawood Number:** Maximum chromatic number is Θ(√n)\n\n3. **Topological Graph Theory:** Surface embedding constraints\n\n4. **Girth:** High-girth graphs achieve extremal cochromatic numbers\n\n5. **Structural Graph Theory:** Relations between coloring variants",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Chromatic vs Cochromatic:** Different growth rates (√n vs √n/log n)\n\n2. **Heawood Number:** Maximum chromatic number is Θ(√n)\n\n3.\n\n**Broader Connections**: **Topological Graph Theory:** Surface embedding constraints\n\n4. **Girth:** High-girth graphs achieve extremal cochromatic numbers\n\n5. **Structural Graph Theory:** Relations between coloring variants.",
     "openQuestions": [
       "Optimal constants in the growth rate",
       "Cochromatic number on non-orientable surfaces",

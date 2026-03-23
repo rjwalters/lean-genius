@@ -72,7 +72,8 @@
       "FTC via `integral_eq_sub_of_hasDerivAt_of_le` requires HasDerivAt only on the open interval Ioo 0 T, avoiding the issue that enstrophy_ode needs t > 0",
       "GlobalNSSolution2DRegular adds ContinuousOn P as a minimal regularity requirement for FTC integration of the enstrophy ODE",
       "The total dissipation bound ∫₀ᵀ 2νP ≤ E(0) is immediate from the energy identity and E(T) ≥ 0: all enstrophy dissipated over any finite time comes from the initial enstrophy"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -120,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "This formalization answers the open question affirmatively: all three quantitative results — inter-time decay, integrated energy identity, and total dissipation bound — can be formalized in Lean 4 with 0 axioms and 0 sorries. The key tools are the integrating factor method (for decay between arbitrary times) and the FTC via `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le` (for the integrated identity).",
-    "implications": "**For 2D fluid mechanics**: The enstrophy_uniform_decay theorem provides a precise Lyapunov function argument: g(t) = E(t)·exp(2νμ₁t) is nonincreasing, certifying exponential stability of the zero state.\n\n**For Mathlib**: The correct FTC lemma for enstrophy integration is `integral_eq_sub_of_hasDerivAt_of_le` (not the simpler `integral_eq_sub_of_hasDerivAt`), because the enstrophy ODE holds for t > 0 but not necessarily at t = 0. This version requires ContinuousOn on the closed interval [0,T] and HasDerivAt only on the open interval (0,T).\n\n**For Navier-Stokes research**: These results form part of the infrastructure for more advanced 2D results, such as proving the Ladyzhenskaya inequality in Lean 4 and connecting 2D global regularity to Fourier space energy cascades.\n\n**For the 3D problem**: The 2D results demonstrate that the enstrophy framework works cleanly in Lean 4. The 3D case differs because vortex stretching prevents the Poincaré bound P ≥ μ₁E from giving exponential decay.",
+    "implications": "**Theoretical Significance**: **For 2D fluid mechanics**: The enstrophy_uniform_decay theorem provides a precise Lyapunov function argument: g(t) = E(t)·exp(2νμ₁t) is nonincreasing, certifying exponential stability of the zero state.\n\n**For Mathlib**: The correct FTC lemma for enstrophy integration is `integral_eq_sub_of_hasDerivAt_of_le` (not the simpler `integral_eq_sub_of_hasDerivAt`), because the enstrophy ODE holds for t > 0 but not necessarily at t = 0.\n\n**Broader Connections**: This version requires ContinuousOn on the closed interval [0,T] and HasDerivAt only on the open interval (0,T).\n\n**For Navier-Stokes research**: These results form part of the infrastructure for more advanced 2D results, such as proving the Ladyzhenskaya inequality in Lean 4 and connecting 2D global regularity to Fourier space energy cascades.\n\n**For the 3D problem**: The 2D results demonstrate that the enstrophy framework works cleanly in Lean 4. The 3D case differs because vortex stretching prevents the Poincaré bound P ≥ μ₁E from giving exponential decay.",
     "openQuestions": [
       "Can the Ladyzhenskaya inequality ‖u‖₄ ≤ C‖u‖₂^{1/2}‖∇u‖₂^{1/2} be formalized in Lean 4 using Mathlib's Sobolev space infrastructure?",
       "Can the 2D Navier-Stokes existence theorem be stated and proved axiom-free? (Requires weak solutions, Galerkin approximation, compactness arguments)",

@@ -65,7 +65,8 @@
       "**Iterated triangle inequality:** The extension to finite sums $\\|\\sum x_i\\| \\leq \\sum \\|x_i\\|$ (proved via `norm_sum_le`) is the workhorse of convergence proofs — it bounds partial sums of series, controls truncation errors, and underpins the Weierstrass M-test.",
       "**Why $p \\geq 1$ matters:** The triangle inequality holds in $\\ell^p$ spaces only for $p \\geq 1$ (Minkowski's inequality). For $0 < p < 1$, the '$p$-norm' satisfies $\\|x+y\\|_p^p \\leq \\|x\\|_p^p + \\|y\\|_p^p$ instead (a quasi-metric). This threshold is why $L^p$ spaces for $p < 1$ have fundamentally different topology (no non-trivial continuous linear functionals).",
       "**Ultrametric strengthening:** In $p$-adic analysis and non-Archimedean fields, the strong triangle inequality $|x+y| \\leq \\max(|x|, |y|)$ holds — a strictly stronger condition. Ultrametric spaces have the remarkable property that every triangle is isoceles with the unequal side being the shortest."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

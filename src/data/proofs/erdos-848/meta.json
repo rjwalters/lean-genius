@@ -82,6 +82,11 @@
       "Sawhney proved the extremal sets are exactly the mod-25 residue classes — a rigid structural result showing the construction is unique up to the 7 ↔ 18 symmetry",
       "The 'sufficiently large N' threshold in Sawhney's result means finite exceptions may exist; determining the exact threshold remains open",
       "The choice of prime 5 is optimal: 25 = 5² is the smallest prime square for which x² ≡ -1 (mod p²) has solutions (since 5 ≡ 1 (mod 4)), giving the densest residue class achieving the property"
+    ],
+    "prerequisites": [
+      "Number theory: squarefree numbers, prime factorization, density 6/π²",
+      "Modular arithmetic: quadratic residues, solutions of x² ≡ -1 (mod p²)",
+      "Extremal combinatorics: maximum set sizes under product constraints"
     ]
   },
   "sections": [

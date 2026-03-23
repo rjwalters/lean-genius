@@ -98,7 +98,8 @@
       "**ℕ vs ℤ coefficients**: Bézout's identity for naturals $a, b \\in \\mathbb{N}$ requires integer coefficients $x, y \\in \\mathbb{Z}$ because one coefficient is typically negative ($\\gcd(12, 8) = 12 \\cdot 1 + 8 \\cdot (-1)$). The integer version handles negative inputs directly",
       "**The Diophantine criterion is a full iff**: The solvability of $ax + by = c$ is completely characterized by the divisibility condition $\\gcd(a,b) \\mid c$. The constructive direction scales Bézout coefficients: if $\\gcd = ax_0 + by_0$ and $c = k \\cdot \\gcd$, then $x = kx_0$, $y = ky_0$",
       "**RSA depends on Bézout**: In RSA, the private key $d$ satisfies $ed \\equiv 1 \\pmod{\\phi(n)}$, which is found by applying the extended Euclidean algorithm to $e$ and $\\phi(n)$. The security of RSA rests on the computational difficulty of factoring $n$, but key generation is efficient precisely because of Bézout's identity"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -181,7 +182,7 @@
   ],
   "conclusion": {
     "summary": "This 238-line formalization of Bézout's identity (Wiedijk #60) builds substantially on Mathlib's GCD infrastructure: it provides Bézout's identity for both ℕ and ℤ, proves the coprimality characterization as a full iff, derives modular inverse existence, establishes the complete Diophantine solvability criterion, and verifies six numerical examples. With 0 sorries and multiple original proofs (coprimality, modular inverse, Diophantine criterion), it demonstrates how a foundational number-theoretic result connects to cryptography and equation solving.",
-    "implications": "Bézout's identity is the computational backbone of number theory. Its formalization enables downstream proofs of Euclid's lemma, unique factorization, and the Chinese Remainder Theorem. The modular inverse theorem is directly applicable to formalizing RSA key generation. The Diophantine solvability criterion provides a decision procedure for linear Diophantine equations that could be extended to systems of congruences.",
+    "implications": "**Theoretical Significance**: Bézout's identity is the computational backbone of number theory. Its formalization enables downstream proofs of Euclid's lemma, unique factorization, and the Chinese Remainder Theorem.\n\n**Broader Connections**: The modular inverse theorem is directly applicable to formalizing RSA key generation. The Diophantine solvability criterion provides a decision procedure for linear Diophantine equations that could be extended to systems of congruences.",
     "openQuestions": [
       "Can the extended Euclidean algorithm itself be formalized as a computable function with a correctness proof?",
       "Can Euclid's lemma be proved formally using the coprime_iff_linear_combination theorem?",

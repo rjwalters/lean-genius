@@ -64,6 +64,14 @@
       "Balog's exponent 4/(9√e) ≈ 0.2695 improved Erdős's original n^{1/3} bound",
       "The Dickman function ρ(u) governs the density of smooth numbers",
       "The problem connects to Goldbach-type questions about additive representations"
+    ],
+    "prerequisites": [
+      "Prime numbers and prime factorization",
+      "Divisibility and Euclid's lemma",
+      "Smooth numbers (y-smooth integers)",
+      "Analytic number theory (Dickman function, Selberg-Delange method)",
+      "Real analysis (rpow, exp, sqrt, log in Lean/Mathlib)",
+      "Asymptotic notation (o(1), big-O)"
     ]
   },
   "sections": [

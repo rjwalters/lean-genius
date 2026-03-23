@@ -84,7 +84,8 @@
       "**LIL drives both bounds**: The law of the iterated logarithm governs |P_n(t,1)| ≈ √(2n log log n), providing both the lower bound (M_n ≥ |P_n(t,1)|) and the upper bound heuristic",
       "**Narrow gap**: Both bounds are n^{1/2±o(1)}, so the true answer is 'very close to √n' — the open question is about the exact iterated logarithm correction",
       "**Trigonometric vs algebraic**: Salem-Zygmund gives √(n log n) for trig polynomials; the conjectured √n for algebraic polynomials reflects the non-uniform covariance structure"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #524 is OPEN. It asks for the precise order of magnitude of the maximum of random ±1 polynomials on [-1,1]. The known bounds (n^{1/2-ε} from below, √(n/log log n) i.o. from above) suggest the answer is close to √n, but the exact iterated logarithm correction remains unknown.",

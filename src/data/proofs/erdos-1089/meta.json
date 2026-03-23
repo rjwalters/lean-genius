@@ -166,6 +166,13 @@
       "Lower bound: g_d(n) ≫ d^{n-1} (Erdős, 'easy') establishes polynomial growth",
       "Upper bound: g_d(n) ≤ c^{d^{1-b_n}} (Erdős-Straus) — stretched-exponential, creating a huge gap",
       "The ratio g_d(n)/d^{n-1} is bounded below (genuinely proved) but convergence is unknown"
+    ],
+    "prerequisites": [
+      "Discrete and combinatorial geometry: point configurations and distances",
+      "Euclidean space ℝ^d and the distance function",
+      "The distinct distances problem (Erdős 1946) and its higher-dimensional variants",
+      "Threshold functions and extremal combinatorics",
+      "Filter-based limits in Lean (Filter.Tendsto)"
     ]
   },
   "crossReferences": [
@@ -207,7 +214,7 @@
   ],
   "conclusion": {
     "summary": "The threshold function g_d(n) captures how many points in ℝ^d guarantee n distinct distances. The cube construction shows g_d(d+1) > 2^d, while Erdős proved g_d(n) ≫ d^{n-1}. The Erdős-Straus upper bound g_d(n) ≤ c^{d^{1-b_n}} leaves a vast gap between polynomial and stretched-exponential growth. Whether g_d(n)/d^{n-1} converges as d → ∞ remains the central open question.",
-    "implications": "This connects to the famous distinct distances problem in the plane (Guth-Katz 2015) and understanding how distance structure changes with dimension. The focus on fixed n as d → ∞ differs from typical questions about n points in fixed dimension, probing the fundamental geometry of high-dimensional Euclidean space.",
+    "implications": "**Theoretical Significance**: This connects to the famous distinct distances problem in the plane (Guth-Katz 2015) and understanding how distance structure changes with dimension.\n\n**Broader Connections**: The focus on fixed n as d → ∞ differs from typical questions about n points in fixed dimension, probing the fundamental geometry of high-dimensional Euclidean space.",
     "openQuestions": [
       "Does lim_{d→∞} g_d(n)/d^{n-1} exist for each fixed n ≥ 2?",
       "What is the true growth rate of g_d(n): closer to d^{n-1} or to the stretched exponential?",

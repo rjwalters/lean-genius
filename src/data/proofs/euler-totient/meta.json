@@ -69,7 +69,8 @@
       "**Coprimality Is Essential:** The counterexample $2^{\\varphi(4)} \\equiv 0 \\not\\equiv 1 \\pmod{4}$ shows the `Units` hypothesis cannot be dropped — zero divisors in $\\mathbb{Z}/n\\mathbb{Z}$ are not in the group.",
       "**Full Fermat Form:** The unconditional $a^p = a$ (not just $a^{p-1} = 1$) works for all $a$, including $a \\equiv 0$. This uses the Frobenius endomorphism of finite fields.",
       "**RSA Foundation:** The encryption scheme $m \\mapsto m^e \\pmod{n}$, $c \\mapsto c^d \\pmod{n}$ with $ed \\equiv 1 \\pmod{\\varphi(n)}$ relies directly on Euler's theorem for correctness."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -146,7 +147,7 @@
   ],
   "conclusion": {
     "summary": "The formalization presents Euler's theorem $a^{\\varphi(n)} = 1$ as a one-line consequence of Lagrange's theorem applied to the unit group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$. Fermat's little theorem is derived as a 3-line corollary via $\\varphi(p) = p-1$. The formalization includes totient function properties ($\\varphi(p) = p-1$, $\\varphi(p^k) = p^{k-1}(p-1)$), verified examples, and a counterexample demonstrating the coprimality requirement. All proofs are complete with zero sorries.",
-    "implications": "**Implications and Applications**\n\n1. **RSA Cryptography:** Euler's theorem guarantees that RSA decryption inverts encryption: $m^{ed} \\equiv m \\pmod{n}$ when $ed \\equiv 1 \\pmod{\\varphi(n)}$.\n\n2. **Primality Testing:** Fermat's test checks if $a^{n-1} \\equiv 1 \\pmod{n}$. Failure implies $n$ is composite (but Carmichael numbers are false positives).\n\n3. **Discrete Logarithms:** The order of elements in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ divides $\\varphi(n)$, fundamental to Diffie-Hellman key exchange.\n\n4. **Chinese Remainder Theorem:** The multiplicativity $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n)=1$ connects Euler's theorem to CRT.\n\n5. **Mobius Inversion:** The identity $n = \\sum_{d \\mid n} \\varphi(d)$ connects the totient to Möbius inversion and the theory of arithmetic functions.",
+    "implications": "**Theoretical Significance**: **Implications and Applications**\n\n1. **RSA Cryptography:** Euler's theorem guarantees that RSA decryption inverts encryption: $m^{ed} \\equiv m \\pmod{n}$ when $ed \\equiv 1 \\pmod{\\varphi(n)}$.\n\n2. **Primality Testing:** Fermat's test checks if $a^{n-1} \\equiv 1 \\pmod{n}$.\n\n**Broader Connections**: Failure implies $n$ is composite (but Carmichael numbers are false positives).\n\n3. **Discrete Logarithms:** The order of elements in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ divides $\\varphi(n)$, fundamental to Diffie-Hellman key exchange.\n\n4. **Chinese Remainder Theorem:** The multiplicativity $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n)=1$ connects Euler's theorem to CRT.\n\n5. **Mobius Inversion:** The identity $n = \\sum_{d \\mid n} \\varphi(d)$ connects the totient to Möbius inversion and the theory of arithmetic functions.",
     "openQuestions": [
       "Can the formalization include Carmichael's theorem ($a^{\\lambda(n)} \\equiv 1$ where $\\lambda$ is the Carmichael function)?",
       "Can the multiplicative property $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n) = 1$ be formalized?",

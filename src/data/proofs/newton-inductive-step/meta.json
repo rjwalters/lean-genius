@@ -63,6 +63,11 @@
       "The proof strategy (multiply by D > 0, then verify a polynomial identity) reduces the problem to a single linear_combination call that combines six derived equations — Lean's tactic handles the resulting degree-8 polynomial verification automatically",
       "The multiplier D = k^3(k+1)(r+1) is the minimal positive clearing factor: k^3 eliminates c^3 via h1_cube, (k+1) eliminates d via h2', and (r+1) eliminates a via h3'",
       "This technique extends to any inequality involving a fixed number of consecutive binomial coefficients: the absorption identity always introduces one new parameter per adjacent pair, and the resulting polynomial identity is algorithmically verifiable"
+    ],
+    "prerequisites": [
+      "Binomial coefficients and their properties (absorption identities)",
+      "Real arithmetic and polynomial inequalities",
+      "The linear_combination tactic for polynomial identity verification"
     ]
   },
   "sections": [

@@ -56,7 +56,8 @@
       "**Euler's Criterion:** $\\left(\\frac{a}{p}\\right) \\equiv a^{(p-1)/2} \\pmod{p}$. This converts the Legendre symbol from a quadratic solvability question into a simple exponentiation — computable in $O(\\log p)$ multiplications by fast exponentiation.",
       "**Multiplicativity:** $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$. Combined with reciprocity and the supplements $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$ and $\\left(\\frac{2}{p}\\right) = (-1)^{(p^2-1)/8}$, this determines $\\left(\\frac{a}{p}\\right)$ for any $a$.",
       "**Higher Reciprocity:** Quadratic reciprocity generalizes to cubic ($\\mathbb{Z}[\\omega]$), quartic ($\\mathbb{Z}[i]$), and arbitrary $n$th-power reciprocity laws via class field theory — the deepest strand in algebraic number theory, from Gauss through Artin to Langlands."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

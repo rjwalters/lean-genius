@@ -63,7 +63,8 @@
       "**Alexander's exponential trick**: The real version is defeated by the map $b \\mapsto X e^{b/X^2}$, which converts additive Sidon structure (all sums distinct) into multiplicative separation ($|ab - cd| \\ge 1$). This shows the integer and real problems have fundamentally different behavior",
       "**Logarithmic bridge**: $\\log(ab) = \\log a + \\log b$ converts multiplicative Sidon to additive Sidon, connecting to the rich theory of $B_2$ sequences and Erdős Problem #30 (\\$1000 prize for the $\\sqrt{n} + O(n^\\varepsilon)$ bound)",
       "**$r$-fold hierarchy**: The conjectured bound $\\pi(n) + O(n^{(r+1)/(2r)})$ gives $3/4$ for pairwise products, $2/3$ for triple products, and approaches $1/2$ as $r \\to \\infty$---showing that higher-order distinctness constraints progressively restrict the set size"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -132,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #425 studies multiplicative Sidon sets---subsets of $\\{1,\\ldots,n\\}$ where all pairwise products are distinct. Erdős (1968) proved tight bounds $F(n) = \\pi(n) + \\Theta(n^{3/4}(\\log n)^{-3/2})$, showing the primes form the core and approximately $n^{3/4}(\\log n)^{-3/2}$ composites can be added. Whether the constant converges is open. For the real version, Erdős's conjecture $\\max |A| = o(x)$ was disproved by Alexander using an exponential lifting of additive Sidon sets.",
-    "implications": "This problem connects multiplicative and additive combinatorics through the logarithmic bridge. The precise determination of the secondary term's constant would require understanding the fine structure of product collisions among composites. Alexander's construction demonstrates that the integer and real settings have fundamentally different extremal behavior, with the real case allowing linear-sized sets.",
+    "implications": "**Theoretical Significance**: This problem connects multiplicative and additive combinatorics through the logarithmic bridge.\n\n**Broader Connections**: The precise determination of the secondary term's constant would require understanding the fine structure of product collisions among composites. Alexander's construction demonstrates that the integer and real settings have fundamentally different extremal behavior, with the real case allowing linear-sized sets.",
     "openQuestions": [
       "Does the constant $c$ in $F(n) = \\pi(n) + (c + o(1)) n^{3/4}(\\log n)^{-3/2}$ exist?",
       "What is the correct bound for $r$-fold multiplicative Sidon sets? Is $|A| \\le \\pi(n) + O(n^{(r+1)/(2r)})$?",

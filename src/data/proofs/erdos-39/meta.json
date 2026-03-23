@@ -66,6 +66,12 @@
       "**The √N barrier**: For finite Sidon sets, max size ≈ √N. For infinite sets, achieving √N growth uniformly is impossible.",
       "**Ruzsa's breakthrough**: His algebraic construction using finite fields gives growth rate N^{√2-1} ≈ N^{0.414}, the current record.",
       "**The gap**: Between Ruzsa's 0.414 and the target 0.5-ε lies the $500 question. No construction has improved the exponent since 1998."
+    ],
+    "prerequisites": [
+      "Sidon sets (B₂ sequences) and pairwise distinct sums",
+      "Counting functions and asymptotic growth rates",
+      "Probabilistic method in combinatorics",
+      "Basic analytic number theory (square root barriers)"
     ]
   },
   "sections": [

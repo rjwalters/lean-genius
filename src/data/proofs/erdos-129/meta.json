@@ -45,7 +45,8 @@
       "The formalization separates the ordered-pair edge representation ({p : Fin N × Fin N // p.1 < p.2}) from the coloring function, making the bijection with undirected edges explicit and avoiding double-counting",
       "Monotonicity (more vertices help) and anti-monotonicity in colors (more colors make avoidance easier) are structural properties that constrain R(n;k,r) and enable inductive arguments — they are axiomatized here as the proofs require embedding arguments not yet in Mathlib",
       "Girão's observation about formulation ambiguity is mathematically significant: the 'all colors simultaneously' vs 'exists a color' interpretations give different Ramsey functions, and the correct interpretation affects which bounds are known"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

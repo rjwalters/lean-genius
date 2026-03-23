@@ -73,7 +73,8 @@
       "**Conjecture:** Σ t₂(n) = o(x²/(log x)^c) for 0 < c < log 2",
       "**Factorial Special:** t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n",
       "**Selfridge (n=10):** Strict decrease property verified"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -149,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #394 is PARTIALLY SOLVED with key questions OPEN. Erdős-Hall (1978) proved Σ t₂(n) ≪ (log log log x / log log x)x², confirming Erdős's o(x²) conjecture. The stronger conjecture o(x²/(log x)^c) for c < log 2 and the hierarchy conjecture remain open. Special factorial cases are understood.",
-    "implications": "This problem connects divisibility theory with asymptotic analysis. The appearance of triple-log factors shows how slowly the sum grows compared to trivial estimates. The lower bound from primes (t₂(p) = p-1) is fundamental.",
+    "implications": "**Theoretical Significance**: This problem connects divisibility theory with asymptotic analysis.\n\n**Broader Connections**: The appearance of triple-log factors shows how slowly the sum grows compared to trivial estimates. The lower bound from primes (t₂(p) = p-1) is fundamental.",
     "openQuestions": [
       "Prove or disprove: Σ t₂(n) ≪ x²/(log x)^c for some c > 0",
       "Determine the optimal c in the Erdős-Hall conjecture",

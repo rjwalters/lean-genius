@@ -34,7 +34,8 @@
       "Legendre's conjecture (there is always a prime between consecutive squares) would imply at most one such $q$ exists for large $k$, giving sufficient control.",
       "Chebyshev's theorem gives $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) \\sim n$, so asymptotically the ratio $\\text{lcm}(1,\\ldots,p_{k+1})/\\text{lcm}(1,\\ldots,p_k) \\approx e^{p_{k+1}-p_k}$.",
       "The formalization uses `Finset.lcm` over `Finset.range` and `Nat.nth` for the prime enumeration, with small cases verified via `native_decide`."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

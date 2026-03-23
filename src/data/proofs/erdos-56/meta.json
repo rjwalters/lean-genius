@@ -70,6 +70,12 @@
       "**Why the conjecture fails**: For certain k and N near the boundary (N close to p_k), one can carefully add numbers coprime to all first k primes without creating k+1 pairwise coprimes.",
       "**The large-N regime**: When N >> p_k^2, there are so many multiples of each prime that the boundary effects disappear, and the conjecture holds.",
       "**Connection to extremal combinatorics**: This is a Turán-type problem asking for the maximum size of a set avoiding a forbidden configuration (k+1 pairwise coprimes)."
+    ],
+    "prerequisites": [
+      "Divisibility and the divisor function",
+      "Set theory and infinite sets",
+      "Extremal combinatorics",
+      "Number-theoretic density"
     ]
   },
   "sections": [
@@ -111,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #56, which asks whether the set of multiples of the first k primes is the largest k-weakly divisible subset of {1,...,N}. The answer is NO in general—Ahlswede and Khachatrian found counterexamples—but YES when N is sufficiently large. We state the disproof as an axiom and verify basic properties of the definitions.",
-    "implications": "This result illustrates how combinatorial extremal problems can have surprising phase transitions. The 'obvious' construction isn't always optimal, especially near boundaries. The techniques developed by Ahlswede and Khachatrian connect to intersection theorems in combinatorics (Erdős-Ko-Rado type results).",
+    "implications": "**Theoretical Significance**: This result illustrates how combinatorial extremal problems can have surprising phase transitions.\n\n**Broader Connections**: The 'obvious' construction isn't always optimal, especially near boundaries. The techniques developed by Ahlswede and Khachatrian connect to intersection theorems in combinatorics (Erdős-Ko-Rado type results).",
     "openQuestions": [
       "What is the smallest k for which the conjecture fails?",
       "Can we characterize exactly when M_k(N) is optimal?",

@@ -73,7 +73,8 @@
       "**Problem #364 Connection**: The stronger conjecture that no three consecutive integers can all be powerful would rule out APs with common difference 1.",
       "**Asymptotic Count**: The number of powerful numbers up to x is (ζ(3/2)/ζ(3))·√x, a classical result connecting to the Riemann zeta function.",
       "**Computational Barrier**: Unlike some Erdős problems, this one cannot be settled by checking finitely many cases — the question is inherently about infinitary behavior."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -149,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #938 remains open. The formalization defines powerful numbers, their ordered enumeration, and the arithmetic progression condition for consecutive terms. The main conjecture — that only finitely many consecutive powerful triples form APs — is axiomatized along with connections to Problem #364 and the asymptotic distribution of powerful numbers. A derived finiteness result for AP differences is proved from the main conjecture.",
-    "implications": "Resolution of this problem would illuminate the fine structure of powerful number distribution. A positive answer (finitely many APs) would show that local regularity becomes impossible for large consecutive powerful numbers. A negative answer (infinitely many APs) would reveal surprising hidden arithmetic structure. Progress on this problem would likely require new techniques in multiplicative number theory beyond current asymptotic methods.",
+    "implications": "**Theoretical Significance**: Resolution of this problem would illuminate the fine structure of powerful number distribution. A positive answer (finitely many APs) would show that local regularity becomes impossible for large consecutive powerful numbers.\n\n**Broader Connections**: A negative answer (infinitely many APs) would reveal surprising hidden arithmetic structure. Progress on this problem would likely require new techniques in multiplicative number theory beyond current asymptotic methods.",
     "openQuestions": [
       "Are there infinitely many three-term APs among consecutive powerful numbers?",
       "What is the largest known index k where consecutive powerful numbers form an AP?",

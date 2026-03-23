@@ -33,7 +33,8 @@
       "**Landau-Ramanujan density decay**: Sums of two squares have density C/√(log x), making the pattern increasingly sparse—yet the conjecture predicts it still repeats at some translate",
       "**Balanced partition existential**: Part 2 asks whether some (not all) balanced prime partition yields P-smooth numbers with the property—an existential question that may be easier than Part 1",
       "**Growth rate dichotomy**: The CRT gives t_n ≤ e^{O(n)} for squarefree numbers; if t_n > exp(n^c) for some c > 0, it means the minimal translation is essentially as large as the CRT bound allows"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -95,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem 675 investigates the translation property—a form of quasi-periodicity—for three classes of number-theoretic sets. Brun's sieve and the Chinese Remainder Theorem establish the property for B-free sets (including squarefree numbers), but the questions for sums of two squares, balanced prime partitions, and the growth rate of minimal translations remain open. The three parts probe different aspects: Part 1 tests whether multiplicative conditions beyond non-divisibility force translation; Part 2 asks an existential question about prime partitions; Part 3 quantifies the non-periodicity of the squarefree pattern.",
-    "implications": "A positive answer to Part 1 would reveal hidden quasi-periodic structure in sums of two squares despite their decaying density, connecting to Dirichlet characters and automorphic forms. Part 2 would establish new connections between prime partition theory and multiplicative number theory. Part 3 would quantify the local complexity of the squarefree pattern, with implications for sieve theory and the distribution of squarefree numbers in short intervals.",
+    "implications": "**Theoretical Significance**: A positive answer to Part 1 would reveal hidden quasi-periodic structure in sums of two squares despite their decaying density, connecting to Dirichlet characters and automorphic forms.\n\n**Broader Connections**: Part 2 would establish new connections between prime partition theory and multiplicative number theory. Part 3 would quantify the local complexity of the squarefree pattern, with implications for sieve theory and the distribution of squarefree numbers in short intervals.",
     "openQuestions": [
       "Do sums of two squares have the translation property?",
       "Can the Fermat characterization (even exponents of p ≡ 3 mod 4) be exploited for a CRT-like argument?",

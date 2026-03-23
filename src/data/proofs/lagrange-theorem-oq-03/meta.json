@@ -73,7 +73,8 @@
       "**The $A_4$ counterexample** shows the converse of Lagrange fails even for solvable groups when the coprimality condition is dropped: $6 \\mid 12$ but $\\gcd(6, 2) = 2 \\neq 1$",
       "**Normal Hall subgroups are unique**: conjugacy ($K = gHg^{-1}$) plus normality ($gHg^{-1} = H$) forces $K = H$, the group-theoretic analogue of unique Sylow $p$-subgroups",
       "**Schur-Zassenhaus** handles normal Hall subgroups without solvability: $N \\trianglelefteq G$ with $\\gcd(|N|, [G:N]) = 1$ always has a complement $K$ with $NK = G$ and $N \\cap K = \\{1\\}$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -163,7 +164,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides a comprehensive treatment of Hall's theorem as the definitive partial converse of Lagrange's theorem for solvable groups. The 373-line file proves all structural consequences (0 sorries) while axiomatizing the three deep results requiring induction on group order (Hall existence, Hall conjugacy, A₄ non-existence). The Schur-Zassenhaus complement results are fully proved from Mathlib.",
-    "implications": "Hall's theorem is foundational for the structure theory of solvable groups, providing a complete description of which subgroup orders are realized. The Schur-Zassenhaus complement gives semidirect product decompositions $G \\cong N \\rtimes K$ for normal Hall subgroups. In applications, Hall subgroups appear in the classification of finite solvable groups (Hall's theorem is the solvable-group analogue of the Sylow theorems) and in computational group theory where finding Hall subgroups is a key algorithmic primitive.",
+    "implications": "**Theoretical Significance**: Hall's theorem is foundational for the structure theory of solvable groups, providing a complete description of which subgroup orders are realized.\n\n**Broader Connections**: The Schur-Zassenhaus complement gives semidirect product decompositions $G \\cong N \\rtimes K$ for normal Hall subgroups. In applications, Hall subgroups appear in the classification of finite solvable groups (Hall's theorem is the solvable-group analogue of the Sylow theorems) and in computational group theory where finding Hall subgroups is a key algorithmic primitive.",
     "openQuestions": [
       "Can Hall existence be proved constructively in Lean using derived series induction?",
       "Can the A₄ counterexample be computationally verified using native_decide on the explicit group table?",

@@ -59,7 +59,8 @@
       "**The #101 ↔ #102 bridge**: If $h_c(n) \\to \\infty$, then for large $n$ some line carries $\\ge 5$ points whenever there are $cn^2$ four-point lines, contradicting a no-five-collinear hypothesis — thus the four-point line count must be $o(n^2)$, settling Problem #101",
       "**Cross-product collinearity**: The formalization uses $(q_1 - p_1)(r_2 - p_2) = (r_1 - p_1)(q_2 - p_2)$ as the collinearity test, equivalent to vanishing of the $2 \\times 2$ determinant formed by displacement vectors — numerically exact over $\\mathbb{R}$",
       "**Open divergence question**: Neither divergence ($h_c(n) \\to \\infty$) nor the existence of bounded counterexamples ($h_c(n) = O(1)$) has been established — the problem sits at the boundary between what Szemerédi–Trotter can and cannot resolve"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

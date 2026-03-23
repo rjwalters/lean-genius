@@ -86,7 +86,8 @@
       "The n=1 case is trivially provable: M₁(K) ≅ K, and every K-algebra endomorphism of K is the identity",
       "Center(Mₙ(K)) = K·I is proved by testing commutativity against standard basis matrices E_ij",
       "Combined with the parent file's minpoly.algEquiv_eq, Skolem-Noether shows that ALL minpoly-preserving automorphisms of Mₙ(K) are exactly the inner ones — there are no 'exotic' automorphisms"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -148,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "This formalization fully proves the Skolem-Noether theorem for matrix algebras Mₙ(K) using an elementary matrix units approach — no Artin-Wedderburn theory needed. It defines inner automorphisms, proves they form a group, proves the main theorem that all K-algebra automorphisms are inner, derives consequences including Aut_K(Mₙ(K)) ≅ PGLₙ(K), proves Center(Mₙ(K)) = K·I, and characterizes the conjugation kernel. The file has 0 axioms, 0 sorries, and 26 theorems/lemmas.",
-    "implications": "**Mathematical Significance**\n\n1. **Completes the automorphism picture**: The parent file showed that inner automorphisms preserve minpoly. Skolem-Noether shows there are no other automorphisms, so minpoly preservation is an exact characterization.\n\n2. **PGL structure**: The theorem implies Aut_K(Mₙ(K)) ≅ PGLₙ(K), connecting abstract algebra automorphisms to projective geometry. The conjugation kernel theorem makes this explicit.\n\n3. **Central simple algebra theory**: Skolem-Noether is the gateway to deeper results about Brauer groups, crossed products, and division algebras.\n\n4. **Elementary proof**: The formalization demonstrates that Artin-Wedderburn theory is NOT needed for the matrix algebra case — the elementary matrix units approach gives a self-contained proof using only basic linear algebra.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Completes the automorphism picture**: The parent file showed that inner automorphisms preserve minpoly. Skolem-Noether shows there are no other automorphisms, so minpoly preservation is an exact characterization.\n\n2.\n\n**Broader Connections**: **PGL structure**: The theorem implies Aut_K(Mₙ(K)) ≅ PGLₙ(K), connecting abstract algebra automorphisms to projective geometry. The conjugation kernel theorem makes this explicit.\n\n3. **Central simple algebra theory**: Skolem-Noether is the gateway to deeper results about Brauer groups, crossed products, and division algebras.\n\n4. **Elementary proof**: The formalization demonstrates that Artin-Wedderburn theory is NOT needed for the matrix algebra case — the elementary matrix units approach gives a self-contained proof using only basic linear algebra.",
     "openQuestions": [
       "Can the more general Skolem-Noether theorem for arbitrary central simple algebras be formalized?",
       "Can the Brauer group of a field be formalized, building on the Skolem-Noether theorem?",

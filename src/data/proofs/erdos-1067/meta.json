@@ -71,7 +71,8 @@
       "**Soukup's ladder-tree construction**: The counterexample builds graphs from ladder structures over trees, creating high chromatic number through global structure while keeping each infinitely connected piece locally countably colorable",
       "**ZFC independence for restricted variants**: When $|V(G)| = \\aleph_1$, the answer depends on set-theoretic axioms (Komjáth) — one of the most striking examples of independence in combinatorics",
       "**Robustness of the negative answer**: Thomassen's edge-connectivity variant shows the phenomenon persists even under weaker connectivity notions, and three independent constructions (Komjáth, Soukup, Bowler-Pitz) confirm it is not an artifact of one technique"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -133,7 +134,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the complete resolution of Erdős Problem #1067. The Erdős-Hajnal question (1966) — whether every graph with $\\chi = \\aleph_1$ contains an infinitely connected subgraph with $\\chi = \\aleph_1$ — is **false**. Three independent counterexamples are axiomatized (Soukup 2015 in ZFC, Bowler-Pitz 2024 elementary, Thomassen 2017 edge variant). The main theorem `erdos_1067_answer` uses `push_neg` tactic reasoning to formally negate the universal statement. A striking side result: for graphs with exactly $\\aleph_1$ vertices, the answer is independent of ZFC.",
-    "implications": "**Theoretical Significance**\n\n1. **Decoupling of chromatic number and connectivity**: The disproof shows that the 'hard-to-color core' of a graph need not be well-connected — chromatic complexity can arise from global, distributed structure rather than dense local components.\n\n2. **Set-theoretic independence in combinatorics**: Komjáth's result that the $|V| = \\aleph_1$ variant is independent of ZFC is a rare example where a natural graph-theoretic statement is undecidable in standard set theory, connecting to Shelah's work on graph coloring and forcing.\n\n3. **Menger's theorem in the infinite**: The formalization of infinite connectivity via disjoint paths (equivalent to infinite vertex connectivity by the infinite Menger theorem) demonstrates how classical structural results extend to the uncountable setting with surprising consequences.\n\n4. **Robustness across connectivity notions**: Thomassen's edge-connectivity counterexample shows the negative answer is not an artifact of the vertex-disjoint path definition — even the weaker edge-disjoint notion fails.\n\n5. **Multiple construction techniques**: The existence of three independent proofs (consistency, ZFC, elementary) illustrates different approaches to building combinatorial counterexamples at uncountable scale.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Decoupling of chromatic number and connectivity**: The disproof shows that the 'hard-to-color core' of a graph need not be well-connected — chromatic complexity can arise from global, distributed structure rather than dense local components.\n\n2. **Set-theoretic independence in combinatorics**: Komjáth's result that the $|V| = \\aleph_1$ variant is independent of ZFC is a rare example where a natural graph-theoretic statement is undecidable in standard set theory, connecting to Shelah's work on graph coloring and forcing.\n\n3.\n\n**Broader Connections**: **Menger's theorem in the infinite**: The formalization of infinite connectivity via disjoint paths (equivalent to infinite vertex connectivity by the infinite Menger theorem) demonstrates how classical structural results extend to the uncountable setting with surprising consequences.\n\n4. **Robustness across connectivity notions**: Thomassen's edge-connectivity counterexample shows the negative answer is not an artifact of the vertex-disjoint path definition — even the weaker edge-disjoint notion fails.\n\n5. **Multiple construction techniques**: The existence of three independent proofs (consistency, ZFC, elementary) illustrates different approaches to building combinatorial counterexamples at uncountable scale.",
     "openQuestions": [
       "For which graph classes $\\mathcal{G}$ does the Erdős-Hajnal property hold? Characterize structural conditions forcing infinitely connected subgraphs to inherit high chromatic number.",
       "What is the maximum $\\chi(H)$ that can be guaranteed for infinitely connected subgraphs $H$ of a graph $G$ with $\\chi(G) = \\aleph_1$? Is there any non-trivial lower bound?",
@@ -193,35 +194,47 @@
   ],
   "references": [
     {
-      "authors": ["Lajos Soukup"],
+      "authors": [
+        "Lajos Soukup"
+      ],
       "title": "Infinite graphs with no odd cycles of a given length",
       "venue": "European Journal of Combinatorics",
       "year": 2015,
       "note": "Constructs the ZFC counterexample to the Erdős-Hajnal question, building ladder-tree graphs with χ = ℵ₁ but no infinitely connected subgraph of uncountable chromatic number"
     },
     {
-      "authors": ["Nathan Bowler", "Steffen Pitz"],
+      "authors": [
+        "Nathan Bowler",
+        "Steffen Pitz"
+      ],
       "title": "A simpler proof of the Erdős-Hajnal conjecture for forests",
       "venue": "arXiv",
       "year": 2024,
       "note": "Provides a more elementary construction of the counterexample to Erdős Problem #1067, accessible without specialized set-theoretic forcing machinery"
     },
     {
-      "authors": ["Péter Komjáth"],
+      "authors": [
+        "Péter Komjáth"
+      ],
       "title": "A note on uncountably chromatic graphs",
       "venue": "Combinatorica",
       "year": 2013,
       "note": "Proves the consistency of a counterexample (via forcing) and establishes that for graphs with exactly ℵ₁ vertices, the Erdős-Hajnal question is independent of ZFC"
     },
     {
-      "authors": ["Carsten Thomassen"],
+      "authors": [
+        "Carsten Thomassen"
+      ],
       "title": "Graph decomposition with applications to subdivisions and path systems modulo k",
       "venue": "Journal of Graph Theory",
       "year": 2017,
       "note": "Shows the analogous question for infinite edge-connectivity is also false, strengthening the negative answer and demonstrating robustness across connectivity notions"
     },
     {
-      "authors": ["Paul Erdős", "András Hajnal"],
+      "authors": [
+        "Paul Erdős",
+        "András Hajnal"
+      ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Hungarica",
       "year": 1966,

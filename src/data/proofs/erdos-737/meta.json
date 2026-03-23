@@ -68,6 +68,12 @@
       "**Strengthening EHS:** Thomassen's result strengthens the EHS existence result.",
       "**Infinite Graph Theory:** This connects to deep results about uncountable structures.",
       "**De Bruijn-Erdős:** Finite subgraphs determine chromatic number, explaining why ℵ₁ matters."
+    ],
+    "prerequisites": [
+      "Graph theory basics (vertices, edges, cycles, chromatic number)",
+      "Cardinal arithmetic (ℵ₀, ℵ₁, uncountable cardinals)",
+      "SimpleGraph type in Mathlib",
+      "Compactness arguments in infinite combinatorics"
     ]
   },
   "sections": [
@@ -122,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #737 was solved by Thomassen in 1983. If a graph G has chromatic number ℵ₁, then there exists an edge e such that G contains a cycle of length n through e for all sufficiently large n. This strengthens the EHS result that such graphs contain all large cycles.",
-    "implications": "The result shows that uncountable chromatic number forces very strong cycle structure. Not only do all large cycles exist, but they can be 'routed' through a single edge. This connects chromatic theory to cycle theory in infinite graphs.",
+    "implications": "**Theoretical Significance**: The result shows that uncountable chromatic number forces very strong cycle structure.\n\n**Broader Connections**: Not only do all large cycles exist, but they can be 'routed' through a single edge. This connects chromatic theory to cycle theory in infinite graphs.",
     "openQuestions": [
       "Is every edge of a $\\chi = \\aleph_1$ graph contained in all large cycles, or are 'universal cycle edges' rare? Thomassen's proof shows at least one exists, but the structure of the set of such edges is unknown.",
       "What is the optimal threshold $N(G)$ such that the universal edge lies in every cycle of length $\\geq N$? Is $N$ bounded by a function of the girth or other graph invariants?",

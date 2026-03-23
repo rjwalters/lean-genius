@@ -74,7 +74,8 @@
       "**König's Cofinality Bound:** $\\text{cf}(2^{\\mathfrak{c}}) > \\mathfrak{c}$ rules out $\\aleph_\\omega$ (since $\\text{cf}(\\aleph_\\omega) = \\omega \\leq \\mathfrak{c}$) and other singular cardinals with small cofinality. This is the only non-trivial ZFC constraint on $\\beth_2$'s aleph-index.",
       "**Lean4 Ordinal Pitfall:** `omega` does NOT work for `Ordinal` arithmetic; use `rw [Order.succ_eq_add_one]; norm_num`. `Cardinal.beth_succ` requires the argument in successor form — literal numerals need explicit conversion.",
       "**Universe Pinning:** All `Cardinal` statements must use `Cardinal.{0}` to avoid universe metavariable issues in Lean4. This is a formalization concern, not a mathematical one — but essential for correct type-checking."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -129,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves all ZFC-provable facts about |𝒫(ℝ)|: the power set formula (= 2^𝔠), Cantor's strict inequality (|ℝ| < |𝒫(ℝ)|), the beth representation (= ℶ₂), and the aleph lower bound (ℵ₁ < |𝒫(ℝ)|). The file compiles with 0 sorries and 1 axiom (König's constraint). The proofs navigate Lean4's ordinal arithmetic limitations by using Order.succ_eq_add_one + norm_num instead of omega.",
-    "implications": "**What this establishes**:\n\n**Definitive ZFC answer**: |𝒫(ℝ)| = 2^𝔠 = 2^(2^ℵ₀) = ℶ₂. This is the cleanest possible answer — no set-theoretic independence, no choice of axioms beyond ZFC.\n\n**Independence boundary**: The aleph-index of ℶ₂ is where ZFC independence begins. CH says ℶ₁ = ℵ₁, GCH then gives ℶ₂ = ℵ₂. But both CH and GCH are independent of ZFC.\n\n**König's constraint**: cf(2^𝔠) > 𝔠 is a genuine ZFC theorem that rules out many potential values (e.g., ℵ_ω, ℵ_{ω·2}, etc.), showing the boundary between provable and independent.",
+    "implications": "**Theoretical Significance**: **What this establishes**:\n\n**Definitive ZFC answer**: |𝒫(ℝ)| = 2^𝔠 = 2^(2^ℵ₀) = ℶ₂. This is the cleanest possible answer — no set-theoretic independence, no choice of axioms beyond ZFC.\n\n**Independence boundary**: The aleph-index of ℶ₂ is where ZFC independence begins.\n\n**Broader Connections**: CH says ℶ₁ = ℵ₁, GCH then gives ℶ₂ = ℵ₂. But both CH and GCH are independent of ZFC.\n\n**König's constraint**: cf(2^𝔠) > 𝔠 is a genuine ZFC theorem that rules out many potential values (e.g., ℵ_ω, ℵ_{ω·2}, etc.), showing the boundary between provable and independent.",
     "openQuestions": [
       "Is |𝒫(ℝ)| = ℵ₂? (Independent of ZFC — consistent both ways)",
       "What is the exact aleph-index of ℶ₂? (Easton: essentially anything with cofinality > 𝔠)",

@@ -66,7 +66,8 @@
       "**Easy Lower Bound:** The n^(1/3) independent set bound is essentially optimal.",
       "**Probabilistic Methods:** Alon-Rödl used sophisticated probabilistic constructions.",
       "**Connection to #553:** Related Ramsey problems appear in Problem #553."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -121,7 +122,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #925 was disproved by Alon and Rödl in 2005. The answer is NO: non-Ramsey graphs on n vertices need not have independent sets larger than ~n^(1/3). The multicolor Ramsey number R(3,3,m) grows like m³/polylog(m), not like m^(3-c) for any c > 0.",
-    "implications": "The result shows that the trivial n^(1/3) bound for independent sets in non-Ramsey graphs is essentially optimal. The precise bounds on R(3,3,m) involve only logarithmic factors, not polynomial improvements. This connects Ramsey theory to extremal graph theory.",
+    "implications": "**Theoretical Significance**: The result shows that the trivial n^(1/3) bound for independent sets in non-Ramsey graphs is essentially optimal.\n\n**Broader Connections**: The precise bounds on R(3,3,m) involve only logarithmic factors, not polynomial improvements. This connects Ramsey theory to extremal graph theory.",
     "openQuestions": [
       "What is the exact exponent in (log m)^k for the Ramsey bounds?",
       "Can similar tight bounds be proved for R(k,k,m) for k > 3?",

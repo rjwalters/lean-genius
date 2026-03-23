@@ -69,7 +69,8 @@
       "**Folkman Analogue:** Erdős #924 asks the same question for cliques in graphs instead of APs in sets",
       "**Density Consideration:** Spencer's sets must have zero upper density (by Roth's theorem)",
       "**Constructive Challenge:** While existence is proved, explicit constructions remain computationally difficult"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -145,7 +146,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #966 asked whether sets can avoid (k+1)-term arithmetic progressions while still forcing monochromatic k-term progressions in any r-coloring. Spencer proved YES (~1975). This elegant result lies at the intersection of Ramsey theory and additive combinatorics, demonstrating that AP-avoidance and Ramsey-type forcing can coexist.",
-    "implications": "**Combinatorial Connections**\n\n1. **Ramsey Theory:** Demonstrates the robustness of Ramsey phenomena even in structured subsets\n\n2. **Additive Combinatorics:** Links AP-free sets to coloring problems\n\n3. **Van der Waerden Extension:** Shows VdW-type results hold for restricted domains\n\n4. **Folkman Analogy:** Erdős #924 (graph version) has the same affirmative answer\n\n5. **Density Bounds:** Spencer's sets must have zero density, connecting to Roth/Szemerédi",
+    "implications": "**Theoretical Significance**: **Combinatorial Connections**\n\n1. **Ramsey Theory:** Demonstrates the robustness of Ramsey phenomena even in structured subsets\n\n2. **Additive Combinatorics:** Links AP-free sets to coloring problems\n\n3.\n\n**Broader Connections**: **Van der Waerden Extension:** Shows VdW-type results hold for restricted domains\n\n4. **Folkman Analogy:** Erdős #924 (graph version) has the same affirmative answer\n\n5. **Density Bounds:** Spencer's sets must have zero density, connecting to Roth/Szemerédi.",
     "openQuestions": [
       "Explicit constructions of Spencer's sets for small k, r",
       "Optimal size bounds for finite versions of the problem",

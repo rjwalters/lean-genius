@@ -33,7 +33,8 @@
       "**Constructive witnesses vs. asymptotic bounds**: The file uniquely combines constructive proofs for small $n$ (via `native_decide`) with axiomatized asymptotic results, demonstrating both computation and theory",
       "**The $n = 3$ case is fully verified**: $3! = 6$, and the only factorization with factors $> 3$ is $[6]$, proved by showing that two factors $\\geq 4$ would give product $\\geq 20 > 6$ — a complete case analysis",
       "**Convergence vs. boundedness**: The EGS bounds show $\\liminf$ and $\\limsup$ of $(f(n)-2n)\\log n/n$ are both positive and finite, but whether they coincide (i.e., the limit exists) is the open question"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

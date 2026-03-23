@@ -34,7 +34,8 @@
       "Even small starting sets (perfect squares) require thousands of terms for periodicity to emerge, indicating the transient phase can be much longer than the period itself",
       "The singleton case {1} gives the Mian-Chowla sequence (Problem #340), showing that greedy Sidon sequences are a special case of Dickson extensions",
       "If true, the eventual period p and offset N are computable functions of A0, and the asymptotic growth rate a_n/n converges to a rational number"
-    ]
+    ],
+    "prerequisites": []
   },
   "references": [
     {
@@ -103,7 +104,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #341 formalizes Dickson's sum-free extension: extending a finite set by always choosing the smallest non-sum creates sequences with apparently periodic differences, but proving this universal periodicity remains open. The connection to the Mian-Chowla sequence (Problem #340) and the slow emergence of periodicity make this a compelling test case for understanding greedy dynamics in additive combinatorics.",
-    "implications": "**Dynamical Systems**: A proof would establish that the greedy sum-avoidance map on finite subsets of N always enters a periodic orbit in the 'difference space', a strong form of eventual regularity. **Automatic Sequences**: If the difference sequence is eventually periodic, it is an automatic sequence, connecting to Cobham's theorem and the theory of k-regular sequences. **Additive Combinatorics**: Understanding why sum-avoidance forces periodicity would illuminate the fine structure of sumsets and their complements.",
+    "implications": "**Theoretical Significance**: **Dynamical Systems**: A proof would establish that the greedy sum-avoidance map on finite subsets of N always enters a periodic orbit in the 'difference space', a strong form of eventual regularity.\n\n**Broader Connections**: **Automatic Sequences**: If the difference sequence is eventually periodic, it is an automatic sequence, connecting to Cobham's theorem and the theory of k-regular sequences. **Additive Combinatorics**: Understanding why sum-avoidance forces periodicity would illuminate the fine structure of sumsets and their complements.",
     "openQuestions": [
       "Is the difference sequence always eventually periodic?",
       "How does the eventual period depend on the starting set?",

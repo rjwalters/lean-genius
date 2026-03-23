@@ -82,7 +82,8 @@
       "**The $\\varepsilon$-formulation captures asymptotic equivalence**: The Lean statement uses $(1-\\varepsilon) \\cdot Cd/\\log y \\le \\pi(y+Cd) - \\pi(y) \\le (1+\\varepsilon) \\cdot Cd/\\log y$ for all $\\varepsilon > 0$, which is the standard way to formalize $f \\sim g$ as $f/g \\to 1$ without division-by-zero issues.",
       "**Bertrand's postulate as a weak baseline**: Bertrand's postulate guarantees a prime in $(n, 2n]$, an interval of length $n$. Erdős's conjecture asks for the expected prime count in intervals potentially as short as $C(\\log x)^2$ — exponentially shorter than what Bertrand provides.",
       "**Cramér's probabilistic model**: Cramér modeled primes via independent random variables with $\\Pr[n \\text{ is prime}] = 1/\\log n$. Under this model, the maximal gap below $x$ is $(\\log x)^2$ with probability 1, and the short interval count obeys the PNT. Erdős's conjecture essentially asks whether the 'real' primes behave like Cramér's model at this fine scale."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -130,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1138, which asks whether the prime number theorem holds at the scale of maximal prime gaps. The infrastructure — prime counting via `Finset.filter`, maximal gaps via `sSup`, and the $\\varepsilon$-formulation of asymptotic equivalence — provides a clean Lean 4 framework for this deep open problem in analytic number theory.",
-    "implications": "A positive resolution would imply that primes are remarkably well-distributed even at scales far below what current analytic methods can handle. It would confirm aspects of Cramér's probabilistic model of the primes and have consequences for understanding the fine structure of prime gaps. A negative resolution would reveal unexpected irregularities in prime distribution at the $(\\log x)^2$ scale.",
+    "implications": "**Theoretical Significance**: A positive resolution would imply that primes are remarkably well-distributed even at scales far below what current analytic methods can handle.\n\n**Broader Connections**: It would confirm aspects of Cramér's probabilistic model of the primes and have consequences for understanding the fine structure of prime gaps. A negative resolution would reveal unexpected irregularities in prime distribution at the $(\\log x)^2$ scale.",
     "openQuestions": [
       "Can the short interval prime number theorem be extended to intervals of length $(\\log x)^{2+\\varepsilon}$, bridging toward the conjectured $(\\log x)^2$ scale?",
       "Does Maier's theorem (1985) — showing that $\\pi(x+h) - \\pi(x)$ deviates from $h/\\log x$ for certain $h$ around $(\\log x)^A$ — obstruct Erdős's conjecture, or does the maximal gap normalization avoid Maier's phenomenon?",

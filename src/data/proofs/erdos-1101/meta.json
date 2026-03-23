@@ -66,7 +66,8 @@
       "**Polynomial growth fails**: Erdős conjectured that if uₙ = O(n^k), the sequence cannot be good—gaps must sometimes exceed the bound.",
       "**Sub-exponential might work**: Sequences growing like uₙ = e^(n^α) for α < 1 might achieve the good property.",
       "**Prime squares special case**: Problem #208 asks if uᵢ = pᵢ² (prime squares) is good. This has polynomial growth, so resolving it would resolve question 1."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -114,7 +115,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1101 on 'good sequences'—pairwise coprime sequences whose sieved integers have gaps matching the theoretical bound from sieve theory. Erdős proved such sequences exist but conjectured that polynomial growth is impossible while sub-exponential growth is achievable. Both conjectures remain OPEN.",
-    "implications": "This problem bridges combinatorial number theory and analytic methods. Understanding which growth rates allow 'good' sequences would illuminate the interplay between multiplicative structure (coprimality) and additive structure (gaps). Progress here could impact our understanding of prime gaps and sieve methods.",
+    "implications": "**Theoretical Significance**: This problem bridges combinatorial number theory and analytic methods.\n\n**Broader Connections**: Understanding which growth rates allow 'good' sequences would illuminate the interplay between multiplicative structure (coprimality) and additive structure (gaps). Progress here could impact our understanding of prime gaps and sieve methods.",
     "openQuestions": [
       "Is there a good sequence with u_n = O(n^k) for some fixed k?",
       "Is there a good sequence with u_n = e^(n^α) for some α < 1?",
@@ -168,7 +169,9 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and results on combinatorial number theory",
       "venue": "A Survey of Combinatorial Theory (J. N. Srivastava et al., eds.), North-Holland",
       "year": 1973,
@@ -176,21 +179,28 @@
       "note": "Original source containing Problem #1101 and Erdős's discussion of good sequences and gap bounds for sieved integers."
     },
     {
-      "authors": ["H. Halberstam", "H.-E. Richert"],
+      "authors": [
+        "H. Halberstam",
+        "H.-E. Richert"
+      ],
       "title": "Sieve Methods",
       "venue": "Academic Press, London–New York",
       "year": 1974,
       "note": "Standard reference for the sieve-theoretic framework underlying the lower bound tₓ·∏(1−1/uᵢ)⁻¹ on gaps in sieved sets."
     },
     {
-      "authors": ["H. Davenport"],
+      "authors": [
+        "H. Davenport"
+      ],
       "title": "Multiplicative Number Theory",
       "venue": "Graduate Texts in Mathematics, vol. 74, Springer, New York",
       "year": 1980,
       "note": "Background on multiplicative structure, Dirichlet series, and analytic methods relevant to density and gap arguments for multiplicative sequences."
     },
     {
-      "authors": ["A. Granville"],
+      "authors": [
+        "A. Granville"
+      ],
       "title": "Harald Cramér and the distribution of prime numbers",
       "venue": "Scandinavian Actuarial Journal",
       "year": 1995,
@@ -198,7 +208,10 @@
       "note": "Discusses probabilistic models for prime gaps; the heuristic framework here informs expectations for gap behavior in sieved integer sequences."
     },
     {
-      "authors": ["B. Green", "T. Tao"],
+      "authors": [
+        "B. Green",
+        "T. Tao"
+      ],
       "title": "The primes contain arbitrarily long arithmetic progressions",
       "venue": "Annals of Mathematics",
       "year": 2008,

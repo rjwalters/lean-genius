@@ -71,6 +71,11 @@
       "The easy bound τ ≤ n − √n falls short of the conjecture",
       "Even the K₄-free case remains open",
       "The conjecture's difficulty stems from τ(G) depending on global clique structure while H(n) depends on local triangle-freeness — bridging these requires understanding how clique transversals interact with Ramsey-theoretic bounds"
+    ],
+    "prerequisites": [
+      "Graph theory basics (cliques, independent sets)",
+      "Ramsey theory (R(3,t) bounds)",
+      "Basic combinatorics"
     ]
   },
   "sections": [

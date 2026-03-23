@@ -34,7 +34,8 @@
       "**Self-candidate 2p − 1**: Using q_i = q_n gives the Mersenne-like 2p − 1, guaranteeing at least one odd candidate at each step (though not necessarily prime)",
       "**Computational evidence**: The first 8 terms from [3, 5] are exactly the odd primes 3, 5, 7, 11, 13, 17, 19, 23—all verified by native_decide",
       "**Gap bound**: Consecutive terms differ by at least 2 (except possibly 2 → 3), constraining the growth rate to at least linear in n"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -110,7 +111,7 @@
   ],
   "conclusion": {
     "summary": "This formalization of Erdős Problem 472 provides both an abstract specification and computable implementation of Ulam's prime sequence extension rule. The parity analysis reveals why odd seeds are structurally superior: the −1 shift preserves oddness, while seed element 2 contributes only even (hence composite) candidates. Computational verification through 8 terms shows the [3, 5] sequence matching all odd primes up to 23, but whether any seed produces an infinite sequence remains open.",
-    "implications": "Resolution would connect additive combinatorics of primes with greedy algorithm termination theory. If the [3, 5] sequence indeed contains all odd primes, this would establish a new additive characterization of the prime sequence. The problem also relates to questions about additive bases: is the set of primes a 'shifted additive basis' for itself?",
+    "implications": "**Theoretical Significance**: Resolution would connect additive combinatorics of primes with greedy algorithm termination theory.\n\n**Broader Connections**: If the [3, 5] sequence indeed contains all odd primes, this would establish a new additive characterization of the prime sequence. The problem also relates to questions about additive bases: is the set of primes a 'shifted additive basis' for itself?.",
     "openQuestions": [
       "Does the seed [3, 5] produce an infinite sequence, and does it contain all odd primes?",
       "For seeds that terminate, what is the maximum achievable sequence length as a function of seed size?",

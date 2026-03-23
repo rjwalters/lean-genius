@@ -58,7 +58,8 @@
       "The size-variety tradeoff $|\\mathcal{F}| \\geq r \\cdot d$ (where $d$ is the number of distinct sizes) combined with Sperner's bound gives $d \\leq \\binom{n}{\\lfloor n/2 \\rfloor}/r$, which for fixed $r$ is $\\Theta(2^n/\\sqrt{n})$, far above $n - 3$, so the real constraint comes from the antichain property, not the size bound",
       "The proof of `erdos_trotter_exact` takes $N = \\max(N_1, N_2)$ from the two axioms and uses `omega` to close the equality from $\\leq$ and $\\geq$, a clean example of the sandwich technique in extremal combinatorics",
       "**Unimodality barrier**: The binomial coefficients $\\binom{n}{k}$ are unimodal (increasing then decreasing), so layers with $\\binom{n}{k} < r$ cluster at the extremes. For fixed $r$, exactly the outermost layers are excluded, and their count stabilizes once $n$ is large enough — this is why a finite threshold $N(r)$ exists"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -104,7 +105,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #776 is formalized with 5 definitions, 1 proved theorem, and 6 axioms. The theorem `erdos_trotter_exact` is genuinely proved from the upper and lower bound axioms. The open question is to determine the threshold $N(r)$ as a function of $r$, which would complete the characterization of multiplicity-constrained antichains.",
-    "implications": "Resolution would advance the extremal theory of antichains in Boolean lattices beyond classical Sperner-type results. The threshold $N(r)$ likely depends on the growth of $\\binom{n}{k}$ near the extremes, connecting to concentration phenomena for binomial coefficients. A precise formula would extend the Griggs result ($r = 1$, max $= n - 2$) to the full multiplicity spectrum.",
+    "implications": "**Theoretical Significance**: Resolution would advance the extremal theory of antichains in Boolean lattices beyond classical Sperner-type results.\n\n**Broader Connections**: The threshold $N(r)$ likely depends on the growth of $\\binom{n}{k}$ near the extremes, connecting to concentration phenomena for binomial coefficients. A precise formula would extend the Griggs result ($r = 1$, max $= n - 2$) to the full multiplicity spectrum.",
     "openQuestions": [
       "What is the precise threshold $N(r)$ as a function of $r$? Is it polynomial, exponential, or something else?",
       "Does $N(r)$ grow like $\\Theta(r)$, matching the point where $\\binom{n}{2} \\geq r$ stabilizes?",

@@ -177,6 +177,12 @@
       "Module.finrank ℚ K (not `finrank` or `IsFiniteDimensional`) is the correct Mathlib4 API for field extension degree",
       "The Gauss-Wantzel theorem (regular $n$-gon constructible $\\iff \\phi(n) = 2^k$) is a special case: $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\phi(n)$, and this is a 2-group iff $\\phi(n) = 2^k$ iff $n = 2^a p_1 \\cdots p_m$ with distinct Fermat primes $p_i = 2^{2^{e_i}} + 1$. Only 5 Fermat primes are known (3, 5, 17, 257, 65537), so the full list of constructible regular polygons is still unknown",
       "Constructibility sits within a strict hierarchy of expressibility: constructible numbers (Galois group is a 2-group) $\\subsetneq$ numbers solvable by radicals (Galois group is solvable) $\\subsetneq$ algebraic numbers $\\subsetneq$ all real numbers. Abel-Ruffini characterizes the second class, while this file characterizes the first — the same Galois-theoretic framework governs both, with the only difference being the group property tested (2-group vs solvable). This hierarchy explains why $\\sqrt[4]{2}$ is constructible (D₄ is a 2-group, hence also solvable), $\\sqrt[5]{2}$ is solvable by radicals but not constructible (Gal ≅ F₂₀ is solvable but not a 2-group), and the generic quintic root is none of these (S₅ is not solvable)"
+    ],
+    "prerequisites": [
+      "Galois theory (Galois groups, Galois correspondence)",
+      "p-groups and their characterization via order",
+      "Field extensions and degree computations",
+      "Compass-and-straightedge constructibility (from OQ-01)"
     ]
   },
   "sections": [

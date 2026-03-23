@@ -41,6 +41,12 @@
       "The hierarchy of chromatic forcing: χ ≤ 2 → no odd cycles; χ ≤ 2k+2 → ≤ k odd lengths (Gyárfás); χ = ∞ → ∑ 1/aᵢ = ∞ (Problem #57, Liu-Montgomery)",
       "Gao-Huo-Ma's consecutive odd lengths strengthening: χ ≥ 2k+3 forces not just k+1 distinct odd lengths but k+1 consecutive ones — revealing that high chromatic number constrains the gaps between odd cycle lengths",
       "All four proved theorems are one- or two-line applications of the axioms with omega or direct rewriting, demonstrating clean modular proof architecture"
+    ],
+    "prerequisites": [
+      "Graph coloring and chromatic number",
+      "Odd cycles and graph parity",
+      "Girth of graphs",
+      "Probabilistic method in graph theory"
     ]
   },
   "sections": [

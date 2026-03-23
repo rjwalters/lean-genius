@@ -68,7 +68,8 @@
       "**Random Graphs:** Dense random graphs provide counterexamples — they have good local structure but limited global independent sets.",
       "**Log Log Factor:** The mysterious log log n divisor appears in both tight bounds, reflecting subtle structure.",
       "**Related Problem #805:** Similar questions answered by the same Alon-Sudakov techniques."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -116,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #804 asked two questions about how local independent set structure propagates globally. Both conjectures were DISPROVED by Alon and Sudakov (2007). The true bounds are (log n)² / log log n, far smaller than the conjectured n^(1/2-o(1)) and (log n)³. This demonstrates that local structure doesn't force global structure as strongly as intuition suggests.",
-    "implications": "**Implications for Extremal Graph Theory**\n\n1. **Local-Global Gap:** The gap between local and global independent set structure is larger than expected.\n\n2. **Polylogarithmic vs Polynomial:** The true answer is polylogarithmic, not polynomial in n.\n\n3. **Log Log Factor:** The mysterious log log n appears in tight bounds, a common phenomenon in extremal combinatorics.\n\n4. **Random Constructions:** Random graphs continue to provide extremal examples.",
+    "implications": "**Theoretical Significance**: **Implications for Extremal Graph Theory**\n\n1. **Local-Global Gap:** The gap between local and global independent set structure is larger than expected.\n\n2.\n\n**Broader Connections**: **Polylogarithmic vs Polynomial:** The true answer is polylogarithmic, not polynomial in n.\n\n3. **Log Log Factor:** The mysterious log log n appears in tight bounds, a common phenomenon in extremal combinatorics.\n\n4. **Random Constructions:** Random graphs continue to provide extremal examples.",
     "openQuestions": [
       "What is the exact leading constant in f((log n)², n)?",
       "Can the construction be made explicit (non-random)?",

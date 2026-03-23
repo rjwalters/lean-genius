@@ -37,7 +37,8 @@
       "Middle layer C(n, n/2) achieves the maximum",
       "F(n) ~ √(2/π) · 2^n / √n by Stirling",
       "Follows from Problem 447 on 2-union-free families"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -113,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1023 asked whether the maximum union-free family has size ~ c · 2^n / √n. The answer is YES: F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n. The middle layer achieves this bound, and Erdős-Kleitman proved it's optimal.",
-    "implications": "**Theoretical Significance**\n\n1. **Extremal Set Theory**: Tight bound on union-free families\n\n2. **Connection to Antichains**: Sperner's theorem is the key ingredient\n\n3. **Stirling's Approximation**: Converts exact bound to asymptotic form\n\n4. **Problem 447 Link**: Hunter's observation connects related problems",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Extremal Set Theory**: Tight bound on union-free families\n\n2.\n\n**Broader Connections**: **Connection to Antichains**: Sperner's theorem is the key ingredient\n\n3. **Stirling's Approximation**: Converts exact bound to asymptotic form\n\n4. **Problem 447 Link**: Hunter's observation connects related problems.",
     "openQuestions": [
       "What about union-free families with additional constraints?",
       "Analogous problems for other operations (intersection, difference)?",
@@ -172,7 +173,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "D. J. Kleitman"],
+      "authors": [
+        "P. Erdős",
+        "D. J. Kleitman"
+      ],
       "title": "On combinations of sets",
       "venue": "Nordisk Matematisk Tidskrift",
       "year": 1968,
@@ -181,7 +185,9 @@
       "notes": "Original paper establishing F(n) = C(n, ⌊n/2⌋) by proving the matching upper bound."
     },
     {
-      "authors": ["E. Sperner"],
+      "authors": [
+        "E. Sperner"
+      ],
       "title": "Ein Satz über Untermengen einer endlichen Menge",
       "venue": "Mathematische Zeitschrift",
       "year": 1928,
@@ -190,14 +196,18 @@
       "notes": "The foundational Sperner's theorem: the largest antichain in 2^[n] is the middle layer C(n, ⌊n/2⌋). The lower bound F(n) ≥ C(n, n/2) follows immediately."
     },
     {
-      "authors": ["B. Bollobás"],
+      "authors": [
+        "B. Bollobás"
+      ],
       "title": "Combinatorics: Set Systems, Hypergraphs, Families of Vectors and Combinatorial Probability",
       "venue": "Cambridge University Press",
       "year": 1986,
       "notes": "Standard reference covering Sperner's theorem, union-free families, and the Erdős–Kleitman result in the context of extremal set theory."
     },
     {
-      "authors": ["P. Frankl"],
+      "authors": [
+        "P. Frankl"
+      ],
       "title": "Extremal set systems",
       "venue": "Handbook of Combinatorics (eds. R. Graham, M. Grötschel, L. Lovász), Elsevier",
       "year": 1995,
@@ -205,7 +215,9 @@
       "notes": "Comprehensive survey of extremal set systems including union-free families, antichains, and their connections to compression and shifting methods."
     },
     {
-      "authors": ["D. J. Kleitman"],
+      "authors": [
+        "D. J. Kleitman"
+      ],
       "title": "On a combinatorial conjecture of Erdős",
       "venue": "Journal of Combinatorial Theory",
       "year": 1966,

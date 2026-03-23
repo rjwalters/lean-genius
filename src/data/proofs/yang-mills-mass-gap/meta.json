@@ -142,7 +142,8 @@
       "Gribov copies obstruct global gauge fixing (Singer's theorem), but stochastic quantization (Parisi-Wu) bypasses this entirely: the Langevin process converges to the correct path integral measure without gauge fixing",
       "Only 1 axiom remains (gaugeTransform, definitional) after aggressive elimination: 15 former axioms were either proved, shown trivially satisfiable, or deleted as unused — demonstrating that much of the QFT infrastructure can be formalized in pure Lean",
       "Balaban's block-spin RG is the closest rigorous approach: coupling remains controlled for finitely many steps, but extending to infinitely many steps in d=4 (the continuum limit) remains the central gap to the Millennium Prize"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -624,7 +625,7 @@
   ],
   "conclusion": {
     "summary": "This is the largest single formalization in the gallery at 30808 lines, covering 162 parts of Yang-Mills theory with 2600+ theorems and definitions. After aggressive axiom elimination, only 1 axiom remains (gaugeTransform — definitional) with 0 sorries. The formalization spans classical gauge theory, quantum axiomatics, lattice methods, exact solutions, and modern approaches including AdS/CFT, constructive QFT, and Donaldson theory.",
-    "implications": "**Significance**\n\n1. **Most complete formalization**: At 30808 lines and 162 parts, this is the most comprehensive Lean formalization of Yang-Mills theory, spanning classical gauge theory, quantum axiomatics, and modern non-perturbative approaches.\n2. **Near-axiom-free**: Only 1 axiom remains (gaugeTransform, definitional) after 15 former axioms were eliminated — demonstrating that much of the mathematical physics infrastructure can be formalized without assumptions.\n3. **Multiple approaches formalized**: Lattice, continuum, exact solutions, AdS/CFT, SUSY, constructive QFT, Schwinger model, gradient flow, monopoles, Seiberg duality — providing a comprehensive roadmap for future work on the Millennium Prize Problem.\n4. **Modular architecture**: The 162-part structure allows independent verification of each component, from classical gauge invariance through lattice mass gap to OS reconstruction.\n5. **Educational value**: Serves as a structured mathematical introduction to Yang-Mills theory, connecting each physical concept to its Lean formalization.",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Most complete formalization**: At 30808 lines and 162 parts, this is the most comprehensive Lean formalization of Yang-Mills theory, spanning classical gauge theory, quantum axiomatics, and modern non-perturbative approaches.\n2. **Near-axiom-free**: Only 1 axiom remains (gaugeTransform, definitional) after 15 former axioms were eliminated — demonstrating that much of the mathematical physics infrastructure can be formalized without assumptions.\n3.\n\n**Broader Connections**: **Multiple approaches formalized**: Lattice, continuum, exact solutions, AdS/CFT, SUSY, constructive QFT, Schwinger model, gradient flow, monopoles, Seiberg duality — providing a comprehensive roadmap for future work on the Millennium Prize Problem.\n4. **Modular architecture**: The 162-part structure allows independent verification of each component, from classical gauge invariance through lattice mass gap to OS reconstruction.\n5. **Educational value**: Serves as a structured mathematical introduction to Yang-Mills theory, connecting each physical concept to its Lean formalization.",
     "openQuestions": [
       "Can constructive QFT methods (Part LII) be extended from 2D to 4D Yang-Mills?",
       "Does the lattice mass gap (Part XIII) survive the continuum limit?",

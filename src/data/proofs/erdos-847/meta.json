@@ -73,6 +73,13 @@
       "**Szemeredi's theorem:** AP-free sets have density 0, so they are sparse",
       "**Roth (1953):** First k=3 result on APs in dense sets",
       "**Kelley-Meka (2023):** Best bounds: |A| <= N exp(-c(log N)^{1/12})"
+    ],
+    "prerequisites": [
+      "Arithmetic progressions and their basic properties",
+      "Szemeredi's theorem (density of sets avoiding APs)",
+      "Finset and Set cardinality in Lean 4 / Mathlib",
+      "Roth's theorem on 3-term APs in dense sets",
+      "Basic additive combinatorics (set unions, partitions, density)"
     ]
   },
   "sections": [

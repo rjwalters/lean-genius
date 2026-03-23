@@ -43,6 +43,13 @@
       "Behrend lower bound: r₃(N) ≥ N/exp(c√log N) - gap remains open",
       "{1,2,4,5,10,11,13,14} is verified 3-AP-free (first 8 of greedy sequence)",
       "k ≥ 4 case remains OPEN"
+    ],
+    "prerequisites": [
+      "arithmetic-progressions",
+      "density-arguments",
+      "additive-combinatorics",
+      "fourier-analysis-on-finite-groups",
+      "extremal-set-theory"
     ]
   },
   "sections": [
@@ -143,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #140 is SOLVED (Kelley-Meka 2023). The maximum size of a 3-AP-free subset of {1,...,N} satisfies r₃(N) = O(N/(log N)^C) for all C > 0. This 70-year problem from Roth's 1953 breakthrough was resolved with a novel spectral approach.",
-    "implications": "The Kelley-Meka theorem essentially closes the upper-bound side of the $r_3(N)$ problem: the bound $O(N/(\\log N)^C)$ for all $C > 0$ means $r_3(N) = o(N/(\\log N)^C)$ for every fixed $C$, which is qualitatively as strong as one can hope without reaching the Behrend regime. Their spectral/large-deviation technique has already influenced work on the polynomial Freiman–Ruzsa conjecture (proved by Gowers–Green–Manners–Tao, 2023) and cap set problems in $\\mathbb{F}_3^n$. The result also vindicates the density-increment paradigm and shows that Fourier-analytic methods in additive combinatorics are far from exhausted.",
+    "implications": "**Theoretical Significance**: The Kelley-Meka theorem essentially closes the upper-bound side of the $r_3(N)$ problem: the bound $O(N/(\\log N)^C)$ for all $C > 0$ means $r_3(N) = o(N/(\\log N)^C)$ for every fixed $C$, which is qualitatively as strong as one can hope without reaching the Behrend regime.\n\n**Broader Connections**: Their spectral/large-deviation technique has already influenced work on the polynomial Freiman–Ruzsa conjecture (proved by Gowers–Green–Manners–Tao, 2023) and cap set problems in $\\mathbb{F}_3^n$. The result also vindicates the density-increment paradigm and shows that Fourier-analytic methods in additive combinatorics are far from exhausted.",
     "openQuestions": [
       "What is the true order of r₃(N)? (Behrend gap)",
       "Does r_k(N) = O(N/(log N)^C) hold for k ≥ 4?",

@@ -96,7 +96,8 @@
         "proofId": "erdos-30",
         "relationship": "Erdős Problem #30 ($1000 prize) asks whether $f(N) = \\sqrt{N} + O(N^\\varepsilon)$; the $f(N)$ asymptotic is foundational to Problem #43"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -165,7 +166,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #43 ($100 bounty) asks whether two Sidon sets with disjoint nonzero differences satisfy $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + O(1)$. The formalization captures the full landscape: the main OPEN conjecture, the equal-size variant (disproved by Barreto), Tao's partial bound $m \\le 0.707\\sqrt{N}$, and the underlying counting arguments. Five `sorry` placeholders mark the counting lemmas.",
-    "implications": "**Mathematical Connections**\n\n1. **Extremal set theory:** The conjecture asks whether the Sidon property under difference-disjointness exhibits a sharp \"complementarity\" phenomenon\n2. **Additive combinatorics:** Connects to $B_2$ sequence theory and sumset problems\n3. **Erdős Problem #30:** The $f(N)$ asymptotic is a $1000 prize problem; sharper bounds on $f(N)$ would refine the conjecture\n4. **Multiplicative analogues:** Erdős Problem #425 studies the multiplicative Sidon version $F(n) = \\pi(n) + \\Theta(n^{3/4}(\\log n)^{-3/2})$",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Extremal set theory:** The conjecture asks whether the Sidon property under difference-disjointness exhibits a sharp \"complementarity\" phenomenon\n2.\n\n**Broader Connections**: **Additive combinatorics:** Connects to $B_2$ sequence theory and sumset problems\n3. **Erdős Problem #30:** The $f(N)$ asymptotic is a $1000 prize problem; sharper bounds on $f(N)$ would refine the conjecture\n4. **Multiplicative analogues:** Erdős Problem #425 studies the multiplicative Sidon version $F(n) = \\pi(n) + \\Theta(n^{3/4}(\\log n)^{-3/2})$.",
     "openQuestions": [
       "Does $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + O(1)$ hold for all Sidon sets with disjoint differences?",
       "What is the tightest constant in the $O(1)$ error term?",
@@ -208,7 +209,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "P. Turán"],
+      "authors": [
+        "P. Erdős",
+        "P. Turán"
+      ],
       "title": "On a problem of Sidon in additive number theory, and on some related problems",
       "journal": "Journal of the London Mathematical Society",
       "volume": "16",
@@ -218,7 +222,9 @@
       "note": "Founding paper proving f(N)≤√N+O(N^{1/4}) and constructing Sidon sets of size ~√N via Singer difference sets"
     },
     {
-      "authors": ["S. Chowla"],
+      "authors": [
+        "S. Chowla"
+      ],
       "title": "Solution of a problem of Erdős and Turán in additive-number theory",
       "journal": "Proceedings of the National Academy of Sciences of India",
       "volume": "14",
@@ -227,7 +233,9 @@
       "note": "Simplified Singer-type construction giving explicit Sidon sets of size ~√p for prime p"
     },
     {
-      "authors": ["B. Lindström"],
+      "authors": [
+        "B. Lindström"
+      ],
       "title": "An inequality for B_2-sequences",
       "journal": "Journal of Combinatorial Theory",
       "volume": "6",
@@ -237,7 +245,9 @@
       "note": "Proves C(|A|,2)≤N for Sidon sets in {1,…,N} via a direct counting argument on differences"
     },
     {
-      "authors": ["I. Z. Ruzsa"],
+      "authors": [
+        "I. Z. Ruzsa"
+      ],
       "title": "Solving a linear equation in a set of integers",
       "journal": "Acta Arithmetica",
       "volume": "65",
@@ -247,7 +257,9 @@
       "note": "Develops the Plünnecke-Ruzsa inequality and sumset methods used in modern Sidon set analysis"
     },
     {
-      "authors": ["K. O'Bryant"],
+      "authors": [
+        "K. O'Bryant"
+      ],
       "title": "A complete annotated bibliography of work related to Sidon sets",
       "journal": "Electronic Journal of Combinatorics",
       "volume": "DS11",

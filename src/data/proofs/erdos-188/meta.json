@@ -80,6 +80,15 @@
       "**Tsaturian's improvement:** The lower bound improvement from $k \\geq 5$ to $k \\geq 6$ required constructing an explicit unit-distance configuration in $\\mathbb{R}^2$ that forces any red-independent coloring to contain a 6-term blue AP. Such configurations must be carefully designed since the plane has uncountable many directions.",
       "**The gap problem:** The six-order-of-magnitude gap between $k \\geq 6$ and $k \\leq 10^7$ is one of the widest in combinatorial geometry. Even determining whether $k$ is closer to 6 or to $10^7$ would be a major breakthrough. The Erdős-Graham upper bound construction uses stripe-based colorings whose analysis is technically demanding.",
       "**Formalization as axioms:** The 5 axioms (`lower_bound_5`, `lower_bound_6`, `upper_bound_exists`, `vanDerWaerden`, `alon_observation`) reflect mathematically deep results. The proved theorems (`achievable_nonempty`, `red_is_independent`, `erdos_188_bounds`, `erdos_188_statement`) demonstrate meaningful deductions from these axioms."
+    ],
+    "prerequisites": [
+      "Metric spaces and distance functions in ℝ²",
+      "Graph coloring and chromatic number basics",
+      "Arithmetic progressions and van der Waerden's theorem",
+      "Unit distance graphs in Euclidean geometry",
+      "Complex plane as a model of ℝ²",
+      "Independent sets in graphs",
+      "Ramsey theory fundamentals"
     ]
   },
   "sections": [

@@ -74,7 +74,8 @@
       "**Lovász Local Lemma (LLL) for sparse hypergraphs**: If each edge intersects $< 2^{n-1}$ others, then $ep(d+1) \\leq 1$ where $p = 2^{1-n}$ and $d < 2^{n-1}$, so the LLL guarantees a proper 2-coloring exists. This gives $m(n) = \\Omega(2^n / n)$ from the LLL alone.",
       "**Radhakrishnan-Srinivasan resampling**: The best lower bound $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ uses an iterative recoloring strategy: start with a random coloring, identify monochromatic edges, and randomly recolor their vertices. The analysis bounds the number of rounds before all edges are properly colored.",
       "**Fano plane and $m(3) = 7$**: The Fano plane $PG(2, 2)$ — the unique Steiner triple system $S(2, 3, 7)$ with 7 points and 7 lines of 3 points each — is the smallest 3-uniform hypergraph without Property B. Every 2-coloring of its 7 points creates a monochromatic triple."
-    ]
+    ],
+    "prerequisites": []
   },
   "crossReferences": [
     {
@@ -167,7 +168,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #901 on Property B and hypergraph coloring. The function $m(n)$ — the minimum edges in an $n$-uniform hypergraph without Property B — is bounded by $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$. The formalization includes the full chain of lower bounds (Erdős, Beck, Pluhár, Radhakrishnan-Srinivasan), exact values for small $n$, the Erdős-Lovász conjecture, the Lovász Local Lemma, and connections to chromatic number theory.",
-    "implications": "Property B is a foundational concept in combinatorics, connecting hypergraph coloring, the probabilistic method, and the Lovász Local Lemma. Understanding $m(n)$ has implications for discrepancy theory, derandomization, and the algorithmic aspects of the LLL (via Moser-Tardos). The gap between $\\sqrt{n/\\log n}$ and $n$ in the coefficient is one of the most important open problems in probabilistic combinatorics.",
+    "implications": "**Theoretical Significance**: Property B is a foundational concept in combinatorics, connecting hypergraph coloring, the probabilistic method, and the Lovász Local Lemma.\n\n**Broader Connections**: Understanding $m(n)$ has implications for discrepancy theory, derandomization, and the algorithmic aspects of the LLL (via Moser-Tardos). The gap between $\\sqrt{n/\\log n}$ and $n$ in the coefficient is one of the most important open problems in probabilistic combinatorics.",
     "openQuestions": [
       "Is $m(n) = \\Theta(n \\cdot 2^n)$ as the Erdős-Lovász conjecture predicts? Even proving $m(n) = \\omega(\\sqrt{n} \\cdot 2^n)$ would be a breakthrough.",
       "What is $m(5)$? No exact value is known for $n \\geq 5$.",

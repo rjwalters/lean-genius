@@ -82,7 +82,8 @@
       "Hyperplane rounding preserves at least α_GW fraction of the SDP value, giving the approximation guarantee.",
       "The conservative bound 878/1000 < true α_GW ensures all inequalities remain valid.",
       "Under the Unique Games Conjecture, no polynomial-time algorithm can beat this ratio, making it conditionally optimal."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -172,7 +173,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the algebraic backbone of the celebrated Goemans-Williamson MaxCut approximation. The SDP infrastructure is cleanly axiomatized (Mathlib has no SDP support), while the core proof chain—from SDP relaxation through rounding inequality to approximation guarantee—is fully verified.\n\nThe formalization demonstrates how axiomatization can be used productively: by clearly separating the verified algebraic argument from the axiomatized analytical/optimization components, we achieve a rigorous proof of the key result while honestly marking what remains unformalized.",
-    "implications": "**Algorithmic Impact**\n\nThe GW result transformed combinatorial optimization by demonstrating that semidefinite programming relaxations could yield dramatic improvements over simpler approaches (0.878 vs 0.5). This launched an entire research program of SDP-based approximation algorithms.\n\n**Conditional Optimality**\n\nUnder the Unique Games Conjecture (Khot 2002, Khot et al. 2007), no polynomial-time algorithm can achieve an approximation ratio better than α_GW for MaxCut. This means the GW algorithm is essentially the best possible.\n\n**Formalization Frontier**\n\nFull formalization of the SDP components would require:\n- Semidefinite programming theory in Lean/Mathlib\n- Measure theory on the unit sphere (for hyperplane rounding)\n- The arccos inequality via calculus of variations",
+    "implications": "**Theoretical Significance**: **Algorithmic Impact**\n\nThe GW result transformed combinatorial optimization by demonstrating that semidefinite programming relaxations could yield dramatic improvements over simpler approaches (0.878 vs 0.5). This launched an entire research program of SDP-based approximation algorithms.\n\n**Conditional Optimality**\n\nUnder the Unique Games Conjecture (Khot 2002, Khot et al.\n\n**Broader Connections**: 2007), no polynomial-time algorithm can achieve an approximation ratio better than α_GW for MaxCut. This means the GW algorithm is essentially the best possible.\n\n**Formalization Frontier**\n\nFull formalization of the SDP components would require:\n- Semidefinite programming theory in Lean/Mathlib\n- Measure theory on the unit sphere (for hyperplane rounding)\n- The arccos inequality via calculus of variations.",
     "openQuestions": [
       "Can we formalize the SDP relaxation infrastructure in Lean (positive semidefinite cones, duality)?",
       "Can the arccos inequality arccos(x)/π ≥ α_GW·(1-x)/2 be proved using Lean's calculus library?",

@@ -91,7 +91,8 @@
       "**Coordination shells**: The triangular lattice has $f(1) = 6$, $f(\\sqrt{3}) = 12$, $f(3) = 18$ — these are the first coordination shells, with shell sizes determined by representations of Loeschian numbers",
       "**Extends Thue's theorem**: Just as the triangular lattice maximizes packing density, the conjecture asserts it maximizes pair counts — a stronger optimality property for the hexagonal lattice",
       "**Boundary effects**: The formulation requires $n \\ge N$ because finite lattice patches have fewer pairs per point near the boundary; the conjecture is asymptotic in nature"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Formalizes Erdős Problem #662 on the optimality of the triangular lattice for maximizing distance-constrained pair counts in 1-separated planar point sets. The formalization establishes the Loeschian distance formula, known coordination shell values, and proves the contact number bound (3n) for the t = 1 case via the 2D kissing number argument.",

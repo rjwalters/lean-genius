@@ -76,6 +76,14 @@
       "**Cambie's Theorem (2024):** For all sufficiently large k, there exist n,m with M(n,k) > M(m,k+1).",
       "**Growth Rate:** Erdős proved n_k/k → ∞ where n_k is the minimal n for which the comparison holds.",
       "**Counterintuition:** More numbers ≠ larger LCM. The starting position matters crucially."
+    ],
+    "prerequisites": [
+      "Least common multiple (LCM) of natural numbers",
+      "Finite sets and fold operations (Finset.fold)",
+      "Prime factorization and prime powers",
+      "Divisibility lattice on natural numbers",
+      "Chebyshev-type bounds on prime products",
+      "Native decision procedures in Lean 4"
     ]
   },
   "sections": [
@@ -124,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #678 asks whether a shorter interval can have larger LCM than a longer one starting later. The answer is YES: Selfridge found concrete examples in 1979, and Cambie proved infinitely many exist in 2024. Our formalization verifies specific examples computationally and states the main theoretical results.",
-    "implications": "This problem connects to:\n\n1. **Prime distribution:** Intervals containing prime powers have structured LCMs\n2. **Smooth numbers:** Intervals avoiding large primes have smaller LCMs\n3. **Computational number theory:** LCM computations are tractable for moderate intervals\n4. **Chebyshev bounds:** The growth rate log M(n,k) ≈ k uses prime-counting estimates",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Prime distribution:** Intervals containing prime powers have structured LCMs\n2.\n\n**Broader Connections**: **Smooth numbers:** Intervals avoiding large primes have smaller LCMs\n3. **Computational number theory:** LCM computations are tractable for moderate intervals\n4. **Chebyshev bounds:** The growth rate log M(n,k) ≈ k uses prime-counting estimates.",
     "openQuestions": [
       "Find the exact threshold K where Cambie's theorem applies",
       "Characterize all (n,m,k) triples satisfying the comparison",

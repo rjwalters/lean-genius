@@ -91,7 +91,8 @@
       "Matsuyama's exponent c > 1/2 for log log decay is reminiscent of the central limit theorem's √N scaling, suggesting a deep connection between quasi-independence strength and the optimal exponent",
       "The gap between log log and log log log decay is enormous: log log log n grows so slowly that functions with only log log log decay can have extremely rough Fourier behavior",
       "Raikov's unconditional result for geometric sequences shows that maximal lacunarity compensates for any lack of regularity, while general lacunary sequences need some minimum Fourier decay"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -181,7 +182,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #996 on the strong law of large numbers for lacunary sequences. The four historical milestones (Raikov, KSZ, Erdős, Matsuyama) are axiomatized, showing the progressive weakening of Fourier decay conditions from log to log log with c > 1/2. The open question asks whether log log log decay suffices.",
-    "implications": "**Theoretical Significance**\n\n1. **Harmonic Analysis meets Probability**: The problem reveals deep connections between Fourier regularity (how smooth f is) and probabilistic convergence (strong law), mediated by the quasi-independence of lacunary sequences\n\n2. **Iterated Logarithm Hierarchy**: The progression log → log log → log log log suggests a universal principle: each additional level of lacunary quasi-independence compensates for one less level of Fourier regularity\n\n3. **Optimal Exponents**: Matsuyama's c > 1/2 for log log decay mirrors the CLT's √N scaling, suggesting the exponent is connected to the variance structure of the quasi-independent system\n\n4. **Ergodic Theory**: The problem is a sparse sampling version of the pointwise ergodic theorem — equidistribution along a thin subsequence rather than all integers\n\n5. **Barrier to Progress**: The 60-year gap since Matsuyama (1966) suggests a fundamental difficulty in handling triple-iterated logarithm decay",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Harmonic Analysis meets Probability**: The problem reveals deep connections between Fourier regularity (how smooth f is) and probabilistic convergence (strong law), mediated by the quasi-independence of lacunary sequences\n\n2. **Iterated Logarithm Hierarchy**: The progression log → log log → log log log suggests a universal principle: each additional level of lacunary quasi-independence compensates for one less level of Fourier regularity\n\n3.\n\n**Broader Connections**: **Optimal Exponents**: Matsuyama's c > 1/2 for log log decay mirrors the CLT's √N scaling, suggesting the exponent is connected to the variance structure of the quasi-independent system\n\n4. **Ergodic Theory**: The problem is a sparse sampling version of the pointwise ergodic theorem — equidistribution along a thin subsequence rather than all integers\n\n5. **Barrier to Progress**: The 60-year gap since Matsuyama (1966) suggests a fundamental difficulty in handling triple-iterated logarithm decay.",
     "openQuestions": [
       "Does log log log decay with some exponent C suffice for the SLLN along lacunary sequences? (Problem #996 itself)",
       "What is the optimal exponent for log log decay? Is c > 1/2 sharp, or can it be weakened to c > 0?",

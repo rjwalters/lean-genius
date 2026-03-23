@@ -64,7 +64,8 @@
       "**The ratio condition**: If a_{n+1}/a_n → 1, the sequence grows 'slowly' — consecutive terms become relatively close. Powers of 2 fail this (ratio = 2), but n^α for any α > 0 satisfies it.",
       "**Why the conjecture seemed plausible**: Hitting every AP infinitely often means good 'spread' across residue classes. Slow growth means no large gaps in the sequence. Yet Cassels showed these don't combine to give complete representation.",
       "**Cassels' insight**: Even with good AP coverage, one can arrange 'systematic gaps' in subset sums by carefully controlling which combinations of terms arise."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

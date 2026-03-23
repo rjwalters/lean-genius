@@ -94,11 +94,12 @@
       "Even $0 \\in A_3$ (the simplest possible jump) requires showing that 3-uniform hypergraphs with positive density contain denser subhypergraphs—a non-trivial fact related to hypergraph regularity",
       "The hypergraph Turán conjecture $\\pi(K_4^{(3)}) = 5/9$ remains open after 80+ years, and resolving it would determine whether $5/9 \\in A_3$",
       "Razborov's flag algebra method provides a systematic computational approach to bounding extremal densities, but cannot alone determine the full structure of $A_3$"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #837 is OPEN. The formalization captures the density jump framework for $k$-uniform hypergraphs, records the elegant solution $A_2 = \\{1 - 1/m\\}$ for graphs via Erdős–Stone–Simonovits, and axiomatizes the central open question: characterize $A_3$ for 3-uniform hypergraphs. The file has 0 sorries but 4 axioms encoding the known and unknown results.",
-    "implications": "Characterizing $A_3$ would be a major breakthrough in hypergraph extremal theory, unifying our understanding of density phenomena across all uniformities. It would resolve or subsume many specific open problems including the Turán tetrahedron conjecture. The structure of $A_3$—whether discrete like $A_2$, or having accumulation points, or even being uncountable—remains completely open.",
+    "implications": "**Theoretical Significance**: Characterizing $A_3$ would be a major breakthrough in hypergraph extremal theory, unifying our understanding of density phenomena across all uniformities.\n\n**Broader Connections**: It would resolve or subsume many specific open problems including the Turán tetrahedron conjecture. The structure of $A_3$—whether discrete like $A_2$, or having accumulation points, or even being uncountable—remains completely open.",
     "openQuestions": [
       "What is $A_3$ for 3-uniform hypergraphs? Is it countable or uncountable?",
       "Does $A_3$ consist of isolated points like $A_2$, or does it have accumulation points?",

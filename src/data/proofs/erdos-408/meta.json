@@ -64,7 +64,8 @@
       "The constant $1/\\log 2$ has a transparent interpretation: powers of 2 satisfy $f(2^k)/\\log(2^k) = 1/\\log 2$ exactly, and since $\\phi(n)$ is always even for $n \\ge 3$, generic iterations are 'shadowed' by the binary component. The odd prime factors perturb $f(n)$ only by lower-order terms.",
       "The Elliott-Halberstam conjecture enters because controlling $f(n)$ for typical $n$ requires understanding how $\\phi$ distributes values across residue classes modulo small primes. The Bombieri-Vinogradov theorem gives level $1/2$, but the EGPS sieve argument needs level arbitrarily close to 1 — exactly the Elliott-Halberstam assertion.",
       "Question 3 (largest prime factor of $\\phi_k(n)$ for $k \\approx \\log\\log n$) probes the 'smoothing' effect of iterated totient: repeated application cascades large prime factors down to smaller ones, with $\\log\\log n$ iterations being the natural threshold where this cascade completes."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -147,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #408 is OPEN unconditionally but conditionally resolved. The EGPS theorem (1990) shows that, assuming the Elliott-Halberstam conjecture, $f(n)/\\log n \\to 1/\\log 2$ for almost all $n$ (answering both Q1 and Q2 affirmatively). The 393-line formalization axiomatizes Pillai's bounds, Shapiro's multiplicativity, and the EGPS conditional, proving summary theorems that assemble these results. The single sorry is the existence proof for $f(n)$; all other non-axiomatized results (pillai_bounds, erdos_408_summary, erdos_408, small examples) are proved.",
-    "implications": "This problem reveals how iterated arithmetic functions bridge multiplicative number theory and probabilistic distribution theory. The essential multiplicativity of $f$ means its behavior on typical integers is governed by its values on prime powers, and concentration follows from independence-like properties of prime factorizations. The Elliott-Halberstam dependence highlights that many natural questions about the statistics of arithmetic functions ultimately reduce to understanding the level of distribution of primes — one of the deepest themes in analytic number theory.",
+    "implications": "**Theoretical Significance**: This problem reveals how iterated arithmetic functions bridge multiplicative number theory and probabilistic distribution theory.\n\n**Broader Connections**: The essential multiplicativity of $f$ means its behavior on typical integers is governed by its values on prime powers, and concentration follows from independence-like properties of prime factorizations. The Elliott-Halberstam dependence highlights that many natural questions about the statistics of arithmetic functions ultimately reduce to understanding the level of distribution of primes — one of the deepest themes in analytic number theory.",
     "openQuestions": [
       "Can the EGPS result $f(n)/\\log n \\to 1/\\log 2$ be proved unconditionally? The barrier is the level of distribution: Bombieri-Vinogradov gives $\\theta = 1/2$, but the proof requires $\\theta$ arbitrarily close to 1.",
       "What is the rate of convergence of $f(n)/\\log n$ to $1/\\log 2$? The variance and higher moments of the distribution are not known even conditionally.",

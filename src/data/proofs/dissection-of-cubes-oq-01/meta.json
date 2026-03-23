@@ -65,7 +65,8 @@
       "The lower bound 2 is tight in principle: HasMinimalCollision (collidingCubes.card = 2) is a formal open question",
       "Littlewood's cascade suggests in practice many more cubes must collide, but the formal lower bound stops at 2",
       "The 2D contrast (all-different sizes achievable) shows why dimension matters fundamentally"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -113,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "The key result is that every nonempty cube dissection has collidingCubes.card ≥ 2: at least two cubes must share a size. This strengthens Wiedijk #82 from 'there exists a collision' to 'at least 2 cubes participate'. The proof relies on extracting both cubes from the collision pair promised by the impossibility theorem.",
-    "implications": "**Connection to the base theorem**: Wiedijk #82 says cube dissections can't be perfect (all-different sizes). This OQ studies how far from perfect they must be. A dissection with HasMinimalCollision would be 'almost perfect': only one repeated size, with all other cubes distinct.\n\n**Why 2 might not be achievable**: Littlewood's floor argument creates a geometric cascade. The smallest cube on any floor forces even smaller cubes above it, and those force still smaller cubes, and so on. This cascade typically produces many size repetitions. Whether the cascade can be arranged to produce only one repeated size is the heart of the open question.\n\n**Formal limitation**: Our formalization uses covers_unit_cube : True as a placeholder for the actual geometric covering constraint. Resolving the open question would require formalizing the full 3D tiling geometry.",
+    "implications": "**Theoretical Significance**: **Connection to the base theorem**: Wiedijk #82 says cube dissections can't be perfect (all-different sizes). This OQ studies how far from perfect they must be. A dissection with HasMinimalCollision would be 'almost perfect': only one repeated size, with all other cubes distinct.\n\n**Why 2 might not be achievable**: Littlewood's floor argument creates a geometric cascade.\n\n**Broader Connections**: The smallest cube on any floor forces even smaller cubes above it, and those force still smaller cubes, and so on. This cascade typically produces many size repetitions. Whether the cascade can be arranged to produce only one repeated size is the heart of the open question.\n\n**Formal limitation**: Our formalization uses covers_unit_cube : True as a placeholder for the actual geometric covering constraint. Resolving the open question would require formalizing the full 3D tiling geometry.",
     "openQuestions": [
       "Is HasMinimalCollision achievable? (Can collidingCubes.card = 2 for a valid dissection?)",
       "What is the actual minimum of collidingCubes.card over all valid dissections?",

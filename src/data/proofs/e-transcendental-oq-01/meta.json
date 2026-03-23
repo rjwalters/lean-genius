@@ -77,7 +77,8 @@
       "Schanuel's Conjecture: if z₁,...,zₙ ∈ ℂ are ℚ-linearly independent, tr.deg ℚ(z₁,...,zₙ,e^z₁,...,e^zₙ)/ℚ ≥ n. Taking z₁=1, z₂=iπ gives tr.deg ℚ(π,e)/ℚ ≥ 2, i.e., e and π are algebraically independent",
       "Nesterenko (1996): π, e^π, Γ(1/4) algebraically independent — the strongest unconditional transcendence result for classical constants",
       "Even the IRRATIONALITY of e+π is open! If e+π = q ∈ ℚ, then π = q - e. This would require knowing that e and π differ by an irrational — not provable from current tools"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -160,7 +161,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the current state of knowledge about e + π. The key provable result is `e_plus_pi_or_e_times_pi_transcendental`: at least one of e+π or eπ must be transcendental. The proof is elegant — it uses only the transcendence of e (Hermite 1873) and the Vieta symmetric polynomial identity. The main open conjecture (`e_plus_pi_transcendental`) carries a sorry reflecting its genuine unknown status.",
-    "implications": "**If e + π is proved transcendental**:\n\n**For mathematics**: Would almost certainly require either a proof of Schanuel's Conjecture or a fundamentally new technique. Given Schanuel's depth, this would be a landmark result in transcendental number theory.\n\n**For Lean/Mathlib**: Would be a significant formalization milestone. The proof would likely require `Algebra.IsAlgebraic.trans`, the algebraic closure, and new Mathlib lemmas about transcendence degree.\n\n**For related problems**: The same technique proving e+π transcendental might also give eπ, e^e, γ (Euler-Mascheroni) and other classical constants.\n\n**Schanuel's Conjecture scope**: Schanuel would simultaneously prove e+π, eπ, e^e, π^e, and infinitely many other combinations transcendental. It is considered one of the most ambitious conjectures in number theory.",
+    "implications": "**Theoretical Significance**: **If e + π is proved transcendental**:\n\n**For mathematics**: Would almost certainly require either a proof of Schanuel's Conjecture or a fundamentally new technique. Given Schanuel's depth, this would be a landmark result in transcendental number theory.\n\n**For Lean/Mathlib**: Would be a significant formalization milestone.\n\n**Broader Connections**: The proof would likely require `Algebra.IsAlgebraic.trans`, the algebraic closure, and new Mathlib lemmas about transcendence degree.\n\n**For related problems**: The same technique proving e+π transcendental might also give eπ, e^e, γ (Euler-Mascheroni) and other classical constants.\n\n**Schanuel's Conjecture scope**: Schanuel would simultaneously prove e+π, eπ, e^e, π^e, and infinitely many other combinations transcendental. It is considered one of the most ambitious conjectures in number theory.",
     "openQuestions": [
       "Is e + π irrational? (Surprisingly open — not known even at this weaker level)",
       "Is e · π transcendental?",

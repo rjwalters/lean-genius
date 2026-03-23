@@ -72,7 +72,8 @@
       "**Disproof:** For n/log n independence, 1/8 cannot be improved",
       "**Turan Connection:** ex(n, K4) ~ (1/6)n^2, but with independence constraint get 1/8",
       "**3-Partite Structure:** K4-free graphs can be nearly tripartite"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -141,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #615 asked whether the 1/8 threshold for rt(n; 4, l) could be improved when l = n/log n. The answer is NO: Fox, Loh, and Zhao (2015) proved that rt(n; 4, n/log n) >= (1/8 - o(1))n^2. They identified a critical window at f(n) ~ sqrt(log n / log log n) where the behavior transitions from (1/8)n^2 to subquadratic.",
-    "implications": "**Combinatorial Significance**\n\n1. **Ramsey-Turan Theory:** Establishes precise thresholds for K4-free graphs with independence constraints\n\n2. **Critical Phenomena:** Identifies exact transition point between quadratic and subquadratic regimes\n\n3. **Probabilistic Methods:** The construction uses random graph techniques\n\n4. **3-Partite Structure:** K4-free dense graphs are approximately tripartite\n\n5. **Phase Transitions:** Mathematical proof of \"critical window\" phenomenon",
+    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Ramsey-Turan Theory:** Establishes precise thresholds for K4-free graphs with independence constraints\n\n2. **Critical Phenomena:** Identifies exact transition point between quadratic and subquadratic regimes\n\n3.\n\n**Broader Connections**: **Probabilistic Methods:** The construction uses random graph techniques\n\n4. **3-Partite Structure:** K4-free dense graphs are approximately tripartite\n\n5. **Phase Transitions:** Mathematical proof of \"critical window\" phenomenon.",
     "openQuestions": [
       "What is the exact constant in the critical window?",
       "Analogous results for rt(n; k, l) with k > 4?",

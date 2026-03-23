@@ -80,7 +80,8 @@
       "**Logarithmic Growth:** No node choice can avoid Λ → ∞; best possible is Λ ~ (2/π) log n",
       "**Complex Variant:** On the unit circle, roots of unity (uniformly spaced) are provably optimal",
       "**Known Exact Solutions:** Optimal canonical nodes known only for n ≤ 4; the n = 4 solution has an explicit algebraic form"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -142,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1129 asked which interpolation nodes minimize the Lebesgue constant. The answer is complete: optimal nodes exist (Kilgore-Cheney), are characterized by the equal-height property (Kilgore), and are unique for canonical configurations (de Boor-Pinkus). The minimum Lebesgue constant satisfies (2/π) log n - O(1) ≤ Λ_min ≤ (2/π) log n + O(1), with Chebyshev nodes achieving the upper bound. For the complex variant on the unit circle, roots of unity are optimal.",
-    "implications": "**Numerical Analysis Significance**\n\n1. **Interpolation Error Bounds:** ||f - P||_∞ ≤ (1 + Λ) · E_n(f) shows conditioning matters.\n\n2. **Chebyshev Preference:** Chebyshev nodes are standard in numerical methods because they achieve asymptotically optimal conditioning.\n\n3. **Runge Phenomenon:** Explains why equidistant nodes fail - their Lebesgue constant grows exponentially.\n\n4. **Approximation Theory:** Connects polynomial interpolation to best approximation through Lebesgue's inequality.\n\n5. **Computational Practice:** Modern spectral methods use Chebyshev or Gauss-Lobatto points based on these results.",
+    "implications": "**Theoretical Significance**: **Numerical Analysis Significance**\n\n1. **Interpolation Error Bounds:** ||f - P||_∞ ≤ (1 + Λ) · E_n(f) shows conditioning matters.\n\n2. **Chebyshev Preference:** Chebyshev nodes are standard in numerical methods because they achieve asymptotically optimal conditioning.\n\n3.\n\n**Broader Connections**: **Runge Phenomenon:** Explains why equidistant nodes fail - their Lebesgue constant grows exponentially.\n\n4. **Approximation Theory:** Connects polynomial interpolation to best approximation through Lebesgue's inequality.\n\n5. **Computational Practice:** Modern spectral methods use Chebyshev or Gauss-Lobatto points based on these results.",
     "openQuestions": [
       "Explicit optimal nodes for n ≥ 5",
       "Optimal nodes for other intervals or weight functions",
@@ -213,7 +214,10 @@
   ],
   "references": [
     {
-      "authors": ["T. Kilgore", "E. W. Cheney"],
+      "authors": [
+        "T. Kilgore",
+        "E. W. Cheney"
+      ],
       "title": "A theorem on interpolation in Haar subspaces",
       "journal": "Aequationes Mathematicae",
       "year": 1976,
@@ -222,7 +226,9 @@
       "description": "First proof of the existence of optimal interpolation nodes (Kilgore-Cheney existence theorem); the key compactness argument establishing that a minimizer of Λ exists in [-1,1]^n."
     },
     {
-      "authors": ["T. Kilgore"],
+      "authors": [
+        "T. Kilgore"
+      ],
       "title": "A characterization of the Lagrange interpolating projection with minimal Tchebycheff norm",
       "journal": "Journal of Approximation Theory",
       "year": 1977,
@@ -231,7 +237,10 @@
       "description": "Proves the equal-height characterization: optimal nodes equalize the local maxima of the Lebesgue function on consecutive subintervals (equioscillation theorem)."
     },
     {
-      "authors": ["C. de Boor", "A. Pinkus"],
+      "authors": [
+        "C. de Boor",
+        "A. Pinkus"
+      ],
       "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
       "journal": "Journal of Approximation Theory",
       "year": 1978,
@@ -240,7 +249,9 @@
       "description": "Proves uniqueness of the canonical minimizer and resolves both the Bernstein and Erdős conjectures on optimal interpolation nodes; the source for the uniqueness axiom in the Lean formalization."
     },
     {
-      "authors": ["G. Faber"],
+      "authors": [
+        "G. Faber"
+      ],
       "title": "Über die interpolatorische Darstellung stetiger Funktionen",
       "journal": "Jahresbericht der Deutschen Mathematiker-Vereinigung",
       "year": 1914,
@@ -249,7 +260,9 @@
       "description": "The foundational 1914 result showing that no sequence of interpolation nodes can keep Λ_n bounded; establishes Λ_n → ∞ for every node sequence, the starting point for the logarithmic lower bound."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and results on the theory of interpolation II",
       "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "year": 1961,

@@ -78,7 +78,8 @@
       "**Decidability via Finset.range**: The bounded quantifier formulation makes IsErdos1141Good decidable, enabling Lean's `decide` and `native_decide` tactics to computationally verify or refute the property for specific n — a powerful technique for concrete number theory.",
       "**The 1722 gap**: No good values exist between 1722 and 10^10 (a ratio of ~6 million). This enormous gap strongly suggests the sequence is finite, but proving this would require showing that the primality constraints become unsatisfiable for all sufficiently large n.",
       "**Density bound O(N^{1/2+o(1)})**: ChatGPT-Tang's result bounds the counting function, showing good values are very sparse. This is the best theoretical evidence toward finiteness, though it does not rule out infinitely many extremely sparse terms."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -204,7 +205,9 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems in number theory and combinatorics",
       "venue": "Proceedings of the Sixth Manitoba Conference on Numerical Mathematics",
       "year": 1976,
@@ -212,7 +215,9 @@
       "note": "Original source for many Erdős problems in this family, including the coprime-square subtraction problem."
     },
     {
-      "authors": ["ChatGPT-Tang"],
+      "authors": [
+        "ChatGPT-Tang"
+      ],
       "title": "Density bound for OEIS A214583: #{n ≤ N : IsErdos1141Good(n)} = O(N^{1/2+o(1)})",
       "venue": "erdosproblems.com comment / informal communication",
       "year": 2023,
@@ -220,14 +225,19 @@
       "note": "Establishes the best known upper bound on the counting function, showing the good values are sub-square-root sparse."
     },
     {
-      "authors": ["A. Epure", "A. Gica"],
+      "authors": [
+        "A. Epure",
+        "A. Gica"
+      ],
       "title": "On a conjecture of Erdős concerning primes of the form n − 2x²",
       "venue": "Journal of Number Theory",
       "year": 2022,
       "note": "Disproves the analogous conjecture for Erdős Problem #1140 (n − 2x² prime for all x), giving a cautionary precedent that the sequence in #1141 may also be finite."
     },
     {
-      "authors": ["OEIS Foundation"],
+      "authors": [
+        "OEIS Foundation"
+      ],
       "title": "Sequence A214583: Numbers n such that n - k^2 is prime for all k with gcd(n,k)=1 and k^2 < n",
       "venue": "The On-Line Encyclopedia of Integer Sequences",
       "year": 2012,
@@ -235,7 +245,10 @@
       "note": "Documents all 41 known good values, the 10^10 search bound, and references to related computational work."
     },
     {
-      "authors": ["P. Erdős", "R. L. Graham"],
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham"
+      ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "venue": "Monographies de L'Enseignement Mathématique, vol. 28, Université de Genève",
       "year": 1980,

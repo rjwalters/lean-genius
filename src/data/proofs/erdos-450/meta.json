@@ -62,7 +62,8 @@
       "**Pigeonhole for small $\\varepsilon$:** When $y \\geq 2n + 1$, any interval contains a multiple of some $d \\in (n, 2n)$, so $y(\\varepsilon, n) \\sim 2n$ when $\\varepsilon \\ll 1/n$",
       "**Rational $\\varepsilon$ encoding:** The formalization avoids real arithmetic by encoding $\\varepsilon = \\varepsilon_{\\text{Num}}/\\varepsilon_{\\text{Den}}$ and cross-multiplying, keeping all proofs in $\\mathbb{N}$",
       "**Proved contradiction:** `not_forAll_in_general` combines Cambie's axiom with a logical argument to formally prove the universal version fails"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

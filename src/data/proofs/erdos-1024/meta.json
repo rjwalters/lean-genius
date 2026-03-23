@@ -35,7 +35,8 @@
       "Erdős: n^(1/2) ≪ f(n) ≪ n^(2/3)",
       "Phelps-Rödl: f(n) ≍ (n log n)^(1/2)",
       "The log factor precisely closes Erdős's gap"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -111,7 +112,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1024 asked to estimate the minimum independence number f(n) of 3-uniform linear hypergraphs. Phelps and Rödl (1986) determined f(n) ≍ (n log n)^(1/2), precisely closing the gap in Erdős's bounds n^(1/2) ≪ f(n) ≪ n^(2/3).",
-    "implications": "**Theoretical Significance**\n\n1. **Hypergraph Independence**: Fundamental result on guaranteed independent sets\n\n2. **Steiner Systems**: Applies to partial Steiner triple systems\n\n3. **Probabilistic Method**: Lower bound via random selection\n\n4. **Log Factor**: Precise asymptotic between polynomial bounds",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Hypergraph Independence**: Fundamental result on guaranteed independent sets\n\n2.\n\n**Broader Connections**: **Steiner Systems**: Applies to partial Steiner triple systems\n\n3. **Probabilistic Method**: Lower bound via random selection\n\n4. **Log Factor**: Precise asymptotic between polynomial bounds.",
     "openQuestions": [
       "What are the exact constants in the asymptotic?",
       "What about k-uniform linear hypergraphs for k > 3?",
@@ -166,7 +167,10 @@
   ],
   "references": [
     {
-      "authors": ["Kevin T. Phelps", "Vojtěch Rödl"],
+      "authors": [
+        "Kevin T. Phelps",
+        "Vojtěch Rödl"
+      ],
       "title": "On the algorithmic complexity of coloring simple hypergraphs and Steiner triple systems",
       "venue": "Combinatorica",
       "year": 1986,
@@ -177,7 +181,9 @@
       "note": "Primary reference: proves f(n) ≍ (n log n)^{1/2} for 3-uniform linear hypergraphs."
     },
     {
-      "authors": ["Paul Erdős"],
+      "authors": [
+        "Paul Erdős"
+      ],
       "title": "On the combinatorial problems which I would most like to see solved",
       "venue": "Combinatorica",
       "year": 1981,
@@ -188,14 +194,20 @@
       "note": "Erdős's original problem statement and initial bounds n^{1/2} ≪ f(n) ≪ n^{2/3}."
     },
     {
-      "authors": ["Paul Erdős", "Joel Spencer"],
+      "authors": [
+        "Paul Erdős",
+        "Joel Spencer"
+      ],
       "title": "Probabilistic Methods in Combinatorics",
       "venue": "Academic Press",
       "year": 1974,
       "note": "The probabilistic method used for the independence lower bound; the first-moment technique is developed here."
     },
     {
-      "authors": ["Noga Alon", "Joel H. Spencer"],
+      "authors": [
+        "Noga Alon",
+        "Joel H. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "venue": "Wiley-Interscience",
       "year": 2016,
@@ -203,7 +215,9 @@
       "note": "Standard reference for the probabilistic method including the Lovász Local Lemma and independence number bounds in hypergraphs."
     },
     {
-      "authors": ["Stasys Jukna"],
+      "authors": [
+        "Stasys Jukna"
+      ],
       "title": "Extremal Combinatorics: With Applications in Computer Science",
       "venue": "Springer",
       "year": 2011,

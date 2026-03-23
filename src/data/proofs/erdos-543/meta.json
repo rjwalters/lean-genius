@@ -77,7 +77,8 @@
       "**Disproof by ChatGPT-Tang:** The O(log log N) cannot be improved to o(log log N), confirming Erdős's belief. Collision effects in finite fields of prime order force the extra term.",
       "**Logical Structure:** The two conjectures (little-o improvement vs. optimality) are formal negations, so proving one disproves the other. This is verified in Lean.",
       "**Spanning via Subset Sums:** Unlike group generation (arbitrary linear combinations), subset sums only allow coefficients 0 or 1, making the covering problem harder."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

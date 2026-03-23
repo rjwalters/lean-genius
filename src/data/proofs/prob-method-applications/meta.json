@@ -86,6 +86,13 @@
       "The chromatic number bound chi(G) <= O(Delta/log Delta) for triangle-free graphs uses the LLL in a non-obvious way, applying it to the color space rather than the graph directly",
       "Property B connects to discrepancy theory and is a gateway to the broader topic of hypergraph coloring",
       "The independent set bound sum(1/(d(v)+1)) is tight for the complement of a disjoint union of cliques"
+    ],
+    "prerequisites": [
+      "Probabilistic method: first and second moment methods",
+      "Ramsey theory and Ramsey number bounds",
+      "Graph coloring and chromatic number",
+      "Independent sets and cliques in random graphs",
+      "Lovász Local Lemma and property B"
     ]
   },
   "sections": [

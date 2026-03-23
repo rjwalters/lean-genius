@@ -107,6 +107,13 @@
       "In algebra towers, the minimal polynomial degree can only decrease when extending the base field",
       "Equality in towers holds precisely when the base-changed polynomial remains irreducible",
       "The reduction theorem generalizes the Cayley-Hamilton corollary: any polynomial function of a matrix can be computed by a polynomial of degree less than the matrix size"
+    ],
+    "prerequisites": [
+      "Minimal polynomials and the Cayley-Hamilton theorem",
+      "Polynomial evaluation in K-algebras (aeval)",
+      "Field extensions and scalar towers",
+      "Polynomial division algorithm and quotient rings",
+      "Integral elements and algebraic elements in ring theory"
     ]
   },
   "sections": [

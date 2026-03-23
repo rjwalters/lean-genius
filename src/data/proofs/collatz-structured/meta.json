@@ -43,7 +43,8 @@
       "27 is famous for its long trajectory (111 steps) despite being small",
       "The conjecture is equivalent to: no cycles exist other than 4 -> 2 -> 1",
       "The `native_decide` tactic enables verification of specific Collatz trajectories (like 27's 111-step path) by compiling the recursive computation to native code — turning the proof assistant into an efficient trajectory checker"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -84,7 +85,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves the Collatz conjecture for an important infinite family: all numbers of the form 2^m * n where we've verified n reaches 1. The closure property is key—once we verify any odd number, all its multiples by powers of 2 are covered.\n\nThe proof for powers of 2 is clean and illustrative: each application of the Collatz function halves the value until we reach 1. The specific verifications (especially 27's 111 steps) demonstrate how Lean's native_decide can handle substantial computations.",
-    "implications": "**Computational Verification**\n\nThis approach scales well: once we verify one odd number reaches 1, infinitely many even numbers are covered. The hard cases are odd numbers that grow before eventually descending.\n\n**The 27 Example**\n\n27 is famous because it takes 111 steps despite being small:\n27 -> 82 -> 41 -> 124 -> 62 -> 31 -> 94 -> 47 -> 142 -> 71 -> 214 -> 107 -> 322 -> ... -> 1\n\nThe maximum value in the trajectory is 9232, showing how even small starting values can have dramatic orbits.",
+    "implications": "**Theoretical Significance**: **Computational Verification**\n\nThis approach scales well: once we verify one odd number reaches 1, infinitely many even numbers are covered.\n\n**Broader Connections**: The hard cases are odd numbers that grow before eventually descending.\n\n**The 27 Example**\n\n27 is famous because it takes 111 steps despite being small:\n27 -> 82 -> 41 -> 124 -> 62 -> 31 -> 94 -> 47 -> 142 -> 71 -> 214 -> 107 -> 322 -> ... -> 1\n\nThe maximum value in the trajectory is 9232, showing how even small starting values can have dramatic orbits.",
     "openQuestions": [
       "Does every positive integer reach 1? (The full Collatz conjecture)",
       "Are there cycles other than 4 -> 2 -> 1?",

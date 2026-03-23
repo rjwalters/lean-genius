@@ -41,7 +41,8 @@
       "Erdős's 'colleague from Zagreb' mystery was resolved after decades",
       "Related problem #89 asks for the minimum distance count itself",
       "For large n, even the minimum distance count is not precisely known"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -89,7 +90,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #91 asks whether there are multiple non-similar n-point sets achieving the minimum number of distinct distances. For n=5, the regular pentagon is uniquely optimal (Kovács 2024), but for n=4,6-9, multiple optima exist. The question for large n remains OPEN.",
-    "implications": "**Theoretical Significance**\n\n1. **Discrete Geometry**: Connects to rigidity theory and configuration spaces\n\n2. **Algebraic Geometry**: Optimal configurations satisfy polynomial distance equations\n\n3. **Number Theory**: Lattice points and algebraic integers appear in optimal constructions\n\n4. **Combinatorics**: The structure of minimal distance sets is poorly understood",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Discrete Geometry**: Connects to rigidity theory and configuration spaces\n\n2.\n\n**Broader Connections**: **Algebraic Geometry**: Optimal configurations satisfy polynomial distance equations\n\n3. **Number Theory**: Lattice points and algebraic integers appear in optimal constructions\n\n4. **Combinatorics**: The structure of minimal distance sets is poorly understood.",
     "openQuestions": [
       "Prove non-uniqueness for all sufficiently large n",
       "Characterize the structure of optimal configurations",

@@ -69,6 +69,12 @@
       "**Self-Reference Requires Strength:** The system must be 'sufficiently strong' (represent all computable functions) to encode $\\text{Prov}(x)$. Robinson arithmetic $Q$ suffices — even weak systems can talk about their own provability.",
       "**Universal Scope:** The theorem applies to ANY consistent, recursively axiomatizable extension of $Q$: Peano Arithmetic, ZFC, ZFC + large cardinals — no matter how many axioms you add, new unprovable truths emerge. Incompleteness is inescapable.",
       "**Diagonalization Family:** The same technique underlies Cantor's uncountability ($|\\mathbb{R}| > |\\mathbb{N}|$), Turing's halting problem, and Tarski's undefinability of truth. All use self-reference + negation to establish impossibility."
+    ],
+    "prerequisites": [
+      "Mathematical logic: formal systems, provability, consistency",
+      "Gödel numbering and arithmetization of metamathematics",
+      "Diagonalization and self-reference (Diagonal Lemma)",
+      "Modal logic of provability (Hilbert-Bernays-Löb conditions)"
     ]
   },
   "sections": [
@@ -155,7 +161,7 @@
   ],
   "conclusion": {
     "summary": "Gödel's First Incompleteness Theorem demonstrates that mathematical truth forever exceeds formal provability. Any consistent system powerful enough to express arithmetic contains true statements it cannot prove. This isn't a flaw in specific systems—it's a fundamental feature of formal reasoning itself.",
-    "implications": "The incompleteness theorems transformed our understanding of foundations. Hilbert's vision of a complete, mechanizable mathematics was shown to be impossible. In computer science, the same techniques yield the undecidability of the Halting Problem. Philosophically, the theorems raise profound questions: Does human mathematical insight transcend algorithmic computation? Is there a limit to what we can know through formal methods? Gödel's work suggests that creativity and intuition in mathematics cannot be fully captured by any fixed set of rules.",
+    "implications": "**Theoretical Significance**: The incompleteness theorems transformed our understanding of foundations. Hilbert's vision of a complete, mechanizable mathematics was shown to be impossible.\n\n**Broader Connections**: In computer science, the same techniques yield the undecidability of the Halting Problem. Philosophically, the theorems raise profound questions: Does human mathematical insight transcend algorithmic computation? Is there a limit to what we can know through formal methods? Gödel's work suggests that creativity and intuition in mathematics cannot be fully captured by any fixed set of rules.",
     "openQuestions": [
       "Can human mathematical reasoning genuinely transcend formal systems, or are we also bound by incompleteness?",
       "What is the relationship between Gödel incompleteness, Turing undecidability, and Chaitin incompleteness?",

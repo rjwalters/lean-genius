@@ -70,7 +70,8 @@
       "**Prime factorization approach**: Using Legendre's formula for the prime power in n!, one can analyze when the divisibility holds. The difficulty is showing it happens infinitely often.",
       "**Erdős's bound constrains solutions**: If a!b! | n!, then a + b ≤ n + O(log n). For our problem with a = b = n+k and factorial (2n)!, this gives constraints on valid n.",
       "**Open even for k = 2**: Despite decades of work, even the specific case k = 2 asking whether ((n+2)!)² | (2n)! infinitely often is unresolved."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -139,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #727, which asks whether ((n+k)!)² divides (2n)! for infinitely many n when k ≥ 2. The main problem is OPEN, but we capture the solved k=1 case (Balakran 1929) and the EGRS variant showing (n+k)!(n+1)! | (2n)! infinitely often.",
-    "implications": "This problem connects factorial arithmetic, Catalan numbers, and prime factorization. The gap between k=1 (solved) and k=2 (open) illustrates how small changes in divisibility conditions can dramatically change problem difficulty. Understanding this gap may reveal new techniques in multiplicative number theory.",
+    "implications": "**Theoretical Significance**: This problem connects factorial arithmetic, Catalan numbers, and prime factorization.\n\n**Broader Connections**: The gap between k=1 (solved) and k=2 (open) illustrates how small changes in divisibility conditions can dramatically change problem difficulty. Understanding this gap may reveal new techniques in multiplicative number theory.",
     "openQuestions": [
       "Does ((n+2)!)² | (2n)! for infinitely many n? (The k=2 case)",
       "What is the density of n for which ((n+1)!)² | (2n)!?",

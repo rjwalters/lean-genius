@@ -79,7 +79,8 @@
       "**The $\\{0,1\\}$ parity fix**: Ruzsa's core set handles residues coprime to 5, but parity issues remain—adding $\\{0,1\\}$ ensures both even and odd integers are covered without increasing the asymptotic density.",
       "**Tight optimality**: The density $N/\\log N$ is sharp from both sides. The upper bound comes from Ruzsa's construction; the lower bound follows because the powers of 2 up to $N$ number only $\\lfloor \\log_2 N \\rfloor + 1$, so $A$ must have $\\Omega(N/\\log N)$ elements to provide enough distinct representations.",
       "**Lacunary complement theory**: The result exemplifies a broader phenomenon: exponentially sparse (lacunary) sequences like $\\{g^k\\}$ always admit complements of density $O(N/\\log N)$, with the construction adapting via primitive roots of $g$ modulo suitable prime powers."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -219,7 +220,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #221 is SOLVED. The answer is YES: Ruzsa (1972) constructed a set $A$ with $|A \\cap \\{1,\\ldots,N\\}| = O(N/\\log N)$ such that every sufficiently large integer is $2^k + a$ for some $k \\geq 0$ and $a \\in A$. The construction $A = \\{5^n \\cdot m : 5^n \\geq C \\log m\\} + \\{0,1\\}$ exploits the fact that 2 is a primitive root modulo all powers of 5. Ruzsa (2001) later achieved the asymptotically exact density $N/\\log_2 N$, and a matching lower bound shows this is optimal.",
-    "implications": "The result reveals a deep connection between additive combinatorics and multiplicative number theory: the purely additive question of complementing $\\{2^k\\}$ is resolved by the multiplicative property of 2 being a primitive root modulo $5^n$. This exemplifies how number-theoretic structure (primitive roots, residue coverage) can be leveraged for combinatorial constructions. The density $N/\\log N$ is the natural barrier, matching the logarithmic growth of the number of powers of 2 up to $N$.",
+    "implications": "**Theoretical Significance**: The result reveals a deep connection between additive combinatorics and multiplicative number theory: the purely additive question of complementing $\\{2^k\\}$ is resolved by the multiplicative property of 2 being a primitive root modulo $5^n$.\n\n**Broader Connections**: This exemplifies how number-theoretic structure (primitive roots, residue coverage) can be leveraged for combinatorial constructions. The density $N/\\log N$ is the natural barrier, matching the logarithmic growth of the number of powers of 2 up to $N$.",
     "openQuestions": [
       "What are the exact constants in the density bounds? Ruzsa's $C = 1/(5 \\log 2)$ yields an upper bound, but the sharp constant in the lower bound is unknown.",
       "For which bases $g$ can the construction be made fully explicit? Artin's conjecture on primitive roots (unproven in general) governs which primes $p$ have $g$ as a primitive root mod $p^n$.",

@@ -63,7 +63,8 @@
       "**Cramer Is a Linear Map:** Mathlib defines `Matrix.cramer` as a `LinearMap` from the start. Linearity in $b$ follows from multilinearity of the determinant in its columns.",
       "**Invertible vs Field:** The formalization uses the `Invertible` typeclass rather than requiring a `Field`. This works in any ring where $\\det(A)$ has a two-sided inverse, a subtler algebraic condition.",
       "**Cofactor Expansion:** Each $\\text{cramer}(A,b)_i$ is a cofactor expansion along column $i$ using the entries of $b$ instead of $A$. This is why the determinant $\\det(A_i)$ arises naturally."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -154,7 +155,7 @@
   ],
   "conclusion": {
     "summary": "The formalization presents Cramer's rule in its most general form over commutative rings: $A \\cdot \\text{cramer}(A,b) = \\det(A) \\cdot b$, without requiring invertibility. It connects the Cramer map to the adjugate matrix, proves linearity in $b$, provides the transpose form, and specializes to 2x2 systems over fields. All proofs are complete with zero sorries, building on Mathlib's matrix adjugate infrastructure.",
-    "implications": "**Implications and Connections**\n\n1. **Matrix Invertibility:** When $\\det(A)$ is a unit, Cramer's rule gives an explicit inverse $A^{-1} = \\frac{1}{\\det(A)}\\text{adj}(A)$, providing a constructive proof of invertibility.\n\n2. **Algebraic Geometry:** Over polynomial rings, Cramer's rule provides rational expressions for solution coordinates, fundamental to resultant theory and elimination.\n\n3. **Symbolic Computation:** For systems with symbolic entries, Cramer's rule gives closed-form solutions that reveal parameter dependence.\n\n4. **Linear Algebra Theory:** The adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ is the foundation for the Cayley-Hamilton theorem.\n\n5. **Formalization Design:** Working over `CommRing` rather than `Field` demonstrates the power of algebraic generality in formal mathematics.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Matrix Invertibility:** When $\\det(A)$ is a unit, Cramer's rule gives an explicit inverse $A^{-1} = \\frac{1}{\\det(A)}\\text{adj}(A)$, providing a constructive proof of invertibility.\n\n2. **Algebraic Geometry:** Over polynomial rings, Cramer's rule provides rational expressions for solution coordinates, fundamental to resultant theory and elimination.\n\n3.\n\n**Broader Connections**: **Symbolic Computation:** For systems with symbolic entries, Cramer's rule gives closed-form solutions that reveal parameter dependence.\n\n4. **Linear Algebra Theory:** The adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ is the foundation for the Cayley-Hamilton theorem.\n\n5. **Formalization Design:** Working over `CommRing` rather than `Field` demonstrates the power of algebraic generality in formal mathematics.",
     "openQuestions": [
       "Can the formalization include the Cayley-Hamilton theorem as a corollary of the adjugate identity?",
       "Can complexity analysis ($O(n!)$ vs $O(n^3)$ Gaussian elimination) be formalized in Lean?",

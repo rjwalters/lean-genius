@@ -36,7 +36,8 @@
       "**Szemerédi-Trotter Does Not Suffice:** The ST incidence bound for circles I(P,C) ≤ O(n^{2/3}|C|^{2/3} + n + |C|) with the 3-rich condition I ≥ 3|C| only yields |C| = O(n²), matching the trivial bound. New structural ideas are needed",
       "**Even o(n²) Is Open:** No one has proved any subquadratic upper bound. The gap between the n^{3/2} lower bound and n² upper bound is the largest known gap for any Erdős incidence problem",
       "**$100 Prize Problem:** One of Erdős's monetary prizes, reflecting the difficulty. Related open problems include unit distances (Erdős #102) and line avoidance (Erdős #105)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -98,7 +99,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #104 asks whether the number of unit circles containing 3+ points from an n-point set in the plane is O(n^{3/2}). Elekes's Ω(n^{3/2}) construction shows this would be tight. The Harborth-Mengersen bound n(n-1)/3 is the best known upper bound, and even proving o(n²) remains open. The formalization captures the full problem: geometric setup, circle determination, double counting, lower bounds, the conjecture and its weak variant, Szemerédi-Trotter connections, and exact values for small n.",
-    "implications": "This problem lies at the heart of combinatorial incidence geometry, connecting to the unit distance problem (how many pairs at unit distance?), the Szemerédi-Trotter theorem and its generalizations to algebraic curves, and modern techniques like polynomial partitioning. A resolution would likely require new ideas beyond existing incidence bounds. The problem also connects to computational geometry (efficient circle detection algorithms) and number theory (lattice point counts on circles).",
+    "implications": "**Theoretical Significance**: This problem lies at the heart of combinatorial incidence geometry, connecting to the unit distance problem (how many pairs at unit distance?), the Szemerédi-Trotter theorem and its generalizations to algebraic curves, and modern techniques like polynomial partitioning.\n\n**Broader Connections**: A resolution would likely require new ideas beyond existing incidence bounds. The problem also connects to computational geometry (efficient circle detection algorithms) and number theory (lattice point counts on circles).",
     "openQuestions": [
       "Is the count O(n^{3/2})? This is the main conjecture with a $100 Erdős prize.",
       "Can we prove even o(n²) — any improvement over the trivial quadratic bound?",

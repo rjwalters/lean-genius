@@ -73,7 +73,8 @@
       "**Tucker = BU in 1D**: Both directions of the equivalence are proved, connecting combinatorial and topological perspectives",
       "**Perturbation stability**: epsilon-perturbations of f shift the antisymmetric difference by at most 2*epsilon",
       "**Circle BU is genuinely non-trivial**: Proved via IVT on g(theta) with g(pi)=-g(0), unlike interval BU which has trivial witness x=0"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -142,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides a comprehensive quantitative analysis of the 1D Borsuk-Ulam theorem and a complete proof of Tucker's 1D lemma. 28 theorems are proved with 0 sorries, covering Lipschitz bounds, bisection convergence, oscillation estimates, coincidence set structure, circle BU bounds, perturbation stability, and the Tucker-BU equivalence. Tucker's lemma for 2D and n-D is axiomized (3 axioms total), accurately reflecting the infrastructure gap in Mathlib for simplicial complexes with antipodal structure.",
-    "implications": "**Implications**\n\n1. **Computational BU**: The bisection convergence rate makes the 1D constructive proof algorithmically explicit with complexity O(log(1/epsilon)).\n\n2. **Stability**: The 2*epsilon perturbation bound shows that BU solutions vary continuously with the input function.\n\n3. **Tucker-BU bridge**: The proved 1D equivalence validates Tucker's lemma as the discrete foundation for BU, supporting the combinatorial approach to higher-dimensional proofs.\n\n4. **Infrastructure roadmap**: The axiomized Tucker 2D/nD statements precisely specify what Mathlib infrastructure is needed: antipodal triangulations of B^n with labeling conditions.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Computational BU**: The bisection convergence rate makes the 1D constructive proof algorithmically explicit with complexity O(log(1/epsilon)).\n\n2.\n\n**Broader Connections**: **Stability**: The 2*epsilon perturbation bound shows that BU solutions vary continuously with the input function.\n\n3. **Tucker-BU bridge**: The proved 1D equivalence validates Tucker's lemma as the discrete foundation for BU, supporting the combinatorial approach to higher-dimensional proofs.\n\n4. **Infrastructure roadmap**: The axiomized Tucker 2D/nD statements precisely specify what Mathlib infrastructure is needed: antipodal triangulations of B^n with labeling conditions.",
     "openQuestions": [
       "Can Tucker 2D be proved in Lean using a graph-theoretic path-following argument?",
       "Can the odd counting version (number of complementary edges is odd) be formalized for Tucker 1D?",

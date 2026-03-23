@@ -64,7 +64,8 @@
       "**Polynomial bound**: Erdős's stronger conjecture says the smallest valid prime is polynomial in $n$, not just that one exists. The heuristic predicts growth closer to $n \\log n$.",
       "**Computational verification**: Deaconescu checked $n \\leq 1000$, providing strong numerical evidence. Note $a(6) = 17 < a(5) = 23$, so the sequence is not monotone.",
       "**Divisibility obstruction**: Since every prime $p_k \\leq p_n$ divides $P$, the sum $P + p$ is divisible by $p_k$ whenever $p_k \\mid p$. This means only primes $p > p_n$ can possibly yield $P + p$ prime — the lower bound in the conjecture is forced, not arbitrary."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -153,7 +154,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #779 (the Deaconescu conjecture) asking whether for each n, there exists a prime p between the nth prime and the primorial such that P + p is prime. We verify explicit witnesses for small n and state Erdős's stronger polynomial bound conjecture.",
-    "implications": "This problem connects prime distribution to additive properties of primorials. A proof would give new insights into the additive structure of prime numbers. The heuristic argument is overwhelming, but converting it to a proof requires deep analytic number theory.",
+    "implications": "**Theoretical Significance**: This problem connects prime distribution to additive properties of primorials.\n\n**Broader Connections**: A proof would give new insights into the additive structure of prime numbers. The heuristic argument is overwhelming, but converting it to a proof requires deep analytic number theory.",
     "openQuestions": [
       "Does a valid prime always exist for all n ≥ 2?",
       "Is the smallest valid prime bounded by n^c for some constant c?",

@@ -58,7 +58,8 @@
       "**SAT Verification as Mathematics:** Barber's proof (2015) via SAT solver is a legitimate mathematical proof — the UNSAT certificate for the negation is a checkable proof object, not just a numerical claim; this exemplifies the growing role of computational methods in combinatorics",
       "**Schur Number Connection:** The Schur number $S(2) = 4$ says any 2-coloring of $\\{1,2,3,4,5\\}$ has a monochromatic triple; Problem #895 replaces 'same color' with 'triangle-free neighborhood', showing graph structure can substitute for coloring constraints",
       "**Hajnal's Gap is Deep:** The jump from 'one Schur triple' (Erdős #895, proved) to 'infinite Hindman structure' (Hajnal's conjecture, open) mirrors the gap between Schur's theorem (1916) and Hindman's theorem (1974) — decades apart in difficulty even in the pure combinatorial setting"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -120,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #895 asks whether triangle-free graphs on {1,...,n} must contain independent additive triples a, b, a+b. The answer is YES for n ≥ 18, verified computationally by Ben Barber. Our formalization captures the main theorem, the sharp threshold, connections to Ramsey theory and Schur numbers, and Hajnal's open generalization.",
-    "implications": "This problem connects to:\n\n1. **Ramsey Theory:** Triangle-free graphs and independence numbers\n2. **Additive Combinatorics:** Schur's theorem and sum-free sets\n3. **Hindman's Theorem:** Finite sums in partition regular structures\n4. **Computational Methods:** SAT solver verification of combinatorial conjectures\n5. **Arithmetic Ramsey Theory:** Combining graph and number-theoretic constraints",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Ramsey Theory:** Triangle-free graphs and independence numbers\n2. **Additive Combinatorics:** Schur's theorem and sum-free sets\n3.\n\n**Broader Connections**: **Hindman's Theorem:** Finite sums in partition regular structures\n4. **Computational Methods:** SAT solver verification of combinatorial conjectures\n5. **Arithmetic Ramsey Theory:** Combining graph and number-theoretic constraints.",
     "openQuestions": [
       "Prove Hajnal's generalization: do large triangle-free graphs always contain an independent Hindman set (all finite sums of a finite base)?",
       "Find an explicit combinatorial or algebraic proof of Barber's theorem that doesn't require SAT verification — is there a human-understandable argument?",

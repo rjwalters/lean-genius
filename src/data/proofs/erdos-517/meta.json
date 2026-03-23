@@ -96,6 +96,13 @@
       "**Value distribution**: Picard's theorem says entire functions miss at most one value. Gap conditions can force every value to be assumed infinitely often.",
       "**The gap**: Despite 100+ years of study, we don't know if the weaker Fabry condition suffices for infinite value coverage.",
       "**Nevanlinna-theoretic perspective**: The counting function $n(r,w)$ of $w$-points in $|z| < r$ grows without bound for each $w$ under Fejér gaps. The open question is whether Fabry gaps — which only control the *rate* of exponent growth rather than their summability — still force this growth for every value simultaneously."
+    ],
+    "prerequisites": [
+      "Complex analysis: entire functions, power series",
+      "Lacunary (gap) series and Fabry/Fejér gap conditions",
+      "Summability conditions (∑1/nₖ convergence)",
+      "Value distribution theory (Picard/Borel)",
+      "Basic series convergence from Mathlib"
     ]
   },
   "sections": [

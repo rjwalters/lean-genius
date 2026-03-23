@@ -68,7 +68,8 @@
       "**Inverse Ackermann appears**: The d=3 upper bound involves β(n), the inverse Ackermann function. This arises from Davenport-Schinzel sequences in computational geometry, showing deep structural complexity.",
       "**Even vs. odd dimensions**: For d≥4, even dimensions have exact formulas, while odd dimensions have O(n^(4/3)) error terms. This parity phenomenon relates to the Lenz construction's efficiency.",
       "**80 years of open gaps**: The 2D case has been open since 1946. Despite intense study, we don't know if f_2(n) is closer to n^(1+o(1)) or n^(4/3). This remains a central open problem in combinatorial geometry."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -144,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1085 on the unit distance problem across all dimensions. For d≥4, the problem is essentially solved with f_d(n) ≈ (p-1)/(2p)·n². For d=2,3, significant gaps remain between upper and lower bounds, with the d=2 case being one of the most famous open problems in combinatorial geometry.",
-    "implications": "The unit distance problem sits at the intersection of combinatorics, geometry, and graph theory. The breakthrough upper bound of Spencer-Szemerédi-Trotter introduced crossing number techniques that have had wide influence. The contrast between the clean high-dimensional answers and the stubborn low-dimensional gaps illustrates how geometry becomes more rigid in higher dimensions.",
+    "implications": "**Theoretical Significance**: The unit distance problem sits at the intersection of combinatorics, geometry, and graph theory.\n\n**Broader Connections**: The breakthrough upper bound of Spencer-Szemerédi-Trotter introduced crossing number techniques that have had wide influence. The contrast between the clean high-dimensional answers and the stubborn low-dimensional gaps illustrates how geometry becomes more rigid in higher dimensions.",
     "openQuestions": [
       "Is f_2(n) = O(n^(1+c/log log n))? (Main open question - 80 years old)",
       "Is f_3(n) = O(n^(4/3) log log n)? (3D tight bound)",

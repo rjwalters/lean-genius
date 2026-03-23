@@ -63,7 +63,8 @@
       "**Prime divisibility criterion**: Selfridge-Straus showed uniqueness holds if |A| has a prime factor > k. This explains many special cases.",
       "**Products fail**: Unlike sums, the product version of the problem has counterexamples even for large sets (Steinerberger's roots of unity example).",
       "**The threshold function**: For each k > 2, there exists N(k) such that uniqueness holds for |A| > N(k). GFS give N(k) <= k^2 - k + 2."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -139,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #494 on set determination from k-sums. The problem is SOLVED: for k > 2, a finite set A in the complex plane is uniquely determined (up to its cardinality) by its k-sum multiset, provided |A| is sufficiently large. The formalization includes the complete k=2 characterization, specific bounds for k=3,4, the general GFS theorem, and counterexamples showing the necessity of the size condition.",
-    "implications": "This result connects several areas:\n\n1. **Additive combinatorics**: Understanding when sumset information determines the underlying set\n2. **Polynomial methods**: The proofs use symmetric functions and Newton's identities\n3. **Algebraic number theory**: The counterexamples involve roots of unity and Gaussian integers\n4. **Inverse problems**: Reconstruction from incomplete information\n\nThe contrast between sums (determined for large sets) and products (never determined) highlights the special structure of addition.",
+    "implications": "**Theoretical Significance**: This result connects several areas:\n\n1. **Additive combinatorics**: Understanding when sumset information determines the underlying set\n2.\n\n**Broader Connections**: **Polynomial methods**: The proofs use symmetric functions and Newton's identities\n3. **Algebraic number theory**: The counterexamples involve roots of unity and Gaussian integers\n4. **Inverse problems**: Reconstruction from incomplete information\n\nThe contrast between sums (determined for large sets) and products (never determined) highlights the special structure of addition.",
     "openQuestions": [
       "What is the exact threshold N(k) for each k?",
       "Can the GFS bound k^2 - k + 2 be improved?",

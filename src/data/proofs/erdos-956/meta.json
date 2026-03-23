@@ -86,7 +86,8 @@
       "Removing the translate constraint (allowing general disjoint convex sets) worsens the upper bound from $n^{4/3}$ to $n^{7/5}$, reflecting the loss of translational symmetry that constrains boundary geometry",
       "The best lower bound $\\Omega(n \\log n / \\log\\log n)$ comes from placing translates at integer lattice points in $[1, \\sqrt{n}]^2$ and exploiting the classical lattice point result on sums of two squares",
       "The formalization separates the problem into definitions (set distance, configurations) and axiomatized bounds, cleanly distinguishing what Lean can verify structurally from deep analytic results that require external justification"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -176,7 +177,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full landscape of Erdős Problem #956: the definition of $h(n)$ as the maximum unit distances among $n$ disjoint convex translates, the Erdős-Pach bounds $\\Omega(n \\log n / \\log\\log n) \\leq h(n) \\leq O(n^{4/3})$, the relationship $h(n) \\geq f(n)$ to the classical unit distance problem, the generalization to non-translate convex sets with bound $O(n^{7/5})$, and the formal statement of the open conjecture $h(n) > n^{1+c}$.",
-    "implications": "**Theoretical Significance**\n\n1. **Convex Geometry meets Combinatorics**: This problem lies at the interface of convex geometry and extremal combinatorics, asking how the structure of convex bodies constrains distance patterns\n\n2. **Generalization of the Unit Distance Problem**: Since $h(n) \\geq f(n)$, resolving the Erdős-Pach conjecture would also advance our understanding of the classical unit distance problem posed by Erdős in 1946\n\n3. **Incidence Geometry**: The upper bounds rely on the Szemerédi-Trotter theorem and its extensions to algebraic curves, connecting this problem to the broader incidence geometry program\n\n4. **Shape Independence**: A resolution would clarify whether the asymptotic behavior of $h(n)$ depends on the specific convex set $C$ or is universal across all compact convex shapes\n\n5. **Formalization Value**: The Lean formalization cleanly separates structural definitions (verifiable) from deep analytic bounds (axiomatized), providing a template for formalizing open problems with known partial results",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Convex Geometry meets Combinatorics**: This problem lies at the interface of convex geometry and extremal combinatorics, asking how the structure of convex bodies constrains distance patterns\n\n2. **Generalization of the Unit Distance Problem**: Since $h(n) \\geq f(n)$, resolving the Erdős-Pach conjecture would also advance our understanding of the classical unit distance problem posed by Erdős in 1946\n\n3.\n\n**Broader Connections**: **Incidence Geometry**: The upper bounds rely on the Szemerédi-Trotter theorem and its extensions to algebraic curves, connecting this problem to the broader incidence geometry program\n\n4. **Shape Independence**: A resolution would clarify whether the asymptotic behavior of $h(n)$ depends on the specific convex set $C$ or is universal across all compact convex shapes\n\n5. **Formalization Value**: The Lean formalization cleanly separates structural definitions (verifiable) from deep analytic bounds (axiomatized), providing a template for formalizing open problems with known partial results.",
     "openQuestions": [
       "Is h(n) > n^(1+c) for some c > 0? (The main Erdős-Pach conjecture)",
       "What is the exact order of magnitude of h(n)? The gap between n log n / log log n and n^(4/3) is substantial",

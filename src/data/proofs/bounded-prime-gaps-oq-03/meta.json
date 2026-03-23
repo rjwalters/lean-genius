@@ -67,7 +67,8 @@
       "interval_cases p is used to eliminate composite 'prime' cases between 47 and 53 in the admissibility proof",
       "Mathlib 4.26.0 API change: Finset.min'_le and Finset.le_max' no longer take an explicit Nonempty argument — signature changed from (s hne b hb) to (s b hb)",
       "The 246 bound is tight for the 50-tuple approach — improving requires either larger k-tuples or new sieve techniques"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -129,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves that 246 is the exact optimal bound achievable by the 50-tuple Maynard-Tao sieve, as established by Engelsma's 2013 exhaustive computer search. The Lean file compiles with 0 sorries and 1 axiom (engelsma_lower_bound encoding the computational result). The admissibility proof handles all prime cases: native_decide for p ≤ 47, counting argument for p ≥ 53.",
-    "implications": "**What this establishes**:\n\n**Optimality of 246**: The Polymath 8b bound is tight — no admissible 50-tuple can achieve a smaller diameter. Improving the prime gap bound below 246 requires either using k-tuples with k > 50 (at the cost of larger diameter initially) or developing fundamentally new sieve techniques.\n\n**Admissibility infrastructure**: The proof demonstrates a clean pattern for admissibility verification: finitely many small prime cases via decidable computation, infinite large prime cases via cardinality counting.\n\n**The one axiom**: `engelsma_lower_bound` encodes an exhaustive computation over all admissible 50-tuples. Eliminating this axiom would require formalizing and verifying Engelsma's search algorithm — a substantial project in certified computation.\n\n**Connection to Twin Primes**: The 50-tuple bound 246 is the best unconditional result. Under Elliott-Halberstam conjecture, the Maynard-Tao method gives ≤ 12. The Twin Prime Conjecture (liminf = 2) remains open.",
+    "implications": "**Theoretical Significance**: **What this establishes**:\n\n**Optimality of 246**: The Polymath 8b bound is tight — no admissible 50-tuple can achieve a smaller diameter. Improving the prime gap bound below 246 requires either using k-tuples with k > 50 (at the cost of larger diameter initially) or developing fundamentally new sieve techniques.\n\n**Admissibility infrastructure**: The proof demonstrates a clean pattern for admissibility verification: finitely many small prime cases via decidable computation, infinite large prime cases via cardinality counting.\n\n**The one axiom**: `engelsma_lower_bound` encodes an exhaustive computation over all admissible 50-tuples.\n\n**Broader Connections**: Eliminating this axiom would require formalizing and verifying Engelsma's search algorithm — a substantial project in certified computation.\n\n**Connection to Twin Primes**: The 50-tuple bound 246 is the best unconditional result. Under Elliott-Halberstam conjecture, the Maynard-Tao method gives ≤ 12. The Twin Prime Conjecture (liminf = 2) remains open.",
     "openQuestions": [
       "Can the 246 bound be improved below 246 using k-tuples with k ≠ 50? (Would require new sieve or different k)",
       "Can engelsma_lower_bound be formally verified by running Engelsma's search algorithm in Lean? (Certified computation project)",

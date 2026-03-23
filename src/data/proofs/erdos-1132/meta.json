@@ -78,7 +78,8 @@
       "**Dense vs Almost Everywhere:** Bernstein showed good points are dense, but almost-everywhere remains open",
       "**Chebyshev Nodes:** xₖ = cos((2k-1)π/(2n)) minimize the Lebesgue constant",
       "**Runge Phenomenon:** Equidistant nodes have exponentially growing Lebesgue constants, causing interpolation instability"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -133,7 +134,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1132 poses two open questions about Lebesgue functions for infinite node sequences in polynomial interpolation. Question 1 asks whether every sequence has a 'witness' point with large Lebesgue function infinitely often. Question 2 asks whether the optimal growth rate holds for almost all points. We know good points are dense (Bernstein), but the measure-theoretic question remains open.",
-    "implications": "**Connections to Other Areas**\n\n1. **Numerical Analysis:** Lebesgue constants determine polynomial interpolation stability\n\n2. **Approximation Theory:** The (2/π)log(n) bound is fundamental to polynomial approximation\n\n3. **Measure Theory:** Question 2 asks about measure-theoretic vs topological density\n\n4. **Complex Analysis:** Runge phenomenon connects to singularities in the complex plane\n\n5. **Computational Mathematics:** Node selection affects numerical algorithms",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Numerical Analysis:** Lebesgue constants determine polynomial interpolation stability\n\n2. **Approximation Theory:** The (2/π)log(n) bound is fundamental to polynomial approximation\n\n3.\n\n**Broader Connections**: **Measure Theory:** Question 2 asks about measure-theoretic vs topological density\n\n4. **Complex Analysis:** Runge phenomenon connects to singularities in the complex plane\n\n5. **Computational Mathematics:** Node selection affects numerical algorithms.",
     "openQuestions": [
       "Question 1: Does every infinite sequence have a 'witness' point?",
       "Question 2: Is the growth property satisfied almost everywhere?",
@@ -188,35 +189,45 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and Results on the Theory of Interpolation, II",
       "venue": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "year": 1961,
       "note": "Proves the lower bound Λₙ ≥ (2/π)log(n) − O(1) for the Lebesgue constant of any node sequence; this is the key quantitative result underlying both questions in Problem #1132."
     },
     {
-      "authors": ["S. N. Bernstein"],
+      "authors": [
+        "S. N. Bernstein"
+      ],
       "title": "Sur la limitation des valeurs d'un polynôme P_n(x) de degré n sur tout un segment par ses valeurs en n+1 points du segment",
       "venue": "Izvestia Akademii Nauk SSSR",
       "year": 1931,
       "note": "Establishes that the set of 'good' points x where Lₙ(x) grows like (2/π)log(n) is dense in (-1,1), the density result formalized as bernstein_density_theorem in this entry."
     },
     {
-      "authors": ["T. J. Rivlin"],
+      "authors": [
+        "T. J. Rivlin"
+      ],
       "title": "An Introduction to the Approximation of Functions",
       "venue": "Blaisdell Publishing Company (reprinted Dover, 1981)",
       "year": 1969,
       "note": "Classical graduate text covering Lebesgue functions, Lebesgue constants, Chebyshev nodes, and the (2/π)log(n) asymptotic in depth; standard reference for the background to Problem #1132."
     },
     {
-      "authors": ["E. W. Cheney"],
+      "authors": [
+        "E. W. Cheney"
+      ],
       "title": "Introduction to Approximation Theory",
       "venue": "McGraw-Hill (reprinted AMS Chelsea, 1998)",
       "year": 1966,
       "note": "Covers Chebyshev nodes, equidistant node instability (Runge phenomenon), and the optimality of Chebyshev interpolation in terms of Lebesgue constants, providing the context for the (2/π)log(n) lower bound."
     },
     {
-      "authors": ["L. Brutman"],
+      "authors": [
+        "L. Brutman"
+      ],
       "title": "Lebesgue Functions for Polynomial Interpolation — A Survey",
       "venue": "Annals of Numerical Mathematics",
       "year": 1997,

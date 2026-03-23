@@ -33,7 +33,8 @@
       "The hypothesis that $8x^2 - 1$ takes infinitely many prime values at prime arguments is a special case of the Bunyakovsky conjecture, which remains open for all degree $\\geq 2$ polynomials",
       "The reduction from the original problem to a Bunyakovsky-type statement illustrates Erdős's methodological insight: hard existence questions often reduce to prime distribution conjectures",
       "The factorization $8p^2 = (8p^2-1) + 1$ exploits the structure of $n(n+1)$ as consecutive integers to engineer a specific exponent pattern"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -95,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #913 asks whether infinitely many $n$ have all distinct exponents in the prime factorization of $n(n+1)$. The formalization reduces this OPEN problem to the infinitude of primes $p$ with $8p^2 - 1$ also prime—a Bunyakovsky-type conjecture. The construction $n = 8p^2 - 1$ yields the clean exponent pattern $\\{1, 2, 3\\}$ on three distinct primes. All results are axiomatized, with the file containing 0 sorries.",
-    "implications": "A proof of the Bunyakovsky conjecture for $f(x) = 8x^2 - 1$ would immediately resolve this problem. More broadly, the approach illustrates how questions about the multiplicative structure of consecutive integers reduce to polynomial prime conjectures. The coprimality of $n$ and $n+1$ provides a powerful structural tool, allowing independent control over the exponent patterns of each factor.",
+    "implications": "**Theoretical Significance**: A proof of the Bunyakovsky conjecture for $f(x) = 8x^2 - 1$ would immediately resolve this problem.\n\n**Broader Connections**: More broadly, the approach illustrates how questions about the multiplicative structure of consecutive integers reduce to polynomial prime conjectures. The coprimality of $n$ and $n+1$ provides a powerful structural tool, allowing independent control over the exponent patterns of each factor.",
     "openQuestions": [
       "Is the set PrimePairs8 = {p prime : 8p²-1 prime} infinite? This Bunyakovsky-type conjecture is believed true but unproven for any degree ≥ 2 polynomial.",
       "Are there unconditional proofs not relying on the Bunyakovsky conjecture? Could sieve methods or the circle method establish the existence of infinitely many such n?",

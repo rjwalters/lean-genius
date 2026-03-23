@@ -113,6 +113,12 @@
       "**The enormous gap**: At $N = 10^{10^{10}}$: $(\\log N)^{1/2} \\approx 151{,}000$ vs $(\\log\\log N)^{1/2} \\approx 4.9$ — a factor of $30{,}000$. This 75-year gap is one of the most fundamental open problems in metric number theory",
       "**Existential vs universal asymmetry**: Lower bound is $\\exists f, \\{n_k\\}$ (existential), upper is $\\forall f, \\{n_k\\}$ (universal). The true growth rate could depend on the specific lacunary sequence and function",
       "**Weyl sum maximal inequality**: The upper bound reduces to $\\max_{N \\leq M} |\\sum_{k \\leq N} e(\\alpha n_k)|$. Improving from $(\\log M)^{1/2+\\varepsilon}$ to $(\\log\\log M)^{1/2+\\varepsilon}$ would resolve the conjecture"
+    ],
+    "prerequisites": [
+      "Lacunary sequences and gap conditions",
+      "Fractional parts and equidistribution",
+      "Weyl's theorem on uniform distribution",
+      "Measure theory fundamentals"
     ]
   },
   "sections": [

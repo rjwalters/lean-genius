@@ -77,6 +77,13 @@
       "Arithmetic progressions {0, n, 2n, ..., (n-1)n} show the n² bound is tight",
       "Higher dimensions may allow tighter packing, potentially weakening the bound",
       "Gap ≥ 1 implies all distances are distinct, connecting to Erdős's 1946 distinct distances problem"
+    ],
+    "prerequisites": [
+      "Euclidean distance and metric spaces in ℝ^d",
+      "Finset operations and combinatorics (binomial coefficients)",
+      "Asymptotic notation (little-o, big-O)",
+      "Basic real analysis (supremum, ordering on ℝ)",
+      "Pigeonhole principle"
     ]
   },
   "sections": [

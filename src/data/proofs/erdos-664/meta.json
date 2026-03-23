@@ -91,7 +91,8 @@
       "The **logarithmic lower bound** $|B \\cap A_j| \\geq \\Omega(\\log n)$ is tight: the ESS construction for Problem #1159 achieves $O(\\log n)$-bounded blocking sets in projective planes, showing that $\\log n$ is the correct order of magnitude",
       "The **balanced block design version remains open**: BBDs impose the additional constraint that every pair of elements appears in exactly one block (not just $\\leq 1$), and this extra structure might be sufficient to force $O(1)$-bounded transversals",
       "The constant $c = 2/5$ is not special — the construction works for any $c < 1/2$, with the barrier at $c = 1/2$ related to the random covering threshold where a random point subset begins to block all lines with high probability"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -174,7 +175,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #664, posed in 1981, asked whether near-linear set families (sets of size $> c\\sqrt{n}$ with pairwise intersection $\\leq 1$) always admit blocking sets with $O(1)$ intersection. Alon disproved this using random subsets of projective plane lines: for $n = q^2+q+1$, any blocker must have $\\Omega(\\log n)$ intersection with some set. The formalization captures the disproof as axioms, with the full construction mechanism (projective plane structure, random thinning, covering argument) explained through supporting axioms. The original balanced block design version remains open.",
-    "implications": "Alon's disproof reveals a fundamental asymmetry in transversal theory: the near-linear condition ($|A_i \\cap A_j| \\leq 1$) prevents *local* overlap but cannot prevent *global* concentration of transversals. The tight logarithmic bound ($\\Theta(\\log n)$) connects to covering theory and the coupon collector problem. The projective plane construction bridges finite geometry and probabilistic combinatorics, and the unresolved BBD version tests whether the stronger design-theoretic structure ($\\lambda = 1$ BIBD) can overcome this limitation. Problem #1159 extends the question by asking whether $O(\\log n)$-bounded blocking sets always exist in projective planes (the ESS theorem confirms this for Desarguesian planes).",
+    "implications": "**Theoretical Significance**: Alon's disproof reveals a fundamental asymmetry in transversal theory: the near-linear condition ($|A_i \\cap A_j| \\leq 1$) prevents *local* overlap but cannot prevent *global* concentration of transversals. The tight logarithmic bound ($\\Theta(\\log n)$) connects to covering theory and the coupon collector problem.\n\n**Broader Connections**: The projective plane construction bridges finite geometry and probabilistic combinatorics, and the unresolved BBD version tests whether the stronger design-theoretic structure ($\\lambda = 1$ BIBD) can overcome this limitation. Problem #1159 extends the question by asking whether $O(\\log n)$-bounded blocking sets always exist in projective planes (the ESS theorem confirms this for Desarguesian planes).",
     "openQuestions": [
       "Is the balanced block design version (ErdosQuestion664_Original) also false, as Alon conjectured?",
       "For non-Desarguesian projective planes, do $O(\\log n)$-bounded blocking sets still exist?",

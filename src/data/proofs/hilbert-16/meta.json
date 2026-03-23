@@ -37,7 +37,8 @@
       "**Poincare-Bendixson constraint**: in 2D, bounded trajectories with no equilibria in their $\\omega$-limit set must approach a periodic orbit — this fails in 3D where chaos is possible, making Hilbert 16 specific to planar dynamics",
       "**Bifurcation complexity**: limit cycles can appear/disappear via Hopf bifurcation (from equilibria), from infinity, from polycycles (saddle connections), or by collision and annihilation — tracking these global phenomena across all parameter space is the main difficulty",
       "**The quadratic mystery**: even $H(2)$ is unknown after 125 years; the best lower bound $H(2) \\geq 4$ comes from Shi Songling's explicit (3,1) distribution, but no upper bound is known"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -120,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures the full landscape of Hilbert's 16th Problem (Part B), from the definition of polynomial vector fields and limit cycles through the Hilbert number $H(n)$, the proof that $H(1) = 0$, lower bounds $H(2) \\geq 4$ and $H(3) \\geq 13$, the Ecalle-Ilyashenko finiteness theorem, Poincare-Bendixson theory, and Hopf bifurcation. The file uses Mathlib's `MvPolynomial`, `EuclideanSpace`, and ODE infrastructure with deeper results axiomatized.",
-    "implications": "Hilbert's 16th Problem connects the algebraic structure of polynomial systems to the topological complexity of their phase portraits. Resolution would require a deep understanding of the global bifurcation structure of polynomial vector fields. Progress on this problem has driven developments in resurgent analysis (Ecalle), quasi-analytic classes (Ilyashenko), and computational algebraic geometry.",
+    "implications": "**Theoretical Significance**: Hilbert's 16th Problem connects the algebraic structure of polynomial systems to the topological complexity of their phase portraits.\n\n**Broader Connections**: Resolution would require a deep understanding of the global bifurcation structure of polynomial vector fields. Progress on this problem has driven developments in resurgent analysis (Ecalle), quasi-analytic classes (Ilyashenko), and computational algebraic geometry.",
     "openQuestions": [
       "What is the exact value of $H(2)$? The lower bound $H(2) \\geq 4$ has stood since 1980; many researchers conjecture $H(2) = 4$ but no upper bound is known.",
       "Is there a polynomial bound on $H(n)$ in terms of $n$? The Ecalle-Ilyashenko proof gives finiteness but no effective bound whatsoever.",

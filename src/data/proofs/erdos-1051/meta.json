@@ -34,7 +34,8 @@
       "Arithmetic progressions show the threshold is meaningful: $a_n = n$ gives $\\sum 1/(n(n+1)) = 1$ (rational, by telescoping), so some growth condition is necessary for irrationality",
       "The Sylvester sequence $a_{n+1} = a_n(a_n-1)+1$ demonstrates that reciprocal product series can telescope to rational values ($\\sum 1/(a_k(a_k-1)) = 1$), showing the conjecture requires genuinely non-constructive irrationality proofs",
       "The parallel question about $\\sum 1/a_n$ under the same growth condition, linked to the product series via Abel summation, suggests a deep structural connection between growth rates and arithmetic properties of infinite sums"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

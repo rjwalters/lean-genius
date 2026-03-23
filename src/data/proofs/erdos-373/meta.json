@@ -60,7 +60,8 @@
       "**Computational evidence**: No two-factor solutions except 10! = 6!7! exist for n <= 10^3000, strong evidence for Suranyi's conjecture.",
       "**Prime factor bounds**: Erdos showed the problem reduces to P(n(n-1)) > 4 log n, connecting to open problems in analytic number theory.",
       "**Unique factorization paradox**: Despite ℕ having unique factorization, factorials grow so rapidly that the equation n! = a₁!·a₂!···aₖ! becomes extremely overdetermined — the existence of even one non-trivial solution (10! = 6!·7!) is itself remarkable"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -122,7 +123,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdos Problem #373 on factorials that are products of factorials. The finiteness conjecture remains OPEN unconditionally, but is proved under the ABC conjecture (Luca 2007). We verify all four known solutions.",
-    "implications": "This problem has implications for:\n\n1. **Diophantine equations**: Factorial equations have rich structure\n\n2. **ABC conjecture applications**: Demonstrates the power of ABC for finiteness results\n\n3. **Prime factor theory**: Connects to open questions about P(n(n-1))",
+    "implications": "**Theoretical Significance**: This problem has implications for:\n\n1. **Diophantine equations**: Factorial equations have rich structure\n\n2.\n\n**Broader Connections**: **ABC conjecture applications**: Demonstrates the power of ABC for finiteness results\n\n3. **Prime factor theory**: Connects to open questions about P(n(n-1)).",
     "openQuestions": [
       "Prove finiteness unconditionally (without ABC)",
       "Verify Hickerson's conjecture: exactly 4 solutions",

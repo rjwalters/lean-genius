@@ -87,7 +87,8 @@
       "**Multi-ratio phenomenon**: Cambie found solutions with ratios 3 and 4 (not just doubling), revealing that the set $\\{c : \\exists n, r,\\, g^{k+r}(n) = c \\cdot g^k(n)\\}$ is larger than $\\{2\\}$",
       "**Structural rigidity**: All known $r = 2$ solutions have the form $n = 2^l \\cdot p$ for small primes $p \\in \\{2, 3, 5, 7, 35, 47\\}$ (Cambie's conjecture), suggesting the solution set is highly constrained",
       "**Parity constraint**: Even preservation under $g$ (for $n > 2$) via $\\varphi(n)$ being even restricts orbits to even numbers, a structural constraint from Mathlib's `Nat.totient_even`"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -142,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #411 asks for all $(n, r)$ such that iterating $g(n) = n + \\varphi(n)$ satisfies $g^{k+r}(n) = 2 \\cdot g^k(n)$ for large $k$. Solutions are known for $r = 2$ ($n = 10, 94$) and for general ratios 3 and 4 (Cambie). Steinerberger's 2025 reduction simplifies the $r = 2$ case to a single finitely-checkable equation. The formalization axiomatizes 6 known solutions, proves 2 structural properties, and states the full open problem.",
-    "implications": "A full characterization would reveal deep structure in the arithmetic dynamics of the totient function and its interaction with addition. The connection between the multiplicative nature of $\\varphi$ and the additive iteration $g(n) = n + \\varphi(n)$ is fundamental. The multi-ratio phenomenon discovered by Cambie suggests the problem is part of a richer classification of growth rates in arithmetic dynamical systems.",
+    "implications": "**Theoretical Significance**: A full characterization would reveal deep structure in the arithmetic dynamics of the totient function and its interaction with addition.\n\n**Broader Connections**: The connection between the multiplicative nature of $\\varphi$ and the additive iteration $g(n) = n + \\varphi(n)$ is fundamental. The multi-ratio phenomenon discovered by Cambie suggests the problem is part of a richer classification of growth rates in arithmetic dynamical systems.",
     "openQuestions": [
       "Are there finitely or infinitely many $(n, r)$ with the doubling property? Cambie's conjecture would give infinitely many (all $2^l \\cdot p$ for each valid $p$)",
       "Does Cambie's conjecture ($n = 2^l \\cdot p$ for small $p$) hold for all $r = 2$ solutions?",

@@ -35,7 +35,8 @@
       "H(n) = min over f of max discrepancy",
       "Erdős: n/4 ≤ H(n) ≪ n^(3/2)",
       "Erdős-Spencer: H(n) = Θ(n^(3/2))"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -111,7 +112,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1028 asked to estimate H(n), the minimum possible maximum discrepancy over sign functions on pairs. Erdős (1963) gave n/4 ≤ H(n) ≪ n^(3/2), and Erdős-Spencer (1971) closed the gap: H(n) = Θ(n^(3/2)).",
-    "implications": "**Theoretical Significance**\n\n1. **Discrepancy Theory**: Fundamental result on unavoidable imbalance\n\n2. **Signed Graphs**: Minimum imbalance in edge-signed complete graphs\n\n3. **Probabilistic Method**: Upper bound via random signs\n\n4. **Ramsey Connection**: Large homogeneous subsets relate to discrepancy",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Discrepancy Theory**: Fundamental result on unavoidable imbalance\n\n2.\n\n**Broader Connections**: **Signed Graphs**: Minimum imbalance in edge-signed complete graphs\n\n3. **Probabilistic Method**: Upper bound via random signs\n\n4. **Ramsey Connection**: Large homogeneous subsets relate to discrepancy.",
     "openQuestions": [
       "What are the exact constants in the asymptotic?",
       "Algorithmic: can we efficiently find high-discrepancy subsets?",
@@ -162,14 +163,19 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "On some problems in graph theory, combinatorial analysis and combinatorial number theory",
       "venue": "Graph Theory and Combinatorics (Cambridge, 1983)",
       "year": 1984,
       "note": "Contains the original formulation and n/4 lower bound for H(n)."
     },
     {
-      "authors": ["P. Erdős", "J. Spencer"],
+      "authors": [
+        "P. Erdős",
+        "J. Spencer"
+      ],
       "title": "Imbalances in k-colorations",
       "venue": "Networks",
       "volume": "1",
@@ -178,7 +184,9 @@
       "note": "Establishes the matching Ω(n^{3/2}) lower bound, completing H(n) = Θ(n^{3/2})."
     },
     {
-      "authors": ["J. Spencer"],
+      "authors": [
+        "J. Spencer"
+      ],
       "title": "Six standard deviations suffice",
       "venue": "Transactions of the American Mathematical Society",
       "volume": "289",
@@ -187,7 +195,10 @@
       "note": "Landmark discrepancy result proving the entropy method; directly related to the Erdős-Spencer lower bound technique used here."
     },
     {
-      "authors": ["J. Matoušek", "J. Spencer"],
+      "authors": [
+        "J. Matoušek",
+        "J. Spencer"
+      ],
       "title": "Discrepancy in arithmetic progressions",
       "venue": "Journal of the American Mathematical Society",
       "volume": "9",
@@ -196,7 +207,10 @@
       "note": "Illustrates the discrepancy-theory framework connecting signed-sum estimates with combinatorial lower bounds."
     },
     {
-      "authors": ["N. Alon", "J. Spencer"],
+      "authors": [
+        "N. Alon",
+        "J. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "venue": "Wiley",
       "edition": "4th",

@@ -69,6 +69,12 @@
       "**Upper bound** (Conlon–Fox–Pham 2021): $\\exists A$ Ramsey 2-complete with $|A \\cap [1,N]| \\le C(\\log N)^2$ — probabilistic construction near powers of 2",
       "**36-year gap closed**: reducing the upper exponent from 3 to 2 required fundamentally new structural insights about subset sums under colourings",
       "**Tight result**: minimum growth rate is $\\Theta((\\log N)^2)$ — exact constants unknown"
+    ],
+    "prerequisites": [
+      "Ramsey theory fundamentals",
+      "Complete sequences and subset sums",
+      "Finset operations for set arithmetic",
+      "Coloring and partition problems"
     ]
   },
   "sections": [

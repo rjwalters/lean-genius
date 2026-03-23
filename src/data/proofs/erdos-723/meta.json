@@ -41,6 +41,12 @@
       "The gap between orders 10 and 12 illustrates a fundamental divide: order 10 required brute-force computation (no theoretical obstruction exists), while order 12 is open because even brute force is infeasible at that scale",
       "The counting formula $n^2 + n + 1$ for both points and lines reflects projective duality—the deep symmetry that interchanging 'point' and 'line' preserves all incidence axioms",
       "Encoding the main conjecture as a `Prop` (rather than an axiom asserting it true) is the correct Lean design: it states the conjecture without assuming its truth, reflecting genuine open status"
+    ],
+    "prerequisites": [
+      "Finite projective planes and incidence geometry",
+      "Prime powers and basic number theory",
+      "Bruck-Ryser theorem (sum of two squares condition)",
+      "Mathlib Configuration.ProjectivePlane API"
     ]
   },
   "sections": [
@@ -124,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #723 (Prime Power Conjecture) is OPEN in general. The formalization includes verified proofs that orders 1-5 are prime powers, a complete Bruck-Ryser application ruling out order 6, and records Lam's computational result for order 10. Order 12 remains the smallest unknown case.",
-    "implications": "The conjecture sits at the intersection of finite geometry, algebraic number theory, and combinatorial design theory. The Bruck-Ryser necessary condition links plane existence to quadratic form theory, while the equivalence between projective planes and complete sets of MOLS connects to Latin square combinatorics. If a non-prime-power projective plane were found, it would require construction methods fundamentally different from finite field algebra—potentially revolutionizing our understanding of combinatorial designs.",
+    "implications": "**Theoretical Significance**: The conjecture sits at the intersection of finite geometry, algebraic number theory, and combinatorial design theory.\n\n**Broader Connections**: The Bruck-Ryser necessary condition links plane existence to quadratic form theory, while the equivalence between projective planes and complete sets of MOLS connects to Latin square combinatorics. If a non-prime-power projective plane were found, it would require construction methods fundamentally different from finite field algebra—potentially revolutionizing our understanding of combinatorial designs.",
     "openQuestions": [
       "Does a projective plane of order 12 exist? This is the smallest open case and would require an order-of-magnitude leap in computational methods beyond Lam's work on order 10.",
       "Can the Bruck-Ryser-Chowla theorem be strengthened to provide sufficient conditions, not just necessary ones, for plane non-existence?",

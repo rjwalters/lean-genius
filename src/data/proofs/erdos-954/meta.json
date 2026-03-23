@@ -68,7 +68,8 @@
       "**Relaxation of Sidon condition**: B$_2$ (Sidon) sequences require all pairwise sums distinct, giving density $\\sim \\sqrt{x}$. Rosen's sequence allows repeated sums but controls cumulative count, potentially achieving density $\\sim x$ — a quadratic improvement.",
       "**The $x^{1/4}$ exponent**: For B$_2$ sequences, $R(x) \\sim \\sqrt{x}$ and the optimal error is $O(x^{1/4})$. Scaling to Rosen's setting where $R(x) \\sim x$, the analogous error is $O(x^{1/4})$ — the same exponent but relative to a much larger main term.",
       "**Five proved theorems with 0 sorries**: All structural properties (monotonicity of $R_k$ in $k$, growth $a_k \\geq k$, greedy bounds) are fully proved. Only the open conjectures and the non-B$_2$ claim are axiomatized."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -92,11 +92,12 @@
       "Mertens' theorem gives $\\prod_{p \\leq x}(1-1/p) \\sim e^{-\\gamma}/\\ln x$, showing that prime reciprocal sums grow like $\\ln\\ln x$ — so the budget $C$ determines roughly which primes fit",
       "The monotonicity axiom (adding elements only helps) combined with the product minimization axiom gives a two-part strategy: use all your budget, and use it on primes",
       "The 'large $n$' condition in the conjecture handles the edge case where some primes exceed $n$; for $n$ large enough, all first-$k$ primes fit in $\\{2, \\ldots, n\\}$"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "This formalization provides a rigorous framework for Erdős Problem #783: it defines the optimization problem (minimize unsieved integers under a coprime reciprocal-sum budget), constructs the conjectured optimal solution (first $k$ primes), proves its validity, and connects the optimization to the survival product $\\prod(1-1/a)$ via inclusion-exclusion. The baseline and monotonicity results establish the boundary behavior of the sieve function.",
-    "implications": "A proof would establish a clean optimality result in combinatorial sieve theory: greedy prime selection is the best strategy for coprime sieving under a reciprocal-sum budget. This complements the asymptotic sieve estimates of Brun and Selberg by providing an exact optimality characterization. It would also connect to the theory of submodular optimization (the unsieved count as a function of the sieving set has submodular-like properties) and to the study of prime reciprocal sums via Mertens' theorem.",
+    "implications": "**Theoretical Significance**: A proof would establish a clean optimality result in combinatorial sieve theory: greedy prime selection is the best strategy for coprime sieving under a reciprocal-sum budget.\n\n**Broader Connections**: This complements the asymptotic sieve estimates of Brun and Selberg by providing an exact optimality characterization. It would also connect to the theory of submodular optimization (the unsieved count as a function of the sieving set has submodular-like properties) and to the study of prime reciprocal sums via Mertens' theorem.",
     "openQuestions": [
       "Is the first-$k$-primes sieving set optimal for all sufficiently large $n$ under any budget $C > 0$?",
       "Can the product minimization heuristic ($\\prod(1-1/a)$ minimized by primes) be rigorously upgraded to an exact optimality proof for unsievedCount?",

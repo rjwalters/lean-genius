@@ -36,7 +36,8 @@
       "**Ramsey Lower Bound Tight:** The construction shows that degree diversity graphs still have max trivial size Θ(log n), matching the probabilistic lower bound from Erdős (1947) for random graphs G(n,1/2)",
       "**Multiplicity Generalization:** For multiplicity ≤ k (each degree appears at most k times), the maximum distinct degrees is bounded by roughly (1 - 1/(2k))n, extending the multiplicity-2 analysis to arbitrary constraints",
       "**Connection to Non-Ramsey Graphs:** Like Problems 1036 and 1031, this problem explores when combinatorial constraints force (or fail to force) large homogeneous subgraphs beyond the Ramsey baseline"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -126,7 +127,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1037 asked whether graphs with many distinct degrees (each appearing at most twice) must contain large trivial subgraphs. Cambie, Chan, and Hunter (2025) disproved this by constructing graphs with at least 3n/4 distinct degrees where the largest clique or independent set has size only O(log n). The formalization captures the conjecture, the counterexample construction, optimality of the 3/4 bound, the Ramsey-theoretic baseline, and generalizations to arbitrary multiplicity constraints.",
-    "implications": "This result demonstrates a fundamental independence between degree sequence diversity and Ramsey-type structure. Graphs can be maximally diverse in their degree distributions while exhibiting the same trivial subgraph bounds as random graphs. This challenges the intuition that structural regularity (diverse degrees implying complex adjacency patterns) should force large homogeneous subsets. The disproof connects to the broader theme in Ramsey theory that many natural combinatorial properties are surprisingly compatible with small clique and independent set numbers.",
+    "implications": "**Theoretical Significance**: This result demonstrates a fundamental independence between degree sequence diversity and Ramsey-type structure. Graphs can be maximally diverse in their degree distributions while exhibiting the same trivial subgraph bounds as random graphs.\n\n**Broader Connections**: This challenges the intuition that structural regularity (diverse degrees implying complex adjacency patterns) should force large homogeneous subsets. The disproof connects to the broader theme in Ramsey theory that many natural combinatorial properties are surprisingly compatible with small clique and independent set numbers.",
     "openQuestions": [
       "What is the exact maximum number of distinct degrees achievable with multiplicity at most k, for each k ≥ 3? The formalization gives (1-1/(2k))n but is this tight?",
       "Can similar counterexamples be constructed for higher multiplicity bounds, maintaining O(log n) trivial size while achieving near-optimal degree diversity?",

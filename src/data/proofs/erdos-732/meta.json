@@ -76,7 +76,8 @@
       "**Growth rate $\\sqrt{n} \\log n$:** The unusual exponent $\\sqrt{n} \\log n$ arises because $B(n)$ counts partitions of $n(n-1)/2 \\sim n^2/2$ into parts of size $\\le \\binom{n}{2}$. The number of such partitions has log of order $\\sqrt{n} \\log n$ by classical partition asymptotics.",
       "**Keevash's breakthrough:** The 2014 proof that Steiner systems exist for all sufficiently large admissible parameters (using randomized algebraic constructions) provides the modern foundation for understanding which uniform block-compatible sequences are realizable.",
       "**Alon's probabilistic construction:** The lower bound uses the insight that in large PBDs, blocks in distant regions of $[n]$ are nearly independent, so $\\sim \\sqrt{n}$ 'independent choices' can be made, each contributing $\\sim \\log n$ bits to the count."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -159,7 +160,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #732 is PARTIALLY SOLVED. Question 2 (counting block-compatible sequences) was resolved by Alon, who proved $B(n) \\ge 2^{(1/2+o(1))\\sqrt{n} \\log n}$, matching Erdős's upper bound up to the constant factor. This gives $\\log B(n) = \\Theta(\\sqrt{n} \\log n)$. Question 1 (characterizing which sequences are block-compatible) remains OPEN -- the pair-counting condition $\\sum \\binom{X_i}{2} = \\binom{n}{2}$ is necessary but not sufficient, and no complete characterization is known.",
-    "implications": "The resolution of Q2 reveals that the landscape of PBDs is far richer than previously understood: exponentially many distinct block-size profiles can be realized. The open Q1 connects to fundamental questions in combinatorial design theory about the gap between necessary arithmetic conditions and sufficient geometric conditions. Progress would likely require new insights into the intersection structure of block designs, potentially building on Keevash's randomized algebraic construction methods.",
+    "implications": "**Theoretical Significance**: The resolution of Q2 reveals that the landscape of PBDs is far richer than previously understood: exponentially many distinct block-size profiles can be realized.\n\n**Broader Connections**: The open Q1 connects to fundamental questions in combinatorial design theory about the gap between necessary arithmetic conditions and sufficient geometric conditions. Progress would likely require new insights into the intersection structure of block designs, potentially building on Keevash's randomized algebraic construction methods.",
     "openQuestions": [
       "What are necessary and sufficient conditions for block-compatibility beyond pair-counting?",
       "What is the exact asymptotic constant $c$ in $B(n) = 2^{(c+o(1))\\sqrt{n} \\log n}$? Is $c = 1/2$?",

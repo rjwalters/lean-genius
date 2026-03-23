@@ -90,7 +90,8 @@
       "**Primorial constraint:** The common difference of a prime AP of length $k$ must satisfy $p \\mid d$ for all primes $p \\leq k$, forcing $d \\geq k\\# \\sim e^k$. This exponential growth of $d$ is the key structural reason why long prime APs are rare.",
       "**Open status persists:** Despite Green-Tao and extensive computation (longest known prime AP has 27 terms, found in 2019), the growth rate of $\\text{longestPrimeAP}(N)$ between $\\omega(1)$ and $(1+o(1))\\log N$ remains unknown.",
       "**Connection to Szemerédi's theorem:** Green-Tao extends Szemerédi's theorem (dense sets contain long APs) to the primes via a transference principle, using Goldston-Pintz-Yıldırım sieve estimates for the pseudorandomness of primes."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

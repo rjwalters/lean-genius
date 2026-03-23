@@ -53,7 +53,8 @@
       "The AC condition controls total variation on sets of small measure, not just oscillation at individual points — this is what distinguishes it from uniform continuity and makes it the right condition for integration",
       "Mathlib already contains the hardest building blocks (Vitali covering families, Lebesgue density theorem, monotone a.e. differentiability), so the main gap is AC → BV and Jordan decomposition",
       "Absolute continuity of functions is intimately connected to absolute continuity of measures: F is AC iff the signed measure dF is absolutely continuous with respect to Lebesgue measure, and F' is its Radon-Nikodym derivative"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -108,7 +109,7 @@
   ],
   "conclusion": {
     "summary": "This formalization establishes the key definitions and statements for the Lebesgue generalization of the FTC in Lean 4. It introduces AbsolutelyContinuousOn (not yet in Mathlib), proves the regularity hierarchy Lipschitz → AC → uniformly continuous, states the Lebesgue FTC as axioms, demonstrates the classical FTC as a corollary, and provides the Cantor function counterexample showing AC is necessary. The formalization connects to Mathlib's Vitali covering families, Lebesgue density theorem, and monotone a.e. differentiability.",
-    "implications": "Completing the two axioms would establish the full Lebesgue FTC in Lean 4, filling a significant gap in Mathlib's real analysis library. The AbsolutelyContinuousOn definition could be contributed upstream to Mathlib, where it would complement the existing MeasureTheory.Measure.AbsolutelyContinuous for measures. This would also enable formalizing the Radon-Nikodym theorem for functions (connecting function-level AC to measure-level AC) and advanced results in Sobolev space theory where AC is a key regularity condition.",
+    "implications": "**Theoretical Significance**: Completing the two axioms would establish the full Lebesgue FTC in Lean 4, filling a significant gap in Mathlib's real analysis library.\n\n**Broader Connections**: The AbsolutelyContinuousOn definition could be contributed upstream to Mathlib, where it would complement the existing MeasureTheory.Measure.AbsolutelyContinuous for measures. This would also enable formalizing the Radon-Nikodym theorem for functions (connecting function-level AC to measure-level AC) and advanced results in Sobolev space theory where AC is a key regularity condition.",
     "openQuestions": [
       "Can AC → BV be proved directly from the ε-δ definition, or does it require additional Mathlib infrastructure for total variation?",
       "Does Mathlib's current Jordan decomposition for signed measures extend to functions of bounded variation in a way that yields the monotone decomposition needed here?",

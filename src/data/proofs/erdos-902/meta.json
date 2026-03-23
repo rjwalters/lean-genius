@@ -42,6 +42,15 @@
       "f(3) = 19 (exact value determined computationally)",
       "Lower bound: f(n) ≥ c·n·2^n (Szekeres & Szekeres 1965)",
       "Upper bound: f(n) ≤ C·n²·2^n (Erdős 1963, probabilistic)"
+    ],
+    "prerequisites": [
+      "Tournament (complete directed graph) definitions",
+      "Domination in directed graphs",
+      "Probabilistic method (Erdős existence argument)",
+      "Quadratic residues and finite fields",
+      "Paley tournament construction",
+      "Asymptotic analysis and big-O notation",
+      "Combinatorial counting (double counting)"
     ]
   },
   "sections": [
@@ -132,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #902 on tournament domination. The function f(n) gives the minimum tournament size where every n-set is dominated. Known values are f(1)=3, f(2)=7, f(3)=19, with bounds n·2^n ≪ f(n) ≪ n²·2^n.",
-    "implications": "The gap between the bounds suggests deep structure in extremal tournaments. Paley tournaments provide optimal constructions for certain orders. The problem connects to covering codes and the probabilistic method.",
+    "implications": "**Theoretical Significance**: The gap between the bounds suggests deep structure in extremal tournaments.\n\n**Broader Connections**: Paley tournaments provide optimal constructions for certain orders. The problem connects to covering codes and the probabilistic method.",
     "openQuestions": [
       "What is the exact asymptotic growth of f(n)?",
       "Can the upper bound be improved to f(n) ≪ n·2^n?",

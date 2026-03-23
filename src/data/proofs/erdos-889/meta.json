@@ -70,7 +70,8 @@
       "The generalized version $v_l(n) = \\max_{k \\ge l} v(n,k)$ asks whether divergence persists even when small shifts are excluded, testing whether the phenomenon is robust or an artifact of initial terms",
       "The exact power variant $V(n,k)$ uses $p$-adic valuation ($p^{v_p(n+k)} \\nmid n+i$) instead of bare divisibility ($p \\nmid n+i$), giving $V \\ge v$ and potentially being more tractable",
       "The problem connects to the distribution of smooth numbers: if $n+k$ has many large prime factors, most will be 'new' since large primes are unlikely to divide nearby integers"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

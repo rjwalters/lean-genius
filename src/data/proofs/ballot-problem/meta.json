@@ -82,6 +82,12 @@
       "The ballot problem connects to Catalan numbers: the number of paths from $(0,0)$ to $(2n, 0)$ that stay non-negative is the Catalan number $C_n = \\frac{1}{n+1}\\binom{2n}{n}$.",
       "The Mathlib formalization models vote sequences as lists of integers, using `condCount` for conditional probability over finite sets — demonstrating how classical probability theory integrates with Lean's measure theory.",
       "Applications extend beyond voting: random walks staying positive, queues never emptying, stock prices above a barrier, and the Gambler's Ruin problem all reduce to variants of the ballot problem."
+    ],
+    "prerequisites": [
+      "Combinatorics and counting arguments",
+      "Catalan numbers and lattice paths",
+      "Probability theory fundamentals",
+      "Finset and Nat operations from Mathlib"
     ]
   },
   "sections": [

@@ -37,7 +37,8 @@
       "Simonovits asymptotic: f_r(n) = n²/4 - g(r)n/2 + O(1)",
       "g(r) = max vertices to remove from χ≥r triangle-free graph to make bipartite",
       "Bounds: (1/2-o(1))r² log r ≤ g(r) ≤ (2+o(1))r² log r"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -113,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "The threshold f_r(n) for forcing triangles in graphs with chromatic number ≥ r is well-understood for small r but the general asymptotic remains open. Simonovits showed f_r(n) = n²/4 - g(r)n/2 + O(1) where g(r) captures how far triangle-free χ≥r graphs are from bipartite. Current bounds show g(r) ~ r² log r with a factor-of-4 gap in the constant.",
-    "implications": "This connects extremal graph theory (Turán-type problems) with chromatic theory. Understanding g(r) would reveal how chromatic number constrains triangle-free graphs. The recent progress on R(3,k) (the Ramsey number) directly impacts the upper bound on g(r).",
+    "implications": "**Theoretical Significance**: This connects extremal graph theory (Turán-type problems) with chromatic theory.\n\n**Broader Connections**: Understanding g(r) would reveal how chromatic number constrains triangle-free graphs. The recent progress on R(3,k) (the Ramsey number) directly impacts the upper bound on g(r).",
     "openQuestions": [
       "What is the exact constant c such that g(r) ~ c·r² log r?",
       "Is c = 1 (the 'natural' guess)?",
@@ -163,35 +164,50 @@
   ],
   "references": [
     {
-      "authors": ["P. Turán"],
+      "authors": [
+        "P. Turán"
+      ],
       "title": "On an extremal problem in graph theory",
       "year": 1941,
       "venue": "Matematikai és Fizikai Lapok",
       "note": "Establishes Turán's theorem: every n-vertex triangle-free graph has at most ⌊n²/4⌋ edges, giving f_2(n) = ⌊n²/4⌋ + 1."
     },
     {
-      "authors": ["P. Erdős", "T. Gallai"],
+      "authors": [
+        "P. Erdős",
+        "T. Gallai"
+      ],
       "title": "On the minimal number of vertices representing the edges of a graph",
       "year": 1962,
       "venue": "Magyar Tudományos Akadémia Matematikai Kutató Intézetének Közleményei",
       "note": "Determines f_3(n) = ⌊(n-1)²/4⌋ + 2, the case of graphs with chromatic number ≥ 3."
     },
     {
-      "authors": ["M. Simonovits"],
+      "authors": [
+        "M. Simonovits"
+      ],
       "title": "A method for solving extremal problems in graph theory",
       "year": 1966,
       "venue": "Theory of Graphs (Proc. Colloq., Tihany, 1966)",
       "note": "Establishes the Simonovits asymptotic f_r(n) = n²/4 - g(r)n/2 + O(1) and introduces the key quantity g(r)."
     },
     {
-      "authors": ["E. Davies", "M. Illingworth"],
+      "authors": [
+        "E. Davies",
+        "M. Illingworth"
+      ],
       "title": "Triangles in graphs with forbidden subgraphs and large chromatic number",
       "year": 2022,
       "venue": "arXiv preprint",
       "note": "Proves g(r) ≥ (1/2 - o(1))r² log r using χ-Ramsey techniques, establishing the current best lower bound."
     },
     {
-      "authors": ["P. Hefetz", "M. Horn", "R. King", "F. Pfender"],
+      "authors": [
+        "P. Hefetz",
+        "M. Horn",
+        "R. King",
+        "F. Pfender"
+      ],
       "title": "Triangles in graphs with high chromatic number",
       "year": 2025,
       "venue": "arXiv preprint",

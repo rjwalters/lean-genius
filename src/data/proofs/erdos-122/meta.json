@@ -41,7 +41,8 @@
       "**Hardy–Ramanujan connection**: $\\omega(n) \\sim \\log\\log n$ normally, but on smooth numbers $\\omega(n)$ is much larger; these outliers drive the concentration of $n + \\omega(n)$ in short intervals",
       "**Quantifier structure captures 'infinitely often'**: The formalization uses $\\forall x_0,\\, \\exists x \\ge x_0$ instead of filters, providing a constructive characterization of 'infinitely many $x$' via the Archimedean property",
       "**Density-based growth domination**: The condition $f/F \\to 0$ a.e. is formalized as natural density tending to 0, using rational $\\varepsilon$-$\\delta$ parameters to avoid real-valued Lean complications"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

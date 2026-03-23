@@ -63,7 +63,8 @@
       "**Average vs. maximum**: Even the average case requires Ω(log log b) terms, showing that most rationals need this many unit fractions, not just worst cases.",
       "**Connection to Problem #293**: The special case N(b-1, b) (representing (b-1)/b = 1 - 1/b) connects to the smallest denominator missing from unit fraction representations of 1.",
       "**The greedy algorithm is suboptimal**: The standard greedy algorithm uses O(log b) terms - much worse than the optimal O(√(log b)) - showing that finding minimal representations requires more sophisticated techniques."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -139,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #304 on the complexity of Egyptian fraction representations. The minimum number of unit fractions N(b) needed for the worst-case a/b with 1 ≤ a < b is bounded by log log b ≪ N(b) ≪ √(log b). The open question asks if N(b) ≪ log log b, which would completely characterize the growth rate.",
-    "implications": "This problem connects ancient mathematics (Egyptian fraction tradition) with modern asymptotic analysis. The bounds involve iterated logarithms, a rate of growth so slow it is essentially constant for practical purposes. Understanding N(b) precisely would illuminate the structure of how rationals decompose into unit fractions.",
+    "implications": "**Theoretical Significance**: This problem connects ancient mathematics (Egyptian fraction tradition) with modern asymptotic analysis.\n\n**Broader Connections**: The bounds involve iterated logarithms, a rate of growth so slow it is essentially constant for practical purposes. Understanding N(b) precisely would illuminate the structure of how rationals decompose into unit fractions.",
     "openQuestions": [
       "Is N(b) ≪ log log b? (The main open question)",
       "What is the exact constant in the lower bound log log b ≪ N(b)?",

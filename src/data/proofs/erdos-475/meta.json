@@ -84,6 +84,10 @@
       "**Bedert-Kravitz breakthrough**: By developing techniques that avoid rectification entirely, they reached $\\exp((\\log p)^{1/4})$, an exponential improvement over the logarithmic barrier",
       "**Alspach generalization**: The conjecture extends naturally from $\\mathbb{F}_p$ to all finite abelian groups, and the Lean formalization proves this equivalence directly by unfolding definitions",
       "**Constructive vs existential**: Graham's original proof for $t = p-1$ gives an explicit algorithm; most later results are existential, making computational verification difficult"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "sections": [
@@ -153,7 +157,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #475 (Graham's Conjecture) asks whether every non-zero subset of 𝔽ₚ has an ordering with distinct partial sums. The formalization axiomatizes the three main verified ranges and proves their combination, along with the Alspach equivalence for abelian groups. The general case remains one of the most compelling open problems in additive combinatorics.",
-    "implications": "This problem lies at the heart of additive combinatorics over finite fields, connecting sequencing theory, the polynomial method, character sums, and Freiman-type inverse theorems. The breakthrough beyond the rectification barrier by Bedert-Kravitz suggests that fundamentally new techniques—rather than incremental improvements—are needed to close the remaining gap.",
+    "implications": "**Theoretical Significance**: This problem lies at the heart of additive combinatorics over finite fields, connecting sequencing theory, the polynomial method, character sums, and Freiman-type inverse theorems.\n\n**Broader Connections**: The breakthrough beyond the rectification barrier by Bedert-Kravitz suggests that fundamentally new techniques—rather than incremental improvements—are needed to close the remaining gap.",
     "openQuestions": [
       "Does Graham's conjecture hold for all t (closing the gap between exp((log p)^{1/4}) and p-3)?",
       "Can the rectification-free techniques of Bedert-Kravitz be further refined?",

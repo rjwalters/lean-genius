@@ -38,7 +38,8 @@
       "**Density-size tradeoff**: $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0^+$, meaning sparser graphs hide their non-planarity in progressively larger substructures—a quantitative form of the intuition that 'barely super-linear' graphs are almost planar locally",
       "**Probabilistic method**: The proof samples random vertex subsets to reduce the graph while preserving density, then applies extremal arguments (Mader-type) to find $K_5$ subdivisions in the reduced graph",
       "**Kuratowski reduction**: By Kuratowski's theorem, finding any non-planar subgraph reduces to finding $K_5$ or $K_{3,3}$ subdivisions, and the explicit $C_\\varepsilon \\sim 1/\\varepsilon^2$ bound quantifies the size of these obstructions"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -114,7 +115,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1018 asked whether dense graphs (n^(1+ε) edges) must contain non-planar subgraphs of bounded size. Kostochka and Pyber (1988) proved yes: such graphs contain K₅ subdivisions on O_ε(1) vertices. The bound C_ε grows as ε → 0, reflecting that sparser graphs hide non-planarity in larger structures.",
-    "implications": "**Theoretical Significance**\n\n1. **Topological Graph Theory**: Quantifies how density forces non-planar structure\n\n2. **Extremal Combinatorics**: Connects edge density to topological properties\n\n3. **Kuratowski Theory**: Shows obstructions appear in bounded-size subgraphs\n\n4. **Algorithmic Applications**: Bounds on finding non-planar subgraphs",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Topological Graph Theory**: Quantifies how density forces non-planar structure\n\n2.\n\n**Broader Connections**: **Extremal Combinatorics**: Connects edge density to topological properties\n\n3. **Kuratowski Theory**: Shows obstructions appear in bounded-size subgraphs\n\n4. **Algorithmic Applications**: Bounds on finding non-planar subgraphs.",
     "openQuestions": [
       "What is the optimal bound on C_ε as a function of ε?",
       "Can similar results be proved for other surfaces (torus, etc.)?",
@@ -165,35 +166,48 @@
   ],
   "references": [
     {
-      "authors": ["A. V. Kostochka", "L. Pyber"],
+      "authors": [
+        "A. V. Kostochka",
+        "L. Pyber"
+      ],
       "title": "Small topological complete subgraphs of 'dense' graphs",
       "year": 1988,
       "venue": "Combinatorica",
       "note": "Proves the main result of Erdős Problem #1018: graphs with n^(1+ε) edges contain K₅ subdivisions on O_ε(1) vertices."
     },
     {
-      "authors": ["W. Mader"],
+      "authors": [
+        "W. Mader"
+      ],
       "title": "Homomorphieeigenschaften und mittlere Kantendichte von Graphen",
       "year": 1967,
       "venue": "Mathematische Annalen",
       "note": "Established that the Turán number for K_t subdivisions is O(t√(log t) · n), a key precursor to the Kostochka-Pyber result."
     },
     {
-      "authors": ["K. Kuratowski"],
+      "authors": [
+        "K. Kuratowski"
+      ],
       "title": "Sur le problème des courbes gauches en topologie",
       "year": 1930,
       "venue": "Fundamenta Mathematicae",
       "note": "The foundational characterization of planar graphs: a graph is planar if and only if it contains no subdivision of K₅ or K_{3,3}."
     },
     {
-      "authors": ["P. Erdős", "M. Simonovits"],
+      "authors": [
+        "P. Erdős",
+        "M. Simonovits"
+      ],
       "title": "A limit theorem in graph theory",
       "year": 1966,
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
       "note": "Foundational work on extremal graph theory and Turán-type problems underlying the density threshold analysis in Problem #1018."
     },
     {
-      "authors": ["N. Alon", "J. H. Spencer"],
+      "authors": [
+        "N. Alon",
+        "J. H. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "year": 2016,
       "venue": "Wiley (4th edition)",

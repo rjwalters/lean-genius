@@ -72,7 +72,8 @@
       "**k-Sums Generalization:** Hindman-Leader-Strauss showed failure extends to all k-sums",
       "**Partition Calculus:** Uses techniques from Erdős-Hajnal-Rado infinite combinatorics",
       "**Sharp Boundary:** This identifies exactly where the Ramsey property breaks down"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #965 asked whether any 2-coloring of ℝ admits an uncountable set with monochromatic pairwise sums. The answer is NO: there exist 2-colorings where no uncountable set has this property. Erdős proved this under CH in 1975; Komjáth (2016) and Soukup-Weiss proved it unconditionally.",
-    "implications": "**Significance:**\n\n1. **Ramsey Boundary:** Identifies the exact cardinality where the sum-Ramsey property fails\n\n2. **Set-Theoretic Independence:** Shows initial CH dependence but ultimate unconditional result\n\n3. **Partition Calculus:** Demonstrates power of Erdős-Hajnal-Rado techniques\n\n4. **Infinite Combinatorics:** Contributes to understanding of uncountable Ramsey theory",
+    "implications": "**Theoretical Significance**: **Significance:**\n\n1. **Ramsey Boundary:** Identifies the exact cardinality where the sum-Ramsey property fails\n\n2.\n\n**Broader Connections**: **Set-Theoretic Independence:** Shows initial CH dependence but ultimate unconditional result\n\n3. **Partition Calculus:** Demonstrates power of Erdős-Hajnal-Rado techniques\n\n4. **Infinite Combinatorics:** Contributes to understanding of uncountable Ramsey theory.",
     "openQuestions": [
       "What is the exact structure of counterexample colorings?",
       "Can we characterize all colorings that avoid uncountable monochromatic-sum sets?",

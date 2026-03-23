@@ -208,11 +208,18 @@
       "**Sieve revolution**: Maynard's approach uses the same multidimensional sieve that proved bounded gaps ($\\liminf g_n \\leq 246$), applied in reverse to prove unbounded gaps",
       "**Upper-lower gap**: Current bounds span from $\\omega(\\log n \\cdot \\log\\log n / \\log\\log\\log n)$ (lower) to $O(n^{0.525})$ (upper) — an enormous range reflecting our ignorance about prime distribution",
       "**$10,000 still open**: Erdős's stronger conjecture ($g_n > (\\log n)^{1+c}$) remains unresolved and would require fundamentally new ideas beyond current sieve methods"
+    ],
+    "prerequisites": [
+      "Analytic number theory: the Prime Number Theorem and its consequences",
+      "Sieve methods: Selberg sieve, multidimensional sieve weights",
+      "Iterated logarithms and their asymptotic behavior",
+      "Probabilistic methods in combinatorics and number theory",
+      "Filter-based asymptotics in Lean (Filter.atTop, Filter.Tendsto)"
     ]
   },
   "conclusion": {
     "summary": "Erdős Problem #4 is SOLVED: for any $C > 0$, infinitely many prime gaps exceed $C$ times the Erdős function. Proved independently by Maynard and Ford-Green-Konyagin-Tao in 2016, with an improved bound by all five authors in 2018. This resolved a 75-year-old question about the growth rate of maximal prime gaps.",
-    "implications": "The resolution demonstrates that prime gaps can far exceed the average gap of $\\log n$, with the amplification factor growing without bound (though very slowly). The techniques — multidimensional sieves and probabilistic hypergraph methods — have become fundamental tools in analytic number theory. However, the exact growth rate of maximal gaps remains unknown, with current bounds spanning from iterated-log amplification to polynomial in $n$.",
+    "implications": "**1. Prime Gap Theory**: The resolution by Maynard (2016) and Ford-Green-Konyagin-Tao (2016) demonstrates that prime gaps can far exceed the average gap of $\\log n$, with the amplification factor $\\log\\log n \\cdot \\log\\log\\log\\log n / (\\log\\log\\log n)^2$ growing without bound. This answered a question open since the 1930s and established that the Cramér random model (which predicts gaps of order $(\\log n)^2$) is essentially correct for the regime of 'large' gaps.\n\n**2. Sieve Methods Revolution**: The multidimensional sieve techniques developed for this problem, particularly Maynard's optimization of GPY sieve weights, have become fundamental tools in analytic number theory. These same methods led to Maynard's Fields Medal-winning work on bounded gaps between primes ($p_{n+1} - p_n \\leq 246$ infinitely often).\n\n**3. Probabilistic Hypergraph Methods**: The Ford-Green-Konyagin-Tao approach introduced probabilistic hypergraph covering arguments into prime number theory, creating a bridge between combinatorics and analytic number theory. The 'hypergraph covering lemma' has found applications in additive combinatorics and Ramsey theory.\n\n**4. Connections to RH and Beyond**: Under the Riemann Hypothesis, the expected maximum gap below $x$ is $O(\\sqrt{x} \\log x)$, far below the unconditional $(\\log x)^2$ prediction of Cramér. The gap between conditional and unconditional results remains one of the central mysteries in analytic number theory.\n\n**5. Computational Verification**: The largest known prime gap as of 2024 is 1550 (between primes near $10^{18}$), discovered by computation. The interplay between theoretical bounds and computational search continues to inform our understanding of prime distribution.",
     "openQuestions": [
       "Erdős's $10,000 conjecture: Does p_{n+1} - p_n > (log n)^{1+c} hold for some c > 0 and infinitely many n?",
       "Cramér's conjecture: Is p_{n+1} - p_n = O((log p_n)²)?",

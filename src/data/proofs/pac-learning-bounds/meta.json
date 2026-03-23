@@ -63,6 +63,13 @@
       "The symmetrization trick (ghost sample) is the key technical innovation: it converts a bound on the difference between empirical and true distributions into a purely empirical quantity",
       "ERM (Empirical Risk Minimization) is a universal learning algorithm: it works for any hypothesis class with finite VC dimension, with no knowledge of the target distribution required",
       "The d/epsilon^2 term in sample complexity is information-theoretic (from Sauer-Shelah), while the log(1/delta)/epsilon^2 term is a confidence boost (from Hoeffding)"
+    ],
+    "prerequisites": [
+      "PAC learning framework (Valiant 1984)",
+      "VC dimension and shattering of hypothesis classes",
+      "Sauer-Shelah lemma on growth functions",
+      "Concentration inequalities (Hoeffding, Chernoff)",
+      "Uniform convergence and generalization bounds"
     ]
   },
   "sections": [

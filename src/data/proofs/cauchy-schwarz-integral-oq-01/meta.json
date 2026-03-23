@@ -65,7 +65,8 @@
       "**NNReal vs Real.HolderConjugate**: `NNReal.young_inequality` uses `NNReal.HolderConjugate`, which differs from `Real.HolderConjugate`. The main Hölder theorem uses `Real.HolderConjugate`.",
       "**Nnnorm Multiplicativity**: For real numbers, `nnnorm_mul : ‖x·y‖₊ = ‖x‖₊·‖y‖₊` (not `Real.nnnorm_mul`) gives the equality needed to pass from pointwise products to Hölder.",
       "**Minkowski from Norm**: Since `Lp ℝ p μ` is a `NormedAddCommGroup`, Minkowski's inequality is just the abstract norm triangle inequality `norm_add_le`."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -113,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "This file answers OQ-01: Hölder's inequality ∫|fg|dμ ≤ (∫|f|^p dμ)^{1/p}·(∫|g|^q dμ)^{1/q} is a strict generalization of Cauchy-Schwarz. Setting p=q=2 and using the conjugate pair (2,2) (since 1/2+1/2=1) recovers exactly the integral Cauchy-Schwarz inequality from CauchySchwarzIntegral.lean. All proofs verified with 0 sorries and 0 axioms.",
-    "implications": "**Implications and Connections**\n\n1. **Unification**: Hölder unifies Cauchy-Schwarz (p=q=2), Young's inequality (pointwise bound), and Minkowski's inequality (triangle inequality), all under one framework.\n\n2. **Lp Space Theory**: The existence of Hölder's inequality is what makes ∫fg a well-defined pairing between Lp and Lq spaces, giving the duality Lp* ≅ Lq.\n\n3. **Interpolation**: Hölder implies the Riesz-Thorin interpolation theorem: if T is bounded on Lp and Lq, it's bounded on all Lr for p < r < q.\n\n4. **Minkowski from Hölder**: The Lp triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p follows from Hölder applied to |f+g|^{p-1} times |f| or |g|.\n\n5. **Bridge to CauchySchwarzOQ02**: The discrete Hölder inequality (NNReal.inner_le_Lp_mul_Lq for finite sums) in CauchySchwarzOQ02.lean is the discrete analogue of this integral version.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Unification**: Hölder unifies Cauchy-Schwarz (p=q=2), Young's inequality (pointwise bound), and Minkowski's inequality (triangle inequality), all under one framework.\n\n2. **Lp Space Theory**: The existence of Hölder's inequality is what makes ∫fg a well-defined pairing between Lp and Lq spaces, giving the duality Lp* ≅ Lq.\n\n3.\n\n**Broader Connections**: **Interpolation**: Hölder implies the Riesz-Thorin interpolation theorem: if T is bounded on Lp and Lq, it's bounded on all Lr for p < r < q.\n\n4. **Minkowski from Hölder**: The Lp triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p follows from Hölder applied to |f+g|^{p-1} times |f| or |g|.\n\n5. **Bridge to CauchySchwarzOQ02**: The discrete Hölder inequality (NNReal.inner_le_Lp_mul_Lq for finite sums) in CauchySchwarzOQ02.lean is the discrete analogue of this integral version.",
     "openQuestions": [
       "Can the snorm-based Hölder (‖fg‖_{L1} ≤ ‖f‖_{Lp}·‖g‖_{Lq}) be formalized using the renamed API in Mathlib 4.26+?",
       "Can Riesz-Thorin interpolation be derived from Hölder in Lean 4?",

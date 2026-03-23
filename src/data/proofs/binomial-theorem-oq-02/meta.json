@@ -68,7 +68,8 @@
       "**The Bool-indexed form is the bridge**: The formal connection between multinomial and binomial is cleanest via $s = \\{\\text{false}, \\text{true}\\}$: `multinomial_bool_form_eq_binomial` shows the multinomial expansion over Bool equals the classical binomial sum. This is the precise statement that the multinomial theorem implies the binomial theorem",
       "**Definitional reduction avoids Bool equality issues**: Instead of `if b = false then x else y` (which requires `true ≠ false` to evaluate symbolically), using `if b then y else x` reduces definitionally for Bool values, enabling clean `rfl`-level proofs in simp",
       "**Multinomial coefficients telescope to factorials**: The recurrence `multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s, k)` applied $m$ times to reduce from $m$ variables to 0 yields a telescoping product that equals $n! / (k_1! \\cdots k_m!)$, the combinatorial formula for arrangements of a multiset. This makes the formal multinomial coefficient definition consistent with the combinatorial interpretation."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -144,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "This 280-line formalization confirms: YES, the multinomial theorem can be proved as a generalization of the binomial theorem. The proof uses Mathlib's Finset.sum_pow_eq_sum_piAntidiag as the core, with 8 named theorems covering the inductive structure, coefficient properties, the sum identity, and the explicit 2-variable connection. The file achieves 0 sorries and proves the multinomial theorem for arbitrary commutative semirings over arbitrary finite types.",
-    "implications": "The multinomial theorem is fundamental to combinatorics (counting arrangements with repetition), algebra (polynomial ring computations), probability (multinomial distribution), and analysis (multivariate Taylor expansions). The formal proof that it generalizes the binomial theorem establishes the clean hierarchical structure: binomial → multinomial → power series generalizations. The multinomial coefficient formula n!/(k₁!···kₘ!) unifies Pascal's triangle into a single multi-dimensional structure.",
+    "implications": "**Theoretical Significance**: The multinomial theorem is fundamental to combinatorics (counting arrangements with repetition), algebra (polynomial ring computations), probability (multinomial distribution), and analysis (multivariate Taylor expansions).\n\n**Broader Connections**: The formal proof that it generalizes the binomial theorem establishes the clean hierarchical structure: binomial → multinomial → power series generalizations. The multinomial coefficient formula n!/(k₁!···kₘ!) unifies Pascal's triangle into a single multi-dimensional structure.",
     "openQuestions": [
       "Can the multinomial distribution and its moment-generating function be formally proved using this multinomial theorem infrastructure?",
       "Is there a clean proof of the Vandermonde identity ∑_k C(m,k)C(n,r-k) = C(m+n,r) using multinomial coefficient identities?",

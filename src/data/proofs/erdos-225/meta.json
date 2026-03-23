@@ -36,7 +36,8 @@
       "**Sharp bound**: The constant 4 cannot be improved to $4 - \\varepsilon$ for any $\\varepsilon > 0$, as demonstrated by explicit extremal sequences",
       "**Contrasting results**: Erdős #225 gives an $L^1$ **upper** bound of 4 for unit-circle-root polynomials, while Littlewood's conjecture (proved 1981) gives an $L^1$ **lower** bound of $C \\log n$ for unimodular polynomials",
       "**Fejér–Riesz connection**: Non-negative trigonometric polynomials factor as $|g|^2$, linking the problem to spectral factorization theory"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -112,7 +113,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #225 is **solved**: the bound $\\|f\\|_1 \\leq 4$ holds for trigonometric polynomials of degree $\\geq 1$ with all roots on the unit circle and $\\|f\\|_\\infty = 1$. The formalization captures definitions, norms, and related results. Aristotle proved optimality and the supremum equivalence, and discovered that the formalized statement needs a degree $\\geq 1$ hypothesis to exclude the constant-polynomial counterexample.",
-    "implications": "The result reveals a deep connection between **root geometry** (all roots on $S^1$) and **integral norm bounds** ($\\|f\\|_1 \\leq 4$). The unit-circle constraint dramatically restricts the polynomial's behavior: without it, $\\|f\\|_1$ can be arbitrarily large even with $\\|f\\|_\\infty = 1$. The Fejér–Riesz theorem provides a structural explanation via spectral factorization.",
+    "implications": "**Theoretical Significance**: The result reveals a deep connection between **root geometry** (all roots on $S^1$) and **integral norm bounds** ($\\|f\\|_1 \\leq 4$).\n\n**Broader Connections**: The unit-circle constraint dramatically restricts the polynomial's behavior: without it, $\\|f\\|_1$ can be arbitrarily large even with $\\|f\\|_\\infty = 1$. The Fejér–Riesz theorem provides a structural explanation via spectral factorization.",
     "openQuestions": [
       "What are the degree-$n$ extremal polynomials that maximize $\\|f\\|_1$ under the unit-circle-roots and $\\|f\\|_\\infty = 1$ constraints?",
       "Can the formalization be completed by adding the degree $\\geq 1$ hypothesis and proving the corrected main theorem in Lean?",

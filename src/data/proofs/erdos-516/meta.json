@@ -70,7 +70,8 @@
       "**Why logarithms?**: Wiman's original result had m(r)/M(r) → 1 under strong gaps. For weaker gaps, we only get (log m)/(log M) → 1.",
       "**Fejér gaps**: The weaker condition Σ 1/nₖ < ∞ is conjectured to suffice. Macintyre showed this would be optimal - counterexamples exist when Σ 1/nₖ = ∞.",
       "**Nevanlinna theory**: Fuchs's proof uses deep results from value distribution theory, which is not yet formalized in Mathlib."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

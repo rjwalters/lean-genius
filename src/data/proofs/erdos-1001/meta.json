@@ -78,6 +78,14 @@
       "When min(A,c) > 10, S stays bounded away from 0 and 1",
       "The π² comes from Farey fraction asymptotics: |F_n| ~ 3n²/π²",
       "Multiple proof methods: measure theory, Farey fractions, continued fractions"
+    ],
+    "prerequisites": [
+      "Diophantine approximation (Dirichlet's theorem, approximation quality)",
+      "Lebesgue measure on the real line",
+      "Farey fractions and their asymptotic counting",
+      "Filter convergence and limits in topology",
+      "Euler's totient function and coprime density (6/pi^2)",
+      "Basic ergodic theory (for Kesten-Sos proof method)"
     ]
   },
   "sections": [

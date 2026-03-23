@@ -140,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1110 asks about representing integers as sums of p^k q^l with non-divisibility. The {2,3} case is completely solved (all positive integers representable), but general cases have infinitely many exceptions. Yu-Chen (2022) established density zero for large parameters and coprime infinitude for most (p,q). The minimum summand can be as large as n/log n.",
-    "implications": "**Implications**\n\n1. **Additive Structure:** Reveals how 'smooth' numbers combine additively\n2. **Density Theory:** Non-representables form a thin set in many cases\n3. **Number-Theoretic Constraints:** Non-divisibility creates rich structure\n4. **Algorithmic:** Inductive proof gives explicit constructions for {2,3}",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Additive Structure:** Reveals how 'smooth' numbers combine additively\n2.\n\n**Broader Connections**: **Density Theory:** Non-representables form a thin set in many cases\n3. **Number-Theoretic Constraints:** Non-divisibility creates rich structure\n4. **Algorithmic:** Inductive proof gives explicit constructions for {2,3}.",
     "openQuestions": [
       "What is the exact density of non-representables for small p, q?",
       "Can the minimum summand bound be improved beyond n/log n?",
@@ -194,7 +194,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "M. Lewin"],
+      "authors": [
+        "P. Erdős",
+        "M. Lewin"
+      ],
       "title": "d-Complete Sequences of Integers",
       "venue": "Journal of the Australian Mathematical Society",
       "year": 1996,
@@ -204,7 +207,10 @@
       "note": "Proves the characterization theorem: for coprime p > q ≥ 2, the number of non-representable integers is finite if and only if {p,q} = {2,3}. Introduces the non-divisibility representability framework."
     },
     {
-      "authors": ["G. Yu", "Y. Chen"],
+      "authors": [
+        "G. Yu",
+        "Y. Chen"
+      ],
       "title": "On Representations by Sums of p^a q^b",
       "venue": "Acta Arithmetica",
       "year": 2022,
@@ -213,7 +219,9 @@
       "note": "Establishes density-zero results for non-representable integers in many parameter regimes and proves infinitely many coprime non-representable integers exist for most (p,q) ≠ {2,3}."
     },
     {
-      "authors": ["B. J. Birch"],
+      "authors": [
+        "B. J. Birch"
+      ],
       "title": "Note on a Problem of Erdős",
       "venue": "Proceedings of the Cambridge Philosophical Society",
       "year": 1959,
@@ -223,14 +231,19 @@
       "note": "Proves completeness of {a^k b^l} for coprime a, b (Problem #246), which is the precursor result to Problem #1110's representability question without the non-divisibility constraint."
     },
     {
-      "authors": ["H. Yang", "T. Zhao"],
+      "authors": [
+        "H. Yang",
+        "T. Zhao"
+      ],
       "title": "Minimum Summand Bounds for p^k q^l Representations",
       "venue": "Journal of Number Theory",
       "year": 2025,
       "note": "Improves the Yu-Chen lower bounds on the minimum summand in representations, showing the minimum summand f(n) satisfies f(n) ~ n / log n asymptotically."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "On a Problem in Additive Number Theory",
       "venue": "Journal of the London Mathematical Society",
       "year": 1954,

@@ -63,7 +63,8 @@
       "**Gap between f and F**: While f(n) ≤ F(n) always, the typical behavior differs: f(n) = o(n log log n) vs F(n) ~ (1/2)n log log n conjecturally.",
       "**Partial asymptotic**: Erdős showed max_{n≤x} f(n) ~ x log x / log log x, but only along a subsequence—the full result remains open.",
       "**Iterated logarithms**: The bounds on H(x) involve four-fold and three-fold iterated logarithms, showing extremely slow growth."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

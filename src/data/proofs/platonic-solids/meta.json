@@ -54,6 +54,13 @@
       "The tetrahedron $\\{3,3\\}$ is self-dual: swapping $p$ and $q$ yields the same solid",
       "All five solids satisfy Euler's formula $V - E + F = 2$, verified computationally in Lean",
       "For $p \\geq 6$, $(p-2)(q-2) \\geq 4$ always holds when $q \\geq 3$, so no regular polyhedron has hexagonal or higher faces"
+    ],
+    "prerequisites": [
+      "Euler's formula for polyhedra: V - E + F = 2",
+      "Schlafli symbols and regular polyhedra",
+      "Combinatorics of regular tilings and angle constraints",
+      "Symmetry groups of polyhedra and SO(3)",
+      "Classification of convex regular polyhedra"
     ]
   },
   "sections": [
@@ -108,7 +115,7 @@
   ],
   "conclusion": {
     "summary": "The classification of Platonic solids is a beautiful result combining geometry, combinatorics, and topology. The constraint 1/p + 1/q > 1/2 (equivalently (p-2)(q-2) < 4) precisely characterizes which regular polygonal faces can tile a sphere, yielding exactly five solutions.",
-    "implications": "**Significance:**\n\n1. First complete classification of a family of geometric objects\n2. Foundation for understanding symmetry groups\n3. Deep connections to group theory (Platonic groups are finite subgroups of SO(3))\n4. Applications in chemistry (molecular structures), crystallography, and physics",
+    "implications": "**Theoretical Significance**: **Significance:**\n\n1. First complete classification of a family of geometric objects\n2.\n\n**Broader Connections**: Foundation for understanding symmetry groups\n3. Deep connections to group theory (Platonic groups are finite subgroups of SO(3))\n4. Applications in chemistry (molecular structures), crystallography, and physics.",
     "openQuestions": [
       "Extension to higher dimensions (regular polytopes)",
       "Classification of semi-regular (Archimedean) solids",

@@ -67,6 +67,12 @@
       "**Why triangle-free matters**: Triangles (K3) would create local density that interferes with the optimal pentagon structure. Triangle-freeness forces the graph toward the pentagon-like structure.",
       "**The 10-fold symmetry**: Each C5 can be traced starting from any of 5 vertices, in either direction, giving 10 orderings. The count divides by 10 for unordered copies.",
       "**Generalization remains open**: For r > 5, whether graphs of girth r on rn vertices have at most n^r copies of Cr is unknown. The flag algebras approach becomes more complex for larger cycles."
+    ],
+    "prerequisites": [
+      "Graph theory (cycles, triangle-free graphs)",
+      "Extremal graph theory (Turán-type problems)",
+      "Ramsey theory",
+      "Regularity method"
     ]
   },
   "sections": [
@@ -122,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #24, the pentagon problem in triangle-free graphs. The problem is SOLVED: every triangle-free graph on 5n vertices contains at most n^5 copies of C5. The bound is tight, achieved by the balanced blow-up of C5. The proof uses Razborov's flag algebras, a computer-assisted method for extremal combinatorics.",
-    "implications": "This result has several implications:\n\n1. **Flag algebras power**: Demonstrates that flag algebras can solve long-standing extremal problems\n2. **Unique extremal structure**: The pentagon blow-up is the only way to maximize C5 in triangle-free graphs\n3. **Template for generalizations**: Similar techniques may apply to other cycle-counting problems\n4. **Connection to Turán theory**: Extends classical extremal graph theory to subgraph counting",
+    "implications": "**Theoretical Significance**: This result has several implications:\n\n1. **Flag algebras power**: Demonstrates that flag algebras can solve long-standing extremal problems\n2.\n\n**Broader Connections**: **Unique extremal structure**: The pentagon blow-up is the only way to maximize C5 in triangle-free graphs\n3. **Template for generalizations**: Similar techniques may apply to other cycle-counting problems\n4. **Connection to Turán theory**: Extends classical extremal graph theory to subgraph counting.",
     "openQuestions": [
       "For odd r > 5, does girth-r on rn vertices imply at most n^r copies of Cr?",
       "What is the maximum C5 count for graphs with chromatic number k?",

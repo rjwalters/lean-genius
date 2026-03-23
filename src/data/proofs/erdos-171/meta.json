@@ -94,7 +94,8 @@
       "**Fractional chromatic number**: χ_f = 4 exactly. That χ ≥ 5 > χ_f shows integrality is essential.",
       "**De Grey's approach**: Used algebraic coordinates and computer search to find a graph with specific properties that force 5 colors.",
       "**Remaining question**: Is χ = 5, 6, or 7? Most researchers conjecture χ ∈ {5, 6}, but this is open."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -156,7 +157,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #171 on the chromatic number of the unit distance graph (Hadwiger-Nelson problem). The problem was 'solved' in 2018 when de Grey improved the lower bound from 4 to 5, breaking a 68-year stalemate. The current knowledge is 5 ≤ χ(ℝ²) ≤ 7. Aristotle verified the clique number results: an equilateral triangle gives ω = 3, and no 4-clique exists in ℝ².",
-    "implications": "This problem sits at the intersection of combinatorics, geometry, and graph theory. The de Grey breakthrough showed that computer-aided mathematical discovery can solve long-standing open problems. The gap between χ and χ_f demonstrates the importance of integrality constraints in coloring problems.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of combinatorics, geometry, and graph theory.\n\n**Broader Connections**: The de Grey breakthrough showed that computer-aided mathematical discovery can solve long-standing open problems. The gap between χ and χ_f demonstrates the importance of integrality constraints in coloring problems.",
     "openQuestions": [
       "Is χ(ℝ²) = 5, 6, or 7?",
       "Can the de Grey construction be simplified or made more explicit?",

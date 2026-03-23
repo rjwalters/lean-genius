@@ -114,11 +114,15 @@
       "**The 2-adic valuation obstruction**: χ(n) = ν₂(n) mod 2 blocks all powers of 2 from being monochromatic sums — a beautiful number-theoretic construction proving O(log N) is tight for k=2",
       "**Partition regularity hierarchy**: Schur (one monochromatic solution) → Problem #484 (positive fraction of sums) → Hindman (infinite monochromatic IP set) — each is qualitatively stronger",
       "**Only even sums are guaranteed**: odd sums a+b require a,b of different parity, and the coloring can separate parities — so the problem is fundamentally about even sums"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "conclusion": {
     "summary": "Erdős Problem #484 is SOLVED by Erdős, Sárközy, and Sós (1989). Any k-coloring of {1,...,N} has ≥ N/2 − O(N^{1−1/2^{k+1}}) even monochromatic sums. For k = 2, the bound N/2 − O(log N) is tight — the 2-adic valuation construction avoids all powers of 2.",
-    "implications": "The result establishes that monochromatic sums are **unavoidable at positive density** in any partition — a quantitative strengthening of Schur's theorem. The techniques (Fourier analysis, large sieve) have become standard in additive combinatorics, influencing work on the Freiman-Ruzsa conjecture and sum-product estimates. The tight O(log N) bound for k = 2 via the 2-adic valuation reveals deep connections between partition regularity and p-adic structure.",
+    "implications": "**Theoretical Significance**: The result establishes that monochromatic sums are **unavoidable at positive density** in any partition — a quantitative strengthening of Schur's theorem.\n\n**Broader Connections**: The techniques (Fourier analysis, large sieve) have become standard in additive combinatorics, influencing work on the Freiman-Ruzsa conjecture and sum-product estimates. The tight O(log N) bound for k = 2 via the 2-adic valuation reveals deep connections between partition regularity and p-adic structure.",
     "openQuestions": [
       "What is the exact optimal constant in the error term for general k? (Ben Green's Problem 25)",
       "Can the exponent 1 − 1/2^{k+1} be improved, or is it best possible for the ESS approach?",

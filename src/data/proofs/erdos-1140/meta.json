@@ -130,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1140 was disproved by Epure and Gica (2010). The property AllShiftsArePrime(n) — that n - 2x² is prime for all valid x — holds for only finitely many n. The complete list is {2, 5, 7, 13, 31, 61, 181, 199} with at most one exception. The proof combines elementary parity arguments, quadratic residue sieving, and deep results on class numbers of imaginary quadratic fields.",
-    "implications": "**Theoretical Significance**\n\n1. **Quadratic Forms and Primes**: The problem reveals the tension between quadratic structure (the polynomial n - 2x²) and prime distribution. While Bunyakovsky's conjecture predicts any irreducible polynomial represents infinitely many primes for varying input, requiring ALL outputs to be prime simultaneously is far too restrictive.\n\n2. **Class Number Connection**: The n ≡ 3 (mod 4) case connects to the deep theory of imaginary quadratic fields via the class number h(-8n). This is one of the few elementary-sounding problems where algebraic number theory is essential for the resolution.\n\n3. **Siegel's Ineffectivity**: The 'at most one exception' reflects a fundamental limitation: Siegel's bound h(-D) > C(ε)D^{1/2-ε} has an ineffective constant C(ε). Computing it would either resolve the exception or prove the existence of a Siegel zero — one of the deepest open problems in analytic number theory.\n\n4. **Pattern Fragility**: The eight known values demonstrate how striking numerical patterns can be finite — a cautionary tale against conjecturing from small examples in number theory.\n\n5. **Companion Problems**: The open status of erdos-1141 (n - k² prime for coprime k) and erdos-1142 (n - 2^k prime) shows that small variations in the quadratic constraint can change the problem's difficulty dramatically.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Quadratic Forms and Primes**: The problem reveals the tension between quadratic structure (the polynomial n - 2x²) and prime distribution. While Bunyakovsky's conjecture predicts any irreducible polynomial represents infinitely many primes for varying input, requiring ALL outputs to be prime simultaneously is far too restrictive.\n\n2. **Class Number Connection**: The n ≡ 3 (mod 4) case connects to the deep theory of imaginary quadratic fields via the class number h(-8n).\n\n**Broader Connections**: This is one of the few elementary-sounding problems where algebraic number theory is essential for the resolution.\n\n3. **Siegel's Ineffectivity**: The 'at most one exception' reflects a fundamental limitation: Siegel's bound h(-D) > C(ε)D^{1/2-ε} has an ineffective constant C(ε). Computing it would either resolve the exception or prove the existence of a Siegel zero — one of the deepest open problems in analytic number theory.\n\n4. **Pattern Fragility**: The eight known values demonstrate how striking numerical patterns can be finite — a cautionary tale against conjecturing from small examples in number theory.\n\n5. **Companion Problems**: The open status of erdos-1141 (n - k² prime for coprime k) and erdos-1142 (n - 2^k prime) shows that small variations in the quadratic constraint can change the problem's difficulty dramatically.",
     "openQuestions": [
       "Does the one possible exception in the n ≡ 3 (mod 4) case actually exist? Resolving this would require either effective Siegel bounds or GRH.",
       "What happens for n - 3x²? n - 5x²? Are the analogous finite sets computable for each coefficient?",
@@ -194,13 +194,19 @@
   ],
   "references": [
     {
-      "authors": ["Epure, M.", "Gica, A."],
+      "authors": [
+        "Epure, M.",
+        "Gica, A."
+      ],
       "title": "A Diophantine Equation Related to an Erdős Problem",
       "year": 2010,
       "description": "The paper that disproved Erdős Problem #1140, proving that only finitely many n satisfy AllShiftsArePrime(n). The proof combines quadratic residue sieving for n ≡ 1 (mod 4) and class number methods for n ≡ 3 (mod 4)."
     },
     {
-      "authors": ["Mollin, R. A.", "Williams, H. C."],
+      "authors": [
+        "Mollin, R. A.",
+        "Williams, H. C."
+      ],
       "title": "On Prime-Valued Polynomials and Class Numbers of Real Quadratic Fields",
       "year": 1989,
       "journal": "Nagoya Mathematical Journal",
@@ -208,7 +214,9 @@
       "description": "Establishes the connection between the condition that all n - 2x² are prime and the class number h(-8n) of the imaginary quadratic field Q(√(-2n)). This result is the key ingredient in the Epure-Gica proof for the n ≡ 3 (mod 4) case."
     },
     {
-      "authors": ["Siegel, C. L."],
+      "authors": [
+        "Siegel, C. L."
+      ],
       "title": "Über die Classenzahl quadratischer Zahlkörper",
       "year": 1935,
       "journal": "Acta Arithmetica",
@@ -216,7 +224,10 @@
       "description": "Proves the ineffective lower bound h(-D) > C(ε)D^{1/2-ε}. The ineffectivity (C(ε) cannot be explicitly computed) is responsible for the 'at most one exception' in the erdos-1140 disproof and is related to the existence of Siegel zeros."
     },
     {
-      "authors": ["Ireland, K.", "Rosen, M."],
+      "authors": [
+        "Ireland, K.",
+        "Rosen, M."
+      ],
       "title": "A Classical Introduction to Modern Number Theory",
       "year": 1990,
       "publisher": "Springer",
@@ -224,7 +235,9 @@
       "description": "Standard reference covering quadratic residues, Gauss's law of quadratic reciprocity, the theory of binary quadratic forms, and class numbers of imaginary quadratic fields — all the tools required to understand the Epure-Gica proof."
     },
     {
-      "authors": ["Bunyakovsky, V."],
+      "authors": [
+        "Bunyakovsky, V."
+      ],
       "title": "Nouveaux théorèmes relatifs à la distinction des nombres premiers et à la décomposition des entiers en facteurs",
       "year": 1857,
       "journal": "Mémoires de l'Académie impériale des sciences de Saint Pétersbourg",

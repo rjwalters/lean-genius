@@ -96,7 +96,8 @@
       "The density gap: n³+1 on 3n vertices gives density ~2/9, but Frankl-Füredi proved the Turán density for K₄⁻ is ≥ 2/7, so the threshold was fundamentally too low",
       "The exact Turán density π(K₄⁻) = 2/7 remains conjectural — proving the upper bound is a major open problem in hypergraph extremal theory",
       "This is one of the cleanest formalizations: 0 sorry entries, with all theorems proved from 3 axioms (Balogh, Harris, Frankl-Füredi)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -158,7 +159,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #794 is DISPROVED. The conjecture that 3n vertices with n³+1 edges forces K₄⁻ is false — Harris's tripartite product construction on 9 vertices with 28 edges avoids K₄⁻. Balogh showed the 5-7 condition was redundant. The correct Turán density for K₄⁻ is at least 2/7 (Frankl-Füredi), well above the conjectured threshold of 2/9.",
-    "implications": "**Theoretical Significance**\n\n1. **Hypergraph Turán Theory**: The problem highlights the difficulty of determining exact Turán densities for hypergraphs. Unlike graphs (where Turán's theorem gives exact answers), hypergraph Turán problems remain largely open — even for small forbidden structures like K₄⁻.\n\n2. **Tripartite Constructions**: Harris's counterexample uses the tripartite product, a fundamental construction in extremal combinatorics. The same technique appears in the Frankl-Füredi construction and many other extremal hypergraph results.\n\n3. **Density Thresholds**: The gap between 2/9 (Erdős's threshold) and 2/7 (Frankl-Füredi) shows how sensitive hypergraph Turán problems are to the exact density. A small change in density can cross the extremal threshold.\n\n4. **Problem Statement Quality**: Balogh's observation that the 5-7 condition was redundant suggests the original problem may have contained an error or been posed with incomplete information. This illustrates how even Erdős's problem statements sometimes needed correction.\n\n5. **Formalization Quality**: With 0 sorry entries and clean axiom-based structure, this is among the most complete formalizations in the gallery.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Hypergraph Turán Theory**: The problem highlights the difficulty of determining exact Turán densities for hypergraphs. Unlike graphs (where Turán's theorem gives exact answers), hypergraph Turán problems remain largely open — even for small forbidden structures like K₄⁻.\n\n2. **Tripartite Constructions**: Harris's counterexample uses the tripartite product, a fundamental construction in extremal combinatorics. The same technique appears in the Frankl-Füredi construction and many other extremal hypergraph results.\n\n3.\n\n**Broader Connections**: **Density Thresholds**: The gap between 2/9 (Erdős's threshold) and 2/7 (Frankl-Füredi) shows how sensitive hypergraph Turán problems are to the exact density. A small change in density can cross the extremal threshold.\n\n4. **Problem Statement Quality**: Balogh's observation that the 5-7 condition was redundant suggests the original problem may have contained an error or been posed with incomplete information. This illustrates how even Erdős's problem statements sometimes needed correction.\n\n5. **Formalization Quality**: With 0 sorry entries and clean axiom-based structure, this is among the most complete formalizations in the gallery.",
     "openQuestions": [
       "What is the exact Turán density for K₄⁻ in 3-uniform hypergraphs? Is it exactly 2/7?",
       "What is the extremal construction achieving density 2/7? Is it the Fano complement?",

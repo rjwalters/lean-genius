@@ -115,7 +115,8 @@
       "**Equality cases**: When $n = q - 1$ for prime $q$, we must have $m_n = p_n = q$. These are the 'hard' cases where the totient preimage requires a prime in the specific progression",
       "**Van Doorn's observation**: For $n = 2^{2k+1}$, $\\varphi(2n) = 2^{2k+1} = n$, so $m_n \\le 2n \\ll p_n$. This uses the simple structure of $\\varphi$ at powers of $2$",
       "**Hierarchy**: Part 2 ($p_n/m_n \\to \\infty$) $\\Rightarrow$ Part 1 ($m_n < p_n$ a.a.) $\\Rightarrow$ infinitely many $n$ with $m_n < p_n$. The converses likely fail, making Part 2 strictly stronger"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -170,7 +171,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #456 explores the comparative growth of pₙ (smallest prime ≡ 1 mod n) and mₙ (smallest m with n | φ(m)) through three progressively stronger conjectures. Known results establish mₙ ≤ pₙ trivially, Linnik's polynomial bound on pₙ, and van Doorn's explicit strict inequality family for powers of 2. All three conjectures remain open.",
-    "implications": "Resolving these questions would illuminate the relationship between Dirichlet primes in arithmetic progressions and the preimage structure of Euler's totient function. Part 1 would show that for 'generic' n, finding an m with n | φ(m) is easier than finding a prime in the progression. Part 2 would quantify how much easier. Part 3 connects to Carmichael's totient conjecture and the inverse totient problem.",
+    "implications": "**Theoretical Significance**: Resolving these questions would illuminate the relationship between Dirichlet primes in arithmetic progressions and the preimage structure of Euler's totient function. Part 1 would show that for 'generic' n, finding an m with n | φ(m) is easier than finding a prime in the progression.\n\n**Broader Connections**: Part 2 would quantify how much easier. Part 3 connects to Carmichael's totient conjecture and the inverse totient problem.",
     "openQuestions": [
       "Is mₙ < pₙ for almost all n? (Part 1)",
       "Does pₙ/mₙ → ∞ for almost all n? (Part 2)",

@@ -58,6 +58,12 @@
       "**Three-set proof strategy**: The proof applies two-set inclusion-exclusion twice, then uses distributivity $(A \\cup B) \\cap C = (A \\cap C) \\cup (B \\cap C)$ to decompose the resulting intersection. Cardinality bounds ($|A \\cap B| \\leq |A|$) are needed for `omega` to handle the natural number arithmetic.",
       "**Probability extension**: The principle extends to probability measures: $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$, foundational for computing compound event probabilities.",
       "**Symmetric difference connection**: $|A \\triangle B| = |A| + |B| - 2|A \\cap B|$ is proved by decomposing into disjoint set differences and applying `card_sdiff`. This formula is the XOR analog of inclusion-exclusion."
+    ],
+    "prerequisites": [
+      "Finset operations (union, inter, card) from Mathlib",
+      "Natural number subtraction and omega tactic",
+      "Set theory basics (union, intersection, complement)",
+      "Finset.card_union_add_card_inter identity"
     ]
   },
   "sections": [

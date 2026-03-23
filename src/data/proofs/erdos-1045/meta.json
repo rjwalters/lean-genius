@@ -65,7 +65,8 @@
       "**Quantitative gap $\\ge 27\\%$**: The Cambie–Dong–Tang lower bound $\\text{MaxDelta}(n)/n^n \\ge 1.269$ shows the regular polygon is not just barely suboptimal but substantially so. The constructions achieving this bound involve configurations with nontrivial algebraic structure.",
       "**Potential theory framework**: Pommerenke's upper bound $\\Delta \\le 2^{Cn} \\cdot n^n$ uses the connection between $\\log \\Delta$ and the logarithmic energy $\\sum_{i \\ne j} \\log|z_i - z_j|$. The transfinite diameter of the disk provides the asymptotic envelope for the maximum.",
       "**EHP–lemniscate connection**: The EHP 1958 result ($\\Delta < n^n$ when the sublevel set is connected) links this problem to #1044 on polynomial lemniscate boundary lengths. Both problems emerge from understanding how root geometry constrains polynomial level sets."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1045 asks for the maximum product of pairwise distances among n complex points with diameter ≤ 2. For even n ≥ 4, the regular polygon is provably NOT optimal (Cambie), with the true maximum exceeding n^n by at least 27% (Cambie–Dong–Tang). For odd n, the regular polygon may still be optimal—this remains open. The formalization captures the complete state of knowledge in ~168 lines with 0 sorries.",
-    "implications": "**Theoretical Significance**\n\n1. **Extremal polynomial theory**: The problem connects the discriminant of polynomials (an algebraic invariant) to geometric optimization, bridging complex analysis and combinatorial geometry.\n\n2. **Parity phenomena in geometry**: The even/odd dichotomy reveals that parity of the number of points fundamentally affects the optimization landscape, an unexpected feature for a continuous geometric problem.\n\n3. **Potential theory and transfinite diameter**: The upper bounds use the connection between product of distances and logarithmic energy, a central object in potential theory with applications to approximation theory and random matrix theory.\n\n4. **Polynomial lemniscate theory**: Together with Problem #1044, this problem drives the study of metric properties of polynomial level sets, connecting to the broader theory of conformal mapping and capacity.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Extremal polynomial theory**: The problem connects the discriminant of polynomials (an algebraic invariant) to geometric optimization, bridging complex analysis and combinatorial geometry.\n\n2.\n\n**Broader Connections**: **Parity phenomena in geometry**: The even/odd dichotomy reveals that parity of the number of points fundamentally affects the optimization landscape, an unexpected feature for a continuous geometric problem.\n\n3. **Potential theory and transfinite diameter**: The upper bounds use the connection between product of distances and logarithmic energy, a central object in potential theory with applications to approximation theory and random matrix theory.\n\n4. **Polynomial lemniscate theory**: Together with Problem #1044, this problem drives the study of metric properties of polynomial level sets, connecting to the broader theory of conformal mapping and capacity.",
     "openQuestions": [
       "Is the regular polygon optimal for odd n? No counterexample is known for any odd n ≥ 5.",
       "What is the exact maximum Δ for each even n? The optimal configurations are unknown even for n = 4.",
@@ -187,7 +188,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "G. Herzog", "G. Piranian"],
+      "authors": [
+        "P. Erdős",
+        "G. Herzog",
+        "G. Piranian"
+      ],
       "title": "Metric properties of polynomials",
       "journal": "Journal d'Analyse Mathématique",
       "year": 1958,
@@ -196,7 +201,9 @@
       "description": "The founding paper: introduces the problem of maximizing ∏|z_i - z_j| subject to diameter ≤ 2, proves EHP 1958 (connected sublevel set ⟹ Δ < n^n), and conjectures the regular polygon is optimal."
     },
     {
-      "authors": ["Ch. Pommerenke"],
+      "authors": [
+        "Ch. Pommerenke"
+      ],
       "title": "On metric properties of complex polynomials",
       "journal": "The Michigan Mathematical Journal",
       "year": 1961,
@@ -206,21 +213,29 @@
       "description": "Proves the upper bound Δ ≤ 2^{Cn}·n^n using potential theory and transfinite diameter; also proves the projection bound (Problem #1043) and lemniscate containment results related to Problem #1046."
     },
     {
-      "authors": ["Siraphong Cambie"],
+      "authors": [
+        "Siraphong Cambie"
+      ],
       "title": "Counterexamples for even n in the Erdős–Herzog–Piranian problem",
       "year": 2023,
       "note": "Proves that the regular n-gon is not optimal for all even n ≥ 4, generalizing the Hu–Tang n = 4, 6 counterexamples. Available at arXiv:2305.xxxxx.",
       "description": "The key structural result captured in the formalization: establishes cambie_even_not_optimal for all even n ≥ 4 by analyzing deformation modes of antipodal vertex pairs."
     },
     {
-      "authors": ["Siraphong Cambie", "Qi Dong", "Xiaoyu Tang"],
+      "authors": [
+        "Siraphong Cambie",
+        "Qi Dong",
+        "Xiaoyu Tang"
+      ],
       "title": "Quantitative lower bounds for the maximum product of distances",
       "year": 2024,
       "note": "Preprint.",
       "description": "Establishes liminf_{n even} MaxDelta(n)/n^n ≥ 1.304 when 6 | n and ≥ 1.269 for all even n, using algebraic configurations related to cyclotomic fields. These are the bounds axiomatized as cambie_dong_tang_even in the formalization."
     },
     {
-      "authors": ["Natthaphon Sothanaphan"],
+      "authors": [
+        "Natthaphon Sothanaphan"
+      ],
       "title": "On the maximum product of distances between complex points",
       "year": 2025,
       "note": "Preprint.",

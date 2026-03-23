@@ -84,7 +84,8 @@
       "Untouchable numbers (2, 5, 52, 88, ...) show the converse also fails: positive-density target sets can have empty preimages, since some values are never achieved by $s$",
       "The PPT threshold exponent $1/2$ arises from $s(n) \\leq n \\cdot O(\\log\\log n)$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range cannot capture enough fibers",
       "Each partial result (primes, sums of two squares, sparse sets) requires completely different analytic techniques, suggesting no simple unified approach exists"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -160,7 +161,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full state of knowledge on Erdős Problem #955: the EGPS conjecture that zero-density sets have zero-density preimages under $s(n) = \\sigma(n) - n$. It formalizes the conjecture, the striking asymmetry between forward and backward density preservation, the three main partial results (Pollack for primes, Troupe for sums of two squares, PPT for sparse sets), the critical threshold exponent $1/2$, and the growth bound $s(n) \\leq n \\cdot O(\\log\\log n)$ that explains this threshold.",
-    "implications": "**Theoretical Significance**\n\n1. **Arithmetic Function Regularity**: A resolution would establish a deep regularity property of the divisor function—that $s$ distributes values uniformly enough to prevent density concentration in fibers\n\n2. **Multiplicative Number Theory**: The partial results each exploit specific multiplicative structure (primes, sums of two squares), suggesting the full conjecture requires understanding the distribution of $s(n)$ in arithmetic progressions\n\n3. **Density Preservation**: The problem connects to broader questions about which arithmetic functions preserve asymptotic density under preimages, a theme in probabilistic number theory\n\n4. **Untouchable Numbers**: Understanding the fiber structure of $s$ would illuminate which integers are untouchable and how the untouchable numbers are distributed\n\n5. **Iterative Dynamics**: The original EGPS paper studied iterates $s^{(k)}(n)$; resolving the single-step conjecture would be a crucial first step toward understanding the dynamical behavior of repeated application of $s$",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Arithmetic Function Regularity**: A resolution would establish a deep regularity property of the divisor function—that $s$ distributes values uniformly enough to prevent density concentration in fibers\n\n2. **Multiplicative Number Theory**: The partial results each exploit specific multiplicative structure (primes, sums of two squares), suggesting the full conjecture requires understanding the distribution of $s(n)$ in arithmetic progressions\n\n3.\n\n**Broader Connections**: **Density Preservation**: The problem connects to broader questions about which arithmetic functions preserve asymptotic density under preimages, a theme in probabilistic number theory\n\n4. **Untouchable Numbers**: Understanding the fiber structure of $s$ would illuminate which integers are untouchable and how the untouchable numbers are distributed\n\n5. **Iterative Dynamics**: The original EGPS paper studied iterates $s^{(k)}(n)$; resolving the single-step conjecture would be a crucial first step toward understanding the dynamical behavior of repeated application of $s$.",
     "openQuestions": [
       "Does the EGPS conjecture hold for all density-0 sets A? This is the main open question after 35+ years",
       "Is the PPT exponent 1/2 sharp, or can the threshold be improved toward general density-0 sets?",

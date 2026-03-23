@@ -64,7 +64,8 @@
       "**Monier's super-exponential bound**: $n_k \\leq k!$ for $k \\geq 3$, proved by showing $\\binom{k!}{k}$ has the required divisibility — the highly composite nature of $k!$ forces almost all factors to divide",
       "**Cambie's exponential improvement**: $n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1) \\leq e^{(1+o(1))k}$ via the prime number theorem and the Chebyshev function $\\psi(m) \\sim m$",
       "**The polynomial vs. exponential question**: Whether $n_k \\leq k^C$ for some constant $C$ is one of the cleanest open problems in combinatorial number theory, with a gap spanning many orders of magnitude"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -112,7 +113,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1063 on the growth rate of $n_k$, the least $n \\geq 2k$ where all but one of $\\{n, n-1, \\ldots, n-k+1\\}$ divide $\\binom{n}{k}$. The Erdős-Selfridge theorem (1983) shows full divisibility is impossible, and the formalization axiomatizes known values ($n_2 = 4$ through $n_5 = 12$), Monier's bound $n_k \\leq k!$, and Cambie's improvement $n_k \\leq e^{(1+o(1))k}$. The open question — whether $n_k$ is polynomial in $k$ — is formalized as a Lean `Prop`.",
-    "implications": "**Theoretical Significance**\n\n1. **Arithmetic of binomial coefficients**: The problem reveals that the divisibility of $\\binom{n}{k}$ by nearby integers is highly structured — not all can divide, but almost all can. This connects to Kummer's theorem on the $p$-adic valuation of binomial coefficients.\n\n2. **Gap between polynomial and exponential**: The enormous gap between the trivial lower bound $n_k \\geq 2k$ and the exponential upper bound $n_k \\leq e^{(1+o(1))k}$ highlights a deep lacuna in our understanding of divisibility patterns. The answer likely requires new techniques from analytic number theory.\n\n3. **Role of lcm**: Cambie's bound $n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1)$ connects the problem to the prime number theorem, since $\\text{lcm}(1, \\ldots, m) = e^{\\psi(m)}$ where $\\psi$ is the Chebyshev function. This suggests the growth rate is controlled by prime distribution.\n\n4. **Formalization approach**: By axiomatizing deep results and fully formalizing the definitions and the open question, the formalization enables future machine-verified progress — once the polynomial vs. exponential question is resolved, the proof can be directly integrated.\n\n5. **Connection to Erdős's legacy**: This is one of over 500 open problems left by Erdős, representing a clean number-theoretic question where the answer (polynomial vs. exponential) is genuinely unknown.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Arithmetic of binomial coefficients**: The problem reveals that the divisibility of $\\binom{n}{k}$ by nearby integers is highly structured — not all can divide, but almost all can. This connects to Kummer's theorem on the $p$-adic valuation of binomial coefficients.\n\n2. **Gap between polynomial and exponential**: The enormous gap between the trivial lower bound $n_k \\geq 2k$ and the exponential upper bound $n_k \\leq e^{(1+o(1))k}$ highlights a deep lacuna in our understanding of divisibility patterns. The answer likely requires new techniques from analytic number theory.\n\n3.\n\n**Broader Connections**: **Role of lcm**: Cambie's bound $n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1)$ connects the problem to the prime number theorem, since $\\text{lcm}(1, \\ldots, m) = e^{\\psi(m)}$ where $\\psi$ is the Chebyshev function. This suggests the growth rate is controlled by prime distribution.\n\n4. **Formalization approach**: By axiomatizing deep results and fully formalizing the definitions and the open question, the formalization enables future machine-verified progress — once the polynomial vs. exponential question is resolved, the proof can be directly integrated.\n\n5. **Connection to Erdős's legacy**: This is one of over 500 open problems left by Erdős, representing a clean number-theoretic question where the answer (polynomial vs. exponential) is genuinely unknown.",
     "openQuestions": [
       "Is $n_k$ polynomial in $k$? The known values $4, 6, 9, 12$ grow roughly linearly, but this could be misleading for large $k$.",
       "Can $n_k$ be computed exactly for $k = 6, 7, 8$? Computational evidence would help distinguish polynomial from exponential growth.",
@@ -173,28 +174,37 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "J.L. Selfridge"],
+      "authors": [
+        "P. Erdős",
+        "J.L. Selfridge"
+      ],
       "title": "Some problems on the prime factors of consecutive integers",
       "venue": "Illinois Journal of Mathematics",
       "year": 1975,
       "note": "Foundational paper establishing that not all k consecutive integers in the numerator of C(n,k) can divide C(n,k) simultaneously; precursor results to the 1063 threshold question"
     },
     {
-      "authors": ["L. Monier"],
+      "authors": [
+        "L. Monier"
+      ],
       "title": "Factorisation des entiers: quelques résultats et questions ouvertes",
       "venue": "Proceedings of the Colloque Algorithmique, INRIA",
       "year": 1985,
       "note": "Proves n_k ≤ k! by showing that n = k! satisfies the all-but-one divisibility condition; establishes the first non-trivial super-exponential upper bound"
     },
     {
-      "authors": ["S. Cambie"],
+      "authors": [
+        "S. Cambie"
+      ],
       "title": "Improved bounds for divisibility of binomial coefficients by consecutive factors",
       "venue": "Unpublished / personal communication, cited in Erdős Problems catalogue",
       "year": 2022,
       "note": "Establishes the sharp exponential improvement n_k ≤ k·lcm(2,…,k-1) ~ e^{(1+o(1))k} via the connection to the Chebyshev ψ-function"
     },
     {
-      "authors": ["E.E. Kummer"],
+      "authors": [
+        "E.E. Kummer"
+      ],
       "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
       "venue": "Journal für die reine und angewandte Mathematik",
       "year": 1852,
@@ -203,7 +213,9 @@
       "note": "Proves that v_p(C(n,k)) equals the number of carries when adding k and n-k in base p; the p-adic valuation tool used to analyze divisibility of C(n,k) by integers near n"
     },
     {
-      "authors": ["R.K. Guy"],
+      "authors": [
+        "R.K. Guy"
+      ],
       "title": "Unsolved Problems in Number Theory",
       "venue": "Springer-Verlag, Third Edition",
       "year": 2004,

@@ -101,7 +101,8 @@
       "The sum range constraint: an almost-Sidon set of size $k$ produces $\\geq \\binom{k}{2} + k - 1$ distinct sums in $[2, 2N]$, giving $k(k+1)/2 - 1 \\leq 2N - 1$, hence $k \\leq O(\\sqrt{N})$",
       "The gap between Sidon ($\\sqrt{N}$) and almost-Sidon ($(2/\\sqrt{3})\\sqrt{N}$) is precisely the factor $2/\\sqrt{3}$: one collision is worth a multiplicative factor of $\\approx 1.155$",
       "For differences instead of sums, Erdős-Freud proved the maximum is asymptotically $\\sqrt{N}$ — the difference version does not benefit from allowing one collision"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #864 is formalized with concrete definitions of sum representation counting, almost-Sidon and Sidon properties, the maximum function, and the Erdős-Freud reflected construction. The key theorem sidon_is_almost_sidon is proved; bounds and construction validity are axiomatized. The file has 0 sorries and 7 axioms (including 2 placeholder True).",

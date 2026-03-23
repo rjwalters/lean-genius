@@ -68,7 +68,8 @@
       "**Greedy Not Complete:** The greedy sequence satisfies prime sums but may not cover all integers, and misses some primes (like 197) as sums",
       "**Finite Version:** Probabilistically expected to work for all n ≥ 2 based on prime density, confirmed for infinitely many n",
       "**OEIS A055265:** The greedy sequence beginning 1, 2, 3, 4, 7, 6, 5, 8, 9, ... is well-studied"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -116,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #473 is solved: there exists a permutation of positive integers with all consecutive sums prime (Odlyzko). The greedy algorithm produces such a sequence but may not cover all integers and misses some primes as sums (like 197). The finite version is true for infinitely many n.",
-    "implications": "**Connections**\n\n1. **Graph Theory:** Hamilton path problem in infinite graphs — the prime sum graph\n\n2. **Additive Combinatorics:** Structure of which pairs of integers sum to primes\n\n3. **Goldbach Connection:** Related to the distribution of prime sums among integers\n\n4. **Algorithmic:** Greedy algorithms on infinite structures may produce interesting but incomplete coverings",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Graph Theory:** Hamilton path problem in infinite graphs — the prime sum graph\n\n2.\n\n**Broader Connections**: **Additive Combinatorics:** Structure of which pairs of integers sum to primes\n\n3. **Goldbach Connection:** Related to the distribution of prime sums among integers\n\n4. **Algorithmic:** Greedy algorithms on infinite structures may produce interesting but incomplete coverings.",
     "openQuestions": [
       "Does the greedy algorithm cover all positive integers?",
       "For which n does the finite version work? Is it all n ≥ 2?",

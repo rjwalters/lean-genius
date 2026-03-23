@@ -34,7 +34,8 @@
       "**The gap is $\\log^* n + O(1)$ — practically constant**: since $\\log^* n \\leq 5$ for any conceivable $n$, the bounds differ by at most about 6 for all practical graph sizes, yet closing even this tiny gap is open",
       "**Even $h(n) - \\log_2 n \\to \\infty$ is open**: Erdos could not prove the correction term diverges, despite believing it should be $\\sim \\log^* n$. This makes the problem unusual — the answer is nearly determined yet the proof seems out of reach",
       "**Bondy's quadratic threshold is far from tight**: the classic result that $n^2/4$ edges suffice for pancyclicity or bipartiteness gives a threshold of $\\Theta(n^2)$, vastly exceeding the true threshold of $n + O(\\log n)$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -103,7 +104,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdos Problem #1016 on the minimum excess edges for pancyclic graphs. The bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ leave a gap of only $\\log^* n + O(1)$, which is at most about 6 for any practical $n$. The Lean formalization encodes the definitions, both conjectures, the known bounds, structural properties, and small cases.",
-    "implications": "Resolving whether $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$ would determine the exact edge threshold for pancyclicity. The problem is notable for the extreme tightness of known bounds combined with the apparent difficulty of closing the gap. A proof of even $h(n) - \\log_2 n \\to \\infty$ would require new techniques for lower-bounding the edge count of pancyclic graphs beyond simple doubling arguments.",
+    "implications": "**Theoretical Significance**: Resolving whether $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$ would determine the exact edge threshold for pancyclicity.\n\n**Broader Connections**: The problem is notable for the extreme tightness of known bounds combined with the apparent difficulty of closing the gap. A proof of even $h(n) - \\log_2 n \\to \\infty$ would require new techniques for lower-bounding the edge count of pancyclic graphs beyond simple doubling arguments.",
     "openQuestions": [
       "Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$? (Main conjecture)",
       "Does $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$? (Weaker question Erdos could not prove)",
@@ -159,7 +160,9 @@
   ],
   "references": [
     {
-      "authors": ["J.A. Bondy"],
+      "authors": [
+        "J.A. Bondy"
+      ],
       "title": "Pancyclic graphs I",
       "venue": "Journal of Combinatorial Theory, Series B",
       "year": 1971,
@@ -169,7 +172,9 @@
       "note": "Introduces pancyclic graphs, proves that n²/4 edges suffice for pancyclicity or bipartiteness, and poses the bounds on h(n) studied in Erdős Problem #1016."
     },
     {
-      "authors": ["C. Griffin"],
+      "authors": [
+        "C. Griffin"
+      ],
       "title": "A lower bound for the minimum number of edges in a pancyclic graph on n vertices",
       "venue": "Australasian Journal of Combinatorics",
       "year": 2013,
@@ -178,7 +183,11 @@
       "note": "Establishes the lower bound h(n) ≥ ⌊log₂(n-1)⌋ - 1 via the doubling argument, rigorously proving the bound conjectured by Bondy."
     },
     {
-      "authors": ["J. George", "A. Khodkar", "W.D. Wallis"],
+      "authors": [
+        "J. George",
+        "A. Khodkar",
+        "W.D. Wallis"
+      ],
       "title": "Pancyclic and Bipancyclic Graphs",
       "venue": "Springer Briefs in Mathematics, Springer",
       "year": 2016,
@@ -186,7 +195,10 @@
       "note": "Proves the upper bound h(n) ≤ ⌊log₂ n⌋ + log* n + O(1) via explicit hierarchical construction with ⌊log₂ n⌋ doubling stages and log* n correction stages."
     },
     {
-      "authors": ["J.A. Bondy", "U.S.R. Murty"],
+      "authors": [
+        "J.A. Bondy",
+        "U.S.R. Murty"
+      ],
       "title": "Graph Theory",
       "venue": "Graduate Texts in Mathematics, Springer",
       "year": 2008,
@@ -195,7 +207,11 @@
       "note": "Standard reference for Hamiltonian graph theory and pancyclicity; Chapter 10 covers cycle structure including the Bondy–Simonovits theorem and related extremal results."
     },
     {
-      "authors": ["R.J. Faudree", "R.H. Schelp", "M. Simonovits"],
+      "authors": [
+        "R.J. Faudree",
+        "R.H. Schelp",
+        "M. Simonovits"
+      ],
       "title": "On some Turán type problems in graph theory",
       "venue": "Combinatorics (Keszthely, 1976), Colloq. Math. Soc. János Bolyai",
       "year": 1978,

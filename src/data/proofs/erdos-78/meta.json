@@ -99,7 +99,8 @@
       "CGMS (2023) broke the 88-year $4^k$ upper bound barrier, proving $R(k) \\le (4-\\varepsilon)^k$ — current best bounds: $(\\sqrt{2})^k \\lesssim R(k) \\lesssim (4-\\varepsilon)^k$",
       "The formalization axiomatizes `IsExplicit` as `True` since polynomial-time computability is a meta-property not capturable in Lean's logic",
       "A constructive proof would have profound implications for derandomization, complexity theory (P vs BPP), and the foundations of the probabilistic method"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #78 ($100 prize) remains one of the most famous open problems in combinatorics. The formalization captures the 108-line Lean 4 axiomatization of Ramsey numbers, the probabilistic lower bound, constructive results (Cohen 2015, Li 2023), and upper bounds (Erdős–Szekeres 1935, CGMS 2023). The file has 0 sorries — all statements are axiomatized rather than proved.",

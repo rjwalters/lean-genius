@@ -105,7 +105,8 @@
       "Chebyshev nodes give the smallest possible Lebesgue constant Λ_n = (2/π)log n + O(1), but they don't resolve the conjecture because the adversary can choose arbitrary (non-Chebyshev) nodes",
       "Erdős's weaker result (∃P with ‖P‖_∞ > C) follows from the Runge-type divergence of interpolation, but strengthening ∃P to ∀P requires fundamentally different techniques",
       "The problem has a game-theoretic interpretation: the 'target chooser' plays y_i to maximize min_P ‖P‖_∞, while nature plays x_i to minimize this quantity. The conjecture asserts the target chooser always wins"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -219,7 +220,9 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and results on the convergence and divergence properties of the Lagrange interpolation polynomials and some extremal problems",
       "venue": "Mathematica (Cluj)",
       "year": 1967,
@@ -228,7 +231,9 @@
       "note": "Primary source: Erdős poses Problem #1133 and proves the weaker existence result (∃P with large norm), which is formalized as the erdos_related_result axiom."
     },
     {
-      "authors": ["G. Faber"],
+      "authors": [
+        "G. Faber"
+      ],
       "title": "Über die interpolatorische Darstellung stetiger Funktionen",
       "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung",
       "year": 1914,
@@ -237,7 +242,10 @@
       "note": "Proves that the Lebesgue constant Λ_n → ∞ for ANY node sequence — the fundamental obstruction theorem (lagrange_divergence axiom) underlying Problem #1133."
     },
     {
-      "authors": ["C. de Boor", "A. Pinkus"],
+      "authors": [
+        "C. de Boor",
+        "A. Pinkus"
+      ],
       "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
       "venue": "Journal of Approximation Theory",
       "year": 1978,
@@ -248,7 +256,9 @@
       "note": "Resolves Erdős Problem #1130 (Υ functional); the Lebesgue constant bound (2/π) log n + O(1) proved here provides context for the Chebyshev node optimality used in #1133."
     },
     {
-      "authors": ["T. J. Rivlin"],
+      "authors": [
+        "T. J. Rivlin"
+      ],
       "title": "An Introduction to the Approximation of Functions",
       "venue": "Dover Publications",
       "year": 1981,
@@ -256,7 +266,9 @@
       "note": "Standard reference for Chebyshev polynomial theory, Lebesgue constants, and the minimax polynomial approximation problems that form the mathematical background of Problem #1133."
     },
     {
-      "authors": ["E. W. Cheney"],
+      "authors": [
+        "E. W. Cheney"
+      ],
       "title": "Introduction to Approximation Theory",
       "venue": "AMS Chelsea Publishing",
       "year": 1998,
@@ -267,7 +279,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1133 asks whether one can always choose target values for polynomial interpolation that force any approximating polynomial to be large somewhere in [-1,1]. The problem remains OPEN since 1967. Erdős proved a weaker existence result (∃P with large norm) but the conjectured universal property (∀P matching chosen y has large norm) requires defeating all polynomials simultaneously — a qualitatively harder adversarial challenge.",
-    "implications": "**Theoretical Significance**\n\n1. **Interpolation Limits**: If true, the conjecture would establish a fundamental obstruction to controlling polynomial behavior through partial interpolation data — no matter how the sample points are placed, the 'target chooser' can always create irreconcilable constraints\n\n2. **Approximation Theory**: The conjecture connects to the Bernstein-Erdős theory of polynomial approximation. Bernstein's lethargy theorem shows that convergence rates for best polynomial approximation cannot be improved beyond certain thresholds; Problem #1133 asks about a different kind of limitation\n\n3. **Game Theory in Analysis**: The ∃y∀P structure makes this a minimax problem in infinite dimensions. Von Neumann's minimax theorem applies to convex-compact settings, but the polynomial constraint set is not obviously convex, making standard duality tools insufficient\n\n4. **Lebesgue Constant Theory**: For ε = 0, the conjecture asks whether max_y ‖L_n(y)‖_∞ → ∞ for all node sequences, where L_n is the Lagrange operator. Since ‖L_n‖ = Λ_n → ∞ (Faber), the operator norm diverges — but the conjecture needs divergence for specific y choices, not just worst-case f\n\n5. **Computational Aspects**: The problem suggests a potential algorithm: given nodes x_i, compute y_i that maximizes the minimum polynomial norm. If such algorithms could be made efficient, they would have applications in numerical stability analysis",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Interpolation Limits**: If true, the conjecture would establish a fundamental obstruction to controlling polynomial behavior through partial interpolation data — no matter how the sample points are placed, the 'target chooser' can always create irreconcilable constraints\n\n2. **Approximation Theory**: The conjecture connects to the Bernstein-Erdős theory of polynomial approximation. Bernstein's lethargy theorem shows that convergence rates for best polynomial approximation cannot be improved beyond certain thresholds; Problem #1133 asks about a different kind of limitation\n\n3. **Game Theory in Analysis**: The ∃y∀P structure makes this a minimax problem in infinite dimensions.\n\n**Broader Connections**: Von Neumann's minimax theorem applies to convex-compact settings, but the polynomial constraint set is not obviously convex, making standard duality tools insufficient\n\n4. **Lebesgue Constant Theory**: For ε = 0, the conjecture asks whether max_y ‖L_n(y)‖_∞ → ∞ for all node sequences, where L_n is the Lagrange operator. Since ‖L_n‖ = Λ_n → ∞ (Faber), the operator norm diverges — but the conjecture needs divergence for specific y choices, not just worst-case f\n\n5. **Computational Aspects**: The problem suggests a potential algorithm: given nodes x_i, compute y_i that maximizes the minimum polynomial norm. If such algorithms could be made efficient, they would have applications in numerical stability analysis.",
     "openQuestions": [
       "Is the conjecture true for ε = 0 (exact interpolation, degree < n through all n points)? Erdős noted he could not prove even this special case.",
       "What is the optimal ε(C) if the conjecture is true? Does ε → 0 as C → ∞, or is there a universal ε that works for all C?",

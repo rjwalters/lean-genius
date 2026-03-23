@@ -69,7 +69,8 @@
       "Monotonicity in $r$ (`isRFoldCover_le`) and in $n$ (`coveringCount_mono`) are proved formally, showing the problem has a natural hierarchical structure",
       "The 1-fold case (simple covering) follows from known results on the Jacobsthal function, so the real open content begins at $r = 2$",
       "Ben Green's variant with threshold 10 instead of 2 highlights that even for moderate $r$, the problem remains open, despite $\\log\\log n$ eventually exceeding any fixed $r$"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 689 on double covering by prime congruence classes, with precise definitions, five proved structural theorems, and axiomatized open conjectures. The structural results (monotonicity, bounds, small cases) are fully proved with 0 sorries, while the main question, its generalization, and supporting number-theoretic facts are axiomatized.",

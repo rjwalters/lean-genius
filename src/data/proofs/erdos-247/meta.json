@@ -34,7 +34,8 @@
       "Truncating the lacunary sum $\\sum_{k=1}^N 1/2^{n_k}$ gives a rational approximation $p/2^{n_N}$ with error $\\sum_{k=N+1}^\\infty 1/2^{n_k} \\leq 2/2^{n_{N+1}}$; superpolynomial growth makes this error smaller than any Liouville bound, forcing transcendence.",
       "The gap between weak growth ($n_k/k \\to \\infty$) and strong growth ($n_k/k^t \\to \\infty$ for all $t$) remains unbridged — even quadratic growth $n_k = k^2$ is open. Erdős described the general case as 'hopeless at present' in 1988.",
       "Connection to Mahler's method (1929): Mahler proved that certain 'Mahler functions' (power series satisfying functional equations like $f(x^d) = R(x, f(x))$) take transcendental values at algebraic arguments. The lacunary sum $\\sum x^{n_k}$ satisfies Mahler-type relations when $n_k = d^k$, connecting Erdős #247 to deep algebraic number theory."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

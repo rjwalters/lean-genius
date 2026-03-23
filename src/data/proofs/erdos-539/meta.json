@@ -74,6 +74,13 @@
       "**Lower Bound:** Pigeonhole on divisibility classes",
       "**Upper Bound:** Constructions with structured sets",
       "**Gap:** True exponent between 1/2 and 2/3 unknown"
+    ],
+    "prerequisites": [
+      "Greatest common divisor (GCD) and basic divisibility",
+      "Finite set cardinality and Finset operations",
+      "Asymptotic notation (big-O, big-Omega, Theta)",
+      "Additive combinatorics fundamentals",
+      "Arithmetic and geometric progressions"
     ]
   },
   "sections": [
@@ -128,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #539 asks for the minimum size of { a/gcd(a,b) : a,b ∈ A } over n-element sets. Erdős-Szemerédi proved n^{1/2} ≪ h(n) ≪ n^{1-c}, and Freiman-Lev improved the upper bound to n^{2/3}. The exact exponent remains unknown.",
-    "implications": "**Connections**\n\n1. **Additive Combinatorics:** GCD structure relates to sum-product phenomena\n\n2. **Divisibility:** Quotients encode divisibility relationships\n\n3. **Geometric Interpretation:** Granville-Roesler's lattice point view\n\n4. **Extremal Sets:** Special structure needed for small quotient sets",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Additive Combinatorics:** GCD structure relates to sum-product phenomena\n\n2.\n\n**Broader Connections**: **Divisibility:** Quotients encode divisibility relationships\n\n3. **Geometric Interpretation:** Granville-Roesler's lattice point view\n\n4. **Extremal Sets:** Special structure needed for small quotient sets.",
     "openQuestions": [
       "What is the true exponent α in h(n) = Θ(n^α)?",
       "Is h(n) closer to n^{1/2} or n^{2/3}?",

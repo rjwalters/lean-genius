@@ -34,7 +34,8 @@
       "For $r = 1$, the bound strengthens to $O(\\log N / \\log\\log N)$ as $A$ must be multiplicatively thin",
       "The multiplicative energy bound $r^2|A|$ is FALSE (counterexample: $A$ = first 5 primes, $r=2$, gives 25 pairs > 20); the trivial bound $|A|^2$ is proved instead",
       "Erdős's upper bound is now proved from Mertens' second theorem (axiom) and a double counting inequality (sorry). The proof chains: reciprocalSum·(c·log log N) ≤ reciprocalSum·primeReciprocalSum ≤ r·(1+2·log N) ≤ 3r·log N, then divides by c·log log N"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -110,7 +111,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 538 with Erdős's upper bound O(r·log N / log log N) proved from Mertens' second theorem (axiom) and a double counting inequality. 21 theorems/lemmas including exp(1)<3 bound, log bounds, and the main calc chain. 1 axiom (Mertens), 1 sorry (double counting combinatorial regrouping).",
-    "implications": "The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density. The double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemerédi-Gowers theorem.",
+    "implications": "**Theoretical Significance**: The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density.\n\n**Broader Connections**: The double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemerédi-Gowers theorem.",
     "openQuestions": [
       "Is $r \\cdot \\log N / \\log\\log N$ the optimal bound, or can it be improved?",
       "Can the bound be improved for specific values of $r$ (e.g., $r = 2$)?",
@@ -127,7 +128,9 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Classical"],
+    "opens": [
+      "Classical"
+    ],
     "namespace": null,
     "lineCount": 398,
     "axiomCount": 1,

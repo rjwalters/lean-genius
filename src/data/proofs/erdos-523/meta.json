@@ -69,7 +69,8 @@
       "**Random vs. deterministic**: While most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$ (random result), the minimum over all Littlewood polynomials is $\\Theta(\\sqrt{n \\log n})$ too -- flat polynomials with $\\max = O(\\sqrt{n})$ do not exist for large $n$",
       "**Chaining vs. moments**: The upper bound uses the chaining technique (entropy integral), while the lower bound uses the second moment method. This two-pronged approach is paradigmatic in the theory of suprema of stochastic processes",
       "**Almost sure convergence**: The result holds with probability 1, not just in probability. This stronger statement uses Borel-Cantelli arguments and requires careful control of the probability tails"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -159,7 +160,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #523 asks whether random ±1 polynomials have maximum modulus (C + o(1))√(n log n) on the unit circle, almost surely. Salem-Zygmund established the order of magnitude, and Halász proved the exact asymptotic with C = 1.",
-    "implications": "**Connections**\n\n1. **Littlewood Polynomials:** Typical behavior of ±1 polynomials\n\n2. **Random Fourier Series:** Kahane's theory\n\n3. **Concentration of Measure:** Maximum behavior\n\n4. **Mahler Measure:** Geometric mean on circle",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Littlewood Polynomials:** Typical behavior of ±1 polynomials\n\n2.\n\n**Broader Connections**: **Random Fourier Series:** Kahane's theory\n\n3. **Concentration of Measure:** Maximum behavior\n\n4. **Mahler Measure:** Geometric mean on circle.",
     "openQuestions": [
       "What is the second-order term in the asymptotic?",
       "What is the distribution of the location of the maximum?",

@@ -44,7 +44,8 @@
       "The `calc` chain decomposes the correctness proof into a sequence of rewriting steps that mirror the algebraic identity $a(xc + yk) = (xa + yb)c = c$, making the proof both machine-checkable and human-readable",
       "The `#eval` demonstrations at the end serve as computational certificates: they prove that Lean's kernel can actually evaluate the function, confirming the absence of any hidden noncomputable dependencies",
       "This technique generalizes beyond integers: in any Euclidean domain where division is computable, classical choice can be replaced with explicit division to make constructive proofs executable"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -85,7 +86,7 @@
   ],
   "conclusion": {
     "summary": "Successfully removed the noncomputable annotation from constructive_div by replacing classical choice with computable integer division. The function evaluates at compile time via #eval, demonstrating a clean separation between proof-level hypotheses and runtime computation.",
-    "implications": "This formalization demonstrates a general technique for making constructive proofs computable in Lean 4: replace choice-based witness extraction with decidable arithmetic operations. The approach is applicable whenever a divisibility or existence proof is used to extract a value that can be computed directly. It connects to broader themes in constructive mathematics, where the computational content of proofs is a first-class concern.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates a general technique for making constructive proofs computable in Lean 4: replace choice-based witness extraction with decidable arithmetic operations.\n\n**Broader Connections**: The approach is applicable whenever a divisibility or existence proof is used to extract a value that can be computed directly. It connects to broader themes in constructive mathematics, where the computational content of proofs is a first-class concern.",
     "openQuestions": [
       "Can the time complexity bound $O(\\log \\min(a,b))$ for the extended Euclidean algorithm be formally verified in Lean?",
       "Does this constructive approach extend to polynomial rings where Euclidean division provides computable quotients?",

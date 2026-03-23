@@ -51,7 +51,8 @@
       "The threshold characterization $k(k-1)/(2d) > \\ln(1/(1-p))$ explains the exact constant: for 50%, $23 \\times 22 = 506 > 2 \\times 365 \\times \\ln 2 \\approx 505.97$",
       "The bound is one-sided (upper on distinct, lower on collision) — the matching lower bound requires a second-order correction $O(k^3/d^2)$ from the Taylor remainder of $\\ln(1-x)$",
       "Monotonicity of collision probability is a simple consequence of each new factor being at most 1, but it establishes the intuitive fact that more people can only increase collision likelihood"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -141,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Provides a complete formal proof of the birthday collision asymptotics with 0 axioms and 0 sorries. The formalization covers the exponential product bound, collision lower bound, threshold characterization, monotonicity, and probability validity, all built from three key Mathlib results: add_one_le_exp, Finset.prod_le_prod, and Real.exp_sum.",
-    "implications": "This bound underpins the security analysis of cryptographic hash functions: a hash with $n$-bit output requires only $O(2^{n/2})$ evaluations to find a collision (the birthday attack). The formalization makes this reasoning machine-checkable, supporting verified cryptographic proofs. The threshold characterization also provides the exact constant for practical security parameter selection.",
+    "implications": "**Theoretical Significance**: This bound underpins the security analysis of cryptographic hash functions: a hash with $n$-bit output requires only $O(2^{n/2})$ evaluations to find a collision (the birthday attack).\n\n**Broader Connections**: The formalization makes this reasoning machine-checkable, supporting verified cryptographic proofs. The threshold characterization also provides the exact constant for practical security parameter selection.",
     "openQuestions": [
       "Can the matching lower bound $\\prod(1-i/d) \\ge \\exp(-k(k-1)/(2d) - k^2(k-1)^2/(4d^2))$ be formalized using the second-order Taylor remainder of $\\ln(1-x)$?",
       "Can the Poisson approximation (the limit as $d \\to \\infty$ with $k^2/d \\to \\lambda$) be formalized in Lean, connecting to Mathlib's probability theory?",

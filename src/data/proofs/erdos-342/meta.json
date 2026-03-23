@@ -40,6 +40,12 @@
       "The growth rate is approximately a(n) ≈ 13.5n (empirical, Steinerberger 2015)",
       "Twin pairs like (26,28) and (478,480) appear but their infinitude is unknown",
       "The density of the Ulam sequence is also an open question"
+    ],
+    "prerequisites": [
+      "Ulam sequences and unique-sum representations",
+      "Additive combinatorics (B₂ sequences)",
+      "Natural density and asymptotic analysis",
+      "Lean 4 Set.Infinite and Filter.Tendsto"
     ]
   },
   "sections": [

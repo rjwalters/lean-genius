@@ -82,7 +82,8 @@
       "**Fox-Loh Disproof:** No polynomial lower bound for c < 1/4",
       "**Regularity Gap:** Lower bounds from regularity are extremely weak (tower-type)",
       "**Triangle Saturation Essential:** Without requiring every edge in a triangle, no books guaranteed"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -137,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #80 asks for the growth rate of the largest book in dense triangle-saturated graphs. Fox and Loh (2012) disproved the polynomial growth conjecture, showing f_c(n) <= n^{O(1/log log n)} for c < 1/4. The problem remains OPEN: the true growth rate between regularity-based lower bounds and the Fox-Loh upper bound is unknown.",
-    "implications": "**Graph-Theoretic Significance**\n\n1. **Regularity Limitations:** Exposes the weakness of regularity-based bounds\n\n2. **Phase Transitions:** The c = 1/4 threshold is a sharp structural transition\n\n3. **Triangle Structure:** Connects global density to local triangle configurations\n\n4. **Extremal Combinatorics:** Open gap challenges current proof techniques",
+    "implications": "**Theoretical Significance**: **Graph-Theoretic Significance**\n\n1. **Regularity Limitations:** Exposes the weakness of regularity-based bounds\n\n2.\n\n**Broader Connections**: **Phase Transitions:** The c = 1/4 threshold is a sharp structural transition\n\n3. **Triangle Structure:** Connects global density to local triangle configurations\n\n4. **Extremal Combinatorics:** Open gap challenges current proof techniques.",
     "openQuestions": [
       "What is the true growth rate of f_c(n) for c < 1/4?",
       "Is f_c(n) >> log n? (Erdos's weaker conjecture, still open)",

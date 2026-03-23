@@ -166,7 +166,7 @@
   ],
   "conclusion": {
     "summary": "Complete formalization of the vector-valued mean value inequality and its rich ecosystem of consequences, with 17 theorems and 0 sorries. All results either proved directly or delegated to Mathlib. Covers the core inequality, scalar specialization, canonical counterexample, Lipschitz theory, ODE bounds, and full Banach space generalizations.",
-    "implications": "The mean value inequality is arguably the single most important tool in nonlinear analysis. This formalization makes its consequences — Lipschitz estimates, ODE uniqueness, contraction bounds, constant-function theorems — available in Lean 4 for any normed or Banach space. The clear separation of scalar MVT (equality, uses IVT) from vector MVT (inequality, uses triangle inequality) illuminates why different proof techniques are needed and which results require which form.",
+    "implications": "**Theoretical Significance**: The mean value inequality is arguably the single most important tool in nonlinear analysis.\n\n**Broader Connections**: This formalization makes its consequences — Lipschitz estimates, ODE uniqueness, contraction bounds, constant-function theorems — available in Lean 4 for any normed or Banach space. The clear separation of scalar MVT (equality, uses IVT) from vector MVT (inequality, uses triangle inequality) illuminates why different proof techniques are needed and which results require which form.",
     "openQuestions": [
       "Can the mean value inequality be proved directly in Lean without Mathlib's norm_image_sub_le_of_norm_deriv_le_segment', using only the triangle inequality and Riemann integral estimates?",
       "Can the Gronwall inequality be formalized in Lean 4 as a generalization of the displacement bound?",

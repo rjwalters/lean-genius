@@ -113,6 +113,13 @@
       "**Division-free proportionality:** The condition $\\|f\\|g = \\|g\\|f$ elegantly avoids division by zero — it works even when $f = 0$ or $g = 0$, unlike the naive formulation $g = \\lambda f$",
       "**Real simplification:** Over $\\mathbb{R}$, `inner_smul_right` has no star/conjugate complications since $\\overline{c} = c$ for $c \\in \\mathbb{R}$, making the algebraic manipulations cleaner",
       "**Square root avoidance:** The factoring $(a-b)(a+b)=0$ with $a,b \\geq 0$ avoids computing square roots — `nlinarith` handles the non-negativity arithmetic"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz inequality in inner product spaces",
+      "Triangle inequality and norm properties",
+      "Real inner product spaces and bilinearity",
+      "Equality conditions in classical inequalities",
+      "Proportionality and linear dependence of vectors"
     ]
   },
   "sections": [

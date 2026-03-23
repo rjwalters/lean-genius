@@ -71,7 +71,8 @@
       "Derangements are derived via inclusion-exclusion on fixed-point sets $A_i$, where $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ depends only on $k$",
       "The derangement set is not closed under composition (transposition squared is identity), so derangements do not form a subgroup of $S_n$",
       "$D_n$ equals the nearest integer to $n!/e$ for $n \\ge 1$, providing a simple exact formula"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -163,7 +164,7 @@
   ],
   "conclusion": {
     "summary": "The derangements formula $D_n = n! \\sum (-1)^k/k!$ is verified using Mathlib's `Combinatorics.Derangements` module. The formalization includes the formal definition (no fixed points), the recurrence relation $D_{n+2} = (n+1)(D_n + D_{n+1})$, the closed-form sum, concrete examples, and algebraic properties. The connection to $1/e$ through the Taylor series truncation is the central mathematical insight.",
-    "implications": "The derangements formula is foundational in combinatorial probability. The convergence $D_n/n! \\to 1/e$ is an archetype of 'universal' probabilities in random combinatorics — the probability of a derangement stabilizes by $n = 5$ and is essentially independent of $n$ for large $n$. The inclusion-exclusion derivation serves as a pedagogical template for sieve methods in analytic combinatorics.",
+    "implications": "**Theoretical Significance**: The derangements formula is foundational in combinatorial probability.\n\n**Broader Connections**: The convergence $D_n/n! \\to 1/e$ is an archetype of 'universal' probabilities in random combinatorics — the probability of a derangement stabilizes by $n = 5$ and is essentially independent of $n$ for large $n$. The inclusion-exclusion derivation serves as a pedagogical template for sieve methods in analytic combinatorics.",
     "openQuestions": [
       "Can the convergence rate $|D_n/n! - 1/e| < 1/(n+1)!$ be formalized in Lean?",
       "Can the formalization be extended to partial derangements (permutations with exactly $k$ fixed points)?",

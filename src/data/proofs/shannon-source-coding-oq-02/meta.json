@@ -66,6 +66,12 @@
       "Shannon coding assigns $l_i = \\lceil \\log_2(1/p_i) \\rceil$, rounding the ideal (non-integer) code length up to the nearest integer — the ceiling function is what introduces the gap of at most 1 bit per symbol",
       "The tight sandwich $H_2(p) \\le L^* < H_2(p) + 1$ gives entropy an operational definition: it is the minimum achievable compression rate for prefix-free codes, pinned to within a single bit",
       "Huffman's greedy merge strategy works because optimal codes have an exchange property: if $p_i > p_j$ then $l_i \\le l_j$, so the two least probable symbols can always be placed at maximum depth without loss of optimality"
+    ],
+    "prerequisites": [
+      "Shannon entropy H(X) = -sum p(x) log p(x)",
+      "Kraft's inequality for prefix-free codes",
+      "Pointwise KL divergence bound: p*log(p/q) >= p-q",
+      "Ceiling function properties"
     ]
   },
   "sections": [

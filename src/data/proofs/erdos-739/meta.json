@@ -72,7 +72,8 @@
       "**Cardinal Arithmetic:** Induced version implies 2^κ < 2^ν for κ < ν",
       "**Continuum Function:** Komjáth's model has 2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃ (collapse)",
       "**Combinatorics meets Foundations:** Purely graph-theoretic questions can depend on set theory"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -134,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #739 exhibits SET-THEORETIC INDEPENDENCE. Whether graphs with χ(G) = 𝔪 have subgraphs of all smaller infinite chromatic numbers depends on the model of set theory. Galvin proved the countable case. The summary theorem packages Galvin's result with Komjáth's consistency of failure.",
-    "implications": "**Connections**\n\n1. **Set Theory:** Deep connection between chromatic numbers and cardinal arithmetic\n\n2. **Model Theory:** Different models of ZFC give different combinatorial truths\n\n3. **Infinite Combinatorics:** Compactness-type arguments fail for infinite graphs\n\n4. **Foundations:** Shows limits of what can be proved in standard set theory",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Set Theory:** Deep connection between chromatic numbers and cardinal arithmetic\n\n2.\n\n**Broader Connections**: **Model Theory:** Different models of ZFC give different combinatorial truths\n\n3. **Infinite Combinatorics:** Compactness-type arguments fail for infinite graphs\n\n4. **Foundations:** Shows limits of what can be proved in standard set theory.",
     "openQuestions": [
       "Does GCH imply the property holds for all graphs?",
       "What happens under other large cardinal axioms?",

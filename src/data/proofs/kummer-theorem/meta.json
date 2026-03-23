@@ -62,6 +62,13 @@
       "Equivalent formulation: (p-1)·ν_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n) where S_p is digit sum — each carry 'costs' exactly p-1 in digit sum",
       "Lucas' theorem (C(n,k) mod p = product of digit-wise binomials) follows: a carry at position i means k_i > n_i, making C(n_i, k_i) = 0",
       "Kummer's theorem enables O(log_p n) computation of ν_p(C(n,k)) by carry counting, avoiding computation of the binomial coefficient itself — essential when C(n,k) has millions of digits"
+    ],
+    "prerequisites": [
+      "Binomial coefficients and Pascal's triangle",
+      "p-adic valuations and multiplicities",
+      "Base-p representations and carry arithmetic",
+      "Legendre's formula for factorial valuations",
+      "Lucas' theorem for binomial coefficients mod p"
     ]
   },
   "sections": [
@@ -132,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "Kummer's theorem elegantly connects two seemingly unrelated areas: the divisibility properties of binomial coefficients and the arithmetic of positional numeral systems. The number of carries in a base-p addition completely determines the p-adic valuation of the corresponding binomial coefficient.\n\nThis formalization uses Mathlib's `Nat.Prime.multiplicity_choose` as the core theorem, then builds understanding through concrete examples and connections to related results like Lucas' theorem and Legendre's formula.",
-    "implications": "**Computational Applications**\n\n1. **Efficient Computation**: Determine the exact power of p dividing C(n,k) by just counting carries—no need to compute C(n,k) itself (which can be astronomically large).\n\n2. **Pascal's Triangle mod p**: The pattern of p | C(n,k) creates fractal-like structures. For p = 2, this is the famous Sierpiński triangle!\n\n**Theoretical Significance**\n\n1. **Lucas' Theorem**: Kummer's theorem explains *why* Lucas' theorem works: each digit-wise binomial coefficient contributes to the overall divisibility.\n\n2. **Catalan Numbers**: Similar techniques apply to Catalan numbers C_n = C(2n,n)/(n+1).\n\n3. **Binomial Coefficient Sequences**: Understanding divisibility patterns in rows and diagonals of Pascal's triangle.",
+    "implications": "**Theoretical Significance**: **Computational Applications**\n\n1. **Efficient Computation**: Determine the exact power of p dividing C(n,k) by just counting carries—no need to compute C(n,k) itself (which can be astronomically large).\n\n2. **Pascal's Triangle mod p**: The pattern of p | C(n,k) creates fractal-like structures.\n\n**Broader Connections**: For p = 2, this is the famous Sierpiński triangle!\n\n**Theoretical Significance**\n\n1. **Lucas' Theorem**: Kummer's theorem explains *why* Lucas' theorem works: each digit-wise binomial coefficient contributes to the overall divisibility.\n\n2. **Catalan Numbers**: Similar techniques apply to Catalan numbers C_n = C(2n,n)/(n+1).\n\n3. **Binomial Coefficient Sequences**: Understanding divisibility patterns in rows and diagonals of Pascal's triangle.",
     "openQuestions": [
       "What are the analogs of Kummer's theorem for multinomial coefficients?",
       "How does the theorem generalize to q-binomial coefficients?",

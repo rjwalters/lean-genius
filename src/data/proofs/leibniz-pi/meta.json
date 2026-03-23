@@ -58,6 +58,13 @@
       "**Slow convergence**: Error $\\sim 1/(2N+1)$ by the alternating series estimation theorem; need $N \\sim 10^6$ terms for 6 digits of $\\pi$. Compare Machin's formula: $\\sim 10^2$ terms for the same accuracy",
       "**Pi from pure arithmetic**: The transcendental number $\\pi$ emerges from elementary operations on odd integers — a bridge between arithmetic and geometry that captivated Leibniz",
       "**Mathlib proof**: `Real.tendsto_sum_pi_div_four` provides the convergence directly; `Real.arctan_one` gives $\\arctan(1) = \\pi/4$. The entire proof chain is one Mathlib lemma application"
+    ],
+    "prerequisites": [
+      "Power series and radius of convergence",
+      "Taylor series of arctan and its boundary behavior",
+      "Alternating series test and conditional convergence",
+      "Integration of geometric series",
+      "Abel's theorem on power series boundary convergence"
     ]
   },
   "sections": [

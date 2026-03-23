@@ -75,7 +75,8 @@
       "**Euler's Conjecture**: f(n) = 1 for n ≡ 2 (mod 4) — famously disproved in 1960",
       "**Prime Power Case**: f(p^k) = p^k - 1 via finite field constructions",
       "**Exponent Gap**: Best known ≈ 0.068, conjectured ≈ 0.5 — a 7× difference"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -151,7 +152,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #724 asks whether f(n) ≫ n^(1/2), where f(n) is the maximum number of mutually orthogonal Latin squares of order n. The problem remains OPEN. The best known lower bound is f(n) ≫ n^(1/14.8) by Beth (1983), while the upper bound f(n) ≤ n - 1 is achieved for all prime powers. The gap between the current best exponent (~0.068) and the conjectured exponent (0.5) is substantial.",
-    "implications": "**Combinatorial Significance**\n\n1. **Projective Planes**: f(n) = n-1 iff a projective plane of order n exists\n\n2. **Coding Theory**: MOLS relate to error-correcting codes and Latin hypercubes\n\n3. **Experimental Design**: MOLS are fundamental for constructing orthogonal arrays\n\n4. **Finite Geometry**: The problem connects to deep questions about non-prime-power orders\n\n5. **Computational Results**: f(10) < 9 was proved by exhaustive computer search (Lam-Thiel-Swiercz)",
+    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Projective Planes**: f(n) = n-1 iff a projective plane of order n exists\n\n2. **Coding Theory**: MOLS relate to error-correcting codes and Latin hypercubes\n\n3.\n\n**Broader Connections**: **Experimental Design**: MOLS are fundamental for constructing orthogonal arrays\n\n4. **Finite Geometry**: The problem connects to deep questions about non-prime-power orders\n\n5. **Computational Results**: f(10) < 9 was proved by exhaustive computer search (Lam-Thiel-Swiercz).",
     "openQuestions": [
       "Is f(n) ≫ n^(1/2)? (The main conjecture)",
       "Can the exponent 1/14.8 be improved?",

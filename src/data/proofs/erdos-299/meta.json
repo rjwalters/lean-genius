@@ -66,7 +66,8 @@
       "**Bloom's breakthrough**: The 2021 result showing positive density sets contain unit fraction sums resolved a 50+ year old Erdős-Graham conjecture.",
       "**Contrast with sparse sequences**: Powers of 2 have unbounded gaps and their reciprocals sum to less than 1 (geometric series). Bounded gaps prevent such avoidance.",
       "**Greedy algorithm connection**: The greedy algorithm for Egyptian fractions (Sylvester 1880) always terminates, but finding a subset of a given sequence summing to 1 is computationally harder — the bounded-gap condition provides the structural guarantee that such subsets must exist"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -128,7 +129,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #299, proving that no infinite sequence with bounded gaps can avoid containing a finite subset whose reciprocals sum to 1. The proof relies on Bloom's 2021 theorem connecting positive density to Egyptian fractions.",
-    "implications": "This result has implications for:\n\n1. **Egyptian fractions**: Shows unit fraction representations of 1 are unavoidable in dense sequences\n\n2. **Density and structure**: Demonstrates how density conditions force arithmetic structure\n\n3. **Additive combinatorics**: Connects classical Erdős problems to modern techniques",
+    "implications": "**Theoretical Significance**: This result has implications for:\n\n1. **Egyptian fractions**: Shows unit fraction representations of 1 are unavoidable in dense sequences\n\n2.\n\n**Broader Connections**: **Density and structure**: Demonstrates how density conditions force arithmetic structure\n\n3. **Additive combinatorics**: Connects classical Erdős problems to modern techniques.",
     "openQuestions": [
       "What is the minimum density required to guarantee a unit fraction sum?",
       "Can we compute explicit bounds on the size of the subset needed?",

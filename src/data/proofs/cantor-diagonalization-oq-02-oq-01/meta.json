@@ -67,7 +67,8 @@
       "The key characterization $\\kappa < \\aleph_1 \\iff \\kappa \\leq \\aleph_0$ reduces to the successor-cardinal property $\\aleph_1 = \\text{succ}(\\aleph_0)$ plus `Order.lt_succ_iff`",
       "The ordinal characterization $\\alpha < \\omega_1 \\iff |\\alpha| \\leq \\aleph_0$ bridges the cardinal-ordinal divide using `Cardinal.lt_ord`",
       "The summary theorem bundles four independent properties into a single conjunction, demonstrating the completeness of the characterization"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -132,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "14 theorems proved with 0 sorries and 0 axioms, providing a complete structural characterization of $\\omega_1$: the aleph hierarchy, regularity of $\\aleph_1$, the countable-cardinal equivalence, and the ordinal characterization of countability below $\\omega_1$.",
-    "implications": "These results form the formal foundation for further set-theoretic work in Lean 4: cardinal arithmetic with uncountable cardinals, the study of singular vs. regular cardinals, and constructions that depend on $\\omega_1$'s properties (e.g., the long line, Aronszajn trees, club filters). The regularity result in particular is essential for arguments using Fodor's pressing-down lemma and stationary set combinatorics.",
+    "implications": "**Theoretical Significance**: These results form the formal foundation for further set-theoretic work in Lean 4: cardinal arithmetic with uncountable cardinals, the study of singular vs.\n\n**Broader Connections**: regular cardinals, and constructions that depend on $\\omega_1$'s properties (e.g., the long line, Aronszajn trees, club filters). The regularity result in particular is essential for arguments using Fodor's pressing-down lemma and stationary set combinatorics.",
     "openQuestions": [
       "Can the generalized Hartogs theorem (for any infinite cardinal κ, the set of ordinals of cardinality < κ has cardinality κ) be formalized?",
       "Can König's theorem ($\\text{cof}(\\aleph_\\omega) > \\aleph_0$) be proved for singular cardinals?",

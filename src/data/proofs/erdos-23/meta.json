@@ -62,6 +62,14 @@
       "**Flag algebras**: The Balogh-Clemen-Lidický proof uses Razborov's flag algebra method, which reduces extremal graph theory questions to semidefinite programming. This computer-assisted technique provides tight bounds but does not yield structural insights.",
       "**Generalization to higher girth**: Erdős's 1992 generalization replaces $C_5$ with $C_{2k+1}$: for graphs on $(2k+1)n$ vertices with odd girth $\\geq 2k+1$, the conjectured bound is still $n^2$ deletions. The blow-up of $C_{2k+1}$ is the extremal example.",
       "**Falsifiability**: Unlike many Erdős problems, this is falsifiable — a single finite graph disproving the bound would settle it. Computer searches have not found counterexamples."
+    ],
+    "prerequisites": [
+      "Simple graph theory (adjacency, vertex coloring, bipartiteness)",
+      "Triangle-free and odd-cycle-free graph characterizations",
+      "Extremal graph theory (Turán-type problems, Mantel's theorem)",
+      "Blow-up constructions and product graphs",
+      "Cycle graphs and modular arithmetic on Fin n",
+      "Flag algebra computations (for understanding best known bounds)"
     ]
   },
   "sections": [

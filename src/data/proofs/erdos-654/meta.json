@@ -100,7 +100,8 @@
       "**Per-point vs global**: Guth-Katz gives $\\Omega(n/\\log n)$ total distinct distances without restrictions; Problem #654 asks for near-$n$ from one point but needs the concyclic constraint — these are complementary questions requiring different techniques",
       "**Hierarchy of restrictions**: no-four-concyclic $\\Rightarrow$ no-four-collinear, and the Erdős-Pach variant uses the weaker no-three-collinear, creating a natural hierarchy of conjectures of increasing difficulty",
       "**Incidence geometry connection**: the problem reduces to bounding how many distance circles from a point can share many configuration points, linking to Szemerédi-Trotter–type circle incidence bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Formalizes Erdős Problem #654 with the full context: point configurations, the no-four-concyclic condition, per-point distinct distance counting, the known (n-1)/3 lower bound, the main (1-o(1))n conjecture, the Erdős-Pach weaker variant, and the Guth-Katz global result. The circle distance multiplicity bound provides the structural foundation connecting the geometric condition to distance counting.",

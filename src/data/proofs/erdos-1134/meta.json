@@ -79,7 +79,8 @@
       "**Connection to Collatz dynamics:** Lagarias observed that Klarner's problems are structurally related to the $3x+1$ problem: both concern orbits under piecewise affine maps on $\\mathbb{N}$. The difference is that Klarner's maps are applied non-deterministically (any map may be chosen), while Collatz applies maps deterministically based on parity.",
       "**Ternary tree structure of $A$:** Every element of $A$ corresponds to a node in a ternary tree rooted at 1, where the three children of a node $x$ are $2x+1$, $3x+1$, $6x+1$. The density question asks whether this tree is 'thick' enough to capture a positive fraction of $\\mathbb{N}$.",
       "**Open variant resists analysis:** Klarner's variant $A' = \\langle 0; 2x, 3x+2, 6x+3 \\rangle$ remains unsolved. The map $x \\mapsto 2x$ (multiplication by 2, no additive constant) fundamentally changes the overlap structure, preventing the same geometric series technique."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -148,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1134 is SOLVED with answer NO. The set $A$ closed under $x \\mapsto 2x+1$, $x \\mapsto 3x+1$, $x \\mapsto 6x+1$ does not have positive lower density. Crampin and Hilton proved $|A \\cap [1,X]| \\asymp X^{\\tau}$ where $\\tau \\approx 0.900626 < 1$, exploiting the factorization $6 = 2 \\times 3$ to go beyond the generic Klarner-Rado bound.",
-    "implications": "The result demonstrates that algebraic relationships among the multipliers of generating affine maps can yield growth rates strictly below the generic Klarner-Rado exponent. This principle has broader relevance to the study of affine semigroups and their orbits. The formalization shows how Lean's inductive types naturally capture closure properties, though the deep analytic estimates (Tauberian theorems, generating function analysis) remain axiomatized.",
+    "implications": "**Theoretical Significance**: The result demonstrates that algebraic relationships among the multipliers of generating affine maps can yield growth rates strictly below the generic Klarner-Rado exponent.\n\n**Broader Connections**: This principle has broader relevance to the study of affine semigroups and their orbits. The formalization shows how Lean's inductive types naturally capture closure properties, though the deep analytic estimates (Tauberian theorems, generating function analysis) remain axiomatized.",
     "openQuestions": [
       "Does Klarner's variant $A' = \\langle 0; 2x, 3x+2, 6x+3 \\rangle$ have positive density? This remains open and is connected to Collatz-type dynamics.",
       "What is the exact multiplicative constant in $|A \\cap [1,X]| \\sim c \\cdot X^{\\tau}$, and does a limit $|A \\cap [1,X]|/X^{\\tau} \\to c$ even exist?",
@@ -194,7 +195,10 @@
   ],
   "references": [
     {
-      "authors": ["Klarner, D. A.", "Rado, R."],
+      "authors": [
+        "Klarner, D. A.",
+        "Rado, R."
+      ],
       "title": "Arithmetic properties of certain recursively defined sets",
       "venue": "Pacific Journal of Mathematics",
       "year": 1974,
@@ -204,14 +208,19 @@
       "notes": "Establishes the general upper bound: for sets closed under x ↦ mᵢx + bᵢ, the counting function satisfies |S ∩ [1,X]| ≪ X^{σ+ε} where σ solves Σ mᵢ^{-σ} = 1. For the multipliers {2,3,6} this gives σ = 1 (trivial), motivating the need for the Crampin-Hilton improvement. Axiomatized in the formalization as `klarner_rado_1974`."
     },
     {
-      "authors": ["Crampin, M.", "Hilton, P."],
+      "authors": [
+        "Crampin, M.",
+        "Hilton, P."
+      ],
       "title": "On the counting function for a certain recursively defined set",
       "venue": "Technical Report, University of Warwick",
       "year": 1974,
       "notes": "Proves the sharp bound |A ∩ [1,X]| ≍ X^τ where τ ≈ 0.900626 is the root of the characteristic equation 6^{-s} + 3^{-s}/(1-2^{-s}) = 1. The key insight is that the factorization 6 = 2×3 among multipliers enables enumeration of compositions via a geometric series, breaking below the trivial Klarner-Rado bound. Axiomatized as `crampin_hilton_theorem` in the formalization."
     },
     {
-      "authors": ["Guy, R. K."],
+      "authors": [
+        "Guy, R. K."
+      ],
       "title": "Unsolved Problems in Number Theory",
       "venue": "Springer-Verlag",
       "year": 1983,
@@ -220,7 +229,9 @@
       "notes": "Section E on sequences includes the open variant A' = ⟨0; 2x, 3x+2, 6x+3⟩ (Klarner's generalization), which remains unsolved. Guy's exposition brought wider attention to the Klarner-Rado framework and the difficulty of the boundary case Σ 1/mᵢ = 1. The open variant is formalized in the `open-variants` section of the Lean file."
     },
     {
-      "authors": ["Lagarias, J. C."],
+      "authors": [
+        "Lagarias, J. C."
+      ],
       "title": "The 3x+1 Problem: An Annotated Bibliography (1963–1999)",
       "venue": "arXiv",
       "year": 2004,
@@ -228,7 +239,9 @@
       "notes": "Provides the authoritative survey connecting Klarner's problems to the Collatz (3x+1) conjecture. Lagarias explicitly notes that Klarner's sets and the Collatz orbit share the structure of non-deterministic affine iteration on ℕ, and that Problem #1134 originated with Klarner's work on semigroups generated by affine maps. Key reference for the historical context in the overview."
     },
     {
-      "authors": ["Klarner, D. A."],
+      "authors": [
+        "Klarner, D. A."
+      ],
       "title": "Arithmetic properties of certain recursively defined sets II",
       "venue": "Studies in Pure Mathematics (Birkhäuser)",
       "year": 1983,

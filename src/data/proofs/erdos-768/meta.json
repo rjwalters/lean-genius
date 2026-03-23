@@ -68,7 +68,8 @@
       "**The double-logarithmic scale is natural**: The density decays as $\\exp(-c\\sqrt{\\log N} \\cdot \\log \\log N)$, slower than any polynomial but faster than logarithmic. This scale appears because the condition involves all prime factors, and a typical integer $n \\leq N$ has $\\sim \\log \\log N$ prime factors (Erdős-Kac theorem)",
       "**6 is the smallest non-trivial element**: $6 = 2 \\times 3$ works because $3 \\equiv 1 \\pmod{2}$ (witness for 2). For the prime 3, the witness $d = 4$ would need to divide 6, which it doesn't — but the proof uses `interval_cases` to handle small primes directly",
       "**Gap between bounds is the open problem**: Erdős's lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$ while the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$. Whether these converge to the same asymptotic form is the core question"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -137,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "This formalization introduces the witness divisor set A, proves basic membership (1 ∈ A, 6 ∈ A, prime powers ∉ A), connects to simple group orders via Sylow theory, and states Erdős's two-sided density bounds. The 231-line file formalizes the main conjecture as whether the ratio -log(density)/f(N) converges, with 3 sorries remaining in structural proofs.",
-    "implications": "Resolution would determine the exact density of integers with the witness divisor property, with implications for bounding the distribution of simple group orders. The techniques would involve sieve methods, multiplicative number theory, and the distribution of smooth numbers. The constant c would quantify how 'rare' the balanced prime factorization condition is.",
+    "implications": "**Theoretical Significance**: Resolution would determine the exact density of integers with the witness divisor property, with implications for bounding the distribution of simple group orders.\n\n**Broader Connections**: The techniques would involve sieve methods, multiplicative number theory, and the distribution of smooth numbers. The constant c would quantify how 'rare' the balanced prime factorization condition is.",
     "openQuestions": [
       "Does the constant c exist, i.e., does -log(density)/√(log N)·log log N converge?",
       "What is the exact value of c if it exists?",

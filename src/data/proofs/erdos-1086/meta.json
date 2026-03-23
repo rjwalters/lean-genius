@@ -76,7 +76,8 @@
       "**Grid Construction:** A √n × √n integer grid gives g(n) ≥ n²/8, showing quadratic behavior is achievable",
       "**Higher-Dimensional Richness:** The problem generalizes to simplices in ℝ^d with interesting dimension-dependent phenomena — the critical dimension 2k+2 for k-simplices",
       "**Progressive Upper Bounds:** The upper exponent decreased from 5/2 (1971) to 20/9 (2017) over 46 years, approaching but not reaching the conjectured quadratic"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -131,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1086 asks to estimate g(n), the maximum number of equal-area triangles from n points in ℝ². The best bounds are n² log log n ≪ g(n) ≪ n^{20/9} (Erdős-Purdy 1971, Raz-Sharir 2017), with the Erdős-Purdy conjecture predicting Θ(n² polylog(n)). The problem connects to Szemerédi-Trotter incidence geometry and generalizes to higher-dimensional simplices. The formalization includes typed conjectures, incidence-based reductions, and genuine theorems combining the main bounds.",
-    "implications": "**Connections to Combinatorial Geometry**\n\n1. **Incidence Geometry:** The problem is fundamentally about point-curve incidences — the Szemerédi-Trotter theorem and its generalizations are the main tools\n\n2. **Erdős Distinct Distances:** Related to the distinct distances problem (Erdős #184) — both concern extremal point configuration geometry\n\n3. **Algebraic Methods:** Recent upper bound improvements use polynomial partitioning (Guth-Katz framework) applied to the incidence formulation\n\n4. **Higher Dimensions:** The dimension 2k+2 threshold for k-simplices reveals a dimension-dependent phase transition in extremal geometry\n\n5. **Grid Extremality:** Integer lattice grids are conjectured to be near-extremal, as in many Erdős-type point configuration problems",
+    "implications": "**Theoretical Significance**: **Connections to Combinatorial Geometry**\n\n1. **Incidence Geometry:** The problem is fundamentally about point-curve incidences — the Szemerédi-Trotter theorem and its generalizations are the main tools\n\n2. **Erdős Distinct Distances:** Related to the distinct distances problem (Erdős #184) — both concern extremal point configuration geometry\n\n3.\n\n**Broader Connections**: **Algebraic Methods:** Recent upper bound improvements use polynomial partitioning (Guth-Katz framework) applied to the incidence formulation\n\n4. **Higher Dimensions:** The dimension 2k+2 threshold for k-simplices reveals a dimension-dependent phase transition in extremal geometry\n\n5. **Grid Extremality:** Integer lattice grids are conjectured to be near-extremal, as in many Erdős-type point configuration problems.",
     "openQuestions": [
       "Close the gap between exponents 2 and 20/9 for g(n)",
       "Prove or disprove the Erdős-Purdy conjecture g(n) = Θ(n² polylog(n))",
@@ -191,7 +192,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "G. Purdy"],
+      "authors": [
+        "P. Erdős",
+        "G. Purdy"
+      ],
       "title": "Some extremal problems in geometry",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1971,
@@ -200,7 +204,10 @@
       "note": "Establishes the original bounds n² log log n ≪ g(n) ≪ n^{5/2} and states the conjecture that g(n) = Θ(n² polylog(n))."
     },
     {
-      "authors": ["E. Szemerédi", "W. T. Trotter Jr."],
+      "authors": [
+        "E. Szemerédi",
+        "W. T. Trotter Jr."
+      ],
       "title": "Extremal problems in discrete geometry",
       "venue": "Combinatorica",
       "year": 1983,
@@ -209,7 +216,10 @@
       "note": "Proves the O(n^{2/3}m^{2/3} + n + m) point-line incidence bound that underlies all upper bounds for g(n) via the incidence_reduction argument."
     },
     {
-      "authors": ["O. E. Raz", "M. Sharir"],
+      "authors": [
+        "O. E. Raz",
+        "M. Sharir"
+      ],
       "title": "The number of unit-area triangles in the plane: theme and variations",
       "venue": "Combinatorica",
       "year": 2017,
@@ -218,7 +228,10 @@
       "note": "Establishes the current best upper bound g(n) = O(n^{20/9}) using polynomial partitioning and algebraic incidence methods."
     },
     {
-      "authors": ["J. Pach", "M. Sharir"],
+      "authors": [
+        "J. Pach",
+        "M. Sharir"
+      ],
       "title": "Repeated angles in the plane and related problems",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1992,
@@ -227,7 +240,11 @@
       "note": "Improves the upper bound from n^{5/2} using point-curve incidence techniques; introduces the incidence-reduction framework central to subsequent improvements."
     },
     {
-      "authors": ["A. Dumitrescu", "M. Sharir", "C. D. Tóth"],
+      "authors": [
+        "A. Dumitrescu",
+        "M. Sharir",
+        "C. D. Tóth"
+      ],
       "title": "Extremal problems on triangle areas in two and three dimensions",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 2009,

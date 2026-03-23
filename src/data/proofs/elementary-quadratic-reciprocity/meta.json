@@ -69,6 +69,12 @@
       "The lattice point identity exploits coprimality: no integer point lies on the diagonal",
       "The geometric partition into two triangles corresponds to the two Legendre symbols",
       "No Gauss sums, character theory, or algebraic number theory is needed"
+    ],
+    "prerequisites": [
+      "Legendre symbol (a/p) and basic properties",
+      "Modular arithmetic and the group (Z/pZ)×",
+      "Floor function and integer division",
+      "Lattice points and geometric counting"
     ]
   },
   "sections": [
@@ -131,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "This file presents Eisenstein's 1844 elementary proof of quadratic reciprocity, formalized in Lean 4 using Mathlib's infrastructure. The proof chain is fully verified with zero sorries, proceeding from Gauss's Lemma through Eisenstein's floor function reformulation to the lattice point counting argument.",
-    "implications": "The elementary proof demonstrates that one of number theory's deepest results can be established using only basic arithmetic and geometric counting. This approach:\n\n1. **Pedagogical value**: The clearest path from first principles to QR\n2. **Historical significance**: Represents Eisenstein's simplification of Gauss's method\n3. **Proof technique**: Lattice point counting appears throughout analytic number theory\n4. **Formalization insight**: Shows how Mathlib's Gauss-Eisenstein infrastructure supports multiple proof strategies",
+    "implications": "**Theoretical Significance**: The elementary proof demonstrates that one of number theory's deepest results can be established using only basic arithmetic and geometric counting. This approach:\n\n1. **Pedagogical value**: The clearest path from first principles to QR\n2.\n\n**Broader Connections**: **Historical significance**: Represents Eisenstein's simplification of Gauss's method\n3. **Proof technique**: Lattice point counting appears throughout analytic number theory\n4. **Formalization insight**: Shows how Mathlib's Gauss-Eisenstein infrastructure supports multiple proof strategies.",
     "openQuestions": [
       "Can Zolotarev's permutation-based proof be formalized in Lean 4?",
       "Can a Gauss sum proof be built using Mathlib's character infrastructure?",

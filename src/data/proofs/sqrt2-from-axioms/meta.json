@@ -49,7 +49,8 @@
       "The proof uses infinite descent implicitly: assuming a/b in lowest terms leads to 2|a and 2|b, so a/2 and b/2 give a 'smaller' representation — repeating this descent has no finite stopping point unless no such a/b exists",
       "The contrapositive technique generalizes directly to √p for any prime p: replace 'divisible by 2' with 'divisible by p', and the same argument shows p|a² → p|a (using the prime property), then p|b — contradiction with coprimality",
       "This ~200-line pedagogical proof illustrates the trade-off in formalization: Mathlib's one-liner `exact irrational_sqrt_two` hides real number construction, the square root definition, and the actual irrationality argument — this file makes all of that structure explicit"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -90,7 +91,7 @@
   ],
   "conclusion": {
     "summary": "This proof builds the sqrt(2) irrationality argument from first principles, revealing the structure hidden in library functions. The key insight is the parity argument: if n^2 is even, then n must be even.",
-    "implications": "**Educational Value:**\n\n1. Shows the architecture of a mathematical proof\n2. Demonstrates building definitions and lemmas from scratch\n3. Contrasts with the one-liner using Mathlib's theorem\n4. Illustrates the infinite descent method",
+    "implications": "**Theoretical Significance**: **Educational Value:**\n\n1. Shows the architecture of a mathematical proof\n2.\n\n**Broader Connections**: Demonstrates building definitions and lemmas from scratch\n3. Contrasts with the one-liner using Mathlib's theorem\n4. Illustrates the infinite descent method.",
     "openQuestions": [
       "Generalizing to sqrt(p) for any prime p",
       "Connections to quadratic irrationals and continued fractions"

@@ -35,7 +35,8 @@
       "**Tang–Zhang breakthrough (2025)**: Improved Erdős's bound from $\\log N / \\log\\log N$ to $(\\log N)^{c_k}$ with $c_k \\leq 1$. For $k = 3$: exponents between $0.438$ and $0.889$, leaving a significant gap.",
       "**Sunflower equivalence**: The upper bound exponent $c_k < 1$ holds if and only if the Erdős–Rado sunflower conjecture holds for $k$-petalled sunflowers. This connects a number-theoretic problem to a purely set-theoretic conjecture.",
       "**Divisor structure and LCM**: If $A = \\{d : d \\mid n\\}$, all pairs have $\\text{lcm}(a,b) \\mid n$, creating rich LCM structure. Avoiding uniform LCM subsets constrains how 'divisor-rich' $A$ can be."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -111,7 +112,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #856 formalizes the maximum harmonic sum of k-LCM-free subsets. The Lean file proves LCM properties and the divisor set lemma, axiomatizes Erdős's 1970 bound, Tang–Zhang's 2025 improvement, and the sunflower equivalence. The formalization covers 10 sections across 307 lines.",
-    "implications": "Resolution would bridge combinatorial number theory and the sunflower conjecture. The equivalence c_k < 1 ⟺ sunflower conjecture shows that progress on either problem implies progress on the other. The Alweiss–Lovett–Wu–Zhang (2021) sunflower breakthrough may lead to improved bounds on f_k(N).",
+    "implications": "**Theoretical Significance**: Resolution would bridge combinatorial number theory and the sunflower conjecture.\n\n**Broader Connections**: The equivalence c_k < 1 ⟺ sunflower conjecture shows that progress on either problem implies progress on the other. The Alweiss–Lovett–Wu–Zhang (2021) sunflower breakthrough may lead to improved bounds on f_k(N).",
     "openQuestions": [
       "What is the precise growth exponent $c_k$ for $f_k(N) \\sim (\\log N)^{c_k}$? Is it rational?",
       "Can the Tang–Zhang gap for $k = 3$ ($0.438 \\leq c_3 \\leq 0.889$) be narrowed?",

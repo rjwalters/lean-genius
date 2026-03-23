@@ -58,7 +58,8 @@
       "**Schinzel's counterexample**: n=99215, k=15 shows the original conjecture fails. Computing C(99215,15) and checking divisibility for 15 values is feasible with `native_decide`.",
       "**The open question**: Can we find a fixed lower bound cn (independent of k) such that C(n,k) always has a divisor above cn? The easy bound [n/k, n] shrinks as k grows.",
       "**Related to prime factorization**: Large primes dividing C(n,k) come from the interval (k, n], which relates to theorems of Sylvester-Schur and results by Faulkner (1966)."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -99,7 +100,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #387 on divisors of binomial coefficients. The main conjecture—whether C(n,k) always has a divisor in (cn, n] for some absolute constant c—remains OPEN. We verify Schinzel's 1958 counterexample showing the original stronger conjecture is false, and prove the 'easy' result that a divisor always exists in [n/k, n].",
-    "implications": "This problem connects combinatorics (binomial coefficients) with number theory (divisibility). The existence of a universal constant c would give a strong structural result about how 'spread out' the prime factors of binomial coefficients must be. Faulkner's 1966 result on prime divisors provides partial progress.",
+    "implications": "**Theoretical Significance**: This problem connects combinatorics (binomial coefficients) with number theory (divisibility).\n\n**Broader Connections**: The existence of a universal constant c would give a strong structural result about how 'spread out' the prime factors of binomial coefficients must be. Faulkner's 1966 result on prime divisors provides partial progress.",
     "openQuestions": [
       "Does there exist any c > 0 making the conjecture true?",
       "Is Erdős's variant (c < 1 works for large n) true?",

@@ -33,7 +33,8 @@
       "Schramm's illumination body technique gives the upper bound $\\alpha(n) \\leq (\\sqrt{3/2} + o(1))^n$, so $\\alpha(n)$ is between $\\exp(c\\sqrt{n})$ and $\\exp(Cn)$",
       "The Borsuk graph (vertices = points, edges = diameter-achieving pairs) has chromatic number $\\alpha(n)$, connecting the partition problem to graph coloring",
       "Brouwer-Jenrich's computer-assisted approach to $n \\geq 64$ used two-distance sets, linking Borsuk's problem to Erdős Problem 502 on few-distance sets"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -88,7 +89,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Borsuk's conjecture as a precisely defined predicate on the Borsuk number α(n), recording the complete known picture: positive results for n ≤ 3, counterexamples for n ≥ 64, and quantitative bounds showing α(n) grows between exp(c√n) and exp(Cn). The gap 4 ≤ n ≤ 63 remains the central open question.",
-    "implications": "The Kahn-Kalai counterexample was a landmark in discrete geometry, demonstrating that high-dimensional combinatorial structure can force partition numbers far beyond naive geometric expectations. The techniques connect Borsuk's problem to algebraic combinatorics (Frankl-Wilson type bounds), graph theory (Borsuk graph chromatic number), and convex geometry (illumination bodies). The problem's resolution pattern — true in low dimensions, false in high dimensions — is a recurring theme in discrete geometry.",
+    "implications": "**Theoretical Significance**: The Kahn-Kalai counterexample was a landmark in discrete geometry, demonstrating that high-dimensional combinatorial structure can force partition numbers far beyond naive geometric expectations.\n\n**Broader Connections**: The techniques connect Borsuk's problem to algebraic combinatorics (Frankl-Wilson type bounds), graph theory (Borsuk graph chromatic number), and convex geometry (illumination bodies). The problem's resolution pattern — true in low dimensions, false in high dimensions — is a recurring theme in discrete geometry.",
     "openQuestions": [
       "What is the smallest dimension n for which Borsuk's conjecture fails? Is it n = 4?",
       "What are the exact values α(4), α(5), ..., α(63)?",

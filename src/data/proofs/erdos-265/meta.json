@@ -50,7 +50,8 @@
       "**Kovač-Tao broke the exponential barrier**: Their 2024 Annals paper shows $\\exists \\beta > 1$ with valid sequences growing as $a_n \\sim \\beta^{\\beta^n}$, confirming Erdős's first conjecture that super-exponential growth is achievable",
       "**The irrationality threshold at $\\beta = 2$**: A folklore result in transcendence theory shows that if $a_n^{1/2^n} \\to c > 1$ for a constant $c$, then $\\sum 1/a_n$ is irrational — providing a mechanism for why $\\beta = 2$ might be the hard limit",
       "**The disjunction structure of the open problem**: Either (a) some valid sequence has $\\limsup a_n^{1/2^n} > 1$, disproving Erdős's second conjecture, or (b) all valid sequences satisfy $\\limsup a_n^{1/2^n} \\leq 1$, confirming it. This is formalized as a logical disjunction in Lean"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

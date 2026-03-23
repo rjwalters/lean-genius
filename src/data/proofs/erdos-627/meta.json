@@ -69,7 +69,8 @@
       "**$f(n) = \\Theta(n/(\\log n)^2)$:** The lower bound uses random graphs $G(n, n^{-1/2})$ via the probabilistic method; the upper bound uses Ramsey-type arguments bounding $\\omega \\geq c\\log n$.",
       "**Perfect graphs give ratio 1:** The Strong Perfect Graph Theorem (2006) characterizes when $\\chi = \\omega$ for all induced subgraphs, showing extremal graphs must contain odd holes or antiholes.",
       "**Limit bounds $(\\log 2)^2 \\cdot [1/4, 1]$:** The upper bound comes from $R(k,k) \\leq 4^k$ (giving $\\omega \\geq \\frac{1}{2}\\log_2 n$); the lower bound from explicit constructions. The $4\\times$ gap remains open."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -152,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #627 is OPEN. We know $f(n) = \\Theta(n/(\\log n)^2)$, where $f(n)$ is the maximum $\\chi/\\omega$ ratio over $n$-vertex graphs, but whether the normalized limit $\\lim_{n\\to\\infty} f(n)/(n/(\\log n)^2)$ exists remains unknown. If the limit exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$. The formalization captures the full landscape: Tutte-Zykov constructions, the Erdős asymptotic, perfect graph characterization, Ramsey connections, and explicit Mycielski/Kneser families.",
-    "implications": "This problem connects several pillars of combinatorics:\n\n1. **Perfect Graph Theory:** The SPGT (2006) characterizes when $\\chi = \\omega$, showing extremal graphs must be imperfect\n2. **Probabilistic Method:** Erdős's random graph arguments provide the best lower bounds on $f(n)$\n3. **Ramsey Theory:** Diagonal Ramsey bounds $R(k,k) \\leq 4^k$ directly constrain the limit\n4. **Topological Combinatorics:** Lovász's Kneser graph proof (1978) via Borsuk-Ulam opened a new field\n5. **Extremal Graph Theory:** Understanding which graphs maximize $\\chi/\\omega$ for fixed vertex count",
+    "implications": "**Theoretical Significance**: This problem connects several pillars of combinatorics:\n\n1. **Perfect Graph Theory:** The SPGT (2006) characterizes when $\\chi = \\omega$, showing extremal graphs must be imperfect\n2. **Probabilistic Method:** Erdős's random graph arguments provide the best lower bounds on $f(n)$\n3.\n\n**Broader Connections**: **Ramsey Theory:** Diagonal Ramsey bounds $R(k,k) \\leq 4^k$ directly constrain the limit\n4. **Topological Combinatorics:** Lovász's Kneser graph proof (1978) via Borsuk-Ulam opened a new field\n5. **Extremal Graph Theory:** Understanding which graphs maximize $\\chi/\\omega$ for fixed vertex count.",
     "openQuestions": [
       "Does $\\lim_{n\\to\\infty} f(n)/(n/(\\log n)^2)$ exist, or does the normalized ratio oscillate between the known bounds?",
       "Can the gap $(\\log 2)^2 \\cdot [1/4, 1]$ be narrowed by improving either the Ramsey upper bound or explicit construction lower bound?",

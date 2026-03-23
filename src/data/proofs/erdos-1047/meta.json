@@ -71,7 +71,8 @@
       "**Goodman's Contribution:** Even with all simple roots, non-convexity can occur (degree 4 example)",
       "**Referee's Example:** f(z) = z(z⁵-1) shows non-convexity with symmetric root configurations",
       "**Open Question:** Goodman asked for the maximum number of non-convex components vs polynomial degree"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -154,7 +155,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1047 asked whether polynomial lemniscate components must be convex. Grunsky's conjecture was FALSE: Pommerenke (1961) and Goodman (1966) constructed explicit counterexamples. Our formalization defines lemniscates, states the disproved conjecture, captures three distinct counterexamples, and proves positive results for the single-root case.",
-    "implications": "**Theoretical Connections**\n\n1. **Potential Theory:** Lemniscates are equipotential curves for the logarithmic potential log|f(z)|\n\n2. **Approximation Theory:** Lemniscates appear in polynomial approximation bounds (Bernstein's inequality)\n\n3. **Algebraic Geometry:** Real algebraic geometry of polynomial level sets in ℂ ≅ ℝ²\n\n4. **Numerical Analysis:** Relates to stability regions for polynomial iteration and root-finding\n\n5. **Function Theory:** Connects to Chebyshev polynomials and capacity of compact sets",
+    "implications": "**Theoretical Significance**: **Theoretical Connections**\n\n1. **Potential Theory:** Lemniscates are equipotential curves for the logarithmic potential log|f(z)|\n\n2. **Approximation Theory:** Lemniscates appear in polynomial approximation bounds (Bernstein's inequality)\n\n3.\n\n**Broader Connections**: **Algebraic Geometry:** Real algebraic geometry of polynomial level sets in ℂ ≅ ℝ²\n\n4. **Numerical Analysis:** Relates to stability regions for polynomial iteration and root-finding\n\n5. **Function Theory:** Connects to Chebyshev polynomials and capacity of compact sets.",
     "openQuestions": [
       "What is the maximum number of non-convex components for degree d polynomials? (Goodman's question)",
       "Characterize which polynomials have all convex lemniscate components",
@@ -214,7 +215,9 @@
   ],
   "references": [
     {
-      "authors": ["Ch. Pommerenke"],
+      "authors": [
+        "Ch. Pommerenke"
+      ],
       "title": "On the derivative of a polynomial",
       "venue": "Michigan Mathematical Journal",
       "year": 1961,
@@ -224,7 +227,9 @@
       "note": "Contains the first counterexample to Grunsky's conjecture: f(z) = z^k(z-a) for large k."
     },
     {
-      "authors": ["A. W. Goodman"],
+      "authors": [
+        "A. W. Goodman"
+      ],
       "title": "On the convexity of the lemniscates",
       "venue": "Journal d'Analyse Mathématique",
       "year": 1966,
@@ -234,7 +239,11 @@
       "note": "Provides explicit degree-4 counterexamples including one with all simple roots, and raises the open question of maximum non-convex components."
     },
     {
-      "authors": ["P. Erdős", "F. Herzog", "G. Piranian"],
+      "authors": [
+        "P. Erdős",
+        "F. Herzog",
+        "G. Piranian"
+      ],
       "title": "Metric properties of polynomials",
       "venue": "Journal d'Analyse Mathématique",
       "year": 1958,
@@ -244,7 +253,9 @@
       "note": "Reports Grunsky's conjecture and surveys metric and geometric properties of polynomial lemniscates; origin of Erdős Problems #1038–#1048."
     },
     {
-      "authors": ["Ch. Pommerenke"],
+      "authors": [
+        "Ch. Pommerenke"
+      ],
       "title": "On the coefficients and Hankel determinants of univalent functions",
       "venue": "Journal of the London Mathematical Society",
       "year": 1959,
@@ -255,7 +266,9 @@
       "note": "Establishes the containment of connected lemniscates in a disc of radius 2 (Erdős #1046 positive result), providing context for the convexity question."
     },
     {
-      "authors": ["T. W. Gamelin"],
+      "authors": [
+        "T. W. Gamelin"
+      ],
       "title": "Complex Analysis",
       "venue": "Springer Undergraduate Texts in Mathematics",
       "year": 2001,

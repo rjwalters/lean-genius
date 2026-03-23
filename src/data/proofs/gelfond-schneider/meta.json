@@ -78,7 +78,8 @@
       "**Real-to-complex lifting**: The proof strategy lifts from $\\mathbb{R}$ to $\\mathbb{C}$ and back. This requires careful handling of coercions in Lean: `Complex.ofReal` preserves algebraicity, and `Real.rpow` equals `Complex.cpow` for positive real bases.",
       "**Baker's generalization**: Baker (1966) proved that linear forms $\\beta_0 + \\beta_1 \\log \\alpha_1 + \\cdots + \\beta_n \\log \\alpha_n$ are transcendental (with effective bounds), subsuming both Hermite-Lindemann and Gelfond-Schneider.",
       "**Why irrational algebraic is crucial**: Rational $b$ makes $a^b$ algebraic. Transcendental $b$ provides no algebraic structure to exploit. Algebraic irrational is the \"Goldilocks\" condition that makes the auxiliary function method work."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
