@@ -18,12 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 7,
-    "focus": "Session 7: Proved fourier_large_coefficient fully (0 sorries). Only density_increment_lemma remains.",
+    "iteration": 8,
+    "focus": "Session 8: Decomposed density_increment_lemma into structured proof with 4 well-scoped sorries. Isolated core construction (exists_dense_subprogression) from edge cases.",
     "blockers": [
-      "density_increment_lemma: character partition + pigeonhole argument"
+      "exists_dense_subprogression: coset partition + pigeonhole + AP-freeness preservation (core mathematical content)",
+      "Edge cases: even N, small δ²N, N<3 (combinatorial/finite case analysis)"
     ],
-    "nextAction": "Prove density_increment_lemma: use fourier_large_coefficient + character partition + pigeonhole for density increment on subprogression",
+    "nextAction": "Prove exists_dense_subprogression via coset partition for composite N or AP-interval partition for prime N",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 7 proved fourier_large_coefficient completely. All helper lemmas proved: apFree_card_lt, two_mul_bijective, parseval_nonzero/parseval_nonzero_double, existence of nonzero elements, h_key (full Fourier-analytic bound via triangle inequality + AM-GM + Parseval). 7→1 sorry. Only density_increment_lemma remains.",
+    "progressSummary": "PROGRESS: Session 8 decomposed density_increment_lemma. Main case (N≥3, odd, δ²N≥4) routes through fourier_large_coefficient to exists_dense_subprogression. Proved delta<1 from APFree+N≥3. 4 well-scoped sorries: 1 core construction, 3 edge cases.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -51,7 +52,10 @@
       "Proved two_mul_bijective: Coprime(2,N) for odd N, IsUnit gives injectivity, finite→bijective",
       "Proved parseval_nonzero_double: erase-split + bijective variable change + Parseval",
       "Proved parseval_nonzero: same pattern without bijection (simpler)",
-      "Proved h_key: full 6-step Fourier-analytic proof - Fourier sum identity, r=0 separation, norm bound via triangle ineq, factor out via pointwise bound, AM-GM + Parseval, final chain"
+      "Proved h_key: full 6-step Fourier-analytic proof - Fourier sum identity, r=0 separation, norm bound via triangle ineq, factor out via pointwise bound, AM-GM + Parseval, final chain",
+      "exists_dense_subprogression: isolated core construction lemma with full hypotheses (large Fourier coeff, N odd, δ²N≥4)",
+      "density_increment_lemma main case routing: APFree→|A|<N→delta<1→fourier_large_coefficient→exists_dense_subprogression",
+      "Identified N=1 edge case issue: lemma is technically false for N=1,delta→1 (roth_density_bound N₀=1 also incorrect)"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -82,12 +86,18 @@
       "eq_sub_of_add_eq handles complex subtraction derivations (linarith fails on ℂ)",
       "Complex.norm_real needs explicit ℝ→ℂ cast: use push_cast;ring to create ((x:ℝ):ℂ) form",
       "Finset.sum_filter_add_sum_filter_not cleaner than sum_erase_add for splitting sums",
-      "starRingEnd_apply needed to convert starRingEnd ℂ z to star z before norm_star"
+      "starRingEnd_apply needed to convert starRingEnd ℂ z to star z before norm_star",
+      "For N prime, coset partition gives only {0} and ZMod N (no intermediate subgroups). Need AP-interval partition instead.",
+      "For composite N with gcd(val(r),N)=g>1: cosets of ⟨r⟩ give g pieces of size L=N/g. AP-freeness preserved since er≠0 in ZMod N iff e≠0 in ZMod L.",
+      "density_increment_lemma is FALSE for N=1,delta≥0.99: no M,B can have density>1. Fix: change N₀ in roth_density_bound.",
+      "The small δ²N case (N≥3,odd,δ²<4/N) requires finite case analysis of max AP-free sizes in ZMod N for small N."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove density_increment_lemma: character partition + pigeonhole + AP-free preservation",
-      "Consider Aristotle submission for density_increment_lemma helper lemmas"
+      "Prove exists_dense_subprogression: implement coset partition for composite odd N with g>1",
+      "Handle prime N case: AP-interval partition with Fejér kernel bound on density gain",
+      "Fix roth_density_bound: change N₀ from 1 to max(3, computed threshold)",
+      "Prove edge cases: small δ²N (finite enumeration), even N (reduction to odd), N<3 (explicit)"
     ]
   },
   "tags": [
@@ -106,7 +116,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T20:00:00Z",
+  "lastUpdate": "2026-03-23T21:00:00Z",
   "significance": 9,
   "tractability": 6
 }

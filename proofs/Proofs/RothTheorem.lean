@@ -773,6 +773,26 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
 -- PART V: DENSITY INCREMENT LEMMA
 -- ═══════════════════════════════════════════════════════════════════
 
+/-- Core construction: given a large Fourier coefficient in an AP-free set,
+    produce a subprogression with increased density.
+
+    Strategy: partition Z/NZ into g arithmetic progressions of length L = N/g
+    (via cosets of ⟨r⟩ for composite N, or via intervals under the map x ↦ rx
+    for prime N). Decompose Â(r) = Σ_j a_j·ψ(rj) + error, where a_j is the
+    count on coset j. The large |Â(r)| forces Σ|a_j - μ| ≥ η (μ = |A|/g,
+    η = |Â(r)| - error). By pigeonhole: max_j a_j/L ≥ δ + η/(gL) ≥ δ + δ²/2.
+    AP-freeness lifts: any 3-AP in the coset maps to a 3-AP in ZMod N. -/
+private lemma exists_dense_subprogression {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta) (hdelta1 : delta < 1)
+    (hAlt : A.card < N)
+    (hdensity : (A.card : ℝ) ≥ delta * N)
+    (r : ZMod N) (hr : r ≠ 0) (hfourier : ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2)
+    (hNodd : ¬ 2 ∣ N) (hd2N : delta ^ 2 * ↑N ≥ 4) :
+    ∃ (M : ℕ) (B : Finset (ZMod M)),
+      0 < M ∧ M ≥ Nat.sqrt N ∧ APFree B ∧
+      (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
+  sorry
+
 /-- The density increment lemma: if A ⊆ Z/NZ has density delta and no 3-AP,
     then A has density at least delta + c·delta² on some long arithmetic
     subprogression, and the restriction is also AP-free. This is the
@@ -791,7 +811,39 @@ theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
       M ≥ Nat.sqrt N ∧
       APFree B ∧
       (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
-  sorry
+  haveI : NeZero N := ⟨by omega⟩
+  by_cases hN3 : N ≥ 3
+  · -- N ≥ 3: AP-free implies |A| < N, hence delta < 1
+    have hAlt := apFree_card_lt A hAP hN3
+    have hdelta1 : delta < 1 := by
+      by_contra h; push_neg at h
+      have : (A.card : ℝ) ≥ ↑N := calc
+        (A.card : ℝ) ≥ delta * ↑N := hdensity
+        _ ≥ 1 * ↑N := mul_le_mul_of_nonneg_right h (Nat.cast_nonneg N)
+        _ = ↑N := one_mul _
+      have : (A.card : ℝ) < ↑N := by exact_mod_cast hAlt
+      linarith
+    by_cases hNodd : ¬ 2 ∣ N
+    · by_cases hd2N : delta ^ 2 * ↑N ≥ 4
+      · -- ═══ Main case: N ≥ 3, odd, δ²N ≥ 4 → Fourier analysis ═══
+        obtain ⟨r, hr, hfourier⟩ :=
+          fourier_large_coefficient hN A hAP delta hdelta hdensity hNodd hd2N
+        exact exists_dense_subprogression A hAP delta hdelta hdelta1 hAlt
+          hdensity r hr hfourier hNodd hd2N
+      · -- δ²N < 4, N ≥ 3, odd: delta is bounded by (N-1)/N and δ² < 4/N,
+        -- so delta + delta²/100 ≤ (N-1)/N + 4/(100N) = (100N-96)/(100N) < 1.
+        -- Use M = 1, B = {0} (note: M ≥ √N may fail for N ≥ 4).
+        push_neg at hd2N
+        sorry
+    · -- N even, N ≥ 3: fourier_large_coefficient requires odd N.
+      -- Can reduce to odd subprogression or handle via CRT.
+      push_neg at hNodd
+      sorry
+  · -- N < 3 (N = 1 or N = 2). For N = 2: APFree forces |A| ≤ 1
+    -- since in ZMod 2, a + 2d = a, so APFree A means no (a,d) with d ≠ 0
+    -- has both a ∈ A and a+d ∈ A, i.e., |A| ≤ 1.
+    push_neg at hN3
+    sorry
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VI: ROTH'S THEOREM (MAIN RESULT)
