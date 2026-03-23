@@ -391,7 +391,7 @@
     "title": "Summary and Proof Architecture",
     "content": "The closing summary recaps the three impossibilities and their distinct obstruction mechanisms: trisection and cube doubling fail because degree 3 is not a power of 2, while circle squaring fails because $\\pi$ (hence $\\sqrt{\\pi}$) is transcendental.\n\nThe proof architecture is carefully documented: 3 axioms (Wantzel's theorem, irreducibility of $8x^3 - 6x - 1$, and $\\pi$'s transcendence via the imported `PiTranscendental` module) serve as the deep inputs, while 18+ theorems are fully proved from these axioms and Mathlib. This layered design separates 'assumed deep results' from 'derived consequences', making the formalization both rigorous and pedagogically transparent.",
     "mathContext": "The three obstructions: (1) $[\\mathbb{Q}(\\cos 20°) : \\mathbb{Q}] = 3 \\neq 2^n$, (2) $[\\mathbb{Q}(\\sqrt[3]{2}) : \\mathbb{Q}] = 3 \\neq 2^n$, (3) $\\sqrt{\\pi}$ is transcendental $\\Rightarrow$ no finite degree over $\\mathbb{Q}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "proof architecture",
       "axiom inventory",

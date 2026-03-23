@@ -106,7 +106,7 @@
     "title": "Applications",
     "content": "**Why This Matters**:\n\n1. **Gambler's Ruin**: Starting with wealth $W_0$, targeting $W_0 + a$ before 0:\n   $$P(\\text{success}) = \\frac{W_0}{W_0 + a}$$\n   Derived from $E[W_\\tau] = W_0$.\n\n2. **Betting Systems Fail**:\n   - Martingale system (double after loss)\n   - D'Alembert, Fibonacci systems\n   - All fail because bounded stopping → $E[\\text{final}] = E[\\text{initial}]$\n\n3. **Financial Mathematics**:\n   - Discounted asset prices are martingales under risk-neutral measure\n   - Option pricing = expected discounted payoff\n   - American option exercise = stopping time problem\n\n4. **Doob's Maximal Inequality**:\n   $$P(\\max_{n \\leq N} f_n \\geq \\lambda) \\leq \\frac{E[f_N]}{\\lambda}$$",
     "summary": "Gambler's ruin probability, failure of betting systems, and connections to Black-Scholes option pricing.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "gambler's ruin probability W₀/(W₀+a)",
       "Black-Scholes option pricing",
@@ -130,7 +130,7 @@
     "title": "Historical Context",
     "content": "**Timeline**:\n- **1906**: Bachelier applies fair game concepts to finance\n- **1934**: Lévy develops martingale theory\n- **1939**: Ville coins \"martingale\"\n- **1953**: Doob proves optional stopping theorem\n\n**Wiedijk's Summary** (#62):\n\n*\"You cannot beat a fair game with any strategy.\"*\n\n**Three Connected Ideas**:\n1. **Fairness** (martingale): future expectation = current value\n2. **Strategy** (stopping time): when to stop based on past\n3. **Invariance** (theorem): strategy can't change expected outcome\n\nThis explains why casinos profit (games are unfair) and why \"systems\" don't work.",
     "summary": "Timeline from Bachelier (1906) to Doob (1953); explains the name 'martingale' and Wiedijk's characterization.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Joseph Doob (1953)",
       "Paul Lévy (1934)",

@@ -18,7 +18,10 @@
       "planar graphs",
       "topological invariant"
     ],
-    "prerequisites": ["basic combinatorics", "graph theory fundamentals"]
+    "prerequisites": [
+      "basic combinatorics",
+      "graph theory fundamentals"
+    ]
   },
   {
     "id": "ann-constructible-poly",
@@ -32,8 +35,18 @@
     "content": "The key insight: define polyhedra inductively from a tetrahedron via two χ-preserving operations:\n\n- **subdivideEdge**: Insert a vertex on an edge → V+1, E+1, F unchanged → χ unchanged\n- **subdivideFace**: Insert an edge across a face → V unchanged, E+1, F+1 → χ unchanged\n\nThe main theorem `euler_constructible` then follows by structural induction on these three cases (tetra, subdivideEdge, subdivideFace), with `push_cast; linarith` closing each step. Base case: 4-6+4=2. No axioms required.",
     "mathContext": "subdivideEdge: $\\Delta V = +1, \\Delta E = +1, \\Delta F = 0 \\Rightarrow \\Delta\\chi = 0$; subdivideFace: $\\Delta V = 0, \\Delta E = +1, \\Delta F = +1 \\Rightarrow \\Delta\\chi = 0$",
     "significance": "key",
-    "relatedConcepts": ["structural induction in Lean 4", "invariant preservation", "edge subdivision", "push_cast tactic", "linarith tactic"],
-    "prerequisites": ["Lean 4 inductive types", "graph operations", "Lean 4 induction tactic"]
+    "relatedConcepts": [
+      "structural induction in Lean 4",
+      "invariant preservation",
+      "edge subdivision",
+      "push_cast tactic",
+      "linarith tactic"
+    ],
+    "prerequisites": [
+      "Lean 4 inductive types",
+      "graph operations",
+      "Lean 4 induction tactic"
+    ]
   },
   {
     "id": "ann-graph-correspondence",
@@ -54,7 +67,11 @@
       "axiomatic vs constructive proof",
       "eulerCharacteristic"
     ],
-    "prerequisites": ["Lean 4 structures", "natural number arithmetic", "graph planarity"]
+    "prerequisites": [
+      "Lean 4 structures",
+      "natural number arithmetic",
+      "graph planarity"
+    ]
   },
   {
     "id": "ann-tetrahedron",
@@ -74,7 +91,10 @@
       "simplicial complex",
       "ConstructiblePoly"
     ],
-    "prerequisites": ["ConstructiblePoly.tetra", "euler_constructible"]
+    "prerequisites": [
+      "ConstructiblePoly.tetra",
+      "euler_constructible"
+    ]
   },
   {
     "id": "ann-platonic",
@@ -95,7 +115,10 @@
       "all_platonic_euler",
       "DualGraph.dual_euler"
     ],
-    "prerequisites": ["ConstructiblePoly", "euler_constructible"]
+    "prerequisites": [
+      "ConstructiblePoly",
+      "euler_constructible"
+    ]
   },
   {
     "id": "ann-edge-removal",
@@ -116,7 +139,11 @@
       "ring tactic",
       "euler_preserved_edge_removal"
     ],
-    "prerequisites": ["eulerCharacteristic definition", "ℕ subtraction in Lean 4", "ring tactic"]
+    "prerequisites": [
+      "eulerCharacteristic definition",
+      "ℕ subtraction in Lean 4",
+      "ring tactic"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -136,7 +163,10 @@
       "Wiedijk 100 theorems",
       "axiom vs constructive proof"
     ],
-    "prerequisites": ["ConstructiblePoly", "PolyhedralGraph"]
+    "prerequisites": [
+      "ConstructiblePoly",
+      "PolyhedralGraph"
+    ]
   },
   {
     "id": "ann-edge-bound",
@@ -157,7 +187,12 @@
       "k33_nonplanar",
       "double counting"
     ],
-    "prerequisites": ["edge_vertex_bound", "bipartite graphs", "Euler's formula", "linarith tactic"]
+    "prerequisites": [
+      "edge_vertex_bound",
+      "bipartite graphs",
+      "Euler's formula",
+      "linarith tactic"
+    ]
   },
   {
     "id": "ann-topology",
@@ -179,7 +214,11 @@
       "SurfaceEmbedding",
       "EulerGenus"
     ],
-    "prerequisites": ["Euler characteristic", "manifolds", "genus of a surface"]
+    "prerequisites": [
+      "Euler characteristic",
+      "manifolds",
+      "genus of a surface"
+    ]
   },
   {
     "id": "ann-platonic-classification",
@@ -200,7 +239,12 @@
       "double counting",
       "PlatonicClassification.platonic_classification"
     ],
-    "prerequisites": ["Euler's formula", "double counting", "integer arithmetic", "RegularPolyhedron structure"]
+    "prerequisites": [
+      "Euler's formula",
+      "double counting",
+      "integer arithmetic",
+      "RegularPolyhedron structure"
+    ]
   },
   {
     "id": "ann-history",
@@ -213,7 +257,7 @@
     "title": "Descartes' Theorem: Angular Deficiency and χ",
     "content": "Descartes (1639, unpublished) discovered that for a convex polyhedron, the total angular deficiency equals 4π. Each vertex contributes a deficiency = 2π - (sum of face angles at vertex). Summing over all vertices: Σ δ_v = 2π · χ = 4π. This is formalized via `descartes_euler` — given the Euler formula, the total deficiency in normalized units equals 2. For regular polyhedra, each vertex has the same deficiency d = 2/V, proved in `regular_descartes`.",
     "mathContext": "$\\sum_v \\delta_v = 2\\pi \\cdot \\chi = 4\\pi$ (Descartes, 1639); normalized: $\\sum_v (\\delta_v / 2\\pi) = \\chi = 2$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Descartes' theorem",
       "angular deficiency",
@@ -221,6 +265,10 @@
       "Poincaré",
       "Cauchy"
     ],
-    "prerequisites": ["Euler characteristic", "topology basics", "angular geometry"]
+    "prerequisites": [
+      "Euler characteristic",
+      "topology basics",
+      "angular geometry"
+    ]
   }
 ]

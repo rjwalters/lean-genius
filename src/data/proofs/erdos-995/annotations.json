@@ -10,7 +10,7 @@
     "title": "File Preamble: Problem Statement and Mathlib Imports",
     "content": "Docstring introduces Erdős Problem #995 on lacunary sums $\\sum_{k \\leq N} f(\\{\\alpha n_k\\})$. States the open conjecture $S_N = o(N\\sqrt{\\log\\log N})$ and both known bounds: the existential lower bound from Erdős (1949) involving $(\\log\\log N)^{1/2-\\varepsilon}$, and the universal upper bound involving $(\\log N)^{1/2+\\varepsilon}$. Imports Mathlib.Analysis.SpecialFunctions.Log.Basic (for $\\log$), Mathlib.MeasureTheory.Measure.Lebesgue.Basic (for Lebesgue measure, $\\forall^{\\mathrm{m}} \\alpha$), Mathlib.MeasureTheory.Function.L2Space (for $L^2([0,1])$ functions), and basic real/natural number libraries. Opens MeasureTheory and Real namespaces for concise notation.",
     "mathContext": "The problem sits at the interface of harmonic analysis ($\\sum e(\\alpha n_k)$ Weyl sums), probability (LIL, CLT for quasi-independent variables), and ergodic theory (Birkhoff averages along subsequences). The 75-year gap between $(\\log\\log N)^{1/2}$ and $(\\log N)^{1/2}$ is one of the longest-standing open problems in metric number theory.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "metric number theory",
       "Weyl sums",

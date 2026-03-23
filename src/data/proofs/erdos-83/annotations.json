@@ -10,7 +10,7 @@
     "title": "Problem Overview: Complete Intersection Theorem",
     "content": "Erdős Problem #83 extends the Erdős-Ko-Rado theorem to $t$-intersecting families. Given a family $\\mathcal{F}$ of $2n$-subsets of $[4n]$ with $|A \\cap B| \\geq 2$ for all $A, B \\in \\mathcal{F}$, the conjecture bounds $|\\mathcal{F}| \\leq \\frac{1}{2}\\binom{4n}{2n} - \\binom{2n}{n}^2$. Posed implicitly by EKR (1961) and carrying a $500 Erdős prize, it was solved by Ahlswede and Khachatrian in 1997 via their Complete Intersection Theorem, which handles all parameters $(m, k, t)$ simultaneously.",
     "mathContext": "$\\mathcal{F} \\subseteq \\binom{[4n]}{2n}$, $|A \\cap B| \\geq 2$ for all $A, B \\in \\mathcal{F}$ $\\Rightarrow$ $|\\mathcal{F}| \\leq \\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Erdős-Ko-Rado theorem",
       "t-intersecting families",

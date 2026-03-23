@@ -10,7 +10,7 @@
     "title": "Module Overview: The Halting Problem",
     "content": "Module docstring covering: (1) the theorem — no algorithm can determine whether an arbitrary program halts; (2) the approach — zero external imports, complete self-contained proof using diagonalization with only Lean's built-in `Nat` and `Bool`; (3) proof techniques — diagonalization, contradiction, boolean case analysis; (4) historical context — Turing's 1936 proof establishing fundamental limits on computability. The proof requires no Mathlib imports whatsoever, demonstrating that undecidability is a purely logical result.",
     "mathContext": "Turing (1936): there is no computable function $H: \\mathbb{N} \\times \\mathbb{N} \\to \\{0,1\\}$ such that $H(p,i) = 1$ iff program $p$ halts on input $i$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "computability theory",
       "Turing machines",
@@ -208,7 +208,7 @@
     "title": "Verification via #check",
     "content": "Type-checks all five main theorems: `diagonal_differs`, `no_halting_oracle`, `halting_undecidable`, `no_self_halting_decider`, and `halting_problem_undecidable`. Note: this file has no namespace (no `end` statement), so all definitions are at the top level.",
     "mathContext": "Five theorems verified, covering the key lemma, three formulations of the halting problem, and the summary theorem.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "type checking",
       "#check command"

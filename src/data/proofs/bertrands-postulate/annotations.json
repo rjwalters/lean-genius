@@ -10,7 +10,7 @@
     "title": "Imports: Mathlib's Bertrand Module",
     "content": "The file imports `Mathlib.NumberTheory.Bertrand`, which contains the complete proof of Bertrand's Postulate following Erdős's elementary approach via the central binomial coefficient. The second import `Mathlib.Tactic` provides `omega`, `norm_num`, and other decision procedures used in the corollaries.\n\nMathlib's proof is self-contained: it establishes the result for $n \\geq 512$ via analysis of $\\binom{2n}{n}$, then handles small cases by constructing a descending chain of primes. This file wraps those results with pedagogical documentation and derives corollaries about prime gaps and infinitude.",
     "mathContext": "Mathlib provides `Nat.exists_prime_lt_and_le_two_mul : n \\neq 0 \\to \\exists p, \\text{Prime}\\, p \\wedge n < p \\wedge p \\leq 2n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib NumberTheory",
       "Nat.exists_prime_lt_and_le_two_mul",
@@ -32,7 +32,7 @@
     "title": "Historical Documentation: Bertrand, Chebyshev, Erdős",
     "content": "**Bertrand (1845)**: Conjectured the result after checking it for all $n$ up to 3,000,000 in his *Traité d'Algèbre*. The sheer computational effort — done by hand — reflects the empirical tradition in number theory before rigorous proof became the norm.\n\n**Chebyshev (1852)**: Proved the conjecture using analytic techniques involving his famous $\\vartheta(x) = \\sum_{p \\leq x} \\log p$ and $\\psi(x) = \\sum_{p^k \\leq x} \\log p$ functions. His bounds $(0.92...)x/\\log x < \\pi(x) < (1.11...)x/\\log x$ for large $x$ are strong enough to imply Bertrand.\n\n**Erdős (1932)**: Published an elementary proof at age 19 — his first paper, in *Acta Litt. Sci. Szeged*. This launched a legendary career of 1,500+ papers. Erdős later called it his favorite proof, and it appears as the opening chapter in *Proofs from THE BOOK* (Aigner-Ziegler).\n\n**Ramanujan (1919)**: Gave another proof in his first published paper, using the gamma function and properties of $\\vartheta(x)$.\n\nThe module docstring covers the problem statement, historical development, proof approach, Mathlib dependencies, and Wiedijk's 100 Theorems #98 classification.",
     "mathContext": "The historical progression: Bertrand conjectured $\\forall n \\geq 1, \\exists p \\in (n, 2n]$ prime (1845); Chebyshev proved it analytically via $\\vartheta(x)$ (1852); Erdős proved it elementarily via $\\binom{2n}{n}$ (1932).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "history of number theory",
       "Chebyshev functions",
@@ -245,7 +245,7 @@
     "title": "Key Theorems Summary and Verification",
     "content": "Type-checks all six theorems via `#check`: `bertrand_postulate` (main statement), `bertrand` (alias), `exists_prime_between` (interval formulation), `prime_gap_bounded` (gap corollary), `primes_infinite_via_bertrand` (infinitude), and `no_largest_prime_via_bertrand` (no maximum). Closes the `BertrandsPostulate` namespace.\n\nThe six theorems form a deductive chain: the main postulate implies interval existence, which implies bounded gaps and infinitude, which implies no largest prime. This demonstrates how a single deep result (Bertrand) cascades into multiple useful consequences.",
     "mathContext": "Verified: 6 theorems with 0 sorries and 0 axioms. Deductive chain: Bertrand $\\Rightarrow$ interval existence $\\Rightarrow$ bounded gaps $\\Rightarrow$ infinitude $\\Rightarrow$ no maximum.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "type checking",
       "#check command",

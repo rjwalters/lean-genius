@@ -10,7 +10,7 @@
     "title": "Newton's Generalized Binomial Theorem: From Integers to All Reals",
     "content": "The header introduces Newton's 1665 generalization: (1+x)^α = Σ C(α,k) x^k for any real α, convergent for |x| < 1. The generalized coefficient C(α,k) = α(α-1)···(α-k+1)/k! reduces to Nat.choose when α is natural. Key special cases: α=-1 gives the geometric series 1/(1+x), α=1/2 gives the square root series √(1+x). The convergence radius |x| < 1 is both necessary and sufficient. The file proves this using Mathlib's Real.one_add_rpow_hasFPowerSeriesOnBall_zero.",
     "mathContext": "$(1+x)^\\alpha = \\sum_{k=0}^\\infty \\binom{\\alpha}{k} x^k$ for $|x|<1$, where $\\binom{\\alpha}{k} = \\frac{\\alpha(\\alpha-1)\\cdots(\\alpha-k+1)}{k!}$. Special cases: $\\binom{n}{k} = \\text{Nat.choose } n \\, k$ ($n \\in \\mathbb{N}$), $\\binom{-1}{k} = (-1)^k$, $\\binom{1/2}{0}=1, \\binom{1/2}{1}=1/2, \\binom{1/2}{2}=-1/8, \\ldots$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Newton's binomial theorem",
       "generalized binomial coefficients",
@@ -128,7 +128,7 @@
     "title": "Bridging genBinom and Ring.choose via descPochhammer",
     "content": "The main theorem uses Mathlib's binomialSeries which has Ring.choose coefficients, while we defined genBinom via the product formula. The bridge: smeval_descPochhammer_int_eq_prod proves (descPochhammer ℤ n).smeval α = ∏ j, (α-j) by induction using descPochhammer_succ_right + Polynomial.aeval_eq_smeval (which converts smeval to aeval for access to richer ring homomorphism lemmas). Then ring_choose_eq_genBinom = Ring.choose_eq_smul + smeval_descPochhammer + the product formula + ring. This is the key technical lemma connecting the two representations.",
     "mathContext": "Chain: `Ring.choose α k` $\\xrightarrow{\\text{Ring.choose\\_eq\\_smul}}$ `(descPochhammer ℤ k).smeval α / k!` $\\xrightarrow{\\text{Polynomial.aeval\\_eq\\_smeval}}$ `(∏ j, (α-j)) / k!` = `genBinom α k`. Lean: `Polynomial.aeval_eq_smeval` is the critical bridge lemma.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ring.choose_eq_smul",
       "Polynomial.aeval_eq_smeval",

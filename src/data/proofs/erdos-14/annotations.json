@@ -33,7 +33,7 @@
     "title": "Imports and Setup",
     "content": "Imports Mathlib's asymptotic analysis (`Asymptotics`), `Finset.Basic` for finite set operations, and general tactics. Opens `Finset`, `Filter`, and `Asymptotics` namespaces for convenient access to `atTop`, `∀ᶠ`, `∃ᶠ`, and finset operations.",
     "mathContext": "Uses `Filter.atTop` for $N \\to \\infty$, `∀ᶠ N in atTop` for 'for all sufficiently large $N$', and `∃ᶠ N in atTop` for 'for infinitely many $N$'. These are Lean's clean formalization of asymptotic quantifiers.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Filter.atTop",
       "Asymptotics",

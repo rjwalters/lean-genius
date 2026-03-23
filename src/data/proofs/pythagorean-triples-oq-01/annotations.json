@@ -288,7 +288,7 @@
     "title": "Monotonicity and Growth of Counting Functions",
     "content": "Establishes that all counting functions are monotone non-decreasing: if $M \\le N$, then $\\text{count}(M) \\le \\text{count}(N)$. Also proves that the intermediate coprime sector count tends to infinity ($\\text{coprimeInSectorCount}(N) \\to \\infty$), which is needed for the telescoping ratio argument — you cannot divide by the coprime count unless it is eventually nonzero.",
     "mathContext": "$M \\le N \\Rightarrow \\text{primitiveTripleCount}(M) \\le \\text{primitiveTripleCount}(N)$; $\\text{coprimeInSectorCount}(N) \\to \\infty$ as $N \\to \\infty$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.card_le_card",
       "Filter.Tendsto.atTop",

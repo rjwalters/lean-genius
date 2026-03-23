@@ -127,7 +127,7 @@
     "title": "Stirling Approximation Function",
     "content": "**Definition**:\n$$\\text{stirlingApprox}(n) = \\sqrt{2\\pi n} \\left(\\frac{n}{e}\\right)^n$$\n\n**Properties**:\n- Positive for $n \\geq 1$\n- $n!/\\text{stirlingApprox}(n) \\to 1$ as $n \\to \\infty$\n\n**Usage**: Use stirlingApprox(n) as a fast approximation for n! when exact values aren't needed.",
     "mathContext": "$\\text{stirlingApprox}(n) = \\sqrt{2\\pi n} \\cdot (n/e)^n$; $n! / \\text{stirlingApprox}(n) \\to 1$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "approximation function",
       "ratio convergence",
@@ -149,7 +149,7 @@
     "title": "Numerical Examples",
     "content": "**Example Values**:\n\n| n | n! | Stirling Approx | Error |\n|---|---|---|---|\n| 10 | 3,628,800 | ~3,598,696 | ~0.8% |\n| 20 | 2.43×10¹⁸ | ~2.42×10¹⁸ | ~0.4% |\n\n**Relative error** is approximately $1/(12n)$.\n\nFor $n = 100$: error < 0.1%\nFor $n = 1000$: error < 0.01%",
     "mathContext": "Relative error $\\approx 1/(12n)$; for $n=10$: $\\approx 0.8\\%$; for $n=100$: $<0.1\\%$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "numerical accuracy",
       "relative error",
@@ -219,7 +219,7 @@
     "title": "Applications of Stirling's Formula",
     "content": "**Key Applications**:\n\n1. **Binomial coefficients**:\n   $$\\binom{n}{k} \\approx \\frac{n^n}{k^k(n-k)^{n-k}}$$\n\n2. **Entropy**: $H = \\log(n!) \\approx n\\log n - n$\n\n3. **Central Limit Theorem**: Derivations via characteristic functions\n\n4. **De Moivre-Laplace**: Normal approximation to binomial\n\n5. **Gamma function**: Extends to $\\Gamma(x+1) \\sim \\sqrt{2\\pi x}(x/e)^x$",
     "mathContext": "$\\binom{n}{k} \\approx \\frac{n^n}{k^k(n-k)^{n-k}} \\cdot \\sqrt{\\frac{n}{2\\pi k(n-k)}}$; $\\Gamma(x+1) \\sim \\sqrt{2\\pi x}(x/e)^x$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "binomial coefficients",
       "Shannon entropy",

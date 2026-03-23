@@ -8,9 +8,9 @@
     },
     "type": "technique",
     "title": "Pigeonhole Bin Function for Fractional Parts",
-    "content": "The binning infrastructure for Dirichlet's theorem. `binFn \u03b1 N hN : Fin(N+1) \u2192 Fin(N)` maps each index i to the bin \u230aN \u00b7 fract(i\u03b1)\u230b \u2208 {0,...,N-1}. Two supporting lemmas establish the bin function is well-typed: `floor_mul_fract_nonneg` proves \u230aN \u00b7 fract(x)\u230b \u2265 0 (from non-negativity of N and fract), and `floor_mul_fract_lt` proves \u230aN \u00b7 fract(x)\u230b < N (from fract(x) < 1 and positivity of N). The `same_bin_fract_close` lemma then shows that two values landing in the same bin have fractional parts within 1/N of each other, using the floor sandwich: k \u2264 N\u00b7fract(x) < k+1 for both values implies their difference is less than 1/N after dividing by N.",
+    "content": "The binning infrastructure for Dirichlet's theorem. `binFn α N hN : Fin(N+1) → Fin(N)` maps each index i to the bin ⌊N · fract(iα)⌋ ∈ {0,...,N-1}. Two supporting lemmas establish the bin function is well-typed: `floor_mul_fract_nonneg` proves ⌊N · fract(x)⌋ ≥ 0 (from non-negativity of N and fract), and `floor_mul_fract_lt` proves ⌊N · fract(x)⌋ < N (from fract(x) < 1 and positivity of N). The `same_bin_fract_close` lemma then shows that two values landing in the same bin have fractional parts within 1/N of each other, using the floor sandwich: k ≤ N·fract(x) < k+1 for both values implies their difference is less than 1/N after dividing by N.",
     "mathContext": "The bin function $\\text{bin}(i) = \\lfloor N \\cdot \\{i\\alpha\\} \\rfloor$ partitions $[0,1)$ into $N$ equal intervals $[k/N, (k+1)/N)$ for $k = 0, \\ldots, N-1$. If $\\text{bin}(i) = \\text{bin}(j) = k$, then both $\\{i\\alpha\\}$ and $\\{j\\alpha\\}$ lie in $[k/N, (k+1)/N)$, so $|\\{i\\alpha\\} - \\{j\\alpha\\}| < 1/N$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "pigeonhole principle",
       "fractional part",
@@ -33,7 +33,7 @@
     },
     "type": "technique",
     "title": "Dirichlet's Approximation Theorem (1842)",
-    "content": "The main theorem: for any real \u03b1 and N \u2265 1, there exist integers p, q with 1 \u2264 q \u2264 N and |q\u03b1 - p| < 1/N. The proof invokes `Fintype.exists_ne_map_eq_of_card_lt` (pigeonhole) on `binFn`: since |Fin(N+1)| > |Fin(N)|, two distinct indices i \u2260 j must collide. Their fractional parts differ by < 1/N. The proof then case-splits on whether i < j or i > j (via `Nat.lt_or_gt_of_ne`), setting q = |i-j| and p = \u230bi\u03b1\u230b - \u230bj\u03b1\u230b. The key algebraic identity `fract_sub_eq` rewrites the fractional part difference as (i-j)\u03b1 - (\u230bi\u03b1\u230b - \u230bj\u03b1\u230b), connecting the bin collision to the approximation quality. The `Nat.cast_sub` and `Int.cast_sub` lemmas handle the coercion gymnastics between \u2115, \u2124, and \u211d.",
+    "content": "The main theorem: for any real α and N ≥ 1, there exist integers p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. The proof invokes `Fintype.exists_ne_map_eq_of_card_lt` (pigeonhole) on `binFn`: since |Fin(N+1)| > |Fin(N)|, two distinct indices i ≠ j must collide. Their fractional parts differ by < 1/N. The proof then case-splits on whether i < j or i > j (via `Nat.lt_or_gt_of_ne`), setting q = |i-j| and p = ⌋iα⌋ - ⌋jα⌋. The key algebraic identity `fract_sub_eq` rewrites the fractional part difference as (i-j)α - (⌋iα⌋ - ⌋jα⌋), connecting the bin collision to the approximation quality. The `Nat.cast_sub` and `Int.cast_sub` lemmas handle the coercion gymnastics between ℕ, ℤ, and ℝ.",
     "mathContext": "**Dirichlet's Theorem**: $\\forall \\alpha \\in \\mathbb{R},\\ \\forall N \\geq 1,\\ \\exists p \\in \\mathbb{Z},\\ q \\in \\mathbb{N}$ with $1 \\leq q \\leq N$ and $|q\\alpha - p| < 1/N$. Equivalently, $|\\alpha - p/q| < 1/(qN) \\leq 1/q^2$. The proof uses $N+1$ values $\\{0\\cdot\\alpha\\}, \\{1\\cdot\\alpha\\}, \\ldots, \\{N\\cdot\\alpha\\}$ mapped to $N$ bins by $\\lfloor N \\cdot \\{k\\alpha\\} \\rfloor$. By pigeonhole, two collide, giving the approximation.",
     "significance": "key",
     "relatedConcepts": [
@@ -59,7 +59,7 @@
     },
     "type": "technique",
     "title": "Lattice Point Existence in Intervals",
-    "content": "`integer_in_interval` proves any interval [a, a+1) contains an integer (via the ceiling function). `lattice_point_exists` generalizes: for m > 0, the interval (a, a+m] contains a multiple of m. The proof divides by m, finds the appropriate integer via \u230aa/m\u230b + 1, and scales back. The `nlinarith` calls handle the resulting arithmetic involving floor division bounds. This connects to Minkowski's lattice point theorem and provides the geometric foundation for CRT solvability: existence of solutions to simultaneous congruences reduces to finding lattice points in shifted cosets.",
+    "content": "`integer_in_interval` proves any interval [a, a+1) contains an integer (via the ceiling function). `lattice_point_exists` generalizes: for m > 0, the interval (a, a+m] contains a multiple of m. The proof divides by m, finds the appropriate integer via ⌊a/m⌋ + 1, and scales back. The `nlinarith` calls handle the resulting arithmetic involving floor division bounds. This connects to Minkowski's lattice point theorem and provides the geometric foundation for CRT solvability: existence of solutions to simultaneous congruences reduces to finding lattice points in shifted cosets.",
     "mathContext": "For $m > 0$ and $a \\in \\mathbb{R}$: $\\exists k \\in \\mathbb{Z}$ with $a < km \\leq a + m$. Proof: set $k = \\lfloor a/m \\rfloor + 1$. Then $a/m < k \\leq a/m + 1$, so $a < km \\leq a + m$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -71,7 +71,7 @@
     "prerequisites": [
       "Int.le_ceil",
       "Int.floor_le",
-      "div_mul_cancel\u2080"
+      "div_mul_cancel₀"
     ]
   },
   {
@@ -83,7 +83,7 @@
     },
     "type": "technique",
     "title": "Stern-Brocot Mediant and Farey Neighbors",
-    "content": "`mediant_between` proves the mediant (a+c)/(b+d) lies strictly between a/b and c/d when a/b < c/d. The proof uses cross-multiplication: a/b < c/d implies ad < cb, then `nlinarith` derives the two mediant inequalities. `farey_neighbor_order` proves that Farey neighbors (fractions with determinant cb - ad = 1) are automatically ordered. The determinant condition cb - ad = 1 immediately implies ad < cb, giving a/b < c/d. The Stern-Brocot tree generates all positive rationals in lowest terms using the mediant operation, and Farey neighbors are adjacent fractions in Farey sequences F_n \u2014 they appear consecutively when ordered by denominator bound.",
+    "content": "`mediant_between` proves the mediant (a+c)/(b+d) lies strictly between a/b and c/d when a/b < c/d. The proof uses cross-multiplication: a/b < c/d implies ad < cb, then `nlinarith` derives the two mediant inequalities. `farey_neighbor_order` proves that Farey neighbors (fractions with determinant cb - ad = 1) are automatically ordered. The determinant condition cb - ad = 1 immediately implies ad < cb, giving a/b < c/d. The Stern-Brocot tree generates all positive rationals in lowest terms using the mediant operation, and Farey neighbors are adjacent fractions in Farey sequences F_n — they appear consecutively when ordered by denominator bound.",
     "mathContext": "For $a/b < c/d$ with $b, d > 0$: $a/b < (a+c)/(b+d) < c/d$. The mediant is the simplest fraction between two fractions. **Farey neighbors**: if $cb - ad = 1$, then $a/b$ and $c/d$ are adjacent in the Stern-Brocot tree and in the Farey sequence $F_{\\max(b,d)}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -94,7 +94,7 @@
       "continued fractions"
     ],
     "prerequisites": [
-      "div_lt_div_iff\u2080",
+      "div_lt_div_iff₀",
       "positivity"
     ]
   },
@@ -107,7 +107,7 @@
     },
     "type": "concept",
     "title": "Golden Ratio: The Worst-Case Approximation Target",
-    "content": "Defines \u03c6 = (1+\u221a5)/2 and proves its key algebraic properties: \u03c6 > 0, \u03c6 > 1, \u03c6\u00b2 = \u03c6 + 1, 1/\u03c6 = \u03c6 - 1, and \u03c6\u00b2 - \u03c6 - 1 = 0. The `golden_ratio_quadratic` proof uses `ring_nf` followed by `nlinarith` with `sq_sqrt` to establish \u03c6\u00b2 = \u03c6 + 1 from (\u221a5)\u00b2 = 5. The `golden_ratio_reciprocal` follows from `div_eq_iff` and the quadratic identity. Fibonacci examples (`native_decide`) verify fib(1)=1, fib(5)=5, fib(8)=21, fib(10)=55 \u2014 the denominators of \u03c6's best rational approximations. The golden ratio is the hardest-to-approximate irrational because its continued fraction [1;1,1,...] has all partial quotients equal to 1, giving the slowest convergent convergence. Hurwitz (1891) proved |x - p/q| < 1/(\u221a5 \u00b7 q\u00b2) for infinitely many p/q, and \u221a5 is optimal (achieved by \u03c6).",
+    "content": "Defines φ = (1+√5)/2 and proves its key algebraic properties: φ > 0, φ > 1, φ² = φ + 1, 1/φ = φ - 1, and φ² - φ - 1 = 0. The `golden_ratio_quadratic` proof uses `ring_nf` followed by `nlinarith` with `sq_sqrt` to establish φ² = φ + 1 from (√5)² = 5. The `golden_ratio_reciprocal` follows from `div_eq_iff` and the quadratic identity. Fibonacci examples (`native_decide`) verify fib(1)=1, fib(5)=5, fib(8)=21, fib(10)=55 — the denominators of φ's best rational approximations. The golden ratio is the hardest-to-approximate irrational because its continued fraction [1;1,1,...] has all partial quotients equal to 1, giving the slowest convergent convergence. Hurwitz (1891) proved |x - p/q| < 1/(√5 · q²) for infinitely many p/q, and √5 is optimal (achieved by φ).",
     "mathContext": "$\\varphi = (1+\\sqrt{5})/2$ satisfies $\\varphi^2 = \\varphi + 1$ (the minimal polynomial $x^2 - x - 1 = 0$). Its continued fraction $[1;1,1,\\ldots]$ gives convergents $p_n/q_n = F_{n+1}/F_n$ (Fibonacci ratios). Hurwitz's theorem: $\\forall$ irrational $\\alpha$, $\\exists^\\infty p/q$ with $|\\alpha - p/q| < 1/(\\sqrt{5} q^2)$, and $\\sqrt{5}$ is the best constant (attained by $\\varphi$).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -132,14 +132,14 @@
     },
     "type": "context",
     "title": "CRT Non-Coprime Lattice Examples",
-    "content": "Concrete examples connecting CRT solvability to lattice coset membership. The solvable system x \u2261 3 (mod 6), x \u2261 1 (mod 4) has solution x = 9 (mod 12) because gcd(6,4) = 2 divides 3-1 = 2. The unsolvable system x \u2261 3 (mod 6), x \u2261 2 (mod 4) fails because gcd(6,4) = 2 does not divide 3-2 = 1. B\u00e9zout's identity 6\u00b7(-1) + 4\u00b72 = 2 provides the coefficient witness. The Sunzi example (3rd century CE) x \u2261 2 (mod 3), x \u2261 3 (mod 5), x \u2261 2 (mod 7) \u2192 x = 23 (mod 105) demonstrates the classical CRT for coprime moduli. All examples use `native_decide` for computational verification.",
+    "content": "Concrete examples connecting CRT solvability to lattice coset membership. The solvable system x ≡ 3 (mod 6), x ≡ 1 (mod 4) has solution x = 9 (mod 12) because gcd(6,4) = 2 divides 3-1 = 2. The unsolvable system x ≡ 3 (mod 6), x ≡ 2 (mod 4) fails because gcd(6,4) = 2 does not divide 3-2 = 1. Bézout's identity 6·(-1) + 4·2 = 2 provides the coefficient witness. The Sunzi example (3rd century CE) x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7) → x = 23 (mod 105) demonstrates the classical CRT for coprime moduli. All examples use `native_decide` for computational verification.",
     "mathContext": "**CRT non-coprime solvability**: $x \\equiv a_1 \\pmod{m_1},\\ x \\equiv a_2 \\pmod{m_2}$ is solvable $\\iff \\gcd(m_1, m_2) \\mid (a_1 - a_2)$. When solvable, the solution is unique modulo $\\text{lcm}(m_1, m_2)$. Geometrically: the solution set is the intersection of two cosets in $\\mathbb{Z}$, which is nonempty iff the cosets are compatible modulo $\\gcd$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Chinese Remainder Theorem",
       "non-coprime CRT",
       "lattice cosets",
-      "B\u00e9zout's identity",
+      "Bézout's identity",
       "Sunzi's problem",
       "native_decide"
     ],

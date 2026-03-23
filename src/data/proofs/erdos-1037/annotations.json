@@ -10,7 +10,7 @@
     "title": "Imports and Problem Overview",
     "content": "Module documentation describing Erdős Problem #1037 on degree diversity and Ramsey properties. Imports all of Mathlib. The problem asks whether graphs with many distinct degrees (each appearing at most twice) must contain large homogeneous subgraphs.",
     "mathContext": "Chen and Erdős conjectured: if $G$ on $n$ vertices has at most $2$ vertices of each degree and more than $(1/2 + \\varepsilon)n$ distinct degrees, must $\\max(\\omega(G), \\alpha(G)) \\gg \\log n$? Cambie-Chan-Hunter (2025) disproved this.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "degree sequence",
       "Ramsey theory",

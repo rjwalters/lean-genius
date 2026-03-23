@@ -10,7 +10,7 @@
     "title": "Mathlib Imports and Module Documentation",
     "content": "The module imports three Mathlib packages: `Nat.Prime.Basic` (providing `Nat.Prime`, `Nat.exists_prime_and_dvd`, and prime factorization lemmas), `Nat.Factorial.Basic` (the factorial function and `Nat.dvd_factorial`), and `Tactic` (proof automation including `omega`, `norm_num`, `push_neg`). The docstring outlines the proof structure and attributes the theorem to Euclid's *Elements* Book IX, Proposition 20.",
     "mathContext": "Mathlib provides `Nat.Prime p` ($p \\geq 2$ and no non-trivial divisors), `n.factorial` ($n! = \\prod_{k=1}^{n} k$), `Nat.dvd_factorial` ($0 < k \\leq n \\Rightarrow k \\mid n!$), and `Nat.exists_prime_and_dvd` ($n \\geq 2 \\Rightarrow \\exists p$ prime, $p \\mid n$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "prime definition",
@@ -249,7 +249,7 @@
     "title": "Verification and Namespace Close",
     "content": "Type-checks the three main results: `unbounded_primes` (for any $n$, there exists a prime $> n$), `primes_infinite` (alias emphasizing infinitude), and `no_largest_prime` (negation of a largest prime). Together they give three equivalent formulations of the infinitude of primes, all fully verified with 0 sorries.",
     "mathContext": "Three equivalent formulations: (1) $\\forall n, \\exists p > n, p$ prime; (2) $\\{p : p \\text{ prime}\\}$ is infinite; (3) $\\neg \\exists p$ prime, $\\forall q$ prime, $q \\leq p$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "#check verification",
       "equivalent formulations"

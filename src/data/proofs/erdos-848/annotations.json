@@ -33,7 +33,7 @@
     "title": "Imports and Namespace Setup",
     "content": "Imports Mathlib.Tactic for general proof automation, Mathlib.Data.Nat.Basic for natural number operations, and Mathlib.Data.Nat.Prime.Basic for the `Nat.Prime` predicate used in the squarefree definition.",
     "mathContext": "The formalization needs only basic natural number infrastructure: primality testing ($p.\\text{Prime}$), divisibility ($\\mid$), and modular arithmetic ($\\%$). No advanced Mathlib modules (e.g., Finset cardinality bounds or analytic number theory) are required because the deep results are axiomatized.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "mathlib",
       "lean4-imports",

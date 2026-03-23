@@ -10,7 +10,7 @@
     "title": "Problem Overview and References",
     "content": "Erdős Problem #800 asks whether graphs with no two adjacent vertices of degree $\\geq 3$ have linear Ramsey numbers $R(G) \\ll n$. Alon (1994) proved $R(G) \\leq 12n$ using the probabilistic method. The header documents the connection to the broader Burr-Erdős conjecture (Problem #163), which was fully resolved by Choongbum Lee in 2016 for all $p$-degenerate graphs.",
     "mathContext": "$R(G) \\leq 12n$ for graphs $G$ on $n$ vertices with no adjacent vertices of degree $\\geq 3$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ramsey number",
       "subdivided graph",
@@ -34,7 +34,7 @@
     "title": "Imports and Namespace",
     "content": "Imports Mathlib's simple graph infrastructure (`SimpleGraph.Basic`, `SimpleGraph.Subgraph`, `SimpleGraph.Clique`, `SimpleGraph.Coloring`), finite type machinery, and real number arithmetic for Ramsey bounds. The `open SimpleGraph` brings graph notation into scope. All definitions live in `Erdos800`.",
     "mathContext": "Uses `SimpleGraph V` for graphs, `neighborFinset` for degree computation, and $\\mathbb{R}$ for Ramsey bound arithmetic",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib SimpleGraph",
       "neighbor sets",

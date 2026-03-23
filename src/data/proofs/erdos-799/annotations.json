@@ -10,7 +10,7 @@
     "title": "Problem Overview and References",
     "content": "Erdős Problem #799 asks whether the list chromatic number $\\chi_L(G) = o(n)$ for almost all graphs on $n$ vertices. The header documents the full resolution: Alon (1992) gave the first sublinear bound $\\chi_L(G) \\ll \\frac{\\log\\log n}{\\log n} \\cdot n$, and Alon-Krivelevich-Sudakov (1999) determined the precise order $\\chi_L(G) \\asymp \\frac{n}{\\log n}$. The references [Al92] and [AKS99] are the two key papers.",
     "mathContext": "$\\chi_L(G) = o(n)$ for $G \\in G(n, 1/2)$; resolved with $\\chi_L(G) \\asymp \\frac{n}{\\log n}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "list chromatic number",
       "choice number",
@@ -34,7 +34,7 @@
     "title": "Imports and Namespace",
     "content": "The formalization imports Mathlib's simple graph infrastructure (`SimpleGraph.Basic`, `SimpleGraph.Coloring`), finite type machinery (`Fintype.Basic`, `Finset.Basic`), and order theory (`Order.Basic`). The `open SimpleGraph Finset` brings graph and finite set notation into scope. All definitions live in the `Erdos799` namespace.",
     "mathContext": "Mathlib's `SimpleGraph V` represents simple undirected graphs on vertex type $V$; `chromaticNumber` gives $\\chi(G)$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib SimpleGraph",
       "finite sets",

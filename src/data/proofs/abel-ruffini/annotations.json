@@ -57,7 +57,7 @@
     "title": "Namespace and Proof Architecture",
     "content": "The `AbelRuffini` namespace scopes the entire proof development into a seven-part logical structure that mirrors the mathematical argument:\n\n- **Part I** (Solvable by Radicals): Definitions — `IsSolvableByRad` and field variables\n- **Part II** (Galois Bridge): radical solvability implies solvable Galois group\n- **Part III** (Non-Solvability): $S_n$ not solvable for $n \\geq 5$, $A_5$ simple\n- **Part IV** (Small Groups): $S_0, S_1$ are solvable — contrast with the threshold\n- **Part V** (Abel-Ruffini): Synthesis via contrapositive\n- **Parts VI–VII** (Commentary): Why degree 5, historical significance\n\nThis organization separates the field-theoretic ingredient (Part II) from the group-theoretic ingredient (Part III) before combining them (Part V), reflecting how modern algebra textbooks present the proof as a composition of independent modules. All theorem names are prefixed with `AbelRuffini.` when referenced externally.",
     "mathContext": "The namespace groups nine declarations: two core theorems (`galois_bridge`, `not_solvable_by_rad_of_not_solvable_gal`), four group-theoretic results (`symmetric_group_not_solvable`, `s5_not_solvable`, `s6_not_solvable`, `a5_is_simple`), two solvability instances (`s0_solvable`, `s1_solvable`), and one existence witness (`exists_quintic`). The modular structure enables each component to be independently verified and reused.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "Lean 4 namespace system"
     ],

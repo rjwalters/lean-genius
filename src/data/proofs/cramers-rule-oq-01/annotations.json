@@ -10,7 +10,7 @@
     "title": "Cramer's Rule Meets Cayley-Hamilton: The Adjugate Identity Connection",
     "content": "The module preamble reveals the deep algebraic unity between Cramer's Rule and the Cayley-Hamilton theorem. Both depend on the adjugate identity A·adj(A) = det(A)·I. The Cayley-Hamilton proof applies this identity to the characteristic matrix λI - M (a matrix with polynomial entries), then evaluates at λ=M to obtain charpoly(M)(M) = 0. The five-step proof chain: (1) Cramer adjugate identity, (2) apply to charmatrix(M), (3) rewrite as adj·charmatrix form, (4) transfer to Polynomial(Matrix n n R) via matPolyEquiv isomorphism, (5) evaluate at M using eval_mul_X_sub_C. Historically, Cayley (1858) developed the matrix algebra encompassing both results — the adjugate matrix is simultaneously the key object in Cramer's Rule AND the proof mechanism of Cayley-Hamilton.",
     "mathContext": "Core identity: $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ (over any CommRing). Applied to charmatrix: $\\text{adj}(\\lambda I - M) \\cdot (\\lambda I - M) = \\text{charpoly}(M) \\cdot I$. Transfer via matPolyEquiv: $B(X) \\cdot (X - M) = \\text{charpoly}(M) \\cdot I$ in $R[X]^{n\\times n}$. Evaluate at $X=M$: $0 = \\text{charpoly}(M)(M)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Matrix.adjugate",
       "Matrix.mul_adjugate",
@@ -87,7 +87,7 @@
     "title": "matPolyEquiv Bridge: Matrix(R[X]) ≅ (Matrix R)[X] Isomorphism",
     "content": "charmatrix_under_equiv shows that matPolyEquiv maps charmatrix(M) to X - C(M) in the polynomial-matrix ring. cramer_charmatrix_in_poly_ring transfers the charmatrix adjugate identity through this isomorphism: in Matrix(R)[X], there exists B : Matrix(R)[X] such that B * (X - C(M)) = charpoly(M) • I. The matPolyEquiv isomorphism (Matrix n n R[X] ≃ₐ[R] (Matrix n n R)[X]) is the critical technical bridge — it converts between two descriptions of the same object: 'a matrix of polynomials' vs 'a polynomial of matrices'. The isomorphism preserves multiplication and evaluation.",
     "mathContext": "matPolyEquiv : `Matrix n n R[X] ≃ₐ[R] (Matrix n n R)[X]`. charmatrix_under_equiv: `matPolyEquiv (charmatrix M) = X - C M`. Key: the isomorphism commutes with polynomial evaluation: `Polynomial.aeval M (matPolyEquiv f) = Matrix.map f (aeval M)`. Lean: uses `AlgEquiv.toLinearEquiv` properties.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "matPolyEquiv",
       "Matrix.charmatrix",

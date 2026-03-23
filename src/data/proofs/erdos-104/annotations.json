@@ -10,7 +10,7 @@
     "title": "Imports and Problem Overview",
     "content": "Module documentation for Erdős Problem #104 on unit circles through three points. The problem asks: given n points in ℝ², how many unit circles contain at least 3 points? The trivial bound is O(n²), Elekes showed Ω(n^{3/2}) is achievable, and the conjecture is O(n^{3/2}). Imports Mathlib for EuclideanSpace, Finset, and Set operations.",
     "mathContext": "For a finite point set $P \\subset \\mathbb{R}^2$ with $|P| = n$, let $f_3(P)$ denote the number of distinct unit circles containing at least 3 points of $P$. The problem asks for the maximum order of $f_3(P)$ over all $n$-point sets. Known: $\\Omega(n^{3/2}) \\leq \\max_P f_3(P) \\leq O(n^2)$. Conjecture: $\\max_P f_3(P) = O(n^{3/2})$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "unit circles",
       "incidence geometry",

@@ -10,7 +10,7 @@
     "title": "Problem Statement and Context",
     "content": "**Erdős Problem #1144** asks about the partial sums of random completely multiplicative functions.\n\nFor each prime $p$, independently choose $f(p) \\in \\{-1, 1\\}$ uniformly at random, then extend multiplicatively to all of $\\mathbb{N}$.\n\n**Conjecture**: With probability 1,\n$$\\limsup_{N \\to \\infty} \\frac{\\left|\\sum_{m \\le N} f(m)\\right|}{\\sqrt{N}} = \\infty$$\n\nThis belongs to a family of problems about the **Erdős discrepancy theory** and random multiplicative functions, connecting number theory to probability.\n\n**Key known result** (Atherfold, 2025): Almost surely, $\\sum_{m \\le N} f(m) \\ll N^{1/2} (\\log N)^{1+o(1)}$, giving an upper bound but not resolving the conjecture.\n\nRelated to Erdős Problem #520 (Rademacher functions on squarefree integers).",
     "mathContext": "$\\limsup_{N \\to \\infty} |S_f(N)| / \\sqrt{N} = \\infty$ a.s., where $S_f(N) = \\sum_{m=1}^{N} f(m)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "random multiplicative functions",
       "Erdős discrepancy problem",

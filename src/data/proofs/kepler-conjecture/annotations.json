@@ -200,7 +200,7 @@
     "title": "Exports and Summary",
     "content": "The #check section verifies all major exports: hexagonal and FCC density definitions, Thue's and Kepler's theorems, numerical bounds, and the density comparison chain. The key verified statements are hexagonal_is_optimal_2D, fcc_is_optimal_3D, and density_decreases_with_dimension.",
     "mathContext": "The formalization establishes optimality in three dimensions: $\\delta_{\\text{hex}}$ in 2D (Thue), $\\delta_{\\text{FCC}}$ in 3D (Hales), $\\delta_{E_8}$ in 8D (Viazovska), with the density chain $\\delta_{2D} > \\delta_{3D} > \\delta_{8D}$ proved.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "type checking",
       "verification",

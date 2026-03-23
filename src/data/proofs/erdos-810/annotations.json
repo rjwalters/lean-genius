@@ -10,7 +10,7 @@
     "title": "Problem Overview and Background",
     "content": "Erdős Problem #810 is an OPEN problem of Burr, Erdős, Graham, and Sós asking whether dense graphs ($\\geq \\varepsilon n^2$ edges) can be $n$-colored so that every $C_4$ is rainbow (4 distinct edge colors). The header explains the key tension: $C_4$-free graphs vacuously satisfy the rainbow condition but are too sparse by the Kővári-Sós-Turán theorem ($\\text{ex}(n; C_4) = O(n^{3/2})$). Any positive answer requires many $C_4$'s, all rainbow.",
     "mathContext": "Does $\\exists \\varepsilon > 0$ s.t. for large $n$, $\\exists G$ on $n$ vertices with $\\geq \\varepsilon n^2$ edges and an $n$-coloring where every $C_4$ uses 4 distinct colors?",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "anti-Ramsey theory",
       "rainbow subgraph",
@@ -34,7 +34,7 @@
     "title": "Imports and Setup",
     "content": "Imports Mathlib's simple graph infrastructure with finite graph support, finite set cardinality, and general tactics. The variable `{n : ℕ}` is implicit throughout, making definitions polymorphic in the number of vertices.",
     "mathContext": "Works on `SimpleGraph (Fin n)` with `edgeFinset` for counting edges",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib SimpleGraph",
       "Fin type",

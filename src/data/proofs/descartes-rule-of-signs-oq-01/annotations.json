@@ -10,7 +10,7 @@
     "title": "Descartes' Rule: From Classical Theorem to Mathlib API",
     "content": "The module preamble establishes the full scope of the formalization. The main result — upper bound on positive roots by sign variation count — is proved directly from Mathlib's Polynomial.signVariations API with 0 axioms. Mathlib uses List.destutter on SignType.sign applied to nonzero coefficients to count sign changes. The preamble identifies six new contributions: the Mathlib bridge, sign variation arithmetic (root insertion, negation, scaling), special polynomial families, the negSubst negative-root framework, the linear polynomial case, and the parity challenge. The open parity result (sign variations ≡ positive root count mod 2) requires FTA plus conjugate-pair analysis — not yet in Mathlib.",
     "mathContext": "Mathlib API: `Polynomial.signVariations p` counts sign changes via `List.destutter (·≠·)` on `List.map SignType.sign p.coeffList.filter(·≠0)`. Main theorem: `p.roots_countP_pos_le_signVariations : p.roots.countP (0<·) ≤ p.signVariations` (Wiedijk #100).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Polynomial.signVariations",
       "roots_countP_pos_le_signVariations",

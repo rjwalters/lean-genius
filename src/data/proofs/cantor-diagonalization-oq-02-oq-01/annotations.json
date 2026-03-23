@@ -10,7 +10,7 @@
     "title": "Imports and Namespace Setup",
     "content": "Imports Mathlib's cardinal-ordinal theory (`SetTheory.Cardinal.Ordinal`), cofinality theory (`SetTheory.Cardinal.Cofinality`), and ordinal arithmetic. Opens the `Cardinal` and `Ordinal` namespaces for convenient access to `aleph`, `ord`, `cof`, etc.",
     "mathContext": "The key Mathlib modules provide: `Cardinal.aleph` (the $\\alpha \\mapsto \\aleph_\\alpha$ function), `Cardinal.aleph_lt_aleph` (order characterization), `Cardinal.isRegular_aleph_one` (regularity of $\\aleph_1$), `Cardinal.card_ord` and `Cardinal.lt_ord` (cardinal-ordinal bridge).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "cardinal arithmetic",

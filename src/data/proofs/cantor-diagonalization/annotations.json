@@ -10,7 +10,7 @@
     "title": "Module Overview: Cantor's Diagonalization",
     "content": "Imports basic Mathlib modules (`Logic.Function.Basic`, `Data.Set.Function`, `Tactic`) and provides a comprehensive module docstring covering: (1) the theorem statement — no surjection from $\\mathbb{N}$ to infinite binary sequences; (2) the approach — original diagonal construction without relying on non-trivial Mathlib theorems; (3) historical context — Cantor's 1891 publication that revolutionized understanding of infinity. Opens the `CantorDiagonalization` namespace.",
     "mathContext": "Cantor's theorem (1891): $|\\mathbb{N}| < |2^{\\mathbb{N}}| = |\\mathbb{R}|$. The proof is entirely constructive: given any enumeration, we exhibit a missing sequence.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "uncountability",
       "set theory",
@@ -239,7 +239,7 @@
     "title": "Verification and Namespace Close",
     "content": "Type-checks all four main theorems via `#check`: `cantor_diagonalization`, `no_surjection_nat_to_binary`, `reals_uncountable`, and `cantor_powerset`. Closes the `CantorDiagonalization` namespace.",
     "mathContext": "All four theorems verified: the main diagonalization, no-surjection reformulation, uncountability of reals, and the general power set theorem.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "type checking",
       "#check command"

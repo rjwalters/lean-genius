@@ -10,7 +10,7 @@
     "title": "Problem Overview and References",
     "content": "Erdős Problem #802 asks whether $K_r$-free graphs on $n$ vertices with average degree $t$ must contain an independent set of size $\\gg_r (\\log t / t) \\cdot n$. This is the AEKS conjecture (Ajtai-Erdős-Komlós-Szemerédi, 1981). The header documents the resolution timeline: AKS (1980) proved the full bound for $r = 3$ (triangle-free graphs), AEKS (1981) proved a weaker $(\\log\\log t / t) \\cdot n$ bound for general $r$, Shearer (1995) improved to $(\\log t / (\\log\\log t \\cdot t)) \\cdot n$, and Alon (1996) proved the full bound under stronger local sparsity assumptions.",
     "mathContext": "$\\alpha(G) \\geq c_r \\cdot \\frac{\\log t}{t} \\cdot n$ for $K_r$-free graphs with average degree $t$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "AEKS conjecture",
       "independence number",
@@ -35,7 +35,7 @@
     "title": "Imports and Namespace",
     "content": "Imports Mathlib's simple graph and clique infrastructure, natural number and real number arithmetic, and the natural logarithm from `Analysis.SpecialFunctions.Log.Basic`. The `open SimpleGraph Real` brings graph notation and `Real.log` into scope.",
     "mathContext": "Uses `SimpleGraph.IsClique` for clique detection, `Real.log` for $\\ln$, and `Fintype.card` for $|V|$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib SimpleGraph",
       "natural logarithm",

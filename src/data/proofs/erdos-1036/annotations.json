@@ -10,7 +10,7 @@
     "title": "Imports and Problem Overview",
     "content": "Module documentation describing Erdős Problem #1036 on distinct induced subgraphs in non-Ramsey graphs. Imports SimpleGraph, Finset, Fintype, and real number infrastructure for counting arguments.",
     "mathContext": "A graph $G$ on $n$ vertices is non-Ramsey with parameter $c$ if it has no trivial (empty or complete) induced subgraph on more than $c \\log n$ vertices. Problem 1036 asks whether such graphs must contain $2^{\\Omega_c(n)}$ non-isomorphic induced subgraphs.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ramsey theory",
       "induced subgraph counting",

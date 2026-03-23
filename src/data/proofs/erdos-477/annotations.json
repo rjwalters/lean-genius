@@ -10,7 +10,7 @@
     "title": "Mathlib Imports and Namespace",
     "content": "A single `import Mathlib` pulls in the entire library, then `open Set Function` brings set-theoretic and function notations into scope. The file works inside the `Erdos477` namespace to avoid name collisions.",
     "mathContext": "Uses $\\text{Set}$, $\\text{Function}$, $\\text{range}$, $\\text{Injective}$ from Mathlib.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "namespaces",

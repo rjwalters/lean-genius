@@ -10,7 +10,7 @@
     "title": "Imports and Module Documentation",
     "content": "Imports for Euclidean geometry (EuclideanSpace, inner product), finite sets (Finset), real analysis (NNReal, logarithm), and filter convergence. The module formalizes Erdős Problem #100 on point sets with restricted distances in the plane.",
     "mathContext": "The formalization works in $\\mathbb{R}^2$ modeled as `EuclideanSpace \\mathbb{R} (Fin 2)` with the standard inner product inducing the Euclidean metric $d(p,q) = \\|p - q\\|$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euclidean space",
       "inner product space",

@@ -10,7 +10,7 @@
     "title": "The Missing Piece: ContDiff ℝ 1 γ → IntervalIntegrable",
     "content": "The header identifies precisely what was missing from BuffonsNeedleOQ01OQ01.lean: that file proved buffon_smooth_full but required an explicit `hInnerInt : IntervalIntegrable (fun t => ∫_0^π |dx·sin θ + dy·cos θ| dθ) vol a b`. This file proves that hInnerInt follows automatically from ContDiff ℝ 1 γ via a clean 4-step chain: (1) C¹ → Continuous (fderiv ℝ f) via ContDiff.continuous_fderiv; (2) deriv f t = fderiv ℝ f t 1, so Continuous (deriv f) via clm_apply; (3) angular_average: inner integral = 2√(dx²+dy²); (4) continuity of 2√(dx²+dy²) → IntervalIntegrable. The file achieves 0 sorries, 0 axioms.",
     "mathContext": "The gap: `hInnerInt : IntervalIntegrable (fun t => ∫_0^π |γ'_x(t) sin θ + γ'_y(t) cos θ| dθ) μ a b`. The fill: $\\gamma \\in C^1 \\Rightarrow \\gamma'_x, \\gamma'_y$ continuous $\\Rightarrow$ the integral (= $2\\sqrt{\\gamma_x'^2 + \\gamma_y'^2}$) is continuous $\\Rightarrow$ integrable.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "BuffonsNeedleOQ01OQ01",
       "IntervalIntegrable",

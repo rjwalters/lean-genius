@@ -34,7 +34,7 @@
     "title": "Namespace and Measure-Theoretic Setup",
     "content": "The namespace `AreaOfCircle` scopes all theorems, and `open MeasureTheory Metric` brings the key abstractions into scope: `volume` (the canonical Lebesgue measure on ℂ via `MeasureTheory.MeasureSpace.volume`), `ball` (the open metric ball `{z : dist z c < r}`), and `closedBall` (the closed metric ball `{z : dist z c ≤ r}`). The section docstring explains the modeling choice: using ℂ rather than ℝ² because Mathlib's `Complex.volume_ball` is stated directly for the complex plane. The isomorphism ℂ ≅ ℝ² as real inner product spaces means this is equivalent to the classical Euclidean statement.\n\n**Why ℂ rather than ℝ²?** Mathlib's `Complex.volume_ball` is a directly usable API that gives the volume of a ball in ℂ without manual coordinate identification. Working in ℝ² would require establishing that the product measure on ℝ × ℝ agrees with the canonical volume and that the Euclidean metric ball in ℝ² corresponds to the disk — all of which Mathlib handles automatically for ℂ via the `InnerProductSpace ℝ ℂ` instance.",
     "mathContext": "The complex plane ℂ carries a canonical `MeasureSpace` structure from its identification with ℝ². The Lebesgue measure `volume` on ℂ is the product measure $\\lambda \\otimes \\lambda$ on $\\mathbb{R}^2$. Metric balls in ℂ use $|z - c| = \\sqrt{(\\text{Re}(z-c))^2 + (\\text{Im}(z-c))^2}$, the standard Euclidean distance.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "MeasureSpace",
       "Lebesgue measure",
@@ -83,7 +83,7 @@
     "title": "Properties and Corollaries: Edge Cases and Special Values",
     "content": "This section header introduces five corollaries that exercise the main theorem at boundary values of the radius parameter. The corollaries serve a dual purpose: they verify that the formula behaves correctly at edge cases (r = 0, r < 0, r = 1) and they demonstrate the robustness of the measure-theoretic formulation — unlike a purely geometric definition, the Lebesgue measure approach naturally handles degenerate cases (empty sets have measure 0, singletons have 2D measure 0) without special-case reasoning.",
     "mathContext": "Edge case analysis: $r = 1 \\Rightarrow A = \\pi$ (unit disk), $r = 0 \\Rightarrow A = 0$ (empty/singleton), $r < 0 \\Rightarrow A = 0$ (empty). Each follows from the general formula $A = \\pi r^2$ with `ENNReal.ofReal` mapping negative values to 0.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "edge cases",
       "robustness",

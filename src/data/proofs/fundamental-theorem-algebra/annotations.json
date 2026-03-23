@@ -194,7 +194,7 @@
     "title": "Why FTA Matters: Consequences and Connections",
     "content": "The documentary commentary highlights four consequences: (1) algebraic completeness — no further number system extension is needed; (2) linear algebra — every complex matrix has an eigenvalue (characteristic polynomial has degree $n \\geq 1$, so FTA gives a root $\\lambda$); (3) algebraic closure — $\\mathbb{C}$ is the algebraic closure of both $\\mathbb{R}$ and $\\mathbb{Q}$; (4) the algebra-analysis bridge — the proof requires completeness of $\\mathbb{R}$, showing algebra and analysis are intertwined.\n\nThe Jordan normal form follows from repeated application of FTA: factor $\\det(A - \\lambda I)$ completely over $\\mathbb{C}$ to get eigenvalues, then decompose the matrix into Jordan blocks.",
     "mathContext": "FTA $\\Rightarrow$ $\\det(A - \\lambda I) = 0$ has solutions for any $A \\in M_n(\\mathbb{C})$. The characteristic polynomial $\\chi_A(\\lambda) = \\det(A - \\lambda I)$ has degree $n$, so by FTA it factors as $\\prod_{i=1}^{k}(\\lambda - \\lambda_i)^{m_i}$ with $\\sum m_i = n$. This gives the eigenvalue decomposition that underpins spectral theory.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "eigenvalues",
       "Jordan normal form",

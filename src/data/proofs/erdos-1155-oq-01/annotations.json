@@ -10,7 +10,7 @@
     "title": "Module Header and Imports",
     "content": "Documents the file's scope: extending the parent Erdos1155Problem.lean formalization to analyze the gap between the Bohman-Frieze-Lubetzky (BFL) $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$. Imports all of Mathlib to access filters, real powers, simple graph clique theory, and topological convergence.",
     "mathContext": "Uses Mathlib's filter-based asymptotics: $\\forall^\\infty n$ means `Filter.Eventually` in `atTop`, and convergence uses `Filter.Tendsto` into `nhds`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib filter framework",
       "asymptotic analysis",

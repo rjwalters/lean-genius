@@ -33,7 +33,7 @@
     "title": "Imports",
     "content": "Imports Mathlib's Sidon set library (`Combinatorics.Additive.Sidon`), pointwise finset operations for $A + A$, and filter basics for the infinite version. Opens `Pointwise` for the `+` notation on finsets.",
     "mathContext": "Uses `Finset.Pointwise` for $A + A = \\{a + b : a \\in A,\\, b \\in A\\}$. The Sidon property from Mathlib states that the sumset map $(a,b) \\mapsto a+b$ is injective on unordered pairs.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib.Combinatorics.Additive.Sidon",
       "Finset.Pointwise"

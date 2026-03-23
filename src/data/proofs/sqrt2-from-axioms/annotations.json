@@ -179,7 +179,7 @@
     "title": "Educational Value",
     "content": "**What This Proof Teaches**:\n\n1. **Existential proofs**: Using witnesses (`use k`)\n2. **Case analysis**: `cases even_or_odd n`\n3. **Induction**: Building `even_or_odd` inductively\n4. **Contrapositive**: Proving A → B by proving ¬B → ¬A\n5. **Contradiction**: `absurd` and `exact absurd ⟨h, h_sq_odd⟩ ...`\n\n**Comparison with Mathlib**:\n\n| Approach | Lines | What You Learn |\n|----------|-------|----------------|\n| This file | ~200 | Full proof architecture |\n| Mathlib | 1 | \"Trust the library\" |\n\n**Trade-off**: Mathlib's `exact irrational_sqrt_two` hides:\n- Real number construction\n- Square root definition\n- Irrationality for reals\n- The actual proof\n\nOur version exposes the essential ideas in ~200 lines.",
     "mathContext": "Contrapositive: $\\neg Q \\Rightarrow \\neg P$ is equivalent to $P \\Rightarrow Q$; used as: $\\text{Odd}(n) \\Rightarrow \\text{Odd}(n^2)$ implies $\\text{Even}(n^2) \\Rightarrow \\text{Even}(n)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "proof architecture",
       "Mathlib comparison",

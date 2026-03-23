@@ -10,7 +10,7 @@
     "title": "Siegel Zeros: The Gap Between Nonvanishing and Effective Lower Bounds",
     "content": "The header situates the Siegel zero problem in analytic number theory. Dirichlet's theorem requires L(1,χ) ≠ 0 for non-trivial characters — this is proved. But HOW SMALL can L(1,χ) be? Three levels are known: (1) Nonvanishing: L(1,χ) ≠ 0 (Mathlib); (2) Siegel's ineffective bound: L(1,χ) > C(ε)/q^ε for any ε (ineffective — C(ε) not computable); (3) Conditional GRH: L(1,χ) ≫ 1/log(q) (effective, much stronger). A 'Siegel zero' is a real zero β ∈ (1-c/log(q), 1) of L(s,χ). Its non-existence is equivalent to effective lower bounds. The file formalizes this structure.",
     "mathContext": "Dirichlet character $\\chi$ mod $N$. L-function: $L(s,\\chi) = \\sum_n \\chi(n)/n^s$. Siegel's theorem: $L(1,\\chi) > C(\\varepsilon)/q^\\varepsilon$. GRH bound: $L(1,\\chi) \\gg 1/\\log^2 q$. Siegel zero: $\\beta \\in (1-c/\\log q, 1)$ with $L(\\beta,\\chi)=0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Dirichlet L-functions",
       "Siegel zeros",

@@ -10,7 +10,7 @@
     "title": "Spherical Ceva via Unit Vectors: The Open Question and Its Answer",
     "content": "The file header states and answers OQ-02-OQ-01: Can the spherical Ceva theorem be expressed using concrete unit vectors in a real inner product space? The answer is YES, via weight parameters. Instead of abstract arc lengths, cevian points are defined by D = normalize(α·B + β·C) for α, β > 0. The five key results all follow from a single algebraic identity: n² - (α + βm)² = β²(1 - m²), where n = ‖α·B + β·C‖ and m = ⟪B, C⟫. This file bridges CevasTheoremSinRatio.lean (single cevian sin-ratio) and CevasTheoremNonEuclidean.lean (abstract spherical Ceva) with a concrete, computational formulation.",
     "mathContext": "**Spherical Ceva (classical)**: In a spherical triangle, cevians to arc midpoints D, E, F are concurrent $\\iff$ $\\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = 1$. **Weight parametrization**: $D = \\mathrm{normalize}(\\alpha B + \\beta C)$ means $D$ lies on the arc from $B$ to $C$ at angular position determined by $\\alpha/\\beta$. When $\\alpha = \\beta$, $D$ is the midpoint of arc $BC$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ceva's theorem",
       "spherical geometry",

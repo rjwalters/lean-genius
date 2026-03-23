@@ -203,7 +203,7 @@
     "title": "Significance and Verification",
     "content": "**Why Lagrange's Theorem Matters**:\n\n1. **Structure constraints**: Limits possible subgroup orders to divisors of $|G|$\n2. **Element orders**: Via cyclic subgroups, constrains orders of individual elements\n3. **Counting arguments**: Enables group counting and classification (e.g., groups of order $\\leq 15$)\n4. **Number theory**: Implies Fermat's little theorem and Euler's theorem\n5. **Extensions**: Generalizes to orbit-stabilizer ($|G| = |\\text{Orb}(x)| \\cdot |\\text{Stab}(x)|$) and the class equation\n\n**The false converse**: $n | |G|$ does NOT imply existence of a subgroup of order $n$. The alternating group $A_4$ (order 12) has no subgroup of order 6, despite $6 | 12$. This is because a subgroup of order 6 would be normal (index 2) and isomorphic to $S_3$, but $A_4$'s structure (Klein four-group plus 3-cycles) doesn't permit this.\n\nThe `#check` statements verify all seven exported theorems are well-typed.",
     "mathContext": "Five applications: structure, elements, counting, number theory, orbit-stabilizer",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "orbit-stabilizer",
       "class equation",

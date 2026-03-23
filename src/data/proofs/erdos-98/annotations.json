@@ -10,7 +10,7 @@
     "title": "Problem Documentation and Imports",
     "content": "The header documents Erdős Problem #98 on distinct distances for points in general position ($\\text{no 3 collinear} \\wedge \\text{no 4 concyclic}$). The question is whether $h(n)/n \\to \\infty$, where $h(n)$ is the minimum distinct distances over all $n$-point general-position configurations. Even $h(n) \\ge n$ is unknown. Upper bounds: Pach ($n^{\\log_2 3}$) and EFP ($n \\cdot e^{c\\sqrt{\\log n}}$). Imports Mathlib's inner product spaces, special functions (log, exp, sqrt), Finset, and filters.",
     "mathContext": "$h(n) = \\min\\{|\\{\\|p_i - p_j\\| : i \\ne j\\}| : P \\in \\text{GenPos}(n)\\}$; conjecture: $h(n)/n \\to \\infty$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "distinct distances",
       "general position",

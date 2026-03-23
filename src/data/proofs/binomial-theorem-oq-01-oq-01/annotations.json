@@ -10,7 +10,7 @@
     "title": "Analytic Function Theory Perspective on Newton's Binomial Theorem",
     "content": "This file approaches Newton's generalized binomial theorem through the lens of analytic function theory. Instead of proving convergence directly, it shows that the ODE (1+x)f'(x) = αf(x) with f(0) = 1 uniquely determines f(x) = (1+x)^α. The coefficient recurrence that follows from this ODE is the key to all identities in the file. Mathlib's HasFPowerSeriesOnBall provides the analyticity framework.",
     "mathContext": "The ODE $(1+x)f'(x) = \\alpha f(x)$ with $f(0) = 1$ has unique solution $f(x) = (1+x)^\\alpha$. At the coefficient level: $(k+1)C(\\alpha, k+1) + kC(\\alpha, k) = \\alpha C(\\alpha, k)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "ODE characterization",
       "power series",

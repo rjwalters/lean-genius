@@ -10,7 +10,7 @@
     "title": "Header: Open Question and Proof Strategy",
     "content": "The opening block documents the open question and the Finset.max' proof strategy. The file imports `Mathlib.Tactic` (standard tactic infrastructure), `Mathlib.Data.List.Basic` (prefix sum lemmas like `List.sum_take_succ` and `List.getElem_mem`), and `Mathlib.Data.Finset.Basic` (Finset membership and max' machinery). The header records which sub-goals are solved (ballot_discrete_ivt) and which remain sketched (rightmost_is_good_rotation, integration with the lower bound).",
     "mathContext": "The proof context is the Dvoretzky-Motzkin Cycle Lemma (1947): given $a$ copies of $+1$ and $b$ copies of $-k$ with $a > kb$, exactly $a - kb$ of the $a+b$ cyclic rotations have all partial sums positive. The prefix sum at position $i$ is $P(i) = \\sum_{j=0}^{i-1} l_j$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Dvoretzky-Motzkin cycle lemma",
       "ballot sequences",

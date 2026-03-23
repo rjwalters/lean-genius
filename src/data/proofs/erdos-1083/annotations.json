@@ -34,7 +34,7 @@
     "title": "Mathlib Imports",
     "content": "The formalization imports basic real number and finite set infrastructure from Mathlib. `Data.Real.Basic` provides the ordered field structure on $\\mathbb{R}$, while `Data.Finset.Basic` provides finite set operations needed for counting distinct distances.",
     "mathContext": "The imports provide $\\mathbb{R}$ as an ordered field and $\\text{Finset}$ for finite combinatorics.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "real numbers",
       "finite sets",

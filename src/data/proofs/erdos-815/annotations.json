@@ -10,7 +10,7 @@
     "title": "Problem Overview and References",
     "content": "Erdős Problem #815 asks whether 'degree 3 critical' graphs must contain cycles of all lengths $k \\geq 3$. A degree 3 critical graph has $n$ vertices, $2n-2$ edges, and every proper induced subgraph has minimum degree $\\leq 2$. The conjecture was posed by Erdős and Hajnal and DISPROVED by Narins, Pokrovskiy, and Szabó (2017), who constructed arbitrarily large such graphs avoiding $C_{23}$. Earlier, Erdős, Faudree, Gyárfás, and Schelp (1988) proved that $C_3$, $C_4$, $C_5$ always exist and that the longest cycle lies between $\\log_2 n$ and $\\sqrt{n}$.",
     "mathContext": "Does $G$ degree 3 critical with $|V| = n$, $|E| = 2n - 2$ imply $C_k \\subseteq G$ for all $k \\geq 3$? Answer: NO ($C_{23}$ can be avoided).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "degree 3 critical graph",
       "cycle containment",
@@ -35,7 +35,7 @@
     "title": "Imports and Setup",
     "content": "Imports Mathlib's simple graph infrastructure, subgraph module (for induced subgraphs), connectivity (for walk-based cycle definitions), and finite set cardinality. The variable `{V : Type*} [Fintype V] [DecidableEq V]` makes all definitions polymorphic over the vertex type, which is crucial for the counterexample axiom that existentially quantifies over vertex types.",
     "mathContext": "Uses `SimpleGraph V`, `G.induce S` for induced subgraphs, `G.Walk v v` for cycles",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib SimpleGraph",
       "induced subgraph",

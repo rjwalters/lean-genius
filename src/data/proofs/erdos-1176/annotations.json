@@ -36,7 +36,7 @@
     "title": "Imports and Namespace Setup",
     "content": "Imports cardinal arithmetic from Mathlib (Ordinal and Cofinality modules for $\\aleph$ numbers) and SimpleGraph.Basic for the graph theory infrastructure. The namespace opens Cardinal, Set, and SimpleGraph for convenient access to key definitions.",
     "mathContext": "The formalization builds on Mathlib's cardinal hierarchy, where $\\aleph_0 = |\\mathbb{N}|$ and $\\aleph_1$ is the next infinite cardinal, along with the SimpleGraph type for undirected graphs without self-loops.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib cardinal hierarchy",
       "SimpleGraph"

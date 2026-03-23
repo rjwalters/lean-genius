@@ -34,7 +34,7 @@
     "title": "Imports",
     "content": "Imports Mathlib's basic tactics, natural number and finset infrastructure, and `SimpleGraph.Basic` for the foundational graph theory API. The file defines its own `Graph` structure rather than using Mathlib's `SimpleGraph` directly, bundling adjacency with symmetry and irreflexivity proofs.",
     "mathContext": "Uses `Finset.univ.product` and `Finset.filter` for edge counting, and `Fin n` for vertex indexing. The custom `Graph n` structure packages a decidable adjacency relation on `Fin n`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph",
       "Finset.filter",

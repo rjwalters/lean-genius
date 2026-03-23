@@ -10,7 +10,7 @@
     "title": "Module Structure and Open Question Origin",
     "content": "Imports `Nat.GCD.Basic` for natural number GCD, `Data.Int.GCD` for integer GCD, and `Mathlib.Tactic` for proof automation (including `linear_combination` and `native_decide`). The module documentation traces the open question back through the bezout-identity chain: starting from the basic Bézout identity (OQ-01), through Euclid's lemma generalization (OQ-02), to this constructive algorithm (OQ-02-OQ-01). The key formula $q = uc + vk$ is previewed in the header.",
     "mathContext": "The open question asks whether Bézout coefficients can be combined with Euclid's lemma algorithmically. The affirmative answer: $ua + vb = 1$ and $a | bc$ yield explicit $q = uc + vk$ with $aq = c$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "open question chain",
       "constructive mathematics",

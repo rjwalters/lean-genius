@@ -10,7 +10,7 @@
     "title": "Imports and Dependencies",
     "content": "Imports Mathlib's divisor theory (`Nat.divisors`) and basic natural number arithmetic. The `Nat.divisors` API provides the finite set of divisors of a natural number, which underpins the definition of the sum-of-divisors function $\\sigma(n)$.",
     "mathContext": "The import `Mathlib.NumberTheory.Divisors` provides `Nat.divisors n`, the finset $\\{d \\in \\mathbb{N} : d \\mid n\\}$, enabling $\\sigma(n) = \\sum_{d \\mid n} d$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "divisor lattice",
       "finset summation",

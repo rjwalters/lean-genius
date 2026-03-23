@@ -2,14 +2,27 @@
   {
     "id": "ann-module-header",
     "proofId": "cauchy-schwarz-integral-oq-01",
-    "range": { "startLine": 1, "endLine": 68 },
+    "range": {
+      "startLine": 1,
+      "endLine": 68
+    },
     "type": "context",
     "title": "Module Overview: Hölder → Cauchy-Schwarz → Minkowski for Integrals",
     "content": "This file answers the open question: 'Is Cauchy-Schwarz for integrals a special case of Hölder's inequality?' The answer is YES — the Cauchy-Schwarz integral inequality $\\int fg \\leq \\|f\\|_{L^2}\\|g\\|_{L^2}$ is exactly Hölder with $p = q = 2$.\n\nThe file builds a complete chain:\n1. **Young's AM-GM** (pointwise): $2ab \\leq a^2 + b^2$ via $(a-b)^2 \\geq 0$\n2. **Hölder for lintegral** (ENNReal): wrapping `lintegral_mul_le_Lp_mul_Lq`\n3. **The (2,2) conjugate pair**: proving `HolderConjugate 2 2` (the $1/2 + 1/2 = 1$ verification)\n4. **Cauchy-Schwarz from Hölder**: specializing to $p = q = 2$\n5. **Hölder for real-valued functions**: via nnnorm multiplicativity\n6. **Minkowski's inequality**: $\\|f+g\\|_{L^2} \\leq \\|f\\|_{L^2} + \\|g\\|_{L^2}$ as the norm triangle inequality\n\nImports include `MeasureTheory.Function.LpSpace` and `MeasureTheory.Integral.MeanInequalities` for the $L^p$ space infrastructure.",
     "mathContext": "Proof chain: Young ($2ab \\leq a^2+b^2$) $\\to$ Hölder ($\\int fg \\leq \\|f\\|_p\\|g\\|_q$) $\\to$ CS at $p=q=2$ $\\to$ Minkowski ($\\|f+g\\|_2 \\leq \\|f\\|_2 + \\|g\\|_2$)",
-    "significance": "context",
-    "relatedConcepts": ["measure theory", "L^p spaces", "Hölder's inequality", "integral Cauchy-Schwarz"],
-    "prerequisites": ["MeasureTheory", "ENNReal", "NNReal", "lintegral"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "measure theory",
+      "L^p spaces",
+      "Hölder's inequality",
+      "integral Cauchy-Schwarz"
+    ],
+    "prerequisites": [
+      "MeasureTheory",
+      "ENNReal",
+      "NNReal",
+      "lintegral"
+    ]
   },
   {
     "id": "ann-young-nnreal",

@@ -10,7 +10,7 @@
     "title": "Problem Statement and Imports",
     "content": "The header states Erdős Problem #593: characterize which finite 3-uniform hypergraphs must appear in every 3-uniform hypergraph of uncountable chromatic number. This is a $500 prize problem from Erdős (1995). The formalization imports Mathlib's cardinal arithmetic, Finset, and set theory modules.",
     "mathContext": "A 3-uniform hypergraph $H = (V, E)$ has $E \\subseteq \\binom{V}{3}$. The problem asks: for which finite $F$ is it true that every $H$ with $\\chi(H) > \\aleph_0$ contains a copy of $F$?",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "infinite combinatorics",
       "hypergraph coloring",

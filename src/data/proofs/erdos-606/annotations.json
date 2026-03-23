@@ -34,7 +34,7 @@
     "title": "Mathlib Imports",
     "content": "Imports from Mathlib for inner product spaces (defining $\\mathbb{R}^2$ as `EuclideanSpace ℝ (Fin 2)`), finite set cardinality, affine independence, and general tactics. The use of `EuclideanSpace` provides a concrete model of the Euclidean plane with the standard inner product.",
     "mathContext": "The type `EuclideanSpace ℝ (Fin 2)` is isomorphic to $\\mathbb{R}^2$ with the $\\ell^2$ norm, providing the geometric structure needed for points and lines.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euclidean space",
       "inner product space",

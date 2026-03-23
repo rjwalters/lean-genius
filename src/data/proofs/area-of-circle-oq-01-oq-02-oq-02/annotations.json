@@ -33,7 +33,7 @@
     "title": "Section I: IBP for Fourier Coefficients",
     "content": "The file contains a single section within the `IsoperimetricFourier` namespace, dedicated entirely to the integration by parts formula for Fourier coefficients. The namespace choice reflects the broader goal: this result is infrastructure for the Fourier-analytic proof of the isoperimetric inequality $L^2 \\geq 4\\pi A$. The `noncomputable section` declaration (line 19) is necessary because Fourier coefficients involve integrals, which are noncomputable in Lean's constructive framework.",
     "mathContext": "The `IsoperimetricFourier` namespace groups all lemmas contributing to the Fourier approach to the isoperimetric inequality. This file contributes the derivative formula $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "noncomputable definitions",
       "Lean namespaces",

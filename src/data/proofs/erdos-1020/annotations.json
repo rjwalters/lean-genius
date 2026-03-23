@@ -10,7 +10,7 @@
     "title": "Imports and Module Documentation",
     "content": "Module documentation and imports for finite sets, combinatorics (Nat.choose), and real arithmetic. Formalizes the Erdős Matching Conjecture on maximum edges in r-uniform hypergraphs avoiding k-matchings.",
     "mathContext": "The formalization uses `Finset` for hyperedges (as $r$-element subsets of a finite vertex set), `Nat.choose` for binomial coefficients $\\binom{n}{r}$, and `Nat.cast` for embedding into $\\mathbb{R}$ for asymptotic statements.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "finite sets",
       "binomial coefficients",

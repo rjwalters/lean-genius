@@ -10,7 +10,7 @@
     "title": "Module Overview and Imports",
     "content": "The file imports three Mathlib modules: `GroupTheory.Solvable` (definition of `IsSolvable` and the derived series), `GroupTheory.SpecificGroups.Alternating` (the proof that $A_5$ is simple via `alternatingGroup.isSimpleGroup_five`), and `Tactic` (general-purpose tactics). The module documents the 4-step proof chain from $A_5$ simplicity to Abel-Ruffini and connects to two sibling files in the gallery: `AbelRuffini.lean` (base theorem via `solvableByRad`) and `AbelRuffiniGaloisExtensions.lean` (solvability classifications). This is part of Wiedijk's \"100 Theorems\" project (#83).",
     "mathContext": "The file formalizes the proof chain: $A_5$ simple $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ no radical formula for the general quintic. All group-theoretic content comes from Mathlib's `GroupTheory` library.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib imports",
       "Wiedijk 100 theorems",
@@ -32,7 +32,7 @@
     "title": "Part I Header and Proof Architecture",
     "content": "The file is organized into a single namespace `AbelRuffiniOQ04` with five clearly separated parts, mirroring the logical structure of the Abel-Ruffini proof chain. Part I establishes the foundation (A₅ simplicity), Part II builds the main non-solvability theorem, Part III provides contrast cases, Part IV packages the threshold result, and Part V provides comprehensive documentation. This 'OQ-04' designation indicates the fourth original question/exploration branching from the base `abel-ruffini` gallery entry, focusing specifically on making the internal proof chain explicit.\n\n**Design choice:** The modular architecture ensures that each link in the chain can be independently verified and reused. For instance, `symmetric_not_solvable` can be imported directly by any downstream proof about polynomial solvability without pulling in the pedagogical documentation. This separation of executable proof from mathematical narrative follows the literate programming tradition pioneered by Knuth (1984) and adapted for proof assistants by de Bruijn's Automath project (1968).",
     "mathContext": "The proof chain architecture: foundation ($A_5$ simple) $\\to$ propagation ($S_n$ not solvable) $\\to$ contrast ($S_{\\leq 4}$ solvable) $\\to$ threshold (exact dichotomy) $\\to$ documentation (full chain).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "proof architecture",
       "modular formalization",
@@ -202,7 +202,7 @@
     "title": "Part IV: Packaging the Sharp Dichotomy",
     "content": "Part IV distills the results of Parts II and III into a single theorem witnessing the solvability threshold. Where Part II proved non-solvability for n ≥ 5 and Part III showed solvability for small n, Part IV packages these into a conjunction that formally locates the phase transition. This step is mathematically trivial but pedagogically essential: it makes the sharp dichotomy at n = 5 a single quotable result rather than a pair of separate theorems scattered across the file.\n\n**Mathematical significance of the exact threshold:** The transition at n = 5 is not just a curiosity — it explains why the historical search for a quintic formula was doomed. Lagrange's approach (1771) of analyzing resolvents worked for degrees ≤ 4 precisely because S₄ is solvable: each quotient in the derived series corresponds to a radical extraction step. At degree 5, Lagrange's method produces a resolvent of degree 6 rather than reducing the degree — a symptom of the non-solvability that Abel and Galois would later prove.",
     "mathContext": "The solvability threshold theorem: $\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$ witnesses the exact transition at $n = 5$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "phase transition",
       "proof packaging",
@@ -247,7 +247,7 @@
     "title": "Part V: The Full Chain in Documentation",
     "content": "Part V shifts from executable Lean code to comprehensive mathematical documentation. While Parts I–IV contain machine-checked theorems, Part V reconstructs the complete 5-step proof chain (including Steps 2, 4, and 5 which are handled internally by Mathlib or require field theory not formalized here) in a structured comment. This serves a dual purpose: it connects the formalized steps to the full mathematical narrative, and it provides degree-by-degree comparison tables that make the 'Why 5?' question visually concrete.\n\n**What Steps 4–5 require:** Step 4 (the Galois bridge) requires Mathlib's `solvableByRad.isSolvable'`, which proves that if a polynomial is solvable by radicals then its splitting field has a solvable Galois group. Step 5 requires showing that the generic polynomial of degree n over ℚ(a₁,...,aₙ) has Galois group Sₙ — this follows from the fact that the elementary symmetric polynomials are algebraically independent (a consequence of Newton's identities and the fundamental theorem of symmetric polynomials).",
     "mathContext": "The full chain: $A_5$ simple $\\Rightarrow$ $A_5$ not solvable $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ solvable Galois group needed $\\Rightarrow$ generic quintic unsolvable by radicals.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "literate programming",
       "proof documentation",
@@ -399,7 +399,7 @@
     "title": "Verification via #check",
     "content": "The file ends by type-checking all four main theorems using Lean's `#check` command: `a5_is_simple`, `s5_not_solvable`, `symmetric_not_solvable`, and `five_is_the_threshold`. In Lean 4, `#check` prints the type of a term — if any theorem had a type error, unsatisfied universe constraint, or missing hypothesis, this would produce an error. These four theorems represent the complete proof chain: A₅ simplicity (Step 1), S₅ non-solvability (Steps 1-3 composed), the general theorem for all n ≥ 5 (Step 3 generalized), and the sharp threshold witness (combining Steps 3 and the solvable small cases).\n\n**Types displayed by #check:**\n- `a5_is_simple : IsSimpleGroup (alternatingGroup (Fin 5))`\n- `s5_not_solvable : ¬IsSolvable (Equiv.Perm (Fin 5))`\n- `symmetric_not_solvable : ∀ (n : ℕ), 5 ≤ n → ¬IsSolvable (Equiv.Perm (Fin n))`\n- `five_is_the_threshold : IsSolvable (Equiv.Perm (Fin 1)) ∧ ¬IsSolvable (Equiv.Perm (Fin 5))`\n\nNote: `Equiv.Perm (Fin n)` is Lean's representation of Sₙ — the group of all bijections from `Fin n` to itself under composition.",
     "mathContext": "The four checked theorems: (1) `IsSimpleGroup(A_5)`, (2) $\\neg\\text{IsSolvable}(S_5)$, (3) $\\forall n \\geq 5,\\ \\neg\\text{IsSolvable}(S_n)$, (4) $\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "type checking",
       "#check command",

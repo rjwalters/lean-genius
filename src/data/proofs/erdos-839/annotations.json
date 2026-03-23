@@ -10,7 +10,7 @@
     "title": "Problem Header and Imports",
     "content": "The formalization imports Mathlib's natural number basics, finite sets, and filter theory. The header describes Problem #839 on sequences $1 \\leq a_1 < a_2 < \\cdots$ where no term equals a sum of consecutive earlier terms. Two open questions concern growth rate ($\\limsup a_n/n = \\infty$?) and logarithmic density (vanishing?). Known results include Freud's construction with upper density $19/36$, disproving Erdős's conjecture of $\\leq 1/2$.",
     "mathContext": "Imports: Finset, Filter.Basic, Nat.Basic for formalizing $\\sum_{k=i}^{j} a_k$, $\\limsup$, and sequence properties.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.Icc",
       "Filter.limsup",
@@ -229,7 +229,7 @@
     "title": "Empty Consecutive Sum (Proved)",
     "content": "When $j < i$, the interval $[i, j]$ is empty, so the consecutive sum is $0$. This boundary case is handled via `Finset.Icc_eq_empty`, ensuring the sum function is well-behaved for degenerate ranges.",
     "mathContext": "$j < i \\implies \\sum_{k=i}^{j} a_k = 0$ (sum over empty set).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "empty sum convention",
       "Finset.Icc_eq_empty"

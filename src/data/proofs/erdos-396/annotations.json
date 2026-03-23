@@ -10,7 +10,7 @@
     "title": "Imports and Setup",
     "content": "Imports Mathlib modules for natural number arithmetic, central binomial coefficients (`Nat.centralBinom`), and factorial operations (`Nat.descFactorial`). The `Nat.centralBinom n` computes $\\binom{2n}{n}$ directly, while `Nat.descFactorial n k` computes the descending factorial $n(n-1)\\cdots(n-k+1)$.",
     "mathContext": "`Nat.centralBinom n` $= \\binom{2n}{n}$, `Nat.descFactorial n k` $= n^{\\underline{k}} = \\frac{n!}{(n-k)!}$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "central binomial coefficient",

@@ -10,7 +10,7 @@
     "title": "Complexity Models: Counting Multiplications",
     "content": "The module defines three concrete complexity functions. `detMuls n = n * n!` counts the multiplications in one n×n determinant via the Leibniz expansion: n! permutations each requiring n multiplications. `cramersRuleMuls n = (n+1) * detMuls n` counts the full cost of Cramer's rule: we need det(A) plus det(A₁),...,det(Aₙ), totaling n+1 determinants. `gaussMuls n = n³` is a conservative upper bound for Gaussian elimination (the true count is ≈n³/3). The lemma `cramersRuleMuls_eq` expands the definition to `(n+1)*n*n!`, the form used in proofs. Small examples: at n=4, Cramer needs 480 vs Gaussian's 64; at n=6, Cramer needs 30240 vs Gaussian's 216.",
     "mathContext": "Leibniz formula: $\\det(A) = \\sum_{\\sigma \\in S_n} \\text{sgn}(\\sigma) \\prod_{i=1}^n a_{i,\\sigma(i)}$. Cost: $|S_n| = n!$ terms, each costing $n$ multiplications, giving $n \\cdot n!$ total. Gaussian elimination via forward elimination + back-substitution: $(n-1) + (n-2) + \\cdots + 1 \\approx n^2/2$ pivot operations, each costing $O(n)$, giving $O(n^3/3)$ total.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "detMuls",
       "cramersRuleMuls",
@@ -130,7 +130,7 @@
     "title": "nlinarith for Factorial-Polynomial Inequalities",
     "content": "The `nlinarith` tactic appears at two key points. In the factorial induction (`factorial_gt_sq`), `nlinarith [Nat.factorial_pos m]` closes `(m+1)² < (m+1)*m!` from `m²<m!` — the hint provides `0<m!` which lets nlinarith multiply hypotheses and find the Positivstellensatz certificate. In the main theorem, `nlinarith [Nat.factorial_pos n]` closes `n³ < (n+1)*n*n!` from `n²<n!` and `0<n`. The tactic works because the goal is a polynomial inequality in n with n! treated as an atomic variable satisfying `n!>n²`.",
     "mathContext": "nlinarith uses a Positivstellensatz certificate: it searches for a nonnegative linear combination of products of hypotheses that equals the negation of the goal. For `n³ < (n+1)*n*n!` given `n²<n!` and `0<n`: the certificate involves `n * (n! - n²) > 0` (product of `n>0` and `n!>n²`), giving `n*n! > n*n² = n³`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "nlinarith",
       "Positivstellensatz",
@@ -154,7 +154,7 @@
     "title": "Summary: Three Components of the Complexity Gap",
     "content": "The capstone theorem `cramer_vs_gauss_summary` packages three complementary results: (1) the pointwise comparison (Gaussian < Cramer for n≥4 via factorial growth), (2) the asymptotic dominance (for any K, the gap eventually exceeds K-fold), and (3) the concrete anchor (at n=4: 64 vs 480, a 7.5× gap). Together these establish not just that Gaussian is faster, but that it is faster by a super-polynomial factor that grows without any bound. The proof is a simple structural conjunction of the three previously proved theorems, showing the modular design: each component was proved cleanly and the summary theorem just assembles them.",
     "mathContext": "The three components together imply: $\\frac{\\text{cramersRuleMuls}(n)}{\\text{gaussMuls}(n)} = \\frac{(n+1) \\cdot n!}{n^2} \\to \\infty$ faster than any polynomial. Specifically, $\\frac{(n+1) \\cdot n!}{n^2} \\geq n-1$ for $n \\geq 4$ (since $n! \\geq n^3$ for $n \\geq 6$), so the ratio grows at least linearly in n — and in fact super-polynomially since $n! / n^k \\to \\infty$ for any fixed $k$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "cramer_vs_gauss_summary",
       "gauss_beats_cramer",

@@ -10,7 +10,7 @@
     "title": "Problem Setup: Density Hierarchy and Historical Context",
     "content": "The file imports Mathlib's Bertrand machinery (Nat.bertrand, Nat.primeCounting, Nat.log) plus a local helper module PrimeGapBounds. The header block presents a four-row density hierarchy table from longest known (Bertrand: [n, 2n]) to shortest open (Cramér: [x, x+(log x)^2]), contextualizing the open question. Key dates: Bertrand conjecture 1845, Chebyshev proof 1852, Erdős elementary proof 1932 via central binomial coefficients, Legendre conjecture 1845 (still open), Cramér conjecture 1936 (still open), Baker-Harman-Pintz record 2001.",
     "mathContext": "The central question: what is $\\inf\\{\\theta : \\text{every } [x, x+x^\\theta] \\text{ has a prime for large } x\\}$? Known: $\\leq 0.525$ (BHP). Bertrand gives $\\leq 1$. PNT predicts $h/\\ln x$ primes in $[x, x+h]$ for $h \\gg \\ln x$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Bertrand's postulate",
       "prime counting function",

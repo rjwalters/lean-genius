@@ -10,7 +10,7 @@
     "title": "Module Header: Imports and Historical Documentation",
     "content": "The file imports three Mathlib modules: `BigOperators.Intervals` (providing `Finset.sum_range_id` and `sum_range_id_mul_two`), `BigOperators.Ring.Finset` (for `sum_add_distrib`, `sum_mul`, and `sum_const`), and `Tactic` (general-purpose tactics including `ring`, `omega`, and `native_decide`). The module docstring documents the formula's attribution to Gauss (~1785), the famous schoolboy anecdote, and notes that the formula was known to the ancient Greeks and Babylonians. This is Wiedijk's 100 Theorems #68.\n\nThe `open Finset BigOperators` declaration brings `range`, `sum`, and the `∑` notation into scope, enabling concise summation expressions throughout the file.",
     "mathContext": "The file proves $\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}$ (Wiedijk #68) and extensions: general arithmetic series $\\sum(a+kd)$, sum of odd numbers $= n^2$, and triangular number properties.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib BigOperators",
       "Wiedijk 100 theorems",
@@ -296,7 +296,7 @@
     "title": "Verification and Namespace Close",
     "content": "**Type-checks the six main results using `#check`.**\n\nThe verified theorems are: `gauss_sum` ($\\sum_{0}^{n} = n(n+1)/2$), `gauss_sum_zero_indexed` (0-indexed variant), `arithmetic_series_sum` (general arithmetic progression), `sum_odd_numbers` ($\\sum(2k+1) = n^2$), `triangular` (definition), and `triangular_recurrence` ($T(n+1) = T(n) + (n+1)$). Together these constitute 11 theorems and 1 definition covering the classical theory of arithmetic series and triangular numbers.",
     "mathContext": "All 11 theorems and 1 definition verified with 0 sorries and 0 axioms.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "#check command",
       "proof verification",

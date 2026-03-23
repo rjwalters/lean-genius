@@ -10,7 +10,7 @@
     "title": "Aristotle Proof Search Results",
     "content": "This file was automatically proved by Aristotle, an automated proof search tool for Lean 4. All three theorems (`erdos_1_lower_bound`, `max_element_bound`, `subset_sums_spacing`) were found without human intervention. The header documents the Lean/Mathlib versions used and lists the proved theorems with their full type signatures. This is a notable Aristotle success: the proofs involve non-trivial case analysis (`rcases` with three cases), tactic composition (`simp_all`, `linarith`, `grind`), and proof reduction (`convert` to apply a general theorem to a specific corollary).",
     "mathContext": "Aristotle found proofs of three results about distinct subset sums: (1) $2^{|A|-1} \\leq N$, (2) $2^{|A|-1} \\leq \\max(A)$, (3) $S \\neq T \\Rightarrow \\sum S \\neq \\sum T$ for $S, T \\subseteq A$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Aristotle proof search",
       "automated theorem proving",

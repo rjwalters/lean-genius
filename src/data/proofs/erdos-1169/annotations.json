@@ -10,7 +10,7 @@
     "title": "Imports and Setup",
     "content": "Imports Mathlib's ordinal arithmetic, cardinal arithmetic, and the cardinal-ordinal interface. These provide the foundation for expressing ordinal partition relations: `Ordinal.Arithmetic` supplies ordinal multiplication (for $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$), `Cardinal.Basic` provides $\\aleph_0$ and $\\aleph_1$, and `Cardinal.Ordinal` connects cardinals to ordinals via `.ord`.",
     "mathContext": "The ordinals $\\omega_1$ and $\\omega_1^2$ are defined using `Cardinal.aleph 1` and ordinal multiplication from Mathlib.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib ordinal arithmetic",
       "cardinal-ordinal correspondence"

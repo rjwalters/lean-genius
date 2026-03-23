@@ -34,7 +34,7 @@
     "title": "Imports and Setup",
     "content": "Imports Mathlib modules for the complex unit circle, normed spaces, filters (for limsup and eventually), and big operators (for finite sums and products). Opens the Filter and Finset namespaces for convenient access to `atTop`, `limsup`, `range`, and `∑`/`∏`.",
     "mathContext": "Uses `Filter.atTop.limsup` for $\\limsup_{n \\to \\infty}$, `Filter.Eventually` for '$\\forall^\\infty n$', and `Finset.range` for $\\{0, \\ldots, n-1\\}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Filter.atTop",
       "Finset.range",

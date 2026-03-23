@@ -2,85 +2,164 @@
   {
     "id": "ann-imports",
     "proofId": "arithmetic-series-oq-02",
-    "range": { "startLine": 1, "endLine": 4 },
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
     "type": "context",
     "title": "Imports: Choose, BigOperators, Tactic",
     "content": "The proof imports `Mathlib.Data.Nat.Choose.Basic` for binomial coefficients (`Nat.choose`, `Nat.choose_self`, `Nat.choose_succ_succ`, `Nat.choose_one_right`), `Mathlib.Algebra.BigOperators.Intervals` for `Finset.sum_range_succ`, and `Mathlib.Tactic` for `linarith`, `nlinarith`, `ring`, and `simp`.",
     "mathContext": "The key Mathlib theorem is `Nat.choose_succ_succ (n k : ℕ) : Nat.choose (n+1) (k+1) = Nat.choose n k + Nat.choose n (k+1)` — Pascal's identity. This single lemma drives both the recurrence and the hockey stick inductive step.",
-    "significance": "context",
-    "relatedConcepts": ["binomial coefficients", "Pascal's triangle", "BigOperators", "Finset.sum"],
-    "prerequisites": ["Lean 4 imports", "Nat.choose definition"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial coefficients",
+      "Pascal's triangle",
+      "BigOperators",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Nat.choose definition"
+    ]
   },
   {
     "id": "ann-simplicial-def",
     "proofId": "arithmetic-series-oq-02",
-    "range": { "startLine": 48, "endLine": 52 },
+    "range": {
+      "startLine": 48,
+      "endLine": 52
+    },
     "type": "definition",
     "title": "The Simplicial Number Definition",
     "content": "The k-th simplicial number sequence is defined as `simplicial k n := Nat.choose (n + k) k`. This single definition encodes: 0-simplex (points), 1-simplex (natural numbers), 2-simplex (triangular numbers), 3-simplex (tetrahedral numbers), and all higher dimensions. The index n ranges from 0, giving simplicial k 0 = C(k,k) = 1 for all k.",
     "mathContext": "The n-th k-simplex number counts the number of n-element multisets from a k-element set, equivalently the number of lattice paths in k-dimensional space. The formula $S_k(n) = \\binom{n+k}{k} = \\frac{(n+k)!}{n! \\cdot k!}$ is a polynomial of degree k in n.",
     "significance": "key",
-    "relatedConcepts": ["binomial coefficients", "multisets", "lattice paths", "Pascal's triangle"],
-    "prerequisites": ["Nat.choose definition", "combinatorial interpretation"]
+    "relatedConcepts": [
+      "binomial coefficients",
+      "multisets",
+      "lattice paths",
+      "Pascal's triangle"
+    ],
+    "prerequisites": [
+      "Nat.choose definition",
+      "combinatorial interpretation"
+    ]
   },
   {
     "id": "ann-basic-props",
     "proofId": "arithmetic-series-oq-02",
-    "range": { "startLine": 55, "endLine": 70 },
+    "range": {
+      "startLine": 55,
+      "endLine": 70
+    },
     "type": "technique",
     "title": "Basic Properties: One-Line Simp Proofs",
     "content": "The three basic properties — `simplicial_zero`, `simplicial_start`, `simplicial_one` — are each one-line `simp` proofs using Mathlib's choose lemmas. `simplicial_zero n : S_0(n) = 1` uses `choose_zero_right`. `simplicial_start k : S_k(0) = 1` uses `choose_self`. `simplicial_one n : S_1(n) = n+1` uses `choose_one_right`.",
     "mathContext": "These three base cases correspond to: (1) the 0-simplex is always 1 point; (2) any simplex has 1 vertex at n=0; (3) the 1-simplex sequence counts points on a line segment from 1 to n+1.",
     "significance": "supporting",
-    "relatedConcepts": ["Nat.choose_zero_right", "Nat.choose_self", "Nat.choose_one_right"],
-    "prerequisites": ["simplicial definition", "Nat.choose boundary cases"]
+    "relatedConcepts": [
+      "Nat.choose_zero_right",
+      "Nat.choose_self",
+      "Nat.choose_one_right"
+    ],
+    "prerequisites": [
+      "simplicial definition",
+      "Nat.choose boundary cases"
+    ]
   },
   {
     "id": "ann-recurrence",
     "proofId": "arithmetic-series-oq-02",
-    "range": { "startLine": 72, "endLine": 84 },
+    "range": {
+      "startLine": 72,
+      "endLine": 84
+    },
     "type": "insight",
     "title": "Pascal's Recurrence for Simplicial Numbers",
     "content": "The recurrence `simplicial_succ_recurrence`: S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1). This is Pascal's identity in disguise: C(n+k+2, k+1) = C(n+k+1, k+1) + C(n+k+1, k). The proof normalizes the index arithmetic to match `Nat.choose_succ_succ (n+k+1) k`, then uses `linarith` to handle the commutativity difference: Pascal gives C(n+k+1,k)+C(n+k+1,k+1) = C(n+k+2,k+1), but the goal has the right-hand side in reversed order.",
     "mathContext": "Pascal's identity $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ is equivalent to counting subsets by whether they include the largest element. Specialized to our indices: $S_{k+1}(n+1) = \\binom{n+k+2}{k+1} = \\binom{n+k+1}{k+1} + \\binom{n+k+1}{k} = S_{k+1}(n) + S_k(n+1)$.",
     "significance": "key",
-    "relatedConcepts": ["Pascal's identity", "Nat.choose_succ_succ", "index normalization", "linarith"],
-    "prerequisites": ["simplicial definition", "Nat.choose_succ_succ"]
+    "relatedConcepts": [
+      "Pascal's identity",
+      "Nat.choose_succ_succ",
+      "index normalization",
+      "linarith"
+    ],
+    "prerequisites": [
+      "simplicial definition",
+      "Nat.choose_succ_succ"
+    ]
   },
   {
     "id": "ann-hockey-stick",
     "proofId": "arithmetic-series-oq-02",
-    "range": { "startLine": 99, "endLine": 110 },
+    "range": {
+      "startLine": 99,
+      "endLine": 110
+    },
     "type": "insight",
     "title": "The Hockey Stick Identity: Inductive Proof",
     "content": "The main theorem: ∑_{i=0}^n S_k(i) = S_{k+1}(n), proved by induction on n. Base case (n=0): ∑_{i=0}^0 S_k(i) = S_k(0) = 1 = C(k+1,k+1) = S_{k+1}(0), using `choose_self`. Inductive step: ∑_{i=0}^{n+1} S_k(i) = (∑_{i=0}^n S_k(i)) + S_k(n+1) = S_{k+1}(n) + S_k(n+1) = S_{k+1}(n+1) by the recurrence. The proof is exactly 2 lines of Lean after unfolding.",
     "mathContext": "The Hockey Stick Identity $\\sum_{i=0}^{n} \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$ is named after the shape it traces in Pascal's triangle: starting from C(k,k)=1 and summing diagonally, the result jumps to the next diagonal. It has a bijective proof: count (n+1)-element multisets from [k+1] by fixing the largest element.",
     "significance": "key",
-    "relatedConcepts": ["Hockey Stick Identity", "Pascal's triangle diagonal sums", "simplicial_succ_recurrence", "induction"],
-    "prerequisites": ["simplicial_start", "simplicial_succ_recurrence", "sum_range_succ"]
+    "relatedConcepts": [
+      "Hockey Stick Identity",
+      "Pascal's triangle diagonal sums",
+      "simplicial_succ_recurrence",
+      "induction"
+    ],
+    "prerequisites": [
+      "simplicial_start",
+      "simplicial_succ_recurrence",
+      "sum_range_succ"
+    ]
   },
   {
     "id": "ann-arithmetic-connection",
     "proofId": "arithmetic-series-oq-02",
-    "range": { "startLine": 113, "endLine": 130 },
+    "range": {
+      "startLine": 113,
+      "endLine": 130
+    },
     "type": "technique",
     "title": "Connecting to Gauss's Formula",
     "content": "`arithmetic_to_triangular` proves ∑_{i=0}^n (i+1) = S_2(n) by a calc proof with two steps: (1) rewrite (i+1) as simplicial 1 i using `Finset.sum_congr rfl` + `simplicial_one`; (2) apply `hockey_stick_sum 1 n`. The `sum_congr` approach is used instead of `simp_rw` to avoid accidentally rewriting `n+1` in `range (n+1)` to `simplicial 1 n`. `triangular_to_tetrahedral` is immediate from `hockey_stick_sum 2 n`.",
     "mathContext": "Gauss's formula $1 + 2 + \\cdots + (n+1) = (n+1)(n+2)/2$ is the k=1 hockey stick: $\\sum_{i=0}^{n} (i+1) = \\sum_{i=0}^{n} S_1(i) = S_2(n) = \\binom{n+2}{2} = (n+1)(n+2)/2$. The tetrahedral sum $\\sum T_i = T_n^{(3)}$ is the k=2 instance.",
     "significance": "supporting",
-    "relatedConcepts": ["Gauss's formula", "Finset.sum_congr", "hockey_stick_sum", "triangular numbers"],
-    "prerequisites": ["hockey_stick_sum", "simplicial_one", "Finset.sum_congr"]
+    "relatedConcepts": [
+      "Gauss's formula",
+      "Finset.sum_congr",
+      "hockey_stick_sum",
+      "triangular numbers"
+    ],
+    "prerequisites": [
+      "hockey_stick_sum",
+      "simplicial_one",
+      "Finset.sum_congr"
+    ]
   },
   {
     "id": "ann-formulas",
     "proofId": "arithmetic-series-oq-02",
-    "range": { "startLine": 136, "endLine": 165 },
+    "range": {
+      "startLine": 136,
+      "endLine": 165
+    },
     "type": "technique",
     "title": "Closed Formulas by Induction + nlinarith",
     "content": "The closed form theorems `simplicial_two_formula` (S_2(n)*2=(n+1)(n+2)) and `simplicial_three_formula` (S_3(n)*6=(n+1)(n+2)(n+3)) are proved by induction. The key tool is `nlinarith` (nonlinear arithmetic): at each inductive step, the IH gives S_k(n)*constant = polynomial, and the recurrence reduces the step to a nonlinear inequality like `(n+1)*(n+2) + (n+2)*2 = (n+2)*(n+3)`, which `nlinarith` handles. The formulation `S_2(n)*2 = ...` avoids natural number division issues.",
     "mathContext": "The closed forms $S_2(n) = \\binom{n+2}{2} = \\frac{(n+1)(n+2)}{2}$ and $S_3(n) = \\binom{n+3}{3} = \\frac{(n+1)(n+2)(n+3)}{6}$ follow from the definition. Working with $S_2(n) \\cdot 2 = (n+1)(n+2)$ instead of $S_2(n) = \\frac{(n+1)(n+2)}{2}$ avoids natural number division complications.",
     "significance": "supporting",
-    "relatedConcepts": ["nlinarith tactic", "natural number division avoidance", "inductive formulas", "simplicial_succ_recurrence"],
-    "prerequisites": ["simplicial_succ_recurrence", "simplicial_one", "nlinarith"]
+    "relatedConcepts": [
+      "nlinarith tactic",
+      "natural number division avoidance",
+      "inductive formulas",
+      "simplicial_succ_recurrence"
+    ],
+    "prerequisites": [
+      "simplicial_succ_recurrence",
+      "simplicial_one",
+      "nlinarith"
+    ]
   }
 ]

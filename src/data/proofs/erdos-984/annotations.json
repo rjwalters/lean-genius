@@ -33,7 +33,7 @@
     "title": "Imports and Namespace",
     "content": "The formalization imports Mathlib modules for natural number and real number arithmetic, finsets for representing arithmetic progressions, real-valued exponentiation for the growth bound a^ε, and filters for asymptotic analysis. The Erdos984 namespace isolates all definitions.",
     "mathContext": "Real exponentiation $a^\\varepsilon$ (via `Real.rpow`) is essential because the growth condition involves fractional powers of natural numbers, requiring passage to the reals.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "real exponentiation",

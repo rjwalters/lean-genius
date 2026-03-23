@@ -8,11 +8,11 @@
     },
     "type": "context",
     "title": "Problem Statement and Survey of Known Results",
-    "content": "Header documentation establishing Erd\u0151s Problem #1142: are there infinitely many n such that n \u2212 2^k is prime for all 1 < 2^k < n? The known values are n \u2208 {4, 7, 15, 21, 45, 75, 105} (OEIS A039669). Mientka & Weitzenkamp (1969) verified no other n \u2264 2^{44} satisfy this. Vaughan (1973) showed the count of such n up to N is extremely sparse. Erd\u0151s conjectured the number of primes of the form n \u2212 2^k is o(log n), which would imply only finitely many n satisfy the full property.",
+    "content": "Header documentation establishing Erdős Problem #1142: are there infinitely many n such that n − 2^k is prime for all 1 < 2^k < n? The known values are n ∈ {4, 7, 15, 21, 45, 75, 105} (OEIS A039669). Mientka & Weitzenkamp (1969) verified no other n ≤ 2^{44} satisfy this. Vaughan (1973) showed the count of such n up to N is extremely sparse. Erdős conjectured the number of primes of the form n − 2^k is o(log n), which would imply only finitely many n satisfy the full property.",
     "mathContext": "The problem asks: is $\\{n \\in \\mathbb{N} : n - 2^k \\text{ prime for all } 1 < 2^k < n\\}$ infinite? Known elements: $\\{4, 7, 15, 21, 45, 75, 105\\}$. Computational search to $2^{44}$ found no others.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Erd\u0151s problems",
+      "Erdős problems",
       "prime gaps",
       "Goldbach-type problems",
       "OEIS A039669"
@@ -31,7 +31,7 @@
     },
     "type": "definition",
     "title": "Core Definitions: powersOfTwoBetween and SatisfiesErdos1142",
-    "content": "`powersOfTwoBetween n` computes the finite set {2^k : k \u2265 1, 2^k < n} by filtering exponents in Finset.range n and mapping through 2^(\u00b7). `SatisfiesErdos1142 n` requires (1) this set is nonempty (n \u2265 4, since 2^1 = 2 < 4) and (2) n \u2212 m is prime for every m in the set. The `Decidable` instance enables computational verification via `native_decide`. The definition uses universal quantification over a finite set, making it both mathematically precise and computationally tractable.",
+    "content": "`powersOfTwoBetween n` computes the finite set {2^k : k ≥ 1, 2^k < n} by filtering exponents in Finset.range n and mapping through 2^(·). `SatisfiesErdos1142 n` requires (1) this set is nonempty (n ≥ 4, since 2^1 = 2 < 4) and (2) n − m is prime for every m in the set. The `Decidable` instance enables computational verification via `native_decide`. The definition uses universal quantification over a finite set, making it both mathematically precise and computationally tractable.",
     "mathContext": "$\\text{SatisfiesErdos1142}(n) \\iff \\{2^k : 1 \\leq k,\\, 2^k < n\\} \\neq \\emptyset \\land \\forall m \\in \\{2^k : 2^k < n\\},\\, (n-m) \\text{ is prime}$",
     "significance": "key",
     "relatedConcepts": [
@@ -55,7 +55,7 @@
     },
     "type": "technique",
     "title": "Computational Verification of OEIS A039669",
-    "content": "Seven theorems verify each element of OEIS A039669 satisfies the property, all proved by `native_decide`. For n = 105 (the largest known), the powers of 2 in (1, 105) are {2, 4, 8, 16, 32, 64}, and 105 minus each gives {103, 101, 97, 89, 73, 41} \u2014 all prime. The increasing number of primality conditions (from 1 for n=4 to 6 for n=105) illustrates why larger solutions become exponentially harder to find: n must simultaneously satisfy \u230blog\u2082 n\u230b primality tests.",
+    "content": "Seven theorems verify each element of OEIS A039669 satisfies the property, all proved by `native_decide`. For n = 105 (the largest known), the powers of 2 in (1, 105) are {2, 4, 8, 16, 32, 64}, and 105 minus each gives {103, 101, 97, 89, 73, 41} — all prime. The increasing number of primality conditions (from 1 for n=4 to 6 for n=105) illustrates why larger solutions become exponentially harder to find: n must simultaneously satisfy ⌋log₂ n⌋ primality tests.",
     "mathContext": "Known values: $4 - 2 = 2$; $7 - \\{2,4\\} = \\{5,3\\}$; $15 - \\{2,4,8\\} = \\{13,11,7\\}$; $21 - \\{2,4,8,16\\} = \\{19,17,13,5\\}$; $45 - \\{2,4,8,16,32\\} = \\{43,41,37,29,13\\}$; $75 - \\{2,4,8,16,32,64\\} = \\{73,71,67,59,43,11\\}$; $105 - \\{2,4,8,16,32,64\\} = \\{103,101,97,89,73,41\\}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -76,8 +76,8 @@
       "endLine": 143
     },
     "type": "technique",
-    "title": "Structural Properties: n \u2265 4, Parity, and n \u2212 2 Prime",
-    "content": "`erdos1142_ge_4` proves n \u2265 4 by extracting an element from powersOfTwoBetween (existence gives n \u2265 3, then primality of n\u22122 gives n\u22122 \u2265 2, so n \u2265 4). `erdos1142_n_minus_2_prime` shows n\u22122 is always prime (since 2 \u2208 powersOfTwoBetween n for n \u2265 3). `erdos1142_odd_or_4` proves parity: if n > 4 is even, then n\u22122 is even and \u2265 4, contradicting primality. The proof uses `Prime.eq_one_or_self_of_dvd` to show that 2 | (n\u22122) with n\u22122 prime forces n\u22122 = 2, hence n = 4. `erdos1142_mod2` packages this as n % 2 = 1 for n > 4.",
+    "title": "Structural Properties: n ≥ 4, Parity, and n − 2 Prime",
+    "content": "`erdos1142_ge_4` proves n ≥ 4 by extracting an element from powersOfTwoBetween (existence gives n ≥ 3, then primality of n−2 gives n−2 ≥ 2, so n ≥ 4). `erdos1142_n_minus_2_prime` shows n−2 is always prime (since 2 ∈ powersOfTwoBetween n for n ≥ 3). `erdos1142_odd_or_4` proves parity: if n > 4 is even, then n−2 is even and ≥ 4, contradicting primality. The proof uses `Prime.eq_one_or_self_of_dvd` to show that 2 | (n−2) with n−2 prime forces n−2 = 2, hence n = 4. `erdos1142_mod2` packages this as n % 2 = 1 for n > 4.",
     "mathContext": "Structural constraints: (1) $n \\geq 4$ (need $2 < n$). (2) $n - 2$ is prime. (3) For $n > 4$: $n$ is odd (if even, $n-2$ even and $\\geq 4$, not prime). These reduce the search space to odd $n \\geq 7$.",
     "significance": "key",
     "relatedConcepts": [
@@ -100,13 +100,13 @@
     },
     "type": "concept",
     "title": "The Open Conjecture and Stronger Quantitative Version",
-    "content": "`erdos_1142_conjecture` states the main open problem as `Set.Infinite {n : \u2115 | SatisfiesErdos1142 n}`. `erdos_1142_stronger_conjecture` formalizes Erd\u0151s's quantitative conjecture: for every \u03b5 > 0, for sufficiently large n, the count of k with n \u2212 2^k prime is at most \u03b5 \u00b7 log\u2082(n). This o(log n) bound on the prime count would imply that eventually no n can satisfy ALL \u230blog\u2082 n\u230b conditions simultaneously, suggesting the set {4, 7, 15, 21, 45, 75, 105} is complete. The formal statement uses Finset.filter.card cast to \u211d and compared with \u03b5 \u00b7 Nat.log 2 n.",
+    "content": "`erdos_1142_conjecture` states the main open problem as `Set.Infinite {n : ℕ | SatisfiesErdos1142 n}`. `erdos_1142_stronger_conjecture` formalizes Erdős's quantitative conjecture: for every ε > 0, for sufficiently large n, the count of k with n − 2^k prime is at most ε · log₂(n). This o(log n) bound on the prime count would imply that eventually no n can satisfy ALL ⌋log₂ n⌋ conditions simultaneously, suggesting the set {4, 7, 15, 21, 45, 75, 105} is complete. The formal statement uses Finset.filter.card cast to ℝ and compared with ε · Nat.log 2 n.",
     "mathContext": "**Main conjecture**: $|\\{n : \\text{SatisfiesErdos1142}(n)\\}| = \\infty$? **Stronger conjecture**: $|\\{k : 1 \\leq k,\\, 2^k < n,\\, n-2^k \\text{ prime}\\}| = o(\\log_2 n)$. If the stronger conjecture holds with $\\varepsilon = 1/2$, then for large $n$, prime count $\\leq \\frac{1}{2}\\log_2 n < \\lfloor\\log_2 n\\rfloor$, so not ALL differences can be prime.",
     "significance": "key",
     "relatedConcepts": [
       "Set.Infinite",
       "o(log n) density",
-      "Erd\u0151s conjecture",
+      "Erdős conjecture",
       "prime counting in arithmetic sets"
     ],
     "prerequisites": [
@@ -124,14 +124,14 @@
     },
     "type": "technique",
     "title": "Completeness Verification and Relationship to Problem #236",
-    "content": "`erdos1142_complete_le_105` proves computationally (via `native_decide`) that the set of n \u2264 105 satisfying the property is exactly {4, 7, 15, 21, 45, 75, 105}. This verifies the OEIS data by exhaustive search over Finset.range 106. The file documents the logical implication from the stronger conjecture to finiteness: taking \u03b5 = 1/2, for large n the prime count \u2264 (1/2)\u00b7log\u2082(n) < \u230blog\u2082(n\u22121)\u230b = |powersOfTwoBetween n|, so not all differences can be prime. This proof sketch is blocked by the Nat.log/Finset.card/\u211d arithmetic bridge.",
+    "content": "`erdos1142_complete_le_105` proves computationally (via `native_decide`) that the set of n ≤ 105 satisfying the property is exactly {4, 7, 15, 21, 45, 75, 105}. This verifies the OEIS data by exhaustive search over Finset.range 106. The file documents the logical implication from the stronger conjecture to finiteness: taking ε = 1/2, for large n the prime count ≤ (1/2)·log₂(n) < ⌋log₂(n−1)⌋ = |powersOfTwoBetween n|, so not all differences can be prime. This proof sketch is blocked by the Nat.log/Finset.card/ℝ arithmetic bridge.",
     "mathContext": "$\\{n \\leq 105 : \\text{SatisfiesErdos1142}(n)\\} = \\{4, 7, 15, 21, 45, 75, 105\\}$ (exhaustive search). The TODO connects to Problem #236 via: $\\varepsilon = 1/2 \\Rightarrow$ prime count $< \\lfloor\\log_2 n\\rfloor$ for large $n$, contradicting the full property.",
     "significance": "supporting",
     "relatedConcepts": [
       "exhaustive search",
       "Finset.filter",
       "native_decide",
-      "Erd\u0151s Problem #236"
+      "Erdős Problem #236"
     ],
     "prerequisites": [
       "native_decide",

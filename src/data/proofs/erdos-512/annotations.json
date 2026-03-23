@@ -250,7 +250,7 @@
     "title": "Applications",
     "content": "**diophantineApplication:** Placeholder for the connection to Diophantine approximation. Lower bounds on exponential sums control the equidistribution of sequences $\\{n\\alpha\\}_{n \\in A}$ modulo 1 via Weyl's criterion.\n\n**numberTheoreticApplication:** Placeholder for analytic number theory applications. Bounds on character sums (closely related to exponential sums) are fundamental in estimating error terms in the prime number theorem and Dirichlet $L$-functions.",
     "mathContext": "Weyl's equidistribution criterion: the sequence $\\{n\\alpha\\}$ is equidistributed mod 1 iff $\\frac{1}{N}\\sum_{n=1}^N e^{2\\pi i n\\alpha} \\to 0$ for all nonzero integers. Littlewood's conjecture, applied to Gauss sums and Kloosterman sums, yields bounds on character sums $\\sum_{n} \\chi(n) e(n\\alpha)$ that appear throughout analytic number theory.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Weyl's criterion",
       "equidistribution",

@@ -10,7 +10,7 @@
     "title": "Problem Statement and Imports",
     "content": "The header states Erdős Problem #598: can one color the countable subsets of an infinite set with κ = (2^ℵ₀)⁺ colors so that every κ-sized subset contains subsets of all colors? The formalization imports Mathlib's cardinal arithmetic, continuum, ordinal, and successor modules.",
     "mathContext": "Let $\\kappa = (2^{\\aleph_0})^+$, the successor of the continuum. The problem asks whether $\\forall m \\ge \\kappa$, there exists $c: [m]^{\\le\\omega} \\to \\kappa$ such that every $X \\subseteq m$ with $|X| = \\kappa$ satisfies $c([X]^{\\le\\omega}) = \\kappa$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "partition calculus",
       "cardinal coloring",

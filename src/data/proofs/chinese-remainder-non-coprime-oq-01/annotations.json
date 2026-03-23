@@ -10,7 +10,7 @@
     "title": "Non-Coprime CRT Efficiency: Three Complementary Improvements via Garner (1959)",
     "content": "The Chinese Remainder Theorem (CRT) classically requires coprime moduli. The non-coprime generalization — x ≡ a (mod m), x ≡ b (mod n), solvable iff gcd(m,n) | (a-b), unique mod lcm(m,n) — is well-known. The open question is computational efficiency for large moduli.\n\nNaively, a solution lives in [0, m*n), requiring O(log m + log n) bits. This file proves three independent efficiency gains:\n\n1. **LCM Bound**: Solutions live in [0, lcm(m,n)), which is m*n / gcd(m,n). When gcd = 2, this halves the bit length. When gcd = 2^32 (e.g., two 64-bit numbers with shared factor), the savings is 32 bits.\n\n2. **Bézout Reduction**: The Bézout step operates on m/g and n/g, which are (a) coprime (`Nat.coprime_div_gcd_div_gcd`), and (b) strictly smaller when g > 1 (`Nat.div_lt_self`). Cost O(log(min(m,n)/g)) instead of O(log min(m,n)).\n\n3. **Garner Decomposition**: Any x < m*n factors as x = c₁ + c₂*m with c₁ < m, c₂ < n. Reconstruction keeps all arithmetic within max(m,n) per step — no m*n-bit arithmetic needed.\n\nGarner (1959) introduced this for residue number systems (RNS), now standard in cryptographic hardware for fast multi-precision modular arithmetic.",
     "mathContext": "Non-coprime CRT: $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$ solvable iff $\\gcd(m,n) \\mid (a-b)$; unique $\\bmod{\\text{lcm}(m,n)}$. Efficiency: $\\text{lcm}(m,n) = m \\cdot n / \\gcd(m,n)$, so representation needs $\\log_2(mn/g)$ bits. Garner: $x = c_1 + c_2 m$, $c_1 = x \\% m$, $c_2 = x / m < n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "CRT",
       "non-coprime moduli",

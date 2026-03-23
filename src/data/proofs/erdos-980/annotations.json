@@ -10,7 +10,7 @@
     "title": "Problem Overview and Imports",
     "content": "The file formalizes Erdos Problem #980 on the sum of least $k$-th power nonresidues over primes. It imports Mathlib modules for prime number basics, the Legendre symbol, asymptotics, and logarithmic functions. The `open Nat Real` command brings natural number and real number notations into scope.",
     "mathContext": "The problem asks whether $\\sum_{p < x} n_k(p) \\sim c_k \\cdot x/\\log x$ where $n_k(p)$ is the least $k$-th power nonresidue modulo prime $p$. This connects the distribution of power residues to prime counting asymptotics via $\\pi(x) \\sim x/\\log x$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Power residues",
       "Quadratic nonresidues",

@@ -35,7 +35,7 @@
     "title": "Imports",
     "content": "Imports the unit circle from Mathlib's complex analysis, Lebesgue measure from measure theory, logarithm from special functions, and basic complex number infrastructure. These provide the mathematical foundations for stating sublevel set measure bounds.",
     "mathContext": "Uses Mathlib's `Complex.abs` for $|z|$, `MeasureTheory.MeasureSpace.volume` for Lebesgue measure on $\\mathbb{R}^2$, and `Real.log` for $\\log n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib complex analysis",
       "Lebesgue measure"

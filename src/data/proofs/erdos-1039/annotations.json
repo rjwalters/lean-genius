@@ -10,7 +10,7 @@
     "title": "Imports and Problem Overview",
     "content": "Module documentation for Erdős Problem #1039 on polynomial lemniscate disc radii. Imports Mathlib for complex analysis, topology, and measure theory. The problem asks: for f(z) = ∏(z - zᵢ) with |zᵢ| ≤ 1, what is the largest disc inscribed in {z : |f(z)| < 1}? Known bounds range from 1/(2en²) (Pommerenke 1961) to c/(n√log n) (KLR 2025), with the conjecture ρ(f) ≫ 1/n still open.",
     "mathContext": "The sublevel set $\\{z : |f(z)| < 1\\}$ for a monic polynomial $f(z) = \\prod_{i=1}^n (z - z_i)$ with $|z_i| \\leq 1$ is an open subset of $\\mathbb{C}$ bounded by the lemniscate $\\{z : |f(z)| = 1\\}$. The inscribed disc radius $\\rho(f)$ measures the geometric regularity of this sublevel set.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "polynomial lemniscates",
       "sublevel sets",
@@ -320,7 +320,7 @@
     "title": "ehp_open",
     "content": "Placeholder axiom indicating the conjecture remains open. Stated as ¬(ehpConjecture ∨ ¬ehpConjecture), which is logically false but serves as a formal marker that the problem's status is unresolved.",
     "mathContext": "The EHP conjecture is open as of 2025. The remaining gap is the $\\sqrt{\\log n}$ factor between the KLR lower bound $c/(n\\sqrt{\\log n})$ and the conjectured $c/n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "open problem",
       "conjecture status"
@@ -677,7 +677,7 @@
     "title": "erdos_1039_question",
     "content": "The main open question restated as erdos_1039_question := ehpConjecture. This is a definitional alias linking the Erdős problem number to the formal conjecture statement.",
     "mathContext": "Is $\\rho(f) \\geq c/n$ for all monic polynomials of degree $n$ with roots in $\\overline{\\mathbb{D}}$?",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "open problem",
       "EHP conjecture"

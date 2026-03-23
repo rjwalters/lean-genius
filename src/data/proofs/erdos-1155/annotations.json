@@ -10,7 +10,7 @@
     "title": "Problem Statement and Imports",
     "content": "The header describes the triangle removal process: begin with $K_n$, repeatedly select a uniformly random triangle and delete all three of its edges, until the graph is triangle-free. Let $f(n)$ denote the number of remaining edges. The problem asks whether $\\mathbb{E}[f(n)] \\asymp n^{3/2}$ and $f(n) \\ll n^{3/2}$ almost surely.\n\nImports include Mathlib's SimpleGraph (for graph structure and cliques), Finset (for edge counting), Filter.AtTopBot (for eventual/asymptotic statements via ∀ᶠ ... in atTop), and Pow.Real (for real-valued exponents like $n^{3/2}$).",
     "mathContext": "The triangle removal process is a random greedy algorithm on $K_n$. At each step, a triangle is selected uniformly at random from all remaining triangles, and its three edges are deleted. The process terminates when the graph is triangle-free.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "random graph processes",
       "triangle-free graphs",

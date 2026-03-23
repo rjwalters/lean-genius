@@ -10,7 +10,7 @@
     "title": "De Moivre's Theorem and the Chebyshev Polynomial Connection",
     "content": "The module preamble introduces the mathematical content: De Moivre's theorem states (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ). Expanding the left side via the binomial theorem and comparing real/imaginary parts yields explicit trigonometric identities. The abstract pattern is captured by Chebyshev polynomials T_n (first kind) and U_n (second kind): cos(nθ) = T_n(cos θ) and sin((n+1)θ) = U_n(cos θ) · sin θ. Both sequences satisfy the recurrence T_{n+2} = 2X·T_{n+1} - T_n (resp. for U), which arises from the identity (e^{iθ})^{n+2} = (2cos θ)(e^{iθ})^{n+1} - (e^{iθ})^n via e^{iθ} + e^{-iθ} = 2cos θ.",
     "mathContext": "De Moivre: $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$. Chebyshev: $\\cos(n\\theta) = T_n(\\cos\\theta)$, $\\sin((n+1)\\theta) = U_n(\\cos\\theta)\\sin\\theta$. Recurrences: $T_{n+2} = 2X\\cdot T_{n+1} - T_n$, $U_{n+2} = 2X\\cdot U_{n+1} - U_n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "De Moivre's theorem",
       "Chebyshev polynomials",
@@ -105,7 +105,7 @@
     "title": "Explicit Chebyshev Computations via T_add_two / U_add_two Recurrence",
     "content": "T_three, T_four, T_five, U_three, U_four prove explicit polynomial forms by induction on T_add_two: T(n+2) = 2X·T(n+1) - T(n). Each proof follows the same four-step pattern: (1) apply T_add_two (R := ℝ) n to get the recurrence for T(n+2), (2) simp with decide to normalize integer arithmetic (1+2=3 etc.), (3) rw with previously computed values (T_two, T_three, etc.), (4) ring to close the polynomial identity. The annotation (R := ℝ) is critical: without it Lean cannot infer the ring from the integer index alone. Results: T_3 = 4X³-3X, T_4 = 8X⁴-8X²+1, T_5 = 16X⁵-20X³+5X, U_3 = 8X³-4X, U_4 = 16X⁴-12X²+1.",
     "mathContext": "Recurrence: $T_{n+2} = 2X\\cdot T_{n+1} - T_n$. Values: $T_3 = 4X^3-3X$, $T_4 = 8X^4-8X^2+1$, $T_5 = 16X^5-20X^3+5X$. Lean pattern: `have h := T_add_two (R := ℝ) n; simp only [show (n+2:ℤ)=... from by decide] at h; rw [h, T_{n+1}, T_n]; ring`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "T_add_two",
       "U_add_two",

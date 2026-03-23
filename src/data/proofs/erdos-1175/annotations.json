@@ -10,7 +10,7 @@
     "title": "Problem Context and Imports",
     "content": "Header documenting Erdős Problem #1175 on triangle-free subgraphs with large chromatic number. The question asks: for each uncountable cardinal κ, does there exist λ such that every graph with χ(G) ≥ λ contains a triangle-free subgraph with χ ≥ κ? Shelah showed a negative answer is consistent with ZFC for κ = λ = ℵ₁. Imports Cardinal.Ordinal for cardinal arithmetic (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic for graph structure and adjacency.",
     "mathContext": "For uncountable $\\kappa$, does $\\exists\\, \\lambda$ such that $\\chi(G) \\geq \\lambda \\implies G$ contains a triangle-free subgraph $H$ with $\\chi(H) \\geq \\kappa$?",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Cardinal.aleph",
       "SimpleGraph",

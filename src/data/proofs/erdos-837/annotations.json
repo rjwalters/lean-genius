@@ -10,7 +10,7 @@
     "title": "Problem Overview and Imports",
     "content": "Header documentation and Lean imports for the hypergraph density jumps problem. Imports Mathlib's Nat.Basic, Real.Basic, Set.Basic, and Tactic — providing natural number arithmetic, real-valued densities, set-builder notation for A_k, and general proof automation.",
     "mathContext": "The imports are chosen for a lightweight formalization: `Real.Basic` provides the field $\\mathbb{R}$ for densities $e(G)/\\binom{|G|}{k} \\in [0,1]$, and `Set.Basic` allows defining $A_k = \\{\\alpha \\in [0,1] : \\alpha \\text{ is a density jump}\\}$. A full formalization would additionally need `Mathlib.Topology.Sequences` for the $\\liminf$ condition.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lean 4 imports",
       "Real.Basic",

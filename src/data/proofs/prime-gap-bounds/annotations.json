@@ -10,7 +10,7 @@
     "title": "Module Structure and Imports",
     "content": "The module imports four Mathlib components: `Bertrand` (Bertrand's postulate), `PrimeCounting` (the prime counting function $\\pi(n)$), `Nat.Prime.Nth` (the $n$-th prime function), and `Tactic` (general-purpose tactics). The `open Nat` declaration brings natural number operations into scope.\n\nThe `PrimeGapBounds` namespace groups all results, isolating them from the global scope. The docstring summarizes three categories of results: prime counting bounds under doubling, small value computations, and the exponential bound $p_n \\leq 2^{n+1}$.",
     "mathContext": "The module builds on Bertrand's postulate: for $n \\geq 1$, $\\exists p$ prime with $n < p \\leq 2n$. All results in this file are consequences of this single theorem from Mathlib.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib.NumberTheory.Bertrand",
       "prime counting function",
@@ -235,7 +235,7 @@
     "title": "Consequences and Summary",
     "content": "The closing comment block provides concrete numerical instances of the exponential bound ($p_0 = 2 \\leq 2$, $p_9 = 29 \\leq 1024$, $p_{99} = 541 \\leq 2^{100}$) and notes that tighter Dusart-type bounds $p_n \\leq n(\\ln n + \\ln \\ln n)$ require analytic number theory not yet in Mathlib.\n\nThe summary lists all six categories of results. The final line confirms 0 axioms: everything is derived from Mathlib's formalization of Bertrand's postulate, which in turn uses Mathlib's proof of Chebyshev's theorem.",
     "mathContext": "Numerical instances: $p_0 = 2$, $p_1 = 3 \\leq 4$, $p_2 = 5 \\leq 8$, $p_9 = 29 \\leq 1024$. The gap between $p_n$ and $2^{n+1}$ grows exponentially, reflecting the crudeness of the bound relative to the PNT's $p_n \\sim n \\ln n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Dusart's bounds",
       "prime number theorem",

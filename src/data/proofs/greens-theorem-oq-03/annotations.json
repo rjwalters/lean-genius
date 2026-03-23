@@ -85,7 +85,7 @@
     "content": "TypeIRegion.area is a noncomputable def using Mathlib's intervalIntegral. The area nonnegativity proof (typeI_area_nonneg) uses intervalIntegral.integral_nonneg with R.hab.le for the interval ordering, then linarith from hfg to establish g(x) - f(x) ≥ 0 pointwise.\n\nFor rectangles, typeI_rect_area proves (rectToTypeI).area = (b-a)*(d-c) by using show to reduce to a constant integral, then rw [integral_const, smul_eq_mul] — the rewrite closes the goal via rfl (no ring needed). The unit square area = 1 follows by unfold + rw + norm_num.",
     "mathContext": "**Area formula**: $\\text{Area}(D) = \\int_a^b (g(x) - f(x))\\,dx$. **Nonnegativity**: $g(x) - f(x) \\geq 0$ on $[a,b]$ from `hfg`, so `integral_nonneg` applies. **Rectangle**: $\\int_a^b (d-c)\\,dx = (b-a)(d-c)$ via `integral_const`. **Key Lean fact**: `rw [integral_const, smul_eq_mul]` closes `(b-a)*(d-c) = (b-a)*(d-c)` automatically via `rfl` — no `ring` needed after `smul_eq_mul`.",
     "summary": "Area = ∫_a^b (g-f) dx; proved nonneg via integral_nonneg; rectangle area = (b-a)(d-c).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "intervalIntegral.integral_nonneg",
       "intervalIntegral.integral_const",
@@ -110,7 +110,7 @@
     "content": "TypeIRegion.iteratedIntegral F = ∫ x in a..b, ∫ y in f(x)..g(x), F(x,y) is the standard double integral over a TypeI region. The integration order is outer-x inner-y, matching the TypeI region shape.\n\nNote: this is OPPOSITE to GreensTheoremOQ01's rectDoubleIntegral which is outer-y inner-x. The two are equal by Fubini (for rectangles), but the Fubini swap requires measurability/integrability hypotheses and is NOT proved here.\n\ntypeI_area_is_iterated_one proves Area = iteratedIntegral(const 1) using congr 1 + ext + integral_const + smul_eq_mul + mul_one. This is the key geometric fact connecting area to double integration.",
     "mathContext": "**Iterated integral**: $\\iint_D F\\,dA = \\int_a^b \\left(\\int_{f(x)}^{g(x)} F(x,y)\\,dy\\right)dx$. **Area as integral of 1**: $\\text{Area}(D) = \\iint_D 1\\,dA = \\int_a^b (g(x)-f(x))\\,dx$. **Order matters**: TypeI is $(dx\\,dy)$ order (outer $x$, inner $y$); OQ01's `rectDoubleIntegral` is $(dy\\,dx)$ order — they're equal by Fubini but Fubini is not proved here.",
     "summary": "Double integral as iterated integral ∫_a^b ∫_{f(x)}^{g(x)} F dy dx; area equals iterated integral of 1.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "TypeIRegion.iteratedIntegral",
       "typeI_area_is_iterated_one",

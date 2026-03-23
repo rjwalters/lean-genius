@@ -10,7 +10,7 @@
     "title": "Imports and Setup",
     "content": "The formalization imports the full Mathlib library, bringing in topological spaces, homeomorphisms, cardinal arithmetic, and set operations. The `open Set Cardinal` command puts set and cardinal notations in scope. The variable `{X : Type*} [TopologicalSpace X]` establishes a generic topological space for the definitions.",
     "mathContext": "We work in a general topological space $(X, \\tau)$ with Mathlib's `TopologicalSpace` typeclass, later specialized to $\\mathbb{R} \\times \\mathbb{R}$ for the concrete conjectures.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "TopologicalSpace",
       "Cardinal arithmetic",

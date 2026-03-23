@@ -10,7 +10,7 @@
     "title": "Module Setup and Namespace",
     "content": "The file imports the full Mathlib library and works within the `ProbMethod.SecondMoment` namespace. The formalization uses finite probability spaces modeled over `Finset α` with rational-valued random variables (`α → ℚ`), giving exact arithmetic without floating-point concerns. This discrete framework suffices for combinatorial applications where the sample space is finite.",
     "mathContext": "A finite probability space $(\\Omega, \\Pr)$ is modeled as a `Finset α` with uniform measure: $\\Pr[A] = |A|/|\\Omega|$. Expectations become finite sums: $E[X] = \\frac{1}{|\\Omega|} \\sum_{\\omega \\in \\Omega} X(\\omega)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "finite probability space",
       "uniform measure",

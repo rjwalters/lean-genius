@@ -345,7 +345,7 @@
     "title": "Greedy Egyptian Property",
     "content": "**greedyEgyptianProperty:**\n\nSylvester's sequence arises from the greedy algorithm for Egyptian fractions: at each step, take the largest unit fraction $1/m$ not exceeding the remainder $r_n$, giving $u_{n+1} = \\lceil 1/r_n \\rceil$.\n\nCurrently defined as `True` (placeholder) since formalizing the greedy property requires reasoning about real-valued remainders and ceiling functions.",
     "mathContext": "The greedy algorithm sets $r_0 = 1$ and $r_{n+1} = r_n - 1/u_{n+1}$ where $u_{n+1} = \\lceil 1/r_n \\rceil$. For Sylvester's sequence, $r_n = 1/\\prod_{k=0}^{n-1}(u_k - 1)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Greedy algorithms",
       "Egyptian fractions",
@@ -411,7 +411,7 @@
     "title": "Related Problems",
     "content": "**Connections to other Egyptian fraction problems:**\n\n- **Erdős-Straus conjecture:** For every $n \\geq 2$, can $4/n$ be written as a sum of three unit fractions? Open since 1948, verified for $n \\leq 10^{17}$.\n\n- **Odd greedy expansion:** Always take the largest *odd* unit fraction. Does this terminate for every positive rational? Related to questions about the structure of Egyptian representations.\n\n- **OEIS references:** A000058 (Sylvester's sequence), A076393 (Vardi constant digits).",
     "mathContext": "The Erdős-Straus conjecture: $\\forall n \\geq 2, \\exists a,b,c \\in \\mathbb{Z}^+ : 4/n = 1/a + 1/b + 1/c$. While Problem #315 concerns infinite representations summing to 1, Erdős-Straus concerns finite representations of $4/n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Erdős-Straus conjecture",
       "Odd greedy expansion",
@@ -433,7 +433,7 @@
     "title": "Historical Correction",
     "content": "**Historical note on the original formulation:**\n\nThe 1980 Erdős-Graham monograph [ErGr80, p.41] stated the problem with $u_1 = 1$ and recurrence $u_{n+1} = u_n(u_n + 1)$, giving the sequence 1, 2, 6, 42, 1806, ... But $\\sum 1/u_n > 1$ for this sequence (since $1/1 = 1$ already). Quanyu Tang identified this error; the correct formulation uses the standard Sylvester sequence starting at $u_1 = 2$.",
     "mathContext": "With $u_1 = 1$: the sequence is $1, 2, 6, 42, 1806, \\ldots$ and $\\sum_{n=1}^{\\infty} 1/u_n = 1/1 + 1/2 + 1/6 + 1/42 + \\cdots > 1$, violating the Egyptian fraction condition. The correct sequence $2, 3, 7, 43, 1807, \\ldots$ satisfies $\\sum 1/u_n = 1$ exactly.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Errata",
       "Erdős-Graham monograph"

@@ -10,7 +10,7 @@
     "title": "Problem Statement and Imports",
     "content": "Three conjectures of Erdos, Galvin, and Hajnal about F_G(kappa): the family of 3-uniform hypergraphs with chromatic number kappa that are G-free. (1) Bounded witness: if F_G(aleph_1) is nonempty, it contains an element with at most 2^(2^aleph_0) vertices. (2) Intersection: if F_G(aleph_1) and F_H(aleph_1) are both nonempty, their intersection is nonempty. (3) Cardinal transfer: nonemptiness of F_G(kappa) for one uncountable kappa implies it for all uncountable kappa.",
     "mathContext": "Three conjectures about $\\mathcal{F}_G(\\kappa) = \\{H : \\chi(H) = \\kappa,\\ G \\not\\subseteq H\\}$ for finite 3-uniform $G$:\n(1) $\\mathcal{F}_G(\\aleph_1) \\neq \\emptyset \\implies \\exists\\, X \\in \\mathcal{F}_G(\\aleph_1),\\ |V(X)| \\leq 2^{2^{\\aleph_0}}$\n(2) $\\mathcal{F}_G(\\aleph_1), \\mathcal{F}_H(\\aleph_1) \\neq \\emptyset \\implies \\mathcal{F}_G(\\aleph_1) \\cap \\mathcal{F}_H(\\aleph_1) \\neq \\emptyset$\n(3) $\\kappa, \\mu$ uncountable, $\\mathcal{F}_G(\\kappa) \\neq \\emptyset \\implies \\mathcal{F}_G(\\mu) \\neq \\emptyset$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "3-uniform hypergraph",
       "chromatic number",

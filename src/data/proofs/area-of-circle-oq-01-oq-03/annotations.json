@@ -84,7 +84,7 @@
     "title": "Regular n-gons Converge to Circle: tan(h)/h → 1 at h = 0",
     "content": "Part III proves that regular n-gons converge to the circle's isoperimetric ratio as n → ∞. The key theorem ngon_limit_tendsto_circle shows lim_{n→∞} π/(n·tan(π/n)) = 1. Proof technique: use Real.hasDerivAt_tan at 0 and hasDerivAt_iff_tendsto_slope to get tan(h)/h → 1 as h → 0. Then compose with π/n → 0. The formula regular_ngon_isoperimetric_ratio = cos(π/n)·sin(π/n)·C²R/(2π·n·R²) = π/(n·tan(π/n)) uses the n-gon area formula with circumradius R.",
     "mathContext": "**n-gon ratio**: $\\frac{\\pi}{n\\tan(\\pi/n)} \\to 1$ as $n \\to \\infty$. **Proof**: $\\frac{\\tan(h)}{h} \\to 1$ as $h \\to 0$ (derivative of $\\tan$ at 0 is 1); substitute $h = \\pi/n \\to 0$. **n-gon area formula**: $A = \\frac{C^2}{4n}\\cot(\\frac{\\pi}{n})$ where $C$ is perimeter. **Mathlib**: `Real.hasDerivAt_tan`, `hasDerivAt_iff_tendsto_slope`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "regular_ngon_isoperimetric_ratio",
       "ngon_limit_tendsto_circle",
@@ -136,7 +136,7 @@
     "title": "Smooth Curve Inequality, Equality Characterization, and Algebraic Corollaries",
     "content": "Parts V-VII build on Wirtinger. Part V: isoperimetric_inequality_smooth — the main sorry, using Wirtinger to prove 4πA ≤ L² for any smooth closed curve. The proof plan: constant-speed parametrization gives ∫(x'²+y'²) = 2πc²; Wirtinger gives ∫(x²+y²) ≤ 2πc²; Cauchy-Schwarz and Green's theorem close. Part VI: equality characterization (circle iff f = a₁cos + b₁sin). Part VII: algebraic corollaries from 4πA ≤ C² — bounds on area from perimeter, scale invariance of isoperimetric ratio, circle maximizes area for given perimeter.",
     "mathContext": "**Remaining sorry**: `isoperimetric_inequality_smooth` — given `wirtinger_inequality`, prove $4\\pi A \\leq L^2$. Plan: constant-speed reparametrize so $\\int(x'^2+y'^2) = 2\\pi c^2 = L^2/(2\\pi)$; Wirtinger gives $\\int x^2 \\leq \\int(x')^2 = \\pi c^2$ (after centering); Green's: $2A = |\\int(xy'-yx')\\,dt|$; 2D C-S: $|\\int xy'\\,dt| \\leq \\sqrt{\\int x^2}\\sqrt{\\int(y')^2}$; arithmetic kernel closes. **Corollary**: $A \\leq C^2/(4\\pi)$ with equality iff circle.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "isoperimetric_inequality_smooth",
       "circle_satisfies_isoperimetric",

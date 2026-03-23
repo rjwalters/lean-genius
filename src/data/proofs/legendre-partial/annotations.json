@@ -10,7 +10,7 @@
     "title": "Introduction and Imports",
     "content": "The file opens with a module docstring introducing Legendre's conjecture (1798): for every positive integer $n$, there exists a prime $p$ with $n^2 < p < (n+1)^2$. This is one of the oldest open problems in number theory, now over 225 years old. The file takes a computational verification approach, confirming the conjecture for $n = 1$ through $20$ using explicit prime witnesses checked by `native_decide`.\n\nThe single import `Mathlib.Tactic` provides `native_decide` (kernel-level decision procedure for decidable propositions), `Nat.Prime` (primality predicate), and basic arithmetic lemmas. No heavy Mathlib infrastructure is needed because the proofs are purely computational — each case reduces to checking three decidable conditions: primality, lower bound, upper bound.",
     "mathContext": "Legendre's conjecture: $\\forall n \\geq 1, \\exists p \\in \\mathbb{P}: n^2 < p < (n+1)^2$. The interval $(n^2, (n+1)^2)$ has length $2n$, which grows without bound, making the conjecture plausible by the Prime Number Theorem: the expected number of primes in the interval is approximately $\\frac{2n}{\\ln(n^2)} = \\frac{n}{\\ln n} \\to \\infty$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Legendre's conjecture",
       "prime gaps",

@@ -10,7 +10,7 @@
     "title": "Mathlib Imports for Sylow Theory",
     "content": "Imports six Mathlib modules: `GroupTheory.Sylow` (the `Sylow p G` type, existence, conjugacy, and counting theorems), `GroupTheory.Coset.Basic` (coset decomposition for index calculations), `GroupTheory.Index` (subgroup index `[G:H]`), `GroupTheory.OrderOfElement` (`orderOf` for Cauchy's theorem), `Data.Nat.Factorization.Basic` ($p$-adic valuation for Sylow subgroup cardinality), and `Tactic` (general-purpose tactics). These six modules together provide the full toolkit for Sylow-theoretic arguments in Lean 4.",
     "mathContext": "Key imports: `Sylow p G` (type of Sylow $p$-subgroups), `Subgroup.index` ($[G:H] = |G|/|H|$), `orderOf g` ($\\min\\{n > 0 : g^n = e\\}$), `Nat.factorization n p` ($\\nu_p(n)$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib module system",
       "Sylow p G type",
@@ -58,7 +58,7 @@
     "title": "Namespace and Configuration",
     "content": "Opens the `SylowTheorems` namespace and `Subgroup` for convenient access to subgroup operations without qualification. The `set_option linter.unusedVariables false` suppresses warnings for universe variables and type parameters that are needed for type inference but not directly used in proof terms — a common pattern in Mathlib-wrapping files where the pedagogical presentation introduces more type parameters than strictly necessary.",
     "mathContext": "`open Subgroup` brings names like `Normal`, `index`, `mem_normalizer_iff` into scope without `Subgroup.` prefix.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lean 4 namespaces",
       "open declaration",
@@ -251,7 +251,7 @@
     "title": "Summary Table and Classification Applications",
     "content": "Comprehensive documentation summarizing all results in a table and demonstrating the Sylow theorems as a classification tool. Three worked examples illustrate the power of Sylow counting:\n\n**Groups of order pq** (p < q primes): n_q ≡ 1 (mod q) and n_q | p. Since q > p, the only possibility is n_q = 1 — the unique Sylow q-subgroup is normal. If additionally p ∤ (q-1), then n_p = 1 too, and G ≅ ℤ/pqℤ is cyclic. If p | (q-1), there is exactly one non-abelian group: the semidirect product ℤ/qℤ ⋊ ℤ/pℤ.\n\n**Groups of order p²**: The Sylow p-subgroup is G itself (order p²), and every group of order p² is abelian — either ℤ/p² or (ℤ/p)². This follows because Z(G) is non-trivial for any p-group.\n\n**Simple group obstruction**: If n_p = 1 for any prime p dividing |G|, then G has a normal subgroup and is not simple. Sylow counting often forces n_p = 1, ruling out simplicity for most group orders. For example, no group of order 132 = 4·3·11 is simple (since n_11 | 12 and n_11 ≡ 1 mod 11 forces n_11 = 1).",
     "mathContext": "Groups of order $pq$ ($p < q$ prime): $n_q \\mid p$ and $n_q \\equiv 1 \\pmod{q}$ force $n_q = 1$, so $G \\cong \\mathbb{Z}_{pq}$ (if $p \\nmid q-1$) or $\\mathbb{Z}_q \\rtimes \\mathbb{Z}_p$ (if $p \\mid q-1$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "classification of finite groups",
       "simple group obstruction",
@@ -277,7 +277,7 @@
     "title": "Verification via #check",
     "content": "Type-checks all 10 theorems and 1 definition using Lean's `#check` command: `sylow_existence`, `sylow_card`, `sylow_conjugacy`, `sylow_isomorphic`, `sylow_count_mod_p`, `sylow_count_dvd_index`, `sylow_normal_of_eq`, `sylow_normal_of_unique`, `sylow_unique_of_normal`, `cauchy_from_sylow`, and `group_of_prime_order_cyclic`. If any theorem had a type error or unsatisfied constraint, `#check` would produce an error — so these 11 successful checks confirm the full correctness of the formalization.",
     "mathContext": "All theorems verified: Sylow I (existence), cardinality ($|P| = p^{\\nu_p(|G|)}$), Sylow II (conjugacy), isomorphism ($P \\cong Q$), Sylow III (counting mod $p$ and divisibility), normality $\\leftrightarrow$ uniqueness, Cauchy ($p \\mid |G| \\Rightarrow \\exists \\text{ord-}p$ element), prime-order cyclicity.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "#check command",
       "type checking",

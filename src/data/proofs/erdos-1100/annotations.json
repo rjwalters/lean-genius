@@ -35,7 +35,7 @@
     "title": "Mathlib Imports and Namespace",
     "content": "Imports **Nat.Basic**, **Nat.Prime.Defs**, and **Nat.Factorization.Basic** for number-theoretic definitions (primes, prime factors). **Finset.Basic** provides finite set operations for filtering divisors. **Real.Basic**, **Log.Basic**, and **Pow.Real** supply the real analysis framework needed for the asymptotic statements involving $\\exp$, $\\log$, and real exponentiation.",
     "mathContext": "The `open Real Nat Finset` directive brings these namespaces into scope, avoiding the need for qualified names throughout the file. The interplay between $\\mathbb{N}$ (for divisor counts) and $\\mathbb{R}$ (for asymptotic bounds) requires explicit coercions via $(\\cdot : \\mathbb{R})$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "namespace management",

@@ -10,7 +10,7 @@
     "title": "Jacobi Symbol Extension of QR",
     "content": "The file header introduces the central question: can quadratic reciprocity, classically stated for the Legendre symbol (prime moduli only), be extended to composite odd moduli via the Jacobi symbol? The Jacobi symbol J(a,n) is defined multiplicatively over the prime factorization of n, inheriting algebraic properties from the Legendre symbol while losing the direct connection to quadratic residuacity. This formalization imports Mathlib's JacobiSymbol and QuadraticReciprocity modules, which provide the foundational definitions and the prime-case QR law.",
     "mathContext": "The Jacobi symbol is defined as $J(a, n) = \\prod_{i=1}^{k} \\left(\\frac{a}{p_i}\\right)^{e_i}$ where $n = \\prod_{i=1}^{k} p_i^{e_i}$ is the prime factorization of odd $n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Legendre symbol",
       "Jacobi symbol",

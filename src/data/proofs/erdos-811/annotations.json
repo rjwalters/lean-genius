@@ -10,7 +10,7 @@
     "title": "Problem Overview and References",
     "content": "Erdős Problem #811 asks: for which graphs $G$ (with $m = e(G)$ edges) does every balanced $m$-coloring of $K_n$ contain a rainbow copy of $G$? A balanced coloring requires each vertex to see exactly $\\lfloor(n-1)/m\\rfloor$ edges of each color, which forces $n \\equiv 1 \\pmod{m}$. A rainbow copy uses all $m$ edge colors distinctly. The problem was posed by Erdős, Pyber, and Tuza (1991) and sits at the intersection of anti-Ramsey theory and extremal graph theory. Recent breakthroughs: Clemen-Wagner (2023) showed $K_4$ fails, and Axenovich-Clemen (2024) extended this to infinitely many complete graphs.",
     "mathContext": "For which $G$ with $m = e(G)$ edges: $\\forall$ large $n \\equiv 1 \\pmod{m}$, $\\forall$ balanced $m$-colorings $\\chi$ of $K_n$, $\\exists$ rainbow copy of $G$ in $\\chi$?",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "anti-Ramsey theory",
       "rainbow subgraph",
@@ -34,7 +34,7 @@
     "title": "Imports and Setup",
     "content": "Imports Mathlib's simple graph infrastructure, finite set operations, and general tactics. The namespace `Erdos811` isolates all definitions. `open Finset` brings finite set notation into scope for cardinality computations and filtering operations used in color degree definitions.",
     "mathContext": "Uses `SimpleGraph (Fin k)` for graph structures and `Finset.univ.filter` for counting",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib SimpleGraph",
       "Finset operations",

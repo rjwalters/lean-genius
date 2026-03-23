@@ -39,7 +39,7 @@
     "title": "Lean Setup and Namespace",
     "content": "Imports full Mathlib and opens `Set`, `Finset`, `Nat`, and `Real` namespaces. The formalization uses `Finset.range`, `sSup`, `Real.log`, `Real.exp`, and `Real.sqrt` from Mathlib. The `Erdos140` namespace scopes all definitions and theorems to this problem.",
     "mathContext": "The `Real` namespace provides $\\log$, $\\exp$, and $\\sqrt{}$ for stating the asymptotic bounds. The `Finset` namespace provides finite set operations for defining $r_3(N)$ as a supremum over finite subsets.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "namespace",

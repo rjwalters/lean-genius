@@ -10,7 +10,7 @@
     "title": "CRT Ring Isomorphism: Building on Bézout",
     "content": "This module answers the open question: can the Chinese Remainder Theorem ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ be formalized building on crt_via_bezout? The answer is YES. Mathlib provides ZMod.chineseRemainder directly. This file wraps it and proves applications: idempotent decomposition, Bézout-based explicit solutions, cardinality, unit groups. All results are fully proved with 0 sorries and 0 axioms.",
     "mathContext": "The CRT for rings: if I, J are coprime ideals (I + J = R), then R/(I∩J) ≅ R/I × R/J. For ℤ, mℤ + nℤ = ℤ when gcd(m,n)=1, giving ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "ZMod.chineseRemainder",
       "Nat.Coprime",

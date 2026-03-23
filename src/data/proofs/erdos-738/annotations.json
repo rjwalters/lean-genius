@@ -10,7 +10,7 @@
     "title": "Problem Statement, References, and Imports",
     "content": "Module docstring presenting Erdős Problem #738 (Gyárfás conjecture for triangle-free graphs). Lists key partial results: Kierstead-Penrice (1994) for radius-2 trees, Scott (1997) for caterpillars, and Chudnovsky-Scott-Seymour (2020) for subdivisions. Imports `SimpleGraph.Basic` (adjacency), `SimpleGraph.Clique` (CliqueFree), `SimpleGraph.Coloring` (proper colorings), `Fintype.Basic` (finite types), and `Tactic` (omega, etc.).",
     "mathContext": "The conjecture asks whether triangle-free graphs with $\\chi(G) = \\infty$ are 'universal' for finite trees under induced subgraph containment. This sits in the broader theory of $\\chi$-bounded graph classes initiated by Gyárfás (1975).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Gyárfás conjecture",
       "chi-bounded classes",

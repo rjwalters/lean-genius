@@ -10,7 +10,7 @@
     "title": "Module Preamble: Deeper Chebyshev Properties via De Moivre",
     "content": "The module extends OQ-01's basic T_n(cos θ) = cos(nθ) identity to derive the full algebraic structure of Chebyshev polynomials. The key observation is that a single identity — T_real_cos — combined with standard trigonometric identities yields composition, product-to-sum, parity, special values, and roots. Every theorem follows the pattern: convert to trig via T_real_cos → apply trig identity → close with algebra.",
     "mathContext": "Core identity: $T_n(\\cos\\theta) = \\cos(n\\theta)$. All properties follow from this plus $\\cos(A\\pm B)$, $\\cos(\\pi - \\theta) = -\\cos\\theta$, $\\cos(n\\pi) = (-1)^n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "T_real_cos",
       "cos_add",

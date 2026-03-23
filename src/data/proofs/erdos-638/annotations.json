@@ -10,7 +10,7 @@
     "title": "Problem Statement and Imports",
     "content": "The header states Erdős Problem #638: given a Ramsey family S of finite graphs (where for every n, some member forces a monochromatic triangle under n-colourings), does there exist, for every infinite cardinal κ, a graph whose finite subgraphs lie in S and whose edges cannot be κ-coloured without a monochromatic triangle? Erdős noted an affirmative answer would enable many extensions and generalisations.",
     "mathContext": "A family $\\mathcal{S}$ is Ramsey if $\\forall n \\ge 1$, $\\exists G_n \\in \\mathcal{S}$ with $G_n \\to (K_3)^2_n$ (every $n$-colouring of $E(G_n)$ yields a monochromatic $K_3$). The problem asks: $\\forall \\kappa \\ge \\aleph_0$, $\\exists G$ with the $\\kappa$-colour Ramsey property.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ramsey theory",
       "infinite combinatorics",

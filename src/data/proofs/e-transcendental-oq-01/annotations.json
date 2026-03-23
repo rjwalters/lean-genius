@@ -10,7 +10,7 @@
     "title": "Is e + π Transcendental? The State of the Open Problem",
     "content": "The header frames one of the deepest open problems in transcendental number theory: despite knowing e (Hermite 1873) and π (Lindemann 1882) are individually transcendental, the transcendence of e+π remains unknown after 140+ years. The doc comment organizes what IS known: (1) e transcendental, (2) π transcendental, (3) at least one of {e+π, eπ} is transcendental (proved here), (4) e^π transcendental (Gelfond-Schneider). The Schanuel conjecture connection: if true, it implies e and π are algebraically independent, hence e+π is transcendental. Nesterenko 1996 theorem (π, e^π, Γ(1/4) algebraically independent) does not directly give e+π.",
     "mathContext": "**Transcendental number**: $x$ is transcendental over $\\mathbb{Q}$ if no polynomial $p \\in \\mathbb{Q}[X]$ satisfies $p(x) = 0$. **Known transcendentals**: $e$ (Hermite 1873), $\\pi$ (Lindemann 1882), $e^\\pi$ (Gelfond 1929), $2^{\\sqrt{2}}$ (Gelfond-Schneider 1934). **Unknown**: $e+\\pi$, $e \\cdot \\pi$, $e^e$, $\\pi^e$. **Schanuel's conjecture**: tr.deg $\\mathbb{Q}(z_1, \\ldots, z_n, e^{z_1}, \\ldots, e^{z_n}) / \\mathbb{Q} \\geq n$ for $\\mathbb{Q}$-linearly independent $z_i \\in \\mathbb{C}$. Would immediately imply $e, \\pi$ algebraically independent.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Transcendental",
       "Schanuel's conjecture",

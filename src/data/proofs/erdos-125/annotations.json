@@ -34,7 +34,7 @@
     "title": "Imports",
     "content": "Imports Mathlib's digit representation (`Nat.digits`), basic natural number and real number infrastructure, `Finset` for counting, and `Filter` for asymptotic statements.",
     "mathContext": "Uses `Nat.digits b n` which returns the list of base-$b$ digits of $n$, enabling the definition of digit-restricted sets via list membership conditions.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.digits",
       "Finset.filter"

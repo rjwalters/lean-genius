@@ -176,7 +176,7 @@
     "type": "concept",
     "title": "Modern Perspective: Finsler Geometry",
     "content": "**Finsler Metric**: A smooth function F: TM → ℝ restricting to a Minkowski gauge on each tangent space.\n\nGeneralizes Riemannian geometry: at each point, the \"unit ball\" can be any smooth convex body (not necessarily an ellipsoid).\n\n**Hilbert 4 in Finsler terms**: Characterize Finsler metrics on ℝⁿ with straight-line geodesics = projective Finsler metrics.",
-    "significance": "context",
+    "significance": "supporting",
     "mathContext": "A Finsler metric $F : TM \\to \\mathbb{R}$ restricts to a Minkowski gauge on each tangent space $T_pM$. Riemannian metrics are the special case where $F^2$ is a quadratic form on each fiber (the unit ball is always an ellipsoid). Hilbert's 4th Problem in Finsler terms becomes: classify projective Finsler metrics on $\\mathbb{R}^n$ (those with straight-line geodesics). Álvarez Paiva and Thompson gave a modern treatment using symplectic geometry.",
     "relatedConcepts": [
       "Finsler geometry",
@@ -224,7 +224,7 @@
     "type": "concept",
     "title": "Problem Status: SOLVED",
     "content": "**Hilbert's 4th Problem is SOLVED**:\n\n**Timeline**:\n- 1900: Hilbert poses the problem\n- 1903: Hamel solves 2D case\n- 1955: Busemann gives complete classification\n- 2000s: Finsler perspective refined\n\n**The Answer**: Straight-line geodesic metrics are exactly:\n- Minkowski (translation-invariant)\n- Hilbert (projective invariant)\n- Funk-type (asymmetric)\n\nFoundation for modern Finsler geometry and convex analysis.",
-    "significance": "context",
+    "significance": "supporting",
     "mathContext": "Hilbert's 4th Problem has the unusual status of being 'solved' but still generating active research. Busemann's 1955 classification settled the metrizable case, but extensions to non-metrizable geometries and connections to symplectic geometry (via Álvarez Paiva) remain active areas. The formalization captures the key definitions and classification statement with 1 sorry remaining.",
     "relatedConcepts": [
       "solved problems",

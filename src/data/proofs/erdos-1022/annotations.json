@@ -2,133 +2,246 @@
   {
     "id": "ann-1022-header",
     "proofId": "erdos-1022",
-    "range": { "startLine": 1, "endLine": 19 },
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
     "type": "context",
     "title": "Problem Documentation and Imports",
     "content": "The header documents Erdős Problem #1022 on property B for sparse set families. Property B asks when a family of sets can be 2-colored so that no set is monochromatic. The sparseness condition bounds how many family members can be subsets of any given set $X$. Imports Mathlib's `Finset`, `Fintype`, and `Real` modules.",
     "mathContext": "$\\exists c_t \\to \\infty: \\text{hasMinSize}(\\mathcal{F}, t) \\wedge \\text{isSparse}(\\mathcal{F}, c_t) \\Rightarrow \\text{hasPropertyB}(\\mathcal{F})$",
-    "significance": "context",
-    "relatedConcepts": ["property B", "hypergraph coloring", "sparseness"],
-    "prerequisites": ["Finset", "Fintype", "Real"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "property B",
+      "hypergraph coloring",
+      "sparseness"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Fintype",
+      "Real"
+    ]
   },
   {
     "id": "ann-1022-setfamily",
     "proofId": "erdos-1022",
-    "range": { "startLine": 22, "endLine": 39 },
+    "range": {
+      "startLine": 22,
+      "endLine": 39
+    },
     "type": "definition",
     "title": "Set Family, Ground Set, and Minimum Size",
     "content": "`SetFamily α` is `Finset (Finset α)`—a finite collection of finite subsets of $\\alpha$. The `groundSet` is $\\bigcup \\mathcal{F}$ (computed via `Finset.sup`). `minSetSize` returns the minimum cardinality across all sets in $\\mathcal{F}$, the parameter $t$ in the problem. These are the basic objects of the hypergraph coloring problem.",
     "mathContext": "$\\mathcal{F} \\subseteq 2^{\\alpha}$ finite; $\\text{groundSet}(\\mathcal{F}) = \\bigcup_{A \\in \\mathcal{F}} A$; $t = \\min_{A \\in \\mathcal{F}} |A|$",
     "significance": "key",
-    "relatedConcepts": ["Finset.sup", "hypergraph", "uniform family"],
-    "prerequisites": ["Finset", "DecidableEq"]
+    "relatedConcepts": [
+      "Finset.sup",
+      "hypergraph",
+      "uniform family"
+    ],
+    "prerequisites": [
+      "Finset",
+      "DecidableEq"
+    ]
   },
   {
     "id": "ann-1022-propertyb",
     "proofId": "erdos-1022",
-    "range": { "startLine": 41, "endLine": 61 },
+    "range": {
+      "startLine": 41,
+      "endLine": 61
+    },
     "type": "definition",
     "title": "Property B (2-Colorability)",
     "content": "`hasPropertyB F` holds if there exists a 2-coloring $c: \\alpha \\to \\text{Bool}$ such that every set $A \\in \\mathcal{F}$ with $|A| \\ge 2$ is non-monochromatic: it contains both a true-colored and a false-colored element. Named after Felix Bernstein (1908), property B is the fundamental notion of hypergraph 2-colorability. The tautological equivalence `propertyB_iff_chromatic2` shows this is definitional.",
     "mathContext": "$\\text{hasPropertyB}(\\mathcal{F}) \\iff \\exists c: \\alpha \\to \\{0,1\\}, \\forall A \\in \\mathcal{F}: A \\not\\subseteq c^{-1}(0) \\wedge A \\not\\subseteq c^{-1}(1)$",
     "significance": "key",
-    "relatedConcepts": ["Bernstein property", "hypergraph 2-coloring", "set splitting"],
-    "prerequisites": ["Bool", "Finset membership"]
+    "relatedConcepts": [
+      "Bernstein property",
+      "hypergraph 2-coloring",
+      "set splitting"
+    ],
+    "prerequisites": [
+      "Bool",
+      "Finset membership"
+    ]
   },
   {
     "id": "ann-1022-chromatic",
     "proofId": "erdos-1022",
-    "range": { "startLine": 63, "endLine": 87 },
+    "range": {
+      "startLine": 63,
+      "endLine": 87
+    },
     "type": "definition",
     "title": "Chromatic Number of a Set Family",
     "content": "Generalizes property B to $k$ colors. `isKColorable F k` requires a $k$-coloring making all sets non-monochromatic (containing at least 2 distinct colors). `chromaticNumber F` is the minimum such $k$, defined via `Nat.find`. The theorem `propertyB_iff_chromatic_le2` connects property B to $\\chi(\\mathcal{F}) \\le 2$.",
     "mathContext": "$\\chi(\\mathcal{F}) = \\min\\{k : \\exists c: \\alpha \\to [k], \\forall A \\in \\mathcal{F}: |c(A)| \\ge 2\\}$; property B $\\iff \\chi \\le 2$",
     "significance": "key",
-    "relatedConcepts": ["chromatic number", "hypergraph coloring", "list coloring"],
-    "prerequisites": ["Fin", "Nat.find"]
+    "relatedConcepts": [
+      "chromatic number",
+      "hypergraph coloring",
+      "list coloring"
+    ],
+    "prerequisites": [
+      "Fin",
+      "Nat.find"
+    ]
   },
   {
     "id": "ann-1022-sparseness",
     "proofId": "erdos-1022",
-    "range": { "startLine": 89, "endLine": 105 },
+    "range": {
+      "startLine": 89,
+      "endLine": 105
+    },
     "type": "definition",
     "title": "Sparseness Condition",
     "content": "The key condition: `subsetCount F X` counts how many sets in $\\mathcal{F}$ are subsets of $X$. `isSparse F c` requires this count to be $< c \\cdot |X|$ for *every* finite set $X$ (not just sets in $\\mathcal{F}$). This is a strong structural condition: it bounds the 'local density' of the family near any set. `hasMinSize F t` requires all sets to have $|A| \\ge t$.",
     "mathContext": "$\\text{isSparse}(\\mathcal{F}, c) \\iff \\forall X: |\\{A \\in \\mathcal{F} : A \\subseteq X\\}| < c \\cdot |X|$",
     "significance": "key",
-    "relatedConcepts": ["subset density", "VC dimension", "trace"],
-    "prerequisites": ["Finset.filter", "Real coercion"]
+    "relatedConcepts": [
+      "subset density",
+      "VC dimension",
+      "trace"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Real coercion"
+    ]
   },
   {
     "id": "ann-1022-conjecture",
     "proofId": "erdos-1022",
-    "range": { "startLine": 107, "endLine": 124 },
+    "range": {
+      "startLine": 107,
+      "endLine": 124
+    },
     "type": "definition",
     "title": "The Main Conjecture: $c_t \\to \\infty$",
     "content": "`erdos_1022_conjecture` asks: does there exist a `ThresholdFunction` $c: \\mathbb{N} \\to \\mathbb{R}$ with $c_t \\to \\infty$ such that for all $t \\ge 2$, every set family with minimum size $t$ and sparseness $< c_t$ has property B? The divergence condition $c_t \\to \\infty$ means larger sets allow progressively sparser families to still be 2-colorable.",
     "mathContext": "$\\exists c: \\mathbb{N} \\to \\mathbb{R}, c_t \\to \\infty: \\forall t \\ge 2, \\forall \\mathcal{F}: \\text{minSize}(\\mathcal{F}) \\ge t \\wedge \\text{sparse}(\\mathcal{F}, c_t) \\Rightarrow \\text{propertyB}(\\mathcal{F})$",
     "significance": "key",
-    "relatedConcepts": ["threshold function", "Filter.Tendsto", "hypergraph conjecture"],
-    "prerequisites": ["ThresholdFunction", "tendsToInfinity", "hasPropertyB"]
+    "relatedConcepts": [
+      "threshold function",
+      "Filter.Tendsto",
+      "hypergraph conjecture"
+    ],
+    "prerequisites": [
+      "ThresholdFunction",
+      "tendsToInfinity",
+      "hasPropertyB"
+    ]
   },
   {
     "id": "ann-1022-lovasz",
     "proofId": "erdos-1022",
-    "range": { "startLine": 126, "endLine": 147 },
+    "range": {
+      "startLine": 126,
+      "endLine": 147
+    },
     "type": "technique",
     "title": "Lovász's Theorem (1968): $c_2 = 1$",
     "content": "The only solved case: for $t = 2$ (all sets have $\\ge 2$ elements), the threshold $c_2 = 1$ works. That is, if for every set $X$ fewer than $|X|$ family members are subsets of $X$, the family has property B. Axiomatized as `lovasz_theorem`. The derived `t2_case_solved` packages this as an existential witness ($c = 1 > 0$).",
     "mathContext": "$\\forall \\mathcal{F}: \\text{minSize} \\ge 2 \\wedge (\\forall X: |\\{A \\in \\mathcal{F}: A \\subseteq X\\}| < |X|) \\Rightarrow \\text{propertyB}(\\mathcal{F})$",
     "significance": "key",
-    "relatedConcepts": ["Lovász Local Lemma", "Hall's theorem", "transversal theory"],
-    "prerequisites": ["hasPropertyB", "isSparse", "c2"]
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "Hall's theorem",
+      "transversal theory"
+    ],
+    "prerequisites": [
+      "hasPropertyB",
+      "isSparse",
+      "c2"
+    ]
   },
   {
     "id": "ann-1022-hypergraph",
     "proofId": "erdos-1022",
-    "range": { "startLine": 149, "endLine": 172 },
+    "range": {
+      "startLine": 149,
+      "endLine": 172
+    },
     "type": "definition",
     "title": "Hypergraph Formulation",
     "content": "Defines `Hypergraph α` as an alias for `SetFamily α`, `hypergraphChromaticNumber` as `chromaticNumber`, and `erdos_1022_hypergraph` as the conjecture restated using hypergraph language ($\\chi(H) \\le 2$). The equivalence `formulations_equiv` shows the two statements are logically identical. This dual viewpoint is useful: set-family language emphasizes subset structure, while hypergraph language emphasizes coloring.",
     "mathContext": "$\\text{Hypergraph} \\equiv \\text{SetFamily}$; $\\chi(H) \\le 2 \\iff \\text{propertyB}(H)$",
     "significance": "supporting",
-    "relatedConcepts": ["hypergraph", "chromatic number", "set system"],
-    "prerequisites": ["SetFamily", "chromaticNumber"]
+    "relatedConcepts": [
+      "hypergraph",
+      "chromatic number",
+      "set system"
+    ],
+    "prerequisites": [
+      "SetFamily",
+      "chromaticNumber"
+    ]
   },
   {
     "id": "ann-1022-necessary",
     "proofId": "erdos-1022",
-    "range": { "startLine": 174, "endLine": 208 },
+    "range": {
+      "startLine": 174,
+      "endLine": 208
+    },
     "type": "technique",
     "title": "Necessary Conditions and Subset Density",
     "content": "If $c_t$ exists and tends to infinity, it must be eventually positive (`threshold_positive`) and must grow unboundedly (`threshold_grows`). The `subsetDensity` function normalizes the count: $\\text{subsetDensity}(\\mathcal{F}, X) = |\\{A \\subseteq X\\}| / |X|$. The theorem `sparse_iff_low_density` shows sparseness is equivalent to low density for all nonempty $X$.",
     "mathContext": "$c_t \\to \\infty \\Rightarrow \\exists T: \\forall t \\ge T, c_t > 0$; $\\text{density}(\\mathcal{F}, X) = \\frac{|\\{A \\in \\mathcal{F}: A \\subseteq X\\}|}{|X|}$",
     "significance": "key",
-    "relatedConcepts": ["density", "normalization", "eventual positivity"],
-    "prerequisites": ["tendsToInfinity", "subsetCount"]
+    "relatedConcepts": [
+      "density",
+      "normalization",
+      "eventual positivity"
+    ],
+    "prerequisites": [
+      "tendsToInfinity",
+      "subsetCount"
+    ]
   },
   {
     "id": "ann-1022-probabilistic",
     "proofId": "erdos-1022",
-    "range": { "startLine": 210, "endLine": 228 },
+    "range": {
+      "startLine": 210,
+      "endLine": 228
+    },
     "type": "insight",
     "title": "Probabilistic Intuition: Random Colorings",
     "content": "`expectedMonochromatic F` computes the expected number of monochromatic sets under a uniformly random 2-coloring: each set $A$ with $|A| = s$ is monochromatic with probability $2^{1-s}$ (all same color). The axiom `expected_less_one_implies_propertyB` asserts that if this expectation is $< 1$, property B holds—this is the first-moment method (or a consequence of the Lovász Local Lemma). The theorem `sparse_bounds_expected` shows sparseness controls this expectation.",
     "mathContext": "$\\mathbb{E}[\\text{mono}] = \\sum_{A \\in \\mathcal{F}} 2^{1-|A|}$; if $< 1$ then property B holds; sparseness gives $\\le c_t \\cdot |\\bigcup \\mathcal{F}| \\cdot 2^{1-t}$",
     "significance": "key",
-    "relatedConcepts": ["first-moment method", "Lovász Local Lemma", "probabilistic method"],
-    "prerequisites": ["expectedMonochromatic", "isSparse"]
+    "relatedConcepts": [
+      "first-moment method",
+      "Lovász Local Lemma",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "expectedMonochromatic",
+      "isSparse"
+    ]
   },
   {
     "id": "ann-1022-coverfree",
     "proofId": "erdos-1022",
-    "range": { "startLine": 230, "endLine": 244 },
+    "range": {
+      "startLine": 230,
+      "endLine": 244
+    },
     "type": "definition",
     "title": "Cover-Free Families",
     "content": "`isCoverFree F r` means no set in $\\mathcal{F}$ is contained in the union of $r$ others: $\\forall A \\in \\mathcal{F}: A \\not\\subseteq \\bigcup_{B \\in \\mathcal{B}} B$ for any $\\mathcal{B} \\subseteq \\mathcal{F}$ with $|\\mathcal{B}| \\le r$. The theorem `coverFree_implies_sparse` shows $r$-cover-freeness implies $(r+1)$-sparseness. Cover-free families arise in combinatorial group testing and error-correcting codes.",
     "mathContext": "$r$-cover-free: $\\forall A \\in \\mathcal{F}, \\forall \\mathcal{B} \\subseteq \\mathcal{F}, |\\mathcal{B}| \\le r: A \\not\\subseteq \\bigcup \\mathcal{B}$; implies $(r+1)$-sparse",
     "significance": "key",
-    "relatedConcepts": ["cover-free family", "superimposed codes", "group testing"],
-    "prerequisites": ["Finset.sup", "isSparse"]
+    "relatedConcepts": [
+      "cover-free family",
+      "superimposed codes",
+      "group testing"
+    ],
+    "prerequisites": [
+      "Finset.sup",
+      "isSparse"
+    ]
   }
 ]

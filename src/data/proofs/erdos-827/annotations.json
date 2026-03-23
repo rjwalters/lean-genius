@@ -10,7 +10,7 @@
     "title": "Problem Overview and Imports",
     "content": "Erdős Problem #827 is a Ramsey-type problem in discrete geometry: determine $n_k$, the minimal number of points in general position in $\\mathbb{R}^2$ such that some $k$-element subset has all $\\binom{k}{3}$ triples with distinct circumradii. Erdős posed this in 1975, claimed an explicit bound in 1978 (with errors), and Martinez-Roldán-Pensado corrected it to $n_k \\ll k^9$. Imports Mathlib's real numbers and finite sets.",
     "mathContext": "$n_k = \\min\\{n : \\forall S \\subseteq \\mathbb{R}^2$ in general position with $|S| = n$, $\\exists T \\subseteq S$ with $|T| = k$ and all $\\binom{k}{3}$ circumradii distinct$\\}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ramsey-type problem",
       "discrete geometry",

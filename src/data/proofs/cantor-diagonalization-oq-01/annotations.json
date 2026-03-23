@@ -10,7 +10,7 @@
     "title": "Open Question: What Can Diagonalization Prove About CH?",
     "content": "The header frames the central question: Cantor's diagonal argument proves the gap aleph_0 < 2^aleph_0, but can it determine whether any cardinal lies between them? The Continuum Hypothesis (CH), posed in 1878, is Hilbert's Problem 1. The file imports Cardinal.Basic (Cantor's theorem), Cardinal.Ordinal (aleph numbers), Cardinal.Cofinality (for König's theorem), and local helpers CantorDiagonalization and ContinuumHypothesis. The header gives a clean table of what the diagonal CAN prove (cantor_gap, aleph_one_le_continuum, beth_strictly_increasing, ch_iff_no_intermediate) vs. what it CANNOT (the exact value of 2^aleph_0 in the aleph hierarchy).",
     "mathContext": "The Cantor-Bernstein hierarchy: $\\aleph_0 < \\aleph_1 \\leq 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$. CH states $2^{\\aleph_0} = \\aleph_1$. Gödel (1940): ZFC + CH is consistent. Cohen (1963): ZFC + ¬CH is consistent. So CH is independent of ZFC.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Continuum Hypothesis",
       "Cantor diagonalization",

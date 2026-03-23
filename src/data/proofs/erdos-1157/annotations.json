@@ -10,7 +10,7 @@
     "title": "Problem Context and Imports",
     "content": "Header documenting Erdős Problem #1157 on general extremal numbers for r-uniform hypergraphs. The Brown-Erdős-Sós (BES) conjecture asks: for r > t >= 2 and s >= 3, is ex_t(n, F) = o(n^t) whenever k >= (r-t)s + t + 1? Known partial results include the (6,3)-case (Ruzsa-Szemerédi 1978), (7,4)-case (Glock 2019), and the full 3-uniform case (Delcourt-Postle 2024). Imports Nat.Basic for natural number arithmetic, Real.Basic for the real-valued exponent computations, and SpecialFunctions.Pow.Real for real powers n^α used in asymptotic bounds.",
     "mathContext": "The extremal number $f^{(r)}(n; k, s)$ is the maximum edges in an $r$-uniform hypergraph on $n$ vertices with no $s$ edges spanning $\\leq k$ vertices. The BES conjecture asserts $f^{(t)}(n; k, s) = o(n^t)$ when $k \\geq (r-t)s + t + 1$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Real.rpow",
       "Nat.Basic",

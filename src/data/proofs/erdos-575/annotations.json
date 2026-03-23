@@ -10,7 +10,7 @@
     "title": "Problem Statement and Imports",
     "content": "The header lays out Erdős Problem #575: given a finite family F of forbidden graphs containing at least one bipartite member, must some single bipartite G ∈ F satisfy ex(n; G) = O(ex(n; F))? The formalization imports Mathlib's SimpleGraph infrastructure and Finset API.",
     "mathContext": "The extremal number $\\mathrm{ex}(n; F)$ counts the maximum edges in an $n$-vertex graph avoiding every member of $F$. When $F$ contains a bipartite graph, the Kővári–Sós–Turán theorem forces $\\mathrm{ex}(n; F) = o(n^2)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "extremal graph theory",
       "forbidden subgraph",

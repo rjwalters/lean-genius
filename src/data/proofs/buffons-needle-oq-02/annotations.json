@@ -10,7 +10,7 @@
     "title": "3D Buffon: From Parallel Lines to Parallel Planes",
     "content": "The header explains the 3D generalization of Buffon's Needle. The 2D formula E = 2L/(πd) (for parallel lines) becomes E = L/(2d) (for parallel planes) in 3D. The dimensional crossing factors are α₂ = 2/π ≈ 0.637 and α₃ = 1/2 = 0.5. The key computation is the sphere average E_{S²}[|cos φ|] = 1/2, which follows from ∫₀^π sin φ |cos φ| dφ = 1. The proof is organized into 4 parts: (I) the fundamental integral, (II) sphere average, (III) noodle theorem properties, (IV) dimension comparison.",
     "mathContext": "In ℝⁿ, the expected crossings of a curve with a hyperplane family depends on the crossing factor $\\alpha_n = E_{S^{n-1}}[|u_1|]$. For $n=2$: $\\alpha_2 = \\frac{2}{\\pi}$ (sphere $S^1$ = circle). For $n=3$: $\\alpha_3 = \\frac{1}{2}$ (sphere $S^2$, polar angle integral). Result: $E[\\text{crossings}] = \\alpha_n \\cdot L/d$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "BuffonsNeedle",
       "BuffonsNoodle",

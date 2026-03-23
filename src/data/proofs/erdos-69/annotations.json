@@ -10,7 +10,7 @@
     "title": "Aristotle Proof-Search Header",
     "content": "This file was edited by Aristotle, the automated proof-search system. Aristotle successfully proved `tao_identity : omegaSum = primeSum` — the combinatorial double-sum interchange that is the mathematical core of Problem 69. The irrationality result `primeSum_irrational` was not found by Aristotle (marked 'Aristotle failed to find a proof'), which is expected since the deep analytic number theory involved is beyond automated search.",
     "mathContext": "The Aristotle proof for `tao_identity` is 60+ lines of tactic-mode Lean, involving `Summable.tsum_comm` for the Fubini-style interchange, `tsum_eq_tsum_of_ne_zero_bij` for reindexing, and `summable_of_ratio_norm_eventually_le` for convergence estimates. This represents a significant automated proof discovery.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "Aristotle proof search system"
     ],

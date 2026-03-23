@@ -82,7 +82,7 @@
     "title": "Uniform Family",
     "content": "**IsUniform F n**: All sets in F have exactly n elements.\n\n```lean\ndef IsUniform (F : Finset (Finset α)) (n : ℕ) : Prop :=\n  ∀ A ∈ F, A.card = n\n```\n\nAlso called an n-uniform hypergraph.",
     "mathContext": "Uniformity simplifies the analysis. The covering condition for (n-1)-sets interacts cleanly with n-sets.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "hypergraph",
       "uniform-family",
@@ -298,7 +298,7 @@
     "title": "Sunflowers",
     "content": "**IsSunflower F**: All pairwise intersections are the SAME set C (the kernel).\n\n```lean\ndef IsSunflower (F : Finset (Finset α)) : Prop :=\n  ∃ C : Finset α, ∀ A ∈ F, ∀ B ∈ F, A ≠ B → A ∩ B = C\n```\n\nSunflowers have a central 'kernel' with 'petals' around it.\n\n**Note**: Not all covering families are sunflowers!",
     "mathContext": "The Sunflower Lemma (Erdős-Rado) says large uniform families contain sunflowers. Covering families have similar but not identical structure.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "sunflower-lemma",
       "kernel",
@@ -334,7 +334,7 @@
     "title": "Generalized Problem",
     "content": "**f_general k n**: Minimum size for covering all (n-k)-sets.\n\nThe original problem is f = f_general 1 (cover (n-1)-sets).\n\n**GeneralizedConjecture k**: f_k(n) = (k+2)n + O(1)\n\n| k | Conjectured leading coefficient |\n|---|----------------------------------|\n| 1 | 3 (original problem) |\n| 2 | 4 |\n| k | k + 2 |",
     "mathContext": "This generalization studies how the minimum grows as we require coverage of smaller sets. The pattern (k+2)n is based on limited data.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "generalization",
       "parametric-family",

@@ -10,7 +10,7 @@
     "title": "Problem Statement and Imports",
     "content": "Module documentation describing Erdős Problem #863 on B₂[r] sum sets vs difference sets, with imports for Data.Nat.Basic, Data.Finset.Basic, Data.Finset.Card (finite set combinatorics), Order.Filter.Basic (the eventually filter for asymptotic convergence statements), and Tactic for proof automation.",
     "mathContext": "The module formalizes the question: for B₂[$r$] sets $A \\subseteq \\{1, \\ldots, N\\}$ where each integer has at most $r$ representations as $a+b$ ($a \\leq b$), and the difference analogue where each nonzero integer has at most $r$ representations as $a - b$, do the asymptotic constants $c_r$ and $c'_r$ differ when $r \\geq 2$? The Filter.atTop framework enables $\\varepsilon$-$\\delta$ convergence statements.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset",
       "Filter.atTop",

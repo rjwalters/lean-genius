@@ -2,85 +2,164 @@
   {
     "id": "ann-imports-docstring",
     "proofId": "fundamental-theorem-calculus",
-    "range": { "startLine": 1, "endLine": 48 },
+    "range": {
+      "startLine": 1,
+      "endLine": 48
+    },
     "type": "context",
     "title": "Imports, Overview, and Setup",
     "content": "Six Mathlib imports covering calculus (`FDeriv`, `Deriv`), measure-theoretic integration (`IntervalIntegral`, `FundThmCalculus`), the mean value theorem, and topology. Module docstring describes both parts of the FTC with historical context (Newton, Leibniz, Cauchy, Weierstrass). Opens five namespaces for concise notation and declares the `FundamentalTheoremCalculus` namespace.",
     "mathContext": "FTC Part 1: $\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$. FTC Part 2: $\\int_a^b F'(x)\\,dx = F(b) - F(a)$.",
-    "significance": "context",
-    "relatedConcepts": ["Mathlib calculus", "interval integral", "measure theory", "Fréchet derivative", "Bochner integral", "Wiedijk 100 #15"],
-    "prerequisites": ["Lean 4 imports", "real analysis"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib calculus",
+      "interval integral",
+      "measure theory",
+      "Fréchet derivative",
+      "Bochner integral",
+      "Wiedijk 100 #15"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-integral-function",
     "proofId": "fundamental-theorem-calculus",
-    "range": { "startLine": 50, "endLine": 61 },
+    "range": {
+      "startLine": 50,
+      "endLine": 61
+    },
     "type": "definition",
     "title": "The Integral Function",
     "content": "Defines `integralFunction f a` as $F(x) = \\int_a^x f(t)\\,dt$, the running integral of $f$ from fixed lower bound $a$. Marked `noncomputable` because real-valued integrals use classical choice. This is the function whose derivative FTC Part 1 computes.",
     "mathContext": "$F(x) = \\int_a^x f(t)\\,dt$. This defines a new function $F : \\mathbb{R} \\to \\mathbb{R}$ from a given $f$ and basepoint $a$.",
     "significance": "key",
-    "relatedConcepts": ["interval integral", "noncomputable", "running integral"],
-    "prerequisites": ["interval integral notation", "Mathlib measure theory"]
+    "relatedConcepts": [
+      "interval integral",
+      "noncomputable",
+      "running integral"
+    ],
+    "prerequisites": [
+      "interval integral notation",
+      "Mathlib measure theory"
+    ]
   },
   {
     "id": "ann-ftc-part1",
     "proofId": "fundamental-theorem-calculus",
-    "range": { "startLine": 63, "endLine": 78 },
+    "range": {
+      "startLine": 63,
+      "endLine": 78
+    },
     "type": "technique",
     "title": "FTC Part 1: Derivative of the Integral",
     "content": "Two versions of FTC Part 1. `ftc_part1` uses minimal hypotheses (continuity at $b$, integrability on $[a,b]$, strong measurability at $b$), directly applying Mathlib's `integral_hasDerivAt_right`. `ftc_part1_continuous` provides the classical statement for globally continuous $f$: the integral function has derivative $f(x)$ at every point $x$.",
     "mathContext": "If $f$ is continuous at $b$ and integrable on $[a,b]$: $F'(b) = f(b)$ where $F(x) = \\int_a^x f$. Globally: $f$ continuous $\\Rightarrow \\frac{d}{dx}\\int_a^x f = f(x)$ everywhere.",
     "significance": "key",
-    "relatedConcepts": ["HasDerivAt", "integral_hasDerivAt_right", "ContinuousAt", "strong measurability", "Barrow's theorem"],
-    "prerequisites": ["interval integrability", "strong measurability", "HasDerivAt"]
+    "relatedConcepts": [
+      "HasDerivAt",
+      "integral_hasDerivAt_right",
+      "ContinuousAt",
+      "strong measurability",
+      "Barrow's theorem"
+    ],
+    "prerequisites": [
+      "interval integrability",
+      "strong measurability",
+      "HasDerivAt"
+    ]
   },
   {
     "id": "ann-ftc-part2",
     "proofId": "fundamental-theorem-calculus",
-    "range": { "startLine": 80, "endLine": 105 },
+    "range": {
+      "startLine": 80,
+      "endLine": 105
+    },
     "type": "technique",
     "title": "FTC Part 2: Integral of the Derivative",
     "content": "Two versions: `ftc_part2` (with $a \\leq b$) applies `integral_eq_sub_of_hasDerivAt_of_le` requiring continuity of $F$ on $[a,b]$ and differentiability on $(a,b)$. `ftc_part2_general` drops the $a \\leq b$ assumption using `uIcc` (unordered interval), applying `integral_eq_sub_of_hasDeriv_right`.",
     "mathContext": "$\\int_a^b F'(x)\\,dx = F(b) - F(a)$. Hypotheses: $F$ continuous on $[a,b]$, $F' = f$ on $(a,b)$, $f$ integrable.",
     "significance": "key",
-    "relatedConcepts": ["evaluation theorem", "antiderivative", "net change theorem", "Newton-Leibniz formula", "uIcc"],
-    "prerequisites": ["ContinuousOn", "HasDerivAt", "HasDerivWithinAt"]
+    "relatedConcepts": [
+      "evaluation theorem",
+      "antiderivative",
+      "net change theorem",
+      "Newton-Leibniz formula",
+      "uIcc"
+    ],
+    "prerequisites": [
+      "ContinuousOn",
+      "HasDerivAt",
+      "HasDerivWithinAt"
+    ]
   },
   {
     "id": "ann-unity-antiderivative",
     "proofId": "fundamental-theorem-calculus",
-    "range": { "startLine": 107, "endLine": 128 },
+    "range": {
+      "startLine": 107,
+      "endLine": 128
+    },
     "type": "insight",
     "title": "The Unity of Calculus and Antiderivatives",
     "content": "Documentation explaining that FTC Parts 1 and 2 establish differentiation and integration as inverse operations. Defines `IsAntiderivative F f` as $F' = f$ everywhere. `integral_is_antiderivative` proves the integral function is an antiderivative of continuous $f$, directly from `ftc_part1_continuous`.",
     "mathContext": "$\\frac{d}{dx}\\int_a^x f = f$ (integrate then differentiate). $\\int_a^b F' = F(b) - F(a)$ (differentiate then integrate). $F$ is an antiderivative of $f$ iff $F'(x) = f(x)$ for all $x$.",
     "significance": "key",
-    "relatedConcepts": ["antiderivative", "inverse operations", "IsAntiderivative"],
-    "prerequisites": ["ftc_part1_continuous", "HasDerivAt"]
+    "relatedConcepts": [
+      "antiderivative",
+      "inverse operations",
+      "IsAntiderivative"
+    ],
+    "prerequisites": [
+      "ftc_part1_continuous",
+      "HasDerivAt"
+    ]
   },
   {
     "id": "ann-constant-theorem",
     "proofId": "fundamental-theorem-calculus",
-    "range": { "startLine": 130, "endLine": 158 },
+    "range": {
+      "startLine": 130,
+      "endLine": 158
+    },
     "type": "technique",
     "title": "Antiderivatives Differ by a Constant",
     "content": "Two supporting theorems. `hasDerivAt_zero_implies_constant`: a function with everywhere-zero derivative is constant, using `is_const_of_deriv_eq_zero` from Mathlib's mean value theorem infrastructure. `antiderivatives_differ_by_constant`: if $F$ and $G$ are both antiderivatives of $f$, then $F - G$ is constant — proved by showing $(F-G)' = f - f = 0$ and applying the zero-derivative theorem.",
     "mathContext": "If $F' = 0$ everywhere, then $F$ is constant (consequence of MVT). Therefore: $F' = G' = f \\Rightarrow (F-G)' = 0 \\Rightarrow F - G = c$ for some constant $c$.",
     "significance": "key",
-    "relatedConcepts": ["mean value theorem", "constant function", "uniqueness of antiderivatives", "kernel of d/dx", "affine subspace"],
-    "prerequisites": ["is_const_of_deriv_eq_zero", "HasDerivAt.sub", "linarith"]
+    "relatedConcepts": [
+      "mean value theorem",
+      "constant function",
+      "uniqueness of antiderivatives",
+      "kernel of d/dx",
+      "affine subspace"
+    ],
+    "prerequisites": [
+      "is_const_of_deriv_eq_zero",
+      "HasDerivAt.sub",
+      "linarith"
+    ]
   },
   {
     "id": "ann-verification",
     "proofId": "fundamental-theorem-calculus",
-    "range": { "startLine": 160, "endLine": 165 },
+    "range": {
+      "startLine": 160,
+      "endLine": 165
+    },
     "type": "context",
     "title": "Verification",
     "content": "Closes the namespace and type-checks four main theorems: `ftc_part1`, `ftc_part2`, `integral_is_antiderivative`, and `antiderivatives_differ_by_constant`.",
     "mathContext": "All four theorems verified: Parts 1 and 2 of the FTC, the antiderivative property of the integral, and uniqueness up to constants.",
-    "significance": "context",
-    "relatedConcepts": ["#check command"],
-    "prerequisites": ["Lean 4 meta-commands"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "#check command"
+    ],
+    "prerequisites": [
+      "Lean 4 meta-commands"
+    ]
   }
 ]

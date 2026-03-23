@@ -10,7 +10,7 @@
     "title": "Problem Statement and Imports",
     "content": "The header states Erdős Problem #585: determine the maximum number of edges in an n-vertex graph with no two edge-disjoint cycles on the same vertex set. Known bounds are Ω(n log log n) from Pyber–Rödl–Szemerédi (1995) and O(n(log n)^C) from Chakraborti–Janzer–Methuku–Montgomery (2024). Imports include Mathlib's SimpleGraph, Finset, and Filter modules.",
     "mathContext": "The extremal function $f(n) = \\max\\{|E(G)| : |V(G)| = n,\\; G \\text{ has no two edge-disjoint cycles on the same vertex set}\\}$ satisfies $\\Omega(n \\log \\log n) \\le f(n) \\le O(n (\\log n)^C)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "extremal graph theory",
       "cycle decomposition",

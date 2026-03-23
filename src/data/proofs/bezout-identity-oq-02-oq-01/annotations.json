@@ -10,7 +10,7 @@
     "title": "FTA from Euclid's Lemma: The Proof Chain and Historical Motivation",
     "content": "The module preamble establishes the proof chain: Bézout's identity (IsCoprime in Lean) → Euclid's lemma for primes → Euclid's lemma for lists → FTA uniqueness → FTA existence. The key insight is that uniqueness is exactly what requires Euclid's lemma — existence (every number is a product of primes) is elementary, but uniqueness requires the irreducible = prime equivalence that Euclid's lemma provides. The historical context is precise: Euclid's Elements VII.30 proves p prime, p|ab → p|a or p|b; Gauss's Disquisitiones Arithmeticae (1801) gave the first complete uniqueness proof. The file achieves 0 axioms and 0 sorries for all results.",
     "mathContext": "Proof chain: `IsCoprime p a` (from prime + coprimality) → `coprime_iff_not_dvd.mpr` → `dvd_of_dvd_mul_left` → `euclids_lemma_prime`. Then by induction: `prime_dvd_of_dvd_list_prod` → `prime_mem_of_dvd_prime_list` → `fta_uniqueness` (via `prime_list_perm`) → `fta_from_euclid`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "euclids_lemma_prime",
       "prime_dvd_of_dvd_list_prod",
@@ -164,7 +164,7 @@
     "title": "Product Lemmas: Prime List Products Exceed 1",
     "content": "The product lemmas section establishes that a nonempty list of primes has product > 1. This is a necessary ingredient for the fta_uniqueness induction: in the base case (l₁ = []), we need to show l₂ = [] too, which requires knowing that a nonempty prime list can't have product 1. The lemmas: prime_list_prod_pos (product of prime list is > 0), prime_list_prod_ge_two (nonempty prime list product ≥ 2, proved using the minimum prime = 2), prime_list_prod_ne_one (nonempty prime list product ≠ 1, from ≥2 result). These auxiliary facts, while elementary, are essential structural components of the uniqueness proof.",
     "mathContext": "prime_list_prod_ge_two: by induction, `hd.Prime → 2 ≤ hd → hd ≤ hd * tl.prod`. Lean: `Nat.Prime.two_le hp` gives `2 ≤ p`. Then `mul_le_mul_of_nonneg_right` scales up for longer lists. prime_list_prod_ne_one: follows from `≥2` result.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "prime_list_perm",
       "fta_uniqueness",
