@@ -111,20 +111,60 @@
       "mathContext": "A cyclic vector v generates the entire Krylov space span{v, Mv, M²v, ...} = K^n. Nonderogatory means the minimal and characteristic polynomials coincide, i.e., M has a single invariant factor."
     },
     {
-      "id": "helpers",
-      "title": "Helper Lemmas",
+      "id": "helper-eval-nonvanishing",
+      "title": "Helper: Polynomial Evaluation Non-vanishing",
       "startLine": 35,
-      "endLine": 146,
-      "summary": "Proves five key helpers: aeval_ne_zero_of_ne_zero (low-degree nonzero polys evaluate to nonzero matrices), not_union_proper_subspaces (union avoidance over infinite fields), gcd_aeval_mulVec_eq_zero (GCD annihilation via Bezout), and ker_mulVecLin_ne_top (nonzero matrix has proper kernel)",
-      "mathContext": "Union avoidance is proved by induction on the number of subspaces, using a line argument: for v ∉ S_k and w ∉ S_1 ∪ ... ∪ S_{k-1}, the line {v + tw} meets each S_i in at most one point. Since K is infinite, some point avoids all subspaces."
+      "endLine": 42,
+      "summary": "Proves aeval_ne_zero_of_ne_zero: if p ≠ 0 and deg(p) < deg(minpoly M), then p(M) ≠ 0. Uses the minimality property: if p(M) = 0 then minpoly | p, forcing deg(minpoly) ≤ deg(p), a contradiction.",
+      "mathContext": "The minimal polynomial is the monic polynomial of least degree annihilating $M$. By definition, $\\mu_M | p$ whenever $p(M) = 0$, so any nonzero $p$ with $\\deg(p) < \\deg(\\mu_M)$ cannot annihilate $M$. This is the entry point for the proper-subspace construction in Phase 2."
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem",
+      "id": "helper-union-avoidance",
+      "title": "Helper: Union Avoidance over Infinite Fields",
+      "startLine": 44,
+      "endLine": 104,
+      "summary": "Proves not_union_proper_subspaces: over an infinite field, finitely many proper subspaces cannot cover a nontrivial vector space. Induction on the number of subspaces with a line argument — for v ∉ S_k and w ∉ S_1 ∪ ⋯ ∪ S_{k-1}, the line {v + tw} meets each S_i in at most one point, and K is infinite.",
+      "mathContext": "Union avoidance: $V \\neq S_1 \\cup \\cdots \\cup S_k$ when each $S_i \\subsetneq V$ and $|K| = \\infty$. The line argument: $|\\{t \\in K : v + tw \\in S_i\\}| \\leq 1$ for each $i$ (two intersections force $w \\in S_i$), so at most $k$ bad parameters exist in an infinite field."
+    },
+    {
+      "id": "helper-gcd-annihilation",
+      "title": "Helper: GCD Annihilation via Bezout",
+      "startLine": 106,
+      "endLine": 132,
+      "summary": "Proves gcd_aeval_mulVec_eq_zero: if p(M)v = 0, then gcd(p, minpoly)(M)v = 0. Uses Bezout's identity d = a·p + b·μ in K[X], evaluates at M, and applies to v. Both terms vanish: a(M)·p(M)v = 0 by hypothesis, b(M)·μ(M)v = 0 by Cayley-Hamilton.",
+      "mathContext": "Bezout in $K[X]$: $d = \\gcd(p, \\mu) = ap + b\\mu$. Then $d(M)v = a(M)\\underbrace{p(M)v}_{=0} + b(M)\\underbrace{\\mu(M)v}_{=0} = 0$. The key subtlety: Bezout gives $d = pa + \\mu b$ but we need $ap$ and $b\\mu$ (commuted) so that $p(M)$ and $\\mu(M)$ act on $v$ first via `mulVec_mulVec`."
+    },
+    {
+      "id": "helper-proper-kernel",
+      "title": "Helper: Nonzero Matrix Has Proper Kernel",
+      "startLine": 134,
+      "endLine": 145,
+      "summary": "Proves ker_mulVecLin_ne_top: if A ≠ 0 then ker(A) ≠ K^n. Contradiction: if every vector is in the kernel, then A·e_j = 0 for all standard basis vectors, forcing all entries A_{ij} = 0.",
+      "mathContext": "$A \\neq 0 \\implies \\ker(A) \\subsetneq K^n$. Proof: $\\ker(A) = K^n \\implies Ae_j = 0$ for all $j \\implies A_{ij} = 0$ for all $i,j \\implies A = 0$. Bridges algebraic nontriviality (cofactor $\\neq 0$) to geometric properness ($\\ker \\subsetneq K^n$)."
+    },
+    {
+      "id": "main-theorem-setup",
+      "title": "Main Theorem: Base Case and Setup",
       "startLine": 148,
+      "endLine": 168,
+      "summary": "Handles the n = 0 edge case (vacuously true: Fin.elim0 is cyclic), then sets up the minimal polynomial μ, establishes deg(μ) = n via the nonderogatory hypothesis, and extracts normalizedFactors(μ) as a Finset for use in union avoidance.",
+      "mathContext": "Setup: $\\mu = \\text{minpoly}(K, M)$, $\\deg(\\mu) = n$ (since $\\mu = \\chi_M$ and $\\deg(\\chi_M) = n$). The normalized factors form a finite multiset of irreducible polynomials with $\\mu = u \\cdot \\prod_{q \\in \\text{nf}} q^{e_q}$ for a unit $u$. Converting to a `Finset` deduplicates for union avoidance."
+    },
+    {
+      "id": "main-theorem-subspaces-avoidance",
+      "title": "Main Theorem: Phases 2-3 (Cofactor Kernels and Union Avoidance)",
+      "startLine": 169,
+      "endLine": 209,
+      "summary": "Phase 2: For each irreducible factor q of μ, the cofactor kernel ker((μ/q)(M)) is proper (since μ/q has degree < n and is nonzero, aeval_ne_zero_of_ne_zero gives (μ/q)(M) ≠ 0). Phase 3: Apply union avoidance to find v outside all cofactor kernels.",
+      "mathContext": "For each irreducible $q | \\mu$: $\\deg(\\mu/q) = \\deg(\\mu) - \\deg(q) < n$ and $\\mu/q \\neq 0$, so $(\\mu/q)(M) \\neq 0$ by the evaluation non-vanishing lemma. Then $\\ker((\\mu/q)(M)) \\subsetneq K^n$ by the proper kernel lemma. Union avoidance: $\\exists v \\notin \\bigcup_{q} \\ker((\\mu/q)(M))$."
+    },
+    {
+      "id": "main-theorem-contradiction",
+      "title": "Main Theorem: Phase 4 (Cyclicity by Contradiction)",
+      "startLine": 210,
       "endLine": 268,
-      "summary": "The main theorem: over an infinite field, nonderogatory implies cyclic vector. Uses normalizedFactors to get a finite set of irreducible factors, constructs cofactor kernels as proper subspaces, applies union avoidance, then proves cyclicity by contradiction using GCD annihilation",
-      "mathContext": "The proof has five phases: (1) setup and factor enumeration, (2) proper subspace construction, (3) union avoidance, (4) cyclicity proof by contradiction using GCD/Bezout and factor divisibility. The key algebraic step uses polynomial commutativity (mul_comm) to get the right order for matrix multiplication."
+      "summary": "Proves v is cyclic by contradiction. If nonzero p with deg(p) < n annihilates v, then d = gcd(p,μ) annihilates v and properly divides μ. Writing μ = d·s with s non-unit, factor s to get irreducible q₀ | s, find associated q' ∈ normalizedFactors(μ), then (μ/q')(M)v = 0 — contradicting v's avoidance of ker((μ/q')(M)).",
+      "mathContext": "Contradiction chain: $d = \\gcd(p,\\mu)$, $d(M)v = 0$, $\\deg(d) < n = \\deg(\\mu)$. Factor $\\mu = ds$, $\\deg(s) > 0$, $q_0 | s$ irreducible, $q' \\sim q_0$ in $\\text{nf}(\\mu)$, $q' | s$, $\\mu/q' = dt$, $(\\mu/q')(M)v = t(M) \\cdot d(M)v = 0$. But $v \\notin \\ker((\\mu/q')(M))$ by Phase 3."
     }
   ],
   "conclusion": {
@@ -185,6 +225,16 @@
       "targetId": "gcd-algorithm",
       "relationship": "uses-concept",
       "description": "The Euclidean algorithm for polynomial GCD is the computational backbone of the Bezout identity used in the GCD annihilation lemma"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "extends",
+      "description": "Parent entry on minimal polynomial reduction in K-algebras. This OQ-01 entry specializes the theory to matrices and proves the key structural consequence: nonderogatory matrices have cyclic vectors"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "related",
+      "description": "Similar matrices share the same minimal polynomial. Combined with the nonderogatory characterization, this shows the cyclic vector property is a similarity invariant: if $M$ is nonderogatory, so is $P^{-1}MP$"
     }
   ],
   "relatedProofs": [
@@ -193,7 +243,9 @@
     "bezout-identity",
     "fundamental-arithmetic",
     "cayley-hamilton-reduction",
-    "gcd-algorithm"
+    "gcd-algorithm",
+    "cayley-hamilton-minpoly-oq-05",
+    "cayley-hamilton-minpoly-oq-02"
   ],
   "references": [
     {
