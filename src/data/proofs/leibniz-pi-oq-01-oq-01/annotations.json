@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-machin-00-header",
+    "proofId": "leibniz-pi-oq-01-oq-01",
+    "range": { "startLine": 5, "endLine": 34 },
+    "type": "context",
+    "title": "Module Overview: From-Scratch Derivation of Machin's Formula",
+    "content": "This proof deliberately avoids Mathlib's pre-packaged `Real.four_mul_arctan_inv_5_sub_arctan_inv_239` to derive Machin's formula from first principles. Only three Mathlib lemmas are used: `arctan_add` (the addition formula), `arctan_neg` (parity), and `arctan_one` ($\\arctan(1) = \\pi/4$). The from-scratch approach demonstrates that any Machin-like formula can be verified by iterating these primitives. John Machin used this identity in 1706 to compute 100 digits of $\\pi$, vastly outpacing the Leibniz series $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ which requires millions of terms for similar accuracy.",
+    "mathContext": "Machin's formula: $\\frac{\\pi}{4} = 4\\arctan\\frac{1}{5} - \\arctan\\frac{1}{239}$. The arctan series at $x = 1/5$ converges as $O(5^{-2N})$ vs $O(1/N)$ for the Leibniz series at $x = 1$.",
+    "significance": "context",
+    "relatedConcepts": ["Machin-like formulas", "pi computation", "arctan series", "Leibniz formula"],
+    "prerequisites": ["Real.arctan_add", "Real.arctan_neg", "Real.arctan_one"]
+  },
+  {
     "id": "ann-machin-01-doubling",
     "proofId": "leibniz-pi-oq-01-oq-01",
     "range": { "startLine": 34, "endLine": 39 },
