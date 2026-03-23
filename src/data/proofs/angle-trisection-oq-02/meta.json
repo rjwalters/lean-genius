@@ -248,14 +248,14 @@
       "id": "non-constructible",
       "title": "Non-Constructibility: ∛2 and cos(20°)",
       "startLine": 94,
-      "endLine": 135,
+      "endLine": 141,
       "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2.",
       "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$, not $2^n$. $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$, not $2^n$. Key: $\\gcd(3, 2^n) = 1$ so $3 \\nmid 2^n$."
     },
     {
       "id": "constructible-examples",
       "title": "Constructible Examples: √2 and 2^(1/4)",
-      "startLine": 137,
+      "startLine": 143,
       "endLine": 200,
       "summary": "PROVED: |Gal(x²-2/ℚ)| = 2 via divisibility squeeze (prime degree divides |Gal|, Gal embeds into S₂). Gal(x⁴-2/ℚ) = 8 from InverseGaloisD4. Both are 2-groups.",
       "mathContext": "$|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$ ($\\sqrt{2}$ constructible). $|\\text{Gal}(x^4-2/\\mathbb{Q})| = 8 = 2^3$ ($\\sqrt[4]{2}$ constructible)."
@@ -264,14 +264,14 @@
       "id": "oq01-connection",
       "title": "Connection to OQ-01 (Degree Criterion)",
       "startLine": 202,
-      "endLine": 236,
+      "endLine": 242,
       "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated.",
       "mathContext": "$\\deg(\\text{minpoly}) \\mid [\\text{SplittingField} : \\mathbb{Q}] = |\\text{Gal}| = 2^k$, so $\\deg(\\text{minpoly}) = 2^j$ for some $j \\leq k$."
     },
     {
       "id": "contrapositives",
       "title": "Contrapositive Non-Constructibility Results",
-      "startLine": 236,
+      "startLine": 244,
       "endLine": 261,
       "summary": "Two contrapositive theorems: constructible_implies_degree_dvd_pow2 (Galois criterion → degree criterion), not_constructible_of_not_2group (¬2-group → ¬constructible), not_constructible_of_degree (degree ∤ 2^n → ¬constructible).",
       "mathContext": "Contrapositives: $\\text{Gal} \\not\\cong 2\\text{-group} \\Rightarrow \\alpha$ not constructible, and $\\deg(\\text{minpoly}) \\nmid 2^n$ for all $n \\Rightarrow \\alpha$ not constructible."
