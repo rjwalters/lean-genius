@@ -165,6 +165,16 @@
       "targetId": "harmonic-divergence",
       "relationship": "related",
       "description": "The average of $\\tau(n)$ over $[1, N]$ is $\\sim \\log N$ (Dirichlet's divisor problem), so the iteration $h(n) = n + \\tau(n)$ advances by $\\sim \\log n$ on average. The divergence of the harmonic series underlies the heuristic that orbits grow linearly with logarithmic corrections"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The PNT controls the distribution of primes, which in turn governs the divisor function: $\\tau(n)$ depends on the exponents in $n$'s prime factorization, and the typical factorization structure of a random integer near $N$ is governed by the PNT via the Hardy-Ramanujan theorem ($\\omega(n) \\sim \\log\\log n$ for typical $n$). The Dirichlet divisor problem ($\\sum_{n \\leq N} \\tau(n) = N\\log N + (2\\gamma - 1)N + O(N^\\theta)$, with $\\theta$ unknown) provides the average-case behavior of $h(n) = n + \\tau(n)$"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "The Riemann Hypothesis controls the error term in the Dirichlet divisor problem ($\\sum_{n \\leq N} \\tau(n) = N\\log N + O(N^{1/4+\\varepsilon})$ under RH) and more generally governs the fluctuations of multiplicative functions around their means. Understanding orbit coalescence for $h(n) = n + \\tau(n)$ requires controlling these fluctuations — specifically, whether two trajectories can maintain different $\\tau$ values indefinitely despite their sums growing at similar rates"
     }
   ],
   "relatedProofs": [
@@ -175,7 +185,9 @@
     "euler-totient",
     "fundamental-arithmetic",
     "harmonic-divergence",
-    "perfect-numbers"
+    "perfect-numbers",
+    "prime-number-theorem",
+    "riemann-hypothesis"
   ],
   "conclusion": {
     "summary": "Erdős Problem #414 remains OPEN. The conjecture that all orbits of h(n) = n + τ(n) eventually merge is supported by overwhelming computational evidence and plausible heuristics, but no proof exists. The difficulty is fundamentally about controlling the cumulative irregularity of the divisor function along different trajectories to guarantee an exact collision.",
