@@ -150,10 +150,36 @@ The Parseval proof `∑_r ‖Â(r)‖² = |A|·N` requires:
 - `left_ne_zero_of_mul` useful for ψ(x) ≠ 0 from ψ(x)·ψ(-x) = 1
 - Sum swapping inside outer sums: use `simp_rw` with explicit `Finset.sum_comm`
 
-### Remaining Sorry Dependency Chain (Updated)
+### Remaining Sorry Dependency Chain (Updated Session 4)
 ```
 triple_count_fourier (sorry) ──────────────────────┐
                                                     ├→ fourier_large_coefficient (sorry)
 parseval_on_zmod (PROVED) ─────────────────────────┤    └→ density_increment_lemma (sorry)
                                                               └→ roth_density_bound (PROVED)
+```
+
+## Session 5 (2026-03-23, researcher-5)
+
+### What Was Done
+1. **Proved triple_count_fourier** — the Fourier identity for AP counting!
+   - Fixed broken `← psi_add` by adding extra `Finset.sum_mul` to fully distribute 3-factor products
+   - Used `simp_rw [Finset.sum_comm (s := Finset.univ) (t := A)]` to push r innermost
+   - Applied `char_orthogonality` + `sub_eq_zero` for orthogonality collapse
+   - Reduced to pure combinatorial identity `tripleCount_add_card_eq_triple_sum`
+2. **Introduced `tripleCount_add_card_eq_triple_sum`** (sorry) — combinatorial identity:
+   `tripleCount A + |A| = ∑_{x∈A} ∑_{y∈A} ∑_{z∈A} [x+z=2y]`
+
+### Key Technical Discoveries
+- **Distribution completeness**: `simp_rw [Finset.sum_mul, Finset.mul_sum]` does NOT fully distribute 3-factor products. Need: `simp_rw [Finset.sum_mul, Finset.mul_sum, Finset.sum_mul]`
+- **psi_add matching**: After distribution, ψ products are left-associated. Fix: explicit `show` with `rw [← psi_add, ← psi_add]; congr 1; ring`
+- **Sum order**: The Fourier expansion of Â(r)²·conj(Â(2r)) gives variable order (x, z, y) where x,z from sq and y from conj
+- **simp_rw sum_comm**: `simp_rw [Finset.sum_comm (s := univ) (t := A)]` pushes univ sums inside A sums in 3 automatic passes
+
+### Remaining Sorry Dependency Chain (Updated Session 5)
+```
+tripleCount_add_card_eq_triple_sum (sorry) ─── pure combinatorics
+    └→ triple_count_fourier (PROVED)
+          └→ fourier_large_coefficient (sorry)
+parseval_on_zmod (PROVED) ──┘    └→ density_increment_lemma (sorry)
+                                       └→ roth_density_bound (PROVED)
 ```
