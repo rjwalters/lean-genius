@@ -8,7 +8,7 @@ const meta = metaJson as {
   overview?: ProofOverview; conclusion?: ProofConclusion
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/Erdos761Problem.lean?raw')
+const leanSource = () => import('../../../../proofs/Proofs/Stubs/Erdos761Problem.lean?raw')
 
 export const proof: Proof = {
   id: meta.id,

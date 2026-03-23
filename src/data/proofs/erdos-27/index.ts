@@ -15,7 +15,7 @@ const meta = metaJson as {
 }
 
 // Import the Lean source file
-const leanSource = () => import('../../../../proofs/Proofs/Erdos27Problem.lean?raw')
+const leanSource = () => import('../../../../proofs/Proofs/Stubs/Erdos27Problem.lean?raw')
 
 export const proof: Proof = {
   id: meta.id,

@@ -3,13 +3,13 @@
   "title": "Erdős #901: Property B and Hypergraph Coloring",
   "slug": "erdos-901",
   "description": "Find m(n) = minimum edges in an n-uniform hypergraph without Property B (not 2-colorable). Known: √(n/log n)·2^n ≪ m(n) ≪ n²·2^n. Erdős-Lovász conjecture: m(n) = Θ(n·2^n). OPEN.",
-  "leanFile": "Proofs/Erdos901Problem.lean",
+  "leanFile": "Proofs/Stubs/Erdos901Problem.lean",
   "meta": {
     "author": "Paul Erdős, László Lovász",
     "sourceUrl": "https://erdosproblems.com/901",
     "date": "1963-1975",
     "status": "formalized",
-    "proofRepoPath": "Proofs/Erdos901Problem.lean",
+    "proofRepoPath": "Proofs/Stubs/Erdos901Problem.lean",
     "tags": [
       "erdos",
       "hypergraph",
