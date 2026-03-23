@@ -56,7 +56,32 @@
       "szemeredi_theorem axiom: positive density sets contain arbitrarily long APs"
     ],
     "axiomCount": 8,
-    "lineCount": 311
+    "lineCount": 311,
+    "references": [
+      {
+        "title": "A note on a conjecture of Erdős",
+        "authors": "J. Spencer",
+        "year": 1973,
+        "venue": "Canadian Mathematical Bulletin",
+        "url": "https://doi.org/10.4153/CMB-1973-083-2",
+        "description": "Gives the exact formula for N(k,1) in terms of the 2-adic valuation of k"
+      },
+      {
+        "title": "Old and new problems and results in combinatorial number theory",
+        "authors": "P. Erdős, R. L. Graham",
+        "year": 1980,
+        "venue": "L'Enseignement Mathématique, Monograph 28",
+        "description": "Poses the problem of bounding N(k,ℓ) and remarks that 'no decent bound' is known for N(k,2)"
+      },
+      {
+        "title": "The Erdős discrepancy problem",
+        "authors": "T. Tao",
+        "year": 2016,
+        "venue": "Discrete Analysis",
+        "url": "https://doi.org/10.19086/da.609",
+        "description": "Proves the Erdős Discrepancy Conjecture: every infinite ±1 sequence has unbounded discrepancy on homogeneous APs"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #176** concerns the discrepancy of ±1 colorings with respect to arithmetic progressions. This is a fundamental problem in Ramsey theory and combinatorial number theory.\n\n**Historical Development:**\n- **1963 (Erdős):** Proved exponential lower bounds N(k,ck) > (1+α_c)^k.\n- **1973 (Spencer):** Gave exact formula for N(k,1): if k = 2^t·m with m odd, then N(k,1) = 2^t(k-1) + 1.\n- **1980 (Erdős-Graham):** Stated that 'no decent bound' is known even for N(k,2).\n\nThe problem connects to van der Waerden numbers: when ℓ = k, N(k,k) equals the van der Waerden number W(k).",
@@ -165,5 +190,22 @@
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-177",
+      "title": "Erdős Problem #177: Discrepancy of Arithmetic Progressions",
+      "relationship": "Both concern discrepancy of colorings with respect to arithmetic progressions — #176 studies ±1 colorings, #177 addresses a closely related discrepancy formulation"
+    },
+    {
+      "id": "erdos-178",
+      "title": "Erdős Problem #178: Balancing Infinite Collections of Integer Sequences",
+      "relationship": "Both are discrepancy problems asking for balanced colorings; #176 balances APs while #178 balances arbitrary infinite sequence families"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "title": "Szemerédi's Theorem (k=3 via Mathlib)",
+      "relationship": "Szemerédi's theorem on APs in dense sets is a fundamental companion result; the discrepancy problem #176 asks about ±1 balance on APs rather than AP existence"
+    }
+  ]
 }

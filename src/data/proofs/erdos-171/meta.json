@@ -56,7 +56,32 @@
       "Aristotle-verified: no_4_clique (no tetrahedron in ℝ²)"
     ],
     "axiomCount": 3,
-    "lineCount": 184
+    "lineCount": 184,
+    "references": [
+      {
+        "title": "The chromatic number of the plane is at least 5",
+        "authors": "A. D. N. J. de Grey",
+        "year": 2018,
+        "venue": "Geombinatorics",
+        "url": "https://arxiv.org/abs/1804.02385",
+        "description": "Breakthrough result improving the lower bound to χ(ℝ²) ≥ 5, ending a 68-year stalemate"
+      },
+      {
+        "title": "The Mathematical Coloring Book",
+        "authors": "A. Soifer",
+        "year": 2009,
+        "venue": "Springer",
+        "url": "https://doi.org/10.1007/978-0-387-74642-5",
+        "description": "Comprehensive treatment of the Hadwiger-Nelson problem and chromatic number of the plane"
+      },
+      {
+        "title": "Small unit-distance graphs in the plane",
+        "authors": "G. Exoo, D. Ismailescu",
+        "year": 2020,
+        "venue": "Bulletin of the AMS",
+        "description": "Optimizes de Grey's construction to 553 vertices requiring 5 colors"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The **Hadwiger-Nelson problem** asks for the chromatic number χ(ℝ²) of the unit distance graph: the minimum number of colors needed to color the plane so no two points at distance 1 share a color.\n\n**Historical Timeline**:\n- **1950**: Edward Nelson proved χ ≥ 4 using a 7-vertex graph (later called the Moser spindle)\n- **1950**: John Isbell proved χ ≤ 7 using a hexagonal tiling\n- **1950-2018**: No progress on the bounds for 68 years!\n- **2018**: Aubrey de Grey proved χ ≥ 5, finding a unit distance graph with ~1581 vertices that requires 5 colors\n\n**The de Grey Breakthrough**: After nearly 70 years with no improvement, de Grey used computer-aided construction to find a graph embedding where 4 colors are insufficient. This was later optimized to 553 vertices by Exoo and Ismailescu.\n\n**Current State**: 5 ≤ χ(ℝ²) ≤ 7. The exact value remains unknown.",
@@ -160,5 +185,22 @@
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-173",
+      "title": "Erdős Problem #173: Monochromatic Triangles in Plane Colorings",
+      "relationship": "Both concern chromatic properties of the Euclidean plane — #171 asks for χ(ℝ²) under unit distance constraints, #173 asks about monochromatic triangles under arbitrary plane colorings"
+    },
+    {
+      "id": "erdos-174",
+      "title": "Erdős Problem #174: Euclidean Ramsey Sets",
+      "relationship": "Both involve geometric Ramsey theory in Euclidean space; unit distance graphs and Euclidean Ramsey sets both study unavoidable monochromatic geometric configurations"
+    },
+    {
+      "id": "prob-method-lovasz-local",
+      "title": "Lovász Local Lemma",
+      "relationship": "The Lovász Local Lemma is a key tool in chromatic number bounds for geometric graphs, including approaches to the Hadwiger-Nelson problem"
+    }
+  ]
 }

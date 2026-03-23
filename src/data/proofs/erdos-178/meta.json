@@ -64,7 +64,32 @@
       "erdos_178_answer theorem: affirmative answer via Beck 1981"
     ],
     "axiomCount": 6,
-    "lineCount": 181
+    "lineCount": 181,
+    "references": [
+      {
+        "title": "Roth's estimate of the discrepancy of integer sequences is nearly sharp",
+        "authors": "J. Beck",
+        "year": 1981,
+        "venue": "Combinatorica",
+        "url": "https://doi.org/10.1007/BF02579452",
+        "description": "Proves the existence of bounded signings for arbitrary infinite sequence families, solving Erdős #178"
+      },
+      {
+        "title": "Balanced coloring of infinite sequences with bounded discrepancy",
+        "authors": "J. Beck",
+        "year": 2017,
+        "venue": "Beck's book on discrepancy theory",
+        "description": "Quantifies the bound as O(d^{4+ε}) for any ε > 0, improving the 1981 existential result"
+      },
+      {
+        "title": "Six standard deviations suffice",
+        "authors": "J. Spencer",
+        "year": 1985,
+        "venue": "Transactions of the American Mathematical Society",
+        "url": "https://doi.org/10.1090/S0002-9947-1985-0805965-8",
+        "description": "Spencer's seminal discrepancy result for finite set systems, providing context for Beck's infinite-family result"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "**Discrepancy Theory and Sequence Balancing**\n\nErdős Problem #178 is a fundamental question in combinatorial discrepancy theory: can we assign ±1 values to integers in a way that balances arbitrary infinite families of sequences?\n\n**Historical Development:**\n- **Erdős:** Posed the problem, remarking 'it seems certain that the answer is affirmative'\n- **Beck (1981):** Proved the existence of such a signing (the answer is YES)\n- **Beck (2017):** Quantified the bound as O(d^(4+ε)) for any ε > 0\n\nThe problem connects to fundamental questions about how well structured sets can be balanced.",
@@ -171,5 +196,22 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-176",
+      "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
+      "relationship": "Both are combinatorial discrepancy problems: #176 measures ±1 discrepancy on APs, while #178 asks whether infinite sequence families can be uniformly balanced"
+    },
+    {
+      "id": "erdos-177",
+      "title": "Erdős Problem #177: Discrepancy of Arithmetic Progressions",
+      "relationship": "Part of the same family of Erdős discrepancy problems; all three (#176, #177, #178) study the limits of balanced colorings for structured set systems"
+    },
+    {
+      "id": "erdos-162",
+      "title": "Erdős Problem #162: Discrepancy in 2-Coloured Complete Graphs",
+      "relationship": "Both concern discrepancy in combinatorial structures — #162 studies graph colorings while #178 studies sequence balancing"
+    }
+  ]
 }
