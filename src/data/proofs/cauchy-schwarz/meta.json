@@ -253,6 +253,16 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "In complex inner product spaces, $|\\langle u,v \\rangle_{\\mathbb{C}}| \\leq \\|u\\|\\|v\\|$ where the inner product involves $e^{i\\theta}$ phases. Euler's formula connects the complex inner product to the real one: $\\text{Re}(e^{i\\theta}\\langle u,v \\rangle) = |\\langle u,v \\rangle|\\cos(\\arg\\langle u,v \\rangle + \\theta)$, and the Cauchy-Schwarz bound ensures this is at most $\\|u\\|\\|v\\|$"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "Cauchy-Schwarz underpins key steps in proving the Central Limit Theorem: bounding characteristic function differences $|\\varphi_n(t) - e^{-t^2/2}|$ uses $|\\mathbb{E}[XY]| \\leq \\sqrt{\\mathbb{E}[X^2]\\mathbb{E}[Y^2]}$, and the variance decomposition $\\text{Var}(S_n/\\sqrt{n}) = 1$ relies on the inner product structure of $L^2$. The CLT's normal limit $\\mathcal{N}(0,1)$ has density proportional to $e^{-x^2/2}$, whose normalization $\\int e^{-x^2} dx = \\sqrt{\\pi}$ connects to the Gaussian integral"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Brouwer's fixed point theorem uses topological properties of the closed unit ball $\\{x : \\|x\\| \\leq 1\\}$, where the norm $\\|\\cdot\\|$ satisfies the triangle inequality derived from Cauchy-Schwarz. The inner product structure that Cauchy-Schwarz governs is what makes the unit ball convex and compact — the topological prerequisites for the fixed point theorem"
     }
   ],
   "conclusion": {
@@ -281,7 +291,9 @@
     "pythagorean-theorem",
     "law-of-cosines",
     "randomized-maxcut",
-    "euler-identity"
+    "euler-identity",
+    "central-limit-theorem",
+    "brouwer-fixed-point"
   ],
   "references": [
     {
