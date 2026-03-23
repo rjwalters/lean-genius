@@ -35,6 +35,12 @@
       "**Ramsey-chromatic bridge**: the key reduction $R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta \\implies g_k(n) \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$ transforms the problem from graph coloring to Ramsey bounds",
       "**Mattheus-Verstraete breakthrough** (2023): using algebraic geometry over $\\mathbb{F}_q$, they constructed explicit Ramsey graphs proving $R(4,t) \\gg t^3/(\\log t)^4$, resolving the $k=4$ case with optimal exponent $2/3 = 1 - 1/(4-1)$",
       "**The exponent gap**: for $k \\geq 5$, the known exponent $1 - 2/(k+1)$ falls short of the conjectured $1 - 1/(k-1)$; for $k=5$ this is $2/3$ vs $3/4$, requiring an improvement from $R(5,m) \\gg m^3$ to $R(5,m) \\gg m^4$"
+    ],
+    "prerequisites": [
+      "Graph coloring: proper vertex colorings, chromatic number, and clique-free (triangle-free, $K_k$-free) graphs",
+      "Ramsey theory: Ramsey numbers $R(k,m)$, existence of monochromatic cliques or independent sets in large graphs",
+      "Extremal graph theory: Turan-type problems, extremal functions, and asymptotic bounds on graph parameters",
+      "The probabilistic method: random graph arguments for existence of graphs with high chromatic number and no large cliques"
     ]
   },
   "sections": [
