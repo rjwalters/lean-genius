@@ -133,6 +133,112 @@
       "What are effective algorithms to find K_r above the threshold?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "ramseys-theorem",
+      "relationship": "Ramsey's theorem guarantees complete subgraphs in dense graphs via pigeonhole arguments; the BES problem studies the sharper question of forcing K_r through a minimum degree condition in structured r-partite graphs.",
+      "significance": "high"
+    },
+    {
+      "target": "erdos-1079",
+      "relationship": "Turán density in neighborhoods (Problem #1079) studies extremal densities for induced substructures in graph neighborhoods, a closely related minimum-degree / density threshold framework.",
+      "significance": "high"
+    },
+    {
+      "target": "erdos-1077",
+      "relationship": "Problem #1077 on balanced subgraphs in dense graphs shares the theme of forcing structured subgraphs via degree conditions, complementing the multipartite setting of Problem #1078.",
+      "significance": "high"
+    },
+    {
+      "target": "erdos-1075",
+      "relationship": "Dense subgraphs in r-uniform hypergraphs (Problem #1075) generalises the bipartite Kővári–Sós–Turán approach to higher uniformity; the r-partite graph setting of Problem #1078 is the graph-level analogue.",
+      "significance": "medium"
+    },
+    {
+      "target": "erdos-1017",
+      "relationship": "Clique partition of graphs (Problem #1017) addresses decomposing graphs into complete subgraphs; Problem #1078 forces a single K_r via a minimum degree threshold in the r-partite setting.",
+      "significance": "medium"
+    },
+    {
+      "target": "erdos-1076",
+      "relationship": "Extremal numbers for 3-uniform hypergraphs (Problem #1076) and the Steiner system constructions used there exhibit the same interplay between density/degree thresholds and the existence of complete sub-structures.",
+      "significance": "medium"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "ramseys-theorem",
+      "title": "Ramsey's Theorem",
+      "connection": "Foundational result guaranteeing monochromatic cliques; provides the combinatorial backdrop against which minimum-degree forcing results for K_r are understood."
+    },
+    {
+      "slug": "erdos-1079",
+      "title": "Erdős Problem #1079: Turán Density in Neighborhoods",
+      "connection": "Shares the extremal-graph-theory framework of minimum degree / density thresholds for forcing dense substructures."
+    },
+    {
+      "slug": "erdos-1077",
+      "title": "Erdős Problem #1077: Balanced Subgraphs in Dense Graphs",
+      "connection": "Degree-regularity conditions for forcing specific subgraphs; directly parallel to the r-partite minimum-degree threshold studied in Problem #1078."
+    },
+    {
+      "slug": "erdos-1075",
+      "title": "Erdős Problem #1075: Dense Subgraphs in r-Uniform Hypergraphs",
+      "connection": "Hypergraph analogue of density-forcing results; the graph case (r = 2) reduces to problems of the type studied in Problem #1078."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P.E. Haxell"],
+      "title": "A Note on Vertex List Colouring",
+      "venue": "Combinatorics, Probability and Computing",
+      "year": 2001,
+      "volume": "10",
+      "pages": "345–347",
+      "doi": "10.1017/S0963548301004758",
+      "note": "Proves the BES conjecture: minimum degree ≥ (r − 3/2 − o(1))n in a balanced r-partite graph forces K_r."
+    },
+    {
+      "authors": ["P.E. Haxell", "T. Szabó"],
+      "title": "Odd Independent Transversals Are Odd",
+      "venue": "Combinatorics, Probability and Computing",
+      "year": 2006,
+      "volume": "15",
+      "pages": "193–211",
+      "doi": "10.1017/S0963548305007156",
+      "note": "Determines the exact sharp threshold (r − 1)n − ⌈sn/(2s−1)⌉ and proves optimality via parity-based extremal constructions."
+    },
+    {
+      "authors": ["B. Bollobás", "P. Erdős", "E. Szemerédi"],
+      "title": "On Complete Subgraphs of r-Chromatic Graphs",
+      "venue": "Discrete Mathematics",
+      "year": 1975,
+      "volume": "13",
+      "pages": "97–107",
+      "doi": "10.1016/0012-365X(75)90011-4",
+      "note": "Original 1975 paper by Bollobás–Erdős–Szemerédi conjecturing the (r − 3/2)n threshold and giving the extremal constructions showing sharpness of the constant."
+    },
+    {
+      "authors": ["P.E. Haxell"],
+      "title": "On the Strong Chromatic Number",
+      "venue": "Combinatorics, Probability and Computing",
+      "year": 2004,
+      "volume": "13",
+      "pages": "857–865",
+      "doi": "10.1017/S0963548304006157",
+      "note": "Connects the BES conjecture to strong chromatic numbers and independent transversals; the list-coloring reduction central to the 2001 proof is elaborated here."
+    },
+    {
+      "authors": ["R. Häggkvist"],
+      "title": "On the Structure of Non-Hamiltonian Graphs I",
+      "venue": "Combinatorica",
+      "year": 1992,
+      "volume": "12",
+      "pages": "27–34",
+      "doi": "10.1007/BF01191199",
+      "note": "Earlier partial results on minimum degree conditions and complete subgraphs in multipartite graphs, providing context for the BES conjecture."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

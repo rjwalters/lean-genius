@@ -136,6 +136,105 @@
       "What is the computational complexity of determining whether a given finite set of segments forms a maximal packing?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-1070",
+      "title": "Independence Number of Unit Distance Graphs",
+      "relationship": "Both problems study extremal properties of geometric graphs built from unit distances. Erdős #1070 asks for the minimum independence number f(n) of n-point unit distance graphs in ℝ², while #1071 studies maximal packings (maximal independent sets) in the intersection graph of all possible unit segments.",
+      "sharedConcepts": ["unit-distance-graphs", "independence-number", "combinatorial-geometry"]
+    },
+    {
+      "id": "erdos-1066",
+      "title": "Independence Number of Unit Distance Graphs (Planar)",
+      "relationship": "Closely related problem on independence numbers in planar unit distance graphs. A maximal packing of unit segments is a maximal independent set in the intersection graph of unit segments; Erdős #1066 studies independence numbers in the planar unit-distance setting, sharing the geometric graph-theoretic framework.",
+      "sharedConcepts": ["combinatorial-geometry", "unit-distance-graphs", "independence-number", "planar-graphs"]
+    },
+    {
+      "id": "erdos-1069",
+      "title": "Szemerédi-Trotter Theorem on k-Rich Lines",
+      "relationship": "Both problems fall within incidence geometry. The Szemerédi-Trotter theorem (#1069) bounds incidences between points and lines in ℝ², a fundamental result in the same combinatorial geometry setting where segment packing questions arise. Density and counting arguments used in Szemerédi-Trotter inform packing bounds.",
+      "sharedConcepts": ["incidence-geometry", "combinatorial-geometry", "lines-and-segments", "point-line-incidences"]
+    },
+    {
+      "id": "erdos-97",
+      "title": "Equidistant Vertices in Convex Polygons",
+      "relationship": "Erdős #97 investigates unit-distance constraints among vertices of convex polygons, sharing the unit-distance geometric framework with #1071. Both problems concern how many geometric objects at unit scale can coexist subject to disjointness or equidistance constraints in the plane.",
+      "sharedConcepts": ["convex-polygon", "unit-distance", "geometry", "combinatorial-geometry"]
+    },
+    {
+      "id": "borsuk-ulam",
+      "title": "Borsuk-Ulam Theorem",
+      "relationship": "The Borsuk-Ulam theorem provides topological tools (compactness, antipodal arguments) applicable to blocking and covering problems in geometry. Compactness arguments are central to proving that any packing of unit segments in [0,1]² must be finite — the same topological reasoning that underpins Borsuk-type results.",
+      "sharedConcepts": ["compactness", "geometric-topology", "blocking-sets", "covering"]
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-1070",
+      "description": "Unit distance graphs and independence numbers — the geometric graph-theory setting directly surrounding #1071's packing-as-independent-set framing."
+    },
+    {
+      "id": "erdos-1066",
+      "description": "Independence number of planar unit distance graphs — shares the combinatorial geometry and independence-number perspective of the segment packing problem."
+    },
+    {
+      "id": "erdos-1069",
+      "description": "Szemerédi-Trotter incidence theorem — fundamental result in combinatorial geometry bounding point-line incidences, informing the density arguments relevant to segment packings."
+    },
+    {
+      "id": "erdos-97",
+      "description": "Unit-distance equidistance in convex polygons — another Erdős problem in the unit-distance planar geometry family."
+    },
+    {
+      "id": "borsuk-ulam",
+      "description": "Borsuk-Ulam theorem — supplies the topological compactness machinery used to argue that any packing of unit segments in a bounded region must be finite."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["L. Danzer"],
+      "title": "Über ein Problem aus der kombinatorischen Geometrie",
+      "venue": "Archiv der Mathematik",
+      "year": 1956,
+      "note": "Danzer's original construction of a finite maximal set of pairwise non-intersecting unit segments in [0,1]², resolving part (a) of Erdős Problem #1071 and earning the \\$10 prize.",
+      "type": "journal"
+    },
+    {
+      "authors": ["P. Erdős", "G. Tóth"],
+      "title": "Packing and Covering Problems",
+      "venue": "Combinatorial Geometry and Graph Theory (Proceedings, Sendai)",
+      "year": 1980,
+      "note": "Survey by Erdős and Tóth on extremal packing and covering problems in the plane, including the maximal segment packing problem formalized here.",
+      "type": "proceedings"
+    },
+    {
+      "authors": ["J. Pach", "P.K. Agarwal"],
+      "title": "Combinatorial Geometry",
+      "venue": "Wiley-Interscience",
+      "year": 1995,
+      "note": "Comprehensive reference on combinatorial geometry covering packing problems, intersection graphs of geometric objects, and the blocking/covering duality central to Erdős Problem #1071.",
+      "type": "book"
+    },
+    {
+      "authors": ["L. Fejes Tóth"],
+      "title": "Lagerungen in der Ebene, auf der Kugel und im Raum",
+      "venue": "Springer-Verlag, Berlin",
+      "year": 1953,
+      "note": "Classic monograph on packings and coverings by congruent figures in the plane and space; the foundational reference for the packing theory context of Danzer's construction.",
+      "type": "book"
+    },
+    {
+      "authors": ["E. Szemerédi", "W.T. Trotter Jr."],
+      "title": "Extremal Problems in Discrete Geometry",
+      "venue": "Combinatorica",
+      "volume": "3",
+      "number": "3–4",
+      "pages": "381–392",
+      "year": 1983,
+      "note": "Proves the Szemerédi-Trotter theorem bounding point-line incidences, a cornerstone result in combinatorial geometry that provides the analytic tools underlying density and blocking arguments for segment packings.",
+      "type": "journal"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

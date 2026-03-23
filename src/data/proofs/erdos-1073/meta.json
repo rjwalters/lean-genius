@@ -82,6 +82,108 @@
       "What is the asymptotic density of such composites?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "wilsons-theorem",
+      "relationship": "Wilson's theorem is the key tool: every prime p divides (p-1)!+1, and this characterises primes completely, making the composite case the surprising exception that Problem 1073 studies."
+    },
+    {
+      "target": "erdos-1072",
+      "relationship": "Sibling problem: Erdős #1072 asks for the least n with n! ≡ -1 (mod p) for a prime p, studying the same factorial-plus-one divisibility condition from the prime side that #1073 examines from the composite side."
+    },
+    {
+      "target": "erdos-1074",
+      "relationship": "Erdős #1074 studies EHS numbers and Pillai primes, objects introduced by Erdős-Hardy-Subbarao in the same body of work that motivates the composite factorial-divisibility question of #1073."
+    },
+    {
+      "target": "erdos-728-factorial-divisibility",
+      "relationship": "Erdős #728 studies a related factorial divisibility problem whose Lean formalization uses overlapping techniques for counting composites with special divisibility properties."
+    },
+    {
+      "target": "bertrands-postulate",
+      "relationship": "Bertrand's Postulate guarantees primes between n and 2n; the coprimality constraint that forces prime factors of any composite u | n!+1 to exceed n relies on the same density-of-primes reasoning."
+    },
+    {
+      "target": "infinitude-primes",
+      "relationship": "The infinitude of primes underpins the argument that the set of composites dividing some n!+1 is sparse: the coprimality constraint forces each such composite to be built from primes in an increasingly restricted range."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "wilsons-theorem",
+      "title": "Wilson's Theorem",
+      "relevance": "Core tool: characterises primes via (p-1)! ≡ -1 (mod p), establishing the baseline for the composite exception studied in Problem 1073."
+    },
+    {
+      "id": "erdos-1072",
+      "title": "Erdős Problem #1072: Least n with n! ≡ −1 (mod p)",
+      "relevance": "Sibling problem in the same factorial-plus-one family, studying the prime side of the same divisibility question."
+    },
+    {
+      "id": "erdos-1074",
+      "title": "Erdős Problem #1074: EHS Numbers and Pillai Primes",
+      "relevance": "Related density problem from the Erdős-Hardy-Subbarao programme on factorial arithmetic."
+    },
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "title": "Erdős Problem #728: Factorial Divisibility",
+      "relevance": "Parallel Lean formalization of a factorial divisibility conjecture using closely related proof structures."
+    },
+    {
+      "id": "bertrands-postulate",
+      "title": "Bertrand's Postulate",
+      "relevance": "Prime-gap result underlying the coprimality constraint that limits which composites can divide n!+1."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "R. L. Graham", "I. Z. Ruzsa", "E. G. Straus"],
+      "title": "On the prime factors of C(2n, n)",
+      "venue": "Mathematics of Computation",
+      "year": 1975,
+      "volume": "29",
+      "pages": "83–92",
+      "doi": "10.1090/S0025-5718-1975-0369288-3",
+      "note": "Foundational work on factorials and prime factors that informs the sparsity arguments for composites dividing n!+1."
+    },
+    {
+      "authors": ["M. V. Subbarao"],
+      "title": "On two congruences for primality",
+      "venue": "Pacific Journal of Mathematics",
+      "year": 1974,
+      "volume": "52",
+      "pages": "261–268",
+      "doi": "10.2140/pjm.1974.52.261",
+      "note": "Introduces Wilson pseudoprimes and connects the factorial-plus-one divisibility condition to primality testing, directly motivating OEIS A256519."
+    },
+    {
+      "authors": ["R. Crandall", "C. Pomerance"],
+      "title": "Prime Numbers: A Computational Perspective",
+      "venue": "Springer",
+      "year": 2005,
+      "edition": "2nd",
+      "isbn": "978-0-387-25282-7",
+      "note": "Chapter 3 covers Wilson's theorem, factorial congruences, and pseudoprimality, providing background for the composite divisibility problem."
+    },
+    {
+      "authors": ["P. Erdős", "M. B. Nathanson"],
+      "title": "Problems in Combinatorial Number Theory",
+      "venue": "Annals of the New York Academy of Sciences",
+      "year": 1976,
+      "volume": "175",
+      "pages": "89–109",
+      "doi": "10.1111/j.1749-6632.1970.tb56462.x",
+      "note": "Survey of Erdős open problems including factorial arithmetic questions related to Problem 1073."
+    },
+    {
+      "authors": ["N. J. A. Sloane"],
+      "title": "OEIS A256519: Composite numbers that divide n! + 1 for some n",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "year": 2015,
+      "url": "https://oeis.org/A256519",
+      "note": "The sequence 25, 121, 169, 437, ... of known composite solutions; the sparsity of this sequence is what the subpolynomial growth conjecture aims to quantify."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.Wilson",

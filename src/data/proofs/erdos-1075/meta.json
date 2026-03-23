@@ -157,6 +157,83 @@
       "How does the problem relate to Razborov's flag algebra method and its hypergraph extensions?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1076",
+      "relationship": "thematic",
+      "description": "Erdős #1076 concerns extremal numbers for 3-uniform hypergraphs (Steiner-system-adjacent constructions, the Bohman-Warnke / Glock-Kühn result). Both problems ask how many edges an r-uniform hypergraph can have before a prescribed dense substructure is forced — they are adjacent questions in the extremal hypergraph programme."
+    },
+    {
+      "targetId": "erdos-1157",
+      "relationship": "thematic",
+      "description": "The Brown-Erdős-Sós conjecture (erdos-1157) determines extremal numbers f^(r)(n; k, s) for r-uniform hypergraphs. Problem #1075 asks about dense subgraph density constants once a global density threshold is met; #1157 characterises the threshold itself. Together they bound the two sides of the same supersaturation question."
+    },
+    {
+      "targetId": "erdos-1020",
+      "relationship": "related",
+      "description": "The Erdős Matching Conjecture (erdos-1020) determines the maximum number of edges in an r-uniform hypergraph with no k independent edges — a Turán-type extremal result for matchings. The probabilistic arguments and Katona-style averaging techniques used there are closely related to the random-sampling argument Erdős employed to prove the r^{-r} baseline in #1075."
+    },
+    {
+      "targetId": "erdos-1024",
+      "relationship": "related",
+      "description": "Independent sets in linear hypergraphs (erdos-1024) study structural properties of r-uniform hypergraphs via forbidden configurations. The container method and independence-number bounds developed for linear hypergraphs are among the tools considered for attacking Problem #1075, though controlling density constants has proven elusive."
+    },
+    {
+      "targetId": "erdos-1078",
+      "relationship": "thematic",
+      "description": "Erdős #1078 (minimum degree for K_r in r-partite graphs, solved by Haxell 2001) uses threshold conditions on edge or degree density to force complete subgraphs. The structural threshold machinery — showing a density condition forces a specific substructure — is the same paradigm as Problem #1075, and the r-partite setting provides explicit constructions that could inform extremal examples."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "methodological",
+      "description": "The Szemerédi Regularity Lemma provides a structural decomposition of dense graphs and hypergraphs into quasi-random pieces. Hypergraph regularity (Rödl-Schacht, Gowers) is one of the primary tools considered for improving the c_r > r^{-r} constant in #1075, but controlling the density in the regular parts to beat the random baseline has not yet been achieved."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1076",
+    "erdos-1157",
+    "erdos-1020",
+    "erdos-1024",
+    "erdos-1078",
+    "szemeredi-regularity"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On extremal problems of graphs and generalized graphs",
+      "year": "1964",
+      "venue": "Israel Journal of Mathematics, 2(3), 183–190",
+      "note": "[Er64f] — original result proving c_r = r^{-r} with threshold εn^r"
+    },
+    {
+      "authors": "Rödl, Vojtěch; Schacht, Mathias",
+      "title": "Regular partitions of hypergraphs: Regularity lemmas",
+      "year": "2007",
+      "venue": "Combinatorics, Probability and Computing, 16(6), 833–885",
+      "note": "Hypergraph regularity lemma — primary structural tool for attacking Problem #1075"
+    },
+    {
+      "authors": "Gowers, W. Timothy",
+      "title": "Hypergraph regularity and the multidimensional Szemerédi theorem",
+      "year": "2007",
+      "venue": "Annals of Mathematics, 166(3), 897–946",
+      "note": "Alternative hypergraph regularity framework via Gowers uniformity norms"
+    },
+    {
+      "authors": "Balogh, József; Morris, Robert; Samotij, Wojciech",
+      "title": "Independent sets in hypergraphs",
+      "year": "2015",
+      "venue": "Journal of the American Mathematical Society, 28(3), 669–709",
+      "note": "Container method for hypergraphs — a main modern tool for extremal hypergraph problems"
+    },
+    {
+      "authors": "Frankl, Peter; Rödl, Vojtěch",
+      "title": "Hypergraphs do not jump",
+      "year": "1984",
+      "venue": "Combinatorica, 4(2–3), 149–159",
+      "note": "Shows hypergraph Turán densities are not 'jumping' — related to the structure of extremal constants c_r"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
