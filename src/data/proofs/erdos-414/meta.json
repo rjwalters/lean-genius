@@ -47,6 +47,22 @@
       }
     ],
     "axiomCount": 14,
+    "assumptions": [
+      "h_strictly_increasing: h(n) > n for n ≥ 1",
+      "orbit_strictly_increasing: orbits are strictly increasing sequences",
+      "h_upper: h(n) ≤ 2n for n ≥ 1",
+      "h_prime: h(p) = p + 2 for primes p",
+      "h_one: h(1) = 2",
+      "h_two: h(2) = 4",
+      "h_three: h(3) = 5",
+      "erdos_414_conjecture: all orbits eventually merge (main open question)",
+      "single_eventual_orbit: equivalent single-orbit formulation",
+      "orbit_1_start: orbit from 1 is 1, 2, 4, 7, 9, ...",
+      "orbit_3_merges_with_1: orbit from 3 reaches 7, merging with orbit from 1",
+      "average_divisor_count: ∑ τ(k) ~ n log n (Dirichlet's average order)",
+      "orbit_linear_lower: orbit values grow at least linearly",
+      "orbits_get_close: weaker statement that orbits get arbitrarily close"
+    ],
     "lineCount": 109
   },
   "sections": [
@@ -94,6 +110,7 @@
   "overview": {
     "historicalContext": "Erdős and Graham posed Problem #414 in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p. 82), alongside the related Problems #412 ($n + \\sigma(n)$) and #413 ($n - \\varphi(n)$). The problem belongs to **arithmetic dynamics** — iteration of number-theoretic functions as discrete dynamical systems, a field that also includes the Collatz conjecture and aliquot sequences.\n\nThe function $h(n) = n + \\tau(n)$ is strictly increasing ($\\tau(n) \\geq 1$), ruling out cycles. Orbits march strictly upward, so the question is purely about *merging*. Despite strong computational evidence (all orbits from 1 to $10^6$ merge within ~20 steps), the problem remains OPEN. The difficulty: proving exact collision $h^i(m) = h^j(n)$ requires controlling the cumulative irregularity of $\\tau$ along two trajectories. Dirichlet gives $\\sum_{k \\leq n} \\tau(k) \\sim n \\log n$ on average, but $\\tau$ fluctuates wildly: from 2 at primes to $\\tau(n) \\gg n^\\varepsilon$ at highly composite numbers.",
     "problemStatement": "Let h(n) = n + τ(n) where τ(n) counts the divisors of n. For any m, n ≥ 1, do there exist i, j ∈ ℕ such that h^i(m) = h^j(n)?",
+    "text": "Erdős Problem #414 studies the iteration h(n) = n + τ(n), where τ(n) counts divisors. Since h is strictly increasing, orbits march upward without cycles. The open question: do all orbits eventually merge? For any m, n ≥ 1, Erdős and Graham conjectured there exist i, j with h^i(m) = h^j(n). Computational evidence is strong (all orbits from 1 to 10^6 merge within ~20 steps), but the irregularity of τ along trajectories makes rigorous proof elusive.",
     "proofStrategy": "The formalization defines h(n) = n + τ(n) using Lean's `Nat.divisors.card` and the orbit sequence hOrbit by recursion. Basic properties (strict monotonicity, upper bound h(n) ≤ 2n, behavior at primes) are axiomatized. The main conjecture and its equivalent single-orbit formulation are stated. Concrete orbit computations demonstrate the merge of orbits from 1 and 3 at value 7. Growth rate analysis includes Dirichlet's average order of τ, linear orbit lower bounds, and the weaker 'orbits get close' statement. No sorries remain — all deep statements are correctly axiomatized as open conjectures.",
     "keyInsights": [
       "**Strict monotonicity eliminates cycles**: h(n) > n always, so orbits march strictly upward — no Collatz-like cycle-hunting needed",
@@ -162,7 +179,12 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #414 remains OPEN. The conjecture that all orbits of h(n) = n + τ(n) eventually merge is supported by overwhelming computational evidence and plausible heuristics, but no proof exists. The difficulty is fundamentally about controlling the cumulative irregularity of the divisor function along different trajectories to guarantee an exact collision.",
-    "implications": "**Theoretical Significance**: A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior.\n\n**Broader Connections**: The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence). Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative f.",
+    "implications": [
+      "A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior",
+      "The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence)",
+      "Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative arithmetic functions f",
+      "The collision mechanism h(a) = h(b) when τ(a) - τ(b) = b - a connects to the distribution of values of τ, a classical topic in multiplicative number theory"
+    ],
     "openQuestions": [
       "Does the merging conjecture hold? Can any pair of orbits be shown to collide?",
       "Even weaker: can orbits be shown to get arbitrarily close (|h^i(m) − h^j(n)| < D for any D)?",

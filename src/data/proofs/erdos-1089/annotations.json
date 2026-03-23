@@ -120,6 +120,18 @@
     "prerequisites": ["erdos_lower_bound", "gRatio definition"]
   },
   {
+    "id": "ann-1089-bounded-question",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 150, "endLine": 151 },
+    "type": "definition",
+    "title": "Weaker Question: Is the Ratio Bounded?",
+    "content": "**ratioIsBounded** asks whether $g_d(n)/d^{n-1} \\leq C$ for some constant $C$ and all $d \\geq 1$. This is strictly weaker than limit existence (erdos1089Conjecture): boundedness would follow from convergence but not vice versa. Combined with ratio_bounded_below, an upper bound would sandwich the ratio in $[c, C]$. If the ratio is unbounded, then $g_d(n)$ grows super-polynomially in $d$, closer to the Erdős-Straus stretched-exponential upper bound.",
+    "mathContext": "$\\text{ratioIsBounded}(n) \\iff \\exists C > 0 : \\forall d \\geq 1, g_d(n)/d^{n-1} \\leq C$. This is weaker than limit existence but would already establish polynomial growth rate.",
+    "significance": "supporting",
+    "relatedConcepts": ["bounded sequences", "polynomial vs super-polynomial growth", "sandwich theorem"],
+    "prerequisites": ["gRatio definition", "ratio_bounded_below"]
+  },
+  {
     "id": "ann-1089-inverse",
     "proofId": "erdos-1089",
     "range": { "startLine": 179, "endLine": 185 },
