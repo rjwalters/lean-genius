@@ -29,7 +29,7 @@
     "range": { "startLine": 51, "endLine": 57 },
     "type": "definition",
     "title": "Distinct Distances Set and Count",
-    "content": "**distinctDistances P** computes all positive pairwise distances in a point set, and **numDistinctDistances** returns its cardinality. These are the central quantities: the problem asks how many points guarantee n distinct values.",
+    "content": "**distinctDistances P** computes all positive pairwise distances in a point set $P$, and **numDistinctDistances** returns its cardinality. These are the central quantities: the problem asks how many points are needed to guarantee $n$ distinct distance values.\n\nIn the planar case ($d = 2$), the Guth-Katz theorem (2015) showed that $n$ points determine $\\Omega(n/\\sqrt{\\log n})$ distinct distances, nearly matching the $\\sqrt{n}$-grid upper bound. In higher dimensions, the problem shifts from fixing the point count to fixing the distance count and asking how the point threshold grows with dimension — a fundamentally different asymptotic regime.",
     "mathContext": "For $P \\subseteq \\mathbb{R}^d$, $\\Delta(P) = \\{\\|p - q\\| : p, q \\in P, p \\neq q\\}$. The count $|\\Delta(P)|$ is the number of distinct distances. Implemented via `Finset.product`, `Finset.image`, and `Finset.filter`.",
     "significance": "key",
     "relatedConcepts": ["Distinct distances problem", "Guth-Katz theorem", "Euclidean distance"],
