@@ -22,6 +22,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
+    "assumptions": "None. All theorems fully proved from Mathlib with 0 axioms and 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "mul_neg_geom_sum",
@@ -45,6 +46,22 @@
       "Non-summability for |r| ≥ 1 via term-doesn't-vanish argument",
       "Cesàro summability: σₙ → 1/2 via squeeze with bound |σₙ - 1/2| ≤ 1/(2n)",
       "Complete characterization of boundary behavior at |r| = 1"
+    ],
+    "lineCount": 250,
+    "relatedProofs": [
+      "geometric-series",
+      "geometric-series-oq-02",
+      "arithmetic-series",
+      "harmonic-divergence",
+      "basel-problem",
+      "fourier-series",
+      "taylor-sincos-convergence"
+    ],
+    "prerequisites": [
+      "Real analysis (sequences, limits, convergence)",
+      "Series and summability",
+      "Metric space topology",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "openQuestion": {
@@ -52,5 +69,177 @@
     "parentProof": "geometric-series",
     "question": "What happens at exactly |r| = 1? (Series diverges, but behavior varies)",
     "answer": "At r = 1, partial sums diverge to infinity. At r = -1, partial sums oscillate between 0 and 1 (Grandi's series), but the Cesàro mean converges to 1/2. For all |r| ≥ 1, the series is not summable because terms don't tend to zero."
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "The parent proof establishes convergence of the geometric series for |r| < 1. This OQ investigates the boundary |r| = 1 where convergence fails but Cesàro summability can assign finite values."
+    },
+    {
+      "targetId": "geometric-series-oq-02",
+      "relationship": "related",
+      "description": "Sibling open question exploring other aspects of the geometric series. Both branch from the same parent proof to investigate different extensions."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Both are fundamental divergence results: the harmonic series diverges despite terms tending to zero (the boundary case for p-series), while the geometric series at |r| = 1 diverges because terms do NOT tend to zero. Together they illustrate the two modes of divergence."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem evaluates the convergent series ∑ 1/n² = π²/6. Where this file studies the boundary of geometric series convergence, the Basel problem studies a convergent p-series (p = 2 > 1), highlighting the contrast between convergent and divergent series."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Fourier series involve sums of e^{inθ} on the unit circle — exactly the complex geometric series at |r| = 1. The Dirichlet kernel D_n(θ) = ∑_{k=-n}^{n} e^{ikθ} is a geometric sum on the boundary, and its Cesàro average (Fejér kernel) converges, paralleling this file's Cesàro summability result."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "Both formalize fundamental series identities. The arithmetic series ∑ k = n(n+1)/2 gives closed-form partial sums, paralleling this file's S_n = n at r = 1. Together they cover the two most basic finite sum formulas."
+    },
+    {
+      "targetId": "taylor-sincos-convergence",
+      "relationship": "related",
+      "description": "Taylor series for sin and cos involve terms (-1)^n x^{2n+1}/(2n+1)! which alternate in sign like Grandi's series but with factorial decay. The convergence of Taylor series everywhere contrasts with the geometric series, which converges only for |r| < 1."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Guido Grandi introduced the series 1 - 1 + 1 - 1 + ··· in his 1703 work 'Quadratura circuli et hyperbolae per infinitas hyperbolas et parabolas quadrabiles geometrice exhibita', arguing it summed to 1/2 by analogy with the geometric series formula 1/(1+1) = 1/2. The series sparked a century-long debate: Leibniz agreed with 1/2 via probabilistic reasoning (the sum is 0 or 1 with equal likelihood), while Daniel Bernoulli and others objected. Euler systematized divergent series regularization in the 1740s-1760s, treating them as formal power series and assigning values via analytic continuation — his method gives 1/(1-(-1)) = 1/2 for Grandi's series. The modern resolution came with Ernesto Cesàro's 1890 paper introducing (C,1) summability: averaging partial sums gives a rigorous framework where σₙ → 1/2. This inaugurated summability theory, later developed by Hardy, Littlewood, and others into a rich branch of analysis with deep connections to Fourier analysis (Fejér's theorem, 1900), number theory (Abel summation in analytic number theory), and quantum field theory (zeta function regularization).",
+    "problemStatement": "Characterize the behavior of the geometric series $\\sum_{n=0}^{\\infty} r^n$ at the critical boundary $|r| = 1$: prove divergence at $r = 1$, oscillation at $r = -1$ (Grandi's series), non-summability for all $|r| \\geq 1$, and Cesàro summability $\\sigma_n \\to 1/2$ for Grandi's series.",
+    "text": "What happens to the geometric series at the critical boundary |r| = 1? The series transitions from convergent to divergent: at r = 1 the partial sums grow without bound, at r = -1 they oscillate (Grandi's series), and for any |r| ≥ 1 the series is not summable. However, Cesàro summability rescues Grandi's series: the averages of partial sums converge to 1/2.",
+    "proofStrategy": "The file decomposes the boundary analysis into four parts. Part 1 handles r = 1 via direct computation (1^k = 1, so S_n = n → ∞). Part 2 analyzes Grandi's series via parity: the finite geometric sum identity 2·S_n = 1 - (-1)^n splits into S_{2m} = 0 and S_{2m+1} = 1. Part 3 generalizes to all |r| ≥ 1 using the contrapositive of the necessary condition for convergence (summable implies terms → 0, but |r^n| ≥ 1). Part 4 proves Cesàro summability via an explicit bound: counting odd indices among the first n partial sums gives σ_n = ⌈n/2⌉/n, and the key inequality |σ_n - 1/2| ≤ 1/(2n) yields convergence via the squeeze theorem.",
+    "keyInsights": [
+      "The boundary |r| = 1 is a phase transition: inside the disk (|r| < 1) the geometric series converges to 1/(1-r); on the boundary, classical convergence fails but the behavior is richer than simple divergence",
+      "Parity governs oscillation: the identity 2·S_n = 1 - (-1)^n makes the even/odd dichotomy (S_{2m} = 0, S_{2m+1} = 1) immediate from the finite geometric sum formula",
+      "The squeeze bound |σ_n - 1/2| ≤ 1/(2n) provides not just convergence but an explicit convergence rate O(1/n) — the Cesàro mean approaches 1/2 at an algebraic rate",
+      "Non-summability at the boundary follows from a single principle: the necessary condition a_n → 0. When |r| ≥ 1, the terms |r^n| ≥ 1 are bounded away from zero, making convergence impossible regardless of cancellation patterns",
+      "Cesàro summability rescues divergent series by 'averaging out' oscillations — the partial sums 0, 1, 0, 1, ... average to 1/2, confirming Euler's formal evaluation 1/(1-(-1)) = 1/2 within a rigorous framework"
+    ],
+    "prerequisites": [
+      "Real analysis (sequences, limits, convergence)",
+      "Series and summability",
+      "Metric space topology",
+      "Familiarity with Lean 4 and Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports four Mathlib modules (Algebra.GeomSum, Analysis.SpecificLimits.Normed, Topology.Algebra.InfiniteSum.Basic, Tactic). Documents the four main results and historical context. Opens Finset, BigOperators, and Filter.",
+      "mathContext": "Dependencies: `mul_neg_geom_sum`, `Summable.tendsto_atTop_zero`, `one_le_pow₀` from Mathlib."
+    },
+    {
+      "id": "divergence-r1",
+      "title": "Divergence at r = 1",
+      "startLine": 40,
+      "endLine": 60,
+      "summary": "Three theorems establishing divergence at r = 1: geom_partial_sum_one (S_n = n), geom_sum_one_diverges (S_n → ∞), not_summable_one (constant 1 sequence not summable).",
+      "mathContext": "$S_n = \\sum_{k=0}^{n-1} 1^k = n \\to \\infty$. Not summable because $1 \\not\\to 0$."
+    },
+    {
+      "id": "grandi-series",
+      "title": "Grandi's Series: Oscillation at r = -1",
+      "startLine": 62,
+      "endLine": 101,
+      "summary": "Four theorems analyzing Grandi's series: grandi_double_sum (2·S_n = 1 - (-1)^n), grandi_even (S_{2m} = 0), grandi_odd (S_{2m+1} = 1), not_summable_grandi (divergent via |(-1)^n| = 1).",
+      "mathContext": "$\\sum (-1)^n$: partial sums $S_{2m} = 0$, $S_{2m+1} = 1$. Diverges because $|(-1)^n| = 1 \\not\\to 0$."
+    },
+    {
+      "id": "general-nonsummable",
+      "title": "General |r| ≥ 1 Non-Summability",
+      "startLine": 103,
+      "endLine": 124,
+      "summary": "Two theorems: not_summable_geom_of_one_le_norm (|r| ≥ 1 implies ∑ r^n not summable via |r^n| ≥ 1) and its specialization not_summable_geom_of_norm_eq_one (|r| = 1 case).",
+      "mathContext": "$|r| \\geq 1 \\Rightarrow |r^n| = |r|^n \\geq 1 \\Rightarrow r^n \\not\\to 0 \\Rightarrow \\sum r^n$ not summable."
+    },
+    {
+      "id": "cesaro-summability",
+      "title": "Cesàro Summability of Grandi's Series",
+      "startLine": 126,
+      "endLine": 216,
+      "summary": "Five items: grandiCesaro definition (Cesàro mean σ_n), sum_grandi_partial_sums (sum = ⌈n/2⌉ by induction), grandiCesaro_eq (σ_n = ⌈n/2⌉/n), grandiCesaro_bound (|σ_n - 1/2| ≤ 1/(2n)), grandiCesaro_tendsto (σ_n → 1/2).",
+      "mathContext": "$\\sigma_n = \\frac{\\lfloor(n+1)/2\\rfloor}{n} \\to \\frac{1}{2}$. Convergence rate: $|\\sigma_n - \\frac{1}{2}| \\leq \\frac{1}{2n}$."
+    },
+    {
+      "id": "examples-verification",
+      "title": "Examples and Verification",
+      "startLine": 218,
+      "endLine": 250,
+      "summary": "Concrete examples (S_10 = 10, S_6 = 0, S_7 = 1) and boundary behavior summary table covering r = 1, -1, i, e^{iθ}. Type-checks five main results.",
+      "mathContext": "Boundary table: $r = 1$ diverges, $r = -1$ Cesàro $\\frac{1}{2}$, $r = e^{i\\theta}$ Cesàro $\\frac{1}{1-e^{i\\theta}}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) analysis of the geometric series boundary behavior in 250 lines with 12 theorems/definitions. Establishes three complementary results: divergence at r = 1 (partial sums = n → ∞), oscillation at r = -1 (Grandi's series, S_{2m} = 0, S_{2m+1} = 1), and general non-summability for |r| ≥ 1 (terms don't vanish). The main original contribution is the Cesàro summability proof: the explicit bound |σ_n - 1/2| ≤ 1/(2n) yields convergence at rate O(1/n), confirming Euler's formal evaluation within rigorous summability theory.",
+    "implications": "This formalization bridges 18th-century divergent series debates with modern summability theory. The Cesàro result for Grandi's series is the prototypical example of (C,1) summability, which extends to Fejér's theorem (1900): the Cesàro means of the Fourier series of a continuous function converge uniformly, even though the Fourier partial sums themselves may diverge (du Bois-Reymond, 1876). The boundary behavior at |r| = 1 connects to Abel summation in analytic number theory, where Dirichlet series ∑ a_n/n^s are studied at the boundary of their half-plane of convergence. The explicit convergence rate O(1/n) for the Cesàro mean demonstrates how regularity of the summability method translates into quantitative convergence estimates.",
+    "openQuestions": [
+      "Formalize Abel summability for Grandi's series: lim_{x→1⁻} ∑ (-1)^n x^n = lim_{x→1⁻} 1/(1+x) = 1/2, and prove Abel summability implies Cesàro summability for bounded sequences",
+      "Extend to the full complex boundary: prove that for r = e^{iθ} (θ ≠ 0), the Cesàro mean of ∑ r^n converges to 1/(1-r), connecting to the Fejér kernel in Fourier analysis",
+      "Formalize higher-order Cesàro means (C, α) for α > 1 and prove the inclusion theorem: (C, α)-summable implies (C, β)-summable for β > α",
+      "Prove Grandi's series is Borel summable to 1/2 and formalize the hierarchy: ordinary ⊂ Cesàro ⊂ Abel ⊂ Borel",
+      "Formalize the Silverman-Toeplitz theorem characterizing regular matrix summability methods, and verify that Cesàro summation satisfies the conditions"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.GeomSum",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Finset", "BigOperators", "Filter"],
+    "namespace": "GeometricSeriesOQ01",
+    "lineCount": 250,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1
+  },
+  "references": [
+    {
+      "key": "Gr03",
+      "citation": "Grandi, G., Quadratura circuli et hyperbolae per infinitas hyperbolas et parabolas quadrabiles geometrice exhibita, Pisa (1703).",
+      "type": "book"
+    },
+    {
+      "key": "Eu55",
+      "citation": "Euler, L., De seriebus divergentibus, Novi Commentarii academiae scientiarum Petropolitanae 5 (1760), 205–237. Written circa 1755.",
+      "type": "paper"
+    },
+    {
+      "key": "Ce90",
+      "citation": "Cesàro, E., Sur la multiplication des séries, Bulletin des Sciences Mathématiques 14 (1890), 114–120.",
+      "type": "paper"
+    },
+    {
+      "key": "Ha49",
+      "citation": "Hardy, G.H., Divergent Series, Clarendon Press, Oxford (1949).",
+      "type": "book"
+    },
+    {
+      "key": "Fe00",
+      "citation": "Fejér, L., Sur les fonctions bornées et intégrables, Comptes Rendus de l'Académie des Sciences, Paris 131 (1900), 984–987.",
+      "type": "paper"
+    },
+    {
+      "key": "Ko11",
+      "citation": "Korevaar, J., Tauberian Theory: A Century of Developments, Springer Grundlehren 329 (2004).",
+      "type": "book"
+    }
+  ],
+  "relatedProofs": [
+    "geometric-series",
+    "geometric-series-oq-02",
+    "arithmetic-series",
+    "harmonic-divergence",
+    "basel-problem",
+    "fourier-series",
+    "taylor-sincos-convergence"
+  ]
 }

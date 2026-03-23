@@ -1,0 +1,174 @@
+[
+  {
+    "id": "ann-imports-header",
+    "proofId": "geometric-series-oq-01",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Module Overview and Setup",
+    "content": "The file imports four Mathlib modules: `Algebra.GeomSum` (the finite geometric sum identity $(1-r)\\cdot\\sum_{k=0}^{n-1} r^k = 1 - r^n$), `Analysis.SpecificLimits.Normed` (convergence results for specific sequences), `Topology.Algebra.InfiniteSum.Basic` (the `Summable` predicate and `Summable.tendsto_atTop_zero`), and `Tactic` (general-purpose proof automation). The module header documents the four main results and situates them historically: Grandi (1703), Euler's regularization, and Cesàro's formalization (1890). The `open` declarations bring `Finset`, `BigOperators` (for `∑` notation), and `Filter` (for `atTop` and `Tendsto`) into scope.",
+    "mathContext": "The geometric series $\\sum_{n=0}^{\\infty} r^n$ converges to $\\frac{1}{1-r}$ for $|r| < 1$. This file investigates the critical boundary $|r| = 1$, where convergence fails but alternative summability methods (Cesàro, Abel) can assign finite values.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib imports",
+      "geometric series",
+      "radius of convergence",
+      "unit circle boundary"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-divergence-r1",
+    "proofId": "geometric-series-oq-01",
+    "range": { "startLine": 40, "endLine": 60 },
+    "type": "concept",
+    "title": "Divergence at r = 1: Partial Sums Equal n",
+    "content": "Part 1 establishes the simplest boundary case: when $r = 1$, each term $1^k = 1$, so the partial sum $S_n = \\sum_{k=0}^{n-1} 1 = n$. The theorem `geom_partial_sum_one` proves this by `simp [one_pow]`, and `geom_sum_one_diverges` shows $S_n \\to \\infty$ via `tendsto_natCast_atTop_atTop`. The non-summability `not_summable_one` follows from the contrapositive: if $\\sum a_n$ converges then $a_n \\to 0$, but the constant sequence $1, 1, 1, \\ldots$ does not tend to zero.\n\nThis case is the 'most divergent' point on the boundary circle — the partial sums grow without bound, and no summability method (Cesàro, Abel, Borel) can assign a finite value. By contrast, at $r = -1$ the partial sums oscillate and can be regularized.",
+    "mathContext": "$S_n = \\sum_{k=0}^{n-1} 1^k = n \\to \\infty$. The series $\\sum_{n=0}^{\\infty} 1$ diverges because the necessary condition $a_n \\to 0$ fails: the terms are identically 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergent series",
+      "necessary condition for convergence",
+      "partial sums",
+      "telescoping"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "sequences and limits"
+    ]
+  },
+  {
+    "id": "ann-grandi-series",
+    "proofId": "geometric-series-oq-01",
+    "range": { "startLine": 62, "endLine": 101 },
+    "type": "concept",
+    "title": "Grandi's Series: Oscillation at r = -1",
+    "content": "Part 2 analyzes the historically famous Grandi's series $1 - 1 + 1 - 1 + \\cdots = \\sum_{n=0}^{\\infty} (-1)^n$. The key technique is parity case analysis using Mathlib's finite geometric sum formula `mul_neg_geom_sum`: $2 \\cdot S_n = 1 - (-1)^n$. For even $n = 2m$: $(-1)^{2m} = 1$ so $S_{2m} = 0$. For odd $n = 2m+1$: $(-1)^{2m+1} = -1$ so $S_{2m+1} = 1$. The partial sums oscillate $0, 1, 0, 1, \\ldots$ without converging.\n\nNon-summability follows from the same necessary condition: $|(-1)^n| = 1 \\not\\to 0$. The proof uses `Metric.tendsto_atTop` to extract an $N$ with $|(-1)^N| < 1/2$, then derives a contradiction since $|(-1)^N| = 1$.\n\nHistorically, Guido Grandi published this series in 1703, arguing it should equal $1/2$ by analogy with the formal identity $\\frac{1}{1-r}\\big|_{r=-1} = \\frac{1}{2}$. Leibniz agreed, invoking probabilistic reasoning. Euler later developed systematic regularization methods that confirmed $1/2$ as the 'natural' value, but rigorous justification had to wait for Cesàro (1890).",
+    "mathContext": "$\\sum_{n=0}^{\\infty} (-1)^n$: partial sums $S_{2m} = 0$, $S_{2m+1} = 1$. The series diverges (oscillates), but formal evaluation $\\frac{1}{1-(-1)} = \\frac{1}{2}$ suggests a regularized value. Proved via the identity $2S_n = 1 - (-1)^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Grandi's series",
+      "alternating series",
+      "parity case analysis",
+      "oscillation",
+      "divergent series regularization",
+      "Euler regularization"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "metric spaces",
+      "absolute value properties"
+    ]
+  },
+  {
+    "id": "ann-general-nonsummable",
+    "proofId": "geometric-series-oq-01",
+    "range": { "startLine": 103, "endLine": 124 },
+    "type": "technique",
+    "title": "General Non-Summability for |r| ≥ 1",
+    "content": "Part 3 unifies the $r = 1$ and $r = -1$ cases into a single theorem: for any $r \\in \\mathbb{R}$ with $|r| \\geq 1$, the geometric series $\\sum r^n$ is not summable. The proof uses the term-test: if $\\sum a_n$ converges, then $a_n \\to 0$. Since $|r^n| = |r|^n \\geq 1^n = 1$ for all $n$ (by `one_le_pow₀`), the terms cannot tend to zero.\n\nThe key Lean technique is extracting a quantitative contradiction: `Metric.tendsto_atTop` gives an $N$ with $\\|r^N\\| < 1/2$, but `one_le_pow₀` ensures $|r^N| \\geq 1$, yielding $1 \\leq 1/2$. The specialization `not_summable_geom_of_norm_eq_one` restricts to the exact boundary $|r| = 1$.",
+    "mathContext": "For $|r| \\geq 1$: $|r^n| = |r|^n \\geq 1$ for all $n$, so $r^n \\not\\to 0$, hence $\\sum r^n$ is not summable. This is the contrapositive of the necessary condition for convergence: $\\sum a_n$ convergent $\\Rightarrow$ $a_n \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "term test for divergence",
+      "necessary condition for convergence",
+      "contrapositive argument",
+      "norm power inequality"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "normed spaces",
+      "summability"
+    ]
+  },
+  {
+    "id": "ann-cesaro-definition",
+    "proofId": "geometric-series-oq-01",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "definition",
+    "title": "Cesàro Mean Definition",
+    "content": "The Cesàro mean $\\sigma_n$ averages the first $n$ partial sums: $\\sigma_n = \\frac{1}{n}\\sum_{k=0}^{n-1} S_{k+1}$ where $S_k = \\sum_{j=0}^{k-1} (-1)^j$. The definition handles $n = 0$ separately (returning 0) to avoid division by zero. This is the $(C, 1)$ Cesàro mean — the simplest nontrivial case of the hierarchy of Cesàro means $(C, \\alpha)$ for $\\alpha > 0$.\n\nCesàro summability is strictly stronger than ordinary convergence: every convergent series is Cesàro summable to the same limit, but some divergent series (like Grandi's) are also Cesàro summable. This makes it a 'regular' summability method in the sense of the Silverman-Toeplitz theorem.",
+    "mathContext": "$\\sigma_n = \\frac{1}{n}\\sum_{k=1}^{n} S_k$ where $S_k = \\sum_{j=0}^{k-1} (-1)^j$. Cesàro summability: $\\sum a_n = L$ in the $(C,1)$ sense if $\\sigma_n \\to L$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cesàro mean",
+      "Cesàro summability",
+      "Silverman-Toeplitz theorem",
+      "regular summability method",
+      "Stolz-Cesàro theorem"
+    ],
+    "prerequisites": [
+      "sequences and averages",
+      "summability theory"
+    ]
+  },
+  {
+    "id": "ann-cesaro-bound",
+    "proofId": "geometric-series-oq-01",
+    "range": { "startLine": 136, "endLine": 191 },
+    "type": "technique",
+    "title": "Partial Sum Counting and Cesàro Bound",
+    "content": "The core computational step: since Grandi partial sums alternate $S_{\\text{even}} = 0$ and $S_{\\text{odd}} = 1$, the sum of the first $n$ partial sums counts the odd indices, giving $\\sum_{k=0}^{n-1} S_{k+1} = \\lceil n/2 \\rceil = \\lfloor(n+1)/2\\rfloor$. The proof proceeds by induction on $n$, splitting into even and odd cases.\n\nThe key analytic result is `grandiCesaro_bound`: $|\\sigma_n - 1/2| \\leq 1/(2n)$ for $n \\geq 1$. The proof rewrites $\\sigma_n - 1/2 = (2\\lceil n/2\\rceil - n)/(2n)$. Since $n \\leq 2\\lceil n/2\\rceil \\leq n+1$, the numerator satisfies $|2\\lceil n/2\\rceil - n| \\leq 1$, giving the bound. This provides an explicit convergence rate: $\\sigma_n$ approaches $1/2$ at rate $O(1/n)$.",
+    "mathContext": "$\\sigma_n = \\frac{\\lfloor(n+1)/2\\rfloor}{n}$. Bound: $|\\sigma_n - \\frac{1}{2}| = \\frac{|2\\lfloor(n+1)/2\\rfloor - n|}{2n} \\leq \\frac{1}{2n}$. This gives convergence rate $O(1/n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ceiling function",
+      "floor function",
+      "induction",
+      "parity case analysis",
+      "convergence rate",
+      "explicit bounds"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "absolute value inequalities",
+      "field arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cesaro-convergence",
+    "proofId": "geometric-series-oq-01",
+    "range": { "startLine": 193, "endLine": 216 },
+    "type": "insight",
+    "title": "Cesàro Convergence: σₙ → 1/2",
+    "content": "The main theorem: $\\sigma_n \\to 1/2$ as $n \\to \\infty$. The proof uses the $\\varepsilon$-$N$ definition directly: given $\\varepsilon > 0$, choose $N > 1/(2\\varepsilon)$ (by the Archimedean property). For $n \\geq \\max(N, 1)$, the triangle $|\\sigma_n - 1/2| \\leq 1/(2n) \\leq 1/(2N) < \\varepsilon$ closes via the bound from `grandiCesaro_bound`.\n\nThis confirms Euler's formal assignment $\\sum (-1)^n = 1/2$ in the rigorous framework of Cesàro summability. The result also follows from Abel summability: $\\lim_{x \\to 1^-} \\sum_{n=0}^{\\infty} (-1)^n x^n = \\lim_{x \\to 1^-} \\frac{1}{1+x} = \\frac{1}{2}$. Hardy's tauberian theorem relates these methods: Abel summability implies Cesàro summability for series with $a_n = O(1/n)$.",
+    "mathContext": "$\\sigma_n \\to \\frac{1}{2}$: the Cesàro sum of Grandi's series is $\\frac{1}{2}$. Proof: $|\\sigma_n - \\frac{1}{2}| \\leq \\frac{1}{2n} < \\varepsilon$ for $n > \\frac{1}{2\\varepsilon}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "epsilon-N definition",
+      "Archimedean property",
+      "squeeze theorem",
+      "Abel summability",
+      "Hardy's tauberian theorem",
+      "Cesàro summability"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "limits",
+      "metric space topology"
+    ]
+  },
+  {
+    "id": "ann-examples-verification",
+    "proofId": "geometric-series-oq-01",
+    "range": { "startLine": 218, "endLine": 250 },
+    "type": "context",
+    "title": "Examples and Boundary Behavior Table",
+    "content": "Part 5 provides concrete computations and a summary table. The examples verify: $\\sum_{k=0}^{9} 1^k = 10$ (divergent partial sum), $\\sum_{k=0}^{5} (-1)^k = 0$ (even Grandi), $\\sum_{k=0}^{6} (-1)^k = 1$ (odd Grandi). The boundary behavior table extends beyond real $r$ to complex values: at $r = i$ the partial sums are bounded but don't converge, and at $r = e^{i\\theta}$ the Cesàro sum is $\\frac{1}{1-e^{i\\theta}}$ — the same value as the formal series evaluation. This suggests a deep connection: on the boundary $|r| = 1$, the Cesàro sum always equals the meromorphic continuation $\\frac{1}{1-r}$ (except at the pole $r = 1$).\n\nThe `#check` commands verify the types of the five main results.",
+    "mathContext": "Boundary behavior at $|r| = 1$: $r = 1$ diverges, $r = -1$ Cesàro-sums to $1/2$, $r = e^{i\\theta}$ ($\\theta \\neq 0$) Cesàro-sums to $\\frac{1}{1-e^{i\\theta}}$. The Cesàro sum agrees with the meromorphic continuation of $\\frac{1}{1-r}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete verification",
+      "complex geometric series",
+      "meromorphic continuation",
+      "unit circle",
+      "Dirichlet kernel"
+    ],
+    "prerequisites": [
+      "complex analysis basics",
+      "Lean 4 #check command"
+    ]
+  }
+]
