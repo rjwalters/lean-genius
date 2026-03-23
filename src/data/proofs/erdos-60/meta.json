@@ -113,7 +113,13 @@
       }
     ],
     "axiomCount": 8,
-    "lineCount": 386
+    "lineCount": 386,
+    "prerequisites": [
+      "Extremal graph theory (Turán-type problems)",
+      "4-cycles (C₄) in graphs",
+      "Kővári-Sós-Turán theorem",
+      "Zarankiewicz problem"
+    ]
   },
   "sections": [
     {
@@ -224,5 +230,37 @@
     "axiomCount": 8,
     "theoremCount": 10,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 (Ramsey-Turán for K₄) and Problem #60 (supersaturation of C₄) are both extremal graph theory problems about counting specific subgraphs in dense graphs"
+    },
+    {
+      "targetId": "erdos-24",
+      "relationship": "related",
+      "description": "Problem #24 (pentagons in triangle-free) and Problem #60 (4-cycles) both concern counting short cycles in graphs with density constraints"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kővári, Tamás; Sós, Vera T.; Turán, Paul",
+      "title": "On a problem of K. Zarankiewicz",
+      "year": "1954",
+      "venue": "Colloquium Mathematicum, vol. 3, pp. 50–57",
+      "note": "The KST theorem bounding the number of edges in C₄-free bipartite graphs — the extremal result underlying Problem #60"
+    },
+    {
+      "authors": "Erdős, Paul; Simonovits, Miklós",
+      "title": "Supersaturated graphs and hypergraphs",
+      "year": "1983",
+      "venue": "Combinatorica, vol. 3, no. 2, pp. 181–192",
+      "note": "Introduced supersaturation theory: how many copies of H appear when the number of edges exceeds the Turán number"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-22",
+    "erdos-24"
+  ]
 }

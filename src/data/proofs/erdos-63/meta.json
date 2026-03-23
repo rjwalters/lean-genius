@@ -21,7 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/63",
     "erdosProblemStatus": "solved",
     "axiomCount": 8,
-    "lineCount": 255
+    "lineCount": 255,
+    "prerequisites": [
+      "Infinite graph theory",
+      "Cycle lengths in graphs",
+      "Powers of 2 in combinatorics",
+      "Ramsey theory for infinite structures"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Peter Mihók and Paul Erdős during the period 1993-1997, building on earlier work connecting chromatic number to cycle structure. Penman first observed that the result holds when the chromatic number is uncountable, using the Erdős-Hajnal theorem (which gives arbitrarily large $K_{m,m}$ subgraphs, each containing all even cycles up to $2m$). The countable case was much harder and remained open for over two decades. The breakthrough came from Hong Liu and Richard Montgomery in 2020, who proved a key result connecting high chromatic number to high minimum degree subgraphs: every graph with $\\chi > k$ contains a subgraph with $\\delta > k/2$. Combined with the de Bruijn-Erdős compactness theorem (1951) and the Bondy-Simonovits theorem on even cycles in dense graphs, this resolved the full problem. Liu and Montgomery's result was part of their broader work on Mader's conjecture about clique subdivisions in $C_4$-free graphs.",
@@ -124,5 +130,30 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-60",
+      "relationship": "related",
+      "description": "Problem #60 (supersaturation of C₄) and Problem #63 (cycles of length 2^n) both concern the existence of cycles with specific length constraints in graphs"
+    },
+    {
+      "targetId": "erdos-58",
+      "relationship": "related",
+      "description": "Problem #58 (chromatic number vs odd cycle length) and Problem #63 both study cycle structure in graphs with specific constraints"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results in combinatorial analysis",
+      "year": "1973",
+      "venue": "In: Combinatorics, Part I, Mathematical Centre Tracts vol. 55, pp. 16–19",
+      "note": "Includes problems about cycles of specific lengths in infinite graphs"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-58",
+    "erdos-60"
+  ]
 }
