@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Core counting lemma and infrastructure fully proved (0 sorries in Part I). triangle_removal_quantitative has 2 remaining sorries: (1) edge count bound |R|≤δn² (partition bookkeeping), (2) Finpartition sum identity P.parts.sum card = n. Triangle-freeness argument fully proved via counting lemma contradiction.",
+    "progressSummary": "PROGRESS: Wrote proof for h_wp (within-part edge bound ≤ δ/4·n², ~60 lines) but CANNOT VERIFY: SzemerediCounting.lean and SzemerediRegularity.lean have 20+ pre-existing Mathlib API compatibility errors (pow_lt_pow_left renamed, ▸ notation changes, etc.). File needs comprehensive Mathlib API update before any new proofs can be verified.",
     "builtItems": [
       "counting_lemma: fully proved (Part I, ~200 lines)",
       "bad_vertices_small: fully proved (key bridge lemma)",
@@ -37,7 +37,8 @@
       "counting_lemma_lower_bound: corollary for d≥2ε triples → ≥(1-2ε)ε³|A||B||C| triangles",
       "regularity_lemma_full: extends regularity_lemma_strong with partition coverage and disjointness",
       "triangle_removal_quantitative: proper proof using regularity+counting, 2 sorries remaining",
-      "triangleCount_mono, triangleCount_le_total: monotonicity lemmas"
+      "triangleCount_mono, triangleCount_le_total: monotonicity lemmas",
+      "h_wp proof attempt: within-part pairs ≤ (δ/4)n² via Σ|S|²≤(n/k+1)·n. Uses Finpartition.sup_parts, card_biUnion, equipartition bound. NOT VERIFIED due to Mathlib API breakage."
     ],
     "insights": [
       "Counting lemma requires d≥2ε (not ε) for safe application: neighborhoods of good vertices must be ε-fractions of B,C",
@@ -45,15 +46,18 @@
       "gamma = (1-2ε)ε³/(16M³) works: LHS of contradiction = 2·gamma·n³ > gamma·n³ = RHS",
       "Small graph case (n<M): gamma·n³ < (1-2ε)ε³/16 ≤ 1/1024 < 1, so 0 triangles",
       "Part size bound needs Finpartition.sum_card_parts or equivalent: sum of disjoint partition parts = Finset.univ.card. Try Finset.card_biUnion with P.disjoint.",
-      "Edge bound sorry: within-part ≤ 2εn², irregular ≤ 2εn², sparse ≤ 2εn², total ≤ 6εn² ≤ δn² since ε≤δ/8"
+      "Edge bound sorry: within-part ≤ 2εn², irregular ≤ 2εn², sparse ≤ 2εn², total ≤ 6εn² ≤ δn² since ε≤δ/8",
+      "SzemerediCounting.lean and SzemerediRegularity.lean have 20+ Mathlib API compatibility errors: pow_lt_pow_left→pow_lt_pow_left₀, pow_le_pow_left renamed, ▸ notation changes, Finpartition.supParts→sup_parts, etc.",
+      "h_wp proof strategy verified: |R_wp| ≤ Σ|S|² (biUnion_le) ≤ max|S|·n (equitable) ≤ (n/k+1)·n = n²/k+n ≤ (δ/4)n² using k≥8/δ and n≥8/δ",
+      "h_irreg and h_sparse follow similar patterns: irregular via ε·k²·(n/k+1)² ≤ 4εn² ≤ (δ/2)n², sparse via Σ(2ε·|Vi|·|Vj|) ≤ 2εn² ≤ (δ/4)n²"
     ],
     "mathlibGaps": [
       "Need clean Lean idiom for: Finpartition sum of part sizes = universe card"
     ],
     "nextSteps": [
-      "Prove Finpartition sum identity: P.parts.sum Finset.card = Fintype.card V (try Finset.card_biUnion + P.supParts)",
-      "Prove edge count bound |R| ≤ δn² using equitable partition size bounds",
-      "Consider creating Aristotle companion file for routine lemmas"
+      "CRITICAL: Fix Mathlib API compatibility in SzemerediRegularity.lean and SzemerediCounting.lean (20+ errors from API renames)",
+      "After API fix: verify h_wp proof (already written), then adapt for h_irreg and h_sparse",
+      "Consider filing an issue for comprehensive Mathlib API update of Szemeredi files"
     ]
   },
   "tags": [

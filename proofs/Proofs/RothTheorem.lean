@@ -245,6 +245,30 @@ private lemma psi_ne_one {N : ℕ} [NeZero N] (c : ZMod N) (hc : c ≠ 0) :
   · linarith [mul_nonpos_of_nonpos_of_nonneg hn hN_pos.le]
   · linarith [mul_le_mul_of_nonneg_right (show 1 ≤ n by omega) hN_pos.le]
 
+/-- ψ has norm 1: each value lies on the unit circle. -/
+private lemma psi_norm {N : ℕ} [NeZero N] (a : ZMod N) : ‖ψ a‖ = 1 := by
+  simp only [ψ, Complex.norm_exp]
+  have hre : (2 * ↑Real.pi * Complex.I * (↑(ZMod.val a) / ↑N)).re = 0 := by
+    have : 2 * ↑Real.pi * Complex.I * (↑(ZMod.val a) / ↑N) =
+           ↑(2 * Real.pi * ((ZMod.val a : ℝ) / (N : ℝ))) * Complex.I := by
+      push_cast; ring
+    rw [this, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+        Complex.I_re, Complex.I_im]
+    ring
+  rw [hre, Real.exp_zero]
+
+/-- Complex conjugate of ψ: conj(ψ(a)) = ψ(-a).
+    On the unit circle, conjugation equals inversion. -/
+private lemma conj_psi {N : ℕ} [NeZero N] (a : ZMod N) :
+    starRingEnd ℂ (ψ a) = ψ (-a) := by
+  have hne : ψ a ≠ 0 := Complex.exp_ne_zero _
+  have h1 : ψ a * ψ (-a) = 1 := by rw [← psi_add, add_neg_cancel, psi_zero]
+  have h2 : ψ a * starRingEnd ℂ (ψ a) = 1 := by
+    rw [Complex.mul_conj, ← Complex.ofReal_one]; congr 1
+    -- normSq(ψ a) = ‖ψ a‖² = 1² = 1
+    rw [Complex.normSq_eq_norm_sq, psi_norm, one_pow]
+  exact mul_left_cancel₀ hne (h2.trans h1.symm)
+
 /-- Character orthogonality: ∑_{r : ZMod N} ψ(r·c) = N if c = 0, 0 if c ≠ 0.
     When c = 0, every term is 1. When c ≠ 0, the sum is a geometric series
     with ratio ω = exp(2πi·val(c)/N), a nontrivial N-th root of unity.
@@ -329,17 +353,63 @@ private lemma char_sum_int {N : ℕ} [NeZero N] (m : ℤ) :
 
 theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) = A.card * N := by
-  sorry
+  -- Prove complex identity: ∑_r Â(r) · conj(Â(r)) = |A| · N
+  suffices hC : Finset.univ.sum (fun r : ZMod N =>
+      fourierCoeff A r * starRingEnd ℂ (fourierCoeff A r)) =
+      ↑A.card * (↑N : ℂ) by
+    -- Derive real identity from complex one
+    -- ‖z‖² = normSq(z) = (z * conj z).re
+    have hnorm : ∀ z : ℂ, ‖z‖ ^ 2 = (z * starRingEnd ℂ z).re := by
+      intro z
+      rw [Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
+    simp_rw [hnorm]
+    -- Sum of .re = .re of sum (re is additive)
+    have sum_re : ∀ (s : Finset (ZMod N)) (f : ZMod N → ℂ),
+        s.sum (fun r => (f r).re) = (s.sum f).re := by
+      intro s f
+      exact (map_sum
+        (⟨⟨Complex.re, Complex.zero_re⟩, fun _ _ => Complex.add_re _ _⟩ : ℂ →+ ℝ) f s).symm
+    rw [sum_re, hC]; simp
+  -- Expand fourierCoeff as ψ sums
+  simp_rw [fourierCoeff_eq_sum_psi, map_sum (starRingEnd ℂ), conj_psi]
+  -- Expand product of sums into double sum
+  simp_rw [Finset.sum_mul, Finset.mul_sum]
+  -- Combine ψ(rx) · ψ(-ry) = ψ(r(x-y)) via psi_add
+  simp_rw [← psi_add]
+  simp_rw [show ∀ r x y : ZMod N, r * x + -(r * y) = r * (x - y) from
+    fun _ _ _ => by ring]
+  -- Swap sums: ∑_r ∑_x ∑_y → ∑_x ∑_y ∑_r
+  rw [Finset.sum_comm]
+  conv_lhs => arg 2; ext; rw [Finset.sum_comm]
+  -- Apply char_orthogonality: ∑_r ψ(r(x-y)) = N·δ(x,y)
+  have horth : ∀ x y : ZMod N,
+      Finset.univ.sum (fun r => ψ (r * (x - y))) = if x = y then ↑N else 0 := by
+    intro x y
+    have h := char_orthogonality (x - y)
+    simp only [sub_eq_zero] at h; exact h
+  simp_rw [horth]
+  -- Simplify diagonal: ∑_x ∑_y δ(x,y)·N = ∑_x N = |A|·N
+  -- Inner sum: ∑_{y∈A} (if x=y then N else 0) = if x∈A then N else 0
+  have inner : ∀ x, (A.sum fun y => if x = y then (↑N : ℂ) else 0) =
+      if x ∈ A then ↑N else 0 := fun x => Finset.sum_ite_eq A x (fun _ => (↑N : ℂ))
+  simp_rw [inner]
+  -- Since x ranges over A, each condition x ∈ A is true
+  rw [Finset.sum_congr rfl (fun x hx => if_pos hx), Finset.sum_const]; ring
 
 /-- The Fourier identity for AP counting:
-    Λ₃(A) = N⁻¹ · Σ_r Â(r)² · conj(Â(2r))
-    This identity connects the combinatorial AP count to Fourier analysis.
-    It follows from expanding the triple sum and using orthogonality. -/
+    tripleCount(A) + |A| = N⁻¹ · Σ_r Â(r)² · conj(Â(2r))
+    The RHS is the FULL triple count (including degenerate d=0 triples which
+    contribute |A|). The d=0 triples are: for each a ∈ A, (a, a, a) is a
+    3-AP with common difference 0.
+    Proof: expand 1_A via Fourier inversion, swap sums, apply orthogonality. -/
 theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
-    (tripleCount A : ℂ) = (↑N)⁻¹ *
+    (tripleCount A : ℂ) + ↑A.card = (↑N)⁻¹ *
       Finset.univ.sum (fun r : ZMod N =>
         fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) := by
-  sorry
+  -- Both sides equal |{(x,y,z) ∈ A³ : x+y=2z}|.
+  -- Part A (Fourier): RHS = Σ_{x,y,z∈A} δ(x+y=2z) via orthogonality
+  -- Part B (Combinatorial): LHS = |{(a,d) : a∈A, a+d∈A, a+2d∈A}| = same count
+  sorry -- Deferred: requires Fourier inversion + combinatorial bijection (~100 lines)
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART IV: LARGE FOURIER COEFFICIENT FROM AP-FREENESS
@@ -348,11 +418,10 @@ theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
 /-- If A has no 3-AP and has density delta, then some Fourier coefficient
     is large. This is the key analytic step in Roth's proof.
 
-    Proof sketch: Since A is AP-free, tripleCount A = 0. By the Fourier
-    identity, 0 = N⁻¹ Σ_r Â(r)² conj(Â(2r)). The r=0 term contributes
-    |A|³/N ≥ δ³N². Cancellation with r≠0 terms requires some |Â(r)| to be
-    large. Using Parseval (Σ|Â(r)|² = |A|N) and the bound |Â(r)| ≤ |A|,
-    we get ∃ r ≠ 0 with |Â(r)| ≥ δ²N/2. -/
+    Proof sketch: Since A is AP-free, tripleCount A = 0. By the corrected
+    Fourier identity, |A| = N⁻¹ Σ_r Â(r)² conj(Â(2r)). Separating r=0
+    (contributing |A|³/N) from r≠0: Σ_{r≠0} Â(r)² conj(Â(2r)) = N|A| - |A|³.
+    Using |Â(2r)| ≤ |A| and Parseval, extract a large coefficient. -/
 theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
