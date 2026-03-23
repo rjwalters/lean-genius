@@ -71,7 +71,9 @@
       "The summand bound $\\binom{m}{k}\\binom{n}{r-k} \\le \\binom{m+n}{r}$ via `Finset.single_le_sum` has direct probabilistic significance: it bounds each term of the hypergeometric PMF",
       "The proof leverages Lean's definitional equality for natural number subtraction: when $k > r$, $\\binom{n}{r-k} = \\binom{n}{0} = 1$ since $r - k = 0$ in $\\mathbb{N}$, which means the summation range naturally handles out-of-range terms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

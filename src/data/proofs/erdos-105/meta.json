@@ -73,7 +73,9 @@
       "**Threshold gap**: The function $f(n)$ satisfying $cn \\leq f(n) \\leq n - 4$ has a gap spanning from linear to near-linear — whether $f(n) = \\Theta(n)$ or $f(n) = n - O(1)$ is completely open, one of the cleanest unsolved problems in discrete geometry",
       "**Hickerson's $n - 2$ boundary**: Hickerson showed $n - 2$ obstacles suffice to block all rich lines, establishing that the Erdős-Purdy conjecture targeted the exact boundary — Xichuan's result shifts the boundary one step lower to $n - 4$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

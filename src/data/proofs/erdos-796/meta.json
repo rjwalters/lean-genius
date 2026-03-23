@@ -68,7 +68,10 @@
       "**Second-order hardness:** Pinning the error to $\\Theta(n/(\\log n)^2)$ requires only upper and lower bound arguments, but determining whether the ratio $E_3(n) \\cdot (\\log n)^2 / n$ converges requires understanding oscillatory behavior in the distribution of semiprimes -- a fundamentally harder analytic question.",
       "**Parallel with the PNT:** The $k = 2$ case gives $g_2(n) \\sim n/\\log n$, mirroring the Prime Number Theorem. Problem #425 asks the analogous second-order question for $g_2$, where the error relates to the prime-counting error $\\pi(n) - \\mathrm{li}(n)$ and ultimately to the Riemann Hypothesis."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

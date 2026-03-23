@@ -73,7 +73,13 @@
       "**Monotonicity:** Tighter tolerance $\\varepsilon_1 < \\varepsilon_2$ requires more elements: $g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$",
       "**Universality:** The result holds for ALL abelian groups of order $N$, not just $\\mathbb{Z}/N\\mathbb{Z}$. The Fourier analysis works on any finite abelian group via its character group"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Probability theory",
+      "Mathematical analysis",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

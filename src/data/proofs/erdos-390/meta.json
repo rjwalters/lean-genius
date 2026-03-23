@@ -34,7 +34,10 @@
       "**The $n = 3$ case is fully verified**: $3! = 6$, and the only factorization with factors $> 3$ is $[6]$, proved by showing that two factors $\\geq 4$ would give product $\\geq 20 > 6$ — a complete case analysis",
       "**Convergence vs. boundedness**: The EGS bounds show $\\liminf$ and $\\limsup$ of $(f(n)-2n)\\log n/n$ are both positive and finite, but whether they coincide (i.e., the limit exists) is the open question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

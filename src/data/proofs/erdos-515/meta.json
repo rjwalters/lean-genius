@@ -77,7 +77,10 @@
       "For finite-order functions, Zhang's proof exploits the controlled zero density (by Jensen's formula, the number of zeros in $|z| < r$ is $O(r^\\rho)$) to route the path between zero clusters. For infinite-order functions, the zeros can be much denser, requiring the more delicate potential-theoretic approach of LRW.",
       "The three-stage resolution (Huber 1957, Zhang 1977, LRW 1984) spanning 27 years reflects the increasing difficulty: each step required fundamentally new ideas, from potential-theoretic estimates to controlled zero-avoidance to the full maximum-principle argument."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

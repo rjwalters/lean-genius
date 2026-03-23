@@ -63,7 +63,10 @@
       "**Erdős's Asymptotic Conjecture**: The excess max(m+τ(m))-n grows without bound, implying only finitely many solutions.",
       "**Computational verification**: The proof that n=24 works uses interval_cases to check all m < 24 exhaustively — a clean example of how Lean's tactic system handles bounded verification, while the open conjecture (whether n=24 is the largest) requires analytic number theory beyond exhaustive search"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -91,7 +91,9 @@
       "**Bipartite structure**: Restricting to cross-distances eliminates the 'diagonal' pairs $d(x_i,x_j)$, potentially allowing geometric configurations that exploit this constraint for fewer distinct values",
       "**Connection to incidence geometry**: The problem is equivalent to asking about point-curve incidences where the curves are distance circles, linking it to the Szemerédi–Trotter theorem and sum-product estimates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #661 asks whether the bipartite structure can reduce the number of distinct distances below the general Guth–Katz threshold in ℝ². The formalization captures the extremal functions F(2n) and f(2n), the Guth–Katz and lattice bounds, and the Lenz construction showing dramatic savings in ℝ⁴. The problem remains fully open in the plane.",

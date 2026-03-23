@@ -64,7 +64,10 @@
       "**Connection to the Erdős–Graham conjecture:** Erdős and Graham conjectured (and Croot proved more generally) that for large $N$, any integer in $\\{1, \\ldots, \\lfloor H_N \\rfloor\\}$ can be represented. This extends the classical Erdős–Graham result that $\\sum_{n \\in A} \\frac{1}{n}$ covers all unit fractions $\\frac{1}{m}$ for any sufficiently dense set $A$.",
       "**Egyptian fraction constraint:** Unlike unrestricted Egyptian fractions (where every positive rational has a representation by the Fibonacci–Sylvester greedy algorithm), bounding the denominators by $N$ creates a finite combinatorial problem. The interplay between the continuous quantity $H_N$ and the discrete set of representable integers is the core difficulty."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

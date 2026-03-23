@@ -88,7 +88,9 @@
       "Idempotent matrices have minpoly dividing X(X-1), involutory matrices have minpoly dividing X^2-1",
       "Nilpotent matrices have minpoly = X^d, so M^d = 0 with d = deg(minpoly) <= n"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear algebra"
+    ]
   },
   "sections": [
     {

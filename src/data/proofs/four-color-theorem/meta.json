@@ -43,7 +43,10 @@
       "**Discharging Method:** Assign charge $6 - \\deg(v)$ to each vertex ($\\sum = 12$ by Euler). Redistribute via local rules. If every vertex ends positive, contradiction — so some 'reducible configuration' must appear, enabling induction.",
       "**Computer-Assisted Proof:** Appel-Haken (1976) checked 1,936 reducible configurations by computer. Robertson et al. (1997) reduced to 633. The proof raised philosophical questions: is a theorem proved if no human can verify every case? Formal verification (Gonthier 2005 in Coq) resolved this."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

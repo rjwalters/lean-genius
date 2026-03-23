@@ -70,7 +70,11 @@
       "Croot's (2001) theorem that every positive integer $\\leq N$ is a sum of distinct unit fractions from $\\{1,\\ldots,N\\}$ is a deep result in the theory of Egyptian fractions, connecting Problem #319 to the broader Erdős-Graham program",
       "The trivial upper bound $c(N) \\leq N$ (since $A \\subseteq \\{1,\\ldots,N\\}$) and the gap to the lower bound $(1 - 1/e)N$ leaves room for improvement in either direction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

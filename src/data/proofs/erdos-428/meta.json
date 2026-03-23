@@ -114,7 +114,11 @@
       "**Subset Antitonicity**: `AllOffsetsPrime` is antitone under subset inclusion (`allOffsetsPrime_mono`), so finding large offset sets is the challenge -- shrinking $A$ makes `AllOffsetsPrime` easier but density harder",
       "**Prime Distribution**: The problem fundamentally asks how regular the distribution of primes is when viewed through arithmetic translations, connecting analytic number theory to combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

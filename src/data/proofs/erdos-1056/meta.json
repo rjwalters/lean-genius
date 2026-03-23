@@ -97,7 +97,10 @@
       "The Noll–Simmons factorial reformulation asks: as $p \\to \\infty$, does the maximum number of collisions among $\\{0!, 1!, \\ldots, (p-1)!\\} \\pmod{p}$ grow without bound? Probabilistic heuristics suggest yes, since the factorial function should behave 'randomly' modulo large primes",
       "The problem sits at the intersection of multiplicative number theory (products of consecutive integers), analytic number theory (distribution of factorial residues), and combinatorics (partitioning intervals with prescribed products)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #1056 asks whether for every $k \\ge 2$, there exist a prime $p$ and $k$ consecutive intervals of integers whose products are all $\\equiv 1 \\pmod{p}$. **Status: OPEN.** Known for $k = 2$ (Erdős 1979, $p = 11$) and $k = 3$ (Makowski 1983, $p = 17$). The factorial reformulation—do $k+1$ factorial residues agree modulo some prime?—connects to the Noll–Simmons conjecture. Wilson's theorem provides structural constraints.",

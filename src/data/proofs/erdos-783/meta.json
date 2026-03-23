@@ -93,7 +93,10 @@
       "The monotonicity axiom (adding elements only helps) combined with the product minimization axiom gives a two-part strategy: use all your budget, and use it on primes",
       "The 'large $n$' condition in the conjecture handles the edge case where some primes exceed $n$; for $n$ large enough, all first-$k$ primes fit in $\\{2, \\ldots, n\\}$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "conclusion": {
     "summary": "This formalization provides a rigorous framework for Erdős Problem #783: it defines the optimization problem (minimize unsieved integers under a coprime reciprocal-sum budget), constructs the conjectured optimal solution (first $k$ primes), proves its validity, and connects the optimization to the survival product $\\prod(1-1/a)$ via inclusion-exclusion. The baseline and monotonicity results establish the boundary behavior of the sieve function.",

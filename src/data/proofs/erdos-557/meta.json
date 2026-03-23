@@ -76,7 +76,12 @@
       "The iterative approach $R(T; k) \\leq R(T; k-1) + n - 1$ gives $R(T; k) \\leq k(n-1) + 1$, which is already nearly tight but with a constant depending on $k$",
       "The conjecture would establish that trees have the simplest possible multicolor Ramsey behavior: linear in both parameters with only an additive constant — the same growth rate as the trivial star lower bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #557 on multicolor tree Ramsey numbers remains OPEN. The 129-line formalization captures the conjecture R(T; k) ≤ kn + C, the matching star lower bound R(S_n; k) ≥ k(n-1) + 1, the settled 2-color case R(T; 2) ≤ 2n - 2, the Gerencsér-Gyárfás path formula, monotonicity in k, and the connection to the Burr-Erdős conjecture (proved by Lee 2017 for k=2). All statements are axiomatized (0 sorries).",

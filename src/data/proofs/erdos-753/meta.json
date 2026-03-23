@@ -79,7 +79,10 @@
       "The probabilistic method via G(n, 1/2) exploits self-complementarity in distribution: G and G^c have identical statistics, forcing both chi_L values to be similar",
       "Alon's bound chi_L(G) + chi_L(G^c) <= O(sqrt(n log n)) is essentially tight up to the logarithmic factor; closing this gap remains open"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

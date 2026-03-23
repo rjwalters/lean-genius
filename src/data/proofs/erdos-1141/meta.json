@@ -79,7 +79,10 @@
       "**The 1722 gap**: No good values exist between 1722 and 10^10 (a ratio of ~6 million). This enormous gap strongly suggests the sequence is finite, but proving this would require showing that the primality constraints become unsatisfiable for all sufficiently large n.",
       "**Density bound O(N^{1/2+o(1)})**: ChatGPT-Tang's result bounds the counting function, showing good values are very sparse. This is the best theoretical evidence toward finiteness, though it does not rule out infinitely many extremely sparse terms."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

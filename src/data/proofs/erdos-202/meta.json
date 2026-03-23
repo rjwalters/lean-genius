@@ -66,7 +66,11 @@
       "**Smooth Number Connection:** The bounds involve counting $y$-smooth numbers (integers with all prime factors $\\leq y$). The Dickman function $\\rho(u)$ satisfying $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$ underlies the $L(N)$ appearance.",
       "**Aristotle Success:** 7 of the file's theorems were proved automatically by Aristotle, including the nontrivial `L_subpolynomial` which requires a nested chain of limit arguments ($y = \\log N$, $z = \\sqrt{y}$, squeeze lemma)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

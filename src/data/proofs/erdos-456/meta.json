@@ -116,7 +116,10 @@
       "**Van Doorn's observation**: For $n = 2^{2k+1}$, $\\varphi(2n) = 2^{2k+1} = n$, so $m_n \\le 2n \\ll p_n$. This uses the simple structure of $\\varphi$ at powers of $2$",
       "**Hierarchy**: Part 2 ($p_n/m_n \\to \\infty$) $\\Rightarrow$ Part 1 ($m_n < p_n$ a.a.) $\\Rightarrow$ infinitely many $n$ with $m_n < p_n$. The converses likely fail, making Part 2 strictly stronger"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

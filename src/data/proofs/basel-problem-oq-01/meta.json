@@ -73,7 +73,10 @@
       "Zudilin 2001: strengthened to show at least one of four consecutive odd zeta values ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
       "The correct lower bound approach in Mathlib: use hasSum_ite_eq + hasSum_le, not sum_le_tsum (which is only for ENNReal)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

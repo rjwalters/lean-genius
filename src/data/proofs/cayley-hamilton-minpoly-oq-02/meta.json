@@ -91,7 +91,9 @@
       "Using simp [mul_assoc] instead of ring is essential for non-commutative matrices (ring requires CommSemiring)",
       "The algebra homomorphism approach is cleaner than direct polynomial induction: aeval_algHom_apply reduces the proof to a one-liner"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear algebra"
+    ]
   },
   "sections": [
     {

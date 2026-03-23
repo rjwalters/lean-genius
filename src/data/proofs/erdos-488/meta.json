@@ -34,7 +34,10 @@
       "**Davenport's density theorem**: The natural density $\\delta(B(A)) = \\lim_{N \\to \\infty} |B \\cap [1,N]|/N$ exists for any finite $A$ and equals the inclusion-exclusion sum $\\sum_{\\emptyset \\neq S \\subseteq A} (-1)^{|S|+1} / \\operatorname{lcm}(S)$",
       "**Connection to Besicovitch's counterexample**: For infinite sets, multiples need not have asymptotic density (Besicovitch, 1935), making the finite-set hypothesis essential to the problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

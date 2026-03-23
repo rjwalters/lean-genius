@@ -35,7 +35,10 @@
       "The tension between C(n,k) ~ n^k/k! (polynomial growth in n) and the spacing of primorial quotients (roughly exponential in the prime gap) makes large examples increasingly rare",
       "The Lean formalization uses the 'for every threshold N, there exists n ≥ N' idiom to express infinitude, avoiding direct use of Filter.atTop"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

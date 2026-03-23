@@ -79,7 +79,9 @@
       "**Polynomial partitioning**: Given $n$ points in $\\mathbb{R}^3$, a degree-$D$ polynomial partitions space into $O(D^3)$ cells with $O(n/D^3)$ points each. Optimizing $D$ gives incidence bounds that defeat the trivial $O(n^2)$ estimate",
       "**Convex case is simpler**: In convex position, $O(n)$ distinct distances with multiplicity $O(n)$ gives $\\sum f(d)^2 = O(n^3)$ — no $\\log n$ factor, no polynomial method needed. The general case requires the algebraic machinery"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

@@ -34,7 +34,10 @@
       "**Pigeonhole ceiling**: Since gaps among primes $p \\leq x$ satisfy $d_n \\leq x$, at most $x$ distinct positive values exist, giving the trivial bound $h(x) \\leq x$. The conjectured $o(\\log x)$ is vastly stronger.",
       "**Connection to Poisson model**: Gallagher (1976) showed normalized prime gaps follow a Poisson distribution on average. If gaps were truly independent Poisson, $h(x)$ would grow like $\\log x / \\log\\log x$ — between the two conjectured bounds."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

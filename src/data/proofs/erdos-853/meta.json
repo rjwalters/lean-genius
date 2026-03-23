@@ -86,7 +86,10 @@
       "**Cramér's conditional bound**: Cramér's conjecture ($\\max_{p_n \\le x} d_n \\sim (\\log x)^2$) would imply $r(x) \\le O((\\log x)^2)$. Combined with the strong conjecture $r(x)/\\log x \\to \\infty$, this would place $r(x)$ between $\\log x$ and $(\\log x)^2$.",
       "**14 proved theorems**: The file derives extensive structural theory from Mathlib with 0 sorries, demonstrating the power of Mathlib's `Nat.nth` prime enumeration infrastructure."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

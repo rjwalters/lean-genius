@@ -92,7 +92,10 @@
       "The **balanced block design version remains open**: BBDs impose the additional constraint that every pair of elements appears in exactly one block (not just $\\leq 1$), and this extra structure might be sufficient to force $O(1)$-bounded transversals",
       "The constant $c = 2/5$ is not special — the construction works for any $c < 1/2$, with the barrier at $c = 1/2$ related to the random covering threshold where a random point subset begins to block all lines with high probability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

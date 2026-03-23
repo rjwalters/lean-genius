@@ -59,7 +59,10 @@
       "**Related problem:** Problem 1003 asks the same for Euler's totient φ(n).",
       "**Multiplicative structure**: Since τ(n) is multiplicative and consecutive integers n, n+1 are coprime, their divisor counts are determined independently — making equal values a genuinely 'random' coincidence whose frequency reflects deep distributional properties of τ."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

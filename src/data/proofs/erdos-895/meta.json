@@ -59,7 +59,12 @@
       "**Schur Number Connection:** The Schur number $S(2) = 4$ says any 2-coloring of $\\{1,2,3,4,5\\}$ has a monochromatic triple; Problem #895 replaces 'same color' with 'triangle-free neighborhood', showing graph structure can substitute for coloring constraints",
       "**Hajnal's Gap is Deep:** The jump from 'one Schur triple' (Erdős #895, proved) to 'infinite Hindman structure' (Hajnal's conjecture, open) mirrors the gap between Schur's theorem (1916) and Hindman's theorem (1974) — decades apart in difficulty even in the pure combinatorial setting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Additive combinatorics (sumsets, density)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

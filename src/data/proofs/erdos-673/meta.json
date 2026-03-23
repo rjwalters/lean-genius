@@ -114,7 +114,10 @@
       "**Asymptotic formula**: $\\sum_{n \\le X} G(n) \\sim c X \\log X$ for some $c > 0$, paralleling Dirichlet's classical $\\sum \\tau(n) \\sim X \\log X$",
       "**Non-multiplicativity**: $G$ is not multiplicative ($G(ab) \\neq G(a)G(b)$ in general) but is superadditive: $G(mn) \\ge G(m) + G(n)$ for coprime $m, n$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

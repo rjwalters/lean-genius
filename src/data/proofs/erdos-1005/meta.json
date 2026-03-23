@@ -36,7 +36,11 @@
       "**Euler totient connection**: The Farey sequence $F_n$ has $|F_n| \\sim 3n^2/\\pi^2$ elements via $\\sum_{k=1}^{n} \\varphi(k)$, so $f(n) \\sim cn$ means similarly ordered runs comprise $\\sim c\\pi^2/(3n)$ fraction of all elements — a vanishing but linearly-scaling proportion",
       "**Mediant insertion mechanism**: $F_{n+1}$ is obtained from $F_n$ by inserting mediants $(a+c)/(b+d)$ between adjacent fractions $a/b, c/d$ when $b+d = n+1$. Understanding how mediant insertion affects similarly ordered runs is central to closing the gap between $1/12$ and $1/4$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

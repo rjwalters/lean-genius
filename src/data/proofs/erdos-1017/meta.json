@@ -36,7 +36,10 @@
       "**Covering vs. partitioning**: Lovász's 1968 result bounds the number of cliques in a *covering* (edges can be shared). The gap between covering and partitioning is the core difficulty—partition requires the edge-disjointness constraint, which makes the optimization much harder.",
       "**Larger cliques create competing savings**: A $K_4$ replaces $\\binom{4}{2} = 6$ edges with 1 clique (saving 5), while a triangle saves only 2. But edges may lie in multiple potential $K_4$'s, and choosing one $K_4$ may destroy others. This makes the general case a complex optimization problem, possibly related to maximum weighted clique packing."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

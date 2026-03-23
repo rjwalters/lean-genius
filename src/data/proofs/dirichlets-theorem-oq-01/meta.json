@@ -88,7 +88,9 @@
       "The Landau-Page theorem gives a useful structure: among all real primitive characters of conductor ≤ Q, AT MOST ONE can have a Siegel zero. This 'exceptional character' monopolizes the potential zeros",
       "Mathlib's `LFunction_apply_one_ne_zero` gives L(1,χ) ≠ 0 for free — the Siegel zero question is purely quantitative, asking how close to 0 is possible"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -69,7 +69,10 @@
       "**Axiom-based approach**: the Rogers-Ramanujan identities require either $q$-series manipulation (Jacobi triple product, $(q;q)_k$ calculus) or bijective proofs (Garsia-Milne involution, ~500+ lines each), justifying axiomatization while the structural theory is developed independently",
       "**Noncomputable predicates**: lifting list-level gap conditions to `Nat.Partition` requires `Multiset.sort`, which is noncomputable in Lean 4 since the sort of a multiset is not computationally canonical — a design tension between decidability and abstraction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

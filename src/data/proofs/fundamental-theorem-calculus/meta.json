@@ -51,7 +51,10 @@
       "**Uniqueness up to Constants:** If $F' = G' = f$, then $(F - G)' = 0$, so $F - G = C$ (a constant). This is why indefinite integrals have '$+ C$': the derivative operator has kernel = constants, so its preimage of $f$ is an affine subspace.",
       "**Continuity is Essential:** FTC Part 1 requires $f$ continuous. For discontinuous functions, the Lebesgue integral and absolute continuity of $F$ replace Riemann integrability and pointwise differentiability."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Calculus and real analysis"
+    ]
   },
   "sections": [
     {

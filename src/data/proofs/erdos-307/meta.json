@@ -61,7 +61,10 @@
       "**Computational intractability**: 2^60 ≈ 10^18 partitions to check. At 10^9/sec, this takes 36+ years.",
       "**Disjointness P ∩ Q = ∅**: If a prime appears in both sums, the product structure prevents equality to 1."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

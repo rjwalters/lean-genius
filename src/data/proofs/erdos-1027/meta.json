@@ -38,7 +38,10 @@
       "**Connection to the container method**: The hypergraph container method (Balogh-Morris-Samotij 2015, Saxton-Thomason 2015) provides a general framework for counting independent sets in hypergraphs. Good sets are precisely independent sets in the 'bad' hypergraph whose edges are the monochromatic subsets. The container method would give that most subsets of $X$ are close to a small number of 'containers,' each containing many good sets.",
       "**Quantitative strengthening of Problem #901**: Problem #901 asks whether bounded families have property B (at least one good set). Problem #1027 asks for exponentially many. The relationship is: #901 gives the 'qualitative' result, #1027 gives the 'quantitative' version. Koishi Chan's proof likely subsumes #901 as the $\\delta > 0$ case of the density bound."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

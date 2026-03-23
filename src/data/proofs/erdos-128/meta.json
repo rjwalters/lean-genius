@@ -31,7 +31,11 @@
       "Norin-Yepremyan's result identifies the hard case: globally sparse graphs that are locally dense. The $C_5$ blow-up has edge density $1/5$, well below the Turán density $1/4$ for triangle-free graphs. The conjecture is about these 'moderately sparse' graphs where triangle-freeness barely survives.",
       "Flag algebras (Razborov's framework) reduce the problem to a semidefinite program over graph homomorphism densities. The current SDP relaxation yields $27/1024$; closing the gap to $1/50$ may require additional structural constraints or a different decomposition of the flag algebra certificate."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

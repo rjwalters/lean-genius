@@ -34,7 +34,11 @@
       "**Balanced partition existential**: Part 2 asks whether some (not all) balanced prime partition yields P-smooth numbers with the property—an existential question that may be easier than Part 1",
       "**Growth rate dichotomy**: The CRT gives t_n ≤ e^{O(n)} for squarefree numbers; if t_n > exp(n^c) for some c > 0, it means the minimal translation is essentially as large as the CRT bound allows"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

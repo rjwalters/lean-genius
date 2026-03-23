@@ -56,7 +56,10 @@
       "k >= 4 requires hypergraph regularity (open in Mathlib)",
       "The axiom reduction strategy proves the full theorem from just one axiom (k>=4), minimizing the formalization gap to exactly what Mathlib currently lacks"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

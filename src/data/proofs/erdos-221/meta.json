@@ -80,7 +80,9 @@
       "**Tight optimality**: The density $N/\\log N$ is sharp from both sides. The upper bound comes from Ruzsa's construction; the lower bound follows because the powers of 2 up to $N$ number only $\\lfloor \\log_2 N \\rfloor + 1$, so $A$ must have $\\Omega(N/\\log N)$ elements to provide enough distinct representations.",
       "**Lacunary complement theory**: The result exemplifies a broader phenomenon: exponentially sparse (lacunary) sequences like $\\{g^k\\}$ always admit complements of density $O(N/\\log N)$, with the construction adapting via primitive roots of $g$ modulo suitable prime powers."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

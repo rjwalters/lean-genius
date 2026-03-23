@@ -63,7 +63,9 @@
       "Linear convergence at rate $1/2$ means $\\log_2(10) \\approx 3.32$ steps per decimal digit — 20 steps on $[1,2]$ give $< 10^{-6}$ error",
       "The $\\sqrt{2}$ proof is constructive via Mathlib's `Real.sqrt`, not via bisection — connecting the bisection sequence to sqrt requires the full convergence theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

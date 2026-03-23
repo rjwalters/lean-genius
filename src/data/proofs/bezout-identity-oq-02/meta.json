@@ -68,7 +68,9 @@
       "**Working in ℤ avoids subtraction issues**: Natural number arithmetic doesn't support negative Bézout coefficients. Casting to ℤ, doing the algebra, and casting back is the clean path.",
       "**IsCoprime IS the Bézout condition**: In Lean 4, `IsCoprime a b = ∃ u v, u*a + v*b = 1`, so `euclids_lemma_int` is the most direct version."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -87,7 +87,9 @@
       "Center(Mₙ(K)) = K·I is proved by testing commutativity against standard basis matrices E_ij",
       "Combined with the parent file's minpoly.algEquiv_eq, Skolem-Noether shows that ALL minpoly-preserving automorphisms of Mₙ(K) are exactly the inner ones — there are no 'exotic' automorphisms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear algebra"
+    ]
   },
   "sections": [
     {

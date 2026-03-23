@@ -78,7 +78,12 @@
       "**Logical Structure:** The two conjectures (little-o improvement vs. optimality) are formal negations, so proving one disproves the other. This is verified in Lean.",
       "**Spanning via Subset Sums:** Unlike group generation (arbitrary linear combinations), subset sums only allow coefficients 0 or 1, making the covering problem harder."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Probability theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

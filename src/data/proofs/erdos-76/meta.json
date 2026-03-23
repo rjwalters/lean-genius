@@ -105,7 +105,11 @@
       "**Stability**: The balanced bipartition is essentially the unique extremal coloring — any deviation increases the packing count",
       "**Steiner connection**: Optimal triangle packing in $K_m$ uses $\\lfloor m(m-1)/6 \\rfloor$ triangles when $m \\equiv 1,3 \\pmod{6}$ (Steiner triple systems)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

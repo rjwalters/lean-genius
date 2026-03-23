@@ -34,7 +34,9 @@
       "**Product ratio interpretation**: The ratio $\\prod_{i=0}^{k-1}(1 + k/(n+i))$ must be an integer, connecting to multiplicative number theory and the distribution of primes in arithmetic progressions",
       "**Computational barrier**: For $n = 4$, verifying $k = 207$ requires computing products of 207 consecutive integers (hundreds of digits each), and ruling out all smaller $k$ requires 206 such checks — demonstrating why brute force becomes infeasible for larger $n$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

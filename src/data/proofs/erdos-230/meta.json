@@ -114,7 +114,10 @@
       "**Littlewood vs. unimodular**: For $\\pm 1$ coefficients (Littlewood polynomials, Problem #228), the flatness question is significantly harder — the analog of Kahane's theorem is unresolved and may have a different answer",
       "**Perfect flatness is impossible**: A polynomial with $|P(z)| = \\sqrt{n}$ on all of $S^1$ would have to be a monomial, so some oscillation is unavoidable — the question is only about its magnitude"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #230 is fully solved (disproved). Kahane's 1980 construction of ultraflat polynomials shows the Parseval lower bound ‖P‖_∞ ≥ √n is asymptotically tight: the infimum of ‖P‖_∞/√n over unimodular polynomials converges to 1. The Lean formalization captures the complete story from Parseval's identity through the false conjecture to Kahane's disproof and the Bombieri-Bourgain quantitative improvement.",

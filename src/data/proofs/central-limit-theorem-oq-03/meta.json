@@ -120,7 +120,9 @@
       "Cramér's theorem (1936) says the Gaussian is \"prime\" in the convolution monoid: if $\\mu * \\nu$ is Gaussian, both $\\mu$ and $\\nu$ must be Gaussian—analogous to primality of integers",
       "The domain of attraction is closed under convolution: if $\\mu, \\nu$ are attracted to the Gaussian, so is $\\mu * \\nu$, giving the DOA an algebraic structure of its own"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probability theory"
+    ]
   },
   "conclusion": {
     "summary": "This formalization establishes the full commutative monoid structure of probability distributions under convolution, with characteristic functions as a homomorphism, convolution powers with the distribution law, the CLT as domain-of-attraction convergence to the Gaussian fixed point, Gaussian stability, and Cramer's indecomposability theorem. The key proved results are convPow_add and charFun_convPow; the deeper analytical results (CLT convergence, Cramer's theorem) are axiomatized.",

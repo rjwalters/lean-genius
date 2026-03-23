@@ -71,7 +71,10 @@
       "**Fejér gaps**: The weaker condition Σ 1/nₖ < ∞ is conjectured to suffice. Macintyre showed this would be optimal - counterexamples exist when Σ 1/nₖ = ∞.",
       "**Nevanlinna theory**: Fuchs's proof uses deep results from value distribution theory, which is not yet formalized in Mathlib."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

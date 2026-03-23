@@ -86,7 +86,11 @@
       "**Edge-Disjoint Completely Solved:** Mader (1973) proved ℓ_m(n) = ⌊m(n-1)/2 + 1⌋ for all m ≥ 2, confirming the conjecture in the edge-disjoint setting",
       "**3-Connected Rescue:** Sørensen-Thomassen showed the vertex-disjoint conjecture holds for 3-connected graphs, indicating the counterexamples exploit low connectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

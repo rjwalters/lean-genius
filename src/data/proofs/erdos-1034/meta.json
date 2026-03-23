@@ -39,7 +39,11 @@
       "**Book lemma lower bound**: $h(n) \\ge n/6$ because every dense graph has a triangle with $\\ge n/6$ vertices adjacent to all three vertices",
       "**$K_4$-free variant**: the bound improves to $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ — counterintuitively, forbidding $K_4$ allows *more* good neighbors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

@@ -69,7 +69,9 @@
       "**DecompositionMonoid unifies irreducible and prime**: In ℤ, k[X], ℤ[i], `irreducible_iff_prime` holds — this is the abstract FTA seed.",
       "**One proof, many instances**: `euclids_lemma_ring hcop hdvd` is the same line of code for ℤ, ℚ[X], and ℤ[i]."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

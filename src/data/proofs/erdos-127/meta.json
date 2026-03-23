@@ -33,7 +33,11 @@
       "The excess function $f$ oscillates: it equals 0 at triangular numbers and grows to $\\Theta(\\sqrt{n})$ between them, constrained by 1-Lipschitz behavior (adding one edge changes the cut by at most 1)",
       "Alon's proof uses the probabilistic method and connections to semidefinite programming — the same tools that later led to the Goemans–Williamson MAX-CUT algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

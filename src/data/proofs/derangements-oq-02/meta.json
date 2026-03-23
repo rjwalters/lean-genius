@@ -81,7 +81,9 @@
       "**card_support_ne_one**: `Equiv.Perm.card_support_ne_one σ : σ.support.card ≠ 1` is the key for proving S(n,n-1) = 0. Usage: `absurd hsupp (Equiv.Perm.card_support_ne_one σ)`.",
       "**Bijection proof structure**: `permSupportEqEquiv` proves the Equiv by using `ofSubtype_subtypePerm` for left_inv (providing only the h2 hypothesis, as h1 is automatic) and plain `simp` for right_inv."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

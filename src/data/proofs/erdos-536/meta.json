@@ -65,7 +65,12 @@
       "**Construction lower bound**: Weisenberg's constructions avoiding LCM triples have size $\\gg (\\log\\log N)^{f(N)} \\cdot N / \\log N$, so triple-free sets can be surprisingly large even though the density threshold may be 0",
       "**Related to GCD/LCM problems**: Part of a family of Erdős problems (#535, #537, #856, #857) on multiplicative structure in dense integer sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

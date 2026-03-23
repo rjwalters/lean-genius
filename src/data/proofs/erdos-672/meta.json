@@ -66,7 +66,10 @@
       "**Heuristic probability argument**: The probability that a random product of k near-coprime factors is a perfect l-th power is ~1/P^(1-1/l), which sums to a finite constant. This suggests only finitely many (possibly zero) solutions exist.",
       "**Gap in the literature**: While Euler (k=4) and Obláth (k=5) settled small cases for l=2, larger k and other l values remain open despite decades of work."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

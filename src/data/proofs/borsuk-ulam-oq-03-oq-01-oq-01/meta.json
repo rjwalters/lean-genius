@@ -79,7 +79,10 @@
       "The typeclass-based boundary classification (HasBoundary) abstracts away the specific triangulation, making the parity argument applicable to any triangulated 2-manifold with boundary.",
       "The exhaustive classification of complementary pairs (only 4 possibilities from {±1, ±2}) constrains the combinatorial structure: each triangle has at most 2 complementary edges, ensuring the Tucker graph has maximum degree 2."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Point-set topology",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

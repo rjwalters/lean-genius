@@ -45,7 +45,10 @@
       "**Tight bound**: The threshold $2^d + 1$ is exact — $2^d$ obtuse-free points exist (hypercube) but $2^d + 1$ always force an obtuse triple",
       "**Inner product characterization**: Obtuse $\\Leftrightarrow$ negative dot product: $\\angle ABC > \\pi/2 \\iff \\langle A-B, C-B\\rangle < 0$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

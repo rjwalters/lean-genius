@@ -74,7 +74,11 @@
       "Subset monotonicity (`NonRepresenting` is downward-closed) means the extremal sets achieving the maximum size have a hereditary structure amenable to matroid-theoretic analysis",
       "The NP-completeness of the subset sum problem means computing `maxNonReprSize c n` exactly is computationally intractable, motivating the search for asymptotic bounds rather than exact formulas"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

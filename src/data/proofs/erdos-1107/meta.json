@@ -54,7 +54,11 @@
       "**Verified examples**: We prove 13 = 4 + 9 (two squareful numbers) and 17 = 8 + 9, demonstrating that the conjecture holds for small cases.",
       "**Density argument**: Squareful numbers have density $\\sum_{p} p^{-2} \\approx 0.6$ among integers, so their sumsets should eventually cover all large numbers — the challenge is making 'eventually' effective"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

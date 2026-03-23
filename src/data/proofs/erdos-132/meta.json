@@ -94,7 +94,9 @@
       "**Gap between known and conjectured:** Even the weakest form (two rare distances for $n \\geq 7$) is open, while the strong conjecture asks for $n^{1-o(1)}$. The $\\varepsilon$-$\\delta$ formulation `erdos132_strong_conjecture` captures subpolynomial growth precisely in Lean's type theory.",
       "**Connection to distinct distances:** Guth-Katz shows $\\Omega(n/\\log n)$ distinct distances, but this counts ALL distances, not just rare ones. A distance with multiplicity $> n$ contributes to the distinct count but is NOT rare. The rare distance problem is strictly harder because it requires controlling the multiplicity distribution, not just its support."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

@@ -77,7 +77,11 @@
       "**Known bounds:** n²/log n from above and n^{2-o(1)} from below, leaving a significant gap",
       "**questions_together (proved):** If both questions hold, differences → ∞ but relative differences → 0"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

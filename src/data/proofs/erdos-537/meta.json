@@ -67,7 +67,11 @@
       "**Implication for Problem #536:** A positive answer to #537 would have implied #536 (two equal prime products). Ruzsa's counterexample blocks this approach but does not resolve #536 itself",
       "**Multiplicative vs. Additive:** Dense sets must contain additive patterns (Szemerédi's theorem) but need NOT contain all multiplicative patterns — the prime factorization structure allows escape"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

@@ -66,7 +66,9 @@
       "**Linear gap:** The gap $\\binom{n+2}{2} - \\binom{n+1}{2} - 1 = n$ between bounds grows linearly—for large $n$, the relative gap shrinks as $O(1/n)$, suggesting the bounds are close to tight",
       "**Neither bound tight for $n = 3$:** Since $f(3) = 8$ while the bounds give $[7, 10]$, neither Blokhuis nor Weisenberg is tight, suggesting the true answer may require dimension-specific constructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

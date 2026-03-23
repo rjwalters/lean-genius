@@ -62,7 +62,10 @@
       "Mathlib's egirth (ℕ∞) and chromaticNumber (ℕ∞) are the right types for the comparison — both give ⊤ for acyclic/colorable-zero degenerate cases",
       "The contrapositive proof pattern (by_contra + push_neg) cleanly derives lower bounds from sufficiency theorems in Lean 4"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

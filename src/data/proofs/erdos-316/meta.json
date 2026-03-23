@@ -77,7 +77,10 @@
       "**Generalization**: Sándor proved that for any n ≥ 2, there exists a set with sum < n that cannot be partitioned into n parts each with sum < 1. The case n = 2 is what we formalize here.",
       "**Certified computation**: The `decide +kernel` tactic performs a verified exhaustive search of all 2048 subsets, producing a kernel-level proof certificate. This is fundamentally different from a pen-and-paper 'check all cases' argument — the Lean kernel independently verifies every step, eliminating the possibility of computational error."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -83,7 +83,10 @@
       "**Ternary quadratic form method**: Heath-Brown's proof writes $n = a^2 + b^2 c^3 + d^2 e^3$ and applies the Hasse principle for ternary forms. The ineffective Siegel bound means the threshold $N_0$ is not explicitly computable",
       "**r-Powerful generalization**: For $r$-powerful numbers ($p \\mid n \\Rightarrow p^r \\mid n$), the counting function is $\\sim c_r x^{1/r}$, and Problem #1107 asks for the minimal basis order. The diagonal case $k = r$ is exactly Problem #940"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -132,7 +132,10 @@
       "**Egyptian Fraction of 1:** The equation $\\sum 1/p_i + 1/m = 1$ is an Egyptian fraction representation of $1$ with the special property that all but one denominator is prime. This places the problem in the context of Erdős's broader Egyptian fraction program (#282–285).",
       "**Super-Exponential Growth:** Known solutions grow extremely rapidly (from 1 digit to 31 digits in 8 terms). This makes computational search for a 9th term difficult and suggests either finiteness or extreme sparsity."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #313 asks whether there are infinitely many primary pseudoperfect numbers — integers $m$ whose prime reciprocals sum to $1 - 1/m$. The formalization captures the solution set, the primary pseudoperfect predicate, five verified examples, structural constraints (product and uniqueness), the count of 8 known solutions, and the Egyptian fraction connection. The 105-line Lean file has 0 sorries, with all results axiomatized.",

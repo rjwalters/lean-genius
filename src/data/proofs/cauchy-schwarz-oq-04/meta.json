@@ -71,7 +71,9 @@
       "**Lagrange identity for finite sums**: The cross-term vanishing condition a_i*b_j = a_j*b_i is extracted from the identity sum_ij (a_i*b_j - a_j*b_i)^2 = 2*(sum a_i^2 * sum b_i^2 - (sum a_i*b_i)^2), giving the exact ratio a_i/b_i = sum(a*b)/sum(b^2) for all i.",
       "**Bridge to OQ-03 (Hölder)**: The equality condition for Cauchy-Schwarz (p=q=2) is a special case of Hölder equality — the general case requires $f_i^p/g_i^q$ constant. At p=q=2 this reduces to proportionality $f_i/g_i = c$, unifying the geometric (projection) and analytic (Hölder) perspectives"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

@@ -68,7 +68,10 @@
       "**Missing integers**: Even assuming well-definedness, whether $f$ misses infinitely many integers (i.e., fails to be surjective) is unknown, and the related question of whether $f$ is eventually constant is also open",
       "**Linear growth conjecture**: Computational evidence suggests $f(n)$ grows linearly, formalized as $f(n) \\leq (1 + \\varepsilon)n$ for any $\\varepsilon > 0$ and large enough $n$—but even this weaker statement is unproved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

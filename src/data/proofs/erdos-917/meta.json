@@ -71,7 +71,10 @@
       "**Mod 3 Matters:** The asymptotic behavior depends on k mod 3; Stiebitz showed the conjectured formula fails for k ≢ 0 (mod 3)",
       "**Upper Bounds:** Stiebitz proved f_k(n) < ex(n; K_{k-1}), improved by Luo-Ma-Yang (2023)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

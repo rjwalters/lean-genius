@@ -144,7 +144,11 @@
       "**Sum Constraint:** The axiomatized result $d(A) + d(B) \\leq 1$ is necessary: if $d(A+B) = d(A) + d(B)$ and $d(A+B) \\leq 1$, then $d(A) + d(B) \\leq 1$. The density pairs $(d(A), d(B))$ achieving additivity must lie in the triangle $\\{(\\alpha, \\beta) : \\alpha + \\beta \\leq 1\\}$.",
       "**Characterization vs Existence:** Unlike most Erdős problems that ask whether something exists, #335 asks for a *characterization*. Knowing *that* density-additive pairs exist (the fractional part construction) is easy; understanding *all* of them is the deep challenge."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)",
+      "Asymptotic density and counting"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #335 asks for a characterization of all pairs $A, B \\subseteq \\mathbb{N}$ with positive density and $d(A+B) = d(A) + d(B)$. The known examples come from fractional part sets via Weyl equidistribution; the open conjecture is that *all* examples have this group-theoretic origin. The 123-line Lean file formalizes density, sumsets, the fractional part construction, the main conjecture, basic properties, and one proved theorem (`additive_implies_tight`). It has 0 sorries.",

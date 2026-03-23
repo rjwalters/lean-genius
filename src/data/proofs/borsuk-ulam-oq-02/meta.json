@@ -127,7 +127,9 @@
       "The proof of freeness for ℤ/p rotation (`zp_rotation_free_statement`) is a nice elementary argument: cos(2π/p) = 1 implies 2π/p = 2πn for integer n, so n·p = 1, but p ≥ 2 so this is impossible. This avoids any algebraic topology.",
       "Compact Lie groups (SO(n), U(n), Sp(n)) acting on spheres give equivariant maps that are studied by K-theory and representation theory — the optimal vanishing dimensions are controlled by representation rings, which are rich objects not captured by simple index theory."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Point-set topology"
+    ]
   },
   "sections": [
     {

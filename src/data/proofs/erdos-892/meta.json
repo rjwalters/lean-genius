@@ -109,7 +109,10 @@
       "The ESS (1967) condition is strictly stronger: it controls the partial reciprocal sums $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$, capturing not just convergence but the rate",
       "The GCD-free condition prevents 'divisibility obstructions' where $\\gcd(b_i, b_j)$ forces elements into the same divisibility chain, making primitivity impossible locally"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem 892 is formalized with definitions of primitive sequences, domination, and the GCD-free condition, along with axiomatized necessary conditions from Erdős (1935) and Erdős-Sárközy-Szemerédi (1967). The counting bound for primitive sets is also axiomatized. The file has 0 sorries and 4 axioms, with no proved theorems.",

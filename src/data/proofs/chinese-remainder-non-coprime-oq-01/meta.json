@@ -75,7 +75,9 @@
       "The three efficiency gains are independent and multiplicative: LCM saves bits in representation, Bézout saves computation, Garner saves reconstruction overhead",
       "In practice, for moduli like m = n = 2^64 with gcd = 2^32: the representation needs 65 bits (not 128), the Bézout step works on 32-bit numbers, and Garner reconstruction stays within 64 bits"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

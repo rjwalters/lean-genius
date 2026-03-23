@@ -87,7 +87,13 @@
       "The gap between n^{3/2+o(1)} (BFL) and Θ(n^{3/2}) (conjecture) is significant: the o(1) in the exponent could hide logarithmic factors, and determining whether such corrections exist requires understanding the final phase of the process when few triangles remain",
       "The formalization demonstrates how Filter.Eventually (∀ᶠ in atTop) elegantly captures asymptotic statements in Lean 4, avoiding explicit N₀ bookkeeping"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Graph theory (vertices, edges, colorings)",
+      "Probability theory",
+      "Mathematical analysis"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures the triangle removal process problem (Erdős #1155) in Lean 4, axiomatizing the key function f(n) and the two main results: Grable's bound f(n) ≤ n^{7/4+o(1)} and BFL's tight exponent characterization f(n) = n^{3/2+o(1)}. Three derived theorems are proved, including the implication chain BFL ⇒ Grable and the exponent sandwich. The remaining open conjecture — whether f(n) = Θ(n^{3/2}) without sub-polynomial corrections — is stated as a Prop.",

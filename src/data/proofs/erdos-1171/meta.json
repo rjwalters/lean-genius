@@ -92,7 +92,12 @@
       "**MA vs CH for partition calculus**: Baumgartner's result under MA uses techniques specific to the source ω₁·ω, while Hajnal's CH result works for the larger source ω₁². The gap between MA and CH for k ≥ 2 reflects a genuine mathematical difficulty, not just a proof-theoretic limitation.",
       "**Lean 4 formalization of set-theoretic independence**: The formalization captures a problem whose answer depends on the set-theoretic universe. By using axioms for CH and MA as hypotheses, the Lean code faithfully represents that the CH case is resolved while the ZFC case remains open."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

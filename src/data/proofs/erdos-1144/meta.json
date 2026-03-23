@@ -79,7 +79,12 @@
       "**Filter.atTop for open problems**: The formalization elegantly uses Lean's filter library to express 'infinitely many N such that ...' and 'for all sufficiently large N ...', capturing the asymptotic nature of the conjecture directly in the type system.",
       "**Axiomatization strategy**: Deep analytic results (Atherfold's bound) are axiomatized rather than proved, allowing the formalization to focus on the logical structure connecting the conjecture to known bounds. This is appropriate for an open problem where the conjecture itself cannot be proved."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Probability theory",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

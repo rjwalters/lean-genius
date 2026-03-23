@@ -35,7 +35,10 @@
       "The Fano plane (order 2) trivially has bounded blocking sets since every line has only 3 points, so any blocking set meets each line in at most 3 points -- the difficulty arises for large orders",
       "Non-Desarguesian planes (which exist for all prime-power orders > 8) might behave differently from Desarguesian planes PG(2,q), making the 'for all planes' quantifier essential"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

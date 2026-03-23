@@ -66,7 +66,11 @@
       "**Known Bounds**: R(K_3; k) >= 2^k (exponential) while R(C_{2n+1}; 2) = 4n+1 (linear in n for fixed colors), but the multicolor growth rates are not well understood",
       "**2-Color Benchmark**: Bondy-Erdős (1973) completely solved the 2-color case: R(C_{2n+1}; 2) = 4n + 1, establishing that odd cycle Ramsey numbers are small relative to triangle Ramsey numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

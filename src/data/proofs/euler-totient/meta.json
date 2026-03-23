@@ -70,7 +70,9 @@
       "**Full Fermat Form:** The unconditional $a^p = a$ (not just $a^{p-1} = 1$) works for all $a$, including $a \\equiv 0$. This uses the Frobenius endomorphism of finite fields.",
       "**RSA Foundation:** The encryption scheme $m \\mapsto m^e \\pmod{n}$, $c \\mapsto c^d \\pmod{n}$ with $ed \\equiv 1 \\pmod{\\varphi(n)}$ relies directly on Euler's theorem for correctness."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

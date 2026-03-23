@@ -59,7 +59,10 @@
       "**The gap**: B₂[1] is solved but B₂[2] remains open. The extra representation destroys the unique sum property.",
       "**ESS94 log bound**: The stronger result liminf A(N) · N^{-1/2} · (log N)^{1/2} < ∞ implies liminf A(N)/√N = 0."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

@@ -70,7 +70,9 @@
       "**Cauchy's integral theorem as corollary**: For holomorphic $f = u + iv$, the Cauchy-Riemann equations force $\\text{curl} = 0$, so $\\oint_C f\\,dz = 0$. This connects vector calculus to complex analysis.",
       "**Generalized Stokes' theorem**: Green's theorem is $\\int_{\\partial D} \\omega = \\int_D d\\omega$ for the 1-form $\\omega = P\\,dx + Q\\,dy$ with exterior derivative $d\\omega = (\\partial_x Q - \\partial_y P)\\,dx \\wedge dy$. The 3D version is the classical Stokes' theorem; the 1D version is the FTC."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

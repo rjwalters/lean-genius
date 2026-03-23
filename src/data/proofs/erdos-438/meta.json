@@ -125,7 +125,12 @@
       "**Regularity transfer**: Szemerédi's regularity lemma bridges the gap between modular and integer density bounds. The key idea: a dense set in $\\{1,\\ldots,N\\}$ must 'look like' a union of residue classes at some scale, and the modular bound constrains the density",
       "**Furstenberg-Sárközy contrast**: While the Furstenberg-Sárközy theorem says dense sets must have square differences ($A - A \\ni \\square$), this problem asks how dense $A$ can be while avoiding square sums ($A + A \\not\\ni \\square$). The sum version has a definite answer; the difference version is about thresholds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

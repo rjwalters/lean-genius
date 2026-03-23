@@ -59,7 +59,10 @@
       "The proof of `erdos_trotter_exact` takes $N = \\max(N_1, N_2)$ from the two axioms and uses `omega` to close the equality from $\\leq$ and $\\geq$, a clean example of the sandwich technique in extremal combinatorics",
       "**Unimodality barrier**: The binomial coefficients $\\binom{n}{k}$ are unimodal (increasing then decreasing), so layers with $\\binom{n}{k} < r$ cluster at the extremes. For fixed $r$, exactly the outermost layers are excluded, and their count stabilizes once $n$ is large enough — this is why a finite threshold $N(r)$ exists"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

@@ -64,7 +64,10 @@
       "**Historical Gap:** The upper bound improved from (N log N)^{1/2} to N^{1/4+o(1)} over three decades",
       "**Roth Connection:** Roth-type sets (avoiding all 3-APs) have size at most N/log N, while non-averaging sets can reach N^{1/4}"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

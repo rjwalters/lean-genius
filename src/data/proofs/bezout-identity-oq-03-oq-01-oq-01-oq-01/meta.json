@@ -61,7 +61,9 @@
       "Coprimality inheritance uses IsCoprime.mul_right plus J·K ≤ J∩K (Ideal.mul_le_inf)",
       "The formalization's value lies not in the CRT itself (one Mathlib call) but in making coprimality explicit, connecting ∩ with ·, and proving closure properties needed for applications"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abstract algebra"
+    ]
   },
   "sections": [
     {

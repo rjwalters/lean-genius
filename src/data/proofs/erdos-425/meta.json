@@ -64,7 +64,11 @@
       "**Logarithmic bridge**: $\\log(ab) = \\log a + \\log b$ converts multiplicative Sidon to additive Sidon, connecting to the rich theory of $B_2$ sequences and Erdős Problem #30 (\\$1000 prize for the $\\sqrt{n} + O(n^\\varepsilon)$ bound)",
       "**$r$-fold hierarchy**: The conjectured bound $\\pi(n) + O(n^{(r+1)/(2r)})$ gives $3/4$ for pairwise products, $2/3$ for triple products, and approaches $1/2$ as $r \\to \\infty$---showing that higher-order distinctness constraints progressively restrict the set size"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

@@ -74,7 +74,9 @@
       "All $q$ roots factor as **principal root times roots of unity**: $\\zeta_k = \\zeta_0 \\cdot \\omega_k$, reflecting the coset decomposition $z^{1/q} \\cdot \\mu_q$ where $\\mu_q$ is the cyclic group of $q$-th roots of unity",
       "The **square root negation** $\\zeta_1 = -\\zeta_0$ is a direct consequence of Euler's identity $e^{i\\pi} = -1$, providing a satisfying concrete instance of the general theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

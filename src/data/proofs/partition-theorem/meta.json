@@ -58,7 +58,10 @@
       "**Foundation for q-Series:** Euler's identity is the simplest instance of a rich family: Rogers-Ramanujan identities, Jacobi's triple product, and the entire theory of q-series and modular forms grow from this root.",
       "**Computational Verification:** The `native_decide` proofs for small n provide a 'sanity check' independent of the generating function argument — if the theorem were false, these would fail."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "leanFile": {
     "imports": [

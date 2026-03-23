@@ -61,7 +61,10 @@
       "**General conjecture**: Erdős conjectured that for any slowly-growing sequence gₙ ≥ 2 with gₙ = o(pₙ), the sum Σ pₙ/(g₁·...·gₙ) is irrational.",
       "**Computational evidence**: The first 5 terms sum to 101/32 ≈ 3.15625, already within 0.5 of the limit."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

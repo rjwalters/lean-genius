@@ -110,7 +110,11 @@
       "**Combinatorics-to-Number-Theory Bridge**: Via prime factorization encoding ($S \\mapsto \\prod_{i \\in S} p_i$, union $\\leftrightarrow$ lcm), the union-free bound implies LCM representations in positive-density sets (Problem 487)",
       "**Hierarchy of Conditions**: `IsUnionFree` (2-union-free) generalizes to $k$-union-free (Frankl-Füredi) and strong union-free (Problem 1023), creating a rich family of extremal problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Set theory and cardinality"
+    ]
   },
   "sections": [
     {

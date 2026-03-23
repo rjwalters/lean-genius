@@ -189,7 +189,10 @@
       "**$C_5$ is the unique exception**: For $C_{2k+1}$ with $k \\geq 3$, the bound $(2/9)n^2$ IS correct; only $C_5$ has a smaller constant",
       "**Hierarchy of odd cycle supersaturation**: Triangles give $\\Theta(n)$, $C_5$ gives $cn^2$ with $c < 2/9$, and $C_{2k+1}$ ($k \\geq 3$) gives $(2/9)n^2$ — three distinct regimes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #608 on edges in 5-cycles. Erdős's original conjecture of $(2/9)n^2$ edges is disproved: the correct asymptotic bound is $c = (2 + \\sqrt{2})/16 \\approx 0.2134$, determined exactly by Füredi-Maleki (upper bound via weighted blow-up constructions) and Grzesik-Hu-Volec (lower bound via flag algebras). The formalization covers the full $C_5$ machinery, the general odd cycle comparison, triangle and Turán threshold results, and the extremal construction.",

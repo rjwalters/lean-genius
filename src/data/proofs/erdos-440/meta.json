@@ -73,7 +73,10 @@
       "**Tao's GCD decomposition:** Write a = dm, b = dn with gcd(m,n)=1, then sum over d to get O(√x)",
       "**Generalizes to k-tuples:** Similar bounds hold for k-consecutive LCM with different exponents"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

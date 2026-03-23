@@ -36,7 +36,10 @@
       "**Stability meets supersaturation**: This result extends the Erdős-Simonovits stability theorem into the supersaturation regime. Near the extremal threshold, the graph resembles the Turán graph; beyond it, specific topological structures (saturated planar subgraphs) must appear.",
       "**Planarity as a formal challenge**: The definition of `isPlanar` is `sorry` because topological planarity requires embedding theory not yet in Mathlib. This is a concrete target for formalization efforts: Kuratowski's theorem or the Hopcroft-Tarjan planarity algorithm would provide a constructive definition."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

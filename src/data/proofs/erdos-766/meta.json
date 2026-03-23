@@ -89,7 +89,12 @@
       "**C₄ Anomaly:** ex(n;C₄) = Θ(n^{3/2}), much smaller than quadratic; 4-cycles are hard to avoid",
       "**Trees vs Dense:** For trees (l=k-1), ex is nearly linear; for dense graphs, ex is quadratic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

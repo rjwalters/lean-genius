@@ -58,7 +58,11 @@
       "**Connection to Goldbach**: If every even n ≥ 6 is a sum of two primes p + q, then f(n) might be achievable via m = pq with divisors {1, p, q, pq}.",
       "**OEIS sequence**: Values of f(n) are recorded in A167485."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

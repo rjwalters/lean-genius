@@ -70,7 +70,11 @@
       "**Consistency with Tao**: Exceptional set {n : f(n) ≥ εn} has density 0, consistent with Tao finding such n",
       "**Gronwall's theorem gap**: σ(m)/(m log log m) → e^γ (Gronwall 1913) not yet in Mathlib 4.26"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

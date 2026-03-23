@@ -62,7 +62,10 @@
       "**Stronger $o(\\log n)$ conjecture implies finiteness**: If the fraction of prime differences tends to zero, then eventually no $n$ can have ALL differences prime, yielding `stronger_implies_eventually_not_all_prime`.",
       "**Connection to covering congruences**: The problem relates to whether a system of congruences can cover all residues modulo small primes, preventing all differences from being prime simultaneously."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

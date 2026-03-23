@@ -75,7 +75,10 @@
       "**LCM Connection:** The harmonic denominator divides lcm(a, ..., b), so drops relate to prime factorization changes in the LCM. When b+1 introduces a prime not present in [a, b], the LCM jumps, but cancellation may still occur. This is related to the prime number theorem and Bertrand's postulate",
       "**Counterintuitive Arithmetic:** The problem illustrates that rational arithmetic is surprisingly non-monotone. Unlike real addition (where adding positive numbers always increases the result), the denominator of a rational sum can oscillate wildly. This connects to the broader study of Farey sequences and mediant properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

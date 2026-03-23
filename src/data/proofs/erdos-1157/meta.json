@@ -33,7 +33,10 @@
       "Problem #1076 ($k = s + 2$) is beyond the BES threshold ($k \\geq s + 3$), yet was also resolved (Bohman-Warnke 2019), suggesting the true extremal landscape is richer than BES alone predicts",
       "Monotonicity in $k$ enables a transfer principle: proving BES for the smallest valid $k$ in each parameter family automatically implies it for all larger $k$, reducing the conjecture to boundary cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

@@ -95,7 +95,10 @@
       "The hypergraph Turán conjecture $\\pi(K_4^{(3)}) = 5/9$ remains open after 80+ years, and resolving it would determine whether $5/9 \\in A_3$",
       "Razborov's flag algebra method provides a systematic computational approach to bounding extremal densities, but cannot alone determine the full structure of $A_3$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #837 is OPEN. The formalization captures the density jump framework for $k$-uniform hypergraphs, records the elegant solution $A_2 = \\{1 - 1/m\\}$ for graphs via Erdős–Stone–Simonovits, and axiomatizes the central open question: characterize $A_3$ for 3-uniform hypergraphs. The file has 0 sorries but 4 axioms encoding the known and unknown results.",

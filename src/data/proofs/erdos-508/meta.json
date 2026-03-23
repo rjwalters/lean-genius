@@ -86,7 +86,9 @@
       "**Computer-assisted proofs**: de Grey's result was the first time SAT solvers resolved a longstanding open problem in chromatic geometry. The subsequent Polymath reduction to 509 vertices represents a new paradigm for collaborative mathematical problem-solving.",
       "**Unit-distance graph formalization**: `unitDistGraph` uses Mathlib's `SimpleGraph` on `EuclideanSpace ℝ (Fin 2)`, with adjacency defined by `dist x y = 1 ∧ x ≠ y`. The symmetry proof (`dist_comm`) and loopless proof (contradiction) are fully formalized, providing a clean foundation."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

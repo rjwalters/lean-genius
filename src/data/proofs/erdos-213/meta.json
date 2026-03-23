@@ -62,7 +62,11 @@
       "**Sparsity**: In [-N,N]², such sets have size at most O((log N)^C) - very sparse!",
       "**Subset trick**: n=4,5,6 follow from n=7 since subsets inherit the properties."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

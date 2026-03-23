@@ -45,7 +45,11 @@
       "**Non-constructive proofs reveal structural depth**: Wigderson's argument shows that finitely many obstructions cannot capture the full boundary of Ramsey size linearity — a phenomenon reminiscent of the Robertson–Seymour theorem's non-constructive aspects in graph minor theory",
       "**Infinite antichains connect to well-quasi-ordering**: The existence of an infinite antichain of minimal obstructions means the subgraph ordering does NOT well-quasi-order the class of graphs relevant to Ramsey size linearity, contrasting with the graph minor ordering which does (Robertson–Seymour theorem)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

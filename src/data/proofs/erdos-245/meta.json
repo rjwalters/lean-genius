@@ -35,7 +35,11 @@
       "**Connection to Freiman's structure theory**: This result is part of Freiman's broader program understanding sets with small doubling",
       "**Mann's 1960 bound of 2**: The easier bound follows from basic counting — each element of $A$ contributes at least itself and itself+min(A) to $A+A$, giving doubling, while Freiman's strengthening to 3 requires deeper structural analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

@@ -34,7 +34,10 @@
       "**Monotonicity in $k$**: Since $(n+1)\\cdots(n+k+1) = (n+1)\\cdots(n+k) \\cdot (n+k+1)$, enlarging the product can only introduce new prime divisors, so $q(n,k)$ is non-increasing in $k$",
       "**Connection to sieve methods**: The problem is intimately related to sieve-theoretic questions about smooth numbers and the distribution of primes in short intervals, bridging analytic and combinatorial number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

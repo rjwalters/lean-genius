@@ -36,7 +36,10 @@
       "**Correct asymptotic**: $g(n) = n - \\log_2 n - \\Theta(1)$. The number of 'missing' clique sizes is $\\lfloor \\log_2 n \\rfloor + O(1)$, determined by the binary structure of $n$.",
       "**Ramsey connection**: The upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ relates to the fact that any graph on $n$ vertices must have a monochromatic clique or independent set of size $\\sim \\log_2 n$, forcing certain clique sizes to coincide."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

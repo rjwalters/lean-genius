@@ -75,7 +75,10 @@
       "**Arithmetic series is hockey stick with k=1**: Gauss's formula ∑_{i=0}^n (i+1) = (n+1)(n+2)/2 is the k=1 instance, connecting ArithmeticSeries.lean to this generalization.",
       "**Closed forms by induction**: The triangular and tetrahedral closed forms follow from the recurrence by induction + nlinarith, without needing to unfold the binomial coefficient definition."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

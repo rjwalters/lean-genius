@@ -59,7 +59,9 @@
       "**Connection to primitive roots:** $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ (existence of primitive roots). If $g$ is a generator, then $(p-1)! = \\prod_{k=0}^{p-2} g^k = g^{(p-1)(p-2)/2}$. Since $g^{(p-1)/2} \\equiv -1$ (the unique element of order 2), this gives $(p-1)! \\equiv (-1)^{p-2} = -1$ (since $p-2$ is odd for $p > 2$).",
       "**Lean formalization pattern:** The formalization demonstrates Mathlib's `ZMod p` infrastructure: the typeclass `Fact (Nat.Prime p)` provides the primality hypothesis, and `ZMod.wilsons_lemma` gives the forward direction directly. The biconditional `Nat.prime_iff_fac_equiv_neg_one` requires the hypothesis `n \\neq 1` to exclude the degenerate case."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

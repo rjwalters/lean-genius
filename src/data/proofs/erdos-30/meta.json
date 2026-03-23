@@ -62,7 +62,11 @@
       "Erdős speculated h(N) = N^{1/2} + O(1) might hold — that the deviation from √N is bounded by a constant. This 'optimistic conjecture' remains consistent with all computational evidence for small N.",
       "The reduction theorem shows one improvement suffices: proving RequiredUpperBound(ε) for any single ε < 1/4 implies the full conjecture, since N^{ε₀} is dominated by N^ε for ε > ε₀."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

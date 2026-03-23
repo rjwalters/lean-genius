@@ -67,7 +67,10 @@
       "**Strongly vs completely additive**: ω(n) counts distinct primes (strongly additive: ω(p^k) = 1), while Ω(n) counts with multiplicity (completely additive: Ω(p^k) = k).",
       "**Open status**: Despite progress on the converse, Erdős's original questions about the forward direction remain unresolved."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

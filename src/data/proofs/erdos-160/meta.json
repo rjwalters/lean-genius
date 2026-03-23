@@ -93,7 +93,10 @@
       "**Kelley–Meka (2023) breakthrough provides the lower bound**: The connection to 3-AP-free sets means any improvement on $r_3(N)$ bounds automatically improves the lower bound on $h(N)$",
       "**The polynomial-vs-superpolynomial gap is the core mystery**: Whether $h(N)$ is polynomial (like $N^{\\alpha}$) or superpolynomial (like $\\exp((\\log N)^{\\beta})$) in $N$ remains completely unknown"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #160 asks for the growth rate of $h(N)$, the minimum colors for 3-diverse colorings of 4-APs in $\\{1,\\ldots,N\\}$. The formalization captures the full combinatorial setup with proved structural properties, axiomatizes the state-of-the-art bounds (Hunter's $N^{0.356}$ upper and Kelley–Meka-based $\\exp(c(\\log N)^{1/9})$ lower), and formally states the open problem.",

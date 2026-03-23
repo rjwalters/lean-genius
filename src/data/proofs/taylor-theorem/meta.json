@@ -62,7 +62,10 @@
       "**Compactness gives uniform bounds**: On a closed interval $[a, b]$, the continuous function $\\|f^{(n+1)}\\|$ achieves its maximum (by the Extreme Value Theorem), giving a uniform bound $C$ on the remainder. This is how we prove convergence of Taylor series",
       "**Foundation of numerical computing**: Every time a computer evaluates $\\sin(x)$, $e^x$, or $\\log(x)$, it uses a Taylor-like polynomial approximation with a bound on the remainder to guarantee accuracy to machine precision"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Calculus and real analysis",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

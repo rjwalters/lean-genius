@@ -63,7 +63,10 @@
       "**Factor-of-2 Phase Transition:** Replacing $ab$ with $2ab$ in the avoidance condition is conjectured to cause a dramatic phase transition: from density $1/2$ to density $0$.  This suggests that the parity structure of $ab$ is precisely what enables large avoidance sets, and removing it collapses the extremal function.",
       "**Hereditary Structure:** SumNotDvdProd is downward-closed (hereditary), so the family of avoiding sets forms an abstract simplicial complex.  The extremal problem asks for the maximum face dimension of this complex within $\\{1, \\ldots, N\\}$ — a well-studied setup in combinatorial optimization and Kruskal-Katona theory."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

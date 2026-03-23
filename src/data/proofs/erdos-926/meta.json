@@ -34,7 +34,10 @@
       "**Füredi (1991) to AKS (2003)**: The improvement from $\\mathrm{ex}(n; H_k) \\leq C(kn)^{3/2}$ to $\\mathrm{ex}(n; H_k) \\leq Ck \\cdot n^{3/2}$ saves a factor of $\\sqrt{k}$, significant for large $k$.",
       "**Bipartite structure**: $H_k$ is bipartite with parts $\\{x\\} \\cup \\{z_{ij}\\}$ and $\\{y_1, \\ldots, y_k\\}$, enabling Kővári-Sós-Turán type arguments."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

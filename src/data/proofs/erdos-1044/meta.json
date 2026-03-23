@@ -36,7 +36,10 @@
       "**The degree-1 baseline**: For $f(z) = z - z_0$, $\\{|f| < 1\\}$ is a unit disk with $\\Lambda = 2\\pi \\approx 6.28$. This is $\\pi$ times the infimum, showing that the infimum requires high degree. The progression from $2\\pi$ toward $2$ as degree increases reflects how distributing roots around the circle creates smaller, more efficient petals.",
       "**Infimum-not-minimum phenomenon**: Like the distance from an open set to a point outside it, the infimum $2$ is not achieved. This is because any polynomial level set boundary is a real-analytic curve (hence smooth), and any smooth closed curve enclosing positive area has length $> 2$. The limit $\\Lambda \\to 2$ corresponds to petals collapsing to segments."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex analysis",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

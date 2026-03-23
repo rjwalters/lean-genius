@@ -72,7 +72,9 @@
       "The polarization identity $\\langle u,v \\rangle = (|u|^2 + |v|^2 - |u-v|^2)/2$ combined with circumcenter equidistance $|OA| = |OB| = |OC| = R$ yields the dot product identities $\\langle A-O, B-O \\rangle = R^2 - c^2/2$ that make the bilinear expansion computable in terms of $R$ and side lengths alone.",
       "Triangle inequalities ($s-a > 0$, etc.) are proved indirectly from Heron's formula and area positivity, avoiding any direct geometric argument. This is needed for the excircle denominators $(s-a)$, $(s-b)$, $(s-c)$ which appear when dividing out to obtain $|NI_k|^2$."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

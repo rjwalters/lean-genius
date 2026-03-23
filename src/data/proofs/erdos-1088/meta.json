@@ -64,7 +64,10 @@
       "**Subexponential vs exponential gap:** The conjecture $f_d(n) = 2^{o(d)}$ asks whether the Erdős-Straus bound $c_n^d$ is essentially tight, or whether high-dimensional geometry provides structural advantages that mere counting arguments miss",
       "**Connection to Sidon sets:** The 1D case $f_1(n) \\asymp n^2$ is equivalent to the question of how large a set of real numbers must be to contain an $n$-element Sidon set (all pairwise differences distinct)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

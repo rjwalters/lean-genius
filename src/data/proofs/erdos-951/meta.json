@@ -88,7 +88,10 @@
       "**Beurling's rigidity**: If the Beurling integers (products) have counting function $N_a(x) = x + o(\\log x)$, then $a$ must be the actual primes (Diamond 1977 showed this is sharp). This characterizes primes by their products' density",
       "**Finsupp design choice**: Using `ℕ →₀ ℕ` for exponent tuples is elegant: it avoids fixed-length tuples, handles arbitrary numbers of generators, and integrates with Mathlib's `Finset.prod` over the finite support"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

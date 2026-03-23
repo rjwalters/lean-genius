@@ -62,7 +62,10 @@
       "**Goldbach connection**: If every even n > 6 is the sum of two distinct primes, then every odd number is a cototient (via cototient(p*q) = p + q - 1).",
       "**Open question**: Do non-cototients have positive density? The Browkin-Schinzel set is sparse (density 0)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

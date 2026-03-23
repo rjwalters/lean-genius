@@ -39,7 +39,10 @@
       "**Proportional generalization absorbs scaling**: Allowing $a \\cdot \\prod = b \\cdot \\prod$ with fixed $a, b$ generalizes the problem while maintaining finiteness — the rational factor $a/b$ can be absorbed into the prime factorization analysis",
       "**Connection to Diophantine finiteness principles**: The conjecture is analogous to Faltings' theorem (finitely many rational points on high-genus curves) — the equal-products equation defines a Diophantine variety whose rational points should be finite for structural reasons"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

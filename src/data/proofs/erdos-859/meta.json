@@ -89,7 +89,11 @@
       "**The subset sum NP-completeness is irrelevant here**: While SubsetSumExists is NP-complete for arbitrary sets, divisor sets have multiplicative structure enabling polynomial-time analysis. The 'hardness' of Problem #859 is analytic (determining the exact density), not computational.",
       "**Density 0 examples show the question is deep**: Some natural number-theoretic sets (like primes) have density 0 despite being infinite. That dₜ > 0 for all t > 0 is already surprising—it says representing any target t is never 'rare' among integers, even for very large t."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

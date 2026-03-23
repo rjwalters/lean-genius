@@ -62,7 +62,11 @@
       "**Greedy lower bound**: A greedy algorithm constructs Sidon subsets of size > n/2, proving c > 1/2.",
       "**Open gap**: The exact value of c in (1/2, 3/5) remains unknown despite 30+ years of study."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

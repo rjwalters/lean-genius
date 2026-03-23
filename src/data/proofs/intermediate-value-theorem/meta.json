@@ -57,7 +57,10 @@
       "**Bolzano's Theorem:** The special case $f(a) < 0 < f(b) \\Rightarrow \\exists x \\in (a,b),\\; f(x) = 0$ — the root-finding version. This is the foundation of numerical analysis: bisection, Newton's method, and Brent's method all exploit this existence guarantee.",
       "**Topological Generalization:** IVT holds for any continuous $f: X \\to Y$ where $X$ is connected and $Y$ is ordered. In Mathlib, `IsPreconnected.intermediate_value` captures this at full generality."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Point-set topology"
+    ]
   },
   "sections": [
     {

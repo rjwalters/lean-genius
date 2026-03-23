@@ -65,7 +65,10 @@
       "**Cambie's exponential improvement**: $n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1) \\leq e^{(1+o(1))k}$ via the prime number theorem and the Chebyshev function $\\psi(m) \\sim m$",
       "**The polynomial vs. exponential question**: Whether $n_k \\leq k^C$ for some constant $C$ is one of the cleanest open problems in combinatorial number theory, with a gap spanning many orders of magnitude"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

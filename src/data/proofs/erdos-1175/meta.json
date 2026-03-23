@@ -34,7 +34,12 @@
       "The **contradiction structure** of the Shelah proof is elegantly captured: if every $\\aleph_1$-chromatic graph had a triangle-free subgraph with $\\chi \\geq \\aleph_1$, Shelah's graph would too — but its triangle-free subgraphs all have $\\chi \\leq \\aleph_0 < \\aleph_1$",
       "The **cardinal chromatic number** is axiomatized rather than defined as an infimum, sidestepping universe polymorphism and decidability issues that arise when minimizing over a potentially proper class of cardinals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Graph theory (vertices, edges, colorings)",
+      "Set theory and cardinality"
+    ]
   },
   "sections": [
     {

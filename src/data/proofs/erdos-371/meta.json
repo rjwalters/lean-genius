@@ -35,7 +35,11 @@
       "**Dickman function connection**: The density kernel $u(x) = x^{-1}\\rho(x^{-1}-1)$ links this problem to smooth number theory, where $\\Psi(x,y) \\sim x\\rho(\\log x/\\log y)$ counts $y$-smooth integers up to $x$.",
       "**Binary correlations of multiplicative functions**: Teräväinen's breakthrough analyzed $\\sum_{n < x} f(n)g(n+1)$ for multiplicative $f, g$ encoding the $P(n)$ comparison. This technique generalizes to many problems about consecutive integers."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

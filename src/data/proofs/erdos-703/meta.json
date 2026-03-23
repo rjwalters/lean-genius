@@ -135,7 +135,10 @@
       "**Geometric connection**: The exponential bound on $T(n,r)$ implies $\\chi(\\mathbb{R}^n) \\geq c^n$ for the unit distance graph, linking combinatorics to high-dimensional geometry",
       "**Algebraic methods**: The Frankl-Wilson theorem uses the linear algebra (dimension) method modulo a prime $p$, bounding $|\\mathcal{F}| \\leq \\binom{n}{s}$ via polynomial independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #703 is SOLVED. The answer to 'Is T(n,r) < (2-δ)^n for middle range r?' is YES, proved by Frankl-Rödl (1987) using the nibble method. The formalization covers the full development from T(n,0) through optimal families to the main theorem, with connections to the Frankl-Wilson theorem and unit distance graph chromatic numbers. 2 sorries remain (T_n_0 proof, large_sets_avoid_1).",

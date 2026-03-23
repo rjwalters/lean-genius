@@ -71,7 +71,11 @@
       "**Restricted sums work**: Tao-Ziegler (2023) showed that with the restriction i < j on indices, infinite B, C with B + C ⊆ Primes exist. The full sumset is harder.",
       "**Connection to Goldbach**: This is the 'inverse' of Goldbach's conjecture, asking if primes can be GENERATED as a sumset rather than being a SOURCE for sumsets."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

@@ -60,7 +60,10 @@
       "The general Erdős–Sós conjecture predicts R(3,...,3,n) with r threes grows like n^{r+1}(polylog) — Problem 553 is the first nontrivial case",
       "Kim's triangle-free process (1995) gave the matching R(3,n) ≥ cn²/log n, making R(3,n) = Θ(n²/log n) one of the most precisely understood off-diagonal Ramsey numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

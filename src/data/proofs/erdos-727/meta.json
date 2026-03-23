@@ -71,7 +71,10 @@
       "**Erdős's bound constrains solutions**: If a!b! | n!, then a + b ≤ n + O(log n). For our problem with a = b = n+k and factorial (2n)!, this gives constraints on valid n.",
       "**Open even for k = 2**: Despite decades of work, even the specific case k = 2 asking whether ((n+2)!)² | (2n)! infinitely often is unresolved."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

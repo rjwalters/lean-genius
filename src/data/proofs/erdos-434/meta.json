@@ -83,7 +83,11 @@
       "**Greedy is Optimal**: The greedy approach (always pick the largest number) produces topK and is provably optimal — a rare case in combinatorial optimization.",
       "**NP-hardness contrast**: Computing the Frobenius number for ≥ 3 elements is NP-hard (Ramírez-Alfonsín 2005), yet the extremal problem has an elegant explicit solution."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "leanFile": {
     "imports": [

@@ -62,7 +62,10 @@
       "**Probabilistic construction**: The JSS proof uses random graphs $G(n,p)$ with careful edge removal --- destroying all 4-regular subgraphs while preserving $\\chi$, showcasing the power of the probabilistic method",
       "**Contrast with positive results**: High $\\chi$ does force long odd cycles (Gyárfás 1975) and large minors (Hadwiger's conjecture, partially proven), but regular subgraphs are a bridge too far"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

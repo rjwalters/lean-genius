@@ -139,7 +139,11 @@
       "**Boundary phenomenon:** The classification boundary lies between CNF-lengths 2 (positive) and 4 (negative), with length 3 as the critical open case",
       "**50-year program:** The classification spans Specker (1957), Chang (1972), Galvin-Larson (1974), and Schipperus (2010), with the final case still open"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Set theory and cardinality",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #592 on partition ordinals and ordinal Ramsey theory. The classification of countable ordinals $\\beta$ satisfying $\\omega^\\beta \\to (\\omega^\\beta, 3)^2$ is nearly complete: Specker (1957) resolved the finite cases, Chang (1972) handled $\\beta = \\omega$, Galvin-Larson (1974) established the necessary structural condition, and Schipperus (2010) reduced everything to the single open case of CNF-length 3. This last case carries Erdős's $1,000 bounty.",

@@ -58,7 +58,10 @@
       "The factor-of-2 relationship 1/T_n = 2/(n(n+1)) means ∑1/T_n = 2 and ∑1/(n(n+1)) = 1 are the same result in different clothing — both are proved here",
       "Consecutive integers n(n+1) are always even, so division by 2 in T_n = n(n+1)/2 is exact over ℕ — the Lean proof verifies this divisibility explicitly"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

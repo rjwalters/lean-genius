@@ -89,7 +89,10 @@
       "**Clean Formal Disproof:** The proof of $\\neg\\text{ErdosHajnalConjecture}$ is only 4 lines in Lean: assume the conjecture, specialize to $k = 23$, invoke the counterexample with the resulting $N$, and extract the contradiction. This demonstrates the power of axiomatizing the counterexample clearly.",
       "**Connection to Pancyclicity:** A graph is *pancyclic* if it contains $C_k$ for all $3 \\leq k \\leq n$. The Erdős-Hajnal conjecture asked for a weaker property (cycles of each length in *some* large graph), but even this weaker version fails. This contrasts with Bondy's theorem that Hamiltonian graphs with enough edges are often pancyclic."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

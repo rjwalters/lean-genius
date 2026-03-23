@@ -69,7 +69,11 @@
       "**Density Zero Sumset:** The set $A + A = \\{n : r_2(n) > 0\\}$ has counting function $\\sim c \\cdot x^{2/3}$, so density zero in $\\mathbb{N}$ — yet the pointwise maximum $r_2(n)$ still grows without bound",
       "**Upper Bound Barrier:** Any polylogarithmic upper bound would require controlling elliptic curve ranks uniformly, a challenge deeply connected to the Birch and Swinnerton-Dyer conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

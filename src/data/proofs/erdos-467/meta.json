@@ -64,7 +64,10 @@
       "Mertens' third theorem: $\\prod_{p \\leq x}(1 - 1/p) \\sim e^{-\\gamma}/\\log x$, so each half of a partition needs enough primes for its product to be small",
       "The `dual_covering_double_hit` lemma shows every $n < x$ must be hit by $\\geq 2$ primes (one from each side of the partition)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

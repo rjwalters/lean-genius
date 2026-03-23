@@ -105,7 +105,10 @@
       "**Bertrand's postulate as base case**: For the central binomial $\\binom{2n}{n}$, Bertrand's postulate gives a prime $p \\in (n, 2n]$ dividing $\\binom{2n}{n}$, so $P(\\binom{2n}{n}) > n$",
       "**Equivalence with Problem #961**: Both problems reduce to understanding the distribution of smooth numbers in short intervals — large prime factors of $\\binom{n}{k}$ are equivalent to non-smoothness of the consecutive product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

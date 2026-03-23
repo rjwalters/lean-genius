@@ -36,7 +36,10 @@
       "**Generalization to $r$-products**: For the condition $a \\nmid b_1 \\cdots b_r$, the exponent $2/3$ generalizes to $2/(r+1)$. This is because the critical threshold shifts from $n^{2/3}$ (where a prime can divide a 2-product) to $n^{2/(r+1)}$ (where it can divide an $r$-product).",
       "**Connection to smooth numbers**: The 'extra' elements beyond primes are numbers with specific factorization patterns — related to the count of $n^{2/3}$-smooth numbers in $[1, n]$. The $(\\log n)^{-2}$ factor reflects the density of such numbers."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -78,7 +78,10 @@
       "**Heuristic for Question 2**: Near squares of large primes, prime-free intervals can be long, suggesting v−u can be arbitrarily large",
       "**Concrete Example**: [2,4] has product 24 = 2³·3 where the largest prime 3 has exponent 1, so it does NOT satisfy the condition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

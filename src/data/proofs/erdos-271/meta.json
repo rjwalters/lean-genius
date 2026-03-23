@@ -70,7 +70,10 @@
       "The connection between AP-freeness and base representations is specific to base 3: a set $S \\subseteq \\{0, 1, 2\\}^n$ (viewed in $\\mathbb{Z}/3\\mathbb{Z}$) is AP-free iff it is a cap set. The $A(1)$ characterization is the infinite analog of cap sets in $\\mathbb{F}_3^n$.",
       "Stanley sequences differ fundamentally from random AP-free sets: the greedy construction imposes a rigid deterministic structure that may explain the dichotomy. Understanding why greediness forces exactly two growth rates is the central challenge."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

@@ -63,7 +63,10 @@
       "**Quasi-line structure constrains coloring:** In quasi-line graphs, every neighborhood is a union of two cliques. This means the local structure is well-controlled: each vertex 'sees' at most two cliques in its vicinity. Balogh et al. exploited this to prove Tihany by analyzing how chromatic number distributes across such structured neighborhoods.",
       "**The $\\alpha = 2$ case is Ramsey-constrained:** When $\\alpha(G) = 2$, the complement $\\bar{G}$ is triangle-free. By Ramsey theory, $|V(G)| \\le R(3, \\omega(\\bar{G})+1)$, bounding the graph's size. This constraint, combined with $K_k$-freeness and $\\chi = k$, severely limits the graph structure, enabling the proof."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

@@ -75,7 +75,11 @@
       "**The HHP Exponential Explosion.** The 2007 result of Hegyvári, Hennecart, and Plagne is the most dramatic: for order k, the restricted order can be at least 2^{k−2} + k − 1. This exponential growth suggests that no polynomial function f(k) can bound restricted order in terms of order — though this remains unproven. The Lean proof uses push_neg and contraposition: if every basis of order k had restricted order < 2^{k−2} + k − 1, we'd contradict the HHP construction",
       "**The Squares-Triangulars Dichotomy.** Squares have order 4 (Lagrange) but restricted order 5 (Pall) — the gap of 1 reflects the fact that representations like 4 = 2² need repetition, so requiring distinctness costs one extra summand. Triangular numbers have both order and restricted order equal to 3 (Gauss + Schinzel), making them the paradigmatic example of 'order = restricted order'. Understanding what distinguishes these cases is the content of Open Question 3"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

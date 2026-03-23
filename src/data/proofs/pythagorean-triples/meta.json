@@ -60,7 +60,10 @@
       "**Scaling completes the classification**: Every Pythagorean triple is a scalar multiple of a primitive one, so the full classification reduces to classifying primitive triples. This factorization through GCD is a recurring pattern in Diophantine equations",
       "**From Babylonian tablets to formal verification**: The same result computed by hand on clay tablets 3800 years ago is now machine-verified in Lean, demonstrating how formal proof assistants connect ancient mathematics to modern computer science"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

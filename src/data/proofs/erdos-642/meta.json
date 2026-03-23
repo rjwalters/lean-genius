@@ -74,7 +74,10 @@
       "Three theorems are proved without sorry: `short_cycles_ok` (interval_cases + norm_num), `pentagon_all_diags_violates` (norm_num), and `critical_length` (omega) — all in the critical length analysis",
       "The problem connects extremal graph theory (Turán numbers, $C_4$-free graphs) with spectral graph theory (expanders, random walks) — a rare synthesis of algebraic and probabilistic combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

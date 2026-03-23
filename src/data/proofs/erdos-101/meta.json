@@ -77,7 +77,9 @@
       "The contrast with collinear triples is instructive: $\\Theta(n^2)$ collinear triples can coexist with zero four-point lines, showing a sharp phase transition from 3-point to 4-point collinearity",
       "The problem is connected to Erdős Problems #102, #588, and #669, which explore related collinearity extremal questions in different settings"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #101, one of the fundamental open problems in combinatorial geometry. The question of whether four-point lines from $n$ points (no five collinear) are $o(n^2)$ remains unresolved despite Solymosi and Stojaković's dramatic improvement of the lower bound to $n^{2 - O(1/\\sqrt{\\log n})}$.",

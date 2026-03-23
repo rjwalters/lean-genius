@@ -35,7 +35,10 @@
       "The gap between $F(n) \\gg \\log n$ and the conjecture $F(n) > n$ is a factor of $n/\\log n$, reflecting how difficult it is to control the prime factorization of products of arithmetic functions defined combinatorially rather than multiplicatively.",
       "Ramanujan's congruences $p(5n+4) \\equiv 0 \\pmod{5}$, $p(7n+5) \\equiv 0 \\pmod{7}$, $p(11n+6) \\equiv 0 \\pmod{11}$ were the first hints that $p(n)$ has rich arithmetic structure — Ono's work shows this extends to all primes."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -64,7 +64,10 @@
       "**Randomized algebraic construction**: Keevash's proof combines three powerful techniques: (1) random greedy algorithms for initial partial designs, (2) algebraic nibble methods for iterative refinement, (3) absorbing methods for completing partial designs to exact ones.",
       "**Packing-covering duality**: A Steiner system is simultaneously an optimal packing (every $r$-set in at most one block) and a perfect covering (every $r$-set in at least one block). This duality connects to coding theory (perfect codes) and sphere packing."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

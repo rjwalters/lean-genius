@@ -72,7 +72,10 @@
       "**Zero derivative implies constant is a genuine proof**: Unlike the MVT wrappers (which are one-line applications of Mathlib lemmas), `constant_of_deriv_zero` is proved from scratch: obtain the MVT point, substitute the zero-derivative hypothesis, use `field_simp` to clear the denominator, and `linarith` to conclude equality",
       "**The secant-tangent parallel is the geometric core**: MVT says that for any chord of a smooth curve, there is a point where the tangent is parallel. This is why MVT is sometimes called the 'tangent-chord theorem' — it connects local differential information (the tangent slope) to global finite-difference information (the secant slope)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Calculus and real analysis",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

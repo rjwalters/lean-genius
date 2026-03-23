@@ -59,7 +59,11 @@
       "**The open question**: Can we find a fixed lower bound cn (independent of k) such that C(n,k) always has a divisor above cn? The easy bound [n/k, n] shrinks as k grows.",
       "**Related to prime factorization**: Large primes dividing C(n,k) come from the interval (k, n], which relates to theorems of Sylvester-Schur and results by Faulkner (1966)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

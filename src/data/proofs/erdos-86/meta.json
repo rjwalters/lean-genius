@@ -38,7 +38,10 @@
       "**The $1/2$ barrier**: The conjectured threshold $1/2$ is natural: in a random half-edges subgraph of $Q_n$, the expected number of $C_4$'s is $\\Theta(n^2)$, which can be destroyed by removing $o(n \\cdot 2^{n-1})$ edges. This suggests $1/2$ is achievable, but the constructive direction is harder.",
       "**Connections to coding theory and Boolean functions**: $C_4$-free subgraphs of $Q_n$ relate to error-correcting codes (pairs of codewords at distance $\\leq 2$), Boolean function complexity (monotone circuits), and isoperimetric inequalities on the hypercube."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

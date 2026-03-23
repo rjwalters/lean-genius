@@ -72,7 +72,10 @@
       "**Bounded vs. Unbounded:** Erdős expected f_k to grow without bound. The answer being a constant — the number of edges in K_{k-1} — was completely unexpected.",
       "**Specific Values:** f_3 = 1, f_4 = 3, f_5 = 6, f_6 = 10, f_7 = 15, following the triangular number pattern C(k-1, 2)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

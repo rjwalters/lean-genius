@@ -66,7 +66,11 @@
       "**Self-inner product elaboration**: `inner_self_eq_norm_sq_to_K` gives `⟪u,u⟫_𝕜 = (↑‖u‖)^2` where the coercion is `‖u‖ : ℝ → 𝕜`. For `𝕜 = ℂ`, this is `(↑‖u‖ : ℂ)^2 = (Complex.ofReal ‖u‖)^2`, whose imaginary part is 0 by `Complex.mul_im` and `Complex.ofReal_im`.",
       "**Concrete instantiation**: The EuclideanSpace ℝ n specialization demonstrates that abstract inner product theorems apply to $\\mathbb{R}^n$ with the standard dot product, bridging abstract and concrete linear algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Linear algebra",
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

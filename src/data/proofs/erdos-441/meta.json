@@ -68,7 +68,10 @@
       "The error term O(√(N/log N) · log log N) between the construction and upper bound is o(√N) but grows without bound — this gap is where counterexamples live",
       "The proof that ¬ErdosQuestion follows from ConstructionNotOptimal is pure logic: ∃N (g(N) > |C(N)|) contradicts ∀N (g(N) = |C(N)|), resolved by omega"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

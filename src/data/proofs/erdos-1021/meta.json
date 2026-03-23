@@ -39,7 +39,10 @@
       "**Degrading exponent**: Erdős-Simonovits showed $c_k \\to 0$ as $k \\to \\infty$, meaning the improvement over $n^{3/2}$ becomes vanishingly small for large $k$—the KST bound is asymptotically tight in the family $\\{G_k\\}$",
       "**Even $o(n^{3/2})$ is open**: The weak conjecture $\\text{ex}(n, G_k) = o(n^{3/2})$ is unknown for $k \\ge 4$, highlighting how little is known about beating the KST threshold for specific bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

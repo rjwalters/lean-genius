@@ -116,7 +116,10 @@
       "**Pomerance's graph-chromatic argument**: The proof that $\\limsup \\ge 2$ uses the chromatic number of the Prime Number Graph. If the graph has low chromatic number, one can find positions $n$ where all symmetric sums avoid certain residue classes, forcing deviations $\\ge 2$",
       "**Connection to Goldbach**: The Prime Number Graph has an edge $n$-$m$ when $p_n + p_m$ is prime. Dense edges suggest many symmetric sums are prime, constraining the minimum — relating this problem to Goldbach-type questions about prime sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

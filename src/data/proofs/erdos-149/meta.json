@@ -80,7 +80,11 @@
       "**Induced matching equivalence:** Strong edge coloring = partitioning $E(G)$ into induced matchings (sets of pairwise strongly independent edges). This reformulation connects to extremal set theory and hypergraph coloring, providing alternative attack vectors.",
       "**Remaining gap is 0.522Δ²:** The proved theorem `current_gap` quantifies the distance: $1.772 - 1.25 = 0.522$. Closing this gap requires either new techniques beyond cluster expansion or showing the conjecture is false — both major challenges."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

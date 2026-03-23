@@ -86,7 +86,11 @@
       "**Quantitative Refinement via d_G(n):** The rainbow minimum degree $d_G(n)$ measures how far from balanced a coloring can be while still guaranteeing rainbow $G$. The Erdős-Tuza bounds $n/6 \\leq d_{C_4}(n) \\leq (1/4 - c)n$ show the threshold is linear in $n$ but the exact constant is unknown.",
       "**Connection to Anti-Ramsey Numbers:** The classical anti-Ramsey number $\\text{ar}(n; G)$ counts the minimum colors needed to guarantee a rainbow $G$ in any coloring of $K_n$. Problem #811 fixes the number of colors to $e(G)$ and instead constrains the coloring to be balanced. This shifts the difficulty from 'enough colors' to 'structured coloring.'"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

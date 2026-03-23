@@ -35,7 +35,10 @@
       "**Heuristic logarithmic bound**: Since the average value of $\\varphi(n)/n$ is $6/\\pi^2$, each step typically multiplies by $\\approx 0.608$, suggesting $F(n) = O(\\log n)$ rather than the trivial $o(n)$",
       "**Sigma variant divergence**: The companion map $n \\mapsto \\sigma(n) - 1$ satisfies $\\sigma(n) - 1 \\geq n$ for composites, creating a fundamentally different (non-decreasing) dynamical system where termination is not guaranteed"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

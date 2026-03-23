@@ -77,7 +77,10 @@
       "**Upper Bound Progression:** Simonovits (n^0.72) → Alon (√(n log n)) → Hanson-Seyffarth (√2·√n) → Füredi-Seress (2/√3·√n), approaching the conjectured √n.",
       "**Alon's Conjecture:** The true asymptotic is likely f(n) ~ √n with constant 1, meaning the Moore lower bound is asymptotically tight."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

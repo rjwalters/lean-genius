@@ -54,7 +54,10 @@
       "Mathlib already contains the hardest building blocks (Vitali covering families, Lebesgue density theorem, monotone a.e. differentiability), so the main gap is AC → BV and Jordan decomposition",
       "Absolute continuity of functions is intimately connected to absolute continuity of measures: F is AC iff the signed measure dF is absolutely continuous with respect to Lebesgue measure, and F' is its Radon-Nikodym derivative"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Calculus and real analysis"
+    ]
   },
   "sections": [
     {

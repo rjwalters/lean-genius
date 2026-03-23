@@ -34,7 +34,9 @@
       "The formalization uses Lean's filter theory to express asymptotic bounds cleanly — `∀ᶠ (k : ℕ) in atTop` captures \"for all sufficiently large $k$\" without specifying explicit constants",
       "The monotonicity $S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$ follows from set inclusion of smooth block sets, a structural observation that constrains the growth of $S(k)$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

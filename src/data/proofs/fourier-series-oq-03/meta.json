@@ -66,7 +66,9 @@
       "**At continuity points, the theorem simplifies**: When f is continuous at x_0, both one-sided limits equal f(x_0), so the midpoint is just f(x_0). This corollary is proved from the main theorem.",
       "**The Dirichlet kernel has rich structure**: We prove D_N(0) = 2N+1, conjugate symmetry D_N(-t) = conj(D_N(t)), and continuity. These are used in the localization argument."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

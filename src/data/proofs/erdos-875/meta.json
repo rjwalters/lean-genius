@@ -36,7 +36,10 @@
       "**Proved growth lower bound**: by induction on strict increase, every admissible sequence satisfies $a(n) \\geq n+1$—a crude linear bound, with the disjoint sumsets condition forcing much faster growth",
       "**Finite-infinite connection**: the finite Problem #874 asks for the maximum size of an admissible subset of $\\{1, \\ldots, n\\}$, whose growth rate determines the optimal growth of infinite admissible sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

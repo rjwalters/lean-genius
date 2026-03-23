@@ -75,7 +75,10 @@
       "**Dynamical systems interpretation**: Barriers are fixed points of a discrete dynamical system. The iteration $n \\mapsto n + \\omega(n)$ defines orbits, and barriers are values no orbit can jump over. Erdős problem #412 asks whether all orbits eventually merge — a question about the attractor structure of this system",
       "**Computational verification builds confidence**: Machine-verified barriers up to 128 (15 values) and barrier counts up to 121 match OEIS A005236, providing empirical evidence for the conjecture. The gap between consecutive barriers grows but never appears to terminate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

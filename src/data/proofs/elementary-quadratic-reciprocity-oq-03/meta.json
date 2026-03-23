@@ -74,7 +74,9 @@
       "The Jacobi symbol can be computed in O(log² n) time via a generalized Euclidean algorithm, without factoring n — making it the computational backbone of Solovay-Strassen primality testing.",
       "The supplements J(-1,n) and J(2,n) follow from their Legendre symbol analogues via multiplicativity over the prime factorization of n."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

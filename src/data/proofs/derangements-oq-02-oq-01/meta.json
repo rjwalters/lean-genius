@@ -71,7 +71,9 @@
       "**Corollaries transfer automatically**: Once the filter bijection is established, all corollaries (S(α,|α|-1)=0, S(α,|α|)=1, sum=|α|!) follow by a single rewrite.",
       "**Reusable methodology**: The three-step pattern (prove invariance under permCongr → establish filter bijection → instantiate with equivFin) applies to any permutation statistic preserved by conjugation: cycle type, descent count, inversion number, etc."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

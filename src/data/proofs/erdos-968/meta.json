@@ -67,7 +67,11 @@
       "**The asymmetry puzzle**: Why do decreasing steps provably have positive density while increasing steps remain open? The sets are complementary (mod negligible flat set).",
       "**Prime gap connection**: u_{n+1} > u_n ⟺ prime gap p_{n+1} - p_n > u_n ~ log n. So increasing steps happen when gaps exceed the 'expected' log n."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Asymptotic density and counting",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

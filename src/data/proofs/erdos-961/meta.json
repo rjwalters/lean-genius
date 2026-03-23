@@ -82,7 +82,10 @@
       "**Connection to #683**: If $g(k)$ is the largest gap between $k$-smooth numbers, then $f(k) \\leq g(k) + 1$, making the two problems essentially equivalent",
       "**Asymptotic formalization**: Uses Mathlib's `Asymptotics.IsBigO` and `Filter.atTop` to express the Jutila–Ramachandra–Shorey bound cleanly"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

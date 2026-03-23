@@ -72,7 +72,10 @@
       "**Melfi's conditional result**: If prime gaps satisfy p_{n+1} - p_n < √p_n/10 (implied by Cramér's conjecture), then infinitely many primitive weird numbers exist. This connects weird numbers to prime distribution!",
       "**Connection to abundancy**: The abundancy index σ(n)/n measures 'how abundant' n is. If no odd weirds exist, all weirds have abundancy < 4."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

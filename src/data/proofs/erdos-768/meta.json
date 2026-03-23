@@ -69,7 +69,10 @@
       "**6 is the smallest non-trivial element**: $6 = 2 \\times 3$ works because $3 \\equiv 1 \\pmod{2}$ (witness for 2). For the prime 3, the witness $d = 4$ would need to divide 6, which it doesn't — but the proof uses `interval_cases` to handle small primes directly",
       "**Gap between bounds is the open problem**: Erdős's lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$ while the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$. Whether these converge to the same asymptotic form is the core question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

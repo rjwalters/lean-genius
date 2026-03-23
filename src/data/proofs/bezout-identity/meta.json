@@ -99,7 +99,9 @@
       "**The Diophantine criterion is a full iff**: The solvability of $ax + by = c$ is completely characterized by the divisibility condition $\\gcd(a,b) \\mid c$. The constructive direction scales Bézout coefficients: if $\\gcd = ax_0 + by_0$ and $c = k \\cdot \\gcd$, then $x = kx_0$, $y = ky_0$",
       "**RSA depends on Bézout**: In RSA, the private key $d$ satisfies $ed \\equiv 1 \\pmod{\\phi(n)}$, which is found by applying the extended Euclidean algorithm to $e$ and $\\phi(n)$. The security of RSA rests on the computational difficulty of factoring $n$, but key generation is efficient precisely because of Bézout's identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

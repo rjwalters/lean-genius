@@ -70,7 +70,12 @@
       "**Even cycle Ramsey numbers:** The problem generalizes to $R(C_{2k}, K_n)$ for longer even cycles. For $k = 2$ ($C_4$), the tight connection to the Zarankiewicz problem makes it the most natural starting point. For general $k$, bounds involve the extremal number $\\text{ex}(n, C_{2k})$.",
       "**Threshold specification:** The formalization uses the complete min-max characterization: `ramseyC4Kn_spec` asserts BOTH directions (sufficiency and necessity), making $R(C_4, K_n)$ the exact threshold rather than just an upper bound. The complement `Gᶜ` turns clique-finding into independence-number questions."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

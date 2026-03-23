@@ -98,7 +98,11 @@
       "**Connected variant**: Requiring the k-regular subgraph to be connected gives weaker bound O(n^{5/3}).",
       "**Dense graphs**: For any epsilon > 0, graphs with >= epsilon·n^2 edges contain k-regular subgraphs."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

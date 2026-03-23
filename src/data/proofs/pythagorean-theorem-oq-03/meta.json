@@ -78,7 +78,9 @@
       "**Lorentz boosts as hyperbolic rotations**: Rapidity parameterization $\\beta = \\tanh(\\phi)$ shows boosts use $\\cosh/\\sinh$ exactly as rotations use $\\cos/\\sin$, with $\\cosh^2 - \\sinh^2 = 1$ preserving the interval",
       "**111 theorems, zero sorries, zero axioms**: Every result follows from Mathlib's exponential and trigonometric library. The structural approach (encoding the law as a structure field) enables clean derivation of all consequences from the core identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

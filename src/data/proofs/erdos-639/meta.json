@@ -68,7 +68,11 @@
       "Keevash-Sudakov's structural insight: the non-monochromatic edges form an 'almost bipartite' graph, which constrains their count to at most $\\lfloor n^2/4 \\rfloor$ — this is why Turán's theorem lurks behind the $n^2/4$ bound",
       "Two theorems proved without sorry: `mono_iff_red_or_blue` (monochromaticity is red-or-blue for Bool coloring) and `edge_partition` (every edge is classified as in or not in a mono triangle) — both verified by Aristotle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

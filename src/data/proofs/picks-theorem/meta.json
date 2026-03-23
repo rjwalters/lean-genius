@@ -63,7 +63,10 @@
       "**Fails in 3D**: Reeve tetrahedra with same lattice counts but different volumes show no Pick-like formula exists in dimension $\\geq 3$; Ehrhart polynomials provide the correct generalization",
       "**Euler characteristic connection**: Pick's formula can be derived from Euler's formula $V - E + F = 2$ for planar graphs, linking lattice geometry to graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

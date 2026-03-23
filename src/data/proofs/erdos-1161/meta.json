@@ -73,7 +73,12 @@
       "The function lcmRange$(m) = \\mathrm{lcm}(1, \\ldots, m)$ grows like $e^m$ by the prime number theorem ($\\log \\mathrm{lcm}(1,\\ldots,m) \\sim m$), controlling how the maximizer $k$ relates to $n$",
       "The number of $n$-cycles in $S_n$ is exactly $(n-1)!$, and this serves as both the asymptotic value of the maximum and a key structural benchmark"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

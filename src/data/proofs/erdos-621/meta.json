@@ -35,7 +35,10 @@
       "**Triangle-free reduction**: For triangle-free graphs, $\\tau_1 = 0$ (no triangles to cover) and $\\alpha_1 = |E|$ (every edge set is vacuously sparse), so the conjecture reduces exactly to Mantel's 1907 theorem: $|E(G)| \\le n^2/4$.",
       "**Problem #23 connection**: The related conjecture $\\tau_B(G) \\le n^2/25$ (Erdős Problem #23) would give a much tighter bound on the bipartite removal number alone. If true, it implies $\\tau_1(G) \\le n^2/25$, substantially strengthening the covering side of the inequality."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

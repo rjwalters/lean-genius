@@ -38,7 +38,11 @@
       "g(r) = max vertices to remove from χ≥r triangle-free graph to make bipartite",
       "Bounds: (1/2-o(1))r² log r ≤ g(r) ≤ (2+o(1))r² log r"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

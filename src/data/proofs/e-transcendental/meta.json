@@ -58,7 +58,10 @@
       "**First 'Famous' Transcendental:** Liouville (1844) constructed artificial transcendentals; Hermite's proof was the first for a 'naturally occurring' constant, opening the door to $\\pi$'s transcendence and the resolution of squaring the circle.",
       "**Auxiliary Polynomial Template:** Hermite's construction $f(x) = x^{p-1}(x{-}1)^p \\cdots (x{-}n)^p / (p{-}1)!$ — controlling divisibility at integer points while maintaining integrality — became the blueprint for Baker's theorem (1966) on linear forms in logarithms."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Mathematical analysis"
+    ]
   },
   "crossReferences": [
     {

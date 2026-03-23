@@ -61,7 +61,10 @@
       "**Prime factor bounds**: Erdos showed the problem reduces to P(n(n-1)) > 4 log n, connecting to open problems in analytic number theory.",
       "**Unique factorization paradox**: Despite ℕ having unique factorization, factorials grow so rapidly that the equation n! = a₁!·a₂!···aₖ! becomes extremely overdetermined — the existence of even one non-trivial solution (10! = 6!·7!) is itself remarkable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

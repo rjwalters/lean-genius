@@ -72,7 +72,10 @@
       "**Enormous gap between known and conjectured:** The established lower bound $\\frac{\\log x}{(\\log\\log x)^2}$ is barely super-logarithmic, while the conjecture predicts polynomial-in-$\\log x$ intervals. Bridging this gap likely requires new techniques from sieve theory or probabilistic number theory.",
       "**Individual vs. correlated behavior:** The Erdős–Kac theorem describes $\\omega(n)$ for individual $n$, but Problem #452 asks about *correlated* behavior across consecutive integers. Consecutive integers share few prime factors (they are coprime in pairs), making the correlation structure highly nontrivial."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

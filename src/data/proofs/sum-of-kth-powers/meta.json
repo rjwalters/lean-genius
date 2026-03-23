@@ -53,7 +53,10 @@
       "Each closed-form formula is a polynomial in n of degree k+1, always divisible by n(n+1) — reflecting that both 0 and -1 are roots, matching the fact that empty sums equal 0 and the sum over a vacuous range also vanishes",
       "The formulas become structurally simpler when expressed via the falling factorial or binomial coefficients: Σᵢ₌₀ⁿ C(i,r) = C(n+1, r+1) is the 'hockey stick identity', from which all power sum formulas can be derived by inverting the triangular matrix relating powers to binomial coefficients"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abstract algebra",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

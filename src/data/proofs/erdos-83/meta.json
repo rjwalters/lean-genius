@@ -100,7 +100,10 @@
       "**Complete Solution:** Unlike many Erdős problems that are solved only for specific parameters, the AK theorem resolves the maximum $t$-intersecting family for ALL valid $(m, k, t)$. This comprehensiveness is rare in extremal combinatorics.",
       "**Coding Theory Connection:** A $t$-intersecting $k$-uniform family on $[m]$ is equivalent to a constant-weight binary code of length $m$, weight $k$, and minimum 'agreement' $t$. The AK theorem thus determines optimal constant-weight codes under agreement constraints."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

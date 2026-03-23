@@ -88,7 +88,12 @@
       "**Pigeonhole Upper Bound**: The relation R(3;k) ≤ 2 + k(R(3;k-1)-1) follows from considering color classes at a vertex",
       "**Open Questions**: Both whether the limit exists and whether it is finite remain unknown, each worth separate rewards"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

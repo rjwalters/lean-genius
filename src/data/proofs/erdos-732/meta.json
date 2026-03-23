@@ -77,7 +77,10 @@
       "**Keevash's breakthrough:** The 2014 proof that Steiner systems exist for all sufficiently large admissible parameters (using randomized algebraic constructions) provides the modern foundation for understanding which uniform block-compatible sequences are realizable.",
       "**Alon's probabilistic construction:** The lower bound uses the insight that in large PBDs, blocks in distant regions of $[n]$ are nearly independent, so $\\sim \\sqrt{n}$ 'independent choices' can be made, each contributing $\\sim \\log n$ bits to the count."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

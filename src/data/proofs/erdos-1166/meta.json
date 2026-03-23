@@ -91,7 +91,13 @@
       "The axiomatization of 'almost surely' as an abstract predicate with monotonicity and conjunction closure elegantly avoids formalizing the full measure-theoretic probability space while preserving the logical structure needed for combining multiple a.s. events.",
       "Problems #1165 and #1166 form an interconnected pair: #1165 bounds $|F(n)|$ (the instantaneous most-visited set), and #1166 bounds the cumulative union $|\\bigcup_{k \\leq n} F(k)|$. The solution to #1165 is a key ingredient for #1166."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Probability theory",
+      "Combinatorics (counting, extremal problems)",
+      "Geometry (Euclidean, combinatorial)",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

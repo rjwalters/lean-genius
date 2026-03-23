@@ -136,7 +136,10 @@
       "**Container method**: The BLST proof partitions maximal sum-free sets into 'containers' of bounded size, yielding $f_m(n) \\leq 2^{o(n)} \\cdot 2^{n/4}$",
       "**Exponential gap**: $f_m(n) = \\Theta(2^{n/4})$ vs $f(n) = \\Theta(2^{n/2})$ shows maximal sets are exponentially rare among all sum-free sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = Θ(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4. The formalization captures the full progression from Cameron-Erdős through BLST. 5 sorries remain.",

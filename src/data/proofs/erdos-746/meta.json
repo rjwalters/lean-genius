@@ -93,7 +93,10 @@
       "**Matching as stepping stone**: Erdős-Rényi's matching result ($1/2 + \\varepsilon$ factor) anticipated the Hamiltonicity threshold, since a Hamilton cycle is two perfect matchings",
       "**Dirac vs random**: Dirac's theorem needs $\\delta(G) \\ge n/2$, but random graphs are Hamiltonian with $\\delta(G) \\sim 2c \\log n \\ll n/2$ — randomness compensates for low degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

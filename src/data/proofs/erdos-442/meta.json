@@ -67,7 +67,10 @@
       "**The LCM-GCD identity**: lcm(a,b)·gcd(a,b) = a·b connects LCM behavior to GCD structure. For coprime a,b, lcm = a·b (maximal), while shared factors reduce the LCM.",
       "**Historical significance**: This resolves a 44-year-old problem and reveals a precise phase transition in the density-LCM relationship."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

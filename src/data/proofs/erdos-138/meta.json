@@ -56,7 +56,11 @@
       "The main conjecture W(k)^{1/k} → ∞ would imply W(k)/2^k → ∞ but is strictly stronger",
       "The formalization uses Filter.Tendsto to express divergence, which is the standard Mathlib idiom and enables compositional limit arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

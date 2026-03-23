@@ -82,7 +82,10 @@
       "**The Exponent Gap:** The current bounds $2^{(\\log n)^{1/9}} \\le f(n) \\le 2^{\\sqrt{\\log n}}$ have exponents $1/9$ vs $1/2$ — neither is believed tight, and the true growth rate of $f(n)$ remains a major open question",
       "**Dimensional Threshold:** Straus showed that in $\\mathbb{R}^k$ with $2^k \\ge n$, isosceles-free sets can have only $n - 1$ distances (using hypercube vertices $\\{0,1\\}^k$), so the problem is nontrivial only in low dimensions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

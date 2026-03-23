@@ -35,7 +35,9 @@
       "**Maier–Pomerance conjecture**: $Y(x) \\ll x \\cdot (\\log x)^{2+o(1)}$ — if true, the gap between upper and lower bounds would be only a polylogarithmic factor",
       "**CRT periodicity**: By the Chinese Remainder Theorem, the covering pattern repeats modulo $P(x)$, so $Y(x) \\le P(x)$. The challenge is to show the actual maximum is much smaller"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

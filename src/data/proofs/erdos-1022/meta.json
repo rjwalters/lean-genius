@@ -36,7 +36,10 @@
       "**The probabilistic method gives partial results via the first-moment bound**: A random 2-coloring makes each set $A$ monochromatic with probability $2^{1-|A|}$. If $\\mathbb{E}[\\text{mono}] = \\sum_{A \\in \\mathcal{F}} 2^{1-|A|} < 1$, property B holds. Sparseness bounds this expectation: $\\mathbb{E}[\\text{mono}] \\le c_t \\cdot |\\bigcup \\mathcal{F}| \\cdot 2^{1-t}$, which is $< 1$ when the ground set is small relative to $2^t / c_t$.",
       "**Cover-free families provide a structural bridge**: An $r$-cover-free family (no set is contained in the union of $r$ others) is automatically $(r+1)$-sparse. Cover-free families arise in combinatorial group testing, where they identify defective items in pooled tests. This connection links property B to information-theoretic questions about identification codes."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

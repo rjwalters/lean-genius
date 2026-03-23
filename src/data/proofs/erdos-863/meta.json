@@ -33,7 +33,11 @@
       "**Growth Rate:** Cilleruelo-Ruzsa-Trujillo (2002) established that B₂[r] sets in {1,...,N} have size Θ(√(rN)), with Ruzsa showing c_r ~ √r, but the precision needed to separate c_r from c'_r has not been achieved.",
       "**ε-δ Formalization:** The asymptotic constants are formalized using the Filter.atTop framework: for all ε > 0, eventually |maxB2rSize(r,N)/√N - c_r| < ε, avoiding the need to define limits directly."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

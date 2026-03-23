@@ -65,7 +65,11 @@
       "The **annulus formula** $\\int_{r_1}^{r_2} 2\\pi\\rho\\, d\\rho = \\pi(r_2^2 - r_1^2)$ is an immediate corollary, computing the area of the ring between two circles",
       "Combining the two open-question answers: differentiating then integrating (or integrating then differentiating) $\\pi r^2$ returns $\\pi r^2$ — a concrete illustration of the FTC for the most classical function in geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Geometry (Euclidean, combinatorial)",
+      "Calculus and real analysis"
+    ]
   },
   "crossReferences": [
     {

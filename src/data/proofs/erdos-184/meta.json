@@ -144,7 +144,10 @@
       "**Covering vs. partition gap**: Without edge-disjointness, $n-1$ pieces suffice (via spanning tree + fundamental cycles), versus $\\Theta(n \\log^* n)$ with disjointness — the constraint creates the difficulty",
       "**Constructive definitions**: The Lean formalization defines `Cycle`, `SingleEdge`, `DecompPiece`, and `IsValidDecomposition` constructively, with only the optimization (`decompNumber`) and deep bounds axiomatized"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #184 remains OPEN. The Erdős–Gallai conjecture that O(n) cycles and edges suffice for any graph is unresolved. The current best bound O(n log* n) by Bucić–Montgomery (2022) is tantalizingly close — since log* n ≤ 5 for all feasible n, the bound is essentially 5n in practice. The formalization captures all major results with constructive definitions and axiomatized bounds.",

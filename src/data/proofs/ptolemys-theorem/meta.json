@@ -50,7 +50,9 @@
       "The converse characterizes cyclic quadrilaterals: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ holds if and only if the four points are concyclic. The inequality $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations (Ptolemy's inequality).",
       "Historically, Ptolemy used the theorem to derive chord addition formulas: $\\text{chord}(\\alpha \\pm \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$. These are the ancient versions of the sine and cosine addition formulas, which are the foundation of trigonometry."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

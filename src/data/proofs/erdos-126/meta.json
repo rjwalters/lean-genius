@@ -85,7 +85,10 @@
       "**Two open questions**: Both f(n)/log(n) → ∞ (the main conjecture) and f(n) = o(n/log(n)) (tightness of upper bound) remain unresolved",
       "**Gap magnitude**: The gap between log(n) and n/log(n) is enormous — roughly a factor of n/log²(n) — making this one of the widest open gaps in extremal number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -63,7 +63,11 @@
       "**Square-sum vs square-free duality:** Problem #439 (sums equal squares) and Problem #438 (sumsets avoiding squares) are dual: one asks about partition regularity of $x + y = z^2$, the other about extremal density of square-free sumsets",
       "**Regularity lemma as universal tool:** The Khalfalah-Szemerédi proof is a paradigmatic application of Szemerédi's regularity lemma to additive problems — similar in spirit to the regularity proof of Roth's theorem on 3-term APs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

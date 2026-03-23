@@ -52,7 +52,10 @@
       "**Smooth number counting**: Erdős's elementary proof avoids analytic machinery entirely — it uses only the observation that smooth numbers up to $n$ number at most $2^k \\sqrt{n}$, while non-smooth numbers are bounded by $n \\sum_{p > p_k} 1/p$",
       "**Density interpretation**: The divergence means primes are not 'too sparse' — in probabilistic terms, a random integer $n$ is prime with probability $\\sim 1/\\ln(n)$, and $\\sum 1/\\ln(n)$ diverges"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

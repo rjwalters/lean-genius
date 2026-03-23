@@ -55,7 +55,9 @@
       "**Three-square obstruction is arithmetic, not algebraic**: Legendre proved (1798) that $n$ is a sum of three squares iff $n \\neq 4^a(8b+7)$. This is a condition on quadratic residues mod 8, not on the existence of a composition identity. There is no 3-dimensional normed division algebra, so three squares have no product formula — but the obstruction is finer than that.",
       "**Conjugation as norm recovery**: The identity $q\\bar{q} = N(q)$ (with zero imaginary part) shows the norm is intrinsic to the quaternion algebra. This parallels $z\\bar{z} = |z|^2$ for complex numbers and is the foundation of the theory of composition algebras (Hurwitz, 1898)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

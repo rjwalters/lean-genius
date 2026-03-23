@@ -35,7 +35,10 @@
       "**Near-linear vs linear**: The basic form asks for α > n^{1-ε} (almost linear), while the strong form asks for α ≥ cn (truly linear)—the gap between these is meaningful",
       "**Simplified formalization**: The n^{1-ε} bound is approximated by 0 < α(H) in the Lean code, since rational exponentiation n^{1-ε} would require substantial infrastructure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {
