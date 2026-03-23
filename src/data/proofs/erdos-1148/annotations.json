@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Problem Statement and Known Results",
-    "content": "**Erdős Problem #1148**: Can every sufficiently large integer $n$ be written as $n = x^2 + y^2 - z^2$ where $\\max(x^2, y^2, z^2) \\le n$?\n\nThe bound constraint means $x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$. Without this bound, every integer has such a representation (e.g., $n = ((n+1)/2)^2 - ((n-1)/2)^2$ for odd $n$). The difficulty is keeping the components small.\n\n**Known results**:\n- The largest known non-representable integer is **6563**\n- With the relaxed bound $\\max(x^2, y^2, z^2) \\le n + 2\\sqrt{n}$, representation always exists\n- Reference: Vaughan [Va99, §1.25]\n\nThe problem sits at the intersection of additive number theory and the geometry of numbers.",
+    "content": "**Erd\u0151s Problem #1148**: Can every sufficiently large integer $n$ be written as $n = x^2 + y^2 - z^2$ where $\\max(x^2, y^2, z^2) \\le n$?\n\nThe bound constraint means $x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$. Without this bound, every integer has such a representation (e.g., $n = ((n+1)/2)^2 - ((n-1)/2)^2$ for odd $n$). The difficulty is keeping the components small.\n\n**Known results**:\n- The largest known non-representable integer is **6563**\n- With the relaxed bound $\\max(x^2, y^2, z^2) \\le n + 2\\sqrt{n}$, representation always exists\n- Reference: Vaughan [Va99, \u00a71.25]\n\nThe problem sits at the intersection of additive number theory and the geometry of numbers.",
     "mathContext": "$n = x^2 + y^2 - z^2$ with $x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$, equivalently $x^2 + y^2 = n + z^2$ with bounded components",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "sum of squares",
       "ternary quadratic forms",
@@ -70,7 +70,7 @@
     },
     "type": "technique",
     "title": "Odd Numbers and Difference of Squares",
-    "content": "For odd $n$, the classical identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ always holds. However, this **violates the bound** for $n \\ge 3$:\n\n$$\\left(\\frac{n+1}{2}\\right)^2 = \\frac{n^2 + 2n + 1}{4} > n \\quad \\text{when } n \\ge 3$$\n\nTwo theorems formalize this:\n1. `odd_diff_squares_exceeds_bound`: For odd $n \\ge 3$, $((n+1)/2)^2 > n$. Proved by `omega`.\n2. `odd_diff_squares_identity`: For odd $n$, $((n+1)/2)^2 = ((n-1)/2)^2 + n$. Proved by `omega`.\n\nThis shows the naive difference-of-squares approach fails — the bound constraint is the heart of the problem.",
+    "content": "For odd $n$, the classical identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ always holds. However, this **violates the bound** for $n \\ge 3$:\n\n$$\\left(\\frac{n+1}{2}\\right)^2 = \\frac{n^2 + 2n + 1}{4} > n \\quad \\text{when } n \\ge 3$$\n\nTwo theorems formalize this:\n1. `odd_diff_squares_exceeds_bound`: For odd $n \\ge 3$, $((n+1)/2)^2 > n$. Proved by `omega`.\n2. `odd_diff_squares_identity`: For odd $n$, $((n+1)/2)^2 = ((n-1)/2)^2 + n$. Proved by `omega`.\n\nThis shows the naive difference-of-squares approach fails \u2014 the bound constraint is the heart of the problem.",
     "mathContext": "$n = ((n+1)/2)^2 - ((n-1)/2)^2$ but $((n+1)/2)^2 > n$ for $n \\ge 3$",
     "significance": "key",
     "relatedConcepts": [
@@ -111,8 +111,8 @@
     },
     "type": "definition",
     "title": "Computational Verification: Soundness and Completeness",
-    "content": "A **brute-force checker** `checkRepresentable n b` tests all triples $(x,y,z)$ with $x, y, z \\le \\lfloor\\sqrt{b}\\rfloor$ for a valid representation.\n\nTwo key theorems establish it as a **decision procedure**:\n1. **Soundness** (`checkRepresentable_sound`): If the checker returns true, then `IsRepresentableWith n b` holds. Extracts the witness from the existential in `List.any_eq_true`.\n2. **Completeness** (`checkRepresentable_complete`): If `IsRepresentableWith n b` holds, the checker returns true. Constructs the membership proof via `List.mem_range.mpr` and `omega`.\n\nThis gives: `checkRepresentable n b = true ↔ IsRepresentableWith n b`.\n\nAlso proves **3 is not representable** by `interval_cases` exhaustion: with $x^2, y^2, z^2 \\le 3$, we need $x, y, z \\le 1$, and no triple works.",
-    "mathContext": "`checkRepresentable n b = true ↔ IsRepresentableWith n b` (sound and complete decision procedure)",
+    "content": "A **brute-force checker** `checkRepresentable n b` tests all triples $(x,y,z)$ with $x, y, z \\le \\lfloor\\sqrt{b}\\rfloor$ for a valid representation.\n\nTwo key theorems establish it as a **decision procedure**:\n1. **Soundness** (`checkRepresentable_sound`): If the checker returns true, then `IsRepresentableWith n b` holds. Extracts the witness from the existential in `List.any_eq_true`.\n2. **Completeness** (`checkRepresentable_complete`): If `IsRepresentableWith n b` holds, the checker returns true. Constructs the membership proof via `List.mem_range.mpr` and `omega`.\n\nThis gives: `checkRepresentable n b = true \u2194 IsRepresentableWith n b`.\n\nAlso proves **3 is not representable** by `interval_cases` exhaustion: with $x^2, y^2, z^2 \\le 3$, we need $x, y, z \\le 1$, and no triple works.",
+    "mathContext": "`checkRepresentable n b = true \u2194 IsRepresentableWith n b` (sound and complete decision procedure)",
     "significance": "key",
     "relatedConcepts": [
       "decision procedure",
@@ -133,7 +133,7 @@
     },
     "type": "concept",
     "title": "The Main Conjecture",
-    "content": "**Erdős Problem #1148 (OPEN)**: There exists $N_0$ such that every $n \\ge N_0$ is representable as $x^2 + y^2 - z^2$ with $\\max(x^2, y^2, z^2) \\le n$.\n\nThe conjecture is defined as a Prop (`erdos_1148_conjecture`) and then axiomatized (`erdos_1148`).\n\nThe largest known non-representable number is 6563, so if the conjecture is true, $N_0 \\le 6564$. The gap between what's been computationally verified and the conjecture is significant — the conjecture requires a proof that works for ALL sufficiently large $n$, not just up to some computational bound.\n\nUsing $\\exists N_0, \\forall n \\ge N_0$ is the standard 'sufficiently large' pattern in formalized number theory.",
+    "content": "**Erd\u0151s Problem #1148 (OPEN)**: There exists $N_0$ such that every $n \\ge N_0$ is representable as $x^2 + y^2 - z^2$ with $\\max(x^2, y^2, z^2) \\le n$.\n\nThe conjecture is defined as a Prop (`erdos_1148_conjecture`) and then axiomatized (`erdos_1148`).\n\nThe largest known non-representable number is 6563, so if the conjecture is true, $N_0 \\le 6564$. The gap between what's been computationally verified and the conjecture is significant \u2014 the conjecture requires a proof that works for ALL sufficiently large $n$, not just up to some computational bound.\n\nUsing $\\exists N_0, \\forall n \\ge N_0$ is the standard 'sufficiently large' pattern in formalized number theory.",
     "mathContext": "$\\exists N_0,\\; \\forall n \\ge N_0 : \\text{IsRepresentable}(n)$",
     "significance": "key",
     "relatedConcepts": [
@@ -178,7 +178,7 @@
     "type": "technique",
     "title": "Reduction to Sum of Two Squares",
     "content": "**Key structural insight**: $n = x^2 + y^2 - z^2$ is equivalent to $x^2 + y^2 = n + z^2$.\n\nSo the problem reduces to: for which $n$ can we find $z \\le \\sqrt{n}$ such that $n + z^2$ is a **sum of two bounded squares**?\n\nBy Fermat's theorem on sums of two squares, $m$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ appears to an even power in the factorization of $m$. So we need some $n + z^2$ (with $z^2 \\le n$) to satisfy this condition with the additional bound $x^2, y^2 \\le n$.\n\nThe iff is proved by direct construction in both directions, rearranging the equation between the two forms.",
-    "mathContext": "`IsRepresentable n ↔ ∃ z, z² ≤ n ∧ ∃ x y, x² + y² = n + z² ∧ x² ≤ n ∧ y² ≤ n`",
+    "mathContext": "`IsRepresentable n \u2194 \u2203 z, z\u00b2 \u2264 n \u2227 \u2203 x y, x\u00b2 + y\u00b2 = n + z\u00b2 \u2227 x\u00b2 \u2264 n \u2227 y\u00b2 \u2264 n`",
     "significance": "key",
     "relatedConcepts": [
       "sum of two squares",
@@ -200,7 +200,7 @@
     "type": "definition",
     "title": "Non-Representable Set and Finiteness",
     "content": "The **set of non-representable numbers** up to $N$ is defined as a Finset using the Boolean checker.\n\nThe theorem `conjecture_implies_finite_exceptions` shows the conjecture directly implies the set of non-representable numbers is finite (trivially, since the conjecture IS the statement $\\exists N_0, \\forall n \\ge N_0, \\ldots$).\n\nComputationally, the non-representable numbers include 3, 6, and others up to 6563 (the largest known). The conjecture asserts this set is finite.",
-    "mathContext": "`nonRepresentable N = (Finset.range (N+1)).filter (¬checkRepresentable · ·)`",
+    "mathContext": "`nonRepresentable N = (Finset.range (N+1)).filter (\u00accheckRepresentable \u00b7 \u00b7)`",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset.filter",

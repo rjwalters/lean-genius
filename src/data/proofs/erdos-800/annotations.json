@@ -8,13 +8,13 @@
     },
     "type": "context",
     "title": "Problem Overview and References",
-    "content": "Erdős Problem #800 asks whether graphs with no two adjacent vertices of degree $\\geq 3$ have linear Ramsey numbers $R(G) \\ll n$. Alon (1994) proved $R(G) \\leq 12n$ using the probabilistic method. The header documents the connection to the broader Burr-Erdős conjecture (Problem #163), which was fully resolved by Choongbum Lee in 2016 for all $p$-degenerate graphs.",
+    "content": "Erd\u0151s Problem #800 asks whether graphs with no two adjacent vertices of degree $\\geq 3$ have linear Ramsey numbers $R(G) \\ll n$. Alon (1994) proved $R(G) \\leq 12n$ using the probabilistic method. The header documents the connection to the broader Burr-Erd\u0151s conjecture (Problem #163), which was fully resolved by Choongbum Lee in 2016 for all $p$-degenerate graphs.",
     "mathContext": "$R(G) \\leq 12n$ for graphs $G$ on $n$ vertices with no adjacent vertices of degree $\\geq 3$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ramsey number",
       "subdivided graph",
-      "Burr-Erdős conjecture",
+      "Burr-Erd\u0151s conjecture",
       "probabilistic method"
     ],
     "prerequisites": [
@@ -102,7 +102,7 @@
     },
     "type": "definition",
     "title": "Ramsey Number Infrastructure",
-    "content": "Builds the Ramsey theory framework from scratch. `completeGraph N` defines $K_N$ on `Fin N` with adjacency $u \\neq v$. `edgeColoring N` assigns a Boolean (red/blue) to each ordered pair. `isMonochromatic` checks that all edges of an embedded copy of $G$ have the same color. `containsMonochromaticCopy` requires an injective embedding with monochromaticity. The Ramsey number $R(G)$ and its specification are axiomatized — formalizing the finite Ramsey theorem would require substantial combinatorial infrastructure. `hasLinearRamseyNumber G C` means $R(G) \\leq C \\cdot n$.",
+    "content": "Builds the Ramsey theory framework from scratch. `completeGraph N` defines $K_N$ on `Fin N` with adjacency $u \\neq v$. `edgeColoring N` assigns a Boolean (red/blue) to each ordered pair. `isMonochromatic` checks that all edges of an embedded copy of $G$ have the same color. `containsMonochromaticCopy` requires an injective embedding with monochromaticity. The Ramsey number $R(G)$ and its specification are axiomatized \u2014 formalizing the finite Ramsey theorem would require substantial combinatorial infrastructure. `hasLinearRamseyNumber G C` means $R(G) \\leq C \\cdot n$.",
     "mathContext": "$R(G) = \\min\\{N : \\forall c\\colon E(K_N) \\to \\{\\text{red}, \\text{blue}\\},\\; K_N \\text{ contains a monochromatic copy of } G\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -126,7 +126,7 @@
       "endLine": 183
     },
     "type": "technique",
-    "title": "Alon's Theorem (1994): R(G) ≤ 12n",
+    "title": "Alon's Theorem (1994): R(G) \u2264 12n",
     "content": "The main result, axiomatized as `alon_theorem`: if $G$ on $n$ vertices has no adjacent high-degree vertices, then $R(G) \\leq 12n$. Alon's proof uses the probabilistic method. Since the high-degree vertices $H$ form an independent set, they can be randomly embedded into $K_N$. For each high-degree vertex $v$, the paths of degree-2 vertices connecting it to other high-degree vertices can be extended deterministically. The constant $12 = 2 \\times 6$ arises from: factor 2 for the two colors in the Ramsey setting, and factor 6 from probabilistic counting of embedding extensions. The corollary `subdivided_graphs_linear_ramsey` chains this with the subdivision theorem.",
     "mathContext": "$\\text{noAdjacentHighDegree}(G) \\Rightarrow R(G) \\leq 12|V(G)|$; constant $12 = 2 \\times 6$ from color doubling and probabilistic argument",
     "significance": "key",
@@ -150,13 +150,13 @@
       "endLine": 227
     },
     "type": "concept",
-    "title": "Degeneracy and the Burr-Erdős Conjecture",
-    "content": "Connects Problem #800 to the broader Burr-Erdős conjecture (Problem #163). `isDegenerateAt G p` means every subgraph has a vertex of degree $\\leq p$; this is $p$-degeneracy. The axiom `no_adjacent_high_degree_is_2_degenerate` states that graphs with no adjacent high-degree vertices are 2-degenerate. The `burr_erdos_theorem` (Lee 2016) axiomatizes the full conjecture: every $p$-degenerate $n$-vertex graph has $R(G) \\leq c_p \\cdot n$. The theorem `erdos_800_special_case_of_163` derives Problem #800 as the $p = 2$ case, providing an alternative proof path via the general theorem.",
+    "title": "Degeneracy and the Burr-Erd\u0151s Conjecture",
+    "content": "Connects Problem #800 to the broader Burr-Erd\u0151s conjecture (Problem #163). `isDegenerateAt G p` means every subgraph has a vertex of degree $\\leq p$; this is $p$-degeneracy. The axiom `no_adjacent_high_degree_is_2_degenerate` states that graphs with no adjacent high-degree vertices are 2-degenerate. The `burr_erdos_theorem` (Lee 2016) axiomatizes the full conjecture: every $p$-degenerate $n$-vertex graph has $R(G) \\leq c_p \\cdot n$. The theorem `erdos_800_special_case_of_163` derives Problem #800 as the $p = 2$ case, providing an alternative proof path via the general theorem.",
     "mathContext": "$G$ $p$-degenerate $\\Rightarrow R(G) \\leq c_p n$; graphs with no adjacent high-degree vertices are 2-degenerate, so Problem #800 is the $p = 2$ case",
     "significance": "key",
     "relatedConcepts": [
       "graph degeneracy",
-      "Burr-Erdős conjecture",
+      "Burr-Erd\u0151s conjecture",
       "Choongbum Lee's theorem",
       "degenerate graph Ramsey theory"
     ],

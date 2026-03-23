@@ -8,11 +8,11 @@
     },
     "type": "context",
     "title": "Problem Overview: Complete Intersection Theorem",
-    "content": "Erdős Problem #83 extends the Erdős-Ko-Rado theorem to $t$-intersecting families. Given a family $\\mathcal{F}$ of $2n$-subsets of $[4n]$ with $|A \\cap B| \\geq 2$ for all $A, B \\in \\mathcal{F}$, the conjecture bounds $|\\mathcal{F}| \\leq \\frac{1}{2}\\binom{4n}{2n} - \\binom{2n}{n}^2$. Posed implicitly by EKR (1961) and carrying a $500 Erdős prize, it was solved by Ahlswede and Khachatrian in 1997 via their Complete Intersection Theorem, which handles all parameters $(m, k, t)$ simultaneously.",
+    "content": "Erd\u0151s Problem #83 extends the Erd\u0151s-Ko-Rado theorem to $t$-intersecting families. Given a family $\\mathcal{F}$ of $2n$-subsets of $[4n]$ with $|A \\cap B| \\geq 2$ for all $A, B \\in \\mathcal{F}$, the conjecture bounds $|\\mathcal{F}| \\leq \\frac{1}{2}\\binom{4n}{2n} - \\binom{2n}{n}^2$. Posed implicitly by EKR (1961) and carrying a $500 Erd\u0151s prize, it was solved by Ahlswede and Khachatrian in 1997 via their Complete Intersection Theorem, which handles all parameters $(m, k, t)$ simultaneously.",
     "mathContext": "$\\mathcal{F} \\subseteq \\binom{[4n]}{2n}$, $|A \\cap B| \\geq 2$ for all $A, B \\in \\mathcal{F}$ $\\Rightarrow$ $|\\mathcal{F}| \\leq \\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Erdős-Ko-Rado theorem",
+      "Erd\u0151s-Ko-Rado theorem",
       "t-intersecting families",
       "Complete Intersection Theorem",
       "extremal set theory"
@@ -33,7 +33,7 @@
     "type": "context",
     "title": "Imports and Setup",
     "content": "Imports Mathlib's `Finset.Basic` and `Finset.Card` for finite set operations and cardinality, `Nat.Choose.Basic` for binomial coefficients $\\binom{n}{k}$, `SetFamily.Intersecting` for intersecting family definitions from Mathlib's combinatorics library, and `Real.Basic` for the asymptotic bound statement. Opens the `Finset` and `Nat` namespaces for concise notation.",
-    "mathContext": "Working within `Finset (Finset (Fin m))` — families of finite subsets of a finite ground set $[m] = \\{0, 1, \\ldots, m-1\\}$",
+    "mathContext": "Working within `Finset (Finset (Fin m))` \u2014 families of finite subsets of a finite ground set $[m] = \\{0, 1, \\ldots, m-1\\}$",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset",
@@ -77,7 +77,7 @@
     },
     "type": "definition",
     "title": "k-Uniform Family",
-    "content": "`isKUniform F k` requires every set in the family $\\mathcal{F}$ to have exactly $k$ elements: $\\forall A \\in \\mathcal{F},\\, |A| = k$. This is the standard uniformity condition in extremal set theory and hypergraph theory. A $k$-uniform family is equivalently a $k$-uniform hypergraph. For Erdős #83, we work with $k = 2n$ (the 'middle layer' of the Boolean lattice $2^{[4n]}$).",
+    "content": "`isKUniform F k` requires every set in the family $\\mathcal{F}$ to have exactly $k$ elements: $\\forall A \\in \\mathcal{F},\\, |A| = k$. This is the standard uniformity condition in extremal set theory and hypergraph theory. A $k$-uniform family is equivalently a $k$-uniform hypergraph. For Erd\u0151s #83, we work with $k = 2n$ (the 'middle layer' of the Boolean lattice $2^{[4n]}$).",
     "mathContext": "$\\mathcal{F}$ is $k$-uniform $\\iff \\forall A \\in \\mathcal{F}: |A| = k$. Here $\\mathcal{F} \\subseteq \\binom{[4n]}{2n}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -99,7 +99,7 @@
     },
     "type": "definition",
     "title": "t-Intersecting Family",
-    "content": "`isTIntersecting F t` requires every pair of sets in $\\mathcal{F}$ to share at least $t$ elements: $\\forall A, B \\in \\mathcal{F},\\, |A \\cap B| \\geq t$. The classical EKR theorem addresses $t = 1$. Erdős #83 requires $t = 2$, which is substantially harder because the $t = 1$ shifting technique does not directly generalize. The $t \\geq 2$ case required the entirely new 'pushing-pulling' method of Ahlswede-Khachatrian.",
+    "content": "`isTIntersecting F t` requires every pair of sets in $\\mathcal{F}$ to share at least $t$ elements: $\\forall A, B \\in \\mathcal{F},\\, |A \\cap B| \\geq t$. The classical EKR theorem addresses $t = 1$. Erd\u0151s #83 requires $t = 2$, which is substantially harder because the $t = 1$ shifting technique does not directly generalize. The $t \\geq 2$ case required the entirely new 'pushing-pulling' method of Ahlswede-Khachatrian.",
     "mathContext": "$\\mathcal{F}$ is $t$-intersecting $\\iff \\forall A, B \\in \\mathcal{F}: |A \\cap B| \\geq t$",
     "significance": "key",
     "relatedConcepts": [
@@ -123,7 +123,7 @@
     },
     "type": "definition",
     "title": "Classical Intersecting (t = 1)",
-    "content": "`isIntersecting F` is the $t = 1$ special case: every pair shares at least one element. This is the setting of the original Erdős-Ko-Rado theorem (1961), which established that for $k$-subsets of $[n]$ with $n \\geq 2k$, the maximum intersecting family has size $\\binom{n-1}{k-1}$. Defining it as `isTIntersecting F 1` makes the generalization hierarchy explicit.",
+    "content": "`isIntersecting F` is the $t = 1$ special case: every pair shares at least one element. This is the setting of the original Erd\u0151s-Ko-Rado theorem (1961), which established that for $k$-subsets of $[n]$ with $n \\geq 2k$, the maximum intersecting family has size $\\binom{n-1}{k-1}$. Defining it as `isTIntersecting F 1` makes the generalization hierarchy explicit.",
     "mathContext": "$\\mathcal{F}$ is intersecting $\\iff \\mathcal{F}$ is $1$-intersecting $\\iff \\forall A, B \\in \\mathcal{F}: A \\cap B \\neq \\emptyset$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -144,7 +144,7 @@
       "endLine": 81
     },
     "type": "concept",
-    "title": "Erdős-Ko-Rado Bound",
+    "title": "Erd\u0151s-Ko-Rado Bound",
     "content": "`erdos_ko_rado_bound` is the classical 1961 result: for $k$-subsets of $[n]$ with $n \\geq 2k$, the largest intersecting family has size $\\binom{n-1}{k-1}$. This launched extremal set theory. The proof uses the elegant 'cyclic permutation' argument or Katona's proof via double counting. The bound is tight, achieved by the star family $\\{A \\in \\binom{[n]}{k} : x \\in A\\}$ for any fixed $x$.",
     "mathContext": "EKR: $n \\geq 2k \\Rightarrow \\max\\{|\\mathcal{F}| : \\mathcal{F} \\subseteq \\binom{[n]}{k},\\, \\mathcal{F}$ intersecting$\\} = \\binom{n-1}{k-1}$",
     "significance": "key",
@@ -215,14 +215,14 @@
     },
     "type": "definition",
     "title": "The Conjectured Bound and Formal Problem",
-    "content": "`erdos83Bound n` computes $\\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$. This elegant formula was conjectured by Erdős-Ko-Rado in 1961 and carried a $500 prize. `erdos83Question n` is the formal statement: every valid family satisfies $|\\mathcal{F}| \\leq$ `erdos83Bound n`. The bound counts the 'majority' sets — those with at least $n+1$ elements from a fixed $2n$-set — which automatically have pairwise $2$-intersections.",
+    "content": "`erdos83Bound n` computes $\\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$. This elegant formula was conjectured by Erd\u0151s-Ko-Rado in 1961 and carried a $500 prize. `erdos83Question n` is the formal statement: every valid family satisfies $|\\mathcal{F}| \\leq$ `erdos83Bound n`. The bound counts the 'majority' sets \u2014 those with at least $n+1$ elements from a fixed $2n$-set \u2014 which automatically have pairwise $2$-intersections.",
     "mathContext": "$\\text{erdos83Bound}(n) = \\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$. This equals $|\\{A \\in \\binom{[4n]}{2n} : |A \\cap [2n]| \\geq n+1\\}|$.",
     "significance": "key",
     "relatedConcepts": [
       "extremal bound",
       "majority sets",
       "binomial coefficient identity",
-      "$500 Erdős prize"
+      "$500 Erd\u0151s prize"
     ],
     "prerequisites": [
       "Nat.choose",
@@ -263,7 +263,7 @@
     },
     "type": "definition",
     "title": "Critical Ratio and AK-Family",
-    "content": "`criticalRatio m k t` is the key parameter $r$ from the Ahlswede-Khachatrian theorem, satisfying $\\frac{1}{r+1} \\leq \\frac{m - 2k + 2t - 2}{(t-1)(k-t+1)} < \\frac{1}{r}$. `akFamily m k t r` constructs the family $\\mathcal{A}(r)$: all $k$-subsets containing at least $t + r$ elements from a fixed $(t + 2r)$-set. Different values of $r$ yield qualitatively different extremal families — a 'phase transition' phenomenon. For Erdős #83 parameters, $r = n - 1$ recovers the star-like family.",
+    "content": "`criticalRatio m k t` is the key parameter $r$ from the Ahlswede-Khachatrian theorem, satisfying $\\frac{1}{r+1} \\leq \\frac{m - 2k + 2t - 2}{(t-1)(k-t+1)} < \\frac{1}{r}$. `akFamily m k t r` constructs the family $\\mathcal{A}(r)$: all $k$-subsets containing at least $t + r$ elements from a fixed $(t + 2r)$-set. Different values of $r$ yield qualitatively different extremal families \u2014 a 'phase transition' phenomenon. For Erd\u0151s #83 parameters, $r = n - 1$ recovers the star-like family.",
     "mathContext": "$\\mathcal{A}(r) = \\{A \\in \\binom{[m]}{k} : |A \\cap [t+2r]| \\geq t+r\\}$. Critical ratio: $r$ is unique with $\\frac{1}{r+1} \\leq \\frac{m-2k+2t-2}{(t-1)(k-t+1)} < \\frac{1}{r}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -287,13 +287,13 @@
     },
     "type": "concept",
     "title": "Complete Intersection Theorem (Ahlswede-Khachatrian 1997)",
-    "content": "`ahlswede_khachatrian_theorem` is the landmark result: for all valid $(m, k, t)$ with $m \\geq 2k$ and $2 \\leq t \\leq k$, the maximum $t$-intersecting $k$-uniform family on $[m]$ has size $|\\mathcal{A}(r)|$ where $r = \\text{criticalRatio}(m, k, t)$. This solved the EKR conjecture for all parameters simultaneously, earning the $500 Erdős prize. The proof introduced the powerful 'pushing-pulling' technique, extending the classical shifting method.",
+    "content": "`ahlswede_khachatrian_theorem` is the landmark result: for all valid $(m, k, t)$ with $m \\geq 2k$ and $2 \\leq t \\leq k$, the maximum $t$-intersecting $k$-uniform family on $[m]$ has size $|\\mathcal{A}(r)|$ where $r = \\text{criticalRatio}(m, k, t)$. This solved the EKR conjecture for all parameters simultaneously, earning the $500 Erd\u0151s prize. The proof introduced the powerful 'pushing-pulling' technique, extending the classical shifting method.",
     "mathContext": "AK Theorem: $\\max\\{|\\mathcal{F}| : \\mathcal{F} \\subseteq \\binom{[m]}{k},\\, \\mathcal{F}$ is $t$-intersecting$\\} = |\\mathcal{A}(r^*)|$ where $r^* = \\text{criticalRatio}(m,k,t)$",
     "significance": "key",
     "relatedConcepts": [
       "Complete Intersection Theorem",
       "pushing-pulling technique",
-      "$500 Erdős prize",
+      "$500 Erd\u0151s prize",
       "EKR generalization"
     ],
     "prerequisites": [
@@ -311,8 +311,8 @@
       "endLine": 213
     },
     "type": "technique",
-    "title": "Resolution: Erdős #83 from AK Theorem",
-    "content": "`erdos83_from_ak` shows that for $(m,k,t) = (4n, 2n, 2)$, the AK-family size equals `erdos83Bound n`. `erdos83_answer` proves the full problem by applying `ahlswede_khachatrian_theorem` with these parameters: extract uniformity and intersection from `isValidErdos83Family`, apply AK to get $|\\mathcal{F}| \\leq |\\mathcal{A}(r^*)|$, then substitute the computed bound. This is one of few Erdős problems where a single deep theorem completely resolves the question.",
+    "title": "Resolution: Erd\u0151s #83 from AK Theorem",
+    "content": "`erdos83_from_ak` shows that for $(m,k,t) = (4n, 2n, 2)$, the AK-family size equals `erdos83Bound n`. `erdos83_answer` proves the full problem by applying `ahlswede_khachatrian_theorem` with these parameters: extract uniformity and intersection from `isValidErdos83Family`, apply AK to get $|\\mathcal{F}| \\leq |\\mathcal{A}(r^*)|$, then substitute the computed bound. This is one of few Erd\u0151s problems where a single deep theorem completely resolves the question.",
     "mathContext": "For $(4n, 2n, 2)$: $|\\mathcal{A}(r^*)| = \\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$ $\\Rightarrow$ `erdos83Question n` holds.",
     "significance": "key",
     "relatedConcepts": [
@@ -357,7 +357,7 @@
     },
     "type": "insight",
     "title": "Implications: Phase Transitions and Connections",
-    "content": "Four commented sections outline broader implications: (1) **Phase transitions** — the optimal family structure changes discontinuously at critical $r$ values, analogous to phase transitions in statistical physics. (2) **Coding theory** — $t$-intersecting families correspond to constant-weight codes with minimum distance constraints. (3) **Probabilistic extensions** — random $k$-subsets have specific intersection distributions. (4) **Multipartite extensions** — the theorem generalizes to product ground sets. These connections make the AK theorem a cornerstone of extremal combinatorics.",
+    "content": "Four commented sections outline broader implications: (1) **Phase transitions** \u2014 the optimal family structure changes discontinuously at critical $r$ values, analogous to phase transitions in statistical physics. (2) **Coding theory** \u2014 $t$-intersecting families correspond to constant-weight codes with minimum distance constraints. (3) **Probabilistic extensions** \u2014 random $k$-subsets have specific intersection distributions. (4) **Multipartite extensions** \u2014 the theorem generalizes to product ground sets. These connections make the AK theorem a cornerstone of extremal combinatorics.",
     "mathContext": "Code connection: $t$-intersecting $k$-uniform family on $[m]$ $\\leftrightarrow$ binary code of length $m$, constant weight $k$, minimum 'agreement' $t$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -401,12 +401,12 @@
       "endLine": 289
     },
     "type": "technique",
-    "title": "Main Theorem: Erdős Problem #83 Solved",
-    "content": "`erdos_83` is the final answer: `erdos83Question n` holds for all $n \\geq 1$. The $500 Erdős prize was awarded to Ahlswede and Khachatrian for their 1997 proof. The theorem is a direct application of `erdos83_answer`. The formalization captures the full logical structure: definitions, background (EKR), the deep theorem (AK), specialization, and both directions of the extremal result.",
+    "title": "Main Theorem: Erd\u0151s Problem #83 Solved",
+    "content": "`erdos_83` is the final answer: `erdos83Question n` holds for all $n \\geq 1$. The $500 Erd\u0151s prize was awarded to Ahlswede and Khachatrian for their 1997 proof. The theorem is a direct application of `erdos83_answer`. The formalization captures the full logical structure: definitions, background (EKR), the deep theorem (AK), specialization, and both directions of the extremal result.",
     "mathContext": "$\\forall n \\geq 1,\\, \\forall \\mathcal{F} \\subseteq \\binom{[4n]}{2n}$ with $|A \\cap B| \\geq 2$: $|\\mathcal{F}| \\leq \\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$. **QED.**",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős prize",
+      "Erd\u0151s prize",
       "solved problem",
       "complete formalization"
     ],

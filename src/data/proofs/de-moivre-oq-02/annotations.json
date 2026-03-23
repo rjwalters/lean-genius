@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Module Preamble: Deeper Chebyshev Properties via De Moivre",
-    "content": "The module extends OQ-01's basic T_n(cos θ) = cos(nθ) identity to derive the full algebraic structure of Chebyshev polynomials. The key observation is that a single identity — T_real_cos — combined with standard trigonometric identities yields composition, product-to-sum, parity, special values, and roots. Every theorem follows the pattern: convert to trig via T_real_cos → apply trig identity → close with algebra.",
+    "content": "The module extends OQ-01's basic T_n(cos \u03b8) = cos(n\u03b8) identity to derive the full algebraic structure of Chebyshev polynomials. The key observation is that a single identity \u2014 T_real_cos \u2014 combined with standard trigonometric identities yields composition, product-to-sum, parity, special values, and roots. Every theorem follows the pattern: convert to trig via T_real_cos \u2192 apply trig identity \u2192 close with algebra.",
     "mathContext": "Core identity: $T_n(\\cos\\theta) = \\cos(n\\theta)$. All properties follow from this plus $\\cos(A\\pm B)$, $\\cos(\\pi - \\theta) = -\\cos\\theta$, $\\cos(n\\pi) = (-1)^n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "T_real_cos",
       "cos_add",
@@ -31,9 +31,9 @@
       "endLine": 32
     },
     "type": "technique",
-    "title": "Composition Identity: T_m(T_n(cos θ)) = T_{mn}(cos θ)",
-    "content": "chebyshev_composition proves the fundamental composition identity by converting both sides to cosine: T_m(T_n(cos θ)) = T_m(cos(nθ)) = cos(m·nθ) = cos(mn·θ) = T_{mn}(cos θ). The proof applies T_real_cos twice (once for T_n at θ, once for T_m at nθ) and once for T_{mn} at θ, reducing to the arithmetic identity m·n·θ = mn·θ which push_cast; ring closes. This reveals Chebyshev polynomials as a commutative monoid under composition, isomorphic to (ℤ,×).",
-    "mathContext": "$T_m(T_n(\\cos\\theta)) = \\cos(m \\cdot n\\theta) = \\cos(mn\\theta) = T_{mn}(\\cos\\theta)$. Lean: `rw [T_real_cos θ n, T_real_cos (n*θ) m, T_real_cos θ (m*n)]; congr 1; push_cast; ring`.",
+    "title": "Composition Identity: T_m(T_n(cos \u03b8)) = T_{mn}(cos \u03b8)",
+    "content": "chebyshev_composition proves the fundamental composition identity by converting both sides to cosine: T_m(T_n(cos \u03b8)) = T_m(cos(n\u03b8)) = cos(m\u00b7n\u03b8) = cos(mn\u00b7\u03b8) = T_{mn}(cos \u03b8). The proof applies T_real_cos twice (once for T_n at \u03b8, once for T_m at n\u03b8) and once for T_{mn} at \u03b8, reducing to the arithmetic identity m\u00b7n\u00b7\u03b8 = mn\u00b7\u03b8 which push_cast; ring closes. This reveals Chebyshev polynomials as a commutative monoid under composition, isomorphic to (\u2124,\u00d7).",
+    "mathContext": "$T_m(T_n(\\cos\\theta)) = \\cos(m \\cdot n\\theta) = \\cos(mn\\theta) = T_{mn}(\\cos\\theta)$. Lean: `rw [T_real_cos \u03b8 n, T_real_cos (n*\u03b8) m, T_real_cos \u03b8 (m*n)]; congr 1; push_cast; ring`.",
     "significance": "key",
     "relatedConcepts": [
       "T_real_cos",
@@ -55,8 +55,8 @@
       "endLine": 74
     },
     "type": "technique",
-    "title": "Product-to-Sum: 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x)",
-    "content": "chebyshev_product_to_sum proves the polynomial product-to-sum formula by converting to trigonometric form and applying cos_add/cos_sub. After T_real_cos rewrites: 2·cos(mθ)·cos(nθ) = cos((m+n)θ) + cos((m-n)θ). The proof establishes cos_add and cos_sub as local hypotheses, computes the cast arithmetic (m+n)·θ = m·θ+n·θ and (m-n)·θ = m·θ-n·θ via push_cast; ring, then linarith combines them. This identity underpins Chebyshev spectral methods: multiplying two Chebyshev expansions reduces to index shifts.",
+    "title": "Product-to-Sum: 2\u00b7T_m(x)\u00b7T_n(x) = T_{m+n}(x) + T_{m-n}(x)",
+    "content": "chebyshev_product_to_sum proves the polynomial product-to-sum formula by converting to trigonometric form and applying cos_add/cos_sub. After T_real_cos rewrites: 2\u00b7cos(m\u03b8)\u00b7cos(n\u03b8) = cos((m+n)\u03b8) + cos((m-n)\u03b8). The proof establishes cos_add and cos_sub as local hypotheses, computes the cast arithmetic (m+n)\u00b7\u03b8 = m\u00b7\u03b8+n\u00b7\u03b8 and (m-n)\u00b7\u03b8 = m\u00b7\u03b8-n\u00b7\u03b8 via push_cast; ring, then linarith combines them. This identity underpins Chebyshev spectral methods: multiplying two Chebyshev expansions reduces to index shifts.",
     "mathContext": "$2\\cos(m\\theta)\\cos(n\\theta) = \\cos((m+n)\\theta) + \\cos((m-n)\\theta)$ by product-to-sum. Polynomial form: $2T_m(x)T_n(x) = T_{m+n}(x) + T_{m-n}(x)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -80,8 +80,8 @@
       "endLine": 92
     },
     "type": "technique",
-    "title": "Parity: T_n(-cos θ) = (-1)^n · T_n(cos θ)",
-    "content": "chebyshev_parity proves that negating the argument of T_n multiplies the value by (-1)^n. The key is cos_pi_sub: -cos θ = cos(π-θ). After rewriting: T_n(cos(π-θ)) = cos(n(π-θ)) = cos(nπ-nθ) = (-1)^n·cos(nθ) by cos_int_mul_pi_sub. The final step uses ring to show n·(π-θ) = n·π - n·θ. This classifies T_{2n} as even functions and T_{2n+1} as odd functions — important for integration on symmetric intervals.",
+    "title": "Parity: T_n(-cos \u03b8) = (-1)^n \u00b7 T_n(cos \u03b8)",
+    "content": "chebyshev_parity proves that negating the argument of T_n multiplies the value by (-1)^n. The key is cos_pi_sub: -cos \u03b8 = cos(\u03c0-\u03b8). After rewriting: T_n(cos(\u03c0-\u03b8)) = cos(n(\u03c0-\u03b8)) = cos(n\u03c0-n\u03b8) = (-1)^n\u00b7cos(n\u03b8) by cos_int_mul_pi_sub. The final step uses ring to show n\u00b7(\u03c0-\u03b8) = n\u00b7\u03c0 - n\u00b7\u03b8. This classifies T_{2n} as even functions and T_{2n+1} as odd functions \u2014 important for integration on symmetric intervals.",
     "mathContext": "$-\\cos\\theta = \\cos(\\pi-\\theta)$, so $T_n(-\\cos\\theta) = \\cos(n(\\pi-\\theta)) = \\cos(n\\pi - n\\theta) = (-1)^n\\cos(n\\theta) = (-1)^n T_n(\\cos\\theta)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -105,7 +105,7 @@
     },
     "type": "technique",
     "title": "Special Values: T_n(1), T_n(-1), T_n(0)",
-    "content": "Three special value theorems. chebyshev_at_one: T_n(1) = 1 from cos(0)=1 and cos(n·0)=cos(0)=1 — the constant 1 is a fixed point for every Chebyshev polynomial. chebyshev_at_neg_one: T_n(-1) = (-1)^n from cos(π)=-1 and cos(nπ) = (-1)^n — the alternating sign is the parity of n. chebyshev_at_zero: T_n(0) = cos(nπ/2) from cos(π/2)=0 — this cycles through 1, 0, -1, 0 as n increases.",
+    "content": "Three special value theorems. chebyshev_at_one: T_n(1) = 1 from cos(0)=1 and cos(n\u00b70)=cos(0)=1 \u2014 the constant 1 is a fixed point for every Chebyshev polynomial. chebyshev_at_neg_one: T_n(-1) = (-1)^n from cos(\u03c0)=-1 and cos(n\u03c0) = (-1)^n \u2014 the alternating sign is the parity of n. chebyshev_at_zero: T_n(0) = cos(n\u03c0/2) from cos(\u03c0/2)=0 \u2014 this cycles through 1, 0, -1, 0 as n increases.",
     "mathContext": "$T_n(1) = 1$ (from $\\cos(0)=1$). $T_n(-1) = (-1)^n$ (from $\\cos(n\\pi)=(-1)^n$). $T_n(0) = \\cos(n\\pi/2)$ (from $\\cos(\\pi/2)=0$).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -127,8 +127,8 @@
       "endLine": 144
     },
     "type": "technique",
-    "title": "Roots: T_n(cos((2k+1)π/(2n))) = 0",
-    "content": "chebyshev_root proves that the n-th Chebyshev polynomial vanishes at cos((2k+1)π/(2n)) for all integers k. The key algebraic manipulation simplifies n·((2k+1)π/(2n)) = (2k+1)π/2 = kπ + π/2 via field_simp (needing n ≠ 0). Then cos(kπ + π/2) = cos(kπ)·cos(π/2) - sin(kπ)·sin(π/2) = 0 since cos(π/2) = 0. For k = 0, ..., n-1 these give the n distinct roots in (-1,1), which are the optimal Chebyshev interpolation nodes.",
+    "title": "Roots: T_n(cos((2k+1)\u03c0/(2n))) = 0",
+    "content": "chebyshev_root proves that the n-th Chebyshev polynomial vanishes at cos((2k+1)\u03c0/(2n)) for all integers k. The key algebraic manipulation simplifies n\u00b7((2k+1)\u03c0/(2n)) = (2k+1)\u03c0/2 = k\u03c0 + \u03c0/2 via field_simp (needing n \u2260 0). Then cos(k\u03c0 + \u03c0/2) = cos(k\u03c0)\u00b7cos(\u03c0/2) - sin(k\u03c0)\u00b7sin(\u03c0/2) = 0 since cos(\u03c0/2) = 0. For k = 0, ..., n-1 these give the n distinct roots in (-1,1), which are the optimal Chebyshev interpolation nodes.",
     "mathContext": "$T_n\\left(\\cos\\frac{(2k+1)\\pi}{2n}\\right) = \\cos\\left(\\frac{(2k+1)\\pi}{2}\\right) = \\cos\\left(k\\pi + \\frac{\\pi}{2}\\right) = 0$.",
     "significance": "key",
     "relatedConcepts": [

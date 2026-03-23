@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Problem Statement and Known Results",
-    "content": "**Erdős Problem #1141**: Are there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\nThe known values form **OEIS A214583**: 3, 4, 6, 8, 12, 14, 18, 20, 24, 30, 32, ..., 930, 1722. There are exactly 41 known terms, and an exhaustive search found no further terms below $10^{10}$.\n\n**Key observation**: All known good values are **even** (except 3). This is because odd $n > 3$ tends to fail: taking $k$ even with $\\gcd(n,k) = 1$, we need $n - k^2$ prime, but the many coprime $k$ values create too many primality constraints.\n\nChatGPT-Tang proved the count of good values in $[1, N]$ is $O(N^{1/2+o(1)})$, giving a density bound that is consistent with finiteness but does not settle the question.",
+    "content": "**Erd\u0151s Problem #1141**: Are there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\nThe known values form **OEIS A214583**: 3, 4, 6, 8, 12, 14, 18, 20, 24, 30, 32, ..., 930, 1722. There are exactly 41 known terms, and an exhaustive search found no further terms below $10^{10}$.\n\n**Key observation**: All known good values are **even** (except 3). This is because odd $n > 3$ tends to fail: taking $k$ even with $\\gcd(n,k) = 1$, we need $n - k^2$ prime, but the many coprime $k$ values create too many primality constraints.\n\nChatGPT-Tang proved the count of good values in $[1, N]$ is $O(N^{1/2+o(1)})$, giving a density bound that is consistent with finiteness but does not settle the question.",
     "mathContext": "$\\{n \\in \\mathbb{N} : \\forall k,\\; \\gcd(n,k)=1 \\wedge k^2 < n \\Rightarrow (n-k^2) \\text{ prime}\\}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "OEIS A214583",
       "Bunyakovsky conjecture",
@@ -26,9 +26,9 @@
       "endLine": 32
     },
     "type": "definition",
-    "title": "The Erdős-1141 Property",
-    "content": "A natural number $n$ is **Erdős-1141 good** if for every $k$ with $k^2 < n$ and $\\gcd(n, k) = 1$, the difference $n - k^2$ is prime.\n\nThe formalization bounds the quantifier using `Finset.range n` to ensure **decidability** — since $k^2 < n$ implies $k < n$, ranging over $\\{0, 1, \\ldots, n-1\\}$ captures all relevant $k$. This makes the property `Decidable`, enabling the `decide` and `native_decide` tactics for computational verification.\n\nThe coprimality condition $\\gcd(n, k) = 1$ filters out $k$ values that share factors with $n$, reducing the number of primality conditions. For highly composite $n$, fewer $k$ are coprime, making it easier to satisfy the property — which explains why many known good values are highly composite (12, 24, 30, 60, 180, 360).",
-    "mathContext": "`IsErdos1141Good n ↔ ∀ k ∈ Finset.range n, k² < n → Nat.Coprime n k → (n - k²).Prime`",
+    "title": "The Erd\u0151s-1141 Property",
+    "content": "A natural number $n$ is **Erd\u0151s-1141 good** if for every $k$ with $k^2 < n$ and $\\gcd(n, k) = 1$, the difference $n - k^2$ is prime.\n\nThe formalization bounds the quantifier using `Finset.range n` to ensure **decidability** \u2014 since $k^2 < n$ implies $k < n$, ranging over $\\{0, 1, \\ldots, n-1\\}$ captures all relevant $k$. This makes the property `Decidable`, enabling the `decide` and `native_decide` tactics for computational verification.\n\nThe coprimality condition $\\gcd(n, k) = 1$ filters out $k$ values that share factors with $n$, reducing the number of primality conditions. For highly composite $n$, fewer $k$ are coprime, making it easier to satisfy the property \u2014 which explains why many known good values are highly composite (12, 24, 30, 60, 180, 360).",
+    "mathContext": "`IsErdos1141Good n \u2194 \u2200 k \u2208 Finset.range n, k\u00b2 < n \u2192 Nat.Coprime n k \u2192 (n - k\u00b2).Prime`",
     "significance": "key",
     "relatedConcepts": [
       "Decidable",
@@ -49,8 +49,8 @@
     },
     "type": "technique",
     "title": "Equivalence with Unbounded Quantifier",
-    "content": "The bounded formulation (`k ∈ Finset.range n`) is equivalent to the unbounded one (`∀ k : ℕ`).\n\n**Forward direction**: The bounded version quantifies over $\\{0, \\ldots, n-1\\}$, which includes all $k$ with $k^2 < n$ since $k^2 < n \\Rightarrow k < n$. Proved using `Finset.mem_range.mpr` and `omega`.\n\n**Reverse direction**: The unbounded version trivially implies the bounded one by ignoring the Finset membership condition.\n\nThis equivalence lets us use `decide` for computation (bounded) while stating clean mathematical theorems (unbounded).",
-    "mathContext": "`IsErdos1141Good n ↔ ∀ k, k² < n → Nat.Coprime n k → (n - k²).Prime`",
+    "content": "The bounded formulation (`k \u2208 Finset.range n`) is equivalent to the unbounded one (`\u2200 k : \u2115`).\n\n**Forward direction**: The bounded version quantifies over $\\{0, \\ldots, n-1\\}$, which includes all $k$ with $k^2 < n$ since $k^2 < n \\Rightarrow k < n$. Proved using `Finset.mem_range.mpr` and `omega`.\n\n**Reverse direction**: The unbounded version trivially implies the bounded one by ignoring the Finset membership condition.\n\nThis equivalence lets us use `decide` for computation (bounded) while stating clean mathematical theorems (unbounded).",
+    "mathContext": "`IsErdos1141Good n \u2194 \u2200 k, k\u00b2 < n \u2192 Nat.Coprime n k \u2192 (n - k\u00b2).Prime`",
     "significance": "supporting",
     "relatedConcepts": [
       "iff",
@@ -69,7 +69,7 @@
       "endLine": 69
     },
     "type": "technique",
-    "title": "Verified Good Values (3–20)",
+    "title": "Verified Good Values (3\u201320)",
     "content": "Eight small values verified by the `decide` tactic: $n = 3, 4, 6, 8, 12, 14, 18, 20$.\n\n**Why these work**:\n- $n = 3$: Only $k = 1$ is coprime with $1^2 < 3$, and $3 - 1 = 2$ is prime\n- $n = 4$: $k = 1$ gives $4 - 1 = 3$ (prime); $k = 3$ gives $3^2 = 9 > 4$ so excluded\n- $n = 12$: Coprime $k$ with $k^2 < 12$: $k \\in \\{1, 5, 7, 11\\}$ but $5^2, 7^2, 11^2 > 12$, so only $k = 1$ giving $12 - 1 = 11$ (prime)\n\n**Pattern**: Highly composite numbers (12, 18, 20) have few coprime $k$ values with $k^2 < n$, making it easier to satisfy all the primality conditions simultaneously.\n\nAll proved by `decide`, which exhaustively checks every $k \\in \\{0, \\ldots, n-1\\}$.",
     "mathContext": "`IsErdos1141Good n` verified for $n \\in \\{3, 4, 6, 8, 12, 14, 18, 20\\}$ by `decide`",
     "significance": "supporting",
@@ -112,7 +112,7 @@
     },
     "type": "technique",
     "title": "Structural Properties",
-    "content": "Three structural results about the Erdős-1141 property:\n\n1. **$n = 0$ is good** (`good_0`): Vacuously true — there are no $k$ with $k^2 < 0$. Proved by `intro` and `simp` on `Finset.mem_range`.\n\n2. **$n = 1$ is not good** (`not_good_1`): $k = 0$ has $0^2 = 0 < 1$ and $\\gcd(1, 0) = 1$, but $1 - 0 = 1$ is not prime.\n\n3. **Good implies predecessor is prime** (`good_implies_pred_prime`): If $n \\ge 2$ is good, then $n - 1$ is prime. This uses $k = 1$ (since $1^2 < n$ and $\\gcd(n, 1) = 1$ always). This means all good $n \\ge 2$ are of the form $p + 1$ for some prime $p$.\n\nThe third result is a genuine structural theorem: it constrains good values to lie one above a prime, which is a strong necessary condition.",
+    "content": "Three structural results about the Erd\u0151s-1141 property:\n\n1. **$n = 0$ is good** (`good_0`): Vacuously true \u2014 there are no $k$ with $k^2 < 0$. Proved by `intro` and `simp` on `Finset.mem_range`.\n\n2. **$n = 1$ is not good** (`not_good_1`): $k = 0$ has $0^2 = 0 < 1$ and $\\gcd(1, 0) = 1$, but $1 - 0 = 1$ is not prime.\n\n3. **Good implies predecessor is prime** (`good_implies_pred_prime`): If $n \\ge 2$ is good, then $n - 1$ is prime. This uses $k = 1$ (since $1^2 < n$ and $\\gcd(n, 1) = 1$ always). This means all good $n \\ge 2$ are of the form $p + 1$ for some prime $p$.\n\nThe third result is a genuine structural theorem: it constrains good values to lie one above a prime, which is a strong necessary condition.",
     "mathContext": "If $n \\ge 2$ and `IsErdos1141Good n`, then $(n-1)$ is prime (via $k = 1$)",
     "significance": "key",
     "relatedConcepts": [
@@ -133,7 +133,7 @@
     },
     "type": "concept",
     "title": "The Open Conjecture",
-    "content": "**Erdős Problem #1141 (OPEN)**: For every $N$, there exists $n \\ge N$ with `IsErdos1141Good n`.\n\nThis is the **infinitude statement**: the set of good values is unbounded. Equivalently, `{n : IsErdos1141Good n}` is infinite.\n\nStated as an axiom since the problem is open. The evidence is ambiguous:\n- **For infinitude**: The sequence extends to 1722 and has 41 known terms, suggesting a rich structure\n- **Against infinitude**: No new terms between 1722 and $10^{10}$; the density bound $O(N^{1/2+o(1)})$ is consistent with a finite sequence\n\nThe formalization uses the standard Lean pattern for infinitude: $\\forall N, \\exists n \\ge N$ satisfying the property.",
+    "content": "**Erd\u0151s Problem #1141 (OPEN)**: For every $N$, there exists $n \\ge N$ with `IsErdos1141Good n`.\n\nThis is the **infinitude statement**: the set of good values is unbounded. Equivalently, `{n : IsErdos1141Good n}` is infinite.\n\nStated as an axiom since the problem is open. The evidence is ambiguous:\n- **For infinitude**: The sequence extends to 1722 and has 41 known terms, suggesting a rich structure\n- **Against infinitude**: No new terms between 1722 and $10^{10}$; the density bound $O(N^{1/2+o(1)})$ is consistent with a finite sequence\n\nThe formalization uses the standard Lean pattern for infinitude: $\\forall N, \\exists n \\ge N$ satisfying the property.",
     "mathContext": "$\\forall N \\in \\mathbb{N},\\; \\exists n \\ge N : \\text{IsErdos1141Good}(n)$",
     "significance": "key",
     "relatedConcepts": [
@@ -155,12 +155,12 @@
     },
     "type": "definition",
     "title": "OEIS A214583 Enumeration",
-    "content": "The complete list of all 41 known good values, stored as `knownGoodValues : List ℕ`.\n\nThis is OEIS sequence **A214583**. Notable features:\n- The largest known term is 1722\n- The sequence is sparse: only 41 terms up to 1722, and none between 1722 and $10^{10}$\n- Many terms are highly composite: 12, 24, 30, 60, 90, 108, 180, 252, 360, 570\n- The list length is verified to be 41 by `native_decide`\n\nThe highly composite pattern is explained by Euler's totient function: $\\phi(n)/n$ is small for highly composite $n$, meaning fewer coprime residues, and hence fewer primality conditions to satisfy.",
+    "content": "The complete list of all 41 known good values, stored as `knownGoodValues : List \u2115`.\n\nThis is OEIS sequence **A214583**. Notable features:\n- The largest known term is 1722\n- The sequence is sparse: only 41 terms up to 1722, and none between 1722 and $10^{10}$\n- Many terms are highly composite: 12, 24, 30, 60, 90, 108, 180, 252, 360, 570\n- The list length is verified to be 41 by `native_decide`\n\nThe highly composite pattern is explained by Euler's totient function: $\\phi(n)/n$ is small for highly composite $n$, meaning fewer coprime residues, and hence fewer primality conditions to satisfy.",
     "mathContext": "`knownGoodValues = [3, 4, 6, ..., 930, 1722]` with `knownGoodValues.length = 41`",
     "significance": "supporting",
     "relatedConcepts": [
       "OEIS A214583",
-      "List ℕ",
+      "List \u2115",
       "native_decide",
       "highly composite numbers"
     ],
@@ -176,7 +176,7 @@
       "endLine": 154
     },
     "type": "technique",
-    "title": "Larger Verified Examples (24–1722)",
+    "title": "Larger Verified Examples (24\u20131722)",
     "content": "Nine larger values verified using `native_decide`: $n = 24, 30, 60, 90, 110, 198, 252, 570, 1722$.\n\nThese use `native_decide` instead of `decide` because the kernel-level decision procedure becomes too slow for larger $n$. `native_decide` compiles the decision procedure to native code, enabling verification of $n = 1722$ (checking all $k \\in \\{0, \\ldots, 1721\\}$ with $k^2 < 1722$ and $\\gcd(1722, k) = 1$).\n\n**$n = 1722$** is the **largest known** good value (as of $10^{10}$ search). Its factorization $1722 = 2 \\times 3 \\times 7 \\times 41$ makes it highly composite, with $\\phi(1722) = 432$ coprime residues. Of these, $\\lfloor\\sqrt{1722}\\rfloor = 41$ satisfy $k \\le \\sqrt{n}$, but the coprimality filter reduces the constraints.",
     "mathContext": "`IsErdos1141Good n` verified for $n \\in \\{24, 30, 60, 90, 110, 198, 252, 570, 1722\\}$ by `native_decide`",
     "significance": "supporting",

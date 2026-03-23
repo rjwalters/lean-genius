@@ -8,13 +8,13 @@
     },
     "type": "context",
     "title": "Open Question: What Can Diagonalization Prove About CH?",
-    "content": "The header frames the central question: Cantor's diagonal argument proves the gap aleph_0 < 2^aleph_0, but can it determine whether any cardinal lies between them? The Continuum Hypothesis (CH), posed in 1878, is Hilbert's Problem 1. The file imports Cardinal.Basic (Cantor's theorem), Cardinal.Ordinal (aleph numbers), Cardinal.Cofinality (for König's theorem), and local helpers CantorDiagonalization and ContinuumHypothesis. The header gives a clean table of what the diagonal CAN prove (cantor_gap, aleph_one_le_continuum, beth_strictly_increasing, ch_iff_no_intermediate) vs. what it CANNOT (the exact value of 2^aleph_0 in the aleph hierarchy).",
-    "mathContext": "The Cantor-Bernstein hierarchy: $\\aleph_0 < \\aleph_1 \\leq 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$. CH states $2^{\\aleph_0} = \\aleph_1$. Gödel (1940): ZFC + CH is consistent. Cohen (1963): ZFC + ¬CH is consistent. So CH is independent of ZFC.",
-    "significance": "context",
+    "content": "The header frames the central question: Cantor's diagonal argument proves the gap aleph_0 < 2^aleph_0, but can it determine whether any cardinal lies between them? The Continuum Hypothesis (CH), posed in 1878, is Hilbert's Problem 1. The file imports Cardinal.Basic (Cantor's theorem), Cardinal.Ordinal (aleph numbers), Cardinal.Cofinality (for K\u00f6nig's theorem), and local helpers CantorDiagonalization and ContinuumHypothesis. The header gives a clean table of what the diagonal CAN prove (cantor_gap, aleph_one_le_continuum, beth_strictly_increasing, ch_iff_no_intermediate) vs. what it CANNOT (the exact value of 2^aleph_0 in the aleph hierarchy).",
+    "mathContext": "The Cantor-Bernstein hierarchy: $\\aleph_0 < \\aleph_1 \\leq 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$. CH states $2^{\\aleph_0} = \\aleph_1$. G\u00f6del (1940): ZFC + CH is consistent. Cohen (1963): ZFC + \u00acCH is consistent. So CH is independent of ZFC.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Continuum Hypothesis",
       "Cantor diagonalization",
-      "Gödel constructible universe",
+      "G\u00f6del constructible universe",
       "Cohen forcing",
       "ZFC independence"
     ],
@@ -33,7 +33,7 @@
     },
     "type": "technique",
     "title": "The Fundamental Diagonal Gap: cantor_gap and General Inequality",
-    "content": "cantor_gap is a one-line theorem: Cardinal.cantor aleph_0. Cardinal.cantor states the general diagonal inequality kappa < 2^kappa for any cardinal. Three additional results follow: continuum := 2^aleph_0 (def), aleph_zero_lt_continuum (alias for cantor_gap), diagonal_strict_inequality kappa := Cardinal.cantor kappa (the general case), and diagonal_argument_holds — a functional formulation using CantorDiagonalization.cantor_diagonalization showing every enumeration f : N -> (N -> Bool) misses the anti-diagonal sequence. These establish the gap in both cardinal-order and functional-witness forms.",
+    "content": "cantor_gap is a one-line theorem: Cardinal.cantor aleph_0. Cardinal.cantor states the general diagonal inequality kappa < 2^kappa for any cardinal. Three additional results follow: continuum := 2^aleph_0 (def), aleph_zero_lt_continuum (alias for cantor_gap), diagonal_strict_inequality kappa := Cardinal.cantor kappa (the general case), and diagonal_argument_holds \u2014 a functional formulation using CantorDiagonalization.cantor_diagonalization showing every enumeration f : N -> (N -> Bool) misses the anti-diagonal sequence. These establish the gap in both cardinal-order and functional-witness forms.",
     "mathContext": "Cantor's theorem: $\\forall \\kappa, \\kappa < 2^\\kappa$. At $\\kappa = \\aleph_0$: no $f: \\mathbb{N} \\to \\{0,1\\}^\\mathbb{N}$ is surjective. The diagonal witness: $d_n = 1 - f(n)(n)$ satisfies $\\forall n, d \\neq f(n)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -81,7 +81,7 @@
     },
     "type": "insight",
     "title": "Beth Number Tower: Infinite Cardinal Hierarchy from Iterated Diagonalization",
-    "content": "beth is defined by recursion: beth 0 = aleph_0, beth (n+1) = 2^(beth n). beth_strictly_increasing proves beth n < beth (n+1) in one line by Cardinal.cantor (beth n) — the diagonal at each level. beth_lt_of_lt proves strict monotonicity for all n < m by induction using lt_trans. beth_generates_infinite_hierarchy shows the diagonal generates infinitely many distinct cardinals. This demonstrates that the diagonal argument does not stop at one gap but iterates forever, each level transcending the previous by a new diagonal argument.",
+    "content": "beth is defined by recursion: beth 0 = aleph_0, beth (n+1) = 2^(beth n). beth_strictly_increasing proves beth n < beth (n+1) in one line by Cardinal.cantor (beth n) \u2014 the diagonal at each level. beth_lt_of_lt proves strict monotonicity for all n < m by induction using lt_trans. beth_generates_infinite_hierarchy shows the diagonal generates infinitely many distinct cardinals. This demonstrates that the diagonal argument does not stop at one gap but iterates forever, each level transcending the previous by a new diagonal argument.",
     "mathContext": "$\\beth_n$: $\\beth_0 = \\aleph_0$, $\\beth_1 = 2^{\\aleph_0}$, $\\beth_2 = 2^{2^{\\aleph_0}}$. Strict monotonicity: $\\beth_n < \\beth_{n+1}$ by $\\kappa < 2^\\kappa$. The beth hierarchy is distinct from the aleph hierarchy unless the Generalized CH holds ($\\beth_n = \\aleph_n$ for all $n$).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -107,7 +107,7 @@
     "type": "insight",
     "title": "CH Analysis: The Equivalence CH iff No Intermediate Cardinal",
     "content": "CH := continuum = aleph_one. HasIntermediateCardinal := exists kappa, aleph_0 < kappa < continuum. ch_implies_no_intermediate: if CH then continuum = Order.succ aleph_0, so kappa < continuum forces kappa <= aleph_0 by Order.lt_succ_iff, contradicting aleph_0 < kappa. not_ch_means_gap: if not-CH then aleph_1 < continuum by lt_or_eq_of_le. not_ch_has_intermediate: aleph_1 is explicitly intermediate under not-CH. ch_iff_no_intermediate proves the bidirectional equivalence using le_antisymm with by_contra. This section formalizes the logical content of CH without forcing.",
-    "mathContext": "CH $\\iff 2^{\\aleph_0} = \\aleph_1 \\iff \\neg\\text{HasIntermediate}$. Under CH: $\\kappa < \\text{succ}(\\aleph_0)$ implies $\\kappa \\leq \\aleph_0$ (Order.lt_succ_iff). Under ¬CH: $\\aleph_1 < 2^{\\aleph_0}$ gives explicit intermediate $\\aleph_1$.",
+    "mathContext": "CH $\\iff 2^{\\aleph_0} = \\aleph_1 \\iff \\neg\\text{HasIntermediate}$. Under CH: $\\kappa < \\text{succ}(\\aleph_0)$ implies $\\kappa \\leq \\aleph_0$ (Order.lt_succ_iff). Under \u00acCH: $\\aleph_1 < 2^{\\aleph_0}$ gives explicit intermediate $\\aleph_1$.",
     "significance": "key",
     "relatedConcepts": [
       "Continuum Hypothesis",
@@ -130,12 +130,12 @@
       "endLine": 321
     },
     "type": "insight",
-    "title": "König's Theorem: cf(2^aleph_0) > aleph_0 Rules Out Singular Alephs",
-    "content": "König's cofinality bound is axiomatized: aleph_0 < cof(continuum.ord). Two axioms are used: konig_cofinality_bound and aleph_omega_cofinality_is_aleph_zero. From these, konig_rules_out_aleph_omega proves continuum != aleph_omega by contradiction: if continuum = aleph_omega then cof(continuum) = cof(aleph_omega) = aleph_0, contradicting König's bound. This shows that even without deciding CH, ZFC rules out all singular cardinals (those with countable cofinality) as possible values of 2^aleph_0. König's proof uses the general lemma sum_i kappa_i < prod_i lambda_i when kappa_i < lambda_i.",
-    "mathContext": "König's theorem: $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$. Since $\\text{cf}(\\aleph_\\omega) = \\aleph_0$, we get $2^{\\aleph_0} \\neq \\aleph_\\omega$. More generally: $2^{\\aleph_0} \\neq \\aleph_\\lambda$ for any limit ordinal $\\lambda$ with $\\text{cf}(\\lambda) = \\omega$.",
+    "title": "K\u00f6nig's Theorem: cf(2^aleph_0) > aleph_0 Rules Out Singular Alephs",
+    "content": "K\u00f6nig's cofinality bound is axiomatized: aleph_0 < cof(continuum.ord). Two axioms are used: konig_cofinality_bound and aleph_omega_cofinality_is_aleph_zero. From these, konig_rules_out_aleph_omega proves continuum != aleph_omega by contradiction: if continuum = aleph_omega then cof(continuum) = cof(aleph_omega) = aleph_0, contradicting K\u00f6nig's bound. This shows that even without deciding CH, ZFC rules out all singular cardinals (those with countable cofinality) as possible values of 2^aleph_0. K\u00f6nig's proof uses the general lemma sum_i kappa_i < prod_i lambda_i when kappa_i < lambda_i.",
+    "mathContext": "K\u00f6nig's theorem: $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$. Since $\\text{cf}(\\aleph_\\omega) = \\aleph_0$, we get $2^{\\aleph_0} \\neq \\aleph_\\omega$. More generally: $2^{\\aleph_0} \\neq \\aleph_\\lambda$ for any limit ordinal $\\lambda$ with $\\text{cf}(\\lambda) = \\omega$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "König's theorem",
+      "K\u00f6nig's theorem",
       "cofinality",
       "singular cardinals",
       "aleph_omega",
@@ -144,7 +144,7 @@
     "prerequisites": [
       "Ordinal.cof",
       "Cardinal.Cofinality module",
-      "König's cardinal lemma"
+      "K\u00f6nig's cardinal lemma"
     ]
   },
   {
@@ -156,12 +156,12 @@
     },
     "type": "insight",
     "title": "The Limit of Diagonalization: ZFC vs. Independence",
-    "content": "The section doc enumerates 4 ZFC-provable facts vs. 3 ZFC-undecidable facts. diagonal_reaches_its_limit packages the ZFC-provable chain as a conjunction. cantor_diagonal_open_question_summary is the comprehensive four-part result: cantor_gap + aleph_one_le_continuum + (forall n, beth n < beth (n+1)) + ch_iff_no_intermediate. The conclusion comment summarizes: the diagonal reveals the gap exists and generates the beth tower, but cannot measure the width of the first gap — that question requires the forcing machinery of Cohen 1963. This file is unique in providing the formal statement of what ZFC can and cannot prove about CH in Lean 4.",
-    "mathContext": "ZFC proves: $\\aleph_0 < \\aleph_1 \\leq 2^{\\aleph_0}$, $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$, $\\beth_n$ strictly increasing. ZFC does not prove: $2^{\\aleph_0} = \\aleph_1$ (Con(ZFC+CH), Gödel 1940) or $2^{\\aleph_0} > \\aleph_1$ (Con(ZFC+¬CH), Cohen 1963).",
+    "content": "The section doc enumerates 4 ZFC-provable facts vs. 3 ZFC-undecidable facts. diagonal_reaches_its_limit packages the ZFC-provable chain as a conjunction. cantor_diagonal_open_question_summary is the comprehensive four-part result: cantor_gap + aleph_one_le_continuum + (forall n, beth n < beth (n+1)) + ch_iff_no_intermediate. The conclusion comment summarizes: the diagonal reveals the gap exists and generates the beth tower, but cannot measure the width of the first gap \u2014 that question requires the forcing machinery of Cohen 1963. This file is unique in providing the formal statement of what ZFC can and cannot prove about CH in Lean 4.",
+    "mathContext": "ZFC proves: $\\aleph_0 < \\aleph_1 \\leq 2^{\\aleph_0}$, $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$, $\\beth_n$ strictly increasing. ZFC does not prove: $2^{\\aleph_0} = \\aleph_1$ (Con(ZFC+CH), G\u00f6del 1940) or $2^{\\aleph_0} > \\aleph_1$ (Con(ZFC+\u00acCH), Cohen 1963).",
     "significance": "supporting",
     "relatedConcepts": [
       "ZFC independence",
-      "Gödel-Cohen",
+      "G\u00f6del-Cohen",
       "beth_strictly_increasing",
       "forcing",
       "large cardinal axioms"
@@ -169,7 +169,7 @@
     "prerequisites": [
       "ch_iff_no_intermediate",
       "aleph_one_le_continuum",
-      "König's bound",
+      "K\u00f6nig's bound",
       "Woodin's Ultimate-L"
     ]
   }

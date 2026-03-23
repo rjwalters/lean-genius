@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Imports and Problem Overview",
-    "content": "Module documentation describing Erdős Problem #1036 on distinct induced subgraphs in non-Ramsey graphs. Imports SimpleGraph, Finset, Fintype, and real number infrastructure for counting arguments.",
+    "content": "Module documentation describing Erd\u0151s Problem #1036 on distinct induced subgraphs in non-Ramsey graphs. Imports SimpleGraph, Finset, Fintype, and real number infrastructure for counting arguments.",
     "mathContext": "A graph $G$ on $n$ vertices is non-Ramsey with parameter $c$ if it has no trivial (empty or complete) induced subgraph on more than $c \\log n$ vertices. Problem 1036 asks whether such graphs must contain $2^{\\Omega_c(n)}$ non-isomorphic induced subgraphs.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ramsey theory",
       "induced subgraph counting",
@@ -32,7 +32,7 @@
     "type": "definition",
     "title": "vertexCount",
     "content": "Number of vertices in a simple graph, defined as the cardinality of the Fintype vertex set.",
-    "mathContext": "$|V(G)|$ — the number of vertices of the graph $G$. All graphs are finite throughout this formalization.",
+    "mathContext": "$|V(G)|$ \u2014 the number of vertices of the graph $G$. All graphs are finite throughout this formalization.",
     "significance": "supporting",
     "relatedConcepts": [
       "graph order",
@@ -160,7 +160,7 @@
     },
     "type": "definition",
     "title": "isNonRamsey",
-    "content": "A graph G on n vertices is non-Ramsey with parameter c if it has no trivial subgraph on more than c log n vertices. By Ramsey's theorem, this requires c ≥ some constant depending on the graph.",
+    "content": "A graph G on n vertices is non-Ramsey with parameter c if it has no trivial subgraph on more than c log n vertices. By Ramsey's theorem, this requires c \u2265 some constant depending on the graph.",
     "mathContext": "$G$ is non-Ramsey with parameter $c$ if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log_2 n$. By Ramsey's theorem, $R(k,k) \\leq 4^k$, so every $n$-vertex graph has a trivial subgraph of size $\\geq \\frac{1}{2}\\log_2 n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -183,11 +183,11 @@
     "type": "context",
     "title": "ramsey_theorem",
     "content": "Axiomatizes the existence of non-Ramsey graphs: for sufficiently large n, there exist n-vertex graphs with no trivial subgraph larger than O(log n). Random graphs achieve this with high probability.",
-    "mathContext": "By Ramsey's theorem, $R(k,k) \\leq 4^k$. Conversely, Erdős (1947) showed $R(k,k) \\geq 2^{k/2}$ by the probabilistic method: the random graph $G(n, 1/2)$ has $\\omega(G), \\alpha(G) = O(\\log n)$ with high probability.",
+    "mathContext": "By Ramsey's theorem, $R(k,k) \\leq 4^k$. Conversely, Erd\u0151s (1947) showed $R(k,k) \\geq 2^{k/2}$ by the probabilistic method: the random graph $G(n, 1/2)$ has $\\omega(G), \\alpha(G) = O(\\log n)$ with high probability.",
     "significance": "key",
     "relatedConcepts": [
       "probabilistic method",
-      "Erdős 1947",
+      "Erd\u0151s 1947",
       "random graph",
       "Ramsey number lower bound"
     ],
@@ -269,7 +269,7 @@
     },
     "type": "definition",
     "title": "inducedIso",
-    "content": "Isomorphism of induced subgraphs: G[S₁] ≅ G[S₂] via some bijection preserving adjacency.",
+    "content": "Isomorphism of induced subgraphs: G[S\u2081] \u2245 G[S\u2082] via some bijection preserving adjacency.",
     "mathContext": "Two induced subgraphs $G[S_1]$ and $G[S_2]$ are isomorphic if there is a bijection $\\phi: S_1 \\to S_2$ preserving the adjacency relation of $G$ restricted to these sets.",
     "significance": "key",
     "relatedConcepts": [
@@ -290,7 +290,7 @@
     },
     "type": "technique",
     "title": "inducedIso_refl",
-    "content": "Induced subgraph isomorphism is reflexive: G[S] ≅ G[S] via the identity.",
+    "content": "Induced subgraph isomorphism is reflexive: G[S] \u2245 G[S] via the identity.",
     "mathContext": "$G[S] \\cong G[S]$ via the identity bijection $\\text{id}: S \\to S$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -310,7 +310,7 @@
     },
     "type": "technique",
     "title": "inducedIso_symm",
-    "content": "Induced subgraph isomorphism is symmetric: G[S₁] ≅ G[S₂] implies G[S₂] ≅ G[S₁] via the inverse bijection.",
+    "content": "Induced subgraph isomorphism is symmetric: G[S\u2081] \u2245 G[S\u2082] implies G[S\u2082] \u2245 G[S\u2081] via the inverse bijection.",
     "mathContext": "If $\\phi: G[S_1] \\cong G[S_2]$, then $\\phi^{-1}: G[S_2] \\cong G[S_1]$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -330,7 +330,7 @@
     },
     "type": "technique",
     "title": "inducedIso_trans",
-    "content": "Induced subgraph isomorphism is transitive: G[S₁] ≅ G[S₂] and G[S₂] ≅ G[S₃] imply G[S₁] ≅ G[S₃] via composition.",
+    "content": "Induced subgraph isomorphism is transitive: G[S\u2081] \u2245 G[S\u2082] and G[S\u2082] \u2245 G[S\u2083] imply G[S\u2081] \u2245 G[S\u2083] via composition.",
     "mathContext": "If $\\phi: G[S_1] \\cong G[S_2]$ and $\\psi: G[S_2] \\cong G[S_3]$, then $\\psi \\circ \\phi: G[S_1] \\cong G[S_3]$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -370,7 +370,7 @@
     },
     "type": "definition",
     "title": "sameIsoClass",
-    "content": "Equivalence relation on vertex subsets: S₁ ~ S₂ if and only if G[S₁] ≅ G[S₂]. The number of equivalence classes is the number of distinct induced subgraph types.",
+    "content": "Equivalence relation on vertex subsets: S\u2081 ~ S\u2082 if and only if G[S\u2081] \u2245 G[S\u2082]. The number of equivalence classes is the number of distinct induced subgraph types.",
     "mathContext": "Define $S_1 \\sim S_2$ iff $G[S_1] \\cong G[S_2]$. This is an equivalence relation (reflexive, symmetric, transitive). The quotient $\\mathcal{P}(V) / {\\sim}$ gives the set of distinct induced subgraph isomorphism types.",
     "significance": "key",
     "relatedConcepts": [
@@ -415,7 +415,7 @@
     },
     "type": "definition",
     "title": "hasDistinctInduced",
-    "content": "Predicate asserting that G has at least k non-isomorphic induced subgraphs. The conjecture asks for k = 2^{Ω(n)}.",
+    "content": "Predicate asserting that G has at least k non-isomorphic induced subgraphs. The conjecture asks for k = 2^{\u03a9(n)}.",
     "mathContext": "$G$ has $\\geq k$ distinct induced subgraphs means $i(G) \\geq k$, i.e., there exist $k$ vertex subsets $S_1, \\ldots, S_k$ with $G[S_i] \\not\\cong G[S_j]$ for $i \\neq j$.",
     "significance": "key",
     "relatedConcepts": [
@@ -435,11 +435,11 @@
     },
     "type": "definition",
     "title": "erdos_renyi_conjecture",
-    "content": "The Erdős-Rényi conjecture: for every constant c > 0, there exists c' > 0 such that every non-Ramsey graph with parameter c on n vertices has at least 2^{c'n} non-isomorphic induced subgraphs.",
+    "content": "The Erd\u0151s-R\u00e9nyi conjecture: for every constant c > 0, there exists c' > 0 such that every non-Ramsey graph with parameter c on n vertices has at least 2^{c'n} non-isomorphic induced subgraphs.",
     "mathContext": "For every $c > 0$, $\\exists c' > 0$ such that if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then $i(G) \\geq 2^{c' n}$. This says non-Ramsey graphs must be structurally diverse at an exponential scale.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős-Rényi conjecture",
+      "Erd\u0151s-R\u00e9nyi conjecture",
       "exponential diversity",
       "Ramsey avoidance"
     ],
@@ -457,8 +457,8 @@
     },
     "type": "definition",
     "title": "alonHajnalExponent",
-    "content": "The Alon-Hajnal exponent n·(log n)^{-O(log log n)}: a sub-exponential but super-polynomial growth rate, weaker than the conjectured 2^{Ω(n)}.",
-    "mathContext": "The Alon-Hajnal (1991) bound gives $i(G) \\geq \\exp(n (\\log n)^{-O(\\log \\log n)})$, which is $2^{o(n)}$ — sub-exponential in $n$ but still super-polynomial.",
+    "content": "The Alon-Hajnal exponent n\u00b7(log n)^{-O(log log n)}: a sub-exponential but super-polynomial growth rate, weaker than the conjectured 2^{\u03a9(n)}.",
+    "mathContext": "The Alon-Hajnal (1991) bound gives $i(G) \\geq \\exp(n (\\log n)^{-O(\\log \\log n)})$, which is $2^{o(n)}$ \u2014 sub-exponential in $n$ but still super-polynomial.",
     "significance": "key",
     "relatedConcepts": [
       "sub-exponential bound",
@@ -478,11 +478,11 @@
     },
     "type": "context",
     "title": "Alon-Hajnal Bound",
-    "content": "Axiomatizes the Alon-Hajnal (1991) result: every non-Ramsey graph has at least exp(n·(log n)^{-O(log log n)}) distinct induced subgraphs. This was the strongest result before Shelah.",
-    "mathContext": "Alon and Hajnal (1991) proved: if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then $i(G) \\geq \\exp(n (\\log n)^{-O(\\log \\log n)})$. Their proof uses Szemerédi's regularity lemma.",
+    "content": "Axiomatizes the Alon-Hajnal (1991) result: every non-Ramsey graph has at least exp(n\u00b7(log n)^{-O(log log n)}) distinct induced subgraphs. This was the strongest result before Shelah.",
+    "mathContext": "Alon and Hajnal (1991) proved: if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then $i(G) \\geq \\exp(n (\\log n)^{-O(\\log \\log n)})$. Their proof uses Szemer\u00e9di's regularity lemma.",
     "significance": "key",
     "relatedConcepts": [
-      "Szemerédi regularity lemma",
+      "Szemer\u00e9di regularity lemma",
       "Alon-Hajnal 1991"
     ],
     "prerequisites": [
@@ -499,7 +499,7 @@
     },
     "type": "technique",
     "title": "alon_hajnal_weaker",
-    "content": "The Alon-Hajnal bound is strictly weaker than Shelah's theorem: for large n, exp(n·(log n)^{-O(log log n)}) < 2^{c'n}.",
+    "content": "The Alon-Hajnal bound is strictly weaker than Shelah's theorem: for large n, exp(n\u00b7(log n)^{-O(log log n)}) < 2^{c'n}.",
     "mathContext": "For large $n$: $\\exp(n (\\log n)^{-O(\\log \\log n)}) = 2^{o(n)} < 2^{c'n}$, so Shelah's bound is exponentially stronger.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -560,12 +560,12 @@
       "endLine": 214
     },
     "type": "context",
-    "title": "Erdős-Hajnal Bipartite",
-    "content": "Axiomatizes the Erdős-Hajnal (1989) result: graphs avoiding K_{k,k} in both G and its complement have 2^{Ω(n)} distinct induced subgraphs. This was the first exponential bound in a restricted setting.",
-    "mathContext": "Erdős and Hajnal (1989) proved: if neither $G$ nor $\\bar{G}$ contains $K_{k,k}$, then $i(G) \\geq 2^{cn}$ for a constant $c = c(k) > 0$. This uses a direct counting argument on neighborhoods.",
+    "title": "Erd\u0151s-Hajnal Bipartite",
+    "content": "Axiomatizes the Erd\u0151s-Hajnal (1989) result: graphs avoiding K_{k,k} in both G and its complement have 2^{\u03a9(n)} distinct induced subgraphs. This was the first exponential bound in a restricted setting.",
+    "mathContext": "Erd\u0151s and Hajnal (1989) proved: if neither $G$ nor $\\bar{G}$ contains $K_{k,k}$, then $i(G) \\geq 2^{cn}$ for a constant $c = c(k) > 0$. This uses a direct counting argument on neighborhoods.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős-Hajnal 1989",
+      "Erd\u0151s-Hajnal 1989",
       "bipartite avoidance",
       "neighborhood counting"
     ],
@@ -583,7 +583,7 @@
     },
     "type": "technique",
     "title": "nonRamsey_avoids_bipartite",
-    "content": "Non-Ramsey graphs avoid large complete bipartite subgraphs: if max(ω(G), α(G)) ≤ c log n, then neither G nor its complement contains K_{k,k} for appropriate k.",
+    "content": "Non-Ramsey graphs avoid large complete bipartite subgraphs: if max(\u03c9(G), \u03b1(G)) \u2264 c log n, then neither G nor its complement contains K_{k,k} for appropriate k.",
     "mathContext": "If $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then for $k = c \\log n$, $G$ avoids $K_{k,k}$ (since $K_{k,k}$ contains an independent set of size $k$) and similarly for $\\bar{G}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -625,12 +625,12 @@
     },
     "type": "technique",
     "title": "erdos_1036_solved",
-    "content": "Shelah's theorem implies the Erdős-Rényi conjecture, resolving Problem 1036 affirmatively.",
-    "mathContext": "Shelah's theorem directly establishes the Erdős-Rényi conjecture: $i(G) \\geq 2^{c'n}$ for non-Ramsey $G$, which is $2^{\\Omega(n)}$ as conjectured.",
+    "content": "Shelah's theorem implies the Erd\u0151s-R\u00e9nyi conjecture, resolving Problem 1036 affirmatively.",
+    "mathContext": "Shelah's theorem directly establishes the Erd\u0151s-R\u00e9nyi conjecture: $i(G) \\geq 2^{c'n}$ for non-Ramsey $G$, which is $2^{\\Omega(n)}$ as conjectured.",
     "significance": "key",
     "relatedConcepts": [
       "conjecture resolution",
-      "Erdős-Rényi conjecture"
+      "Erd\u0151s-R\u00e9nyi conjecture"
     ],
     "prerequisites": [
       "shelah_theorem",
@@ -666,7 +666,7 @@
     },
     "type": "definition",
     "title": "alonHajnalBound",
-    "content": "The Alon-Hajnal bound exp(n·(log n)^{-O(log log n)}) expressed as a concrete function.",
+    "content": "The Alon-Hajnal bound exp(n\u00b7(log n)^{-O(log log n)}) expressed as a concrete function.",
     "mathContext": "$\\text{alonHajnalBound}(n) = \\exp(n \\cdot (\\log n)^{-O(\\log \\log n)})$, the sub-exponential bound from 1991.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -686,7 +686,7 @@
     },
     "type": "technique",
     "title": "shelah_better",
-    "content": "Shelah's bound is asymptotically stronger than Alon-Hajnal's: 2^{c'n} grows exponentially faster than exp(n·(log n)^{-O(log log n)}).",
+    "content": "Shelah's bound is asymptotically stronger than Alon-Hajnal's: 2^{c'n} grows exponentially faster than exp(n\u00b7(log n)^{-O(log log n)}).",
     "mathContext": "For large $n$: $2^{c'n} \\gg \\exp(n (\\log n)^{-O(\\log \\log n)})$. The ratio $2^{c'n} / \\exp(n (\\log n)^{-O(\\log \\log n)}) \\to \\infty$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -732,7 +732,7 @@
     "mathContext": "For $G \\sim G(n, 1/2)$: $i(G) = (1 - o(1)) \\cdot 2^n$ with high probability. Random graphs are maximally diverse in induced subgraph types.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Erdős-Rényi random graph",
+      "Erd\u0151s-R\u00e9nyi random graph",
       "maximum diversity"
     ],
     "prerequisites": [
@@ -892,12 +892,12 @@
     },
     "type": "definition",
     "title": "isKUniversal",
-    "content": "A graph G is k-universal if it contains every graph on at most k vertices as an induced subgraph. Prömel and Rödl (1999) proved non-Ramsey graphs are c·log(n)-universal.",
+    "content": "A graph G is k-universal if it contains every graph on at most k vertices as an induced subgraph. Pr\u00f6mel and R\u00f6dl (1999) proved non-Ramsey graphs are c\u00b7log(n)-universal.",
     "mathContext": "$G$ is $k$-universal if for every graph $H$ with $|V(H)| \\leq k$, there exists $S \\subseteq V(G)$ with $G[S] \\cong H$. The number of graphs on $k$ vertices is $2^{\\binom{k}{2}}$, so $k$-universality implies $i(G) \\geq 2^{\\binom{k}{2}}$.",
     "significance": "key",
     "relatedConcepts": [
       "universal graph",
-      "Prömel-Rödl theorem",
+      "Pr\u00f6mel-R\u00f6dl theorem",
       "induced universality"
     ],
     "prerequisites": [
@@ -935,11 +935,11 @@
     },
     "type": "technique",
     "title": "via_universality",
-    "content": "Alternative proof of Problem 1036 via Prömel-Rödl universality (Problem 1031): non-Ramsey graphs are c·log(n)-universal, and universality implies exponentially many distinct induced subgraphs.",
-    "mathContext": "By Prömel-Rödl (Problem 1031), non-Ramsey $G$ is $c \\log n$-universal. Hence $i(G) \\geq 2^{\\binom{c \\log n}{2}} = 2^{\\Omega((\\log n)^2)}$. Note: this gives a weaker bound than Shelah's $2^{\\Omega(n)}$ but provides a conceptually cleaner proof via universality.",
+    "content": "Alternative proof of Problem 1036 via Pr\u00f6mel-R\u00f6dl universality (Problem 1031): non-Ramsey graphs are c\u00b7log(n)-universal, and universality implies exponentially many distinct induced subgraphs.",
+    "mathContext": "By Pr\u00f6mel-R\u00f6dl (Problem 1031), non-Ramsey $G$ is $c \\log n$-universal. Hence $i(G) \\geq 2^{\\binom{c \\log n}{2}} = 2^{\\Omega((\\log n)^2)}$. Note: this gives a weaker bound than Shelah's $2^{\\Omega(n)}$ but provides a conceptually cleaner proof via universality.",
     "significance": "key",
     "relatedConcepts": [
-      "Prömel-Rödl universality",
+      "Pr\u00f6mel-R\u00f6dl universality",
       "alternative proof",
       "Problem 1031 connection"
     ],

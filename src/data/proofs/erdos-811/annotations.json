@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Problem Overview and References",
-    "content": "Erdős Problem #811 asks: for which graphs $G$ (with $m = e(G)$ edges) does every balanced $m$-coloring of $K_n$ contain a rainbow copy of $G$? A balanced coloring requires each vertex to see exactly $\\lfloor(n-1)/m\\rfloor$ edges of each color, which forces $n \\equiv 1 \\pmod{m}$. A rainbow copy uses all $m$ edge colors distinctly. The problem was posed by Erdős, Pyber, and Tuza (1991) and sits at the intersection of anti-Ramsey theory and extremal graph theory. Recent breakthroughs: Clemen-Wagner (2023) showed $K_4$ fails, and Axenovich-Clemen (2024) extended this to infinitely many complete graphs.",
+    "content": "Erd\u0151s Problem #811 asks: for which graphs $G$ (with $m = e(G)$ edges) does every balanced $m$-coloring of $K_n$ contain a rainbow copy of $G$? A balanced coloring requires each vertex to see exactly $\\lfloor(n-1)/m\\rfloor$ edges of each color, which forces $n \\equiv 1 \\pmod{m}$. A rainbow copy uses all $m$ edge colors distinctly. The problem was posed by Erd\u0151s, Pyber, and Tuza (1991) and sits at the intersection of anti-Ramsey theory and extremal graph theory. Recent breakthroughs: Clemen-Wagner (2023) showed $K_4$ fails, and Axenovich-Clemen (2024) extended this to infinitely many complete graphs.",
     "mathContext": "For which $G$ with $m = e(G)$ edges: $\\forall$ large $n \\equiv 1 \\pmod{m}$, $\\forall$ balanced $m$-colorings $\\chi$ of $K_n$, $\\exists$ rainbow copy of $G$ in $\\chi$?",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "anti-Ramsey theory",
       "rainbow subgraph",
@@ -76,7 +76,7 @@
     },
     "type": "definition",
     "title": "Edge Coloring Structure and Color Degree",
-    "content": "`EdgeColoring n m` is a structure assigning a color in `Fin m` to each pair of vertices in $K_n$, with symmetry ($\\chi(u,v) = \\chi(v,u)$) and irreflexivity (diagonal entries are fixed). `colorDegree χ v c` counts the edges of color $c$ incident to vertex $v$ by filtering over all neighbors. This forms the foundation for the balanced coloring definition.",
+    "content": "`EdgeColoring n m` is a structure assigning a color in `Fin m` to each pair of vertices in $K_n$, with symmetry ($\\chi(u,v) = \\chi(v,u)$) and irreflexivity (diagonal entries are fixed). `colorDegree \u03c7 v c` counts the edges of color $c$ incident to vertex $v$ by filtering over all neighbors. This forms the foundation for the balanced coloring definition.",
     "mathContext": "$\\chi: \\binom{V}{2} \\to [m]$ with $\\deg_c(v) = |\\{w \\neq v : \\chi(vw) = c\\}|$",
     "significance": "key",
     "relatedConcepts": [
@@ -100,7 +100,7 @@
     },
     "type": "definition",
     "title": "Balanced Coloring and Existence",
-    "content": "`IsBalanced χ` requires every vertex to see exactly $\\lfloor(n-1)/m\\rfloor$ edges of each color. This is the key structural constraint: it prevents trivial avoidance strategies where one color class is deliberately sparse. The axiom `balanced_existence` asserts that balanced colorings exist whenever $n \\equiv 1 \\pmod{m}$ — the divisibility condition ensures $(n-1)/m$ is an integer, so 'balanced' means exactly equal, not just approximately equal.",
+    "content": "`IsBalanced \u03c7` requires every vertex to see exactly $\\lfloor(n-1)/m\\rfloor$ edges of each color. This is the key structural constraint: it prevents trivial avoidance strategies where one color class is deliberately sparse. The axiom `balanced_existence` asserts that balanced colorings exist whenever $n \\equiv 1 \\pmod{m}$ \u2014 the divisibility condition ensures $(n-1)/m$ is an integer, so 'balanced' means exactly equal, not just approximately equal.",
     "mathContext": "$\\chi$ is balanced $\\iff \\forall v, \\forall c: \\deg_c(v) = \\frac{n-1}{m}$; exists when $m \\mid (n-1)$",
     "significance": "key",
     "relatedConcepts": [
@@ -123,7 +123,7 @@
     },
     "type": "definition",
     "title": "Graph Embedding and Rainbow Copy",
-    "content": "`GraphEmbedding G n` is an injective map from $V(G)$ into $\\text{Fin}\\,n$. `IsRainbow G χ emb` asserts that distinct edges of $G$ receive distinct colors under the embedding — i.e., the restriction of $\\chi$ to the image of $G$ is injective on edges. `ContainsRainbow G χ` existentially quantifies over embeddings. The injectivity requirement on the embedding is essential: without it, a 'copy' could collapse vertices, violating the graph structure.",
+    "content": "`GraphEmbedding G n` is an injective map from $V(G)$ into $\\text{Fin}\\,n$. `IsRainbow G \u03c7 emb` asserts that distinct edges of $G$ receive distinct colors under the embedding \u2014 i.e., the restriction of $\\chi$ to the image of $G$ is injective on edges. `ContainsRainbow G \u03c7` existentially quantifies over embeddings. The injectivity requirement on the embedding is essential: without it, a 'copy' could collapse vertices, violating the graph structure.",
     "mathContext": "$G \\hookrightarrow K_n$ is rainbow under $\\chi$ $\\iff$ $\\chi$ restricted to $E(G)$ is injective: $\\{e_1, e_2\\} \\subseteq E(G),\\, e_1 \\neq e_2 \\Rightarrow \\chi(e_1) \\neq \\chi(e_2)$",
     "significance": "key",
     "relatedConcepts": [
@@ -170,14 +170,14 @@
       "endLine": 104
     },
     "type": "insight",
-    "title": "K₄ Fails: Clemen-Wagner (2023)",
+    "title": "K\u2084 Fails: Clemen-Wagner (2023)",
     "content": "The axiom `clemen_wagner_2023` formalizes the breakthrough result that $K_4$ does NOT have the rainbow property: for arbitrarily large $n \\equiv 1 \\pmod{6}$, there exist balanced 6-colorings of $K_n$ with no rainbow $K_4$. This resolved the simplest open case negatively. The number 6 comes from $|E(K_4)| = \\binom{4}{2} = 6$. The construction likely uses algebraic or probabilistic methods to create colorings that systematically avoid rainbow 4-cliques while maintaining balance.",
     "mathContext": "$\\forall N_0,\\, \\exists n \\geq N_0$ with $6 \\mid (n-1)$: $\\exists$ balanced $\\chi$ of $K_n$ with $\\nexists$ rainbow $K_4$ in $\\chi$",
     "significance": "key",
     "relatedConcepts": [
       "negative resolution",
       "balanced coloring construction",
-      "K₄ rainbow avoidance"
+      "K\u2084 rainbow avoidance"
     ],
     "prerequisites": [
       "HasRainbowProperty negation",
@@ -217,19 +217,19 @@
     },
     "type": "concept",
     "title": "Quantitative Version: Rainbow Minimum Degree",
-    "content": "The quantitative version introduces $d_G(n)$, the minimum color degree threshold guaranteeing a rainbow copy of $G$. `rainbowMinDegree` is axiomatized as a function. The Erdős-Tuza bounds for $C_4$ give $\\lfloor n/6 \\rfloor \\leq d_{C_4}(n) \\leq (1/4 - c)n$. The gap between $n/6 \\approx 0.167n$ and $(1/4 - c)n < 0.25n$ shows the threshold is known only up to a constant factor. This quantitative refinement connects to Turán-type density questions.",
+    "content": "The quantitative version introduces $d_G(n)$, the minimum color degree threshold guaranteeing a rainbow copy of $G$. `rainbowMinDegree` is axiomatized as a function. The Erd\u0151s-Tuza bounds for $C_4$ give $\\lfloor n/6 \\rfloor \\leq d_{C_4}(n) \\leq (1/4 - c)n$. The gap between $n/6 \\approx 0.167n$ and $(1/4 - c)n < 0.25n$ shows the threshold is known only up to a constant factor. This quantitative refinement connects to Tur\u00e1n-type density questions.",
     "mathContext": "$d_{C_4}(n)$: min color degree forcing rainbow $C_4$; $\\frac{n}{6} \\leq d_{C_4}(n) \\leq \\left(\\frac{1}{4} - c\\right)n$",
     "significance": "key",
     "relatedConcepts": [
       "minimum degree threshold",
-      "Turán-type problem",
+      "Tur\u00e1n-type problem",
       "color degree",
       "extremal threshold"
     ],
     "prerequisites": [
       "colorDegree definition",
       "rainbow copy",
-      "Erdős-Tuza results"
+      "Erd\u0151s-Tuza results"
     ]
   },
   {
@@ -240,8 +240,8 @@
       "endLine": 152
     },
     "type": "concept",
-    "title": "Erdős's Specific Challenge: C₆ or K₄ in 6-Colorings",
-    "content": "`ErdosChallenge` formalizes Erdős's specific question: in any balanced 6-coloring of $K_{6n+1}$, must there exist a rainbow $C_6$ or rainbow $K_4$? Since Clemen-Wagner showed the $K_4$ part fails, the question reduces to: does every balanced 6-coloring contain a rainbow $C_6$? The axiom `erdos_challenge_K4_false` captures this partial resolution. The disjunction 'rainbow $C_6$ or rainbow $K_4$' is interesting because both graphs have 6 edges, so both use the same number of colors.",
+    "title": "Erd\u0151s's Specific Challenge: C\u2086 or K\u2084 in 6-Colorings",
+    "content": "`ErdosChallenge` formalizes Erd\u0151s's specific question: in any balanced 6-coloring of $K_{6n+1}$, must there exist a rainbow $C_6$ or rainbow $K_4$? Since Clemen-Wagner showed the $K_4$ part fails, the question reduces to: does every balanced 6-coloring contain a rainbow $C_6$? The axiom `erdos_challenge_K4_false` captures this partial resolution. The disjunction 'rainbow $C_6$ or rainbow $K_4$' is interesting because both graphs have 6 edges, so both use the same number of colors.",
     "mathContext": "$\\forall$ large $n$, $\\forall$ balanced $\\chi$ of $K_{6n+1}$ with 6 colors: $\\chi \\supseteq$ rainbow $C_6$ or $\\chi \\supseteq$ rainbow $K_4$? ($K_4$ part: NO)",
     "significance": "key",
     "relatedConcepts": [
@@ -265,7 +265,7 @@
     },
     "type": "technique",
     "title": "Small Cases: Trees and Stars Have the Rainbow Property",
-    "content": "Two axioms capture positive results: `trees_have_rainbow_property` (any tree $T$ on $k$ vertices has the rainbow property with $k-1$ colors) and `stars_rainbow` ($K_{1,m}$ has the property with $m$ colors). Trees are the simplest connected graphs, and their acyclicity makes the rainbow condition easier to satisfy — there are no closed walks that could create color conflicts. Stars are the most extreme trees (diameter 2), and their star structure means rainbow = injective coloring of edges at one vertex.",
+    "content": "Two axioms capture positive results: `trees_have_rainbow_property` (any tree $T$ on $k$ vertices has the rainbow property with $k-1$ colors) and `stars_rainbow` ($K_{1,m}$ has the property with $m$ colors). Trees are the simplest connected graphs, and their acyclicity makes the rainbow condition easier to satisfy \u2014 there are no closed walks that could create color conflicts. Stars are the most extreme trees (diameter 2), and their star structure means rainbow = injective coloring of edges at one vertex.",
     "mathContext": "Trees: $\\text{HasRainbowProperty}(T, k-1)$ for all trees $T$ on $k$ vertices; Stars: $\\text{HasRainbowProperty}(K_{1,m}, m)$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -289,7 +289,7 @@
     },
     "type": "technique",
     "title": "Main Theorem: erdos_811 (OPEN Problem Summary)",
-    "content": "The main theorem `erdos_811` packages the two key negative results as a conjunction: (1) $K_4$ fails the rainbow property (Clemen-Wagner 2023), and (2) infinitely many $K_m$ fail (Axenovich-Clemen 2024). The proof is a clean pair construction `⟨clemen_wagner_2023, axenovich_clemen_2024⟩`. The problem remains OPEN: the full characterization of graphs with the rainbow property is unknown, and the Axenovich-Clemen conjecture (all $K_m$ fail for $m \\geq 4$) is unresolved.",
+    "content": "The main theorem `erdos_811` packages the two key negative results as a conjunction: (1) $K_4$ fails the rainbow property (Clemen-Wagner 2023), and (2) infinitely many $K_m$ fail (Axenovich-Clemen 2024). The proof is a clean pair construction `\u27e8clemen_wagner_2023, axenovich_clemen_2024\u27e9`. The problem remains OPEN: the full characterization of graphs with the rainbow property is unknown, and the Axenovich-Clemen conjecture (all $K_m$ fail for $m \\geq 4$) is unresolved.",
     "mathContext": "$(\\neg\\text{HasRainbowProperty}(K_4, 6)) \\wedge (\\text{infinitely many } K_m \\text{ fail})$",
     "significance": "key",
     "relatedConcepts": [
