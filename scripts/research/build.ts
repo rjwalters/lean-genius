@@ -544,7 +544,7 @@ function generateListing(problem: ResearchProblem): ResearchListing {
     status: problem.status,
     tier: problem.tier,
     path: problem.path,
-    tags: problem.tags,
+    tags: problem.tags ?? [],
     started: problem.started,
     lastUpdate: problem.lastUpdate,
     completed: problem.completed,
