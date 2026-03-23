@@ -79,7 +79,8 @@
       "nth-root-irrational-oq-01",
       "hilbert-9-reciprocity",
       "hilbert-13",
-      "hurwitz-theorem"
+      "hurwitz-theorem",
+      "vietas-formulas-oq-03"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -280,6 +281,11 @@
       "targetId": "hurwitz-theorem",
       "relationship": "thematic",
       "description": "Hurwitz's theorem (1898) proves that normed division algebras exist only in dimensions 1, 2, 4, 8 (ℝ, ℂ, ℍ, 𝕆), a striking parallel to Abel-Ruffini's threshold phenomenon: radical solvability holds only for degrees 1–4, and composition algebras exist only for n = 1, 2, 4, 8. Both are 'finiteness of nice structures' results where algebraic constraints force a sharp cutoff. The connection deepens through Frobenius's theorem (1878): associative division algebras over ℝ are only ℝ, ℂ, ℍ — and the quaternions ℍ have automorphism group SO(3), which is not solvable, echoing how A₅'s non-solvability drives Abel-Ruffini"
+    },
+    {
+      "targetId": "vietas-formulas-oq-03",
+      "relationship": "foundational",
+      "description": "Newton's identities express power sums pₖ = Σxᵢᵏ recursively in terms of elementary symmetric polynomials eⱼ, providing the computational bridge for Step 5 of the proof chain: the generic polynomial x⁵ + a₁x⁴ + ··· + a₅ has Galois group S₅ because the elementary symmetric polynomials e₁,...,e₅ are algebraically independent generators of the ring of S₅-invariant polynomials. Newton's identities make this algebraic independence computationally explicit by showing that power sums (which generate the same invariant ring) are polynomial combinations of elementary symmetric polynomials and vice versa — establishing the transcendence degree of the fixed field ℚ(e₁,...,eₙ) that forces Gal = Sₙ"
     }
   ],
   "overview": {
