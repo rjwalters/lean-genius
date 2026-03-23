@@ -273,6 +273,26 @@
       "targetId": "liouville-theorem",
       "relationship": "related",
       "description": "Liouville's construction of transcendental numbers (1844) extends the impossibility hierarchy: Abel-Ruffini shows certain roots aren't expressible by radicals, while Liouville shows certain numbers aren't even algebraic. Liouville's approximation theorem provides the first explicit examples of numbers beyond the reach of all polynomial equations"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots — this is precisely why the Galois group acts by permutations on roots: permuting roots preserves the symmetric functions (= coefficients), so the symmetry group of a polynomial is a subgroup of $S_n$. The failure of $S_5$-solvability in Abel-Ruffini means the elementary symmetric functions of quintic roots cannot be 'unscrambled' using radicals"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots modulo primes establish that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic — a foundational fact for Galois theory. Cyclotomic extensions $\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}$ have cyclic Galois groups, and radical extensions factor through cyclotomic extensions (adjoining $\\sqrt[n]{a}$ requires $\\zeta_n$). The solvability of cyclic groups is what makes radical steps work; Abel-Ruffini fails because $S_5$ cannot be built from cyclic pieces"
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "thematic",
+      "description": "Hurwitz's 1,2,4,8 theorem (only $\\mathbb{R}$, $\\mathbb{C}$, $\\mathbb{H}$, $\\mathbb{O}$ admit $n$-square identities) is another algebraic impossibility result with a sharp threshold: Abel-Ruffini's boundary is at degree 5 (solvability), Hurwitz's boundary is at dimension 8 (composition algebras). Both show that algebraic structures satisfying natural-seeming properties exist only up to a finite bound"
+    },
+    {
+      "targetId": "hilbert-9-reciprocity",
+      "relationship": "extends",
+      "description": "Hilbert's 9th problem (the most general reciprocity law) led to class field theory and Artin reciprocity — a far-reaching generalization of both quadratic reciprocity and the abelian case of Galois theory. Class field theory classifies all abelian extensions of number fields, extending Galois's criterion that abelian (hence solvable) Galois groups correspond to radical solvability. The non-abelian Langlands program seeks the analogous classification for non-solvable groups like $S_5$"
     }
   ],
   "relatedProofs": [
@@ -300,7 +320,11 @@
     "cayley-hamilton",
     "liouville-theorem",
     "puiseux-theorem",
-    "lagrange-theorem-oq-03"
+    "lagrange-theorem-oq-03",
+    "vietas-formulas",
+    "primitive-roots",
+    "hurwitz-theorem",
+    "hilbert-9-reciprocity"
   ],
   "references": [
     {
