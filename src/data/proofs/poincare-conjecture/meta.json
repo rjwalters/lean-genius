@@ -243,8 +243,34 @@
   ],
   "crossReferences": [
     {
-      "relationship": "Both establish classification theorems: Hurwitz classifies normed division algebras ($n \\in \\{1,2,4,8\\}$), Poincaré classifies simply connected closed 3-manifolds (only $S^3$). Both use biconditional characterizations.",
-      "targetId": "hurwitz-theorem"
+      "targetId": "hurwitz-theorem",
+      "relationship": "thematic",
+      "description": "Both establish classification theorems: Hurwitz classifies normed division algebras ($n \\in \\{1,2,4,8\\}$), Poincaré classifies simply connected closed 3-manifolds (only $S^3$). Both use biconditional characterizations"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "foundational",
+      "description": "The Brouwer fixed point theorem is a cornerstone of algebraic topology — the same homotopy-theoretic machinery (fundamental group, simple connectivity) that underlies the Poincaré conjecture's statement"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "foundational",
+      "description": "The Borsuk-Ulam theorem ($f: S^n \\to \\mathbb{R}^n$ has a point with $f(x) = f(-x)$) is another deep result about sphere topology — both rely on the topological properties of $S^n$ that the Poincaré conjecture characterizes"
+    },
+    {
+      "targetId": "navier-stokes",
+      "relationship": "thematic",
+      "description": "Both are Clay Millennium Prize Problems — the Poincaré conjecture (solved by Perelman, 2003) and Navier-Stokes existence/smoothness (open) represent the pinnacle of mathematical challenges in topology and PDE theory respectively"
+    },
+    {
+      "targetId": "hodge-conjecture",
+      "relationship": "thematic",
+      "description": "Another Clay Millennium Prize Problem — the Hodge conjecture concerns the algebraic topology of complex manifolds, complementing the Poincaré conjecture's classification of topological manifolds"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Gödel's incompleteness theorems constrain what formal systems can prove — Perelman's proof of the Poincaré conjecture was verified in this formalization using axiomatized deep results (Ricci flow, surgery), raising questions about the boundary between verified and axiomatized mathematics"
     }
   ],
   "conclusion": {
@@ -293,7 +319,12 @@
     "definitionCount": 369
   },
   "relatedProofs": [
-    ""
+    "hurwitz-theorem",
+    "brouwer-fixed-point",
+    "borsuk-ulam",
+    "navier-stokes",
+    "hodge-conjecture",
+    "godel-incompleteness"
   ],
   "references": [
     {
@@ -309,6 +340,27 @@
       "year": "2007",
       "venue": "American Mathematical Society, Clay Mathematics Monographs 3",
       "note": "Complete detailed verification of Perelman's proof of the Poincaré conjecture"
+    },
+    {
+      "authors": "Hamilton, Richard S.",
+      "title": "Three-manifolds with positive Ricci curvature",
+      "year": "1982",
+      "venue": "Journal of Differential Geometry 17(2), 255–306",
+      "note": "Introduced the Ricci flow equation $\\partial g/\\partial t = -2\\text{Ric}(g)$ and proved convergence to constant curvature for positive Ricci 3-manifolds — the foundation for Perelman's approach"
+    },
+    {
+      "authors": "Smale, Stephen",
+      "title": "Generalized Poincaré's conjecture in dimensions greater than four",
+      "year": "1961",
+      "venue": "Annals of Mathematics 74(2), 391–406",
+      "note": "Proved the generalized Poincaré conjecture for dimensions ≥ 5 using h-cobordism, earning the Fields Medal"
+    },
+    {
+      "authors": "Freedman, Michael H.",
+      "title": "The topology of four-dimensional manifolds",
+      "year": "1982",
+      "venue": "Journal of Differential Geometry 17(3), 357–453",
+      "note": "Proved the topological Poincaré conjecture in dimension 4, earning the Fields Medal — the smooth case remains open"
     }
   ]
 }

@@ -112,6 +112,34 @@
     "theoremCount": 15,
     "definitionCount": 3
   },
+  "crossReferences": [
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The standard formalization of $\\sqrt{2}$ irrationality using Mathlib — this entry proves the same result from first principles without Mathlib, making every axiom explicit"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Both are classical number-theoretic results proved from basic properties of integers — the infinitude of primes and irrationality of $\\sqrt{2}$ are the foundational examples of proof by contradiction in number theory"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The well-ordering principle (equivalent to induction) underpins the infinite descent argument used in the classic proof of $\\sqrt{2}$'s irrationality"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The GCD algorithm and the notion of coprimality ($\\gcd(p,q)=1$) are central to the standard proof: if $p^2 = 2q^2$ with $\\gcd(p,q)=1$, then both $p$ and $q$ must be even, contradicting coprimality"
+    }
+  ],
+  "relatedProofs": [
+    "sqrt2-irrational",
+    "infinitude-primes",
+    "mathematical-induction",
+    "gcd-algorithm"
+  ],
   "references": [
     {
       "authors": "Hardy, G.H.; Wright, E.M.",
