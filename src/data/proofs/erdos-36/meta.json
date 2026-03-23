@@ -219,12 +219,24 @@
       "targetId": "fourier-series",
       "relationship": "supports",
       "description": "Scherk's 1955 lower bound and White's 2022 breakthrough both use Fourier analysis. The overlap function equals the autocorrelation of the partition indicator, and Parseval's identity provides the key constraint in the convex optimization formulation"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Both are extremal problems on subsets of integers: #1 asks for maximum-size sets with distinct subset sums, #36 asks for minimum-overlap equal partitions. Both probe the combinatorial structure of difference and sum sets in $\\{1, \\ldots, N\\}$"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Both use Fourier-analytic methods on finite sets of integers. Roth's theorem counts 3-term APs via the Fourier transform; the minimum overlap problem reduces to convex optimization over Fourier coefficients. The same machinery (Parseval's identity, energy bounds) drives both results"
     }
   ],
   "relatedProofs": [
     "erdos-335",
     "erdos-66",
     "erdos-30",
-    "fourier-series"
+    "fourier-series",
+    "erdos-1",
+    "roth-theorem-k3"
   ]
 }
