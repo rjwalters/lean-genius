@@ -148,11 +148,21 @@ theorem sumDvdProd_iff_reduced_divides_gcd {a b : ℕ} (ha : 0 < a) (hb : 0 < b)
   set b' := b / d with hb'_def
   have hd_pos : 0 < d := Nat.pos_of_ne_zero (by
     intro h; rw [Nat.gcd_eq_zero_iff.mp h |>.1] at ha; exact Nat.lt_irrefl 0 ha)
-  -- Proof via gcd reduction:
-  -- Write a = d*a', b = d*b' with d = gcd(a,b), gcd(a',b') = 1.
-  -- a+b = d(a'+b'), a*b = d²a'b'.
-  -- (a+b)|a*b ↔ d(a'+b') | d²a'b' ↔ (a'+b') | da'b'.
-  -- Since gcd(a'+b', a'b') = 1 (from gcd(a',b')=1):
-  --   (a'+b') | da'b' ↔ (a'+b') | d.
-  -- QED.
-  sorry
+  have hda : d ∣ a := Nat.gcd_dvd_left a b
+  have hdb : d ∣ b := Nat.gcd_dvd_right a b
+  have ha_eq : a = d * a' := (Nat.mul_div_cancel' hda).symm
+  have hb_eq : b = d * b' := (Nat.mul_div_cancel' hdb).symm
+  have hcop : Nat.Coprime a' b' := Nat.coprime_div_gcd_div_gcd hd_pos
+  -- (a'+b') is coprime to a'*b' since gcd(a',b')=1
+  have hcop1 : Nat.Coprime (a' + b') a' :=
+    (Nat.coprime_self_add_right.mpr hcop).symm
+  have hcop2 : Nat.Coprime (a' + b') b' := by
+    rw [show a' + b' = b' + a' from add_comm a' b']
+    exact (Nat.coprime_self_add_right.mpr hcop.symm).symm
+  have hcop_prod : Nat.Coprime (a' + b') (a' * b') := hcop1.mul_right hcop2
+  -- Reduce: a+b = d*(a'+b'), a*b = d*(d*a'*b'), cancel d
+  have sum_eq : a + b = d * (a' + b') := by rw [ha_eq, hb_eq]; ring
+  have prod_eq : a * b = d * (d * (a' * b')) := by rw [ha_eq, hb_eq]; ring
+  rw [sum_eq, prod_eq, mul_dvd_mul_iff_left (by omega : d ≠ 0)]
+  -- (a'+b') | d*(a'*b') ↔ (a'+b') | d, by coprimality
+  exact ⟨hcop_prod.dvd_of_dvd_mul_right, fun h => dvd_mul_of_dvd_left h _⟩
