@@ -999,14 +999,24 @@ theorem approximate_fixed_point_2d
     -- so |pᵢ.k - pⱼ.k| ≤ 1/n for any two triangle vertices and coordinate k
     -- Triangle vertices are within L∞ distance 1/n of each other
     -- (Grid vertices differ by at most 1 in each ℕ coordinate, so ≤ 1/n in ℝ)
+    -- Helper: |a/n - b/n| ≤ 1/n when |a - b| ≤ 1 (for natural a, b)
+    have coord_dist : ∀ (a b : ℕ), (a : ℤ) - b ≤ 1 → (b : ℤ) - a ≤ 1 →
+        dist ((a : ℝ) / n) ((b : ℝ) / n) ≤ 1 / (n : ℝ) := by
+      intro a b hab hba
+      rw [Real.dist_eq, ← sub_div, abs_div, abs_of_pos hn_real]
+      apply div_le_div_of_nonneg_right _ (le_of_lt hn_real)
+      have : |(↑a : ℝ) - ↑b| ≤ 1 := by
+        rw [abs_le]; exact ⟨by exact_mod_cast (by omega : -1 ≤ (a : ℤ) - b),
+                            by exact_mod_cast (by omega : (a : ℤ) - b ≤ 1)⟩
+      linarith
     have h_dist_bound : ∀ (i j : Fin 3),
         dist (gridToReal n (t.vertices i)) (gridToReal n (t.vertices j)) ≤ 1 / (n : ℝ) := by
       intro i j
-      -- Case split FIRST to get concrete vertex coordinates
-      -- Grid triangle vertices differ by at most 1 in each natural number coordinate.
-      -- After dividing by n, each component distance ≤ 1/n.
-      -- Technical proof: unfold vertex defs, convert to ℤ, use triangle validity.
-      sorry
+      simp only [Prod.dist_eq, gridToReal, GridTriangle.vertices]
+      rcases t with ⟨ti, tj, ty, hvalid⟩
+      rcases ty with _ | _ <;> simp only [lowerVertices, upperVertices] <;>
+      fin_cases i <;> fin_cases j <;> simp only <;>
+      apply max_le <;> apply coord_dist <;> omega
     -- By uniform continuity: dist(f(pᵢ), f(pⱼ)) < ε/4 for triangle vertices
     have h_f_close : ∀ (i j : Fin 3),
         dist (f (gridToReal n (t.vertices i))) (f (gridToReal n (t.vertices j))) < ε / 4 := by
