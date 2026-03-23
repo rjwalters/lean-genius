@@ -180,7 +180,7 @@ fi
 **Invoke Scout for structured survey:**
 
 ```
-/scout <problem-id>
+/lean-scout <problem-id>
 ```
 
 Scout returns gallery proofs, techniques, Mathlib gaps, and recommended approaches. Use this as your primary ORIENT tool.
@@ -281,8 +281,8 @@ When pool is empty, we scout for new knowledge and attempt if promising.
 When in the ORIENT phase, invoke the Scout skill for a structured literature survey:
 
 ```
-Use the /scout skill with the problem ID:
-/scout <problem-id>
+Use the /lean-scout skill with the problem ID:
+/lean-scout <problem-id>
 ```
 
 Scout will return:

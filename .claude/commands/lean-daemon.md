@@ -27,16 +27,16 @@ You don't do the mathematical work yourself - you spawn worker agents to do the 
 ## Usage
 
 ```
-/lean                     # Start daemon with default pool (2 erdos, 1 aristotle, 1 researcher, 1 seeker, 1 deployer)
-/lean status              # Report current system state only
-/lean start --erdos 3 --researcher 2    # Start with custom pool sizes
-/lean spawn erdos         # Manually spawn one Erdős enhancer
-/lean spawn aristotle     # Manually spawn Aristotle agent
-/lean spawn researcher    # Manually spawn Researcher agent
-/lean spawn seeker        # Manually spawn Seeker agent
-/lean spawn deployer      # Manually spawn Deployer agent
-/lean scale erdos 3       # Scale Erdős pool to 3 agents
-/lean stop                # Graceful shutdown of all agents
+/lean-daemon                     # Start daemon with default pool (2 erdos, 1 aristotle, 1 researcher, 1 seeker, 1 deployer)
+/lean-daemon status              # Report current system state only
+/lean-daemon start --erdos 3 --researcher 2    # Start with custom pool sizes
+/lean-daemon spawn erdos         # Manually spawn one Erdős enhancer
+/lean-daemon spawn aristotle     # Manually spawn Aristotle agent
+/lean-daemon spawn researcher    # Manually spawn Researcher agent
+/lean-daemon spawn seeker        # Manually spawn Seeker agent
+/lean-daemon spawn deployer      # Manually spawn Deployer agent
+/lean-daemon scale erdos 3       # Scale Erdős pool to 3 agents
+/lean-daemon stop                # Graceful shutdown of all agents
 ```
 
 ## Commands
@@ -214,7 +214,7 @@ State tracked in `.loom/lean-daemon-state.json`:
 touch .loom/signals/stop-lean-daemon
 
 # Option 2: Use command
-/lean stop
+/lean-daemon stop
 
 # Daemon will:
 # 1. Stop spawning new agents
@@ -257,17 +257,17 @@ touch .loom/signals/stop-lean-daemon
 
 | Layer | Role | Purpose |
 |-------|------|---------|
-| Layer 2 | **Lean Daemon** (`/lean`) | Spawns workers, manages pools, monitors progress |
-| Layer 1 | **Workers** (`/erdos`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`) | Execute mathematical work |
+| Layer 2 | **Lean Daemon** (`/lean-daemon`) | Spawns workers, manages pools, monitors progress |
+| Layer 1 | **Workers** (`/lean-erdos`, `/aristotle`, `/lean-research`, `/lean-scout`, `/lean-seeker`, `/lean-deploy`) | Execute mathematical work |
 
-Use `/erdos`, `/aristotle`, `/research`, `/scout`, `/seeker`, or `/deploy` for single-agent work.
-Use `/lean` to run the continuous orchestrator that manages the full team.
+Use `/lean-erdos`, `/aristotle`, `/lean-research`, `/lean-scout`, `/lean-seeker`, or `/lean-deploy` for single-agent work.
+Use `/lean-daemon` to run the continuous orchestrator that manages the full team.
 
 ## Integration with Loom
 
 The Lean Daemon coexists with the Loom Daemon:
 - `/loom` orchestrates development work (Builder, Judge, Curator)
-- `/lean` orchestrates mathematical work (Erdős, Aristotle, Researcher, Seeker, Deployer)
+- `/lean-daemon` orchestrates mathematical work (Erdős, Aristotle, Researcher, Seeker, Deployer)
 
 They share:
 - Worktree infrastructure (`.loom/worktrees/`)
@@ -278,19 +278,19 @@ They share:
 
 ```bash
 # Start the mathematical team
-/lean start --erdos 2 --aristotle 1 --researcher 1 --seeker 1 --deployer 1
+/lean-daemon start --erdos 2 --aristotle 1 --researcher 1 --seeker 1 --deployer 1
 
 # Check status periodically
-/lean status
+/lean-daemon status
 
 # Scale up Erdős enhancers if many stubs available
-/lean scale erdos 4
+/lean-daemon scale erdos 4
 
 # Add another researcher
-/lean spawn researcher
+/lean-daemon spawn researcher
 
 # Graceful shutdown when done
-/lean stop
+/lean-daemon stop
 ```
 
 ARGUMENTS: $ARGUMENTS

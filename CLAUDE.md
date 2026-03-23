@@ -60,12 +60,12 @@ This project uses **two distinct AI agent orchestration systems** for different 
 | **Tester** | Tests random proof pages on the live site, files issues on failure | Autonomous (30min) |
 | **Herald** | Posts noteworthy research results to Mathstodon | Autonomous (6h) |
 
-**Managed by `/lean`**: Enricher, Aristotle, Researcher, Auditor, Seeker, Deployer, Tester, Herald
+**Managed by `/lean-daemon`**: Enricher, Aristotle, Researcher, Auditor, Seeker, Deployer, Tester, Herald
 **Managed separately**: Erdos Enhancer (`make enhance`, `scripts/erdos/`)
 
-**Invoke via**: `/enricher`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`, `/peer-review`
+**Invoke via**: `/enricher`, `/aristotle`, `/lean-research`, `/lean-scout`, `/lean-seeker`, `/lean-deploy`, `/peer-review`
 
-**Team orchestration**: `/lean` - Start/stop/scale the full mathematical agent team
+**Team orchestration**: `/lean-daemon` - Start/stop/scale the full mathematical agent team
 
 ### PR Labels for Math Agents
 
@@ -77,58 +77,58 @@ If you want a specific PR to go through Loom Judge review, manually add `loom:re
 
 The project has two distinct enrichment systems:
 
-1. **Enricher** (`scripts/enricher/`) - Adds depth to **existing** gallery proofs: annotations, cross-references, mathematical context. This is the active system managed by `/lean`.
+1. **Enricher** (`scripts/enricher/`) - Adds depth to **existing** gallery proofs: annotations, cross-references, mathematical context. This is the active system managed by `/lean-daemon`.
 2. **Erdos Enhancer** (`scripts/erdos/`) - Creates **new** Lean formalizations from Erdos problem stubs. This work is essentially complete (0 stubs remaining, gallery at 97.9% quality). Managed via `make enhance`.
 
 ### When to Use Which
 
 - **Writing code, fixing bugs, reviewing PRs** → Use Loom agents (Builder, Judge, etc.)
-- **Enriching existing gallery proofs** → Use Enricher (via `/lean`)
-- **Formalizing math, proving theorems** → Use Researcher (via `/lean`)
-- **Automated proof search** → Use Aristotle (via `/lean`)
-- **Surveying literature and techniques** → Use Scout (`/scout`)
-- **Selecting research problems** → Use Seeker (`/seeker`)
+- **Enriching existing gallery proofs** → Use Enricher (via `/lean-daemon`)
+- **Formalizing math, proving theorems** → Use Researcher (via `/lean-daemon`)
+- **Automated proof search** → Use Aristotle (via `/lean-daemon`)
+- **Surveying literature and techniques** → Use Scout (`/lean-scout`)
+- **Selecting research problems** → Use Seeker (`/lean-seeker`)
 - **Deep qualitative review of a proof** → Use Peer Reviewer (`/peer-review`)
-- **Deploying the website** → Use Deployer (via `/lean`)
-- **Starting the full mathematical team** → Use `/lean`
+- **Deploying the website** → Use Deployer (via `/lean-daemon`)
+- **Starting the full mathematical team** → Use `/lean-daemon`
 - **Creating new Erdos stubs** → `make enhance` (legacy, nearly complete)
 
 ---
 
-# /lean - Mathematical Team Orchestration
+# /lean-daemon - Mathematical Team Orchestration
 
-The `/lean` skill provides a unified interface to start, stop, and scale the mathematical agent team.
+The `/lean-daemon` skill provides a unified interface to start, stop, and scale the mathematical agent team.
 
 ## Quick Start
 
 ```bash
 # Start with defaults (2 enricher, 1 aristotle, 2 researcher, 1 seeker, 1 deployer)
-/lean
+/lean-daemon
 
 # Research-focused (no enrichers, more researchers)
-/lean start --enricher 0 --researcher 3
+/lean-daemon start --enricher 0 --researcher 3
 
 # Check status
-/lean status
+/lean-daemon status
 
 # Stop all agents
-/lean stop
+/lean-daemon stop
 ```
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/lean` | Start daemon with default pool |
-| `/lean status` | Show work queue and agent status |
-| `/lean start [options]` | Start with custom pool sizes |
-| `/lean spawn <type>` | Add one agent (enricher, aristotle, researcher, seeker, deployer, tester, peer-reviewer) |
-| `/lean scale <type> <N>` | Scale pool to N agents |
-| `/lean stop` | Graceful shutdown of all agents (creates signal files) |
-| `/lean stop --force` | Force stop all agents (kills tmux sessions immediately) |
-| `/lean wake <type>` | Wake a sleeping agent early to start its next cycle now |
-| `/lean health` | Show agent process health and detect stuck agents |
-| `/lean daemon [options]` | Run continuous monitoring daemon (respawns completed/stuck agents) |
+| `/lean-daemon` | Start daemon with default pool |
+| `/lean-daemon status` | Show work queue and agent status |
+| `/lean-daemon start [options]` | Start with custom pool sizes |
+| `/lean-daemon spawn <type>` | Add one agent (enricher, aristotle, researcher, seeker, deployer, tester, peer-reviewer) |
+| `/lean-daemon scale <type> <N>` | Scale pool to N agents |
+| `/lean-daemon stop` | Graceful shutdown of all agents (creates signal files) |
+| `/lean-daemon stop --force` | Force stop all agents (kills tmux sessions immediately) |
+| `/lean-daemon wake <type>` | Wake a sleeping agent early to start its next cycle now |
+| `/lean-daemon health` | Show agent process health and detect stuck agents |
+| `/lean-daemon daemon [options]` | Run continuous monitoring daemon (respawns completed/stuck agents) |
 
 ## Pool Limits
 
@@ -147,11 +147,11 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 ## Helper Scripts
 
 ```bash
-# Status (also works outside /lean skill)
+# Status (also works outside /lean-daemon skill)
 ./scripts/lean/status.sh
 ./scripts/lean/status.sh --json
 
-# Launch/stop (also works outside /lean skill)
+# Launch/stop (also works outside /lean-daemon skill)
 ./scripts/lean/launch.sh start --researcher 3
 ./scripts/lean/launch.sh stop                # Graceful (signal files)
 ./scripts/lean/launch.sh stop --force        # Force (kill sessions)
@@ -474,7 +474,7 @@ The Aristotle agent was recently fixed. There are **~132 jobs** eligible for res
 - 7 failed
 - 5 build_failed
 
-The Aristotle agent will automatically process this backlog when spawned via `/lean`.
+The Aristotle agent will automatically process this backlog when spawned via `/lean-daemon`.
 
 ## Documentation
 
@@ -533,7 +533,7 @@ make enhance N=5      # Launch 5 Erdős stub enhancers
 make research N=2     # Launch 2 parallel research agents (default)
 ```
 
-**Note**: `make enhance` launches **Erdos Enhancers** (stub creation), not Enrichers (gallery depth). For enrichers, use `/lean start --enricher 2` or `./scripts/lean/launch.sh start --enricher 2`.
+**Note**: `make enhance` launches **Erdos Enhancers** (stub creation), not Enrichers (gallery depth). For enrichers, use `/lean-daemon start --enricher 2` or `./scripts/lean/launch.sh start --enricher 2`.
 
 ---
 
@@ -670,15 +670,15 @@ Use Claude Code terminals with specialized roles for hands-on development coordi
 **Example workflow**:
 ```bash
 # Terminal 1: Builder working on feature
-/builder
+/loom:builder
 # Claims loom:ready issue, implements, creates PR
 
 # Terminal 2: Judge reviewing PRs
-/judge
+/loom:judge
 # Reviews PR with loom:review-requested, provides feedback
 
 # Terminal 3: Curator maintaining issues
-/curator
+/loom:curator
 # Enhances unlabeled issues, marks as loom:ready
 ```
 
