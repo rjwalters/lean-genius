@@ -215,3 +215,27 @@ density_increment_lemma (1 sorry) ── needs subprogression extraction
 ```
 
 All other sorries are eliminated. The proof of Roth's theorem is complete modulo `density_increment_lemma`.
+
+### Analysis: density_increment_lemma proof requirements
+
+**Statement**: Given AP-free A ⊆ Z/NZ with density ≥ δ, find M ≥ √N and AP-free B ⊆ Z/MZ with density ≥ δ + δ²/100.
+
+**Key observation**: The M ≥ √N bound is NEVER USED downstream. In `density_iteration` and `roth_density_bound`, it's destructured as `_` (ignored). The proof only needs `1 < M`.
+
+**Proof approach** (requires new infrastructure):
+1. From `fourier_large_coefficient` (proved): ∃ r ≠ 0 with |Â(r)| ≥ δ²N/2
+2. Let P = addOrderOf r (order of r in Z/NZ). Then P | N, P ≥ 2.
+3. Z/NZ has N/P cosets of ⟨r⟩. Each coset ≅ Z/PZ.
+4. Need to show: the Fourier coefficient forces a coset to have density δ + Ω(δ²).
+5. AP-freeness preserves: a 3-AP in Z/PZ lifts to 3-AP in the coset ⊆ Z/NZ (since kr ≠ 0 for 0 < k < P).
+
+**New infrastructure needed**:
+- `addOrderOf r` and basic properties for ZMod N
+- Coset partition of Z/NZ by ⟨r⟩ (as Finset decomposition)
+- Bijection between each coset and Z/PZ
+- Fourier coefficient decomposition over cosets → density increment via pigeonhole
+- AP-freeness preservation under the coset→Z/PZ map
+
+**Difficulty**: HIGH (estimated 200+ lines of new infrastructure)
+**Aristotle-suitable**: NO (requires creative proof architecture, not just tactic search)
+**Simplification**: Could remove M ≥ √N from statement (unused) to simplify
