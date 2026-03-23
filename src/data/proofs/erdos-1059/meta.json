@@ -158,7 +158,7 @@
       "title": "Verified Examples Summary",
       "summary": "Proves `prime_101`, `prime_211` via `decide`, and packages both witnesses into `two_witnesses`: $(101).\\text{Prime} \\wedge \\text{AllFact}(101) \\wedge (211).\\text{Prime} \\wedge \\text{AllFact}(211)$.",
       "startLine": 121,
-      "endLine": 144,
+      "endLine": 143,
       "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding."
     }
   ],
@@ -239,10 +239,11 @@
     "summary": "Erdős Problem #1059 remains open. The formalization verifies two concrete witnesses ($p = 101, 211$) and one counterexample ($p = 89$) using Lean's `decide` tactic, demonstrates the sparsity of factorials below $n$, and axiomatizes both the main conjecture and Erdős's potentially more tractable smooth-number variant.",
     "implications": "**Theoretical Significance**: A resolution would illuminate the relationship between prime distribution and factorial arithmetic.\n\n**Broader Connections**: The probabilistic heuristic strongly suggests the answer is yes — in fact, it predicts that the density of qualifying primes among all primes approaches 1 — but converting such arguments into rigorous proofs remains a central challenge in analytic number theory.\n\nThe problem connects to several themes: (1) the general question of whether primes 'avoid' structured sequences (cf. Bunyakovsky conjecture, Bateman-Horn conjecture); (2) Erdős's smooth-number variant links to sieve theory and the Dickman function $\\rho(u)$, which governs the distribution of integers with no prime factors exceeding $n^{1/u}$; (3) the computational verification strategy — reducing an infinite problem to finite case analysis via factorial growth bounds — demonstrates a pattern common to many number-theoretic formalizations.",
     "openQuestions": [
-      "What is the density of primes satisfying the factorial-subtraction property among all primes?",
-      "Can Erdős's alternative approach via smooth numbers in $(l!, (l+1)!]$ be established by sieve methods?",
-      "What is the smallest prime $p > 211$ that fails the property?",
-      "Is there a connection between this problem and Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$?"
+      "What is the density of primes satisfying the factorial-subtraction property among all primes? The probabilistic heuristic predicts density 1 (almost all large primes qualify), but even proving positive density would be a significant advance.",
+      "Can Erdős's alternative approach via smooth numbers in $(l!, (l+1)!]$ be established by sieve methods? The Selberg sieve can estimate counts of $l$-rough numbers in intervals, but combining roughness with the factorial-subtraction compositeness condition requires a multi-dimensional sieve.",
+      "What is the smallest prime $p > 211$ that fails the property? Computational search suggests that qualifying primes become increasingly common, consistent with the density-1 prediction. OEIS A064152 lists further terms.",
+      "Is there a connection between this problem and Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$? Wilson gives $p - (p-1)! \\equiv 1 \\pmod{p}$, which is never prime for $p > 2$, but the factorials in Problem #1059 are much smaller than $(p-1)!$.",
+      "Can the `interval_cases` + `decide` verification pattern be generalized to automatically verify arbitrarily large instances? A tactic that takes an upper bound on $k!$ and generates the cases would allow extending the verified witness set beyond $\\{101, 211\\}$ without manual proof construction."
     ]
   },
   "references": [
