@@ -25,6 +25,27 @@
     ]
   },
   {
+    "id": "ann-287-imports",
+    "proofId": "erdos-287",
+    "range": {
+      "startLine": 19,
+      "endLine": 27
+    },
+    "type": "context",
+    "title": "Imports and Namespace",
+    "content": "Imports `Nat.Basic` for natural number arithmetic, `Rat.Basic` for rational number operations (needed to express the sum $\\sum 1/n_i = 1$), and `List.Basic` for sorted list operations. The `Erdos287` namespace encapsulates all definitions and conjectures.\n\nThe choice of `List` over `Finset` for representing decompositions is deliberate: the ordering of denominators and the gap structure $n_{i+1} - n_i$ are inherently sequential, making sorted lists the natural data structure. A `Finset`-based formulation would need to re-derive the ordering.",
+    "mathContext": "The three imports provide: $\\mathbb{N}$ arithmetic (divisibility, ordering), $\\mathbb{Q}$ arithmetic (unit fractions $1/n$, summation to check $= 1$), and list operations (sorted?, consecutive gaps, membership).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean imports",
+      "list vs finset",
+      "namespace"
+    ],
+    "prerequisites": [
+      "Lean 4 basics"
+    ]
+  },
+  {
     "id": "ann-287-decomp-def",
     "proofId": "erdos-287",
     "range": {
