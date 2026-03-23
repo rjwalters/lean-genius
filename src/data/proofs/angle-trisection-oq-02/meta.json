@@ -164,6 +164,16 @@
       "targetId": "angle-trisection-oq-02-oq-03-oq-01",
       "relationship": "extended-by",
       "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Connects the 2-group Galois criterion proved here to the concrete setting of $\\zeta_n = e^{2\\pi i/n}$ and Chebyshev polynomials, showing how the abstract group-theoretic characterization manifests in the cyclotomic world that governs regular polygon constructibility"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ expresses the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$ that generate cyclotomic extensions. The Gauss-Wantzel theorem is a direct application: the regular $p$-gon is constructible iff $\\text{Gal}(\\mathbb{Q}(\\zeta_p)/\\mathbb{Q}) \\cong (\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a 2-group, i.e., $p-1 = 2^k$. Gauss's construction of the 17-gon used the 2-group structure to recursively extract square roots of the Gauss periods $\\eta_i = \\sum_{j} \\zeta_{17}^{g^{2j+i}}$, which are real numbers expressed via De Moivre's formula"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) explains why all constructible numbers live inside cyclotomic fields: the degree-2 tower generating a constructible number produces an abelian extension, which Kronecker-Weber places inside $\\mathbb{Q}(\\zeta_n)$ for some $n$. This connects the local geometric construction (compass-and-straightedge) to the global arithmetic of cyclotomic fields"
     }
   ],
   "overview": {
@@ -309,7 +319,9 @@
     "nth-root-irrational",
     "e-transcendental",
     "solution-of-cubic",
-    "angle-trisection-oq-02-oq-03-oq-01"
+    "angle-trisection-oq-02-oq-03-oq-01",
+    "de-moivre",
+    "kroneckers-jugendtraum"
   ],
   "references": [
     {
