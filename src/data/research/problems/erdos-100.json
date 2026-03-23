@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-23T19:00:00Z",
     "iteration": 2,
-    "focus": "Full formalization completed with Guth-Katz connection",
+    "focus": "Proved diam_ge_one and n_over_log_sublinear",
     "blockers": [],
     "nextAction": "Prove diam_ge_one sorry, or submit to Aristotle",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full 354-line formalization from empty stub. 8 theorems, 9 definitions, 6 axioms, 1 sorry. Key theorem diam_ge_n_over_log_n proved (conditional on axiomatized Guth-Katz). Piepmeyer counterexample formalized.",
+    "progressSummary": "COMPLETED: Full 386-line formalization. 9 theorems, 9 definitions, 5 axioms, 0 sorries. Proved diam_ge_one (sorry eliminated) and n_over_log_sublinear (axiom→theorem, proved from Real.tendsto_log_atTop).",
     "builtItems": [
       "dist, dist_symm, dist_nonneg in Erdos100Problem.lean:38-53",
       "hasIntegerDistances, pairwiseDistances, numDistinctDistances in Erdos100Problem.lean:66-79",
@@ -38,7 +38,9 @@
       "diam_ge_n_over_log_n (PROVED, conditional on Guth-Katz) in Erdos100Problem.lean:216-234",
       "piepmeyer_ratio_bound, strong_conjecture_fails_at_9 (PROVED) in Erdos100Problem.lean:257-273",
       "conjecture_implies_kanold (PROVED) in Erdos100Problem.lean:308-325",
-      "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298"
+      "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298",
+      "diam_ge_one (PROVED) - trivial lower bound from Finset.one_lt_card + Finset.le_max'",
+      "n_over_log_sublinear (PROVED, was axiom) - n/log n = o(n) from Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop"
     ],
     "insights": [
       "Key bridge: integer distances => distinct distances subset of {1,...,floor(diam)} => #distinct_dists <= diam",
@@ -46,16 +48,16 @@
       "Piepmeyer 9-point construction disproves strong conjecture (diam >= n-1) at n=9",
       "Erdos-Anning theorem: infinite integer distance sets must be collinear (finite case fundamentally different)",
       "Gap between n/log n (known) and n (conjectured) is the central open question",
-      "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle"
+      "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle",
+      "n_over_log_sublinear follows from log n → ∞: eventually log n > 1/ε, so ε*log n > 1, hence n < ε*n*log n",
+      "diam_ge_one proof: extract two points via Finset.one_lt_card, show dist ∈ pairwiseDistances, then Finset.le_max' gives diam ≥ dist ≥ 1"
     ],
     "mathlibGaps": [
-      "No Finset.offDiag_nonempty lemma found in Mathlib",
-      "Finset.one_lt_card extraction + offDiag membership causes heartbeat timeouts"
+      "No Finset.offDiag_nonempty lemma found in Mathlib (worked around via manual membership proof)"
     ],
     "nextSteps": [
-      "Prove diam_ge_one (trivial bound) - may need set_option maxHeartbeats or alternative approach",
-      "Create Aristotle companion file for diam_ge_one sorry",
-      "Consider proving distinctDistances_le_diam (currently axiom, may be provable from definitions)"
+      "Consider proving distinctDistances_le_diam (counting argument: integer distances ⊆ {1,...,⌊diam⌋})",
+      "Remaining 5 axioms are deep external results (Guth-Katz, Kanold, Piepmeyer, Erdos-Anning) - likely not further reducible"
     ]
   },
   "tags": [
@@ -87,18 +89,18 @@
     ]
   },
   "started": "2026-01-23T08:04:56.538Z",
-  "lastUpdate": "2026-03-23T19:30:00Z",
+  "lastUpdate": "2026-03-23T20:30:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos100Problem.lean",
       "filename": "Erdos100Problem.lean",
-      "lineCount": 354,
-      "theoremCount": 8,
-      "axiomCount": 6,
+      "lineCount": 386,
+      "theoremCount": 9,
+      "axiomCount": 5,
       "defCount": 9,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos100Problem.lean"
     }
