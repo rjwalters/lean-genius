@@ -224,5 +224,15 @@
     "axiomCount": 3,
     "theoremCount": 55,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Extension of the central-limit-theorem-oq-01 formalization"
+    }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem-oq-01"
+  ]
 }

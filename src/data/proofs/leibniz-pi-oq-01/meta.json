@@ -144,5 +144,15 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "extends",
+      "description": "Extension of the leibniz-pi formalization"
+    }
+  ],
+  "relatedProofs": [
+    "leibniz-pi"
+  ]
 }

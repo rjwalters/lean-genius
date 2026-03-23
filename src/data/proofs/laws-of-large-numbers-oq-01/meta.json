@@ -161,5 +161,15 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "extends",
+      "description": "Extension of the laws-of-large-numbers formalization"
+    }
+  ],
+  "relatedProofs": [
+    "laws-of-large-numbers"
+  ]
 }

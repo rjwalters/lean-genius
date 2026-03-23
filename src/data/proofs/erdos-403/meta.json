@@ -61,7 +61,7 @@
   "overview": {
     "historicalContext": "**Erdős Problem #403: Powers of 2 as Factorial Sums**\n\nThis problem asks whether the equation 2^m = a₁! + a₂! + ... + aₖ! (with distinct positive integers aᵢ) has only finitely many solutions.\n\n**Historical Development:**\n- **Burr and Erdős** posed the question\n- **Lin (1976):** Proved finiteness, showing m ≤ 7 is maximal\n- **Frankl:** Independently obtained the same result\n- **Lin's stronger result:** The 2-adic valuation of any such sum is ≤ 254\n\n**The Answer:**\nYES, there are only finitely many solutions. The largest is:\n**2^7 = 2! + 3! + 5! = 2 + 6 + 120 = 128**\n\n**Reference:**\nLin, S., 'On two problems of Erdős concerning sums of distinct factorials.'\nBell Laboratories internal memorandum (1960/1976).\nAlso in Erdős-Graham [ErGr80, p.79].",
     "problemStatement": "**Problem Statement (Solved)**\n\nDoes the equation\n$$2^m = a_1! + a_2! + \\cdots + a_k!$$\nwith $a_1 < a_2 < \\cdots < a_k$ have only finitely many solutions?\n\n**Answer: YES**\n\n**Maximal Solution:** $2^7 = 2! + 3! + 5! = 128$\n\n**Verified Solutions:**\n- $2^1 = 2 = 2!$\n- $2^2 = 4 = 0! + 1! + 2!$\n- $2^3 = 8 = 0! + 1! + 3!$\n- $2^7 = 128 = 2! + 3! + 5!$ (maximal)\n\n**Related Result:**\nFor $3^m = \\sum a_i!$, there are exactly 5 solutions: $m \\in \\{0, 1, 2, 3, 6\\}$.",
-    "text": "Does 2^m = a\u2081! + a\u2082! + ... + a\u2096! (with distinct a\u1d62) have only finitely many solutions? YES - the largest is 2^7 = 2! + 3! + 5! = 128 (Lin/Frankl 1976).",
+    "text": "Does 2^m = a₁! + a₂! + ... + aₖ! (with distinct aᵢ) have only finitely many solutions? YES - the largest is 2^7 = 2! + 3! + 5! = 128 (Lin/Frankl 1976).",
     "proofStrategy": "**Formalization Strategy**\n\nThe Lean formalization proceeds in two layers: computational verification for explicit solutions, and axiomatization for the deep analytical results.\n\n1. **Definitions:** `sumFactorials(S) = Σₐ∈S a!` as a `Finset ℕ → ℕ` function, with predicates `IsPowerOfTwoFactorialSum(m)` and `IsPrimePowerFactorialSum(p, m)` capturing the Diophantine conditions.\n\n2. **Computational layer:** `native_decide` verifies equalities like `sumFactorials {2,3,5} = 2^7` by kernel evaluation — no human proof required for arithmetic facts.\n\n3. **Analytical layer (axiomatized):** Lin's theorem `m ≤ 7` and the 2-adic bound `v₂(Σa!) ≤ 254` are stated as axioms, representing deep results whose complete proofs (2-adic analysis, growth comparison) lie beyond the current formalization.\n\n4. **Structural derivations:** From the axioms, `solution_set_finite` is derived via `Set.Finite.subset (Set.finite_le_nat 7)` — a clean structural argument.\n\n5. **Powers of 3:** The complete classification is verified by providing five explicit witnesses and axiomatizing the 'no more solutions' direction.",
     "keyInsights": [
       "**Explicit Maximum:** $2^7 = 2! + 3! + 5! = 2 + 6 + 120 = 128$ is the unique largest solution; Lin's bound $m \\leq 7$ shows no larger power of 2 can be a factorial sum",
@@ -167,5 +167,16 @@
     "axiomCount": 9,
     "theoremCount": 15,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-402",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-402",
+    "erdos-404"
+  ]
 }

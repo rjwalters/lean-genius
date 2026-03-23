@@ -161,5 +161,15 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Extension of the cayley-hamilton-minpoly formalization"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-minpoly"
+  ]
 }

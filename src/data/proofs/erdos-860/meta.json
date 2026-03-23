@@ -141,8 +141,8 @@
     ]
   },
   "relatedProofs": [
-    "erdos-375",
-    "erdos-533"
+    "erdos-859",
+    "erdos-861"
   ],
   "leanFile": {
     "imports": [
@@ -171,6 +171,13 @@
       "key": "Gu04",
       "citation": "Guy, Richard K., Unsolved Problems in Number Theory, 3rd ed. (2004), Problem B32.",
       "type": "book"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-859",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
     }
   ]
 }

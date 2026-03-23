@@ -28,7 +28,7 @@
   "overview": {
     "historicalContext": "The problem of finding long monochromatic arithmetic progressions (APs) in 2-colorings of the integers has its roots in van der Waerden's 1927 theorem, which guarantees that any finite coloring of ℤ contains arbitrarily long monochromatic APs. Van der Waerden's original proof was non-constructive and gave tower-type bounds; Shelah (1988) later gave a primitive-recursive proof, but the quantitative bounds remain astronomical. Cohen and Erdős sharpened the question by fixing the common difference d: what is f(d), the maximum AP length that every 2-coloring must contain with difference d for infinitely many d? Erdős noted that the irrational rotation coloring χ(n) = ⌊√2 · n⌋ mod 2 limits monochromatic AP lengths, illustrating that Diophantine approximation governs the extremal colorings. The landmark result of Beck (1980) used discrepancy-theoretic methods to show f(d) ≤ (1+o(1))log₂ d — a striking logarithmic upper bound from probabilistic combinatorics. As of 2025, no lower bound beyond f(d) → ∞ (from van der Waerden) is known, making the gap between O(log d) and ω(1) the central open difficulty.",
     "problemStatement": "Find the optimal function f(d) such that in any 2-coloring of ℤ, at least one color class contains a monochromatic arithmetic progression of length f(d) with common difference d, for infinitely many d.",
-    "text": "Find optimal f(d) such that any 2-coloring of \u2124 has a monochromatic AP of length f(d) with difference d for infinitely many d. Known: f(d) \u2192 \u221e (van der Waerden), f(d) \u2264 (1+o(1))log\u2082 d (Beck). Open.",
+    "text": "Find optimal f(d) such that any 2-coloring of ℤ has a monochromatic AP of length f(d) with difference d for infinitely many d. Known: f(d) → ∞ (van der Waerden), f(d) ≤ (1+o(1))log₂ d (Beck). Open.",
     "proofStrategy": "The formalization axiomatizes 2-colorings (ℕ → Fin 2), monochromatic APs (IsMonoAP χ a d k), and the optimal bound function f(d). Known results — van der Waerden's growth guarantee, Beck's logarithmic upper bound, and Erdős's √2-coloring — are recorded as axioms. The conjecture that f(d) = Θ(log d) is stated as the open question. Key structural definitions include maxMonoAPLength (per-coloring AP bound) and optAPBound (the infimum over all colorings), encoding the minimax nature of f(d).",
     "keyInsights": [
       "Van der Waerden's theorem (1927) guarantees f(d) → ∞ as d → ∞: any 2-coloring must contain arbitrarily long monochromatic APs with any fixed common difference d, but gives no quantitative rate",
@@ -114,5 +114,16 @@
     "Beck (1980): upper bound f(d) ≤ (1+o(1))log₂ d",
     "Cohen: original formulation",
     "https://erdosproblems.com/187"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-186",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-186",
+    "erdos-188"
   ]
 }

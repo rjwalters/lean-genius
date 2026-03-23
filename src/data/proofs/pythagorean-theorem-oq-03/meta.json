@@ -227,5 +227,15 @@
     "axiomCount": 0,
     "theoremCount": 105,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "extends",
+      "description": "Extension of the pythagorean-theorem formalization"
+    }
+  ],
+  "relatedProofs": [
+    "pythagorean-theorem"
+  ]
 }

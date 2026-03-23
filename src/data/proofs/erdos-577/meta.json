@@ -131,12 +131,8 @@
     }
   ],
   "relatedProofs": [
-    "erdos-622",
-    "erdos-570",
-    "erdos-572",
-    "erdos-599",
-    "erdos-546",
-    "erdos-579"
+    "erdos-576",
+    "erdos-578"
   ],
   "references": [
     "Wang, H. (2010). 'Proof of the Erdős-Faudree conjecture on quadrilaterals.' Graphs and Combinatorics, 26(6), 833–877.",
@@ -171,5 +167,12 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-576",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ]
 }

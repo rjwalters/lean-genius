@@ -185,5 +185,15 @@
       "venue": "Wiley, New York",
       "note": "Classical treatment of subfactorials and partial derangements"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements",
+      "relationship": "extends",
+      "description": "Extension of the derangements formalization"
+    }
+  ],
+  "relatedProofs": [
+    "derangements"
   ]
 }

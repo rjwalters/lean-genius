@@ -206,5 +206,15 @@
       "venue": "Proceedings of the Royal Society of London",
       "note": "Young's inequality ab ≤ a^p/p + b^q/q, the pointwise engine behind Hölder"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "extends",
+      "description": "Extension of the lebesgue-measure formalization"
+    }
+  ],
+  "relatedProofs": [
+    "lebesgue-measure"
   ]
 }

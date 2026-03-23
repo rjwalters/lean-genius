@@ -167,5 +167,15 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "Extension of the geometric-series formalization"
+    }
+  ],
+  "relatedProofs": [
+    "geometric-series"
+  ]
 }

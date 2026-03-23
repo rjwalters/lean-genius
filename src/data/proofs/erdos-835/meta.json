@@ -134,13 +134,8 @@
     ]
   },
   "relatedProofs": [
-    "erdos-82",
-    "erdos-706",
-    "erdos-704",
-    "erdos-717",
-    "erdos-738",
-    "four-color-theorem",
-    "ramseys-theorem"
+    "erdos-834",
+    "erdos-836"
   ],
   "leanFile": {
     "imports": [
@@ -162,6 +157,13 @@
       "key": "JohnsonDB",
       "citation": "Johnson Graph Chromatic Numbers Database (computational verification)",
       "type": "database"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-834",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
     }
   ]
 }

@@ -167,7 +167,8 @@
     ]
   },
   "relatedProofs": [
-    "erdos-613"
+    "erdos-626",
+    "erdos-628"
   ],
   "leanFile": {
     "imports": [
@@ -184,5 +185,12 @@
     "axiomCount": 8,
     "theoremCount": 13,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-626",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ]
 }

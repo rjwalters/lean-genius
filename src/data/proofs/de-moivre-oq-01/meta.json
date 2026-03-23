@@ -176,5 +176,15 @@
       "venue": "Mémoires des Savants étrangers présentés à l'Académie de Saint-Pétersbourg",
       "note": "Introduced T_n and U_n polynomials, capturing the multiple-angle structure"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre",
+      "relationship": "extends",
+      "description": "Extension of the de-moivre formalization"
+    }
+  ],
+  "relatedProofs": [
+    "de-moivre"
   ]
 }

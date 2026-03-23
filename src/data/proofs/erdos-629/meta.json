@@ -125,11 +125,8 @@
     ]
   },
   "relatedProofs": [
-    "four-color-theorem",
-    "erdos-87",
-    "erdos-60",
-    "randomized-maxcut",
-    "ramseys-theorem"
+    "erdos-628",
+    "erdos-630"
   ],
   "leanFile": {
     "imports": [
@@ -175,5 +172,12 @@
     "axiomCount": 0,
     "theoremCount": 37,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-628",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ]
 }

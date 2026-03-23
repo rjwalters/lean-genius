@@ -27,7 +27,7 @@
   "overview": {
     "historicalContext": "Benkoski and Erdős studied weird numbers—abundant numbers that are not semiperfect. The smallest weird number is 70. Erdős asked whether sufficiently high abundancy σ(n)/n forces semiperfectness, offering a $25 prize. The problem remains open. No odd weird number is known (Erdős Problem #470). Perfect numbers (σ(n) = 2n) have been studied since antiquity, and abundant numbers were classified by Nicomachus around 100 CE. Semiperfect numbers were introduced by Sierpinski in 1965, and Benkoski coined the term weird in 1972 for abundant numbers lacking a subset-sum representation using proper divisors.",
     "problemStatement": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n?",
-    "text": "Is there an absolute constant C > 0 such that every n with \u03c3(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
+    "text": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
     "proofStrategy": "The formalization defines divisor sums, proper divisors, semiperfectness, and weird numbers. It axiomatises the known lower bound C > 2 (from the counterexample n = 70) and the connection to odd weird numbers. The main conjecture and the strengthened C = 3 version are stated.",
     "keyInsights": [
       "A weird number is abundant but not semiperfect; 70 is the smallest",
@@ -121,5 +121,16 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-824",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-824",
+    "erdos-826"
+  ]
 }

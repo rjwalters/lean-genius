@@ -141,5 +141,15 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "greens-theorem",
+      "relationship": "extends",
+      "description": "Extension of the greens-theorem formalization"
+    }
+  ],
+  "relatedProofs": [
+    "greens-theorem"
+  ]
 }

@@ -166,5 +166,15 @@
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "navier-stokes",
+      "relationship": "extends",
+      "description": "Extension of the navier-stokes formalization"
+    }
+  ],
+  "relatedProofs": [
+    "navier-stokes"
+  ]
 }

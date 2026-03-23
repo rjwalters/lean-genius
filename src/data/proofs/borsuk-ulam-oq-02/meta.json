@@ -220,5 +220,15 @@
     "axiomCount": 1,
     "theoremCount": 18,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "extends",
+      "description": "Extension of the borsuk-ulam formalization"
+    }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam"
+  ]
 }

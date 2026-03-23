@@ -173,5 +173,15 @@
     "axiomCount": 0,
     "theoremCount": 28,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "extends",
+      "description": "Extension of the gcd-algorithm formalization"
+    }
+  ],
+  "relatedProofs": [
+    "gcd-algorithm"
+  ]
 }

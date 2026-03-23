@@ -142,5 +142,15 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "extends",
+      "description": "Extension of the cayley-hamilton-reduction formalization"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-reduction"
+  ]
 }

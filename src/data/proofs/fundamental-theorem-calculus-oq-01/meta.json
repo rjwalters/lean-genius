@@ -46,7 +46,7 @@
   "overview": {
     "historicalContext": "The Fundamental Theorem of Calculus in its classical Newton-Leibniz form (late 17th century) assumes the integrand is continuous. Throughout the 19th century, mathematicians including Cauchy, Riemann, and Darboux progressively weakened the hypotheses, but the question of the *minimal* regularity for the FTC remained open. Henri Lebesgue's 1904 thesis 'Leçons sur l'intégration et la recherche des fonctions primitives' introduced the concept of absolute continuity and proved that it is the *precise* necessary and sufficient condition: a function F satisfies ∫ₐᵇ F'(x)dx = F(b) - F(a) with the Lebesgue integral if and only if F is absolutely continuous. The sharpness of this characterization was demonstrated by the Cantor function (devil's staircase), constructed by Georg Cantor in 1884: a continuous, monotone function on [0,1] whose derivative is zero almost everywhere, yet whose net change is 1. Vitali (1905) independently arrived at similar results, and the modern proof uses the Vitali covering lemma as a key tool. The connection between absolute continuity of functions and absolute continuity of measures (via the Radon-Nikodym theorem) was later clarified by Nikodym (1930).",
     "problemStatement": "If $F : [a,b] \\to \\mathbb{R}$ is absolutely continuous, then $F$ is differentiable almost everywhere, $F'$ is Lebesgue integrable, and $\\int_a^b F'(x)\\,dx = F(b) - F(a)$.",
-    "text": "Formalizes the Lebesgue generalization of the Fundamental Theorem of Calculus. Defines absolutely continuous functions (not yet in Mathlib), states the Lebesgue FTC (AC \u2192 a.e. differentiable, integral of derivative = net change), and connects to Mathlib's Vitali covering theorem, Lebesgue density theorem, and monotone a.e. differentiability.",
+    "text": "Formalizes the Lebesgue generalization of the Fundamental Theorem of Calculus. Defines absolutely continuous functions (not yet in Mathlib), states the Lebesgue FTC (AC → a.e. differentiable, integral of derivative = net change), and connects to Mathlib's Vitali covering theorem, Lebesgue density theorem, and monotone a.e. differentiability.",
     "proofStrategy": "The formalization defines absolutely continuous functions using Fin n-indexed families of disjoint subintervals, states the Lebesgue FTC as two axioms (a.e. differentiability and integral recovery), and connects to Mathlib's existing infrastructure. The intended proof path for the axioms is: AC → BV (total variation bound from the AC definition with a single ε) → Jordan decomposition as difference of monotone functions → apply Mathlib's Monotone.ae_differentiableAt to each → integral recovery using the Vitali covering lemma and Lebesgue differentiation theorem (both available in Mathlib).",
     "keyInsights": [
       "Absolute continuity sits strictly between Lipschitz continuity and uniform continuity in the regularity hierarchy: Lipschitz → AC → uniformly continuous → continuous, with each implication strict",
@@ -150,5 +150,12 @@
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "Extension of the fundamental-theorem-calculus formalization"
+    }
+  ]
 }

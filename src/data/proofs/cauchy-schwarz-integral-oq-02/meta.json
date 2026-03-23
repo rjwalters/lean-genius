@@ -165,5 +165,15 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "Extension of the cauchy-schwarz-integral formalization"
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-integral"
+  ]
 }

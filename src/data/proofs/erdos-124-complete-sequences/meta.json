@@ -151,5 +151,16 @@
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-123",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-123",
+    "erdos-125"
+  ]
 }

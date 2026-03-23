@@ -188,5 +188,15 @@
       "venue": "Academic Pensieve",
       "note": "The proof approach in Mathlib follows this reference"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule",
+      "relationship": "extends",
+      "description": "Extension of the cramers-rule formalization"
+    }
+  ],
+  "relatedProofs": [
+    "cramers-rule"
   ]
 }

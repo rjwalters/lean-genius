@@ -105,13 +105,8 @@
     ]
   },
   "relatedProofs": [
-    "erdos-564",
-    "ramseys-theorem",
-    "erdos-546",
-    "erdos-545",
-    "erdos-szekeres",
-    "erdos-55",
-    "erdos-500"
+    "erdos-561",
+    "erdos-563"
   ],
   "references": [
     "Erdős, P., Hajnal, A., and Rado, R. (1965). 'Partition relations for cardinal numbers.' Acta Math. Acad. Sci. Hungar., 16, 93–196.",
@@ -131,5 +126,12 @@
       "Is R_3(5) equal to 43, 44, ... or 48? (Current best bounds: 43 ≤ R₃(5) ≤ 48)",
       "Can algebraic or topological methods yield better hypergraph Ramsey lower bounds for r ≥ 4?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-561",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ]
 }

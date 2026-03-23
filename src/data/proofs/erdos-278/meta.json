@@ -31,7 +31,7 @@
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.28), as part of their systematic study of covering systems — a topic Erdős championed from his groundbreaking 1950 paper showing that covering systems with distinct moduli greater than 1 exist. The problem asks: given fixed moduli, how should one choose residues to optimize coverage? R.J. Simpson resolved the minimum question in 1986 (Discrete Mathematics 59), proving by an elegant averaging argument that equal residues minimize coverage density. The maximum question remains open and connects to the broader structure theory of covering systems, which saw a major breakthrough when Bob Hough (2015, Annals of Mathematics) proved the minimum modulus conjecture — showing that any covering system with distinct moduli must include a modulus at most $10^{16}$. The interplay between coprime and non-coprime moduli connects to the Chinese Remainder Theorem and to sieve-theoretic methods in analytic number theory.",
     "problemStatement": "Given moduli $A = \\{n_1, \\ldots, n_r\\}$ with $n_i > 0$, what is $\\delta_{\\max}(A) = \\sup_{a_1, \\ldots, a_r} |\\bigcup_{i=1}^r (a_i + n_i\\mathbb{Z}) \\cap [0, L)| / L$ where $L = \\mathrm{lcm}(n_1, \\ldots, n_r)$?",
-    "text": "Given moduli {n\u2081,...,n\u1d63}, choose residues to maximize the density of covered integers. Simpson (1986) proved minimum is achieved with equal residues. Maximum density remains OPEN.",
+    "text": "Given moduli {n₁,...,nᵣ}, choose residues to maximize the density of covered integers. Simpson (1986) proved minimum is achieved with equal residues. Maximum density remains OPEN.",
     "proofStrategy": "We formalize congruence systems as structures with moduli and residue functions, define coverage density over one LCM period, prove the basic bounds $0 \\leq \\delta \\leq 1$, axiomatize Simpson's theorem (minimum with equal residues), the coprime maximum (via CRT), and state the open question for general moduli.",
     "keyInsights": [
       "**Simpson's averaging argument**: The minimum density is achieved by equal residues because $\\mathbb{E}_t[\\delta(\\{a_i + t \\pmod{n_i}\\})] = \\delta(\\{0 \\pmod{n_i}\\})$ — averaging over uniform shifts gives the equal-residue density, so the minimum is at most this",
@@ -134,5 +134,16 @@
     "Hough (2015): 'Solution of the minimum modulus problem for covering systems', Annals of Mathematics 181(1), 361–382",
     "Crittenden & Vanden Eynden (1970): 'Any n arithmetic progressions covering the first 2ⁿ integers cover all integers', Journal of Combinatorial Theory 8, 29–30",
     "https://erdosproblems.com/278"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-277",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-277",
+    "erdos-279"
   ]
 }

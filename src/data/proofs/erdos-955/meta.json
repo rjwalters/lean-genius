@@ -77,7 +77,7 @@
   "overview": {
     "historicalContext": "The sum of proper divisors $s(n) = \\sigma(n) - n$ (the aliquot sum) has been studied since antiquity in connection with perfect numbers—integers where $s(n) = n$, such as 6 and 28. Pythagoras and Euclid investigated these, and Euler proved that all even perfect numbers have the form $2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime.\n\nThe modern question about density preservation under $s$ was formulated by Erdős, Granville, Pomerance, and Spiro in their influential 1990 paper on iterates of arithmetic functions. The EGPS conjecture asks: if $A \\subset \\mathbb{N}$ has natural density 0, must $s^{-1}(A) = \\{n : s(n) \\in A\\}$ also have density 0? This is a question about the \"regularity\" of the arithmetic function $s$—whether it distributes values uniformly enough that sparse target sets cannot attract a dense set of inputs.\n\nSubstantial partial progress has been made. Pollack (2014) proved the conjecture for $A$ = primes, using deep results on the distribution of $s(n)$ modulo primes. Troupe (2020) extended this to $A$ = sums of two squares. Pollack, Pomerance, and Thompson (2018) proved the conjecture for all sets with $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$, identifying the threshold exponent $1/2$ as critical. The general case remains open after over 35 years.\n\nStrikingly, the forward direction behaves differently: there exist density-0 sets $A$ whose image $s(A)$ has positive density. Additionally, the existence of untouchable numbers (integers $k$ with $s^{-1}(\\{k\\}) = \\emptyset$, such as 2 and 5) shows that even positive-density sets can have empty preimages. The conjecture concerns only the backward direction: does sparse target force sparse fiber?\n\n**Status**: OPEN — The EGPS conjecture is unresolved in full generality.",
     "problemStatement": "**Problem (OPEN)**\n\nLet $s(n) = \\sigma(n) - n$ be the sum of proper divisors.\n\n**Conjecture (EGPS 1990):** If $A \\subset \\mathbb{N}$ has natural density $0$, then $s^{-1}(A) = \\{n : s(n) \\in A\\}$ must also have density $0$.\n\n**Known Results:**\n- True for $A$ = primes (Pollack 2014)\n- True for $A$ = integers with many prime factors (Troupe 2015)\n- True for $A$ = sums of two squares (Troupe 2020)\n- True if $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$ (PPT 2018)\n\n**Contrasts:**\n- $s(A)$ can have positive density even if $A$ has density 0\n- $s^{-1}(A)$ can be empty even if $A$ has positive density (untouchable numbers)",
-    "text": "If A \u2282 \u2115 has density 0, must s\u207b\u00b9(A) also have density 0, where s(n) is the sum of proper divisors? Proved for primes (Pollack), sums of two squares (Troupe), and sparse sets (PPT). General case OPEN.",
+    "text": "If A ⊂ ℕ has density 0, must s⁻¹(A) also have density 0, where s(n) is the sum of proper divisors? Proved for primes (Pollack), sums of two squares (Troupe), and sparse sets (PPT). General case OPEN.",
     "proofStrategy": "**Formalization Strategy**\n\nThe Lean file builds up the framework for the EGPS conjecture:\n\n1. **Divisor sums**: Defines $\\sigma(n)$ via Mathlib's `Nat.divisors` and $s(n) = \\sigma(n) - n$ as the aliquot sum, with an alternative definition via `Nat.properDivisors`\n2. **Number classifications**: Defines perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$) numbers, with 6 and 28 as perfect examples\n3. **Natural density**: Defines the counting function $|A \\cap [1,x]|$, density $d(A) = \\lim_{x \\to \\infty} |A \\cap [1,x]|/x$, and zero/positive density predicates\n4. **Preimage**: Defines $s^{-1}(A) = \\{n : s(n) \\in A\\}$ as a set-theoretic preimage\n5. **EGPS conjecture**: Formally states $\\forall A, d(A) = 0 \\Rightarrow d(s^{-1}(A)) = 0$\n6. **Contrasts**: Axiomatizes the forward failure (density amplification) and untouchable numbers\n7. **Partial results**: Axiomatizes Pollack (primes), Troupe (sums of two squares), and PPT (sparse sets)\n8. **PPT threshold**: The critical exponent $1/2$: any set growing like $x^{1/2+o(1)}$ satisfies the conjecture\n9. **Growth bound**: $s(n) \\leq n(2 + \\log\\log n)$ explains why the threshold is $1/2$",
     "keyInsights": [
       "The aliquot sum $s(n) = \\sigma(n) - n$ encodes the divisor structure of $n$, and its preimage fibers $s^{-1}(\\{k\\})$ reveal how arithmetic structure constrains which values are achievable",
@@ -217,5 +217,16 @@
       "citation": "Pollack, P., Pomerance, C., and Thompson, L. (2018). Divisor-sum fibers. Mathematika, 64(2), 330-342.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-954",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-954",
+    "erdos-956"
   ]
 }

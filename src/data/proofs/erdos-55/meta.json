@@ -118,12 +118,7 @@
   ],
   "relatedProofs": [
     "erdos-54",
-    "ramseys-theorem",
-    "erdos-546",
-    "szemeredi-theorem",
-    "erdos-88",
-    "erdos-87",
-    "erdos-szekeres"
+    "erdos-56"
   ],
   "references": [
     "Burr, S.A. and Erdős, P. (1985). 'On a Ramsey-type problem in additive number theory.' J. Combin. Theory Ser. A, 40(1), 39–63.",
@@ -156,5 +151,12 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-54",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ]
 }

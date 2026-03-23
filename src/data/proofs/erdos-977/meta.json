@@ -125,8 +125,7 @@
   },
   "relatedProofs": [
     "erdos-976",
-    "erdos-728-factorial-divisibility",
-    "erdos-970"
+    "erdos-978"
   ],
   "leanFile": {
     "imports": [],
@@ -136,5 +135,12 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ]
 }

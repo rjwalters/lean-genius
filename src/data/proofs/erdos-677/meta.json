@@ -27,7 +27,7 @@
   "overview": {
     "historicalContext": "Erdős posed this problem about the distinctness of lcm of consecutive integer blocks. The Thue-Siegel theorem implies finiteness for fixed k. Erdős knew only two cross-parameter examples: lcm(5,6,7) = lcm(14,15) = 210 and lcm(4,5,6,7) = lcm(20,21) = 420. A stronger conjecture asserts that consecutive products can rarely share the same prime factor set. The LCM of k consecutive integers equals k! times a binomial coefficient, and the prime factorization structure is deeply connected to Sylvester-Schur theory; the analogous problem for products (rather than LCMs) of consecutive integers relates to Catalan-type Diophantine equations and was studied by Stormer and others in the early 20th century.",
     "problemStatement": "Let M(n,k) = lcm(n+1,...,n+k). Is M(m,k) ≠ M(n,k) for all m ≥ n+k?",
-    "text": "Is M(n,k) = lcm(n+1,...,n+k) always distinct for m \u2265 n+k? The Thue\u2013Siegel theorem gives finiteness for fixed k. Only two cross-parameter examples are known.",
+    "text": "Is M(n,k) = lcm(n+1,...,n+k) always distinct for m ≥ n+k? The Thue–Siegel theorem gives finiteness for fixed k. Only two cross-parameter examples are known.",
     "proofStrategy": "We define lcmInterval using Finset.fold with Nat.lcm, consecutiveProduct using Finset.prod, and samePrimeFactors via Nat.primeFactors. The main conjecture and its stronger variant are stated as Prop. Thue–Siegel finiteness is an axiom.",
     "keyInsights": [
       "The Thue–Siegel theorem gives finiteness for fixed k but not the full conjecture",
@@ -107,5 +107,16 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-676",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-676",
+    "erdos-678"
+  ]
 }

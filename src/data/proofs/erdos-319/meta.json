@@ -63,7 +63,7 @@
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* [ErGr80]. It asks for the largest subset $A$ of $\\{1,\\ldots,N\\}$ that supports an irreducible signed unit-fraction vanishing sum—a signing $\\delta : A \\to \\{\\pm 1\\}$ such that $\\sum_{n \\in A} \\delta(n)/n = 0$, but no proper nonempty subset of $A$ satisfies this.\n\nThe irreducibility condition is the key constraint: it means the vanishing is tight—removing any element breaks the zero sum. Without this condition, one could trivially achieve $|A| = N$ by combining independent zero sums. Irreducibility captures a notion of minimal rational dependence among the reciprocals $1/n$.\n\nAdenwalla achieved the best known lower bound $c(N) \\geq (1 - 1/e + o(1))N \\approx 0.632N$ using Croot's (2001) unit-fraction theorem. The construction takes $B \\subseteq [(1/e - o(1))N, N]$ with $\\sum_{b \\in B} 1/b = 1$ (which exists by Croot's result), then sets $A = B \\cup \\{1\\}$ with $\\delta(1) = +1$ and $\\delta(b) = -1$ for $b \\in B$, giving $\\sum \\delta(n)/n = 1 - 1 = 0$. The set $B$ has $|B| \\geq (1 - 1/e - o(1))N$ elements since all denominators are $\\geq (1/e)N$.\n\nThe gap between $(1 - 1/e)N \\approx 0.632N$ and the trivial upper bound $N$ remains open. The central question is whether $c(N) = (1 - o(1))N$ or whether there is a strict constant gap.\n\n**Status**: OPEN — The exact asymptotic constant is unknown.",
     "problemStatement": "**Problem (OPEN)**\n\nFind the maximum $c(N) = \\max |A|$ for $A \\subseteq \\{1,\\ldots,N\\}$ admitting $\\delta : A \\to \\{\\pm 1\\}$ with $\\sum_{n \\in A} \\delta(n)/n = 0$ and $\\sum_{n \\in A'} \\delta(n)/n \\neq 0$ for every non-empty proper subset $A' \\subsetneq A$.\n\n**Known Results:**\n- Lower bound: $c(N) \\geq (1 - 1/e + o(1))N$ (Adenwalla, using Croot 2001)\n- Upper bound: $c(N) \\leq N$ (trivial)\n\n**Open**: Determine the asymptotic constant. Is $c(N) = (1 - o(1))N$?",
-    "text": "Find max |A| for A \u2286 {1,...,N} with a signing \u03b4 : A \u2192 {\u00b11} giving \u03a3 \u03b4(n)/n = 0 irreducibly. Known: |A| \u2265 (1\u22121/e+o(1))N (Adenwalla/Croot). Open.",
+    "text": "Find max |A| for A ⊆ {1,...,N} with a signing δ : A → {±1} giving Σ δ(n)/n = 0 irreducibly. Known: |A| ≥ (1−1/e+o(1))N (Adenwalla/Croot). Open.",
     "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (90 lines) formalizes the problem with all results axiomatized:\n\n1. **Core definitions** (lines 26–46): `IsSigning A δ` asserts $\\delta(n) \\in \\{\\pm 1\\}$ for $n \\in A$. `signedSum A δ = \\sum_{n \\in A} \\delta(n)/n$ as a rational number via `Finset.sum`. `IsIrreducibleZeroSum A δ` combines signing, zero sum, and irreducibility (no proper nonempty subset sums to zero). `maxIrreducibleSize N` is the supremum of $|A|$ over `(Finset.Icc 1 N).powerset` filtered by existence of an irreducible zero sum.\n\n2. **Main conjecture** (lines 48–55): `erdos_319_conjecture` axiomatizes the lower bound $c(N) \\geq (1 - 1/e - \\varepsilon)N$ for large $N$, using `Real.exp 1` for the constant $e$.\n\n3. **Known results** (lines 57–77): `adenwalla_lower_bound` (same bound, duplicated for attribution), `trivial_upper_bound` ($c(N) \\leq N$), and `croot_unit_fraction_theorem` (every positive integer $\\leq N$ is a sum of distinct unit fractions from $\\{1,\\ldots,N\\}$).\n\n4. **Observations** (lines 79–90): `small_example` asserts existence of an irreducible zero sum in $\\{1,\\ldots,6\\}$.",
     "keyInsights": [
       "The irreducibility condition captures minimal rational dependence: $\\sum \\delta(n)/n = 0$ holds but no proper subset achieves this, meaning the reciprocals $1/n$ for $n \\in A$ are minimally $\\mathbb{Q}$-dependent with the given signs",
@@ -151,5 +151,16 @@
       "citation": "Croot, E.S. (2001). On a coloring conjecture about unit fractions. Annals of Mathematics, 157(2), 545-556.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-318",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-318",
+    "erdos-320"
   ]
 }

@@ -140,10 +140,8 @@
     ]
   },
   "relatedProofs": [
-    "erdos-28",
-    "erdos-533",
-    "erdos-117",
-    "erdos-839"
+    "erdos-953",
+    "erdos-955"
   ],
   "leanFile": {
     "imports": [
@@ -164,5 +162,12 @@
     "Rosen: greedy sequence construction",
     "OEIS A390642: the Rosen sequence",
     "https://erdosproblems.com/954"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-953",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem"
+    }
   ]
 }
