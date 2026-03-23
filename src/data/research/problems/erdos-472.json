@@ -1,7 +1,7 @@
 {
   "slug": "erdos-472",
-  "title": "Erdős #472",
-  "phase": "OBSERVE",
+  "title": "Erd\u0151s #472",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,25 +16,40 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T04:11:10.513Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Fixed build issues: deprecated List.Sorted \u2192 List.Pairwise, incorrect theorem hypothesis, import consolidation",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "File now compiles cleanly. Only 1 irreducible axiom remains (open conjecture).",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEY+FIX: Fixed 3 build issues in well-developed file (19 theorems, 1 axiom). Replaced deprecated List.Sorted with List.Pairwise. Fixed incorrect seed_two_gives_even theorem (added missing Odd p hypothesis). Consolidated imports to import Mathlib. File now compiles cleanly. The single remaining axiom (ulam35_contains_all_odd_primes_conjecture) is an open problem and cannot be eliminated.",
+    "builtItems": [
+      "Fixed seed_two_gives_even: added missing Odd p hypothesis (theorem was false for even p)",
+      "Replaced deprecated List.Sorted with List.Pairwise (3 occurrences)",
+      "Consolidated imports to import Mathlib"
+    ],
+    "insights": [
+      "File is well-developed: 19 theorems including computational verification of 8 terms",
+      "Single axiom ulam35_contains_all_odd_primes_conjecture is genuinely open",
+      "The {3,5} Ulam sequence is conjectured to contain all odd primes",
+      "Computational step function (ulamNextCandidate, ulamStep, ulamExtend) enables native_decide verification",
+      "List.Sorted deprecated in current Mathlib in favor of List.Pairwise",
+      "seed_two_gives_even was incorrectly stated for all p >= 3 - only true for odd p"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #472 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?\n\n\n\nA problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\\ldots$. It is possible that this sequence is infinite.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #471\n- Problem #473\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "nextSteps": [
+      "No axiom elimination possible - single axiom is an open conjecture",
+      "Could extend computational verification beyond 8 terms",
+      "Could prove the conjectured equivalence: Ulam {3,5} sequence = all odd primes"
+    ],
+    "markdown": "# Erd\u0151s #472 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?\n\n\n\nA problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\\ldots$. It is possible that this sequence is infinite.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #471\n- Problem #473\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
