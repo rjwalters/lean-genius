@@ -1,0 +1,164 @@
+{
+  "id": "solution-of-cubic-oq-03",
+  "title": "Vieta's Formulas for the Cubic via Cardano's Roots",
+  "slug": "solution-of-cubic-oq-03",
+  "description": "Proves that the three Cardano roots of x³ + px + q = 0 satisfy Vieta's formulas (sum = 0, pairwise products = p, triple product = -q) and derives the complete factorization into linear factors.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vieta%27s_formulas",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SolutionOfCubicOQ03.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "cubic-equations",
+      "vieta-formulas",
+      "cardano-formula",
+      "symmetric-polynomials",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exp_two_pi_mul_I",
+        "description": "e^(2πi) = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Complex.exp_mul_I",
+        "description": "Euler's formula: e^(θi) = cos θ + i sin θ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Real.sin_pi_div_three",
+        "description": "sin(π/3) = √3/2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "vieta_sum: x₁ + x₂ + x₃ = 0 for Cardano roots via 1 + ω + ω² = 0",
+      "vieta_pairs: x₁x₂ + x₁x₃ + x₂x₃ = p via ω³ = 1 and uv = -p/3",
+      "vieta_product: x₁x₂x₃ = -q via ω³ = 1 and u³ + v³ = -q",
+      "cubic_factorization: x³ + px + q = (x - x₁)(x - x₂)(x - x₃)",
+      "all_roots_satisfy: all three Cardano roots are zeros of the cubic"
+    ],
+    "dateAdded": "2026-03-22",
+    "prerequisites": [
+      "Cardano's formula for the depressed cubic (parent proof)",
+      "Cube roots of unity and their properties",
+      "Symmetric polynomial relations",
+      "Complex exponential and trigonometric functions"
+    ],
+    "relatedProblems": [
+      {
+        "id": "solution-of-cubic",
+        "relationship": "Parent: Cardano's formula for the depressed cubic"
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "Related: impossibility of quintic formula"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 187
+  },
+  "overview": {
+    "historicalContext": "Vieta's formulas, published by François Viète in 1591, express the coefficients of a polynomial in terms of symmetric functions of its roots. For the depressed cubic x³ + px + q = 0 (no x² term), the three elementary symmetric polynomials of the roots equal 0, p, and -q respectively. Cardano's formula (1545) gives the roots explicitly in terms of cube roots, making the verification of Vieta's formulas a concrete algebraic computation involving cube roots of unity.",
+    "problemStatement": "Given the three Cardano roots x₁ = u+v, x₂ = ωu+ω²v, x₃ = ω²u+ωv of x³+px+q=0, prove σ₁ = 0, σ₂ = p, σ₃ = -q and the complete factorization.",
+    "proofStrategy": "All three Vieta formulas reduce to algebraic identities involving the cube root of unity ω. The key identity 1+ω+ω²=0 eliminates all but the desired terms in each symmetric sum. The factorization follows from the general identity (x-r₁)(x-r₂)(x-r₃) = x³-σ₁x²+σ₂x-σ₃.",
+    "keyInsights": [
+      "The sum σ₁ = 0 reflects the absence of the x² term: u(1+ω+ω²) + v(1+ω²+ω) = 0",
+      "The pairwise sum σ₂ = p arises because u² and v² terms vanish by 1+ω+ω²=0, leaving only -3uv = p",
+      "The product σ₃ = -q follows from ω³(u³+v³) = u³+v³ = -q, with cross-terms again killed by 1+ω+ω²=0",
+      "linear_combination tactic elegantly handles the algebraic simplifications involving ω"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cube-root-unity",
+      "title": "Section I: Cube Root of Unity",
+      "startLine": 1,
+      "endLine": 79,
+      "summary": "Defines $\\omega = e^{2\\pi i/3}$ and proves the fundamental identities: $\\omega^3 = 1$, $\\omega \\neq 1$, $1 + \\omega + \\omega^2 = 0$, $\\omega^2 + \\omega = -1$, and $\\omega^4 = \\omega$",
+      "mathContext": "The primitive cube root of unity generates the cyclic group $\\mathbb{Z}/3\\mathbb{Z}$ inside $\\mathbb{C}^\\times$. The relation $1 + \\omega + \\omega^2 = 0$ is the key algebraic identity used throughout."
+    },
+    {
+      "id": "cardano-roots",
+      "title": "Section II: The Three Cardano Roots",
+      "startLine": 81,
+      "endLine": 95,
+      "summary": "Defines the three roots: $x_1 = u + v$, $x_2 = \\omega u + \\omega^2 v$, $x_3 = \\omega^2 u + \\omega v$",
+      "mathContext": "The choice of pairing (root $k$ uses $\\omega^k u + \\omega^{2k} v$) ensures $uv = -p/3$ is preserved for all three root pairs, which is essential for Vieta II."
+    },
+    {
+      "id": "vieta-sum",
+      "title": "Section III: Vieta I — Sum of Roots",
+      "startLine": 97,
+      "endLine": 109,
+      "summary": "$x_1 + x_2 + x_3 = (1+\\omega+\\omega^2)(u+v) = 0$. Proved via linear_combination with omega_sum",
+      "mathContext": "For a monic polynomial $x^n + a_{n-1}x^{n-1} + \\cdots$, the sum of roots equals $-a_{n-1}$. Here $a_{n-1} = 0$ (no $x^2$ term)."
+    },
+    {
+      "id": "vieta-pairs",
+      "title": "Section IV: Vieta II — Sum of Pairwise Products",
+      "startLine": 111,
+      "endLine": 134,
+      "summary": "After expanding, the $u^2$ and $v^2$ coefficients are $(1+\\omega+\\omega^2) = 0$, and the $uv$ coefficient reduces to $-3$ via $\\omega^3 = 1$ and $\\omega^4 = \\omega$. With $uv = -p/3$, this gives $p$",
+      "mathContext": "The second elementary symmetric polynomial $\\sigma_2 = \\sum_{i<j} x_i x_j$ equals the coefficient of $x$ in the monic depressed cubic."
+    },
+    {
+      "id": "vieta-product",
+      "title": "Section V: Vieta III — Product of All Roots",
+      "startLine": 136,
+      "endLine": 152,
+      "summary": "The triple product expands with cross-terms ($u^2 v$, $uv^2$) that vanish by $1+\\omega+\\omega^2 = 0$, leaving $\\omega^3(u^3+v^3) = u^3 + v^3 = -q$",
+      "mathContext": "The third elementary symmetric polynomial $\\sigma_3 = x_1 x_2 x_3$ equals $(-1)^3$ times the constant term, giving $-q$."
+    },
+    {
+      "id": "factorization",
+      "title": "Section VI: Polynomial Factorization",
+      "startLine": 154,
+      "endLine": 171,
+      "summary": "Combines all three Vieta formulas with the expansion $(x-r_1)(x-r_2)(x-r_3) = x^3 - \\sigma_1 x^2 + \\sigma_2 x - \\sigma_3$ to prove $x^3 + px + q = (x - x_1)(x - x_2)(x - x_3)$",
+      "mathContext": "This is the fundamental theorem of algebra applied to degree 3: every cubic over $\\mathbb{C}$ splits into linear factors."
+    },
+    {
+      "id": "roots-satisfy",
+      "title": "Section VII: Root Verification",
+      "startLine": 173,
+      "endLine": 187,
+      "summary": "As a corollary of the factorization, all three Cardano roots satisfy $x_i^3 + px_i + q = 0$",
+      "mathContext": "Each root is a zero of the polynomial because the factorization puts $(x - x_i)$ as a factor."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file completes the algebraic picture of Cardano's formula by proving all three Vieta formulas and the complete factorization. Every theorem is fully verified with zero sorries.",
+    "implications": "Vieta's formulas provide the algebraic bridge between the explicit radical formula (Cardano) and the abstract factorization theory. They confirm that the three Cardano roots are exactly the roots of the cubic, with correct multiplicity structure.",
+    "openQuestions": [
+      "Can the discriminant Δ = -4p³ - 27q² be related to the distinctness of roots?",
+      "How do the casus irreducibilis (Δ < 0 with three real roots) manifest in this framework?"
+    ]
+  },
+  "sorryCount": 0,
+  "status": "verified",
+  "badge": "verified",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Log",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial"
+    ],
+    "namespace": "SolutionOfCubicOQ03",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 4
+  }
+}
