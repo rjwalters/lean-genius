@@ -170,6 +170,103 @@
       "Can the counterexample be made explicit/constructive?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-62",
+      "title": "Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁",
+      "relation": "sibling-problem",
+      "description": "Directly related: asks whether any two ℵ₁-chromatic graphs share a common finite subgraph, another question about finite structure inside uncountably chromatic graphs"
+    },
+    {
+      "slug": "erdos-111",
+      "title": "Erdős Problem #111: Edge Deletion to Bipartiteness for Large Chromatic Graphs",
+      "relation": "sibling-problem",
+      "description": "Companion problem in the series: studies how many edges must be deleted to make ℵ₁-chromatic graphs bipartite, related structure theory"
+    },
+    {
+      "slug": "erdos-736",
+      "title": "Chromatic Numbers and Finite Subgraph Inheritance",
+      "relation": "foundational-theorem",
+      "description": "Directly relevant: concerns the inheritance of chromatic properties by finite subgraphs of infinite graphs — the central theme of Problem #110"
+    },
+    {
+      "slug": "erdos-593",
+      "title": "Erdős Problem #593: Finite Subhypergraphs of Uncountably Chromatic 3-Uniform Hypergraphs",
+      "relation": "generalization",
+      "description": "Hypergraph analogue of Problem #110: asks the same question about bounded finite subhypergraphs in the uncountably chromatic setting"
+    },
+    {
+      "slug": "erdos-918",
+      "title": "Erdős Problem #918: Chromatic Numbers of Infinite Graphs",
+      "relation": "sibling-problem",
+      "description": "Broadly related: studies chromatic number behavior and structure theory for infinite graphs, overlapping themes of ℵ₀ vs ℵ₁ chromatic behavior"
+    },
+    {
+      "slug": "continuum-hypothesis",
+      "title": "Independence of the Continuum Hypothesis",
+      "relation": "set-theory-context",
+      "description": "Set-theoretic backdrop: Shelah's consistency result for Problem #110 uses forcing and independence techniques analogous to those used to prove CH independence"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-57",
+      "title": "Erdős Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number",
+      "relation": "related-problem",
+      "description": "Studies odd cycles in infinite chromatic graphs; de Bruijn–Erdős finite subgraph inheritance applies to both problems"
+    },
+    {
+      "slug": "erdos-63",
+      "title": "Erdős Problem #63: Cycles of Length 2^n in Infinite Chromatic Graphs",
+      "relation": "related-problem",
+      "description": "Asks which cycle lengths are forced by infinite chromatic number — complements Problem #110's question about forced n-chromatic subgraph sizes"
+    },
+    {
+      "slug": "erdos-75",
+      "title": "Erdős Problem #75: Uncountable Chromatic Number and Large Independent Sets",
+      "relation": "related-problem",
+      "description": "Investigates the relationship between uncountable chromatic number and independent set structure, parallel structural questions for ℵ₁-chromatic graphs"
+    },
+    {
+      "slug": "erdos-594",
+      "title": "Erdős Problem #594: Graphs with Chromatic Number ≥ ℵ₁ and Odd Cycles",
+      "relation": "related-problem",
+      "description": "Studies odd cycle structure forced by χ ≥ ℵ₁, closely related to understanding what finite subgraph structure is guaranteed at uncountable chromatic numbers"
+    }
+  ],
+  "references": [
+    {
+      "key": "LambieHanson2020",
+      "citation": "Lambie-Hanson, C. (2020). Chromatic numbers of ℵ₁-graphs. arXiv:2001.03368.",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2001.03368",
+      "note": "Definitive ZFC disproof; constructs an ℵ₁-chromatic graph with no uniform bound on sizes of n-chromatic subgraphs"
+    },
+    {
+      "key": "Shelah2005",
+      "citation": "Shelah, S. (2005). On chromatic numbers of graphs. Periodica Mathematica Hungarica 50, 249–260.",
+      "type": "paper",
+      "note": "Showed consistency (relative to ZFC) of a negative answer to Problem #110 via a forcing argument"
+    },
+    {
+      "key": "ErdosHajnalSzemeredi1982",
+      "citation": "Erdős, P., Hajnal, A., and Szemerédi, E. (1982). On almost bipartite large chromatic graphs. Annals of Discrete Mathematics 12, 117–123.",
+      "type": "paper",
+      "note": "Original paper posing the conjecture that every ℵ₁-chromatic graph has n-chromatic subgraphs on ≤F(n) vertices"
+    },
+    {
+      "key": "deBruijnErdos1951",
+      "citation": "de Bruijn, N. G. and Erdős, P. (1951). A colour problem for infinite graphs and a problem in the theory of relations. Indagationes Mathematicae 13, 369–373.",
+      "type": "paper",
+      "note": "Foundational theorem: every graph with infinite chromatic number contains finite subgraphs of every finite chromatic number, without a size bound"
+    },
+    {
+      "key": "Komjath2011",
+      "citation": "Komjáth, P. (2011). Graphs on the uncountable cardinals. In: Open Problems in Mathematics, Springer.",
+      "type": "book-chapter",
+      "note": "Survey of open problems about chromatic numbers of graphs on uncountable vertex sets, including the context of Problem #110 and its relatives"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

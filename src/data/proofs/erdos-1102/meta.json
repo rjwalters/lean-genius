@@ -107,6 +107,83 @@
       "Are there algebraic conditions that guarantee property P?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Squarefree Sumsets (Erdős #1103) asks whether every sumset A + B contains a squarefree element, directly complementing Problem #1102's study of sequences defined by squarefree translate conditions"
+    },
+    {
+      "targetId": "erdos-969",
+      "relationship": "foundational",
+      "description": "Error Term in Squarefree Integer Counting (Erdős #969) concerns the precision of the squarefree density 6/π², which is the key constant appearing in the Q-sequence bound of Problem #1102"
+    },
+    {
+      "targetId": "erdos-208",
+      "relationship": "related",
+      "description": "Gaps Between Squarefree Numbers (Erdős #208) studies the local distribution of squarefree integers; Problem #1102 relies on the global density of squarefree numbers (6/π²) and their distribution properties"
+    },
+    {
+      "targetId": "erdos-378",
+      "relationship": "related",
+      "description": "Density of Squarefree Binomial Coefficients (Erdős #378) asks whether infinitely many central binomial coefficients are squarefree, sharing the theme of squarefree density with Problem #1102"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Squarefree + Power of 2 (Erdős #11) studies whether every integer can be written as the sum of a squarefree number and a power of 2, another instance of Erdős's recurring interest in squarefree translates"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "foundational",
+      "description": "The Basel Problem establishes ζ(2) = π²/6, hence 1/ζ(2) = 6/π² is the density of squarefree integers — exactly the optimal bound for Q-sequences proved by van Doorn and Tao in Problem #1102"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1103",
+    "erdos-969",
+    "erdos-208",
+    "erdos-378",
+    "erdos-11",
+    "basel-problem"
+  ],
+  "references": [
+    {
+      "authors": "van Doorn, Floris; Tao, Terence",
+      "title": "Squarefree properties P and Q",
+      "year": "2025",
+      "venue": "arXiv preprint",
+      "note": "Resolves Erdős Problem #1102: proves P-sequences have density 0 and Q-sequences have upper density at most 6/π², with the squarefree numbers themselves achieving the bound"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results in combinatorial number theory",
+      "year": "1981",
+      "venue": "Journées Arithmétiques de Metz, Astérisque 94",
+      "note": "Original source where Erdős posed the questions about properties P and Q for sequences with squarefree translate conditions"
+    },
+    {
+      "authors": "Mirsky, Leon",
+      "title": "On the frequency of pairs of square-free numbers with a given difference",
+      "year": "1947",
+      "venue": "Bulletin of the American Mathematical Society, 53(10), 936–939",
+      "note": "Early foundational result on the distribution of squarefree numbers and pairs; the density 6/π² for squarefree integers was known classically and underpins the Q-bound"
+    },
+    {
+      "authors": "Pappalardi, Francesco",
+      "title": "A survey on k-freeness",
+      "year": "2004",
+      "venue": "Number Theory, Ramanujan Mathematical Society Lecture Notes Series, Vol. 1, 71–88",
+      "note": "Survey covering density results for k-free (squarefree = 2-free) integers and their distribution, providing analytic background for the density 6/π² central to Problem #1102"
+    },
+    {
+      "authors": "Granville, Andrew",
+      "title": "ABC allows us to count squarefrees",
+      "year": "1998",
+      "venue": "International Mathematics Research Notices, 1998(19), 991–1009",
+      "note": "Studies the density of squarefree values of polynomials, connecting sieve methods and analytic number theory to squarefree distribution — techniques closely related to the van Doorn–Tao proof"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

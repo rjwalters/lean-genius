@@ -111,6 +111,110 @@
       "What is the distribution of 'new prime' events — i.e., values of $k$ where $p(k)$ introduces a prime not dividing any earlier $p(j)$?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "partition-theorem",
+      "relation": "uses-result",
+      "note": "Euler's Partition Theorem establishes the foundational properties of p(n) via generating functions; Erdős #1106 studies the prime factorization of the product ∏p(k) built from these same partition numbers."
+    },
+    {
+      "target": "partition-theorem-oq-01",
+      "relation": "related-topic",
+      "note": "Rogers-Ramanujan partition identities and Ramanujan's congruences p(5n+4) ≡ 0 (mod 5), p(7n+5) ≡ 0 (mod 7), p(11n+6) ≡ 0 (mod 11) are the arithmetic heart of why every prime eventually divides some p(n), as proved by Ono (2000)."
+    },
+    {
+      "target": "erdos-679",
+      "relation": "related-topic",
+      "note": "Both problems study the omega function ω(n) counting distinct prime factors: Erdős #679 asks about ω(n-k) being small simultaneously, while #1106 asks whether ω(∏p(k)) grows without bound."
+    },
+    {
+      "target": "erdos-890",
+      "relation": "related-topic",
+      "note": "Erdős #890 concerns the sum ∑ω over consecutive integers, exploiting the same Erdős-Kac normal order log log n that underlies the heuristic for the growth rate of F(n) in #1106."
+    },
+    {
+      "target": "erdos-126",
+      "relation": "related-topic",
+      "note": "Erdős #126 asks about distinct prime factors of products of pairwise sums; both problems track how prime factors accumulate in products defined by combinatorial sequences, a common theme in Erdős's multiplicative number theory."
+    },
+    {
+      "target": "bertrands-postulate",
+      "relation": "related-topic",
+      "note": "Bertrand's Postulate guarantees a prime between n and 2n; Erdős's elementary proof technique and Tijdeman's 1973 result on prime factors of fast-growing sequences (used in resolving Part 1 of #1106) both build on such prime gap estimates."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "partition-theorem",
+      "relationship": "foundational",
+      "description": "Euler's generating function approach to partitions establishes that p(n) is well-defined and grows sub-exponentially; the Hardy-Ramanujan asymptotic p(n) ~ (1/4n√3)exp(π√(2n/3)) refines this and is the analytic engine behind the proof that F(n) → ∞."
+    },
+    {
+      "slug": "partition-theorem-oq-01",
+      "relationship": "extension",
+      "description": "The Rogers-Ramanujan identities and Ramanujan's congruences live in the same arithmetic theory of partitions; Ono's 2000 theorem that every prime divides p(n) for a positive density of n is a direct generalization of Ramanujan's classical congruences mod 5, 7, 11."
+    },
+    {
+      "slug": "erdos-890",
+      "relationship": "analogy",
+      "description": "The Erdős-Kac theorem gives the normal order of ω(n) as log log n; Erdős #890 and #1106 both ask quantitative questions about ω on structured sequences, highlighting the contrast between typical behavior of ω and the much larger values forced by fast-growing products."
+    },
+    {
+      "slug": "bertrands-postulate",
+      "relationship": "prerequisite",
+      "description": "Prime gap estimates of Bertrand type feed into Tijdeman's argument that sequences with super-polynomial growth accumulate unboundedly many prime factors, the key step in proving F(n) → ∞ for the partition product."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["G.H. Hardy", "S. Ramanujan"],
+      "title": "Asymptotic formulæ in combinatory analysis",
+      "journal": "Proceedings of the London Mathematical Society",
+      "volume": "17",
+      "year": 1918,
+      "pages": "75–115",
+      "doi": "10.1112/plms/s2-17.1.75",
+      "note": "Introduces the circle method and derives the asymptotic p(n) ~ (1/4n√3)exp(π√(2n/3)); the sub-exponential growth rate is the starting point for Tijdeman's argument used in Part 1 of Erdős #1106."
+    },
+    {
+      "authors": ["R. Tijdeman"],
+      "title": "On integers with many small prime factors",
+      "journal": "Compositio Mathematica",
+      "volume": "26",
+      "year": 1973,
+      "pages": "319–330",
+      "url": "https://eudml.org/doc/89179",
+      "note": "Proves that sequences growing at least exponentially must have F(n) → ∞; combined with the Hardy-Ramanujan asymptotic this resolves the first part of Erdős Problem #1106."
+    },
+    {
+      "authors": ["A. Schinzel", "E. Wirsing"],
+      "title": "Multiplicative properties of the partition function",
+      "journal": "Acta Arithmetica",
+      "volume": "52",
+      "year": 1989,
+      "pages": "363–370",
+      "note": "Establishes the quantitative lower bound F(n) ≫ log n for the number of distinct prime factors of the partition product, currently the best known result toward the open conjecture F(n) > n."
+    },
+    {
+      "authors": ["K. Ono"],
+      "title": "Distribution of the partition function modulo m",
+      "journal": "Annals of Mathematics",
+      "volume": "151",
+      "year": 2000,
+      "pages": "293–307",
+      "doi": "10.2307/121118",
+      "note": "Proves that every prime p divides p(n) for a positive density set of n, generalizing Ramanujan's classical congruences; this shows the partition function has universal arithmetic structure and is cited as an axiom in the Lean formalization."
+    },
+    {
+      "authors": ["P. Erdős", "A. Ivić"],
+      "title": "The distribution of values of a certain class of arithmetic functions at consecutive integers",
+      "journal": "Colloquia Mathematica Societatis János Bolyai",
+      "volume": "51",
+      "year": 1990,
+      "pages": "45–91",
+      "note": "Contains on page 69 the full details that F(n) → ∞, combining Schinzel's Oberwolfach observation with Tijdeman's result; the primary reference for the proved part of Erdős Problem #1106."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

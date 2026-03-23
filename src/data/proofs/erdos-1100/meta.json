@@ -116,6 +116,105 @@
       "Can the lower and upper bounds on $g(k)$ be tightened, e.g., is $g(k) \\gg \\phi^k$ where $\\phi = (1+\\sqrt{5})/2 \\approx 1.618$ is the golden ratio?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-1099",
+      "title": "Erdős Problem #1099: Divisor Ratio Sum Boundedness",
+      "relationship": "Direct sibling problem from the same 1978 Erdős–Hall paper. While #1100 counts coprime consecutive divisor pairs, #1099 studies $h_\\alpha(n) = \\sum_i ((d_{i+1}/d_i) - 1)^\\alpha$ — a weighted sum over consecutive divisor ratios. Both problems probe the fine structure of the divisor sequence $(d_1 < d_2 < \\cdots < d_{\\tau(n)})$ and share the same combinatorial framework of consecutive divisor transitions."
+    },
+    {
+      "slug": "erdos-56",
+      "title": "Erdős Problem #56: Weakly Divisible Sets",
+      "relationship": "Both problems involve pairwise coprimality constraints on integers. Problem #56 asks for the largest subset of $\\{1,\\ldots,N\\}$ with no $k+1$ pairwise coprime elements, using primes as the key structural ingredient. The connection between coprime pairs in divisor sequences (#1100) and maximal pairwise-coprime subsets of integers (#56) reflects the dual role of coprimality in multiplicative number theory."
+    },
+    {
+      "slug": "erdos-18",
+      "title": "Erdős Problem #18: Practical Numbers",
+      "relationship": "Both problems study fine structural properties of divisor sets. Problem #18 asks how many divisors of $n$ are needed to represent all integers below $n$ as divisor sums (practical numbers), while #1100 asks how many consecutive divisor pairs are coprime. Both are about the combinatorial complexity of the divisor poset and the interplay between multiplicative and additive structure of divisors."
+    },
+    {
+      "slug": "erdos-1101",
+      "title": "Erdős Problem #1101: Good Sequences and Gaps in Sieved Integers",
+      "relationship": "Problem #1101 studies pairwise coprime sequences $u_1, u_2, \\ldots$ and the gaps in the integers they fail to divide. The coprimality of the $u_i$ is structurally analogous to the coprime transitions in the divisor sequence studied in #1100. Both problems connect the distribution of coprime integers to sieve-theoretic phenomena governed by multiplicative structure."
+    },
+    {
+      "slug": "erdos-1102",
+      "title": "Erdős Problem #1102: Squarefree Properties P and Q",
+      "relationship": "Problem #1100 restricts to squarefree $n$ in defining $g(k) = \\max_{\\omega(n)=k} \\tau^\\perp(n)$, making the divisor lattice a Boolean lattice $2^{\\{p_1,\\ldots,p_k\\}}$. Problem #1102 concerns density properties of squarefree integers, and the resolved van Doorn–Tao (2025) result on Q-sequences (upper density $\\leq 6/\\pi^2$) uses the same squarefree number theory apparatus."
+    },
+    {
+      "slug": "prime-number-theorem",
+      "title": "The Prime Number Theorem",
+      "relationship": "The Hardy–Ramanujan theorem ($\\omega(n) \\sim \\log\\log n$ for almost all $n$), which underpins the interpretation of Question 1 of #1100, follows from the Prime Number Theorem via a Turán-type variance estimate. Understanding whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ is therefore implicitly a question about the distribution of primes, linking back to PNT-level analytic machinery."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-1099",
+      "connection": "The companion problem about divisor ratio sums $h_\\alpha(n)$, originating in the same 1978 Erdős–Hall paper. The two problems together give a comprehensive picture of how consecutive divisors relate: #1099 via weighted ratio sums, #1100 via coprime pair counts."
+    },
+    {
+      "slug": "bezout-identity",
+      "connection": "Bézout's identity characterizes coprimality ($\\gcd(a,b) = 1$) via the existence of integer linear combinations. The coprimality condition $\\gcd(d_i, d_{i+1}) = 1$ at the heart of #1100 is exactly the Bézout-coprimality relation between consecutive divisors."
+    },
+    {
+      "slug": "infinitude-primes",
+      "connection": "The trivial lower bound $\\tau^\\perp(n) \\geq \\omega(n)$ in #1100 depends on having at least $\\omega(n)$ distinct prime factors. Euclid's proof that there are infinitely many primes guarantees an unbounded supply of integers with large $\\omega(n)$, making the question of whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ non-vacuous."
+    },
+    {
+      "slug": "prime-number-theorem",
+      "connection": "Question 1 of #1100 asks whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ for almost all $n$. By the Hardy–Ramanujan theorem (a consequence of PNT), $\\omega(n) \\approx \\log\\log n$ for almost all $n$, so this is equivalent to $\\tau^\\perp(n) \\gg \\log\\log n$. The PNT provides the asymptotic scale against which $\\tau^\\perp$ must be measured."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "R. R. Hall"],
+      "title": "On some unconventional problems on the divisors of integers",
+      "venue": "Journal of the Australian Mathematical Society (Series A)",
+      "year": 1978,
+      "volume": 25,
+      "pages": "479–485",
+      "doi": "10.1017/S1446788700021455",
+      "note": "Original paper posing the three questions on τ⊥(n). Hall collaborated with Erdős on several problems in multiplicative number theory at the University of York."
+    },
+    {
+      "authors": ["P. Erdős", "M. Simonovits"],
+      "title": "On the number of complete subgraphs and circuits contained in graphs",
+      "venue": "Časopis pro pěstování matematiky",
+      "year": 1984,
+      "volume": 109,
+      "pages": "3",
+      "note": "Contains the Erdős–Simonovits exponential bounds $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$ for the maximum coprime consecutive divisor count over squarefree integers with k prime factors. The upper bound uses a combinatorial argument on Boolean lattices."
+    },
+    {
+      "authors": ["G. Hardy", "S. Ramanujan"],
+      "title": "The normal number of prime factors of a number n",
+      "venue": "Quarterly Journal of Mathematics",
+      "year": 1917,
+      "volume": 48,
+      "pages": "76–92",
+      "note": "Proves the Hardy–Ramanujan theorem: ω(n) ~ log log n for almost all n. This is the baseline denominator in Question 1, which asks whether τ⊥(n)/ω(n) → ∞ for almost all n."
+    },
+    {
+      "authors": ["G. Tenenbaum"],
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "venue": "Cambridge University Press",
+      "year": 2015,
+      "edition": "3rd",
+      "isbn": "978-1-107-06130-6",
+      "note": "Comprehensive reference for the analytic and probabilistic methods underlying the study of τ⊥(n): divisor distributions, the Hardy–Ramanujan theorem, Turán's method, and Sathe–Selberg-type results for multiplicative functions."
+    },
+    {
+      "authors": ["P. Erdős", "R. R. Hall"],
+      "title": "Distinct values of Euler's φ function",
+      "venue": "Mathematika",
+      "year": 1976,
+      "volume": 23,
+      "pages": "1–3",
+      "doi": "10.1112/S0025579300016156",
+      "note": "Earlier Erdős–Hall collaboration on multiplicative arithmetic functions. Provides methodological context for the 1978 divisor problems, including the extremal analysis technique used to derive the lower bound max_{n<x} τ⊥(n) > exp((log log x)^{2-ε})."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

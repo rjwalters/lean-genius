@@ -158,6 +158,107 @@
       "What is the exact behavior of liminf (Σ(d_{i+1}/dᵢ) - τ(n) - log(n))?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-673",
+      "relationship": "sibling",
+      "description": "Erdős #673 studies G(n) = Σ dᵢ/dᵢ₊₁ (inverse consecutive ratios), directly complementary to the ratio sums in #1099. Both measure divisor gap regularity from different angles, and both were solved by analyzing smoothly-distributed divisors."
+    },
+    {
+      "target": "erdos-1100",
+      "relationship": "sibling",
+      "description": "Erdős #1100 investigates coprimality of consecutive divisors τ⊥(n), another structural property of the divisor sequence d₁ < d₂ < ... < d_τ(n). Both problems study how consecutive divisors relate to each other and both were posed in the same period."
+    },
+    {
+      "target": "erdos-1049",
+      "relationship": "related",
+      "description": "Erdős #1049 concerns the irrationality of Σ τ(n)/t^n where τ(n) is the divisor count, the same τ used in #1099. Both problems exploit properties of the divisor function τ and its analytic behavior."
+    },
+    {
+      "target": "erdos-1062",
+      "relationship": "related",
+      "description": "Erdős #1062 asks for the maximum antichain under divisibility in {1,…,n}. The structure of divisor chains and antichains is intimately connected to how consecutive divisors are spaced, the subject of #1099."
+    },
+    {
+      "target": "erdos-1054",
+      "relationship": "related",
+      "description": "Erdős #1054 studies f(n) = minimum m such that n equals the sum of the k smallest divisors of m. Both problems concern extremal properties of the ordered divisor sequence and the smallest divisors of integers."
+    },
+    {
+      "target": "erdos-1101",
+      "relationship": "related",
+      "description": "Erdős #1101 studies gaps in sieved integers (integers not divisible by elements of a pairwise coprime sequence). The gap structure of sieved sets is closely related to how smoothly divisors can be distributed, the core of Vose's construction in #1099."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "bertrands-postulate",
+      "title": "Bertrand's Postulate",
+      "relationship": "contrast",
+      "description": "Bertrand's Postulate guarantees a prime between n and 2n, ensuring the worst-case divisor gap for primes is bounded by a factor of 2. This contrasts with Vose's construction: while primes have maximally bad divisor ratios (only divisors 1 and p), Vose found integers with all consecutive divisor ratios close to 1."
+    },
+    {
+      "slug": "erdos-728",
+      "title": "Erdős #728: Factorial Divisibility with Logarithmic Gap",
+      "relationship": "related",
+      "description": "Erdős #728 studies divisibility of n! and related factorial expressions. The role of n! and lcm{1,...,n} as candidate sequences with bounded h_α is one of the main open directions from #1099. Both problems use factorial structure as a key tool."
+    }
+  ],
+  "references": [
+    {
+      "id": "Vose1984",
+      "type": "journal",
+      "title": "Fractional parts of sequences",
+      "authors": ["Michael D. Vose"],
+      "year": 1984,
+      "journal": "Journal of Number Theory",
+      "volume": 19,
+      "issue": 2,
+      "pages": "233–240",
+      "doi": "10.1016/0022-314X(84)90059-7",
+      "description": "Vose's paper resolving Erdős #1099, constructing sequences with bounded Σ((d_{i+1}/dᵢ) - 1)^α."
+    },
+    {
+      "id": "Erdos1981",
+      "type": "proceedings",
+      "title": "Problems in number theory and combinatorics",
+      "authors": ["Paul Erdős"],
+      "year": 1981,
+      "booktitle": "Proceedings of the Sixth Manitoba Conference on Numerical Mathematics",
+      "publisher": "Utilitas Mathematica",
+      "pages": "35–58",
+      "description": "Erdős poses Problem #1099 (among others) in this survey of open problems, asking about the boundedness of liminf h_α(n)."
+    },
+    {
+      "id": "Tenenbaum1995",
+      "type": "book",
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "authors": ["Gérald Tenenbaum"],
+      "year": 1995,
+      "publisher": "Cambridge University Press",
+      "series": "Cambridge Studies in Advanced Mathematics",
+      "volume": 46,
+      "description": "Standard reference on divisor structure, smooth numbers, and multiplicative functions. Covers the theory of friable (smooth) numbers relevant to Vose's construction."
+    },
+    {
+      "id": "HalberstamRoth1966",
+      "type": "book",
+      "title": "Sequences",
+      "authors": ["Heini Halberstam", "Klaus F. Roth"],
+      "year": 1966,
+      "publisher": "Oxford University Press",
+      "description": "Classic reference covering divisor distributions, the divisor function τ, and the analytic methods used to study divisor ratios. Foundational background for Problems #673 and #1099."
+    },
+    {
+      "id": "ErdosBook2025",
+      "type": "website",
+      "title": "The Erdős Problems",
+      "authors": ["Thomas F. Bloom"],
+      "year": 2025,
+      "url": "https://erdosproblems.com/1099",
+      "description": "Online database entry for Erdős Problem #1099, with references to Vose (1984) and statement of the open sub-questions about n! and lcm{1,...,n}."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

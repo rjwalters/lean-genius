@@ -122,6 +122,91 @@
       "What is the minimal growth rate for a good sequence?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-208",
+      "title": "Erdős Problem #208: Gaps Between Squarefree Numbers",
+      "relationship": "Direct special case: Problem #208 asks whether the prime-squares sequence {p₁², p₂², ...} is good in the sense of Problem #1101. Resolving #208 would answer the polynomial-growth question of #1101."
+    },
+    {
+      "slug": "erdos-124-complete-sequences",
+      "title": "Erdős Problem #124: Complete Sequences",
+      "relationship": "Complementary sieve-theoretic problem: complete sequences ask which integers are representable as subset sums, while #1101 studies which integers survive a coprime sieve. Both analyze gaps and coverage properties of integer sequences."
+    },
+    {
+      "slug": "prime-reciprocal-divergence",
+      "title": "Divergence of Prime Reciprocals",
+      "relationship": "Motivating example: the prime sequence fails the Σ1/pᵢ < ∞ convergence condition of Problem #1101. All primes together form a 'maximally dense' sieve where Erdős proved goodness holds, underpinning the existence theorem cited in #1101."
+    },
+    {
+      "slug": "bounded-prime-gaps",
+      "title": "Bounded Prime Gaps (Zhang/Maynard-Tao/Polymath 8b)",
+      "relationship": "Parallel gap structure: both problems concern the distribution of gaps in filtered integer sequences. Bounded prime gaps studies gaps in primes; #1101 studies gaps in integers surviving a coprime sieve."
+    },
+    {
+      "slug": "prime-gap-bounds",
+      "title": "Explicit Prime Gap Bounds from Bertrand's Postulate",
+      "relationship": "Methodological connection: explicit gap bound techniques used for prime gaps are analogous to the product-formula gap bounds Erdős seeks to establish for good sequences."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-208",
+      "title": "Erdős Problem #208: Gaps Between Squarefree Numbers",
+      "relationship": "The prime-squares sequence {pᵢ²} is the central special case of Problem #1101: it has polynomial growth, so if it is good, that disproves the no-polynomial conjecture."
+    },
+    {
+      "slug": "prime-reciprocal-divergence",
+      "title": "Divergence of Prime Reciprocals",
+      "relationship": "Establishes that the full prime sequence does NOT satisfy Σ1/uᵢ < ∞, explaining why Erdős's existence proof uses all primes but Problem #1101 restricts to subsequences with convergent reciprocals."
+    },
+    {
+      "slug": "bounded-prime-gaps",
+      "title": "Bounded Prime Gaps (Zhang/Maynard-Tao/Polymath 8b)",
+      "relationship": "The 2013–2014 breakthrough on bounded prime gaps uses sieve methods closely related to the analytic machinery needed for Problem #1101's gap estimates."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős"],
+      "title": "Problems and results on combinatorial number theory",
+      "venue": "A Survey of Combinatorial Theory (J. N. Srivastava et al., eds.), North-Holland",
+      "year": 1973,
+      "pages": "117–138",
+      "note": "Original source containing Problem #1101 and Erdős's discussion of good sequences and gap bounds for sieved integers."
+    },
+    {
+      "authors": ["H. Halberstam", "H.-E. Richert"],
+      "title": "Sieve Methods",
+      "venue": "Academic Press, London–New York",
+      "year": 1974,
+      "note": "Standard reference for the sieve-theoretic framework underlying the lower bound tₓ·∏(1−1/uᵢ)⁻¹ on gaps in sieved sets."
+    },
+    {
+      "authors": ["H. Davenport"],
+      "title": "Multiplicative Number Theory",
+      "venue": "Graduate Texts in Mathematics, vol. 74, Springer, New York",
+      "year": 1980,
+      "note": "Background on multiplicative structure, Dirichlet series, and analytic methods relevant to density and gap arguments for multiplicative sequences."
+    },
+    {
+      "authors": ["A. Granville"],
+      "title": "Harald Cramér and the distribution of prime numbers",
+      "venue": "Scandinavian Actuarial Journal",
+      "year": 1995,
+      "pages": "12–28",
+      "note": "Discusses probabilistic models for prime gaps; the heuristic framework here informs expectations for gap behavior in sieved integer sequences."
+    },
+    {
+      "authors": ["B. Green", "T. Tao"],
+      "title": "The primes contain arbitrarily long arithmetic progressions",
+      "venue": "Annals of Mathematics",
+      "year": 2008,
+      "volume": 167,
+      "pages": "481–547",
+      "note": "Exemplifies the interplay between sieve theory and gap structure in prime-like sequences; techniques are conceptually related to those sought for Problem #1101."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
