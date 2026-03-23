@@ -169,6 +169,16 @@
       "targetId": "erdos-szekeres",
       "relationship": "related",
       "description": "Both are combinatorial results solved by elegant counting arguments: the Erdős-Szekeres theorem (every sequence of length mn+1 has a monotone subsequence of length m+1 or n+1) uses the pigeonhole principle on lattice paths, while the ballot problem uses the reflection principle on lattice paths — both involve path-counting in grid diagrams"
+    },
+    {
+      "targetId": "ballot-problem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Formalizes the Discrete Intermediate Value Theorem for the Dvoretzky-Motzkin cycle lemma — a deeper combinatorial tool that generalizes the ballot problem's reflection principle to cyclic sequences"
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends ballot problem lattice path counting to the general $r \\times r$ Lindström-Gessel-Viennot determinant formula — the ballot problem is the $1 \\times 1$ case of the LGV lemma for non-intersecting lattice paths"
     }
   ],
   "relatedProofs": [
@@ -181,6 +191,8 @@
     "ballot-problem-oq-02",
     "ballot-problem-oq-03",
     "derangements",
+    "ballot-problem-oq-01-oq-01",
+    "ballot-problem-oq-03-oq-02",
     "inclusion-exclusion",
     "central-limit-theorem"
   ],
