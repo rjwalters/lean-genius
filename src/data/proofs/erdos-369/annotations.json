@@ -146,7 +146,8 @@
     "relatedConcepts": [
       "parameterized conjecture",
       "smoothness bound",
-      "Erdős-Graham (1980)"
+      "Erdős-Graham (1980)",
+      "prime number theorem"
     ],
     "prerequisites": [
       "HasConsecutiveSmoothRun"
@@ -161,7 +162,7 @@
     },
     "type": "concept",
     "title": "The k = 2 Case: Simplest Open Instance",
-    "content": "**ErdosConjecture369_k2**: Even for $k = 2$ (just two consecutive smooth numbers), the conjecture is open. Erdős and Graham called this 'very hard.'",
+    "content": "**ErdosConjecture369_k2**: Even for $k = 2$ (just two consecutive smooth numbers), the conjecture is open. Erdős and Graham called this 'very hard.' The difficulty stems from the complete independence of consecutive integers' factorizations ($\\gcd(m, m+1) = 1$, see `fundamental-arithmetic` for unique factorization). Compare with Bertrand's postulate (see `bertrands-postulate`), which guarantees primes between $n$ and $2n$ — smooth number gaps are much less understood than prime gaps.",
     "significance": "key",
     "mathContext": "The $k = 2$ case asks: for all large $n$, do there exist consecutive integers $m, m+1 \\leq n$ with both $m$ and $m+1$ being $n^\\varepsilon$-smooth? Since $\\gcd(m, m+1) = 1$, the prime factorizations are completely independent. The heuristic probability that both are smooth is $\\rho(1/\\varepsilon)^2$, so among $n$ candidates we expect $\\sim n \\rho(1/\\varepsilon)^2$ pairs — this grows, but converting 'many in expectation' to 'at least one for all large $n$' requires controlling the variance, which involves understanding correlations in the smoothness of nearby integers. This is related to the abc conjecture: if $abc$ held effectively, it would constrain how smooth consecutive integers can simultaneously be.",
     "relatedConcepts": [

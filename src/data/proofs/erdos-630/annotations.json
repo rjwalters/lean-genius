@@ -145,7 +145,7 @@
     },
     "type": "concept",
     "title": "Alon–Tarsi Theorem: The Main Result",
-    "content": "**`alon_tarsi_theorem`** (axiomatized): every planar bipartite graph is 3-choosable, i.e., $\\chi_L(G) \\le 3$.\n\n**`planar_bipartite_3_choosable`**: equivalent `IsKChoosable G 3` formulation, partially proved.\n\nThe Alon–Tarsi proof uses the graph polynomial and shows a certain coefficient is nonzero for planar bipartite graphs by relating it to even vs. odd Eulerian subgraphs in an appropriate orientation.",
+    "content": "**`alon_tarsi_theorem`** (axiomatized): every planar bipartite graph is 3-choosable, i.e., $\\chi_L(G) \\le 3$.\n\n**`planar_bipartite_3_choosable`**: equivalent `IsKChoosable G 3` formulation, partially proved.\n\nThe Alon-Tarsi proof uses the graph polynomial and Combinatorial Nullstellensatz: it shows a certain coefficient in the product $\\prod_{uv \\in E} (x_u - x_v)$ is nonzero for planar bipartite graphs by relating it to even vs. odd Eulerian subgraphs in an appropriate orientation. This algebraic technique is a breakthrough method in combinatorics, connecting graph coloring to polynomial identity testing.",
     "mathContext": "$$\\text{planar} \\wedge \\text{bipartite} \\implies \\chi_L(G) \\le 3$$",
     "significance": "key",
     "relatedConcepts": [

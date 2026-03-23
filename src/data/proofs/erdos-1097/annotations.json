@@ -20,7 +20,7 @@
     "content": "A three-term arithmetic progression with base $a$ and common difference $d$ in set $A$: the elements $a$, $a+d$, $a+2d$ all belong to $A$. This is the fundamental predicate underlying the entire formalization.",
     "mathContext": "A three-term AP is a triple $(a, a+d, a+2d)$ with $a, a+d, a+2d \\in A$. Equivalently, three elements $x < y < z$ form an AP iff $y - x = z - y$, i.e., $2y = x + z$.",
     "significance": "key",
-    "relatedConcepts": ["arithmetic progression", "Szemerédi's theorem", "additive combinatorics"],
+    "relatedConcepts": ["arithmetic progression", "Szemerédi's theorem", "additive combinatorics", "Roth's theorem"],
     "prerequisites": ["Set membership", "integer arithmetic"]
   },
   {
@@ -77,10 +77,10 @@
     "range": { "startLine": 293, "endLine": 301 },
     "type": "insight",
     "title": "Erdős's O(n^{3/2}) Conjecture",
-    "content": "The central open question: does $|D(A)| = O(n^{3/2})$? The Erdős-Spencer probabilistic construction achieves $\\Omega(n^{3/2})$, so the conjecture asserts this is essentially tight. The answer determines the exact growth rate of common differences.",
+    "content": "The central open question: does $|D(A)| = O(n^{3/2})$? The Erdős-Spencer probabilistic construction achieves $\\Omega(n^{3/2})$, so the conjecture asserts this is essentially tight. The answer determines the exact growth rate of common differences.\n\nThis connects to the broader landscape of additive combinatorics: Szemerédi's theorem (see `szemeredi-theorem`) guarantees that dense sets contain arbitrarily long APs, while this problem asks how many *distinct* common differences arise in 3-term APs. The Roth-type bounds (see `roth-theorem-k3`) on sets without 3-APs provide complementary constraints.",
     "mathContext": "The conjecture asks: $\\exists\\, C > 0$ such that for all $n \\in \\mathbb{N}$ and all $A \\subseteq \\mathbb{Z}$ with $|A| = n$, $|D(A)| \\le C \\cdot n^{3/2}$. Combined with the Erdős-Spencer lower bound, this would give $|D(A)| = \\Theta(n^{3/2})$.",
     "significance": "key",
-    "relatedConcepts": ["Erdős problems", "extremal combinatorics", "polynomial growth"],
+    "relatedConcepts": ["Erdős problems", "extremal combinatorics", "polynomial growth", "Szemerédi's theorem", "Roth's theorem"],
     "prerequisites": ["asymptotic notation", "real exponentiation"]
   },
   {
