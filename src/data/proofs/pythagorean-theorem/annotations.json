@@ -43,6 +43,28 @@
     ]
   },
   {
+    "id": "ann-euclidean-setup",
+    "proofId": "pythagorean-theorem",
+    "range": {
+      "startLine": 42,
+      "endLine": 55
+    },
+    "type": "context",
+    "title": "Euclidean Plane Setup: Vec2 as ℝ²",
+    "content": "`Vec2` is defined as `EuclideanSpace ℝ (Fin 2)` — Mathlib's formalization of $\\mathbb{R}^2$ as an inner product space. This single `abbrev` provides: the vector space structure ($+$, scalar $\\cdot$), the inner product $\\langle \\cdot, \\cdot \\rangle$ inherited from `RealInnerProductSpace`, and the Euclidean norm $\\|\\cdot\\|$.\n\nThe `open scoped RealInnerProductSpace` makes the notation $\\langle v, w \\rangle$ available for `@inner ℝ Vec2`. The `set_option linter.unusedVariables false` suppresses warnings from intermediate `#check` declarations used for documentation.",
+    "mathContext": "$\\text{Vec2} = \\mathbb{R}^{\\text{Fin}\\,2} \\cong \\mathbb{R}^2$ with inner product $\\langle (x_1, x_2), (y_1, y_2) \\rangle = x_1 y_1 + x_2 y_2$ and norm $\\|(x_1, x_2)\\| = \\sqrt{x_1^2 + x_2^2}$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Mathlib inner product space API",
+      "EuclideanSpace"
+    ],
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "inner product space",
+      "Fin 2"
+    ]
+  },
+  {
     "id": "ann-norm-sq",
     "proofId": "pythagorean-theorem",
     "range": {
@@ -62,6 +84,27 @@
       "Euclidean norm",
       "length",
       "magnitude"
+    ]
+  },
+  {
+    "id": "ann-perpendicular-def",
+    "proofId": "pythagorean-theorem",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Perpendicularity Definition and Notation",
+    "content": "`perpendicular v w` is defined as `inner v w = (0 : ℝ)`. The custom notation `v ⊥ w` makes the mathematical intent readable. This single-line definition captures the key geometric concept: perpendicularity is zero inner product.\n\nThe definition works in any inner product space, not just $\\mathbb{R}^2$. In $\\mathbb{R}^n$, $\\langle v, w \\rangle = \\sum_i v_i w_i$, so perpendicularity means the componentwise products cancel. In function spaces, $\\langle f, g \\rangle = \\int f \\cdot g$, so perpendicularity means the functions are 'uncorrelated' — the foundation of Fourier analysis.",
+    "mathContext": "$v \\perp w \\stackrel{\\text{def}}{\\iff} \\langle v, w \\rangle = 0$. For $v = (v_1, v_2)$, $w = (w_1, w_2)$: $v \\perp w \\iff v_1 w_1 + v_2 w_2 = 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "inner product spaces"
+    ],
+    "relatedConcepts": [
+      "orthogonality",
+      "inner product",
+      "Fourier analysis"
     ]
   },
   {
@@ -131,6 +174,28 @@
     ]
   },
   {
+    "id": "ann-right-triangle-structure",
+    "proofId": "pythagorean-theorem",
+    "range": {
+      "startLine": 113,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "RightTriangle Structure: Classical Formulation",
+    "content": "The `RightTriangle` structure bridges the inner product proof to the classical $a^2 + b^2 = c^2$ formulation. It bundles three positive reals ($a, b, c$) with positivity proofs and the Pythagorean relation as a field.\n\nThis is a *dependent type*: a `RightTriangle` is not just three numbers but three numbers *together with proof* that they satisfy the relation. You cannot construct a `RightTriangle` with sides that violate $a^2 + b^2 = c^2$ — the type system enforces geometric validity.",
+    "mathContext": "A right triangle is a triple $(a, b, c) \\in \\mathbb{R}^3_{>0}$ satisfying $a^2 + b^2 = c^2$. This structure encodes both the data and the constraint. By the AM-GM inequality, $c > \\max(a, b)$ since $c^2 = a^2 + b^2 > a^2$ implies $c > a$ (and similarly $c > b$).",
+    "significance": "key",
+    "prerequisites": [
+      "structure types in Lean 4",
+      "real number arithmetic"
+    ],
+    "relatedConcepts": [
+      "dependent types",
+      "type-safe modeling",
+      "Pythagorean triples"
+    ]
+  },
+  {
     "id": "ann-right-triangle",
     "proofId": "pythagorean-theorem",
     "range": {
@@ -194,6 +259,29 @@
       "number theory",
       "Diophantine equations",
       "Plimpton 322"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "pythagorean-theorem",
+    "range": {
+      "startLine": 158,
+      "endLine": 169
+    },
+    "type": "context",
+    "title": "Applications: Distance Formula and Higher Dimensions",
+    "content": "This docstring connects the abstract theorem to two fundamental applications. The Euclidean distance formula $d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$ is simply the Pythagorean theorem applied to the displacement vector $(x_2-x_1, y_2-y_1)$.\n\nThe higher-dimensional generalization $\\|v_1 + \\cdots + v_k\\|^2 = \\|v_1\\|^2 + \\cdots + \\|v_k\\|^2$ (for mutually perpendicular vectors) is proved as `pythagorean_sum` below. This generalization underpins Parseval's identity in Fourier analysis: the energy of a signal equals the sum of energies of its frequency components.",
+    "mathContext": "Distance: $d(P, Q) = \\|\\vec{PQ}\\| = \\sqrt{\\sum_i (q_i - p_i)^2}$. Generalization: for $v_1, \\ldots, v_k$ mutually orthogonal, $\\|\\sum v_i\\|^2 = \\sum \\|v_i\\|^2$. Parseval's identity: $\\|f\\|^2 = \\sum_n |\\hat{f}(n)|^2$.",
+    "significance": "key",
+    "prerequisites": [
+      "distance formula",
+      "orthogonal decomposition"
+    ],
+    "relatedConcepts": [
+      "Euclidean distance",
+      "Parseval's identity",
+      "Fourier analysis",
+      "metric spaces"
     ]
   },
   {
