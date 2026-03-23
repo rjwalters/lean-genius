@@ -158,5 +158,29 @@
     "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-1084",
+    "erdos-1088",
+    "erdos-653",
+    "erdos-982",
+    "erdos-507"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1084: Unit Distances Among Separated Points"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1088: Distinct Distance Subsets in High Dimensions"
+    },
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    }
+  ]
 }

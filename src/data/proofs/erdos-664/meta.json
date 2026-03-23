@@ -202,5 +202,29 @@
     "axiomCount": 10,
     "theoremCount": 4,
     "definitionCount": 18
-  }
+  },
+  "relatedProofs": [
+    "erdos-1159",
+    "erdos-166",
+    "erdos-21",
+    "erdos-903",
+    "erdos-8"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1159: Bounded Blocking Sets in Projective Planes"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #166: Ramsey Number R(4,k) Lower Bound"
+    },
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #21: Covering Intersecting Families"
+    }
+  ]
 }

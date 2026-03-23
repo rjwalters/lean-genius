@@ -171,5 +171,29 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-956",
+    "erdos-176",
+    "erdos-1090",
+    "erdos-172",
+    "erdos-564"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-956",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #956: Unit Distances Between Convex Translates"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    }
+  ]
 }

@@ -206,5 +206,29 @@
     "axiomCount": 7,
     "theoremCount": 12,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-314",
+    "erdos-286",
+    "erdos-293",
+    "erdos-313",
+    "erdos-299"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-314",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #314: Harmonic Sum Error Term"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #286: Unit Fractions in Short Intervals"
+    },
+    {
+      "targetId": "erdos-293",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #293: Missing Denominators in Egyptian Fractions"
+    }
+  ]
 }

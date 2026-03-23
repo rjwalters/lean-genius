@@ -166,5 +166,29 @@
     "axiomCount": 12,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-240",
+    "erdos-370",
+    "erdos-933",
+    "erdos-682",
+    "erdos-446"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #240: Gaps Between P-Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-370",
+      "relationship": "related",
+      "description": "Related formalization: Consecutive Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-933",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #933: Smooth Part of Consecutive Products"
+    }
+  ]
 }

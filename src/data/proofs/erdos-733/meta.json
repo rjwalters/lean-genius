@@ -185,5 +185,29 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-1166",
+    "erdos-798",
+    "erdos-211",
+    "erdos-754"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    },
+    {
+      "targetId": "erdos-798",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #798: Covering Lattice Points with Lines"
+    }
+  ]
 }

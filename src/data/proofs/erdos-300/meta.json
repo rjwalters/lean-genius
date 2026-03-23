@@ -156,5 +156,29 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-321",
+    "erdos-310",
+    "erdos-309",
+    "erdos-286",
+    "erdos-293"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #321: Distinct Subset Sums of Unit Fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #310: Unit Fractions from Dense Subsets"
+    },
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #309: Integers as Sums of Distinct Unit Fractions"
+    }
+  ]
 }

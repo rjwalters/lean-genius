@@ -149,5 +149,29 @@
     "axiomCount": 19,
     "theoremCount": 1,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-749",
+    "erdos-484",
+    "erdos-333",
+    "erdos-335"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #109: The Sumset Conjecture"
+    },
+    {
+      "targetId": "erdos-749",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #749: Dense Sumsets with Bounded Representation"
+    },
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #484: Monochromatic Sums in Colorings"
+    }
+  ]
 }

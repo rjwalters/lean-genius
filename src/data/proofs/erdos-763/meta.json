@@ -162,5 +162,29 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-764",
+    "erdos-954",
+    "erdos-829",
+    "erdos-28",
+    "erdos-198"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-764",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #764: 3-Fold Convolution Linear Error"
+    },
+    {
+      "targetId": "erdos-954",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #954: Rosen's Greedy Additive Sequence"
+    },
+    {
+      "targetId": "erdos-829",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #829: Representations as Sums of Two Cubes"
+    }
+  ]
 }

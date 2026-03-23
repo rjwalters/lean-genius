@@ -180,5 +180,29 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-799",
+    "erdos-745",
+    "erdos-207",
+    "erdos-833",
+    "erdos-780"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-799",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #799: List Chromatic Number of Random Graphs"
+    },
+    {
+      "targetId": "erdos-745",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #745: Second Largest Component of Random Graphs"
+    },
+    {
+      "targetId": "erdos-207",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #207: High-Girth Steiner Triple Systems"
+    }
+  ]
 }

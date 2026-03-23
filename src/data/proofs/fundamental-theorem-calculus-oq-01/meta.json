@@ -145,5 +145,22 @@
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "Related formalization: Fundamental Theorem of Calculus"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "related",
+      "description": "Related formalization: Lebesgue Measure"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Related formalization: Bunyakovsky-Schwarz Integral Inequality"
+    }
+  ]
 }

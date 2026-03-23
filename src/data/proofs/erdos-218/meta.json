@@ -154,5 +154,29 @@
     "axiomCount": 22,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-455",
+    "erdos-382",
+    "erdos-950",
+    "erdos-454",
+    "erdos-932"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-455",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #455: Monotone Prime Gap Sequences"
+    },
+    {
+      "targetId": "erdos-382",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #382: Prime Powers in Factorial Products"
+    },
+    {
+      "targetId": "erdos-950",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #950: Sum of Reciprocal Prime Gaps"
+    }
+  ]
 }

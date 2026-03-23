@@ -137,5 +137,29 @@
     "axiomCount": 11,
     "theoremCount": 8,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-574",
+    "erdos-926",
+    "erdos-180",
+    "erdos-127",
+    "erdos-571"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-574",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #574: Turán Number for Consecutive Cycle Pairs"
+    },
+    {
+      "targetId": "erdos-926",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #926: Turán Number of H_k"
+    },
+    {
+      "targetId": "erdos-180",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #180: Turán Numbers for Graph Families"
+    }
+  ]
 }

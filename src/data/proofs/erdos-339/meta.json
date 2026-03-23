@@ -174,5 +174,29 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-35",
+    "erdos-330",
+    "erdos-1136",
+    "erdos-157",
+    "erdos-9"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-35",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #35: Schnirelmann Density and Additive Bases"
+    },
+    {
+      "targetId": "erdos-330",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #330: Minimal Bases with Positive Density"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1136: Sum-Free Sets Avoiding Powers of Two"
+    }
+  ]
 }

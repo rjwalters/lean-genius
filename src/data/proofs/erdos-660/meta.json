@@ -153,5 +153,29 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-604",
+    "erdos-1089",
+    "erdos-508",
+    "erdos-91",
+    "erdos-670"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #604: The Pinned Distance Problem"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1089: Distinct Distances in Higher Dimensions"
+    },
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Related formalization: The Hadwiger-Nelson Problem"
+    }
+  ]
 }

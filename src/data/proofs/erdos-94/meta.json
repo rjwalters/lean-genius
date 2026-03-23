@@ -175,5 +175,22 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-86",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #86: C₄-Free Subgraphs of Hypercubes"
+    },
+    {
+      "targetId": "erdos-146",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #146: Turán Numbers for Bipartite r-Degenerate Graphs"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs"
+    }
+  ]
 }

@@ -124,5 +124,29 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-34",
+    "erdos-176",
+    "erdos-743",
+    "erdos-1088",
+    "erdos-8"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-34",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #34: Consecutive Sums in Permutations"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-743",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #743: Tree Packing Conjecture"
+    }
+  ]
 }

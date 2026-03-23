@@ -134,5 +134,29 @@
     "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-2",
+    "erdos-202",
+    "erdos-279",
+    "erdos-8"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-7",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #7: Odd Covering Systems"
+    },
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #2: Covering Systems"
+    },
+    {
+      "targetId": "erdos-202",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #202: Disjoint Covering Systems"
+    }
+  ]
 }

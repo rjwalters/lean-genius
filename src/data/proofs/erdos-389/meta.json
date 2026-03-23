@@ -102,5 +102,29 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-708",
+    "erdos-488",
+    "erdos-962",
+    "erdos-711",
+    "erdos-131"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-488",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #488: Divisibility Density in Multiples of Finite Sets"
+    },
+    {
+      "targetId": "erdos-962",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #962: Consecutive Integers with Large Prime Divisors"
+    }
+  ]
 }

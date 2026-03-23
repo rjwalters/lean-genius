@@ -109,5 +109,29 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-367",
+    "erdos-137",
+    "erdos-366",
+    "erdos-890",
+    "erdos-945"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #367: Products of 2-Full Parts"
+    },
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #137: Powerful Products of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-366",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #366: Consecutive k-Full Numbers"
+    }
+  ]
 }

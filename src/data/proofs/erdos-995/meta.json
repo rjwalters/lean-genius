@@ -293,5 +293,29 @@
       "description": "Most recent significant progress on the gap: improved upper bounds under additional conditions on the lacunary sequence and the function f",
       "relevance": "supporting"
     }
+  ],
+  "relatedProofs": [
+    "erdos-1144",
+    "erdos-998",
+    "erdos-1002",
+    "erdos-997",
+    "erdos-1166"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1144: Partial Sums of Random Multiplicative Functions"
+    },
+    {
+      "targetId": "erdos-998",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #998: Kesten's Equidistribution Characterization"
+    },
+    {
+      "targetId": "erdos-1002",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1002: Asymptotic Distribution of Weighted Fractional Sums"
+    }
   ]
 }

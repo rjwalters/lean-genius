@@ -164,5 +164,29 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-391",
+    "erdos-823",
+    "erdos-286",
+    "erdos-941",
+    "erdos-235"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-391",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #391: Factorizing n! with Large Minimum Factor"
+    },
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #286: Unit Fractions in Short Intervals"
+    }
+  ]
 }

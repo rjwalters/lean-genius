@@ -180,5 +180,29 @@
     "axiomCount": 20,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-180",
+    "erdos-80",
+    "erdos-1020",
+    "erdos-643",
+    "erdos-792"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-180",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #180: Turán Numbers for Graph Families"
+    },
+    {
+      "targetId": "erdos-80",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #80: Book Size in Triangle-Saturated Graphs"
+    },
+    {
+      "targetId": "erdos-1020",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1020: The Erdős Matching Conjecture"
+    }
+  ]
 }

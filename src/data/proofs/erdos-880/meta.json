@@ -170,5 +170,22 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums"
+    },
+    {
+      "targetId": "erdos-840",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #840: Quasi-Sidon Subsets"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs"
+    }
+  ]
 }

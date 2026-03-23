@@ -104,5 +104,29 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1177",
+    "erdos-563",
+    "erdos-1016",
+    "erdos-555",
+    "erdos-585"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1177",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1177: Chromatic Numbers of Hypergraph Families with Forbidden Subgraphs"
+    },
+    {
+      "targetId": "erdos-563",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #563: Balanced 2-Colorings and Subset Edge Density"
+    },
+    {
+      "targetId": "erdos-1016",
+      "relationship": "related",
+      "description": "Related formalization: Pancyclic Excess Edges"
+    }
+  ]
 }

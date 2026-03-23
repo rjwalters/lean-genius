@@ -136,5 +136,29 @@
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-668",
+    "erdos-126",
+    "erdos-635",
+    "erdos-223",
+    "erdos-176"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-668",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #668: Unit Distance Configuration Uniqueness"
+    },
+    {
+      "targetId": "erdos-126",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #126: Distinct Prime Factors of Pairwise Sums"
+    },
+    {
+      "targetId": "erdos-635",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #635: Non-Divisibility Condition on Differences"
+    }
+  ]
 }

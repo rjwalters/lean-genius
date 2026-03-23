@@ -195,5 +195,29 @@
     "axiomCount": 7,
     "theoremCount": 12,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-749",
+    "erdos-153",
+    "erdos-587",
+    "erdos-484",
+    "erdos-333"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-749",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #749: Dense Sumsets with Bounded Representation"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #153: Gap Variance in Sidon Sumsets"
+    },
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #587: Square-Sum-Free Subsets"
+    }
+  ]
 }

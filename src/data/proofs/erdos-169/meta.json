@@ -151,5 +151,29 @@
     "axiomCount": 15,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-160",
+    "erdos-187",
+    "erdos-984",
+    "erdos-721",
+    "erdos-198"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #160: Rainbow-Free Colorings of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #187: Arithmetic Progressions in 2-Colorings"
+    },
+    {
+      "targetId": "erdos-984",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #984: 2-Coloring with Controlled Monochromatic Progressions"
+    }
+  ]
 }

@@ -139,5 +139,29 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "leibniz-pi",
+    "basel-problem-oq-01",
+    "basel-problem",
+    "fourier-series",
+    "geometric-series"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "extends",
+      "description": "Related formalization: Leibniz's Series for Pi"
+    },
+    {
+      "targetId": "basel-problem-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Is ζ(5) Irrational? (Open Question)"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Related formalization: The Basel Problem: Sum of Reciprocal Squares"
+    }
+  ]
 }

@@ -129,5 +129,29 @@
     "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-423",
+    "erdos-587",
+    "erdos-779",
+    "erdos-157",
+    "erdos-42"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-423",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #423: Sums of Consecutive Terms Sequence"
+    },
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #587: Square-Sum-Free Subsets"
+    },
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #779: Primorial Plus Prime"
+    }
+  ]
 }

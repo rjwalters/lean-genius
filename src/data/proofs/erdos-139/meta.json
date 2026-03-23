@@ -107,5 +107,29 @@
     "axiomCount": 4,
     "theoremCount": 8,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-176",
+    "erdos-865",
+    "erdos-253",
+    "erdos-199",
+    "erdos-487"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-865",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #865: Pairwise Sums in Dense Sets"
+    },
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #253: Subset Sums in Arithmetic Progressions"
+    }
+  ]
 }

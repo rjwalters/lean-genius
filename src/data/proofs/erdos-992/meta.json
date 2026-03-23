@@ -163,5 +163,29 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-492",
+    "erdos-997",
+    "erdos-67",
+    "erdos-987",
+    "erdos-999"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-492",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #492: Uniform Distribution Relative to a Fixed Sequence"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #997: Well-Distributed Sequences and Primes"
+    },
+    {
+      "targetId": "erdos-67",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #67: The Erdős Discrepancy Problem"
+    }
+  ]
 }

@@ -162,5 +162,29 @@
     "axiomCount": 9,
     "theoremCount": 15,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-646",
+    "erdos-728",
+    "erdos-1058",
+    "erdos-1108",
+    "erdos-823"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-646",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #646: Even Powers of Primes Dividing Factorials"
+    },
+    {
+      "targetId": "erdos-728",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #728: Factorial Divisibility with Logarithmic Gap"
+    },
+    {
+      "targetId": "erdos-1058",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1058: Prime Divisors of n!+1 Between Consecutive Primes"
+    }
+  ]
 }

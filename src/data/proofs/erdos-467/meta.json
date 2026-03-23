@@ -138,5 +138,29 @@
     "axiomCount": 3,
     "theoremCount": 21,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-273",
+    "erdos-1106",
+    "erdos-316",
+    "erdos-486",
+    "erdos-25"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #273: Covering Systems with Prime-Minus-One Moduli"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1106: Prime Factors of Partition Products"
+    },
+    {
+      "targetId": "erdos-316",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #316: Partitioning Sets by Reciprocal Sums"
+    }
+  ]
 }

@@ -164,5 +164,29 @@
       "venue": "Teubner, Leipzig",
       "note": "Axiomatic foundations of geometry"
     }
+  ],
+  "relatedProofs": [
+    "parallel-postulate-independence",
+    "continuum-hypothesis-oq-01",
+    "cantor-diagonalization-oq-02",
+    "continuum-hypothesis",
+    "cantor-diagonalization-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "parallel-postulate-independence",
+      "relationship": "extends",
+      "description": "Related formalization: Independence of the Parallel Postulate"
+    },
+    {
+      "targetId": "continuum-hypothesis-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Should We Adopt Axioms That Decide CH?"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Cardinality of the Set of All Countable Ordinals"
+    }
   ]
 }

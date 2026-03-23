@@ -121,5 +121,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-114",
+    "erdos-1041",
+    "erdos-990",
+    "erdos-228",
+    "erdos-1048"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-114",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #114: Lemniscate Length Maximization"
+    },
+    {
+      "targetId": "erdos-1041",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1041: Paths in Polynomial Level Sets"
+    },
+    {
+      "targetId": "erdos-990",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #990: Polynomial Root Distribution and the Erdős-Turán Inequality"
+    }
+  ]
 }

@@ -115,5 +115,29 @@
       "venue": "Oxford University Press, 6th edition",
       "note": "The classic proof of irrationality of √2 from the unique factorization of integers"
     }
+  ],
+  "relatedProofs": [
+    "sqrt2-from-axioms-oq-01",
+    "sqrt2-irrational",
+    "erdos-257",
+    "erdos-269",
+    "erdos-250"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sqrt2-from-axioms-oq-01",
+      "relationship": "parent",
+      "description": "Related formalization: Irrationality of √p for Any Prime p (From Axioms)"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Related formalization: Irrationality of Square Roots"
+    },
+    {
+      "targetId": "erdos-257",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #257: Irrationality of Lambert Sums"
+    }
   ]
 }

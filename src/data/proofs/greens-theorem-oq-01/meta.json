@@ -136,5 +136,29 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "area-of-circle-oq-01-oq-02",
+    "area-of-circle-oq-01-oq-02-oq-01",
+    "lebesgue-measure",
+    "greens-theorem",
+    "greens-theorem-oq-03"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Area from Circumference Integration"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: N-Dimensional Volume from Surface Area Integration"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "related",
+      "description": "Related formalization: Lebesgue Measure"
+    }
+  ]
 }

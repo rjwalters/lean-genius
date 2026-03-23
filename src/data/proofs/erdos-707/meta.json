@@ -150,5 +150,29 @@
     "axiomCount": 14,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-198",
+    "erdos-774",
+    "erdos-42",
+    "erdos-757",
+    "erdos-41"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #198: Sidon Sets and Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-774",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #774: Dissociated and Proportionately Dissociated Sets"
+    },
+    {
+      "targetId": "erdos-42",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #42: Sidon Sets with Disjoint Difference Sets"
+    }
+  ]
 }

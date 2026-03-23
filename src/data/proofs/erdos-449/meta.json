@@ -160,5 +160,29 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-697",
+    "erdos-859",
+    "erdos-537",
+    "erdos-144",
+    "erdos-27"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-697",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #697: Density of Integers Divisible by d ≡ 1 (mod m)"
+    },
+    {
+      "targetId": "erdos-859",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #859: Density of Divisor Sum Representations"
+    },
+    {
+      "targetId": "erdos-537",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #537: Three Numbers with Equal Prime Products"
+    }
+  ]
 }

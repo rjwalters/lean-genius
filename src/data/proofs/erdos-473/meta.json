@@ -139,5 +139,29 @@
     "axiomCount": 13,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-237",
+    "erdos-779",
+    "erdos-9",
+    "erdos-244",
+    "erdos-540"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #237: Prime Plus Set Representations"
+    },
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #779: Primorial Plus Prime"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    }
+  ]
 }

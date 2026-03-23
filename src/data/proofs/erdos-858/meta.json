@@ -102,5 +102,29 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-786",
+    "erdos-143",
+    "erdos-873",
+    "erdos-425",
+    "erdos-888"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #786: Multiplicative Cardinality Sets"
+    },
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #143: Sparseness of Dilation-Avoiding Sets"
+    },
+    {
+      "targetId": "erdos-873",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #873: LCM of Consecutive Sequence Terms"
+    }
+  ]
 }

@@ -143,5 +143,29 @@
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-762",
+    "erdos-508",
+    "erdos-704",
+    "erdos-944",
+    "erdos-758"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-762",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #762: Chromatic vs Cochromatic Number"
+    },
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Related formalization: The Hadwiger-Nelson Problem"
+    },
+    {
+      "targetId": "erdos-704",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #704: Chromatic Number of Unit Distance Graphs"
+    }
+  ]
 }

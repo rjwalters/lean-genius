@@ -137,5 +137,29 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-462",
+    "erdos-4",
+    "erdos-676",
+    "erdos-971",
+    "erdos-369"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-462",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #462: Least Prime Factor Sums in Short Intervals"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #4: Large Prime Gaps"
+    },
+    {
+      "targetId": "erdos-676",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #676: Representations ap² + b with p Prime"
+    }
+  ]
 }

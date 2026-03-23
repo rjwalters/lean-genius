@@ -112,5 +112,29 @@
     "axiomCount": 2,
     "theoremCount": 10,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-974",
+    "erdos-523",
+    "erdos-981",
+    "erdos-391",
+    "erdos-1114"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-974",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #974: Power Sums and Roots of Unity"
+    },
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #523: Maximum of Random Polynomials on Unit Circle"
+    },
+    {
+      "targetId": "erdos-981",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #981: Character Sum Stabilization Threshold"
+    }
+  ]
 }

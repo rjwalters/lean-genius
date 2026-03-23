@@ -143,5 +143,29 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-462",
+    "erdos-450",
+    "erdos-673",
+    "erdos-461",
+    "erdos-122"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-462",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #462: Least Prime Factor Sums in Short Intervals"
+    },
+    {
+      "targetId": "erdos-450",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #450: Divisor Density in Short Intervals"
+    },
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #673: Sum of Consecutive Divisor Ratios"
+    }
+  ]
 }

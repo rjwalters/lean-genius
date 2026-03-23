@@ -196,5 +196,29 @@
       "venue": "J. Graph Theory 7(1), 115-129",
       "note": "Proved size Ramsey numbers are linear for bounded-degree graphs"
     }
+  ],
+  "relatedProofs": [
+    "erdos-617",
+    "erdos-552",
+    "erdos-129",
+    "erdos-165",
+    "erdos-1014"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-617",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #617: Balanced Colourings of Complete Graphs"
+    },
+    {
+      "targetId": "erdos-552",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #552: Ramsey Number R(C₄, Sₙ)"
+    },
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Related formalization: Ramsey Numbers Avoiding Monochromatic Cliques"
+    }
   ]
 }

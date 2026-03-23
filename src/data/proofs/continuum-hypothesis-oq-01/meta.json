@@ -158,5 +158,29 @@
     "axiomCount": 10,
     "theoremCount": 20,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "continuum-hypothesis",
+    "cantor-diagonalization-oq-01",
+    "godel-incompleteness",
+    "mathematical-induction",
+    "three-place-identity"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "extends",
+      "description": "Related formalization: Independence of the Continuum Hypothesis"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: The Continuum Hypothesis: Is There a Cardinality Between Countable and Continuum?"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Related formalization: Gödel's First Incompleteness Theorem"
+    }
+  ]
 }

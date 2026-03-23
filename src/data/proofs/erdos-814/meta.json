@@ -156,5 +156,29 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-565",
+    "erdos-914",
+    "erdos-88",
+    "erdos-927",
+    "erdos-622"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #565: Induced Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-914",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #914: Hajnal-Szemerédi Theorem (Vertex-Disjoint Cliques)"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #88: Induced Subgraphs in Ramsey Graphs"
+    }
+  ]
 }

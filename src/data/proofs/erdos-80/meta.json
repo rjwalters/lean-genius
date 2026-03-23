@@ -164,5 +164,29 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-813",
+    "erdos-1011",
+    "erdos-621",
+    "erdos-642",
+    "erdos-1033"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-813",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #813: Triangles in Every 7-Vertex Set"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1011: Triangles in Graphs with High Chromatic Number"
+    },
+    {
+      "targetId": "erdos-621",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #621: Triangle Edge Covers"
+    }
+  ]
 }

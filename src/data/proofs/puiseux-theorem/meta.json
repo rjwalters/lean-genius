@@ -157,5 +157,29 @@
       "venue": "Princeton University Press (Springer reprint 1978)",
       "note": "Classic treatment of Puiseux expansions and their role in the resolution of singularities of plane curves"
     }
+  ],
+  "relatedProofs": [
+    "arithmetic-series",
+    "abel-ruffini",
+    "fundamental-theorem-algebra",
+    "solution-of-cubic",
+    "lagrange-four-squares"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "Related formalization: Sum of an Arithmetic Series"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Related formalization: Abel-Ruffini Theorem"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Related formalization: Fundamental Theorem of Algebra"
+    }
   ]
 }

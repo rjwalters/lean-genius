@@ -133,5 +133,29 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-940",
+    "erdos-41",
+    "erdos-33",
+    "erdos-432"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    },
+    {
+      "targetId": "erdos-940",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #940: Sums of r-Powerful Numbers"
+    },
+    {
+      "targetId": "erdos-41",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #41: B_h Sequences and Density Bounds"
+    }
+  ]
 }

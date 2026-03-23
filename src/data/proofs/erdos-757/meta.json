@@ -153,5 +153,29 @@
     "axiomCount": 11,
     "theoremCount": 8,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-156",
+    "erdos-772",
+    "erdos-789",
+    "erdos-340-greedy-sidon",
+    "erdos-153"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #156: Minimum Size of Maximal Sidon Sets"
+    },
+    {
+      "targetId": "erdos-772",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #772: Sidon Sets in Bounded Convolution Sets"
+    },
+    {
+      "targetId": "erdos-789",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #789: Sum-Length-Free Subsets"
+    }
+  ]
 }

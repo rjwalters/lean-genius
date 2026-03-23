@@ -121,5 +121,29 @@
     "axiomCount": 2,
     "theoremCount": 11,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-1091",
+    "erdos-944",
+    "erdos-758",
+    "erdos-753",
+    "erdos-762"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1091",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1091: Odd Cycles with Diagonals in K4-Free Graphs"
+    },
+    {
+      "targetId": "erdos-944",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #944: Critical Graphs Without Critical Edges"
+    },
+    {
+      "targetId": "erdos-758",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #758: Cochromatic Number z(n)"
+    }
+  ]
 }

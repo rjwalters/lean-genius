@@ -186,5 +186,29 @@
     "axiomCount": 10,
     "theoremCount": 16,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-1167",
+    "erdos-1169",
+    "erdos-1171",
+    "erdos-1174",
+    "erdos-1176"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1169: Partition Relations for ω₁²"
+    },
+    {
+      "targetId": "erdos-1171",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1171: Multicolor Partition Relations for ω₁²"
+    }
+  ]
 }

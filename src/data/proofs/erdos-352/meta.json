@@ -168,5 +168,29 @@
     "axiomCount": 10,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-1033",
+    "erdos-1009",
+    "erdos-80",
+    "erdos-898",
+    "erdos-1010"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1033: Triangle Degree Sums in Dense Graphs"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1009: Edge-Disjoint Triangles Beyond Turán"
+    },
+    {
+      "targetId": "erdos-80",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #80: Book Size in Triangle-Saturated Graphs"
+    }
+  ]
 }

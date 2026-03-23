@@ -170,5 +170,29 @@
     "axiomCount": 9,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-710",
+    "erdos-131",
+    "erdos-400",
+    "erdos-784",
+    "erdos-387"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-710",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #710: Minimal Interval for Divisibility Matching"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #131: Non-Dividing Sets"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #400: Factorial Divisibility and Sum Excess"
+    }
+  ]
 }

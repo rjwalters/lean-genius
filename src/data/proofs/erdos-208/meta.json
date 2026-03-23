@@ -146,5 +146,29 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1109",
+    "erdos-693",
+    "erdos-970",
+    "erdos-489",
+    "erdos-145"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1109: Squarefree Sumsets"
+    },
+    {
+      "targetId": "erdos-693",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #693: Divisor Gaps in Intervals"
+    },
+    {
+      "targetId": "erdos-970",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #970: Jacobsthal's Function"
+    }
+  ]
 }

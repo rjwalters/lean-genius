@@ -144,5 +144,29 @@
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-525",
+    "erdos-1150",
+    "erdos-230",
+    "erdos-523",
+    "erdos-1041"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #525: Littlewood Polynomials and Minimum Modulus"
+    },
+    {
+      "targetId": "erdos-1150",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1150: Supremum of Littlewood Polynomials"
+    },
+    {
+      "targetId": "erdos-230",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #230: Ultraflat Polynomials on the Unit Circle"
+    }
+  ]
 }

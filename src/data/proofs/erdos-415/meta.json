@@ -239,5 +239,29 @@
       "venue": "Ramanujan J.",
       "note": "Tight bounds on V(x), the counting function for totient values"
     }
+  ],
+  "relatedProofs": [
+    "erdos-416",
+    "erdos-822",
+    "erdos-1064",
+    "erdos-456",
+    "erdos-1003"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-416",
+      "relationship": "related",
+      "description": "Related formalization: Counting Totient Values"
+    },
+    {
+      "targetId": "erdos-822",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #822: Positive Density of n + φ(n)"
+    },
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1064: Comparing φ(n) and φ(n - φ(n))"
+    }
   ]
 }

@@ -161,5 +161,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-404",
+    "erdos-646",
+    "erdos-400",
+    "erdos-784",
+    "erdos-427"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-404",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #404: Prime Power Divisibility of Factorial Sums"
+    },
+    {
+      "targetId": "erdos-646",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #646: Even Powers of Primes Dividing Factorials"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #400: Factorial Divisibility and Sum Excess"
+    }
+  ]
 }

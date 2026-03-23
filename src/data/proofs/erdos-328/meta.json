@@ -187,5 +187,29 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-360",
+    "erdos-198",
+    "erdos-774",
+    "erdos-42",
+    "erdos-757"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-360",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #360: Partition Sum-Free Classes"
+    },
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #198: Sidon Sets and Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-774",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #774: Dissociated and Proportionately Dissociated Sets"
+    }
+  ]
 }

@@ -159,5 +159,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-166",
+    "erdos-812",
+    "erdos-617",
+    "erdos-552",
+    "erdos-129"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #166: Ramsey Number R(4,k) Lower Bound"
+    },
+    {
+      "targetId": "erdos-812",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #812: Growth of Consecutive Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-617",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #617: Balanced Colourings of Complete Graphs"
+    }
+  ]
 }

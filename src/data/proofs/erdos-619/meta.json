@@ -163,5 +163,29 @@
       "citation": "Alon, N., Gyárfás, A., Ruszinkó, M. (2000)",
       "type": "paper"
     }
+  ],
+  "relatedProofs": [
+    "erdos-128",
+    "erdos-133",
+    "erdos-134",
+    "erdos-618",
+    "erdos-742"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-128",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #128: Triangle-Free Graphs with Dense Subgraphs"
+    },
+    {
+      "targetId": "erdos-133",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #133: Maximum Degree in Triangle-Free Diameter-2 Graphs"
+    },
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #134: Triangle-Free Graphs with Diameter 2"
+    }
   ]
 }

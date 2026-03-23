@@ -143,5 +143,29 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-309",
+    "erdos-286",
+    "erdos-293",
+    "erdos-313",
+    "erdos-299"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #309: Integers as Sums of Distinct Unit Fractions"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #286: Unit Fractions in Short Intervals"
+    },
+    {
+      "targetId": "erdos-293",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #293: Missing Denominators in Egyptian Fractions"
+    }
+  ]
 }

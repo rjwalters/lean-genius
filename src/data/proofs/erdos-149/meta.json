@@ -172,5 +172,29 @@
     "axiomCount": 15,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-766",
+    "erdos-129",
+    "erdos-812",
+    "erdos-176",
+    "erdos-743"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-766",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #766: Extremal Numbers and Graph Density"
+    },
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Related formalization: Ramsey Numbers Avoiding Monochromatic Cliques"
+    },
+    {
+      "targetId": "erdos-812",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #812: Growth of Consecutive Ramsey Numbers"
+    }
+  ]
 }

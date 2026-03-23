@@ -149,5 +149,29 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-949",
+    "erdos-789",
+    "erdos-774",
+    "erdos-340",
+    "erdos-840"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-949",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #949: Sum-Free Sets and Continuum-Sized Sumset Avoidance"
+    },
+    {
+      "targetId": "erdos-789",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #789: Sum-Length-Free Subsets"
+    },
+    {
+      "targetId": "erdos-774",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #774: Dissociated and Proportionately Dissociated Sets"
+    }
+  ]
 }

@@ -172,5 +172,27 @@
       "venue": "Proceedings of the International Congress of Mathematicians, Vol. I, 579–604",
       "note": "Foundation of motivic homotopy theory in which flag varieties and their maps play a central role"
     }
+  ],
+  "relatedProofs": [
+    "hodge-conjecture",
+    "fermats-last-theorem",
+    "hilbert-15"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hodge-conjecture",
+      "relationship": "related",
+      "description": "Related formalization: The Hodge Conjecture"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Related formalization: Fermat's Last Theorem"
+    },
+    {
+      "targetId": "hilbert-15",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's 15th Problem: Schubert Calculus"
+    }
   ]
 }

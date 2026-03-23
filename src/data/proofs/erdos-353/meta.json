@@ -164,5 +164,29 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 14
-  }
+  },
+  "relatedProofs": [
+    "erdos-988",
+    "erdos-823",
+    "erdos-95",
+    "erdos-286",
+    "erdos-758"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-988",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #988: Discrepancy on the Sphere"
+    },
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio"
+    },
+    {
+      "targetId": "erdos-95",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #95: Sum of Squared Distance Multiplicities"
+    }
+  ]
 }

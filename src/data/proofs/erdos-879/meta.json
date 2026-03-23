@@ -152,5 +152,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-829",
+    "erdos-432",
+    "erdos-340",
+    "erdos-332",
+    "erdos-28"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-829",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #829: Representations as Sums of Two Cubes"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #340: Growth of the Greedy Sidon Sequence"
+    }
+  ]
 }

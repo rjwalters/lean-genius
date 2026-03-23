@@ -150,5 +150,29 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-916",
+    "erdos-577",
+    "erdos-737",
+    "erdos-58",
+    "erdos-57"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-916",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #916: Graphs with Cycles and Triply Adjacent Vertices"
+    },
+    {
+      "targetId": "erdos-577",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #577: Vertex-Disjoint 4-Cycles in Dense Graphs"
+    },
+    {
+      "targetId": "erdos-737",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #737: Edge in All Large Cycles"
+    }
+  ]
 }

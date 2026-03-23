@@ -152,5 +152,29 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-1040",
+    "erdos-1042",
+    "erdos-1047",
+    "erdos-1039",
+    "erdos-1041"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1040: Transfinite Diameter and Sublevel Set Measure"
+    },
+    {
+      "targetId": "erdos-1042",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1042: Connected Components of Polynomial Lemniscates"
+    },
+    {
+      "targetId": "erdos-1047",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1047: Convexity of Polynomial Lemniscates"
+    }
+  ]
 }

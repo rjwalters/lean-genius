@@ -111,5 +111,29 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-708",
+    "erdos-387",
+    "erdos-650",
+    "erdos-828"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1063: Binomial Coefficient Divisibility"
+    },
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #387: Divisors of Binomial Coefficients Near n"
+    }
+  ]
 }

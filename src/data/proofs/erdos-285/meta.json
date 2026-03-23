@@ -129,5 +129,29 @@
     "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-284",
+    "erdos-295",
+    "erdos-309",
+    "erdos-286",
+    "erdos-355"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #284: Maximum First Denominator for Egyptian Fraction Representations of 1"
+    },
+    {
+      "targetId": "erdos-295",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #295: Egyptian Fractions with Large Denominators"
+    },
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #309: Integers as Sums of Distinct Unit Fractions"
+    }
+  ]
 }

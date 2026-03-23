@@ -168,5 +168,29 @@
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-983",
+    "erdos-711",
+    "erdos-434",
+    "erdos-387",
+    "erdos-253"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-983",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #983: Prime Coverage Function for Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #434: Extremal Frobenius Problem"
+    }
+  ]
 }

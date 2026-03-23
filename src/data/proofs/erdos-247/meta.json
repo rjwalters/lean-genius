@@ -121,5 +121,29 @@
     "axiomCount": 1,
     "theoremCount": 27,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-1144",
+    "erdos-997",
+    "erdos-263",
+    "erdos-1138",
+    "erdos-260"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1144: Partial Sums of Random Multiplicative Functions"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #997: Well-Distributed Sequences and Primes"
+    },
+    {
+      "targetId": "erdos-263",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #263: Irrationality Sequences"
+    }
+  ]
 }

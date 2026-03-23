@@ -188,5 +188,29 @@
     "axiomCount": 15,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-609",
+    "erdos-72",
+    "erdos-570",
+    "erdos-622",
+    "erdos-720"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-609",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #609: Monochromatic Odd Cycles in Edge Colorings"
+    },
+    {
+      "targetId": "erdos-72",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #72: Unavoidable Cycle Lengths"
+    },
+    {
+      "targetId": "erdos-570",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #570: Cycle-Graph Ramsey Numbers"
+    }
+  ]
 }

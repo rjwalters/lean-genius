@@ -138,5 +138,29 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-473",
+    "erdos-237",
+    "erdos-444",
+    "erdos-793",
+    "erdos-823"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-473",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #473: Prime Sum Permutations"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #237: Prime Plus Set Representations"
+    },
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #444: Generalized Divisor Functions"
+    }
+  ]
 }

@@ -205,5 +205,27 @@
       "venue": "Springer GTM",
       "note": "Chapter 5: Sylow and Hall subgroups"
     }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-minpoly-oq-05",
+    "cayley-hamilton-minpoly-oq-02-oq-01-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Minimal Polynomial Generalization to K-Algebras"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "related",
+      "description": "Related formalization: Minimal Polynomial Reduction in General K-Algebras"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Skolem-Noether Theorem: K-Algebra Automorphisms of Mₙ(K)"
+    }
   ]
 }

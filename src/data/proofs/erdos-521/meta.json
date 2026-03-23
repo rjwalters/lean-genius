@@ -148,5 +148,29 @@
     "axiomCount": 11,
     "theoremCount": 1,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-524",
+    "erdos-523",
+    "erdos-525",
+    "erdos-522",
+    "erdos-996"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-524",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #524: Maximum of Random Sign Polynomials"
+    },
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #523: Maximum of Random Polynomials on Unit Circle"
+    },
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #525: Littlewood Polynomials and Minimum Modulus"
+    }
+  ]
 }

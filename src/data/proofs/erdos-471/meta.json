@@ -151,5 +151,29 @@
     "axiomCount": 8,
     "theoremCount": 7,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-221",
+    "erdos-876",
+    "erdos-1146",
+    "erdos-37",
+    "erdos-329"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-221",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #221: Additive Complements with Powers of 2"
+    },
+    {
+      "targetId": "erdos-876",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #876: Sum-Free Sets and Gap Growth"
+    },
+    {
+      "targetId": "erdos-1146",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1146: Is {2^m · 3^n} an Essential Component?"
+    }
+  ]
 }

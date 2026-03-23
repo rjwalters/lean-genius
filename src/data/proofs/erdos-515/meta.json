@@ -170,5 +170,29 @@
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-226",
+    "erdos-1116",
+    "erdos-1118",
+    "erdos-395",
+    "erdos-974"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-226",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #226: Entire Functions Preserving Rationality"
+    },
+    {
+      "targetId": "erdos-1116",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1116: Extreme Value Distribution of Entire Functions"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets"
+    }
+  ]
 }

@@ -154,5 +154,29 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-587",
+    "erdos-779",
+    "erdos-157",
+    "erdos-42",
+    "erdos-9"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #587: Square-Sum-Free Subsets"
+    },
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #779: Primorial Plus Prime"
+    },
+    {
+      "targetId": "erdos-157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis"
+    }
+  ]
 }

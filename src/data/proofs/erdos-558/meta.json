@@ -173,5 +173,29 @@
     "axiomCount": 19,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-560",
+    "erdos-925",
+    "erdos-554",
+    "erdos-23",
+    "erdos-581"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-560",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #560: Size Ramsey Number of Complete Bipartite Graphs"
+    },
+    {
+      "targetId": "erdos-925",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #925: Independent Sets in Non-Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-554",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #554: Odd Cycle vs Triangle Ramsey Numbers"
+    }
+  ]
 }

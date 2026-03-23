@@ -128,5 +128,29 @@
     "axiomCount": 12,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-412",
+    "erdos-51",
+    "erdos-164",
+    "erdos-685",
+    "erdos-279"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-412",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #412: Iterated Sum of Divisors Convergence"
+    },
+    {
+      "targetId": "erdos-51",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #51: Totient Preimage Growth"
+    },
+    {
+      "targetId": "erdos-164",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #164: Maximum Sum for Primitive Sets"
+    }
+  ]
 }

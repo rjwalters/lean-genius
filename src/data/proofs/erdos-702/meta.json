@@ -203,5 +203,29 @@
       "citation": "Erdős Problems, Problem #702, https://erdosproblems.com/702",
       "type": "website"
     }
+  ],
+  "relatedProofs": [
+    "erdos-701",
+    "erdos-272",
+    "erdos-777",
+    "erdos-874",
+    "erdos-21"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-701",
+      "relationship": "related",
+      "description": "Related formalization: Chvátal's Conjecture on Intersecting Families"
+    },
+    {
+      "targetId": "erdos-272",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #272: Intersection Properties of Subsets"
+    },
+    {
+      "targetId": "erdos-777",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #777: Comparable Pairs in Families of Sets"
+    }
   ]
 }

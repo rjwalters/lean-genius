@@ -151,5 +151,29 @@
     "axiomCount": 13,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-399",
+    "erdos-388",
+    "erdos-393",
+    "erdos-405",
+    "erdos-850"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-399",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #399: Factorial Diophantine Equations"
+    },
+    {
+      "targetId": "erdos-388",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #388: Products of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-393",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #393: Factorial Factorization Span"
+    }
+  ]
 }

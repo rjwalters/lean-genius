@@ -254,5 +254,29 @@
       "year": "1976",
       "venue": "Cambridge University Press"
     }
+  ],
+  "relatedProofs": [
+    "pythagorean-triples-oq-01",
+    "erdos-711",
+    "erdos-434",
+    "erdos-1155-oq-01",
+    "erdos-387"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Density of Primitive Pythagorean Triples"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #434: Extremal Frobenius Problem"
+    }
   ]
 }

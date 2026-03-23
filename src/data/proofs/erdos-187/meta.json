@@ -109,5 +109,29 @@
     "Beck (1980): upper bound f(d) ≤ (1+o(1))log₂ d",
     "Cohen: original formulation",
     "https://erdosproblems.com/187"
+  ],
+  "relatedProofs": [
+    "erdos-160",
+    "erdos-984",
+    "erdos-721",
+    "erdos-169",
+    "erdos-179"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #160: Rainbow-Free Colorings of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-984",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #984: 2-Coloring with Controlled Monochromatic Progressions"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #721: Van der Waerden Numbers W(3,k)"
+    }
   ]
 }

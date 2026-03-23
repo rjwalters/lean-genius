@@ -125,5 +125,22 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs"
+    },
+    {
+      "targetId": "erdos-182",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #182: Maximum Edges Avoiding k-Regular Subgraphs"
+    }
+  ]
 }

@@ -124,5 +124,29 @@
     "Blokhuis (1984): simplified BBS proof using linear algebra",
     "Petrov–Pohoata (2021): simpler proof via Croot–Lev–Pach polynomial method",
     "https://erdosproblems.com/502"
+  ],
+  "relatedProofs": [
+    "erdos-505",
+    "erdos-506",
+    "erdos-657",
+    "erdos-982",
+    "erdos-953"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-505",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #505: Borsuk's Conjecture"
+    },
+    {
+      "targetId": "erdos-506",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #506: Minimum Number of Circles from n Points"
+    },
+    {
+      "targetId": "erdos-657",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances"
+    }
   ]
 }

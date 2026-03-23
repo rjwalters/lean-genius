@@ -121,5 +121,29 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-125",
+    "erdos-246",
+    "erdos-54",
+    "erdos-348",
+    "erdos-587"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-125",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #125: Positive Density of Digit-Restricted Sumsets"
+    },
+    {
+      "targetId": "erdos-246",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #246: Completeness of {a^k b^l : k, l ≥ 0}"
+    },
+    {
+      "targetId": "erdos-54",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #54: Ramsey 2-Complete Sets"
+    }
+  ]
 }

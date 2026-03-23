@@ -129,5 +129,29 @@
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-1097",
+    "erdos-196",
+    "erdos-53",
+    "erdos-477",
+    "erdos-10"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1097",
+      "relationship": "related",
+      "description": "Related formalization: Common Differences in Three-Term Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-196",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #196: Monotone 4-Term APs in Permutations"
+    },
+    {
+      "targetId": "erdos-53",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #53: Sums and Products of Distinct Elements"
+    }
+  ]
 }

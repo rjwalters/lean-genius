@@ -133,5 +133,29 @@
     "axiomCount": 7,
     "theoremCount": 7,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-823",
+    "erdos-286",
+    "erdos-941",
+    "erdos-235",
+    "erdos-4"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #286: Unit Fractions in Short Intervals"
+    },
+    {
+      "targetId": "erdos-941",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #941: Sums of Three Powerful Numbers"
+    }
+  ]
 }

@@ -141,5 +141,29 @@
     "axiomCount": 6,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-569",
+    "erdos-620",
+    "erdos-180",
+    "erdos-82",
+    "erdos-766"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #569: Odd Cycle Ramsey Numbers Linear in Edges"
+    },
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #620: The Erdős-Rogers Problem"
+    },
+    {
+      "targetId": "erdos-180",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #180: Turán Numbers for Graph Families"
+    }
+  ]
 }

@@ -141,5 +141,29 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-758",
+    "erdos-484",
+    "erdos-656",
+    "erdos-483",
+    "erdos-55"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-758",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #758: Cochromatic Number z(n)"
+    },
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #484: Monochromatic Sums in Colorings"
+    },
+    {
+      "targetId": "erdos-656",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #656: Density Version of Hindman's Theorem"
+    }
+  ]
 }

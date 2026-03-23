@@ -143,5 +143,29 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-983",
+    "erdos-951",
+    "prime-gap-bounds",
+    "erdos-795",
+    "erdos-122"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-983",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #983: Prime Coverage Function for Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-951",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #951: Beurling Prime Numbers"
+    },
+    {
+      "targetId": "prime-gap-bounds",
+      "relationship": "related",
+      "description": "Related formalization: Explicit Prime Gap Bounds from Bertrand's Postulate"
+    }
+  ]
 }

@@ -142,5 +142,29 @@
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-288",
+    "erdos-295",
+    "erdos-312",
+    "erdos-287",
+    "erdos-1000"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-288",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #288: Integer Harmonic Sums Over Interval Pairs"
+    },
+    {
+      "targetId": "erdos-295",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #295: Egyptian Fractions with Large Denominators"
+    },
+    {
+      "targetId": "erdos-312",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #312: Subset Sums of Unit Fractions"
+    }
+  ]
 }

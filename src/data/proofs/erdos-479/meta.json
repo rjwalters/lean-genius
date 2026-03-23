@@ -150,5 +150,29 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-486",
+    "erdos-1074",
+    "erdos-364",
+    "erdos-25",
+    "divisibility-by-3-oq-02"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-486",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #486: Logarithmic Density for Modular Avoidance Sets"
+    },
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1074: EHS Numbers and Pillai Primes"
+    },
+    {
+      "targetId": "erdos-364",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #364: Consecutive Powerful Numbers"
+    }
+  ]
 }

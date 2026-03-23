@@ -161,5 +161,29 @@
     "axiomCount": 10,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-1072",
+    "erdos-445",
+    "erdos-985",
+    "erdos-1065"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1056: Consecutive Interval Products ≡ 1 (mod p)"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1072: Least n with n! ≡ −1 (mod p)"
+    },
+    {
+      "targetId": "erdos-445",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #445: Multiplicative Inverses in Short Intervals"
+    }
+  ]
 }

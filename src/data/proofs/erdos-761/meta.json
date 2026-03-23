@@ -146,5 +146,29 @@
       "citation": "Erdős Problems, Problem #761, https://erdosproblems.com/761",
       "type": "website"
     }
+  ],
+  "relatedProofs": [
+    "erdos-920",
+    "erdos-75",
+    "erdos-1092",
+    "erdos-1111",
+    "erdos-1104"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-920",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #920: Chromatic Numbers of K_k-Free Graphs"
+    },
+    {
+      "targetId": "erdos-75",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #75: Uncountable Chromatic Number and Large Independent Sets"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1092: Chromatic Decomposition Threshold"
+    }
   ]
 }

@@ -169,5 +169,29 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-772",
+    "erdos-185",
+    "erdos-748",
+    "erdos-1179",
+    "erdos-874"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-772",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #772: Sidon Sets in Bounded Convolution Sets"
+    },
+    {
+      "targetId": "erdos-185",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #185: Cap Sets in {0,1,2}^n"
+    },
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #748: The Cameron-Erdős Conjecture"
+    }
+  ]
 }

@@ -147,5 +147,29 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-254",
+    "erdos-997",
+    "erdos-1000",
+    "erdos-492",
+    "erdos-466"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-254",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #254: Subset Sum Representation"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #997: Well-Distributed Sequences and Primes"
+    },
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1000: Generalized Totients and Diophantine Approximation"
+    }
+  ]
 }

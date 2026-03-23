@@ -165,5 +165,29 @@
     "axiomCount": 0,
     "theoremCount": 26,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-minpoly-oq-05",
+    "cayley-hamilton-minpoly-oq-02",
+    "cayley-hamilton-minpoly",
+    "lagrange-theorem-oq-03"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Related formalization: Minimal Polynomial Generalization to K-Algebras"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "related",
+      "description": "Related formalization: Minimal Polynomial Reduction in General K-Algebras"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "extends",
+      "description": "Related formalization: Similar Matrices Have Identical Minimal Polynomials"
+    }
+  ]
 }

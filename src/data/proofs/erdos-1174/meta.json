@@ -150,5 +150,29 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-1169",
+    "erdos-1176",
+    "erdos-1167",
+    "erdos-1014",
+    "erdos-1171"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1169: Partition Relations for ω₁²"
+    },
+    {
+      "targetId": "erdos-1176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1176: Edge Coloring and Vertex Color Classes"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    }
+  ]
 }

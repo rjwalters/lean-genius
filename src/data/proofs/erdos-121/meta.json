@@ -94,5 +94,29 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-538",
+    "erdos-690",
+    "erdos-730",
+    "erdos-346",
+    "erdos-963"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-538",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #538: Reciprocal Sums with Bounded Prime Representations"
+    },
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Related formalization: Unimodality of k-th Prime Factor Density"
+    },
+    {
+      "targetId": "erdos-730",
+      "relationship": "related",
+      "description": "Related formalization: Same Prime Divisors of Central Binomials"
+    }
+  ]
 }

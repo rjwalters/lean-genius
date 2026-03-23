@@ -201,5 +201,29 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-165",
+    "erdos-166",
+    "erdos-1029",
+    "erdos-176",
+    "erdos-172"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #165: Asymptotic Formula for R(3,k)"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #166: Ramsey Number R(4,k) Lower Bound"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1029: Ramsey Number Growth Rate"
+    }
+  ]
 }

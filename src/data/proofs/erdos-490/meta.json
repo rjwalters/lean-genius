@@ -208,5 +208,29 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 15
-  }
+  },
+  "relatedProofs": [
+    "erdos-402",
+    "erdos-532",
+    "erdos-843",
+    "erdos-297",
+    "erdos-45"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-402",
+      "relationship": "related",
+      "description": "Related formalization: Graham's GCD Conjecture"
+    },
+    {
+      "targetId": "erdos-532",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #532: Hindman's Theorem (IP Sets)"
+    },
+    {
+      "targetId": "erdos-843",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #843: Are the Squares Ramsey 2-Complete?"
+    }
+  ]
 }

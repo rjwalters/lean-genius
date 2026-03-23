@@ -141,5 +141,29 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-569",
+    "erdos-1029",
+    "erdos-558",
+    "erdos-812",
+    "erdos-596"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #569: Odd Cycle Ramsey Numbers Linear in Edges"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1029: Ramsey Number Growth Rate"
+    },
+    {
+      "targetId": "erdos-558",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #558: Multicolor Ramsey Numbers for Complete Bipartite Graphs"
+    }
+  ]
 }

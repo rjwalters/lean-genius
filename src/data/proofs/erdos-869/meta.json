@@ -166,5 +166,29 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-868",
+    "erdos-839",
+    "erdos-39",
+    "erdos-158",
+    "erdos-342"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-868",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #868: Additive Bases and Minimal Bases"
+    },
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums"
+    },
+    {
+      "targetId": "erdos-39",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #39: Infinite Sidon Set Growth"
+    }
+  ]
 }

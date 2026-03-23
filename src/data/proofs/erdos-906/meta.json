@@ -176,5 +176,29 @@
     "axiomCount": 15,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-229",
+    "erdos-1118",
+    "erdos-226",
+    "erdos-1117",
+    "erdos-1116"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-229",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #229: Zeros of Derivatives of Entire Functions"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets"
+    },
+    {
+      "targetId": "erdos-226",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #226: Entire Functions Preserving Rationality"
+    }
+  ]
 }

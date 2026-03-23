@@ -152,5 +152,29 @@
       "venue": "Studia Mathematica 2, 171–180",
       "note": "Generalized Brouwer's fixed point theorem to infinite-dimensional Banach spaces for compact convex sets"
     }
+  ],
+  "relatedProofs": [
+    "schauder-fixed-point-oq-01",
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-02",
+    "hurwitz-theorem",
+    "central-limit-theorem"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "schauder-fixed-point-oq-01",
+      "relationship": "parent",
+      "description": "Related formalization: Schauder Projection Lemma"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Related formalization: Brouwer Fixed Point Theorem"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Computational Complexity of Approximate Fixed Points (OQ-02)"
+    }
   ]
 }

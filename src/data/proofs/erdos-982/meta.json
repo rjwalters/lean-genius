@@ -179,5 +179,29 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-94",
+    "erdos-654",
+    "erdos-605",
+    "erdos-507",
+    "erdos-661"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-94",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #94: Distance Multiplicities in Convex Polygons"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #654: Distinct Distances with No Four Concyclic"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #605: Repeated Distances on a Sphere"
+    }
+  ]
 }

@@ -157,5 +157,29 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-748",
+    "erdos-1136",
+    "erdos-484",
+    "erdos-179",
+    "erdos-54"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #748: The Cameron-Erdős Conjecture"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1136: Sum-Free Sets Avoiding Powers of Two"
+    },
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #484: Monochromatic Sums in Colorings"
+    }
+  ]
 }

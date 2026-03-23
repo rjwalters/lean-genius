@@ -127,11 +127,37 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Classical"],
+    "opens": [
+      "Classical"
+    ],
     "namespace": null,
     "lineCount": 398,
     "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-690",
+    "erdos-121",
+    "erdos-730",
+    "erdos-346",
+    "erdos-963"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Related formalization: Unimodality of k-th Prime Factor Density"
+    },
+    {
+      "targetId": "erdos-121",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #121: Square-Free Products"
+    },
+    {
+      "targetId": "erdos-730",
+      "relationship": "related",
+      "description": "Related formalization: Same Prime Divisors of Central Binomials"
+    }
+  ]
 }

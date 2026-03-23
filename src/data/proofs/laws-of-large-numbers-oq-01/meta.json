@@ -156,5 +156,29 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "laws-of-large-numbers",
+    "cauchy-schwarz-integral-oq-02",
+    "basel-problem-oq-01",
+    "derangements-oq-03",
+    "central-limit-theorem-oq-03"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "extends",
+      "description": "Related formalization: Laws of Large Numbers"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Minkowski Integral Inequality as Corollary of Cauchy-Schwarz"
+    },
+    {
+      "targetId": "basel-problem-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Is ζ(5) Irrational? (Open Question)"
+    }
+  ]
 }

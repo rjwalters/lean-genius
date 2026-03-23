@@ -140,5 +140,29 @@
     "axiomCount": 12,
     "theoremCount": 6,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-711",
+    "erdos-434",
+    "erdos-387",
+    "erdos-253",
+    "erdos-13"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #434: Extremal Frobenius Problem"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #387: Divisors of Binomial Coefficients Near n"
+    }
+  ]
 }

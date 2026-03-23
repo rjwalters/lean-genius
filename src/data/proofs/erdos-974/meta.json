@@ -172,5 +172,29 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-485",
+    "erdos-973",
+    "erdos-519",
+    "erdos-395",
+    "erdos-226"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-485",
+      "relationship": "related",
+      "description": "Related formalization: Minimum Terms in Squared Polynomials"
+    },
+    {
+      "targetId": "erdos-973",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #973: Power Sums of Complex Numbers (Turán's Problem)"
+    },
+    {
+      "targetId": "erdos-519",
+      "relationship": "related",
+      "description": "Related formalization: Power Sums of Complex Numbers"
+    }
+  ]
 }

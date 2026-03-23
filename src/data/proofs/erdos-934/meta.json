@@ -169,5 +169,29 @@
     "axiomCount": 11,
     "theoremCount": 10,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-88",
+    "erdos-23",
+    "erdos-1077",
+    "erdos-547",
+    "erdos-565"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #88: Induced Subgraphs in Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #23: Triangle-Free Graphs and Bipartiteness"
+    },
+    {
+      "targetId": "erdos-1077",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1077: Balanced Subgraphs in Dense Graphs"
+    }
+  ]
 }

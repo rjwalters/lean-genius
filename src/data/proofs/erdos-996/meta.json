@@ -211,5 +211,29 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 14
-  }
+  },
+  "relatedProofs": [
+    "erdos-995",
+    "erdos-512",
+    "erdos-774",
+    "fourier-series-oq-03",
+    "erdos-510"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-995",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #995: Lacunary Sequences and Fractional Parts"
+    },
+    {
+      "targetId": "erdos-512",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #512: Littlewood's Conjecture on Exponential Sums"
+    },
+    {
+      "targetId": "erdos-774",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #774: Dissociated and Proportionately Dissociated Sets"
+    }
+  ]
 }

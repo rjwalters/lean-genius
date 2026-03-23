@@ -120,5 +120,29 @@
     "axiomCount": 7,
     "theoremCount": 12,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-187",
+    "erdos-169",
+    "erdos-200",
+    "erdos-984",
+    "erdos-142"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #187: Arithmetic Progressions in 2-Colorings"
+    },
+    {
+      "targetId": "erdos-169",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #169: Harmonic Sum of AP-Free Sets"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #200: Longest Arithmetic Progression of Primes"
+    }
+  ]
 }

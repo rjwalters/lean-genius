@@ -154,5 +154,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-798",
+    "erdos-1127",
+    "erdos-199",
+    "erdos-591",
+    "erdos-590"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-798",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #798: Covering Lattice Points with Lines"
+    },
+    {
+      "targetId": "erdos-1127",
+      "relationship": "related",
+      "description": "Related formalization: Decomposing ℝⁿ into Sets with Distinct Distances"
+    },
+    {
+      "targetId": "erdos-199",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #199: Arithmetic Progressions in Set Complements"
+    }
+  ]
 }

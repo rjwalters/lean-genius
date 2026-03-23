@@ -143,5 +143,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-451",
+    "erdos-708",
+    "erdos-686",
+    "erdos-421",
+    "erdos-672"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-451",
+      "relationship": "related",
+      "description": "Related formalization: Primes in (k, 2k) Avoiding Products"
+    },
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-686",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #686: Ratios of Products of Consecutive Integers"
+    }
+  ]
 }

@@ -198,5 +198,29 @@
     "axiomCount": 21,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-529",
+    "erdos-1166",
+    "erdos-1138",
+    "erdos-543",
+    "erdos-1155"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-529",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #529: Self-Avoiding Walk End-to-End Distance"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1138: Primes in Short Intervals and Maximal Gaps"
+    }
+  ]
 }

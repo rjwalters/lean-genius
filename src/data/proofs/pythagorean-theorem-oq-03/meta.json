@@ -222,5 +222,29 @@
     "axiomCount": 0,
     "theoremCount": 105,
     "definitionCount": 18
-  }
+  },
+  "relatedProofs": [
+    "cevas-theorem-oq-02",
+    "cevas-theorem-oq-02-oq-02",
+    "parallel-postulate-independence",
+    "picks-theorem-oq-03",
+    "cevas-theorem-oq-02-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Ceva's Theorem: Non-Euclidean Geometries, Menelaus Duality, and Gauss-Bonnet"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Ceva's Theorem for Spherical Polygons"
+    },
+    {
+      "targetId": "parallel-postulate-independence",
+      "relationship": "related",
+      "description": "Related formalization: Independence of the Parallel Postulate"
+    }
+  ]
 }

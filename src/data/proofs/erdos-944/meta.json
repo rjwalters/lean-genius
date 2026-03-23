@@ -126,5 +126,29 @@
     "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-744",
+    "erdos-917",
+    "erdos-1032",
+    "erdos-758",
+    "erdos-753"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-744",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #744: Critical Graphs and Bipartition"
+    },
+    {
+      "targetId": "erdos-917",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #917: Critical Graphs and Edge Density"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1032: 4-Chromatic Critical Graphs with High Minimum Degree"
+    }
+  ]
 }

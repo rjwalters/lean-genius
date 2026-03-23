@@ -187,5 +187,29 @@
     "axiomCount": 14,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-793",
+    "erdos-131",
+    "erdos-1052",
+    "erdos-404",
+    "erdos-710"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #793: Primitive Sets Avoiding Product Divisibility"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #131: Non-Dividing Sets"
+    },
+    {
+      "targetId": "erdos-1052",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1052: Unitary Perfect Numbers"
+    }
+  ]
 }

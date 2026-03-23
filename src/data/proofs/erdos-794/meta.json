@@ -181,5 +181,29 @@
     "axiomCount": 3,
     "theoremCount": 7,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-833",
+    "erdos-1076",
+    "erdos-565",
+    "erdos-927",
+    "erdos-447"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-833",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1076: Extremal Numbers for 3-Uniform Hypergraphs"
+    },
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #565: Induced Ramsey Numbers"
+    }
+  ]
 }

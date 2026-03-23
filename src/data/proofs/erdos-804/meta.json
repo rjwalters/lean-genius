@@ -148,5 +148,29 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-615",
+    "erdos-925",
+    "erdos-750",
+    "erdos-802",
+    "erdos-88"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-615",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #615: Ramsey-Turan Number rt(n; 4, n/log n)"
+    },
+    {
+      "targetId": "erdos-925",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #925: Independent Sets in Non-Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-750",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #750: Almost Bipartite Graphs with Infinite Chromatic Number"
+    }
+  ]
 }

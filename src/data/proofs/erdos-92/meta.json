@@ -146,5 +146,29 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-90",
+    "erdos-102",
+    "erdos-98",
+    "erdos-607",
+    "erdos-1069"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-90",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #90: The Unit Distance Problem"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines"
+    },
+    {
+      "targetId": "erdos-98",
+      "relationship": "related",
+      "description": "Related formalization: Distinct Distances in General Position"
+    }
+  ]
 }

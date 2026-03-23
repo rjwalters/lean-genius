@@ -136,5 +136,29 @@
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-525",
+    "erdos-498",
+    "erdos-1166",
+    "erdos-226",
+    "erdos-523"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #525: Littlewood Polynomials and Minimum Modulus"
+    },
+    {
+      "targetId": "erdos-498",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #498: Complex Littlewood–Offord Problem"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    }
+  ]
 }

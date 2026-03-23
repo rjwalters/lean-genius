@@ -164,5 +164,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-404",
+    "erdos-711",
+    "erdos-131",
+    "erdos-400",
+    "erdos-793"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-404",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #404: Prime Power Divisibility of Factorial Sums"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #131: Non-Dividing Sets"
+    }
+  ]
 }

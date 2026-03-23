@@ -177,5 +177,29 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-620",
+    "erdos-88",
+    "erdos-636",
+    "erdos-614",
+    "erdos-1036"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #620: The Erdős-Rogers Problem"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #88: Induced Subgraphs in Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-636",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #636: Distinct Induced Subgraphs in Ramsey Graphs"
+    }
+  ]
 }

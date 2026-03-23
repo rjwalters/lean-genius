@@ -162,5 +162,29 @@
     "axiomCount": 16,
     "theoremCount": 4,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-179",
+    "erdos-187",
+    "erdos-984",
+    "erdos-966",
+    "erdos-645"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #179: Arithmetic Progression Supersaturation"
+    },
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #187: Arithmetic Progressions in 2-Colorings"
+    },
+    {
+      "targetId": "erdos-984",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #984: 2-Coloring with Controlled Monochromatic Progressions"
+    }
+  ]
 }

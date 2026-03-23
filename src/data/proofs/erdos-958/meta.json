@@ -105,5 +105,29 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-217",
+    "erdos-605",
+    "erdos-754",
+    "erdos-1087",
+    "erdos-1090"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-217",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #217: Point Configurations with Distance Multiplicities"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #605: Repeated Distances on a Sphere"
+    },
+    {
+      "targetId": "erdos-754",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #754: Favorite Distances in Four Dimensions"
+    }
+  ]
 }

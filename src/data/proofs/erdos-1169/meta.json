@@ -174,5 +174,29 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1174",
+    "erdos-1176",
+    "erdos-1167",
+    "erdos-1014",
+    "erdos-1171"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1174",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1174: Monochromatic Cliques from Edge Colorings"
+    },
+    {
+      "targetId": "erdos-1176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1176: Edge Coloring and Vertex Color Classes"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    }
+  ]
 }

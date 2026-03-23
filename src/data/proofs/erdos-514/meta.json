@@ -181,5 +181,29 @@
     "axiomCount": 13,
     "theoremCount": 3,
     "definitionCount": 14
-  }
+  },
+  "relatedProofs": [
+    "erdos-1117",
+    "erdos-906",
+    "erdos-1118",
+    "erdos-226",
+    "erdos-1116"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1117",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1117: Maximum Modulus Points on Circles"
+    },
+    {
+      "targetId": "erdos-906",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #906: Dense Zeros of Derivative Subsequences"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets"
+    }
+  ]
 }

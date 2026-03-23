@@ -167,5 +167,29 @@
     "axiomCount": 7,
     "theoremCount": 9,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-484",
+    "erdos-806",
+    "erdos-785",
+    "erdos-749",
+    "erdos-153"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #484: Monochromatic Sums in Colorings"
+    },
+    {
+      "targetId": "erdos-806",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #806: Small Bases for Sumsets"
+    },
+    {
+      "targetId": "erdos-785",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #785: Exact Additive Complements"
+    }
+  ]
 }

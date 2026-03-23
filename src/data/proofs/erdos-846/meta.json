@@ -135,5 +135,29 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-189",
+    "erdos-960",
+    "erdos-102",
+    "erdos-101"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #107: The Happy Ending Problem"
+    },
+    {
+      "targetId": "erdos-189",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #189: Rectangles of Every Area in Colored Planes"
+    },
+    {
+      "targetId": "erdos-960",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #960: Ordinary Lines and Collinear Ramsey Thresholds"
+    }
+  ]
 }

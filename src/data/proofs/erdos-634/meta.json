@@ -206,5 +206,29 @@
       "citation": "Erdős, P. and Graham, R.L. 'Old and New Problems and Results in Combinatorial Number Theory.' L'Enseignement Mathématique, Monograph 28 (1980). Contains the original problem statement.",
       "type": "book"
     }
+  ],
+  "relatedProofs": [
+    "erdos-633",
+    "erdos-831",
+    "erdos-1083",
+    "erdos-668",
+    "erdos-956"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-633",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #633: Square Number Triangle Dissections"
+    },
+    {
+      "targetId": "erdos-831",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #831: Distinct Radii Circles Through Point Configurations"
+    },
+    {
+      "targetId": "erdos-1083",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1083: Distinct Distances in Higher Dimensions"
+    }
   ]
 }

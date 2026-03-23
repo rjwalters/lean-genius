@@ -157,5 +157,29 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-962",
+    "erdos-394",
+    "erdos-1063",
+    "erdos-650",
+    "erdos-828"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-962",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #962: Consecutive Integers with Large Prime Divisors"
+    },
+    {
+      "targetId": "erdos-394",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #394: Divisibility by Consecutive Integer Products"
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1063: Binomial Coefficient Divisibility"
+    }
+  ]
 }

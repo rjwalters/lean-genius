@@ -162,5 +162,29 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-749",
+    "erdos-432",
+    "erdos-840",
+    "erdos-741",
+    "erdos-335"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-749",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #749: Dense Sumsets with Bounded Representation"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    },
+    {
+      "targetId": "erdos-840",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #840: Quasi-Sidon Subsets"
+    }
+  ]
 }

@@ -110,5 +110,29 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-931",
+    "erdos-340",
+    "erdos-282",
+    "erdos-463",
+    "erdos-682"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-931",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #931: Same Prime Factors in Products of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #340: Growth of the Greedy Sidon Sequence"
+    },
+    {
+      "targetId": "erdos-282",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #282: Greedy Algorithm for Egyptian Fractions"
+    }
+  ]
 }

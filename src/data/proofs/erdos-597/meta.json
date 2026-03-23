@@ -140,5 +140,29 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-474",
+    "erdos-70",
+    "erdos-1167",
+    "erdos-1128",
+    "erdos-591"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-474",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #474: Coloring ℝ² for Uncountable Sets"
+    },
+    {
+      "targetId": "erdos-70",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #70: Partition Calculus for the Continuum"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    }
+  ]
 }

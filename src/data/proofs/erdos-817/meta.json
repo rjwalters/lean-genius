@@ -190,5 +190,29 @@
     "axiomCount": 2,
     "theoremCount": 11,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-186",
+    "erdos-198",
+    "erdos-757",
+    "erdos-160"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1: Distinct Subset Sums"
+    },
+    {
+      "targetId": "erdos-186",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #186: Non-Averaging Sets"
+    },
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #198: Sidon Sets and Arithmetic Progressions"
+    }
+  ]
 }

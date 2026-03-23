@@ -142,5 +142,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "erdos-953",
+    "erdos-662",
+    "erdos-661",
+    "erdos-1087",
+    "erdos-101"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-953",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #953: Avoiding Integer Distances in the Plane"
+    },
+    {
+      "targetId": "erdos-662",
+      "relationship": "related",
+      "description": "Related formalization: Distances in Separated Point Sets"
+    },
+    {
+      "targetId": "erdos-661",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #661: Bipartite Distinct Distances"
+    }
+  ]
 }

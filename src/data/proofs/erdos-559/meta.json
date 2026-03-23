@@ -114,5 +114,29 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-547",
+    "erdos-911",
+    "erdos-22",
+    "erdos-639",
+    "erdos-183"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #547: Tree Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-911",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #911: Size Ramsey Numbers of Dense Graphs"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #22: Ramsey-Turán Numbers for K₄"
+    }
+  ]
 }

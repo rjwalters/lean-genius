@@ -213,5 +213,28 @@
       "year": "1995",
       "venue": "AMS Colloquium Publications"
     }
+  ],
+  "relatedProofs": [
+    "hilbert-19",
+    "navier-stokes-oq-02",
+    "navier-stokes-existence",
+    "navier-stokes-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-19",
+      "relationship": "extends",
+      "description": "Related formalization: Hilbert's Nineteenth Problem: Regularity of Variational Solutions"
+    },
+    {
+      "targetId": "navier-stokes-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: 2D Navier-Stokes: Gronwall Stability, Uniqueness, and Well-Posedness"
+    },
+    {
+      "targetId": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "Related formalization: Navier-Stokes Existence and Smoothness"
+    }
   ]
 }

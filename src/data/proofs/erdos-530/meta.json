@@ -112,5 +112,29 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-963",
+    "erdos-10",
+    "erdos-53",
+    "erdos-477",
+    "erdos-690"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-963",
+      "relationship": "related",
+      "description": "Related formalization: Dissociated Subsets"
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related formalization: Sums of a Prime and Powers of 2"
+    },
+    {
+      "targetId": "erdos-53",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #53: Sums and Products of Distinct Elements"
+    }
+  ]
 }

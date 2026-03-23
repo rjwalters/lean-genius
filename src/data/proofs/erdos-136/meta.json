@@ -146,5 +146,29 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-556",
+    "erdos-924",
+    "erdos-191",
+    "erdos-1076",
+    "erdos-1090"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-556",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #556: 3-Color Ramsey Number for Cycles"
+    },
+    {
+      "targetId": "erdos-924",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #924: Folkman-Nešetřil-Rödl Theorem (Ramsey without Large Cliques)"
+    },
+    {
+      "targetId": "erdos-191",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #191: Monochromatic Sets with Large 1/log Sum"
+    }
+  ]
 }

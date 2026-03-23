@@ -111,5 +111,29 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-1016",
+    "erdos-916",
+    "erdos-1080",
+    "erdos-57",
+    "erdos-184"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1016",
+      "relationship": "related",
+      "description": "Related formalization: Pancyclic Excess Edges"
+    },
+    {
+      "targetId": "erdos-916",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #916: Graphs with Cycles and Triply Adjacent Vertices"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs"
+    }
+  ]
 }

@@ -190,5 +190,29 @@
     "axiomCount": 17,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-299",
+    "erdos-310",
+    "erdos-292",
+    "erdos-309",
+    "erdos-286"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-299",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #299: Bounded Gap Sequences and Unit Fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #310: Unit Fractions from Dense Subsets"
+    },
+    {
+      "targetId": "erdos-292",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #292: Egyptian Fractions Summing to 1"
+    }
+  ]
 }

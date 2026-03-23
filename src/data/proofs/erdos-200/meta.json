@@ -166,5 +166,29 @@
     "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-141",
+    "erdos-971",
+    "erdos-779",
+    "erdos-9",
+    "erdos-160"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #141: Consecutive Primes in Arithmetic Progression"
+    },
+    {
+      "targetId": "erdos-971",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #971: Distribution of Least Primes in Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #779: Primorial Plus Prime"
+    }
+  ]
 }

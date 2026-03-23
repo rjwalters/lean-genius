@@ -166,5 +166,29 @@
     "axiomCount": 13,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-435",
+    "erdos-434",
+    "erdos-844",
+    "erdos-848",
+    "erdos-466"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-435",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #435: Binomial Coefficient Representation"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #434: Extremal Frobenius Problem"
+    },
+    {
+      "targetId": "erdos-844",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #844: Maximum Set with Non-Squarefree Products"
+    }
+  ]
 }

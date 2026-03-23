@@ -177,5 +177,29 @@
     "axiomCount": 13,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-727",
+    "erdos-238",
+    "erdos-680",
+    "erdos-4",
+    "erdos-234"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-727",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #727: Factorial Divisibility"
+    },
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #238: Consecutive Primes with Large Gaps"
+    },
+    {
+      "targetId": "erdos-680",
+      "relationship": "related",
+      "description": "Related formalization: Least Prime Factor Exceeding k² + 1"
+    }
+  ]
 }

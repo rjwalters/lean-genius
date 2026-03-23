@@ -160,5 +160,29 @@
     "axiomCount": 2,
     "theoremCount": 21,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-708",
+    "erdos-889",
+    "erdos-388",
+    "erdos-430",
+    "erdos-369"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-889",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #889: New Prime Factors in Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-388",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #388: Products of Consecutive Integers"
+    }
+  ]
 }

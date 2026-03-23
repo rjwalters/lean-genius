@@ -138,5 +138,29 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-1069",
+    "erdos-733",
+    "erdos-95",
+    "erdos-605",
+    "erdos-1086"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1069",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1069: Szemerédi-Trotter Theorem on k-Rich Lines"
+    },
+    {
+      "targetId": "erdos-733",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #733: Line-Compatible Sequences"
+    },
+    {
+      "targetId": "erdos-95",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #95: Sum of Squared Distance Multiplicities"
+    }
+  ]
 }

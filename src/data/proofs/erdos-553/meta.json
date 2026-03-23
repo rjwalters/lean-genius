@@ -151,5 +151,29 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 14
-  }
+  },
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-924",
+    "erdos-778",
+    "erdos-136",
+    "erdos-191"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1014: Ramsey Number Ratio Convergence"
+    },
+    {
+      "targetId": "erdos-924",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #924: Folkman-Nešetřil-Rödl Theorem (Ramsey without Large Cliques)"
+    },
+    {
+      "targetId": "erdos-778",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #778: Clique-Building Games on Complete Graphs"
+    }
+  ]
 }

@@ -149,5 +149,29 @@
     "axiomCount": 10,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-309",
+    "erdos-286",
+    "erdos-784",
+    "erdos-315",
+    "erdos-296"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #309: Integers as Sums of Distinct Unit Fractions"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #286: Unit Fractions in Short Intervals"
+    },
+    {
+      "targetId": "erdos-784",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #784: Sieving Sets with Bounded Reciprocal Sums"
+    }
+  ]
 }

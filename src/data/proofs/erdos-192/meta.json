@@ -130,5 +130,29 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-188",
+    "erdos-176",
+    "erdos-279",
+    "erdos-198",
+    "erdos-984"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-188",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #188: Unit Distance Colorings and Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-279",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #279: Covering with Shifted Prime Progressions"
+    }
+  ]
 }

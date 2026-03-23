@@ -143,5 +143,29 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 19
-  }
+  },
+  "relatedProofs": [
+    "erdos-260",
+    "erdos-264",
+    "erdos-265",
+    "erdos-1144",
+    "erdos-997"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-260",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #260: Irrationality of Sparse Sequence Series"
+    },
+    {
+      "targetId": "erdos-264",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #264: Irrationality Sequences"
+    },
+    {
+      "targetId": "erdos-265",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #265: Growth Rates of Sequences with Rational Sums"
+    }
+  ]
 }

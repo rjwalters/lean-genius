@@ -159,5 +159,29 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-774",
+    "erdos-865",
+    "erdos-160",
+    "erdos-829",
+    "erdos-432"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-774",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #774: Dissociated and Proportionately Dissociated Sets"
+    },
+    {
+      "targetId": "erdos-865",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #865: Pairwise Sums in Dense Sets"
+    },
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #160: Rainbow-Free Colorings of Arithmetic Progressions"
+    }
+  ]
 }

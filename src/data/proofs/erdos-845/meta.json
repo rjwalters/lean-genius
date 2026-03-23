@@ -148,5 +148,29 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1110",
+    "erdos-157",
+    "erdos-9",
+    "erdos-334",
+    "erdos-940"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1110: Representability by Sums of p^k q^l"
+    },
+    {
+      "targetId": "erdos-157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    }
+  ]
 }

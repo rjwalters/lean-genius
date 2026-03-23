@@ -173,5 +173,29 @@
       "venue": "Mémoires des Savants étrangers présentés à l'Académie de Saint-Pétersbourg",
       "note": "Introduced T_n and U_n polynomials, capturing the multiple-angle structure"
     }
+  ],
+  "relatedProofs": [
+    "de-moivre-oq-02",
+    "descartes-rule-of-signs-oq-01",
+    "lebesgue-measure-oq-01",
+    "borsuk-ulam-oq-03",
+    "cayley-hamilton-minpoly-oq-02"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Chebyshev Polynomial Properties via De Moivre's Theorem"
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Descartes' Rule of Signs: Parity Result and Exact Count (Open Question)"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Dirichlet Function Integral via Almost Everywhere Zero"
+    }
   ]
 }

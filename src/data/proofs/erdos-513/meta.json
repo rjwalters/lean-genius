@@ -30,7 +30,23 @@
     ],
     "relatedProofs": []
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "erdos-227",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #227: Maximum Term vs Maximum Modulus"
+    },
+    {
+      "targetId": "erdos-1117",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1117: Maximum Modulus Points on Circles"
+    },
+    {
+      "targetId": "erdos-906",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #906: Dense Zeros of Derivative Subsequences"
+    }
+  ],
   "overview": {
     "historicalContext": "Erdős (1961) asked for the greatest possible value of $\\liminf_{r\\to\\infty} \\mu(r)/M(r)$ over all transcendental entire functions, where $\\mu(r) = \\max_n |a_n|r^n$ is the **maximum term** and $M(r) = \\max_{|z|=r}|f(z)|$ the **maximum modulus**. The problem sits at the heart of **Wiman–Valiron theory**, which systematically relates the dominant term to global growth.\n\nThe trivial bound $\\mu(r) \\leq M(r)$ (the maximum term never exceeds the maximum modulus) means the ratio always lies in $[0,1]$. For many standard functions (like $e^z$), the dominant term captures most of the maximum modulus as $r \\to \\infty$, giving $\\liminf \\mu(r)/M(r) = 1$. The question is how small this ratio can be forced to be.\n\nKövári (unpublished) showed via lacunary series constructions that the supremum exceeds $1/2$. Clunie and Hayman (1964, *J. Analyse Math.*) proved the sharp upper bound: the supremum is strictly less than $2/\\pi \\approx 0.6366$, where $2/\\pi$ arises as $\\frac{1}{\\pi}\\int_0^\\pi |\\cos\\theta|\\,d\\theta$ — the average value of $|\\cos\\theta|$. Gray and Shah (1963) provided additional intermediate bounds. The exact value in $(1/2, 2/\\pi)$ remains one of the outstanding open problems in classical complex analysis.",
     "problemStatement": "Determine $\\sup_f \\liminf_{r\\to\\infty} \\frac{\\mu(r)}{M(r)}$ over all transcendental entire functions $f(z) = \\sum a_n z^n$, where $\\mu(r) = \\max_n |a_n|r^n$ and $M(r) = \\max_{|z|=r}|f(z)|$.",
@@ -120,5 +136,12 @@
       "citation": "Clunie, J. and Hayman, W.K., The maximum term of a power series, J. Analyse Math. 12 (1964), 143–186. Upper bound 2/π - c.",
       "type": "paper"
     }
+  ],
+  "relatedProofs": [
+    "erdos-227",
+    "erdos-1117",
+    "erdos-906",
+    "erdos-1118",
+    "erdos-226"
   ]
 }

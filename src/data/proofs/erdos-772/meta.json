@@ -169,5 +169,29 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-757",
+    "erdos-185",
+    "erdos-340-greedy-sidon",
+    "erdos-153",
+    "erdos-748"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #757: Sidon Sets in Almost-Sidon Families"
+    },
+    {
+      "targetId": "erdos-185",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #185: Cap Sets in {0,1,2}^n"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Related formalization: Greedy Sidon Sequence Infrastructure (Erdos Problem #340)"
+    }
+  ]
 }

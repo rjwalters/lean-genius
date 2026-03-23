@@ -184,5 +184,29 @@
       "citation": "Erdős Problems, Problem #706, https://erdosproblems.com/706",
       "type": "website"
     }
+  ],
+  "relatedProofs": [
+    "erdos-130",
+    "erdos-920",
+    "erdos-75",
+    "erdos-1092",
+    "erdos-508"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-130",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #130: Integer Distance Graphs in General Position"
+    },
+    {
+      "targetId": "erdos-920",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #920: Chromatic Numbers of K_k-Free Graphs"
+    },
+    {
+      "targetId": "erdos-75",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #75: Uncountable Chromatic Number and Large Independent Sets"
+    }
   ]
 }

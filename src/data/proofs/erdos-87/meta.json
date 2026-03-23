@@ -127,5 +127,29 @@
     "axiomCount": 10,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-549",
+    "erdos-1037",
+    "erdos-641",
+    "erdos-613",
+    "erdos-110"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-549",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #549: Ramsey Numbers for Bipartite Trees"
+    },
+    {
+      "targetId": "erdos-1037",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1037: Degree Diversity and Ramsey Properties"
+    },
+    {
+      "targetId": "erdos-641",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #641: Edge-Disjoint Cycles on Same Vertex Set"
+    }
+  ]
 }

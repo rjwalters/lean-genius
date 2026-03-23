@@ -135,5 +135,29 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-833",
+    "erdos-927",
+    "erdos-804",
+    "erdos-615",
+    "erdos-616"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-833",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs"
+    },
+    {
+      "targetId": "erdos-927",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #927: Distinct Clique Sizes in Graphs"
+    },
+    {
+      "targetId": "erdos-804",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #804: Independent Sets in Locally Independent Graphs"
+    }
+  ]
 }

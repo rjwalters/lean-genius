@@ -176,5 +176,29 @@
     "axiomCount": 10,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-57",
+    "erdos-617",
+    "erdos-552",
+    "erdos-924"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number"
+    },
+    {
+      "targetId": "erdos-617",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #617: Balanced Colourings of Complete Graphs"
+    }
+  ]
 }

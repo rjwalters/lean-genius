@@ -148,5 +148,29 @@
       "venue": "Monographies de L'Enseignement Mathématique 28, Université de Genève",
       "note": "Comprehensive collection including the LCM triple conjecture and related problems"
     }
+  ],
+  "relatedProofs": [
+    "erdos-487",
+    "erdos-310",
+    "erdos-711",
+    "erdos-865",
+    "erdos-434"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-487",
+      "relationship": "related",
+      "description": "Related formalization: LCM Triples in Dense Sets"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #310: Unit Fractions from Dense Subsets"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    }
   ]
 }

@@ -185,5 +185,29 @@
     "axiomCount": 11,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-790",
+    "erdos-20",
+    "erdos-535",
+    "erdos-743",
+    "erdos-1088"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-790",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #790: Maximum Sum-Free Subsequences"
+    },
+    {
+      "targetId": "erdos-20",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #20: The Sunflower Conjecture"
+    },
+    {
+      "targetId": "erdos-535",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #535: GCD-Free r-Subsets"
+    }
+  ]
 }

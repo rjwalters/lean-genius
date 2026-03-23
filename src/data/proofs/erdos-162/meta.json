@@ -120,5 +120,29 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-176",
+    "erdos-1090",
+    "erdos-172",
+    "erdos-564",
+    "erdos-617"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-172",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #172: Monochromatic Sums and Products"
+    }
+  ]
 }

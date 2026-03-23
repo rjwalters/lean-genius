@@ -143,5 +143,29 @@
     "axiomCount": 1,
     "theoremCount": 44,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-288",
+    "erdos-295",
+    "erdos-287",
+    "erdos-317",
+    "erdos-1057"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-288",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #288: Integer Harmonic Sums Over Interval Pairs"
+    },
+    {
+      "targetId": "erdos-295",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #295: Egyptian Fractions with Large Denominators"
+    },
+    {
+      "targetId": "erdos-287",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #287: Gap in Egyptian Fraction Representations of 1"
+    }
+  ]
 }

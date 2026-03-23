@@ -172,5 +172,29 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-779",
+    "erdos-9",
+    "erdos-473",
+    "erdos-244",
+    "erdos-200"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #779: Primorial Plus Prime"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    },
+    {
+      "targetId": "erdos-473",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #473: Prime Sum Permutations"
+    }
+  ]
 }

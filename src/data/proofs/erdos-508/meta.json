@@ -155,5 +155,29 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "erdos-171",
+    "erdos-704",
+    "erdos-214",
+    "erdos-90",
+    "erdos-762"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-171",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #171: Unit Distance Chromatic Number"
+    },
+    {
+      "targetId": "erdos-704",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #704: Chromatic Number of Unit Distance Graphs"
+    },
+    {
+      "targetId": "erdos-214",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #214: Unit Distance Free Sets and Unit Squares"
+    }
+  ]
 }

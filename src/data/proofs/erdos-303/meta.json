@@ -141,5 +141,29 @@
     "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-46",
+    "erdos-948",
+    "erdos-439",
+    "erdos-55",
+    "erdos-532"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-46",
+      "relationship": "related",
+      "description": "Related formalization: Monochromatic Unit Fraction Representations"
+    },
+    {
+      "targetId": "erdos-948",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #948: Subset Sums and Colorings"
+    },
+    {
+      "targetId": "erdos-439",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #439: Monochromatic Solutions to x + y = z²"
+    }
+  ]
 }

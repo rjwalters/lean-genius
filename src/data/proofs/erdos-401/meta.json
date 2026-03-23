@@ -187,5 +187,29 @@
     "axiomCount": 3,
     "theoremCount": 20,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-1147",
+    "erdos-779",
+    "erdos-891",
+    "erdos-309",
+    "erdos-962"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1147",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1147: Additive Basis from Diophantine Approximation"
+    },
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #779: Primorial Plus Prime"
+    },
+    {
+      "targetId": "erdos-891",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #891: Prime Factors in Short Intervals"
+    }
+  ]
 }

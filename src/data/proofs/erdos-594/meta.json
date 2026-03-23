@@ -156,5 +156,29 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-737",
+    "erdos-740",
+    "erdos-58",
+    "erdos-57",
+    "erdos-736"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-737",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #737: Edge in All Large Cycles"
+    },
+    {
+      "targetId": "erdos-740",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #740: Chromatic Number and Odd Cycle Avoidance"
+    },
+    {
+      "targetId": "erdos-58",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #58: Chromatic Number vs Odd Cycle Lengths"
+    }
+  ]
 }

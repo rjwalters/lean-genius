@@ -85,5 +85,29 @@
     "Erdős–Graham (1980), p.93",
     "OEIS A006036",
     "https://erdosproblems.com/469"
+  ],
+  "relatedProofs": [
+    "erdos-412",
+    "erdos-884",
+    "erdos-313",
+    "erdos-893",
+    "erdos-1144"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-412",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #412: Iterated Sum of Divisors Convergence"
+    },
+    {
+      "targetId": "erdos-884",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #884: Divisor Gap Sums"
+    },
+    {
+      "targetId": "erdos-313",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #313: Primary Pseudoperfect Numbers"
+    }
   ]
 }

@@ -144,5 +144,29 @@
     "axiomCount": 3,
     "theoremCount": 22,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-839",
+    "erdos-342",
+    "erdos-1109",
+    "erdos-954",
+    "erdos-881"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums"
+    },
+    {
+      "targetId": "erdos-342",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #342: The Ulam Sequence U(1,2)"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1109: Squarefree Sumsets"
+    }
+  ]
 }

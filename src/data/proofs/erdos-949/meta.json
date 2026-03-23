@@ -134,5 +134,29 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-788",
+    "erdos-1167",
+    "erdos-792",
+    "erdos-748",
+    "erdos-867"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-788",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #788: Sum-Free Subsets in Intervals"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    },
+    {
+      "targetId": "erdos-792",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #792: Sum-Free Subsets"
+    }
+  ]
 }

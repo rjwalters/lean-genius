@@ -194,5 +194,29 @@
       "venue": "Lausanne",
       "note": "Euler product formula ζ(2) = π²/6 and the coprime probability 6/π² = ∏_p(1-1/p²)"
     }
+  ],
+  "relatedProofs": [
+    "erdos-970",
+    "erdos-460",
+    "erdos-937",
+    "erdos-432",
+    "erdos-1100"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-970",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #970: Jacobsthal's Function"
+    },
+    {
+      "targetId": "erdos-460",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #460: Greedy Coprime Sieve Reciprocals"
+    },
+    {
+      "targetId": "erdos-937",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #937: Arithmetic Progressions of Coprime Powerful Numbers"
+    }
   ]
 }

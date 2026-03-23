@@ -166,5 +166,29 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-722",
+    "erdos-780",
+    "erdos-1076",
+    "erdos-498",
+    "erdos-1090"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-722",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #722: Existence of Steiner Systems"
+    },
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #780: Chromatic Number of Kneser Hypergraphs"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1076: Extremal Numbers for 3-Uniform Hypergraphs"
+    }
+  ]
 }

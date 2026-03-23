@@ -137,5 +137,22 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-775",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #775: Clique Sizes in 3-Uniform Hypergraphs"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #166: Ramsey Number R(4,k) Lower Bound"
+    },
+    {
+      "targetId": "erdos-79",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #79: Minimally Non-Ramsey-Size-Linear Graphs"
+    }
+  ]
 }

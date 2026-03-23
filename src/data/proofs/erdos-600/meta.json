@@ -163,5 +163,29 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-533",
+    "erdos-1075",
+    "erdos-743",
+    "erdos-1088",
+    "erdos-603"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1075: Dense Subgraphs in r-Uniform Hypergraphs"
+    },
+    {
+      "targetId": "erdos-743",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #743: Tree Packing Conjecture"
+    }
+  ]
 }

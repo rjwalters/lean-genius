@@ -162,5 +162,29 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-711",
+    "erdos-131",
+    "erdos-394",
+    "erdos-728",
+    "erdos-387"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #131: Non-Dividing Sets"
+    },
+    {
+      "targetId": "erdos-394",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #394: Divisibility by Consecutive Integer Products"
+    }
+  ]
 }

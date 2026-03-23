@@ -149,5 +149,29 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-159",
+    "erdos-554",
+    "erdos-620",
+    "erdos-180",
+    "erdos-82"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-159",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #159: Ramsey Numbers for C₄ and Complete Graphs"
+    },
+    {
+      "targetId": "erdos-554",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #554: Odd Cycle vs Triangle Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #620: The Erdős-Rogers Problem"
+    }
+  ]
 }

@@ -119,5 +119,29 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-653",
+    "erdos-660",
+    "erdos-1089",
+    "erdos-93",
+    "erdos-102"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    },
+    {
+      "targetId": "erdos-660",
+      "relationship": "related",
+      "description": "Related formalization: Distinct Distances in Convex Polyhedra"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1089: Distinct Distances in Higher Dimensions"
+    }
+  ]
 }

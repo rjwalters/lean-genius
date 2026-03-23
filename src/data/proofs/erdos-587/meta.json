@@ -120,5 +120,29 @@
     "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-438",
+    "erdos-1103",
+    "erdos-1109",
+    "erdos-337",
+    "erdos-432"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-438",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #438: Square-Free Sumsets"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related formalization: Squarefree Sumsets"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1109: Squarefree Sumsets"
+    }
+  ]
 }

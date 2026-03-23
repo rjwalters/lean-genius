@@ -150,5 +150,29 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-944",
+    "erdos-744",
+    "erdos-1032",
+    "erdos-572"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1011: Triangles in Graphs with High Chromatic Number"
+    },
+    {
+      "targetId": "erdos-944",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #944: Critical Graphs Without Critical Edges"
+    },
+    {
+      "targetId": "erdos-744",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #744: Critical Graphs and Bipartition"
+    }
+  ]
 }

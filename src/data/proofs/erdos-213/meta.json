@@ -128,5 +128,29 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-1166",
+    "erdos-831",
+    "erdos-798",
+    "erdos-94"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    },
+    {
+      "targetId": "erdos-831",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #831: Distinct Radii Circles Through Point Configurations"
+    }
+  ]
 }

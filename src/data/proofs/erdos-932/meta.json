@@ -135,5 +135,29 @@
     "axiomCount": 12,
     "theoremCount": 8,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-1055",
+    "erdos-682",
+    "erdos-218",
+    "erdos-457",
+    "erdos-269"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1055: Prime Classification by p+1 Factorization"
+    },
+    {
+      "targetId": "erdos-682",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #682: Rough Numbers Between Consecutive Primes"
+    },
+    {
+      "targetId": "erdos-218",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #218: Prime Gap Densities"
+    }
+  ]
 }

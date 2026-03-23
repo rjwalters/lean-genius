@@ -164,5 +164,29 @@
     "axiomCount": 16,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-848",
+    "erdos-534",
+    "erdos-433",
+    "erdos-466",
+    "erdos-378"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-848",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #848: Squarefree Products and Extremal Sets"
+    },
+    {
+      "targetId": "erdos-534",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #534: Maximum GCD-Intersecting Sets"
+    },
+    {
+      "targetId": "erdos-433",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #433: Maximum Frobenius Numbers"
+    }
+  ]
 }

@@ -169,5 +169,29 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-465",
+    "erdos-57",
+    "erdos-780",
+    "erdos-58",
+    "erdos-835"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-465",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #465: Points with Distances Avoiding Integers"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number"
+    },
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #780: Chromatic Number of Kneser Hypergraphs"
+    }
+  ]
 }

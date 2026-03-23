@@ -188,5 +188,29 @@
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-565",
+    "erdos-927",
+    "erdos-622",
+    "erdos-833",
+    "erdos-608"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #565: Induced Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-927",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #927: Distinct Clique Sizes in Graphs"
+    },
+    {
+      "targetId": "erdos-622",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #622: Cycle-Spanning Subsets in Regular Graphs"
+    }
+  ]
 }

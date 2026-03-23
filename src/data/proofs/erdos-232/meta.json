@@ -198,5 +198,29 @@
     "axiomCount": 9,
     "theoremCount": 11,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-1066",
+    "erdos-953",
+    "erdos-157",
+    "erdos-906",
+    "erdos-333"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1066: Independence Number of Unit Distance Graphs"
+    },
+    {
+      "targetId": "erdos-953",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #953: Avoiding Integer Distances in the Plane"
+    },
+    {
+      "targetId": "erdos-157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis"
+    }
+  ]
 }

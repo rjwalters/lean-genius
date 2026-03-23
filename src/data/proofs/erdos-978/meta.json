@@ -156,5 +156,29 @@
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-976",
+    "erdos-975",
+    "erdos-283",
+    "erdos-351",
+    "erdos-489"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #976: Greatest Prime Divisor of Polynomial Products"
+    },
+    {
+      "targetId": "erdos-975",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #975: Divisor Sums over Polynomial Values"
+    },
+    {
+      "targetId": "erdos-283",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #283: Egyptian Fractions and Polynomial Values"
+    }
+  ]
 }

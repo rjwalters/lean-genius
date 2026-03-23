@@ -188,5 +188,29 @@
     "axiomCount": 3,
     "theoremCount": 45,
     "definitionCount": 15
-  }
+  },
+  "relatedProofs": [
+    "erdos-564",
+    "erdos-176",
+    "erdos-834",
+    "erdos-757",
+    "erdos-434"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-564",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #564: Hypergraph Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-834",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #834: 3-Critical 3-Uniform Hypergraphs"
+    }
+  ]
 }

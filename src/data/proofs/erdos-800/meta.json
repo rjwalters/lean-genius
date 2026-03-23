@@ -179,5 +179,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-163",
+    "erdos-77",
+    "erdos-78",
+    "erdos-165",
+    "erdos-1029"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-163",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #163: The Burr-Erdős Conjecture"
+    },
+    {
+      "targetId": "erdos-77",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #77: Ramsey Number Growth Rate"
+    },
+    {
+      "targetId": "erdos-78",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #78: Constructive Ramsey Lower Bound"
+    }
+  ]
 }

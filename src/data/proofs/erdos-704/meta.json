@@ -159,5 +159,29 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-508",
+    "erdos-171",
+    "erdos-705",
+    "erdos-762",
+    "erdos-842"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Related formalization: The Hadwiger-Nelson Problem"
+    },
+    {
+      "targetId": "erdos-171",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #171: Unit Distance Chromatic Number"
+    },
+    {
+      "targetId": "erdos-705",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #705: Unit Distance Graphs with Large Girth"
+    }
+  ]
 }

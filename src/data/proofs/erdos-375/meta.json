@@ -168,5 +168,29 @@
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-385",
+    "erdos-276",
+    "erdos-1055",
+    "erdos-852",
+    "erdos-5"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-385",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #385: Composite Numbers and Least Prime Divisors"
+    },
+    {
+      "targetId": "erdos-276",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #276: Composite Lucas Sequence Without Common Factor"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1055: Prime Classification by p+1 Factorization"
+    }
+  ]
 }

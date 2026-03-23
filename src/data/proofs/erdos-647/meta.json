@@ -138,5 +138,29 @@
     "axiomCount": 1,
     "theoremCount": 25,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-824",
+    "erdos-1049",
+    "erdos-826",
+    "erdos-1057",
+    "erdos-288"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-824",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors"
+    },
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1049: Irrationality of Divisor Sums"
+    },
+    {
+      "targetId": "erdos-826",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #826: Divisor Function Growth Along Shifts"
+    }
+  ]
 }

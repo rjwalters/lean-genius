@@ -166,5 +166,29 @@
     "axiomCount": 10,
     "theoremCount": 9,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-238",
+    "erdos-680",
+    "erdos-382",
+    "erdos-950",
+    "erdos-428"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #238: Consecutive Primes with Large Gaps"
+    },
+    {
+      "targetId": "erdos-680",
+      "relationship": "related",
+      "description": "Related formalization: Least Prime Factor Exceeding k² + 1"
+    },
+    {
+      "targetId": "erdos-382",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #382: Prime Powers in Factorial Products"
+    }
+  ]
 }

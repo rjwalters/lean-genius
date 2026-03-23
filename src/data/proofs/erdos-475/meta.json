@@ -209,5 +209,29 @@
       "year": 1970,
       "journal": "Journal of the London Mathematical Society"
     }
+  ],
+  "relatedProofs": [
+    "erdos-839",
+    "erdos-342",
+    "erdos-123",
+    "erdos-483",
+    "erdos-476"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums"
+    },
+    {
+      "targetId": "erdos-342",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #342: The Ulam Sequence U(1,2)"
+    },
+    {
+      "targetId": "erdos-123",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #123: d-Complete Sequences"
+    }
   ]
 }

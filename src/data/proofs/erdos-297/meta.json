@@ -187,5 +187,29 @@
     "axiomCount": 14,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-45",
+    "erdos-310",
+    "erdos-286",
+    "erdos-296",
+    "erdos-315"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-45",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #45: Monochromatic Egyptian Fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #310: Unit Fractions from Dense Subsets"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #286: Unit Fractions in Short Intervals"
+    }
+  ]
 }

@@ -168,5 +168,29 @@
     "axiomCount": 14,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-751",
+    "erdos-65",
+    "erdos-72",
+    "erdos-84",
+    "erdos-622"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-751",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #751: Cycle Lengths in 4-Chromatic Graphs"
+    },
+    {
+      "targetId": "erdos-65",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #65: Cycle Lengths in Dense Graphs"
+    },
+    {
+      "targetId": "erdos-72",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #72: Unavoidable Cycle Lengths"
+    }
+  ]
 }

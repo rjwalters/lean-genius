@@ -173,5 +173,29 @@
       "venue": "Wiley",
       "note": "Classical treatment of Chebyshev polynomial identities"
     }
+  ],
+  "relatedProofs": [
+    "de-moivre-oq-01",
+    "lebesgue-measure-oq-01",
+    "borsuk-ulam-oq-03",
+    "de-moivre-oq-03",
+    "descartes-rule-of-signs-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Explicit Multiple Angle Formulas from De Moivre's Theorem"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Dirichlet Function Integral via Almost Everywhere Zero"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Constructive Borsuk-Ulam Theorem and Equivalences"
+    }
   ]
 }

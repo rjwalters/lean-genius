@@ -165,5 +165,29 @@
       "venue": "Springer GTM 5, 2nd edition",
       "note": "Standard reference for categorical identities and coherence theorems"
     }
+  ],
+  "relatedProofs": [
+    "continuum-hypothesis-oq-01",
+    "mathematical-induction",
+    "continuum-hypothesis",
+    "godel-incompleteness",
+    "cantors-theorem-oq-02"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "continuum-hypothesis-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Should We Adopt Axioms That Decide CH?"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "related",
+      "description": "Related formalization: The Principle of Mathematical Induction"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Related formalization: Independence of the Continuum Hypothesis"
+    }
   ]
 }

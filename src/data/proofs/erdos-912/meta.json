@@ -175,5 +175,29 @@
       "venue": "Acta Arith. 2, 23-46",
       "note": "Random model for primes underlying Tao's heuristic"
     }
+  ],
+  "relatedProofs": [
+    "erdos-430",
+    "erdos-137",
+    "erdos-939",
+    "erdos-930",
+    "erdos-878"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-430",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #430: Composite Numbers in Greedy Large-Factor Sequences"
+    },
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #137: Powerful Products of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-939",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #939: r-Powerful Numbers and Sums"
+    }
   ]
 }

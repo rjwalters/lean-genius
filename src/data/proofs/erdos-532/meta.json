@@ -168,5 +168,29 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-843",
+    "erdos-45",
+    "erdos-439",
+    "erdos-1090",
+    "erdos-531"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-843",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #843: Are the Squares Ramsey 2-Complete?"
+    },
+    {
+      "targetId": "erdos-45",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #45: Monochromatic Egyptian Fractions"
+    },
+    {
+      "targetId": "erdos-439",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #439: Monochromatic Solutions to x + y = z²"
+    }
+  ]
 }

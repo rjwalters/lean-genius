@@ -134,5 +134,29 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-132",
+    "erdos-503",
+    "erdos-657",
+    "erdos-953",
+    "erdos-662"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-132",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #132: Distance Multiplicities in Planar Point Sets"
+    },
+    {
+      "targetId": "erdos-503",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #503: Maximum Isosceles Sets in Rⁿ"
+    },
+    {
+      "targetId": "erdos-657",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances"
+    }
+  ]
 }

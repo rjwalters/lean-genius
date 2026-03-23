@@ -178,5 +178,29 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-286",
+    "erdos-299",
+    "erdos-296",
+    "erdos-297",
+    "erdos-45"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #286: Unit Fractions in Short Intervals"
+    },
+    {
+      "targetId": "erdos-299",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #299: Bounded Gap Sequences and Unit Fractions"
+    },
+    {
+      "targetId": "erdos-296",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #296: Disjoint Unit Fraction Partitions"
+    }
+  ]
 }

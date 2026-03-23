@@ -177,5 +177,29 @@
       "venue": "Acta Societatis Scientiarum Fennicae",
       "note": "Inner product space formulation with equality condition"
     }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-integral-oq-03",
+    "cauchy-schwarz-oq-03",
+    "area-of-circle-oq-03",
+    "amgm-inequality-oq-03"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "extends",
+      "description": "Related formalization: Cauchy-Schwarz for Complex Inner Product Spaces"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Complex L2 Cauchy-Schwarz via Bridge Theorem"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Hölder's Inequality as Cauchy-Schwarz Generalization"
+    }
   ]
 }

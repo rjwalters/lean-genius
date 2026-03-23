@@ -163,5 +163,29 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-473",
+    "erdos-237",
+    "erdos-35",
+    "erdos-1136",
+    "erdos-54"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-473",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #473: Prime Sum Permutations"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #237: Prime Plus Set Representations"
+    },
+    {
+      "targetId": "erdos-35",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #35: Schnirelmann Density and Additive Bases"
+    }
+  ]
 }

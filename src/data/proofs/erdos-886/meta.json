@@ -185,5 +185,29 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-1054-oq-01",
+    "erdos-693",
+    "erdos-945",
+    "erdos-1054",
+    "erdos-830"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1054: f(n) = o(n) for Almost All n"
+    },
+    {
+      "targetId": "erdos-693",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #693: Divisor Gaps in Intervals"
+    },
+    {
+      "targetId": "erdos-945",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #945: Consecutive Integers with Distinct Divisor Counts"
+    }
+  ]
 }

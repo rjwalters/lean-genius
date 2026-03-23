@@ -122,5 +122,29 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-734",
+    "erdos-722",
+    "erdos-903",
+    "erdos-1159",
+    "erdos-743"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-734",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #734: Pairwise Balanced Block Designs with Bounded Frequencies"
+    },
+    {
+      "targetId": "erdos-722",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #722: Existence of Steiner Systems"
+    },
+    {
+      "targetId": "erdos-903",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #903: Block Designs and the de Bruijn-Erdős Gap"
+    }
+  ]
 }

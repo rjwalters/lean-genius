@@ -162,5 +162,29 @@
     "axiomCount": 6,
     "theoremCount": 17,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-478",
+    "erdos-445",
+    "erdos-273",
+    "erdos-1056",
+    "erdos-997"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-478",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #478: Factorial Residues Modulo Primes"
+    },
+    {
+      "targetId": "erdos-445",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #445: Multiplicative Inverses in Short Intervals"
+    },
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #273: Covering Systems with Prime-Minus-One Moduli"
+    }
+  ]
 }

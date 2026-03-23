@@ -154,5 +154,29 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-524",
+    "erdos-1144",
+    "erdos-1138",
+    "erdos-996",
+    "erdos-395"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-524",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #524: Maximum of Random Sign Polynomials"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1144: Partial Sums of Random Multiplicative Functions"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1138: Primes in Short Intervals and Maximal Gaps"
+    }
+  ]
 }

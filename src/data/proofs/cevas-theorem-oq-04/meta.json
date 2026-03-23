@@ -140,5 +140,29 @@
     "axiomCount": 0,
     "theoremCount": 22,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "cevas-theorem-oq-02-oq-01",
+    "cevas-theorem",
+    "cevas-theorem-oq-02",
+    "feuerbachs-theorem",
+    "morleys-theorem"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Ceva's Theorem: Spherical Ceva via Unit Vectors and Weight Balance"
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "extends",
+      "description": "Related formalization: Ceva's Theorem"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Ceva's Theorem: Non-Euclidean Geometries, Menelaus Duality, and Gauss-Bonnet"
+    }
+  ]
 }

@@ -146,5 +146,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-92",
+    "erdos-85",
+    "erdos-93",
+    "erdos-98",
+    "erdos-604"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-92",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #92: Equidistant Points in the Plane"
+    },
+    {
+      "targetId": "erdos-85",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #85: Minimum Degree for 4-Cycles"
+    },
+    {
+      "targetId": "erdos-93",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #93: Distinct Distances in Convex Polygons"
+    }
+  ]
 }

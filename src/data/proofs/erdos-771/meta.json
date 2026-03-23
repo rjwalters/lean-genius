@@ -196,5 +196,29 @@
     "axiomCount": 6,
     "theoremCount": 11,
     "definitionCount": 16
-  }
+  },
+  "relatedProofs": [
+    "erdos-473",
+    "erdos-237",
+    "erdos-874",
+    "erdos-779",
+    "erdos-9"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-473",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #473: Prime Sum Permutations"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #237: Prime Plus Set Representations"
+    },
+    {
+      "targetId": "erdos-874",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #874: Admissible Sets and Subset Sum Disjointness"
+    }
+  ]
 }

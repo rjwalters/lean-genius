@@ -191,5 +191,29 @@
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "Theorem #88: Derangements Formula (extended by this convergence rate result)"
     }
+  ],
+  "relatedProofs": [
+    "derangements-oq-02",
+    "amgm-inequality-oq-03",
+    "basel-problem-oq-01",
+    "amgm-inequality-oq-02",
+    "derangements-oq-02-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Partial Derangements: Permutations with Exactly k Fixed Points"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?"
+    },
+    {
+      "targetId": "basel-problem-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Is ζ(5) Irrational? (Open Question)"
+    }
   ]
 }

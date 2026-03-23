@@ -153,5 +153,29 @@
     "axiomCount": 18,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "buffons-needle-oq-02",
+    "buffons-needle",
+    "buffons-needle-oq-01",
+    "buffons-needle-oq-01-oq-01",
+    "buffons-needle-oq-02-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: 3D Buffon's Noodle: Parallel Planes Formula E = L/(2d)"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "Related formalization: Buffon's Needle Problem"
+    },
+    {
+      "targetId": "buffons-needle-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Buffon-Barbier for C¹ Curves: Smooth Noodle Theorem (Complete)"
+    }
+  ]
 }

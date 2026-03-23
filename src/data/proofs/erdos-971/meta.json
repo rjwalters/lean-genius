@@ -136,5 +136,29 @@
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-200",
+    "erdos-462",
+    "erdos-976",
+    "erdos-4",
+    "erdos-279"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #200: Longest Arithmetic Progression of Primes"
+    },
+    {
+      "targetId": "erdos-462",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #462: Least Prime Factor Sums in Short Intervals"
+    },
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #976: Greatest Prime Divisor of Polynomial Products"
+    }
+  ]
 }

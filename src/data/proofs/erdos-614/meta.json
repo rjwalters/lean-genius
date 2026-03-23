@@ -150,5 +150,29 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-82",
+    "erdos-620",
+    "erdos-600",
+    "erdos-1092",
+    "erdos-573"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-82",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #82: Regular Induced Subgraphs"
+    },
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #620: The Erdős-Rogers Problem"
+    },
+    {
+      "targetId": "erdos-600",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #600: Edge-Triangle Containment Thresholds"
+    }
+  ]
 }

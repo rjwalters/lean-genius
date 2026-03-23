@@ -199,5 +199,29 @@
     "axiomCount": 12,
     "theoremCount": 8,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-1055",
+    "erdos-961",
+    "erdos-240",
+    "erdos-370"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #4: Large Prime Gaps"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1055: Prime Classification by p+1 Factorization"
+    },
+    {
+      "targetId": "erdos-961",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #961: Smooth Numbers in Consecutive Intervals"
+    }
+  ]
 }

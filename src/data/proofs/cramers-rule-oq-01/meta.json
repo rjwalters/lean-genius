@@ -183,5 +183,29 @@
       "venue": "Academic Pensieve",
       "note": "The proof approach in Mathlib follows this reference"
     }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-minpoly-oq-02",
+    "cayley-hamilton-reduction-oq-01",
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-02-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Similar Matrices Have Identical Minimal Polynomials"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Efficient Cayley-Hamilton Reduction for Sparse Matrices"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "related",
+      "description": "Related formalization: Matrix Function Reduction via Cayley-Hamilton"
+    }
   ]
 }

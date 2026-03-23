@@ -158,5 +158,29 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-991",
+    "erdos-178",
+    "erdos-255",
+    "erdos-353",
+    "erdos-177"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-991",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #991: Discrepancy of Optimal Logarithmic Energy Points"
+    },
+    {
+      "targetId": "erdos-178",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #178: Balancing Infinite Collections of Integer Sequences"
+    },
+    {
+      "targetId": "erdos-255",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #255: Discrepancy of Sequences in [0,1]"
+    }
+  ]
 }

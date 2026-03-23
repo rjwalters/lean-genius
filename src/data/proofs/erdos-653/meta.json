@@ -187,5 +187,29 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-91",
+    "erdos-1087",
+    "erdos-1088",
+    "erdos-1089",
+    "erdos-507"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-91",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #91: Non-Uniqueness of Minimal Distance Sets"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1087: Degenerate Quadruples in Point Sets"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1088: Distinct Distance Subsets in High Dimensions"
+    }
+  ]
 }

@@ -117,5 +117,29 @@
     "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-711",
+    "erdos-131",
+    "erdos-400",
+    "erdos-1063",
+    "erdos-710"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #131: Non-Dividing Sets"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #400: Factorial Divisibility and Sum Excess"
+    }
+  ]
 }

@@ -185,5 +185,29 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-1167",
+    "erdos-70",
+    "erdos-597",
+    "erdos-1128",
+    "erdos-1169"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    },
+    {
+      "targetId": "erdos-70",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #70: Partition Calculus for the Continuum"
+    },
+    {
+      "targetId": "erdos-597",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #597: Partition Relations for Ordinal Powers"
+    }
+  ]
 }

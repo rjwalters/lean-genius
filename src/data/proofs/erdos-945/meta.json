@@ -136,5 +136,29 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-686",
+    "erdos-1054-oq-01",
+    "erdos-693",
+    "erdos-366",
+    "erdos-1054"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-686",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #686: Ratios of Products of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-1054-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1054: f(n) = o(n) for Almost All n"
+    },
+    {
+      "targetId": "erdos-693",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #693: Divisor Gaps in Intervals"
+    }
+  ]
 }

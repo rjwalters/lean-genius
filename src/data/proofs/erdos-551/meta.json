@@ -156,5 +156,29 @@
     "axiomCount": 0,
     "theoremCount": 26,
     "definitionCount": 14
-  }
+  },
+  "relatedProofs": [
+    "erdos-570",
+    "erdos-720",
+    "erdos-916",
+    "erdos-1080",
+    "erdos-547"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-570",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #570: Cycle-Graph Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-720",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #720: Size Ramsey Numbers of Paths and Cycles"
+    },
+    {
+      "targetId": "erdos-916",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #916: Graphs with Cycles and Triply Adjacent Vertices"
+    }
+  ]
 }

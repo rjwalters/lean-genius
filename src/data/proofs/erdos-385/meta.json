@@ -183,5 +183,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-276",
+    "erdos-375",
+    "erdos-691",
+    "erdos-852",
+    "erdos-976"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-276",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #276: Composite Lucas Sequence Without Common Factor"
+    },
+    {
+      "targetId": "erdos-375",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #375: Grimm's Conjecture on Consecutive Composites"
+    },
+    {
+      "targetId": "erdos-691",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #691: Behrend Sequences and Density of Multiples"
+    }
+  ]
 }

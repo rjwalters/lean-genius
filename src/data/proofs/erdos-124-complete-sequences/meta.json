@@ -144,5 +144,29 @@
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-728-factorial-divisibility",
+    "erdos-711",
+    "erdos-434",
+    "erdos-387",
+    "erdos-253"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #728: Factorial Divisibility"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #434: Extremal Frobenius Problem"
+    }
+  ]
 }

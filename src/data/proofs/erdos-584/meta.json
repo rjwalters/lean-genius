@@ -148,5 +148,29 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 18
-  }
+  },
+  "relatedProofs": [
+    "erdos-743",
+    "erdos-611",
+    "erdos-1157",
+    "erdos-916",
+    "erdos-1092"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-743",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #743: Tree Packing Conjecture"
+    },
+    {
+      "targetId": "erdos-611",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #611: Clique Transversal with Large Cliques"
+    },
+    {
+      "targetId": "erdos-1157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1157: General Extremal Numbers for r-Uniform Hypergraphs"
+    }
+  ]
 }

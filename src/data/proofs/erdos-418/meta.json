@@ -147,5 +147,29 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-411",
+    "erdos-249",
+    "erdos-220",
+    "erdos-48",
+    "erdos-408"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-411",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #411: Iterated Totient Sums and Doubling"
+    },
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #249: Irrationality of Totient Power Sum"
+    },
+    {
+      "targetId": "erdos-220",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #220: Squared Gaps Between Reduced Residues"
+    }
+  ]
 }

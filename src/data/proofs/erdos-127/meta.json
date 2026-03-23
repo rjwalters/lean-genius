@@ -111,5 +111,29 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-147",
+    "erdos-904",
+    "erdos-1092",
+    "erdos-766"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs"
+    },
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #147: Turán Numbers for Bipartite Graphs"
+    },
+    {
+      "targetId": "erdos-904",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #904: Triangles with High Degree Sum"
+    }
+  ]
 }

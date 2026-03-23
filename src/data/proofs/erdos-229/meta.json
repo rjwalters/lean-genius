@@ -137,5 +137,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-906",
+    "erdos-1118",
+    "erdos-226",
+    "erdos-1117",
+    "erdos-1116"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-906",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #906: Dense Zeros of Derivative Subsequences"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets"
+    },
+    {
+      "targetId": "erdos-226",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #226: Entire Functions Preserving Rationality"
+    }
+  ]
 }

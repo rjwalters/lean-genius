@@ -122,5 +122,29 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-847",
+    "erdos-774",
+    "erdos-42",
+    "erdos-333",
+    "erdos-757"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-847",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #847: AP-Free Subsets and Finite Unions"
+    },
+    {
+      "targetId": "erdos-774",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #774: Dissociated and Proportionately Dissociated Sets"
+    },
+    {
+      "targetId": "erdos-42",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #42: Sidon Sets with Disjoint Difference Sets"
+    }
+  ]
 }

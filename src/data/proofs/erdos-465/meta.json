@@ -180,5 +180,29 @@
     "axiomCount": 15,
     "theoremCount": 7,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-466",
+    "erdos-894",
+    "erdos-206",
+    "erdos-490",
+    "erdos-402"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #466: Points in a Circle with Fractional Distance Separation"
+    },
+    {
+      "targetId": "erdos-894",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #894: Chromatic Numbers of Lacunary Cayley Graphs"
+    },
+    {
+      "targetId": "erdos-206",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #206: Eventually Greedy Egyptian Fractions"
+    }
+  ]
 }

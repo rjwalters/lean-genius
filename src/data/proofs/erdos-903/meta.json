@@ -183,5 +183,29 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-664",
+    "erdos-665",
+    "erdos-1159",
+    "erdos-734",
+    "erdos-722"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-664",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #664: Blocking Sets with Bounded Intersection"
+    },
+    {
+      "targetId": "erdos-665",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #665: Pairwise Balanced Designs with Large Blocks"
+    },
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1159: Bounded Blocking Sets in Projective Planes"
+    }
+  ]
 }

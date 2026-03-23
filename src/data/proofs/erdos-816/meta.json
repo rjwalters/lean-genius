@@ -168,5 +168,29 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-1021",
+    "erdos-581",
+    "erdos-630",
+    "erdos-916",
+    "erdos-1079"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1021: Extremal Numbers for Bipartite Pair Graphs"
+    },
+    {
+      "targetId": "erdos-581",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs"
+    },
+    {
+      "targetId": "erdos-630",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #630: List Chromatic Number of Planar Bipartite Graphs"
+    }
+  ]
 }

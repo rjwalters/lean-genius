@@ -152,5 +152,29 @@
     "axiomCount": 17,
     "theoremCount": 8,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "erdos-205",
+    "erdos-105",
+    "erdos-632",
+    "erdos-331",
+    "erdos-641"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-205",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #205: 2^k + m with Few Prime Factors"
+    },
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #105: Lines Avoiding a Point Set"
+    },
+    {
+      "targetId": "erdos-632",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #632: The (a,b)-Choosability Scaling Conjecture"
+    }
+  ]
 }

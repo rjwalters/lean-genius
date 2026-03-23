@@ -169,5 +169,29 @@
     "axiomCount": 10,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-788",
+    "erdos-792",
+    "erdos-757",
+    "erdos-156",
+    "erdos-155"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-788",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #788: Sum-Free Subsets in Intervals"
+    },
+    {
+      "targetId": "erdos-792",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #792: Sum-Free Subsets"
+    },
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #757: Sidon Sets in Almost-Sidon Families"
+    }
+  ]
 }

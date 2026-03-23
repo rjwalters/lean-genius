@@ -125,5 +125,29 @@
     "axiomCount": 5,
     "theoremCount": 9,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-25",
+    "erdos-432",
+    "erdos-421",
+    "erdos-332",
+    "erdos-955"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-25",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #25: Logarithmic Density of Congruence-Sieved Sets"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    },
+    {
+      "targetId": "erdos-421",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #421: Distinct Products in Dense Sequences"
+    }
+  ]
 }

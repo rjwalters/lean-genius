@@ -166,5 +166,29 @@
     "axiomCount": 17,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-333",
+    "erdos-337",
+    "erdos-31",
+    "erdos-749",
+    "erdos-153"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #333: Sparse Sumset Bases"
+    },
+    {
+      "targetId": "erdos-337",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #337: Additive Bases and Sumset Growth"
+    },
+    {
+      "targetId": "erdos-31",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #31: Additive Complements"
+    }
+  ]
 }

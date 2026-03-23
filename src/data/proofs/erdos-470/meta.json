@@ -168,5 +168,29 @@
     "axiomCount": 17,
     "theoremCount": 3,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-252",
+    "erdos-1057",
+    "erdos-288",
+    "erdos-126",
+    "erdos-1095"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-252",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #252: Irrationality of Divisor Power Sums"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1057: Counting Carmichael Numbers"
+    },
+    {
+      "targetId": "erdos-288",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #288: Integer Harmonic Sums Over Interval Pairs"
+    }
+  ]
 }

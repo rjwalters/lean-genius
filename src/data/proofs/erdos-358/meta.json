@@ -157,5 +157,29 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-997",
+    "erdos-313",
+    "erdos-1141",
+    "erdos-683",
+    "erdos-985"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #997: Well-Distributed Sequences and Primes"
+    },
+    {
+      "targetId": "erdos-313",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #313: Primary Pseudoperfect Numbers"
+    },
+    {
+      "targetId": "erdos-1141",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1141: Coprime-Square Subtraction Primes"
+    }
+  ]
 }

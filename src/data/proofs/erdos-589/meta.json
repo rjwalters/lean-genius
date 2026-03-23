@@ -142,5 +142,29 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-1088",
+    "erdos-1070",
+    "erdos-756",
+    "erdos-735",
+    "erdos-94"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1088: Distinct Distance Subsets in High Dimensions"
+    },
+    {
+      "targetId": "erdos-1070",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1070: Independence Number of Unit Distance Graphs"
+    },
+    {
+      "targetId": "erdos-756",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #756: Rich Distances in the Plane"
+    }
+  ]
 }

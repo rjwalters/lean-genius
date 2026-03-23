@@ -162,5 +162,29 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-129",
+    "erdos-76",
+    "erdos-547",
+    "erdos-1014",
+    "erdos-613"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Related formalization: Ramsey Numbers Avoiding Monochromatic Cliques"
+    },
+    {
+      "targetId": "erdos-76",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #76: Monochromatic Triangle Packings"
+    },
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #547: Tree Ramsey Numbers"
+    }
+  ]
 }

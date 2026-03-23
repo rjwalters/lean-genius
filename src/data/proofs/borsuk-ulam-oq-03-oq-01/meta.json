@@ -195,5 +195,29 @@
       "venue": "Fundamenta Mathematicae",
       "note": "Original Borsuk-Ulam theorem"
     }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01-oq-01",
+    "borsuk-ulam-oq-02",
+    "euler-polyhedral-formula-oq-02"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Constructive 2D Borsuk-Ulam via Tucker's Lemma"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "extends",
+      "description": "Related formalization: Constructive Borsuk-Ulam Theorem and Equivalences"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Related formalization: Tucker 2D Lemma via Graph-Theoretic Path-Following"
+    }
   ]
 }

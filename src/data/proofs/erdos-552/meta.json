@@ -137,5 +137,29 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 16
-  }
+  },
+  "relatedProofs": [
+    "erdos-129",
+    "erdos-1014",
+    "erdos-166",
+    "erdos-986",
+    "erdos-1174"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Related formalization: Ramsey Numbers Avoiding Monochromatic Cliques"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1014: Ramsey Number Ratio Convergence"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #166: Ramsey Number R(4,k) Lower Bound"
+    }
+  ]
 }

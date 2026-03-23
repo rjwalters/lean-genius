@@ -147,5 +147,29 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-857",
+    "erdos-743",
+    "erdos-1088",
+    "erdos-600",
+    "erdos-603"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-857",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #857: The Weak Sunflower Problem"
+    },
+    {
+      "targetId": "erdos-743",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #743: Tree Packing Conjecture"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1088: Distinct Distance Subsets in High Dimensions"
+    }
+  ]
 }

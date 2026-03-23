@@ -208,5 +208,29 @@
     "axiomCount": 7,
     "theoremCount": 8,
     "definitionCount": 15
-  }
+  },
+  "relatedProofs": [
+    "erdos-957",
+    "erdos-95",
+    "erdos-1088",
+    "erdos-1070",
+    "erdos-605"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-957",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #957: Product of Extreme Distance Frequencies"
+    },
+    {
+      "targetId": "erdos-95",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #95: Sum of Squared Distance Multiplicities"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1088: Distinct Distance Subsets in High Dimensions"
+    }
+  ]
 }

@@ -167,5 +167,29 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-626",
+    "erdos-108",
+    "erdos-751",
+    "erdos-62",
+    "erdos-628"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-626",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #626: Chromatic Number and Girth"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #108: High Chromatic Subgraphs with Large Girth"
+    },
+    {
+      "targetId": "erdos-751",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #751: Cycle Lengths in 4-Chromatic Graphs"
+    }
+  ]
 }

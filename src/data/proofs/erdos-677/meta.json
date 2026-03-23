@@ -101,5 +101,29 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-890",
+    "erdos-369",
+    "erdos-889",
+    "erdos-678",
+    "erdos-441"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-890",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #890: Sum of ω over Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #369: Consecutive Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-889",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #889: New Prime Factors in Consecutive Integers"
+    }
+  ]
 }

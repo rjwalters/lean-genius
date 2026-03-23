@@ -170,5 +170,29 @@
     "axiomCount": 6,
     "theoremCount": 11,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-877",
+    "erdos-360",
+    "erdos-1136",
+    "erdos-861",
+    "erdos-772"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-877",
+      "relationship": "related",
+      "description": "Related formalization: Counting Maximal Sum-Free Subsets"
+    },
+    {
+      "targetId": "erdos-360",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #360: Partition Sum-Free Classes"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1136: Sum-Free Sets Avoiding Powers of Two"
+    }
+  ]
 }

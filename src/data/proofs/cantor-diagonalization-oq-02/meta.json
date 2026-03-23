@@ -202,5 +202,29 @@
       "venue": "Leipzig: Veit",
       "note": "Systematic treatment of uncountable ordinals and their cardinality"
     }
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization-oq-01",
+    "cantor-diagonalization",
+    "denumerability-rationals",
+    "continuum-hypothesis-oq-01",
+    "cantors-theorem-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: The Continuum Hypothesis: Is There a Cardinality Between Countable and Continuum?"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "extends",
+      "description": "Related formalization: Cantor's Diagonalization Theorem"
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "related",
+      "description": "Related formalization: Denumerability of the Rationals"
+    }
   ]
 }

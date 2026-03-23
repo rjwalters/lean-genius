@@ -169,5 +169,29 @@
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-683",
+    "erdos-1055",
+    "erdos-821",
+    "erdos-1095",
+    "erdos-383"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-683",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #683: Largest Prime Divisor of Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1055: Prime Classification by p+1 Factorization"
+    },
+    {
+      "targetId": "erdos-821",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #821: Large Values of the Euler Phi Preimage Function"
+    }
+  ]
 }

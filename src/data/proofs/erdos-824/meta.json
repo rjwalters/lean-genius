@@ -159,5 +159,29 @@
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-970",
+    "erdos-1057",
+    "erdos-647",
+    "erdos-1049",
+    "erdos-826"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-970",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #970: Jacobsthal's Function"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1057: Counting Carmichael Numbers"
+    },
+    {
+      "targetId": "erdos-647",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #647: Divisor Function Gap Problem"
+    }
+  ]
 }

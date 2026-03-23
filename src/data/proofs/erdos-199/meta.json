@@ -141,5 +141,29 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-176",
+    "erdos-8",
+    "erdos-1080",
+    "erdos-253",
+    "erdos-775"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-8",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #8: Monochromatic Covering Systems"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs"
+    }
+  ]
 }

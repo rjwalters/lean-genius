@@ -200,5 +200,29 @@
       "author": "Thomas Bloom",
       "url": "https://erdosproblems.com/534"
     }
+  ],
+  "relatedProofs": [
+    "erdos-844",
+    "erdos-535",
+    "erdos-402",
+    "erdos-698",
+    "erdos-433"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-844",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #844: Maximum Set with Non-Squarefree Products"
+    },
+    {
+      "targetId": "erdos-535",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #535: GCD-Free r-Subsets"
+    },
+    {
+      "targetId": "erdos-402",
+      "relationship": "related",
+      "description": "Related formalization: Graham's GCD Conjecture"
+    }
   ]
 }

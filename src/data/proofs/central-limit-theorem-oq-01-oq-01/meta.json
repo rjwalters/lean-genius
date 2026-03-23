@@ -218,5 +218,29 @@
     "axiomCount": 3,
     "theoremCount": 55,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "central-limit-theorem-oq-01",
+    "shannon-channel-coding",
+    "central-limit-theorem",
+    "shannon-source-coding",
+    "shannon-entropy"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Related formalization: What Happens When Variance is Infinite?"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "related",
+      "description": "Related formalization: Shannon Noisy Channel Coding Theorem"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "Related formalization: Central Limit Theorem"
+    }
+  ]
 }

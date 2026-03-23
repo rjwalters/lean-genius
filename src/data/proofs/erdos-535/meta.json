@@ -138,5 +138,29 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-534",
+    "erdos-700",
+    "erdos-820",
+    "erdos-539",
+    "erdos-770"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-534",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #534: Maximum GCD-Intersecting Sets"
+    },
+    {
+      "targetId": "erdos-700",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #700: GCD of n with Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-820",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #820: GCD of Exponential Sequences"
+    }
+  ]
 }

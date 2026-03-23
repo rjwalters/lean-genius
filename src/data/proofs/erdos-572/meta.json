@@ -147,5 +147,29 @@
     "axiomCount": 6,
     "theoremCount": 8,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-917",
+    "erdos-915",
+    "erdos-714",
+    "erdos-1020"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1011: Triangles in Graphs with High Chromatic Number"
+    },
+    {
+      "targetId": "erdos-917",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #917: Critical Graphs and Edge Density"
+    },
+    {
+      "targetId": "erdos-915",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #915: Disjoint Paths in Graphs"
+    }
+  ]
 }

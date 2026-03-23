@@ -122,5 +122,29 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-532",
+    "erdos-45",
+    "erdos-1090",
+    "erdos-253",
+    "erdos-882"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-532",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #532: Hindman's Theorem (IP Sets)"
+    },
+    {
+      "targetId": "erdos-45",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #45: Monochromatic Egyptian Fractions"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    }
+  ]
 }

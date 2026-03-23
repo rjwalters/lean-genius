@@ -171,5 +171,29 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-763",
+    "erdos-829",
+    "erdos-785",
+    "erdos-484",
+    "erdos-473"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-763",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #763: The Erdős-Fuchs Theorem"
+    },
+    {
+      "targetId": "erdos-829",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #829: Representations as Sums of Two Cubes"
+    },
+    {
+      "targetId": "erdos-785",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #785: Exact Additive Complements"
+    }
+  ]
 }

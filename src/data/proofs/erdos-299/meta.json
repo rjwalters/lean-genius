@@ -158,5 +158,29 @@
     "axiomCount": 1,
     "theoremCount": 10,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-298",
+    "erdos-310",
+    "erdos-292",
+    "erdos-309",
+    "erdos-286"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-298",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #298: Unit Fractions from Sets of Positive Density"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #310: Unit Fractions from Dense Subsets"
+    },
+    {
+      "targetId": "erdos-292",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #292: Egyptian Fractions Summing to 1"
+    }
+  ]
 }

@@ -153,5 +153,29 @@
     "axiomCount": 12,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-824",
+    "erdos-208",
+    "erdos-1059",
+    "erdos-793",
+    "erdos-456"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-824",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors"
+    },
+    {
+      "targetId": "erdos-208",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #208: Gaps Between Squarefree Numbers"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1059: Primes Minus Factorials All Composite"
+    }
+  ]
 }

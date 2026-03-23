@@ -167,5 +167,29 @@
       "venue": "Cambridge University Press",
       "note": "Standard reference for the O(n³/3) complexity of Gaussian elimination"
     }
+  ],
+  "relatedProofs": [
+    "cramers-rule-oq-01",
+    "cayley-hamilton-reduction-oq-01",
+    "erdos-1155-oq-01",
+    "ballot-problem-oq-03",
+    "ballot-problem-oq-01-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Cayley-Hamilton as a Corollary of Cramer's Rule"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Efficient Cayley-Hamilton Reduction for Sparse Matrices"
+    },
+    {
+      "targetId": "erdos-1155-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Triangle Removal Process: Exact Asymptotics"
+    }
   ]
 }

@@ -190,5 +190,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-605",
+    "erdos-988",
+    "erdos-178",
+    "erdos-255",
+    "erdos-823"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #605: Repeated Distances on a Sphere"
+    },
+    {
+      "targetId": "erdos-988",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #988: Discrepancy on the Sphere"
+    },
+    {
+      "targetId": "erdos-178",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #178: Balancing Infinite Collections of Integer Sequences"
+    }
+  ]
 }

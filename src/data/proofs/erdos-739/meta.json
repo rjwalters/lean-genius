@@ -157,5 +157,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-736",
+    "erdos-740",
+    "erdos-919",
+    "erdos-918",
+    "erdos-1067"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-736",
+      "relationship": "related",
+      "description": "Related formalization: Chromatic Numbers and Finite Subgraph Inheritance"
+    },
+    {
+      "targetId": "erdos-740",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #740: Chromatic Number and Odd Cycle Avoidance"
+    },
+    {
+      "targetId": "erdos-919",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #919: Chromatic Numbers on Ordinal Products"
+    }
+  ]
 }

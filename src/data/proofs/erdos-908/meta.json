@@ -186,5 +186,29 @@
     "axiomCount": 11,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1126",
+    "erdos-907",
+    "erdos-1125",
+    "erdos-498",
+    "erdos-256"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1126",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1126: Almost Additive Functions"
+    },
+    {
+      "targetId": "erdos-907",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #907: Decomposition of Functions with Continuous Differences"
+    },
+    {
+      "targetId": "erdos-1125",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1125: Kemperman's Inequality and Monotonicity"
+    }
+  ]
 }

@@ -129,5 +129,29 @@
     "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-1064",
+    "erdos-415",
+    "erdos-955",
+    "erdos-1000",
+    "erdos-694"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1064: Comparing φ(n) and φ(n - φ(n))"
+    },
+    {
+      "targetId": "erdos-415",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #415: Ordering Patterns in Euler's Totient Function"
+    },
+    {
+      "targetId": "erdos-955",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #955: Sum of Proper Divisors and Density"
+    }
+  ]
 }

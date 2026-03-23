@@ -148,5 +148,29 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-146",
+    "erdos-1033",
+    "erdos-579",
+    "erdos-127",
+    "erdos-1080"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-146",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #146: Turán Numbers for Bipartite r-Degenerate Graphs"
+    },
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1033: Triangle Degree Sums in Dense Graphs"
+    },
+    {
+      "targetId": "erdos-579",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #579: Independent Sets in K₂,₂,₂-Free Dense Graphs"
+    }
+  ]
 }

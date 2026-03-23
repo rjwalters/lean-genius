@@ -210,5 +210,29 @@
       "citation": "Erdős Problems. Problem #73.",
       "type": "website"
     }
+  ],
+  "relatedProofs": [
+    "erdos-23",
+    "erdos-581",
+    "erdos-127",
+    "erdos-1021",
+    "erdos-816"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #23: Triangle-Free Graphs and Bipartiteness"
+    },
+    {
+      "targetId": "erdos-581",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs"
+    },
+    {
+      "targetId": "erdos-127",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #127: Large Bipartite Subgraphs Beyond Edwards' Bound"
+    }
   ]
 }

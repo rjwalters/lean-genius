@@ -145,5 +145,29 @@
       "venue": "Mathematische Annalen 67 (Koebe); Acta Mathematica 31 (Poincaré)",
       "note": "Both independently proved the uniformization theorem for Riemann surfaces — solving Hilbert's 22nd problem"
     }
+  ],
+  "relatedProofs": [
+    "hilbert-21",
+    "kepler-conjecture",
+    "hilbert-13",
+    "hilbert-5",
+    "kroneckers-jugendtraum"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-21",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's 21st Problem: Riemann-Hilbert Problem"
+    },
+    {
+      "targetId": "kepler-conjecture",
+      "relationship": "related",
+      "description": "Related formalization: Kepler Conjecture: Sphere Packing"
+    },
+    {
+      "targetId": "hilbert-13",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's 13th Problem: Superposition of Functions"
+    }
   ]
 }

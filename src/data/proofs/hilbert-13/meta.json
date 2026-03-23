@@ -148,5 +148,29 @@
       "venue": "Doklady Akademii Nauk SSSR 114, 679–681",
       "note": "Proved that continuous functions of three variables are representable by superpositions — complementing Kolmogorov's result"
     }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "hilbert-5",
+    "shannon-channel-coding",
+    "shannon-source-coding-oq-02",
+    "lebesgue-measure"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "Related formalization: Central Limit Theorem"
+    },
+    {
+      "targetId": "hilbert-5",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's 5th Problem: Lie Groups Without Differentiability"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "related",
+      "description": "Related formalization: Shannon Noisy Channel Coding Theorem"
+    }
   ]
 }

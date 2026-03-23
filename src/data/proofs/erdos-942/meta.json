@@ -191,5 +191,29 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-941",
+    "erdos-371",
+    "erdos-940",
+    "erdos-222",
+    "erdos-428"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-941",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #941: Sums of Three Powerful Numbers"
+    },
+    {
+      "targetId": "erdos-371",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #371: Density of P(n) < P(n+1)"
+    },
+    {
+      "targetId": "erdos-940",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #940: Sums of r-Powerful Numbers"
+    }
+  ]
 }

@@ -168,5 +168,29 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-88",
+    "erdos-814",
+    "erdos-636",
+    "erdos-620",
+    "erdos-1036"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #88: Induced Subgraphs in Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-814",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #814: Dense Graphs Contain Smaller Min-Degree-k Subgraphs"
+    },
+    {
+      "targetId": "erdos-636",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #636: Distinct Induced Subgraphs in Ramsey Graphs"
+    }
+  ]
 }

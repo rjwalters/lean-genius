@@ -159,5 +159,29 @@
       "venue": "Mathematische Zeitschrift",
       "note": "If X+Y is Gaussian with X,Y independent, then X and Y are Gaussian"
     }
+  ],
+  "relatedProofs": [
+    "binomial-theorem-oq-03",
+    "central-limit-theorem-oq-01-oq-02",
+    "buffons-needle-oq-01",
+    "ballot-problem-oq-02",
+    "laws-of-large-numbers-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Binomial Distribution from the Binomial Theorem"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Lévy-Khintchine Representation: Triplets, Decomposition, and Classification"
+    },
+    {
+      "targetId": "buffons-needle-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Buffon-Barbier for C¹ Curves: Smooth Noodle Theorem (Complete)"
+    }
   ]
 }

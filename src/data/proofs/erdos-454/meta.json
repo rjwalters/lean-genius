@@ -254,5 +254,29 @@
       "venue": "Springer, 3rd edition",
       "note": "Discussion of prime gap problems and symmetric prime properties"
     }
+  ],
+  "relatedProofs": [
+    "erdos-15",
+    "erdos-853",
+    "erdos-950",
+    "erdos-4",
+    "bounded-prime-gaps-oq-03"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #15: Alternating Prime Series"
+    },
+    {
+      "targetId": "erdos-853",
+      "relationship": "related",
+      "description": "Related formalization: Smallest Missing Prime Gap"
+    },
+    {
+      "targetId": "erdos-950",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #950: Sum of Reciprocal Prime Gaps"
+    }
   ]
 }

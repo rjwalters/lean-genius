@@ -128,5 +128,29 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-336",
+    "erdos-1103",
+    "erdos-868",
+    "erdos-587",
+    "erdos-779"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-336",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #336: Additive Bases and Exact Order"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related formalization: Squarefree Sumsets"
+    },
+    {
+      "targetId": "erdos-868",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #868: Additive Bases and Minimal Bases"
+    }
+  ]
 }

@@ -145,5 +145,29 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-1055",
+    "erdos-684",
+    "erdos-383",
+    "erdos-369",
+    "erdos-1065"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1055: Prime Classification by p+1 Factorization"
+    },
+    {
+      "targetId": "erdos-684",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #684: Smooth Parts of Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-383",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #383: Prime Divisors of Consecutive Squares"
+    }
+  ]
 }

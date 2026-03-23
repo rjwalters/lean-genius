@@ -161,5 +161,29 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-64",
+    "erdos-574",
+    "erdos-577",
+    "erdos-86"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs"
+    },
+    {
+      "targetId": "erdos-64",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #64: Power of Two Cycles in Min Degree 3 Graphs"
+    },
+    {
+      "targetId": "erdos-574",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #574: Turán Number for Consecutive Cycle Pairs"
+    }
+  ]
 }

@@ -117,5 +117,29 @@
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-653",
+    "erdos-1088",
+    "erdos-101",
+    "erdos-1084",
+    "erdos-507"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1088: Distinct Distance Subsets in High Dimensions"
+    },
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #101: Four-Point Lines from Planar Point Sets"
+    }
+  ]
 }

@@ -152,5 +152,29 @@
     "axiomCount": 2,
     "theoremCount": 25,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-1113",
+    "erdos-279",
+    "erdos-9",
+    "erdos-276",
+    "erdos-273"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1113: Sierpinski Numbers Without Covering Sets"
+    },
+    {
+      "targetId": "erdos-279",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #279: Covering with Shifted Prime Progressions"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    }
+  ]
 }

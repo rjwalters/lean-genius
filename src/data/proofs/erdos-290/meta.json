@@ -184,5 +184,29 @@
     "axiomCount": 9,
     "theoremCount": 7,
     "definitionCount": 21
-  }
+  },
+  "relatedProofs": [
+    "erdos-444",
+    "erdos-288",
+    "erdos-884",
+    "erdos-823",
+    "erdos-286"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #444: Generalized Divisor Functions"
+    },
+    {
+      "targetId": "erdos-288",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #288: Integer Harmonic Sums Over Interval Pairs"
+    },
+    {
+      "targetId": "erdos-884",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #884: Divisor Gap Sums"
+    }
+  ]
 }

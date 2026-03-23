@@ -168,5 +168,29 @@
     "axiomCount": 10,
     "theoremCount": 10,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-175",
+    "erdos-698",
+    "erdos-384",
+    "erdos-435",
+    "erdos-697"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-175",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #175: Central Binomial Coefficient Not Squarefree"
+    },
+    {
+      "targetId": "erdos-698",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #698: GCDs of Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-384",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #384: Prime Divisors of Binomial Coefficients"
+    }
+  ]
 }

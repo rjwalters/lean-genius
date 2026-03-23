@@ -168,5 +168,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-824",
+    "erdos-647",
+    "erdos-1049",
+    "erdos-415",
+    "erdos-1061"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-824",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors"
+    },
+    {
+      "targetId": "erdos-647",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #647: Divisor Function Gap Problem"
+    },
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1049: Irrationality of Divisor Sums"
+    }
+  ]
 }

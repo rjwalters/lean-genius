@@ -166,5 +166,29 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-605",
+    "erdos-756",
+    "erdos-466",
+    "erdos-95",
+    "erdos-982"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #605: Repeated Distances on a Sphere"
+    },
+    {
+      "targetId": "erdos-756",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #756: Rich Distances in the Plane"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #466: Points in a Circle with Fractional Distance Separation"
+    }
+  ]
 }

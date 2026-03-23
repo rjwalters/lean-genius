@@ -158,5 +158,29 @@
     "axiomCount": 13,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1087",
+    "erdos-653",
+    "erdos-846",
+    "erdos-91",
+    "erdos-958"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1087: Degenerate Quadruples in Point Sets"
+    },
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    },
+    {
+      "targetId": "erdos-846",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #846: Non-Trilinear Subsets of the Plane"
+    }
+  ]
 }

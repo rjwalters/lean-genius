@@ -159,5 +159,29 @@
     "axiomCount": 15,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-432",
+    "erdos-332",
+    "erdos-330",
+    "erdos-741",
+    "erdos-109"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    },
+    {
+      "targetId": "erdos-332",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #332: Difference Sets and Bounded Gaps"
+    },
+    {
+      "targetId": "erdos-330",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #330: Minimal Bases with Positive Density"
+    }
+  ]
 }

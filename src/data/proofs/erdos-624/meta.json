@@ -159,5 +159,29 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-176",
+    "erdos-603",
+    "erdos-172",
+    "erdos-564",
+    "erdos-635"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-603",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #603: Set Family Colorings with Intersection Restrictions"
+    },
+    {
+      "targetId": "erdos-172",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #172: Monochromatic Sums and Products"
+    }
+  ]
 }

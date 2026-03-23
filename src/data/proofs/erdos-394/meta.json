@@ -177,5 +177,29 @@
     "axiomCount": 13,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-962",
+    "erdos-708",
+    "erdos-400",
+    "erdos-768",
+    "erdos-890"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-962",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #962: Consecutive Integers with Large Prime Divisors"
+    },
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #400: Factorial Divisibility and Sum Excess"
+    }
+  ]
 }

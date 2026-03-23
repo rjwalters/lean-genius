@@ -138,5 +138,29 @@
     "axiomCount": 12,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-784",
+    "erdos-728",
+    "erdos-427",
+    "erdos-459",
+    "erdos-962"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-784",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #784: Sieving Sets with Bounded Reciprocal Sums"
+    },
+    {
+      "targetId": "erdos-728",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #728: Factorial Divisibility with Logarithmic Gap"
+    },
+    {
+      "targetId": "erdos-427",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #427: Divisibility of Prime Sums"
+    }
+  ]
 }

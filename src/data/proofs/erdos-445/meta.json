@@ -135,5 +135,29 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-478",
+    "erdos-1056",
+    "erdos-985",
+    "erdos-486",
+    "erdos-25"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-478",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #478: Factorial Residues Modulo Primes"
+    },
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1056: Consecutive Interval Products ≡ 1 (mod p)"
+    },
+    {
+      "targetId": "erdos-985",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #985: Prime Primitive Roots"
+    }
+  ]
 }

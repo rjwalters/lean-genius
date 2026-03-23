@@ -185,5 +185,29 @@
     "axiomCount": 14,
     "theoremCount": 6,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-542",
+    "erdos-677",
+    "erdos-327",
+    "erdos-844",
+    "erdos-269"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-542",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #542: Reciprocal Sums Under LCM Constraints"
+    },
+    {
+      "targetId": "erdos-677",
+      "relationship": "related",
+      "description": "Related formalization: Distinct LCM of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-327",
+      "relationship": "related",
+      "description": "Related formalization: Sum-Divides-Product Avoidance"
+    }
+  ]
 }

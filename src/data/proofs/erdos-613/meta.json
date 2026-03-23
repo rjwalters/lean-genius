@@ -208,5 +208,29 @@
       "citation": "Tao, T. Lean verification of counterexample to Erdős Problem #613 at n = 5.",
       "type": "software"
     }
+  ],
+  "relatedProofs": [
+    "erdos-549",
+    "erdos-1037",
+    "erdos-87",
+    "erdos-720",
+    "erdos-567"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-549",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #549: Ramsey Numbers for Bipartite Trees"
+    },
+    {
+      "targetId": "erdos-1037",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1037: Degree Diversity and Ramsey Properties"
+    },
+    {
+      "targetId": "erdos-87",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #87: Ramsey Numbers and Chromatic Number"
+    }
   ]
 }

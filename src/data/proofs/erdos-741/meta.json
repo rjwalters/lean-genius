@@ -158,5 +158,29 @@
     "axiomCount": 7,
     "theoremCount": 22,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-749",
+    "erdos-335",
+    "erdos-432",
+    "erdos-484",
+    "erdos-333"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-749",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #749: Dense Sumsets with Bounded Representation"
+    },
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #335: Density Additivity Characterization"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    }
+  ]
 }

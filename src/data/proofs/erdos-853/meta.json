@@ -153,5 +153,29 @@
     "axiomCount": 9,
     "theoremCount": 15,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-454",
+    "erdos-15",
+    "erdos-4",
+    "bertrands-postulate",
+    "bounded-prime-gaps"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-454",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #454: Prime Sum Deviations"
+    },
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #15: Alternating Prime Series"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #4: Large Prime Gaps"
+    }
+  ]
 }

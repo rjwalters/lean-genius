@@ -150,5 +150,29 @@
     "axiomCount": 0,
     "theoremCount": 56,
     "definitionCount": 29
-  }
+  },
+  "relatedProofs": [
+    "erdos-419",
+    "erdos-124-complete-sequences",
+    "erdos-45",
+    "erdos-2",
+    "erdos-1073"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-419",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)"
+    },
+    {
+      "targetId": "erdos-124-complete-sequences",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #124: Complete Sequences"
+    },
+    {
+      "targetId": "erdos-45",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #45: Monochromatic Egyptian Fractions"
+    }
+  ]
 }

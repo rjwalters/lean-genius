@@ -184,5 +184,29 @@
     "axiomCount": 19,
     "theoremCount": 1,
     "definitionCount": 15
-  }
+  },
+  "relatedProofs": [
+    "erdos-547",
+    "erdos-549",
+    "erdos-557",
+    "erdos-129",
+    "erdos-993"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #547: Tree Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-549",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #549: Ramsey Numbers for Bipartite Trees"
+    },
+    {
+      "targetId": "erdos-557",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #557: Multicolor Ramsey Numbers of Trees"
+    }
+  ]
 }

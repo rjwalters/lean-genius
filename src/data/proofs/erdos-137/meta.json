@@ -123,5 +123,29 @@
     "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-367",
+    "erdos-365",
+    "erdos-931",
+    "erdos-913",
+    "erdos-366"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #367: Products of 2-Full Parts"
+    },
+    {
+      "targetId": "erdos-365",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #365: Consecutive Powerful Numbers"
+    },
+    {
+      "targetId": "erdos-931",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #931: Same Prime Factors in Products of Consecutive Integers"
+    }
+  ]
 }

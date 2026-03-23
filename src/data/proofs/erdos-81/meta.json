@@ -159,5 +159,29 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-625",
+    "erdos-610",
+    "erdos-80",
+    "erdos-626",
+    "erdos-180"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-625",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #625: Chromatic vs Cochromatic Numbers of Random Graphs"
+    },
+    {
+      "targetId": "erdos-610",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #610: Clique Transversal Numbers"
+    },
+    {
+      "targetId": "erdos-80",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #80: Book Size in Triangle-Saturated Graphs"
+    }
+  ]
 }

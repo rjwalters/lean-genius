@@ -146,5 +146,22 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs"
+    },
+    {
+      "targetId": "erdos-347",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #347: Complete Sequences with Ratio Tending to 2"
+    }
+  ]
 }

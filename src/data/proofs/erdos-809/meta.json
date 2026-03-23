@@ -144,5 +144,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-569",
+    "erdos-554",
+    "erdos-146",
+    "erdos-180",
+    "erdos-766"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #569: Odd Cycle Ramsey Numbers Linear in Edges"
+    },
+    {
+      "targetId": "erdos-554",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #554: Odd Cycle vs Triangle Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-146",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #146: Turán Numbers for Bipartite r-Degenerate Graphs"
+    }
+  ]
 }

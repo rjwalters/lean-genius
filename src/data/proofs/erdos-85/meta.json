@@ -146,5 +146,29 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-89",
+    "erdos-74",
+    "erdos-61",
+    "erdos-577",
+    "erdos-1032"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-89",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #89: Distinct Distances in the Plane"
+    },
+    {
+      "targetId": "erdos-74",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #74: Almost Bipartite Graphs with High Chromatic Number"
+    },
+    {
+      "targetId": "erdos-61",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #61: The Erdős–Hajnal Conjecture"
+    }
+  ]
 }

@@ -153,5 +153,29 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-80",
+    "erdos-621",
+    "erdos-88",
+    "erdos-547",
+    "erdos-565"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-80",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #80: Book Size in Triangle-Saturated Graphs"
+    },
+    {
+      "targetId": "erdos-621",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #621: Triangle Edge Covers"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #88: Induced Subgraphs in Ramsey Graphs"
+    }
+  ]
 }

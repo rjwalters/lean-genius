@@ -180,5 +180,29 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-523",
+    "erdos-228",
+    "erdos-395",
+    "erdos-522",
+    "erdos-1166"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #523: Maximum of Random Polynomials on Unit Circle"
+    },
+    {
+      "targetId": "erdos-228",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #228: Flat Littlewood Polynomials"
+    },
+    {
+      "targetId": "erdos-395",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #395: Reverse Littlewood-Offord Problem"
+    }
+  ]
 }

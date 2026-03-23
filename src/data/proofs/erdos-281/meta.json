@@ -154,5 +154,29 @@
       "venue": "Oxford University Press",
       "note": "Contains Rogers' theorem used in the uniformization step"
     }
+  ],
+  "relatedProofs": [
+    "erdos-688",
+    "erdos-690",
+    "erdos-10",
+    "erdos-488",
+    "erdos-687"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-688",
+      "relationship": "related",
+      "description": "Related formalization: Covering by Large Prime Congruences"
+    },
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Related formalization: Unimodality of k-th Prime Factor Density"
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related formalization: Sums of a Prime and Powers of 2"
+    }
   ]
 }

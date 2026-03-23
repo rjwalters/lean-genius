@@ -145,5 +145,29 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-744",
+    "erdos-85",
+    "erdos-61",
+    "erdos-944",
+    "erdos-758"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-744",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #744: Critical Graphs and Bipartition"
+    },
+    {
+      "targetId": "erdos-85",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #85: Minimum Degree for 4-Cycles"
+    },
+    {
+      "targetId": "erdos-61",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #61: The Erdős–Hajnal Conjecture"
+    }
+  ]
 }

@@ -133,5 +133,29 @@
     "Erdős & Kac (1940): The Gaussian law of errors in the theory of additive number theoretic functions",
     "Mertens (1874): prime reciprocal sum asymptotics",
     "https://erdosproblems.com/690"
+  ],
+  "relatedProofs": [
+    "erdos-10",
+    "erdos-281",
+    "erdos-49",
+    "erdos-488",
+    "erdos-538"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related formalization: Sums of a Prime and Powers of 2"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #281: Covering Congruences and Density"
+    },
+    {
+      "targetId": "erdos-49",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #49: Sets with Increasing Euler Totient Values"
+    }
   ]
 }

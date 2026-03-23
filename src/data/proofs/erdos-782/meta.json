@@ -171,5 +171,29 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 19
-  }
+  },
+  "relatedProofs": [
+    "erdos-773",
+    "erdos-587",
+    "erdos-33",
+    "erdos-829",
+    "erdos-432"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-773",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #773: Sidon Subsets of Perfect Squares"
+    },
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #587: Square-Sum-Free Subsets"
+    },
+    {
+      "targetId": "erdos-33",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #33: Additive Complements of Squares"
+    }
+  ]
 }

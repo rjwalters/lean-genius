@@ -137,5 +137,29 @@
     "axiomCount": 16,
     "theoremCount": 4,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-78",
+    "erdos-800",
+    "erdos-165",
+    "erdos-1029",
+    "erdos-802"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-78",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #78: Constructive Ramsey Lower Bound"
+    },
+    {
+      "targetId": "erdos-800",
+      "relationship": "related",
+      "description": "Related formalization: Linear Ramsey Numbers for Graphs Without Adjacent High-Degree Vertices"
+    },
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #165: Asymptotic Formula for R(3,k)"
+    }
+  ]
 }

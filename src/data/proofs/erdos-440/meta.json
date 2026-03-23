@@ -141,5 +141,29 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-873",
+    "erdos-858",
+    "erdos-786",
+    "erdos-425",
+    "erdos-888"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-873",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #873: LCM of Consecutive Sequence Terms"
+    },
+    {
+      "targetId": "erdos-858",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #858: Avoiding Multiplicative Relations with Large Prime Factors"
+    },
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #786: Multiplicative Cardinality Sets"
+    }
+  ]
 }

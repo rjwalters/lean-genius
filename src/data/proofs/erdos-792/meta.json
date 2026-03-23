@@ -166,5 +166,29 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-789",
+    "erdos-788",
+    "erdos-748",
+    "erdos-867",
+    "erdos-949"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-789",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #789: Sum-Length-Free Subsets"
+    },
+    {
+      "targetId": "erdos-788",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #788: Sum-Free Subsets in Intervals"
+    },
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #748: The Cameron-Erdős Conjecture"
+    }
+  ]
 }

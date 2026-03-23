@@ -158,5 +158,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 16
-  }
+  },
+  "relatedProofs": [
+    "erdos-609",
+    "erdos-176",
+    "erdos-508",
+    "erdos-172",
+    "erdos-564"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-609",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #609: Monochromatic Odd Cycles in Edge Colorings"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Related formalization: The Hadwiger-Nelson Problem"
+    }
+  ]
 }

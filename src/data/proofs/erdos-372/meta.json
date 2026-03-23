@@ -162,5 +162,29 @@
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-368",
+    "erdos-380",
+    "erdos-1106",
+    "erdos-452",
+    "erdos-371"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #368: Largest Prime Factor of n(n+1)"
+    },
+    {
+      "targetId": "erdos-380",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #380: Bad Intervals and Greatest Prime Factors"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1106: Prime Factors of Partition Products"
+    }
+  ]
 }

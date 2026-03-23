@@ -179,5 +179,29 @@
     "axiomCount": 7,
     "theoremCount": 7,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-165",
+    "erdos-812",
+    "erdos-617",
+    "erdos-552",
+    "erdos-129"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #165: Asymptotic Formula for R(3,k)"
+    },
+    {
+      "targetId": "erdos-812",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #812: Growth of Consecutive Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-617",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #617: Balanced Colourings of Complete Graphs"
+    }
+  ]
 }

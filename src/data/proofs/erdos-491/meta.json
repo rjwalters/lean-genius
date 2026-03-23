@@ -174,5 +174,29 @@
     "axiomCount": 16,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-1122",
+    "erdos-897",
+    "erdos-878",
+    "erdos-309",
+    "erdos-962"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1122",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1122: Additive Functions and Monotonicity Defects"
+    },
+    {
+      "targetId": "erdos-897",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #897: Additive Functions and Consecutive Differences"
+    },
+    {
+      "targetId": "erdos-878",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #878: Unconventional Number Theoretic Functions"
+    }
+  ]
 }

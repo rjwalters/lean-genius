@@ -151,5 +151,29 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-118",
+    "erdos-781",
+    "erdos-1128",
+    "erdos-804",
+    "erdos-615"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-118",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #118: Partition Ordinals and Higher Cliques"
+    },
+    {
+      "targetId": "erdos-781",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #781: Descending Waves in 2-Colorings"
+    },
+    {
+      "targetId": "erdos-1128",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1128: Monochromatic Cubes in Cardinal Products"
+    }
+  ]
 }

@@ -110,5 +110,29 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-506",
+    "erdos-502",
+    "erdos-633",
+    "erdos-1071",
+    "erdos-657"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-506",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #506: Minimum Number of Circles from n Points"
+    },
+    {
+      "targetId": "erdos-502",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #502: Two-Distance Sets in Euclidean Space"
+    },
+    {
+      "targetId": "erdos-633",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #633: Square Number Triangle Dissections"
+    }
+  ]
 }

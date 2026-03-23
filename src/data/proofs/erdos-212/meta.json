@@ -120,5 +120,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-95",
+    "erdos-633",
+    "erdos-1071",
+    "erdos-657",
+    "erdos-1121"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-95",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #95: Sum of Squared Distance Multiplicities"
+    },
+    {
+      "targetId": "erdos-633",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #633: Square Number Triangle Dissections"
+    },
+    {
+      "targetId": "erdos-1071",
+      "relationship": "related",
+      "description": "Related formalization: Maximal Packings of Unit Segments in the Unit Square"
+    }
+  ]
 }

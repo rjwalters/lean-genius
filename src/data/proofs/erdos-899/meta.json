@@ -120,5 +120,29 @@
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-865",
+    "erdos-332",
+    "erdos-109",
+    "erdos-157",
+    "erdos-42"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-865",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #865: Pairwise Sums in Dense Sets"
+    },
+    {
+      "targetId": "erdos-332",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #332: Difference Sets and Bounded Gaps"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #109: The Sumset Conjecture"
+    }
+  ]
 }

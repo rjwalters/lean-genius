@@ -215,5 +215,29 @@
     "axiomCount": 1,
     "theoremCount": 18,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam",
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01",
+    "brouwer-fixed-point"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Constructive 2D Borsuk-Ulam via Tucker's Lemma"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "extends",
+      "description": "Related formalization: Borsuk-Ulam Theorem"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Constructive Borsuk-Ulam Theorem and Equivalences"
+    }
+  ]
 }

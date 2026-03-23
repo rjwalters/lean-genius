@@ -163,5 +163,29 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-795",
+    "erdos-56",
+    "erdos-855",
+    "erdos-684",
+    "erdos-711"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-795",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #795"
+    },
+    {
+      "targetId": "erdos-56",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #56: Weakly Divisible Sets"
+    },
+    {
+      "targetId": "erdos-855",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #855: The Second Hardy-Littlewood Conjecture"
+    }
+  ]
 }

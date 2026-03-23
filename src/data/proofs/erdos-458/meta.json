@@ -96,5 +96,29 @@
     "axiomCount": 8,
     "theoremCount": 12,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-269",
+    "erdos-1059",
+    "erdos-793",
+    "erdos-456",
+    "erdos-17"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #269: LCM Series Irrationality"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1059: Primes Minus Factorials All Composite"
+    },
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #793: Primitive Sets Avoiding Product Divisibility"
+    }
+  ]
 }

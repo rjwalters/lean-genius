@@ -154,5 +154,29 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-834",
+    "erdos-780",
+    "erdos-207",
+    "erdos-57",
+    "erdos-564"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-834",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #834: 3-Critical 3-Uniform Hypergraphs"
+    },
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #780: Chromatic Number of Kneser Hypergraphs"
+    },
+    {
+      "targetId": "erdos-207",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #207: High-Girth Steiner Triple Systems"
+    }
+  ]
 }

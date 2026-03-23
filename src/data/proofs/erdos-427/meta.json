@@ -163,5 +163,29 @@
     "axiomCount": 13,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-784",
+    "erdos-728",
+    "erdos-446",
+    "erdos-962",
+    "erdos-711"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-784",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #784: Sieving Sets with Bounded Reciprocal Sums"
+    },
+    {
+      "targetId": "erdos-728",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #728: Factorial Divisibility with Logarithmic Gap"
+    },
+    {
+      "targetId": "erdos-446",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #446: Density of Integers with Divisors in (n, 2n)"
+    }
+  ]
 }

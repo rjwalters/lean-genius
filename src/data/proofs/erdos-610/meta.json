@@ -192,5 +192,29 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 16
-  }
+  },
+  "relatedProofs": [
+    "erdos-611",
+    "erdos-925",
+    "erdos-750",
+    "erdos-804",
+    "erdos-993"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-611",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #611: Clique Transversal with Large Cliques"
+    },
+    {
+      "targetId": "erdos-925",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #925: Independent Sets in Non-Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-750",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #750: Almost Bipartite Graphs with Infinite Chromatic Number"
+    }
+  ]
 }

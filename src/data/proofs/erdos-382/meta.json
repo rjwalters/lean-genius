@@ -183,5 +183,29 @@
     "axiomCount": 13,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-950",
+    "erdos-238",
+    "erdos-680",
+    "erdos-455",
+    "erdos-218"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-950",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #950: Sum of Reciprocal Prime Gaps"
+    },
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #238: Consecutive Primes with Large Gaps"
+    },
+    {
+      "targetId": "erdos-680",
+      "relationship": "related",
+      "description": "Related formalization: Least Prime Factor Exceeding k² + 1"
+    }
+  ]
 }

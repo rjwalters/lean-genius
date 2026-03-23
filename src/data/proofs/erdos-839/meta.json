@@ -139,5 +139,29 @@
     "axiomCount": 6,
     "theoremCount": 8,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-342",
+    "erdos-423",
+    "erdos-123",
+    "erdos-1109",
+    "erdos-954"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-342",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #342: The Ulam Sequence U(1,2)"
+    },
+    {
+      "targetId": "erdos-423",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #423: Sums of Consecutive Terms Sequence"
+    },
+    {
+      "targetId": "erdos-123",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #123: d-Complete Sequences"
+    }
+  ]
 }

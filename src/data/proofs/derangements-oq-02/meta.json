@@ -180,5 +180,29 @@
       "venue": "Wiley, New York",
       "note": "Classical treatment of subfactorials and partial derangements"
     }
+  ],
+  "relatedProofs": [
+    "derangements-oq-02-oq-01",
+    "derangements-oq-03",
+    "ballot-problem-oq-03-oq-02",
+    "binomial-theorem-oq-04-oq-02",
+    "amgm-inequality-oq-03"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements-oq-02-oq-01",
+      "relationship": "parent",
+      "description": "Related formalization: Partial Derangements for Arbitrary Finite Types"
+    },
+    {
+      "targetId": "derangements-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Derangements Convergence Rate to 1/e"
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: General r×r Lindström-Gessel-Viennot Determinant"
+    }
   ]
 }

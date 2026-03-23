@@ -137,5 +137,29 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-02",
+    "cramers-rule-oq-01",
+    "cayley-hamilton"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "extends",
+      "description": "Related formalization: Matrix Function Reduction via Cayley-Hamilton"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "Related formalization: Minimal Polynomial Reduction and Annihilator Theory"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Similar Matrices Have Identical Minimal Polynomials"
+    }
+  ]
 }

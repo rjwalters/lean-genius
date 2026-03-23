@@ -138,5 +138,29 @@
     "axiomCount": 11,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-457",
+    "erdos-383",
+    "erdos-269",
+    "erdos-1055",
+    "erdos-821"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-457",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #457: Small Prime Divisors of Consecutive Products"
+    },
+    {
+      "targetId": "erdos-383",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #383: Prime Divisors of Consecutive Squares"
+    },
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #269: LCM Series Irrationality"
+    }
+  ]
 }

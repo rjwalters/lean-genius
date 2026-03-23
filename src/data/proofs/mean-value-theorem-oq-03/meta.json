@@ -223,5 +223,29 @@
       "venue": "Paris",
       "note": "Original statement of the scalar mean value theorem (Lagrange's MVT)"
     }
+  ],
+  "relatedProofs": [
+    "area-of-circle-oq-01-oq-02-oq-01",
+    "fundamental-theorem-calculus-oq-01",
+    "amgm-inequality-oq-03-oq-02",
+    "area-of-circle-oq-01-oq-02",
+    "area-of-circle-oq-01-oq-02-oq-02"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: N-Dimensional Volume from Surface Area Integration"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Fundamental Theorem of Calculus: Lebesgue Generalization"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Power Mean Limit: lim_{r→0} M_r = GM (Geometric Mean as a Limit)"
+    }
   ]
 }

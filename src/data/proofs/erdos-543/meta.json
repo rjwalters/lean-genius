@@ -165,5 +165,29 @@
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1179",
+    "erdos-198",
+    "erdos-333",
+    "erdos-861",
+    "erdos-865"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1179: Uniform Subset Sum Representations in Abelian Groups"
+    },
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #198: Sidon Sets and Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #333: Sparse Sumset Bases"
+    }
+  ]
 }

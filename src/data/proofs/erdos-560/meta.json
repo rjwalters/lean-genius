@@ -163,5 +163,29 @@
     "axiomCount": 16,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-713",
+    "erdos-558",
+    "erdos-111",
+    "erdos-567",
+    "erdos-82"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-713",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #713: Rational Exponents for Bipartite Turán Numbers"
+    },
+    {
+      "targetId": "erdos-558",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #558: Multicolor Ramsey Numbers for Complete Bipartite Graphs"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #111: Edge Deletion to Bipartiteness for Large Chromatic Graphs"
+    }
+  ]
 }

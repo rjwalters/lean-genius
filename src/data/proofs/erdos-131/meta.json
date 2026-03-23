@@ -171,5 +171,29 @@
     "axiomCount": 0,
     "theoremCount": 27,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-710",
+    "erdos-635",
+    "erdos-711",
+    "erdos-400",
+    "erdos-793"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-710",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #710: Minimal Interval for Divisibility Matching"
+    },
+    {
+      "targetId": "erdos-635",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #635: Non-Divisibility Condition on Differences"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    }
+  ]
 }

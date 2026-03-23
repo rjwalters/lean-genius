@@ -126,5 +126,29 @@
     "axiomCount": 10,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-776",
+    "erdos-1023",
+    "erdos-872",
+    "erdos-176",
+    "erdos-743"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-776",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #776: Antichains with Set-Size Multiplicity"
+    },
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1023: Union-Free Families"
+    },
+    {
+      "targetId": "erdos-872",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #872: Antichain Saturation Game"
+    }
+  ]
 }

@@ -119,5 +119,29 @@
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-387",
+    "erdos-699",
+    "erdos-882",
+    "erdos-7",
+    "erdos-710"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #387: Divisors of Binomial Coefficients Near n"
+    },
+    {
+      "targetId": "erdos-699",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #699: Prime Divisors of GCDs of Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-882",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #882: Subset Sums Without Divisibility"
+    }
+  ]
 }

@@ -176,5 +176,29 @@
     "axiomCount": 11,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-998",
+    "erdos-1144",
+    "erdos-1138",
+    "erdos-990",
+    "erdos-994"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-998",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #998: Kesten's Equidistribution Characterization"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1144: Partial Sums of Random Multiplicative Functions"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1138: Primes in Short Intervals and Maximal Gaps"
+    }
+  ]
 }

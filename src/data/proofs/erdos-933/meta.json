@@ -188,5 +188,29 @@
     "axiomCount": 6,
     "theoremCount": 9,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-240",
+    "erdos-369",
+    "erdos-370",
+    "erdos-459",
+    "erdos-682"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #240: Gaps Between P-Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #369: Consecutive Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-370",
+      "relationship": "related",
+      "description": "Related formalization: Consecutive Smooth Numbers"
+    }
+  ]
 }

@@ -156,5 +156,29 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-702",
+    "erdos-777",
+    "erdos-874",
+    "erdos-966",
+    "erdos-645"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-702",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #702: Singleton Intersections in k-Uniform Families"
+    },
+    {
+      "targetId": "erdos-777",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #777: Comparable Pairs in Families of Sets"
+    },
+    {
+      "targetId": "erdos-874",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #874: Admissible Sets and Subset Sum Disjointness"
+    }
+  ]
 }

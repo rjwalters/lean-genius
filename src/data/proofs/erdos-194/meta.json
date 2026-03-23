@@ -170,5 +170,29 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-966",
+    "erdos-645",
+    "erdos-176",
+    "erdos-1090",
+    "erdos-924"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-966",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #966: Ramsey-Type Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-645",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #645: Monochromatic AP with Large Difference"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    }
+  ]
 }

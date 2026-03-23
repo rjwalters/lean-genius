@@ -159,5 +159,29 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 20
-  }
+  },
+  "relatedProofs": [
+    "erdos-1144",
+    "erdos-695",
+    "erdos-708",
+    "erdos-311",
+    "erdos-341"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1144: Partial Sums of Random Multiplicative Functions"
+    },
+    {
+      "targetId": "erdos-695",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #695: Prime Chain Growth"
+    },
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    }
+  ]
 }

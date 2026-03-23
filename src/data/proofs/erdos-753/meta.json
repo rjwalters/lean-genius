@@ -171,5 +171,29 @@
     "axiomCount": 15,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-833",
+    "erdos-797",
+    "erdos-631",
+    "erdos-630",
+    "erdos-799"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-833",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs"
+    },
+    {
+      "targetId": "erdos-797",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #797: Acyclic Chromatic Number"
+    },
+    {
+      "targetId": "erdos-631",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #631: List Chromatic Number of Planar Graphs"
+    }
+  ]
 }

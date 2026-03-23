@@ -146,5 +146,29 @@
     "axiomCount": 3,
     "theoremCount": 25,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-38",
+    "erdos-40",
+    "erdos-881",
+    "erdos-587",
+    "erdos-779"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-38",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #38: Essential Components and Density Boosting"
+    },
+    {
+      "targetId": "erdos-40",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #40: Representation Function and Dense Sets"
+    },
+    {
+      "targetId": "erdos-881",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #881: Minimal Additive Bases and Order Increase"
+    }
+  ]
 }

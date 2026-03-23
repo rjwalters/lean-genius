@@ -174,5 +174,29 @@
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 18
-  }
+  },
+  "relatedProofs": [
+    "erdos-708",
+    "erdos-691",
+    "erdos-432",
+    "erdos-332",
+    "erdos-955"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-691",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #691: Behrend Sequences and Density of Multiples"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    }
+  ]
 }

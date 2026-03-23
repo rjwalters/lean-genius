@@ -165,5 +165,29 @@
     "axiomCount": 19,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-306",
+    "erdos-295",
+    "erdos-243",
+    "erdos-287",
+    "erdos-309"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #306: Egyptian Fractions with Semiprime Denominators"
+    },
+    {
+      "targetId": "erdos-295",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #295: Egyptian Fractions with Large Denominators"
+    },
+    {
+      "targetId": "erdos-243",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #243: Sylvester's Sequence Characterization"
+    }
+  ]
 }

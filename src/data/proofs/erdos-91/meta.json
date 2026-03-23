@@ -115,5 +115,29 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-653",
+    "erdos-1089",
+    "erdos-670",
+    "erdos-604",
+    "erdos-95"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1089: Distinct Distances in Higher Dimensions"
+    },
+    {
+      "targetId": "erdos-670",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #670: Diameter of Sets with Distinct Distances"
+    }
+  ]
 }

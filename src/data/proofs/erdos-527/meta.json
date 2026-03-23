@@ -161,5 +161,29 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-1166",
+    "erdos-523",
+    "erdos-1179",
+    "erdos-1144",
+    "erdos-498"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    },
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #523: Maximum of Random Polynomials on Unit Circle"
+    },
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1179: Uniform Subset Sum Representations in Abelian Groups"
+    }
+  ]
 }

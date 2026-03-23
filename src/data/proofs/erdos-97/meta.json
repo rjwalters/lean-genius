@@ -140,5 +140,29 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-92",
+    "erdos-171",
+    "erdos-1007-oq-01",
+    "erdos-508",
+    "erdos-214"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-92",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #92: Equidistant Points in the Plane"
+    },
+    {
+      "targetId": "erdos-171",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #171: Unit Distance Chromatic Number"
+    },
+    {
+      "targetId": "erdos-1007-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Minimum Edges for Graph Dimension d"
+    }
+  ]
 }

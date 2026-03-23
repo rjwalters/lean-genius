@@ -149,5 +149,29 @@
       "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
       "type": "book"
     }
+  ],
+  "relatedProofs": [
+    "erdos-253",
+    "erdos-882",
+    "erdos-400",
+    "erdos-300",
+    "erdos-843"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #253: Subset Sums in Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-882",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #882: Subset Sums Without Divisibility"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #400: Factorial Divisibility and Sum Excess"
+    }
   ]
 }

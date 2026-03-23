@@ -130,5 +130,22 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1: Distinct Subset Sums"
+    },
+    {
+      "targetId": "erdos-954",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #954: Rosen's Greedy Additive Sequence"
+    },
+    {
+      "targetId": "erdos-949",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #949: Sum-Free Sets and Continuum-Sized Sumset Avoidance"
+    }
+  ]
 }

@@ -142,5 +142,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-691",
+    "erdos-852",
+    "erdos-783",
+    "erdos-675",
+    "erdos-385"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-691",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #691: Behrend Sequences and Density of Multiples"
+    },
+    {
+      "targetId": "erdos-852",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #852: Maximal Runs of Distinct Consecutive Prime Gaps"
+    },
+    {
+      "targetId": "erdos-783",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #783: Optimal Sieving with Coprime Sets"
+    }
+  ]
 }

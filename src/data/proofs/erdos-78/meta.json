@@ -135,5 +135,29 @@
     "Li (2023): improved to (log n)^C, current state of the art",
     "Campos–Griffiths–Morris–Sahasrabudhe (2023): R(k) ≤ (4-ε)^k, breaking the 4^k barrier",
     "https://erdosproblems.com/78"
+  ],
+  "relatedProofs": [
+    "erdos-77",
+    "erdos-800",
+    "erdos-165",
+    "erdos-1029",
+    "erdos-802"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-77",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #77: Ramsey Number Growth Rate"
+    },
+    {
+      "targetId": "erdos-800",
+      "relationship": "related",
+      "description": "Related formalization: Linear Ramsey Numbers for Graphs Without Adjacent High-Degree Vertices"
+    },
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #165: Asymptotic Formula for R(3,k)"
+    }
   ]
 }

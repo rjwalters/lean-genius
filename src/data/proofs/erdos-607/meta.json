@@ -191,5 +191,29 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-90",
+    "erdos-105",
+    "erdos-102",
+    "erdos-92",
+    "erdos-98"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-90",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #90: The Unit Distance Problem"
+    },
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #105: Lines Avoiding a Point Set"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines"
+    }
+  ]
 }

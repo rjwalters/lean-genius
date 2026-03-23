@@ -117,5 +117,29 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-505",
+    "erdos-502",
+    "erdos-1121",
+    "erdos-989",
+    "product-of-segments-of-chords"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-505",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #505: Borsuk's Conjecture"
+    },
+    {
+      "targetId": "erdos-502",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #502: Two-Distance Sets in Euclidean Space"
+    },
+    {
+      "targetId": "erdos-1121",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1121: Circle Covering Theorem"
+    }
+  ]
 }

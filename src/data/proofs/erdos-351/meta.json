@@ -123,5 +123,29 @@
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-283",
+    "erdos-587",
+    "erdos-779",
+    "erdos-157",
+    "erdos-42"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-283",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #283: Egyptian Fractions and Polynomial Values"
+    },
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #587: Square-Sum-Free Subsets"
+    },
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #779: Primorial Plus Prime"
+    }
+  ]
 }

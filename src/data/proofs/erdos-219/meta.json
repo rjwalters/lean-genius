@@ -130,5 +130,29 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-238",
+    "erdos-962",
+    "erdos-680",
+    "erdos-478",
+    "erdos-663"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #238: Consecutive Primes with Large Gaps"
+    },
+    {
+      "targetId": "erdos-962",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #962: Consecutive Integers with Large Prime Divisors"
+    },
+    {
+      "targetId": "erdos-680",
+      "relationship": "related",
+      "description": "Related formalization: Least Prime Factor Exceeding k² + 1"
+    }
+  ]
 }

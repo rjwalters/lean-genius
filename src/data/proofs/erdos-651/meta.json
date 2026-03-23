@@ -157,5 +157,29 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-118",
+    "erdos-107",
+    "erdos-804",
+    "erdos-615"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-118",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #118: Partition Ordinals and Higher Cliques"
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #107: The Happy Ending Problem"
+    }
+  ]
 }

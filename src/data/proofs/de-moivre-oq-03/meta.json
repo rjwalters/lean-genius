@@ -210,5 +210,29 @@
       "year": "1997",
       "venue": "Oxford University Press"
     }
+  ],
+  "relatedProofs": [
+    "de-moivre-oq-01",
+    "de-moivre-oq-02",
+    "erdos-974",
+    "de-moivre",
+    "euler-identity"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Explicit Multiple Angle Formulas from De Moivre's Theorem"
+    },
+    {
+      "targetId": "de-moivre-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Chebyshev Polynomial Properties via De Moivre's Theorem"
+    },
+    {
+      "targetId": "erdos-974",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #974: Power Sums and Roots of Unity"
+    }
   ]
 }

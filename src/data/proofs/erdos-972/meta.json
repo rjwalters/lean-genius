@@ -144,5 +144,29 @@
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-354",
+    "erdos-1149",
+    "erdos-164",
+    "erdos-685",
+    "erdos-279"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-354",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #354: Completeness of Binary Floor Sequences"
+    },
+    {
+      "targetId": "erdos-1149",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1149: Coprimality of n and ⌊n^α⌋"
+    },
+    {
+      "targetId": "erdos-164",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #164: Maximum Sum for Primitive Sets"
+    }
+  ]
 }

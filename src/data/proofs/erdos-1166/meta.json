@@ -192,5 +192,29 @@
     "axiomCount": 20,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "erdos-1179",
+    "erdos-498",
+    "erdos-1138",
+    "erdos-523",
+    "erdos-1155"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1179: Uniform Subset Sum Representations in Abelian Groups"
+    },
+    {
+      "targetId": "erdos-498",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #498: Complex Littlewood–Offord Problem"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1138: Primes in Short Intervals and Maximal Gaps"
+    }
+  ]
 }

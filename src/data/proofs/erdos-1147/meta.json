@@ -161,5 +161,29 @@
     "axiomCount": 4,
     "theoremCount": 8,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-1000",
+    "erdos-492",
+    "erdos-254",
+    "erdos-466",
+    "erdos-317"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1000: Generalized Totients and Diophantine Approximation"
+    },
+    {
+      "targetId": "erdos-492",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #492: Uniform Distribution Relative to a Fixed Sequence"
+    },
+    {
+      "targetId": "erdos-254",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #254: Subset Sum Representation"
+    }
+  ]
 }

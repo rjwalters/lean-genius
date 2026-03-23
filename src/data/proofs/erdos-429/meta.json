@@ -142,5 +142,29 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-279",
+    "erdos-9",
+    "erdos-273",
+    "erdos-1113",
+    "erdos-203"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-279",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #279: Covering with Shifted Prime Progressions"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    },
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #273: Covering Systems with Prime-Minus-One Moduli"
+    }
+  ]
 }

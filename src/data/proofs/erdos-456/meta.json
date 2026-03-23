@@ -221,5 +221,29 @@
       "venue": "PhD thesis, Universität Bonn",
       "note": "Best known Linnik constant L ≤ 5.18"
     }
+  ],
+  "relatedProofs": [
+    "erdos-415",
+    "erdos-416",
+    "erdos-1003",
+    "erdos-1059",
+    "erdos-793"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-415",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #415: Ordering Patterns in Euler's Totient Function"
+    },
+    {
+      "targetId": "erdos-416",
+      "relationship": "related",
+      "description": "Related formalization: Counting Totient Values"
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1003: Consecutive Equal Totients"
+    }
   ]
 }

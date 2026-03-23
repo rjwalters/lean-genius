@@ -111,5 +111,29 @@
     "axiomCount": 3,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-749",
+    "erdos-333",
+    "erdos-335",
+    "erdos-109",
+    "erdos-656"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-749",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #749: Dense Sumsets with Bounded Representation"
+    },
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #333: Sparse Sumset Bases"
+    },
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #335: Density Additivity Characterization"
+    }
+  ]
 }

@@ -141,5 +141,29 @@
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-296",
+    "erdos-310",
+    "erdos-309",
+    "erdos-293",
+    "erdos-313"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-296",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #296: Disjoint Unit Fraction Partitions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #310: Unit Fractions from Dense Subsets"
+    },
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #309: Integers as Sums of Distinct Unit Fractions"
+    }
+  ]
 }

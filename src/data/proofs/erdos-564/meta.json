@@ -157,5 +157,29 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-176",
+    "erdos-172",
+    "erdos-483",
+    "erdos-812",
+    "erdos-643"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-172",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #172: Monochromatic Sums and Products"
+    },
+    {
+      "targetId": "erdos-483",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #483: Growth Rate of Schur Numbers"
+    }
+  ]
 }

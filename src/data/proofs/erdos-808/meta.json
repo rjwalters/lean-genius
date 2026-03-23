@@ -149,5 +149,29 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-198",
+    "erdos-818",
+    "erdos-333",
+    "erdos-867",
+    "erdos-52"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #198: Sidon Sets and Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-818",
+      "relationship": "related",
+      "description": "Related formalization: Product Set Lower Bound for Small Sumsets"
+    },
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #333: Sparse Sumset Bases"
+    }
+  ]
 }

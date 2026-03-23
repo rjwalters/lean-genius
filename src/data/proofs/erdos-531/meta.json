@@ -160,5 +160,29 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-532",
+    "erdos-843",
+    "erdos-781",
+    "erdos-176",
+    "erdos-1090"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-532",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #532: Hindman's Theorem (IP Sets)"
+    },
+    {
+      "targetId": "erdos-843",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #843: Are the Squares Ramsey 2-Complete?"
+    },
+    {
+      "targetId": "erdos-781",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #781: Descending Waves in 2-Colorings"
+    }
+  ]
 }

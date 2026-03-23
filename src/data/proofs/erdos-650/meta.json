@@ -169,5 +169,29 @@
       "citation": "Erdős Problems, Problem #650, https://erdosproblems.com/650",
       "type": "website"
     }
+  ],
+  "relatedProofs": [
+    "erdos-708",
+    "erdos-1063",
+    "erdos-828",
+    "erdos-396",
+    "erdos-860"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1063: Binomial Coefficient Divisibility"
+    },
+    {
+      "targetId": "erdos-828",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #828: Totient Divisibility φ(n) | n + a"
+    }
   ]
 }

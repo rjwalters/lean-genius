@@ -148,5 +148,29 @@
     "axiomCount": 12,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-326",
+    "erdos-868",
+    "erdos-157",
+    "erdos-779",
+    "erdos-42"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-326",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #326: Additive Bases and Non-Convergent Subsequences"
+    },
+    {
+      "targetId": "erdos-868",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #868: Additive Bases and Minimal Bases"
+    },
+    {
+      "targetId": "erdos-157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis"
+    }
+  ]
 }

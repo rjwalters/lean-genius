@@ -156,5 +156,29 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-minpoly",
+    "cramers-rule-oq-01",
+    "cayley-hamilton-reduction-oq-01",
+    "cayley-hamilton-reduction"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "parent",
+      "description": "Related formalization: Minimal Polynomial Generalization to K-Algebras"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Related formalization: Minimal Polynomial Reduction and Annihilator Theory"
+    },
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Cayley-Hamilton as a Corollary of Cramer's Rule"
+    }
+  ]
 }

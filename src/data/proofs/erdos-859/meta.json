@@ -209,5 +209,29 @@
     "axiomCount": 6,
     "theoremCount": 13,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-1054-oq-01",
+    "erdos-1054",
+    "erdos-697",
+    "erdos-144",
+    "erdos-449"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1054: f(n) = o(n) for Almost All n"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1054: Sum of Smallest Divisors"
+    },
+    {
+      "targetId": "erdos-697",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #697: Density of Integers Divisible by d ≡ 1 (mod m)"
+    }
+  ]
 }

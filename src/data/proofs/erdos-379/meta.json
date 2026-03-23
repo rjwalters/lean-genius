@@ -146,5 +146,29 @@
     "axiomCount": 10,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-175",
+    "erdos-979",
+    "erdos-678",
+    "erdos-1094",
+    "erdos-684"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-175",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #175: Central Binomial Coefficient Not Squarefree"
+    },
+    {
+      "targetId": "erdos-979",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #979: Sums of k-th Powers of Primes"
+    },
+    {
+      "targetId": "erdos-678",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #678: LCM of Consecutive Integers"
+    }
+  ]
 }

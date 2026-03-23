@@ -214,5 +214,29 @@
     "axiomCount": 7,
     "theoremCount": 11,
     "definitionCount": 16
-  }
+  },
+  "relatedProofs": [
+    "erdos-510",
+    "erdos-256",
+    "erdos-987",
+    "erdos-484",
+    "erdos-996"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-510",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #510: Chowla's Cosine Problem"
+    },
+    {
+      "targetId": "erdos-256",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #256: Maxima of Products on the Unit Circle"
+    },
+    {
+      "targetId": "erdos-987",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #987: Exponential Sums and Sequence Discrepancy"
+    }
+  ]
 }

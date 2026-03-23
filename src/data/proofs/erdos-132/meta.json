@@ -194,5 +194,29 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-1089",
+    "erdos-604",
+    "erdos-653",
+    "erdos-104",
+    "erdos-91"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1089: Distinct Distances in Higher Dimensions"
+    },
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #604: The Pinned Distance Problem"
+    },
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    }
+  ]
 }

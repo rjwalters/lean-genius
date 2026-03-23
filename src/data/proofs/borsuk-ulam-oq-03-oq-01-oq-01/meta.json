@@ -193,5 +193,29 @@
       "citation": "Ziegler, G., Lectures on Polytopes, Springer GTM 152 (1995), Chapter 5 on triangulations.",
       "type": "book"
     }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01",
+    "erdos-780",
+    "platonic-solids"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Constructive 2D Borsuk-Ulam via Tucker's Lemma"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "extends",
+      "description": "Related formalization: Constructive Borsuk-Ulam Theorem and Equivalences"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Related formalization: Quantitative Borsuk-Ulam and Tucker's Lemma in 1D"
+    }
   ]
 }

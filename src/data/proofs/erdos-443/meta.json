@@ -170,5 +170,29 @@
     "axiomCount": 19,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-253",
+    "erdos-363",
+    "erdos-177",
+    "erdos-672",
+    "erdos-176"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #253: Subset Sums in Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-363",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #363: Square Products from Disjoint Intervals"
+    },
+    {
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #177: Discrepancy of Arithmetic Progressions"
+    }
+  ]
 }

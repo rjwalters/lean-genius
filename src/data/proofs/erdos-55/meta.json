@@ -148,5 +148,22 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-54",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #54: Ramsey 2-Complete Sets"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Related formalization: Ramsey's Theorem"
+    },
+    {
+      "targetId": "erdos-546",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #546: Ramsey Numbers and Edge Count"
+    }
+  ]
 }

@@ -156,5 +156,29 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-33",
+    "erdos-438",
+    "erdos-35",
+    "erdos-1136",
+    "erdos-339"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-33",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #33: Additive Complements of Squares"
+    },
+    {
+      "targetId": "erdos-438",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #438: Square-Free Sumsets"
+    },
+    {
+      "targetId": "erdos-35",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #35: Schnirelmann Density and Additive Bases"
+    }
+  ]
 }

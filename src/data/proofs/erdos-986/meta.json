@@ -152,5 +152,29 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-711",
+    "erdos-617",
+    "erdos-552",
+    "erdos-129",
+    "erdos-165"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-617",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #617: Balanced Colourings of Complete Graphs"
+    },
+    {
+      "targetId": "erdos-552",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #552: Ramsey Number R(C₄, Sₙ)"
+    }
+  ]
 }

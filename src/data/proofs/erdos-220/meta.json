@@ -155,5 +155,29 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-48",
+    "erdos-240",
+    "erdos-823",
+    "erdos-286",
+    "erdos-941"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-48",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #48: Infinitely Many Pairs with phi(n) = sigma(m)"
+    },
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #240: Gaps Between P-Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio"
+    }
+  ]
 }

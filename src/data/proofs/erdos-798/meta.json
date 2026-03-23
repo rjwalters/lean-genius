@@ -161,5 +161,29 @@
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-1166",
+    "erdos-733",
+    "erdos-754",
+    "erdos-498"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    },
+    {
+      "targetId": "erdos-733",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #733: Line-Compatible Sequences"
+    }
+  ]
 }

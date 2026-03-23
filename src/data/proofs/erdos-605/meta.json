@@ -190,5 +190,29 @@
     "axiomCount": 14,
     "theoremCount": 1,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-95",
+    "erdos-210",
+    "erdos-982",
+    "erdos-957",
+    "erdos-654"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-95",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #95: Sum of Squared Distance Multiplicities"
+    },
+    {
+      "targetId": "erdos-210",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #210: Ordinary Lines"
+    },
+    {
+      "targetId": "erdos-982",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #982: Distinct Distances from Convex Polygon Vertices"
+    }
+  ]
 }

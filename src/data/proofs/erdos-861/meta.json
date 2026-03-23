@@ -158,5 +158,29 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-748",
+    "erdos-865",
+    "erdos-757",
+    "erdos-362",
+    "erdos-772"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #748: The Cameron-Erdős Conjecture"
+    },
+    {
+      "targetId": "erdos-865",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #865: Pairwise Sums in Dense Sets"
+    },
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #757: Sidon Sets in Almost-Sidon Families"
+    }
+  ]
 }

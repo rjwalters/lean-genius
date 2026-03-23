@@ -175,5 +175,29 @@
       "key": "VD24",
       "citation": "W. van Doorn, 'On strongly complete sequences', preprint (2024)"
     }
+  ],
+  "relatedProofs": [
+    "erdos-124",
+    "erdos-246",
+    "erdos-54",
+    "erdos-157",
+    "erdos-779"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-124",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #124: Complete Sequences from Digit-Restricted Sums"
+    },
+    {
+      "targetId": "erdos-246",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #246: Completeness of {a^k b^l : k, l ≥ 0}"
+    },
+    {
+      "targetId": "erdos-54",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #54: Ramsey 2-Complete Sets"
+    }
   ]
 }

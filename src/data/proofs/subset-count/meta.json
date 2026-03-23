@@ -128,5 +128,29 @@
       "venue": "Addison-Wesley, 2nd edition",
       "note": "Standard reference for combinatorial identities including the proof that a set with n elements has 2^n subsets"
     }
+  ],
+  "relatedProofs": [
+    "inclusion-exclusion",
+    "birthday-problem",
+    "binomial-theorem",
+    "konigsberg",
+    "erdos-861"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "Related formalization: Principle of Inclusion/Exclusion"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Related formalization: The Birthday Problem"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Related formalization: The Binomial Theorem"
+    }
   ]
 }

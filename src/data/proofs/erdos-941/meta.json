@@ -182,5 +182,29 @@
     "axiomCount": 4,
     "theoremCount": 11,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-942",
+    "erdos-937",
+    "erdos-943",
+    "erdos-823",
+    "erdos-286"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-942",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #942: Powerful Numbers Between Consecutive Squares"
+    },
+    {
+      "targetId": "erdos-937",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #937: Arithmetic Progressions of Coprime Powerful Numbers"
+    },
+    {
+      "targetId": "erdos-943",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #943: Representation by Sums of Two Powerful Numbers"
+    }
+  ]
 }

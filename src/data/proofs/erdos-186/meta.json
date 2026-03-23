@@ -157,5 +157,29 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-817",
+    "erdos-179",
+    "erdos-721",
+    "erdos-198",
+    "erdos-757"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-817",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #817: Subset Sum Sets and Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #179: Arithmetic Progression Supersaturation"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #721: Van der Waerden Numbers W(3,k)"
+    }
+  ]
 }

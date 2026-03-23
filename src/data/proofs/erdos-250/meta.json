@@ -121,5 +121,29 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-262",
+    "erdos-1050",
+    "erdos-68",
+    "erdos-257",
+    "erdos-269"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-262",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #262: Irrationality Sequences"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1050: Irrationality of ∑ 1/(2^n - 3)"
+    },
+    {
+      "targetId": "erdos-68",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #68: Irrationality of Factorial Sum"
+    }
+  ]
 }

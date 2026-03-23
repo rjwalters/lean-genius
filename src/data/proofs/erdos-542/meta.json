@@ -155,5 +155,29 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-441",
+    "erdos-434",
+    "erdos-327",
+    "erdos-433",
+    "erdos-844"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-441",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #441: LCM-Bounded Subsets"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #434: Extremal Frobenius Problem"
+    },
+    {
+      "targetId": "erdos-327",
+      "relationship": "related",
+      "description": "Related formalization: Sum-Divides-Product Avoidance"
+    }
+  ]
 }

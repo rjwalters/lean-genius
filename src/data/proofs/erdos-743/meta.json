@@ -149,5 +149,29 @@
     "axiomCount": 13,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-557",
+    "erdos-993",
+    "erdos-1014",
+    "erdos-1169",
+    "erdos-568"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-557",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #557: Multicolor Ramsey Numbers of Trees"
+    },
+    {
+      "targetId": "erdos-993",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #993: Unimodal Independent Set Sequences in Trees"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1014: Ramsey Number Ratio Convergence"
+    }
+  ]
 }

@@ -144,5 +144,29 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-564",
+    "erdos-176",
+    "erdos-172",
+    "erdos-1167",
+    "erdos-129"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-564",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #564: Hypergraph Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-172",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #172: Monochromatic Sums and Products"
+    }
+  ]
 }

@@ -172,5 +172,29 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-484",
+    "erdos-476",
+    "erdos-785",
+    "erdos-749",
+    "erdos-153"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #484: Monochromatic Sums in Colorings"
+    },
+    {
+      "targetId": "erdos-476",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #476: The Erdős-Heilbronn Conjecture"
+    },
+    {
+      "targetId": "erdos-785",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #785: Exact Additive Complements"
+    }
+  ]
 }

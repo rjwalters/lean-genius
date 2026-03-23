@@ -121,5 +121,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-662",
+    "erdos-132",
+    "erdos-1071",
+    "erdos-657",
+    "erdos-653"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-662",
+      "relationship": "related",
+      "description": "Related formalization: Distances in Separated Point Sets"
+    },
+    {
+      "targetId": "erdos-132",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #132: Distance Multiplicities in Planar Point Sets"
+    },
+    {
+      "targetId": "erdos-1071",
+      "relationship": "related",
+      "description": "Related formalization: Maximal Packings of Unit Segments in the Unit Square"
+    }
+  ]
 }

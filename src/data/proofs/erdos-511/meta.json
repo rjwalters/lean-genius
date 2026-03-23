@@ -169,5 +169,29 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-1048",
+    "erdos-1041",
+    "erdos-114",
+    "erdos-1047",
+    "erdos-1120"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1048: Polynomial Lemniscate Diameter"
+    },
+    {
+      "targetId": "erdos-1041",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1041: Paths in Polynomial Level Sets"
+    },
+    {
+      "targetId": "erdos-114",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #114: Lemniscate Length Maximization"
+    }
+  ]
 }

@@ -155,5 +155,29 @@
     "axiomCount": 5,
     "theoremCount": 14,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-591",
+    "erdos-1167",
+    "erdos-1169",
+    "erdos-1171",
+    "erdos-1174"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-591",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1169: Partition Relations for ω₁²"
+    }
+  ]
 }

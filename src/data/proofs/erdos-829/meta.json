@@ -156,5 +156,29 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-28",
+    "erdos-954",
+    "erdos-432",
+    "erdos-340",
+    "erdos-332"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #28: The Erdős–Turán Conjecture on Additive Bases"
+    },
+    {
+      "targetId": "erdos-954",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #954: Rosen's Greedy Additive Sequence"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    }
+  ]
 }

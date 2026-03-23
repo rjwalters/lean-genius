@@ -170,5 +170,29 @@
     "Bollobás, Erdős: exact threshold n + 3 - 2√n for τ = 1, proved optimal",
     "Erdős Problem #610: clique transversal without clique size constraints (the base problem)",
     "https://erdosproblems.com/611"
+  ],
+  "relatedProofs": [
+    "erdos-610",
+    "erdos-743",
+    "erdos-1157",
+    "erdos-1092",
+    "erdos-567"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-610",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #610: Clique Transversal Numbers"
+    },
+    {
+      "targetId": "erdos-743",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #743: Tree Packing Conjecture"
+    },
+    {
+      "targetId": "erdos-1157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1157: General Extremal Numbers for r-Uniform Hypergraphs"
+    }
   ]
 }

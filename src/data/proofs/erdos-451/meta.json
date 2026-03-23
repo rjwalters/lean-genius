@@ -120,5 +120,29 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-930",
+    "erdos-708",
+    "erdos-686",
+    "erdos-421",
+    "erdos-677"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-930",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #930: Products of Disjoint Intervals and Perfect Powers"
+    },
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-686",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #686: Ratios of Products of Consecutive Integers"
+    }
+  ]
 }

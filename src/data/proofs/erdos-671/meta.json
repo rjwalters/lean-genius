@@ -183,5 +183,29 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-1130",
+    "erdos-1132",
+    "erdos-1131",
+    "erdos-1133",
+    "erdos-1129"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1130",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1130: Lagrange Basis Function Sums"
+    },
+    {
+      "targetId": "erdos-1132",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions"
+    },
+    {
+      "targetId": "erdos-1131",
+      "relationship": "related",
+      "description": "Related formalization: Minimizing Lagrange Interpolation Basis Polynomial Integrals"
+    }
+  ]
 }

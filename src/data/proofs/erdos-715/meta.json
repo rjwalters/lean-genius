@@ -214,5 +214,29 @@
       "citation": "Erdős Problems, Problem #715, https://erdosproblems.com/715",
       "type": "website"
     }
+  ],
+  "relatedProofs": [
+    "erdos-622",
+    "erdos-182",
+    "erdos-82",
+    "erdos-1031",
+    "erdos-758"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-622",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #622: Cycle-Spanning Subsets in Regular Graphs"
+    },
+    {
+      "targetId": "erdos-182",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #182: Maximum Edges Avoiding k-Regular Subgraphs"
+    },
+    {
+      "targetId": "erdos-82",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #82: Regular Induced Subgraphs"
+    }
   ]
 }

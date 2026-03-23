@@ -168,5 +168,29 @@
     "axiomCount": 19,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-275",
+    "erdos-277",
+    "erdos-278",
+    "erdos-280",
+    "erdos-947"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #275: Covering Congruences"
+    },
+    {
+      "targetId": "erdos-277",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #277: Covering Systems and Abundancy"
+    },
+    {
+      "targetId": "erdos-278",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #278: Maximum Covering Density of Congruence Systems"
+    }
+  ]
 }

@@ -130,5 +130,29 @@
     "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-257",
+    "erdos-262",
+    "erdos-1049",
+    "erdos-251",
+    "erdos-68"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-257",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #257: Irrationality of Lambert Sums"
+    },
+    {
+      "targetId": "erdos-262",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #262: Irrationality Sequences"
+    },
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1049: Irrationality of Divisor Sums"
+    }
+  ]
 }

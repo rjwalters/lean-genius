@@ -206,5 +206,29 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-587",
+    "erdos-432",
+    "erdos-33",
+    "erdos-749",
+    "erdos-333"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #587: Square-Sum-Free Subsets"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    },
+    {
+      "targetId": "erdos-33",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #33: Additive Complements of Squares"
+    }
+  ]
 }

@@ -115,5 +115,29 @@
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-213",
+    "erdos-1166",
+    "erdos-831",
+    "erdos-798"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-213",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #213: Integer Distance Sets in General Position"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    }
+  ]
 }

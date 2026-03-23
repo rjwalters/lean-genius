@@ -163,5 +163,29 @@
     "axiomCount": 2,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-605",
+    "erdos-210",
+    "erdos-476",
+    "erdos-105",
+    "erdos-98"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #605: Repeated Distances on a Sphere"
+    },
+    {
+      "targetId": "erdos-210",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #210: Ordinary Lines"
+    },
+    {
+      "targetId": "erdos-476",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #476: The Erdős-Heilbronn Conjecture"
+    }
+  ]
 }

@@ -200,5 +200,29 @@
       "citation": "Erdős, P. and Szemerédi, E. (1972). On a Ramsey type theorem. Periodica Math. Hungarica 2, 295-299.",
       "type": "paper"
     }
+  ],
+  "relatedProofs": [
+    "erdos-565",
+    "erdos-636",
+    "erdos-814",
+    "erdos-620",
+    "erdos-1036"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #565: Induced Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-636",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #636: Distinct Induced Subgraphs in Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-814",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #814: Dense Graphs Contain Smaller Min-Degree-k Subgraphs"
+    }
   ]
 }

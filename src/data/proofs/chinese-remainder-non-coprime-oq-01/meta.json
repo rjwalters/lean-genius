@@ -159,5 +159,29 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-678",
+    "erdos-1141",
+    "area-of-circle-oq-03-oq-02",
+    "erdos-534",
+    "erdos-700"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-678",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #678: LCM of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-1141",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1141: Coprime-Square Subtraction Primes"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Archimedes Pi Bounds: 223/71 < π < 22/7"
+    }
+  ]
 }

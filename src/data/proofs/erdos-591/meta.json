@@ -134,5 +134,29 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-590",
+    "erdos-1090",
+    "erdos-447",
+    "erdos-1167",
+    "erdos-924"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-590",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #590: Ordinal Ramsey Theory for ω^ω"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-447",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #447: Union-Free Collections of Sets"
+    }
+  ]
 }

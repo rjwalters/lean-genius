@@ -179,5 +179,29 @@
     "axiomCount": 10,
     "theoremCount": 8,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-272",
+    "erdos-702",
+    "erdos-874",
+    "erdos-57",
+    "erdos-426"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-272",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #272: Intersection Properties of Subsets"
+    },
+    {
+      "targetId": "erdos-702",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #702: Singleton Intersections in k-Uniform Families"
+    },
+    {
+      "targetId": "erdos-874",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #874: Admissible Sets and Subset Sum Disjointness"
+    }
+  ]
 }

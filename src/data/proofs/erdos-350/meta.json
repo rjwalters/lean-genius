@@ -150,5 +150,29 @@
     "axiomCount": 8,
     "theoremCount": 7,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-774",
+    "erdos-42",
+    "erdos-41",
+    "erdos-340",
+    "erdos-30"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-774",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #774: Dissociated and Proportionately Dissociated Sets"
+    },
+    {
+      "targetId": "erdos-42",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #42: Sidon Sets with Disjoint Difference Sets"
+    },
+    {
+      "targetId": "erdos-41",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #41: B_h Sequences and Density Bounds"
+    }
+  ]
 }

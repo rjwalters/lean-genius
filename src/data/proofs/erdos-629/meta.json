@@ -169,5 +169,22 @@
     "axiomCount": 0,
     "theoremCount": 37,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Related formalization: Four Color Theorem"
+    },
+    {
+      "targetId": "erdos-87",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #87: Ramsey Numbers and Chromatic Number"
+    },
+    {
+      "targetId": "erdos-60",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #60: Supersaturation of 4-Cycles"
+    }
+  ]
 }

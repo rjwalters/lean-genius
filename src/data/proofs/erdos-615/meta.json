@@ -166,5 +166,29 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-22",
+    "erdos-804",
+    "erdos-1019",
+    "erdos-88",
+    "erdos-547"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #22: Ramsey-Turán Numbers for K₄"
+    },
+    {
+      "targetId": "erdos-804",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #804: Independent Sets in Locally Independent Graphs"
+    },
+    {
+      "targetId": "erdos-1019",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1019: Saturated Planar Subgraphs in Dense Graphs"
+    }
+  ]
 }

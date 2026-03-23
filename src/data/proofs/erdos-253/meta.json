@@ -126,5 +126,29 @@
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-882",
+    "erdos-443",
+    "erdos-361",
+    "erdos-300",
+    "erdos-843"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-882",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #882: Subset Sums Without Divisibility"
+    },
+    {
+      "targetId": "erdos-443",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #443: Common Products k(m-k) and l(n-l)"
+    },
+    {
+      "targetId": "erdos-361",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #361: Largest Non-Representing Subsets"
+    }
+  ]
 }

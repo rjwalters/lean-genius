@@ -143,5 +143,29 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-708",
+    "erdos-1063",
+    "erdos-650",
+    "erdos-396",
+    "erdos-962"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #708: Divisibility of Products by Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1063: Binomial Coefficient Divisibility"
+    },
+    {
+      "targetId": "erdos-650",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #650: Divisibility Covering in Intervals"
+    }
+  ]
 }

@@ -128,5 +128,29 @@
     "axiomCount": 16,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-757",
+    "erdos-156",
+    "erdos-789",
+    "erdos-817",
+    "erdos-438"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #757: Sidon Sets in Almost-Sidon Families"
+    },
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #156: Minimum Size of Maximal Sidon Sets"
+    },
+    {
+      "targetId": "erdos-789",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #789: Sum-Length-Free Subsets"
+    }
+  ]
 }

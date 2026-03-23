@@ -168,5 +168,29 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-711",
+    "erdos-131",
+    "erdos-635",
+    "erdos-400",
+    "erdos-793"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #131: Non-Dividing Sets"
+    },
+    {
+      "targetId": "erdos-635",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #635: Non-Divisibility Condition on Differences"
+    }
+  ]
 }

@@ -147,5 +147,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-93",
+    "erdos-1084",
+    "erdos-956",
+    "erdos-1089",
+    "erdos-104"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-93",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #93: Distinct Distances in Convex Polygons"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1084: Unit Distances Among Separated Points"
+    },
+    {
+      "targetId": "erdos-956",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #956: Unit Distances Between Convex Translates"
+    }
+  ]
 }

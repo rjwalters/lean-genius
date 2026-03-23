@@ -136,5 +136,29 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-954",
+    "erdos-39",
+    "erdos-198",
+    "erdos-774",
+    "erdos-42"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-954",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #954: Rosen's Greedy Additive Sequence"
+    },
+    {
+      "targetId": "erdos-39",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #39: Infinite Sidon Set Growth"
+    },
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #198: Sidon Sets and Arithmetic Progressions"
+    }
+  ]
 }

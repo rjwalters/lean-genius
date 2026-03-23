@@ -149,5 +149,29 @@
     "axiomCount": 6,
     "theoremCount": 15,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-80",
+    "erdos-813",
+    "erdos-1033",
+    "erdos-1009",
+    "erdos-1010"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-80",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #80: Book Size in Triangle-Saturated Graphs"
+    },
+    {
+      "targetId": "erdos-813",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #813: Triangles in Every 7-Vertex Set"
+    },
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1033: Triangle Degree Sums in Dense Graphs"
+    }
+  ]
 }

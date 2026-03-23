@@ -125,5 +125,29 @@
     "Szemerédi regularity lemma",
     "Turán's theorem",
     "https://erdosproblems.com/533"
+  ],
+  "relatedProofs": [
+    "erdos-600",
+    "erdos-1167",
+    "erdos-1014",
+    "erdos-1169",
+    "erdos-1171"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-600",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #600: Edge-Triangle Containment Thresholds"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1014: Ramsey Number Ratio Convergence"
+    }
   ]
 }

@@ -143,5 +143,29 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-802",
+    "erdos-750",
+    "erdos-804",
+    "erdos-565",
+    "erdos-518"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-802",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #802: Independent Sets in K_r-Free Graphs"
+    },
+    {
+      "targetId": "erdos-750",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #750: Almost Bipartite Graphs with Infinite Chromatic Number"
+    },
+    {
+      "targetId": "erdos-804",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #804: Independent Sets in Locally Independent Graphs"
+    }
+  ]
 }

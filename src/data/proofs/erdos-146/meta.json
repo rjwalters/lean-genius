@@ -162,5 +162,29 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-113",
+    "erdos-571",
+    "erdos-127",
+    "erdos-1080",
+    "erdos-147"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-113",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #113: Extremal Numbers and Degeneracy of Bipartite Graphs"
+    },
+    {
+      "targetId": "erdos-571",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #571: Rational Turán Exponents for Bipartite Graphs"
+    },
+    {
+      "targetId": "erdos-127",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #127: Large Bipartite Subgraphs Beyond Edwards' Bound"
+    }
+  ]
 }

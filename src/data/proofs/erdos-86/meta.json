@@ -104,5 +104,22 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-117",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #117: Covering Groups by Abelian Subgroups"
+    },
+    {
+      "targetId": "erdos-182",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #182: Maximum Edges Avoiding k-Regular Subgraphs"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs"
+    }
+  ]
 }

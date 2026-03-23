@@ -155,5 +155,29 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-605",
+    "erdos-507",
+    "erdos-224",
+    "erdos-223",
+    "erdos-95"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #605: Repeated Distances on a Sphere"
+    },
+    {
+      "targetId": "erdos-507",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #507: Heilbronn's Triangle Problem"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #224: Obtuse Angles in Point Sets"
+    }
+  ]
 }

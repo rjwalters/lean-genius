@@ -129,5 +129,29 @@
     "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-315",
+    "erdos-306",
+    "erdos-304",
+    "erdos-295",
+    "erdos-287"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-315",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #315: Sylvester's Sequence and the Vardi Constant"
+    },
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #306: Egyptian Fractions with Semiprime Denominators"
+    },
+    {
+      "targetId": "erdos-304",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #304: Egyptian Fractions Complexity"
+    }
+  ]
 }

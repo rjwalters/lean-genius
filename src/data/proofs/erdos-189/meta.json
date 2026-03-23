@@ -112,5 +112,29 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-172",
+    "erdos-846",
+    "erdos-107",
+    "erdos-596",
+    "erdos-645"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-172",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #172: Monochromatic Sums and Products"
+    },
+    {
+      "targetId": "erdos-846",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #846: Non-Trilinear Subsets of the Plane"
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #107: The Happy Ending Problem"
+    }
+  ]
 }

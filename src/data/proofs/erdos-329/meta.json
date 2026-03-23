@@ -169,5 +169,29 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-876",
+    "erdos-865",
+    "erdos-757",
+    "erdos-487",
+    "erdos-772"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-876",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #876: Sum-Free Sets and Gap Growth"
+    },
+    {
+      "targetId": "erdos-865",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #865: Pairwise Sums in Dense Sets"
+    },
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #757: Sidon Sets in Almost-Sidon Families"
+    }
+  ]
 }

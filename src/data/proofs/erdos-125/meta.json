@@ -118,5 +118,29 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-157",
+    "erdos-9",
+    "erdos-940",
+    "erdos-41",
+    "erdos-33"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    },
+    {
+      "targetId": "erdos-940",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #940: Sums of r-Powerful Numbers"
+    }
+  ]
 }

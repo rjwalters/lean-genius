@@ -104,5 +104,29 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1033",
+    "erdos-1092",
+    "erdos-82",
+    "erdos-128",
+    "erdos-64"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1033: Triangle Degree Sums in Dense Graphs"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1092: Chromatic Decomposition Threshold"
+    },
+    {
+      "targetId": "erdos-82",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #82: Regular Induced Subgraphs"
+    }
+  ]
 }

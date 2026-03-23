@@ -103,5 +103,29 @@
     "axiomCount": 8,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-1177",
+    "erdos-555",
+    "erdos-544",
+    "erdos-545",
+    "erdos-151"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1177",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #1177: Chromatic Numbers of Hypergraph Families with Forbidden Subgraphs"
+    },
+    {
+      "targetId": "erdos-555",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #555: Ramsey Numbers of Even Cycles"
+    },
+    {
+      "targetId": "erdos-544",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #544: Consecutive Ramsey Number Differences"
+    }
+  ]
 }

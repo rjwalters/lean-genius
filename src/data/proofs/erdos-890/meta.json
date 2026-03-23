@@ -129,5 +129,22 @@
     "axiomCount": 2,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums"
+    },
+    {
+      "targetId": "erdos-852",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #852: Maximal Runs of Distinct Consecutive Prime Gaps"
+    },
+    {
+      "targetId": "erdos-867",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #867: Consecutive Sum-Free Sets"
+    }
+  ]
 }

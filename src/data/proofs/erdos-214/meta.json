@@ -190,5 +190,29 @@
     "axiomCount": 15,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-1071",
+    "erdos-657",
+    "erdos-507",
+    "erdos-755",
+    "erdos-668"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1071",
+      "relationship": "related",
+      "description": "Related formalization: Maximal Packings of Unit Segments in the Unit Square"
+    },
+    {
+      "targetId": "erdos-657",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances"
+    },
+    {
+      "targetId": "erdos-507",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #507: Heilbronn's Triangle Problem"
+    }
+  ]
 }

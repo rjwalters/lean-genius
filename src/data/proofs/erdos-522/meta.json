@@ -166,5 +166,29 @@
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-525",
+    "erdos-395",
+    "erdos-524",
+    "erdos-523",
+    "erdos-521"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #525: Littlewood Polynomials and Minimum Modulus"
+    },
+    {
+      "targetId": "erdos-395",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #395: Reverse Littlewood-Offord Problem"
+    },
+    {
+      "targetId": "erdos-524",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #524: Maximum of Random Sign Polynomials"
+    }
+  ]
 }

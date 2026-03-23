@@ -175,5 +175,29 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-578",
+    "erdos-799",
+    "erdos-747",
+    "erdos-745",
+    "erdos-1155-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-578",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #578: Hypercubes in Random Graphs"
+    },
+    {
+      "targetId": "erdos-799",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #799: List Chromatic Number of Random Graphs"
+    },
+    {
+      "targetId": "erdos-747",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #747: Shamir's Problem (Perfect Matchings in Random Hypergraphs)"
+    }
+  ]
 }

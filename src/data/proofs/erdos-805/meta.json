@@ -127,5 +127,29 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-922",
+    "erdos-88",
+    "erdos-547",
+    "erdos-565",
+    "erdos-567"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-922",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #922: Folkman's Chromatic Number Bound"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #88: Induced Subgraphs in Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #547: Tree Ramsey Numbers"
+    }
+  ]
 }

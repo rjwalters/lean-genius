@@ -175,5 +175,29 @@
     "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-700",
+    "erdos-535",
+    "erdos-539",
+    "erdos-770",
+    "erdos-534"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-700",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #700: GCD of n with Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-535",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #535: GCD-Free r-Subsets"
+    },
+    {
+      "targetId": "erdos-539",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #539: GCD-Reduced Quotients"
+    }
+  ]
 }

@@ -182,5 +182,29 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-649",
+    "erdos-316",
+    "erdos-678",
+    "erdos-441",
+    "erdos-873"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-649",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #649: Greatest Prime Factors of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-316",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #316: Partitioning Sets by Reciprocal Sums"
+    },
+    {
+      "targetId": "erdos-678",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #678: LCM of Consecutive Integers"
+    }
+  ]
 }

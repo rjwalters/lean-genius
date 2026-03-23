@@ -202,5 +202,29 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-506",
+    "erdos-1121",
+    "erdos-234",
+    "erdos-673",
+    "erdos-408"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-506",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #506: Minimum Number of Circles from n Points"
+    },
+    {
+      "targetId": "erdos-1121",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1121: Circle Covering Theorem"
+    },
+    {
+      "targetId": "erdos-234",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #234: Density of Normalized Prime Gaps"
+    }
+  ]
 }

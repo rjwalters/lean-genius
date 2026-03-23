@@ -146,5 +146,29 @@
       "venue": "American Mathematical Society, Graduate Studies in Mathematics 19, 2nd edition",
       "note": "Modern treatment of existence and regularity for elliptic boundary value problems — context for Hilbert's 20th problem"
     }
+  ],
+  "relatedProofs": [
+    "hilbert-23",
+    "hilbert-19",
+    "hilbert-13",
+    "triangular-reciprocals",
+    "navier-stokes-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-23",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's Twenty-Third Problem: Calculus of Variations"
+    },
+    {
+      "targetId": "hilbert-19",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's Nineteenth Problem: Regularity of Variational Solutions"
+    },
+    {
+      "targetId": "hilbert-13",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's 13th Problem: Superposition of Functions"
+    }
   ]
 }

@@ -126,5 +126,29 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-688",
+    "erdos-281",
+    "erdos-929",
+    "erdos-690",
+    "erdos-730"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-688",
+      "relationship": "related",
+      "description": "Related formalization: Covering by Large Prime Congruences"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #281: Covering Congruences and Density"
+    },
+    {
+      "targetId": "erdos-929",
+      "relationship": "related",
+      "description": "Related formalization: Smooth Numbers in Short Intervals"
+    }
+  ]
 }

@@ -132,5 +132,29 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-684",
+    "erdos-1095",
+    "erdos-683",
+    "erdos-1094",
+    "erdos-175"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-684",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #684: Smooth Parts of Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1095: The Erdős-Selfridge Function"
+    },
+    {
+      "targetId": "erdos-683",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #683: Largest Prime Divisor of Binomial Coefficients"
+    }
+  ]
 }

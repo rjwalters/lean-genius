@@ -112,5 +112,29 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-833",
+    "erdos-740",
+    "erdos-739",
+    "erdos-919",
+    "erdos-736"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-833",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs"
+    },
+    {
+      "targetId": "erdos-740",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #740: Chromatic Number and Odd Cycle Avoidance"
+    },
+    {
+      "targetId": "erdos-739",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #739: Chromatic Numbers of Subgraphs (Infinite)"
+    }
+  ]
 }

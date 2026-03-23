@@ -106,5 +106,29 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-345",
+    "erdos-344",
+    "erdos-157",
+    "erdos-25",
+    "erdos-9"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-345",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #345: Completeness Thresholds for Power Sequences"
+    },
+    {
+      "targetId": "erdos-344",
+      "relationship": "related",
+      "description": "Related formalization: Subcomplete Sequences and Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis"
+    }
+  ]
 }

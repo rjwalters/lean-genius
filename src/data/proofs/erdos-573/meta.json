@@ -160,5 +160,29 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-600",
+    "erdos-1092",
+    "erdos-82",
+    "erdos-533",
+    "erdos-128"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-600",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #600: Edge-Triangle Containment Thresholds"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1092: Chromatic Decomposition Threshold"
+    },
+    {
+      "targetId": "erdos-82",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #82: Regular Induced Subgraphs"
+    }
+  ]
 }

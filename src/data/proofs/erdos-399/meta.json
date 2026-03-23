@@ -119,5 +119,29 @@
     "axiomCount": 4,
     "theoremCount": 16,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-393",
+    "erdos-388",
+    "erdos-405",
+    "erdos-373",
+    "erdos-242"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-393",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #393: Factorial Factorization Span"
+    },
+    {
+      "targetId": "erdos-388",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #388: Products of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-405",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #405: Factorial Plus Power Equals Prime Power"
+    }
+  ]
 }

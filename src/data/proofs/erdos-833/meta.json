@@ -227,5 +227,29 @@
       "citation": "Alon, N. and Spencer, J., The Probabilistic Method, 4th ed., Wiley (2016), Chapter 5: The Lovász Local Lemma.",
       "type": "book"
     }
+  ],
+  "relatedProofs": [
+    "erdos-753",
+    "erdos-797",
+    "erdos-802",
+    "erdos-801",
+    "erdos-626"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-753",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #753: List Chromatic Number of Graph and Complement"
+    },
+    {
+      "targetId": "erdos-797",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #797: Acyclic Chromatic Number"
+    },
+    {
+      "targetId": "erdos-802",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #802: Independent Sets in K_r-Free Graphs"
+    }
   ]
 }

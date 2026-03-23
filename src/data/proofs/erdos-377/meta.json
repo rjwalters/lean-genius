@@ -133,5 +133,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-436",
+    "erdos-942",
+    "erdos-975",
+    "erdos-372",
+    "erdos-1122"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-436",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #436: Consecutive kth Power Residues"
+    },
+    {
+      "targetId": "erdos-942",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #942: Powerful Numbers Between Consecutive Squares"
+    },
+    {
+      "targetId": "erdos-975",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #975: Divisor Sums over Polynomial Values"
+    }
+  ]
 }

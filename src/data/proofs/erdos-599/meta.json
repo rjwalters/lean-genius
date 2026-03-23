@@ -146,5 +146,29 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 14
-  }
+  },
+  "relatedProofs": [
+    "erdos-1067",
+    "erdos-594",
+    "erdos-736",
+    "erdos-110",
+    "erdos-737"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1067: Infinitely Connected Subgraphs with Chromatic Number ℵ₁"
+    },
+    {
+      "targetId": "erdos-594",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #594: Graphs with Chromatic Number ≥ ℵ₁ and Odd Cycles"
+    },
+    {
+      "targetId": "erdos-736",
+      "relationship": "related",
+      "description": "Related formalization: Chromatic Numbers and Finite Subgraph Inheritance"
+    }
+  ]
 }

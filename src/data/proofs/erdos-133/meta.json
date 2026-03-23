@@ -163,5 +163,29 @@
     "axiomCount": 13,
     "theoremCount": 1,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-134",
+    "erdos-619",
+    "erdos-23",
+    "erdos-581",
+    "erdos-618"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #134: Triangle-Free Graphs with Diameter 2"
+    },
+    {
+      "targetId": "erdos-619",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #619: Decreasing Diameter of Triangle-Free Graphs"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #23: Triangle-Free Graphs and Bipartiteness"
+    }
+  ]
 }

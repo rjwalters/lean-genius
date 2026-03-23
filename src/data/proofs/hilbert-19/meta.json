@@ -152,5 +152,29 @@
       "venue": "Memorie della Accademia delle Scienze di Torino 3, 25–43",
       "note": "Proved regularity of solutions to elliptic PDEs — a key result toward Hilbert's 19th problem"
     }
+  ],
+  "relatedProofs": [
+    "hilbert-19-oq-03",
+    "hilbert-23",
+    "hilbert-20",
+    "hilbert-10",
+    "hilbert-3"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-19-oq-03",
+      "relationship": "parent",
+      "description": "Related formalization: Fully Nonlinear Elliptic Regularity (Evans-Krylov)"
+    },
+    {
+      "targetId": "hilbert-23",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's Twenty-Third Problem: Calculus of Variations"
+    },
+    {
+      "targetId": "hilbert-20",
+      "relationship": "related",
+      "description": "Related formalization: Hilbert's Twentieth Problem: Boundary Value Problems"
+    }
   ]
 }

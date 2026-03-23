@@ -149,5 +149,29 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem",
+    "shannon-source-coding",
+    "shannon-channel-coding",
+    "shannon-entropy"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Related formalization: The Gnedenko-Kolmogorov Domain of Attraction Theorem"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "Related formalization: Central Limit Theorem"
+    },
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "related",
+      "description": "Related formalization: Shannon Source Coding Theorem"
+    }
+  ]
 }

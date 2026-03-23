@@ -145,5 +145,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-105",
+    "erdos-605",
+    "erdos-1086",
+    "erdos-210",
+    "erdos-1082"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #105: Lines Avoiding a Point Set"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #605: Repeated Distances on a Sphere"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1086: Triangles of Equal Area"
+    }
+  ]
 }

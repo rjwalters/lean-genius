@@ -122,5 +122,29 @@
     "axiomCount": 4,
     "theoremCount": 14,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-257",
+    "erdos-269",
+    "erdos-250",
+    "erdos-264",
+    "erdos-262"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-257",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #257: Irrationality of Lambert Sums"
+    },
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #269: LCM Series Irrationality"
+    },
+    {
+      "targetId": "erdos-250",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #250: Irrationality of the Sigma-Power Series"
+    }
+  ]
 }

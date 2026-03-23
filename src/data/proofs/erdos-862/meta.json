@@ -180,5 +180,29 @@
     "axiomCount": 11,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-757",
+    "erdos-447",
+    "erdos-772",
+    "erdos-83",
+    "erdos-589"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #757: Sidon Sets in Almost-Sidon Families"
+    },
+    {
+      "targetId": "erdos-447",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #447: Union-Free Collections of Sets"
+    },
+    {
+      "targetId": "erdos-772",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #772: Sidon Sets in Bounded Convolution Sets"
+    }
+  ]
 }

@@ -176,5 +176,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-443",
+    "erdos-437",
+    "erdos-374",
+    "erdos-711",
+    "erdos-434"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-443",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #443: Common Products k(m-k) and l(n-l)"
+    },
+    {
+      "targetId": "erdos-437",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #437: Square Partial Products"
+    },
+    {
+      "targetId": "erdos-374",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #374: Factorial Products as Perfect Squares"
+    }
+  ]
 }

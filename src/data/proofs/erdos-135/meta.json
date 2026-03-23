@@ -125,5 +125,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-653",
+    "erdos-1088",
+    "erdos-1089",
+    "erdos-93",
+    "erdos-604"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1088: Distinct Distance Subsets in High Dimensions"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1089: Distinct Distances in Higher Dimensions"
+    }
+  ]
 }

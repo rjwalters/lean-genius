@@ -131,5 +131,29 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-1049",
+    "erdos-258",
+    "erdos-269",
+    "erdos-250",
+    "erdos-264"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1049: Irrationality of Divisor Sums"
+    },
+    {
+      "targetId": "erdos-258",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #258: Irrationality of Divisor Sum Series"
+    },
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #269: LCM Series Irrationality"
+    }
+  ]
 }

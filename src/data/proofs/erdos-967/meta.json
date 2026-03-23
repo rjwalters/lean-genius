@@ -176,5 +176,29 @@
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-1048",
+    "erdos-1115",
+    "erdos-511",
+    "erdos-537",
+    "erdos-1081"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1048: Polynomial Lemniscate Diameter"
+    },
+    {
+      "targetId": "erdos-1115",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1115: Path Length for Entire Functions"
+    },
+    {
+      "targetId": "erdos-511",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #511: Bounded Components of Polynomial Lemniscates"
+    }
+  ]
 }

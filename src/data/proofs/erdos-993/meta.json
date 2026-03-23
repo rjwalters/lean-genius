@@ -172,5 +172,29 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-743",
+    "erdos-557",
+    "erdos-1080",
+    "erdos-1155-oq-01",
+    "erdos-57"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-743",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #743: Tree Packing Conjecture"
+    },
+    {
+      "targetId": "erdos-557",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #557: Multicolor Ramsey Numbers of Trees"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs"
+    }
+  ]
 }

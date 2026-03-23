@@ -154,5 +154,29 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-939",
+    "erdos-686",
+    "erdos-364",
+    "erdos-945",
+    "erdos-367"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-939",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #939: r-Powerful Numbers and Sums"
+    },
+    {
+      "targetId": "erdos-686",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #686: Ratios of Products of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-364",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #364: Consecutive Powerful Numbers"
+    }
+  ]
 }

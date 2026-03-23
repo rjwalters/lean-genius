@@ -116,5 +116,21 @@
     "axiomCount": 6,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-115",
+    "erdos-120"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-115",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #115: Polynomial Derivatives on Connected Lemniscates"
+    },
+    {
+      "targetId": "erdos-120",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #120: The Similarity Problem"
+    }
+  ]
 }

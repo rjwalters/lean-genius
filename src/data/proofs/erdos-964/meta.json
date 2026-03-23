@@ -158,5 +158,29 @@
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-378",
+    "erdos-697",
+    "erdos-144",
+    "erdos-646",
+    "erdos-35"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-378",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #378: Density of Squarefree Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-697",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #697: Density of Integers Divisible by d ≡ 1 (mod m)"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #144: Propinquity of Divisors"
+    }
+  ]
 }

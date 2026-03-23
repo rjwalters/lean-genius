@@ -129,5 +129,29 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-200",
+    "erdos-779",
+    "erdos-9",
+    "erdos-3",
+    "erdos-473"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #200: Longest Arithmetic Progression of Primes"
+    },
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #779: Primorial Plus Prime"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    }
+  ]
 }

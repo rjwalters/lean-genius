@@ -171,5 +171,29 @@
     "axiomCount": 4,
     "theoremCount": 26,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-369",
+    "erdos-1055",
+    "erdos-821",
+    "erdos-961",
+    "erdos-684"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #369: Consecutive Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1055: Prime Classification by p+1 Factorization"
+    },
+    {
+      "targetId": "erdos-821",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #821: Large Values of the Euler Phi Preimage Function"
+    }
+  ]
 }

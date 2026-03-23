@@ -154,5 +154,29 @@
     "axiomCount": 0,
     "theoremCount": 25,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-242",
+    "erdos-399",
+    "erdos-398",
+    "erdos-443",
+    "erdos-363"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #242: The Erdős-Straus Conjecture"
+    },
+    {
+      "targetId": "erdos-399",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #399: Factorial Diophantine Equations"
+    },
+    {
+      "targetId": "erdos-398",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #398: The Brocard-Ramanujan Conjecture"
+    }
+  ]
 }

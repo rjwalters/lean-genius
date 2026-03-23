@@ -133,5 +133,29 @@
     "axiomCount": 21,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-852",
+    "erdos-386",
+    "erdos-235",
+    "erdos-238",
+    "erdos-680"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-852",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #852: Maximal Runs of Distinct Consecutive Prime Gaps"
+    },
+    {
+      "targetId": "erdos-386",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #386: Binomial Coefficients as Products of Consecutive Primes"
+    },
+    {
+      "targetId": "erdos-235",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #235: Gaps Between Coprime Integers"
+    }
+  ]
 }

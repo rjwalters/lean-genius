@@ -142,5 +142,29 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-673",
+    "erdos-1122",
+    "erdos-823",
+    "erdos-413",
+    "erdos-69"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #673: Sum of Consecutive Divisor Ratios"
+    },
+    {
+      "targetId": "erdos-1122",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1122: Additive Functions and Monotonicity Defects"
+    },
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio"
+    }
+  ]
 }

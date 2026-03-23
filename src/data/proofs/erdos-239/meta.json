@@ -182,5 +182,29 @@
     "axiomCount": 11,
     "theoremCount": 10,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-823",
+    "erdos-4",
+    "erdos-419",
+    "erdos-682",
+    "erdos-286"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #4: Large Prime Gaps"
+    },
+    {
+      "targetId": "erdos-419",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)"
+    }
+  ]
 }

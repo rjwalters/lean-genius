@@ -186,5 +186,29 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 21
-  }
+  },
+  "relatedProofs": [
+    "erdos-525",
+    "erdos-1166",
+    "erdos-524",
+    "erdos-1179",
+    "erdos-1114"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #525: Littlewood Polynomials and Minimum Modulus"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    },
+    {
+      "targetId": "erdos-524",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #524: Maximum of Random Sign Polynomials"
+    }
+  ]
 }

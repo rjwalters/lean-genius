@@ -144,5 +144,29 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "cevas-theorem-oq-02-oq-01",
+    "pythagorean-theorem-oq-03",
+    "picks-theorem-oq-03",
+    "cevas-theorem-oq-02",
+    "binomial-theorem-oq-02"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Ceva's Theorem: Spherical Ceva via Unit Vectors and Weight Balance"
+    },
+    {
+      "targetId": "pythagorean-theorem-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Pythagorean Theorem in Non-Euclidean Geometry"
+    },
+    {
+      "targetId": "picks-theorem-oq-03",
+      "relationship": "related",
+      "description": "Related formalization: Ehrhart Polynomials for Lattice Polytopes"
+    }
+  ]
 }

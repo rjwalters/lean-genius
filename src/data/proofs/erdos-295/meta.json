@@ -156,5 +156,29 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "erdos-284",
+    "erdos-287",
+    "erdos-309",
+    "erdos-286",
+    "erdos-293"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #284: Maximum First Denominator for Egyptian Fraction Representations of 1"
+    },
+    {
+      "targetId": "erdos-287",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #287: Gap in Egyptian Fraction Representations of 1"
+    },
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #309: Integers as Sums of Distinct Unit Fractions"
+    }
+  ]
 }

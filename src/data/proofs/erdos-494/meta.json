@@ -166,5 +166,29 @@
     "axiomCount": 12,
     "theoremCount": 1,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-176",
+    "erdos-743",
+    "erdos-1088",
+    "erdos-8",
+    "erdos-600"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    },
+    {
+      "targetId": "erdos-743",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #743: Tree Packing Conjecture"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1088: Distinct Distance Subsets in High Dimensions"
+    }
+  ]
 }

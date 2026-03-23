@@ -184,5 +184,29 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-565",
+    "erdos-802",
+    "erdos-720",
+    "erdos-582",
+    "erdos-925"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #565: Induced Ramsey Numbers"
+    },
+    {
+      "targetId": "erdos-802",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #802: Independent Sets in K_r-Free Graphs"
+    },
+    {
+      "targetId": "erdos-720",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #720: Size Ramsey Numbers of Paths and Cycles"
+    }
+  ]
 }

@@ -159,5 +159,29 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "erdos-681",
+    "erdos-248",
+    "erdos-430",
+    "erdos-682",
+    "erdos-680"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-681",
+      "relationship": "related",
+      "description": "Related formalization: Large Least Prime Factor in Shifted Composites"
+    },
+    {
+      "targetId": "erdos-248",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #248: Bounded Prime Factors of Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-430",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #430: Composite Numbers in Greedy Large-Factor Sequences"
+    }
+  ]
 }

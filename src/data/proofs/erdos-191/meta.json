@@ -198,5 +198,29 @@
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-924",
+    "erdos-1090",
+    "erdos-591",
+    "erdos-966",
+    "erdos-582"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-924",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #924: Folkman-Nešetřil-Rödl Theorem (Ramsey without Large Cliques)"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1090: Monochromatic Collinear Points"
+    },
+    {
+      "targetId": "erdos-591",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)"
+    }
+  ]
 }

@@ -143,5 +143,29 @@
     "axiomCount": 12,
     "theoremCount": 2,
     "definitionCount": 16
-  }
+  },
+  "relatedProofs": [
+    "erdos-300",
+    "erdos-45",
+    "erdos-310",
+    "erdos-297",
+    "erdos-309"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #300: Maximum Subsets Avoiding Unit Fraction Sum 1"
+    },
+    {
+      "targetId": "erdos-45",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #45: Monochromatic Egyptian Fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #310: Unit Fractions from Dense Subsets"
+    }
+  ]
 }

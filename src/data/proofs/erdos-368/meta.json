@@ -188,5 +188,29 @@
     "axiomCount": 11,
     "theoremCount": 13,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-850",
+    "erdos-936",
+    "erdos-889",
+    "erdos-891",
+    "erdos-679"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-850",
+      "relationship": "related",
+      "description": "Related formalization: Same Prime Factors for Three Consecutive Shifts (Erdős-Woods Conjecture)"
+    },
+    {
+      "targetId": "erdos-936",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #936: Powerful Numbers Near 2^n and n!"
+    },
+    {
+      "targetId": "erdos-889",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #889: New Prime Factors in Consecutive Integers"
+    }
+  ]
 }

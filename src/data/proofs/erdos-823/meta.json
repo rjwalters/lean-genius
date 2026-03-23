@@ -234,5 +234,29 @@
     "axiomCount": 21,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-48",
+    "erdos-315",
+    "erdos-239",
+    "erdos-277",
+    "erdos-419"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-48",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #48: Infinitely Many Pairs with phi(n) = sigma(m)"
+    },
+    {
+      "targetId": "erdos-315",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #315: Sylvester's Sequence and the Vardi Constant"
+    },
+    {
+      "targetId": "erdos-239",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #239: Mean of Multiplicative Plus-Minus-One Functions"
+    }
+  ]
 }

@@ -143,5 +143,29 @@
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-1077",
+    "erdos-1037",
+    "erdos-88",
+    "erdos-23",
+    "erdos-547"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1077",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1077: Balanced Subgraphs in Dense Graphs"
+    },
+    {
+      "targetId": "erdos-1037",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1037: Degree Diversity and Ramsey Properties"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #88: Induced Subgraphs in Ramsey Graphs"
+    }
+  ]
 }

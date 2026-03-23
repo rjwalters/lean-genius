@@ -168,5 +168,29 @@
     "axiomCount": 11,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-392",
+    "erdos-419",
+    "erdos-981",
+    "erdos-933",
+    "erdos-1073"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-392",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #392: Optimal Factorization of n!"
+    },
+    {
+      "targetId": "erdos-419",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)"
+    },
+    {
+      "targetId": "erdos-981",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #981: Character Sum Stabilization Threshold"
+    }
+  ]
 }

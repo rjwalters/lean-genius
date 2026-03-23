@@ -117,5 +117,29 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-1138",
+    "erdos-36",
+    "erdos-539",
+    "erdos-177",
+    "erdos-691"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1138: Primes in Short Intervals and Maximal Gaps"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #36: Minimum Overlap Problem"
+    },
+    {
+      "targetId": "erdos-539",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #539: GCD-Reduced Quotients"
+    }
+  ]
 }

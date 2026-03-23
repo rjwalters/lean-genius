@@ -168,5 +168,29 @@
     "axiomCount": 0,
     "theoremCount": 28,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "bezout-identity-oq-02",
+    "bezout-identity-oq-02-oq-01",
+    "bezout-identity-oq-04",
+    "bezout-identity",
+    "bezout-identity-oq-03"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Euclid's Lemma via coprime_iff_linear_combination"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Fundamental Theorem of Arithmetic from Euclid's Lemma"
+    },
+    {
+      "targetId": "bezout-identity-oq-04",
+      "relationship": "related",
+      "description": "Related formalization: GCD Structure: Complete Solution Set of Linear Diophantine Equations"
+    }
+  ]
 }

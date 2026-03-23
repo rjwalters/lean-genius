@@ -155,5 +155,29 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-976",
+    "erdos-369",
+    "erdos-460",
+    "erdos-461",
+    "erdos-462"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #976: Greatest Prime Divisor of Polynomial Products"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #369: Consecutive Smooth Numbers"
+    },
+    {
+      "targetId": "erdos-460",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #460: Greedy Coprime Sieve Reciprocals"
+    }
+  ]
 }

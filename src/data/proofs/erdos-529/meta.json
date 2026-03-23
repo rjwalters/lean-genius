@@ -213,5 +213,29 @@
     "axiomCount": 13,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-528",
+    "erdos-1166",
+    "erdos-1144",
+    "erdos-1138",
+    "erdos-1155"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-528",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #528: Connective Constant for Self-Avoiding Walks"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1166: Most-Visited Points in Planar Random Walk"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1144: Partial Sums of Random Multiplicative Functions"
+    }
+  ]
 }

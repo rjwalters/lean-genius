@@ -138,5 +138,29 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-586",
+    "erdos-7",
+    "erdos-543",
+    "erdos-2"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-8",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #8: Monochromatic Covering Systems"
+    },
+    {
+      "targetId": "erdos-586",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #586: Covering Systems with Antichain Moduli"
+    },
+    {
+      "targetId": "erdos-7",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #7: Odd Covering Systems"
+    }
+  ]
 }

@@ -148,5 +148,29 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-619",
+    "erdos-133",
+    "erdos-134",
+    "erdos-23",
+    "erdos-1104"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-619",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #619: Decreasing Diameter of Triangle-Free Graphs"
+    },
+    {
+      "targetId": "erdos-133",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #133: Maximum Degree in Triangle-Free Diameter-2 Graphs"
+    },
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #134: Triangle-Free Graphs with Diameter 2"
+    }
+  ]
 }

@@ -119,5 +119,29 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-153",
+    "erdos-14",
+    "erdos-840",
+    "erdos-42",
+    "erdos-31"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #153: Gap Variance in Sidon Sumsets"
+    },
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Related formalization: Unique Sums and Non-Unique Representation"
+    },
+    {
+      "targetId": "erdos-840",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #840: Quasi-Sidon Subsets"
+    }
+  ]
 }

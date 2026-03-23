@@ -134,5 +134,29 @@
     "axiomCount": 15,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-839",
+    "erdos-423",
+    "erdos-123",
+    "erdos-1109",
+    "erdos-954"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums"
+    },
+    {
+      "targetId": "erdos-423",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #423: Sums of Consecutive Terms Sequence"
+    },
+    {
+      "targetId": "erdos-123",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #123: d-Complete Sequences"
+    }
+  ]
 }

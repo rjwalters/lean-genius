@@ -144,5 +144,29 @@
     "axiomCount": 15,
     "theoremCount": 44,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-980",
+    "erdos-711",
+    "erdos-306",
+    "erdos-420",
+    "erdos-318"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-980",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #980: Sum of Least k-th Power Nonresidues"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #306: Egyptian Fractions with Semiprime Denominators"
+    }
+  ]
 }

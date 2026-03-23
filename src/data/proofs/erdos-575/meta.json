@@ -97,5 +97,29 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-1016",
+    "erdos-585",
+    "erdos-176",
+    "erdos-743",
+    "erdos-1088"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1016",
+      "relationship": "related",
+      "description": "Related formalization: Pancyclic Excess Edges"
+    },
+    {
+      "targetId": "erdos-585",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #585: Edge-Disjoint Cycles on the Same Vertex Set"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #176: Discrepancy of Arithmetic Progressions"
+    }
+  ]
 }

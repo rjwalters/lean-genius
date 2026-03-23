@@ -123,5 +123,29 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-463",
+    "erdos-1073",
+    "erdos-164",
+    "erdos-685",
+    "erdos-279"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-463",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #463: Composites Near Their Least Prime Factor"
+    },
+    {
+      "targetId": "erdos-1073",
+      "relationship": "related",
+      "description": "Related formalization: Composites Dividing Factorial Plus One"
+    },
+    {
+      "targetId": "erdos-164",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #164: Maximum Sum for Primitive Sets"
+    }
+  ]
 }

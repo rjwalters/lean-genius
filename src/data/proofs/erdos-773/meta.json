@@ -130,5 +130,29 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-340",
+    "erdos-782",
+    "erdos-587",
+    "erdos-774",
+    "erdos-42"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #340: Growth of the Greedy Sidon Sequence"
+    },
+    {
+      "targetId": "erdos-782",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #782: Quasi-Progressions and Cubes in the Squares"
+    },
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #587: Square-Sum-Free Subsets"
+    }
+  ]
 }

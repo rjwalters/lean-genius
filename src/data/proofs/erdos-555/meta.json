@@ -102,5 +102,29 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-545",
+    "erdos-1013",
+    "erdos-563",
+    "erdos-151",
+    "erdos-544"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-545",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #545: Ramsey Numbers and Maximally Complete Graphs"
+    },
+    {
+      "targetId": "erdos-1013",
+      "relationship": "related",
+      "description": "Related formalization: Triangle-Free Chromatic Threshold"
+    },
+    {
+      "targetId": "erdos-563",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #563: Balanced 2-Colorings and Subset Edge Density"
+    }
+  ]
 }

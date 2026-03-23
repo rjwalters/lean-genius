@@ -147,5 +147,29 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-976",
+    "erdos-448",
+    "erdos-283",
+    "erdos-978",
+    "erdos-351"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #976: Greatest Prime Divisor of Polynomial Products"
+    },
+    {
+      "targetId": "erdos-448",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #448: Divisors in Dyadic Intervals"
+    },
+    {
+      "targetId": "erdos-283",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #283: Egyptian Fractions and Polynomial Values"
+    }
+  ]
 }

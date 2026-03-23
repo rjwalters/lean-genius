@@ -199,5 +199,29 @@
     "axiomCount": 2,
     "theoremCount": 10,
     "definitionCount": 15
-  }
+  },
+  "relatedProofs": [
+    "erdos-157",
+    "erdos-9",
+    "erdos-41",
+    "erdos-33",
+    "erdos-432"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-157",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l"
+    },
+    {
+      "targetId": "erdos-41",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #41: B_h Sequences and Density Bounds"
+    }
+  ]
 }

@@ -150,5 +150,29 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "relatedProofs": [
+    "erdos-318",
+    "erdos-304",
+    "erdos-295",
+    "erdos-243",
+    "erdos-287"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-318",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #318: Signed Unit Fractions with Zero Sum"
+    },
+    {
+      "targetId": "erdos-304",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #304: Egyptian Fractions Complexity"
+    },
+    {
+      "targetId": "erdos-295",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #295: Egyptian Fractions with Large Denominators"
+    }
+  ]
 }

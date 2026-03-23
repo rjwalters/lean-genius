@@ -141,5 +141,29 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-690",
+    "erdos-346",
+    "erdos-963",
+    "erdos-688",
+    "erdos-10"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Related formalization: Unimodality of k-th Prime Factor Density"
+    },
+    {
+      "targetId": "erdos-346",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #346: Complete Sequences and the Golden Ratio"
+    },
+    {
+      "targetId": "erdos-963",
+      "relationship": "related",
+      "description": "Related formalization: Dissociated Subsets"
+    }
+  ]
 }

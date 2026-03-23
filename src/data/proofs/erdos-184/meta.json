@@ -178,5 +178,29 @@
     "Bucić–Montgomery (2022): O(n log* n) bound, arXiv:2209.01051",
     "Erdős (1971): 'Some unsolved problems in graph theory'",
     "https://erdosproblems.com/184"
+  ],
+  "relatedProofs": [
+    "erdos-64",
+    "erdos-574",
+    "erdos-719",
+    "erdos-551",
+    "erdos-577"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-64",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #64: Power of Two Cycles in Min Degree 3 Graphs"
+    },
+    {
+      "targetId": "erdos-574",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #574: Turán Number for Consecutive Cycle Pairs"
+    },
+    {
+      "targetId": "erdos-719",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #719: Hypergraph Decomposition into Cliques"
+    }
   ]
 }

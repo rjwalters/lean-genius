@@ -108,5 +108,29 @@
     "axiomCount": 6,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-617",
+    "erdos-552",
+    "erdos-165",
+    "erdos-1014",
+    "erdos-546"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-617",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #617: Balanced Colourings of Complete Graphs"
+    },
+    {
+      "targetId": "erdos-552",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #552: Ramsey Number R(C₄, Sₙ)"
+    },
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #165: Asymptotic Formula for R(3,k)"
+    }
+  ]
 }

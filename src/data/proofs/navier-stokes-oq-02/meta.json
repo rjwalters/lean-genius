@@ -161,5 +161,29 @@
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104
-  }
+  },
+  "relatedProofs": [
+    "navier-stokes-oq-01",
+    "navier-stokes-existence",
+    "cauchy-schwarz-integral-oq-02",
+    "area-of-circle-oq-03",
+    "cauchy-schwarz-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "navier-stokes-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: 2D Navier-Stokes: Quantitative Enstrophy Decay and Energy Identity"
+    },
+    {
+      "targetId": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "Related formalization: Navier-Stokes Existence and Smoothness"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Minkowski Integral Inequality as Corollary of Cauchy-Schwarz"
+    }
+  ]
 }

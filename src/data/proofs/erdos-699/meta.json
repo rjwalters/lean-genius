@@ -142,5 +142,29 @@
     "axiomCount": 1,
     "theoremCount": 17,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-387",
+    "erdos-635",
+    "erdos-7",
+    "erdos-710",
+    "erdos-888"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #387: Divisors of Binomial Coefficients Near n"
+    },
+    {
+      "targetId": "erdos-635",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #635: Non-Divisibility Condition on Differences"
+    },
+    {
+      "targetId": "erdos-7",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #7: Odd Covering Systems"
+    }
+  ]
 }

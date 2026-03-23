@@ -162,5 +162,29 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 11
-  }
+  },
+  "relatedProofs": [
+    "erdos-1081",
+    "erdos-444",
+    "erdos-955",
+    "erdos-1060",
+    "erdos-417"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1081",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1081: Sums of Two Squarefull Numbers"
+    },
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #444: Generalized Divisor Functions"
+    },
+    {
+      "targetId": "erdos-955",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #955: Sum of Proper Divisors and Density"
+    }
+  ]
 }

@@ -183,5 +183,29 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    "erdos-596",
+    "erdos-758",
+    "erdos-1105",
+    "erdos-1015",
+    "erdos-1006-oq-02-oq-03"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-596",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #596: Graph Coloring Dichotomy for Forbidden Subgraphs"
+    },
+    {
+      "targetId": "erdos-758",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #758: Cochromatic Number z(n)"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1105: Anti-Ramsey Numbers for Cycles and Paths"
+    }
+  ]
 }

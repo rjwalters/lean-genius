@@ -187,5 +187,29 @@
     "axiomCount": 10,
     "theoremCount": 12,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-908",
+    "erdos-1126",
+    "erdos-1125",
+    "erdos-1144",
+    "erdos-498"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-908",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #908: Functions with Measurable Differences"
+    },
+    {
+      "targetId": "erdos-1126",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1126: Almost Additive Functions"
+    },
+    {
+      "targetId": "erdos-1125",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1125: Kemperman's Inequality and Monotonicity"
+    }
+  ]
 }

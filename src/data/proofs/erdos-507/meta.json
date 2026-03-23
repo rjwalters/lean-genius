@@ -170,5 +170,29 @@
     "Komlós–Pintz–Szemerédi (1981): upper bound 1/n^{8/7}",
     "Cohen–Pohoata–Zakharov (2024): upper bound 1/n^{7/6+o(1)}",
     "https://erdosproblems.com/507"
+  ],
+  "relatedProofs": [
+    "erdos-653",
+    "erdos-982",
+    "erdos-654",
+    "erdos-661",
+    "erdos-755"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    },
+    {
+      "targetId": "erdos-982",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #982: Distinct Distances from Convex Polygon Vertices"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #654: Distinct Distances with No Four Concyclic"
+    }
   ]
 }

@@ -177,5 +177,29 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-943",
+    "erdos-936",
+    "erdos-937",
+    "erdos-200",
+    "erdos-177"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-943",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #943: Representation by Sums of Two Powerful Numbers"
+    },
+    {
+      "targetId": "erdos-936",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #936: Powerful Numbers Near 2^n and n!"
+    },
+    {
+      "targetId": "erdos-937",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #937: Arithmetic Progressions of Coprime Powerful Numbers"
+    }
+  ]
 }

@@ -187,5 +187,29 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-133",
+    "erdos-628",
+    "erdos-632",
+    "erdos-1034",
+    "erdos-549"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-133",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #133: Maximum Degree in Triangle-Free Diameter-2 Graphs"
+    },
+    {
+      "targetId": "erdos-628",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #628: The Erdős-Lovász Tihany Conjecture"
+    },
+    {
+      "targetId": "erdos-632",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #632: The (a,b)-Choosability Scaling Conjecture"
+    }
+  ]
 }

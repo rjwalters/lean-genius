@@ -156,5 +156,29 @@
     "axiomCount": 17,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "erdos-101",
+    "erdos-1084",
+    "erdos-653",
+    "erdos-507",
+    "erdos-655"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #101: Four-Point Lines from Planar Point Sets"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1084: Unit Distances Among Separated Points"
+    },
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #653: Distinct Distance Counts in the Plane"
+    }
+  ]
 }

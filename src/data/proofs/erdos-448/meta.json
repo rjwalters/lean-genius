@@ -160,5 +160,29 @@
     "axiomCount": 12,
     "theoremCount": 9,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-975",
+    "erdos-692",
+    "erdos-258",
+    "erdos-964",
+    "erdos-824"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-975",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #975: Divisor Sums over Polynomial Values"
+    },
+    {
+      "targetId": "erdos-692",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #692: Unimodularity of Divisor Density"
+    },
+    {
+      "targetId": "erdos-258",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #258: Irrationality of Divisor Sum Series"
+    }
+  ]
 }

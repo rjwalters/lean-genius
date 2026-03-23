@@ -189,5 +189,29 @@
       "venue": "Monographies de L'Enseignement Mathématique 28",
       "note": "Problem 344 statement (p.54)"
     }
+  ],
+  "relatedProofs": [
+    "erdos-347",
+    "erdos-345",
+    "erdos-253",
+    "erdos-843",
+    "erdos-254"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-347",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #347: Complete Sequences with Ratio Tending to 2"
+    },
+    {
+      "targetId": "erdos-345",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #345: Completeness Thresholds for Power Sequences"
+    },
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #253: Subset Sums in Arithmetic Progressions"
+    }
   ]
 }

@@ -189,5 +189,29 @@
     "axiomCount": 18,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-986",
+    "erdos-651",
+    "erdos-95",
+    "erdos-1088"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #107: The Happy Ending Problem"
+    },
+    {
+      "targetId": "erdos-986",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #986: Ramsey Number Lower Bounds"
+    },
+    {
+      "targetId": "erdos-651",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #651: Convex Polyhedra from Points in General Position"
+    }
+  ]
 }

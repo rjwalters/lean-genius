@@ -165,5 +165,29 @@
       "venue": "Cambridge University Press",
       "note": "Comprehensive treatment of Young, Hölder, and Minkowski inequalities"
     }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-integral-oq-02",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "lebesgue-measure-oq-02",
+    "cauchy-schwarz-oq-01"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Minkowski Integral Inequality as Corollary of Cauchy-Schwarz"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Hölder's Inequality as a Generalization of Cauchy-Schwarz"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Related formalization: Hölder's Inequality in eLpNorm Form"
+    }
   ]
 }

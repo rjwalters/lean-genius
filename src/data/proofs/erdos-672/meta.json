@@ -167,5 +167,29 @@
     "axiomCount": 14,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-443",
+    "erdos-394",
+    "erdos-271",
+    "erdos-930",
+    "erdos-1108"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-443",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #443: Common Products k(m-k) and l(n-l)"
+    },
+    {
+      "targetId": "erdos-394",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #394: Divisibility by Consecutive Integer Products"
+    },
+    {
+      "targetId": "erdos-271",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #271: Stanley Sequences"
+    }
+  ]
 }

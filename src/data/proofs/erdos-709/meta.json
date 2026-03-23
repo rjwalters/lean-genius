@@ -193,5 +193,29 @@
     "axiomCount": 18,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-962",
+    "erdos-711",
+    "erdos-131",
+    "erdos-394",
+    "erdos-708"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-962",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #962: Consecutive Integers with Large Prime Divisors"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #711: Divisibility Matching with Variable Starting Point"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #131: Non-Dividing Sets"
+    }
+  ]
 }

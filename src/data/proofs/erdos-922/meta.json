@@ -134,5 +134,29 @@
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-944",
+    "erdos-758",
+    "erdos-753",
+    "erdos-762",
+    "erdos-108"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-944",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #944: Critical Graphs Without Critical Edges"
+    },
+    {
+      "targetId": "erdos-758",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #758: Cochromatic Number z(n)"
+    },
+    {
+      "targetId": "erdos-753",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #753: List Chromatic Number of Graph and Complement"
+    }
+  ]
 }

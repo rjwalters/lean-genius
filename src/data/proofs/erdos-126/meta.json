@@ -168,5 +168,29 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-635",
+    "erdos-890",
+    "erdos-415",
+    "erdos-416",
+    "erdos-1054"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-635",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #635: Non-Divisibility Condition on Differences"
+    },
+    {
+      "targetId": "erdos-890",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #890: Sum of ω over Consecutive Integers"
+    },
+    {
+      "targetId": "erdos-415",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #415: Ordering Patterns in Euler's Totient Function"
+    }
+  ]
 }

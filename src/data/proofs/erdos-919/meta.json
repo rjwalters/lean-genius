@@ -151,5 +151,29 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 14
-  }
+  },
+  "relatedProofs": [
+    "erdos-111",
+    "erdos-75",
+    "erdos-62",
+    "erdos-740",
+    "erdos-739"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #111: Edge Deletion to Bipartiteness for Large Chromatic Graphs"
+    },
+    {
+      "targetId": "erdos-75",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #75: Uncountable Chromatic Number and Large Independent Sets"
+    },
+    {
+      "targetId": "erdos-62",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁"
+    }
+  ]
 }

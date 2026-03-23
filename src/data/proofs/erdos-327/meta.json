@@ -143,5 +143,29 @@
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-1062",
+    "erdos-302",
+    "erdos-301",
+    "erdos-962",
+    "erdos-711"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1062",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1062: Maximum \"No Divides Two Others\" Sets"
+    },
+    {
+      "targetId": "erdos-302",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #302: Unit Fraction Sum-Free Sets"
+    },
+    {
+      "targetId": "erdos-301",
+      "relationship": "related",
+      "description": "Related formalization: Egyptian Fraction Avoidance Sets"
+    }
+  ]
 }

@@ -127,5 +127,29 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-489",
+    "erdos-208",
+    "erdos-823",
+    "erdos-367",
+    "erdos-11"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-489",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #489: Gaps Between B-Free Numbers"
+    },
+    {
+      "targetId": "erdos-208",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #208: Gaps Between Squarefree Numbers"
+    },
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio"
+    }
+  ]
 }

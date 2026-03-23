@@ -129,5 +129,29 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-432",
+    "erdos-997",
+    "erdos-495",
+    "erdos-345",
+    "erdos-321"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #432: Pairwise Coprime Sumsets"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #997: Well-Distributed Sequences and Primes"
+    },
+    {
+      "targetId": "erdos-495",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #495: The Littlewood Conjecture"
+    }
+  ]
 }

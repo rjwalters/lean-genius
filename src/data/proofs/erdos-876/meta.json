@@ -168,5 +168,29 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-329",
+    "erdos-13",
+    "erdos-748",
+    "erdos-711",
+    "erdos-986"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-329",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #329: Maximum Density of Sidon Sets"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #13: Divisibility-Free Sets"
+    },
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #748: The Cameron-Erdős Conjecture"
+    }
+  ]
 }

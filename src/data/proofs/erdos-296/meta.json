@@ -191,5 +191,29 @@
     "Hunter, Sawhney (2021): observation that Bloom's Theorem 3 implies k(N) = (1-o(1))·log N",
     "Erdős, Rado (1960): 'Intersection theorems for systems of sets', sunflower lemma",
     "https://erdosproblems.com/296"
+  ],
+  "relatedProofs": [
+    "erdos-286",
+    "erdos-310",
+    "erdos-309",
+    "erdos-293",
+    "erdos-313"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #286: Unit Fractions in Short Intervals"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related formalization: Erdos Problem #310: Unit Fractions from Dense Subsets"
+    },
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #309: Integers as Sums of Distinct Unit Fractions"
+    }
   ]
 }

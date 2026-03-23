@@ -163,5 +163,29 @@
     "axiomCount": 4,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "erdos-131",
+    "divisibility-by-3-oq-02",
+    "erdos-793",
+    "erdos-1052",
+    "erdos-404"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #131: Non-Dividing Sets"
+    },
+    {
+      "targetId": "divisibility-by-3-oq-02",
+      "relationship": "related",
+      "description": "Related formalization: Base-b Divisibility Rules"
+    },
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #793: Primitive Sets Avoiding Product Divisibility"
+    }
+  ]
 }

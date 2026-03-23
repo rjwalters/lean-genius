@@ -166,5 +166,29 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 13
-  }
+  },
+  "relatedProofs": [
+    "erdos-974",
+    "erdos-519",
+    "erdos-114",
+    "erdos-1117",
+    "erdos-976"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-974",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #974: Power Sums and Roots of Unity"
+    },
+    {
+      "targetId": "erdos-519",
+      "relationship": "related",
+      "description": "Related formalization: Power Sums of Complex Numbers"
+    },
+    {
+      "targetId": "erdos-114",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #114: Lemniscate Length Maximization"
+    }
+  ]
 }

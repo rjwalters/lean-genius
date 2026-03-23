@@ -164,5 +164,29 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-206",
+    "erdos-492",
+    "erdos-466",
+    "erdos-894",
+    "erdos-1001"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-206",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #206: Eventually Greedy Egyptian Fractions"
+    },
+    {
+      "targetId": "erdos-492",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #492: Uniform Distribution Relative to a Fixed Sequence"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #466: Points in a Circle with Fractional Distance Separation"
+    }
+  ]
 }

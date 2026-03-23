@@ -157,5 +157,29 @@
     "axiomCount": 4,
     "theoremCount": 10,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-276",
+    "erdos-234",
+    "erdos-673",
+    "erdos-989",
+    "erdos-408"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-276",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #276: Composite Lucas Sequence Without Common Factor"
+    },
+    {
+      "targetId": "erdos-234",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #234: Density of Normalized Prime Gaps"
+    },
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #673: Sum of Consecutive Divisor Ratios"
+    }
+  ]
 }

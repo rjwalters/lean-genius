@@ -158,5 +158,29 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-23",
+    "erdos-134",
+    "erdos-133",
+    "erdos-1021",
+    "erdos-816"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #23: Triangle-Free Graphs and Bipartiteness"
+    },
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #134: Triangle-Free Graphs with Diameter 2"
+    },
+    {
+      "targetId": "erdos-133",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #133: Maximum Degree in Triangle-Free Diameter-2 Graphs"
+    }
+  ]
 }

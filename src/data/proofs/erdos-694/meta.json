@@ -154,5 +154,29 @@
     "axiomCount": 12,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-1000",
+    "erdos-417",
+    "erdos-828",
+    "erdos-822",
+    "erdos-415"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #1000: Generalized Totients and Diophantine Approximation"
+    },
+    {
+      "targetId": "erdos-417",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #417: Counting Totient Values"
+    },
+    {
+      "targetId": "erdos-828",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #828: Totient Divisibility φ(n) | n + a"
+    }
+  ]
 }

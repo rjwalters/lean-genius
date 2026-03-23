@@ -153,5 +153,29 @@
     "axiomCount": 13,
     "theoremCount": 15,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-387",
+    "binomial-theorem-oq-04",
+    "erdos-699",
+    "erdos-397",
+    "erdos-698"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #387: Divisors of Binomial Coefficients Near n"
+    },
+    {
+      "targetId": "binomial-theorem-oq-04",
+      "relationship": "related",
+      "description": "Related formalization: Vandermonde's Identity: C(m+n,r) = Σ C(m,k)·C(n,r-k)"
+    },
+    {
+      "targetId": "erdos-699",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #699: Prime Divisors of GCDs of Binomial Coefficients"
+    }
+  ]
 }

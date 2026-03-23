@@ -203,5 +203,29 @@
     "axiomCount": 17,
     "theoremCount": 7,
     "definitionCount": 9
-  }
+  },
+  "relatedProofs": [
+    "erdos-630",
+    "erdos-753",
+    "erdos-799",
+    "erdos-1018",
+    "erdos-629"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-630",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #630: List Chromatic Number of Planar Bipartite Graphs"
+    },
+    {
+      "targetId": "erdos-753",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #753: List Chromatic Number of Graph and Complement"
+    },
+    {
+      "targetId": "erdos-799",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #799: List Chromatic Number of Random Graphs"
+    }
+  ]
 }

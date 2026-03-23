@@ -152,5 +152,29 @@
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-1094",
+    "erdos-175",
+    "erdos-684",
+    "erdos-1063",
+    "erdos-1095"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1094",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1094: Least Prime Factor of Binomial Coefficients"
+    },
+    {
+      "targetId": "erdos-175",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #175: Central Binomial Coefficient Not Squarefree"
+    },
+    {
+      "targetId": "erdos-684",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #684: Smooth Parts of Binomial Coefficients"
+    }
+  ]
 }

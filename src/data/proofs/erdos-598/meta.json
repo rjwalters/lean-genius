@@ -112,5 +112,29 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "relatedProofs": [
+    "erdos-1167",
+    "erdos-597",
+    "erdos-965",
+    "erdos-1174",
+    "erdos-1128"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1167: Stepping-Down Partition Relations"
+    },
+    {
+      "targetId": "erdos-597",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #597: Partition Relations for Ordinal Powers"
+    },
+    {
+      "targetId": "erdos-965",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #965: Monochromatic Sums in 2-Colorings of ℝ"
+    }
+  ]
 }

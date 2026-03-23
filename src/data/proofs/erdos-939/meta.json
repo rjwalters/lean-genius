@@ -137,5 +137,29 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-364",
+    "erdos-366",
+    "erdos-306",
+    "erdos-137",
+    "erdos-1057"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-364",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #364: Consecutive Powerful Numbers"
+    },
+    {
+      "targetId": "erdos-366",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #366: Consecutive k-Full Numbers"
+    },
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #306: Egyptian Fractions with Semiprime Denominators"
+    }
+  ]
 }

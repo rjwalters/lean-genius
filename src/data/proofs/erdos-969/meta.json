@@ -139,5 +139,29 @@
     "axiomCount": 9,
     "theoremCount": 11,
     "definitionCount": 7
-  }
+  },
+  "relatedProofs": [
+    "erdos-1102",
+    "erdos-233",
+    "erdos-489",
+    "erdos-367",
+    "erdos-11"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1102: Squarefree Properties P and Q"
+    },
+    {
+      "targetId": "erdos-233",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #233: Sum of Squares of Prime Gaps"
+    },
+    {
+      "targetId": "erdos-489",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #489: Gaps Between B-Free Numbers"
+    }
+  ]
 }

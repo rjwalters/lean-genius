@@ -165,5 +165,29 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 1
-  }
+  },
+  "relatedProofs": [
+    "erdos-391",
+    "erdos-1073",
+    "erdos-936",
+    "erdos-68",
+    "erdos-728-factorial-divisibility"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-391",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #391: Factorizing n! with Large Minimum Factor"
+    },
+    {
+      "targetId": "erdos-1073",
+      "relationship": "related",
+      "description": "Related formalization: Composites Dividing Factorial Plus One"
+    },
+    {
+      "targetId": "erdos-936",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #936: Powerful Numbers Near 2^n and n!"
+    }
+  ]
 }

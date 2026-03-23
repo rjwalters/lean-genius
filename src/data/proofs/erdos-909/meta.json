@@ -139,5 +139,29 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-780",
+    "erdos-268",
+    "erdos-910",
+    "erdos-823",
+    "erdos-95"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #780: Chromatic Number of Kneser Hypergraphs"
+    },
+    {
+      "targetId": "erdos-268",
+      "relationship": "related",
+      "description": "Related formalization: Erdős #268: Interior of Harmonic Subseries Points"
+    },
+    {
+      "targetId": "erdos-910",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #910: Connected Subsets of Euclidean Space"
+    }
+  ]
 }

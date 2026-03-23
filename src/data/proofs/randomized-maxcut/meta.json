@@ -181,5 +181,21 @@
       "venue": "SIAM Journal on Computing 37(1), 319–357",
       "note": "Proved that the Goemans-Williamson ratio is optimal assuming the Unique Games Conjecture"
     }
+  ],
+  "relatedProofs": [
+    "randomized-maxcut-oq-01",
+    "erdos-1155"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "randomized-maxcut-oq-01",
+      "relationship": "parent",
+      "description": "Related formalization: Goemans-Williamson 0.878-Approximation for MaxCut"
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #1155: Triangle Removal Process"
+    }
   ]
 }

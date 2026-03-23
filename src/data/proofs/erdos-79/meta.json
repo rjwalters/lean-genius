@@ -158,5 +158,29 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "relatedProofs": [
+    "erdos-88",
+    "erdos-916",
+    "erdos-547",
+    "erdos-565",
+    "erdos-567"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #88: Induced Subgraphs in Ramsey Graphs"
+    },
+    {
+      "targetId": "erdos-916",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #916: Graphs with Cycles and Triply Adjacent Vertices"
+    },
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related formalization: Erdős Problem #547: Tree Ramsey Numbers"
+    }
+  ]
 }
