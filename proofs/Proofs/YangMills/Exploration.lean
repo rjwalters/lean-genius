@@ -27624,9 +27624,9 @@ noncomputable def adhm_dimension (m : InstantonModuli) : ℕ :=
 theorem adhm_dim_pos (m : InstantonModuli) :
     adhm_dimension m ≥ 1 := by
   unfold adhm_dimension
-  have : m.N ≥ 2 := m.hN
-  have : m.k ≥ 1 := m.hk
-  omega
+  have hN : m.N ≥ 2 := m.hN
+  have hk : m.k ≥ 1 := m.hk
+  nlinarith
 
 /-- For SU(2), k=1: the moduli space is 8-dimensional.
     Decomposition: 4 (position) + 1 (scale ρ) + 3 (gauge orientation) = 8. -/
@@ -27908,7 +27908,6 @@ theorem polyakov_confinement_criterion (L_exp : ℝ) :
     L_exp = 0 → ∀ T : ℝ, T > 0 → ¬ (∃ F : ℝ, Real.exp (-F / T) = |L_exp|) := by
   intro hL T hT ⟨F, hF⟩
   simp [hL, abs_zero] at hF
-  exact (Real.exp_pos (-F / T)).ne' hF
 
 /-- The Fredenhagen-Marcu order parameter.
     ρ(R) = ⟨W_open(R)⟩ / √⟨W_closed(2R)⟩
