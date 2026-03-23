@@ -29,9 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Fixed 4 pre-existing build errors (Fintype.card_fin, deprecated API, omega failures). File now compiles. 3 sorries remain: beker_characterization, beker_maximizer_achieves (both deep Beker [Be25d] results), permCountByOrder_n_eq_subfactorial_pred (n-cycle counting).",
+    "builtItems": [
+      "Fixed orderOf_perm_dvd_factorial: added Fintype.card_fin simp lemma",
+      "Fixed permCountByOrder_le_factorial: added Fintype.card_fin to rw chain",
+      "Fixed lcmRange_dvd_lcmRange: explicit lt_of_lt_of_le instead of omega",
+      "Fixed dvd_lcmRange: dsimp before omega for lambda reduction",
+      "Fixed deprecated Finset.not_mem_empty → Finset.notMem_empty"
+    ],
+    "insights": [
+      "File required import Mathlib (full import) - imports all of Mathlib",
+      "Fintype.card_perm gives card = (Fintype.card α)! not n!, need Fintype.card_fin to bridge",
+      "omega cannot see through Finset.mem_range - need to extract membership manually",
+      "lambda application (fun i => i+1) (j-1) needs dsimp before omega can process",
+      "Beker characterization and maximizer theorems are deep published results, unlikely provable from Mathlib",
+      "permCountByOrder_n_eq_subfactorial_pred (n-cycle counting) might be provable but needs cycle-counting infrastructure not easily available in current Mathlib"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1161 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
