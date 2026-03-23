@@ -140,11 +140,19 @@
     },
     {
       "id": "threshold",
-      "title": "Why Degree 5 is the Threshold",
+      "title": "Part VI: Why Degree 5 is the Threshold",
       "startLine": 151,
-      "endLine": 185,
-      "summary": "Parts VI–VII documentary commentary: the derived series $S_4 \\supset A_4 \\supset V_4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$ (abelian quotients → formula exists) vs $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ (stuck at simple $A_5 \\Rightarrow$ no formula). Historical significance: first major impossibility proof. Closes the `AbelRuffini` namespace.",
+      "endLine": 163,
+      "summary": "Part VI: the derived series comparison — $S_4 \\supset A_4 \\supset V_4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$ (abelian quotients → radical formula exists) vs $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ (stuck at simple $A_5 \\Rightarrow$ no formula). The threshold is sharp: $A_n$ transitions from solvable ($n \\leq 4$) to simple ($n \\geq 5$), an irreversible structural change.",
       "mathContext": "The Klein four-group $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the key structural feature making $S_4$ solvable: it is a normal subgroup of $A_4$ with quotient $\\mathbb{Z}/3$, and $A_4/V_4 \\cong \\mathbb{Z}/3$ is abelian. No such subgroup exists in $A_5$: any non-trivial normal subgroup of $A_5$ would have to be a union of conjugacy classes of sizes 1, 15, 20, 12, 12 (summing to 60), but no such sub-sum (including 1) divides 60 and yields a normal subgroup."
+    },
+    {
+      "id": "historical-significance",
+      "title": "Part VII: Historical Significance and the Impossibility Paradigm",
+      "startLine": 164,
+      "endLine": 185,
+      "summary": "Part VII: five aspects of Abel-Ruffini's impact — (1) the conceptual shift from seeking a formula to proving impossibility, (2) the birth of group theory from Galois's framework, (3) the impossibility-proof methodology later used by Lindemann, Gödel, and Turing, (4) the distinction between existence of solutions (FTA) and their symbolic expressibility, (5) Galois's precise criterion characterizing solvable polynomials of any degree. Closes the `AbelRuffini` namespace.",
+      "mathContext": "Abel-Ruffini's impossibility sits in an expressibility hierarchy: irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$) $\\subset$ radical inexpressibility (Abel-Ruffini: roots of generic quintic $\\notin$ radical closure) $\\subset$ algebraic inexpressibility (Hermite-Lindemann: $e, \\pi \\notin \\overline{\\mathbb{Q}}$). Each level shows a broader class of 'closed-form' expressions fails to capture certain mathematical quantities. The impossibility is specific to the operations allowed: Hermite (1858) showed quintics ARE solvable via elliptic modular functions, bypassing the radical barrier."
     }
   ],
   "conclusion": {
