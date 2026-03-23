@@ -120,6 +120,102 @@
       "Can polynomial partitioning or the Guth-Katz algebraic framework be extended to $d \\geq 3$?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-89",
+      "relationship": "2D base case of the distinct distances hierarchy: f_2(n) ≥ cn/log n, solved by Guth-Katz (2015) using polynomial partitioning—the techniques underpinning the d=2 resolution do not extend to d≥3"
+    },
+    {
+      "targetId": "erdos-1082",
+      "relationship": "Companion distinct-distances problem in the plane imposing a general-position constraint (no three collinear); shares the Erdős 1946 lower-bound strategy and the challenge of exploiting structural restrictions"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "Unit-distance variant in ℝ^d with a separation constraint; the separation condition transforms the incidence-counting argument and directly relates the unit-distance bound to the distinct-distances exponent"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "Studies subsets of ℝ^d all of whose pairwise distances are distinct (a dual perspective to minimizing distinct distances); the function f_d in #1088 is exponentially related to the extremal configurations in #1083"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "The inverse function g_d(n)—maximum points in ℝ^d with at most n distinct distances—is essentially the functional inverse of f_d from this problem; progress on either immediately constrains the other"
+    },
+    {
+      "targetId": "erdos-95",
+      "relationship": "Sum-of-squared-multiplicities problem in the plane; the polynomial method and algebraic incidence bounds used there are the same tools (Guth-Katz ruling surfaces, Cauchy-Schwarz over distance pairs) being sought for d≥3"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "proofId": "erdos-89",
+      "description": "The d=2 resolved case of the distinct distances problem; Guth-Katz 2015 proved f_2(n) ≥ cn/log n using polynomial partitioning and the algebraic geometry of lines in ℝ³, setting the gold standard that d≥3 has yet to match"
+    },
+    {
+      "proofId": "erdos-1089",
+      "description": "The dual problem: maximum cardinality of a point set in ℝ^d with at most n distinct distances. The functional duality f_d(g_d(n)) ≈ n means any polynomial improvement to the lower bound for f_d closes the gap for g_d simultaneously"
+    },
+    {
+      "proofId": "erdos-1082",
+      "description": "Distinct distances under a general-position hypothesis in the plane; demonstrates how structural constraints (no three collinear, no four concyclic) can sharpen the Erdős lower bound even without the full polynomial method"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős"],
+      "title": "On sets of distances of n points",
+      "venue": "American Mathematical Monthly",
+      "year": 1946,
+      "volume": "53",
+      "pages": "248–250",
+      "doi": "10.2307/2305092",
+      "note": "Original paper establishing the distinct distances problem and the basic sandwich bounds n^{1/d} ≤ f_d(n) ≤ n^{2/d} for all d"
+    },
+    {
+      "authors": ["L. Guth", "N.H. Katz"],
+      "title": "On the Erdős distinct distances problem in the plane",
+      "venue": "Annals of Mathematics",
+      "year": 2015,
+      "volume": "181",
+      "issue": "1",
+      "pages": "155–190",
+      "doi": "10.4007/annals.2015.181.1.2",
+      "note": "Resolved the d=2 case: f_2(n) ≥ cn/log n using polynomial partitioning and the theory of ruled surfaces in ℝ³"
+    },
+    {
+      "authors": ["J. Solymosi", "V.H. Vu"],
+      "title": "Near optimal bounds for the Erdős distinct distances problem in high dimensions",
+      "venue": "Combinatorica",
+      "year": 2008,
+      "volume": "28",
+      "issue": "1",
+      "pages": "113–125",
+      "doi": "10.1007/s00493-008-2099-1",
+      "note": "Established f_d(n) ≥ n^{2/d − c/d²} for d ≥ 4, the current best general lower bound, axiomatized in this formalization"
+    },
+    {
+      "authors": ["B. Aronov", "J. Pach", "M. Sharir", "G. Tardos"],
+      "title": "Distinct distances in three and higher dimensions",
+      "venue": "Combinatorics, Probability and Computing",
+      "year": 2004,
+      "volume": "13",
+      "issue": "3",
+      "pages": "283–293",
+      "doi": "10.1017/S0963548304006091",
+      "note": "Improved lower bounds for d ≥ 3 via incidence geometry and cutting decompositions; precursor to Solymosi-Vu"
+    },
+    {
+      "authors": ["F.R.K. Chung", "E. Szemerédi", "W.T. Trotter"],
+      "title": "The number of different distances determined by a set of points in the Euclidean plane",
+      "venue": "Discrete & Computational Geometry",
+      "year": 1992,
+      "volume": "7",
+      "issue": "1",
+      "pages": "1–11",
+      "doi": "10.1007/BF02122727",
+      "note": "Improved the planar lower bound to Ω(n^{2/3}) using cutting methods; the 3D analogue of the problem discussed in this formalization remains open"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",

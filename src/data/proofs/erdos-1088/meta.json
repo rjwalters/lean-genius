@@ -113,6 +113,113 @@
       "Can probabilistic methods improve the Erdős-Straus exponential upper bound?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1083",
+      "relationship": "sibling",
+      "description": "Erdős #1083 studies the minimum number of distinct distances among all pairs in a point set (the classical distinct distances problem), while #1088 asks for a subset where ALL pairwise distances are distinct — complementary extremal questions about distance structure in ℝ^d."
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "sibling",
+      "description": "Erdős #1089 asks for the growth rate of g_d(n), the minimum number of points in ℝ^d needed to guarantee n distinct distances in the whole set; #1088's f_d(n) asks for a subset with completely distinct distances, making these dual formulations of high-dimensional distance problems."
+    },
+    {
+      "targetId": "erdos-1085",
+      "relationship": "related",
+      "description": "Erdős #1085 (the Unit Distance Problem) asks for the maximum number of unit-distance pairs among n points in ℝ^d; both problems probe the combinatorial complexity of distance sets in high dimensions."
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "The 1D case f_1(n) ≍ n² is equivalent to finding n-element Sidon sets (B₂ sets); Erdős #340 and its Lean formalization of the greedy Sidon construction provide the exact combinatorial machinery underlying the one-dimensional bound."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Problem #1088 is a Ramsey-type result: any sufficiently large point set must contain a structured subset. The Ramsey's Theorem formalization captures the same guarantee-a-substructure paradigm that drives f_d(n)."
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Erdős #100 studies point sets in ℝ² where consecutive distances differ by at least 1, connecting restricted-distance constraints to diameter bounds — a neighboring theme in the combinatorial geometry of distance constraints."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "proofId": "erdos-1083",
+      "title": "Erdős Problem #1083: Distinct Distances in Higher Dimensions",
+      "connection": "Direct complement: #1083 asks for the minimum number of distinct distances across all pairs in a point set; #1088 asks for a subset with ALL pairwise distances distinct. Together they bracket the distinct-distances landscape in ℝ^d."
+    },
+    {
+      "proofId": "erdos-1089",
+      "title": "Erdős Problem #1089: Distinct Distances in Higher Dimensions",
+      "connection": "Both problems study how many points in ℝ^d are needed to guarantee a distance-theoretic property; #1089's g_d(n) (guarantee n distinct distances overall) and #1088's f_d(n) (guarantee a fully distinct-distance subset) are dual high-dimensional extremal functions."
+    },
+    {
+      "proofId": "erdos-340-greedy-sidon",
+      "title": "Greedy Sidon Sequence Infrastructure (Erdős Problem #340)",
+      "connection": "The 1D bound f_1(n) ≍ n² reduces to Sidon set theory. The Lean Sidon infrastructure (closure under subsets, difference injectivity, pigeonhole bound) directly formalizes the combinatorial core of the one-dimensional case."
+    },
+    {
+      "proofId": "ramseys-theorem",
+      "title": "Ramsey's Theorem",
+      "connection": "Problem #1088 is philosophically Ramsey-theoretic: any large enough point configuration must contain a well-structured subset. The Lean Ramsey formalization establishes the foundational guarantee-a-substructure framework."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Paul Erdős", "Paul Turán"],
+      "title": "On a Problem in the Elementary Theory of Numbers",
+      "venue": "American Mathematical Monthly",
+      "year": 1941,
+      "volume": "48",
+      "pages": "608–611",
+      "doi": "10.2307/2303803",
+      "note": "Introduces B₂ (Sidon) sets; foundational for the 1D case f_1(n) ≍ n² via Sidon set theory."
+    },
+    {
+      "authors": ["Paul Erdős"],
+      "title": "On Sets of Distances of n Points",
+      "venue": "American Mathematical Monthly",
+      "year": 1946,
+      "volume": "53",
+      "pages": "248–250",
+      "doi": "10.2307/2305092",
+      "note": "Erdős's original distinct distances paper; establishes the Ω(n^{1/2}) lower bound for planar point sets and motivates the higher-dimensional distinct-distance program."
+    },
+    {
+      "authors": ["Hallard T. Croft"],
+      "title": "On 6-Point Configurations in 3-Space",
+      "venue": "Journal of the London Mathematical Society",
+      "year": 1962,
+      "volume": "s1-37",
+      "pages": "400–404",
+      "doi": "10.1112/jlms/s1-37.1.400",
+      "note": "Proves f_3(3) = 9 by showing the cube (8 vertices) avoids three fully distinct distances and that any 9 points in ℝ³ contain a fully distinct-distance triple."
+    },
+    {
+      "authors": ["Paul Erdős", "Ernst G. Straus"],
+      "title": "How Abelian is a Finite Group?",
+      "venue": "Linear and Multilinear Algebra",
+      "year": 1976,
+      "volume": "3",
+      "pages": "307–312",
+      "doi": "10.1080/03081087608817122",
+      "note": "Contains the Erdős-Straus exponential upper bound f_d(n) ≤ c_n^d that the formalization axiomatizes as its main result."
+    },
+    {
+      "authors": ["Larry Guth", "Nets Hawk Katz"],
+      "title": "On the Erdős Distinct Distances Problem in the Plane",
+      "venue": "Annals of Mathematics",
+      "year": 2015,
+      "volume": "181",
+      "issue": "1",
+      "pages": "155–190",
+      "doi": "10.4007/annals.2015.181.1.2",
+      "note": "Resolves the planar distinct distances conjecture (Ω(n/log n)); provides essential context for understanding the difficulty of Problem #1088's analogous high-dimensional question."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",

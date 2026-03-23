@@ -140,6 +140,102 @@
       "Find exact formulas for g_d^r(n) in higher dimensions"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-1069",
+      "title": "Erdős Problem #1069: Szemerédi-Trotter Theorem on k-Rich Lines",
+      "relationship": "The Szemerédi-Trotter theorem is the primary tool for the upper bound on g(n). Problem #1069 formalizes the k-rich lines variant of the same incidence theorem used in the incidence_reduction step here."
+    },
+    {
+      "slug": "erdos-1085",
+      "title": "Erdős Problem #1085: The Unit Distance Problem",
+      "relationship": "The unit distance problem is the archetypal Erdős point-configuration problem in the plane. Both problems ask for the maximum number of a geometric pattern (unit distances vs. equal-area triangles) among n points, and both use Szemerédi-Trotter incidence bounds."
+    },
+    {
+      "slug": "erdos-1082",
+      "title": "Erdős Problem #1082: Distinct Distances in General Position",
+      "relationship": "The Erdős distinct distances problem is the closest sibling to the equal-area triangles problem. The Guth-Katz polynomial partitioning framework that improved distinct distance bounds also influences the Raz-Sharir 2017 upper bound n^{20/9} for g(n)."
+    },
+    {
+      "slug": "erdos-1084",
+      "title": "Erdős Problem #1084: Unit Distances Among Separated Points",
+      "relationship": "Studies unit distances under separation constraints in the plane, another extremal point-configuration problem sharing the same incidence-geometry toolkit and partially overlapping with the methods used for equal-area triangle bounds."
+    },
+    {
+      "slug": "erdos-102",
+      "title": "Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines",
+      "relationship": "Concerns collinearity and rich-line configurations — exactly the dual perspective to the incidence_reduction argument in this problem, where equal-area triangles reduce to counting incidences between points and parallel-line pairs."
+    },
+    {
+      "slug": "szemeredi-core",
+      "title": "Szemerédi Core Definitions",
+      "relationship": "Provides the foundational combinatorial framework underlying the Szemerédi-Trotter incidence bound cited as szemeredi_trotter_bound in this formalization."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-1087",
+      "title": "Erdos Problem #1087: Degenerate Quadruples in Point Sets",
+      "relationship": "Examines degenerate quadruples (collinear or concyclic) in point sets, a complementary extremal geometry problem that shares the point-configuration combinatorics framework and the open-problem status of tight bounds."
+    },
+    {
+      "slug": "erdos-755",
+      "title": "Erdős Problem #755: Equilateral Triangles in ℝ⁶",
+      "relationship": "Counts equilateral triangles (a specific area-constrained triangle family) in higher-dimensional space, directly paralleling the higher-dimensional g_d^r(n) generalizations formalized in the higher-dim section of this proof."
+    },
+    {
+      "slug": "erdos-756",
+      "title": "Erdős Problem #756: Rich Distances in the Plane",
+      "relationship": "Studies rich distance distributions among n planar points; the 'rich' structure (many repeated values) is the same extremal phenomenon studied here for triangle areas, and many of the counting arguments are analogous."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "G. Purdy"],
+      "title": "Some extremal problems in geometry",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "year": 1971,
+      "volume": "10",
+      "pages": "246–252",
+      "note": "Establishes the original bounds n² log log n ≪ g(n) ≪ n^{5/2} and states the conjecture that g(n) = Θ(n² polylog(n))."
+    },
+    {
+      "authors": ["E. Szemerédi", "W. T. Trotter Jr."],
+      "title": "Extremal problems in discrete geometry",
+      "venue": "Combinatorica",
+      "year": 1983,
+      "volume": "3",
+      "pages": "381–392",
+      "note": "Proves the O(n^{2/3}m^{2/3} + n + m) point-line incidence bound that underlies all upper bounds for g(n) via the incidence_reduction argument."
+    },
+    {
+      "authors": ["O. E. Raz", "M. Sharir"],
+      "title": "The number of unit-area triangles in the plane: theme and variations",
+      "venue": "Combinatorica",
+      "year": 2017,
+      "volume": "37",
+      "pages": "1221–1240",
+      "note": "Establishes the current best upper bound g(n) = O(n^{20/9}) using polynomial partitioning and algebraic incidence methods."
+    },
+    {
+      "authors": ["J. Pach", "M. Sharir"],
+      "title": "Repeated angles in the plane and related problems",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "year": 1992,
+      "volume": "59",
+      "pages": "12–22",
+      "note": "Improves the upper bound from n^{5/2} using point-curve incidence techniques; introduces the incidence-reduction framework central to subsequent improvements."
+    },
+    {
+      "authors": ["A. Dumitrescu", "M. Sharir", "C. D. Tóth"],
+      "title": "Extremal problems on triangle areas in two and three dimensions",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "year": 2009,
+      "volume": "116",
+      "pages": "1177–1198",
+      "note": "Provides further upper bound improvements and treats the three-dimensional case g_3^2(n), directly covering the higher-dimensional bounds formalized in this proof."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.EuclideanDist",

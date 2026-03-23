@@ -145,6 +145,111 @@
       "Can the gap between n/3 and n/2 be closed in either direction?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-89",
+      "relationship": "The general distinct distances problem for all n-point sets in ℝ². Guth–Katz (2015) proved an Ω(n/log n) lower bound, which applies without the general position hypothesis. Problem #1082 asks whether the stronger constraint of no three collinear implies the tighter n/2 bound.",
+      "significance": "high"
+    },
+    {
+      "target": "erdos-93",
+      "relationship": "Distinct distances for vertices of a convex n-gon. Altman (1963) proved convex position implies ≥ ⌊n/2⌋ distinct distances — the same threshold as Problem #1082 conjectures for general position. The convex case is fully resolved; the general-position case remains open.",
+      "significance": "high"
+    },
+    {
+      "target": "erdos-98",
+      "relationship": "A related general-position variant requiring both no 3 collinear and no 4 concyclic. Asks whether h(n)/n → ∞. Even h(n) ≥ n is unresolved, making it a strict extension of Problem #1082's regime.",
+      "significance": "high"
+    },
+    {
+      "target": "erdos-90",
+      "relationship": "The unit distance problem counts pairs at distance exactly 1 among n points. Extremal unit-distance configurations constrain how repeated distances can concentrate, directly informing lower bounds on the total number of distinct distances.",
+      "significance": "medium"
+    },
+    {
+      "target": "erdos-95",
+      "relationship": "Bounds on ∑ f(u)² where f(u) counts pairs at distance u. Guth–Katz proved ∑ f(u)² ≪ n³, controlling distance multiplicity and underpinning the Ω(n/log n) result for Problem #89 and related problems in this cluster.",
+      "significance": "medium"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-89",
+      "description": "Erdős distinct distances conjecture for general n-point sets, resolved by Guth–Katz with Ω(n/log n)."
+    },
+    {
+      "target": "erdos-93",
+      "description": "Convex polygon distinct distances: ≥ ⌊n/2⌋ proved by Altman, matching the #1082 threshold."
+    },
+    {
+      "target": "erdos-98",
+      "description": "Stronger general-position variant (no 3 collinear and no 4 concyclic) with unknown linear lower bound."
+    },
+    {
+      "target": "erdos-90",
+      "description": "Unit distance problem in the plane, governing concentration of a single distance value."
+    },
+    {
+      "target": "erdos-95",
+      "description": "Sum of squared distance multiplicities; Guth–Katz O(n³) bound supports the distinct-distances cluster."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Paul Erdős"],
+      "title": "On some problems of elementary and combinatorial geometry",
+      "venue": "Annali di Matematica Pura ed Applicata",
+      "year": 1975,
+      "volume": "103",
+      "pages": "99–108",
+      "doi": "10.1007/BF02414146",
+      "note": "Original source of the n/2 conjecture for points in general position (no three collinear)."
+    },
+    {
+      "authors": ["Larry Guth", "Nets Hawk Katz"],
+      "title": "On the Erdős distinct distances problem in the plane",
+      "venue": "Annals of Mathematics",
+      "year": 2015,
+      "volume": "181",
+      "issue": "1",
+      "pages": "155–190",
+      "doi": "10.4007/annals.2015.181.1.2",
+      "note": "Proves Ω(n/log n) distinct distances for all n-point sets; the strongest known lower bound for Problem #89, contextualizing the n/2 threshold for general position."
+    },
+    {
+      "authors": ["Endre Szemerédi", "William T. Trotter Jr."],
+      "title": "Extremal problems in discrete geometry",
+      "venue": "Combinatorica",
+      "year": 1983,
+      "volume": "3",
+      "issue": "3–4",
+      "pages": "381–392",
+      "doi": "10.1007/BF02579194",
+      "note": "Szemerédi–Trotter incidence theorem, foundational to distance counting arguments including Szemerédi's unpublished n/3 bound cited in Problem #1082."
+    },
+    {
+      "authors": ["Emanuel Altman"],
+      "title": "On a problem of Erdős",
+      "venue": "The American Mathematical Monthly",
+      "year": 1963,
+      "volume": "70",
+      "issue": "2",
+      "pages": "148–157",
+      "doi": "10.2307/2312735",
+      "note": "Proves that the vertices of a convex n-gon determine at least ⌊n/2⌋ distinct distances, establishing the resolved analogue of the open Problem #1082."
+    },
+    {
+      "authors": ["József Solymosi", "Csaba D. Tóth"],
+      "title": "Distinct distances in the plane",
+      "venue": "Discrete & Computational Geometry",
+      "year": 2001,
+      "volume": "25",
+      "issue": "4",
+      "pages": "629–634",
+      "doi": "10.1007/s00454-001-0019-8",
+      "note": "Proves an Ω(n^{6/7}) lower bound on distinct distances, a key step before Guth–Katz and relevant to the general-position regime."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",

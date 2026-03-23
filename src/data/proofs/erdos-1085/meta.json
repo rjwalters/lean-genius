@@ -153,6 +153,83 @@
       "Is there a construction achieving f_2(n) = ω(n^(1+c/log log n))?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-90",
+      "relationship": "specializes",
+      "description": "Erdős #90 is the classical 2D unit distance problem — a direct special case of #1085 restricted to ℝ². Both share the same open conjecture f_2(n) = n^(1+o(1)) and the Spencer-Szemerédi-Trotter O(n^(4/3)) upper bound."
+    },
+    {
+      "targetId": "erdos-89",
+      "relationship": "related",
+      "description": "The distinct distances problem (#89) is a close companion: both ask how many times a fixed distance can appear among n points. Guth-Katz (2015) resolved #89 using polynomial partitioning, a technique also relevant to improving unit distance bounds."
+    },
+    {
+      "targetId": "erdos-96",
+      "relationship": "related",
+      "description": "Unit distances in convex polygons (#96) is a constrained variant: restricting n points to a convex position changes the extremal behavior. The Lenz construction exploits non-convexity, so convex configurations have much smaller unit distance counts."
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "uses",
+      "description": "Incidence geometry and rich-line bounds (#102) are deeply linked to unit distances: the Szemerédi-Trotter theorem that yields the O(n^(4/3)) upper bound for unit distances also governs point-line incidence counts."
+    },
+    {
+      "targetId": "erdos-95",
+      "relationship": "related",
+      "description": "Sum of squared distance multiplicities (#95) provides an algebraic complement: bounding Σ_d f_d(P)² relates to the energy of distance multisets and connects to the polynomial method used in Guth-Katz."
+    },
+    {
+      "targetId": "erdos-1007",
+      "relationship": "related",
+      "description": "Graph dimension (#1007) asks for the minimum number of edges in a graph realizable in ℝ^d with prescribed edge lengths, connecting to the unit distance graph framework underlying #1085."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-90",
+    "erdos-89",
+    "erdos-96",
+    "erdos-102",
+    "erdos-95",
+    "erdos-1007"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On sets of distances of n points",
+      "year": "1946",
+      "venue": "American Mathematical Monthly, 53(5), 248–250",
+      "note": "Foundational paper posing the unit distance problem and proving the n^(1+c/log log n) lower bound via the integer lattice construction."
+    },
+    {
+      "authors": "Spencer, Joel; Szemerédi, Endre; Trotter, William T., Jr.",
+      "title": "Unit distances in the Euclidean plane",
+      "year": "1984",
+      "venue": "Graph Theory and Combinatorics (Academic Press), 293–303",
+      "note": "Proves the landmark O(n^(4/3)) upper bound using the crossing number inequality for unit distance graphs — one of the most influential results in combinatorial geometry."
+    },
+    {
+      "authors": "Brass, Peter",
+      "title": "On the maximum number of unit distances among n points in dimension four",
+      "year": "1997",
+      "venue": "Intuitive Geometry (Bolyai Society Mathematical Studies 6), 277–290",
+      "note": "Determines the exact formula for f_4(n) = n²/4 + o(n²), completing the d=4 case of Erdős Problem #1085."
+    },
+    {
+      "authors": "Swanepoel, Konrad J.",
+      "title": "Unit distances and diameters in Euclidean spaces",
+      "year": "2009",
+      "venue": "Discrete and Computational Geometry, 41(1), 1–27",
+      "note": "Establishes exact asymptotic formulas for f_d(n) for all even d ≥ 6 via a refined analysis of the Lenz construction, essentially closing the high-dimensional cases."
+    },
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics, 181(1), 155–190",
+      "note": "Resolves the distinct distances problem (#89) using polynomial partitioning; the techniques are directly relevant to improving unit distance upper bounds in d=2."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic"
