@@ -27,6 +27,7 @@
   "overview": {
     "historicalContext": "Erdős and Gyárfás conjectured that local constraints on 4-point configurations would force global distance diversity: if any 4 points determine at least 5 of the 6 possible distinct distances, the total number of distances should be quadratic. This $250-prize problem remained open for decades until Terence Tao disproved it in September 2024 (arXiv:2409.01343). Tao's counterexample, using randomized algebraic curves over finite fields, was part of his broader exploration of erdosproblems.com, partly as a test case for AI-assisted mathematics. The result shows that local constraints on small point subsets cannot guarantee global distance diversity.",
     "problemStatement": "Let A ⊂ ℝ² be n points such that any 4 points determine at least 5 distinct distances (out of 6 possible). Must A determine ≫ n² total distinct distances?",
+    "text": "If any 4 points from A \u2282 \u211d\u00b2 determine at least 5 distinct distances, must A determine \u226b n\u00b2 distances? DISPROVED by Tao (2024).",
     "proofStrategy": "Tao uses randomized algebraic curves over finite fields. Parabolas (ax+by)² ≡ cx+dy+e (mod p) naturally avoid parallelograms. Random affine transformations and probabilistic deletion handle other forbidden 4-point patterns. The result: O(n²/√(log n)) distances with the five-distance property.",
     "keyInsights": [
       "Four points have 6 pairwise distances; the 'five-distance property' requires ≥ 5 distinct",
