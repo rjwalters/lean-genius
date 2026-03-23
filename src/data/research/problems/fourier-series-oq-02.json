@@ -1,13 +1,13 @@
 {
   "slug": "fourier-series-oq-02",
-  "title": "Fourier Coefficient Decay Under Hölder Continuity",
+  "title": "Fourier Coefficient Decay Under H\u00f6lder Continuity",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ), IsHolderOnCircle C α f → ∀ n ≠ 0, ‖fourierCoeff f n‖ ≤ (C/2) * (T / (2|n|))^α",
-    "plain": "Prove that the Fourier coefficients of an α-Hölder continuous function on the circle decay at rate O(1/|n|^α), and that this bound is optimal.",
+    "formal": "\u2200 (C : \u211d\u22650) (\u03b1 : \u211d\u22650) (f : AddCircle T \u2192 \u2102), IsHolderOnCircle C \u03b1 f \u2192 \u2200 n \u2260 0, \u2016fourierCoeff f n\u2016 \u2264 (C/2) * (T / (2|n|))^\u03b1",
+    "plain": "Prove that the Fourier coefficients of an \u03b1-H\u00f6lder continuous function on the circle decay at rate O(1/|n|^\u03b1), and that this bound is optimal.",
     "whyMatters": [
       "Fundamental result in harmonic analysis connecting smoothness to frequency decay",
       "Bridges Faulhaber integer power sums to real-exponent zeta theory"
@@ -15,17 +15,17 @@
   },
   "knownResults": {
     "proven": [
-      "fourier_norm_one: ‖fourier n x‖ = 1 (via toCircle)",
+      "fourier_norm_one: \u2016fourier n x\u2016 = 1 (via toCircle)",
       "fourier_translate_halfperiod: fourier(-n)(x + T/(2n)) = -fourier(-n)(x)",
       "fourierCoeff_holder_decay: main theorem from axioms",
       "fourierCoeff_lipschitz_decay: Lipschitz special case",
-      "holder_continuous: Hölder ⟹ continuous",
-      "lipschitz_is_holder_one: Lipschitz ⊂ Hölder(1)",
-      "holder_translation_bound: ‖f(x) - f(x+T/(2n))‖ ≤ C·(T/(2|n|))^α (via HolderWith.dist_le_of_le + QuotientAddGroup.norm_mk_le_norm)",
-      "integral_product_bound: ‖∫(f-f∘τ)·e_{-n}‖ ≤ C·(T/(2|n|))^α (via norm_integral_le + probability measure)"
+      "holder_continuous: H\u00f6lder \u27f9 continuous",
+      "lipschitz_is_holder_one: Lipschitz \u2282 H\u00f6lder(1)",
+      "holder_translation_bound: \u2016f(x) - f(x+T/(2n))\u2016 \u2264 C\u00b7(T/(2|n|))^\u03b1 (via HolderWith.dist_le_of_le + QuotientAddGroup.norm_mk_le_norm)",
+      "integral_product_bound: \u2016\u222b(f-f\u2218\u03c4)\u00b7e_{-n}\u2016 \u2264 C\u00b7(T/(2|n|))^\u03b1 (via norm_integral_le + probability measure)"
     ],
     "open": [
-      "Prove remaining 8 axioms: difference formula, summability, R-L, optimality, converse, C^k/C^∞/analytic decay"
+      "Prove remaining 8 axioms: difference formula, summability, R-L, optimality, converse, C^k/C^\u221e/analytic decay"
     ],
     "goal": "Prove fourierCoeff_difference_formula (Haar translation invariance), then tackle corollaries"
   },
@@ -33,7 +33,7 @@
     "phase": "ACT",
     "since": "2026-03-23T20:00:00Z",
     "iteration": 3,
-    "focus": "Proved 4 of 12 axioms (holder_translation_bound, integral_product_bound now verified). 8 axioms remain.",
+    "focus": "Proved 5 of 12 axioms. 7 axioms remain: difference formula, summability, optimality, converse, C^k/C^\u221e/analytic.",
     "blockers": [
       "fourierCoeff_difference_formula needs integral_add_right_eq_self for haarAddCircle + integrability conditions",
       "riemannLebesgue_of_holder needs squeeze lemma + power decay Tendsto"
@@ -46,29 +46,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 12 to 8. Sessions 1-2 proved fourier_norm_one, fourier_translate_halfperiod. Session 3 proved holder_translation_bound and integral_product_bound.",
+    "progressSummary": "PROGRESS: Reduced axiom count from 12 to 7. Sessions 1-2 proved fourier_norm_one, fourier_translate_halfperiod. Session 3 proved holder_translation_bound, integral_product_bound, riemannLebesgue_of_holder.",
     "builtItems": [
-      "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
+      "fourier_norm_one: proved via simp [fourier_apply] \u2014 toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
       "holder_translation_bound: proved via HolderWith.dist_le_of_le + QuotientAddGroup.norm_mk_le_norm (quotient distance bound)",
-      "integral_product_bound: proved via norm_integral_le_integral_norm + integral_mono_of_nonneg + holder_translation_bound + IsProbabilityMeasure"
+      "integral_product_bound: proved via norm_integral_le_integral_norm + integral_mono_of_nonneg + holder_translation_bound + IsProbabilityMeasure",
+      "riemannLebesgue_of_holder: proved via squeeze_zero_norm + tendsto_rpow_neg_atTop + Int.tendsto_coe_cofinite composition"
     ],
     "insights": [
-      "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
-      "fourier_add_half_inv_index takes explicit (hT : 0 < T), not Fact instance — need hT.out",
+      "fourier_apply unfolds to \u2191(n \u2022 x).toCircle, which immediately gives unit norm via simp",
+      "fourier_add_half_inv_index takes explicit (hT : 0 < T), not Fact instance \u2014 need hT.out",
       "fourier_neg relates fourier(-n) to starRingEnd(fourier n), enabling conjugation approach",
       "T/(2*n) vs T/2/n: ring normalizes between these equivalent forms",
-      "QuotientAddGroup.norm_mk_le_norm gives ‖(↑s : AddCircle T)‖ ≤ ‖s‖ = |s| — the key quotient distance bound",
-      "dist x (x+↑s) = ‖↑s‖ on AddCircle via dist_eq_norm + norm_sub_rev + add_sub_cancel_left",
-      "HolderWith.dist_le_of_le converts distance bound to function distance bound: dist (f x) (f y) ≤ C * d ^ α",
+      "QuotientAddGroup.norm_mk_le_norm gives \u2016(\u2191s : AddCircle T)\u2016 \u2264 \u2016s\u2016 = |s| \u2014 the key quotient distance bound",
+      "dist x (x+\u2191s) = \u2016\u2191s\u2016 on AddCircle via dist_eq_norm + norm_sub_rev + add_sub_cancel_left",
+      "HolderWith.dist_le_of_le converts distance bound to function distance bound: dist (f x) (f y) \u2264 C * d ^ \u03b1",
       "integral_mono_of_nonneg requires: ae nonneg lower bound, integrable upper bound, ae pointwise bound",
-      "IsProbabilityMeasure.measure_univ + ENNReal.one_toReal collapses ∫ const = const on probability space",
-      "haarAddCircle derives IsAddHaarMeasure from addHaarMeasure ⊤ — has integral_add_right_eq_self for translation invariance"
+      "IsProbabilityMeasure.measure_univ + ENNReal.one_toReal collapses \u222b const = const on probability space",
+      "haarAddCircle derives IsAddHaarMeasure from addHaarMeasure \u22a4 \u2014 has integral_add_right_eq_self for translation invariance",
+      "squeeze_zero_norm + tendsto_rpow_neg_atTop + tendsto_norm_cocompact_atTop.comp Int.tendsto_coe_cofinite cleanly proves Riemann-Lebesgue from decay bound"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove fourierCoeff_difference_formula via integral_add_right_eq_self + fourier_translate_halfperiod (needs integrability handling)",
-      "Prove riemannLebesgue_of_holder via squeeze theorem with 1/|n|^α → 0 bound",
+      "Prove riemannLebesgue_of_holder via squeeze theorem with 1/|n|^\u03b1 \u2192 0 bound",
       "Prove fourierCoeff_sq_summable_of_holder via comparison with Real.summable_nat_rpow_inv"
     ]
   },
@@ -104,8 +106,8 @@
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
       "lineCount": 326,
-      "theoremCount": 11,
-      "axiomCount": 8,
+      "theoremCount": 12,
+      "axiomCount": 7,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
