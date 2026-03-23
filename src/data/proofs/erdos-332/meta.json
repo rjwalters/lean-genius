@@ -73,6 +73,13 @@
       "**Furstenberg correspondence**: The problem connects to ergodic theory — positive density sets correspond to sets of positive measure in a dynamical system, and syndeticity of $D(A)$ follows from Poincaré recurrence",
       "**The open question is about the threshold**: Positive density is known to suffice, but the problem asks whether weaker conditions (e.g., divergent harmonic sum $\\sum 1/a = \\infty$, or Banach density conditions) also force syndeticity of $D(A)$",
       "**Structural hierarchy**: The formalization captures a chain: $D(A)$ is symmetric, contains 0 (for infinite $A$), inherits positive density from $A$, and is syndetic — each property progressively constrains the structure of difference sets"
+    ],
+    "prerequisites": [
+      "Integer arithmetic (ℤ) and natural-to-integer coercion",
+      "Set theory: infinite sets, set membership, set builder notation",
+      "Asymptotic density: upper density, lower density via counting functions",
+      "Additive combinatorics: difference sets, syndetic sets",
+      "Ergodic theory basics: Furstenberg correspondence principle (for context)"
     ]
   },
   "sections": [
@@ -128,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full structure of Erdős Problem #332: the difference set $D(A)$ with its infinite-fibre condition, syndeticity as the target property, the density hierarchy (upper vs lower), Prikry's theorem as the known sufficient condition, and structural properties (symmetry, zero membership, density inheritance). The open question — finding the weakest condition on $A$ forcing syndeticity of $D(A)$ — connects density theory to topological dynamics.",
-    "implications": "Resolution would clarify the minimum density-like condition required for persistent differences to form syndetic sets. This has implications for the Furstenberg correspondence program, the study of recurrence in ergodic systems, and the broader question of how density forces additive structure in sets of integers.",
+    "implications": "**Theoretical Significance**: Resolution would clarify the minimum density-like condition required for persistent differences to form syndetic sets.\n\n**Broader Connections**: This has implications for the Furstenberg correspondence program, the study of recurrence in ergodic systems, and the broader question of how density forces additive structure in sets of integers.",
     "openQuestions": [
       "Does divergence of $\\sum_{a \\in A} 1/a$ (without positive density) suffice to make $D(A)$ syndetic?",
       "Is there a set $A$ with zero upper density but $D(A)$ syndetic, characterizing how far the condition can be weakened?",

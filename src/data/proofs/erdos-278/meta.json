@@ -37,6 +37,10 @@
       "**Non-coprimality creates correlations**: When $\\gcd(n_i, n_j) > 1$, the events $m \\equiv a_i \\pmod{n_i}$ and $m \\equiv a_j \\pmod{n_j}$ become dependent, and clever residue choices can control overlap",
       "**Periodicity reduces to finite computation**: Coverage density is periodic with period $L = \\mathrm{lcm}(n_1, \\ldots, n_r)$, so the problem reduces to optimizing over $\\prod n_i$ residue combinations — but this is exponentially large",
       "**Inclusion-exclusion gives the formula**: The equal-residue density is $\\sum_{\\emptyset \\neq S} (-1)^{|S|+1} / \\mathrm{lcm}_{i \\in S}(n_i)$, generalizing $\\sum 1/n_i$ (first order) with correction terms for overlaps"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "sections": [
@@ -99,7 +103,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full structure of Erdős Problem #278: congruence system coverage density, the optimization over residue choices, Simpson's theorem resolving the minimum (1986), the coprime case resolving the maximum via CRT, and the open question for non-coprime moduli. The three proved theorems (density bounds) demonstrate that the formalization is computationally meaningful beyond just axiomatized statements.",
-    "implications": "A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors. This connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erdős program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
+    "implications": "**Theoretical Significance**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors.\n\n**Broader Connections**: This connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erdős program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
     "openQuestions": [
       "What is the maximum coverage density $\\delta_{\\max}(A)$ for arbitrary (non-coprime) moduli?",
       "Is there a polynomial-time algorithm to compute $\\delta_{\\max}(A)$, or is the optimization NP-hard?",

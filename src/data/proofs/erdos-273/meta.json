@@ -73,6 +73,10 @@
       "The reciprocal sum condition $\\sum 1/m_i \\geq 1$ is necessary but not the obstruction — $\\sum_{p \\geq 5} 1/(p-1)$ diverges by Mertens' theorem",
       "Hough's theorem (2015) implies that any solution, if it exists, must use repeated or small moduli from the allowed set",
       "The problem connects prime distribution (which integers are $p - 1$ for prime $p$?) to the combinatorics of residue class coverings"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "sections": [
@@ -121,7 +125,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem 273 asks whether covering systems exist with all moduli of the form $p - 1$ for primes $p \\geq 5$. Selfridge solved the easier $p \\geq 3$ case using divisors of 360, but the restriction to $p \\geq 5$ eliminates the crucial modulus $2 = 3 - 1$, forcing all moduli to be $\\geq 4$. The formalization captures the complete problem structure including the covering definition, parametric prime-minus-one constraint, reciprocal sum condition, and structural obstacles.",
-    "implications": "Resolution would deepen understanding of the interplay between covering systems and the multiplicative structure of primes. A positive answer would require a novel covering construction avoiding small moduli; a negative answer would need new impossibility techniques beyond the reciprocal sum condition, possibly building on Hough's probabilistic methods.",
+    "implications": "**Theoretical Significance**: Resolution would deepen understanding of the interplay between covering systems and the multiplicative structure of primes.\n\n**Broader Connections**: A positive answer would require a novel covering construction avoiding small moduli; a negative answer would need new impossibility techniques beyond the reciprocal sum condition, possibly building on Hough's probabilistic methods.",
     "openQuestions": [
       "Can a covering system be constructed with moduli from $\\{p - 1 : p \\text{ prime},\\, p \\geq 5\\}$?",
       "What is the minimum number of residue classes needed if such a covering exists?",
