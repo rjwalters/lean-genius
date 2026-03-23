@@ -131,7 +131,7 @@
     "title": "Weak Law of Large Numbers",
     "content": "The WLLN is stated as: for i.i.d. random variables with common mean $\\mu$ and finite variance, $P(|\\bar{X}_n - \\mu| > \\varepsilon) \\to 0$ for all $\\varepsilon > 0$.\n\nThe proof strategy combines Chebyshev's inequality with the variance reduction property:\n1. $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$ (from `variance_sum_indep` and i.i.d.)\n2. $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\sigma^2/(n\\varepsilon^2)$ (Chebyshev)\n3. $\\sigma^2/(n\\varepsilon^2) \\to 0$ as $n \\to \\infty$\n\nThe current formalization uses an axiom (`weak_law_of_large_numbers_axiom`) to wrap the proof steps, with the core mathematical content coming from Mathlib's Chebyshev inequality and variance properties. The `weak_law_of_large_numbers` theorem is a direct application of this axiom.\n\nThis is Wiedijk #59 (partial — the Weak Law component). The hypotheses require `Memℒp X_i 2` (finite second moment) and pairwise independence.",
     "mathContext": "$P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(\\bar{X}_n)}{\\varepsilon^2} = \\frac{\\sigma^2}{n\\varepsilon^2} \\xrightarrow{n \\to \\infty} 0$\n\nThis is Bernoulli's original approach (1713), though Bernoulli used direct combinatorial estimates rather than Chebyshev's inequality (which came 150 years later).",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Chebyshev's inequality",
       "variance of sample mean",
@@ -155,7 +155,7 @@
     "title": "Strong Law of Large Numbers",
     "content": "The SLLN asserts almost sure convergence: $P(\\lim_{n \\to \\infty} \\bar{X}_n = \\mu) = 1$. This is strictly stronger than the Weak Law — almost sure convergence implies convergence in probability, but not conversely.\n\nThe proof is a direct application of Mathlib's `ProbabilityTheory.strong_law_ae`, which implements Etemadi's 1981 proof — a significant simplification of Kolmogorov's original 1930 argument. Etemadi's method:\n1. Truncate $X_i$ at level $c^n$ for a constant $c > 1$\n2. Prove convergence along the subsequence $c^n$\n3. Extend to all $n$ by monotonicity\n4. Control the truncation error using integrability\n\nRemarkably, the SLLN only requires finite first moment ($E[|X|] < \\infty$), not finite variance. The hypotheses are pairwise independence (`Pairwise ... IndepFun`) and identical distribution (`IdentDistrib`). The `#check` line documents the Mathlib API entry point.",
     "mathContext": "$\\bar{X}_n \\xrightarrow{\\text{a.s.}} E[X_0]$, i.e., $P\\left(\\omega : \\lim_{n \\to \\infty} \\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega) = E[X_0]\\right) = 1$\n\nIn Lean: `∀ᵐ ω, Filter.Tendsto (fun n => (↑n)⁻¹ • ∑ i ∈ Finset.range n, X i ω) atTop (nhds (∫ ω', X 0 ω'))`",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "almost sure convergence",
       "integrability",
