@@ -142,6 +142,16 @@
       "targetId": "stirling-formula",
       "relationship": "related",
       "description": "Both connect π to unexpected areas: Stirling's formula has √(2π) in factorial asymptotics, while Buffon has 2/π in crossing probability. Both reflect π's role as a universal constant in analysis."
+    },
+    {
+      "targetId": "buffons-needle-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes Buffon's needle to the Buffon-Barbier smooth noodle theorem: for any $C^1$ curve of length $L$, the expected number of crossings with parallel lines spaced $d$ apart is $2L/(\\pi d)$ — answering the open question about the Cauchy-Crofton formula"
+    },
+    {
+      "targetId": "buffons-needle-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends Buffon's needle to 3 dimensions: a needle dropped among parallel planes spaced $d$ apart has expected crossing count $L/(2d)$ — answering the open question about higher-dimensional generalizations"
     }
   ],
   "relatedProofs": [
@@ -164,6 +174,16 @@
       "id": "stirling-formula",
       "relationship": "related",
       "description": "Stirling's formula appears in the asymptotic analysis of Buffon's needle experiments with many drops"
+    },
+    {
+      "id": "buffons-needle-oq-01",
+      "relationship": "extended-by",
+      "description": "Smooth noodle theorem generalizing to C¹ curves"
+    },
+    {
+      "id": "buffons-needle-oq-02",
+      "relationship": "extended-by",
+      "description": "3D Buffon's noodle with parallel planes"
     }
   ],
   "leanFile": {
