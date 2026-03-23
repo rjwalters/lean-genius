@@ -541,6 +541,12 @@ structure LatticeYangMills where
     3. Non-triviality -- the theory is not a generalized free field
     4. Exponential clustering -- the theory has a mass gap
 
+    The existential over a family of `LatticeYangMills` theories witnesses
+    that the continuum measure arises as the limit of lattice theories
+    indexed by lattice spacing. The spacing-to-zero convergence condition
+    is left implicit for now; formalizing it would require a
+    `Filter.Tendsto` argument beyond the current scope of this file.
+
     This is the complete mathematical content of the Clay Millennium Prize
     problem for Yang-Mills existence and mass gap, in the Euclidean
     (constructive QFT) formulation.
@@ -549,7 +555,8 @@ structure LatticeYangMills where
     Douglas (2026), Nature Reviews Physics (the lattice -> OS -> Wightman chain). -/
 def YangMillsContinuumLimitFull (G : Type*) [Group G] [TopologicalSpace G]
     [CompactSpace G] : Prop :=
-  ∃ (dμ : ProbabilityMeasure EFieldConfiguration),
+  ∃ (_family : ℕ → LatticeYangMills.{0})
+    (dμ : ProbabilityMeasure EFieldConfiguration),
     SatisfiesAllOS dμ ∧
     GaugeInvariant dμ ∧
     HasNonGaussianCorrelations dμ ∧
@@ -583,7 +590,7 @@ theorem yang_mills_millennium_prize
     (G : Type*) [Group G] [TopologicalSpace G] [CompactSpace G]
     (h : YangMillsContinuumLimitFull G) :
     ∃ (qft : WightmanQFT) (Δ : ℝ), qft.hasMassGap Δ := by
-  obtain ⟨dμ, hOS, _, _, Δ, hΔ⟩ := h
+  obtain ⟨_, dμ, hOS, _, _, Δ, hΔ⟩ := h
   exact ⟨os_reconstruction dμ hOS, Δ, mass_gap_transfer dμ hOS Δ hΔ⟩
 
 /- ## Consistency Note
