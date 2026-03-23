@@ -161,13 +161,13 @@ theorem class_of_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
     | nil => simp [hlist] at hq_in_ns
     | cons _ _ => rfl
   simp only [h_not_empty, ite_false]
-  -- Goal: primeClass q < 1 + foldl max ... 0
-  -- The foldl includes primeClass q (since q is in the list), so foldl ≥ primeClass q
-  -- Therefore 1 + foldl > primeClass q
-  -- NOTE: The foldl function in the goal includes a `have` proof term that is
-  -- definitionally irrelevant but makes syntactic matching with helper lemmas
-  -- difficult. This bound is a routine property of foldl with max.
-  sorry
+  -- The foldl includes a `have` proof term; use `change` (definitional equality)
+  -- to replace with the simpler form that matches our helper lemma
+  set ns := (p + 1).primeFactorsList.dedup.filter (fun r => r != 2 && r != 3) with hns
+  change primeClass q < 1 + ns.attach.foldl (fun acc y => max acc (primeClass y.val)) 0
+  have h_bound := foldl_max_ge_of_mem (List.mem_attach ns ⟨q, hns ▸ hq_in_ns⟩)
+    (fun y => primeClass y.val) 0
+  omega
 
 /- ## Concrete Evidence for Infinitude -/
 
