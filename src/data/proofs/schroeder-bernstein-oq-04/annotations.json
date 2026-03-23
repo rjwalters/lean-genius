@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-module-doc",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 8,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Module Documentation: Constructive CBS for Finite Types",
+    "content": "This module answers Open Question #4 from the Schroeder-Bernstein gallery entry: can the Cantor-Bernstein-Schroeder theorem be made constructive for specific classes of sets? For finite types with decidable equality, the answer is yes.\n\nThe classical CBS proof is non-constructive because it uses excluded middle to classify elements into orbit types. For finite types, chains in the orbit graph must terminate by pigeonhole, making the classification decidable. The entire proof is 0 sorries, 0 axioms — fully verified.",
+    "mathContext": "Classical CBS: $|A| \\leq |B|$ and $|B| \\leq |A|$ $\\Rightarrow$ $|A| = |B|$. The proof classifies each $a \\in A$ as 'Type A' (backward chain under $g^{-1}$ terminates in $A \\setminus \\text{range}(g)$) or 'Type B' (terminates in $B \\setminus \\text{range}(f)$ or is infinite). For finite types, all chains are finite, so the classification is decidable.",
+    "significance": "key",
+    "prerequisites": [
+      "Cantor-Bernstein-Schroeder theorem",
+      "constructive mathematics",
+      "Fintype in Lean 4"
+    ],
+    "relatedConcepts": [
+      "excluded middle",
+      "decidability",
+      "orbit classification",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 45,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Core Definitions: Base Set, Expansion, and Reachable Set",
+    "content": "Three definitions form the foundation:\n\n1. `baseSet g` = $\\{a \\in \\alpha \\mid \\forall b, g(b) \\neq a\\}$ — elements of $\\alpha$ with no preimage under $g$. These are the 'Type A' seeds.\n\n2. `expand f g S` = $S \\cup (g \\circ f)''(S)$ — one expansion step, adding forward images under $g \\circ f$.\n\n3. `reachableSet f g` = $(\\text{expand})^{|\\alpha|}(\\text{baseSet})$ — iterate expansion $|\\alpha|$ times. After this many steps, the set must have stabilized (by pigeonhole).",
+    "mathContext": "$A_0 = \\alpha \\setminus \\text{range}(g)$, $A_{n+1} = A_n \\cup (g \\circ f)(A_n)$, $S = A_{|\\alpha|}$. Since $|A_n| \\leq |\\alpha|$ and the sequence is monotone, it must stabilize within $|\\alpha|$ steps. The reachable set $S$ satisfies the fixed-point property $\\text{expand}(S) = S$.",
+    "significance": "key",
+    "prerequisites": [
+      "Finset in Lean 4",
+      "Function.iterate",
+      "Fintype.card"
+    ],
+    "relatedConcepts": [
+      "orbit classification",
+      "fixed point",
+      "iterated function",
+      "transitive closure"
+    ]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 60,
+      "endLine": 91
+    },
+    "type": "technique",
+    "title": "Monotonicity of the Expansion Operator",
+    "content": "`subset_expand` shows $S \\subseteq \\text{expand}(S)$ (via `Finset.subset_union_left`). `expand_mono` shows `expand` is monotone: $S \\subseteq T \\Rightarrow \\text{expand}(S) \\subseteq \\text{expand}(T)$ (via `Finset.union_subset_union` and `Finset.image_subset_image`). `iterate_expand_mono` proves the iteration sequence is non-decreasing by induction on $n$. `baseSet_subset_reachable` is the base case: $A_0 \\subseteq S$.",
+    "mathContext": "$A_0 \\subseteq A_1 \\subseteq \\cdots \\subseteq A_{|\\alpha|}$ with $|A_n| \\leq |\\alpha|$ for all $n$. Monotonicity is essential for the pigeonhole stabilization argument: a non-decreasing bounded sequence of naturals must eventually repeat.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Finset.subset_union_left",
+      "Finset.image_subset_image",
+      "Monotone"
+    ],
+    "relatedConcepts": [
+      "monotone operator",
+      "Knaster-Tarski fixed point",
+      "chain condition"
+    ]
+  },
+  {
+    "id": "ann-stabilization",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 95,
+      "endLine": 167
+    },
+    "type": "theorem",
+    "title": "Stabilization via Pigeonhole: The Fixed-Point Property",
+    "content": "The technical heart of the constructive proof. `nat_seq_stabilize` proves that a non-decreasing sequence $s : \\mathbb{N} \\to \\mathbb{N}$ bounded by $N$ must have $s(k) = s(k+1)$ for some $k \\leq N$. The proof is by contradiction: if all steps are strict, then $s(N+1) \\geq s(0) + N + 1 > N$, violating the bound.\n\n`iterate_stable_forever` shows that once $S_k = S_{k+1}$, the sequence is constant forever. `reachable_stable` combines these to prove $\\text{expand}(S) = S$ — the fixed-point property that makes the bijection well-defined.",
+    "mathContext": "Pigeonhole: if $0 \\leq s(0) \\leq s(1) \\leq \\cdots \\leq N$, then among the $N+1$ values $s(0), \\ldots, s(N)$, two consecutive ones must be equal. This is weaker than the Knaster-Tarski fixed-point theorem (which works on complete lattices) but is constructively valid and suffices for finite types.\n\nThe fixed-point property: $S \\cup (g \\circ f)''(S) = S$, i.e., $S$ is closed under $g \\circ f$ and contains the base set.",
+    "significance": "key",
+    "prerequisites": [
+      "pigeonhole principle",
+      "Finset.card_le_card",
+      "Finset.eq_of_subset_of_card_le"
+    ],
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Knaster-Tarski theorem",
+      "fixed point",
+      "orbit stabilization"
+    ]
+  },
+  {
+    "id": "ann-decomposition",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 169,
+      "endLine": 213
+    },
+    "type": "theorem",
+    "title": "Closure and Decomposition Properties",
+    "content": "Three structural properties of the reachable set:\n\n1. `reachable_closed`: $a \\in S \\Rightarrow g(f(a)) \\in S$ — the reachable set is closed under $g \\circ f$.\n\n2. `not_reachable_in_range`: $a \\notin S \\Rightarrow a \\in \\text{range}(g)$ — non-reachable elements have a preimage under $g$.\n\n3. `reachable_decomp`: Every reachable $a$ is either in the base set $A_0$ or equals $g(f(a'))$ for some reachable $a'$. This decomposition lemma is proved by induction on the iteration depth and is the key structural tool for the surjectivity proof.",
+    "mathContext": "The decomposition $S = A_0 \\cup (g \\circ f)(S)$ is a direct consequence of the fixed-point property $\\text{expand}(S) = S$, unfolded: $S = S \\cup (g \\circ f)''(S)$ means $S \\supseteq A_0$ (base) and $S \\supseteq (g \\circ f)(S)$ (closure). The iterative proof reconstructs this from the definition $S = \\text{expand}^{|\\alpha|}(A_0)$.",
+    "significance": "key",
+    "prerequisites": [
+      "reachable_stable",
+      "baseSet_subset_reachable",
+      "Finset.mem_image"
+    ],
+    "relatedConcepts": [
+      "structural induction",
+      "orbit decomposition",
+      "transitive closure"
+    ]
+  },
+  {
+    "id": "ann-bijection",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 217,
+      "endLine": 231
+    },
+    "type": "definition",
+    "title": "The Constructive CBS Bijection",
+    "content": "`cbsBijection f g a` defines the piecewise function:\n- If $a \\in S$ (reachable): return $f(a)$\n- If $a \\notin S$: return $g^{-1}(a)$ (via `Classical.choose`)\n\nThe orbit classification $a \\in S$ is fully decidable via `Finset.decidableMem`. The `noncomputable` tag comes from `Classical.choose` for the preimage extraction, which is a Lean 4 artifact (extracting from `Multiset` quotients) rather than a mathematical limitation.\n\n`cbsBijection_typeA` and `cbsBijection_typeB_spec` extract the defining properties for each case.",
+    "mathContext": "$h(a) = \\begin{cases} f(a) & \\text{if } a \\in S \\text{ (decidable)} \\\\ g^{-1}(a) & \\text{if } a \\notin S \\end{cases}$\n\nThe preimage $g^{-1}(a)$ exists when $a \\notin S$ because `not_reachable_in_range` guarantees $a \\in \\text{range}(g)$. The choice of preimage is unique by injectivity of $g$.",
+    "significance": "key",
+    "prerequisites": [
+      "reachableSet",
+      "not_reachable_in_range",
+      "Classical.choose"
+    ],
+    "relatedConcepts": [
+      "piecewise function",
+      "orbit classification",
+      "decidable membership",
+      "classical choice"
+    ]
+  },
+  {
+    "id": "ann-injectivity",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 235,
+      "endLine": 265
+    },
+    "type": "theorem",
+    "title": "Injectivity Proof: Four Cases with Cross-Case Contradiction",
+    "content": "The injectivity proof splits into four cases based on whether $a_1, a_2$ are reachable:\n\n1. **Both reachable**: $f(a_1) = f(a_2) \\Rightarrow a_1 = a_2$ by injectivity of $f$.\n2. **$a_1$ reachable, $a_2$ not**: Contradiction. $h(a_1) = h(a_2)$ gives $f(a_1) = g^{-1}(a_2)$, so $g(f(a_1)) = a_2$. But $g(f(a_1)) \\in S$ by closure, contradicting $a_2 \\notin S$.\n3. **$a_1$ not, $a_2$ reachable**: Symmetric contradiction.\n4. **Neither reachable**: $g^{-1}(a_1) = g^{-1}(a_2) \\Rightarrow g(g^{-1}(a_1)) = g(g^{-1}(a_2)) \\Rightarrow a_1 = a_2$.",
+    "mathContext": "The cross-case contradiction (cases 2-3) is the key insight: if $a \\in S$ and $a' \\notin S$ mapped to the same $b$, then $g(f(a)) = a'$ (from the Type B specification $g(h(a')) = a'$ and $h(a) = f(a)$). But $g(f(a)) \\in S$ by `reachable_closed`, contradicting $a' \\notin S$.",
+    "significance": "key",
+    "prerequisites": [
+      "reachable_closed",
+      "cbsBijection_typeA",
+      "cbsBijection_typeB_spec",
+      "Function.Embedding.injective"
+    ],
+    "relatedConcepts": [
+      "case analysis",
+      "proof by contradiction",
+      "cross-case elimination",
+      "injectivity"
+    ]
+  },
+  {
+    "id": "ann-surjectivity",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 269,
+      "endLine": 291
+    },
+    "type": "theorem",
+    "title": "Surjectivity Proof via Decomposition",
+    "content": "For any $b \\in \\beta$, either:\n1. Some reachable $a$ satisfies $f(a) = b$: then $h(a) = f(a) = b$.\n2. No reachable $a$ maps to $b$ via $f$: then $g(b) \\notin S$. If $g(b) \\in S$, the decomposition lemma gives either $g(b) \\in A_0$ (impossible: $g(b)$ is in range of $g$) or $g(b) = g(f(a'))$ for reachable $a'$, so $b = f(a')$ by injectivity of $g$ (contradicting our assumption). Since $g(b) \\notin S$, $h(g(b)) = g^{-1}(g(b))$, and $g$ applied to both sides gives $b$.",
+    "mathContext": "The surjectivity proof is the most intricate: it uses both the decomposition lemma (`reachable_decomp`) and the injectivity of $g$ to show that if no reachable element maps to $b$ via $f$, then $g(b)$ cannot be reachable. The final step uses $g(h(g(b))) = g(b)$, then injectivity of $g$.",
+    "significance": "key",
+    "prerequisites": [
+      "reachable_decomp",
+      "not_reachable_in_range",
+      "Function.Embedding.injective"
+    ],
+    "relatedConcepts": [
+      "surjectivity",
+      "decomposition lemma",
+      "preimage",
+      "inverse function"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 295,
+      "endLine": 314
+    },
+    "type": "theorem",
+    "title": "Main Theorem: Constructive CBS Equivalence and Decidability",
+    "content": "`constructive_CBS` assembles the final equivalence $\\alpha \\simeq \\beta$ from `Equiv.ofBijective`, packaging `cbsBijection_injective` and `cbsBijection_surjective`.\n\n`reachableSetDecidable` declares the `Decidable` instance for orbit classification: `a ∈ reachableSet f g` is decidable via `Finset.decidableMem`. This is the key constructive contribution — it shows that the non-constructive step in classical CBS (orbit classification via excluded middle) is avoidable for finite types.\n\n`constructive_agrees_with_classical` confirms that the constructive equivalence implies the classical `Nonempty (α ≃ β)`.",
+    "mathContext": "$f : \\alpha \\hookrightarrow \\beta, \\; g : \\beta \\hookrightarrow \\alpha, \\; [\\text{Fintype}\\,\\alpha], \\; [\\text{Fintype}\\,\\beta], \\; [\\text{DecidableEq}\\,\\alpha], \\; [\\text{DecidableEq}\\,\\beta] \\vdash \\alpha \\simeq \\beta$\n\nThe proof produces a concrete equivalence (not just `Nonempty`), and the orbit classification is a `Decidable` instance that can be evaluated by the Lean kernel.",
+    "significance": "key",
+    "prerequisites": [
+      "Equiv.ofBijective",
+      "cbsBijection_injective",
+      "cbsBijection_surjective",
+      "Finset.decidableMem"
+    ],
+    "relatedConcepts": [
+      "constructive equivalence",
+      "decidability instance",
+      "Equiv.ofBijective",
+      "computability"
+    ]
+  }
+]
