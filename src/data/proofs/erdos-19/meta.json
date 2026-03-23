@@ -58,7 +58,13 @@
       "erdos_furedi_generalization axiom: k-wise intersection case"
     ],
     "axiomCount": 16,
-    "lineCount": 301
+    "lineCount": 301,
+    "prerequisites": [
+      "Graph theory (chromatic number, complete graphs, edge-disjoint unions)",
+      "Graph coloring and proper vertex colorings",
+      "Linear hypergraphs and set systems",
+      "Absorbing method (for the 2021 proof)"
+    ]
   },
   "overview": {
     "historicalContext": "The Erdős-Faber-Lovász Conjecture arose from a conversation at a party in Boulder, Colorado in September 1972. Three prominent mathematicians — Paul Erdős, Vance Faber, and László Lovász — conjectured that any edge-disjoint union of n copies of the complete graph K_n can be properly colored with just n colors. Erdős offered a $500 prize for a proof or disproof.\n\nThe conjecture resisted proof for decades despite its simple statement. Hindman verified it for n < 10 by exhaustive analysis. The first major breakthrough came in 1992, when Jeff Kahn proved χ(G) ≤ (1 + o(1))n — the chromatic number is asymptotically n. Kahn won Erdős's $100 consolation prize for this result, and his explicit bound was χ(G) ≤ n + n^{1-1/51}.\n\nThe full resolution came in 2021 when Kang, Kelly, Kühn, Methuku, and Osthus proved the conjecture for all sufficiently large n using the absorbing method. This powerful technique — also used to resolve the Ringel conjecture around the same time — works by finding a small absorbing structure, greedily coloring most vertices, then using absorption to handle the remainder. Combined with Hindman's small cases, the conjecture is now fully resolved.",
@@ -167,6 +173,64 @@
       "Algorithmic aspects: finding optimal colorings efficiently"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Problem #21 on covering intersecting families is another Erdős problem in extremal set theory. Both concern colorings of structured hypergraphs: EFL asks about edge-disjoint clique unions, while Problem #21 asks about covering intersecting set families"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 on Ramsey-Turán numbers for $K_4$ concerns extremal graph theory with Ramsey-type constraints. Both problems involve graph coloring and the interplay between local structure (cliques) and global properties (chromatic number)"
+    },
+    {
+      "targetId": "erdos-24",
+      "relationship": "related",
+      "description": "Problem #24 on pentagons in triangle-free graphs is another extremal graph theory problem. The EFL conjecture's resolution via the absorbing method connects to the broader program of resolving long-standing extremal conjectures"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Problem #1011 on chromatic numbers is directly related: both concern the chromatic number of graphs with specific structural constraints. EFL shows $\\chi = n$ for edge-disjoint clique unions"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results in graph theory and combinatorial analysis",
+      "year": "1972",
+      "venue": "Proceedings of the Fifth British Combinatorial Conference, Aberdeen, pp. 169–192",
+      "note": "First published statement of the EFL conjecture, arising from a 1972 party conversation with Faber and Lovász"
+    },
+    {
+      "authors": "Kahn, Jeff",
+      "title": "Coloring nearly-disjoint hypergraphs with n+o(n) colors",
+      "year": "1992",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 59, no. 1, pp. 31–39",
+      "note": "Proved χ(G) ≤ (1+o(1))n asymptotically, earning Erdős's $100 consolation prize"
+    },
+    {
+      "authors": "Kang, Dong Yeap; Kelly, Tom; Kühn, Daniela; Methuku, Abhishek; Osthus, Deryk",
+      "title": "A proof of the Erdős-Faber-Lovász conjecture",
+      "year": "2023",
+      "venue": "Annals of Mathematics, vol. 198, no. 2, pp. 537–618",
+      "note": "Full resolution of the conjecture for all sufficiently large n using the absorbing method"
+    },
+    {
+      "authors": "Hindman, Neil",
+      "title": "On a conjecture of Erdős, Faber, and Lovász about n-colorings",
+      "year": "1981",
+      "venue": "Canadian Journal of Mathematics, vol. 33, no. 3, pp. 563–570",
+      "note": "Verified the conjecture for n < 10 by exhaustive case analysis"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-21",
+    "erdos-22",
+    "erdos-24",
+    "erdos-1011"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
