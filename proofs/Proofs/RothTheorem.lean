@@ -406,6 +406,14 @@ theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (tripleCount A : ℂ) + ↑A.card = (↑N)⁻¹ *
       Finset.univ.sum (fun r : ZMod N =>
         fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) := by
+  -- Suffices: both sides equal |{(x,y,z) ∈ A³ : x+y=2z}|
+  -- The Fourier computation and combinatorial bijection are deferred.
+  -- Proof sketch:
+  -- RHS = N⁻¹ Σ_r (Σ_x ψ(rx))(Σ_y ψ(ry))(Σ_z ψ(-2rz))
+  --     = N⁻¹ Σ_{x,y,z∈A} Σ_r ψ(r(x+y-2z))
+  --     = Σ_{x,y,z∈A} δ(x+y=2z)           [by char_orthogonality]
+  -- LHS = tripleCount + |A| = |{(a,d) : a∈A, a+d∈A, a+2d∈A}|
+  --     = |{(x,y,z)∈A³ : x+y=2z}|          [bijection x=a, z=a+d, y=a+2d]
   sorry
 
 -- ═══════════════════════════════════════════════════════════════════
