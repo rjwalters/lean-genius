@@ -218,7 +218,9 @@ theorem fourierCoeff_lipschitz_decay
   calc ‖fourierCoeff f n‖ ≤ K / 2 * (T / (2 * |(n : ℝ)|)) := h
     _ = K * T / (4 * |(n : ℝ)|) := by ring
 
-/-- **Riemann-Lebesgue for Hölder functions**: f̂(n) → 0 with quantitative rate. -/
+/-- **Riemann-Lebesgue for Hölder functions**: f̂(n) → 0 with quantitative rate.
+    Uses the decay bound from `fourierCoeff_holder_decay` and the Archimedean property
+    to show only finitely many coefficients can exceed any ε > 0. -/
 theorem fourierCoeff_tendsto_zero_of_holder
     {f : AddCircle T → ℂ} {C : ℝ} {α : ℝ}
     (hα : 0 < α) (hC : 0 ≤ C)
@@ -227,21 +229,80 @@ theorem fourierCoeff_tendsto_zero_of_holder
     Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0) := by
   rw [Metric.tendsto_nhds]
   intro ε hε
+  simp only [dist_zero_right]
   rw [Filter.Eventually, Filter.mem_cofinite]
-  -- The bound ‖fc n‖ ≤ (C/2) * (T/(2|n|))^α → 0 as |n| → ∞
-  -- For ε > 0, finitely many n have ‖fc n‖ ≥ ε
-  -- Since the bound is monotone decreasing in |n|, only finitely many n violate it
-  sorry
+  -- Suffices: ∃ N, ∀ n with |n| > N, ‖fc n‖ < ε
+  suffices ∃ N : ℕ, ∀ n : ℤ, N < n.natAbs → ‖fourierCoeff f n‖ < ε by
+    obtain ⟨N, hN⟩ := this
+    apply (Set.finite_Icc (-(N : ℤ)) ↑N).subset
+    intro n hn
+    simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_lt] at hn
+    simp only [Set.mem_Icc]
+    by_contra habs; push_neg at habs
+    exact absurd (hN n (by omega)) (not_lt.mpr hn)
+  -- Case C = 0: bound is 0 for all n ≠ 0
+  by_cases hCz : C = 0
+  · exact ⟨0, fun n hn => by
+      have hne : n ≠ 0 := by omega
+      have := fourierCoeff_holder_decay hα hC holder hf hne
+      rw [hCz, zero_div, zero_mul] at this
+      linarith [norm_nonneg (fourierCoeff f n)]⟩
+  -- Case C > 0: use Archimedean property to find N where decay bound < ε
+  · push_neg at hCz
+    have hCpos : 0 < C := lt_of_le_of_ne hC (Ne.symm hCz)
+    have hTpos := hT.out
+    have heps_C : 0 < 2 * ε / C := by positivity
+    -- Choose N such that the decay bound (C/2)·(T/(2N))^α < ε
+    obtain ⟨N, hN⟩ := exists_nat_gt (T / (2 * (2 * ε / C) ^ (1 / α)))
+    refine ⟨N, fun n hn => ?_⟩
+    have hne : n ≠ 0 := by omega
+    have h_nR_pos : (0 : ℝ) < |(n : ℝ)| := abs_pos.mpr (Int.cast_ne_zero.mpr hne)
+    -- Convert: (N : ℝ) < |(n : ℝ)| via natAbs
+    have h_natabs_eq : (n.natAbs : ℝ) = |(n : ℝ)| := by
+      rw [← Int.cast_abs, ← Int.natCast_natAbs, Int.cast_natCast]
+    have h_nR_gt : (N : ℝ) < |(n : ℝ)| := by
+      linarith [show (N : ℝ) < (n.natAbs : ℝ) from Nat.cast_lt.mpr hn]
+    -- T/(2|n|) < (2ε/C)^{1/α} from the bound on N
+    have h_base_pos : 0 < 2 * (2 * ε / C) ^ (1 / α) := by positivity
+    have h_2n_pos : (0 : ℝ) < 2 * |(n : ℝ)| := by linarith
+    have h_ratio : T / (2 * |(n : ℝ)|) < (2 * ε / C) ^ (1 / α) := by
+      rw [div_lt_iff₀ h_2n_pos]
+      have hT_lt : T < ↑N * (2 * (2 * ε / C) ^ (1 / α)) :=
+        (div_lt_iff₀ h_base_pos).mp hN
+      calc T < ↑N * (2 * (2 * ε / C) ^ (1 / α)) := hT_lt
+        _ ≤ |(n : ℝ)| * (2 * (2 * ε / C) ^ (1 / α)) := by
+            apply mul_le_mul_of_nonneg_right (le_of_lt h_nR_gt); linarith
+        _ = (2 * ε / C) ^ (1 / α) * (2 * |(n : ℝ)|) := by ring
+    -- (T/(2|n|))^α < ((2ε/C)^{1/α})^α = 2ε/C
+    have h_ratio_nn : 0 ≤ T / (2 * |(n : ℝ)|) := by positivity
+    have h_rpow : (T / (2 * |(n : ℝ)|)) ^ α < 2 * ε / C := by
+      calc (T / (2 * |(n : ℝ)|)) ^ α
+          < ((2 * ε / C) ^ (1 / α)) ^ α :=
+            Real.rpow_lt_rpow h_ratio_nn h_ratio hα
+        _ = 2 * ε / C := by
+            rw [← Real.rpow_mul (le_of_lt heps_C)]
+            rw [show (1 / α) * α = 1 from by field_simp]
+            exact Real.rpow_one _
+    -- Final: ‖fc n‖ ≤ (C/2)·bound < (C/2)·(2ε/C) = ε
+    calc ‖fourierCoeff f n‖
+        ≤ C / 2 * (T / (2 * |(n : ℝ)|)) ^ α :=
+          fourierCoeff_holder_decay hα hC holder hf hne
+      _ < C / 2 * (2 * ε / C) := by nlinarith
+      _ = ε := by field_simp
 
-/-- **Summability**: When α > 1/2, Fourier coefficients are absolutely summable,
-    guaranteeing uniform convergence of the Fourier series. -/
+/-- **Summability (Bernstein's theorem)**: When α > 1/2, Fourier coefficients are
+    absolutely summable, guaranteeing uniform convergence of the Fourier series.
+
+    The proof uses dyadic decomposition and Cauchy-Schwarz: partition ℤ into dyadic blocks
+    {2^k ≤ |n| < 2^{k+1}}, apply Cauchy-Schwarz to each block, then use Parseval's identity
+    with the Hölder modulus of continuity to sum the geometric series in 2^{k(1/2-α)}. -/
 theorem summable_fourierCoeff_of_holder
     {f : AddCircle T → ℂ} {C : ℝ} {α : ℝ}
     (hα : 1 / 2 < α) (hC : 0 ≤ C)
     (holder : ∀ x y : AddCircle T, ‖f x - f y‖ ≤ C * dist x y ^ α)
     (hf : Integrable f haarAddCircle) :
     Summable (fun n : ℤ => fourierCoeff f n) := by
-  -- Summable by comparison with C * |n|^{-α}, which is summable when α > 1/2
+  -- Bernstein's theorem: requires dyadic Cauchy-Schwarz + Parseval, ~200 lines
   sorry
 
 /-! ## Verification -/

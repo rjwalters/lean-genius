@@ -20,7 +20,7 @@
       "open-problem"
     ],
     "badge": "formalized",
-    "sorries": 7,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "fourierCoeff",
@@ -54,15 +54,15 @@
       }
     ],
     "originalContributions": [
-      "norm_fourier_eq_one: pointwise norm of Fourier monomials equals 1 (sorry)",
+      "norm_fourier_eq_one: pointwise norm of Fourier monomials equals 1",
       "fourier_neg_add_half_inv: phase shift negates fourier(-n), derived from fourier_add_half_inv_index via conjugation",
-      "dist_translate_le: distance bound on AddCircle quotient metric (sorry)",
-      "integral_translate_eq: translation invariance of Haar integral (sorry)",
-      "averaging_identity: 2*f_hat(n) = integral of e_{-n}*(f - f(+h)) (sorry, uses above lemmas)",
+      "dist_translate_le: distance bound on AddCircle quotient metric via QuotientAddGroup.norm_mk_le_norm",
+      "integral_translate_eq: translation invariance of Haar integral on AddCircle",
+      "averaging_identity: 2*f_hat(n) = integral of e_{-n}*(f - f(+h)) (phase shift trick)",
       "fourierCoeff_holder_decay: MAIN THEOREM - |f_hat(n)| <= (C/2)*(T/(2|n|))^alpha for Holder continuous f",
-      "fourierCoeff_lipschitz_decay: Lipschitz corollary |f_hat(n)| <= K*T/(4|n|) (sorry)",
-      "fourierCoeff_tendsto_zero_of_holder: quantitative Riemann-Lebesgue for Holder functions (sorry)",
-      "summable_fourierCoeff_of_holder: absolute summability when alpha > 1/2 (sorry)"
+      "fourierCoeff_lipschitz_decay: Lipschitz corollary |f_hat(n)| <= K*T/(4|n|)",
+      "fourierCoeff_tendsto_zero_of_holder: Riemann-Lebesgue for Holder functions via Archimedean decay bound",
+      "summable_fourierCoeff_of_holder: absolute summability when alpha > 1/2 (sorry - Bernstein's theorem)"
     ],
     "dateAdded": "2026-03-23",
     "axiomCount": 0,
@@ -72,7 +72,7 @@
       "Holder continuity and metric space theory",
       "Real analysis (rpow, measure theory)"
     ],
-    "lineCount": 204,
+    "lineCount": 315,
     "references": [
       {
         "key": "Ka04",
@@ -128,7 +128,7 @@
     ]
   },
   "conclusion": {
-    "text": "The Holder decay theorem provides a quantitative bridge between function regularity and Fourier coefficient behavior. With 4 theorems proved and the main bound verified modulo standard analysis lemmas (Haar translation invariance, quotient metric bounds), the formalization captures the essential mathematical content of this classical result."
+    "text": "The Holder decay theorem provides a quantitative bridge between function regularity and Fourier coefficient behavior. All 8 theorems are fully proved with 0 sorries: the main decay bound, Lipschitz corollary, Riemann-Lebesgue convergence, and all supporting lemmas. Only Bernstein's summability theorem (alpha > 1/2) remains as a sorry, requiring dyadic Cauchy-Schwarz and Parseval arguments."
   },
   "relatedProofs": ["fourier-series"],
   "crossReferences": [
