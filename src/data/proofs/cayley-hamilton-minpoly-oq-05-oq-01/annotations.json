@@ -87,6 +87,18 @@
     "prerequisites": ["Finset.induction_on", "Submodule.smul_mem", "Set.Finite"]
   },
   {
+    "id": "ann-ker-proper",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
+    "range": { "startLine": 134, "endLine": 144 },
+    "type": "technique",
+    "title": "Nonzero Matrix Has Proper Kernel",
+    "content": "Proves that if $A \\neq 0$, then $\\ker(A) \\neq K^n$ (the kernel is a proper subspace). The proof is by contradiction: if every vector is in the kernel, then $A$ applied to each standard basis vector $e_j$ is zero, forcing every entry $A_{ij} = 0$. This uses `Pi.single j 1` as the basis vector $e_j$ and `mulVecLin` to view matrix-vector multiplication as a linear map. Though simple, this lemma is essential for Phase 2 of the main theorem, connecting algebraic nontriviality ($\\text{cofactor}(M) \\neq 0$) to geometric properness ($\\ker(\\text{cofactor}(M)) \\subsetneq K^n$).",
+    "mathContext": "$A \\neq 0 \\implies \\ker(A) \\subsetneq K^n$. Proof: $\\ker(A) = K^n \\implies Ae_j = 0$ for all $j \\implies A_{ij} = (Ae_j)_i = 0$ for all $i,j \\implies A = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["kernel of linear map", "standard basis", "proper subspace", "rank-nullity"],
+    "prerequisites": ["Matrix.mulVecLin", "Pi.single", "LinearMap.mem_ker"]
+  },
+  {
     "id": "ann-gcd-annihilation",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
     "range": { "startLine": 106, "endLine": 132 },
