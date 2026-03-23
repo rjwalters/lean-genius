@@ -68,38 +68,53 @@
     ],
     "references": [
       {
-        "key": "Wa37",
-        "citation": "Wantzel, P.L., Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas, Journal de mathématiques pures et appliquées 2 (1837), 366–372.",
-        "type": "paper"
+        "authors": "Wantzel, Pierre Laurent",
+        "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
+        "year": "1837",
+        "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+        "note": "First rigorous proof that the three classical construction problems (trisection, doubling, squaring) are impossible. Wantzel showed that compass-and-straightedge constructions produce only algebraic numbers whose minimal polynomial degree is a power of 2"
       },
       {
-        "key": "St04",
-        "citation": "Stewart, I., Galois Theory, 3rd ed., Chapman & Hall/CRC (2004), Chapter 5.",
-        "type": "book"
-      },
-      {
-        "key": "Ga01",
-        "citation": "Gauss, C.F., Disquisitiones Arithmeticae (1801), §365.",
-        "type": "book",
+        "authors": "Gauss, Carl Friedrich",
+        "title": "Disquisitiones Arithmeticae",
+        "year": "1801",
+        "venue": "Gerhard Fleischer, Leipzig, §365",
         "note": "Gauss proved the regular 17-gon is constructible using the 2-group structure of Gal(ℚ(ζ₁₇)/ℚ) ≅ ℤ/16ℤ, implicitly anticipating the Galois characterization of constructibility"
       },
       {
-        "key": "Co04",
-        "citation": "Cox, D.A., Galois Theory, 2nd ed., Wiley (2004, 2012), Chapters 10–11.",
-        "type": "book",
+        "authors": "Stewart, Ian",
+        "title": "Galois Theory",
+        "year": "2004",
+        "venue": "Chapman & Hall/CRC, 3rd edition, Chapter 5",
+        "note": "Modern textbook treatment of the Galois-theoretic characterization of constructibility, including the connection between 2-groups and compass-and-straightedge constructions"
+      },
+      {
+        "authors": "Cox, David A.",
+        "title": "Galois Theory",
+        "year": "2012",
+        "venue": "Wiley, 2nd edition, Chapters 10–11",
         "note": "Detailed treatment of constructibility and the Galois correspondence: Chapter 10 covers compass-and-straightedge constructions and the characterization via 2-group Galois groups, Chapter 11 covers the Gauss-Wantzel theorem for regular polygons"
       },
       {
-        "key": "Ma98",
-        "citation": "Martin, G.E., Geometric Constructions, Springer Undergraduate Texts in Mathematics (1998).",
-        "type": "book",
+        "authors": "Martin, George E.",
+        "title": "Geometric Constructions",
+        "year": "1998",
+        "venue": "Springer Undergraduate Texts in Mathematics",
         "note": "Comprehensive reference on constructibility theory with algebraic proofs of the three classical impossibilities (trisection, doubling, squaring) via field extension degrees and Galois groups"
       },
       {
-        "key": "Ro95",
-        "citation": "Rotman, J.J., An Introduction to the Theory of Groups, 4th ed., Springer GTM 148 (1995), Chapter 5.",
-        "type": "book",
+        "authors": "Rotman, Joseph J.",
+        "title": "An Introduction to the Theory of Groups",
+        "year": "1995",
+        "venue": "Springer GTM 148, 4th edition, Chapter 5",
         "note": "Standard treatment of p-groups and Sylow theory: proves that p-groups have composition series with ℤ/pℤ factors, the structural fact underlying the Galois 2-group characterization of constructibility"
+      },
+      {
+        "authors": "Hadlock, Charles Robert",
+        "title": "Field Theory and Its Classical Problems",
+        "year": "1978",
+        "venue": "Carus Mathematical Monographs No. 19, MAA",
+        "note": "Elegant exposition connecting classical construction problems to field theory, with complete proofs that the three impossibilities follow from the Galois-theoretic characterization of constructibility"
       }
     ],
     "lineCount": 298
@@ -189,6 +204,11 @@
       "targetId": "e-transcendental",
       "relationship": "related",
       "description": "The transcendence of $e$ (Hermite 1873) is a strictly stronger impossibility than non-constructibility: transcendental numbers are not just non-constructible but satisfy no polynomial over $\\mathbb{Q}$ at all. The Galois criterion applies only to algebraic numbers — for transcendental numbers, even the Galois group framework does not apply"
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula solves cubics by radicals (S₃ is solvable), but cos(20°) satisfies the cubic 8x³-6x-1=0 yet is NOT constructible — because S₃ is solvable but not a 2-group. This is the key distinction: solvability by radicals (solvable Galois group) is strictly weaker than constructibility (2-group Galois group). Cardano's formula gives cos(20°) in terms of cube roots, confirming it is solvable by radicals, yet the Galois 2-group criterion blocks constructibility"
     }
   ],
   "overview": {
@@ -327,6 +347,7 @@
     "primitive-roots",
     "euler-totient",
     "nth-root-irrational",
-    "e-transcendental"
+    "e-transcendental",
+    "solution-of-cubic"
   ]
 }

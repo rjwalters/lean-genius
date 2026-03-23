@@ -534,6 +534,27 @@
       "year": "1963",
       "venue": "Pacific Journal of Mathematics, vol. 13, no. 3, pp. 775–1029",
       "note": "The celebrated Odd Order Theorem: every finite group of odd order is solvable. This 255-page proof is the deepest result about group solvability since Galois and directly implies that any polynomial whose Galois group has odd order is solvable by radicals"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The definitive list of 100 well-known mathematical theorems and their formalization status across proof assistants. The Abel-Ruffini theorem is #16. This formalization contributes to the Lean 4 / Mathlib column of the list"
+    },
+    {
+      "authors": "Pesic, Peter",
+      "title": "Abel's Proof: An Essay on the Sources and Meaning of Mathematical Unsolvability",
+      "year": "2003",
+      "venue": "MIT Press",
+      "note": "Accessible modern account tracing the intellectual journey from the Renaissance algebraists through Abel and Galois, placing the impossibility of the quintic in the broader context of mathematical thought about the limits of symbolic methods"
+    },
+    {
+      "authors": "Klein, Felix",
+      "title": "Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade",
+      "year": "1884",
+      "venue": "Teubner, Leipzig (English translation: Lectures on the Icosahedron, 1888, Trübner & Co.)",
+      "note": "Klein's masterwork connecting the quintic to the symmetries of the icosahedron (rotation group ≅ A₅) and solving it via elliptic modular functions and hypergeometric series. Directly relevant to the open question about formalizing alternative quintic solutions beyond radicals: Klein showed that the icosahedral equation x⁵ + x + a can be solved by theta functions, linking A₅'s geometry to transcendental function theory"
     }
   ],
   "leanFile": {
