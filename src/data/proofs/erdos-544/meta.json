@@ -27,7 +27,7 @@
   "overview": {
     "historicalContext": "Erdős and Sós asked whether the consecutive differences $R(3,k+1) - R(3,k)$ tend to infinity, and whether the growth is sublinear in $k$. The asymptotic behaviour of $R(3,k)$ has a rich history: **Erdős** established early bounds using the probabilistic method; **Shearer** (1983) proved $R(3,k) \\leq Ck^2/\\log k$; **Kim** (1995) proved the matching lower bound $R(3,k) \\geq ck^2/\\log k$ via the triangle-free process, a landmark in probabilistic combinatorics. Most recently, **Campos–Griffiths–Morris–Sahasrabudhe** (2023, *Ann. Math.*) sharpened the upper bound constant to within a factor of 4. The average consecutive difference is thus $\\Theta(k/\\log k)$, but the pointwise behaviour of individual differences remains an open problem.",
     "problemStatement": "Show that R(3, k+1) − R(3, k) → ∞ as k → ∞. Similarly, prove or disprove that R(3, k+1) − R(3, k) = o(k).",
-    "text": "Show that R(3, k+1) − R(3, k) → ∞. Prove or disprove that R(3, k+1) − R(3, k) = o(k).",
+    "text": "A 93-line formalization of Erdős Problem #544 on the consecutive differences of Ramsey numbers $R(3,k)$. The file axiomatizes $R(3,k)$ as a function with monotonicity, 7 known exact values ($R(3,3) = 6$ through $R(3,9) = 36$), Kim's 1995 lower bound $R(3,k) \\geq ck^2/\\log k$, and Shearer's 1983 upper bound $R(3,k) \\leq Ck^2/\\log k$. It defines the consecutive difference function $\\text{ramseyDiff}(k) = R(3,k+1) - R(3,k)$ and states two open conjectures: (1) divergence ($\\text{ramseyDiff}(k) \\to \\infty$) and (2) sublinearity ($\\text{ramseyDiff}(k) = o(k)$). One theorem is proved: $R(3,k) \\geq 6$ for $k \\geq 3$, derived from the known values. The 11 axioms encode deep results from probabilistic combinatorics (Kim's triangle-free process) and graph theory (Shearer's entropy bounds).",
     "proofStrategy": "The formalization axiomatises R(3, k) with known values (k = 3 through 9), monotonicity, and the Kim / Shearer asymptotic bounds. The consecutive difference function and both parts of the conjecture (divergence and sublinearity) are stated.",
     "keyInsights": [
       "R(3, k) = Θ(k²/log k) implies the average difference grows like k/log k",
@@ -84,7 +84,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures both parts of Erdős Problem 544: the divergence of R(3,k+1) − R(3,k) and the question of whether the growth is sublinear in k.",
-    "implications": "Understanding consecutive Ramsey differences would refine our knowledge of the fine structure of the R(3,k) sequence beyond its asymptotic order Θ(k²/log k).",
+    "implications": "**Theoretical Significance**: The consecutive differences $R(3,k+1) - R(3,k)$ probe the *fine structure* of the Ramsey sequence beyond its asymptotic order $\\Theta(k^2/\\log k)$. While the CGMS 2023 breakthrough pinned down the leading constant up to a factor of 4, the pointwise behaviour of individual differences remains mysterious.\n\nThe divergence question (Part 1) reduces to showing that $R(3,k)$ cannot grow in large jumps separated by plateaus. The known irregularity of small values (differences 3, 5, 4, 5, 5, 8 for $k = 3,\\ldots,9$) suggests this is non-trivial — the sequence is not monotonically increasing in its differences.\n\nThe sublinearity question (Part 2) is deeper: it asks whether the Ramsey function $R(3,k)$ grows 'smoothly' at scale $k$, with differences much smaller than $k$. A smooth interpolation of $R(3,k) \\approx k^2/(4\\log k)$ gives differences $\\approx 2k/\\log k - k/(\\log k)^2 = o(k)$, but Ramsey numbers need not follow smooth curves. Resolving this would illuminate whether the probabilistic constructions underlying Kim's lower bound produce 'regular' growth or allow sporadic jumps.\n\n**Connections to the probabilistic method**: Kim's lower bound uses the triangle-free process — the same random process studied in Erdős Problem #1155 (triangle removal). Both problems ultimately ask about the fine-grained behavior of random graph processes near their critical thresholds.",
     "openQuestions": [
       "Does R(3, k+1) − R(3, k) → ∞?",
       "Is R(3, k+1) − R(3, k) = o(k)?",
@@ -95,11 +95,83 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "R(3,k) is a special case of Ramsey numbers; the base theory is formalized in the gallery"
+      "description": "R(3,k) is a special case of Ramsey numbers $R(s,t)$; the base theory and Ramsey's theorem are formalized in the gallery. Problem #544 studies the fine structure of the $R(3,k)$ subsequence"
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "related",
+      "description": "Kim's 1995 lower bound $R(3,k) \\geq ck^2/\\log k$ uses the triangle-free process — the same random process studied in Problem #1155 (triangle removal). Both problems concern the fine-grained behavior of triangle-related random graph processes"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The probabilistic method underpins both Kim's lower bound construction (semi-random method) and the classical Erdős upper bounds for Ramsey numbers. Second moment arguments are central to analyzing the triangle-free process used in Kim's proof"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Both are Erdős problems about the fine structure of combinatorial sequences. #4 studies density of sum-free sets, #544 studies growth rate of Ramsey numbers — both probe how combinatorial constraints force specific quantitative behavior"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Both concern triangle-related extremal combinatorics. #1009 asks about edge-disjoint triangles beyond the Turán threshold, while #544 studies the off-diagonal Ramsey number $R(3,k)$ where one forbidden subgraph is a triangle"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi's regularity lemma is a key tool in upper bounds for Ramsey numbers. Shearer's 1983 bound $R(3,k) \\leq Ck^2/\\log k$ uses a variant of regularity-based counting arguments. The CGMS 2023 improvement bypasses regularity via a novel book algorithm"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Both Erdős problems study the growth and fine structure of combinatorial sequences defined by avoidance conditions — #36 concerns arithmetic-progression-free sets, #544 concerns the Ramsey function $R(3,k)$ defined by triangle/clique avoidance"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem on 3-term arithmetic progressions connects to Ramsey theory through Hales-Jewett and the broader density Ramsey paradigm. Both problems concern how forbidden structures constrain the density or growth rate of combinatorial objects"
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "erdos-1155",
+    "prob-method-second-moment",
+    "erdos-4",
+    "erdos-1009",
+    "szemeredi-regularity",
+    "erdos-36",
+    "roth-theorem-k3"
+  ],
+  "references": [
+    {
+      "authors": "Kim, Jeong Han",
+      "title": "The Ramsey number R(3,t) has order of magnitude t²/log t",
+      "year": "1995",
+      "venue": "Random Structures & Algorithms, vol. 7, pp. 173–207",
+      "note": "Proved the lower bound R(3,k) ≥ ck²/log k via the triangle-free process, matching Shearer's upper bound up to a constant"
+    },
+    {
+      "authors": "Shearer, James B.",
+      "title": "A note on the independence number of triangle-free graphs",
+      "year": "1983",
+      "venue": "Discrete Mathematics, vol. 46, pp. 83–87",
+      "note": "Proved R(3,k) ≤ Ck²/log k using entropy-based arguments"
+    },
+    {
+      "authors": "Campos, Marcelo; Griffiths, Simon; Morris, Robert; Sahasrabudhe, Julian",
+      "title": "An exponential improvement for diagonal Ramsey",
+      "year": "2023",
+      "venue": "Annals of Mathematics, vol. 198, pp. 507–541",
+      "note": "Determined the leading constant of R(3,k) up to a factor of 4, the sharpest known result"
+    },
+    {
+      "authors": "Grinstead, Charles; Roberts, Sam",
+      "title": "On the Ramsey numbers R(3,8) and R(3,9)",
+      "year": "1982",
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 33, pp. 27–51",
+      "note": "Established R(3,8) = 28 and R(3,9) = 36, the largest known exact values of R(3,k)"
+    }
   ],
   "leanFile": {
     "imports": [
