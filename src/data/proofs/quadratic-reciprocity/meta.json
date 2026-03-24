@@ -2,7 +2,7 @@
   "id": "quadratic-reciprocity",
   "title": "Law of Quadratic Reciprocity",
   "slug": "quadratic-reciprocity",
-  "description": "Gauss's 'golden theorem' of number theory: for distinct odd primes p and q, the Legendre symbols (p/q) and (q/p) are equal unless both p and q are congruent to 3 mod 4.",
+  "description": "Quadratic Reciprocity (Wiedijk #7): Gauss's 'golden theorem' — for distinct odd primes $p, q$, $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$, i.e., the Legendre symbols agree unless both $p \\equiv q \\equiv 3 \\pmod{4}$. Formalized in Lean 4 via Mathlib's `ZMod.quadraticReciprocity`. Includes the first and second supplements. 0 sorries, 0 axioms.",
   "meta": {
     "author": "Gauss (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
@@ -46,7 +46,7 @@
     "wiedijkNumber": 7,
     "axiomCount": 0,
     "lineCount": 231,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core reciprocity law delegates to Mathlib's `legendreSym.quadratic_reciprocity` (proved via Gauss sums and Eisenstein's lemma). The supplementary laws use `ZMod.exists_sq_eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`. Original contributions are pedagogical wrappers providing four forms of the main law and explicit worked examples."
   },
   "overview": {
     "historicalContext": "Quadratic reciprocity is one of the most celebrated theorems in number theory. Euler and Legendre conjectured the result but could not prove it completely. Gauss (1796) gave the first complete proof at age 19, calling it the golden theorem and eventually publishing 8 different proofs. The theorem reveals deep, unexpected connections between prime numbers and is the foundation for class field theory and algebraic number theory. Eisenstein (1844) gave a particularly elegant proof using roots of unity and Gaussian integers. The theorem was generalized to arbitrary number fields by Artin (1927) in his reciprocity law, and the complete theory of higher reciprocity laws was developed through 20th-century class field theory.",
