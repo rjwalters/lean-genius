@@ -4,11 +4,11 @@
     "proofId": "ballot-problem-oq-02",
     "range": {
       "startLine": 3,
-      "endLine": 66
+      "endLine": 55
     },
     "type": "context",
     "title": "Ballot Problem: From Bertrand's Discrete Result to Levy's Brownian Motion",
-    "content": "The module preamble frames the continuous-time ballot problem. The classical discrete ballot theorem (Bertrand 1887, Wiedijk #30) asks: if A gets p votes and B gets q votes with p>q, what is the probability A leads throughout? Answer: (p-q)/(p+q). The continuous generalization connects to Brownian motion via three key results: the Reflection Principle (P(max W >= a) = 2P(W_T >= a)), the First Passage Time Distribution (P(tau_a <= T) = 2(1-Phi(a/sqrt(T)))), and Levy's Arcsine Law (fraction of time BM spends positive has arcsine distribution). The file achieves 0 sorries with 3 axioms for deep results (reflection principle, first passage characterization, arcsine law), while proving all derived results including the discrete ballot formula.",
+    "content": "The module preamble frames the continuous-time ballot problem. The classical discrete ballot theorem (Bertrand 1887, Wiedijk #30) asks: if A gets p votes and B gets q votes with p>q, what is the probability A leads throughout? Answer: (p-q)/(p+q). The continuous generalization connects to Brownian motion via three key results: the Reflection Principle (P(max W >= a) = 2P(W_T >= a)), the First Passage Time Distribution (P(tau_a <= T) = 2(1-Phi(a/sqrt(T)))), and Levy's Arcsine Law (fraction of time BM spends positive has arcsine distribution). The file achieves 0 sorries with 2 axioms for deep results (reflection principle and first passage characterization), while proving all derived results including the discrete ballot formula. The arcsine law is discussed and its definition (`positiveTime`) is provided, but the arcsine distribution formula itself is not axiomatized in the Lean code.",
     "mathContext": "Reflection Principle (Levy): $P(\\max_{0\\leq s\\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ for $a,T>0$. First passage: $P(\\tau_a \\leq T) = 2(1-\\Phi(a/\\sqrt{T}))$. Arcsine Law: $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -29,8 +29,8 @@
     "id": "ann-ballot-oq02-02-bm-structure",
     "proofId": "ballot-problem-oq-02",
     "range": {
-      "startLine": 67,
-      "endLine": 100
+      "startLine": 61,
+      "endLine": 93
     },
     "type": "definition",
     "title": "BrownianMotion Structure: Axiomatic Framework with Key Properties",
@@ -55,8 +55,8 @@
     "id": "ann-ballot-oq02-03-symmetry",
     "proofId": "ballot-problem-oq-02",
     "range": {
-      "startLine": 101,
-      "endLine": 128
+      "startLine": 95,
+      "endLine": 130
     },
     "type": "technique",
     "title": "Symmetry: P(W_t > 0) = P(W_t < 0) from Gaussian Structure",
@@ -80,7 +80,7 @@
     "proofId": "ballot-problem-oq-02",
     "range": {
       "startLine": 145,
-      "endLine": 171
+      "endLine": 170
     },
     "type": "definition",
     "title": "First Passage Time and Max Event Definitions",
@@ -153,11 +153,11 @@
     "proofId": "ballot-problem-oq-02",
     "range": {
       "startLine": 228,
-      "endLine": 306
+      "endLine": 305
     },
     "type": "concept",
     "title": "Arcsine Law, Donsker Connection, and Main Ballot Theorem",
-    "content": "positiveTime defines the time BM spends positive in [0,T] via Lebesgue measure. levy_arcsine_law is axiomatized: P(L_T/T <= r) = (2/pi)*arcsin(sqrt(r)), characterizing the arcsine distribution -- the fraction of positive time is NOT uniform but heavily concentrated near 0 and 1. The Donsker invariance principle (1951) is discussed informally: the scaled random walk S_{floor(nt)}/sqrt(n) converges to Brownian motion, connecting discrete and continuous ballot theorems. continuous_ballot_theorem packages the complete continuous ballot picture as a conjunction: reflection principle, first passage = max event, and positive passage probability.",
+    "content": "positiveTime defines the time BM spends positive in [0,T] via Lebesgue measure. The arcsine law P(L_T/T <= r) = (2/pi)*arcsin(sqrt(r)) is described mathematically but NOT axiomatized as a Lean axiom -- only the `positiveTime` definition is formalized. The Donsker invariance principle (1951) is discussed informally: the scaled random walk S_{floor(nt)}/sqrt(n) converges to Brownian motion, connecting discrete and continuous ballot theorems. continuous_ballot_theorem packages the complete continuous ballot picture as a conjunction: reflection principle, first passage = max event, and positive passage probability.",
     "mathContext": "Arcsine law: $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$. Density $f(x) = 1/(\\pi\\sqrt{x(1-x)})$ is infinite at 0 and 1 -- most time is spent near 0 (all negative) or $T$ (all positive). Main theorem: conjunction of reflection principle, first passage characterization, and positivity.",
     "significance": "key",
     "relatedConcepts": [
@@ -178,7 +178,7 @@
     "proofId": "ballot-problem-oq-02",
     "range": {
       "startLine": 308,
-      "endLine": 340
+      "endLine": 339
     },
     "type": "insight",
     "title": "Discrete Ballot Theorem: (p-q)/(p+q) via Bertrand-Cycle Lemma",
