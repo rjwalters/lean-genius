@@ -72,18 +72,42 @@ axiom partitionThreshold (α : Ordinal.{0}) : ℕ
 axiom partition_monotone_down (α : Ordinal.{0}) (k j : ℕ) (hjk : j ≤ k)
     (hk : IsPartitionOrd α k) : IsPartitionOrd α j
 
-/-- The threshold captures the exact boundary. -/
+/-- The threshold captures the exact boundary: the partition property holds
+    at the threshold and fails one step above. -/
 axiom threshold_exact (α : Ordinal.{0}) :
     IsPartitionOrd α (partitionThreshold α) ∧
-    (partitionThreshold α + 1 > 2 → ¬ IsPartitionOrd α (partitionThreshold α + 1))
+    ¬ IsPartitionOrd α (partitionThreshold α + 1)
 
 /- ## Known Thresholds -/
 
 /-- For ω^(ω²), the threshold is between 3 and 4 (inclusive).
-    We know triangles work but K_5 fails. -/
-axiom omega_omega2_threshold :
+    We know triangles work but K_5 fails.
+    PROVED from threshold_exact, partition_monotone_down, and counterexample axioms. -/
+theorem omega_omega2_threshold :
     3 ≤ partitionThreshold counterexampleOrd ∧
-    partitionThreshold counterexampleOrd ≤ 4
+    partitionThreshold counterexampleOrd ≤ 4 := by
+  constructor
+  · -- Lower bound: threshold ≥ 3
+    -- If threshold ≤ 2, then threshold+1 ≤ 3, and by monotonicity from
+    -- counter_partition_3, IsPartitionOrd counterexampleOrd (threshold+1).
+    -- But threshold_exact says ¬ IsPartitionOrd α (threshold+1). Contradiction.
+    by_contra h
+    push_neg at h -- h : partitionThreshold counterexampleOrd < 3
+    have ht := (threshold_exact counterexampleOrd).2
+    have hle : partitionThreshold counterexampleOrd + 1 ≤ 3 := by omega
+    have h3 := partition_monotone_down counterexampleOrd 3
+      (partitionThreshold counterexampleOrd + 1) hle counter_partition_3
+    exact ht h3
+  · -- Upper bound: threshold ≤ 4
+    -- If threshold ≥ 5, then by threshold_exact, IsPartitionOrd α threshold.
+    -- By monotonicity with j=5 ≤ threshold: IsPartitionOrd α 5.
+    -- But counter_not_partition_5. Contradiction.
+    by_contra h
+    push_neg at h -- h : 5 ≤ partitionThreshold counterexampleOrd
+    have ht := (threshold_exact counterexampleOrd).1
+    have h5 := partition_monotone_down counterexampleOrd
+      (partitionThreshold counterexampleOrd) 5 h ht
+    exact counter_not_partition_5 h5
 
 /- ## Relation to Problem #592 -/
 
