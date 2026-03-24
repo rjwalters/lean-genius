@@ -149,28 +149,28 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-398",
-      "relationship": "The Brocard-Ramanujan conjecture (n! + 1 = m²) is the most directly adjacent problem: both concern when factorial expressions yield perfect powers. Problem #398 asks about a single factorial plus one; Problem #1108 asks about arbitrary finite sums of distinct factorials."
+      "relationship": "The Brocard-Ramanujan conjecture (n! + 1 = m²) is the most directly adjacent problem: both concern when factorial expressions yield perfect powers. Problem #398 asks about a single factorial plus one; Problem #1108 asks about arbitrary finite sums of distinct factorials.",
+      "targetId": "erdos-398"
     },
     {
-      "id": "erdos-399",
-      "relationship": "Problem #399 asks whether n! = x^k ± y^k has solutions with xy > 1 and k > 2. Both #399 and #1108 investigate the intersection of factorials with the multiplicative structure of perfect powers, using Diophantine methods."
+      "relationship": "Problem #399 asks whether n! = x^k ± y^k has solutions with xy > 1 and k > 2. Both #399 and #1108 investigate the intersection of factorials with the multiplicative structure of perfect powers, using Diophantine methods.",
+      "targetId": "erdos-399"
     },
     {
-      "id": "erdos-1107",
-      "relationship": "Problem #1107 asks whether every sufficiently large integer is a sum of at most r+1 many r-powerful numbers. Both problems study the additive and multiplicative structure of powerful numbers; #1108 asks whether factorial sums can produce them, #1107 asks how many are needed to represent all integers."
+      "relationship": "Problem #1107 asks whether every sufficiently large integer is a sum of at most r+1 many r-powerful numbers. Both problems study the additive and multiplicative structure of powerful numbers; #1108 asks whether factorial sums can produce them, #1107 asks how many are needed to represent all integers.",
+      "targetId": "erdos-1107"
     },
     {
-      "id": "erdos-390",
-      "relationship": "Problem #390 studies factorizations of n! into large factors, revealing deep multiplicative structure in factorials. Understanding how prime powers distribute in n! informs why factorial sums are unlikely to be perfect powers."
+      "relationship": "Problem #390 studies factorizations of n! into large factors, revealing deep multiplicative structure in factorials. Understanding how prime powers distribute in n! informs why factorial sums are unlikely to be perfect powers.",
+      "targetId": "erdos-390"
     },
     {
-      "id": "perfect-numbers",
-      "relationship": "Perfect numbers are a classical instance of numbers with highly constrained multiplicative structure (all prime factors to even powers for even perfects). The IsPowerful predicate generalizes this: powerful numbers require every prime factor to appear with exponent ≥ 2, placing them in the same circle of ideas."
+      "relationship": "Perfect numbers are a classical instance of numbers with highly constrained multiplicative structure (all prime factors to even powers for even perfects). The IsPowerful predicate generalizes this: powerful numbers require every prime factor to appear with exponent ≥ 2, placing them in the same circle of ideas.",
+      "targetId": "perfect-numbers"
     },
     {
-      "id": "erdos-728",
-      "relationship": "Problem #728 concerns factorial divisibility conditions and logarithmic gap constraints. Both problems exploit the rapid growth of factorials and their prime factorization structure to establish finiteness or impossibility results."
+      "relationship": "Problem #728 concerns factorial divisibility conditions and logarithmic gap constraints. Both problems exploit the rapid growth of factorials and their prime factorization structure to establish finiteness or impossibility results.",
+      "targetId": "erdos-728"
     }
   ],
   "relatedProofs": [

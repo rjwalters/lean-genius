@@ -129,24 +129,24 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-156",
       "relationship": "related",
-      "description": "Erdős #156 (Minimum Size of Maximal Sidon Sets) — both problems study Sidon sets; #156 asks about maximality while #157 asks about basis properties"
+      "description": "Erdős #156 (Minimum Size of Maximal Sidon Sets) — both problems study Sidon sets; #156 asks about maximality while #157 asks about basis properties",
+      "targetId": "erdos-156"
     },
     {
-      "id": "erdos-158",
       "relationship": "related",
-      "description": "Erdős #158 (B₂[g] Sets) — generalizes Sidon sets (B₂ = B₂[1]) to allow g representations per sum; the density constraints change as g grows"
+      "description": "Erdős #158 (B₂[g] Sets) — generalizes Sidon sets (B₂ = B₂[1]) to allow g representations per sum; the density constraints change as g grows",
+      "targetId": "erdos-158"
     },
     {
-      "id": "erdos-1",
       "relationship": "related",
-      "description": "Erdős #1 (Distinct Subset Sums) — another problem about additive structure of sets, exploring how sums interact with set density"
+      "description": "Erdős #1 (Distinct Subset Sums) — another problem about additive structure of sets, exploring how sums interact with set density",
+      "targetId": "erdos-1"
     },
     {
-      "id": "prob-method-alteration",
       "relationship": "foundational",
-      "description": "Pilatte's proof uses the probabilistic method (specifically the Lovász Local Lemma) — the alteration method is a key technique in this family of arguments"
+      "description": "Pilatte's proof uses the probabilistic method (specifically the Lovász Local Lemma) — the alteration method is a key technique in this family of arguments",
+      "targetId": "prob-method-alteration"
     }
   ],
   "leanFile": {
