@@ -89,35 +89,40 @@
       "title": "NSSolutionPair2D: Framework for Comparing Solutions",
       "startLine": 2710,
       "endLine": 2733,
-      "summary": "Defines the NSSolutionPair2D structure: two 2D NS solutions compared via difference energy W(t) with the Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t). This abstracts the PDE analysis into a structural hypothesis."
+      "summary": "Defines the NSSolutionPair2D structure: two 2D NS solutions compared via difference energy W(t) with the Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t). This abstracts the PDE analysis into a structural hypothesis.",
+      "mathContext": "Structure fields: $W : \\mathbb{R} \\to \\mathbb{R}$ (difference energy $\\|u_1 - u_2\\|^2_{L^2}$), $E : \\mathbb{R} \\to \\mathbb{R}$ (enstrophy $\\|\\nabla u\\|^2_{L^2}$), $C > 0$ (Ladyzhenskaya constant). Key hypothesis: $W'(t) \\leq C \\cdot E(t) \\cdot W(t)$ and $E(t) \\leq E(0)$ (bounded enstrophy, 2D-specific)."
     },
     {
       "id": "gronwall-stability",
       "title": "Gronwall L² Stability Bound",
       "startLine": 2734,
       "endLine": 2816,
-      "summary": "gronwall_stability_2d: W(t) ≤ W(0)·exp(C·E(0)·t). The integrating factor g(t) = W(t)·exp(-Kt) is shown antitone via g'(t) ≤ 0, using the bounded enstrophy E(t) ≤ E(0)."
+      "summary": "gronwall_stability_2d: W(t) ≤ W(0)·exp(C·E(0)·t). The integrating factor g(t) = W(t)·exp(-Kt) is shown antitone via g'(t) ≤ 0, using the bounded enstrophy E(t) ≤ E(0).",
+      "mathContext": "$W(t) \\leq W(0) \\cdot e^{CE(0)t}$. Proof: set $K = CE(0)$, $g(t) = W(t)e^{-Kt}$. Then $g'(t) = (W'(t) - KW(t))e^{-Kt} \\leq 0$ since $W' \\leq CE(t)W \\leq KW$. So $g$ antitone: $g(t) \\leq g(0) = W(0)$."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of 2D Navier-Stokes Solutions",
       "startLine": 2817,
       "endLine": 2827,
-      "summary": "uniqueness_2d: W(0) = 0 implies W(t) = 0. One-line proof from Gronwall bound + nonnegativity of W."
+      "summary": "uniqueness_2d: W(0) = 0 implies W(t) = 0. One-line proof from Gronwall bound + nonnegativity of W.",
+      "mathContext": "$W(0) = 0 \\Rightarrow W(t) \\leq 0 \\cdot e^{Kt} = 0$. Combined with $W(t) \\geq 0$ (as $\\|u_1 - u_2\\|^2$): $W(t) = 0$, so $u_1(t) = u_2(t)$ in $L^2$."
     },
     {
       "id": "amplification",
       "title": "Stability Amplification Factor",
       "startLine": 2836,
       "endLine": 2853,
-      "summary": "stability_amplification_2d: W(t) ≤ W(0)·exp(C·E(0)·T) for t ∈ (0,T). Finite amplification factor because 2D enstrophy E(0) < ∞."
+      "summary": "stability_amplification_2d: W(t) ≤ W(0)·exp(C·E(0)·T) for t ∈ (0,T). Finite amplification factor because 2D enstrophy E(0) < ∞.",
+      "mathContext": "$\\sup_{t \\in [0,T]} W(t) \\leq W(0) \\cdot e^{CE(0)T}$. The amplification factor $e^{CE(0)T}$ is finite because $E(0) < \\infty$ (bounded initial enstrophy). In 3D, $E(t)$ might blow up, making the factor infinite."
     },
     {
       "id": "continuous-dependence",
       "title": "Continuous Dependence on Initial Data",
       "startLine": 2864,
       "endLine": 21110,
-      "summary": "continuous_dependence_2d: for any ε > 0, δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε on (0,T). Together with uniqueness, establishes Hadamard well-posedness."
+      "summary": "continuous_dependence_2d: for any ε > 0, δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε on (0,T). Together with uniqueness, establishes Hadamard well-posedness.",
+      "mathContext": "$\\forall \\varepsilon > 0,\\, \\delta = \\varepsilon \\cdot e^{-CE(0)T}$: $W(0) \\leq \\delta \\Rightarrow W(t) \\leq \\delta \\cdot e^{CE(0)T} = \\varepsilon$ for $t \\in [0,T]$. This completes Hadamard's third criterion (continuous dependence on initial data)."
     }
   ],
   "conclusion": {
