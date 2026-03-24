@@ -263,6 +263,11 @@
       "targetId": "erdos-szekeres",
       "relationship": "related",
       "description": "The Erdős-Szekeres theorem connects to combinatorial optimization problems whose decision versions are often NP-complete"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Both P vs NP and Gödel's incompleteness address fundamental limits: Gödel showed no consistent formal system can prove all truths (some statements are independent), while P vs NP asks whether all efficiently verifiable problems are efficiently solvable. If P vs NP is independent of standard axioms (a possibility raised by Razborov 1995 and Ben-David & Halevi 1992), it would be a Gödel-type phenomenon in computational complexity"
     }
   ],
   "conclusion": {
@@ -282,6 +287,27 @@
       "year": "1971",
       "venue": "Proceedings of the Third Annual ACM Symposium on Theory of Computing, 151–158",
       "note": "Introduced the concept of NP-completeness and proved that SAT is NP-complete — the foundation of the P vs NP problem"
+    },
+    {
+      "authors": "Karp, Richard M.",
+      "title": "Reducibility among combinatorial problems",
+      "year": "1972",
+      "venue": "Complexity of Computer Computations, Plenum Press, 85–103",
+      "note": "Demonstrated the practical significance of NP-completeness by showing 21 natural combinatorial problems are NP-complete, including CLIQUE, VERTEX COVER, HAMILTONIAN CIRCUIT, and 3-SAT"
+    },
+    {
+      "authors": "Levin, Leonid A.",
+      "title": "Universal sequential search problems",
+      "year": "1973",
+      "venue": "Problems of Information Transmission 9(3), 265–266",
+      "note": "Independently discovered NP-completeness (called 'universal search problems') in the Soviet Union, proving that several tiling and optimization problems are NP-complete"
+    },
+    {
+      "authors": "Razborov, Alexander A.; Rudich, Steven",
+      "title": "Natural proofs",
+      "year": "1997",
+      "venue": "Journal of Computer and System Sciences 55(1), 24–35",
+      "note": "Proved that 'natural' combinatorial proof techniques cannot separate P from NP assuming strong pseudorandom generators exist — one of three major barriers (alongside relativization and algebrization) to resolving P vs NP"
     },
     {
       "authors": "Arora, Sanjeev; Barak, Boaz",
