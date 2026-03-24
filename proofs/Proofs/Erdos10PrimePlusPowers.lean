@@ -613,6 +613,9 @@ theorem pow24_period (r : Fin 24) : 2 ^ 24 % coverPrime r = 1 := by
   fin_cases r <;> simp [coverPrime, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons] <;> norm_num
 
+private theorem coverPrime_gt_one (r : Fin 24) : 1 < coverPrime r := by
+  fin_cases r <;> native_decide
+
 /-- For any a, the covering prime at (a % 24) divides (dePolignacResidue + dePolignacModulus * m - 2^a)
     in ℤ. In ℕ: n and 2^a have the same remainder mod the covering prime. -/
 theorem covering_divides (a m : ℕ) :
@@ -628,10 +631,22 @@ theorem covering_divides (a m : ℕ) :
     conv_lhs => rw [hk, show coverPrime r * k * m = coverPrime r * (k * m) from by ring]
     rw [Nat.add_mul_mod_self_left]
   -- Step 2: 2^a ≡ 2^(a % 24) (mod coverPrime r)
-  -- This requires periodicity: 2^24 ≡ 1 mod coverPrime r
-  -- Full proof deferred to follow-up session
   have h2 : 2 ^ a % coverPrime r = 2 ^ r.val % coverPrime r := by
-    sorry -- TODO: pow periodicity using pow24_period and Nat.pow_mod
+    -- 2^24 ≡ 1 mod coverPrime r
+    have hcp_gt1 : 1 < coverPrime r := coverPrime_gt_one r
+    have hperiod : 2 ^ 24 ≡ 1 [MOD coverPrime r] := by
+      show 2 ^ 24 % coverPrime r = 1 % coverPrime r
+      rw [pow24_period r, Nat.mod_eq_of_lt hcp_gt1]
+    -- Write a = 24 * (a / 24) + a % 24
+    conv_lhs => rw [show a = 24 * (a / 24) + a % 24 from (Nat.div_add_mod a 24).symm]
+    rw [pow_add, pow_mul]
+    -- (2^24)^(a/24) ≡ 1 mod coverPrime r
+    have h_pow_one : (2 ^ 24) ^ (a / 24) ≡ 1 [MOD coverPrime r] := by
+      have := hperiod.pow (a / 24); rwa [one_pow] at this
+    -- So (2^24)^(a/24) * 2^(a%24) ≡ 2^(a%24) mod coverPrime r
+    have h_eq := h_pow_one.mul_right (2 ^ (a % 24))
+    rw [one_mul] at h_eq
+    exact h_eq
   rw [h1, hres, h2]
 
 /-- Erdős's covering congruence theorem: The arithmetic progression
