@@ -20,9 +20,9 @@
     "erdosNumber": 638,
     "erdosUrl": "https://erdosproblems.com/638",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "lineCount": 84,
-    "assumptions": "3 axiom(s): ramsey_triangle, complete_graphs_ramsey, triangle_ramsey_mono. See Lean source for complete statements.",
+    "axiomCount": 1,
+    "lineCount": 98,
+    "assumptions": "1 axiom: ramsey_triangle (classical Ramsey theorem for triangles). complete_graphs_ramsey proved from ramsey_triangle. triangle_ramsey_mono proved via Fin.castLE injection.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
