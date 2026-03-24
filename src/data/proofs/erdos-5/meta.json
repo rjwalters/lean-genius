@@ -16,13 +16,13 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 5,
     "erdosUrl": "https://erdosproblems.com/5",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 446,
-    "assumptions": "3 axioms: westzynthius_large_gaps (∞ ∈ S, 1931), zhang_bounded_gaps (bounded prime gaps, 2013), merikoski_bounded_gaps (S has bounded gaps, 2020). 0 sorries. Proves 19 theorems including: zhang_implies_zero_limit, twin_prime_implies_zero_limit, limitPointSet_unbounded, westzynthius_implies_frequently_large. Gallery metadata now points to main formalization (Erdos5PrimeGaps.lean) instead of legacy stub.",
+    "assumptions": "3 axioms: westzynthius_large_gaps (∞ ∈ S, 1931), zhang_bounded_gaps (bounded prime gaps, 2013), merikoski_bounded_gaps (S has bounded gaps, 2020). 1 sorry in limitPointSet_isClosed (closedness of limit point set). Proves 19 theorems including: zhang_implies_zero_limit, twin_prime_implies_zero_limit, limitPointSet_unbounded, westzynthius_implies_frequently_large.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
