@@ -37,7 +37,8 @@
     "dateAdded": "2025-01-15",
     "axiomCount": 12,
     "assumptions": "12 axiom declarations: sigma (sum-of-divisors function), sigma_def (sigma equals sum of divisors), one_perfect_unique (only n=1 is 1-perfect), perfect_examples (6, 28, 496, 8128 are 2-perfect), euler_even_perfect (even perfect iff 2^(p-1)*(2^p-1) Mersenne), triperfect_examples (known 3-perfect numbers), largest_known_k (k-perfect numbers exist up to k=11), erdos_1053_conjecture (k = o(log log n) for k-perfect), gronwall_bound (lim sup sigma(n)/(n log log n) = e^gamma), robin_inequality_conditional (sigma(n) < e^gamma*n*log log n for n >= 5041), guy_finiteness_conjecture (finitely many k-perfect for k >= 3), robin_gives_O_bound (k = O(log log n) from Robin's inequality)",
-    "badge": "axiom"
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/Erdos1053Problem.lean"
   },
   "sections": [
     {
