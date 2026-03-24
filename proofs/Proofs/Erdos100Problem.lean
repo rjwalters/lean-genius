@@ -154,9 +154,62 @@ For integer distance sets, every distance is a positive integer,
 so the set of distinct distances is contained in {1, 2, ..., ⌊diam⌋}.
 Hence #distinct distances ≤ diam.
 -/
-axiom distinctDistances_le_diam (S : Finset (EuclideanSpace ℝ (Fin 2)))
+theorem distinctDistances_le_diam (S : Finset (EuclideanSpace ℝ (Fin 2)))
     (hint : hasIntegerDistances S) (h2 : S.card ≥ 2) :
-    (numDistinctDistances S : ℝ) ≤ diam S
+    (numDistinctDistances S : ℝ) ≤ diam S := by
+  unfold numDistinctDistances
+  -- Each distance d ∈ pairwiseDistances S is a positive integer ≤ diam S
+  -- so pairwiseDistances maps injectively into {1,...,⌊diam⌋} via ⌊·⌋
+  have hge := diam_nonneg S
+  -- Suffices: card ≤ ⌊diam⌋, then ⌊diam⌋ ≤ diam
+  suffices h : (pairwiseDistances S).card ≤ Nat.floor (diam S) by
+    calc (↑(pairwiseDistances S).card : ℝ) ≤ ↑(Nat.floor (diam S)) := by exact_mod_cast h
+      _ ≤ diam S := Nat.floor_le hge
+  -- Each d ∈ pairwiseDistances is ↑k for some k ∈ {1,...,⌊diam⌋}
+  have hint_mem : ∀ d ∈ pairwiseDistances S, ∃ k : ℕ, k ≥ 1 ∧ d = ↑k := by
+    intro d hd
+    simp only [pairwiseDistances, Finset.mem_filter, Finset.mem_image] at hd
+    obtain ⟨⟨⟨p, q⟩, hmem, rfl⟩, _⟩ := hd
+    simp only [Finset.mem_offDiag] at hmem
+    exact hint p hmem.1 q hmem.2.1 hmem.2.2
+  -- pairwiseDistances is nonempty (S has ≥ 2 points)
+  have hne : (pairwiseDistances S).Nonempty := by
+    obtain ⟨p, hp, q, hq, hpq⟩ := Finset.one_lt_card.mp (by omega : 1 < S.card)
+    obtain ⟨k, hk1, hkd⟩ := hint p hp q hq hpq
+    refine ⟨dist p q, ?_⟩
+    simp only [pairwiseDistances, Finset.mem_filter, Finset.mem_image]
+    exact ⟨⟨⟨p, q⟩, Finset.mem_offDiag.mpr ⟨hp, hq, hpq⟩, rfl⟩, by rw [hkd]; positivity⟩
+  -- diam = max' of pairwiseDistances
+  have hdiam_eq : diam S = (pairwiseDistances S).max' hne := by
+    simp [diam, dif_pos hne]
+  -- Each d ≤ diam
+  have hle_diam : ∀ d ∈ pairwiseDistances S, d ≤ diam S := by
+    intro d hd; rw [hdiam_eq]; exact Finset.le_max' _ _ hd
+  -- The map ⌊·⌋ₙ is injective on pairwiseDistances (since all elements are ↑k)
+  -- and maps into Finset.Icc 1 (⌊diam⌋)
+  -- Use card (image f s) ≤ card t when image ⊆ t, and card s = card (image f s) when injective
+  set f := fun d : ℝ => Nat.floor d with hf_def
+  have hf_inj : Set.InjOn f ↑(pairwiseDistances S) := by
+    intro d₁ hd₁ d₂ hd₂ heq
+    obtain ⟨k₁, _, rfl⟩ := hint_mem d₁ (Finset.mem_coe.mp hd₁)
+    obtain ⟨k₂, _, rfl⟩ := hint_mem d₂ (Finset.mem_coe.mp hd₂)
+    simp only [hf_def, Nat.floor_natCast] at heq
+    exact_mod_cast heq
+  have hf_range : ∀ d ∈ pairwiseDistances S, f d ∈ Finset.Icc 1 (Nat.floor (diam S)) := by
+    intro d hd
+    obtain ⟨k, hk1, rfl⟩ := hint_mem d hd
+    simp only [hf_def, Nat.floor_natCast, Finset.mem_Icc]
+    constructor
+    · exact hk1
+    · suffices Nat.floor (↑k : ℝ) ≤ Nat.floor (diam S) by
+        rwa [Nat.floor_natCast] at this
+      exact Nat.floor_mono (hle_diam (↑k) hd)
+  calc (pairwiseDistances S).card
+      = ((pairwiseDistances S).image f).card :=
+        (Finset.card_image_of_injOn (by exact_mod_cast hf_inj)).symm
+    _ ≤ (Finset.Icc 1 (Nat.floor (diam S))).card :=
+        Finset.card_le_card (Finset.image_subset_iff.mpr hf_range)
+    _ = Nat.floor (diam S) := by rw [Nat.card_Icc]; omega
 
 /-
 ## Known Lower Bounds
