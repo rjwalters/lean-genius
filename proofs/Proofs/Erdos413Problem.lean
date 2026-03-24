@@ -67,10 +67,11 @@ theorem zero_is_barrier (f : ℕ → ℕ) : IsBarrier f 0 := by
   intro m hm
   omega
 
-/-- 1 is always a barrier (vacuously true for positive m, and 0 + f(0) ≤ 1 for reasonable f) -/
-theorem one_is_barrier (f : ℕ → ℕ) : IsBarrier f 1 := by
+/-- 1 is a barrier for f when f(0) ≤ 1 -/
+theorem one_is_barrier (f : ℕ → ℕ) (h0 : f 0 ≤ 1) : IsBarrier f 1 := by
   intro m hm
-  omega
+  have : m = 0 := by omega
+  subst this; omega
 
 /-- If f(0) = 0, then 2 is a barrier iff f(1) ≤ 1 -/
 theorem two_is_barrier_iff (f : ℕ → ℕ) (h0 : f 0 = 0) :
@@ -107,7 +108,7 @@ theorem omega_one : omega 1 = 0 := by
   simp [omega, Nat.primeFactors]
 
 theorem omega_prime (p : ℕ) (hp : p.Prime) : omega p = 1 := by
-  simp [omega, hp.primeFactors_eq]
+  simp [omega, Nat.Prime.primeFactors hp]
 
 /-- ω(n) = 0 iff n ≤ 1 (for natural numbers) -/
 theorem omega_eq_zero_iff (n : ℕ) : omega n = 0 ↔ n.primeFactors = ∅ := by
@@ -126,7 +127,7 @@ theorem primeFactors_prod_dvd (n : ℕ) (hn : n ≠ 0) :
 /-- 2^(number of distinct prime factors) ≤ n for n ≥ 1 -/
 theorem two_pow_omega_le (n : ℕ) (hn : n ≥ 1) :
     2 ^ omega n ≤ n := by
-  rcases Nat.eq_or_gt_of_le hn with rfl | hn2
+  rcases hn.eq_or_gt with rfl | hn2
   · simp [omega_one]
   · have hne : n ≠ 0 := by omega
     have hprod : 2 ^ n.primeFactors.card ≤ n.primeFactors.prod id := by
@@ -144,7 +145,7 @@ theorem omega_upper_bound (n : ℕ) (hn : n ≥ 2) :
     (omega n : ℝ) ≤ Real.log n / Real.log 2 := by
   have h1 : (1 : ℝ) < 2 := by norm_num
   have hlog2 : Real.log 2 > 0 := Real.log_pos h1
-  rw [div_le_iff hlog2]
+  rw [le_div_iff₀ hlog2]
   have h2n : (2 : ℝ) ^ omega n ≤ (n : ℝ) := by
     have := two_pow_omega_le n (by omega : n ≥ 1)
     exact_mod_cast this
@@ -230,9 +231,7 @@ theorem bigOmega_barrier_implies_omega_barrier (n : ℕ)
 /-- ω of a prime power is 1 -/
 theorem omega_prime_pow (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) :
     omega (p ^ k) = 1 := by
-  simp [omega]
-  rw [Nat.Prime.primeFactors_pow hp (by omega)]
-  simp
+  simp [omega, Nat.primeFactors_prime_pow hp (by omega : k ≠ 0)]
 
 /-- At any barrier n > 0, the predecessor has ω(n-1) ≤ 1 -/
 theorem omega_pred_le_one_at_barrier (n : ℕ) (hn : n > 0)
@@ -261,15 +260,15 @@ def isBarrierBool (f : ℕ → ℕ) (n : ℕ) : Bool :=
 theorem isBarrierBool_sound (f : ℕ → ℕ) (n : ℕ) (h : isBarrierBool f n = true) :
     IsBarrier f n := by
   intro m hm
-  simp [isBarrierBool, List.all_eq_true, decide_eq_true_eq] at h
-  exact h m (List.mem_range.mpr hm)
+  simp only [isBarrierBool, List.all_eq_true, decide_eq_true_eq] at h
+  exact h m (by simpa using hm)
 
 /-- isBarrierBool is complete: IsBarrier implies isBarrierBool returns true -/
 theorem isBarrierBool_complete (f : ℕ → ℕ) (n : ℕ) (h : IsBarrier f n) :
     isBarrierBool f n = true := by
-  simp [isBarrierBool, List.all_eq_true, decide_eq_true_eq]
+  simp only [isBarrierBool, List.all_eq_true, decide_eq_true_eq]
   intro m hm
-  exact h m (List.mem_range.mp hm)
+  exact h m (by simpa using hm)
 
 /-- Count barriers for a function up to N -/
 def countBarriers (f : ℕ → ℕ) (N : ℕ) : ℕ :=
@@ -304,97 +303,52 @@ theorem omega_barrier_24 : IsBarrier omegaC 24 :=
 theorem omega_barrier_30 : IsBarrier omegaC 30 :=
   isBarrierBool_sound omegaC 30 (by native_decide)
 
-theorem omega_barrier_32 : IsBarrier omegaC 32 :=
-  isBarrierBool_sound omegaC 32 (by native_decide)
-
-theorem omega_barrier_48 : IsBarrier omegaC 48 :=
-  isBarrierBool_sound omegaC 48 (by native_decide)
-
-theorem omega_barrier_60 : IsBarrier omegaC 60 :=
-  isBarrierBool_sound omegaC 60 (by native_decide)
-
-theorem omega_barrier_64 : IsBarrier omegaC 64 :=
-  isBarrierBool_sound omegaC 64 (by native_decide)
-
-theorem omega_barrier_90 : IsBarrier omegaC 90 :=
-  isBarrierBool_sound omegaC 90 (by native_decide)
-
-theorem omega_barrier_120 : IsBarrier omegaC 120 :=
-  isBarrierBool_sound omegaC 120 (by native_decide)
-
-theorem omega_barrier_128 : IsBarrier omegaC 128 :=
-  isBarrierBool_sound omegaC 128 (by native_decide)
-
--- Barriers at 150, 180, 192, 210, 240 are in OEIS A005236.
--- Verification beyond ~128 can be memory-intensive in Docker; kept as comments.
--- theorem omega_barrier_150 : IsBarrier omegaC 150 := native_decide
--- theorem omega_barrier_210 : IsBarrier omegaC 210 := native_decide
--- theorem omega_barrier_240 : IsBarrier omegaC 240 := native_decide
+-- NOTE: Previous claims that 32, 48, 60, 64, 90, 120, 128 are ω-barriers were
+-- INCORRECT. The original OEIS A005236 reference was for d(n) (divisor count)
+-- barriers, not ω(n) barriers. For example, 30 + ω(30) = 30 + 3 = 33 > 32,
+-- so 32 is not an ω-barrier. The verified ω-barriers above (0-30) are correct.
 
 -- ## Verified Non-Barriers
-
-theorem omega_not_barrier_3 : ¬IsBarrier omegaC 3 := by
-  intro h
-  have := isBarrierBool_complete omegaC 3 h
-  native_decide
-
-theorem omega_not_barrier_5 : ¬IsBarrier omegaC 5 := by
-  intro h
-  have := isBarrierBool_complete omegaC 5 h
-  native_decide
+-- NOTE: 3, 5, 8, 9, 10 are actually ω-barriers (corrected from original).
+-- The first non-barrier is 7: ω(6) = 2, so 6 + 2 = 8 > 7.
 
 theorem omega_not_barrier_7 : ¬IsBarrier omegaC 7 := by
   intro h
-  have := isBarrierBool_complete omegaC 7 h
-  native_decide
-
-theorem omega_not_barrier_8 : ¬IsBarrier omegaC 8 := by
-  intro h
-  have := isBarrierBool_complete omegaC 8 h
-  native_decide
-
-theorem omega_not_barrier_9 : ¬IsBarrier omegaC 9 := by
-  intro h
-  have := isBarrierBool_complete omegaC 9 h
-  native_decide
-
-theorem omega_not_barrier_10 : ¬IsBarrier omegaC 10 := by
-  intro h
-  have := isBarrierBool_complete omegaC 10 h
-  native_decide
+  exact absurd (isBarrierBool_complete omegaC 7 h) (by native_decide)
 
 theorem omega_not_barrier_15 : ¬IsBarrier omegaC 15 := by
   intro h
-  have := isBarrierBool_complete omegaC 15 h
-  native_decide
+  exact absurd (isBarrierBool_complete omegaC 15 h) (by native_decide)
+
+-- Additional verified barriers (previously listed as non-barriers)
+theorem omega_barrier_3 : IsBarrier omegaC 3 :=
+  isBarrierBool_sound omegaC 3 (by native_decide)
+
+theorem omega_barrier_5 : IsBarrier omegaC 5 :=
+  isBarrierBool_sound omegaC 5 (by native_decide)
+
+theorem omega_barrier_8 : IsBarrier omegaC 8 :=
+  isBarrierBool_sound omegaC 8 (by native_decide)
+
+theorem omega_barrier_9 : IsBarrier omegaC 9 :=
+  isBarrierBool_sound omegaC 9 (by native_decide)
+
+theorem omega_barrier_10 : IsBarrier omegaC 10 :=
+  isBarrierBool_sound omegaC 10 (by native_decide)
 
 theorem omega_not_barrier_16 : ¬IsBarrier omegaC 16 := by
   intro h
-  have := isBarrierBool_complete omegaC 16 h
-  native_decide
+  exact absurd (isBarrierBool_complete omegaC 16 h) (by native_decide)
 
-theorem omega_not_barrier_20 : ¬IsBarrier omegaC 20 := by
-  intro h
-  have := isBarrierBool_complete omegaC 20 h
-  native_decide
+theorem omega_barrier_20 : IsBarrier omegaC 20 :=
+  isBarrierBool_sound omegaC 20 (by native_decide)
 
 -- ## Barrier Counting
 
-/-- The number of ω-barriers up to 32 is exactly 9 -/
-theorem omega_barrier_count_32 : countBarriers omegaC 32 = 9 := by
-  native_decide
-
-/-- The number of ω-barriers up to 61 is exactly 11 -/
-theorem omega_barrier_count_61 : countBarriers omegaC 61 = 11 := by
-  native_decide
-
-/-- The number of ω-barriers up to 91 is exactly 13 -/
-theorem omega_barrier_count_91 : countBarriers omegaC 91 = 13 := by
-  native_decide
-
-/-- The number of ω-barriers up to 121 is exactly 14 -/
-theorem omega_barrier_count_121 : countBarriers omegaC 121 = 14 := by
-  native_decide
+-- Barrier counts: the original values (9, 11, 13, 14) were computed for
+-- the wrong function. Correct ω-barrier counts need recomputation.
+-- Uncomment after verifying the correct counts:
+-- theorem omega_barrier_count_32 : countBarriers omegaC 32 = ? := by native_decide
 
 -- The number of ω-barriers up to 241 is 20 (verified on host; heavy for Docker)
 
@@ -416,7 +370,7 @@ theorem barrier_pred_is_prime_power_or_one (n : ℕ) (hn : n ≥ 2)
     (hb : IsBarrier omega n) :
     n - 1 = 1 ∨ ∃ p k, Nat.Prime p ∧ k ≥ 1 ∧ n - 1 = p ^ k := by
   have hpred := omega_pred_le_one_at_barrier n (by omega) hb
-  rcases Nat.eq_or_gt_of_le (Nat.zero_le (omega (n - 1))) with h0 | h1
+  rcases Nat.eq_or_lt_of_le (Nat.zero_le (omega (n - 1))) with h0 | h1
   · -- ω(n-1) = 0 means n-1 has no prime factors, so n-1 ≤ 1
     rw [omega, Finset.card_eq_zero] at h0
     have : n - 1 ≤ 1 := by
@@ -608,10 +562,10 @@ theorem barrier_structural_constraint (n : ℕ) (hn : n ≥ 2) (hb : IsBarrier o
 -- eventually reaches the same trajectory from any starting point.
 
 /-- The iteration function for ω -/
-def iterOmega (n : ℕ) : ℕ := n + omega n
+noncomputable def iterOmega (n : ℕ) : ℕ := n + omega n
 
 /-- Iterated application of the ω-step -/
-def iterOmegaPow : ℕ → ℕ → ℕ
+noncomputable def iterOmegaPow : ℕ → ℕ → ℕ
   | 0, n => n
   | k + 1, n => iterOmega (iterOmegaPow k n)
 
@@ -640,7 +594,7 @@ theorem iterOmega_strictly_increasing (n : ℕ) (hn : n ≥ 2) :
   omega
 
 /-- The orbit of n under the ω-iteration -/
-def orbit (n : ℕ) : ℕ → ℕ
+noncomputable def orbit (n : ℕ) : ℕ → ℕ
   | 0 => n
   | k + 1 => iterOmega (orbit n k)
 
@@ -736,17 +690,18 @@ theorem bigOmega_barrier_2 : IsBarrier bigOmegaC 2 :=
 theorem bigOmega_barrier_4 : IsBarrier bigOmegaC 4 :=
   isBarrierBool_sound bigOmegaC 4 (by native_decide)
 
-theorem bigOmega_not_barrier_3 : ¬IsBarrier bigOmegaC 3 := by
-  intro h; have := isBarrierBool_complete bigOmegaC 3 h; native_decide
+-- NOTE: 3 and 6 are Ω-barriers (corrected). 5 is correctly a non-barrier.
+theorem bigOmega_barrier_3 : IsBarrier bigOmegaC 3 :=
+  isBarrierBool_sound bigOmegaC 3 (by native_decide)
 
 theorem bigOmega_not_barrier_5 : ¬IsBarrier bigOmegaC 5 := by
-  intro h; have := isBarrierBool_complete bigOmegaC 5 h; native_decide
+  intro h; exact absurd (isBarrierBool_complete bigOmegaC 5 h) (by native_decide)
 
-theorem bigOmega_not_barrier_6 : ¬IsBarrier bigOmegaC 6 := by
-  intro h; have := isBarrierBool_complete bigOmegaC 6 h; native_decide
+theorem bigOmega_barrier_6 : IsBarrier bigOmegaC 6 :=
+  isBarrierBool_sound bigOmegaC 6 (by native_decide)
 
-/-- Count of Ω-barriers up to 5 is exactly 4 (0, 1, 2, 4) -/
-theorem bigOmega_barrier_count_5 : countBarriers bigOmegaC 5 = 4 := by
+-- Count corrected: Ω-barriers below 5 are 0, 1, 2, 3, 4 = 5
+theorem bigOmega_barrier_count_5 : countBarriers bigOmegaC 5 = 5 := by
   native_decide
 
 end DecidableBigOmega
@@ -784,8 +739,9 @@ theorem expProd_barrier_3 : IsBarrier expProdC 3 :=
 theorem expProd_barrier_4 : IsBarrier expProdC 4 :=
   isBarrierBool_sound expProdC 4 (by native_decide)
 
-theorem expProd_barrier_5 : IsBarrier expProdC 5 :=
-  isBarrierBool_sound expProdC 5 (by native_decide)
+-- NOTE: 5 is NOT an F-barrier (F(4)=2, 4+2=6>5). Corrected.
+theorem expProd_not_barrier_5 : ¬IsBarrier expProdC 5 := by
+  intro h; exact absurd (isBarrierBool_complete expProdC 5 h) (by native_decide)
 
 theorem expProd_barrier_6 : IsBarrier expProdC 6 :=
   isBarrierBool_sound expProdC 6 (by native_decide)
@@ -797,18 +753,14 @@ theorem expProd_barrier_8 : IsBarrier expProdC 8 :=
   isBarrierBool_sound expProdC 8 (by native_decide)
 
 theorem expProd_not_barrier_9 : ¬IsBarrier expProdC 9 := by
-  intro h; have := isBarrierBool_complete expProdC 9 h; native_decide
+  intro h; exact absurd (isBarrierBool_complete expProdC 9 h) (by native_decide)
 
-theorem expProd_barrier_10 : IsBarrier expProdC 10 :=
-  isBarrierBool_sound expProdC 10 (by native_decide)
+-- NOTE: 10 is NOT an F-barrier (F(8)=3, 8+3=11>10). Corrected.
+theorem expProd_not_barrier_10 : ¬IsBarrier expProdC 10 := by
+  intro h; exact absurd (isBarrierBool_complete expProdC 10 h) (by native_decide)
 
-/-- Count of F-barriers up to 20 -/
-theorem expProd_barrier_count_20 : countBarriers expProdC 20 = 14 := by
-  native_decide
-
-/-- Count of F-barriers up to 50 -/
-theorem expProd_barrier_count_50 : countBarriers expProdC 50 = 35 := by
-  native_decide
+-- F-barrier counts need recomputation after corrections.
+-- Original values (14, 35) were wrong.
 
 -- Count of F-barriers up to 100 is 65 (verified on host; too expensive for Docker native_decide)
 
@@ -841,16 +793,10 @@ theorem omega_more_barriers_than_bigOmega_5 :
     countBarriers bigOmegaC 5 ≤ countBarriers omegaC 5 := by
   native_decide
 
-/-- F-barriers are more common than ω-barriers up to 20 -/
-theorem expProd_more_barriers_than_omega_20 :
-    countBarriers omegaC 20 ≤ countBarriers expProdC 20 := by
-  native_decide
-
-/-- Barrier hierarchy at 50: F >> ω >> Ω -/
-theorem barrier_hierarchy_50 :
-    countBarriers bigOmegaC 50 ≤ countBarriers omegaC 50 ∧
-    countBarriers omegaC 50 ≤ countBarriers expProdC 50 := by
-  constructor <;> native_decide
+-- Barrier comparison theorems need recomputation after corrections.
+-- Commented out until correct counts are verified.
+-- theorem expProd_more_barriers_than_omega_20 : ...
+-- theorem barrier_hierarchy_50 : ...
 
 end BarrierComparison
 
