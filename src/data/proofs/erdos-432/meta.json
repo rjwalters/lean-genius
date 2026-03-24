@@ -54,6 +54,18 @@
     "assumptions": "3 axiom declarations: (1) prime_divides_at_most_one — genuine mathematical content: each prime divides at most one element of a pairwise coprime sumset, (2) coprime_set_bound — TRIVIAL: states countingFn S n ≤ n (true for any set), does NOT formalize the intended π(n)+1 bound, (3) ostmann_connection — PLACEHOLDER: declares True, contributes no content",
     "relatedProblems": [
       {
+        "id": "erdos-431",
+        "relationship": "Companion problem by Ostmann: #431 asks about additive complements covering ℕ, while #432 asks how thin a coprime sumset can be forced to be"
+      },
+      {
+        "id": "erdos-30",
+        "relationship": "Sidon sets (B₂ sets) require unique pairwise sums; coprime sumsets require pairwise coprime sums — both impose structure on sumset representations"
+      },
+      {
+        "id": "erdos-1",
+        "relationship": "Both ask how structural constraints on sumsets affect density: #1 via distinct subset sums, #432 via pairwise coprimality"
+      },
+      {
         "id": "ramseys-theorem",
         "relationship": "Related extremal combinatorics result"
       },
@@ -111,7 +123,7 @@
       "startLine": 100,
       "endLine": 131,
       "summary": "**prime_divides_at_most_one**: factorizations are disjoint across A + B. **coprime_set_bound**: at most π(n) + 1 coprime elements in [1,n]. **ostmann_connection**: companion problem #431 on additive complements.",
-      "mathContext": "Key: if $s_1 = a_1 + b_1$ and $s_2 = a_2 + b_2$ share a prime factor $p$, then $p \\mid (a_1 - a_2)$ or $p \\mid (b_1 - b_2)$. This constrains arithmetic progressions in $A$ and $B$."
+      "mathContext": "Key structural result: if $s_1, s_2 \\in A + B$ share a prime factor $p$ (i.e., $p \\mid s_1$ and $p \\mid s_2$), then $\\gcd(s_1, s_2) \\geq p > 1$, contradicting pairwise coprimality. Therefore each prime $p$ divides **at most one** element of $A + B$. Writing $s_i = a_i + b_i$, the constraint $p \\mid a_i + b_i$ means $a_i \\equiv -b_i \\pmod{p}$ — so the additive structure of $A$ and $B$ modulo $p$ is tightly controlled. If both $a_1 + b_1$ and $a_2 + b_2$ were divisible by $p$, then $a_1 \\equiv a_2 \\pmod{p}$ iff $b_1 \\equiv b_2 \\pmod{p}$, meaning $A$ and $B$ can each have at most one residue class modulo $p$ that contributes to sumset elements divisible by $p$."
     },
     {
       "id": "summary",
@@ -119,7 +131,7 @@
       "startLine": 132,
       "endLine": 141,
       "summary": "Status: OPEN. Tao noted the problem 'looks difficult'. The core challenge is bridging additive combinatorics (sumset structure) and multiplicative number theory (coprimality) — two paradigms that rarely interact directly.",
-      "mathContext": "Status: OPEN. The coprimality constraint forces extreme sparsity in $A + B$ but the optimal density bound is unknown."
+      "mathContext": "Status: OPEN (2026). The coprimality constraint forces extreme sparsity in $A + B$: the trivial upper bound is $\\pi(n) + 1 \\sim n/\\log n$ elements in $[1,n]$. The question is whether the sumset structure $A + B$ forces the counting function to grow strictly slower than $\\pi(n)$. Possible growth regimes: $\\Theta(\\pi(n))$, $O(n^\\alpha)$ for $\\alpha < 1$, or $O((\\log n)^k)$. Even the correct order of magnitude is unknown. No partial results have been announced and Tao's public assessment ('looks difficult') suggests the problem is far from current techniques."
     }
   ],
   "overview": {

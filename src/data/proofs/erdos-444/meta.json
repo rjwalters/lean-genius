@@ -101,7 +101,7 @@
       "startLine": 87,
       "endLine": 108,
       "summary": "**A = ℕ**: d_A = τ, H_A ∼ log x, M_A ∼ exp(log 2 · log x / log log x) (highly composite numbers). **A = primes**: d_A = ω, H_A ∼ log log x (Mertens), M_A ∼ log x / log log x (primorials). Both cases confirm the general theorem.",
-      "mathContext": "Classical case $A = \\mathbb{N}$: $d_A = \\tau$, $H_A(x) \\sim \\log x$, $M_A(x) \\sim \\exp(\\log 2 \\cdot \\log x / \\log\\log x)$ (Ramanujan 1915)."
+      "mathContext": "Classical case $A = \\mathbb{N}$: $d_A = \\tau$, $H_A(x) \\sim \\log x$, $M_A(x) \\sim \\exp(\\log 2 \\cdot \\log x / \\log\\log x)$ (Ramanujan 1915). Case $A = $ primes: $d_A = \\omega$, $H_A(x) \\sim \\log\\log x$ (Mertens' theorem), $M_A(x) \\sim \\log x / \\log\\log x$ (primorials). The Lean file also defines a local `IsPrime` alias for `Nat.Prime` on line 101 to scope the prime set; this is an implementation detail with no mathematical significance. The two specialization axioms `case_all_naturals` and `case_primes` are logically subsumed by `erdos_graham_conjecture_true` but are stated separately to make the classical cases directly accessible."
     },
     {
       "id": "section-4",
@@ -109,7 +109,7 @@
       "startLine": 109,
       "endLine": 131,
       "summary": "**highly_composite_relative**: A-highly composite numbers exist for any A. **exponential_lower_bound**: M_A(x) ≥ exp(c · H_A(x)) frequently. **no_uniform_bound**: no function f bounds M_A(x) in terms of H_A(x) universally — the strongest form of the result.",
-      "mathContext": "An $A$-highly composite number $n$ maximizes $d_A(n)$ up to $n$. These exist for any infinite $A$ (analogous to highly composite numbers for $\\tau$)."
+      "mathContext": "An $A$-highly composite number $n$ maximizes $d_A(n)$ among all $m \\leq n$. These exist for any infinite $A$ (analogous to highly composite numbers for $\\tau$). The three axioms in this section form a hierarchy: `highly_composite_relative` gives single-point extremal values; `exponential_lower_bound` gives the quantitative rate $M_A(x) \\geq \\exp(c \\cdot H_A(x))$ frequently; `no_uniform_bound` gives the qualitative maximality — no function of $H_A$ can bound $M_A$ across all $A$. Together these capture the full strength of the Erdős-Sárközy result beyond the basic lim sup = $\\infty$ statement."
     },
     {
       "id": "section-5",

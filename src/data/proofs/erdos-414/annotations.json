@@ -4,13 +4,13 @@
     "proofId": "erdos-414",
     "range": {
       "startLine": 1,
-      "endLine": 27
+      "endLine": 24
     },
     "type": "insight",
-    "title": "Related Erdős Problems: #412 and #413",
-    "content": "Erdős-Graham posed three related problems: #412 (n + φ(n)), #413 (n - φ(n)), and #414 (n + τ(n)). The map n + φ(n) is also strictly increasing and conjectured to have merging orbits. The map n - φ(n) can decrease, creating a fundamentally different dynamic.",
+    "title": "Module Header: Related Erdős Problems and Context",
+    "content": "The module docstring (lines 1–20) states the problem: iterate h(n) = n + τ(n) and ask whether all orbits merge. It cites Erdős–Graham [ErGr80] p. 82 and the OEIS entry A064491. The imports (lines 22–24) bring in `Mathlib.NumberTheory.Divisors` (for `Nat.divisors` and its cardinality), `Mathlib.Data.Nat.Basic` (for arithmetic lemmas), and `Mathlib.Tactic` (for `omega`, `simp`, etc.).\n\nErdős–Graham posed three closely related problems in the same monograph: **#412** (n ↦ n + φ(n)), **#413** (n ↦ n - φ(n)), and **#414** (n ↦ n + τ(n)). The map n + φ(n) is strictly increasing (φ(n) ≥ 1) and conjectured to have merging orbits. The map n - φ(n) can decrease, creating fundamentally different dynamics with fixed points.",
     "significance": "supporting",
-    "mathContext": "The three problems form a family studying iteration of simple arithmetic functions. **Problem #412** (n ↦ n + φ(n)): since φ(n) ≥ 1, this is also strictly increasing and the orbit merging conjecture applies. **Problem #413** (n ↦ n - φ(n)): for even n > 2, n - φ(n) < n, so orbits can decrease, and the dynamics include fixed points (n = 1) and potential cycles. The contrast between #414 (strictly increasing, conjectured single orbit) and #413 (can decrease, complex dynamics) illustrates how the monotonicity of h is crucial for the merging conjecture. Additionally, replacing τ with σ (sum of divisors) gives h(n) = n + σ(n), where σ(n) ≥ n + 1 for n ≥ 2, making steps much larger and merging even more plausible (but equally unproven).",
+    "mathContext": "The three problems form a family studying iteration of simple arithmetic functions. **Problem #412** (n ↦ n + φ(n)): since φ(n) ≥ 1, strictly increasing; orbit merging conjectured. **Problem #413** (n ↦ n - φ(n)): for even n > 2, n - φ(n) < n, so orbits can decrease; dynamics include fixed points (n = 1) and potential cycles. **Problem #414** (n ↦ n + τ(n)): strictly increasing since τ(n) ≥ 1. The contrast between #414 (strictly increasing, conjectured single orbit) and #413 (can decrease, complex dynamics) illustrates how monotonicity is crucial for the merging conjecture. Additionally, replacing τ with σ (sum of divisors) gives n + σ(n), where σ(n) ≥ n + 1 for n ≥ 2, making steps much larger and merging even more plausible (but equally unproven — Problem #412).",
     "relatedConcepts": [
       "Euler totient φ(n)",
       "sum of divisors σ(n)",
@@ -49,7 +49,7 @@
     "proofId": "erdos-414",
     "range": {
       "startLine": 31,
-      "endLine": 37
+      "endLine": 34
     },
     "type": "definition",
     "title": "Orbit Sequence",
@@ -72,20 +72,23 @@
     "proofId": "erdos-414",
     "range": {
       "startLine": 38,
-      "endLine": 52
+      "endLine": 51
     },
     "type": "technique",
-    "title": "Strict Monotonicity",
-    "content": "**h(n) > n** for all n ≥ 1, since τ(n) ≥ 1 (every positive integer has at least divisor 1). Combined with h(n) ≤ 2n (since τ(n) ≤ n), each step advances by at least 1 and at most n.",
+    "title": "Strict Monotonicity: Helper and Main Theorem",
+    "content": "This block contains two theorems. **`divisors_card_pos`** (private, lines 38–44): every n ≥ 1 has `n.divisors.card ≥ 1` because `1 ∈ n.divisors` and a non-empty finset has positive card. **`h_strictly_increasing`** (lines 46–51): h(n) > n for all n ≥ 1, proved by unfolding `h` and applying `divisors_card_pos`. Since τ(n) ≥ 1 for all positive n, each orbit step adds at least 1. Combined with the later `h_upper` (h(n) ≤ 2n), each step advances by between 1 and n positions.",
     "significance": "key",
-    "mathContext": "Strict monotonicity h(n) > n rules out fixed points and cycles — orbits can only move forward. This is the key structural property making the merging conjecture well-posed: without it, orbits could get trapped in loops and never meet. The upper bound h(n) ≤ 2n follows from the elementary bound τ(n) ≤ n, though much stronger bounds are known: τ(n) = O(n^ε) for any ε > 0 (Wigert's theorem), and the maximal order of τ(n) is 2^{(1+o(1)) log n / log log n}.",
+    "mathContext": "Strict monotonicity h(n) > n rules out fixed points and cycles — orbits can only move forward. This is the key structural property making the merging conjecture well-posed: without it, orbits could get trapped in loops and never meet. The private helper `divisors_card_pos` captures the elementary fact that $\\tau(n) \\geq 1$ for all $n \\geq 1$ (the divisor 1 always exists). The Lean proof uses `Nat.mem_divisors` and `Finset.card_pos`. The upper bound h(n) ≤ 2n follows from τ(n) ≤ n, though much stronger bounds are known: τ(n) = O(n^ε) for any ε > 0 (Wigert's theorem), and the maximal order is $2^{(1+o(1))\\log n/\\log\\log n}$.",
     "relatedConcepts": [
       "fixed points",
       "Wigert's bound on τ",
-      "maximal order of divisor function"
+      "maximal order of divisor function",
+      "Nat.mem_divisors",
+      "Finset.card_pos"
     ],
     "prerequisites": [
-      "Nat.divisors_nonempty"
+      "Nat.divisors_nonempty",
+      "h definition"
     ]
   },
   {
@@ -96,10 +99,10 @@
       "endLine": 83
     },
     "type": "technique",
-    "title": "Orbit Monotonicity and Upper Bound",
-    "content": "**orbit_strictly_increasing**: h^{k+1}(n) > h^k(n) for n ≥ 1. This follows from h_strictly_increasing applied at each step. **h_upper**: h(n) ≤ 2n since τ(n) ≤ n. These two bounds together show orbits advance by at least 1 and at most n at each step, giving the growth rate window: n + k ≤ h^k(n) ≤ 2^k · n.",
+    "title": "Orbit Positivity, Monotonicity, and Upper Bound",
+    "content": "This block contains three theorems. **`hOrbit_pos`** (private, lines 53–61): hOrbit n k ≥ 1 when n ≥ 1, proved by induction — the base case is n itself, and the inductive step uses `h_strictly_increasing` to show h applied to a positive value stays positive. **`orbit_strictly_increasing`** (lines 63–67): hOrbit n (k+1) > hOrbit n k for n ≥ 1, proved by applying `h_strictly_increasing` to `hOrbit_pos`. **`h_upper`** (lines 69–82): h(n) ≤ 2n for n ≥ 1, proved by showing divisors of n lie in [1,n] via `Finset.Icc 1 n` and counting. Together these give: n + k ≤ h^k(n) ≤ 2^k · n.",
     "significance": "supporting",
-    "mathContext": "The linear lower bound $h^k(n) \\geq n + k$ and exponential upper bound $h^k(n) \\leq 2^k n$ bracket the orbit growth. In practice, the average growth $h^k(n) \\approx n + k \\log n$ (from Dirichlet's $\\tau(n) \\approx \\log n$) is between these extremes. The upper bound $\\tau(n) \\leq n$ is crude — Wigert's theorem gives $\\tau(n) = O(2^{(1+o(1))\\log n/\\log\\log n})$, and even $\\tau(n) \\leq 2\\sqrt{n}$ for all $n$ suffices. Both `orbit_strictly_increasing` and `h_upper` are axiomatized but could be proved from the definition of $h$ and basic properties of `Nat.divisors.card`.",
+    "mathContext": "The linear lower bound $h^k(n) \\geq n + k$ and exponential upper bound $h^k(n) \\leq 2^k n$ bracket the orbit growth. In practice, the average growth $h^k(n) \\approx n + k \\log n$ (from Dirichlet's $\\tau(n) \\approx \\log n$) is between these extremes. The proof of `h_upper` is notable: it bounds `(Nat.divisors n).card` by `(Finset.Icc 1 n).card = n` using `Finset.card_le_card`, showing each divisor $d$ of $n$ satisfies $1 \\leq d \\leq n$ via `Nat.pos_of_dvd_of_pos` and `Nat.le_of_dvd`. The upper bound $\\tau(n) \\leq n$ is crude but proves `h_upper` cleanly. Wigert's theorem gives the much stronger $\\tau(n) = O(n^\\varepsilon)$ for any $\\varepsilon > 0$.",
     "relatedConcepts": [
       "orbit growth bounds",
       "Wigert's theorem",
@@ -118,10 +121,10 @@
       "endLine": 88
     },
     "type": "technique",
-    "title": "h at Primes",
-    "content": "For a prime p, τ(p) = 2 (divisors: 1 and p), so **h(p) = p + 2**. Primes advance by the minimum non-trivial amount. Highly composite numbers like 12 (τ = 6), 24 (τ = 8), 60 (τ = 12) advance much further.",
+    "title": "h at Primes: Minimum Step Size",
+    "content": "**`h_prime`** (lines 84–87): For a prime p, h(p) = p + 2. The Lean proof uses `Nat.Prime.divisors hp` (which states `p.divisors = {1, p}`) and `Finset.card_pair (ne_of_lt hp.one_lt)` (the pair {1, p} has card 2 since 1 ≠ p). Primes advance by the minimum non-trivial step size 2. Highly composite numbers like 12 (τ = 6), 24 (τ = 8), 60 (τ = 12) advance much further, creating uneven orbit spacing.",
     "significance": "key",
-    "mathContext": "The dichotomy between primes (τ = 2, minimal advance) and highly composite numbers (large τ, big jumps) is what makes the orbit dynamics interesting. Two orbits might approach each other when both pass through a region rich in primes (small steps, fine spacing), then one hits a highly composite number and jumps ahead. The **collision mechanism** requires both orbits to land on exactly the same value — not merely get close. Since consecutive orbit values h^k(n) and h^{k+1}(n) differ by τ(h^k(n)), the 'mesh size' of an orbit near N is roughly log N on average (by Dirichlet's theorem), meaning collisions become harder as values grow.",
+    "mathContext": "The dichotomy between primes (τ = 2, minimal advance) and highly composite numbers (large τ, big jumps) drives the orbit dynamics. Two orbits might converge when both pass through a region rich in primes (small steps, fine orbit spacing), then one hits a highly composite number and jumps ahead. The **collision mechanism** for h(a) = h(b) requires a + τ(a) = b + τ(b), i.e., b - a = τ(a) - τ(b). For this to hold with a ≠ b, the divisor counts must differ by exactly the right amount. The simplest example is h(4) = h(5) = 7: τ(4) = 3 and τ(5) = 2, so 5 - 4 = 3 - 2 = 1. The 'mesh size' of an orbit near N is roughly log N on average, meaning exact-collision opportunities become sparser as N grows.",
     "relatedConcepts": [
       "prime number theorem",
       "highly composite numbers (Ramanujan)",
@@ -249,10 +252,10 @@
       "endLine": 135
     },
     "type": "concept",
-    "title": "Dirichlet's Average Order of τ",
-    "content": "**Dirichlet (1849)**: Σ_{n≤N} τ(n) = N log N + (2γ - 1)N + O(√N), where γ ≈ 0.5772 is the Euler-Mascheroni constant. On average, τ(n) ≈ log n.\n\n**Note**: The Lean declaration `axiom average_divisor_count : True` is a placeholder — it states `True` rather than the actual Dirichlet asymptotic. This axiom contributes no mathematical content and could be removed without affecting the formalization. A meaningful version would use `Filter.Tendsto` to state $\\sum_{k \\leq n} \\tau(k) / (n \\log n) \\to 1$.",
+    "title": "Dirichlet's Average Order of τ (Placeholder Theorem)",
+    "content": "**Dirichlet (1849)**: Σ_{n≤N} τ(n) = N log N + (2γ - 1)N + O(√N), where γ ≈ 0.5772 is the Euler-Mascheroni constant. On average, τ(n) ≈ log n.\n\n**Lean note**: The declaration `theorem average_divisor_count : True := trivial` is a placeholder — it states and proves only `True`. This contributes no mathematical content to the formalization. It is not an `axiom` (which would make a false assumption) — it is just a trivially true stub standing in for the real Dirichlet asymptotic. A meaningful Lean version would state something like: `(fun N => (∑ k in Finset.range N, (k.divisors.card : ℝ)) / (N * Real.log N)) →[Filter.atTop] 1`, using `Filter.Tendsto`. This result is available in Mathlib via `Nat.ArithmeticFunction.isEquivalent_sum_divisors_log`.",
     "significance": "key",
-    "mathContext": "Dirichlet's **divisor problem** gives the average order of τ(n) as log n, with the error term being the famous **Dirichlet divisor problem**: what is the true order of the remainder Δ(N) = Σ_{n≤N} τ(n) - N log N - (2γ-1)N? It is known that Δ(N) = O(N^{131/416}) (Huxley, 2003) and Δ(N) = Ω(N^{1/4}). For the orbit merging problem, this average tells us that a 'typical' orbit step near N has size ≈ log N, so the orbit of n reaches value V ≈ n + k·log(V) after k steps. But the irregularity of τ around its average is precisely what makes proving exact collisions so difficult.",
+    "mathContext": "Dirichlet's **divisor problem** gives the average order of τ(n) as log n. The famous open problem is the error term: the **Dirichlet divisor problem** asks for the true order of Δ(N) = Σ_{n≤N} τ(n) - N log N - (2γ-1)N. It is known that Δ(N) = O(N^{131/416}) (Huxley, 2003) and Δ(N) = Ω(N^{1/4}). For orbit merging, this average tells us that a 'typical' orbit step near value V has size ≈ log V, so after k steps starting from n, the orbit has value ≈ n + k log(n). But the irregularity of τ around its average — ranging from 2 at primes to $\\gg n^\\varepsilon$ at highly composite numbers — is precisely what prevents proving exact collisions. The average behavior is easy; the pointwise control needed for collision is hard.",
     "relatedConcepts": [
       "Dirichlet divisor problem",
       "Euler-Mascheroni constant",
@@ -270,10 +273,10 @@
       "endLine": 147
     },
     "type": "technique",
-    "title": "Linear Lower Bound on Orbit Growth",
-    "content": "**h^k(n) ≥ n + k** for all n ≥ 1. Each step adds at least τ(h^{k-1}(n)) ≥ 1, so after k steps the orbit has advanced by at least k. On average the growth is faster: h^k(n) ≈ n + k · log(n + k).",
+    "title": "Linear Lower Bound on Orbit Growth (Proved by Induction)",
+    "content": "**`orbit_linear_lower`** (lines 136–146): hOrbit n k ≥ n + k for all n ≥ 1 and k ≥ 0. The Lean proof proceeds by induction on k. Base case (k = 0): hOrbit n 0 = n ≥ n + 0 by `simp [hOrbit]`. Inductive step: assume hOrbit n k ≥ n + k; then hOrbit n (k+1) = h(hOrbit n k) > hOrbit n k ≥ n + k, so hOrbit n (k+1) ≥ n + (k+1), closing via `omega`. The bound is tight: orbits from prime numbers advance by exactly 2 per prime-valued step, giving growth ≈ n + 2k when the trajectory passes through many primes.",
     "significance": "supporting",
-    "mathContext": "The linear lower bound is trivial (each step adds ≥ 1) but important: it shows orbits reach arbitrarily large values, so the 'probability' of collision at any given value decreases. The **heuristic argument** for merging is: near value V, the orbit of m has gaps of size ≈ log V between consecutive values, and similarly for the orbit of n. The 'probability' of missing all of the orbit-of-n values in an interval of length L is roughly (1 - 1/log V)^{L/log V} ≈ e^{-L/(log V)²}. Summing over V → ∞, the expected number of collisions diverges (since Σ 1/(log V)² diverges when summed over V), suggesting infinitely many collisions occur. Making this heuristic rigorous is the open problem.",
+    "mathContext": "The linear lower bound $h^k(n) \\geq n + k$ is trivially proved but important: it shows every orbit escapes to infinity, so the 'probability' of collision at any specific value V decreases as V grows. The **heuristic argument** for merging: near value V, orbit gaps average $\\sim \\log V$ (by Dirichlet). The probability that a single step of one orbit hits a value in the other orbit is $\\sim 1/\\log V$; the probability of a collision in any given interval of length $L$ near $V$ is $\\sim L/(\\log V)^2$. Since $\\sum_{V} 1/(\\log V)^2$ diverges (the harmonic series dominates), infinitely many collisions are expected heuristically. The actual proof of orbit merging requires making this 'Borel-Cantelli'-style argument rigorous, which remains open. The `orbit_linear_lower` theorem uses `hOrbit_pos` (to ensure positivity at each step) and `h_strictly_increasing` (to advance by ≥ 1).",
     "relatedConcepts": [
       "orbit growth rate",
       "Borel-Cantelli heuristic",
@@ -292,10 +295,10 @@
       "endLine": 155
     },
     "type": "concept",
-    "title": "Orbits Get Arbitrarily Close",
-    "content": "For any m, n ≥ 1 and any bound D, there exist i, j such that |h^i(m) - h^j(n)| < D. This weaker statement (proximity without exact collision) is plausible from average growth rates but also unproven.",
+    "title": "Orbits Get Arbitrarily Close (Weakest Open Form)",
+    "content": "**`orbits_get_close`** (axiom, lines 148–155): For any m, n ≥ 1 and any bound D, there exist i, j such that |h^i(m) - h^j(n)| < D (stated as both integer inequalities). This is the **weakest open form** of Problem #414 — proximity without exact collision is still unproven! The `orbits_get_close` axiom is the final declaration in the file, capturing this open statement.\n\nThe axiom uses integer subtraction in ℤ (`(hOrbit m i : ℤ) - (hOrbit n j : ℤ)`) rather than natural number subtraction to avoid the truncation issue where `a - b = 0` for `a < b` in ℕ.",
     "significance": "key",
-    "mathContext": "This is a **weaker form** of the main conjecture: orbits get within distance D of each other for any D. Even this has not been rigorously proved! The difficulty is that while both orbits grow at average rate log V near value V, their actual positions depend on the cumulative effect of τ along each specific trajectory. Proving proximity requires showing that the 'drift' between two orbits — the difference in cumulative divisor counts — cannot grow without bound. This is related to the **equidistribution of orbits** modulo small numbers: if both orbits eventually hit every residue class (mod d) for each d, then they must eventually be within distance d of each other.",
+    "mathContext": "This is a **weaker form** of the main conjecture: orbits get within distance D of each other for any D. Even this weaker proximity statement has not been rigorously proved. The difficulty: while both orbits grow at average rate $\\log V$ near value $V$, their actual positions depend on the cumulative effect of $\\tau$ along each specific trajectory. Proving proximity requires showing the 'drift' $\\sum_i \\tau(h^i(m)) - \\sum_j \\tau(h^j(n))$ cannot grow without bound as both trajectories advance. The **equidistribution approach**: if both orbits eventually hit every residue class mod $d$ for each $d$, they must be within $d$ of each other. Proving equidistribution of the orbit $\\{h^k(n)\\}$ modulo $d$ requires understanding how the divisor function distributes residues along orbits — a difficult multiplicative number theory problem. The integer formulation in ℤ is needed to express a two-sided bound since Lean's ℕ subtraction truncates at 0.",
     "relatedConcepts": [
       "orbit proximity",
       "equidistribution mod d",

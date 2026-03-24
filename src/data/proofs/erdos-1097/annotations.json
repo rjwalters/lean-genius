@@ -53,8 +53,8 @@
     },
     "type": "definition",
     "title": "Common Differences D(A)",
-    "content": "The set $D(A)$ of all integers $d$ such that some three-term AP in $A$ has common difference $d$. This is the central object studied in Problem #1097: understanding how $|D(A)|$ grows with $|A|$.\n\n**Structural properties of $D(A)$:** Since $a, a+d, a+2d \\in A$ implies $a+2d, (a+2d)-d, (a+2d)-2d \\in A$, the set $D(A)$ is symmetric: $d \\in D(A) \\iff -d \\in D(A)$. For dense sets $A \\subseteq [n]$ with $|A| = \\delta n$, counting arguments give $|D(A)| \\geq \\Omega(n)$ (at least one AP exists for most differences $d$). The deep question is whether $|D(A)|$ can be polynomially larger than $|A|$ — i.e., whether dense sets necessarily exhibit many *distinct* AP common differences.",
-    "mathContext": "$D(A) = \\{d \\in \\mathbb{Z} : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Note $0 \\in D(A)$ whenever $A \\neq \\emptyset$, and $D(A)$ is symmetric: $d \\in D(A) \\Leftrightarrow -d \\in D(A)$.",
+    "content": "The set $D(A)$ of all integers $d$ such that some three-term AP in $A$ has common difference $d$. This is the central object studied in Problem #1097: understanding how $|D(A)|$ grows with $|A|$.\n\n**Structural properties of $D(A)$:** Since $a, a+d, a+2d \\in A$ implies $a+2d, (a+2d)-d, (a+2d)-2d \\in A$, the set $D(A)$ is symmetric: $d \\in D(A) \\iff -d \\in D(A)$. For dense sets $A \\subseteq [n]$ with $|A| = \\delta n$, counting arguments give $|D(A)| \\geq \\Omega(n)$ (at least one AP exists for most differences $d$). The deep question is whether $|D(A)|$ can be polynomially larger than $|A|$ — i.e., whether dense sets necessarily exhibit many *distinct* AP common differences.\n\n**Small sets:** A 3-term AP $a, a+d, a+2d$ requires three (not necessarily distinct) elements of $A$. For $|A| \\le 2$, the only 3-AP possible is the trivial one with $d = 0$, so $D(\\{a\\}) = D(\\{a,b\\}) = \\{0\\}$ regardless of the elements. This is proved formally: `commonDiffFinset_singleton` and `commonDiffFinset_pair`.",
+    "mathContext": "$D(A) = \\{d \\in \\mathbb{Z} : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Note $0 \\in D(A)$ whenever $A \\neq \\emptyset$ (trivial AP $a, a+0, a+0$). $D(A)$ is symmetric: $d \\in D(A) \\Leftrightarrow -d \\in D(A)$. For small sets: $D(\\{a\\}) = \\{0\\}$, $D(\\{a,b\\}) = \\{0\\}$ (no non-trivial 3-AP fits in 2 elements), $D(\\{a,a+1,a+2\\}) = \\{-1,0,1\\}$.",
     "significance": "key",
     "relatedConcepts": [
       "difference set",
@@ -97,8 +97,8 @@
     },
     "type": "technique",
     "title": "Subset Bound, Cardinality, and Nonemptiness",
-    "content": "Foundational facts proved without axioms: (1) `commonDiffFinset_subset`: $D(A) \\subseteq A - A$ via `filter_subset`. (2) `numCommonDiff_le_card_sq`: $|D(A)| \\leq |A|^2$ since $|A - A| \\leq |A|^2$. (3) `zero_mem_commonDiffFinset`: $0 \\in D(A)$ for nonempty $A$ (every element forms a trivial AP $a, a, a$), hence `numCommonDiff_pos`: $|D(A)| \\geq 1$. (4) `commonDiffFinset_empty`: $D(\\emptyset) = \\emptyset$.",
-    "mathContext": "$D(A) \\subseteq A - A \\implies |D(A)| \\leq |A - A| \\leq |A|^2$. Nonemptiness: $a \\in A \\implies a, a+0, a+2 \\cdot 0 \\in A$, so $0 \\in D(A)$. Empty set: $D(\\emptyset) = \\emptyset$.",
+    "content": "Foundational facts proved without axioms: (1) `commonDiffFinset_subset`: $D(A) \\subseteq A - A$ via `filter_subset`. (2) `numCommonDiff_le_card_sq`: $|D(A)| \\leq |A|^2$ since $|A - A| \\leq |A|^2$. (3) `zero_mem_commonDiffFinset`: $0 \\in D(A)$ for nonempty $A$ (every element forms a trivial AP $a, a+0, a+0$), hence `numCommonDiff_pos`: $|D(A)| \\geq 1$. (4) `commonDiffFinset_empty`: $D(\\emptyset) = \\emptyset$.\n\nThe proof of `numCommonDiff_le_card_sq` uses `card_filter_le` to bound filter size by the underlying set, then `card_image_le` and `card_product` to bound $|A - A| \\leq |A|^2$ by encoding differences as pairs. This gives the trivial $O(n^2)$ upper bound that the Katz-Tao theorem improves to $O(n^{11/6})$.",
+    "mathContext": "$D(A) \\subseteq A - A \\implies |D(A)| \\leq |A - A| \\leq |A|^2$. The trivial bound: differences $a - b$ for $a, b \\in A$ biject with $A \\times A$ modulo uniqueness, so at most $|A|^2$ distinct values. In practice $|A - A|$ can be $\\Theta(|A|^2)$ for generic sets (e.g., sets in general position), but for sets with additive structure (like arithmetic progressions) $|A - A| = \\Theta(|A|)$ (Plünnecke-Ruzsa).",
     "significance": "supporting",
     "relatedConcepts": [
       "difference set bounds",
@@ -119,8 +119,8 @@
     },
     "type": "technique",
     "title": "Monotonicity, Small-Set Computations, and Symmetry",
-    "content": "The `commonDiffFinset_mono` and `numCommonDiff_mono` theorems establish monotonicity: $A \\subseteq B \\implies D(A) \\subseteq D(B)$, proved by showing that any AP witness in $A$ is also a witness in $B$. Also includes `neg_mem_commonDiffFinset` (Finset-level symmetry: $d \\in D(A) \\implies -d \\in D(A)$), tighter bound $|D(A)| \\leq |A - A|$, and exact computations for small sets: singletons have $D(\\{a\\}) = \\{0\\}$, pairs $D(\\{a,b\\}) = \\{0\\}$ (no non-trivial 3-AP in a 2-element set), and count monotonicity.",
-    "mathContext": "Monotonicity: $A \\subseteq B \\implies D(A) \\subseteq D(B) \\implies |D(A)| \\leq |D(B)|$. Symmetry: $d \\in D(A) \\implies -d \\in D(A)$. Small sets: $D(\\{a\\}) = \\{0\\}$, $D(\\{a,b\\}) = \\{0\\}$.",
+    "content": "This section covers five groups of theorems: (1) **Monotonicity** — `commonDiffFinset_mono` and `numCommonDiff_mono`: $A \\subseteq B \\implies D(A) \\subseteq D(B)$, proved by showing any AP witness $(a, a+d, a+2d)$ in $A$ remains a witness in $B$. (2) **Finset symmetry** — `neg_mem_commonDiffFinset`: $d \\in D(A) \\implies -d \\in D(A)$, proved by reversing the AP to get the witness $a+2d, (a+2d)-d, (a+2d)-2d$ with common difference $-d$. (3) **Tighter bound** — `numCommonDiff_le_card_sub`: $|D(A)| \\leq |A - A|$ (stronger than $|A|^2$ since $|A - A| \\leq |A|^2$). (4) **Singleton computation** — `commonDiffFinset_singleton`: $D(\\{a\\}) = \\{0\\}$, the unique witness being the trivial AP $a, a, a$. (5) **Pair computation** — `commonDiffFinset_pair`: $D(\\{a,b\\}) = \\{0\\}$ for $a \\neq b$, since fitting $a, a+d, a+2d$ into 2 elements forces $d=0$ (proved by exhaustive case analysis with `omega`).",
+    "mathContext": "Monotonicity: $A \\subseteq B \\implies D(A) \\subseteq D(B) \\implies |D(A)| \\leq |D(B)|$. Finset symmetry: $d \\in D(A) \\implies -d \\in D(A)$ (uses reversed AP). Small sets: $D(\\{a\\}) = \\{0\\}$, $D(\\{a,b\\}) = \\{0\\}$ — in both cases $|D| = 1$, but 3 consecutive integers give $|D| = 3$. The jump from $|A|=2$ to $|A|=3$ illustrates the combinatorial explosion that motivates the problem.",
     "significance": "supporting",
     "relatedConcepts": [
       "monotonicity",
@@ -232,8 +232,8 @@
     },
     "type": "insight",
     "title": "Katz-Tao Upper Bound",
-    "content": "The best known upper bound: $|D(A)| \\le C \\cdot n^{11/6}$ for some absolute constant $C$. Published by Nets Katz and Terence Tao in 1999, this improved earlier bounds using incidence geometry techniques related to the Kakeya problem.",
-    "mathContext": "The exponent $11/6 \\approx 1.833$ improved the trivial $|D(A)| \\le |A-A| = O(n^2)$ bound. The proof uses a combinatorial geometry argument connecting the problem to line incidences in $\\mathbb{R}^2$, mirroring techniques from the Kakeya conjecture.",
+    "content": "The best known upper bound: $|D(A)| \\le C \\cdot n^{11/6}$ for some absolute constant $C$. Published by Nets Katz and Terence Tao in 1999, this improved earlier bounds using incidence geometry techniques related to the Kakeya problem.\n\n**Proof sketch:** Katz and Tao reduce bounding $|D(A)|$ to counting incidences between points and lines in $\\mathbb{R}^2$. For each common difference $d \\in D(A)$, there exists a witness $(a, d)$ forming a line arrangement. The Szemerédi-Trotter theorem gives incidence bounds of the form $I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$. Optimizing over the correspondence between points, lines, and common differences yields the $n^{11/6}$ bound. The exact value $11/6 = 1.833\\ldots$ comes from the exponent $2/3$ in Szemerédi-Trotter.\n\n**Connection to Kakeya:** The Kakeya conjecture (every Besicovitch set in $\\mathbb{R}^n$ has Hausdorff dimension $n$) is equivalent to bounding maximal functions of characteristic functions of thin tubes. Bourgain's arithmetic approach to Kakeya passes through sums-differences estimates that are formally equivalent to this problem via Chan's theorem (line 357-364).",
+    "mathContext": "The exponent $11/6 \\approx 1.833$ improved the trivial $|D(A)| \\leq |A-A| \\leq |A|^2 = O(n^2)$ bound. The Katz-Tao proof uses Szemerédi-Trotter incidence geometry: $I(P,L) \\leq O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ applied to the point-line incidences arising from 3-APs. The exponent $11/6$ comes from optimizing this correspondence. This is the same framework used in the polynomial method and Bourgain's Kakeya work.",
     "significance": "key",
     "relatedConcepts": [
       "Kakeya conjecture",
@@ -276,8 +276,8 @@
     },
     "type": "insight",
     "title": "Erdős-Ruzsa Explicit Construction",
-    "content": "An explicit (derandomized) construction achieving $n^{1+c}$ common differences for some constant $c > 0$. Unlike the Erdős-Spencer probabilistic argument, this gives a concrete family of sets, though with a weaker exponent.",
-    "mathContext": "There exist $c > 0$ and $C > 0$ such that for all $n$, an explicit $A$ with $|A| = n$ satisfies $|D(A)| \\ge C \\cdot n^{1+c}$. The exponent $1+c$ is weaker than the probabilistic $3/2$ but the construction is constructive.",
+    "content": "An explicit (derandomized) construction achieving $n^{1+c}$ common differences for some constant $c > 0$ (achieving exponent $4/3$ concretely). Unlike the Erdős-Spencer probabilistic argument, this gives a concrete family of sets. The construction uses algebraic structure — often based on finite fields or geometric progressions — to explicitly exhibit $\\Omega(n^{4/3})$ common differences, though this remains weaker than the probabilistic $n^{3/2}$ lower bound.\n\n**Significance of explicit constructions:** Probabilistic existence proofs guarantee that *some* sets achieve the bound but provide no way to find them. Ruzsa's explicit construction is important for proving computational lower bounds and for understanding which number-theoretic properties of $A$ force many common differences. The gap between the explicit $n^{4/3}$ and probabilistic $n^{3/2}$ lower bounds mirrors a common pattern in additive combinatorics where randomness outperforms known algebraic constructions.",
+    "mathContext": "There exist $c > 0$ and $C > 0$ such that for all $n$, an explicit $A$ with $|A| = n$ satisfies $|D(A)| \\geq C \\cdot n^{1+c}$. The Lean axiom `erdos_ruzsa_explicit` states this with an unspecified $c > 0$, while the literature specifies $c$ such that the exponent is approximately $4/3$. The exponent $1+c > 1$ already shows $|D(A)|$ grows superlinearly, ruling out $|D(A)| = \\Theta(n)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "explicit constructions",
@@ -314,7 +314,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 331,
-      "endLine": 339
+      "endLine": 336
     },
     "type": "context",
     "title": "AlphaEvolve Improvement",
@@ -385,8 +385,8 @@
     },
     "type": "insight",
     "title": "Chan's Equivalence Theorem",
-    "content": "Chan proved that the optimal exponent for common differences in 3-APs equals the critical Bourgain sums-differences exponent. This deep equivalence bridges additive combinatorics with harmonic analysis and the Kakeya conjecture, meaning progress on either problem implies progress on the other.",
-    "mathContext": "For $c \\ge 1$: $(\\forall n,\\; \\exists A,\\; |A| = n,\\; |D(A)| \\ge n^c) \\;\\Leftrightarrow\\; \\neg\\text{BourgainExponent}(c)$. In other words, $c^*_{\\text{3-AP}} = c^*_{\\text{Bourgain}}$. This links a discrete combinatorial problem to continuous Kakeya-type geometry.",
+    "content": "Chan proved that the optimal exponent for common differences in 3-APs equals the critical Bourgain sums-differences exponent. This deep equivalence bridges additive combinatorics with harmonic analysis and the Kakeya conjecture, meaning progress on either problem implies progress on the other.\n\n**Equivalence mechanism:** The proof constructs a bijection between extremal examples for 3-AP common differences and extremal examples for sums-differences. Given a set $A$ with many common differences, one forms the bipartite graph $G$ encoding the AP structure and shows the sums-differences bound must fail. Conversely, extremal sums-differences examples can be lifted to AP examples. The precise formal statement in the Lean file (lines 360-364) captures the equivalence for all exponents $c \\geq 1$ simultaneously.\n\n**Structural implication:** Since $c^*_{\\text{3-AP}} = c^*_{\\text{Bourgain}}$ and Bourgain's exponent is connected to the Kakeya conjecture, any improvement to the Katz-Tao bound would constitute progress toward Kakeya — one of the central unsolved problems in harmonic analysis. This explains why no improvement has been made in 25 years despite much effort.",
+    "mathContext": "For $c \\geq 1$: $(\\forall n,\\; \\exists A,\\; |A| = n,\\; |D(A)| \\geq n^c) \\Leftrightarrow \\neg\\text{BourgainExponent}(c)$. In other words, $c^*_{\\text{3-AP}} = c^*_{\\text{Bourgain}}$. The Lean formalization captures this as a biconditional for all real $c \\geq 1$, directly connecting $D(A)$ growth to the failure of sums-differences bounds. Chan's original proof used a combinatorial reduction between extremal constructions for the two problems.",
     "significance": "key",
     "relatedConcepts": [
       "Kakeya conjecture",

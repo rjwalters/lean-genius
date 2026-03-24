@@ -48,17 +48,18 @@
     "proofId": "erdos-432",
     "type": "definition",
     "range": {
-      "startLine": 43,
+      "startLine": 40,
       "endLine": 44
     },
     "title": "Restricted Sumset",
-    "content": "**sumsetUpTo A B n** = {m ∈ A + B : m ≤ n}. The initial segment of the sumset up to n, used for counting density via |A + B ∩ [1,n]|.",
+    "content": "**sumsetUpTo A B n** = {m ∈ A + B : m ≤ n}. The initial segment of the sumset up to n, used for counting density via |A + B ∩ [1,n]|. This bounded version feeds directly into `countingFn` and is the object whose cardinality is bounded by π(n) + 1 under pairwise coprimality.",
     "significance": "supporting",
-    "mathContext": "Density is measured by the **counting function** |S ∩ [1,n]| as n → ∞. For a pairwise coprime set S, the trivial bound is |S ∩ [1,n]| ≤ π(n) + 1, since each element > 1 must have a distinct smallest prime factor. The question is whether the sumset structure A + B forces a density even lower than this 'greedy coprime set' bound, or whether one can construct A, B achieving density close to π(n).",
+    "mathContext": "Density is measured by the **counting function** |S ∩ [1,n]| as n → ∞. For a pairwise coprime set S, the trivial bound is |S ∩ [1,n]| ≤ π(n) + 1, since each element > 1 must have a distinct smallest prime factor. The question is whether the sumset structure A + B forces a density even lower than this 'greedy coprime set' bound, or whether one can construct A, B achieving density close to π(n). The **Schnirelmann density** d(A) = inf_{n} |A ∩ [1,n]|/n and **asymptotic density** δ(A) = lim_{n→∞} |A ∩ [1,n]|/n are two classical ways to measure set thickness; both are relevant here.",
     "relatedConcepts": [
       "counting function",
       "natural density",
-      "Schnirelmann density"
+      "Schnirelmann density",
+      "asymptotic density"
     ],
     "prerequisites": [
       "sumset"
@@ -209,19 +210,46 @@
     "proofId": "erdos-432",
     "type": "insight",
     "range": {
-      "startLine": 134,
+      "startLine": 132,
       "endLine": 141
     },
     "title": "Tao's Assessment and the Additive-Multiplicative Barrier",
-    "content": "Terence Tao assessed Problem #432 as 'looking difficult' on the Erdős Problems project. No partial results or viable proof strategies are known.",
+    "content": "Terence Tao assessed Problem #432 as 'looking difficult' on the Erdős Problems project. No partial results or viable proof strategies are known. The summary section closes the namespace and consolidates the status: the question of the maximum density of a pairwise coprime sumset is entirely open, with even the correct order of magnitude unknown.\n\nThe **additive-multiplicative barrier** is the core obstruction: additive combinatorics tools (Plünnecke-Ruzsa, Freiman structure theorem, Gowers norms) operate in quotient groups ℤ/pℤ or in continuous settings and do not natively capture coprimality. Sieve methods (Selberg, large sieve) handle multiplicative structure but have no mechanism for imposing the sumset constraint a = a₀ + b₀. Bridging these two worlds requires fundamentally new techniques.",
     "significance": "supporting",
-    "mathContext": "Tao's assessment reflects the fundamental difficulty of combining **additive structure theory** (sumsets, Freiman, Plünnecke-Ruzsa) with **multiplicative number theory** (coprimality, sieves, prime distribution). Current additive combinatorics tools work modulo primes or in groups, while coprimality is about the full multiplicative structure of ℕ. The **Green-Tao theorem** shows primes contain long arithmetic progressions (additive structure in a multiplicative set), but #432 asks the converse: can additive structure (sumset) coexist with prime-like thinness (coprimality)? Bridging these two paradigms remains one of the major challenges in combinatorial number theory.",
+    "mathContext": "Tao's assessment reflects the fundamental difficulty of combining **additive structure theory** (sumsets, Freiman, Plünnecke-Ruzsa) with **multiplicative number theory** (coprimality, sieves, prime distribution). Current additive combinatorics tools work modulo primes or in groups, while coprimality is about the full multiplicative structure of ℕ. The **Green-Tao theorem** shows primes contain long arithmetic progressions (additive structure in a multiplicative set), but #432 asks the converse: can additive structure (sumset) coexist with prime-like thinness (coprimality)? The **Erdős-Rényi probabilistic method** — which works by taking random subsets A, B and showing they satisfy the coprimality constraint in expectation — might suggest constructions, but probabilistic arguments typically fail to produce deterministic infinite sets satisfying both the sumset structure and pairwise coprimality simultaneously.",
     "relatedConcepts": [
       "Green-Tao theorem",
       "additive combinatorics",
       "analytic number theory",
-      "sum-product phenomenon"
+      "sum-product phenomenon",
+      "Selberg sieve",
+      "probabilistic method"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "erdos-432-formal-structure",
+    "proofId": "erdos-432",
+    "type": "technique",
+    "range": {
+      "startLine": 86,
+      "endLine": 99
+    },
+    "title": "Formal Structure of the Density Conjecture",
+    "content": "The Lean definition of `ErdosProblem432` is a three-part existential statement: (1) `∃ f : ℕ → ℕ` — a bounding function exists; (2) `∀ n, f n ≤ n` — f is non-trivial (doesn't exceed the trivial bound); (3) `∀ C, ∃ N, f N ≥ C` — f grows to infinity (not a constant bound); and (4) `∀ A B, IsInfiniteSet A → IsInfiniteSet B → SumsetPairwiseCoprime A B → ∀ n, countingFn (sumset A B) n ≤ f n` — the bound applies universally to all admissible pairs.\n\nThis formalization captures the **existential-universal** quantifier structure of a density result: it asserts *there exists* a good bound, without specifying what f is. A constructive resolution would give an explicit f (e.g., f(n) = π(n) or f(n) = √n). The proof strategy would either exhibit f with matching upper and lower bounds, or derive a contradiction from assuming no such f exists.",
+    "significance": "key",
+    "mathContext": "The quantifier structure mirrors how extremal problems are stated in analytic number theory. Compare Bertrand's postulate: for all n, there exists a prime p with n < p < 2n — a ∀∃ structure. Problem #432 has an ∃∀ structure (there exists an f that universally bounds the counting function), which is harder: it requires exhibiting a single f that works for *all* pairs A, B. The non-triviality condition `f n ≤ n` excludes f(n) = n (trivially true), and the unboundedness condition excludes f(n) = C (constant bound). The formalization correctly encodes both exclusions. Note: the definition is `noncomputable` because it involves `Finset.filter` on an infinite domain.",
+    "relatedConcepts": [
+      "existential-universal quantifiers",
+      "extremal problems",
+      "density bounds",
+      "Bertrand's postulate",
+      "noncomputable definitions"
+    ],
+    "prerequisites": [
+      "countingFn",
+      "IsInfiniteSet",
+      "SumsetPairwiseCoprime"
+    ]
   }
 ]

@@ -4,7 +4,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 1,
-      "endLine": 32
+      "endLine": 30
     },
     "type": "context",
     "title": "Problem History and Imports",
@@ -25,7 +25,7 @@
     "id": "ann-e4-nthprime",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 33,
+      "startLine": 31,
       "endLine": 35
     },
     "type": "definition",
@@ -48,7 +48,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 36,
-      "endLine": 40
+      "endLine": 38
     },
     "type": "definition",
     "title": "Prime Gap",
@@ -69,14 +69,14 @@
     "id": "ann-e4-lg",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 41,
+      "startLine": 39,
       "endLine": 43
     },
     "type": "definition",
-    "title": "Natural Logarithm",
-    "content": "**lg x** = $\\log(x)$, the natural logarithm. Wrapper around `Real.log` for notational convenience.",
+    "title": "Iterated Logarithms: Base Case",
+    "content": "The `Iterated Logarithms` section (lines 39-52) defines the four nested logarithms central to the Erdős function. **lg x** = $\\log(x)$ is the base: a thin wrapper around `Real.log` for notational convenience, enabling the compact expressions `lg2 x = lg (lg x)`, `lg3 x = lg (lg (lg x))`, and `lg4 x = lg (lg (lg (lg x)))` defined in the lines that follow.",
     "significance": "supporting",
-    "mathContext": "The natural logarithm appears throughout prime number theory. The Prime Number Theorem states $\\pi(x) \\sim x/\\log x$. The iterated logarithms $\\log\\log n$, $\\log\\log\\log n$, etc. appear in refined asymptotics for prime gaps because the sieve of Eratosthenes involves $\\log\\log$ factors (Mertens' theorem: $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$).",
+    "mathContext": "The natural logarithm appears throughout prime number theory. The Prime Number Theorem states $\\pi(x) \\sim x/\\log x$. The iterated logarithms $\\log\\log n$, $\\log\\log\\log n$, etc. appear in refined asymptotics for prime gaps because the sieve of Eratosthenes involves $\\log\\log$ factors: by Mertens' theorem, $\\prod_{p \\leq x}(1 - 1/p) \\sim e^{-\\gamma}/\\log x$ and $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$. These two Mertens estimates are why the Rankin function naturally involves four levels of iterated logarithm — each iterated log arises from one optimization step in the sieve parameter selection.",
     "relatedConcepts": [
       "Real.log",
       "Prime Number Theorem",
@@ -91,7 +91,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 44,
-      "endLine": 54
+      "endLine": 52
     },
     "type": "definition",
     "title": "Iterated Logarithms",
@@ -111,7 +111,7 @@
     "id": "ann-e4-erdosfunc",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 55,
+      "startLine": 53,
       "endLine": 63
     },
     "type": "definition",
@@ -136,7 +136,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 64,
-      "endLine": 72
+      "endLine": 70
     },
     "type": "definition",
     "title": "Rankin Function",
@@ -157,8 +157,8 @@
     "id": "ann-e4-conjecture",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 73,
-      "endLine": 83
+      "startLine": 71,
+      "endLine": 81
     },
     "type": "concept",
     "title": "Erdős Problem #4 (SOLVED)",
@@ -180,8 +180,8 @@
     "id": "ann-e4-rankin",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 84,
-      "endLine": 99
+      "startLine": 82,
+      "endLine": 97
     },
     "type": "insight",
     "title": "Rankin's Theorem (1938)",
@@ -203,7 +203,7 @@
     "id": "ann-e4-maynard",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 100,
+      "startLine": 98,
       "endLine": 108
     },
     "type": "insight",
@@ -249,27 +249,31 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 115,
-      "endLine": 119
+      "endLine": 117
     },
     "type": "insight",
     "title": "Problem Solved (PROVED)",
-    "content": "**erdos_4_solved**: `erdos_4_conjecture` holds, witnessed by `maynard_theorem`. A one-line proof.",
+    "content": "**erdos_4_solved** (line 116): `erdos_4_conjecture` holds, witnessed by `maynard_theorem`. A one-line proof by direct application. This is the formal capstone of the resolution of Erdős Problem #4 — the proof that the 75-year-old question is affirmatively settled. Either `maynard_theorem` or `ford_green_konyagin_tao_theorem` would serve as witness; Maynard's result is chosen as the canonical one. In Lean, this reads `theorem erdos_4_solved : erdos_4_conjecture := maynard_theorem`.",
     "significance": "key",
-    "mathContext": "This packages the resolution as a direct application of the axiomatized theorem. Either `maynard_theorem` or `ford_green_konyagin_tao_theorem` would suffice — Maynard's is chosen as the canonical witness.",
+    "mathContext": "The proof is structurally trivial — `erdos_4_conjecture` is just the type, and `maynard_theorem` is an axiom of that type. The mathematical depth lies entirely in Maynard's 2016 paper, which the axiom encapsulates. The existence of two independent witnesses (`maynard_theorem` and `ford_green_konyagin_tao_theorem`) is mathematically significant: it confirms the result is robust and not an artifact of one particular approach. In a fully formal proof, both would require formalizing the Selberg sieve and Maynard-Tao multidimensional weights — a substantial Lean project not yet undertaken in Mathlib.",
     "relatedConcepts": [
       "problem resolution",
-      "axiom witness"
+      "axiom witness",
+      "two independent proofs",
+      "Selberg sieve formalization"
     ],
     "prerequisites": [
-      "maynard_theorem"
+      "maynard_theorem",
+      "ford_green_konyagin_tao_theorem",
+      "erdos_4_conjecture"
     ]
   },
   {
     "id": "ann-e4-improved",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 120,
-      "endLine": 135
+      "startLine": 118,
+      "endLine": 133
     },
     "type": "insight",
     "title": "FGKMT Improved Bound (2018)",
@@ -290,7 +294,7 @@
     "id": "ann-e4-bhp",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 136,
+      "startLine": 134,
       "endLine": 148
     },
     "type": "insight",
@@ -359,7 +363,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 162,
-      "endLine": 169
+      "endLine": 167
     },
     "type": "definition",
     "title": "Cramér-Granville Constant",
@@ -379,37 +383,18 @@
     "id": "ann-e4-gap0",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 170,
+      "startLine": 168,
       "endLine": 172
     },
     "type": "concept",
-    "title": "First Prime Gap",
-    "content": "**gap_0**: $g_0 = p_1 - p_0 = 3 - 2 = 1$. The unique gap of size 1 between consecutive primes.",
+    "title": "Simple Properties of Prime Gaps",
+    "content": "The `Simple Properties` section (lines 168-179) establishes three basic axioms. **gap_0**: $g_0 = p_1 - p_0 = 3 - 2 = 1$. This is the unique prime gap of size 1 — and the only odd prime gap, since 2 is the only even prime. The `Simple Properties` section comment marks the transition from the Cramér conjecture material to basic structural lemmas that hold for all prime gaps.",
     "significance": "supporting",
-    "mathContext": "The gap $g_0 = 1$ is the only odd prime gap, since 2 is the only even prime. All subsequent gaps $g_n$ for $n \\geq 1$ are even (since both $p_n$ and $p_{n+1}$ are odd for $n \\geq 1$).",
+    "mathContext": "The gap $g_0 = p_1 - p_0 = 3 - 2 = 1$ is formalized as an axiom because `primeGap` is defined via `Nat.nth Nat.Prime`, and computing `Nat.nth Nat.Prime 0 = 2` and `Nat.nth Nat.Prime 1 = 3` requires unfolding the infinite enumeration — non-trivial in Lean without explicit computation lemmas. The parity structure: $g_0 = 1$ is odd; for $n \\geq 1$, both $p_n$ and $p_{n+1}$ are odd, so $g_n = p_{n+1} - p_n$ is even. This means the only odd prime gap is $g_0 = 1$, i.e., the 'gap' from 2 to 3.",
     "relatedConcepts": [
       "parity of prime gaps",
-      "prime 2"
-    ],
-    "prerequisites": [
-      "primeGap"
-    ]
-  },
-  {
-    "id": "ann-e4-gappos",
-    "proofId": "erdos-4",
-    "range": {
-      "startLine": 173,
-      "endLine": 176
-    },
-    "type": "concept",
-    "title": "Gaps are Positive",
-    "content": "Prime gaps $g_n > 0$ for $n \\geq 1$ since primes are strictly increasing.",
-    "significance": "supporting",
-    "mathContext": "This follows immediately from the strict monotonicity of the prime sequence: $p_{n+1} > p_n$ for all $n$. In the natural number subtraction of Lean 4, this requires $p_{n+1} > p_n$ to avoid truncation to 0.",
-    "relatedConcepts": [
-      "strict monotonicity",
-      "natural subtraction"
+      "prime 2",
+      "Nat.nth computation"
     ],
     "prerequisites": [
       "primeGap",
@@ -417,11 +402,35 @@
     ]
   },
   {
+    "id": "ann-e4-gappos",
+    "proofId": "erdos-4",
+    "range": {
+      "startLine": 173,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "Prime Gaps are Positive",
+    "content": "**prime_gap_pos**: $g_n = p_{n+1} - p_n > 0$ for all $n \\geq 1$. Formalized as an axiom because the strict monotonicity of `Nat.nth Nat.Prime` requires non-trivial Mathlib lemmas to verify formally. Together with `gap_0`, this confirms `primeGap` is always a positive natural number — the natural number subtraction in Lean 4 is truncating ($a - b = 0$ when $a \\leq b$), so the positivity condition is essential for the subtraction to behave as expected.",
+    "significance": "supporting",
+    "mathContext": "The fact that $p_{n+1} > p_n$ follows from the strict monotonicity of the prime enumeration: `Nat.nth` applied to an infinite predicate (infinitely many primes, by Euclid) gives a strictly increasing sequence. Formally, this requires `Nat.nth_strictMono` from Mathlib. The axiom `prime_gap_pos` short-circuits this. Note the threshold $n \\geq 1$ (not $n \\geq 0$): for $n = 0$, $g_0 = 1 > 0$ is handled separately by `gap_0`. The lower bound $g_n \\geq 2$ for $n \\geq 1$ (since both primes are odd) is not stated but follows from parity.",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "natural subtraction truncation",
+      "Nat.nth_strictMono",
+      "infinitude of primes"
+    ],
+    "prerequisites": [
+      "primeGap",
+      "nthPrime",
+      "gap_0"
+    ]
+  },
+  {
     "id": "ann-e4-average",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 177,
-      "endLine": 182
+      "startLine": 176,
+      "endLine": 179
     },
     "type": "concept",
     "title": "Average Gap Asymptotic",
@@ -442,7 +451,7 @@
     "id": "ann-e4-growth",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 183,
+      "startLine": 180,
       "endLine": 185
     },
     "type": "concept",
