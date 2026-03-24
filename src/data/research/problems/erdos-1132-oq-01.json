@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved chebyshevNodes_in_interval (cos in [-1,1]). Converted lebesgueFunction_ge_one from axiom to theorem via partition of unity lemma. Axioms: 7 → 5, sorries: 0 → 1. Created Aristotle companion file.",
+    "progressSummary": "SESSION 3: Assessed lagrangeBasis_sum_eq_one sorry. Proof requires polynomial uniqueness theory or Mathlib Lagrange module connection. Documented proof strategies.",
     "builtItems": [
       "lagrangeBasis_self: proved from definition using div_self (eliminated axiom)",
       "lagrangeBasis_other: proved from definition using prod_eq_zero (eliminated axiom)",
@@ -43,7 +43,10 @@
       "Remaining 7 axioms are genuinely deep results (Lebesgue function bounds, Erdős lower bound, Chebyshev, density theorems)",
       "Remaining 5 axioms are genuinely deep results (Erdos lower bound, Chebyshev optimality, Bernstein density, Erdos max, equidistant exponential growth) - cannot be proved from Mathlib",
       "lagrangeBasis_sum_eq_one (partition of unity) is the key blocker - standard polynomial identity but non-trivial to formalize from product definition",
-      "Proof strategy for partition of unity: P(x) = Σ lₖ(x) has degree ≤ n-1 and equals 1 at all n nodes, so P ≡ 1 by uniqueness of interpolation"
+      "Proof strategy for partition of unity: P(x) = Σ lₖ(x) has degree ≤ n-1 and equals 1 at all n nodes, so P ≡ 1 by uniqueness of interpolation",
+      "lagrangeBasis_sum_eq_one: standard proof uses polynomial interpolation uniqueness (degree n-1 poly with n roots is 0)",
+      "Mathlib.LinearAlgebra.Lagrange may have sum_basis or equivalent; connecting custom lagrangeBasis to Mathlib Lagrange.basis could simplify proof",
+      "Direct algebraic proof for n=2 works cleanly; general case needs induction or polynomial theory"
     ],
     "mathlibGaps": [],
     "nextSteps": [
