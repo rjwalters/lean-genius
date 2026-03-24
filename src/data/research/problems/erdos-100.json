@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full 354-line formalization from empty stub. 8 theorems, 9 definitions, 6 axioms, 1 sorry. Key theorem diam_ge_n_over_log_n proved (conditional on axiomatized Guth-Katz). Piepmeyer counterexample formalized.",
+    "progressSummary": "PROGRESS: Proved distinctDistances_le_diam (5→4 axioms). Injection into {1,...,⌊diam⌋} via Nat.floor.",
     "builtItems": [
       "dist, dist_symm, dist_nonneg in Erdos100Problem.lean:38-53",
       "hasIntegerDistances, pairwiseDistances, numDistinctDistances in Erdos100Problem.lean:66-79",
@@ -38,7 +38,8 @@
       "diam_ge_n_over_log_n (PROVED, conditional on Guth-Katz) in Erdos100Problem.lean:216-234",
       "piepmeyer_ratio_bound, strong_conjecture_fails_at_9 (PROVED) in Erdos100Problem.lean:257-273",
       "conjecture_implies_kanold (PROVED) in Erdos100Problem.lean:308-325",
-      "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298"
+      "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298",
+      "PROVED distinctDistances_le_diam: axiom→theorem via injection of pairwiseDistances into Finset.Icc 1 ⌊diam⌋ using Nat.floor_natCast injectivity"
     ],
     "insights": [
       "Key bridge: integer distances => distinct distances subset of {1,...,floor(diam)} => #distinct_dists <= diam",
@@ -111,7 +112,7 @@
       "filename": "Erdos1000Problem.lean",
       "lineCount": 1,
       "theoremCount": 0,
-      "axiomCount": 0,
+      "axiomCount": 4,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
