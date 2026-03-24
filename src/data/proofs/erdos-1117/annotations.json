@@ -28,7 +28,7 @@
       "startLine": 28,
       "endLine": 29
     },
-    "type": "concept",
+    "type": "definition",
     "title": "IsEntire — Entire Function Predicate",
     "content": "Declares `IsEntire` as an axiom: a predicate asserting that $f : \\mathbb{C} \\to \\mathbb{C}$ is holomorphic on all of $\\mathbb{C}$. Entire functions form the natural domain for this problem — they include polynomials, exponentials, and trigonometric functions. The axiomatization avoids the complexity of formalizing differentiability conditions in Lean while preserving the logical structure.",
     "mathContext": "$f$ is entire if $f$ is holomorphic on $\\mathbb{C}$, i.e., $f'(z)$ exists for all $z \\in \\mathbb{C}$.",
@@ -95,7 +95,7 @@
       "startLine": 42,
       "endLine": 48
     },
-    "type": "definition",
+    "type": "concept",
     "title": "nu — Counting Function ν(r)",
     "content": "The counting function $\\nu(r) = \\#\\{z : |z| = r,\\, |f(z)| = M(r)\\}$ counts maximum modulus points on the circle of radius $r$. Formalized using `Nat.card` of the set of $z$ on the circle where $|f|$ achieves its maximum. For non-monomials, the set $\\{z : |f(z)| = M(r)\\}$ intersected with the circle is a finite set (since $|f(z)| - M(r)$ has isolated zeros on the circle), so $\\nu(r)$ is a well-defined natural number.",
     "mathContext": "$\\nu(r) = \\#\\{ z \\in \\mathbb{C} : |z| = r \\text{ and } |f(z)| = M(r) \\}$",
@@ -117,7 +117,7 @@
       "startLine": 52,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Finiteness and Existence of Maximum Points",
     "content": "Two basic properties: (1) `nu_finite` — for non-monomial entire functions, $\\nu(r) < \\infty$ for each $r > 0$, because the function $\\theta \\mapsto |f(re^{i\\theta})|$ is real-analytic and non-constant, so it achieves its maximum at finitely many points; (2) `nu_ge_one` — for any entire function, $\\nu(r) \\ge 1$ because the circle $|z| = r$ is compact and $|f|$ is continuous, so the maximum is always attained.",
     "mathContext": "For non-monomial $f$: $1 \\le \\nu(r) < \\infty$ for all $r > 0$. The finiteness follows from the identity theorem applied to $|f(re^{i\\theta})| - M(r)$.",
@@ -163,7 +163,7 @@
       "startLine": 72,
       "endLine": 79
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Open Question: lim inf ν(r) = ∞?",
     "content": "The central open question of Problem 1117: does there exist a non-monomial entire function with $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$? This is much harder than the $\\limsup$ case because it requires $\\nu(r)$ to be eventually large for **all** sufficiently large $r$, not just along a subsequence. The formalization encodes this as a disjunction: either such a function exists, or for every non-monomial entire $f$, there is a bound $N$ such that $\\nu(r) < N$ infinitely often.",
     "mathContext": "Open: $\\exists f \\text{ entire, non-monomial}: \\liminf_{r \\to \\infty} \\nu(r) = \\infty$? Equivalently: $\\forall N,\\, \\exists R,\\, \\forall r > R : \\nu(r) \\ge N$.",
@@ -207,7 +207,7 @@
       "startLine": 96,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "concept",
     "title": "maxModulus_nondecreasing — Monotonicity of M(r)",
     "content": "The maximum modulus $M(r)$ is a nondecreasing function of $r$ for nonconstant entire functions. This follows from the maximum modulus principle: if $|f|$ achieves value $M(r_1)$ at some point on $|z| = r_1$, then on the larger disc $|z| \\le r_2$ (with $r_2 \\ge r_1$), the maximum of $|f|$ can only increase. Moreover, by Hadamard's three-circles theorem, $\\log M(r)$ is a convex function of $\\log r$.",
     "mathContext": "$0 < r_1 \\le r_2 \\implies M(r_1) \\le M(r_2)$ for nonconstant entire $f$. Furthermore, $\\log M(e^t)$ is convex in $t$.",

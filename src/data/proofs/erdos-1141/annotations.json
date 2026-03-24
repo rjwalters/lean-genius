@@ -48,7 +48,7 @@
       "startLine": 35,
       "endLine": 43
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence with Unbounded Quantifier",
     "content": "The bounded formulation (`k ∈ Finset.range n`) is equivalent to the unbounded one (`∀ k : ℕ`).\n\n**Forward direction**: The bounded version quantifies over $\\{0, \\ldots, n-1\\}$, which includes all $k$ with $k^2 < n$ since $k^2 < n \\Rightarrow k < n$. Proved using `Finset.mem_range.mpr` and `omega`.\n\n**Reverse direction**: The unbounded version trivially implies the bounded one by ignoring the Finset membership condition.\n\nThis equivalence lets us use `decide` for computation (bounded) while stating clean mathematical theorems (unbounded).",
     "mathContext": "`IsErdos1141Good n ↔ ∀ k, k² < n → Nat.Coprime n k → (n - k²).Prime`",
@@ -111,7 +111,7 @@
       "startLine": 91,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Properties",
     "content": "Three structural results about the Erdős-1141 property:\n\n1. **$n = 0$ is good** (`good_0`): Vacuously true — there are no $k$ with $k^2 < 0$. Proved by `intro` and `simp` on `Finset.mem_range`.\n\n2. **$n = 1$ is not good** (`not_good_1`): $k = 0$ has $0^2 = 0 < 1$ and $\\gcd(1, 0) = 1$, but $1 - 0 = 1$ is not prime.\n\n3. **Good implies predecessor is prime** (`good_implies_pred_prime`): If $n \\ge 2$ is good, then $n - 1$ is prime. This uses $k = 1$ (since $1^2 < n$ and $\\gcd(n, 1) = 1$ always). This means all good $n \\ge 2$ are of the form $p + 1$ for some prime $p$.\n\nThe third result is a genuine structural theorem: it constrains good values to lie one above a prime, which is a strong necessary condition.",
     "mathContext": "If $n \\ge 2$ and `IsErdos1141Good n`, then $(n-1)$ is prime (via $k = 1$)",
@@ -154,7 +154,7 @@
       "startLine": 119,
       "endLine": 125
     },
-    "type": "definition",
+    "type": "concept",
     "title": "OEIS A214583 Enumeration",
     "content": "The complete list of all 41 known good values, stored as `knownGoodValues : List ℕ`.\n\nThis is OEIS sequence **A214583**. Notable features:\n- The largest known term is 1722\n- The sequence is sparse: only 41 terms up to 1722, and none between 1722 and $10^{10}$\n- Many terms are highly composite: 12, 24, 30, 60, 90, 108, 180, 252, 360, 570\n- The list length is verified to be 41 by `native_decide`\n\nThe highly composite pattern is explained by Euler's totient function: $\\phi(n)/n$ is small for highly composite $n$, meaning fewer coprime residues, and hence fewer primality conditions to satisfy.",
     "mathContext": "`knownGoodValues = [3, 4, 6, ..., 930, 1722]` with `knownGoodValues.length = 41`",

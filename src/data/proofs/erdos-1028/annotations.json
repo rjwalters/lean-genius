@@ -86,7 +86,7 @@
       "startLine": 158,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: H(n) = Θ(n^{3/2})",
     "content": "The theorem H_asymptotic combines the upper and lower bounds to establish H(n) = Θ(n^{3/2}): there exist constants c, C > 0 and threshold N such that c·n^{3/2} ≤ H(n) ≤ C·n^{3/2} for all n ≥ N. The proof extracts constants from both bounds and takes N = max(N₁, N₂). The main question erdos_1028_question and solution erdos_1028_solved package this as an existential statement about the growth rate.",
     "mathContext": "The proof of H_asymptotic is a clean combination using le_of_max_le_left and le_of_max_le_right to handle the threshold. The formulation of erdos_1028_question uses an abstract growth function h(n), and erdos_1028_solved instantiates it with n^{3/2}. This separation between the question format and the specific answer follows the pattern used throughout the Erdős problem formalizations.",

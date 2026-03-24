@@ -79,7 +79,7 @@
       "startLine": 127,
       "endLine": 130
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Haar Measure on AddCircle",
     "content": "Demonstrates that `haarAddCircle` provides the normalized Haar measure on `AddCircle T` ($= \\mathbb{R}/T\\mathbb{Z}$) and that it is a probability measure (`IsProbabilityMeasure`). This is the unique translation-invariant probability measure on the circle.",
     "mathContext": "The Haar measure $\\mu$ on $\\mathbb{R}/T\\mathbb{Z}$ satisfies $\\mu(\\mathbb{R}/T\\mathbb{Z}) = 1$ and is translation-invariant: $\\mu(A + x) = \\mu(A)$. Mathlib provides this as `haarAddCircle : Measure (AddCircle T)` with the `IsProbabilityMeasure` instance inferred automatically.",
@@ -102,7 +102,7 @@
       "startLine": 148,
       "endLine": 148
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Fourier Monomials",
     "content": "The $n$-th Fourier monomial is $e_n(x) = e^{2\\pi i n x / T}$, given by Mathlib's `fourier n : C(AddCircle T, ℂ)`. These are continuous functions on the circle valued in $\\mathbb{C}$ and form the building blocks of Fourier series.",
     "mathContext": "The Fourier monomial $e_n : \\mathbb{R}/T\\mathbb{Z} \\to \\mathbb{C}$ is defined by $e_n(x) = \\exp(2\\pi i n x / T)$. In Mathlib, `fourier n` returns a `C(AddCircle T, ℂ)` (continuous map). The collection $\\{e_n\\}_{n \\in \\mathbb{Z}}$ forms a complete orthonormal system in $L^2$.",
@@ -125,7 +125,7 @@
       "startLine": 154,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiplicative Property of Fourier Monomials",
     "content": "Proves $e_n(x) \\cdot e_m(x) = e_{n+m}(x)$: the Fourier monomials form a group under pointwise multiplication. The proof uses `simp` with `fourier_apply`, `add_smul`, and the submonoid multiplication law.",
     "mathContext": "Proved: `fourier_mul (n m : ℤ) (x : AddCircle T) : fourier n x * fourier m x = fourier (n + m) x`. This reflects $e^{i\\alpha} \\cdot e^{i\\beta} = e^{i(\\alpha + \\beta)}$. The proof reduces to the monoid structure on the unit circle via `Submonoid.coe_mul` and `AddCircle.toCircle_add`.",

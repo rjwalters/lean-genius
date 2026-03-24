@@ -208,7 +208,7 @@
       "startLine": 164,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Conjecture Disproved",
     "content": "**erdos_492_disproved:**\n\n∃ A : UnityRatioSeq, ¬erdosConjecture A\n\nErdős Problem #492 is DISPROVED. The general conjecture is false.",
     "mathContext": "`∃ A : UnityRatioSeq, ¬erdosConjecture A`. Direct consequence of Schmidt's counterexample. The proof applies `schmidt_counterexample` which provides the witness $A$.",
@@ -333,7 +333,7 @@
       "startLine": 204,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Natural Numbers Case",
     "content": "**naturals_case:**\n\nFor A = ℕ, the conjecture holds.\n\n**Proof:** The natural numbers have constant gaps (all equal to 1), which are trivially monotonic. By Davenport-LeVeque, the conjecture holds.\n\nThis recovers Weyl's classical theorem as a special case.",
     "mathContext": "`naturals_case : almostAllUniform naturalsSeq`. Proved by showing `naturalsSeq` has monotonic gaps (trivially, since all gaps = 1), then applying `davenport_leveque`. Recovers Weyl's theorem as a special case.",
@@ -433,7 +433,7 @@
       "startLine": 294,
       "endLine": 303
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_492_summary:**\n\nCombines all main results:\n1. Schmidt's counterexample exists (conjecture FALSE in general)\n2. Monotonic gaps ⟹ conjecture TRUE (Davenport-LeVeque)\n3. Polynomial growth ⟹ conjecture TRUE (Davenport-Erdős)\n4. Natural numbers ⟹ conjecture TRUE (Weyl)\n\nThis gives a complete picture of what is known.",
     "mathContext": "Four-way conjunction: `¬∀A, almostAllUniform A` (Schmidt) ∧ `hasMonotonicGaps → almostAllUniform` (D-L) ∧ `hasPolynomialGrowth → almostAllUniform` (D-E) ∧ `almostAllUniform naturalsSeq` (Weyl). Complete characterization of Problem #492.",
@@ -460,7 +460,7 @@
       "startLine": 309,
       "endLine": 310
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #492",
     "content": "**erdos_492:**\n\nThe main theorem: ∃ A : UnityRatioSeq, ¬erdosConjecture A\n\nErdős Problem #492 is DISPROVED. The answer to the question is NO - the conjecture does not hold for all unity ratio sequences.",
     "mathContext": "`erdos_492 : ∃ A : UnityRatioSeq, ¬erdosConjecture A`. The capstone theorem directly applying `erdos_492_disproved`. Problem #492 is resolved as FALSE: Schmidt's oscillating-gap sequence defeats Erdős's equidistribution conjecture.",

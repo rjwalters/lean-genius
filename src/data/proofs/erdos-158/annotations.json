@@ -158,7 +158,7 @@
       "startLine": 106,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The √N Barrier",
     "content": "For finite Sidon sets in {1,...,N}, the size is bounded by √N + o(√N). This explains the √N normalization - it's the natural scale for measuring density of these sets.",
     "mathContext": "If A ⊆ {1,...,N} is Sidon, the sums a + b are distinct and lie in {2,...,2N}. There are |A|·(|A|+1)/2 such sums, bounded by 2N-1. So |A|² ≤ O(N), giving |A| ≤ O(√N).",

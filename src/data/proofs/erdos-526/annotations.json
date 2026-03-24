@@ -225,7 +225,7 @@
       "startLine": 106,
       "endLine": 118
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Supercritical Sequence",
     "content": "**superCriticalSeq:**\n\nThe sequence a_n = (1+c)/n for c > 0.\n\n**Properties:**\n- nonneg: (1+c)/n ≥ 0 ✓\n- tendsto_zero: (1+c)/n → 0 ✓\n- sum_diverges: Σ(1+c)/n = (1+c) · Σ(1/n) = ∞ ✓\n\n**Shepp check:**\n- S_n ≈ (1+c) log n\n- exp(S_n)/n² ≈ n^(1+c)/n² = n^(c-1)\n- For c > 0: sum diverges (at least logarithmically)",
     "mathContext": "Kahane (1959) proved this covers. It's 'supercritical' because it's strictly above the 1/n threshold.",

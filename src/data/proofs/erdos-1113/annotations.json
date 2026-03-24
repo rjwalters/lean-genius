@@ -183,7 +183,7 @@
       "startLine": 198,
       "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_1113_summary** (verified): Combines the key results: (1) Izotov's candidate is a Sierpinski number, (2) it is a perfect power (4th power), (3) the FFK conjecture is compatible. Proved directly from axioms and the verified `izotov_is_power` and `ffk_consistent_with_izotov` theorems. **Problem Status: OPEN.**",
     "mathContext": "$\\text{Sierpinski}(m_{\\text{Iz}}) \\wedge \\text{PerfectPower}(m_{\\text{Iz}}) \\wedge (\\text{FFK} \\Rightarrow \\text{PerfectPower}(m_{\\text{Iz}}) \\vee \\text{HasCovering}(m_{\\text{Iz}}))$. The summary combines axioms with verified results (`izotov_is_power` via norm_num/rfl, `ffk_consistent_with_izotov` via function application).",

@@ -63,7 +63,7 @@
       "startLine": 79,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified: 1 and 2 are Practical",
     "content": "**theorem one_practical : IsPractical 1** (verified)\nVacuously true: no k in range [1, 0).\n\n**theorem two_practical : IsPractical 2** (verified)\nOnly need to represent 1, and 1 divides 2.\n\nProof uses `interval_cases k` for exhaustive case analysis.",
     "mathContext": "These verified proofs show the definition is correct and usable. The vacuous case for 1 is handled cleanly by omega.",
@@ -101,7 +101,7 @@
       "startLine": 114,
       "endLine": 120
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Non-Practical Numbers",
     "content": "**axiom three_not_practical : not IsPractical 3**\nDivisors {1,3} cannot represent 2.\n\n**axiom five_not_practical : not IsPractical 5**\nDivisors {1,5} cannot represent 2, 3, or 4.\n\nOdd primes are never practical (divisors only {1, p}).",
     "mathContext": "Prime numbers p > 2 have only divisors {1, p}, which cannot represent any integer in the range [2, p-1]. This explains why practical numbers become sparse.",

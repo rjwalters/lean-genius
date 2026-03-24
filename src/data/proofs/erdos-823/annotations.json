@@ -95,7 +95,7 @@
       "startLine": 88,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pollack's Theorem (2015) and Main Result (Proved)",
     "content": "Axiomatizes Pollack's 2015 theorem and **proves** `erdos_823_solved` as a direct corollary. Pollack's proof constructs sequences by exploiting: (1) the abundance of $\\sigma$-pairs (many $n \\neq m$ with $\\sigma(n) = \\sigma(m)$), (2) multiplicativity to scale pairs to desired ratios, and (3) a density argument showing the achievable ratios are dense in $[1, \\infty)$. The proof appeared in *Remarks on fibers of the sum-of-divisors function* (Mathematika, 2015).",
     "mathContext": "$\\forall \\alpha \\geq 1,\\; \\exists (n_k), (m_k) \\text{ with } \\sigma(n_k) = \\sigma(m_k) \\text{ and } n_k/m_k \\to \\alpha$. Proved by `intro _; obtain ... := pollack_2015 α hα; exact ⟨...⟩`.",
@@ -184,7 +184,7 @@
       "startLine": 183,
       "endLine": 194
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Results for σ-Values",
     "content": "Two density axioms: (1) the set of $\\sigma$-values has **positive lower density** ($\\exists c > 0,\\; |\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$), and (2) the set of $\\sigma$-values with **multiple preimages** also has positive density. These results go back to Erdős (1959) and Pomerance. The positive density of multi-preimage values is precisely what enables Pollack's construction: it ensures enough $\\sigma$-pairs exist to approximate any ratio.",
     "mathContext": "$|\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$ and $|\\{m \\leq N : |\\sigma^{-1}(m)| \\geq 2\\}| \\geq cN$ for constants $c > 0$.",
@@ -206,7 +206,7 @@
       "startLine": 201,
       "endLine": 213
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Examples and Perfect Numbers",
     "content": "Verified computations via `native_decide`: $\\sigma(p) = p + 1$ for $p = 2, 3, 5, 7$ (primes), $\\sigma(6) = 12$ and $\\sigma(28) = 56$ (perfect numbers, $\\sigma(n) = 2n$), and integer ratio $14000/15 = 933$. The perfect number examples connect to the Euclid-Euler theorem: $n$ is an even perfect number iff $n = 2^{p-1}(2^p - 1)$ with $2^p - 1$ prime (Mersenne prime).",
     "mathContext": "$\\sigma(2) = 3$, $\\sigma(3) = 4$, $\\sigma(5) = 6$, $\\sigma(7) = 8$. $\\sigma(6) = 12 = 2 \\cdot 6$, $\\sigma(28) = 56 = 2 \\cdot 28$.",
@@ -228,7 +228,7 @@
       "startLine": 224,
       "endLine": 228
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Abundance of σ-Pairs",
     "content": "Axiomatizes that infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ exist. This is the fundamental fact enabling Pollack's construction. The proof that $\\sigma$-pairs are infinite uses the pigeonhole principle on the fibers: since $|\\sigma^{-1}(m)| \\geq 2$ for positive-density many $m$, there are infinitely many $m$ with at least two preimages, yielding infinitely many pairs.",
     "mathContext": "$\\exists (n_k, m_k)_{k \\geq 1},\\; n_k \\neq m_k \\wedge \\sigma(n_k) = \\sigma(m_k)$",
@@ -250,7 +250,7 @@
       "startLine": 259,
       "endLine": 268
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Statement (Proved)",
     "content": "**Verified proof** combining the main theorem and the $\\varphi$-analogue into a single conjunction. Proved by extracting the Pollack result for $\\sigma$ and the Erdős remark for $\\varphi$: `exact ⟨fun α hα => erdos_823_solved α hα, fun α hα => let ⟨n, m, _, hphi, hconv⟩ := erdos_phi_easy α hα; ⟨n, m, hphi, hconv⟩⟩`. This packages the complete resolution of Problem #823.",
     "mathContext": "$(\\forall \\alpha \\geq 1,\\; \\text{SigmaSequenceConvergingTo}(\\alpha)) \\wedge (\\forall \\alpha \\geq 1,\\; \\exists (n_k), (m_k),\\; \\varphi(n_k) = \\varphi(m_k) \\wedge n_k/m_k \\to \\alpha)$",

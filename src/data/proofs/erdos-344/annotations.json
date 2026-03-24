@@ -249,7 +249,7 @@
       "startLine": 173,
       "endLine": 181
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Implies Subcomplete (Proved)",
     "content": "**complete_implies_subcomplete:**\n\nIf A is complete, then A is subcomplete. The proof takes N₀ from completeness and constructs the arithmetic progression {N₀, N₀+1, N₀+2, ...} (d=1) inside P(A).\n\nThis is the only fully proved theorem in the file — all other major results are axiomatized.",
     "mathContext": "The proof is constructive: given $N_0$ such that $\\forall n \\geq N_0, n \\in P(A)$, we witness the arithmetic progression with $a = N_0$ and $d = 1$. The key step is showing $a + k \\cdot 1 = N_0 + k \\geq N_0$, which follows by `omega`. This is a clean example of how completeness (a strong property) trivially implies subcompleteness (a weaker one).",
@@ -272,7 +272,7 @@
       "startLine": 202,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary of Known Results",
     "content": "**erdos_344_summary:**\n\n1. **Szemerédi-Vu:** √N density is sufficient for subcompleteness\n2. **Erdős:** √(2N) is necessary (counterexample below this)\n\nThe exact threshold in between remains open. The proof combines the two axiomatized results.",
     "mathContext": "This summary theorem packages the two main results as a conjunction: $$(\\forall A, \\text{HasSquareRootDensity}(A) \\to \\text{IsSubcomplete}(A)) \\land (\\exists A, A(N) < \\sqrt{2N} \\land \\lnot\\text{IsSubcomplete}(A))$$ The gap between the sufficient condition $C\\sqrt{N}$ and the necessary condition $\\sqrt{2N}$ is the remaining open problem.",

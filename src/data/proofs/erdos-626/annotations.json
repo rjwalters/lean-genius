@@ -174,7 +174,7 @@
       "startLine": 111,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Limit Question (OPEN)",
     "content": "**gRatio, LimitExists, limit_if_exists_bounded:**\n\nThe central question: does $\\lim_{n \\to \\infty} g_k(n)/\\log n$ exist?\n\n```lean\ndef LimitExists (k : ℕ) : Prop :=\n  ∃ L : ℝ, Filter.Tendsto (gRatio k) Filter.atTop (nhds L)\n```\n\nThe ratio $g_k(n)/\\log n$ is bounded between $\\frac{1}{4\\log k}$ and $\\frac{2}{\\log(k-2)}$. If the limit exists, it must lie in this interval. The sorry'd `limit_if_exists_bounded` captures this squeeze.\n\n**Why this is hard:** The ratio could oscillate — for some subsequences of $n$, probabilistic constructions might give larger girth, while for others, structural constraints might limit it. Proving convergence requires understanding the extremal graphs, which are poorly understood.\n\nThe `limit_question_open` axiom formally encodes the open status (somewhat artificially, since excluded middle holds in Lean).",
     "mathContext": "If $L_k = \\lim_{n \\to \\infty} g_k(n)/\\log n$ exists, then $\\frac{1}{4\\log k} \\le L_k \\le \\frac{2}{\\log(k-2)}$. The existence of $L_k$ is unknown for any $k \\ge 4$.",
@@ -199,7 +199,7 @@
       "startLine": 132,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap Analysis: Bound Ratio Approaches 8",
     "content": "**bound_gap, boundRatio, bound_ratio_formula, bound_ratio_limit:**\n\nThe ratio of upper to lower bound coefficients is $\\frac{2/\\log(k-2)}{1/(4\\log k)} = \\frac{8\\log k}{\\log(k-2)}$.\n\nAs $k \\to \\infty$: $\\log k / \\log(k-2) \\to 1$, so the ratio approaches 8. This means even for very large $k$, we don't know $g_k(n)$ within a factor of 8.\n\n**Specific values:**\n- $k = 4$: ratio $= 8\\log 4/\\log 2 = 16$ (large gap)\n- $k = 10$: ratio $= 8\\log 10/\\log 8 \\approx 8.86$\n- $k = 100$: ratio $= 8\\log 100/\\log 98 \\approx 8.04$ (close to 8)\n\nNarrowing this constant-factor gap is open and would require fundamentally new techniques.",
     "mathContext": "$\\frac{\\text{upper coeff}}{\\text{lower coeff}} = \\frac{2/\\log(k-2)}{1/(4\\log k)} = \\frac{8\\log k}{\\log(k-2)} \\to 8$ as $k \\to \\infty$.",
@@ -222,7 +222,7 @@
       "startLine": 153,
       "endLine": 171
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dual Problem h^(m)(n) and Its Bounds",
     "content": "**h, g_h_relationship, h_bounds:**\n\nThe dual function $h^{(m)}(n)$ is the largest chromatic number achievable by an $n$-vertex graph with girth $> m$. This 'inverts' $g_k(n)$: instead of maximizing girth for fixed $\\chi$, we maximize $\\chi$ for fixed girth.\n\nThe duality: $g_k(n) \\ge m \\Leftrightarrow h^{(m)}(n) \\ge k$.\n\nKnown bounds on $h$: $c_1 n^{1/(m-1)} \\le h^{(m)}(n) \\le c_2 n^{1/(m-1)} (\\log n)^{1 + 1/(m-1)}$. These polynomial bounds in $n$ (with girth-dependent exponent) contrast with the logarithmic bounds for $g_k(n)$.\n\nFor $m = 3$ (triangle-free): $h^{(3)}(n) = \\Theta(n^{1/2}/\\sqrt{\\log n})$ by Kim's theorem on $R(3,k)$.",
     "mathContext": "$h^{(m)}(n) = \\max\\{\\chi(G) : |V(G)| = n,\\; \\text{girth}(G) > m\\}$. Bounds: $c_1 n^{1/(m-1)} \\le h^{(m)}(n) \\le c_2 n^{1/(m-1)} (\\log n)^{1+1/(m-1)}$.",
@@ -246,7 +246,7 @@
       "startLine": 172,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases: k=4 and Triangle-Free Graphs",
     "content": "**k4_bounds, triangle_free_unbounded_chromatic, probabilistic_lower_bound:**\n\nFor $k = 4$: the bounds are $0.18 \\log n \\le g_4(n) \\le 2.89 \\log n + 1$, a ratio of about 16. This is the tightest case but still has a large gap.\n\n`triangle_free_unbounded_chromatic` (sorry'd): for any $k$, triangle-free graphs with $\\chi \\ge k$ exist. This is a special case of Erdős 1959 and perhaps the most counterintuitive consequence — graphs without any triangles can still require arbitrarily many colors. Mycielski's construction (1955) gives explicit examples.\n\n`probabilistic_lower_bound` (sorry'd): the probabilistic method gives graphs with $\\chi \\ge k$ and girth $\\ge c \\log n$ on $n$ vertices.",
     "mathContext": "For $k = 4$: $\\frac{1}{4\\log 4} \\log n \\le g_4(n) \\le \\frac{2}{\\log 2} \\log n + 1$, i.e., $0.18 \\log n \\le g_4(n) \\le 2.89 \\log n + 1$.",

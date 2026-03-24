@@ -97,7 +97,7 @@
       "startLine": 80,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Cases: f(3)=3, f(4)=5, f(5)=9",
     "content": "The known exact values of $f$: **$f(3) = 3$** (trivial: three non-collinear points form a triangle), **$f(4) = 5$** (Klein 1931: case analysis on the convex hull of 5 points), and **$f(5) = 9$** (Makai-Turan: any 9 points in general position contain a convex pentagon). Klein's proof of $f(4) = 5$ was the observation that sparked the entire problem: if the convex hull of 5 points is a quadrilateral or pentagon, we're done; if it's a triangle, the two interior points with two hull vertices form a convex quadrilateral.",
     "mathContext": "$f(3) = 3, \\quad f(4) = 5, \\quad f(5) = 9$. The values $f(4)$ and $f(5)$ are axiomatized; $f(3)$ has a sorry proof (needs case analysis showing $3 \\in \\text{CardSet}(3)$ and $2 \\notin \\text{CardSet}(3)$). All three values match $2^{n-2}+1$ for $n=3,4,5$.",
@@ -119,7 +119,7 @@
       "startLine": 95,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos-Szekeres Lower Bound (1960)",
     "content": "**$2^{n-2}+1 \\leq f(n)$** for all $n \\geq 3$: There exist $2^{n-2}$ points in general position containing no convex $n$-gon. The construction is recursive: start with a suitable configuration for $n-1$ and carefully place new points to double the count while preventing any convex $n$-gon. This shows the conjectured value $2^{n-2}+1$ would be tight.",
     "mathContext": "$\\forall\\, n \\geq 3:\\quad 2^{n-2} + 1 \\leq f(n)$. Axiomatized. The construction uses a 'double sequence' (Horton set variant). The points are arranged so that certain orientations prevent large convex subsets.",
@@ -142,7 +142,7 @@
       "startLine": 103,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Upper Bounds: ES (1935), Suk (2017), HMPT (2020)",
     "content": "Three progressively tighter upper bounds on $f(n)$:\n\n1. **Erdos-Szekeres (1935)**: $f(n) \\leq \\binom{2n-4}{n-2} + 1 \\sim 4^n/\\sqrt{n}$, using Ramsey theory\n2. **Suk (2017)**: $f(n) \\leq 2^{(1+o(1))n}$, a breakthrough reducing the base from 4 to 2 via a novel cups-and-caps argument with improved counting\n3. **HMPT (2020)**: $f(n) \\leq 2^{n + O(\\sqrt{n \\log n})}$, the current best bound by Holmsen-Mojarrad-Pach-Tardos\n\nThe gap between lower bound $2^{n-2}+1$ and upper bound $2^{n+O(\\sqrt{n\\log n})}$ is now only $O(\\sqrt{n \\log n})$ in the exponent.",
     "mathContext": "$2^{n-2}+1 \\;\\leq\\; f(n) \\;\\leq\\; 2^{n + C\\sqrt{n \\log n}}$. All three bounds axiomatized. Suk's bound uses Filter.atTop for the $o(1)$ term. HMPT uses an existential constant $C > 0$. The exponential gap has been dramatically narrowed from $\\sim 4^n$ to $\\sim 2^{O(\\sqrt{n \\log n})}$ above $2^n$.",
@@ -188,7 +188,7 @@
       "startLine": 148,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Existence and Finiteness of f(n)",
     "content": "**Erdos-Szekeres (1935)**: For every $n \\geq 3$, $f(n)$ is finite, i.e., `CardSet(n)` is nonempty. This is the foundational result that makes the problem well-defined. The proof uses the upper bound: $\\binom{2n-4}{n-2}+1 \\in \\text{CardSet}(n)$. Additionally, explicit bounds for $f(4)$ are stated: $4 < f(4)$ (4 points can avoid a quadrilateral) and $f(4) \\leq 5$ (Klein's result).",
     "mathContext": "$\\forall\\, n \\geq 3,\\; \\text{CardSet}(n) \\neq \\emptyset$ (i.e., $f(n) < \\infty$). Has a sorry proof; the proof would instantiate the Ramsey-theoretic argument showing $\\binom{2n-4}{n-2}+1$ points suffice.",
@@ -210,7 +210,7 @@
       "startLine": 157,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Small Bounds for f(4)",
     "content": "Three theorems bracketing $f(4)$: `f_3_value` ($f(3) = 3$, sorry), `f_4_lb` ($4 < f(4)$, sorry), and `f_4_ub` ($f(4) \\leq 5$, sorry). Together with the axiom `f_four_eq`, these give a complete picture for $n = 4$. The sorry proofs would require explicit case analysis on point configurations in the plane.",
     "mathContext": "$f(3) = 3$, $4 < f(4)$, and $f(4) \\leq 5$, all with sorry proofs requiring combinatorial case analysis on small point sets in general position.",

@@ -82,7 +82,7 @@
       "startLine": 66,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Erdős's Theorem (1975)",
     "content": "**erdos_transcendence_strong** (axiom): Under strong growth conditions, the lacunary sum is transcendental. The proof uses Liouville-type arguments: if α is algebraic of degree d, then |α - p/q| > c/q^d. But lacunary sums with superpolynomial growth can be approximated by their partial sums (rationals) with error smaller than any Liouville bound.",
     "mathContext": "$\\text{HasStrongGrowth}(n) \\Rightarrow \\neg\\text{Algebraic}(\\sum 1/2^{n_k})$; key: $|\\sum_{k=1}^{\\infty} 1/2^{n_k} - \\sum_{k=1}^N 1/2^{n_k}| \\leq 2/2^{n_{N+1}}$, which beats Liouville's bound $c/2^{d \\cdot n_N}$ when $n_{N+1}/n_N \\to \\infty$.",
@@ -101,7 +101,7 @@
       "startLine": 83,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Factorial Strict Monotonicity",
     "content": "**factorial_strictMono**: The sequence k ↦ (k+1)! is strictly increasing. This is needed to apply Erdős's theorem, which requires the index sequence to be strictly increasing. Proof uses Nat.factorial_lt_of_lt.",
     "significance": "supporting",
@@ -120,7 +120,7 @@
       "startLine": 90,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 Strict Monotonicity",
     "content": "**pow2_strictMono**: The sequence k ↦ 2^k is strictly increasing. Another example of a sequence with strong growth that can serve as the index for a transcendental lacunary sum.",
     "significance": "supporting",
@@ -196,7 +196,7 @@
       "startLine": 117,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Square Sequence Monotonicity",
     "content": "**square_strictMono**: The sequence k ↦ (k+1)² is strictly increasing. This shows the square sequence is a valid index sequence for Erdős's problem, even though we can't prove transcendence of the resulting sum.",
     "significance": "supporting",
@@ -215,7 +215,7 @@
       "startLine": 128,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**problem_247_summary**: Packages the main results: (1) Erdős's theorem for strong growth, (2) transcendence of the factorial sum, (3) transcendence of the double-exponential sum. This provides a clean interface to the file's main contributions.",
     "significance": "key",

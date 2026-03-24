@@ -44,7 +44,7 @@
       "startLine": 148,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Hodge Numbers and Hodge Symmetry (PROVED)",
     "content": "**Hodge Numbers**: $h^{p,q} = \\dim_{\\mathbb{C}} V^{p,q}$\n\n**Hodge Symmetry** (proved from conjugation axiom):\n$$h^{p,q} = h^{q,p}$$\n\nThis means the **Hodge diamond** is symmetric about its vertical axis.\n\n**Proof**: Direct consequence of the axiom that complex conjugation maps V^{p,q} isomorphically to V^{q,p}, preserving dimension.\n\nThis is one of the few properties we can **prove** rather than axiomatize!",
     "mathContext": "h^{p,q} = h^{q,p}",
@@ -177,7 +177,7 @@
       "startLine": 472,
       "endLine": 517
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Integral Hodge Conjecture and Its Failure",
     "content": "**Integral vs Rational Hodge Conjecture**:\n\n**Integral version**: Every Hodge class is an **integer** linear combination of cycle classes.\n**Rational version**: Every Hodge class is a **rational** linear combination.\n\n**Atiyah-Hirzebruch (1962)**: Integral version is FALSE!\n- Uses torsion in cohomology and Steenrod operations\n- Later simplified by Totaro (1997)\n\n**Proved theorem**: `integral_implies_rational`\n- If integral version holds, rational version follows\n- Since integral version fails, the two are genuinely different\n\nThis justifies why the Hodge Conjecture specifically uses ℚ coefficients.",
     "mathContext": "ℤ-Hodge ⟹ ℚ-Hodge, but ℤ-Hodge is false",

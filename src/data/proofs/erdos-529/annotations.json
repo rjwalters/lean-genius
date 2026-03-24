@@ -77,7 +77,7 @@
       "startLine": 113,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "High-Dimensional Results (Slade and Hara-Slade)",
     "content": "`tendsTo` axiomatizes asymptotic convergence $f(n) \\to L$. `slade_high_dim` (1987): for $k$ sufficiently large, $d_k(n)/\\sqrt{n} \\to D > 0$. `haraSlade_five_dim` (1991-92): extends to all $k \\ge 5$. `high_dim_sqrt` derives from `haraSlade_five_dim` directly.",
     "significance": "key",
@@ -199,7 +199,7 @@
       "startLine": 304,
       "endLine": 326
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results Summary",
     "content": "`erdos_529_summary` packages: (1) Hara-Slade for $k \\ge 5$, (2) Duminil-Copin-Hammond sub-ballistic, (3) $\\nu_2 = 3/4$ (definition). Proved by $\\langle$`haraSlade_five_dim, duminilCopin_subBallistic, rfl`$\\rangle$. `erdos_529` (main theorem) adds Question 2 for $k \\ge 5$. **Status: OPEN** for low dimensions.",
     "significance": "key",

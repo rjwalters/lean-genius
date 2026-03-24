@@ -103,7 +103,7 @@
       "startLine": 135,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Three-Prime Version Solved",
     "content": "**three_prime_solved**: Derives the 3-prime integer version from Butler-Erdős-Graham.\n\n```lean\ntheorem three_prime_solved : three_prime_integer_version := by\n  intro m hm\n  obtain ⟨k, hk, repr, hrepr, hsum⟩ := butler_erdos_graham_theorem m hm\n  exact ⟨k, repr, hrepr, hsum⟩\n```\n\nThis is a direct corollary of the axiomatized theorem, dropping the k > 0 condition.",
     "mathContext": "The proof uses obtain to destructure the existence statement and rebuilds it with the simpler predicate.",

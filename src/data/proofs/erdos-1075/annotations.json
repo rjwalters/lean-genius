@@ -77,7 +77,7 @@
       "startLine": 73,
       "endLine": 83
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős 1964 Result",
     "content": "The foundational result from [Er64f]: with the strong edge threshold $\\varepsilon n^r$, one can find an $m$-vertex subhypergraph with at least $r^{-r} \\cdot m^r$ edges, where $m \\to \\infty$. This uses random vertex selection — the key question (Problem #1075) is whether the weaker threshold $(1+\\varepsilon)(n/r)^r$ allows improving the density constant beyond $r^{-r}$.",
     "significance": "key",
@@ -102,7 +102,7 @@
       "startLine": 90,
       "endLine": 92
     },
-    "type": "context",
+    "type": "concept",
     "title": "Threshold Monotonicity",
     "content": "The constant $r^{-r}$ is strictly decreasing in $r$: $(r+1)^{-(r+1)} < r^{-r}$ for all $r \\ge 2$. This means the density guarantee weakens for higher uniformity, and the problem of beating $r^{-r}$ becomes correspondingly harder. The rapid decay ($1/27, 1/256, 1/3125, \\ldots$) suggests any improvement, even for $r=3$, would be significant.",
     "significance": "key",
@@ -123,7 +123,7 @@
       "startLine": 95,
       "endLine": 98
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Threshold Values",
     "content": "Explicit values of the threshold constant for small $r$: $3^{-3} = 1/27 \\approx 0.037$, $4^{-4} = 1/256 \\approx 0.004$, $5^{-5} = 1/3125 \\approx 0.0003$. These quantify how sparse the guaranteed dense subhypergraph can be — for $r=5$, we only guarantee edge density about 0.03% of $m^r$.",
     "significance": "supporting",
@@ -168,7 +168,7 @@
       "startLine": 131,
       "endLine": 133
     },
-    "type": "context",
+    "type": "concept",
     "title": "Threshold Comparison",
     "content": "For $n \\ge r \\ge 3$, $(n/r)^r < n^r$. Since $(n/r)^r = n^r/r^r$ and $r \\ge 3$, the conjecture's edge threshold $(1+\\varepsilon)(n/r)^r$ is much smaller than $\\varepsilon n^r$ from the known result. This means the conjecture assumes LESS about the hypergraph (fewer edges guaranteed) while hoping for a STRONGER conclusion (better density constant).",
     "significance": "key",
@@ -215,7 +215,7 @@
       "startLine": 164,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "Packages the two main established facts: (1) Erdős's 1964 result — $c_r = r^{-r}$ works with the strong threshold $\\varepsilon n^r$, and (2) the threshold constant $r^{-r}$ is strictly decreasing in $r$. The proof combines the two axioms via `exact ⟨erdos_1964_result, threshold_decreasing⟩`. The open question (`ErdosConjecture1075`) about improving $c_r$ under the weaker threshold remains unresolved.",
     "significance": "key",

@@ -105,7 +105,7 @@
       "startLine": 244,
       "endLine": 355
     },
-    "type": "context",
+    "type": "concept",
     "title": "Wirtinger's Inequality and SmoothClosedCurve Infrastructure",
     "content": "Part IV introduces the SmoothClosedCurve structure and axiomatizes Wirtinger's inequality. SmoothClosedCurve has fields x, y : ℝ → ℝ (each smooth 2π-periodic), with circumference = ∫₀²π √(x'² + y'²) dt and area = (1/2)|∫₀²π (xy' - yx') dt| (Green's theorem). wirtinger_inequality is axiomatized: for smooth mean-zero periodic f, ∫f² ≤ ∫(f')². The Fourier proof would be: ∫f² = π∑(aₙ² + bₙ²) and ∫(f')² = π∑n²(aₙ² + bₙ²) ≥ ∫f². circleGamma provides the circle as SmoothClosedCurve with circumference 2πr and area πr².",
     "mathContext": "**Wirtinger inequality**: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi}(f')^2$ for mean-zero periodic $f$. **Fourier proof**: $\\int f^2 = \\pi\\sum_{n\\geq 1}(a_n^2 + b_n^2)$ and $\\int(f')^2 = \\pi\\sum n^2(a_n^2+b_n^2) \\geq \\int f^2$. **Green's theorem area**: $A = \\frac{1}{2}|\\int_0^{2\\pi}(x(t)y'(t) - y(t)x'(t))\\,dt|$. **Equality condition**: equality iff $f = a_1\\cos t + b_1\\sin t$ (circle).",
@@ -157,7 +157,7 @@
       "startLine": 523,
       "endLine": 596
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Arithmetic Kernel and 2D Cauchy-Schwarz: Fully Proved",
     "content": "Part VIII proves two key algebraic ingredients of the Hurwitz isoperimetric proof. cross_product_sq_le establishes the 2D Cauchy-Schwarz inequality |xv-yu|² ≤ (x²+y²)(u²+v²) by a one-line nlinarith proof: the squared area of a parallelogram is at most the product of squared norms. isoperimetric_from_wirtinger_bounds is the arithmetic kernel: given the Wirtinger bounds (Sxy ≤ 2πc², S² ≤ 2πSxy, 2A ≤ cS), it proves 4πA ≤ L² via a fully explicit calculation chain. Together, these reduce the remaining sorry to integral-form Wirtinger bounds + Green's theorem.",
     "mathContext": "**2D Cauchy-Schwarz**: $(xv-yu)^2 \\leq (x^2+y^2)(u^2+v^2)$. Proof: nlinarith. **Arithmetic kernel**: chain $S^2 \\leq 2\\pi S_{xy} \\leq 2\\pi(2\\pi c^2) = (2\\pi c)^2$, so $S \\leq 2\\pi c$. Then $2A \\leq cS \\leq 2\\pi c^2$, so $A \\leq \\pi c^2$, giving $4\\pi A \\leq 4\\pi^2 c^2 = (2\\pi c)^2 = L^2$. **Key**: constant-speed $c$ means $\\int(x'^2+y'^2) = 2\\pi c^2$ exactly.",

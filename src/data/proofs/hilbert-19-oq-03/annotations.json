@@ -139,7 +139,7 @@
       "startLine": 264,
       "endLine": 273
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Viscosity Uniqueness via Double Comparison",
     "content": "Uniqueness of viscosity solutions follows from applying the comparison principle twice. If u and v are both viscosity solutions with the same boundary data, then u <= v (comparing u as subsolution against v as supersolution) and v <= u (comparing v as subsolution against u as supersolution). The linarith tactic closes the proof from these two inequalities. This elegant argument reduces uniqueness entirely to the comparison principle.",
     "mathContext": "u \\le v \\text{ and } v \\le u \\implies u = v \\text{ on } [a,b]",
@@ -255,7 +255,7 @@
       "startLine": 373,
       "endLine": 376
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Krylov-Safonov Harnack Inequality",
     "content": "The Krylov-Safonov Harnack inequality (1980) is the nondivergence-form analog of the De Giorgi-Nash-Moser theory. It states that non-negative solutions of $M^-(D^2 u) \\leq 0 \\leq M^+(D^2 u)$ satisfy $\\sup u \\leq C \\inf u$ on interior subdomains. The constant $C$ depends only on dimension, ellipticity ratio $\\Lambda/\\lambda$, and the ratio of domain sizes. This Harnack inequality implies Holder continuity (oscillation decay) via the standard iteration argument, providing $C^\\alpha$ regularity for solutions of uniformly elliptic equations without any convexity assumption.",
     "mathContext": "$u \\geq 0,\\; M^-(D^2u) \\leq 0 \\leq M^+(D^2u) \\implies \\sup_{B_{r/2}} u \\leq C \\inf_{B_{r/2}} u$",

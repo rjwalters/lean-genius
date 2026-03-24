@@ -144,7 +144,7 @@
       "startLine": 61,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Lower Bound on εₙ",
     "content": "Erdős proved εₙ ≫ (log log log n)/(log log n), establishing that the covering exponent cannot tend to 0 faster than this triply-iterated logarithmic ratio. The proof uses a probabilistic/counting argument: if ε is too small, the total covering capacity ∑ n/p is insufficient to cover [1, n] with high multiplicity.",
     "mathContext": "$\\varepsilon_n \\ge c \\cdot \\frac{\\log\\log\\log n}{\\log\\log n}$ for some $c > 0$ and all large $n$. This uses the fact that covering requires $\\sum_{p \\in \\mathcal{P}} 1/p \\ge 1 + o(1)$, and by Mertens' theorem $\\sum_{n^\\varepsilon < p \\le n} 1/p \\approx \\log(1/\\varepsilon)$.",
@@ -167,7 +167,7 @@
       "startLine": 69,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Upper Bound εₙ < 1",
     "content": "The covering exponent is always less than 1 for n ≥ 2. With ε = 1, the only prime in (n, n] would be n itself (if prime), providing just one residue class — clearly insufficient to cover [1, n]. The interesting question is how close to 0 εₙ can be.",
     "mathContext": "$\\varepsilon_n < 1$ for $n \\ge 2$. With $\\varepsilon$ near 1, $\\mathcal{P}(n, \\varepsilon)$ contains $O(n^{1-\\varepsilon}/\\log n)$ primes, which is too few for coverage.",
@@ -189,7 +189,7 @@
       "startLine": 76,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Single-Class Coverage Bound",
     "content": "A single residue class a mod p covers at most ⌊n/p⌋ + 1 integers in [1, n]. This is the per-prime contribution to the covering: each prime p 'controls' approximately n/p elements. The +1 accounts for boundary effects.",
     "mathContext": "$|\\{m \\in [1,n] : m \\equiv a \\pmod{p}\\}| \\le \\lfloor n/p \\rfloor + 1 \\le n/p + 1$. Summing over primes: $\\sum_{p \\in \\mathcal{P}} (n/p + 1) \\approx n \\sum 1/p + |\\mathcal{P}|$.",
@@ -211,7 +211,7 @@
       "startLine": 82,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Mertens Coverage Estimate",
     "content": "By Mertens' theorem, the total covering capacity ∑_{n^ε < p ≤ n} n/p is approximately n · log(1/ε). This is the crucial quantitative estimate: it tells us how much 'coverage budget' we get from primes in the range (n^ε, n]. For the covering to succeed, we need this sum to exceed n (with enough slack for the probabilistic argument).",
     "mathContext": "Mertens' third theorem: $\\sum_{p \\le x} 1/p = \\log\\log x + M + o(1)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant. Hence $\\sum_{n^\\varepsilon < p \\le n} 1/p \\approx \\log\\log n - \\log\\log(n^\\varepsilon) = \\log(1/\\varepsilon)$.",
@@ -257,7 +257,7 @@
       "startLine": 96,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Full Prime Covering (ε = 0)",
     "content": "Using all primes up to n (ε = 0), a covering assignment exists for sufficiently large n. This follows from the Chinese Remainder Theorem and the prime number theorem: with all primes ≤ n available, the total coverage far exceeds n, and a greedy or random assignment succeeds. This establishes that εₙ is well-defined and positive.",
     "mathContext": "By CRT, the residues modulo distinct primes $p_1, \\ldots, p_k$ are independent. With $\\sum_{p \\le n} 1/p \\approx \\log\\log n \\to \\infty$, a random assignment covers any fixed $m$ with probability $1 - \\prod (1 - 1/p) \\to 1$. Union bound over $[1,n]$ gives coverage w.h.p.",

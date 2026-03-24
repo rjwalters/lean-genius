@@ -137,7 +137,7 @@
       "startLine": 187,
       "endLine": 222
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Robin's Inequality - An Arithmetic Equivalent",
     "content": "**Robin (1984)**: The Riemann Hypothesis is equivalent to:\n\nσ(n) < e^γ · n · log(log n) for all n > 5040\n\nwhere σ(n) is the sum of divisors and γ ≈ 0.5772 is the Euler-Mascheroni constant.\n\nThis is remarkable: an analytic statement about complex zeros becomes a purely arithmetic inequality about divisor sums! The number 5040 = 7! is the largest known counterexample.",
     "mathContext": "$\\sigma(n) < e^\\gamma n \\log\\log n$ for $n > 5040$\n\n$\\sigma(n) = \\sum_{d|n} d$, $\\gamma = \\lim_{n\\to\\infty} (H_n - \\ln n) \\approx 0.5772$",
@@ -175,7 +175,7 @@
       "startLine": 252,
       "endLine": 276
     },
-    "type": "insight",
+    "type": "definition",
     "title": "Prime Counting Error - Why RH Matters for Primes",
     "content": "RH is equivalent to the best possible error term in the Prime Number Theorem:\n\n|π(x) - Li(x)| = O(√x log x)\n\nwhere π(x) counts primes up to x and Li(x) is the logarithmic integral. Without RH, we only know the error is o(x/log x). With RH, we get a precise square-root error bound.",
     "mathContext": "$|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$ $\\Leftrightarrow$ RH\n\n$\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$",
@@ -289,7 +289,7 @@
       "startLine": 348,
       "endLine": 377
     },
-    "type": "insight",
+    "type": "definition",
     "title": "What We Know After 166 Years",
     "content": "**Proven without RH**:\n- Trivial zeros at -2, -4, -6, ...\n- No zeros for Re(s) ≥ 1\n- Infinitely many zeros on Re(s) = 1/2\n- >40% of zeros on critical line\n- First 10^13 zeros verified\n\n**Equivalent to RH**:\n- Robin's inequality\n- Mertens bound\n- Prime counting error O(√x log x)\n\n**Still unknown**: Whether ALL zeros are on the critical line.",
     "mathContext": "Open since 1859. $1M prize. Greatest unsolved problem in pure mathematics.",

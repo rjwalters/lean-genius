@@ -80,7 +80,7 @@
       "startLine": 173,
       "endLine": 202
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The 8-Step Proof: FTC + Fubini + ring",
     "mathContext": "Proof by rewriting:\n$$\\int_c^d \\int_a^b (\\partial_x Q - \\partial_y P)\\,dx\\,dy \\xrightarrow{\\text{(1)}} \\int_c^d \\left(\\int_a^b \\partial_x Q\\,dx - \\int_a^b \\partial_y P\\,dx\\right)dy$$\n$$\\xrightarrow{\\text{(4)}} \\int_c^d (Q(b,y)-Q(a,y))\\,dy - \\int_c^d\\int_a^b \\partial_y P\\,dx\\,dy$$\n$$\\xrightarrow{\\text{Fubini}} \\int_c^d(Q(b,y)-Q(a,y))\\,dy - \\int_a^b(P(x,d)-P(x,c))\\,dx$$\n$$\\xrightarrow{\\text{ring}} \\oint_{\\partial R} (P\\,dx + Q\\,dy).$$",
     "significance": "key",

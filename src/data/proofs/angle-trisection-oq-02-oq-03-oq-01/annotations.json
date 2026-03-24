@@ -6,7 +6,7 @@
       "startLine": 42,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cyclotomic Field Infrastructure",
     "content": "Establishes that $\\mathbb{Q}(\\zeta_n)$ is a Galois extension of $\\mathbb{Q}$ with $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ (Euler's totient). All three results come directly from Mathlib's `IsCyclotomicExtension` API. The `abstractZeta` definition uses Mathlib's canonical primitive $n$-th root of unity, which is essential for `fromZetaAut` compatibility.",
     "mathContext": "$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$; $\\zeta_n$ is a primitive $n$-th root of unity",
@@ -53,7 +53,7 @@
       "startLine": 75,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjugation is Non-Trivial for n >= 3",
     "content": "Proves $\\sigma \\neq \\text{id}$ when $n \\geq 3$. The key idea: if $\\sigma = \\text{id}$ then $\\zeta_n^{-1} = \\zeta_n$, so $\\zeta_n^2 = 1$, meaning $\\text{ord}(\\zeta_n) \\mid 2$. But $\\text{ord}(\\zeta_n) = n \\geq 3$, contradiction. This argument elegantly uses the order of a primitive root to derive a numerical impossibility ($n \\mid 2$ fails for $n \\geq 3$).",
     "mathContext": "$n \\geq 3 \\implies \\sigma \\neq \\text{id}$, because $\\zeta_n = \\zeta_n^{-1}$ would force $n \\mid 2$",
@@ -75,7 +75,7 @@
       "startLine": 94,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjugation Squares to Identity",
     "content": "Proves $\\sigma^2 = \\text{id}$ via the Galois group isomorphism $\\text{Aut}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$. The automorphism $\\sigma$ corresponds to $-1 \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ (shown by computing that $\\zeta_n^{u+1} = 1$ forces $n \\mid (u+1)$, hence $u = -1 \\pmod{n}$). Since $(-1)^2 = 1$ in the group, $\\sigma^2 = \\text{id}$. This is the deepest technical result, using the full power of `autEquivPow`.",
     "mathContext": "$\\sigma \\leftrightarrow -1 \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ via $\\text{autEquivPow}$; $(-1)^2 = 1$ gives $\\sigma^2 = \\text{id}$",
@@ -99,7 +99,7 @@
       "startLine": 122,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Order Exactly 2",
     "content": "Combines $\\sigma \\neq \\text{id}$ and $\\sigma^2 = \\text{id}$ to conclude $\\text{ord}(\\sigma) = 2$ using Mathlib's `orderOf_eq_prime`. This is the crux needed for the fixed field argument: the subgroup $\\langle \\sigma \\rangle$ has order 2, so the fixed field has index 2.",
     "mathContext": "$\\sigma \\neq 1$ and $\\sigma^2 = 1 \\implies \\text{ord}(\\sigma) = 2$",

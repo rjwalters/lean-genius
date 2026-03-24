@@ -110,7 +110,7 @@
   {
     "id": "ann-e846-basicProperties",
     "proofId": "erdos-846",
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties of Non-Trilinear Sets (Fully Proved)",
     "content": "Four proved lemmas: monotonicity (subsets preserve non-trilinearity), empty set, singleton, and collinearity symmetry.",
     "mathContext": "Four **fully proved** structural lemmas: (1) `nonTrilinear_mono`: non-trilinearity is hereditary—subsets of non-trilinear sets are non-trilinear; (2) `nonTrilinear_empty`: $\\emptyset$ is non-trilinear (vacuously); (3) `nonTrilinear_singleton`: any singleton $\\{p\\}$ is non-trilinear (no three distinct points exist); (4) `areCollinear_symm12`: collinearity is symmetric in the first two arguments, proved by `linarith`. These form the foundation for the pigeonhole argument.",
@@ -132,7 +132,7 @@
   {
     "id": "ann-e846-epsOneAndMono",
     "proofId": "erdos-846",
-    "type": "technique",
+    "type": "concept",
     "title": "ε-Non-Trilinear: Trivial Case and Monotonicity (Fully Proved)",
     "content": "Non-trilinear sets are ε-non-trilinear with ε=1 (take C=B). If ε' ≤ ε, then ε-non-trilinear implies ε'-non-trilinear.",
     "mathContext": "Two **fully proved** results about the $\\varepsilon$-non-trilinear property: (1) `nonTrilinear_is_eps_one`: any non-trilinear set $A$ is $1$-non-trilinear (take $C = B$, since $B \\subseteq A$ is non-trilinear by monotonicity); (2) `isEpsNonTrilinear_mono`: if $A$ is $\\varepsilon$-non-trilinear and $\\varepsilon' \\leq \\varepsilon$, then $A$ is $\\varepsilon'$-non-trilinear (the same $C$ works since $\\varepsilon' |B| \\leq \\varepsilon |B| \\leq |C|$). The monotonicity proof uses `mul_le_mul_of_nonneg_right`.",
@@ -155,7 +155,7 @@
   {
     "id": "ann-e846-pigeonhole",
     "proofId": "erdos-846",
-    "type": "technique",
+    "type": "concept",
     "title": "Finitary Pigeonhole Principle (Fully Proved)",
     "content": "For any function f : B → Fin k, some fiber has |fiber| ≥ |B|/k. Proved by contradiction using Finset.sum and Finset.card_biUnion.",
     "mathContext": "The **finitary pigeonhole principle** is a substantial standalone Lean proof (~20 lines). The proof proceeds by contradiction: if every fiber has $< |B|/k$ elements, then $\\sum_i k \\cdot |\\text{fiber}_i| < k \\cdot |B|$. But $\\sum_i |\\text{fiber}_i| = |B|$ (by `Finset.card_biUnion`, since fibers partition $B$), giving $k \\cdot |B| < k \\cdot |B|$, contradiction via `omega`. The disjointness of fibers requires showing that if $f(x) = i$ and $f(x) = j$ with $i \\neq j$, we get a contradiction via `Fin.ext`. This lemma is used in the main theorem to find a large partition class.",
@@ -178,7 +178,7 @@
   {
     "id": "ann-e846-easyDirection",
     "proofId": "erdos-846",
-    "type": "technique",
+    "type": "concept",
     "title": "Easy Direction: Weakly Non-Trilinear → ε-Non-Trilinear (Fully Proved)",
     "content": "If A = S₁ ∪ ... ∪ Sₖ with each Sᵢ non-trilinear, then A is (1/k)-non-trilinear. The main proved result of the file.",
     "mathContext": "This is the **main proved theorem** of the file (~45 lines). The proof: given $A \\subseteq \\bigcup_{i=1}^k S_i$ with each $S_i$ non-trilinear, and a finite $B \\subseteq A$, assign each $x \\in B$ to some $S_i$ containing it (using `choice` for the assignment function). By the pigeonhole lemma, some fiber $C = \\{x \\in B : \\text{assign}(x) = i\\}$ has $|C| \\geq |B|/k$. Since $C \\subseteq S_i$ and $S_i$ is non-trilinear, $C$ is also non-trilinear by monotonicity. Thus $\\varepsilon = 1/k$ works. The proof handles the edge case $k = 0$ separately (where $A \\subseteq \\emptyset$, so all finite subsets are empty). The `classical` tactic is needed for the non-constructive choice of assignment function.",
@@ -202,7 +202,7 @@
   {
     "id": "ann-e846-conjecture",
     "proofId": "erdos-846",
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem 846: The Hard Direction (OPEN)",
     "content": "Every infinite ε-non-trilinear set in ℝ² is weakly non-trilinear. This is the open problem, marked with sorry.",
     "mathContext": "The **hard direction** of the Erdős-Nešetřil-Rödl conjecture: if $A$ is infinite and $\\varepsilon$-non-trilinear for some $\\varepsilon > 0$, then $A$ is a finite union of non-trilinear sets. This is formalized as a `theorem` with `sorry`, making the open status explicit. The difficulty is that the density condition provides *existence* of a large non-collinear subset in every finite piece, but does not directly yield a *global decomposition* into finitely many non-collinear parts. The contrapositive formulation is also provided, derived from the main conjecture by pure logic (`intro` + `exact`).",

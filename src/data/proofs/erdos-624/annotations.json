@@ -120,7 +120,7 @@
       "startLine": 69,
       "endLine": 85
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Lower Bound: H(n) ≥ log₂(n)",
     "content": "**`covering_lower_bound`**: If $f$ is $H$-covering for $X$, then $2^H \\geq |X|$.\n\n**Proof sketch** (has `sorry`):\n1. Take any $Y \\subseteq X$ with $|Y| = H$\n2. Since $f$ is $H$-covering: $\\{f(A) : A \\subseteq Y\\} = X$\n3. But $|\\{f(A) : A \\subseteq Y\\}| \\leq 2^{|Y|} = 2^H$\n4. Therefore $|X| \\leq 2^H$\n\n**`coveringNumber_ge_log`**: Concludes $H(n) \\geq \\lceil\\log_2(n)\\rceil$ using `Nat.clog` (ceiling log).\n\nBoth have `sorry` — the proof requires careful handling of the `sInf` definition and subset existence.",
     "mathContext": "covering_lower_bound: IsCoveringFunction X f H → 2^H ≥ |X|; coveringNumber_ge_log: coveringNumber X ≥ Nat.clog 2 |X|",
@@ -234,7 +234,7 @@
       "startLine": 148,
       "endLine": 163
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Summary: State of Knowledge",
     "content": "**Complete picture of Erdős Problem #624**:\n\n| Result | Status | Source |\n|--------|--------|--------|\n| $H(n) \\geq \\lceil\\log_2(n)\\rceil$ | Proved (counting) | This file (2 sorries) |\n| $H(n) < \\log_2(n) + O(\\log\\log n)$ | Proved (construction) | Erdős-Hajnal 1968 |\n| $\\exists c > 0$: gap $\\geq c$ | Proved (structural) | Alon |\n| $H(2^k) \\geq k+1$ | **OPEN** | Weaker conjecture |\n| $H(n) - \\log_2(n) \\to \\infty$ | **OPEN** | Main conjecture |\n\nThe gap $H(n) - \\log_2(n)$ is between a positive constant and $O(\\log\\log n)$. Whether it is bounded or unbounded remains one of the oldest open problems in combinatorial set theory.",
     "mathContext": "log₂(n) + Ω(1) ≤ H(n) < log₂(n) + O(log log n); unboundedness of gap: OPEN",

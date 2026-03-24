@@ -118,7 +118,7 @@
       "startLine": 81,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Croot's Theorem (2003)",
     "content": "**croot_existence**: For all k ≥ 2, there exists n_k such that HasKEgyptianProperty n_k k. This is the main result — the k-Egyptian property is achievable. One sorry remains (the proof uses probabilistic methods).",
     "significance": "key",
@@ -208,7 +208,7 @@
       "startLine": 113,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Egyptian Fraction Bound (PROVED)",
     "content": "**egyptian_fraction_bound**: If D' has reciprocal sum 1 with all elements positive, then each d ∈ D' satisfies d ≤ Π_{d'∈D'} d'. **Proved by Aristotle** via `Finset.dvd_prod_of_mem` and `Nat.le_of_dvd`.",
     "significance": "key",

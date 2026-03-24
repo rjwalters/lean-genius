@@ -144,7 +144,7 @@
       "startLine": 68,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "P(n) for Finite Ordinals",
     "content": "**Trivial Case:** $P(n)$ holds for all finite ordinals $n$.\n\nA finite graph cannot contain an infinite path, so the infinite path alternative is vacuously excluded. The independent set of order type $n$ must then exist, which is guaranteed because the entire vertex set is independent in the complement or the graph structure forces it.",
     "significance": "supporting",
@@ -165,7 +165,7 @@
       "startLine": 80,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "P(omega) via Ramsey's Theorem",
     "content": "**$P(\\omega)$:** Every graph on $\\omega$ has either an infinite path or an infinite independent set (of order type $\\omega$).\n\nThis follows from the **infinite Ramsey theorem**: any 2-coloring of pairs of $\\omega$ has an infinite monochromatic set. Applied to the adjacency relation, we get either an infinite clique (which contains an infinite path) or an infinite independent set.",
     "significance": "key",
@@ -211,7 +211,7 @@
       "startLine": 94,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Hajnal-Milner Theorem (1970)",
     "content": "**Erdős-Hajnal-Milner (1970):** $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$.\n\nThis is the main known positive result. The proof uses **transfinite induction** on the Cantor normal form of $\\alpha$, with the key step being a sophisticated combinatorial argument involving ordinal arithmetic and partition relations. The theorem covers all countable ordinals and many uncountable ones.",
     "significance": "key",
@@ -258,7 +258,7 @@
       "startLine": 120,
       "endLine": 120
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Martin's Axiom",
     "content": "**Martin's Axiom (MA):** A set-theoretic axiom consistent with ZFC that extends the Baire category theorem to $< 2^{\\aleph_0}$ many dense sets.\n\nMA is weaker than the Continuum Hypothesis but has powerful combinatorial consequences. Under MA, many partition-type results that hold for countable structures extend to structures of size $< 2^{\\aleph_0}$.",
     "significance": "key",
@@ -281,7 +281,7 @@
       "startLine": 126,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Larson's Theorem (1990)",
     "content": "**Larson (1990):** Under Martin's Axiom, $P(\\alpha)$ holds for all $\\alpha$ with $|\\alpha| < 2^{\\aleph_0}$.\n\nThis dramatically extends the range of $P$: under MA + $\\neg$CH, $2^{\\aleph_0} > \\aleph_1$, so Larson's result covers ordinals far beyond $\\omega_1^{\\omega+2}$. The proof uses MA to construct the required independent sets via a transfinite iteration of the Erdős-Hajnal-Milner technique.",
     "significance": "key",
@@ -305,7 +305,7 @@
       "startLine": 144,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ordinal Hierarchy",
     "content": "**Ordinal Hierarchy:** $\\omega < \\omega_1 < \\omega_1^\\omega < \\omega_1^{\\omega+1} < \\omega_1^{\\omega+2}$.\n\nThis chain shows the ordinals leading up to the critical boundary. Each step represents a significant increase in ordinal complexity, with $P$ known to hold for all ordinals in the chain except possibly the last.",
     "significance": "key",

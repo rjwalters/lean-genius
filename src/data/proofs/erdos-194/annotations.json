@@ -167,7 +167,7 @@
       "startLine": 179,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos Problem #194: Main Result",
     "content": "**erdos_194:**\n\nThere exists an infinite set S and an enumeration of S that is chaotic.\n\n```lean\ntheorem erdos_194 :\n    exists S : Set R, S.Infinite and exists e : Enumeration S, isChaotic e\n```\n\n**Answer to Erdos:** The question asked \"must any ordering contain a monotone AP?\" This proves the answer is NO.",
     "significance": "key",
@@ -257,7 +257,7 @@
       "startLine": 301,
       "endLine": 309
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Answer: Disproof",
     "content": "**erdos_194_answer:**\n\nExplicitly states that the conjecture is FALSE.\n\n```lean\ntheorem erdos_194_answer : \n    not(forall (S : Set R) (e : Enumeration S), S.Infinite -> hasMonotoneAP3 e)\n```\n\n**Proof:** By contradiction using the existence of chaotic orderings.\n\nThis is the formal disproof of the original Erdos question.",
     "significance": "key",

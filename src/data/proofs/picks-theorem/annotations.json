@@ -124,7 +124,7 @@
       "startLine": 240,
       "endLine": 265
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Rectangle Verification",
     "content": "Defines `rectangle m n` with $i = (m-1)(n-1)$, $b = 2m+2n$, $A = mn$. The theorem `picks_rectangle` verifies the formula algebraically: $(m-1)(n-1) + (2m+2n)/2 - 1 = mn - m - n + 1 + m + n - 1 = mn$. Proved by `ring` after casting natural numbers to rationals. Concrete examples: $3 \\times 4$ rectangle ($i=6, b=14, A=12$), $5 \\times 7$ rectangle ($i=24, b=24, A=35$), unit square ($i=0, b=4, A=1$).",
     "mathContext": "For an $m \\times n$ rectangle, the boundary count $b = 2m + 2n$ counts the perimeter lattice points (excluding corners counted once each: $4$ corners $+ (m-1) + (m-1) + (n-1) + (n-1)$ edge points $= 2m + 2n$). The interior count $(m-1)(n-1)$ is the product of lattice rows and columns strictly inside. The `ring` tactic handles the algebraic identity after `Nat.cast_sub` lemmas convert $\\mathbb{N}$ subtraction to $\\mathbb{Q}$ subtraction.",
@@ -172,7 +172,7 @@
       "startLine": 326,
       "endLine": 334
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Additivity Property",
     "content": "When polygon $P = P_1 \\cup P_2$ shares an edge with $e$ lattice points: $i(P) = i_1 + i_2 + (e-2)$ (shared edge interior becomes polygon interior), $b(P) = b_1 + b_2 - 2e + 2$ (shared edge removed from boundary). The theorem `picks_additive` proves the formula is preserved: $\\text{picks}(i_1, b_1) + \\text{picks}(i_2, b_2) = \\text{picks}(i_1 + i_2 + e - 2, b_1 + b_2 - 2e + 2)$. Proved by `ring` after `Nat.cast_sub`.",
     "mathContext": "The additivity identity is the key inductive step: if Pick's formula holds for sub-polygons $P_1$ and $P_2$, it holds for their union $P$. The shared edge contributes $e$ lattice points; the $e-2$ interior points of the edge become interior points of $P$, and the 2 endpoints remain boundary. Algebraically: $(i_1 + b_1/2 - 1) + (i_2 + b_2/2 - 1) = (i_1 + i_2 + e - 2) + (b_1 + b_2 - 2e + 2)/2 - 1$. This reduces Pick's theorem to triangulation.",
@@ -196,7 +196,7 @@
       "startLine": 357,
       "endLine": 368
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Half-Integer Area Corollary",
     "content": "Two corollaries: `twice_area_is_integer` proves $\\exists n \\in \\mathbb{Z}, A(P) = n/2$ (area is always a half-integer), and `area_half_integer` proves $2A = 2i + b - 2$. The first is proved by exhibiting the witness $n = 2i + b - 2$; both use `linarith`. This connects to the **shoelace formula**: $2A = |\\sum_i (x_i y_{i+1} - x_{i+1} y_i)|$ always gives an integer for lattice polygons.",
     "mathContext": "The identity $2A = 2i + b - 2$ shows that twice the area is always a non-negative integer. Combined with the shoelace formula $2A = |\\sum_{i=0}^{n-1}(x_i y_{i+1} - x_{i+1} y_i)|$ (where indices are mod $n$), we get $2i + b - 2 = |\\sum(x_i y_{i+1} - x_{i+1} y_i)|$, a purely combinatorial identity relating lattice point counts to a cross-product sum. The shoelace formula itself follows from Green's theorem: $A = \\frac{1}{2}\\oint(x\\,dy - y\\,dx)$.",
@@ -220,7 +220,7 @@
       "startLine": 400,
       "endLine": 421
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Failure in 3D: Reeve Tetrahedra",
     "content": "Pick's theorem does NOT generalize to 3D. The **Reeve tetrahedra** with vertices $(0,0,0)$, $(1,0,0)$, $(0,1,0)$, $(1,1,r)$ have $i = 0$ interior and $b = 4$ boundary lattice points for all $r$, but volume $= r/6$ varies. The theorem `picks_fails_3D` proves same counts but different volumes for $r=1$ and $r=2$. The proper 3D generalization is **Ehrhart theory**: $|nP \\cap \\mathbb{Z}^d|$ is a polynomial in $n$ (the Ehrhart polynomial).",
     "mathContext": "The Reeve tetrahedra show that in $d \\geq 3$, volume is not determined by lattice point counts alone. For the Reeve tetrahedron $T_r$: $\\text{Vol}(T_r) = r/6$ but $|T_r \\cap \\mathbb{Z}^3| = 4$ for all $r$. Ehrhart's theorem (1962) provides the correct generalization: for a $d$-dimensional lattice polytope $P$, $L_P(n) = |nP \\cap \\mathbb{Z}^d|$ is a degree-$d$ polynomial with leading coefficient $\\text{Vol}(P)$ and constant term 1. Pick's formula is the $d=2$ case: $L_P(n) = An^2 + (b/2)n + 1$.",
@@ -245,7 +245,7 @@
       "startLine": 440,
       "endLine": 489
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Applications and Lattice Width",
     "content": "Practical applications include surveying, computer graphics, combinatorics, and algorithm verification. The `compute_area` function gives $O(1)$ area computation from point counts (vs $O(n)$ for the shoelace formula). The formalization also defines `lattice_width_x` and axiomatizes `area_bounded_by_box`: a polygon contained in a $w_x \\times w_y$ bounding box has area at most $w_x \\cdot w_y$. The final section exports main results via `#check`.",
     "mathContext": "The lattice width in direction $\\mathbf{v}$ is the number of parallel lattice hyperplanes (perpendicular to $\\mathbf{v}$) that intersect the polygon. For axis-aligned width: $w_x = x_{\\max} - x_{\\min} + 1$. The bounding box bound $A \\leq w_x \\cdot w_y$ is tight for rectangles. Combined with Pick's formula, this gives $i \\leq w_x w_y - b/2 + 1$, bounding interior points from the bounding box. These bounds are useful in computational geometry and integer programming.",

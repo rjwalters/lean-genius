@@ -347,7 +347,7 @@
       "startLine": 286,
       "endLine": 312
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős 474 Main Theorems",
     "content": "`erdos_474_summary` is a **genuine theorem** combining: (1) `erdos_under_ch` — CH implies the 3-color property, and (2) `sierpinski_kurepa` — the 2-color case always works.\n\n`erdos_474` is a **genuine theorem** combining: (1) `erdos_under_ch` — CH implies the property, and (2) `shelah_consistency` — failure is consistent with ZFC. Together, these establish the independence of the partition property from ZFC + ¬CH.",
     "mathContext": "Both theorems use the anonymous constructor $\\langle\\ldots, \\ldots\\rangle$ to combine axiomatized results. The `erdos_474` theorem captures the state of the art: the partition property is independent of ZFC, holding under CH but consistently failing without it. The $\\mathfrak{c} = \\aleph_2$ case remains the key open question, worth Erdős's $100 prize.",

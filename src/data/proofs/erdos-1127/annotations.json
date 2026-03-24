@@ -94,7 +94,7 @@
       "startLine": 135,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Kakutani Theorem (1943)",
     "content": "**erdos_kakutani_equivalence:**\n\nThe Continuum Hypothesis is EQUIVALENT to the statement:\n'ℝ can be written as a countable union of ℚ-linearly independent sets.'\n\nThis is a remarkable characterization of CH in terms of linear algebra!",
     "mathContext": "CH ↔ ∃(S : ℕ → Set ℝ), (∀i, IsQLinearlyIndependent (S i)) ∧ (⋃i, S i) = univ",
@@ -113,7 +113,7 @@
       "startLine": 172,
       "endLine": 176
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Davies' Theorem (1972)",
     "content": "**davies_theorem:**\n\nAssuming CH, ℝ² can be decomposed into countably many sets with distinct pairwise distances.\n\nThis extended Erdős-Kakutani from dimension 1 to dimension 2.",
     "significance": "key",

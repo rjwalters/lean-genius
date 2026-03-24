@@ -285,7 +285,7 @@
       "startLine": 277,
       "endLine": 295
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Summary Theorems",
     "content": "**erdos_692:** Combines the upper bound ($\\exists c > 0,\\; \\delta_1(n,m) \\leq 1/(\\log n)^c$) with the disproof of unimodality. Proved by `constructor`. **erdos_692_status:** $\\neg\\, \\text{erdosUnimodalityQuestion}\\, 3$. Resolves a 39-year-old problem (1986–2025).",
     "mathContext": "The `constructor` tactic splits the conjunction into two goals: Erdős's bound (applied from the axiom) and Cambie's disproof (applied directly). The end of namespace closes `Erdos692`.",

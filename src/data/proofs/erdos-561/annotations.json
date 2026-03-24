@@ -158,7 +158,7 @@
       "startLine": 170,
       "endLine": 179
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Uniform Case Application (Proved)",
     "content": "**uniform_case**: For s copies of K_{1,n} and t copies of K_{1,m}, the constructed unions are uniform and the formula holds. Proved by constructing the uniform unions via `uniformStarUnion`, proving uniformity via `simp`, and applying `befrs78_theorem`.",
     "mathContext": "The proof shows three things as a conjunction: (1) $F_1 = s \\cdot K_{1,n}$ is uniform (witnessed by $n$), (2) $F_2 = t \\cdot K_{1,m}$ is uniform (witnessed by $m$), and (3) $\\hat{R}(F_1, F_2) = \\text{conjecturedFormula}(F_1, F_2)$. The uniformity proofs use `simp [uniformStarUnion]` to unfold `List.replicate`.",
@@ -204,7 +204,7 @@
       "startLine": 219,
       "endLine": 235
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary and Main Theorem",
     "content": "**erdos_561_summary**: Packages BEFRS78 (uniform case) and the lower bound as a conjunction: `⟨befrs78_theorem, sizeRamsey_lower_bound⟩`.\n\n**erdos_561**: Main entry-point theorem — for all uniform star unions, the size Ramsey number equals the conjectured formula. Proved directly as `befrs78_theorem`.\n\n**openQuestion**: The remaining challenge — does the formula hold for ALL star unions (including non-uniform)?",
     "mathContext": "The main theorem states: $\\forall F_1, F_2$ uniform, $\\hat{R}(F_1, F_2) = \\sum_{k=2}^{s+t} \\max\\{n_i + m_j - 1 : i+j=k\\}$. The open question asks whether uniformity can be dropped. Non-uniform star unions introduce asymmetry in the index-sum pairings, requiring new techniques beyond explicit Ramsey-minimal constructions.",

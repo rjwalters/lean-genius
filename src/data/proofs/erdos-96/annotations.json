@@ -85,7 +85,7 @@
       "startLine": 99,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Lower Bound Construction",
     "content": "**edelsbrunner_hajnal_construction:** For n ≥ 7, ∃ convex n-gon with exactly 2n - 7 unit distance pairs. Axiomatized construction from 1991.\n\n**lower_bound (PROVED):** For n ≥ 7, ∃ convex n-gon with ≥ 2n - 7 unit distances. Proved from the construction axiom using omega.",
     "mathContext": "The construction uses points on a specific curve. The lower_bound theorem is one of the few fully proved results in this formalization, derived from the construction axiom via a simple inequality relaxation.",

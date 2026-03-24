@@ -81,7 +81,7 @@
       "startLine": 52,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Convergence",
     "content": "summand_tendsto_zero: terms tend to 0. factorialSum_summable: the sum converges. factorialSum_pos: sum is positive.",
     "mathContext": "Factorial growth dominates: n! > 2^n, so 1/(n!-1) < 2/2^n. Sum bounded by geometric series.",
@@ -106,7 +106,7 @@
       "startLine": 69,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Weisenberg's Identity",
     "content": "Weisenberg's identity rewrites the sum as a double sum: $\\sum_{n \\geq 2} 1/(n! - 1) = \\sum_{n \\geq 2} \\sum_{k \\geq 1} 1/(n!)^k$. This uses the geometric series formula $1/(x - 1) = \\sum_{k \\geq 1} x^{-k}$ for $x > 1$ (applied with $x = n!$). The double sum reformulation expresses the original series entirely in terms of powers of factorials, removing the problematic $-1$ from the denominator. While this is a clean identity, it has not yet led to a proof of irrationality because the resulting double sum is not obviously related to known constants.",
     "mathContext": "Uses geometric series: 1/(x-1) = x/(x-1) * 1/x = (1 + 1/(x-1)) * 1/x leads to sum_{k>=1} x^{-k}.",
@@ -131,7 +131,7 @@
       "startLine": 92,
       "endLine": 106
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Main Conjecture",
     "content": "`ErdosConjecture68` is defined as `Irrational factorialSum`, asserting that $\\sum_{n \\geq 2} 1/(n! - 1) \\notin \\mathbb{Q}$. This is the central open question. Despite the sum being computable to arbitrary precision ($\\approx 1.2517525711\\ldots$), numerical evidence alone cannot prove irrationality. The axiom `erdos_68` serves as a placeholder for the unproved conjecture, allowing downstream reasoning about its consequences.",
     "mathContext": "Asks whether the sum is irrational. Erdos actually conjectured transcendence (stronger).",
@@ -156,7 +156,7 @@
       "startLine": 108,
       "endLine": 130
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Generalized Factorial Sum",
     "content": "generalizedFactorialSum(t) := sum 1/(n!+t). erdosTranscendenceConjecture: transcendental for all integer t.",
     "mathContext": "Problem 68 is the t = -1 case. Erdos conjectured all such sums are transcendental.",
@@ -181,7 +181,7 @@
       "startLine": 132,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Case Theorem",
     "content": "The theorem `problem_68_is_special_case` proves that `generalizedFactorialSum (-1) = factorialSum`, formally verifying that Problem #68 is the $t = -1$ instance of Erdos's broader conjecture. This connects the specific problem to the parametric family, showing that any progress on the general conjecture immediately resolves the original question.",
     "mathContext": "Verifies that Problem 68 is indeed the t = -1 case of Erdos's broader conjecture.",
@@ -204,7 +204,7 @@
       "startLine": 149,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Explicit Calculations",
     "content": "first_term = 1 (2!-1=1), second_term = 1/5 (3!-1=5), third_term = 1/23 (4!-1=23), fourth_term = 1/119 (5!-1=119).",
     "mathContext": "Partial sum 1 + 0.2 + 0.043... + 0.0084... = 1.251... Verified by native_decide where possible.",
@@ -279,7 +279,7 @@
       "startLine": 215,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Transcendence Theory",
     "content": "transcendence_implies_irrationality: Transcendental => Irrational. transcendence_implies_68: if transcendental, then Problem 68 solved.",
     "mathContext": "Transcendental numbers form a proper subset of irrationals. Erdos's broader conjecture would imply Problem 68.",

@@ -72,7 +72,7 @@
       "startLine": 107,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Convolution Power Distribution Law",
     "content": "**convPow_add**\n\n$\\mu^{*(m+n)} = \\mu^{*m} * \\mu^{*n}$\n\nThe probability analogue of the law of exponents $a^{m+n} = a^m \\cdot a^n$. Proved by induction on $n$:\n- Base case ($n = 0$): $\\mu^{*m} = \\mu^{*m} * \\delta_0$ by the right identity\n- Inductive step: uses `Nat.add_succ`, `convPow` unfolding, the IH, and `convolution_assoc`\n\nThis is one of the key proved (non-axiomatized) results in the formalization.",
     "mathContext": "$\\mu^{*(m+n)} = \\mu^{*m} * \\mu^{*n}$, proved by induction using associativity",
@@ -95,7 +95,7 @@
       "startLine": 132,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Characteristic Function Power Law",
     "content": "**charFun_convPow**\n\n$\\varphi_{\\mu^{*n}}(t) = \\varphi_\\mu(t)^n$\n\nThe characteristic function of the $n$-fold convolution power is the $n$-th power of the original characteristic function. Proved by induction on $n$:\n- Base case: $\\varphi_{\\delta_0}(t) = 1 = \\varphi_\\mu(t)^0$ (using `charFun_dirac_zero`)\n- Inductive step: $\\varphi_{\\mu^{*(n+1)}}(t) = \\varphi_{\\mu^{*n}}(t) \\cdot \\varphi_\\mu(t) = \\varphi_\\mu(t)^n \\cdot \\varphi_\\mu(t) = \\varphi_\\mu(t)^{n+1}$\n\nThis transforms convolution power analysis into complex multiplication, which is the key technique behind all CLT proofs.",
     "mathContext": "$\\varphi_{\\mu^{*n}}(t) = [\\varphi_\\mu(t)]^n$, reducing convolution powers to complex powers",

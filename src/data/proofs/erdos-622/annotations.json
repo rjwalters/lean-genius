@@ -173,7 +173,7 @@
       "startLine": 71,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Draganić-Keevash-Müyesser Theorem (2025)",
     "content": "The axiom asserting the main result, proved in 2025 by Nemanja Draganić, Peter Keevash, and Alp Müyesser. This resolved the Erdős-Faudree conjecture: Erdős-Faudree graphs have at least (1/2 + o(1))2^{2n} cycle-spanned subsets. The proof uses probabilistic and structural methods from extremal graph theory.",
     "mathContext": "The **Draganić–Keevash–Müyesser theorem** (2025): for every $(n+1)$-regular graph $G$ on $2n$ vertices, at least $(1/2 + o(1)) \\cdot 2^{2n}$ subsets of $V(G)$ are spanned by a cycle. The proof combines the **absorbing method** (introduced by Rödl, Ruciński, and Szemerédi for Hamiltonicity problems) with refined counting arguments for cycle structures in dense regular graphs.",
@@ -195,7 +195,7 @@
       "startLine": 74,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tightness of Bound",
     "content": "The bound is asymptotically tight: there exist Erdős-Faudree graphs with at most (1/2 + ε)2^{2n} cycle-spanned subsets for arbitrarily small ε. This shows the 1/2 constant is optimal. The existential quantifier uses Filter.Frequently (∃ᶠ n) — infinitely many n witness near-tightness.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists^\\infty n,\\; \\exists G \\text{ Erdős–Faudree on } 2n \\text{ vertices},\\; \\text{cycleSpannedCount}(G) \\leq (1/2 + \\varepsilon) \\cdot 2^{2n}$. The `∃ᶠ n in Filter.atTop` means the set of witnessing $n$ is cofinite (infinitely many). Combined with the lower bound, this pins the asymptotic fraction at exactly $1/2$.",
@@ -219,7 +219,7 @@
       "startLine": 88,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Observation: Many Non-Cycle Subsets",
     "content": "Erdős claimed it was 'easy to see' that at least (1/2 + o(1))2^{2n} subsets are NOT spanned by any cycle. The complementary bound shows that both cycle-spanned and non-cycle-spanned subsets each constitute about half the powerset. Together with DKM 2025, this gives the half-half symmetry.",
     "mathContext": "**Erdős's observation**: $\\text{nonCycleCount}(G) = 2^{2n} - \\text{cycleSpannedCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. The 'easy' direction: subsets of size $< 3$ (of which there are $\\binom{2n}{0} + \\binom{2n}{1} + \\binom{2n}{2} = O(n^2) = o(2^{2n})$) are never cycle-spanned. More significantly, odd-sized subsets in bipartite subgraphs, and subsets not containing a Hamiltonian path, contribute to the non-cycle count.",
@@ -241,7 +241,7 @@
       "startLine": 96,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Half-Half Symmetry",
     "content": "Combining the DKM lower bound with Erdős's observation and the tightness result yields a remarkable symmetry: both cycle-spanned and non-cycle-spanned subsets comprise approximately half of all 2^{2n} subsets. The cycle-spanned count is squeezed between (1/2 - ε) and (1/2 + ε) times 2^{2n} for large n.",
     "mathContext": "The **half-half phenomenon**: $(1/2 - \\varepsilon) \\cdot 2^{2n} \\leq \\text{cycleSpannedCount}(G) \\leq (1/2 + \\varepsilon) \\cdot 2^{2n}$ for all $\\varepsilon > 0$ and sufficiently large $n$. Equivalently, the fraction of cycle-spanned subsets converges to $1/2$: $\\text{cycleSpannedCount}(G)/2^{2n} \\to 1/2$. This is a rare instance of a natural combinatorial quantity being pinned at exactly $1/2$.",
@@ -288,7 +288,7 @@
       "startLine": 125,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "concept",
     "title": "K_{n,n} Has Few Cycle-Spanned Sets",
     "content": "K_{n,n} has only O((n!)²) cycle-spanned subsets, vastly fewer than 2^{Θ(n)}. This is because all cycles in K_{n,n} must alternate between the two parts (bipartiteness forces even-length cycles), severely restricting possible cycle structures. Since n! ≪ 2^n for large n, this demonstrates the Erdős-Faudree bound fails dramatically for bipartite graphs.",
     "mathContext": "In $K_{n,n}$, every cycle has the form $(a_1, b_1, a_2, b_2, \\ldots, a_k, b_k)$ with $a_i \\in A$, $b_i \\in B$. The number of such cycles of length $2k$ is $\\binom{n}{k}^2 \\cdot (k-1)! \\cdot k!/2$. Summing over $k$ gives $\\text{cycleSpannedCount}(K_{n,n}) \\leq (n!)^2 = o(2^{2n})$ since $\\ln(n!) = n \\ln n - n + O(\\ln n) \\ll 2n \\ln 2$.",
@@ -357,7 +357,7 @@
       "startLine": 166,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Random Regular Graph Bound",
     "content": "Random (n+1)-regular graphs on 2n vertices satisfy the cycle-spanning bound with high probability. This probabilistic result shows the Erdős-Faudree phenomenon is typical rather than exceptional among regular graphs of the right degree. Axiomatized since the proof requires probabilistic graph theory not yet in Mathlib.",
     "mathContext": "In the random regular graph model $\\mathcal{G}(2n, n+1)$, the cycle-spanned count satisfies $\\text{cycleSpannedCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$ with high probability (probability $\\to 1$ as $n \\to \\infty$). This follows from the DKM theorem applied deterministically, since every $(n+1)$-regular graph on $2n$ vertices satisfies the bound. The probabilistic statement here is redundant but emphasizes typicality.",
@@ -401,7 +401,7 @@
       "startLine": 184,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Faudree Graphs are Hamiltonian",
     "content": "Every Erdős-Faudree graph with n ≥ 2 contains at least one Hamiltonian cycle. This follows from Dirac's theorem: degree n+1 ≥ (2n)/2 = n guarantees Hamiltonicity. Axiomatized since formalizing Dirac's theorem requires Mathlib infrastructure not invoked here.",
     "mathContext": "By **Dirac's theorem**: $\\delta(G) \\geq |V|/2 \\implies G$ is Hamiltonian. For Erdős–Faudree graphs: $\\delta(G) = n + 1 > n = |V|/2$. In fact, by **Cieslik's generalization**, the number of distinct Hamiltonian cycles is at least $\\exp(c \\cdot n)$ for some constant $c > 0$, though this stronger bound is not formalized.",
@@ -423,7 +423,7 @@
       "startLine": 192,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Edge Count in Erdős-Faudree Graphs",
     "content": "An Erdős-Faudree graph on 2n vertices has exactly n(n+1) edges. By the handshaking lemma: 2n vertices × degree (n+1) = 2n(n+1) edge-endpoints, divided by 2 gives n(n+1) edges. This is slightly more than n² edges, making the graph dense but not complete.",
     "mathContext": "By the **handshaking lemma**: $|E(G)| = \\frac{1}{2}\\sum_{v \\in V} \\deg(v) = \\frac{2n(n+1)}{2} = n(n+1)$. Compared to the complete graph $K_{2n}$ with $\\binom{2n}{2} = n(2n-1)$ edges, the edge density is $\\frac{n(n+1)}{n(2n-1)} = \\frac{n+1}{2n-1} \\to 1/2$ as $n \\to \\infty$. This is just above the Turán density $\\text{ex}(2n, K_3)/(\\binom{2n}{2}) \\to 1/2$.",
@@ -445,7 +445,7 @@
       "startLine": 198,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Faudree Graphs are Dense",
     "content": "The edge count n(n+1) > n² confirms these graphs are dense. The density exceeds the Turán number for triangle-free graphs, so Erdős-Faudree graphs must contain triangles (and indeed many short cycles). This density is what drives the abundance of cycle-spanned subsets.",
     "mathContext": "$n(n+1) = n^2 + n > n^2 = \\lfloor (2n)^2/4 \\rfloor = \\text{ex}(2n, K_3)$ (Turán's theorem). Therefore every Erdős–Faudree graph contains $K_3$ as a subgraph. More strongly, by the Kruskal–Katona theorem and supersaturation, the number of triangles is $\\Omega(n^3)$, providing a rich supply of short cycles.",

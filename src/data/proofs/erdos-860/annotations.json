@@ -333,7 +333,7 @@
       "startLine": 185,
       "endLine": 191
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Erdős Problem #860 (Proved)",
     "content": "The theorem `erdos_860` combines the two key results into a single statement: (1) $h(n)/n \\to \\infty$ (superlinear growth, from Ruzsa) and (2) there exists $C > 0$ with $h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ eventually (from Erdős-Pomerance). This is fully proved by pairing the two axioms. The exact asymptotics remain open.",
     "mathContext": "$h(n)/n \\to \\infty \\;\\wedge\\; \\exists\\, C > 0,\\; \\forall^* n: h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$.",

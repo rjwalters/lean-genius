@@ -74,7 +74,7 @@
       "startLine": 43,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complex Cauchy-Schwarz (One Line)",
     "content": "**Theorem** `cauchy_schwarz_complex`: For `u, v` in a complex inner product space `E`:\n```\n‖⟪u, v⟫_ℂ‖ ≤ ‖u‖ * ‖v‖\n```\n\nThe entire proof is `norm_inner_le_norm u v` — a single application of Mathlib's built-in result. The `[InnerProductSpace ℂ E]` instance tells Lean that `𝕜 = ℂ`, so `norm_inner_le_norm` specializes to the complex case automatically.\n\n**Key observation**: No special handling of conjugate-linearity is needed. Mathlib's `norm_inner_le_norm` already accounts for the modulus `‖⟪u,v⟫_𝕜‖` (not just the real part `|Re⟪u,v⟫|`), which is what makes it work for complex inner products.",
     "mathContext": "\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| \\leq \\|u\\| \\cdot \\|v\\|",
@@ -146,7 +146,7 @@
       "startLine": 79,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Squared Cauchy-Schwarz via nlinarith",
     "content": "**Theorem** `cauchy_schwarz_complex_sq`: `‖⟪u,v⟫_ℂ‖² ≤ ‖u‖²·‖v‖²`\n\nDerived from the linear form `h : ‖⟪u,v⟫_ℂ‖ ≤ ‖u‖·‖v‖` by `nlinarith` with hints:\n- `sq_nonneg (‖u‖·‖v‖ - ‖⟪u,v⟫_ℂ‖)` gives `0 ≤ (‖u‖·‖v‖)² - 2‖u‖·‖v‖·‖⟪u,v⟫‖ + ‖⟪u,v⟫‖²`\n- Combined with `h` and nonnegativity, `nlinarith` concludes `‖⟪u,v⟫‖² ≤ ‖u‖²·‖v‖²`\n\n**Why nlinarith needs hints**: The nonlinear arithmetic solver needs explicit quadratic witnesses to close the goal.",
     "mathContext": "\\|\\langle u, v \\rangle\\|^2 \\leq \\|u\\|^2 \\cdot \\|v\\|^2",
@@ -170,7 +170,7 @@
       "startLine": 120,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pythagorean Theorem from Orthogonality",
     "content": "**Theorem** `pythagorean_from_orthogonal`: If `⟪u,v⟫_𝕜 = 0` then `‖u+v‖² = ‖u‖² + ‖v‖²`\n\nProof via `norm_add_sq (𝕜 := 𝕜)` which gives the polarization identity:\n```\n‖u+v‖² = ‖u‖² + 2·Re⟪u,v⟫_𝕜 + ‖v‖²\n```\nThen `rw [h, map_zero]` substitutes `⟪u,v⟫_𝕜 = 0` and simplifies `Re(0) = 0`.\nFinally `ring` closes `‖u‖² + 2·0 + ‖v‖² = ‖u‖² + ‖v‖²`.\n\n**Why this matters**: Orthogonality is the abstract generalization of right angles. Pythagoras holds in any inner product space — real or complex — when two vectors are orthogonal (their inner product is zero).",
     "mathContext": "\\langle u, v \\rangle_𝕜 = 0 \\implies \\|u + v\\|^2 = \\|u\\|^2 + \\|v\\|^2",

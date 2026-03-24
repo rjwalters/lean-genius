@@ -53,7 +53,7 @@
       "startLine": 70,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pons Asinorum — Forward Direction (Euclid I.5)",
     "content": "**Theorem**: $d(A,B) = d(A,C) \\implies \\angle ABC = \\angle ACB$.\n\nThe proof is a single application of `EuclideanGeometry.angle_eq_angle_of_dist_eq`. This Mathlib lemma encapsulates Pappus's insight: if $d(A,B) = d(A,C)$, then triangles $ABC$ and $ACB$ are congruent by SAS (the shared side $BC$, the equal sides, and the included angle structure), so the base angles must match.\n\nThe one-line proof demonstrates the power of Mathlib's library: a result that took Euclid a page of auxiliary constructions is now immediate.",
     "mathContext": "dist(A,B) = dist(A,C) ⟹ ∠ABC = ∠ACB. Euclid's Elements I.5, Wiedijk #65. Proof: exact angle_eq_angle_of_dist_eq h.",
@@ -76,7 +76,7 @@
       "startLine": 87,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Converse of Pons Asinorum (Euclid I.6)",
     "content": "**Theorem**: $\\angle ABC = \\angle ACB \\land \\angle BAC \\neq \\pi \\implies d(A,B) = d(A,C)$.\n\nThe **non-degeneracy condition** $\\angle BAC \\neq \\pi$ is essential: when $A$, $B$, $C$ are collinear with $A$ between $B$ and $C$, the 'base angles' are both $0$ (or both $\\pi$ depending on orientation), giving equal angles without equal sides. This is Euclid's Proposition I.6.\n\nUses `dist_eq_of_angle_eq_angle_of_angle_ne_pi` from Mathlib.",
     "mathContext": "∠ABC = ∠ACB ∧ ∠BAC ≠ π ⟹ dist(A,B) = dist(A,C). Non-degeneracy excludes collinear configurations where the triangle has zero area.",
@@ -100,7 +100,7 @@
       "startLine": 103,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Biconditional Characterization of Isosceles Triangles",
     "content": "**Theorem**: For non-degenerate triangles ($\\angle BAC \\neq \\pi$):\n$$d(A,B) = d(A,C) \\iff \\angle ABC = \\angle ACB$$\n\nCombines Euclid I.5 and I.6 into a single `↔` statement. The proof constructs the Iff pair directly: the forward direction needs no non-degeneracy hypothesis, while the backward direction uses the given `hnd : ∠ B A C ≠ Real.pi`.\n\nThis equivalence provides a **complete characterization**: among non-degenerate triangles, having equal sides is the same as having equal base angles.",
     "mathContext": "dist(A,B) = dist(A,C) ↔ ∠ABC = ∠ACB (under ∠BAC ≠ π). Combines Euclid I.5 and I.6 into one equivalence.",
@@ -124,7 +124,7 @@
       "startLine": 118,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Vector Formulation of Pons Asinorum",
     "content": "**Theorem**: For vectors $x, y \\in V$ with $\\|x\\| = \\|y\\|$:\n$$\\angle(x, x-y) = \\angle(y, y-x)$$\n\n**Geometric interpretation**: Place the apex at the origin. Then $x$ and $y$ are position vectors to the base vertices, $x - y$ and $y - x$ are the base directions seen from each vertex. Equal norms mean equal side lengths from the apex.\n\nThis formulation works directly in the vector space $V$ (no affine points needed), making it useful in **linear algebra** and **functional analysis** contexts where inner product geometry is natural.",
     "mathContext": "‖x‖ = ‖y‖ ⟹ angle(x, x-y) = angle(y, y-x). Uses InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq.",

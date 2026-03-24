@@ -225,7 +225,7 @@
       "startLine": 246,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Problem #771 SOLVED",
     "content": "erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All are aliases for erdos_graham_conjecture_true. The problem is completely solved: f(n) = (1/2+o(1))n/log n, with lower bound from prime multiples (Erdos-Graham) and upper bound from LCM argument (Alon-Freiman 1988).",
     "mathContext": "`erdos_771 : ErdosGrahamConjecture := erdos_graham_conjecture_true`. `erdos_771_main : \\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |f(n)/(n/\\log n) - 1/2| < \\varepsilon$. `erdos_771_solved : ErdosGrahamConjecture$. All proved from `erdos_graham_conjecture_true`.",

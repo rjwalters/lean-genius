@@ -86,7 +86,7 @@
       "startLine": 191,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tychonoff's Generalization",
     "content": "**Theorem (Tychonoff, 1935):** Every continuous self-map of a nonempty compact convex subset of a locally convex topological vector space has a fixed point.\n\nThis is the most general theorem in the Brouwer-Schauder lineage for single-valued maps. It applies to spaces that don't even have a norm, only a family of seminorms defining the topology.\n\n**Examples of locally convex spaces:**\n- $C^\\infty(\\mathbb{R})$ with the topology of uniform convergence on compact sets\n- Spaces of distributions\n- Frechet spaces (metrizable locally convex spaces)\n\nEvery normed space is locally convex, so Tychonoff subsumes Schauder.",
     "significance": "key",
@@ -107,7 +107,7 @@
       "startLine": 219,
       "endLine": 224
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Interval Fixed Point: Fully Proved via IVT",
     "content": "The simplest case: every continuous $f: [0,1] \\to [0,1]$ has a fixed point.\n\nThis is fully proved using Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo`, which applies the Intermediate Value Theorem to $g(x) = f(x) - x$.\n\nThis is the 1D base case of the entire hierarchy, and it's the only level where a simple calculus argument suffices.",
     "significance": "key",
@@ -125,7 +125,7 @@
       "startLine": 287,
       "endLine": 307
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Banach Contraction Mapping: Uniqueness and Constructive Iteration",
     "content": "**Theorem (Banach, 1922):** If $f: X \\to X$ is a contraction ($\\text{dist}(f(x), f(y)) \\leq k \\cdot \\text{dist}(x, y)$ with $k < 1$) on a complete metric space, then $f$ has a **unique** fixed point.\n\nThis is proved using Mathlib's `ContractingWith` API, which provides:\n- `ContractingWith.fixedPoint`: the unique fixed point\n- `ContractingWith.fixedPoint_isFixedPt`: it satisfies $f(x^*) = x^*$\n- `ContractingWith.fixedPoint_unique`: no other fixed point exists\n\n**Relationship to Schauder:** Contractions on bounded closed convex sets in Banach spaces are automatically compact operators (contraction images are totally bounded). So Schauder gives existence; Banach adds uniqueness and the constructive iteration $x^* = \\lim f^n(x_0)$.",
     "mathContext": "$f$ contraction with constant $k < 1$ on complete metric space $\\Rightarrow \\exists! x^*: f(x^*) = x^*$",

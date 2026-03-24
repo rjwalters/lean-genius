@@ -62,7 +62,7 @@
       "startLine": 53,
       "endLine": 75
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Least Prime Divisor",
     "content": "**leastPrimeDivisor(n)** wraps Mathlib's `minFac` to compute the smallest prime dividing n. Two theorems are proved: (1) it is prime for composite inputs, (2) it divides n. The axiom states p(m) ≤ √m for composite m.",
     "mathContext": "For composite n, if p(n) > √n then n/p(n) < √n < p(n), but n/p(n) is a divisor smaller than p(n), contradicting minimality. This is why p(m) ≤ √m, which gives the trivial upper bound F(n) ≤ n + √n.",
@@ -138,7 +138,7 @@
       "startLine": 111,
       "endLine": 121
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Question 2: F(n) - n → ∞",
     "content": "**Question 2 (OPEN)**: Does F(n) - n → ∞ as n → ∞? This is stronger than Question 1 — not only does F(n) eventually exceed n, but the excess grows without bound.",
     "mathContext": "erdos385Question2 ≡ Tendsto (λ n ↦ (F n : ℤ) - n) atTop atTop. Uses integer subtraction to avoid natural number truncation issues. Question 2 ⟹ Question 1.",
@@ -195,7 +195,7 @@
       "startLine": 146,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Composite Number Examples",
     "content": "**Concrete verification** that 4, 9, and 6 are composite numbers. These serve as witnesses for the F function: F(10) = 12 is achieved by m = 9 with p(9) = 3, giving 9 + 3 = 12 > 10.",
     "mathContext": "Each proof uses omega for the n > 1 condition and decide for the ¬n.Prime condition. These are fully constructive with no sorry.",

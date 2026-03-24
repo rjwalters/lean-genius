@@ -123,7 +123,7 @@
       "startLine": 112,
       "endLine": 118
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Erdős-Purdy Conjecture",
     "content": "`erdos_purdy_conjecture` states $g(n) = \\Theta(n^2 (\\log n)^\\alpha)$ for some $\\alpha > 0$: the truth is believed to be quadratic with a polylogarithmic correction. This is formalized as the existence of $\\alpha > 0$ with matching upper and lower bounds.",
     "mathContext": "The conjecture predicts that the lower bound $n^2 \\log \\log n$ is closer to the truth than the upper bound $n^{20/9}$. The polylogarithmic correction $(\\log n)^\\alpha$ generalizes the $\\log \\log n$ in the lower bound. If true, this would be analogous to the Erdős unit distance conjecture, where grid-like constructions are near-extremal.",
@@ -143,7 +143,7 @@
       "startLine": 126,
       "endLine": 135
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Higher-Dimensional Generalization g_d^r(n)",
     "content": "`g_dim d r n` is the maximum number of $r$-simplices of the same volume from $n$ points in $\\mathbb{R}^d$. Axiomatized since the definition involves a supremum over all point configurations. `g2_is_g` states $g_2^2(n) = g(n)$, connecting to the original problem.",
     "mathContext": "The generalization to $r$-simplices in $\\mathbb{R}^d$ reveals dimension-dependent behavior. The critical case is $d = 2r$: the Oppenheim-Lenz construction achieves $g_{2r}^r(n) \\geq c \\cdot n^{r+1}$ using a product construction. For $d < 2r$, the bounds are suboptimal; for $d > 2r$, higher-dimensional freedom allows more equal-volume simplices.",
@@ -202,7 +202,7 @@
       "startLine": 185,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Incidence Geometry Connection",
     "content": "`incidence_reduction`: the number of triangles of area $\\alpha$ is bounded by the number of base edges $\\binom{n}{2}$ times a factor from point-line incidences. `szemeredi_trotter_bound`: the Szemerédi-Trotter theorem bounds incidences between $n$ points and $m$ lines to $O(n^{2/3}m^{2/3} + n + m)$.",
     "mathContext": "The reduction to incidences works as follows: fix a base edge $(A,B)$ with $|AB| = d$. The set of points $C$ forming a triangle of area $\\alpha$ lies on two lines parallel to $AB$ at distance $2\\alpha/d$. Summing over all $\\binom{n}{2}$ base edges gives $O(n^2)$ lines. The Szemerédi-Trotter theorem then bounds the total incidences, yielding the upper bound on $g(n)$. The Raz-Sharir improvement uses a more refined algebraic curve incidence bound.",
@@ -222,7 +222,7 @@
       "startLine": 206,
       "endLine": 213
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Statement",
     "content": "`erdos_1086_statement` is a **genuine theorem**: for $n \\geq 16$, both the lower bound $n^2 \\log \\log n \\ll g(n)$ and the upper bound $g(n) \\ll n^{20/9}$ hold simultaneously. The proof applies the two axiomatized bounds directly.",
     "mathContext": "The proof uses anonymous constructor `⟨..., ...⟩` to combine the lower bound (from `lower_bound_erdos_purdy n hn`) and upper bound (from `upper_bound_raz_sharir_2017 n (by omega)`). The `by omega` discharge handles the weakening from $n \\geq 16$ to $n \\geq 2$ needed by the upper bound axiom.",

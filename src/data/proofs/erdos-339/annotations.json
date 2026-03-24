@@ -97,7 +97,7 @@
       "startLine": 89,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "First Erdős Conjecture",
     "content": "**erdosConjecture1:**\n\nIf A is a basis of order r (r ≥ 2), then rDistinctSums A r has positive lower density.\n\n**Why surprising?** Restricting to distinct elements removes many sums. Intuitively, density could drop to zero.\n\n**Theorem (HHP 2003):** The conjecture is TRUE!\n\nThe axiom `hegyvari_hennecart_plagne_1` asserts this.",
     "mathContext": "Conjectured by Erdős in the 1980 Erdős-Graham monograph on additive number theory.",
@@ -115,7 +115,7 @@
       "startLine": 103,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Second Erdős-Graham Conjecture",
     "content": "**erdosGrahamConjecture2:**\n\nIf rSums A r has positive upper density, then rDistinctSums A r also has positive upper density.\n\nThis is more general than Conjecture 1: it doesn't require A to be a full basis, just that the r-sums have positive density.\n\n**Theorem (HHP 2003):** Also TRUE!\n\nBoth conjectures proved in the same 2003 paper.",
     "mathContext": "This 'density preservation' result shows that restricting to distinct sums cannot destroy density.",
@@ -133,7 +133,7 @@
       "startLine": 118,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Distinct Sums Are a Subset",
     "content": "**distinct_subset_general:**\n\n```lean\ntheorem distinct_subset_general (A : Set ℕ) (r : ℕ) :\n    rDistinctSums A r ⊆ rSums A r\n```\n\n**Observation:** Every sum of distinct elements is also a sum (trivially).\n\nThe proof just drops the injectivity constraint.\n\n**The surprise:** Despite being a strict subset, density is preserved!",
     "significance": "key",
@@ -169,7 +169,7 @@
       "startLine": 155,
       "endLine": 176
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Case r = 2",
     "content": "**case_r_equals_2 and case_r_equals_2_distinct:**\n\nFor r = 2:\n- rSums A 2 = A + A = {a + b : a, b ∈ A} (ordinary sumset)\n- rDistinctSums A 2 = A +̂ A = {a + b : a, b ∈ A, a ≠ b} (restricted sumset)\n\nThe theorem proves these characterizations explicitly.\n\n**Note:** The restricted sumset A +̂ A is also written Â + A in some literature.",
     "significance": "key",
@@ -187,7 +187,7 @@
       "startLine": 182,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Application to Squares",
     "content": "**four_distinct_squares_dense:**\n\nSince squares form a basis of order 4 (Lagrange's theorem), the HHP result implies:\n\n**Sums of 4 DISTINCT squares have positive lower density.**\n\nConcrete application: a positive fraction of integers can be written as a² + b² + c² + d² with a, b, c, d all different.\n\nThis is a non-obvious consequence of the abstract theory.",
     "mathContext": "Lagrange (1770) proved every positive integer is a sum of four squares. Here we require distinct squares.",

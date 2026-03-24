@@ -307,7 +307,7 @@
       "startLine": 261,
       "endLine": 278
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary of Results",
     "content": "**theorem erdos_240_summary** combines three key results:\n\n1. **Finite P → unbounded gaps** (Pólya-based)\n2. **Tijdeman's theorem** (infinite P with gaps ≫ aᵢ^{1-ε})\n3. **erdos240Question = YES**\n\nThis theorem encapsulates the complete resolution of the problem.",
     "mathContext": "Packaging results into a summary theorem is good Lean practice - it documents what has been achieved and makes the main results easily accessible.",

@@ -177,7 +177,7 @@
       "startLine": 195,
       "endLine": 213
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hyperbolic Property Contradicts Parallel Postulate",
     "content": "**Key lemma** (fully proved in Lean, no axioms needed):\n\nThe hyperbolic parallel property is incompatible with Playfair's axiom.\n\n**Proof** (by contradiction):\n1. Assume both hold for geometry G with a line l and point p ∉ l\n2. **Hyperbolic**: ∃m₁ ≠ m₂ with p ∈ m₁, p ∈ m₂, m₁ ∥ l, m₂ ∥ l\n3. **Playfair**: ∃!m with p ∈ m ∧ m ∥ l — call it m\n4. By uniqueness: m₁ = m and m₂ = m\n5. But m₁ ≠ m₂ — contradiction! ∎\n\nThis is the only theorem in the file proved purely from definitions, with no axioms. It demonstrates the clean logical structure: the parallel postulate is the exact dividing line between Euclidean and hyperbolic geometry.",
     "mathContext": "∀G, (∃l,p. p ∉ l) → HyperbolicParallel(G) → ¬PlayfairAxiom(G). Uses: ∃! uniqueness extraction + ≠ contradiction.",
@@ -196,7 +196,7 @@
       "startLine": 218,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Poincaré Disk Refutes the Parallel Postulate",
     "content": "**Corollary**: The Poincaré disk model does NOT satisfy the parallel postulate.\n\nThis follows immediately by applying the previous lemma to the Poincaré disk, using:\n1. `poincare_nontrivial`: the disk has a line and a point not on it\n2. `poincare_satisfies_hyperbolic_parallel`: the disk has multiple parallels\n\nThe proof is a single function application — the mathematical content is in the lemma and axioms. This witnesses the negative half of the independence result.",
     "mathContext": "¬SatisfiesParallelPostulate(Poincaré) follows from HyperbolicParallel(Poincaré) via the lemma.",

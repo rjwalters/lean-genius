@@ -124,7 +124,7 @@
       "startLine": 112,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graph Case (r = 2)",
     "content": "**turan_graph** (axiom): $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$ (Turán's theorem).\n\n**graph_case_bound** (proved): The graph case of the conjecture reduces to: every graph on $n$ vertices decomposes into $\\le \\lfloor n^2/4 \\rfloor$ edges and triangles.",
     "mathContext": "Turán's theorem (1941) is one of the foundational results of extremal graph theory. The complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is triangle-free and has $\\lfloor n^2/4 \\rfloor$ edges, achieving the maximum. For the decomposition conjecture, the graph case asks whether every graph can be written as at most $\\lfloor n^2/4 \\rfloor$ edges and triangles — a non-trivial structural claim even for this well-understood Turán number.",
@@ -148,7 +148,7 @@
       "startLine": 128,
       "endLine": 164
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Results",
     "content": "**choose_succ_self** (proved): $\\binom{r+1}{r} = r+1$, showing each $(r+1)$-clique has exactly $r+1$ edges.\n\n**empty_case** (proved): The empty hypergraph trivially satisfies the conjecture with 0 pieces.\n\n**decomp_pieces_le_edges** (sorry): Any valid decomposition has $|\\text{pieces}| \\le |E(H)|$.\n\n**trivial_decomp_exists** (sorry): The one-piece-per-edge decomposition always works with $|E(H)|$ pieces.",
     "mathContext": "The structural results establish the basic framework. The identity $\\binom{r+1}{r} = r+1$ means each clique piece accounts for $r+1$ edges, so using cliques reduces the piece count. The trivial decomposition (all single-edge pieces) always exists but may use too many pieces. The conjecture's content is that clique pieces can always reduce the count below the Turán number.",

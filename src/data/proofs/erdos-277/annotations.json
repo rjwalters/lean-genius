@@ -51,7 +51,7 @@
       "startLine": 47,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "concept",
     "title": "σ(1) = 1",
     "content": "Base case: $\\sigma(1) = 1$ since the only divisor of 1 is itself. Proved by `simp` with the definitions.",
     "significance": "supporting",
@@ -72,7 +72,7 @@
       "startLine": 51,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "concept",
     "title": "σ(p) = p + 1 for Primes",
     "content": "For prime $p$, the only divisors are 1 and $p$, so $\\sigma(p) = 1 + p = p + 1$. This is the simplest non-trivial evaluation of $\\sigma$ and shows primes have the smallest possible abundancy ratio $\\sigma(p)/p = 1 + 1/p$ among integers $> 1$.",
     "significance": "key",
@@ -358,7 +358,7 @@
       "startLine": 130,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Covering Properties (Proved)",
     "content": "Three proved results: (1) the trivial covering is indeed a covering system, (2) its modulus 1 divides every $n \\geq 1$, and (3) therefore every $n \\geq 1$ has some covering with divisor moduli. These are the only fully proved theorems in the file.",
     "significance": "key",
@@ -560,7 +560,7 @@
       "startLine": 276,
       "endLine": 284
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem and Restatements",
     "content": "Three equivalent restatements of the main result: `erdos_277`, `erdos_277_main` (with explicit $\\sigma$ inequality), and `erdos_277_summary`. All derive from `haight_theorem` directly.",
     "significance": "key",

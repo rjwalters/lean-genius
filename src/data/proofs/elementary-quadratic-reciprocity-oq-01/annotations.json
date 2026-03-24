@@ -78,7 +78,7 @@
       "startLine": 495,
       "endLine": 509
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiplication Permutation Analysis",
     "content": "Proves two structural properties: (1) `mulPerm a` has no fixed points when $a \\neq 1$ (since $ax = x \\Rightarrow a = 1$, making $\\sigma_a$ a derangement), and (2) `mulPermHom` is injective (evaluate at 1: if $\\sigma_a = \\sigma_b$ then $a \\cdot 1 = b \\cdot 1$). The no-fixed-point property is essential for the cycle analysis of generators.",
     "mathContext": "For $a \\neq 1$: $\\sigma_a$ is fixed-point-free (a derangement). The support of $\\sigma_a$ equals all of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$. Injectivity: $\\sigma_a = \\sigma_b \\Rightarrow a = b$ (faithful action).",
@@ -101,7 +101,7 @@
       "startLine": 534,
       "endLine": 577
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Character Uniqueness on Cyclic Groups",
     "content": "The key algebraic reduction. Proves: (1) a homomorphism $G \\to \\mathbb{Z}^\\times$ on a cyclic group is determined by its value on a generator, (2) any surjective such homomorphism must send the generator to $-1$ (otherwise the image is trivial), and (3) two surjective homomorphisms $G \\to \\mathbb{Z}^\\times$ are identical. This reduces Zolotarev's Lemma to two surjectivity claims.",
     "mathContext": "For cyclic $G = \\langle g \\rangle$ and $\\varphi, \\psi: G \\to \\{\\pm 1\\}$ surjective: $\\varphi(g) = -1 = \\psi(g)$ (forced by surjectivity), so $\\varphi(g^n) = (-1)^n = \\psi(g^n)$ for all $n$, giving $\\varphi = \\psi$. This is the uniqueness of the non-trivial quadratic character.",
@@ -125,7 +125,7 @@
       "startLine": 147,
       "endLine": 179
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Generator Cycle Analysis",
     "content": "Proves that $\\sigma_g$ for a generator $g$ is a single $(p-1)$-cycle, and its sign is $(-1)^{p-2} = -1$ for odd $p$. Every element $y = g^n$ is in the orbit of 1 under $\\sigma_g$ (since $\\sigma_g^n(1) = g^n$), so $\\sigma_g$ has a single orbit of size $p - 1$. The sign of an $n$-cycle is $(-1)^{n-1}$.",
     "mathContext": "$\\sigma_g$ is a single $(p-1)$-cycle: $1 \\to g \\to g^2 \\to \\cdots \\to g^{p-2} \\to 1$. Sign: $\\mathrm{sign}((p-1)\\text{-cycle}) = (-1)^{p-2}$. For odd $p$: $p - 2$ is odd, so $\\mathrm{sign}(\\sigma_g) = -1$.",
@@ -195,7 +195,7 @@
       "startLine": 370,
       "endLine": 387
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Quadratic Reciprocity and Proof Comparison",
     "content": "States QR and compares Eisenstein and Zolotarev proof methods. The formula $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$ uses Mathlib's `legendreSym.quadratic_reciprocity`. The `two_proof_methods` theorem bundles QR with Zolotarev's Lemma and sign multiplicativity, demonstrating the complete Zolotarev framework.",
     "mathContext": "For distinct odd primes $p, q$: $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$. Eisenstein counts lattice points below $y = qx/p$; Zolotarev analyzes the permutation on $\\mathbb{Z}/pq\\mathbb{Z} \\cong \\mathbb{Z}/p\\mathbb{Z} \\times \\mathbb{Z}/q\\mathbb{Z}$ via CRT.",
@@ -219,7 +219,7 @@
       "startLine": 399,
       "endLine": 408
     },
-    "type": "technique",
+    "type": "concept",
     "title": "First and Second Supplements",
     "content": "Restates the supplements to QR with permutation-theoretic motivation. First supplement: $-1$ is a square mod $p$ iff $p \\not\\equiv 3 \\pmod{4}$ — via Zolotarev, $\\sigma_{-1}$ is the inversion map with $(p-1)/2$ transpositions. Second supplement: $2$ is a square mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$ — the cycle structure of $\\sigma_2$ depends on $p \\bmod 8$.",
     "mathContext": "First: $-1 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\not\\equiv 3 \\pmod{4}$. Second: $2 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\equiv \\pm 1 \\pmod{8}$.",
@@ -241,7 +241,7 @@
       "startLine": 425,
       "endLine": 442
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Computational Examples",
     "content": "Five examples verified by `decide`. For $p = 5$: $\\sigma_2 = (1\\ 2\\ 4\\ 3)$ (single 4-cycle, sign $-1$), confirming $(2/5) = -1$. For $p = 7$: $\\sigma_2 = (1\\ 2\\ 4)(3\\ 6\\ 5)$ (two 3-cycles, sign $+1$), confirming $(2/7) = 1$ since $3^2 \\equiv 2$. QR examples verify reciprocity between pairs $(3,5)$, $(3,7)$, $(5,13)$.",
     "mathContext": "$(2/5) = -1$, $(2/7) = 1$, $(3/5) = (5/3)$ since $5 \\equiv 1 \\pmod{4}$, $(3/7) = -(7/3)$ since both $\\equiv 3 \\pmod{4}$, $(5/13) = (13/5)$ since $13 \\equiv 1 \\pmod{4}$.",

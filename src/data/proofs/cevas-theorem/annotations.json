@@ -134,7 +134,7 @@
       "startLine": 116,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ceva's Theorem - Main Result",
     "content": "The central equivalence: cevaProduct cfg = 1 if and only if cevaParameterCondition cfg holds. The proof unfolds definitions, applies field_simp to clear denominators, then uses linarith for the algebraic manipulation.",
     "mathContext": "[f/(1-f)] * [d/(1-d)] * [e/(1-e)] = 1  <-->  d*e*f = (1-d)*(1-e)*(1-f)",
@@ -156,7 +156,7 @@
       "startLine": 143,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Medians Satisfy Ceva",
     "content": "For the median configuration where d = e = f = 1/2, the Ceva product equals 1. This verifies that the three medians of a triangle are concurrent (meeting at the centroid).",
     "mathContext": "(1/2)/(1-1/2) * (1/2)/(1-1/2) * (1/2)/(1-1/2) = 1 * 1 * 1 = 1",

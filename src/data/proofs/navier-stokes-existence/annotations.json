@@ -9,7 +9,7 @@
     "type": "context",
     "title": "Navier-Stokes: Millennium Prize Formalization",
     "content": "This file formalizes the Navier-Stokes existence and smoothness problem, one of the seven Millennium Prize Problems. It contains a complete 2D proof (no axioms) and conditional 3D regularity. All 35 original axioms have been eliminated. The file spans 40 parts covering the full landscape of modern Navier-Stokes theory.",
-    "mathContext": "The Navier-Stokes equations model viscous fluid flow: \u2202u/\u2202t + (u\u00b7\u2207)u = \u03bd\u0394u - \u2207p + f, \u2207\u00b7u = 0. The Millennium Problem asks for global existence and smoothness in 3D.",
+    "mathContext": "The Navier-Stokes equations model viscous fluid flow: ∂u/∂t + (u·∇)u = νΔu - ∇p + f, ∇·u = 0. The Millennium Problem asks for global existence and smoothness in 3D.",
     "significance": "supporting",
     "relatedConcepts": [
       "Navier-Stokes",
@@ -27,8 +27,8 @@
     },
     "type": "technique",
     "title": "ESS Theorem: Type I Blowup Is Impossible",
-    "content": "The Escauriaza-Seregin-\u0160ver\u00e1k theorem (2003): any blowup must satisfy \u2016u(t)\u2016_{L\u00b3} \u2192 \u221e. Combined with Liouville for bounded ancient solutions (proved: bounded ancient = zero via spectral gap), this eliminates Type I (self-similar) blowup. The proof chain: bounded ancient \u2192 spectral gap forces growth \u2192 contradiction \u2192 must be zero \u2192 no Type I rescaling limit.",
-    "mathContext": "Type I blowup means \u2016u(t)\u2016 \u223c (T-t)^{-1/2}. Rescaling at such a point gives a bounded ancient solution. The Liouville theorem says such solutions are zero, contradicting the blowup.",
+    "content": "The Escauriaza-Seregin-Šverák theorem (2003): any blowup must satisfy ‖u(t)‖_{L³} → ∞. Combined with Liouville for bounded ancient solutions (proved: bounded ancient = zero via spectral gap), this eliminates Type I (self-similar) blowup. The proof chain: bounded ancient → spectral gap forces growth → contradiction → must be zero → no Type I rescaling limit.",
+    "mathContext": "Type I blowup means ‖u(t)‖ ∼ (T-t)^{-1/2}. Rescaling at such a point gives a bounded ancient solution. The Liouville theorem says such solutions are zero, contradicting the blowup.",
     "significance": "key",
     "relatedConcepts": [
       "Type I blowup",
@@ -50,7 +50,7 @@
     },
     "type": "technique",
     "title": "Type II No Blowup",
-    "content": "Type II blowup (faster than self-similar) is excluded by showing the effective stability parameter \u03b2_eff vanishes: (T-t)^{\u03b1-1} \u2192 0 for \u03b1 > 1. This gives eventual stability (E' \u2264 0), so energy is bounded on compact intervals. Then BKM criterion (enstrophy bounded \u2192 no blowup) gives the contradiction.",
+    "content": "Type II blowup (faster than self-similar) is excluded by showing the effective stability parameter β_eff vanishes: (T-t)^{α-1} → 0 for α > 1. This gives eventual stability (E' ≤ 0), so energy is bounded on compact intervals. Then BKM criterion (enstrophy bounded → no blowup) gives the contradiction.",
     "mathContext": "Type II singularities grow faster than (T-t)^{-1/2}. The stability analysis shows that even in this regime, the dissipation eventually dominates the nonlinear term, preventing blowup.",
     "significance": "key",
     "relatedConcepts": [
@@ -95,8 +95,8 @@
     },
     "type": "technique",
     "title": "2D Global Existence (PROVEN, No Axioms)",
-    "content": "The crown jewel: complete 2D Navier-Stokes global existence without axioms. In 2D, vorticity is scalar and the stretching term vanishes. Enstrophy satisfies E' = -2\u03bdP \u2264 0, so it decreases monotonically. GlobalNSSolution2D proves: for any smooth initial data, the solution exists for all t > 0 with bounded enstrophy. Exponential decay follows under Poincar\u00e9 inequality.",
-    "mathContext": "The 2D result (Ladyzhenskaya 1969) is a fully solved case. The key is that \u03c9 = \u2202_1 u_2 - \u2202_2 u_1 is scalar in 2D, eliminating vortex stretching. This makes the enstrophy equation dissipative: d/dt \u222b|\u03c9|\u00b2 = -2\u03bd\u222b|\u2207\u03c9|\u00b2 \u2264 0.",
+    "content": "The crown jewel: complete 2D Navier-Stokes global existence without axioms. In 2D, vorticity is scalar and the stretching term vanishes. Enstrophy satisfies E' = -2νP ≤ 0, so it decreases monotonically. GlobalNSSolution2D proves: for any smooth initial data, the solution exists for all t > 0 with bounded enstrophy. Exponential decay follows under Poincaré inequality.",
+    "mathContext": "The 2D result (Ladyzhenskaya 1969) is a fully solved case. The key is that ω = ∂_1 u_2 - ∂_2 u_1 is scalar in 2D, eliminating vortex stretching. This makes the enstrophy equation dissipative: d/dt ∫|ω|² = -2ν∫|∇ω|² ≤ 0.",
     "significance": "key",
     "relatedConcepts": [
       "enstrophy",
@@ -118,7 +118,7 @@
     },
     "type": "technique",
     "title": "Leray-Hopf Weak Solutions",
-    "content": "Formalizes Leray's 1934 construction: weak solutions exist globally in 3D satisfying the energy inequality \u2016u(t)\u2016\u00b2 + 2\u03bd\u222b\u2016\u2207u\u2016\u00b2 \u2264 \u2016u\u2080\u2016\u00b2. These solutions may not be unique or smooth, but they exist for all time and dissipate energy.",
+    "content": "Formalizes Leray's 1934 construction: weak solutions exist globally in 3D satisfying the energy inequality ‖u(t)‖² + 2ν∫‖∇u‖² ≤ ‖u₀‖². These solutions may not be unique or smooth, but they exist for all time and dissipate energy.",
     "mathContext": "Leray's weak solutions are the foundation of 3D NS theory. They exist but may have singularities. The key open question is whether they are actually smooth (the Millennium Problem).",
     "significance": "key",
     "relatedConcepts": [
@@ -140,8 +140,8 @@
     },
     "type": "technique",
     "title": "Serrin's Regularity Criterion",
-    "content": "If a Leray-Hopf solution satisfies u \u2208 L^p_t L^q_x with 2/p + 3/q \u2264 1 and q > 3, then it is smooth. This is the fundamental conditional regularity result: control in a critical norm implies full regularity. The endpoint case (p=\u221e, q=3) was proved by ESS (2003).",
-    "mathContext": "The Serrin condition identifies the precise integrability threshold for regularity. It connects to the NS scaling symmetry: u(x,t) \u21a6 \u03bbu(\u03bbx, \u03bb\u00b2t) preserves L^p_t L^q_x when 2/p + 3/q = 1.",
+    "content": "If a Leray-Hopf solution satisfies u ∈ L^p_t L^q_x with 2/p + 3/q ≤ 1 and q > 3, then it is smooth. This is the fundamental conditional regularity result: control in a critical norm implies full regularity. The endpoint case (p=∞, q=3) was proved by ESS (2003).",
+    "mathContext": "The Serrin condition identifies the precise integrability threshold for regularity. It connects to the NS scaling symmetry: u(x,t) ↦ λu(λx, λ²t) preserves L^p_t L^q_x when 2/p + 3/q = 1.",
     "significance": "supporting",
     "relatedConcepts": [
       "Serrin",
@@ -163,7 +163,7 @@
     },
     "type": "technique",
     "title": "Onsager Conjecture Threshold",
-    "content": "Onsager's conjecture (1949): Euler solutions conserve energy iff H\u00f6lder regularity > 1/3. Above 1/3: energy conserved (proved by Constantin-E-Titi 1994). Below 1/3: non-conservative solutions exist (Isett 2018, building on De Lellis-Sz\u00e9kelyhidi convex integration). The sharp threshold is C^{1/3}.",
+    "content": "Onsager's conjecture (1949): Euler solutions conserve energy iff Hölder regularity > 1/3. Above 1/3: energy conserved (proved by Constantin-E-Titi 1994). Below 1/3: non-conservative solutions exist (Isett 2018, building on De Lellis-Székelyhidi convex integration). The sharp threshold is C^{1/3}.",
     "mathContext": "This connects the regularity of turbulent solutions to energy conservation. The 1/3 threshold matches Kolmogorov's K41 prediction of v(l) ~ l^{1/3} for turbulent velocity increments.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -184,10 +184,10 @@
       "startLine": 6103,
       "endLine": 6347
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Fujita-Kato Mild Solutions",
-    "content": "Local existence of mild solutions via the heat semigroup: u(t) = e^{\u03bd\u0394t}u\u2080 - \u222b B(u,u). The existence time scales as T ~ \u2016u\u2080\u2016^{-4} (quartic). Koch-Tataru (2001) extended this to BMO^{-1}, the largest critical space. For small data in L\u00b3: \u2016u\u2080\u2016_{L\u00b3} < c\u03bd gives global existence.",
-    "mathContext": "Mild solutions recast NS as a fixed-point problem in a Banach space. The quartic scaling T ~ \u2016u\u2080\u2016_{L\u00b3}^{-4} reflects the supercritical nature of 3D NS.",
+    "content": "Local existence of mild solutions via the heat semigroup: u(t) = e^{νΔt}u₀ - ∫ B(u,u). The existence time scales as T ~ ‖u₀‖^{-4} (quartic). Koch-Tataru (2001) extended this to BMO^{-1}, the largest critical space. For small data in L³: ‖u₀‖_{L³} < cν gives global existence.",
+    "mathContext": "Mild solutions recast NS as a fixed-point problem in a Banach space. The quartic scaling T ~ ‖u₀‖_{L³}^{-4} reflects the supercritical nature of 3D NS.",
     "significance": "supporting",
     "relatedConcepts": [
       "Fujita-Kato",
@@ -210,8 +210,8 @@
     },
     "type": "technique",
     "title": "Liouville Theorems and Millennium Connection",
-    "content": "KNSS theorem: bounded ancient solutions to 3D NS are zero. Seregin: zero solutions at blowup time. Stationary Liouville: u \u2208 L^{9/2} implies u = 0 (critical exponent 9/2, not 3). Landau solution u ~ C/|x| shows L\u00b3 threshold is sharp. The gap from 9/2 to 3 measures the distance to solving the Millennium Problem.",
-    "mathContext": "Liouville theorems classify global solutions. The stationary case has critical exponent 9/2 (Koch-Nadirashvili-Seregin-\u0160ver\u00e1k). Closing the gap to 3 would resolve the Millennium Problem.",
+    "content": "KNSS theorem: bounded ancient solutions to 3D NS are zero. Seregin: zero solutions at blowup time. Stationary Liouville: u ∈ L^{9/2} implies u = 0 (critical exponent 9/2, not 3). Landau solution u ~ C/|x| shows L³ threshold is sharp. The gap from 9/2 to 3 measures the distance to solving the Millennium Problem.",
+    "mathContext": "Liouville theorems classify global solutions. The stationary case has critical exponent 9/2 (Koch-Nadirashvili-Seregin-Šverák). Closing the gap to 3 would resolve the Millennium Problem.",
     "significance": "key",
     "relatedConcepts": [
       "KNSS",

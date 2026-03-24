@@ -53,7 +53,7 @@
       "startLine": 89,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sylvester-Schur Theorem: $P(\\binom{n}{k}) > k$",
     "content": "**sylvester_schur** (axiom): $P(\\binom{n}{k}) > k$ for $1 \\le k \\le n/2$.\n\nThe product $(n-k+1)(n-k+2) \\cdots n$ of $k$ consecutive integers, each exceeding $k$, must contain a prime factor $> k$. Sylvester (1892) proved this for consecutive products; Schur (1929) extended it to binomial coefficients.\n\n**choose_gt_one** (axiom): $\\binom{n}{k} > 1$ for valid parameters.\n\n**binom_has_large_prime** (proved): Derives the existential form $\\exists p$ prime with $p \\mid \\binom{n}{k}$ and $p > k$, combining the three axiomatized properties of $P$.",
     "mathContext": "Sylvester-Schur: among any $k$ consecutive integers $> k$, at least one has a prime factor $> k$. Equivalently, $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ always has a prime factor exceeding $k$ when $k \\le n/2$. The proof uses the pigeonhole principle on the prime factorization of the consecutive product.",
@@ -77,7 +77,7 @@
       "startLine": 120,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős 1955: $P(\\binom{n}{k}) \\gg k \\log k$",
     "content": "**erdos_1955_bound** (axiom): There exists $c > 0$ such that $P(\\binom{n}{k}) \\ge c \\cdot k \\cdot \\log k$ for all $k \\le n/2$.\n\nA significant quantitative improvement over Sylvester-Schur: the prime factor exceeds not just $k$ but $k \\log k$. Erdős's proof uses the prime number theorem and a careful counting argument on prime factors in consecutive products.\n\n**erdos_1955_asymptotic** (proved): Instantiates the bound for specific $n, k$ from the existential axiom using `obtain`.",
     "mathContext": "Erdős (1955) proved $P(\\binom{n}{k}) \\ge c \\cdot k \\cdot \\log k$ by analyzing the prime factorization of $\\binom{n}{k}$. The key is that among $k$ consecutive integers, the prime number theorem ensures $\\sim k/\\log k$ of them are prime, and these primes contribute large factors. The logarithmic improvement $k \\to k \\log k$ was a breakthrough over the linear bound.",
@@ -123,7 +123,7 @@
       "startLine": 165,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Gap Heuristic: $P > e^{c\\sqrt{k}}$",
     "content": "**prime_gap_heuristic** (axiom): $P(\\binom{n}{k}) > e^{c\\sqrt{k}}$ for some $c > 0$, eventually.\n\nThis stretched exponential bound far exceeds the polynomial conjecture $k^{1+c}$. It arises from Cramér-type heuristics: in a random model of the primes, among $k$ 'random' integers near $n$, the largest prime gap is $\\sim (\\log n)^2$, so the largest prime factor should be $\\sim n/(\\log n)^2 \\gg e^{c\\sqrt{k}}$.\n\n**heuristic_stronger_than_conjecture** (axiom): $e^{c\\sqrt{k}} > k^{1+c}$ eventually, since exponential growth dominates polynomial growth.",
     "mathContext": "The heuristic $P(\\binom{n}{k}) > e^{c\\sqrt{k}}$ comes from Cramér's model: the product $(n-k+1) \\cdots n$ contains $\\sim k/\\log n$ primes, and the largest prime gap in the interval is $\\sim (\\log n)^2$. The largest prime in the product is thus $\\sim n - O((\\log n)^2) \\approx n$. Since $k \\le n/2$, this gives $P \\approx n \\ge 2k$, far exceeding any polynomial in $k$.",
@@ -171,7 +171,7 @@
       "startLine": 222,
       "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Central Binomial and Small $k$ Cases",
     "content": "**central_binom_bound** (axiom): $P(\\binom{2k}{k}) > \\frac{4}{3}k$ for large $k$. The central binomial coefficient has particularly large prime divisors because it encodes the middle row of Pascal's triangle, with maximal combinatorial complexity.\n\n**small_k_case_2** (axiom): $P(\\binom{n}{2}) \\ge (n-1)/2$ for $n \\ge 4$. Since $\\binom{n}{2} = n(n-1)/2$, and at least one of $n, n-1$ has a prime factor $\\ge (n-1)/2$ (by Bertrand's postulate applied to $(n-1)/2$).",
     "mathContext": "For the central coefficient: $\\binom{2k}{k} \\sim \\frac{4^k}{\\sqrt{\\pi k}}$ by Stirling. The Korselt criterion and Erdős's analysis show that primes in $(k, 2k]$ divide $\\binom{2k}{k}$, and Bertrand guarantees at least one such prime. The $4/3$ constant improves on this by analyzing the distribution of primes in $(k, 4k/3]$.",
@@ -195,7 +195,7 @@
       "startLine": 253,
       "endLine": 259
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_683_summary** (proved): Combines the two established bounds into a conjunction:\n1. Sylvester-Schur: $\\forall n, k,\\, 1 \\le k \\le n/2 \\Rightarrow P(\\binom{n}{k}) > k$\n2. Erdős 1955: $\\exists c > 0,\\, \\forall n, k,\\, 1 \\le k \\le n/2 \\Rightarrow P(\\binom{n}{k}) \\ge c \\cdot k \\log k$\n\nProved by the term-mode pair `⟨fun n k hk hn => sylvester_schur hk hn, erdos_1955_bound⟩`.",
     "mathContext": "The summary captures the state of the art: $P(\\binom{n}{k}) > k$ (proved 1892) and $P(\\binom{n}{k}) \\ge c \\cdot k \\log k$ (proved 1955). The gap to the conjectured $k^{1+c}$ remains open after 70+ years.",

@@ -6,7 +6,7 @@
       "startLine": 41,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lagrange Identity for the Cauchy-Schwarz Deficit",
     "content": "Proves the Lagrange identity: the double sum of squared cross-terms $(f_ig_j - f_jg_i)^2$ equals twice the Cauchy-Schwarz deficit. The proof expands the squared difference via sub_sq and uses Finset sum manipulation (sum_comm, mul_sum, sum_mul) to collect terms into three products: $\\sum f^2 \\cdot \\sum g^2$, $\\sum g^2 \\cdot \\sum f^2$, and $2(\\sum fg)^2$. The left side is manifestly non-negative (sum of squares), immediately giving Cauchy-Schwarz as a corollary. This approach dates to Lagrange (1773), who used it to study 2×2 determinants.",
     "mathContext": "$$\\sum_{i \\in s} \\sum_{j \\in s} (f_i g_j - f_j g_i)^2 = 2\\left[(\\sum_{i \\in s} f_i^2)(\\sum_{i \\in s} g_i^2) - (\\sum_{i \\in s} f_i g_i)^2\\right]$$\nThe left side is manifestly $\\geq 0$, immediately giving Cauchy-Schwarz. Equality holds iff every cross-term vanishes.",
@@ -78,7 +78,7 @@
       "startLine": 115,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proportionality Extraction from Cross-Term Condition",
     "content": "Extracts proportionality from the cross-term condition: if $f_ig_j = f_jg_i$ for all $i,j$ and some $g_k \\neq 0$, then $f_i = (f_k/g_k) \\cdot g_i$ for all $i$. This is the classical proportionality condition: the two vectors are scalar multiples. Proved by dividing $f_ig_k = f_kg_i$ by $g_k$, using field_simp to handle the division. The reverse direction is algebraic: if $f_i = c \\cdot g_i$, then $f_ig_j - f_jg_i = c(g_ig_j - g_jg_i) = 0$.",
     "mathContext": "If $f_i g_k = f_k g_i$ for all $i$ and $g_k \\neq 0$, then $f_i = \\frac{f_k}{g_k} \\cdot g_i$, i.e., $f = c \\cdot g$ where $c = f_k/g_k$.",
@@ -101,7 +101,7 @@
       "startLine": 158,
       "endLine": 176
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Inner Product Space Cauchy-Schwarz Equality",
     "content": "Abstract CS equality for inner product spaces: $\\|\\langle u, v \\rangle\\| = \\|u\\| \\cdot \\|v\\|$ iff $u = c \\cdot v$ for some scalar $c$. Uses Mathlib's norm_inner_eq_norm_iff (which gives $\\exists r \\neq 0,\\; r \\bullet u = v$) and inverts. The reverse direction expands $\\langle c \\bullet v, v \\rangle = c \\cdot \\|v\\|^2$ and uses norm-smul. This lifts the finite-sum characterization to arbitrary (possibly infinite-dimensional) inner product spaces and Hilbert spaces.",
     "mathContext": "In a real inner product space $E$: $\\|\\langle u, v \\rangle\\| = \\|u\\| \\cdot \\|v\\| \\;\\Longleftrightarrow\\; \\exists c \\in \\mathbb{R},\\; u = c \\cdot v$",
@@ -126,7 +126,7 @@
       "startLine": 215,
       "endLine": 229
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Independent Cauchy-Schwarz Proof from Lagrange Identity",
     "content": "Independent proof of Cauchy-Schwarz from the Lagrange identity: $0 \\le \\sum\\sum(f_ig_j - f_jg_i)^2 = 2[(\\sum f^2)(\\sum g^2) - (\\sum fg)^2]$, so $(\\sum fg)^2 \\le (\\sum f^2)(\\sum g^2)$. This bypasses Mathlib's inner product infrastructure, giving a purely algebraic proof that works for arbitrary commutative rings. Concrete examples verify equality (proportional vectors $(1,2,3)$ and $(2,4,6)$) and strict inequality.",
     "mathContext": "$(\\sum f_i g_i)^2 \\leq (\\sum f_i^2)(\\sum g_i^2)$. Example: $(1,2,3) \\cdot (2,4,6) = 28$, $14 \\cdot 56 = 784 = 28^2$ (equality). Example: $(1,0) \\cdot (0,1) = 0 < 1$ (strict).",
@@ -149,7 +149,7 @@
       "startLine": 245,
       "endLine": 292
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hölder Conjugate Exponent Identities",
     "content": "Five identities for Hölder conjugate exponents with $1/p + 1/q = 1$: (1) $q = p/(p-1)$, (2) $(p-1)(q-1) = 1$, (3) $q/p + 1 = q$, (4) $1 < q$, (5) $p + q = pq$. These are the algebraic backbone of Hölder theory. All proved via field_simp and nlinarith. The identity $p + q = pq$ is particularly important: dividing by $pq$ recovers $1/p + 1/q = 1$, and it reveals the conjugate relation as symmetric under $p \\leftrightarrow q$.",
     "mathContext": "For $1 < p$ and $1/p + 1/q = 1$: $q = \\frac{p}{p-1}$, $(p-1)(q-1) = 1$, $\\frac{q}{p} + 1 = q$, $1 < q$, $p + q = pq$.",
@@ -197,7 +197,7 @@
       "startLine": 457,
       "endLine": 460
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Young's Equality Case: δ(a,b) = 0 iff a^p = b^q",
     "content": "Young's equality: $\\delta(a,b) = 0$ iff $a^p = b^q$. The forward direction (deficit $= 0 \\implies$ equality) uses strict convexity of $\\exp$: the convexity inequality is strict unless $x = y$, i.e., $p \\log a = q \\log b$, giving $a^p = b^q$. The reverse direction is algebraic: if $a^p = b^q = c$, then $a^p/p + b^q/q = c(1/p + 1/q) = c$ and $ab = a \\cdot a^{p/q} = a^{1+p/q} = a^p = c$, so the deficit vanishes. This is the pointwise engine that drives the Hölder equality proof.",
     "mathContext": "$\\frac{a^p}{p} + \\frac{b^q}{q} = ab \\;\\Longleftrightarrow\\; a^p = b^q$. Forward: `strictConvexOn_exp` gives strict inequality unless $p \\log a = q \\log b$. Reverse: if $a^p = b^q = c$, deficit $= c/p + c/q - c^{1/p+1/q} = c - c = 0$.",
@@ -221,7 +221,7 @@
       "startLine": 483,
       "endLine": 539
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hölder Equality: Normalized Case",
     "content": "Hölder equality in the normalized case: if $\\sum f_i^p = \\sum g_i^q = \\sum f_ig_i = 1$, then $f_i^p = g_i^q$ for all $i$. Proof: total Young deficit $= \\sum(f_i^p/p + g_i^q/q - f_ig_i) = 1/p + 1/q - 1 = 0$. Since each deficit $\\ge 0$ and their sum is 0, all are zero. By Young's equality case, $f_i^p = g_i^q$ pointwise. The reverse direction verifies the normalized conditions hold when power proportionality is assumed.",
     "mathContext": "If $\\sum f_i^p = \\sum g_i^q = \\sum f_ig_i = 1$ with $f,g \\geq 0$, then $f_i^p = g_i^q$ for all $i$. Total deficit: $\\sum \\delta_i = \\frac{1}{p} + \\frac{1}{q} - 1 = 0$.",
@@ -244,7 +244,7 @@
       "startLine": 541,
       "endLine": 600
     },
-    "type": "technique",
+    "type": "concept",
     "title": "General Hölder Equality (Finite Sums)",
     "content": "General Hölder equality: if $\\sum f_ig_i = (\\sum f_i^p)^{1/p}(\\sum g_i^q)^{1/q}$, then $\\exists c \\ge 0$ with $f_i^p = c \\cdot g_i^q$, where $c = \\|f\\|_p^p / \\|g\\|_q^q$. Reduces to the normalized case by dividing $f$ by $a = (\\sum f^p)^{1/p}$ and $g$ by $b = (\\sum g^q)^{1/q}$. Key cancellation: $a^p = \\sum f^p$ via rpow_mul. The normalization technique transforms a general inequality equality into a unit-ball problem.",
     "mathContext": "If $\\sum f_ig_i = \\|f\\|_p \\cdot \\|g\\|_q$, then $f_i^p = \\frac{\\|f\\|_p^p}{\\|g\\|_q^q} \\cdot g_i^q$ for all $i \\in s$.",
@@ -267,7 +267,7 @@
       "startLine": 638,
       "endLine": 650
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Recovering Cauchy-Schwarz from Hölder at p = q = 2",
     "content": "Recovers Cauchy-Schwarz proportionality from Hölder power proportionality at $p = q = 2$: $f_i^2 = c \\cdot g_i^2$ with $c \\ge 0$ and $f, g \\ge 0$ implies $f_i = \\sqrt{c} \\cdot g_i$. The proof computes $(f_i - \\sqrt{c} \\cdot g_i)^2 = f_i^2 - 2f_i\\sqrt{c}g_i + cg_i^2 = 0$ via nlinarith, using $f_i^2 = cg_i^2$ and $f_i\\sqrt{c}g_i \\ge 0$. This closes the circle: general Hölder specializes cleanly to the classical Cauchy-Schwarz proportionality.",
     "mathContext": "For $f_i, g_i \\geq 0$, $c \\geq 0$: $f_i^2 = c g_i^2 \\Rightarrow f_i = \\sqrt{c}\\, g_i$. Proof: $(f_i - \\sqrt{c}\\, g_i)^2 = 0$.",
@@ -290,7 +290,7 @@
       "startLine": 678,
       "endLine": 834
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Integral Hölder Equality (Measure Theory)",
     "content": "Integral Hölder equality (normalized case): if $\\int f^p = \\int g^q = \\int fg = 1$, then $f^p = g^q$ a.e. The proof mirrors the finite sum argument: (1) integral of Young deficits $= 1/p + 1/q - 1 = 0$, (2) the integrand is a.e. non-negative by Young's inequality, (3) integral_eq_zero_iff_of_nonneg_ae gives deficits $= 0$ a.e., (4) Young's equality gives $f^p = g^q$ a.e. The general (un-normalized) case follows by dividing by $\\|f\\|_p$ and $\\|g\\|_q$. This is the deepest result in the formalization, lifting the entire finite-sum framework to measure spaces.",
     "mathContext": "If $\\int f^p\\,d\\mu = \\int g^q\\,d\\mu = \\int fg\\,d\\mu = 1$ with $f, g \\geq 0$ a.e., then $f^p = g^q$ $\\mu$-a.e. Key: `integral_eq_zero_iff_of_nonneg_ae` replaces `sum_eq_zero_iff_of_nonneg`.",

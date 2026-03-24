@@ -98,7 +98,7 @@
       "startLine": 77,
       "endLine": 100
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Counting Function and Exponent Scale",
     "content": "Defines the key analytic objects:\n\n- **countA**: $A(N) = |\\{n \\leq N : n \\in A\\}|$ via `Finset.filter inSetA (Finset.range (N+1))`\n- **densityA**: $d(N) = A(N)/N$, the proportion of integers up to $N$ in $A$\n- **exponentFunc**: $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$, the natural scale for this problem\n\nAll three are `noncomputable` since they involve real-valued operations or undecidable predicates.",
     "mathContext": "$A(N) = |A \\cap [1, N]|$. The density $d(N) = A(N)/N$ decays as $\\exp(-\\Theta(\\sqrt{\\log N} \\cdot \\log \\log N))$. The scale $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$ grows slower than $\\log N$ but faster than $\\log \\log N$.",
@@ -170,7 +170,7 @@
       "startLine": 149,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Structural Properties and Smallest Element",
     "content": "Two results about the structure of $A$:\n\n1. **squarefree_part_structure** (sorry): If $n \\in A$, $p \\mid n$, and $p^2 \\nmid n$, then $\\exists q$ prime with $q \\mid n$, $q \\neq p$, and $q \\equiv 1 \\pmod{p}$. The witness $d \\equiv 1 \\pmod{p}$ must have a prime factor $\\equiv 1 \\pmod{p}$ dividing $n$.\n\n2. **smallest_nontrivial_in_setA** (axiom): There exists a smallest $n > 1$ in $A$, and all integers between 2 and $n-1$ are outside $A$. (This is $n = 6$.)",
     "mathContext": "For squarefree $n \\in A$: each prime $p \\mid n$ needs another prime $q \\mid n$ with $q \\equiv 1 \\pmod{p}$. This creates a 'witness graph' on the prime factors where each vertex has an incoming edge. The smallest non-trivial element is $6 = 2 \\times 3$ since $3 \\equiv 1 \\pmod{2}$.",

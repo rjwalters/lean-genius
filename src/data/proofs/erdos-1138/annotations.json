@@ -145,7 +145,7 @@
       "startLine": 55,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity of π",
     "content": "Proves that $\\pi$ is monotone: $a \\le b \\Rightarrow \\pi(a) \\le \\pi(b)$. The proof chains `Finset.card_le_card` with `Finset.filter_subset_filter` and `Finset.range_mono`. This is essential for ensuring that `primesInInterval` (defined as $\\pi(b) - \\pi(a)$) is non-negative in the natural number sense.",
     "mathContext": "$a \\le b \\implies \\pi(a) \\le \\pi(b)$. The proof is: $\\{p \\le a : \\text{prime}\\} \\subseteq \\{p \\le b : \\text{prime}\\}$ since $\\{0, \\ldots, a\\} \\subseteq \\{0, \\ldots, b\\}$, and subset implies $\\le$ on cardinalities.",
@@ -168,7 +168,7 @@
       "startLine": 62,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Values of π",
     "content": "Establishes $\\pi(0) = 0$, $\\pi(1) = 0$, and $\\pi(2) = 1$ by computation. These are proved using `simp` followed by `decide`, which unfolds the definitions and checks the finite computation. The fact $\\pi(2) = 1$ confirms that 2 is the smallest (and only even) prime.",
     "mathContext": "$\\pi(0) = 0$ (no primes $\\le 0$), $\\pi(1) = 0$ (1 is not prime), $\\pi(2) = 1$ (2 is the unique even prime). These base cases anchor the prime counting function and are used for sanity-checking the definition.",
@@ -191,7 +191,7 @@
       "startLine": 77,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Upper Bound on π",
     "content": "Proves $\\pi(n) \\le n + 1$: the number of primes up to $n$ is at most the total number of natural numbers up to $n$. Uses `Finset.card_filter_le` which states that filtering a finite set can only reduce cardinality.",
     "mathContext": "$\\pi(n) = |\\{p \\le n : \\text{prime}\\}| \\le |\\{0, \\ldots, n\\}| = n + 1$. This is far from the PNT bound $\\pi(n) \\sim n/\\log n$, but it is the tightest bound provable from the definition alone without analytic methods.",
@@ -236,7 +236,7 @@
       "startLine": 90,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem 1138 (Main Conjecture)",
     "content": "The central conjecture, stated as an axiom: for any constant $C > 1$ and tolerance $\\varepsilon > 0$, there exists $N$ such that for all $x \\ge N$ and all $y$ with $x/2 < y < x$, the number of primes in $(y, y + \\lfloor Cd \\rfloor]$ satisfies $(1 - \\varepsilon) \\cdot Cd/\\log y \\le \\pi(y + \\lfloor Cd \\rfloor) - \\pi(y) \\le (1 + \\varepsilon) \\cdot Cd/\\log y$. The extensive docstring documents the problem's status (OPEN) and why it is out of reach: even under RH, short-interval PNT needs $h > x^{1/2+\\varepsilon}$, while $Cd \\sim C(\\log x)^2$ is far shorter.",
     "mathContext": "The $\\varepsilon$-sandwich formulation avoids division: $f(x) \\sim g(x)$ is equivalent to $(1-\\varepsilon)g(x) \\le f(x) \\le (1+\\varepsilon)g(x)$ for all $\\varepsilon > 0$ eventually. The use of `Nat.floor (C * d)` converts the real-valued interval length to a natural number endpoint. The universality over $y \\in (x/2, x)$ is the strongest form, implying both average and worst-case control.",
@@ -263,7 +263,7 @@
       "startLine": 121,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bertrand's Postulate",
     "content": "States Bertrand's postulate as an axiom: for every $n \\ge 1$, there exists a prime $p$ with $n < p \\le 2n$. This was conjectured by Bertrand in 1845 and proved by Chebyshev in 1852. Erdős gave an elegant elementary proof in 1932 at age 19 — his first published paper. The result implies that $d(n) < n$ for all $n$, but this is vastly weaker than Cramér's conjecture $d(x) \\sim (\\log x)^2$.",
     "mathContext": "$\\forall n \\ge 1, \\, \\exists p \\text{ prime}: n < p \\le 2n$. Equivalently, the prime gap after any prime $p$ is at most $p$: $p_{n+1} - p_n < p_n$. Bertrand's postulate is available in Mathlib as `Nat.bertrand`, but is stated here as an axiom for self-containedness.",

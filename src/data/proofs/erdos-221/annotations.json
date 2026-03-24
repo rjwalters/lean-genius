@@ -347,7 +347,7 @@
       "startLine": 177,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiplicative Order of 2 mod $5^n$",
     "content": "**primitive_root_order:** For $n \\geq 1$, $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and $2^j \\not\\equiv 1 \\pmod{5^n}$ for $0 < j < 4 \\cdot 5^{n-1}$.\n\nThis quantitative statement confirms 2 generates the full multiplicative group $(\\mathbb{Z}/5^n\\mathbb{Z})^\\times$.",
     "mathContext": "The fact that 2 is a primitive root mod 5 (order 4) lifts to all $5^n$ by Hensel's lemma-type arguments. Specifically, if $g$ is a primitive root mod $p$ and $g^{p-1} \\not\\equiv 1 \\pmod{p^2}$, then $g$ is a primitive root mod $p^n$ for all $n$.",
@@ -436,7 +436,7 @@
       "startLine": 232,
       "endLine": 274
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary and Main Theorems",
     "content": "**erdos_221_summary:** Conjecture holds ∧ Ruzsa's construction works ∧ exact complement exists.\n\n**erdos_221_main:** Explicit representation: $\\exists A,\\; (\\forall n \\gg 1,\\; \\exists k, a \\in A,\\; n = 2^k + a) \\wedge |A \\cap [N]| = O(N/\\log N)$.\n\n**erdos_221:** Conjecture holds ∧ density is optimal ($\\Omega(N/\\log N)$ lower bound).\n\nThe problem is fully resolved with tight bounds.",
     "mathContext": "The final theorem `erdos_221` is the conjunction $\\text{Erdos221Conjecture} \\wedge \\text{density\\_lower\\_bound}$, establishing both existence and optimality.",

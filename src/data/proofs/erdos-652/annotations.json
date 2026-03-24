@@ -412,7 +412,7 @@
       "startLine": 222,
       "endLine": 224
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Final Summary",
     "content": "**erdos_652_summary**: $\\alpha_k \\to \\infty$ as $k \\to \\infty$.\n\nA clean one-line statement of the answer, directly referencing `alpha_k_unbounded`. Solved by Mathialagan (2021) using polynomial partitioning.",
     "mathContext": "The final answer to Erdős Problem #652 is affirmative: the threshold constants $\\alpha_k$ satisfy $\\alpha_k \\to \\infty$, with the quantitative bound $\\alpha_k \\geq C\\sqrt{k}$. Whether this bound is tight (i.e., whether $\\alpha_k = \\Theta(\\sqrt{k})$) remains open.",

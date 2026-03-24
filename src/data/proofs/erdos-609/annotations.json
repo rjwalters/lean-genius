@@ -191,7 +191,7 @@
       "startLine": 109,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "concept",
     "title": "K_{2^n} Avoids All Monochromatic Odd Cycles",
     "content": "**K_2n_avoids_odd_cycles:** There exists an $n$-coloring of $K_{2^n}$ with no monochromatic odd cycles of any length. This is achieved by the doubling construction: start with $K_2$ (1 color, trivially bipartite), and at each step double the graph, using a new color for all cross-edges. Each color class is bipartite, hence contains no odd cycles.",
     "mathContext": "The doubling construction gives a coloring $c : E(K_{2^n}) \\to [n]$ where color class $i$ forms a complete bipartite graph $K_{2^{i-1}, 2^{i-1}}$ (between the two copies at step $i$). Since complete bipartite graphs are bipartite, no color class contains an odd cycle. The vertex count $2^n$ is maximal: $n$ bipartite graphs on $V$ can edge-cover $K_N$ only if $N \\leq 2^n$ (each bipartite graph has at most $N^2/4$ edges, but the structure argument uses the product bound on bipartition sizes).",

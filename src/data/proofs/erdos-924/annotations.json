@@ -305,7 +305,7 @@
       "startLine": 289,
       "endLine": 300
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_924_summary (Proved)",
     "content": "The summary theorem combines three results: (1) Nešetřil-Rödl: general existence for all k ≥ 2, l ≥ 3, (2) Folkman: the original k = 2 case, (3) specific case f(3; 2) exists. All proved from the axioms.",
     "mathContext": "The proof uses `constructor` to split the conjunction. The first conjunct is `nesetril_rodl_1976` directly. The second is `folkman_1970`. The third applies `nesetril_rodl_1976 2 3` with `norm_num` to discharge k ≥ 2 and l ≥ 3. This structure demonstrates how the general theorem (Nešetřil-Rödl) subsumes both Folkman's special case and the most-studied Folkman number f(3; 2).",
@@ -320,7 +320,7 @@
       "startLine": 305,
       "endLine": 306
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_924 (Proved)",
     "content": "The main theorem: `∀ k l : ℕ, k ≥ 2 → l ≥ 3 → ErdosHajnalQuestion k l`. Defined directly as `nesetril_rodl_1976`, showing the complete solution is precisely the Nešetřil-Rödl theorem.",
     "mathContext": "This one-line proof `erdos_924 = nesetril_rodl_1976` is a clean demonstration that the Erdős-Hajnal question is exactly answered by the Nešetřil-Rödl theorem. The identification `erdos_924 := nesetril_rodl_1976` makes the mathematical point explicit: Problem #924 *is* the Nešetřil-Rödl theorem. The axiomatized proof delegates to the deep combinatorial content of the original 1976 paper.",
@@ -335,7 +335,7 @@
       "startLine": 312,
       "endLine": 315
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_924_answer (Proved)",
     "content": "Unpacks the existential: for any k ≥ 2, l ≥ 3, there exists a finite graph G that is K_{l+1}-free and has the k-Ramsey property for K_l. A direct application of `nesetril_rodl_1976`.",
     "mathContext": "This theorem makes the existential content explicit by unfolding `ErdosHajnalQuestion` into its constituent parts: existence of a type V with Fintype, a SimpleGraph G, and the conjunction `IsCliqueFree G (l+1) ∧ HasRamseyProperty G k l`. The proof is again a direct forwarding to the axiom, serving as a readable 'interface' to the main result for downstream use.",

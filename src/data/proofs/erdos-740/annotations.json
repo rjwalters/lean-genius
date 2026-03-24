@@ -246,7 +246,7 @@
       "startLine": 135,
       "endLine": 140
     },
-    "type": "insight",
+    "type": "definition",
     "title": "The Erdos-Hajnal Conjecture (Problem #740)",
     "content": "The central conjecture: if $\\chi(G) = \\mathfrak{m}$ is an infinite cardinal, then $G$ must contain an induced subgraph with the same chromatic number $\\mathfrak{m}$ that avoids all odd cycles of length $\\leq r$. This asserts that high chromatic number forces rich substructure even under cycle restrictions.\n\nThis was formulated by Erdos and Hajnal and appears in Erdos's 1981 paper [Er81] as one of the problems he 'would most like to see solved.'",
     "mathContext": "For infinite $\\mathfrak{m}$ and $r \\geq 1$: $\\chi(G) = \\mathfrak{m} \\implies \\exists S \\subseteq V,\\; \\chi(G[S]) = \\mathfrak{m} \\wedge \\text{oddGirth}(G[S]) > r$.",
@@ -313,7 +313,7 @@
       "startLine": 169,
       "endLine": 169
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Rodl's Theorem",
     "content": "Rodl's theorem (1977): every graph with $\\chi = \\aleph_0$ contains a triangle-free subgraph with $\\chi = \\aleph_0$. This is the deepest result formalized here, stated as an axiom since the proof uses advanced probabilistic methods beyond current Mathlib formalization capabilities.\n\nRodl's proof introduced the technique of random vertex selection with careful probability estimates, which became influential in combinatorics.",
     "mathContext": "Rodl proved $\\text{countableCase}(3)$: $\\chi(G) = \\aleph_0 \\implies \\exists H \\subseteq G,\\; \\chi(H) = \\aleph_0 \\wedge K_3 \\not\\subseteq H$. The proof uses the probabilistic method in infinite combinatorics.",
@@ -335,7 +335,7 @@
       "startLine": 175,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Countable Triangle-Free Corollary",
     "content": "A direct corollary restating Rodl's theorem: the countable case with $r = 3$ is resolved. This trivial deduction from the axiom demonstrates the formalization's structure.",
     "mathContext": "$\\text{countable\\_triangle\\_free} = \\text{rodl\\_theorem} : \\text{countableCase}(3)$.",
@@ -376,7 +376,7 @@
       "startLine": 198,
       "endLine": 200
     },
-    "type": "context",
+    "type": "definition",
     "title": "Threshold Function Open",
     "content": "The existence of the threshold function $f_r(\\mathfrak{m})$ remains unknown for most combinations of $r$ and $\\mathfrak{m}$. Even determining whether such a function is well-defined is a major open problem.",
     "significance": "supporting",
@@ -440,7 +440,7 @@
       "startLine": 226,
       "endLine": 231
     },
-    "type": "insight",
+    "type": "definition",
     "title": "Girth Variant Conjecture",
     "content": "A stronger variant of Problem #740: must $G$ with $\\chi = \\mathfrak{m}$ contain a subgraph with $\\chi = \\mathfrak{m}$ and girth $> r$? This forbids ALL short cycles (not just odd ones), making it strictly harder to satisfy. If true, it would immediately imply the odd cycle version.",
     "mathContext": "$\\text{girthConjecture}(\\mathfrak{m}, r) :\\iff \\chi(G) = \\mathfrak{m} \\implies \\exists H \\subseteq G,\\; \\chi(H) = \\mathfrak{m} \\wedge \\text{girth}(H) > r$.",
@@ -462,7 +462,7 @@
       "startLine": 237,
       "endLine": 246
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Girth Implies Odd Cycle Avoidance",
     "content": "A formally verified implication: the girth conjecture implies the Erdos-Hajnal conjecture for the same parameters. The proof is straightforward: if a subgraph has no cycles of any length $\\leq r$, it certainly has no odd cycles of length $\\leq r$. This is one of the few fully proved results in the formalization.",
     "mathContext": "$\\text{girthConjecture}(\\mathfrak{m}, r) \\implies \\text{erdosHajnalConjecture}(\\mathfrak{m}, r)$. Proof: $\\text{girth}(H) > r \\implies \\text{oddGirth}(H) > r$.",
@@ -505,7 +505,7 @@
       "startLine": 267,
       "endLine": 268
     },
-    "type": "context",
+    "type": "concept",
     "title": "Finite Triangle-Free Progress",
     "content": "An axiom asserting partial progress on the finite $r = 3$ case: there exists a constant $c$ such that every graph with $\\chi \\geq c$ contains a triangle-free subgraph with $\\chi \\geq 3$. This is inspired by results of Thomassen and others on forcing triangle-free subgraphs with high chromatic number.",
     "mathContext": "$\\exists c \\in \\mathbb{N},\\; \\text{finiteAnalog}(c, 3, 3)$. Related to Thomassen's result that $\\chi(G) \\geq 4$ implies $G$ has a triangle-free subgraph with $\\chi \\geq 3$.",
@@ -547,7 +547,7 @@
       "startLine": 286,
       "endLine": 296
     },
-    "type": "technique",
+    "type": "concept",
     "title": "No Infinite Bipartite Subgraph",
     "content": "For $\\mathfrak{m} > 2$, it is impossible to find a bipartite subgraph with $\\chi = \\mathfrak{m}$, because every bipartite graph has $\\chi \\leq 2$. This shows that Problem #740 must have a finite bound $r$: the 'avoid ALL odd cycles' (bipartite) version fails for large chromatic numbers. The proof uses sorry for the final contradiction step.",
     "mathContext": "$\\mathfrak{m} > 2 \\implies \\neg(\\forall G,\\; \\chi(G) = \\mathfrak{m} \\implies \\exists H \\subseteq G,\\; \\chi(H) = \\mathfrak{m} \\wedge H \\text{ bipartite})$, since bipartite $\\implies \\chi \\leq 2 < \\mathfrak{m}$.",
@@ -569,7 +569,7 @@
       "startLine": 308,
       "endLine": 317
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "Combines the three main results into a single conjunction: (1) Rodl's theorem resolving the countable triangle-free case, (2) the girth conjecture implying the odd cycle conjecture, and (3) the impossibility of bipartite subgraphs with $\\chi > 2$. This provides a complete picture of what is currently known about Problem #740.",
     "mathContext": "$\\text{erdos\\_740\\_summary} : \\text{countableCase}(3) \\wedge (\\text{girthConj} \\Rightarrow \\text{oddCycleConj}) \\wedge (\\mathfrak{m} > 2 \\implies \\neg\\text{bipartiteVersion})$.",
@@ -589,7 +589,7 @@
       "startLine": 323,
       "endLine": 323
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem (Erdos 740)",
     "content": "The main exported theorem: $\\text{countableCase}(3)$, i.e., Rodl's theorem. This identifies the strongest known positive result as the headline theorem of the formalization.",
     "mathContext": "$\\text{erdos\\_740} : \\text{countableCase}(3) = \\text{rodl\\_theorem}$.",
@@ -609,7 +609,7 @@
       "startLine": 329,
       "endLine": 330
     },
-    "type": "context",
+    "type": "definition",
     "title": "Open Question",
     "content": "The formalization records the open question explicitly: does the Erdos-Hajnal conjecture hold for all infinite cardinals $\\mathfrak{m}$ and all $r \\geq 1$? This remains one of the major unsolved problems in infinite graph theory.",
     "significance": "supporting",
@@ -628,7 +628,7 @@
       "startLine": 336,
       "endLine": 339
     },
-    "type": "insight",
+    "type": "definition",
     "title": "Erdos's Most Wanted Problem",
     "content": "The full universally quantified conjecture: for ALL infinite cardinals $\\mathfrak{m}$ and ALL $r \\geq 1$, the conjecture holds. Erdos listed this in his 1981 paper 'On the combinatorial problems which I would most like to see solved' ([Er81]), placing it among approximately 50 problems he considered most important. The problem also appears in his 1995 survey [Er95d].",
     "mathContext": "$\\text{erdosMostWanted} :\\iff \\forall \\mathfrak{m} \\text{ infinite},\\; \\forall r \\geq 1,\\; \\text{erdosHajnalConjecture}(\\mathfrak{m}, r)$.",

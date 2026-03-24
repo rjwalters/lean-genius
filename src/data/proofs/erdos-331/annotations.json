@@ -313,7 +313,7 @@
       "startLine": 234,
       "endLine": 245
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Three Proved Theorems",
     "content": "Three genuinely proved theorems conclude the formalization. `erdos_331` (line 234) is `¬ErdosConjecture331`, defined directly as `erdos_331_disproved`. `erdos_331_main` (line 237) is an alias of `erdos_331` — both names are available for external reference. `erdos_331_ruzsa` (lines 240–243) provides the existential witness: $\\exists A, B$ with `HasSqrtDensity A`, `HasSqrtDensity B`, and $\\neg$`HasInfinitelyManyCommonDifferences A B`; the proof term is simply `⟨ruzsaA, ruzsaB, ruzsa_counterexample⟩`. The namespace is closed at line 245. The complete proof chain: `ruzsaA_has_sqrt_density` + `ruzsaB_has_sqrt_density` + `ruzsa_no_common_differences` → `ruzsa_counterexample` → `erdos_331_disproved` → `erdos_331` → `erdos_331_main`; and `ruzsa_counterexample` → `erdos_331_ruzsa`. The file has 0 sorries and 9 axioms.",
     "mathContext": "**Proved**: $\\neg\\text{ErdosConjecture331}$ and $\\exists A, B : |A(N)|, |B(N)| \\gg \\sqrt{N} \\land |\\text{CD}(A,B)| < \\infty$.\n\nThe **proof chain**: `ruzsaA_has_sqrt_density` + `ruzsaB_has_sqrt_density` + `ruzsa_no_common_differences` → `ruzsa_counterexample` → `erdos_331_disproved`.\n\nLean proof of `erdos_331_ruzsa`:\n```lean\n⟨ruzsaA, ruzsaB, ruzsa_counterexample⟩\n```\nThe tuple `ruzsa_counterexample : HasSqrtDensity A ∧ HasSqrtDensity B ∧ ¬HasInfinitely...` is used directly as the witness.",

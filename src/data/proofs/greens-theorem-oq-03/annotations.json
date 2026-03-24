@@ -80,7 +80,7 @@
       "startLine": 123,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Area Formula via intervalIntegral: Area(D) = ∫_a^b (g(x) - f(x)) dx",
     "content": "TypeIRegion.area is a noncomputable def using Mathlib's intervalIntegral. The area nonnegativity proof (typeI_area_nonneg) uses intervalIntegral.integral_nonneg with R.hab.le for the interval ordering, then linarith from hfg to establish g(x) - f(x) ≥ 0 pointwise.\n\nFor rectangles, typeI_rect_area proves (rectToTypeI).area = (b-a)*(d-c) by using show to reduce to a constant integral, then rw [integral_const, smul_eq_mul] — the rewrite closes the goal via rfl (no ring needed). The unit square area = 1 follows by unfold + rw + norm_num.",
     "mathContext": "**Area formula**: $\\text{Area}(D) = \\int_a^b (g(x) - f(x))\\,dx$. **Nonnegativity**: $g(x) - f(x) \\geq 0$ on $[a,b]$ from `hfg`, so `integral_nonneg` applies. **Rectangle**: $\\int_a^b (d-c)\\,dx = (b-a)(d-c)$ via `integral_const`. **Key Lean fact**: `rw [integral_const, smul_eq_mul]` closes `(b-a)*(d-c) = (b-a)*(d-c)` automatically via `rfl` — no `ring` needed after `smul_eq_mul`.",
@@ -131,7 +131,7 @@
       "startLine": 181,
       "endLine": 210
     },
-    "type": "context",
+    "type": "concept",
     "title": "Green's Theorem Axiom: Concrete Non-Trivial Formulation",
     "content": "greens_theorem_typeI is an axiom (not True!) stating the concrete Green's theorem formula for TypeI regions. Unlike the base file's `axiom greens_theorem_general : True`, this axiom has substantive mathematical content: it equates the iterated integral of (∂Q/∂x - ∂P/∂y) to a specific combination of four boundary integrals involving P, Q along the curves f(x), g(x) and the vertical sides.\n\nThe boundary formula uses deriv R.g x and deriv R.f x — the chain rule terms from parametrizing the boundary curves. The smoothness hypotheses hP_smooth and hQ_smooth use HasDerivAt (pointwise differentiability), not ContinuousOn — this is intentional for generality.\n\nA full proof sketch: ∬ ∂P/∂y dA = inner FTC: ∫_a^b [P(x,g(x)) - P(x,f(x))] dx. For ∬ ∂Q/∂x dA, apply FTC to outer integral + Fubini. The boundary decomposes into lower curve (with -P), upper curve (with P and Q), right side, left side.",
     "mathContext": "**Green's theorem**: $\\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA = \\oint_{\\partial D} P\\,dx + Q\\,dy$. **For TypeI boundary**: lower curve $(x, f(x))$ contributes $\\int_a^b Q(x,f(x)) f'(x)\\,dx + \\int_a^b P(x,f(x))\\,dx$; upper curve $(x,g(x))$ contributes with opposite sign; vertical sides $x=a$ (downward) and $x=b$ (upward) contribute $\\int_{f(a)}^{g(a)}$ and $\\int_{f(b)}^{g(b)}$ terms. **Key**: `deriv R.f x` and `deriv R.g x` appear in boundary Q-integrals from chain rule.",

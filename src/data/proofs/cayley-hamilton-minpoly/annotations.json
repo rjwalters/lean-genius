@@ -28,7 +28,7 @@
       "startLine": 68,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Minimal Polynomial Reduction Theorem",
     "content": "The core theorem: evaluating any polynomial $f$ at matrix $M$ equals evaluating the remainder $f \\bmod \\text{minpoly}(K, M)$. This is the matrix-algebra analogue of modular arithmetic: just as $a \\equiv a \\bmod n$ in $\\mathbb{Z}/n\\mathbb{Z}$, we have $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\text{minpoly})$. The proof applies the division algorithm $f = q \\cdot \\text{minpoly} + r$, evaluates at $M$, and uses $\\text{aeval}_M(\\text{minpoly}) = 0$ to eliminate the quotient term. The companion theorem shows $\\text{aeval}_M(f - f \\bmod \\mu_M) = 0$.",
     "mathContext": "$\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$ where $\\mu_M = \\text{minpoly}(K, M)$. Proof: $f = q \\cdot \\mu_M + r \\Rightarrow \\text{aeval}_M(f) = \\text{aeval}_M(q) \\cdot 0 + \\text{aeval}_M(r) = \\text{aeval}_M(r)$.",
@@ -212,7 +212,7 @@
       "startLine": 346,
       "endLine": 365
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Polynomial Identities via Annihilator Theory",
     "content": "The annihilator ideal structure provides a systematic method for proving matrix identities: to show $\\text{aeval}_M(f) = \\text{aeval}_M(g)$, it suffices to show $\\mu_M \\mid (f - g)$. The theorem `aeval_eq_of_minpoly_dvd_diff` formalizes this. Additionally, `annihilating_degree_ge_minpoly` shows that any nonzero annihilating polynomial has degree $\\geq \\deg(\\mu_M)$, confirming the minimality of $\\mu_M$.",
     "mathContext": "If $f - g = \\mu_M \\cdot q$ then $\\text{aeval}_M(f) = \\text{aeval}_M(g)$. For nonzero $f$ with $\\text{aeval}_M(f) = 0$: $\\deg(f) \\geq \\deg(\\mu_M)$.",

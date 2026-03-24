@@ -51,7 +51,7 @@
       "startLine": 64,
       "endLine": 70
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Equivalent Formulations",
     "content": "Proved theorem: `IsSumFree A ↔ IsSumFree' A`. The two definitions ($a \\ne b + c$ vs $b + c \\ne a$) are logically equivalent by symmetry of inequality.",
     "significance": "supporting",
@@ -96,7 +96,7 @@
       "startLine": 98,
       "endLine": 105
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Upper Half Is Sum-Free",
     "content": "Proved theorem: any subset of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ is sum-free. If $a, b \\ge n/2 + 1$, then $a + b \\ge n + 2 > n$, so no sum can land in the set.",
     "significance": "key",
@@ -229,7 +229,7 @@
       "startLine": 166,
       "endLine": 173
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Cameron-Erdős Conjecture: Proved",
     "content": "The theorem `cameron_erdos_proved : cameronErdosConjecture` combines the lower and upper bounds. Contains a `sorry` for the asymptotic bookkeeping: $2^{n/2} \\le f(n) \\le C \\cdot 2^{n/2}$ implies $\\log_2 f(n) \\in [n/2, n/2 + O(1)]$.",
     "significance": "key",
@@ -252,7 +252,7 @@
       "startLine": 182,
       "endLine": 184
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Empty Set Is Sum-Free",
     "content": "Proved: $\\emptyset$ is sum-free (vacuously, no elements to form a sum). Proved by contradiction: $a \\in \\emptyset$ is false.",
     "significance": "supporting",
@@ -274,7 +274,7 @@
       "startLine": 189,
       "endLine": 193
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Singletons Are Sum-Free",
     "content": "Proved: $\\{x\\}$ is sum-free for $x > 0$. If $a, b, c \\in \\{x\\}$, then $a = b = c = x$, so $a = b + c$ would mean $x = 2x$, contradicting $x > 0$.",
     "significance": "supporting",
@@ -296,7 +296,7 @@
       "startLine": 199,
       "endLine": 210
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Odd Numbers Are Sum-Free",
     "content": "Proved: the set of odd numbers in $[0, n]$ is sum-free. If $a, b, c$ are all odd, then $b + c$ is even, so $b + c \\ne a$ (odd). This gives another large sum-free family of size $\\lceil n/2 \\rceil$.",
     "significance": "key",
@@ -388,7 +388,7 @@
       "startLine": 273,
       "endLine": 285
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "Proved theorem combining all main results: (1) trivial lower bound $f(n) \\ge 2^{n/2}$, (2) Green/Sapozhenko upper bound $f(n) \\le C \\cdot 2^{n/2}$, (3) existence of precise asymptotic constants $c_{\\text{even}}, c_{\\text{odd}} > 0$.",
     "significance": "key",
@@ -411,7 +411,7 @@
       "startLine": 290,
       "endLine": 290
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Erdős Problem #748: Proved",
     "content": "The final theorem `erdos_748 : cameronErdosConjecture := cameron_erdos_proved` confirms the Cameron-Erdős conjecture. The number of sum-free subsets of $\\{1, \\ldots, n\\}$ is $2^{(1+o(1))n/2}$.",
     "significance": "key",

@@ -120,7 +120,7 @@
       "startLine": 108,
       "endLine": 115
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Sothanaphan Counterexample",
     "content": "**def Erdos401Strong**: Prop\n  Same as Erdos401Conjecture but with '∀ n ≥ N₀' instead of '∃ᶠ n'\n\n**axiom sothanaphan_counterexample**: ¬Erdos401Strong\n\n**Counterexample**: Take n = p_{r+1}^k - 1 (one less than a prime power).\n\nFor such n, the divisibility constraint forces a₁ + a₂ ≤ n + 2·p_{r+1}, which is bounded independent of how large k is.\n\nThis shows the quantifier matters: 'infinitely many n' vs 'all large n' give different answers!",
     "mathContext": "This is a subtle point about quantifiers. The 'for all large n' version fails because some n have special structure that limits the excess.",
@@ -139,7 +139,7 @@
       "startLine": 121,
       "endLine": 130
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The g₂ Function",
     "content": "**noncomputable def g₂ (n : ℕ)**: ℝ\n  sSup { a₁ + a₂ - n | a₁!a₂! | n! }\n\nThe maximum excess when factorials divide n! (no extra factors).\n\n**axiom g2_log_bound**: ∃ C > 0, ∀ n > 1, g₂(n) ≤ C · log(n)\n\n**noncomputable def g₂_modified (n r : ℕ)**: ℝ\n  sSup { a₁ + a₂ - n | FactorialDivides a₁ a₂ n r }\n\nThe modified version with primorial factors - this can exceed C·log(n) by f(r)·log(n).",
     "mathContext": "The g_k functions from Problem #400 measure the 'excess' possible in factorial divisibility. Problem #401 asks how the modified g₂ behaves.",

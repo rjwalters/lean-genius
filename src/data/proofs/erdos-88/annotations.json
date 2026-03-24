@@ -496,7 +496,7 @@
       "startLine": 285,
       "endLine": 290
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Answer",
     "content": "**Answer**: YES\n\nThe Erdős-McKay conjecture is TRUE (KSSS 2022).",
     "mathContext": "The answer string and prize value ($100) are recorded as Lean definitions for documentation. The `#check` commands at lines 294–296 verify that all key definitions (`erdos_88`, `ksss_theorem`, `delta`) are well-formed. This is a fully solved Erdős problem with a clean, sorry-free formalization.",

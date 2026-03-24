@@ -117,7 +117,7 @@
       "startLine": 216,
       "endLine": 256
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ThreeAPFree Equivalence",
     "content": "**Key Result**: Our `IsAPFree S 3` is equivalent to Mathlib's `ThreeAPFree S`.\n\nMathlib's definition: ThreeAPFree means for a, b, c in S with a + c = 2b, we have a = b.\n\nOur definition: IsAPFree S 3 means no (a, a+d, a+2d) with d > 0 all in S.\n\nThe proof shows these are the same condition.",
     "mathContext": "threeAPFree_iff_isAPFree: ThreeAPFree S <-> IsAPFree S 3",
@@ -139,7 +139,7 @@
       "startLine": 261,
       "endLine": 271
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Roth's Theorem via Mathlib",
     "content": "**Breakthrough**: The k=3 case is FULLY PROVED using Mathlib.\n\nWe apply `roth_3ap_theorem_nat` via the equivalence established above.\n\nThe bound comes from `cornersTheoremBound(delta/3)`, which uses the Szemeredi Regularity bound (a tower-type function).",
     "mathContext": "roth_theorem_via_mathlib: RothTheorem := apply roth_3ap_theorem_nat",

@@ -124,7 +124,7 @@
       "startLine": 114,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Schinzel's Infinitude and A_unbounded",
     "content": "**schinzel_infinite:** Axiomatizes that $A$ is infinite (`A.Infinite`). Credited by Erdős in [Er77c] without a specific reference to Schinzel's proof method.\n\n**A_unbounded:** Derived constructively from `schinzel_infinite`: for every $N$, there exists $n \\in A$ with $n > N$. The proof proceeds by contradiction — if all elements of $A$ were $\\leq N$, then $A \\subseteq \\text{Finset.range}(N+1)$, contradicting infinitude.",
     "mathContext": "Schinzel's result: $|A| = \\infty$, equivalently $\\forall N, \\exists n \\in A : n > N$. The proof of `A_unbounded` uses `Set.Finite.subset` to derive a contradiction: a subset of a finite set cannot be infinite.",

@@ -29,7 +29,7 @@
       "startLine": 53,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence with Mathlib's smoothNumbers",
     "content": "**isSmooth_iff_smoothNumbers**: *Proved* equivalence between `isSmooth k n` and $n \\in \\text{Nat.smoothNumbers}(k+1)$. The offset by 1 arises because `smoothNumbers` uses a strict bound: $n \\in \\text{smoothNumbers}(k+1)$ means all prime factors are $< k+1$, i.e., $\\leq k$. The proof uses `Nat.prime_of_mem_primeFactors`, `Nat.dvd_of_mem_primeFactors`, and `Nat.lt_add_one_iff`.",
     "mathContext": "$\\text{isSmooth}(k, n) \\iff n \\in \\text{smoothNumbers}(k+1)$",
@@ -119,7 +119,7 @@
       "startLine": 133,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sylvester–Schur Bound: f(k) ≤ k",
     "content": "**sylvester_schur_bound**: *Proved*: $f(k) \\leq k$. The proof is one line: `f_min k k (sylvester_schur k)`, applying the minimality of $f(k)$ to the fact that $k$ itself is a valid witness. This 'trivial' bound is the starting point for all improvements.",
     "mathContext": "$f(k) \\leq k$",
@@ -212,7 +212,7 @@
       "startLine": 182,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Examples: k = 2, 3",
     "content": "**example_k2** and **example_k3**: *Proved*: $f(2) \\leq 2$ and $f(3) \\leq 3$ as immediate corollaries of `sylvester_schur_bound`. For $k = 2$, the 2-smooth numbers are powers of 2 ($1, 2, 4, 8, 16, \\ldots$) with exponentially growing gaps. For $k = 3$, the 3-smooth numbers are $2^a \\cdot 3^b$ ($1, 2, 3, 4, 6, 8, 9, 12, \\ldots$).",
     "mathContext": "$f(2) \\leq 2,\\quad f(3) \\leq 3$",
@@ -259,7 +259,7 @@
       "startLine": 221,
       "endLine": 226
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds Summary",
     "content": "**bounds_summary**: *Proved*: combines two results into a conjunction: (1) $f(k) \\leq k$ from `sylvester_schur_bound` and (2) $\\forall^\\infty k, f(k) < 3k/\\log k$ from `erdos_1955_bound`. The proof splits the conjunction and applies each component directly.",
     "mathContext": "$f(k) \\leq k \\wedge \\forall^\\infty k, f(k) < 3k/\\log k$",

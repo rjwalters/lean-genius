@@ -54,7 +54,7 @@
       "startLine": 59,
       "endLine": 62
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Consecutive Square Product",
     "content": "consecutiveSquareProduct(p, k) = ∏_{i=0}^k (p² + i) = p²(p²+1)...(p²+k). This is k+1 consecutive integers starting at p².",
     "mathContext": "The product of k+1 terms, each a consecutive integer.",
@@ -100,7 +100,7 @@
       "startLine": 88,
       "endLine": 97
     },
-    "type": "definition",
+    "type": "concept",
     "title": "k-Good Primes",
     "content": "isKGood(p, k) := p.Prime ∧ hasLargestPrimeFactor(product, p). A prime p is k-good if p is the largest prime factor of the product.",
     "mathContext": "The central definition: when is p the dominant prime factor?",
@@ -146,7 +146,7 @@
       "startLine": 111,
       "endLine": 121
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Main Conjecture",
     "content": "ErdosConjecture383 := ∀k, kGoodPrimes(k) is infinite. ErdosConjecture383' uses Nat.maxPrimeFac directly.",
     "mathContext": "The conjecture asserts infinitely many k-good primes for each k.",
@@ -170,7 +170,7 @@
       "startLine": 128,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Partial Results",
     "content": "all_primes_zero_good: every prime is 0-good. infinitely_many_zero_good: kGoodPrimes(0) is infinite. positive_density_smooth: smooth numbers have positive density.",
     "mathContext": "The k=0 case is trivial. Smooth number density supports the general conjecture.",
@@ -309,7 +309,7 @@
       "startLine": 206,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Formal Statement",
     "content": "erdos_383_statement: The conjecture using Nat.maxPrimeFac and Finset.Icc.",
     "mathContext": "Precise formal statement adapted from formal-conjectures.",

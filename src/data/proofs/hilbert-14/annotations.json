@@ -25,7 +25,7 @@
       "startLine": 86,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hilbert's Basis Theorem (1888)",
     "content": "**Hilbert's Basis Theorem** states that if R is a Noetherian ring, then the polynomial ring R[X] is also Noetherian.\n\nThis was proved by Hilbert in 1888 as part of his revolutionary approach to invariant theory. Rather than computing invariants explicitly, Hilbert showed existence via finiteness arguments.",
     "mathContext": "R Noetherian => R[X] Noetherian => R[X,Y] Noetherian => ...\n\nBy induction, k[x_1, ..., x_n] is Noetherian for any field k.",

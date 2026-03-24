@@ -215,7 +215,7 @@
       "startLine": 176,
       "endLine": 193
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Sequence Examples",
     "content": "**constant_seq_unit_interval**: A constant sequence x_n = c with c ∈ [0,1] is a valid unit interval sequence.\n\n**constant_seq_diff_zero**: For constant sequences, |x(m+n) - x(m)| = 0 always, so ALL pairs are good!\n\n**harmonic_seq_unit_interval**: The sequence x_n = n/(n+1) stays in [0, 1) and converges to 1.",
     "mathContext": "The harmonic sequence n/(n+1) = 1 - 1/(n+1) shows that sequences can approach the boundary. The proof uses div_le_one and positivity.",

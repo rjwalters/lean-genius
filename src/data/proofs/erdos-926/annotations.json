@@ -90,7 +90,7 @@
       "startLine": 84,
       "endLine": 85
     },
-    "type": "insight",
+    "type": "concept",
     "title": "$C_4$ Containment",
     "content": "$H_k$ contains $C_4$ (a 4-cycle) as a subgraph for $k \\geq 3$: the cycle $x - y_1 - z_{12} - y_2 - x$. This is crucial because $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ by Kővári-Sós-Turán, giving a free lower bound on $\\mathrm{ex}(n; H_k)$.",
     "mathContext": "$C_4 \\subseteq H_k$ for $k \\geq 3$, so $\\mathrm{ex}(n; H_k) \\geq \\mathrm{ex}(n; C_4) \\gg n^{3/2}$.",
@@ -132,7 +132,7 @@
       "startLine": 100,
       "endLine": 101
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Bipartiteness of $H_k$",
     "content": "$H_k$ is bipartite with parts $\\{x\\} \\cup \\{z_{ij}\\}$ and $\\{y_1, \\ldots, y_k\\}$: vertex $x$ connects only to $y$-vertices, and each $z_{ij}$ connects only to $y_i$ and $y_j$. This bipartite structure is relevant for applying Kővári-Sós-Turán type bounds.",
     "mathContext": "$H_k$ is bipartite: $V(H_k) = (\\{x\\} \\cup \\{z_{ij}\\}) \\sqcup \\{y_1, \\ldots, y_k\\}$ with all edges crossing the partition.",

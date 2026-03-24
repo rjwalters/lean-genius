@@ -91,7 +91,7 @@
       "startLine": 48,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties of Rademacher Functions",
     "content": "Four foundational results about Rademacher multiplicative functions:\n\n1. **$f(1) = 1$** (`rademacher_one`): Follows directly from the completely multiplicative condition.\n\n2. **$f(n) \\in \\{-1, 1\\}$ for all $n > 0$** (`rademacher_values_pm1`): Since $f(p) = \\pm 1$ for primes and $f$ is completely multiplicative, $f(n) = \\prod f(p_i)^{a_i} = \\pm 1$. (Currently `sorry`.)\n\n3. **$|f(n)| = 1$ for all $n > 0$** (`rademacher_abs_one`): Immediate from the $\\pm 1$ values. This justifies the trivial bound $|S_f(N)| \\le N$.\n\n4. **$f(0) = 0$** (`completely_mult_zero`): From $f(0) = f(0 \\cdot 0) = f(0)^2$, so $f(0) \\in \\{0, 1\\}$; the proof shows $f(0) = 0$ by algebraic reasoning with `ring_nf` and `omega`.",
     "mathContext": "$f(1) = 1$, $f(n) = \\pm 1$ for $n > 0$, $|f(n)| = 1$ for $n > 0$, $f(0) = 0$",
@@ -179,7 +179,7 @@
       "startLine": 122,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Theorems and Bounds",
     "content": "Three structural results connecting the definitions:\n\n1. **`partialSum_zero`**: $S_f(0) = 0$, the empty sum. Proved by `simp [partialSum]`.\n\n2. **`atherfold_implies_subpolynomial`**: Atherfold's bound implies $|S_f(N)| \\le C \\cdot N^{1/2+\\delta}$ for any $\\delta > 0$. This follows because $(\\log N)^{1+\\varepsilon} = o(N^\\delta)$ for any $\\delta > 0$. Currently `sorry` — filling this in requires showing log-polynomial growth is dominated by any positive power of $N$.\n\n3. **`partialSum_trivial_bound`**: $|S_f(N)| \\le N$ for Rademacher functions. Since $|f(m)| = 1$, the triangle inequality gives $|\\sum f(m)| \\le \\sum |f(m)| = N$. Currently `sorry`.",
     "mathContext": "$S_f(0) = 0$; $(\\log N)^{1+\\varepsilon} = o(N^\\delta)$ implies subpolynomial bound; $|S_f(N)| \\le N$ by triangle inequality",
@@ -201,7 +201,7 @@
       "startLine": 145,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Growth Rate Pinch Theorem",
     "content": "**If the conjecture is true**, combined with Atherfold's upper bound, the partial sums are 'pinched' between $C_1 \\sqrt{N}$ (infinitely often from below) and $C_2 \\sqrt{N} (\\log N)^{1+\\varepsilon}$ (eventually from above).\n\nThis means the **exact growth rate** is $\\sqrt{N}$ up to logarithmic factors:\n$$\\sqrt{N} \\ll |S_f(N)| \\ll \\sqrt{N} (\\log N)^{1+\\varepsilon}$$\n(in the sense of infinitely-often lower bound and eventual upper bound).\n\nThe proof is the only fully-proved non-trivial theorem: it directly combines the conjecture hypothesis with Atherfold's axiom, using $C_1 = 1$ and extracting $C_2$ from the Atherfold bound.\n\nThis pinch result demonstrates the formalization's value: it precisely captures how existing results constrain the answer.",
     "mathContext": "$C_1 \\sqrt{N} \\le |S_f(N)| \\le C_2 \\sqrt{N} (\\log N)^{1+\\varepsilon}$ combining conjecture + Atherfold",

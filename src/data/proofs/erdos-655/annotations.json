@@ -139,7 +139,7 @@
   {
     "id": "ann-e655-countingLemma",
     "proofId": "erdos-655",
-    "type": "technique",
+    "type": "concept",
     "title": "Counting Lemma: n-1 ≤ 2·|distances from i|",
     "content": "Under the NoConcyclicTriple condition, the n-1 other points map to distinct distances with multiplicity ≤ 2 each, giving n-1 ≤ 2·|distinctDistancesFrom P i|.",
     "mathContext": "This is the key **counting lemma** proved in full in Lean. The proof decomposes $\\{j \\neq i\\}$ into fibers by distance value using `Finset.card_eq_sum_card_fiberwise`, bounds each fiber by 2 using `NoConcyclicTriple`, and sums: $n-1 = \\sum_{r} |\\text{fiber}_r| \\leq \\sum_r 2 = 2 \\cdot |\\text{distinctDistancesFrom}(P,i)|$. The fiber decomposition is the combinatorial core—it requires showing that the distance function maps $\\{j \\neq i\\}$ into `distinctDistancesFrom P i`, which needs injectivity of $P$ to ensure $d(x_i, x_j) > 0$ for $j \\neq i$. This is a **fully proved** result (no sorry), making it one of the substantive Lean proofs in the gallery.",
@@ -163,7 +163,7 @@
   {
     "id": "ann-e655-basicBound",
     "proofId": "erdos-655",
-    "type": "technique",
+    "type": "concept",
     "title": "Basic (n-1)/2 Distance Bound",
     "content": "Under NoConcyclicTriple, every point determines at least (n-1)/2 distinct distances. Proved by applying the counting lemma and dividing by 2.",
     "mathContext": "The theorem `basic_distance_bound` derives $(n-1)/2 \\leq |\\text{distinctDistancesFrom}(P, i)|$ as a direct corollary of the counting lemma via `omega`. This bound is **tight**: equally-spaced points on a circle achieve exactly $\\lceil n/2 \\rceil$ distinct distances from each point (Hunter's counterexample). The conjecture asks whether the stronger `NoFourConcyclic` condition forces a multiplicative improvement to $(1+c) \\cdot n/2$. This is a **fully proved** theorem with no sorry.",

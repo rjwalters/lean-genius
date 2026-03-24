@@ -72,7 +72,7 @@
       "startLine": 134,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verification",
     "content": "**Each Solid Satisfies the Constraint**:\n\n$(p-2)(q-2)$ evaluates to $1, 2, 2, 3, 3$ for the five pairs respectively, all $< 4$. Verified by `norm_num`.",
     "mathContext": "$(3-2)(3-2) = 1$, $(4-2)(3-2) = 2$, $(3-2)(4-2) = 2$, $(5-2)(3-2) = 3$, $(3-2)(5-2) = 3$. All strictly less than 4, verified by the `norm_num` tactic.",

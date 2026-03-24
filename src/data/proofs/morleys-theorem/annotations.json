@@ -151,7 +151,7 @@
       "startLine": 255,
       "endLine": 270
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Morley's Theorem (Wiedijk #84)",
     "content": "**Morley's Theorem**: For any triangle with angles $\\alpha, \\beta, \\gamma$, the three intersection points $M_1, M_2, M_3$ of adjacent angle trisectors satisfy $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. The main theorem `morleys_theorem` follows directly from `morleys_theorem_axiom`. The alternative formulation `morley_triangle_equilateral` adds a trivial `True` conjunct. The axiom encodes the deep geometric fact that the symmetric side length formula guarantees equilateral geometry.",
     "mathContext": "The theorem asserts $|M_2 - M_1| = |M_3 - M_2|$ and $|M_3 - M_2| = |M_1 - M_3|$ using `Complex.abs` for Euclidean distance in the complex plane. The axiom `morleys_theorem_axiom` is the only axiom used for the main result (besides `equilateral_side_length_axiom` for the construction). A full proof would require showing that the backward construction produces valid trisectors, which involves substantial trigonometric computation.",

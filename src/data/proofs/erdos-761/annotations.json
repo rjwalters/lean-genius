@@ -164,7 +164,7 @@
       "startLine": 78,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dichromatic Number Bounded by Vertex Count",
     "content": "The dichromatic number is at most |V|. Any proper coloring (no adjacent vertices share a color) is automatically acyclic for every orientation, since monochromatic directed edges cannot exist.",
     "significance": "key",
@@ -187,7 +187,7 @@
       "startLine": 85,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cochromatic Number Bounded by Vertex Count",
     "content": "The cochromatic number is at most |V|. Any proper coloring gives a cochromatic partition since each independent color class is trivially cochromatic.",
     "significance": "supporting",
@@ -209,7 +209,7 @@
       "startLine": 91,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bipartite Dichromatic Number",
     "content": "Bipartite graphs have dichromatic number at most 2. Any 2-coloring is proper, hence acyclic for all orientations. This is the single sorry in the file.",
     "significance": "supporting",
@@ -232,7 +232,7 @@
       "startLine": 104,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Question 1: Large Chi Forces Large Delta",
     "content": "Erdős and Neumann-Lara asked: for every k, does there exist f(k) such that chi(G) >= f(k) implies delta(G) >= k? Axiomatized as an open conjecture. This would establish that high chromatic number forces complex orientation-coloring structure.",
     "significance": "key",
@@ -255,7 +255,7 @@
       "startLine": 115,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Question 2: Large Zeta Forces Subgraph with Large Delta",
     "content": "Erdős and Gimbel strengthened Question 1: does large cochromatic number force a subgraph with large dichromatic number? Since zeta(G) <= chi(G), a positive answer to Q2 implies Q1. Axiomatized as an open conjecture.",
     "significance": "key",
@@ -280,7 +280,7 @@
       "startLine": 126,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Graph Dichromatic Number",
     "content": "For complete graphs K_n, the dichromatic number equals floor(n/2) + 1 (Neumann-Lara 1982). This shows delta can be much smaller than chi: delta(K_n) ~ n/2 while chi(K_n) = n.",
     "significance": "key",
@@ -303,7 +303,7 @@
       "startLine": 131,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Odd Cycle Dichromatic Number",
     "content": "For odd cycles C_{2k+1}, the dichromatic number is 2 while the chromatic number is 3. A simple example showing delta(G) < chi(G). Axiomatized as True due to missing cycle graph construction in Mathlib.",
     "significance": "supporting",
@@ -325,7 +325,7 @@
       "startLine": 138,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Subgraph Monotonicity",
     "content": "The dichromatic number is monotone under subgraphs: if H is a subgraph of G, then delta(H) <= delta(G). Any orientation of H extends to an orientation of G, so the maximum over orientations can only increase.",
     "significance": "key",
@@ -347,7 +347,7 @@
       "startLine": 145,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Existence of Acyclic Orientations",
     "content": "Acyclic orientations always exist (by induction on edges). For an acyclic orientation, any proper coloring is automatically acyclic, giving another proof that delta(G) <= chi(G).",
     "significance": "supporting",

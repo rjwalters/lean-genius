@@ -220,7 +220,7 @@
       "startLine": 153,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Croot's Lower Bound (1999)",
     "content": "**croot_lower_bound:**\n\n$$\\exists N_0,\\; \\forall N \\geq N_0,\\; f(N) \\geq \\lfloor H_N \\rfloor - 6$$\n\nFor large $N$, $f(N)$ is at most 6 below $\\lfloor H_N \\rfloor$. The precise asymptotic lower bound is:\n$$f(N) \\geq \\Big\\lfloor H_N - \\frac{9}{2} \\cdot \\frac{(\\log\\log N)^2}{\\log N} \\Big\\rfloor$$\n\nThe formalization uses the simplified constant 6 as an approximation.",
     "mathContext": "Croot's lower bound shows that $f(N)$ cannot be much smaller than $\\lfloor H_N \\rfloor$. The second-order correction $(\\log\\log N)^2/\\log N \\to 0$ as $N \\to \\infty$, so $f(N)/\\lfloor H_N \\rfloor \\to 1$. The coefficient $9/2$ comes from sieve-theoretic estimates for the density of integers representable as sums of unit fractions. The simplified bound $\\lfloor H_N \\rfloor - 6$ holds for all sufficiently large $N$ because the correction term eventually stays below 6.",
@@ -243,7 +243,7 @@
       "startLine": 164,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Croot's Upper Bound (1999)",
     "content": "**croot_upper_bound:**\n\n$$\\exists N_0,\\; \\forall N \\geq N_0,\\; f(N) \\leq \\lfloor H_N \\rfloor$$\n\nThe smallest non-representable integer is at most $\\lfloor H_N \\rfloor$ — you can always represent everything strictly below the harmonic ceiling.\n\nThe precise bound is $f(N) \\leq \\lfloor H_N - \\frac{1}{2} \\cdot \\frac{(\\log\\log N)^2}{\\log N} \\rfloor$.",
     "mathContext": "The upper bound is the easier direction: since $\\text{sumUnitFracs}(\\{1, \\ldots, N\\}) = H_N$, we certainly cannot represent $\\lceil H_N \\rceil$ if $H_N$ is not an integer ($H_N \\in \\mathbb{Z}$ only for $N = 1$, since $H_N$ is never an integer for $N > 1$ by Wolstenholme-type arguments). The refined coefficient $1/2$ shows the gap is strictly positive — even $\\lfloor H_N \\rfloor$ may fail to be representable when the 'fractional overshoot' $H_N - \\lfloor H_N \\rfloor$ is too small.",
@@ -266,7 +266,7 @@
       "startLine": 175,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Croot's Main Theorem: Two-Value Characterization",
     "content": "**croot_main_theorem:**\n\n$$\\exists N_0,\\; \\forall N \\geq N_0,\\; f(N) \\in \\{\\lfloor H_N \\rfloor - 1,\\; \\lfloor H_N \\rfloor\\}$$\n\nFor large $N$, the smallest non-representable integer is either $\\lfloor H_N \\rfloor$ or $\\lfloor H_N \\rfloor - 1$ — a two-value characterization.\n\nThis means `RepresentableSet(N)` is either $\\{0, \\ldots, \\lfloor H_N \\rfloor - 2\\}$ or $\\{0, \\ldots, \\lfloor H_N \\rfloor - 1\\}$.",
     "mathContext": "The two-value characterization follows from combining the lower and upper bounds: the correction term $\\Theta((\\log\\log N)^2/\\log N)$ is eventually $< 1$, forcing $f(N) \\in \\{\\lfloor H_N \\rfloor - 1, \\lfloor H_N \\rfloor\\}$. Determining which value occurs for a given $N$ depends on the fractional part $\\{H_N\\} = H_N - \\lfloor H_N \\rfloor$ — when $\\{H_N\\}$ is close to 0, $\\lfloor H_N \\rfloor$ is harder to represent, pushing $f(N) = \\lfloor H_N \\rfloor - 1$.",
@@ -289,7 +289,7 @@
       "startLine": 184,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Contiguity Holds for Large N",
     "content": "**question2_yes:**\n\n$$\\exists N_0,\\; \\forall N \\geq N_0,\\; \\text{RepresentableSet}(N) = \\{0, 1, \\ldots, m\\}$$\n\nfor some $m$. The representable set IS contiguous for sufficiently large $N$.\n\nThis answers Question 2 of Erdős Problem #308 affirmatively.",
     "mathContext": "Croot's proof of contiguity uses an exchange argument: given a representation of $k$ as $\\sum_{n \\in S} 1/n = k$, he shows how to modify $S$ to produce a representation of $k - 1$ (for $k \\geq 2$). The idea is to remove a large denominator from $S$ and add several smaller denominators, adjusting the sum downward by exactly 1. This requires the 'granularity' of available unit fractions to be fine enough, which holds for large $N$.",
@@ -357,7 +357,7 @@
       "startLine": 251,
       "endLine": 273
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Asymptotic Behavior of f(N)",
     "content": "**Three asymptotic results (axiomatized as `True` placeholders):**\n\n1. **harmonic_asymptotics:** $H_N = \\ln N + \\gamma + \\frac{1}{2N} - \\frac{1}{12N^2} + O(N^{-4})$\n2. **f_asymptotics:** $f(N) = \\lfloor H_N \\rfloor - \\Theta\\big(\\frac{(\\log\\log N)^2}{\\log N}\\big)$\n3. **f_growth_rate:** $f(N)/\\ln N \\to 1$ as $N \\to \\infty$\n\nThese `True` axioms serve as documentation — the actual bounds are captured in `croot_lower_bound` and `croot_upper_bound`.",
     "mathContext": "The asymptotic expansion of $H_N$ is classical (Euler, 1740). The growth rate $f(N) \\sim \\ln N$ follows because $\\lfloor H_N \\rfloor \\sim \\ln N$ and the correction term $(\\log\\log N)^2/\\log N = o(1)$. The doubly-logarithmic nature of the correction term is remarkable — it means that $f(N)$ tracks $\\lfloor H_N \\rfloor$ extremely closely, with the relative error vanishing faster than any inverse power of $\\log N$.",
@@ -380,7 +380,7 @@
       "startLine": 293,
       "endLine": 303
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_308_summary:**\n\nProves the conjunction of three results:\n1. Croot's lower bound: $f(N) \\geq \\lfloor H_N \\rfloor - 6$ for large $N$\n2. Croot's upper bound: $f(N) \\leq \\lfloor H_N \\rfloor$ for large $N$\n3. Contiguity: $\\text{RepresentableSet}(N) = \\{0, \\ldots, m\\}$ for large $N$\n\n**Proof:** `⟨croot_lower_bound, croot_upper_bound, question2_yes⟩`\n\nA direct composition of the three axiomatized results via And.intro.",
     "mathContext": "The summary theorem packages the complete solution to Erdős Problem #308. The three-part conjunction captures both the quantitative answer (bounds on $f(N)$) and the qualitative answer (contiguity). The proof is trivial in Lean — it simply pairs the three axioms — but it serves as a formal certificate that the problem is fully resolved modulo the axiomatized deep results.",
@@ -404,7 +404,7 @@
       "startLine": 309,
       "endLine": 313
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_308:**\n\nThe contiguity result stated directly:\n$$\\exists N_0,\\; \\forall N \\geq N_0,\\; \\text{question2}(N)$$\n\n**Proof:** Directly from `question2_yes`.\n\nThis is the simplest statement of the main result: the representable set is contiguous for large $N$, meaning the structure of representable integers via bounded-denominator Egyptian fractions is completely determined by the single quantity $f(N)$.",
     "mathContext": "By reducing the full characterization to the single function $f(N)$, this theorem transforms a set-valued problem into a scalar one. Combined with Croot's bounds, we know $f(N)$ to within 1 of $\\lfloor H_N \\rfloor$. The remaining question — whether $f(N) = \\lfloor H_N \\rfloor$ or $\\lfloor H_N \\rfloor - 1$ for a given $N$ — depends on delicate arithmetic properties of the fractional part of $H_N$.",

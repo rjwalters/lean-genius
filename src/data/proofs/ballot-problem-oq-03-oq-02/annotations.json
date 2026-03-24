@@ -76,7 +76,7 @@
       "startLine": 141,
       "endLine": 150
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Path Weight Matrix",
     "content": "Defines the $r \\times r$ integer matrix $M_{i,j} = \\binom{m + (b_j - a_i)}{m}$, where entry $(i,j)$ counts lattice paths from source $i$ to target $j$. This is the matrix whose determinant the LGV lemma evaluates. Casting to $\\mathbb{Z}$ (not $\\mathbb{N}$) is necessary because the determinant involves signs from permutations.",
     "mathContext": "$M_{i,j} = \\binom{m + (b_j - a_i)}{m} = $ number of paths from $(0, a_i)$ to $(m, b_j)$",
@@ -121,7 +121,7 @@
       "startLine": 179,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tail-Swap Operation and Sign Reversal",
     "content": "The `swapTailsAt` operation takes two paths and a split index $k$, swapping their suffixes after position $k$. Two length-preservation theorems confirm this produces valid paths. The critical `gessel_viennot_transposition_sign` theorem proves that composing a transposition $(i, \\sigma(i))$ with $\\sigma$ reverses the permutation sign: $\\mathrm{sign}((i\\;\\sigma(i)) \\circ \\sigma) = -\\mathrm{sign}(\\sigma)$. This sign reversal is what causes the pairwise cancellation in the determinant expansion.",
     "mathContext": "$\\mathrm{sgn}((i\\;\\sigma(i)) \\cdot \\sigma) = \\mathrm{sgn}((i\\;\\sigma(i))) \\cdot \\mathrm{sgn}(\\sigma) = (-1) \\cdot \\mathrm{sgn}(\\sigma)$",
@@ -145,7 +145,7 @@
       "startLine": 228,
       "endLine": 281
     },
-    "type": "technique",
+    "type": "definition",
     "title": "First Non-Fixed Point of a Permutation",
     "content": "Four lemmas about `firstNonFixed σ`—the smallest index $i$ with $\\sigma(i) \\neq i$. The key result `firstNonFixed_lt_image` proves $i < \\sigma(i)$: since $\\sigma$ fixes all $j < i$, the image $\\sigma(i)$ cannot equal any smaller index (by injectivity) nor $i$ itself (by definition), so $\\sigma(i) > i$. This ordering is essential for the GV involution: it guarantees the path from the lower source crosses the path from the higher source.",
     "mathContext": "For $\\sigma \\neq \\mathrm{id}$, let $i = \\min\\{j : \\sigma(j) \\neq j\\}$. Then $\\sigma(j) = j$ for $j < i$ and $\\sigma(i) > i$.",
@@ -214,7 +214,7 @@
       "startLine": 359,
       "endLine": 1885
     },
-    "type": "context",
+    "type": "concept",
     "title": "Corollaries and Applications",
     "content": "Three corollaries: (1) `niTupleCount_nonneg`: the NI count is trivially non-negative as a natural number; (2) `pathMatrix_det_nonneg`: the determinant is non-negative (since it equals a count); (3) `isNonIntersecting_of_r_one`: for $r=1$, every path tuple is vacuously non-intersecting. The `lgv_universality` theorem restates the lemma for all $r$. The docstring on the applications theorem surveys four major consequences: Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, and plane partitions.",
     "mathContext": "$\\det M \\geq 0$ (since $\\det M = |\\{\\text{NI tuples}\\}| \\in \\mathbb{N}$); for $r=1$, every singleton tuple is NI",

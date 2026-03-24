@@ -215,7 +215,7 @@
       "startLine": 265,
       "endLine": 299
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kahn's Resolution (1994) - Main Result",
     "content": "**axiom kahn_1994_linear_bound**: f(n) ≤ C · n\n\n**This resolved the Erdős-Lovász conjecture!**\n\nKahn proved f(n) = O(n) using a refined probabilistic argument:\n1. More careful analysis of projective plane selection\n2. Eliminated the log factor\n3. The constant C is not optimal but finite\n\n**theorem conjecture_resolved : ErdosLovaszConjecture** ✓",
     "mathContext": "The $500 Erdős prize was won for this result. Combined with lower bound (8/3)n, we have f(n) = Θ(n).",

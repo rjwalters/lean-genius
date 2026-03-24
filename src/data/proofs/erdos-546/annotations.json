@@ -162,7 +162,7 @@
       "startLine": 76,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sudakov's Theorem (2011)",
     "content": "Benny Sudakov's 2011 proof that $R(G) \\leq 2^{O(\\sqrt{m})}$. The proof uses a combination of the **dependent random choice** technique and the **regularity method** (a variant of Szemerédi's regularity lemma).",
     "mathContext": "Sudakov's proof: (1) apply dependent random choice to find a large vertex subset with strong co-degree properties, (2) use a regularity-based embedding argument to find $G$ as a subgraph. The constant $C$ in $2^{C\\sqrt{m}}$ can be made explicit but is not sharp.",
@@ -185,7 +185,7 @@
       "startLine": 80,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tightness of Sudakov Bound",
     "content": "The $2^{O(\\sqrt{m})}$ bound is essentially tight: complete graphs $K_n$ with $m = \\binom{n}{2}$ edges satisfy $R(K_n) \\geq 2^{n/2}$ (Erdős 1947). Since $n \\approx \\sqrt{2m}$, this gives $R(K_n) \\geq 2^{\\Theta(\\sqrt{m})}$.",
     "mathContext": "The Erdős (1947) probabilistic lower bound: $R(K_n) \\geq 2^{n/2}$. With $m = \\binom{n}{2} = n(n-1)/2$, we get $n = \\Theta(\\sqrt{m})$, so $R(K_n) \\geq 2^{\\Omega(\\sqrt{m})}$. Combined with Sudakov, $\\log_2 R(G) = \\Theta(\\sqrt{m})$ in the worst case.",
@@ -229,7 +229,7 @@
       "startLine": 96,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "AKS Bipartite Bound (2003)",
     "content": "Noga Alon, Michael Krivelevich, and Benny Sudakov proved in 2003 that $R(G) \\leq 2^{O(\\sqrt{m})}$ when $G$ is bipartite. This introduced the dependent random choice technique later generalized by Sudakov (2011) to all graphs.",
     "mathContext": "The AKS (2003) result: $\\exists C > 0, \\forall$ bipartite $G$ with $|E| = m$ and $\\delta(G) \\geq 1$: $R(G) \\leq 2^{C\\sqrt{m}}$. The proof exploits bipartite structure to find large vertex subsets with uniform co-degree properties via random neighborhood selection.",
@@ -319,7 +319,7 @@
       "startLine": 161,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Path Ramsey Number Is Linear",
     "content": "States $R(P_n) \\leq 2n - 1$, demonstrating that sparse graphs have much smaller Ramsey numbers than Sudakov's general exponential bound predicts.",
     "mathContext": "For $P_n$ with $m = n-1$: $R(P_n) \\leq 2n - 1 = O(m)$, while Sudakov gives $2^{O(\\sqrt{m})}$. The exponential bound is loose by a factor exponential in $\\sqrt{m}$ for paths.",
@@ -340,7 +340,7 @@
       "startLine": 181,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Probabilistic Lower Bound",
     "content": "A lower bound: $R(G) \\geq c\\sqrt{m}$ for constant $c > 0$. For dense graphs like $K_n$, the probabilistic method gives $R(K_n) \\geq 2^{n/2} = 2^{\\Theta(\\sqrt{m})}$, matching Sudakov's upper bound.",
     "mathContext": "Random 2-coloring of $K_N$: $\\Pr[\\text{monochromatic } G] \\leq \\binom{N}{|V|} 2^{1-m}$. Setting this $< 1$ gives $R(G) > N$. For $K_n$ with $m = \\binom{n}{2}$, this yields $R(K_n) \\geq 2^{n/2} = 2^{\\Omega(\\sqrt{m})}$.",

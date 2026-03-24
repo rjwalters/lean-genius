@@ -54,7 +54,7 @@
       "startLine": 23,
       "endLine": 27
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fano's Inequality (Placeholder)",
     "content": "Fano's inequality (Robert Fano, 1961) is the key tool for the converse of the channel coding theorem. It states that $H(X|Y) \\leq h(P_e) + P_e \\log(|\\mathcal{X}|-1)$, where $P_e = \\Pr[X \\neq \\hat{X}]$ is the error probability and $h$ is the binary entropy function. Intuitively: if decoding error is small, then $Y$ must carry most of the information about $X$, so conditional entropy $H(X|Y)$ is small. The formalization currently proves `True` because stating the full inequality requires defining conditional entropy and the binary entropy function.",
     "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\log(|\\mathcal{X}|-1)$ where $h(p) = -p\\log p - (1-p)\\log(1-p)$",
@@ -78,7 +78,7 @@
       "startLine": 31,
       "endLine": 36
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Channel Coding Achievability (Random Coding)",
     "content": "The achievability half of the channel coding theorem: for any rate $R < C$, codes exist with vanishing error probability. Shannon's original proof uses random coding — generate $2^{nR}$ codewords i.i.d. from the capacity-achieving input distribution and decode using joint typicality. The error probability vanishes exponentially fast: $P_e \\leq 2^{-n(C-R-\\delta)}$ for any $\\delta > 0$. This is a probabilistic method argument avant la lettre: a random codebook works, so a good deterministic codebook exists. Currently proves `True`.",
     "mathContext": "$R < C \\implies \\exists$ code sequence with $P_e^{(n)} \\leq 2^{-n(C-R-\\delta)} \\to 0$",
@@ -102,7 +102,7 @@
       "startLine": 40,
       "endLine": 45
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Channel Coding Converse (via Fano)",
     "content": "The converse half: for rates above capacity, error probability cannot vanish. The proof chains: data processing inequality shows $I(W; \\hat{W}) \\leq nC$ (where $W$ is the message, $\\hat{W}$ the decoded message), while Fano's inequality gives $H(W|\\hat{W}) \\leq 1 + P_e nR$. Since $H(W) = nR$, combining gives $nR \\leq nC + 1 + P_e nR$, so $P_e \\geq 1 - C/R - 1/(nR) \\to 1 - C/R > 0$ when $R > C$. Currently proves `True`.",
     "mathContext": "$R > C \\implies \\liminf_{n \\to \\infty} P_e^{(n)} \\geq 1 - C/R > 0$",
@@ -126,7 +126,7 @@
       "startLine": 49,
       "endLine": 51
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Binary Symmetric Channel Capacity",
     "content": "The binary symmetric channel BSC(p) flips each bit independently with probability $p$. Its capacity is $C = 1 - h(p)$ bits per channel use, where $h(p) = -p \\log_2 p - (1-p) \\log_2(1-p)$ is the binary entropy function. At $p = 0$ (noiseless), $C = 1$; at $p = 1/2$ (pure noise), $C = 0$. The BSC is the simplest non-trivial channel model and is the standard example in every information theory textbook. Currently proves `True`.",
     "mathContext": "$C_{\\text{BSC}}(p) = 1 - h(p) = 1 + p\\log_2 p + (1-p)\\log_2(1-p)$",

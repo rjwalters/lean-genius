@@ -139,7 +139,7 @@
       "startLine": 120,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hajnal Free Set Theorem (Regular Case)",
     "content": "Axiomatized: for regular κ and f on κ⁺ with |f(α)| < κ, there exists a free set of size κ⁺. This is the classical result (Hajnal, 1961) that Problem #1173 seeks to generalize. Regularity of κ is essential — the proof uses transfinite induction along κ⁺ with diagonal intersection arguments that require cf(κ) = κ.",
     "mathContext": "For regular $\\kappa$: $\\forall f : \\kappa^+ \\to [\\kappa^+]^{<\\kappa},\\; \\exists S \\subseteq \\kappa^+,\\; |S| = \\kappa^+ \\wedge S \\text{ is free}$. The proof constructs the free set by transfinite recursion, using regularity to ensure the 'forbidden' set at each stage has cardinality $< \\kappa$.",
@@ -162,7 +162,7 @@
       "startLine": 132,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "GCH Implies ℵ_ω Is Strong Limit",
     "content": "Axiomatized: GCH implies 2^{ℵ_n} < ℵ_ω for all n ∈ ℕ. Under GCH, 2^{ℵ_n} = ℵ_{n+1} < ℵ_ω since ℵ_{n+1} < ℵ_ω for all finite n. This makes ℵ_ω a strong limit cardinal, which constrains the power set sizes below ℵ_ω.",
     "mathContext": "Under GCH: $2^{\\aleph_n} = \\aleph_{n+1}$ for all $n < \\omega$. Since $\\aleph_{n+1} < \\aleph_\\omega$ for all $n$, $\\aleph_\\omega$ is a strong limit: $\\forall \\kappa < \\aleph_\\omega,\\; 2^\\kappa < \\aleph_\\omega$.",
@@ -184,7 +184,7 @@
       "startLine": 138,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Overlap Bounded by ℵ_n via Cofinality",
     "content": "Axiomatized: if f has almost-disjoint images (overlap < ℵ_ω), then each pairwise overlap is bounded by some ℵ_n (n ∈ ℕ). This follows from cf(ℵ_ω) = ω: any cardinal < ℵ_ω is ≤ ℵ_n for some n. This structural observation is key to potential inductive approaches.",
     "mathContext": "Since $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, any $\\kappa < \\aleph_\\omega$ satisfies $\\kappa \\leq \\aleph_n$ for some $n < \\omega$. Applied to overlaps: $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega \\Rightarrow \\exists n,\\; |f(\\alpha) \\cap f(\\beta)| \\leq \\aleph_n$.",
@@ -206,7 +206,7 @@
       "startLine": 152,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős–Hajnal Theorem for ℵ₁",
     "content": "Axiomatized: any set mapping f : ω₁ → [ω₁]^{≤ℵ₀} has a free set of size ℵ₁. This is the countable case: κ = ℵ₀ is regular, so Hajnal's theorem applies directly. It serves as the motivating example for Problem #1173, showing that the result holds at the first level of the aleph hierarchy.",
     "mathContext": "$\\forall f : \\omega_1 \\to [\\omega_1]^{\\leq \\aleph_0},\\; \\exists S \\subseteq \\omega_1,\\; |S| = \\aleph_1 \\wedge S \\text{ is free}$. Since $\\aleph_0$ is regular, this is a direct instance of Hajnal's theorem.",

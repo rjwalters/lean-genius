@@ -96,7 +96,7 @@
       "startLine": 55,
       "endLine": 57
     },
-    "type": "definition",
+    "type": "concept",
     "title": "List Chromatic Number",
     "content": "The list chromatic number χ_L(G) is the minimum k such that G is k-choosable. Also called the choosability or choice number of G.",
     "significance": "key",
@@ -117,7 +117,7 @@
       "startLine": 61,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "χ_L ≥ χ",
     "content": "The list chromatic number is always at least the chromatic number. Proved by observing that k-choosability with identical lists reduces to k-colorability.",
     "significance": "key",
@@ -139,7 +139,7 @@
       "startLine": 66,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Choosability Properties",
     "content": "Two properties: (1) k-choosability is monotone (k-choosable implies (k+1)-choosable), and (2) k-choosability implies k-colorability. The second is proved by Aristotle using a contrapositive argument with ULift and Finset.filter.",
     "significance": "key",
@@ -162,7 +162,7 @@
       "startLine": 94,
       "endLine": 108
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Planar Graphs and Euler's Formula",
     "content": "Defines IsPlanar G (sorry — embeddable in the plane). Axiomatizes Euler's formula V - E + F = 2 for connected planar graphs and the edge bound |E| ≤ 3|V| - 6.",
     "significance": "key",
@@ -254,7 +254,7 @@
       "startLine": 167,
       "endLine": 185
     },
-    "type": "definition",
+    "type": "concept",
     "title": "List Coloring Conjecture and the Gap",
     "content": "The List Coloring Conjecture asks: is every planar graph 4-choosable? This would close the gap between χ ≤ 4 (Four Color) and χ_L ≤ 5 (Thomassen). The chromatic_list_gap theorem formally states both bounds.",
     "significance": "key",

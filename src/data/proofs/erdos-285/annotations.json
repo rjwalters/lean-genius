@@ -120,7 +120,7 @@
       "startLine": 60,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Martin's Theorem",
     "content": "**martin_egyptian_fractions**: f(k) = (1 + o(1)) · e/(e-1) · k. The minimal largest denominator is asymptotically e/(e-1) times the number of terms.",
     "mathContext": "Martin's 2000 paper 'Denser Egyptian Fractions' constructs explicit representations achieving this bound. The o(1) term goes to 0 as k → ∞.",
@@ -139,7 +139,7 @@
       "startLine": 70,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_285**: Restates Martin's result as the answer to Erdős's question. The asymptotic formula f(k) = (1+o(1))·e/(e-1)·k holds.",
     "mathContext": "This directly follows from the axiom martin_egyptian_fractions, packaged as the main theorem for the problem.",
@@ -158,7 +158,7 @@
       "startLine": 77,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Lower Bound",
     "content": "**egyptian_lower_bound**: f(k) ≥ (1 + o(1)) · e/(e-1) · k. The lower bound is 'trivial' from harmonic series considerations.",
     "mathContext": "If nₖ ≈ eu, then primes in [e, eu] contribute ~1 to the sum. There are ~(e-1)u integers in this interval, so k ≤ (e-1)u. Thus nₖ ≥ eu ≥ e/(e-1) · k.",
@@ -177,7 +177,7 @@
       "startLine": 103,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Constant > 1",
     "content": "**egyptianConstant_gt_one**: e/(e-1) > 1. This shows f(k) > k — we always need a largest denominator larger than the number of terms.",
     "mathContext": "Since e > 1, we have e - 1 > 0 and e/(e-1) = 1 + 1/(e-1) > 1. The proof uses exp(1) > 1.",

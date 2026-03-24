@@ -181,7 +181,7 @@
       "startLine": 187,
       "endLine": 199
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alice Cannot Win Four Consecutive Values",
     "content": "**alice_no_four_consecutive:** If Alice wins at n, then she cannot also win at n+1, n+2, and n+3.\n\n**Proof:** Assume Alice wins at n and at n+1. By the Malekshahian-Spiro recovery property, Alice winning at n implies Bob has a winning strategy at n+1. But we assumed Alice also has a winning strategy at n+1. The contradiction arises from applying both strategies: Bob's strategy σ beats all Alice strategies (including τ), but Alice's strategy τ beats all Bob strategies (including σ). This yields hσ τ (hτ σ), a direct contradiction.",
     "mathContext": "This is a clean example of how axiomatized results enable downstream proofs. The recovery property (an axiom from the Malekshahian-Spiro paper) immediately yields this structural constraint as a theorem.",

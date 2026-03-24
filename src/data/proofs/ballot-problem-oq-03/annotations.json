@@ -185,7 +185,7 @@
       "startLine": 580,
       "endLine": 712
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Catalan Numbers and Ballot Theorem",
     "content": "Defines Catalan numbers as Cn(n) = C(2n,n) - C(2n,n+1) and proves the fundamental formula Cn(n)*(n+1) = C(2n,n) via the absorption identity. The ballot theorem is proved similarly: ballotSeqCount(p,q)*(p+q) = (p-q)*C(p+q,p). Both proofs use the same algebraic technique: apply Nat.add_one_mul_choose_eq (the absorption identity) twice, use binomial coefficient symmetry to equate the intermediate terms, then do integer arithmetic via zify and linear_combination. Verified computationally for several small cases via native_decide.",
     "mathContext": "The $n$-th Catalan number $C_n = \\binom{2n}{n} - \\binom{2n}{n+1} = \\frac{1}{n+1}\\binom{2n}{n}$. The ballot formula: for $q < p$, the number of ballot sequences where $A$ always leads is $\\frac{p-q}{p+q}\\binom{p+q}{p}$.",
@@ -275,7 +275,7 @@
       "startLine": 1438,
       "endLine": 2182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lindstrom Involution Infrastructure",
     "content": "Develops the machinery needed to eliminate the axiomatized Lindstrom involution. The approach tracks step-by-step lattice positions via posAfter, defines visitedPoints as the Finset of all lattice points a path visits, and proves that intersecting paths share a lattice point (sharedPoints_nonempty_of_not_ni). The computable swapAtPoint function splits two paths at a shared point and swaps their suffixes. Key preservation theorems (East step count, North step count, involutivity) are proved. Three lemmas remain as sorry: the swapped paths visit the shared point and are themselves intersecting.",
     "mathContext": "The Lindstrom involution maps intersecting identity pairs $(P_1: A_1 \\to B_1,\\, P_2: A_2 \\to B_2)$ to crossing pairs $(P_1': A_1 \\to B_2,\\, P_2': A_2 \\to B_1)$ by swapping suffixes at the first shared lattice point. This bijection proves $|\\text{intersecting identity}| = |\\text{all crossing}|$, completing the LGV determinant formula.",

@@ -121,7 +121,7 @@
       "startLine": 134,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap Between Bounds (Proved)",
     "content": "**aks_weaker_than_conjecture (proved by field_simp + linarith):**\n\nFor all r ≥ 1: 2 - 1/r < 2 - 1/(4r)\n\nThis is a fully proved theorem establishing that the AKS exponent is strictly larger (weaker) than the conjectured exponent. The proof uses field_simp to clear fractions and linarith for the resulting linear arithmetic.\n\n**For r = 2:** Conjecture gives n^{3/2}, AKS gives n^{15/8} — a gap of 3/8 in the exponent.",
     "mathContext": "The inequality 2 - 1/r < 2 - 1/(4r) simplifies to 1/(4r) < 1/r, which holds for all positive r. The bound_comparison_r2 theorem verifies the r=2 specialization with norm_num.",

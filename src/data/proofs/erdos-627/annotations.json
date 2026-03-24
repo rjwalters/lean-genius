@@ -99,7 +99,7 @@
       "startLine": 44,
       "endLine": 46
     },
-    "type": "insight",
+    "type": "concept",
     "title": "k-Colorability",
     "content": "A graph is $k$-colorable if there exists $f: V \\to \\{0,\\ldots,k-1\\}$ with $f(v) \\neq f(w)$ whenever $v \\sim w$. Formalized as `IsKColorable G k` using `Fin k` as the color set.",
     "significance": "supporting",
@@ -121,7 +121,7 @@
       "startLine": 55,
       "endLine": 56
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Contains k-Clique",
     "content": "A graph contains a $k$-clique if there exists a subset $S \\subseteq V$ with $|S| = k$ where all distinct pairs are adjacent. Formalized via `Finset V` with pairwise adjacency.",
     "significance": "supporting",
@@ -209,7 +209,7 @@
       "startLine": 70,
       "endLine": 71
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Tutte-Zykov Construction",
     "content": "**Tutte (1947) and Zykov (1949) independently:**\n\nGraphs with $\\omega = 2$ (triangle-free) can have arbitrarily large $\\chi$!\n\nThis is surprising: triangle-free graphs seem 'sparse' but can still require many colors. The ratio $\\chi/\\omega$ can be arbitrarily large.",
     "significance": "key",
@@ -232,7 +232,7 @@
       "startLine": 74,
       "endLine": 82
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Triangle-Free Large χ",
     "content": "For any $k$, there exist triangle-free graphs with $\\chi \\geq k$.\n\nThis follows from Tutte-Zykov: $\\omega = 2$ means no triangles ($K_3$).\n\n**Intuition breaker:** Locally sparse (no triangles) doesn't mean globally easy to color!",
     "significance": "key",
@@ -488,7 +488,7 @@
       "startLine": 222,
       "endLine": 237
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Main Status",
     "content": "**Erdős Problem #627: OPEN**\n\n1. **$f(n) \\asymp n/(\\log n)^2$:** Erdős established the growth rate\n2. **Limit question:** Does $f(n)/(n/(\\log n)^2)$ converge? UNKNOWN\n3. **Limit bounds:** If exists, in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$\n4. **Tutte-Zykov:** Triangle-free graphs can have arbitrarily large $\\chi$\n5. **Perfect graphs:** $\\chi = \\omega$ always (ratio exactly 1)\n6. **Constructions:** Mycielski, Kneser achieve high ratio",
     "significance": "key",

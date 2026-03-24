@@ -79,7 +79,7 @@
       "startLine": 138,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Constructive Formulation",
     "content": "**For any n, we can find a prime p > n in the progression.**\n\nThis is the constructive version: given any bound n, there exists a prime p larger than n that is congruent to a modulo q.\n\nThis is logically equivalent to 'infinitely many' but has a more computational flavor. It says the primes in the progression are unbounded.",
     "summary": "Constructive version: for any bound n, there exists a prime p > n congruent to a mod q.",

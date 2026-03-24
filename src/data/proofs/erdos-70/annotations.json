@@ -206,7 +206,7 @@
       "startLine": 91,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ω is Countable",
     "content": "Proves **omega0_countable**: $|\\omega| = \\aleph_0 \\le \\aleph_0$, so $\\omega$ is a countable ordinal. Uses `card_omega0` from Mathlib.",
     "significance": "supporting",
@@ -227,7 +227,7 @@
       "startLine": 111,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Rado: 𝔠 → (ω+n, 4)₂³",
     "content": "**Erdős-Rado Theorem**: For all $2 \\le n < \\omega$, $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$. This is the strongest known partial result toward the full conjecture, proved using the stepping-up lemma.",
     "significance": "key",
@@ -338,7 +338,7 @@
       "startLine": 148,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Finite Ramsey Theorem",
     "content": "**Finite Ramsey Theorem**: For any $r, k, n$, there exists $N$ such that any $k$-coloring of $n$-subsets of an $N$-set has a monochromatic $r$-set. This is the finite analogue of partition calculus.",
     "significance": "supporting",
@@ -360,7 +360,7 @@
       "startLine": 158,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "R(3,3) = 6",
     "content": "**Ramsey's Theorem (specific)**: Any 2-coloring of 3-subsets of a 6-element set has a monochromatic 3-subset. This is the classical $R(3,3) = 6$ result.",
     "significance": "supporting",
@@ -404,7 +404,7 @@
       "startLine": 174,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture ↔ ¬Counterexample",
     "content": "Proves the conjecture and counterexample are logically complementary: `erdos_70_conjecture ↔ ¬erdos_70_counterexample`. The proof is by unfolding definitions and applying `push_neg`.",
     "significance": "supporting",
@@ -426,7 +426,7 @@
       "startLine": 183,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ordinal Monotonicity of Partition Arrows",
     "content": "If $\\kappa \\to (\\beta, m)_2^3$ and $\\alpha \\le \\beta$, then $\\kappa \\to (\\alpha, m)_2^3$. Smaller ordinals are easier to find as homogeneous sets — any color-0 set of type $\\ge \\beta$ also has type $\\ge \\alpha$.",
     "significance": "key",
@@ -447,7 +447,7 @@
       "startLine": 187,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Size Monotonicity of Partition Arrows",
     "content": "If $\\kappa \\to (\\alpha, n)_2^3$ and $m \\le n$, then $\\kappa \\to (\\alpha, m)_2^3$. Smaller finite sets are easier to find — any color-1 homogeneous set of size $\\ge n$ also has size $\\ge m$.",
     "significance": "key",
@@ -468,7 +468,7 @@
       "startLine": 193,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ω + n is Countable",
     "content": "Proves $\\omega + n$ is a countable ordinal: $|\\omega + n| = \\aleph_0 + n = \\aleph_0$ by cardinal absorption. Uses `card_add`, `card_omega0`, `card_nat`, and `aleph0_add_nat`.",
     "significance": "supporting",
@@ -490,7 +490,7 @@
       "startLine": 198,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ω² is Countable",
     "content": "Proves $\\omega^2 = \\omega \\cdot \\omega$ is countable: $|\\omega^2| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$. Uses `card_mul`, `card_omega0`, and `aleph0_mul_aleph0`.",
     "significance": "supporting",

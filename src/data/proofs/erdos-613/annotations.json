@@ -170,7 +170,7 @@
       "startLine": 108,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pikhurko's Lower Bound",
     "content": "**Lower bound:** $\\hat{r}(K_{1,n}, \\mathcal{F}) > n^2 + 0.577\\,n^{3/2}$\n\nSince the conjectured value $\\binom{2n+1}{2} - \\binom{n}{2} \\approx n^2 + n$, and $0.577\\,n^{3/2} \\gg n$ for large $n$, this disproves the conjecture asymptotically. The constant $0.577 \\approx 1/\\sqrt{3}$ arises from a probabilistic construction.",
     "mathContext": "Pikhurko showed $\\hat{r}(K_{1,n}, \\mathcal{F}) > n^2 + c\\,n^{3/2}$ for some $c > 1/2$. The proof constructs a random bipartite graph with carefully chosen parameters, then shows that removing edges to reduce max degree below $n$ forces the remaining graph to contain an odd cycle. The axiom states $\\exists c > 0.5$ such that the bound holds for all $n \\ge 3$.",
@@ -193,7 +193,7 @@
       "startLine": 114,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pikhurko's Upper Bound",
     "content": "**Upper bound:** $\\hat{r}(K_{1,n}, \\mathcal{F}) < n^2 + \\sqrt{2}\\,n^{3/2} + n$\n\nCombined with the lower bound: $\\hat{r} = n^2 + \\Theta(n^{3/2})$. The coefficient of $n^{3/2}$ lies in $(0.577, \\sqrt{2}) \\approx (0.577, 1.414)$. Determining the exact coefficient remains open.",
     "mathContext": "The upper bound uses an explicit decomposition argument: given any graph $G$ with at least $n^2 + \\sqrt{2}\\,n^{3/2} + n$ edges, one can greedily extract a bipartite subgraph $H_1$ such that the remainder $H_2 = G \\setminus H_1$ has $\\Delta(H_2) < n$. The key inequality is $|E(G)| - \\text{ex}(|V|, \\text{odd cycle}) < n \\cdot |V| / 2$.",
@@ -216,7 +216,7 @@
       "startLine": 119,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture is FALSE",
     "content": "`original_conjecture_false : ¬OriginalConjecture`\n\nThe decomposition property fails for some graphs with the critical edge count. This is a **complete disproof** — the negation of a universal statement, proved by exhibiting a counterexample (via `tao_counterexample_n5`).",
     "mathContext": "The theorem states $\\neg\\bigl(\\forall n \\ge 3,\\, \\forall G,\\, |E(G)| = \\text{criticalEdgeCount}(n) \\Rightarrow \\text{HasDecomposition}(G, n)\\bigr)$. This is logically equivalent to $\\exists n \\ge 3,\\, \\exists G$ with $|E(G)| = \\text{criticalEdgeCount}(n)$ and $\\neg\\text{HasDecomposition}(G, n)$, which is witnessed at $n = 5$.",
@@ -238,7 +238,7 @@
       "startLine": 125,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tao's Lean Verification",
     "content": "**Tao's counterexample at $n = 5$:**\n\nThere exists a graph on 44 edges that CANNOT be decomposed into bipartite + max-degree-4. This was **formally verified in Lean** — one of the first Erdős disproofs with computer verification!\n\nThe counterexample graph has $|V| > 11 = 2(5)+1$, consistent with Faudree's partial result showing the conjecture holds when $|V| = 2n+1$.",
     "mathContext": "The axiom asserts $\\exists V, G : \\text{SimpleGraph}\\,V$ with $|E(G)| = 44$ and $\\neg\\text{HasDecomposition}(G, 5)$. The Lean-verified counterexample is an explicit finite graph. Since $\\binom{11}{2} - \\binom{5}{2} - 1 = 44$, this means 44 edges is exactly the critical count for $n = 5$.",
@@ -261,7 +261,7 @@
       "startLine": 131,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Smallest Counterexample",
     "content": "$n = 5$ is the **smallest counterexample**.\n\n- $n = 3$: 17 edges, conjecture HOLDS\n- $n = 4$: 29 edges, conjecture HOLDS\n- $n = 5$: 44 edges, conjecture FAILS\n\nThe transition from true to false happens exactly at $n = 5$. The theorem combines `n3_holds`, `n4_holds` with `tao_counterexample_n5`.",
     "mathContext": "The theorem is a conjunction: $\\bigl(\\forall n < 5,\\, n \\ge 3 \\Rightarrow \\text{conjecture holds at } n\\bigr) \\wedge \\bigl(\\exists G,\\, |E(G)| = 44 \\wedge \\neg\\text{HasDecomposition}(G, 5)\\bigr)$. Only $n \\in \\{3, 4\\}$ satisfy both $n < 5$ and $n \\ge 3$.",
@@ -283,7 +283,7 @@
       "startLine": 144,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Faudree's Partial Result",
     "content": "**Faudree (unpublished):** If $|V| = 2n + 1$ exactly, the conjecture HOLDS.\n\nCounterexamples require more vertices! With exactly $2n+1$ vertices and the critical edge count, decomposition is always possible. This reveals that vertex count, not just edge count, controls decomposability. The result uses the tight relationship between edge density and structure in small graphs.",
     "mathContext": "The axiom states $\\forall n \\ge 3,\\, \\forall G : \\text{SimpleGraph}(\\text{Fin}(2n+1))$, if $|E(G)| = \\text{criticalEdgeCount}(n)$ then $\\text{HasDecomposition}(G, n)$. The proof exploits the fact that a graph on $2n+1$ vertices with $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges has density $1 - \\frac{\\binom{n}{2} + 1}{\\binom{2n+1}{2}} \\to 3/4$ as $n \\to \\infty$.",
@@ -305,7 +305,7 @@
       "startLine": 151,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Vertex Count Matters",
     "content": "The same edge count behaves differently depending on vertex count:\n\n- $|V| = 2n + 1$: Decomposition exists (Faudree)\n- $|V| > 2n + 1$: Counterexamples possible (Pikhurko)\n\nThis is a clean demonstration that **edge density alone doesn't determine decomposability**. The proof at $n = 5$ uses `faudree_partial` and `tao_counterexample_n5` as witnesses.",
     "mathContext": "The theorem proves $\\exists n \\ge 3$ such that (1) $\\forall G : \\text{SimpleGraph}(\\text{Fin}(2n+1)),\\, |E(G)| = \\text{criticalEdgeCount}(n) \\Rightarrow \\text{HasDecomposition}(G, n)$ and (2) $\\exists V, G$ with $|E(G)| = \\text{criticalEdgeCount}(n) \\wedge \\neg\\text{HasDecomposition}(G, n)$. Lean verifies this at $n = 5$ using `norm_num` and the axioms.",
@@ -372,7 +372,7 @@
       "startLine": 200,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "n = 3 Case",
     "content": "For $n = 3$: $\\text{criticalEdgeCount}(3) = \\binom{7}{2} - \\binom{3}{2} - 1 = 21 - 3 - 1 = 17$.\n\nEvery graph with 17 edges CAN be decomposed into a bipartite part (no odd cycles) and a part with max degree $< 3$ (i.e., every vertex has degree $\\le 2$, so the bounded part is a union of paths and even cycles).",
     "mathContext": "The statement is $\\forall V, G : \\text{SimpleGraph}\\,V,\\, |E(G)| = 17 \\Rightarrow \\text{HasDecomposition}(G, 3)$. A graph with $\\Delta(H_2) < 3$ means $H_2$ is a union of paths and cycles — a very restricted structure. This small case can be verified by exhaustive analysis.",
@@ -394,7 +394,7 @@
       "startLine": 242,
       "endLine": 260
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Status Theorem",
     "content": "**Erdős Problem #613: DISPROVED**\n\n1. **Original conjecture:** FALSE (Pikhurko)\n2. **Small cases $n = 3, 4$:** TRUE\n3. **First counterexample:** $n = 5$ (Tao, Lean-verified)\n4. **Restricted case $|V| = 2n+1$:** TRUE (Faudree)\n5. **Asymptotic:** $\\hat{r} = n^2 + \\Theta(n^{3/2})$, not $n^2 + O(n)$\n\nThis is a rare, clean disproof of an Erdős conjecture with formal verification.",
     "mathContext": "The theorem `erdos_613_status` is a conjunction: $\\neg\\text{OriginalConjecture} \\wedge \\bigl(\\forall n \\in \\{3,4\\},\\, \\text{conjecture holds}\\bigr) \\wedge \\bigl(\\exists G,\\, |E(G)| = 44 \\wedge \\neg\\text{HasDecomposition}(G,5)\\bigr)$. The proof uses `original_conjecture_false`, `n3_holds`, `n4_holds`, `tao_counterexample_n5`, and `fin_cases` for the finset membership.",

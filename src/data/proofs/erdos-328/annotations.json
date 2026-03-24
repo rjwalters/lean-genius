@@ -162,7 +162,7 @@
       "startLine": 82,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "sidon_bounded_convolution",
     "content": "**sidon_bounded_convolution**: If $A$ is a Sidon set, then $r_A(n) \\leq 2$ for all $n$.\n\nThis follows directly from the definition: in a Sidon set, each $n$ has at most one unordered pair $\\{a,b\\}$ with $a+b=n$, giving at most 2 ordered pairs.",
     "mathContext": "The bound $r_A \\leq 2$ is tight: $r_A(2a) = 1$ for $a \\in A$ (the pair $(a,a)$), and $r_A(a+b) = 2$ for distinct $a,b \\in A$. The axiom bridges the 'all sums distinct' definition with the convolution bound.",
@@ -248,7 +248,7 @@
       "startLine": 123,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_C3_counterexample",
     "content": "**erdos_C3_counterexample** (Erdős 1980): There exists a set $A$ with $r_A \\leq 3$ that cannot be partitioned into pieces with $r < 3$, no matter how many pieces are used.\n\nThis was Erdős's first partial result toward Problem #328.",
     "mathContext": "Erdős [Er80e] constructed explicit examples for $C=3$ and $C=4$, and showed the answer is NO for infinitely many values of $C$. The constructions use combinatorial arguments about the structure of the sumset.",
@@ -269,7 +269,7 @@
       "startLine": 134,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_C4_counterexample",
     "content": "**erdos_C4_counterexample** (Erdős 1980): Similarly, there exists a set $A$ with $r_A \\leq 4$ that cannot be partitioned into pieces with $r < 4$.",
     "mathContext": "The case $C=4$ was proved alongside $C=3$ in [Er80e]. Erdős noted that his method extends to infinitely many $C$ but could not settle the question for all $C$, leaving that to Nešetřil and Rödl.",
@@ -289,7 +289,7 @@
       "startLine": 148,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Nešetřil-Rödl Theorem (1985)",
     "content": "**nesetril_rodl_theorem**: For ALL $C \\geq 1$, there exists a 'bad' set $A$ with $r_A \\leq C$ that cannot be partitioned into ANY number of pieces with $r_{A_i} < C$.\n\nThis is the complete negative answer to Problem #328.",
     "mathContext": "The proof [NeRo85] uses Ramsey-theoretic methods: interpret pairs summing to the same value as hyperedges in a hypergraph. A partition of $A$ is a vertex coloring; Ramsey theory guarantees a monochromatic subhypergraph with full convolution bound. The quantitative Ramsey bounds determine the minimum size of the counterexample.",
@@ -312,7 +312,7 @@
       "startLine": 160,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_newman_disproved",
     "content": "**erdos_newman_disproved**: $\\neg$ `erdos_newman_question`\n\nThe Erdős-Newman conjecture is FALSE. This follows from `nesetril_rodl_theorem` applied to any $C \\geq 1$.",
     "mathContext": "The negation means: for some $C$, no uniform bound $t(C)$ suffices. In fact, the Nešetřil-Rödl theorem shows this for EVERY $C \\geq 1$.",
@@ -333,7 +333,7 @@
       "startLine": 167,
       "endLine": 174
     },
-    "type": "technique",
+    "type": "concept",
     "title": "nesetril_rodl_strong",
     "content": "**nesetril_rodl_strong**: Even allowing $t$ to depend on $A$ itself (not just $C$), the answer is still NO. For every $C \\geq 1$, there exist sets that resist partition into ANY finite number of pieces with smaller convolution.",
     "mathContext": "This strengthening rules out all partition strategies: not only uniform ones ($t$ depending on $C$) but also non-uniform ones ($t$ depending on $A$). The 'bad' sets produced by Ramsey theory have the property that every partition, no matter how fine, preserves the convolution bound in at least one piece.",
@@ -353,7 +353,7 @@
       "startLine": 183,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "sidon_case",
     "content": "**sidon_case**: Even Sidon sets ($C=2$) cannot always be partitioned into unique-sum sets ($r \\leq 1$). This is the base case of the Nešetřil-Rödl theorem and the most concrete instance of the obstruction.",
     "mathContext": "Since $C=2$ is the smallest nontrivial case, this illustrates the phenomenon most vividly: a set where all pairwise sums are distinct still cannot be split into pieces where all sums are unique. The counterexample Sidon set must be constructed via Ramsey theory.",
@@ -396,7 +396,7 @@
       "startLine": 201,
       "endLine": 202
     },
-    "type": "technique",
+    "type": "concept",
     "title": "unique_sums_hereditary",
     "content": "**unique_sums_hereditary**: If $A$ has unique sums and $B \\subseteq A$, then $B$ also has unique sums.\n\nThis contrasts sharply with $C \\geq 2$: Sidon is NOT hereditary in the partition sense (you can't always partition into unique-sum subsets).",
     "mathContext": "Heredity for $r_A \\leq 1$ is immediate: if $B \\subseteq A$, then any pair in $B$ summing to $n$ is also a pair in $A$ summing to $n$, so $r_B(n) \\leq r_A(n) \\leq 1$. This monotonicity fails for the partition question because partition pieces are not arbitrary subsets—they must cover all of $A$.",
@@ -417,7 +417,7 @@
       "startLine": 211,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "concept",
     "title": "density_bound",
     "content": "**density_bound**: For $A \\subseteq [1,N]$ with $r_A(n) \\leq C$ for all $n$:\n$$|A \\cap [1,N]| \\leq C\\sqrt{N} + 1$$\n\nThe counterexamples in the Nešetřil-Rödl theorem achieve this density order.",
     "mathContext": "This is a counting argument: $\\sum_n r_A(n) = |A|^2$ (since each ordered pair $(a,b)$ contributes to exactly one $n = a+b$), and if $r_A(n) \\leq C$ then $|A|^2 \\leq C \\cdot 2N$, giving $|A| \\leq \\sqrt{2CN}$. The $C\\sqrt{N}+1$ bound is a refined version. For Sidon sets ($C=2$), this recovers the Erdős-Turán bound.",
@@ -440,7 +440,7 @@
       "startLine": 235,
       "endLine": 245
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_328_summary",
     "content": "**erdos_328_summary**: The complete resolution of Problem #328, proved as a conjunction:\n1. **Nešetřil-Rödl**: $\\forall C \\geq 1$, $\\exists$ bad set $A$ with no valid partition\n2. **Disproof**: $\\neg$ `erdos_newman_question`\n\nProved by `⟨nesetril_rodl_theorem, erdos_newman_disproved⟩`.",
     "mathContext": "The summary theorem packages both the constructive statement (counterexamples exist for every $C$) and the logical negation of the original conjecture. This is a clean formalization pattern: state the answer both constructively and as a negation of the question.",

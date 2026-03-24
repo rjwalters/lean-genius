@@ -186,7 +186,7 @@
       "startLine": 260,
       "endLine": 281
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results",
     "content": "**erdos_581** combines both bounds into a single conjunction:\n(∃ c₁ > 0, ∀ m, f(m) ≥ m/2 + c₁·m^{4/5}) ∧ (∃ c₂ > 0, ∀ m, f(m) ≤ m/2 + c₂·m^{4/5})\n\n**erdos_581_summary** further includes positivity of the extracted constants c₁ and c₂, proved using exact ⟨alon_lower_bound, alon_upper_bound, c₁_positive.le, c₂_positive.le⟩.",
     "mathContext": "Status: SOLVED by Alon (1996). The answer f(m) = m/2 + Θ(m^{4/5}) shows triangle-free graphs are inherently more bipartite-like than arbitrary graphs.",

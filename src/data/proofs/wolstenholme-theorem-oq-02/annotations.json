@@ -75,7 +75,7 @@
       "startLine": 78,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Exclusion of Small Primes",
     "content": "Seven theorems proving primes 5, 7, 11, 13, 17, 19, 23 are NOT Wolstenholme primes. Each proof is identical: assume IsWP p, extract the mod p⁴ condition, and refute it with `native_decide`. This establishes a computational gap: the first WP is 16843, over 700× larger than 23. The pattern demonstrates that checking WP status is computationally feasible for small primes but becomes infeasible as the binomial coefficient grows super-exponentially.",
     "mathContext": "$\\binom{9}{4} = 126$, $126 \\bmod 625 = 126 \\neq 1$ (p=5 fails). $\\binom{13}{6} = 1716$, $1716 \\bmod 2401 = 1716 \\neq 1$ (p=7 fails). The kernel can evaluate these, but $\\binom{33685}{16842}$ for $p=16843$ is astronomically large.",
@@ -121,7 +121,7 @@
       "startLine": 140,
       "endLine": 178
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Residue Analysis: The Mod 4/8/12 Pattern",
     "content": "Both known WPs are ≡ 3 (mod 4), but they differ mod 8: 16843 ≡ 3 (mod 8) while 2124679 ≡ 7 (mod 8), covering both odd residue classes that map to 3 (mod 4). Intriguingly, both share residue 7 (mod 12). Whether the mod 12 coincidence reflects a structural constraint or is accidental is unknown — with only two data points, statistical inference is impossible. The `known_wp_all_mod4_eq_3` theorem packages the mod 4 observation as a single lemma over both known WPs using case analysis.",
     "mathContext": "Mod 4: $16843 \\equiv 2124679 \\equiv 3$. Mod 8: $16843 \\equiv 3$, $2124679 \\equiv 7$. Mod 12: $16843 \\equiv 2124679 \\equiv 7$. The mod 8 data rules out a mod-8 pattern, but the mod 4 and mod 12 patterns are unexplained.",

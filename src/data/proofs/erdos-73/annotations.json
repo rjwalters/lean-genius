@@ -100,7 +100,7 @@
       "startLine": 91,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Trivial $k = 0$ Case",
     "content": "**odd_cycle_independence** (axiom): An odd cycle $C_{2m+1}$ has independence number exactly $m$ — select every other vertex around the cycle.\n\n**odd_cycle_violates_strict** (proved): $2m < 2m + 1$, so $\\alpha(C_{2m+1}) = m < (2m+1)/2$, violating the $k = 0$ condition.\n\n**trivial_case** (sorry): If $\\alpha(G[S]) \\ge |S|/2$ for all $S$, then $G$ is bipartite. The proof is by contrapositive: a non-bipartite graph contains an odd cycle, which violates the condition.",
     "mathContext": "The $k = 0$ case is Reed's 'trivial observation': if $G$ has an odd cycle $C_{2m+1}$, then taking $S = V(C_{2m+1})$ gives $\\alpha(G[S]) = m < (2m+1)/2 = |S|/2$, contradicting the condition. This reduces to the classical equivalence between bipartiteness and absence of odd cycles.",
@@ -147,7 +147,7 @@
       "startLine": 141,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reed's Theorem (1999)",
     "content": "**reed_bound**: An axiomatized function $f : \\mathbb{N} \\to \\mathbb{N}$ bounding the number of exceptional vertices.\n\n**reed_theorem** (axiom): If $G$ satisfies the $k$-independence condition, then $G$ is $f(k)$-almost-bipartite.\n\n**erdos_73_solved** (proved): Unpacks Reed's theorem into the explicit form: there exists $S \\subseteq V$ with $|S| \\le f(k)$ such that $G[V \\setminus S]$ is bipartite. This directly answers Erdős's question.",
     "mathContext": "Reed's proof in 'Mangoes and Blueberries' (Combinatorica 1999) uses a structural decomposition: analyze how odd cycles interact in $G$. The $k$-independence condition limits the number of vertex-disjoint odd cycles (since each creates a deficit in $\\alpha$), and bounded odd cycle packing implies bounded odd cycle transversal by the Erdős-Pósa theorem for odd cycles.",
@@ -171,7 +171,7 @@
       "startLine": 156,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Case: $k = 0$ and Exact Bipartiteness",
     "content": "**reed_bound_zero** (axiom): $f(0) = 0$, so the strict condition forces exact bipartiteness.\n\n**strict_implies_bipartite** (sorry): When $k = 0$, Reed's theorem gives a set $S$ of size 0 to remove, meaning $G$ is already bipartite. The proof unpacks the bound and uses $S = \\emptyset$ to conclude $G[V \\setminus \\emptyset] = G[V] \\cong G$ is bipartite.",
     "mathContext": "The $k = 0$ case establishes $f(0) = 0$: the strict independence condition $\\alpha(G[S]) \\ge |S|/2$ for all $S$ is equivalent to bipartiteness. This is the base case for Reed's induction. The remaining sorry involves showing that $G$ induced on $V = V \\setminus \\emptyset$ is isomorphic to $G$ itself.",
@@ -218,7 +218,7 @@
       "startLine": 189,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Explicit Bounds on $f(k)$",
     "content": "**reed_bound_explicit** (axiom): $f(k) \\le 2^k$. Reed's proof gives an exponential bound, but the optimal growth rate of $f(k)$ is unknown.\n\n**openQuestion_optimal_bound**: Defines the optimal bound as the tightest function $f$ that makes Reed's theorem work for all graphs. Is $f(k)$ polynomial? Linear? The exponential bound from the proof may be far from optimal.",
     "mathContext": "The exponential bound $f(k) \\le 2^k$ comes from Reed's structural argument. By the Erdős-Pósa theorem, bounded odd cycle packing implies bounded transversal, but the Erdős-Pósa constant can be exponential. Whether $f(k) = O(k)$ or $f(k) = O(\\text{poly}(k))$ is an open combinatorial question.",
@@ -240,7 +240,7 @@
       "startLine": 201,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Chromatic Number Connection",
     "content": "**bipartite_iff_two_colorable** (axiom): $G$ is bipartite $\\iff$ $\\chi(G) \\le 2$.\n\n**almost_bipartite_chromatic** (axiom): If $G$ is $k$-almost-bipartite, then $\\chi(G) \\le k + 2$. Proof: color the bipartite remainder with 2 colors, and give each of the $\\le k$ removed vertices a unique additional color.",
     "mathContext": "Combining with Reed's theorem: if $G$ satisfies the $k$-independence condition, then $\\chi(G) \\le f(k) + 2$. This is a $\\chi$-boundedness result — the $k$-independence condition bounds the chromatic number independently of graph size. The class of $\\chi$-bounded graph families is a central topic in structural graph theory (Gyárfás 1987).",

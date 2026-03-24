@@ -240,7 +240,7 @@
       "startLine": 91,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence to Chromatic Number",
     "content": "The key structural result: ErdosRosenfeldQuestion(k) holds if and only if χ(J(2k,k)) = k+1. This transforms the combinatorial rainbow condition into a chromatic number equation. The forward direction shows a rainbow coloring must be proper; the reverse constructs a rainbow coloring from an optimal proper coloring.",
     "mathContext": "$\\text{ErdosRosenfeldQuestion}(k) \\iff \\chi(J(2k,k)) = k + 1$. The proof uses: (1) a rainbow coloring is necessarily proper (adjacent $k$-subsets share a $(k+1)$-subset), and (2) a $(k+1)$-coloring achieving $\\chi = k+1$ is rainbow by counting.",
@@ -442,7 +442,7 @@
       "startLine": 160,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: erdos_835",
     "content": "The main result: for all k with 3 <= k <= 8, the Erdős-Rosenfeld property fails. The proof uses Lean's interval_cases tactic to exhaustively case-split on k ∈ {3,4,5,6,7,8}, dispatching each case to the corresponding axiom.",
     "mathContext": "$\\forall k \\in \\mathbb{N},\\, 3 \\leq k \\leq 8 \\Rightarrow \\neg\\text{ErdosRosenfeldQuestion}(k)$. Proof: `interval_cases k` reduces to 6 goals, each closed by the corresponding `k_equals_N_fails` axiom.",

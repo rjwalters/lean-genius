@@ -139,7 +139,7 @@
       "startLine": 117,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Distinct Moduli Implies Not Exact",
     "content": "**distinct_moduli_not_exact**: *Proved*: $\\forall C, \\text{hasDistinctModuli}(C) \\to \\neg\\text{isExact}(C)$. The universal contrapositive of `no_exact_covering_system`. The proof constructs the existential witness from the hypotheses and applies the axiomatized impossibility: `⟨C, hD, hE⟩` witnesses the negated statement, then `no_exact_covering_system` gives the contradiction.",
     "mathContext": "$\\forall C, \\text{distinct moduli} \\Rightarrow \\neg\\text{exact}$",
@@ -253,7 +253,7 @@
       "startLine": 201,
       "endLine": 206
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Impossibility and Existence",
     "content": "**erdos_947_summary**: *Proved*: the conjunction of (1) $\\neg\\exists C, \\text{hasDistinctModuli}(C) \\wedge \\text{isExact}(C)$ from `no_exact_covering_system` and (2) $\\exists C, \\text{hasDistinctModuli}(C)$ extracted from `covering_systems_exist`. The proof uses `⟨no_exact_covering_system, let ⟨C, hD, _⟩ := covering_systems_exist; ⟨C, hD⟩⟩` to combine both results.",
     "mathContext": "$(\\neg\\exists C : \\text{exact with distinct moduli}) \\wedge (\\exists C : \\text{covering with distinct moduli})$",

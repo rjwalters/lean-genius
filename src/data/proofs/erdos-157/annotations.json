@@ -91,7 +91,7 @@
       "startLine": 60,
       "endLine": 62
     },
-    "type": "definition",
+    "type": "concept",
     "title": "k-fold Sumset",
     "content": "**def SumsetK (A : Set ℕ) (k : ℕ)**: Set ℕ\n  The set of all n expressible as sums of at most k elements from A.\n\n**Formally**: n ∈ SumsetK A k iff ∃ S : Finset ℕ with |S| ≤ k, S ⊆ A, and n = Σ_{s∈S} s.\n\n**Examples**:\n- SumsetK {1,2,3} 1 = {1, 2, 3}\n- SumsetK {1,2,3} 2 = {1, 2, 3, 4, 5}\n- SumsetK {1,2,3} 3 = {1, 2, 3, 4, 5, 6}",
     "mathContext": "The k-fold sumset measures the 'reach' of a set under addition with bounded terms. This is the key object for studying bases.",
@@ -113,7 +113,7 @@
       "startLine": 64,
       "endLine": 67
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Asymptotic Basis Definition",
     "content": "**def IsAsymptoticBasis (A : Set ℕ) (k : ℕ)**: Prop\n  ∃ N₀, ∀ n ≥ N₀, n ∈ SumsetK A k\n\n**Meaning**: Every sufficiently large integer is a sum of at most k elements of A.\n\n**Classic examples**:\n- ℕ is an asymptotic basis of order 1 (trivially)\n- Squares are an asymptotic basis of order 4 (Lagrange)\n- Primes are an asymptotic basis of order 3 (Vinogradov, for odd numbers)\n\n**Key constraint**: The order k matters greatly for density requirements.",
     "mathContext": "The concept of 'basis' has been central to additive number theory since Waring's problem. The asymptotic version allows finitely many exceptions.",
@@ -157,7 +157,7 @@
       "startLine": 87,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Pilatte's Existence Theorem (2023)",
     "content": "**theorem pilatte_existence**: Erdos157Conjecture\n\n**Status**: sorry (existential construction not formalized)\n\n**Pilatte's proof** (2023) uses a probabilistic construction:\n1. Carefully select elements to maintain the Sidon property\n2. Ensure enough density to cover all large integers with 3 terms\n3. Balance the competing constraints through delicate analysis\n\nThe construction is non-explicit - it proves existence without giving a concrete set.",
     "mathContext": "Probabilistic existence proofs are common in combinatorics. They show something exists without constructing it explicitly.",

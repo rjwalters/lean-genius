@@ -52,7 +52,7 @@
       "startLine": 119,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Origin Membership Lemma",
     "content": "**Theorem**: The origin lies in any nonempty, centrally symmetric, convex set $S$.\n\n**Proof**: Pick $x \\in S$ (nonemptiness). Then $-x \\in S$ (symmetry). By convexity with weights $1/2$ each, the midpoint $\\frac{1}{2}x + \\frac{1}{2}(-x) = 0 \\in S$.\n\nThis is the only fully proved theorem in the file (not axiomatized).",
     "mathContext": "Uses Mathlib's `Convex ℝ S` applied to $x$ and $-x$ with coefficients $1/2$, combined with the definition `CentrallySymmetric`.",
@@ -145,7 +145,7 @@
       "startLine": 273,
       "endLine": 275
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem (Axiomatized)",
     "content": "**Minkowski's Fundamental Theorem**:\n\n$$\\text{vol}(S) > 2^n \\cdot \\text{covol}(L) \\Rightarrow \\exists x \\in S \\cap L, x \\neq 0$$\n\n**Status**: Axiomatized because the full proof requires measure-theoretic machinery (Fubini's theorem, change of variables) and a careful infinite pigeonhole argument that is beyond current scope.\n\nThe equivalent formulation `minkowski_fundamental'` unfolds `criticalVolume` explicitly.",
     "mathContext": "Stated as `axiom` rather than `theorem` because the proof requires integration over lattice translates and measure-theoretic pigeonhole, which needs Mathlib's `MeasureTheory.Measure.Lebesgue` in a way not yet set up in this file.",
@@ -171,7 +171,7 @@
       "startLine": 298,
       "endLine": 307
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Integer Lattice Specialization",
     "content": "**For $\\mathbb{Z}^n$**: If $\\text{vol}(S) > 2^n$, then $S$ contains a nonzero integer point.\n\nThis is the most commonly stated form. The proof rewrites `criticalVolume (standardLattice n) = 2^n` using `standardLattice_covolume` and applies the main axiom.",
     "mathContext": "Derives the standard-lattice case from the general theorem by showing $\\text{covol}(\\mathbb{Z}^n) = 1$, so $\\text{critVol} = 2^n \\cdot 1 = 2^n$.",
@@ -194,7 +194,7 @@
       "startLine": 340,
       "endLine": 346
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Application: Fermat's Two Squares",
     "content": "**Fermat's Theorem**: Every prime $p \\equiv 1 \\pmod 4$ is a sum of two squares.\n\n**Proof via Minkowski**:\n1. Since $p \\equiv 1 \\pmod 4$, $-1$ is a quadratic residue: $k^2 \\equiv -1$\n2. Lattice $L = \\{(a,b) \\in \\mathbb{Z}^2 : a \\equiv kb \\pmod p\\}$\n3. $\\text{covol}(L) = p$\n4. Disk $D = \\{x^2 + y^2 < 2p\\}$ has area $2\\pi p > 4p = 2^2 \\cdot p$\n5. By Minkowski, $D$ contains $(a,b) \\in L \\setminus \\{0\\}$\n6. Then $a^2 + b^2 < 2p$ and $a^2 + b^2 \\equiv 0 \\pmod p$\n7. Therefore $a^2 + b^2 = p$\n\nThe actual Lean proof uses Mathlib's `Nat.Prime.sq_add_sq` directly.",
     "mathContext": "While the annotation describes the Minkowski-based proof, the Lean code delegates to Mathlib's `Nat.Prime.sq_add_sq` which uses a different approach (Zagier's involution or Gaussian integers). The condition $p \\% 4 \\neq 3$ is equivalent to $p \\equiv 1 \\pmod{4}$ for odd primes.",

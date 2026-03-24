@@ -81,7 +81,7 @@
       "startLine": 115,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Erdős Conjecture #818",
     "content": "The conjecture asks: if |A+A| ≤ K|A|, must |AA| ≥ |A|²/(log|A|)^C for some C? This says the product set must be nearly quadratic in size, with only a polylogarithmic loss.",
     "mathContext": "|A+A| ≤ K|A| ⟹ |AA| ≥ |A|²/(log|A|)^C",
@@ -106,7 +106,7 @@
       "startLine": 133,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solymosi's Theorem (2009)",
     "content": "Solymosi proved the STRONGER result: |AA| ≥ c·|A|²/log|A| (with C = 1, not arbitrary C). This means only a single log factor is lost from the quadratic bound, which is tight.",
     "mathContext": "|A+A| ≤ K|A| ⟹ |AA| ≥ c·|A|²/log|A|",
@@ -156,7 +156,7 @@
       "startLine": 188,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solymosi's Energy Lemma",
     "content": "Solymosi's key innovation: E×(A) ≤ |A|² · |A+A| · log|A|. This upper bound on multiplicative energy in terms of sumset size is the crucial bridge between additive and multiplicative structure.",
     "mathContext": "E×(A) ≤ |A|² · |A+A| · log|A|",

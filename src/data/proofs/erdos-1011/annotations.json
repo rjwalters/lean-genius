@@ -106,7 +106,7 @@
       "startLine": 167,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity and Special Values",
     "content": "Three monotonicity axioms: f_r(n) increases in n, decreases in r, and g(r) increases in r. Special values: g(2) = 0 (bipartite graphs are bipartite), g(3) = 1 (odd cycle removal), g(4) = 3 (Grötzsch-type constructions). These ground the abstract theory in computable examples.",
     "mathContext": "f_r(n) decreasing in r is the key structural property: higher chromatic number is a stronger constraint on the graph, so fewer edges suffice to force a triangle. The special values of g(r) give concrete instances: g(3) = 1 means every triangle-free graph with χ ≥ 3 can be made bipartite by removing one vertex. The Grötzsch graph (11 vertices, χ = 4, triangle-free) witnesses g(4) ≥ 3.",

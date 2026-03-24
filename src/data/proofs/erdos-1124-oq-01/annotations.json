@@ -183,7 +183,7 @@
       "startLine": 427,
       "endLine": 448
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Transitivity via Translation Composition",
     "content": "Translation congruence is transitive because composing two translations gives another translation. The helper theorem translateBy_comp proves that applying translateBy(w) after translateBy(v) to a set S equals translateBy(v+w) applied to S. This is the set-image version of the identity (p + v) + w = p + (v + w), verified using the abel tactic for the commutativity and associativity of addition.",
     "mathContext": "If $B = A + v$ and $C = B + w$, then $C = A + (v + w)$. At the set level: $\\text{translateBy}(w)(\\text{translateBy}(v)(S)) = \\text{translateBy}(v + w)(S)$.",

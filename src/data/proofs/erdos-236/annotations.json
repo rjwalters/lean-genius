@@ -190,7 +190,7 @@
       "startLine": 121,
       "endLine": 135
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Connection to Problem #10",
     "content": "Problem #236 counts representations n = p + 2^k, while Problem #10 asks if every odd n has such a representation. f(n) = 0 means no representation exists.",
     "mathContext": "HasRepresentation n := f n > 0. Numbers with f(n) = 0 cannot be written as p + 2^k. Example: f(262) = 0.",

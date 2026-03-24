@@ -53,7 +53,7 @@
       "endLine": 86
     },
     "title": "Ptolemy's Theorem (Wiedijk #95)",
-    "type": "technique",
+    "type": "concept",
     "content": "For four cospherical points $A, B, C, D$ with diagonals intersecting at $P$ (where $\\angle APC = \\pi$ and $\\angle BPD = \\pi$): $\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$.",
     "mathContext": "The `Cospherical` predicate asserts the four points lie on a common sphere. The angle conditions $\\angle APC = \\pi$ and $\\angle BPD = \\pi$ mean $P$ lies on both diagonals with vertices on opposite sides (collinear triples through $P$). The proof is a one-liner: `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical h hapc hbpd`. This is **Wiedijk's 100 Theorems #95**, proved by Ptolemy of Alexandria (c. 150 AD) in Book I, Ch. 10 of the *Almagest*.",
     "significance": "key",
@@ -77,7 +77,7 @@
       "endLine": 115
     },
     "title": "Alternative Formulations",
-    "type": "technique",
+    "type": "concept",
     "content": "Three equivalent statements of Ptolemy: standard form ($AB \\cdot CD + BC \\cdot DA = AC \\cdot BD$), symmetric form (diagonals on left), and rearranged form (using `mul_comm`). All follow from the main theorem by algebraic rewriting.",
     "mathContext": "The three formulations differ only in the arrangement of terms. The symmetric form $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ is natural when computing diagonal products from side lengths. The rearranged form swaps the order of diagonal factors via `mul_comm`. Formally, each requires a separate theorem statement since Lean's definitional equality does not include commutativity. The proofs use `rw [ptolemys_theorem ...]` and `mul_comm`.",
     "significance": "supporting",
@@ -100,7 +100,7 @@
       "endLine": 128
     },
     "title": "Diagonal Product from Sides",
-    "type": "technique",
+    "type": "concept",
     "content": "For a cyclic quadrilateral with known side lengths, the product of diagonals $AC \\cdot BD$ can be computed from the four side lengths alone: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$.",
     "mathContext": "This corollary is the computationally useful form of Ptolemy's theorem. In ancient astronomy, side lengths (angular separations between stars) could be measured directly, but diagonal lengths required trigonometric computation. Ptolemy's theorem eliminated one step. In modern computational geometry, computing the diagonal product from sides avoids taking square roots, which is numerically advantageous. The proof is trivially `ptolemys_theorem_symmetric h hapc hbpd`.",
     "significance": "key",
@@ -146,7 +146,7 @@
       "endLine": 177
     },
     "title": "Example: Rectangle (Pythagorean Theorem)",
-    "type": "insight",
+    "type": "concept",
     "content": "For a 3-4-5 rectangle inscribed in a circle: $4 \\cdot 4 + 3 \\cdot 3 = 16 + 9 = 25 = 5 \\cdot 5$. Ptolemy reduces to $a^2 + b^2 = d^2$ — the Pythagorean theorem.",
     "mathContext": "For any rectangle with sides $a$ and $b$, the diagonals have length $d = \\sqrt{a^2 + b^2}$ and opposite sides are equal. Ptolemy gives $a \\cdot a + b \\cdot b = d \\cdot d$, i.e., $a^2 + b^2 = d^2$. So Ptolemy genuinely **generalizes** the Pythagorean theorem to non-rectangular cyclic quadrilaterals. The 3-4-5 example is verified by `norm_num`. This connection was known to Ptolemy and was one of his motivations.",
     "significance": "key",
@@ -169,7 +169,7 @@
       "endLine": 191
     },
     "title": "Example: Square",
-    "type": "insight",
+    "type": "concept",
     "content": "For a square with side $s$: all sides equal, diagonals $= s\\sqrt{2}$. Ptolemy gives $s^2 + s^2 = (s\\sqrt{2})^2 = 2s^2$.",
     "mathContext": "The proof uses `Real.mul_self_sqrt` to show $(\\sqrt{2})^2 = 2$, then `ring` for algebraic verification. The non-negativity condition $2 \\ge 0$ is discharged by `linarith`. The `mul_mul_mul_comm` lemma rearranges the product $(s \\cdot \\sqrt{2}) \\cdot (s \\cdot \\sqrt{2})$ into $(s \\cdot s) \\cdot (\\sqrt{2} \\cdot \\sqrt{2})$. This also confirms the elementary fact that the diagonal of a square is $s\\sqrt{2}$.",
     "significance": "supporting",
@@ -192,7 +192,7 @@
       "endLine": 207
     },
     "title": "Example: Isosceles Trapezoid",
-    "type": "insight",
+    "type": "concept",
     "content": "Isosceles trapezoid with sides $AB = CD = 5$ and $BC = DA = 6$: Ptolemy gives $5^2 + 6^2 = 61$, so $AC \\cdot BD = 61$ and $AC = BD = \\sqrt{61}$.",
     "mathContext": "This demonstrates the practical power of Ptolemy: compute diagonal lengths from side lengths without using the Law of Cosines (no angles needed!). Since the trapezoid is isosceles, $AC = BD$, so $AC^2 = 61$ and $AC = \\sqrt{61} \\approx 7.81$. The irrationality of $\\sqrt{61}$ (61 is prime) shows that integer-sided cyclic quadrilaterals can have irrational diagonals. Both computations ($5 \\cdot 5 + 6 \\cdot 6 = 61$ and $\\sqrt{61} = \\sqrt{61}$) are verified by `norm_num`.",
     "significance": "supporting",

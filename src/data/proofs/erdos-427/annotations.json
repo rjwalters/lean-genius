@@ -236,7 +236,7 @@
       "startLine": 227,
       "endLine": 232
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Corollary: Consecutive Primes in Any Class",
     "content": "**shiu_implies_consecutive**: For any k, a, q with k ≥ 1, q ≥ 1, and gcd(a,q) = 1:\n\n```lean\ndef consecutive_primes_in_class (k a q : ℕ) : Prop :=\n  ∃ m : ℕ, ∀ i ∈ Finset.Ico m (m + k), nthPrime i ≡ a [MOD q]\n\ntheorem shiu_implies_consecutive (k a q : ℕ) (hk : 1 ≤ k) (hq : 1 ≤ q) (hcop : Nat.Coprime a q) :\n    consecutive_primes_in_class k a q\n```\n\nWe can find k consecutive primes all in any coprime residue class.",
     "mathContext": "This is the finite (existential) version of Shiu's infinite statement. Since infinitely many starting points exist, at least one must exist.",

@@ -262,7 +262,7 @@
       "startLine": 211,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_535_summary:** Combines the two key bounds:\n1. Abbott-Hanson: $\\forall r \\geq 3,\\, f_r(N) \\leq C \\cdot N^{1/2 + \\varepsilon}$\n2. Erdős: $f_3(N) > N^{c/\\log \\log N}$\n\nProved by $\\langle \\text{abbott\\_hanson\\_upper\\_bound}, \\text{erdos\\_lower\\_bound} \\rangle$.",
     "mathContext": "The conjunction $(f_r(N) \\leq N^{1/2+o(1)}) \\wedge (f_3(N) > N^{c/\\log \\log N})$ encapsulates the complete known picture. The gap between exponents $1/2$ and $c/\\log \\log N \\to 0$ is the open problem.",

@@ -192,7 +192,7 @@
       "startLine": 141,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Original Erdős–Gallai Bound: $O(n \\log n)$",
     "content": "**erdos_gallai_original_bound**: There exists $C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n \\cdot \\log n$ for all graphs on $n \\geq 2$ vertices. This was the first quantitative upper bound, proved alongside the conjecture statement.",
     "mathContext": "The $O(n \\log n)$ bound was the starting point for the conjecture. The proof strategy involves iteratively extracting longest cycles: at each step, the longest cycle in the remaining graph covers many edges, and the number of iterations is bounded by $O(\\log n)$ since each cycle reduces the edge count significantly. This greedy approach loses a logarithmic factor that has proven difficult to eliminate.",
@@ -216,7 +216,7 @@
       "startLine": 150,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bound from $K_{3,n-3}$",
     "content": "**lower_bound_from_bipartite**: There exists $c > 0$ such that for all $n \\geq 6$, some graph on $n$ vertices requires at least $(1+c)n$ pieces. The witness is the **complete bipartite graph** $K_{3,n-3}$.",
     "mathContext": "$K_{3,n-3}$ has $3(n-3)$ edges. Any cycle in a bipartite graph has even length $\\geq 4$, so each cycle covers $\\geq 4$ edges. With at most $3(n-3)/4$ cycles possible, additional single edges are needed, pushing the count above $n$. The precise lower bound is $(1 + c)n$ for an explicit $c > 0$ depending on the parity structure.",
@@ -263,7 +263,7 @@
       "startLine": 169,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bucić–Montgomery Bound: $O(n \\log^* n)$ (2022)",
     "content": "**bucic_montgomery_bound**: There exists $C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n \\cdot (\\log^*(n) + 1)$ for all graphs on $n \\geq 2$ vertices. This is the **current best** upper bound, a dramatic improvement over the original $O(n \\log n)$.",
     "mathContext": "Bucić and Montgomery's proof uses a refined iterative approach: instead of extracting single longest cycles, they find **cycle decompositions of dense subgraphs** (using the Conlon–Fox–Sudakov result) and peel off layers. Each peeling step reduces the problem to a graph with lower minimum degree, and the number of layers needed is bounded by $\\log^* n$. The `+1` in the bound handles the base case when $\\log^*(n) = 0$.",
@@ -311,7 +311,7 @@
       "startLine": 188,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conlon–Fox–Sudakov: Dense Case Solved (2014)",
     "content": "**conlon_fox_sudakov**: For any $\\varepsilon > 0$, if $\\delta(G) \\geq \\varepsilon n$, then $\\text{dec}(G) \\leq C(\\varepsilon) \\cdot n$. The **dense case** of the Erdős–Gallai conjecture is fully resolved — only sparse graphs remain open.",
     "mathContext": "The constant $C(\\varepsilon)$ depends on $\\varepsilon$ but not on $n$. The proof uses the **regularity method**: apply Szemerédi's regularity lemma to find a regular partition, then decompose edges within regular pairs into cycles using probabilistic arguments. The sparse case ($\\delta(G) \\ll n$) resists this approach because regularity lemma loses control at low densities.",
@@ -335,7 +335,7 @@
       "startLine": 202,
       "endLine": 216
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Non-Disjoint Covering: $n - 1$ Pieces Suffice",
     "content": "**IsValidCovering** relaxes edge-disjointness to mere covering: every edge must appear in some piece, but pieces may overlap. **erdos_covering_bound**: in this setting, $n - 1$ cycles and edges always suffice (Erdős, 1971).",
     "mathContext": "The covering number is at most $n - 1$ because a spanning tree of $G$ uses $n - 1$ edges, and each non-tree edge creates a fundamental cycle with the tree. These $|E| - (n-1)$ cycles plus the $n - 1$ tree edges give at most $|E|$ pieces, but with clever selection one can cover all edges with $\\leq n - 1$ pieces. The contrast between $n - 1$ (covering) and $\\Theta(n \\log^* n)$ (partition) illustrates how the disjointness constraint dramatically increases complexity.",
@@ -359,7 +359,7 @@
       "startLine": 225,
       "endLine": 249
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem and $\\log^*$ Verification",
     "content": "**erdos_184_summary** combines three axiomatized bounds into a conjunction: (1) $O(n \\log^* n)$ upper bound, (2) $(1+c)n$ lower bound, (3) $O(n)$ for dense graphs. Proved by `exact ⟨..., ..., ...⟩`. The **key_insight_log_star** theorem verifies $\\log^*(65536) = 4$ and $\\log^*(4) = 2$ by `native_decide`.",
     "mathContext": "The summary theorem packages the state of knowledge: the gap between lower bound $(1+c)n$ and upper bound $O(n \\log^* n)$ is a multiplicative factor of $\\log^* n \\leq 5$ for all practical $n$. The `native_decide` tactic evaluates the recursive `logStar` function at compile time, providing computational verification of the iterated logarithm values.",

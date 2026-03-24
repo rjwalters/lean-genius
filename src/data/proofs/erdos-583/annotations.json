@@ -184,7 +184,7 @@
       "startLine": 195,
       "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases: Trees, Complete Graphs, and Cycles",
     "content": "`tree_satisfies` (axiom): trees satisfy the conjecture trivially. `complete_graph_satisfies` (axiom): $K_n$ satisfies it for all $n \\ge 1$. `cycle_satisfies` (axiom): 2-regular connected graphs (cycles) satisfy it.",
     "significance": "supporting",
@@ -258,7 +258,7 @@
       "startLine": 246,
       "endLine": 258
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "`erdos_583_summary` bundles: (1) the conjecture unfolds correctly (`Iff.rfl`), (2) Lovász's $\\lfloor n/2 \\rfloor$ path+cycle bound, and (3) Fan's $\\lceil n/2 \\rceil$ covering bound. Proved by `exact ⟨fun n => Iff.rfl, lovasz_theorem, fan_theorem⟩`. **Status: OPEN** after 60+ years.",
     "significance": "key",

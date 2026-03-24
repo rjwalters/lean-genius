@@ -52,7 +52,7 @@
       "startLine": 77,
       "endLine": 94
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Rogers-Ramanujan Partition Set Definitions",
     "content": "Four partition sets are defined for the two Rogers-Ramanujan identities. rr1GapPartitions selects partitions with gap at least 2 between consecutive parts, while rr1Mod5Partitions selects partitions whose parts are all congruent to 1 or 4 modulo 5. The RR2 variants additionally require the smallest part to be at least 2 (gap side) or restrict to residues 2 and 3 modulo 5 (congruence side). All sets are defined as filtered Finsets over the universe of Nat.Partition n.",
     "mathContext": "RR1: $|\\{\\lambda \\vdash n : \\lambda_i - \\lambda_{i+1} \\geq 2\\}| = |\\{\\lambda \\vdash n : \\text{all parts} \\equiv 1,4 \\pmod{5}\\}|$. RR2: same with $\\lambda_k \\geq 2$ and residues $\\{2,3\\}$ mod 5.",
@@ -98,7 +98,7 @@
       "startLine": 112,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Schur's Partition Identity (1926)",
     "content": "Schur's identity equates two classes of partitions of n: those into distinct parts congruent to 1 or 2 modulo 3 (the mod side), and those with minimum gap 3 between consecutive parts and distinctness (the gap side). The formalization uses Nodup on both sides to enforce distinctness. Like the Rogers-Ramanujan identities, Schur's identity is stated as an axiom, as it requires similarly deep combinatorial or analytic machinery to prove.",
     "mathContext": "Schur (1926): $|\\{\\lambda \\vdash n : \\text{distinct, parts} \\equiv \\pm 1 \\pmod{3}\\}| = |\\{\\lambda \\vdash n : \\text{gap} \\geq 3, \\text{distinct}\\}|$",
@@ -212,7 +212,7 @@
       "startLine": 175,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "definition",
     "title": "RR1 Gap Subset and Containment Hierarchy",
     "content": "This theorem wraps `rr1_gap_implies_distinct` into a Finset subset statement: `rr1GapPartitions n ⊆ Nat.Partition.distincts n`. Together with `rr2_subset_rr1`, this establishes the complete containment hierarchy: RR2 gap $\\subseteq$ RR1 gap $\\subseteq$ distinct $\\subseteq$ all partitions. The formalization catalogs 6 partition set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), and 3 fully proved structural theorems with 0 sorries. The axiomatization is justified by the infrastructure gap: proving the identities would require q-series manipulation (Jacobi triple product) or bijective proofs (Garsia-Milne involution, ~500+ lines each).",
     "mathContext": "$\\text{RR2\\_gap}(n) \\subseteq \\text{RR1\\_gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$. The q-series proof requires $(q;q)_k = \\prod_{i=1}^k (1-q^i)$.",

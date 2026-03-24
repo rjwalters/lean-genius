@@ -101,7 +101,7 @@
       "startLine": 71,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alweiss (2023)",
     "content": "**Ryan Alweiss's extension**: The full conjecture holds over ℚ\\{0}. For any finite coloring of nonzero rationals and any m, there exist arbitrarily large sum-product monochromatic sets.",
     "mathContext": "This suggests the conjecture may be true for ℕ as well. The rational case allows more algebraic flexibility (inverses exist), but the core difficulty of combining sums and products is the same.",
@@ -158,7 +158,7 @@
       "startLine": 113,
       "endLine": 129
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Singleton Example",
     "content": "Any singleton {n} is trivially sum-product monochromatic with color c(n). The only nonempty subset is {n} itself, and n = Σ{n} = Π{n}.",
     "mathContext": "The proof uses Finset.eq_singleton_iff_nonempty_unique_mem to show S ⊆ {n} with S nonempty implies S = {n}.",
@@ -177,7 +177,7 @@
       "startLine": 123,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Empty Set Example",
     "content": "The empty set satisfies the property **vacuously** - there are no nonempty subsets, so the condition is trivially true for any color c₀.",
     "mathContext": "This is a standard vacuous truth argument. The proof uses that S ⊆ ∅ and S.Nonempty lead to a contradiction.",

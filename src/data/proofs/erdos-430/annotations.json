@@ -96,7 +96,7 @@
       "startLine": 40,
       "endLine": 41
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Greedy Next Element",
     "content": "Computes the largest admissible integer in $[1, \\text{prev})$ using $\\texttt{Finset.sup}$ over the filtered interval $\\{m \\in [1, \\text{prev}-1] : \\texttt{IsAdmissible}(n, m)\\}$. Returns 0 if no admissible element exists (sequence termination). The greedy choice maximizes the current term, creating a strictly decreasing sequence.",
     "mathContext": "$\\texttt{greedyNext}(n, a_{k-1}) = \\max\\{m \\in [1, a_{k-1}) : \\texttt{IsAdmissible}(n, m)\\}$, or $0$ if the set is empty.",
@@ -119,7 +119,7 @@
       "startLine": 47,
       "endLine": 49
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Greedy Sequence",
     "content": "The greedy large-factor sequence: $a_0 = n - 1$ and $a_{k+1} = \\texttt{greedyNext}(n, a_k)$. This is a strictly decreasing sequence of positive integers (until termination at 0), so it has finite length. The central question is whether this sequence must include a composite for large $n$.",
     "mathContext": "$a_0 = n - 1,\\quad a_{k+1} = \\max\\{m \\in [1, a_k) : \\text{all prime factors of } m > n - m\\}$. Length $\\leq n - 1$ since the sequence is strictly decreasing in $\\{1, \\ldots, n-1\\}$.",
@@ -184,7 +184,7 @@
       "startLine": 64,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Example: $n = 8$",
     "content": "For $n = 8$: $a_0 = 7$ (prime, factor $7 > 8 - 7 = 1$), $a_1 = 5$ (prime, factor $5 > 8 - 5 = 3$), then the sequence terminates since no $m \\in [1, 5)$ has all prime factors exceeding $8 - m$. The sequence is entirely prime, showing the conjecture fails for small $n$. Note: $4$ is not admissible since $2 \\mid 4$ and $2 \\not> 8 - 4 = 4$.",
     "mathContext": "$n = 8$: $a_0 = 7, a_1 = 5, a_2 = 0$. Check: $4$ fails since $2 \\mid 4$ but $2 \\leq 4 = 8 - 4$. $3$ fails since $3 \\leq 5 = 8 - 3$.",
@@ -206,7 +206,7 @@
       "startLine": 71,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Equivalence with Problem #385",
     "content": "Adenwalla's key observation: Problem #430 (greedy sequence contains composite for large $n$) is equivalent to the first part of Problem #385 (for large $n$, there exists a composite $m < n$ with all prime factors exceeding $n - m$). The equivalence follows because the greedy sequence includes all admissible integers in decreasing order, so it contains a composite iff any composite is admissible. This connects the constructive greedy process to a pure existence question about rough composites near $n$.",
     "mathContext": "$(\\exists N_0,\\; \\forall n \\geq N_0,\\; \\texttt{hasComposite}(n)) \\iff (\\exists N_0,\\; \\forall n \\geq N_0,\\; \\exists m < n,\\; m \\text{ composite} \\wedge \\text{all primes } p \\mid m \\text{ satisfy } p > n - m)$.",
@@ -254,7 +254,7 @@
       "startLine": 88,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small $n$: All-Prime Sequences",
     "content": "For small $n$, the greedy sequence may consist entirely of primes (or 1). There exists a threshold $n_0$ below which no composite appears. The conjecture asserts this all-prime behavior cannot persist for arbitrarily large $n$: eventually, the density of primes near $n$ is insufficient to fill all admissible slots, and a composite must enter the sequence.",
     "mathContext": "$\\exists n_0,\\; \\forall n \\leq n_0,\\; \\forall k,\\; a_k > 0 \\Rightarrow a_k$ is prime or $a_k = 1$. The prime number theorem implies primes thin out: $\\pi(n) \\sim n/\\ln n$, but admissible composites may be abundant.",

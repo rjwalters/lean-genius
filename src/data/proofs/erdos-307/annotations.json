@@ -205,7 +205,7 @@
       "startLine": 90,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cambie Example 1: Full Verification (Proved)",
     "content": "Complete chain of proved results: (1) $\\{1, 5\\}$ is pairwise coprime, (2) $\\{2, 3\\}$ is pairwise coprime, (3) $\\sum_{\\{1,5\\}} = 6/5$, (4) $\\sum_{\\{2,3\\}} = 5/6$, (5) $(6/5)(5/6) = 1$. All verified by `simp` and `norm_num`.",
     "significance": "key",
@@ -385,7 +385,7 @@
       "startLine": 207,
       "endLine": 208
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Reciprocal Divergence (Axiom)",
     "content": "Axiomatized classical result: $\\sum 1/p$ diverges. For every $M \\in \\mathbb{Q}$, there exists $n$ with the partial sum exceeding $M$. First proved by Euler (1737).",
     "significance": "key",
@@ -407,7 +407,7 @@
       "startLine": 212,
       "endLine": 217
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Product Rigidity (Axiom)",
     "content": "Axiomatized: for a given prime set $P$, a matching $Q$ exists iff $(\\sum_P)^{-1}$ is itself a sum of distinct prime reciprocals. Most choices of $P$ have no matching $Q$.",
     "significance": "key",
@@ -452,7 +452,7 @@
       "startLine": 227,
       "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Egyptian Example: 1 = 1/2 + 1/3 + 1/6 (Proved)",
     "content": "Classic Egyptian fraction identity verified by `norm_num`. Shows that $\\{2, 3, 6\\}$ satisfies `IsEgyptianOne`. Note 6 is composite, so this doesn't directly help with the prime version.",
     "significance": "supporting",
@@ -609,7 +609,7 @@
       "startLine": 336,
       "endLine": 343
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem (Proved)",
     "content": "Combines the two main results: (1) `ErdosProblem307Coprime` holds (Cambie's examples), and (2) any prime solution needs $|P \\cup Q| \\geq 60$. Both halves are proved (second uses the axiom chain).",
     "significance": "key",

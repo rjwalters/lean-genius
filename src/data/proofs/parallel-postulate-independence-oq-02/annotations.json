@@ -74,7 +74,7 @@
       "startLine": 120,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Parallelism via Disk Exterior Intersection",
     "content": "The proofs of par1_parallel_xaxis and par2_parallel_xaxis follow the same strategy: assume a DiskPoint p lies on both chords, derive that p.y = 0 (from the x-axis equation), then solve for p.x = -2 or p.x = 2. The nlinarith tactic then derives a contradiction from p.in_disk (which says p.x^2 + p.y^2 < 1) since the putative intersection has norm 4. The key insight is that showing chords are parallel reduces to checking that their Euclidean intersection lies outside the unit disk.",
     "mathContext": "If $p \\in \\ell_1 \\cap \\ell_2$ with $p \\in D^\\circ$, then $p = (\\pm 2, 0)$, but $|\\pm 2|^2 = 4 \\not< 1$, contradiction.",
@@ -96,7 +96,7 @@
       "startLine": 147,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hyperbolic Parallel Property: The Core Existential Witness",
     "content": "The theorem hyperbolic_parallel_property assembles all verified components into a single existential statement: there exist a chord l, a point p not on l, and two distinct chords through p both parallel to l. The proof is purely structural -- it supplies xaxis, P, par1, par2, and the previously proved lemmas as witnesses. This is the fundamental property distinguishing hyperbolic from Euclidean geometry.",
     "mathContext": "$$\\exists\\, \\ell,\\, p \\notin \\ell,\\, m_1 \\neq m_2 :\\; p \\in m_1 \\cap m_2 \\;\\land\\; m_1 \\parallel \\ell \\;\\land\\; m_2 \\parallel \\ell$$",
@@ -117,7 +117,7 @@
       "startLine": 163,
       "endLine": 178
     },
-    "type": "insight",
+    "type": "definition",
     "title": "Playfair Violation via Uniqueness Contradiction",
     "content": "BKPlayfair asserts that through any off-chord point there is exactly one parallel chord. The proof of bk_not_playfair applies this to xaxis and P, obtaining some unique chord m. By the uniqueness clause, both par1 and par2 must equal m, forcing par1 = par2. But par1_ne_par2 was already proved (their b-coefficients differ: -4 vs 4), giving a contradiction. This is a clean application of the uniqueness half of the existential-unique quantifier.",
     "mathContext": "From $\\exists! m$ we get $\\text{par}_1 = m = \\text{par}_2$, contradicting $\\text{par}_1 \\neq \\text{par}_2$ since their $b$-coefficients are $-4$ and $4$.",
@@ -139,7 +139,7 @@
       "startLine": 186,
       "endLine": 202
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Three Non-Collinear Points: Model Non-Degeneracy",
     "content": "The proof that O = (0,0), A = (1/2, 0), B = (0, 1/2) are not collinear proceeds by supposing some chord l passes through all three. From O on l we get l.c = 0; from A on l we get l.a = 0; from B on l we get l.b = 0. But the nondegeneracy condition a^2 + b^2 > 0 is then violated. This establishes that the BK disk is a genuine geometry, not a degenerate pencil of concurrent lines.",
     "mathContext": "If $\\ell: ax + by + c = 0$ passes through $(0,0)$, $(1/2, 0)$, $(0, 1/2)$, then $c = 0$, $a/2 = 0$, $b/2 = 0$, so $a^2 + b^2 = 0$, contradicting nondegeneracy.",

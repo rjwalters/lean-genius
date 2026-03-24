@@ -55,8 +55,8 @@
       "endLine": 107
     },
     "type": "technique",
-    "title": "Convergence to \u221a\u03c0",
-    "content": "**Central Theorem**:\n$$\\lim_{n \\to \\infty} \\frac{n!}{\\sqrt{2n}(n/e)^n} = \\sqrt{\\pi}$$\n\n**Proof method in Mathlib**: Via the **Wallis Product**:\n$$\\frac{\\pi}{2} = \\prod_{n=1}^{\\infty} \\frac{4n^2}{4n^2 - 1}$$\n\nThis product relates factorial ratios to \u03c0, giving the constant \u221a\u03c0.",
+    "title": "Convergence to √π",
+    "content": "**Central Theorem**:\n$$\\lim_{n \\to \\infty} \\frac{n!}{\\sqrt{2n}(n/e)^n} = \\sqrt{\\pi}$$\n\n**Proof method in Mathlib**: Via the **Wallis Product**:\n$$\\frac{\\pi}{2} = \\prod_{n=1}^{\\infty} \\frac{4n^2}{4n^2 - 1}$$\n\nThis product relates factorial ratios to π, giving the constant √π.",
     "mathContext": "$\\lim_{n \\to \\infty} \\frac{n!}{\\sqrt{2n}(n/e)^n} = \\sqrt{\\pi}$; via Wallis: $\\frac{\\pi}{2} = \\prod_{n=1}^{\\infty} \\frac{4n^2}{4n^2-1}$",
     "significance": "key",
     "relatedConcepts": [
@@ -80,7 +80,7 @@
     },
     "type": "technique",
     "title": "Stirling's Asymptotic Formula",
-    "content": "**Stirling's Formula**:\n$$n! \\sim \\sqrt{2\\pi n} \\left(\\frac{n}{e}\\right)^n$$\n\nas $n \\to \\infty$.\n\n**Meaning of ~**: The ratio of these quantities \u2192 1.\n\n**In Mathlib**: `Asymptotics.IsEquivalent` captures this precisely.\n\nThis is the definitive statement from which all applications follow.",
+    "content": "**Stirling's Formula**:\n$$n! \\sim \\sqrt{2\\pi n} \\left(\\frac{n}{e}\\right)^n$$\n\nas $n \\to \\infty$.\n\n**Meaning of ~**: The ratio of these quantities → 1.\n\n**In Mathlib**: `Asymptotics.IsEquivalent` captures this precisely.\n\nThis is the definitive statement from which all applications follow.",
     "mathContext": "$n! \\sim \\sqrt{2\\pi n}(n/e)^n$; `IsEquivalent`: ratio $\\to 1$ in the sense of `Asymptotics.IsEquivalent`",
     "significance": "key",
     "relatedConcepts": [
@@ -147,7 +147,7 @@
     },
     "type": "context",
     "title": "Numerical Examples",
-    "content": "**Example Values**:\n\n| n | n! | Stirling Approx | Error |\n|---|---|---|---|\n| 10 | 3,628,800 | ~3,598,696 | ~0.8% |\n| 20 | 2.43\u00d710\u00b9\u2078 | ~2.42\u00d710\u00b9\u2078 | ~0.4% |\n\n**Relative error** is approximately $1/(12n)$.\n\nFor $n = 100$: error < 0.1%\nFor $n = 1000$: error < 0.01%",
+    "content": "**Example Values**:\n\n| n | n! | Stirling Approx | Error |\n|---|---|---|---|\n| 10 | 3,628,800 | ~3,598,696 | ~0.8% |\n| 20 | 2.43×10¹⁸ | ~2.42×10¹⁸ | ~0.4% |\n\n**Relative error** is approximately $1/(12n)$.\n\nFor $n = 100$: error < 0.1%\nFor $n = 1000$: error < 0.01%",
     "mathContext": "Relative error $\\approx 1/(12n)$; for $n=10$: $\\approx 0.8\\%$; for $n=100$: $<0.1\\%$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -167,7 +167,7 @@
       "startLine": 294,
       "endLine": 425
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Error Bound",
     "content": "**Error Bound Theorem**:\n\nThere exists $C > 0$ such that for all $n \\geq 1$:\n$$\\left|\\frac{n!}{\\text{stirlingApprox}(n)} - 1\\right| \\leq \\frac{C}{n}$$\n\n**Refined asymptotic**:\n$$\\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1 + \\frac{1}{12n} + O(1/n^2)$$\n\nSo relative error is $O(1/n)$ with leading term $1/(12n)$.",
     "mathContext": "$\\left|\\frac{n!}{\\text{stirlingApprox}(n)} - 1\\right| \\leq \\frac{C}{n}$; refined: $\\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1 + \\frac{1}{12n} + O(1/n^2)$",

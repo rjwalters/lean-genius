@@ -122,7 +122,7 @@
       "startLine": 132,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graham's Near-Linear Gap Result",
     "content": "Axiomatizes Graham's result: for any $\\varepsilon > 0$, there exists an infinite sum-free set with gaps eventually $< n^{1+\\varepsilon}$. This is the strongest known positive result toward the open question. The construction uses a recursive procedure: at each stage, select the smallest element that avoids all subset sums of previous elements. By careful analysis of the resulting sequence, Graham showed the gaps grow at most polynomially with exponent $1+\\varepsilon$.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists a \\text{ sum-free},\\; \\exists N,\\; \\forall n \\geq N,\\; a_{n+1} - a_n < n^{1+\\varepsilon}$. The gap $n^{1+\\varepsilon}$ versus $n$ represents the frontier of the problem: for every $\\varepsilon > 0$ we can achieve $n^{1+\\varepsilon}$, but whether $\\varepsilon = 0$ (linear gaps) works is open.",
@@ -146,7 +146,7 @@
       "startLine": 146,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Results: Erdős and Łuczak-Schoen",
     "content": "Three density axioms: (1) `erdos_density_zero` (1962): $|A \\cap [1,N]|/N \\to 0$ for any sum-free $A$. (2) `luczak_schoen_upper` (2000): $|A \\cap [1,N]| \\leq c\\sqrt{N \\log N}$ for an absolute constant $c$. (3) `luczak_schoen_lower` (2000): there exists $B$ sum-free with $|B \\cap [1,N]| \\geq \\sqrt{N}/(\\log N)^{1/2+o(1)}$. Together, these show the counting function is $\\Theta(\\sqrt{N \\log N})$ up to lower-order factors.",
     "mathContext": "**Density zero:** $\\lim_{N \\to \\infty} |A \\cap [1,N]|/N = 0$. **Tight bounds:** $c_1 \\sqrt{N/\\log N} \\leq \\max_A |A \\cap [1,N]| \\leq c_2 \\sqrt{N \\log N}$. The formalization uses `Set.ncard` for the cardinality of possibly infinite intersections and `Real.sqrt`/`Real.log` for the bounds.",
@@ -171,7 +171,7 @@
       "startLine": 181,
       "endLine": 193
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Deshouillers-Erdős-Melfi Growth Rate",
     "content": "Axiomatizes the DEM (1999) result: there exists a sum-free set with $n^{3-\\varepsilon} < a_n < n^{3+\\varepsilon}$ for all $\\varepsilon > 0$ and large $n$. The cubic exponent $3$ arises from the counting function: if $|A \\cap [1,N]| \\sim \\sqrt{N}$, then the $n$-th element satisfies $a_n \\sim n^2$. The $\\log N$ correction in Łuczak-Schoen's bound accounts for the extra factor, pushing the exponent from $2$ to $3$. The constant `cubicGrowthExponent := 3` highlights this key parameter.",
     "mathContext": "$a_n = n^{3+o(1)}$: if $|A \\cap [1,N]| \\sim c\\sqrt{N\\log N}$, setting $n = c\\sqrt{N\\log N}$ gives $N \\sim n^2/\\log n$, so $a_n = N \\sim n^2/\\log n$. The extra log factor explains why the growth is closer to cubic than quadratic.",
@@ -218,7 +218,7 @@
       "startLine": 237,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of Two: Sum-Free Example",
     "content": "`powers_of_two_sumfree` states that $\\{2^n : n \\in \\mathbb{N}\\}$ is Erdős sum-free (with sorry). The proof relies on uniqueness of binary representation: $2^n$ has a single $1$-bit in position $n$, while any sum of distinct smaller powers of 2 has $1$-bits only in positions $< n$. Hence their sum is $< 2^n$, and equality is impossible. This is the simplest infinite sum-free set, but with exponential gaps $2^{n+1} - 2^n = 2^n$.",
     "mathContext": "$\\{1, 2, 4, 8, 16, \\ldots\\}$ is sum-free: $2^n = \\sum_{i \\in S} 2^i$ with $S \\subseteq \\{0,\\ldots,n-1\\}$ implies $2^n \\leq \\sum_{i=0}^{n-1} 2^i = 2^n - 1 < 2^n$, a contradiction. Gaps: $2^{n+1} - 2^n = 2^n$, which is exponential — far from linear.",
@@ -263,7 +263,7 @@
       "startLine": 285,
       "endLine": 297
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "`erdos_876_summary` combines Graham's result (near-linear gaps achievable for any $\\varepsilon > 0$) with the statement that the linear gap question is open (represented as `True`). The proof extracts the sum-free set and gap bound from `graham_result` and closes the trivial conjunct. The `True` placeholder for the open question is an honest formalization — the linear gap problem is neither proved nor disproved.",
     "mathContext": "$\\texttt{erdos\\_876\\_summary} : (\\forall \\varepsilon > 0,\\; \\exists a \\text{ sum-free with gaps } < n^{1+\\varepsilon}) \\wedge \\text{True}$. The second conjunct encodes that the linear gap question ($\\varepsilon = 0$) is open — neither provable nor disprovable from current knowledge.",

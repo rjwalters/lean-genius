@@ -76,7 +76,7 @@
       "startLine": 47,
       "endLine": 66
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Prime Infrastructure",
     "content": "Axiomatized prime number infrastructure: `nthPrime k` gives the $(k+1)$-th prime (0-indexed, so `nthPrime 0 = 2`). Key properties: each value is prime, the sequence is strictly increasing, and hence injective. The injectivity proof is the one fully proved theorem in this section, derived from strict monotonicity by contradiction.",
     "mathContext": "$p_k = \\text{nthPrime}(k)$ with $p_0 = 2, p_1 = 3, p_2 = 5, \\ldots$ Axioms: $p_k$ is prime, $i < j \\Rightarrow p_i < p_j$. Proved: $p_i = p_j \\Rightarrow i = j$.",
@@ -123,7 +123,7 @@
       "startLine": 74,
       "endLine": 82
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Prime Sieving Set Construction",
     "content": "The prime sieving set $\\{p_0, p_1, \\ldots, p_{k-1}\\}$ is constructed as the image of `nthPrime` over `Finset.range k`. The cardinality theorem shows it has exactly $k$ elements (using injectivity of `nthPrime`). This is the conjectured optimal sieving set for budget $C$.",
     "mathContext": "$\\text{primeSievingSet}(k) = \\{p_i : 0 \\leq i < k\\} = \\{2, 3, 5, \\ldots, p_{k-1}\\}$, with $|\\text{primeSievingSet}(k)| = k$.",
@@ -146,7 +146,7 @@
       "startLine": 122,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Sieving Set Validity",
     "content": "A proved theorem: for large enough $n$ (all primes in the set are $\\leq n$), the prime sieving set is a valid sieving set. The proof assembles the three validity conditions: range membership (from $2 \\leq p_i \\leq n$), pairwise coprimality (from the coprime theorem), and the reciprocal sum bound (from `maxPrimeCount_spec`).",
     "mathContext": "If $p_i \\leq n$ for all $i < k = \\text{maxPrimeCount}(C)$, then $\\text{primeSievingSet}(k)$ is valid for budget $C$.",
@@ -192,7 +192,7 @@
       "startLine": 150,
       "endLine": 153
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Coprime Sieve Estimate",
     "content": "The key analytic tool: for a coprime sieving set $A$, the unsieved fraction is approximately $\\prod_{a \\in A}(1 - 1/a)$. This is the Chinese remainder theorem in action: since the moduli are pairwise coprime, the sieve events are independent, and the survival probability factorizes. The error term depends on $|A|$ but not on $n$ significantly.",
     "mathContext": "$\\left|\\frac{\\text{unsievedCount}(A, n)}{n} - \\prod_{a \\in A}\\left(1 - \\frac{1}{a}\\right)\\right| \\leq \\delta$ for some $\\delta$ depending on $A$.",
@@ -240,7 +240,7 @@
       "startLine": 166,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Empty Sieve Baseline",
     "content": "Two proved theorems establishing the baseline: the empty set is trivially valid (vacuous conditions, reciprocal sum 0), and with no sieving, every positive integer $\\leq n$ survives ($\\text{unsievedCount}(\\emptyset, n) = n$). The proof of `unsievedCount_empty` uses a characterization of the filter as the range minus 0, then computes the cardinality.",
     "mathContext": "$\\text{unsievedCount}(\\emptyset, n) = n$ for $n \\geq 1$.",

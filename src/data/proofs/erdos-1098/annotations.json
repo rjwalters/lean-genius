@@ -232,7 +232,7 @@
       "startLine": 220,
       "endLine": 249
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Group Examples",
     "content": "**infinite_clique_example** (axiom): Non-abelian groups like free groups can have infinite cliques. **symmetric_group_clique_bound** (axiom): For S_n (n ≥ 3), Z(S_n) = {1}, so clique size ≤ n!. **dihedral_group_center_index** (axiom): D_n has center index n (even n) or 2n (odd n). **finite_group_finite_index** (sorry): Every finite group trivially has finite index center.",
     "significance": "supporting",
@@ -283,7 +283,7 @@
       "startLine": 295,
       "endLine": 318
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: SOLVED",
     "content": "**erdos_1098** is defined as `erdos_question_answered G`, the main implication. **erdos_1098_summary** combines Neumann's equivalence and the finite-clique implication into a conjunction. **erdos_1098_status** directly aliases `neumann_theorem G`.",
     "significance": "key",
