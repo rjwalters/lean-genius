@@ -38,6 +38,9 @@ def IsB3 (A : Finset ℕ) : Prop :=
     a₁ + b₁ + c₁ = a₂ + b₂ + c₂ →
     a₁ = a₂ ∧ b₁ = b₂ ∧ c₁ = c₂
 
+noncomputable instance : DecidablePred (fun S : Finset ℕ => IsB3 S) :=
+  fun _ => Classical.dec _
+
 /-
 ## Section II: Maximum B₃ Subset Size
 -/
@@ -94,6 +97,9 @@ def IsBh (h : ℕ) (A : Finset ℕ) : Prop :=
     S₁ ⊆ A → S₂ ⊆ A → S₁.card = h → S₂.card = h →
     S₁.sum id = S₂.sum id → S₁ = S₂
 
+noncomputable instance (h : ℕ) : DecidablePred (fun S : Finset ℕ => IsBh h S) :=
+  fun _ => Classical.dec _
+
 /-- Maximum size of a Bₕ subset of {1,...,N}. -/
 noncomputable def maxBhSize (h N : ℕ) : ℕ :=
   ((Finset.range N).powerset.filter (fun S => IsBh h S)).sup Finset.card
@@ -120,10 +126,13 @@ axiom bose_chowla_general_lower (h : ℕ) (hh : h ≥ 2) :
 ## Section VII: Known Small B₃ Sets
 -/
 
-/-- Example: {1, 2, 4, 8} is a B₃ set in {1,...,8}.
-All ordered triple sums are distinct. -/
+/-- Example: {1, 5, 14, 30} is a B₃ set.
+All 20 ordered triple sums (a ≤ b ≤ c) are distinct:
+3, 7, 11, 15, 16, 20, 24, 29, 32, 33, 36, 40, 42, 45, 49, 58, 61, 65, 74, 90.
+
+Note: The previously claimed {1,2,4,8} is NOT B₃ since 1+1+4 = 2+2+2 = 6. -/
 axiom example_b3_set :
-  IsB3 {1, 2, 4, 8}
+  IsB3 {1, 5, 14, 30}
 
 /-- The trivial upper bound: a B₃ set in {1,...,N} has at most
 O(N^{1/3}) elements since distinct sums lie in {3,...,3N}. -/
