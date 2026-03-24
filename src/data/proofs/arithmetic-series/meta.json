@@ -231,6 +231,36 @@
       "id": "sum-of-kth-powers",
       "relationship": "extended-by",
       "description": "Faulhaber's formulas generalize the arithmetic series from $\\sum k$ (degree 1) to $\\sum k^p$ for arbitrary $p$ — the arithmetic series formula $n(n+1)/2$ is the $p=1$ case of Faulhaber's general result"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "complementary",
+      "description": "The harmonic series $\\sum 1/k$ diverges while the arithmetic series $\\sum k$ grows quadratically — contrasting behaviors"
+    },
+    {
+      "id": "triangular-reciprocals",
+      "relationship": "related",
+      "description": "The reciprocals of triangular numbers $T_n = n(n+1)/2$ telescope to give $\\sum 1/T_n = 2(1 - 1/(n+1))$ — connecting the "
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's solution $\\sum 1/k^2 = \\pi^2/6$ extends the idea of summing natural number expressions from $\\sum k$ (polynomial"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The sum-of-odd-numbers identity $1+3+5+\\cdots+(2n-1) = n^2$ was known to the Pythagoreans as the gnomon construction — e"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "Triangular numbers $T(n) = n(n+1)/2$ connect to perfect numbers via Euler's theorem: every even perfect number has the f"
+    },
+    {
+      "id": "arithmetic-series-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "The 2D hockey stick identity generalizes the arithmetic series sum to two-dimensional lattice sums, extending the one-di"
     }
   ],
   "references": [
