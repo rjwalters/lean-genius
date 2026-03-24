@@ -26,9 +26,9 @@
       }
     ],
     "originalContributions": [
-      "Multiple formulations",
-      "Numerical examples",
-      "Historical context"
+      "Pedagogical examples connecting Ptolemy to the Pythagorean theorem (rectangle case)",
+      "Curated exposition of historical and mathematical context",
+      "Symmetric formulation of Ptolemy's theorem"
     ],
     "dateAdded": "2025-12-27",
     "wiedijkNumber": 95,
@@ -145,7 +145,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization verifies Ptolemy's Theorem (Wiedijk #95) using Mathlib's cospherical geometry framework. It provides the main theorem, three alternative formulations, a diagonal-product corollary, three numerical examples (including the Pythagorean theorem as a special case), and discusses the converse characterization and Ptolemy's inequality.",
+    "summary": "A well-curated Mathlib wrapper presenting Ptolemy's theorem via EuclideanGeometry.mul_dist_le_mul_dist_add_mul_dist. The file provides 3 distinct theorem statements (main, symmetric, and rectangle/Pythagorean specialization) with extensive historical and pedagogical context. The core mathematical work is in Mathlib.",
     "implications": "**Theoretical Significance**: Ptolemy's theorem bridges ancient and modern mathematics. It yields the trigonometric addition formulas (the foundation of trigonometry), generalizes the Pythagorean theorem, and characterizes cyclic quadrilaterals.\n\nThe complex-number proof reveals connections to conformal mappings and inversive geometry. Ptolemy's inequality generalizes to higher dimensions and is related to the positive semidefiniteness of the Cayley-Menger determinant.",
     "openQuestions": [
       "Can Ptolemy's inequality (AC·BD ≤ AB·CD + AD·BC for arbitrary four points) be formalized, with equality characterized by concyclicity?",
@@ -171,7 +171,7 @@
     "namespace": null,
     "lineCount": 267,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 3,
     "definitionCount": 0
   },
   "references": [
