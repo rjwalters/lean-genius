@@ -49,24 +49,49 @@
     "proofId": "erdos-1155-oq-01",
     "range": {
       "startLine": 77,
-      "endLine": 110
+      "endLine": 96
     },
     "type": "concept",
-    "title": "Axiomatized f(n), BFL Bounds, and the Erd\u0151s Conjecture",
-    "content": "Axiomatizes the triangle removal function $f(n)$ with basic properties ($0 \\leq f(n) \\leq \\binom{n}{2}$) and the BFL (2015) bounds: for any $\\varepsilon > 0$, eventually $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$.\n\nThe **Erd\u0151s conjecture** (`erdos_1155_conjecture`) is formalized as: $\\exists c_1 \\leq c_2$ with $0 < c_1$ such that $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ eventually. The gap: BFL gives sub-polynomial bounds $n^{\\pm\\varepsilon}$ on the ratio $f(n)/n^{3/2}$, while the conjecture needs constant bounds.\n\n**Axiomatization strategy**: The 5 axioms encode externally established results (Mantel's theorem, BFL bounds, the definition of $f$) while all structural theorems are fully proved from these axioms. This cleanly separates hard probabilistic analysis from combinatorial-logical structure.",
-    "mathContext": "$\\text{erdos\\_1155\\_conjecture} := \\exists c_1, c_2,\\; 0 < c_1 \\leq c_2 \\wedge \\forall^\\infty n,\\; c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$. The requirement $c_1 \\leq c_2$ is built into the definition.",
+    "title": "Axiomatized f(n) and BFL Bounds",
+    "content": "Four axiom declarations encode the external mathematical infrastructure:\n\n1. `triangleRemovalEdges : ℕ → ℝ` — the function $f(n)$ counting surviving edges after the triangle removal process on $K_n$.\n2. `triangleRemovalEdges_le_complete` — $f(n) \\leq n(n-1)/2$, i.e., $f(n)$ cannot exceed the number of edges in $K_n$.\n3. `bfl_upper_bound` — for any $\\varepsilon > 0$, eventually $f(n) \\leq n^{3/2+\\varepsilon}$ (Bohman-Frieze-Lubetzky 2015).\n4. `bfl_lower_bound` — for any $\\varepsilon > 0$, eventually $n^{3/2-\\varepsilon} \\leq f(n)$ (BFL 2015).\n\n**Axiomatization strategy**: These 4 axioms (plus `triangleRemoval_mantel_bound` in § 8) encode externally established results while all 20 structural theorems are fully proved from them. This cleanly separates hard probabilistic analysis (BFL's martingale arguments, Wormald's ODE method) from the combinatorial-logical structure that is independently verifiable.",
+    "mathContext": "Axioms 3–4 together give the BFL result: $f(n) = n^{3/2+o(1)}$, meaning $\\forall \\varepsilon > 0: n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually. The `Filter.Eventually` at `atTop` formalization captures 'for all sufficiently large $n$' via Lean's filter framework.",
     "significance": "key",
     "relatedConcepts": [
       "triangle removal process",
       "random graph processes",
-      "Theta notation",
       "Wormald differential equation method",
-      "martingale concentration inequalities"
+      "martingale concentration inequalities",
+      "axiomatization in formal proofs"
     ],
     "prerequisites": [
       "Filter.Eventually",
       "Real.rpow",
       "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e1155-conjecture-def",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "The Erdős Conjecture: f(n) = Θ(n^{3/2})",
+    "content": "The central definition of the formalization: `erdos_1155_conjecture` asserts that the triangle removal function satisfies $f(n) = \\Theta(n^{3/2})$ with explicit constants. Specifically: $\\exists c_1, c_2 \\in \\mathbb{R}$ with $0 < c_1 \\leq c_2$ such that $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ for all sufficiently large $n$.\n\nThe gap with BFL: the conjecture requires **constant** multiplicative bounds ($c_1, c_2$ independent of $n$), while BFL only establishes **sub-polynomial** bounds ($n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$). This is the difference between the ratio $f(n)/n^{3/2}$ being bounded between constants versus being bounded between functions that grow/shrink with $n$.\n\nThe built-in constraint $c_1 \\leq c_2$ is not a separate assumption — it's forced by the eventual inequality $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ for $n^{3/2} > 0$. Including it in the definition simplifies later proofs (see `conjecture_iff_both_bounds`).",
+    "mathContext": "$\\text{erdos\\_1155\\_conjecture} := \\exists c_1, c_2 \\in \\mathbb{R},\\; 0 < c_1 \\leq c_2 \\wedge \\forall^\\infty n,\\; c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$.\n\nEquivalently: $\\exists c_1, c_2 > 0$ such that $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually — a compactness condition on the ratio sequence in $(0, \\infty)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Theta notation",
+      "asymptotic bounds",
+      "triangle removal process",
+      "BFL-conjecture gap",
+      "compactness of ratio sequences"
+    ],
+    "prerequisites": [
+      "Filter.Eventually",
+      "Real.rpow",
+      "existential quantification"
     ]
   },
   {
@@ -93,23 +118,49 @@
     ]
   },
   {
+    "id": "ann-e1155-theta-bounds",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 184,
+      "endLine": 197
+    },
+    "type": "definition",
+    "title": "One-Sided Theta Bounds: upper_theta_bound and lower_theta_bound",
+    "content": "Two auxiliary definitions decompose the Erdős conjecture into independent halves:\n\n- `upper_theta_bound`: $\\exists C > 0$ such that $f(n) \\leq C \\cdot n^{3/2}$ eventually — the $O(n^{3/2})$ bound.\n- `lower_theta_bound`: $\\exists c > 0$ such that $c \\cdot n^{3/2} \\leq f(n)$ eventually — the $\\Omega(n^{3/2})$ bound.\n\nThese are used in `conjecture_iff_both_bounds` to show the full conjecture is equivalent to both one-sided bounds holding simultaneously. The strategic significance: each bound can be attacked independently by different mathematical techniques. The upper bound relates to how quickly the removal process depletes triangles (connected to Wormald's ODE trajectory), while the lower bound requires showing the process cannot terminate too early (connected to the concentration of the triangle count during the critical phase).",
+    "mathContext": "$\\text{upper\\_theta\\_bound} := \\exists C > 0,\\; f(n) \\leq C n^{3/2}$ eventually.\n$\\text{lower\\_theta\\_bound} := \\exists c > 0,\\; c n^{3/2} \\leq f(n)$ eventually.\n\nThe conjecture $f(n) = \\Theta(n^{3/2})$ is precisely the conjunction of these two.",
+    "significance": "key",
+    "relatedConcepts": [
+      "big-O notation",
+      "big-Omega notation",
+      "Theta notation",
+      "one-sided asymptotic bounds",
+      "Wormald ODE method"
+    ],
+    "prerequisites": [
+      "Filter.Eventually",
+      "Real.rpow",
+      "existential quantification"
+    ]
+  },
+  {
     "id": "ann-e1155-decomposition",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 185,
-      "endLine": 225
+      "startLine": 198,
+      "endLine": 219
     },
     "type": "technique",
     "title": "Conjecture Decomposition into Independent Bounds",
-    "content": "`conjecture_iff_both_bounds`: $f(n) = \\Theta(n^{3/2})$ iff both $f(n) = O(n^{3/2})$ AND $f(n) = \\Omega(n^{3/2})$ hold independently. The non-trivial direction combines the bounds and proves $c_1 \\leq c_2$ by contradiction: if $c_1 > c_2$, then $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ forces $c_1 \\leq c_2$ for large $n$.\n\nThis decomposition is strategically important: it means the $O$ and $\\Omega$ bounds can be attacked independently, and proving either constitutes concrete progress toward the full conjecture.",
-    "mathContext": "$f(n) = \\Theta(n^{3/2}) \\iff f(n) = O(n^{3/2}) \\wedge f(n) = \\Omega(n^{3/2})$. The $O$ and $\\Omega$ bounds can be pursued independently \u2014 proving either constitutes progress.",
+    "content": "`conjecture_iff_both_bounds`: $f(n) = \\Theta(n^{3/2})$ iff both $f(n) = O(n^{3/2})$ AND $f(n) = \\Omega(n^{3/2})$ hold independently. The forward direction is trivial (extract witnesses). The non-trivial reverse direction combines the bounds and proves $c_1 \\leq c_2$ by contradiction: assume $c > C$, then eventually $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$, which for $n^{3/2} > 0$ implies $c \\leq C$ — contradicting the assumption.\n\nThis decomposition is strategically important: it means the $O$ and $\\Omega$ bounds can be attacked independently, and proving either constitutes concrete progress toward the full conjecture. Historically, many asymptotic conjectures in combinatorics have been resolved by first establishing the easier one-sided bound and then bootstrapping to the full result.",
+    "mathContext": "$f(n) = \\Theta(n^{3/2}) \\iff f(n) = O(n^{3/2}) \\wedge f(n) = \\Omega(n^{3/2})$.\n\nThe reverse direction uses: $c > C$ and $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ implies $c \\cdot n^{3/2} \\leq C \\cdot n^{3/2}$, hence $c \\leq C$ (since $n^{3/2} > 0$ for $n \\geq 1$) — contradiction.",
     "significance": "key",
     "relatedConcepts": [
       "Theta notation",
       "big-O notation",
       "big-Omega notation",
       "asymptotic decomposition",
-      "Bachmann-Landau notation"
+      "Bachmann-Landau notation",
+      "proof by contradiction"
     ],
     "prerequisites": [
       "Filter.Eventually",
@@ -185,28 +236,52 @@
     ]
   },
   {
-    "id": "ann-e1155-sufficient",
+    "id": "ann-e1155-limit-sufficient",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 311,
-      "endLine": 355
+      "startLine": 309,
+      "endLine": 329
     },
     "type": "technique",
-    "title": "Sufficient Conditions: Limit Convergence Implies Conjecture",
-    "content": "`limit_implies_conjecture`: if $f(n)/n^{3/2} \\to L > 0$, the conjecture holds with $c_1 = L/2$, $c_2 = 3L/2$. Uses the `Icc` neighborhood $[L/2, 3L/2] \\in \\text{nhds}(L)$.\n\n`limsup_liminf_implies_conjecture`: the weaker condition $0 < \\liminf \\leq \\limsup < \\infty$ also suffices. This shows the conjecture is equivalent to a compactness condition on the ratio sequence \u2014 the ratio $f(n)/n^{3/2}$ must have all its subsequential limits in a compact subset of $(0, \\infty)$.",
-    "mathContext": "If $\\lim f(n)/n^{3/2} = L > 0$, then $L/2 \\leq f(n)/n^{3/2} \\leq 3L/2$ eventually. The limsup/liminf condition is equivalent to the conjecture.",
+    "title": "Limit Convergence Implies Conjecture",
+    "content": "`limit_implies_conjecture`: if $f(n)/n^{3/2} \\to L > 0$, then the full Erdős conjecture holds with explicit constants $c_1 = L/2$, $c_2 = 3L/2$. The proof uses topological convergence: the closed interval $[L/2, 3L/2]$ is a neighborhood of $L$ (via `Icc_mem_nhds`), so `Filter.Tendsto` guarantees the ratio eventually lands in this interval.\n\nThis is the strongest sufficient condition in the formalization — it reduces the open conjecture to a convergence question about the ratio sequence. Simulations suggest $L \\approx 1.2$ but this is not rigorously established. If the limit exists and is positive, the constants $L/2$ and $3L/2$ provide a factor-of-3 window, which is generous — tighter intervals would also work but $[L/2, 3L/2]$ simplifies the Lean proof.",
+    "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies \\text{erdos\\_1155\\_conjecture}$ with $c_1 = L/2$, $c_2 = 3L/2$.\n\nProof: $[L/2, 3L/2] \\in \\text{nhds}(L)$ since $L/2 < L < 3L/2$. By `Tendsto`, $f(n)/n^{3/2} \\in [L/2, 3L/2]$ eventually. Multiply through by $n^{3/2} > 0$.",
     "significance": "key",
     "relatedConcepts": [
       "convergence of sequences",
-      "limsup and liminf",
       "neighborhood filters",
-      "Bolzano-Weierstrass theorem",
-      "sequential compactness"
+      "Icc neighborhoods",
+      "explicit constants"
     ],
     "prerequisites": [
       "Filter.Tendsto",
-      "topological convergence",
-      "Icc neighborhoods"
+      "Icc_mem_nhds",
+      "topological convergence"
+    ]
+  },
+  {
+    "id": "ann-e1155-limsup-liminf",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 330,
+      "endLine": 355
+    },
+    "type": "technique",
+    "title": "Limsup/Liminf Condition: Weaker Sufficient Criterion",
+    "content": "`limsup_liminf_condition` defines: $\\exists C > 0$ with $f(n)/n^{3/2} \\leq C$ eventually, AND $\\exists c > 0$ with $c \\leq f(n)/n^{3/2}$ eventually. This is weaker than limit convergence — it only requires the ratio to be bounded, not convergent.\n\n`limsup_liminf_implies_conjecture` proves this condition implies the full conjecture. The proof extracts witnesses $c, C$ and shows $c \\leq C$ by contradiction (if $c > C$, then eventually $c \\leq f/n^{3/2} \\leq C < c$, impossible). This reveals the conjecture's topological core: it is equivalent to the ratio sequence $\\{f(n)/n^{3/2}\\}$ having a compact limit set in $(0, \\infty)$ — a Bolzano-Weierstrass-type condition where all subsequential limits lie in a bounded interval of positive reals.",
+    "mathContext": "$\\text{limsup\\_liminf\\_condition} := (\\exists C > 0: f(n)/n^{3/2} \\leq C \\text{ eventually}) \\wedge (\\exists c > 0: c \\leq f(n)/n^{3/2} \\text{ eventually})$.\n\nImplication chain: limit convergence $\\Rightarrow$ limsup/liminf bounded $\\Rightarrow$ Erdős conjecture $\\Rightarrow$ BFL. The first two arrows are strict — the conjecture does not require the limit to exist, only that the ratio stays bounded.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup and liminf",
+      "Bolzano-Weierstrass theorem",
+      "sequential compactness",
+      "bounded sequences",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "Filter.Eventually",
+      "division by positive reals",
+      "real order properties"
     ]
   },
   {
