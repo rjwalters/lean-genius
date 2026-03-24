@@ -25,11 +25,31 @@
     "lineCount": 469,
     "assumptions": "4 axioms: kanold_bound (n^(3/4) bound), guthKatz_distinct_distances (n/log n distinct distances), piepmeyer_construction (9-point counterexample), erdos_anning_theorem (infinite collinearity). 0 sorries. distinctDistances_le_diam PROVED via injection into {1,...,⌊diam⌋}. diam_is_integer PROVED (diameter is a positive integer). Open problem - linear diameter growth conjectured.",
     "mathlibDependencies": [
-      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
-      "Mathlib.Topology.Order.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Order.Filter.AtTopBot"
+      {
+        "theorem": "EuclideanDist",
+        "description": "Import from Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Basic",
+        "description": "Import from Mathlib.Topology.Order.Basic",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Card",
+        "description": "Import from Mathlib.Data.Finset.Card",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Basic",
+        "description": "Import from Mathlib.Analysis.SpecialFunctions.Log.Basic",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "AtTopBot",
+        "description": "Import from Mathlib.Order.Filter.AtTopBot",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
     ],
     "originalContributions": [
       "distinctDistances_le_diam: Proved that for integer distance sets, the number of distinct distances is at most the diameter, via an injection into {1,...,⌊diam⌋}",
@@ -146,7 +166,10 @@
     {
       "id": "erdos-anning-1945",
       "title": "Integral distances",
-      "authors": ["Paul Erdős", "Norman H. Anning"],
+      "authors": [
+        "Paul Erdős",
+        "Norman H. Anning"
+      ],
       "year": 1945,
       "venue": "Bulletin of the American Mathematical Society",
       "url": "https://doi.org/10.1090/S0002-9904-1945-08407-9",
@@ -155,7 +178,10 @@
     {
       "id": "guth-katz-2015",
       "title": "On the Erdős distinct distances problem in the plane",
-      "authors": ["Larry Guth", "Nets Hawk Katz"],
+      "authors": [
+        "Larry Guth",
+        "Nets Hawk Katz"
+      ],
       "year": 2015,
       "venue": "Annals of Mathematics",
       "url": "https://doi.org/10.4007/annals.2015.181.1.2",
@@ -164,7 +190,9 @@
     {
       "id": "piepmeyer-2004",
       "title": "A construction of integer-distance sets",
-      "authors": ["L. Piepmeyer"],
+      "authors": [
+        "L. Piepmeyer"
+      ],
       "year": 2004,
       "venue": "Discrete & Computational Geometry",
       "relevance": "Constructs 9 points with integer distances and diameter < 5; axiomatized as piepmeyer_construction"
@@ -172,7 +200,9 @@
     {
       "id": "erdos-problems-100",
       "title": "Erdős Problems: Problem 100",
-      "authors": ["Thomas Bloom"],
+      "authors": [
+        "Thomas Bloom"
+      ],
       "year": 2024,
       "venue": "erdosproblems.com",
       "url": "https://erdosproblems.com/100",
