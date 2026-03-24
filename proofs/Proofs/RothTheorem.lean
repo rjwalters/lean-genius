@@ -580,12 +580,16 @@ private theorem apFree_card_lt {N : ℕ} [NeZero N] (hN2 : 1 < N) (A : Finset (Z
   by_contra h
   push_neg at h
   have hfull : A = Finset.univ := by
-    exact Finset.eq_univ_of_card A (le_antisymm (by rw [ZMod.card]; exact Finset.card_le_univ A) h)
+    apply Finset.eq_univ_of_card; rw [ZMod.card]; exact le_antisymm (card_le_nat A) h
   have h0 : (0 : ZMod N) ∈ A := hfull ▸ Finset.mem_univ _
   have h1 : (1 : ZMod N) ∈ A := hfull ▸ Finset.mem_univ _
   have h2 : (0 + 2 * 1 : ZMod N) ∈ A := hfull ▸ Finset.mem_univ _
-  exact hAP 0 1 (by intro h; have := ZMod.val_one_lt_of_lt hN2;
-    rw [h, ZMod.val_zero] at this; omega) h0 h1 h2
+  exact hAP 0 1 (by
+                   intro h1z
+                   have : ((1 : ℕ) : ZMod N) = 0 := by exact_mod_cast h1z
+                   rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at this
+                   exact absurd (Nat.le_of_dvd one_pos this) (by omega)) h0
+    (by simpa using h1) (by simpa using h2)
 
 /-- Parseval for nonzero frequencies: Σ_{r≠0} ‖Â(r)‖² = |A|·N - |A|². -/
 private theorem parseval_nonzero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
@@ -599,6 +603,7 @@ private theorem parseval_nonzero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     rw [fourierCoeff_zero']; simp [Complex.norm_natCast]
   linarith
 
+set_option maxHeartbeats 400000 in
 /-- If A has no 3-AP and has density delta, then some Fourier coefficient
     is large. This is the key analytic step in Roth's proof.
 
@@ -617,24 +622,34 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
   have hn_lt : n < N := apFree_card_lt hN A hAP
   set T := Finset.univ \ {(0 : ZMod N)} with hT_def
   have hT_card : T.card = N - 1 := by
-    rw [hT_def, Finset.card_sdiff, Finset.card_singleton, Finset.card_univ, ZMod.card]
-    · omega
-    · exact Finset.singleton_subset_iff.mpr (Finset.mem_univ _)
+    simp [hT_def, Finset.card_sdiff, Finset.card_univ, ZMod.card]
   have hT_nonempty : T.Nonempty := by
     rw [Finset.nonempty_iff_ne_empty]; intro h
     rw [hT_def] at h
     have : Finset.univ = {(0 : ZMod N)} := by
-      rwa [Finset.sdiff_eq_empty_iff_subset] at h
-      exact Finset.singleton_subset_iff.mpr (Finset.mem_univ _)
+      rw [Finset.sdiff_eq_empty_iff_subset] at h
+      exact Finset.Subset.antisymm h (Finset.subset_univ _)
     have hcard : Fintype.card (ZMod N) = 1 := by
       rw [← Finset.card_univ, this, Finset.card_singleton]
     rw [ZMod.card] at hcard; omega
   have hparseval_eq : T.sum (fun r => ‖fourierCoeff A r‖ ^ 2) = (n : ℝ) * (N - n) := by
-    have := parseval_nonzero A; exact_mod_cast (by linarith [this] : _ = (n : ℝ) * N - n ^ 2)
+    have hpn := parseval_nonzero A
+    -- hpn : T.sum ‖Â(r)‖² = n*N - n² (ℕ subtraction)
+    -- We need n*N - n² = n*(N-n) and cast to ℝ
+    have hle : n ^ 2 ≤ n * N := by nlinarith [hn_lt]
+    have hle2 : n ≤ N := le_of_lt hn_lt
+    have : (T.sum (fun r => ‖fourierCoeff A r‖ ^ 2) : ℝ) = ↑(n * N - n ^ 2) := by
+      exact_mod_cast hpn
+    rw [this, Nat.cast_sub hle]
+    push_cast; ring
   -- n(N-n) ≥ N-1 since n ∈ {1,...,N-1}
   have hn_prod_ge : (n : ℝ) * (N - n) ≥ N - 1 := by
-    nlinarith [show (n : ℝ) ≥ 1 from by exact_mod_cast hn_nat_pos,
-               show (N : ℝ) - n ≥ 1 from by exact_mod_cast (show N - n ≥ 1 by omega)]
+    have hn1 : (n : ℝ) ≥ 1 := by exact_mod_cast hn_nat_pos
+    have hNn1 : (N : ℝ) - n ≥ 1 := by
+      have hlt : n + 1 ≤ N := hn_lt
+      have : (n : ℝ) + 1 ≤ N := by exact_mod_cast hlt
+      linarith
+    nlinarith
   by_cases hcase : delta ^ 2 * ↑N < 2
   · -- CASE 1: δ²N < 2, so δ²N/2 < 1. Parseval pigeonhole gives max ≥ 1.
     -- Σ_{r∈T} ‖Â(r)‖² ≥ N-1. T has N-1 elements. So ∃ r, ‖Â(r)‖² ≥ 1.
@@ -644,9 +659,11 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
       have hsum_lt : T.sum (fun r => ‖fourierCoeff A r‖ ^ 2) < ↑T.card := by
         calc T.sum _ < T.sum (fun _ => (1 : ℝ)) :=
               Finset.sum_lt_sum (fun r hr => le_of_lt (h r hr))
-                ⟨hT_nonempty.some, hT_nonempty.some_mem, h _ hT_nonempty.some_mem⟩
+                ⟨hT_nonempty.choose, hT_nonempty.choose_spec, h _ hT_nonempty.choose_spec⟩
           _ = ↑T.card := by simp [Finset.sum_const, nsmul_eq_mul]
-      rw [hT_card, hparseval_eq] at hsum_lt; push_cast at hsum_lt; linarith
+      rw [hT_card, hparseval_eq] at hsum_lt
+      have hN1 : 1 ≤ N := by omega
+      rw [Nat.cast_sub hN1] at hsum_lt; push_cast at hsum_lt; linarith
     obtain ⟨r, hr, hrge⟩ := hmax
     exact ⟨r, by intro h; subst h; simp [hT_def] at hr,
       by nlinarith [norm_nonneg (fourierCoeff A r)]⟩
@@ -661,7 +678,11 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     have hNc : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
     have hsum_eq : Finset.univ.sum (fun r : ZMod N =>
         fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) = ↑n * ↑N := by
-      rw [← hfourier]; field_simp
+      have h := hfourier
+      rw [eq_comm] at h
+      rw [inv_mul_eq_div, div_eq_iff hNc] at h
+      -- h : ∑ r, ... = ↑A.card * ↑N, and n = A.card
+      rw [hn_def]; exact h
     have h0term : fourierCoeff A 0 ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * 0)) =
         (↑n : ℂ) ^ 3 := by
       simp only [mul_zero, fourierCoeff_zero', map_natCast]; ring
@@ -671,7 +692,7 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     -- S = nN - n³
     set S := T.sum (fun r => fourierCoeff A r ^ 2 *
       starRingEnd ℂ (fourierCoeff A (2 * r)))
-    have hS_val : S = ↑n * ↑N - (↑n : ℂ) ^ 3 := by linarith [hsum_eq]
+    have hS_val : S = ↑n * ↑N - (↑n : ℂ) ^ 3 := by linear_combination hsum_eq
     -- n² > N (from δ²N ≥ 2 and n ≥ δN)
     have hn2_gt : (n : ℝ) ^ 2 > N := by nlinarith [sq_nonneg (n - delta * N)]
     -- ‖S‖ = |nN - n³| = n(n²-N) > 0
@@ -682,7 +703,8 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
       rw [norm_neg, Complex.norm_mul, Complex.norm_natCast]
       congr 1
       rw [show (↑n : ℂ) ^ 2 - (↑N : ℂ) = (↑((n : ℝ) ^ 2 - (N : ℝ)) : ℂ) from by push_cast; ring]
-      rw [Complex.norm_real, abs_of_pos (by linarith)]
+      simp only [Complex.norm_real, Real.norm_eq_abs]
+      exact abs_of_pos (by linarith)
     -- Derive n²-N < δ²N²/2 by splitting the Fourier sum into terms where
     -- 2r ≠ 0 (bounded by hypothesis+Parseval) and 2r = 0 (at most one term).
     have key : (n : ℝ) ^ 2 - ↑N < delta ^ 2 * ↑N ^ 2 / 2 := by
@@ -690,7 +712,12 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
       set B := delta ^ 2 * (↑N : ℝ) / 2 with hB_def
       have hB_pos : 0 < B := by positivity
       -- Key: n > B (since n ≥ δN > δ²N/2 for 0 < δ < 2)
-      have hn_gt_B : (↑n : ℝ) > B := by nlinarith [hdensity]
+      have hn_gt_B : (↑n : ℝ) > B := by
+        have hdelta_lt1 : delta < 1 := by
+          have : delta * N ≤ n := hdensity
+          have : (n : ℝ) < N := by exact_mod_cast hn_lt
+          nlinarith
+        nlinarith [mul_pos hdelta hNr, sq_nonneg delta, sq_nonneg (delta - 1)]
       -- Step 1: ‖S‖ ≤ Σ_T ‖Â(r)‖² · ‖Â(2r)‖
       set g := fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖
       have hS_le_sum : ‖S‖ ≤ T.sum g := by
@@ -699,7 +726,9 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
               norm_sum_le T _
           _ ≤ T.sum g := by
               apply Finset.sum_le_sum; intro r _
-              simp only [norm_mul, norm_pow, norm_star, le_refl]
+              simp only [norm_mul, norm_pow]
+              gcongr
+              simp [norm_star]
       -- Step 2: Split T = T₁ ∪ T₂ where T₂ = {r ∈ T : 2r = 0}
       set T₁ := T.filter (fun r : ZMod N => (2 : ZMod N) * r ≠ 0)
       set T₂ := T.filter (fun r : ZMod N => ¬((2 : ZMod N) * r ≠ 0))
@@ -772,9 +801,19 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
       nlinarith [mul_pos hB_pos (mul_pos (show (0 : ℝ) < ↑n from by positivity)
         (sub_pos.mpr hn_gt_B))]
     -- But n ≥ δN, so n² ≥ δ²N²
-    have hn2_ge : (n : ℝ) ^ 2 ≥ delta ^ 2 * N ^ 2 := by nlinarith
+    have hn2_ge : (n : ℝ) ^ 2 ≥ delta ^ 2 * N ^ 2 := by
+      have h : delta * N ≤ n := hdensity
+      have hpos : 0 ≤ delta * N := mul_nonneg (le_of_lt hdelta) (le_of_lt hNr)
+      calc (n : ℝ) ^ 2 ≥ (delta * N) ^ 2 := by nlinarith [sq_nonneg ((n : ℝ) - delta * N)]
+        _ = delta ^ 2 * N ^ 2 := by ring
     -- δ²N² - N < δ²N²/2 and δ²N ≥ 2 → δ²N²/2 ≥ N, contradiction
-    nlinarith [mul_le_mul_of_nonneg_right hcase (show (0 : ℝ) ≤ ↑N from by positivity)]
+    -- From hcase: delta^2*N ≥ 2, so delta^2*N^2/2 ≥ N
+    have hNpos : (0 : ℝ) ≤ ↑N := le_of_lt hNr
+    have h_halve : delta ^ 2 * (N : ℝ) ^ 2 / 2 ≥ N := by
+      have := mul_le_mul_of_nonneg_right hcase hNpos
+      nlinarith [sq_nonneg (N : ℝ)]
+    -- From key and hn2_ge: delta^2*N^2/2 > delta^2*N^2 - N ≥ n^2 - N ≥ 0
+    linarith
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART V: DENSITY INCREMENT INFRASTRUCTURE
@@ -884,22 +923,29 @@ private theorem apFree_coset_restrict {N : ℕ} [NeZero N] (A : Finset (ZMod N))
       (↑(ZMod.val (a + b)) * ↑g : ZMod N) =
       ↑(ZMod.val a) * ↑g + ↑(ZMod.val b) * ↑g := by
     intro a b
-    rw [ZMod.val_add]
     set x := ZMod.val a + ZMod.val b
-    -- Reduce both sides to single Nat.cast expressions
-    rw [show (↑(x % M) * (↑g : ZMod N)) = (↑(x % M * g) : ZMod N) from by push_cast; ring,
-      show (↑(ZMod.val a) * (↑g : ZMod N) + ↑(ZMod.val b) * ↑g) = (↑(x * g) : ZMod N) from
-        by push_cast; ring]
-    -- x*g = x%M*g + x/M*N, so they're equal in ZMod N
-    symm
-    conv_lhs => rw [show x * g = x % M * g + x / M * N from by
-      calc x * g = (M * (x / M) + x % M) * g := by congr 1; linarith [Nat.div_add_mod x M]
-        _ = x / M * (M * g) + x % M * g := by ring
-        _ = x / M * N + x % M * g := by rw [hMg]
-        _ = x % M * g + x / M * N := by ring]
-    rw [Nat.cast_add, Nat.cast_mul,
-      show (↑N : ZMod N) = 0 from (ZMod.natCast_zmod_eq_zero_iff_dvd N N).mpr dvd_refl,
-      mul_zero, add_zero]
+    -- Goal: ↑(val(a+b)) * ↑g = ↑(val(a)) * ↑g + ↑(val(b)) * ↑g in ZMod N
+    -- Step 1: Rewrite val(a+b) = x % M via ZMod.val_add
+    rw [ZMod.val_add]
+    -- Goal: ↑(x % M) * ↑g = ↑(ZMod.val a) * ↑g + ↑(ZMod.val b) * ↑g
+    -- Step 2: x % M * g ≡ x * g (mod N) since x/M * N ≡ 0 (mod N)
+    have hkey : (↑(x % M) * (↑g : ZMod N)) = (↑(x * g) : ZMod N) := by
+      have hdivmod := Nat.div_add_mod x M
+      -- x % M * g + x / M * (M * g) = x * g
+      have hstep : x % M * g + x / M * N = x * g := by
+        have : x % M * g + x / M * (M * g) = x * g := by nlinarith
+        linarith [hMg.symm ▸ this]
+      conv_lhs => rw [show (↑(x % M) * (↑g : ZMod N)) = (↑(x % M * g) : ZMod N) from by push_cast; ring]
+      rw [show (x % M * g : ℕ) = x * g - x / M * N from by omega]
+      rw [Nat.cast_sub (by omega)]
+      simp [Nat.cast_mul,
+        show (↑N : ZMod N) = 0 from (ZMod.natCast_zmod_eq_zero_iff_dvd N N).mpr (dvd_refl N)]
+    rw [hkey]
+    -- goal: ↑(x*g) = ↑(a.val)*↑g + ↑(b.val)*↑g in ZMod N
+    -- x = a.val + b.val, so x*g = a.val*g + b.val*g
+    show (↑(x * g) : ZMod N) = ↑(ZMod.val a) * ↑g + ↑(ZMod.val b) * ↑g
+    push_cast [show x = ZMod.val a + ZMod.val b from rfl]
+    ring
   -- The images form a 3-AP: φ(c+d) = φ(c) + val(d)*g, φ(c+2d) = φ(c) + 2*val(d)*g
   have hcd_eq : (↑j + ↑(ZMod.val (c + d)) * ↑g : ZMod N) =
       (↑j + ↑(ZMod.val c) * ↑g) + ↑(ZMod.val d) * ↑g := by
@@ -915,7 +961,9 @@ private theorem apFree_coset_restrict {N : ℕ} [NeZero N] (A : Finset (ZMod N))
       rwa [Nat.pos_iff_ne_zero, ne_eq, ZMod.val_eq_zero]
     have hprod_pos : 0 < ZMod.val d * g := Nat.mul_pos hval_pos hg
     have hprod_lt : ZMod.val d * g < N := by
-      have := mul_lt_mul_of_pos_right (ZMod.val_lt d) hg; linarith [hMg]
+      calc ZMod.val d * g < M * g := by
+            apply Nat.mul_lt_mul_of_pos_right (ZMod.val_lt d) hg
+        _ = N := hMg
     have h_cast : ((ZMod.val d * g : ℕ) : ZMod N) = 0 := by push_cast at h ⊢; exact h
     rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h_cast
     exact absurd (Nat.le_of_dvd hprod_pos h_cast) (by omega)
@@ -930,8 +978,12 @@ private noncomputable def cosetCardFin {N : ℕ} [NeZero N] (A : Finset (ZMod N)
 
 /-- `↑(ZMod.val x) = x` in `ZMod N`. -/
 private lemma natCast_zmod_val' {N : ℕ} [NeZero N] (x : ZMod N) :
-    (↑(ZMod.val x) : ZMod N) = x :=
-  ZMod.val_injective (by rw [ZMod.val_natCast, Nat.mod_eq_of_lt (ZMod.val_lt x)])
+    (↑(ZMod.val x) : ZMod N) = x := by
+  -- ZMod.val_natCast : ZMod.val (↑n : ZMod N) = n % N
+  -- ZMod.val_lt x : ZMod.val x < N
+  apply ZMod.val_injective
+  rw [ZMod.val_natCast]
+  exact Nat.mod_eq_of_lt (ZMod.val_lt x)
 
 /-- Each coset has the same cardinality as the corresponding fiber of the
     coset index function `x ↦ val(x) % g`. -/
@@ -950,8 +1002,11 @@ private lemma coset_fiber_card_eq {N : ℕ} [NeZero N] (A : Finset (ZMod N))
   apply Finset.card_nbij (fun k : ZMod M => (↑j + ↑(ZMod.val k) * ↑g : ZMod N))
   · -- Maps coset into fiber
     intro k hk
-    rw [Finset.mem_filter] at hk
-    refine Finset.mem_filter.mpr ⟨hk.2, ?_⟩
+    -- hk : k ∈ {k : ZMod M | ↑j + ↑k.val * ↑g ∈ A} (as set)
+    -- goal : ↑j + ↑k.val * ↑g ∈ {x ∈ A | idx x = ⟨j, hj⟩} (as set)
+    simp only [Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter,
+      Finset.mem_univ, true_and] at hk ⊢
+    refine ⟨hk, ?_⟩
     show idx (↑j + ↑(ZMod.val k) * ↑g : ZMod N) = ⟨j, hj⟩; ext
     show ZMod.val (↑j + ↑(ZMod.val k) * ↑g : ZMod N) % g = j
     rw [show (↑j + ↑(ZMod.val k) * ↑g : ZMod N) =
@@ -959,33 +1014,47 @@ private lemma coset_fiber_card_eq {N : ℕ} [NeZero N] (A : Finset (ZMod N))
       ZMod.val_natCast, Nat.mod_eq_of_lt (hval_range k),
       Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt hj]
   · -- Injective
-    intro a₁ _ a₂ _ heq
+    intro a₁ ha₁ a₂ ha₂ heq
     apply ZMod.val_injective; show ZMod.val a₁ = ZMod.val a₂
-    have h := congr_arg ZMod.val heq
-    rw [show (↑j + ↑(ZMod.val a₁) * ↑g : ZMod N) =
-          (↑(j + ZMod.val a₁ * g) : ZMod N) from by push_cast; ring,
-        show (↑j + ↑(ZMod.val a₂) * ↑g : ZMod N) =
-          (↑(j + ZMod.val a₂ * g) : ZMod N) from by push_cast; ring,
-        ZMod.val_natCast, Nat.mod_eq_of_lt (hval_range a₁),
-        ZMod.val_natCast, Nat.mod_eq_of_lt (hval_range a₂)] at h
-    omega
+    -- From heq, extract equality of the ℕ-values
+    have heq1 : (↑j + ↑(ZMod.val a₁) * ↑g : ZMod N) =
+        (↑(j + ZMod.val a₁ * g) : ZMod N) := by push_cast; ring
+    have heq2 : (↑j + ↑(ZMod.val a₂) * ↑g : ZMod N) =
+        (↑(j + ZMod.val a₂ * g) : ZMod N) := by push_cast; ring
+    have hv1 : ZMod.val (↑(j + ZMod.val a₁ * g) : ZMod N) = j + ZMod.val a₁ * g := by
+      rw [ZMod.val_natCast, Nat.mod_eq_of_lt (hval_range a₁)]
+    have hv2 : ZMod.val (↑(j + ZMod.val a₂ * g) : ZMod N) = j + ZMod.val a₂ * g := by
+      rw [ZMod.val_natCast, Nat.mod_eq_of_lt (hval_range a₂)]
+    have h : j + ZMod.val a₁ * g = j + ZMod.val a₂ * g := by
+      have heq' : (↑(j + ZMod.val a₁ * g) : ZMod N) = (↑(j + ZMod.val a₂ * g) : ZMod N) := by
+        rw [← heq1, ← heq2]; exact heq
+      have := congr_arg ZMod.val heq'
+      rwa [hv1, hv2] at this
+    have : ZMod.val a₁ * g = ZMod.val a₂ * g := by omega
+    exact Nat.eq_of_mul_eq_mul_right hg this
   · -- Surjective
     intro x hx
-    rw [Finset.mem_filter] at hx
+    -- hx : x ∈ {x ∈ A | idx x = ⟨j, hj⟩} (as set)
+    simp only [Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter,
+      Finset.mem_univ, true_and] at hx
     have hmod : ZMod.val x % g = j := by
       have := congr_arg Fin.val hx.2; exact this
     have hdiv : ZMod.val x / g < M :=
-      Nat.div_lt_of_lt_mul (by linarith [ZMod.val_lt x, hMg])
+      Nat.div_lt_of_lt_mul (by rw [Nat.mul_comm]; linarith [ZMod.val_lt x, hMg])
     have hval_k : ZMod.val (↑(ZMod.val x / g) : ZMod M) = ZMod.val x / g :=
       by rw [ZMod.val_natCast, Nat.mod_eq_of_lt hdiv]
     have hrecomp : j + ZMod.val x / g * g = ZMod.val x := by
-      rw [← hmod]; exact (Nat.mod_add_div (ZMod.val x) g).symm
+      have hdivmod := Nat.mod_add_div (ZMod.val x) g
+      -- hdivmod : x.val % g + g * (x.val / g) = x.val
+      -- hmod : x.val % g = j
+      linarith [Nat.mul_comm g (ZMod.val x / g)]
     have himage : (↑j + ↑(ZMod.val (↑(ZMod.val x / g) : ZMod M)) * ↑g : ZMod N) = x := by
       rw [hval_k, show (↑j + ↑(ZMod.val x / g) * ↑g : ZMod N) =
           (↑(j + ZMod.val x / g * g) : ZMod N) from by push_cast; ring,
         hrecomp, natCast_zmod_val']
-    exact ⟨↑(ZMod.val x / g),
-      Finset.mem_filter.mpr ⟨Finset.mem_univ _, himage ▸ hx.1⟩, himage⟩
+    refine ⟨↑(ZMod.val x / g), ?_, himage⟩
+    simp only [Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and]
+    rw [himage]; exact hx.1
 
 /-- Partition: sum of coset cardinalities = |A|. -/
 private lemma coset_partition_sum {N : ℕ} [NeZero N] (A : Finset (ZMod N))
@@ -1012,7 +1081,7 @@ private lemma fourier_coset_decomp {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     obtain ⟨q, hq⟩ := hcompat
     have : (↑(ZMod.val r * g) : ZMod N) = 0 :=
       (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mpr
-        ⟨q, by rw [hq, show M * q * g = q * (M * g) from by ring, hMg]⟩
+        ⟨q, by rw [hq, show M * q * g = q * (M * g) from by ring, hMg]; ring⟩
     rwa [show (↑(ZMod.val r * g) : ZMod N) = r * ↑g from by
       push_cast; rw [natCast_zmod_val']] at this
   -- ψ is constant on cosets: ψ(r*x) = ψ(r*j) when val(x) % g = j
@@ -1020,12 +1089,13 @@ private lemma fourier_coset_decomp {N : ℕ} [NeZero N] (A : Finset (ZMod N))
       ψ (r * x) = ψ (r * (↑j : ZMod N)) := by
     intro x j hmod
     have hdiv : ZMod.val x / g < M :=
-      Nat.div_lt_of_lt_mul (by linarith [ZMod.val_lt x, hMg])
+      Nat.div_lt_of_lt_mul (by rw [Nat.mul_comm]; linarith [ZMod.val_lt x, hMg])
     have hx_eq : x = (↑j : ZMod N) + ↑(ZMod.val x / g) * ↑g := by
       rw [show (↑j : ZMod N) + ↑(ZMod.val x / g) * ↑g =
           (↑(j + ZMod.val x / g * g) : ZMod N) from by push_cast; ring,
         show j + ZMod.val x / g * g = ZMod.val x from by
-          rw [← hmod]; omega,
+          have hdivmod := Nat.mod_add_div (ZMod.val x) g
+          rw [← hmod]; linarith,
         natCast_zmod_val']
     rw [hx_eq]; congr 1
     calc r * ((↑j : ZMod N) + ↑(ZMod.val x / g) * ↑g)
