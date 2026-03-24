@@ -46,16 +46,16 @@
       "Piepmeyer 9-point construction disproves strong conjecture (diam >= n-1) at n=9",
       "Erdos-Anning theorem: infinite integer distance sets must be collinear (finite case fundamentally different)",
       "Gap between n/log n (known) and n (conjectured) is the central open question",
-      "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle"
+      "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle",
+      "distinctDistances_le_diam axiom IS PROVABLE: inject pairwiseDistances into {1,...,⌊diam⌋} via identity (distances are positive integers ≤ diam). Needs: (1) show each d∈pairwiseDistances is a positive integer via hasIntegerDistances, (2) build injection to Finset.Icc 1 ⌊diam⌋, (3) card bound + Nat.floor_le."
     ],
     "mathlibGaps": [
       "No Finset.offDiag_nonempty lemma found in Mathlib",
       "Finset.one_lt_card extraction + offDiag membership causes heartbeat timeouts"
     ],
     "nextSteps": [
-      "Prove diam_ge_one (trivial bound) - may need set_option maxHeartbeats or alternative approach",
-      "Create Aristotle companion file for diam_ge_one sorry",
-      "Consider proving distinctDistances_le_diam (currently axiom, may be provable from definitions)"
+      "PROVE distinctDistances_le_diam: routine axiom elimination via injection into {1,...,⌊diam⌋} (5→4 axioms)",
+      "piepmeyer_construction may be provable by explicit 9-point construction + norm computation"
     ]
   },
   "tags": [
