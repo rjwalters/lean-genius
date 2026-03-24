@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/931",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 199,
-    "assumptions": "2 axioms: stronger_implies_main, exists_prime_between_blocks. See Lean source for complete statements.",
+    "lineCount": 300,
+    "assumptions": "2 axioms: stronger_implies_main (Størmer-type smooth number argument), exists_prime_between_blocks (partially proved via Bertrand for k₁ ≥ n₁ case). See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -83,29 +83,36 @@
       "id": "sec-931-counterexamples",
       "title": "Verified Counterexamples",
       "startLine": 104,
-      "endLine": 127,
-      "summary": "AlphaProof counterexample (n₁=0, k₁=10, n₂=13, k₂=3) and Tijdeman's example (n₁=18, k₁=k₂=4, n₂=53), fully verified by native_decide and omega. Establishes that the stronger conjecture is false."
+      "endLine": 148,
+      "summary": "Five verified examples: AlphaProof (n₁=0, k₁=10, n₂=13, k₂=3), Tijdeman (n₁=18, k₁=k₂=4, n₂=53), and three new small examples showing {4,5,6}/{8,9,10}, {3,4,5,6}/{8,9,10}, and {1..5}/{8,9,10} share prime factors {2,3,5}. All verified by native_decide and omega."
     },
     {
       "id": "sec-931-properties",
       "title": "Properties of Prime Factors",
-      "startLine": 128,
-      "endLine": 171,
+      "startLine": 149,
+      "endLine": 192,
       "summary": "Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive."
     },
     {
       "id": "sec-931-implication",
       "title": "Stronger Implies Main",
-      "startLine": 172,
-      "endLine": 180,
-      "summary": "Axiom recording that the stronger conjecture implies the main one, via the Bertrand's postulate argument for the unbounded-gap case."
+      "startLine": 193,
+      "endLine": 207,
+      "summary": "Axiom with detailed commentary: the stronger conjecture implies the main one. The set decomposition into band and outer regions is explained, with the outer region requiring Størmer-type smooth number arguments."
     },
     {
-      "id": "sec-931-prime-between",
-      "title": "Open Question: Prime Between Blocks",
-      "startLine": 181,
-      "endLine": 199,
-      "summary": "Axiom stating the open subsidiary question: must a prime exist between n₁ and n₂+k₂ when blocks share prime factors? Includes the problem status string."
+      "id": "sec-931-bertrand",
+      "title": "Bertrand's Postulate and Prime Between Blocks",
+      "startLine": 208,
+      "endLine": 277,
+      "summary": "NEW: Four theorems using Bertrand's postulate. (1) If the first block contains a prime, a prime exists in range (trivial). (2) By Bertrand, when k₁ ≥ n₁ the first block always has a prime. (3) Combined: exists_prime_between_blocks holds for k₁ ≥ n₁ without SamePrimeFactors. (4) If the first product has a large prime factor, SamePrimeFactors transfers it to bound q ≤ n₂+k₂ via Prime.dvd_finset_prod_iff."
+    },
+    {
+      "id": "sec-931-prime-between-axiom",
+      "title": "Open Question: Remaining Hard Case",
+      "startLine": 278,
+      "endLine": 300,
+      "summary": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically impossible for all tested values."
     }
   ],
   "conclusion": {
@@ -126,16 +133,17 @@
       "Mathlib.Data.Nat.Factorization.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Finset.Interval",
-      "Mathlib.Tactic"
+      "Mathlib.Tactic",
+      "Mathlib.NumberTheory.Bertrand"
     ],
     "opens": [
       "Nat",
       "Finset"
     ],
     "namespace": "Erdos931",
-    "lineCount": 199,
+    "lineCount": 300,
     "axiomCount": 2,
-    "theoremCount": 21,
+    "theoremCount": 31,
     "definitionCount": 6
   },
   "crossReferences": [
