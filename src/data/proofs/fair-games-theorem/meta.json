@@ -42,7 +42,8 @@
       "Probability theory: expectation and conditional expectation",
       "Gambler's ruin and absorbing Markov chains",
       "Filtrations and stopping times"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The gambler's ruin problem has been studied since the origins of probability theory. Pascal and Fermat exchanged letters in 1654 about 'le problème des partis' (the division problem), effectively founding the theory of probability. Christiaan Huygens formalized the gambler's ruin in his 1657 treatise *De Ratiociniis in Ludo Aleae*, computing ruin probabilities as the first systematic results in probability. Nicholas Bernoulli studied the problem in his 1713 doctoral dissertation, discovering the St. Petersburg paradox as a related curiosity about infinite expected values.\n\nThe modern framework emerged in the 20th century. Louis Bachelier's 1900 thesis applied martingale-like reasoning to financial markets. Paul Lévy developed the theory of martingales in the 1930s, and Jean Ville coined the term 'martingale' in 1939 to describe fair betting sequences. Joseph Doob's 1953 masterwork *Stochastic Processes* established the Optional Stopping Theorem (also called the Fair Games Theorem) as a cornerstone of modern probability: for any bounded stopping time $\\tau$, $E[X_\\tau] = E[X_0]$.\n\nThis is Wiedijk's theorem #62 ('You cannot beat a fair game with any strategy'). The theorem explains why betting systems like the martingale doubling strategy, the D'Alembert system, and Fibonacci betting all fail: bounded capital means bounded stopping time, so expected earnings remain zero.",
