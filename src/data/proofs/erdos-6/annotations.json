@@ -15,7 +15,12 @@
       "prime enumeration",
       "Nat.nth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.nth",
+      "Nat.Prime",
+      "Set.Infinite",
+      "Nat.infinite_setOf_prime"
+    ]
   },
   {
     "id": "ann-e6-prime-gap",
@@ -34,7 +39,12 @@
       "twin primes",
       "bounded gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nthPrime (Erdos6.nthPrime)",
+      "Nat.nth Nat.Prime",
+      "Nat.sub (natural number subtraction)",
+      "prime enumeration via Nat.nth"
+    ]
   },
   {
     "id": "ann-e6-primes-infinite",
@@ -52,7 +62,12 @@
       "infinitude of primes"
     ],
     "mathContext": "See annotation content for formal details of primes are infinite",
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.infinite_setOf_prime",
+      "Set.Infinite",
+      "Nat.Prime",
+      "Euclid's theorem on the infinitude of primes"
+    ]
   },
   {
     "id": "ann-e6-strict-mono",
@@ -70,7 +85,12 @@
       "StrictMono"
     ],
     "mathContext": "See annotation content for formal details of strict monotonicity",
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.nth_strictMono",
+      "StrictMono",
+      "Set.Infinite",
+      "Nat.infinite_setOf_prime"
+    ]
   },
   {
     "id": "ann-e6-gap-pos",
@@ -88,7 +108,12 @@
       "omega tactic"
     ],
     "mathContext": "See annotation content for formal details of prime gaps are positive",
-    "prerequisites": []
+    "prerequisites": [
+      "nthPrime_strictMono",
+      "Nat.nth_strictMono",
+      "omega (Lean 4 linear arithmetic tactic)",
+      "Nat.sub_pos_of_lt"
+    ]
   },
   {
     "id": "ann-e6-first-gaps",
@@ -106,7 +131,12 @@
       "simp"
     ],
     "mathContext": "See annotation content for formal details of first prime gaps",
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.nth_prime_zero_eq_two",
+      "Nat.nth_prime_one_eq_three",
+      "Nat.nth_prime_two_eq_five",
+      "simp (Lean 4 simplification tactic)"
+    ]
   },
   {
     "id": "ann-e6-increasing-gaps",
@@ -124,7 +154,12 @@
       "monotone sequences",
       "prime gap patterns"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primeGap (Erdos6.primeGap)",
+      "StrictMono",
+      "Finset.range (for universal quantification over indices)",
+      "strict inequality on natural numbers"
+    ]
   },
   {
     "id": "ann-e6-decreasing-gaps",
@@ -141,7 +176,12 @@
       "monotone sequences"
     ],
     "mathContext": "See annotation content for formal details of decreasing gap sequences",
-    "prerequisites": []
+    "prerequisites": [
+      "primeGap (Erdos6.primeGap)",
+      "HasIncreasingGaps (symmetric definition)",
+      "strict inequality on natural numbers",
+      "StrictAntiMono"
+    ]
   },
   {
     "id": "ann-e6-infinitely-many",
@@ -159,7 +199,12 @@
       "infinite sets",
       "cofinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "HasIncreasingGaps (Erdos6.HasIncreasingGaps)",
+      "HasDecreasingGaps (Erdos6.HasDecreasingGaps)",
+      "existential quantifier over unbounded naturals",
+      "Set.Infinite (standard 'infinitely many' encoding)"
+    ]
   },
   {
     "id": "ann-e6-conjecture",
@@ -177,7 +222,12 @@
       "Erdős problems",
       "prime gap conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "InfinitelyManyIncreasing (Erdos6.InfinitelyManyIncreasing)",
+      "primeGap (Erdos6.primeGap)",
+      "Erdős-Turán conjecture on prime gap monotonicity (1948)",
+      "bounded gaps between primes (Maynard-Tao-Zhang)"
+    ]
   },
   {
     "id": "ann-e6-bftb-theorem",
@@ -196,7 +246,12 @@
       "sieve methods",
       "bounded gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "InfinitelyManyIncreasing (Erdos6.InfinitelyManyIncreasing)",
+      "maynard_tao_bounded_gaps (axiom)",
+      "Maynard-Tao multidimensional sieve (GPY method)",
+      "Zhang's bounded gaps theorem (2013)"
+    ]
   },
   {
     "id": "ann-e6-decreasing-axiom",
@@ -214,7 +269,12 @@
       "gap patterns"
     ],
     "mathContext": "See annotation content for formal details of decreasing version",
-    "prerequisites": []
+    "prerequisites": [
+      "InfinitelyManyDecreasing (Erdos6.InfinitelyManyDecreasing)",
+      "banks_freiberg_turnage_butterbaugh (axiom, increasing version)",
+      "Maynard-Tao sieve (symmetric argument for decreasing patterns)",
+      "prime gap oscillation"
+    ]
   },
   {
     "id": "ann-e6-solved",
@@ -231,7 +291,12 @@
     "relatedConcepts": [
       "theorem derivation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "banks_freiberg_turnage_butterbaugh (axiom)",
+      "erdos_6_conjecture (Erdos6.erdos_6_conjecture)",
+      "norm_num (Lean 4 numeric normalization tactic)",
+      "InfinitelyManyIncreasing 2"
+    ]
   },
   {
     "id": "ann-e6-maynard-tao",
@@ -250,7 +315,12 @@
       "prime clusters",
       "GPY method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.filter Nat.Prime (counting primes in intervals)",
+      "Finset.Icc (closed integer intervals)",
+      "Finset.card (cardinality)",
+      "Goldston-Pintz-Yıldırım (GPY) sieve method"
+    ]
   },
   {
     "id": "ann-e6-zhang",
@@ -269,7 +339,12 @@
       "bounded gaps",
       "polymath project"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime (primality predicate)",
+      "lim inf of prime gaps (analytic number theory concept)",
+      "Bombieri-Vinogradov theorem (used in Zhang's proof)",
+      "admissible tuples and Hardy-Littlewood conjecture"
+    ]
   },
   {
     "id": "ann-e6-long-runs",
@@ -287,7 +362,12 @@
       "prime gap patterns"
     ],
     "mathContext": "See annotation content for formal details of arbitrarily long monotone runs",
-    "prerequisites": []
+    "prerequisites": [
+      "banks_freiberg_turnage_butterbaugh (axiom)",
+      "banks_freiberg_turnage_butterbaugh_decreasing (axiom)",
+      "InfinitelyManyIncreasing (Erdos6.InfinitelyManyIncreasing)",
+      "universal quantification over run length m"
+    ]
   },
   {
     "id": "ann-e6-oscillation",
@@ -305,6 +385,11 @@
       "oscillation theorems",
       "prime randomness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "banks_freiberg_turnage_butterbaugh (axiom, m = 1)",
+      "banks_freiberg_turnage_butterbaugh_decreasing (axiom, m = 1)",
+      "And.intro (Lean 4 conjunction introduction)",
+      "norm_num (proves 1 ≥ 1 numerically)"
+    ]
   }
 ]
