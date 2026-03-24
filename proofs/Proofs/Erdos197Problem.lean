@@ -29,10 +29,10 @@ References:
 
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Set.Function
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Nat.Basic
 import Mathlib.Logic.Function.Basic
 import Mathlib.Order.Basic
+import Mathlib.Tactic
 
 open Set Function
 
@@ -132,13 +132,22 @@ to avoid monotone 3-APs?
 Does there exist a partition of ℕ into two sets A and B such that both
 A and B can be permuted to avoid monotone 3-term arithmetic progressions?
 
-This is axiomatized as the problem remains open.
+This disjunction holds by excluded middle — the problem is open because we
+don't know which disjunct is true.
 -/
-axiom erdos_197_conjecture :
+theorem erdos_197_conjecture :
     (∃ A B : Set ℕ, isTwoPartition A B ∧
       canPermuteTo3APFree A ∧ canPermuteTo3APFree B) ∨
     (∀ A B : Set ℕ, isTwoPartition A B →
-      ¬canPermuteTo3APFree A ∨ ¬canPermuteTo3APFree B)
+      ¬canPermuteTo3APFree A ∨ ¬canPermuteTo3APFree B) := by
+  by_cases h : ∃ A B : Set ℕ, isTwoPartition A B ∧
+      canPermuteTo3APFree A ∧ canPermuteTo3APFree B
+  · exact Or.inl h
+  · right
+    intro A B hpart
+    by_contra habs
+    push_neg at habs
+    exact h ⟨A, B, hpart, habs.1, habs.2⟩
 
 /-
 ## Part V: The Three-Set Case (Solved)
@@ -166,16 +175,12 @@ axiom erdos_graham_three_sets :
 -/
 
 /--
-**Constant Sequence Avoids 3-AP:**
-A constant sequence trivially avoids non-trivial 3-APs since we require i < j < k.
+**Constant Sequence Has 3-APs:**
+A constant sequence f(n) = c has trivial 3-APs at every triple of indices,
+since c + c = 2c always holds.
 -/
-theorem constant_avoids_3AP (c : ℕ) : avoids3AP (fun _ => c) := by
-  intro ⟨i, j, k, hij, hjk, hap⟩
-  simp only [isArithmeticProgression] at hap
-  -- c + c = 2 * c is always true, so this is actually not a contradiction
-  -- The issue is that constant sequences DO have "trivial" 3-APs
-  -- Let me reconsider - we need stricter definition
-  omega
+theorem constant_has_3AP (c : ℕ) : hasMonotone3AP (fun _ => c) := by
+  exact ⟨0, 1, 2, by omega, by omega, by simp [isArithmeticProgression]; ring⟩
 
 /--
 **Strictly Increasing Sequences:**
@@ -208,25 +213,31 @@ theorem identity_has_3AP : hasMonotone3AP id := by
 /--
 **Powers of 2 avoid 3-APs:**
 The sequence 1, 2, 4, 8, 16, ... avoids 3-APs.
-This is because 2^a + 2^c = 2 * 2^b implies a = b = c (for distinct a, b, c).
+
+Proof: If 2^i + 2^k = 2 * 2^j with i < j < k, then since j < k we have
+2^k ≥ 2^(j+1) = 2 * 2^j, and since 2^i ≥ 1, we get
+2^i + 2^k ≥ 1 + 2 * 2^j > 2 * 2^j, contradicting the equation.
 -/
-axiom powers_of_2_avoid_3AP :
-    avoids3AP (fun n => 2 ^ n)
+theorem powers_of_2_avoid_3AP :
+    avoids3AP (fun n => 2 ^ n) := by
+  intro ⟨i, j, k, hij, hjk, hap⟩
+  simp only [isArithmeticProgression] at hap
+  -- hap : 2 ^ i + 2 ^ k = 2 * 2 ^ j
+  -- Since j < k, 2^k ≥ 2^(j+1) = 2 * 2^j, and 2^i ≥ 1
+  have hk : 2 * 2 ^ j ≤ 2 ^ k := by
+    have : 2 ^ (j + 1) ≤ 2 ^ k := Nat.pow_le_pow_right (by omega) hjk
+    linarith [show 2 ^ (j + 1) = 2 * 2 ^ j from by ring]
+  have hi : 0 < 2 ^ i := pow_pos (by omega : (0 : ℕ) < 2) i
+  linarith
 
 /-
 ## Part VIII: Computational Intractability
--/
 
-/--
-**Non-Computability:**
-The two-set version cannot be resolved by finite computation.
+The two-set version cannot be resolved by finite computation alone.
 Any finite portion of ℕ can be partitioned to avoid 3-APs in both parts,
-but this doesn't extend to all of ℕ.
+but this does not extend to all of ℕ. This is a known meta-mathematical
+observation rather than a formal theorem.
 -/
-axiom erdos_197_not_finite_checkable :
-    ¬∃ N : ℕ, ∀ A B : Set ℕ, isTwoPartition A B →
-      ((∃ f : ℕ → ℕ, isEnumeration A f ∧ avoids3AP f) ↔
-       (∃ f : Fin N → ℕ, True))  -- Placeholder for finite verification
 
 /-
 ## Part IX: Related Sequences
@@ -242,9 +253,9 @@ Begins: 0, 1, 3, 5, 9, 11, 13, 15, 25, 27, ...
 def isStanleySequence (f : ℕ → ℕ) : Prop :=
   f 0 = 0 ∧ f 1 = 1 ∧
   avoids3AP f ∧
-  ∀ n ≥ 2, f n = Nat.find (fun m =>
-    m > f (n - 1) ∧
-    ∀ i j, i < j → j < n → ¬isArithmeticProgression (f i) (f j) m)
+  StrictlyIncreasing f ∧
+  ∀ n ≥ 2, ∀ m, f (n - 1) < m → m < f n →
+    ∃ i j, i < j ∧ j < n ∧ isArithmeticProgression (f i) (f j) m
 
 /--
 **Stanley Sequence Avoids 3-AP:**
@@ -260,18 +271,15 @@ axiom stanley_avoids_3AP :
 /--
 **Problem Status:**
 Erdős Problem #197 remains open. We know:
-1. The three-set version is solvable (erdos_graham_three_sets)
-2. The problem cannot be resolved by finite computation
-3. Individual 3-AP-free sequences exist (powers_of_2_avoid_3AP)
+1. The three-set version is solvable (erdos_graham_three_sets, axiom)
+2. Individual 3-AP-free sequences exist (powers_of_2_avoid_3AP, proved)
+3. The two-set question is undecided (erdos_197_conjecture, by excluded middle)
 -/
 theorem erdos_197_status :
     (∃ A B C : Set ℕ, isThreePartition A B C ∧
       canPermuteTo3APFree A ∧ canPermuteTo3APFree B ∧ canPermuteTo3APFree C) ∧
     (∃ f : ℕ → ℕ, avoids3AP f) := by
-  constructor
-  · exact erdos_graham_three_sets
-  · use (fun n => 2 ^ n)
-    exact powers_of_2_avoid_3AP
+  exact ⟨erdos_graham_three_sets, ⟨fun n => 2 ^ n, powers_of_2_avoid_3AP⟩⟩
 
 /--
 **The Main Open Question:**
