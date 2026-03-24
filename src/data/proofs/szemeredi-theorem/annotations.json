@@ -4,22 +4,24 @@
     "proofId": "szemeredi-theorem",
     "range": {
       "startLine": 1,
-      "endLine": 31
+      "endLine": 47
     },
     "type": "context",
-    "title": "Introduction",
-    "content": "Szemeredi's theorem (1975): Dense subsets contain arbitrarily long arithmetic progressions.\n\nThis is one of the most important results in combinatorics. The k=3 case (Roth's theorem) is fully proved using Mathlib's corners theorem chain.\n\nThe proof chain: Regularity Lemma -> Triangle Removal -> Corners -> Roth.",
-    "mathContext": "Szemeredi (1975) proved the general case. Roth (1953) proved k=3.",
-    "significance": "supporting",
+    "title": "Module Overview and Proof Strategy",
+    "content": "Szemerédi's theorem (1975) is one of the crown jewels of combinatorics: any subset of the natural numbers with positive upper density contains arbitrarily long arithmetic progressions. This file formalizes the theorem with the $k = 3$ case (Roth's theorem, 1953) fully proved via Mathlib's corners theorem chain, and $k \\geq 4$ stated as an axiom pending hypergraph regularity in Mathlib.\n\nThe formalization imports `Mathlib.Combinatorics.Additive.Corner.Roth` (providing `roth_3ap_theorem_nat`), `Mathlib.Combinatorics.Additive.AP.Three.Defs` (for `ThreeAPFree`), and general tactics. The proof chain for $k = 3$ in Mathlib follows: Szemerédi Regularity Lemma $\\to$ Triangle Removal Lemma $\\to$ Corners Theorem $\\to$ Roth's Theorem. Each step is a deep result in its own right.",
+    "mathContext": "Szemerédi (1975): $\\forall k \\geq 1, \\delta > 0, \\exists N_0: |S \\cap [N]| \\geq \\delta N \\Rightarrow S$ contains a $k$-AP. Roth (1953) proved $k = 3$; the full theorem requires the Szemerédi Regularity Lemma.",
+    "significance": "key",
     "relatedConcepts": [
-      "Szemeredi",
-      "Roth",
-      "regularity lemma"
+      "Szemerédi Regularity Lemma",
+      "Roth's theorem on 3-APs",
+      "Triangle Removal Lemma",
+      "Corners Theorem",
+      "additive combinatorics"
     ],
     "prerequisites": [
-      "additive combinatorics",
+      "natural density and upper density",
       "arithmetic progressions",
-      "density"
+      "graph regularity (for proof chain)"
     ]
   },
   {
@@ -27,132 +29,119 @@
     "proofId": "szemeredi-theorem",
     "range": {
       "startLine": 48,
-      "endLine": 50
+      "endLine": 71
     },
     "type": "definition",
-    "title": "k-term Arithmetic Progression",
-    "content": "`HasAPOfLength S k` means S contains a k-term AP: a, a+d, a+2d, ..., a+(k-1)d with d > 0.\n\nExamples:\n- {1, 4, 7} has a 3-AP (d=3)\n- {2, 4, 6, 8, 10} has a 5-AP (d=2)\n- {1, 2, 4, 8} has no 4-AP",
-    "mathContext": "HasAPOfLength S k := exists a d, d > 0 AND forall i < k, (a + i*d) in S",
+    "title": "k-term AP Predicate and Szemerédi Statement",
+    "content": "**`HasAPOfLength S k`**: $S$ contains a $k$-term arithmetic progression — there exist $a, d$ with $d > 0$ such that $a, a+d, a+2d, \\ldots, a+(k-1)d$ all belong to $S$. The $d > 0$ condition excludes degenerate constant sequences.\n\n**`SzemerediTheorem`**: The formal statement — for any $k \\geq 1$ and $\\delta > 0$, there exists $N_0$ such that for all $N \\geq N_0$, any subset of $\\{0, \\ldots, N-1\\}$ of size $\\geq \\delta N$ contains a $k$-AP. The use of `Finset.range N` (giving $\\{0, \\ldots, N-1\\}$) is standard in Lean formalizations.\n\nThe theorem quantifies over both the AP length $k$ and the density $\\delta$, making it a purely combinatorial statement about finite sets. The remarkable content is that $N_0$ depends only on $k$ and $\\delta$, not on the specific structure of $S$ — any sufficiently large dense set must contain long APs.",
+    "mathContext": "$\\text{HasAPOfLength}(S, k) \\iff \\exists a, d > 0: \\{a, a+d, \\ldots, a+(k-1)d\\} \\subseteq S$. Szemerédi: $\\forall k, \\delta > 0, \\exists N_0(k, \\delta)$ such that $|S \\cap [N]| \\geq \\delta N \\Rightarrow$ $S$ has a $k$-AP.",
     "significance": "key",
     "relatedConcepts": [
       "arithmetic progression",
-      "common difference"
+      "Ramsey-type theorems",
+      "density conditions",
+      "Finset.range in Lean",
+      "Erdős–Turán conjecture (1936)"
     ],
     "prerequisites": [
-      "combinatorics",
-      "number theory",
-      "arithmetic progressions"
+      "Finset API",
+      "natural density"
     ]
   },
   {
-    "id": "ann-szemeredi-statement",
+    "id": "ann-trivial-cases",
     "proofId": "szemeredi-theorem",
     "range": {
-      "startLine": 66,
-      "endLine": 71
-    },
-    "type": "technique",
-    "title": "The Main Statement",
-    "content": "**Szemeredi's Theorem**: For any k >= 1 and delta > 0, there exists N_0 such that:\n\nAny subset S of {1,...,N} with |S| >= delta*N contains a k-term AP.\n\nThe density delta*N ensures S is 'thick enough' to force long progressions.",
-    "mathContext": "SzemerediTheorem := forall k delta, k >= 1 -> delta > 0 -> exists N_0, ...",
-    "significance": "key",
-    "relatedConcepts": [
-      "density",
-      "Ramsey theory"
-    ],
-    "prerequisites": [
-      "combinatorics",
-      "number theory",
-      "arithmetic progressions"
-    ]
-  },
-  {
-    "id": "ann-trivial-k1",
-    "proofId": "szemeredi-theorem",
-    "range": {
-      "startLine": 80,
-      "endLine": 83
-    },
-    "type": "technique",
-    "title": "k=1 Case",
-    "content": "**Trivial**: Any non-empty set contains a 1-AP.\n\nA single element forms a 1-term arithmetic progression (vacuously).\n\nProof: Take any element a in S; the sequence (a) is a 1-AP.",
-    "mathContext": "szemeredi_k1: S.Nonempty -> HasAPOfLength S 1",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "trivial case",
-      "base case"
-    ],
-    "prerequisites": [
-      "combinatorics",
-      "number theory",
-      "arithmetic progressions"
-    ]
-  },
-  {
-    "id": "ann-trivial-k2",
-    "proofId": "szemeredi-theorem",
-    "range": {
-      "startLine": 85,
+      "startLine": 72,
       "endLine": 106
     },
     "type": "technique",
-    "title": "k=2 Case",
-    "content": "**Trivial**: Any set with 2+ elements contains a 2-AP.\n\nTake any two distinct elements a < b. Then (a, b) is a 2-AP with d = b - a.\n\nThe proof handles both orderings (a < b and b < a).",
-    "mathContext": "szemeredi_k2: |S| >= 2 -> HasAPOfLength S 2",
+    "title": "Trivial Cases: k = 1 and k = 2",
+    "content": "**$k = 1$** (`szemeredi_k1`): Any nonempty set contains a 1-AP (a single element). The proof extracts an element from `S.Nonempty` and constructs the degenerate AP $(a)$.\n\n**$k = 2$** (`szemeredi_k2`): Any set with $|S| \\geq 2$ contains a 2-AP. The proof takes two distinct elements $a \\neq b$ from $S$ (via `Finset.exists_ne_of_card_le_two_le`) and constructs the AP $(\\min(a,b), \\max(a,b))$ with $d = |b - a|$. The case split handles $a < b$ vs $b < a$.\n\nDensity versions (`szemeredi_k1_density`, `szemeredi_k2_density`) prove that for $N$ large enough relative to $\\delta$, any $\\delta$-dense subset has $|S| \\geq 1$ (resp. $\\geq 2$), reducing to the non-density versions. These handle the $k = 1, 2$ cases of the full Szemerédi statement.",
+    "mathContext": "$k = 1$: $|S| \\geq 1 \\Rightarrow S$ has a 1-AP. $k = 2$: $|S| \\geq 2 \\Rightarrow S$ has a 2-AP (take any two distinct elements). Density version: $|S| \\geq \\delta N \\geq 2$ when $N \\geq 2/\\delta$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "trivial case",
-      "two elements"
+      "base cases of induction",
+      "Finset.Nonempty",
+      "Finset.exists_ne",
+      "density-to-cardinality reduction"
     ],
     "prerequisites": [
-      "combinatorics",
-      "number theory",
-      "arithmetic progressions"
+      "Finset cardinality",
+      "min/max on ℕ"
     ]
   },
   {
-    "id": "ann-equivalence",
+    "id": "ann-ap-free",
+    "proofId": "szemeredi-theorem",
+    "range": {
+      "startLine": 107,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "AP-Free Definitions and Auxiliary Results",
+    "content": "**`IsAPFree S k`**: The negation of `HasAPOfLength S k` — $S$ contains no $k$-AP. This is the key concept for stating bounds: Roth's theorem says that $k$-AP-free subsets of $[N]$ must have $|S| < \\delta N$ for any $\\delta > 0$ and large enough $N$.\n\nThis section builds the infrastructure connecting the custom AP definitions to Mathlib's `ThreeAPFree` predicate, which is defined differently: `ThreeAPFree S` means that for $a, b, c \\in S$ with $a + c = 2b$, we have $a = b$ (i.e., the only 3-APs are trivial/constant ones). The equivalence `threeAPFree_iff_isAPFree` bridges these definitions.\n\nThe section also includes the assembly of the full Szemerédi theorem from its components: the $k = 1$ case (trivial), $k = 2$ case (trivial), $k = 3$ case (Roth via Mathlib), and $k \\geq 4$ case (axiom `szemeredi_k_geq_4`). The `szemeredi_full` theorem combines these via a case split on $k$.",
+    "mathContext": "$\\text{IsAPFree}(S, 3) \\iff \\text{ThreeAPFree}(S) \\iff \\forall a, b, c \\in S: a + c = 2b \\Rightarrow a = b$. The Szemerédi bounds for 3-AP-free sets: $|S| \\leq C N / (\\log \\log N)$ (Roth 1953), improved to $N (\\log N)^{-1+\\varepsilon}$ by Bloom-Sisask (2020).",
+    "significance": "key",
+    "relatedConcepts": [
+      "AP-free sets",
+      "ThreeAPFree (Mathlib definition)",
+      "definition equivalence bridge",
+      "case-split theorem assembly",
+      "Roth's density bound"
+    ],
+    "prerequisites": [
+      "ThreeAPFree in Mathlib",
+      "logical negation and equivalence"
+    ]
+  },
+  {
+    "id": "ann-equivalence-roth",
     "proofId": "szemeredi-theorem",
     "range": {
       "startLine": 216,
-      "endLine": 256
+      "endLine": 271
     },
-    "type": "concept",
-    "title": "ThreeAPFree Equivalence",
-    "content": "**Key Result**: Our `IsAPFree S 3` is equivalent to Mathlib's `ThreeAPFree S`.\n\nMathlib's definition: ThreeAPFree means for a, b, c in S with a + c = 2b, we have a = b.\n\nOur definition: IsAPFree S 3 means no (a, a+d, a+2d) with d > 0 all in S.\n\nThe proof shows these are the same condition.",
-    "mathContext": "threeAPFree_iff_isAPFree: ThreeAPFree S <-> IsAPFree S 3",
+    "type": "technique",
+    "title": "ThreeAPFree Equivalence and Roth via Mathlib",
+    "content": "**`threeAPFree_iff_isAPFree`**: The key bridge lemma: Mathlib's `ThreeAPFree S` (defined via $a + c = 2b \\Rightarrow a = b$) is equivalent to `IsAPFree S 3` (no non-trivial 3-AP). The forward direction constructs an AP from the Mathlib counterexample; the reverse extracts a Mathlib-style triple from an AP.\n\n**`roth_theorem_via_mathlib`**: The fully proved $k = 3$ case. The proof applies `roth_3ap_theorem_nat` from Mathlib, which provides: for any $\\delta > 0$, there exists $N_0$ (specifically, `cornersTheoremBound(\\delta/3)`) such that any $\\delta$-dense subset of $[N]$ contains a 3-AP. The bound comes from the Szemerédi Regularity Lemma, which gives a tower-type dependence on $1/\\delta$.\n\nThe proof chain in Mathlib: the Regularity Lemma partitions a graph into 'regular' bipartite pairs; the Triangle Removal Lemma uses regularity to find triangles; the Corners Theorem lifts triangles in grid graphs to 3-APs in $[N]$; Roth's theorem follows. This is one of Mathlib's most sophisticated formalization achievements.",
+    "mathContext": "Roth (1953): $\\forall \\delta > 0, \\exists N_0: |S \\cap [N]| \\geq \\delta N,\\, N \\geq N_0 \\Rightarrow S$ has a 3-AP. Mathlib proof chain: Regularity $\\to$ Triangle Removal $\\to$ Corners $\\to$ Roth. Bound: $N_0 \\leq \\text{cornersTheoremBound}(\\delta/3)$.",
     "significance": "key",
     "relatedConcepts": [
-      "equivalence",
-      "Mathlib connection"
+      "roth_3ap_theorem_nat (Mathlib)",
+      "cornersTheoremBound",
+      "Szemerédi Regularity Lemma",
+      "Triangle Removal Lemma",
+      "definition bridge pattern"
     ],
     "prerequisites": [
-      "combinatorics",
-      "number theory",
-      "arithmetic progressions"
+      "ThreeAPFree API",
+      "Regularity Lemma (conceptual)",
+      "Corners Theorem"
     ]
   },
   {
-    "id": "ann-roth",
+    "id": "ann-assembly",
     "proofId": "szemeredi-theorem",
     "range": {
-      "startLine": 261,
-      "endLine": 271
+      "startLine": 272,
+      "endLine": 335
     },
-    "type": "concept",
-    "title": "Roth's Theorem via Mathlib",
-    "content": "**Breakthrough**: The k=3 case is FULLY PROVED using Mathlib.\n\nWe apply `roth_3ap_theorem_nat` via the equivalence established above.\n\nThe bound comes from `cornersTheoremBound(delta/3)`, which uses the Szemeredi Regularity bound (a tower-type function).",
-    "mathContext": "roth_theorem_via_mathlib: RothTheorem := apply roth_3ap_theorem_nat",
-    "significance": "key",
+    "type": "context",
+    "title": "Full Theorem Assembly and API Surface",
+    "content": "The full Szemerédi theorem is assembled by cases:\n- $k = 1$: `szemeredi_k1_density` (trivial)\n- $k = 2$: `szemeredi_k2_density` (trivial)\n- $k = 3$: `roth_theorem_via_mathlib` (proved from Mathlib)\n- $k \\geq 4$: `szemeredi_k_geq_4` (axiom — requires hypergraph regularity, not in Mathlib)\n\nThe axiom reduction is precise: only one axiom is needed (the $k \\geq 4$ case). Everything else is either trivially proved or delegated to Mathlib's corners chain. This design minimizes the formalization gap to exactly what Mathlib currently lacks.\n\nThe file concludes with `#check` commands displaying the types of `SzemerediTheorem`, `szemeredi_full`, and supporting definitions, serving as an API summary for downstream users.\n\n**What Mathlib would need for $k \\geq 4$**: The Gowers proof (2001) for general $k$ uses higher-order Fourier analysis and the inverse conjecture for the Gowers norms. Alternatively, the combinatorial proof via the hypergraph regularity lemma (Rödl, Schacht, and others) extends the graph regularity approach. Neither is currently formalized.",
+    "mathContext": "Full theorem: case split on $k$. Only $k \\geq 4$ axiomatized. For $k = 4$: Szemerédi's original proof (1969) used a 'density increment' argument. Gowers (2001) gave bounds $N_0(k, \\delta) \\leq 2^{2^{\\delta^{-c_k}}}$ via higher-order Fourier analysis.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Roth",
-      "corners theorem",
-      "Mathlib"
+      "axiom minimization strategy",
+      "case-split assembly",
+      "hypergraph regularity lemma",
+      "Gowers norms and inverse theorems",
+      "density increment argument"
     ],
     "prerequisites": [
-      "Fourier analysis",
-      "exponential sums",
-      "circle method"
+      "all previous sections",
+      "hypergraph regularity (conceptual, for k >= 4)"
     ]
   }
 ]

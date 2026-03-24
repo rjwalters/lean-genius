@@ -256,5 +256,29 @@
       "rate of convergence",
       "Euler-Maclaurin formula"
     ]
+  },
+  {
+    "id": "ann-namespace-open",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 54,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Namespace and Open Declarations",
+    "content": "The `BaselProblem` namespace scopes all declarations, and five `open` commands bring key Lean/Mathlib notations into scope: `Finset` for finite sums, `BigOperators` for the `∑` and `∏` notation, `Filter` and `Topology` for limits and the `HasSum` predicate (defined topologically — partial sums converge in the topology of ℝ), and `Real` for `π` and real-number operations. Without `open Real`, `π` would need to be written as `Real.pi`. These declarations make the formalization readable without affecting mathematical content.",
+    "mathContext": "The `HasSum` predicate is topological: `HasSum f s` means $\\lim_{S \\to \\text{Finset.univ}} \\sum_{n \\in S} f(n) = s$ in the topology of $\\mathbb{R}$. The `BigOperators` notation provides $\\sum_{n \\in S} f(n)$ as `∑ n ∈ S, f n` and the infinite sum $\\sum' n, f(n)$ as `∑' n, f n`.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 namespace system",
+      "open declarations",
+      "HasSum topology"
+    ],
+    "relatedConcepts": [
+      "BigOperators notation",
+      "topological sum",
+      "Filter.Tendsto",
+      "Lean 4 scoping"
+    ]
   }
 ]
