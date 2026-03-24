@@ -3,14 +3,12 @@
   "proofId": "arithmetic-series",
   "reviewDate": "2026-03-23T13:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B",
     "oneLiner": "Classic Wiedijk #68 formalization with excellent historical exposition and genuine extensions (odd numbers, triangular recurrence), but the core result is a direct Mathlib call and theorem count is inflated by wrappers and computational checks.",
     "tier": "B",
     "tierJustification": "The foundational result (gauss_sum_zero_indexed) is literally Finset.sum_range_id. The file adds real value through the general arithmetic series formula, sum-of-odd-numbers induction, and triangular number recurrence, but the mathematical heavy lifting is done by Mathlib."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -69,7 +67,6 @@
       "recommendation": "Change significance from 'supporting' to 'key' for ann-triangular-recurrence."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -83,24 +80,23 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Add missing mathlibDependencies: at minimum sum_add_distrib (from Mathlib.Algebra.BigOperators.Ring.Finset, used in arithmetic_series_sum) and sum_range_succ (from Mathlib.Algebra.BigOperators.Intervals, used in sum_odd_numbers induction step).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Change annotation ann-triangular-recurrence significance from 'supporting' to 'key'. This is the most technically demanding proof in the file.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Remove 'Historical context about Gauss's schoolboy discovery' from originalContributions. The historical exposition is excellent but it is editorial work, not a formal mathematical contribution.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 6,
     "originalityAccuracy": 6,
@@ -110,6 +106,5 @@
     "internalConsistency": 8,
     "overall": 7.3
   },
-
   "suggestedBestFraming": "A Mathlib-based formalization of Gauss's summation formula (Wiedijk #68) that bridges the 0-indexed Finset.sum_range_id to the classical 1-indexed form, extends to a general arithmetic series formula, and proves the sum-of-odd-numbers identity and triangular number recurrence with genuine Lean proof techniques."
 }

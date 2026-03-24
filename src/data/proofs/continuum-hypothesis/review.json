@@ -3,14 +3,12 @@
   "proofId": "continuum-hypothesis",
   "reviewDate": "2026-03-23T22:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "C",
     "oneLiner": "Excellent pedagogy on a landmark result, but the formal independence proof is vacuous — holds_CH and holds_notCH are both True, making the main theorem trivially (∃ M, True) ∧ (∃ M, True), with one egregious filler theorem (Easton's Theorem proving 1+1=2).",
     "tier": "C",
     "tierJustification": "Tier C: Scaffold/axiomatized. The core independence theorem is vacuously true because holds_CH and holds_notCH are both placeholder definitions returning True for any model. Two genuine Mathlib-based proofs exist (gch_implies_ch, cantor_theorem) and the CH/GCH definitions are correctly formalized, but the central claim of the file — CH independence — has no formal content."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -97,7 +95,6 @@
       "recommendation": "Remove or move to a test file."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -125,28 +122,28 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions in meta.json to honestly describe the pedagogical scaffold nature: ['Pedagogical scaffold illustrating Gödel-Cohen independence proof structure', 'Genuine proof that GCH implies CH using Mathlib cardinal arithmetic', 'Correct formal definitions of CH, CH_alt, and GCH'].",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix factual errors: (1) Göran → Gödel in annotations.json ann-gch, (2) '2 sorries, 5 axioms' → '0 sorries, 6 axioms' in file header docstring.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "medium",
       "target": "enricher",
       "description": "Update assumptions field in meta.json to note that L_satisfies_CH and forcing_violates_CH are formally vacuous due to placeholder model predicate definitions.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-7",
       "priority": "low",
       "target": "enricher",
       "description": "Fix section boundaries in meta.json: resolve overlap at line 185, add missing sections for ZFC Set Theory (114-141), Related Results (280-295), Philosophy (296-356).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-8",
@@ -156,7 +153,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 5,
     "originalityAccuracy": 5,
@@ -166,6 +162,5 @@
     "internalConsistency": 5,
     "overall": 5.5
   },
-
   "suggestedBestFraming": "A pedagogical scaffold illustrating the logical architecture of the Gödel-Cohen independence proof for the Continuum Hypothesis, featuring correct Lean 4 definitions of CH, GCH, and ℵ₁ using Mathlib's cardinal arithmetic, one genuine proof (GCH implies CH), and placeholder model structures whose predicates need implementation to give the independence theorem formal content."
 }

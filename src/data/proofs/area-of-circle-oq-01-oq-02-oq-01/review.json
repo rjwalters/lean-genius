@@ -3,14 +3,12 @@
   "proofId": "area-of-circle-oq-01-oq-02-oq-01",
   "reviewDate": "2026-03-23T12:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B+",
     "oneLiner": "Well-structured n-dimensional generalization of A = integral of C via FTC, with clean Gamma computations and honest framing, though padded by trivial instantiations.",
     "tier": "B",
     "tierJustification": "Core mathematical reasoning (FTC application, Gamma function evaluations) assembles Mathlib building blocks with clean definitions. The proof adds real value through its definitions, assembly, and explicit computations, but the FTC and differentiation machinery comes directly from Mathlib."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -69,7 +67,6 @@
       "recommendation": "Consider splitting the count or adding a note: e.g., '26 theorems (8 core, 18 supporting/instantiation)'. Low priority."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -83,17 +80,16 @@
       "priority": "low",
       "target": "enricher",
       "description": "In conclusion.summary, replace 'Rich consequences include' with 'Natural consequences include' or 'Immediate consequences include' to more accurately characterize the algebraic corollaries.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Consider adding a brief note to the meta.json description or leanFile section indicating the theorem count breakdown (e.g., '26 theorems including supporting lemmas and special case instantiations') to set accurate expectations.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 7,
     "originalityAccuracy": 7,
@@ -103,6 +99,5 @@
     "internalConsistency": 9,
     "overall": 8.0
   },
-
   "suggestedBestFraming": "A clean n-dimensional generalization of A = integral of C, exploiting the polynomial structure V_n(r) = omega_n * r^n to derive the volume-surface duality via FTC, with explicit Gamma function computations for small dimensions and fully verified scaling laws."
 }

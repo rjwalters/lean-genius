@@ -3,14 +3,12 @@
   "proofId": "cevas-theorem",
   "reviewDate": "2026-03-23T20:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B+",
     "oneLiner": "A genuinely original algebraic formalization of Ceva's theorem with substantive proofs — the 'original' badge is well-deserved, with only a minor algebraic-to-geometric gap and some generic cross-references.",
     "tier": "A",
     "tierJustification": "Tier A: Fully formalized theorem. All definitions and proofs are original Lean work (not Mathlib wrappers). The core theorem, CevianConfig structure, and supporting results are written from scratch. Mathlib is used only for real field arithmetic and tactics. Zero sorries, zero axioms."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -69,28 +67,27 @@
       "recommendation": "Remove."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "medium",
       "target": "enricher",
       "description": "Add note to description or overview clarifying that this formalizes the algebraic form of Ceva's theorem (parameter product equivalence), with the geometric concurrency interpretation described in commentary but not formally proved.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "low",
       "target": "enricher",
       "description": "Fix cevian-config-struct annotation: parameters can be any real except 0 and 1 (not restricted to (0,1)). Values outside (0,1) represent external division.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Trim generic cross-references (triangle-angle-sum, isosceles-triangle). Add Menelaus theorem cross-reference if available — it is the true mathematical dual.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
@@ -100,7 +97,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 8,
     "originalityAccuracy": 9,
@@ -110,6 +106,5 @@
     "internalConsistency": 8,
     "overall": 7.8
   },
-
   "suggestedBestFraming": "An original algebraic formalization of Ceva's Theorem (Wiedijk #61) using signed ratios and parameter conditions, proving the equivalence cevaProduct = 1 ↔ d·e·f = (1-d)·(1-e)·(1-f) from scratch with field_simp and linarith, plus a characterization that medians (d=e=f=1/2) are the unique equal-parameter solution."
 }
