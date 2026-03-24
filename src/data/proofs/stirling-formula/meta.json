@@ -223,6 +223,26 @@
       "id": "euler-identity",
       "relationship": "related",
       "description": "Euler's formula e^{iπ} + 1 = 0 connects the same constants (e, π) that appear in Stirling's formula. Both reveal deep relationships between exponential growth and circular geometry"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "Stirling's formula is derived by approximating $\\ln(n!) = \\sum_{k=1}^n \\ln k \\approx \\int_1^n \\ln x\\,dx = n\\ln n - n + 1"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Both results compare discrete sums with continuous integrals: the harmonic series $\\sum 1/n$ diverges like $\\ln n$ (by c"
+    },
+    {
+      "id": "derangements",
+      "relationship": "related",
+      "description": "The number of derangements $D_n \\sim n!/e$ uses both the factorial (approximated by Stirling) and $e$ (the base of the n"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (there exists a prime between $n$ and $2n$) was first proved by Chebyshev using bounds on $\\binom{2"
     }
   ]
 }
