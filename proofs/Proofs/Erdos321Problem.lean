@@ -82,13 +82,46 @@ theorem singleton_hasDistinctReciprocalSums (n : ℕ) (hn : n ≥ 1) :
   · simp [Finset.sum_singleton]; positivity
   · exact absurd rfl hne
 
+/-- Subsets of a two-element set {a, b} are: ∅, {a}, {b}, {a, b}. -/
+private lemma subset_pair_cases {a b : ℕ} (_hab : a ≠ b) {S : Finset ℕ}
+    (hS : S ⊆ {a, b}) : S = ∅ ∨ S = {a} ∨ S = {b} ∨ S = {a, b} := by
+  have hmem : ∀ x ∈ S, x = a ∨ x = b := fun x hx =>
+    (Finset.mem_insert.mp (hS hx)).imp_right Finset.mem_singleton.mp
+  by_cases ha : a ∈ S <;> by_cases hb : b ∈ S
+  · right; right; right
+    exact Finset.Subset.antisymm hS (fun x hx =>
+      ((Finset.mem_insert.mp hx).imp_right Finset.mem_singleton.mp).elim
+        (fun h => h ▸ ha) (fun h => h ▸ hb))
+  · right; left
+    exact Finset.Subset.antisymm
+      (fun x hx => Finset.mem_singleton.mpr
+        ((hmem x hx).resolve_right (fun h => hb (h ▸ hx))))
+      (Finset.singleton_subset_iff.mpr ha)
+  · right; right; left
+    exact Finset.Subset.antisymm
+      (fun x hx => Finset.mem_singleton.mpr
+        ((hmem x hx).resolve_left (fun h => ha (h ▸ hx))))
+      (Finset.singleton_subset_iff.mpr hb)
+  · left
+    exact Finset.eq_empty_of_forall_notMem fun x hx =>
+      (hmem x hx).elim (fun h => ha (h ▸ hx)) (fun h => hb (h ▸ hx))
+
 /-- Pair {m, n} with m < n has distinct reciprocal sums.
-    Since m < n and both ≥ 1, we have 1/m ≠ 1/n, so the 4 subsets
-    ∅, {m}, {n}, {m,n} all have distinct sums 0, 1/m, 1/n, 1/m+1/n. -/
+    Since m < n and both ≥ 1, we have 0 < 1/n < 1/m < 1/m + 1/n,
+    so all 4 subset sums are distinct. -/
 theorem pair_hasDistinctReciprocalSums (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
     (hmn : m < n) : HasDistinctReciprocalSums {m, n} := by
-  intro S T hS hT hne
-  sorry
+  have hmn_ne : m ≠ n := Nat.ne_of_lt hmn
+  have hm_pos : (0 : ℚ) < 1 / (m : ℚ) := by positivity
+  have hn_pos : (0 : ℚ) < 1 / (n : ℚ) := by positivity
+  have hmn_lt : (1 : ℚ) / n < 1 / m :=
+    div_lt_div_of_pos_left one_pos (by positivity : (0 : ℚ) < m)
+      (by exact_mod_cast hmn : (m : ℚ) < n)
+  intro S T hS hT hne heq
+  rcases subset_pair_cases hmn_ne hS with rfl | rfl | rfl | rfl <;>
+  rcases subset_pair_cases hmn_ne hT with rfl | rfl | rfl | rfl <;>
+  simp only [Finset.sum_empty, Finset.sum_singleton, Finset.sum_pair hmn_ne] at heq <;>
+  first | exact hne rfl | linarith
 
 /- ## R(N) Definition -/
 
