@@ -1,94 +1,119 @@
 {
   "slug": "descartes-rule-of-signs-oq-02",
-  "title": "Budan's theorem (1807) generalizes Descartes's rule: the number of roots in a...",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Budan's Theorem (1807): Generalization of Descartes' Rule to Intervals",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in algebra: Budan's theorem (1807) generalizes Descartes's rule: the number of roots in a....",
-    "whyMatters": []
+    "formal": "For polynomial p of degree n, let V_p(x) = sign changes in [p(x), p'(x), ..., p^(n)(x)]. Then #roots in (a,b] ≤ V_p(a) - V_p(b), and the difference is even.",
+    "plain": "Budan's theorem generalizes Descartes' Rule: the number of roots in any interval (a,b] is bounded by the decrease in sign variation count of the derivative evaluation sequence between the endpoints.",
+    "whyMatters": [
+      "Foundation of modern polynomial root isolation algorithms (Vincent, VAS)",
+      "Strict generalization of Descartes' Rule of Signs",
+      "Computationally cheaper than Sturm chains for practical root finding"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Descartes' upper bound (Mathlib: roots_countP_pos_le_signVariations)",
+      "Rolle's theorem for polynomials (ContinuousOn + exists_deriv_eq_zero)"
+    ],
+    "open": [
+      "Full proof of Budan's upper bound (requires careful Rolle induction)",
+      "Parity result (requires complex conjugate pair analysis)"
+    ],
+    "goal": "Complete formalization of Budan's theorem with root isolation certificates"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-24T00:48:59.817Z",
+    "phase": "ACT",
+    "since": "2026-03-24T20:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Initial formalization: definitions, root isolation certificates, Rolle bridge",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove remaining sorries (iterDeriv_eval_zero, rootsInInterval_split, budanCount bounds)",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "ACT: Created DescartesRuleOfSignsOQ02.lean — 418 lines, 28 theorems, 9 definitions, 3 axioms, 7 sorries. Key results: root isolation certificates (0,1,2-root), Rolle polynomial bridge, Descartes recovery framework.",
+    "builtItems": [
+      "iterDeriv: k-th iterated derivative with degree bounds (DescartesRuleOfSignsOQ02.lean:68-108)",
+      "budanSequence: [p(x), p'(x), ..., p^(n)(x)] evaluation list (DescartesRuleOfSignsOQ02.lean:110-117)",
+      "signChangesInList: sign change counter (filter zeros, map ±1, count diffs) (DescartesRuleOfSignsOQ02.lean:123-143)",
+      "budanCount: V_p(x) = sign changes in Budan-Fourier sequence (DescartesRuleOfSignsOQ02.lean:149-152)",
+      "rootsInInterval: root count in (a,b] with multiplicity (DescartesRuleOfSignsOQ02.lean:173-176)",
+      "budan_theorem: combined bound + parity (∃ k, roots + 2k = V(a) - V(b)) (DescartesRuleOfSignsOQ02.lean:217-222)",
+      "no_roots_of_equal_budanCount: root-free certificate (DescartesRuleOfSignsOQ02.lean:230-232)",
+      "unique_root_of_budanCount_diff_one: unique root certificate (DescartesRuleOfSignsOQ02.lean:239-247)",
+      "zero_or_two_roots: parity-constrained certificate (DescartesRuleOfSignsOQ02.lean:252-260)",
+      "rolle_polynomial: between two roots, derivative has root (DescartesRuleOfSignsOQ02.lean:371-378)",
+      "n_roots_derivative_roots: n+1 roots → n derivative roots (DescartesRuleOfSignsOQ02.lean:382-391)"
+    ],
+    "insights": [
+      "Budan-Fourier count V_p(x) generalizes Descartes' coefficient sign changes: V_p(0) = signChanges(coefficients) because p^(k)(0) = k! * a_k and k! > 0 preserves signs",
+      "Root isolation certificates (0-root, 1-root) are elegant applications of the parity axiom — the parity constraint eliminates impossible root counts",
+      "Rolle's theorem for polynomials follows cleanly from Mathlib's exists_deriv_eq_zero + Polynomial.deriv + Polynomial.continuous",
+      "iterDeriv_eq_zero (beyond degree) uses eq_C_of_natDegree_eq_zero to show the n-th derivative is constant, then derivative of constant is 0"
+    ],
+    "mathlibGaps": [
+      "No Budan-Fourier theorem in Mathlib — derivative sequence sign change analysis is absent",
+      "No polynomial root count in intervals (only positive root count via roots.filter)",
+      "Fin.castSucc_lt_succ API is a proof term not a function — need dot notation i.castSucc_lt_succ"
+    ],
+    "nextSteps": [
+      "Prove iterDeriv_eval_zero (p^(k)(0) = k! * coeff k) via induction on derivative coefficients",
+      "Prove rootsInInterval_split (interval additivity) via Multiset.ext",
+      "Prove budanCount_le_natDegree (sign changes ≤ list length - 1)",
+      "Submit remaining sorries to Aristotle for automated proof search"
+    ]
   },
   "tags": [
     "polynomials",
     "algebra",
     "real-analysis",
     "root-counting",
+    "root-isolation",
     "wiedijk-100",
     "seeker-selected"
   ],
   "relatedProofs": [
     "descartes-rule-of-signs",
-    "descartes-rule-of-signs-oq-01"
+    "descartes-rule-of-signs-oq-01",
+    "descartes-rule-of-signs-oq-03"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Budan de Boislaurent (1807): Nouvelle méthode pour la résolution des équations numériques",
+      "Fourier (~1820): Sur l'usage du théorème de Descartes (published posthumously 1831)",
+      "Akritas (1986): There is no 'Uspensky's method'"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Budan%27s_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.Polynomial.Derivative",
+      "Mathlib.Algebra.Polynomial.RuleOfSigns",
+      "Mathlib.Analysis.Calculus.LocalExtr.Rolle"
+    ]
   },
   "started": "2026-03-24T00:48:59.817Z",
-  "lastUpdate": "2026-03-24T00:48:59.817Z",
+  "lastUpdate": "2026-03-24T20:00:00.000Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/DescartesRuleOfSigns.lean",
-      "filename": "DescartesRuleOfSigns.lean",
-      "lineCount": 577,
-      "theoremCount": 35,
-      "axiomCount": 8,
-      "defCount": 11,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSigns.lean"
-    },
-    {
-      "path": "Proofs/DescartesRuleOfSignsOQ01.lean",
-      "filename": "DescartesRuleOfSignsOQ01.lean",
-      "lineCount": 1075,
-      "theoremCount": 30,
-      "axiomCount": 1,
-      "defCount": 1,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
-    },
-    {
-      "path": "Proofs/DescartesRuleOfSignsOQ03.lean",
-      "filename": "DescartesRuleOfSignsOQ03.lean",
-      "lineCount": 441,
-      "theoremCount": 24,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ03.lean"
+      "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02.lean",
+      "lineCount": 418,
+      "theoremCount": 28,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 7,
+      "isAristotle": false
     }
   ]
 }
