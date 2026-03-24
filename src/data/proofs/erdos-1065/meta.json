@@ -213,15 +213,31 @@
     }
   ],
   "relatedProofs": [
-    "sophie-germain",
-    "primitive-roots",
-    "dirichlets-theorem",
-    "erdos-1057",
-    "erdos-1059",
-    "euler-totient",
-    "infinitude-primes",
-    "bertrands-postulate",
-    "prime-number-theorem"
+    {
+      "id": "sophie-germain",
+      "relationship": "generalizes",
+      "description": "Safe primes (p = 2q + 1) are the k=1 special case of Form A primes; the infinitude of safe primes would imply Conjecture A"
+    },
+    {
+      "id": "erdos-1057",
+      "relationship": "related",
+      "description": "Sister Erdős problem about special prime sets; both use Set.Infinite for open conjectures about primes with constrained factorization structure in p-1"
+    },
+    {
+      "id": "erdos-1059",
+      "relationship": "related",
+      "description": "Both concern infinitude of primes with special arithmetic properties and use decidable arithmetic for computational verification"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Euclid's theorem guarantees infinitely many primes; this problem asks whether the subset with restricted p-1 factorization is also infinite"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The PNT underlies the density heuristic for Form A primes via the probability that 2^k·q + 1 is prime"
+    }
   ],
   "leanFile": {
     "lineCount": 301,

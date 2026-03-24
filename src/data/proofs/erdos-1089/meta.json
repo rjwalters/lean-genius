@@ -243,15 +243,31 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1083",
-    "szemeredi-regularity",
-    "combinations-formula",
-    "erdos-1082",
-    "erdos-1088",
-    "ramseys-theorem",
-    "borsuk-ulam",
-    "minkowski-theorem",
-    "isoperimetric-theorem"
+    {
+      "id": "erdos-1083",
+      "relationship": "complementary",
+      "description": "Problem #1083 studies f_d(n) = max distinct distances from n points; #1089's g_d(n) is the inverse threshold — dual perspectives on the same phenomenon"
+    },
+    {
+      "id": "erdos-1082",
+      "relationship": "related",
+      "description": "Both concern distinct distances in Euclidean space; #1082 studies points in general position while #1089 studies all configurations"
+    },
+    {
+      "id": "erdos-1088",
+      "relationship": "related",
+      "description": "Distinct distance subsets in high dimensions: #1088 asks for the largest subset with all pairwise distances distinct, dual to #1089's minimum points guaranteeing n distinct distances"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "supports",
+      "description": "The number of pairwise distances from n points is C(n,2); combinatorial pair counting is the starting point for all distinct distance bounds"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "The threshold g_d(n) is a Ramsey-type quantity: minimum set size guaranteeing a structured subset with many distinct distances"
+    }
   ],
   "leanFile": {
     "lineCount": 201,
