@@ -427,10 +427,65 @@ theorem limitPointSet_unbounded_above (M : ℝ) (hM : M > 0) :
 theorem limitPointSet_isClosed : IsClosed limitPointSet := by
   rw [← isOpen_compl_iff, Metric.isOpen_iff]
   intro C hC
-  -- C is not a limit point → ∃ ε > 0, eventually normalizedGap stays away from C
-  -- (contrapositive of diagonalization argument above)
-  -- Then ball C (ε/2) ⊆ limitPointSetᶜ by triangle inequality
-  sorry
+  -- Step 1: ¬IsLimitPoint C → ∃ ε > 0, only finitely many n within ε of C
+  -- (by contrapositive: if infinitely many for all ε, extract converging subsequence)
+  have key : ∃ ε > 0, ({n : ℕ | dist (normalizedGap n) C < ε}).Finite := by
+    by_contra h_all_inf
+    push_neg at h_all_inf
+    apply hC
+    -- For each k, the set {n | dist ... < 1/(k+1)} is infinite
+    have hS : ∀ k : ℕ, ({n : ℕ | dist (normalizedGap n) C < 1 / (↑k + 1)}).Infinite :=
+      fun k => h_all_inf _ (by positivity)
+    -- From infinite subset of ℕ, find elements beyond any bound
+    have inf_gt : ∀ (s : Set ℕ), s.Infinite → ∀ N : ℕ, ∃ n ∈ s, N < n := by
+      intro s hs N
+      by_contra hc; push_neg at hc
+      exact hs ((Set.finite_Iic N).subset fun n hn => hc n hn)
+    -- For each k, N: get n > N with dist < 1/(k+1)
+    have step : ∀ k N : ℕ, ∃ n, N < n ∧ dist (normalizedGap n) C < 1 / (↑k + 1) := by
+      intro k N; obtain ⟨n, hm, hg⟩ := inf_gt _ (hS k) N; exact ⟨n, hg, hm⟩
+    choose g hg_gt hg_dist using step
+    -- Build sequence: f 0 = g 0 0, f (k+1) = g (k+1) (f k)
+    let f : ℕ → ℕ := fun n => Nat.rec (g 0 0) (fun k fk => g (k + 1) fk) n
+    have hf_step : ∀ n, f n < f (n + 1) := fun n => hg_gt (n + 1) (f n)
+    have hf_dist : ∀ k, dist (normalizedGap (f k)) C < 1 / (↑k + 1) := by
+      intro k; cases k with
+      | zero => exact hg_dist 0 0
+      | succ n => exact hg_dist (n + 1) (f n)
+    refine ⟨f, strictMono_nat_of_lt_succ hf_step, ?_⟩
+    rw [Metric.tendsto_atTop]
+    intro ε hε
+    obtain ⟨K, hK⟩ := exists_nat_gt (1 / ε)
+    use K
+    intro k hk
+    simp only [Function.comp_apply]
+    calc dist (normalizedGap (f k)) C
+        < 1 / (↑k + 1) := hf_dist k
+      _ < ε := by
+          have hk_pos : (0 : ℝ) < ↑k + 1 := by positivity
+          rw [div_lt_iff₀ hk_pos]
+          have h1 : 1 < (↑K : ℝ) * ε := (div_lt_iff₀ hε).mp hK
+          have h2 : (↑K : ℝ) ≤ ↑k := by exact_mod_cast hk
+          nlinarith
+  -- Step 2: Ball of radius ε/2 around C avoids all limit points
+  obtain ⟨ε, hε, hfin⟩ := key
+  refine ⟨ε / 2, by linarith, ?_⟩
+  intro C' hC' ⟨f, hf_mono, hf_lim⟩
+  rw [Metric.tendsto_atTop] at hf_lim
+  obtain ⟨K, hK⟩ := hf_lim (ε / 2) (by linarith)
+  -- For k ≥ K: normalizedGap(f k) within ε/2 of C', and C' within ε/2 of C
+  -- So normalizedGap(f k) within ε of C by triangle inequality
+  have h_in : ∀ k, K ≤ k → f k ∈ {n : ℕ | dist (normalizedGap n) C < ε} := by
+    intro k hk
+    have h1 := hK k hk; simp only [Function.comp_apply] at h1
+    simp only [Set.mem_setOf_eq]
+    linarith [dist_triangle (normalizedGap (f k)) C' C, Metric.mem_ball.mp hC']
+  -- But only finitely many n are within ε of C, while f is unbounded → contradiction
+  obtain ⟨M, hM⟩ := hfin.bddAbove
+  obtain ⟨K', hK'⟩ := (Filter.tendsto_atTop_atTop.mp hf_mono.tendsto_atTop) (M + 1)
+  have h_le := hM (h_in (max K K') (le_max_left _ _))
+  have h_ge := hK' (max K K') (le_max_right _ _)
+  omega
 
 /- ## Part XI: The Conjecture as Set Equality -/
 
