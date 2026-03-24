@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1146",
-  "title": "Erdős #1146",
+  "title": "Erd\u0151s #1146",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,12 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED+: Sorry narrowed from full theorem to specific algebraic step (C\u00b7x\u00b2-x \u2265 x^(3/2) for large x). 2 axioms assessed as deep/substantial. 13 theorems fully proved.",
+    "builtItems": [
+      "Narrowed sorry in growth_satisfies_ruzsa_necessary to algebraic rpow bound",
+      "Proof structure: filter_upwards combines counting approx with algebraic bound"
+    ],
+    "insights": [
+      "File has only 2 axioms and 1 sorry - very clean formalization",
+      "growth_satisfies_ruzsa_necessary: sorry narrowed to pure rpow algebra",
+      "Proof structure: filter_upwards + abs bound + algebraic step",
+      "smooth23_not_lacunary: deep result about ratios of smooth numbers, keep as axiom",
+      "smooth23_schnirelmann_zero: provable from smooth23_counting via iInf/Tendsto but substantial",
+      "Imports Erdos37Problem which has 6 axioms (mann_theorem, schnirelmann_theorem, etc.)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1146 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "nextSteps": [
+      "Fill rpow algebra sorry: use rpow_add, sqrt_eq_rpow, sqrt bounds",
+      "Prove smooth23_schnirelmann_zero from smooth23_counting",
+      "Consider companion Aristotle file for rpow algebra step"
+    ],
+    "markdown": "# Erd\u0151s #1146 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"

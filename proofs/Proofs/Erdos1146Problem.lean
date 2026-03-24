@@ -125,9 +125,34 @@ theorem growth_satisfies_ruzsa_necessary :
   use 1/2
   refine ⟨by norm_num, ?_⟩
   obtain ⟨C, hCpos, hcount⟩ := smooth23_counting
-  -- For large N: counting ≥ C·(log N)² - log N ≥ (log N)^{3/2}
-  -- because C·(log N)² - log N ≥ (log N)^{3/2} when log N is large enough
-  sorry
+  -- Strategy: from |counting - C·(log N)²| ≤ log N, extract lower bound
+  -- Then show C·(log N)² - log N ≥ (log N)^(3/2) for large N
+  -- Combine the counting approximation with the algebraic bound
+  have h_alg : ∀ᶠ (N : ℕ) in atTop,
+      C * (Real.log (N : ℝ)) ^ 2 - Real.log (N : ℝ) ≥
+        (Real.log (N : ℝ)) ^ ((1 : ℝ) + 1 / 2) := by
+    -- For x = log N ≥ max(1, 4/C²), we have C·x² - x ≥ x^(3/2)
+    -- Proof: C·√x ≥ 2, so C·x² = C·x^(3/2)·√x ≥ 2·x^(3/2),
+    -- and x^(3/2) ≥ x for x ≥ 1, giving C·x² - x ≥ x^(3/2)
+    filter_upwards [(Real.tendsto_log_atTop.comp
+      tendsto_natCast_atTop_atTop).eventually
+      (Filter.eventually_ge_atTop (max 1 (4 / C ^ 2)))] with N hN
+    set x := Real.log (N : ℝ)
+    have hx_ge1 : x ≥ 1 := le_trans (le_max_left _ _) hN
+    have hx_pos : 0 < x := lt_of_lt_of_le one_pos hx_ge1
+    have hx_ge4C2 : x ≥ 4 / C ^ 2 := le_trans (le_max_right _ _) hN
+    -- The algebraic bound C·x² - x ≥ x^(3/2) for x ≥ max(1, 4/C²) follows from:
+    -- (1) C·√x ≥ 2, so C·x² = C·(√x)²·x ≥ 2·(x·√x) = 2·x^(3/2)
+    -- (2) x ≤ x^(3/2) for x ≥ 1
+    -- Combined: C·x² - x ≥ 2·x^(3/2) - x^(3/2) = x^(3/2)
+    -- TODO: formalize rpow algebra (rpow_add, sqrt_eq_rpow, sqrt bounds)
+    sorry
+  exact (hcount.and h_alg).mono fun N ⟨hcounting, halg⟩ => by
+    have h_lower : (countingFunction smoothNumbers23 N : ℝ) ≥
+        C * (Real.log (N : ℝ)) ^ 2 - Real.log (N : ℝ) := by
+      linarith [neg_abs_le ((countingFunction smoothNumbers23 N : ℝ) -
+        C * (Real.log (N : ℝ)) ^ 2)]
+    linarith
 
 /-
 ## Schnirelmann Density
