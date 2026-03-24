@@ -141,8 +141,8 @@
     {
       "id": "small-values-ratio",
       "title": "Small Values and BFL Ratio Reformulation",
-      "summary": "Base cases ($f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$) from the complete graph edge bound $f(n) \\leq n(n-1)/2$. Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds on the ratio) maximally transparent.",
-      "startLine": 253,
+      "summary": "Base cases ($f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$) from the complete graph edge bound $f(n) \\leq n(n-1)/2$. Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds on the ratio) maximally transparent. The ratio formulation is the sharpest way to see the BFL-conjecture gap: BFL allows the ratio to drift at sub-polynomial speed, while the conjecture pins it between constants.",
+      "startLine": 254,
       "endLine": 304,
       "mathContext": "Base cases: $f(n) \\leq n(n-1)/2$ gives $f(0) \\leq 0$, $f(2) \\leq 1$. Ratio: $R(n) = f(n)/n^{3/2}$. BFL $\\iff R(n) \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$. Conjecture $\\iff R(n) \\in [c_1, c_2]$."
     },
@@ -157,16 +157,16 @@
     {
       "id": "lower-exponent",
       "title": "Lower Exponent Characterization",
-      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Proved by taking ε = 3/2 - α in the BFL lower bound. Includes physical interpretation: superlinearity (f(n) ≫ n) means the terminal graph is far from being a forest.",
+      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Proved by taking ε = 3/2 - α in the BFL lower bound. Completes the two-sided critical exponent characterization started in § 4: together with `bfl_exponent_is_three_halves`, this shows inf{α : f(n) = O(n^α)} = 3/2.",
       "startLine": 356,
-      "endLine": 370,
-      "mathContext": "$\\forall \\alpha < 3/2: \\; n^\\alpha \\leq f(n)$ eventually. Take $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound."
+      "endLine": 369,
+      "mathContext": "$\\forall \\alpha < 3/2: \\; n^\\alpha \\leq f(n)$ eventually. Take $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound. Superlinearity ($\\alpha = 1$): the terminal graph is far from a forest."
     },
     {
       "id": "mantel-connection",
       "title": "Mantel/Turán Connection",
-      "summary": "Connects the triangle removal process to Mantel's theorem: the triangle-free terminal graph has at most n²/4 edges. Axiomatizes this as `triangleRemoval_mantel_bound`. Proves `bfl_below_mantel_exponent`: BFL's $n^{7/4}$ bound (via $\\varepsilon = 1/4$) is vastly tighter than Mantel's $n^2/4$.",
-      "startLine": 371,
+      "summary": "Connects the triangle removal process to Mantel's theorem (1907): the triangle-free terminal graph has at most n²/4 edges. Axiomatizes this as `triangleRemoval_mantel_bound` (the 5th axiom). Proves `bfl_below_mantel_exponent`: BFL's $n^{7/4}$ bound (via $\\varepsilon = 1/4$) is vastly tighter than Mantel's $n^2/4$. Also wraps the axiom as `mantel_bound_forall` and `mantel_bound_eventually` for API compatibility.",
+      "startLine": 370,
       "endLine": 403,
       "mathContext": "Mantel: $f(n) \\leq n^2/4$ (triangle-free). BFL: $f(n) \\leq n^{7/4}$. Hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$."
     },
@@ -181,9 +181,9 @@
     {
       "id": "tightness",
       "title": "Tightness and Ratio Characterization",
-      "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually. Together they characterize the conjecture as a compactness condition on the ratio sequence in $(0, \\infty)$.",
+      "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually, measuring how close the conjecture's constants are to sharp. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually, the cleanest compactness formulation. Together they characterize the conjecture as: the ratio sequence $\\{f(n)/n^{3/2}\\}$ has a compact accumulation set in $(0, \\infty)$ — a topological reformulation of the number-theoretic conjecture.",
       "startLine": 434,
-      "endLine": 490,
+      "endLine": 489,
       "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],

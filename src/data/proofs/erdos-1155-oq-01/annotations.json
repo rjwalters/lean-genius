@@ -95,6 +95,29 @@
     ]
   },
   {
+    "id": "ann-e1155-gap-intro",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 110
+    },
+    "type": "context",
+    "title": "§ 3: The Gap Between BFL and the Conjecture",
+    "content": "This section begins the core analytical contribution of the file: dissecting the precise mathematical gap between Bohman-Frieze-Lubetzky's $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$. The gap is not merely quantitative (tighter constants) but qualitative: BFL allows the ratio $f(n)/n^{3/2}$ to drift at sub-polynomial speed, while the conjecture pins it between fixed constants. This section proves the conjecture strictly implies BFL via a constant-to-sub-polynomial reduction: any fixed constant $C$ is eventually dominated by $n^\\varepsilon$ for any $\\varepsilon > 0$, since $n^\\varepsilon \\to \\infty$.",
+    "mathContext": "The gap: BFL gives $n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$ (sub-polynomial bounds) while the conjecture needs $c_1 \\leq f(n)/n^{3/2} \\leq c_2$ (constant bounds). The proof that Conjecture $\\Rightarrow$ BFL uses: $\\forall C > 0,\\; \\forall \\varepsilon > 0,\\; C \\leq n^\\varepsilon$ eventually.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sub-polynomial vs constant bounds",
+      "gap analysis",
+      "asymptotic refinement",
+      "BFL result"
+    ],
+    "prerequisites": [
+      "BFL bounds",
+      "conjecture definition"
+    ]
+  },
+  {
     "id": "ann-e1155-bfl-sandwich",
     "proofId": "erdos-1155-oq-01",
     "range": {
@@ -168,6 +191,29 @@
     ]
   },
   {
+    "id": "ann-e1155-exponent-intro",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 220,
+      "endLine": 225
+    },
+    "type": "context",
+    "title": "§ 4: Pinpointing the Exact Critical Exponent",
+    "content": "This section establishes $3/2$ as the exact critical exponent of the triangle removal process via two complementary results. The upper characterization (`bfl_exponent_is_three_halves`) shows $f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$; the lower tightness (`bfl_lower_tight`) shows $f(n) \\neq O(n^\\beta)$ for any $\\beta < 3/2$. Together: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. This formalizes the BFL result at the level of exponents rather than bounds, extracting the sharpest possible exponent-level consequence of the BFL theorem.",
+    "mathContext": "Critical exponent: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. This is the strongest exponent-level consequence of BFL. The gap with the conjecture: BFL fixes the exponent but not the multiplicative constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "critical exponent",
+      "infimum characterization",
+      "exponent gap",
+      "BFL theorem"
+    ],
+    "prerequisites": [
+      "BFL bounds",
+      "Real.rpow monotonicity"
+    ]
+  },
+  {
     "id": "ann-e1155-exponent-upper",
     "proofId": "erdos-1155-oq-01",
     "range": {
@@ -216,8 +262,8 @@
     "id": "ann-e1155-small-values",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 253,
-      "endLine": 310
+      "startLine": 254,
+      "endLine": 307
     },
     "type": "concept",
     "title": "Small Values, Base Cases, and BFL Ratio Reformulation",
@@ -239,7 +285,7 @@
     "id": "ann-e1155-limit-sufficient",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 309,
+      "startLine": 305,
       "endLine": 329
     },
     "type": "technique",
@@ -289,11 +335,11 @@
     "proofId": "erdos-1155-oq-01",
     "range": {
       "startLine": 356,
-      "endLine": 381
+      "endLine": 369
     },
     "type": "technique",
     "title": "Lower Exponent: f Exceeds Any Sub-3/2 Power",
-    "content": "`bfl_eventually_exceeds_power`: for any $\\alpha < 3/2$, eventually $n^\\alpha \\leq f(n)$. Proved by taking $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound. Special cases: $f$ is superlinear ($\\alpha = 1$) and grows faster than $n^{5/4}$.\n\nThis is the 'lower critical exponent' result: $f(n) = \\omega(n^\\alpha)$ for every $\\alpha < 3/2$, meaning no sub-$3/2$ power bound is eventually valid from above.\n\n**Physical interpretation:** The superlinearity ($f(n) \\gg n$) means the terminal graph is far from being a forest (which would have at most $n - 1$ edges). The $n^{5/4}$ case shows the process preserves significantly more structure than random edge-deletion models suggest. In the language of random graph processes, the terminal graph occupies a 'sweet spot' between sparse (tree-like) and dense (Turán-like) regimes, with the $n^{3/2}$ scaling reflecting the balance between triangle creation rate and deletion rate during the critical phase of the process.\n\nThe section continues with the Mantel/Turán connection preamble, noting that the terminal graph is triangle-free and therefore subject to Mantel's extremal bound $f(n) \\leq \\lfloor n^2/4 \\rfloor$.",
+    "content": "`bfl_eventually_exceeds_power`: for any $\\alpha < 3/2$, eventually $n^\\alpha \\leq f(n)$. Proved by taking $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound. The proof is a single-line substitution followed by a ring rewrite.\n\nThis is the 'lower critical exponent' result: $f(n) = \\omega(n^\\alpha)$ for every $\\alpha < 3/2$, meaning no sub-$3/2$ power bound is eventually valid from above. Together with `bfl_exponent_is_three_halves` from § 4, this establishes $3/2$ as the exact critical exponent from both sides.\n\n**Physical interpretation:** The superlinearity ($f(n) \\gg n$, taking $\\alpha = 1$) means the terminal graph is far from being a forest (which would have at most $n - 1$ edges). The $n^{5/4}$ case (taking $\\alpha = 5/4$) shows the process preserves significantly more structure than random edge-deletion models suggest. In the language of random graph processes, the terminal graph occupies a 'sweet spot' between sparse (tree-like) and dense (Turán-like) regimes, with the $n^{3/2}$ scaling reflecting the balance between triangle creation rate and deletion rate during the critical phase of the process.",
     "mathContext": "For $\\alpha < 3/2$: take $\\varepsilon = 3/2 - \\alpha > 0$, then $n^{3/2 - \\varepsilon} = n^\\alpha \\leq f(n)$ eventually. This shows $f(n) = \\omega(n^\\alpha)$ for all $\\alpha < 3/2$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -311,7 +357,7 @@
     "id": "ann-e1155-mantel",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 382,
+      "startLine": 370,
       "endLine": 403
     },
     "type": "concept",
@@ -337,7 +383,7 @@
     "proofId": "erdos-1155-oq-01",
     "range": {
       "startLine": 404,
-      "endLine": 445
+      "endLine": 433
     },
     "type": "technique",
     "title": "Strict Hierarchy: Conjecture > BFL > Grable",
@@ -360,7 +406,7 @@
     "id": "ann-e1155-tightness",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 447,
+      "startLine": 434,
       "endLine": 489
     },
     "type": "technique",
