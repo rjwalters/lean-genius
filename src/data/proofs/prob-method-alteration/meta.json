@@ -7,7 +7,7 @@
     "author": "Paul Erdos, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
     "date": "1960",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ProbMethodAlteration.lean",
     "tags": [
       "probabilistic-method",
@@ -15,7 +15,7 @@
       "graph-theory",
       "intermediate"
     ],
-    "badge": "verified",
+    "badge": "formalized",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,7 +49,7 @@
       "Property B and hypergraph 2-colorability",
       "Optimization of probability parameters"
     ],
-    "assumptions": "property_b_bound proves True (placeholder, needs hypergraph type). 2/3 theorems fully proved; 1 True stub remains.",
+    "assumptions": "1 True stub (1/3 theorems): property_b_bound (line 58): proves True instead of Property B bound. property_b_bound proves True (placeholder, needs hypergraph type). 2/3 theorems fully proved; 1 True stub remains.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

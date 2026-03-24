@@ -7,7 +7,7 @@
     "author": "Lévy (1934), Khintchine (1937); formalized 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/L%C3%A9vy%E2%80%93Khintchine_representation",
     "date": "1937",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
     "tags": [
       "probability",
@@ -19,7 +19,7 @@
       "gaussian",
       "stable-distributions"
     ],
-    "badge": "verified",
+    "badge": "formalized",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -41,7 +41,7 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 322,
-    "assumptions": "stable_inf_divisible proves True (placeholder). 19/20 theorems fully proved; 1 True stub remains for α-stable infinite divisibility.",
+    "assumptions": "1 True stub (1/19 theorems): stable_inf_divisible (line 208): proves True instead of infinite divisibility. stable_inf_divisible proves True (placeholder). 19/20 theorems fully proved; 1 True stub remains for α-stable infinite divisibility.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

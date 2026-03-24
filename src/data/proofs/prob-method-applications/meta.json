@@ -7,7 +7,7 @@
     "author": "Erdos and collaborators, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
     "date": "1947",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ProbMethodApplications.lean",
     "tags": [
       "probabilistic-method",
@@ -16,7 +16,7 @@
       "graph-theory",
       "advanced"
     ],
-    "badge": "verified",
+    "badge": "formalized",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -76,7 +76,7 @@
       }
     ],
     "lineCount": 51,
-    "assumptions": "high_girth_high_chromatic proves True (placeholder). Several theorems prove simplified/weakened statements. 5/6 non-placeholder theorems; 1 True stub remains.",
+    "assumptions": "1 True stub (1/6 theorems): high_girth_high_chromatic (line 23): proves True instead of existence claim. high_girth_high_chromatic proves True (placeholder). Several theorems prove simplified/weakened statements. 5/6 non-placeholder theorems; 1 True stub remains.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
