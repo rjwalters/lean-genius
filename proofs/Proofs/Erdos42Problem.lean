@@ -16,10 +16,7 @@ Known partial results:
 Reference: https://erdosproblems.com/42
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Sidon Set Definitions -/
 
@@ -43,7 +40,7 @@ def IsMaximalSidon (A : Finset ℕ) (N : ℕ) : Prop :=
 
 /-- The difference set A − A = {a₁ − a₂ : a₁, a₂ ∈ A} (as integers) -/
 def diffSet (A : Finset ℕ) : Finset ℤ :=
-  A.biUnion (fun a₁ => A.image (fun a₂ => (a₁ : ℤ) - (a₂ : ℤ)))
+  Finset.image (fun p : ℕ × ℕ => (p.1 : ℤ) - (p.2 : ℤ)) (A ×ˢ A)
 
 /-- Two sets have disjoint difference sets (intersecting only at 0) -/
 def DisjointDiffs (A B : Finset ℕ) : Prop :=
@@ -56,12 +53,42 @@ axiom sidon_size_bound (A : Finset ℕ) (N : ℕ) (hn : 1 ≤ N)
     (hs : IsSidonSet A) (hi : InInterval A N) :
   A.card * A.card ≤ 2 * N + 1
 
-/-- 0 is always in A − A -/
-axiom zero_in_diffSet (A : Finset ℕ) (hne : A.Nonempty) :
-  (0 : ℤ) ∈ diffSet A
+/-- 0 is always in A − A: pick any a ∈ A, then a - a = 0. -/
+theorem zero_in_diffSet (A : Finset ℕ) (hne : A.Nonempty) :
+  (0 : ℤ) ∈ diffSet A := by
+  obtain ⟨a, ha⟩ := hne
+  simp only [diffSet, Finset.mem_image, Finset.mem_product]
+  exact ⟨(a, a), ⟨ha, ha⟩, by simp⟩
 
-/-- {1, 2, 4} is a maximal Sidon set in {1,...,4} -/
-axiom example_maximal_sidon : IsMaximalSidon {1, 2, 4} 4
+/-- {1, 2, 4} is a Sidon set: all pairwise sums are distinct. -/
+private theorem sidon_124 : IsSidonSet ({1, 2, 4} : Finset ℕ) := by
+  intro a₁ ha₁ b₁ hb₁ a₂ ha₂ b₂ hb₂ hsum
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha₁ ha₂ hb₁ hb₂
+  -- Enumerate all cases
+  rcases ha₁ with rfl | rfl | rfl <;> rcases hb₁ with rfl | rfl | rfl <;>
+    rcases ha₂ with rfl | rfl | rfl <;> rcases hb₂ with rfl | rfl | rfl <;>
+    simp_all (config := { decide := true })
+
+/-- {1, 2, 4} ⊆ {1,...,4} -/
+private theorem interval_124 : InInterval ({1, 2, 4} : Finset ℕ) 4 := by
+  intro a ha
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha
+  rcases ha with rfl | rfl | rfl <;> omega
+
+/-- {1, 2, 4} is a maximal Sidon set in {1,...,4}: adding 3 breaks Sidon. -/
+theorem example_maximal_sidon : IsMaximalSidon ({1, 2, 4} : Finset ℕ) 4 := by
+  refine ⟨sidon_124, interval_124, fun x hx1 hx4 hxA => ?_⟩
+  -- x ∈ {1,...,4} \ {1,2,4}, so x = 3
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hxA
+  have : x = 3 := by omega
+  subst this
+  -- Show {1,2,3,4} is not Sidon: 1+3 = 2+2 = 4 but {1,3} ≠ {2,2}
+  intro hSidon
+  have h := hSidon 1 (by simp) 3 (by simp) 2 (by simp) 2 (by simp) (by ring)
+  -- h : {1, 3} = {2, 2} = {2}. But 1 ∈ {1, 3} and 1 ∉ {2}.
+  have : (1 : ℕ) ∈ ({1, 3} : Finset ℕ) := by simp
+  rw [h] at this
+  simp at this
 
 /- ## Partial Results -/
 
