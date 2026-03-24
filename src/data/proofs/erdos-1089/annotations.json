@@ -2,7 +2,7 @@
   {
     "id": "ann-1089-header",
     "proofId": "erdos-1089",
-    "range": { "startLine": 1, "endLine": 36 },
+    "range": { "startLine": 1, "endLine": 37 },
     "type": "context",
     "title": "Problem Statement and Imports",
     "content": "The header documents Erdős Problem #1089: estimating the threshold function $g_d(n)$ that guarantees $n$ distinct distances in $\\mathbb{R}^d$. Known small values ($g_1(3)=4$, $g_2(3)=6$, $g_3(3)=7$) and the central bounds ($d^{n-1} \\ll g_d(n) \\leq c^{d^{1-b_n}}$) are summarized. The single `import Mathlib` pulls in EuclideanSpace, Filter, Finset, and all required tactics. The `open Set Finset` declaration makes set and finite set operations available without prefixes.",
@@ -14,7 +14,7 @@
   {
     "id": "ann-1089-point",
     "proofId": "erdos-1089",
-    "range": { "startLine": 44, "endLine": 49 },
+    "range": { "startLine": 38, "endLine": 50 },
     "type": "definition",
     "title": "Point Type and Distance Function",
     "content": "**Point d** abbreviates `EuclideanSpace ℝ (Fin d)` — the type of functions `Fin d → ℝ` equipped with the $\\ell^2$ inner product. The **dist** function computes $\\|p - q\\| = \\sqrt{\\sum_{i=0}^{d-1} (p_i - q_i)^2}$ using Mathlib's norm. The `noncomputable` annotation reflects that real-valued computation is non-constructive in Lean's type theory.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-1089-distinctdist",
     "proofId": "erdos-1089",
-    "range": { "startLine": 51, "endLine": 57 },
+    "range": { "startLine": 51, "endLine": 58 },
     "type": "definition",
     "title": "Distinct Distances Set and Count",
     "content": "**distinctDistances P** computes all positive pairwise distances in a point set, and **numDistinctDistances** returns its cardinality. These are the central quantities: the problem asks how many points guarantee n distinct values.\n\nThe number of pairwise distances is at most $\\binom{|P|}{2}$ (see `combinations-formula`), so $|\\Delta(P)| \\leq \\binom{|P|}{2}$. The Guth-Katz breakthrough (2015) proved $|\\Delta(P)| \\geq c|P|/\\sqrt{\\log |P|}$ in the plane — the near-tight answer to the 2D distinct distances problem. Problem #1089 asks the orthogonal question: fixing the number of distinct distances $n$ and varying dimension $d$.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-1089-gdef",
     "proofId": "erdos-1089",
-    "range": { "startLine": 59, "endLine": 75 },
+    "range": { "startLine": 59, "endLine": 76 },
     "type": "definition",
     "title": "The Threshold Function g_d(n): Definition and Well-Definedness",
     "content": "This section introduces the two core definitions of the formalization.\n\n**determinesNDistances P n** is the predicate that a finite point set $P$ realizes at least $n$ distinct pairwise distances. It serves as the Boolean criterion inside the infimum defining $g$.\n\n**g d n** is the infimum of all $m$ such that every $m$-point set in $\\mathbb{R}^d$ determines at least $n$ distinct distances — the central threshold function of Erdős Problem #1089. The `noncomputable` annotation reflects that both $g$ and `determinesNDistances` depend on real-valued distances, which are non-constructive in Lean.\n\n**g_well_defined** axiomatizes the finiteness of $g_d(n)$ for $n \\geq 1$: it asserts that for each $n \\geq 1$, there exists some $m$ such that every $m$-point set determines $n$ distances. Without this, `sInf` of an empty set would equal 0, giving the wrong value. This well-definedness is geometrically clear (for any $n$, $m = n$ points in general position suffice) but non-trivial to formalize in Lean.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-1089-cube",
     "proofId": "erdos-1089",
-    "range": { "startLine": 99, "endLine": 118 },
+    "range": { "startLine": 99, "endLine": 119 },
     "type": "context",
     "title": "Cube Construction: The Key Extremal Example",
     "content": "The $d$-dimensional unit cube $\\{0,1\\}^d$ is the fundamental extremal construction in this problem. This section axiomatizes it and derives a lower bound.\n\n**cubeVertices(d)** is axiomatized as a `Finset (Point d)` — a finite subset of $\\mathbb{R}^d$. The embedding $\\{0,1\\}^d \\hookrightarrow \\mathbb{R}^d$ is straightforward conceptually (map each bitstring to its coordinate vector) but would require substantial Lean infrastructure to formalize (building the $2^d$ elements of `EuclideanSpace ℝ (Fin d)` as a `Finset`), so it is axiomatized instead.\n\n**cube_card** axiomatizes $|\\text{cubeVertices}(d)| = 2^d$ — the cube has $2^d$ vertices.\n\n**cube_distances** axiomatizes $|\\Delta(\\text{cubeVertices}(d))| \\leq d$ — the cube vertices determine at most $d$ distinct distances: vertices differing in exactly $k$ coordinates have squared distance $k$, giving distances $\\sqrt{1}, \\sqrt{2}, \\ldots, \\sqrt{d}$. Exactly $d$ distinct distances, not $2^d$.\n\n**cube_lower_bound** ($g_d(d+1) > 2^d$) is sorry'd. The proof idea: since the $2^d$-vertex cube has only $d < d+1$ distinct distances, the $2^d$-point set does NOT witness that $2^d$ points guarantee $d+1$ distances. Hence $g_d(d+1) > 2^d$. Completing this proof from the axioms requires working through the sInf characterization of $g$.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-1089-erdoslower",
     "proofId": "erdos-1089",
-    "range": { "startLine": 120, "endLine": 122 },
+    "range": { "startLine": 120, "endLine": 123 },
     "type": "context",
     "title": "Erdős Lower Bound: g_d(n) ≥ c·d^{n-1} (Polynomial Growth)",
     "content": "**erdos_lower_bound** axiomatizes Erdős's 1975 polynomial lower bound: for each $n \\geq 2$, there exists a constant $c > 0$ such that $g_d(n) \\geq c \\cdot d^{n-1}$ for all $d \\geq 1$.\n\nErdős called this 'easy' — the argument goes: fix $n \\geq 2$ and consider the points $\\{1, 2, \\ldots, m\\}^{n-1} \\subset \\mathbb{R}^{n-1}$ (a discrete grid). By a counting argument, one can show that $m^{n-1}$ points in $\\mathbb{R}^{d}$ cannot guarantee $n$ distinct distances unless $m \\gtrsim d$, giving $g_d(n) \\gtrsim d^{n-1}$. The key observation is that polynomial families of points can be arranged with controlled distance repetitions.\n\nIn the Lean formalization, `erdos_lower_bound` is axiomatized because the full counting argument requires constructing explicit low-distance configurations in high-dimensional Euclidean space — a substantial Lean formalization effort. The axiom states the conclusion in the natural form for the subsequent theorem `ratio_bounded_below`.\n\nThe `(n - 1 : ℕ)` exponent uses natural number subtraction: since $n \\geq 2$, this equals $n - 1$ as expected. The cast `(g d n : ℝ)` is needed because $g$ has type `ℕ → ℕ → ℕ`.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-1089-upper",
     "proofId": "erdos-1089",
-    "range": { "startLine": 130, "endLine": 133 },
+    "range": { "startLine": 124, "endLine": 134 },
     "type": "context",
     "title": "Erdős-Straus Upper Bound",
     "content": "**erdos_straus_upper_bound** axiomatizes that $g_d(n) \\le c^{d^{1-b_n}}$ for constants $c > 1$ and $b_n > 0$. This stretched-exponential upper bound is vastly larger than the polynomial lower bound $d^{n-1}$.",
@@ -98,7 +98,7 @@
   {
     "id": "ann-1089-ratio",
     "proofId": "erdos-1089",
-    "range": { "startLine": 141, "endLine": 147 },
+    "range": { "startLine": 135, "endLine": 149 },
     "type": "definition",
     "title": "Normalized Ratio and Main Conjecture",
     "content": "**gRatio d n** = $g_d(n)/d^{n-1}$ is the normalized threshold. **erdos1089Conjecture n** asks whether this ratio converges as $d \\to \\infty$ for fixed $n$. Convergence would determine the exact polynomial growth rate.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-1089-bounded-below",
     "proofId": "erdos-1089",
-    "range": { "startLine": 153, "endLine": 157 },
+    "range": { "startLine": 153, "endLine": 158 },
     "type": "technique",
     "title": "ratio_bounded_below: The One Genuinely Proved Theorem",
     "content": "**ratio_bounded_below** is the one theorem in this file with a genuine Lean proof (not an axiom or sorry). It derives that $g_d(n)/d^{n-1} \\geq c > 0$ directly from the `erdos_lower_bound` axiom.\n\nThe Lean proof is a two-step `obtain`/`exact`:\n1. `obtain ⟨c, hc, h⟩ := erdos_lower_bound n hn` — destructs the existential in `erdos_lower_bound` to get a witness $c > 0$ and the bound $g_d(n) \\geq c \\cdot d^{n-1}$.\n2. `exact ⟨c, hc, fun d hd => by simp only [gRatio]; linarith [h d hd]⟩` — constructs the output existential, then proves `gRatio d n ≥ c` by unfolding the definition and applying `linarith` to `h d hd : g d n ≥ c * d^(n-1)`.\n\nThe `simp only [gRatio]` unfolds the definition `gRatio d n = (g d n : ℝ) / d^(n-1)`. Then `linarith` finishes: $g_d(n) \\geq c \\cdot d^{n-1}$ implies $g_d(n)/d^{n-1} \\geq c$ (for $d \\geq 1$, $d^{n-1} > 0$).\n\nThis theorem establishes that the ratio $\\text{gRatio}(d, n)$ is bounded away from 0 — meaning $g_d(n)$ genuinely grows at least polynomially as $d \\to \\infty$. Combined with `ratioIsBounded` (which remains open), this would place the ratio in a positive interval $[c, C]$.",
@@ -122,7 +122,7 @@
   {
     "id": "ann-1089-bounded-question",
     "proofId": "erdos-1089",
-    "range": { "startLine": 150, "endLine": 151 },
+    "range": { "startLine": 150, "endLine": 152 },
     "type": "definition",
     "title": "Weaker Question: Is the Ratio Bounded?",
     "content": "**ratioIsBounded** asks whether $g_d(n)/d^{n-1} \\leq C$ for some constant $C$ and all $d \\geq 1$. This is strictly weaker than limit existence (erdos1089Conjecture): boundedness would follow from convergence but not vice versa. Combined with ratio_bounded_below, an upper bound would sandwich the ratio in $[c, C]$. If the ratio is unbounded, then $g_d(n)$ grows super-polynomially in $d$, closer to the Erdős-Straus stretched-exponential upper bound.",
@@ -146,7 +146,7 @@
   {
     "id": "ann-1089-monotonicity",
     "proofId": "erdos-1089",
-    "range": { "startLine": 165, "endLine": 171 },
+    "range": { "startLine": 159, "endLine": 172 },
     "type": "concept",
     "title": "Monotonicity of g_d(n) in Both Arguments",
     "content": "Two natural monotonicity properties are axiomatized: **g_mono_n** ($n_1 \\leq n_2 \\implies g_d(n_1) \\leq g_d(n_2)$) says requiring more distinct distances can only increase the threshold. **g_mono_d** ($d_1 \\leq d_2 \\implies g_{d_1}(n) \\leq g_{d_2}(n)$ for $n \\geq 2$) says higher dimensions allow larger few-distance configurations, so more points are needed. The $n \\geq 2$ condition in g_mono_d excludes the trivial case $g_d(1) = 2$ for all $d$.",
@@ -158,7 +158,7 @@
   {
     "id": "ann-1089-openproblem",
     "proofId": "erdos-1089",
-    "range": { "startLine": 193, "endLine": 201 },
+    "range": { "startLine": 186, "endLine": 201 },
     "type": "context",
     "title": "Open Problem Statement and Type Verification",
     "content": "**erdos1089OpenProblem** bundles the open conjecture for all $n \\geq 2$ simultaneously: $\\forall n \\geq 2,\\; \\text{erdos1089Conjecture}(n)$. This is the statement of Erdős Problem #1089 as a single Lean `Prop`.\n\nThe five trailing `#check` commands serve as type-level unit tests — they confirm that the central definitions and theorems have the expected types and compile without errors. In Lean 4, `#check` elaborates and type-checks its argument, so these verify that:\n- `g : ℕ → ℕ → ℕ` (the threshold function)\n- `gRatio : ℕ → ℕ → ℝ` (the normalized ratio)\n- `erdos1089Conjecture : ℕ → Prop` (the limit existence predicate)\n- `erdos_lower_bound` and `erdos_straus_upper_bound` have their correct axiom types\n\n**Why the problem remains open**: The difficulty of proving `erdos1089OpenProblem` lies in simultaneously establishing convergence for all $n \\geq 2$. Even for $n = 2$ (where $g_d(2) = 3$ for all $d$, so the ratio $3/d^1 \\to 0$), the limit is known trivially. For $n = 3$, the ratio $g_d(3)/d^2$ is bounded below by the Erdős lower bound but its convergence is open. The problem is hardest for large $n$, where the gap between $d^{n-1}$ and $c^{d^{1-b_n}}$ is widest.",

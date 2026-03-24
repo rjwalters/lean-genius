@@ -264,7 +264,10 @@
       "expository comments",
       "module documentation"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "erdos_36_limit_exists",
+      "known bounds axioms"
+    ],
     "mathContext": "Three key results about the constant $c = \\lim_{N \\to \\infty} M(N)/N$: (1) Erdős conjectured $c = 1/2$ (disproved), (2) the Fourier approach gives $c \\geq 1 - 1/\\sqrt{2}$, (3) connections to additive combinatorics discrepancy theory."
   },
   {
