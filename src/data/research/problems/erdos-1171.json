@@ -29,11 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (omega1_isLimit, omega1TimesOmega_isLimit) using Cardinal.ord_isLimit and Ordinal.mul_isLimit. Now 14 axioms, 0 sorries. Documented axiom classification.",
+    "builtItems": [
+      "omega1_isLimit: proved (was axiom) using Cardinal.ord_isLimit",
+      "omega1TimesOmega_isLimit: proved (was axiom) using Ordinal.mul_isLimit",
+      "Updated gallery metadata: 16→14 axioms"
+    ],
+    "insights": [
+      "16 axioms classified: 2 definition-axioms (ordinalPartitionRel2, ordinalPartitionRelMulti), 2 limit ordinals (NOW PROVED), 7 monotonicity/structural, 4 deep results (Hajnal, Baumgartner, Erdős-Rado, CH multicolor), 1 concept declaration (MartinsAxiom)",
+      "ordinalPartitionRel2 and ordinalPartitionRelMulti SHOULD be defs, not axioms — they define predicates. Converting them requires formalizing partition relations on ordinal types.",
+      "partition_multi_trivial is provable once ordinalPartitionRelMulti is a def (1-color case is trivial)",
+      "Problem is OPEN in ZFC but SOLVED under CH via Hajnal + color merging argument",
+      "The Baumgartner k=1 case under MA uses techniques specific to ω₁·ω that don't extend to higher k"
+    ],
+    "mathlibGaps": [
+      "Ordinal partition relation API (not in Mathlib — would need custom definitions)",
+      "Multicolor Ramsey theory for ordinals (non-standard territory)"
+    ],
+    "nextSteps": [
+      "Replace axiom ordinalPartitionRel2 with concrete def (−1 axiom, enables proving partition_multi_trivial)",
+      "Replace axiom ordinalPartitionRelMulti with concrete def (−1 axiom)",
+      "Prove partition_multi_trivial from concrete def (−1 axiom)",
+      "Consider proving monotonicity axioms from concrete definitions (−4 axioms)"
+    ],
     "markdown": "# Erdős #1171 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [

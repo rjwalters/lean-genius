@@ -89,11 +89,17 @@ theorem omega1TimesOmega_lt_omega1Sq : omega1TimesOmega < omega1Sq := by
   unfold omega1TimesOmega omega1Sq
   exact (Ordinal.mul_lt_mul_iff_left omega1_pos).mpr omega_lt_omega1
 
-/-- ω₁ · ω is a limit ordinal. -/
-axiom omega1TimesOmega_isLimit : Ordinal.IsLimit omega1TimesOmega
+/-- ω₁ is a limit ordinal (the ord of an infinite cardinal is always limit). -/
+theorem omega1_isLimit : Ordinal.IsLimit omega1 := by
+  unfold omega1
+  exact Cardinal.ord_isLimit (by
+    rw [Cardinal.aleph_zero.symm]
+    exact le_of_lt (Cardinal.aleph_lt_aleph.mpr (by norm_num)))
 
-/-- ω₁ is a limit ordinal. -/
-axiom omega1_isLimit : Ordinal.IsLimit omega1
+/-- ω₁ · ω is a limit ordinal (product of positive ordinal with limit ordinal). -/
+theorem omega1TimesOmega_isLimit : Ordinal.IsLimit omega1TimesOmega := by
+  unfold omega1TimesOmega
+  exact Ordinal.mul_isLimit omega1_pos Ordinal.omega0_isLimit
 
 -- ============================================================
 -- PART 4: The Problem Statement
@@ -282,7 +288,8 @@ for all finite k.
    from ZFC: without CH or MA, we lack the tools to control colorings
    of ω₁².
 
-### Axiom Count: 14 axioms, 10 theorems (7 with non-trivial proofs)
+### Axiom Count: 14 axioms, 12 theorems (9 with non-trivial proofs)
+### Note: omega1_isLimit and omega1TimesOmega_isLimit were proved (was 16 axioms)
 -/
 
 end Erdos1171
