@@ -29,11 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Reduced axiom count from 5 to 4. Proved positivity of the series.",
+    "builtItems": [
+      "Proved series_positive theorem in Erdos1051Problem.lean"
+    ],
+    "insights": [
+      "Proved series_positive from series_converges using tsum_pos. Each term 1/(a_n*a_{n+1}) > 0 since a_n > 0."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Remaining axioms are deep (Erdős 1988 result, open questions, Fibonacci example)"
+    ],
     "markdown": "# Erdős #1051 - Knowledge Base\n\n## Problem Statement\n\nIs it true that if a1&lt;a2&lt;&#x22EF;\" role=\"presentation\" style=\"position: relative;\">a1a2⋯a1a2⋯a_1 is a sequence of integers withlim&#x2006;infan1/2n&gt;1\" role=\"presentation\" style=\"text-align: center; position: relative;\">liminfa1/2nn>1lim infan1/2n>1\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #1050\n- Problem #1052\n- Problem #39\n- Problem #1\n\n## References\n\n- Er88c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -58,9 +64,9 @@
     {
       "path": "Proofs/Erdos1051Problem.lean",
       "filename": "Erdos1051Problem.lean",
-      "lineCount": 99,
-      "theoremCount": 0,
-      "axiomCount": 5,
+      "lineCount": 106,
+      "theoremCount": 1,
+      "axiomCount": 4,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

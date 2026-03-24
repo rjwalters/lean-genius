@@ -20,9 +20,9 @@
     "erdosNumber": 1051,
     "erdosUrl": "https://erdosproblems.com/1051",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 98,
-    "assumptions": "5 axioms: rapid_growth_irrational, series_converges, series_positive, and 2 more. See Lean source for complete statements.",
+    "axiomCount": 4,
+    "lineCount": 106,
+    "assumptions": "4 axioms: rapid_growth_irrational, series_converges, simple_series_question, sylvester_fibonacci_example. series_positive proved from series_converges via tsum_pos.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -227,9 +227,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 98,
-    "axiomCount": 5,
-    "theoremCount": 0,
+    "lineCount": 106,
+    "axiomCount": 4,
+    "theoremCount": 1,
     "definitionCount": 4
   }
 }

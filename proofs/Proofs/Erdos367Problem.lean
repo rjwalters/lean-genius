@@ -184,19 +184,83 @@ The 2-full part is trivial exactly when n has no repeated prime factors.
 axiom twoFullPart_eq_one_iff (n : ℕ) (hn : n ≥ 1) :
     twoFullPart n = 1 ↔ Squarefree n
 
+/- Helper: For a prime p, p.primeFactors = {p} -/
+private lemma primeFactors_prime_eq (p : ℕ) (hp : p.Prime) :
+    p.primeFactors = {p} := by
+  ext q
+  simp only [Nat.mem_primeFactors, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hq, hqp, -⟩
+    exact (hp.eq_one_or_self_of_dvd q hqp).resolve_left hq.one_lt.ne'
+  · rintro rfl
+    exact ⟨hp, dvd_refl p, hp.ne_zero⟩
+
+/- Helper: For a prime p, (p^2).primeFactors = {p} -/
+private lemma primeFactors_prime_sq_eq (p : ℕ) (hp : p.Prime) :
+    (p ^ 2).primeFactors = {p} := by
+  ext q
+  simp only [Nat.mem_primeFactors, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hq, hqp2, -⟩
+    exact (hp.eq_one_or_self_of_dvd q (hq.dvd_of_dvd_pow hqp2)).resolve_left hq.one_lt.ne'
+  · rintro rfl
+    exact ⟨hp, dvd_pow_self p (by omega), pow_ne_zero 2 hp.ne_zero⟩
+
+/- Helper: squarefreePart of a prime equals the prime itself -/
+private lemma squarefreePart_prime_eq (p : ℕ) (hp : p.Prime) :
+    squarefreePart p = p := by
+  unfold squarefreePart
+  rw [primeFactors_prime_eq p hp]
+  have hfilt : ({p} : Finset ℕ).filter (fun q => p.factorization q = 1) = {p} := by
+    apply Finset.filter_true_of_mem
+    intro q hq
+    rw [Finset.mem_singleton.mp hq]
+    simp [Nat.factorization_prime hp, Finsupp.single_eq_same]
+  rw [hfilt]
+  exact Finset.prod_singleton
+
+/- Helper: squarefreePart of p² is 1 (no primes with exponent exactly 1) -/
+private lemma squarefreePart_prime_sq_eq (p : ℕ) (hp : p.Prime) :
+    squarefreePart (p ^ 2) = 1 := by
+  unfold squarefreePart
+  rw [primeFactors_prime_sq_eq p hp]
+  have hfilt : ({p} : Finset ℕ).filter
+      (fun q => (p ^ 2).factorization q = 1) = ∅ := by
+    rw [Finset.filter_eq_empty]
+    intro q hq
+    rw [Finset.mem_singleton.mp hq]
+    simp [Nat.factorization_prime_pow hp, Finsupp.single_eq_same]
+  rw [hfilt]
+  exact Finset.prod_empty
+
 /--
 **B₂(p) = 1 for Primes**
 
 Primes are squarefree, so their 2-full part is 1.
 -/
-axiom twoFullPart_prime (p : ℕ) (hp : p.Prime) : twoFullPart p = 1
+theorem twoFullPart_prime (p : ℕ) (hp : p.Prime) : twoFullPart p = 1 := by
+  have hsf := squarefreePart_prime_eq p hp
+  unfold twoFullPart
+  have h : squarefreePart p ∣ p ∧ squarefreePart p ≠ 0 := by
+    constructor
+    · rw [hsf]
+    · rw [hsf]; exact hp.ne_zero
+  rw [dif_pos h, hsf, Nat.div_self hp.pos]
 
 /--
 **B₂(p²) = p² for Primes**
 
 Perfect squares of primes are entirely 2-full.
 -/
-axiom twoFullPart_prime_sq (p : ℕ) (hp : p.Prime) : twoFullPart (p ^ 2) = p ^ 2
+theorem twoFullPart_prime_sq (p : ℕ) (hp : p.Prime) :
+    twoFullPart (p ^ 2) = p ^ 2 := by
+  have hsf := squarefreePart_prime_sq_eq p hp
+  unfold twoFullPart
+  have h : squarefreePart (p ^ 2) ∣ p ^ 2 ∧ squarefreePart (p ^ 2) ≠ 0 := by
+    constructor
+    · rw [hsf]; exact one_dvd _
+    · rw [hsf]; exact one_ne_zero
+  rw [dif_pos h, hsf, Nat.div_one]
 
 /--
 **Multiplicativity on Coprime Arguments**
@@ -211,14 +275,22 @@ axiom twoFullPart_mul_coprime (m n : ℕ) (h : Nat.Coprime m n) :
 
 The 2-full part never exceeds n itself.
 -/
-axiom twoFullPart_le (n : ℕ) : twoFullPart n ≤ n
+theorem twoFullPart_le (n : ℕ) : twoFullPart n ≤ n := by
+  unfold twoFullPart
+  split
+  next _ => exact Nat.div_le_self n _
+  next _ => exact le_refl n
 
 /--
 **Divisibility: B₂(n) | n**
 
 The 2-full part always divides n.
 -/
-axiom twoFullPart_dvd (n : ℕ) : twoFullPart n ∣ n
+theorem twoFullPart_dvd (n : ℕ) : twoFullPart n ∣ n := by
+  unfold twoFullPart
+  split
+  next h => exact Nat.div_dvd_of_dvd h.1
+  next _ => exact dvd_refl n
 
 /-
 # Part 8: Generalization to r-Full Parts
