@@ -177,5 +177,37 @@
     "axiomCount": 8,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    {
+      "id": "erdos-30",
+      "relationship": "related",
+      "description": "Problem #30 asks whether h(N) = N^{1/2} + O_ε(N^ε) for general Sidon sets — the theoretical ceiling that constrains Problem #340. Resolving #340 would show the greedy construction approaches this ceiling"
+    },
+    {
+      "id": "erdos-156",
+      "relationship": "related",
+      "description": "Problem #156 concerns maximal Sidon subsets and their density. Both study how construction methods affect Sidon set growth, with #340 focusing on the specific greedy algorithm"
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "technique",
+      "description": "The random Sidon set benchmark (expected size ~N^{1/3} by the birthday paradox) is the baseline comparison: the greedy construction empirically outperforms randomness by achieving ~N^{0.497} instead of ~N^{1/3}"
+    },
+    {
+      "id": "prob-method-alteration",
+      "relationship": "technique",
+      "description": "The alteration method could potentially construct near-optimal Sidon sets by starting with a random set and removing colliding pairs. This approach gives ~N^{1/3} which matches the known lower bound, suggesting the greedy algorithm uses structural information that randomness misses"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "technique",
+      "description": "Singer's construction of Sidon sets from perfect difference sets in Z_p uses primes, achieving size ~√N for specific N. The PNT ensures these constructions exist for arbitrarily large N, providing the existence proof that the Erdős-Turán upper bound is tight (at least for non-greedy constructions)"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes guarantees that Singer-type Sidon set constructions (using Z_p for primes p) exist for all large N, establishing the theoretical maximum density against which the greedy sequence is compared"
+    }
+  ]
 }
