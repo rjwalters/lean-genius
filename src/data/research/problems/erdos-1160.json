@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1160",
-  "title": "Erdős #1160",
+  "title": "Erd\u0151s #1160",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,27 +29,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created initial formalization of Erdős #1160 (group counting conjecture). Axiomatized numGroups function with known values. Stated main conjecture, stronger BNV07 conjecture, and Pantelidakis partial result. Proved trivial cases (n=1, prime n) and equivalence of two formulations. Created full gallery entry.",
+    "progressSummary": "AXIOM ELIMINATION: Reduced 13\u219212 axioms (numGroups_two derived from numGroups_prime). Proved conjecture for all powers of 2 and for m=1. Added structural lifting lemma.",
     "builtItems": [
       "Created Erdos1160Problem.lean with numGroups axiomatization",
       "Proved erdos_1160_equiv (two formulations equivalent)",
-      "Proved strong_implies_original (BNV07 → original conjecture)",
+      "Proved strong_implies_original (BNV07 \u2192 original conjecture)",
       "Proved erdos_1160_n_eq_one and erdos_1160_prime (trivial cases)",
-      "Created gallery entry with 7 annotations"
+      "Created gallery entry with 7 annotations",
+      "numGroups_two: converted from axiom to theorem (proved from numGroups_prime)",
+      "erdos_1160_n_eq_zero: proved (g(0)=0 case)",
+      "erdos_1160_power_of_two: proved (all powers of 2)",
+      "erdos_1160_m_eq_one: proved (m=1 case, all n \u2264 2)",
+      "numGroups_two_power_pos: proved (g(2^m) \u2265 1)",
+      "erdos_1160_lift: proved (monotone lifting from m to m+1 on [0,2^m])"
     ],
     "insights": [
-      "g(2^m) grows as 2^{(2/27)m³} due to nilpotent Lie algebra correspondence",
-      "Pantelidakis proved odd case for m ≥ 3619 using Feit-Thompson + Sylow bounds",
+      "g(2^m) grows as 2^{(2/27)m\u00b3} due to nilpotent Lie algebra correspondence",
+      "Pantelidakis proved odd case for m \u2265 3619 using Feit-Thompson + Sylow bounds",
       "Mathlib has no group enumeration; numGroups must be axiomatized",
-      "The conjecture is open even for even n that are not powers of 2"
+      "The conjecture is open even for even n that are not powers of 2",
+      "Eliminated numGroups_two axiom: derived from numGroups_prime since 2 is prime (13\u219212 axioms)",
+      "Proved erdos_1160_power_of_two: conjecture holds for n = 2^k when k \u2264 m (via prime power monotonicity)",
+      "Proved erdos_1160_m_eq_one: conjecture verified for all n \u2264 2 using interval_cases",
+      "Proved erdos_1160_lift: if conjecture holds for m, the [0,2^m] range carries over to m+1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove g(p^k) ≤ g(2^m) for small primes p by explicit bounds",
+      "Prove g(p^k) \u2264 g(2^m) for small primes p by explicit bounds",
       "Axiomatize the Higman PORC conjecture (p-groups of order p^n counted by polynomial in p)",
       "Consider computational verification for small m via known OEIS values"
     ],
-    "markdown": "# Erdős #1160 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1160 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"

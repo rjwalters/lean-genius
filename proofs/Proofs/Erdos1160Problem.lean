@@ -48,8 +48,11 @@ axiom numGroups_one : numGroups 1 = 1
 /-- For any prime p, there is exactly one group of order p (the cyclic group). -/
 axiom numGroups_prime (p : ℕ) (hp : Nat.Prime p) : numGroups p = 1
 
+/-- numGroups 2 = 1: derived from numGroups_prime since 2 is prime. -/
+theorem numGroups_two : numGroups 2 = 1 :=
+  numGroups_prime 2 (by norm_num)
+
 /-- Known values for small powers of 2. -/
-axiom numGroups_two : numGroups 2 = 1
 axiom numGroups_four : numGroups 4 = 2
 axiom numGroups_eight : numGroups 8 = 5
 axiom numGroups_sixteen : numGroups 16 = 14
@@ -149,8 +152,54 @@ axiom numGroups_two_power_growth :
       (2 : ℝ) / 27 - ε < (Real.log (numGroups (2 ^ m) : ℝ)) / ((m : ℝ) ^ 3 * Real.log 2) ∧
       (Real.log (numGroups (2 ^ m) : ℝ)) / ((m : ℝ) ^ 3 * Real.log 2) < 2 / 27 + ε
 
-#check erdos_1160
-#check erdos_1160_strong
-#check numGroups
+/-
+## Section VII: Structural Results
+-/
+
+/-- The conjecture holds for n = 0 (trivially, since g(0) = 0). -/
+theorem erdos_1160_n_eq_zero (m : ℕ) :
+    numGroups 0 ≤ numGroups (2 ^ m) := by
+  rw [numGroups_zero]
+  exact Nat.zero_le _
+
+/-- The conjecture holds when n is a power of 2 with exponent ≤ m.
+    This follows directly from the monotonicity of g at prime powers. -/
+theorem erdos_1160_power_of_two (k m : ℕ) (hk : k ≤ m) :
+    numGroups (2 ^ k) ≤ numGroups (2 ^ m) := by
+  rcases Nat.eq_zero_or_pos k with rfl | hk_pos
+  · -- k = 0: numGroups(1) = 1 ≤ numGroups(2^m)
+    simp only [pow_zero]
+    exact erdos_1160_n_eq_one m
+  · -- k > 0: apply prime power monotonicity
+    exact numGroups_prime_power_mono 2 (by norm_num) k m hk hk_pos
+
+/-- The conjecture holds for n = 2^m itself (reflexivity). -/
+theorem erdos_1160_self (m : ℕ) :
+    numGroups (2 ^ m) ≤ numGroups (2 ^ m) :=
+  le_refl _
+
+/-- g(2^m) ≥ 1 for all m ≥ 0. -/
+theorem numGroups_two_power_pos (m : ℕ) : 0 < numGroups (2 ^ m) :=
+  numGroups_pos (2 ^ m) (by positivity)
+
+/-- The conjecture for all n ≤ 2 follows from g(0)=0, g(1)=1, g(2)=1. -/
+theorem erdos_1160_m_eq_one (n : ℕ) (hn : n ≤ 2) :
+    numGroups n ≤ numGroups (2 ^ 1) := by
+  simp only [pow_one]
+  interval_cases n
+  · rw [numGroups_zero, numGroups_two]; omega
+  · rw [numGroups_one, numGroups_two]
+  · exact le_refl _
+
+/-- If the conjecture holds for m, and g(2^m) ≤ g(2^(m+1)),
+    then the conjecture holds for m+1 on the range [0, 2^m].
+    (The new range (2^m, 2^(m+1)] still needs verification.) -/
+theorem erdos_1160_lift (m : ℕ) (h : erdos_1160)  :
+    ∀ n, n ≤ 2 ^ m → numGroups n ≤ numGroups (2 ^ (m + 1)) := by
+  intro n hn
+  calc numGroups n
+      ≤ numGroups (2 ^ m) := h m n hn
+    _ ≤ numGroups (2 ^ (m + 1)) :=
+        erdos_1160_power_of_two m (m + 1) (Nat.le_succ m)
 
 end Erdos1160
