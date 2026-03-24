@@ -69,7 +69,7 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix exists_quintic: either remove it or add a comment clarifying it is a trivial witness, not the substantive statement needed (which would be ∃ q : Polynomial ℚ, Irreducible q ∧ q.natDegree = 5 ∧ ¬ IsSolvable q.Gal). Cross-reference the open question about formalizing x⁵-x-1.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
@@ -83,7 +83,7 @@
       "priority": "low",
       "target": "enricher",
       "description": "Change originalContributions[2] from 'Quintic unsolvability demonstration' to 'General contrapositive form of Abel-Ruffini' for precision.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
