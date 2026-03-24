@@ -169,34 +169,34 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1039",
       "relationship": "sibling",
-      "description": "Erdős #1039 (polynomial lemniscate disc radius) asks for the largest inscribed disc in sublevel sets {z: |f(z)| < 1}, the complementary geometric quantity to the total sublevel set area studied in Problem 1040."
+      "description": "Erdős #1039 (polynomial lemniscate disc radius) asks for the largest inscribed disc in sublevel sets {z: |f(z)| < 1}, the complementary geometric quantity to the total sublevel set area studied in Problem 1040.",
+      "targetId": "erdos-1039"
     },
     {
-      "id": "erdos-1038",
       "relationship": "related",
-      "description": "Erdős #1038 (sublevel sets of monic polynomials) studies measure properties of the same polynomial sublevel sets, providing the direct precursor to Problem 1040's investigation of how the infimum μ(F) depends on the root set."
+      "description": "Erdős #1038 (sublevel sets of monic polynomials) studies measure properties of the same polynomial sublevel sets, providing the direct precursor to Problem 1040's investigation of how the infimum μ(F) depends on the root set.",
+      "targetId": "erdos-1038"
     },
     {
-      "id": "erdos-1041",
       "relationship": "related",
-      "description": "Erdős #1041 (paths in polynomial level sets) investigates connectivity and path structure within level curves of polynomials, sharing the lemniscate geometry framework central to Problems 1039–1042."
+      "description": "Erdős #1041 (paths in polynomial level sets) investigates connectivity and path structure within level curves of polynomials, sharing the lemniscate geometry framework central to Problems 1039–1042.",
+      "targetId": "erdos-1041"
     },
     {
-      "id": "erdos-1042",
       "relationship": "related",
-      "description": "Erdős #1042 (connected components of polynomial lemniscates) studies the topology of polynomial level sets from the same EHP 1958 research program, complementing the measure-theoretic angle of Problem 1040."
+      "description": "Erdős #1042 (connected components of polynomial lemniscates) studies the topology of polynomial level sets from the same EHP 1958 research program, complementing the measure-theoretic angle of Problem 1040.",
+      "targetId": "erdos-1042"
     },
     {
-      "id": "lebesgue-measure",
       "relationship": "foundational",
-      "description": "The definition of μ(F) as the Lebesgue measure of sublevel sets in the complex plane relies directly on MeasureTheory.volume, the Lebesgue measure formalized in Mathlib."
+      "description": "The definition of μ(F) as the Lebesgue measure of sublevel sets in the complex plane relies directly on MeasureTheory.volume, the Lebesgue measure formalized in Mathlib.",
+      "targetId": "lebesgue-measure"
     },
     {
-      "id": "fundamental-theorem-algebra",
       "relationship": "foundational",
-      "description": "The Fundamental Theorem of Algebra underpins the polynomial infrastructure, ensuring that monic polynomials with roots in F are well-defined and that their root factorization is complete over ℂ."
+      "description": "The Fundamental Theorem of Algebra underpins the polynomial infrastructure, ensuring that monic polynomials with roots in F are well-defined and that their root factorization is complete over ℂ.",
+      "targetId": "fundamental-theorem-algebra"
     }
   ],
   "relatedProofs": [
