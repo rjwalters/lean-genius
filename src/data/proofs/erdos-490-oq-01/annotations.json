@@ -202,5 +202,23 @@
       "Bolzano-Weierstrass theorem",
       "convergence vs oscillation"
     ]
+  },
+  {
+    "id": "ann-summary-checks",
+    "proofId": "erdos-490-oq-01",
+    "range": { "startLine": 203, "endLine": 215 },
+    "type": "context",
+    "title": "Summary: Nine Theorems from Three Axioms",
+    "content": "The `#check` block lists all nine theorems proved in the development, providing an at-a-glance inventory of the formalization's output:\n\n- `maxProd_is_upper` / `maxProd_is_achieved`: interface theorems for the axiomatized maximum\n- `productRatio_bounded_above` / `productRatio_bounded_below`: the core sandwich bounds\n- `limit_in_sandwich`: the main analytical result (limit constrained to $[c, C]$)\n- `productRatio_nonneg`: nonnegativity of the ratio\n- `card_le_of_subset_upto`: cardinality bound $|A| \\leq N$\n- `maxProd_le_sq`: trivial bound $\\operatorname{maxProd}(N) \\leq N^2$\n- `productRatio_sandwich`: capstone combining all bounds\n\nThis `#check` pattern is a Lean convention for summarizing a module's public API, making it easy for other files to discover available lemmas.",
+    "mathContext": "Nine theorems from three axioms: two interface lemmas (upper bound, achievability), two sandwich bounds ($c \\leq r(N) \\leq C$), one limit theorem ($L \\in [c, C]$), and four structural results (nonnegativity, cardinality, trivial bound, full sandwich).",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean #check command"
+    ],
+    "relatedConcepts": [
+      "module API",
+      "theorem inventory",
+      "Lean conventions"
+    ]
   }
 ]
