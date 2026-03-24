@@ -32,7 +32,9 @@
     "keyInsights": [
       "**Dimensional dichotomy**: In 1D, the favourite site is unique for large n (Bass-Griffin 1985). In 2D, the marginal recurrence allows multiple favourite sites, but the walk's diffusive behaviour limits this to exactly 3.",
       "**23-year gap**: Tóth's 2001 upper bound (≤ 3) took over two decades to match with a lower bound (≥ 3, Hao et al. 2024), reflecting the extreme technical difficulty of proving that three-way ties persist.",
-      "**Marginal recurrence**: ℤ² random walks return to the origin with probability 1 but have infinite expected return time. This 'barely recurrent' behaviour is key: enough returns to create ties, but not enough for four-way ties to persist."
+      "**Marginal recurrence**: ℤ² random walks return to the origin with probability 1 but have infinite expected return time. This 'barely recurrent' behaviour is key: enough returns to create ties, but not enough for four-way ties to persist.",
+      "**Green's function dichotomy**: Tóth's proof hinges on the logarithmic growth of the 2D Green's function $G(x) \\sim (2/\\pi) \\log |x|$. In 1D, $G(x) \\sim |x|$ (linear growth) forces uniqueness of the favourite site; in 2D, the slower logarithmic growth permits multiple sites to compete for the maximum, but only up to 3.",
+      "**Axiom-theorem architecture**: The formalization cleanly separates deep probabilistic results (axiomatized, since Mathlib lacks 2D random walk local time theory) from the logical combination of those results (proved). The three derived theorems demonstrate that the complete resolution follows as a clean deduction from the two core results."
     ],
     "prerequisites": [
       "Probability theory",
@@ -85,9 +87,16 @@
       "id": "background",
       "title": "Background Results",
       "startLine": 148,
-      "endLine": 157,
-      "summary": "Bass-Griffin (1985) 1D uniqueness result, providing context for why the 2D case is fundamentally different.",
+      "endLine": 164,
+      "summary": "Bass-Griffin (1985) 1D uniqueness result and context theorem, showing why the 2D case is fundamentally different from the strongly recurrent 1D case.",
       "mathContext": "1D: $|F(n)| = 1$ for large $n$ a.s. (Bass-Griffin 1985). Contrast: 2D has $|F(n)| = 3$ i.o. a.s."
+    },
+    {
+      "id": "closing-summary",
+      "title": "Summary and Closing",
+      "startLine": 166,
+      "endLine": 188,
+      "summary": "Recapitulates the complete resolution of Erdős Problem #1165: $\\mathbb{P}(|F(n)| = 3 \\text{ i.o.}) = 1$ and $\\mathbb{P}(|F(n)| = r \\text{ i.o.}) = 0$ for $r \\ge 4$, emphasizing the 23-year gap between upper and lower bounds and the key role of dimensional recurrence structure."
     }
   ],
   "conclusion": {
@@ -99,6 +108,24 @@
       "What is the asymptotic behaviour of the sizes of near-maximum visit count sets?"
     ]
   },
+  "relatedProofs": [
+    {
+      "id": "erdos-1166",
+      "relationship": "Sister problem by Erdős–Révész, studying most-visited points in planar random walks — closely related variant investigating maximum visit count structure in ℤ²."
+    },
+    {
+      "id": "erdos-529",
+      "relationship": "Studies end-to-end distance of self-avoiding walks on lattices, a complementary property of lattice random processes."
+    },
+    {
+      "id": "erdos-528",
+      "relationship": "Investigates the connective constant for self-avoiding walks — related asymptotic analysis of stochastic processes on lattices."
+    },
+    {
+      "id": "fair-games-theorem",
+      "relationship": "The optional stopping theorem for martingales, foundational to random walk analysis and the study of stopping times underlying visit count arguments."
+    }
+  ],
   "references": [
     {
       "authors": ["Bálint Tóth"],
