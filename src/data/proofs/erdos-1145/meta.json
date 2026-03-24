@@ -96,15 +96,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Sárközy conjectured this generalization of the Erdős–Turán conjecture on additive bases (Problem #28). While Problem #28 asks whether r_{A,A}(n) must be unbounded when A + A is a basis, Problem #1145 extends to two different sets A, B with the constraint that their enumerations grow at the same rate (aₙ/bₙ → 1). The condition is necessary: Ruzsa showed (solving Problem #331) that without it, one can construct A, B with A + B = ℕ where every integer has exactly one representation. The problem appears in Varga's 1999 collection [Va99, 1.17] and remains completely open.",
+    "historicalContext": "Erdős and Sárközy formulated this conjecture in their 1986 paper 'Problems and results on additive properties of general sequences, II' (Acta Math. Hungarica 48, 201–211), extending the classical Erdős–Turán conjecture (1941) from single-set bases to two-set bases. The original Erdős–Turán conjecture (Problem #28) asks whether r_{A,A}(n) must be unbounded when A + A covers all large integers — a question that remains open and carries a $500 Erdős prize. Problem #1145 generalizes this to distinct sets A, B with the crucial constraint that their enumerations grow at the same rate (aₙ/bₙ → 1). The necessity of this ratio condition was established by Imre Ruzsa, who solved the related Problem #331 by constructing sets A, B using binary digit interleaving where A + B = ℕ but every integer has exactly one representation (r = 1 everywhere). Partial progress includes the work of Grekos, Haddad, Helou, and Pihko, who showed that r_{A,B}(n) ≥ 6 infinitely often under the conjecture's hypotheses. The problem appears in Varga's 1999 collection [Va99, 1.17] and remains completely open as of 2026.",
     "problemStatement": "Let $A = \\{a_1 < a_2 < \\cdots\\}$ and $B = \\{b_1 < b_2 < \\cdots\\}$ be infinite sets of positive integers with $a_n/b_n \\to 1$. If $A + B$ contains all sufficiently large integers, must $\\limsup_{n \\to \\infty} r_{A,B}(n) = \\infty$?",
     "text": "The Erdős–Sárközy conjecture generalizes the famous Erdős–Turán conjecture from A + A to A + B, requiring that the two sets grow at the same rate.",
     "proofStrategy": "We formalize the two-set representation function, state the conjecture as an axiom, and prove: (1) this implies the Erdős–Turán conjecture when A = B; (2) the ratio condition is necessary via Ruzsa's counterexample; (3) basic structural properties (symmetry, monotonicity, positivity, vanishing).",
     "keyInsights": [
-      "**Generalizes Erdős–Turán**: Setting A = B recovers Problem #28, proved as `erdos_1145_implies_28`",
+      "**Generalizes Erdős–Turán**: Setting A = B recovers Problem #28, proved as `erdos_1145_implies_28` — making this conjecture strictly stronger than the $500 Erdős prize problem",
       "**Ratio condition is necessary**: Without aₙ/bₙ → 1, Ruzsa gives A + B = ℕ with r = 1 everywhere, proved as `ratio_condition_necessary`",
-      "**Ruzsa's key insight**: Binary digit interleaving creates sets where every sum is unique, showing the conjecture is sharp",
-      "**Symmetry of representations**: r_{A,B}(n) = r_{B,A}(n) via explicit pair-swap bijection"
+      "**Ruzsa's binary digit construction**: Interleaving even- and odd-position binary digits creates sets where every sum has a unique representation, demonstrating the conjecture is optimally sharp",
+      "**Symmetry of representations**: r_{A,B}(n) = r_{B,A}(n) via explicit pair-swap bijection — the conjecture is invariant under swapping A and B",
+      "**Average vs pointwise growth**: The axiomatized average-representation result shows the average of r_{A,B}(n) diverges when both sets have density ≫ √N, but this does not directly imply the pointwise lim sup = ∞ required by the conjecture — highlighting the gap between average and extremal behavior"
     ],
     "prerequisites": [
       "Additive number theory (sumsets, representation functions)",
