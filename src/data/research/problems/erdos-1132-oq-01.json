@@ -29,17 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved lagrangeBasis_self and lagrangeBasis_other from definitions. Axioms: 9 → 7.",
+    "progressSummary": "COMPLETED: Proved chebyshevNodes_in_interval (cos in [-1,1]). Converted lebesgueFunction_ge_one from axiom to theorem via partition of unity lemma. Axioms: 7 → 5, sorries: 0 → 1. Created Aristotle companion file.",
     "builtItems": [
       "lagrangeBasis_self: proved from definition using div_self (eliminated axiom)",
-      "lagrangeBasis_other: proved from definition using prod_eq_zero (eliminated axiom)"
+      "lagrangeBasis_other: proved from definition using prod_eq_zero (eliminated axiom)",
+      "chebyshevNodes_in_interval: proved from Real.neg_one_le_cos / Real.cos_le_one (eliminated axiom)",
+      "lagrangeBasis_sum_eq_one: partition of unity lemma stated (sorry, Aristotle target)",
+      "lebesgueFunction_ge_one: converted axiom to theorem using partition of unity + triangle inequality",
+      "Erdos1132Aristotle.lean: Aristotle companion file with lagrangeBasis_sum_eq_one"
     ],
     "insights": [
       "lagrangeBasis_self and lagrangeBasis_other are definitionally provable — numerator=denominator and zero factor respectively",
-      "Remaining 7 axioms are genuinely deep results (Lebesgue function bounds, Erdős lower bound, Chebyshev, density theorems)"
+      "Remaining 7 axioms are genuinely deep results (Lebesgue function bounds, Erdős lower bound, Chebyshev, density theorems)",
+      "Remaining 5 axioms are genuinely deep results (Erdos lower bound, Chebyshev optimality, Bernstein density, Erdos max, equidistant exponential growth) - cannot be proved from Mathlib",
+      "lagrangeBasis_sum_eq_one (partition of unity) is the key blocker - standard polynomial identity but non-trivial to formalize from product definition",
+      "Proof strategy for partition of unity: P(x) = Σ lₖ(x) has degree ≤ n-1 and equals 1 at all n nodes, so P ≡ 1 by uniqueness of interpolation"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove lagrangeBasis_sum_eq_one (partition of unity) - key sorry remaining",
+      "Potential approach: use Mathlib Lagrange.interpolate_at or prove polynomial uniqueness argument",
+      "Alternative: induction on n with careful algebraic manipulation of the product definition"
+    ]
   },
   "tags": [
     "erdos",
@@ -61,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.907Z",
-  "lastUpdate": "2026-03-24T17:45:00Z",
+  "lastUpdate": "2026-03-24T16:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

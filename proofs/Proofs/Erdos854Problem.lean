@@ -67,7 +67,7 @@ theorem maxGap_mem (n : ℕ) (hn : 1 < n) : maxGap n ∈ gapSet n := by
   sorry -- Requires showing gapSet n is nonempty for n > 1
 
 theorem maxGap_max (n : ℕ) (d : ℕ) (hd : d ∈ gapSet n) : d ≤ maxGap n := by
-  sorry -- Finset.le_sup for ℕ with bot=0
+  simp only [maxGap]; exact Finset.le_sup hd
 
 /-- Number of distinct gap values. -/
 noncomputable def distinctGapCount (n : ℕ) : ℕ := (gapSet n).card
