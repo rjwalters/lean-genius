@@ -130,10 +130,6 @@ private theorem foldl_max_ge_of_mem {α : Type*} :
 
 /- ## Structural Properties -/
 
-theorem class_one_iff_smooth (p : ℕ) (hp : Nat.Prime p) :
-    primeClass p = 1 ↔ ∀ q ∈ (p + 1).primeFactorsList, q = 2 ∨ q = 3 := by
-  sorry
-
 theorem primeClass_pos_of_prime (p : ℕ) (hp : Nat.Prime p) :
     primeClass p ≥ 1 := by
   unfold primeClass; simp only [hp, dite_true]; split <;> omega
@@ -168,6 +164,26 @@ theorem class_of_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
   have h_bound := foldl_max_ge_of_mem (List.mem_attach ns ⟨q, hns ▸ hq_in_ns⟩)
     (fun y => primeClass y.val) 0
   omega
+
+theorem class_one_iff_smooth (p : ℕ) (hp : Nat.Prime p) :
+    primeClass p = 1 ↔ ∀ q ∈ (p + 1).primeFactorsList, q = 2 ∨ q = 3 := by
+  constructor
+  · -- (→) primeClass p = 1 ⟹ all factors are 2 or 3
+    intro heq q hq
+    by_contra h_neg; push_neg at h_neg; obtain ⟨hq2, hq3⟩ := h_neg
+    have hq_prime := Nat.prime_of_mem_primeFactorsList hq
+    have hq_dvd := Nat.dvd_of_mem_primeFactorsList hq
+    have h_lt := class_of_factor_lt p q hp hq_prime hq_dvd hq2 hq3
+    have h_ge := primeClass_pos_of_prime q hq_prime
+    omega
+  · -- (←) all factors are 2 or 3 ⟹ primeClass = 1
+    intro h; unfold primeClass; simp only [hp, dite_true]
+    suffices h_nil : ((p + 1).primeFactorsList.dedup.filter
+        (fun r => r != 2 && r != 3)) = [] by rw [h_nil]; rfl
+    by_contra h_ne
+    obtain ⟨a, ha⟩ := List.exists_mem_of_ne_nil _ h_ne
+    rw [List.mem_filter, List.mem_dedup] at ha
+    rcases h a ha.1 with rfl | rfl <;> simp at ha
 
 /- ## Concrete Evidence for Infinitude -/
 
