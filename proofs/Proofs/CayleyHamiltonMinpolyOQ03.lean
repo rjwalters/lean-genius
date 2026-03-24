@@ -105,7 +105,7 @@ private theorem sum_mulVec {ι : Type*} [DecidableEq ι] (s : Finset ι)
     (∑ i ∈ s, f i).mulVec v = ∑ i ∈ s, (f i).mulVec v := by
   induction s using Finset.induction_on with
   | empty => simp [Matrix.zero_mulVec]
-  | insert has ih =>
+  | @insert a s' has ih =>
     rw [Finset.sum_insert has, Matrix.add_mulVec, ih, Finset.sum_insert has]
 
 theorem aeval_mulVec_eq_krylov_sum (M : Matrix (Fin n) (Fin n) K)
@@ -122,7 +122,7 @@ theorem aeval_mulVec_eq_krylov_sum (M : Matrix (Fin n) (Fin n) K)
     · congr 1; ext i
       rw [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
     · intro i _ hi
-      rw [Polynomial.not_mem_support_iff.mp hi, map_zero, zero_mul]
+      rw [Polynomial.notMem_support_iff.mp hi, map_zero, zero_mul]
   rw [haeval_expand, sum_mulVec]
   simp only [Matrix.smul_mulVec, krylovVec]
 
@@ -170,11 +170,9 @@ theorem krylov_dependent_at_minpoly_degree [hn : NeZero n]
   rw [← Fin.sum_univ_eq_sum_range] at hann
   have hzero := (Fintype.linearIndependent_iff.mp hli)
     (fun i => (minpoly K M).coeff ↑i) hann
-  have h0 := hzero ⟨(minpoly K M).natDegree, Nat.lt_succ_of_le le_rfl⟩
-  dsimp at h0
-  have h1 : (minpoly K M).leadingCoeff = 1 := hmonic.leadingCoeff
-  rw [Polynomial.leadingCoeff] at h1
-  linarith
+  have h0 : (minpoly K M).leadingCoeff = 0 :=
+    hzero ⟨(minpoly K M).natDegree, Nat.lt_succ_of_le le_rfl⟩
+  exact one_ne_zero (hmonic.leadingCoeff.symm.trans h0)
 
 -- ============================================================
 -- PART V: Krylov Dimension Bound
