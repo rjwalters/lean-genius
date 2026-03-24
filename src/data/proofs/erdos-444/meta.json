@@ -97,7 +97,7 @@
       "id": "section-1",
       "title": "Basic Definitions",
       "startLine": 31,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Defines **InfiniteSubset**, **d_A(n)** = |{a ∈ A : a | n}| (generalized divisor function), **H_A(x)** = Σ_{a∈A, a<x} 1/a (partial harmonic sum), and **M_A(x)** = max_{n<x} d_A(n) (maximum A-divisor count). These are the three quantities whose relationship the problem studies.",
       "mathContext": "$d_A(n) = |\\{a \\in A : a \\mid n\\}|$ generalizes $\\tau(n) = d_{\\mathbb{N}}(n)$. $H_A(x) = \\sum_{a \\in A, a \\leq x} 1/a$ (harmonic partial sum over $A$)."
     },
@@ -105,7 +105,7 @@
       "id": "section-2",
       "title": "The Main Conjecture (PROVED)",
       "startLine": 63,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "**erdos_graham_conjecture**: ∀ infinite A, ∀ k ≥ 1, lim sup M_A(x)/H_A(x)^k = ∞. Formalized using `Filter.atTop` and `∃ᶠ`. **erdos_graham_conjecture_true**: axiomatized as proved by Erdős-Sárközy (1980) via extremal product constructions.",
       "mathContext": "Conjecture: $\\limsup_{x \\to \\infty} M_A(x) / (H_A(x))^k \\to \\infty$ where $M_A(x) = \\max_{n \\leq x} d_A(n)$."
     },
@@ -113,7 +113,7 @@
       "id": "section-3",
       "title": "Special Cases",
       "startLine": 87,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "**A = ℕ**: d_A = τ, H_A ∼ log x, M_A ∼ exp(log 2 · log x / log log x) (highly composite numbers). **A = primes**: d_A = ω, H_A ∼ log log x (Mertens), M_A ∼ log x / log log x (primorials). Both cases confirm the general theorem.",
       "mathContext": "Classical case $A = \\mathbb{N}$: $d_A = \\tau$, $H_A(x) \\sim \\log x$, $M_A(x) \\sim \\exp(\\log 2 \\cdot \\log x / \\log\\log x)$ (Ramanujan 1915)."
     },
@@ -121,7 +121,7 @@
       "id": "section-4",
       "title": "Structural Properties",
       "startLine": 109,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "**highly_composite_relative**: A-highly composite numbers exist for any A. **exponential_lower_bound**: M_A(x) ≥ exp(c · H_A(x)) frequently. **no_uniform_bound**: no function f bounds M_A(x) in terms of H_A(x) universally — the strongest form of the result.",
       "mathContext": "An $A$-highly composite number $n$ maximizes $d_A(n)$ up to $n$. These exist for any infinite $A$ (analogous to highly composite numbers for $\\tau$)."
     },
