@@ -119,14 +119,14 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Update annotation ann-riemann-comparison to reflect that the Dirichlet function integral is now fully proved (not axiomatized). The annotation text says 'The integral is axiomatized here rather than fully proved' which contradicts the current Lean source and meta.json openQuestions.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix meta.json section line ranges to match the actual Lean source. Key corrections: riemann-comparison endLine should be ~383, applications startLine should be ~397.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",

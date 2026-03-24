@@ -136,14 +136,14 @@
       "id": "riemann-comparison",
       "title": "Comparison with Riemann Integration",
       "startLine": 326,
-      "endLine": 370,
+      "endLine": 383,
       "summary": "Proves that bounded measurable functions on $[a,b]$ are Lebesgue integrable. Proves that the Dirichlet function integral $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$ using the fact that $\\mathbb{Q}$ has measure zero and `integral_eq_zero_of_ae`, demonstrating that Lebesgue integration handles functions that are not Riemann integrable."
     },
     {
       "id": "applications",
       "title": "Applications and $L^p$ Spaces",
-      "startLine": 372,
-      "endLine": 413,
+      "startLine": 385,
+      "endLine": 425,
       "summary": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed."
     }
   ],
