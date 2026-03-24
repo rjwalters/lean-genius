@@ -99,7 +99,7 @@ theorem reciprocalSum_pos (n : ℕ) (hn : 0 < n) (a : Fin n → ℕ) (ha : ∀ i
   apply Finset.sum_pos
   · intro i _
     exact inv_pos.mpr (Nat.cast_pos.mpr (ha i))
-  · exact Finset.univ_nonempty
+  · exact ⟨⟨0, hn⟩, Finset.mem_univ _⟩
 
 /-- Removing an element from the subset decreases the sum by exactly 1/a(i). -/
 theorem subsetReciprocalSum_erase (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n))
@@ -108,6 +108,7 @@ theorem subsetReciprocalSum_erase (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin
       subsetReciprocalSum n a (S.erase i) + (a i : ℝ)⁻¹ := by
   simp only [subsetReciprocalSum]
   rw [← Finset.add_sum_erase _ _ hi]
+  ring
 
 /-- Inserting a new element increases the subset sum by 1/a(i). -/
 theorem subsetReciprocalSum_insert (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n))
@@ -201,7 +202,7 @@ theorem exponential_stronger_than_polynomial :
         field_simp
       _ < c' * c ^ 2 / (c * K) ^ 2 := by
         apply div_lt_div_of_pos_right h_dist hcK2_pos
-      _ = c' / K ^ 2 := by ring_nf; field_simp; ring
+      _ = c' / K ^ 2 := by ring_nf; field_simp
 
 /-- If the exponential precision conjecture holds, then for large K,
     any multiset satisfying the exponential property also satisfies
@@ -278,9 +279,8 @@ theorem exponential_gap_tends_to_one (c : ℝ) (hc : 0 < c) :
     Tendsto.const_mul_atTop hc tendsto_id
   have h2 : Tendsto (fun K : ℝ => Real.exp (-(c * K))) atTop (nhds 0) :=
     Real.tendsto_exp_neg_atTop_nhds_zero.comp h1
-  have h3 : (1 : ℝ) = 1 - 0 := by ring
-  rw [h3]
-  exact Tendsto.const_sub h2 1
+  convert tendsto_const_nhds.sub h2 using 1
+  ring_nf
 
 /- ## Part IV.c: Polynomial Gap Analysis -/
 
@@ -295,19 +295,20 @@ theorem polynomial_gap_antitone (c : ℝ) (hc : 0 < c) (K₁ K₂ : ℝ) (hK₁ 
     (hK : K₁ ≤ K₂) :
     c / K₂ ^ 2 ≤ c / K₁ ^ 2 := by
   apply div_le_div_of_nonneg_left (by linarith) (by positivity)
-  exact pow_le_pow_left (le_of_lt hK₁) hK 2
+  exact pow_le_pow_left₀ hK₁.le hK 2
 
 /-- The polynomial gap c/K² tends to 0 as K → ∞. -/
 theorem polynomial_gap_tends_to_zero (c : ℝ) :
     Tendsto (fun K : ℝ => c / K ^ 2) atTop (nhds 0) := by
   have h : Tendsto (fun K : ℝ => K ^ 2) atTop atTop :=
-    tendsto_pow_atTop (by norm_num : 1 < 2)
+    tendsto_pow_atTop (by norm_num : 2 ≠ 0)
   have h2 : Tendsto (fun K : ℝ => (K ^ 2)⁻¹) atTop (nhds 0) :=
     tendsto_inv_atTop_zero.comp h
   have h3 : (fun K : ℝ => c / K ^ 2) = (fun K => c * (K ^ 2)⁻¹) := by
     ext K; rw [div_eq_mul_inv]
-  rw [h3, show (0 : ℝ) = c * 0 from by ring]
-  exact Tendsto.const_mul h2 (Or.inr rfl)
+  rw [h3]
+  convert h2.const_mul c using 1
+  ring_nf
 
 /-- Monotonicity of polynomial precision in the constant c:
     If c₁ ≤ c₂ and K ≠ 0, polynomial precision with c₁ implies c₂. -/
@@ -329,8 +330,8 @@ theorem polynomialPrecision_mono_c (n : ℕ) (a : Fin n → ℕ) (c₁ c₂ K : 
     This is the "first-order Taylor" bound for the exponential. -/
 theorem exp_neg_le_inv_one_add (x : ℝ) (hx : 0 ≤ x) :
     Real.exp (-x) ≤ 1 / (1 + x) := by
-  rw [Real.exp_neg, div_le_div_iff (by positivity : (0 : ℝ) < Real.exp x) (by linarith)]
-  linarith [Real.add_one_le_exp x]
+  rw [Real.exp_neg, inv_eq_one_div]
+  exact one_div_le_one_div_of_le (by linarith) (by linarith [Real.add_one_le_exp x])
 
 /-- The exponential precision window is at least as large as 1 - 1/(1+cK)
     for c > 0 and K > 0, giving a concrete rational lower bound on the gap. -/
@@ -344,6 +345,7 @@ theorem one_sub_inv_one_add (t : ℝ) (ht : t ≠ -1) :
     1 - 1 / (1 + t) = t / (1 + t) := by
   have h1t : 1 + t ≠ 0 := by intro h; apply ht; linarith
   field_simp
+  linarith
 
 /-- Combined: the exponential gap is at least cK/(1+cK). -/
 theorem exponential_gap_concrete_bound (c K : ℝ) (hc : 0 < c) (hK : 0 < K) :
@@ -487,14 +489,86 @@ theorem exponentialPrecision_subset_nonempty (n : ℕ) (a : Fin n → ℕ) (c K 
   have h_gap := exponential_gap_nonneg c K hc hK
   linarith
 
-/-- Polynomial precision at (c, K) with c > 0 and K > 1 also gives a nontrivial subset. -/
+/-- Polynomial precision at (c, K) with c ≤ K² gives a nontrivial subset.
+    The hypothesis c ≤ K² ensures 1 - c/K² ≥ 0, making the precision window nontrivial. -/
 theorem polynomialPrecision_subset_sum_pos (n : ℕ) (a : Fin n → ℕ) (c K : ℝ)
-    (hc : 0 < c) (hK : 1 < K) :
+    (hc : 0 < c) (hK : 1 < K) (hcK : c ≤ K ^ 2) :
     hasPolynomialPrecision n a c K →
     ∃ S : Finset (Fin n), 0 < subsetReciprocalSum n a S ∧ subsetReciprocalSum n a S ≤ 1 := by
   intro ⟨S, hlo, hhi⟩
   refine ⟨S, ?_, hhi⟩
-  have : 0 < c / K ^ 2 := by positivity
+  have hK2 : (0 : ℝ) < K ^ 2 := by positivity
+  have : c / K ^ 2 ≤ 1 := by rwa [div_le_one hK2]
+  linarith
+
+/- ## Part VII: Maximal Feasible Subsets and the Gap Bound
+
+The greedy approach to the Erdős-Graham problem: identify subsets with reciprocal
+sum close to 1 via maximal feasible subsets. A subset is "feasible" if its sum
+is at most 1; it is "maximal" if adding any element exceeds 1. For maximal
+feasible S and any j ∉ S, we have sum(S) > 1 - 1/a(j), bounding the gap. -/
+
+/-- A subset S is feasible if its reciprocal sum does not exceed 1. -/
+def isFeasible (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n)) : Prop :=
+  subsetReciprocalSum n a S ≤ 1
+
+/-- The empty set is always feasible (sum = 0 ≤ 1). -/
+theorem empty_isFeasible (n : ℕ) (a : Fin n → ℕ) : isFeasible n a ∅ := by
+  simp [isFeasible, subsetReciprocalSum]
+
+/-- If the total reciprocal sum exceeds 1, the full set is not feasible. -/
+theorem univ_not_feasible (n : ℕ) (a : Fin n → ℕ)
+    (h : 1 < reciprocalSum n a) : ¬ isFeasible n a Finset.univ := by
+  simp only [isFeasible, univ_subsetSum_eq_totalSum, not_le]
+  exact h
+
+/-- Maximal feasible subsets exist: among subsets with reciprocal sum ≤ 1,
+    there is one where adding any element would push the sum above 1.
+    Proof: choose a feasible subset of maximum cardinality. -/
+theorem maximal_feasible_exists (n : ℕ) (a : Fin n → ℕ) :
+    ∃ S : Finset (Fin n), isFeasible n a S ∧
+      ∀ j : Fin n, j ∉ S → ¬ isFeasible n a (insert j S) := by
+  classical
+  let F := (Finset.univ : Finset (Finset (Fin n))).filter (isFeasible n a)
+  have hF : F.Nonempty :=
+    ⟨∅, Finset.mem_filter.mpr ⟨Finset.mem_univ _, empty_isFeasible n a⟩⟩
+  obtain ⟨S, hS, hS_max⟩ := F.exists_max_image Finset.card hF
+  refine ⟨S, (Finset.mem_filter.mp hS).2, fun j hj hc => ?_⟩
+  have h1 := hS_max (insert j S) (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hc⟩)
+  rw [Finset.card_insert_of_notMem hj] at h1
+  omega
+
+/-- The gap bound for maximal feasible subsets:
+    If S has sum ≤ 1 and adding any j ∉ S pushes sum above 1,
+    then sum(S) > 1 - 1/a(j). This follows from sum(S) + 1/a(j) > 1. -/
+theorem maximalFeasible_gap_bound (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n))
+    (hmax : ∀ j : Fin n, j ∉ S → ¬ isFeasible n a (insert j S))
+    (j : Fin n) (hj : j ∉ S) :
+    1 - (a j : ℝ)⁻¹ < subsetReciprocalSum n a S := by
+  have h := hmax j hj
+  simp only [isFeasible, not_le] at h
+  have h_eq := subsetReciprocalSum_insert n a S j hj
+  linarith
+
+/-- If the total reciprocal sum exceeds 1 and all elements are at least m > 0,
+    then there exists a subset S with 1 - 1/m < sum(S) ≤ 1.
+    This provides a constructive gap bound for the Erdős-Graham problem:
+    larger minimum element yields tighter approximation to 1. -/
+theorem subset_near_one (n : ℕ) (a : Fin n → ℕ) (m : ℕ) (hm : 0 < m)
+    (ha : ∀ i, m ≤ a i) (htotal : 1 < reciprocalSum n a) :
+    ∃ S : Finset (Fin n), 1 - (m : ℝ)⁻¹ < subsetReciprocalSum n a S ∧
+      subsetReciprocalSum n a S ≤ 1 := by
+  obtain ⟨S, hfeas, hmax⟩ := maximal_feasible_exists n a
+  have hS_ne : S ≠ Finset.univ := by
+    intro heq; rw [heq, isFeasible, univ_subsetSum_eq_totalSum] at hfeas; linarith
+  obtain ⟨j, hj⟩ : ∃ j, j ∉ S := by
+    by_contra h; push_neg at h
+    exact hS_ne (Finset.eq_univ_iff_forall.mpr h)
+  refine ⟨S, ?_, hfeas⟩
+  have h_gap := maximalFeasible_gap_bound n a S hmax j hj
+  have h_inv : (a j : ℝ)⁻¹ ≤ (m : ℝ)⁻¹ := by
+    rw [inv_eq_one_div, inv_eq_one_div]
+    exact one_div_le_one_div_of_le (by exact_mod_cast hm) (by exact_mod_cast ha j)
   linarith
 
 /- ## Part VI: Summary -/

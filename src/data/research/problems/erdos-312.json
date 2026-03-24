@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-12T23:55:09.603Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,9 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added Part VII (maximal feasible subsets, gap bound, constructive approximation). Fixed 9 pre-existing Mathlib API breakages. File now compiles cleanly (589 lines, 50 theorems, 7 defs, 1 axiom, 0 sorries).",
+    "builtItems": [
+      "isFeasible def: subset with reciprocal sum ≤ 1",
+      "maximal_feasible_exists theorem: proved via max-cardinality argument",
+      "maximalFeasible_gap_bound theorem: sum(S) > 1 - 1/a(j)",
+      "subset_near_one theorem: constructive gap bound for Erdős-Graham",
+      "Fixed all pre-existing compilation errors (9 broken proofs)"
+    ],
+    "insights": [
+      "Maximal feasible subset technique: among subsets with sum ≤ 1, choose max cardinality. Adding any element exceeds 1.",
+      "Gap bound: for maximal feasible S and j ∉ S, sum(S) > 1 - 1/a(j). Follows from sum(S) + 1/a(j) > 1.",
+      "subset_near_one: if total sum > 1 and all a(i) ≥ m, then ∃ S with sum ∈ (1-1/m, 1].",
+      "Fixed 9 pre-existing Mathlib API breakages (pow_le_pow_left, Tendsto, div_le_div_iff, etc.)"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #312 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]\n\n\n\nErd\\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #311\n- Problem #313\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
@@ -50,7 +61,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T23:55:09.603Z",
-  "lastUpdate": "2026-03-13T07:52:17.045Z",
+  "lastUpdate": "2026-03-23T22:31:40.287738Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
