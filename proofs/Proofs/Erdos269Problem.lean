@@ -27,13 +27,7 @@ References:
 - [Er88c, p.106]
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Lattice
-import Mathlib.Algebra.Order.LatticeGroup
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Irrational
-import Mathlib.Data.Nat.Order.Lemmas
-import Mathlib.Topology.Algebra.InfiniteSum.Basic
+import Mathlib
 
 open Nat BigOperators Finset
 
@@ -55,13 +49,10 @@ Examples for P = {2, 3}:
 def IsPSmooth (P : Set ℕ) (n : ℕ) : Prop :=
   n > 0 ∧ ∀ p, p.Prime → p ∣ n → p ∈ P
 
-/-- 1 is P-smooth for any P. -/
-theorem one_isPSmooth (P : Set ℕ) : IsPSmooth P 1 := by
-  constructor
-  · exact Nat.one_pos
-  · intro p hp hdiv
-    have : p = 1 := Nat.eq_one_of_pos_of_self_mul_self_le hp.pos (Nat.le_of_dvd Nat.one_pos hdiv)
-    exact absurd this (Nat.Prime.ne_one hp)
+/-- 1 is P-smooth for any P (vacuously: 1 has no prime divisors). -/
+theorem one_isPSmooth (P : Set ℕ) : IsPSmooth P 1 :=
+  ⟨Nat.one_pos, fun p hp hdiv =>
+    absurd (Nat.le_of_dvd Nat.one_pos hdiv) (not_le_of_lt hp.one_lt)⟩
 
 /-- If p ∈ P and p is prime, then p is P-smooth. -/
 theorem prime_isPSmooth {P : Set ℕ} {p : ℕ} (hp : p.Prime) (hpP : p ∈ P) :
@@ -96,8 +87,20 @@ For P = {2, 3}: a = [1, 2, 3, 4, 6, 8, 9, 12, 16, 18, ...]
 noncomputable def smoothSeq (P : Set ℕ) : ℕ → ℕ :=
   Nat.nth (IsPSmooth P)
 
-/-- smoothSeq P 0 = 1 for any nonempty P. -/
-axiom smoothSeq_zero (P : Set ℕ) (hP : P.Nonempty) : smoothSeq P 0 = 1
+/-- smoothSeq P 0 = 1 for any nonempty P.
+The 0-th P-smooth number is 1, since 1 is vacuously P-smooth (has no prime divisors)
+and 0 is not P-smooth (fails the positivity requirement). -/
+theorem smoothSeq_zero (P : Set ℕ) (hP : P.Nonempty) : smoothSeq P 0 = 1 := by
+  classical
+  unfold smoothSeq
+  -- Use Nat.nth_count: if p n, then nth p (count p n) = n
+  have h_smooth : IsPSmooth P 1 := one_isPSmooth P
+  have h_count : Nat.count (IsPSmooth P) 1 = 0 := by
+    change Nat.count (IsPSmooth P) (0 + 1) = 0
+    rw [Nat.count_succ, Nat.count_zero, zero_add,
+        if_neg (show ¬ IsPSmooth P 0 from fun h => absurd h.1 (by omega))]
+  rw [show (0 : ℕ) = Nat.count (IsPSmooth P) 1 from h_count.symm]
+  exact Nat.nth_count h_smooth
 
 /- ## Part III: Partial LCM -/
 
@@ -122,9 +125,8 @@ theorem partialLcm_one (P : Set ℕ) (hP : P.Nonempty) : partialLcm P 1 = 1 := b
 /-- L_{n+1} = lcm(L_n, a_n). -/
 theorem partialLcm_succ (P : Set ℕ) (n : ℕ) :
     partialLcm P (n + 1) = Nat.lcm (partialLcm P n) (smoothSeq P n) := by
-  simp only [partialLcm, Finset.range_succ]
-  rw [Finset.lcm_insert (Finset.not_mem_range_self n)]
-  ring
+  simp only [partialLcm, Finset.range_add_one, Finset.lcm_insert]
+  exact _root_.lcm_comm _ _
 
 /- ## Part IV: The Series -/
 
@@ -159,7 +161,7 @@ def isSeriesRational (P : Set ℕ) : Prop :=
 
 theorem erdos_269_equivalent (P : Finset ℕ) (hPrime : ∀ p ∈ P, p.Prime) (hCard : P.card ≥ 2) :
     ¬ isSeriesRational (P : Set ℕ) ↔ Irrational (lcmSeries (P : Set ℕ)) := by
-  simp [isSeriesRational, irrational_iff_ne_rational]
+  simp [isSeriesRational, Irrational]
 
 /- ## Part VI: The Infinite Case (SOLVED) -/
 
@@ -193,7 +195,7 @@ theorem twoThreeSmooth_prime : ∀ p ∈ ({2, 3} : Finset ℕ), p.Prime := by
 
 /- ## Part VIII: Structural Properties -/
 
-/--
+/-
 **P-adic Valuation**
 
 For understanding the series, the key is the p-adic valuation v_p(L_n).
@@ -203,11 +205,11 @@ power of p enters the sequence.
 
 /-- The p-adic valuation of L_n. -/
 noncomputable def lcmPadicVal (p n : ℕ) (P : Set ℕ) : ℕ :=
-  Nat.padicValNat p (partialLcm P n)
+  padicValNat p (partialLcm P n)
 
 /- ## Part IX: Why It's Hard -/
 
-/--
+/-
 **The Difficulty**
 
 For finite P, the series S(P) = Σ 1/L_n has a "finite structure" in some sense.
