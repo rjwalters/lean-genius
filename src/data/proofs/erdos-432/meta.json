@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Problem statement: how dense can $A + B$ be if all elements are pairwise coprime? Source: Straus, via Erdős-Graham (1980). Imports Mathlib for natural number basics, GCD/coprimality, Finset, and tactics.",
+      "mathContext": "Given $A, B \\subseteq \\mathbb{N}$ infinite, the sumset $A + B = \\{a + b : a \\in A, b \\in B\\}$ is pairwise coprime iff $\\gcd(s_1, s_2) = 1$ for all distinct $s_1, s_2 \\in A + B$. How dense can $A + B$ be? The pairwise coprimality forces each prime $p$ to divide at most one element of $A + B$, severely constraining density."
+    },
+    {
       "id": "sumsets",
       "title": "Part I: Sumsets",
       "startLine": 30,
