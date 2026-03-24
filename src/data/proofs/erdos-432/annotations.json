@@ -1,5 +1,26 @@
 [
   {
+    "id": "erdos-432-header",
+    "proofId": "erdos-432",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "title": "Problem Statement, Imports, and Namespace",
+    "content": "The module docstring introduces Erdős Problem #432 (Straus, via Erdős-Graham 1980, p.85): given infinite A, B ⊆ ℕ with A + B pairwise coprime, how dense can A + B be? The four Mathlib imports provide `Nat.Coprime` (GCD-based coprimality), `Finset.Basic` (for the counting function filter/card), and `Tactic` for proof automation. The `Erdos432` namespace encapsulates all definitions.",
+    "significance": "supporting",
+    "mathContext": "The problem sits at the additive-multiplicative interface: sumsets are additive objects ($A + B = \\{a + b\\}$) while pairwise coprimality is a multiplicative constraint ($\\gcd(x,y) = 1$). The Mathlib imports suffice for the formalization since the problem requires only elementary number theory — the deep tools (sieve methods, Green-Tao) would be needed for a resolution, not the statement.",
+    "relatedConcepts": [
+      "Erdős-Graham 1980",
+      "Straus",
+      "additive-multiplicative interface"
+    ],
+    "prerequisites": [
+      "Mathlib basics"
+    ]
+  },
+  {
     "id": "erdos-432-sumset",
     "proofId": "erdos-432",
     "type": "definition",
@@ -116,7 +137,7 @@
   {
     "id": "erdos-432-prime-unique",
     "proofId": "erdos-432",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 106,
       "endLine": 111
@@ -140,13 +161,13 @@
   {
     "id": "erdos-432-bound",
     "proofId": "erdos-432",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 118,
       "endLine": 121
     },
     "title": "Coprime Set Density Bound",
-    "content": "A pairwise coprime subset of {1,...,n} has at most π(n) + 1 elements. Each element > 1 has a distinct smallest prime factor, and there are π(n) primes ≤ n.",
+    "content": "A pairwise coprime subset of {1,...,n} has at most π(n) + 1 elements. Each element > 1 has a distinct smallest prime factor, and there are π(n) primes ≤ n.\n\n**Discrepancy**: The Lean axiom states `countingFn S n ≤ n`, which is trivially true for any subset of {1,...,n} — it provides NO non-trivial information. The mathematical bound of π(n) + 1 described here is NOT formalized. To be useful, the axiom should state `countingFn S n ≤ primeCounting n + 1` where `primeCounting` is Nat.primeCounting or equivalent.",
     "significance": "key",
     "mathContext": "The proof: for each m > 1, let p(m) be its smallest prime factor. If m₁ ≠ m₂ both have smallest prime factor p, then p | gcd(m₁, m₂), contradicting coprimality. So m ↦ p(m) is injective from {elements > 1} to {primes ≤ n}, giving at most π(n) elements > 1, plus 1 itself. This bound is **tight**: {1} ∪ {p : p prime, p ≤ n} achieves it. For Problem #432, this gives countingFn(A + B, n) ≤ π(n) + 1. The deep question is whether the sumset structure of A + B prevents achieving this bound — does requiring A + B = {a + b : a ∈ A, b ∈ B} force a sparser coprime set than a 'free' construction?",
     "relatedConcepts": [
@@ -169,7 +190,7 @@
       "endLine": 130
     },
     "title": "Connection to Ostmann's Problem (#431)",
-    "content": "Ostmann's problem (#431) asks about additive complements: when A + B covers all (or almost all) of ℕ. Problem #432 imposes the opposite — the sumset must be thin (pairwise coprime). Together they bracket sumset behavior under structural constraints.",
+    "content": "Ostmann's problem (#431) asks about additive complements: when A + B covers all (or almost all) of ℕ. Problem #432 imposes the opposite — the sumset must be thin (pairwise coprime). Together they bracket sumset behavior under structural constraints.\n\n**Note**: The Lean declaration `axiom ostmann_connection : True` is a placeholder — it states `True` rather than any meaningful relationship between Problems #431 and #432. This axiom contributes no mathematical content and could be removed without affecting the formalization.",
     "significance": "key",
     "mathContext": "**Ostmann's conjecture** states that if A + B contains all sufficiently large integers, then A and B cannot both be 'thin'. Problem #432 goes the other direction: if A + B is required to be 'multiplicatively thin' (pairwise coprime), how 'additively thick' can it still be? Straus was motivated by the observation that Ostmann's problem becomes qualitatively different when coprimality is imposed. The problems share a common theme: understanding which subsets of ℕ can be sumsets, and how structural properties (density for #431, coprimality for #432) constrain the component sets A, B. Both appear in Erdős-Graham (1980), pp. 84–85.",
     "relatedConcepts": [

@@ -69,7 +69,10 @@
       "**Millennium Prize Implications:** RH implies the best error bounds in the Prime Number Theorem, sharp estimates for prime gaps, and the truth of the Lindelöf hypothesis. Its proof (or disproof) would transform analytic number theory."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Complex analysis (analytic continuation, meromorphic functions, contour integration)",
+      "Analytic number theory (Dirichlet series, Euler products, prime counting function $\\pi(x)$)",
+      "Special functions (Gamma function, Riemann zeta function $\\zeta(s)$)",
+      "Algebraic number theory (Dirichlet $L$-functions, Artin $L$-functions)"
     ]
   },
   "sections": [
@@ -78,14 +81,16 @@
       "title": "Parts I-VIII: Foundations and Statement",
       "startLine": 1,
       "endLine": 700,
-      "summary": "Basic definitions (critical line, strip, zeros), formal RH statement, known facts about zeros (trivial zeros, functional equation, zero symmetry), equivalent formulations (Robin, Mertens, prime counting), partial results (Hardy, Selberg, zero-free region), computational verification, and consequences."
+      "summary": "Basic definitions (critical line, strip, zeros), formal RH statement, known facts about zeros (trivial zeros, functional equation, zero symmetry), equivalent formulations (Robin, Mertens, prime counting), partial results (Hardy, Selberg, zero-free region), computational verification, and consequences.",
+      "mathContext": "RH: $\\zeta(\\rho) = 0$ and $0 < \\text{Re}(\\rho) < 1 \\Rightarrow \\text{Re}(\\rho) = 1/2$. Euler product: $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$."
     },
     {
       "id": "conjugation-equivalences",
       "title": "Parts IX-XV: Conjugation and Equivalences",
       "startLine": 700,
       "endLine": 1700,
-      "summary": "Zeta conjugation symmetry (proved for Re(s)>1), Nyman-Beurling criterion, GRH definition and GRH→RH proof, de Bruijn-Newman constant (Rodgers-Tao, upper bound, RH↔Λ=0), Lagarias inequality, Speiser criterion, explicit zeta values at negative integers."
+      "summary": "Zeta conjugation symmetry (proved for Re(s)>1), Nyman-Beurling criterion, GRH definition and GRH→RH proof, de Bruijn-Newman constant (Rodgers-Tao, upper bound, RH↔Λ=0), Lagarias inequality, Speiser criterion, explicit zeta values at negative integers.",
+      "mathContext": "GRH: $L(\\rho, \\chi) = 0 \\Rightarrow \\text{Re}(\\rho) = 1/2$ for all Dirichlet $L$-functions. de Bruijn-Newman: RH $\\iff \\Lambda = 0$ (Rodgers-Tao 2018: $\\Lambda \\geq 0$)."
     },
     {
       "id": "deep-theory",
@@ -113,7 +118,8 @@
       "title": "Part XLVIII: Li's Criterion and K₁₀",
       "startLine": 5377,
       "endLine": 5772,
-      "summary": "Li's criterion (1997): RH ↔ all Li coefficients λₙ ≥ 0. Extends the equivalence network from K₉ to K₁₀ with 45 pairwise equivalences. Keiper's conjecture (strict positivity and monotonicity), Bombieri-Lagarias generalization to L-functions, GRH implies all 10 formulations, single negative Li coefficient disproves everything."
+      "summary": "Li's criterion (1997): RH ↔ all Li coefficients λₙ ≥ 0. Extends the equivalence network from K₉ to K₁₀ with 45 pairwise equivalences. Keiper's conjecture (strict positivity and monotonicity), Bombieri-Lagarias generalization to L-functions, GRH implies all 10 formulations, single negative Li coefficient disproves everything.",
+      "mathContext": "Li's criterion: RH $\\iff \\lambda_n \\geq 0$ for all $n \\geq 1$, where $\\lambda_n = \\sum_\\rho [1 - (1-1/\\rho)^n]$. Network: 10 equivalent formulations, $\\binom{10}{2} = 45$ pairwise equivalences."
     },
     {
       "id": "moment-conjectures",

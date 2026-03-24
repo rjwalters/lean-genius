@@ -109,7 +109,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #14 in 104 lines of Lean 4, encoding the unique-sum representation problem with both finite and infinite versions, the two open conjectures, ESS bounds ($O(N^{1/2+\\varepsilon})$ eventually, $\\Omega(N^{1/3-\\varepsilon})$ frequently), the Erdős-Freud finite analogue, and structural observations about Sidon sets. Zero sorries; all deep results axiomatized.",
-    "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of unique representation in additive combinatorics.\n\n**Broader Connections**: If conjecture (a) holds, it establishes $\\sqrt{N}$ as a universal barrier — no set can achieve better than $\\sim \\sqrt{N}$ non-unique sums. This connects to the broader theory of additive bases, Sidon sets, and the probabilistic method in combinatorial number theory.",
+    "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of unique representation in additive combinatorics.\n\nIf conjecture (a) holds, it establishes $\\sqrt{N}$ as a universal barrier — no set can achieve better than $\\sim \\sqrt{N}$ non-unique sums. This connects to the broader theory of additive bases, Sidon sets, and the probabilistic method in combinatorial number theory.",
     "openQuestions": [
       "Is $f_A(N) \\gg N^{1/2-\\varepsilon}$ for all $A$ and all large $N$? This is conjecture (a), the main open question.",
       "Can $f_A(N) = o(\\sqrt{N})$ for some $A$? This is conjecture (b), which if true would refute (a).",

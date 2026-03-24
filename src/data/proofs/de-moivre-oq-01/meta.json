@@ -127,7 +127,7 @@
   ],
   "conclusion": {
     "summary": "The formalization affirmatively answers the open question: yes, the explicit polynomial extraction of cos(nθ) and sin(nθ) from De Moivre's theorem can be fully formalized in Lean 4. The proof is complete with 19 theorems/lemmas and 0 sorries. The key chain is: De Moivre → Chebyshev polynomials T_n and U_n → explicit recurrences → concrete formulas for n = 2, 3, 4, 5 → general recurrence for all integers.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Chebyshev = De Moivre**: The formalization makes explicit that Chebyshev polynomials of the first and second kind are precisely the polynomials arising from De Moivre's theorem.\n\n2.\n\n**Broader Connections**: **Integer n**: The formulas work for all integers n (including negative), not just natural numbers, because Mathlib's Chebyshev polynomials are ℤ-indexed.\n\n3. **Works Over Any Ring**: The Chebyshev polynomial recurrences hold over any commutative ring, making the algebraic structure entirely ring-theoretic.\n\n4. **Educational Connection**: Students learning trigonometry and complex numbers can see that the pattern cos(nθ) = 4cos³θ - 3cosθ (for n=3) is not a coincidence but a manifestation of the Chebyshev polynomial T_3 = 4X³ - 3X.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Chebyshev = De Moivre**: The formalization makes explicit that Chebyshev polynomials of the first and second kind are precisely the polynomials arising from De Moivre's theorem.\n\n**2. Integer n**: The formulas work for all integers n (including negative), not just natural numbers, because Mathlib's Chebyshev polynomials are ℤ-indexed.\n\n3. **Works Over Any Ring**: The Chebyshev polynomial recurrences hold over any commutative ring, making the algebraic structure entirely ring-theoretic.\n\n4. **Educational Connection**: Students learning trigonometry and complex numbers can see that the pattern cos(nθ) = 4cos³θ - 3cosθ (for n=3) is not a coincidence but a manifestation of the Chebyshev polynomial T_3 = 4X³ - 3X.",
     "openQuestions": [
       "Can the binomial expansion formula for cos(nθ) (with alternating sums of binomial coefficients) be formally derived and connected to T_n?",
       "Can the Chebyshev connection be extended to complex or p-adic settings?",
@@ -176,5 +176,15 @@
       "venue": "Mémoires des Savants étrangers présentés à l'Académie de Saint-Pétersbourg",
       "note": "Introduced T_n and U_n polynomials, capturing the multiple-angle structure"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "de-moivre"
   ]
 }

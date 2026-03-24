@@ -161,7 +161,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #465 is completely solved. Both conjectures are true: N(X,δ) = o(X) (Sárközy 1976 with bound X/log log X) and N(X,δ) < X^{1/2+o(1)} (Konyagin 2001 with optimal bound C_δ·X^{1/2}). The matching lower bound from Problem #466 proves N(X,δ) ≍ X^{1/2}, determining the growth exponent exactly.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Diophantine Geometry**: The result quantifies how the arithmetic structure of distances (proximity to integers) constrains geometric packing. The exponent 1/2 emerges from a balance between the number of distance constraints (quadratic in n) and the geometric degrees of freedom (linear in X).\n\n2. **Exponential Sum Techniques**: Konyagin's proof showcases the power of Fourier analysis in combinatorial geometry. The exponential sums S(t) = Σ e^{2πi t d_{ij}} translate distance-avoidance into analytic estimates, a technique applicable throughout additive combinatorics and harmonic analysis.\n\n3.\n\n**Broader Connections**: **Optimal Exponents**: The tight result N(X,δ) ≍ X^{1/2} is a rare complete answer in combinatorial geometry — both the exponent and its tightness are established. This contrasts with many Erdős problems where gaps between upper and lower bounds persist.\n\n4. **Connection to Problem #466**: The upper (#465) and lower (#466) bound problems together determine the exact growth rate. This paired structure — one problem for each direction — is characteristic of Erdős's approach to extremal problems.\n\n5. **Comparison with Lattice Structure**: The √X threshold reflects the density of lattice points with integer distances. Points 'generically' have irrational distances, but in a disk of radius X, the lattice creates O(X²) integer-distance pairs that must be avoided.",
+    "implications": "1. **Diophantine Geometry**: The result quantifies how the arithmetic structure of distances (proximity to integers) constrains geometric packing. The exponent 1/2 emerges from a balance between the number of distance constraints (quadratic in n) and the geometric degrees of freedom (linear in X).\n\n2. **Exponential Sum Techniques**: Konyagin's proof showcases the power of Fourier analysis in combinatorial geometry. The exponential sums S(t) = Σ e^{2πi t d_{ij}} translate distance-avoidance into analytic estimates, a technique applicable throughout additive combinatorics and harmonic analysis.\n\n**3. Optimal Exponents**: The tight result N(X,δ) ≍ X^{1/2} is a rare complete answer in combinatorial geometry — both the exponent and its tightness are established. This contrasts with many Erdős problems where gaps between upper and lower bounds persist.\n\n4. **Connection to Problem #466**: The upper (#465) and lower (#466) bound problems together determine the exact growth rate. This paired structure — one problem for each direction — is characteristic of Erdős's approach to extremal problems.\n\n5. **Comparison with Lattice Structure**: The √X threshold reflects the density of lattice points with integer distances. Points 'generically' have irrational distances, but in a disk of radius X, the lattice creates O(X²) integer-distance pairs that must be avoided.",
     "openQuestions": [
       "What is the exact dependence of the constant C_δ on δ in Konyagin's bound? Is C_δ polynomial, exponential, or worse in 1/δ?",
       "What is the higher-dimensional analogue? Is N_d(X,δ) ≍ X^{d/2} in ℝ^d?",
@@ -187,5 +187,51 @@
     "axiomCount": 15,
     "theoremCount": 7,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Direct companion: provides the matching lower bound N(X,δ) ≫_δ X^{1/2}, proving the exponent 1/2 is optimal. Together with #465's upper bound, gives N(X,δ) ≍ X^{1/2}"
+    },
+    {
+      "targetId": "erdos-953",
+      "relationship": "related",
+      "description": "Measure-theoretic variant: asks for the maximum measure M(r) of a measurable set in B(0,r) avoiding integer distances, with bounds r^{0.26} ≤ M(r) ≤ O(r)"
+    },
+    {
+      "targetId": "erdos-464",
+      "relationship": "related",
+      "description": "Shares Diophantine approximation techniques: studies density of fractional parts {θn_k} for lacunary sequences, solved by de Mathan/Pollington (1979-80)"
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Distance geometry companion: asks if diameter must grow with n for points with integer distances and spacing constraints, bounds n^{3/4} to n/log n"
+    },
+    {
+      "targetId": "erdos-254",
+      "relationship": "related",
+      "description": "Connects additive combinatorics with Diophantine approximation: subset sum representation involving fractional parts {θn}"
+    },
+    {
+      "targetId": "erdos-1127",
+      "relationship": "related",
+      "description": "Set-theoretic variant on distance constraints: decomposing ℝⁿ into countably many sets with distinct pairwise distances, solved under CH"
+    },
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Uses Diophantine approximation techniques: generalized totient φ_A with Cesàro averages and fraction denominators, solved by Haight"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-466",
+    "erdos-953",
+    "erdos-464",
+    "erdos-100",
+    "erdos-254",
+    "erdos-1127",
+    "erdos-1000"
+  ]
 }

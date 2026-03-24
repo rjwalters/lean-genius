@@ -15,7 +15,12 @@
       "sign changes",
       "La Géométrie"
     ],
-    "mathContext": "See annotation content for formal details of descartes' rule of signs: wiedijk #100"
+    "mathContext": "Descartes' Rule: the number of positive real roots of $p(x) = \\sum a_k x^k$ (counted with multiplicity) is at most the number of sign changes in the coefficient sequence $(a_n, a_{n-1}, \\ldots, a_0)$ (ignoring zeros), and the difference is even. Wiedijk 100 theorem #100.",
+    "prerequisites": [
+      "polynomial algebra",
+      "real analysis",
+      "Wiedijk 100 list"
+    ]
   },
   {
     "id": "ann-sign-changes",
@@ -33,6 +38,11 @@
       "oppositeSign",
       "coefficient sequence",
       "skipping zeros"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "list operations",
+      "sign function"
     ]
   },
   {
@@ -51,6 +61,11 @@
       "coeffSequence",
       "countPositiveRoots",
       "Multiset"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff",
+      "Multiset",
+      "coefficient extraction"
     ]
   },
   {
@@ -69,6 +84,11 @@
       "Rolle's theorem",
       "induction",
       "parity"
+    ],
+    "prerequisites": [
+      "Rolle's theorem",
+      "mathematical induction",
+      "polynomial division"
     ]
   },
   {
@@ -87,6 +107,11 @@
       "negSubst",
       "comp",
       "negative roots"
+    ],
+    "prerequisites": [
+      "polynomial composition",
+      "negSubst",
+      "Polynomial.comp"
     ]
   },
   {
@@ -105,6 +130,11 @@
       "examples",
       "verification",
       "norm_num"
+    ],
+    "prerequisites": [
+      "norm_num tactic",
+      "native_decide",
+      "polynomial evaluation"
     ]
   },
   {
@@ -123,6 +153,11 @@
       "positive coefficients",
       "alternating signs",
       "tight bound"
+    ],
+    "prerequisites": [
+      "monotonicity",
+      "intermediate value theorem",
+      "positive coefficients"
     ]
   },
   {
@@ -141,6 +176,11 @@
       "Rolle's theorem",
       "derivative",
       "Mean Value Theorem"
+    ],
+    "prerequisites": [
+      "Rolle's theorem",
+      "mean value theorem",
+      "derivative"
     ]
   },
   {
@@ -159,6 +199,11 @@
       "Vincent's theorem",
       "root isolation"
     ],
-    "mathContext": "See annotation content for formal details of applications and significance"
+    "mathContext": "Sturm's theorem (1829) gives an exact count of real roots in an interval using a Sturm chain of polynomial GCD remainders. Descartes' rule is weaker (only an upper bound) but simpler to compute. Both are used in Collins' CAD algorithm and in computer algebra systems for real root isolation.",
+    "prerequisites": [
+      "Sturm's theorem",
+      "root isolation",
+      "computational algebra"
+    ]
   }
 ]

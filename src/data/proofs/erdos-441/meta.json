@@ -163,7 +163,7 @@
   ],
   "conclusion": {
     "summary": "Erdős' question about whether his two-part construction is optimal has a negative answer. While Chen (1998) confirmed the asymptotic g(N) ~ √(9N/8) — showing the construction captures the correct leading term — Chen and Dai (2006) proved that for infinitely many N, strictly larger LCM-bounded sets exist by exploiting divisor-rich integers that the rigid construction misses.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Natural Constructions Can Be Suboptimal**: Even when a construction achieves the correct asymptotic, its rigid structure may miss problem-specific opportunities. This is a recurring theme in extremal combinatorics (cf. Ramsey constructions, Turán graphs).\n\n2. **Multiplicative vs Additive Structure**: The LCM constraint lcm(a,b) = ab/gcd(a,b) ≤ N fundamentally differs from additive constraints (a+b ≤ N).\n\n**Broader Connections**: The multiplicative structure creates rich interactions between elements based on their prime factorizations, making optimal sets depend on the detailed arithmetic of N.\n\n3. **Error Term Analysis**: The gap between the construction (√(9N/8) + O(1)) and the upper bound (√(9N/8) + O(√(N/log N)·log log N)) is where the action happens. Improving the error term would characterize exactly which N values are counterexamples.\n\n4. **Highly Composite Numbers**: The counterexamples arise from N values near highly composite numbers, where the divisor-rich structure creates additional LCM-compatible elements. This connects to Ramanujan's study of highly composite numbers and the Wigert-type bounds on d(n).\n\n5. **Formal Verification**: The proof that ¬ErdosQuestion follows from ConstructionNotOptimal is one of the cleanest examples of Lean's omega tactic resolving a contradiction between a universal and existential statement.",
+    "implications": "1. **Natural Constructions Can Be Suboptimal**: Even when a construction achieves the correct asymptotic, its rigid structure may miss problem-specific opportunities. This is a recurring theme in extremal combinatorics (cf. Ramsey constructions, Turán graphs).\n\n2. **Multiplicative vs Additive Structure**: The LCM constraint lcm(a,b) = ab/gcd(a,b) ≤ N fundamentally differs from additive constraints (a+b ≤ N).\n\nThe multiplicative structure creates rich interactions between elements based on their prime factorizations, making optimal sets depend on the detailed arithmetic of N.\n\n3. **Error Term Analysis**: The gap between the construction (√(9N/8) + O(1)) and the upper bound (√(9N/8) + O(√(N/log N)·log log N)) is where the action happens. Improving the error term would characterize exactly which N values are counterexamples.\n\n4. **Highly Composite Numbers**: The counterexamples arise from N values near highly composite numbers, where the divisor-rich structure creates additional LCM-compatible elements. This connects to Ramanujan's study of highly composite numbers and the Wigert-type bounds on d(n).\n\n5. **Formal Verification**: The proof that ¬ErdosQuestion follows from ConstructionNotOptimal is one of the cleanest examples of Lean's omega tactic resolving a contradiction between a universal and existential statement.",
     "openQuestions": [
       "What is the exact structure of optimal LCM-bounded sets for the counterexample values of N? Do they always extend Erdős' construction by adding specific highly composite numbers?",
       "Can the Chen-Dai upper bound error term O(√(N/log N)·log log N) be improved to O(√(N/log N)) or even O((log N)^C)?",
@@ -191,5 +191,57 @@
     "axiomCount": 14,
     "theoremCount": 6,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-440",
+      "relationship": "related",
+      "description": "Sibling LCM problem studying liminf of counting function A(x) for sets where consecutive elements have small LCM; same multiplicative structure"
+    },
+    {
+      "targetId": "erdos-442",
+      "relationship": "related",
+      "description": "Tao's 2024 result on density-LCM relationship with sharp threshold exp(√(log log x)·log log log x); extends LCM analysis to dense sets"
+    },
+    {
+      "targetId": "erdos-536",
+      "relationship": "related",
+      "description": "Density threshold for three elements with equal pairwise LCMs [a,b]=[b,c]=[a,c]; directly addresses LCM pairwise conditions in dense sets"
+    },
+    {
+      "targetId": "erdos-542",
+      "relationship": "related",
+      "description": "Schinzel-Szekeres tight bound (31/30) for reciprocal sums of sets with lcm(a,b) > n; extremal bound under complementary LCM constraint"
+    },
+    {
+      "targetId": "erdos-534",
+      "relationship": "related",
+      "description": "Ahlswede-Khachatrian characterization of sets with pairwise gcd > 1; dual problem via the GCD-LCM identity lcm(a,b) = ab/gcd(a,b)"
+    },
+    {
+      "targetId": "erdos-487",
+      "relationship": "related",
+      "description": "Kleitman's 1971 theorem: dense sets must contain a,b,c with lcm(a,b)=c; connects LCM constraints to density-Ramsey theory"
+    },
+    {
+      "targetId": "erdos-402",
+      "relationship": "related",
+      "description": "Graham's GCD conjecture (solved): for any set A, ∃a,b with gcd(a,b) ≤ a/|A|; uses divisibility structure underlying LCM problems"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "Fundamental Euclidean algorithm for computing gcd; the core operation underlying the LCM constraint lcm(a,b) = ab/gcd(a,b)"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-440",
+    "erdos-442",
+    "erdos-536",
+    "erdos-542",
+    "erdos-534",
+    "erdos-487",
+    "erdos-402",
+    "gcd-algorithm"
+  ]
 }

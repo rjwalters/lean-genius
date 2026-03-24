@@ -40,7 +40,7 @@
       }
     ],
     "originalContributions": [
-      "Complete parametric classification",
+      "Bridge formalization connecting Mathlib's classification to pedagogical examples",
       "Verification of classic triples (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29)",
       "Scaling examples (6,8,10) and (9,12,15)"
     ],
@@ -48,7 +48,7 @@
     "wiedijkNumber": 23,
     "axiomCount": 0,
     "lineCount": 268,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Core classification theorem derived from Mathlib's PythagoreanTriple module (isPrimitiveClassified_of_coprime, classified)."
   },
   "overview": {
     "historicalContext": "The Pythagorean triple formula is one of the oldest results in mathematics, with roots stretching back nearly four millennia. The Plimpton 322 clay tablet (c. 1800 BCE), discovered in Iraq in 1922, contains a table of 15 Pythagorean triples including large examples like $(4601, 4800, 6649)$, demonstrating that Babylonian mathematicians understood the parametric generation of these triples long before Pythagoras.\n\nThe systematic study of the formula is traditionally attributed to Euclid, whose *Elements* (Book X, Lemma 1, c. 300 BCE) contains the first known proof that the parametric form $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ generates all primitive triples. Diophantus of Alexandria (c. 250 CE) further developed the theory in his *Arithmetica*, connecting it to rational points on the unit circle — the same geometric insight that underlies the modern proof.\n\nThe result appears as #23 on Freek Wiedijk's list of 100 greatest theorems, reflecting its foundational importance. The classification theorem connects number theory (coprimality, parity), algebra (polynomial identities), and geometry (the unit circle parametrization) in a single elegant statement. It also serves as the historical precursor to Fermat's Last Theorem: while $a^2 + b^2 = c^2$ has infinitely many integer solutions, Fermat conjectured (and Wiles proved in 1995) that $a^n + b^n = c^n$ has none for $n \\geq 3$.",
@@ -134,7 +134,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides the complete classification of Pythagorean triples (Wiedijk #23): every primitive triple arises from the parametric formula with coprime parameters of opposite parity, and every triple is a scalar multiple of a primitive one. The proof leverages Mathlib's PythagoreanTriple module for the deep classification theorems while providing original algebraic verifications and five concrete examples.",
-    "implications": "**Theoretical Significance**: The Pythagorean triple formula is the simplest non-trivial case of Diophantine analysis — classifying all integer solutions to a polynomial equation.\n\n**Broader Connections**: The same techniques (rational parametrization, coprimality reduction, parity arguments) extend to classifying integer points on conics, and the failure of these techniques for higher-degree equations motivated centuries of research culminating in Fermat's Last Theorem. In computational number theory, the parametric formula provides an efficient algorithm for generating all triples up to a given bound.",
+    "implications": "**Theoretical Significance**: The Pythagorean triple formula is the simplest non-trivial case of Diophantine analysis — classifying all integer solutions to a polynomial equation.\n\nThe same techniques (rational parametrization, coprimality reduction, parity arguments) extend to classifying integer points on conics, and the failure of these techniques for higher-degree equations motivated centuries of research culminating in Fermat's Last Theorem. In computational number theory, the parametric formula provides an efficient algorithm for generating all triples up to a given bound.",
     "openQuestions": [
       "Can Lean verify the density result that the number of primitive Pythagorean triples with hypotenuse ≤ N is asymptotic to N/(2π)?",
       "How does the Pythagorean triple formula generalize to Gaussian integers, where a² + b² = c² factors as (a + bi)(a - bi) = c²?",

@@ -11,9 +11,9 @@ You do NOT make decisions, select approaches, or write proofs. You explore and r
 ## Usage
 
 ```
-/scout <problem-id>             # Survey a research problem by ID
-/scout --topic "<topic>"        # Survey a mathematical topic
-/scout --problem-file <path>    # Survey based on a problem file
+/lean-scout <problem-id>             # Survey a research problem by ID
+/lean-scout --topic "<topic>"        # Survey a mathematical topic
+/lean-scout --problem-file <path>    # Survey based on a problem file
 ```
 
 ## Arguments

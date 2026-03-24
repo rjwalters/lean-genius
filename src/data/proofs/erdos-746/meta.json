@@ -188,7 +188,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #746 asked whether $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ is a.s. Hamiltonian. The answer is YES, established through a chain of results: Erdős-Rényi matching (1966), Pósa rotation-extension (1976), Korshunov sharp threshold (1977), and Komlós-Szemerédi limiting probability $e^{-e^{-2c}}$ (1983). The formalization axiomatizes each result and composes them.",
-    "implications": "**Theoretical Significance**: **Connections and Significance**\n\n1. **Phase transitions**: Paradigmatic example of sharp threshold behavior in random combinatorial structures\n2.\n\n**Broader Connections**: **Threshold coincidence**: Connectivity and Hamiltonicity share the threshold $(1/2) n \\log n$, governed by minimum degree\n3. **Gumbel statistics**: The $e^{-e^{-2c}}$ distribution connects random graphs to extreme value theory\n4. **Algorithmic applications**: Polynomial-time algorithms for finding Hamiltonian cycles in random graphs above threshold.",
+    "implications": "**Theoretical Significance**: **Connections and Significance**\n\n1. **Phase transitions**: Paradigmatic example of sharp threshold behavior in random combinatorial structures\n**2. Threshold coincidence**: Connectivity and Hamiltonicity share the threshold $(1/2) n \\log n$, governed by minimum degree\n3. **Gumbel statistics**: The $e^{-e^{-2c}}$ distribution connects random graphs to extreme value theory\n4. **Algorithmic applications**: Polynomial-time algorithms for finding Hamiltonian cycles in random graphs above threshold.",
     "openQuestions": [
       "What is the threshold for Hamiltonicity in the directed random graph $D(n, m)$?",
       "Can Pósa's rotation-extension technique be made algorithmic (find the cycle in polynomial time)?",
@@ -240,5 +240,27 @@
       "citation": "Erdős Problems. Problem #746.",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-47",
+      "relationship": "related",
+      "description": "thematic"
+    },
+    {
+      "targetId": "erdos-73",
+      "relationship": "related",
+      "description": "thematic"
+    },
+    {
+      "targetId": "erdos-106",
+      "relationship": "related",
+      "description": "thematic"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-47",
+    "erdos-73",
+    "erdos-106"
   ]
 }

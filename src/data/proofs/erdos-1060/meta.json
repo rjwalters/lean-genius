@@ -135,14 +135,14 @@
   ],
   "crossReferences": [
     {
-      "id": "erdos-1058",
       "relationship": "thematic",
-      "description": "Both problems concern restricted prime factorization of expressions involving factorials or divisor functions — the interplay between rapid growth and few prime factors"
+      "description": "Both problems concern restricted prime factorization of expressions involving factorials or divisor functions — the interplay between rapid growth and few prime factors",
+      "targetId": "erdos-1058"
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #1060 asks for upper bounds on f(n), the number of solutions to k·σ(k) = n. Two conjectures are proposed: a weak bound f(n) ≤ n^{o(1/log log n)} and a strong bound f(n) ≤ (log n)^C. Both remain OPEN. The formalization defines the counting function, proves finiteness of solutions, and verifies concrete examples.",
-    "implications": "**Theoretical Significance**: **Number Theory Connections**\n\n1. **Divisor Function Structure:** Understanding when k·σ(k) = n relates to the multiplicative structure of σ\n\n2. **Diophantine Equations:** Part of the broader study of multiplicative equations\n\n3.\n\n**Broader Connections**: **Value Distribution:** Related to understanding the range of arithmetic functions\n\n4. **Density Questions:** How sparse is {k·σ(k) : k ∈ ℕ}?\n\n5. **Perfect Numbers:** For perfect n, σ(n) = 2n, so g(n) = 2n², giving specific solutions.",
+    "implications": "**Theoretical Significance**: **Number Theory Connections**\n\n1. **Divisor Function Structure:** Understanding when k·σ(k) = n relates to the multiplicative structure of σ\n\n2. **Diophantine Equations:** Part of the broader study of multiplicative equations\n\n**3. Value Distribution:** Related to understanding the range of arithmetic functions\n\n4. **Density Questions:** How sparse is {k·σ(k) : k ∈ ℕ}?\n\n5. **Perfect Numbers:** For perfect n, σ(n) = 2n, so g(n) = 2n², giving specific solutions.",
     "openQuestions": [
       "Is f(n) ≤ n^{o(1/log log n)}? (weak conjecture)",
       "Is f(n) ≤ (log n)^C for some C? (strong conjecture)",

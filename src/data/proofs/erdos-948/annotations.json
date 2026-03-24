@@ -21,7 +21,7 @@
     "id": "ann-948-subsums",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 38,
+      "startLine": 39,
       "endLine": 41
     },
     "type": "definition",
@@ -38,10 +38,10 @@
     "id": "ann-948-basic",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 50,
+      "startLine": 51,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Basic Properties",
     "content": "0 ∈ FiniteSubsums(a) (empty sum) and a(n) ∈ FiniteSubsums(a) (singleton sum).",
     "mathContext": "These are immediate from the definition.",
@@ -55,7 +55,7 @@
     "id": "ann-948-coloring",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 64,
+      "startLine": 65,
       "endLine": 66
     },
     "type": "definition",
@@ -72,7 +72,7 @@
     "id": "ann-948-monochromatic",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 67,
+      "startLine": 68,
       "endLine": 78
     },
     "type": "definition",
@@ -89,7 +89,7 @@
     "id": "ann-948-growth",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 85,
+      "startLine": 86,
       "endLine": 92
     },
     "type": "definition",
@@ -106,7 +106,7 @@
     "id": "ann-948-monoconj",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 99,
+      "startLine": 100,
       "endLine": 106
     },
     "type": "definition",
@@ -123,7 +123,7 @@
     "id": "ann-948-galvin-axiom",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 107,
+      "startLine": 108,
       "endLine": 109
     },
     "type": "concept",
@@ -140,7 +140,7 @@
     "id": "ann-948-modified",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 118,
+      "startLine": 119,
       "endLine": 125
     },
     "type": "definition",
@@ -157,7 +157,7 @@
     "id": "ann-948-dyadic",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 132,
+      "startLine": 133,
       "endLine": 139
     },
     "type": "definition",
@@ -174,7 +174,7 @@
     "id": "ann-948-hindman",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 151,
+      "startLine": 152,
       "endLine": 156
     },
     "type": "concept",
@@ -191,7 +191,7 @@
     "id": "ann-948-ipset",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 166,
+      "startLine": 167,
       "endLine": 173
     },
     "type": "definition",
@@ -208,7 +208,7 @@
     "id": "ann-948-ipstar",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 174,
+      "startLine": 175,
       "endLine": 181
     },
     "type": "definition",
@@ -225,10 +225,10 @@
     "id": "ann-948-status",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 189,
+      "startLine": 190,
       "endLine": 198
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Problem Status",
     "content": "Modified conjecture is OPEN. The countable colors version is also open.",
     "mathContext": "The gap between Hindman (existence) and Galvin (no bounded monochromatic) remains unresolved.",
@@ -242,10 +242,10 @@
     "id": "ann-948-summary",
     "proofId": "erdos-948",
     "range": {
-      "startLine": 215,
+      "startLine": 216,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Main Results",
     "content": "erdos_948_mono_false: Original monochromatic conjecture is FALSE. erdos_948_statement: Formal statement of modified conjecture.",
     "mathContext": "The formalization captures both the disproved and open versions.",

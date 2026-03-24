@@ -15,6 +15,11 @@
       "Wolstenholme",
       "Babbage",
       "binomial coefficients"
+    ],
+    "prerequisites": [
+      "Wolstenholme",
+      "Babbage",
+      "binomial coefficients"
     ]
   },
   {
@@ -30,6 +35,10 @@
     "mathContext": "centralBinomial p := Nat.choose (2 * p - 1) (p - 1)",
     "significance": "key",
     "relatedConcepts": [
+      "binomial coefficient",
+      "central binomial"
+    ],
+    "prerequisites": [
       "binomial coefficient",
       "central binomial"
     ]
@@ -49,6 +58,10 @@
     "relatedConcepts": [
       "verification",
       "native_decide"
+    ],
+    "prerequisites": [
+      "verification",
+      "native_decide"
     ]
   },
   {
@@ -64,6 +77,10 @@
     "mathContext": "babbage_theorem: centralBinomial p % (p^2) = 1",
     "significance": "key",
     "relatedConcepts": [
+      "Babbage",
+      "mod p^2"
+    ],
+    "prerequisites": [
       "Babbage",
       "mod p^2"
     ]
@@ -83,6 +100,10 @@
     "relatedConcepts": [
       "counterexample",
       "sharpness"
+    ],
+    "prerequisites": [
+      "counterexample",
+      "sharpness"
     ]
   },
   {
@@ -100,6 +121,10 @@
     "relatedConcepts": [
       "Wolstenholme prime",
       "rare primes"
+    ],
+    "prerequisites": [
+      "Wolstenholme prime",
+      "rare primes"
     ]
   },
   {
@@ -115,6 +140,10 @@
     "mathContext": "p^2 | harmonicNumerator p for p >= 5",
     "significance": "key",
     "relatedConcepts": [
+      "harmonic numbers",
+      "equivalent formulation"
+    ],
+    "prerequisites": [
       "harmonic numbers",
       "equivalent formulation"
     ]

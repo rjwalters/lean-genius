@@ -176,7 +176,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #178 asked whether any infinite family of integer sequences can be balanced by a signing function with discrepancy bounded independently of the prefix length. Beck (1981) proved the answer is YES, and Beck (2017) showed the bound can be made O(d^(4+ε)) for any ε > 0.",
-    "implications": "**Theoretical Significance**: **Implications for Discrepancy Theory**\n\n1. **Infinite vs Finite:** Extends Spencer's finite results to infinite families\n\n2.\n\n**Broader Connections**: **Uniform Balancing:** Shows uniform balancing is achievable even for arbitrary families\n\n3. **Polynomial Bounds:** The d^(4+ε) bound shows polynomial growth in the number of sequences\n\n4. **Proof Techniques:** Demonstrates power of sophisticated combinatorial methods beyond probabilistic approach.",
+    "implications": "**Theoretical Significance**: **Implications for Discrepancy Theory**\n\n1. **Infinite vs Finite:** Extends Spencer's finite results to infinite families\n\n**2. Uniform Balancing:** Shows uniform balancing is achievable even for arbitrary families\n\n3. **Polynomial Bounds:** The d^(4+ε) bound shows polynomial growth in the number of sequences\n\n4. **Proof Techniques:** Demonstrates power of sophisticated combinatorial methods beyond probabilistic approach.",
     "openQuestions": [
       "Can the exponent 4 be improved? Is it optimal?",
       "What are explicit constructions achieving the bound?",
@@ -205,19 +205,19 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-176",
       "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
-      "relationship": "Both are combinatorial discrepancy problems: #176 measures ±1 discrepancy on APs, while #178 asks whether infinite sequence families can be uniformly balanced"
+      "relationship": "Both are combinatorial discrepancy problems: #176 measures ±1 discrepancy on APs, while #178 asks whether infinite sequence families can be uniformly balanced",
+      "targetId": "erdos-176"
     },
     {
-      "id": "erdos-177",
       "title": "Erdős Problem #177: Discrepancy of Arithmetic Progressions",
-      "relationship": "Part of the same family of Erdős discrepancy problems; all three (#176, #177, #178) study the limits of balanced colorings for structured set systems"
+      "relationship": "Part of the same family of Erdős discrepancy problems; all three (#176, #177, #178) study the limits of balanced colorings for structured set systems",
+      "targetId": "erdos-177"
     },
     {
-      "id": "erdos-162",
       "title": "Erdős Problem #162: Discrepancy in 2-Coloured Complete Graphs",
-      "relationship": "Both concern discrepancy in combinatorial structures — #162 studies graph colorings while #178 studies sequence balancing"
+      "relationship": "Both concern discrepancy in combinatorial structures — #162 studies graph colorings while #178 studies sequence balancing",
+      "targetId": "erdos-162"
     }
   ]
 }

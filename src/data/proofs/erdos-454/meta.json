@@ -211,7 +211,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #454 on symmetric prime sum deviations. The problem asks whether f(n) - 2p_n can be arbitrarily large, where f(n) = min_{i<n}(p_{n+i} + p_{n-i}) is the minimum symmetric prime sum. Pomerance (1979) proved the limsup is at least 2 using his Prime Number Graph, but whether it's infinite remains open.",
-    "implications": "**Theoretical Significance**: The problem connects to fundamental questions about prime gap distribution and the fine structure of the prime sequence. If gaps were regular (averaging log p by the Prime Number Theorem), symmetric sums would cancel to 2p_n.\n\n**Broader Connections**: The existence of deviations reflects gap irregularity — the same phenomenon captured by Maier's theorem and the Cramér conjecture. Resolving this would shed light on whether primes can be simultaneously 'too far apart' on the right and 'too close together' on the left at all scales around a position n.",
+    "implications": "**Theoretical Significance**: The problem connects to fundamental questions about prime gap distribution and the fine structure of the prime sequence. If gaps were regular (averaging log p by the Prime Number Theorem), symmetric sums would cancel to 2p_n.\n\nThe existence of deviations reflects gap irregularity — the same phenomenon captured by Maier's theorem and the Cramér conjecture. Resolving this would shed light on whether primes can be simultaneously 'too far apart' on the right and 'too close together' on the left at all scales around a position n.",
     "openQuestions": [
       "Is limsup(f(n) - 2p_n) finite or infinite? (The main conjecture)",
       "Can Pomerance's lower bound 2 be improved to any explicit larger value?",
@@ -260,5 +260,15 @@
       "venue": "Springer, 3rd edition",
       "note": "Discussion of prime gap problems and symmetric prime properties"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-458",
+      "relationship": "related",
+      "description": "Consecutive prime sum deviations"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-458"
   ]
 }

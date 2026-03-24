@@ -192,7 +192,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #648 asks for the asymptotic behavior of $g(n)$, the length of the longest increasing sequence below $n$ with strictly decreasing greatest prime factors. Stijn Cambie (2025) resolved the problem completely: $g(n) \\asymp (n/\\log n)^{1/2}$. The formalization axiomatizes Cambie's bounds ($c_1 \\ge 2$ for the lower bound, $c_2 \\le 2\\sqrt{2}$ for the upper) and derives the main $\\Theta$-result. The proof includes concrete verified examples up to length 4 and connects to smooth number theory via the de Bruijn $\\Psi$-function.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Smooth number theory in combinatorics**: The solution demonstrates how de Bruijn's estimates on $\\Psi(x, y)$ — originally tools of analytic number theory — resolve a purely combinatorial question about sequence optimization.\n\n2. **Arithmetic function extremal problems**: Erdős #648 belongs to a family of problems asking how arithmetic functions (here $P(n)$) constrain combinatorial structures.\n\n**Broader Connections**: Similar questions for $\\omega(n)$, $\\Omega(n)$, and $\\tau(n)$ remain largely open.\n\n3. **The square-root barrier**: The growth rate $\\sqrt{n/\\log n}$ is intermediate between the trivial bounds $1 \\ll g(n) \\ll \\pi(n) \\sim n/\\log n$. The square root emerges from a balance between prime density and representability constraints — a phenomenon seen in other extremal number theory problems.\n\n4. **Precise asymptotics remain open**: While the order of magnitude is determined, the exact constant $c \\in [2, 2\\sqrt{2}]$ and whether the limit $g(n)/\\sqrt{n/\\log n}$ even exists are open questions connecting to deep properties of smooth number distributions.",
+    "implications": "1. **Smooth number theory in combinatorics**: The solution demonstrates how de Bruijn's estimates on $\\Psi(x, y)$ — originally tools of analytic number theory — resolve a purely combinatorial question about sequence optimization.\n\n2. **Arithmetic function extremal problems**: Erdős #648 belongs to a family of problems asking how arithmetic functions (here $P(n)$) constrain combinatorial structures.\n\nSimilar questions for $\\omega(n)$, $\\Omega(n)$, and $\\tau(n)$ remain largely open.\n\n3. **The square-root barrier**: The growth rate $\\sqrt{n/\\log n}$ is intermediate between the trivial bounds $1 \\ll g(n) \\ll \\pi(n) \\sim n/\\log n$. The square root emerges from a balance between prime density and representability constraints — a phenomenon seen in other extremal number theory problems.\n\n4. **Precise asymptotics remain open**: While the order of magnitude is determined, the exact constant $c \\in [2, 2\\sqrt{2}]$ and whether the limit $g(n)/\\sqrt{n/\\log n}$ even exists are open questions connecting to deep properties of smooth number distributions.",
     "openQuestions": [
       "What is the exact constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$? Does the limit exist, and if so, is $c = 2$, $c = 2\\sqrt{2}$, or some intermediate value?",
       "What is the growth rate of the dual problem: longest increasing sequence with increasing smallest prime factors $p(a_1) < p(a_2) < \\cdots < p(a_t)$?",
@@ -244,5 +244,45 @@
       "citation": "Dickman, K. (1930). On the frequency of numbers containing prime factors of a certain relative magnitude. Ark. Mat. Astr. Fys. 22, 1-14.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ is essential for counting available primes in Cambie's bound. The number of distinct GPF values below $n$ is $\\pi(n)$, and the PNT determines the growth rate of $g(n)$."
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Both problems study the interplay between prime factorization structure and classification. Erdős #1055 classifies primes by the smoothness of $p+1$, while #648 builds sequences ordered by greatest prime factor."
+    },
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "The Erdős-Selfridge function also involves greatest prime factors of combinatorial objects (binomial coefficients), connecting smooth number theory to extremal problems."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (proved by Erdős in 1932) guarantees prime existence in intervals — relevant for ensuring enough distinct primes are available to build long GPF-descending sequences."
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Both are solved Erdős problems involving prime distribution asymptotics. Erdős #4 (large prime gaps, solved by Maynard 2016) uses sieve methods that also appear in smooth number estimates underlying #648."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence $\\sum_{p} 1/p = \\infty$ (Euler, 1737) implies the set of primes is dense enough to support arbitrarily long GPF-descending sequences, consistent with $g(n) \\to \\infty$."
+    }
+  ],
+  "relatedProofs": [
+    "prime-number-theorem",
+    "erdos-1055",
+    "erdos-1095",
+    "bertrands-postulate",
+    "erdos-4",
+    "prime-reciprocal-divergence"
   ]
 }

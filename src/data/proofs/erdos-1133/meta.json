@@ -166,34 +166,34 @@
   ],
   "crossReferences": [
     {
-      "id": "erdos-1132",
       "title": "Erdős Problem #1132",
-      "relationship": "Direct companion: studies Lebesgue functions for infinite node sequences and Bernstein's density theorem. Together #1132 and #1133 form Erdős's paired attack on interpolation divergence phenomena."
+      "relationship": "Direct companion: studies Lebesgue functions for infinite node sequences and Bernstein's density theorem. Together #1132 and #1133 form Erdős's paired attack on interpolation divergence phenomena.",
+      "targetId": "erdos-1132"
     },
     {
-      "id": "erdos-1130",
       "title": "Erdős Problem #1130",
-      "relationship": "Studies the Υ functional (sums of Lagrange basis functions on subintervals), solved by de Boor–Pinkus (1978) with Υ ≤ (2/π) log n + O(1). The Lebesgue constant growth rate proved there underlies the divergence used in #1133."
+      "relationship": "Studies the Υ functional (sums of Lagrange basis functions on subintervals), solved by de Boor–Pinkus (1978) with Υ ≤ (2/π) log n + O(1). The Lebesgue constant growth rate proved there underlies the divergence used in #1133.",
+      "targetId": "erdos-1130"
     },
     {
-      "id": "erdos-1131",
       "title": "Erdős Problem #1131",
-      "relationship": "L² optimization of Lagrange basis polynomial integrals — a parallel to #1133's L∞ perspective. Both problems ask how optimal node placement interacts with polynomial norm bounds in different function spaces."
+      "relationship": "L² optimization of Lagrange basis polynomial integrals — a parallel to #1133's L∞ perspective. Both problems ask how optimal node placement interacts with polynomial norm bounds in different function spaces.",
+      "targetId": "erdos-1131"
     },
     {
-      "id": "taylor-theorem",
       "title": "Taylor's Theorem",
-      "relationship": "Foundational: Taylor polynomial approximation with explicit remainder bounds underpins interpolation error analysis. The remainder formula via divided differences makes Taylor's theorem the algebraic backbone of Lagrange theory."
+      "relationship": "Foundational: Taylor polynomial approximation with explicit remainder bounds underpins interpolation error analysis. The remainder formula via divided differences makes Taylor's theorem the algebraic backbone of Lagrange theory.",
+      "targetId": "taylor-theorem"
     },
     {
-      "id": "mean-value-theorem",
       "title": "Mean Value Theorem",
-      "relationship": "The Lagrange interpolation remainder R_n(x) = f^(n)(ξ)/(n!) · Π(x − x_i) relies on the generalized MVT for higher derivatives. Bounding this remainder is central to controlling interpolation error on [-1,1]."
+      "relationship": "The Lagrange interpolation remainder R_n(x) = f^(n)(ξ)/(n!) · Π(x − x_i) relies on the generalized MVT for higher derivatives. Bounding this remainder is central to controlling interpolation error on [-1,1].",
+      "targetId": "mean-value-theorem"
     },
     {
-      "id": "fourier-series",
       "title": "Fourier Series",
-      "relationship": "Parallel theory: Fourier approximation is L²-optimal while polynomial interpolation is analyzed in L∞. Both exhibit convergence-divergence phenomena (Carleson's theorem vs Faber's theorem), making their comparison a cornerstone of modern approximation theory."
+      "relationship": "Parallel theory: Fourier approximation is L²-optimal while polynomial interpolation is analyzed in L∞. Both exhibit convergence-divergence phenomena (Carleson's theorem vs Faber's theorem), making their comparison a cornerstone of modern approximation theory.",
+      "targetId": "fourier-series"
     }
   ],
   "relatedProofs": [
@@ -284,7 +284,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1133 asks whether one can always choose target values for polynomial interpolation that force any approximating polynomial to be large somewhere in [-1,1]. The problem remains OPEN since 1967. Erdős proved a weaker existence result (∃P with large norm) but the conjectured universal property (∀P matching chosen y has large norm) requires defeating all polynomials simultaneously — a qualitatively harder adversarial challenge.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Interpolation Limits**: If true, the conjecture would establish a fundamental obstruction to controlling polynomial behavior through partial interpolation data — no matter how the sample points are placed, the 'target chooser' can always create irreconcilable constraints\n\n2. **Approximation Theory**: The conjecture connects to the Bernstein-Erdős theory of polynomial approximation. Bernstein's lethargy theorem shows that convergence rates for best polynomial approximation cannot be improved beyond certain thresholds; Problem #1133 asks about a different kind of limitation\n\n3. **Game Theory in Analysis**: The ∃y∀P structure makes this a minimax problem in infinite dimensions.\n\n**Broader Connections**: Von Neumann's minimax theorem applies to convex-compact settings, but the polynomial constraint set is not obviously convex, making standard duality tools insufficient\n\n4. **Lebesgue Constant Theory**: For ε = 0, the conjecture asks whether max_y ‖L_n(y)‖_∞ → ∞ for all node sequences, where L_n is the Lagrange operator. Since ‖L_n‖ = Λ_n → ∞ (Faber), the operator norm diverges — but the conjecture needs divergence for specific y choices, not just worst-case f\n\n5. **Computational Aspects**: The problem suggests a potential algorithm: given nodes x_i, compute y_i that maximizes the minimum polynomial norm. If such algorithms could be made efficient, they would have applications in numerical stability analysis.",
+    "implications": "1. **Interpolation Limits**: If true, the conjecture would establish a fundamental obstruction to controlling polynomial behavior through partial interpolation data — no matter how the sample points are placed, the 'target chooser' can always create irreconcilable constraints\n\n2. **Approximation Theory**: The conjecture connects to the Bernstein-Erdős theory of polynomial approximation. Bernstein's lethargy theorem shows that convergence rates for best polynomial approximation cannot be improved beyond certain thresholds; Problem #1133 asks about a different kind of limitation\n\n3. **Game Theory in Analysis**: The ∃y∀P structure makes this a minimax problem in infinite dimensions.\n\nVon Neumann's minimax theorem applies to convex-compact settings, but the polynomial constraint set is not obviously convex, making standard duality tools insufficient\n\n4. **Lebesgue Constant Theory**: For ε = 0, the conjecture asks whether max_y ‖L_n(y)‖_∞ → ∞ for all node sequences, where L_n is the Lagrange operator. Since ‖L_n‖ = Λ_n → ∞ (Faber), the operator norm diverges — but the conjecture needs divergence for specific y choices, not just worst-case f\n\n5. **Computational Aspects**: The problem suggests a potential algorithm: given nodes x_i, compute y_i that maximizes the minimum polynomial norm. If such algorithms could be made efficient, they would have applications in numerical stability analysis.",
     "openQuestions": [
       "Is the conjecture true for ε = 0 (exact interpolation, degree < n through all n points)? Erdős noted he could not prove even this special case.",
       "What is the optimal ε(C) if the conjecture is true? Does ε → 0 as C → ∞, or is there a universal ε that works for all C?",

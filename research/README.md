@@ -18,7 +18,7 @@ The system can run completely autonomously:
 
 ```bash
 # Just say "do research" — the system handles everything
-/research
+/lean-research
 ```
 
 This will:
@@ -28,16 +28,16 @@ This will:
 4. Run one OODA loop iteration
 5. Report progress and prepare for next iteration
 
-Repeat `/research` to continue advancing through the loop.
+Repeat `/lean-research` to continue advancing through the loop.
 
 ## Quick Start
 
 ### Option 1: Fully Autonomous
 
 ```bash
-/research   # Selects problem, starts OBSERVE
-/research   # Continues to ORIENT
-/research   # Continues to DECIDE
+/lean-research   # Selects problem, starts OBSERVE
+/lean-research   # Continues to ORIENT
+/lean-research   # Continues to DECIDE
 ...         # Keep going until COMPLETED or PIVOT
 ```
 
@@ -124,8 +124,8 @@ OBSERVE → ORIENT → DECIDE → ACT → VERIFY → LEARN
 
 | Role | Purpose | When Used |
 |------|---------|-----------|
-| **Scout** (`/scout`) | Structured gallery, technique, and literature survey | ORIENT phase (auto-invoked by Researcher) |
-| **Seeker** (`/seeker`) | Selects next research problem from candidate pool | Between research iterations (daemon-managed) |
+| **Scout** (`/lean-scout`) | Structured gallery, technique, and literature survey | ORIENT phase (auto-invoked by Researcher) |
+| **Seeker** (`/lean-seeker`) | Selects next research problem from candidate pool | Between research iterations (daemon-managed) |
 | **Adversary** (`/adversary`) | Attack proofs | VERIFY phase |
 | **Chronicler** (`/chronicler`) | Document learnings, update technique index | LEARN phase |
 
@@ -156,12 +156,12 @@ Seeker selects next problem (loop repeats)
 
 ```bash
 # Start the full mathematical team with seeker
-/lean start --seeker 1 --researcher 1
+/lean-daemon start --seeker 1 --researcher 1
 
 # Or start individual agents
-/seeker                    # Select next problem
-/scout weak-goldbach       # Survey a specific problem
-/research                  # Run one OODA iteration
+/lean-seeker                    # Select next problem
+/lean-scout weak-goldbach       # Survey a specific problem
+/lean-research                  # Run one OODA iteration
 ```
 
 ### Pipeline Health

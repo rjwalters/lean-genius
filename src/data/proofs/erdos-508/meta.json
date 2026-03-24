@@ -89,7 +89,9 @@
       "**Unit-distance graph formalization**: `unitDistGraph` uses Mathlib's `SimpleGraph` on `EuclideanSpace ℝ (Fin 2)`, with adjacency defined by `dist x y = 1 ∧ x ≠ y`. The symmetry proof (`dist_comm`) and loopless proof (contradiction) are fully formalized, providing a clean foundation."
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Graph theory (chromatic number, graph coloring)",
+      "Euclidean geometry and metric spaces",
+      "Mathlib SimpleGraph and Coloring API"
     ]
   },
   "sections": [
@@ -98,47 +100,53 @@
       "title": "Problem Statement and Imports",
       "summary": "Hadwiger-Nelson problem statement, known bounds 5 ≤ χ ≤ 7, references; imports SimpleGraph, Coloring, Nat, Tactic",
       "startLine": 1,
-      "endLine": 24
+      "endLine": 24,
+      "mathContext": "The chromatic number $\\chi(G)$ of a graph $G$ is the minimum number of colors in a proper coloring. The unit-distance graph has vertex set $\\mathbb{R}^2$ and edges between points at Euclidean distance 1."
     },
     {
       "id": "definitions",
       "title": "Definitions",
       "summary": "unitDistGraph on EuclideanSpace ℝ (Fin 2) with proved symmetry (dist_comm) and looplessness; planeChromatic axiomatized as unknown ℕ",
       "startLine": 25,
-      "endLine": 37
+      "endLine": 37,
+      "mathContext": "`unitDistGraph : SimpleGraph (EuclideanSpace \\mathbb{R} (\\text{Fin } 2))` with adjacency $x \\sim y \\iff d(x,y) = 1 \\wedge x \\neq y$. Symmetry: $d(x,y) = d(y,x)$. Loopless: $d(x,x) = 0 \\neq 1$."
     },
     {
       "id": "main-problem",
       "title": "Main Problem Statement",
       "summary": "erdos_508_problem axiom: 5 ≤ planeChromatic ∧ planeChromatic ≤ 7, constraining the answer to {5, 6, 7}",
       "startLine": 39,
-      "endLine": 44
+      "endLine": 44,
+      "mathContext": "$5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. The answer is one of $\\{5, 6, 7\\}$."
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "summary": "Progressive axioms: chromatic_ge_3 (equilateral triangle K₃), chromatic_ge_4_moser (Moser spindle, 7 vertices), de_grey_2018 (1581 vertices, SAT verification)",
       "startLine": 46,
-      "endLine": 58
+      "endLine": 58,
+      "mathContext": "$\\chi \\geq 3$: equilateral triangle $K_3$ embeds as a unit-distance graph. $\\chi \\geq 4$: Moser spindle (7 vertices, 11 edges). $\\chi \\geq 5$: de Grey's 1581-vertex graph (2018), reduced to 509 vertices by Polymath."
     },
     {
       "id": "upper-bound",
       "title": "Known Upper Bound",
       "summary": "chromatic_le_7_isbell axiom: hexagonal tiling with diameter < 1 hexagons in 7-color periodic pattern",
       "startLine": 60,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "$\\chi \\leq 7$: tile $\\mathbb{R}^2$ with regular hexagons of diameter $< 1$; 7 colors suffice in a periodic pattern where no two same-colored hexagons are within unit distance."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "fractional_chromatic_bounds (4 ≤ χ_f ≤ 4.36), higher_dimensions (6 ≤ χ(ℝ³) ≤ 15), erdos_de_bruijn compactness theorem (finite reduction)",
       "startLine": 67,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "Fractional: $4 \\leq \\chi_f(\\mathbb{R}^2) \\leq 4.36$. Higher dimensions: $6 \\leq \\chi(\\mathbb{R}^3) \\leq 15$; $\\chi(\\mathbb{R}^d)$ grows exponentially (Frankl-Wilson). Erdős-de Bruijn: $\\chi(\\mathbb{R}^2) = \\sup\\{\\chi(G) : G \\text{ finite unit-distance subgraph}\\}$."
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #508 (the Hadwiger-Nelson problem) asks for the chromatic number of the plane. After de Grey's 2018 computer-assisted breakthrough, $5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. The formalization captures the unit-distance graph with proved symmetry/looplessness, progressive lower bounds (triangle, Moser spindle, de Grey), Isbell's upper bound, fractional constraints, and the Erdős-de Bruijn compactness reduction. All 0 sorries — the file is a complete axiom-based formalization of the state of knowledge.",
-    "implications": "**Theoretical Significance**: Determining $\\chi(\\mathbb{R}^2)$ would resolve one of the most famous problems in combinatorial geometry, with connections to Ramsey theory, distance geometry, computational combinatorics, and measurable coloring theory.\n\n**Broader Connections**: de Grey's result demonstrated that SAT-based methods can resolve longstanding open problems. The Erdős-de Bruijn compactness theorem bridges infinite geometry and finite graph theory, enabling computational attacks on infinite-dimensional problems.",
+    "implications": "**Theoretical Significance**: Determining $\\chi(\\mathbb{R}^2)$ would resolve one of the most famous problems in combinatorial geometry, with connections to Ramsey theory, distance geometry, computational combinatorics, and measurable coloring theory.\n\nde Grey's result demonstrated that SAT-based methods can resolve longstanding open problems. The Erdős-de Bruijn compactness theorem bridges infinite geometry and finite graph theory, enabling computational attacks on infinite-dimensional problems.",
     "openQuestions": [
       "Is χ(ℝ²) = 5, 6, or 7? Most experts lean toward 7 but no proof exists.",
       "Can the hexagonal upper bound of 7 be improved to 6? This would require non-periodic or non-tiling constructions.",
@@ -160,5 +168,54 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Sparseness of dilation-avoiding sets — both problems concern geometric constraints on point configurations in Euclidean space"
+    },
+    {
+      "targetId": "erdos-169",
+      "relationship": "related",
+      "description": "AP-free sets with harmonic sum constraints — related extremal combinatorics with coloring-theoretic connections via van der Waerden's theorem"
+    },
+    {
+      "targetId": "erdos-808",
+      "relationship": "related",
+      "description": "Graph-restricted sum-product bounds — related graph-theoretic extremal problems in combinatorial geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-143",
+    "erdos-169",
+    "erdos-808"
+  ],
+  "references": [
+    {
+      "key": "dG18",
+      "citation": "de Grey, A.D.N.J., The chromatic number of the plane is at least 5, Geombinatorics 28 (2018), 18–31.",
+      "type": "paper"
+    },
+    {
+      "key": "HN50",
+      "citation": "Hadwiger, H., Überdeckung des euklidischen Raumes durch kongruente Mengen, Portugaliae Mathematica 4 (1945), 238–242; Nelson, E., Problem (1950), posed at University of Chicago.",
+      "type": "paper"
+    },
+    {
+      "key": "MS61",
+      "citation": "Moser, L. and Moser, W., Solution to Problem 10, Canadian Mathematical Bulletin 4 (1961), 187–189.",
+      "type": "paper"
+    },
+    {
+      "key": "EdB51",
+      "citation": "Erdős, P. and de Bruijn, N.G., A colour problem for infinite graphs and a problem in the theory of relations, Indagationes Mathematicae 13 (1951), 371–373.",
+      "type": "paper"
+    },
+    {
+      "key": "So09",
+      "citation": "Soifer, A., The Mathematical Coloring Book: Mathematics of Coloring and the Colorful Life of its Creators, Springer (2009).",
+      "type": "book"
+    }
+  ]
 }

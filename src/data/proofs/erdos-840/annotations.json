@@ -2,10 +2,6 @@
   {
     "id": "ann-840-statement",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 7,
-      "endLine": 16
-    },
     "type": "concept",
     "title": "Problem Statement",
     "content": "The core question: how large can a quasi-Sidon subset of {1,...,N} be? A quasi-Sidon set has sumset size approaching the binomial coefficient C(|A|,2) asymptotically, allowing a vanishing fraction of sum collisions.",
@@ -26,10 +22,6 @@
   {
     "id": "ann-840-sumset",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 45,
-      "endLine": 47
-    },
     "type": "definition",
     "title": "Sumset A + A",
     "content": "The sumset A + A = {a + b : a, b ∈ A} is the set of all pairwise sums from A. For a set of size k, trivially |A + A| ≤ k(k+1)/2 (with equality for Sidon sets). The quasi-Sidon condition asks for |A + A| ≈ C(k,2) = k(k-1)/2.",
@@ -49,10 +41,6 @@
   {
     "id": "ann-840-sidon",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 49,
-      "endLine": 52
-    },
     "type": "definition",
     "title": "Sidon Set (B₂ Sequence)",
     "content": "A Sidon set (B₂ sequence) has all pairwise sums distinct: a₁ + a₂ = a₃ + a₄ implies {a₁, a₂} = {a₃, a₄}. Named after Simon Sidon who posed the problem to Erdős in 1932. Maximum size in {1,...,N} is √N + O(N^{1/4}).",
@@ -72,10 +60,6 @@
   {
     "id": "ann-840-quasi",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 74,
-      "endLine": 78
-    },
     "type": "definition",
     "title": "Quasi-Sidon Definition",
     "content": "A set A is quasi-Sidon if |A + A| = (1 + o(1)) · C(|A|, 2) as |A| → ∞. This allows some collisions in the sumset as long as they are asymptotically negligible — the number of 'excess' representations is o(|A|²).",
@@ -96,10 +80,6 @@
   {
     "id": "ann-840-f-function",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 82,
-      "endLine": 86
-    },
     "type": "definition",
     "title": "The Function f(N)",
     "content": "f(N) is the maximum cardinality of a quasi-Sidon subset of {1,...,N}. Axiomatized with witness and optimality. The growth rate f(N) = Θ(√N) is known, but the exact asymptotic constant is open.",
@@ -118,10 +98,6 @@
   {
     "id": "ann-840-lower",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 95,
-      "endLine": 100
-    },
     "type": "technique",
     "title": "Erdős–Freud Lower Bound",
     "content": "Erdős and Freud (1991) proved f(N) ≥ (2/√3 + o(1))√N ≈ 1.155√N. The construction takes a Sidon set B ⊆ [1, N/3] of size ~√(N/3) and forms A = B ∪ {N - b : b ∈ B}. The key insight: sums from different halves cluster near N, avoiding collisions with sums within each half.",
@@ -140,10 +116,6 @@
   {
     "id": "ann-840-construction",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 108,
-      "endLine": 118
-    },
     "type": "definition",
     "title": "Lower Bound Construction Detail",
     "content": "The reflection construction in detail: B ⊆ [1, N/3] is Sidon, so B-sums lie in [2, 2N/3]. The reflected set N - B has sums in [2N - 2N/3, 2N - 2] = [4N/3, 2N - 2]. Cross sums b + (N - b') = N + (b - b') lie near N. These three sum ranges are nearly disjoint, making A quasi-Sidon.",
@@ -162,10 +134,6 @@
   {
     "id": "ann-840-upper-ef",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 120,
-      "endLine": 124
-    },
     "type": "technique",
     "title": "Erdős–Freud Upper Bound",
     "content": "The original upper bound f(N) ≤ (2 + o(1))√N by Erdős and Freud (1991), using a counting argument on the number of sums. Superseded by Pikhurko's sharper bound.",
@@ -184,10 +152,6 @@
   {
     "id": "ann-840-pikhurko",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 126,
-      "endLine": 132
-    },
     "type": "technique",
     "title": "Pikhurko's Upper Bound",
     "content": "Pikhurko (2006) improved the upper bound to f(N) ≤ c_P√N where c_P = (1/4 + 1/(π+2)²)^{-1/2} ≈ 1.863. The proof uses a connection between quasi-Sidon sets and edge-magic graph labelings, combined with analytic optimization over trigonometric sums.",
@@ -208,10 +172,6 @@
   {
     "id": "ann-840-constant",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 134,
-      "endLine": 138
-    },
     "type": "insight",
     "title": "The Pikhurko Constant",
     "content": "The constant c_P = (1/4 + 1/(π+2)²)^{-1/2} ≈ 1.863 is remarkable: π appears in a purely combinatorial problem about integer subsets. This reflects the Fourier-analytic nature of the proof, where trigonometric polynomials optimize the sum representation constraint.",
@@ -230,10 +190,6 @@
   {
     "id": "ann-840-question",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 142,
-      "endLine": 152
-    },
     "type": "concept",
     "title": "The Open Question",
     "content": "What is the exact constant c such that f(N) ~ c√N? Currently 2/√3 ≤ c ≤ 1.863, a gap of about 38%. Determining c would reveal whether the reflection construction is optimal or whether fundamentally different constructions exist.",
@@ -252,10 +208,6 @@
   {
     "id": "ann-840-diffset",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 160,
-      "endLine": 166
-    },
     "type": "technique",
     "title": "Cilleruelo's Difference Set Result",
     "content": "Cilleruelo (2010) proved the analogous problem for A - A instead of A + A is simpler: the maximum quasi-Sidon size (for differences) is ~√N with constant 1. The asymmetry between sums and differences is related to the fact that A - A is symmetric while A + A is not.",
@@ -274,10 +226,6 @@
   {
     "id": "ann-840-sidon-bound",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 170,
-      "endLine": 174
-    },
     "type": "technique",
     "title": "Classical Sidon Bound",
     "content": "For actual Sidon sets (not quasi-Sidon), the maximum size in {1,...,N} is √N + O(N^{1/4}) (Erdős–Turán 1941 upper bound, Singer 1938 / Bose–Chowla 1962 lower bound). The quasi-Sidon relaxation gains a factor of at least 2/√3 ≈ 1.155.",
@@ -296,10 +244,6 @@
   {
     "id": "ann-840-gap",
     "proofId": "erdos-840",
-    "range": {
-      "startLine": 184,
-      "endLine": 194
-    },
     "type": "insight",
     "title": "The Gap Analysis",
     "content": "The current gap between bounds is about 38%: from ~1.155 to ~1.863. If the lower bound is tight (c = 2/√3), then the reflection construction is optimal and quasi-Sidon sets cannot be much larger than Sidon sets. If the upper bound is tight, fundamentally new constructions exist.",

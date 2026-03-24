@@ -7,7 +7,7 @@
     "author": "Conlon-Fox-Sudakov (2014)",
     "sourceUrl": "https://erdosproblems.com/1008",
     "date": "2014",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos1008Problem.lean",
     "tags": [
       "erdos",
@@ -17,14 +17,14 @@
       "subgraphs",
       "zarankiewicz"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1008,
     "erdosUrl": "https://erdosproblems.com/1008",
     "erdosProblemStatus": "solved",
     "axiomCount": 0,
     "lineCount": 1,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"verified\"."
   },
   "overview": {
     "historicalContext": "This problem was originally posed by Bollobás and Erdős at the 1966 Tihany graph theory colloquium in Hungary, asking whether every m-edge graph contains a C₄-free subgraph with ≫ m^{3/4} edges. Folkman quickly disproved this using the bipartite graph K_{n,n²}: it has n³ edges but every C₄-free subgraph has only O(n²) = O(m^{2/3}) edges, by the Kővári-Sós-Turán theorem. Erdős revised the conjecture to exponent 2/3 in 1971, noting that the trivial bound m^{1/2} follows easily from Kővári-Sós-Turán. He mentioned that Szemerédi had proved the 2/3 bound but gave no published reference. The problem remained formally open until Conlon, Fox, and Sudakov proved it in their 2014 paper using dependent random choice, a powerful probabilistic technique developed in the 2000s. A simpler proof was later given by Hunter. The result fits into the broader program of understanding Turán-type and Zarankiewicz-type problems: how dense can a graph be while avoiding a fixed forbidden subgraph? The C₄ case is special because C₄ = K_{2,2}, linking cycle-free conditions to bipartite Ramsey theory.",
@@ -96,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "Every graph with m edges contains a C₄-free subgraph with Ω(m^{2/3}) edges, proved by Conlon-Fox-Sudakov (2014) using dependent random choice. The exponent 2/3 is optimal, matching Folkman's upper bound from K_{n,n²}. The result generalizes to K_{s,t}-free subgraphs with exponent 1-1/s, connecting to the classical Zarankiewicz problem.",
-    "implications": "**Theoretical Significance**: This result exemplifies the power of dependent random choice in extremal combinatorics. It shows that even dense graphs contain large sparse (forbidden-subgraph-free) subgraphs, with tight bounds.\n\n**Broader Connections**: The technique has applications in additive combinatorics, theoretical computer science (graph sparsification), and Ramsey theory. The Zarankiewicz-type generalization provides a unified framework for understanding how different forbidden subgraphs control the density of extractable subgraphs.",
+    "implications": "**Theoretical Significance**: This result exemplifies the power of dependent random choice in extremal combinatorics. It shows that even dense graphs contain large sparse (forbidden-subgraph-free) subgraphs, with tight bounds.\n\nThe technique has applications in additive combinatorics, theoretical computer science (graph sparsification), and Ramsey theory. The Zarankiewicz-type generalization provides a unified framework for understanding how different forbidden subgraphs control the density of extractable subgraphs.",
     "openQuestions": [
       "What are the optimal constants in the Ω(m^{2/3}) bound?",
       "Can such subgraphs be found algorithmically in polynomial time?",
@@ -107,19 +107,19 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1009",
       "relationship": "related",
-      "description": "Erdős #1009 (edge-disjoint triangles beyond Turán) studies related extremal graph questions about finding structured subgraphs in dense graphs."
+      "description": "Erdős #1009 (edge-disjoint triangles beyond Turán) studies related extremal graph questions about finding structured subgraphs in dense graphs.",
+      "targetId": "erdos-1009"
     },
     {
-      "id": "erdos-613",
       "relationship": "related",
-      "description": "Erdős #613 (graph decomposition and size Ramsey numbers) connects to the problem of partitioning graphs into forbidden-subgraph-free pieces."
+      "description": "Erdős #613 (graph decomposition and size Ramsey numbers) connects to the problem of partitioning graphs into forbidden-subgraph-free pieces.",
+      "targetId": "erdos-613"
     },
     {
-      "id": "erdos-1006",
       "relationship": "related",
-      "description": "Erdős #1006 (robust acyclic orientations) uses the probabilistic method in graph theory, sharing the dependent random choice technique."
+      "description": "Erdős #1006 (robust acyclic orientations) uses the probabilistic method in graph theory, sharing the dependent random choice technique.",
+      "targetId": "erdos-1006"
     }
   ],
   "relatedProofs": [

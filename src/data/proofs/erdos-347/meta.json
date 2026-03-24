@@ -95,7 +95,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #347 is solved: there exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has density-1 subset sums. The affirmative construction by ebarschkis (building on Tao and van Doorn) demonstrates that robust additive completeness is achievable at the critical growth rate 2.",
-    "implications": "**Theoretical Significance**: **Additive Completeness**: The result establishes that the critical ratio 2 admits robustly complete sequences, deepening the understanding of how multiplicative growth interacts with additive structure.\n\n**Broader Connections**: **Formal Verification**: As a solved problem with a Lean-verified proof, it demonstrates the feasibility of formalizing combinatorial existence arguments. **Perturbation Theory**: The construction technique (controlled perturbation of geometric sequences) may apply to other problems about near-extremal sequences.",
+    "implications": "**Theoretical Significance**: **Additive Completeness**: The result establishes that the critical ratio 2 admits robustly complete sequences, deepening the understanding of how multiplicative growth interacts with additive structure.\n\n**Formal Verification**: As a solved problem with a Lean-verified proof, it demonstrates the feasibility of formalizing combinatorial existence arguments. **Perturbation Theory**: The construction technique (controlled perturbation of geometric sequences) may apply to other problems about near-extremal sequences.",
     "openQuestions": [
       "What is the optimal error term for the density convergence rate?",
       "Can the ratio limit 2 be replaced by other values and still achieve robust completeness?",

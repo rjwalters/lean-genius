@@ -135,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1041 about paths in polynomial sublevel sets. The Erdős-Herzog-Piranian Component Lemma (1958) shows that the sublevel set {z : |f(z)| < 1} has a connected component containing at least two roots. The open conjecture asks whether this connected component contains a SHORT path of length less than 2 connecting two roots.",
-    "implications": "**Theoretical Significance**: This problem connects complex analysis, metric geometry, and potential theory.\n\n**Broader Connections**: Understanding the geometry of polynomial level sets has applications in numerical analysis (root-finding algorithms) and complex dynamics. The 1-dimensional Hausdorff measure provides the natural notion of path length for potentially irregular curves.",
+    "implications": "**Theoretical Significance**: This problem connects complex analysis, metric geometry, and potential theory.\n\nUnderstanding the geometry of polynomial level sets has applications in numerical analysis (root-finding algorithms) and complex dynamics. The 1-dimensional Hausdorff measure provides the natural notion of path length for potentially irregular curves.",
     "openQuestions": [
       "Does the conjecture hold for all monic polynomials with roots in the unit disk?",
       "What is the supremum of the minimal path length over all such polynomials?",

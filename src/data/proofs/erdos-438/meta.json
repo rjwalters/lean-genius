@@ -187,7 +187,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #438 asks for the maximum size of A ⊆ {1,...,N} with A+A square-free. The answer is |A| = (11/32 + o(1))N, achieved by the Massias construction (11 residue classes mod 32) and proved tight by Khalfalah-Lodha-Szemerédi (2002) using the Szemerédi regularity lemma.",
-    "implications": "**Theoretical Significance**: The result demonstrates the power of the regularity method for transferring modular density bounds to integer settings.\n\n**Broader Connections**: It shows that the optimal density for sumset avoidance problems can be determined by finite combinatorial optimization (maximum independent set in a graph defined by quadratic residues). The exact value 11/32 is a consequence of the 2-adic structure of perfect squares.",
+    "implications": "**Theoretical Significance**: The result demonstrates the power of the regularity method for transferring modular density bounds to integer settings.\n\nIt shows that the optimal density for sumset avoidance problems can be determined by finite combinatorial optimization (maximum independent set in a graph defined by quadratic residues). The exact value 11/32 is a consequence of the 2-adic structure of perfect squares.",
     "openQuestions": [
       "What is the exact formula for max|A| for small N (before asymptotics dominate)?",
       "What is the optimal density for A+A avoiding kth powers (Problem #439)?",
@@ -214,5 +214,21 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-439",
+      "relationship": "related",
+      "description": "Similar question for kth powers"
+    },
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Variant with A-A instead of A+A"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-439",
+    "erdos-587"
+  ]
 }

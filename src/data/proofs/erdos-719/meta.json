@@ -144,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "The Erdős-Sauer conjecture (Problem #719) asks whether every $r$-uniform hypergraph on $n$ vertices decomposes into at most $\\text{ex}_r(n; K_{r+1}^r)$ edge-disjoint pieces (single edges or complete $(r+1)$-cliques). The formalization defines the decomposition framework, proves the graph case reduction via Turán's theorem, and establishes structural lemmas including $\\binom{r+1}{r} = r+1$. The conjecture remains OPEN for all $r \\ge 2$.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Connects Turán theory and decomposition**: Resolution would provide a fundamental structural result linking extremal edge counts to decomposability\n\n2.\n\n**Broader Connections**: **Doubly open for $r \\ge 3$**: The conjecture depends on the hypergraph Turán problem, itself one of the hardest open problems in combinatorics\n\n3. **Graph case still open**: Even the $r = 2$ case — decomposing graphs into $\\le \\lfloor n^2/4 \\rfloor$ edges and triangles — is unresolved\n\n4. **Design theory connection**: Valid decompositions resemble packing designs with cliques as blocks.",
+    "implications": "1. **Connects Turán theory and decomposition**: Resolution would provide a fundamental structural result linking extremal edge counts to decomposability\n\n**2. Doubly open for $r \\ge 3$**: The conjecture depends on the hypergraph Turán problem, itself one of the hardest open problems in combinatorics\n\n3. **Graph case still open**: Even the $r = 2$ case — decomposing graphs into $\\le \\lfloor n^2/4 \\rfloor$ edges and triangles — is unresolved\n\n4. **Design theory connection**: Valid decompositions resemble packing designs with cliques as blocks.",
     "openQuestions": [
       "Does the Erdős-Sauer decomposition hold for the graph case r = 2?",
       "Can the conjecture be proved approximately (with a multiplicative constant)?",
@@ -188,5 +188,27 @@
       "citation": "Keevash, P. (2011). Hypergraph Turán problems. In Surveys in Combinatorics 2011, London Math. Soc. Lecture Note Ser. 392, 83–139.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-720",
+      "relationship": "related",
+      "description": "Turán densities for higher uniformity — the Turán number in the conjecture is itself open for r ≥ 3"
+    },
+    {
+      "targetId": "erdos-76",
+      "relationship": "related",
+      "description": "Monochromatic triangle packings — related edge-disjoint decomposition in colored complete graphs"
+    },
+    {
+      "targetId": "erdos-746",
+      "relationship": "related",
+      "description": "Hamiltonicity and random graphs — structural decomposition questions in extremal graph theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-720",
+    "erdos-76",
+    "erdos-746"
   ]
 }

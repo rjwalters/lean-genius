@@ -153,7 +153,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #184 remains OPEN. The Erdős–Gallai conjecture that O(n) cycles and edges suffice for any graph is unresolved. The current best bound O(n log* n) by Bucić–Montgomery (2022) is tantalizingly close — since log* n ≤ 5 for all feasible n, the bound is essentially 5n in practice. The formalization captures all major results with constructive definitions and axiomatized bounds.",
-    "implications": "**Theoretical Significance**: Resolution would advance our understanding of graph structure at a fundamental level.\n\n**Broader Connections**: The problem connects to cycle packing (Erdős–Pósa theorem), edge coloring (Vizing's theorem), and matroid decomposition. The iterative peeling technique of Bucić–Montgomery may find applications in other decomposition problems.",
+    "implications": "**Theoretical Significance**: Resolution would advance our understanding of graph structure at a fundamental level.\n\nThe problem connects to cycle packing (Erdős–Pósa theorem), edge coloring (Vizing's theorem), and matroid decomposition. The iterative peeling technique of Bucić–Montgomery may find applications in other decomposition problems.",
     "openQuestions": [
       "Can the Bucić–Montgomery $O(n \\log^* n)$ bound be improved to $O(n)$, or is there a superlinear lower bound hiding in sparse graphs?",
       "What is the exact optimal constant $C$ in the lower bound $(1+c)n$? Is $K_{3,n-3}$ the worst case?",

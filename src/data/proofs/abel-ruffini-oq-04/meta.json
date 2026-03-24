@@ -1,8 +1,8 @@
 {
   "id": "abel-ruffini-oq-04",
-  "title": "The A₅ Simplicity Proof Chain",
+  "title": "Abel-Ruffini Proof Chain: From A₅ Simplicity to Non-Solvability",
   "slug": "abel-ruffini-oq-04",
-  "description": "Exposes the complete proof chain from A₅ simplicity to the Abel-Ruffini theorem with each step as a named, independently verifiable theorem: A₅ is simple → Sₙ (n≥5) not solvable → general quintic unsolvable by radicals. Part of Wiedijk's 100 Theorems (#83). Fully verified with 0 sorries and 0 axioms.",
+  "description": "Exposes the key group-theoretic steps of the Abel-Ruffini proof chain with each step as a named theorem: A₅ is simple → Sₙ (n≥5) not solvable, plus a 2-line type-coercion bridge from Mathlib's cardinal-level statement to natural numbers. Steps 4–5 (Galois bridge, generic quintic Galois group) are documented but not formalized here. Part of Wiedijk's 100 Theorems (#16, Insolvability of General Higher Degree Equations). Fully verified with 0 sorries and 0 axioms.",
   "meta": {
     "author": "Abel (1824), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
@@ -18,11 +18,11 @@
       "simple-group",
       "wiedijk-100"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All 8 theorems fully proved from Mathlib with 0 axioms and 0 sorries. No structure-encoded assumptions.",
-    "wiedijkNumber": 83,
+    "assumptions": "Core results (A₅ simplicity, Sₙ not solvable) are direct Mathlib calls. This file provides a pedagogical proof chain wrapper around Mathlib's alternatingGroup.isSimpleGroup_five and Equiv.Perm.not_solvable.",
+    "wiedijkNumber": 16,
     "dateAdded": "2026-03-22",
     "mathlibDependencies": [
       {
@@ -37,53 +37,9 @@
       }
     ],
     "originalContributions": [
-      "Named proof chain: a5_is_simple → symmetric_not_solvable → Abel-Ruffini",
-      "symmetric_not_solvable: explicit proof for general n via Cardinal inequality",
-      "five_is_the_threshold: exact dividing line between solvable and non-solvable",
-      "Comprehensive documentation of the 5-step proof chain with historical context",
-      "Degree-by-degree comparison table showing why 5 is the critical threshold"
-    ],
-    "relatedProofs": [
-      "abel-ruffini",
-      "inverse-galois",
-      "lagrange-theorem",
-      "sylow-theorems",
-      "solution-of-cubic",
-      "general-quartic",
-      "angle-trisection",
-      "fundamental-theorem-algebra",
-      "fundamental-arithmetic",
-      "hermite-lindemann",
-      "sqrt2-irrational",
-      "e-transcendental",
-      "pi-transcendental",
-      "godel-incompleteness",
-      "halting-problem",
-      "cantor-diagonalization",
-      "lagrange-theorem-oq-03",
-      "angle-trisection-oq-02",
-      "angle-trisection-oq-02-oq-01",
-      "quadratic-reciprocity",
-      "kroneckers-jugendtraum",
-      "hilbert-10",
-      "vietas-formulas",
-      "primitive-roots",
-      "fermats-last-theorem",
-      "puiseux-theorem",
-      "elementary-quadratic-reciprocity-oq-01",
-      "derangements",
-      "partition-theorem",
-      "wilsons-theorem",
-      "euler-totient",
-      "angle-trisection-oq-02-oq-03",
-      "angle-trisection-oq-02-oq-03-oq-01",
-      "nth-root-irrational-oq-01",
-      "hilbert-9-reciprocity",
-      "hilbert-13",
-      "hurwitz-theorem",
-      "vietas-formulas-oq-03",
-      "solution-of-cubic-oq-03",
-      "platonic-solids"
+      "Bridge theorem (symmetric_not_solvable): 2-line type coercion converting Mathlib's cardinal-level Equiv.Perm.not_solvable to a natural number bound via simp + exact_mod_cast",
+      "Pedagogical organization: names each step in the A₅ → Abel-Ruffini chain as an independently verifiable theorem",
+      "Documentation: structured 5-step proof chain exposition with 'Why Exactly 5?' and 'Crucial Asymmetry' degree-by-degree comparison tables"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -108,7 +64,7 @@
     {
       "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "Both are impossibility results via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle trisection shows the general angle cannot be trisected by compass and straightedge"
+      "description": "Both are Galois-theoretic impossibility results: Abel-Ruffini shows quintics are unsolvable by radicals (Galois group not solvable), angle trisection shows certain angles cannot be trisected (Galois group not a 2-group)"
     },
     {
       "targetId": "fundamental-theorem-algebra",
@@ -131,14 +87,9 @@
       "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and help prove simplicity"
     },
     {
-      "targetId": "fundamental-arithmetic",
-      "relationship": "related",
-      "description": "Unique prime factorization underlies the Sylow-theoretic analysis of A₅: |A₅| = 60 = 2²·3·5 determines its Sylow subgroup structure, which is key to proving simplicity"
-    },
-    {
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
-      "description": "Cardano's formula (1545) gives explicit radical solutions for cubics — the last degree where a general radical formula exists. This file proves why no such formula exists for degree ≥ 5"
+      "description": "Cardano's formula (1545) gives explicit radical solutions for cubics — the highest odd degree where a general radical formula exists, contrasting with the impossibility at degree 5"
     },
     {
       "targetId": "general-quartic",
@@ -146,165 +97,25 @@
       "description": "Ferrari's quartic formula (1540) is the highest-degree general radical solution. S₄ is solvable (derived series {e} ◁ V₄ ◁ A₄ ◁ S₄) but S₅ is not — this file proves the exact threshold"
     },
     {
-      "targetId": "hermite-lindemann",
-      "relationship": "related",
-      "description": "Hermite-Lindemann (e^α transcendental for algebraic α ≠ 0) strengthens the impossibility hierarchy: Abel-Ruffini shows certain roots aren't radical, while Hermite-Lindemann shows e and π aren't even algebraic — a strictly stronger expressibility barrier"
-    },
-    {
-      "targetId": "sqrt2-irrational",
-      "relationship": "foundational",
-      "description": "The irrationality of √2 (c. 500 BCE) is the earliest impossibility result in mathematics. Abel-Ruffini extends the paradigm: √2 ∉ ℚ → certain quintic roots ∉ radical extensions → e,π ∉ algebraic numbers forms a hierarchy of inexpressibility"
-    },
-    {
-      "targetId": "e-transcendental",
-      "relationship": "related",
-      "description": "Hermite's proof that e is transcendental (1873) extends the impossibility hierarchy: Abel-Ruffini shows certain roots cannot be expressed by radicals, while transcendence of e shows it cannot satisfy any polynomial — a strictly stronger inexpressibility barrier"
-    },
-    {
-      "targetId": "pi-transcendental",
-      "relationship": "related",
-      "description": "Lindemann's proof that π is transcendental (1882) is a successor impossibility result: the transcendence of π implies the impossibility of squaring the circle, paralleling Abel-Ruffini's impossibility of the quintic formula — both show certain quantities escape finite algebraic description"
-    },
-    {
-      "targetId": "godel-incompleteness",
-      "relationship": "thematic",
-      "description": "Gödel's incompleteness (1931) extends the impossibility paradigm: Abel-Ruffini shows no radical formula captures all quintic roots, Gödel shows no formal system captures all arithmetic truths — both reveal fundamental limits of finite symbolic methods"
-    },
-    {
-      "targetId": "halting-problem",
-      "relationship": "thematic",
-      "description": "Turing's halting problem (1936) parallels Abel-Ruffini: no algorithm decides all halting questions, just as no radical formula solves all quintics — both establish undecidability within natural-seeming computational frameworks"
-    },
-    {
-      "targetId": "cantor-diagonalization",
-      "relationship": "thematic",
-      "description": "Cantor's diagonal argument (1891) established the impossibility proof paradigm used in different form by Abel-Ruffini: no enumeration captures all reals, just as no radical formula captures all quintic roots — both prove that certain 'natural' operations cannot reach all targets"
-    },
-    {
-      "targetId": "lagrange-theorem-oq-03",
-      "relationship": "complementary",
-      "description": "Hall's theorem (1928) gives a structural characterization of solvable groups: a finite group G is solvable iff for every divisor d of |G| with gcd(d, |G|/d) = 1, G has a subgroup of order d. This is the converse direction of the solvability concept central to Abel-Ruffini — where this file uses non-solvability of S₅ to prove impossibility, Hall's theorem provides the positive characterization of exactly which groups are solvable"
-    },
-    {
-      "targetId": "angle-trisection-oq-02",
-      "relationship": "related",
-      "description": "Both use Galois theory to prove impossibility: this file shows S₅ non-solvable blocks radical solutions of quintics, while OQ-02 shows constructibility requires the Galois group to be a 2-group — the Wantzel-Galois characterization that explains why angle trisection and cube doubling are impossible with compass and straightedge"
-    },
-    {
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Gauss's quadratic reciprocity (1801) concerns the multiplicative structure of (ℤ/pℤ)*, foreshadowing the group-theoretic methods used here. The Artin reciprocity law generalizes both: it connects abelian Galois groups to ideal class groups, unifying quadratic reciprocity with the abelian case of Galois's solvability criterion that underlies Abel-Ruffini"
-    },
-    {
-      "targetId": "kroneckers-jugendtraum",
-      "relationship": "extends",
-      "description": "Kronecker-Weber (every abelian extension of ℚ is cyclotomic) is the positive counterpart: it characterizes exactly which extensions are generated by radicals of unity. This file proves the negative side (S₅ not solvable blocks general quintic solutions), while Kronecker-Weber shows the abelian case always works — together they map the boundary between solvable and unsolvable"
-    },
-    {
-      "targetId": "hilbert-10",
-      "relationship": "thematic",
-      "description": "Matiyasevich's negative resolution of Hilbert's tenth problem (1970) extends the impossibility tradition: this file proves no radical formula solves all quintics (group-theoretic obstruction), while Hilbert-10 proves no algorithm decides all Diophantine equations (computability obstruction) — both establish fundamental limits on solving polynomial equations"
+      "description": "Gauss's quadratic reciprocity (1801) concerns the multiplicative structure of (ℤ/pℤ)*, foreshadowing the group-theoretic methods used here. Artin reciprocity generalizes both quadratic reciprocity and the abelian case of Galois's solvability criterion"
     },
     {
       "targetId": "vietas-formulas",
       "relationship": "foundational",
-      "description": "Vieta's formulas express polynomial roots as elementary symmetric functions of coefficients — the symmetric group Sₙ acts on roots by permutation, and Vieta's formulas are exactly the fundamental Sₙ-invariant polynomials. This invariance is why polynomial coefficients live in the ground field: they are fixed by the Galois group. The Abel-Ruffini theorem can be restated as: the elementary symmetric functions cannot be 'inverted' by radicals when the Galois group is S₅"
-    },
-    {
-      "targetId": "primitive-roots",
-      "relationship": "related",
-      "description": "Primitive roots of unity generate cyclotomic extensions ℚ(ζₙ)/ℚ, the simplest radical extensions with cyclic (hence solvable) Galois groups Gal(ℚ(ζₚ)/ℚ) ≅ (ℤ/pℤ)*. These are the prototype of solvable-by-radicals equations — every radical tower passes through cyclotomic extensions. The contrast with the generic quintic (Galois group S₅, not solvable) illuminates the exact boundary between radical-solvable and radical-unsolvable"
-    },
-    {
-      "targetId": "fermats-last-theorem",
-      "relationship": "thematic",
-      "description": "Two landmark impossibility results that drove algebraic innovation across centuries: Abel-Ruffini (1824) proves no radical formula solves all quintics via the non-solvability of S₅, spawning Galois theory; FLT (1995) proves aⁿ + bⁿ = cⁿ has no positive integer solutions for n > 2, proved via the modularity of elliptic curves. Both transformed their fields — Abel-Ruffini led from equation-solving to structural algebra, while FLT connected number theory to the Langlands program"
-    },
-    {
-      "targetId": "angle-trisection-oq-02-oq-01",
-      "relationship": "related",
-      "description": "Both use Galois-theoretic obstructions to prove impossibility via parallel strategies: this file shows Gal(generic quintic) ≅ S₅ is not solvable, blocking radical solutions; OQ-02-OQ-01 proves that constructibility requires the Galois group to be a 2-group (natDegree divides |Gal|), blocking compass-and-straightedge constructions. Both reduce geometric/algebraic impossibility to a group-theoretic property check"
+      "description": "Vieta's formulas are the fundamental Sₙ-invariant polynomials. The Abel-Ruffini theorem can be restated as: the elementary symmetric functions cannot be 'inverted' by radicals when the Galois group is S₅"
     },
     {
       "targetId": "puiseux-theorem",
       "relationship": "complementary",
-      "description": "Puiseux's theorem shows that the field of fractional power series ℂ{{t^{1/∞}}} is algebraically closed — every polynomial equation has a Puiseux series solution. This provides an illuminating contrast with Abel-Ruffini: while radicals (nested nth roots) cannot solve the generic quintic, Puiseux series always can. The Newton-Puiseux algorithm constructs solutions term-by-term via the Newton polygon, succeeding precisely where radical formulas fail. This situates Abel-Ruffini as a statement about the specific class of radical expressions, not about the existence of 'closed-form' solutions in general"
-    },
-    {
-      "targetId": "elementary-quadratic-reciprocity-oq-01",
-      "relationship": "related",
-      "description": "Zolotarev's 1872 proof of quadratic reciprocity uses the sign homomorphism sign: Sₙ → {±1} — the same homomorphism whose kernel Aₙ = ker(sign) is central to this file's proof chain. In Zolotarev's proof, the Legendre symbol (a/p) equals the signature of the multiplication-by-a permutation on (ℤ/pℤ)*, directly linking the symmetric group structure that drives Abel-Ruffini's impossibility to a fundamental result in number theory. Both proofs exploit the same group-theoretic infrastructure (symmetric groups and their sign homomorphism) for entirely different purposes"
-    },
-    {
-      "targetId": "derangements",
-      "relationship": "related",
-      "description": "The derangement formula D(n) = n! Σ(-1)^k/k! counts fixed-point-free permutations in Sₙ via inclusion-exclusion on the group action of Sₙ on {1,...,n}. The sign homomorphism sign: Sₙ → {±1} partitions derangements into even (in Aₙ) and odd — the same sign homomorphism whose kernel Aₙ = ker(sign) is central to the Abel-Ruffini proof chain. The derangement count also illustrates how combinatorial properties of Sₙ (fixed-point structure) coexist with its algebraic properties (solvability), showcasing two faces of the same group"
-    },
-    {
-      "targetId": "partition-theorem",
-      "relationship": "related",
-      "description": "Integer partitions of n index the conjugacy classes of Sₙ by cycle type — a partition λ = (λ₁, λ₂, ...) corresponds to the class of permutations with cycle lengths λ₁, λ₂, etc. The conjugacy class sizes of A₅ (1, 12, 12, 15, 20, corresponding to cycle types (1⁵), (2²1), (3 1²), (5), (5) split) are the raw data for proving A₅ simplicity: a normal subgroup must be a union of conjugacy classes including {e}, and the only sub-sums of {1, 12, 12, 15, 20} that divide 60 are 1 and 60. Euler's partition theorem (odd parts ↔ distinct parts) thus connects to group theory through the cycle-type encoding"
-    },
-    {
-      "targetId": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem — (p−1)! ≡ −1 (mod p) for prime p — is a statement about the group (ℤ/pℤ)* of order p−1. The product of all elements in a finite abelian group equals the product of its order-2 elements; for (ℤ/pℤ)* the only such element is −1, giving Wilson's theorem. This connects to Abel-Ruffini through the structure of unit groups: (ℤ/pℤ)* is cyclic (hence solvable), and cyclotomic extensions ℚ(ζₚ)/ℚ have Galois group (ℤ/pℤ)* — precisely the solvable extensions that form the building blocks of radical towers. Wilson's theorem thus witnesses the abelian (solvable) structure of prime-order unit groups, the opposite pole from the non-solvable S₅ that drives Abel-Ruffini"
-    },
-    {
-      "targetId": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's totient φ(n) = |(ℤ/nℤ)*| computes the order of the multiplicative unit group modulo n. The structure theorem (ℤ/nℤ)* ≅ ∏ (ℤ/pᵢᵉⁱℤ)* shows this group is always a product of cyclic groups — hence always solvable. This solvability of unit groups is why cyclotomic extensions (adjoining nth roots of unity) are always radical: their Galois groups are subgroups of (ℤ/nℤ)*, which are abelian. The Abel-Ruffini impossibility arises precisely when the Galois group escapes this abelian world — the generic quintic has Galois group S₅, which is not a subgroup of any (ℤ/nℤ)* and is not solvable. Euler's totient thus quantifies the 'solvable side' of the radical solvability dichotomy"
-    },
-    {
-      "targetId": "angle-trisection-oq-02-oq-03",
-      "relationship": "related",
-      "description": "The Gauss-Wantzel theorem characterizes exactly which regular n-gons are constructible by compass and straightedge: n must be a product of a power of 2 and distinct Fermat primes. The parallel with Abel-Ruffini is striking — both are Galois-theoretic impossibility results that reduce geometric/algebraic questions to group-theoretic criteria: constructibility requires the Galois group to be a 2-group (tower of degree-2 extensions), while radical solvability requires a solvable Galois group (tower of cyclic extensions). Gauss-Wantzel and Abel-Ruffini together illustrate how Galois theory provides a unified framework for impossibility proofs across algebra and geometry"
-    },
-    {
-      "targetId": "angle-trisection-oq-02-oq-03-oq-01",
-      "relationship": "related",
-      "description": "The cyclotomic field approach to the Gauss-Wantzel theorem connects directly to the radical solvability paradigm: the nth cyclotomic polynomial Φₙ has Galois group (ℤ/nℤ)*, which is abelian and hence solvable — explaining why roots of unity are always expressible by radicals. The Abel-Ruffini theorem arises precisely when the Galois group escapes this abelian cyclotomic world: the generic quintic's Galois group S₅ is not solvable, and its non-abelian simple composition factor A₅ is the exact obstruction"
-    },
-    {
-      "targetId": "nth-root-irrational-oq-01",
-      "relationship": "foundational",
-      "description": "The irrationality of nth roots via irreducible polynomials is a prototype of the field extension arguments that underlie Abel-Ruffini. Showing ⁿ√m ∉ ℚ uses the irreducibility of xⁿ − m over ℚ (Eisenstein's criterion), giving [ℚ(ⁿ√m) : ℚ] = n — a degree-n radical extension. Abel-Ruffini asks when arbitrary polynomial roots can be reached by chaining such radical extensions (tower of radical extensions), and the answer depends on whether the Galois group is solvable. The irrationality proof is the base case (degree 1 tower, always possible) of the general radical solvability question"
-    },
-    {
-      "targetId": "hilbert-9-reciprocity",
-      "relationship": "extends",
-      "description": "Hilbert's 9th problem — the search for the most general reciprocity law — was answered by Artin reciprocity (1927), which establishes an isomorphism between abelian Galois groups and generalized ideal class groups. This directly extends the abelian/non-abelian dichotomy central to Abel-Ruffini: Artin reciprocity completely classifies abelian extensions (the solvable case), while the non-abelian Langlands program seeks analogues for non-abelian Galois groups like S₅. The contrast is precise: Abel-Ruffini says S₅ blocks radical solvability because it is non-solvable, while class field theory says abelian extensions are fully understood — the frontier of difficulty is exactly the non-abelian boundary"
-    },
-    {
-      "targetId": "hilbert-13",
-      "relationship": "related",
-      "description": "Hilbert's 13th problem asked whether solutions of degree-7 polynomials require functions of 3 variables — a direct successor to Abel-Ruffini's impossibility for radicals. While Abel-Ruffini shows x⁵ + ··· cannot be solved by nested radicals (functions of 1 variable composed via +, ×, ⁿ√), Hilbert asked whether the general septic could be solved using continuous functions of only 2 variables. The Kolmogorov-Arnold representation theorem (1957) resolved this negatively by showing every continuous function of n variables decomposes into functions of 1 variable — a surprising inversion: the algebraic barrier (Abel-Ruffini) is harder than the continuous one"
-    },
-    {
-      "targetId": "hurwitz-theorem",
-      "relationship": "thematic",
-      "description": "Hurwitz's theorem (1898) proves that normed division algebras exist only in dimensions 1, 2, 4, 8 (ℝ, ℂ, ℍ, 𝕆), a striking parallel to Abel-Ruffini's threshold phenomenon: radical solvability holds only for degrees 1–4, and composition algebras exist only for n = 1, 2, 4, 8. Both are 'finiteness of nice structures' results where algebraic constraints force a sharp cutoff. The connection deepens through Frobenius's theorem (1878): associative division algebras over ℝ are only ℝ, ℂ, ℍ — and the quaternions ℍ have automorphism group SO(3), which is not solvable, echoing how A₅'s non-solvability drives Abel-Ruffini"
-    },
-    {
-      "targetId": "vietas-formulas-oq-03",
-      "relationship": "foundational",
-      "description": "Newton's identities express power sums pₖ = Σxᵢᵏ recursively in terms of elementary symmetric polynomials eⱼ, providing the computational bridge for Step 5 of the proof chain: the generic polynomial x⁵ + a₁x⁴ + ··· + a₅ has Galois group S₅ because the elementary symmetric polynomials e₁,...,e₅ are algebraically independent generators of the ring of S₅-invariant polynomials. Newton's identities make this algebraic independence computationally explicit by showing that power sums (which generate the same invariant ring) are polynomial combinations of elementary symmetric polynomials and vice versa — establishing the transcendence degree of the fixed field ℚ(e₁,...,eₙ) that forces Gal = Sₙ"
-    },
-    {
-      "targetId": "solution-of-cubic-oq-03",
-      "relationship": "complementary",
-      "description": "Vieta's formulas for the cubic via Cardano's roots demonstrate the solvable case in action: the three Cardano roots of x³ + px + q = 0 satisfy Vieta's formulas (sum = 0, pairwise products = p, triple product = −q), with the factorization obtained through explicit radical expressions. This is the degree-3 instance of the radical tower that Abel-Ruffini proves impossible at degree 5 — S₃ is solvable (derived series {e} ◁ A₃ ◁ S₃ terminates), so Cardano's radical formula exists, and Vieta's formulas confirm it reconstructs the original polynomial"
-    },
-    {
-      "targetId": "platonic-solids",
-      "relationship": "related",
-      "description": "The classification of exactly five Platonic solids connects to Abel-Ruffini through the icosahedron: A₅ is isomorphic to the rotation group of the regular icosahedron (60 rotational symmetries matching |A₅| = 60). Klein (1884) exploited this isomorphism to solve the general quintic via the icosahedral equation — while no radical formula exists (Abel-Ruffini), the quintic IS solvable using functions adapted to icosahedral symmetry. The icosahedron is the most symmetric Platonic solid with a non-abelian rotation group, making the five-fold connection between five Platonic solids and the degree-5 threshold more than coincidental"
+      "description": "Puiseux series always solve polynomial equations, contrasting with Abel-Ruffini: radicals cannot solve the generic quintic, but Puiseux series can — situating Abel-Ruffini as a statement about the specific class of radical expressions"
     }
   ],
   "overview": {
     "historicalContext": "The Abel-Ruffini theorem (1824) stands as one of the most profound results in the history of algebra, settling a question that had occupied mathematicians for centuries. After Cardano (1545) and Ferrari (1540) found radical solutions for cubics and quartics, the search for a quintic formula consumed generations of mathematicians including Euler, Lagrange, and Vandermonde. Paolo Ruffini published the first attempted proof of impossibility in 1799 in his *Teoria Generale delle Equazioni*, running to over 500 pages. Ruffini's argument, based on permutation analysis, contained a gap: he assumed without proof that any radical expression for the roots must take a specific 'standard form,' and his treatment of the permutations was not fully rigorous. Despite submitting his work to leading mathematicians including Lagrange (who never responded) and Cauchy (who acknowledged its importance), Ruffini's proof was not widely accepted during his lifetime. Niels Henrik Abel, working independently in near-poverty in Norway, provided the first complete proof in 1824 at age 21 — a 6-page paper that succeeded precisely where Ruffini's argument was incomplete. Abel died of tuberculosis in 1829, just two days before a letter arrived offering him a professorship in Berlin. Évariste Galois, before his death in a duel at 20, went much further in 1832: he characterized exactly which polynomials are solvable by radicals in terms of their symmetry groups, founding what we now call Galois theory. The key group-theoretic insight is that A₅, the alternating group on 5 elements, is the smallest non-abelian simple group — with order 60, it has no proper non-trivial normal subgroups, causing the derived series to get stuck. This single fact propagates upward through the chain: A₅ not solvable → Sₙ (n ≥ 5) not solvable → generic quintic not solvable by radicals. The classification of finite simple groups (completed circa 2004) shows that A₅ is the first in the infinite family of simple alternating groups Aₙ (n ≥ 5).",
-    "problemStatement": "Expose the full proof chain from $A_5$ simplicity to the Abel-Ruffini theorem with each step as a named, machine-verified theorem: $A_5$ simple $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ no radical formula for the general degree-$n$ polynomial ($n \\geq 5$).",
-    "text": "Exposes the complete proof chain from A₅ simplicity to the Abel-Ruffini theorem with each step as a named, independently verifiable theorem: A₅ is simple → Sₙ (n≥5) not solvable → general quintic unsolvable by radicals. Part of Wiedijk's 100 Theorems (#83). Fully verified with 0 sorries and 0 axioms.",
+    "problemStatement": "Expose the key group-theoretic steps of the Abel-Ruffini proof chain as named, machine-verified theorems: $A_5$ simple $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable, with a type-coercion bridge from Mathlib's cardinal-level statement. Steps 4–5 (Galois bridge, generic quintic Galois group) are documented but not formalized here.",
+    "text": "A pedagogical Mathlib wrapper that names each step in the A₅-simplicity-to-Abel-Ruffini proof chain, providing a 2-line type-coercion bridge (cardinal to natural number) for Equiv.Perm.not_solvable and structured documentation of the complete 5-step argument including degree-by-degree comparison tables. Part of Wiedijk's 100 Theorems (#16, Insolvability of General Higher Degree Equations). Fully verified with 0 sorries and 0 axioms.",
     "proofStrategy": "The file decomposes the Abel-Ruffini proof chain into five named, independently verifiable steps. The key technical theorem is `symmetric_not_solvable`, which bridges Mathlib's cardinal-level non-solvability statement (`Equiv.Perm.not_solvable`, stated for `5 ≤ Cardinal.mk α`) to a natural number bound (`5 ≤ n`) via `exact_mod_cast` — this type-level coercion is the main new proof content. The pedagogical architecture then builds upward: `a5_is_simple` extracts the foundation from Mathlib, specific instances (`s5_not_solvable`, `s6_not_solvable`, `s7_not_solvable`) demonstrate the theorem for individual degrees, contrast cases (`s0_solvable`, `s1_solvable`) establish the solvable side, and `five_is_the_threshold` packages the sharp dichotomy. The file concludes with structured documentation of the complete 5-step chain including Steps 4–5 (Galois bridge and field theory) which are handled by Mathlib internally.",
     "keyInsights": [
       "A₅ (order 60) is the smallest non-abelian simple group — this single fact drives the entire Abel-Ruffini theorem through a chain of group-theoretic implications",
@@ -329,7 +140,7 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Imports three Mathlib modules (GroupTheory.Solvable, SpecificGroups.Alternating, Tactic) and documents the 4-step proof chain architecture. Part of Wiedijk's 100 Theorems (#83). References sibling files AbelRuffini.lean and AbelRuffiniGaloisExtensions.lean.",
+      "summary": "Imports three Mathlib modules (GroupTheory.Solvable, SpecificGroups.Alternating, Tactic) and documents the 4-step proof chain architecture. Part of Wiedijk's 100 Theorems (#16, Insolvability of General Higher Degree Equations). References sibling files AbelRuffini.lean and AbelRuffiniGaloisExtensions.lean.",
       "mathContext": "Dependencies: `IsSolvable`, `alternatingGroup`, `isSimpleGroup_five`, `Equiv.Perm.not_solvable` from Mathlib's group theory library."
     },
     {
@@ -382,8 +193,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) pedagogical exposition of the A₅ simplicity proof chain in 163 lines with 8 theorems. Each link in the chain from A₅ simplicity to the Abel-Ruffini theorem is named, machine-verified, and documented with historical and mathematical context. The key technical theorem is symmetric_not_solvable, which bridges Mathlib's cardinal-level statement to natural numbers.",
-    "implications": "**Theoretical Significance**: This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups.\n\n**Broader Connections**: More broadly, the chain illustrates a general pattern in Galois theory: structural properties of groups (simplicity, solvability) translate into concrete impossibility results about algebraic equations. This paradigm extends to other areas — for example, the impossibility of angle trisection and cube doubling by compass and straightedge follow from analogous Galois-theoretic arguments about field extension degrees. The formalization also connects to modern computational algebra: algorithms for computing Galois groups over ℚ (e.g., Stauduhar's method, van der Waerden's approach, and modern p-adic methods) can decide radical solvability of any specific polynomial, transforming Abel-Ruffini's negative result into a positive algorithmic criterion via its contrapositive. The same group-theoretic paradigm extends to differential Galois theory (Picard-Vessiot theory): a linear ODE is 'solvable by quadratures' iff its differential Galois group has solvable identity component, with Kovacic's algorithm (1986) making this decidable for second-order equations — a direct analogue of how Galois group computation decides radical solvability for polynomials.",
+    "summary": "Fully verified (0 sorries, 0 axioms) pedagogical exposition in 163 lines with 8 named theorems: 1 substantive bridge (symmetric_not_solvable, converting cardinal to natural number bound), 1 Mathlib alias (a5_is_simple), 3 one-line specializations (s5/s6/s7_not_solvable), 2 typeclass inferences (s0/s1_solvable), and 1 conjunction (five_is_the_threshold). The mathematical depth resides in the structured documentation of the 5-step proof chain rather than in the ~4 lines of original Lean code.",
+    "implications": "**Theoretical Significance**: This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups.\n\nMore broadly, the chain illustrates a general pattern in Galois theory: structural properties of groups (simplicity, solvability) translate into concrete impossibility results about algebraic equations. This paradigm extends to other areas — for example, the impossibility of angle trisection and cube doubling by compass and straightedge follow from analogous Galois-theoretic arguments about field extension degrees. The formalization also connects to modern computational algebra: algorithms for computing Galois groups over ℚ (e.g., Stauduhar's method, van der Waerden's approach, and modern p-adic methods) can decide radical solvability of any specific polynomial, transforming Abel-Ruffini's negative result into a positive algorithmic criterion via its contrapositive. The same group-theoretic paradigm extends to differential Galois theory (Picard-Vessiot theory): a linear ODE is 'solvable by quadratures' iff its differential Galois group has solvable identity component, with Kovacic's algorithm (1986) making this decidable for second-order equations — a direct analogue of how Galois group computation decides radical solvability for polynomials.",
     "openQuestions": [
       "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴ + ··· + a₅ / ℚ(a₁,...,a₅)) = S₅",
       "Prove S₂, S₃, S₄ solvable explicitly (not just S₀, S₁) to complete the degree-by-degree picture",
@@ -405,6 +216,8 @@
     "lineCount": 163,
     "axiomCount": 0,
     "theoremCount": 8,
+    "substantiveTheoremCount": 2,
+    "trivialSpecializations": 6,
     "definitionCount": 0
   },
   "references": [
@@ -536,39 +349,10 @@
     "inverse-galois",
     "lagrange-theorem",
     "sylow-theorems",
-    "fundamental-arithmetic",
     "solution-of-cubic",
     "general-quartic",
-    "hermite-lindemann",
-    "sqrt2-irrational",
-    "e-transcendental",
-    "pi-transcendental",
-    "godel-incompleteness",
-    "halting-problem",
-    "cantor-diagonalization",
-    "lagrange-theorem-oq-03",
-    "angle-trisection-oq-02",
     "quadratic-reciprocity",
-    "kroneckers-jugendtraum",
-    "hilbert-10",
     "vietas-formulas",
-    "primitive-roots",
-    "fermats-last-theorem",
-    "angle-trisection-oq-02-oq-01",
-    "puiseux-theorem",
-    "elementary-quadratic-reciprocity-oq-01",
-    "derangements",
-    "partition-theorem",
-    "wilsons-theorem",
-    "euler-totient",
-    "angle-trisection-oq-02-oq-03",
-    "angle-trisection-oq-02-oq-03-oq-01",
-    "nth-root-irrational-oq-01",
-    "hilbert-9-reciprocity",
-    "hilbert-13",
-    "hurwitz-theorem",
-    "vietas-formulas-oq-03",
-    "solution-of-cubic-oq-03",
-    "platonic-solids"
+    "puiseux-theorem"
   ]
 }

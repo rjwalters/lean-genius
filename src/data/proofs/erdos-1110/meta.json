@@ -142,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1110 asks about representing integers as sums of p^k q^l with non-divisibility. The {2,3} case is completely solved (all positive integers representable), but general cases have infinitely many exceptions. Yu-Chen (2022) established density zero for large parameters and coprime infinitude for most (p,q). The minimum summand can be as large as n/log n.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Additive Structure:** Reveals how 'smooth' numbers combine additively\n2.\n\n**Broader Connections**: **Density Theory:** Non-representables form a thin set in many cases\n3. **Number-Theoretic Constraints:** Non-divisibility creates rich structure\n4. **Algorithmic:** Inductive proof gives explicit constructions for {2,3}.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Additive Structure:** Reveals how 'smooth' numbers combine additively\n**2. Density Theory:** Non-representables form a thin set in many cases\n3. **Number-Theoretic Constraints:** Non-divisibility creates rich structure\n4. **Algorithmic:** Inductive proof gives explicit constructions for {2,3}.",
     "openQuestions": [
       "What is the exact density of non-representables for small p, q?",
       "Can the minimum summand bound be improved beyond n/log n?",

@@ -147,7 +147,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1129 asked which interpolation nodes minimize the Lebesgue constant. The answer is complete: optimal nodes exist (Kilgore-Cheney), are characterized by the equal-height property (Kilgore), and are unique for canonical configurations (de Boor-Pinkus). The minimum Lebesgue constant satisfies (2/π) log n - O(1) ≤ Λ_min ≤ (2/π) log n + O(1), with Chebyshev nodes achieving the upper bound. For the complex variant on the unit circle, roots of unity are optimal.",
-    "implications": "**Theoretical Significance**: **Numerical Analysis Significance**\n\n1. **Interpolation Error Bounds:** ||f - P||_∞ ≤ (1 + Λ) · E_n(f) shows conditioning matters.\n\n2. **Chebyshev Preference:** Chebyshev nodes are standard in numerical methods because they achieve asymptotically optimal conditioning.\n\n3.\n\n**Broader Connections**: **Runge Phenomenon:** Explains why equidistant nodes fail - their Lebesgue constant grows exponentially.\n\n4. **Approximation Theory:** Connects polynomial interpolation to best approximation through Lebesgue's inequality.\n\n5. **Computational Practice:** Modern spectral methods use Chebyshev or Gauss-Lobatto points based on these results.",
+    "implications": "**Theoretical Significance**: **Numerical Analysis Significance**\n\n1. **Interpolation Error Bounds:** ||f - P||_∞ ≤ (1 + Λ) · E_n(f) shows conditioning matters.\n\n2. **Chebyshev Preference:** Chebyshev nodes are standard in numerical methods because they achieve asymptotically optimal conditioning.\n\n**3. Runge Phenomenon:** Explains why equidistant nodes fail - their Lebesgue constant grows exponentially.\n\n4. **Approximation Theory:** Connects polynomial interpolation to best approximation through Lebesgue's inequality.\n\n5. **Computational Practice:** Modern spectral methods use Chebyshev or Gauss-Lobatto points based on these results.",
     "openQuestions": [
       "Explicit optimal nodes for n ≥ 5",
       "Optimal nodes for other intervals or weight functions",
@@ -158,40 +158,40 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1130",
       "title": "Erdős Problem #1130: Lagrange Basis Function Sums",
       "relationship": "Companion problem: asks whether the minimum over subintervals of the maximum Lebesgue function is O(log n), directly complementing #1129's full characterization of optimal nodes and the (2/π) log n asymptotic.",
-      "relevance": "high"
+      "relevance": "high",
+      "targetId": "erdos-1130"
     },
     {
-      "id": "erdos-1131",
       "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
       "relationship": "L² analog of #1129: minimizes ∫ Σ|l_k(x)|² dx (Legendre nodes) rather than the L∞ Lebesgue constant. The equal-height equioscillation structure in #1129 has no direct L² counterpart, leaving the L² problem open.",
-      "relevance": "high"
+      "relevance": "high",
+      "targetId": "erdos-1131"
     },
     {
-      "id": "erdos-671",
       "title": "Erdős Problem #671: Lagrange Interpolation Convergence",
       "relationship": "Studies whether Lagrange interpolation at general nodes converges for continuous functions; uses the same Lebesgue constant framework and Faber's logarithmic lower bound established in #1129.",
-      "relevance": "high"
+      "relevance": "high",
+      "targetId": "erdos-671"
     },
     {
-      "id": "erdos-1132",
       "title": "Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions",
       "relationship": "Asks for sharp pointwise bounds on individual Lebesgue basis functions; shares the core definitions of LagrangeBasis and LebesgueFunction developed in #1129.",
-      "relevance": "medium"
+      "relevance": "medium",
+      "targetId": "erdos-1132"
     },
     {
-      "id": "erdos-1133",
       "title": "Erdős Problem #1133: Large Polynomial Interpolation Bound",
       "relationship": "Investigates the maximum of Lagrange interpolation polynomials for bounded functions; the Lebesgue constant bounds from #1129 provide key inputs to these upper estimates.",
-      "relevance": "medium"
+      "relevance": "medium",
+      "targetId": "erdos-1133"
     },
     {
-      "id": "de-moivre-oq-02",
       "title": "Chebyshev Polynomial Properties via De Moivre's Theorem",
       "relationship": "Establishes the recurrence, extremal, and equioscillation properties of Chebyshev polynomials T_n via De Moivre's theorem; these properties underlie the ChebyshevNodes definition and the upper bound Λ ≤ (2/π) log n + O(1) in #1129.",
-      "relevance": "medium"
+      "relevance": "medium",
+      "targetId": "de-moivre-oq-02"
     }
   ],
   "relatedProofs": [

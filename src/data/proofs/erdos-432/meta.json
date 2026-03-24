@@ -65,7 +65,7 @@
       }
     ],
     "axiomCount": 3,
-    "assumptions": "prime_divides_at_most_one (each prime divides at most one element of a pairwise coprime sumset A+B), coprime_set_bound (a pairwise coprime subset of [1,n] has at most pi(n)+1 elements), ostmann_connection (link to Ostmann's additive complement problem #431)",
+    "assumptions": "3 axiom declarations: (1) prime_divides_at_most_one — genuine mathematical content: each prime divides at most one element of a pairwise coprime sumset, (2) coprime_set_bound — TRIVIAL: states countingFn S n ≤ n (true for any set), does NOT formalize the intended π(n)+1 bound, (3) ostmann_connection — PLACEHOLDER: declares True, contributes no content",
     "relatedProblems": [
       {
         "id": "ramseys-theorem",
@@ -131,14 +131,15 @@
   "overview": {
     "historicalContext": "Problem #432 was posed by **Ernst Straus**, inspired by Ostmann's related problem on additive complements (#431). It appears in Erdős and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p. 85). The problem sits at the intersection of **additive combinatorics** and **multiplicative number theory** — two areas that have developed largely independent toolkits.\n\nSumset theory (Cauchy-Davenport, Freiman-Ruzsa, Plünnecke inequalities) typically bounds sumsets from below: if $|A| = m$ and $|B| = n$, then $|A + B| \\geq m + n - 1$ in $\\mathbb{Z}/p\\mathbb{Z}$. Conversely, coprimality constraints use sieve-theoretic and multiplicative techniques: a pairwise coprime set in $[1, n]$ has at most $\\pi(n) + 1$ elements, since each prime can divide at most one element.\n\nProblem #432 asks what happens when these two worlds collide: how large can a sumset be when forced to be multiplicatively independent? The constraint that all elements of $A + B$ be pairwise coprime is extremely restrictive — it forces the sums to 'use' distinct primes, creating tension between the additive structure (which tends to produce many sums) and the multiplicative constraint (which limits how many coprime numbers can exist in any interval). Terence Tao has assessed the problem as 'looking difficult,' and no partial results or viable proof strategies are known. Even the question of whether $A + B$ can have positive density among the integers under the coprimality constraint is open.",
     "problemStatement": "Let A, B ⊆ ℕ be two infinite sets. How dense can A + B = {a + b : a ∈ A, b ∈ B} be if all elements of A + B are pairwise coprime?",
-    "text": "Let A, B \u2286 \u2115 be infinite. How dense can A + B be if all elements are pairwise coprime? Asked by Straus (Erd\u0151s\u2013Graham 1980, p.85). OPEN.",
+    "text": "Let A, B ⊆ ℕ be infinite. How dense can A + B be if all elements are pairwise coprime? Asked by Straus (Erdős–Graham 1980, p.85). OPEN.",
     "proofStrategy": "The formalization defines sumsets, pairwise coprimality, and counting functions in Lean 4. The problem is stated as the existence of a non-trivial upper bound f(n) on the coprime sumset counting function. Key structural observations are axiomatized: each prime divides at most one element (prime uniqueness), and any pairwise coprime set in [1,n] has at most π(n) + 1 elements. The connection to Ostmann's problem (#431) is noted. No sorries remain — all statements are either definitions or correctly axiomatized.",
     "keyInsights": [
       "**Prime partition**: pairwise coprimality forces the elements of A + B to have disjoint prime factorizations, immediately bounding density by π(n) + 1",
       "**The real question**: does the sumset structure A + B force density below π(n)? A 'free' coprime set can achieve π(n) + 1, but the additive constraint may prevent this",
       "**Additive-multiplicative barrier**: the problem requires combining sumset theory (additive) with sieve methods (multiplicative) — two largely disjoint toolkits",
       "**Three scenarios**: density could be Θ(π(n)), O(n^α) for α < 1, or O((log n)^k) — even the correct order of magnitude is unknown",
-      "**Tao's assessment**: 'looks difficult' — suggesting current techniques are insufficient"
+      "**Tao's assessment**: 'looks difficult' — suggesting current techniques are insufficient",
+      "**Axiom quality issues**: Of 3 axioms, `coprime_set_bound` states the trivial bound `countingFn S n ≤ n` rather than the meaningful π(n) + 1 bound described in the documentation, and `ostmann_connection : True` is a content-free placeholder. Only `prime_divides_at_most_one` states genuine mathematical content. The formalization would benefit from correcting `coprime_set_bound` to use `Nat.primeCounting`"
     ],
     "prerequisites": [
       "Additive combinatorics: sumsets ($A + B$), Cauchy-Davenport theorem, Plünnecke-Ruzsa inequality",
@@ -149,7 +150,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #432 asks how dense the sumset A + B can be when all its elements are pairwise coprime. The pairwise coprime constraint forces disjoint prime factorizations, limiting density to at most π(n) + 1 ∼ n/log n. Whether the sumset structure forces a strictly smaller bound remains completely open.",
-    "implications": "**Theoretical Significance**: A resolution would illuminate the fundamental interplay between additive structure (sumsets) and multiplicative structure (coprimality) in the integers.\n\n**Broader Connections**: The problem connects to the broader 'sum-product phenomenon' — the principle that additive and multiplicative structure cannot coexist extensively. Techniques developed here could apply to other problems combining additive and multiplicative constraints.",
+    "implications": "**Theoretical Significance**: A resolution would illuminate the fundamental interplay between additive structure (sumsets) and multiplicative structure (coprimality) in the integers.\n\nThe problem connects to the broader 'sum-product phenomenon' — the principle that additive and multiplicative structure cannot coexist extensively. Techniques developed here could apply to other problems combining additive and multiplicative constraints.",
     "openQuestions": [
       "Is there a density bound of the form |A + B ∩ [1,n]| = o(π(n))?",
       "Can infinite A, B be constructed with coprime sumset achieving density Θ(π(n))?",
@@ -211,26 +212,61 @@
     "chinese-remainder-constructive"
   ],
   "leanFile": {
+    "lineCount": 141,
+    "structureCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 7,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Nat.GCD.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "Erdos432",
-    "lineCount": 141,
-    "axiomCount": 3,
-    "theoremCount": 0,
-    "definitionCount": 7
+    ]
   },
   "references": [
-    "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, pp. 84–85",
-    "Ostmann, H.-H. (1956): 'Additive Zahlentheorie', Ergebnisse der Mathematik, Springer",
-    "Freiman, G.A. (1973): 'Foundations of a structural theory of set addition', Translations of Mathematical Monographs 37, AMS",
-    "Plünnecke, H. (1970): 'Eine zahlentheoretische Anwendung der Graphentheorie', J. Reine Angew. Math. 243, 171–183",
-    "Ruzsa, I.Z. (1989): 'An application of graph theory to additive number theory', Scientia Ser. A 3, 97–109",
-    "Green, B. and Tao, T. (2008): 'The primes contain arbitrarily long arithmetic progressions', Annals of Mathematics 167, 481–547",
-    "https://erdosproblems.com/432"
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Université de Genève, Monographie No. 28",
+      "note": "Problem #432 on pp. 84-85: coprime sumset bases"
+    },
+    {
+      "authors": "Ostmann, Hans-Heinrich",
+      "title": "Additive Zahlentheorie",
+      "year": "1956",
+      "venue": "Ergebnisse der Mathematik und ihrer Grenzgebiete, Springer",
+      "note": "Foundational work on additive number theory and sumset structure"
+    },
+    {
+      "authors": "Freiman, Gregory A.",
+      "title": "Foundations of a Structural Theory of Set Addition",
+      "year": "1973",
+      "venue": "Translations of Mathematical Monographs, vol. 37, AMS",
+      "note": "Freiman's structure theorem: sets with small sumsets are dense in generalized arithmetic progressions"
+    },
+    {
+      "authors": "Plünnecke, Helmut",
+      "title": "Eine zahlentheoretische Anwendung der Graphentheorie",
+      "year": "1970",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 243, pp. 171-183",
+      "note": "Plünnecke's inequality via directed graph methods — foundational for sumset growth estimates"
+    },
+    {
+      "authors": "Ruzsa, Imre Z.",
+      "title": "An application of graph theory to additive number theory",
+      "year": "1989",
+      "venue": "Scientia, Series A, vol. 3, pp. 97-109",
+      "note": "Simplified proof of Plünnecke's inequality with the Ruzsa covering lemma"
+    },
+    {
+      "authors": "Green, Ben; Tao, Terence",
+      "title": "The primes contain arbitrarily long arithmetic progressions",
+      "year": "2008",
+      "venue": "Annals of Mathematics, vol. 167, pp. 481-547",
+      "note": "Green-Tao theorem — connected to Problem #432 through the additive structure of primes"
+    }
   ]
 }

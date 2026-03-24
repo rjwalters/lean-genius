@@ -172,7 +172,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #680 asks whether every large integer $n$ has some nearby offset $k$ where the least prime factor $p(n+k)$ exceeds $k^2 + 1$. The formalization includes 10 proved theorems, 0 sorries, and establishes the reduction to prime gap conjectures. The key insight is that finding a prime near $n$ suffices, connecting the problem to Cramér's and Granville's conjectures. Both the quadratic conjecture and the exponential variant are formalized, pinning down the critical growth rate.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Prime gap interface**: Resolution would establish a new connection between the distribution of least prime factors and the distribution of primes, two apparently separate topics in analytic number theory.\n\n2. **Smooth number structure**: Understanding when $p(n+k)$ is large requires understanding when $n + k$ avoids small prime factors — precisely the complement of smooth numbers.\n\n**Broader Connections**: A positive resolution would constrain how dense smooth numbers can be near arbitrary integers.\n\n3. **Conditional results**: The formalized reduction `cramer_implies_large_lpf` shows that progress on prime gaps automatically implies progress on #680. The Cramér conjecture is one of the most important open problems in prime number theory.\n\n4. **Threshold phenomena**: The quadratic-vs-exponential dichotomy reveals a phase transition in the structure of least prime factors near integers, with the threshold somewhere between $k^2$ and $e^{\\sqrt{k}}$.",
+    "implications": "1. **Prime gap interface**: Resolution would establish a new connection between the distribution of least prime factors and the distribution of primes, two apparently separate topics in analytic number theory.\n\n2. **Smooth number structure**: Understanding when $p(n+k)$ is large requires understanding when $n + k$ avoids small prime factors — precisely the complement of smooth numbers.\n\nA positive resolution would constrain how dense smooth numbers can be near arbitrary integers.\n\n3. **Conditional results**: The formalized reduction `cramer_implies_large_lpf` shows that progress on prime gaps automatically implies progress on #680. The Cramér conjecture is one of the most important open problems in prime number theory.\n\n4. **Threshold phenomena**: The quadratic-vs-exponential dichotomy reveals a phase transition in the structure of least prime factors near integers, with the threshold somewhere between $k^2$ and $e^{\\sqrt{k}}$.",
     "openQuestions": [
       "Can unconditional progress be made using Baker-Harman-Pintz gap bounds ($p_{n+1} - p_n \\ll p_n^{0.525}$), perhaps with a weaker threshold than $k^2 + 1$?",
       "Is the quadratic bound $k^2 + 1$ tight, or can it be strengthened to $k^\\alpha + 1$ for some $\\alpha > 2$?",
@@ -217,5 +217,45 @@
       "citation": "Maynard, J. (2015). Large gaps between primes. Ann. of Math. 183, 915-933.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Erdős #4 asks about large prime gaps — directly relevant since #680 reduces to prime gap bounds. The Maynard-Tao theorem (2016) on large gaps provides partial context for understanding when $p(n+k)$ can be large."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT $\\pi(x) \\sim x/\\ln x$ underlies both Cramér's conjecture and the expected density of primes near $n$. The prime gap reduction in #680 implicitly uses the PNT to estimate how far one must search for a prime."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime in $(n, 2n]$, giving a weak version of the prime gap bound needed for #680: with $k \\le n$ and $n + k$ prime, we need $k^2 + 1 < n + k$, which holds for $k \\le \\sqrt{n}$."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "The infinitude of primes (Euclid) is used directly in the formalization: `Nat.exists_infinite_primes (p + 1)` finds the next prime after $p$, enabling the definition of CramerConjecture."
+    },
+    {
+      "targetId": "erdos-648",
+      "relationship": "related",
+      "description": "Erdős #648 studies the greatest prime factor $P(n)$ while #680 studies the least prime factor $p(n)$. They are dual perspectives on the same arithmetic function: the prime factorization structure of integers near $n$."
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Erdős #1055 classifies primes by smoothness of $p+1$, connecting to the least prime factor of $p + 1$. Both problems relate to the distribution of prime factors of integers in structured positions."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "prime-number-theorem",
+    "bertrands-postulate",
+    "infinitude-primes",
+    "erdos-648",
+    "erdos-1055"
   ]
 }

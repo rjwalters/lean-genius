@@ -134,7 +134,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #336 asks for the limit of h(r)/r², where h(r) is the maximum exact order achievable by a basis of order r. The current best bounds are 1/3 ≤ lim ≤ 1/2. Specific values h(2) = 4, h(3) = 7 are known. The exact limit remains OPEN.",
-    "implications": "**Theoretical Significance**: This problem connects additive combinatorics to the structure of representation functions. The difference between 'at most r' and 'exactly k' summands reveals subtle properties of additive bases.\n\n**Broader Connections**: The coprimality characterization provides a clean criterion for when exact order exists. The quadratic scaling of h(r) with r² is a deep phenomenon in additive number theory.",
+    "implications": "**Theoretical Significance**: This problem connects additive combinatorics to the structure of representation functions. The difference between 'at most r' and 'exactly k' summands reveals subtle properties of additive bases.\n\nThe coprimality characterization provides a clean criterion for when exact order exists. The quadratic scaling of h(r) with r² is a deep phenomenon in additive number theory.",
     "openQuestions": [
       "What is the exact value of lim h(r)/r²?",
       "Is the limit 1/3, 1/2, or something in between?",

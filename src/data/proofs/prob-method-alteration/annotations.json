@@ -115,5 +115,93 @@
     "prerequisites": [
       "Lean 4 namespace system"
     ]
+  },
+  {
+    "id": "ann-part-i-header",
+    "proofId": "prob-method-alteration",
+    "range": {
+      "startLine": 20,
+      "endLine": 23
+    },
+    "type": "context",
+    "title": "Part I: The Alteration Principle",
+    "content": "The Part I section header introduces the alteration principle as the deterministic core of the deletion method. The key conceptual move is abstracting away the probabilistic language: while the method is motivated by random constructions, the formal theorem is a purely combinatorial statement about finite sums. This abstraction makes the principle applicable beyond probability — it works for any finite collection of outcomes where net value can be computed.",
+    "mathContext": "The alteration principle is a weighted pigeonhole principle: if $\\sum_{a \\in S} f(a) > 0$ for $f : S \\to \\mathbb{Z}$, then $\\exists a \\in S,\\, f(a) > 0$. Here $f(a) = \\text{good}(a) - \\text{bad}(a)$ measures the net value after alteration.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "deterministic extraction",
+      "first moment method"
+    ],
+    "prerequisites": [
+      "finite sums"
+    ]
+  },
+  {
+    "id": "ann-part-ii-header",
+    "proofId": "prob-method-alteration",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    },
+    "type": "context",
+    "title": "Part II: Independent Set Application",
+    "content": "The Part II section header introduces the most famous application of the alteration method: bounding the independence number of graphs. The alteration argument here is the textbook example from Alon-Spencer Chapter 3 — select a random subset, then delete vertices that violate independence. The bound $\\alpha(G) \\geq n/(2d)$ for $d$-regular graphs was among the first applications of the probabilistic method to graph theory and remains a standard benchmark for more sophisticated techniques.",
+    "mathContext": "The independence number $\\alpha(G)$ is the size of the largest independent set (no two vertices adjacent). For a $d$-regular graph: randomly include each vertex with probability $p$, delete one vertex per surviving edge. The expected surviving set has size $np - \\frac{ndp^2}{2}$, maximized at $p = 1/d$ giving $\\frac{n}{2d}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "independence number",
+      "random subset",
+      "regular graph",
+      "vertex deletion"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "linearity of expectation"
+    ]
+  },
+  {
+    "id": "ann-part-iii-header",
+    "proofId": "prob-method-alteration",
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    },
+    "type": "context",
+    "title": "Part III: Hypergraph Coloring (Property B)",
+    "content": "The Part III section header introduces Property B, a fundamental concept in hypergraph coloring theory. A hypergraph has Property B if its vertices can be 2-colored so that no edge is monochromatic. Erd\\u0151s (1963) asked for the minimum number of edges $m(k)$ in a $k$-uniform hypergraph without Property B. The alteration method gives the bound $m(k) > 2^{k-1}$: randomly 2-color vertices, then fix monochromatic edges by recoloring. This is one of the earliest and most elegant applications of the deletion method.",
+    "mathContext": "Property B threshold: $m(k) = \\min\\{|\\mathcal{E}| : \\mathcal{H} = (V, \\mathcal{E})$ is $k$-uniform without Property B$\\}$. The alteration bound gives $m(k) \\geq 2^{k-1}$. The best known upper bound is $m(k) = O(\\sqrt{k/\\ln k} \\cdot 2^k)$ due to Radhakrishnan-Srinivasan (2000).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hypergraph coloring",
+      "Property B",
+      "Erdos problem",
+      "set system"
+    ],
+    "prerequisites": [
+      "hypergraph definitions",
+      "random coloring"
+    ]
+  },
+  {
+    "id": "ann-end-namespace",
+    "proofId": "prob-method-alteration",
+    "range": {
+      "startLine": 61,
+      "endLine": 61
+    },
+    "type": "context",
+    "title": "Namespace Closure",
+    "content": "Closes the `ProbMethod.Alteration` namespace. The three theorems — `alteration_principle`, `independent_set_bound`, and `property_b_bound` — are now accessible as `ProbMethod.Alteration.alteration_principle` etc. when imported via `import Proofs.ProbMethodAlteration`. The file provides the deletion method component of the probabilistic method library alongside `ProbMethodExpectation` (first moment), `ProbMethodSecondMoment` (variance), and `ProbMethodLovaszLocal` (LLL).",
+    "mathContext": "The probabilistic method library hierarchy: expectation $\\subset$ alteration $\\subset$ second moment $\\subset$ Lov\\u00e1sz Local Lemma, ordered by increasing sophistication of the probabilistic argument required.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 namespaces",
+      "module organization",
+      "probabilistic method hierarchy"
+    ],
+    "prerequisites": [
+      "Lean 4 module system"
+    ]
   }
 ]

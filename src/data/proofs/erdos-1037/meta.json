@@ -133,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1037 asked whether graphs with many distinct degrees (each appearing at most twice) must contain large trivial subgraphs. Cambie, Chan, and Hunter (2025) disproved this by constructing graphs with at least 3n/4 distinct degrees where the largest clique or independent set has size only O(log n). The formalization captures the conjecture, the counterexample construction, optimality of the 3/4 bound, the Ramsey-theoretic baseline, and generalizations to arbitrary multiplicity constraints.",
-    "implications": "**Theoretical Significance**: This result demonstrates a fundamental independence between degree sequence diversity and Ramsey-type structure. Graphs can be maximally diverse in their degree distributions while exhibiting the same trivial subgraph bounds as random graphs.\n\n**Broader Connections**: This challenges the intuition that structural regularity (diverse degrees implying complex adjacency patterns) should force large homogeneous subsets. The disproof connects to the broader theme in Ramsey theory that many natural combinatorial properties are surprisingly compatible with small clique and independent set numbers.",
+    "implications": "**Theoretical Significance**: This result demonstrates a fundamental independence between degree sequence diversity and Ramsey-type structure. Graphs can be maximally diverse in their degree distributions while exhibiting the same trivial subgraph bounds as random graphs.\n\nThis challenges the intuition that structural regularity (diverse degrees implying complex adjacency patterns) should force large homogeneous subsets. The disproof connects to the broader theme in Ramsey theory that many natural combinatorial properties are surprisingly compatible with small clique and independent set numbers.",
     "openQuestions": [
       "What is the exact maximum number of distinct degrees achievable with multiplicity at most k, for each k ≥ 3? The formalization gives (1-1/(2k))n but is this tight?",
       "Can similar counterexamples be constructed for higher multiplicity bounds, maintaining O(log n) trivial size while achieving near-optimal degree diversity?",
@@ -144,14 +144,14 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1036",
       "relationship": "related",
-      "description": "Erdős #1036 (distinct induced subgraphs in non-Ramsey graphs) explores the complementary question: non-Ramsey graphs must have exponentially many distinct induced subgraphs (Shelah 1998), while Problem 1037 shows degree diversity alone does not help improve Ramsey bounds."
+      "description": "Erdős #1036 (distinct induced subgraphs in non-Ramsey graphs) explores the complementary question: non-Ramsey graphs must have exponentially many distinct induced subgraphs (Shelah 1998), while Problem 1037 shows degree diversity alone does not help improve Ramsey bounds.",
+      "targetId": "erdos-1036"
     },
     {
-      "id": "erdos-1031",
       "relationship": "related",
-      "description": "Erdős #1031 (induced regular subgraphs in non-Ramsey graphs) studies universality properties of non-Ramsey graphs. Problem 1037 shows that degree diversity, unlike Ramsey deficiency, does not force structural complexity."
+      "description": "Erdős #1031 (induced regular subgraphs in non-Ramsey graphs) studies universality properties of non-Ramsey graphs. Problem 1037 shows that degree diversity, unlike Ramsey deficiency, does not force structural complexity.",
+      "targetId": "erdos-1031"
     }
   ],
   "relatedProofs": [

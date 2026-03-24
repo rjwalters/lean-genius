@@ -38,7 +38,7 @@
   {
     "id": "ann-main-axioms",
     "proofId": "bounded-prime-gaps",
-    "range": { "startLine": 215, "endLine": 236 },
+    "range": { "startLine": 210, "endLine": 218 },
     "type": "technique",
     "title": "Three Sieve-Theoretic Axioms: Polymath 8b, Maynard-Tao, EH",
     "content": "Three axioms encode the deep sieve-theoretic results beyond current Mathlib scope. `polymath_bounded_gaps_246` (Polymath 8b, 2014): for every N, there exists a prime index n ≥ N with gap ≤ 246. `maynard_tao_m_tuples` (2015): for any m ≥ 2, there exists a constant C such that infinitely many intervals of length C contain m primes. `bounded_gaps_conditional_EH`: assuming the Elliott-Halberstam conjecture, the gap drops to 12. The proof of `polymath_bounded_gaps_246` from first principles would require: (1) existence of an admissible 50-tuple of diameter ≤ 246 (proved constructively), plus (2) the Maynard-Tao sieve showing such a tuple produces 2 primes in infinitely many translates — this step is the axiom.",
@@ -106,5 +106,41 @@
     "significance": "supporting",
     "relatedConcepts": ["factorial construction", "prime_gaps_oscillate", "liminf vs limsup", "Cramér's conjecture"],
     "prerequisites": ["Nat.factorial in Mathlib", "divisibility in ℕ", "composites in factorial gaps"]
+  },
+  {
+    "id": "ann-prime-gap-properties",
+    "proofId": "bounded-prime-gaps",
+    "range": { "startLine": 417, "endLine": 500 },
+    "type": "technique",
+    "title": "Prime Gap Arithmetic Properties",
+    "content": "This section establishes fundamental arithmetic properties of the prime gap function $g(n) = p_{n+1} - p_n$:\n\n- `primeGap_pos`: $g(n) > 0$ for all $n$ (consecutive primes are distinct)\n- `primeGap_even`: $g(n)$ is even for $n \\geq 1$ (consecutive primes $\\geq 3$ are both odd, so their difference is even)\n- `primeGap_ge_two`: $g(n) \\geq 2$ for $n \\geq 1$ (combines positivity and evenness)\n- `not_admissible_range`: $\\text{Fin}(p)$ is not admissible for prime $p$ (the full residue system covers all classes)\n- `admissible_card_lt_of_prime`: Any admissible set has fewer than $p$ elements mod $p$, bounding the size of admissible tuples\n\nThese properties connect the abstract definition of prime gaps to concrete arithmetic constraints that guide the sieve theory approach.",
+    "mathContext": "$g(n) = p_{n+1} - p_n > 0$. For $n \\geq 1$: $g(n)$ is even (both $p_n, p_{n+1} \\geq 3$ are odd). The twin prime conjecture is $\\liminf g(n) = 2$; Zhang proved $\\liminf g(n) < 7 \\times 10^7$; Polymath proved $\\leq 246$.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime gap", "parity of primes", "admissibility constraint", "sieve theory"],
+    "prerequisites": ["nthPrime", "primeGap definition"]
+  },
+  {
+    "id": "ann-related-conjectures",
+    "proofId": "bounded-prime-gaps",
+    "range": { "startLine": 1458, "endLine": 1700 },
+    "type": "concept",
+    "title": "Constellation of Related Conjectures",
+    "content": "This substantial section formalizes the network of conjectures surrounding bounded prime gaps:\n\n**Polignac's Conjecture** ($k \\geq 1$): For every even $2k$, there are infinitely many prime pairs $(p, p+2k)$. Twin primes ($k=1$) is the most famous case. `polignac_implies_bounded_gaps` shows Polignac for any single $k$ implies bounded gaps.\n\n**Legendre's Conjecture**: Between $n^2$ and $(n+1)^2$ there is always a prime. This implies prime gaps $g(n) \\leq 2\\sqrt{p_n} + 1$, a much stronger bound than bounded gaps.\n\n**Hardy-Littlewood Conjecture A**: For admissible $H = \\{h_1, \\ldots, h_k\\}$, the number of $n \\leq x$ with all $n+h_i$ prime is $\\sim C_H \\cdot x/(\\log x)^k$ where $C_H = \\prod_p \\frac{1-\\nu_H(p)/p}{(1-1/p)^k}$. This quantitative refinement of Dickson's conjecture predicts not just existence but density of prime constellations.\n\n**Firoozbakht's Conjecture** (1982): $p_n^{1/n}$ is strictly decreasing. This implies $g(n) < (\\log p_n)^2 - \\log p_n$, stronger than Cramér's conjecture $g(n) = O((\\log p_n)^2)$.",
+    "mathContext": "Polignac ($k=1$): $\\liminf g(n) = 2$ (twin primes). Hardy-Littlewood A: $\\pi_H(x) \\sim C_H \\cdot \\text{li}_k(x)$ with singular series $C_H$. Firoozbakht: $p_{n+1}^{1/(n+1)} < p_n^{1/n}$, implying $g(n) < (\\log p_n)^2 - \\log p_n$ for all $n$.",
+    "significance": "key",
+    "relatedConcepts": ["Polignac conjecture", "Legendre conjecture", "Hardy-Littlewood conjecture", "Firoozbakht conjecture", "Cramér conjecture", "singular series"],
+    "prerequisites": ["bounded prime gaps main theorem", "admissibility"]
+  },
+  {
+    "id": "ann-brun-constant",
+    "proofId": "bounded-prime-gaps",
+    "range": { "startLine": 1836, "endLine": 1910 },
+    "type": "concept",
+    "title": "Brun's Constant and the Twin Prime Constant",
+    "content": "The file concludes with two fundamental constants from analytic number theory:\n\n**Brun's Constant** $B \\approx 1.9022$: The sum of reciprocals of twin primes $\\sum (1/p + 1/(p+2))$ over twin prime pairs converges to $B$. Viggo Brun proved this in 1919, establishing that twin primes are 'sparse' even if infinite. This contrasts with $\\sum 1/p = \\infty$ (primes are dense enough for the reciprocal sum to diverge).\n\n**The Twin Prime Constant** $C_2 \\approx 1.3203$: The product $C_2 = 2\\prod_{p \\geq 3} \\frac{p(p-2)}{(p-1)^2}$ appears in Hardy-Littlewood's predicted density of twin primes: $\\pi_2(x) \\sim 2C_2 \\cdot x/(\\log x)^2$.\n\nThe `twin_prime_factor_lt_one` theorem verifies that each factor $p(p-2)/(p-1)^2 < 1$ for $p \\geq 3$, ensuring the product converges. The `brun_sieve_exponent` connects to Brun's sieve: the number of integers $n \\leq x$ with both $n$ and $n+2$ having no small prime factor is $O(x/(\\log x)^2)$.",
+    "mathContext": "Brun's constant: $B = \\sum_{p, p+2 \\text{ prime}} \\left(\\frac{1}{p} + \\frac{1}{p+2}\\right) \\approx 1.9022$. Twin prime constant: $C_2 = 2\\prod_{p \\geq 3} \\frac{p(p-2)}{(p-1)^2} \\approx 1.3203$. Hardy-Littlewood: $\\pi_2(x) \\sim 2C_2 \\cdot x/(\\log x)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Brun's constant", "twin prime constant", "Brun sieve", "Hardy-Littlewood conjecture", "analytic number theory"],
+    "prerequisites": ["twin prime conjecture", "Euler product convergence"]
   }
 ]

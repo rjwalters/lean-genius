@@ -90,7 +90,7 @@
   ],
   "conclusion": {
     "summary": "Successfully removed the noncomputable annotation from constructive_div by replacing classical choice with computable integer division. The function evaluates at compile time via #eval, demonstrating a clean separation between proof-level hypotheses and runtime computation.",
-    "implications": "**Theoretical Significance**: This formalization demonstrates a general technique for making constructive proofs computable in Lean 4: replace choice-based witness extraction with decidable arithmetic operations.\n\n**Broader Connections**: The approach is applicable whenever a divisibility or existence proof is used to extract a value that can be computed directly. It connects to broader themes in constructive mathematics, where the computational content of proofs is a first-class concern.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates a general technique for making constructive proofs computable in Lean 4: replace choice-based witness extraction with decidable arithmetic operations.\n\nThe approach is applicable whenever a divisibility or existence proof is used to extract a value that can be computed directly. It connects to broader themes in constructive mathematics, where the computational content of proofs is a first-class concern.",
     "openQuestions": [
       "Can the time complexity bound $O(\\log \\min(a,b))$ for the extended Euclidean algorithm be formally verified in Lean?",
       "Does this constructive approach extend to polynomial rings where Euclidean division provides computable quotients?",
@@ -122,34 +122,34 @@
   ],
   "crossReferences": [
     {
-      "id": "bezout-identity",
       "relationship": "ancestor",
-      "description": "The root formalization of Bézout's identity, which establishes the extended Euclidean algorithm used here"
+      "description": "The root formalization of Bézout's identity, which establishes the extended Euclidean algorithm used here",
+      "targetId": "bezout-identity"
     },
     {
-      "id": "bezout-identity-oq-02",
       "relationship": "ancestor",
-      "description": "Euclid's lemma via coprimality — the classical (noncomputable) version that this entry makes computable"
+      "description": "Euclid's lemma via coprimality — the classical (noncomputable) version that this entry makes computable",
+      "targetId": "bezout-identity-oq-02"
     },
     {
-      "id": "bezout-identity-oq-02-oq-02-oq-01",
       "relationship": "parent",
-      "description": "The direct parent: constructive divisibility via Bézout coefficients using classical choice (`hdvd.choose`)"
+      "description": "The direct parent: constructive divisibility via Bézout coefficients using classical choice (`hdvd.choose`)",
+      "targetId": "bezout-identity-oq-02-oq-02-oq-01"
     },
     {
-      "id": "bezout-identity-oq-02-oq-02",
       "relationship": "related",
-      "description": "Euclid's lemma in Bézout domains and PIDs — the abstract algebraic generalization"
+      "description": "Euclid's lemma in Bézout domains and PIDs — the abstract algebraic generalization",
+      "targetId": "bezout-identity-oq-02-oq-02"
     },
     {
-      "id": "bezout-identity-oq-02-oq-01",
       "relationship": "related",
-      "description": "The Fundamental Theorem of Arithmetic from Euclid's lemma — a key application of the divisibility result made computable here"
+      "description": "The Fundamental Theorem of Arithmetic from Euclid's lemma — a key application of the divisibility result made computable here",
+      "targetId": "bezout-identity-oq-02-oq-01"
     },
     {
-      "id": "chinese-remainder-non-coprime",
       "relationship": "related",
-      "description": "The Chinese Remainder Theorem uses similar coprimality and Bézout coefficient techniques"
+      "description": "The Chinese Remainder Theorem uses similar coprimality and Bézout coefficient techniques",
+      "targetId": "chinese-remainder-non-coprime"
     }
   ],
   "relatedProofs": [

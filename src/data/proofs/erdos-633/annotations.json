@@ -2,10 +2,6 @@
   {
     "id": "ann-e633-triangle-struct",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 39,
-      "endLine": 50
-    },
     "type": "definition",
     "title": "Triangle Structure",
     "content": "A triangle is represented by three positive real side lengths $(a, b, c)$ satisfying the **triangle inequality**: $a + b > c$, $b + c > a$, $c + a > b$. This ensures the sides can actually form a non-degenerate triangle in the plane.",
@@ -24,10 +20,6 @@
   {
     "id": "ann-e633-triangle-angles",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 52,
-      "endLine": 60
-    },
     "type": "definition",
     "title": "Triangle by Angles",
     "content": "An alternative representation using three angles $(\\alpha, \\beta, \\gamma)$ in radians, with each angle in $(0, \\pi)$ and $\\alpha + \\beta + \\gamma = \\pi$. This representation is essential for the integral independence condition, which constrains dissection possibilities through angle relationships.",
@@ -46,10 +38,6 @@
   {
     "id": "ann-e633-heron",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 62,
-      "endLine": 65
-    },
     "type": "definition",
     "title": "Heron's Formula",
     "content": "The area of a triangle with sides $a, b, c$: $\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$ where $s = (a+b+c)/2$ is the semi-perimeter. This is key for dissection counting: $n$ congruent pieces each have area $\\text{Area}(T)/n$, constraining the scaling factor to $1/\\sqrt{n}$.",
@@ -68,10 +56,6 @@
   {
     "id": "ann-e633-dissection",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 69,
-      "endLine": 74
-    },
     "type": "definition",
     "title": "Congruent Dissection",
     "content": "A **congruent dissection** of $T$ into $n$ copies of $S$ requires area compatibility ($\\text{Area}(T) = n \\times \\text{Area}(S)$) and that the pieces $S$ are congruent (same shape and size). The pieces must tile $T$ exactly with no gaps or overlaps. In practice, the pieces are similar to $T$ with scaling factor $1/\\sqrt{n}$.",
@@ -91,10 +75,6 @@
   {
     "id": "ann-e633-can-dissect",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 76,
-      "endLine": 78
-    },
     "type": "definition",
     "title": "Can Dissect Into",
     "content": "The predicate `CanDissectInto T n` asserts that triangle $T$ can be divided into exactly $n$ congruent triangular pieces. This is the core relation: for which $n$ does a valid dissection of $T$ into $n$ congruent copies exist?",
@@ -113,10 +93,6 @@
   {
     "id": "ann-e633-dissection-counts",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 80,
-      "endLine": 82
-    },
     "type": "definition",
     "title": "Dissection Counts",
     "content": "The set of all valid dissection counts for a triangle $T$: $\\text{DissectionCounts}(T) = \\{n \\geq 1 : T \\text{ can be dissected into } n \\text{ congruent pieces}\\}$. The problem asks: for which $T$ is this set exactly $\\{1, 4, 9, 16, 25, \\ldots\\}$ (the perfect squares)?",
@@ -133,10 +109,6 @@
   {
     "id": "ann-e633-is-square",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 86,
-      "endLine": 87
-    },
     "type": "definition",
     "title": "Perfect Square",
     "content": "A natural number $n$ is a **perfect square** if $n = k^2$ for some $k \\in \\mathbb{N}$. The sequence $1, 4, 9, 16, 25, 36, \\ldots$ These are exactly the achievable dissection counts for the grid construction.",
@@ -153,10 +125,6 @@
   {
     "id": "ann-e633-square-only",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 89,
-      "endLine": 92
-    },
     "type": "definition",
     "title": "Square-Only Property",
     "content": "A triangle has the **square-only property** if every valid dissection count is a perfect square: $\\forall n \\in \\text{DissectionCounts}(T),\\ \\exists k,\\ n = k^2$. This is the restrictive property Erdős asked to classify — triangles where the grid subdivision is the ONLY way to dissect into congruent copies.",
@@ -175,10 +143,6 @@
   {
     "id": "ann-e633-universal",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 100,
-      "endLine": 103
-    },
     "type": "technique",
     "title": "Universal Square Dissections",
     "content": "**Every triangle can be dissected into $n^2$ congruent triangles for any $n \\geq 1$.** The construction: divide each side into $n$ equal parts and connect corresponding division points to form an $n \\times n$ grid of $n^2$ similar (and congruent) sub-triangles, each scaled by factor $1/n$. This shows square numbers are always achievable; the question is whether NON-square numbers are also achievable.",
@@ -198,10 +162,6 @@
   {
     "id": "ann-e633-soifer-def",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 115,
-      "endLine": 145
-    },
     "type": "definition",
     "title": "Soifer's Triangle",
     "content": "**Soifer's Example:** The triangle with sides $\\sqrt{2}, \\sqrt{3}, \\sqrt{4} = 2$. This satisfies the triangle inequality ($\\sqrt{2} + \\sqrt{3} > 2$, etc.) and has angles that are 'integrally independent' over $\\pi$. Soifer proved this triangle can ONLY be dissected into square numbers of congruent pieces — the irrational side lengths constrain possible tilings so severely that only the grid construction works.",
@@ -220,10 +180,6 @@
   {
     "id": "ann-e633-soifer-thm",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 147,
-      "endLine": 149
-    },
     "type": "technique",
     "title": "Soifer's Theorem",
     "content": "**soifer_square_only** (sorry): The triangle $(\\sqrt{2}, \\sqrt{3}, \\sqrt{4})$ has the square-only property. The proof involves careful analysis of how the irrational side lengths constrain possible tilings — any dissection must respect the algebraic relationships between sides, forcing the count to be a perfect square.",
@@ -242,10 +198,6 @@
   {
     "id": "ann-e633-integral-ind",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 153,
-      "endLine": 157
-    },
     "type": "definition",
     "title": "Integral Independence",
     "content": "Angles $\\alpha, \\beta, \\gamma$ are **integrally independent** (modulo $\\alpha + \\beta + \\gamma = \\pi$) if: for integers $a, b, c$, $a\\alpha + b\\beta + c\\gamma = 0$ implies $a = b = c = 0$. This algebraic condition on the angles constrains how pieces can fit together in a dissection, since rotations must respect angle compatibility at each vertex.",
@@ -265,10 +217,6 @@
   {
     "id": "ann-e633-equilateral",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 171,
-      "endLine": 174
-    },
     "type": "technique",
     "title": "Equilateral Dissects to 3",
     "content": "**Counterexample to square-only:** The equilateral triangle can be dissected into 3 congruent triangles (not a perfect square!). Construction: connect the centroid to the three vertices, creating three congruent triangles with angles $30°$-$30°$-$120°$. This shows equilateral triangles do NOT have the square-only property.",
@@ -287,10 +235,6 @@
   {
     "id": "ann-e633-right-isoceles",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 176,
-      "endLine": 179
-    },
     "type": "technique",
     "title": "Right Isosceles Dissects to 2",
     "content": "**Another counterexample:** The 45-45-90 right isosceles triangle can be dissected into 2 congruent right isosceles triangles. Construction: draw the altitude from the right angle to the hypotenuse, creating two congruent copies. Since 2 is not a perfect square, this triangle does NOT have the square-only property.",
@@ -309,10 +253,6 @@
   {
     "id": "ann-e633-similar",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 188,
-      "endLine": 191
-    },
     "type": "technique",
     "title": "Similar Dissection Theorem",
     "content": "**Related result (similar, not congruent):** Every triangle can be dissected into $n$ similar triangles for $n \\neq 2, 3, 5$. Some triangles cannot be dissected into 2, 3, or 5 similar copies. This is a complete characterization for the similar case — much cleaner than the congruent case, which remains open.",
@@ -331,10 +271,6 @@
   {
     "id": "ann-e633-classification",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 201,
-      "endLine": 207
-    },
     "type": "definition",
     "title": "The Classification Problem",
     "content": "**Erdős Problem #633 (OPEN, \\$25 prize):** Find a predicate $P$ on triangles such that $\\text{HasSquareOnlyProperty}(T) \\leftrightarrow P(T)$, where $P$ is a 'nice' geometric condition (like angle relationships or side ratios). The conjecture is that integral independence of angles characterizes the square-only property, but this remains unproven.",
@@ -353,10 +289,6 @@
   {
     "id": "ann-e633-soifer-family",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 215,
-      "endLine": 220
-    },
     "type": "definition",
     "title": "Soifer's Family",
     "content": "**Generalization:** Triangles with sides $(\\sqrt{p}, \\sqrt{q}, \\sqrt{r})$ for distinct positive integers $p, q, r$ satisfying the triangle inequality form Soifer's family. The conjecture is that all such triangles have the square-only property — the algebraic independence of $\\sqrt{p}, \\sqrt{q}, \\sqrt{r}$ over $\\mathbb{Q}$ prevents non-square dissection counts.",
@@ -376,10 +308,6 @@
   {
     "id": "ann-e633-main",
     "proofId": "erdos-633",
-    "range": {
-      "startLine": 228,
-      "endLine": 232
-    },
     "type": "technique",
     "title": "Main Result: Square-Only Triangles Exist",
     "content": "**erdos_633_exists** (sorry): There exists a triangle with the square-only property, witnessed by Soifer's triangle $(\\sqrt{2}, \\sqrt{3}, \\sqrt{4})$. The complete classification of all such triangles remains the open problem worth \\$25.",

@@ -172,7 +172,7 @@
   ],
   "conclusion": {
     "summary": "Juhász (1979) proved that if S ⊂ ℝ² avoids unit distances, then Sᶜ contains a congruent copy of any 4-point configuration — in particular, a unit square. This captures how avoiding a single distance forces geometric richness in the complement. The result is sharp: it fails for sufficiently large n-point configurations, and the 5-point case remains open.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Geometric Ramsey Theory**: The result is a partition theorem for the plane: in any 2-coloring where one color avoids unit distances, the other color contains all 4-point configurations. This is a geometric analogue of classical Ramsey theory.\n\n2. **Independent Set Structure**: Unit-distance-free sets (independent sets of G₁(ℝ²)) cannot be geometrically 'rich' — their complements must contain diverse configurations. This connects graph theory (independence number) to geometry (configuration embedding).\n\n3.\n\n**Broader Connections**: **Chromatic Number Connection**: Since each color class in a χ(ℝ²)-coloring is unit-distance-free, Juhász's theorem gives structural information about optimal colorings: each color class's complement is geometrically rich.\n\n4. **Threshold Phenomenon**: The transition from 'works for 4 points' to 'fails for large n' suggests a sharp threshold in the number of points. Finding this threshold would reveal the precise geometric complexity that unit-distance-free complements must exhibit.\n\n5. **Measure-Theoretic Perspective**: Unit-distance-free sets can have positive measure (e.g., small disks), but their complements (which also have positive measure) always contain 4-point configurations. The density of available points in Sᶜ is the enabling mechanism.",
+    "implications": "1. **Geometric Ramsey Theory**: The result is a partition theorem for the plane: in any 2-coloring where one color avoids unit distances, the other color contains all 4-point configurations. This is a geometric analogue of classical Ramsey theory.\n\n2. **Independent Set Structure**: Unit-distance-free sets (independent sets of G₁(ℝ²)) cannot be geometrically 'rich' — their complements must contain diverse configurations. This connects graph theory (independence number) to geometry (configuration embedding).\n\n**3. Chromatic Number Connection**: Since each color class in a χ(ℝ²)-coloring is unit-distance-free, Juhász's theorem gives structural information about optimal colorings: each color class's complement is geometrically rich.\n\n4. **Threshold Phenomenon**: The transition from 'works for 4 points' to 'fails for large n' suggests a sharp threshold in the number of points. Finding this threshold would reveal the precise geometric complexity that unit-distance-free complements must exhibit.\n\n5. **Measure-Theoretic Perspective**: Unit-distance-free sets can have positive measure (e.g., small disks), but their complements (which also have positive measure) always contain 4-point configurations. The density of available points in Sᶜ is the enabling mechanism.",
     "openQuestions": [
       "Does the property hold for all 5-point configurations? This is the first open case after Juhász's 4-point theorem.",
       "What is the maximum n for which every n-point configuration appears in the complement of every unit-distance-free set?",
@@ -196,5 +196,51 @@
     "axiomCount": 15,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-213",
+      "relationship": "related",
+      "description": "Companion problem: integer distance sets in general position (n points, all distances integers, no three collinear, no four cocircular)"
+    },
+    {
+      "targetId": "erdos-216",
+      "relationship": "related",
+      "description": "Empty convex polygons in point sets: related combinatorial geometry of planar configurations and Ramsey-type existence results"
+    },
+    {
+      "targetId": "erdos-171",
+      "relationship": "related",
+      "description": "Unit distance chromatic number (Hadwiger-Nelson problem): each color class is unit-distance-free, directly connecting to Juhász's theorem"
+    },
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Another formulation of the Hadwiger-Nelson problem: bounds χ(ℝ²) ∈ {5,...,7} via de Grey's 1581-vertex graph"
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Point sets with restricted distances: n points in ℝ² with distance constraints, sharing the distance geometry framework"
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "The Happy Ending problem: convex n-gons in point sets, related Ramsey-type existence of geometric configurations"
+    },
+    {
+      "targetId": "erdos-705",
+      "relationship": "related",
+      "description": "Unit distance graphs with large girth: chromatic number of unit distance graphs under girth constraints"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-213",
+    "erdos-216",
+    "erdos-171",
+    "erdos-508",
+    "erdos-100",
+    "erdos-107",
+    "erdos-705"
+  ]
 }

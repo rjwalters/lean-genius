@@ -122,7 +122,8 @@ theorem fourier_translate_halfperiod (n : ℤ) (hn : n ≠ 0) (x : AddCircle T) 
     2. Pointwise: (f(x)-f(x+s))·e_{-n}(x) = g(x) + g(x+s) where g = e_{-n}·f
     3. By Haar invariance: ∫ g(x+s) dμ = ∫ g(x) dμ
     4. Split: ∫ (g + g∘T) = ∫ g + ∫ g∘T = 2·∫ g = 2·ĉ_n(f) -/
-theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0) :
+theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0)
+    (hf_cont : Continuous f) :
     2 * fourierCoeff f n =
       ∫ x : AddCircle T,
         (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle := by
@@ -153,10 +154,10 @@ theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn 
         hint.aestronglyMeasurable |>.mpr hint)
     rw [h_split, haar]
     unfold fourierCoeff; ring
-  · -- Non-integrable: both sides vanish (edge case, cannot occur for Hölder f)
-    have : fourierCoeff f n = 0 := integral_undef hint
-    rw [this, mul_zero]
-    sorry
+  · -- Non-integrable: contradiction — continuous f on compact space is always integrable
+    exfalso; apply hint
+    rw [← integrableOn_univ]
+    exact ((fourier (-n)).continuous.smul hf_cont).continuousOn.integrableOn_compact isCompact_univ
 
 /-- Hölder bound on translation differences:
     ‖f(x) - f(x + T/(2n))‖ ≤ C · (T/(2|n|))^α
@@ -178,10 +179,8 @@ theorem holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T �
   calc dist x (x + (↑(T / (2 * ↑n)) : AddCircle T))
       = ‖(↑(T / (2 * (↑n : ℝ))) : AddCircle T)‖ := by
         rw [dist_comm, dist_eq_norm, add_comm, add_sub_cancel_right]
-    _ ≤ ‖T / (2 * (↑n : ℝ))‖ := by
-        -- ‖mk x‖ ≤ ‖x‖ for AddCircle = ℝ ⧸ zmultiples T
-        -- norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient
-        exact QuotientAddGroup.norm_mk_le_norm
+    _ ≤ ‖T / (2 * (↑n : ℝ))‖ :=
+        QuotientAddGroup.norm_mk_le_norm
     _ = |T / (2 * (↑n : ℝ))| := Real.norm_eq_abs _
     _ = T / (2 * |(↑n : ℝ)|) := by
         rw [abs_div, abs_of_pos hT.out, abs_mul,
@@ -239,9 +238,9 @@ PART IV: MAIN THEOREM — FOURIER COEFFICIENT DECAY
     2. Bound the integral: ‖...‖ ≤ C · (T/(2|n|))^α
     3. Divide by 2: ‖ĉ_n‖ ≤ (C/2) · (T/(2|n|))^α -/
 theorem fourierCoeff_holder_decay (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
-    (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) :
+    (hf : IsHolderOnCircle C α f) (hα : 0 < α) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) ^ (α : ℝ) := by
-  have hdiff := fourierCoeff_difference_formula f n hn
+  have hdiff := fourierCoeff_difference_formula f n hn (holder_continuous hf hα)
   have hbound : ‖2 * fourierCoeff f n‖ ≤
       ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
     rw [hdiff]
@@ -259,21 +258,34 @@ PART V: COROLLARIES
 theorem fourierCoeff_lipschitz_decay (C : ℝ≥0) (f : AddCircle T → ℂ)
     (hf : LipschitzWith C f) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) := by
-  have h := fourierCoeff_holder_decay C 1 f (lipschitz_is_holder_one hf) n hn
+  have h := fourierCoeff_holder_decay C 1 f (lipschitz_is_holder_one hf) one_pos n hn
   simp only [NNReal.coe_one, Real.rpow_one] at h
   exact h
 
 /-- **Square-Summability for α > 1/2**: ‖ĉ_n‖ = O(1/|n|^α), so
-    ‖ĉ_n‖² = O(1/|n|^{2α}), and Σ 1/|n|^{2α} < ∞ when 2α > 1. -/
-axiom fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
+    ‖ĉ_n‖² = O(1/|n|^{2α}), and Σ 1/|n|^{2α} < ∞ when 2α > 1.
+    Proof: fourierCoeff_holder_decay gives ‖ĉ_n‖² ≤ K/|n|^{2α},
+    then Summable.of_nonneg_of_le + Real.summable_nat_rpow_inv. -/
+theorem fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f)
     (hα : (1 : ℝ) / 2 < (α : ℝ)) :
-    Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2)
+    Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2) := by
+  -- ‖ĉ_n‖² ≤ ((C/2)(T/(2|n|))^α)² = K/|n|^{2α}
+  -- Σ 1/|n|^{2α} < ∞ for 2α > 1 (via Real.summable_nat_rpow_inv)
+  sorry
 
-/-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0. -/
-axiom riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
+/-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0.
+    From fourierCoeff_holder_decay: for any ε > 0, the set {n : ‖ĉ_n‖ ≥ ε}
+    is finite (contained in a bounded interval ∪ {0}). -/
+theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f) (hα : 0 < α) :
-    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0)
+    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0) := by
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  simp only [dist_zero_right]
+  rw [Filter.eventually_cofinite]
+  -- {n | ε ≤ ‖ĉ_n‖} is finite: for n ≠ 0, ‖ĉ_n‖ ≤ K/|n|^α < ε when |n| large
+  sorry
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -345,9 +357,9 @@ theorem holder_parseval_range :
 
 /-- Synonym: quantitative Riemann-Lebesgue with explicit rate. -/
 theorem quantitative_riemannLebesgue (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
-    (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) :
+    (hf : IsHolderOnCircle C α f) (hα : 0 < α) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) ^ (α : ℝ) :=
-  fourierCoeff_holder_decay C α f hf n hn
+  fourierCoeff_holder_decay C α f hf hα n hn
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

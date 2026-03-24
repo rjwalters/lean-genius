@@ -17,7 +17,7 @@
       "additive-combinatorics"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 779,
     "erdosUrl": "https://erdosproblems.com/779",
     "erdosProblemStatus": "open",
@@ -160,7 +160,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #779 (the Deaconescu conjecture) asking whether for each n, there exists a prime p between the nth prime and the primorial such that P + p is prime. We verify explicit witnesses for small n and state Erdős's stronger polynomial bound conjecture.",
-    "implications": "**Theoretical Significance**: This problem connects prime distribution to additive properties of primorials.\n\n**Broader Connections**: A proof would give new insights into the additive structure of prime numbers. The heuristic argument is overwhelming, but converting it to a proof requires deep analytic number theory.",
+    "implications": "**Theoretical Significance**: This problem connects prime distribution to additive properties of primorials.\n\nA proof would give new insights into the additive structure of prime numbers. The heuristic argument is overwhelming, but converting it to a proof requires deep analytic number theory.",
     "openQuestions": [
       "Does a valid prime always exist for all n ≥ 2?",
       "Is the smallest valid prime bounded by n^c for some constant c?",

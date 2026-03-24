@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-59-header",
+    "proofId": "erdos-59",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "context",
+    "title": "Counting G-Free Graphs (Disproved)",
+    "content": "Module docstring for Erdős Problem #59: is the number of $G$-free graphs on $n$ vertices at most $2^{(1+o(1))\\text{ex}(n;G)}$? Erdős-Frankl-Rödl (1986) proved this for non-bipartite $G$, but Morris-Saxton (2016) disproved it for bipartite graphs, specifically $C_6$, showing there are at least $2^{(1+c)\\text{ex}(n;C_6)}$ $C_6$-free graphs. The weaker conjecture $2^{O(\\text{ex}(n;G))}$ remains open.",
+    "mathContext": "Erdős #59: Is $|\\{G \\text{-free graphs on } [n]\\}| \\leq 2^{(1+o(1))\\text{ex}(n;G)}$? Answer: NO for bipartite $G$ (Morris-Saxton 2016).",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "Turán numbers",
+      "graph counting",
+      "forbidden subgraphs"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "Turán's theorem",
+      "SimpleGraph"
+    ]
+  },
+  {
     "id": "ann-59-defs",
     "proofId": "erdos-59",
     "range": {
@@ -99,7 +123,7 @@
     "proofId": "erdos-59",
     "range": {
       "startLine": 174,
-      "endLine": 200
+      "endLine": 222
     },
     "type": "technique",
     "title": "Classical Turán Bounds and Corollaries",

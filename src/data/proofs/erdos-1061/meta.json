@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #1061 asks whether the count of ordered pairs (a,b) satisfying sigma(a)+sigma(b)=sigma(a+b) with a+b<=x grows linearly as ~cx for some c>0. This remains an OPEN problem. We formalize the question, verify known solutions like (1,2), and establish basic bounds.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Divisor Structure:** The equation probes how the divisor function behaves under addition\n\n2. **Density Questions:** Positive c would mean solutions are \"common\" in a precise sense\n\n3.\n\n**Broader Connections**: **Computational Aspects:** Finding solutions requires checking divisor sums\n\n4. **OEIS Connection:** Results feed into sequence A110177\n\n5. **Open Status:** Resolution could reveal deep structure in divisor behavior.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Divisor Structure:** The equation probes how the divisor function behaves under addition\n\n2. **Density Questions:** Positive c would mean solutions are \"common\" in a precise sense\n\n**3. Computational Aspects:** Finding solutions requires checking divisor sums\n\n4. **OEIS Connection:** Results feed into sequence A110177\n\n5. **Open Status:** Resolution could reveal deep structure in divisor behavior.",
     "openQuestions": [
       "Does S(x) grow linearly, i.e., is there c > 0 with S(x) ~ cx?",
       "What is the density of solutions among pairs with a + b = n for fixed n?",

@@ -13,7 +13,8 @@
       "cardinality",
       "diagonal-argument",
       "classic",
-      "easy"
+      "easy",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/CantorsTheorem.lean",
     "badge": "mathlib",
@@ -53,16 +54,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Georg Cantor published this theorem in his 1891 paper *Über eine elementare Frage der Mannigfaltigkeitslehre* in *Jahresbericht der Deutschen Mathematiker-Vereinigung*. This was actually Cantor's second proof that the reals are uncountable — his first (1874) used a nested interval argument, but the 1891 diagonal proof was far more general and elegant.\n\nThe theorem was revolutionary: it proved that not all infinities are equal, establishing the hierarchy $|A| < |\\mathcal{P}(A)| = 2^{|A|}$ for every set $A$. Starting from $\\aleph_0 = |\\mathbb{N}|$, Cantor showed there exist infinities $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ — an endless tower of transfinite cardinals.\n\nCantor's work provoked fierce opposition. Leopold Kronecker, his former teacher at Berlin, famously declared 'God made the integers; all else is the work of man' and actively blocked Cantor's career. Henri Poincaré called set theory 'a disease from which mathematics will eventually recover.' The controversy contributed to Cantor's recurring bouts of depression; he died in a sanatorium in 1918. Yet within decades, Cantor's ideas became the foundation of modern mathematics: Zermelo axiomatized set theory (1908), and today ZFC set theory — built on Cantor's concepts — is the standard foundation.\n\nThe diagonal argument's versatility is remarkable: Gödel used a variant for his incompleteness theorems (1931), Turing for the undecidability of the halting problem (1936), and it appears in proofs of the Baire category theorem, the uncountability of the reals, and the non-computability of Kolmogorov complexity.",
+    "historicalContext": "Georg Cantor published this theorem in his 1891 paper *\u00dcber eine elementare Frage der Mannigfaltigkeitslehre* in *Jahresbericht der Deutschen Mathematiker-Vereinigung*. This was actually Cantor's second proof that the reals are uncountable \u2014 his first (1874) used a nested interval argument, but the 1891 diagonal proof was far more general and elegant.\n\nThe theorem was revolutionary: it proved that not all infinities are equal, establishing the hierarchy $|A| < |\\mathcal{P}(A)| = 2^{|A|}$ for every set $A$. Starting from $\\aleph_0 = |\\mathbb{N}|$, Cantor showed there exist infinities $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ \u2014 an endless tower of transfinite cardinals.\n\nCantor's work provoked fierce opposition. Leopold Kronecker, his former teacher at Berlin, famously declared 'God made the integers; all else is the work of man' and actively blocked Cantor's career. Henri Poincar\u00e9 called set theory 'a disease from which mathematics will eventually recover.' The controversy contributed to Cantor's recurring bouts of depression; he died in a sanatorium in 1918. Yet within decades, Cantor's ideas became the foundation of modern mathematics: Zermelo axiomatized set theory (1908), and today ZFC set theory \u2014 built on Cantor's concepts \u2014 is the standard foundation.\n\nThe diagonal argument's versatility is remarkable: G\u00f6del used a variant for his incompleteness theorems (1931), Turing for the undecidability of the halting problem (1936), and it appears in proofs of the Baire category theorem, the uncountability of the reals, and the non-computability of Kolmogorov complexity.",
     "problemStatement": "Cantor's Theorem (Wiedijk #63):\n\nFor any set A, there is no surjection from A to its power set P(A).\n\n**Equivalently:**\n- There is no function f: A -> P(A) such that every subset of A is f(x) for some x in A\n- The cardinality of A is strictly less than the cardinality of P(A): |A| < |P(A)| = 2^|A|\n\nThis proves that the power set is always 'larger' than the original set, even for infinite sets.",
-    "text": "For any set A, there is no surjection from A to its power set P(A). This establishes that |A| < |P(A)| = 2^|A|, proving the hierarchy of infinite cardinalities.",
+    "text": "A seven-theorem development of Cantor's theorem (Wiedijk #63) in 157 lines, proving no surjection exists from a set to its power set. The Mathlib form `cantor_no_surjection` delegates to `Function.cantor_surjective` for the `A \\to Prop` formulation; the Set form `cantor_no_surjection_set` gives an original proof via the explicit diagonal set `diagonalSet f = \\{x \\mid x \\notin f(x)\\}`, with the self-referential contradiction extracted as `diagonal_paradox`. Corollaries include strict cardinality inequality, impossibility of bijection, and a constructive witness `cantor_witness` producing the diagonal set for any given function. Fully verified: 0 sorries, 0 axioms.",
     "proofStrategy": "The proof uses Cantor's diagonal argument:\n\n1. **Assume for contradiction** that f: A -> P(A) is surjective.\n\n2. **Construct the diagonal set** D = {x in A | x is not in f(x)}.\n   This is the set of elements that are NOT in their own image.\n\n3. **By surjectivity**, there exists some b in A with f(b) = D.\n\n4. **Ask: Is b in D?**\n   - If b in D, then by definition of D, b is not in f(b) = D. Contradiction!\n   - If b not in D, then by definition of D, b is in f(b) = D. Contradiction!\n\n5. **Conclude** no such surjection can exist.\n\nThe construction is entirely explicit - given any f, we can exhibit a set not in its range.",
     "keyInsights": [
-      "The diagonal set D = {x | x not in f(x)} is the witness to non-surjectivity",
-      "The argument is constructive: we don't just prove existence, we exhibit D",
-      "This is closely related to Russell's paradox (D resembles 'the set of all sets not containing themselves')",
-      "The proof works identically for finite and infinite sets",
-      "Applying this to A = N shows there are uncountably many subsets of the natural numbers"
+      "**Constructive Witness:** Unlike most impossibility proofs, Cantor's theorem is constructive: given ANY $f: A \\to \\mathcal{P}(A)$, the diagonal set $D = \\{x \\mid x \\notin f(x)\\}$ is an explicit set not in the range of $f$. The `cantor_witness` theorem returns this witness.",
+      "**Self-Reference as Proof Engine:** The diagonal paradox $b \\in D \\iff b \\notin D$ (where $f(b) = D$) is the same self-referential structure underlying Russell's paradox, Godel's incompleteness theorems, the halting problem, and the Liar paradox. Lawvere's fixed-point theorem unifies these as instances of one categorical principle.",
+      "**Two Formulations, One Theorem:** The `A \\to Prop` form matches Mathlib's `Function.cantor_surjective` (predicates as subsets), while the `Set A` form uses Lean's `Set` type with explicit membership. Both are equivalent but expose different parts of the type-theoretic machinery.",
+      "**The Unbounded Cardinal Tower:** Iterating Cantor's theorem gives $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$, the beth numbers $\\beth_0 < \\beth_1 < \\beth_2 < \\cdots$. This proves there is no largest cardinal, and the class of all cardinals is a proper class (not a set).",
+      "**Diagonal Argument Versatility:** The same technique proves: uncountability of $\\mathbb{R}$ (Cantor 1874/1891), incompleteness of arithmetic (Godel 1931), undecidability of the halting problem (Turing 1936), non-computability of Kolmogorov complexity, and the Baire category theorem."
     ],
     "prerequisites": [
       "Naive set theory (sets, subsets, power sets, membership)",
@@ -78,7 +79,7 @@
       "startLine": 1,
       "endLine": 46,
       "summary": "Overview of Cantor's theorem, its connection to Wiedijk #63, and relationship to the diagonalization result.",
-      "mathContext": "Statement: $\\forall A,\\ \\neg\\exists f: A \\to \\mathcal{P}(A),\\ \\text{Surjective}(f)$. In Lean, $\\mathcal{P}(A)$ is represented as `A → Prop` (each predicate defines a subset). The file provides both the `A → Prop` formulation (via Mathlib) and the `Set A` formulation (original diagonal construction). Wiedijk #63 (general) subsumes Wiedijk #22 (uncountability of $\\mathbb{R}$) as the special case $A = \\mathbb{N}$."
+      "mathContext": "Statement: $\\forall A,\\ \\neg\\exists f: A \\to \\mathcal{P}(A),\\ \\text{Surjective}(f)$. In Lean, $\\mathcal{P}(A)$ is represented as `A \u2192 Prop` (each predicate defines a subset). The file provides both the `A \u2192 Prop` formulation (via Mathlib) and the `Set A` formulation (original diagonal construction). Wiedijk #63 (general) subsumes Wiedijk #22 (uncountability of $\\mathbb{R}$) as the special case $A = \\mathbb{N}$."
     },
     {
       "id": "main-mathlib",
@@ -86,15 +87,15 @@
       "startLine": 48,
       "endLine": 60,
       "summary": "The core theorem using Mathlib's Function.cantor_surjective for the (A -> Prop) formulation.",
-      "mathContext": "$\\neg \\exists f: A \\to (A \\to \\text{Prop}),\\ \\text{Surjective}(f)$. In Lean, $\\mathcal{P}(A)$ is represented as `A → Prop` — each predicate defines a subset. The proof delegates to Mathlib's `Function.cantor_surjective`."
+      "mathContext": "$\\neg \\exists f: A \\to (A \\to \\text{Prop}),\\ \\text{Surjective}(f)$. In Lean, $\\mathcal{P}(A)$ is represented as `A \u2192 Prop` \u2014 each predicate defines a subset. The proof delegates to Mathlib's `Function.cantor_surjective`."
     },
     {
       "id": "set-formulation",
-      "title": "Set Formulation",
+      "title": "Set Formulation with Diagonal Construction",
       "startLine": 62,
       "endLine": 94,
-      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction.",
-      "mathContext": "The diagonal set $D = \\{x \\in A \\mid x \\notin f(x)\\}$ is the explicit witness. If $f(b) = D$, then $b \\in D \\iff b \\notin f(b) = D \\iff b \\notin D$ — a contradiction."
+      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction. Defines `diagonalSet f = {x | x ∉ f x}` and proves `cantor_no_surjection_set` via by_cases on b ∈ D, where D = diagonalSet f and f(b) = D by surjectivity.",
+      "mathContext": "The diagonal set $D = \\{x \\in A \\mid x \\notin f(x)\\}$ is the explicit witness. If $f(b) = D$, then $b \\in D \\iff b \\notin f(b) = D \\iff b \\notin D$ \u2014 a contradiction."
     },
     {
       "id": "diagonal-paradox",
@@ -118,16 +119,16 @@
       "startLine": 133,
       "endLine": 156,
       "summary": "Shows the proof is constructive: given any f, we can explicitly construct a set not in its range.",
-      "mathContext": "For any $f: A \\to \\mathcal{P}(A)$, the diagonal set $D = \\{x \\mid x \\notin f(x)\\}$ is an explicit witness with $D \\notin \\mathrm{ran}(f)$. This constructivity contrasts with existence proofs using Zorn's lemma or the axiom of choice — Cantor's proof produces the counterexample rather than merely asserting its existence."
+      "mathContext": "For any $f: A \\to \\mathcal{P}(A)$, the diagonal set $D = \\{x \\mid x \\notin f(x)\\}$ is an explicit witness with $D \\notin \\mathrm{ran}(f)$. This constructivity contrasts with existence proofs using Zorn's lemma or the axiom of choice \u2014 Cantor's proof produces the counterexample rather than merely asserting its existence."
     }
   ],
   "conclusion": {
-    "summary": "Cantor's theorem is now fully verified using both Mathlib's infrastructure and an explicit diagonal construction. We provide the (A -> Prop) formulation (matching Mathlib) and the Set A formulation, along with multiple corollaries.",
-    "implications": "This theorem is foundational to understanding infinite cardinalities. It shows:\n- There are infinitely many sizes of infinity\n- The continuum (real numbers) is larger than the natural numbers (via |R| = |P(N)|)\n- No universe can contain its own power set\n\nThe diagonal argument technique is used throughout mathematics and computer science to prove impossibility results.",
+    "summary": "A fully verified seven-theorem development of Cantor's theorem (Wiedijk #63), with both Mathlib delegation (`Function.cantor_surjective`) and an original diagonal construction (`diagonalSet`). The formalization provides two formulations (A -> Prop and Set A), extracts the core self-referential contradiction as `diagonal_paradox`, and includes a constructive witness theorem.",
+    "implications": "**Foundational Impact**: Cantor's theorem is the engine of transfinite cardinal arithmetic. It proves there is no largest cardinal, establishes the beth number hierarchy, and shows that the universe of sets cannot be 'completed' \u2014 there is always a larger infinity.\n\n**Diagonal Method**: The diagonal argument has become one of the most powerful proof techniques in mathematics and computer science. Its categorical generalization (Lawvere's fixed-point theorem) shows that in any cartesian closed category, a surjection $X \\twoheadrightarrow Y^X$ forces every endomorphism $Y \\to Y$ to have a fixed point \u2014 unifying Cantor, Godel, and Turing under one framework.\n\n**Type-Theoretic Resolution**: The connection to Russell's paradox is resolved in Lean's type theory via universe stratification: `x : \\alpha` cannot have type `Set \\alpha`, so $x \\in x$ is ill-typed. This is the same solution as ZFC's axiom of regularity, translated into dependent type theory.",
     "openQuestions": [
-      "What is the cardinality of P(R)? Is there a set strictly between N and P(N) (Continuum Hypothesis)?",
-      "How does this relate to type-theoretic universes and Girard's paradox?",
-      "Can we generalize the diagonal argument to other structures beyond sets?"
+      "The Continuum Hypothesis ($\\aleph_1 = 2^{\\aleph_0}$?) is independent of ZFC (Godel 1940, Cohen 1963). Can we formalize the independence proof in Lean \u2014 specifically, Cohen's forcing construction that produces a model where CH fails?",
+      "Lawvere's fixed-point theorem generalizes Cantor's diagonal argument categorically. Can we formalize this in Lean using Mathlib's category theory library and derive Cantor's theorem as a corollary?",
+      "Cantor's theorem in constructive mathematics: while the diagonal witness IS constructive, the strict inequality $|A| < |\\mathcal{P}(A)|$ requires classical logic (to show no bijection exists). What is the precise constructive content of Cantor's theorem in CZF or HoTT?"
     ]
   },
   "leanFile": {
@@ -147,32 +148,52 @@
     {
       "targetId": "cantor-diagonalization",
       "relationship": "related",
-      "description": "Cantor's diagonalization (uncountability of ℝ) uses the same diagonal technique; Cantor's theorem generalizes it to show |S| < |P(S)| for ALL sets S, not just ℕ"
+      "description": "Cantor's diagonalization (uncountability of \u211d) uses the same diagonal technique; Cantor's theorem generalizes it to show |S| < |P(S)| for ALL sets S, not just \u2115"
     },
     {
       "targetId": "continuum-hypothesis",
       "relationship": "extends",
-      "description": "Cantor's theorem shows |ℕ| < |P(ℕ)| = |ℝ|. The continuum hypothesis asks whether any cardinality lies strictly between — proved independent by Gödel (1940) and Cohen (1963)"
+      "description": "Cantor's theorem shows |\u2115| < |P(\u2115)| = |\u211d|. The continuum hypothesis asks whether any cardinality lies strictly between \u2014 proved independent by G\u00f6del (1940) and Cohen (1963)"
     },
     {
       "targetId": "schroeder-bernstein",
       "relationship": "complementary",
-      "description": "Schröder-Bernstein establishes cardinality equality from mutual injections; Cantor's theorem shows the injection A → P(A) (singletons) has no reverse, giving strict inequality"
+      "description": "Schr\u00f6der-Bernstein establishes cardinality equality from mutual injections; Cantor's theorem shows the injection A \u2192 P(A) (singletons) has no reverse, giving strict inequality"
     },
     {
       "targetId": "halting-problem",
       "relationship": "related",
-      "description": "The halting problem's undecidability proof is structurally identical to Cantor's theorem: the 'diagonal machine' that asks 'does this machine halt on itself?' is the Turing machine analog of the set {x : x ∉ f(x)}"
+      "description": "The halting problem's undecidability proof is structurally identical to Cantor's theorem: the 'diagonal machine' that asks 'does this machine halt on itself?' is the Turing machine analog of the set {x : x \u2209 f(x)}"
     },
     {
       "targetId": "cantors-theorem-oq-01",
       "relationship": "extended-by",
-      "description": "Investigates the cardinality of $\\mathcal{P}(\\mathbb{R})$ — iterated application of Cantor's theorem gives the tower $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})| < \\cdots$, and the Continuum Hypothesis asks about gaps in this hierarchy"
+      "description": "Investigates the cardinality of $\\mathcal{P}(\\mathbb{R})$ \u2014 iterated application of Cantor's theorem gives the tower $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})| < \\cdots$, and the Continuum Hypothesis asks about gaps in this hierarchy"
     },
     {
       "targetId": "cantors-theorem-oq-02",
       "relationship": "extended-by",
-      "description": "Lawvere's fixed-point theorem provides a categorical generalization of Cantor's diagonal argument: in any cartesian closed category, if $Y^{Y^X}$ has a surjection from $X$, then every endomorphism of $Y$ has a fixed point — unifying Cantor's theorem, the halting problem, and Gödel incompleteness under one framework"
+      "description": "Lawvere's fixed-point theorem provides a categorical generalization of Cantor's diagonal argument: in any cartesian closed category, if $Y^{Y^X}$ has a surjection from $X$, then every endomorphism of $Y$ has a fixed point \u2014 unifying Cantor's theorem, the halting problem, and G\u00f6del incompleteness under one framework"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Godel's incompleteness theorem uses a self-referential construction structurally identical to Cantor's diagonal argument: the Godel sentence 'I am not provable' parallels the diagonal set 'I am not in my own image'. Lawvere's fixed-point theorem unifies both."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are impossibility results proved by structural obstruction: Cantor shows no surjection to the power set via diagonalization, Abel-Ruffini shows no radical formula for quintics via non-solvability of $S_5$."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both establish fundamental structural properties of infinite mathematical objects. Euclid's proof that primes are infinite and Cantor's proof of uncountability are the two foundational results about the structure of infinity."
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The well-ordering principle (equivalent to induction, as formalized in mathematical-induction) provides the foundation for ordinal and cardinal arithmetic that Cantor's theorem initiates. The transfinite induction principle generalizes mathematical induction to ordinals, enabling proofs about the cardinal hierarchy $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ that Cantor's theorem establishes"
     }
   ],
   "relatedProofs": [
@@ -181,14 +202,18 @@
     "schroeder-bernstein",
     "halting-problem",
     "cantors-theorem-oq-01",
-    "cantors-theorem-oq-02"
+    "cantors-theorem-oq-02",
+    "godel-incompleteness",
+    "abel-ruffini",
+    "infinitude-primes",
+    "mathematical-induction"
   ],
   "references": [
     {
       "authors": "Cantor, Georg",
-      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "title": "\u00dcber eine elementare Frage der Mannigfaltigkeitslehre",
       "year": "1891",
-      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 1, 75–78",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 1, 75\u201378",
       "note": "The diagonal argument proving no surjection from a set to its power set"
     },
     {
@@ -204,6 +229,27 @@
       "year": "1979",
       "venue": "Harvard University Press",
       "note": "Definitive intellectual biography covering Cantor's development of set theory, the controversy with Kronecker, and the philosophical implications of transfinite cardinals"
+    },
+    {
+      "authors": "Lawvere, F. William",
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Lecture Notes in Mathematics 92, Springer, 134–145",
+      "note": "Categorical generalization of Cantor's diagonal argument: in any cartesian closed category, a surjection X → Y^X forces every endomorphism of Y to have a fixed point — unifying Cantor, Gödel, and Turing"
+    },
+    {
+      "authors": "Cohen, Paul J.",
+      "title": "The independence of the continuum hypothesis",
+      "year": "1963",
+      "venue": "Proceedings of the National Academy of Sciences 50(6), 1143–1148",
+      "note": "Proved the Continuum Hypothesis is independent of ZFC using forcing, complementing Gödel's 1940 consistency proof — the most significant consequence of Cantor's theorem for the foundations of mathematics"
+    },
+    {
+      "authors": "Enderton, Herbert B.",
+      "title": "Elements of Set Theory",
+      "year": "1977",
+      "venue": "Academic Press",
+      "note": "Standard graduate textbook with rigorous treatment of Cantor's theorem, cardinal arithmetic, and the beth/aleph hierarchies"
     }
   ]
 }

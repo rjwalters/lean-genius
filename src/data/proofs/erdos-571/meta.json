@@ -135,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #571 (the Erdos-Simonovits conjecture) asks whether every rational $\\alpha \\in [1,2)$ is a Turan exponent for a single bipartite graph. The problem remains OPEN despite extensive progress: Bukh-Conlon (2018) solved the finite family variant, and multiple exponent families are known -- Conlon-Janzer-Lee near $3/2$, Jiang-Qiu near 1 and at $4/3$, $5/4$, Jiang-Ma-Yepremyan near 2, and Conlon-Janzer densely covering $[7/4, 2)$. The formalization captures all major partial results with a clean separation between the open conjecture (as a `Prop` definition) and the proved/axiomatized individual results.",
-    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Fine structure of extremal graph theory:** Resolution would completely characterize the possible growth rates of extremal numbers for bipartite forbidden subgraphs, revealing the 'spectrum' of bipartite Turan theory\n\n2. **Algebraic geometry and combinatorics:** Nearly all modern constructions use algebraic graphs over finite fields, connecting combinatorial extremal theory to questions about polynomial equations, field norms, and algebraic varieties\n\n3.\n\n**Broader Connections**: **Zarankiewicz problem connection:** The Kovari-Sos-Turan bound $\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ links to the Zarankiewicz problem $z(m,n; s,t)$ on maximum edges in bipartite graphs avoiding $K_{s,t}$; improvements in either direction transfer to the other\n\n4. **Hypergraph Turan theory:** The Jiang-Ma-Yepremyan encoding shows that bipartite graph Turan problems contain hypergraph Turan problems as special cases, suggesting the graph version may be at least as hard as unresolved hypergraph questions\n\n5. **Computational aspects:** The extremal function $\\text{ex}(n;G)$ is in general hard to compute exactly; even determining the correct exponent requires sophisticated constructions, connecting to computational complexity of combinatorial optimization.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Fine structure of extremal graph theory:** Resolution would completely characterize the possible growth rates of extremal numbers for bipartite forbidden subgraphs, revealing the 'spectrum' of bipartite Turan theory\n\n2. **Algebraic geometry and combinatorics:** Nearly all modern constructions use algebraic graphs over finite fields, connecting combinatorial extremal theory to questions about polynomial equations, field norms, and algebraic varieties\n\n**3. Zarankiewicz problem connection:** The Kovari-Sos-Turan bound $\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ links to the Zarankiewicz problem $z(m,n; s,t)$ on maximum edges in bipartite graphs avoiding $K_{s,t}$; improvements in either direction transfer to the other\n\n4. **Hypergraph Turan theory:** The Jiang-Ma-Yepremyan encoding shows that bipartite graph Turan problems contain hypergraph Turan problems as special cases, suggesting the graph version may be at least as hard as unresolved hypergraph questions\n\n5. **Computational aspects:** The extremal function $\\text{ex}(n;G)$ is in general hard to compute exactly; even determining the correct exponent requires sophisticated constructions, connecting to computational complexity of combinatorial optimization.",
     "openQuestions": [
       "Is every rational in $[1,2)$ a Turan exponent for a single bipartite graph? (The central question.)",
       "Can exponents very close to 1 (like $1 + 1/100$ or $1.001$) be achieved? What construction techniques could work in this regime?",
@@ -154,5 +154,15 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-713",
+      "relationship": "related",
+      "description": "Related Turán-type problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-713"
+  ]
 }

@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-23T01:30:00Z",
-    "iteration": 4,
-    "focus": "Structural theorems: self_condition, prime exclusion (p=2,3), mod25_incompatible, mod25_characterization. Also fixed Mathlib API breakage.",
+    "since": "2026-03-23T21:30:00Z",
+    "iteration": 3,
+    "focus": "Axiom elimination: converted maxNonSqfreeSet to noncomputable def, proved maxNonSqfreeSet_le and lower_bound (6→3 axioms)",
     "blockers": [],
-    "nextAction": "Remaining 3 axioms are genuinely deep (Van Doorn, Sawhney). Complete for elementary structural analysis.",
+    "nextAction": "Remaining 3 axioms are deep results (Van Doorn, Sawhney). Further progress would require formalizing analytic number theory.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 3,
+      "total": 3,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 5 new proved theorems (13 total, up from 8). self_condition, no_four_dvd_sq_plus_one, no_nine_dvd_sq_plus_one, mod25_incompatible, mod25_characterization. Fixed Mathlib API breakage in maxNonSqfreeSet_le. Complete elementary structural picture of the 5² mechanism.",
+    "progressSummary": "PROGRESS: Eliminated 3 more axioms (6→3). Converted maxNonSqfreeSet from axiom to noncomputable def via Finset.sup. Proved maxNonSqfreeSet_le via injection x↦x-1. Proved lower_bound via witness construction k↦25k+7. All builds verified.",
     "builtItems": [
       "Proved mod25_achieves (axiom→theorem): 5²|ab+1 when a≡b≡7(mod25)",
       "Proved mod25_achieves_18: symmetric case for a≡b≡18(mod25)",
@@ -38,13 +38,7 @@
       "Converted maxNonSqfreeSet from axiom to noncomputable def via Finset.sup over powerset",
       "Proved maxNonSqfreeSet_le: |A| ≤ |Icc 1 N| ≤ N via injection x↦x-1 to range N",
       "Proved lower_bound: N/25 ≤ maxNonSqfreeSet N via mod7Set witness and injection k↦25k+7",
-      "Added mod7Set helper def with residue, subset, and cardinality lemmas",
-      "self_condition: every element of valid A has a²+1 not squarefree",
-      "no_four_dvd_sq_plus_one: 4 never divides a²+1 (p=2 excluded from sieve)",
-      "no_nine_dvd_sq_plus_one: 9 never divides a²+1 (p=3 excluded from sieve)",
-      "mod25_incompatible: mixing {7 mod 25} and {18 mod 25} breaks 5² guarantee",
-      "mod25_characterization: 25|a²+1 iff a≡7 or 18 (mod 25) - complete iff characterization",
-      "Fixed maxNonSqfreeSet_le proof for current Mathlib API (simp+dsimp instead of named simp lemmas)"
+      "Added mod7Set helper def with residue, subset, and cardinality lemmas"
     ],
     "insights": [
       "mod25_achieves is pure arithmetic: 7*7+1=50, 25|50, so 5²|ab+1 for a≡b≡7(mod25)",
@@ -53,12 +47,7 @@
       "maxNonSqfreeSet can be defined as Finset.sup (powerset.filter HasNonSqfreeProductProp) card using open Classical for decidability",
       "Upper bound proof: injection x↦x-1 from Icc 1 N to range N avoids needing Finset.card_Icc",
       "Lower bound proof: injection k↦25k+7 from range(N/25) to mod7Set N, using Nat.div_mul_le_self for the bound 25k+7 ≤ N",
-      "Remaining 3 axioms are genuinely deep: Van Doorn's analytic upper bound, Sawhney's exact solution, and structural characterization",
-      "p=2 is provably excluded: a² ≡ 0 or 1 (mod 4), so a²+1 ≡ 1 or 2, never 0 (mod 4)",
-      "p=3 is provably excluded: a² ≡ 0,1,4,7 (mod 9), so a²+1 ≡ 1,2,5,8, never 0 (mod 9)",
-      "The two extremal classes {7 mod 25} and {18 mod 25} are incompatible via the 5² mechanism: mixed pairs give ab+1 ≡ 2 (mod 25)",
-      "Complete characterization: 7 and 18 are the ONLY solutions to a²≡-1 (mod 25), i.e., the only square roots of -1 in Z/25Z",
-      "This establishes p=5 as the smallest prime usable in the sieve, and the mod-25 classes as the unique optimal construction"
+      "Remaining 3 axioms are genuinely deep: Van Doorn's analytic upper bound, Sawhney's exact solution, and structural characterization"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -89,10 +78,10 @@
     {
       "path": "Proofs/Erdos848Problem.lean",
       "filename": "Erdos848Problem.lean",
-      "lineCount": 254,
-      "theoremCount": 13,
+      "lineCount": 177,
+      "theoremCount": 8,
       "axiomCount": 3,
-      "defCount": 4,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos848Problem.lean"

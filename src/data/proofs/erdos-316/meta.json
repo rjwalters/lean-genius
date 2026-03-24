@@ -123,7 +123,7 @@
   ],
   "conclusion": {
     "summary": "We have formally verified that Erdős's conjecture about partitioning sets by reciprocal sums is FALSE. The minimal counterexample {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} has reciprocal sum approximately 1.96, yet cannot be split into two parts each summing to less than 1. The proof uses exhaustive computational verification of all 2048 possible partitions.",
-    "implications": "**Theoretical Significance**: This result shows that the additive structure of unit fractions is more complex than naive intuition suggests.\n\n**Broader Connections**: Even with 'room to spare' (total sum well below 2), the specific values can conspire to prevent any balanced partition. Sándor's generalization shows this phenomenon extends to all partition numbers n ≥ 2.",
+    "implications": "**Theoretical Significance**: This result shows that the additive structure of unit fractions is more complex than naive intuition suggests.\n\nEven with 'room to spare' (total sum well below 2), the specific values can conspire to prevent any balanced partition. Sándor's generalization shows this phenomenon extends to all partition numbers n ≥ 2.",
     "openQuestions": [
       "What is the minimum cardinality of a counterexample for each partition number n?",
       "Are there structural characterizations of sets that CAN be partitioned as Erdős conjectured?",

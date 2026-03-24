@@ -169,5 +169,21 @@
     "axiomCount": 4,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Related extremal combinatorics result"
+    },
+    {
+      "targetId": "erdos-1001",
+      "relationship": "related",
+      "description": "Fellow Erdős problem"
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "erdos-1001"
+  ]
 }

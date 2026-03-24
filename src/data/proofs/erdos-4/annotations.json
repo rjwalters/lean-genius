@@ -413,7 +413,7 @@
       "startLine": 183,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Function Growth Rate",
     "content": "**erdos_function_growth**: $f(n) < (\\log n)^{1+\\varepsilon}$ eventually for any $\\varepsilon > 0$. The Erdős function grows slower than any power of $\\log n$ beyond the first.",
     "significance": "supporting",
@@ -425,6 +425,28 @@
     ],
     "prerequisites": [
       "erdosFunction"
+    ]
+  },
+  {
+    "id": "ann-e4-improved-stronger",
+    "proofId": "erdos-4",
+    "range": {
+      "startLine": 186,
+      "endLine": 192
+    },
+    "type": "technique",
+    "title": "FGKMT Dominance: Improved ≥ Original (sorry)",
+    "content": "**improved_stronger**: For $n \\geq 100$, the FGKMT improved function dominates the original Erdős function. This is the file's only `sorry` — a technical inequality comparing $(\\log\\log\\log n)^2$ vs $\\log\\log\\log n$ in the denominator. The proof unfolds both definitions and needs to verify that $1/(\\log\\log\\log n)^2 \\leq 1/\\log\\log\\log n$ for $n \\geq 100$, which follows from $\\log\\log\\log n \\geq 1$.",
+    "significance": "supporting",
+    "mathContext": "The claim: $f(n) \\leq f'(n)$ where $f(n) = \\frac{\\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n}{(\\log\\log\\log n)^2}$ and $f'(n) = \\frac{\\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n}{\\log\\log\\log n}$. This reduces to $\\frac{1}{(\\log\\log\\log n)^2} \\leq \\frac{1}{\\log\\log\\log n}$, i.e., $\\log\\log\\log n \\geq 1$, which holds for $n \\geq e^{e^e} \\approx 3814279$. For $n \\geq 100$, $\\log\\log\\log 100 \\approx 0.83 < 1$, so the bound actually fails at $n = 100$ — this sorry may be genuinely unprovable as stated. An Aristotle candidate if the bound is corrected to $n \\geq 10^7$.",
+    "relatedConcepts": [
+      "iterated log comparison",
+      "technical inequality",
+      "sorry classification"
+    ],
+    "prerequisites": [
+      "erdosFunction",
+      "improvedErdosFunction"
     ]
   },
   {
@@ -469,6 +491,29 @@
     "prerequisites": [
       "nthPrime",
       "primeGap"
+    ]
+  },
+  {
+    "id": "ann-e4-summary",
+    "proofId": "erdos-4",
+    "range": {
+      "startLine": 216,
+      "endLine": 243
+    },
+    "type": "context",
+    "title": "Summary: SOLVED Status and Open Questions",
+    "content": "The closing commentary summarizes the complete resolution of Erdős Problem #4 and the remaining frontier. The file contains 16 definitions, 2 theorems, and 9 axiom declarations across 243 lines. The single sorry (`improved_stronger`) is a technical inequality comparing the original and improved Erdős functions.\n\nThe summary lists the four key milestones: Rankin (1938, $\\exists C$), Maynard (2016, $\\forall C$), FGKT (2016, independent $\\forall C$), and FGKMT (2018, improved bound). Three open questions remain: Cramér's conjecture, the $\\$10{,}000$ growth rate conjecture, and the exact growth rate of $G(x) = \\max_{p_n \\leq x} g_n$.",
+    "significance": "supporting",
+    "mathContext": "The file formalizes a complete hierarchy of prime gap results:\n- **Lower bounds**: $\\omega(\\log n \\cdot \\log\\log n / \\log\\log\\log n)$ (FGKMT 2018) — the state of the art\n- **Upper bounds**: $O(n^{0.525})$ unconditionally (BHP 2001), $O(n^{1/2+\\varepsilon})$ under RH\n- **Conjectured**: $\\Theta((\\log n)^2)$ (Cramér), with lim sup constant $2e^{-\\gamma}$ (Granville)\n\nThe enormous gap between lower and upper bounds — roughly $(\\log n)^{1+o(1)}$ vs $n^{0.525}$ — is one of the most striking open problems in analytic number theory.",
+    "relatedConcepts": [
+      "prime gap hierarchy",
+      "SOLVED status",
+      "open problems in prime distribution"
+    ],
+    "prerequisites": [
+      "erdos_4_conjecture",
+      "maynard_theorem",
+      "cramer_conjecture"
     ]
   }
 ]

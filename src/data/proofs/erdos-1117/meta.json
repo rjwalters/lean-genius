@@ -80,7 +80,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #1117 formalizes a two-part question about the growth of maximum modulus point counts on circles for non-monomial entire functions. Part 1 ($\\limsup \\nu(r) = \\infty$) was solved by Herzog–Piranian in 1968 via lacunary series constructions. Part 2 ($\\liminf \\nu(r) = \\infty$) remains open after more than 50 years, with the best partial result being the 2024 approximate answer by Glücksam–Pardo-Simón showing that near-maximum points can be made abundant on every circle.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Value distribution theory**: A resolution would advance the classical theory of Nevanlinna, Ahlfors, and Hayman on how entire functions distribute their values, specifically the geometric structure of level sets.\n\n2. **Wiman–Valiron theory extensions**: The problem is intimately connected to how the central index $N(r)$ controls the angular distribution of maximum modulus points, potentially requiring new asymptotic techniques.\n\n3.\n\n**Broader Connections**: **Approximation theory**: Understanding the distribution of maximum points connects to best polynomial approximation on circles and the theory of Chebyshev-like extremal problems.\n\n4. **Ergodic aspects**: The $\\liminf$ question has an ergodic flavor — asking whether a property that holds 'infinitely often' (as in the $\\limsup$ result) can be upgraded to 'eventually always'. This connects to density and recurrence phenomena in dynamical systems.",
+    "implications": "1. **Value distribution theory**: A resolution would advance the classical theory of Nevanlinna, Ahlfors, and Hayman on how entire functions distribute their values, specifically the geometric structure of level sets.\n\n2. **Wiman–Valiron theory extensions**: The problem is intimately connected to how the central index $N(r)$ controls the angular distribution of maximum modulus points, potentially requiring new asymptotic techniques.\n\n**3. Approximation theory**: Understanding the distribution of maximum points connects to best polynomial approximation on circles and the theory of Chebyshev-like extremal problems.\n\n4. **Ergodic aspects**: The $\\liminf$ question has an ergodic flavor — asking whether a property that holds 'infinitely often' (as in the $\\limsup$ result) can be upgraded to 'eventually always'. This connects to density and recurrence phenomena in dynamical systems.",
     "openQuestions": [
       "Can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function, or is there an intrinsic obstruction?",
       "Can the Glücksam–Pardo-Simón $(1-\\varepsilon)$ approximate result be strengthened to the exact maximum?",
@@ -91,40 +91,40 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-513",
       "slug": "erdos-513",
       "title": "Erdős Problem #513: Maximum Term of a Power Series",
-      "relationship": "Both problems concern the maximum modulus function M(r) = max_{|z|=r} |f(z)| for entire functions. Problem #513 studies the ratio μ(r)/M(r) of the maximum term to maximum modulus, while #1117 studies the count of points achieving M(r). The Wiman–Valiron central index N(r) connects both problems."
+      "relationship": "Both problems concern the maximum modulus function M(r) = max_{|z|=r} |f(z)| for entire functions. Problem #513 studies the ratio μ(r)/M(r) of the maximum term to maximum modulus, while #1117 studies the count of points achieving M(r). The Wiman–Valiron central index N(r) connects both problems.",
+      "targetId": "erdos-513"
     },
     {
-      "id": "erdos-516",
       "slug": "erdos-516",
       "title": "Erdős Problem #516: Gap Series and the Minimum Modulus Problem",
-      "relationship": "Problem #516 studies minimum modulus m(r) vs maximum modulus M(r) for lacunary (Fabry gap) series. The Herzog–Piranian 1968 construction resolving Problem #1117 Question 1 also uses lacunary power series techniques, creating functions where dominant terms rotate to produce many maximum-modulus points at specific radii."
+      "relationship": "Problem #516 studies minimum modulus m(r) vs maximum modulus M(r) for lacunary (Fabry gap) series. The Herzog–Piranian 1968 construction resolving Problem #1117 Question 1 also uses lacunary power series techniques, creating functions where dominant terms rotate to produce many maximum-modulus points at specific radii.",
+      "targetId": "erdos-516"
     },
     {
-      "id": "erdos-1115",
       "slug": "erdos-1115",
       "title": "Erdős Problem #1115: Path Length for Entire Functions",
-      "relationship": "Neighboring problem from the same 1974 Hayman collection, also studying asymptotic behavior related to M(r). Problem #1115 asks about paths to infinity along which growth is controlled relative to M(r), with Gol'dberg–Eremenko providing the disproof — sharing the same classical function theory context and authors."
+      "relationship": "Neighboring problem from the same 1974 Hayman collection, also studying asymptotic behavior related to M(r). Problem #1115 asks about paths to infinity along which growth is controlled relative to M(r), with Gol'dberg–Eremenko providing the disproof — sharing the same classical function theory context and authors.",
+      "targetId": "erdos-1115"
     },
     {
-      "id": "erdos-1116",
       "slug": "erdos-1116",
       "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
-      "relationship": "Direct neighbor in Hayman's collection: Problem #1116 asks whether entire functions can have extreme asymmetry in the counting function n(r,a) of a-points (Nevanlinna theory). Problem #1117 similarly asks about the counting function ν(r) of maximum-modulus points, representing dual aspects of value distribution theory for entire functions."
+      "relationship": "Direct neighbor in Hayman's collection: Problem #1116 asks whether entire functions can have extreme asymmetry in the counting function n(r,a) of a-points (Nevanlinna theory). Problem #1117 similarly asks about the counting function ν(r) of maximum-modulus points, representing dual aspects of value distribution theory for entire functions.",
+      "targetId": "erdos-1116"
     },
     {
-      "id": "erdos-1118",
       "slug": "erdos-1118",
       "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
-      "relationship": "Neighboring problem about the geometry of level sets {z : |f(z)| > c}. Problem #1117 counts points on the level set |f(z)| = M(r) (the maximum modulus level set on a circle), while #1118 studies area properties of superlevel sets. Both probe the measure-theoretic and geometric structure of entire function level sets."
+      "relationship": "Neighboring problem about the geometry of level sets {z : |f(z)| > c}. Problem #1117 counts points on the level set |f(z)| = M(r) (the maximum modulus level set on a circle), while #1118 studies area properties of superlevel sets. Both probe the measure-theoretic and geometric structure of entire function level sets.",
+      "targetId": "erdos-1118"
     },
     {
-      "id": "erdos-906",
       "slug": "erdos-906",
       "title": "Erdős Problem #906: Dense Zeros of Derivative Subsequences",
-      "relationship": "Both problems involve entire functions with remarkable asymptotic or geometric properties that appear hard to achieve simultaneously. Problem #906 asks for transcendental entire functions with dense zeros of derivative subsequences; both exemplify Erdős's interest in extremal entire function constructions."
+      "relationship": "Both problems involve entire functions with remarkable asymptotic or geometric properties that appear hard to achieve simultaneously. Problem #906 asks for transcendental entire functions with dense zeros of derivative subsequences; both exemplify Erdős's interest in extremal entire function constructions.",
+      "targetId": "erdos-906"
     }
   ],
   "relatedProofs": [

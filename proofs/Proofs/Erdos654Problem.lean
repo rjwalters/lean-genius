@@ -37,8 +37,8 @@ noncomputable def distinctDistances (P : PointConfig n) (i : Fin n) : ℕ :=
   ((Finset.univ.filter (· ≠ i)).image (fun j => dist (P i) (P j))).card
 
 /-- The maximum number of distinct distances from any single point. -/
-noncomputable def maxDistinctDistances (P : PointConfig n) : ℕ :=
-  Finset.univ.sup' ⟨0, Finset.mem_univ 0⟩ (distinctDistances P)
+noncomputable def maxDistinctDistances (P : PointConfig n) [NeZero n] : ℕ :=
+  Finset.univ.sup' ⟨⟨0, NeZero.pos n⟩, Finset.mem_univ _⟩ (distinctDistances P)
 
 /- ## Known Lower Bound -/
 
@@ -47,6 +47,10 @@ noncomputable def maxDistinctDistances (P : PointConfig n) : ℕ :=
 axiom known_lower_bound (n : ℕ) (hn : 4 ≤ n) (P : PointConfig n)
     (hP : NoFourConcyclic P) (i : Fin n) :
     (n - 1) / 3 ≤ distinctDistances P i
+-- Note: This follows from circle_distance_bound via a counting argument:
+-- each distinct distance from i is shared by ≤ 3 other points,
+-- so distinctDistances P i ≥ (n-1)/3. A full proof requires formalizing
+-- the pigeonhole-style counting bound on Finset.image cardinality.
 
 /- ## The Main Conjecture -/
 
@@ -91,6 +95,40 @@ axiom guth_katz_context (n : ℕ) (hn : 2 ≤ n) (P : PointConfig n) :
 /-- On a circle, at most 2 points determine each distance from
     the center. So the no-four-concyclic condition prevents
     many repeated distances from a single point. -/
-axiom circle_distance_bound (P : PointConfig n) (hP : NoFourConcyclic P)
+theorem circle_distance_bound (P : PointConfig n) (hP : NoFourConcyclic P)
     (i : Fin n) (d : ℝ) (hd : 0 < d) :
-    ((Finset.univ.filter (fun j => j ≠ i ∧ dist (P i) (P j) = d)).card) ≤ 3
+    ((Finset.univ.filter (fun j => j ≠ i ∧ dist (P i) (P j) = d)).card) ≤ 3 := by
+  by_contra h
+  push_neg at h
+  set S := Finset.univ.filter (fun j : Fin n => j ≠ i ∧ dist (P i) (P j) = d)
+  -- Extract 4 distinct elements from S (|S| ≥ 4)
+  have ⟨j₁, hj₁⟩ := Finset.card_pos.mp (by omega : 0 < S.card)
+  have ⟨j₂, hj₂⟩ := Finset.card_pos.mp (show 0 < (S.erase j₁).card by
+    rw [Finset.card_erase_of_mem hj₁]; omega)
+  have h12 : j₂ ≠ j₁ := Finset.ne_of_mem_erase hj₂
+  have hj₂' : j₂ ∈ S := Finset.mem_of_mem_erase hj₂
+  have ⟨j₃, hj₃⟩ := Finset.card_pos.mp (show 0 < ((S.erase j₁).erase j₂).card by
+    rw [Finset.card_erase_of_mem hj₂, Finset.card_erase_of_mem hj₁]; omega)
+  have h32 : j₃ ≠ j₂ := Finset.ne_of_mem_erase hj₃
+  have hj₃_e1 : j₃ ∈ S.erase j₁ := Finset.mem_of_mem_erase hj₃
+  have h31 : j₃ ≠ j₁ := Finset.ne_of_mem_erase hj₃_e1
+  have hj₃' : j₃ ∈ S := Finset.mem_of_mem_erase hj₃_e1
+  have ⟨j₄, hj₄⟩ := Finset.card_pos.mp (show 0 < (((S.erase j₁).erase j₂).erase j₃).card by
+    rw [Finset.card_erase_of_mem hj₃,
+        Finset.card_erase_of_mem hj₂,
+        Finset.card_erase_of_mem hj₁]; omega)
+  have h43 : j₄ ≠ j₃ := Finset.ne_of_mem_erase hj₄
+  have hj₄_e12 : j₄ ∈ (S.erase j₁).erase j₂ := Finset.mem_of_mem_erase hj₄
+  have h42 : j₄ ≠ j₂ := Finset.ne_of_mem_erase hj₄_e12
+  have hj₄_e1 : j₄ ∈ S.erase j₁ := Finset.mem_of_mem_erase hj₄_e12
+  have h41 : j₄ ≠ j₁ := Finset.ne_of_mem_erase hj₄_e1
+  have hj₄' : j₄ ∈ S := Finset.mem_of_mem_erase hj₄_e1
+  -- Extract distance properties from membership in S
+  have hd₁ : dist (P i) (P j₁) = d := ((Finset.mem_filter.mp hj₁).2).2
+  have hd₂ : dist (P i) (P j₂) = d := ((Finset.mem_filter.mp hj₂').2).2
+  have hd₃ : dist (P i) (P j₃) = d := ((Finset.mem_filter.mp hj₃').2).2
+  have hd₄ : dist (P i) (P j₄) = d := ((Finset.mem_filter.mp hj₄').2).2
+  -- All 4 points lie on the circle centered at P i with radius d
+  rw [dist_comm] at hd₁ hd₂ hd₃ hd₄
+  exact hP j₁ j₂ j₃ j₄ h12.symm h31.symm h41.symm h32.symm h42.symm h43.symm
+    ⟨P i, d, hd, hd₁, hd₂, hd₃, hd₄⟩

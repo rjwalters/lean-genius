@@ -174,7 +174,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #817, which asks about the extremal function g₃(n): the minimal N such that {1,...,N} contains an n-element set whose subset sums avoid 3-term arithmetic progressions. We define the key concepts (AP-free sets, subset sums, the g function), state the main conjecture g₃(n) ≫ 3ⁿ, and include the Erdős-Sárközy partial result g₃(n) ≫ 3ⁿ/n^{O(1)} as an axiom.",
-    "implications": "**Theoretical Significance**: This problem connects extremal combinatorics to the structure of subset sums.\n\n**Broader Connections**: A positive answer would show that avoiding APs in subset sum sets requires exponentially large universes. The techniques could apply to other questions about additive structure in combinatorial constructions.",
+    "implications": "**Theoretical Significance**: This problem connects extremal combinatorics to the structure of subset sums.\n\nA positive answer would show that avoiding APs in subset sum sets requires exponentially large universes. The techniques could apply to other questions about additive structure in combinatorial constructions.",
     "openQuestions": [
       "Is g₃(n) ≫ 3ⁿ, or is there a polynomial correction factor?",
       "What is the behavior of g_k(n) for larger k?",

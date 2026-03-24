@@ -181,7 +181,7 @@
   ],
   "conclusion": {
     "summary": "This file partially answers OQ-01-OQ-02: Hölder's inequality provides the endpoint operator norm bounds and Lp space structure that Riesz-Thorin interpolation requires, but the full proof additionally needs the Hadamard three-lines lemma (complex analysis). The formalization includes 0 sorries, 2 axioms (hadamard_three_lines, riesz_thorin), and 28 proved theorems covering interpolation infrastructure, log-convexity, Hausdorff-Young exponents, Young's convolution, and space inclusions.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Partial derivation**: Hölder → endpoint bounds → Riesz-Thorin (with three-lines lemma) → Hausdorff-Young. Hölder is necessary but not sufficient alone.\n\n2.\n\n**Broader Connections**: **Missing piece**: The Hadamard three-lines lemma for analytic functions on a strip is the key gap. Adding this to Mathlib would enable a complete Riesz-Thorin proof.\n\n3. **Proof hierarchy**: Young → Hölder → Minkowski → Lp structure → Riesz-Thorin endpoints + three-lines → interpolation → Hausdorff-Young.\n\n4. **Applications**: Riesz-Thorin yields Young's convolution inequality, Hausdorff-Young, and boundedness of Hilbert/Riesz transforms on intermediate Lp spaces.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Partial derivation**: Hölder → endpoint bounds → Riesz-Thorin (with three-lines lemma) → Hausdorff-Young. Hölder is necessary but not sufficient alone.\n\n**2. Missing piece**: The Hadamard three-lines lemma for analytic functions on a strip is the key gap. Adding this to Mathlib would enable a complete Riesz-Thorin proof.\n\n3. **Proof hierarchy**: Young → Hölder → Minkowski → Lp structure → Riesz-Thorin endpoints + three-lines → interpolation → Hausdorff-Young.\n\n4. **Applications**: Riesz-Thorin yields Young's convolution inequality, Hausdorff-Young, and boundedness of Hilbert/Riesz transforms on intermediate Lp spaces.",
     "openQuestions": [
       "Can the Hadamard three-lines lemma be formalized in Lean 4 using Mathlib's complex analysis?",
       "Can the Marcinkiewicz interpolation theorem (weaker: only weak-type bounds) be formalized?",
@@ -226,5 +226,15 @@
       "venue": "Princeton University Press",
       "note": "Standard reference for interpolation theory (Chapter V)"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-integral-oq-01"
   ]
 }

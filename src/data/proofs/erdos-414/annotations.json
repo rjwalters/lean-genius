@@ -3,7 +3,7 @@
     "id": "h-function",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 27,
+      "startLine": 28,
       "endLine": 29
     },
     "type": "definition",
@@ -50,7 +50,7 @@
     "proofId": "erdos-414",
     "range": {
       "startLine": 38,
-      "endLine": 40
+      "endLine": 51
     },
     "type": "technique",
     "title": "Strict Monotonicity",
@@ -67,11 +67,55 @@
     ]
   },
   {
+    "id": "orbit-inc-upper",
+    "proofId": "erdos-414",
+    "range": {
+      "startLine": 53,
+      "endLine": 82
+    },
+    "type": "technique",
+    "title": "Orbit Monotonicity and Upper Bound",
+    "content": "**orbit_strictly_increasing**: h^{k+1}(n) > h^k(n) for n ≥ 1. This follows from h_strictly_increasing applied at each step. **h_upper**: h(n) ≤ 2n since τ(n) ≤ n. These two bounds together show orbits advance by at least 1 and at most n at each step, giving the growth rate window: n + k ≤ h^k(n) ≤ 2^k · n.",
+    "significance": "supporting",
+    "mathContext": "The linear lower bound $h^k(n) \\geq n + k$ and exponential upper bound $h^k(n) \\leq 2^k n$ bracket the orbit growth. In practice, the average growth $h^k(n) \\approx n + k \\log n$ (from Dirichlet's $\\tau(n) \\approx \\log n$) is between these extremes. The upper bound $\\tau(n) \\leq n$ is crude — Wigert's theorem gives $\\tau(n) = O(2^{(1+o(1))\\log n/\\log\\log n})$, and even $\\tau(n) \\leq 2\\sqrt{n}$ for all $n$ suffices. Both `orbit_strictly_increasing` and `h_upper` are axiomatized but could be proved from the definition of $h$ and basic properties of `Nat.divisors.card`.",
+    "relatedConcepts": [
+      "orbit growth bounds",
+      "Wigert's theorem",
+      "divisor bound"
+    ],
+    "prerequisites": [
+      "h_strictly_increasing",
+      "Nat.divisors.card"
+    ]
+  },
+  {
+    "id": "concrete-values",
+    "proofId": "erdos-414",
+    "range": {
+      "startLine": 89,
+      "endLine": 96
+    },
+    "type": "technique",
+    "title": "Concrete Values: h(1)=2, h(2)=4, h(3)=5",
+    "content": "Three concrete axioms: **h_one**: h(1) = 1 + τ(1) = 1 + 1 = 2, **h_two**: h(2) = 2 + τ(2) = 2 + 2 = 4, **h_three**: h(3) = 3 + τ(3) = 3 + 2 = 5. These are axiomatized but are trivially computable — they could be proved by `decide` or `native_decide` since `Nat.divisors.card` is decidable for specific values. The values establish the initial orbit segment 1 → 2 → 4 and the branching point 3 → 5 → 7 that merges with the main orbit.",
+    "significance": "supporting",
+    "mathContext": "These compute $h$ at the three smallest positive integers:\n- $\\tau(1) = 1$ (only divisor: 1), so $h(1) = 2$\n- $\\tau(2) = 2$ (divisors: 1, 2), so $h(2) = 4$\n- $\\tau(3) = 2$ (divisors: 1, 3), so $h(3) = 5$\n\nNote the asymmetry: $h(1) = 2$ and $h(2) = 4$ are on the same orbit, but $h(3) = 5$ starts a different branch that merges with the main orbit at 7 (via $h(5) = 5 + 2 = 7 = h(4) = 4 + 3$). These axioms could be Aristotle candidates — all three are trivially provable by computation.",
+    "relatedConcepts": [
+      "computable axiom pattern",
+      "Aristotle candidate",
+      "orbit branching"
+    ],
+    "prerequisites": [
+      "h definition",
+      "Nat.divisors.card"
+    ]
+  },
+  {
     "id": "h-prime",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 50,
-      "endLine": 52
+      "startLine": 84,
+      "endLine": 87
     },
     "type": "technique",
     "title": "h at Primes",
@@ -92,8 +136,8 @@
     "id": "main-conjecture",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 65,
-      "endLine": 69
+      "startLine": 98,
+      "endLine": 104
     },
     "type": "concept",
     "title": "Erdős Problem #414: All Orbits Merge (OPEN)",
@@ -114,8 +158,8 @@
     "id": "single-orbit",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 73,
-      "endLine": 76
+      "startLine": 106,
+      "endLine": 111
     },
     "type": "concept",
     "title": "Single Eventual Orbit",
@@ -135,8 +179,8 @@
     "id": "orbit-example",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 80,
-      "endLine": 83
+      "startLine": 113,
+      "endLine": 119
     },
     "type": "technique",
     "title": "Orbit of 1",
@@ -157,10 +201,10 @@
     "id": "merge-example",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 87,
-      "endLine": 88
+      "startLine": 121,
+      "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Orbits of 1 and 3 Merge at 7",
     "content": "**h³(1) = h²(3) = 7**: The orbit of 1 reaches 7 in 3 steps (1→2→4→7), while the orbit of 3 reaches 7 in 2 steps (3→5→7). After 7, both follow the same path: 7→9→12→18→24→...",
     "significance": "key",
@@ -179,12 +223,12 @@
     "id": "average-divisor",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 95,
-      "endLine": 96
+      "startLine": 127,
+      "endLine": 134
     },
     "type": "concept",
     "title": "Dirichlet's Average Order of τ",
-    "content": "**Dirichlet (1849)**: Σ_{n≤N} τ(n) = N log N + (2γ - 1)N + O(√N), where γ ≈ 0.5772 is the Euler-Mascheroni constant. On average, τ(n) ≈ log n.",
+    "content": "**Dirichlet (1849)**: Σ_{n≤N} τ(n) = N log N + (2γ - 1)N + O(√N), where γ ≈ 0.5772 is the Euler-Mascheroni constant. On average, τ(n) ≈ log n.\n\n**Note**: The Lean declaration `axiom average_divisor_count : True` is a placeholder — it states `True` rather than the actual Dirichlet asymptotic. This axiom contributes no mathematical content and could be removed without affecting the formalization. A meaningful version would use `Filter.Tendsto` to state $\\sum_{k \\leq n} \\tau(k) / (n \\log n) \\to 1$.",
     "significance": "key",
     "mathContext": "Dirichlet's **divisor problem** gives the average order of τ(n) as log n, with the error term being the famous **Dirichlet divisor problem**: what is the true order of the remainder Δ(N) = Σ_{n≤N} τ(n) - N log N - (2γ-1)N? It is known that Δ(N) = O(N^{131/416}) (Huxley, 2003) and Δ(N) = Ω(N^{1/4}). For the orbit merging problem, this average tells us that a 'typical' orbit step near N has size ≈ log N, so the orbit of n reaches value V ≈ n + k·log(V) after k steps. But the irregularity of τ around its average is precisely what makes proving exact collisions so difficult.",
     "relatedConcepts": [
@@ -200,8 +244,8 @@
     "id": "growth-analysis",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 98,
-      "endLine": 100
+      "startLine": 136,
+      "endLine": 146
     },
     "type": "technique",
     "title": "Linear Lower Bound on Orbit Growth",
@@ -222,8 +266,8 @@
     "id": "orbits-close",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 105,
-      "endLine": 109
+      "startLine": 148,
+      "endLine": 155
     },
     "type": "concept",
     "title": "Orbits Get Arbitrarily Close",

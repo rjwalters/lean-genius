@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 131,
     "erdosUrl": "https://erdosproblems.com/131",
     "erdosProblemStatus": "open",
@@ -158,7 +158,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #131's original question 'Is $F(N) > N^{1/2-o(1)}$?' was answered NO by Pham-Zakharov (2024), who showed $F(N) \\leq N^{1/4+o(1)}$ via the connection to non-averaging sets. The formalization centers on this connection: non-dividing $\\implies$ non-averaging $\\implies F(N) \\leq g(N)$, enabling bound transfer. However, the exact growth rate remains wide open: the gap between the subexponential lower bound $\\exp(c\\sqrt{\\log N})$ (Straus) and the polynomial upper bound $N^{1/4+o(1)}$ (Pham-Zakharov) is enormous.",
-    "implications": "**Theoretical Significance**: The resolution demonstrates the power of recognizing structural implications between combinatorial properties.\n\n**Broader Connections**: The Pham-Zakharov breakthrough was about non-averaging sets, not non-dividing ones, yet the simple observation that non-dividing $\\implies$ non-averaging transferred the result. This paradigm applies broadly in extremal combinatorics: proving a containment $\\mathcal{P}_1 \\subseteq \\mathcal{P}_2$ between property classes allows upper bounds to flow from $\\mathcal{P}_2$ to $\\mathcal{P}_1$.",
+    "implications": "**Theoretical Significance**: The resolution demonstrates the power of recognizing structural implications between combinatorial properties.\n\nThe Pham-Zakharov breakthrough was about non-averaging sets, not non-dividing ones, yet the simple observation that non-dividing $\\implies$ non-averaging transferred the result. This paradigm applies broadly in extremal combinatorics: proving a containment $\\mathcal{P}_1 \\subseteq \\mathcal{P}_2$ between property classes allows upper bounds to flow from $\\mathcal{P}_2$ to $\\mathcal{P}_1$.",
     "openQuestions": [
       "Is $F(N)$ polynomial in $N$, i.e., does $F(N) = N^{\\theta+o(1)}$ for some $\\theta > 0$? Or does $F$ have genuinely intermediate (subexponential) growth?",
       "Can the upper bound exponent $1/4$ be improved? Pham-Zakharov's bound comes from non-averaging; a direct approach to non-dividing might give better constants.",

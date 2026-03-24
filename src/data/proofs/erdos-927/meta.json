@@ -117,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #927 is SOLVED. The conjecture $g(n) = n - \\log_2 n - \\log^*(n) + O(1)$ is FALSE. Spencer (1971) proved $g(n) > n - \\log_2 n - O(1)$, showing the iterated logarithm term is unnecessary. Combined with the Moon-Moser upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$, the correct asymptotic is $g(n) = n - \\log_2 n - \\Theta(1)$.",
-    "implications": "**Theoretical Significance**: Spencer's result shows that the iterated logarithm — despite appearing naturally in Erdős's analysis — plays no role in the asymptotic formula for distinct clique sizes.\n\n**Broader Connections**: The problem illustrates how extremely slow-growing functions ($\\log^*$) can be deceptive in combinatorial estimates. The Ramsey-theoretic connection suggests deeper structural reasons why $\\lfloor \\log_2 n \\rfloor$ clique sizes must be missing.",
+    "implications": "**Theoretical Significance**: Spencer's result shows that the iterated logarithm — despite appearing naturally in Erdős's analysis — plays no role in the asymptotic formula for distinct clique sizes.\n\nThe problem illustrates how extremely slow-growing functions ($\\log^*$) can be deceptive in combinatorial estimates. The Ramsey-theoretic connection suggests deeper structural reasons why $\\lfloor \\log_2 n \\rfloor$ clique sizes must be missing.",
     "openQuestions": [
       "What is the exact constant $C$ in $g(n) = n - \\lfloor \\log_2 n \\rfloor - C$ for large $n$?",
       "What is the extremal graph structure achieving $g(n)$? Is it unique for large $n$?",

@@ -116,7 +116,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #841 asks to estimate t_n, the minimal interval length for making n times a subset product a perfect square. Selfridge proved t_n = P(n) for rough n and t_n ≤ O(√n) for smooth n. Bui-Pratt-Zaharescu (2024) showed the distribution of t_n mirrors P(n)'s distribution.",
-    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Number Theory**: Reveals structure in how products become squares\n\n2.\n\n**Broader Connections**: **Smooth vs Rough**: Dichotomy between smooth (small primes) and rough (large primes) numbers\n\n3. **Distribution Theory**: t_n and P(n) have identical distribution functions\n\n4. **Algorithmic**: For smooth n, finding square products is easier.",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Number Theory**: Reveals structure in how products become squares\n\n**2. Smooth vs Rough**: Dichotomy between smooth (small primes) and rough (large primes) numbers\n\n3. **Distribution Theory**: t_n and P(n) have identical distribution functions\n\n4. **Algorithmic**: For smooth n, finding square products is easier.",
     "openQuestions": [
       "Exact determination of t_n for all n (not just asymptotic)",
       "Better bounds for t_n when n is very smooth",
@@ -144,5 +144,15 @@
     "axiomCount": 11,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-437",
+      "relationship": "related",
+      "description": "Related: Products in short intervals"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-437"
+  ]
 }

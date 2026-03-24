@@ -92,19 +92,19 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-544",
       "relationship": "related-problem",
-      "description": "Erdős #544 concerns odd perfect numbers (σ(n) = 2n with standard divisors). Both problems ask about parity constraints on number-theoretic perfection conditions."
+      "description": "Erdős #544 concerns odd perfect numbers (σ(n) = 2n with standard divisors). Both problems ask about parity constraints on number-theoretic perfection conditions.",
+      "targetId": "erdos-544"
     },
     {
-      "id": "erdos-987",
       "relationship": "uses-same-technique",
-      "description": "Both use Finset-based divisor computations with filter predicates and coprimality conditions, demonstrating the Finset API for number-theoretic problems."
+      "description": "Both use Finset-based divisor computations with filter predicates and coprimality conditions, demonstrating the Finset API for number-theoretic problems.",
+      "targetId": "erdos-987"
     },
     {
-      "id": "euclid-euler",
       "relationship": "related-problem",
-      "description": "Euclid-Euler characterizes even ordinary perfect numbers as 2^{p-1}(2^p-1) where 2^p-1 is Mersenne prime. No analogous characterization is known for unitary perfect numbers."
+      "description": "Euclid-Euler characterizes even ordinary perfect numbers as 2^{p-1}(2^p-1) where 2^p-1 is Mersenne prime. No analogous characterization is known for unitary perfect numbers.",
+      "targetId": "euclid-euler"
     }
   ],
   "sections": [
@@ -167,7 +167,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1052 is formalized with 8 proved theorems (including 3 verified examples via native_decide, Finset induction parity lemma, prime characterization of coprimality, and unitary complement symmetry), 4 axioms (evenness of unitary perfect numbers, prime power structure, multiplicativity, pairing, and the open finiteness conjecture), and 3 definitions. The main computational verification uses native_decide through a Decidable instance on IsUnitaryPerfect.",
-    "implications": "**Theoretical Significance**: **Significance for Number Theory**\n\n1. **Unitary Divisor Theory**: The unitary divisor structure provides a natural generalization of classical divisor theory. The multiplicativity σ*(mn) = σ*(m)σ*(n) for coprime m, n enables product formulas.\n\n2.\n\n**Broader Connections**: **Parity Constraints**: The evenness proof illustrates how the factorization σ*(n) = ∏(1 + pᵢ^{aᵢ}) imposes strong arithmetic constraints. The argument generalizes to show unitary k-perfect numbers (σ*(n) = kn) have restricted prime structures.\n\n3. **Computational Verification**: The `native_decide` approach demonstrates Lean 4's ability to verify number-theoretic properties computationally, avoiding manual divisor enumeration.\n\n4. **Open Problems**: The finiteness conjecture remains one of the most accessible open problems in number theory, requiring only elementary methods but resisting resolution for 50+ years.",
+    "implications": "**Theoretical Significance**: **Significance for Number Theory**\n\n1. **Unitary Divisor Theory**: The unitary divisor structure provides a natural generalization of classical divisor theory. The multiplicativity σ*(mn) = σ*(m)σ*(n) for coprime m, n enables product formulas.\n\n**2. Parity Constraints**: The evenness proof illustrates how the factorization σ*(n) = ∏(1 + pᵢ^{aᵢ}) imposes strong arithmetic constraints. The argument generalizes to show unitary k-perfect numbers (σ*(n) = kn) have restricted prime structures.\n\n3. **Computational Verification**: The `native_decide` approach demonstrates Lean 4's ability to verify number-theoretic properties computationally, avoiding manual divisor enumeration.\n\n4. **Open Problems**: The finiteness conjecture remains one of the most accessible open problems in number theory, requiring only elementary methods but resisting resolution for 50+ years.",
     "openQuestions": [
       "Are there only finitely many unitary perfect numbers?",
       "Is there a sixth unitary perfect number?",

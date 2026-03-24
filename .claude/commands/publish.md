@@ -100,11 +100,11 @@ gh pr create --repo rjwalters/lean-genius --fill
 ## Workflow Tips
 
 ### Multiple Research Sessions
-You can run `/research` multiple times before publishing:
+You can run `/lean-research` multiple times before publishing:
 ```
-/research  # First iteration
-/research  # Second iteration
-/research  # Third iteration
+/lean-research  # First iteration
+/lean-research  # Second iteration
+/lean-research  # Third iteration
 /publish   # Creates PR with all accumulated work
 ```
 

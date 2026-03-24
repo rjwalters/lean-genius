@@ -7,8 +7,8 @@
     "title": "The Power Mean Limit: Overview",
     "content": "This file formalizes the classical theorem that the weighted power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) converges to the geometric mean GM = ∏ zᵢ^wᵢ as r → 0. The proof uses the exp/log representation and the definition of derivative, formalized via Mathlib's `hasDerivAt_iff_tendsto_slope`.\n\n**The indeterminate form:** At r = 0, M_r = (∑ wᵢzᵢ^0)^(1/0) = 1^∞, a classical indeterminate form. The standard resolution is logarithmic: log M_r = (1/r)·log(∑ wᵢzᵢ^r) = f(r)/r where f(r) = log(∑ wᵢzᵢ^r). Since f(0) = log(1) = 0, this is a 0/0 form resolvable by the definition of derivative. The result fills a known gap in Mathlib.Analysis.MeanInequalitiesPow.",
     "mathContext": "$\\lim_{r \\to 0} M_r(\\mathbf{z}, \\mathbf{w}) = \\prod_i z_i^{w_i} = \\text{GM}(\\mathbf{z}, \\mathbf{w})$ where $M_r = \\left(\\sum_i w_i z_i^r\\right)^{1/r}$",
-    "significance": "supporting",
-    "relatedConcepts": ["power means", "geometric mean", "L'Hôpital rule", "derivative definition"],
+    "significance": "key",
+    "relatedConcepts": ["power means", "geometric mean", "L'Hôpital rule", "derivative definition", "Jensen's inequality"],
     "prerequisites": ["weighted inequalities", "real analysis", "HasDerivAt in Mathlib"]
   },
   {

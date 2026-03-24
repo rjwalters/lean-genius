@@ -119,34 +119,34 @@
   ],
   "crossReferences": [
     {
-      "id": "fermats-last-theorem",
       "relationship": "related",
-      "description": "Sophie Germain's original motivation: she proved the first case of FLT holds for Sophie Germain prime exponents"
+      "description": "Sophie Germain's original motivation: she proved the first case of FLT holds for Sophie Germain prime exponents",
+      "targetId": "fermats-last-theorem"
     },
     {
-      "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Whether there are infinitely many Sophie Germain primes remains open, analogous to the infinitude of primes result"
+      "description": "Whether there are infinitely many Sophie Germain primes remains open, analogous to the infinitude of primes result",
+      "targetId": "infinitude-primes"
     },
     {
-      "id": "twin-primes-special",
       "relationship": "related",
-      "description": "The Sophie Germain prime conjecture is analogous to the twin prime conjecture — both ask about structured prime pairs"
+      "description": "The Sophie Germain prime conjecture is analogous to the twin prime conjecture — both ask about structured prime pairs",
+      "targetId": "twin-primes-special"
     },
     {
-      "id": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions provides the framework for understanding primes ≡ 5 (mod 6)"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions provides the framework for understanding primes ≡ 5 (mod 6)",
+      "targetId": "dirichlets-theorem"
     },
     {
-      "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem provides another primality criterion; safe primes have special properties under Wilson's characterization"
+      "description": "Wilson's theorem provides another primality criterion; safe primes have special properties under Wilson's characterization",
+      "targetId": "wilsons-theorem"
     }
   ],
   "conclusion": {
     "summary": "This formalization provides a complete treatment of Sophie Germain primes, from definition through the main structure theorem. The key result—that Sophie Germain primes greater than 3 must satisfy p ≡ 5 (mod 6)—follows from a clean modular arithmetic argument.\n\nThe proof demonstrates how divisibility constraints propagate: if p ≡ 1 (mod 6), then 2p + 1 is divisible by 3, eliminating these candidates. Only p ≡ 5 (mod 6) remains viable.",
-    "implications": "**Theoretical Significance**: **Applications in Cryptography**\n\nSophie Germain and safe primes are crucial in cryptography:\n\n1. **Diffie-Hellman**: Safe primes ensure the multiplicative group has large prime-order subgroups\n\n2.\n\n**Broader Connections**: **RSA**: Some implementations prefer safe primes to resist certain attacks\n\n3. **Pohlig-Hellman**: Safe primes make discrete log harder by avoiding small subgroups\n\n**Connection to Fermat's Last Theorem**\n\nSophie Germain proved: If p is a Sophie Germain prime, then x^p + y^p = z^p has no solutions with p ∤ xyz (the \"first case\" of FLT).",
+    "implications": "**Theoretical Significance**: **Applications in Cryptography**\n\nSophie Germain and safe primes are crucial in cryptography:\n\n1. **Diffie-Hellman**: Safe primes ensure the multiplicative group has large prime-order subgroups\n\n**2. RSA**: Some implementations prefer safe primes to resist certain attacks\n\n3. **Pohlig-Hellman**: Safe primes make discrete log harder by avoiding small subgroups\n\n**Connection to Fermat's Last Theorem**\n\nSophie Germain proved: If p is a Sophie Germain prime, then x^p + y^p = z^p has no solutions with p ∤ xyz (the \"first case\" of FLT).",
     "openQuestions": [
       "Are there infinitely many Sophie Germain primes? (Analogous to twin prime conjecture)",
       "What is the distribution of Sophie Germain primes among all primes?",

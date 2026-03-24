@@ -27,6 +27,9 @@ import Mathlib
 def IsErdos1141Good (n : ℕ) : Prop :=
   ∀ k ∈ Finset.range n, k ^ 2 < n → Nat.Coprime n k → (n - k ^ 2).Prime
 
+instance (n : ℕ) : Decidable (IsErdos1141Good n) := by
+  unfold IsErdos1141Good; infer_instance
+
 /-- Equivalent unbounded formulation (for mathematical statements). -/
 theorem isErdos1141Good_iff_unbounded (n : ℕ) :
     IsErdos1141Good n ↔
@@ -34,52 +37,52 @@ theorem isErdos1141Good_iff_unbounded (n : ℕ) :
   unfold IsErdos1141Good
   constructor
   · intro h k hk hcop
-    exact h k (Finset.mem_range.mpr (by omega)) hk hcop
+    exact h k (Finset.mem_range.mpr (by nlinarith [sq_nonneg k])) hk hcop
   · intro h k _ hk hcop
     exact h k hk hcop
 
 -- ## Computational Verification of Small Examples
 
 /-- n = 3 satisfies the property: only k=1 qualifies, and 3 - 1 = 2 is prime. -/
-theorem good_3 : IsErdos1141Good 3 := by decide
+theorem good_3 : IsErdos1141Good 3 := by native_decide
 
 /-- n = 4 satisfies the property. -/
-theorem good_4 : IsErdos1141Good 4 := by decide
+theorem good_4 : IsErdos1141Good 4 := by native_decide
 
 /-- n = 6 satisfies the property. -/
-theorem good_6 : IsErdos1141Good 6 := by decide
+theorem good_6 : IsErdos1141Good 6 := by native_decide
 
 /-- n = 8 satisfies the property. -/
-theorem good_8 : IsErdos1141Good 8 := by decide
+theorem good_8 : IsErdos1141Good 8 := by native_decide
 
 /-- n = 12 satisfies the property. -/
-theorem good_12 : IsErdos1141Good 12 := by decide
+theorem good_12 : IsErdos1141Good 12 := by native_decide
 
 /-- n = 14 satisfies the property. -/
-theorem good_14 : IsErdos1141Good 14 := by decide
+theorem good_14 : IsErdos1141Good 14 := by native_decide
 
 /-- n = 18 satisfies the property. -/
-theorem good_18 : IsErdos1141Good 18 := by decide
+theorem good_18 : IsErdos1141Good 18 := by native_decide
 
 /-- n = 20 satisfies the property. -/
-theorem good_20 : IsErdos1141Good 20 := by decide
+theorem good_20 : IsErdos1141Good 20 := by native_decide
 
 -- ## Counterexamples: values that do NOT satisfy the property
 
 /-- n = 5 does not satisfy the property: k=2, gcd(5,2)=1, 5-4=1 not prime. -/
-theorem not_good_5 : ¬ IsErdos1141Good 5 := by decide
+theorem not_good_5 : ¬ IsErdos1141Good 5 := by native_decide
 
 /-- n = 7 does not satisfy the property. -/
-theorem not_good_7 : ¬ IsErdos1141Good 7 := by decide
+theorem not_good_7 : ¬ IsErdos1141Good 7 := by native_decide
 
 /-- n = 9 does not satisfy the property. -/
-theorem not_good_9 : ¬ IsErdos1141Good 9 := by decide
+theorem not_good_9 : ¬ IsErdos1141Good 9 := by native_decide
 
 /-- n = 10 does not satisfy the property. -/
-theorem not_good_10 : ¬ IsErdos1141Good 10 := by decide
+theorem not_good_10 : ¬ IsErdos1141Good 10 := by native_decide
 
 /-- n = 16 does not satisfy the property: 16-1=15 not prime. -/
-theorem not_good_16 : ¬ IsErdos1141Good 16 := by decide
+theorem not_good_16 : ¬ IsErdos1141Good 16 := by native_decide
 
 -- ## Structural Properties
 
@@ -89,18 +92,17 @@ theorem good_0 : IsErdos1141Good 0 := by
 
 /-- n = 1 does not satisfy the property: k=0, 0²=0 < 1, gcd(1,0)=1,
     but 1-0=1 is not prime. -/
-theorem not_good_1 : ¬ IsErdos1141Good 1 := by decide
+theorem not_good_1 : ¬ IsErdos1141Good 1 := by native_decide
 
 /-- n = 2 does not satisfy the property: k=1, gcd(2,1)=1, 2-1=1 not prime. -/
-theorem not_good_2 : ¬ IsErdos1141Good 2 := by decide
+theorem not_good_2 : ¬ IsErdos1141Good 2 := by native_decide
 
 /-- If n ≥ 2 is good, then n - 1 is prime (taking k = 1, gcd(n,1) = 1). -/
 theorem good_implies_pred_prime (n : ℕ) (hn : 2 ≤ n) (hg : IsErdos1141Good n) :
     (n - 1).Prime := by
   rw [isErdos1141Good_iff_unbounded] at hg
-  apply hg
-  · omega
-  · exact Nat.Coprime.symm (Nat.coprime_one_left n)
+  have := hg 1 (by omega) (Nat.Coprime.symm (Nat.coprime_one_left n))
+  simpa using this
 
 /-- All good values n ≥ 4 are even. Proof: n-1 must be prime, and if n is odd
     then n-1 is even and ≥ 3, hence composite (only even prime is 2). -/

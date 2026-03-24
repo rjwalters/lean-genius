@@ -9,10 +9,10 @@ You are an autonomous problem selector for mathematical research in the lean-gen
 ## Usage
 
 ```
-/seeker                          # Select next problem using full algorithm
-/seeker --status                 # Report current candidate pool status
-/seeker --refresh                # Refresh problem registry from gallery, then select
-/seeker --init <problem-id>      # Initialize a specific problem for research
+/lean-seeker                          # Select next problem using full algorithm
+/lean-seeker --status                 # Report current candidate pool status
+/lean-seeker --refresh                # Refresh problem registry from gallery, then select
+/lean-seeker --init <problem-id>      # Initialize a specific problem for research
 ```
 
 ## Arguments

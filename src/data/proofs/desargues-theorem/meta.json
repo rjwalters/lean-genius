@@ -48,7 +48,7 @@
   "overview": {
     "historicalContext": "Girard Desargues (1591-1661) was a French mathematician who is considered one of the founders of projective geometry. He published this theorem in 1639 in a work on conic sections. The theorem is remarkable because it is self-dual in projective geometry (the dual statement is also Desargues's theorem), it characterizes Desarguesian planes (those where the theorem holds), and it fails in some non-Desarguesian projective planes.\n\nDesargues's theorem is fundamental to projective geometry and has applications in computer graphics, computer vision, and perspective drawing in art and architecture.",
     "problemStatement": "**Theorem (Desargues):** If two triangles ABC and A'B'C' are in **perspective from a point** (i.e., the lines AA', BB', CC' are concurrent at a point O), then they are in **perspective from a line** (i.e., the intersections P = AB ∩ A'B', Q = BC ∩ B'C', R = CA ∩ C'A' are collinear).\n\n**Converse:** If two triangles are in perspective from a line, then they are in perspective from a point.\n\nA projective plane where this theorem holds is called a **Desarguesian plane**.",
-    "text": "Desargues's Theorem (Wiedijk's #87): If two triangles are in perspective from a point, then they are in perspective from a line, and conversely.",
+    "text": "This formalization proves Desargues's theorem — two triangles in perspective from a point are in perspective from a line, and conversely — using homogeneous coordinates in the projective plane. Points are represented as equivalence classes of ℝ³\\{0}, lines as cross products p × q, and collinearity/concurrence reduce to determinant conditions det(p,q,r) = 0.\n\nThe proof is purely algebraic: the perspective-from-a-point condition (AA', BB', CC' concurrent) and perspective-from-a-line condition (AB∩A'B', AC∩A'C', BC∩B'C' collinear) are both expressed as determinant equations, and the implication between them follows from multilinear algebra identities. Commentary connects to the Moulton plane (a non-Desarguesian projective plane), the coordinatization theorem (Desarguesian iff coordinatizable by a division ring), and applications in computer vision. Wiedijk 100 theorem #87.",
     "proofStrategy": "Our proof uses homogeneous coordinates in the projective plane:\n\n1. **Projective Points:** Represented as nonzero vectors in R^3, where scalar multiples represent the same point\n\n2. **Lines:** The line through points p, q is represented by their cross product p × q\n\n3. **Collinearity:** Three points are collinear iff the determinant of their coordinate matrix is zero\n\n4. **Concurrence:** Three lines are concurrent iff the determinant of their coefficient matrix is zero\n\n5. **Key Insight:** The perspective conditions translate to determinant equations that are related through the algebraic properties of cross products and determinants",
     "keyInsights": [
       "**Projective Self-Duality:** Swapping 'point' $\\leftrightarrow$ 'line' and 'concurrent' $\\leftrightarrow$ 'collinear' transforms Desargues's theorem into its own converse. This duality reflects the symmetric role of points and hyperplanes in projective space.",
@@ -150,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "This formalization establishes Desargues's Theorem using homogeneous coordinates in projective geometry. The theorem states that perspective from a point and perspective from a line are equivalent conditions for pairs of triangles. The proof uses cross products and determinants to express the geometric conditions algebraically.",
-    "implications": "**Theoretical Significance**: Desargues's theorem is foundational to projective geometry.\n\n**Broader Connections**: It characterizes Desarguesian planes and is closely related to the coordinatizability of projective planes by division rings. The theorem has practical applications in computer graphics (perspective projection), computer vision (3D reconstruction), and the theory of perspective in art.",
+    "implications": "**Theoretical Significance**: Desargues's theorem is foundational to projective geometry.\n\nIt characterizes Desarguesian planes and is closely related to the coordinatizability of projective planes by division rings. The theorem has practical applications in computer graphics (perspective projection), computer vision (3D reconstruction), and the theory of perspective in art.",
     "openQuestions": [
       "Can the full algebraic proof be completed without sorries using Mathlib's linear algebra?",
       "How can we formalize non-Desarguesian planes in Lean to demonstrate when the theorem fails?",
@@ -190,6 +190,27 @@
       "year": "1974",
       "venue": "Springer, 2nd edition",
       "note": "Standard treatment of Desargues's theorem in the axiomatic framework of projective planes"
+    },
+    {
+      "authors": "Hilbert, David; Cohn-Vossen, Stephan",
+      "title": "Geometry and the Imagination",
+      "year": "1932",
+      "venue": "Springer (English translation: Chelsea 1952)",
+      "note": "Chapter IV gives an intuitive geometric treatment of Desargues's theorem and its role in establishing the coordinatization of projective planes — projective planes satisfying Desargues's theorem are exactly those coordinatizable over division rings"
+    },
+    {
+      "authors": "Hartshorne, Robin",
+      "title": "Foundations of Projective Geometry",
+      "year": "1967",
+      "venue": "W.A. Benjamin",
+      "note": "Develops the axiomatic theory of projective planes: Desargues's theorem is independent of the incidence axioms in dimension 2 but follows from them in dimension ≥ 3, establishing the connection between geometric axioms and algebraic coordinatization"
+    },
+    {
+      "authors": "Veblen, Oswald; Young, John Wesley",
+      "title": "Projective Geometry, Vol. 1",
+      "year": "1910",
+      "venue": "Ginn and Company, Boston",
+      "note": "First systematic axiomatic treatment of projective geometry. Chapter IV proves Desargues's theorem in 3-space from incidence axioms alone, and Chapter V shows it must be taken as an axiom in the plane — the first rigorous demonstration of its independence"
     }
   ],
   "crossReferences": [

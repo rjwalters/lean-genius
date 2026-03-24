@@ -131,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "Both of Erdős's questions about connected subsets are answered negatively under CH. Mary Ellen Rudin (1958) constructed a connected planar set where every proper connected subset is either a single point or homeomorphic to the whole, and there are exactly $2^{\\aleph_0}$ connected subsets. The formalization captures the definitions, Rudin's theorem as an axiom, and proves the key structural result (no diverse subsets) fully.",
-    "implications": "**Theoretical Significance**: Rudin's construction reveals that connected sets can have surprisingly rigid topological structure, with no 'intermediate' connected substructures.\n\n**Broader Connections**: The dependence on CH highlights deep connections between point-set topology and set theory. This result is a landmark in the study of pathological connected sets and influenced later work on totally disconnected and hereditarily indecomposable continua.",
+    "implications": "**Theoretical Significance**: Rudin's construction reveals that connected sets can have surprisingly rigid topological structure, with no 'intermediate' connected substructures.\n\nThe dependence on CH highlights deep connections between point-set topology and set theory. This result is a landmark in the study of pathological connected sets and influenced later work on totally disconnected and hereditarily indecomposable continua.",
     "openQuestions": [
       "Does there exist a ZFC-provable counterexample (without assuming CH)? This is the main open question remaining from Erdős's problem.",
       "Under $\\neg$CH, can connected sets in $\\mathbb{R}^2$ always be shown to have diverse connected subsets?",

@@ -180,7 +180,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #682 is SOLVED with answer YES. For almost all n, the gap (p_n, p_{n+1}) contains an integer m with smallest prime factor p(m) ≥ g_n. Gafni and Tao (2025) proved E(X) ≪ X/(log X)², and conditionally E(X) ~ c·X/(log X)². Erdős's conditional counterexample via Dickson's conjecture shows infinitely many exceptions exist, but they have density 0.",
-    "implications": "**Theoretical Significance**: The result reveals the interplay between prime gap structure and the factorization of composites within gaps.\n\n**Broader Connections**: The Gafni-Tao proof extends sieve-theoretic methods to a new domain, connecting smooth/rough number distribution to prime gap problems. The conditional asymptotic shows the primorial-based obstructions are the dominant source of exceptions.",
+    "implications": "**Theoretical Significance**: The result reveals the interplay between prime gap structure and the factorization of composites within gaps.\n\nThe Gafni-Tao proof extends sieve-theoretic methods to a new domain, connecting smooth/rough number distribution to prime gap problems. The conditional asymptotic shows the primorial-based obstructions are the dominant source of exceptions.",
     "openQuestions": [
       "Determine the exact constant c in the conditional asymptotic E(X) ~ c·X/(log X)²",
       "Can the unconditional bound E(X) ≪ X/(log X)² be improved to E(X) ≪ X/(log X)^α for some α > 2?",

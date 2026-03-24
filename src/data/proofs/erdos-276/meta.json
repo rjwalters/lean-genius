@@ -51,36 +51,18 @@
       "coprime_necessary axiom (GCD propagation)",
       "covering_system_mechanism axiom"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-275",
-        "relationship": "Foundational covering congruence result (2^r bound) — the theoretical backbone of Graham's construction in erdos-276"
-      },
-      {
-        "proofId": "erdos-277",
-        "relationship": "Adjacent covering system problem from the same Erdős-Graham investigation"
-      },
-      {
-        "proofId": "erdos-2",
-        "relationship": "Minimum modulus problem for covering systems — constrains what covering constructions are possible"
-      },
-      {
-        "proofId": "erdos-7",
-        "relationship": "Odd covering systems problem — parity constraints on covering moduli relevant to Lucas recurrence analysis"
-      },
-      {
-        "proofId": "erdos-1113",
-        "relationship": "Sierpinski numbers without covering sets — parallel question about whether covering systems are the only mechanism for compositeness"
-      }
-    ],
     "relatedProblems": [
       {
         "id": "erdos-275",
-        "relation": "Covering congruence 2^r bound — foundational to Graham's construction"
+        "relationship": "Covering congruence 2^r bound — foundational to Graham's construction"
+      },
+      {
+        "id": "erdos-277",
+        "relationship": "Adjacent covering system problem from the same Erdős-Graham investigation"
       },
       {
         "id": "erdos-1113",
-        "relation": "Sierpinski numbers: parallel question about covering systems as sole mechanism for compositeness"
+        "relationship": "Sierpinski numbers: parallel question about covering systems as sole mechanism for compositeness"
       }
     ],
     "axiomCount": 4,
@@ -110,47 +92,53 @@
       "title": "Imports",
       "summary": "Imports Mathlib's natural number arithmetic, GCD, primality, and tactic libraries.",
       "startLine": 20,
-      "endLine": 23
+      "endLine": 23,
+      "mathContext": "Requires `Nat.Composite` ($n$ has a nontrivial factorization), `Nat.Coprime` ($\\gcd(a,b) = 1$), `Nat.Prime`, and divisibility ($\\mid$) from Mathlib."
     },
     {
       "id": "definition",
       "title": "Core Definitions",
       "summary": "Defines **IsLucasSequence** ($a_{n+2} = a_{n+1} + a_n$), **IsPrimefree** ($\\forall k, a_k$ composite), and **HasNoUniversalDivisor** ($\\forall d > 1, \\exists k, d \\nmid a_k$). These three predicates capture the problem's requirements precisely.",
       "startLine": 25,
-      "endLine": 38
+      "endLine": 38,
+      "mathContext": "Three predicates: $\\text{IsLucasSequence}(a) :\\equiv \\forall n,\\, a(n+2) = a(n+1) + a(n)$; $\\text{IsPrimefree}(a) :\\equiv \\forall k,\\, a(k).\\text{Composite}$; $\\text{HasNoUniversalDivisor}(a) :\\equiv \\forall d > 1,\\, \\exists k,\\, d \\nmid a(k)$."
     },
     {
       "id": "main-question",
       "title": "Main Question (Existence)",
       "summary": "Axiomatizes **erdos_276_existence**: there exists a Lucas sequence that is primefree with no universal divisor. This is the resolved part of the problem (Graham 1964).",
       "startLine": 40,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "$\\exists a : \\mathbb{N} \\to \\mathbb{N},\\; \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\text{HasNoUniversalDivisor}(a)$. Graham (1964) proved existence via covering congruences."
     },
     {
       "id": "graham-construction",
       "title": "Graham's Construction",
       "summary": "Axiomatizes **graham_construction** (coprime primefree Lucas sequence exists) and **coprime_necessary** (any common divisor of $a_0, a_1$ divides all terms). Together, these show coprimality is the right condition for nontriviality.",
       "startLine": 49,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Graham's strengthening: $\\exists a,\\, \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\gcd(a_0, a_1) = 1$. GCD propagation: $d \\mid a_0 \\wedge d \\mid a_1 \\Rightarrow \\forall k,\\, d \\mid a_k$ (by induction on $a_{n+2} = a_{n+1} + a_n$)."
     },
     {
       "id": "covering-mechanism",
       "title": "Covering Congruence Mechanism",
       "summary": "Axiomatizes **covering_system_mechanism**: a finite set of primes covers all index positions via Pisano period residue classes. This captures how Graham's construction works and poses the open question of whether this mechanism is necessary.",
       "startLine": 65,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "$\\exists S \\subseteq \\{\\text{primes}\\},\\; \\forall a,\\; \\text{IsLucas}(a) \\wedge \\gcd(a_0,a_1)=1 \\wedge \\text{Primefree}(a) \\Rightarrow \\forall k,\\, \\exists p \\in S,\\, p \\mid a_k$. The Lucas sequence is periodic mod $p$ with Pisano period $\\pi(p)$."
     },
     {
       "id": "further-results",
       "title": "Further Results and Open Questions",
       "summary": "Comments on Vsemirnov's (2004) record-small starting values ($a_0 = 106276436867$) and the central open question: are covering congruences the only mechanism for primefree Lucas sequences?",
       "startLine": 79,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "Current record: $a_0 = 106276436867$, $a_1 = 35256392432$ (Vsemirnov 2004). Open: is every primefree coprime Lucas sequence explained by a covering system?"
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #276 has a resolved existence component (Graham 1964: primefree coprime Lucas sequences exist via covering congruences) and a deep open component (are covering congruences the only mechanism?). The formalization captures all three predicates (Lucas recurrence, primefree, no universal divisor), axiomatizes Graham's construction with the coprimality strengthening, formalizes GCD propagation, and states the covering system mechanism. The 88-line Lean file has no sorries, cleanly separating definitions from axiomatized results.",
-    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Covering Systems Theory:** This problem sits squarely in Erdős's covering systems program (Problems #2, #7, #275–281). Understanding whether covering congruences are necessary for primefree sequences would illuminate the fundamental question of when covering systems are the 'right' explanation for compositeness phenomena.\n\n2. **Sierpinski Numbers Parallel:** Erdős Problem #1113 asks the identical structural question for Sierpinski numbers: must every $k$ where $k \\cdot 2^n + 1$ is always composite be explained by a covering system? Progress on either problem likely implies progress on the other.\n\n3. **Computational Number Theory:** Finding smaller initial values remains an active computational challenge.\n\n**Broader Connections**: The gap between Graham's 34-digit values (1964) and Vsemirnov's 12-digit record (2004) took 40 years. Whether single-digit initial values are possible is unknown.\n\n4. **Linear Recurrence Divisibility:** The Pisano period structure connecting linear recurrences to covering systems is a deep arithmetic phenomenon. Understanding it fully requires combining algebraic number theory (quadratic fields for the golden ratio) with combinatorial covering theory.\n\n5. **Minimum Modulus Constraints:** The resolution of Erdős's minimum modulus conjecture (#2) by Hough (2015) and Balister et al. (2022) constrains what covering systems are possible, indirectly limiting primefree sequence constructions.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Covering Systems Theory:** This problem sits squarely in Erdős's covering systems program (Problems #2, #7, #275–281). Understanding whether covering congruences are necessary for primefree sequences would illuminate the fundamental question of when covering systems are the 'right' explanation for compositeness phenomena.\n\n2. **Sierpinski Numbers Parallel:** Erdős Problem #1113 asks the identical structural question for Sierpinski numbers: must every $k$ where $k \\cdot 2^n + 1$ is always composite be explained by a covering system? Progress on either problem likely implies progress on the other.\n\n3. **Computational Number Theory:** Finding smaller initial values remains an active computational challenge.\n\nThe gap between Graham's 34-digit values (1964) and Vsemirnov's 12-digit record (2004) took 40 years. Whether single-digit initial values are possible is unknown.\n\n4. **Linear Recurrence Divisibility:** The Pisano period structure connecting linear recurrences to covering systems is a deep arithmetic phenomenon. Understanding it fully requires combining algebraic number theory (quadratic fields for the golden ratio) with combinatorial covering theory.\n\n5. **Minimum Modulus Constraints:** The resolution of Erdős's minimum modulus conjecture (#2) by Hough (2015) and Balister et al. (2022) constrains what covering systems are possible, indirectly limiting primefree sequence constructions.",
     "openQuestions": [
       "**Necessity of Covering Systems:** Are covering congruences the only mechanism producing primefree coprime Lucas sequences? Or can such sequences arise from fundamentally different arithmetic structures?",
       "**Smallest Initial Values:** What is the smallest pair $(a_0, a_1)$ of coprime composite numbers generating a primefree Lucas sequence? (Current record: Vsemirnov 2004, $a_0 = 106276436867$)",
@@ -174,11 +162,59 @@
     "definitionCount": 3
   },
   "references": [
-    "Graham (1964): 'A Fibonacci-like sequence of composite numbers', Mathematics Magazine 37, 322–324",
-    "Vsemirnov (2004): 'Two new records concerning primefree Fibonacci-like sequences'",
-    "Ismailescu–Son (2014): 'On primefree sequences generated by Lucas recurrences'",
-    "Knuth (1990): Note on smaller primefree starting values",
-    "Erdős–Graham (1980): Old and New Problems and Results in Combinatorial Number Theory",
-    "https://erdosproblems.com/276"
+    {
+      "key": "Gr64",
+      "citation": "Graham, R.L., A Fibonacci-like sequence of composite numbers, Mathematics Magazine 37 (1964), 322–324.",
+      "type": "paper"
+    },
+    {
+      "key": "Vs04",
+      "citation": "Vsemirnov, M., Two new records concerning primefree Fibonacci-like sequences (2004).",
+      "type": "paper"
+    },
+    {
+      "key": "IS14",
+      "citation": "Ismailescu, D. and Son, J., On primefree sequences generated by Lucas recurrences (2014).",
+      "type": "paper"
+    },
+    {
+      "key": "EG80",
+      "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, Monographies de L'Enseignement Mathématique 28, Université de Genève (1980).",
+      "type": "book"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-275",
+      "relationship": "foundational",
+      "description": "Covering congruence 2^r bound — the theoretical backbone of Graham's covering system construction for primefree Lucas sequences"
+    },
+    {
+      "targetId": "erdos-277",
+      "relationship": "related",
+      "description": "Adjacent covering system problem from the same Erdős-Graham investigation into Fibonacci-like recurrences and compositeness"
+    },
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Minimum modulus problem for covering systems (resolved by Hough 2015) — constrains what covering constructions are possible for primefree sequences"
+    },
+    {
+      "targetId": "erdos-7",
+      "relationship": "related",
+      "description": "Odd covering systems problem — parity constraints on covering moduli relevant to Lucas recurrence divisibility analysis"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Sierpinski numbers without covering sets — parallel open question about whether covering systems are the only mechanism for compositeness phenomena"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-275",
+    "erdos-277",
+    "erdos-2",
+    "erdos-7",
+    "erdos-1113"
   ]
 }

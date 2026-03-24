@@ -68,8 +68,10 @@
       "**Stable self-similarity** $[e^{-|t/n^{1/\\alpha}|^\\alpha}]^n = e^{-|t|^\\alpha}$ encodes why stable distributions are 'stable' under normalized convolution — the defining algebraic identity"
     ],
     "prerequisites": [
-      "Probability theory",
-      "Mathematical analysis"
+      "Probability theory (characteristic functions, convergence in distribution)",
+      "Regular variation theory (slowly varying functions, Karamata's theorem)",
+      "Stable distributions ($\\alpha$-stable laws, Lévy-Khintchine representation)",
+      "Measure theory (tail probabilities, truncation, Fubini's theorem)"
     ]
   },
   "sections": [
@@ -85,7 +87,8 @@
       "title": "Slowly Varying Functions",
       "startLine": 39,
       "endLine": 101,
-      "summary": "Defines `SlowlyVarying L` as $\\forall c > 0, \\; L(cx)/L(x) \\to 1$ via `Filter.Tendsto` on `atTop`. Proves constant functions are slowly varying ($a/a = 1$), closure under multiplication ($L_1 \\cdot L_2$), and closure under real powers ($|L|^p$). The power closure uses continuity of $t \\mapsto |t|^p$ at $1$."
+      "summary": "Defines `SlowlyVarying L` as $\\forall c > 0, \\; L(cx)/L(x) \\to 1$ via `Filter.Tendsto` on `atTop`. Proves constant functions are slowly varying ($a/a = 1$), closure under multiplication ($L_1 \\cdot L_2$), and closure under real powers ($|L|^p$). The power closure uses continuity of $t \\mapsto |t|^p$ at $1$.",
+      "mathContext": "`SlowlyVarying L`: $\\forall c > 0,\\; L(cx)/L(x) \\to 1$ as $x \\to \\infty$. Examples: $\\log x$, constants. Closed under $\\times$, $|\\cdot|^p$."
     },
     {
       "id": "regularly-varying",
@@ -106,14 +109,16 @@
       "title": "Domain of Attraction",
       "startLine": 174,
       "endLine": 206,
-      "summary": "Defines `stableCharFun α t = exp(-|t|^α)` as the symmetric stable characteristic function, and `InDomainOfAttraction φ α` requiring normalizing sequences $a_n \\to \\infty$ and centering $b_n$ such that $\\varphi^n(t/a_n) \\cdot e^{-ib_n t / a_n} \\to e^{-|t|^\\alpha}$."
+      "summary": "Defines `stableCharFun α t = exp(-|t|^α)` as the symmetric stable characteristic function, and `InDomainOfAttraction φ α` requiring normalizing sequences $a_n \\to \\infty$ and centering $b_n$ such that $\\varphi^n(t/a_n) \\cdot e^{-ib_n t / a_n} \\to e^{-|t|^\\alpha}$.",
+      "mathContext": "Stable char. fn.: $\\hat{S}_\\alpha(t) = e^{-|t|^\\alpha}$. Domain of attraction: $(S_n - b_n)/a_n \\xrightarrow{d} S_\\alpha$ via $\\varphi^n(t/a_n) e^{-ib_n t/a_n} \\to e^{-|t|^\\alpha}$."
     },
     {
       "id": "gnedenko-kolmogorov",
       "title": "The Gnedenko-Kolmogorov Theorem",
       "startLine": 207,
       "endLine": 287,
-      "summary": "States the full theorem in three axiomatized parts: (1) **Forward** — tail balance implies domain of attraction membership; (2) **Gaussian** — finite variance implies $\\alpha = 2$ with $a_n = \\sigma\\sqrt{n}$; (3) **Converse** — domain of attraction membership implies regularly varying tails with appropriate tail balance. These axioms encapsulate deep results requiring Lévy's continuity theorem and Abelian-Tauberian theory."
+      "summary": "States the full theorem in three axiomatized parts: (1) **Forward** — tail balance implies domain of attraction membership; (2) **Gaussian** — finite variance implies $\\alpha = 2$ with $a_n = \\sigma\\sqrt{n}$; (3) **Converse** — domain of attraction membership implies regularly varying tails with appropriate tail balance. These axioms encapsulate deep results requiring Lévy's continuity theorem and Abelian-Tauberian theory.",
+      "mathContext": "Gnedenko-Kolmogorov: $X \\in DA(\\alpha) \\iff$ tails are regularly varying with index $-\\alpha$ and balanced. Gaussian case ($\\alpha = 2$): $\\text{Var}(X) < \\infty \\Rightarrow a_n = \\sigma\\sqrt{n}$."
     },
     {
       "id": "sv-properties",
@@ -169,7 +174,8 @@
       "title": "Representation Theorem for Regular Variation",
       "startLine": 613,
       "endLine": 725,
-      "summary": "Proves the representation theorem: $f \\in RV(\\alpha) \\iff f(x) = |x|^\\alpha L(x)$ with $L$ slowly varying. The decomposition direction extracts $L(x) = f(x)/|x|^\\alpha$ and uses $RV(\\alpha)/RV(\\alpha) = RV(0) = SV$. Also proves composition properties: $L \\circ x^\\beta \\in SV$ and $f \\circ x^\\beta \\in RV(\\alpha\\beta)$."
+      "summary": "Proves the representation theorem: $f \\in RV(\\alpha) \\iff f(x) = |x|^\\alpha L(x)$ with $L$ slowly varying. The decomposition direction extracts $L(x) = f(x)/|x|^\\alpha$ and uses $RV(\\alpha)/RV(\\alpha) = RV(0) = SV$. Also proves composition properties: $L \\circ x^\\beta \\in SV$ and $f \\circ x^\\beta \\in RV(\\alpha\\beta)$.",
+      "mathContext": "Representation: $f \\in RV(\\alpha) \\iff f(x) = |x|^\\alpha L(x)$ with $L \\in SV$. Composition: $f \\circ x^\\beta \\in RV(\\alpha\\beta)$."
     },
     {
       "id": "uniform-convergence",
@@ -224,5 +230,15 @@
     "axiomCount": 3,
     "theoremCount": 55,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem-oq-01"
+  ]
 }

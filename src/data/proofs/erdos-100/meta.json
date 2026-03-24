@@ -114,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #100 on point sets with restricted distances in ℝ². The combination of minimum distance 1 and integer separation forces all pairwise distances to be positive integers, and the central question asks whether diameter must grow linearly with n. The current best lower bound is n/log n (Guth-Katz, 2015), while the conjectured linear bound remains open. Piepmeyer's 9-point construction shows the optimal constant is at most 5/9.",
-    "implications": "**Theoretical Significance**: The problem sits at the intersection of discrete geometry, combinatorial geometry, and algebraic methods.\n\n**Broader Connections**: Resolution would require either (a) closing the logarithmic gap between n/log n and n, advancing beyond polynomial partitioning methods, or (b) constructing a family of restricted distance sets with sublinear diameter growth, which would be a major surprise. The connection to the Guth-Katz theorem means progress here is closely tied to advances in incidence geometry and algebraic methods.",
+    "implications": "**Theoretical Significance**: The problem sits at the intersection of discrete geometry, combinatorial geometry, and algebraic methods.\n\nResolution would require either (a) closing the logarithmic gap between n/log n and n, advancing beyond polynomial partitioning methods, or (b) constructing a family of restricted distance sets with sublinear diameter growth, which would be a major surprise. The connection to the Guth-Katz theorem means progress here is closely tied to advances in incidence geometry and algebraic methods.",
     "openQuestions": [
       "Is diameter ≫ n (linear growth), or does the logarithmic factor in the Guth-Katz bound reflect a genuine obstruction?",
       "Is diameter ≥ n-1 for sufficiently large n (strong conjecture)?",
@@ -125,24 +125,24 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-89",
       "relationship": "foundation",
-      "description": "Erdős #89 (distinct distances) provides the current best lower bound via Guth-Katz: Δ(A) ≥ cn/log n implies diam ≥ cn/log n for restricted distance sets."
+      "description": "Erdős #89 (distinct distances) provides the current best lower bound via Guth-Katz: Δ(A) ≥ cn/log n implies diam ≥ cn/log n for restricted distance sets.",
+      "targetId": "erdos-89"
     },
     {
-      "id": "erdos-104",
       "relationship": "related",
-      "description": "Erdős #104 (unit circles through points) shares the discrete geometry setting and incidence-counting techniques."
+      "description": "Erdős #104 (unit circles through points) shares the discrete geometry setting and incidence-counting techniques.",
+      "targetId": "erdos-104"
     },
     {
-      "id": "erdos-1066",
       "relationship": "related",
-      "description": "Erdős #1066 (independence number of unit distance graphs) studies graph-theoretic properties of the same unit distance structure used here."
+      "description": "Erdős #1066 (independence number of unit distance graphs) studies graph-theoretic properties of the same unit distance structure used here.",
+      "targetId": "erdos-1066"
     },
     {
-      "id": "erdos-1007",
       "relationship": "related",
-      "description": "Erdős #1007 (graph dimension and unit distance embedding) connects to the geometric embedding questions underlying restricted distance sets."
+      "description": "Erdős #1007 (graph dimension and unit distance embedding) connects to the geometric embedding questions underlying restricted distance sets.",
+      "targetId": "erdos-1007"
     }
   ],
   "relatedProofs": [
@@ -152,8 +152,15 @@
     "erdos-1007"
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Filter", "Set", "Finset", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Finset",
+      "Topology"
+    ],
     "namespace": "Erdos100",
     "lineCount": 386,
     "axiomCount": 5,

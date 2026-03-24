@@ -7,7 +7,7 @@
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1002",
     "date": "",
-    "status": "formalized",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos1002Problem.lean",
     "tags": [
       "analysis",
@@ -24,7 +24,7 @@
     "relatedProblems": [],
     "axiomCount": 0,
     "lineCount": 1,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\"."
   },
   "overview": {
     "historicalContext": "**Fractional Parts in Number Theory**\n\nThe study of fractional parts $\\{n\\alpha\\}$ for irrational $\\alpha$ is central to Diophantine approximation. Hermann Weyl's equidistribution theorem (1916) established that $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is uniformly distributed in $[0,1)$, a foundational result connecting number theory to ergodic theory.\n\n**Gauss and Continued Fractions**: Carl Friedrich Gauss studied the map $T(x) = \\{1/x\\}$ on $(0,1)$, discovering its invariant measure $d\\mu = dx/(\\log 2 \\cdot (1+x))$. The Gauss-Kuzmin theorem (Kuzmin 1928, Lévy 1929) describes the rate at which iterates of $T$ converge to this measure.\n\n**Erdős's Question**: Erdős asked whether $f(\\alpha, n) = \\frac{1}{\\log n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ has an asymptotic distribution function — does the proportion of $\\alpha$ with $f(\\alpha, n) \\le c$ converge as $n \\to \\infty$?\n\n**Kesten's Breakthrough**: Harry Kesten (1960) proved the two-parameter variant $f(\\alpha, \\beta, n) = \\frac{1}{\\log n}\\sum(1/2 - \\{\\beta + \\alpha k\\})$ has a Cauchy limit distribution $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + 1/2$, using the ergodic properties of the natural extension of the Gauss map. The extra parameter $\\beta$ provides the independence needed for the ergodic argument. Fixing $\\beta = 0$ destroys this independence, and the one-parameter problem remains **OPEN**.",
@@ -117,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1002 asks whether the weighted fractional part sum f(α,n) = (1/log n) Σ (1/2 - {αk}) has an asymptotic distribution function. While Kesten (1960) proved the two-parameter variant has Cauchy distribution, the one-parameter case (fixing β = 0) remains open. The difficulty lies in the loss of independence when the shift parameter is fixed.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n2.\n\n**Broader Connections**: **Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of α.",
+    "implications": "1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n**2. Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of α.",
     "openQuestions": [
       "Does f(α,n) have an asymptotic distribution for Lebesgue-almost all α?",
       "If a distribution exists, is it the same Cauchy distribution as Kesten's result?",

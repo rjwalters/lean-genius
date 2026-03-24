@@ -116,5 +116,25 @@
       "Finset.sum_le_sum_of_subset_of_nonneg",
       "nlinarith"
     ]
+  },
+  {
+    "id": "ann-smm-end",
+    "proofId": "prob-method-second-moment",
+    "range": {
+      "startLine": 160,
+      "endLine": 161
+    },
+    "type": "context",
+    "title": "Namespace Closure",
+    "content": "Closes the `ProbMethod.SecondMoment` namespace. The six theorems — `chebyshev_ineq`, `paley_zygmund`, `finite_cauchy_schwarz`, `sum_pos_eq_sum_filter_pos`, `sum_sq_filter_le`, and `second_moment_existence` — are accessible as `ProbMethod.SecondMoment.*` when imported. Together with `ProbMethod.Expectation` and `ProbMethod.Alteration`, this forms a complete toolkit for probabilistic method arguments in combinatorics.",
+    "mathContext": "The probabilistic method toolkit hierarchy is now: first moment (expectation) → alteration (deletion) → second moment (concentration) → Lovász Local Lemma (dependency), ordered by increasing sophistication.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 namespaces",
+      "probabilistic method library"
+    ],
+    "prerequisites": [
+      "all preceding theorems"
+    ]
   }
 ]

@@ -96,10 +96,10 @@
     "id": "ann-627-colorable",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 41,
-      "endLine": 42
+      "startLine": 44,
+      "endLine": 46
     },
-    "type": "definition",
+    "type": "insight",
     "title": "k-Colorability",
     "content": "A graph is $k$-colorable if there exists $f: V \\to \\{0,\\ldots,k-1\\}$ with $f(v) \\neq f(w)$ whenever $v \\sim w$. Formalized as `IsKColorable G k` using `Fin k` as the color set.",
     "significance": "supporting",
@@ -118,10 +118,10 @@
     "id": "ann-627-contains-clique",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 45,
-      "endLine": 46
+      "startLine": 55,
+      "endLine": 56
     },
-    "type": "definition",
+    "type": "insight",
     "title": "Contains k-Clique",
     "content": "A graph contains a $k$-clique if there exists a subset $S \\subseteq V$ with $|S| = k$ where all distinct pairs are adjacent. Formalized via `Finset V` with pairwise adjacency.",
     "significance": "supporting",
@@ -184,10 +184,10 @@
     "id": "ann-627-f-function",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 66,
-      "endLine": 68
+      "startLine": 65,
+      "endLine": 67
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Function f(n)",
     "content": "$f(n) = \\sup_{|V(G)|=n} \\chi(G)/\\omega(G)$, the maximum ratio over all $n$-vertex graphs.\n\nThis captures the worst-case gap between clique number and chromatic number for $n$-vertex graphs.\n\nThe question is: how does $f(n)$ grow with $n$?",
     "significance": "key",
@@ -206,10 +206,10 @@
     "id": "ann-627-tutte-zykov",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 80,
-      "endLine": 83
+      "startLine": 70,
+      "endLine": 71
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Tutte-Zykov Construction",
     "content": "**Tutte (1947) and Zykov (1949) independently:**\n\nGraphs with $\\omega = 2$ (triangle-free) can have arbitrarily large $\\chi$!\n\nThis is surprising: triangle-free graphs seem 'sparse' but can still require many colors. The ratio $\\chi/\\omega$ can be arbitrarily large.",
     "significance": "key",
@@ -229,10 +229,10 @@
     "id": "ann-627-triangle-free",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 89,
-      "endLine": 98
+      "startLine": 74,
+      "endLine": 82
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Triangle-Free Large χ",
     "content": "For any $k$, there exist triangle-free graphs with $\\chi \\geq k$.\n\nThis follows from Tutte-Zykov: $\\omega = 2$ means no triangles ($K_3$).\n\n**Intuition breaker:** Locally sparse (no triangles) doesn't mean globally easy to color!",
     "significance": "key",
@@ -251,8 +251,8 @@
     "id": "ann-627-normalized",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 102,
-      "endLine": 104
+      "startLine": 87,
+      "endLine": 88
     },
     "type": "definition",
     "title": "Normalized Function",
@@ -275,10 +275,10 @@
     "id": "ann-627-erdos-asymptotic",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 112,
-      "endLine": 117
+      "startLine": 97,
+      "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Asymptotic",
     "content": "**Erdős proved:** $f(n) \\asymp n/(\\log n)^2$\n\nMeaning: $c_1 \\cdot n/(\\log n)^2 \\leq f(n) \\leq c_2 \\cdot n/(\\log n)^2$ for constants $c_1, c_2 > 0$.\n\nSo $f(n)$ grows, but slower than linear. The $(\\log n)^2$ denominator makes growth sub-polynomial.",
     "significance": "key",
@@ -299,8 +299,8 @@
     "id": "ann-627-limit",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 132,
-      "endLine": 134
+      "startLine": 117,
+      "endLine": 118
     },
     "type": "definition",
     "title": "Limit Existence",
@@ -346,8 +346,8 @@
     "id": "ann-627-perfect",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 152,
-      "endLine": 154
+      "startLine": 137,
+      "endLine": 138
     },
     "type": "definition",
     "title": "Perfect Graphs",
@@ -369,10 +369,10 @@
     "id": "ann-627-spgt",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 162,
-      "endLine": 168
+      "startLine": 147,
+      "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Strong Perfect Graph Theorem",
     "content": "**Chudnovsky, Robertson, Seymour, Thomas (2006):**\n\n$G$ is perfect $\\iff$ $G$ has no odd hole or odd antihole.\n\nAn odd hole is an induced odd cycle $C_{2k+1}$ for $k \\geq 2$.\nAn odd antihole is the complement of an odd hole.\n\nThis landmark theorem completely characterizes perfect graphs!",
     "significance": "key",
@@ -393,10 +393,10 @@
     "id": "ann-627-ramsey",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 172,
-      "endLine": 178
+      "startLine": 157,
+      "endLine": 158
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Ramsey Connection",
     "content": "**Connection to Ramsey numbers:**\n\n$f(R(k,k)) \\geq k$, where $R(k,k)$ is the diagonal Ramsey number.\n\nRamsey graphs (those achieving Ramsey bounds) have large $\\chi/\\omega$ ratio because they avoid both large cliques and large independent sets.",
     "significance": "key",
@@ -416,8 +416,8 @@
     "id": "ann-627-mycielski",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 187,
-      "endLine": 195
+      "startLine": 172,
+      "endLine": 173
     },
     "type": "definition",
     "title": "Mycielski Construction",
@@ -439,8 +439,8 @@
     "id": "ann-627-kneser",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 197,
-      "endLine": 204
+      "startLine": 182,
+      "endLine": 183
     },
     "type": "definition",
     "title": "Kneser Graphs",
@@ -485,10 +485,10 @@
     "id": "ann-627-main",
     "proofId": "erdos-627",
     "range": {
-      "startLine": 226,
-      "endLine": 245
+      "startLine": 222,
+      "endLine": 237
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Main Status",
     "content": "**Erdős Problem #627: OPEN**\n\n1. **$f(n) \\asymp n/(\\log n)^2$:** Erdős established the growth rate\n2. **Limit question:** Does $f(n)/(n/(\\log n)^2)$ converge? UNKNOWN\n3. **Limit bounds:** If exists, in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$\n4. **Tutte-Zykov:** Triangle-free graphs can have arbitrarily large $\\chi$\n5. **Perfect graphs:** $\\chi = \\omega$ always (ratio exactly 1)\n6. **Constructions:** Mycielski, Kneser achieve high ratio",
     "significance": "key",

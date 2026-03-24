@@ -145,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves Szemeredi's theorem by combining proved cases (k=1,2 trivial, k=3 Roth via Mathlib) with an axiom for k>=4. The key achievements are: the equivalence `threeAPFree_iff_isAPFree` connecting to Mathlib, density lemmas for k=1,2, and axiom reduction from the full theorem to just k>=4.\n\nOnly k >= 4 remains axiomatized, awaiting hypergraph regularity in Mathlib.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\nSzemeredi's theorem has deep connections to:\n1. **Ergodic Theory**: Furstenberg's proof initiated the field of ergodic Ramsey theory\n2.\n\n**Broader Connections**: **Fourier Analysis**: Gowers' proof introduced influential new techniques\n3. **Regularity Lemma**: Became a fundamental tool in graph theory\n\n**The Green-Tao Theorem**\n\nBuilding on Szemeredi, Green and Tao (2004) proved the primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
+    "implications": "Szemeredi's theorem has deep connections to:\n1. **Ergodic Theory**: Furstenberg's proof initiated the field of ergodic Ramsey theory\n**2. Fourier Analysis**: Gowers' proof introduced influential new techniques\n3. **Regularity Lemma**: Became a fundamental tool in graph theory\n\n**The Green-Tao Theorem**\n\nBuilding on Szemeredi, Green and Tao (2004) proved the primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
     "openQuestions": [
       "What is the optimal bound for Szemeredi's theorem?",
       "Can the regularity lemma be avoided for small k?",

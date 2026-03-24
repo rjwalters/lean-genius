@@ -26,7 +26,7 @@
     ],
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: simpson_theorem (minimum with equal residues — deep 1986 result), max_density_coprime_case (CRT coprime maximum). Previously axiomatized equal_residues_minimize, single_modulus_density, and erdos_278_density_le_one are now fully proved.",
-    "lineCount": 291
+    "lineCount": 334
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.28), as part of their systematic study of covering systems — a topic Erdős championed from his groundbreaking 1950 paper showing that covering systems with distinct moduli greater than 1 exist. The problem asks: given fixed moduli, how should one choose residues to optimize coverage? R.J. Simpson resolved the minimum question in 1986 (Discrete Mathematics 59), proving by an elegant averaging argument that equal residues minimize coverage density. The maximum question remains open and connects to the broader structure theory of covering systems, which saw a major breakthrough when Bob Hough (2015, Annals of Mathematics) proved the minimum modulus conjecture — showing that any covering system with distinct moduli must include a modulus at most $10^{16}$. The interplay between coprime and non-coprime moduli connects to the Chinese Remainder Theorem and to sieve-theoretic methods in analytic number theory.",
@@ -109,13 +109,13 @@
       "title": "Maximum Density (Open)",
       "startLine": 133,
       "endLine": 148,
-      "summary": "Three axiomatized results: coprime maximum ($\\delta_{\\max} = \\sum 1/n_i$ by CRT), the open question ($\\delta_{\\max} \\leq 1$ for general moduli), and the single modulus base case ($\\delta = 1/n$).",
-      "mathContext": "Coprime case: $\\gcd(n_i, n_j) = 1 \\Rightarrow \\delta_{\\max} = \\sum 1/n_i$ (CRT). Open: general formula for $\\delta_{\\max}$."
+      "summary": "Axiomatized coprime maximum ($\\delta_{\\max} = 1 - \\prod(1 - 1/n_i)$ by CRT), proved $\\delta_{\\max} \\leq 1$ for general moduli, and the single modulus base case ($\\delta = 1/n$).",
+      "mathContext": "Coprime case: $\\gcd(n_i, n_j) = 1 \\Rightarrow \\delta_{\\max} = 1 - \\prod(1 - 1/n_i)$ (CRT independence). Open: general formula for $\\delta_{\\max}$."
     }
   ],
   "conclusion": {
     "summary": "This formalization captures the full structure of Erdős Problem #278: congruence system coverage density, the optimization over residue choices, Simpson's theorem resolving the minimum (1986), the coprime case resolving the maximum via CRT, and the open question for non-coprime moduli. The three proved theorems (density bounds) demonstrate that the formalization is computationally meaningful beyond just axiomatized statements.",
-    "implications": "**Theoretical Significance**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors.\n\n**Broader Connections**: This connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erdős program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
+    "implications": "**Theoretical Significance**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors.\n\nThis connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erdős program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
     "openQuestions": [
       "What is the maximum coverage density $\\delta_{\\max}(A)$ for arbitrary (non-coprime) moduli?",
       "Is there a polynomial-time algorithm to compute $\\delta_{\\max}(A)$, or is the optimization NP-hard?",
@@ -133,10 +133,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 148,
+    "lineCount": 334,
     "axiomCount": 2,
-    "theoremCount": 8,
-    "definitionCount": 6
+    "theoremCount": 18,
+    "definitionCount": 7
   },
   "crossReferences": [
     {

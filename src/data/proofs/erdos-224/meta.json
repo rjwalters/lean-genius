@@ -126,7 +126,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #224 was solved by Danzer and Grünbaum (1962): any $2^d + 1$ points in $\\mathbb{R}^d$ contain three forming an obtuse angle. The hypercube $\\{0,1\\}^d$ with $2^d$ vertices is the extremal obtuse-free configuration, making the bound tight. The formalization axiomatizes the main theorem and special cases, and proves extremality and the summary conjunction.",
-    "implications": "**Theoretical Significance**: The result reveals that the hypercube geometry is the unique obstruction to obtuse-freeness in high dimensions.\n\n**Broader Connections**: The exponential threshold $2^d$ connects discrete geometry to coding theory (spherical codes with angle constraints) and the combinatorics of the Boolean lattice. The Danzer-Grünbaum technique of induction via projection has become a standard tool in discrete geometry.",
+    "implications": "**Theoretical Significance**: The result reveals that the hypercube geometry is the unique obstruction to obtuse-freeness in high dimensions.\n\nThe exponential threshold $2^d$ connects discrete geometry to coding theory (spherical codes with angle constraints) and the combinatorics of the Boolean lattice. The Danzer-Grünbaum technique of induction via projection has become a standard tool in discrete geometry.",
     "openQuestions": [
       "What is the maximum size of an acute set (all angles strictly < 90°) in ℝ^d? (Known: between d+1 and 2d-1)",
       "Are there other extremal obtuse-free configurations besides the hypercube (up to isometry)?",
@@ -155,5 +155,15 @@
     "Kuiper, Boerdijk: Unpublished proof for d = 3 (9 points in ℝ³)",
     "Barvinok, Lee, Novik (2013): Acute sets and related problems in discrete geometry",
     "https://erdosproblems.com/224"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-225",
+      "relationship": "related",
+      "description": "Related formalization"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-225"
   ]
 }

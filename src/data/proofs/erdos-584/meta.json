@@ -130,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #584 asks whether dense graphs must contain large cycle-connected subgraphs. Three partial results are formalized: Duke-Erdős (1982) proved H₁ for fixed density, Duke-Erdős-Rödl (1984) proved H₁ uniformly with a δ⁵ exponent, and Fox-Sudakov (2008) proved H₂ for δ > n^{-1/5}. The summary theorem combines the two H₁ results. The full conjecture with the optimal δ³ exponent for H₁ remains open.",
-    "implications": "**Theoretical Significance**: This problem sits at the intersection of extremal graph theory and structural graph theory.\n\n**Broader Connections**: Resolving the exponent gap from δ⁵ to δ³ would likely require new techniques beyond the Szemerédi regularity lemma. The sparse regime where δ = n^{-c} is particularly important for applications to additive combinatorics and theoretical computer science.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of extremal graph theory and structural graph theory.\n\nResolving the exponent gap from δ⁵ to δ³ would likely require new techniques beyond the Szemerédi regularity lemma. The sparse regime where δ = n^{-c} is particularly important for applications to additive combinatorics and theoretical computer science.",
     "openQuestions": [
       "Can the δ⁵ exponent for H₁ be improved toward the conjectured δ³?",
       "Can Fox-Sudakov's H₂ result be extended below the n^{-1/5} threshold?",

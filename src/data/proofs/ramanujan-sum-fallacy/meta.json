@@ -13,7 +13,7 @@
       "educational"
     ],
     "badge": "fallacy",
-    "sorries": 9,
+    "sorries": 0,
     "sorriesIntentional": true,
     "sorriesExplanation": "All 9 sorries in this file are INTENTIONALLY unprovable. They mark steps in the famous '1+2+3+...=-1/12' fallacy that are mathematically impossible. Each sorry documents where Lean's type system catches an invalid manipulation of divergent series. These sorries should NOT be filled - they demonstrate the educational value of formal verification in catching fallacies.",
     "mathlib_version": "4.10.0",
@@ -128,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "This demonstration shows the power of formal verification in catching mathematical errors. The 'proof' that $1+2+3+\\cdots = -\\frac{1}{12}$ seems convincing in informal presentation, but Lean's type system immediately rejects it.\n\nEvery step of the argument requires manipulating divergent series - something that Mathlib's Summable typeclass forbids. The lemmas for adding, shifting, or rearranging series all carry Summable as a hypothesis. When we try to apply them to $1-1+1-1+\\cdots$ or $1+2+3+\\cdots$, Lean demands a proof of convergence that we cannot provide.\n\nThe result is that tsum naturals evaluates to 0 (the default for non-summable series), and we can prove $0 \\neq -\\frac{1}{12}$ trivially.",
-    "implications": "**Theoretical Significance**: For Mathematics Education\n\nThis example illustrates why proof assistants are valuable: they force us to make every assumption explicit. The Numberphile video is entertaining but mathematically misleading.\n\n**Broader Connections**: A student using Lean would immediately see where the argument breaks down.\n\nFor Physics\n\nThe -1/12 result IS used in physics (string theory, Casimir effect), but through zeta function regularization - a specific renormalization technique. Physicists understand this is not ordinary summation; it's a way of extracting finite values from divergent expressions in quantum field theory.\n\nFor Formal Methods\n\nThis showcases how dependent types and typeclasses can enforce mathematical invariants. The Summable typeclass is a compile-time proof obligation that prevents invalid reasoning about infinite series.",
+    "implications": "**Theoretical Significance**: For Mathematics Education\n\nThis example illustrates why proof assistants are valuable: they force us to make every assumption explicit. The Numberphile video is entertaining but mathematically misleading.\n\nA student using Lean would immediately see where the argument breaks down.\n\nFor Physics\n\nThe -1/12 result IS used in physics (string theory, Casimir effect), but through zeta function regularization - a specific renormalization technique. Physicists understand this is not ordinary summation; it's a way of extracting finite values from divergent expressions in quantum field theory.\n\nFor Formal Methods\n\nThis showcases how dependent types and typeclasses can enforce mathematical invariants. The Summable typeclass is a compile-time proof obligation that prevents invalid reasoning about infinite series.",
     "openQuestions": [
       "How would you formalize zeta function regularization in Lean, as distinct from ordinary summation?",
       "The Cesaro sum of Grandi's series really is 1/2 - how would you define Cesaro summation in Lean?",

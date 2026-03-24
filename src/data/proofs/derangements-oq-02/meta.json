@@ -140,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "The partial derangement formula S(n,k) = C(n,k)·D(n-k) is fully proved in Lean 4 with 0 sorries. The proof uses an explicit Equiv between {σ | σ.support = S} and derangements ↑S, combined with a biUnion decomposition over all (n-k)-element subsets. Special cases (S(n,0), S(n,n), S(n,n-1)) and the summation identity ∑S(n,k) = n! are also proved. Eleven concrete values are verified by native_decide.",
-    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Connection to Derangements**: This generalizes the basic derangement count. `permsWithZeroFixed_eq_derangement_count` gives S(n,0) = D(n) as an immediate corollary, connecting to Mathlib's `numDerangements`.\n\n2. **Probability Distribution**: The partial derangement formula gives the full probability distribution of fixed-point counts under a uniform random permutation: P(exactly k fixed points) = C(n,k)·D(n-k)/n!.\n\n**Broader Connections**: This converges to a Poisson(1) distribution as n→∞.\n\n3. **Inclusion-Exclusion**: The classical proof via inclusion-exclusion is equivalent to the bijective proof used here. The bijective approach is more amenable to Lean formalization because it avoids alternating sums.\n\n4. **Mathlib API Discoveries**: This formalization uncovered several current Mathlib API subtleties: `subtypePerm` takes reversed iff direction, `powersetLen` → `powersetCard` rename, and `ofSubtype_apply_of_not_mem` naming.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Connection to Derangements**: This generalizes the basic derangement count. `permsWithZeroFixed_eq_derangement_count` gives S(n,0) = D(n) as an immediate corollary, connecting to Mathlib's `numDerangements`.\n\n2. **Probability Distribution**: The partial derangement formula gives the full probability distribution of fixed-point counts under a uniform random permutation: P(exactly k fixed points) = C(n,k)·D(n-k)/n!.\n\nThis converges to a Poisson(1) distribution as n→∞.\n\n3. **Inclusion-Exclusion**: The classical proof via inclusion-exclusion is equivalent to the bijective proof used here. The bijective approach is more amenable to Lean formalization because it avoids alternating sums.\n\n4. **Mathlib API Discoveries**: This formalization uncovered several current Mathlib API subtleties: `subtypePerm` takes reversed iff direction, `powersetLen` → `powersetCard` rename, and `ofSubtype_apply_of_not_mem` naming.",
     "openQuestions": [
       "Extend to arbitrary finite types: prove S(α, k) = C(|α|, k)·D(|α|-k) for α : Type* [Fintype α]",
       "Prove the generating function ∑_k S(n,k)·x^k = D(n)·(1+x/(n-k)) or the exponential generating function",
@@ -185,5 +185,15 @@
       "venue": "Wiley, New York",
       "note": "Classical treatment of subfactorials and partial derangements"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "derangements"
   ]
 }

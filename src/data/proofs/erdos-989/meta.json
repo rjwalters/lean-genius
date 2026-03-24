@@ -179,7 +179,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #989 asked whether the circle discrepancy f(r) is unbounded and how fast it grows. Beck (1987) completely settled this: f(r) ≫ √r for ALL sequences (using Fourier/Bessel analysis), and ∃ sequence with f(r) ≪ √(r log r) (using probabilistic construction). The optimal rate is Θ̃(√r).",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Discrepancy Theory**: Foundational result establishing the sharp growth rate for circle discrepancy, resolving the key open question in geometric equidistribution\n\n2. **Fourier Methods in Combinatorics**: Demonstrates the power of harmonic analysis for discrete geometry problems — the Bessel function connection shows deep interplay between analysis and combinatorics\n\n3.\n\n**Broader Connections**: **Probabilistic Method**: The fact that a randomly perturbed lattice achieves near-optimal discrepancy is a striking example of the Erdős probabilistic method in geometry\n\n4. **Curvature and Discrepancy**: The comparison circles (√r) vs half-planes (r^{1/4}) reveals that boundary curvature κ = 1/r fundamentally amplifies discrepancy — a geometric insight with implications for all curved test set families\n\n5. **Connection to Number Theory**: The Gauss circle problem (lattice points in circles) is a special case where the highly structured lattice achieves r^{1/4} fluctuation, far below the √r universal lower bound.",
+    "implications": "1. **Discrepancy Theory**: Foundational result establishing the sharp growth rate for circle discrepancy, resolving the key open question in geometric equidistribution\n\n2. **Fourier Methods in Combinatorics**: Demonstrates the power of harmonic analysis for discrete geometry problems — the Bessel function connection shows deep interplay between analysis and combinatorics\n\n**3. Probabilistic Method**: The fact that a randomly perturbed lattice achieves near-optimal discrepancy is a striking example of the Erdős probabilistic method in geometry\n\n4. **Curvature and Discrepancy**: The comparison circles (√r) vs half-planes (r^{1/4}) reveals that boundary curvature κ = 1/r fundamentally amplifies discrepancy — a geometric insight with implications for all curved test set families\n\n5. **Connection to Number Theory**: The Gauss circle problem (lattice points in circles) is a special case where the highly structured lattice achieves r^{1/4} fluctuation, far below the √r universal lower bound.",
     "openQuestions": [
       "Is the logarithmic factor necessary? Is the lower bound actually Ω(√(r log r))? This has been open since 1987.",
       "Can we give explicit deterministic constructions achieving √(r log r)? Known low-discrepancy sequences (Halton, Niederreiter) apply to boxes, not circles.",
@@ -207,5 +207,45 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-988",
+      "relationship": "related",
+      "description": "Companion spherical discrepancy problem using Schmidt's theorem on spherical caps"
+    },
+    {
+      "targetId": "erdos-987",
+      "relationship": "related",
+      "description": "Exponential sums controlling equidistribution via the Erdős-Turán inequality, using related Fourier methods"
+    },
+    {
+      "targetId": "erdos-990",
+      "relationship": "related",
+      "description": "Angular discrepancy of polynomial roots on the unit circle via Erdős-Turán inequality"
+    },
+    {
+      "targetId": "erdos-992",
+      "relationship": "related",
+      "description": "Sequence discrepancy mod 1 using Weyl's criterion and exponential sum bounds"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Foundational Fourier series theory underpinning Beck's Fourier-analytic lower bound proof"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Roth's theorem (k=3 case) connects to Roth's earlier rectangle discrepancy lower bound (1954)"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-988",
+    "erdos-987",
+    "erdos-990",
+    "erdos-992",
+    "fourier-series",
+    "szemeredi-theorem"
+  ]
 }

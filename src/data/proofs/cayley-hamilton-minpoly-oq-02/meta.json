@@ -143,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves that similar matrices $B = P^{-1}AP$ have identical minimal polynomials, answering the open question affirmatively. The proof uses the inner conjugation as a $K$-algebra endomorphism and Mathlib's `aeval_algHom_apply` for a clean, 4-line proof of the central commutation lemma. All results compile with 0 sorries.",
-    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Similarity Invariants**: The minimal polynomial joins the determinant, trace, and characteristic polynomial as a similarity invariant. This is fundamental to classification theorems for linear maps.\n\n2. **Jordan Form**: The minimal polynomial $\\mu_M = \\prod_i (X - \\lambda_i)^{m_i}$ where $m_i$ is the size of the largest Jordan block for $\\lambda_i$. Similarity invariance means Jordan-form analysis is independent of basis choice.\n\n3.\n\n**Broader Connections**: **Rational Canonical Form**: The invariant factor decomposition (rational canonical form) depends on the sequence of invariant factors, which are determined by the similarity class. The minimal polynomial is the largest invariant factor.\n\n4. **Algebra Homomorphism Pattern**: Using `AlgHom` to transfer polynomial evaluation is a reusable proof pattern. Any statement about `aeval x p` can be transferred across algebra homomorphisms, enabling clean formalizations of many linear algebra results.\n\n5. **Non-Commutative Ring Tactic**: The proof highlights that `ring` fails for matrices (requires `CommSemiring`); `simp [mul_assoc]` combined with explicit unit lemmas (`Units.mul_inv`, `Units.inv_mul`) is the correct replacement for non-commutative associativity arguments.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Similarity Invariants**: The minimal polynomial joins the determinant, trace, and characteristic polynomial as a similarity invariant. This is fundamental to classification theorems for linear maps.\n\n2. **Jordan Form**: The minimal polynomial $\\mu_M = \\prod_i (X - \\lambda_i)^{m_i}$ where $m_i$ is the size of the largest Jordan block for $\\lambda_i$. Similarity invariance means Jordan-form analysis is independent of basis choice.\n\n**3. Rational Canonical Form**: The invariant factor decomposition (rational canonical form) depends on the sequence of invariant factors, which are determined by the similarity class. The minimal polynomial is the largest invariant factor.\n\n4. **Algebra Homomorphism Pattern**: Using `AlgHom` to transfer polynomial evaluation is a reusable proof pattern. Any statement about `aeval x p` can be transferred across algebra homomorphisms, enabling clean formalizations of many linear algebra results.\n\n5. **Non-Commutative Ring Tactic**: The proof highlights that `ring` fails for matrices (requires `CommSemiring`); `simp [mul_assoc]` combined with explicit unit lemmas (`Units.mul_inv`, `Units.inv_mul`) is the correct replacement for non-commutative associativity arguments.",
     "openQuestions": [
       "Can this be generalized to elements of abstract K-algebras, showing that isomorphic elements have the same minimal polynomial?",
       "Can the converse be formalized: if two matrices have the same minimal polynomial and characteristic polynomial, are they similar (over an algebraically closed field)?",
@@ -161,5 +161,21 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Parent result: Cayley-Hamilton theorem shows characteristic polynomial annihilates M; minimal polynomial is the monic divisor of least degree"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton"
+  ]
 }

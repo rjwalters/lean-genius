@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-e62-header",
+    "proofId": "erdos-62",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "context",
+    "title": "Common Subgraphs of Graphs with Chromatic Number Aleph-1",
+    "content": "Module docstring for Erdős Problem #62: if $G_1, G_2$ are graphs with chromatic number $\\aleph_1$, must they share a common subgraph $G$ with $\\chi(G) = 4$ (or even $\\chi(G) = \\aleph_0$)? This problem sits at the intersection of infinite combinatorics and graph theory. The Erdős-Hajnal-Shelah theorem shows graphs with $\\chi = \\aleph_1$ contain all large odd cycles, providing partial evidence.",
+    "mathContext": "Erdős #62: $\\chi(G_1) = \\chi(G_2) = \\aleph_1 \\Rightarrow \\exists H \\subseteq G_1 \\cap G_2$ with $\\chi(H) \\geq 4$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite chromatic number",
+      "common subgraphs",
+      "uncountable graphs",
+      "Erdős-Hajnal-Shelah"
+    ],
+    "prerequisites": [
+      "infinite graph theory",
+      "chromatic number",
+      "cardinal arithmetic"
+    ]
+  },
+  {
     "id": "ann-e62-defs",
     "proofId": "erdos-62",
     "range": {

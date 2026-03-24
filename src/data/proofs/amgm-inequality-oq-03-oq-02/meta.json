@@ -62,7 +62,7 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. All 10 theorems proved from Mathlib with no custom axioms or structure-encoded assumptions.",
+    "assumptions": "0 axioms, 0 sorries. Main limit theorem is original; uses Mathlib calculus infrastructure (derivatives, exp/log, AM-GM) as building blocks.",
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
       "Real exp/log/rpow identities and derivatives",
@@ -175,7 +175,8 @@
       "The rpow_def_of_pos identity rewrites both M_r and the limit target to the exp form, making congr' close the goal",
       "Once limit is established, HM ≤ GM ≤ AM follows from AM-GM on inverse values",
       "This limit is structurally identical to $\\lim_{\\alpha \\to 1} H_\\alpha = H_1$ (Rényi entropy converges to Shannon entropy): both use the derivative of $\\log(\\sum p_i^\\alpha)$ at the singular point, with $f(1) = 0$ and $f'(1) = \\sum p_i \\log p_i$. The `hasDerivAt_iff_tendsto_slope` technique applies verbatim to formalize the Rényi-to-Shannon limit in Lean",
-      "**Kolmogorov-Nagumo uniqueness:** The power mean family is essentially the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity (Kolmogorov 1930, Nagumo 1930, independently). The $r \\to 0$ limit proved here is the continuity condition at the singular point that makes the power mean a smooth one-parameter interpolation from $\\min$ ($r \\to -\\infty$) through $\\text{HM}$ ($r=-1$), $\\text{GM}$ ($r=0$), $\\text{AM}$ ($r=1$) to $\\max$ ($r \\to +\\infty$). Without this limit, the family would have a discontinuity at $r=0$ and the uniqueness characterization would fail — making this result not just a computation but a foundational continuity requirement"
+      "**Kolmogorov-Nagumo uniqueness:** The power mean family is essentially the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity (Kolmogorov 1930, Nagumo 1930, independently). The $r \\to 0$ limit proved here is the continuity condition at the singular point that makes the power mean a smooth one-parameter interpolation from $\\min$ ($r \\to -\\infty$) through $\\text{HM}$ ($r=-1$), $\\text{GM}$ ($r=0$), $\\text{AM}$ ($r=1$) to $\\max$ ($r \\to +\\infty$). Without this limit, the family would have a discontinuity at $r=0$ and the uniqueness characterization would fail — making this result not just a computation but a foundational continuity requirement",
+      "**Jensen's inequality as the engine of power mean monotonicity:** The $r \\to 0$ limit proved here completes a chain whose monotonicity ($M_r \\leq M_s$ for $r < s$) ultimately derives from Jensen's inequality. For $0 < r < s$: Jensen applied to the convex function $t \\mapsto t^{s/r}$ yields $(\\sum w_i x_i)^{s/r} \\geq \\sum w_i x_i^{s/r}$, which with $x_i = z_i^r$ gives $M_r \\leq M_s$. The GM case $r = 0$ is the singular limit where Jensen's convexity argument degenerates into the exp/log derivative technique used in this file. Conversely, $\\text{GM} \\leq \\text{AM}$ (the $M_0 \\leq M_1$ case) is exactly Jensen's inequality for the concave function $\\log$: $\\sum w_i \\log z_i \\leq \\log(\\sum w_i z_i)$. This makes Jensen's inequality the single unifying principle behind the entire power mean chain"
     ],
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
@@ -244,7 +245,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves the Power Mean Limit Theorem: lim_{r→0} M_r(z,w) = GM(z,w) with 0 sorries. The proof chain — derivative of ∑ wᵢzᵢ^r at r=0, chain rule for log composition, slope limit via hasDerivAt_iff_tendsto_slope, and exp continuity — is fully verified in Lean 4 using Mathlib. Additionally proves HM ≤ GM ≤ AM as corollaries. Together with AmgmInequalityOQ03.lean (power mean monotonicity), this completes the full chain HM = M_{-1} ≤ M_0 = GM ≤ M_1 = AM ≤ M_2 ≤ ...",
-    "implications": "**Theoretical Significance**: **For the power mean chain**: The limit establishes M_0 = GM, making the power mean family M_r continuous at r = 0.\n\n**Broader Connections**: Combined with monotonicity for r > 0 and r < 0 (proved in OQ03), this gives the complete chain.\n\n**For Mathlib**: This is the 'r=0 case' explicitly listed as a TODO in Mathlib.Analysis.MeanInequalitiesPow. This formalization fills that known gap and could be contributed upstream.\n\n**Key technique**: The `hasDerivAt_iff_tendsto_slope` lemma provides a clean bridge: 'f differentiable at 0 with f(0) = 0' immediately gives 'f(r)/r → f'(0)', which is the standard L'Hôpital-style step formalized without any division issues.",
+    "implications": "**Theoretical Significance**: **For the power mean chain**: The limit establishes M_0 = GM, making the power mean family M_r continuous at r = 0.\n\nCombined with monotonicity for r > 0 and r < 0 (proved in OQ03), this gives the complete chain.\n\n**For Mathlib**: This is the 'r=0 case' explicitly listed as a TODO in Mathlib.Analysis.MeanInequalitiesPow. This formalization fills that known gap and could be contributed upstream.\n\n**Key technique**: The `hasDerivAt_iff_tendsto_slope` lemma provides a clean bridge: 'f differentiable at 0 with f(0) = 0' immediately gives 'f(r)/r → f'(0)', which is the standard L'Hôpital-style step formalized without any division issues.",
     "openQuestions": [
       "Generalize to M_r ≤ M_s for all r < 0 < s (crossing zero case — handled by combining OQ03 with this limit)",
       "Add this to Mathlib as a proper contribution filling the existing TODO in MeanInequalitiesPow",
@@ -271,9 +272,11 @@
     ],
     "namespace": null,
     "lineCount": 316,
+    "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "lemmaCount": 0,
+    "defCount": 0
   },
   "relatedProofs": [
     "amgm-inequality-oq-03",

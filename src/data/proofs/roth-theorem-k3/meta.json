@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 6,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -43,8 +43,8 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 1040,
-    "assumptions": "No axioms. 6 sorry(s): 1 ZMod API, 1 char sum, 1 coset density core, 1 box partition, 1 even N, 1 N=1."
+    "lineCount": 1442,
+    "assumptions": "No axioms. 1 sorry: density_increment_iter N=1 hard case (delta ∈ (0.99, 1]) — requires Dirichlet approximation to prevent descent reaching N=1 with high density. DirichletApproximation.lean is already proved."
   },
   "overview": {
     "historicalContext": "Roth's theorem, proved by Klaus Friedrich Roth in 1953, was a landmark achievement in number theory and combinatorics. It confirmed the k=3 case of the Erdos-Turan conjecture (1936) that every dense subset of the integers contains arithmetic progressions of any length.\n\nRoth introduced Fourier-analytic methods to additive combinatorics, a revolutionary approach that opened an entirely new toolbox. His key insight was the density increment strategy: if a set A of density delta in [N] has no 3-term AP, then there exists a long arithmetic progression P where A has density at least delta + c*delta^2. Iterating this increment (which can only happen O(1/delta) times before density exceeds 1) yields a contradiction.\n\nThe quantitative bounds have been dramatically improved over the decades: Bourgain (1999, 2008), Sanders (2011), and most recently Bloom and Sisask (2020) achieved r_3(N) = O(N/(log N)^{1+c}). In 2023, Kelley and Meka achieved the breakthrough bound r_3(N) = O(N * exp(-c * (log N)^{1/12})).\n\nRoth's theorem is the natural starting point for the Szemeredi program because it introduces the core techniques (Fourier analysis, density increment) in their simplest setting.",
@@ -117,7 +117,7 @@
       "title": "Part IV: Large Fourier Coefficient",
       "startLine": 449,
       "endLine": 465,
-      "summary": "States fourier_large_coefficient: if A has density δ and no 3-AP, then ∃ r ≠ 0 with |Â(r)| ≥ δ²N/2. Uses AP-freeness (Λ₃=0), the Fourier identity, and Parseval. 1 sorry.",
+      "summary": "Proves fourier_large_coefficient: if A has density δ and no 3-AP, then ∃ r ≠ 0 with |Â(r)| ≥ δ²N/2. Case 1 (δ²N<2): Parseval pigeonhole. Case 2 (δ²N≥2): Fourier identity + AM-GM bound. 0 sorries — fully proved.",
       "mathContext": "AP-free + density $\\delta$ $\\implies$ $\\exists r \\neq 0$: $|\\hat{1}_A(r)| \\geq \\delta^2 N/2$."
     },
     {
@@ -125,7 +125,7 @@
       "title": "Part V: Density Increment Lemma",
       "startLine": 466,
       "endLine": 495,
-      "summary": "States density_increment_lemma: AP-free set of density δ on Z/NZ implies AP-free set of density ≥ δ + δ²/100 on some Z/MZ with M ≥ √N. 1 sorry.",
+      "summary": "Proves density_increment_lemma (0 sorries): AP-free set of density δ on Z/NZ (N≥2) implies AP-free set of density ≥ δ+δ²/100 on some Z/MZ with 0<M<N. Also proves density_increment_iter extending to N≥1 with 1 sorry for the narrow N=1, δ∈(0.99,1] case (needs Dirichlet approximation).",
       "mathContext": "AP-free + density $\\delta$ on $\\mathbb{Z}/N\\mathbb{Z}$ $\\implies$ AP-free + density $\\geq \\delta + \\delta^2/100$ on some $\\mathbb{Z}/M\\mathbb{Z}$, $M \\geq \\sqrt{N}$."
     },
     {
@@ -211,9 +211,9 @@
     ],
     "opens": [],
     "namespace": "Szemeredi.Roth",
-    "lineCount": 594,
+    "lineCount": 1476,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 16,
     "definitionCount": 3
   },
   "references": [

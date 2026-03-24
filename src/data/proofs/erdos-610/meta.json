@@ -175,7 +175,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #610 remains OPEN. The best known bound τ(G) ≤ n - √(2n) + O(1) by Erdős, Gallai, and Tuza is nearly tight, but whether it can be improved to n - ω(n)√n or n - c√(n log n) is unknown. The conjecture τ ≤ n - f(n) connecting to triangle-free independence (f(n) = Θ(√(n log n)) by Kim) would resolve Question 2.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Clique Structure Theory**: The problem reveals fundamental limits on how maximal cliques can be distributed in a graph. The EGT bound shows that no matter how complex the clique structure, a transversal of size n - Θ(√n) always exists.\n\n2. **Ramsey-Theoretic Connection**: The conjecture τ ≤ n - f(n) would create a direct bridge between clique transversals and triangle-free Ramsey theory. Kim's theorem R(3,k) = Θ(k²/log k) would then have implications for hitting sets in arbitrary graphs.\n\n3.\n\n**Broader Connections**: **Algorithmic Implications**: Computing τ is NP-hard in general but polynomial for perfect and chordal graphs. Improving the EGT bound would give better approximation guarantees for the general case.\n\n4. **Turán-Type Reasoning**: The proof uses Turán's theorem on auxiliary graphs, connecting transversal problems to extremal graph theory. Improving the bound likely requires going beyond Turán-type arguments.\n\n5. **Random Graph Perspective**: Near-tight constructions from random graphs suggest that 'typical' graphs have τ ≈ n - √(2n), so improvements require exploiting structure beyond what random graphs exhibit.",
+    "implications": "1. **Clique Structure Theory**: The problem reveals fundamental limits on how maximal cliques can be distributed in a graph. The EGT bound shows that no matter how complex the clique structure, a transversal of size n - Θ(√n) always exists.\n\n2. **Ramsey-Theoretic Connection**: The conjecture τ ≤ n - f(n) would create a direct bridge between clique transversals and triangle-free Ramsey theory. Kim's theorem R(3,k) = Θ(k²/log k) would then have implications for hitting sets in arbitrary graphs.\n\n**3. Algorithmic Implications**: Computing τ is NP-hard in general but polynomial for perfect and chordal graphs. Improving the EGT bound would give better approximation guarantees for the general case.\n\n4. **Turán-Type Reasoning**: The proof uses Turán's theorem on auxiliary graphs, connecting transversal problems to extremal graph theory. Improving the bound likely requires going beyond Turán-type arguments.\n\n5. **Random Graph Perspective**: Near-tight constructions from random graphs suggest that 'typical' graphs have τ ≈ n - √(2n), so improvements require exploiting structure beyond what random graphs exhibit.",
     "openQuestions": [
       "Can τ(G) ≤ n - ω(n)√n be achieved for any ω → ∞? Even ω(n) = log log n would be major progress.",
       "Does τ(G) ≤ n - c√(n log n) hold for some c > 0? This would match the triangle-free independence threshold.",
@@ -198,5 +198,51 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-611",
+      "relationship": "related",
+      "description": "Direct refinement: constrains maximal clique sizes (all ≥ k), giving τ(G) ≤ n - √(kn) and asking whether the dependence on k can be improved"
+    },
+    {
+      "targetId": "erdos-151",
+      "relationship": "related",
+      "description": "Related via triangle-free independence: conjectures τ(G) ≤ n - H(n) where H(n) is the triangle-free independence number, sharing the core connection to Kim's theorem"
+    },
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Ramsey numbers avoiding monochromatic cliques: foundational Ramsey theory underlying the clique/independent set duality in the EGT conjecture"
+    },
+    {
+      "targetId": "erdos-128",
+      "relationship": "related",
+      "description": "Triangle-free graphs with dense subgraphs: structural results on triangle-free graphs, related to the f(n) function central to the EGT conjecture"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "High chromatic subgraphs with large girth: chromatic number and clique/color structure, related to the interplay between cliques and independent sets"
+    },
+    {
+      "targetId": "erdos-612",
+      "relationship": "related",
+      "description": "Sister problem: diameter bounds for K_r-free graphs, extending clique-free constraints to diameter properties of graphs"
+    },
+    {
+      "targetId": "erdos-54",
+      "relationship": "related",
+      "description": "Foundational Ramsey theory (2-complete sets): the Ramsey-theoretic framework underpinning Kim's theorem R(3,k) = Θ(k²/log k)"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-611",
+    "erdos-151",
+    "erdos-129",
+    "erdos-128",
+    "erdos-108",
+    "erdos-612",
+    "erdos-54"
+  ]
 }

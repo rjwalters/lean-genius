@@ -102,7 +102,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #160 asks for the growth rate of $h(N)$, the minimum colors for 3-diverse colorings of 4-APs in $\\{1,\\ldots,N\\}$. The formalization captures the full combinatorial setup with proved structural properties, axiomatizes the state-of-the-art bounds (Hunter's $N^{0.356}$ upper and Kelley–Meka-based $\\exp(c(\\log N)^{1/9})$ lower), and formally states the open problem.",
-    "implications": "**Theoretical Significance**: Closing this gap would advance quantitative Ramsey theory significantly.\n\n**Broader Connections**: A polynomial answer would suggest 4-AP coloring problems behave differently from 3-AP problems (where the density bounds are exponential in $\\log$-powers). A superpolynomial answer would connect to deep phenomena in additive combinatorics related to Szemerédi regularity.",
+    "implications": "**Theoretical Significance**: Closing this gap would advance quantitative Ramsey theory significantly.\n\nA polynomial answer would suggest 4-AP coloring problems behave differently from 3-AP problems (where the density bounds are exponential in $\\log$-powers). A superpolynomial answer would connect to deep phenomena in additive combinatorics related to Szemerédi regularity.",
     "openQuestions": [
       "Is $h(N)$ polynomial or superpolynomial in $N$? The current bounds do not even determine this basic dichotomy.",
       "Can Hunter's exponent $\\log 3/\\log 22 \\approx 0.356$ be further reduced, perhaps below $1/3$?",

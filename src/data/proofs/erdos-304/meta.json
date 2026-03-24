@@ -145,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #304 on the complexity of Egyptian fraction representations. The minimum number of unit fractions N(b) needed for the worst-case a/b with 1 ≤ a < b is bounded by log log b ≪ N(b) ≪ √(log b). The open question asks if N(b) ≪ log log b, which would completely characterize the growth rate.",
-    "implications": "**Theoretical Significance**: This problem connects ancient mathematics (Egyptian fraction tradition) with modern asymptotic analysis.\n\n**Broader Connections**: The bounds involve iterated logarithms, a rate of growth so slow it is essentially constant for practical purposes. Understanding N(b) precisely would illuminate the structure of how rationals decompose into unit fractions.",
+    "implications": "**Theoretical Significance**: This problem connects ancient mathematics (Egyptian fraction tradition) with modern asymptotic analysis.\n\nThe bounds involve iterated logarithms, a rate of growth so slow it is essentially constant for practical purposes. Understanding N(b) precisely would illuminate the structure of how rationals decompose into unit fractions.",
     "openQuestions": [
       "Is N(b) ≪ log log b? (The main open question)",
       "What is the exact constant in the lower bound log log b ≪ N(b)?",

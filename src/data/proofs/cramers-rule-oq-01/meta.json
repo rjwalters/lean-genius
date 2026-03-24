@@ -137,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "The formalization affirmatively answers the open question: **yes**, the Cayley-Hamilton theorem can be derived as a corollary of Cramer's Rule (the adjugate identity). The proof is complete with 13 theorems and 0 sorries, working over any commutative ring. The key chain is: adjugate identity → polynomial matrix application → matPolyEquiv transfer → evaluation at M → Cayley-Hamilton.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Unified Framework**: Cramer's Rule and Cayley-Hamilton are not just historically related — they are formally derivable from the same algebraic identity.\n\n2.\n\n**Broader Connections**: **Proof via Polynomial Substitution**: The characteristic matrix $\\lambda I - M$ is the bridge that converts a result about linear systems (Cramer) into a result about matrix polynomials (Cayley-Hamilton).\n\n3. **Commutative Ring Generality**: Both theorems hold over any commutative ring, and the connection between them is also ring-theoretic.\n\n4. **Educational Value**: This derivation shows students and researchers that these fundamental linear algebra results share deep algebraic roots.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Unified Framework**: Cramer's Rule and Cayley-Hamilton are not just historically related — they are formally derivable from the same algebraic identity.\n\n**2. Proof via Polynomial Substitution**: The characteristic matrix $\\lambda I - M$ is the bridge that converts a result about linear systems (Cramer) into a result about matrix polynomials (Cayley-Hamilton).\n\n3. **Commutative Ring Generality**: Both theorems hold over any commutative ring, and the connection between them is also ring-theoretic.\n\n4. **Educational Value**: This derivation shows students and researchers that these fundamental linear algebra results share deep algebraic roots.",
     "openQuestions": [
       "Can the connection be extended to the minimal polynomial (does the adjugate approach give the minimal polynomial too)?",
       "Is there a non-commutative analogue using quasideterminants (Gelfand-Retakh)?",
@@ -188,5 +188,15 @@
       "venue": "Academic Pensieve",
       "note": "The proof approach in Mathlib follows this reference"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "cramers-rule"
   ]
 }

@@ -153,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes the combinatorial core of Tucker's 2D lemma with 434 lines, 10 theorems, 3 definitions, 0 axioms, and 0 sorries. All theorems are fully machine-checked. The modular architecture separates labeling definitions, pair classification, triangulated complex structure, parity argument, and graph-theoretic handshaking connection.",
-    "implications": "**Theoretical Significance**: The modular decomposition (1D Tucker → parity → 2D Tucker) provides a clean proof architecture that separates topological content (triangulation existence) from combinatorial content (parity counting).\n\n**Broader Connections**: The path-following interpretation gives algorithmic content: the proof is not just existential but describes a procedure to find the complementary edge. This connects Tucker's lemma to the broader program of constructive combinatorial topology.",
+    "implications": "**Theoretical Significance**: The modular decomposition (1D Tucker → parity → 2D Tucker) provides a clean proof architecture that separates topological content (triangulation existence) from combinatorial content (parity counting).\n\nThe path-following interpretation gives algorithmic content: the proof is not just existential but describes a procedure to find the complementary edge. This connects Tucker's lemma to the broader program of constructive combinatorial topology.",
     "openQuestions": [
       "Reformulate parent tucker_2d axiom to use TriangulatedComplex (current statement is too broad for arbitrary graphs)",
       "Formalize the path-following algorithm as a constructive proof with a termination argument",
@@ -199,5 +199,15 @@
       "citation": "Ziegler, G., Lectures on Polytopes, Springer GTM 152 (1995), Chapter 5 on triangulations.",
       "type": "book"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam-oq-03-oq-01"
   ]
 }

@@ -194,7 +194,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #529 asks about the growth rate of self-avoiding walk end-to-end distance in various dimensions. For k ≥ 5, Hara and Slade proved d_k(n) ~ D√n. For k = 2, Duminil-Copin and Hammond proved d_2(n) = o(n). The conjectured behavior is d_2(n) ~ n^{3/4}, d_3(n) ~ n^{0.588}, and d_4(n) ~ (log n)^{1/8}√n. Question 2 is now believed FALSE for k = 3, 4.",
-    "implications": "**Theoretical Significance**: **Connections to Physics and Mathematics**\n\n1. **Polymer Physics:** SAW models linear polymers in good solvents\n\n2. **Critical Phenomena:** ν is a critical exponent analogous to magnetization\n\n3.\n\n**Broader Connections**: **Conformal Field Theory:** 2D SAW connects to SLE (Schramm-Loewner Evolution)\n\n4. **Lace Expansion:** Technique developed by Brydges-Spencer used in proofs\n\n5. **Universality:** Critical exponents depend only on dimension, not lattice details.",
+    "implications": "**Theoretical Significance**: **Connections to Physics and Mathematics**\n\n1. **Polymer Physics:** SAW models linear polymers in good solvents\n\n2. **Critical Phenomena:** ν is a critical exponent analogous to magnetization\n\n**3. Conformal Field Theory:** 2D SAW connects to SLE (Schramm-Loewner Evolution)\n\n4. **Lace Expansion:** Technique developed by Brydges-Spencer used in proofs\n\n5. **Universality:** Critical exponents depend only on dimension, not lattice details.",
     "openQuestions": [
       "Prove d_2(n) ~ n^{3/4} (rigorously establish ν = 3/4)",
       "Determine exact value of ν in 3D",
@@ -219,5 +219,15 @@
     "axiomCount": 13,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-530",
+      "relationship": "related",
+      "description": "SAW connective constant problem"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-530"
+  ]
 }

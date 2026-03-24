@@ -138,39 +138,39 @@
   ],
   "crossReferences": [
     {
-      "id": "cantors-theorem",
       "relationship": "parent",
-      "description": "The base Cantor's theorem proof; this entry derives it as a corollary of Lawvere's fixed-point theorem"
+      "description": "The base Cantor's theorem proof; this entry derives it as a corollary of Lawvere's fixed-point theorem",
+      "targetId": "cantors-theorem"
     },
     {
-      "id": "cantors-theorem-oq-01",
       "relationship": "sibling",
-      "description": "OQ-01 explores cardinality aspects of Cantor's theorem; OQ-02 explores the categorical unification via Lawvere"
+      "description": "OQ-01 explores cardinality aspects of Cantor's theorem; OQ-02 explores the categorical unification via Lawvere",
+      "targetId": "cantors-theorem-oq-01"
     },
     {
-      "id": "cantor-diagonalization",
       "relationship": "related",
-      "description": "The direct diagonalization proof for uncountability of the reals; Part V of this entry reproduces the diagonal witness construction"
+      "description": "The direct diagonalization proof for uncountability of the reals; Part V of this entry reproduces the diagonal witness construction",
+      "targetId": "cantor-diagonalization"
     },
     {
-      "id": "godel-incompleteness",
       "relationship": "related",
-      "description": "Gödel's incompleteness theorem; Part IV of this entry shows the core diagonal mechanism underlying it"
+      "description": "Gödel's incompleteness theorem; Part IV of this entry shows the core diagonal mechanism underlying it",
+      "targetId": "godel-incompleteness"
     },
     {
-      "id": "brouwer-fixed-point",
       "relationship": "contrast",
-      "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog, whereas Lawvere's theorem forces fixed points from surjectivity"
+      "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog, whereas Lawvere's theorem forces fixed points from surjectivity",
+      "targetId": "brouwer-fixed-point"
     },
     {
-      "id": "schauder-fixed-point",
       "relationship": "contrast",
-      "description": "Schauder's fixed-point theorem extends Brouwer to infinite dimensions; both contrast with Lawvere's algebraic/categorical fixed-point result"
+      "description": "Schauder's fixed-point theorem extends Brouwer to infinite dimensions; both contrast with Lawvere's algebraic/categorical fixed-point result",
+      "targetId": "schauder-fixed-point"
     }
   ],
   "conclusion": {
     "summary": "This formalization proves Lawvere's Fixed-Point Theorem and derives Cantor's theorem, Russell's paradox, Gödel's diagonalization, Tarski's undefinability, and the Bool diagonal argument as corollaries. The file compiles with 0 sorries and 0 axioms. All 15 theorems follow from the single abstract diagonal construction q x = g(f x x).",
-    "implications": "**Theoretical Significance**: **Categorical unification**: All classical 'diagonal' impossibility results (Cantor, Russell, Gödel, Tarski) are instances of one theorem. The apparent 'magic' of diagonalization is the categorical fact that in a cartesian closed category, surjections onto internal hom-objects force fixed points. This formalization makes the unification machine-checkable in Lean 4.\n\n**The role of negation**: The function $\\neg : \\text{Prop} \\to \\text{Prop}$ has no fixed point, and this single fact drives all the results.\n\n**Broader Connections**: Replace $\\neg$ with any other fixed-point-free function and you get a different diagonal argument — for instance, the successor $S : \\mathbb{N} \\to \\mathbb{N}$ yields finiteness impossibility results.\n\n**Type-theoretic foundations**: Lean 4's universe hierarchy `Type u : Type (u+1)` is not syntactic bookkeeping — it encodes the mathematical content of Lawvere's theorem. `Type : Type` would admit a surjection `Type → (Type → Type)`, forcing every endofunction to have a fixed point, including $\\neg$.\n\n**Constructive validity**: The Lawvere framework requires no excluded middle or axiom of choice — only surjectivity and function application. This makes it valid in intuitionistic, classical, and realizability settings, unlike some formulations of Cantor's theorem that rely on classical logic.\n\n**Formal verification significance**: The Gödel and Tarski results here are type-theoretic analogues. The full incompleteness theorem requires arithmetic coding (a much larger project), but the core mechanism — why self-referential sentences exist — is precisely what Lawvere captures.\n\n**Related gallery entries**: See [cantors-theorem](/proofs/cantors-theorem) for the direct Cantor diagonal proof, [brouwer-fixed-point](/proofs/brouwer-fixed-point) and [schauder-fixed-point](/proofs/schauder-fixed-point) for topological fixed-point theorems that contrast with Lawvere's algebraic approach.",
+    "implications": "**Theoretical Significance**: **Categorical unification**: All classical 'diagonal' impossibility results (Cantor, Russell, Gödel, Tarski) are instances of one theorem. The apparent 'magic' of diagonalization is the categorical fact that in a cartesian closed category, surjections onto internal hom-objects force fixed points. This formalization makes the unification machine-checkable in Lean 4.\n\n**The role of negation**: The function $\\neg : \\text{Prop} \\to \\text{Prop}$ has no fixed point, and this single fact drives all the results.\n\nReplace $\\neg$ with any other fixed-point-free function and you get a different diagonal argument — for instance, the successor $S : \\mathbb{N} \\to \\mathbb{N}$ yields finiteness impossibility results.\n\n**Type-theoretic foundations**: Lean 4's universe hierarchy `Type u : Type (u+1)` is not syntactic bookkeeping — it encodes the mathematical content of Lawvere's theorem. `Type : Type` would admit a surjection `Type → (Type → Type)`, forcing every endofunction to have a fixed point, including $\\neg$.\n\n**Constructive validity**: The Lawvere framework requires no excluded middle or axiom of choice — only surjectivity and function application. This makes it valid in intuitionistic, classical, and realizability settings, unlike some formulations of Cantor's theorem that rely on classical logic.\n\n**Formal verification significance**: The Gödel and Tarski results here are type-theoretic analogues. The full incompleteness theorem requires arithmetic coding (a much larger project), but the core mechanism — why self-referential sentences exist — is precisely what Lawvere captures.\n\n**Related gallery entries**: See [cantors-theorem](/proofs/cantors-theorem) for the direct Cantor diagonal proof, [brouwer-fixed-point](/proofs/brouwer-fixed-point) and [schauder-fixed-point](/proofs/schauder-fixed-point) for topological fixed-point theorems that contrast with Lawvere's algebraic approach.",
     "openQuestions": [
       "Can the full Gödel incompleteness theorem be formalized in this framework? (Requires arithmetic coding of syntax — much larger project)",
       "What is the precise relationship between Lawvere's theorem and Cantor's theorem in ZFC? (Cantor uses cardinality, Lawvere uses surjectivity — equivalent in classical logic but different in constructive settings)",

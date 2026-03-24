@@ -124,7 +124,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #484 is SOLVED by Erdős, Sárközy, and Sós (1989). Any k-coloring of {1,...,N} has ≥ N/2 − O(N^{1−1/2^{k+1}}) even monochromatic sums. For k = 2, the bound N/2 − O(log N) is tight — the 2-adic valuation construction avoids all powers of 2.",
-    "implications": "**Theoretical Significance**: The result establishes that monochromatic sums are **unavoidable at positive density** in any partition — a quantitative strengthening of Schur's theorem.\n\n**Broader Connections**: The techniques (Fourier analysis, large sieve) have become standard in additive combinatorics, influencing work on the Freiman-Ruzsa conjecture and sum-product estimates. The tight O(log N) bound for k = 2 via the 2-adic valuation reveals deep connections between partition regularity and p-adic structure.",
+    "implications": "**Theoretical Significance**: The result establishes that monochromatic sums are **unavoidable at positive density** in any partition — a quantitative strengthening of Schur's theorem.\n\nThe techniques (Fourier analysis, large sieve) have become standard in additive combinatorics, influencing work on the Freiman-Ruzsa conjecture and sum-product estimates. The tight O(log N) bound for k = 2 via the 2-adic valuation reveals deep connections between partition regularity and p-adic structure.",
     "openQuestions": [
       "What is the exact optimal constant in the error term for general k? (Ben Green's Problem 25)",
       "Can the exponent 1 − 1/2^{k+1} be improved, or is it best possible for the ESS approach?",
@@ -154,5 +154,33 @@
     "Hindman, N. (1974): 'Finite sums from sequences within cells of a partition of N' — infinite monochromatic sum structure",
     "Freiman, G.A. (1973): 'Foundations of a Structural Theory of Set Addition'",
     "https://erdosproblems.com/484"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization"
+    },
+    {
+      "targetId": "erdos-45",
+      "relationship": "related",
+      "description": "Related formalization"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Related formalization"
+    },
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Related formalization"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-432",
+    "erdos-45",
+    "erdos-36",
+    "erdos-444"
   ]
 }

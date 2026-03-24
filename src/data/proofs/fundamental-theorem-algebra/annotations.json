@@ -33,7 +33,7 @@
     "title": "The Fundamental Theorem of Algebra",
     "content": "**Every non-constant polynomial with complex coefficients has at least one complex root.**\n\nThis seemingly simple statement has profound consequences:\n- No need to extend numbers beyond the complexes for algebra\n- Every polynomial equation is solvable (has solutions)\n- The complex numbers are 'algebraically complete'\n\nDespite the name 'algebra', every known proof uses analysis or topology.",
     "mathContext": "$\\forall p \\in \\mathbb{C}[z], \\deg p \\geq 1 \\Rightarrow \\exists z_0 \\in \\mathbb{C}, p(z_0) = 0$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "complex numbers",
       "polynomial degree",
@@ -55,22 +55,18 @@
     },
     "type": "theorem",
     "title": "Contrapositive Form",
-    "content": "An equivalent statement of FTA: **if a polynomial has no roots, it must be constant.**\n\nThis is the contrapositive of the main theorem:\n- Original: $\\deg p \\geq 1 \\Rightarrow \\exists$ root\n- Contrapositive: no roots $\\Rightarrow \\deg p = 0$\n\nBoth say the same thing logically, but this form is sometimes more useful.\n\nThis contrapositive is the natural formulation for the Liouville proof: assume $p(z) \\neq 0$ everywhere; then $f(z) = 1/p(z)$ is entire (holomorphic on all of $\\mathbb{C}$). Since $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, the function $f$ is bounded. Liouville's theorem then forces $f$ — and hence $p$ — to be constant.",
-    "mathContext": "$(\\deg p \\geq 1 \\Rightarrow \\exists z, p(z) = 0)$\n\n$\\equiv$\n\n$(\\forall z, p(z) \\neq 0 \\Rightarrow \\deg p = 0)$\n\nThe proof mechanism: if $p$ has no roots, define $f = 1/p$. Then:\n- $f$ is entire: holomorphic everywhere on $\\mathbb{C}$\n- $f$ is bounded: $|f(z)| = 1/|p(z)| \\to 0$ as $|z| \\to \\infty$\n- Liouville: bounded entire $\\Rightarrow$ constant, so $p$ is constant\n\nThis is why algebraic statements about polynomials require analytic tools: the completeness of $\\mathbb{R}$ (encoded in Liouville's theorem) is essential. No purely algebraic proof of FTA exists.",
+    "content": "An equivalent statement of FTA: **if a polynomial has no roots, it must be constant.**\n\nThis is the contrapositive of the main theorem:\n- Original: $\\deg p \\geq 1 \\Rightarrow \\exists$ root\n- Contrapositive: no roots $\\Rightarrow \\deg p = 0$\n\nBoth say the same thing logically, but this form is sometimes more useful.",
+    "mathContext": "$(\\deg p \\geq 1 \\Rightarrow \\exists z, p(z) = 0)$\n\n$\\equiv$\n\n$(\\forall z, p(z) \\neq 0 \\Rightarrow \\deg p = 0)$",
     "significance": "key",
     "prerequisites": [
       "fundamental_theorem_of_algebra",
       "contrapositive reasoning",
-      "polynomial degree",
-      "Liouville's theorem",
-      "entire functions"
+      "polynomial degree"
     ],
     "relatedConcepts": [
       "contrapositive",
       "logical equivalence",
-      "constant polynomial",
-      "Liouville's theorem",
-      "bounded entire function"
+      "constant polynomial"
     ]
   },
   {
@@ -82,23 +78,18 @@
     },
     "type": "theorem",
     "title": "Complete Splitting",
-    "content": "Every complex polynomial **splits** into linear factors.\n\nThis means for any $p \\in \\mathbb{C}[z]$ of degree $n$:\n$p(z) = c(z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nwhere $c$ is the leading coefficient and $r_1, \\ldots, r_n$ are the roots.\n\nThis is immediate from algebraic closure: keep factoring out roots until nothing's left.\n\n**The key contrast with Abel-Ruffini**: FTA guarantees these roots $r_1, \\ldots, r_n$ *exist* in $\\mathbb{C}$. The Abel-Ruffini theorem (for $n \\geq 5$) shows they cannot in general be *expressed* using radicals $+, -, \\times, \\div, \\sqrt[k]{\\cdot}$ applied to the coefficients. Existence and explicit expressibility are very different things.\n\n**Why splitting matters**: Over non-algebraically-closed fields, polynomials may be irreducible of degree $> 1$ (e.g., $x^2 + 1$ is irreducible over $\\mathbb{R}$). The algebraic closure $\\overline{K}$ is exactly the smallest extension where every polynomial splits — and FTA says $\\mathbb{C} = \\overline{\\mathbb{R}}$.",
-    "mathContext": "A polynomial *splits* over $K$ if:\n\n$p = c \\prod_i (x - r_i)$ where $r_i \\in K$\n\nEvery polynomial splits over its algebraic closure.\n\nMathlib: `IsAlgClosed.splits_codomain p` gives `Splits (RingHom.id ℂ) p` for any `p : ℂ[X]`.\n\nFTA implies $\\mathbb{C}$ is algebraically closed, so `IsAlgClosed ℂ` holds and every `p : ℂ[X]` splits. Iterating root extraction: given $p$ of degree $n$, FTA gives root $r_1$, so $p = (z - r_1) q$ with $\\deg q = n-1$; apply FTA to $q$, etc. This induction on degree gives the complete factorization $p = c \\prod_{i=1}^n (z - r_i)$.\n\nContrast: Over $\\mathbb{R}$, $x^2 + 1$ does not split ($\\pm i \\notin \\mathbb{R}$); over $\\mathbb{Q}$, $x^2 - 2$ does not split. The algebraic closure $\\overline{\\mathbb{Q}}$ is a countable subfield of $\\mathbb{C}$ — 'most' complex numbers are transcendental.",
+    "content": "Every complex polynomial **splits** into linear factors.\n\nThis means for any $p \\in \\mathbb{C}[z]$ of degree $n$:\n$p(z) = c(z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nwhere $c$ is the leading coefficient and $r_1, \\ldots, r_n$ are the roots.\n\nThis is immediate from algebraic closure: keep factoring out roots until nothing's left.",
+    "mathContext": "A polynomial *splits* over $K$ if:\n\n$p = c \\prod_i (x - r_i)$ where $r_i \\in K$\n\nEvery polynomial splits over its algebraic closure.",
     "significance": "key",
     "prerequisites": [
       "algebraic closure",
       "IsAlgClosed.splits_codomain",
-      "polynomial splitting",
-      "Abel-Ruffini theorem",
-      "algebraic closure of R"
+      "polynomial splitting"
     ],
     "relatedConcepts": [
       "Splits",
       "linear factors",
-      "factorization",
-      "IsAlgClosed",
-      "algebraic closure",
-      "Abel-Ruffini"
+      "factorization"
     ]
   },
   {
@@ -112,7 +103,7 @@
     "title": "Counting Roots",
     "content": "**A degree-n polynomial has exactly n roots, counted with multiplicity.**\n\nMultiplicity: if $(z - r)^k$ divides $p$ but $(z - r)^{k+1}$ doesn't, then $r$ has multiplicity $k$.\n\nExample: $z^3 - z^2 = z^2(z-1)$ has:\n- Root 0 with multiplicity 2\n- Root 1 with multiplicity 1\n- Total: 2 + 1 = 3 = degree",
     "mathContext": "For $p \\neq 0$: $\\sum_{r : p(r) = 0} \\text{mult}_r(p) = \\deg p$\n\nMathlib represents this via multisets: $|\\text{roots}(p)| = \\deg p$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "splits_over_complex",
       "polynomial roots multiset",

@@ -168,7 +168,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #73 asked whether graphs where every subgraph has large independent sets must be 'almost bipartite'. Reed's 1999 proof confirmed this: the $k$-independence condition forces bipartite deficiency at most $f(k) \\le 2^k$. The formalization captures the full chain from definitions through Reed's theorem to the chromatic number corollary.",
-    "implications": "**Theoretical Significance**: **Connections and Significance**\n\n1. **Structural graph theory**: Prototype for 'approximate property implies approximate structure' results, a theme in the Robertson-Seymour Graph Minors Project\n2.\n\n**Broader Connections**: **Erdős-Pósa framework**: The proof relies on packing-transversal duality for odd cycles, connecting to a major theme in combinatorics\n3. **$\\chi$-boundedness**: The corollary $\\chi(G) \\le f(k) + 2$ places the result in Gyárfás's theory of $\\chi$-bounded graph classes\n4. **Algorithmic implications**: The bounded deficiency suggests FPT algorithms for recognizing $k$-independence graphs.",
+    "implications": "**Theoretical Significance**: **Connections and Significance**\n\n1. **Structural graph theory**: Prototype for 'approximate property implies approximate structure' results, a theme in the Robertson-Seymour Graph Minors Project\n**2. Erdős-Pósa framework**: The proof relies on packing-transversal duality for odd cycles, connecting to a major theme in combinatorics\n3. **$\\chi$-boundedness**: The corollary $\\chi(G) \\le f(k) + 2$ places the result in Gyárfás's theory of $\\chi$-bounded graph classes\n4. **Algorithmic implications**: The bounded deficiency suggests FPT algorithms for recognizing $k$-independence graphs.",
     "openQuestions": [
       "What is the optimal growth rate of $f(k)$? Is $f(k) = O(k)$ or $f(k) = O(\\text{poly}(k))$?",
       "Can the Erdős-Pósa constant for odd cycles be improved to give better bounds?",
@@ -216,5 +216,27 @@
       "citation": "Erdős Problems. Problem #73.",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-922",
+      "relationship": "related",
+      "description": "thematic"
+    },
+    {
+      "targetId": "erdos-106",
+      "relationship": "related",
+      "description": "thematic"
+    },
+    {
+      "targetId": "erdos-47",
+      "relationship": "related",
+      "description": "thematic"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-922",
+    "erdos-106",
+    "erdos-47"
   ]
 }

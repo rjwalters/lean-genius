@@ -137,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "This formalization directly answers the open question: infinite variance does NOT cause LLN failure. The true threshold is E[|X|] < ∞ (Kolmogorov 1930). Mathlib's `strong_law_ae` requires only integrability, enabling clean proof of SLLN for all heavy-tailed distributions with finite mean. WLLN follows immediately via a.s. → in-probability convergence.",
-    "implications": "**Theoretical Significance**: **For probability theory**: The proof clarifies a common pedagogical misconception. Chebyshev's inequality proof of WLLN (requiring L²) is a sufficient but not necessary argument. Kolmogorov's L¹ threshold is tight.\n\n**For applications**: Heavy-tailed distributions (Pareto, stable, power-law) arise throughout finance, network science, and physics.\n\n**Broader Connections**: The LLN still applies whenever E[|X|] < ∞, giving practitioners reliable averaging even with extreme events.\n\n**For Mathlib**: This demonstrates that `ProbabilityTheory.strong_law_ae` is already the strongest form of SLLN. The only gap is the converse (necessity), which requires Borel-Cantelli applied to tail events {|Xₙ| > nε}.\n\n**For teaching**: The Cauchy distribution (α = 1 for stable laws) is the precise boundary — it has no finite moments, and indeed the sample mean of i.i.d. Cauchy(0,1) is again Cauchy(0,1) by 1-stability, so no concentration occurs.",
+    "implications": "**Theoretical Significance**: **For probability theory**: The proof clarifies a common pedagogical misconception. Chebyshev's inequality proof of WLLN (requiring L²) is a sufficient but not necessary argument. Kolmogorov's L¹ threshold is tight.\n\n**For applications**: Heavy-tailed distributions (Pareto, stable, power-law) arise throughout finance, network science, and physics.\n\nThe LLN still applies whenever E[|X|] < ∞, giving practitioners reliable averaging even with extreme events.\n\n**For Mathlib**: This demonstrates that `ProbabilityTheory.strong_law_ae` is already the strongest form of SLLN. The only gap is the converse (necessity), which requires Borel-Cantelli applied to tail events {|Xₙ| > nε}.\n\n**For teaching**: The Cauchy distribution (α = 1 for stable laws) is the precise boundary — it has no finite moments, and indeed the sample mean of i.i.d. Cauchy(0,1) is again Cauchy(0,1) by 1-stability, so no concentration occurs.",
     "openQuestions": [
       "Can the converse (slln_necessity) be proved in Mathlib? Requires formalizing Borel-Cantelli for tail events {|Xₙ| > nε}",
       "What is the LLN rate of convergence for heavy-tailed distributions? (Berry-Esseen type results for α ∈ (1,2))",
@@ -161,5 +161,15 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "laws-of-large-numbers"
+  ]
 }

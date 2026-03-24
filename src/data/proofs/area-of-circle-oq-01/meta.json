@@ -155,7 +155,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves that the circumference formula $C = 2\\pi r$ follows from differentiating the area formula $A = \\pi r^2$, answering the open question from the Area of a Circle gallery entry. The proof uses Mathlib's calculus infrastructure (HasDerivAt, deriv) and includes extensive corollaries: differentiability, second derivative, isoperimetric equality, monotonicity, and scaling laws. All 163 lines, 0 sorries, 0 axioms.",
-    "implications": "**Theoretical Significance**: This formalizes a fundamental relationship in geometry: the boundary length is the derivative of the enclosed area.\n\n**Broader Connections**: The same principle generalizes to higher dimensions ($S_n = dV_n/dr$) and to arbitrary smooth domains via the coarea formula. The isoperimetric equality $C^2 = 4\\pi A$ is the equality case of the isoperimetric inequality.",
+    "implications": "**Theoretical Significance**: This formalizes a fundamental relationship in geometry: the boundary length is the derivative of the enclosed area.\n\nThe same principle generalizes to higher dimensions ($S_n = dV_n/dr$) and to arbitrary smooth domains via the coarea formula. The isoperimetric equality $C^2 = 4\\pi A$ is the equality case of the isoperimetric inequality.",
     "openQuestions": [
       "Can the n-dimensional volume-surface area derivative relationship V'_n(r) = S_n(r) be formalized?",
       "Can the integral direction be formalized: A(r) = integral from 0 to r of C(rho) drho?",

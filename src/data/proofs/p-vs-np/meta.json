@@ -135,7 +135,11 @@
       "**Barrier results explain the difficulty**: Relativization (1975), natural proofs (1994), and algebrization (2009) each rule out broad classes of proof techniques, showing that any resolution must use fundamentally new methods.",
       "**Abstract placeholders simplify structure**: All NP-complete problems use `fun _ => false` as a placeholder, making reductions trivial (identity). This lets the formalization focus on the complexity-theoretic framework rather than encoding details."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Computational complexity theory (Turing machines, time complexity, polynomial bounds)",
+      "Logic (Boolean satisfiability, propositional logic, Cook-Levin theorem)",
+      "Discrete mathematics (polynomial-time reductions, NP-completeness)"
+    ]
   },
   "sections": [
     {
@@ -156,6 +160,7 @@
       "id": "class-p",
       "title": "Complexity Class P",
       "summary": "Defines `inP` as existence of polynomial-time solver, and $P$ as the set of all such problems. $P = \\{L \\mid \\exists M, p :\\, M \\text{ decides } L \\text{ in } O(p(n))\\}$.",
+      "mathContext": "$P = \\{L : \\exists \\text{TM } M, \\text{poly } p,\\; M \\text{ decides } L \\text{ in time } p(|x|)\\}$.",
       "startLine": 140,
       "endLine": 153
     },
@@ -163,6 +168,7 @@
       "id": "class-np",
       "title": "Nondeterministic Computation and NP",
       "summary": "Defines `Verifier`, `isCorrectVerifier` (soundness + completeness), `verifierPolyTime`, and `inNP`. $NP = \\{L \\mid \\exists V, p :\\, x \\in L \\Leftrightarrow \\exists c,\\, V(x,c) \\text{ accepts in } O(p(|x|))\\}$.",
+      "mathContext": "$NP = \\{L : \\exists V, p,\\; x \\in L \\iff \\exists c,\\; V(x,c) = \\text{true in time } p(|x|)\\}$.",
       "startLine": 155,
       "endLine": 191
     },
@@ -170,6 +176,7 @@
       "id": "p-subset-np",
       "title": "P ⊆ NP",
       "summary": "**Proved**: $P \\subseteq NP$ by constructing a verifier from a solver (ignoring the certificate). Fully constructive proof with careful polynomial bound arithmetic (~50 lines).",
+      "mathContext": "$P \\subseteq NP$: if $M$ decides $L$ in time $p(n)$, define $V(x, c) = M(x)$ (ignore certificate). Verified in polynomial time.",
       "startLine": 193,
       "endLine": 252
     },
@@ -205,6 +212,7 @@
       "id": "conjecture",
       "title": "The P vs NP Conjecture",
       "summary": "Defines `P_ne_NP_Conjecture`. **Proves**: $P \\neq NP \\Leftrightarrow \\exists L \\in NP \\setminus P$, and the key equivalence `NPC_in_P_implies_P_eq_NP`: if any NP-complete problem is in $P$, then $P = NP$.",
+      "mathContext": "Key: $L \\in \\text{NPC} \\cap P \\Rightarrow P = NP$ (any single NP-complete problem in $P$ collapses the hierarchy).",
       "startLine": 808,
       "endLine": 864
     },
@@ -247,7 +255,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides a comprehensive framework for the P vs NP problem: abstract Turing machines, complexity classes P and NP, polynomial-time reductions with full closure proofs, NP-completeness via the Cook-Levin theorem, and structural results including coNP closure and Ladner's theorem. The key theorem P_subset_NP and all polynomial arithmetic bounds are fully proved (0 sorries); only the Cook-Levin reduction, Time Hierarchy, and Ladner's theorem require axioms.",
-    "implications": "**Theoretical Significance**: Resolution of P vs NP would have transformative implications across mathematics and technology.\n\n**Broader Connections**: If P = NP: public-key cryptography (RSA, Diffie-Hellman) would be insecure, many optimization problems in logistics, scheduling, and protein folding would become tractable, and mathematical proof search could be automated. If P ≠ NP (widely believed): it would establish fundamental limits on efficient computation, validate cryptographic security assumptions, and prove that creativity in problem-solving cannot be fully mechanized.",
+    "implications": "**Theoretical Significance**: Resolution of P vs NP would have transformative implications across mathematics and technology.\n\nIf P = NP: public-key cryptography (RSA, Diffie-Hellman) would be insecure, many optimization problems in logistics, scheduling, and protein folding would become tractable, and mathematical proof search could be automated. If P ≠ NP (widely believed): it would establish fundamental limits on efficient computation, validate cryptographic security assumptions, and prove that creativity in problem-solving cannot be fully mechanized.",
     "openQuestions": [
       "Does P = NP? The central open question — neither direction has been proved despite 50+ years of effort.",
       "Can the three barrier results (relativization, natural proofs, algebrization) be simultaneously circumvented by a new proof technique?",

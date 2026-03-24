@@ -141,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #588 asks whether f_k(n) = o(n²) for k ≥ 4, where f_k(n) counts k-rich lines for n points with no k+1 collinear. The conjecture is OPEN. The best lower bound (Solymosi-Stojaković 2013) is n^{2-o(1)}, tantalizingly close to n² but not quite there. The $100 prize remains unclaimed.",
-    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Incidence Geometry:** Related to Szemerédi-Trotter incidence bounds\n2.\n\n**Broader Connections**: **Problem #101:** The k=4 special case was the original formulation\n3. **Extremal Combinatorics:** Part of the study of point-line configurations\n4. **Orchard Problem:** Related to problems about collinear point triples.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Incidence Geometry:** Related to Szemerédi-Trotter incidence bounds\n**2. Problem #101:** The k=4 special case was the original formulation\n3. **Extremal Combinatorics:** Part of the study of point-line configurations\n4. **Orchard Problem:** Related to problems about collinear point triples.",
     "openQuestions": [
       "Is f_k(n) = o(n²) for k ≥ 4? (The main conjecture, $100 prize)",
       "Can the n^{2-o(1)} lower bound be improved?",

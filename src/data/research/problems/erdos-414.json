@@ -29,9 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: 10 of 14 axioms proved (14→4). Remaining 4: erdos_414_conjecture (OPEN), single_eventual_orbit (equiv), h_upper (needs card bound), orbits_get_close (heuristic).",
+    "builtItems": [
+      "Proved h_strictly_increasing, orbit_strictly_increasing, h_prime, h_one, h_two, h_three",
+      "Proved orbit_1_start, orbit_3_merges_with_1 via native_decide",
+      "Proved orbit_linear_lower by induction, average_divisor_count trivially"
+    ],
+    "insights": [
+      "10 of 14 axioms proved from definitions and Mathlib",
+      "h and hOrbit are concrete definitions, enabling computational proofs",
+      "h_strictly_increasing: divisors_card_pos (1 is always a divisor)",
+      "h_prime: Nat.Prime.divisors + Finset.card_pair",
+      "Computed values (h_one/two/three, orbits) proved via native_decide",
+      "orbit_linear_lower: induction using h_strictly_increasing"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #414 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h_1(n)=h(n)=n+\\tau(n)$ (where $\\tau(n)$ counts the number of divisors of $n$) and $h_k(n)=h(h_{k-1}(n))$. Is it true, for any $m,n$, there exist $i$ and $j$ such that $h_i(m)=h_j(n)$?\n\n\n\nAsked by Spiro. That is, there is (eventually) only one possible sequence that the iterations of $n\\mapsto h(n)$ can settle on. Erd\\H{o}s and Graham believed the answer is yes. Similar questions can be asked by the iterates of many other functions. See also [412] and [413].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #412\n- Problem #413\n- Problem #415\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"

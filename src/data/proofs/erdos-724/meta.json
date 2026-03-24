@@ -79,8 +79,10 @@
       "**Exponent Gap**: Best known ≈ 0.068, conjectured ≈ 0.5 — a 7× difference"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Combinatorics (counting, extremal problems)"
+      "Latin squares and orthogonality (quasigroup theory)",
+      "Finite fields and projective planes",
+      "Combinatorial number theory (asymptotic bounds)",
+      "Mathlib Matrix, Fintype, Fin APIs"
     ]
   },
   "sections": [
@@ -89,75 +91,85 @@
       "title": "Latin Squares",
       "summary": "Definition of Latin squares via row/column bijection property",
       "startLine": 48,
-      "endLine": 67
+      "endLine": 67,
+      "mathContext": "An $n \\times n$ Latin square is a matrix $L$ over $\\{1,\\ldots,n\\}$ where each row and column is a permutation. Equivalently, $L$ is the Cayley table of a quasigroup of order $n$."
     },
     {
       "id": "orthogonality",
       "title": "Orthogonal Latin Squares",
       "summary": "Definition of orthogonality and mutual orthogonality for sets of Latin squares",
       "startLine": 69,
-      "endLine": 88
+      "endLine": 88,
+      "mathContext": "Latin squares $L_1, L_2$ are orthogonal if the superposition $(L_1(i,j), L_2(i,j))$ covers all $n^2$ ordered pairs. A set of $k$ squares is mutually orthogonal (MOLS) if every pair is orthogonal."
     },
     {
       "id": "mols-function",
       "title": "The MOLS Function f(n)",
       "summary": "Definition of f(n) as supremum over finite MOLS sets",
       "startLine": 90,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "$f(n) = \\max\\{k : \\exists k \\text{ MOLS of order } n\\}$. Upper bound: $f(n) \\leq n - 1$. Achieved: $f(n) = n - 1$ for all prime powers $n = p^k$."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "Upper bound f(n) ≤ n-1, prime power theorem, Bose-Parker-Shrikhande",
       "startLine": 112,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "Upper bound: $f(n) \\leq n - 1$. Prime power construction: $f(p^k) = p^k - 1$ via finite field $\\text{GF}(p^k)$. Bose-Parker-Shrikhande (1960): disproved Euler's conjecture that $f(n) = 1$ for $n \\equiv 2 \\pmod{4}$."
     },
     {
       "id": "lower-bound-progress",
       "title": "Lower Bound Progress",
       "summary": "Chowla-Erdős-Straus, Wilson, and Beth's improvements",
       "startLine": 154,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "Lower bounds: Chowla-Erdős-Straus (1960): $f(n) \\gg n^{1/91}$. Wilson (1974): $f(n) \\gg n^{1/17}$. Beth (1983): $f(n) \\gg n^{1/14.8}$ (current best)."
     },
     {
       "id": "conjecture",
       "title": "Erdős Conjecture",
       "summary": "Statement of the conjecture f(n) ≫ n^(1/2)",
       "startLine": 186,
-      "endLine": 205
+      "endLine": 205,
+      "mathContext": "**Erdős conjecture**: $f(n) \\gg n^{1/2}$. The gap: best known exponent $\\approx 0.068$ vs conjectured $0.5$ — a seven-fold improvement needed."
     },
     {
       "id": "examples",
       "title": "Examples and Constructions",
       "summary": "Concrete MOLS examples for orders 3, 4, 5",
       "startLine": 207,
-      "endLine": 242
+      "endLine": 242,
+      "mathContext": "Order 3: $f(3) = 2$ (from $\\text{GF}(3)$). Order 4: $f(4) = 3$ (from $\\text{GF}(4) \\cong \\mathbb{F}_2[x]/(x^2+x+1)$). Order 6: $f(6) = 1$ (Euler was right for $n=6$, but wrong in general)."
     },
     {
       "id": "projective-planes",
       "title": "Projective Plane Connection",
       "summary": "Equivalence between maximal MOLS and projective planes",
       "startLine": 244,
-      "endLine": 266
+      "endLine": 266,
+      "mathContext": "$f(n) = n - 1 \\iff$ a projective plane of order $n$ exists. A projective plane of order $n$ has $n^2 + n + 1$ points and lines. Existence is open for $n = 12, 15, 18, \\ldots$ (non-prime-powers)."
     },
     {
       "id": "macneish",
       "title": "MacNeish's Conjecture",
       "summary": "The disproved MacNeish bound",
       "startLine": 268,
-      "endLine": 283
+      "endLine": 283,
+      "mathContext": "MacNeish (1922) conjectured $f(n) = \\min_{p^k \\| n}(p^k - 1)$ where $p^k \\| n$ means $p^k$ exactly divides $n$. Disproved by Bose-Parker-Shrikhande (1960): $f(n)$ can exceed the MacNeish bound."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Summary theorems and the exponent gap",
       "startLine": 285,
-      "endLine": 328
+      "endLine": 328,
+      "mathContext": "State of knowledge: $n^{1/14.8} \\ll f(n) \\leq n - 1$. The main open problem: close the exponent gap from $1/14.8$ to $1/2$ (Erdős conjecture)."
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #724 asks whether f(n) ≫ n^(1/2), where f(n) is the maximum number of mutually orthogonal Latin squares of order n. The problem remains OPEN. The best known lower bound is f(n) ≫ n^(1/14.8) by Beth (1983), while the upper bound f(n) ≤ n - 1 is achieved for all prime powers. The gap between the current best exponent (~0.068) and the conjectured exponent (0.5) is substantial.",
-    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Projective Planes**: f(n) = n-1 iff a projective plane of order n exists\n\n2. **Coding Theory**: MOLS relate to error-correcting codes and Latin hypercubes\n\n3.\n\n**Broader Connections**: **Experimental Design**: MOLS are fundamental for constructing orthogonal arrays\n\n4. **Finite Geometry**: The problem connects to deep questions about non-prime-power orders\n\n5. **Computational Results**: f(10) < 9 was proved by exhaustive computer search (Lam-Thiel-Swiercz).",
+    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Projective Planes**: f(n) = n-1 iff a projective plane of order n exists\n\n2. **Coding Theory**: MOLS relate to error-correcting codes and Latin hypercubes\n\n**3. Experimental Design**: MOLS are fundamental for constructing orthogonal arrays\n\n4. **Finite Geometry**: The problem connects to deep questions about non-prime-power orders\n\n5. **Computational Results**: f(10) < 9 was proved by exhaustive computer search (Lam-Thiel-Swiercz).",
     "openQuestions": [
       "Is f(n) ≫ n^(1/2)? (The main conjecture)",
       "Can the exponent 1/14.8 be improved?",
@@ -182,5 +194,54 @@
     "axiomCount": 17,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Dilation-avoiding sets in Euclidean space — both problems study extremal configurations under geometric/combinatorial constraints"
+    },
+    {
+      "targetId": "erdos-169",
+      "relationship": "related",
+      "description": "AP-free sets with harmonic sum constraints — related extremal combinatorics with coloring-theoretic connections"
+    },
+    {
+      "targetId": "erdos-808",
+      "relationship": "related",
+      "description": "Graph-restricted sum-product bounds — related graph-theoretic extremal problems in combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-143",
+    "erdos-169",
+    "erdos-808"
+  ],
+  "references": [
+    {
+      "key": "BPS60",
+      "citation": "Bose, R.C., Shrikhande, S.S., and Parker, E.T., Further results on the construction of mutually orthogonal Latin squares and the falsity of Euler's conjecture, Canadian Journal of Mathematics 12 (1960), 189–203.",
+      "type": "paper"
+    },
+    {
+      "key": "CES60",
+      "citation": "Chowla, S., Erdős, P., and Straus, E.G., On the maximal number of pairwise orthogonal Latin squares of a given order, Canadian Journal of Mathematics 12 (1960), 204–208.",
+      "type": "paper"
+    },
+    {
+      "key": "Wi74",
+      "citation": "Wilson, R.M., Concerning the number of mutually orthogonal Latin squares, Discrete Mathematics 9 (1974), 181–198.",
+      "type": "paper"
+    },
+    {
+      "key": "Be83",
+      "citation": "Beth, T., Eine Bemerkung zur Abschätzung der Anzahl orthogonaler lateinischer Quadrate mittels Siebverfahren, Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 53 (1983), 284–288.",
+      "type": "paper"
+    },
+    {
+      "key": "LTS89",
+      "citation": "Lam, C.W.H., Thiel, L., and Swiercz, S., The non-existence of finite projective planes of order 10, Canadian Journal of Mathematics 41 (1989), 1117–1123.",
+      "type": "paper"
+    }
+  ]
 }

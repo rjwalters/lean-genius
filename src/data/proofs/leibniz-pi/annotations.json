@@ -56,9 +56,9 @@
       "endLine": 93
     },
     "type": "insight",
-    "title": "Connection to Arctangent: Why arctan(1) = \u03c0/4",
+    "title": "Connection to Arctangent: Why arctan(1) = π/4",
     "content": "The Leibniz series is the Taylor series of $\\arctan(x)$ evaluated at $x = 1$. Since $\\tan(\\pi/4) = 1$, we get $\\arctan(1) = \\pi/4$. The Taylor series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ converges for $|x| \\leq 1$ by Abel's theorem (the series converges at $x = 1$ despite the radius of convergence being exactly 1). Mathlib provides `Real.arctan_one` for the identity $\\arctan(1) = \\pi/4$.",
-    "mathContext": "$$\\arctan(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{2n+1}, \\quad |x| \\leq 1$$ At $x = 1$: $\\arctan(1) = \\pi/4$ because $\\tan(\\pi/4) = 1$. **Geometric meaning**: in a right triangle with equal legs, the angle is $45\u00b0 = \\pi/4$ radians.",
+    "mathContext": "$$\\arctan(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{2n+1}, \\quad |x| \\leq 1$$ At $x = 1$: $\\arctan(1) = \\pi/4$ because $\\tan(\\pi/4) = 1$. **Geometric meaning**: in a right triangle with equal legs, the angle is $45° = \\pi/4$ radians.",
     "significance": "key",
     "relatedConcepts": [
       "Taylor series",
@@ -128,7 +128,7 @@
     },
     "type": "context",
     "title": "Mathematical Significance: Pi from Pure Arithmetic",
-    "content": "The Leibniz formula is significant for five reasons: (1) Historical \u2014 one of the first infinite series for $\\pi$; (2) Theoretical \u2014 expresses $\\pi$ through rational operations and limits alone, showing the transcendental number $\\pi$ emerges from elementary arithmetic; (3) Analytic \u2014 reveals the deep connection between $\\pi$ and the arctangent function; (4) Conditional convergence \u2014 a classic example where $\\sum |a_n| = \\infty$ but $\\sum a_n < \\infty$; (5) Practical limitation \u2014 needs $\\sim 10^6$ terms for 6 digits of $\\pi$.",
+    "content": "The Leibniz formula is significant for five reasons: (1) Historical — one of the first infinite series for $\\pi$; (2) Theoretical — expresses $\\pi$ through rational operations and limits alone, showing the transcendental number $\\pi$ emerges from elementary arithmetic; (3) Analytic — reveals the deep connection between $\\pi$ and the arctangent function; (4) Conditional convergence — a classic example where $\\sum |a_n| = \\infty$ but $\\sum a_n < \\infty$; (5) Practical limitation — needs $\\sim 10^6$ terms for 6 digits of $\\pi$.",
     "mathContext": "**Conditional convergence**: $\\sum_{n=0}^{\\infty} \\frac{1}{2n+1} = \\infty$ (diverges by comparison with harmonic series) but $\\sum_{n=0}^{\\infty} \\frac{(-1)^n}{2n+1} = \\frac{\\pi}{4}$ (converges). By the Riemann rearrangement theorem, the conditionally convergent series can be rearranged to converge to any real number.",
     "significance": "supporting",
     "relatedConcepts": [

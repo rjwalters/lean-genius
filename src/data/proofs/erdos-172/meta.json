@@ -139,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #172, which asks whether any finite coloring of ℕ admits arbitrarily large sum-product monochromatic sets. The problem remains open despite significant partial progress: Moreira (2017) proved the |A| = 2 case, and Alweiss (2023) proved the full conjecture over rationals.",
-    "implications": "**Theoretical Significance**: This problem lies at the intersection of Ramsey theory and arithmetic combinatorics.\n\n**Broader Connections**: A positive answer would reveal deep structural properties of how addition and multiplication interact under partitions. The fact that the rational case is solved suggests the integer case may also be true.",
+    "implications": "**Theoretical Significance**: This problem lies at the intersection of Ramsey theory and arithmetic combinatorics.\n\nA positive answer would reveal deep structural properties of how addition and multiplication interact under partitions. The fact that the rational case is solved suggests the integer case may also be true.",
     "openQuestions": [
       "Does the full conjecture hold for ℕ?",
       "What is the minimum number of colors needed to avoid infinite monochromatic sets?",
@@ -162,19 +162,19 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-160",
       "title": "Erdős Problem #160: Rainbow-Free Colorings of Arithmetic Progressions",
-      "relationship": "Both concern partition regularity and monochromatic structures under finite colorings of ℕ — #172 seeks monochromatic sum-product sets, #160 avoids rainbow APs"
+      "relationship": "Both concern partition regularity and monochromatic structures under finite colorings of ℕ — #172 seeks monochromatic sum-product sets, #160 avoids rainbow APs",
+      "targetId": "erdos-160"
     },
     {
-      "id": "ramseys-theorem",
       "title": "Ramsey's Theorem",
-      "relationship": "Ramsey's theorem is the foundational result in partition regularity; Erdős #172 extends the Ramsey paradigm to combined additive and multiplicative structure"
+      "relationship": "Ramsey's theorem is the foundational result in partition regularity; Erdős #172 extends the Ramsey paradigm to combined additive and multiplicative structure",
+      "targetId": "ramseys-theorem"
     },
     {
-      "id": "erdos-174",
       "title": "Erdős Problem #174: Euclidean Ramsey Sets",
-      "relationship": "Both are Ramsey-type problems asking for unavoidable monochromatic configurations — #172 in arithmetic, #174 in geometry"
+      "relationship": "Both are Ramsey-type problems asking for unavoidable monochromatic configurations — #172 in arithmetic, #174 in geometry",
+      "targetId": "erdos-174"
     }
   ]
 }

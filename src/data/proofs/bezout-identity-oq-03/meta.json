@@ -153,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "This formalization answers the open question affirmatively: YES, there is a clean formalization of CRT building on bezout_int. The proof is 2 lines per congruence (rw [Int.modEq_iff_dvd]; exact ⟨witness, by linear_combination ...⟩), making the connection between Bézout's identity and CRT completely explicit. The file provides: bezout_int restated, coprime_bezout specialization, existence with explicit formula, uniqueness via IsCoprime.mul_dvd, a computable crtInt function, and 4 worked examples.",
-    "implications": "**Theoretical Significance**: This establishes the CRT-Bézout connection in Lean 4 at the integer level, complementing ChineseRemainderConstructive.lean (which uses natural numbers and Nat.chineseRemainder).\n\n**Broader Connections**: The integer formulation is more natural algebraically: IsCoprime is literally Bézout's identity, and the CRT proof is a direct unpacking. The explicit formula x = a*n*v + b*m*u can be used as the basis for ring isomorphism proofs (ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ).",
+    "implications": "**Theoretical Significance**: This establishes the CRT-Bézout connection in Lean 4 at the integer level, complementing ChineseRemainderConstructive.lean (which uses natural numbers and Nat.chineseRemainder).\n\nThe integer formulation is more natural algebraically: IsCoprime is literally Bézout's identity, and the CRT proof is a direct unpacking. The explicit formula x = a*n*v + b*m*u can be used as the basis for ring isomorphism proofs (ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ).",
     "openQuestions": [
       "Can the ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ be formalized building on crt_via_bezout?",
       "Can the CRT be extended to finitely many pairwise coprime moduli using this Bézout-based approach?",

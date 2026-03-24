@@ -145,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "This formalization of Dirichlet's pointwise convergence theorem establishes that Fourier partial sums of bounded variation functions converge pointwise to the midpoint of one-sided limits. The main theorem is proved by chaining four axiomatized analytical ingredients: BV limit existence, convolution representation, kernel normalization, and the Dirichlet localization lemma (which encapsulates integral splitting and Riemann-Lebesgue). The Dirichlet kernel infrastructure (value at zero, conjugate symmetry) is fully proved from Mathlib.",
-    "implications": "**Theoretical Significance**: Dirichlet's theorem is the foundational result for pointwise Fourier analysis.\n\n**Broader Connections**: It tells us that 'well-behaved' (BV) functions have convergent Fourier series at every point. This is the starting point for studying: Gibbs phenomenon at discontinuities, optimal convergence rates, and extensions to higher regularity classes.",
+    "implications": "**Theoretical Significance**: Dirichlet's theorem is the foundational result for pointwise Fourier analysis.\n\nIt tells us that 'well-behaved' (BV) functions have convergent Fourier series at every point. This is the starting point for studying: Gibbs phenomenon at discontinuities, optimal convergence rates, and extensions to higher regularity classes.",
     "openQuestions": [
       "Can the axiomatized convolution representation be proved from Mathlib's integral API?",
       "Can the Riemann-Lebesgue lemma for BV functions be proved in Lean using integration by parts?",

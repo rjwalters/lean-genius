@@ -7,7 +7,7 @@
     "author": "Erdős (problem), Borwein (1991 proof)",
     "sourceUrl": "https://erdosproblems.com/1050",
     "date": "1991",
-    "status": "axiomatized",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos1050Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "transcendence",
       "solved"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1050,
     "erdosUrl": "https://erdosproblems.com/1050",
@@ -64,7 +64,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 1,
-    "assumptions": "None."
+    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"axiomatized\"."
   },
   "overview": {
     "historicalContext": "**From Lambert Series to Borwein's Theorem**\n\nThe study of series with exponential denominators began with Johann Heinrich Lambert's 1748 investigation of ∑ q^n/(1-q^n) — the Lambert series — which he connected to the divisor function τ(n). Euler recognized the identity ∑ 1/(q^n - 1) = ∑ τ(n)/q^n, linking these series to multiplicative number theory.\n\nIn 1948, Erdős published a foundational paper in the Journal of the Indian Mathematical Society proving that ∑ 1/(2^n - 1) is irrational. His method exploited the divisor function identity: if the sum were rational p/q, then ∑ τ(n)/2^n = p/q, and the arithmetic properties of τ (specifically, that τ(n) is often large — on average log n) would produce contradictions modulo carefully chosen primes. This result established the Erdős-Borwein constant E ≈ 1.60669 as one of the first explicitly-defined irrationals in this family.\n\nErdős conjectured much more: that ∑ 1/(2^n + t) should be transcendental for every integer t ≠ 0. Problem #1050 asks specifically about the case t = -3, i.e., whether ∑ 1/(2^n - 3) is irrational.\n\n**Peter Borwein (1991)** proved the definitive irrationality result in Math. Proc. Cambridge Philos. Soc.: for any integer q ≥ 2 and rational r ≠ 0 (with r ≠ -q^n for any n), the series ∑ 1/(q^n + r) is irrational. His proof used Padé approximation to the q-logarithm function log_q(1+x) = ∑ (-x)^n/(q^n - 1), constructing rational approximants whose quality exceeds the Dirichlet threshold. This completely solved Problem #1050 and subsumed Erdős's 1948 result as a special case.\n\nThe stronger transcendence conjecture remains OPEN. Even for the Erdős-Borwein constant ∑ 1/(2^n - 1), transcendence has not been established. The methods of Mahler (1929) and Nishioka (1996) for q-series transcendence do not directly apply to these Lambert-type series, and fundamentally new techniques appear to be needed.",
@@ -159,7 +159,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1050 was SOLVED by Peter Borwein (1991). The sum S = ∑_{n≥1} 1/(2^n - 3) ≈ 0.287 is irrational. Borwein's theorem proves irrationality for the entire parametric family T(q, r) = ∑ 1/(q^n + r) whenever q ≥ 2 is an integer and r is a rational number with r ≠ 0 and r ≠ -q^n for any n. This subsumes Erdős's 1948 result on ∑ 1/(2^n - 1) as the special case r = -1, and provides a unified irrationality framework connecting Problems #1049 and #1050. The formalization axiomatizes Borwein's Padé approximation result and derives irrationality for four specific series (r = -3, -1, +1 with q = 2, and r = -1 with q = 3), states the open transcendence conjecture, and establishes numerical bounds on S.",
-    "implications": "**Theoretical Significance**: Borwein's theorem reveals that irrationality of exponentially-denominated series is a generic phenomenon: for any fixed base q ≥ 2, the series T(q, r) is irrational for all but countably many rational values of r (the excluded poles r = -q^n).\n\n**Broader Connections**: This places these constants in the same irrationality class as classical constants like e and log 2, while the gap to transcendence — proved for e but open for any T(q, r) — highlights the methodological divide between irrationality (rational approximation quality) and transcendence (algebraic independence). The unification of Problems #1049 and #1050 through the T(q, r) family exemplifies how parametric generalization can resolve multiple Erdős problems simultaneously.",
+    "implications": "**Theoretical Significance**: Borwein's theorem reveals that irrationality of exponentially-denominated series is a generic phenomenon: for any fixed base q ≥ 2, the series T(q, r) is irrational for all but countably many rational values of r (the excluded poles r = -q^n).\n\nThis places these constants in the same irrationality class as classical constants like e and log 2, while the gap to transcendence — proved for e but open for any T(q, r) — highlights the methodological divide between irrationality (rational approximation quality) and transcendence (algebraic independence). The unification of Problems #1049 and #1050 through the T(q, r) family exemplifies how parametric generalization can resolve multiple Erdős problems simultaneously.",
     "openQuestions": [
       "Is ∑ 1/(2^n + t) transcendental for every integer t ≠ 0? This is Erdős's original transcendence conjecture. Even the simplest case t = -1 (the Erdős-Borwein constant) remains unresolved.",
       "What is the irrationality measure μ(S) such that |S - p/q| < q^{-μ} has only finitely many rational solutions p/q? Borwein's proof gives μ ≥ 2 but the exact value is unknown.",
@@ -170,19 +170,19 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1049",
       "relationship": "sibling",
-      "description": "Problem #1049 asks about irrationality of ∑ 1/(t^n - 1) for rational t > 1. This is the special case T(t, -1) of the family T(q, r) studied here. Borwein's theorem resolves both problems simultaneously, and the formalization proves T_eq_S_1049 making the connection explicit."
+      "description": "Problem #1049 asks about irrationality of ∑ 1/(t^n - 1) for rational t > 1. This is the special case T(t, -1) of the family T(q, r) studied here. Borwein's theorem resolves both problems simultaneously, and the formalization proves T_eq_S_1049 making the connection explicit.",
+      "targetId": "erdos-1049"
     },
     {
-      "id": "erdos-1051",
       "relationship": "related",
-      "description": "Problem #1051 studies irrationality of ∑ 1/(aₙ·aₙ₊₁) for rapidly growing sequences — a different family of irrationality problems where the denominators grow super-exponentially rather than exponentially as in T(q, r)."
+      "description": "Problem #1051 studies irrationality of ∑ 1/(aₙ·aₙ₊₁) for rapidly growing sequences — a different family of irrationality problems where the denominators grow super-exponentially rather than exponentially as in T(q, r).",
+      "targetId": "erdos-1051"
     },
     {
-      "id": "erdos-257",
       "relationship": "related",
-      "description": "Problem #257 asks whether ∑_{n∈A} 1/(2^n - 1) is irrational for every infinite set A of positive integers. This is a 'subset selection' variant of the Lambert series that Erdős proved irrational in 1948 (the case A = ℕ), which is T(2, -1) in our framework."
+      "description": "Problem #257 asks whether ∑_{n∈A} 1/(2^n - 1) is irrational for every infinite set A of positive integers. This is a 'subset selection' variant of the Lambert series that Erdős proved irrational in 1948 (the case A = ℕ), which is T(2, -1) in our framework.",
+      "targetId": "erdos-257"
     }
   ],
   "relatedProofs": [

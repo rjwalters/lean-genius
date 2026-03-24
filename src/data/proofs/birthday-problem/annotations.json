@@ -10,7 +10,7 @@
     "title": "The Birthday Paradox",
     "content": "The **Birthday Problem** asks: How many people must be in a room for there to be a >50% chance that two share a birthday?\n\nThe surprising answer: **just 23 people**.\n\nMost people guess much higher (like 183, half of 365), because they confuse two different questions:\n- 'What's the chance someone shares MY birthday?' (needs ~253 people for 50%)\n- 'What's the chance ANY two people share A birthday?' (needs only 23)\n\nThe second question has many more pairs to check!",
     "mathContext": "The probability that at least two of $n$ people share a birthday is $P(n) = 1 - \\prod_{k=0}^{n-1}(1 - k/365)$. The 'paradox' is that $P(23) > 0.5$ despite $23 \\ll 365$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "basic probability",
       "complement rule"
@@ -32,7 +32,7 @@
     "title": "The Birthday Formula",
     "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe product represents the probability that each successive person has a unique birthday.",
     "mathContext": "$P(n) = 1 - \\frac{365!}{365^n (365-n)!}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Nat.descFactorial",
       "rational arithmetic"
@@ -96,7 +96,7 @@
     "title": "The 23-Person Threshold",
     "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
     "mathContext": "$P(23) = 1 - \\frac{365!}{365^{23} \\cdot 342!} \\approx 0.5073 > 0.5$. The exact computation involves $365^{23} \\approx 8.6 \\times 10^{58}$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "birthday_problem_formula",
       "rational arithmetic"
@@ -107,7 +107,7 @@
     ]
   },
   {
-    "id": "ann-crypto",
+    "id": "ann-docstring",
     "proofId": "birthday-problem",
     "range": {
       "startLine": 9,
@@ -147,6 +147,99 @@
     "relatedConcepts": [
       "base case",
       "complement probability"
+    ]
+  },
+  {
+    "id": "ann-setting",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 65,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Part I: The Combinatorial Model",
+    "content": "The birthday problem is modeled as a counting problem over finite types:\n\n- **Days**: `Day := Fin 365` — the 365 possible birthdays (0 to 364)\n- **People**: `Fin n` — a group of $n$ people\n- **Birthday assignments**: functions `Fin n → Day` — each person mapped to a birthday\n- **Total assignments**: `365^n` (each of $n$ people independently chooses from 365 days)\n\nThe key insight is that 'all distinct birthdays' is equivalent to the assignment function being **injective** — no two people map to the same day. Counting injective functions is a standard combinatorial problem solved by the falling factorial: $365 \\times 364 \\times \\cdots \\times (365-n+1)$.",
+    "mathContext": "Total birthday assignments: $|\\text{Day}^{\\text{People}}| = 365^n$. The `total_assignments` theorem proves `Fintype.card (Fin n → Day) = numDays ^ n` via `Fintype.card_fun`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite types",
+      "Fin type",
+      "injective functions",
+      "falling factorial"
+    ],
+    "prerequisites": [
+      "Fintype.card_fun",
+      "finite set cardinality"
+    ]
+  },
+  {
+    "id": "ann-combinatorics-verification",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 249,
+      "endLine": 302
+    },
+    "type": "technique",
+    "title": "Part VI: Combinatorial Verification and Concrete Examples",
+    "content": "This section connects the probability formula to combinatorial counting and provides concrete verification examples.\n\n`birthday_as_counting` restates the probability formula in terms of rational number arithmetic, making the connection between the abstract Fintype.card calculations and concrete numerical values explicit.\n\n`prob_in_unit_interval` proves $0 \\leq P(n) \\leq 1$ for $n \\leq 365$, confirming the result is a valid probability. The proof uses `Nat.descFactorial_le` to bound the falling factorial.\n\nThe verification examples use `native_decide` and `norm_num` to check concrete values: $365 \\cdot 364 = 132860$, $365^2 = 133225$, and $1 - 132860/133225 = 1/365$, confirming the $n=2$ case matches the formula.",
+    "mathContext": "Verification: $\\text{descFactorial}(365, 2) = 365 \\times 364 = 132860$ and $365^2 = 133225$, so $P(2) = 1 - 132860/133225 = 1/365$. The `native_decide` tactic delegates large integer arithmetic to the kernel for certified computation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "norm_num",
+      "numerical verification",
+      "probability bounds"
+    ],
+    "prerequisites": [
+      "birthday_problem_formula",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-expected-pairs",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 304,
+      "endLine": 356
+    },
+    "type": "concept",
+    "title": "Part VII: Expected Number of Shared Birthday Pairs",
+    "content": "This section formalizes a complementary perspective: instead of asking 'what is the probability of ANY shared birthday?', it computes the **expected number** of pairs sharing a birthday.\n\nFor $n$ people, there are $\\binom{n}{2} = n(n-1)/2$ pairs. Each pair shares a birthday with probability $1/365$. By linearity of expectation (which holds even for dependent events), the expected number of matching pairs is:\n\n$$E = \\binom{n}{2} \\cdot \\frac{1}{365} = \\frac{n(n-1)}{2 \\cdot 365}$$\n\nKey results:\n- `expected_pairs_23`: For $n = 23$, $E = 253/365 \\approx 0.693$ — less than 1 pair expected, yet $P > 50\\%$!\n- `expected_pairs_28_gt_one`: For $n = 28$, $E > 1$ — the first $n$ where we expect at least one matching pair\n- `expected_pairs_27_lt_one`: For $n = 27$, $E < 1$ — threshold is between 27 and 28\n\nThe discrepancy between the 50% probability threshold ($n = 23$) and the expected-value threshold ($n = 28$) reflects the difference between '$P(X > 0) > 0.5$' and '$E[X] > 1$' for non-negative random variables.",
+    "mathContext": "$E[\\text{shared pairs}] = \\binom{n}{2}/365 = n(n-1)/(2 \\cdot 365)$. For $n = 23$: $E = 253/365 \\approx 0.693$. For $n = 28$: $E = 378/365 > 1$. The Markov inequality gives $P(X \\geq 1) \\leq E[X]$, but the reverse bound $P(X \\geq 1) \\geq 1 - e^{-E[X]}$ (Poisson approximation) explains why $P > 0.5$ occurs before $E > 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linearity of expectation",
+      "expected value",
+      "binomial coefficient",
+      "Poisson approximation",
+      "Markov inequality"
+    ],
+    "prerequisites": [
+      "birthday_problem_formula",
+      "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-99-threshold",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 357,
+      "endLine": 402
+    },
+    "type": "theorem",
+    "title": "Part VIII: The 99% Threshold — 57 People",
+    "content": "The final section proves the 99% threshold: with 57 people, the probability exceeds 99%, and 56 is not enough.\n\n`birthday_57_exceeds_99_percent`: $P(57) > 99/100$. The proof computes $P(57) = 1 - \\text{descFactorial}(365, 57)/365^{57}$ and uses `native_decide` to verify the large integer comparison. The falling factorial $365!/308!$ and $365^{57}$ are both astronomical numbers (~146 digits), but Lean's `native_decide` handles them via certified kernel computation.\n\n`birthday_56_below_99_percent`: $P(56) < 99/100$, establishing that 57 is the exact threshold.\n\nThe progression: 23 people for 50%, 57 people for 99%. The rapid increase reflects the quadratic growth of $\\binom{n}{2}$ pairs: doubling from 23 to 46 would give ~$\\binom{46}{2} = 1035$ pairs vs. $\\binom{23}{2} = 253$.",
+    "mathContext": "$P(57) > 0.99$ and $P(56) < 0.99$, so 57 is the exact threshold for 99% probability. The proof requires comparing integers with ~146 digits: `native_decide` delegates this to the Lean kernel's certified arbitrary-precision arithmetic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "large integer arithmetic",
+      "quadratic growth",
+      "birthday attack (cryptography)"
+    ],
+    "prerequisites": [
+      "birthday_problem_formula",
+      "native_decide tactic"
     ]
   }
 ]

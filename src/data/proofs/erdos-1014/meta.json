@@ -22,20 +22,20 @@
     "erdosUrl": "https://erdosproblems.com/1014",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "axiomCount": 16,
-    "lineCount": 104,
-    "assumptions": "16 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "axiomCount": 14,
+    "lineCount": 134,
+    "assumptions": "14 axiom(s): 1 definition (ramseyNumber), 13 mathematical hypotheses. 2 former axioms proved as theorems: diagonal_ramsey_upper (from Erdős-Szekeres bound) and ratio_equiv_difference (from real analysis + monotonicity + positivity)."
   },
   "crossReferences": [
     {
-      "id": "erdos-1030",
       "relationship": "related",
-      "description": "Problem #1030 concerns diagonal Ramsey asymptotics R(k,k)^{1/k}; this file's diagonal_ramsey_upper connects to that question."
+      "description": "Problem #1030 concerns diagonal Ramsey asymptotics R(k,k)^{1/k}; this file's diagonal_ramsey_upper connects to that question.",
+      "targetId": "erdos-1030"
     },
     {
-      "id": "erdos-544",
       "relationship": "related",
-      "description": "Problem #544 studies R(3,k) behavior, directly relevant to the k=3 case of ratio convergence."
+      "description": "Problem #544 studies R(3,k) behavior, directly relevant to the k=3 case of ratio convergence.",
+      "targetId": "erdos-544"
     }
   ],
   "sections": [

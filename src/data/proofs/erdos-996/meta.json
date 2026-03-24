@@ -187,7 +187,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #996 on the strong law of large numbers for lacunary sequences. The four historical milestones (Raikov, KSZ, Erdős, Matsuyama) are axiomatized, showing the progressive weakening of Fourier decay conditions from log to log log with c > 1/2. The open question asks whether log log log decay suffices.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Harmonic Analysis meets Probability**: The problem reveals deep connections between Fourier regularity (how smooth f is) and probabilistic convergence (strong law), mediated by the quasi-independence of lacunary sequences\n\n2. **Iterated Logarithm Hierarchy**: The progression log → log log → log log log suggests a universal principle: each additional level of lacunary quasi-independence compensates for one less level of Fourier regularity\n\n3.\n\n**Broader Connections**: **Optimal Exponents**: Matsuyama's c > 1/2 for log log decay mirrors the CLT's √N scaling, suggesting the exponent is connected to the variance structure of the quasi-independent system\n\n4. **Ergodic Theory**: The problem is a sparse sampling version of the pointwise ergodic theorem — equidistribution along a thin subsequence rather than all integers\n\n5. **Barrier to Progress**: The 60-year gap since Matsuyama (1966) suggests a fundamental difficulty in handling triple-iterated logarithm decay.",
+    "implications": "1. **Harmonic Analysis meets Probability**: The problem reveals deep connections between Fourier regularity (how smooth f is) and probabilistic convergence (strong law), mediated by the quasi-independence of lacunary sequences\n\n2. **Iterated Logarithm Hierarchy**: The progression log → log log → log log log suggests a universal principle: each additional level of lacunary quasi-independence compensates for one less level of Fourier regularity\n\n**3. Optimal Exponents**: Matsuyama's c > 1/2 for log log decay mirrors the CLT's √N scaling, suggesting the exponent is connected to the variance structure of the quasi-independent system\n\n4. **Ergodic Theory**: The problem is a sparse sampling version of the pointwise ergodic theorem — equidistribution along a thin subsequence rather than all integers\n\n5. **Barrier to Progress**: The 60-year gap since Matsuyama (1966) suggests a fundamental difficulty in handling triple-iterated logarithm decay.",
     "openQuestions": [
       "Does log log log decay with some exponent C suffice for the SLLN along lacunary sequences? (Problem #996 itself)",
       "What is the optimal exponent for log log decay? Is c > 1/2 sharp, or can it be weakened to c > 0?",
@@ -217,5 +217,51 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-995",
+      "relationship": "related",
+      "description": "Companion problem on estimating ∑f({αnₖ}) for lacunary sequences, sharing the same equidistribution framework"
+    },
+    {
+      "targetId": "erdos-992",
+      "relationship": "related",
+      "description": "Discrepancy of sequences mod 1 using Weyl's criterion and exponential sum bounds"
+    },
+    {
+      "targetId": "erdos-987",
+      "relationship": "related",
+      "description": "Exponential sums controlling equidistribution via the Erdős-Turán inequality, related Fourier methods"
+    },
+    {
+      "targetId": "erdos-989",
+      "relationship": "related",
+      "description": "Circle discrepancy using Fourier analysis and Bessel functions; same harmonic analysis toolkit"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Foundational Fourier series theory: partial sums, Parseval's identity, L² approximation"
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "related",
+      "description": "Core probability foundation: the weak and strong laws of large numbers that this problem generalizes to lacunary sampling"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "Related limit theorem; the exponent c > 1/2 in Matsuyama's result is reminiscent of CLT variance scaling"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-995",
+    "erdos-992",
+    "erdos-987",
+    "erdos-989",
+    "fourier-series",
+    "laws-of-large-numbers",
+    "central-limit-theorem"
+  ]
 }

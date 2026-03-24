@@ -166,29 +166,29 @@
   },
   "crossReferences": [
     {
-      "id": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "Both concern the distribution and density of number-theoretic objects; the divergence of prime reciprocals relates to the Euler product that produces the π² constant"
+      "description": "Both concern the distribution and density of number-theoretic objects; the divergence of prime reciprocals relates to the Euler product that produces the π² constant",
+      "targetId": "prime-reciprocal-divergence"
     },
     {
-      "id": "infinitude-primes",
       "relationship": "related",
-      "description": "The density of coprime pairs (6/π²) underlying the EST formula depends on the distribution of primes via Euler's product formula"
+      "description": "The density of coprime pairs (6/π²) underlying the EST formula depends on the distribution of primes via Euler's product formula",
+      "targetId": "infinitude-primes"
     },
     {
-      "id": "lebesgue-measure",
       "relationship": "uses",
-      "description": "S(N,A,c) is defined as the Lebesgue measure of the approximation set, using MeasureTheory.volume"
+      "description": "S(N,A,c) is defined as the Lebesgue measure of the approximation set, using MeasureTheory.volume",
+      "targetId": "lebesgue-measure"
     },
     {
-      "id": "basel-problem",
       "relationship": "related",
-      "description": "The Basel problem's result ζ(2) = π²/6 directly explains the π² in the EST formula f(A,c) = 12A log(c)/π² via coprime pair density 6/π²"
+      "description": "The Basel problem's result ζ(2) = π²/6 directly explains the π² in the EST formula f(A,c) = 12A log(c)/π² via coprime pair density 6/π²",
+      "targetId": "basel-problem"
     },
     {
-      "id": "hurwitz-theorem",
       "relationship": "related",
-      "description": "Hurwitz's theorem gives the optimal constant 1/√5 for Diophantine approximation quality, providing context for the approximability threshold A/y² used here"
+      "description": "Hurwitz's theorem gives the optimal constant 1/√5 for Diophantine approximation quality, providing context for the approximability threshold A/y² used here",
+      "targetId": "hurwitz-theorem"
     }
   ],
   "relatedProofs": [

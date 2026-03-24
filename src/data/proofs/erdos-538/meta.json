@@ -16,7 +16,7 @@
       "multiplicative number theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 538,
     "erdosUrl": "https://erdosproblems.com/538",
     "erdosProblemStatus": "open",
@@ -27,7 +27,7 @@
   "overview": {
     "historicalContext": "Erdős posed this problem in 1973, studying the interplay between multiplicative constraints and additive density. Given a set $A \\subseteq \\{1, \\ldots, N\\}$ where each integer $m$ has at most $r$ representations as $m = p \\cdot a$ with $p$ prime and $a \\in A$, how large can the reciprocal sum $\\sum_{n \\in A} 1/n$ be? Erdős proved the bound $O(r \\cdot \\log N / \\log\\log N)$ using a double counting argument combined with Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). The idea is elegant: multiplying the reciprocal sum by the prime reciprocal sum produces terms $1/(pa)$ that are controlled by the representation constraint. The harmonic sum $\\sum_{m \\leq N} 1/m \\sim \\log N$ then closes the argument. Whether this bound is optimal remains open. The problem is related to Problems 536 and 537 on multiplicative representations, and connects to the broader study of multiplicative energy in additive combinatorics. The case $r = 1$ (each integer has at most one prime factorization involving an element of $A$) forces $A$ to be 'multiplicatively thin', strengthening the bound to $O(\\log N / \\log\\log N)$.",
     "problemStatement": "Let $r \\geq 2$ and $A \\subseteq \\{1, \\ldots, N\\}$ such that for any $m$, at most $r$ solutions exist to $m = p \\cdot a$ with $p$ prime and $a \\in A$. Give the best possible upper bound for $\\sum_{n \\in A} 1/n$.",
-    "text": "For A \u2286 {1,...,N} with at most r representations m = p\u00b7a (p prime, a \u2208 A), find the best upper bound for \u03a3 1/n. Erd\u0151s showed \u226a r\u00b7log N/log log N. OPEN.",
+    "text": "For A ⊆ {1,...,N} with at most r representations m = p·a (p prime, a ∈ A), find the best upper bound for Σ 1/n. Erdős showed ≪ r·log N/log log N. OPEN.",
     "proofStrategy": "The formalization defines reprCount (counting representations $m = pa$) and HasBoundedRepr (the $r$-bounded constraint), then defines the reciprocal sum and proves basic properties (monotonicity, non-negativity). The main problem is stated as finding the optimal bound function. Erdős's bound $O(r \\cdot \\log N / \\log\\log N)$ is stated as a theorem with sorry (requires Mertens' theorem). The double counting framework and multiplicative energy connection are formalized. Several base cases (empty set, singletons, $r = 1$) are fully proved.",
     "keyInsights": [
       "Erdős's double counting: $(\\sum_{a \\in A} 1/a) \\cdot (\\sum_{p \\leq N} 1/p) \\leq r \\cdot \\sum_{m \\leq N} 1/m$, giving the bound via Mertens' theorem",
@@ -114,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 538 with Erdős's upper bound O(r·log N / log log N) proved from Mertens' second theorem (axiom) and a double counting inequality. 21 theorems/lemmas including exp(1)<3 bound, log bounds, and the main calc chain. 1 axiom (Mertens), 1 sorry (double counting combinatorial regrouping).",
-    "implications": "**Theoretical Significance**: The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density.\n\n**Broader Connections**: The double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemerédi-Gowers theorem.",
+    "implications": "**Theoretical Significance**: The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density.\n\nThe double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemerédi-Gowers theorem.",
     "openQuestions": [
       "Is $r \\cdot \\log N / \\log\\log N$ the optimal bound, or can it be improved?",
       "Can the bound be improved for specific values of $r$ (e.g., $r = 2$)?",

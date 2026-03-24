@@ -48,14 +48,15 @@
       }
     ],
     "originalContributions": [
-      "Framework for Lebesgue measure construction",
-      "Properties: translation invariance, countable additivity",
-      "Comparison with Jordan measure, non-measurable sets"
+      "Pedagogical organization of Lebesgue measure theory into a multi-part walkthrough",
+      "Fubini theorem application: multi-step integral computation via Mathlib's integral_prod",
+      "Dirichlet function ae-proof: the indicator of rationals equals 0 a.e. via countability of ℚ",
+      "Bounded-measurable bridge theorem connecting Mathlib's measure-theoretic and classical perspectives"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
     "lineCount": 425,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Note: 2 theorems prove True as application stubs (dominated convergence and Fubini iteration placeholders). All substantive results are fully verified."
   },
   "overview": {
     "historicalContext": "Henri Lebesgue (1875-1941) introduced his measure and integral in his 1902 doctoral thesis *Intégrale, longueur, aire*, submitted at the Sorbonne under Émile Borel's influence. The work resolved fundamental limitations of Bernhard Riemann's 1854 integral, which could not handle limits of integrable functions or highly discontinuous functions like Dirichlet's indicator of the rationals. Lebesgue's key innovation was to partition the *range* of a function rather than its domain, enabling integration of a vastly larger class of functions. Constantin Carathéodory (1914) later provided an elegant alternative construction via outer measures and his measurability criterion, which is the approach used in Mathlib. Giuseppe Vitali's 1905 construction of a non-measurable set showed that not every subset of $\\mathbb{R}$ can be assigned a measure, demonstrating the necessity of restricting to a $\\sigma$-algebra. The Lebesgue integral's powerful limit theorems — monotone convergence (Beppo Levi, 1906) and dominated convergence (Lebesgue, 1910) — became indispensable tools, forming the foundation of Andrey Kolmogorov's axiomatization of probability theory (1933) and the $L^p$ spaces central to Stefan Banach's functional analysis.",

@@ -13,9 +13,7 @@ A problem due to Ulam. Starting with `3, 5`, the sequence continues
 Erdős–Graham (1980).
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Ulam prime extension -/
 
@@ -49,7 +47,7 @@ def ErdosProblem472 : Prop :=
     ∃ (seed : List ℕ),
       (∀ p ∈ seed, p.Prime) ∧
       seed.length ≥ 2 ∧
-      List.Sorted (· < ·) seed ∧
+      List.Pairwise (· < ·) seed ∧
       ∃ f : ℕ → ℕ, IsUlamPrimeSeq seed f
 
 /- ## Known example -/
@@ -62,7 +60,7 @@ def ulamSeed35 : List ℕ := [3, 5]
 theorem ulamSeed35_prime : ∀ p ∈ ulamSeed35, p.Prime := by decide
 
 /-- The seed `[3, 5]` is sorted in increasing order. -/
-theorem ulamSeed35_sorted : List.Sorted (· < ·) ulamSeed35 := by decide
+theorem ulamSeed35_sorted : List.Pairwise (· < ·) ulamSeed35 := by decide
 
 /-- The seed `[3, 5]` has at least 2 elements. -/
 theorem ulamSeed35_length : ulamSeed35.length ≥ 2 := by decide
@@ -182,12 +180,11 @@ theorem candidates_odd_of_odd (last q : ℕ)
     · exact absurd hq' hq
     · omega
 
-/-- For p ≥ 3, p + 2 - 1 = p + 1 is even. So the candidate from seed element 2
-is always even (for p ≥ 3), hence never prime (except p = 1 which is impossible). -/
-theorem seed_two_gives_even (p : ℕ) (hp : p ≥ 3) : Even (p + 2 - 1) := by
-  rcases Nat.even_or_odd p with ⟨k, hk⟩ | ⟨k, hk⟩
-  · exact ⟨k + 1, by omega⟩
-  · exact ⟨k + 1, by omega⟩
+/-- For odd p ≥ 3, p + 2 - 1 = p + 1 is even. So the candidate from seed element 2
+is always even for odd primes, hence never prime. -/
+theorem seed_two_gives_even (p : ℕ) (hp : p ≥ 3) (hodd : Odd p) : Even (p + 2 - 1) := by
+  obtain ⟨k, hk⟩ := hodd
+  exact ⟨k + 1, by omega⟩
 
 /-- For odd p and odd q, the candidate p + q - 1 is odd,
 hence potentially prime. This is why odd seeds are preferred. -/
@@ -214,7 +211,7 @@ theorem ulam35_all_prime_8 :
 
 /-- All terms in the first 8 elements are strictly increasing. -/
 theorem ulam35_increasing_8 :
-    List.Sorted (· < ·) [3, 5, 7, 11, 13, 17, 19, 23] := by decide
+    List.Pairwise (· < ·) [3, 5, 7, 11, 13, 17, 19, 23] := by decide
 
 /- ## Growth observation -/
 

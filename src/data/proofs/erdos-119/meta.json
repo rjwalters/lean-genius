@@ -101,7 +101,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures all three parts of Erdős Problem #119 in 116 lines of Lean 4, encoding the maximum modulus $M_n$ of unit-circle polynomials, the solved Parts 1-2 (Wagner 1980, Beck 1991) as axioms, and the open Part 3 using `Filter.Eventually`. The implication chain and basic properties are included. Zero sorries.",
-    "implications": "**Theoretical Significance**: Resolution of Part 3 would establish that the cumulative polynomial extrema grow super-linearly for ANY root configuration on the unit circle.\n\n**Broader Connections**: This would have deep implications for Diophantine approximation (quantifying how well rational angles approximate irrational ones) and potential theory (relating energy functionals on the circle to polynomial extrema). Beck's technique for Part 2 may serve as a starting point.",
+    "implications": "**Theoretical Significance**: Resolution of Part 3 would establish that the cumulative polynomial extrema grow super-linearly for ANY root configuration on the unit circle.\n\nThis would have deep implications for Diophantine approximation (quantifying how well rational angles approximate irrational ones) and potential theory (relating energy functionals on the circle to polynomial extrema). Beck's technique for Part 2 may serve as a starting point.",
     "openQuestions": [
       "Does $\\sum_{k \\leq n} M_k > n^{1+c}$ hold for some $c > 0$ and all large $n$? This is Part 3, Erdős's $100 prize problem.",
       "What is the optimal exponent $c$ in Part 2? Beck's proof gives $c > 0$ but the best constant is unknown.",

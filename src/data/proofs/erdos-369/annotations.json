@@ -78,16 +78,18 @@
     },
     "type": "definition",
     "title": "Largest Prime Factor",
-    "content": "**largestPrimeFactor n** = $P^+(n)$, the largest prime dividing $n$ (0 if $n \\leq 1$). Axiomatized as a noncomputable function.",
+    "content": "**largestPrimeFactor n** = $P^+(n)$, the largest prime dividing $n$ (0 if $n \\leq 1$). Axiomatized as a `noncomputable axiom` — a definitional axiom positing that such a function exists without providing an implementation. This is a convenience declaration: $P^+(n)$ is trivially computable by trial division, but writing a verified Lean implementation of the maximum prime factor function would be tangential to the problem formalization. Unlike `balog_wooley_infinitely_many`, this axiom introduces no mathematical assumptions — any function of type `ℕ → ℕ` would satisfy the type signature.",
     "significance": "key",
-    "mathContext": "The function $P^+(n)$ is a central object in multiplicative number theory. Its distribution is intimately connected to the Dickman function: the probability that a random integer near $x$ has $P^+(n) \\leq x^\\alpha$ is $\\rho(1/\\alpha)$. The Erdős-Kac theorem implies that $\\log P^+(n) / \\log n$ is approximately uniformly distributed on $[0,1]$ — most integers have a 'large' prime factor. This makes consecutive smooth numbers rare: two independent draws from this distribution both landing below $\\varepsilon$ has probability $\\rho(1/\\varepsilon)^2$, but consecutive integers are not independent.",
+    "mathContext": "The function $P^+(n)$ is a central object in multiplicative number theory. Its distribution is intimately connected to the Dickman function: the probability that a random integer near $x$ has $P^+(n) \\leq x^\\alpha$ is $\\rho(1/\\alpha)$. The Erdős-Kac theorem implies that $\\log P^+(n) / \\log n$ is approximately uniformly distributed on $[0,1]$ — most integers have a 'large' prime factor. This makes consecutive smooth numbers rare: two independent draws from this distribution both landing below $\\varepsilon$ has probability $\\rho(1/\\varepsilon)^2$, but consecutive integers are not independent.\n\nNote: while `largestPrimeFactor` appears as an `axiom` declaration, the formalization's `IsSmooth` predicate (used in all conjecture statements) does NOT depend on it — smoothness is defined directly via universal quantification over prime divisors. The `largestPrimeFactor` axiom is an unused convenience that could be removed without affecting any conjecture statement.",
     "relatedConcepts": [
       "Erdős-Kac theorem",
       "multiplicative function",
-      "prime factor distribution"
+      "prime factor distribution",
+      "noncomputable axiom pattern"
     ],
     "prerequisites": [
-      "Nat.Prime"
+      "Nat.Prime",
+      "prime factorization"
     ]
   },
   {
@@ -121,13 +123,14 @@
     },
     "type": "definition",
     "title": "Has Consecutive Smooth Run in {1,...,n}",
-    "content": "**HasConsecutiveSmoothRun n k B**: there exists $m \\geq 1$ with $m + k - 1 \\leq n$ such that $m, m+1, \\ldots, m+k-1$ are each $B$-smooth.",
+    "content": "**HasConsecutiveSmoothRun n k B**: there exists $m \\geq 1$ with $m + k - 1 \\leq n$ such that $m, m+1, \\ldots, m+k-1$ are each $B$-smooth. This wraps `ConsecutiveSmoothRun` with an existential quantifier and a range constraint, transforming the local smoothness property into a global question about the interval $\\{1, \\ldots, n\\}$.\n\nThe docstring in the Lean file (lines 58-65) labels this as 'the main conjecture' and describes the $n^\\varepsilon$ approximation via requiring $B^{1/\\varepsilon} \\geq n$, though the actual formalization uses the parametrized `smoothBound` approach in `ErdosConjecture369` instead.",
     "significance": "key",
-    "mathContext": "The existential quantification asks for at least one run within $\\{1, \\ldots, n\\}$. The conjecture asserts this holds for ALL sufficiently large $n$, not just infinitely many. This is the critical distinction from the Balog-Wooley result. Proving 'for all large $n$' typically requires either: (1) showing the gaps between smooth runs are $o(n)$, or (2) constructing smooth runs deterministically. Neither approach has succeeded.",
+    "mathContext": "The existential quantification asks for at least one run within $\\{1, \\ldots, n\\}$. The conjecture asserts this holds for ALL sufficiently large $n$, not just infinitely many — the critical distinction from the Balog-Wooley result.\n\nProving 'for all large $n$' typically requires one of: (1) showing the gaps between consecutive smooth runs are $o(n)$ (gap control), (2) constructing smooth runs deterministically via the Chinese Remainder Theorem or similar tools, or (3) establishing positive lower density for the set of starting points. None has succeeded.\n\nCompare with Bertrand's postulate (see `bertrands-postulate`), where Chebyshev proved a prime exists in every interval $(n, 2n)$ — the smooth number analog (a smooth number in every interval of length $n^{1-\\varepsilon}$) is what would be needed to resolve this conjecture.",
     "relatedConcepts": [
       "existential quantification",
       "gap bound",
-      "deterministic construction"
+      "deterministic construction",
+      "Chebyshev-type estimates"
     ],
     "prerequisites": [
       "ConsecutiveSmoothRun"
@@ -210,14 +213,15 @@
     },
     "type": "context",
     "title": "Summary and Status",
-    "content": "The problem remains OPEN even for $k = 2$. The gap between 'infinitely many' (Balog-Wooley) and 'all sufficiently large' $n$ is the core difficulty, reflecting deep questions about smooth number distribution.",
+    "content": "The problem remains OPEN even for $k = 2$. The gap between 'infinitely many' (Balog-Wooley) and 'all sufficiently large' $n$ is the core difficulty, reflecting deep questions about smooth number distribution.\n\nThe closing comment (lines 124-129) summarizes the formalization's structure: definitions of smooth numbers and consecutive runs, the parametrized conjecture statement, and the Balog-Wooley axiom as the strongest known partial result. The file contains 5 definitions, 0 theorems, and 2 axiom declarations (one definitional, one mathematical), totaling 131 lines.",
     "significance": "key",
-    "mathContext": "The hierarchy of difficulty is: infinitely many (proved, Balog-Wooley 1998) < positive density (open) < all large $n$ (open, the conjecture). Each step requires fundamentally stronger tools. The problem is related to Erdős Problems #370 (smooth numbers in short intervals) and #928 (related smooth number questions). The techniques needed likely involve either: (1) the circle method adapted to smooth numbers, (2) advances in multiplicative number theory regarding correlations of smoothness, or (3) effective versions of the abc conjecture. The problem's difficulty arises from the multiplicative independence of consecutive integers combined with the requirement for uniform (not just average) smoothness.",
+    "mathContext": "The hierarchy of difficulty is: infinitely many (proved, Balog-Wooley 1998) < positive density (open) < all large $n$ (open, the conjecture). Each step requires fundamentally stronger tools.\n\nRelated Erdős problems in the gallery: #370 (smooth numbers in short intervals, see `erdos-370`), #368 (largest prime factor of $n(n+1)$, see `erdos-368`), #371 (ordering of consecutive prime factors, see `erdos-371`), #4 (large prime gaps using smooth number constructions, see `erdos-4`).\n\nThe techniques needed likely involve either: (1) the circle method adapted to smooth numbers (analogous to Vinogradov's approach for Goldbach-type problems), (2) advances in multiplicative number theory regarding correlations of smoothness across consecutive integers, or (3) effective versions of the abc conjecture. The abc conjecture asserts that for coprime $a + b = c$, the radical $\\text{rad}(abc)$ is usually large; an effective version would constrain how simultaneously smooth $n$ and $n + 1$ can be, since $\\text{rad}(n \\cdot (n+1) \\cdot (2n+1))$ involves all their prime factors.",
     "relatedConcepts": [
       "circle method",
       "multiplicative independence",
       "abc conjecture",
-      "smooth number gaps"
+      "smooth number gaps",
+      "Vinogradov's method"
     ],
     "prerequisites": [
       "ErdosConjecture369",

@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "proofId": "abel-ruffini-oq-04",
+  "reviewDate": "2026-03-23T14:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Well-organized pedagogical wrapper around two Mathlib calls, with excellent documentation but overclaimed originality and filler theorems inflating the theorem count.",
+    "tier": "B",
+    "tierJustification": "The core mathematical content is a Mathlib bridge: a5_is_simple is a direct alias for alternatingGroup.isSimpleGroup_five, and symmetric_not_solvable is a 2-line type coercion bridge to Equiv.Perm.not_solvable. The remaining 6 theorems are trivial specializations (le_rfl, omega, inferInstance) or a conjunction of two earlier results. This is Tier B: formalized using Mathlib, with the file providing bridge infrastructure and pedagogical organization rather than original mathematical reasoning."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean file, lines 92-152 (Part V documentation)",
+      "finding": "The structured documentation of the 5-step proof chain is genuinely excellent. The 'Why Exactly 5?' and 'Crucial Asymmetry' tables (lines 127-151) are clear, accurate, and pedagogically valuable. The careful distinction between generic and specific quintic solvability (line 150-151) is exactly right and addresses a common misconception. This documentation is the strongest original contribution of the file.",
+      "recommendation": "Preserve this documentation. It is the file's most distinctive and valuable feature."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean file, lines 48-53 (symmetric_not_solvable)",
+      "finding": "The symmetric_not_solvable theorem, while thin, is a genuine and useful bridge: converting Mathlib's cardinal-level statement (5 <= Cardinal.mk alpha) to a natural number bound (5 <= n) via simp + exact_mod_cast is a real contribution that downstream users need. This is the kind of API-level glue that makes Mathlib results practically accessible.",
+      "recommendation": "This theorem is correctly framed as a bridge. It could be upstreamed to Mathlib if it does not already exist there."
+    },
+    {
+      "severity": "moderate",
+      "category": "filler",
+      "location": "Lean file, lines 56-65 (s5_not_solvable, s6_not_solvable, s7_not_solvable)",
+      "finding": "These three theorems are trivial one-line specializations of symmetric_not_solvable, each consisting of applying it with a concrete n and discharging '5 <= n' via le_rfl or omega. They add no mathematical content. s5_not_solvable = symmetric_not_solvable 5 le_rfl; s6_not_solvable = symmetric_not_solvable 6 (by omega); s7_not_solvable = symmetric_not_solvable 7 (by omega). These pad the theorem count from 5 to 8.",
+      "recommendation": "Either (a) reframe these explicitly as 'convenience instances' rather than counting them equally with the general theorem, or (b) add S2/S3/S4 solvability proofs to make the contrast section complete, which would add actual value rather than just specializing the same result three times."
+    },
+    {
+      "severity": "moderate",
+      "category": "filler",
+      "location": "Lean file, lines 72-75 (s0_solvable, s1_solvable)",
+      "finding": "Both are := inferInstance, meaning Lean's typeclass system finds the proof automatically with zero user reasoning. These exist only for pedagogical contrast, which is legitimate, but they are counted as full theorems in the '8 theorems' claim. The meta.json conclusion says '8 theorems' without distinguishing these inferInstance calls from symmetric_not_solvable's actual proof content.",
+      "recommendation": "Acknowledge in meta.json that 5 of 8 theorems are trivial specializations or typeclass inferences. Better yet, add explicit solvability proofs for S2, S3, S4 with their derived series to make the contrast section substantive rather than relying on inferInstance."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json, originalContributions field (lines 40-44)",
+      "finding": "The originalContributions list 5 items, but the actual original proof content is a 2-line type coercion (lines 50-52). 'Named proof chain: a5_is_simple -> symmetric_not_solvable -> Abel-Ruffini' is pedagogical organization, not an original contribution. 'symmetric_not_solvable: explicit proof for general n via Cardinal inequality' overstates what is a simp + exact_mod_cast bridge. 'five_is_the_threshold: exact dividing line' is a conjunction of two earlier results. 'Comprehensive documentation' and 'Degree-by-degree comparison table' are documentation contributions, not proof contributions.",
+      "recommendation": "Restructure originalContributions to honestly separate: (1) the type coercion bridge (symmetric_not_solvable), which is the one genuinely useful proof contribution; (2) pedagogical organization (naming each step); and (3) documentation (tables, historical context). Do not present documentation as proof contributions."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json, description (line 5)",
+      "finding": "The description says 'Exposes the complete proof chain from A5 simplicity to the Abel-Ruffini theorem.' But the file does NOT prove Steps 4 or 5 of the chain (the Galois bridge and the generic quintic Galois group computation). These are documented in comments but not formalized. The 'complete proof chain' language implies all steps are machine-verified when only Steps 1 and 3 are formalized in this file.",
+      "recommendation": "Change 'complete proof chain' to 'key steps of the proof chain' or 'the group-theoretic steps of the proof chain.' Acknowledge that Steps 4-5 (Galois bridge, generic quintic Galois group) are handled by Mathlib or documented but not formalized here."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json, title: 'The A5 Simplicity Proof Chain'",
+      "finding": "The title implies this file proves A5 is simple, but that is done entirely by Mathlib (alternatingGroup.isSimpleGroup_five). The file's actual contribution is bridging the cardinal/natural-number type gap for symmetric_not_solvable and providing pedagogical packaging. A more precise title would reference the pedagogical decomposition.",
+      "recommendation": "Consider a title like 'Abel-Ruffini Proof Chain: Named Steps from A5 Simplicity to Non-Solvability' to better reflect that the file names/exposes existing Mathlib results rather than proving A5 simplicity."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json, conclusion.summary (line 385)",
+      "finding": "The conclusion says 'Fully verified (0 sorries, 0 axioms) pedagogical exposition... with 8 theorems.' While technically true (no sorries, no axioms), presenting '8 theorems' without qualification gives a misleading impression of substantive breadth. Of the 8: 1 is a Mathlib alias, 1 is a 2-line bridge, 3 are one-line specializations, 2 are inferInstance, and 1 is a conjunction. The real content is ~4 lines of original Lean code.",
+      "recommendation": "Rephrase to: '8 named theorems (1 substantive bridge, 5 convenience specializations, 2 typeclass inferences), fully verified with 0 sorries and 0 axioms.'"
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json, theoremCount: 8 vs actual Lean content",
+      "finding": "The leanFile.theoremCount of 8 is numerically correct but qualitatively misleading in context with the description that emphasizes 'each step as a named, independently verifiable theorem.' The 8 count includes trivial specializations and inferInstance calls that are mechanically independent but mathematically vacuous.",
+      "recommendation": "Add a field like 'substantiveTheoremCount' or a note in the description distinguishing bridge/infrastructure theorems from convenience aliases."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean file overall structure",
+      "finding": "The 5-part organization (Foundation, Propagation, Contrast, Threshold, Documentation) is clean and logical. The file reads well as a pedagogical document. Comments are accurate and proportionate. The namespace isolation (AbelRuffiniOQ04) is proper. The #check section at the end serves as a useful API summary.",
+      "recommendation": "Preserve this organizational structure. It is a good model for other pedagogical proof files."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "annotations.json, ann-symmetric-not-solvable (line 111)",
+      "finding": "The annotation accurately identifies that 'This two-line bridge is the file's only new proof content -- everything else delegates to Mathlib.' This is commendably honest. However, this honest assessment in the annotations contradicts the meta.json's framing of 5 original contributions and 8 substantive theorems.",
+      "recommendation": "Align meta.json with the annotations' honest assessment. The annotations are more accurate than the meta.json on this point."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json, crossReferences (36 entries)",
+      "finding": "The crossReferences section lists 36 related proofs, many with only thematic connections (godel-incompleteness, halting-problem, cantor-diagonalization, fermats-last-theorem). While these connections are intellectually interesting, their volume is disproportionate to the 163-line, 4-lines-of-original-content file. The extensive cross-referencing creates an impression of centrality and depth that exceeds the file's actual mathematical contribution.",
+      "recommendation": "Reduce crossReferences to the 8-12 most directly relevant entries (abel-ruffini, angle-trisection, fundamental-theorem-algebra, inverse-galois, lagrange-theorem, sylow-theorems, solution-of-cubic, general-quartic, quadratic-reciprocity). Move thematic connections to a 'See Also' or 'Further Reading' section if desired."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "annotations.json overall",
+      "finding": "The annotations are rich, mathematically accurate, and genuinely informative. The mathematical context provided for each annotation (Burnside's theorem, Feit-Thompson, character theory, geometric incarnation of A5 as icosahedral rotations) goes well beyond what the Lean code proves but serves as excellent educational material. The annotations are honest about what is Mathlib and what is new.",
+      "recommendation": "The annotations are the strongest component of this gallery entry. They would benefit from a brief note up front acknowledging that the mathematical depth is in the exposition rather than the formalization."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite meta.json originalContributions to honestly separate the type-coercion bridge (symmetric_not_solvable) from pedagogical organization and documentation contributions. Remove claims that restate Mathlib aliases as original contributions.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Change description from 'complete proof chain' to 'key group-theoretic steps of the proof chain,' acknowledging that Steps 4-5 are documented but not formalized in this file.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Add qualification to the '8 theorems' count in the conclusion, distinguishing the 1 substantive bridge theorem from 5 convenience specializations and 2 typeclass inferences.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Trim crossReferences from 36 entries to the 8-12 most directly relevant, removing purely thematic connections (Godel, halting problem, Cantor, etc.) that inflate the entry's apparent centrality.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "medium",
+      "target": "researcher",
+      "description": "Add explicit solvability proofs for S2, S3, S4 (with derived series spelled out) to make the contrast section substantive rather than relying on inferInstance for only S0 and S1. This would also connect to the open question mentioned in the conclusion.",
+      "status": "open"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Align meta.json framing with the annotations' honest assessment. The annotations correctly note the 2-line bridge is 'the file's only new proof content' while meta.json lists 5 original contributions.",
+      "status": "resolved"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 4,
+    "originalityAccuracy": 5,
+    "completeness": 7,
+    "framingPrecision": 5,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 6,
+    "overall": 6.0
+  },
+
+  "suggestedBestFraming": "A pedagogical Mathlib wrapper that names each step in the A5-simplicity-to-Abel-Ruffini proof chain, providing a 2-line type-coercion bridge (cardinal to natural number) for Equiv.Perm.not_solvable and excellent structured documentation of the complete 5-step argument including degree-by-degree comparison tables."
+}

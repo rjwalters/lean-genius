@@ -13,7 +13,8 @@
       "trigonometry",
       "linear-algebra",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/LawOfCosines.lean",
     "badge": "mathlib",
@@ -48,16 +49,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Law of Cosines has ancient origins: Euclid (~300 BCE) gave geometric equivalents in Elements Book II (Propositions 12-13), and al-Kashi (1420s) stated the first modern trigonometric formulation, still called al-Kashi's theorem in many countries. It became standard with the development of trigonometry in the 16th-17th centuries and is fundamental to surveying, navigation, and physics. The law generalizes the Pythagorean theorem: when C = 90°, the cosine term vanishes and c² = a² + b². The algebraic form c² = a² + b² - 2ab cos(C) was instrumental in spherical trigonometry and celestial mechanics, and its inner-product formulation ||v - w||² = ||v||² + ||w||² - 2⟨v,w⟩ unifies geometry and linear algebra.",
-    "problemStatement": "**The Law of Cosines**:\n\nFor a triangle with sides $a$, $b$, $c$ and angle $C$ opposite side $c$:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\n**Special case**: When $C = 90°$, $\\cos(C) = 0$, giving the Pythagorean theorem:\n$$c^2 = a^2 + b^2$$\n\n**Inner product form**: For vectors $v$ and $w$:\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$$",
-    "text": "The generalization of the Pythagorean theorem to arbitrary triangles: c^2 = a^2 + b^2 - 2ab*cos(C), which reduces to the Pythagorean theorem when C = 90 degrees.",
+    "historicalContext": "The Law of Cosines has ancient origins: Euclid (~300 BCE) gave geometric equivalents in Elements Book II (Propositions 12-13), and al-Kashi (1420s) stated the first modern trigonometric formulation, still called al-Kashi's theorem in many countries. It became standard with the development of trigonometry in the 16th-17th centuries and is fundamental to surveying, navigation, and physics. The law generalizes the Pythagorean theorem: when C = 90\u00b0, the cosine term vanishes and c\u00b2 = a\u00b2 + b\u00b2. The algebraic form c\u00b2 = a\u00b2 + b\u00b2 - 2ab cos(C) was instrumental in spherical trigonometry and celestial mechanics, and its inner-product formulation ||v - w||\u00b2 = ||v||\u00b2 + ||w||\u00b2 - 2\u27e8v,w\u27e9 unifies geometry and linear algebra.",
+    "problemStatement": "**The Law of Cosines**:\n\nFor a triangle with sides $a$, $b$, $c$ and angle $C$ opposite side $c$:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\n**Special case**: When $C = 90\u00b0$, $\\cos(C) = 0$, giving the Pythagorean theorem:\n$$c^2 = a^2 + b^2$$\n\n**Inner product form**: For vectors $v$ and $w$:\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$$",
+    "text": "A Lean 4 formalization of the Law of Cosines (Wiedijk #94) using Mathlib's `InnerProductSpace` framework. The proof works in `EuclideanSpace \u211d (Fin 2)` (alias `Vec2`) and establishes the algebraic identity \u2016v \u2212 w\u2016\u00b2 = \u2016v\u2016\u00b2 + \u2016w\u2016\u00b2 \u2212 2\u27e8v, w\u27e9 via bilinearity (`inner_sub_left`, `inner_sub_right`) and symmetry (`real_inner_comm`) of the real inner product, closed by `ring`. The formalization then derives the classical triangle form c\u00b2 = a\u00b2 + b\u00b2 \u2212 2ab cos C, the Pythagorean theorem as the perpendicularity special case, the polarization identity \u27e8v,w\u27e9 = (\u2016v+w\u2016\u00b2 \u2212 \u2016v\u2016\u00b2 \u2212 \u2016w\u2016\u00b2)/2, and the parallelogram law \u2016v+w\u2016\u00b2 + \u2016v\u2212w\u2016\u00b2 = 2(\u2016v\u2016\u00b2 + \u2016w\u2016\u00b2) \u2014 all with 0 sorries and 0 axioms across 280 lines.",
     "proofStrategy": "We prove this using the inner product structure:\n\n1. **Start with $\\|v - w\\|^2$**:\n   $$\\|v - w\\|^2 = \\langle v - w, v - w \\rangle$$\n\n2. **Expand using linearity**:\n   $$= \\langle v, v \\rangle - \\langle v, w \\rangle - \\langle w, v \\rangle + \\langle w, w \\rangle$$\n\n3. **Use symmetry** ($\\langle v, w \\rangle = \\langle w, v \\rangle$):\n   $$= \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$$\n\n4. **For perpendicular vectors** ($\\langle v, w \\rangle = 0$):\n   $$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2$$\n\nThis is the Pythagorean theorem as a special case.",
     "keyInsights": [
-      "**Inner Product Form:** $\\|u - v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u, v \\rangle$. This is the Law of Cosines in its most general form — valid in any inner product space, not just $\\mathbb{R}^2$.",
-      "**Pythagoras as Special Case:** When $\\langle u, v \\rangle = 0$ (perpendicularity), the $-2\\langle u,v \\rangle$ term vanishes: $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2$. The Pythagorean theorem IS the Law of Cosines at $\\theta = 90°$.",
-      "**Polarization Identity:** $\\langle u, v \\rangle = \\frac{1}{2}(\\|u+v\\|^2 - \\|u\\|^2 - \\|v\\|^2)$. Inner products are recoverable from norms alone — a remarkable fact meaning that angle information is encoded in distance information.",
-      "**Parallelogram Law:** $\\|u+v\\|^2 + \\|u-v\\|^2 = 2\\|u\\|^2 + 2\\|v\\|^2$. The sum of squared diagonals equals the sum of squared sides. This characterizes inner product spaces among normed spaces.",
-      "**Triangle Form:** For sides $a, b, c$ opposite angles $A, B, C$: $c^2 = a^2 + b^2 - 2ab\\cos C$. Setting $\\cos C = 0$ gives Pythagoras; the cosine correction captures how non-right angles stretch or shrink the hypotenuse."
+      "**Lean Proof Strategy:** The core `law_of_cosines_inner` proof rewrites \u2016v\u2212w\u2016\u00b2 as `inner (v\u2212w) (v\u2212w)` via `real_inner_self_eq_norm_mul_norm`, then expands using `inner_sub_left` and `inner_sub_right`, applies `real_inner_comm w v` to combine the cross terms, and closes with `ring`. The entire proof is 6 lines \u2014 a minimal algebraic derivation.",
+      "**Pythagorean Theorem as Corollary:** The file defines `perpendicular v w` as `inner v w = (0 : \u211d)` and proves `law_of_cosines_perpendicular` by rewriting via `law_of_cosines_inner` and substituting `h : inner v w = 0`. The Pythagorean theorem is not separately imported from Mathlib but derived inline as a one-line consequence.",
+      "**Polarization Identity:** `polarization_identity` is proved in a single `linarith` call from `law_of_cosines_inner_add`. This shows that all angle information in an inner product space is recoverable from the norm \u2014 distances determine angles. In abstract functional analysis, this means $L^2$ inner products can be computed from $L^2$ norms.",
+      "**Parallelogram Law and Jordan\u2013von Neumann:** `parallelogram_law_from_cosines` follows from one `linarith` combining the sum and difference forms. The parallelogram identity \u2016v+w\u2016\u00b2 + \u2016v\u2212w\u2016\u00b2 = 2\u2016v\u2016\u00b2 + 2\u2016w\u2016\u00b2 is the converse characterization (Jordan\u2013von Neumann, 1935): a normed space satisfying it admits a unique compatible inner product.",
+      "**Classical Triangle Structure:** The `Triangle` structure enforces positivity (`a_pos`, `b_pos`, `c_pos`) and all three triangle inequalities (`tri_ab`, `tri_bc`, `tri_ca`). The `cos_from_sides` theorem uses `field_simp` + `linarith` to derive cos C = (a\u00b2+b\u00b2\u2212c\u00b2)/(2ab), inverting the Law of Cosines to recover angles from sides (the SAS/SSS triangle-solving formulas)."
     ],
     "prerequisites": [
       "Geometry (Euclidean, combinatorial)",
@@ -67,72 +68,110 @@
   "sections": [
     {
       "id": "header",
-      "title": "Introduction",
+      "title": "Introduction and Historical Context",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Overview of the Law of Cosines and its historical context."
+      "summary": "Imports for inner product spaces, module docstring covering the Wiedijk #94 reference, proof approach via inner products, Mathlib dependencies, and historical note on Euclid and al-Kashi.",
+      "mathContext": "The Law of Cosines: $c^2 = a^2 + b^2 - 2ab\\cos C$. In inner product form: $\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$. The formalization uses `EuclideanSpace \u211d (Fin 2)` as the ambient space, with Mathlib's `InnerProductSpace` providing `inner_sub_left`, `inner_sub_right`, and `real_inner_comm`."
     },
     {
       "id": "inner-product",
-      "title": "Inner Product Form",
+      "title": "Inner Product Form (Main Theorems)",
       "startLine": 52,
       "endLine": 101,
-      "summary": "The main theorem in terms of inner products and norms."
+      "summary": "Defines `Vec2 := EuclideanSpace \u211d (Fin 2)`. Proves `norm_sq_eq_inner`, `law_of_cosines_inner` ($\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$), and `law_of_cosines_inner_add` ($\\|v + w\\|^2 = \\|v\\|^2 + \\|w\\|^2 + 2\\langle v, w \\rangle$). Proofs expand via `inner_sub_left`/`inner_add_left`, apply symmetry via `real_inner_comm`, and simplify with `ring`.",
+      "mathContext": "The expansion $\\langle v-w, v-w \\rangle = \\langle v,v \\rangle - \\langle v,w \\rangle - \\langle w,v \\rangle + \\langle w,w \\rangle = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v,w \\rangle$ uses bilinearity ($\\langle v-w, u \\rangle = \\langle v,u \\rangle - \\langle w,u \\rangle$) and symmetry ($\\langle v,w \\rangle = \\langle w,v \\rangle$) of the real inner product."
     },
     {
       "id": "perpendicular",
-      "title": "Perpendicularity",
+      "title": "Connection to Perpendicularity and Pythagoras",
       "startLine": 103,
       "endLine": 129,
-      "summary": "The special case that gives the Pythagorean theorem."
+      "summary": "Defines `perpendicular v w` as `inner v w = 0`. Proves `law_of_cosines_perpendicular` and `pythagorean_from_cosines`: when $\\langle v, w \\rangle = 0$, both $\\|v - w\\|^2$ and $\\|v + w\\|^2$ equal $\\|v\\|^2 + \\|w\\|^2$.",
+      "mathContext": "$v \\perp w \\iff \\langle v, w \\rangle = 0 \\iff \\cos\\theta = 0 \\iff \\theta = 90\u00b0$. The Pythagorean theorem $\\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ is the zero-correction special case of the Law of Cosines."
     },
     {
       "id": "classical",
-      "title": "Classical Formulation",
+      "title": "Classical Triangle Formulation",
       "startLine": 131,
       "endLine": 173,
-      "summary": "The traditional triangle formulation with sides and angles."
+      "summary": "Defines `Triangle` structure with sides $a, b, c > 0$ satisfying triangle inequality. Proves `cos_from_sides`: $\\cos C = (a^2 + b^2 - c^2)/(2ab)$, and `law_of_cosines_classic`: $c^2 = a^2 + b^2 - 2ab\\cos C$.",
+      "mathContext": "The classical formulation relates to the inner product form via $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$. The `Triangle` structure enforces positivity and the triangle inequality $a < b + c$, $b < c + a$, $c < a + b$, which ensures the triangle is non-degenerate."
     },
     {
       "id": "examples",
       "title": "Numerical Examples",
       "startLine": 175,
       "endLine": 211,
-      "summary": "Concrete examples for 60, 90, and 120 degree angles."
+      "summary": "Four concrete examples verified by `norm_num`: equilateral ($a = b = 1$, $\\cos 60\u00b0 = 1/2$, $c = 1$), right angle ($3$-$4$-$5$ triangle), obtuse ($\\cos 120\u00b0 = -1/2$, $c = \\sqrt{3}$), and degenerate ($\\cos 0\u00b0 = 1$, $c = |a - b|$).",
+      "mathContext": "The degenerate case $C = 0\u00b0$ gives $c^2 = a^2 + b^2 - 2ab = (a-b)^2$, so $c = |a - b|$: the three vertices are collinear. The full range $C \\in [0\u00b0, 180\u00b0]$ continuously interpolates between $c = |a-b|$ (collinear) through $c = \\sqrt{a^2+b^2}$ (right angle) to $c = a+b$ (collinear, opposite direction)."
     },
     {
       "id": "corollaries",
-      "title": "Corollaries",
+      "title": "Corollaries: Polarization Identity and Parallelogram Law",
       "startLine": 213,
       "endLine": 246,
-      "summary": "Polarization identity and parallelogram law."
+      "summary": "Derives `polarization_identity` ($\\langle v,w \\rangle = (\\|v+w\\|^2 - \\|v\\|^2 - \\|w\\|^2)/2$), `polarization_identity'` (using $\\|v-w\\|^2$), and `parallelogram_law_from_cosines` ($\\|v+w\\|^2 + \\|v-w\\|^2 = 2\\|v\\|^2 + 2\\|w\\|^2$). All proofs use `linarith` from the two forms of the Law of Cosines.",
+      "mathContext": "The polarization identity recovers the inner product from the norm: $\\langle v, w \\rangle = \\tfrac{1}{2}(\\|v+w\\|^2 - \\|v\\|^2 - \\|w\\|^2)$. The parallelogram law $\\|v+w\\|^2 + \\|v-w\\|^2 = 2(\\|v\\|^2 + \\|w\\|^2)$ characterizes inner product spaces among normed spaces (Jordan-von Neumann theorem, 1935)."
     }
   ],
   "conclusion": {
-    "summary": "The Law of Cosines is fully verified using Mathlib's inner product space infrastructure. We prove both the algebraic (inner product) and classical (trigonometric) forms, along with important corollaries.",
-    "implications": "The Law of Cosines is essential in many fields:\n\n**1. Navigation**\nComputing distances and bearings.\n\n**2. Surveying**\nTriangulation and distance measurement.\n\n**3. Physics**\nForce composition and vector addition.\n\n**4. Computer graphics**\n3D transformations and lighting calculations.",
+    "summary": "The Law of Cosines is fully verified in Lean 4 (Wiedijk #94) using Mathlib's inner product space infrastructure, with 0 sorries and 0 axioms in 280 lines. The formalization covers the inner product form \u2016v\u2212w\u2016\u00b2 = \u2016v\u2016\u00b2 + \u2016w\u2016\u00b2 \u2212 2\u27e8v,w\u27e9, the classical triangle form c\u00b2 = a\u00b2 + b\u00b2 \u2212 2ab cos C, numerical examples verified by `norm_num` and `ring`, and three derived corollaries: the Pythagorean theorem (perpendicularity special case), the polarization identity, and the parallelogram law. The proof technique \u2014 bilinear expansion of the inner product followed by symmetry and `ring` \u2014 transfers unchanged to any real inner product space, making this formalization valid in all of Euclidean geometry, Hilbert spaces, and $L^2$ function spaces.",
+    "implications": "**Theoretical Significance**: The inner product formulation $\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$ is valid in any real inner product space, not just $\\mathbb{R}^2$. This universality means the Law of Cosines applies in:\n\n1. **Function spaces**: $L^2$ inner products $\\langle f, g \\rangle = \\int f g$ give a 'Law of Cosines' for functions, where $\\|f - g\\|^2 = \\|f\\|^2 + \\|g\\|^2 - 2\\langle f, g \\rangle$.\n\n2. **Quantum mechanics**: The Hilbert space inner product $\\langle \\psi | \\phi \\rangle$ governs transition amplitudes; the identity $\\|\\psi - \\phi\\|^2 = 2 - 2\\text{Re}\\langle \\psi | \\phi \\rangle$ (for normalized states) is the quantum Law of Cosines.\n\n3. **Statistics**: The correlation coefficient $\\rho = \\cos\\theta$ between random variables uses the $L^2$ inner product, and $\\|X - Y\\|^2 = \\|X\\|^2 + \\|Y\\|^2 - 2\\rho\\|X\\|\\|Y\\|$ is the variance decomposition.\n\n4. **Corollary significance**: The parallelogram law $\\|v+w\\|^2 + \\|v-w\\|^2 = 2(\\|v\\|^2 + \\|w\\|^2)$ characterizes inner product spaces among normed spaces (Jordan-von Neumann, 1935). The polarization identity shows that distances determine angles \u2014 a metric space with the parallelogram law has a unique compatible inner product.\n\n5. **Navigation and surveying**: The classical form $c^2 = a^2 + b^2 - 2ab\\cos C$ is the basis of triangulation: given two known sides and the included angle (SAS), it computes the third side.",
     "openQuestions": [
-      "What is the spherical analogue of the Law of Cosines?",
-      "How does this generalize to higher-dimensional inner product spaces?",
-      "What are the hyperbolic versions of this theorem?",
-      "How is this used in modern GPS and positioning systems?"
+      "The spherical Law of Cosines $\\cos c = \\cos a \\cos b + \\sin a \\sin b \\cos C$ (for sides measured as angles on a sphere of radius 1) reduces to the planar version in the limit of small triangles. Can this be formalized in Lean using Mathlib's spherical geometry?",
+      "The hyperbolic Law of Cosines $\\cosh c = \\cosh a \\cosh b - \\sinh a \\sinh b \\cos C$ governs triangles in hyperbolic space. Formalizing the three versions (Euclidean, spherical, hyperbolic) and showing they are limits of each other via curvature \u2192 0 would unify Riemannian geometry.",
+      "The Law of Cosines implies the triangle inequality $c \\leq a + b$ (since $\\cos C \\geq -1$). Can this be proved formally as a corollary, connecting to the `triangle-inequality` gallery entry?",
+      "The Stewart's theorem $b^2 m + c^2 n - a^2 d = mnd$ (for a cevian of length $d$) generalizes the Law of Cosines. Can it be derived from the inner product form?",
+      "The cosine rule for angles $\\cos C = (a^2 + b^2 - c^2)/(2ab)$ is formalized as `cos_from_sides`. Can Mathlib's `InnerProductGeometry.angle` be used to give a more direct statement $\\text{angle}(v, w) = \\arccos(\\langle v,w \\rangle / (\\|v\\|\\|w\\|))$?",
+      "The Law of Sines $a/\\sin A = b/\\sin B = c/\\sin C = 2R$ (where $R$ is the circumradius) is the companion theorem for angle-based triangle solving. A Lean formalization using `InnerProductGeometry.angle` from Mathlib could connect to the Law of Cosines via $\\sin^2 C + \\cos^2 C = 1$ and the area formula $\\text{Area} = \\frac{1}{2}ab\\sin C$."
     ]
   },
   "crossReferences": [
     {
       "targetId": "pythagorean-theorem",
       "relationship": "generalizes",
-      "description": "The law of cosines generalizes the Pythagorean theorem: when θ = π/2, the cos term vanishes, recovering a² + b² = c²."
+      "description": "The Law of Cosines generalizes the Pythagorean theorem: when $\\theta = \\pi/2$, $\\cos\\theta = 0$ and $\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. The formalization proves this reduction explicitly as `law_of_cosines_perpendicular`"
     },
     {
       "targetId": "triangle-inequality",
       "relationship": "related",
-      "description": "Both are fundamental triangle relationships. The law of cosines provides the exact relationship that the triangle inequality bounds."
+      "description": "The triangle inequality $c \\leq a + b$ follows from the Law of Cosines since $\\cos C \\geq -1$ gives $c^2 = a^2 + b^2 - 2ab\\cos C \\leq a^2 + b^2 + 2ab = (a+b)^2$"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz inequality $|\\langle v, w \\rangle| \\leq \\|v\\|\\|w\\|$ ensures $|\\cos\\theta| \\leq 1$ in the Law of Cosines. Both are fundamental identities of inner product spaces \u2014 Cauchy-Schwarz bounds the inner product, while the Law of Cosines expands the squared distance"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The Law of Cosines defines the metric ball $\\{w : \\|v - w\\| \\leq r\\}$ whose area $\\pi r^2$ is formalized in the area-of-circle entry. The circle $x^2 + y^2 = r^2$ is the locus where $\\|v\\| = r$, the norm used throughout the Law of Cosines"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both concern angle measurement in Euclidean geometry. The Law of Cosines recovers angles from side lengths ($\\cos C = (a^2+b^2-c^2)/(2ab)$), while the angle trisection impossibility shows certain angles cannot be constructed \u2014 the cosine formula connects the algebraic and geometric perspectives on angles"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both are foundational results in linear algebra. The inner product form of the Law of Cosines uses the same bilinear structure that underlies the characteristic polynomial in Cayley-Hamilton \u2014 both exploit the algebraic properties of linear operators on inner product spaces"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ provides the connection between the inner product $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$ used in the Law of Cosines and the complex exponential \u2014 the cosine function that appears in $c^2 = a^2 + b^2 - 2ab\\cos C$ is the real part of $e^{iC}$"
     }
   ],
   "relatedProofs": [
     "pythagorean-theorem",
-    "triangle-inequality"
+    "triangle-inequality",
+    "cauchy-schwarz",
+    "area-of-circle",
+    "angle-trisection",
+    "cayley-hamilton",
+    "euler-identity"
   ],
   "leanFile": {
     "imports": [
@@ -154,7 +193,7 @@
   "references": [
     {
       "authors": "Euclid",
-      "title": "Elements, Book II, Propositions 12–13",
+      "title": "Elements, Book II, Propositions 12\u201313",
       "year": "~300 BCE",
       "venue": "Alexandria",
       "note": "The law of cosines in geometric form for obtuse and acute triangles respectively"

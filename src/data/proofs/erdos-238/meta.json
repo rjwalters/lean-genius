@@ -125,7 +125,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #238 asks whether long runs of consecutive primes with all gaps > c₂ can always be found. Erdős proved this for small c₁ via a second-moment argument; the general case remains open and requires understanding the joint distribution of consecutive gaps.",
-    "implications": "**Theoretical Significance**: Resolution would illuminate prime gap distribution and whether gaps exhibit sufficient uniformity to support long runs of large values.\n\n**Broader Connections**: A positive answer would confirm that the Cramér random model captures the large-gap structure of primes at the level of consecutive sequences, not just individual gaps. A negative answer would reveal unexpected correlations between consecutive prime gaps.",
+    "implications": "**Theoretical Significance**: Resolution would illuminate prime gap distribution and whether gaps exhibit sufficient uniformity to support long runs of large values.\n\nA positive answer would confirm that the Cramér random model captures the large-gap structure of primes at the level of consecutive sequences, not just individual gaps. A negative answer would reveal unexpected correlations between consecutive prime gaps.",
     "openQuestions": [
       "Does the conjecture hold for all c₁, c₂ > 0?",
       "What is the optimal dependence of c₁ on c₂ in Erdős's partial result?",

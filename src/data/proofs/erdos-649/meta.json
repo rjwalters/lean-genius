@@ -132,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #649 asked whether any two primes p, q can be achieved as P(n) = p and P(n+1) = q. The answer is NO. The simplest counterexample is (2, 7): powers of 2 modulo 7 cycle through {1, 2, 4}, never reaching 6 ≡ -1, so 7 never divides 2^k + 1. Tong's theorem shows infinitely many pairs fail for any fixed p.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Multiplicative Order:** The obstruction for (2, 7) comes from ord_7(2) = 3 being odd\n\n2. **Primitive Roots:** When 2 is a primitive root mod q, similar obstructions apply\n\n3.\n\n**Broader Connections**: **Quadratic Reciprocity:** Tong's general theorem uses deeper reciprocity arguments\n\n4. **Smooth Numbers:** P(n) = p means n is p-smooth times a power of p\n\n5. **Related Problems:** Connects to consecutive smooth numbers and prime gap theory.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Multiplicative Order:** The obstruction for (2, 7) comes from ord_7(2) = 3 being odd\n\n2. **Primitive Roots:** When 2 is a primitive root mod q, similar obstructions apply\n\n**3. Quadratic Reciprocity:** Tong's general theorem uses deeper reciprocity arguments\n\n4. **Smooth Numbers:** P(n) = p means n is p-smooth times a power of p\n\n5. **Related Problems:** Connects to consecutive smooth numbers and prime gap theory.",
     "openQuestions": [
       "Complete characterization of which prime pairs (p, q) work",
       "Density of working pairs among all prime pairs",

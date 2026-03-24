@@ -126,7 +126,7 @@
   },
   "conclusion": {
     "summary": "This formalization provides a fully constructive, coordinate-geometric verification of the Beltrami-Klein model's hyperbolic parallel property. Through P = (0, 1/2), two explicit chords with slopes ±1/4 are both parallel to the x-axis, violating Playfair's uniqueness axiom. Combined with the axiomatized Euclidean model, this establishes independence of the parallel postulate with only 4 axioms (down from 7 in the parent formalization).",
-    "implications": "**Theoretical Significance**: **Connections to Broader Mathematics**\n\n1. **Foundations of Geometry:** This is the first major independence result in axiomatic geometry, predating Gödel's incompleteness theorems by 60 years. It established model-theoretic independence as a fundamental technique.\n2.\n\n**Broader Connections**: **Hyperbolic Geometry:** The Beltrami-Klein model connects to the Cayley-Klein metric and projective geometry, providing the cleanest proof that hyperbolic geometry has the same consistency strength as Euclidean geometry.\n3. **Differential Geometry:** The hyperbolic metric $ds^2 = 4(dx^2+dy^2)/(1-x^2-y^2)^2$ on the disk gives constant negative curvature $K = -1$, connecting to Riemannian geometry and the Gauss-Bonnet theorem.\n4. **Formalization Methodology:** The constructive approach (explicit witnesses + computation) versus axiomatic approach (existence axioms) illustrates a key trade-off in formal mathematics: more work upfront yields stronger results with fewer assumptions.",
+    "implications": "**Theoretical Significance**: **Connections to Broader Mathematics**\n\n1. **Foundations of Geometry:** This is the first major independence result in axiomatic geometry, predating Gödel's incompleteness theorems by 60 years. It established model-theoretic independence as a fundamental technique.\n**2. Hyperbolic Geometry:** The Beltrami-Klein model connects to the Cayley-Klein metric and projective geometry, providing the cleanest proof that hyperbolic geometry has the same consistency strength as Euclidean geometry.\n3. **Differential Geometry:** The hyperbolic metric $ds^2 = 4(dx^2+dy^2)/(1-x^2-y^2)^2$ on the disk gives constant negative curvature $K = -1$, connecting to Riemannian geometry and the Gauss-Bonnet theorem.\n4. **Formalization Methodology:** The constructive approach (explicit witnesses + computation) versus axiomatic approach (existence axioms) illustrates a key trade-off in formal mathematics: more work upfront yields stronger results with fewer assumptions.",
     "openQuestions": [
       "Can the remaining 4 axioms be eliminated by fully verifying all incidence axioms for the Klein model?",
       "Can the hyperbolic metric ds² = 4(dx²+dy²)/(1-x²-y²)² be formalized to verify the congruence axioms?",
@@ -167,5 +167,15 @@
       "venue": "Teubner, Leipzig",
       "note": "Axiomatic foundations of geometry"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "parallel-postulate-independence",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "parallel-postulate-independence"
   ]
 }

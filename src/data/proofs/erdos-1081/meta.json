@@ -148,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1081 asked whether A(x), the count of integers up to x expressible as sums of two squarefull numbers, satisfies A(x) ~ c·x/√(log x). The answer is NO, disproved by Odoni in 1981. The correct asymptotic is A(x) ~ x/(log x)^α where α = 1 - 2^(-1/3) ≈ 0.206, meaning A(x) grows significantly faster than Erdős expected.",
-    "implications": "**Theoretical Significance**: **Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n3.\n\n**Broader Connections**: **Exponent Discovery:** The unexpected exponent α = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques.",
+    "implications": "**Theoretical Significance**: **Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n**3. Exponent Discovery:** The unexpected exponent α = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques.",
     "openQuestions": [
       "Exact leading constant in A(x) asymptotic",
       "Higher order terms in the expansion of A(x)",
@@ -159,34 +159,34 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-940",
       "title": "Erdős #940: Sums of r-Powerful Numbers",
-      "relationship": "Direct generalization: Problem #940 asks whether sums of r r-powerful numbers have density 0 for r ≥ 3, directly extending the squarefull (r=2) setting of Problem #1081. Baker-Brüdern (1994) contributed to both problems."
+      "relationship": "Direct generalization: Problem #940 asks whether sums of r r-powerful numbers have density 0 for r ≥ 3, directly extending the squarefull (r=2) setting of Problem #1081. Baker-Brüdern (1994) contributed to both problems.",
+      "targetId": "erdos-940"
     },
     {
-      "id": "prime-number-theorem",
       "title": "The Prime Number Theorem",
-      "relationship": "The asymptotic π(x) ~ x/ln(x) is a prototype for counting-function asymptotics in analytic number theory; the methods of Dirichlet series, complex analysis, and log-power exponents used to prove PNT are the same toolkit Blomer-Granville deploy to obtain the exponent α for A(x)."
+      "relationship": "The asymptotic π(x) ~ x/ln(x) is a prototype for counting-function asymptotics in analytic number theory; the methods of Dirichlet series, complex analysis, and log-power exponents used to prove PNT are the same toolkit Blomer-Granville deploy to obtain the exponent α for A(x).",
+      "targetId": "prime-number-theorem"
     },
     {
-      "id": "fermat-two-squares",
       "title": "Fermat's Sum of Two Squares",
-      "relationship": "Fermat's theorem characterizes primes expressible as sums of two squares via quadratic forms. The Blomer-Granville proof of the correct A(x) exponent relies on representation counts of binary quadratic forms, making this a foundational technical precursor."
+      "relationship": "Fermat's theorem characterizes primes expressible as sums of two squares via quadratic forms. The Blomer-Granville proof of the correct A(x) exponent relies on representation counts of binary quadratic forms, making this a foundational technical precursor.",
+      "targetId": "fermat-two-squares"
     },
     {
-      "id": "lagrange-four-squares",
       "title": "Lagrange's Four Squares Theorem",
-      "relationship": "Every integer is a sum of four squares; studying which integers are sums of structured sets (squares, squarefull numbers) is a common analytic number theory theme. Lagrange's result anchors the broader programme of additive representations that includes Problem #1081."
+      "relationship": "Every integer is a sum of four squares; studying which integers are sums of structured sets (squares, squarefull numbers) is a common analytic number theory theme. Lagrange's result anchors the broader programme of additive representations that includes Problem #1081.",
+      "targetId": "lagrange-four-squares"
     },
     {
-      "id": "fundamental-arithmetic",
       "title": "Fundamental Theorem of Arithmetic",
-      "relationship": "The definition of squarefull (every prime factor p satisfies p² | m) depends critically on unique prime factorization. The Fundamental Theorem of Arithmetic underpins all structural properties of squarefull numbers used in this formalization."
+      "relationship": "The definition of squarefull (every prime factor p satisfies p² | m) depends critically on unique prime factorization. The Fundamental Theorem of Arithmetic underpins all structural properties of squarefull numbers used in this formalization.",
+      "targetId": "fundamental-arithmetic"
     },
     {
-      "id": "riemann-hypothesis",
       "title": "The Riemann Hypothesis",
-      "relationship": "The density of squarefull numbers S(x) ~ c√x and the exact leading constant in A(x) both involve the Riemann zeta function ζ(3/2)/ζ(3). Conditional results on A(x) error terms connect to the zero-free region of ζ(s), making RH relevant to the open questions in this problem."
+      "relationship": "The density of squarefull numbers S(x) ~ c√x and the exact leading constant in A(x) both involve the Riemann zeta function ζ(3/2)/ζ(3). Conditional results on A(x) error terms connect to the zero-free region of ζ(s), making RH relevant to the open questions in this problem.",
+      "targetId": "riemann-hypothesis"
     }
   ],
   "relatedProofs": [

@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 194,
     "erdosUrl": "https://erdosproblems.com/194",
     "erdosProblemStatus": "solved",
@@ -153,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #194 asked whether any ordering of R must contain a monotone k-term arithmetic progression. The answer is NO, even for k = 3. Ardal, Brown, and Jungic (2011) constructed chaotic orderings of Q that avoid all monotone 3-term APs. This surprising result shows that even dense sets can be enumerated in ways that avoid seemingly natural combinatorial structures.",
-    "implications": "**Theoretical Significance**: **Combinatorial Insights**\n\n1. **Ordering Independence:** The existence of APs depends critically on how elements are ordered\n\n2. **Dense Sets:** Density alone does not guarantee monotone AP patterns\n\n3.\n\n**Broader Connections**: **Ramsey Theory:** Chaotic orderings provide counterexamples to natural conjectures\n\n4. **Construction Techniques:** Base-3 digit patterns provide powerful tools for avoiding patterns\n\n5. **Extensions:** The technique generalizes to longer arithmetic progressions.",
+    "implications": "**Theoretical Significance**: **Combinatorial Insights**\n\n1. **Ordering Independence:** The existence of APs depends critically on how elements are ordered\n\n2. **Dense Sets:** Density alone does not guarantee monotone AP patterns\n\n**3. Ramsey Theory:** Chaotic orderings provide counterexamples to natural conjectures\n\n4. **Construction Techniques:** Base-3 digit patterns provide powerful tools for avoiding patterns\n\n5. **Extensions:** The technique generalizes to longer arithmetic progressions.",
     "openQuestions": [
       "Explicit complexity of the chaotic ordering construction",
       "Measure-theoretic properties of the set of chaotic orderings",

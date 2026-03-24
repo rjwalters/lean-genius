@@ -144,5 +144,39 @@
     "axiomCount": 16,
     "theoremCount": 4,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "extends",
+      "description": "This problem concerns the growth rate of Ramsey numbers R(k,k), extending the basic Ramsey existence theorem"
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "Erdős's 1947 probabilistic lower bound R(k,k) ≥ 2^{k/2} pioneered the probabilistic method formalized here"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The Lovász Local Lemma provides refined Ramsey bounds by handling dependencies in random graph coloring"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "Second moment methods sharpen the probabilistic lower bounds for Ramsey numbers"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Both concern structural properties of graphs under extremal constraints"
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "prob-method-alteration",
+    "prob-method-lovasz-local",
+    "prob-method-second-moment",
+    "erdos-1009"
+  ]
 }

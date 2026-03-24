@@ -164,24 +164,24 @@
   ],
   "crossReferences": [
     {
-      "id": "erdos-64",
-      "relationship": "Direct companion problem: asks whether minimum-degree-3 graphs contain power-of-2 cycles, sharing the same central set A = {2^k} with Problem #72's Liu-Montgomery answer"
+      "relationship": "Direct companion problem: asks whether minimum-degree-3 graphs contain power-of-2 cycles, sharing the same central set A = {2^k} with Problem #72's Liu-Montgomery answer",
+      "targetId": "erdos-64"
     },
     {
-      "id": "erdos-65",
-      "relationship": "Sibling problem on cycle lengths in dense graphs: asks about the reciprocal sum of cycle lengths, complementing Problem #72's existence question for unavoidable sets"
+      "relationship": "Sibling problem on cycle lengths in dense graphs: asks about the reciprocal sum of cycle lengths, complementing Problem #72's existence question for unavoidable sets",
+      "targetId": "erdos-65"
     },
     {
-      "id": "erdos-1012",
-      "relationship": "Related extremal result: characterizes graphs with long cycles via edge density, using similar density-threshold techniques to Problem #72's unavoidability framework"
+      "relationship": "Related extremal result: characterizes graphs with long cycles via edge density, using similar density-threshold techniques to Problem #72's unavoidability framework",
+      "targetId": "erdos-1012"
     },
     {
-      "id": "szemeredi-regularity",
-      "relationship": "Core technique in the Liu-Montgomery (2020) proof: the regularity lemma is used to decompose dense graphs into structured pieces where cycle detection proceeds"
+      "relationship": "Core technique in the Liu-Montgomery (2020) proof: the regularity lemma is used to decompose dense graphs into structured pieces where cycle detection proceeds",
+      "targetId": "szemeredi-regularity"
     },
     {
-      "id": "ramseys-theorem",
-      "relationship": "Foundational combinatorics result underpinning extremal graph theory; the density-forcing philosophy of Ramsey theory informs why high average degree compels specific substructures"
+      "relationship": "Foundational combinatorics result underpinning extremal graph theory; the density-forcing philosophy of Ramsey theory informs why high average degree compels specific substructures",
+      "targetId": "ramseys-theorem"
     }
   ],
   "relatedProofs": [
@@ -248,7 +248,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #72 asked whether sparse sets of natural numbers can serve as 'unavoidable' cycle length sets in dense graphs. The answer is yes, proved non-constructively by Verstraëte (2005) and constructively for powers of 2 by Liu and Montgomery (2020). This contradicted Erdős's belief that powers of 2 would not work.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Extremal Graph Theory**: Demonstrates that high average degree forces rich cycle structure with specific length properties\n\n2.\n\n**Broader Connections**: **Erdős's Intuition**: A rare case where Erdős's mathematical intuition was definitively wrong, showing the depth of the problem\n\n3. **Number Theory Connection**: Links graph density to number-theoretic properties of integer sets\n\n4. **Algorithmic Implications**: Suggests efficient cycle-finding algorithms in dense graphs may target specific length classes.",
+    "implications": "1. **Extremal Graph Theory**: Demonstrates that high average degree forces rich cycle structure with specific length properties\n\n**2. Erdős's Intuition**: A rare case where Erdős's mathematical intuition was definitively wrong, showing the depth of the problem\n\n3. **Number Theory Connection**: Links graph density to number-theoretic properties of integer sets\n\n4. **Algorithmic Implications**: Suggests efficient cycle-finding algorithms in dense graphs may target specific length classes.",
     "openQuestions": [
       "What is the optimal constant c for powers of 2?",
       "Which other density-0 sets work? What about perfect squares or {p±1 : p prime}?",

@@ -150,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #13, asking whether divisibility-free sets A ⊆ {1,...,N} satisfy |A| ≤ N/3 + O(1). Bedert (2023) proved this affirmatively, earning the $100 prize. The upper third (2N/3, N] is simultaneously divisibility-free, sum-free, and optimal up to O(1).",
-    "implications": "**Theoretical Significance**: Bedert's solution closes one of Erdős's combinatorial number theory problems.\n\n**Broader Connections**: The formalization includes the natural r-sum generalization, connecting to extremal combinatorics and sum-free set theory. The r ≥ 3 case remains an active open problem.",
+    "implications": "**Theoretical Significance**: Bedert's solution closes one of Erdős's combinatorial number theory problems.\n\nThe formalization includes the natural r-sum generalization, connecting to extremal combinatorics and sum-free set theory. The r ≥ 3 case remains an active open problem.",
     "openQuestions": [
       "Is |A| ≤ N/(r+1) + O(1) for the r-sum version when r ≥ 3?",
       "What is the exact constant in the O(1) term of Bedert's bound?",
