@@ -201,6 +201,21 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "Both FTA and Brouwer's fixed point theorem are topological results about continuous maps on compact sets. The topological proof of FTA via winding numbers (the degree of $p(z)/|p(z)|$ on a large circle is $n$) uses the same homotopy-theoretic tools that prove Brouwer's theorem — both are consequences of the non-triviality of $\\pi_1(S^1) \\cong \\mathbb{Z}$"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} = -1$ reveals the structure of $\\mathbb{C}$ that makes FTA true: the complex exponential $e^{i\\theta}$ parameterizes the unit circle, giving $\\mathbb{C}^*$ a connected compact subgroup. The winding number proof of FTA uses this parameterization: $p(Re^{i\\theta})/|p(Re^{i\\theta})|$ winds $n$ times around the origin for large $R$, and this winding cannot unwind to 0 by continuity"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "complementary",
+      "description": "FTA guarantees that all polynomial roots exist in $\\mathbb{C}$, while the area-of-circle formalization uses $\\mathbb{C} \\cong \\mathbb{R}^2$ as its ambient space for computing Lebesgue measure. Both entries exploit the identification of $\\mathbb{C}$ with $\\mathbb{R}^2$: FTA for the topology (completeness, connectedness) and area-of-circle for the measure theory (product Lebesgue measure)"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem ($p_A(A) = 0$ for the characteristic polynomial $p_A$) combined with FTA guarantees every complex matrix has an eigenvalue: FTA gives a root $\\lambda$ of $p_A$, making $A - \\lambda I$ singular. This is why linear algebra over $\\mathbb{C}$ admits Jordan normal form — a direct consequence of algebraic closure"
     }
   ],
   "relatedProofs": [
@@ -213,7 +228,10 @@
     "lagrange-theorem",
     "vietas-formulas",
     "intermediate-value-theorem",
-    "brouwer-fixed-point"
+    "brouwer-fixed-point",
+    "euler-identity",
+    "area-of-circle",
+    "cayley-hamilton"
   ],
   "references": [
     {
