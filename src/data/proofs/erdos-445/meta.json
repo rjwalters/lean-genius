@@ -74,44 +74,50 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "HasInverse, OpenInterval, HasInversePairInInterval",
+      "summary": "Defines `HasInverse` (the modular inverse relation $ab \\equiv 1 \\pmod{p}$), `OpenInterval` (the interval $(n, n+p^c)$), and `HasInversePairInInterval` (existence of $a, b$ in the interval with $ab \\equiv 1$).",
       "startLine": 33,
-      "endLine": 48
+      "endLine": 48,
+      "mathContext": "For prime $p$ and $a \\in (\\mathbb{Z}/p\\mathbb{Z})^*$, the inverse $a^{-1}$ satisfies $a \\cdot a^{-1} \\equiv 1 \\pmod{p}$. The problem: can both $a$ and $a^{-1}$ lie in the same short interval $(n, n + p^c)$?"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "MainConjecture, StrongConjecture",
+      "summary": "`MainConjecture c`: for $c > 1/2$ and large primes $p$, an inverse pair exists in some interval of length $p^c$. `StrongConjecture`: the same for ALL intervals.",
       "startLine": 49,
-      "endLine": 62
+      "endLine": 62,
+      "mathContext": "Heuristic: $p^c$ elements in the interval, each with a uniformly random inverse. Expected pairs $\\sim p^{2c-1}$, which diverges for $c > 1/2$."
     },
     {
       "id": "heilbronn",
       "title": "Heilbronn's Result",
-      "summary": "heilbronn_threshold, heilbronn_unpublished axioms",
+      "summary": "Axiomatizes Heilbronn's result: the conjecture holds for $c$ sufficiently close to 1. Uses character sum estimates over short intervals.",
       "startLine": 63,
-      "endLine": 74
+      "endLine": 74,
+      "mathContext": "Heilbronn: $\\exists \\delta > 0$ s.t. $c > 1 - \\delta \\Rightarrow$ inverse pairs exist. Polya-Vinogradov bounds suffice for intervals of length close to $p$."
     },
     {
       "id": "heath-brown",
-      "title": "Heath-Brown's Result",
-      "summary": "KloostermanSum, weil_bound, heath_brown_2000, heath_brown_threshold",
+      "title": "Heath-Brown's Result (2000)",
+      "summary": "Defines `KloostermanSum` $K(m,n;p) = \\sum_{a} e(ma + na^{-1})/p)$, axiomatizes the Weil bound $|K| \\leq 2\\sqrt{p}$, and Heath-Brown's theorem: the conjecture holds for $c > 3/4$.",
       "startLine": 75,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Kloosterman sum: $K(m,n;p) = \\sum_{a=1}^{p-1} e^{2\\pi i(ma + na^{-1})/p}$. Weil bound (1948): $|K(m,n;p)| \\leq 2\\sqrt{p}$. Heath-Brown reduces the inverse pair problem to incomplete Kloosterman sum estimates."
     },
     {
       "id": "open-range",
       "title": "The Open Range",
-      "summary": "OpenRange definition, current_knowledge theorem",
+      "summary": "Defines `OpenRange`: the interval $c \\in (1/2, 3/4]$ where neither proof nor disproof is known. Breaking the $3/4$ barrier requires estimates beyond current Kloosterman technology.",
       "startLine": 100,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "The gap: Kloosterman methods give cancellation $\\sim \\sqrt{p}$ but need $\\sim p^{3/4}$ for intervals of length $p^c$ with $c \\leq 3/4$. New techniques needed."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_445_summary: two-part conjunction of Heilbronn and Heath-Brown",
+      "summary": "`erdos_445_summary`: conjunction of Heilbronn ($c$ close to 1) and Heath-Brown ($c > 3/4$), with the open range $c \\in (1/2, 3/4]$ explicitly identified.",
       "startLine": 118,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "Known: conjecture holds for $c > 3/4$. Open: $c \\in (1/2, 3/4]$. Threshold $c = 1/2$ is conjectured to be sharp."
     }
   ],
   "conclusion": {
