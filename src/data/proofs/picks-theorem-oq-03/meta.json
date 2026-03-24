@@ -66,7 +66,7 @@
     "leanFile": {
       "lineCount": 721,
       "structures": 2,
-      "axioms": 3,
+      "axioms": 2,
       "theorems": 34,
       "definitions": 20,
       "instances": 0
@@ -82,9 +82,9 @@
         "description": "Cross-polytope (hyperoctahedron) Ehrhart theory: polynomials, reciprocity, h*-vectors, duality"
       }
     ],
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 710,
-    "assumptions": "1 axiom: ehrhart_fn (Ehrhart counting function, axiomatized since full construction requires polytope theory).",
+    "assumptions": "2 axioms: ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -222,7 +222,7 @@
     "opens": [],
     "namespace": "EhrhartPolynomial",
     "lineCount": 710,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "theoremCount": 45,
     "definitionCount": 21
   },
