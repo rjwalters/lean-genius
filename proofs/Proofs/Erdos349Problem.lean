@@ -37,11 +37,16 @@ def IsGoodPair (t α : ℝ) : Prop :=
 /- ## Main Question -/
 
 /-- **Erdős Problem #349**: Characterize the pairs (t,α) with
-    t > 0, α > 0 for which ⌊tα^n⌋ is a complete sequence. -/
-axiom erdos_349_characterization :
-  ∃ S : Set (ℝ × ℝ),
-    ∀ t α : ℝ, t > 0 → α > 0 →
-      (IsGoodPair t α ↔ (t, α) ∈ S)
+    t > 0, α > 0 for which ⌊tα^n⌋ is a complete sequence.
+
+    This existence statement is a tautology (take S = {p | IsGoodPair p.1 p.2}).
+    The real problem is to give an explicit description of S.
+    The conjecture is S ⊇ {(t,α) | t > 0 ∧ 1 < α < φ}. -/
+theorem erdos_349_characterization :
+    ∃ S : Set (ℝ × ℝ),
+      ∀ t α : ℝ, t > 0 → α > 0 →
+        (IsGoodPair t α ↔ (t, α) ∈ S) :=
+  ⟨{p | IsGoodPair p.1 p.2}, fun _ _ _ _ => Iff.rfl⟩
 
 /- ## Golden Ratio Conjecture -/
 
@@ -75,6 +80,14 @@ axiom floor_3_2_odd_infinitely :
     many n? Also open. -/
 axiom floor_3_2_even_infinitely :
   Set.Infinite {n : ℕ | Even (⌊(3 / 2 : ℝ) ^ n⌋).toNat}
+
+/- ## Proved Properties -/
+
+/-- When α = 1, the sequence ⌊t · 1^n⌋ = ⌊t⌋ is constant.
+    The floor sequence at α = 1 is constant. -/
+theorem expFloorSeq_at_one (t : ℝ) (n : ℕ) :
+    expFloorSeq t 1 n = ⌊t⌋ := by
+  simp [expFloorSeq, one_pow]
 
 /- ## Observations -/
 
