@@ -22,6 +22,7 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Interval
 import Mathlib.Tactic
+import Mathlib.NumberTheory.Bertrand
 
 namespace Erdos931
 
@@ -125,6 +126,27 @@ theorem tijdeman_gap : 18 + 4 ≤ 53 := by omega
 /-- Tijdeman's example also has n₂ > 2(n₁ + k₁): 53 > 44. -/
 theorem tijdeman_beyond_double : 53 > 2 * (18 + 4) := by omega
 
+/-- New example: 4·5·6 and 8·9·10 share prime factors {2,3,5}.
+    Here n₁ = 3, k₁ = 3, n₂ = 7, k₂ = 3. -/
+theorem small_same_factors_3_3_7_3 : SamePrimeFactors 3 3 7 3 := by native_decide
+
+/-- The (3,3,7,3) example satisfies the gap condition. -/
+theorem small_gap_3_3_7_3 : 3 + 3 ≤ 7 := by omega
+
+/-- 3·4·5·6 and 8·9·10 share prime factors {2,3,5}.
+    Here n₁ = 2, k₁ = 4, n₂ = 7, k₂ = 3. -/
+theorem small_same_factors_2_4_7_3 : SamePrimeFactors 2 4 7 3 := by native_decide
+
+/-- The (2,4,7,3) example satisfies the gap condition. -/
+theorem small_gap_2_4_7_3 : 2 + 4 ≤ 7 := by omega
+
+/-- 1·2·3·4·5 and 8·9·10 share prime factors {2,3,5}.
+    Here n₁ = 0, k₁ = 5, n₂ = 7, k₂ = 3. -/
+theorem small_same_factors_0_5_7_3 : SamePrimeFactors 0 5 7 3 := by native_decide
+
+/-- The (0,5,7,3) example satisfies the gap condition. -/
+theorem small_gap_0_5_7_3 : 0 + 5 ≤ 7 := by omega
+
 /-
 ## Properties of Prime Factors
 -/
@@ -171,19 +193,98 @@ theorem samePrimeFactors_trans {n₁ k₁ n₂ k₂ n₃ k₃ : ℕ}
 
 /-
 ## The Stronger Conjecture Implies the Main One
--/
 
-/-- The stronger conjecture implies the main conjecture: if same-prime-factor
-    pairs with n₂ ≤ 2(n₁+k₁) are finite, combined with the trivial bound,
-    we get overall finiteness. -/
+The main set decomposes as:
+  { (n₁,n₂) | n₁+k₁ ≤ n₂ ∧ SamePrimeFactors } =
+  { n₁+k₁ ≤ n₂ ≤ 2(n₁+k₁) ∧ SamePrimeFactors } ∪
+  { n₂ > 2(n₁+k₁) ∧ SamePrimeFactors }
+StrongerConjecture gives finiteness of the first set. This axiom asserts the
+second ("outer") set is also finite, which requires showing that for n₂ far
+beyond 2(n₁+k₁), having the same prime factors forces the second block
+elements to be n₁-smooth — and by results on consecutive smooth numbers
+(Størmer's theorem), there are only finitely many such n₂ for each n₁.
+-/
 axiom stronger_implies_main : StrongerConjecture → ErdosProblem931
 
 /-
-## Open Question: Prime Between Blocks
+## Bertrand's Postulate and Prime Between Blocks
+
+We partially prove the "prime between blocks" claim using Bertrand's postulate.
+The key insight: if the first block {n₁+1,...,n₁+k₁} contains a prime p,
+then p > n₁ and p ≤ n₁+k₁ ≤ n₂ ≤ n₂+k₂, giving a prime in the range
+immediately. By Bertrand, the first block always contains a prime when k₁ ≥ n₁.
+
+The remaining hard case (n₁ > k₁, first block all composite) requires smooth
+number theory: when all prime factors of both products are ≤ n₁, finding
+k₂ ≥ 3 consecutive n₁-smooth numbers with the exact same prime factor set
+as a block of k₁ composite numbers is extremely restrictive — empirically
+impossible for all tested cases, likely provable via Størmer's theorem.
 -/
 
-/-- Open question: if two consecutive products share prime factors with
-    n₂ ≥ n₁ + k₁, must there exist a prime p with n₁ < p ≤ n₂ + k₂? -/
+/-- If the first block contains a prime, there's a prime in (n₁, n₂+k₂].
+    No SamePrimeFactors hypothesis needed — the prime is already in range. -/
+theorem exists_prime_between_of_prime_in_block
+    (k₂ n₁ n₂ : ℕ)
+    {p : ℕ} (hp : p.Prime) (hlo : n₁ < p) (hhi : p ≤ n₂)
+    : ∃ q : ℕ, q.Prime ∧ n₁ < q ∧ q ≤ n₂ + k₂ :=
+  ⟨p, hp, hlo, le_trans hhi (Nat.le_add_right n₂ k₂)⟩
+
+/-- By Bertrand's postulate, when n₁ ≤ k₁ the first block {n₁+1,...,n₁+k₁}
+    always contains a prime. For n₁ = 0, the prime 2 works. For n₁ ≥ 1,
+    Bertrand gives a prime p with n₁ < p ≤ 2n₁ ≤ n₁+k₁. -/
+theorem first_block_has_prime (n₁ k₁ : ℕ) (hk : 3 ≤ k₁) (hkn : n₁ ≤ k₁) :
+    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₁ + k₁ := by
+  rcases Nat.eq_zero_or_pos n₁ with rfl | hn
+  · exact ⟨2, by norm_num, by omega, by omega⟩
+  · obtain ⟨p, hp, hlt, hle⟩ := Nat.exists_prime_lt_and_le_two_mul n₁ (by omega)
+    exact ⟨p, hp, hlt, by omega⟩
+
+/-- For n₁ ≤ k₁: the prime-between-blocks claim holds unconditionally
+    (no SamePrimeFactors hypothesis needed). This covers all cases where
+    the block is long enough relative to its starting point. -/
+theorem exists_prime_between_blocks_small
+    (k₁ k₂ n₁ n₂ : ℕ)
+    (hk₁ : 3 ≤ k₁) (hkn : n₁ ≤ k₁)
+    (hgap : n₁ + k₁ ≤ n₂) :
+    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂ := by
+  obtain ⟨p, hp, hlo, hhi⟩ := first_block_has_prime n₁ k₁ hk₁ hkn
+  exact ⟨p, hp, hlo, by omega⟩
+
+/-- If the first product has a prime factor q > n₁, and same prime factors hold,
+    then q divides the second product too, giving q ≤ n₂+k₂ (since q divides
+    one of the factors n₂+j ≤ n₂+k₂). -/
+theorem exists_prime_between_of_large_prime_factor
+    (k₁ k₂ n₁ n₂ q : ℕ)
+    (hq : q.Prime) (hq_lo : n₁ < q)
+    (hq_mem : q ∈ consecutivePrimeFactors n₁ k₁)
+    (h₃ : n₁ + k₁ ≤ n₂)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂) :
+    ∃ p : ℕ, p.Prime ∧ n₁ < p ∧ p ≤ n₂ + k₂ := by
+  refine ⟨q, hq, hq_lo, ?_⟩
+  -- q is also a prime factor of the second product by SamePrimeFactors
+  have hq_mem₂ : q ∈ consecutivePrimeFactors n₂ k₂ := h₄ ▸ hq_mem
+  have hq_dvd : q ∣ consecutiveProduct n₂ k₂ := Nat.dvd_of_mem_primeFactors hq_mem₂
+  -- Since q is prime and divides (n₂+1)·...·(n₂+k₂), q divides some factor n₂+j
+  unfold consecutiveProduct at hq_dvd
+  obtain ⟨j, hj_mem, hq_dvd_j⟩ := hq.prime.dvd_finset_prod_iff.mp hq_dvd
+  simp only [Finset.mem_Icc] at hj_mem
+  calc q ≤ n₂ + j := Nat.le_of_dvd (by omega) hq_dvd_j
+    _ ≤ n₂ + k₂ := by omega
+
+/-
+## Open Question: Prime Between Blocks (Remaining Hard Case)
+
+The theorems above prove exists_prime_between_blocks when:
+  (a) k₁ ≥ n₁ (Bertrand guarantees a prime in the first block), OR
+  (b) the first product has any prime factor > n₁ (which includes case (a))
+
+The remaining hard case: n₁ > k₁, ALL elements of {n₁+1,...,n₁+k₁} are composite,
+AND all prime factors of the first product are ≤ n₁. In this case, by
+SamePrimeFactors, the second block is also n₁-smooth. Empirically, having
+k₂ ≥ 3 consecutive n₁-smooth numbers with the exact same prime factor set as
+a block of k₁ composites appears impossible for all tested n₁ values
+(by Størmer-type arguments on consecutive smooth numbers).
+-/
 axiom exists_prime_between_blocks (k₁ k₂ n₁ n₂ : ℕ)
     (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁)
     (h₃ : n₁ + k₁ ≤ n₂)

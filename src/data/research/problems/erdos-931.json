@@ -16,34 +16,43 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-01-15T11:43:50.650Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-03-24T09:30:00.000Z",
+    "iteration": 3,
+    "focus": "Partial proof of exists_prime_between_blocks via Bertrand's postulate.",
+    "blockers": ["Størmer's theorem not in Mathlib — needed to fully eliminate exists_prime_between_blocks axiom"],
+    "nextAction": "Investigate Størmer formalization or alternative smooth number arguments.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Fixed compilation bug. 2 axioms remain, both non-trivial (deep result + open question). File in good shape.",
+    "progressSummary": "PROGRESS: Added 10 new theorems including Bertrand-based partial proof of exists_prime_between_blocks. Proved first_block_has_prime and exists_prime_between_blocks_small (covering k₁≥n₁ case). Added 3 new verified examples. Docker build succeeds.",
     "builtItems": [
-      "Fixed consecutive product computation bug (9459360 → 9480240)"
+      "Fixed consecutive product computation bug (9459360 → 9480240)",
+      "Proved first_block_has_prime using Nat.exists_prime_lt_and_le_two_mul (Bertrand)",
+      "Proved exists_prime_between_blocks_small: covers k₁ ≥ n₁ case without SamePrimeFactors",
+      "Proved exists_prime_between_of_large_prime_factor: uses SamePrimeFactors + Prime.dvd_finset_prod_iff",
+      "Added 3 new verified counterexample pairs via native_decide: (3,3,7,3), (2,4,7,3), (0,5,7,3)"
     ],
     "insights": [
-      "Only 2 axioms, both deep: stronger_implies_main (requires Bertrand-type argument), exists_prime_between_blocks (open question)",
-      "Fixed pre-existing bug: consecutiveProduct 53 4 was 9459360 (should be 9480240 = 54*55*56*57)",
-      "Bertrand postulate available in Mathlib (Nat.exists_prime_lt_and_le) — could help with stronger_implies_main",
-      "File well-structured with verified counterexamples via native_decide"
+      "Only 2 axioms, both deep: stronger_implies_main (requires Størmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
+      "Key insight: exists_prime_between_blocks is TRIVIALLY true when first block contains a prime (p>n₁, p≤n₁+k₁≤n₂≤n₂+k₂)",
+      "By Bertrand's postulate, first block always contains a prime when k₁ ≥ n₁, covering the small-n₁ regime",
+      "The HARD remaining case: n₁ > k₁, first block all composite, all prime factors ≤ n₁ — SamePrimeFactors forces second block to be n₁-smooth",
+      "Empirically, the hard case appears vacuously true: for all tested n₁ with all-composite blocks, SamePrimeFactors fails",
+      "stronger_implies_main requires showing the outer set {n₂ > 2(n₁+k₁)} is finite — needs smooth number theory (Størmer)",
+      "New examples show same-prime-factors pairs cluster around small primes: {2,3,5} examples (4·5·6 = 8·9·10 in primes)"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Størmer's theorem on consecutive smooth numbers — would fully resolve exists_prime_between_blocks"
+    ],
     "nextSteps": [
-      "Try proving stronger_implies_main using Bertrand postulate from Mathlib",
-      "Add more verified examples via native_decide",
-      "exists_prime_between_blocks is an open question - cannot be eliminated"
+      "Formalize Størmer's theorem to fully eliminate exists_prime_between_blocks axiom",
+      "Investigate stronger_implies_main: can the outer-set finiteness be proved from smooth number bounds?",
+      "Search for more same-prime-factor pairs computationally to build intuition"
     ],
     "markdown": "# Erdős #931 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?\n\n\n\nTijdeman gave the example\\[19,20,21,22\\textrm{ and }54,55,56,57.\\]Erd\\H{o}s \\cite{Er76d} was unsure of this conjecture, and thought perhaps if the two products have the same prime factors then $n_2>2(n_1+k_1)$. It is not clear but it is possible that he meant to ask this question also permitting finitely many counterexamples. Indeed, without this caveat it is false - AlphaProof has found the counterexample\\[10! = 2^8\\cdot 3^4\\cdot 5^2\\cdot 7\\]and\\[14\\cdot 15\\cdot 16 = 2^5\\cdot 3\\cdot 5\\cdot 7,\\]so that $n_1=0$, $k_1=10$, $n_2=13$, and $k_2=3$.\n\nSee also [388].\n\nThis is discussed in problem B35 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #930\n- Problem #932\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -68,8 +77,8 @@
     {
       "path": "Proofs/Erdos931Problem.lean",
       "filename": "Erdos931Problem.lean",
-      "lineCount": 200,
-      "theoremCount": 21,
+      "lineCount": 300,
+      "theoremCount": 31,
       "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
