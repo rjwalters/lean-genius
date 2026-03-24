@@ -139,7 +139,7 @@ def ErdosHaymanQuestion : Prop :=
     ∃ z : ℂ, ‖z‖ = 1 ∧ ‖p.eval z‖ > (1 + c) * Real.sqrt n
 
 /-- The Hayman question is related to, but distinct from, the flatness question. -/
-axiom hayman_question_status : ErdosHaymanQuestion ∨ ¬ErdosHaymanQuestion
+theorem hayman_question_status : ErdosHaymanQuestion ∨ ¬ErdosHaymanQuestion := Classical.em _
 
 /- ## Summary -/
 

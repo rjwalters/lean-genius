@@ -119,7 +119,7 @@ def ConsecutivePrimeAPQuestion : Prop :=
     (∀ i < k - 1, ∀ q, p + i * d < q ∧ q < p + (i + 1) * d → ¬q.Prime)
 
 /-- The consecutive prime AP question remains OPEN. -/
-axiom consecutive_prime_ap_open : ConsecutivePrimeAPQuestion ∨ ¬ConsecutivePrimeAPQuestion
+theorem consecutive_prime_ap_open : ConsecutivePrimeAPQuestion ∨ ¬ConsecutivePrimeAPQuestion := Classical.em _
 
 /- ## Summary -/
 
