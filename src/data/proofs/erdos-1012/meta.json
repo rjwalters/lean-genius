@@ -141,11 +141,31 @@
     }
   ],
   "relatedProofs": [
-    "szemeredi-regularity",
-    "erdos-1010",
-    "erdos-1009",
-    "erdos-1008",
-    "ramseys-theorem"
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "foundational",
+      "description": "Szemerédi's Regularity Lemma is the central tool of modern extremal graph theory. Woodall's long cycle theorem belongs t"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "thematic",
+      "description": "Both problems study what happens when a graph's edge count exceeds the Turán threshold ⌊n²/4⌋. Erdős #1010 asks how many"
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "thematic",
+      "description": "Erdős #1009 studies edge-disjoint triangles in graphs just above the Turán threshold ⌊n²/4⌋ + k. This is analogous to #1"
+    },
+    {
+      "id": "erdos-1008",
+      "relationship": "related",
+      "description": "Erdős #1008 asks about C₄-free subgraphs of dense graphs, connecting to the broader extremal program on cycle-free or cy"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem provides the combinatorial foundation underlying many extremal graph results. The compactness argument "
+    }
   ],
   "references": [
     {

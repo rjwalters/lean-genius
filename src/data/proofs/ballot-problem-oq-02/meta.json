@@ -192,11 +192,31 @@
     }
   ],
   "relatedProofs": [
-    "ballot-problem",
-    "ballot-problem-oq-01",
-    "ballot-problem-oq-01-oq-01",
-    "birthday-problem",
-    "ballot-problem-oq-03"
+    {
+      "id": "ballot-problem",
+      "relationship": "extends",
+      "description": "The classical discrete ballot problem (Bertrand 1887) — this file extends it to continuous time via Brownian motion, rep"
+    },
+    {
+      "id": "ballot-problem-oq-01",
+      "relationship": "extends",
+      "description": "The generalized k-fold ballot problem — this file provides the continuous analog via the reflection principle for Browni"
+    },
+    {
+      "id": "ballot-problem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question addressing the ballot problem from a different angle — both extend the base ballot problem formali"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are classic probability results with elegant formulas. The ballot problem's (p-q)/(p+q) and the birthday paradox's "
+    },
+    {
+      "id": "ballot-problem-oq-03",
+      "relationship": "sibling",
+      "description": "The LGV lemma via 2D reflection provides a discrete determinantal approach to ballot counting, complementing this file's"
+    }
   ],
   "leanFile": {
     "imports": [

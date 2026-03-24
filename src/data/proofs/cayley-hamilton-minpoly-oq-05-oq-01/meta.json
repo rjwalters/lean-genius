@@ -239,14 +239,31 @@
     }
   ],
   "relatedProofs": [
-    "cayley-hamilton",
-    "cayley-hamilton-minpoly",
-    "bezout-identity",
-    "fundamental-arithmetic",
-    "cayley-hamilton-reduction",
-    "gcd-algorithm",
-    "cayley-hamilton-minpoly-oq-05",
-    "cayley-hamilton-minpoly-oq-02"
+    {
+      "id": "cayley-hamilton",
+      "relationship": "extends",
+      "description": "Cayley-Hamilton ($\\chi_M(M) = 0$) implies $\\mu_M | \\chi_M$. This proof shows that when equality holds (nonderogatory), t"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Root entry for the minimal polynomial/Cayley-Hamilton family. This OQ-05-OQ-01 result completes the backward direction o"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "uses",
+      "description": "Bezout's identity in Euclidean domains ($d = ap + b\\mu$) is the key algebraic tool: it converts the GCD into a linear co"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "uses",
+      "description": "Unique factorization in $K[X]$ (a Euclidean domain, hence UFD) provides the irreducible factor decomposition of the mini"
+    },
+    {
+      "id": "cayley-hamilton-reduction",
+      "relationship": "related",
+      "description": "Both extend the Cayley-Hamilton theorem in different directions: reduction develops computational aspects, while this pr"
+    }
   ],
   "references": [
     {

@@ -185,12 +185,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-146",
-    "erdos-147",
-    "erdos-127",
-    "erdos-128",
-    "erdos-133",
-    "ramseys-theorem"
+    {
+      "id": "erdos-146",
+      "relationship": "related",
+      "description": "Problem #146 asks whether ex(n;H) ≪ n^{2-1/r} for bipartite r-degenerate H — a direct generalization of the forward dire"
+    },
+    {
+      "id": "erdos-147",
+      "relationship": "related",
+      "description": "Problem #147 asks whether bipartite graphs with minimum degree r have ex(n;H) ≫ n^{2-1/(r-1)+ε}. Janzer's 2023 counterex"
+    },
+    {
+      "id": "erdos-127",
+      "relationship": "thematic",
+      "description": "Problem #127 concerns Edwards' bound for bipartite subgraphs of m-edge graphs. Both #113 and #127 study the interaction "
+    },
+    {
+      "id": "erdos-128",
+      "relationship": "thematic",
+      "description": "Problem #128 investigates when dense induced subgraphs force triangles (a Turán-type result). Together with #113, these "
+    },
+    {
+      "id": "erdos-133",
+      "relationship": "thematic",
+      "description": "Problem #133 studies maximum degree in triangle-free diameter-2 graphs, with answer f(n) = Θ(√n). The Kővári-Sós-Turán b"
+    }
   ],
   "references": [
     {

@@ -169,7 +169,11 @@
     "definitionCount": 3
   },
   "relatedProofs": [
-    "chinese-remainder-constructive"
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
   ],
   "crossReferences": [
     {

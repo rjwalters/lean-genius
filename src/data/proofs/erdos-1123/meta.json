@@ -157,11 +157,31 @@
     }
   ],
   "relatedProofs": [
-    "continuum-hypothesis",
-    "cantor-diagonalization-oq-01",
-    "erdos-1102",
-    "erdos-47",
-    "erdos-532"
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "depends-on",
+      "description": "The Just-Krawczyk isomorphism B₁ ≅ B₂ holds precisely under the Continuum Hypothesis (CH). The independence of CH from Z"
+    },
+    {
+      "id": "cantor-diagonalization-oq-01",
+      "relationship": "related-concept",
+      "description": "The CH question (is |ℝ| = ℵ₁?) bears directly on the cardinality and saturation properties of P(ℕ)/I₁ and P(ℕ)/I₂. Under"
+    },
+    {
+      "id": "erdos-1102",
+      "relationship": "uses-same-technique",
+      "description": "Erdős #1102 also studies density-zero subsets of ℕ, analyzing how squarefree properties interact with natural density. B"
+    },
+    {
+      "id": "erdos-47",
+      "relationship": "related-concept",
+      "description": "Erdős #47 (Bloom 2021) works with subsets of ℕ satisfying density-type conditions (∑ 1/a > δ log N). The density-zero id"
+    },
+    {
+      "id": "erdos-532",
+      "relationship": "related-concept",
+      "description": "Hindman's theorem (Erdős #532) is deeply connected to the combinatorial structure of P(ℕ): its algebraic proof uses the "
+    }
   ],
   "references": [
     {

@@ -191,10 +191,26 @@
     }
   ],
   "relatedProofs": [
-    "birthday-problem",
-    "birthday-problem-oq-02",
-    "ramseys-theorem",
-    "infinitude-primes"
+    {
+      "id": "birthday-problem",
+      "relationship": "generalizes",
+      "description": "Generalizes from 2-way to k-way coincidences. The classical birthday problem is exactly the k=2 case, and this formaliza"
+    },
+    {
+      "id": "birthday-problem-oq-02",
+      "relationship": "related",
+      "description": "The asymptotic bound formalization complements this combinatorial approach — OQ-02 provides the $\\sqrt{2d \\ln 2} \\approx"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are results about forced structure in combinatorial configurations: the pigeonhole principle (this entry) forces a "
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "technique",
+      "description": "Both use counting/contradiction arguments: the generalized pigeonhole bounds fiber sizes, while Euclid's proof bounds th"
+    }
   ],
   "references": [
     {

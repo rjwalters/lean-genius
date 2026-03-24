@@ -156,9 +156,21 @@
     }
   ],
   "relatedProofs": [
-    "dissection-of-cubes",
-    "dissection-of-cubes",
-    "mathematical-induction"
+    {
+      "id": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "Extends the base impossibility result (Wiedijk #82: no perfect cube dissection) to a quantitative lower bound on the num"
+    },
+    {
+      "id": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "Extends the base impossibility result (Wiedijk #82: no perfect cube dissection) to a quantitative lower bound on the num"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The infinite descent argument underlying Littlewood's cascade proof is a classical application of strong induction, a te"
+    }
   ],
   "references": [
     {

@@ -139,11 +139,31 @@
     }
   ],
   "relatedProofs": [
-    "cantor-diagonalization",
-    "derangements",
-    "arithmetic-series",
-    "bezout-identity",
-    "sqrt2-irrational"
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Both are foundational results about the expressive power of formal systems—this entry shows natural numbers are primitiv"
+    },
+    {
+      "id": "derangements",
+      "relationship": "related",
+      "description": "Derangements formalizes combinatorial arithmetic over Lean's built-in `Nat`, directly built on the same `Nat.add` shown "
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "related",
+      "description": "Arithmetic series relies on the commutativity and associativity of `Nat.add` proved here from scratch; this entry is the"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "related",
+      "description": "Bézout's identity uses the divisibility and GCD structure of `ℤ`, which ultimately rests on the same Peano-style arithme"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Both are classic entries in the gallery demonstrating that verified proofs of 'obvious' mathematical facts often reveal "
+    }
   ],
   "conclusion": {
     "summary": "By constructing Peano arithmetic entirely within Lean's kernel—no tactics beyond `rfl`, `induction`, and `rw`, and zero Mathlib imports—this formalization demonstrates that the natural numbers and their basic properties are *internal* to type theory, not imported from an external foundation. The dramatic contrast with Principia Mathematica's 362-page derivation is not a trick of formalism: it reflects a genuine architectural insight that inductive types subsume the logicist program's cumbersome set-theoretic encodings.",

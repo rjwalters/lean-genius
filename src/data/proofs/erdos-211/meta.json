@@ -163,8 +163,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1069",
-    "erdos-733",
-    "erdos-1086"
+    {
+      "id": "erdos-1069",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: incidence-geometry, solved, szemeredi-trotter"
+    },
+    {
+      "id": "erdos-733",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, solved, szemeredi-trotter"
+    },
+    {
+      "id": "erdos-1086",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, incidence-geometry"
+    }
   ]
 }

@@ -208,11 +208,30 @@
     }
   ],
   "relatedProofs": [
-    "cauchy-schwarz",
-    "cauchy-schwarz-oq-04",
-    "cauchy-schwarz-integral",
-    "amgm-inequality",
-    "triangle-inequality",
-    "cauchy-schwarz-oq-03-oq-01"
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Parent formalization proving Cauchy-Schwarz as an inner product space result. This entry generalizes it by showing CS is"
+    },
+    {
+      "id": "cauchy-schwarz-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling entry exploring other generalizations/applications of Cauchy-Schwarz; both extend the parent from different angl"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral form of Cauchy-Schwarz. This entry's holder_lintegral provides the Hölder generalization of the integral CS"
+    },
+    {
+      "id": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM and Hölder are both proved via convexity arguments. Young's inequality $ab \\leq a^p/p + b^q/q$ (the engine behind "
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "Hölder's inequality implies Minkowski's inequality (the triangle inequality for $L^p$ spaces): $\\|f+g\\|_p \\leq \\|f\\|_p +"
+    }
   ]
 }

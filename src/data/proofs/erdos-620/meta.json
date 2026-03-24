@@ -210,11 +210,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "szemeredi-regularity",
-    "erdos-1104",
-    "erdos-1010",
-    "erdos-1155"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "The Erdős-Rogers function $f(n)$ is deeply connected to Ramsey numbers $R(3,k) = \\Theta(k^2/\\log k)$ (Kim 1995). Finding"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The regularity lemma was the main tool for upper bounds until Mubayi-Verstraëte (2024) found a regularity-free approach."
+    },
+    {
+      "id": "erdos-1104",
+      "relationship": "related",
+      "description": "Both concern chromatic structure in triangle-free graphs: #1104 studies maximum chromatic number of triangle-free graphs"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "related",
+      "description": "Triangle supersaturation counts triangles in dense graphs. The Erdős-Rogers problem asks the dual: in graphs that avoid "
+    },
+    {
+      "id": "erdos-1155",
+      "relationship": "thematic",
+      "description": "Both concern graph processes and structure: #1155 studies the triangle removal process (randomly removing triangles), wh"
+    }
   ],
   "leanFile": {
     "imports": [

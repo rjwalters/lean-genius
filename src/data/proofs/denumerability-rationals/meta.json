@@ -207,11 +207,31 @@
     ]
   },
   "relatedProofs": [
-    "cantor-diagonalization",
-    "cantors-theorem",
-    "schroeder-bernstein",
-    "continuum-hypothesis",
-    "sqrt2-irrational"
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "related-problem",
+      "description": "Cantor's diagonalization (Wiedijk #22) proves ℝ is UNcountable, establishing |ℚ| = ℵ₀ < 2^ℵ₀ = |ℝ|. Together these two r"
+    },
+    {
+      "id": "cantors-theorem",
+      "relationship": "generalizes",
+      "description": "Cantor's theorem (Wiedijk #63) proves |A| < |P(A)| for any set A, extending the cardinality hierarchy far beyond ℵ₀ vs 2"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "related",
+      "description": "Schroeder-Bernstein (Wiedijk #25) turns mutual injections into bijections — a key tool for cardinality equalities that c"
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "related-problem",
+      "description": "Directly motivated by denumerability: is 2^ℵ₀ = ℵ₁? The gap between |ℚ| = ℵ₀ and |ℝ| = 2^ℵ₀ raised the question that God"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "related-problem",
+      "description": "The irrationality of √2 shows that ℚ ≠ ℝ — there are 'gaps' in the rationals. Combined with denumerability, this means t"
+    }
   ],
   "references": [
     {

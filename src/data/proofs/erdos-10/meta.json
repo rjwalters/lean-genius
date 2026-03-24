@@ -188,13 +188,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-2",
-    "erdos-9",
-    "erdos-11",
-    "erdos-949",
-    "erdos-1",
-    "erdos-28",
-    "infinitude-primes"
+    {
+      "id": "erdos-2",
+      "relationship": "related",
+      "description": "Erdős's covering congruence argument (1950) proving infinitely many integers are not $p + 2^a$ uses the same covering sy"
+    },
+    {
+      "id": "erdos-9",
+      "relationship": "related",
+      "description": "Problem #9 asks about odd integers not of the form $p + 2^k + 2^l$, a closely related question to Problem #10 with $k = "
+    },
+    {
+      "id": "erdos-11",
+      "relationship": "related",
+      "description": "Problem #11 asks about integers of the form squarefree + power of 2. Like Problem #10, it studies how powers of 2 combin"
+    },
+    {
+      "id": "erdos-949",
+      "relationship": "related",
+      "description": "Problem #949 also concerns representations of integers as sums involving primes and structured sets. Both problems ask a"
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "leanFile": {
     "imports": [

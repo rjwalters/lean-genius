@@ -190,9 +190,21 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-548",
-    "erdos-549"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "uses",
+      "description": "Tree Ramsey numbers are special cases of the general Ramsey problem; R(T) ≤ 2n-2 is tighter than the general Ramsey boun"
+    },
+    {
+      "id": "erdos-548",
+      "relationship": "related",
+      "description": "Turán-side complement: #548 (Erdős-Sós conjecture) asks about dense graphs containing all trees, while #547 asks about e"
+    },
+    {
+      "id": "erdos-549",
+      "relationship": "related",
+      "description": "Bipartite variant: #549 studies bipartite tree Ramsey numbers with sharper structural constraints"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -205,16 +205,31 @@
     }
   ],
   "relatedProofs": [
-    "amgm-inequality-oq-03",
-    "amgm-inequality",
-    "amgm-inequality-oq-02",
-    "amgm-inequality-oq-03-oq-02",
-    "cauchy-schwarz",
-    "cauchy-schwarz-integral",
-    "triangle-inequality",
-    "shannon-entropy",
-    "mean-value-theorem",
-    "sum-of-kth-powers"
+    {
+      "id": "amgm-inequality-oq-03",
+      "relationship": "extends",
+      "description": "Contains the positive-exponent monotonicity theorem power_mean_monotone_pos used by this proof's duality reduction"
+    },
+    {
+      "id": "amgm-inequality",
+      "relationship": "related",
+      "description": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
+    },
+    {
+      "id": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using e_k mean"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Together with this negative case, only the mixed-sign crossing (r < 0 < s) remains to complete the full power mean chain"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
+    }
   ],
   "references": [
     {

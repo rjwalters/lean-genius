@@ -178,11 +178,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-40",
-    "erdos-41",
-    "erdos-43",
-    "szemeredi-regularity"
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #47 (unit fraction subsets) are companion questions about what arithmetic "
+    },
+    {
+      "id": "erdos-40",
+      "relationship": "related",
+      "description": "Problem #40 (representation function and dense sets) asks how density of A ⊆ {1,…,N} forces arithmetic richness in the a"
+    },
+    {
+      "id": "erdos-41",
+      "relationship": "related",
+      "description": "Problem #41 (B_h sequences and density bounds) studies sets in {1,…,N} with constraints on how sums of h-element subsets"
+    },
+    {
+      "id": "erdos-43",
+      "relationship": "related",
+      "description": "Problem #43 (Sidon sets with disjoint difference sets) studies extremal additive combinatorics: how large can Sidon sets"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "technique",
+      "description": "The Szemerédi Regularity Lemma is a fundamental tool for analyzing dense subsets: it decomposes any graph (or subset of "
+    }
   ],
   "references": [
     {

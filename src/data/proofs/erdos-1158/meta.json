@@ -159,9 +159,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1020",
-    "erdos-1021",
-    "erdos-1076"
+    {
+      "id": "erdos-1020",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, turan-type"
+    },
+    {
+      "id": "erdos-1021",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, turan-type"
+    },
+    {
+      "id": "erdos-1076",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, hypergraphs"
+    }
   ],
   "leanFile": {
     "imports": [

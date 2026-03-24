@@ -315,12 +315,31 @@
     }
   ],
   "relatedProofs": [
-    "abel-ruffini",
-    "abel-ruffini-oq-04",
-    "lagrange-theorem",
-    "sylow-theorems",
-    "fundamental-theorem-algebra",
-    "nth-root-irrational-oq-01"
+    {
+      "id": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "Abel-Ruffini uses that S5 occurs as a Galois group; the Inverse Galois Problem asks which groups appear as Galois groups"
+    },
+    {
+      "id": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "The OQ-04 extension of Abel-Ruffini exposes the A5 simplicity chain — the same A5 realization proved here via Gal(x^5-5x"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the Sylow-theoretic arguments used to identify Galois groups by order an"
+    },
+    {
+      "id": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow theorems are essential for the A5 realization — proving |Gal(q)| divides 60 and identifying the Galois group by it"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees polynomial roots exist over C; the Inverse Galois Problem asks about the symmetry structure of those root"
+    }
   ],
   "references": [
     {

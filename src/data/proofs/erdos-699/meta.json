@@ -168,8 +168,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-384",
-    "erdos-387",
-    "erdos-397"
+    {
+      "id": "erdos-384",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, prime-divisors"
+    },
+    {
+      "id": "erdos-387",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics, number-theory"
+    },
+    {
+      "id": "erdos-397",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics, number-theory"
+    }
   ]
 }

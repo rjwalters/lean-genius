@@ -159,12 +159,31 @@
     }
   ],
   "relatedProofs": [
-    "bertrands-postulate",
-    "bounded-prime-gaps",
-    "prime-number-theorem",
-    "infinitude-primes",
-    "dirichlets-theorem",
-    "twin-primes-special"
+    {
+      "id": "bertrands-postulate",
+      "relationship": "complementary",
+      "description": "Bertrand's postulate (prime in $(n, 2n)$, proved by Chebyshev 1852) is the weaker proven analog of Legendre's conjecture"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Zhang (2013) and Maynard (2013) proved that prime gaps stay bounded infinitely often ($\\liminf(p_{n+1} - p_n) \\leq 246$)"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The PNT ($\\pi(x) \\sim x/\\ln x$) provides the heuristic basis for Legendre's conjecture: the expected number of primes in"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes (Euclid, ~300 BCE) is the most basic result about prime distribution. Legendre's conjecture is "
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem (1837) proves primes exist in every arithmetic progression $a + nd$ with $\\gcd(a,d) = 1$. Both resul"
+    }
   ],
   "references": [
     {

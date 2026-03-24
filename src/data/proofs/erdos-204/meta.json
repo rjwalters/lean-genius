@@ -174,7 +174,11 @@
     ]
   },
   "relatedProofs": [
-    "erdos-543"
+    {
+      "id": "erdos-543",
+      "relationship": "thematic",
+      "description": "Both problems concern combinatorial constraints on covering/spanning with algebraic conditions on moduli"
+    }
   ],
   "leanFile": {
     "imports": [

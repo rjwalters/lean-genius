@@ -199,14 +199,30 @@
     "definitionCount": 1
   },
   "relatedProofs": [
-    "e-transcendental",
-    "pi-transcendental",
-    "binomial-theorem",
-    "central-limit-theorem",
-    "euler-identity",
-    "fundamental-theorem-calculus",
-    "harmonic-divergence",
-    "derangements",
-    "bertrands-postulate"
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Euler's number e appears fundamentally in Stirling's formula as (n/e)^n — the transcendence of e (Hermite 1873) ensures "
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "The factor √(2π) in Stirling's formula connects to the Wallis product and the Gaussian integral ∫e^{-x²}dx = √π. The tra"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "complementary",
+      "description": "Stirling's formula gives the asymptotic form of binomial coefficients: C(n,k) ≈ (n/k)^k · (n/(n-k))^{n-k} · √(n/(2πk(n-k"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "related",
+      "description": "De Moivre originally discovered Stirling's formula while proving the CLT for the binomial distribution. Stirling's appro"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's formula e^{iπ} + 1 = 0 connects the same constants (e, π) that appear in Stirling's formula. Both reveal deep re"
+    }
   ]
 }

@@ -167,11 +167,31 @@
     ]
   },
   "relatedProofs": [
-    "ballot-problem-oq-01",
-    "ballot-problem",
-    "intermediate-value-theorem",
-    "ballot-problem-oq-02",
-    "ballot-problem-oq-03"
+    {
+      "id": "ballot-problem-oq-01",
+      "relationship": "parent",
+      "description": "Parent proof containing the full Dvoretzky-Motzkin Cycle Lemma (cycle_lemma: |goodRotations l| = a - k*b) that uses this"
+    },
+    {
+      "id": "ballot-problem",
+      "relationship": "ancestor",
+      "description": "Classical Bertrand ballot theorem: setting k=1 in the cycle lemma recovers the ballot problem probability (a-b)/(a+b)"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "This file proves a discrete analog of the IVT: for {+1,-k}-sequences, prefix sums that start below and end above a targe"
+    },
+    {
+      "id": "ballot-problem-oq-02",
+      "relationship": "sibling",
+      "description": "Continuous-time analog via Brownian motion — while this file uses discrete IVT for the cycle lemma, the sibling extends "
+    },
+    {
+      "id": "ballot-problem-oq-03",
+      "relationship": "sibling",
+      "description": "The Lindström-Gessel-Viennot lemma via 2D reflection — a different combinatorial approach to ballot-type counting. While"
+    }
   ],
   "leanFile": {
     "imports": [

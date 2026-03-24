@@ -222,20 +222,31 @@
     }
   ],
   "relatedProofs": [
-    "fair-games-theorem",
-    "binomial-theorem",
-    "combinations-formula",
-    "erdos-szekeres",
-    "birthday-problem",
-    "ballot-problem-oq-01",
-    "ballot-problem-oq-02",
-    "ballot-problem-oq-03",
-    "derangements",
-    "ballot-problem-oq-01-oq-01",
-    "ballot-problem-oq-03-oq-02",
-    "inclusion-exclusion",
-    "central-limit-theorem",
-    "infinitude-primes"
+    {
+      "id": "fair-games-theorem",
+      "relationship": "related",
+      "description": "Both use conditional probability over finite sample spaces; the ballot problem's staysPositive predicate connects to fai"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "uses",
+      "description": "The ballot formula relies on binomial coefficients C(p+q,p) and C(p+q,q) for counting lattice paths"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "uses",
+      "description": "The ballot probability is a ratio of binomial coefficients C(p+q,p); the counting argument relies on the combinations fo"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "related",
+      "description": "Both are combinatorial results solved by elegant counting arguments: the Erdős-Szekeres theorem (every sequence of lengt"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are classic probability problems solved by counting arguments over finite sample spaces — the birthday problem coun"
+    }
   ],
   "references": [
     {

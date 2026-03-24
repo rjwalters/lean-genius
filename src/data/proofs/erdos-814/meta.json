@@ -181,8 +181,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-565",
-    "erdos-914",
-    "erdos-134"
+    {
+      "id": "erdos-565",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, induced-subgraphs, solved"
+    },
+    {
+      "id": "erdos-914",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, minimum-degree, solved"
+    },
+    {
+      "id": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    }
   ]
 }

@@ -155,11 +155,31 @@
     ]
   },
   "relatedProofs": [
-    "wilsons-theorem",
-    "bertrands-postulate",
-    "stirling-formula",
-    "erdos-728-factorial-divisibility",
-    "bounded-prime-gaps"
+    {
+      "id": "wilsons-theorem",
+      "relationship": "foundational",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ ensures $p_k$ divides $(p_k - 1)! + 1$, providing the starting divisor that"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime between $n$ and $2n$, bounding prime gaps. The interval $[p_{k-1}, p_k)$ in Prob"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ underlies the growth-rate arguments in Luca's proof: the super-e"
+    },
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Both concern the prime factorization structure of factorial-related expressions. Problem #728 studies divisibility prope"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Prime gap bounds determine the size of the intervals $[p_{k-1}, p_k)$ in which $n$ lies. Smaller gaps mean more values o"
+    }
   ],
   "references": [
     {

@@ -373,17 +373,30 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1155",
-    "ramseys-theorem",
-    "szemeredi-regularity",
-    "erdos-1009",
-    "erdos-1010",
-    "erdos-1104",
-    "szemeredi-theorem",
-    "szemeredi-counting",
-    "roth-theorem-k3",
-    "prob-method-alteration",
-    "prob-method-lovasz-local",
-    "prob-method-second-moment"
+    {
+      "id": "erdos-1155",
+      "relationship": "parent",
+      "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis between BFL and the co"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs; both use probabilistic a"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi regularity lemma is the foundation of the triangle removal lemma (distinct from the triangle removal *proc"
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "related",
+      "description": "Edge-disjoint triangles beyond Turán: both problems concern triangle structure in dense graphs. Erdős #1009 asks how man"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "related",
+      "description": "Triangle supersaturation counts triangles in graphs with more than Turán-many edges. The triangle removal process starts"
+    }
   ]
 }

@@ -203,8 +203,20 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-szekeres",
-    "friendship-theorem"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "When q=1, the (p,q)-density condition reduces to 'no independent set of size p,' recovering classical Ramsey theory. The"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdős-Szekeres theorem on monotone subsequences is another Ramsey-type result where local structure (pairwise compar"
+    },
+    {
+      "id": "friendship-theorem",
+      "relationship": "thematic",
+      "description": "Both are results about how local constraints in graphs force global structure: the friendship theorem shows that 'every "
+    }
   ]
 }

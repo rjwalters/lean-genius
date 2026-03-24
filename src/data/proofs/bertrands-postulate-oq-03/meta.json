@@ -195,18 +195,31 @@
     }
   ],
   "relatedProofs": [
-    "bertrands-postulate",
-    "prime-number-theorem",
-    "bounded-prime-gaps",
-    "infinitude-primes",
-    "riemann-hypothesis",
-    "twin-primes-special",
-    "wilsons-theorem",
-    "euler-totient",
-    "stirling-formula",
-    "fundamental-arithmetic",
-    "quadratic-reciprocity",
-    "prime-reciprocal-divergence"
+    {
+      "id": "bertrands-postulate",
+      "relationship": "extends",
+      "description": "Parent entry proving Bertrand's postulate (a prime between n and 2n) — this file extends to the precise density question"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "PNT (π(x) ~ x/ln x) provides the asymptotic framework for understanding prime density in short intervals — Bertrand's po"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Both address prime distribution: bounded gaps (Zhang-Maynard-Tao) shows infinitely many gaps ≤ 246, while this entry stu"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "ancestor",
+      "description": "The foundational result that primes are infinite — this entry quantifies their distribution in short intervals"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "references": [
     {

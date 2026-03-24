@@ -127,8 +127,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-140",
-    "erdos-136"
+    {
+      "id": "erdos-140",
+      "relationship": "related",
+      "description": "Both concern extremal combinatorics: #140 addresses density of 3-AP-free sets, #167 addresses triangle packing/covering "
+    },
+    {
+      "id": "erdos-136",
+      "relationship": "related",
+      "description": "Both are graph coloring/structure problems from Erdős. #136 concerns the Erdős-Gyárfás function f(n,4,5) relating graph "
+    }
   ],
   "leanFile": {
     "imports": [

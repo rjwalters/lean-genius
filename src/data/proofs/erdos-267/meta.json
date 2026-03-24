@@ -181,9 +181,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-249",
-    "erdos-250",
-    "erdos-259"
+    {
+      "id": "erdos-249",
+      "relationship": "related",
+      "description": "Both are Erdős irrationality problems about sums involving arithmetic functions (Σ φ(n)/2^n vs Σ 1/F_{n_k})"
+    },
+    {
+      "id": "erdos-250",
+      "relationship": "related",
+      "description": "Part of Erdős's irrationality cluster: #250 asks about Σ σ(n)/2^n (solved by Nesterenko 1996), while #267 asks about Σ 1"
+    },
+    {
+      "id": "erdos-259",
+      "relationship": "related",
+      "description": "Another Erdős irrationality problem: #259 concerns Σ μ(n)²n/2^n. Both probe when 'natural' arithmetic series produce irr"
+    }
   ],
   "leanFile": {
     "imports": [

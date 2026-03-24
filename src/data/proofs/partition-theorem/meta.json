@@ -181,9 +181,21 @@
     ]
   },
   "relatedProofs": [
-    "kummer-theorem",
-    "erdos-250",
-    "ramseys-theorem"
+    {
+      "id": "kummer-theorem",
+      "relationship": "uses-same-technique",
+      "description": "Kummer's theorem on binomial coefficients uses p-adic valuations and carries in base-p addition — a similar digit-manipu"
+    },
+    {
+      "id": "erdos-250",
+      "relationship": "related-problem",
+      "description": "Irrationality of Σ σ(n)/2ⁿ connects to partition theory through the divisor function σ(n) and Ramanujan-Eisenstein serie"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundation",
+      "description": "Both are foundational combinatorics results. Ramsey theory and partition theory are twin pillars of combinatorial mathem"
+    }
   ],
   "references": [
     {

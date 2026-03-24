@@ -154,12 +154,31 @@
     }
   ],
   "relatedProofs": [
-    "bezout-identity",
-    "bezout-identity-oq-02",
-    "bezout-identity-oq-02-oq-02-oq-01",
-    "bezout-identity-oq-02-oq-02",
-    "bezout-identity-oq-02-oq-01",
-    "chinese-remainder-non-coprime"
+    {
+      "id": "bezout-identity",
+      "relationship": "ancestor",
+      "description": "The root formalization of Bézout's identity, which establishes the extended Euclidean algorithm used here"
+    },
+    {
+      "id": "bezout-identity-oq-02",
+      "relationship": "ancestor",
+      "description": "Euclid's lemma via coprimality — the classical (noncomputable) version that this entry makes computable"
+    },
+    {
+      "id": "bezout-identity-oq-02-oq-02-oq-01",
+      "relationship": "parent",
+      "description": "The direct parent: constructive divisibility via Bézout coefficients using classical choice (`hdvd.choose`)"
+    },
+    {
+      "id": "bezout-identity-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Euclid's lemma in Bézout domains and PIDs — the abstract algebraic generalization"
+    },
+    {
+      "id": "bezout-identity-oq-02-oq-01",
+      "relationship": "related",
+      "description": "The Fundamental Theorem of Arithmetic from Euclid's lemma — a key application of the divisibility result made computable"
+    }
   ],
   "leanFile": {
     "imports": [

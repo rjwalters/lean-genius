@@ -215,9 +215,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-818",
-    "erdos-774",
-    "szemeredi-theorem"
+    {
+      "id": "erdos-818",
+      "relationship": "related",
+      "description": "Both are Erdős problems from the combinatorial number theory collection"
+    },
+    {
+      "id": "erdos-774",
+      "relationship": "related",
+      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #774 for dissociated sets (op"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "foundational",
+      "description": "Szemeredi's theorem (dense sets contain APs) is the fundamental result underlying the ENR condition and AP-free set anal"
+    }
   ],
   "leanFile": {
     "imports": [

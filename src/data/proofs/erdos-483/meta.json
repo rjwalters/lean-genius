@@ -184,9 +184,21 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-360",
-    "erdos-302"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Schur's theorem is a special case of Ramsey theory: S(k) relates to R(3,...,3) since a+b=c is a 3-element structure"
+    },
+    {
+      "id": "erdos-360",
+      "relationship": "related",
+      "description": "Both concern partition/coloring problems avoiding additive structure: #360 studies sum-free partition classes, #483 stud"
+    },
+    {
+      "id": "erdos-302",
+      "relationship": "related",
+      "description": "Both are extremal problems about sets avoiding specific equations: #302 avoids 1/a=1/b+1/c, #483 avoids a+b=c in colorin"
+    }
   ],
   "leanFile": {
     "imports": [

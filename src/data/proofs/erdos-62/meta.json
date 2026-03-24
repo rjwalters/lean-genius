@@ -201,7 +201,15 @@
     "https://erdosproblems.com/62"
   ],
   "relatedProofs": [
-    "erdos-22",
-    "erdos-61"
+    {
+      "id": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 and Problem #62 both concern extremal properties of graphs with specific density constraints"
+    },
+    {
+      "id": "erdos-61",
+      "relationship": "related",
+      "description": "Problem #61 (Erdős-Hajnal) and Problem #62 both concern structural properties of dense graphs. Both study how graph stru"
+    }
   ]
 }

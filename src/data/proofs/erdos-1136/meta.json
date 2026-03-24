@@ -185,9 +185,25 @@
     ]
   },
   "relatedProofs": [
-    "erdos-984",
-    "erdos-107",
-    "erdos-527",
-    "partition-theorem"
+    {
+      "id": "erdos-984",
+      "relationship": "related-problem",
+      "description": "Both are Erdős problems in additive combinatorics involving density bounds for sets with prescribed arithmetic constrain"
+    },
+    {
+      "id": "erdos-107",
+      "relationship": "related-problem",
+      "description": "Both are Erdős problems where a trivial construction gives a baseline bound that is later improved to the optimal value."
+    },
+    {
+      "id": "erdos-527",
+      "relationship": "thematic",
+      "description": "Both involve density and structure of sets defined by arithmetic constraints, connecting combinatorics with number-theor"
+    },
+    {
+      "id": "partition-theorem",
+      "relationship": "thematic",
+      "description": "Both involve partition-type arguments over natural numbers. The pairing argument $(a, 2^k - a)$ in Muller's optimality p"
+    }
   ]
 }

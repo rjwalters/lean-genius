@@ -229,15 +229,31 @@
     }
   ],
   "relatedProofs": [
-    "szemeredi-theorem",
-    "szemeredi-counting",
-    "erdos-1097",
-    "erdos-3",
-    "arithmetic-series",
-    "roth-theorem-k3",
-    "erdos-30",
-    "erdos-1145",
-    "erdos-28"
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Both concern arithmetic structure in dense sets. Szemerédi's theorem guarantees APs in dense sets; Problem #331 asks abo"
+    },
+    {
+      "id": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The counting lemma quantifies how many structured subpatterns exist in dense sets. The density threshold $\\sqrt{N}$ in #"
+    },
+    {
+      "id": "erdos-1097",
+      "relationship": "related",
+      "description": "Both study common differences and additive structure: #1097 asks about the number of common differences in 3-term APs wi"
+    },
+    {
+      "id": "erdos-3",
+      "relationship": "related",
+      "description": "Erdős #3 asks about arithmetic progressions in the primes (a density condition on a specific set). Both #3 and #331 ask "
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "foundational",
+      "description": "Arithmetic progressions and their common differences are the central objects. The difference set $A - A$ is precisely th"
+    }
   ],
   "leanFile": {
     "imports": [

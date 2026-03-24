@@ -113,9 +113,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-164",
-    "erdos-892",
-    "erdos-1052"
+    {
+      "id": "erdos-164",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes, primitive-sets"
+    },
+    {
+      "id": "erdos-892",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, primitive-sets"
+    },
+    {
+      "id": "erdos-1052",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory"
+    }
   ],
   "leanFile": {
     "imports": [

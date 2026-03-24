@@ -163,11 +163,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-807",
-    "euler-polyhedral-formula",
-    "konigsberg",
-    "erdos-szekeres"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are results about graph coloring: Ramsey theory guarantees monochromatic substructures in edge-colored complete gra"
+    },
+    {
+      "id": "erdos-807",
+      "relationship": "related",
+      "description": "Erdős Problem #807 concerns graph coloring bounds, directly connecting to the chromatic theory that the Four Color Theor"
+    },
+    {
+      "id": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "Euler's formula $V - E + F = 2$ for connected planar graphs is the starting point for the discharging method: assigning "
+    },
+    {
+      "id": "konigsberg",
+      "relationship": "foundational",
+      "description": "Euler's Königsberg bridge problem (1736) founded graph theory — the mathematical framework in which the Four Color Theor"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdős-Szekeres theorem on monotone subsequences is another combinatorial result where the proof structure — showing "
+    }
   ],
   "references": [
     {

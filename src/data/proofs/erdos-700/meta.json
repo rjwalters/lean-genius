@@ -122,9 +122,21 @@
     }
   ],
   "relatedProofs": [
-    "kummer-theorem",
-    "wolstenholme-theorem",
-    "infinitude-primes"
+    {
+      "id": "kummer-theorem",
+      "relationship": "depends-on",
+      "description": "Kummer's theorem on p-adic valuations of binomial coefficients is the key tool for computing f(n)"
+    },
+    {
+      "id": "wolstenholme-theorem",
+      "relationship": "related",
+      "description": "Wolstenholme's theorem gives special divisibility of binomial coefficients C(p,k) for primes p, a related but distinct p"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "The prime factorization structure underlying f(n) relies on the infinitude and distribution of primes"
+    }
   ],
   "leanFile": {
     "imports": [

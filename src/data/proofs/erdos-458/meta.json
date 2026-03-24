@@ -141,11 +141,31 @@
     }
   ],
   "relatedProofs": [
-    "legendre-partial",
-    "bertrands-postulate",
-    "prime-number-theorem",
-    "infinitude-primes",
-    "bounded-prime-gaps"
+    {
+      "id": "legendre-partial",
+      "relationship": "related",
+      "description": "Legendre's conjecture (prime between $n^2$ and $(n+1)^2$) is the key ingredient: if Legendre holds, prime gaps near $p_k"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (prime in $(n, 2n)$) is a weaker prime gap result. It does not suffice for Erdős #458 because the B"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The PNT gives $\\psi(n) \\sim n$, providing the asymptotic framework for understanding LCM growth. Chebyshev's weaker boun"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes guarantees `Nat.nth Nat.Prime k` is well-defined for all $k$ — the foundation for the `nthPrime"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Zhang/Maynard's bounded prime gaps ($\\liminf(p_{n+1}-p_n) \\leq 246$) show gaps stay small infinitely often, but Erdős #4"
+    }
   ],
   "references": [
     {

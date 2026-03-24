@@ -199,8 +199,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-435",
-    "erdos-434",
-    "erdos-466"
+    {
+      "id": "erdos-435",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: frobenius-number, number-theory, numerical-semigroups, solved"
+    },
+    {
+      "id": "erdos-434",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, numerical-semigroups"
+    },
+    {
+      "id": "erdos-466",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved"
+    }
   ]
 }

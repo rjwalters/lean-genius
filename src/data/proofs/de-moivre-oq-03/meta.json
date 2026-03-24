@@ -234,8 +234,20 @@
     }
   ],
   "relatedProofs": [
-    "de-moivre",
-    "de-moivre-oq-01",
-    "de-moivre-oq-02"
+    {
+      "id": "de-moivre",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "id": "de-moivre-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Explicit Multiple Angle Formulas from De Moivre's Theorem"
+    },
+    {
+      "id": "de-moivre-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Chebyshev Polynomial Properties via De Moivre's Theorem"
+    }
   ]
 }

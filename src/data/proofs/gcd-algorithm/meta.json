@@ -228,16 +228,31 @@
     }
   ],
   "relatedProofs": [
-    "bezout-identity",
-    "fundamental-arithmetic",
-    "infinitude-primes",
-    "factor-remainder-theorem",
-    "chinese-remainder-constructive",
-    "euler-totient",
-    "wilsons-theorem",
-    "mathematical-induction",
-    "perfect-numbers",
-    "abel-ruffini"
+    {
+      "id": "bezout-identity",
+      "relationship": "extends",
+      "description": "The extended Euclidean algorithm computes Bezout coefficients $x, y$ with $\\gcd(a,b) = ax + by$. This formalization prov"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The Euclidean algorithm provides a constructive proof that GCD exists. Unique prime factorization (FTA) gives an alterna"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euclid's proof of infinitely many primes (Elements IX.20) appears in the same work as the Euclidean algorithm (Book VII)"
+    },
+    {
+      "id": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "The Euclidean algorithm for polynomial GCD mirrors the integer version: $\\gcd(p,q) = \\gcd(q, p \\bmod q)$. The Factor and"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "extends",
+      "description": "The Chinese Remainder Theorem uses the extended Euclidean algorithm to construct solutions: given $\\gcd(m,n) = 1$, find "
+    }
   ],
   "references": [
     {

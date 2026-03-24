@@ -194,9 +194,21 @@
     }
   ],
   "relatedProofs": [
-    "chinese-remainder-non-coprime",
-    "chinese-remainder-constructive",
-    "bezout-identity"
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "extends",
+      "description": "Parent formalization establishing the non-coprime CRT existence theorem. This entry proves the three efficiency improvem"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The standard (coprime) CRT formalization. This entry shows how the non-coprime case reduces to the coprime case via Bézo"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity ($\\gcd(m,n) = sm + tn$) underpins both the coprime CRT construction and the reduction step that makes "
+    }
   ],
   "references": [
     {

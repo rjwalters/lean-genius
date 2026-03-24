@@ -177,12 +177,31 @@
     }
   ],
   "relatedProofs": [
-    "taylor-theorem",
-    "euler-identity",
-    "e-transcendental",
-    "fundamental-theorem-calculus",
-    "basel-problem",
-    "mean-value-theorem"
+    {
+      "id": "taylor-theorem",
+      "relationship": "extends",
+      "description": "Parent entry formalizing Taylor's theorem (Wiedijk #35) with Lagrange and Cauchy remainder forms. This entry answers the"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity e^{i*pi} + 1 = 0 relies on the Taylor series of exp extended to complex arguments. This entry establish"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite's proof that e is transcendental uses the rapid convergence of sum 1/n!, which this entry bounds: |e - S_n(1)| <"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The integral form of the Taylor remainder R_n = (1/n!) integral_a^x (x-t)^n f^{(n+1)}(t) dt is derived from the FTC by r"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem sum 1/n^2 = pi^2/6 can be proved by comparing Taylor coefficients of sin(x)/x with its Weierstrass pro"
+    }
   ],
   "leanFile": {
     "imports": [

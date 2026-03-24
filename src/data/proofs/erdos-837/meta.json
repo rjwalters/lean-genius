@@ -139,10 +139,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-833",
-    "erdos-834",
-    "erdos-1019",
-    "erdos-622"
+    {
+      "id": "erdos-833",
+      "relationship": "related",
+      "description": "Problem #833 studies vertex degrees in 3-chromatic hypergraphs—another structural question about k-uniform hypergraphs f"
+    },
+    {
+      "id": "erdos-834",
+      "relationship": "related",
+      "description": "Problem #834 studies 3-critical 3-uniform hypergraphs—another problem from Erdős–Lovász on extremal properties of k-unif"
+    },
+    {
+      "id": "erdos-1019",
+      "relationship": "related",
+      "description": "Problem #1019 studies dense graphs forcing saturated planar subgraphs via Turán-type thresholds, connecting to the densi"
+    },
+    {
+      "id": "erdos-622",
+      "relationship": "related",
+      "description": "Problem #622 studies cycle-spanning subsets in dense regular graphs—another extremal problem where graph density forces "
+    }
   ],
   "references": [
     "Erdős & Simonovits (1974): original problem [Er74d]",

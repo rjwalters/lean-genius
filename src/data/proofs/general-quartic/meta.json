@@ -160,13 +160,31 @@
     }
   ],
   "relatedProofs": [
-    "solution-of-cubic",
-    "abel-ruffini",
-    "abel-ruffini-oq-04",
-    "fundamental-theorem-algebra",
-    "angle-trisection",
-    "lagrange-theorem",
-    "sylow-theorems"
+    {
+      "id": "solution-of-cubic",
+      "relationship": "uses",
+      "description": "Ferrari's method reduces the quartic to a cubic resolvent, solved by Cardano's formula (Wiedijk #37). The quartic is lit"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "The quartic is the last degree solvable by radicals. Abel-Ruffini (Wiedijk #16) proves no general formula exists for deg"
+    },
+    {
+      "id": "abel-ruffini-oq-04",
+      "relationship": "complementary",
+      "description": "The A₅ simplicity proof chain exposes each step from A₅ simple to 'no quintic formula' — this quartic file is the comple"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "FTA guarantees the quartic has exactly 4 roots in C. Ferrari's formula constructs them explicitly via the resolvent cubi"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "Both connect to constructibility: quartic roots with degree 4 = 2² ARE constructible (4 divides 2²), while the cubic cas"
+    }
   ],
   "references": [
     {

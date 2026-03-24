@@ -122,7 +122,10 @@
     "content": "**alon_2015:**\n\nAlon proved that the ERW conjecture is false.\n\n**Statement:** Almost surely, tau(G) <= n - alpha(G) - 1 for G in G(n, 1/2).\n\nThis shows the bipartition number is strictly smaller than n - alpha(G), disproving the equality conjecture.\n\n**Reference:** Alon, \"Bipartite decomposition of random graphs\", J. Combin. Theory Ser. B (2015).",
     "mathContext": "The proof uses the probabilistic method to show random bipartite subgraphs cover edges efficiently.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "combinatorics"
+    ],
     "prerequisites": []
   },
   {
@@ -137,7 +140,10 @@
     "content": "**erw_conjecture_false:**\n\nThe ERW conjecture is false.\n\n```lean\ntheorem erw_conjecture_false : not (forall n, ERW_conjecture n)\n```\n\n**Proof:** Since tau(G) <= n - alpha(G) - 1 < n - alpha(G) almost surely, the equality fails.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of erw conjecture is false",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -152,7 +158,10 @@
     "content": "**alon_bohman_huang_2017:**\n\nA quantitative improvement over Alon's result.\n\n**Statement:** There exists an absolute constant c > 0 such that almost surely tau(G) <= n - (1+c)alpha(G).\n\nThis shows the gap between tau(G) and n - alpha(G) is multiplicative, not just additive.\n\n**Reference:** Alon, Bohman, Huang, \"More on the bipartite decomposition of random graphs\", J. Graph Theory (2017).",
     "mathContext": "The improved bound uses more sophisticated probabilistic arguments.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -203,7 +212,10 @@
     "content": "**erdos_807:**\n\nThe main result: The ERW conjecture is false, with a quantitative gap.\n\n```lean\ntheorem erdos_807 : exists c : R, c > 0 and\n    -- The ERW conjecture is false with gap at least c * alpha(G)\n    True :=\n  alon_bohman_huang_2017\n```\n\n**Summary:**\n1. Alon (2015): tau(G) <= n - alpha(G) - 1 almost surely\n2. ABH (2017): tau(G) <= n - (1+c)alpha(G) for some c > 0",
     "mathContext": "$\\exists\\, c > 0$ such that a.s. $\\tau(G) \\leq n - (1+c)\\alpha(G)$ for $G \\in G(n, 1/2)$, refuting $\\tau(G) = n - \\alpha(G)$.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -218,7 +230,10 @@
     "content": "**erdos_807_answer:**\n\nErdos #807 asked if tau(G) = n - alpha(G) almost surely.\n\n**Answer: NO**\n\nThe bipartition number is strictly smaller than expected for random graphs.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of answer statement",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {

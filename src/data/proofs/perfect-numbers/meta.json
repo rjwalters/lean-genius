@@ -245,15 +245,30 @@
     }
   ],
   "relatedProofs": [
-    "euler-totient",
-    "infinitude-primes",
-    "bertrands-postulate",
-    "fundamental-arithmetic",
-    "lagrange-four-squares",
-    "fermat-two-squares",
-    "wilsons-theorem",
-    "arithmetic-series",
-    "gcd-algorithm",
-    "binomial-theorem"
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Both concern multiplicative arithmetic functions: $\\sigma_1(n) = \\sum_{d \\mid n} d$ (sum of divisors) and $\\phi(n) = |\\{"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is foundational, but the deeper question — whether infinitely many Mersenne primes $2^p - 1$ ex"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime between $n$ and $2n$, but no analogous result is known for Mersenne primes. The "
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is essential to the proof: $\\sigma_1$ is multiplicative because of the unique factorization o"
+    },
+    {
+      "id": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Both concern representation problems in number theory: which numbers are sums of squares (Lagrange) vs which satisfy $\\s"
+    }
   ]
 }

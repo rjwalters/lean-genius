@@ -30,7 +30,10 @@
     "content": "**Point:**\n\nType alias for points in the Euclidean plane R^2.\n\n```lean\nabbrev Point := EuclideanSpace R (Fin 2)\n```\n\nThis provides the standard Euclidean metric and inner product structure.",
     "significance": "key",
     "mathContext": "$\\text{Point} = \\mathbb{R}^2$ (Euclidean plane, modeled as `EuclideanSpace ℝ (Fin 2)`)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "metric spaces"
+    ],
     "prerequisites": []
   },
   {
@@ -45,7 +48,10 @@
     "content": "**PointTriple:**\n\nA structure representing three distinct points.\n\n```lean\nstructure PointTriple where\n  p1 : Point\n  p2 : Point\n  p3 : Point\n  distinct12 : p1 != p2\n  distinct13 : p1 != p3\n  distinct23 : p2 != p3\n```\n\nThe distinctness proofs ensure we can form a non-degenerate triangle.",
     "significance": "key",
     "mathContext": "$(p_1, p_2, p_3) \\in (\\mathbb{R}^2)^3$ with $p_1 \\neq p_2 \\neq p_3 \\neq p_1$ — three distinct points determining a circumscribed circle",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -60,7 +66,10 @@
     "content": "**areCollinear:**\n\nThree points are collinear if they lie on a common line.\n\n```lean\ndef areCollinear (p1 p2 p3 : Point) : Prop :=\n  exists a b c, (a != 0 or b != 0) and\n    all three points satisfy ax + by + c = 0\n```\n\nCollinear points don't determine a unique circumcircle.",
     "mathContext": "The general position constraint 'no 3 collinear' ensures every triple has a well-defined circumcircle.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -75,7 +84,10 @@
     "content": "**areConcyclic:**\n\nFour points are concyclic if they lie on a common circle.\n\n```lean\ndef areConcyclic (p1 p2 p3 p4 : Point) : Prop :=\n  exists center r, r > 0 and\n    all four points are at distance r from center\n```\n\nFour concyclic points would have equal circumradii for all 4 triples.",
     "mathContext": "The constraint 'no 4 concyclic' prevents radius collisions from geometric degeneracies.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -90,7 +102,10 @@
     "content": "**isInGeneralPosition:**\n\nA point configuration is in general position if:\n1. No three points are collinear\n2. No four points are concyclic\n\nThis is the standard assumption for the problem. It ensures:\n- Every triple has a unique circumcircle\n- No 'accidental' radius equalities from geometric structure",
     "significance": "key",
     "mathContext": "No three collinear and no four concyclic: $\\forall$ distinct $p_i, p_j, p_k$: not collinear, and $\\forall$ distinct $p_i, p_j, p_k, p_\\ell$: not concyclic",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "metric spaces"
+    ],
     "prerequisites": []
   },
   {
@@ -124,7 +139,10 @@
     "content": "**allCircumradii:**\n\nFor a finite point set S, the set of all circumradii from triples in S.\n\n```lean\nnoncomputable def allCircumradii (S : Finset Point) : Set R :=\n  {r | exists p1 p2 p3 in S, distinct, with circumradius = r}\n```\n\nThis is the set whose cardinality we want to minimize.",
     "significance": "key",
     "mathContext": "$R(S) = \\{\\text{circumradius}(p_i, p_j, p_k) : \\{p_i, p_j, p_k\\} \\subseteq S, |\\{p_i, p_j, p_k\\}| = 3\\}$",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -139,7 +157,10 @@
     "content": "**h(n):**\n\nThe minimum over all n-point configurations in general position of the number of distinct circumradii.\n\n```lean\nnoncomputable def h (n : N) : N :=\n  sInf {k | exists S, |S| = n and isInGeneralPosition S and\n    countDistinctRadii S = k}\n```\n\nThis is the central object of the problem.",
     "significance": "key",
     "mathContext": "$h(n) = \\min_{|S|=n, S \\text{ in general position}} |R(S)|$ — the minimum number of distinct circumradii over all $n$-point general position configurations",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -154,7 +175,10 @@
     "content": "**h_upper_bound:**\n\nWith n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.\n\n```lean\ntheorem h_upper_bound (n : N) : h n <= Nat.choose n 3\n```\n\nThis is the obvious upper bound - each triple contributes at most one radius.",
     "significance": "key",
     "mathContext": "$h(n) \\leq \\binom{n}{3}$ since each triple determines at most one circumradius, and there are $\\binom{n}{3}$ triples",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -169,7 +193,10 @@
     "content": "**h_four_lower:**\n\nFour points in general position give at least 2 distinct radii.\n\n```lean\naxiom h_four_lower : h 4 >= 2\n```\n\n**Why:** If all 4 circumradii (from the 4 triples) were equal, the 4 points would lie on a common circle, violating general position.",
     "mathContext": "This is the key observation: the 'no 4 concyclic' constraint forces radius diversity.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -184,7 +211,10 @@
     "content": "**erdos_831_conjecture:**\n\nWhat are the asymptotics of h(n)?\n\n**Possible behaviors:**\n1. h(n) = Theta(n) - linear growth\n2. h(n) = Theta(n^alpha) - polynomial growth for some alpha in (0, 2)\n3. h(n) = Theta(n^2) - quadratic growth\n\nThe problem asks to determine which case holds.\n\nAxiomatized as the disjunction of these possibilities.",
     "mathContext": "The constraint 'no 4 concyclic' suggests radii must spread out, but the rate is unknown.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "asymptotics",
+      "polynomial theory"
+    ],
     "prerequisites": []
   },
   {
@@ -199,7 +229,10 @@
     "content": "**regular_polygon_not_general:**\n\nPoints of a regular n-gon are concyclic, so they don't satisfy general position.\n\n```lean\ntheorem regular_polygon_not_general (S : Finset Point)\n    (h : isRegularPolygon S) (hcard : S.card >= 4) :\n    not isInGeneralPosition S\n```\n\nRegular polygons cannot be used to construct minimizing configurations.",
     "significance": "key",
     "mathContext": "Regular $n$-gon vertices lie on a circle, violating the general position requirement (all $\\binom{n}{4}$ quadruples are concyclic)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -214,7 +247,10 @@
     "content": "**random_points_many_radii:**\n\nRandom points in general position are expected to have many distinct radii.\n\nSpecifically: for random n points, the number of distinct radii is at least c*n for some constant c > 0.\n\nThis suggests the minimum h(n) might be linear or superlinear.",
     "significance": "supporting",
     "mathContext": "For random points in general position: $|R(S)| \\approx \\binom{n}{3}$ with high probability (distinct circumradii)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -265,7 +301,10 @@
     "content": "**h_five_bounds and h_six_bounds:**\n\n**h(5):** With 5 points, C(5,3) = 10 triples.\nBounds: 2 <= h(5) <= 10\n\n**h(6):** With 6 points, C(6,3) = 20 triples.\nBounds: 3 <= h(6) <= 20\n\nThe exact values for small n are not known.",
     "significance": "key",
     "mathContext": "$h(3) = 1$, $h(4) \\in \\{1, 2, 3, 4\\}$, $2 \\leq h(5) \\leq 10$, $2 \\leq h(6) \\leq 20$",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -280,7 +319,10 @@
     "content": "**erdos_831_summary:**\n\nCombines known results:\n1. h(3) = 1 (trivial - one triple, one radius)\n2. h(4) >= 2 (non-concyclicity forces diversity)\n3. h(n) <= C(n,3) (obvious upper bound)\n\n```lean\ntheorem erdos_831_summary :\n    h 3 = 1 and h 4 >= 2 and forall n, h n <= Nat.choose n 3\n```",
     "significance": "key",
     "mathContext": "Known: $h(3) = 1$, $h(n) \\leq \\binom{n}{3}$, $h(n) \\geq 2$ for $n \\geq 4$. Unknown: exact asymptotics of $h(n)$",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "combinatorics"
+    ],
     "prerequisites": []
   },
   {
@@ -295,7 +337,10 @@
     "content": "**erdos_831_open_question:**\n\nThe main open question: what is the asymptotic behavior of h(n)?\n\nWe can prove existence of a positive lower bound function:\n```lean\ntheorem erdos_831_open_question :\n    exists f, (forall n >= 3, h n >= f n) and (forall n >= 3, f n > 0)\n```\n\nBut the exact growth rate remains unknown.",
     "significance": "key",
     "mathContext": "Open: is $h(n) = \\Theta(n^2)$? Or $h(n) = \\Theta(n^3)$? The gap between $\\Omega(n)$ and $O(n^3)$ is wide",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "asymptotics"
+    ],
     "prerequisites": []
   }
 ]

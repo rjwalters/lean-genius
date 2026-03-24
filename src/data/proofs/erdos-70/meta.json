@@ -206,9 +206,25 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "cantor-diagonalization",
-    "cantors-theorem",
-    "continuum-hypothesis"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem is the finite predecessor: every 2-coloring of k-subsets of a sufficiently large set has a monochromati"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument establishes the uncountability of the continuum, providing the cardinal c = 2^aleph_0 central"
+    },
+    {
+      "id": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem |P(X)| > |X| establishes the strict cardinal hierarchy. The continuum c = 2^aleph_0 is the first step b"
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "CH (c = aleph_1) may affect the partition properties of c. The answer to Problem #70 could depend on whether CH holds, c"
+    }
   ]
 }

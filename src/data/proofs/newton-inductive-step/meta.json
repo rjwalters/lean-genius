@@ -193,10 +193,30 @@
     }
   ],
   "relatedProofs": [
-    "amgm-inequality",
-    "amgm-inequality-oq-02",
-    "binomial-theorem",
-    "binomial-theorem-oq-02",
-    "combinations-formula"
+    {
+      "id": "amgm-inequality",
+      "relationship": "related",
+      "description": "Newton's inequalities generalize the AM-GM inequality: for the all-ones sequence, the log-concavity condition reduces to"
+    },
+    {
+      "id": "amgm-inequality-oq-02",
+      "relationship": "foundational",
+      "description": "Provides the key binomial inequality used in the AM-GM extension, which leverages Newton's log-concavity of symmetric po"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem generates the coefficients C(m,k) that this module proves are log-concave. The absorption identity "
+    },
+    {
+      "id": "binomial-theorem-oq-02",
+      "relationship": "related",
+      "description": "Further binomial coefficient identities and inequalities that complement this module's log-concavity result"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) underlies the absorption identity used throughout this proof: k*C(m,k) ="
+    }
   ]
 }

@@ -175,12 +175,27 @@
     }
   ],
   "relatedProofs": [
-    "erdos-28",
-    "erdos-331"
+    {
+      "id": "erdos-28",
+      "relationship": "generalizes",
+      "description": "Problem #1145 generalizes #28: setting A = B recovers the Erdős–Turán conjecture. The implication is proved as erdos_114"
+    },
+    {
+      "id": "erdos-331",
+      "relationship": "related",
+      "description": "Problem #331 (disproved by Ruzsa) provides the counterexample showing the ratio condition aₙ/bₙ → 1 is necessary in Prob"
+    }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Filter", "Set", "Classical", "Pointwise"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Classical",
+      "Pointwise"
+    ],
     "namespace": "Erdos1145",
     "lineCount": 337,
     "axiomCount": 10,

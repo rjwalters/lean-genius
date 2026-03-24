@@ -260,21 +260,31 @@
     }
   ],
   "relatedProofs": [
-    "combinations-formula",
-    "binomial-theorem-oq-01",
-    "inclusion-exclusion",
-    "central-limit-theorem",
-    "binomial-theorem-oq-02",
-    "binomial-theorem-oq-03",
-    "binomial-theorem-oq-01-oq-01",
-    "binomial-theorem-oq-04-oq-02",
-    "mathematical-induction",
-    "binomial-theorem-oq-04",
-    "geometric-series",
-    "taylor-theorem",
-    "birthday-problem",
-    "derangements",
-    "sum-of-kth-powers"
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ is precisely the combinations formula. The binomial theore"
+    },
+    {
+      "id": "binomial-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Sub-entry extending the binomial theorem to further identities or applications."
+    },
+    {
+      "id": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The alternating sum identity $\\sum (-1)^k \\binom{n}{k} = 0$ for $n \\geq 1$, proved here as a corollary of the binomial t"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "The binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$ arises directly from the binomial theorem. The Centr"
+    },
+    {
+      "id": "binomial-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ to the multinomial theorem $(x_1 + \\cdots + x_m)^n = \\sum \\frac{n!"
+    }
   ],
   "references": [
     {

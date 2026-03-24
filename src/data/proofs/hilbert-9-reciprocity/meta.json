@@ -166,12 +166,31 @@
     }
   ],
   "relatedProofs": [
-    "quadratic-reciprocity",
-    "fermats-last-theorem",
-    "kroneckers-jugendtraum",
-    "riemann-hypothesis",
-    "abel-ruffini",
-    "euler-totient"
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Gauss's quadratic reciprocity law is the starting point for Hilbert's 9th problem: the 9th asks for the most general rec"
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Wiles's proof of FLT (1995) uses the modularity of Galois representations, which is deeply connected to the reciprocity "
+    },
+    {
+      "id": "kroneckers-jugendtraum",
+      "relationship": "complementary",
+      "description": "Kronecker's Jugendtraum (Hilbert's 12th) and the 9th are closely related: the 12th asks about generating abelian extensi"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The Riemann hypothesis concerns the zeta function, whose generalization to L-functions is central to the reciprocity law"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini uses non-solvability of S_5 to block radical solutions. The 9th problem's reciprocity laws describe when an"
+    }
   ],
   "leanFile": {
     "lineCount": 259,

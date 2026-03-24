@@ -176,14 +176,31 @@
     ]
   },
   "relatedProofs": [
-    "chinese-remainder-non-coprime",
-    "infinitude-primes",
-    "fundamental-arithmetic",
-    "gcd-algorithm",
-    "wilsons-theorem",
-    "quadratic-reciprocity",
-    "primitive-roots",
-    "prime-number-theorem"
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem gives the multiplicativity of Euler's totient: phi(mn) = phi(m)*phi(n) for coprime m,n, wh"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's product formula phi(n) = n * prod(1 - 1/p) connects the totient function to the prime factorization of n, relati"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The unique prime factorization from FTA is essential for computing phi(n) = n * prod(1 - 1/p) over the prime divisors of"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The GCD algorithm determines coprimality gcd(a,n) = 1, which is the hypothesis of Euler's theorem: a^phi(n) = 1 mod n."
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's theorem $a^{\\varphi(n)} \\equiv 1$ both describe the multiplicat"
+    }
   ],
   "leanFile": {
     "imports": [

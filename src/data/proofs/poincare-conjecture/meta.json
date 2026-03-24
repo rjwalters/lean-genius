@@ -330,12 +330,31 @@
     "definitionCount": 369
   },
   "relatedProofs": [
-    "hurwitz-theorem",
-    "brouwer-fixed-point",
-    "borsuk-ulam",
-    "navier-stokes",
-    "hodge-conjecture",
-    "godel-incompleteness"
+    {
+      "id": "hurwitz-theorem",
+      "relationship": "thematic",
+      "description": "Both establish classification theorems: Hurwitz classifies normed division algebras ($n \\in \\{1,2,4,8\\}$), Poincaré clas"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "foundational",
+      "description": "The Brouwer fixed point theorem is a cornerstone of algebraic topology — the same homotopy-theoretic machinery (fundamen"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "foundational",
+      "description": "The Borsuk-Ulam theorem ($f: S^n \\to \\mathbb{R}^n$ has a point with $f(x) = f(-x)$) is another deep result about sphere "
+    },
+    {
+      "id": "navier-stokes",
+      "relationship": "thematic",
+      "description": "Both are Clay Millennium Prize Problems — the Poincaré conjecture (solved by Perelman, 2003) and Navier-Stokes existence"
+    },
+    {
+      "id": "hodge-conjecture",
+      "relationship": "thematic",
+      "description": "Another Clay Millennium Prize Problem — the Hodge conjecture concerns the algebraic topology of complex manifolds, compl"
+    }
   ],
   "references": [
     {

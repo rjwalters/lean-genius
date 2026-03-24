@@ -191,9 +191,21 @@
     }
   ],
   "relatedProofs": [
-    "euler-totient",
-    "infinitude-primes",
-    "prime-number-theorem"
+    {
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n)$ counts integers coprime to $n$ — the same coprimality condition central to Erdős #114"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "The infinitude of primes is a prerequisite for understanding coprimality density. Erdős #1149 asks about coprimality alo"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "technique",
+      "description": "The prime number theorem gives the density of primes needed to analyze when $\\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1$. Sie"
+    }
   ],
   "leanFile": {
     "imports": [

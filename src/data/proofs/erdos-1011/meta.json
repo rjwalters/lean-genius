@@ -162,12 +162,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-1009",
-    "erdos-1010",
-    "erdos-1012",
-    "erdos-500",
-    "szemeredi-regularity"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "uses",
+      "description": "Off-diagonal Ramsey numbers R(3,k) directly impact the upper bound on g(r); recent progress on R(3,k) by Campos et al. i"
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "related",
+      "description": "Erdős Problem #1009 also concerns triangles and chromatic number in extremal graph theory, sharing the Turán-type framew"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "related",
+      "description": "Erdős Problem #1010 is a companion extremal problem on triangle-free graphs with high chromatic number, directly feeding"
+    },
+    {
+      "id": "erdos-1012",
+      "relationship": "related",
+      "description": "Erdős Problem #1012 explores further Turán-type thresholds for subgraph containment, forming part of the same extremal g"
+    },
+    {
+      "id": "erdos-500",
+      "relationship": "related",
+      "description": "Erdős Problem #500 on chromatic number and subgraph structure shares the core tension between local sparsity (triangle-f"
+    }
   ],
   "references": [
     {

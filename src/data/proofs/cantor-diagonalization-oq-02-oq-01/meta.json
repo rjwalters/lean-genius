@@ -143,9 +143,21 @@
     ]
   },
   "relatedProofs": [
-    "cantor-diagonalization",
-    "cantor-diagonalization-oq-02",
-    "continuum-hypothesis"
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "extends",
+      "description": "The root formalization: Cantor's diagonalization proves $|\\mathbb{R}| > |\\mathbb{N}|$. This entry builds on that uncount"
+    },
+    {
+      "id": "cantor-diagonalization-oq-02",
+      "relationship": "extends",
+      "description": "The direct parent: proves $|\\{\\text{countable ordinals}\\}| = \\aleph_1$ via a Cantor-style diagonal argument. This entry "
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "The Continuum Hypothesis asks whether $2^{\\aleph_0} = \\aleph_1$. The properties of $\\aleph_1$ established here (regulari"
+    }
   ],
   "leanFile": {
     "imports": [

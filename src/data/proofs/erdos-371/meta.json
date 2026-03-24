@@ -204,11 +204,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-372",
-    "erdos-928",
-    "erdos-369",
-    "prime-number-theorem",
-    "infinitude-primes"
+    {
+      "id": "erdos-372",
+      "relationship": "related",
+      "description": "Companion problem: #372 asks for infinitely many n with P(n) > P(n+1) > P(n+2) (descending chains). Proved by Balog (200"
+    },
+    {
+      "id": "erdos-928",
+      "relationship": "related",
+      "description": "Related problem on consecutive smooth numbers with density involving the same Dickman function framework and conditional"
+    },
+    {
+      "id": "erdos-369",
+      "relationship": "related",
+      "description": "Asks for consecutive smooth numbers in {1,...,n}: finding k consecutive integers all with small largest prime factor. Us"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The Prime Number Theorem provides the foundational asymptotic π(x) ~ x/ln x underlying all density arguments about prime"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes ensures P(n) is well-defined for all n ≥ 2 and that the density questions are nontrivial — the "
+    }
   ],
   "leanFile": {
     "imports": [

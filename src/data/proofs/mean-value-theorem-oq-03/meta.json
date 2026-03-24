@@ -215,9 +215,21 @@
     }
   ],
   "relatedProofs": [
-    "intermediate-value-theorem",
-    "fundamental-theorem-calculus",
-    "triangle-inequality"
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The Intermediate Value Theorem underpins the scalar MVT equality f'(c) = slope, which has no vector analogue. The vector"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "The Fundamental Theorem of Calculus connects differentiation and integration. The MVT inequality can be seen as a norm e"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "The triangle inequality in normed spaces is the key tool replacing IVT in the vector-valued setting, enabling the norm b"
+    }
   ],
   "references": [
     {

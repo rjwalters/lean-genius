@@ -184,8 +184,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1021",
-    "erdos-111",
-    "erdos-23"
+    {
+      "id": "erdos-1021",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+    },
+    {
+      "id": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, open"
+    },
+    {
+      "id": "erdos-23",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+    }
   ]
 }

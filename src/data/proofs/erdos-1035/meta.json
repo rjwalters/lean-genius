@@ -143,12 +143,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-576",
-    "erdos-578",
-    "erdos-577",
-    "erdos-580",
-    "erdos-1078",
-    "erdos-1077"
+    {
+      "id": "erdos-576",
+      "relationship": "related",
+      "description": "Erdős #576 asks for the extremal number ex(N, Q_n) — the edge-density analogue of #1035's minimum-degree formulation. Bo"
+    },
+    {
+      "id": "erdos-578",
+      "relationship": "related",
+      "description": "Erdős #578 asks whether a random graph on 2^d vertices with edge probability 1/2 almost surely contains Q_d. Riordan (20"
+    },
+    {
+      "id": "erdos-577",
+      "relationship": "related",
+      "description": "Erdős #577 forces vertex-disjoint 4-cycles via a minimum-degree condition (δ ≥ n/2 on 4k vertices). Both #577 and #1035 "
+    },
+    {
+      "id": "erdos-580",
+      "relationship": "related",
+      "description": "The Loebl-Komlós-Sós conjecture (#580) forces every tree on ≤ n/2 vertices as a subgraph when at least n/2 vertices have"
+    },
+    {
+      "id": "erdos-1078",
+      "relationship": "related",
+      "description": "Erdős #1078 determines the minimum-degree threshold that forces K_r in r-partite graphs (solved by Haxell 2001). Both #1"
+    }
   ],
   "references": [
     {

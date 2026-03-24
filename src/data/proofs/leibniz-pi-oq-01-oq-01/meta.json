@@ -204,12 +204,30 @@
     }
   ],
   "relatedProofs": [
-    "leibniz-pi",
-    "leibniz-pi-oq-01",
-    "pi-transcendental",
-    "basel-problem",
-    "geometric-series",
-    "taylor-theorem",
-    "euler-identity"
+    {
+      "id": "leibniz-pi",
+      "relationship": "extends",
+      "description": "Provides a constructive derivation of the faster-converging alternative to the Leibniz series"
+    },
+    {
+      "id": "leibniz-pi-oq-01",
+      "relationship": "resolves",
+      "description": "Answers the open question about deriving Machin's formula from the arctan addition formula"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Both concern fundamental properties of pi; Machin's formula accelerates the computation of a number whose transcendence "
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Another classical identity involving pi (pi^2/6 = sum of 1/n^2); both demonstrate exact closed-form evaluations via anal"
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "related",
+      "description": "The arctan Taylor series arctan(x) = x - x^3/3 + x^5/5 - ... is a variant of the geometric series identity; Machin's for"
+    }
   ]
 }

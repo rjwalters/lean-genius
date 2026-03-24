@@ -149,11 +149,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-65",
-    "four-color-theorem",
-    "erdos-1104",
-    "roth-theorem-k3"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern forced substructures in graphs: Ramsey theory guarantees monochromatic cliques in colored complete graphs, "
+    },
+    {
+      "id": "erdos-65",
+      "relationship": "related",
+      "description": "Erdős #65 concerns general cycle lengths in graphs with large chromatic number. Problem #57 specializes to odd cycle len"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "The four color theorem shows all planar graphs have $\\chi(G) \\leq 4$. Problem #57 concerns the opposite extreme: $\\chi(G"
+    },
+    {
+      "id": "erdos-1104",
+      "relationship": "related",
+      "description": "Maximum chromatic number of triangle-free graphs is related: $\\chi(G) = \\infty$ forces many odd cycles (#57), while tria"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "thematic",
+      "description": "Both use density and counting arguments in combinatorics: Roth's theorem guarantees 3-term APs in dense sets via Fourier"
+    }
   ],
   "leanFile": {
     "imports": [

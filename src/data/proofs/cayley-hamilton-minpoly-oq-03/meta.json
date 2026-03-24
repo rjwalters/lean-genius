@@ -225,11 +225,31 @@
     }
   ],
   "relatedProofs": [
-    "cayley-hamilton",
-    "cayley-hamilton-minpoly",
-    "cayley-hamilton-minpoly-oq-02",
-    "cayley-hamilton-minpoly-oq-04",
-    "cayley-hamilton-minpoly-oq-05"
+    {
+      "id": "cayley-hamilton",
+      "relationship": "foundational",
+      "description": "The Cayley-Hamilton theorem ($\\chi_M(M) = 0$) implies $\\mu_M | \\chi_M$, which gives the degree bound $\\deg(\\mu_M) \\leq n"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "parent",
+      "description": "Parent formalization establishing minimal polynomial reduction and annihilator theory. This OQ investigates the computat"
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-04",
+      "relationship": "complementary",
+      "description": "Characterizes nonderogatory matrices via cyclic vectors. The Krylov method is optimal precisely for nonderogatory matric"
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "foundational",
+      "description": "General K-algebra minimal polynomial reduction providing the algebraic foundation for the Krylov method's termination gu"
+    }
   ],
   "crossReferences": [
     {

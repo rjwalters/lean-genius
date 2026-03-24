@@ -187,18 +187,31 @@
     }
   ],
   "relatedProofs": [
-    "elementary-quadratic-reciprocity",
-    "euler-totient",
-    "wilsons-theorem",
-    "infinitude-primes",
-    "abel-ruffini",
-    "lagrange-theorem",
-    "fermats-last-theorem",
-    "fundamental-arithmetic",
-    "primitive-roots",
-    "kroneckers-jugendtraum",
-    "fermat-two-squares",
-    "hilbert-9-reciprocity"
+    {
+      "id": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "An alternative formalization of quadratic reciprocity using elementary methods. Both establish the same law relating $(p"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n)$ counts units in $\\mathbb{Z}/n\\mathbb{Z}$. The Legendre symbol $(a/p) = a^{(p-1)/2} \\b"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is closely related: both concern the multiplicative structure of $\\mathbb{Z"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "extends",
+      "description": "Quadratic reciprocity implies Dirichlet-style results on primes in arithmetic progressions: primes $p \\equiv 1 \\pmod{4}$"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are landmarks of 19th-century algebra: Abel-Ruffini uses Galois groups to prove quintic unsolvability, while quadra"
+    }
   ],
   "leanFile": {
     "imports": [

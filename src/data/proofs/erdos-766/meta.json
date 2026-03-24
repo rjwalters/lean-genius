@@ -214,12 +214,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "szemeredi-regularity",
-    "erdos-1009",
-    "erdos-767",
-    "erdos-765",
-    "combinations-formula"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are foundational results in extremal/Ramsey graph theory: Ramsey guarantees monochromatic cliques in edge-colored c"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi regularity lemma is the main structural tool for proving extremal graph theory results: it decomposes dens"
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "related",
+      "description": "Both concern edge-counting thresholds in extremal graph theory: #766 studies the minimum extremal number over graphs wit"
+    },
+    {
+      "id": "erdos-767",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem in the same series on extremal graph theory and Turán-type questions"
+    },
+    {
+      "id": "erdos-765",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem studying related extremal graph theory questions about edge density thresholds"
+    }
   ],
   "leanFile": {
     "imports": [

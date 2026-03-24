@@ -138,11 +138,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-58",
-    "four-color-theorem",
-    "erdos-1105",
-    "erdos-1015"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundation",
+      "description": "Ramsey's theorem is the foundational result; the duality f(n) ≥ k iff R(3,k) ≤ n makes R(3,k) bounds central to this pro"
+    },
+    {
+      "id": "erdos-58",
+      "relationship": "related",
+      "description": "Problem 58 bounds chromatic number via odd cycle structure; both study how triangle-freeness constrains χ(G)"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "related",
+      "description": "The Four Color Theorem bounds planar graph coloring; erdos-1104 removes planarity but adds triangle-freeness"
+    },
+    {
+      "id": "erdos-1105",
+      "relationship": "related",
+      "description": "Problem 1105 studies anti-Ramsey numbers for cycles, extending the Ramsey framework used in 1104's duality"
+    },
+    {
+      "id": "erdos-1015",
+      "relationship": "related",
+      "description": "Problem 1015 on partitioning 2-colored complete graphs uses Ramsey number R(t, t-1), connecting to R(3,k) in this proble"
+    }
   ],
   "leanFile": {
     "imports": [

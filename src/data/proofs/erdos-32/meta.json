@@ -213,8 +213,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-31",
-    "erdos-33",
-    "infinitude-primes"
+    {
+      "id": "erdos-31",
+      "relationship": "specializes",
+      "description": "Problem #31 asks about additive complements in general; Problem #32 specializes to additive complements of the primes"
+    },
+    {
+      "id": "erdos-33",
+      "relationship": "related",
+      "description": "Problem #33 (complements of squares) is the parallel question for a different structured set. Both ask: how thin can a c"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The distribution of primes (density ~1/log N) determines the minimum density of their additive complements"
+    }
   ]
 }

@@ -202,11 +202,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-28",
-    "erdos-41",
-    "erdos-42",
-    "erdos-44"
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) generalizes the Sidon condition from pairwise sums to all subset sums. Both concern th"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "The Erdős-Turán conjecture on additive bases (Problem #28) asks whether bases must have unbounded representation. Sidon "
+    },
+    {
+      "id": "erdos-41",
+      "relationship": "extends",
+      "description": "Problem #41 on $B_h$ sequence density bounds generalizes Sidon sets ($B_2$) to higher-order representation constraints. "
+    },
+    {
+      "id": "erdos-42",
+      "relationship": "related",
+      "description": "Problem #42 asks about Sidon sets with disjoint difference sets, exploring structural constraints beyond density. Both c"
+    },
+    {
+      "id": "erdos-44",
+      "relationship": "related",
+      "description": "Problem #44 on extending Sidon sets asks whether finite Sidon sets can always be extended. The infinite Sidon set growth"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -235,18 +235,31 @@
     }
   ],
   "relatedProofs": [
-    "birthday-problem-oq-03",
-    "birthday-problem-oq-02",
-    "ballot-problem",
-    "buffons-needle",
-    "binomial-theorem",
-    "arithmetic-series",
-    "derangements",
-    "inclusion-exclusion",
-    "stirling-formula",
-    "combinations-formula",
-    "prob-method-expectation",
-    "central-limit-theorem"
+    {
+      "id": "birthday-problem-oq-03",
+      "relationship": "extended-by",
+      "description": "Extended with more sophisticated probability bounds and approximations."
+    },
+    {
+      "id": "birthday-problem-oq-02",
+      "relationship": "extended-by",
+      "description": "Sub-entry exploring further birthday problem variants and generalizations"
+    },
+    {
+      "id": "ballot-problem",
+      "relationship": "related",
+      "description": "Fellow combinatorial probability problem: both use counting arguments over structured finite sample spaces — the ballot "
+    },
+    {
+      "id": "buffons-needle",
+      "relationship": "related",
+      "description": "Fellow classic probability problem: Buffon's needle involves geometric probability with π, while the birthday problem us"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "uses",
+      "description": "Binomial coefficients C(n,2) = n(n-1)/2 count the number of pairs, which is why 23 people have 253 pairs — the quadratic"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -174,11 +174,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-438",
-    "erdos-877",
-    "erdos-613",
-    "erdos-625",
-    "erdos-1031"
+    {
+      "id": "erdos-438",
+      "relationship": "companion",
+      "description": "Problem #438 is the dual question: how large can $A \\subseteq \\{1, \\ldots, N\\}$ be if $A + A$ contains no perfect square"
+    },
+    {
+      "id": "erdos-877",
+      "relationship": "thematic",
+      "description": "Both concern additive structure under partitioning: #877 counts maximal sum-free subsets of $\\{1, \\ldots, n\\}$, while #4"
+    },
+    {
+      "id": "erdos-613",
+      "relationship": "methodological",
+      "description": "Both involve Ramsey-type coloring problems on graphs. #613 studies size Ramsey numbers for stars vs odd cycles; #439 stu"
+    },
+    {
+      "id": "erdos-625",
+      "relationship": "thematic",
+      "description": "Both concern chromatic numbers of structured graphs. #625 compares chromatic and cochromatic numbers of random graphs; #"
+    },
+    {
+      "id": "erdos-1031",
+      "relationship": "methodological",
+      "description": "Both use the Szemerédi regularity lemma. #1031 applies regularity to find induced regular subgraphs in non-Ramsey graphs"
+    }
   ],
   "leanFile": {
     "imports": [

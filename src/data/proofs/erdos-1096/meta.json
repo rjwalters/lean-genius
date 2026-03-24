@@ -218,9 +218,25 @@
     }
   ],
   "relatedProofs": [
-    "geometric-series",
-    "bounded-prime-gaps",
-    "liouville-theorem",
-    "fundamental-arithmetic"
+    {
+      "id": "geometric-series",
+      "relationship": "foundational",
+      "description": "The geometric series formula Σ q^i = 1/(1-q) for |q| < 1 bounds the maximum q-representable number. For q > 1, finite su"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "thematic",
+      "description": "Both concern gap convergence in structured sequences: bounded prime gaps asks whether lim inf (p_{n+1} - p_n) < ∞ for pr"
+    },
+    {
+      "id": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's approximation theorem constrains how well algebraic numbers can be approximated by rationals. Pisot numbers "
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underlies the algebraic number theory needed to study Pisot numbers: the minimal polynomial o"
+    }
   ]
 }

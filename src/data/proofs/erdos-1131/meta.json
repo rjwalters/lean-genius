@@ -155,8 +155,20 @@
     "definitionCount": 5
   },
   "relatedProofs": [
-    "cauchy-schwarz-integral",
-    "fourier-series",
-    "legendre-partial"
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "The Cauchy-Schwarz inequality for integrals provides the key lower bound I >= 2/n via the partition of unity sum l_k = 1",
+      "description": ""
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "Fourier analysis connects to the spectral theory of the Gram matrix G_{jk} = int l_j l_k dx, whose trace equals I",
+      "description": ""
+    },
+    {
+      "id": "legendre-partial",
+      "relationship": "Legendre polynomials provide the near-optimal node system for the L2 interpolation problem; their zeros achieve I = 2 - 2/(2n-1)",
+      "description": ""
+    }
   ]
 }

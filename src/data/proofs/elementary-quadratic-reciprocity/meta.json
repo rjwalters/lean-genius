@@ -204,12 +204,31 @@
     }
   ],
   "relatedProofs": [
-    "quadratic-reciprocity",
-    "infinitude-primes",
-    "lagrange-theorem",
-    "abel-ruffini",
-    "primitive-roots",
-    "wilsons-theorem"
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The main quadratic reciprocity entry — this file provides an alternative elementary proof via Eisenstein's method, compl"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's proof of infinitely many primes uses the divergence of ∑1/p; Dirichlet extended this using quadratic characters "
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem (subgroup order divides group order) underpins the structure of (ℤ/pℤ)× — the multiplicative group wh"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both concern the algebraic structure of number-theoretic objects: QR describes the splitting behavior of primes in quadr"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. The quadratic residues are pr"
+    }
   ],
   "references": [
     {

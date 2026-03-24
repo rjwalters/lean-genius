@@ -170,12 +170,31 @@
     }
   ],
   "relatedProofs": [
-    "cantors-theorem",
-    "cantor-diagonalization",
-    "cantor-diagonalization-oq-01",
-    "cantor-diagonalization-oq-02",
-    "schroeder-bernstein",
-    "godel-incompleteness"
+    {
+      "id": "cantors-theorem",
+      "relationship": "extends",
+      "description": "Parent proof: Cantor's theorem |S| < |P(S)| — this file explores the cardinality of P(ℝ), asking what beth-2 = |P(P(ℕ))|"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument provides the core technique: the proof that |S| < |P(S)| uses a diagonal construction to show"
+    },
+    {
+      "id": "cantor-diagonalization-oq-01",
+      "relationship": "related",
+      "description": "The continuum hypothesis (is there a cardinality between ℵ₀ and 2^ℵ₀?) — this file extends to the generalized continuum "
+    },
+    {
+      "id": "cantor-diagonalization-oq-02",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "foundational",
+      "description": "Schröder-Bernstein theorem enables cardinal arithmetic comparisons: injections both ways give bijection, establishing th"
+    }
   ],
   "leanFile": {
     "imports": [

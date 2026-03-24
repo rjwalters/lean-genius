@@ -233,16 +233,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-335",
-    "erdos-66",
-    "erdos-30",
-    "erdos-35",
-    "erdos-37",
-    "fourier-series",
-    "erdos-1",
-    "roth-theorem-k3",
-    "szemeredi-theorem",
-    "prob-method-expectation"
+    {
+      "id": "erdos-335",
+      "relationship": "related",
+      "description": "Erdős #335 studies density additivity in sumsets, a closely related partition-structure question in additive combinatorics"
+    },
+    {
+      "id": "erdos-66",
+      "relationship": "related",
+      "description": "Erdős #66 studies the representation function r_A(n) asymptotics, the same counting machinery underlying the overlap function"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "supports",
+      "description": "Scherk's 1955 lower bound and White's 2022 breakthrough both use Fourier analysis on the partition indicator's autocorrelation"
+    },
+    {
+      "id": "erdos-30",
+      "relationship": "complement",
+      "description": "Erdős #30 on Sidon sets represents the opposite extreme — maximizing distinctness of differences vs. minimizing overlap"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Both use Fourier-analytic methods on finite sets of integers; Roth counts 3-term APs, the overlap problem reduces to convex optimization over Fourier coefficients"
+    }
   ],
   "references": [
     {

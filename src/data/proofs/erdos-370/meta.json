@@ -202,9 +202,25 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1136",
-    "erdos-984",
-    "erdos-527",
-    "prime-reciprocal-divergence"
+    {
+      "id": "erdos-1136",
+      "relationship": "related-problem",
+      "description": "Both are Erdős problems about sets of integers satisfying arithmetic constraints, resolved by clever constructions. Erdő"
+    },
+    {
+      "id": "erdos-984",
+      "relationship": "related-problem",
+      "description": "Both are Erdős problems in combinatorial number theory where extremal constructions play a central role in resolving den"
+    },
+    {
+      "id": "erdos-527",
+      "relationship": "thematic",
+      "description": "Both involve density and structure questions where the answer depends on a critical threshold parameter (the exponent $1"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "foundational",
+      "description": "Prime distribution underlies smooth number theory. The density of smooth numbers is governed by the Dickman function, wh"
+    }
   ]
 }

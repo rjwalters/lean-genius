@@ -192,8 +192,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-22",
-    "erdos-804",
-    "erdos-1019"
+    {
+      "id": "erdos-22",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory, turan-theory"
+    },
+    {
+      "id": "erdos-804",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, extremal-combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "id": "erdos-1019",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, turan-theory"
+    }
   ]
 }

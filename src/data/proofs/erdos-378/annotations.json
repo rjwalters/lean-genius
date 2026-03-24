@@ -48,7 +48,10 @@
     "content": "**Verified examples:**\n\n- squarefree_one: 1 is squarefree (no prime squared divides 1)\n- squarefree_six: 6 = 2*3 is squarefree (axiom)\n- not_squarefree_four: 4 = 2^2 is NOT squarefree\n- not_squarefree_twelve: 12 = 4*3 is NOT squarefree\n\n**Proof for 4:** We show 2*2 divides 4, contradicting the definition.",
     "significance": "supporting",
     "mathContext": "$1, 2, 3, 5, 6, 7, 10, 11, 13, 14, 15$ are squarefree; $4 = 2^2, 8 = 2^3, 9 = 3^2$ are not",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   },
   {
@@ -242,7 +245,10 @@
     "content": "**example_C_2_1:**\n\nC(2,1) = 2 is squarefree.\n\n**Verification:** 2 is prime, so no prime squared divides it.",
     "significance": "supporting",
     "mathContext": "$\\binom{2}{1} = 2$ is squarefree (2 is prime, hence squarefree)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   },
   {

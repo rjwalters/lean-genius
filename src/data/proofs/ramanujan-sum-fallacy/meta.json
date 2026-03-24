@@ -175,10 +175,26 @@
     }
   ],
   "relatedProofs": [
-    "harmonic-divergence",
-    "basel-problem",
-    "euler-identity",
-    "godel-incompleteness"
+    {
+      "id": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series $\\sum 1/n$ is the fundamental example of a divergent series — the Ramanujan sum $1"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ is a convergent relative of the Ramanujan sum — the Riemann zeta function $\\zeta(s) = \\su"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "thematic",
+      "description": "Euler's identity $e^{i\\pi}+1=0$ connects fundamental constants — similarly, $\\zeta(-1) = -1/12$ connects the integers to"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Both expose limitations of formal systems: Gödel shows not everything true is provable, while the Ramanujan fallacy show"
+    }
   ],
   "references": [
     {

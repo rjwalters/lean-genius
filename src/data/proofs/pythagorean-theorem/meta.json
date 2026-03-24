@@ -245,22 +245,31 @@
     }
   ],
   "relatedProofs": [
-    "area-of-circle",
-    "angle-trisection",
-    "fermats-last-theorem",
-    "cauchy-schwarz",
-    "pythagorean-theorem-oq-03",
-    "pythagorean-triples",
-    "pythagorean-triples-oq-01",
-    "sqrt2-irrational",
-    "law-of-cosines",
-    "euler-identity",
-    "cauchy-schwarz-integral",
-    "triangle-inequality",
-    "amgm-inequality",
-    "mathematical-induction",
-    "fundamental-theorem-calculus",
-    "binomial-theorem"
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "Both are fundamental results in Euclidean geometry. The Pythagorean theorem relates side lengths; the area formula uses "
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "The Pythagorean theorem underpins compass-and-straightedge constructions — every constructible length arises from iterat"
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "foundational",
+      "description": "FLT generalizes the Pythagorean equation: while a²+b²=c² has infinitely many integer solutions, aⁿ+bⁿ=cⁿ has none for n≥"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Both are consequences of inner product space structure: Pythagorean theorem uses orthogonality (⟨v,w⟩=0), Cauchy-Schwarz"
+    },
+    {
+      "id": "pythagorean-theorem-oq-03",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "leanFile": {
     "imports": [

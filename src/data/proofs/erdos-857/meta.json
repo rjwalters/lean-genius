@@ -192,8 +192,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-20",
-    "erdos-535",
-    "erdos-790"
+    {
+      "id": "erdos-20",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, sunflower"
+    },
+    {
+      "id": "erdos-535",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, open, sunflower"
+    },
+    {
+      "id": "erdos-790",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, open"
+    }
   ]
 }

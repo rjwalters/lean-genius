@@ -192,8 +192,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-525",
-    "erdos-395",
-    "erdos-521"
+    {
+      "id": "erdos-525",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, probability, random-polynomials"
+    },
+    {
+      "id": "erdos-395",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, probability"
+    },
+    {
+      "id": "erdos-521",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: probability, random-polynomials"
+    }
   ]
 }

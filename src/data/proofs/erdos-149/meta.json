@@ -208,9 +208,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-132",
-    "four-color-theorem",
-    "erdos-762"
+    {
+      "id": "erdos-132",
+      "relationship": "related",
+      "description": "Both are Erdős problems on extremal combinatorial bounds in graph/geometric settings"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "conceptual",
+      "description": "Both concern graph coloring bounds: 4CT gives χ ≤ 4 for planar graphs, while #149 conjectures χ'_s ≤ (5/4)Δ² for all gra"
+    },
+    {
+      "id": "erdos-762",
+      "relationship": "thematic",
+      "description": "Both are Erdős graph coloring conjectures: #762 on chromatic vs cochromatic number, #149 on strong chromatic index"
+    }
   ],
   "references": [
     {

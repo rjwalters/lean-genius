@@ -153,10 +153,26 @@
     }
   ],
   "relatedProofs": [
-    "navier-stokes",
-    "navier-stokes-existence",
-    "navier-stokes-oq-01",
-    "schauder-fixed-point"
+    {
+      "id": "navier-stokes",
+      "relationship": "parent",
+      "description": "Parent Navier-Stokes formalization providing `GlobalNSSolution2D`, `global_enstrophy_bound` ($E(t) \\leq E(0)$), and the "
+    },
+    {
+      "id": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "The Clay Millennium Prize problem on 3D Navier-Stokes existence and smoothness. This 2D well-posedness result serves as "
+    },
+    {
+      "id": "navier-stokes-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 explores other aspects of the Navier-Stokes formalization, complementing the well-posedness theory established her"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "foundational",
+      "description": "Fixed-point methods for PDE existence. The Schauder theorem provides existence of solutions, which together with the uni"
+    }
   ],
   "leanFile": {
     "imports": [

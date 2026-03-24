@@ -141,9 +141,21 @@
     }
   ],
   "relatedProofs": [
-    "yang-mills",
-    "yang-mills-transfer-matrix",
-    "yang-mills-2d"
+    {
+      "id": "yang-mills",
+      "relationship": "part-of",
+      "description": "Sub-module of the comprehensive Yang-Mills formalization"
+    },
+    {
+      "id": "yang-mills-transfer-matrix",
+      "relationship": "supports",
+      "description": "Lattice structures are used by the transfer matrix formalism to prove the mass gap"
+    },
+    {
+      "id": "yang-mills-2d",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "leanFile": {
     "lineCount": 28001,

@@ -186,8 +186,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1138",
-    "bertrands-postulate",
-    "prime-gap-bounds"
+    {
+      "id": "erdos-1138",
+      "relationship": "Parent formalization that this OQ-03 extends by resolving all sorries and converting axioms to proved theorems",
+      "description": ""
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "Bertrand's postulate (Nat.bertrand in Mathlib) is the key ingredient for proving prime_gap_le_prev_prime and maxPrimeGap_le_half",
+      "description": ""
+    },
+    {
+      "id": "prime-gap-bounds",
+      "relationship": "Related formalization of prime gap bounds; both study the growth rate of maximal prime gaps G(x)",
+      "description": ""
+    }
   ]
 }

@@ -208,14 +208,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-30",
-    "erdos-1",
-    "erdos-431",
-    "gcd-algorithm",
-    "infinitude-primes",
-    "fundamental-arithmetic",
-    "euler-totient",
-    "chinese-remainder-constructive"
+    {
+      "id": "erdos-30",
+      "relationship": "related",
+      "description": "Both study structural constraints on sumsets; #30 concerns Sidon sets (unique representations) while #432 requires pairwise coprimality"
+    },
+    {
+      "id": "erdos-431",
+      "relationship": "related",
+      "description": "Companion problem by Ostmann: #431 asks about additive complements covering N, while #432 asks how thin a coprime sumset can be forced to be"
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Both are extremal problems on integer subsets: #1 studies distinct subset sums (additive uniqueness), #432 studies sumsets with pairwise coprimality (multiplicative uniqueness)"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "supports",
+      "description": "The prime counting function pi(n) bounds the maximum size of a pairwise coprime set in [1,n]; the infinitude of primes ensures pi(n) -> infinity"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is the key tool: pairwise coprimality forces disjoint prime factorizations, and counting relies on unique factorization"
+    }
   ],
   "leanFile": {
     "lineCount": 141,

@@ -170,10 +170,26 @@
     }
   ],
   "relatedProofs": [
-    "binomial-theorem",
-    "binomial-theorem-oq-01",
-    "geometric-series",
-    "fundamental-theorem-calculus"
+    {
+      "id": "binomial-theorem",
+      "relationship": "generalizes",
+      "description": "The standard binomial theorem for natural exponents is a special case where the generalized binomial series terminates ("
+    },
+    {
+      "id": "binomial-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Develops the analytic function theory perspective on Newton's theorem, complementing the algebraic approach in the paren"
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "related",
+      "description": "The geometric series 1/(1+x) = Σ(-x)^k is the α=-1 case of Newton's generalized binomial theorem, since C(-1,k)=(-1)^k"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "The absorption identity α·C(α-1,k)=(k+1)·C(α,k+1) is the coefficient-level version of d/dx[(1+x)^α]=α(1+x)^(α-1), connec"
+    }
   ],
   "leanFile": {
     "imports": [

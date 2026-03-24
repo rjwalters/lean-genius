@@ -177,17 +177,31 @@
     }
   ],
   "relatedProofs": [
-    "cauchy-schwarz",
-    "cauchy-schwarz-oq-01",
-    "cauchy-schwarz-oq-01-oq-01",
-    "fourier-series",
-    "basel-problem",
-    "triangle-inequality",
-    "amgm-inequality-oq-03",
-    "fundamental-theorem-calculus",
-    "cauchy-schwarz-integral-oq-01",
-    "cauchy-schwarz-integral-oq-02",
-    "cauchy-schwarz-integral-oq-03"
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "The discrete Cauchy-Schwarz inequality (∑ aᵢbᵢ)² ≤ (∑ aᵢ²)(∑ bᵢ²) is the finite-dimensional ancestor. The integral form "
+    },
+    {
+      "id": "cauchy-schwarz-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends Cauchy-Schwarz to complex inner product spaces: $\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| \\leq \\|u\\| \\cdot \\|v\\|$. "
+    },
+    {
+      "id": "cauchy-schwarz-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Equality characterization for complex inner product spaces: $\\|\\langle u, v \\rangle\\| = \\|u\\| \\cdot \\|v\\|$ iff $u$ and $"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "technique",
+      "description": "The Cauchy-Schwarz integral inequality is the backbone of Fourier analysis: Parseval's identity, Bessel's inequality, an"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel identity ζ(2) = π²/6 can be derived using Parseval's theorem applied to f(x) = x on [-π,π], which is a direct "
+    }
   ],
   "leanFile": {
     "imports": [

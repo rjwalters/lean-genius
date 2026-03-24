@@ -197,10 +197,30 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1000",
-    "erdos-1001",
-    "erdos-1148",
-    "erdos-1107",
-    "erdos-123"
+    {
+      "id": "erdos-1000",
+      "relationship": "sibling",
+      "description": "Both problems concern Diophantine approximation thresholds: #1000 studies generalized totients with approximation condit"
+    },
+    {
+      "id": "erdos-1001",
+      "relationship": "sibling",
+      "description": "Both concern density of sets defined by Diophantine approximation quality; #1001 asks about density of well-approximable"
+    },
+    {
+      "id": "erdos-1148",
+      "relationship": "sibling",
+      "description": "Neighboring Erdős problem on additive representation: #1148 asks about representation as x² + y² - z², both concern addi"
+    },
+    {
+      "id": "erdos-1107",
+      "relationship": "related",
+      "description": "Both concern additive basis properties of arithmetic sets: #1107 asks about sums of r-powerful numbers, #1147 about sets"
+    },
+    {
+      "id": "erdos-123",
+      "relationship": "related",
+      "description": "Both concern additive completeness: #123 studies d-complete sequences (every sufficiently large integer as a sum of d el"
+    }
   ]
 }

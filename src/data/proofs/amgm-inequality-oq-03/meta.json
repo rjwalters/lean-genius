@@ -217,16 +217,31 @@
     "definitionCount": 3
   },
   "relatedProofs": [
-    "amgm-inequality",
-    "amgm-inequality-oq-02",
-    "cauchy-schwarz",
-    "amgm-inequality-oq-03-oq-01",
-    "amgm-inequality-oq-03-oq-02",
-    "cauchy-schwarz-integral",
-    "mean-value-theorem",
-    "triangle-inequality",
-    "shannon-entropy",
-    "sum-of-kth-powers"
+    {
+      "id": "amgm-inequality",
+      "relationship": "extends",
+      "description": "Base AM-GM inequality — this file generalizes it by placing AM-GM within the continuous power mean family M_r, proving m"
+    },
+    {
+      "id": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "Maclaurin's inequalities refine AM-GM via elementary symmetric polynomials; power means refine it via exponent interpola"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz is the M₂ case of power mean monotonicity: M₁ ≤ M₂ is equivalent to (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ² for equal weights"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Dedicated formalization of M_r ≤ M_s for r ≤ s < 0 — the negative exponent case proved here via duality, isolated as a s"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves lim_{r→0} M_r = GM — the missing r=0 case that would bridge the positive and negative exponent monotonicity resul"
+    }
   ],
   "references": [
     {

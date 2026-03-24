@@ -225,17 +225,30 @@
     }
   ],
   "relatedProofs": [
-    "binomial-theorem",
-    "infinitude-primes",
-    "fundamental-arithmetic",
-    "fundamental-theorem-calculus",
-    "arithmetic-series",
-    "godel-incompleteness",
-    "lagrange-theorem",
-    "gcd-algorithm",
-    "factor-remainder-theorem",
-    "pythagorean-theorem",
-    "subset-count",
-    "schroeder-bernstein"
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The standard proof of the binomial theorem by induction on n uses Pascal's identity at the inductive step. Induction is "
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induct"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The uniqueness of prime factorization is proved by strong induction: assuming uniqueness for all $m < n$, if $n = p_1 \\c"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "Repeated application of FTC via induction gives Taylor's theorem: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + R_n(x)$, w"
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "related",
+      "description": "The sum formula $\\sum_{k=1}^n k = n(n+1)/2$ is the classic first example of proof by induction, attributed to Gauss. Thi"
+    }
   ]
 }

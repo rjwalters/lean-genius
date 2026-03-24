@@ -164,11 +164,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-901",
-    "prob-method-lovasz-local",
-    "prob-method-expectation",
-    "prob-method-alteration",
-    "prob-method-applications"
+    {
+      "id": "erdos-901",
+      "relationship": "extends",
+      "description": "Problem #901 asks whether bounded n-uniform families have property B (existence of one good set); Problem #1027 is the q"
+    },
+    {
+      "id": "prob-method-lovasz-local",
+      "relationship": "uses",
+      "description": "The Lovász Local Lemma is the natural tool for proving Koishi Chan's theorem: bad events ('B misses A' or 'A ⊆ B') have "
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "uses",
+      "description": "The first moment method gives the core heuristic: a random B ⊆ X is good with probability ≈ e^{-2c}, predicting the dens"
+    },
+    {
+      "id": "prob-method-alteration",
+      "relationship": "uses",
+      "description": "The amplification step from one good set to exponentially many uses an alteration-type argument: toggling 'free' element"
+    },
+    {
+      "id": "prob-method-applications",
+      "relationship": "related",
+      "description": "The applications module formalizes Property B for k-uniform hypergraphs using the probabilistic method, providing direct"
+    }
   ],
   "references": [
     {

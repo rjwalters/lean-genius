@@ -126,10 +126,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-410",
-    "halting-problem",
-    "godel-incompleteness",
-    "infinitude-primes"
+    {
+      "id": "erdos-410",
+      "relationship": "related",
+      "description": "Erdos problem #410 concerns iterated sum-of-divisors and iterated arithmetic functions — the same iterative dynamics par"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "thematic",
+      "description": "The Collatz conjecture's difficulty may be fundamental: Conway proved that generalizations of the 3n+1 problem are algor"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "The Collatz conjecture is a candidate for a natural number-theoretic statement that might be independent of Peano Arithm"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "thematic",
+      "description": "Both concern the structure of natural numbers under simple operations: Euclid proves the inexhaustibility of primes, whi"
+    }
   ],
   "leanFile": {
     "imports": [

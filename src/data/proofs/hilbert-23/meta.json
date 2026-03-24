@@ -161,9 +161,21 @@
     }
   ],
   "relatedProofs": [
-    "hilbert-19",
-    "hilbert-20",
-    "fundamental-theorem-calculus"
+    {
+      "id": "hilbert-19",
+      "relationship": "related",
+      "description": "Problem 19 is a specific regularity question within the calculus of variations (Problem 23): whether minimizers of regul"
+    },
+    {
+      "id": "hilbert-20",
+      "relationship": "related",
+      "description": "The weak formulation of boundary value problems (Problem 20) via Lax-Milgram is a direct application of the direct metho"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "The fundamental theorem of calculus underpins the entire variational framework: the Euler-Lagrange equation is derived v"
+    }
   ],
   "references": [
     {

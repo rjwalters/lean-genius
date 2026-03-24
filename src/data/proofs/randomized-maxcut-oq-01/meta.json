@@ -222,9 +222,21 @@
     }
   ],
   "relatedProofs": [
-    "randomized-maxcut",
-    "p-vs-np",
-    "cauchy-schwarz"
+    {
+      "id": "randomized-maxcut",
+      "relationship": "extends",
+      "description": "The simple 1/2-approximation via independent random assignment. The GW algorithm improves this from 0.5 to 0.878 by usin"
+    },
+    {
+      "id": "p-vs-np",
+      "relationship": "related",
+      "description": "MaxCut is NP-hard, so exact polynomial-time solutions are unlikely. The GW algorithm achieves the best possible polynomi"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality underpins the SDP relaxation: inner products v_i . v_j of unit vectors satisfy |v_i . v_j|"
+    }
   ],
   "references": [
     {

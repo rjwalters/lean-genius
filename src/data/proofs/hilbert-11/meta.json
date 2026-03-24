@@ -178,13 +178,31 @@
     }
   ],
   "relatedProofs": [
-    "quadratic-reciprocity",
-    "hilbert-9-reciprocity",
-    "lagrange-four-squares",
-    "minkowski-theorem",
-    "fermat-two-squares",
-    "pell-equation",
-    "kroneckers-jugendtraum"
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Quadratic reciprocity determines which primes are quadratic residues, directly governing solvability of binary quadratic"
+    },
+    {
+      "id": "hilbert-9-reciprocity",
+      "relationship": "parallel",
+      "description": "Hilbert's 9th Problem generalizes quadratic reciprocity to the Artin reciprocity law, which connects to the Hilbert symb"
+    },
+    {
+      "id": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Lagrange's theorem that every natural number is a sum of four squares is a special case of the representation theory of "
+    },
+    {
+      "id": "minkowski-theorem",
+      "relationship": "foundational",
+      "description": "Minkowski's geometry of numbers provides the geometric tools used in proving the Hasse-Minkowski theorem for ternary for"
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two squares theorem characterizes which primes are represented by the binary form x^2 + y^2, a special case of "
+    }
   ],
   "leanFile": {
     "imports": [

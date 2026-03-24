@@ -203,11 +203,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-236",
-    "bertrands-postulate",
-    "bounded-prime-gaps",
-    "infinitude-primes",
-    "prime-number-theorem"
+    {
+      "id": "erdos-236",
+      "relationship": "strengthens",
+      "description": "Problem #236 asks whether the count of prime n - 2^k is o(log n), which is the stronger conjecture formalized here. The "
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime between n and 2n, ensuring that n - 2^k can be prime for the largest power of tw"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "The bounded gaps result (Zhang 2013, Maynard-Tao 2014) shows primes cluster infinitely often. Problem #1142 asks about p"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is a prerequisite for the problem to be meaningful: without infinitely many primes, the primali"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The Prime Number Theorem gives the heuristic probability that n - 2^k is prime as approximately 1/ln(n). The probability"
+    }
   ],
   "leanFile": {
     "imports": [

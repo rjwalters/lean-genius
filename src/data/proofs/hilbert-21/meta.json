@@ -137,12 +137,31 @@
     }
   ],
   "relatedProofs": [
-    "riemann-hypothesis",
-    "hilbert-10",
-    "hilbert-5",
-    "hilbert-9-reciprocity",
-    "hilbert-19",
-    "hilbert-22"
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "Both are named after Riemann and concern deep analytic structures: the Riemann hypothesis concerns the zeta function's z"
+    },
+    {
+      "id": "hilbert-10",
+      "relationship": "thematic",
+      "description": "Both are Hilbert problems with surprising negative resolutions: Hilbert's 10th was resolved negatively by Matiyasevich ("
+    },
+    {
+      "id": "hilbert-5",
+      "relationship": "thematic",
+      "description": "Hilbert's 5th (characterizing Lie groups) and 21st both concern the structure of continuous symmetry groups — the 5th as"
+    },
+    {
+      "id": "hilbert-9-reciprocity",
+      "relationship": "thematic",
+      "description": "Hilbert's 9th (most general reciprocity law) and 21st both contributed to the Langlands program: the 9th via class field"
+    },
+    {
+      "id": "hilbert-19",
+      "relationship": "thematic",
+      "description": "Hilbert's 19th (regularity of solutions of variational problems) and 21st both concern differential equations: the 19th "
+    }
   ],
   "leanFile": {
     "imports": [

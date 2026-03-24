@@ -173,14 +173,31 @@
     ]
   },
   "relatedProofs": [
-    "shannon-entropy",
-    "shannon-channel-coding",
-    "shannon-channel-coding-oq-04",
-    "shannon-source-coding-oq-02",
-    "birthday-problem",
-    "central-limit-theorem",
-    "stirling-formula",
-    "combinations-formula"
+    {
+      "id": "shannon-entropy",
+      "relationship": "depends-on",
+      "description": "The source coding theorem characterizes entropy $H(X) = -\\sum_x p(x)\\log p(x)$ operationally as the compression limit — "
+    },
+    {
+      "id": "shannon-channel-coding",
+      "relationship": "complementary",
+      "description": "Source coding (compression) and channel coding (reliable transmission) are the two fundamental theorems of Shannon's 194"
+    },
+    {
+      "id": "shannon-channel-coding-oq-04",
+      "relationship": "related",
+      "description": "The channel coding sub-entry explores error exponents and reliability functions, which have direct analogues in source c"
+    },
+    {
+      "id": "shannon-source-coding-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends the source coding theorem to explore connections with Kolmogorov complexity and algorithmic information theory —"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "Both use probabilistic counting arguments involving exponential growth: the birthday problem counts collisions among $2^"
+    }
   ],
   "leanFile": {
     "imports": [

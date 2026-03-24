@@ -159,7 +159,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1102",
-    "erdos-233"
+    {
+      "id": "erdos-1102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, squarefree"
+    },
+    {
+      "id": "erdos-233",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, riemann-hypothesis"
+    }
   ]
 }

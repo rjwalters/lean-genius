@@ -155,11 +155,31 @@
     }
   ],
   "relatedProofs": [
-    "geometric-series",
-    "infinitude-primes",
-    "prime-reciprocal-divergence",
-    "e-transcendental",
-    "sqrt2-irrational"
+    {
+      "id": "geometric-series",
+      "relationship": "foundational",
+      "description": "The geometric series formula $\\sum_{k=1}^{\\infty} r^k = r/(1-r)$ is the core computational tool: applied with $r = 2^{-p"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The sum $\\sum_p 1/(2^p - 1)$ ranges over the infinite set of primes. The infinitude of primes ensures this is a genuine "
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "contrasts",
+      "description": "The sum $\\sum 1/p$ over primes diverges (Euler), while $\\sum 1/(2^p - 1)$ converges (and is irrational). The exponential"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "thematic",
+      "description": "Both results concern irrationality/transcendence of specific infinite series. The transcendence of $e = \\sum 1/k!$ was p"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "The simplest irrationality proof ($\\sqrt{2} \\notin \\mathbb{Q}$) uses a descent argument. The irrationality of $\\sum \\ome"
+    }
   ],
   "references": [
     {

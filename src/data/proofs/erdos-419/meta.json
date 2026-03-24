@@ -255,14 +255,31 @@
     ]
   },
   "relatedProofs": [
-    "erdos-415",
-    "erdos-414",
-    "kummer-theorem",
-    "erdos-728-factorial-divisibility",
-    "stirling-formula",
-    "erdos-400",
-    "dirichlets-theorem",
-    "prime-number-theorem"
+    {
+      "id": "erdos-415",
+      "relationship": "related-problem",
+      "description": "Also studies consecutive arithmetic function values. Erdős #415 examines ordering patterns of τ(n), τ(n+1), τ(n+2), whil"
+    },
+    {
+      "id": "erdos-414",
+      "relationship": "related-problem",
+      "description": "Uses the same divisor function τ in the dynamical system h(n) = n + τ(n). Both problems explore how τ interacts with seq"
+    },
+    {
+      "id": "kummer-theorem",
+      "relationship": "uses-same-technique",
+      "description": "Both use Legendre's formula and p-adic factorial analysis. Kummer's theorem counts carries in base-p addition via digit "
+    },
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "relationship": "uses-same-technique",
+      "description": "Both analyze factorial divisibility via p-adic valuations and Legendre's formula, studying how prime factorization of fa"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related-problem",
+      "description": "Stirling gives log(n!) ~ n log n; the asymptotics log τ(n!) ~ n log n / log log n involve an extra log log n factor from"
+    }
   ],
   "references": [
     {

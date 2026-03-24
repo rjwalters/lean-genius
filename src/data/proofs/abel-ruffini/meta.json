@@ -338,35 +338,31 @@
     }
   ],
   "relatedProofs": [
-    "general-quartic",
-    "sylow-theorems",
-    "quadratic-reciprocity",
-    "inverse-galois",
-    "angle-trisection",
-    "abel-ruffini-oq-04",
-    "lagrange-theorem",
-    "puiseux-theorem",
-    "vietas-formulas",
-    "solution-of-cubic",
-    "fundamental-theorem-algebra",
-    "kroneckers-jugendtraum",
-    "e-transcendental",
-    "primitive-roots",
-    "kummer-theorem",
-    "hilbert-13",
-    "hilbert-10",
-    "fermats-last-theorem",
-    "hermite-lindemann",
-    "gelfond-schneider",
-    "sqrt2-irrational",
-    "godel-incompleteness",
-    "halting-problem",
-    "cantor-diagonalization",
-    "descartes-rule-of-signs",
-    "pi-transcendental",
-    "liouville-theorem",
-    "lagrange-theorem-oq-03",
-    "angle-trisection-oq-02"
+    {
+      "id": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula (1545) is the last degree where radicals succeed — S₄ is solvable (derived series S₄ ▷ A₄ ▷ V₄"
+    },
+    {
+      "id": "sylow-theorems",
+      "relationship": "related",
+      "description": "Sylow theorems provide structural information about finite groups that complements the solvability analysis — Sylow subg"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's quadratic reciprocity law (1801) is a deep result about the structure of Z/pZ that foreshadowed Galois theory — "
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "extends",
+      "description": "Abel-Ruffini uses that S₅ occurs as a Galois group. The Inverse Galois Problem asks which groups appear as Galois groups"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "Both are impossibility results proved via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle t"
+    }
   ],
   "references": [
     {

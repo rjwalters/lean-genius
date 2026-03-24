@@ -335,15 +335,31 @@
     }
   ],
   "relatedProofs": [
-    "navier-stokes-existence",
-    "yang-mills",
-    "riemann-hypothesis",
-    "poincare-conjecture",
-    "schauder-fixed-point",
-    "navier-stokes-oq-01",
-    "navier-stokes-oq-02",
-    "lebesgue-measure",
-    "fourier-series"
+    {
+      "id": "navier-stokes-existence",
+      "relationship": "extended-by",
+      "description": "Sub-entry with additional Navier-Stokes existence and regularity results, extending the conditional regularity framework"
+    },
+    {
+      "id": "yang-mills",
+      "relationship": "thematic",
+      "description": "Both are Millennium Prize Problems involving PDEs and regularity: Navier-Stokes asks for smooth solutions to fluid equat"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "Fellow Millennium Prize Problem. While RH concerns analytic number theory, both problems involve understanding how struc"
+    },
+    {
+      "id": "poincare-conjecture",
+      "relationship": "thematic",
+      "description": "The only Millennium Prize Problem solved so far (Perelman 2003). Both problems involve PDEs on manifolds: Ricci flow for"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "foundational",
+      "description": "Schauder's fixed point theorem is used in PDE existence proofs: weak solutions to Navier-Stokes are constructed via Gale"
+    }
   ],
   "leanFile": {
     "lineCount": 21111,

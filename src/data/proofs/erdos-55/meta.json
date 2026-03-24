@@ -118,9 +118,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-54",
-    "erdos-11",
-    "erdos-1103"
+    {
+      "id": "erdos-54",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, ramsey-theory"
+    },
+    {
+      "id": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "id": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
   ],
   "references": [
     "Burr, S.A. and Erdős, P. (1985). 'On a Ramsey-type problem in additive number theory.' J. Combin. Theory Ser. A, 40(1), 39–63.",

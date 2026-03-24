@@ -167,9 +167,25 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "fermat-two-squares",
-    "elementary-quadratic-reciprocity",
-    "erdos-844"
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The squarefree condition p² | ab+1 depends on the structure of primes dividing shifted products. The infinitude of prime"
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The mod-25 construction uses p = 5 with 5 ≡ 1 (mod 4), connecting to Fermat's theorem on primes representable as sums of"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The quadratic residue structure — specifically, -1 is a square mod p iff p ≡ 1 (mod 4) — determines which primes p can h"
+    },
+    {
+      "id": "erdos-844",
+      "relationship": "sibling",
+      "description": "Erdős #844 studies the closely related problem where ab (not ab+1) must be non-squarefree. The shift by 1 changes the ex"
+    }
   ]
 }

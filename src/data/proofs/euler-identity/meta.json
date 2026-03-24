@@ -277,22 +277,31 @@
     }
   ],
   "relatedProofs": [
-    "basel-problem",
-    "pi-transcendental",
-    "pythagorean-theorem",
-    "e-transcendental",
-    "fundamental-theorem-algebra",
-    "area-of-circle",
-    "hermite-lindemann",
-    "primitive-roots",
-    "abel-ruffini",
-    "fundamental-theorem-calculus",
-    "gelfond-schneider",
-    "de-moivre",
-    "de-moivre-oq-01",
-    "fourier-series",
-    "quadratic-reciprocity",
-    "stirling-formula"
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Both are crown jewels of Euler's work. The Basel identity ζ(2) = π²/6 and Euler's identity e^(iπ) + 1 = 0 both connect f"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "uses",
+      "description": "Euler's identity uses π as a specific value. The transcendence of π (Lindemann 1882) means e^(iπ) = -1 is an equation re"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Pythagorean identity $\\cos^2\\theta + \\sin^2\\theta = 1$ is a direct consequence of Euler's formula: $|e^{i\\theta}|^2 "
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite proved $e$ is transcendental (1873). Euler's identity $e^{i\\pi} + 1 = 0$ relates two transcendental numbers ($e$"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Euler's formula $e^{2\\pi ik/n}$ generates the $n$th roots of unity — the roots of $z^n - 1$. FTA guarantees these $n$ ro"
+    }
   ],
   "leanFile": {
     "imports": [

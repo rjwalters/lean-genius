@@ -174,9 +174,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-218",
-    "bounded-prime-gaps",
-    "erdos-219"
+    {
+      "id": "erdos-218",
+      "relationship": "related",
+      "description": "Both concern prime gap distribution: #218 asks about the density of d_{n+1} ≥ d_n vs d_{n+1} ≤ d_n, while #238 asks abou"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Complementary perspectives on prime gaps: bounded-prime-gaps (Zhang/Maynard-Tao) shows gaps can be arbitrarily SMALL, wh"
+    },
+    {
+      "id": "erdos-219",
+      "relationship": "related",
+      "description": "Both concern long structured sequences among primes: #219 asks for arithmetic progressions (Green-Tao), #238 asks for co"
+    }
   ],
   "leanFile": {
     "imports": [

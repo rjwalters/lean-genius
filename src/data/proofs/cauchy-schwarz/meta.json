@@ -232,20 +232,31 @@
     ]
   },
   "relatedProofs": [
-    "cauchy-schwarz-integral",
-    "cauchy-schwarz-oq-01",
-    "cauchy-schwarz-oq-01-oq-01",
-    "cauchy-schwarz-oq-03",
-    "cauchy-schwarz-oq-03-oq-01",
-    "cauchy-schwarz-oq-04",
-    "triangle-inequality",
-    "amgm-inequality",
-    "hurwitz-theorem",
-    "yang-mills",
-    "amgm-inequality-oq-03",
-    "amgm-inequality-oq-02",
-    "randomized-maxcut",
-    "central-limit-theorem"
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "The Bunyakovsky-Schwarz integral inequality extends Cauchy-Schwarz from finite sums to L² inner products: (∫fg)² ≤ (∫f²)"
+    },
+    {
+      "id": "cauchy-schwarz-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends Cauchy-Schwarz to complex inner product spaces using $|\\langle u,v \\rangle_{\\mathbb{C}}| \\leq \\|u\\|\\|v\\|$ — answ"
+    },
+    {
+      "id": "cauchy-schwarz-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "cauchy-schwarz-oq-03",
+      "relationship": "extended-by",
+      "description": "Hölder's inequality $|\\sum a_i b_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ for $1/p + 1/q = 1$ — Cauchy-Schwarz "
+    },
+    {
+      "id": "cauchy-schwarz-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "references": [
     {

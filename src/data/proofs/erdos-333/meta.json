@@ -172,8 +172,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-302",
-    "erdos-806"
+    {
+      "id": "erdos-302",
+      "relationship": "related",
+      "description": "Both are Erdős combinatorial density problems about extremal sizes of structured subsets of integers"
+    },
+    {
+      "id": "erdos-806",
+      "relationship": "related",
+      "description": "Directly related: #806 asks about small bases for sumsets (B+B covering). Both explore the minimum size of B needed so t"
+    }
   ],
   "leanFile": {
     "imports": [

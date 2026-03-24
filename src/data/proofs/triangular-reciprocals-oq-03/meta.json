@@ -135,11 +135,31 @@
     ]
   },
   "relatedProofs": [
-    "triangular-reciprocals",
-    "geometric-series",
-    "leibniz-pi",
-    "harmonic-divergence",
-    "basel-problem"
+    {
+      "id": "triangular-reciprocals",
+      "relationship": "extends",
+      "description": "Extends the non-alternating result ∑2/(n(n+1)) = 2 to its alternating variant. Both use partial fractions and telescopin"
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "related",
+      "description": "Both are classical infinite series with exact closed-form sums. The alternating geometric series ∑(-1)^n·r^n = 1/(1+r) a"
+    },
+    {
+      "id": "leibniz-pi",
+      "relationship": "related",
+      "description": "Both are alternating series with transcendental closed forms. The Leibniz series ∑(-1)^n/(2n+1) = π/4 uses odd reciproca"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic series ∑1/n diverges, but alternating it (∑(-1)^{n+1}/n = ln 2) converges — this alternating harmonic serie"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Both evaluate reciprocal series over structured sequences: Basel computes ∑1/n² = π²/6 while this computes ∑(-1)^{n+1}·2"
+    }
   ],
   "leanFile": {
     "imports": [

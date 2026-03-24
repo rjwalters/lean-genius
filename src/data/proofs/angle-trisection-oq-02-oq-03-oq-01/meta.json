@@ -201,15 +201,31 @@
     }
   ],
   "relatedProofs": [
-    "angle-trisection-oq-02-oq-03",
-    "angle-trisection-oq-02",
-    "angle-trisection-oq-02-oq-01",
-    "angle-trisection",
-    "inverse-galois",
-    "pi-transcendental",
-    "euler-totient",
-    "primitive-roots",
-    "euler-identity"
+    {
+      "id": "angle-trisection-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Parent file proving Gauss-Wantzel with totient computations — this file bridges to Mathlib's cyclotomic infrastructure"
+    },
+    {
+      "id": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "The Galois-theoretic constructibility criterion — this file connects it to cyclotomic Galois groups"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Proves natDegree | |Gal| via the tower law — both files eliminate axioms from OQ-02 using Mathlib's Galois infrastructur"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "ancestor",
+      "description": "Base impossibility proof — this file extends the constructibility theory to regular polygon characterization"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "The cyclotomic Galois group Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* realizes concrete abelian groups — the simplest case of the inverse Galo"
+    }
   ],
   "references": [
     {

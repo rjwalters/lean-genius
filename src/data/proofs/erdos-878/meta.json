@@ -189,8 +189,20 @@
     "definitionCount": 12
   },
   "relatedProofs": [
-    "erdos-679",
-    "erdos-690",
-    "prime-number-theorem"
+    {
+      "id": "erdos-679",
+      "relationship": "related",
+      "description": "Both study prime factorization functions (ω and f/F) with unusual asymptotic behavior; #679 concerns the distribution of"
+    },
+    {
+      "id": "erdos-690",
+      "relationship": "related",
+      "description": "Both study fine structure of prime factor distributions; #690 examines k-th prime factor density while #878 defines new "
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem provides the asymptotic context for understanding growth rates of f(n), F(n), and the behavior "
+    }
   ]
 }

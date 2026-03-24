@@ -189,12 +189,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-3",
-    "erdos-39",
-    "erdos-40",
-    "erdos-41",
-    "erdos-42"
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #28 (unbounded representation) are dual questions in additive combinatoric"
+    },
+    {
+      "id": "erdos-3",
+      "relationship": "related",
+      "description": "Both bear the name Erdős-Turán and concern how arithmetic structure is forced by density. Problem #3 asks whether dense "
+    },
+    {
+      "id": "erdos-39",
+      "relationship": "related",
+      "description": "Problem #39 on infinite Sidon set growth asks about the maximum growth rate of Sidon sets ($r_A(n) \\leq 1$). Sidon sets "
+    },
+    {
+      "id": "erdos-40",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "erdos-41",
+      "relationship": "extends",
+      "description": "Problem #41 on $B_h$ sequence density bounds generalizes Sidon sets to higher-order representation constraints. The Erdő"
+    }
   ],
   "leanFile": {
     "imports": [

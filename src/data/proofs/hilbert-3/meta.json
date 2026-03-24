@@ -180,9 +180,21 @@
     }
   ],
   "relatedProofs": [
-    "euler-polyhedral-formula",
-    "hilbert-10",
-    "area-of-circle"
+    {
+      "id": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "Euler's polyhedral formula V − E + F = 2 provides the combinatorial foundation for polyhedra. The Dehn invariant uses ed"
+    },
+    {
+      "id": "hilbert-10",
+      "relationship": "related",
+      "description": "Another Hilbert problem formalized in this gallery. Hilbert's 10th (MRDP theorem) was the last negative-answer Hilbert p"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "broader-context",
+      "description": "Area computation for circles relates to the 2D scissors congruence question. The Bolyai-Gerwien theorem shows all equal-"
+    }
   ],
   "leanFile": {
     "imports": [

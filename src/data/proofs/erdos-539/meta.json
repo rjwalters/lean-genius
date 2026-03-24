@@ -169,7 +169,11 @@
     }
   ],
   "relatedProofs": [
-    "erdos-302"
+    {
+      "id": "erdos-302",
+      "relationship": "related",
+      "description": "Both are extremal problems about structured subsets: #302 studies maximum sum-free sets, #539 studies minimum GCD quotie"
+    }
   ],
   "leanFile": {
     "imports": [

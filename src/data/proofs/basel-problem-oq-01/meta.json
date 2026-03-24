@@ -183,13 +183,31 @@
     }
   ],
   "relatedProofs": [
-    "basel-problem",
-    "basel-problem-oq-02",
-    "riemann-hypothesis",
-    "e-transcendental",
-    "harmonic-divergence",
-    "euler-identity",
-    "pi-transcendental"
+    {
+      "id": "basel-problem",
+      "relationship": "extends",
+      "description": "Parent entry proving ζ(2) = π²/6 — this file explores the deeper question of ζ(5) irrationality, extending from even zet"
+    },
+    {
+      "id": "basel-problem-oq-02",
+      "relationship": "related",
+      "description": "Sibling open question focusing on the transcendence of ALL odd zeta values and the full implication hierarchy (transcend"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "Both concern the Riemann zeta function ζ(s): RH addresses the zeros of ζ in the critical strip, while this file addresse"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Both are questions about the arithmetic nature of fundamental constants — e's transcendence is proved, while ζ(5)'s irra"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The harmonic series $\\sum 1/n$ diverges, while $\\zeta(2) = \\sum 1/n^2 = \\pi^2/6$ converges (Basel problem). The question"
+    }
   ],
   "leanFile": {
     "imports": [

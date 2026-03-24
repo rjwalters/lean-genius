@@ -163,11 +163,31 @@
     }
   ],
   "relatedProofs": [
-    "brouwer-fixed-point",
-    "borsuk-ulam",
-    "intermediate-value-theorem",
-    "schauder-fixed-point",
-    "borsuk-ulam-oq-03"
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "extends",
+      "description": "Base Brouwer fixed-point theorem — this file extends it by formalizing the computational complexity landscape: binary se"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Borsuk-Ulam implies Brouwer FP via the no-retraction theorem — both are foundational topological fixed-point results, an"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "uses",
+      "description": "IVT provides the 1D fixed-point existence via exists_mem_Icc_isFixedPt_of_mapsTo — the binary search algorithm in this f"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder extends Brouwer FP to infinite dimensions — this file's contraction mapping and Krasnoselskii-Mann iteration an"
+    },
+    {
+      "id": "borsuk-ulam-oq-03",
+      "relationship": "related",
+      "description": "BU-OQ-03 proves the axiom reduction BU → no-retraction → Brouwer FP — this file explores the computational side of the s"
+    }
   ],
   "leanFile": {
     "imports": [

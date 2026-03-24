@@ -158,11 +158,31 @@
     }
   ],
   "relatedProofs": [
-    "fundamental-theorem-algebra",
-    "lagrange-theorem",
-    "abel-ruffini",
-    "cayley-hamilton-reduction",
-    "cayley-hamilton-minpoly"
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees the characteristic polynomial of a complex matrix splits into linear factors (eigenvalues). Cayley-Hamilt"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "thematic",
+      "description": "Both are 'every element satisfies a universal polynomial' results: Lagrange says every group element g satisfies g^|G| ="
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "The eigenvalues of a matrix are the roots of its characteristic polynomial. For matrices larger than 4×4, Abel-Ruffini i"
+    },
+    {
+      "id": "cayley-hamilton-reduction",
+      "relationship": "extended-by",
+      "description": "Applies Cayley-Hamilton to reduce matrix functions: since $p(M) = 0$, any polynomial in $M$ of degree $\\geq n$ can be re"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "extended-by",
+      "description": "Develops the minimal polynomial theory: the minimal polynomial $m(x)$ divides the characteristic polynomial $p(x)$ by Ca"
+    }
   ],
   "leanFile": {
     "imports": [

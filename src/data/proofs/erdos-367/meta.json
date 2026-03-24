@@ -218,9 +218,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-366",
-    "erdos-369",
-    "erdos-368"
+    {
+      "id": "erdos-366",
+      "relationship": "related",
+      "description": "Directly related: #366 concerns consecutive k-full numbers (B_k(n) = n case), while #367 studies the product of 2-full p"
+    },
+    {
+      "id": "erdos-369",
+      "relationship": "related",
+      "description": "Both concern multiplicative structure of consecutive integers: #369 studies consecutive smooth numbers, #367 studies pro"
+    },
+    {
+      "id": "erdos-368",
+      "relationship": "related",
+      "description": "Both study prime factor structure of consecutive integers: #368 asks about the largest prime factor of n(n+1), while #36"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -235,12 +235,31 @@
     }
   ],
   "relatedProofs": [
-    "ballot-problem",
-    "ballot-problem-oq-01",
-    "combinations-formula",
-    "binomial-theorem",
-    "ballot-problem-oq-03-oq-02",
-    "ballot-problem-oq-02"
+    {
+      "id": "ballot-problem",
+      "relationship": "extends",
+      "description": "Extends the classical ballot problem's 1D reflection principle to 2D lattice path pairs, providing the combinatorial fou"
+    },
+    {
+      "id": "ballot-problem-oq-01",
+      "relationship": "extends",
+      "description": "The generalized k-fold ballot problem — this file extends the lattice path framework from 1D to 2D pairs with the Lindst"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "Path counts use C(m+n, m) for the number of monotone lattice paths from (0,0) to (m,n) — the binomial coefficient is the"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The Vandermonde identity C(m+n,r) = ∑C(m,j)C(n,r-j) proved here via lattice path decomposition has a natural connection "
+    },
+    {
+      "id": "ballot-problem-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends the 2×2 LGV determinant to the general r×r case, computing determinants of path-count matrices for r non-crossin"
+    }
   ],
   "references": [
     {

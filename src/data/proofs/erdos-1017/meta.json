@@ -160,12 +160,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1009",
-    "erdos-1010",
-    "ramseys-theorem",
-    "erdos-1015",
-    "szemeredi-regularity",
-    "erdos-500"
+    {
+      "id": "erdos-1009",
+      "relationship": "foundational",
+      "description": "Erdős #1009 asks about edge-disjoint triangles in graphs with more than n²/4 edges—precisely the structural ingredient t"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "complementary",
+      "description": "Erdős #1010 studies triangle supersaturation: how many triangles must appear when k > n²/4. This supersaturation count d"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory underpins the EGP proof: after greedily extracting triangles from a graph, the remainder is triangle-free "
+    },
+    {
+      "id": "erdos-1015",
+      "relationship": "thematic",
+      "description": "Erdős #1015 partitions edges of 2-colored complete graphs into monochromatic cliques, sharing the same edge-partition fr"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "complementary",
+      "description": "The Szemerédi Regularity Lemma is a key tool in modern extremal graph theory for problems about dense graphs. Approaches"
+    }
   ],
   "references": [
     {

@@ -187,8 +187,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1080",
-    "erdos-1035",
-    "erdos-147"
+    {
+      "id": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, disproved, extremal-graph-theory, graph-theory"
+    },
+    {
+      "id": "erdos-1035",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, hypercube"
+    },
+    {
+      "id": "erdos-147",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, extremal-graph-theory, graph-theory"
+    }
   ]
 }

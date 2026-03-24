@@ -162,13 +162,31 @@
     }
   ],
   "relatedProofs": [
-    "fermat-two-squares",
-    "quadratic-reciprocity",
-    "hurwitz-theorem",
-    "fundamental-arithmetic",
-    "perfect-numbers",
-    "pythagorean-triples",
-    "chinese-remainder-non-coprime"
+    {
+      "id": "fermat-two-squares",
+      "relationship": "contrasts",
+      "description": "Two squares vs four: Fermat's theorem restricts which numbers are sums of two squares (only primes $p \\equiv 1 \\pmod{4}$"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic residues modulo $p$ determine which primes are sums of two squares ($p = a^2 + b^2 \\iff p \\equiv 1 \\pmod{4}$) "
+    },
+    {
+      "id": "hurwitz-theorem",
+      "relationship": "related",
+      "description": "Hurwitz's 1898 theorem on composition algebras explains why sum-of-squares identities exist only for 1, 2, 4, and 8 squa"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is essential to the proof strategy: Euler's identity reduces the problem to proving every pri"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "Both results connect to the multiplicative structure of $\\mathbb{N}$: Lagrange shows every $n$ decomposes as $a^2 + b^2 "
+    }
   ],
   "leanFile": {
     "imports": [

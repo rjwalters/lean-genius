@@ -193,14 +193,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-414",
-    "erdos-413",
-    "euler-totient",
-    "fundamental-arithmetic",
-    "harmonic-divergence",
-    "infinitude-primes",
-    "prime-number-theorem",
-    "perfect-numbers"
+    {
+      "id": "erdos-414",
+      "relationship": "related",
+      "description": "Both study the divisor function in dynamical/iterative contexts; #414 iterates n + tau(n) while #444 generalizes tau to restricted divisor functions d_A"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "supports",
+      "description": "Unique prime factorization underlies the extremal product construction: d_A(n) = prod(e_i + 1) where primes are in A, so maximizing d_A reduces to optimizing exponents"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series is the prototype for H_A(x); the theorem says extremal divisor counts grow faster than any power of this harmonic measure"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Mertens' theorem governs the harmonic sum over primes, and the PNT provides pi(x) needed for exponent optimization in the extremal construction"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Both involve fundamental multiplicative arithmetic functions: tau(n) and its generalizations d_A(n) count divisors, while phi(n) counts coprime residues"
+    }
   ],
   "leanFile": {
     "lineCount": 160,

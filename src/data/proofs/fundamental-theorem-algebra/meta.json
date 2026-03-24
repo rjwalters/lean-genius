@@ -224,19 +224,31 @@
     }
   ],
   "relatedProofs": [
-    "abel-ruffini",
-    "angle-trisection",
-    "inverse-galois",
-    "solution-of-cubic",
-    "liouville-theorem",
-    "general-quartic",
-    "lagrange-theorem",
-    "vietas-formulas",
-    "intermediate-value-theorem",
-    "brouwer-fixed-point",
-    "euler-identity",
-    "area-of-circle",
-    "cayley-hamilton"
+    {
+      "id": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imp"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "complementary",
+      "description": "FTA guarantees the polynomial 8x³-6x-1 has roots in C; the angle trisection impossibility shows those roots lie outside "
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "FTA shows every polynomial splits over C, so every Galois group embeds in some S_n. The Inverse Galois Problem asks whic"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "specializes",
+      "description": "Cardano's cubic formula provides explicit complex roots for degree-3 polynomials; FTA guarantees such roots exist withou"
+    },
+    {
+      "id": "liouville-theorem",
+      "relationship": "uses",
+      "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, th"
+    }
   ],
   "references": [
     {

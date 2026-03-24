@@ -192,12 +192,31 @@
     }
   ],
   "relatedProofs": [
-    "prob-method-alteration",
-    "pigeonhole-principle",
-    "kummer-theorem",
-    "binomial-theorem",
-    "mathematical-induction",
-    "erdos-szekeres"
+    {
+      "id": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The probabilistic lower bound on Ramsey numbers R(k,k) ≥ 2^{k/2} uses an alteration/expectation argument on random 2-col"
+    },
+    {
+      "id": "pigeonhole-principle",
+      "relationship": "depends-on",
+      "description": "The neighborhood partition step relies on pigeonhole: n-1 vertices split into two sets, so one has at least ⌈(n-1)/2⌉ el"
+    },
+    {
+      "id": "kummer-theorem",
+      "relationship": "related",
+      "description": "Binomial coefficient structure determines the Ramsey bound R(r,s) ≤ C(r+s-2, r-1)"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The Ramsey bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ directly uses binomial coefficients, and the recurrence $R(r,s) \\leq R"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem is proved by strong induction on $r + s$, the same principle formalized in mathematical-induction. The "
+    }
   ],
   "conclusion": {
     "summary": "This Lean formalization provides a complete, constructive proof of Ramsey's theorem for 2-colorings. The proof carefully builds up from base cases through neighborhood partitions to the main inductive argument.\n\nThe key insight is that the pigeonhole principle forces one of the two neighborhoods to be large enough to apply the induction hypothesis. Clique extension then allows us to grow cliques by adding the central vertex.\n\nAll proofs are complete with no sorries, and the formalization is self-contained within the Ramsey namespace.",

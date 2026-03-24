@@ -184,9 +184,21 @@
     "definitionCount": 14
   },
   "relatedProofs": [
-    "hilbert-16",
-    "hilbert-17",
-    "fundamental-theorem-algebra"
+    {
+      "id": "hilbert-16",
+      "relationship": "Adjacent Hilbert problem — both involve the topology and geometry of real algebraic varieties",
+      "description": ""
+    },
+    {
+      "id": "hilbert-17",
+      "relationship": "Fellow Hilbert problem in algebraic geometry — Problem 17 concerns real polynomials while Problem 15 concerns complex intersection theory",
+      "description": ""
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "Bézout's theorem, which underpins the four lines proof, relies on algebraic closure (FTA) to ensure intersection points exist",
+      "description": ""
+    }
   ],
   "references": [
     {

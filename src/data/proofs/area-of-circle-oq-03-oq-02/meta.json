@@ -157,13 +157,31 @@
     }
   ],
   "relatedProofs": [
-    "area-of-circle-oq-03",
-    "area-of-circle",
-    "pi-transcendental",
-    "hermite-lindemann",
-    "area-of-circle-oq-01",
-    "basel-problem",
-    "e-transcendental"
+    {
+      "id": "area-of-circle-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry formalizing Archimedes' method of exhaustion — this file verifies Archimedes' specific numerical bounds 223"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "ancestor",
+      "description": "The area formula A = πr² requires knowing π — this file verifies Archimedes' classical 3-decimal approximation of the co"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Archimedes' bounds give rational approximations to π (223/71, 22/7), while Lindemann's transcendence proof shows π can n"
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem proves $\\pi$ is transcendental, establishing that Archimedes' bounds $223/71 < \\pi < 22/7$"
+    },
+    {
+      "id": "area-of-circle-oq-01",
+      "relationship": "sibling",
+      "description": "Derives the circumference formula $C = 2\\pi r$ from the area formula by differentiation — the computational counterpart "
+    }
   ],
   "leanFile": {
     "imports": [

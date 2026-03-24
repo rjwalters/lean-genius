@@ -181,10 +181,26 @@
     ]
   },
   "relatedProofs": [
-    "prob-method-expectation",
-    "prob-method-alteration",
-    "prob-method-second-moment",
-    "prob-method-lovasz-local"
+    {
+      "id": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "The first moment method is used for basic Ramsey bounds and Property B"
+    },
+    {
+      "id": "prob-method-alteration",
+      "relationship": "depends-on",
+      "description": "The alteration method is used for off-diagonal Ramsey bounds and independent set bounds"
+    },
+    {
+      "id": "prob-method-second-moment",
+      "relationship": "depends-on",
+      "description": "The second moment method is used for threshold phenomena in random graph applications"
+    },
+    {
+      "id": "prob-method-lovasz-local",
+      "relationship": "depends-on",
+      "description": "The Lovasz Local Lemma is used for chromatic number bounds and hypergraph coloring"
+    }
   ],
   "leanFile": {
     "imports": [

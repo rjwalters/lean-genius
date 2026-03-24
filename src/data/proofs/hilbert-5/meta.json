@@ -251,7 +251,15 @@
     }
   ],
   "relatedProofs": [
-    "lagrange-theorem",
-    "sylow-theorems"
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders is a basic tool in the group theory that underpins Hilbert's 5th problem. The clas"
+    },
+    {
+      "id": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's theorems on p-subgroups provide structural information about finite groups that extends to the locally compact s"
+    }
   ]
 }

@@ -149,7 +149,11 @@
     }
   ],
   "relatedProofs": [
-    "erdos-36"
+    {
+      "id": "erdos-36",
+      "relationship": "related",
+      "description": "Both study density/overlap in partition and sumset problems; #36 concerns overlap in partitions while #335 characterizes"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -154,9 +154,21 @@
     }
   ],
   "relatedProofs": [
-    "hilbert-20",
-    "hilbert-23",
-    "poincare-conjecture"
+    {
+      "id": "hilbert-20",
+      "relationship": "related",
+      "description": "The Perron method proof of the uniformization theorem relies on solving the Dirichlet problem (central to Problem 20) fo"
+    },
+    {
+      "id": "hilbert-23",
+      "relationship": "related",
+      "description": "Uniformization connects to the calculus of variations through the Plateau problem and minimal surfaces: finding conforma"
+    },
+    {
+      "id": "poincare-conjecture",
+      "relationship": "related",
+      "description": "The uniformization theorem classifies 2-dimensional surfaces by geometry (spherical, flat, hyperbolic), while the Poinca"
+    }
   ],
   "references": [
     {

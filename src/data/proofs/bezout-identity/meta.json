@@ -257,13 +257,31 @@
     }
   ],
   "relatedProofs": [
-    "fundamental-arithmetic",
-    "infinitude-primes",
-    "chinese-remainder-constructive",
-    "lagrange-theorem",
-    "bezout-identity-oq-02",
-    "bezout-identity-oq-03",
-    "bezout-identity-oq-04"
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Bézout's identity is a key ingredient in proving unique prime factorization: from gcd(a,b) = ax + by, one derives Euclid"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euclid's proof of infinite primes uses coprimality — Bézout provides the algebraic characterization gcd = 1 ⟺ ax + by = "
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "extended-by",
+      "description": "The Chinese Remainder Theorem uses Bézout coefficients to construct simultaneous solutions: from gcd(m,n) = 1 and mx + n"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Both are foundational to group/number theory: Lagrange's theorem constrains subgroup orders, while Bézout characterizes "
+    },
+    {
+      "id": "bezout-identity-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves Euclid's lemma ($p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$) using the coprime_iff_linear_combination characte"
+    }
   ],
   "references": [
     {

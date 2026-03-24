@@ -176,12 +176,31 @@
     }
   ],
   "relatedProofs": [
-    "cayley-hamilton",
-    "cayley-hamilton-minpoly",
-    "cayley-hamilton-reduction-oq-01",
-    "cayley-hamilton-reduction-oq-02",
-    "cramers-rule",
-    "binomial-theorem"
+    {
+      "id": "cayley-hamilton",
+      "relationship": "extends",
+      "description": "Parent proof: the Cayley-Hamilton theorem (a matrix satisfies its own characteristic polynomial) — this file shows how t"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "The minimal polynomial approach to Cayley-Hamilton — this file uses the characteristic polynomial directly for matrix fu"
+    },
+    {
+      "id": "cayley-hamilton-reduction-oq-01",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "cayley-hamilton-reduction-oq-02",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "cramers-rule",
+      "relationship": "related",
+      "description": "Cramer's rule uses determinants of matrices; the characteristic polynomial involves det(A - λI), connecting determinant "
+    }
   ],
   "references": [
     {

@@ -165,7 +165,10 @@
     "content": "**h_at_least_linear:**\n\nFor graphs with χ(G) = ℵ₁, the edge deletion function h_G(n) grows at least linearly.\n\n**Axiom:**\n```lean\naxiom h_at_least_linear {V : Type*} (G : SimpleGraph V)\n    (hχ : hasAleph1ChromaticNumber G) :\n    ∀ c : ℕ, ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n ≥ c * n\n```\n\nThis follows from the vertex-disjoint cycles: n/(2r+1) cycles means at least n/(2r+1) edges to delete.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of linear lower bound",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -256,7 +259,11 @@
     "content": "**erdos_111_summary:**\n\nCombines all known results about Erdős Problem #111 into a single theorem:\n\n1. **Lower bound:** For all $\\chi = \\aleph_1$ graphs, $h_G(n) \\geq cn$ for some $c > 0$\n2. **Upper bound:** There exists a $\\chi = \\aleph_1$ graph with $h_G(n) \\leq Cn^{3/2}$\n\nThe proof derives the lower bound from `h_at_least_linear` and the upper bound from `ehs_upper_bound`. The gap between linear and $n^{3/2}$ remains to be closed.",
     "mathContext": "This is one of the few theorems in the file with a complete proof — it follows directly from combining the two main axioms.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

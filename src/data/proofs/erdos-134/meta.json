@@ -196,10 +196,30 @@
     ]
   },
   "relatedProofs": [
-    "erdos-618",
-    "erdos-133",
-    "erdos-612",
-    "erdos-742",
-    "erdos-22"
+    {
+      "id": "erdos-618",
+      "relationship": "related-problem",
+      "description": "Essentially the same problem in a different formulation — both concern extending triangle-free graphs to diameter 2 and "
+    },
+    {
+      "id": "erdos-133",
+      "relationship": "related-problem",
+      "description": "The dual problem: what is the maximum degree achievable in a triangle-free diameter-2 graph? Complementary perspective o"
+    },
+    {
+      "id": "erdos-612",
+      "relationship": "generalizes",
+      "description": "Generalizes the triangle-free constraint to clique-free graphs, studying diameter bounds for K_r-free graphs."
+    },
+    {
+      "id": "erdos-742",
+      "relationship": "related-problem",
+      "description": "Studies the maximum number of edges in minimal diameter-2 graphs — the edge-counting complement to #134's extension ques"
+    },
+    {
+      "id": "erdos-22",
+      "relationship": "uses-same-technique",
+      "description": "Ramsey-Turán numbers for K₄ use similar extremal combinatorics techniques — bounding edge density under forbidden subgra"
+    }
   ]
 }

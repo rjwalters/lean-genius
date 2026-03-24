@@ -190,15 +190,31 @@
     }
   ],
   "relatedProofs": [
-    "bertrands-postulate",
-    "erdos-268",
-    "erdos-286",
-    "erdos-288",
-    "harmonic-divergence",
-    "infinitude-primes",
-    "sophie-germain",
-    "erdos-291",
-    "prime-reciprocal-divergence"
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "erdos-268",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "erdos-286",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "erdos-288",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "leanFile": {
     "imports": [

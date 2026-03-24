@@ -95,9 +95,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1008",
-    "erdos-666",
-    "erdos-1010"
+    {
+      "id": "erdos-1008",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal, graph-theory"
+    },
+    {
+      "id": "erdos-666",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, hypercube"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal, graph-theory"
+    }
   ],
   "leanFile": {
     "imports": [

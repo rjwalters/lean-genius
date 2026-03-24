@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import key Mathlib modules: `Finset.Basic` for finite set operations and summation, `SimpleGraph.Basic` and `SimpleGraph.Finite` for graph structure and edge sets, and `Data.Real.Basic` for real number arithmetic in probability calculations.",
+    "mathContext": "Uses Mathlib's `SimpleGraph V` for undirected graphs on vertex type $V$, `Finset.sum` for $\\sum_{e \\in E}$, and $\\mathbb{R}$ arithmetic for the probability bound $\\mathbb{E}[|C|] = |E|/2$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -86,6 +87,7 @@
     "type": "tactic",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
+    "mathContext": "Edges are modeled as elements of $\\text{Sym2}(V) = V \\times V / \\sim$ where $(u,v) \\sim (v,u)$. Induction on `Sym2` reduces to a proof about ordered pairs $(u,v)$ with $u \\neq v$.",
     "significance": "supporting",
     "relatedConcepts": [
       "quotient induction",

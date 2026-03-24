@@ -140,9 +140,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-28",
-    "erdos-40"
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Both concern subset sum structure: #1 asks when all subset sums are distinct (minimizing representations), while #347 as"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "Both concern additive completeness: #28 asks whether representation functions of additive bases must be unbounded, while"
+    },
+    {
+      "id": "erdos-40",
+      "relationship": "related",
+      "description": "Both involve additive structure at critical thresholds: #40 studies B_2[g] sets that cannot be bases, while #347 studies"
+    }
   ],
   "references": [
     {

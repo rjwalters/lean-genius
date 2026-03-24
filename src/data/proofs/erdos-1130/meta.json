@@ -143,8 +143,16 @@
     ]
   },
   "relatedProofs": [
-    "taylor-theorem",
-    "fourier-series"
+    {
+      "id": "taylor-theorem",
+      "relationship": "related",
+      "description": "Taylor's theorem provides the polynomial approximation framework that Lagrange interpolation generalizes. The Lebesgue f"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "related",
+      "description": "The Lebesgue constant for interpolation is analogous to the Lebesgue constant for partial Fourier sums. Both measure ope"
+    }
   ],
   "leanFile": {
     "imports": [

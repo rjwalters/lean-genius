@@ -168,7 +168,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-867"
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #34 (consecutive sums in permutations) both concern how sums of structured"
+    },
+    {
+      "id": "erdos-867",
+      "relationship": "related",
+      "description": "Problem #867 on sum-free sets and Problem #34 on consecutive sums both concern constraints on sums of elements in a set/"
+    }
   ]
 }

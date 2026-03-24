@@ -171,12 +171,31 @@
     ]
   },
   "relatedProofs": [
-    "pi-transcendental",
-    "hermite-lindemann",
-    "leibniz-pi",
-    "euler-identity",
-    "sqrt2-irrational",
-    "abel-ruffini"
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's 1882 proof of $\\pi$'s transcendence directly extended Hermite's method for $e$. Both results are special cas"
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "extends",
+      "description": "Hermite-Lindemann generalizes e's transcendence: e^α is transcendental for all algebraic α ≠ 0. Hermite's 1873 proof for"
+    },
+    {
+      "id": "leibniz-pi",
+      "relationship": "related",
+      "description": "Both formalizations involve the constant $\\pi$ and its deep properties. Leibniz's series computes $\\pi$ as a limit, whil"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of √2 is the simplest impossibility result about number expressibility. Transcendence of e is strictly"
+    }
   ],
   "references": [
     {

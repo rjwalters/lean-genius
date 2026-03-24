@@ -146,11 +146,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-340",
-    "erdos-302",
-    "erdos-421",
-    "erdos-349",
-    "erdos-276"
+    {
+      "id": "erdos-340",
+      "relationship": "specialization",
+      "description": "Problem #340 concerns the greedy Sidon (Mian-Chowla) sequence, which is the Dickson extension starting from {1}. Problem"
+    },
+    {
+      "id": "erdos-302",
+      "relationship": "related",
+      "description": "Both concern sum-free set theory: #302 studies unit fraction sum-free sets, #341 extends Dickson's sum-free construction"
+    },
+    {
+      "id": "erdos-421",
+      "relationship": "related",
+      "description": "Both study dense sequences with restricted arithmetic structure: #421 concerns distinct products in dense sequences, #34"
+    },
+    {
+      "id": "erdos-349",
+      "relationship": "related",
+      "description": "Both involve sequence completeness and density conditions: #349 studies completeness of exponential floor sequences, #34"
+    },
+    {
+      "id": "erdos-276",
+      "relationship": "related",
+      "description": "Both involve sequences with restricted additive/multiplicative properties and periodicity: #276 studies composite Lucas "
+    }
   ],
   "leanFile": {
     "imports": [

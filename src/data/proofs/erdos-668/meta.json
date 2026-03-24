@@ -161,7 +161,11 @@
     }
   ],
   "relatedProofs": [
-    "erdos-646"
+    {
+      "id": "erdos-646",
+      "relationship": "related",
+      "description": "Both are Erdős problems from the combinatorial number theory/geometry domain with axiomatized deep results"
+    }
   ],
   "conclusion": {
     "summary": "Erdos Problem #668 asks about the multiplicity of extremal unit distance configurations. While f(4)=1 is known (the unique double-triangle), and computational evidence suggests f(n)=1 for n up to 21, the questions of whether f(n) tends to infinity or exceeds 1 for large n remain OPEN.",

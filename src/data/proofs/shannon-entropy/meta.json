@@ -169,9 +169,21 @@
     ]
   },
   "relatedProofs": [
-    "shannon-source-coding",
-    "shannon-channel-coding",
-    "prob-method-expectation"
+    {
+      "id": "shannon-source-coding",
+      "relationship": "used-by",
+      "description": "Shannon entropy H(X) is the fundamental limit in the source coding theorem"
+    },
+    {
+      "id": "shannon-channel-coding",
+      "relationship": "used-by",
+      "description": "Mutual information I(X;Y), defined from entropy, determines channel capacity"
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The entropy method in combinatorics uses Shannon entropy with probabilistic method techniques"
+    }
   ],
   "leanFile": {
     "imports": [

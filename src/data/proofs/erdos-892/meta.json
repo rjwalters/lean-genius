@@ -146,9 +146,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1935-primitive",
-    "behrend-theorem",
-    "prime-harmonic-series"
+    {
+      "id": "erdos-1935-primitive",
+      "relationship": "foundational",
+      "description": "Erdős (1935) proved Σ 1/(aₙ log aₙ) converges for primitive a, the foundational result for this problem's necessary cond"
+    },
+    {
+      "id": "behrend-theorem",
+      "relationship": "related",
+      "description": "Behrend's results on primitive sets provide density bounds that constrain the domination problem"
+    },
+    {
+      "id": "prime-harmonic-series",
+      "relationship": "related",
+      "description": "The primes form the densest primitive set; the divergence of Σ 1/(p log p) = Σ 1/p · 1/log p shows primes barely fail th"
+    }
   ],
   "leanFile": {
     "imports": [

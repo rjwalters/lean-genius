@@ -208,10 +208,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-68",
-    "erdos-728-factorial-divisibility",
-    "stirling-formula",
-    "fundamental-arithmetic"
+    {
+      "id": "erdos-68",
+      "relationship": "related",
+      "description": "Both concern interactions between factorials and other arithmetic structures: #68 asks about irrationality of ∑ 1/(n!−1)"
+    },
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Both study divisibility properties of factorial expressions: #728 concerns factorial divisibility patterns while #403 us"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "foundational",
+      "description": "Stirling's approximation n! ~ √(2πn)(n/e)^n provides the super-exponential growth that bounds the search space: for larg"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the 2-adic valuation analysis: v₂(Σa!) depends on the prime factorization of each f"
+    }
   ],
   "references": [
     {

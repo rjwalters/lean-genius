@@ -140,11 +140,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-1017",
-    "erdos-1009",
-    "erdos-1010",
-    "erdos-1012"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem guarantees the existence of monochromatic cliques in any 2-colored complete graph, providing the theore"
+    },
+    {
+      "id": "erdos-1017",
+      "relationship": "related",
+      "description": "Erdős Problem #1017 studies the minimum number of cliques needed to partition the *edges* of a graph, whereas #1015 part"
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "thematic",
+      "description": "Erdős Problem #1009 concerns edge-disjoint triangle packing near the Turán threshold. The packing/covering duality betwe"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "complementary",
+      "description": "Erdős Problem #1010 quantifies triangle supersaturation: how many triangles must appear once the edge count exceeds the "
+    },
+    {
+      "id": "erdos-1012",
+      "relationship": "thematic",
+      "description": "Erdős Problem #1012 studies long cycles in dense graphs via threshold edge-count conditions analogous to Ramsey bounds. "
+    }
   ],
   "references": [
     {

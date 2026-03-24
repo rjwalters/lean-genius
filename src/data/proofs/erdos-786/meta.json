@@ -208,8 +208,20 @@
     "definitionCount": 5
   },
   "relatedProofs": [
-    "erdos-437",
-    "erdos-841",
-    "prime-number-theorem"
+    {
+      "id": "erdos-437",
+      "relationship": "related",
+      "description": "Both study multiplicative structure of integer sets; #437 concerns square partial products while #786 concerns multiplic"
+    },
+    {
+      "id": "erdos-841",
+      "relationship": "related",
+      "description": "Companion multiplicative structure problem; both investigate density limitations imposed by multiplicative constraints o"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem underlies the density analysis of multiplicative cardinality sets, especially Selfridge's 1/e c"
+    }
   ]
 }

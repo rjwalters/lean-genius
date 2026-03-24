@@ -170,14 +170,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1041",
-    "erdos-1040",
-    "erdos-1042",
-    "erdos-114",
-    "erdos-1115",
-    "erdos-509",
-    "erdos-1044",
-    "erdos-1046"
+    {
+      "id": "erdos-1041",
+      "relationship": "companion",
+      "description": "The most directly linked problem: #1041 asks whether a path of length less than 2 always exists within {|f(z)| < 1} conn"
+    },
+    {
+      "id": "erdos-1040",
+      "relationship": "related",
+      "description": "Problem #1040 studies the transfinite diameter and Lebesgue measure of sublevel sets {|f(z)| < 1}, connecting lemniscate"
+    },
+    {
+      "id": "erdos-1042",
+      "relationship": "related",
+      "description": "Problem #1042 counts connected components of polynomial lemniscates {|f(z)| < 1}. The Clunie-Netanyahu existence theorem"
+    },
+    {
+      "id": "erdos-114",
+      "relationship": "thematic",
+      "description": "Problem #114 asks whether the arc length of the level curve {|p(z)| = 1} is maximized by z^n - 1 among monic degree-n po"
+    },
+    {
+      "id": "erdos-1115",
+      "relationship": "analogous",
+      "description": "Problem #1115 asks for the growth rate of paths to infinity along which an entire function of finite order grows slowly "
+    }
   ],
   "references": [
     {

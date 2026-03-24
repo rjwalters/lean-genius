@@ -177,10 +177,26 @@
     }
   ],
   "relatedProofs": [
-    "binomial-theorem",
-    "combinations-formula",
-    "binomial-theorem-oq-01",
-    "arithmetic-series-oq-02"
+    {
+      "id": "binomial-theorem",
+      "relationship": "extends",
+      "description": "The classical binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem "
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) is a special case of the multinomial coefficient n!/(k₁!···kₘ!)"
+    },
+    {
+      "id": "binomial-theorem-oq-01",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "arithmetic-series-oq-02",
+      "relationship": "related",
+      "description": "Both involve multi-index combinatorics: multinomial coefficients generalize binomial coefficients, while simplicial numb"
+    }
   ],
   "leanFile": {
     "imports": [

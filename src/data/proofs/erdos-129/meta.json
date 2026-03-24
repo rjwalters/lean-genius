@@ -116,8 +116,16 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "four-color-theorem"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem is the foundation of this problem. Erdős #129 asks for Ramsey numbers $R(k_1, \\ldots, k_r)$ avoiding mo"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "Both concern coloring constraints on graphs. While the four-color theorem bounds the chromatic number of planar graphs, "
+    }
   ],
   "leanFile": {
     "imports": [

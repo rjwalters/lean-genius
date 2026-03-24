@@ -195,18 +195,31 @@
     }
   ],
   "relatedProofs": [
-    "euler-totient",
-    "quadratic-reciprocity",
-    "lagrange-theorem",
-    "infinitude-primes",
-    "fermat-two-squares",
-    "primitive-roots",
-    "bertrands-postulate",
-    "factor-remainder-theorem",
-    "bezout-identity",
-    "sylow-theorems",
-    "fundamental-arithmetic",
-    "abel-ruffini"
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's theorem $a^{\\phi(n)} \\equiv 1 \\pmod{n}$ both describe the multi"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Both concern the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$. Wilson's theorem uses the pairing $a \\leftrightarrow a^{-1}$"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem ($|H|$ divides $|G|$) applied to $(\\mathbb{Z}/p\\mathbb{Z})^*$ gives $\\text{ord}(a) \\mid (p-1)$ for al"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Wilson's theorem can give a non-constructive proof of infinitely many primes: for each $n$, $(n!-1)$ is either 1 or has "
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Wilson's theorem and Fermat's two-squares theorem both concern primes modulo 4. Wilson's theorem shows $(p-1)! \\equiv -1"
+    }
   ],
   "leanFile": {
     "imports": [

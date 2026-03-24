@@ -203,12 +203,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-207",
-    "erdos-1075",
-    "erdos-1077",
-    "erdos-1078",
-    "ramseys-theorem",
-    "erdos-340"
+    {
+      "id": "erdos-207",
+      "relationship": "foundational",
+      "description": "Problem #207 (High-Girth Steiner Triple Systems) is directly foundational to #1076: the extremal F_k-free constructions "
+    },
+    {
+      "id": "erdos-1075",
+      "relationship": "related",
+      "description": "Problem #1075 studies extremal density in r-uniform hypergraphs more generally, asking whether dense r-graphs must conta"
+    },
+    {
+      "id": "erdos-1077",
+      "relationship": "related",
+      "description": "Problem #1077 (Balanced Subgraphs in Dense Graphs) shares the theme of forced substructures in dense graphs; both #1076 "
+    },
+    {
+      "id": "erdos-1078",
+      "relationship": "related",
+      "description": "Problem #1078 (Minimum Degree for K_r in r-Partite Graphs) is another extremal threshold result resolved by exact comput"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's theorem is the foundational extremal combinatorics result guaranteeing monochromatic cliques; the Brown-Erdős-S"
+    }
   ],
   "references": [
     {

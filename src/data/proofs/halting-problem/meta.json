@@ -164,17 +164,31 @@
     }
   ],
   "relatedProofs": [
-    "cantor-diagonalization",
-    "godel-incompleteness",
-    "hilbert-10",
-    "abel-ruffini",
-    "angle-trisection",
-    "mathematical-induction",
-    "fundamental-arithmetic",
-    "russell-1-plus-1",
-    "continuum-hypothesis",
-    "cantors-theorem",
-    "p-vs-np"
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "technique",
+      "description": "Both use the diagonal argument: Cantor constructs a real not in any enumeration, Turing constructs a program that any ha"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Both are impossibility results about formal reasoning via self-reference. Gödel shows no consistent system proves all tr"
+    },
+    {
+      "id": "hilbert-10",
+      "relationship": "extends",
+      "description": "Matiyasevich's theorem (1970) reduces the halting problem to Diophantine equations: a set is recursively enumerable iff "
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are impossibility results about natural-seeming procedures: Abel-Ruffini shows no radical formula solves all quinti"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "thematic",
+      "description": "Both prove that a natural class of problems has no universal solution within a given framework: compass-straightedge can"
+    }
   ],
   "references": [
     {

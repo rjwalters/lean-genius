@@ -130,8 +130,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-465",
-    "erdos-1089"
+    {
+      "id": "erdos-465",
+      "relationship": "complement",
+      "description": "Direct complement: #465 provides the upper bound N(X,δ) ≪ X^{1/2} matching the lower bounds here"
+    },
+    {
+      "id": "erdos-1089",
+      "relationship": "related",
+      "description": "Both study extremal point configurations under distance constraints; #1089 in higher dimensions, #466 with fractional se"
+    }
   ],
   "leanFile": {
     "imports": [

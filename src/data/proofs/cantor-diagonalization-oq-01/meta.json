@@ -154,12 +154,31 @@
     }
   ],
   "relatedProofs": [
-    "cantor-diagonalization",
-    "cantors-theorem",
-    "godel-incompleteness",
-    "halting-problem",
-    "schroeder-bernstein",
-    "cantor-diagonalization-oq-02"
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "extends",
+      "description": "Parent proof: Cantor's diagonal argument showing |S| < |P(S)| — this file extends to the continuum hypothesis and beth n"
+    },
+    {
+      "id": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem |S| < |P(S)| is the starting point: the continuum hypothesis asks whether 2^ℵ₀ = ℵ₁, i.e., whether ther"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Gödel proved CH is consistent with ZFC (1940); Cohen proved ¬CH is also consistent (1963). This independence parallels G"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "thematic",
+      "description": "Both establish fundamental undecidability: the halting problem shows no algorithm decides all halting questions, while C"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "foundational",
+      "description": "The Schröder-Bernstein theorem (injections both ways ↔ bijection) provides the cardinal arithmetic framework in which CH"
+    }
   ],
   "leanFile": {
     "imports": [

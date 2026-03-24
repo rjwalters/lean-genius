@@ -145,7 +145,11 @@
     }
   ],
   "relatedProofs": [
-    "erdos-367"
+    {
+      "id": "erdos-367",
+      "relationship": "related",
+      "description": "Both study multiplicative structure in intervals: #367 studies powerful parts, #693 studies divisors in intervals"
+    }
   ],
   "leanFile": {
     "imports": [

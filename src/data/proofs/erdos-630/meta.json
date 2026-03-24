@@ -194,10 +194,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-627",
-    "erdos-626",
-    "erdos-628",
-    "ramseys-theorem"
+    {
+      "id": "erdos-627",
+      "relationship": "Problem #627 studies the chromatic number–clique number ratio. List coloring adds another layer: χ_L can exceed χ even when χ is small (bipartite).",
+      "description": ""
+    },
+    {
+      "id": "erdos-626",
+      "relationship": "Problem #626 explores chromatic number vs girth. Both problems study how structural constraints (planarity, girth, bipartiteness) affect chromatic parameters.",
+      "description": ""
+    },
+    {
+      "id": "erdos-628",
+      "relationship": "Problem #628 (Tihany Conjecture) also concerns graphs achieving high chromatic number without large cliques, a theme shared with the list coloring gap phenomenon.",
+      "description": ""
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "Ramsey theory provides structural bounds used in the K_{n,n} list chromatic number computation and in understanding extremal coloring problems.",
+      "description": ""
+    }
   ],
   "leanFile": {
     "imports": [

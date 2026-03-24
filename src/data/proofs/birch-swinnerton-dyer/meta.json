@@ -680,18 +680,31 @@
     "definitionCount": 143
   },
   "relatedProofs": [
-    "fundamental-theorem-algebra",
-    "riemann-hypothesis",
-    "p-vs-np",
-    "continuum-hypothesis",
-    "e-transcendental",
-    "fermats-last-theorem",
-    "quadratic-reciprocity",
-    "pythagorean-theorem",
-    "hodge-conjecture",
-    "poincare-conjecture",
-    "navier-stokes",
-    "yang-mills"
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Both concern deep connections between algebraic and analytic properties: FTA proves polynomial roots exist in $\\mathbb{C"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The Hasse bound $|\\#E(\\mathbb{F}_p) - p - 1| \\leq 2\\sqrt{p}$ (axiomatized in this file) is equivalent to the Riemann Hyp"
+    },
+    {
+      "id": "p-vs-np",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem — both remain open and carry a $1,000,000 prize from the Clay Mathematics Institute. Whi"
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Both are famous mathematical problems whose resolution has required fundamentally new ideas. CH was proved independent o"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Transcendence theory connects to BSD via the Schneider-Lang theorem and periods of elliptic curves. The real period $\\Om"
+    }
   ],
   "references": [
     {

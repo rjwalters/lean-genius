@@ -102,7 +102,10 @@
     "content": "**padic_val_2_formula:**\n\nv₂(n!) = n - s₂(n)\n\nwhere s₂(n) is the sum of binary digits of n.\n\n**Examples:**\n- v₂(7!) = 7 - 3 = 4 (since 7 = 111₂)\n- v₂(8!) = 8 - 1 = 7 (since 8 = 1000₂)\n\nThis elegant formula connects p-adic valuations to base representations.",
     "mathContext": "Special case of the general digit sum formula for any prime p.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -117,7 +120,10 @@
     "content": "**example_even_val_2_at_7:**\n\nn = 7 has even 2-valuation.\n\n**Computation:**\n- 7! = 5040 = 2⁴ · 3² · 5 · 7\n- v₂(7!) = 4 (even) ✓\n\nProved by native_decide.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of example: n=7 for p=2",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -132,7 +138,10 @@
     "content": "**example_even_vals_at_31:**\n\nn = 31 has even valuations for both 2 and 3.\n\n**Computation:**\n- v₂(31!) = 26 (even) ✓\n- v₃(31!) = 14 (even) ✓\n\nThis is a concrete witness for the set {2, 3}.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of example: n=31 for {2,3}",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -147,7 +156,10 @@
     "content": "**berend_existence:**\n\nFor any finite set S of primes, infinitely many n exist such that n! is divisible by an even power of each prime in S.\n\n**Statement:**\n```lean\naxiom berend_existence (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :\n  {n : ℕ | hasAllEvenValuations S n}.Infinite\n```\n\nThis is the main positive result from Berend (1997).",
     "mathContext": "Berend's proof uses analytic number theory techniques.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -162,7 +174,10 @@
     "content": "**berend_bounded_gaps:**\n\nThe sequence of n with all even valuations has bounded gaps.\n\n**Statement:**\n```lean\naxiom berend_bounded_gaps (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :\n  ∃ B : ℕ, ∀ n : ℕ, ∃ m : ℕ, n ≤ m ∧ m ≤ n + B ∧ hasAllEvenValuations S m\n```\n\nThis is stronger than mere infinitude - implies positive density.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of berend's bounded gaps",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -177,7 +192,10 @@
     "content": "**ErdosConjecture646:**\n\nFor any finite set of primes, infinitely many n have even valuation for all primes in the set.\n\n**Definition:**\n```lean\ndef ErdosConjecture646 : Prop :=\n  ∀ S : Finset ℕ, (∀ p ∈ S, p.Prime) → {n : ℕ | hasAllEvenValuations S n}.Infinite\n```\n\nThis is the formal statement of Erdős's question.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of erdős conjecture 646",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "prime numbers"
+    ],
     "prerequisites": []
   },
   {
@@ -192,7 +210,10 @@
     "content": "**erdos_646: ErdosConjecture646**\n\n**Proof:**\n```lean\ntheorem erdos_646 : ErdosConjecture646 := by\n  intro S hS\n  exact berend_existence S hS\n```\n\nThe conjecture follows directly from Berend's existence theorem.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of main result: conjecture true",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -250,7 +271,10 @@
     "content": "**explicit_bound_2_3:**\n\n∃ n ≤ 100, hasAllEvenValuations {2, 3} n\n\n**Proof:**\nn = 31 works, and 31 ≤ 100.\n\nThis gives a concrete, computable witness.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of explicit bound for {2,3}",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -265,7 +289,10 @@
     "content": "**hasAllOddValuations and odd_valuations_infinite:**\n\nThe complement question also has an affirmative answer.\n\nFor any finite set of primes, infinitely many n have ODD valuation for all primes in the set.\n\nThis follows from symmetry considerations - the parity distribution is balanced.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of odd valuations infinite",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -280,7 +307,10 @@
     "content": "**prescribed_parities_infinite:**\n\nFor ANY assignment of parities to primes, infinitely many n achieve it.\n\n**Definition:**\n```lean\ndef hasPrescribedParities (S : Finset ℕ) (parity : ℕ → Bool) (n : ℕ) : Prop :=\n  ∀ p ∈ S, p.Prime →\n    (parity p = true ↔ Even (padicValNat p (n.factorial)))\n```\n\nThis is the strongest generalization of Erdős's question.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of prescribed parities",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "factorial function"
+    ],
     "prerequisites": []
   },
   {
@@ -295,7 +325,10 @@
     "content": "**erdos_646_summary:**\n\nCombines the two main results:\n1. ErdosConjecture646 is TRUE\n2. The sequence has bounded gaps for any prime set\n\n```lean\ntheorem erdos_646_summary :\n  ErdosConjecture646 ∧\n  (∀ S : Finset ℕ, (∀ p ∈ S, p.Prime) →\n    ∃ B : ℕ, ∀ n : ℕ, ∃ m : ℕ, n ≤ m ∧ m ≤ n + B ∧ hasAllEvenValuations S m)\n```",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "combinatorics"
+    ],
     "prerequisites": []
   },
   {
@@ -310,7 +343,10 @@
     "content": "**erdos_646_answer:**\n\nFor any prime set S, there exist n < m with both having all even valuations.\n\n**Proof approach:**\n1. Use berend_existence to get first n\n2. The set minus {n} is still infinite\n3. Use bounded gaps to find m > n\n\nThis constructively demonstrates the infinitude.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of answer: yes",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   }
 ]

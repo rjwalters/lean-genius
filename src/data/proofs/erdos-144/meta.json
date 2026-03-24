@@ -140,9 +140,21 @@
     }
   ],
   "relatedProofs": [
-    "fundamental-arithmetic",
-    "prime-number-theorem",
-    "euler-totient"
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The fundamental theorem of arithmetic (unique prime factorization) determines the divisor structure of integers. Erdős #"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The distribution of primes governs the average behavior of divisor functions. The propinquity of divisors studied in Erd"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function counts integers coprime to $n$, complementing the divisor function $d(n)$ that counts divisors."
+    }
   ],
   "leanFile": {
     "imports": [

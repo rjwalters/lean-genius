@@ -159,8 +159,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-852",
-    "erdos-1055",
-    "erdos-1101"
+    {
+      "id": "erdos-852",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, sieve-theory"
+    },
+    {
+      "id": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    },
+    {
+      "id": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sieve-theory"
+    }
   ]
 }

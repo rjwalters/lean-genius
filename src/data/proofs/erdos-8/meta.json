@@ -191,8 +191,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-2",
-    "erdos-7",
-    "erdos-27"
+    {
+      "id": "erdos-2",
+      "relationship": "extends",
+      "description": "Problem #2 established the basic theory of covering systems. Problem #8 extends this by adding coloring constraints, ask"
+    },
+    {
+      "id": "erdos-7",
+      "relationship": "related",
+      "description": "Problem #7 (odd covering systems) and Problem #8 (monochromatic coverings) are both structural extensions of the basic c"
+    },
+    {
+      "id": "erdos-27",
+      "relationship": "related",
+      "description": "Problem #27 on almost covering systems is another variant of the covering system framework, relaxing the coverage condit"
+    }
   ]
 }

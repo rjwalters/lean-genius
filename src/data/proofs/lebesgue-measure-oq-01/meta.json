@@ -173,14 +173,31 @@
     }
   ],
   "relatedProofs": [
-    "lebesgue-measure",
-    "lebesgue-measure-oq-02",
-    "cantor-diagonalization",
-    "fundamental-theorem-calculus",
-    "harmonic-divergence",
-    "dirichlets-theorem",
-    "schroeder-bernstein",
-    "sqrt2-irrational"
+    {
+      "id": "lebesgue-measure",
+      "relationship": "extends",
+      "description": "This proof resolves Open Question #1 from the parent Lebesgue Measure entry, replacing the axiom dirichlet_integral_zero"
+    },
+    {
+      "id": "lebesgue-measure-oq-02",
+      "relationship": "related",
+      "description": "Sibling open question from the same parent proof (Lebesgue Measure), exploring other aspects of Lebesgue integration and"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonal argument establishes the uncountability of ℝ, which provides the contrast central to this proof: ℚ is "
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The FTC connects Riemann integration to differentiation; this proof demonstrates a function (the Dirichlet function) tha"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Both proofs use measure-theoretic or analytic techniques to resolve questions about integration: harmonic divergence sho"
+    }
   ],
   "leanFile": {
     "imports": [

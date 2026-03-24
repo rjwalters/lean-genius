@@ -220,16 +220,31 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "wilsons-theorem",
-    "bertrands-postulate",
-    "erdos-1057",
-    "erdos-1058",
-    "erdos-68",
-    "erdos-728-factorial-divisibility",
-    "fundamental-arithmetic",
-    "prime-number-theorem",
-    "stirling-formula"
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Both concern infinitude of prime sets; this conjectures infinitude of a structured subset"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "technique",
+      "description": "Connects primes to factorials via (p-1)! ≡ -1 (mod p)"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Both concern prime distribution in structured ranges"
+    },
+    {
+      "id": "erdos-1057",
+      "relationship": "sibling",
+      "description": "Sister Erdős problem about special prime sets using Set.Infinite"
+    },
+    {
+      "id": "erdos-1058",
+      "relationship": "sibling",
+      "description": "Studies prime divisors of n!+1, complementary factorial-prime interaction"
+    }
   ],
   "leanFile": {
     "lineCount": 143,

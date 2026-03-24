@@ -286,23 +286,31 @@
     }
   ],
   "relatedProofs": [
-    "harmonic-divergence",
-    "riemann-hypothesis",
-    "fourier-series",
-    "euler-identity",
-    "prime-reciprocal-divergence",
-    "pi-transcendental",
-    "infinitude-primes",
-    "basel-problem-oq-01",
-    "leibniz-pi",
-    "geometric-series",
-    "taylor-theorem",
-    "prime-number-theorem",
-    "e-transcendental",
-    "stirling-formula",
-    "dirichlets-theorem",
-    "area-of-circle",
-    "central-limit-theorem"
+    {
+      "id": "harmonic-divergence",
+      "relationship": "contrasts",
+      "description": "The harmonic series ∑ 1/n diverges (p = 1), while the Basel series ∑ 1/n² converges (p = 2). The boundary between conver"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "foundational",
+      "description": "The Basel identity ζ(2) = π²/6 is the simplest special value of the Riemann zeta function. The Riemann Hypothesis concer"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "technique",
+      "description": "The modern rigorous proof of the Basel identity uses Parseval's theorem from Fourier analysis: applying it to f(x) = x o"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Both are crown jewels of Euler's mathematical legacy. Euler's identity e^(iπ) + 1 = 0 connects the same fundamental cons"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler proved ∑ 1/p diverges using the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function framework. The divergence"
+    }
   ],
   "leanFile": {
     "imports": [

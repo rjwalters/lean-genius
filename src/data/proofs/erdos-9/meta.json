@@ -240,8 +240,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-2",
-    "erdos-10",
-    "infinitude-primes"
+    {
+      "id": "erdos-2",
+      "relationship": "related",
+      "description": "Erdős's covering congruence technique (from Problem #2) is used to construct integers not representable as p + 2^k + 2^l"
+    },
+    {
+      "id": "erdos-10",
+      "relationship": "related",
+      "description": "Problem #10 asks about integers of the form p + sum of powers of 2. Problem #9 is the specific case asking about odd int"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The distribution of primes is fundamental to understanding which integers can be written as p + 2^k + 2^l"
+    }
   ]
 }
