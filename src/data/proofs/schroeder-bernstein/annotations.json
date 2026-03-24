@@ -10,7 +10,7 @@
     "title": "Antisymmetry of Cardinality",
     "content": "The Schroeder-Bernstein theorem establishes that cardinality is **antisymmetric**: if we can inject A into B and B into A, then A and B have the same size.\n\nThis is remarkable because:\n- We only need *injections* (one-to-one functions), not *bijections* (one-to-one and onto)\n- The bijection is guaranteed to exist, even though we don't explicitly construct it\n- This works for *infinite* sets, where counting elements doesn't make sense\n\nThe theorem allows indirect proofs of equicardinality: instead of building a bijection directly, we can find injections in both directions.",
     "mathContext": "$(\\exists f: A \\hookrightarrow B) \\wedge (\\exists g: B \\hookrightarrow A) \\Rightarrow A \\cong B$. Equivalently: $|A| \\leq |B| \\wedge |B| \\leq |A| \\Rightarrow |A| = |B|$, where $\\leq$ on cardinals is defined by the existence of an injection.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "injection (one-to-one function)",
       "bijection",
@@ -35,7 +35,7 @@
     "title": "The Main Theorem",
     "content": "**Schroeder-Bernstein Theorem (Function Form)**:\n\nGiven:\n- $f: A \\to B$ injective\n- $g: B \\to A$ injective\n\nThen: There exists $h: A \\to B$ that is bijective.\n\nIn Lean, we state this as:\n```\ntheorem schroeder_bernstein (f : A -> B) (g : B -> A)\n    (hf : Injective f) (hg : Injective g) :\n    exists h : A -> B, Bijective h\n```\n\nMathlib's `Function.Embedding.schroeder_bernstein` provides this directly.",
     "mathContext": "Given $f: \\alpha \\to \\beta$ injective and $g: \\beta \\to \\alpha$ injective, there exists $h: \\alpha \\to \\beta$ bijective. Lean: `Function.Embedding.schroeder_bernstein hf hg` produces the witness.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Function.Injective",
       "Function.Bijective",
@@ -131,7 +131,7 @@
     "title": "The Orbit Partition Strategy",
     "content": "The classical proof works by **partitioning elements into orbits**:\n\n**Step 1**: For any element, trace backwards:\n- From $a \\in A$: look for $b$ with $g(b) = a$, then $a'$ with $f(a') = b$, etc.\n- The chain: $... \\to a' \\to b \\to a \\to f(a) \\to g(f(a)) \\to ...$\n\n**Step 2**: Classify by termination:\n- **Type A**: Chain terminates in A (no preimage under g at some point)\n- **Type B**: Chain terminates in B (no preimage under f at some point)\n- **Type C**: Chain is infinite (never terminates)\n\n**Step 3**: Define the bijection:\n- Type A/C elements: use $f$ (go forward)\n- Type B elements: use $g^{-1}$ (go backward)\n\nThis requires **classical logic** to decide which type each element is.",
     "mathContext": "Define $T: \\mathcal{P}(\\alpha) \\to \\mathcal{P}(\\alpha)$ by $T(S) = \\alpha \\setminus g(\\beta \\setminus f(S))$. By Knaster-Tarski, $T$ has a fixed point $S^*$. The bijection: $h(a) = f(a)$ if $a \\in S^*$, $h(a) = g^{-1}(a)$ otherwise. $S^*$ collects Types A and C.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "set operations",
       "law of excluded middle",

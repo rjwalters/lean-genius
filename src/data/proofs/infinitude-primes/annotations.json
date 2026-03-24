@@ -46,7 +46,7 @@
     "title": "Why n! + 1 Works",
     "content": "The factorial $n! = 1 \\times 2 \\times \\cdots \\times n$ is carefully chosen:\n\n1. **Every small prime divides $n!$**: If $p \\leq n$ is prime, then $p$ appears in the product\n2. **Adding 1 shifts the residue**: If $p \\mid n!$, then $n! \\equiv 0 \\pmod{p}$, so $n! + 1 \\equiv 1 \\pmod{p}$\n3. **Therefore $p \\nmid (n! + 1)$**: No prime $\\leq n$ can divide $n! + 1$\n\nAny prime factor of $n! + 1$ must be $> n$. Existence of such a factor is guaranteed since $n! + 1 \\geq 2$.",
     "mathContext": "$n! \\equiv 0 \\pmod{p}$ for all primes $p \\leq n$\n$\\Rightarrow n! + 1 \\equiv 1 \\pmod{p}$\n$\\Rightarrow p \\nmid (n! + 1)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "modular arithmetic",
       "coprimality",
@@ -64,7 +64,7 @@
     "title": "Divisibility in Factorial",
     "content": "Any positive integer $k \\leq n$ divides $n!$. This is because $k$ appears as one of the factors in the product $1 \\cdot 2 \\cdots n$.\n\nWe simply invoke Mathlib's `Nat.dvd_factorial` which already has this proven.",
     "mathContext": "$0 < k \\leq n \\Rightarrow k \\mid n!$\n\nThis is why $n! + 1$ cannot share any small prime factors with $n!$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "factorial properties",
       "product divisibility"
@@ -98,7 +98,7 @@
     "title": "The Key Divisibility Lemma",
     "content": "If $p$ divides both $a$ and $a+1$, then $p$ divides 1. This is the heart of Euclid's proof.\n\nThe proof: if $p \\mid a$ and $p \\mid (a+1)$, then $p \\mid ((a+1) - a) = 1$.\n\nSince no prime divides 1, this creates the contradiction we need.",
     "mathContext": "$p \\mid a \\land p \\mid (a+1) \\Rightarrow p \\mid 1$\n\nEquivalently: consecutive integers are coprime.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "coprimality",
       "consecutive integers",
@@ -116,7 +116,7 @@
     "title": "Euclid's Theorem: Unbounded Primes",
     "content": "**For any $n$, there exists a prime $p > n$.**\n\nThe proof constructs $Q = n! + 1$ and reasons:\n1. $Q \\geq 2$, so $Q$ has a prime divisor $p$ (using `Nat.exists_prime_and_dvd`)\n2. Suppose for contradiction that $p \\leq n$\n3. Then $p \\mid n!$ (since $p$ is a factor in $1 \\cdot 2 \\cdots n$)\n4. But $p \\mid Q = n! + 1$\n5. So $p \\mid ((n!+1) - n!) = 1$\n6. Since $p \\mid 1$, we have $p = 1$\n7. **Contradiction**: $p$ is prime, so $p \\neq 1$\n\nTherefore $p > n$. Since $n$ was arbitrary, primes are unbounded.",
     "mathContext": "$\\forall n, \\exists p$ prime, $p > n$\n\nKey insight: if $p \\mid n!$ and $p \\mid (n!+1)$, then $p \\mid 1$, which is impossible for primes.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-dvd-factorial",
       "ann-dvd-add-one",
@@ -175,7 +175,7 @@
     "title": "Primes Are Not 1",
     "content": "The final contradiction: if $p \\mid 1$, then $p = 1$ (since 1's only positive divisor is 1 itself).\n\nBut $p$ is prime, which by definition means $p \\geq 2$. So $p \\neq 1$.\n\nThis is where Euclid's argument closes: the assumption $p \\leq n$ leads to $p = 1$, which contradicts primality.",
     "mathContext": "$p \\mid 1 \\Rightarrow p = 1$\n$p$ prime $\\Rightarrow p \\geq 2$\n$\\Rightarrow p = 1$ and $p \\geq 2$ — contradiction!",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime definition",
       "divisibility",

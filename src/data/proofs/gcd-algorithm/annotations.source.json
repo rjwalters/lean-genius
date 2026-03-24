@@ -9,7 +9,7 @@
     "type": "context",
     "title": "The Oldest Algorithm",
     "content": "The Euclidean algorithm is arguably the oldest non-trivial algorithm still in common use:\n\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\n**Why it matters**:\n- Over 2,300 years old (Euclid's Elements, c. 300 BCE)\n- Foundation of modern cryptography (RSA, Diffie-Hellman)\n- Remarkably efficient: O(log min(a, b)) steps\n- Extends to polynomials, Gaussian integers, and more\n\nThe algorithm terminates because $a \\mod b < b$, giving a strictly decreasing sequence.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "divisibility",
       "modular arithmetic",
@@ -61,7 +61,7 @@
     "title": "The Euclidean Recurrence",
     "content": "**The Core Identity**:\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\nThis is the heart of the algorithm. The key insight is that common divisors are preserved:\n\n- If $d | a$ and $d | b$, then $d | (a \\mod b)$ since $a \\mod b = a - qb$\n- Conversely, if $d | b$ and $d | (a \\mod b)$, then $d | a$ since $a = qb + (a \\mod b)$\n\nThus the two pairs have exactly the same common divisors.",
     "mathContext": "In Lean: `theorem euclidean_recurrence (a : \u2115) {b : \u2115} (hb : b \u2260 0) : Nat.gcd a b = Nat.gcd b (a % b)`. The proof uses `Nat.gcd_comm` twice and `Nat.gcd_rec`. Key supporting fact: $a = \\lfloor a/b \\rfloor \\cdot b + (a \\bmod b)$, so any $d$ dividing $a$ and $b$ also divides $a - \\lfloor a/b \\rfloor \\cdot b = a \\bmod b$. The invariant `gcd (a, b) = gcd (b, a % b)` holds because both sides represent the same lattice meet in $(\\mathbb{N}, \\mid)$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "divisibility",
       "modulo operation",
@@ -158,7 +158,7 @@
     "title": "GCD is the Greatest",
     "content": "**Correctness Property 2**: Any common divisor divides the GCD.\n\nIf $d \\mid a$ and $d \\mid b$, then $d \\mid \\gcd(a, b)$.\n\nThis means $\\gcd(a, b)$ is the *greatest* common divisor because every other common divisor must be smaller (since it divides the GCD).\n\n**Universal Property**: This characterizes GCD uniquely.",
     "mathContext": "In Lean: `Nat.dvd_gcd : d \u2223 a \u2192 d \u2223 b \u2192 d \u2223 Nat.gcd a b`. Proof by induction: base case `d \u2223 gcd a 0 = a` from `d \u2223 a`; inductive step `d \u2223 gcd a b = gcd b (a % b)` from `d \u2223 b` and `d \u2223 (a % b)` (which follows from `d \u2223 a` and `d \u2223 b` since `a % b = a - q * b`). Combined with `gcd_dvd_left/right`, this gives the universal property: $d \\mid \\gcd(a,b) \\iff d \\mid a \\land d \\mid b$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "universal property",
       "lattice theory",
@@ -283,7 +283,7 @@
     "title": "Bezout's Identity",
     "content": "**Bezout's Identity**: For any $a, b \\in \\mathbb{N}$, there exist integers $x, y$ such that:\n\n$$\\gcd(a, b) = ax + by$$\n\nThe **extended Euclidean algorithm** computes these coefficients alongside the GCD.\n\n**Applications**:\n- Solving linear Diophantine equations $ax + by = c$\n- Computing modular multiplicative inverses\n- RSA key generation\n\n**Example**: $\\gcd(35, 15) = 5 = 35 \\cdot 1 + 15 \\cdot (-2)$",
     "mathContext": "In Lean: `theorem bezout_identity (a b : \u2115) : \u2203 x y : \u2124, (Nat.gcd a b : \u2124) = a * x + b * y := \u27e8Nat.gcdA a b, Nat.gcdB a b, Nat.gcd_eq_gcd_ab a b\u27e9`. The note to \u2124 is crucial: Bezout coefficients can be negative (e.g., $\\gcd(3,5) = 5 \\cdot 2 + 3 \\cdot (-3) = 1$). In Mathlib, `Nat.gcdA` and `Nat.gcdB` are the extended Euclidean algorithm outputs. The identity $ax + by = 1$ for coprime $a, b$ gives the modular inverse: $ax \\equiv 1 \\pmod{b}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "extended Euclidean algorithm",
       "linear Diophantine equations",

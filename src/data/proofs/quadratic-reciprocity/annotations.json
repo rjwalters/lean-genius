@@ -10,7 +10,7 @@
     "title": "Gauss's Golden Theorem",
     "content": "The Law of Quadratic Reciprocity relates the solvability of two quadratic congruences:\n\n$$x^2 \\equiv p \\pmod{q} \\quad \\text{and} \\quad x^2 \\equiv q \\pmod{p}$$\n\nfor distinct odd primes $p$ and $q$. Remarkably, whether $p$ is a square mod $q$ is tied to whether $q$ is a square mod $p$ by a precise sign rule.\n\nGauss called this the *theorema aureum* (golden theorem), proved it first at age 19 in 1796, and published 6 proofs during his lifetime (a posthumous 7th and 8th appeared later). Over 300 proofs are now known — more than for any other theorem in mathematics.\n\nThe statement is shockingly simple given its depth: the product $(p/q)(q/p)$ equals $+1$ unless **both** primes are $\\equiv 3 \\pmod{4}$, in which case it equals $-1$.",
     "mathContext": "Over 300 published proofs exist; Gauss gave 6 in his lifetime. The theorem is equivalent to splitting of primes in quadratic fields: $p$ splits in $\\mathbb{Q}(\\sqrt{q^*})$ iff $(p/q)=1$, where $q^* = (-1)^{(q-1)/2}q$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "prime numbers",
       "modular arithmetic",
@@ -35,7 +35,7 @@
     "title": "The Legendre Symbol",
     "content": "The **Legendre symbol** $(a/p)$ for an integer $a$ and odd prime $p$ encodes quadratic residuosity:\n\n- $(a/p) = 1$ if $a$ is a **quadratic residue** mod $p$: $x^2 \\equiv a \\pmod{p}$ has a solution with $p \\nmid a$\n- $(a/p) = -1$ if $a$ is a **quadratic nonresidue** mod $p$\n- $(a/p) = 0$ if $p \\mid a$\n\n**Euler's Criterion**: $(a/p) \\equiv a^{(p-1)/2} \\pmod{p}$\n\nThis gives a computational method: exponentiate $a$ to the $(p-1)/2$ power mod $p$. Since $a^{p-1} \\equiv 1 \\pmod{p}$ by Fermat, we get $a^{(p-1)/2} \\equiv \\pm 1$, and this sign is exactly the Legendre symbol.\n\nAmong $\\{1, 2, \\ldots, p-1\\}$, exactly $(p-1)/2$ values are QRs and $(p-1)/2$ are QNRs — the QRs form the unique index-2 subgroup of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$.\n\nIn Lean/Mathlib, the Legendre symbol is implemented as `legendreSym p a : ℤ`.",
     "mathContext": "$(a/p) = a^{(p-1)/2} \\mod p$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "prime numbers",
       "modular arithmetic",
@@ -60,7 +60,7 @@
     "title": "The Main Law (Product Form)",
     "content": "**Quadratic Reciprocity** (Product Form):\n\nFor distinct odd primes $p$ and $q$:\n\n$$\\left(\\frac{q}{p}\\right) \\cdot \\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$$\n\nThe exponent $(p-1)/2 \\cdot (q-1)/2$ is odd — making the product $-1$ — **exactly when** both $p \\equiv 3$ and $q \\equiv 3 \\pmod{4}$. In all other cases the product is $+1$.\n\n**Equivalent Reformulation**: The Legendre symbols are\n- **Equal** ($(q/p) = (p/q)$) if at least one of $p, q \\equiv 1 \\pmod{4}$\n- **Opposite** ($(q/p) = -(p/q)$) if both $p \\equiv q \\equiv 3 \\pmod{4}$\n\n**In Lean**: `quadratic_reciprocity_product` delegates directly to Mathlib's `legendreSym.quadratic_reciprocity`, which encodes $p/2$ for odd $p$ as the integer floor $(p-1)/2$.\n\n**Gauss's Lattice-Point Proof**: The classical proof counts integer lattice points $(m, n)$ with $1 \\leq m \\leq (p-1)/2$, $1 \\leq n \\leq (q-1)/2$, and establishes a bijection that explains the sign. This is the conceptual heart behind Mathlib's formalization.",
     "mathContext": "$(q/p)(p/q) = (-1)^{(p-1)/2 \\cdot (q-1)/2}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Legendre symbol",
       "prime numbers",

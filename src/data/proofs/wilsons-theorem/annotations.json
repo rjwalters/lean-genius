@@ -10,7 +10,7 @@
     "title": "A Primality Characterization",
     "content": "Wilson's theorem gives a complete characterization of prime numbers in terms of factorials:\n\n$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$\n\nThis is remarkable because:\n- It provides an *exact* test for primality (not probabilistic)\n- The condition involves only modular arithmetic\n- It reveals deep structure about how primes behave\n\nHowever, computing $(n-1)!$ is computationally expensive, making this impractical for actual primality testing.",
     "mathContext": "Wilson's theorem states: $n > 1$ is prime $\\iff (n-1)! \\equiv -1 \\pmod{n}$. Equivalently, in the ring $\\mathbb{Z}/n\\mathbb{Z}$, the factorial $(n-1)!$ maps to $-1$. The forward direction is proved via the pairing argument in $(\\mathbb{Z}/p\\mathbb{Z})^*$; the backward direction follows from the fact that any proper divisor $a$ of $n$ divides $(n-1)!$ but cannot divide $(n-1)!+1$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "modular arithmetic (congruences, residue classes)",
       "factorial notation: $(n-1)! = 1 \\cdot 2 \\cdots (n-1)$",
@@ -55,7 +55,7 @@
     "title": "Wilson's Lemma (Forward Direction)",
     "content": "**Wilson's Lemma**: For a prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$.\n\nIn Lean:\n```\ntheorem wilsons_lemma (p : N) [Fact (Nat.Prime p)] :\n    ((p - 1).factorial : ZMod p) = -1\n```\n\nThis is the 'easy' direction—the core insight is the pairing of elements with their inverses in $(\\mathbb{Z}/p\\mathbb{Z})^*$.",
     "mathContext": "$(\\uparrow(p-1)! : \\text{ZMod}\\,p) = -1$. In Lean, the coercion $\\uparrow$ embeds $\\mathbb{N}$ into $\\text{ZMod}\\,p$; the typeclass `Fact (Nat.Prime p)` provides primality so that $\\text{ZMod}\\,p$ is a field. Mathlib's `ZMod.wilsons_lemma` proves this via `ZMod.prod_Ico_one_prime`, which establishes $\\prod_{x \\in [1,p)} x = -1$ in $\\text{ZMod}\\,p$ using the pairing of non-self-inverse units.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Lean 4 typeclass system (`Fact`, `instance`)",
       "$\\text{ZMod}\\,n$ as Mathlib's ring of integers mod $n$",
@@ -79,7 +79,7 @@
     "title": "Wilson's Theorem (Biconditional)",
     "content": "**Wilson's Theorem (Full Version)**:\n\n$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$\n\nThe backward direction is equally important: if $(n-1)! \\equiv -1 \\pmod{n}$, then $n$ must be prime.\n\n**Proof of backward direction**:\n- Suppose $n = ab$ with $1 < a < n$\n- Then $a$ divides $(n-1)!$ (since $a < n$)\n- If also $(n-1)! \\equiv -1 \\pmod{n}$, then $a | (n-1)! + 1 = -1 + 1 \\pmod{a}$\n- But this means $a | 0$ and $a | 1$, contradiction for $a > 1$",
     "mathContext": "$n$ prime $\\iff (n-1)! \\equiv -1 \\pmod{n}$. In Lean: `Nat.prime_iff_fac_equiv_neg_one (hn : n ≠ 1)`. The hypothesis $n \\neq 1$ is required because $0! = 1$ and $-1 \\equiv 0 \\pmod{1}$ (every integer is $\\equiv 0 \\pmod 1$), so the statement would be vacuously true for $n = 1$ in a way that misrepresents primality. The proof uses `ZMod.wilsons_lemma` for the forward direction and `Nat.prime_of_fac_equiv_neg_one` for the reverse.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Wilson's Lemma (forward direction)",
       "divisibility argument for composite numbers",
@@ -103,7 +103,7 @@
     "title": "The Pairing Argument",
     "content": "The proof's key insight is a **pairing argument** in the multiplicative group:\n\n1. In $(\\mathbb{Z}/p\\mathbb{Z})^*$, every element $a$ has an inverse $a^{-1}$\n2. **Self-inverse elements**: $a = a^{-1}$ iff $a^2 \\equiv 1 \\pmod{p}$\n   - Solutions: $(a-1)(a+1) \\equiv 0 \\pmod{p}$\n   - Since $p$ is prime: $a \\equiv \\pm 1 \\pmod{p}$\n3. **Non-self-inverse elements** pair up: $\\{a, a^{-1}\\}$ contributes $a \\cdot a^{-1} = 1$\n\n**The product**:\n$$(p-1)! = 1 \\cdot \\underbrace{(2 \\cdot 2^{-1})}_{=1} \\cdot \\ldots \\cdot \\underbrace{((p-2) \\cdot (p-2)^{-1})}_{=1} \\cdot (p-1)$$\n$$= 1 \\cdot 1 \\cdot \\ldots \\cdot 1 \\cdot (-1) = -1$$",
     "mathContext": "Elements of $(\\mathbb{Z}/p\\mathbb{Z})^* = \\{1, 2, \\ldots, p-1\\}$ partition into: the pair $\\{1, -1\\}$ (both self-inverse) and $(p-3)/2$ pairs $\\{a, a^{-1}\\}$ with $a \\neq a^{-1}$. Each non-self-inverse pair satisfies $a \\cdot a^{-1} = 1$, so $(p-1)! = 1 \\cdot (-1) \\cdot 1^{(p-3)/2} = -1$. Formally: the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ is abelian of order $p-1$, and the product of all elements equals the (unique) element of order exactly 2, which is $-1 \\equiv p-1$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$",
       "existence and uniqueness of multiplicative inverses modulo a prime",
