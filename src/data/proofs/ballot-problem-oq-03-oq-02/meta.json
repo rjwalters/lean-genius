@@ -109,35 +109,40 @@
       "title": "Part 2: Column Entry and Non-Intersection",
       "startLine": 83,
       "endLine": 109,
-      "summary": "northBeforeEast (recursive y-tracking), colEntry, colYRange, and NonIntersecting predicate via column-disjointness."
+      "summary": "northBeforeEast (recursive y-tracking), colEntry, colYRange, and NonIntersecting predicate via column-disjointness.",
+      "mathContext": "For a lattice path $P$, $\\mathrm{colEntry}(P, c)$ gives the $y$-coordinate when $P$ enters column $c$. Two paths are non-intersecting iff $\\mathrm{colYRange}(P_i, c) \\cap \\mathrm{colYRange}(P_j, c) = \\emptyset$ for all columns $c$."
     },
     {
       "id": "r-tuple-infrastructure",
       "title": "Part 3: r-Tuple Infrastructure",
       "startLine": 110,
       "endLine": 136,
-      "summary": "LGVConfig structure (sources/targets strictly monotone), PathTuple (dependent r-tuple), IsNonIntersecting (pairwise non-intersection)."
+      "summary": "LGVConfig structure (sources/targets strictly monotone), PathTuple (dependent r-tuple), IsNonIntersecting (pairwise non-intersection).",
+      "mathContext": "$\\mathrm{LGVConfig}(r, m)$: sources $a_1 < \\cdots < a_r$, targets $b_1 < \\cdots < b_r$, grid width $m$. $\\mathrm{PathTuple}$: $(P_1,\\ldots,P_r)$ with $P_i \\in \\mathrm{PathMN}(m, b_i - a_i)$."
     },
     {
       "id": "path-weight-matrix",
       "title": "Part 4: Path Weight Matrix",
       "startLine": 137,
       "endLine": 146,
-      "summary": "pathMatrix: r×r integer matrix M_{i,j} = C(m+(b_j-a_i), m) counting paths from source i to target j."
+      "summary": "pathMatrix: r×r integer matrix M_{i,j} = C(m+(b_j-a_i), m) counting paths from source i to target j.",
+      "mathContext": "$M_{i,j} = \\binom{m + (b_j - a_i)}{m} = e(A_i, B_j)$, the number of monotone lattice paths from source $A_i$ to target $B_j$."
     },
     {
       "id": "permutation-path-tuples",
       "title": "Part 5: Permutation Path Tuples",
       "startLine": 147,
       "endLine": 165,
-      "summary": "PermPathTuple (σ-indexed path tuples), signedPermCount (sign(σ) × product of binomial coefficients)."
+      "summary": "PermPathTuple (σ-indexed path tuples), signedPermCount (sign(σ) × product of binomial coefficients).",
+      "mathContext": "$\\mathrm{PermPathTuple}(\\sigma)$: $r$-tuple $(P_1,\\ldots,P_r)$ with $P_i: A_i \\to B_{\\sigma(i)}$. Signed count: $\\mathrm{sgn}(\\sigma)\\prod_{i=1}^r \\binom{m+(b_{\\sigma(i)}-a_i)}{m}$."
     },
     {
       "id": "ni-tuple-count",
       "title": "Part 6: Non-Intersecting Tuple Count",
       "startLine": 166,
       "endLine": 174,
-      "summary": "niTupleCount: cardinality of non-intersecting identity path tuples, the left-hand side of the LGV lemma."
+      "summary": "niTupleCount: cardinality of non-intersecting identity path tuples, the left-hand side of the LGV lemma.",
+      "mathContext": "$\\mathrm{niTupleCount} = |\\{(P_1,\\ldots,P_r) : P_i \\in \\mathrm{PathMN}(m, b_i{-}a_i),\\; P_i \\cap P_j = \\emptyset\\ \\forall\\, i \\neq j\\}|$"
     },
     {
       "id": "gv-involution",

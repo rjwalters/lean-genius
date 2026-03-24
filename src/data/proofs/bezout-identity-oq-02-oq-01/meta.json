@@ -94,49 +94,56 @@
       "title": "Euclid's Lemma (One Line)",
       "startLine": 59,
       "endLine": 68,
-      "summary": "euclids_lemma_prime: if prime p|ab and p∤a then p|b. One-line proof via Nat.Coprime.dvd_of_dvd_mul_left after converting p∤a to Nat.Coprime p a using Nat.Prime.coprime_iff_not_dvd. Also proves the symmetric version for p∤b."
+      "summary": "euclids_lemma_prime: if prime p|ab and p∤a then p|b. One-line proof via Nat.Coprime.dvd_of_dvd_mul_left after converting p∤a to Nat.Coprime p a using Nat.Prime.coprime_iff_not_dvd. Also proves the symmetric version for p∤b.",
+      "mathContext": "Euclid's Lemma: if $p$ is prime and $p \\mid ab$, then $p \\mid a$ or $p \\mid b$. The proof uses B\\'{e}zout's identity: $p \\nmid a$ implies $\\gcd(p,a) = 1$, so there exist $x,y$ with $px + ay = 1$. Multiplying by $b$: $pxb + ayb = b$. Since $p \\mid ab$, both terms on the left are divisible by $p$, hence $p \\mid b$."
     },
     {
       "id": "prime-dvd-list",
       "title": "Euclid's Lemma Extended to Lists",
       "startLine": 73,
       "endLine": 92,
-      "summary": "prime_dvd_of_dvd_list_prod: if prime p divides a list product, then p divides some element. Induction on the list: nil case uses that p.Prime means p > 1 ≠ 1. Cons case uses Nat.Prime.dvd_mul to split p | (hd * tl.prod)."
+      "summary": "prime_dvd_of_dvd_list_prod: if prime p divides a list product, then p divides some element. Induction on the list: nil case uses that p.Prime means p > 1 ≠ 1. Cons case uses Nat.Prime.dvd_mul to split p | (hd * tl.prod).",
+      "mathContext": "Extension of Euclid's Lemma to finite products: if $p$ is prime and $p \\mid a_1 a_2 \\cdots a_k$, then $p \\mid a_i$ for some $i$. The induction step applies the binary case: $p \\mid (a_1 \\cdot \\prod_{i>1} a_i)$ implies $p \\mid a_1$ or $p \\mid \\prod_{i>1} a_i$."
     },
     {
       "id": "prime-mem-prime-list",
       "title": "Prime in Product of Primes",
       "startLine": 93,
       "endLine": 108,
-      "summary": "prime_mem_of_dvd_prime_list: if prime p divides a product of primes, p equals one of them. Uses prime_dvd_of_dvd_list_prod to get x with p|x, then Nat.Prime.eq_one_or_self_of_dvd to conclude p = x (since p > 1)."
+      "summary": "prime_mem_of_dvd_prime_list: if prime p divides a product of primes, p equals one of them. Uses prime_dvd_of_dvd_list_prod to get x with p|x, then Nat.Prime.eq_one_or_self_of_dvd to conclude p = x (since p > 1).",
+      "mathContext": "If $p$ is prime and $p \\mid q_1 q_2 \\cdots q_k$ where each $q_i$ is prime, then $p = q_i$ for some $i$. Since $p \\mid q_i$ and the only divisors of a prime $q_i$ are $1$ and $q_i$, and $p \\geq 2 > 1$, we conclude $p = q_i$. This is the step that converts divisibility into membership."
     },
     {
       "id": "product-lemmas",
       "title": "Product Lemmas for Prime Lists",
       "startLine": 113,
       "endLine": 141,
-      "summary": "Helper lemmas: prime_list_prod_pos (product of prime list is positive) and prime_list_prod_one_iff_nil (product of prime list is 1 iff list is empty). These handle edge cases in the uniqueness induction."
+      "summary": "Helper lemmas: prime_list_prod_pos (product of prime list is positive) and prime_list_prod_one_iff_nil (product of prime list is 1 iff list is empty). These handle edge cases in the uniqueness induction.",
+      "mathContext": "Two auxiliary facts for lists of primes $[p_1, \\ldots, p_k]$: (1) $\\prod p_i > 0$ since each $p_i \\geq 2$; (2) $\\prod p_i = 1$ iff $k = 0$, since each factor $\\geq 2$ makes the product $\\geq 2$. These handle the base case of the uniqueness induction where one factorization is empty."
     },
     {
       "id": "fta-uniqueness",
       "title": "FTA Uniqueness via Euclid's Lemma",
       "startLine": 157,
       "endLine": 189,
-      "summary": "fta_uniqueness: two prime lists with equal products are permutations. Induction on l₁. Empty: product 1 means l₂ is empty by prime_list_prod_one_iff_nil. Cons: head p divides l₂.prod, so p ∈ l₂ by prime_mem_of_dvd_prime_list. Remove p via List.perm_cons_erase, verify remaining products equal, apply induction."
+      "summary": "fta_uniqueness: two prime lists with equal products are permutations. Induction on l₁. Empty: product 1 means l₂ is empty by prime_list_prod_one_iff_nil. Cons: head p divides l₂.prod, so p ∈ l₂ by prime_mem_of_dvd_prime_list. Remove p via List.perm_cons_erase, verify remaining products equal, apply induction.",
+      "mathContext": "The uniqueness half of FTA: if $p_1 p_2 \\cdots p_j = q_1 q_2 \\cdots q_k$ where all factors are prime, then the lists $[p_i]$ and $[q_i]$ are permutations. Induction on $j$: the head $p_1$ divides $\\prod q_i$, so $p_1 = q_m$ for some $m$ by the prime membership lemma. Cancel $p_1$ from both sides (using $p_1 > 0$) and apply induction to the shorter lists."
     },
     {
       "id": "fta-main",
       "title": "Full Fundamental Theorem of Arithmetic",
       "startLine": 204,
       "endLine": 218,
-      "summary": "fta_from_euclid: for every n ≥ 2, there exists a prime list with product n, all elements prime, and uniquely determined up to permutation. Existence via Nat.primeFactorsList. Uniqueness via fta_uniqueness applied to any competing prime list."
+      "summary": "fta_from_euclid: for every n ≥ 2, there exists a prime list with product n, all elements prime, and uniquely determined up to permutation. Existence via Nat.primeFactorsList. Uniqueness via fta_uniqueness applied to any competing prime list.",
+      "mathContext": "The Fundamental Theorem of Arithmetic: every integer $n \\geq 2$ has a unique prime factorization $n = p_1^{e_1} p_2^{e_2} \\cdots p_k^{e_k}$ (unique up to reordering). Existence comes from Mathlib's `primeFactorsList`; uniqueness from `fta_uniqueness`. The complete proof chain is: B\\'{e}zout's identity $\\Rightarrow$ Euclid's Lemma $\\Rightarrow$ FTA."
     },
     {
       "id": "consequences",
       "title": "Consequences: Unique Multiplicities and Infinite Primes",
       "startLine": 226,
       "endLine": 257,
-      "summary": "prime_factor_count_unique: if two prime lists have the same product, they have the same count of each prime (via Perm.count_eq). no_finite_list_contains_all_primes: for any finite list of primes, there exists a prime not in the list (using Nat.exists_infinite_primes and List.le_sum_of_mem)."
+      "summary": "prime_factor_count_unique: if two prime lists have the same product, they have the same count of each prime (via Perm.count_eq). no_finite_list_contains_all_primes: for any finite list of primes, there exists a prime not in the list (using Nat.exists_infinite_primes and List.le_sum_of_mem).",
+      "mathContext": "Two corollaries of FTA uniqueness: (1) the multiplicity $v_p(n)$ of each prime $p$ in $n$ is well-defined, since permutations preserve element counts; (2) there are infinitely many primes — given any finite list $\\{p_1, \\ldots, p_k\\}$, Euclid's argument produces a prime $q \\notin \\{p_1, \\ldots, p_k\\}$. The infinitude result follows from `Nat.exists_infinite_primes`."
     }
   ],
   "conclusion": {

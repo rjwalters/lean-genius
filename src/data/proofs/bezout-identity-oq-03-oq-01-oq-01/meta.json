@@ -78,49 +78,56 @@
       "title": "Key Coprimality Lemma",
       "startLine": 31,
       "endLine": 60,
-      "summary": "coprime_prod_of_coprime_all and head_coprime_tail_prod: if n is coprime to each element, it's coprime to the product. Proved by induction using Nat.Coprime.mul_right. Also pairwise_tail: extracting pairwise coprimality of the tail from the cons case."
+      "summary": "coprime_prod_of_coprime_all and head_coprime_tail_prod: if n is coprime to each element, it's coprime to the product. Proved by induction using Nat.Coprime.mul_right. Also pairwise_tail: extracting pairwise coprimality of the tail from the cons case.",
+      "mathContext": "Key lemma: if $\\gcd(n, n_i) = 1$ for all $i$, then $\\gcd(n, \\prod_i n_i) = 1$. Proved by induction: $\\gcd(n, n_1 \\cdot \\prod_{i>1} n_i) = 1$ follows from $\\gcd(n, n_1) = 1$ and $\\gcd(n, \\prod_{i>1} n_i) = 1$ via `Nat.Coprime.mul_right`. This is the essential ingredient enabling the inductive step of the $k$-fold CRT."
     },
     {
       "id": "explicit-crt",
       "title": "Explicit 3-fold and 4-fold CRT",
       "startLine": 61,
       "endLine": 99,
-      "summary": "crt3 and crt4: direct constructions of ℤ/(abc)ℤ ≅ ℤ/aℤ × (ℤ/bℤ × ℤ/cℤ) and 4-fold analog. Uses ring for ℕ associativity, Nat.Coprime.mul_right for coprimality propagation, and RingEquiv.prodCongr for lifting isomorphisms into products."
+      "summary": "crt3 and crt4: direct constructions of ℤ/(abc)ℤ ≅ ℤ/aℤ × (ℤ/bℤ × ℤ/cℤ) and 4-fold analog. Uses ring for ℕ associativity, Nat.Coprime.mul_right for coprimality propagation, and RingEquiv.prodCongr for lifting isomorphisms into products.",
+      "mathContext": "Explicit 3-fold: $\\mathbb{Z}/abc\\mathbb{Z} \\cong \\mathbb{Z}/a\\mathbb{Z} \\times (\\mathbb{Z}/b\\mathbb{Z} \\times \\mathbb{Z}/c\\mathbb{Z})$ for pairwise coprime $a,b,c$. First apply `ZMod.chineseRemainder` to get $\\mathbb{Z}/a(bc)\\mathbb{Z} \\cong \\mathbb{Z}/a\\mathbb{Z} \\times \\mathbb{Z}/bc\\mathbb{Z}$ (using $\\gcd(a, bc) = 1$), then `RingEquiv.prodCongr` with the 2-fold CRT on $\\mathbb{Z}/bc\\mathbb{Z}$. The 4-fold version iterates the same pattern."
     },
     {
       "id": "general-kfold",
       "title": "General k-fold CRT Isomorphism",
       "startLine": 100,
       "endLine": 139,
-      "summary": "CRTProd recursive type definition, CommRing instances, zmod_one_equiv_punit base case, and crtKFold: the main inductive construction composing chineseRemainder with prodCongr at each step."
+      "summary": "CRTProd recursive type definition, CommRing instances, zmod_one_equiv_punit base case, and crtKFold: the main inductive construction composing chineseRemainder with prodCongr at each step.",
+      "mathContext": "Define $\\text{CRTProd}([]) = \\text{PUnit}$, $\\text{CRTProd}(n :: ns) = \\mathbb{Z}/n\\mathbb{Z} \\times \\text{CRTProd}(ns)$. The isomorphism $\\mathbb{Z}/(\\prod n_i)\\mathbb{Z} \\cong \\text{CRTProd}(ns)$ is constructed by induction: at each step, $\\mathbb{Z}/(n \\cdot \\prod ns)\\mathbb{Z} \\xrightarrow{\\text{CRT}} \\mathbb{Z}/n\\mathbb{Z} \\times \\mathbb{Z}/(\\prod ns)\\mathbb{Z} \\xrightarrow{\\text{id} \\times \\text{IH}} \\mathbb{Z}/n\\mathbb{Z} \\times \\text{CRTProd}(ns)$. Base case: $\\mathbb{Z}/1\\mathbb{Z} \\cong \\text{PUnit}$ since $\\mathbb{Z}/1\\mathbb{Z}$ is the trivial ring."
     },
     {
       "id": "properties",
       "title": "Properties of the k-fold CRT",
       "startLine": 140,
       "endLine": 183,
-      "summary": "Algebraic properties derived from the ring isomorphism: bijective, injective, surjective, preserves multiplication and addition, round-trip identity in both directions. Each follows directly from RingEquiv API."
+      "summary": "Algebraic properties derived from the ring isomorphism: bijective, injective, surjective, preserves multiplication and addition, round-trip identity in both directions. Each follows directly from RingEquiv API.",
+      "mathContext": "The ring isomorphism $\\phi: \\mathbb{Z}/(\\prod n_i)\\mathbb{Z} \\xrightarrow{\\sim} \\text{CRTProd}(ns)$ satisfies: $\\phi(x + y) = \\phi(x) + \\phi(y)$, $\\phi(xy) = \\phi(x)\\phi(y)$ (ring homomorphism), $\\phi^{-1} \\circ \\phi = \\text{id}$ and $\\phi \\circ \\phi^{-1} = \\text{id}$ (bijectivity). All follow from the `RingEquiv` API since $\\phi$ is constructed as a composition of `RingEquiv`s."
     },
     {
       "id": "totient",
       "title": "Euler Totient Multiplicativity",
       "startLine": 184,
       "endLine": 201,
-      "summary": "totient_prod_pairwise_coprime: φ(∏ nᵢ) = ∏ φ(nᵢ) for pairwise coprime lists. Proved by induction using Nat.totient_mul at each step, mirroring the CRT induction structure."
+      "summary": "totient_prod_pairwise_coprime: φ(∏ nᵢ) = ∏ φ(nᵢ) for pairwise coprime lists. Proved by induction using Nat.totient_mul at each step, mirroring the CRT induction structure.",
+      "mathContext": "Euler's totient $\\varphi(n) = |\\{k : 1 \\leq k \\leq n, \\gcd(k,n) = 1\\}|$ is multiplicative: $\\varphi(mn) = \\varphi(m)\\varphi(n)$ when $\\gcd(m,n)=1$. The $k$-fold version $\\varphi(\\prod_i n_i) = \\prod_i \\varphi(n_i)$ follows by induction, applying `Nat.totient_mul` at each step with coprimality $\\gcd(n, \\prod ns) = 1$ from `coprime_prod_of_coprime_all`."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 202,
       "endLine": 226,
-      "summary": "Concrete instances: ℤ/30ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ (both via k-fold and explicit crt3), ℤ/210ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ × ℤ/7ℤ (explicit crt4). Totient example: φ(30) = φ(2)·φ(3)·φ(5) = 8."
+      "summary": "Concrete instances: ℤ/30ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ (both via k-fold and explicit crt3), ℤ/210ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ × ℤ/7ℤ (explicit crt4). Totient example: φ(30) = φ(2)·φ(3)·φ(5) = 8.",
+      "mathContext": "Example: $30 = 2 \\cdot 3 \\cdot 5$ with $\\gcd(2,3) = \\gcd(2,5) = \\gcd(3,5) = 1$, so $\\mathbb{Z}/30\\mathbb{Z} \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/3\\mathbb{Z} \\times \\mathbb{Z}/5\\mathbb{Z}$. Totient: $\\varphi(30) = \\varphi(2) \\cdot \\varphi(3) \\cdot \\varphi(5) = 1 \\cdot 2 \\cdot 4 = 8$. The 4-fold example: $210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$ gives $\\varphi(210) = 1 \\cdot 2 \\cdot 4 \\cdot 6 = 48$."
     },
     {
       "id": "verification",
       "title": "Type Verification",
       "startLine": 227,
       "endLine": 249,
-      "summary": "#check commands verifying all 15 exported definitions and theorems typecheck correctly: coprimality lemmas, explicit CRT constructions, general k-fold isomorphism with properties, and concrete examples."
+      "summary": "#check commands verifying all 15 exported definitions and theorems typecheck correctly: coprimality lemmas, explicit CRT constructions, general k-fold isomorphism with properties, and concrete examples.",
+      "mathContext": "The `#check` commands verify that all 15 exported names have the expected types in Lean's type theory. For instance, `#check @crtKFold` confirms the type `(ns : List \\mathbb{N}) \\to \\text{Pairwise Coprime ns} \\to \\mathbb{Z}/(\\prod ns)\\mathbb{Z} \\simeq_{+*} \\text{CRTProd}(ns)$, ensuring the full dependent type signature is well-formed."
     }
   ],
   "crossReferences": [

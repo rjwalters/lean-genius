@@ -99,49 +99,56 @@
       "title": "The CRT Ring Isomorphism",
       "summary": "Wraps ZMod.chineseRemainder as crtRingIso and proves ring homomorphism properties: additivity, multiplicativity, unit preservation, bijectivity.",
       "startLine": 34,
-      "endLine": 85
+      "endLine": 85,
+      "mathContext": "The Chinese Remainder Theorem as a ring isomorphism: for coprime $m, n$, the map $\\varphi: \\mathbb{Z}/mn\\mathbb{Z} \\to \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ defined by $x \\mapsto (x \\bmod m,\\, x \\bmod n)$ is a ring isomorphism ($\\varphi(x+y) = \\varphi(x) + \\varphi(y)$, $\\varphi(xy) = \\varphi(x)\\varphi(y)$, $\\varphi(1) = (1,1)$, and $\\varphi$ is bijective)."
     },
     {
       "id": "inverse-map",
       "title": "The Inverse Map and Round-Trips",
       "summary": "Defines crtInverse via .symm and proves both round-trip identities: forward-then-inverse and inverse-then-forward.",
       "startLine": 86,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "The inverse map $\\varphi^{-1}: \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z} \\to \\mathbb{Z}/mn\\mathbb{Z}$ satisfies $\\varphi^{-1}(\\varphi(x)) = x$ and $\\varphi(\\varphi^{-1}(a,b)) = (a,b)$, establishing a bijective correspondence. Explicitly, $\\varphi^{-1}(a,b) = a \\cdot nv + b \\cdot mu \\pmod{mn}$ where $mu + nv = 1$ from B\\'{e}zout's identity."
     },
     {
       "id": "coprimality",
       "title": "CRT and Coprimality",
       "summary": "Coprimality is symmetric, and the isomorphism works with swapped factors ℤ/(nm)ℤ ≅ ℤ/nℤ × ℤ/mℤ.",
       "startLine": 114,
-      "endLine": 127
+      "endLine": 127,
+      "mathContext": "Since $\\gcd(m,n) = 1 \\iff \\gcd(n,m) = 1$, the CRT isomorphism is symmetric: $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z} \\cong \\mathbb{Z}/n\\mathbb{Z} \\times \\mathbb{Z}/m\\mathbb{Z}$. The swapped version uses $mn = nm$ in $\\mathbb{Z}$."
     },
     {
       "id": "idempotents",
       "title": "Orthogonal Idempotent Decomposition",
       "summary": "Constructs idempotents e₁ = φ⁻¹(1,0) and e₂ = φ⁻¹(0,1) satisfying e₁+e₂=1, e₁e₂=0, eᵢ²=eᵢ.",
       "startLine": 128,
-      "endLine": 182
+      "endLine": 182,
+      "mathContext": "Orthogonal idempotent decomposition in $\\mathbb{Z}/mn\\mathbb{Z}$: define $e_1 = \\varphi^{-1}(1,0) = nv$ and $e_2 = \\varphi^{-1}(0,1) = mu$ where $mu + nv = 1$. These satisfy $e_1 + e_2 = 1$, $e_1 e_2 = 0$, $e_1^2 = e_1$, and $e_2^2 = e_2$. The idempotents decompose $\\mathbb{Z}/mn\\mathbb{Z} = e_1 \\cdot \\mathbb{Z}/mn\\mathbb{Z} \\oplus e_2 \\cdot \\mathbb{Z}/mn\\mathbb{Z}$."
     },
     {
       "id": "bezout-connection",
       "title": "Connecting to Bézout's Identity",
       "summary": "Shows the explicit CRT solution formula x = a·nv + b·mu from Bézout coefficients mu + nv = 1.",
       "startLine": 183,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "Explicit CRT solution via B\\'{e}zout coefficients: given $\\gcd(m,n) = 1$ with $mu + nv = 1$, the system $x \\equiv a \\pmod{m},\\; x \\equiv b \\pmod{n}$ has solution $x = a \\cdot nv + b \\cdot mu$. Verification: $x \\equiv a \\cdot nv + b \\cdot mu \\equiv a(1 - mu) + b \\cdot mu \\equiv a \\pmod{m}$, and similarly $x \\equiv b \\pmod{n}$."
     },
     {
       "id": "cardinality",
       "title": "Cardinality and Counting",
       "summary": "Card(ℤ/mnℤ) = Card(ℤ/mℤ) × Card(ℤ/nℤ) and Euler totient multiplicativity φ(mn) = φ(m)φ(n).",
       "startLine": 216,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "The ring isomorphism preserves cardinality: $|\\mathbb{Z}/mn\\mathbb{Z}| = mn = m \\cdot n = |\\mathbb{Z}/m\\mathbb{Z}| \\cdot |\\mathbb{Z}/n\\mathbb{Z}|$. Since isomorphisms preserve units, $\\varphi(mn) = |( \\mathbb{Z}/mn\\mathbb{Z})^\\times| = |(\\mathbb{Z}/m\\mathbb{Z})^\\times| \\cdot |(\\mathbb{Z}/n\\mathbb{Z})^\\times| = \\varphi(m)\\varphi(n)$, establishing the multiplicativity of Euler's totient function for coprime arguments."
     },
     {
       "id": "applications",
       "title": "Applications: Simultaneous Congruences",
       "summary": "Existence and uniqueness of simultaneous solutions, power preservation, and unit characterization.",
       "startLine": 235,
-      "endLine": 315
+      "endLine": 315,
+      "mathContext": "Applications of the CRT isomorphism: (1) the system $x \\equiv a \\pmod{m},\\; x \\equiv b \\pmod{n}$ has a unique solution mod $mn$; (2) $\\varphi(x^k) = (\\varphi(x))^k$ (power preservation); (3) $x \\in (\\mathbb{Z}/mn\\mathbb{Z})^\\times \\iff \\gcd(x,m) = 1 \\land \\gcd(x,n) = 1$, giving the unit group decomposition $(\\mathbb{Z}/mn\\mathbb{Z})^\\times \\cong (\\mathbb{Z}/m\\mathbb{Z})^\\times \\times (\\mathbb{Z}/n\\mathbb{Z})^\\times$."
     }
   ],
   "conclusion": {

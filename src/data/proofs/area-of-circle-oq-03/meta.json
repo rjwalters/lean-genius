@@ -80,42 +80,48 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib (for HasDerivAt, trigonometric functions, Filter.Tendsto) and opens Real, Filter, Topology. Defines inscribedArea and circumscribedArea noncomputably.",
       "startLine": 1,
-      "endLine": 74
+      "endLine": 74,
+      "mathContext": "Defines the inscribed and circumscribed regular polygon areas: $A_{\\text{in}}(n, r) = \\tfrac{n r^2}{2} \\sin\\!\\left(\\tfrac{2\\pi}{n}\\right)$ (area of $n$-gon inscribed in circle of radius $r$) and $A_{\\text{circ}}(n, r) = n r^2 \\tan\\!\\left(\\tfrac{\\pi}{n}\\right)$ (area of circumscribed $n$-gon). Both are `noncomputable` due to dependence on $\\sin$ and $\\tan$."
     },
     {
       "id": "sin-limit",
       "title": "The Key Limit: sin(h)/h → 1",
       "summary": "Proves tendsto_sin_div_nhds_zero via HasDerivAt-slope equivalence. Chains: 2π/n → 0 → sin(2π/n)/(2π/n) → 1 → n·sin(2π/n) → 2π.",
       "startLine": 75,
-      "endLine": 134
+      "endLine": 134,
+      "mathContext": "The fundamental limit $\\lim_{h \\to 0} \\frac{\\sin h}{h} = 1$ is derived from $\\sin'(0) = \\cos(0) = 1$ via the slope-derivative equivalence. Composing with $h = 2\\pi/n \\to 0$ as $n \\to \\infty$ yields $\\frac{\\sin(2\\pi/n)}{2\\pi/n} \\to 1$, hence $n \\sin(2\\pi/n) \\to 2\\pi$."
     },
     {
       "id": "inscribed",
       "title": "Inscribed Polygon Properties",
       "summary": "Proves: n·sin(2π/n) ≤ 2π (from sin x < x), inscribedArea ≤ πr² (sandwich from below), inscribedArea > 0 for n≥3, and inscribedArea → πr² (main convergence theorem).",
       "startLine": 135,
-      "endLine": 219
+      "endLine": 219,
+      "mathContext": "The inscribed polygon area satisfies $A_{\\text{in}}(n,r) = \\tfrac{nr^2}{2}\\sin\\!\\left(\\tfrac{2\\pi}{n}\\right) \\leq \\pi r^2$ since $\\sin x < x$ for $x > 0$ gives $n\\sin(2\\pi/n) < n \\cdot 2\\pi/n = 2\\pi$. Convergence: $A_{\\text{in}}(n,r) = \\tfrac{r^2}{2} \\cdot n\\sin(2\\pi/n) \\to \\tfrac{r^2}{2} \\cdot 2\\pi = \\pi r^2$ as $n \\to \\infty$."
     },
     {
       "id": "tan-limit",
       "title": "The Key Limit: tan(h)/h → 1",
       "summary": "Parallel to sin section: proves tendsto_tan_div_nhds_zero via HasDerivAt tan 1 0 (since cos(0)=1). Chains to n·tan(π/n) → π.",
       "startLine": 220,
-      "endLine": 276
+      "endLine": 276,
+      "mathContext": "The limit $\\lim_{h \\to 0} \\frac{\\tan h}{h} = 1$ from $\\tan'(0) = \\sec^2(0) = 1$. Composing with $h = \\pi/n \\to 0$ gives $\\frac{\\tan(\\pi/n)}{\\pi/n} \\to 1$, hence $n \\tan(\\pi/n) \\to \\pi$. This drives the circumscribed polygon convergence."
     },
     {
       "id": "circumscribed",
       "title": "Circumscribed Polygon Convergence",
       "summary": "Proves circumscribedArea → πr² using n·tan(π/n) → π scaled by r².",
       "startLine": 277,
-      "endLine": 297
+      "endLine": 297,
+      "mathContext": "The circumscribed polygon area $A_{\\text{circ}}(n,r) = nr^2 \\tan(\\pi/n) = r^2 \\cdot n\\tan(\\pi/n) \\to r^2 \\cdot \\pi = \\pi r^2$ as $n \\to \\infty$. Since $\\tan x > x$ for $0 < x < \\pi/2$, we have $A_{\\text{circ}}(n,r) \\geq \\pi r^2$, providing the upper sandwich bound."
     },
     {
       "id": "sandwich",
       "title": "Sandwich and Uniqueness",
       "summary": "inscribed_le_circumscribed: sandwich inequality using sin(2θ)=2sin(θ)cos(θ) and cos(θ)≤1. inscribed_converges_to_pi_r_sq: ε-N characterization. archimedes_exhaustion_unique: πr² uniquely determined by inscribed limit.",
       "startLine": 298,
-      "endLine": 366
+      "endLine": 366,
+      "mathContext": "The sandwich theorem: $A_{\\text{in}}(n,r) \\leq \\pi r^2 \\leq A_{\\text{circ}}(n,r)$ for all $n \\geq 3$. The left inequality uses $\\sin(2\\theta) = 2\\sin\\theta\\cos\\theta \\leq 2\\sin\\theta \\cdot 1 = 2\\sin\\theta$, so $n\\sin(2\\pi/n) \\leq 2n\\sin(\\pi/n) \\leq 2\\pi$. By the squeeze theorem, $\\pi r^2$ is the unique value sandwiched between both sequences, establishing $\\pi r^2 = \\lim_{n \\to \\infty} A_{\\text{in}}(n,r) = \\lim_{n \\to \\infty} A_{\\text{circ}}(n,r)$."
     }
   ],
   "conclusion": {

@@ -58,35 +58,40 @@
       "title": "Module Header and Problem Statement",
       "startLine": 1,
       "endLine": 28,
-      "summary": "Documents the open question origin (from bezout-identity-oq-02-oq-02-oq-01: 'Can the noncomputable annotation be removed?') and the affirmative answer: replacing hdvd.choose with computable integer division (b*c)/a. Imports Mathlib's natural number GCD, integer GCD, and general tactic libraries. Opens the BezoutConstructive namespace for the formalization."
+      "summary": "Documents the open question origin (from bezout-identity-oq-02-oq-02-oq-01: 'Can the noncomputable annotation be removed?') and the affirmative answer: replacing hdvd.choose with computable integer division (b*c)/a. Imports Mathlib's natural number GCD, integer GCD, and general tactic libraries. Opens the BezoutConstructive namespace for the formalization.",
+      "mathContext": "The `noncomputable` annotation in Lean 4 marks definitions that use classical axioms (e.g., `Classical.choice`) and cannot be evaluated by the kernel. The goal is to produce a function $f(a,b,c) = q$ with $aq = c$ that passes the computability checker, replacing `Exists.choose` with $\\lfloor bc/a \\rfloor$."
     },
     {
       "id": "ext-gcd",
       "title": "Extended Euclidean Algorithm",
       "startLine": 29,
       "endLine": 80,
-      "summary": "Implements `extGcd` as a recursive function returning Bézout coefficients $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$, along with correctness proofs `extGcd_gcd` and `extGcd_bezout` by strong induction on $b$."
+      "summary": "Implements `extGcd` as a recursive function returning Bézout coefficients $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$, along with correctness proofs `extGcd_gcd` and `extGcd_bezout` by strong induction on $b$.",
+      "mathContext": "The extended Euclidean algorithm computes $(x, y, g)$ satisfying $ax + by = g = \\gcd(a,b)$ in $O(\\log \\min(a,b))$ steps. When $\\gcd(a,b) = 1$, the coefficients satisfy $ax + by = 1$, giving the multiplicative inverse $x \\equiv a^{-1} \\pmod{b}$. Correctness is proved by strong induction on $b$ using the recurrence $\\gcd(a,b) = \\gcd(b, a \\bmod b)$."
     },
     {
       "id": "computable-div",
       "title": "Fully Computable Constructive Quotient",
       "startLine": 81,
       "endLine": 135,
-      "summary": "Defines `constructive_div_computable` using $q = xc + y \\cdot \\lfloor bc/a \\rfloor$ and proves its correctness via `Int.mul_ediv_cancel'` and the Bézout identity. The function passes Lean's computability checker."
+      "summary": "Defines `constructive_div_computable` using $q = xc + y \\cdot \\lfloor bc/a \\rfloor$ and proves its correctness via `Int.mul_ediv_cancel'` and the Bézout identity. The function passes Lean's computability checker.",
+      "mathContext": "Given $\\gcd(a,b)=1$ and $a \\mid bc$, define $q = xc + y \\cdot \\lfloor bc/a \\rfloor$ where $ax + by = 1$. Then $aq = a(xc + yk) = (ax)c + (ay)k = (1-by)c + (a y)(bc/a) = c - byc + ybc = c$. The key: $k = \\lfloor bc/a \\rfloor$ is exact since $a \\mid bc$, so `Int.mul_ediv_cancel'` gives $a \\cdot k = bc$."
     },
     {
       "id": "eval-examples",
       "title": "Computational Verification",
       "startLine": 136,
       "endLine": 159,
-      "summary": "Demonstrates computability with `native_decide` examples and `#eval` evaluations, confirming the function produces correct quotients for concrete inputs like $\\gcd(3,7)=1, 3 \\mid 42$ giving $q=2$."
+      "summary": "Demonstrates computability with `native_decide` examples and `#eval` evaluations, confirming the function produces correct quotients for concrete inputs like $\\gcd(3,7)=1, 3 \\mid 42$ giving $q=2$.",
+      "mathContext": "Computational certificates: `#eval constructive_div_computable 3 7 42 ...` reduces to $14$ in the kernel, confirming $3 \\times 14 = 42$. The `native_decide` tactic delegates decidable propositions to compiled code, providing a second layer of verification that the function is genuinely computable (no hidden `noncomputable` dependencies)."
     },
     {
       "id": "key-insight",
       "title": "Why Integer Division Works",
       "startLine": 160,
       "endLine": 182,
-      "summary": "The theorem `div_witness_correct` isolates the core insight: when $a \\mid bc$, the integer division $\\lfloor bc/a \\rfloor$ is exact, so $a \\cdot (bc/a) = bc$. This is what eliminates the need for classical choice."
+      "summary": "The theorem `div_witness_correct` isolates the core insight: when $a \\mid bc$, the integer division $\\lfloor bc/a \\rfloor$ is exact, so $a \\cdot (bc/a) = bc$. This is what eliminates the need for classical choice.",
+      "mathContext": "The witness $k = \\lfloor bc/a \\rfloor$ satisfies $ak = bc$ exactly when $a \\mid bc$ (i.e., $bc \\equiv 0 \\pmod{a}$). This is `Int.mul_ediv_cancel'`: $a \\cdot (bc / a) = bc$ given $a \\mid bc$. The classical witness `hdvd.choose` extracts the same $k$ from the existential $\\exists k, ak = bc$, but via the axiom of choice, making the definition `noncomputable`."
     }
   ],
   "conclusion": {
