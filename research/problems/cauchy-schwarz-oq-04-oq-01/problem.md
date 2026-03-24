@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Weighted Cauchy-Schwarz for Finite Sum Inner Products.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Weighted Cauchy-Schwarz for Finite Sum Inner Products.
 
 ## Related Gallery Proofs
 

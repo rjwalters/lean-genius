@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+What is the analog of Cayley-Hamilton for infinite-dimensional operators.
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - What is the analog of Cayley-Hamilton for infinite-dimensional operators.
 
 ## Related Gallery Proofs
 

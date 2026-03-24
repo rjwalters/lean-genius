@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can we formalize the theorem that similar matrices have identical minimal pol...
 
 ### Formal Statement
 $$
@@ -33,7 +33,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can we formalize the theorem that similar matrices have identical minimal pol...
 
 ## Related Gallery Proofs
 

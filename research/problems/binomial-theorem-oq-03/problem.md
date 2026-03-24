@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Derive binomial distribution from binomial theorem.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Derive binomial distribution from binomial theorem.
 
 ## Related Gallery Proofs
 

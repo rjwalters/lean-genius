@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Smooth Gauss-Bonnet theorem formalization.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Smooth Gauss-Bonnet theorem formalization.
 
 ## Related Gallery Proofs
 

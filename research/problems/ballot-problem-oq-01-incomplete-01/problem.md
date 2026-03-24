@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Complete Generalized Ballot Problem: k-Fold Dominance (3 sorries).
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Complete Generalized Ballot Problem: k-Fold Dominance (3 sorries).
 
 ## Related Gallery Proofs
 

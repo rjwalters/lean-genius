@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Wilson Theorem Generalizations for Composite Moduli.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Wilson Theorem Generalizations for Composite Moduli.
 
 ## Related Gallery Proofs
 

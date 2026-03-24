@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Open Question: Do Siegel zeros exist? Equivalently, can L(1,χ) be exponentially small (e.g., like exp(-c·√(log q))) for real primitive Dirichlet.
 
 ### Formal Statement
 $$
@@ -34,7 +34,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Open Question: Do Siegel zeros exist? Equivalently, can L(1,χ) be exponentially small (e.g., like exp(-c·√(log q))) for real primitive Dirichlet.
 
 ## Related Gallery Proofs
 

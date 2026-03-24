@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Dehn-Sydler completeness theorem for 3D scissors congruence.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Dehn-Sydler completeness theorem for 3D scissors congruence.
 
 ## Related Gallery Proofs
 

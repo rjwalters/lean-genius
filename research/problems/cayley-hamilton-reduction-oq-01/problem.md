@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can this reduction be made computationally efficient for sparse matrices.
 
 ### Formal Statement
 $$
@@ -32,7 +32,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can this reduction be made computationally efficient for sparse matrices.
 
 ## Related Gallery Proofs
 

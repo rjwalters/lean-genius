@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Contribute (1+x/n)^n -> e^x limit to Mathlib.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Contribute (1+x/n)^n -> e^x limit to Mathlib.
 
 ## Related Gallery Proofs
 

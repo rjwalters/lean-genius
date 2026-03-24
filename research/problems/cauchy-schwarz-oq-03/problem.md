@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Hölder's Inequality as Cauchy-Schwarz Generalization.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Hölder's Inequality as Cauchy-Schwarz Generalization.
 
 ## Related Gallery Proofs
 

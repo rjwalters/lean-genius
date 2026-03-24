@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Vandermonde identity: C(m+n,r) = sum C(m,k)*C(n,r-k).
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Vandermonde identity: C(m+n,r) = sum C(m,k)*C(n,r-k).
 
 ## Related Gallery Proofs
 

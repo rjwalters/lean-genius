@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-SKIPPED: Already covered by PerfectNumbers.
+Sum of Divisors Properties.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - SKIPPED: Already covered by PerfectNumbers
+1. **Research value** - Sum of Divisors Properties.
 
 ## Related Gallery Proofs
 

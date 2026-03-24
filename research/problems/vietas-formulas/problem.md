@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-COMPLETED: VietasFormulas.
+Formalize Vieta's formulas relating polynomial coefficients to sums and products of roots.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - COMPLETED: VietasFormulas
+1. **Research value** - Formalize Vieta's formulas relating polynomial coefficients to sums and products of roots.
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Generalizations of Wilsons Theorem to Non-Prime Moduli.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Generalizations of Wilsons Theorem to Non-Prime Moduli.
 
 ## Related Gallery Proofs
 

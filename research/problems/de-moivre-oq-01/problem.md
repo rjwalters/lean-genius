@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalize the explicit extraction of cos(nθ) and sin(nθ) formulas by comparin...
 
 ### Formal Statement
 $$
@@ -32,7 +32,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Formalize the explicit extraction of cos(nθ) and sin(nθ) formulas by comparin...
 
 ## Related Gallery Proofs
 

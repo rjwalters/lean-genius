@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
 ## Related Gallery Proofs
 

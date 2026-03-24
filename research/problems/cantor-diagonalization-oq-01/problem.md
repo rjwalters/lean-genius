@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The Continuum Hypothesis: Is there a cardinality between countable and continuum.
 
 ### Formal Statement
 $$
@@ -32,7 +32,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - The Continuum Hypothesis: Is there a cardinality between countable and continuum.
 
 ## Related Gallery Proofs
 

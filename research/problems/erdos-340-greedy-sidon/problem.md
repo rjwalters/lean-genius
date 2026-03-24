@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-BLOCKED: OPEN CONJECTURE - The main theorem (|A ∩ [1,N]| >> N^(1/2-ε)) is an unsolved problem in mathematics.
+Erdős #340: Greedy Sidon Sequence Growth.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - BLOCKED: OPEN CONJECTURE - The main theorem (|A ∩ [1,N]| >> N^(1/2-ε)) is an unsolved problem in mathematics
+1. **Research value** - Erdős #340: Greedy Sidon Sequence Growth.
 
 ## Related Gallery Proofs
 

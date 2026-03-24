@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Non-coprime CRT extension to polynomial rings and PIDs.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Non-coprime CRT extension to polynomial rings and PIDs.
 
 ## Related Gallery Proofs
 

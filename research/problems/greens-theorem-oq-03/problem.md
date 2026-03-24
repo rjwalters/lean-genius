@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Replace the abstract `GreenRegion` (with `dummy : Unit`) with a concrete simply-connected region structure and state meaningful Green's theorem.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Replace the abstract `GreenRegion` (with `dummy : Unit`) with a concrete simply-connected region structure and state meaningful Green's theorem.
 
 ## Related Gallery Proofs
 

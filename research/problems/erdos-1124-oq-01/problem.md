@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Reducing pieces in Laczkovich circle-squaring decomposition.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Reducing pieces in Laczkovich circle-squaring decomposition.
 
 ## Related Gallery Proofs
 

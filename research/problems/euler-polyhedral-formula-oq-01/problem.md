@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Planar Graph Embedding Formalization for Euler Formula.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Planar Graph Embedding Formalization for Euler Formula.
 
 ## Related Gallery Proofs
 

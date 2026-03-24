@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formal Divisibility Rules for Various Bases and Moduli.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Formal Divisibility Rules for Various Bases and Moduli.
 
 ## Related Gallery Proofs
 

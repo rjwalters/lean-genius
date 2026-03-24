@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Hall's theorem for solvable groups (converse of Lagrange).
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Hall's theorem for solvable groups (converse of Lagrange).
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+How do weighted power means interpolate between AM and GM?
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - How do weighted power means interpolate between AM and GM?
 
 ## Related Gallery Proofs
 

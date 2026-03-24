@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+General n-set Inclusion-Exclusion Formula with Formal Induction.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - General n-set Inclusion-Exclusion Formula with Formal Induction.
 
 ## Related Gallery Proofs
 

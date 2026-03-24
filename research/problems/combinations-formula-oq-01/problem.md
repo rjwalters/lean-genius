@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Generalized Binomial Coefficients for Non-Integer Arguments.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Generalized Binomial Coefficients for Non-Integer Arguments.
 
 ## Related Gallery Proofs
 

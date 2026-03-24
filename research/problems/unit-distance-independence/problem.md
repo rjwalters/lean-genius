@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalize bounds on the independence number of unit distance graphs in the plane, connecting to the Hadwiger-Nelson problem on the chromatic number of the plane.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Formalize bounds on the independence number of unit distance graphs in the plane, connecting to the Hadwiger-Nelson problem on the chromatic number of the plane.
 
 ## Related Gallery Proofs
 

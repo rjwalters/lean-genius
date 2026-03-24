@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Prove Feuerbach distance relations via coordinate computation.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Prove Feuerbach distance relations via coordinate computation.
 
 ## Related Gallery Proofs
 

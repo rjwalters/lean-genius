@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Open question: Given that a cube cannot be dissected into finitely many cubes of all different sizes (Wiedijk #82), what is the minimum number of.
 
 ### Formal Statement
 $$
@@ -32,7 +32,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Open question: Given that a cube cannot be dissected into finitely many cubes of all different sizes (Wiedijk #82), what is the minimum number of.
 
 ## Related Gallery Proofs
 

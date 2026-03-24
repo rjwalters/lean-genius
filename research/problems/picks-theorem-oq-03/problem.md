@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Ehrhart polynomials for 3D lattice polytopes generalizing Pick's formula.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Ehrhart polynomials for 3D lattice polytopes generalizing Pick's formula.
 
 ## Related Gallery Proofs
 

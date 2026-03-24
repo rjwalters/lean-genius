@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: Can we characterize which algebraic numbers are constructible in terms of their Galois groups?.
+Constructible algebraic numbers characterized by Galois groups.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: Can we characterize which algebraic numbers are constructible in terms of their Galois groups?
+1. **Research value** - Constructible algebraic numbers characterized by Galois groups.
 
 ## Related Gallery Proofs
 

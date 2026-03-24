@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: What happens with heavy-tailed distributions where variance is infinite? The WLLN via Chebyshev fails, but SLLN may still hold.
+LLN for heavy-tailed distributions with infinite variance.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: What happens with heavy-tailed distributions where variance is infinite? The WLLN via Chebyshev fails, but SLLN may still hold
+1. **Research value** - LLN for heavy-tailed distributions with infinite variance.
 
 ## Related Gallery Proofs
 

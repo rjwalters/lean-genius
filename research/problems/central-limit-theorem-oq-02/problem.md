@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+CLT Generalization to Dependent Random Variables.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - CLT Generalization to Dependent Random Variables.
 
 ## Related Gallery Proofs
 

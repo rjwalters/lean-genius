@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Elementary Proofs of Quadratic Reciprocity.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Elementary Proofs of Quadratic Reciprocity.
 
 ## Related Gallery Proofs
 

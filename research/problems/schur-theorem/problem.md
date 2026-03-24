@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-COMPLETED: SchursTheorem.
+Prove Schur's theorem (1916): for any r-coloring of positive integers, there exists a monochromatic solution to x + y = z.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - COMPLETED: SchursTheorem
+1. **Research value** - Prove Schur's theorem (1916): for any r-coloring of positive integers, there exists a monochromatic solution to x + y = z.
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Snorm-based Hölder Inequality in Mathlib 4.26+.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Snorm-based Hölder Inequality in Mathlib 4.26+.
 
 ## Related Gallery Proofs
 

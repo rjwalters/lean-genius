@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: Mathlib notes that IsSolvable instances for S2, S3, S4 were not available.
+IsSolvable instances for S2, S3, S4 in Mathlib.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: Mathlib notes that IsSolvable instances for S2, S3, S4 were not available
+1. **Research value** - IsSolvable instances for S2, S3, S4 in Mathlib.
 
 ## Related Gallery Proofs
 

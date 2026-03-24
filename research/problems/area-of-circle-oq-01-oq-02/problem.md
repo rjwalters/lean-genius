@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizing the integral direction: A(r) = ∫₀ʳ C(ρ) dρ, where C(ρ) = 2πρ is the circumference.
 
 ### Formal Statement
 $$
@@ -33,7 +33,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Formalizing the integral direction: A(r) = ∫₀ʳ C(ρ) dρ, where C(ρ) = 2πρ is the circumference.
 
 ## Related Gallery Proofs
 

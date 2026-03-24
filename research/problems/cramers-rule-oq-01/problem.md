@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can the formalization include the Cayley-Hamilton theorem as a corollary of t...
 
 ### Formal Statement
 $$
@@ -31,7 +31,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can the formalization include the Cayley-Hamilton theorem as a corollary of t...
 
 ## Related Gallery Proofs
 

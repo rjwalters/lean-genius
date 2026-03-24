@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Ramsey R(4,k) Probabilistic Method Extensions.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Ramsey R(4,k) Probabilistic Method Extensions.
 
 ## Related Gallery Proofs
 

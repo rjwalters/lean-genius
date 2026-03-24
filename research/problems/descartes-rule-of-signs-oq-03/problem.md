@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Constructive Root Bounds from Descartes Rule of Signs.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Constructive Root Bounds from Descartes Rule of Signs.
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative).
+Formalize Mobius inversion formula.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative)
+1. **Research value** - Formalize Mobius inversion formula.
 
 ## Related Gallery Proofs
 

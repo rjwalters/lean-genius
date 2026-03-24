@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-IN-PROGRESS: Created Erdos10PrimePlusPowers.
+Erdős #10: Prime Plus Powers of 2.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - IN-PROGRESS: Created Erdos10PrimePlusPowers
+1. **Research value** - Erdős #10: Prime Plus Powers of 2.
 
 ## Related Gallery Proofs
 

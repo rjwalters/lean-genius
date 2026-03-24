@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Goemans-Williamson 0.878-approximation via SDP.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Goemans-Williamson 0.878-approximation via SDP.
 
 ## Related Gallery Proofs
 

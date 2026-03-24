@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Fundamental Theorem of Arithmetic from euclids_lemma_prime.
 
 ### Formal Statement
 $$
@@ -31,7 +31,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Fundamental Theorem of Arithmetic from euclids_lemma_prime.
 
 ## Related Gallery Proofs
 

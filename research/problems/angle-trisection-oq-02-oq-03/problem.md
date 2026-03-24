@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Gauss-Wantzel theorem: regular n-gon constructible iff phi(n) is a power of 2.
 
 ### Formal Statement
 $$
@@ -31,7 +31,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Gauss-Wantzel theorem: regular n-gon constructible iff phi(n) is a power of 2.
 
 ## Related Gallery Proofs
 

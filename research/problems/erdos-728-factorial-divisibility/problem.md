@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-COMPLETED: AI MILESTONE (Jan 2026): GPT-5.
+Erdős Problem #728: Factorial Divisibility.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - COMPLETED: AI MILESTONE (Jan 2026): GPT-5
+1. **Research value** - Erdős Problem #728: Factorial Divisibility.
 
 ## Related Gallery Proofs
 

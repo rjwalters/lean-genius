@@ -533,13 +533,29 @@ function processProblem(slug: string, entry: RegistryEntry): ResearchProblem | n
 }
 
 /**
+ * Known status prefixes that should not appear as problem descriptions.
+ * When problemStatement.plain starts with one of these, fall back to the title.
+ */
+const STATUS_PREFIXES = ['AVAILABLE', 'IN-PROGRESS', 'COMPLETED', 'BLOCKED', 'SKIPPED', 'SURVEYED']
+
+/**
+ * Check if a description string is a bare status prefix (not a real description).
+ */
+function isStatusPlaceholder(text: string): boolean {
+  const trimmed = text.trim()
+  return STATUS_PREFIXES.some(prefix => trimmed === prefix || trimmed === `${prefix}.` || trimmed.startsWith(prefix))
+}
+
+/**
  * Generate lightweight listing from full problem
  */
 function generateListing(problem: ResearchProblem): ResearchListing {
+  const plain = problem.problemStatement?.plain || ''
+  const description = (plain && !isStatusPlaceholder(plain)) ? plain : problem.title
   return {
     slug: problem.slug,
     title: problem.title,
-    description: problem.problemStatement?.plain || problem.title,
+    description,
     phase: problem.phase,
     status: problem.status,
     tier: problem.tier,

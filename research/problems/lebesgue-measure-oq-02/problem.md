@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Hölder's inequality formal proof beyond axiomatization.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Hölder's inequality formal proof beyond axiomatization.
 
 ## Related Gallery Proofs
 

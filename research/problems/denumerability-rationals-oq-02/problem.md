@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Countability of Algebraic Numbers of Bounded Degree.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Countability of Algebraic Numbers of Bounded Degree.
 
 ## Related Gallery Proofs
 

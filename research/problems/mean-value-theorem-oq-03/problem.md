@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Vector-valued MVT generalization (mean value inequality).
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Vector-valued MVT generalization (mean value inequality).
 
 ## Related Gallery Proofs
 

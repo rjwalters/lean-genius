@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Derangement Convergence Rate to 1/e Formalization.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Derangement Convergence Rate to 1/e Formalization.
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: Formalize continuous-time versions of the ballot problem, connecting to Brownian motion and the reflection principle.
+Continuous-time versions of the ballot problem.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: Formalize continuous-time versions of the ballot problem, connecting to Brownian motion and the reflection principle
+1. **Research value** - Continuous-time versions of the ballot problem.
 
 ## Related Gallery Proofs
 

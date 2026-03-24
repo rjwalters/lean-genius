@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Poincare disk model with verified neutral geometry axioms.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Poincare disk model with verified neutral geometry axioms.
 
 ## Related Gallery Proofs
 

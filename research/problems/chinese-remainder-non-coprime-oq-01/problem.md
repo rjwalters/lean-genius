@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can the construction be made more computationally efficient for large moduli.
 
 ### Formal Statement
 $$
@@ -31,7 +31,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can the construction be made more computationally efficient for large moduli.
 
 ## Related Gallery Proofs
 

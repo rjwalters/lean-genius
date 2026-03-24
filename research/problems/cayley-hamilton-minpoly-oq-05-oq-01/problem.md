@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Complete sorry in minpoly_eq_map_of_irreducible.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Complete sorry in minpoly_eq_map_of_irreducible.
 
 ## Related Gallery Proofs
 

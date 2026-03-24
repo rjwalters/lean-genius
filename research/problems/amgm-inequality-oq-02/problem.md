@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: Maclaurin inequalities e_1/C(n,1) >= (e_2/C(n,2))^(1/2) >= .
+Maclaurin inequalities via elementary symmetric polynomials.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: Maclaurin inequalities e_1/C(n,1) >= (e_2/C(n,2))^(1/2) >= 
+1. **Research value** - Maclaurin inequalities via elementary symmetric polynomials.
 
 ## Related Gallery Proofs
 

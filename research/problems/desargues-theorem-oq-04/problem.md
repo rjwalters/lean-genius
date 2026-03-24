@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalize self-duality of Desargues theorem in projective geometry.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Formalize self-duality of Desargues theorem in projective geometry.
 
 ## Related Gallery Proofs
 

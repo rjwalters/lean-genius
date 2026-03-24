@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Complete proof of Dissection of Cubes (2 sorries).
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Complete proof of Dissection of Cubes (2 sorries).
 
 ## Related Gallery Proofs
 

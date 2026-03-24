@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-SKIPPED: Already in HurwitzTheorem.
+Prove Hurwitz's theorem on composition of quadratic forms: n-square identities exist only for n=1,2,4,8.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - SKIPPED: Already in HurwitzTheorem
+1. **Research value** - Prove Hurwitz's theorem on composition of quadratic forms: n-square identities exist only for n=1,2,4,8.
 
 ## Related Gallery Proofs
 

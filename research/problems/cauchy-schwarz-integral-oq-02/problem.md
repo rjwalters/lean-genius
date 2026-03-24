@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: Can the Minkowski inequality for integrals be derived as a corollary of the integral Cauchy-Schwarz inequality?.
+Minkowski integral inequality as corollary of Cauchy-Schwarz.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: Can the Minkowski inequality for integrals be derived as a corollary of the integral Cauchy-Schwarz inequality?
+1. **Research value** - Minkowski integral inequality as corollary of Cauchy-Schwarz.
 
 ## Related Gallery Proofs
 

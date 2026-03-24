@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: How do equivariant versions of Borsuk-Ulam extend to other group actions?.
+Equivariant Borsuk-Ulam extensions to other group actions.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: How do equivariant versions of Borsuk-Ulam extend to other group actions?
+1. **Research value** - Equivariant Borsuk-Ulam extensions to other group actions.
 
 ## Related Gallery Proofs
 

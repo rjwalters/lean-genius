@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Power Mean Limit: lim_{r→0} M_r = GM (Geometric Mean as a Limit).
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Power Mean Limit: lim_{r→0} M_r = GM (Geometric Mean as a Limit).
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Directed Euler paths: in-degree equals out-degree characterization for directed graphs.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Directed Euler paths: in-degree equals out-degree characterization for directed graphs.
 
 ## Related Gallery Proofs
 

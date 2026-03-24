@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Ballot Problem Generalization to Multiple Candidates.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Ballot Problem Generalization to Multiple Candidates.
 
 ## Related Gallery Proofs
 

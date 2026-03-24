@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+FTA: C is the unique algebraic closure of R.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - FTA: C is the unique algebraic closure of R.
 
 ## Related Gallery Proofs
 

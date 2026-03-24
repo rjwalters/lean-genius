@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Constructive Divisibility Algorithm via Bézout Coefficients.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Constructive Divisibility Algorithm via Bézout Coefficients.
 
 ## Related Gallery Proofs
 

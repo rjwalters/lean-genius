@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Higher-dimensional lattice path problems via reflection principle.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Higher-dimensional lattice path problems via reflection principle.
 
 ## Related Gallery Proofs
 

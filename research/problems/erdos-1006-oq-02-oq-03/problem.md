@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Direct Lean 4 proof of FFLLW chromatic number bound from Mathlib primitives.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Direct Lean 4 proof of FFLLW chromatic number bound from Mathlib primitives.
 
 ## Related Gallery Proofs
 

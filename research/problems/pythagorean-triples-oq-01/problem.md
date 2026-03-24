@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Density of primitive Pythagorean triples with hypotenuse ≤ N ~ N/(2π).
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Density of primitive Pythagorean triples with hypotenuse ≤ N ~ N/(2π).
 
 ## Related Gallery Proofs
 

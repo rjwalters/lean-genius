@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Computing Matrix Exponentials via Cayley-Hamilton.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Computing Matrix Exponentials via Cayley-Hamilton.
 
 ## Related Gallery Proofs
 

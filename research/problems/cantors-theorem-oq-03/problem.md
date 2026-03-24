@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can we generalize the diagonal argument to other structures beyond sets.
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can we generalize the diagonal argument to other structures beyond sets.
 
 ## Related Gallery Proofs
 

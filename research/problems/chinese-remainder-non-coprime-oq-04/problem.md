@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+What are the implications for simultaneous Diophantine approximation.
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - What are the implications for simultaneous Diophantine approximation.
 
 ## Related Gallery Proofs
 

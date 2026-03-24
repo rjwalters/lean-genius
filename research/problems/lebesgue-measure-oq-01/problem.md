@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Dirichlet Function Integral via Mathlib ae-zero.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Dirichlet Function Integral via Mathlib ae-zero.
 
 ## Related Gallery Proofs
 

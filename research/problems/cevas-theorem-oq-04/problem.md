@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Mass point geometry alternative formalization for Ceva.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Mass point geometry alternative formalization for Ceva.
 
 ## Related Gallery Proofs
 

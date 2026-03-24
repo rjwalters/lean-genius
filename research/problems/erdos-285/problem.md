@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Let f(k) be the minimal value of the largest denominator nₖ among all representations 1 = 1/n₁ + ··· + 1/nₖ with n₁ < n₂ < ··· < nₖ.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Let f(k) be the minimal value of the largest denominator nₖ among all representations 1 = 1/n₁ + ··· + 1/nₖ with n₁ < n₂ < ··· < nₖ.
 
 ## Related Gallery Proofs
 

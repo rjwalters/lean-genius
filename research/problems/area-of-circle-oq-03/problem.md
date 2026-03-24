@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalize Archimedes method of exhaustion proof in Lean.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Formalize Archimedes method of exhaustion proof in Lean.
 
 ## Related Gallery Proofs
 

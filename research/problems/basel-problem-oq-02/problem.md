@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Are all odd zeta values ζ(2k+1) transcendental.
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Are all odd zeta values ζ(2k+1) transcendental.
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Generalize arithmetic series to higher-dimensional simplicial numbers.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Generalize arithmetic series to higher-dimensional simplicial numbers.
 
 ## Related Gallery Proofs
 

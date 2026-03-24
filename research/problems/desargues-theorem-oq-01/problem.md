@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can the full algebraic proof be completed without sorries using Mathlib's lin...
 
 ### Formal Statement
 $$
@@ -33,7 +33,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can the full algebraic proof be completed without sorries using Mathlib's lin...
 
 ## Related Gallery Proofs
 

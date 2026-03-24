@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Sum of kth Powers (Faulhaber Formulas).
 
 ### Formal Statement
 $$
@@ -31,7 +31,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Sum of kth Powers (Faulhaber Formulas).
 
 ## Related Gallery Proofs
 

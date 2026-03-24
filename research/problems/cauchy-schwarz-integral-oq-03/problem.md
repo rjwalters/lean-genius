@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Bridge theorem extension to complex-valued L2 functions.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Bridge theorem extension to complex-valued L2 functions.
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Complete proof of the Dvoretzky-Motzkin cycle lemma in Lean 4.
 
 ### Formal Statement
 $$
@@ -33,7 +33,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Complete proof of the Dvoretzky-Motzkin cycle lemma in Lean 4.
 
 ## Related Gallery Proofs
 

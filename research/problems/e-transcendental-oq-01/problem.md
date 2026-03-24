@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Is e + pi transcendental.
 
 ### Formal Statement
 $$
@@ -33,7 +33,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Is e + pi transcendental.
 
 ## Related Gallery Proofs
 

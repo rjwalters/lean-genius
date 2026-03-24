@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Extend Diophantine criterion to characterize GCD structure.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Extend Diophantine criterion to characterize GCD structure.
 
 ## Related Gallery Proofs
 

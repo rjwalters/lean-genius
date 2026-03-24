@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Cardinality of the Set of All Countable Ordinals.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Cardinality of the Set of All Countable Ordinals.
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can Euclid's lemma be proved formally using the coprime_iff_linear_combination theorem?
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can Euclid's lemma be proved formally using the coprime_iff_linear_combination theorem?
 
 ## Related Gallery Proofs
 

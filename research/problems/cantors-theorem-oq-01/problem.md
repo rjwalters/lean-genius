@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+What is the cardinality of P(R).
 
 ### Formal Statement
 $$
@@ -32,7 +32,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - What is the cardinality of P(R).
 
 ## Related Gallery Proofs
 

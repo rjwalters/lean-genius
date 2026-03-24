@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib.
+Prove the Frobenius number for two coprime integers m, n is mn - m - n.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib
+1. **Research value** - Prove the Frobenius number for two coprime integers m, n is mn - m - n.
 
 ## Related Gallery Proofs
 

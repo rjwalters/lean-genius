@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Optimal convergence rate for arctangent-based pi series.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Optimal convergence rate for arctangent-based pi series.
 
 ## Related Gallery Proofs
 

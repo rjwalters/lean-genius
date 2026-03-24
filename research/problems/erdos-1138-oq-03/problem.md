@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Resolve maxPrimeGap_le sorry via BddAbove for prime gaps.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Resolve maxPrimeGap_le sorry via BddAbove for prime gaps.
 
 ## Related Gallery Proofs
 

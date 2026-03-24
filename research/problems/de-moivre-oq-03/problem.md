@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Extend De Moivre to fractional exponents z^(p/q).
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Extend De Moivre to fractional exponents z^(p/q).
 
 ## Related Gallery Proofs
 

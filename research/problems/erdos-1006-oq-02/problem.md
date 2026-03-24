@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: What is the minimum chromatic number of a graph with girth g that fails robust orientability?.
+Minimum chromatic number for girth-g graphs failing robust orientability.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: What is the minimum chromatic number of a graph with girth g that fails robust orientability?
+1. **Research value** - Minimum chromatic number for girth-g graphs failing robust orientability.
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+What is the analog for infinite-dimensional operators (compact operators on H...
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - What is the analog for infinite-dimensional operators (compact operators on H...
 
 ## Related Gallery Proofs
 

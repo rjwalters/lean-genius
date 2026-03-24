@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Birthday Problem: Threshold for 99% Match Probability.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Birthday Problem: Threshold for 99% Match Probability.
 
 ## Related Gallery Proofs
 

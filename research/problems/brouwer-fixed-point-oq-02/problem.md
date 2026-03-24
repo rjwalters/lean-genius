@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Computational Complexity of Approximate Fixed Points.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Computational Complexity of Approximate Fixed Points.
 
 ## Related Gallery Proofs
 

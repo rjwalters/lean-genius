@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+What are the higher categorical analogues of the covering space argument.
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - What are the higher categorical analogues of the covering space argument.
 
 ## Related Gallery Proofs
 

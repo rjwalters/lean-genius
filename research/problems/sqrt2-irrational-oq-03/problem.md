@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Irrationality of nth Roots of Non-Perfect Powers.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Irrationality of nth Roots of Non-Perfect Powers.
 
 ## Related Gallery Proofs
 

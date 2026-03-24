@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Five Color Theorem via Kempe Chain Argument.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Five Color Theorem via Kempe Chain Argument.
 
 ## Related Gallery Proofs
 

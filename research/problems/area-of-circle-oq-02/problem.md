@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE: How does the n-dimensional ball volume formula in Mathlib generalize the area-of-circle result?.
+n-dimensional ball volume formula generalization.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE: How does the n-dimensional ball volume formula in Mathlib generalize the area-of-circle result?
+1. **Research value** - n-dimensional ball volume formula generalization.
 
 ## Related Gallery Proofs
 

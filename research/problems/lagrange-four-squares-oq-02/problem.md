@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Distribution of Four-Square Representations Among Orderings.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Distribution of Four-Square Representations Among Orderings.
 
 ## Related Gallery Proofs
 

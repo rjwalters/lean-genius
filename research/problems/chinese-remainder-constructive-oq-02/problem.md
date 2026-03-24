@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Chinese Remainder Theorem for Non-Coprime Moduli.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Chinese Remainder Theorem for Non-Coprime Moduli.
 
 ## Related Gallery Proofs
 

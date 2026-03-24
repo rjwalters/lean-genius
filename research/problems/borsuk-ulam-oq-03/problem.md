@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Open Question: Can the 1D Borsuk-Ulam theorem be proved constructively (without full classical logic)? What is the constructive status of.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Open Question: Can the 1D Borsuk-Ulam theorem be proved constructively (without full classical logic)? What is the constructive status of.
 
 ## Related Gallery Proofs
 

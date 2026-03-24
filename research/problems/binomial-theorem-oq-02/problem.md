@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can the multinomial theorem be proved as a generalization of the binomial theorem?
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can the multinomial theorem be proved as a generalization of the binomial theorem?
 
 ## Related Gallery Proofs
 

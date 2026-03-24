@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Which mathematical statements are independent of ZFC due to cardinality consi...
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Which mathematical statements are independent of ZFC due to cardinality consi...
 
 ## Related Gallery Proofs
 

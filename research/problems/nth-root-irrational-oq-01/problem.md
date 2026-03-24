@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Extend nth-root irrationality to algebraic irrationality via irreducible polynomials.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Extend nth-root irrationality to algebraic irrationality via irreducible polynomials.
 
 ## Related Gallery Proofs
 

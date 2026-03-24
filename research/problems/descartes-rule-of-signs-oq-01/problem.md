@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Full Formalization of Descartes Rule of Signs using Mathlib Analysis.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Full Formalization of Descartes Rule of Signs using Mathlib Analysis.
 
 ## Related Gallery Proofs
 

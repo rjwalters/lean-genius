@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Riesz-Thorin interpolation from Hölder in Lean 4.
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Riesz-Thorin interpolation from Hölder in Lean 4.
 
 ## Related Gallery Proofs
 

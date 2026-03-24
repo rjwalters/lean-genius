@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Charles Hermite (1858) showed that the general quintic *can* be solved using ...
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Charles Hermite (1858) showed that the general quintic *can* be solved using ...
 
 ## Related Gallery Proofs
 

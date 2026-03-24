@@ -91,16 +91,58 @@ function registryToPoolStatus(entry: RegistryEntry): PoolCandidate['status'] {
 }
 
 /**
+ * Known status prefixes that appear in candidate notes.
+ * When notes is just a bare status prefix (e.g. "AVAILABLE") or starts with
+ * one without meaningful content after it, we should fall back to the
+ * candidate name instead.
+ */
+const STATUS_PREFIXES = ['AVAILABLE', 'IN-PROGRESS', 'COMPLETED', 'BLOCKED', 'SKIPPED', 'SURVEYED']
+
+/**
+ * Extract a meaningful description from candidate notes.
+ * Returns the candidate name if notes is just a status prefix without
+ * useful descriptive content.
+ */
+function extractDescription(notes: string, fallback: string): string {
+  const trimmed = notes.trim()
+  // Check if notes starts with a known status prefix
+  for (const prefix of STATUS_PREFIXES) {
+    if (trimmed.startsWith(prefix)) {
+      // Check if there's meaningful text after the prefix
+      const rest = trimmed.slice(prefix.length).trim()
+      // If empty, or just punctuation, or starts with a bare colon with no text, use fallback
+      if (!rest || rest === '.' || rest === ':' || rest === ':.') {
+        return fallback
+      }
+      // "AVAILABLE: some description" -> extract the description
+      if (rest.startsWith(':')) {
+        const desc = rest.slice(1).trim()
+        if (desc && desc !== '.') {
+          return desc.split('.')[0] || fallback
+        }
+        return fallback
+      }
+      // Status prefix followed by other text (rare) - use fallback
+      return fallback
+    }
+  }
+  // Notes doesn't start with a status prefix - use the first sentence
+  return trimmed.split('.')[0] || fallback
+}
+
+/**
  * Create a minimal problem.md file for a problem
  */
 function createMinimalProblemMd(candidate: PoolCandidate): string {
   const tierMap: Record<string, string> = { 'A': 'A', 'B': 'B', 'C': 'C', 'S': 'S' }
+  const plainDescription = extractDescription(candidate.notes, candidate.name)
+  const whyDescription = extractDescription(candidate.notes, 'Important mathematical result')
   return `# Problem: ${candidate.name}
 
 ## Statement
 
 ### Plain Language
-${candidate.notes.split('.')[0] || candidate.name}.
+${plainDescription}.
 
 ### Formal Statement
 $$
@@ -122,7 +164,7 @@ ${candidate.tags.map(t => `  - ${t}`).join('\n')}
 
 ## Why This Matters
 
-1. **Research value** - ${candidate.notes.split('.')[0] || 'Important mathematical result'}
+1. **Research value** - ${whyDescription}
 
 ## Related Gallery Proofs
 

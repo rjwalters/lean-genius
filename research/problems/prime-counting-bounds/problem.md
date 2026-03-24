@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-SKIPPED: Explicit Chebyshev bounds not in Mathlib.
+Prime Counting Function Bounds.
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - SKIPPED: Explicit Chebyshev bounds not in Mathlib
+1. **Research value** - Prime Counting Function Bounds.
 
 ## Related Gallery Proofs
 

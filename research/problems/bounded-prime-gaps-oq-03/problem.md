@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Constructive Verification of the 246 Bound for Prime Gaps.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Constructive Verification of the 246 Bound for Prime Gaps.
 
 ## Related Gallery Proofs
 

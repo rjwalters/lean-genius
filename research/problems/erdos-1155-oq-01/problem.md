@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Triangle removal process: exact asymptotics f(n) = Θ(n^{3/2}).
 
 ### Formal Statement
 $$
@@ -28,7 +28,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Triangle removal process: exact asymptotics f(n) = Θ(n^{3/2}).
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Let f(N) be the max size of A ⊆ {1,...,N} with A+A squarefree.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Let f(N) be the max size of A ⊆ {1,...,N} with A+A squarefree.
 
 ## Related Gallery Proofs
 

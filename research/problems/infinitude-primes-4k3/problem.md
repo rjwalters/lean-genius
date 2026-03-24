@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-SKIPPED: Already in DirichletsTheorem.
+Prove there are infinitely many primes congruent to 3 (mod 4).
 
 ### Formal Statement
 $$
@@ -27,7 +27,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - SKIPPED: Already in DirichletsTheorem
+1. **Research value** - Prove there are infinitely many primes congruent to 3 (mod 4).
 
 ## Related Gallery Proofs
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Isoperimetric inequality: C^2 >= 4*pi*A with equality only for circles.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Isoperimetric inequality: C^2 >= 4*pi*A with equality only for circles.
 
 ## Related Gallery Proofs
 

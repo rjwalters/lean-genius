@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+How does the topological perspective extend to non-commutative probability (f...
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - How does the topological perspective extend to non-commutative probability (f...
 
 ## Related Gallery Proofs
 

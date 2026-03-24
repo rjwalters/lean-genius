@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Prove the discrete Gauss-Bonnet theorem: the sum of angular deficiencies at all vertices of a polyhedral surface equals 2π times its Euler characteristic.
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Prove the discrete Gauss-Bonnet theorem: the sum of angular deficiencies at all vertices of a polyhedral surface equals 2π times its Euler characteristic.
 
 ## Related Gallery Proofs
 

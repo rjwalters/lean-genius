@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can the higher-dimensional generalization (random needles on a grid in ℝ³) be...
 
 ### Formal Statement
 $$
@@ -26,7 +26,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can the higher-dimensional generalization (random needles on a grid in ℝ³) be...
 
 ## Related Gallery Proofs
 

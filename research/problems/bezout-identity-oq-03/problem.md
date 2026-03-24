@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Question: "Is there a clean formalization of the Chinese Remainder Theorem building on bezout_int?".
 
 ### Formal Statement
 $$
@@ -29,7 +29,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Question: "Is there a clean formalization of the Chinese Remainder Theorem building on bezout_int?".
 
 ## Related Gallery Proofs
 

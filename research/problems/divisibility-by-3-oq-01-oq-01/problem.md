@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can the truncation method be generalized to a single parametric theorem for a...
 
 ### Formal Statement
 $$
@@ -32,7 +32,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Can the truncation method be generalized to a single parametric theorem for a...
 
 ## Related Gallery Proofs
 

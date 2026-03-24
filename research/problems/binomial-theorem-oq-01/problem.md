@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Newton generalized binomial theorem for fractional/negative exponents via formal power series.
 
 ### Formal Statement
 $$
@@ -30,7 +30,7 @@ tags:
 
 ## Why This Matters
 
-1. **Research value** - AVAILABLE
+1. **Research value** - Newton generalized binomial theorem for fractional/negative exponents via formal power series.
 
 ## Related Gallery Proofs
 
