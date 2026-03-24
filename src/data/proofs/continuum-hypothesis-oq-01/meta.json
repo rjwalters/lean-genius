@@ -179,5 +179,22 @@
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
     }
+  ],
+  "references": [
+    {
+      "key": "Go38",
+      "citation": "Gödel, K., The Consistency of the Axiom of Choice and of the Generalized Continuum-Hypothesis, Proceedings of the National Academy of Sciences 24(12) (1938), 556-557. Proved Con(ZFC + CH) via constructible universe L.",
+      "type": "paper"
+    },
+    {
+      "key": "Co63",
+      "citation": "Cohen, P.J., The independence of the continuum hypothesis, Proceedings of the National Academy of Sciences 50(6) (1963), 1143-1148; 51(1) (1964), 105-110. Proved independence of CH from ZFC via forcing.",
+      "type": "paper"
+    },
+    {
+      "key": "Wo10",
+      "citation": "Woodin, W.H., The Axiom of Determinacy, Forcing Axioms, and the Nonstationary Ideal, 2nd ed., de Gruyter (2010). Modern program for resolving CH via large cardinals and forcing axioms.",
+      "type": "book"
+    }
   ]
 }

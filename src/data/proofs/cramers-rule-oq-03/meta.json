@@ -157,11 +157,26 @@
       "Mathlib.LinearAlgebra.Matrix.Adjugate",
       "Mathlib.Tactic"
     ],
-    "opens": ["Matrix", "Finset"],
+    "opens": [
+      "Matrix",
+      "Finset"
+    ],
     "namespace": "CramersRuleOQ03",
     "lineCount": 175,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "key": "Cr50",
+      "citation": "Cramer, G., Introduction à l'analyse des lignes courbes algébriques, Geneva (1750). Original formulation of Cramer's rule for solving systems of linear equations.",
+      "type": "book"
+    },
+    {
+      "key": "GR91",
+      "citation": "Gelfand, I.M. and Retakh, V.S., Determinants of matrices over noncommutative rings, Functional Analysis and Its Applications 25(2) (1991), 91-102. Quasideterminants and non-commutative Cramer's rule.",
+      "type": "paper"
+    }
+  ]
 }
