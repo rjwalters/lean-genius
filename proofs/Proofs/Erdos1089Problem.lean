@@ -91,7 +91,49 @@ axiom g_3_3 : g 3 3 = 7
 
 /-- Trivial: g_d(1) = 2 (any two distinct points give 1 distance) -/
 theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
-  sorry
+  apply le_antisymm
+  · -- g d 1 ≤ 2: every 2-element set has ≥ 1 positive distance
+    apply Nat.sInf_le
+    intro P hP
+    obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hP
+    unfold determinesNDistances numDistinctDistances
+    have hmem : eucDist a b ∈ distinctDistances ({a, b} : Finset (Point d)) := by
+      unfold distinctDistances eucDist
+      rw [Finset.mem_filter]
+      refine ⟨Finset.mem_image.mpr ⟨(a, b), ?_, rfl⟩,
+        norm_pos_iff.mpr (sub_ne_zero.mpr hab)⟩
+      exact Finset.mk_mem_product (Finset.mem_insert_self a _)
+        (Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self b)))
+    exact Finset.card_pos.mpr ⟨_, hmem⟩
+  · -- 2 ≤ g d 1: 0 and 1 are not in the threshold set
+    obtain ⟨M, hM⟩ := g_well_defined d 1 (by omega)
+    refine le_csInf ⟨M, ?_⟩ ?_
+    · exact hM
+    · intro m hm
+      by_contra hlt
+      push_neg at hlt
+      interval_cases m
+      · -- m = 0: empty set has 0 distances
+        have := hm (∅ : Finset (Point d)) (by simp)
+        simp [determinesNDistances, numDistinctDistances, distinctDistances] at this
+      · -- m = 1: singleton {0} has 0 distances
+        have := hm ({(0 : Point d)} : Finset _) (by simp)
+        unfold determinesNDistances numDistinctDistances at this
+        have hempty : distinctDistances ({(0 : Point d)} : Finset _) = ∅ := by
+          rw [Finset.eq_empty_iff_forall_notMem]
+          intro r hr
+          unfold distinctDistances at hr
+          rw [Finset.mem_filter] at hr
+          obtain ⟨hr_mem, hr_pos⟩ := hr
+          rw [Finset.mem_image] at hr_mem
+          obtain ⟨⟨p, q⟩, hpq_mem, rfl⟩ := hr_mem
+          have ⟨hp, hq⟩ := Finset.mem_product.mp hpq_mem
+          simp only [Finset.mem_singleton] at hp hq
+          subst hp; subst hq
+          dsimp only at hr_pos
+          simp [eucDist] at hr_pos
+        rw [hempty, Finset.card_empty] at this
+        omega
 
 /-- Trivial: g_d(2) = 3 for d ≥ 1 -/
 axiom g_d_2 : ∀ d ≥ 1, g d 2 = 3
@@ -127,9 +169,35 @@ theorem cube_card (d : ℕ) : (cubeVertices d).card = 2 ^ d := by
 axiom cube_distances :
   ∀ d : ℕ, numDistinctDistances (cubeVertices d) ≤ d
 
+/-- Distinct distances are monotone under subset: P ⊆ Q → distances(P) ⊆ distances(Q) -/
+private lemma distinctDistances_mono {d : ℕ} {P Q : Finset (Point d)} (h : P ⊆ Q) :
+    distinctDistances P ⊆ distinctDistances Q := by
+  intro r hr
+  unfold distinctDistances at hr ⊢
+  rw [Finset.mem_filter] at hr ⊢
+  obtain ⟨hr_mem, hr_pos⟩ := hr
+  refine ⟨?_, hr_pos⟩
+  rw [Finset.mem_image] at hr_mem ⊢
+  obtain ⟨⟨p, q⟩, hpq_mem, rfl⟩ := hr_mem
+  refine ⟨(p, q), ?_, rfl⟩
+  have ⟨hp, hq⟩ := Finset.mem_product.mp hpq_mem
+  exact Finset.mk_mem_product (h hp) (h hq)
+
 /-- Cube gives lower bound: g_d(d+1) > 2^d -/
 theorem cube_lower_bound (d : ℕ) : g d (d + 1) > 2^d := by
-  sorry
+  by_contra hle
+  push_neg at hle
+  obtain ⟨M, hM⟩ := g_well_defined d (d + 1) (by omega)
+  have hne : Set.Nonempty {m : ℕ | ∀ P : Finset (Point d), P.card = m →
+      determinesNDistances P (d + 1)} := ⟨M, hM⟩
+  have hmem := Nat.sInf_mem hne
+  have hsz : g d (d + 1) ≤ (cubeVertices d).card := by rw [cube_card]; exact hle
+  obtain ⟨P, hPsub, hPcard⟩ := Finset.exists_subset_card_eq hsz
+  have h_many := hmem P hPcard
+  have h_few : numDistinctDistances P ≤ d :=
+    le_trans (Finset.card_le_card (distinctDistances_mono hPsub)) (cube_distances d)
+  unfold determinesNDistances at h_many
+  omega
 
 /-- General lower bound: g_d(n) ≥ c·d^{n-1} for some constant c -/
 axiom erdos_lower_bound :
