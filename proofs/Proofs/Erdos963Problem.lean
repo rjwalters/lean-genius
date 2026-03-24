@@ -13,6 +13,9 @@ f(n) ≥ ⌊log₂ n⌋.
 - A dissociated set of size k has 2^k distinct subset sums
 - Powers of 2 form a dissociated set (binary representation)
 
+Axiom count: 6 (was 7; proved log_base_gap)
+Sorry count: 0
+
 ## References
 
 - [Er65] Erdős original formulation
@@ -132,6 +135,8 @@ axiom powers_of_two_dissociated :
 axiom maxDissociatedSize_mono :
   ∀ m n : ℕ, m ≤ n → maxDissociatedSize m ≤ maxDissociatedSize n
 
-/-- The gap between the greedy bound and the conjecture: log₂ vs log₃. -/
-axiom log_base_gap :
-  ∀ n : ℕ, n ≥ 2 → Nat.log 3 n ≤ Nat.log 2 n
+/-- **PROVED** (was axiom): The gap between the greedy bound and the conjecture: log₂ vs log₃.
+    Since 2 ≤ 3, log₃ n ≤ log₂ n for all n. -/
+theorem log_base_gap :
+    ∀ n : ℕ, n ≥ 2 → Nat.log 3 n ≤ Nat.log 2 n :=
+  fun n _ => Nat.log_anti_left (by omega) n
