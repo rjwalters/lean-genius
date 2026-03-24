@@ -372,7 +372,7 @@
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "complementary",
-      "description": "FTA guarantees every polynomial has complex roots; this file shows those roots cannot always be expressed with radicals "
+      "description": "FTA guarantees every polynomial has complex roots; this file shows those roots cannot always be expressed with radicals — existence versus expressibility"
     },
     {
       "id": "inverse-galois",
@@ -387,47 +387,47 @@
     {
       "id": "sylow-theorems",
       "relationship": "related",
-      "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and hel"
+      "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and help prove simplicity"
     },
     {
       "id": "solution-of-cubic",
       "relationship": "complementary",
-      "description": "Cardano's formula (1545) gives explicit radical solutions for cubics — the highest odd degree where a general radical fo"
+      "description": "Cardano's formula (1545) gives explicit radical solutions for cubics — the highest odd degree where a general radical formula exists, contrasting with the impossibility at degree 5"
     },
     {
       "id": "general-quartic",
       "relationship": "complementary",
-      "description": "Ferrari's quartic formula (1540) is the highest-degree general radical solution. S₄ is solvable (derived series {e} ◁ V₄"
+      "description": "Ferrari's quartic formula (1540) is the highest-degree general radical solution. S₄ is solvable (derived series {e} ◁ V₄ ◁ A₄ ◁ S₄) but S₅ is not — this file proves the exact threshold"
     },
     {
       "id": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Gauss's quadratic reciprocity (1801) concerns the multiplicative structure of (ℤ/pℤ)*, foreshadowing the group-theoretic"
+      "description": "Gauss's quadratic reciprocity (1801) concerns the multiplicative structure of (ℤ/pℤ)*, foreshadowing the group-theoretic methods used here. Artin reciprocity generalizes both"
     },
     {
       "id": "vietas-formulas",
       "relationship": "foundational",
-      "description": "Vieta's formulas are the fundamental Sₙ-invariant polynomials. The Abel-Ruffini theorem can be restated as: the elementa"
+      "description": "Vieta's formulas are the fundamental Sₙ-invariant polynomials. The Abel-Ruffini theorem can be restated as: the elementary symmetric functions cannot be 'inverted' by radicals when the Galois group is S₅"
     },
     {
       "id": "puiseux-theorem",
       "relationship": "complementary",
-      "description": "Puiseux series always solve polynomial equations, contrasting with Abel-Ruffini: radicals cannot solve the generic quint"
+      "description": "Puiseux series always solve polynomial equations, contrasting with Abel-Ruffini: radicals cannot solve the generic quintic, but Puiseux series can — situating Abel-Ruffini as a statement about radical expressions specifically"
     },
     {
       "id": "primitive-roots",
       "relationship": "foundational",
-      "description": "Primitive roots of unity are essential to Kummer theory, which underlies Step 4 (the Galois bridge): each radical extrac"
+      "description": "Primitive roots of unity are essential to Kummer theory, which underlies Step 4 (the Galois bridge): each radical extraction creates a Kummer extension with cyclic Galois group"
     },
     {
       "id": "kummer-theorem",
       "relationship": "foundational",
-      "description": "Kummer theory provides the mechanism for Step 4: radical extensions are towers of Kummer (cyclic) extensions, so their G"
+      "description": "Kummer theory provides the mechanism for Step 4: radical extensions are towers of Kummer (cyclic) extensions, so their Galois groups are solvable — connecting radical solvability to group solvability"
     },
     {
       "id": "hilbert-13",
       "relationship": "related",
-      "description": "Hilbert's 13th problem (1900) asked whether degree-7 polynomial roots require genuinely trivariate functions. Abel-Ruffi"
+      "description": "Hilbert's 13th problem (1900) asked whether degree-7 polynomial roots require genuinely trivariate functions. Abel-Ruffini rules out radicals; Kolmogorov-Arnold (1957) resolved the continuous case, but the algebraic version remains open"
     }
   ]
 }
