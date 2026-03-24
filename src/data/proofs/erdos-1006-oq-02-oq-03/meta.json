@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent",
     "sourceUrl": "https://erdosproblems.com/1006",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1006OQ03.lean",
     "tags": [
       "erdos",
@@ -19,8 +19,8 @@
       "coloring",
       "research"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Coloring",
