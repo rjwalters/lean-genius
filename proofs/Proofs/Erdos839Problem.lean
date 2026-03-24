@@ -1,7 +1,4 @@
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 /-
 # Erdos Problem #839: Sequences Avoiding Consecutive-Term Sums
@@ -25,7 +22,7 @@ Reference: https://erdosproblems.com/839
 
 /-- The sum of consecutive terms a_i + a_{i+1} + ... + a_j. -/
 def consecutiveSum (a : ℕ → ℕ) (i j : ℕ) : ℕ :=
-  ∑ k in Finset.Icc i j, a k
+  ∑ k ∈ Finset.Icc i j, a k
 
 /-- No term of the sequence equals a sum of consecutive earlier terms. -/
 def AvoidConsecutiveSums (a : ℕ → ℕ) : Prop :=
@@ -48,7 +45,7 @@ def Question1 : Prop :=
 def Question2 : Prop :=
   ∀ a : ValidSeq, ∀ ε : ℝ, 0 < ε →
     ∃ X₀ : ℕ, ∀ X : ℕ, X₀ ≤ X →
-      (∑ n in (Finset.range X).filter (fun n => a.val n < X),
+      (∑ n ∈ (Finset.range X).filter (fun n => a.val n < X),
         (1 : ℝ) / (a.val n : ℝ)) ≤ ε * Real.log X
 
 -- ## Structural Theorems
@@ -89,11 +86,11 @@ theorem consecutiveSum_empty (a : ℕ → ℕ) (i j : ℕ) (h : j < i) :
 /-- For a sequence with positive terms, the consecutive sum over [i, j] is
     at least a(i). -/
 theorem consecutiveSum_ge_first (a : ℕ → ℕ) (i j : ℕ) (h : i ≤ j)
-    (hpos : ∀ n, 0 < a n) :
+    (_hpos : ∀ n, 0 < a n) :
     a i ≤ consecutiveSum a i j := by
   unfold consecutiveSum
-  calc a i = ∑ t in {i}, a t := by simp
-    _ ≤ ∑ t in Finset.Icc i j, a t := by
+  calc a i = ∑ t ∈ {i}, a t := by simp
+    _ ≤ ∑ t ∈ Finset.Icc i j, a t := by
         apply Finset.sum_le_sum_of_subset_of_nonneg
         · intro x hx; simp at hx; subst hx; simp [Finset.mem_Icc, h]
         · intro _ _ _; omega
@@ -104,10 +101,11 @@ theorem consecutiveSum_gt_first (a : ValidSeq) (i j : ℕ) (h : i < j) :
     a.val i < consecutiveSum a.val i j := by
   unfold consecutiveSum
   have hij : i ≠ j := by omega
+  have hpos_j : 0 < a.val j := a.property.1 j
   calc a.val i < a.val i + a.val j := by omega
-    _ = ∑ t in ({i, j} : Finset ℕ), a.val t := by
+    _ = ∑ t ∈ ({i, j} : Finset ℕ), a.val t := by
         rw [Finset.sum_pair hij]
-    _ ≤ ∑ t in Finset.Icc i j, a.val t := by
+    _ ≤ ∑ t ∈ Finset.Icc i j, a.val t := by
         apply Finset.sum_le_sum_of_subset_of_nonneg
         · intro x hx
           simp [Finset.mem_Icc] at hx ⊢
@@ -134,7 +132,7 @@ axiom reciprocal_sum_lower :
   ∃ a : ValidSeq, ∃ c : ℝ, 0 < c ∧
     ∀ X : ℕ, 3 ≤ X →
       c * Real.log (Real.log X) ≤
-        ∑ n in (Finset.range X).filter (fun n => a.val n < X),
+        ∑ n ∈ (Finset.range X).filter (fun n => a.val n < X),
           (1 : ℝ) / (a.val n : ℝ)
 
 -- ## Upper Density
@@ -145,14 +143,17 @@ noncomputable def upperDensity (a : ValidSeq) : ℝ :=
     ((Finset.range N).filter (fun n => a.val n ≤ N)).card / (N : ℝ))
     Filter.atTop
 
-/-- Erdos conjectured the upper density is at most 1/2, but
-    Freud disproved this by constructing a sequence with density 19/36. -/
-axiom freud_counterexample :
-  ∃ a : ValidSeq, (1 : ℝ) / 2 < upperDensity a
-
 /-- The Freud construction achieves upper density 19/36. -/
 axiom freud_density :
   ∃ a : ValidSeq, upperDensity a = 19 / 36
+
+/-- Erdos conjectured the upper density is at most 1/2, but
+    Freud disproved this by constructing a sequence with density 19/36.
+    This follows from freud_density since 19/36 > 1/2. -/
+theorem freud_counterexample :
+    ∃ a : ValidSeq, (1 : ℝ) / 2 < upperDensity a := by
+  obtain ⟨a, ha⟩ := freud_density
+  exact ⟨a, by rw [ha]; norm_num⟩
 
 -- ## Main Open Questions
 
