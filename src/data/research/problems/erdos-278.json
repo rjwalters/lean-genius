@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T22:33:22.719Z",
-    "iteration": 3,
-    "focus": "Axiom elimination: proved equal_residues_minimize, 2 axioms remain",
+    "iteration": 4,
+    "focus": "Fixed INCORRECT axiom: max_density_coprime_case claimed Σ1/nᵢ but correct formula is 1-∏(1-1/nᵢ)",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Fix pre-existing Mathlib API breakages in coverage_card_shift (4 errors)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved equal_residues_minimize (axiom→theorem) via cyclic shift bijection card_bij on {0..L-1}. File: 8 theorems/lemmas, 2 axioms, 0 sorries. Axiom count reduced 3→2.",
+    "progressSummary": "PROGRESS: Discovered and fixed incorrect axiom max_density_coprime_case. The statement Σ1/nᵢ is wrong for coprime moduli with ≥2 elements (CRT forces nonempty intersections). Corrected to 1-∏(1-1/nᵢ). Pre-existing Mathlib API breakages in coverage_card_shift remain.",
     "builtItems": [
       "Proved erdos_278_density_le_one (axiom → theorem) via csSup_le",
       "Fixed foldl_lcm_pos: updated List.mem_cons_self/mem_cons_of_mem to simp",
@@ -45,12 +45,17 @@
       "List.mem_cons_self deprecated in current Mathlib - use simp instead",
       "equal_residues_minimize proof strategy: cyclic shift bijection m↦(m+a)%L on {0,...,L-1}. Need add_mod_injOn (prove via by_contra + Nat.mul_le_mul_left for quotient equality), then dvd_mul_of_dvd_left for n|(a+c). Blocked on Lean omega not handling nonlinear L*(q₁-q₂)",
       "omega in Lean 4 handles modular arithmetic round-trips: ((m+a)%L + L - a%L)%L = m when m<L",
-      "Nat.mod_mod_of_dvd is the key lemma for shifting: if k∣L then (x%L)%k = x%k"
+      "Nat.mod_mod_of_dvd is the key lemma for shifting: if k∣L then (x%L)%k = x%k",
+      "max_density_coprime_case was FALSE: for {2,3} coprime, coverage = 4/6 = 2/3, NOT 5/6 = 1/2+1/3",
+      "CRT forces coprime residue classes to always intersect: |Ci∩Cj| = L/(ni·nj) > 0",
+      "For coprime moduli, coverage density = 1 - ∏(1-1/ni) by inclusion-exclusion, INDEPENDENT of residue choice",
+      "Pre-existing Mathlib API breakages in Nat.mod_mod_of_dvd, Nat.add_mod rewrite chains (coverage_card_shift)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove max_density_coprime_case using CRT: for coprime moduli, max density = Σ1/nᵢ",
-      "Consider whether simpson_theorem can be proved from Mathlib (deep result, likely requires significant infrastructure)"
+      "Fix Mathlib API breakages in coverage_card_shift (lines 179-197): Nat.add_mod and omega changes",
+      "Prove the corrected max_density_coprime_case using CRT + inclusion-exclusion",
+      "simpson_theorem remains axiomatized (deep result)"
     ],
     "markdown": "# Erdős #278 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.\n\n\n\n\nReferences\n\n\n[Si86] Simpson, R. J., Exact coverings of the integers by arithmetic progressions. Discrete Math. (1986), 181--190.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #277\n- Problem #279\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Si86\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
