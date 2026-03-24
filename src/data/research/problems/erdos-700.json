@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-14T21:07:11.724Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Axiom elimination: 9->6 axioms. Defined fBinom, proved f_prime_square, removed false Q1 axiom.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axioms 9->6. Defined fBinom properly, proved minFac(p^2)=p and f(p^2)>=p, removed false axiom. 2 new theorems machine-checked.",
+    "progressSummary": "AXIOM ELIMINATION: Converted f_semiprime from axiom to theorem via sandwich argument (minFac ≤ f ≤ n/largestPrimeFactor). Proved 2 new helper lemmas. Axiom count: 6→5.",
     "builtItems": [
       "Defined fBinom via Finset.min in Erdos700Problem.lean:41-46",
       "Proved minFac_prime_sq in Erdos700Problem.lean:51-57",
-      "Proved f_prime_square in Erdos700Problem.lean:104-112"
+      "Proved f_prime_square in Erdos700Problem.lean:104-112",
+      "Proved minFac_mul_prime: minFac(pq) = p for primes p ≤ q",
+      "Proved le_largestPrimeFactor: prime divisors ≤ largestPrimeFactor",
+      "Converted f_semiprime from axiom to theorem (sandwich argument)",
+      "Axiom count: 6→5"
     ],
     "insights": [
       "fBinom can be defined using Finset.min over Finset.Icc 2 (n/2), nonempty for n>=4",
@@ -74,8 +78,8 @@
       "path": "Proofs/Erdos700Problem.lean",
       "filename": "Erdos700Problem.lean",
       "lineCount": 86,
-      "theoremCount": 0,
-      "axiomCount": 9,
+      "theoremCount": 5,
+      "axiomCount": 5,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,

@@ -57,6 +57,28 @@ theorem minFac_prime_sq (p : ℕ) (hp : p.Prime) : Nat.minFac (p * p) = p := by
     exact hpf.dvd_of_dvd_pow h2
   exact (hp.eq_one_or_self_of_dvd _ hdvdp).resolve_left (by have := hpf.one_lt; omega)
 
+/-- minFac(p * q) = p for primes p ≤ q. -/
+theorem minFac_mul_prime {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≤ q) :
+    Nat.minFac (p * q) = p := by
+  have hpq_ne1 : p * q ≠ 1 := by have := hp.two_le; nlinarith
+  have hpf := Nat.minFac_prime hpq_ne1
+  have hdvd := Nat.minFac_dvd (p * q)
+  rcases hpf.dvd_mul.mp hdvd with hp_dvd | hq_dvd
+  · exact (hp.eq_one_or_self_of_dvd _ hp_dvd).resolve_left hpf.one_lt.ne'
+  · have heq := (hq.eq_one_or_self_of_dvd _ hq_dvd).resolve_left hpf.one_lt.ne'
+    have hle : Nat.minFac (p * q) ≤ p :=
+      Nat.minFac_le_of_dvd hp.two_le (dvd_mul_right p q)
+    omega
+
+/-- Any prime factor of n is ≤ largestPrimeFactor(n). -/
+theorem le_largestPrimeFactor {n r : ℕ} (hr : r.Prime) (hdvd : r ∣ n) (hn : 2 ≤ n) :
+    r ≤ largestPrimeFactor n := by
+  unfold largestPrimeFactor
+  simp only [hn, dite_true]
+  have hr_le_n : r ≤ n := Nat.le_of_dvd (by omega) hdvd
+  exact Finset.le_sup (f := id)
+    (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hr, hdvd⟩)
+
 /- ## Basic Bounds -/
 
 /-- f(n) ≤ n/P(n) for all composite n.
@@ -76,11 +98,36 @@ axiom f_lower_bound (n : ℕ) (hn : 2 ≤ n) :
 /- ## Known Equalities -/
 
 /-- When n = pq is a product of two primes with p ≤ q, f(n) = p.
-    The sandwich argument: p = minFac(pq) ≤ f(pq) ≤ pq/q = p.
-    Axiomatized because proving largestPrimeFactor(pq) = q requires
-    nontrivial work with the Finset.sup definition. -/
-axiom f_semiprime (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≤ q) :
-  fBinom (p * q) = p
+    Sandwich: p = minFac(pq) ≤ f(pq) ≤ pq/largestPrimeFactor(pq) ≤ pq/q = p. -/
+theorem f_semiprime (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≤ q) :
+    fBinom (p * q) = p := by
+  have h2 : 2 ≤ p * q := by have := hp.two_le; nlinarith
+  have hcomp : ¬(p * q).Prime := by
+    intro hprime
+    rcases hprime.eq_one_or_self_of_dvd p (dvd_mul_right p q) with h1 | h2
+    · exact hp.one_lt.ne' h1
+    · have : q = 1 := by nlinarith [hp.one_lt]
+      exact absurd this (by omega)
+  -- Lower bound: p ≤ f(pq)
+  have hlower : p ≤ fBinom (p * q) := by
+    have hmin := f_lower_bound (p * q) h2
+    rw [show smallestPrimeFactor (p * q) = Nat.minFac (p * q) from rfl,
+        minFac_mul_prime hp hq hpq] at hmin
+    exact hmin
+  -- Upper bound: f(pq) ≤ p
+  have hupper : fBinom (p * q) ≤ p := by
+    have hup := f_upper_bound (p * q) hcomp h2
+    have hq_le : q ≤ largestPrimeFactor (p * q) :=
+      le_largestPrimeFactor hq (dvd_mul_left q p) h2
+    have hlpf_pos : 0 < largestPrimeFactor (p * q) := by
+      have := hq.two_le; linarith
+    have hpq_le : p * q / largestPrimeFactor (p * q) ≤ p :=
+      calc p * q / largestPrimeFactor (p * q)
+          ≤ p * largestPrimeFactor (p * q) / largestPrimeFactor (p * q) :=
+            Nat.div_le_div_right (Nat.mul_le_mul_left p hq_le)
+        _ = p := Nat.mul_div_cancel p hlpf_pos
+    linarith
+  omega
 
 /-- f(30) = 30/5 = 6. One verifies gcd(30, C(30,k)) ≥ 6 for all
     1 < k ≤ 15, with equality at k = 5 where C(30,5) = 142506
