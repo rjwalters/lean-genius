@@ -89,8 +89,44 @@ axiom R3k_two : R3k 2 = 6
 /-- R(3;3) = 17 (Greenwood and Gleason, 1955) -/
 axiom R3k_three : R3k 3 = 17
 
-/-- Monotonicity: more colors requires more vertices to force a monochromatic triangle. -/
-axiom R3k_mono {k₁ k₂ : ℕ} (h : k₁ ≤ k₂) : R3k k₁ ≤ R3k k₂
+/-- Monotonicity: more colors requires more vertices to force a monochromatic triangle.
+    Proof: embed a k₁-coloring into a k₂-coloring via Fin.castLE; any monochromatic
+    triangle for the k₂-coloring is also monochromatic for the k₁-coloring (injectivity). -/
+theorem R3k_mono {k₁ k₂ : ℕ} (h : k₁ ≤ k₂) : R3k k₁ ≤ R3k k₂ := by
+  by_cases hk₁ : k₁ ≥ 1
+  · -- k₁ ≥ 1 implies k₂ ≥ 1
+    have hk₂ : k₂ ≥ 1 := le_trans hk₁ h
+    -- Unfold R3k to Nat.find and use minimality
+    show R3k k₁ ≤ R3k k₂
+    unfold R3k
+    rw [dif_pos hk₁, dif_pos hk₂]
+    apply Nat.find_min'
+    -- Need: ForcesMonochromaticTriangle (Nat.find ...) k₁
+    have hforce := Nat.find_spec (forcing_set_nonempty k₂ hk₂)
+    -- hforce : ForcesMonochromaticTriangle (Nat.find ...) k₂
+    intro _ c₁ hc₁_sym
+    -- Embed k₁-coloring as k₂-coloring via Fin.castLE
+    let c₂ : EdgeColoring _ k₂ := fun p => Fin.castLE h (c₁ p)
+    have hc₂_sym : IsSymmetric c₂ := by
+      intro i j; show Fin.castLE h (c₁ (i, j)) = Fin.castLE h (c₁ (j, i))
+      congr 1; exact hc₁_sym i j
+    -- c₂ has a monochromatic triangle (from forcing property)
+    obtain ⟨color₂, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ :=
+      hforce hk₂ c₂ hc₂_sym
+    -- Extract triangle for c₁ using Fin.castLE injectivity
+    have hinj : Function.Injective (Fin.castLE h) := by
+      intro a b hab
+      ext
+      have := congr_arg Fin.val hab
+      simpa [Fin.castLE] using this
+    exact ⟨c₁ (i, j), i, j, l, hij, hjl, hil, rfl,
+      hinj (hcjl.trans hcij.symm), hinj (hcil.trans hcij.symm)⟩
+  · -- k₁ = 0: R3k 0 = 0 ≤ R3k k₂
+    have : k₁ = 0 := by omega
+    subst this
+    unfold R3k
+    simp only [show ¬((0 : ℕ) ≥ 1) from by omega, dite_false]
+    exact Nat.zero_le _
 
 /-- R(3;k) ≥ 3 for all k ≥ 1 (from R3k_one and monotonicity). -/
 theorem R3k_ge_three (k : ℕ) (hk : k ≥ 1) : R3k k ≥ 3 := by
