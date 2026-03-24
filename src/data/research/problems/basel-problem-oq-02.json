@@ -1,13 +1,13 @@
 {
   "slug": "basel-problem-oq-02",
-  "title": "Are all odd zeta values ζ(2k+1) transcendental",
+  "title": "Are all odd zeta values \u03b6(2k+1) transcendental",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
+    "formal": "\\forall k \\geq 1, \\zeta(2k+1) is transcendental over \\mathbb{Q}",
+    "plain": "Are all odd zeta values \u03b6(2k+1) transcendental? Not a single one is known to be transcendental. \u03b6(3) is irrational (Ap\u00e9ry 1978). Infinitely many are irrational (Rivoal 2000).",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-23T00:42:35.517Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalization complete, problem is OPEN",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,15 +29,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEY + FORMALIZATION: Created BaselProblemOQ02.lean (109 lines). Formalized the transcendence conjecture, Ap\u00e9ry theorem axiom, structural relationships. 2 axioms (pi_transcendental, apery_theorem), 0 sorries.",
+    "builtItems": [
+      "Created proofs/Proofs/BaselProblemOQ02.lean (109 lines)",
+      "Proved zetaValue_two and zetaValue_four from Mathlib",
+      "Stated odd_zeta_transcendence_conjecture and odd_zeta_irrationality_conjecture",
+      "Proved transcendence_implies_irrationality, conjecture_implies_apery",
+      "Axiomatized pi_transcendental (Lindemann) and apery_theorem"
+    ],
+    "insights": [
+      "Stark even/odd divide: \u03b6(2k) = rational \u00d7 \u03c0^(2k) (fully understood since Euler 1734), but \u03b6(2k+1) has no closed form",
+      "Transcendental implies irrational via Transcendental.irrational in Mathlib",
+      "Mathlib has hasSum_zeta_two/four and hasSum_zeta_nat for even values, nothing for odd",
+      "Neither \u03c0 transcendental nor Ap\u00e9ry theorem are in Mathlib v4.26.0",
+      "Problem inherently open - no specific odd zeta value known transcendental"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Could add Rivoal result (infinitely many odd \u03b6 irrational) as axiom",
+      "Could add Zudilin result (one of \u03b6(5,7,9,11) irrational) as axiom",
+      "If Lindemann-Weierstrass lands in Mathlib, pi_transcendental becomes provable",
+      "zetaValue_summable for general s needs p-series convergence proof"
+    ]
   },
   "tags": [
     "seeker-selected",
-    "extension"
+    "extension",
+    "number-theory",
+    "zeta-function",
+    "transcendence"
   ],
   "relatedProofs": [
     "basel-problem"
@@ -48,20 +68,20 @@
     "mathlib": []
   },
   "started": "2026-03-23T00:42:35.517Z",
-  "lastUpdate": "2026-03-23T00:42:35.517Z",
+  "lastUpdate": "2026-03-24T06:11:27.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/BaselProblem.lean",
-      "filename": "BaselProblem.lean",
-      "lineCount": 165,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 0,
+      "path": "Proofs/BaselProblemOQ02.lean",
+      "filename": "BaselProblemOQ02.lean",
+      "lineCount": 109,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblem.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02.lean"
     }
   ]
 }

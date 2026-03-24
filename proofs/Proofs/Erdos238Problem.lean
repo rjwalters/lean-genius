@@ -27,6 +27,7 @@ import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+import Mathlib.Data.Nat.Factorial.Basic
 
 open Filter Real
 
@@ -118,16 +119,86 @@ axiom erdos_partial_result : ∀ c₂ > 0, ∃ c₁ > 0,
 
 -- ## Part 6: Prime Number Theorem Context
 
+-- Proof that prime gaps are unbounded, eliminating the average_gap_grows axiom.
+-- Key idea: (k+2)! + 2, ..., (k+2)! + (k+2) are k+1 consecutive composites.
+
+/-- n divides k! when n ≥ 1 and n ≤ k. -/
+private lemma dvd_factorial' {n k : ℕ} (hn : 0 < n) (hnk : n ≤ k) :
+    n ∣ Nat.factorial k := by
+  induction k with
+  | zero => omega
+  | succ m ih =>
+    rw [Nat.factorial_succ]
+    rcases le_or_gt n m with h | h
+    · exact dvd_mul_of_dvd_right (ih h) _
+    · have heq : n = m + 1 := by omega
+      subst heq; exact dvd_mul_right _ _
+
+/-- k! + j is not prime for 2 ≤ j ≤ k, since j is a non-trivial divisor. -/
+private lemma not_prime_factorial_add' {k j : ℕ} (hj : 2 ≤ j) (hjk : j ≤ k) :
+    ¬ Nat.Prime (Nat.factorial k + j) := by
+  intro hp
+  have h1 : j ∣ Nat.factorial k + j := dvd_add (dvd_factorial' (by omega) hjk) (dvd_refl j)
+  have h2 := Nat.factorial_pos k
+  rcases hp.eq_one_or_self_of_dvd j h1 with h | h <;> omega
+
+/-- nthPrime n is always prime. -/
+private lemma nthPrime_isPrime (n : ℕ) : (nthPrime n).Prime :=
+  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
+
+/-- Prime gaps are unbounded: for any m, ∃ gap ≥ m. Uses the factorial argument
+    and the Galois connection between Nat.nth and Nat.count. -/
+private theorem primeGap_unbounded (m : ℕ) : ∃ n, m ≤ primeGap n := by
+  -- (m+2)! + 2, ..., (m+2)! + (m+2) are all composite
+  set a := Nat.factorial (m + 2) + 2 with ha_def
+  have hcomp : ∀ j ≤ m, ¬ Nat.Prime (a + j) := by
+    intro j hj
+    have h_eq : a + j = Nat.factorial (m + 2) + (j + 2) := by rw [ha_def]; omega
+    rw [h_eq]; exact not_prime_factorial_add' (by omega) (by omega)
+  -- c = #{primes < a}
+  set c := Nat.count Nat.Prime a with hc_def
+  -- c ≥ 1 since 2 is prime and 2 < a
+  have hc_pos : 0 < c := by
+    rw [hc_def, Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime]
+    rw [Nat.nth_prime_zero_eq_two, ha_def]
+    have := Nat.factorial_pos (m + 2); omega
+  -- The (c-1)-th prime is below a (by Galois connection)
+  have h1 : nthPrime (c - 1) < a := by
+    show Nat.nth Nat.Prime (c - 1) < a
+    exact (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp (by rw [← hc_def]; omega)
+  -- The c-th prime is ≥ a (by Galois connection)
+  have h2 : a ≤ nthPrime c := by
+    show a ≤ Nat.nth Nat.Prime c
+    rw [← Nat.count_le_iff_le_nth Nat.infinite_setOf_prime]
+  -- The c-th prime must skip the entire composite run
+  have h3 : a + m + 1 ≤ nthPrime c := by
+    by_contra hlt
+    push_neg at hlt
+    set j := nthPrime c - a
+    have hj_le : j ≤ m := by omega
+    have hj_eq : a + j = nthPrime c := by omega
+    have hp : Nat.Prime (a + j) := by rw [hj_eq]; exact nthPrime_isPrime c
+    exact hcomp j hj_le hp
+  -- primeGap(c-1) ≥ (a + m + 1) - (a - 1) = m + 2 ≥ m
+  exact ⟨c - 1, by unfold primeGap; rw [show c - 1 + 1 = c from by omega]; omega⟩
+
 /--
 **Average Prime Gap**
 
-By the Prime Number Theorem, the average gap between primes
-near x is approximately log(x). Since c₂ is a fixed constant,
-for large x most gaps exceed c₂.
+For any c₂ > 0, for sufficiently large x there exists a prime
+gap exceeding c₂ among primes ≤ x. Proved from the factorial
+argument that prime gaps are unbounded.
 -/
-axiom average_gap_grows :
+theorem average_gap_grows :
     ∀ c₂ > 0, ∀ᶠ (x : ℝ) in atTop,
-      ∃ n : ℕ, (nthPrime (n + 1) : ℝ) ≤ x ∧ c₂ < (primeGap n : ℝ)
+      ∃ n : ℕ, (nthPrime (n + 1) : ℝ) ≤ x ∧ c₂ < (primeGap n : ℝ) := by
+  intro c₂ hc₂
+  obtain ⟨m, hm⟩ := exists_nat_gt c₂
+  obtain ⟨n, hn⟩ := primeGap_unbounded m
+  rw [Filter.Eventually, Filter.mem_atTop_sets]
+  exact ⟨↑(nthPrime (n + 1)), fun x hx => ⟨n, hx, by
+    calc c₂ < (m : ℝ) := hm
+      _ ≤ ((primeGap n : ℕ) : ℝ) := Nat.cast_le.mpr hn⟩⟩
 
 /--
 **Prime Counting: π(x) ~ x/log(x)**
