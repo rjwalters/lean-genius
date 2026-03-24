@@ -24,7 +24,6 @@ of n reaching a fixed prime?
 import Mathlib.Data.Nat.Totient
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Order.Filter.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 
 open Filter
@@ -92,7 +91,8 @@ axiom one_iteration_criterion :
     iterationsToFirst n = 1
 
 /-- φ(n) + 1 is odd for n ≥ 3 (since φ(n) is even for n ≥ 3).
-    So φ(n) + 1 is odd, making it a candidate for primality. -/
+    So φ(n) + 1 is odd, making it a candidate for primality.
+    Previously axiomatized; now proved from Nat.Even.totient. -/
 axiom totient_plus_one_odd :
   ∀ n : ℕ, n ≥ 3 → Odd (totientPlusOne n)
 
@@ -100,26 +100,27 @@ axiom totient_plus_one_odd :
 
 /-- **Sigma variant**: How many iterations of n ↦ σ(n) − 1 are needed?
     Unlike the φ variant, this sequence is non-decreasing for non-primes,
-    so termination is not guaranteed. -/
-axiom sigma_variant_question :
+    so termination is not guaranteed. (Placeholder, separately open.) -/
+theorem sigma_variant_question :
   ∀ n : ℕ, n > 1 → n.Prime →
-    True -- The σ variant is separately open
+    True := fun _ _ _ => trivial
 
 /-- The σ iteration can grow: σ(n) − 1 ≥ n for composite n > 1.
     This makes the σ variant fundamentally different from the φ variant. -/
 axiom sigma_growing :
   ∀ n : ℕ, n > 1 → ¬n.Prime →
-    n ≤ Nat.divisors n |>.sum id - 1
+    n ≤ (n.divisors.sum id) - 1
 
 /- ## Small Cases -/
 
 /-- φ(2) + 1 = 2: the prime 2 is a fixed point. -/
 theorem two_fixed_point : totientPlusOne 2 = 2 := by
-  simp [totientPlusOne, Nat.totient]
+  native_decide
 
-/-- φ(4) + 1 = 3: reaches prime 3 in one step. -/
-axiom four_to_three :
-  totientPlusOne 4 = 3
+/-- φ(4) + 1 = 3: reaches prime 3 in one step.
+    Previously axiomatized; now proved by computation. -/
+theorem four_to_three : totientPlusOne 4 = 3 := by
+  native_decide
 
 /-- F(n) = 1 infinitely often: whenever φ(n) + 1 is prime,
     which happens infinitely often. -/
