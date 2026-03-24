@@ -67,6 +67,7 @@
       "Proof by contradiction"
     ],
     "lineCount": 250,
+    "mathlib_version": "4.26.0",
     "leanFile": {
       "imports": [
         "Mathlib.Topology.Basic",
@@ -99,14 +100,17 @@
   "overview": {
     "historicalContext": "Luitzen Egbertus Jan Brouwer proved this theorem in 1911 in *Mathematische Annalen*. Earlier special cases were known: Poincaré proved a version for smooth maps in 1886, and Hadamard proved the 2D case in 1910 using degree theory. Brouwer's contribution was the full generalization to continuous maps in arbitrary dimension.\n\nThe result is beautifully intuitive: no matter how you continuously 'stir' a disk, some point must end up exactly where it started. Multiple proofs exist: Brouwer's original via degree theory, Sperner's 1928 combinatorial proof via his lemma on triangulations, Milnor's 1965 differential topology proof via Sard's theorem, and modern proofs via singular homology.\n\nThe theorem's applications are vast. John Nash used it in 1950 to prove equilibrium existence in non-cooperative games (Nobel Prize 1994). It guarantees solutions to differential equations via Schauder's extension to Banach spaces. In computational complexity, finding Brouwer fixed points is PPAD-complete (Papadimitriou 1994), explaining why Nash equilibrium computation is hard.\n\nIronically, Brouwer later founded **intuitionism** (1920s), rejecting the law of excluded middle and the non-constructive proof-by-contradiction his own theorem relies upon. He came to view the theorem as an example of mathematics that proves existence without construction — precisely what intuitionists object to.",
     "problemStatement": "Brouwer Fixed Point Theorem: Let $B^n$ be the closed unit ball in $\\mathbb{R}^n$, and let $f: B^n \\to B^n$ be a continuous function. Then $f$ has a fixed point: there exists $x \\in B^n$ such that $f(x) = x$.\n\nEquivalently: every continuous self-map of a compact convex set in Euclidean space has a fixed point.",
-    "text": "Every continuous function from a closed ball to itself has at least one fixed point. A cornerstone of topology with profound applications in economics, game theory, and differential equations.",
+    "text": "A six-part formalization of the Brouwer Fixed Point Theorem (Wiedijk #36) in 250 lines. The proof follows the classical approach via the No-Retraction Theorem: assuming a continuous self-map $f: B^n \\to B^n$ has no fixed point, the ray from $f(x)$ through $x$ to the boundary $S^{n-1}$ constructs a continuous retraction $r: B^n \\to S^{n-1}$ — which cannot exist because it would force the identity on $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ to factor through $H_{n-1}(B^n) = 0$. Two axioms encode the algebraic topology content not yet available in Mathlib: `no_retraction_axiom` (no retraction from ball to sphere) and `retraction_construction` (fixed-point-free map yields a retraction via ray-casting). The 1D case is proved axiom-free using Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo` from the Intermediate Value Theorem. Original contributions include the `SelfMap` and `Retraction` structures with maps-ball and fixes-sphere constraints, and the 3-line main theorem composing both axioms via `by_contra`/`exact`. Five Mathlib modules provide the metric space infrastructure (`Metric.closedBall`, `EuclideanSpace`, `isCompact_closedBall`, `convex_closedBall`).",
     "proofStrategy": "The proof proceeds by contradiction using a beautiful topological construction:\n\n1. Assume no fixed point exists: Suppose $f: B^n \\to B^n$ is continuous with $f(x) \\neq x$ for all $x$.\n\n2. Construct a retraction: For each point $x$, draw a ray from $f(x)$ through $x$. Since $f(x) \\neq x$, this ray is well-defined and must exit the ball. Define $r(x)$ as the point where the ray hits the boundary sphere.\n\n3. Verify retraction properties: The map $r$ is continuous and fixes points on the boundary (the ray from $f(x)$ through $x$ hits the sphere at $x$ when $x$ is already on the sphere).\n\n4. Apply No-Retraction Theorem: But topologically, no retraction from the ball to its boundary can exist! The ball is contractible while the sphere has nontrivial homology.\n\n5. Contradiction: Therefore our assumption was wrong, and $f$ must have a fixed point.",
     "keyInsights": [
       "**Fixed Point $\\to$ No Retraction:** The proof converts a dynamical claim ($\\exists x,\\; f(x) = x$) into a topological impossibility ($\\nexists$ retraction $r: B^n \\to S^{n-1}$). If $f(x) \\neq x$ everywhere, the ray from $f(x)$ through $x$ to $S^{n-1}$ defines a continuous retraction — which cannot exist.",
       "**The No-Retraction Theorem:** A retraction $r: B^n \\to S^{n-1}$ would satisfy $r \\circ \\iota = \\text{id}_{S^{n-1}}$ where $\\iota: S^{n-1} \\hookrightarrow B^n$ is inclusion. On homology: $r_* \\circ \\iota_* = \\text{id}$ on $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$, but $\\iota_*$ factors through $H_{n-1}(B^n) = 0$ — contradiction.",
       "**Dimension Sensitivity via Homology:** The closed ball $B^n$ is contractible ($H_k(B^n) = 0$ for $k > 0$), while the sphere $S^{n-1}$ has $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$. This algebraic difference is the obstruction: a retraction would force a non-trivial group to factor through a trivial one.",
       "**Non-Constructive Existence:** The proof shows $\\exists x$ with $f(x) = x$ without computing $x$. Computationally, finding an $\\epsilon$-approximate fixed point is PPAD-complete — the class of problems reducible to finding Nash equilibria, believed not to be in P.",
-      "**Universal Applications:** Brouwer's theorem underlies Nash's equilibrium theorem (every finite game has a mixed strategy equilibrium), the existence of market equilibria (Arrow-Debreu), and Kakutani's fixed point theorem for set-valued maps used throughout economics and game theory."
+      "**Universal Applications:** Brouwer's theorem underlies Nash's equilibrium theorem (every finite game has a mixed strategy equilibrium), the existence of market equilibria (Arrow-Debreu), and Kakutani's fixed point theorem for set-valued maps used throughout economics and game theory.",
+      "**Sperner's Lemma as an Alternative Path:** Sperner's lemma (1928) provides a purely combinatorial proof of Brouwer, avoiding homology entirely. Given a Sperner-labeled simplicial triangulation of $B^n$, there must exist a fully-labeled simplex. As the mesh refines ($\\delta \\to 0$), the centroids of these simplices converge to a fixed point. This approach is constructive up to the mesh refinement limit and underlies algorithms for computing approximate fixed points (Scarf's algorithm, Lemke-Howson).",
+      "**The Lefschetz Generalization:** The Lefschetz fixed point theorem (1926) subsumes Brouwer as a special case: a continuous map $f: X \\to X$ on a compact polyhedron has a fixed point whenever its Lefschetz number $\\Lambda(f) = \\sum_k (-1)^k \\operatorname{tr}(f_{*k})$ is nonzero. For $X = B^n$ (contractible), $\\Lambda(f) = 1 \\neq 0$ for any $f$, recovering Brouwer. This algebraic perspective reveals that the fixed point property depends on the topology of the domain (its homology groups), not the specific map.",
+      "**Brouwer's Own Rejection:** Ironically, Brouwer later founded intuitionism (1920s), a philosophy of mathematics rejecting the law of excluded middle and non-constructive proofs. The Brouwer Fixed Point Theorem relies fundamentally on proof by contradiction (`by_contra` in the Lean formalization) — precisely the reasoning pattern Brouwer came to reject. The theorem proves $\\exists x,\\; f(x) = x$ without constructing or approximating $x$, making it a paradigmatic example of non-constructive existence. Constructive alternatives (via Sperner's lemma or Banach iteration for contractive maps) exist but require additional hypotheses."
     ],
     "prerequisites": [
       "Point-set topology (compactness, continuity, metric spaces)",
@@ -208,11 +212,46 @@
       "year": "1985",
       "venue": "Cambridge University Press",
       "note": "Treats Brouwer and Kakutani fixed point theorems with emphasis on economic applications: Nash equilibrium, Walrasian equilibrium, Arrow-Debreu existence"
+    },
+    {
+      "authors": "Nash, John F.",
+      "title": "Equilibrium Points in N-Person Games",
+      "year": "1950",
+      "venue": "Proceedings of the National Academy of Sciences 36(1), 48–49",
+      "note": "One-page proof that every finite game has a Nash equilibrium, using Brouwer's (actually Kakutani's) fixed point theorem applied to the best-response correspondence on the strategy simplex"
+    },
+    {
+      "authors": "Sperner, Emanuel",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": "1928",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6, 265–272",
+      "note": "Sperner's lemma: a combinatorial result on simplicial triangulations that provides a constructive alternative proof of Brouwer's fixed point theorem, avoiding homology theory entirely"
+    },
+    {
+      "authors": "Papadimitriou, Christos H.",
+      "title": "On the Complexity of the Parity Argument and Other Inefficient Proofs of Existence",
+      "year": "1994",
+      "venue": "Journal of Computer and System Sciences 48(3), 498–532",
+      "note": "Introduced the complexity class PPAD and showed that finding approximate Brouwer fixed points is PPAD-complete, establishing the computational hardness of Nash equilibrium computation"
+    },
+    {
+      "authors": "Schauder, Juliusz",
+      "title": "Der Fixpunktsatz in Funktionalräumen",
+      "year": "1930",
+      "venue": "Studia Mathematica 2, 171–180",
+      "note": "Extended Brouwer's fixed point theorem to infinite-dimensional Banach spaces: every continuous self-map of a compact convex subset has a fixed point. Foundation for the Leray-Schauder degree theory used in PDEs"
+    },
+    {
+      "authors": "Lefschetz, Solomon",
+      "title": "Intersections and Transformations of Complexes and Manifolds",
+      "year": "1926",
+      "venue": "Transactions of the American Mathematical Society 28(1), 1–49",
+      "note": "Introduced the Lefschetz number and proved the Lefschetz fixed point theorem, which subsumes Brouwer's theorem as the special case where the domain is contractible (Lefschetz number = 1)"
     }
   ],
   "conclusion": {
     "summary": "The Brouwer Fixed Point Theorem demonstrates that every continuous self-map of a closed ball has a fixed point. The proof ingeniously transforms this dynamical question into a topological one: if no fixed point existed, we could construct a retraction from the ball to its boundary, which is impossible.",
-    "implications": "**Theoretical Significance**: This theorem has far-reaching consequences: Nash's Nobel Prize-winning proof of equilibrium existence in game theory relies on it; solutions to many differential equations are guaranteed by it; and it reveals deep connections between topology and dynamics.\n\nComputationally, finding fixed points is PPAD-complete, explaining why equilibrium computation is hard. The theorem beautifully illustrates how abstract topology answers concrete questions about continuous processes.",
+    "implications": "**Theoretical Significance**: Brouwer's theorem has far-reaching consequences across mathematics and beyond:\n\n1. **GAME THEORY**: Nash (1950) proved every finite game has a mixed strategy equilibrium by applying Brouwer to the best-response map on the strategy simplex. Kakutani's generalization handles the set-valued case needed for general equilibria. Nash's result earned the 1994 Nobel Prize in Economics.\n\n2. **GENERAL EQUILIBRIUM**: Arrow and Debreu (1954) proved existence of competitive market equilibria using Kakutani's extension of Brouwer. Walras' law implies excess demand maps the price simplex to itself, and the fixed point is the equilibrium price vector.\n\n3. **DIFFERENTIAL EQUATIONS**: The Schauder fixed point theorem (1930) extends Brouwer to infinite-dimensional Banach spaces, guaranteeing solutions to PDEs and integral equations. Leray-Schauder degree theory, built on this foundation, is a primary tool in nonlinear analysis.\n\n4. **COMPUTATIONAL COMPLEXITY**: Finding an $\\epsilon$-approximate Brouwer fixed point is PPAD-complete (Papadimitriou 1994), establishing that computing Nash equilibria is computationally hard — not NP-hard, but in a different class of hard search problems defined by the theorem's non-constructive character.\n\n5. **ALGEBRAIC TOPOLOGY**: The proof technique (reducing a dynamic property to a topological impossibility via homology) became a template for algebraic topology's applications. The Borsuk-Ulam theorem, Lefschetz fixed point theorem, and degree theory all follow similar structural patterns.\n\n6. **CONSTRUCTIVE MATHEMATICS**: The theorem's non-constructive nature — proving existence without locating the fixed point — spurred both constructive alternatives (via Sperner's lemma) and foundational debates (Brouwer's own intuitionism). The 1D case (IVT) is constructive; the general case exemplifies the limits of constructive methods.\n\n7. **THE FIXED POINT PROPERTY**: Brouwer's theorem implies that the closed ball has the 'fixed point property' (FPP): every continuous self-map has a fixed point. Characterizing which topological spaces have the FPP remains an active area. Compact convex subsets of Banach spaces have FPP (Schauder), but non-convex spaces need not (counterexamples exist for non-contractible spaces like tori and spheres).",
     "openQuestions": [
       "Can the No-Retraction Theorem be formalized without axioms once Mathlib gains homology theory? The proof requires $H_{n-1}(B^n) = 0$ (ball contractible) and $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ (sphere has non-trivial homology), plus functoriality of $H_{n-1}$.",
       "Can the ray-casting retraction construction (`retraction_construction` axiom) be formalized? It requires solving the quadratic $\\|f(x) + t(x - f(x))\\|^2 = 1$ for $t > 0$ and proving the resulting map is continuous via the implicit function theorem.",
