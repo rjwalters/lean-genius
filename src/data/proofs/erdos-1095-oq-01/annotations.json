@@ -128,6 +128,50 @@
     ]
   },
   {
+    "id": "ann-e1095-oq01-negation",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "technique",
+    "title": "Contrapositive: Witnessing a Small Prime Factor",
+    "content": "If there exists a prime $p \\leq k$ dividing $m$, then $\\text{AllPrimesExceed}(m, k)$ fails. This is the direct contrapositive of the definition, but having it as an explicit lemma simplifies reasoning about when $g(k)$ candidates are eliminated. For example, to show $g(2) \\neq 4$, one exhibits the witness $p = 2$ dividing $\\binom{4}{2} = 6$.",
+    "mathContext": "$p$ prime, $p \\leq k$, $p \\mid m \\implies \\neg\\text{AllPrimesExceed}(m, k)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "contrapositive reasoning",
+      "witness-based proofs",
+      "decidability"
+    ],
+    "prerequisites": [
+      "AllPrimesExceed",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-choose-zero",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 93
+    },
+    "type": "technique",
+    "title": "Boundary: C(n,k) = 0 When k > n",
+    "content": "When $k > n$, $\\binom{n}{k} = 0$ by convention. Since $0$ is divisible by every prime, $\\text{AllPrimesExceed}(0, k)$ fails for $k \\geq 2$ (as $2 \\mid 0$). This means the search for $n$ with smooth-free $\\binom{n}{k}$ only makes sense when $n \\geq k$. The lemma wraps Mathlib's `Nat.choose_eq_zero_of_lt`.",
+    "mathContext": "$n < k \\implies \\binom{n}{k} = 0$. Since $p \\mid 0$ for all $p$, AllPrimesExceed fails at $\\binom{n}{k}$ when $n < k$ and $k \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial coefficient boundary",
+      "degenerate cases",
+      "Nat.choose_eq_zero_of_lt"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.lt"
+    ]
+  },
+  {
     "id": "ann-e1095-oq01-choose-odd",
     "proofId": "erdos-1095-oq-01",
     "range": {
@@ -189,6 +233,28 @@
     "prerequisites": [
       "gFunc_gt",
       "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-conjecture-context",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 149
+    },
+    "type": "context",
+    "title": "Why the Full Conjecture Is Not Formalized",
+    "content": "The full asymptotic conjecture $\\log g(k) \\sim c \\cdot k / \\log k$ requires expressing limits of real-valued functions at infinity, specifically $\\lim_{k \\to \\infty} \\frac{\\log g(k)}{k / \\log k} = c$. In Lean 4 with Mathlib, this would use `Filter.Tendsto` with the `atTop` filter and `Real.log`. The file avoids this dependency to keep the formalization self-contained within natural number arithmetic and `Nat.choose`. The informal statement in the comment block preserves the conjecture's full mathematical content, while the formal `ErdosProblem1095OQ01` definition captures a weaker (but still open) consequence: super-polynomial growth $g(k) > k^c$.",
+    "mathContext": "Full: $\\lim_{k \\to \\infty} \\frac{\\log g(k)}{k / \\log k} = c$, requiring `Filter.Tendsto (fun k => Real.log (gFunc k) / (k / Real.log k)) Filter.atTop (nhds c)`. Weakened formal version avoids real analysis entirely.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "asymptotic equivalence",
+      "formalization trade-offs"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Filter.atTop"
     ]
   },
   {
