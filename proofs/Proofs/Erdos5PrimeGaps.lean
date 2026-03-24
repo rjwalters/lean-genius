@@ -88,20 +88,15 @@ def erdos_5 : Prop :=
     More precisely: lim sup (p_{n+1} - p_n) / log(p_n) = ∞ -/
 axiom westzynthius_large_gaps : InfinityIsLimitPoint
 
-/-- **Erdős-Ricci**: The set S has positive Lebesgue measure.
-    The formal Lebesgue measure statement requires measure theory imports;
-    the existential structure is trivially satisfiable as a placeholder. -/
-theorem erdos_ricci_positive_measure : ∃ ε : ℝ, ε > 0 ∧
-  -- Informal: μ(S) > ε where μ is Lebesgue measure
-  True := ⟨1, by norm_num, trivial⟩
+/-- **Erdős-Ricci (1954, 1956)**: The set S has positive Lebesgue measure.
+    Full measure-theoretic formalization requires MeasureTheory imports.
+    Subsumed by Merikoski's stronger density result below. -/
 
-/-- **Merikoski (2020s)**: At least 1/3 of [0, ∞) belongs to S.
-    Also: S has bounded gaps (no "large holes").
-    The formal measure-theoretic statement requires measure theory imports;
-    the existential structure is trivially satisfiable as a placeholder. -/
-theorem merikoski_density : ∃ density : ℝ, density ≥ 1/3 ∧
-  -- Informal: μ(S ∩ [0, M]) / M ≥ density as M → ∞
-  True := ⟨1/3, by norm_num, trivial⟩
+/-- **Merikoski (2020)**: S has bounded gaps — there exists L > 0 such that
+    every interval [x, x + L] with x ≥ 0 contains a limit point of normalized
+    prime gaps. Merikoski also established μ(S ∩ [0,T]) / T ≥ 1/3 for large T. -/
+axiom merikoski_bounded_gaps :
+  ∃ L : ℝ, L > 0 ∧ ∀ x : ℝ, 0 ≤ x → ∃ C : ℝ, IsLimitPoint C ∧ x ≤ C ∧ C ≤ x + L
 
 /- ## Part V: Basic Properties -/
 
@@ -339,6 +334,44 @@ theorem zhang_implies_zero_limit : IsLimitPoint 0 := by
     Here derived from Zhang's bounded gaps theorem (which is a stronger result). -/
 theorem goldston_pintz_yildirim_small_gaps : IsLimitPoint 0 :=
   zhang_implies_zero_limit
+
+/- ## Part VIII: Structural Results -/
+
+/-- Westzynthius implies normalized gaps exceed any bound infinitely often.
+    For any C, there are infinitely many n with g(n) > C. -/
+theorem westzynthius_implies_frequently_large (C : ℝ) :
+    ∀ N : ℕ, ∃ n, N ≤ n ∧ normalizedGap n > C := by
+  obtain ⟨f, hf_mono, hf_tend⟩ := westzynthius_large_gaps
+  intro N
+  have hf_top : Tendsto f atTop atTop := hf_mono.tendsto_atTop
+  obtain ⟨K₁, hK₁⟩ := Filter.tendsto_atTop_atTop.mp hf_tend (C + 1)
+  obtain ⟨K₂, hK₂⟩ := Filter.tendsto_atTop_atTop.mp hf_top N
+  exact ⟨f (max K₁ K₂), hK₂ _ (le_max_right _ _), by
+    have h := hK₁ _ (le_max_left _ _)
+    change C + 1 ≤ normalizedGap (f (max K₁ K₂)) at h
+    linarith⟩
+
+/-- The limit point set is nonempty: 0 ∈ S by Zhang's theorem. -/
+theorem limitPointSet_nonempty : limitPointSet.Nonempty :=
+  ⟨0, zhang_implies_zero_limit⟩
+
+/-- The limit point set is unbounded: for any M, there exists a limit point above M.
+    Follows from Merikoski's bounded gaps. -/
+theorem limitPointSet_unbounded (M : ℝ) :
+    ∃ C : ℝ, C > M ∧ IsLimitPoint C := by
+  obtain ⟨L, hL_pos, h_gaps⟩ := merikoski_bounded_gaps
+  obtain ⟨C, hC_lim, hC_ge, _⟩ := h_gaps (max 0 (M + 1)) (le_max_left _ _)
+  exact ⟨C, by linarith [le_max_right 0 (M + 1)], hC_lim⟩
+
+/-- The conjecture follows from showing every non-negative real is a limit point
+    (the infinity part is already known from Westzynthius). -/
+theorem erdos5_from_full (h : ∀ C : ℝ, 0 ≤ C → IsLimitPoint C) : erdos_5 :=
+  ⟨h, westzynthius_large_gaps⟩
+
+/-- Known progress: 0 ∈ S and ∞ ∈ S. -/
+theorem erdos5_known_partial :
+    IsLimitPoint 0 ∧ InfinityIsLimitPoint :=
+  ⟨zhang_implies_zero_limit, westzynthius_large_gaps⟩
 
 #check erdos_5
 #check limitPointSet
