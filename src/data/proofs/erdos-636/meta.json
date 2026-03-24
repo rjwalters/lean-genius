@@ -88,6 +88,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Problem statement (Erdős-Faudree-Sós): in a Ramsey graph $G$ on $n$ vertices (no clique or independent set of size $\\gg \\log n$), must $G$ contain $\\gg n^{5/2}$ induced subgraphs with pairwise distinct (vertex count, edge count) signatures? Solved YES by Kwan-Sudakov (2021), optimal. Imports full Mathlib.",
+      "mathContext": "A Ramsey graph satisfies $\\omega(G), \\alpha(G) \\leq c \\log n$. Count distinct pairs $(|V(H)|, |E(H)|)$ over induced $H \\subseteq G$. Erdős-Faudree-Sós proved $\\gg n^{3/2}$; Kwan-Sudakov proved the optimal $\\gg n^{5/2}$. The $n^{5/2}$ bound comes from the pigeonhole principle: $\\binom{n}{k}$ induced subgraphs of size $k$, Ramsey condition forces diverse edge counts."
+    },
+    {
       "id": "basics",
       "title": "Graphs and Basic Definitions",
       "summary": "Defines cliqueNumber ω(G) using Mathlib's cliqueNum, independenceNumber α(G) as ω(Gᶜ) exploiting Ramsey symmetry, and NoLargeHomogeneousSet requiring both ω, α ≤ k. The complement-based definition of α is elegant and fundamental to Ramsey theory.",
