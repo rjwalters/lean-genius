@@ -126,24 +126,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1043",
-      "relationship": "sibling",
-      "description": "Erdős #1043 studies projections of polynomial level sets onto lines and their measure. This is a complementary metric question about the same geometric objects: #1043 measures projections, while #1044 measures boundary arcs."
+      "id": "erdos-1042",
+      "relationship": "companion",
+      "description": "Erdős #1042 studies the number of connected components of polynomial lemniscates and their transfinite diameter. Problem #1044 asks about the bound..."
     },
     {
-      "target": "erdos-1046",
-      "relationship": "sibling",
-      "description": "Erdős #1046 asks whether a polynomial lemniscate is always contained in a disk of controlled radius. The containment radius and the boundary length of #1044 are dual measures of the 'size' of a lemniscate component."
+      "id": "erdos-1041",
+      "relationship": "companion",
+      "description": "Erdős #1041 asks whether any two points in the same connected component of a polynomial sublevel set can be joined by a short path. Problem #1044 b..."
     },
     {
-      "target": "erdos-1039",
-      "relationship": "sibling",
-      "description": "Erdős #1039 studies the disc radius needed to contain polynomial lemniscates with roots in the unit disk, closely paralleling the boundary-length minimization in #1044 and both coming from the same 1958 Erdős–Herzog–Piranian paper."
+      "id": "erdos-1047",
+      "relationship": "related",
+      "description": "Erdős #1047 investigates convexity of polynomial lemniscate components. Convex components have boundary length directly controlled by diameter, so ..."
     },
     {
-      "target": "isoperimetric-theorem",
-      "relationship": "analogy",
-      "description": "The classical isoperimetric theorem (among all curves enclosing a given area, the circle has the shortest perimeter) provides the conceptual backdrop for #1044: the infimum-not-minimum phenomenon and the degeneracy of the extremal 'slit' configuration are analogous to isoperimetric extremal problems in the plane."
+      "id": "erdos-1048",
+      "relationship": "related",
+      "description": "Erdős #1048 studies the diameter of polynomial lemniscate level sets. The infimum-of-boundary-length result in #1044 involves the limiting 'slit' c..."
+    },
+    {
+      "id": "erdos-1040",
+      "relationship": "related",
+      "description": "Erdős #1040 connects the transfinite diameter of the sublevel set to measure estimates for monic polynomials. The transfinite diameter (logarithmic..."
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "prerequisite",
+      "description": "The fundamental theorem of algebra guarantees that every degree-n polynomial has exactly n roots (counted with multiplicity), which is essential fo..."
     }
   ],
   "references": [

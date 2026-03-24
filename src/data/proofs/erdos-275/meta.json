@@ -161,24 +161,24 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-2",
-      "relationship": "Complementary covering system constraint: #2 bounds the minimum modulus of distinct covering systems (≤ 616,000), while #275 characterizes the finite verification threshold"
+      "relationship": "Complementary covering system constraint: #2 bounds the minimum modulus of distinct covering systems (≤ 616,000), while #275 characterizes the finite verification threshold",
+      "targetId": "erdos-2"
     },
     {
-      "targetProofId": "erdos-7",
-      "relationship": "Both address structural constraints on covering systems: #7 concerns parity of moduli (Erdős–Selfridge conjecture on odd covering), #275 concerns the verification threshold"
+      "relationship": "Both address structural constraints on covering systems: #7 concerns parity of moduli (Erdős–Selfridge conjecture on odd covering), #275 concerns the verification threshold",
+      "targetId": "erdos-7"
     },
     {
-      "targetProofId": "erdos-276",
-      "relationship": "Direct application: #276 uses covering congruences via Graham's construction to build primefree Lucas sequences; the covering system theory from #275 provides the foundational mechanism"
+      "relationship": "Direct application: #276 uses covering congruences via Graham's construction to build primefree Lucas sequences; the covering system theory from #275 provides the foundational mechanism",
+      "targetId": "erdos-276"
     },
     {
-      "targetProofId": "erdos-278",
-      "relationship": "Adjacent covering system problem: #278 studies the maximum covering density achievable by r congruences, complementing #275's all-or-nothing coverage threshold"
+      "relationship": "Adjacent covering system problem: #278 studies the maximum covering density achievable by r congruences, complementing #275's all-or-nothing coverage threshold",
+      "targetId": "erdos-278"
     },
     {
-      "targetProofId": "erdos-281",
-      "relationship": "Density complement: #281 studies asymptotic density properties of covering systems via the Davenport–Erdős theorem, contrasting with #275's discrete consecutive-integer criterion"
+      "relationship": "Density complement: #281 studies asymptotic density properties of covering systems via the Davenport–Erdős theorem, contrasting with #275's discrete consecutive-integer criterion",
+      "targetId": "erdos-281"
     }
   ],
   "leanFile": {
@@ -197,29 +197,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-2",
+      "relationship": "Complementary covering system constraint: #2 bounds the minimum modulus of distinct covering systems (≤ 616,000), while #275 characterizes the finite verification threshold",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-7",
+      "relationship": "Both address structural constraints on covering systems: #7 concerns parity of moduli (Erdős–Selfridge conjecture on odd covering), #275 concerns the verification threshold",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-276",
+      "relationship": "Direct application: #276 uses covering congruences via Graham's construction to build primefree Lucas sequences; the covering system theory from #275 provides the foundational mechanism",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-278",
+      "relationship": "Adjacent covering system problem: #278 studies the maximum covering density achievable by r congruences, complementing #275's all-or-nothing coverage threshold",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-281",
+      "relationship": "Density complement: #281 studies asymptotic density properties of covering systems via the Davenport–Erdős theorem, contrasting with #275's discrete consecutive-integer criterion",
+      "description": ""
     }
   ]
 }

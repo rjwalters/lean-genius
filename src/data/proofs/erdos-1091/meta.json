@@ -172,16 +172,16 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-984",
-      "relationship": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions"
+      "relationship": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions",
+      "targetId": "erdos-984"
     },
     {
-      "targetProofId": "erdos-723",
-      "relationship": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior"
+      "relationship": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior",
+      "targetId": "erdos-723"
     },
     {
-      "targetProofId": "erdos-107",
-      "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness"
+      "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness",
+      "targetId": "erdos-107"
     }
   ],
   "leanFile": {
@@ -200,19 +200,19 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-984",
+      "relationship": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-723",
+      "relationship": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-107",
+      "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness",
+      "description": ""
     }
   ]
 }

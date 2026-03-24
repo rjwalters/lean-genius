@@ -168,46 +168,46 @@
   ],
   "crossReferences": [
     {
-      "targetProofId": "erdos-867",
       "relationship": "Problem #867 on subsequences with distinct sums; both study extremal sequence properties",
       "sharedConcepts": [
         "distinct sums",
         "extremal sequences",
         "combinatorial number theory"
-      ]
+      ],
+      "targetId": "erdos-867"
     },
     {
-      "targetProofId": "erdos-321",
       "relationship": "Both involve extremal problems on integer sequences with distinctness constraints",
       "sharedConcepts": [
         "additive combinatorics",
         "integer sequences"
-      ]
+      ],
+      "targetId": "erdos-321"
     },
     {
-      "targetProofId": "erdos-332",
       "relationship": "Related sequence extremal problems from Erdős-Graham",
       "sharedConcepts": [
         "combinatorics",
         "Erdős-Graham problems"
-      ]
+      ],
+      "targetId": "erdos-332"
     },
     {
-      "targetProofId": "erdos-324",
       "relationship": "Problem #324 asks about distinct pair sums of polynomial values; both involve distinctness of sums",
       "sharedConcepts": [
         "distinct sums",
         "Sidon-type properties",
         "open problems"
-      ]
+      ],
+      "targetId": "erdos-324"
     },
     {
-      "targetProofId": "cauchy-schwarz",
       "relationship": "Cauchy-Schwarz bounds additive energy, connected to B₂ sequence theory underlying Weisenberg's bound",
       "sharedConcepts": [
         "inequalities",
         "additive energy"
-      ]
+      ],
+      "targetId": "cauchy-schwarz"
     }
   ],
   "references": [
@@ -260,29 +260,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-867",
+      "relationship": "Problem #867 on subsequences with distinct sums; both study extremal sequence properties",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-321",
+      "relationship": "Both involve extremal problems on integer sequences with distinctness constraints",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-332",
+      "relationship": "Related sequence extremal problems from Erdős-Graham",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-324",
+      "relationship": "Problem #324 asks about distinct pair sums of polynomial values; both involve distinctness of sums",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "cauchy-schwarz",
+      "relationship": "Cauchy-Schwarz bounds additive energy, connected to B₂ sequence theory underlying Weisenberg's bound",
+      "description": ""
     }
   ]
 }

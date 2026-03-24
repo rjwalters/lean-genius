@@ -161,24 +161,34 @@
   ],
   "relatedProofs": [
     {
-      "slug": "partition-theorem",
-      "relationship": "foundational",
-      "description": "Euler's generating function approach to partitions establishes that p(n) is well-defined and grows sub-exponentially; the Hardy-Ramanujan asymptotic p(n) ~ (1/4n√3)exp(π√(2n/3)) refines this and is the analytic engine behind the proof that F(n) → ∞."
+      "id": "partition-theorem",
+      "relationship": "related",
+      "description": ""
     },
     {
-      "slug": "partition-theorem-oq-01",
-      "relationship": "extension",
-      "description": "The Rogers-Ramanujan identities and Ramanujan's congruences live in the same arithmetic theory of partitions; Ono's 2000 theorem that every prime divides p(n) for a positive density of n is a direct generalization of Ramanujan's classical congruences mod 5, 7, 11."
+      "id": "partition-theorem-oq-01",
+      "relationship": "related",
+      "description": ""
     },
     {
-      "slug": "erdos-890",
-      "relationship": "analogy",
-      "description": "The Erdős-Kac theorem gives the normal order of ω(n) as log log n; Erdős #890 and #1106 both ask quantitative questions about ω on structured sequences, highlighting the contrast between typical behavior of ω and the much larger values forced by fast-growing products."
+      "id": "erdos-679",
+      "relationship": "related",
+      "description": ""
     },
     {
-      "slug": "bertrands-postulate",
-      "relationship": "prerequisite",
-      "description": "Prime gap estimates of Bertrand type feed into Tijdeman's argument that sequences with super-polynomial growth accumulate unboundedly many prime factors, the key step in proving F(n) → ∞ for the partition product."
+      "id": "erdos-890",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-126",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": ""
     }
   ],
   "references": [

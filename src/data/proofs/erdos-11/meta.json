@@ -189,26 +189,6 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
       "id": "infinitude-primes",
       "relationship": "foundation",
       "description": "Euclid's infinitude of primes is a prerequisite; the Wieferich prime connection requires understanding prime distribution"
@@ -216,17 +196,17 @@
     {
       "id": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "The divergence of $\\sum 1/p$ relates to squarefree density: the density of squarefree numbers is $\\prod_p (1 - 1/p^2) = "
+      "description": "The divergence of $\\sum 1/p$ relates to squarefree density: the density of squarefree numbers is $\\prod_p (1 - 1/p^2) = 6/\\pi^2$"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate ensures primes in $(n, 2n]$; Erdős gave elementary proofs of both this and the density result for P"
+      "description": "Bertrand's postulate ensures primes in $(n, 2n]$; Erdős gave elementary proofs of both this and the density result for Problem #11"
     },
     {
       "id": "erdos-1",
       "relationship": "sibling",
-      "description": "Another Erdős problem formalization; Problem #1 concerns infinite Sidon sets, also connecting combinatorics with number "
+      "description": "Another Erdős problem formalization; Problem #1 concerns infinite Sidon sets, also connecting combinatorics with number theory"
     }
   ]
 }

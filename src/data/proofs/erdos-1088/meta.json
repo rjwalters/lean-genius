@@ -154,31 +154,35 @@
   ],
   "relatedProofs": [
     {
-      "proofId": "erdos-1083",
-      "title": "Erdős Problem #1083: Distinct Distances in Higher Dimensions",
-      "connection": "Direct complement: #1083 asks for the minimum number of distinct distances across all pairs in a point set; #1088 asks for a subset with ALL pairwise distances distinct. Together they bracket the distinct-distances landscape in ℝ^d."
+      "id": "erdos-1083",
+      "relationship": "sibling",
+      "description": "Erdős #1083 studies the minimum number of distinct distances among all pairs in a point set (the classical distinct distances problem), while #1088..."
     },
     {
-      "proofId": "erdos-1089",
-      "title": "Erdős Problem #1089: Distinct Distances in Higher Dimensions",
-      "connection": "Both problems study how many points in ℝ^d are needed to guarantee a distance-theoretic property; #1089's g_d(n) (guarantee n distinct distances overall) and #1088's f_d(n) (guarantee a fully distinct-distance subset) are dual high-dimensional extremal functions."
+      "id": "erdos-1089",
+      "relationship": "sibling",
+      "description": "Erdős #1089 asks for the growth rate of g_d(n), the minimum number of points in ℝ^d needed to guarantee n distinct distances in the whole set; #108..."
     },
     {
-      "proofId": "erdos-340-greedy-sidon",
-      "title": "Greedy Sidon Sequence Infrastructure (Erdős Problem #340)",
-      "connection": "The 1D bound f_1(n) ≍ n² reduces to Sidon set theory. The Lean Sidon infrastructure (closure under subsets, difference injectivity, pigeonhole bound) directly formalizes the combinatorial core of the one-dimensional case."
+      "id": "erdos-1085",
+      "relationship": "related",
+      "description": "Erdős #1085 (the Unit Distance Problem) asks for the maximum number of unit-distance pairs among n points in ℝ^d; both problems probe the combinato..."
     },
     {
-      "proofId": "ramseys-theorem",
-      "title": "Ramsey's Theorem",
-      "connection": "Problem #1088 is philosophically Ramsey-theoretic: any large enough point configuration must contain a well-structured subset. The Lean Ramsey formalization establishes the foundational guarantee-a-substructure framework."
+      "id": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "The 1D case f_1(n) ≍ n² is equivalent to finding n-element Sidon sets (B₂ sets); Erdős #340 and its Lean formalization of the greedy Sidon construc..."
     },
-    "erdos-1083",
-    "erdos-1089",
-    "erdos-1085",
-    "erdos-340-greedy-sidon",
-    "ramseys-theorem",
-    "erdos-100"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Problem #1088 is a Ramsey-type result: any sufficiently large point set must contain a structured subset. The Ramsey's Theorem formalization captur..."
+    },
+    {
+      "id": "erdos-100",
+      "relationship": "related",
+      "description": "Erdős #100 studies point sets in ℝ² where consecutive distances differ by at least 1, connecting restricted-distance constraints to diameter bounds..."
+    }
   ],
   "references": [
     {

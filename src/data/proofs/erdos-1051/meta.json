@@ -138,24 +138,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1049",
-      "note": "Adjacent Erdős irrationality problem; both appear in the Erdős–Graham (1980) monograph in the same section on series irrationality."
+      "id": "erdos-1049",
+      "relationship": "companion",
+      "description": "Erdős Problem #1049 is a neighboring irrationality problem for integer sequences; both problems belong to the Erdős–Graham program of classifying w..."
     },
     {
-      "target": "erdos-1054",
-      "note": "Erdős Problem #1054 considers related series with integer denominators under growth conditions, part of the same cluster of problems in Erdős–Graham (1980)."
+      "id": "erdos-1053",
+      "relationship": "companion",
+      "description": "Erdős Problem #1053 is another problem in the same cluster of irrationality questions for reciprocal sums, sharing the theme of doubly exponential ..."
     },
     {
-      "target": "sqrt2-irrational",
-      "note": "Canonical irrationality proof establishing the contradiction-from-rationality template; the proof technique in #1051 (assuming p/q rationality and deriving impossibility) is a direct generalization."
+      "id": "erdos-1003",
+      "relationship": "related",
+      "description": "Erdős Problem #1003 involves series with integer denominators; both problems study when integer-sequence-defined series must be irrational, placing..."
     },
     {
-      "target": "e-transcendental",
-      "note": "Transcendence of e; relevant to the open sub-question of whether the series sum is transcendental under the growth condition, not just irrational."
+      "id": "sqrt2-irrational",
+      "relationship": "prerequisite",
+      "description": "The irrationality of √2 is a foundational result establishing the Irrational predicate and contradiction-from-rationality proof technique that Erdő..."
     },
     {
-      "target": "fundamental-arithmetic",
-      "note": "The fundamental theorem of arithmetic provides the unique prime factorization that underpins denominator-growth arguments in irrationality proofs for series with integer terms."
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of e is a key result in transcendence theory; the open question of whether sums in #1051 are transcendental (not merely irrationa..."
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "The infinitude of primes underpins density arguments for integer sequences and is used in ruling out counterexamples in irrationality proofs where ..."
     }
   ],
   "references": [

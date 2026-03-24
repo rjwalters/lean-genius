@@ -169,24 +169,24 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "ramseys-theorem",
-      "relationship": "The original Erdos-Szekeres (1935) proof uses Ramsey-theoretic arguments to establish the existence of f(n), and the upper bound C(2n-4,n-2)+1 follows from Ramsey's theorem"
+      "relationship": "The original Erdos-Szekeres (1935) proof uses Ramsey-theoretic arguments to establish the existence of f(n), and the upper bound C(2n-4,n-2)+1 follows from Ramsey's theorem",
+      "targetId": "ramseys-theorem"
     },
     {
-      "targetProofId": "erdos-984",
-      "relationship": "Both are Ramsey-type problems in combinatorics where existence of structured subconfigurations is guaranteed above a threshold"
+      "relationship": "Both are Ramsey-type problems in combinatorics where existence of structured subconfigurations is guaranteed above a threshold",
+      "targetId": "erdos-984"
     },
     {
-      "targetProofId": "erdos-90",
-      "relationship": "Both are famous open Erdos problems in combinatorial geometry involving extremal properties of planar point sets ($500 prize each)"
+      "relationship": "Both are famous open Erdos problems in combinatorial geometry involving extremal properties of planar point sets ($500 prize each)",
+      "targetId": "erdos-90"
     },
     {
-      "targetProofId": "erdos-106",
-      "relationship": "Neighboring Erdos problem in discrete geometry involving optimization over planar configurations"
+      "relationship": "Neighboring Erdos problem in discrete geometry involving optimization over planar configurations",
+      "targetId": "erdos-106"
     },
     {
-      "targetProofId": "erdos-467",
-      "relationship": "Both are Erdos problems involving extremal combinatorial thresholds and structured subconfigurations"
+      "relationship": "Both are Erdos problems involving extremal combinatorial thresholds and structured subconfigurations",
+      "targetId": "erdos-467"
     }
   ],
   "leanFile": {
@@ -205,29 +205,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "ramseys-theorem",
+      "relationship": "The original Erdos-Szekeres (1935) proof uses Ramsey-theoretic arguments to establish the existence of f(n), and the upper bound C(2n-4,n-2)+1 follows from Ramsey's theorem",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-984",
+      "relationship": "Both are Ramsey-type problems in combinatorics where existence of structured subconfigurations is guaranteed above a threshold",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-90",
+      "relationship": "Both are famous open Erdos problems in combinatorial geometry involving extremal properties of planar point sets ($500 prize each)",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-106",
+      "relationship": "Neighboring Erdos problem in discrete geometry involving optimization over planar configurations",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-467",
+      "relationship": "Both are Erdos problems involving extremal combinatorial thresholds and structured subconfigurations",
+      "description": ""
     }
   ]
 }

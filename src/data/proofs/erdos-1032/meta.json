@@ -151,14 +151,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1104",
+      "id": "erdos-58",
       "relationship": "related",
-      "description": "Maximum chromatic number of triangle-free graphs — establishing χ = Θ(√(n/log n)) for triangle-free graphs; since 4-chromatic critical graphs are triangle-free (or nearly so in constructions), these results bound the chromatic number in the regime Erdős considers"
+      "description": "Chromatic number constrained by odd cycle structure — another Erdős problem linking chromatic number to graph structural properties, paralleling th..."
     },
     {
-      "target": "ramseys-theorem",
+      "id": "erdos-108",
       "relationship": "related",
-      "description": "Ramsey's Theorem — guarantees monochromatic cliques in any coloring of large complete graphs; Ramsey-type arguments appear in probabilistic constructions of high-minimum-degree critical graphs"
+      "description": "High chromatic subgraphs with large girth — directly related: asks for high-χ graphs with large girth, the dual challenge to critical graphs with h..."
+    },
+    {
+      "id": "erdos-1013",
+      "relationship": "related",
+      "description": "Triangle-free chromatic threshold — explores how high chromatic number can be achieved with sparse local structure, closely related to minimum degr..."
+    },
+    {
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": "Triangles in graphs with high chromatic number — examines edge density needed to force triangles when χ is high, complementing the minimum degree p..."
+    },
+    {
+      "id": "erdos-1092",
+      "relationship": "related",
+      "description": "Chromatic decomposition threshold — studies how many edges must be removed to reduce chromatic number, closely tied to edge-criticality which under..."
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "related",
+      "description": "Four Color Theorem — the landmark result on planar graph chromatic number; 4-chromatic critical graphs are the irreducible obstacles to 3-coloring ..."
     }
   ],
   "references": [

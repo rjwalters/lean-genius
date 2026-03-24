@@ -204,14 +204,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1054",
-      "relationship": "technique",
-      "description": "Sum of smallest divisors uses Finset-based counting and asymptotic analysis with Filter.Tendsto, the same Lean infrastructure used in #1061's S(x) counting function"
+      "id": "erdos-1060",
+      "relationship": "sibling",
+      "description": "Both problems study equations involving σ(k) and counting solution pairs; #1060 asks how many k satisfy k·σ(k) = n while #1061 asks about pairs wit..."
     },
     {
-      "target": "erdos-252",
+      "id": "erdos-1052",
       "relationship": "related",
-      "description": "Irrationality of divisor power sums explores σ_k(n) = Σ_{d|n} d^k, the same family of arithmetic functions from which σ = σ_1 is drawn"
+      "description": "Unitary perfect numbers satisfy σ*(n) = 2n; the additive divisor equation σ(a)+σ(b) = σ(a+b) belongs to the same family of problems probing when σ ..."
+    },
+    {
+      "id": "erdos-1053",
+      "relationship": "related",
+      "description": "k-perfect numbers satisfy σ(n) = k·n; both problems ask about density and growth rates of sets defined by divisor-sum equalities"
+    },
+    {
+      "id": "erdos-277",
+      "relationship": "related",
+      "description": "Abundancy (σ(n)/n) is central to both problems; #277 connects covering systems to σ-values while #1061 probes additive identities of σ"
+    },
+    {
+      "id": "erdos-250",
+      "relationship": "related",
+      "description": "Both involve analytic properties of the sigma function; #250 studies irrationality of Σ σ(n)/n^s while #1061 studies additive identities of σ at co..."
+    },
+    {
+      "id": "erdos-122",
+      "relationship": "related",
+      "description": "Distribution of n + f(n) in short intervals uses similar arithmetic-function counting methods to those needed for the asymptotic S(x) ~ cx question..."
     }
   ],
   "references": [

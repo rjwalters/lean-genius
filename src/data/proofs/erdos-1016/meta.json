@@ -160,16 +160,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1012",
-      "relationship": "Long Cycles in Dense Graphs (Woodall, 1972) — extremal edges forcing near-Hamiltonian cycles, closely related to pancyclicity edge thresholds"
+      "id": "erdos-1012",
+      "relationship": "companion problem",
+      "description": "Long Cycles in Dense Graphs studies the minimum edges forcing an (n-k)-cycle in n-vertex graphs. Both problems study the edge threshold for cycle s..."
     },
     {
-      "target": "erdos-65",
-      "relationship": "Cycle Lengths in Dense Graphs — distribution of cycle lengths in kn-edge graphs, companion to pancyclic cycle-spectrum questions"
+      "id": "erdos-65",
+      "relationship": "companion problem",
+      "description": "Cycle Lengths in Dense Graphs asks whether the sum of reciprocals of cycle lengths grows as log k when the graph has kn edges. Both problems concer..."
     },
     {
-      "target": "erdos-64",
-      "relationship": "Power of Two Cycles in Min Degree 3 Graphs — the doubling argument linking achievable cycle lengths to edge additions, foundational to the #1016 lower bound"
+      "id": "erdos-64",
+      "relationship": "related problem",
+      "description": "Power of Two Cycles in Min Degree 3 Graphs asks whether every graph with minimum degree ≥ 3 contains a cycle of length 2^k. The doubling argument u..."
+    },
+    {
+      "id": "erdos-58",
+      "relationship": "related problem",
+      "description": "Chromatic Number vs Odd Cycle Lengths connects the number of distinct odd cycle lengths to chromatic number. Both problems study how the set of rea..."
+    },
+    {
+      "id": "erdos-1017",
+      "relationship": "related problem",
+      "description": "Clique Partition of Graphs studies f(n,k), the minimum cliques needed to partition any graph with n vertices and k edges. Both problems involve ext..."
+    },
+    {
+      "id": "erdos-1079",
+      "relationship": "related problem",
+      "description": "Turán Density in Neighborhoods asks about Turán-dense neighborhoods in graphs at the Turán threshold. Bondy's result that n²/4 edges force pancycli..."
     }
   ],
   "references": [

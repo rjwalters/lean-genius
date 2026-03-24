@@ -190,20 +190,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-62",
-      "description": "Common subgraph structure for graphs with χ = ℵ₁ — also open, also concerns what uncountably chromatic graphs must share"
+      "id": "erdos-62",
+      "relationship": "related",
+      "description": "Erdős Problem #62 asks whether two graphs with χ = ℵ₁ must share a common subgraph with χ = 4, also concerning structural properties of uncountable..."
     },
     {
-      "target": "erdos-57",
-      "description": "Odd cycles in graphs with infinite chromatic number — structural consequences of high chromatic number in the countably infinite case"
+      "id": "erdos-57",
+      "relationship": "related",
+      "description": "Erdős Problem #57 studies odd cycle lengths in graphs with infinite chromatic number, connecting chromatic structure to cycle properties in infinit..."
     },
     {
-      "target": "erdos-1068",
-      "description": "The countable connectivity variant of this problem — open question from the same Soukup 2015 paper"
+      "id": "erdos-63",
+      "relationship": "related",
+      "description": "Erdős Problem #63 (solved by Liu-Montgomery 2020) characterizes which cycle lengths must appear in graphs with infinite chromatic number, a paralle..."
     },
     {
-      "target": "cantors-theorem",
-      "description": "Cantor's theorem on cardinal hierarchies provides the set-theoretic framework for ℵ₀ vs ℵ₁ distinctions used throughout this proof"
+      "id": "erdos-1068",
+      "relationship": "related",
+      "description": "Erdős Problem #1068 asks the countable variant: does every graph with χ = ℵ₁ contain a countable infinitely vertex-connected subgraph? Related open..."
+    },
+    {
+      "id": "erdos-58",
+      "relationship": "related",
+      "description": "Erdős Problem #58 (Gyárfás 1992) bounds chromatic number by distinct odd cycle lengths, showing the deep interplay between χ and local graph structure"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's Theorem provides the finite combinatorial foundation for Ramsey-type questions about cliques and colorings that motivate infinite chromati..."
     }
   ],
   "references": [

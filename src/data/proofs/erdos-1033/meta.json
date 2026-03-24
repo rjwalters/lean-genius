@@ -234,16 +234,29 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-905",
-      "note": "The edge-triangle multiplicity result (n/6 triangles per edge above Turán) provides the base from which Fan's lower bound (21/16)n is derived by summing degree contributions across triangles."
+      "id": "erdos-905",
+      "relationship": "foundational",
+      "description": "Erdős #905 establishes that every dense graph (above Turán threshold) has an edge in at least n/6 triangles. This codegree result is a prerequisite..."
     },
     {
-      "target": "erdos-1034",
-      "note": "Triangle neighbor problems and triangle degree-sum problems are the two main structural questions about triangles in dense graphs; their extremal constants (≈0.419 for neighbors, ≈1.464 for degree sums) are derived from similar nearly-bipartite constructions."
+      "id": "erdos-1034",
+      "relationship": "companion",
+      "description": "Erdős #1034 asks about triangle neighbor counts in dense graphs and is directly companion to #1033. Both probe the structure of triangles above the..."
     },
     {
-      "target": "ramseys-theorem",
-      "note": "Triangle existence is the r=s=3 case of Ramsey's theorem; the Turán threshold n²/4 is the extremal edge count below which triangle-free graphs exist, placing h(n) in the broader Ramsey–Turán framework."
+      "id": "erdos-1032",
+      "relationship": "related",
+      "description": "Erdős #1032 studies 4-chromatic critical graphs with linear minimum degree, connecting the Turán-type threshold with chromatic criticality. Minimum..."
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "context",
+      "description": "Ramsey's theorem guarantees clique or independent set structure in dense graphs. Triangle existence above the Turán threshold is the r=3 instance o..."
+    },
+    {
+      "id": "erdos-1031",
+      "relationship": "related",
+      "description": "Erdős #1031 studies induced regular subgraphs in graphs below the Ramsey threshold. The interplay between degree regularity and extremal thresholds..."
     }
   ],
   "references": [

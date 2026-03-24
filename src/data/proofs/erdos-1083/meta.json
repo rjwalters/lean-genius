@@ -155,23 +155,35 @@
   ],
   "relatedProofs": [
     {
-      "proofId": "erdos-89",
-      "description": "The d=2 resolved case of the distinct distances problem; Guth-Katz 2015 proved f_2(n) ≥ cn/log n using polynomial partitioning and the algebraic geometry of lines in ℝ³, setting the gold standard that d≥3 has yet to match"
+      "id": "erdos-89",
+      "relationship": "2D base case of the distinct distances hierarchy: f_2(n) ≥ cn/log n, solved by Guth-Katz (2015) using polynomial partitioning—the techniques underpinning the d=2 resolution do not extend to d≥3",
+      "description": ""
     },
     {
-      "proofId": "erdos-1089",
-      "description": "The dual problem: maximum cardinality of a point set in ℝ^d with at most n distinct distances. The functional duality f_d(g_d(n)) ≈ n means any polynomial improvement to the lower bound for f_d closes the gap for g_d simultaneously"
+      "id": "erdos-1082",
+      "relationship": "Companion distinct-distances problem in the plane imposing a general-position constraint (no three collinear); shares the Erdős 1946 lower-bound strategy and the challenge of exploiting structural restrictions",
+      "description": ""
     },
     {
-      "proofId": "erdos-1082",
-      "description": "Distinct distances under a general-position hypothesis in the plane; demonstrates how structural constraints (no three collinear, no four concyclic) can sharpen the Erdős lower bound even without the full polynomial method"
+      "id": "erdos-1084",
+      "relationship": "Unit-distance variant in ℝ^d with a separation constraint; the separation condition transforms the incidence-counting argument and directly relates the unit-distance bound to the distinct-distances exponent",
+      "description": ""
     },
-    "erdos-89",
-    "erdos-1082",
-    "erdos-1084",
-    "erdos-1088",
-    "erdos-1089",
-    "erdos-95"
+    {
+      "id": "erdos-1088",
+      "relationship": "Studies subsets of ℝ^d all of whose pairwise distances are distinct (a dual perspective to minimizing distinct distances); the function f_d in #1088 is exponentially related to the extremal configurations in #1083",
+      "description": ""
+    },
+    {
+      "id": "erdos-1089",
+      "relationship": "The inverse function g_d(n)—maximum points in ℝ^d with at most n distinct distances—is essentially the functional inverse of f_d from this problem; progress on either immediately constrains the other",
+      "description": ""
+    },
+    {
+      "id": "erdos-95",
+      "relationship": "Sum-of-squared-multiplicities problem in the plane; the polynomial method and algebraic incidence bounds used there are the same tools (Guth-Katz ruling surfaces, Cauchy-Schwarz over distance pairs) being sought for d≥3",
+      "description": ""
+    }
   ],
   "references": [
     {

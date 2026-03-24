@@ -164,16 +164,29 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1070",
-      "note": "Almost identical problem statement; the two entries together give a complete picture of the Erdős unit-distance independence questions."
+      "id": "erdos-1070",
+      "relationship": "sibling problem",
+      "description": "Erdős Problem #1070 asks the same independence-number question for unit distance graphs, with slightly different notation f(n) and the Hadwiger-Nel..."
     },
     {
-      "target": "four-color-theorem",
-      "note": "Planarity of unit distance graphs (minimum pairwise distance 1) is what allows the 4CT argument for the n/4 lower bound."
+      "id": "erdos-1085",
+      "relationship": "prerequisite context",
+      "description": "The unit distance problem (#1085) counts maximum unit-distance pairs among n points in ℝ²; the extremal configurations used to establish upper boun..."
     },
     {
-      "target": "erdos-1085",
-      "note": "Unit distance counting and independence number of unit distance graphs are complementary extremal questions about the same class of point configurations."
+      "id": "erdos-1084",
+      "relationship": "closely related",
+      "description": "Erdős Problem #1084 studies unit distances among points with all pairwise distances ≥ 1 — exactly the minimum-distance-1 assumption of #1066 — and ..."
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "foundational dependency",
+      "description": "Pollack's 1985 lower bound g(n) ≥ n/4 is a direct corollary of the Four Color Theorem: unit distance graphs with minimum pairwise distance 1 are pl..."
+    },
+    {
+      "id": "erdos-1024",
+      "relationship": "analogous problem",
+      "description": "Erdős Problem #1024 asks for guaranteed independence numbers in 3-uniform linear hypergraphs; the structural techniques (greedy algorithms, fractio..."
     }
   ],
   "references": [

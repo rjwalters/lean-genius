@@ -207,16 +207,34 @@
   ],
   "relatedProofs": [
     {
-      "slug": "bertrands-postulate",
-      "title": "Bertrand's Postulate",
-      "relationship": "contrast",
-      "description": "Bertrand's Postulate guarantees a prime between n and 2n, ensuring the worst-case divisor gap for primes is bounded by a factor of 2. This contrasts with Vose's construction: while primes have maximally bad divisor ratios (only divisors 1 and p), Vose found integers with all consecutive divisor ratios close to 1."
+      "id": "erdos-673",
+      "relationship": "sibling",
+      "description": "Erdős #673 studies G(n) = Σ dᵢ/dᵢ₊₁ (inverse consecutive ratios), directly complementary to the ratio sums in #1099. Both measure divisor gap regul..."
     },
     {
-      "slug": "erdos-728",
-      "title": "Erdős #728: Factorial Divisibility with Logarithmic Gap",
+      "id": "erdos-1100",
+      "relationship": "sibling",
+      "description": "Erdős #1100 investigates coprimality of consecutive divisors τ⊥(n), another structural property of the divisor sequence d₁ < d₂ < ... < d_τ(n). Bot..."
+    },
+    {
+      "id": "erdos-1049",
       "relationship": "related",
-      "description": "Erdős #728 studies divisibility of n! and related factorial expressions. The role of n! and lcm{1,...,n} as candidate sequences with bounded h_α is one of the main open directions from #1099. Both problems use factorial structure as a key tool."
+      "description": "Erdős #1049 concerns the irrationality of Σ τ(n)/t^n where τ(n) is the divisor count, the same τ used in #1099. Both problems exploit properties of..."
+    },
+    {
+      "id": "erdos-1062",
+      "relationship": "related",
+      "description": "Erdős #1062 asks for the maximum antichain under divisibility in {1,…,n}. The structure of divisor chains and antichains is intimately connected to..."
+    },
+    {
+      "id": "erdos-1054",
+      "relationship": "related",
+      "description": "Erdős #1054 studies f(n) = minimum m such that n equals the sum of the k smallest divisors of m. Both problems concern extremal properties of the o..."
+    },
+    {
+      "id": "erdos-1101",
+      "relationship": "related",
+      "description": "Erdős #1101 studies gaps in sieved integers (integers not divisible by elements of a pairwise coprime sequence). The gap structure of sieved sets i..."
     }
   ],
   "references": [

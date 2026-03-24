@@ -148,16 +148,29 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-43",
-      "description": "Direct generalization: Sidon sets (B_2) appear as the solved base case h=2 of the B_h density problem formalized in erdos-41."
+      "id": "erdos-43",
+      "relationship": "Sidon sets (B_2 sets) are the h=2 special case of B_h sets; erdos-43 studies disjointness properties of their difference sets, directly extending the foundational h=2 result axiomatized here.",
+      "description": ""
     },
     {
-      "target": "erdos-40",
-      "description": "Adjacent Erdős problem on additive representation and density; contrasts the dense-representation regime with the sparse-density regime of B_h sets."
+      "id": "erdos-40",
+      "relationship": "Erdős Problem #40 concerns representation functions and dense additive sets, a complementary perspective to the sparsity (liminf = 0) established for B_h sets in Problem #41.",
+      "description": ""
     },
     {
-      "target": "erdos-1",
-      "description": "Distinct subset sums problem shares the theme of sets constrained by uniqueness of sums, placing erdos-41 in the broader context of Erdős's additive combinatorics program."
+      "id": "erdos-1",
+      "relationship": "Erdős Problem #1 on distinct subset sums shares the same additive-combinatorics framework of sets with unique sum structure, making it a natural companion to the B_h density question.",
+      "description": ""
+    },
+    {
+      "id": "erdos-47",
+      "relationship": "Erdős Problem #47 connects unit fractions to dense sets; density bounds for additive sets of special type appear in both problems, illustrating Erdős's broader program on structured sparsity.",
+      "description": ""
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "Counting h-element subsets of a B_h set — central to the definition of IsBhSet — relies on binomial coefficients; the Binomial Theorem underpins the combinatorial counting arguments in Chen's and Nash's proofs.",
+      "description": ""
     }
   ],
   "references": [

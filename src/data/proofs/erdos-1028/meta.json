@@ -163,16 +163,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "ramseys-theorem",
-      "note": "Ramsey's theorem is the foundational result on unavoidable structure in edge-colorings; discrepancy theory can be viewed as a quantitative strengthening."
+      "id": "ramseys-theorem",
+      "relationship": "Ramsey theory provides the extremal combinatorics context in which homogeneous subsets drive large discrepancy; see openQuestions on Ramsey connections.",
+      "description": ""
     },
     {
-      "target": "szemeredi-regularity",
-      "note": "Szemerédi's Regularity Lemma is the principal modern tool for converting discrepancy-type density information into structural results on graphs."
+      "id": "erdos-1",
+      "relationship": "Erdős #1 (Sidon sets / sum-free sets) shares the probabilistic-method toolkit used to establish the O(n^{3/2}) upper bound.",
+      "description": ""
     },
     {
-      "target": "erdos-1025",
-      "note": "Companion problem on signed graph imbalance; proved with parallel Lean axiom structure."
+      "id": "erdos-1025",
+      "relationship": "Erdős #1025 studies signed graph imbalance; the two problems share the signed-complete-graph model and discrepancy extremal questions.",
+      "description": ""
+    },
+    {
+      "id": "erdos-1029",
+      "relationship": "Adjacent Erdős problem in the discrepancy-theory cluster; formalized with the same axiom structure and proof approach.",
+      "description": ""
+    },
+    {
+      "id": "erdos-500",
+      "relationship": "Erdős #500 involves combinatorial counting over pairs; the pair-sum decomposition technique used here appears in related Erdős pair-counting problems.",
+      "description": ""
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "Binomial coefficient estimates underpin the counting arguments in both the upper and lower bound proofs for H(n).",
+      "description": ""
     }
   ],
   "references": [
