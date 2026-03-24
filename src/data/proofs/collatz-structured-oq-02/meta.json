@@ -171,5 +171,22 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "relatedProofs": [
+    {
+      "id": "collatz-structured",
+      "title": "Collatz Conjecture (Structured)",
+      "relationship": "parent — this is an open question about Collatz dynamics"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "title": "Dirichlet's Theorem",
+      "relationship": "related — distribution of primes in arithmetic progressions connects to residue classes in Collatz dynamics"
+    },
+    {
+      "id": "fermat-two-squares",
+      "title": "Fermat's Two Squares Theorem",
+      "relationship": "related — both involve arithmetic structure of integers modulo primes"
+    }
+  ]
 }

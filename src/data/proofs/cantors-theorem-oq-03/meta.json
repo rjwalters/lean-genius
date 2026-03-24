@@ -190,5 +190,27 @@
     "opens": [
       "Function"
     ]
-  }
+  },
+  "relatedProofs": [
+    {
+      "id": "cantors-theorem",
+      "title": "Cantor's Theorem",
+      "relationship": "parent — this is an open question derived from Cantor's theorem"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "title": "Cantor's Diagonalization",
+      "relationship": "technique — diagonalization is the key proof method for cardinality results"
+    },
+    {
+      "id": "cantors-theorem-oq-01",
+      "title": "Cantor's Theorem OQ01",
+      "relationship": "sibling open question from the same theorem"
+    },
+    {
+      "id": "cantors-theorem-oq-02",
+      "title": "Cantor's Theorem OQ02",
+      "relationship": "sibling open question from the same theorem"
+    }
+  ]
 }
