@@ -189,6 +189,11 @@
       "targetId": "infinitude-primes",
       "relationship": "related",
       "description": "Both establish fundamental structural properties of infinite mathematical objects. Euclid's proof that primes are infinite and Cantor's proof of uncountability are the two foundational results about the structure of infinity."
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The well-ordering principle (equivalent to induction, as formalized in mathematical-induction) provides the foundation for ordinal and cardinal arithmetic that Cantor's theorem initiates. The transfinite induction principle generalizes mathematical induction to ordinals, enabling proofs about the cardinal hierarchy $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ that Cantor's theorem establishes"
     }
   ],
   "relatedProofs": [
@@ -200,7 +205,8 @@
     "cantors-theorem-oq-02",
     "godel-incompleteness",
     "abel-ruffini",
-    "infinitude-primes"
+    "infinitude-primes",
+    "mathematical-induction"
   ],
   "references": [
     {
