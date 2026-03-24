@@ -57,10 +57,11 @@ This project uses **two distinct AI agent orchestration systems** for different 
 | **Deployer** | Merges PRs, syncs data, deploys website to Cloudflare | Autonomous (30min) |
 | **Peer Reviewer** | Deep qualitative review of gallery proofs: evaluates substance, originality, framing | On-demand |
 | **Auditor** | Validates gallery integrity: checks proof claims match Lean source files | Autonomous (10min) |
+| **Mechanic** | Repairs issues found by auditors and peer reviewers: metadata, Lean code, companion files | Autonomous (15min) |
 | **Tester** | Tests random proof pages on the live site, files issues on failure | Autonomous (30min) |
 | **Herald** | Posts noteworthy research results to Mathstodon | Autonomous (6h) |
 
-**Managed by `/lean-daemon`**: Enricher, Aristotle, Researcher, Auditor, Seeker, Deployer, Tester, Herald
+**Managed by `/lean-daemon`**: Enricher, Aristotle, Researcher, Auditor, Mechanic, Seeker, Deployer, Tester, Herald
 **Managed separately**: Erdos Enhancer (`make enhance`, `scripts/erdos/`)
 
 **Invoke via**: `/enricher`, `/aristotle`, `/lean-research`, `/lean-scout`, `/lean-seeker`, `/lean-deploy`, `/peer-review`
@@ -138,6 +139,7 @@ The `/lean-daemon` skill provides a unified interface to start, stop, and scale 
 | Aristotle | 1 | 2 |
 | Researcher | 2 | 5 |
 | Auditor | 3 | 3 |
+| Mechanic | 1 | 3 |
 | Seeker | 1 | 1 |
 | Deployer | 1 | 1 |
 | Tester | 1 | 1 |

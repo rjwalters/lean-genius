@@ -195,21 +195,6 @@
   ],
   "crossReferences": [
     {
-      "targetId": "derangements",
-      "relationship": "related",
-      "description": "Derangements use inclusion-exclusion over permutations, closely paralleling the alternating sum identity for binomial coefficients."
-    },
-    {
-      "targetId": "pascals-hexagon",
-      "relationship": "extends",
-      "description": "Pascal's hexagon theorem explores deeper patterns within Pascal's triangle, building on the coefficient structure formalized here."
-    },
-    {
-      "targetId": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation for n! connects to binomial coefficients via $\\binom{n}{k} = n!/(k!(n-k)!)$; asymptotic analysis of central binomial coefficients uses Stirling."
-    },
-    {
       "targetId": "binomial-theorem-oq-01",
       "relationship": "parent",
       "description": "Sub-entry extending the binomial theorem to further identities or applications."
@@ -223,11 +208,6 @@
       "targetId": "combinations-formula",
       "relationship": "foundational",
       "description": "The binomial coefficient $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ is precisely the combinations formula. The binomial theorem gives the algebraic identity that these coefficients satisfy."
-    },
-    {
-      "targetId": "arithmetic-series",
-      "relationship": "related",
-      "description": "The arithmetic series formula $\\sum_{k=0}^n k = \\binom{n+1}{2}$ expresses the sum of the first $n$ natural numbers as a binomial coefficient. More generally, $\\sum \\binom{k}{m}$ yields $\\binom{n+1}{m+1}$ (the hockey stick identity)."
     },
     {
       "targetId": "inclusion-exclusion",
@@ -265,21 +245,6 @@
       "description": "Mathematical induction is the standard proof technique for the binomial theorem: the inductive step uses Pascal's identity $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ to derive row $n+1$ of Pascal's triangle from row $n$. Mathlib's `add_pow` is proved by induction internally, making induction the logical backbone of this formalization"
     },
     {
-      "targetId": "ballot-problem",
-      "relationship": "related",
-      "description": "The ballot problem counts lattice paths by binomial coefficients: the number of paths from $(0,0)$ to $(a,b)$ on a grid is $\\binom{a+b}{a}$. The ballot problem's Bertrand condition (candidate A always leads) restricts these paths, using the reflection principle — a technique that relies on the same combinatorial structure as the binomial theorem"
-    },
-    {
-      "targetId": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "The prime factorization of $n!$ determines the prime factorization of $\\binom{n}{k} = n!/(k!(n-k)!)$. Kummer's theorem states that the highest power of prime $p$ dividing $\\binom{m+n}{m}$ equals the number of carries when adding $m$ and $n$ in base $p$ — connecting the binomial coefficients to number-theoretic structure via unique factorization"
-    },
-    {
-      "targetId": "birthday-problem",
-      "relationship": "related",
-      "description": "The birthday problem computes $P(\\text{collision among } k \\text{ people}) = 1 - \\prod_{i=0}^{k-1}(1 - i/365)$, which involves the same combinatorial counting as binomial coefficients: the number of collision-free arrangements is $\\binom{365}{k} \\cdot k!$ divided by $365^k$. Both results illustrate how counting arguments yield surprising quantitative results"
-    },
-    {
       "targetId": "geometric-series",
       "relationship": "foundational",
       "description": "The geometric series $\\sum_{k=0}^n r^k = (1-r^{n+1})/(1-r)$ is the $y = 1$ special case of the binomial theorem when $x = r$ and we track only powers of $x$. More deeply, Newton's generalized binomial series $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$ for $|x| < 1$ reduces to the geometric series when $\\alpha = -1$: $(1+x)^{-1} = 1 - x + x^2 - \\cdots$"
@@ -288,20 +253,11 @@
       "targetId": "taylor-theorem",
       "relationship": "extends",
       "description": "Taylor's theorem provides the framework for Newton's generalized binomial series: $(1+x)^\\alpha = \\sum_{k=0}^\\infty \\frac{f^{(k)}(0)}{k!} x^k$ where $f^{(k)}(0) = \\alpha(\\alpha-1)\\cdots(\\alpha-k+1)$, giving the generalized binomial coefficient $\\binom{\\alpha}{k}$. The finite binomial theorem (proved here) is the special case where $\\alpha = n \\in \\mathbb{N}$ and the Taylor series terminates after $n+1$ terms"
-    },
-    {
-      "targetId": "cauchy-schwarz",
-      "relationship": "related",
-      "description": "The Cauchy-Schwarz inequality $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ can be proved via binomial expansion: expanding $(a_i t - b_i)^2 \\geq 0$ and summing gives $At^2 - 2Bt + C \\geq 0$ where $A = \\sum a_i^2$, $B = \\sum a_i b_i$, $C = \\sum b_i^2$. Non-negativity of the quadratic requires $B^2 \\leq AC$, which is Cauchy-Schwarz. The binomial expansion $(a + b)^2 = a^2 + 2ab + b^2$ (proved here as `binomial_square`) is the key algebraic step"
     }
   ],
   "relatedProofs": [
-    "derangements",
     "combinations-formula",
-    "pascals-hexagon",
-    "stirling-formula",
     "binomial-theorem-oq-01",
-    "arithmetic-series",
     "inclusion-exclusion",
     "central-limit-theorem",
     "binomial-theorem-oq-02",
@@ -309,13 +265,9 @@
     "binomial-theorem-oq-01-oq-01",
     "binomial-theorem-oq-04-oq-02",
     "mathematical-induction",
-    "ballot-problem",
-    "fundamental-arithmetic",
     "binomial-theorem-oq-04",
-    "birthday-problem",
     "geometric-series",
-    "taylor-theorem",
-    "cauchy-schwarz"
+    "taylor-theorem"
   ],
   "references": [
     {

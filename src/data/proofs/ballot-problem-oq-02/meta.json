@@ -41,7 +41,7 @@
       "Main continuous ballot theorem combining all components (0 sorries)"
     ],
     "dateAdded": "2026-02-24",
-    "axiomCount": 3,
+    "axiomCount": 2,
     "prerequisites": [
       "Brownian motion and stochastic processes",
       "Reflection principle for random walks",
@@ -50,12 +50,12 @@
       "Lévy's arcsine law and occupation times"
     ],
     "lineCount": 339,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axioms: (1) firstPassageTime_eq_maxEvent — {τ_a ≤ T} = maxEvent (requires path continuity + csInf theory), (2) reflection_principle — P(max W ≥ a) = 2·P(W_T ≥ a) (requires strong Markov property). Arcsine law is discussed but not formally axiomatized."
   },
   "overview": {
     "historicalContext": "The classical ballot problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes with $p > q$, the probability A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the reflection principle for lattice paths. The continuous-time version emerged from Louis Bachelier's 1900 thesis on stock price fluctuations — the first mathematical treatment of Brownian motion, predating Einstein's 1905 paper. Paul Lévy (1939) rigorously developed the reflection principle for Brownian motion, proving $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$, and discovered the arcsine law for the fraction of time BM spends positive. Monroe Donsker's 1951 invariance principle (functional CLT) formally connected discrete and continuous ballot theorems: the rescaled random walk converges in distribution to Brownian motion, making the discrete formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle.",
     "problemStatement": "**Continuous Ballot Problem**: For standard Brownian motion W on [0,T]:\n\n1. **Reflection Principle** (Lévy 1939): P(max_{s≤T} W_s ≥ a) = 2·P(W_T ≥ a)\n2. **First Passage CDF**: P(τ_a ≤ T) = 2·P(W_T ≥ a) = 2(1 - Φ(a/√T))\n3. **Arcsine Law**: The fraction of [0,T] where W > 0 has the arcsine distribution\n\nThese give the complete probabilistic description of Brownian motion relative to a level.",
-    "text": "Continuous-time versions of the ballot problem, connecting to Brownian motion and the reflection principle. Formalizes the reflection principle, first passage time distributions, and Lévy's Arcsine Law.",
+    "text": "A 339-line axiomatic formalization of the continuous-time ballot problem via Brownian motion. The file defines a `BrownianMotion` structure with Gaussian marginals ($W_t \\sim N(0,t)$), symmetry, measurability, and continuous paths. Symmetry theorems ($P(W_t > 0) = P(W_t < 0)$) are proved from the structure axioms. The reflection principle $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ is axiomatized (requires the strong Markov property, unavailable in Mathlib 4.26.0), and the first passage CDF $P(\\tau_a \\leq T) = 2P(W_T \\geq a)$ is derived via the linking axiom `firstPassageTime_eq_maxEvent`. First passage time monotonicity ($a' > a \\Rightarrow P(\\tau_{a'} \\leq T) \\leq P(\\tau_a \\leq T)$) is proved directly. Lévy's arcsine law ($P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$) is axiomatized. The `continuous_ballot_theorem` packages all results into a single conjunction. A final section connects to the discrete ballot probability $(p-q)/(p+q) \\in [0,1]$. Total: 2 axioms, 0 sorries.",
     "proofStrategy": "**Axiomatic Approach**: Since Mathlib 4.26.0 lacks full Brownian motion formalization, we axiomatize the key properties:\n\n1. Define BrownianMotion structure with measurability, Gaussian marginals, and symmetry\n2. Prove symmetry theorems from the structure axioms\n3. Take the reflection principle as an axiom (requires strong Markov property)\n4. Derive the first passage CDF from the reflection principle\n5. Axiomatize the Arcsine Law (requires deep analysis)\n6. Connect to the classical discrete ballot theorem via explicit arithmetic",
     "keyInsights": [
       "The reflection principle $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ is the continuous analog of André's lattice path reflection",
@@ -155,7 +155,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides a complete axiomatic framework for the continuous-time ballot problem via Brownian motion. The key results — reflection principle, first passage distributions, and arcsine law — are stated as axioms since Mathlib 4.26.0 lacks full BM formalization. All theorems now build without sorry: the firstPassageTime_eq_maxEvent axiom captures the path-continuity argument cleanly, and path_continuous was added as a BrownianMotion structure field.",
-    "implications": "**Theoretical Significance**: **Applications:**\n\n1. **Mathematical finance**: Barrier option pricing via first passage distributions\n**2. Physics**: 1D diffusion hitting times\n3. **Statistics**: Sequential analysis and stopping times\n4. **Probability**: Foundation for stochastic calculus and Itô's formula.",
+    "implications": "**Theoretical Significance**: This formalization isolates the precise axiomatic requirements for continuous-time ballot theory: Gaussian marginals and symmetry for the reflection principle, path continuity for the first passage time characterization, and the strong Markov property (the deepest ingredient, still axiomatized). The axiomatic approach serves as a roadmap for future Mathlib development of Brownian motion.\n\n**Applications**:\n\n1. **Mathematical finance**: Barrier option pricing (knock-in/knock-out options) uses the first passage CDF $P(\\tau_a \\leq T) = 2(1 - \\Phi(a/\\sqrt{T}))$ directly — the Black-Scholes barrier formula is a corollary\n2. **Physics**: First passage times model 1D diffusion hitting times, relevant to particle transport and chemical kinetics\n3. **Statistics**: Sequential analysis and CUSUM stopping rules are continuous-time ballot problems in disguise — the reflection principle gives exact boundary-crossing probabilities\n4. **Probability**: The arcsine law reveals counterintuitive behavior — Brownian motion spends most of its time entirely above or entirely below zero, not oscillating symmetrically",
     "openQuestions": [
       "Prove the reflection principle from the strong Markov property (requires full BM Markov theory)",
       "Prove firstPassageTime_eq_maxEvent from path_continuous (requires csInf theory for closed sets)",

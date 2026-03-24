@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T00:04:50.018Z",
-    "iteration": 1,
-    "focus": "3 axioms proved, 4 deep axioms remain",
+    "iteration": 2,
+    "focus": "Session 2: Assessed axioms — all 4 are deep results. No axiom elimination possible.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -40,7 +40,8 @@
       "limUnder requires Mathlib.Topology.Basic import (not in original file)",
       "countingFn A N ≤ N: A∩Icc 1 N ⊆ Icc 1 N, ncard(Icc 1 N) = N",
       "density_nonneg needs DensityExists assumption for proper statement (limUnder of non-convergent filter is arbitrary)",
-      "additive_sum_le_one follows trivially from density_le_one applied to Sumset A B"
+      "additive_sum_le_one follows trivially from density_le_one applied to Sumset A B",
+      "All 4 axioms are deep mathematical results: Weyl equidistribution, fractional part density additivity, main conjecture (OPEN), Plünnecke-Ruzsa. None are routine Mathlib proofs."
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -208,16 +208,6 @@
       "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for explicit quotient extraction"
     },
     {
-      "targetId": "infinitude-primes",
-      "relationship": "related",
-      "description": "Euclid's lemma (proved constructively here) is a key ingredient in many proofs about prime distribution and factorization"
-    },
-    {
-      "targetId": "fermat-two-squares",
-      "relationship": "related",
-      "description": "Fermat's two-squares theorem uses coprimality and descent arguments closely related to the Bézout-based divisibility machinery formalized here"
-    },
-    {
       "targetId": "bezout-identity-oq-02-oq-02",
       "relationship": "extends",
       "description": "Direct parent in the open question chain: generalizes Euclid's lemma to commutative rings. This entry adds the constructive quotient computation"
@@ -233,29 +223,9 @@
       "description": "Unique prime factorization relies on Euclid's lemma (if p | ab and p prime, then p | a or p | b) — the constructive version here gives the explicit quotient"
     },
     {
-      "targetId": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$ uses coprimality as its hypothesis. The Bézout coefficient $u$ with $au + nv = 1$ is the modular inverse of $a$ mod $n$, directly connecting the constructive algorithm here to the group (ℤ/nℤ)* whose order is $\\varphi(n)$"
-    },
-    {
       "targetId": "chinese-remainder-non-coprime",
       "relationship": "complementary",
       "description": "Extends CRT to non-coprime moduli, where Bézout's identity gives $\\gcd(m,n) = um + vn$ rather than $1 = um + vn$. The extended GCD from this file computes the same coefficients but the quotient formula requires the coprimality normalization $\\gcd = 1$"
-    },
-    {
-      "targetId": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ can be proved by pairing each $a \\in (ℤ/pℤ)^*$ with its modular inverse $a^{-1}$. The extended Euclidean algorithm constructively computes these inverses — the pairing argument is constructive when the inverse computation is"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Gauss's quadratic reciprocity law concerns when $a$ is a square modulo $p$. The extended Euclidean algorithm provides the modular inverse needed to compute Legendre symbols and reduce quadratic congruences — the constructive machinery here underpins computational approaches to reciprocity"
-    },
-    {
-      "targetId": "primitive-roots",
-      "relationship": "related",
-      "description": "Primitive roots generate the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^*$. The Bézout coefficient $u$ with $ua + pv = 1$ gives $a^{-1} \\bmod p$, directly connecting to the group structure: computing discrete logarithms and testing primitivity require modular inverse operations"
     },
     {
       "targetId": "bezout-identity-oq-03",
@@ -278,29 +248,9 @@
       "description": "Proves the Fundamental Theorem of Arithmetic from Euclid's lemma — a direct consumer of the constructive Euclid's lemma developed here. The proof chain Bézout → Euclid's lemma → unique factorization shows that the constructive quotient extraction formalized in this entry is a building block for the most fundamental theorem in number theory"
     },
     {
-      "targetId": "gcd-algorithm-oq-01",
-      "relationship": "related",
-      "description": "Formalizes Lamé's theorem on worst-case Euclidean algorithm complexity: consecutive Fibonacci numbers achieve the worst case, giving O(log min(a,b)) steps. This quantifies the efficiency of the extended Euclidean algorithm used here to compute Bézout coefficients — the extGcd implementation inherits the same complexity bound"
-    },
-    {
-      "targetId": "factor-remainder-theorem",
-      "relationship": "related",
-      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) | p(x)$) is the polynomial ring analog of the divisibility machinery formalized here. Both use the division algorithm in their respective domains ($\\mathbb{Z}$ for Bézout, $F[x]$ for the factor theorem), and the extended Euclidean algorithm generalizes to polynomial GCD computation — the constructive quotient formula $q = uc + vk$ works identically in $F[x]$ since polynomial rings over fields are Euclidean domains"
-    },
-    {
       "targetId": "bezout-identity-oq-03-oq-01",
       "relationship": "sibling",
       "description": "The CRT ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ is constructed from the same Bézout coefficients computed by the extended Euclidean algorithm. The isomorphism maps $x \\mapsto (x \\bmod m, x \\bmod n)$ with inverse $a \\mapsto a_1 vn + a_2 um$ where $um + vn = 1$ — directly using the output of extGcd"
-    },
-    {
-      "targetId": "chinese-remainder-non-coprime-oq-01",
-      "relationship": "related",
-      "description": "Computational efficiency improvements for CRT with non-coprime moduli parallel the constructive concerns of this entry: both focus on making number-theoretic existence results computationally effective. The non-coprime CRT uses $\\gcd(m,n) = um + vn$ (the general Bézout output, not just the coprime case) to canonicalize and compute solutions efficiently"
-    },
-    {
-      "targetId": "kummer-theorem",
-      "relationship": "related",
-      "description": "Kummer's theorem on $p$-adic valuations of binomial coefficients ($v_p(\\binom{m+n}{m}) = $ number of carries in base-$p$ addition) uses the same divisibility and GCD machinery formalized here. The extended Euclidean algorithm computes $p$-adic structure implicitly: the Bézout coefficients encode how prime factors distribute across coprime factorizations"
     }
   ],
   "relatedProofs": [
@@ -310,22 +260,12 @@
     "bezout-identity-oq-03",
     "chinese-remainder-constructive",
     "chinese-remainder-non-coprime",
-    "infinitude-primes",
-    "fermat-two-squares",
     "gcd-algorithm",
     "fundamental-arithmetic",
-    "euler-totient",
-    "wilsons-theorem",
-    "quadratic-reciprocity",
-    "primitive-roots",
     "bezout-identity-oq-02-oq-02-oq-01-oq-01",
     "bezout-identity-oq-04",
     "bezout-identity-oq-02-oq-01",
-    "gcd-algorithm-oq-01",
-    "factor-remainder-theorem",
-    "bezout-identity-oq-03-oq-01",
-    "chinese-remainder-non-coprime-oq-01",
-    "kummer-theorem"
+    "bezout-identity-oq-03-oq-01"
   ],
   "references": [
     {

@@ -128,16 +128,6 @@
       "description": "Cauchy-Schwarz is the M₁ ≤ M₂ case of power mean monotonicity. The r→0 limit proved here bridges the negative and positive sides of the power mean chain, with Cauchy-Schwarz sitting at M₂ on the positive side"
     },
     {
-      "targetId": "sum-of-kth-powers",
-      "relationship": "related",
-      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means M_k = (p_k/n)^(1/k). The r→0 limit lim M_r = GM connects the power sum hierarchy to the geometric mean, which is the product rather than a sum"
-    },
-    {
-      "targetId": "fundamental-theorem-calculus",
-      "relationship": "foundational",
-      "description": "The fundamental theorem of calculus underpins the derivative machinery used throughout this proof. The key bridge hasDerivAt_iff_tendsto_slope — connecting HasDerivAt to the slope limit f(r)/r → f'(0) — is a consequence of the differential calculus framework that FTC establishes"
-    },
-    {
       "targetId": "harmonic-divergence",
       "relationship": "related",
       "description": "The harmonic mean HM = (∑ wᵢ/zᵢ)⁻¹ = M_{-1} is the r = -1 case of the power mean family. This limit result establishes M_0 = GM, bridging the gap between HM and AM in the chain HM ≤ GM ≤ AM. The harmonic series divergence proof formalizes the arithmetic of reciprocals that underpins the HM ≤ GM step via the inversion trick"
@@ -146,21 +136,6 @@
       "targetId": "taylor-theorem",
       "relationship": "foundational",
       "description": "The derivative-based limit technique used here — f(r)/r → f'(0) when f(0) = 0 — is the first-order case of Taylor's theorem: f(r) = f(0) + f'(0)r + O(r²), so f(r)/r = f'(0) + O(r) → f'(0). Taylor's theorem provides the broader framework for understanding why the power mean limit works: the exp/log representation makes log M_r a smooth function of r whose Taylor expansion at r = 0 reveals the geometric mean as the leading coefficient"
-    },
-    {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's identity e^(iπ) + 1 = 0 showcases the exp function that is central to this proof. The power mean limit M_r → GM relies on the exp/log representation M_r = exp(f(r)/r) and the continuity of exp to pass limits through the exponential — the same analytic properties of exp that make Euler's identity possible"
-    },
-    {
-      "targetId": "geometric-series",
-      "relationship": "related",
-      "description": "The geometric mean $\\prod z_i^{w_i}$ and geometric series $\\sum r^n$ both involve multiplicative/exponential structures. The power mean limit $M_r \\to GM$ as $r \\to 0$ reveals the geometric mean as the natural multiplicative average, just as the geometric series $1/(1-r)$ is the natural multiplicative sum"
-    },
-    {
-      "targetId": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ involves the same exp/log analysis as the power mean limit: both use the representation $f(x) = \\exp(g(x))$ and analyze $g$ via derivatives. The geometric mean of $\\{1, 2, \\ldots, n\\}$ is $(n!)^{1/n} \\sim n/e$ by Stirling, connecting power means to factorial asymptotics"
     }
   ],
   "overview": {
@@ -175,7 +150,8 @@
       "The rpow_def_of_pos identity rewrites both M_r and the limit target to the exp form, making congr' close the goal",
       "Once limit is established, HM ≤ GM ≤ AM follows from AM-GM on inverse values",
       "This limit is structurally identical to $\\lim_{\\alpha \\to 1} H_\\alpha = H_1$ (Rényi entropy converges to Shannon entropy): both use the derivative of $\\log(\\sum p_i^\\alpha)$ at the singular point, with $f(1) = 0$ and $f'(1) = \\sum p_i \\log p_i$. The `hasDerivAt_iff_tendsto_slope` technique applies verbatim to formalize the Rényi-to-Shannon limit in Lean",
-      "**Kolmogorov-Nagumo uniqueness:** The power mean family is essentially the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity (Kolmogorov 1930, Nagumo 1930, independently). The $r \\to 0$ limit proved here is the continuity condition at the singular point that makes the power mean a smooth one-parameter interpolation from $\\min$ ($r \\to -\\infty$) through $\\text{HM}$ ($r=-1$), $\\text{GM}$ ($r=0$), $\\text{AM}$ ($r=1$) to $\\max$ ($r \\to +\\infty$). Without this limit, the family would have a discontinuity at $r=0$ and the uniqueness characterization would fail — making this result not just a computation but a foundational continuity requirement"
+      "**Kolmogorov-Nagumo uniqueness:** The power mean family is essentially the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity (Kolmogorov 1930, Nagumo 1930, independently). The $r \\to 0$ limit proved here is the continuity condition at the singular point that makes the power mean a smooth one-parameter interpolation from $\\min$ ($r \\to -\\infty$) through $\\text{HM}$ ($r=-1$), $\\text{GM}$ ($r=0$), $\\text{AM}$ ($r=1$) to $\\max$ ($r \\to +\\infty$). Without this limit, the family would have a discontinuity at $r=0$ and the uniqueness characterization would fail — making this result not just a computation but a foundational continuity requirement",
+      "**Jensen's inequality as the engine of power mean monotonicity:** The $r \\to 0$ limit proved here completes a chain whose monotonicity ($M_r \\leq M_s$ for $r < s$) ultimately derives from Jensen's inequality. For $0 < r < s$: Jensen applied to the convex function $t \\mapsto t^{s/r}$ yields $(\\sum w_i x_i)^{s/r} \\geq \\sum w_i x_i^{s/r}$, which with $x_i = z_i^r$ gives $M_r \\leq M_s$. The GM case $r = 0$ is the singular limit where Jensen's convexity argument degenerates into the exp/log derivative technique used in this file. Conversely, $\\text{GM} \\leq \\text{AM}$ (the $M_0 \\leq M_1$ case) is exactly Jensen's inequality for the concave function $\\log$: $\\sum w_i \\log z_i \\leq \\log(\\sum w_i z_i)$. This makes Jensen's inequality the single unifying principle behind the entire power mean chain"
     ],
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
@@ -287,13 +263,8 @@
     "mean-value-theorem",
     "triangle-inequality",
     "cauchy-schwarz",
-    "sum-of-kth-powers",
-    "fundamental-theorem-calculus",
     "harmonic-divergence",
-    "taylor-theorem",
-    "euler-identity",
-    "geometric-series",
-    "stirling-formula"
+    "taylor-theorem"
   ],
   "references": [
     {

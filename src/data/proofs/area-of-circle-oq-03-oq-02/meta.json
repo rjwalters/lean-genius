@@ -90,7 +90,7 @@
   "overview": {
     "historicalContext": "Archimedes of Syracuse (c. 287–212 BCE) computed the first rigorous bounds on π in his treatise 'Measurement of a Circle' (Κύκλου μέτρησις), Proposition 3. His method was to inscribe and circumscribe regular polygons around a unit circle, starting from a hexagon (whose perimeter gives the trivial bound π > 3) and doubling the number of sides four times: 6 → 12 → 24 → 48 → 96. For each doubling, he used the half-angle identity to compute the new polygon's side length from the previous one, requiring only square root extraction — which he approximated with remarkable ingenuity using rational bounds. The final result, 223/71 < π < 22/7, stood as the best known approximation for over 400 years until Ptolemy used a 360-gon to obtain π ≈ 3.14166. The upper bound 22/7 became so widely known that it remains the most common rational approximation of π today. In the 20th century, Dalzell (1944) and Niven (1947) independently discovered the elegant integral identity ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π, providing a one-line proof of the upper bound.",
     "problemStatement": "Prove Archimedes' bounds: $\\frac{223}{71} < \\pi < \\frac{22}{7}$, equivalently $3 + \\frac{10}{71} < \\pi < 3 + \\frac{1}{7}$.",
-    "text": "Archimedes' classical bounds on \u03c0 from inscribed and circumscribed 96-gons: 223/71 < \u03c0 < 22/7. Fully verified \u2014 both bounds proved from Mathlib's pi_gt_d4/pi_lt_d4, 0 axioms, 0 sorries.",
+    "text": "A 102-line formalization of Archimedes' classical $\\pi$ bounds $223/71 < \\pi < 22/7$ from inscribed and circumscribed 96-gons. Both bounds are proved via Mathlib's `Real.pi_gt_d4` ($\\pi > 3.1415$) and `Real.pi_lt_d4` ($\\pi < 3.1416$): since $223/71 \\approx 3.14085 < 3.1415$ and $3.1416 < 22/7 \\approx 3.14286$, `linarith` closes both goals. Includes the exact gap $22/7 - 223/71 = 1/497$, error estimates, traditional formulations ($3\\frac{10}{71} < \\pi < 3\\frac{1}{7}$), and a general inscribed polygon bound via `Real.sin_lt`. All arithmetic verified by `norm_num`. Fully verified: 0 sorries, 0 axioms.",
     "proofStrategy": "Both tight π bounds are proved from Mathlib's `pi_gt_d4` ($3.1415 < \\pi$) and `pi_lt_d4` ($\\pi < 3.1416$): since $223/71 \\approx 3.14085 < 3.1415$ and $3.1416 < 22/7 \\approx 3.14286$, simple `linarith` closes both goals. All derived results — traditional formulations, the exact gap $1/497$, error estimates, and the general inscribed polygon bound — are fully proved using `norm_num`, `linarith`, and `Real.sin_lt`. The entire file is axiom-free and sorry-free.",
     "keyInsights": [
       "The gap 22/7 − 223/71 = 1/497 ≈ 0.002 means Archimedes achieved better than 0.1% relative accuracy using only geometry and rational arithmetic — no infinite series or calculus.",
@@ -175,6 +175,16 @@
       "targetId": "area-of-circle-oq-01",
       "relationship": "sibling",
       "description": "Derives the circumference formula $C = 2\\pi r$ from the area formula by differentiation — the computational counterpart to Archimedes' geometric bounds, showing how the same constant $\\pi$ governs both the circle's area and perimeter"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ provides another exact formula involving $\\pi$. Archimedes' bounds $223/71 < \\pi < 22/7$ give $\\pi^2/6 \\approx 1.6449$, which can be verified against partial sums of the Basel series — connecting geometric approximation of $\\pi$ to analytic number theory"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite proved $e$ is transcendental (1873), leading to Lindemann's proof that $\\pi$ is transcendental (1882). Archimedes' rational bounds $223/71 < \\pi < 22/7$ are the tightest rational approximations achievable with 96-gons — but no rational (or algebraic) number can equal $\\pi$ exactly"
     }
   ],
   "relatedProofs": [
@@ -182,7 +192,9 @@
     "area-of-circle",
     "pi-transcendental",
     "hermite-lindemann",
-    "area-of-circle-oq-01"
+    "area-of-circle-oq-01",
+    "basel-problem",
+    "e-transcendental"
   ],
   "leanFile": {
     "imports": [

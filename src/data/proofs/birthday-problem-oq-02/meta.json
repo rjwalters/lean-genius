@@ -39,7 +39,8 @@
       "Threshold characterization: k(k-1)/(2d) > ln(1/(1-p)) implies P(collision) > p",
       "Monotonicity of collision probability in number of people"
     ],
-    "dateAdded": "2026-03-22"
+    "dateAdded": "2026-03-22",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ02.lean"
   },
   "overview": {
     "historicalContext": "The birthday problem was first posed by Richard von Mises in 1939 and popularized by mathematical recreationists. The exponential approximation $P \\approx 1 - e^{-k^2/(2d)}$ became central to cryptography after Yuval (1979) showed that birthday-style attacks reduce the cost of finding hash collisions from $O(2^n)$ to $O(2^{n/2})$. The underlying inequality $1 - x \\le e^{-x}$, a consequence of the convexity of the exponential function, was known to Euler and appears in Cauchy's 1821 Cours d'Analyse. This formalization makes the one-sided bound rigorous: the exact collision probability is always at least as large as the exponential approximation predicts, a fact implicitly assumed in security proofs for hash functions, digital signatures, and pseudorandom generators.",

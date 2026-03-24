@@ -2,7 +2,7 @@
   "id": "erdos-1065",
   "title": "Erdős Problem #1065: Primes of the Form 2^k · q + 1",
   "slug": "erdos-1065",
-  "description": "Are there infinitely many primes p = 2^k · q + 1 (q prime, k ≥ 0)? More generally, p = 2^k · 3^l · q + 1? Connected to safe primes and smooth-minus-one primes. OEIS A074781, A339465.",
+  "description": "Erdős Problem #1065 (Guy's B46): Are there infinitely many primes $p = 2^k \\cdot q + 1$ with $q$ prime and $k \\geq 0$? More generally, $p = 2^k \\cdot 3^l \\cdot q + 1$? Connected to safe primes ($k=1$) and smooth-minus-one primes. The formalization axiomatizes both conjecture variants and proves concrete witnesses via `decide`, with structural theorems connecting the two forms. 162 lines, 0 sorries, 2 axioms. OEIS A074781, A339465.",
   "meta": {
     "author": "Erdős",
     "erdosNumber": 1065,
@@ -154,36 +154,6 @@
       "Does allowing the factor $3^l$ in Form B significantly increase the density, or are most Form B primes already Form A?"
     ]
   },
-  "references": [
-    {
-      "authors": "Hardy, G. H.; Littlewood, J. E.",
-      "title": "Some problems of 'Partitio numerorum'; III: On the expression of a number as a sum of primes",
-      "year": "1923",
-      "venue": "Acta Mathematica, vol. 44, pp. 1-70",
-      "note": "Conjecture F predicts the asymptotic density of safe primes (k=1 case): approximately 2C₂x/(log x)² safe primes up to x, where C₂ ≈ 0.6602 is the twin primes constant"
-    },
-    {
-      "authors": "Schinzel, Andrzej; Sierpiński, Wacław",
-      "title": "Sur certaines hypothèses concernant les nombres premiers",
-      "year": "1958",
-      "venue": "Acta Arithmetica, vol. 4, pp. 185-208",
-      "note": "Hypothesis H: if polynomials f₁,...,fₛ satisfy necessary local conditions, they are simultaneously prime infinitely often. Conjecture A is a special case with f₁(q)=q, f₂(q)=2ᵏq+1"
-    },
-    {
-      "authors": "Guy, Richard K.",
-      "title": "Unsolved Problems in Number Theory",
-      "year": "2004",
-      "venue": "Springer, Problem Books in Mathematics (3rd edition)",
-      "note": "Section B46 discusses primes p where p-1 has restricted factorization, including the 2ᵏq+1 and 2ᵏ3ˡq+1 forms"
-    },
-    {
-      "authors": "Pomerance, Carl",
-      "title": "Popular values of Euler's function",
-      "year": "1980",
-      "venue": "Mathematika, vol. 27, pp. 84-89",
-      "note": "Analyzes the distribution of primes p where φ(p) = p-1 has restricted factorization — directly relevant to the smooth structure of Form A primes"
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "sophie-germain",

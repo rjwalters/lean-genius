@@ -147,19 +147,9 @@
       "description": "Both involve pi and circle geometry — squaring the circle (constructing sqrt(pi)) is impossible by Lindemann's theorem"
     },
     {
-      "targetId": "buffons-needle",
-      "relationship": "related",
-      "description": "Both involve pi: Buffon's needle gives a probabilistic characterization P = 2/(pi), area of circle gives the geometric characterization A = pi*r^2"
-    },
-    {
       "targetId": "pi-transcendental",
       "relationship": "related",
       "description": "π is transcendental (Lindemann 1882) — the same constant whose geometric meaning as the area-to-radius-squared ratio this file formalizes. Transcendence means πr² cannot be a constructible area for all r"
-    },
-    {
-      "targetId": "fundamental-theorem-calculus",
-      "relationship": "foundational",
-      "description": "The area πr² can be derived by integrating √(r²-x²) from -r to r — the fundamental theorem of calculus converts this circle-area problem into a definite integral evaluation"
     },
     {
       "targetId": "pythagorean-theorem",
@@ -170,11 +160,6 @@
       "targetId": "hermite-lindemann",
       "relationship": "related",
       "description": "The Hermite-Lindemann theorem proves π is transcendental, meaning the area πr² is transcendental for all nonzero algebraic r — connecting the geometric formula to number-theoretic impossibility"
-    },
-    {
-      "targetId": "e-transcendental",
-      "relationship": "related",
-      "description": "The transcendence of e connects to the area formula via the Gaussian integral: ∫∫ e^{-(x²+y²)} dA = π, where converting to polar coordinates uses the area element from A = πr²"
     },
     {
       "targetId": "basel-problem",
@@ -192,44 +177,14 @@
       "description": "Formalizes Archimedes' method of exhaustion directly: approximating the circle's area by inscribed and circumscribed regular polygons, providing the historical approach that this file's measure-theoretic proof subsumes"
     },
     {
-      "targetId": "law-of-cosines",
-      "relationship": "related",
-      "description": "The law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ generalizes the Pythagorean theorem that defines the circle $x^2 + y^2 = r^2$. Both are foundational results in metric geometry — the circle area formula is the integral consequence of the metric structure that the law of cosines describes"
-    },
-    {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects $\\pi$ to the complex exponential. The same $\\pi$ that appears as the area-to-radius² ratio in $A = \\pi r^2$ also governs the periodicity of $e^{iz}$: the unit circle in $\\mathbb{C}$ has circumference $2\\pi$ because $e^{2\\pi i} = 1$, and this file's use of $\\mathbb{C}$ as the ambient space makes the connection concrete"
-    },
-    {
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
       "description": "The intermediate value theorem underpins the continuity arguments needed for integration. Archimedes' method of exhaustion is essentially a continuity argument — the area function $A(r) = \\pi r^2$ is continuous, and the method of exhaustion proves equalities by showing the difference can be made arbitrarily small"
     },
     {
-      "targetId": "birthday-problem",
-      "relationship": "thematic",
-      "description": "The birthday problem uses uniform distribution on a circle (days of the year as a cycle), and its generalization to continuous distributions involves the Gaussian distribution — whose normalization $\\int e^{-x^2} dx = \\sqrt{\\pi}$ is proved by converting to polar coordinates using the area element $r\\,dr\\,d\\theta$ from $A = \\pi r^2$"
-    },
-    {
       "targetId": "isoperimetric-theorem",
       "relationship": "complementary",
       "description": "The isoperimetric inequality states that among all planar curves of fixed perimeter $L$, the circle encloses the maximum area $L^2/(4\\pi)$. This provides a variational characterization of the circle: $A = \\pi r^2$ is the maximum area achievable with perimeter $C = 2\\pi r$. Equality holds if and only if the curve is a circle, making the area formula a consequence of the isoperimetric optimality"
-    },
-    {
-      "targetId": "greens-theorem",
-      "relationship": "foundational",
-      "description": "Green's theorem $\\oint_C (P\\,dx + Q\\,dy) = \\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ converts the area integral $\\iint_D dA = \\pi r^2$ to a line integral around the boundary circle: $A = \\frac{1}{2}\\oint_C (x\\,dy - y\\,dx)$. This provides an alternative derivation of the area formula via the boundary parametrization $(r\\cos\\theta, r\\sin\\theta)$"
-    },
-    {
-      "targetId": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's formula $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ contains $\\sqrt{2\\pi}$ — the same constant that appears in the Gaussian integral $\\int e^{-x^2}dx = \\sqrt{\\pi}$, whose proof uses polar coordinates and the area formula $A = \\pi r^2$. The $\\pi$ in Stirling's formula traces back to the circle area through the Gamma function: $\\Gamma(1/2) = \\sqrt{\\pi}$"
-    },
-    {
-      "targetId": "sqrt2-irrational",
-      "relationship": "foundational",
-      "description": "The irrationality of $\\sqrt{2}$ was discovered through the diagonal of the unit square — the Pythagorean relation $x^2 + y^2 = r^2$ that defines the circle. The same quadratic form whose level sets are circles (with area $\\pi r^2$) also generates the irrational $\\sqrt{2}$ when applied to the unit square. Both results reveal fundamental properties of Euclidean geometry"
     },
     {
       "targetId": "area-of-circle-oq-01-oq-02",
@@ -245,30 +200,27 @@
       "targetId": "area-of-circle-oq-03-oq-02",
       "relationship": "extended-by",
       "description": "Archimedes' bounds $223/71 < \\pi < 22/7$ via inscribed and circumscribed regular 96-gons — the computational complement to the area formula, providing the first rigorous numerical approximation of the constant $\\pi$ that appears in $A = \\pi r^2$"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "This proof formalizes area as Lebesgue measure $\\lambda^2$. The Lebesgue measure entry provides the measure-theoretic infrastructure underpinning `MeasureTheory.volume` and the $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ that specializes to $\\pi r^2$ for $n=2$"
     }
   ],
   "relatedProofs": [
     "angle-trisection",
-    "buffons-needle",
     "pi-transcendental",
-    "fundamental-theorem-calculus",
     "pythagorean-theorem",
     "hermite-lindemann",
-    "e-transcendental",
     "basel-problem",
     "area-of-circle-oq-01",
     "area-of-circle-oq-03",
-    "law-of-cosines",
-    "euler-identity",
     "intermediate-value-theorem",
-    "birthday-problem",
     "isoperimetric-theorem",
-    "greens-theorem",
-    "stirling-formula",
-    "sqrt2-irrational",
     "area-of-circle-oq-01-oq-02",
     "area-of-circle-oq-01-oq-03",
-    "area-of-circle-oq-03-oq-02"
+    "area-of-circle-oq-03-oq-02",
+    "lebesgue-measure"
   ],
   "leanFile": {
     "imports": [

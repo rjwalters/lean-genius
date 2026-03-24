@@ -51,21 +51,21 @@
       "IntersectionNot1 definition: alternative constraint",
       "komjath_not1 axiom: Komjath's theorem for != 1",
       "lower_bound_2 theorem: at least 2 colors needed",
-      "countable_suffices_trivial axiom: aleph_0 upper bound",
+      "countable_suffices theorem: aleph_0 upper bound for countable I (proved via injective encoding)",
       "SetFamilyHypergraph structure: hypergraph view",
       "disjoint_2_colors theorem: disjoint families need 2",
       "IsCountablyInfiniteFamily.nonempty lemma: sets in valid family are nonempty",
       "erdos_603_statement theorem: formal statement"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "prerequisites": [
       "Basic set theory (countable and infinite sets)",
       "Cardinal arithmetic (aleph numbers, cardinal ordering)",
       "Graph and hypergraph coloring (chromatic number, proper coloring)",
       "Combinatorics of set families (intersection properties)"
     ],
-    "lineCount": 265,
-    "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for details."
+    "lineCount": 287,
+    "assumptions": "1 axiom (Komjáth's theorem for ≠1 case). The ≠2 upper bound (ℵ₀ suffices for countable I) is now proved."
   },
   "overview": {
     "historicalContext": "Erdős Problem #603 originates from Péter Komjáth and was recorded in [Er87], Erdős's 1987 problem compilation. Komjáth, a leading Hungarian combinatorialist working in set-theoretic combinatorics, proposed this as a natural extension of his own theorem: for families of countably infinite sets with pairwise intersection size $\\neq 1$, exactly $\\aleph_0$ colors suffice to avoid monochromatic sets. The $\\neq 2$ variant remains open and is surprisingly resistant to the same techniques.\n\nThe problem sits at the intersection of infinite combinatorics and hypergraph coloring theory. In finite combinatorics, the chromatic number of hypergraphs with restricted edge intersections is well-studied — the Erdős–Ko–Rado theorem (1961) and the Sunflower Lemma (Erdős and Rado, 1960) are foundational results in this area. The infinite setting introduces cardinal arithmetic complications: the answer could be any finite number, $\\aleph_0$, or conceivably larger. The contrast between the $\\neq 1$ case (solved, $C = \\aleph_0$) and the $\\neq 2$ case (open) illustrates how sensitive these problems are to the exact intersection constraint.",
@@ -114,10 +114,10 @@
     {
       "id": "bounds",
       "title": "Bounds and Special Cases",
-      "summary": "lower_bound_2, countable_suffices_trivial, CanDoBetterThanAleph0",
+      "summary": "lower_bound_2, countable_suffices (proved), CanDoBetterThanAleph0",
       "startLine": 98,
-      "endLine": 125,
-      "mathContext": "Known bounds: $2 \\leq C \\leq \\aleph_0$. The lower bound uses monochromaticity of infinite sets under 1-coloring. The upper bound assigns distinct colors to elements. The open question: is $C$ finite or must it be $\\aleph_0$?"
+      "endLine": 147,
+      "mathContext": "Known bounds: $2 \\leq C \\leq \\aleph_0$. The lower bound uses monochromaticity of infinite sets under 1-coloring. The upper bound (countable_suffices) is now PROVED for countable index sets: inject the countable union into $\\mathbb{N}$; the injection is non-constant on infinite sets. The open question: is $C$ finite or must it be $\\aleph_0$?"
     },
     {
       "id": "hypergraph",
@@ -201,9 +201,9 @@
       "Cardinal"
     ],
     "namespace": "Erdos603",
-    "lineCount": 265,
-    "axiomCount": 2,
-    "theoremCount": 5,
-    "definitionCount": 18
+    "lineCount": 287,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 19
   }
 }

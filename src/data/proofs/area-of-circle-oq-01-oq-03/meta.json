@@ -57,12 +57,12 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 1232,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "assumptions": "4 sorries remain in supporting lemmas: (1) parseval_periodic_real — Parseval's identity for periodic L² functions, (2) fourierCoeffOn_deriv_periodic — IBP for Fourier coefficients of periodic C¹ functions, (3) fourier_decomposition_periodic — full Fourier decomposition combining Parseval + IBP, (4) reparametrize_constant_speed — reparametrization of closed curves to constant speed. 0 axioms. The isoperimetric inequality itself and Wirtinger's inequality are fully proved from these 4 Fourier-analytic sorry lemmas."
   },
   "overview": {
     "historicalContext": "The isoperimetric problem — find the shape of maximum area for a given perimeter — is one of the oldest optimization problems in mathematics, traced to ancient Dido of Carthage (~900 BCE). The problem asks: among all closed curves of length $L$, which encloses the most area? The answer is a circle, and the isoperimetric inequality $C^2 \\geq 4\\pi A$ quantifies how much any curve falls short. Archimedes knew the result informally (~250 BCE), but a rigorous proof waited until the 19th century. Steiner (1838) gave an elegant proof using symmetrization, but didn't prove existence of the maximizer. Weierstrass (1870s) gave the first complete proof using calculus of variations. The most elegant proof is due to Hurwitz (1901), who used Fourier series and the Wirtinger inequality.",
     "problemStatement": "**Isoperimetric Inequality**:\n\nFor any simple closed curve $\\gamma$ in the plane with circumference $C$ and enclosed area $A$:\n$$C^2 \\geq 4\\pi A$$\nwith equality if and only if $\\gamma$ is a circle.\n\n**Connection to OQ Chain**:\n- OQ01: $C = \\frac{dA}{dr}$ (circumference from differentiating area)\n- OQ01-OQ02: $A = \\int_0^r C(\\rho)\\,d\\rho$ (area from integrating circumference)\n- OQ01-OQ03 (this file): $C^2 \\geq 4\\pi A$ for ALL closed curves (isoperimetric inequality)",
-    "text": "For any closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality iff the curve is a circle. Proves 29 theorems (4 sorries, 0 axioms) including Wirtinger's inequality (proved from Fourier decomposition), the general isoperimetric inequality, equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.",
+    "text": "A comprehensive 1232-line formalization of the isoperimetric inequality $C^2 \\geq 4\\pi A$ via the Hurwitz proof (1901). Defines `ClosedPlaneCurve` (path, area, circumference, isoperimetric ratio) and proves Wirtinger's inequality from the Fourier decomposition: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$ for zero-mean $f$, using Parseval's theorem ($\\int f^2 = \\pi \\sum (a_n^2 + b_n^2)$ implies $\\int (f')^2 = \\pi \\sum n^2(a_n^2 + b_n^2) \\geq \\int f^2$). Combined with Green's theorem for area and Cauchy-Schwarz/AM-GM, this yields the isoperimetric inequality. Equality holds iff the curve is a circle (only $n=1$ Fourier mode survives). Concrete verifications for circles (ratio $= 1$), squares ($\\pi/4 \\approx 0.785$), equilateral triangles ($\\pi\\sqrt{3}/9$), and regular $n$-gons ($\\pi/n \\cdot \\cot(\\pi/n) \\to 1$). 29 theorems, 4 sorries, 0 axioms.",
     "proofStrategy": "The **Hurwitz proof** (1901) uses Fourier analysis:\n1. Parameterize the curve $\\gamma(t) = (x(t), y(t))$ with $t \\in [0, 2\\pi]$\n2. Apply **Green's theorem**: $A = \\frac{1}{2}|\\int_0^{2\\pi}(xy' - yx')\\,dt|$\n3. Apply **Wirtinger's inequality**: for $f$ with zero mean, $\\int_0^{2\\pi} f^2\\,dt \\leq \\int_0^{2\\pi}(f')^2\\,dt$\n4. Combined with **Cauchy-Schwarz** and **AM-GM**: this gives $4\\pi A \\leq L^2$\n\nWirtinger follows from **Parseval's theorem** for Fourier series: with $f(t) = \\sum_{n \\geq 1}(a_n \\cos(nt) + b_n \\sin(nt))$, Parseval gives $\\int f^2 = \\pi \\sum(a_n^2 + b_n^2)$ and $\\int(f')^2 = \\pi \\sum n^2(a_n^2 + b_n^2) \\geq \\int f^2$.",
     "keyInsights": [
       "**Equality for circles** is a trivial ring computation: $(2\\pi r)^2 = 4\\pi \\cdot \\pi r^2$",
@@ -204,6 +204,36 @@
     "fourier-series",
     "cauchy-schwarz",
     "borsuk-ulam"
+  ],
+  "references": [
+    {
+      "authors": "Hurwitz, Adolf",
+      "title": "Sur le problème des isopérimètres",
+      "year": "1901",
+      "venue": "Comptes Rendus de l'Académie des Sciences, vol. 132, pp. 401–403",
+      "note": "Elegant proof of the isoperimetric inequality using Fourier series and the Wirtinger inequality — the approach formalized in this file"
+    },
+    {
+      "authors": "Steiner, Jakob",
+      "title": "Einfache Beweise der isoperimetrischen Hauptsätze",
+      "year": "1838",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 18, pp. 281–296",
+      "note": "Pioneering proof via symmetrization that any non-circular shape can be improved — established the geometric approach but lacked a rigorous existence proof"
+    },
+    {
+      "authors": "Osserman, Robert",
+      "title": "The isoperimetric inequality",
+      "year": "1978",
+      "venue": "Bulletin of the American Mathematical Society, vol. 84, no. 6, pp. 1182–1238",
+      "note": "Comprehensive survey of proofs and generalizations of the isoperimetric inequality, including the Hurwitz Fourier proof, Steiner symmetrization, and higher-dimensional analogues"
+    },
+    {
+      "authors": "Blaschke, Wilhelm",
+      "title": "Kreis und Kugel",
+      "year": "1916",
+      "venue": "Veit, Leipzig (reprinted by Chelsea 1949)",
+      "note": "Classical monograph on isoperimetric problems in the plane and 3-space, with the symmetrization proof and applications to convexity theory"
+    }
   ],
   "leanFile": {
     "imports": [

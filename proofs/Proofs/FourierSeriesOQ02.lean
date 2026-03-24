@@ -263,18 +263,29 @@ theorem fourierCoeff_lipschitz_decay (C : ℝ≥0) (f : AddCircle T → ℂ)
   exact h
 
 /-- **Square-Summability for α > 1/2**: ‖ĉ_n‖ = O(1/|n|^α), so
-    ‖ĉ_n‖² = O(1/|n|^{2α}), and Σ 1/|n|^{2α} < ∞ when 2α > 1. -/
-axiom fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
+    ‖ĉ_n‖² = O(1/|n|^{2α}), and Σ 1/|n|^{2α} < ∞ when 2α > 1.
+    Proof: fourierCoeff_holder_decay gives ‖ĉ_n‖² ≤ K/|n|^{2α},
+    then Summable.of_nonneg_of_le + Real.summable_nat_rpow_inv. -/
+theorem fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f)
     (hα : (1 : ℝ) / 2 < (α : ℝ)) :
-    Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2)
+    Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2) := by
+  -- ‖ĉ_n‖² ≤ ((C/2)(T/(2|n|))^α)² = K/|n|^{2α}
+  -- Σ 1/|n|^{2α} < ∞ for 2α > 1 (via Real.summable_nat_rpow_inv)
+  sorry
 
 /-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0.
-    Proof strategy: use fourierCoeff_holder_decay + squeeze theorem,
-    or use general Riemann-Lebesgue for L¹ (Hölder → continuous → integrable). -/
-axiom riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
+    From fourierCoeff_holder_decay: for any ε > 0, the set {n : ‖ĉ_n‖ ≥ ε}
+    is finite (contained in a bounded interval ∪ {0}). -/
+theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f) (hα : 0 < α) :
-    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0)
+    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0) := by
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  simp only [dist_zero_right]
+  rw [Filter.eventually_cofinite]
+  -- {n | ε ≤ ‖ĉ_n‖} is finite: for n ≠ 0, ‖ĉ_n‖ ≤ K/|n|^α < ε when |n| large
+  sorry
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

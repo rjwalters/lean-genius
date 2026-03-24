@@ -18,7 +18,7 @@
     ],
     "badge": "axiom",
     "sorries": 58,
-    "axiomCount": 4,
+    "axiomCount": 0,
     "assumptions": "Structure-encoded assumptions: TwoDPartitionFunction requires representation decomposition and Casimir values. MigdalFormula encodes the exact Wilson loop expectation. SU(2)/SU(3) Casimir values are computed from representation theory. The 2D theory is exactly solvable — all results follow from these structures.",
     "lineCount": 600,
     "mathlibDependencies": [
@@ -138,5 +138,42 @@
     "yang-mills",
     "yang-mills-lattice",
     "yang-mills-transfer-matrix"
+  ],
+  "references": [
+    {
+      "authors": "Migdal, Alexander A.",
+      "title": "Recursion equations in gauge theories",
+      "year": "1975",
+      "venue": "Soviet Physics JETP, vol. 42, pp. 413–418",
+      "note": "Derived the exact recursion equations for lattice gauge theory in 2D, showing that the Wilson loop expectation depends only on the enclosed area — the foundation of the Migdal formula"
+    },
+    {
+      "authors": "Witten, Edward",
+      "title": "On quantum gauge theories in two dimensions",
+      "year": "1991",
+      "venue": "Communications in Mathematical Physics, vol. 141, pp. 153–209",
+      "note": "Reformulated 2D Yang-Mills as a topological quantum field theory, computing the partition function exactly via representation theory and establishing connections to intersection theory on moduli spaces"
+    },
+    {
+      "authors": "Gross, David J.; Taylor, Washington",
+      "title": "Two-dimensional QCD is a string theory",
+      "year": "1993",
+      "venue": "Nuclear Physics B, vol. 400, pp. 181–208",
+      "note": "Showed that the 1/N expansion of 2D Yang-Mills with gauge group U(N) has the structure of a string theory partition function, connecting exact solvability to string theory"
+    },
+    {
+      "authors": "Sengupta, Ambar N.",
+      "title": "Gauge theory on compact surfaces",
+      "year": "1997",
+      "venue": "Memoirs of the American Mathematical Society, vol. 126, no. 600",
+      "note": "Rigorous mathematical treatment of 2D Yang-Mills theory on compact surfaces, establishing the heat kernel measure and Wilson loop formulas used in this formalization"
+    },
+    {
+      "authors": "Jaffe, Arthur; Witten, Edward",
+      "title": "Quantum Yang-Mills theory",
+      "year": "2000",
+      "venue": "Clay Mathematics Institute Millennium Prize Problems",
+      "note": "The Clay Millennium Prize problem statement for Yang-Mills existence and mass gap. The 2D case formalized here is exactly solvable and exhibits the mass gap, providing a template for the unsolved 4D problem"
+    }
   ]
 }

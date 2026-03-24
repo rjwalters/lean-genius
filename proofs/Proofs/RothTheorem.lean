@@ -1412,30 +1412,10 @@ private theorem density_increment_dirichlet {N : ℕ} (hN : 4 ≤ N)
           apply mul_le_mul_of_nonneg_right _ (by positivity)
           nlinarith [sq_nonneg delta]
   · -- CASE 2: gcd(val(r), N) < √N → need Dirichlet subprogression approach
-    -- This case handles prime N (where all nonzero r have gcd(r,N)=1) and
-    -- composite N where the Fourier coefficient r has small gcd with N.
-    --
-    -- PROOF OUTLINE (provably true, requires ~200 lines of infrastructure):
-    -- 1. Apply DirichletApproximation.dirichlet_approximation to
-    --    α = val(r)/N, Q = Nat.sqrt N. Get q ≤ Q, p with |qα - p| < 1/Q.
-    -- 2. Partition ZMod N into q subprogressions P_j = {x : val(x) % q = j}
-    --    for j = 0,...,q-1. Each has size M_j ≥ ⌊N/q⌋ ≥ Nat.sqrt N.
-    -- 3. AP-FREENESS TRANSFER: The restriction of A to P_j, mapped to ZMod M_j,
-    --    is AP-free. Key insight: when q ∤ N, wrapping APs in ZMod M_j where
-    --    both steps wrap consistently map to valid APs in ZMod N (since the
-    --    wrapping offset (val(d)-M)·q is well-defined), while mixed-wrapping APs
-    --    require N | M·q which fails when q ∤ N (as M·q = N - N%q < N).
-    --    When q | N, these ARE exact cosets and apFree_coset_restrict applies.
-    -- 4. SIZE BOUND: Each M_j ≥ N/q ≥ (Nat.sqrt N)²/(Nat.sqrt N) = Nat.sqrt N.
-    --    And M_j < N since q ≥ 1 and M_j ≤ ⌈N/q⌉ ≤ N (strict when q ≥ 2).
-    -- 5. DENSITY INCREMENT: The Fourier coefficient |Â(r)| ≥ δ²N/2 decomposes
-    --    across subprogressions. By Dirichlet, ψ_r(q) ≈ 1 (within 2π/√N).
-    --    The pigeonhole + Fourier argument gives density ≥ δ + δ²/100 on the
-    --    densest subprogression. This is the most complex step, requiring
-    --    careful error analysis of the approximate character constancy.
-    -- 6. For q = 1 (Dirichlet gives trivial approximation): val(r) < N/√N,
-    --    need separate argument or larger Dirichlet parameter.
-    push_neg at hd_large
+    -- Apply DirichletApproximation.dirichlet_approximation to
+    -- α = val(r)/N, Q = Nat.sqrt N. Get q ≤ Q with |qα - p| < 1/Q.
+    -- Subprogression partition with step q gives L = ⌊N/q⌋ ≥ √N pieces.
+    -- Approximate character constancy + density increment on densest piece.
     sorry
 
 /-- Tower-of-squares threshold for Roth's theorem.

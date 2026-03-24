@@ -220,24 +220,24 @@
       "description": "Hermite's proof that $e$ is transcendental (1873) sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape radical expressions, while transcendence shows $e$ escapes all polynomial equations over $\\mathbb{Q}$. Lindemann's extension to $\\pi$ (1882) resolved the ancient problem of squaring the circle"
     },
     {
-      "targetId": "godel-incompleteness",
-      "relationship": "related",
-      "description": "Gödel's incompleteness theorem (1931) extends the impossibility paradigm inaugurated by Abel-Ruffini: Abel showed no radical formula solves all quintics, Gödel showed no consistent formal system proves all true arithmetic statements. Both reveal inherent limitations of formal frameworks"
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots and cyclotomic extensions supply the abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ that form each layer of a radical tower via Kummer theory. Each radical step $K \\to K(\\sqrt[n]{a})$ has cyclic Galois group precisely because the $n$th roots of unity form a cyclic group. Abel-Ruffini's impossibility arises when the target Galois group $S_5$ cannot be decomposed into such abelian cyclotomic layers"
     },
     {
-      "targetId": "halting-problem",
-      "relationship": "related",
-      "description": "Turing's undecidability of the halting problem (1936) continues Abel-Ruffini's impossibility tradition: no algorithm can decide whether an arbitrary program halts, just as no radical formula can solve an arbitrary quintic. Both are proved by structural obstructions (diagonal argument vs non-solvable Galois group)"
+      "targetId": "kummer-theorem",
+      "relationship": "foundational",
+      "description": "Kummer theory provides the mechanism underlying the Galois bridge (galois_bridge): each radical extraction creates a Kummer extension with cyclic Galois group, so radical towers produce solvable Galois groups — the forward direction of the bridge that Abel-Ruffini applies contrapositively"
+    },
+    {
+      "targetId": "hilbert-13",
+      "relationship": "extended-by",
+      "description": "Hilbert's 13th problem (1900) was directly motivated by Abel-Ruffini: since polynomials of degree $\\geq 5$ cannot be solved by radicals, Hilbert asked whether the roots of the degree-7 equation $x^7 + ax^3 + bx^2 + cx + 1 = 0$ can be expressed as superpositions of continuous functions of two variables. Kolmogorov-Arnold (1957) resolved the topological version positively, but the algebraic formulation remains open — can the roots be expressed via algebraic functions of two variables?"
     },
     {
       "targetId": "hilbert-10",
       "relationship": "related",
-      "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (1970) — no algorithm decides solvability of arbitrary Diophantine equations — is the number-theoretic descendant of Abel-Ruffini's impossibility. Both concern the limits of what can be 'solved' within a given formal framework"
-    },
-    {
-      "targetId": "primitive-roots",
-      "relationship": "foundational",
-      "description": "Primitive roots and cyclotomic extensions supply the abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ that form each layer of a radical tower via Kummer theory. Each radical step $K \\to K(\\sqrt[n]{a})$ has cyclic Galois group precisely because the $n$th roots of unity form a cyclic group. Abel-Ruffini's impossibility arises when the target Galois group $S_5$ cannot be decomposed into such abelian cyclotomic layers"
+      "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (MRDP theorem, 1970) extends the impossibility paradigm inaugurated by Abel-Ruffini: Abel-Ruffini shows certain polynomial roots cannot be named by radicals, while MRDP shows the existence of integer solutions to Diophantine equations cannot be decided algorithmically — a deeper level of the expressibility/decidability hierarchy"
     }
   ],
   "relatedProofs": [
@@ -254,10 +254,10 @@
     "fundamental-theorem-algebra",
     "kroneckers-jugendtraum",
     "e-transcendental",
-    "godel-incompleteness",
-    "halting-problem",
-    "hilbert-10",
-    "primitive-roots"
+    "primitive-roots",
+    "kummer-theorem",
+    "hilbert-13",
+    "hilbert-10"
   ],
   "references": [
     {
@@ -434,6 +434,8 @@
     "lineCount": 185,
     "axiomCount": 0,
     "theoremCount": 9,
+    "substantiveTheoremCount": 3,
+    "trivialSpecializations": 6,
     "definitionCount": 0
   }
 }

@@ -17,7 +17,7 @@
       "ODE",
       "research"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -51,7 +51,7 @@
       "Real-valued rpow function"
     ],
     "lineCount": 220,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Core analytic convergence derived from Mathlib Real.one_add_rpow_hasFPowerSeriesOnBall_zero via binomialSeries."
   },
   "overview": {
     "historicalContext": "Newton discovered the generalized binomial theorem around 1665, extending the finite binomial sum $(1+x)^n = \\sum \\binom{n}{k} x^k$ to arbitrary real exponents via the infinite series $(1+x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ for $|x| < 1$. The analytic function theory perspective emerged from Euler and Cauchy's work on ODEs: the function $f(x) = (1+x)^\\alpha$ is the unique solution to the initial value problem $(1+x)f'(x) = \\alpha f(x)$, $f(0) = 1$. This ODE approach is elegant because it determines the power series coefficients via a single recurrence relation, from which all properties (convergence, functional equation, special values) follow.",

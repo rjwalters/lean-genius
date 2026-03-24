@@ -1,7 +1,7 @@
 {
   "slug": "erdos-238",
   "title": "Erdős #238",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-12T16:08:36.613Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiom elimination via sSup/BddAbove machinery",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATION: Proved conjecture_implies_run_growth (formerly axiom). Reduced axiom count from 4 to 3. Proof uses le_csSup with BddAbove bound from strict monotonicity of prime enumeration.",
+    "builtItems": [
+      "Proved nthPrime_strictMono : StrictMono nthPrime (line 155)",
+      "Proved nthPrime_id_le : n <= nthPrime n (line 159)",
+      "Proved conjecture_implies_run_growth (40-line proof, lines 168-203)"
+    ],
+    "insights": [
+      "conjecture_implies_run_growth is a structural consequence of definitions, not a deep number-theoretic result",
+      "Key insight: the set {k | exists run of k primes <= x with gaps > c} is BddAbove by x+1, since n <= nthPrime(n) by strict monotonicity",
+      "Transfer from Filter.Eventually on R to N uses Archimedean property (exists_nat_ge)",
+      "Remaining 3 axioms are genuinely deep: erdos_partial_result (second moment method), average_gap_grows (PNT consequence), prime_number_theorem_asymptotic (PNT itself)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "average_gap_grows could be proved if PNT lands in Mathlib",
+      "prime_number_theorem_asymptotic requires PNT in Mathlib (not currently available in v4.26.0)",
+      "erdos_partial_result is deep (Erdos second moment argument) - keep as axiom"
+    ],
     "markdown": "# Erdős #238 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c_1,c_2>0$. Is it true that, for any sufficiently large $x$, there exist more than $c_1\\log x$ many consecutive primes $\\leq x$ such that the difference between any two is $>c_2$?\n\n\n\nThis is well-known if $c_1$ is sufficiently small.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #237\n- Problem #239\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -57,9 +70,9 @@
     {
       "path": "Proofs/Erdos238Problem.lean",
       "filename": "Erdos238Problem.lean",
-      "lineCount": 235,
-      "theoremCount": 4,
-      "axiomCount": 4,
+      "lineCount": 274,
+      "theoremCount": 7,
+      "axiomCount": 3,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,

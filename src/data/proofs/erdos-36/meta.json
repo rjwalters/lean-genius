@@ -2,7 +2,7 @@
   "id": "erdos-36",
   "title": "Erdős Problem #36: Minimum Overlap Problem",
   "slug": "erdos-36",
-  "description": "Partition {1,...,2N} into equal sets A, B. Minimize over partitions the maximum number of pairs (a,b) with a−b=k. Determine c = lim M(N)/N. Known: 0.379 < c < 0.381. Open.",
+  "description": "Erdős Problem #36: Partition $\\{1,\\ldots,2N\\}$ into equal sets $A, B$. Minimize over all partitions the maximum overlap $\\max_k |\\{(a,b) \\in A \\times B : a - b = k\\}|$. Does the limit $c = \\lim M(N)/N$ exist, and what is its value? Known bounds: $0.379 < c < 0.381$. A 91-line formalization with 6 axioms encoding Moser's construction ($c \\geq 0.379...$), the Swinnerton-Dyer upper bound ($c < 0.382$), and Fourier-analytic reformulations. Status: OPEN.",
   "meta": {
     "erdosNumber": 36,
     "status": "axiomatized",
