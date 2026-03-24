@@ -303,19 +303,15 @@
     "dirichlets-theorem"
   ],
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Set",
-      "Nat",
-      "Real"
-    ],
-    "namespace": "Erdos4",
     "lineCount": 243,
+    "structureCount": 0,
     "axiomCount": 9,
     "theoremCount": 2,
-    "definitionCount": 16
+    "lemmaCount": 0,
+    "defCount": 16,
+    "imports": [
+      "Mathlib"
+    ]
   },
   "references": [
     {
