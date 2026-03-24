@@ -28,7 +28,31 @@
       "Asymptotic notation and density of integer sets"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 497
+    "lineCount": 497,
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Set.Finite.subset",
+        "description": "Subsets of finite sets are finite",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Set.ncard_union_le",
+        "description": "Subadditivity of set cardinality",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Complete formal framework for the Erdős–Turán conjecture: representation functions, asymptotic bases, Sidon sets, and counting functions",
+      "Proved isAsymptoticBasis_iff: equivalence of two basis definitions (threshold vs finite complement)",
+      "Proved sidon_repFunc_bounded: Sidon sets have representation ≤ 2 (original proof via pair-matching argument)",
+      "Proved basis_element_count_sq: density lower bound |A ∩ [0,N]|² ≥ N - N₀ + 1 for bases",
+      "Three-tier conjecture formalization: weak (unbounded), strong (logarithmic growth), and density version"
+    ]
   },
   "sections": [
     {
@@ -123,7 +147,7 @@
   "overview": {
     "historicalContext": "Paul Erdős and Pál Turán posed this conjecture in their landmark 1941 paper 'On a problem of Sidon in additive number theory and some related problems' (J. London Math. Soc.), which also introduced the systematic study of $B_2$ sequences. The conjecture emerged from their investigation of how the representation function $r_A(n)$ behaves for additive bases — sets $A$ whose sumset $A + A$ covers all sufficiently large integers. Erdős attached a $500 bounty, one of his largest prizes, signaling its depth within additive combinatorics. Key partial results include the Erdős–Fuchs theorem (1956), which proved that cumulative representations must fluctuate (sharpened by Montgomery and Vaughan in 1990 to the optimal exponent $1/4$), and the Halberstam–Roth observation that average representations diverge. The conjecture connects to a web of related problems: Problem #40 on $B_2[g]$ sets, the structure theory of Sidon sets (initiated by Simon Sidon in the 1930s), and Waring-type problems on additive bases of higher order. Despite 85 years of effort by leaders in additive combinatorics — including Nathanson, Cilleruelo, and Lev — even the basic conjecture remains completely open.",
     "problemStatement": "If $A \\subseteq \\mathbb{N}$ and $A + A$ contains all but finitely many natural numbers, must $\\limsup_{n \\to \\infty} r_A(n) = \\infty$, where $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n, \\; a \\leq b\\}|$?",
-    "text": "If A ⊆ ℕ is an additive basis of order 2 (A+A covers all but finitely many integers), must the representation function r(n) be unbounded? $500 bounty. Status: OPEN.",
+    "text": "A 497-line formalization of Erdős Problem #28 (\\$500 bounty, OPEN since 1941) that builds the complete framework for the Erdős–Turán conjecture on additive bases. Defines the representation function $r_A(n)$ (ordered and unordered), the asymptotic basis predicate, and the counting function $A(N)$, then states the conjecture in three tiers: weak ($\\limsup r_A(n) = \\infty$), strong ($\\limsup r_A(n)/\\log n > 0$), and density version ($A(N) \\geq c\\sqrt{N}$ suffices). The 4 axioms encode known partial results (Grekos et al. 2003: $r_A(n) \\geq 6$ i.o.; Borwein et al.: $r_A(n) \\geq 8$ i.o.) and the Sidon density bound. The 13 proved theorems include `isAsymptoticBasis_iff` (equivalence of basis definitions), `sidon_repFunc_bounded` ($r_A(n) \\leq 2$ for Sidon sets), `erdos_turan_holds_for_nat` (conjecture holds trivially for $A = \\mathbb{N}$), and `basis_element_count_sq` (density lower bound $A(N)^2 \\geq N - N_0 + 1$).",
     "proofStrategy": "We formalize the core objects of the conjecture — the representation function $r_A(n)$, the asymptotic basis condition, and the counting function — then state the main conjecture and two strengthenings (logarithmic growth and density version) as axioms. We connect these to known results: the basis counting lower bound ($A(N) \\gg \\sqrt{N}$), the Sidon set exclusion, the implication to Problem #40, the Erdős–Fuchs fluctuation theorem, and the Halberstam–Roth average divergence.",
     "keyInsights": [
       "**No thin basis can exist**: The conjecture asserts that controlling $r_A(n) \\leq C$ is fundamentally incompatible with $A + A$ covering all large integers — a profound structural constraint on sumsets",
@@ -211,6 +235,27 @@
       "year": "1996",
       "venue": "Springer GTM 164",
       "note": "Chapter 1 covers additive bases and Sidon sets; Chapter 2 treats Waring's problem; comprehensive modern reference for the Erdős–Turán conjecture and related problems"
+    },
+    {
+      "authors": "Grekos, Georges; Haddad, Labib; Helou, Charles; Pihko, Jukka",
+      "title": "On the Erdős–Turán conjecture",
+      "year": "2003",
+      "venue": "Journal of Number Theory, vol. 102, pp. 339–352",
+      "note": "Proved r_A(n) ≥ 6 for infinitely many n for any asymptotic basis of order 2 — the first quantitative progress toward the conjecture. Formalized as the axiom grekos_lower_bound"
+    },
+    {
+      "authors": "Borwein, Peter; Choi, Stephen; Chu, Frank",
+      "title": "An old conjecture of Erdős-Turán on additive bases",
+      "year": "2006",
+      "venue": "Mathematics of Computation, vol. 75, pp. 475–484",
+      "note": "Improved the Grekos et al. bound to r_A(n) ≥ 8 infinitely often. Formalized as the axiom borwein_lower_bound"
+    },
+    {
+      "authors": "Tao, Terence; Vu, Van",
+      "title": "Additive Combinatorics",
+      "year": "2006",
+      "venue": "Cambridge University Press",
+      "note": "Chapter 2 covers sumsets and the Erdős–Turán conjecture in the context of modern additive combinatorics; includes the Freiman-Ruzsa theorem and connections to inverse sumset theory"
     }
   ],
   "relatedProofs": [
@@ -231,8 +276,8 @@
     },
     {
       "id": "erdos-40",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "relationship": "extends",
+      "description": "Problem #40 asks whether $B_2[g]$ sets can be asymptotic bases. The Erdős–Turán conjecture (#28) implies the answer is no: if $\\limsup r_A(n) = \\infty$ for every basis, then no set with $r_A(n) \\leq g$ can be a basis. The formalization proves this implication directly"
     },
     {
       "id": "erdos-41",
