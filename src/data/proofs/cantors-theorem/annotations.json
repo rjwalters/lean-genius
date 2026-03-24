@@ -28,7 +28,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 52,
-      "endLine": 57
+      "endLine": 60
     },
     "type": "theorem",
     "title": "No Surjection to Power Set",
@@ -51,7 +51,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 64,
-      "endLine": 65
+      "endLine": 67
     },
     "type": "definition",
     "title": "The Diagonal Set",
@@ -74,7 +74,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 69,
-      "endLine": 78
+      "endLine": 94
     },
     "type": "theorem",
     "title": "Set Formulation Proof",
@@ -98,7 +98,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 96,
-      "endLine": 96
+      "endLine": 106
     },
     "type": "lemma",
     "title": "The Self-Reference Paradox",
@@ -121,7 +121,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 108,
-      "endLine": 108
+      "endLine": 114
     },
     "type": "theorem",
     "title": "Strict Cardinality Inequality",
@@ -144,7 +144,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 116,
-      "endLine": 116
+      "endLine": 121
     },
     "type": "theorem",
     "title": "No Bijection Corollary",
@@ -166,7 +166,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 133,
-      "endLine": 140
+      "endLine": 157
     },
     "type": "concept",
     "title": "Constructive Witness",
@@ -213,7 +213,7 @@
     "id": "ann-connection",
     "proofId": "cantors-theorem",
     "range": {
-      "startLine": 5,
+      "startLine": 37,
       "endLine": 46
     },
     "type": "concept",
@@ -231,6 +231,29 @@
       "binary sequences",
       "real numbers",
       "Wiedijk 100"
+    ]
+  },
+  {
+    "id": "ann-cardinal-arithmetic",
+    "proofId": "cantors-theorem",
+    "range": {
+      "startLine": 122,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "Cardinal Arithmetic Formulation",
+    "content": "The `cantor_cardinal_inequality` theorem restates the non-existence of surjection as a cardinal inequality: $|A| < |\\mathcal{P}(A)|$. While the statement is identical to `cantor_no_surjection_set`, the naming emphasizes the cardinal arithmetic perspective.\n\nMathlib's `Cardinal.mk_set_lt` provides the fully cardinal formulation using `Cardinal.mk`, showing $\\#A < \\#(\\text{Set}\\,A)$ directly. This file stays at the function-level formulation (no surjection) rather than importing the full cardinal machinery, keeping the development self-contained and accessible.",
+    "mathContext": "$\\kappa < 2^\\kappa$ for every cardinal $\\kappa$, including transfinite cardinals. The strict inequality follows from: (1) the singleton injection $a \\mapsto \\{a\\}$ gives $\\kappa \\leq 2^\\kappa$, and (2) Cantor's no-surjection result gives $\\kappa \\neq 2^\\kappa$. In Mathlib: `Cardinal.mk_set_lt : Cardinal.mk A < Cardinal.mk (Set A)`.",
+    "significance": "supporting",
+    "prerequisites": [
+      "cardinal arithmetic",
+      "Cardinal.mk_set_lt",
+      "cantor_no_surjection_set"
+    ],
+    "relatedConcepts": [
+      "cardinal arithmetic",
+      "beth numbers",
+      "transfinite cardinals"
     ]
   }
 ]
