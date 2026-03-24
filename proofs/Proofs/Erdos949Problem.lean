@@ -12,12 +12,7 @@ such that A + A ⊆ ℝ \ S?
 - Dillies–AlphaProof: proved the Sidon variant
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Continuum
-import Mathlib.Tactic
+import Mathlib
 
 open Set
 
@@ -98,6 +93,33 @@ theorem sidon_not_implies_sum_free :
   have hsf := h _ hS h0
   have : (1 : ℝ) + 1 ∉ ({1, 2, 4} : Set ℝ) := hsf 1 (by simp) 1 (by simp)
   simp only [mem_insert_iff, mem_singleton_iff] at this; norm_num at this
+
+-- ## Structural Properties
+
+/-- The empty set is sum-free. -/
+theorem sum_free_empty : IsSumFreeSet ∅ :=
+  fun _ ha => absurd ha (Set.notMem_empty _)
+
+/-- {x} is sum-free for x ≠ 0. (0 + 0 = 0 means {0} is not sum-free.) -/
+theorem sum_free_singleton {x : ℝ} (hx : x ≠ 0) : IsSumFreeSet {x} := by
+  intro a ha b hb hab
+  rw [Set.mem_singleton_iff] at ha hb hab
+  subst ha; subst hb; exact hx (by linarith)
+
+/-- A subset of a sum-free set is sum-free. -/
+theorem sum_free_subset {S T : Set ℝ} (hT : IsSumFreeSet T) (hST : S ⊆ T) :
+    IsSumFreeSet S :=
+  fun a ha b hb hab => hT a (hST ha) b (hST hb) (hST hab)
+
+/-- realSumset is monotone: A ⊆ B → A + A ⊆ B + B. -/
+theorem realSumset_mono {A B : Set ℝ} (h : A ⊆ B) : realSumset A ⊆ realSumset B :=
+  fun _ ⟨a, ha, b, hb, hx⟩ => ⟨a, h ha, b, h hb, hx⟩
+
+/-- The open interval (1/3, 2/3) is sum-free.
+    Classic result: if a, b ∈ (1/3, 2/3) then a + b > 2/3, so a + b ∉ (1/3, 2/3). -/
+theorem open_interval_sum_free : IsSumFreeSet (Set.Ioo (1/3 : ℝ) (2/3)) := by
+  intro a ⟨_, ha2⟩ b ⟨hb1, _⟩ ⟨_, hc2⟩
+  linarith
 
 -- ## The Sidon Variant (Solved by Dillies/AlphaProof)
 
