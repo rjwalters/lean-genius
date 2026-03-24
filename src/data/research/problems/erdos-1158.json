@@ -1,56 +1,101 @@
 {
   "slug": "erdos-1158",
   "title": "Erdős #1158",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "\\mathrm{ex}_t(n, K_t(r)) \\geq n^{t - r^{1-t} - o(1)}",
+    "plain": "Is it true that the hypergraph Turán number ex_t(n, K_t(r)) is at least n^{t - r^{1-t} - o(1)}, where K_t(r) is the complete t-partite t-uniform hypergraph with r vertices per class?",
+    "whyMatters": [
+      "Generalizes the Zarankiewicz problem (#714) to t-uniform hypergraphs",
+      "Determines tightness of Erdős's 1964 upper bound for hypergraph extremal numbers",
+      "Central question in extremal hypergraph theory"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Upper bound: ex_t(n, K_t(r)) ≤ O(n^{t - r^{1-t}}) [Erdős 1964]",
+      "Weaker lower bound: ex_t(n, K_t(r)) ≥ n^{t - Cr^{1-t}} for C > 1 [Erdős 1964]",
+      "t=2, r=2: Solved via projective plane constructions",
+      "t=2, r=3: Solved by Brown (1966) and Erdős-Rényi-Sós (1966)",
+      "Stepping-up lemma: (t-1)-uniform bounds lift to t-uniform with exponent +1"
+    ],
+    "open": [
+      "t=2, r≥4: Lower bound not established",
+      "t≥3, all r: Entirely open",
+      "Closing the constant gap C > 1 to C = 1"
+    ],
+    "goal": "Prove ex_t(n, K_t(r)) ≥ n^{t - r^{1-t} - o(1)} for all t, r ≥ 2"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T16:46:42.684Z",
+    "phase": "ACT",
+    "since": "2026-03-23T03:42:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Initial Lean 4 formalization with definitions, conjecture statement, and known bounds",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove exponent_t2 sorry; consider Aristotle companion file for routine lemmas",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1158 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "progressSummary": "PROGRESS: Created full Lean 4 formalization (279 lines, 5 axioms). Defined UniformHypergraph, containsKtr via transversals, exHypergraph as Turán number. Stated conjecture with ε-formulation. Axiomatized upper/lower bounds and stepping-up lemma. Proved known cases summary theorem.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1158Problem.lean: full formalization (279 lines)",
+      "src/data/proofs/erdos-1158/: gallery integration (meta.json, annotations.json, index.ts)",
+      "research/problems/erdos-1158/knowledge.md: session notes"
+    ],
+    "insights": [
+      "The exponent t - r^{1-t} unifies graph (2-1/r) and hypergraph cases",
+      "The constant gap (C>1 vs C=1 in exponent) is the essential difficulty",
+      "Stepping-up lemma compounds the constant gap across uniformities",
+      "Only algebraic constructions (not probabilistic) achieve tight graph bounds",
+      "Connects to Problem #714 as the t=2 specialization"
+    ],
+    "mathlibGaps": [
+      "No t-uniform hypergraph theory in Mathlib",
+      "No hypergraph Turán number definitions",
+      "Real.rpow simplification for negative exponents needs work"
+    ],
+    "nextSteps": [
+      "Prove the exponent_t2 theorem (rpow simplification sorry)",
+      "Consider Aristotle companion file for any routine lemmas",
+      "Formalize explicit connection between exHypergraph 2 and Erdos714.exKrr"
+    ],
+    "markdown": ""
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "hypergraphs",
+    "extremal-combinatorics",
+    "turan-type",
+    "open-problem"
   ],
   "relatedProofs": [
+    "erdos-714",
     "erdos-1",
     "erdos-11",
     "erdos-115"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős (1964): On extremal problems of graphs and generalized graphs [Er64f]",
+      "Verstraëte survey [Va99, 3.65]"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1158"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ]
   },
   "started": "2026-01-15T16:46:42.684Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-03-23T03:42:00Z",
   "significance": 7,
   "tractability": 6
 }

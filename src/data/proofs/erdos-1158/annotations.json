@@ -1,0 +1,56 @@
+[
+  {
+    "id": "uniform-hypergraph",
+    "line": 42,
+    "type": "definition",
+    "content": "A t-uniform hypergraph on V is a Finset of Finsets, where each hyperedge has exactly t elements. This is the natural generalization of a graph (2-uniform hypergraph) to higher uniformities."
+  },
+  {
+    "id": "contains-ktr",
+    "line": 71,
+    "type": "definition",
+    "content": "K_t(r) containment: there exist t pairwise-disjoint parts of size r such that every transversal (one vertex from each part) forms a hyperedge. For t=2 this reduces to the complete bipartite subgraph K_{r,r}."
+  },
+  {
+    "id": "ex-hypergraph",
+    "line": 101,
+    "type": "definition",
+    "content": "The hypergraph Turán number ex_t(n, K_t(r)) is the maximum number of hyperedges in a K_t(r)-free t-uniform hypergraph on n vertices. For t=2, this is the classical Zarankiewicz number."
+  },
+  {
+    "id": "hypergraph-exponent",
+    "line": 120,
+    "type": "insight",
+    "content": "The conjectured exponent t - r^{1-t} unifies all cases: for t=2 it gives 2 - 1/r (the KST exponent), for t=3, r=2 it gives 11/4. The gap with the known lower bound is in the constant multiplying r^{1-t}."
+  },
+  {
+    "id": "erdos-upper",
+    "line": 131,
+    "type": "axiom",
+    "content": "Erdős (1964) proved ex_t(n, K_t(r)) ≤ C·n^{t-r^{1-t}} by double counting, generalizing Kővári-Sós-Turán. The key idea: count t-tuples of parts that could witness K_t(r), then bound by the total edge count."
+  },
+  {
+    "id": "erdos-lower",
+    "line": 155,
+    "type": "axiom",
+    "content": "Erdős (1964) proved a weaker lower bound n^{t-Cr^{1-t}} with C > 1 via probabilistic methods. The random t-uniform hypergraph on n vertices with edge probability p, after deleting all K_t(r) copies, achieves this bound."
+  },
+  {
+    "id": "conjecture",
+    "line": 176,
+    "type": "conjecture",
+    "content": "The ε-formulation: for every ε > 0 there exist c > 0 and N₀ such that ex_t(n, K_t(r)) ≥ c·n^{t-r^{1-t}-ε} for n ≥ N₀. This is equivalent to ex_t(n, K_t(r)) ≥ n^{t-r^{1-t}-o(1)}."
+  },
+  {
+    "id": "stepping-up",
+    "line": 244,
+    "type": "axiom",
+    "content": "The Erdős-Hajnal stepping-up lemma: a lower bound with exponent α for (t-1)-uniform hypergraphs yields exponent α+1 for t-uniform ones. Unfortunately, the base case gap (C > 1) compounds under stepping-up."
+  },
+  {
+    "id": "known-cases",
+    "line": 271,
+    "type": "theorem",
+    "content": "The only known cases are t=2, r=2 (projective planes: ex(n;K_{2,2}) ≥ cn^{3/2}) and t=2, r=3 (Brown 1966: ex(n;K_{3,3}) ≥ cn^{5/3}). Both use algebraic constructions over finite fields."
+  }
+]
