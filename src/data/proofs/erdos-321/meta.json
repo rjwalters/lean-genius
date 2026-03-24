@@ -30,73 +30,48 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Module docstring stating the Bleicher–Erdős bounds with iterated logarithm notation. Imports Mathlib for $\\mathbb{N}$, $\\mathbb{Q}$ (exact reciprocal sums), $\\mathbb{R}$ (asymptotics with $\\log N$), and tactics."
+      "summary": "Module docstring stating the Bleicher-Erdos bounds with iterated logarithm notation. Imports Mathlib for $\\mathbb{N}$, $\\mathbb{Q}$ (exact reciprocal sums), $\\mathbb{R}$ (asymptotics with $\\log N$), and tactics.",
+      "mathContext": "The problem studies $R(N) = \\max\\{|A| : A \\subseteq [N], \\text{ all reciprocal subset sums distinct}\\}$ with known bounds $\\Theta(N/\\log N)$ up to iterated log factors."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 24,
+      "startLine": 25,
       "endLine": 43,
-      "summary": "Three foundational definitions: **unitFractions** $\\{1/n : n \\in [N]\\}$, **HasDistinctReciprocalSums** requiring all $2^{|A|}$ subset sums over $\\mathbb{Q}$ to be distinct, and **maxDistinctReciprocal** $R(N) = \\max|A|$ over valid subsets of $[N]$."
+      "summary": "Two equivalent formulations of distinct reciprocal subset sums: **HasDistinctReciprocalSums** (distinct subsets have distinct sums) and **HasDistinctReciprocalSums'** (injective formulation). Uses Classical.dec for decidability. All subset sums computed over $\\mathbb{Q}$ for exact arithmetic.",
+      "mathContext": "$\\text{HasDistinctReciprocalSums}(A) \\iff |\\{\\sum_{n \\in S} 1/n : S \\subseteq A\\}| = 2^{|A|}$."
     },
     {
-      "id": "main-question",
-      "title": "The Main Asymptotic Question",
-      "startLine": 44,
-      "endLine": 51,
-      "summary": "States the problem: determine $R(N)$ asymptotically. Axiomatizes existence of a function $f$ with $R(N) = f(N)$ for $N \\geq 2$. The precise form of $f$ — whether $R(N) \\sim c \\cdot N/\\log N$ or involves iterated log corrections — is the open question."
-    },
-    {
-      "id": "lower-bound",
-      "title": "Bleicher–Erdős Lower Bound (1975)",
-      "startLine": 52,
-      "endLine": 60,
-      "summary": "Lower bound: $R(N) \\geq (N/\\log N) \\cdot \\prod_{i=3}^k \\log_i N$ via a constructive argument using integers with controlled prime factorizations. Simplified in Lean to $R(N) \\geq N/\\log N$."
-    },
-    {
-      "id": "upper-bound",
-      "title": "Bleicher–Erdős Upper Bound (1976)",
-      "startLine": 61,
-      "endLine": 67,
-      "summary": "Upper bound: $R(N) \\leq (1/\\log 2) \\cdot \\log_r N \\cdot (N/\\log N) \\cdot \\prod_{i=3}^r \\log_i N$, via a counting argument bounding distinct sums by $2^{|A|} \\leq \\text{lcm}(1,\\ldots,N)$. Simplified to $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$."
-    },
-    {
-      "id": "main-term",
-      "title": "Main Term Summary",
-      "startLine": 68,
-      "endLine": 75,
-      "summary": "Combined statement: $c_1 \\cdot N/\\log N \\leq R(N) \\leq c_2 \\cdot (N/\\log N) \\cdot \\log\\log N$. The gap is essentially one iterated logarithm factor — the entire content of the open problem."
-    },
-    {
-      "id": "observations",
-      "title": "Observations and Connections",
-      "startLine": 76,
-      "endLine": 89,
-      "summary": "Three remarks (in comments, not formalized): the **Egyptian fraction** connection (every rational has a unit fraction decomposition), the **greedy construction** strategy for lower bounds, and related **OEIS sequences** A384927, A391592 tracking computed values of $R(N)$."
-    },
-    {
-      "id": "pair-sorry",
-      "title": "Pair Distinct Sums (Sorry)",
-      "startLine": 85,
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 45,
       "endLine": 91,
-      "summary": "States `pair_hasDistinctReciprocalSums`: for $m < n$, $\\{m, n\\}$ has distinct reciprocal subset sums. Contains a sorry — the proof that the 4 subsets $\\emptyset, \\{m\\}, \\{n\\}, \\{m,n\\}$ all yield distinct sums $0, 1/m, 1/n, 1/m+1/n$ is left incomplete.",
-      "mathContext": "The 4 subset sums are $0 < 1/n < 1/m < 1/m + 1/n$, distinct because $m < n$ implies $1/m > 1/n > 0$. The sorry likely requires working with `Finset.sum` over subsets and `Rat` arithmetic."
+      "summary": "Five results establishing basic properties: equivalence of the two formulations, empty set (vacuously true), hereditary property ($B \\subseteq A$ inherits distinctness), singleton $\\{n\\}$ (two distinct sums $0$ and $1/n$), and pair $\\{m, n\\}$ (sorry — 4 distinct sums).",
+      "mathContext": "The family $\\mathcal{F}_N = \\{A \\subseteq [N] : \\text{HasDistinctReciprocalSums}(A)\\}$ is hereditary (downward-closed). One sorry remains: the pair case requires showing $0 < 1/n < 1/m < 1/m + 1/n$ for $m < n$."
     },
     {
-      "id": "r-of-n-def",
-      "title": "R(N) Definition and Known Bounds",
+      "id": "r-definition",
+      "title": "R(N) Definition",
       "startLine": 93,
+      "endLine": 101,
+      "summary": "Defines `maxDistinctReciprocal N` as the maximum cardinality over subsets of $\\{1,\\ldots,N\\}$ with distinct reciprocal sums, via `Finset.sup` over the filtered powerset.",
+      "mathContext": "$R(N) = \\max\\{|A| : A \\subseteq [N], \\text{ all reciprocal subset sums distinct}\\}$, noncomputable due to the existential in the filter predicate."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Bleicher-Erdos Bounds (Axiomatized)",
+      "startLine": 103,
       "endLine": 122,
-      "summary": "Defines `maxDistinctReciprocal N` as the maximum card over subsets of $\\{1,\\ldots,N\\}$ with distinct reciprocal sums, via `Finset.sup`. Axiomatizes Bleicher-Erdős bounds: $R(N) \\geq N/\\log N$ (1975) and $R(N) \\leq C \\cdot N \\log\\log N / \\log N$ (1976). States asymptotic form: $R(N) = \\Theta(N/\\log N)$.",
-      "mathContext": "The gap: $\\frac{N}{\\log N} \\prod_{i=3}^{k} \\log_i N \\leq R(N) \\leq C \\frac{N \\log\\log N}{\\log N}$. The lower and upper bounds differ by essentially one iterated logarithm factor."
+      "summary": "Three axioms encoding the known bounds: lower bound $R(N) \\geq N/\\log N$ (Bleicher-Erdos 1975, constructive via prime factorization), upper bound $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ (1976, counting argument via $\\text{lcm}(1,\\ldots,N)$), and combined $\\Theta(N/\\log N)$ statement.",
+      "mathContext": "$c_1 \\cdot \\frac{N}{\\log N} \\leq R(N) \\leq c_2 \\cdot \\frac{N \\log\\log N}{\\log N}$. The gap is one iterated logarithm factor."
     },
     {
       "id": "main-conjecture",
-      "title": "Erdős Problem #321: Exact Asymptotics (OPEN)",
+      "title": "Erdos Problem #321: Exact Asymptotics (OPEN)",
       "startLine": 124,
       "endLine": 137,
-      "summary": "States the tautological existence of an asymptotic function (take $f = R$). The real open problem is finding an explicit closed-form. The `rfl` proof acknowledges this is a definitional tautology.",
-      "mathContext": "The conjecture asks: is $R(N) \\sim c \\cdot N/\\log N$ for some constant $c$, or does the iterated logarithm factor in the bounds reflect genuine complexity? Erdős conjectured the former."
+      "summary": "States tautological existence of an asymptotic function (take $f = R$, proof by `rfl`). The real open problem is finding an explicit closed-form. Erdos conjectured $R(N) \\sim c \\cdot N/\\log N$.",
+      "mathContext": "The conjecture: is $\\lim_{N \\to \\infty} R(N) \\cdot \\log N / N = c$ for some constant $c > 0$, or do iterated log corrections persist?"
     }
   ],
   "overview": {
@@ -172,17 +147,17 @@
     {
       "id": "erdos-148",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+      "description": "Erdos 148 asks for bounds on the number of representations as sums of distinct unit fractions -- structurally related to the distinctness constraint in Problem 321"
     },
     {
       "id": "erdos-300",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, subset-sums, unit-fractions"
+      "description": "Erdos 300 studies subset sums of unit fractions with prescribed denominators -- shares the Egyptian fraction framework and subset sum machinery"
     },
     {
       "id": "erdos-313",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+      "description": "Erdos 313 concerns density of sets avoiding coincident unit fraction sums -- the dual perspective to maximizing sets with distinct sums"
     }
   ]
 }
