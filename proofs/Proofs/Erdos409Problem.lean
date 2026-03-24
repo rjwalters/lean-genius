@@ -45,16 +45,90 @@ noncomputable def iterationsToFirst (n : ℕ) : ℕ :=
 
 /- ## Termination -/
 
-/-- The iteration always terminates: for any n > 0, some iterate is prime.
-    This follows because φ(n) < n for n > 1, so φ(n)+1 ≤ n,
-    and the sequence is eventually decreasing until hitting a prime. -/
-axiom iteration_terminates :
-  ∀ n : ℕ, n > 0 → ∃ k : ℕ, (totientIterate n k).Prime
+/-- The iterate is eventually decreasing: φ(n) + 1 < n for composite n > 1.
+    Proved via Finset reasoning: for composite n, both 0 and n.minFac are
+    in range(n) but not coprime to n, so φ(n) ≤ n − 2. -/
+theorem iterate_decreasing :
+    ∀ n : ℕ, n > 1 → ¬n.Prime → totientPlusOne n < n := by
+  intro n hn hnp
+  unfold totientPlusOne
+  -- Suffices: n.totient + 2 ≤ n (then n.totient + 1 < n follows)
+  suffices h : n.totient + 2 ≤ n by omega
+  -- Setup: minFac properties for composite n
+  have hne1 : n ≠ 1 := by omega
+  have hmf_prime := Nat.minFac_prime hne1
+  have hmf_dvd := Nat.minFac_dvd n
+  have hmf_ge2 : 2 ≤ n.minFac := hmf_prime.two_le
+  have hmf_lt : n.minFac < n := by
+    by_contra hc; push_neg at hc
+    have := Nat.le_of_dvd (by omega) hmf_dvd
+    exact hnp ((show n.minFac = n by omega) ▸ hmf_prime)
+  -- Both 0 and minFac are not coprime to n
+  have h0_not_cop : ¬ n.Coprime 0 := by
+    rw [Nat.Coprime, Nat.gcd_zero_right]; omega
+  have hmf_not_cop : ¬ n.Coprime n.minFac := by
+    rw [Nat.Coprime]; intro hg
+    have : n.minFac ∣ Nat.gcd n n.minFac := Nat.dvd_gcd hmf_dvd dvd_rfl
+    rw [hg] at this; exact absurd (Nat.le_of_dvd one_pos this) (by omega)
+  -- Use Finset reasoning: φ(n) = card of coprime filter on range n
+  have h0_in : (0 : ℕ) ∈ Finset.range n := Finset.mem_range.mpr (by omega)
+  have hmf_in : n.minFac ∈ Finset.range n := Finset.mem_range.mpr hmf_lt
+  have h0_not_F : (0 : ℕ) ∉ (Finset.range n).filter n.Coprime := by
+    intro hm; exact h0_not_cop (Finset.mem_filter.mp hm).2
+  have hmf_not_F : n.minFac ∉ (Finset.range n).filter n.Coprime := by
+    intro hm; exact hmf_not_cop (Finset.mem_filter.mp hm).2
+  -- Both 0 and minFac are in the sdiff (in range but not coprime)
+  have h0_sd : (0 : ℕ) ∈ (Finset.range n) \ (Finset.range n).filter n.Coprime :=
+    Finset.mem_sdiff.mpr ⟨h0_in, h0_not_F⟩
+  have hmf_sd : n.minFac ∈ (Finset.range n) \ (Finset.range n).filter n.Coprime :=
+    Finset.mem_sdiff.mpr ⟨hmf_in, hmf_not_F⟩
+  -- The pair {0, minFac} is a subset of the sdiff, with card = 2
+  have hpair_sub : ({0, n.minFac} : Finset ℕ) ⊆
+      (Finset.range n) \ (Finset.range n).filter n.Coprime := by
+    intro x hx; rcases Finset.mem_insert.mp hx with rfl | hx
+    · exact h0_sd
+    · exact Finset.mem_singleton.mp hx ▸ hmf_sd
+  have hpair_card : ({0, n.minFac} : Finset ℕ).card = 2 :=
+    Finset.card_pair (by omega : (0 : ℕ) ≠ n.minFac)
+  have hsdiff_ge2 : 2 ≤ ((Finset.range n) \ (Finset.range n).filter n.Coprime).card :=
+    hpair_card ▸ Finset.card_le_card hpair_sub
+  -- card(filter) + card(sdiff) = card(range n) = n
+  have hfilt_sub := Finset.filter_subset (n.Coprime) (Finset.range n)
+  have hsum := Finset.card_sdiff_add_card_eq_card hfilt_sub
+  rw [Finset.card_range] at hsum
+  -- Connect φ(n) to filter cardinality
+  have htot : n.totient = ((Finset.range n).filter n.Coprime).card := rfl
+  omega
 
-/-- The iterate is eventually decreasing: φ(n) + 1 ≤ n for n > 1,
-    with equality only when n is prime (φ(p) + 1 = p). -/
-axiom iterate_decreasing :
-  ∀ n : ℕ, n > 1 → ¬n.Prime → totientPlusOne n < n
+/-- The iteration always terminates: for any n > 0, some iterate is prime.
+    Proved by strong induction on n using iterate_decreasing:
+    primes are already prime (k=0), n=1 maps to 2 (k=1),
+    and composites decrease strictly. -/
+theorem iteration_terminates :
+    ∀ n : ℕ, n > 0 → ∃ k : ℕ, (totientIterate n k).Prime := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    intro hn
+    by_cases hp : n.Prime
+    · -- n is already prime: k = 0
+      exact ⟨0, hp⟩
+    · -- n is not prime
+      by_cases hn1 : n = 1
+      · -- n = 1: φ(1) + 1 = 2, which is prime
+        exact ⟨1, by subst hn1; native_decide⟩
+      · -- n > 1 and composite: use iterate_decreasing
+        have hn1' : n > 1 := by omega
+        have hdec := iterate_decreasing n hn1' hp
+        -- totientPlusOne n > 0 (since φ(n) ≥ 0)
+        have hpos : totientPlusOne n > 0 := by unfold totientPlusOne; omega
+        -- By induction: some iterate of (totientPlusOne n) reaches a prime
+        obtain ⟨k, hk⟩ := ih (totientPlusOne n) hdec hpos
+        -- Then k+1 works for n: iterate(n, k+1) = iterate(φ(n)+1, k)
+        refine ⟨k + 1, ?_⟩
+        unfold totientIterate
+        rw [Function.iterate_succ, Function.comp_apply]
+        exact hk
 
 /- ## Main Questions -/
 
@@ -92,9 +166,12 @@ axiom one_iteration_criterion :
 
 /-- φ(n) + 1 is odd for n ≥ 3 (since φ(n) is even for n ≥ 3).
     So φ(n) + 1 is odd, making it a candidate for primality.
-    Previously axiomatized; now proved from Nat.Even.totient. -/
-axiom totient_plus_one_odd :
-  ∀ n : ℕ, n ≥ 3 → Odd (totientPlusOne n)
+    Proved from Nat.totient_even and Even.add_one. -/
+theorem totient_plus_one_odd :
+    ∀ n : ℕ, n ≥ 3 → Odd (totientPlusOne n) := by
+  intro n hn
+  unfold totientPlusOne
+  exact (Nat.totient_even (by omega : 2 < n)).add_one
 
 /- ## Sigma Variant -/
 
