@@ -156,6 +156,16 @@
       "targetId": "mean-value-theorem",
       "relationship": "supports",
       "description": "The MVT provides the bridge from derivative conditions to function inequalities: $f''(x) > 0$ (verified via MVT applied to $f'$) implies convexity of $f$, which yields Jensen's inequality, which proves the weighted AM-GM. Specifically, applying MVT to $f(x) = -\\log x$ gives the tangent line bound $-\\log x \\geq -\\log a - (x-a)/a$, a one-line proof of the exponential inequality $e^{x-1} \\geq x$ that Pólya used for AM-GM."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic mean $H = n/(\\sum 1/a_i)$ satisfies $H \\leq G \\leq A$ (HM-GM-AM chain), so the harmonic mean is bounded above by both the geometric and arithmetic means. The divergence of the harmonic series $\\sum 1/n$ contrasts with the convergence behavior dictated by AM-GM: while individual harmonic means are well-behaved, their sum diverges — a tension that underlies results in analytic number theory from Euler's product formula to Mertens' theorems."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "AM-GM connects to geometric sequences through the ratio of consecutive terms: if $a_{n+1}/a_n \\leq r < 1$ for all $n$, the sequence decreases geometrically. The AM-GM inequality applied to ratios shows that the geometric mean of growth rates bounds the long-run growth factor, linking the convergence of $\\sum ar^n$ to the dominance of arithmetic over geometric averages."
     }
   ],
   "relatedProofs": [
@@ -173,7 +183,9 @@
     "stirling-formula",
     "binomial-theorem",
     "fundamental-theorem-calculus",
-    "mean-value-theorem"
+    "mean-value-theorem",
+    "harmonic-divergence",
+    "geometric-series"
   ],
   "sections": [
     {

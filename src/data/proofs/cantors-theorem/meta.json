@@ -91,10 +91,10 @@
     },
     {
       "id": "set-formulation",
-      "title": "Set Formulation",
+      "title": "Set Formulation with Diagonal Construction",
       "startLine": 62,
       "endLine": 94,
-      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction.",
+      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction. Defines `diagonalSet f = {x | x ∉ f x}` and proves `cantor_no_surjection_set` via by_cases on b ∈ D, where D = diagonalSet f and f(b) = D by surjectivity.",
       "mathContext": "The diagonal set $D = \\{x \\in A \\mid x \\notin f(x)\\}$ is the explicit witness. If $f(b) = D$, then $b \\in D \\iff b \\notin f(b) = D \\iff b \\notin D$ \u2014 a contradiction."
     },
     {
@@ -229,6 +229,27 @@
       "year": "1979",
       "venue": "Harvard University Press",
       "note": "Definitive intellectual biography covering Cantor's development of set theory, the controversy with Kronecker, and the philosophical implications of transfinite cardinals"
+    },
+    {
+      "authors": "Lawvere, F. William",
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Lecture Notes in Mathematics 92, Springer, 134–145",
+      "note": "Categorical generalization of Cantor's diagonal argument: in any cartesian closed category, a surjection X → Y^X forces every endomorphism of Y to have a fixed point — unifying Cantor, Gödel, and Turing"
+    },
+    {
+      "authors": "Cohen, Paul J.",
+      "title": "The independence of the continuum hypothesis",
+      "year": "1963",
+      "venue": "Proceedings of the National Academy of Sciences 50(6), 1143–1148",
+      "note": "Proved the Continuum Hypothesis is independent of ZFC using forcing, complementing Gödel's 1940 consistency proof — the most significant consequence of Cantor's theorem for the foundations of mathematics"
+    },
+    {
+      "authors": "Enderton, Herbert B.",
+      "title": "Elements of Set Theory",
+      "year": "1977",
+      "venue": "Academic Press",
+      "note": "Standard graduate textbook with rigorous treatment of Cantor's theorem, cardinal arithmetic, and the beth/aleph hierarchies"
     }
   ]
 }
