@@ -162,44 +162,60 @@
   },
   "references": [
     {
-      "key": "Eu35",
-      "citation": "Euler, L., De summis serierum reciprocarum, Commentarii academiae scientiarum Petropolitanae 7 (1735), 123–134. Euler's original solution using the sin(x)/x infinite product factorization, presented to the St. Petersburg Academy in 1734.",
-      "type": "paper"
+      "authors": "Euler, Leonhard",
+      "title": "De summis serierum reciprocarum",
+      "year": "1735",
+      "venue": "Commentarii academiae scientiarum Petropolitanae, vol. 7, pp. 123–134",
+      "note": "Euler's original solution using the sin(x)/x infinite product factorization, presented to the St. Petersburg Academy in 1734 and published 1735"
     },
     {
-      "key": "Me50",
-      "citation": "Mengoli, P., Novae quadraturae arithmeticae, seu de additione fractionum, Bologna (1650). First posing of the Basel Problem.",
-      "type": "book"
+      "authors": "Mengoli, Pietro",
+      "title": "Novae quadraturae arithmeticae, seu de additione fractionum",
+      "year": "1650",
+      "venue": "Bologna",
+      "note": "First posing of the Basel Problem: asked for the exact value of ∑ 1/n², which remained open for 84 years until Euler's solution"
     },
     {
-      "key": "Ap79",
-      "citation": "Apéry, R., Irrationalité de ζ(2) et ζ(3), Astérisque 61 (1979), 11–13. Proved ζ(3) is irrational — the first odd zeta value shown to be irrational.",
-      "type": "paper"
+      "authors": "Apéry, Roger",
+      "title": "Irrationalité de ζ(2) et ζ(3)",
+      "year": "1979",
+      "venue": "Astérisque, vol. 61, pp. 11–13",
+      "note": "Proved ζ(3) is irrational — the first odd zeta value shown to be irrational, using rapidly converging series for ζ(2) and ζ(3)"
     },
     {
-      "key": "Du99",
-      "citation": "Dunham, W., Euler: The Master of Us All, MAA Dolciani Mathematical Expositions 22 (1999), Chapter 3. Detailed account of Euler's Basel Problem solution.",
-      "type": "book"
+      "authors": "Dunham, William",
+      "title": "Euler: The Master of Us All",
+      "year": "1999",
+      "venue": "MAA Dolciani Mathematical Expositions 22, Chapter 3",
+      "note": "Detailed historical account of Euler's Basel Problem solution and its impact on his career"
     },
     {
-      "key": "Ri00",
-      "citation": "Rivoal, T., La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs, Comptes Rendus Acad. Sci. Paris Sér. I 331 (2000), 267–270.",
-      "type": "paper"
+      "authors": "Rivoal, Tanguy",
+      "title": "La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs",
+      "year": "2000",
+      "venue": "Comptes Rendus Acad. Sci. Paris, Sér. I, vol. 331, pp. 267–270",
+      "note": "Proved infinitely many odd zeta values are irrational, extending Apéry's ζ(3) result but without identifying which specific values beyond ζ(3)"
     },
     {
-      "key": "We76",
-      "citation": "Weierstrass, K., Zur Theorie der eindeutigen analytischen Functionen, Abhandlungen der Königlich Preussischen Akademie der Wissenschaften zu Berlin (1876), 11–60. Established the factorization theorem for entire functions, rigorously justifying Euler's 1734 infinite product factorization of sin(x)/x.",
-      "type": "paper"
+      "authors": "Weierstrass, Karl",
+      "title": "Zur Theorie der eindeutigen analytischen Functionen",
+      "year": "1876",
+      "venue": "Abhandlungen der Königlich Preussischen Akademie der Wissenschaften zu Berlin, pp. 11–60",
+      "note": "Established the factorization theorem for entire functions, rigorously justifying Euler's 1734 infinite product factorization of sin(x)/x that was the basis of his original Basel proof"
     },
     {
-      "key": "Ch11",
-      "citation": "Chapman, R., Evaluating ζ(2), preprint (1999, revised 2003). Collects and compares fourteen proofs of ζ(2) = π²/6, including Euler's product, Parseval, residue calculus, and double integral approaches.",
-      "type": "paper"
+      "authors": "Chapman, Robin",
+      "title": "Evaluating ζ(2)",
+      "year": "2003",
+      "venue": "Preprint (1999, revised 2003)",
+      "note": "Collects and compares fourteen proofs of ζ(2) = π²/6, including Euler's product, Parseval's identity, residue calculus, and double integral approaches"
     },
     {
-      "key": "Be1713",
-      "citation": "Bernoulli, J., Ars Conjectandi (posthumous, 1713). Contains the Bernoulli numbers B_k and their connection to power sums — the same B_k that appear in Euler's formula ζ(2k) = (-1)^(k+1) 2^(2k-1) π^(2k) B_{2k} / (2k)!.",
-      "type": "book"
+      "authors": "Bernoulli, Jakob",
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Basel (published posthumously)",
+      "note": "Contains the Bernoulli numbers B_k and their connection to power sums — the same B_k that appear in Euler's formula ζ(2k) = (-1)^(k+1) 2^(2k-1) π^(2k) B_{2k} / (2k)!"
     }
   ],
   "crossReferences": [
