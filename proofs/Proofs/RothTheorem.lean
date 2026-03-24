@@ -1504,42 +1504,74 @@ private theorem density_chain :
         apply mul_le_mul_of_nonneg_right _ (Nat.cast_nonneg M')
         nlinarith [hd'_def]
 
+/-- APFree in ZMod N implies ThreeAPFree when mapped to ℕ via ZMod.val.
+
+    A 3-AP {a, b, c} in ℕ (with a + c = 2b) lifts to a 3-AP in ZMod N
+    since val(x) + val(z) = 2·val(y) in ℕ implies x + z = 2y in ZMod N
+    (both sides are < 2N, so the natural equation implies the modular one). -/
+private theorem apFree_imp_threeAPFree_val {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hAP : APFree A) : ThreeAPFree (Finset.image ZMod.val A : Set ℕ) := by
+  intro a ha b hb c hc habc
+  -- a, b, c ∈ A.image ZMod.val, so a = val(x), b = val(y), c = val(z) for x, y, z ∈ A
+  rw [Finset.coe_image] at ha hb hc
+  obtain ⟨x, hxA, rfl⟩ := ha
+  obtain ⟨y, hyA, rfl⟩ := hb
+  obtain ⟨z, hzA, rfl⟩ := hc
+  -- habc : val(x) + val(z) = val(y) + val(y) in ℕ
+  -- This implies x + z = 2y in ZMod N (cast both sides)
+  by_contra hne
+  have hxy : x ≠ y := by
+    intro h; exact hne (congr_arg ZMod.val h)
+  have hd : y - x ≠ 0 := sub_ne_zero.mpr (Ne.symm hxy)
+  -- Cast habc to ZMod N: ↑(val x + val z) = ↑(val y + val y)
+  have hmod : x + z = y + y := by
+    have h1 : (↑(ZMod.val x + ZMod.val z) : ZMod N) = (↑(ZMod.val y + ZMod.val y) : ZMod N) :=
+      congr_arg Nat.cast habc
+    simp only [Nat.cast_add, ZMod.natCast_zmod_val] at h1
+    exact h1
+  -- z = x + 2(y - x) in ZMod N
+  have hz_eq : z = x + 2 * (y - x) := by linear_combination hmod
+  have hy_eq : y = x + (y - x) := by ring
+  exact hAP x (y - x) hd hxA (hy_eq ▸ hyA) (hz_eq ▸ hzA)
+
 /-- **Roth's Theorem**: r₃(N) = o(N).
     For every delta > 0, there exists N₀ such that for all N ≥ N₀, every
     subset A ⊆ Z/NZ with |A| ≥ delta * N contains a 3-term arithmetic
     progression.
 
-    The proof iterates the Dirichlet-based density increment: each time the
-    set has no 3-AP, its density increases by at least delta²/100 on a
-    subprogression of size ≥ √N. After K+1 ≈ 100/delta² steps, the density
-    exceeds 1, contradicting |A| ≤ N. The Dirichlet-based increment prevents
-    the iteration from reaching N = 1 with high density (the bug in the
-    coset-based approach for prime N).
-
-    N₀ is a tower of squares: 4, 16, 256, 65536, ... of height K+1. -/
+    This proof uses Mathlib's Roth theorem (via the corners theorem chain:
+    Regularity Lemma → Triangle Removal → Corners → Roth) applied to the
+    image of A under ZMod.val : ZMod N → ℕ. The custom Fourier-analytic
+    density increment machinery (Parts I-V) provides an alternative proof
+    path that is mostly complete (one sorry in the Dirichlet subprogression
+    case of density_increment_dirichlet). -/
 theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (_hdelta1 : delta ≤ 1) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → ∀ A : Finset (ZMod N),
       (A.card : ℝ) ≥ delta * N → ¬APFree A := by
-  -- Choose K such that delta + (K+1)*delta²/100 > 1
-  obtain ⟨K, hK⟩ := exists_nat_gt (100 / delta ^ 2)
-  refine ⟨roth_threshold (K + 1), fun N hN A hdensity hAP => ?_⟩
-  -- Apply density_chain: K+1 Dirichlet-based density increments
-  obtain ⟨M, B, hMpos, _, hBdens⟩ :=
-    density_chain K N hN delta hdelta A hAP hdensity
-  -- Density ≥ delta + (K+1)*delta²/100 > 1
-  haveI : NeZero M := ⟨by omega⟩
-  have hd2 : delta ^ 2 > 0 := by positivity
-  have h_exceed : delta + (↑K + 1) * delta ^ 2 / 100 > 1 := by
-    have h1 : 100 / delta ^ 2 * delta ^ 2 < ↑K * delta ^ 2 :=
-      mul_lt_mul_of_pos_right hK hd2
-    have h2 : 100 / delta ^ 2 * delta ^ 2 = 100 := by field_simp
-    linarith
-  -- |B| > M, contradicting |B| ≤ M
-  have hMcast : (0 : ℝ) < ↑M := Nat.cast_pos.mpr hMpos
-  have hBgt : (B.card : ℝ) > ↑M := by
-    calc (B.card : ℝ) ≥ (delta + (↑K + 1) * delta ^ 2 / 100) * ↑M := hBdens
-      _ > 1 * ↑M := mul_lt_mul_of_pos_right h_exceed hMcast
-      _ = ↑M := one_mul _
-  linarith [card_le_nat_real B]
+  -- Use Mathlib's Roth theorem via corners theorem chain
+  use cornersTheoremBound (delta / 3) + 1
+  intro N hN A hdensity hAP
+  haveI : NeZero N := ⟨by
+    intro h; subst h; simp at hdensity; linarith⟩
+  -- Map A to ℕ via ZMod.val
+  set S := Finset.image ZMod.val A with hS_def
+  -- S ⊆ Finset.range N
+  have hS_sub : S ⊆ Finset.range N := by
+    intro x hx
+    rw [hS_def, Finset.mem_image] at hx
+    obtain ⟨a, _, rfl⟩ := hx
+    exact Finset.mem_range.mpr (ZMod.val_lt a)
+  -- |S| = |A| (ZMod.val is injective)
+  have hS_card : S.card = A.card := by
+    rw [hS_def]
+    exact Finset.card_image_of_injective A (ZMod.val_injective N)
+  -- |S| ≥ delta * N
+  have hS_dens : (S.card : ℝ) ≥ delta * ↑N := by
+    rw [hS_card]; exact hdensity
+  -- ThreeAPFree S (from APFree A)
+  have hS_free : ThreeAPFree (S : Set ℕ) := apFree_imp_threeAPFree_val A hAP
+  -- Apply Mathlib's roth_3ap_theorem_nat
+  have hN_bound : cornersTheoremBound (delta / 3) ≤ N := by omega
+  exact roth_3ap_theorem_nat delta hdelta hN_bound S hS_sub hS_dens hS_free
 
 end Szemeredi.Roth
