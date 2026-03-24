@@ -86,7 +86,8 @@
       "title": "Turán Threshold",
       "summary": "turanThreshold, isAboveTuran, turan_has_triangle",
       "startLine": 43,
-      "endLine": 59
+      "endLine": 59,
+      "mathContext": "Turán (1941): $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow G$ contains a triangle."
     },
     {
       "id": "triangles",
@@ -100,14 +101,16 @@
       "title": "The Function h(n)",
       "summary": "hasDenseTriangle, isValidLowerBound, h definition",
       "startLine": 92,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "$h(n) = \\max\\{k : \\forall G \\text{ with } |E| > n^2/4, \\exists \\text{triangle with } d(u)+d(v)+d(w) \\geq k\\}$."
     },
     {
       "id": "constant",
       "title": "The Constant 2(√3−1)",
       "summary": "erdosLaskarConstant, erdosLaskar_approx",
       "startLine": 119,
-      "endLine": 130
+      "endLine": 130,
+      "mathContext": "$2(\\sqrt{3}-1) \\approx 1.464$. Arises from optimizing triangle degree sums in nearly-bipartite graphs near the Turán graph $T(n,2)$."
     },
     {
       "id": "upper-bound",

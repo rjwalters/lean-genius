@@ -73,7 +73,12 @@
       "**2D Yang-Mills is exactly solvable**: Migdal's formula gives the exact Wilson loop expectation $\\langle W_R(C)\\rangle = (\\dim R) \\cdot e^{-g^2 A C_2(R)/(2\\dim R)}$, establishing area law confinement with computable string tension $\\sigma = g^2 C_2(R)/(2\\dim R)$",
       "**Transfer matrix connects lattice to Hamiltonian**: the mass gap equals $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$ where $\\lambda_0 > \\lambda_1$ are the two largest transfer matrix eigenvalues, bridging the Euclidean path integral to the quantum mechanical spectrum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Quantum field theory (Wightman axioms, operator algebras, mass gap)",
+      "Gauge theory (SU(N) gauge groups, connections, field strength tensor)",
+      "Lattice gauge theory (Wilson action, plaquettes, Monte Carlo methods)",
+      "Functional analysis (operator spectra, positive operators, $L^2$ spaces)"
+    ]
   },
   "sections": [
     {
