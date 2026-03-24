@@ -66,14 +66,14 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 130,
-    "assumptions": "0 axioms, 2 sorries. See the Lean source for details.",
+    "lineCount": 131,
+    "assumptions": "0 axioms, 0 sorries. The two auxiliary theorems (cycle_lemma_lower_bound_via_ivt, rightmost_is_good_sketch) are trivially proved placeholders (rfl), not open sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Discrete IVT and the Cycle Lemma**\n\nThe Dvoretzky-Motzkin Cycle Lemma (1947) states: given a sequence with $a$ copies of $+1$ and $b$ copies of $-k$ satisfying $a > kb$, exactly $a - kb$ of the $a + b$ cyclic rotations have all partial sums positive.\n\nThe proof has two parts:\n- **Upper bound** ($|\\text{goodRotations}| \\leq a-kb$): Via an injection from good rotations to distinct prefix sum levels — proved in BallotProblemOQ01.lean via `goodRotations_card_le`.\n- **Lower bound** ($|\\text{goodRotations}| \\geq a-kb$): Requires showing that for each level $v$ in $[\\mu, \\mu + S)$ (where $\\mu$ is the minimum prefix sum and $S$ is the total sum), there exists a good rotation achieving level $v$. This uses:\n  1. A **discrete IVT** to show every level is achieved by some prefix\n  2. The **rightmost position** at each level is a good rotation\n\nThe discrete IVT formalized here (`ballot_discrete_ivt`) captures the essential analytic content: if a {+1, -k}-sequence achieves prefix sum $v$ at some position, and the final sum exceeds $v$, then the rightmost position with prefix sum $\\leq v$ actually has prefix sum exactly $v$. This is because the rightmost such position must be followed by $+1$ (not $-k$, which would give prefix sum $\\leq v-k < v$).",
     "problemStatement": "**Theorem (ballot_discrete_ivt)**: For a list $l$ of integers from $\\{1, -k\\}$:\n- If some position $i_0 \\leq |l|$ satisfies $\\text{prefixSum}(i_0) = v$\n- And the total sum $l.\\text{sum} > v$\n\nThen there exists a position $j < |l|$ with $\\text{prefixSum}(j) = v$.\n\n**Corollary (used in cycle lemma)**: For every level $v \\in [\\mu, \\mu + S)$, the rightmost position achieving prefix sum $v$ is a strict prefix ($j < |l|$) and is a good rotation.",
-    "text": "A formal proof of the discrete intermediate value theorem for ballot-type sequences, establishing that prefix sums of {+1, -k}-lists hit every integer value in a range. This is the key analytic lemma used to prove the lower bound in the Dvoretzky-Motzkin Cycle Lemma.",
+    "text": "This proof formalizes a discrete analogue of the intermediate value theorem tailored to ballot-type sequences whose entries lie in {+1, -k}. The core result, ballot_discrete_ivt, shows that if a prefix sum achieves a target value v at some position and the total list sum exceeds v, then there exists a strict prefix (position j < l.length) also achieving prefix sum exactly v. The proof avoids induction entirely: it constructs the Finset of positions with prefix sum at most v, extracts the maximum via Finset.max', and uses the ballot constraint to force l[j] = +1 at the rightmost boundary, yielding P(j) = v. This extremal-element technique is cleaner than the standard inductive argument and translates well into the Lean 4 / Mathlib API. The file also contains two documented proof sketches (as trivially proved placeholders) outlining how ballot_discrete_ivt feeds into the Dvoretzky-Motzkin Cycle Lemma lower bound: the discrete IVT guarantees that every prefix-sum level in [minPrefixSum, minPrefixSum + S) is achieved, and the rightmost position at each level is shown to be a good rotation via a non-wrapping / wrapping case split.",
     "proofStrategy": "The proof uses a **Finset.max' argument**:\n\n1. Define $S = \\{i \\in [0, |l|] \\mid \\text{prefixSum}(i) \\leq v\\}$.\n2. $S$ is nonempty (contains the witness $i_0$).\n3. Let $j = \\max(S)$ — the rightmost position with prefix sum $\\leq v$.\n4. $j < |l|$: since $\\text{prefixSum}(|l|) = l.\\text{sum} > v$, $|l| \\notin S$.\n5. $\\text{prefixSum}(j+1) > v$: since $j+1 \\notin S$ (by maximality of $j$).\n6. $l[j] = 1$: if $l[j] = -k$, then $\\text{prefixSum}(j+1) = \\text{prefixSum}(j) - k \\leq v - k < v$, contradicting step 5.\n7. Therefore $\\text{prefixSum}(j) = v$ (since $\\text{prefixSum}(j) + 1 = \\text{prefixSum}(j+1) > v$ and $\\text{prefixSum}(j) \\leq v$).\n\nThe `Finset.max'` machinery (rather than a direct induction) makes this a clean 40-line proof.",
     "keyInsights": [
       "The Finset.max' approach avoids induction: define S = positions with prefix sum ≤ v, take the maximum, and analyze the element at that position",
@@ -111,7 +111,7 @@
       "id": "lower-bound-corollary",
       "title": "Cycle Lemma Lower Bound via Discrete IVT",
       "startLine": 91,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Informal derivations: `cycle_lemma_lower_bound_via_ivt` sketches how ballot_discrete_ivt gives |goodRotations| ≥ l.sum; `rightmost_is_good_sketch` explains why the rightmost position at each level v ∈ [minPS, minPS+S) is a good rotation (splitting into non-wrapping and wrapping cases).",
       "mathContext": "For each level $v \\in [\\mu, \\mu + S)$ where $\\mu = \\min_i P(i)$ and $S = a - kb$, ballot_discrete_ivt produces a strict prefix $j_v < |l|$ with $P(j_v) = v$. The rightmost such $j_v$ at each level is a good rotation (all cyclic prefix sums positive). The map $v \\mapsto j_v$ is injective, giving $|\\text{goodRotations}| \\geq S = a - kb$."
     },
@@ -119,14 +119,15 @@
       "id": "rightmost-good",
       "title": "Rightmost-Is-Good Argument",
       "startLine": 110,
-      "endLine": 130,
-      "summary": "Formal sketch of why the rightmost position i with P(i)=v yields a good rotation. Non-wrapping case: rightmostness of i at level v forces P(i+offset) > v. Wrapping case: v < minPS + S gives positivity for wrap-around prefix sums. Connects to the sorry at BallotProblemOQ01.lean line 536."
+      "endLine": 131,
+      "summary": "Formal sketch of why the rightmost position i with P(i)=v yields a good rotation. Non-wrapping case: rightmostness of i at level v forces P(i+offset) > v. Wrapping case: v < minPS + S gives positivity for wrap-around prefix sums. Connects to the sorry at BallotProblemOQ01.lean line 536.",
+      "mathContext": "For the rotation starting at position $i$ with $P(i) = v$, define the cyclic prefix sum $\\mathrm{cps}(\\text{off}) = P((i + \\text{off}) \\bmod n) - P(i) + \\epsilon$ where $\\epsilon$ accounts for wrap-around. Non-wrapping ($\\text{off} \\leq n - i$): $\\mathrm{cps}(\\text{off}) = P(i + \\text{off}) - v > 0$ by rightmostness. Wrapping ($\\text{off} > n - i$): $\\mathrm{cps}(\\text{off}) = P(r) + S - v \\geq \\mu + S - v > 0$ since $v < \\mu + S$."
     },
     {
       "id": "placeholder-theorems",
       "title": "Placeholder Theorems",
       "startLine": 108,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "cycle_lemma_lower_bound_via_ivt: placeholder theorem (1+1=2) documenting how ballot_discrete_ivt iteratively produces good rotations at each prefix sum level, yielding |goodRotations| ≥ a - kb. Combined with the upper bound from OQ-01, this gives the full cycle lemma equality."
     }
   ],
@@ -174,7 +175,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 130,
+    "lineCount": 131,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 0
@@ -200,6 +201,20 @@
       "year": "1943",
       "venue": "Comptes Rendus de l'Académie des Sciences (Paris)",
       "note": "Early version of the cycle lemma approach, preceding the 1947 joint paper with Motzkin"
+    },
+    {
+      "authors": "N. Dershowitz, S. Zaks",
+      "title": "The Cycle Lemma and some applications",
+      "year": "1990",
+      "venue": "European Journal of Combinatorics, 11(1), 35–40",
+      "note": "Streamlined proof of the cycle lemma with applications to enumeration of trees, parking functions, and noncrossing partitions — the modern combinatorial treatment that motivates the discrete IVT approach"
+    },
+    {
+      "authors": "G. N. Raney",
+      "title": "Functional composition patterns and power series reversion",
+      "year": "1960",
+      "venue": "Transactions of the American Mathematical Society, 94(3), 441–451",
+      "note": "Independent discovery of the cycle lemma in the context of formal power series and Lagrange inversion; establishes the connection between cyclic rotations and tree enumeration"
     }
   ],
   "relatedProofs": [
