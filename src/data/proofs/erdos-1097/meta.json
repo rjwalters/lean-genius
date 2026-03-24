@@ -211,6 +211,31 @@
       "id": "prob-method-expectation",
       "relationship": "related",
       "description": "The first moment method underlies the $\\Omega(n^{3/2})$ lower bound on common differences: a random subset of $\\{1,\\ldots,N\\}$ of size $n$ has expected $\\sim cn^3/N$ three-term APs, distributed over $\\sim N$ possible common differences. The pigeonhole principle then shows at least $\\sim n^3/N^2$ distinct common differences occur, which for optimal $N \\sim n^2$ gives $\\Omega(n)$ — but more sophisticated counting via the second moment or Cauchy-Schwarz improves this to $\\Omega(n^{3/2})$"
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "foundational",
+      "description": "Basic arithmetic series formulas underlie the counting of arithmetic progressions in intervals"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The regularity lemma provides pseudorandom decompositions used in counting arithmetic progressions. The 3-AP counting ap"
+    },
+    {
+      "id": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The counting lemma quantifies substructure (including APs) in regular pairs. Counting 3-APs by common difference is the "
+    },
+    {
+      "id": "szemeredi-full",
+      "relationship": "related",
+      "description": "The full Szemerédi theorem guarantees $k$-term APs in dense sets for all $k$. This problem specializes to $k = 3$ but st"
+    },
+    {
+      "id": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method (Chebyshev/Paley-Zygmund inequalities) provides the concentration bounds needed to convert the "
     }
   ],
   "leanFile": {

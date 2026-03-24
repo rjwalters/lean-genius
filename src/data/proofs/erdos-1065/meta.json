@@ -237,6 +237,26 @@
       "id": "prime-number-theorem",
       "relationship": "foundational",
       "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ underlies the density heuristic: the probability that $2^k q + 1$ is prime is $\\sim 1/\\ln(2^k q)$, and summing over valid $(k, q)$ pairs predicts the count of Form A primes up to $x$"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "related",
+      "description": "Artin's primitive root conjecture depends on the factorization of p-1 — exactly the structure constrained by Form A"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is the prototype for prime distribution in structured sets; Erd"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\varphi(p) = p - 1$ connects directly: Form A primes have $\\varphi(p) = 2^k q$ with $\\omega(\\varphi(p))"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees primes in every interval $(n, 2n)$; similar density arguments underlie the heuristic pre"
     }
   ],
   "leanFile": {

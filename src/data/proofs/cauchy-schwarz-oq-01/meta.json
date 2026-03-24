@@ -265,6 +265,21 @@
       "id": "cauchy-schwarz-oq-01-oq-01",
       "relationship": "extended-by",
       "description": "Further exploration building on this entry's complex Cauchy-Schwarz result"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The classical Pythagorean theorem $a^2 + b^2 = c^2$ is a special case of the abstract Pythagorean theorem proved here: o"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "The triangle inequality $\\|u+v\\| \\leq \\|u\\| + \\|v\\|$ for normed spaces is proved using Cauchy-Schwarz in inner product s"
+    },
+    {
+      "id": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM and Cauchy-Schwarz are both fundamental inequalities in analysis. Cauchy-Schwarz can be derived from AM-GM applied"
     }
   ]
 }

@@ -146,7 +146,7 @@
   ],
   "overview": {
     "historicalContext": "The power mean $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ is undefined at $r = 0$, but the limit exists and equals the geometric mean $\\text{GM} = \\prod z_i^{w_i}$. This was established by Hardy, Littlewood, and Pólya (*Inequalities*, 1934, §2.9) and makes the power mean a continuous interpolation between min ($r \\to -\\infty$), HM ($r=-1$), GM ($r=0$), AM ($r=1$), and max ($r \\to +\\infty$).\n\nThe result has deep connections to information theory. The expression $\\sum w_i \\log z_i$ appearing in the limit is exactly the negative of the Kullback-Leibler divergence $D_{KL}(w \\| \\text{uniform})$ applied to $\\log z$, and more broadly, the Rényi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ (Rényi, 1961) satisfies $\\lim_{\\alpha \\to 1} H_\\alpha = H_1 = -\\sum p_i \\log p_i$ (Shannon entropy) by the same derivative-at-zero technique used here. The power mean limit is thus a special case of the Rényi-to-Shannon entropy limit.\n\nIn 1930, Kolmogorov and Nagumo independently proved that the power mean family is (essentially) the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity. The r→0 limit is the continuity condition at the singular point that makes the power mean a smooth one-parameter interpolation. Without it, the family would have a gap at r=0, and the Kolmogorov-Nagumo characterization would not hold.\n\nThe proof uses the definition of derivative: $f(r) = \\log(\\sum w_i z_i^r)$ satisfies $f(0) = 0$ and $f'(0) = \\sum w_i \\log z_i$. Therefore $f(r)/r \\to f'(0)$ by the definition of derivative, and $M_r = \\exp(f(r)/r) \\to \\exp(\\sum w_i \\log z_i) = \\text{GM}$ by continuity of exp. The Lean 4 formalization uses `hasDerivAt_iff_tendsto_slope` as the key bridge, avoiding explicit L'Hôpital machinery.",
-    "problemStatement": "**Open Question (amgm-inequality-oq-03-oq-02)**: Formalize the limit lim_{r→0} M_r(z,w) = GM(z,w) in Lean 4.\n\n**Definitions**:\n- M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r)  for r ≠ 0, wᵢ ≥ 0, ∑ wᵢ = 1, zᵢ > 0\n- GM(z,w) = ∏ zᵢ^wᵢ (weighted geometric mean)\n\n**The Limit**: Filter.Tendsto (fun r => (∑ wᵢzᵢ^r)^(1/r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ zᵢ^wᵢ))\n\n**Proof sketch**: f(r) = log(∑ wᵢzᵢ^r), f(0) = 0, f'(0) = ∑ wᵢ log zᵢ, so M_r = exp(f(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
+    "problemStatement": "**Power Mean Limit Theorem**: For weights $w_i \\geq 0$ with $\\sum w_i = 1$ and positive values $z_i > 0$:\n$$\\lim_{r \\to 0} M_r(\\mathbf{z}, \\mathbf{w}) = \\lim_{r \\to 0} \\left(\\sum_i w_i z_i^r\\right)^{1/r} = \\prod_i z_i^{w_i} = \\text{GM}(\\mathbf{z}, \\mathbf{w})$$\n\n**Proof via derivative**: Let $f(r) = \\log(\\sum_i w_i z_i^r)$. Then $f(0) = 0$, $f'(0) = \\sum_i w_i \\log z_i$, so $M_r = \\exp(f(r)/r) \\to \\exp(f'(0)) = \\exp(\\sum_i w_i \\log z_i) = \\text{GM}$.",
     "text": "This formalization resolves the singularity of the weighted power mean $M_r = (\\sum w_i z_i^r)^{1/r}$ at $r = 0$ by proving $\\lim_{r \\to 0} M_r = \\prod z_i^{w_i} = \\text{GM}$. The proof is a clean 5-step chain through Mathlib's calculus API: (1) establish $\\sum w_i z_i^r > 0$ for the domain; (2) differentiate under the sum to get $f'(0) = \\sum w_i \\log z_i$; (3) compose with $\\log$ via the chain rule; (4) convert the derivative to a slope limit via `hasDerivAt_iff_tendsto_slope`; (5) pass through $\\exp$ by continuity. The key Lean insight is that `hasDerivAt_iff_tendsto_slope` directly gives $f(r)/r \\to f'(0)$ when $f(0) = 0$, avoiding explicit L'Hôpital machinery. As a corollary, the file also proves $\\text{HM} \\leq \\text{GM} \\leq \\text{AM}$ via an inversion trick (apply AM-GM to $z^{-1}$). All 10 theorems are fully verified with 0 sorries.",
     "proofStrategy": "**Step 1**: Establish M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) for zᵢ > 0 via Real.rpow_def_of_pos.\n\n**Step 2**: Prove d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ:\n- Each term: HasDerivAt (fun r => zᵢ^r) (log zᵢ) 0 via Real.hasStrictDerivAt_const_rpow + rpow_zero\n- Apply HasDerivAt.const_mul and HasDerivAt.sum\n\n**Step 3**: Establish g(r) = log(∑ wᵢzᵢ^r) has g(0) = 0 and g'(0) = ∑ wᵢ log zᵢ:\n- Chain rule: Real.hasDerivAt_log composed with step 2\n- g(0) = log(1) = 0 since ∑ wᵢzᵢ^0 = ∑ wᵢ = 1\n\n**Step 4**: Conclude g(r)/r → g'(0) via hasDerivAt_iff_tendsto_slope (congr on slope formula).\n\n**Step 5**: Apply Real.continuous_exp.continuousAt to get M_r = exp(g(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
     "keyInsights": [
@@ -263,27 +263,62 @@
     {
       "id": "amgm-inequality-oq-03",
       "relationship": "extends",
-      "description": "Parent file containing power mean definitions and positive/negative monotonicity — this file establishes the r=0 limit completing the continuous chain"
+      "description": "Parent file with power mean definitions and monotonicity — this limit completes the continuous chain"
     },
     {
       "id": "amgm-inequality-oq-03-oq-01",
       "relationship": "related",
-      "description": "Negative power mean monotonicity — together with this limit, only the mixed-sign crossing (r < 0 < s) remains"
+      "description": "Negative power mean monotonicity — together with this limit, only the mixed-sign crossing remains"
     },
     {
       "id": "amgm-inequality",
       "relationship": "related",
-      "description": "AM-GM is the coarsest case M₁ ≥ M₀: the limit here shows M₀ = GM, giving AM ≥ GM"
+      "description": "AM-GM is the M₁ ≥ M₀ case; this limit shows M₀ = GM, giving AM ≥ GM"
     },
     {
       "id": "amgm-inequality-oq-02",
       "relationship": "related",
-      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM — this limit result shows M₀ = GM, the same GM that Maclaurin's chain bounds from a different direction"
+      "description": "Maclaurin's inequalities give an alternative AM-GM chain via elementary symmetric polynomials"
     },
     {
       "id": "lhopital",
       "relationship": "related",
-      "description": "The limit uses the same derivative-based approach as L'Hopital's rule: f(r)/r → f'(0) when f(0) = 0, formalized via hasDerivAt_iff_tendsto_slope"
+      "description": "Uses the same derivative-based approach: f(r)/r → f'(0) when f(0) = 0"
+    },
+    {
+      "id": "shannon-entropy",
+      "relationship": "related",
+      "description": "GM = exp(∑ wᵢ log zᵢ) involves the same weighted log-sum as Shannon entropy; Rényi entropy generalizes both via power means"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "MVT underpins hasDerivAt_iff_tendsto_slope, the slope-to-derivative bridge central to this proof"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "Power mean monotonicity (completed by this limit) implies Minkowski's inequality (L^p triangle inequality)"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz is the M₁ ≤ M₂ case of power mean monotonicity"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "HM = M_{-1} uses reciprocal arithmetic; this limit bridges HM and AM via GM = M₀"
+    },
+    {
+      "id": "taylor-theorem",
+      "relationship": "foundational",
+      "description": "The f(r)/r → f'(0) technique is the first-order case of Taylor's theorem"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "FTC establishes the HasDerivAt API connecting derivatives to difference quotient limits"
     }
   ],
   "references": [

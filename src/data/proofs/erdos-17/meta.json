@@ -214,6 +214,16 @@
       "id": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem guarantees primes in arithmetic progressions have positive relative density $1/\\varphi(d)$; the formalization proves cluster primes are rarer than primes in any fixed AP, highlighting how extreme the cluster sparsity condition is"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The prime number theorem $\\pi(x) \\sim x/\\log x$ is needed to interpret the Blecksmith-Erdős-Selfridge and Elsholtz upper"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime in $(n, 2n)$, bounding prime gaps from above. Small prime gaps help the cluster "
     }
   ],
   "leanFile": {

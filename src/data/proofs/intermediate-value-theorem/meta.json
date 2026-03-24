@@ -218,6 +218,31 @@
       "id": "sqrt2-irrational",
       "relationship": "related",
       "description": "The failure of IVT over $\\mathbb{Q}$ is witnessed by $f(x) = x^2 - 2$: $f(1) < 0 < f(2)$ but $\\sqrt{2} \\notin \\mathbb{Q}"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root because $\\lim_{x "
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "Archimedes' method of exhaustion — the ancient precursor to IVT — proved $A = \\pi r^2$ by showing the difference between"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "IVT guarantees that $\\cos(\\theta/3)$ exists for any angle $\\theta$ (as a real value between -1 and 1). The impossibility"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "thematic",
+      "description": "Both establish existence of 'intermediate' objects: IVT proves a continuous function attains all values between $f(a)$ a"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "thematic",
+      "description": "IVT relies on the completeness of $\\mathbb{R}$ (which has uncountably many points, by Cantor's argument). Over $\\mathbb{"
     }
   ],
   "references": [

@@ -211,6 +211,41 @@
       "id": "abel-ruffini",
       "relationship": "related",
       "description": "Both are landmarks of 19th-century algebra: Abel-Ruffini uses Galois groups to prove quintic unsolvability, while quadratic reciprocity reveals deep structure in $\\mathbb{Z}/p\\mathbb{Z}$. Artin reciprocity law unifies both into class field theory."
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The quadratic residues modulo $p$ form a subgroup of index 2 in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, with order $(p-1)/2$ "
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "foundational",
+      "description": "Quadratic reciprocity is the $n = 2$ case of Artin reciprocity, which Wiles's modularity theorem generalizes to 2-dimens"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the Legendre symbol: $(a/p)$ depends on $a$ only through its residue mod $p$, and t"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The existence of primitive roots modulo $p$ proves $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. Quadratic"
+    },
+    {
+      "id": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is cyclotomic) generalizes quadratic reciprocity: QR determines"
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) is a direct application of quadratic reciprocit"
+    },
+    {
+      "id": "hilbert-9-reciprocity",
+      "relationship": "extends",
+      "description": "Hilbert's 9th problem asks for the most general reciprocity law in algebraic number fields. Quadratic reciprocity is the"
     }
   ],
   "leanFile": {

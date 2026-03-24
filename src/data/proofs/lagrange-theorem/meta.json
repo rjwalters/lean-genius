@@ -239,6 +239,31 @@
       "id": "euler-totient",
       "relationship": "extends",
       "description": "Euler's theorem (a^φ(n) ≡ 1 mod n) is a direct corollary of Lagrange applied to (Z/nZ)× of order φ(n). The formalization derives Fermat's little theorem (the prime case); Euler's theorem is the general case"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "foundational",
+      "description": "The tower law for field extension degrees ([F_n:Q] = ∏[F_{i+1}:F_i] = 2^n) is a consequence of Lagrange's theorem on sub"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "Lagrange's original 1771 work on permutations of polynomial roots was the direct precursor to Galois theory. The Inverse"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) can be proved via Lagrange's theorem: in $(\\mathbb{Z}/p\\mathbb{Z})^\\times"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity concerns the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, specifically whether elements are qua"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "related",
+      "description": "The existence of primitive roots modulo $p$ — generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — is a co"
     }
   ],
   "references": [

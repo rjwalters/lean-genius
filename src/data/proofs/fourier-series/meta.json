@@ -282,6 +282,16 @@
       "id": "euler-identity",
       "relationship": "foundational",
       "description": "Euler's formula $e^{ix} = \\cos x + i\\sin x$ is the foundation of the complex exponential form of Fourier series: the basis functions $e_n(x) = e^{2\\pi inx/T}$ are powers of the complex exponential. Every Fourier coefficient $c_n = \\int f(x) e^{-2\\pi inx/T}\\,dx$ uses this formula"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "The Fourier basis functions $e^{in\\theta}$ parameterize circles in $\\mathbb{C}$ — each $e^{in\\theta}$ traces the unit ci"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "FTC underpins the computation of Fourier coefficients $c_n = \\int f e^{-inx}\\,dx$ and integration by parts, which shows "
     }
   ]
 }

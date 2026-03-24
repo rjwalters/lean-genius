@@ -281,6 +281,16 @@
       "id": "bezout-identity-oq-02",
       "relationship": "extended-by",
       "description": "Proves Euclid's lemma ($p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$) using the coprime_iff_linear_combination characterization from Bézout — answering one of this file's open questions"
+    },
+    {
+      "id": "bezout-identity-oq-03",
+      "relationship": "extended-by",
+      "description": "Constructs the Chinese Remainder Theorem via Bézout's identity for integers — from $\\gcd(m,n) = 1$ and $mx + ny = 1$, bu"
+    },
+    {
+      "id": "bezout-identity-oq-04",
+      "relationship": "extended-by",
+      "description": "Characterizes the complete solution set of linear Diophantine equations $ax + by = c$: a particular solution (from Bézou"
     }
   ],
   "references": [

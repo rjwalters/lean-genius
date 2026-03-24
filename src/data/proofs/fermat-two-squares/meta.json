@@ -241,6 +241,31 @@
       "id": "euler-totient",
       "relationship": "related",
       "description": "Euler's criterion ($a^{(p-1)/2} \\equiv \\left(\\frac{a}{p}\\right) \\pmod{p}$) determines whether $-1$ is a QR mod $p$: $(-1"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization in $\\mathbb{Z}[i]$ (the Gaussian integers form a UFD) implies the uniqueness of the two-square repr"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions (generalizing the infinitude of primes) guarantees infinitely m"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2 = c^2$ are intimately connected to the two-squares theorem: a prime $p$ divi"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both theorems concern the arithmetic of algebraic number rings: Fermat's theorem uses $\\mathbb{Z}[i]$ (norm $a^2+b^2$), "
+    },
+    {
+      "id": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Elementary QR provides the criterion $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$ which directly determines whether $p$ "
     }
   ],
   "leanFile": {

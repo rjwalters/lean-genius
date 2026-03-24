@@ -295,6 +295,41 @@
       "id": "triangle-inequality",
       "relationship": "related",
       "description": "Both are fundamental inequalities formalized from first principles — the triangle inequality controls absolute sums while Maclaurin's chain controls symmetric polynomial means"
+    },
+    {
+      "id": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums p_k = ∑ xᵢᵏ are related to elementary symmetric polynomials via Newton's identities (Newton-Girard formulas):"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees that elementary symmetric polynomials e_k(x₁,...,xₙ) equal the coefficients (up to sign) of ∏(t - xᵢ) — t"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-02",
+      "relationship": "complementary",
+      "description": "Power mean limit: lim_{r→0} M_r = GM shows the geometric mean as a continuous limit of power means M_r = (∑ wᵢxᵢʳ)^{1/r}"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral Cauchy-Schwarz inequality (∫fg)² ≤ (∫f²)(∫g²) is the continuous analog of the finite Cauchy-Schwarz sum n·∑"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-01",
+      "relationship": "complementary",
+      "description": "Negative power mean monotonicity M_r ≤ M_s for r ≤ s < 0 completes the power mean picture: OQ-02 studies Maclaurin means"
+    },
+    {
+      "id": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas $e_k(x_1,\\ldots,x_n) = (-1)^k a_{n-k}/a_n$ express elementary symmetric polynomials as polynomial coeff"
+    },
+    {
+      "id": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The powersetCard decomposition in elemSymm (summing over all $k$-element subsets) is a combinatorial cousin of inclusion"
     }
   ],
   "references": [

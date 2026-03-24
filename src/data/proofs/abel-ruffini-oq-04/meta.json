@@ -383,6 +383,51 @@
       "id": "lagrange-theorem",
       "relationship": "foundational",
       "description": "Lagrange's theorem on subgroup orders is used throughout: |Aₙ| = n!/2, and the derived series quotients have predictable orders"
+    },
+    {
+      "id": "sylow-theorems",
+      "relationship": "related",
+      "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and hel"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's formula (1545) gives explicit radical solutions for cubics — the highest odd degree where a general radical fo"
+    },
+    {
+      "id": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula (1540) is the highest-degree general radical solution. S₄ is solvable (derived series {e} ◁ V₄"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's quadratic reciprocity (1801) concerns the multiplicative structure of (ℤ/pℤ)*, foreshadowing the group-theoretic"
+    },
+    {
+      "id": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas are the fundamental Sₙ-invariant polynomials. The Abel-Ruffini theorem can be restated as: the elementa"
+    },
+    {
+      "id": "puiseux-theorem",
+      "relationship": "complementary",
+      "description": "Puiseux series always solve polynomial equations, contrasting with Abel-Ruffini: radicals cannot solve the generic quint"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots of unity are essential to Kummer theory, which underlies Step 4 (the Galois bridge): each radical extrac"
+    },
+    {
+      "id": "kummer-theorem",
+      "relationship": "foundational",
+      "description": "Kummer theory provides the mechanism for Step 4: radical extensions are towers of Kummer (cyclic) extensions, so their G"
+    },
+    {
+      "id": "hilbert-13",
+      "relationship": "related",
+      "description": "Hilbert's 13th problem (1900) asked whether degree-7 polynomial roots require genuinely trivariate functions. Abel-Ruffi"
     }
   ]
 }

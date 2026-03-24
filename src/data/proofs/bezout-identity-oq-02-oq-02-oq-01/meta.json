@@ -279,6 +279,41 @@
       "id": "chinese-remainder-constructive",
       "relationship": "related",
       "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for explicit quotient extraction"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "related",
+      "description": "Standard Euclidean algorithm for GCD computation. This entry implements the extended version that additionally returns B"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Unique prime factorization relies on Euclid's lemma (if p | ab and p prime, then p | a or p | b) — the constructive vers"
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "complementary",
+      "description": "Extends CRT to non-coprime moduli, where Bézout's identity gives $\\gcd(m,n) = um + vn$ rather than $1 = um + vn$. The ex"
+    },
+    {
+      "id": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Child entry that resolves the first open question: removes the noncomputable annotation from constructive_div by replaci"
+    },
+    {
+      "id": "bezout-identity-oq-04",
+      "relationship": "sibling",
+      "description": "Complete parametric solution set of linear Diophantine equations ax + by = c: solutions form a 1D lattice {(x₀ + (b/d)t,"
+    },
+    {
+      "id": "bezout-identity-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Proves the Fundamental Theorem of Arithmetic from Euclid's lemma — a direct consumer of the constructive Euclid's lemma "
+    },
+    {
+      "id": "bezout-identity-oq-03-oq-01",
+      "relationship": "sibling",
+      "description": "The CRT ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ is constru"
     }
   ],
   "references": [

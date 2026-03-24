@@ -252,6 +252,31 @@
       "id": "chinese-remainder-constructive",
       "relationship": "extends",
       "description": "The Chinese Remainder Theorem uses the extended Euclidean algorithm to construct solutions: given $\\gcd(m,n) = 1$, find "
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\phi(n) = |\\{k \\leq n : \\gcd(k,n) = 1\\}|$ counts coprime residues, directly using the GCD. The Euclidea"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem's pairing argument pairs each $a \\in \\{2,\\ldots,p-2\\}$ with its inverse $a^{-1}$, where the inverse exi"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The Euclidean algorithm's termination is proved by well-founded induction on the second argument: $a \\bmod b < b$ for $b"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "The Euclid-Euler theorem for perfect numbers uses $\\gcd(2^k, 2^{k+1}-1) = 1$ (since $2^{k+1}-1$ is odd) to invoke multip"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "The Euclidean algorithm in the polynomial ring $F[x]$ computes $\\gcd(p,q)$, which determines the splitting behavior of p"
     }
   ],
   "references": [

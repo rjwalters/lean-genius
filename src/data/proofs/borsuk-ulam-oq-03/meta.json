@@ -213,6 +213,11 @@
       "id": "intermediate-value-theorem",
       "relationship": "uses",
       "description": "The IVT is the fundamental engine for the constructive 1D proof: applied to the antisymmetric difference g(x) = f(x) - f(-x) to find a zero"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder's fixed-point theorem extends Brouwer's to infinite dimensions — the BU → Brouwer FP chain in this file is the "
     }
   ],
   "leanFile": {

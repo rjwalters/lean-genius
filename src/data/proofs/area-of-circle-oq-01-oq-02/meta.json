@@ -182,6 +182,16 @@
       "id": "pi-transcendental",
       "relationship": "related",
       "description": "Both use Mathlib's π: the integral ∫₀ʳ 2πρ dρ = πr² involves the same transcendental constant whose properties are established in the π-transcendence formalization"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes the circumference-to-area integration from 2D circles to n-dimensional spheres: $V_n(r) = \\int_0^r S_n(\\rho)"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "Integration by parts for Fourier coefficients of periodic functions — the same IBP technique used in the circumference i"
     }
   ],
   "leanFile": {

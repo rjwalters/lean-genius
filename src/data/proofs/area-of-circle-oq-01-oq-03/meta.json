@@ -221,6 +221,21 @@
       "id": "isoperimetric-theorem",
       "relationship": "extends",
       "description": "Wiedijk #43: the abstract version is in IsoperimetricTheorem.lean; this file provides the OQ-chain approach"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "foundational",
+      "description": "Fourier decomposition and Parseval's identity underpin the spectral proof of the isoperimetric inequality"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) used in the arithmetic kernel of the proof"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "thematic",
+      "description": "Both reveal geometric rigidity: isoperimetric characterizes the circle as area-optimal, Borsuk-Ulam constrains continuous sphere maps"
     }
   ],
   "references": [

@@ -246,6 +246,21 @@
       "id": "sqrt2-irrational",
       "relationship": "specializes",
       "description": "Irrationality of √2 is the simplest case of the algebraic-transcendental hierarchy: √2 is algebraic of degree 2, hence not Liouville, while Liouville numbers go further and are transcendental"
+    },
+    {
+      "id": "denumerability-rationals",
+      "relationship": "related",
+      "description": "Countability of rationals contextualizes Liouville's result: algebraic numbers are countable while transcendentals (incl"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA (every polynomial has complex roots) establishes that algebraic numbers form a field. Liouville's theorem shows this"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini shows some algebraic numbers can't be expressed by radicals; Liouville goes further, exhibiting numbers tha"
     }
   ],
   "references": [

@@ -207,6 +207,16 @@
       "id": "harmonic-divergence",
       "relationship": "foundational",
       "description": "The harmonic series $\\sum 1/n$ diverges, while $\\zeta(2) = \\sum 1/n^2 = \\pi^2/6$ converges (Basel problem). The question of whether $\\zeta(5) = \\sum 1/n^5$ is irrational probes the arithmetic nature of these convergent sums — the divergence/convergence boundary at $s = 1$ is foundational, and the irrationality question asks about the deeper algebraic structure of the convergent values"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the constants $e$, $\\pi$, and $i$. The zeta values $\\zeta(2k) = (-1)^{k+1}("
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's theorem (π transcendental) is the key ingredient for even zeta transcendence (ζ(2k) = rational * π^(2k)); co"
     }
   ],
   "leanFile": {

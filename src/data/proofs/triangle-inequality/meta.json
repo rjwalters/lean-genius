@@ -205,6 +205,31 @@
       "id": "intermediate-value-theorem",
       "relationship": "related",
       "description": "The intermediate value theorem and the triangle inequality are both foundational results for real analysis. The triangle inequality is used in proofs of uniform continuity and the IVT's generalization to metric spaces"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "related",
+      "description": "The mean value theorem combined with the triangle inequality yields key estimates: $|f(x) - f(y)| \\leq M|x - y|$ where $"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "The Brouwer fixed-point theorem's proof via Schauder's theorem relies on the triangle inequality in normed spaces to est"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder's fixed-point theorem operates in Banach spaces where the triangle inequality axiom provides the metric structu"
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "thematic",
+      "description": "Both the triangle inequality and the isoperimetric theorem concern optimal geometric configurations: the triangle inequa"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "complementary",
+      "description": "The integral Cauchy-Schwarz inequality $|\\int fg| \\leq (\\int f^2)^{1/2}(\\int g^2)^{1/2}$ implies the triangle inequality"
     }
   ],
   "leanFile": {

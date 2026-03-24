@@ -174,6 +174,26 @@
       "id": "triangle-inequality",
       "relationship": "related",
       "description": "Both AM-GM and the triangle inequality are fundamental non-negativity results: AM-GM exploits $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0$ while the triangle inequality exploits $|x+y| \\leq |x|+|y|$. Together they form the backbone of analytic estimation."
+    },
+    {
+      "id": "amgm-inequality-oq-02",
+      "relationship": "parent",
+      "description": "Sub-entry exploring extensions or open questions arising from the AM-GM inequality."
+    },
+    {
+      "id": "amgm-inequality-oq-03",
+      "relationship": "parent",
+      "description": "Sub-entry exploring further generalizations or applications of AM-GM."
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-01",
+      "relationship": "parent",
+      "description": "Proves negative-exponent power mean monotonicity $M_r \\leq M_s$ for $r \\leq s < 0$, extending the AM-GM chain to the ful"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-02",
+      "relationship": "parent",
+      "description": "Proves $\\lim_{r \\to 0} M_r = \\text{GM}$: the geometric mean arises as the continuous limit of power means at $r=0$, comp"
     }
   ],
   "sections": [

@@ -211,6 +211,21 @@
       "id": "basel-problem",
       "relationship": "related",
       "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ — comparing Taylor coefficients yields the Basel sum."
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "related",
+      "description": "Taylor series expand functions in powers of $(x-a)$ (local, polynomial basis), while Fourier series expand in $e^{inx}$ "
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "The Taylor series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ evaluated at $x = 1$ gives Leibniz's formula $\\pi/4 = 1 - 1/"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "IVT guarantees the existence of the intermediate point $c$ in the Lagrange remainder: $R_n = f^{(n+1)}(c)(x-a)^{n+1}/(n+"
     }
   ],
   "leanFile": {

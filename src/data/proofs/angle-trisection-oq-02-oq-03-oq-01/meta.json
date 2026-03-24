@@ -225,6 +225,26 @@
       "id": "inverse-galois",
       "relationship": "related",
       "description": "The cyclotomic Galois group Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* realizes concrete abelian groups — the simplest case of the inverse Galois problem, proved here via galCyclotomicEquivUnitsZMod"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "The roots of unity ζₙ = exp(2πi/n) involve π — this file uses cyclotomic properties of ζₙ, while π's transcendence (prov"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n) = |(\\mathbb{Z}/n\\mathbb{Z})^{\\times}|$ gives the degree $[\\mathbb{Q}(\\zeta_n):\\mathbb{"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots modulo primes establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. The cyclotomi"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ is the $n = 2$ case of $\\zeta_n = e^{2\\pi i/n}$. This file's proof that $\\zeta_n = \\"
     }
   ],
   "references": [

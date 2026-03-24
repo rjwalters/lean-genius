@@ -362,6 +362,126 @@
       "id": "angle-trisection",
       "relationship": "related",
       "description": "Both are impossibility results proved via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle trisection shows the general angle cannot be trisected by compass and straightedge"
+    },
+    {
+      "id": "abel-ruffini-oq-04",
+      "relationship": "extended-by",
+      "description": "OQ-04 exposes the internal proof chain from A₅ simplicity to Abel-Ruffini as individually named theorems with pedagogica"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic machinery: the derived series, composition factors, "
+    },
+    {
+      "id": "puiseux-theorem",
+      "relationship": "complementary",
+      "description": "Puiseux's theorem shows the field of fractional power series (Puiseux series) is algebraically closed — polynomial roots"
+    },
+    {
+      "id": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots — this is precisely why the "
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula (1545) is the degree-3 case where radicals succeed — Abel-Ruffini proves this pattern breaks at "
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has roots in C. Abel-Ruffini shows those roots cannot always be expressed by radicals — "
+    },
+    {
+      "id": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber (every abelian extension of Q is contained in a cyclotomic field) is the positive counterpart to Abel-Ru"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite's proof that $e$ is transcendental (1873) sits one level above Abel-Ruffini in the expressibility hierarchy: Abe"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots and cyclotomic extensions supply the abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ that form"
+    },
+    {
+      "id": "kummer-theorem",
+      "relationship": "foundational",
+      "description": "Kummer theory provides the mechanism underlying the Galois bridge (galois_bridge): each radical extraction creates a Kum"
+    },
+    {
+      "id": "hilbert-13",
+      "relationship": "extended-by",
+      "description": "Hilbert's 13th problem (1900) was directly motivated by Abel-Ruffini: since polynomials of degree $\\geq 5$ cannot be sol"
+    },
+    {
+      "id": "hilbert-10",
+      "relationship": "related",
+      "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (MRDP theorem, 1970) extends the impossibility paradigm ina"
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Both are landmark impossibility/nonexistence results in algebra: Abel-Ruffini proves no radical formula exists for gener"
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape r"
+    },
+    {
+      "id": "gelfond-schneider",
+      "relationship": "related",
+      "description": "Extends the transcendence hierarchy beyond Hermite-Lindemann: Gelfond-Schneider proves $\\alpha^\\beta$ is transcendental "
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) is the first level of the expressibility hier"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Abel-Ruffini (1824) and Gödel's incompleteness (1931) are both impossibility results showing that natural questions ('fi"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's halting problem (1936) extends the impossibility paradigm to computation: no algorithm can decide whether an ar"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonal argument (1891) is the set-theoretic impossibility result that bridges Abel-Ruffini and Gödel in the i"
+    },
+    {
+      "id": "descartes-rule-of-signs",
+      "relationship": "related",
+      "description": "Descartes' rule bounds the number of positive real roots of a polynomial by the number of sign changes in its coefficien"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's proof that $\\pi$ is transcendental (1882) resolved the ancient problem of squaring the circle and sits one l"
+    },
+    {
+      "id": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's construction of the first explicit transcendental numbers (1844) via rational approximation bounds ($|\\alpha"
+    },
+    {
+      "id": "lagrange-theorem-oq-03",
+      "relationship": "related",
+      "description": "Hall's theorem (1928) is the partial converse of Lagrange's theorem for solvable groups: every Hall divisor of a solvabl"
+    },
+    {
+      "id": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "The Wantzel-Galois theorem — an algebraic number $\\alpha$ is constructible by compass and straightedge iff $\\text{Gal}(\\"
     }
   ],
   "references": [

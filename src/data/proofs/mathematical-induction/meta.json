@@ -249,6 +249,41 @@
       "id": "arithmetic-series",
       "relationship": "related",
       "description": "The sum formula $\\sum_{k=1}^n k = n(n+1)/2$ is the classic first example of proof by induction, attributed to Gauss. This formalization includes this example, connecting induction to combinatorial identities"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Godel's incompleteness theorems concern the limits of Peano arithmetic, whose induction axiom schema is precisely the pr"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem on subgroup orders is proved by induction on the index of the subgroup, using the coset decomposition"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The Euclidean algorithm's correctness and termination are proved by strong induction on the pair (a, b) ordered by the s"
+    },
+    {
+      "id": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "The factor theorem connects to induction through polynomial division: proving that a degree-n polynomial has at most n r"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "While the Pythagorean theorem itself does not use induction, many of its extensions do: counting Pythagorean triples, pr"
+    },
+    {
+      "id": "subset-count",
+      "relationship": "related",
+      "description": "The proof that a set with n elements has 2^n subsets is a textbook application of weak induction: removing one element s"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "related",
+      "description": "The Schroeder-Bernstein theorem uses a chain of iterated function applications that terminates by well-ordering — the sa"
     }
   ]
 }

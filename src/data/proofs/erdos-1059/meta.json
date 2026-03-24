@@ -244,6 +244,31 @@
       "id": "erdos-1058",
       "relationship": "sibling",
       "description": "Both problems concern the interplay between primes and factorials: #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1059 studies primality of $p - k!$. Both exploit the super-exponential growth of factorials to reduce infinite problems to finite case analysis"
+    },
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Both concern factorial-prime interactions: #728 studies factorial divisibility patterns while #1059 studies factorial su"
+    },
+    {
+      "id": "erdos-68",
+      "relationship": "related",
+      "description": "Both involve interactions between primes and factorials: #68 asks about irrationality of $\\sum 1/(n!-1)$ while #1059 ask"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "supports",
+      "description": "Unique prime factorization underlies the compositeness checks: verifying $n - k!$ is composite requires exhibiting a non"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The probabilistic heuristic for this problem relies on the PNT: the probability that a random integer near $p$ is prime "
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "foundational",
+      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ quantifies the super-exponential growth of factorials that makes"
     }
   ],
   "leanFile": {

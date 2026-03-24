@@ -224,6 +224,21 @@
       "id": "fundamental-arithmetic",
       "relationship": "related",
       "description": "CRT and FTA are both consequences of Bézout's identity: FTA uses Euclid's lemma (from Bézout), while CRT uses Bézout coefficients as selectors"
+    },
+    {
+      "id": "bezout-identity-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry: CRT Ring Isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ"
+    },
+    {
+      "id": "bezout-identity-oq-03-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry: k-fold Chinese Remainder Theorem: ℤ/(n₁···nₖ)ℤ ≅ ∏ᵢ ℤ/nᵢℤ"
+    },
+    {
+      "id": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry: Ideal-theoretic CRT: R/∏Iᵢ ≅ ∏ R/Iᵢ"
     }
   ],
   "leanFile": {

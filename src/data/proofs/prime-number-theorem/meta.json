@@ -203,6 +203,26 @@
       "id": "bertrands-postulate",
       "relationship": "related",
       "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) is an elementary consequence of PNT: $\\pi(2n) - \\pi(n) \\sim n/\\ln n "
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions ($\\exists$ infinitely many primes $\\equiv a \\pmod{q}$ when $\\gc"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(n)$ appears in PNT for arithmetic progressions: $\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ and PNT are both asymptotic results about discrete sequences wit"
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Both are landmark achievements in number theory. Wiles's proof of FLT (1995) uses the modularity of elliptic curves and "
     }
   ],
   "references": [

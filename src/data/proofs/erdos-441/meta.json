@@ -260,6 +260,21 @@
       "id": "erdos-534",
       "relationship": "related",
       "description": "Ahlswede-Khachatrian characterization of sets with pairwise gcd > 1; dual problem via the GCD-LCM identity lcm(a,b) = ab/gcd(a,b)"
+    },
+    {
+      "id": "erdos-487",
+      "relationship": "related",
+      "description": "Kleitman's 1971 theorem: dense sets must contain a,b,c with lcm(a,b)=c; connects LCM constraints to density-Ramsey theor"
+    },
+    {
+      "id": "erdos-402",
+      "relationship": "related",
+      "description": "Graham's GCD conjecture (solved): for any set A, ∃a,b with gcd(a,b) ≤ a/|A|; uses divisibility structure underlying LCM "
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "related",
+      "description": "Fundamental Euclidean algorithm for computing gcd; the core operation underlying the LCM constraint lcm(a,b) = ab/gcd(a,"
     }
   ]
 }

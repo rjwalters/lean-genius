@@ -253,6 +253,26 @@
       "id": "arithmetic-series",
       "relationship": "foundational",
       "description": "Arithmetic progressions and their common differences are the central objects. The difference set $A - A$ is precisely the set of common differences of 2-term APs in $A$"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Both study density thresholds for additive structure. Roth's theorem shows density $\\gg N/\\log\\log N$ forces 3-term APs;"
+    },
+    {
+      "id": "erdos-30",
+      "relationship": "related",
+      "description": "Ruzsa's counterexample sets have Sidon-like properties ($|A - A| \\sim |A|$), connecting to Erdős #30 on $B_2$ sequences "
+    },
+    {
+      "id": "erdos-1145",
+      "relationship": "related",
+      "description": "Problem #1145 (Erdős–Sárközy conjecture) cites Ruzsa's counterexample from #331 to show the ratio condition $a_n/b_n \\to"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "Problem #28 (Erdős–Turán conjecture on additive bases) is the $A = B$ case of the two-set conjecture #1145. Ruzsa's coun"
     }
   ],
   "leanFile": {
