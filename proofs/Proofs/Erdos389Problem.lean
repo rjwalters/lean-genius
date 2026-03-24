@@ -28,9 +28,13 @@ an integer by choosing k large enough.
 -/
 
 import Mathlib.Tactic
-import Mathlib.Data.Finset.LocallyFinite
+import Mathlib.Data.Nat.Choose.Basic
 
 open Finset
+
+/-- Decidability of natural number divisibility (needed for native_decide). -/
+instance Nat.decidableDvd' (m n : ℕ) : Decidable (m ∣ n) :=
+  decidable_of_iff (n % m = 0) Nat.dvd_iff_mod_eq_zero.symm
 
 /- ## Core Definitions -/
 
@@ -41,13 +45,13 @@ def consecutiveProd (n k : ℕ) : ℕ :=
 
 /-- The divisibility condition: the "lower block" n·(n+1)···(n+k−1)
 divides the "upper block" (n+k)·(n+k+1)···(n+2k−1). -/
-def divides_upper_block (n k : ℕ) : Prop :=
+abbrev divides_upper_block (n k : ℕ) : Prop :=
   consecutiveProd n k ∣ consecutiveProd (n + k) k
 
-/-- The minimal k (if it exists) satisfying the divisibility for a given n. -/
+/-- The minimal k ≥ 1 satisfying the divisibility for a given n.
+    Returns 0 if no such k exists (conjectured to never happen). -/
 noncomputable def minimalK (n : ℕ) : ℕ :=
-  Nat.find (⟨1, by simp [divides_upper_block, consecutiveProd]⟩ :
-    ∃ k : ℕ, 1 ≤ k ∧ divides_upper_block n k)
+  sInf {k : ℕ | 1 ≤ k ∧ divides_upper_block n k}
 
 /- ## Main Conjecture -/
 
@@ -84,7 +88,7 @@ axiom mehta_n4_minimality :
 
 /- ## Ratio Interpretation -/
 
-/-- **The upper block relates to binomial coefficients.**
+/- **The upper block relates to binomial coefficients.**
     consecutiveProd n k = n · (n+1) · ··· · (n+k-1) = k! · C(n+k-1, k).
     This connects the divisibility problem to binomial coefficient arithmetic.
 
@@ -92,7 +96,20 @@ axiom mehta_n4_minimality :
     `∨ ¬ divides_upper_block n k` as an escape clause). Replaced with the
     cleaner binomial identity. -/
 
+/-- Helper: consecutiveProd recurrence. -/
+private lemma consecutiveProd_succ (n k : ℕ) :
+    consecutiveProd n (k + 1) = consecutiveProd n k * (n + k) := by
+  simp [consecutiveProd, Finset.prod_range_succ]
+
 /-- The product of consecutive integers relates to binomial coefficients:
   consecutiveProd n k = k! · C(n+k−1, k). -/
-axiom consecutiveProd_binomial (n k : ℕ) (hn : 0 < n) :
-  consecutiveProd n k = k.factorial * (n + k - 1).choose k
+theorem consecutiveProd_binomial (n k : ℕ) (hn : 0 < n) :
+    consecutiveProd n k = k.factorial * (n + k - 1).choose k := by
+  induction k with
+  | zero => simp [consecutiveProd]
+  | succ k ih =>
+    rw [consecutiveProd_succ, ih]
+    rw [show n + (k + 1) - 1 = n + k from by omega, Nat.factorial_succ]
+    have h := Nat.add_one_mul_choose_eq (n + k - 1) k
+    rw [show n + k - 1 + 1 = n + k from by omega] at h
+    nlinarith
