@@ -91,6 +91,30 @@
       "startLine": 86,
       "endLine": 92,
       "summary": "Axiom `multiplesSet_density_exists`: the asymptotic density $\\delta(B(A))$ exists in $(0, 1]$ for any finite $A$ with all elements $\\geq 1$, and the density ratio converges to $\\delta$."
+    },
+    {
+      "id": "counting-bijection",
+      "title": "Counting Multiples: Bijection and Cardinality",
+      "startLine": 86,
+      "endLine": 112,
+      "summary": "Completes the proof of `count_multiples_of_single`: $|\\{n \\in [1,N] : a \\mid n\\}| = \\lfloor N/a \\rfloor$ via an explicit bijection $k \\mapsto (k+1) \\cdot a$ between `Finset.range (N/a)` and the filtered set. Establishes injectivity via `mul_right_cancel₀` and surjectivity by extracting the quotient.",
+      "mathContext": "The bijection: multiples of $a$ in $[1,N]$ are $a, 2a, \\ldots, \\lfloor N/a \\rfloor \\cdot a$, giving exactly $\\lfloor N/a \\rfloor$ elements."
+    },
+    {
+      "id": "monotonicity-subset",
+      "title": "Monotonicity and Subset Properties",
+      "startLine": 114,
+      "endLine": 131,
+      "summary": "Two structural lemmas: `multiplesCount_mono` (increasing $N$ only increases the count, via `Finset.card_le_card` on the interval extension) and `multiplesCount_subset` (adding elements to $A$ only increases the multiples count).",
+      "mathContext": "$M \\leq N \\Rightarrow |B(A) \\cap [1,M]| \\leq |B(A) \\cap [1,N]|$ and $A \\subseteq B \\Rightarrow |B(A) \\cap [1,N]| \\leq |B(B) \\cap [1,N]|$."
+    },
+    {
+      "id": "density-exists",
+      "title": "Davenport's Density Existence (Axiom)",
+      "startLine": 132,
+      "endLine": 141,
+      "summary": "Axiomatizes `multiplesSet_density_exists`: for any finite $A \\subseteq \\mathbb{N}_{\\geq 1}$, the asymptotic density of $B(A) = \\{n : \\exists a \\in A, a \\mid n\\}$ exists and lies in $(0, 1]$. The density can be computed by inclusion-exclusion over the elements of $A$.",
+      "mathContext": "Davenport's theorem (1933): the Schnirelmann density of the set of multiples $B(A)$ equals its asymptotic density, which exists by inclusion-exclusion: $\\delta(B(A)) = \\sum_{\\emptyset \\neq S \\subseteq A} (-1)^{|S|+1} / \\text{lcm}(S)$."
     }
   ],
   "conclusion": {
