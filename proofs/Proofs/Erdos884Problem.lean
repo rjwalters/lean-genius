@@ -188,10 +188,27 @@ theorem consecutivePairsSum_num_terms (n : ℕ) (_hn : n > 0) :
 theorem divisors_6 : divisorList 6 = [1, 2, 3, 6] := by native_decide
 
 /-- For prime p, divisors are [1, p]. -/
-axiom divisors_prime (p : ℕ) (hp : p.Prime) :
-    divisorList p = [1, p]
+theorem divisors_prime (p : ℕ) (hp : p.Prime) :
+    divisorList p = [1, p] := by
+  unfold divisorList
+  rw [hp.divisors]
+  show ({1, p} : Finset ℕ).val.sort (· ≤ ·) = [1, p]
+  -- Step 1: Show {1, p}.val = ↑[1, p] as multisets
+  have hne : (1 : ℕ) ∉ ({p} : Multiset ℕ) := by rw [Multiset.mem_singleton]; exact hp.one_lt.ne
+  have hval : ({1, p} : Finset ℕ).val = (Multiset.ofList [1, p]) := by
+    simp only [Finset.insert_val, Finset.singleton_val, Multiset.ndinsert_of_notMem hne]; rfl
+  rw [hval]
+  -- Step 2: Sort of ↑[1, p] = [1, p] by uniqueness of sorted permutations
+  have hperm : List.Perm ((Multiset.ofList [1, p]).sort (· ≤ ·)) [1, p] :=
+    Multiset.coe_eq_coe.mp (Multiset.sort_eq (Multiset.ofList [1, p]) (· ≤ ·))
+  have hsorted := Multiset.pairwise_sort (Multiset.ofList [1, p]) (· ≤ ·)
+  have htarget : ([1, p] : List ℕ).Pairwise (· ≤ ·) := by
+    refine List.pairwise_cons.mpr ⟨?_, List.pairwise_cons.mpr ⟨by simp, List.Pairwise.nil⟩⟩
+    intro x hx; simp at hx; subst hx; exact hp.one_lt.le
+  exact hperm.eq_of_pairwise (fun _ _ _ _ hab hba => le_antisymm hab hba) hsorted htarget
 
-/-- For primes, allPairsSum = consecutivePairsSum (trivially: only one pair). -/
+/-- For primes, allPairsSum = consecutivePairsSum (trivially: only one pair).
+    Both sums reduce to 1/(p-1) since there is only one gap. -/
 axiom prime_case_equality (p : ℕ) (hp : p.Prime) :
     allPairsSum p = consecutivePairsSum p
 
@@ -210,7 +227,7 @@ theorem gap_lower_bound (n i j : ℕ) (hij : i < j) (hj : j < numDivisors n) :
 
 /-- For coprime m, n: τ(mn) = τ(m) · τ(n). -/
 /- Note: Nat.Coprime.divisors_mul was removed/renamed in Mathlib v4.26.0.
-   This theorem was proved in the original file but needs API update. -/
+   This theorem needs the correct API name. -/
 theorem numDivisors_mul_coprime (m n : ℕ) (_hm : m > 0) (_hn : n > 0)
     (_hcop : Nat.Coprime m n) :
     numDivisors (m * n) = numDivisors m * numDivisors n := by
