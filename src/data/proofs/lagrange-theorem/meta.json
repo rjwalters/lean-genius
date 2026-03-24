@@ -64,7 +64,13 @@
     "axiomCount": 0,
     "lineCount": 222,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core divisibility $|H| \\mid |G|$ delegates to Mathlib's `Subgroup.card_subgroup_dvd_card` (coset partition argument); all 11 theorems are pedagogical wrappers composing Mathlib lemmas (`orderOf_dvd_card`, `pow_card_eq_one`, `ZMod.card_units_eq_totient`, `isCyclic_of_prime_card`, etc.) with no custom axioms or definitions.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "lagrange-theorem-oq-03",
+        "relationship": "Hall's theorem (1928): the partial converse of Lagrange's theorem for solvable groups — every Hall divisor admits a subgroup"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Joseph-Louis Lagrange proved this theorem in 1771 in his *Reflexions sur la resolution algebrique des equations*, while studying permutation groups in connection with the solvability of polynomial equations by radicals. Lagrange observed that the number of 'values' (arrangements) of a rational function of the roots always divides $n!$, which is essentially the statement that subgroup orders divide the group order for symmetric groups. The theorem was not stated in the language of abstract groups (which didn't exist until the 1830s with Galois and later Cayley); Lagrange worked entirely with permutations. The abstract formulation emerged through the work of Galois (1832), Cayley (1854), and Jordan (1870). The coset-based proof — partitioning $G$ into translates $gH$ — is due to Dedekind. The theorem's converse is famously false: $A_4$ (order 12) has no subgroup of order 6, despite $6 | 12$. The Sylow theorems (1872) provide the best partial converse: subgroups of prime-power order $p^k | |G|$ always exist.",
@@ -93,7 +99,7 @@
       "startLine": 1,
       "endLine": 56,
       "summary": "Documentation header explaining Lagrange's Theorem as Wiedijk #71, with historical notes on Lagrange (1771) and permutation groups, proof strategy via coset partition, and Mathlib dependencies.",
-      "mathContext": "Lagrange's theorem: $|H| \\mid |G|$ for $H \\leq G$ finite. Coset partition: $G = \\bigsqcup gH$ with $|gH| = |H|$."
+      "mathContext": "Lagrange's theorem: $|H| \\mid |G|$ for $H \\leq G$ finite. The proof partitions $G$ into left cosets $gH = \\{gh : h \\in H\\}$. The map $h \\mapsto gh$ is a bijection $H \\xrightarrow{\\sim} gH$, so $|gH| = |H|$, and cosets are equivalence classes of $a \\sim b \\iff a^{-1}b \\in H$. Thus $G = \\bigsqcup_{g \\in G/H} gH$ with $|G| = [G:H] \\cdot |H|$."
     },
     {
       "id": "main-theorem",
@@ -117,7 +123,7 @@
       "startLine": 108,
       "endLine": 129,
       "summary": "Three corollaries: ord(g) divides |G| (orderOf_dvd_card), alternative statement, and g^|G| = 1 (pow_card_eq_one).",
-      "mathContext": "$\\text{ord}(g) \\mid |G|$ via $|\\langle g \\rangle| = \\text{ord}(g)$. Corollary: $g^{|G|} = 1$ since $|G| = \\text{ord}(g) \\cdot k$."
+      "mathContext": "$\\text{ord}(g) \\mid |G|$ via Lagrange applied to $\\langle g \\rangle \\leq G$ with $|\\langle g \\rangle| = \\text{ord}(g)$. Corollary: $g^{|G|} = 1$ since $|G| = \\text{ord}(g) \\cdot k$ gives $g^{|G|} = (g^{\\text{ord}(g)})^k = 1^k = 1$. This is the bridge from subgroup structure to element behavior."
     },
     {
       "id": "fermat",
@@ -149,7 +155,7 @@
       "startLine": 200,
       "endLine": 222,
       "summary": "Discussion of why Lagrange matters (structure constraints, counting, number theory, extensions), the false converse (A₄ counterexample), and type-checking of all exported theorems.",
-      "mathContext": "False converse: $6 \\mid 12 = |A_4|$ but $A_4$ has no subgroup of order 6. Sylow theorems provide partial converse for prime powers."
+      "mathContext": "False converse: $6 \\mid 12 = |A_4|$ but $A_4$ has no subgroup of order 6. A subgroup of index 2 would be normal and isomorphic to $S_3$, but $A_4$'s only normal subgroups are $\\{e\\}$, $V_4$, and $A_4$ itself. Sylow theorems provide partial converse: $p^k \\mid |G| \\Rightarrow \\exists H \\leq G$ with $|H| = p^k$. Hall's theorem extends this to all Hall divisors for solvable groups."
     }
   ],
   "conclusion": {
@@ -213,6 +219,16 @@
       "targetId": "primitive-roots",
       "relationship": "related",
       "description": "The existence of primitive roots modulo $p$ — generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — is a consequence of the structure theorem for finite abelian groups combined with Lagrange's theorem. By Lagrange, the polynomial $x^d - 1$ has at most $d$ roots in $\\mathbb{Z}/p\\mathbb{Z}$, which forces $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ to be cyclic"
+    },
+    {
+      "targetId": "lagrange-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Hall's theorem (1928) provides the partial converse of Lagrange for solvable groups: if $G$ is solvable and $n \\mid |G|$ with $\\gcd(n, |G|/n) = 1$, then $G$ has a subgroup of order $n$. All such Hall subgroups are conjugate. The $A_4$ counterexample (no subgroup of order 6) is non-solvable in the relevant sense — $A_4$ IS solvable, but 6 is not a Hall divisor since $\\gcd(6, 2) \\neq 1$"
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Both named for Lagrange but mathematically distinct: Lagrange's theorem on subgroups (1771, group theory) constrains subgroup orders, while Lagrange's four squares theorem (1770, number theory) proves every natural number is a sum of four squares. The four squares theorem can be proved using group-theoretic methods (quaternion orders), providing a deeper connection"
     }
   ],
   "references": [
@@ -264,6 +280,27 @@
       "year": "1870",
       "venue": "Gauthier-Villars, Paris",
       "note": "First systematic treatment of permutation groups, establishing the group-theoretic framework in which Lagrange's theorem is a foundational result"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Mémoire sur le nombre des valeurs qu'une fonction peut acquérir",
+      "year": "1815",
+      "venue": "Journal de l'École Polytechnique, vol. 10, pp. 1–28",
+      "note": "Contains the precursor to Cauchy's theorem on prime-order elements — if prime $p$ divides $|G|$ then $G$ contains an element of order $p$. This sharpens Lagrange: not only do element orders divide $|G|$, but every prime divisor is realized"
+    },
+    {
+      "authors": "Hall, Philip",
+      "title": "A note on soluble groups",
+      "year": "1928",
+      "venue": "Journal of the London Mathematical Society, vol. 3, pp. 98–105",
+      "note": "Proved that for solvable groups, the converse of Lagrange holds for Hall divisors: if $\\gcd(n, |G|/n) = 1$ then a subgroup of order $n$ exists, and all such subgroups are conjugate. Directly related to the OQ-03 formalization"
+    },
+    {
+      "authors": "McKay, James H.",
+      "title": "Another proof of Cauchy's group theorem",
+      "year": "1959",
+      "venue": "American Mathematical Monthly, vol. 66, p. 119",
+      "note": "An elegant one-paragraph proof of Cauchy's theorem using the action of $\\mathbb{Z}/p\\mathbb{Z}$ on $p$-tuples with product equal to the identity — mentioned in the open questions as a formalization target"
     }
   ],
   "prerequisites": [
