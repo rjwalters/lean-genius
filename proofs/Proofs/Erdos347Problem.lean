@@ -80,14 +80,23 @@ axiom erdos347_affirmative : ErdosProblem347
 /- ## Basic properties -/
 
 /-- The empty subset sum is 0: `0 ∈ P(A)` for any `A`. -/
-axiom zero_mem_subsetSums (A : Set ℕ) :
-    0 ∈ subsetSums A
+theorem zero_mem_subsetSums (A : Set ℕ) :
+    0 ∈ subsetSums A :=
+  ⟨∅, by simp, by simp⟩
 
-/-- Subset sums are closed under adding elements of `A`. -/
-axiom subsetSums_add (A : Set ℕ) (s : ℕ) (a : ℕ) :
-    s ∈ subsetSums A → a ∈ A →
-      s + a ∈ subsetSums A
+/-- Subset sums grow when adding a new element not already in the witness.
+    NOTE: The original `subsetSums_add` axiom (s ∈ P(A) → a ∈ A → s+a ∈ P(A))
+    was INCORRECT — it fails when a is already in the witness finset S
+    (e.g., A = {2,3}, s = 5, a = 2: 7 ∉ P({2,3}) = {0,2,3,5}).
+    This correct version requires a fresh witness where a ∉ S. -/
+theorem subsetSums_insert (A : Set ℕ) (S : Finset ℕ) (a : ℕ)
+    (hS : (↑S : Set ℕ) ⊆ A) (ha : a ∈ A) (hna : a ∉ S) :
+    S.sum id + a ∈ subsetSums A :=
+  ⟨insert a S, by simpa [Set.insert_subset_iff] using ⟨ha, hS⟩,
+   by rw [Finset.sum_insert hna]; ring⟩
 
 /-- If `A ⊆ B`, then `P(A) ⊆ P(B)`. -/
-axiom subsetSums_mono (A B : Set ℕ) (h : A ⊆ B) :
-    subsetSums A ⊆ subsetSums B
+theorem subsetSums_mono (A B : Set ℕ) (h : A ⊆ B) :
+    subsetSums A ⊆ subsetSums B := by
+  intro s ⟨S, hS, hs⟩
+  exact ⟨S, Set.Subset.trans hS h, hs⟩
