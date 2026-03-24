@@ -2,7 +2,7 @@
   "id": "pythagorean-theorem",
   "title": "Pythagorean Theorem",
   "slug": "pythagorean-theorem",
-  "description": "The most famous theorem in mathematics: in a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides. a² + b² = c²",
+  "description": "The Pythagorean Theorem (Wiedijk #4): $a^2 + b^2 = c^2$. Formalized in Lean 4 via Mathlib's inner product space framework — orthogonality $\\langle v,w \\rangle = 0$ implies $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ by bilinearity. Includes the converse, $\\mathbb{R}^2$ specialization, and the $(3,4,5)$ verification. 214 lines, 0 sorries, 0 axioms, badge: original.",
   "meta": {
     "author": "Pythagoras of Samos (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_theorem",
@@ -49,7 +49,7 @@
       }
     ],
     "lineCount": 214,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core theorem is an original construction (badge: original) using Mathlib's `InnerProductSpace` infrastructure — the proof expands $\\langle v+w, v+w \\rangle$ via `inner_add_left`/`inner_add_right` and applies the orthogonality hypothesis to zero the cross terms. The converse direction uses the same bilinearity expansion in reverse."
   },
   "overview": {
     "historicalContext": "The Pythagorean theorem is arguably the most recognized result in all of mathematics. While named after the Greek mathematician Pythagoras (c. 570-495 BCE), evidence suggests the theorem was known to Babylonian mathematicians over 1000 years earlier—clay tablet Plimpton 322 (c. 1800 BCE) contains a list of Pythagorean triples.\n\nPythagoras, or more likely his school, is credited with providing the first general proof. The theorem appears as Proposition 47 in Book I of Euclid's Elements (c. 300 BCE), where it's proved using areas of squares constructed on the triangle's sides.\n\nBy 1940, mathematician Elisha Loomis had catalogued 367 distinct proofs, and new proofs continue to be discovered. James Garfield, before becoming the 20th US President, published an original proof in 1876.",
