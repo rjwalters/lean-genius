@@ -81,7 +81,8 @@
     "axiomCount": 0,
     "lineCount": 79,
     "leanFile": "proofs/Proofs/MachinFromAddition.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "In 1706, John Machin, professor of astronomy at Gresham College, London, discovered that $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$. He used this to compute 100 digits of $\\pi$, a record at the time. The formula's power lies in replacing the arctan series at $x=1$ (the Leibniz series, converging at rate $O(1/N)$) with evaluations at $x = 1/5$ and $x = 1/239$, where convergence is exponential.\n\nWilliam Shanks used Machin's formula in 1873 to compute 707 digits (later found to have an error after digit 527). Machin-like formulas dominated $\\pi$ computation for over 250 years until the Borwein and Chudnovsky algorithms introduced fundamentally faster approaches.\n\nThis formalization derives Machin's formula from scratch, applying the arctan addition formula three times. The derivation reveals the beautiful algebraic coincidence: $4\\arctan(1/5) = \\arctan(120/119)$, and $120/119$ is close enough to 1 that subtracting $\\arctan(1/239)$ yields exactly $\\arctan(1)$. The numerics work out because $169^2 = 28561$ appears in both numerator and denominator of the final fraction.",
