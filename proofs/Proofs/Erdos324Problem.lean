@@ -70,29 +70,55 @@ aⁿ + bⁿ = cⁿ + dⁿ with a < b and c < d implies (a,b) = (c,d). -/
 def PowerPairSumDistinct (n : ℕ) : Prop :=
   HasDistinctPairSums (X ^ n : ℤ[X])
 
-/-- The Lander-Parkin-Selfridge conjecture implies that xⁿ works
-for all n ≥ 5. -/
-axiom lps_implies_power_distinct :
-  (∀ n : ℕ, n ≥ 5 → PowerPairSumDistinct n) → ErdosProblem324
+/-- The Lander-Parkin-Selfridge conjecture implies xⁿ works for all n ≥ 5.
+    Taking n = 5 trivially gives a solution. -/
+theorem lps_implies_power_distinct :
+    (∀ n : ℕ, n ≥ 5 → PowerPairSumDistinct n) → ErdosProblem324 :=
+  fun h => ⟨X ^ 5, h 5 (by omega)⟩
 
 /-- For n = 2, the property fails: 1² + 8² = 4² + 7² = 65. -/
-axiom squares_not_distinct : ¬PowerPairSumDistinct 2
+theorem squares_not_distinct : ¬PowerPairSumDistinct 2 := by
+  intro h
+  have hp1 : ((1 : ℕ), (8 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have hp2 : ((4 : ℕ), (7 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have heq : pairSumFn (X ^ 2 : ℤ[X]) (1, 8) = pairSumFn (X ^ 2 : ℤ[X]) (4, 7) := by
+    simp [pairSumFn, eval_pow, eval_X]; norm_num
+  exact absurd (h hp1 hp2 heq) (by decide)
 
-/-- For n = 3, the property fails: the Hardy-Ramanujan taxicab
-numbers give counterexamples (1³ + 12³ = 9³ + 10³ = 1729). -/
-axiom cubes_not_distinct : ¬PowerPairSumDistinct 3
+/-- For n = 3, the property fails: the Hardy–Ramanujan taxicab number
+    1³ + 12³ = 9³ + 10³ = 1729. -/
+theorem cubes_not_distinct : ¬PowerPairSumDistinct 3 := by
+  intro h
+  have hp1 : ((1 : ℕ), (12 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have hp2 : ((9 : ℕ), (10 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have heq : pairSumFn (X ^ 3 : ℤ[X]) (1, 12) = pairSumFn (X ^ 3 : ℤ[X]) (9, 10) := by
+    simp [pairSumFn, eval_pow, eval_X]; norm_num
+  exact absurd (h hp1 hp2 heq) (by decide)
 
-/-- For n = 4, the property fails: there exist equal sums of
-two fourth powers (Euler 1772). -/
-axiom quartics_not_distinct : ¬PowerPairSumDistinct 4
+/-- For n = 4, the property fails: 59⁴ + 158⁴ = 133⁴ + 134⁴ = 635318657
+    (Euler 1772). -/
+theorem quartics_not_distinct : ¬PowerPairSumDistinct 4 := by
+  intro h
+  have hp1 : ((59 : ℕ), (158 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have hp2 : ((133 : ℕ), (134 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have heq : pairSumFn (X ^ 4 : ℤ[X]) (59, 158) = pairSumFn (X ^ 4 : ℤ[X]) (133, 134) := by
+    simp [pairSumFn, eval_pow, eval_X]; norm_num
+  exact absurd (h hp1 hp2 heq) (by decide)
 
 /-
 ## Section V: Lower Degree Impossibility
 -/
 
-/-- Linear polynomials cannot have distinct pair sums. -/
-axiom linear_not_distinct (a b : ℤ) (ha : a ≠ 0) :
-  ¬HasDistinctPairSums (C a * X + C b)
+/-- Linear polynomials cannot have distinct pair sums:
+    for f(x) = ax + b, f(0) + f(3) = f(1) + f(2) = 3a + 2b. -/
+theorem linear_not_distinct (a b : ℤ) (ha : a ≠ 0) :
+    ¬HasDistinctPairSums (C a * X + C b) := by
+  intro h
+  have hp1 : ((0 : ℕ), (3 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have hp2 : ((1 : ℕ), (2 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
+  have heq : pairSumFn (C a * X + C b) (0, 3) = pairSumFn (C a * X + C b) (1, 2) := by
+    simp [pairSumFn, eval_add, eval_mul, eval_C, eval_X]; push_cast; ring
+  exact absurd (h hp1 hp2 heq) (by decide)
 
 /-- The degree of any polynomial with distinct pair sums must be ≥ 5. -/
 axiom min_degree_for_distinct :
