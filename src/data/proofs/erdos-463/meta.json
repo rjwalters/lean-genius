@@ -165,5 +165,27 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-248",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factors, sieve-theory"
+    },
+    {
+      "targetId": "erdos-681",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: composites, least-prime-factor, number-theory"
+    },
+    {
+      "targetId": "erdos-1073",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: composites, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-248",
+    "erdos-681",
+    "erdos-1073"
+  ]
 }

@@ -147,5 +147,27 @@
       "citation": "OEIS Foundation. A005185: Hofstadter-Maler-Mitchell (or Hofstadter-Conway) $10,000 sequence. The On-Line Encyclopedia of Integer Sequences.",
       "type": "database"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-243",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-255",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1101",
+    "erdos-243",
+    "erdos-255"
   ]
 }

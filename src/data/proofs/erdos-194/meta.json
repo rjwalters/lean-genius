@@ -177,5 +177,27 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-645",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-966",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-645",
+    "erdos-966",
+    "erdos-1090"
+  ]
 }

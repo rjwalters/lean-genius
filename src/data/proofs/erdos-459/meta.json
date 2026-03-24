@@ -172,5 +172,27 @@
     "axiomCount": 12,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, smooth-numbers, solved"
+    },
+    {
+      "targetId": "erdos-370",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, smooth-numbers, solved"
+    },
+    {
+      "targetId": "erdos-446",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-density, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-240",
+    "erdos-370",
+    "erdos-446"
+  ]
 }

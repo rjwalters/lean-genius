@@ -166,5 +166,27 @@
     "axiomCount": 12,
     "theoremCount": 9,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-692",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-975",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-692",
+    "erdos-975",
+    "erdos-1004"
+  ]
 }

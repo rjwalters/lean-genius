@@ -188,5 +188,27 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: lcm, number-theory"
+    },
+    {
+      "targetId": "erdos-316",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, number-theory"
+    },
+    {
+      "targetId": "erdos-440",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: lcm, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-269",
+    "erdos-316",
+    "erdos-440"
+  ]
 }

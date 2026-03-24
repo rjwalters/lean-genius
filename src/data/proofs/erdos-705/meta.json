@@ -173,5 +173,27 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, girth, graph-theory"
+    },
+    {
+      "targetId": "erdos-626",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, girth, graph-theory"
+    },
+    {
+      "targetId": "erdos-751",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, girth, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-108",
+    "erdos-626",
+    "erdos-751"
+  ]
 }

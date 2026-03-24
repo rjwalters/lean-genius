@@ -178,5 +178,27 @@
     "axiomCount": 7,
     "theoremCount": 7,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-812",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-165",
+    "erdos-812",
+    "erdos-1014"
+  ]
 }

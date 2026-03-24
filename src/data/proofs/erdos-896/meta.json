@@ -131,5 +131,27 @@
     "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-304",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-bounds, number-theory"
+    },
+    {
+      "targetId": "erdos-424",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: multiplicative-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-490",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, product-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-304",
+    "erdos-424",
+    "erdos-490"
+  ]
 }

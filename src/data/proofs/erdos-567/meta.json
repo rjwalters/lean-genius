@@ -137,5 +137,27 @@
       "Mathlib.Data.Finset.Basic"
     ],
     "opens": []
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-566",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory, size-ramsey"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-566",
+    "erdos-1014",
+    "erdos-1105"
+  ]
 }

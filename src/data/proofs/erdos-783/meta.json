@@ -112,8 +112,9 @@
     ]
   },
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-szekeres"
+    "erdos-1065",
+    "erdos-1072",
+    "erdos-385"
   ],
   "leanFile": {
     "imports": [
@@ -132,5 +133,22 @@
   "references": [
     "Erdős (1973): original problem",
     "https://erdosproblems.com/783"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-385",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-theory"
+    }
   ]
 }

@@ -173,5 +173,27 @@
     "axiomCount": 11,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-447",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-772",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, sidon-sets, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-447",
+    "erdos-757",
+    "erdos-772"
+  ]
 }

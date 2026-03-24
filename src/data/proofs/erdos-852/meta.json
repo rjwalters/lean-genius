@@ -111,11 +111,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-839",
-    "erdos-533",
-    "erdos-347",
-    "erdos-28",
-    "erdos-106"
+    "erdos-1055",
+    "erdos-1137",
+    "erdos-375"
   ],
   "leanFile": {
     "imports": [
@@ -137,5 +135,22 @@
     "axiomCount": 12,
     "theoremCount": 13,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
+    },
+    {
+      "targetId": "erdos-375",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
+    }
+  ]
 }

@@ -160,5 +160,27 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-329",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-number-theory, combinatorics"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, partially-solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-13",
+    "erdos-329",
+    "erdos-711"
+  ]
 }

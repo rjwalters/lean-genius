@@ -179,5 +179,27 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-236",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-141",
+    "erdos-200",
+    "erdos-236"
+  ]
 }

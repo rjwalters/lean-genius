@@ -145,5 +145,27 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1094",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factorization"
+    },
+    {
+      "targetId": "erdos-1108",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, perfect-powers"
+    },
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factorization"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1094",
+    "erdos-1108",
+    "erdos-137"
+  ]
 }

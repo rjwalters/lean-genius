@@ -160,5 +160,27 @@
     "axiomCount": 12,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient-function"
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient-function"
+    },
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient-function"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1000",
+    "erdos-1003",
+    "erdos-1064"
+  ]
 }

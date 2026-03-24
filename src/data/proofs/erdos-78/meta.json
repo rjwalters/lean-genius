@@ -121,5 +121,27 @@
     "Li (2023): improved to (log n)^C, current state of the art",
     "Campos–Griffiths–Morris–Sahasrabudhe (2023): R(k) ≤ (4-ε)^k, breaking the 4^k barrier",
     "https://erdosproblems.com/78"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-77",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-method, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-77",
+    "erdos-1014",
+    "erdos-1029"
   ]
 }

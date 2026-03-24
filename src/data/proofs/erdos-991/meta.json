@@ -195,5 +195,27 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-178",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrepancy-theory, solved"
+    },
+    {
+      "targetId": "erdos-255",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrepancy-theory, solved"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: solved, sphere"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-178",
+    "erdos-255",
+    "erdos-605"
+  ]
 }

@@ -127,9 +127,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-775",
-    "erdos-166",
-    "erdos-79"
+    "erdos-134",
+    "erdos-150",
+    "erdos-565"
   ],
   "leanFile": {
     "imports": [
@@ -144,5 +144,22 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-150",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    }
+  ]
 }

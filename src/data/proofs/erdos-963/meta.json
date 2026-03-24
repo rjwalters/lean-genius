@@ -117,10 +117,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1",
-    "erdos-954",
-    "erdos-949",
-    "erdos-948"
+    "erdos-10",
+    "erdos-477",
+    "erdos-53"
   ],
   "leanFile": {
     "imports": [
@@ -136,5 +135,22 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    },
+    {
+      "targetId": "erdos-477",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    },
+    {
+      "targetId": "erdos-53",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    }
+  ]
 }

@@ -175,5 +175,27 @@
     "axiomCount": 14,
     "theoremCount": 14,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    },
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distribution, number-theory"
+    },
+    {
+      "targetId": "erdos-220",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1004",
+    "erdos-122",
+    "erdos-220"
+  ]
 }

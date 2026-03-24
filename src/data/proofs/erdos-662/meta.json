@@ -134,5 +134,27 @@
       "Finset",
       "Classical"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, open, packing"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open, packing"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distances, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-103",
+    "erdos-1084",
+    "erdos-1087"
+  ]
 }

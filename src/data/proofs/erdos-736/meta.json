@@ -173,5 +173,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, infinite-graphs, set-theory"
+    },
+    {
+      "targetId": "erdos-110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, infinite-graphs, set-theory"
+    },
+    {
+      "targetId": "erdos-594",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, infinite-graphs, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1067",
+    "erdos-110",
+    "erdos-594"
+  ]
 }

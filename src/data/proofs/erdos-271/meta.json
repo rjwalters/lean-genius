@@ -168,5 +168,27 @@
     "axiomCount": 13,
     "theoremCount": 3,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1026",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, sequences"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
+    },
+    {
+      "targetId": "erdos-139",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1026",
+    "erdos-138",
+    "erdos-139"
+  ]
 }

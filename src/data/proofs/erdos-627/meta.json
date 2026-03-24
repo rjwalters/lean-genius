@@ -168,7 +168,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-613"
+    "erdos-1111",
+    "erdos-626",
+    "erdos-1011"
   ],
   "leanFile": {
     "imports": [
@@ -185,5 +187,22 @@
     "axiomCount": 8,
     "theoremCount": 13,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, clique-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-626",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, chromatic-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    }
+  ]
 }

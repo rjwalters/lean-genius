@@ -198,5 +198,27 @@
     "axiomCount": 10,
     "theoremCount": 4,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: blocking-sets, combinatorics, finite-geometry, projective-planes"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, finite-geometry, probabilistic-method"
+    },
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, probabilistic-method, projective-planes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1159",
+    "erdos-166",
+    "erdos-21"
+  ]
 }

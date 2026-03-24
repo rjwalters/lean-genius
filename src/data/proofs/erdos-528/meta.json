@@ -205,5 +205,27 @@
     "axiomCount": 21,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-529",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: probability, self-avoiding-walks, statistical-mechanics"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, probability"
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, probability"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-529",
+    "erdos-1138",
+    "erdos-1155"
+  ]
 }

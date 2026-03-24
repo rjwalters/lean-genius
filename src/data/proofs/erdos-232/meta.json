@@ -204,5 +204,21 @@
     "axiomCount": 9,
     "theoremCount": 11,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, unit-distance-graphs"
+    },
+    {
+      "targetId": "erdos-953",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, measure-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1066",
+    "erdos-953"
+  ]
 }

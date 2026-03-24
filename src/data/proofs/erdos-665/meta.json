@@ -129,5 +129,27 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-734",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: block-designs, combinatorics, design-theory, open"
+    },
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, projective-planes"
+    },
+    {
+      "targetId": "erdos-722",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: block-designs, combinatorics, design-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-734",
+    "erdos-1159",
+    "erdos-722"
+  ]
 }

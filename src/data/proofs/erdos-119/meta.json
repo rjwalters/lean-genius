@@ -128,5 +128,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, extremal-problems, polynomials"
+    },
+    {
+      "targetId": "erdos-1039",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials"
+    },
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-114",
+    "erdos-1039",
+    "erdos-1040"
+  ]
 }

@@ -174,5 +174,27 @@
       "year": 2004,
       "journal": "Doklady Mathematics"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1002",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, fractional-parts"
+    },
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, equidistribution"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, fractional-parts"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1002",
+    "erdos-335",
+    "erdos-466"
   ]
 }

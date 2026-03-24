@@ -133,5 +133,27 @@
     "axiomCount": 5,
     "theoremCount": 9,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-25",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, sieve-theory"
+    },
+    {
+      "targetId": "erdos-278",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, open"
+    },
+    {
+      "targetId": "erdos-330",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-25",
+    "erdos-278",
+    "erdos-330"
+  ]
 }

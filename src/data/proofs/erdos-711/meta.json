@@ -177,5 +177,27 @@
     "axiomCount": 9,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-710",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-710",
+    "erdos-1005",
+    "erdos-13"
+  ]
 }

@@ -181,5 +181,27 @@
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-276",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sequences"
+    },
+    {
+      "targetId": "erdos-278",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, open"
+    },
+    {
+      "targetId": "erdos-330",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-276",
+    "erdos-278",
+    "erdos-330"
+  ]
 }

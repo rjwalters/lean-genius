@@ -161,5 +161,27 @@
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-230",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, harmonic-analysis, polynomials"
+    },
+    {
+      "targetId": "erdos-256",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, harmonic-analysis, unit-circle"
+    },
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, polynomials"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-230",
+    "erdos-256",
+    "erdos-1048"
+  ]
 }

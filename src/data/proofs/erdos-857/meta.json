@@ -173,5 +173,27 @@
     "axiomCount": 11,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-20",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, sunflower"
+    },
+    {
+      "targetId": "erdos-535",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, open, sunflower"
+    },
+    {
+      "targetId": "erdos-790",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-20",
+    "erdos-535",
+    "erdos-790"
+  ]
 }

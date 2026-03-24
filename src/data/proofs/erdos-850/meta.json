@@ -139,5 +139,27 @@
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: abc-conjecture, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-368",
+    "erdos-1095",
+    "erdos-1106"
+  ]
 }

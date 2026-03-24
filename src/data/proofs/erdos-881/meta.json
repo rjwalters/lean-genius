@@ -162,5 +162,27 @@
     "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-38",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-40",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-871",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-38",
+    "erdos-40",
+    "erdos-871"
+  ]
 }

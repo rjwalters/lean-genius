@@ -194,5 +194,27 @@
     "axiomCount": 15,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-609",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-coloring, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-191",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-609",
+    "erdos-136",
+    "erdos-191"
+  ]
 }

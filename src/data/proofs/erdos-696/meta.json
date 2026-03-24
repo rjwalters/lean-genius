@@ -174,5 +174,27 @@
     "axiomCount": 19,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1058",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-divisors"
+    },
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-divisors"
+    },
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1058",
+    "erdos-1074",
+    "erdos-275"
+  ]
 }

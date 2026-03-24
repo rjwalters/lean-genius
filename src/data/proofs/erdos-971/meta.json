@@ -142,5 +142,27 @@
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, arithmetic-progressions, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-200",
+    "erdos-141",
+    "erdos-15"
+  ]
 }

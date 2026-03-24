@@ -141,5 +141,27 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory, open"
+    },
+    {
+      "targetId": "erdos-478",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory, open"
+    },
+    {
+      "targetId": "erdos-985",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-478",
+    "erdos-985"
+  ]
 }

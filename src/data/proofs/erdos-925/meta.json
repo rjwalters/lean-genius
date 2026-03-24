@@ -150,5 +150,27 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-802",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, independent-sets, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-163",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-518",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-802",
+    "erdos-163",
+    "erdos-518"
+  ]
 }

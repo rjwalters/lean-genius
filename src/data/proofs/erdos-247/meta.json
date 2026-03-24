@@ -129,5 +129,27 @@
     "axiomCount": 1,
     "theoremCount": 27,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, transcendence"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, number-theory"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1050",
+    "erdos-1138",
+    "erdos-1144"
+  ]
 }

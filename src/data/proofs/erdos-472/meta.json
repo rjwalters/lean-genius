@@ -138,5 +138,27 @@
     "axiomCount": 1,
     "theoremCount": 19,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1059",
+    "erdos-1101",
+    "erdos-1113"
+  ]
 }

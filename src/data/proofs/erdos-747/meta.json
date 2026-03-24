@@ -189,5 +189,27 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-745",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: probabilistic-combinatorics, random-graphs, solved"
+    },
+    {
+      "targetId": "erdos-799",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: probabilistic-combinatorics, random-graphs, solved"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: hypergraphs, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-745",
+    "erdos-799",
+    "erdos-1076"
+  ]
 }

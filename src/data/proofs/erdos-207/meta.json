@@ -172,5 +172,27 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-722",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, design-theory, solved, steiner-systems"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: hypergraphs, solved, steiner-systems"
+    },
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, hypergraphs, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-722",
+    "erdos-1076",
+    "erdos-780"
+  ]
 }

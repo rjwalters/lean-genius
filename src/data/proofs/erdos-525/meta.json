@@ -187,5 +187,27 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: littlewood, polynomials, probability, random-polynomials, solved"
+    },
+    {
+      "targetId": "erdos-228",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, littlewood, polynomials"
+    },
+    {
+      "targetId": "erdos-395",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, probability, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-523",
+    "erdos-228",
+    "erdos-395"
+  ]
 }

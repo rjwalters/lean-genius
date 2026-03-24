@@ -140,5 +140,27 @@
     "axiomCount": 21,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-852",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, sieve-theory"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sieve-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-852",
+    "erdos-1055",
+    "erdos-1101"
+  ]
 }

@@ -178,5 +178,27 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-476",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    },
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    },
+    {
+      "targetId": "erdos-785",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-476",
+    "erdos-484",
+    "erdos-785"
+  ]
 }

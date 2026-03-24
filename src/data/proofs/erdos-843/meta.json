@@ -131,5 +131,27 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-45",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-532",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-45",
+    "erdos-532",
+    "erdos-1090"
+  ]
 }

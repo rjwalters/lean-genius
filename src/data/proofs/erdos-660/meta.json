@@ -141,5 +141,27 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, convex-geometry"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
+    },
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-1089",
+    "erdos-604"
+  ]
 }

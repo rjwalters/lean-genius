@@ -172,5 +172,27 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1117",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, open"
+    },
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, open"
+    },
+    {
+      "targetId": "erdos-114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1117",
+    "erdos-1137",
+    "erdos-114"
+  ]
 }

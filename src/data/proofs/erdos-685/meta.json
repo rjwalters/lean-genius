@@ -138,5 +138,27 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-683",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-684",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1095",
+    "erdos-683",
+    "erdos-684"
+  ]
 }

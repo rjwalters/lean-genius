@@ -192,5 +192,27 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, discrete-geometry, open"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open, point-configurations"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distinct-distances, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1084",
+    "erdos-1087",
+    "erdos-1088"
+  ]
 }

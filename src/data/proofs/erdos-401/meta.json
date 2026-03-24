@@ -193,5 +193,21 @@
     "axiomCount": 3,
     "theoremCount": 20,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-779",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primorial"
+    },
+    {
+      "targetId": "erdos-891",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primorial"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-779",
+    "erdos-891"
+  ]
 }

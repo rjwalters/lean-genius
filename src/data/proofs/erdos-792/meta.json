@@ -172,5 +172,27 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-789",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sum-free-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-789",
+    "erdos-1",
+    "erdos-1136"
+  ]
 }

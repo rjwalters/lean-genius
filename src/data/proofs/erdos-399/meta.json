@@ -125,5 +125,27 @@
     "axiomCount": 4,
     "theoremCount": 16,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-373",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, factorials, number-theory"
+    },
+    {
+      "targetId": "erdos-388",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, factorials, number-theory"
+    },
+    {
+      "targetId": "erdos-393",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, factorials, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-373",
+    "erdos-388",
+    "erdos-393"
+  ]
 }

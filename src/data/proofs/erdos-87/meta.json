@@ -135,5 +135,27 @@
     "axiomCount": 10,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1006",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, graph-theory, probabilistic-method"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1037",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1006",
+    "erdos-1029",
+    "erdos-1037"
+  ]
 }

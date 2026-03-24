@@ -150,5 +150,27 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, odd-cycles"
+    },
+    {
+      "targetId": "erdos-573",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, turan"
+    },
+    {
+      "targetId": "erdos-904",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, turan"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-569",
+    "erdos-573",
+    "erdos-904"
+  ]
 }

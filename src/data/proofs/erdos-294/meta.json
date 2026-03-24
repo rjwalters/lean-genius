@@ -148,5 +148,27 @@
     "axiomCount": 12,
     "theoremCount": 2,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-297",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, egyptian-fractions, number-theory"
+    },
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, egyptian-fractions, number-theory"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, egyptian-fractions, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-297",
+    "erdos-300",
+    "erdos-310"
+  ]
 }

@@ -163,5 +163,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-178",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrepancy-theory, solved"
+    },
+    {
+      "targetId": "erdos-255",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrepancy-theory, solved"
+    },
+    {
+      "targetId": "erdos-353",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: geometric-measure-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-178",
+    "erdos-255",
+    "erdos-353"
+  ]
 }

@@ -115,5 +115,27 @@
     "Beck (1980): upper bound f(d) ≤ (1+o(1))log₂ d",
     "Cohen: original formulation",
     "https://erdosproblems.com/187"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, open, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-984",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, van-der-waerden"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-160",
+    "erdos-721",
+    "erdos-984"
   ]
 }

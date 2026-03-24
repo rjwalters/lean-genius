@@ -151,5 +151,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
+    },
+    {
+      "targetId": "erdos-503",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, extremal"
+    },
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1089",
+    "erdos-503",
+    "erdos-604"
+  ]
 }

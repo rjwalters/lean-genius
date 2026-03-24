@@ -152,5 +152,27 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-145",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-489",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, squarefree"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-145",
+    "erdos-489",
+    "erdos-11"
+  ]
 }

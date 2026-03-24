@@ -163,5 +163,27 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, solved"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, solved"
+    },
+    {
+      "targetId": "erdos-817",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, extremal-combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-179",
+    "erdos-721",
+    "erdos-817"
+  ]
 }

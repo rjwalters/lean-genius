@@ -173,5 +173,27 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory, turan-theory"
+    },
+    {
+      "targetId": "erdos-804",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, extremal-combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1019",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, turan-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-22",
+    "erdos-804",
+    "erdos-1019"
+  ]
 }

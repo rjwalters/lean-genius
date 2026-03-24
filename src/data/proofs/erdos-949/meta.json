@@ -124,5 +124,27 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinal-arithmetic, open, set-theory"
+    },
+    {
+      "targetId": "erdos-788",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: open, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1167",
+    "erdos-788",
+    "erdos-111"
+  ]
 }

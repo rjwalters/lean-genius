@@ -158,5 +158,27 @@
     "axiomCount": 11,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-425",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, multiplicative-structure, number-theory, prime-numbers"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, partially-solved"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-425",
+    "erdos-711",
+    "erdos-1005"
+  ]
 }

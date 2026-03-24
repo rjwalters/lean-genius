@@ -167,5 +167,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-26",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, disproved, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-144",
+    "erdos-26"
+  ]
 }

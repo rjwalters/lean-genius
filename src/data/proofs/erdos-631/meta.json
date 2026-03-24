@@ -207,5 +207,27 @@
     "axiomCount": 17,
     "theoremCount": 7,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-630",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring, planar-graphs, solved"
+    },
+    {
+      "targetId": "erdos-753",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring, solved"
+    },
+    {
+      "targetId": "erdos-799",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-630",
+    "erdos-753",
+    "erdos-799"
+  ]
 }

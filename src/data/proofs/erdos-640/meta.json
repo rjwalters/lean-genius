@@ -124,5 +124,27 @@
     "axiomCount": 2,
     "theoremCount": 11,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1091",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, odd-cycles"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1091",
+    "erdos-1011",
+    "erdos-1032"
+  ]
 }

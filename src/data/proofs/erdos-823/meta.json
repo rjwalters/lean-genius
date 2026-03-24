@@ -211,5 +211,27 @@
     "axiomCount": 21,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-48",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, number-theory, solved, sum-of-divisors"
+    },
+    {
+      "targetId": "erdos-1061",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, number-theory, sum-of-divisors"
+    },
+    {
+      "targetId": "erdos-239",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: multiplicative-functions, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-48",
+    "erdos-1061",
+    "erdos-239"
+  ]
 }

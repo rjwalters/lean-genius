@@ -151,5 +151,27 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-744",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite, chromatic-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-744",
+    "erdos-1011",
+    "erdos-1032"
+  ]
 }

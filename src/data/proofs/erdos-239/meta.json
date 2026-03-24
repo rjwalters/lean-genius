@@ -188,5 +188,27 @@
     "axiomCount": 11,
     "theoremCount": 10,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-419",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: multiplicative-functions, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-682",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-419",
+    "erdos-682"
+  ]
 }

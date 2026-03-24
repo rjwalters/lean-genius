@@ -118,5 +118,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: coloring, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-172",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: coloring, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-1105",
+    "erdos-172"
+  ]
 }

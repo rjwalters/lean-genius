@@ -177,5 +177,27 @@
     "axiomCount": 19,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-363",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, diophantine-equations, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-177",
+    "erdos-253",
+    "erdos-363"
+  ]
 }

@@ -113,12 +113,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-533",
-    "erdos-536",
-    "erdos-182",
-    "erdos-600",
-    "erdos-1009",
-    "erdos-1010"
+    "erdos-164",
+    "erdos-892",
+    "erdos-1052"
   ],
   "leanFile": {
     "imports": [
@@ -133,5 +130,22 @@
     "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-164",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes, primitive-sets"
+    },
+    {
+      "targetId": "erdos-892",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, primitive-sets"
+    },
+    {
+      "targetId": "erdos-1052",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory"
+    }
+  ]
 }

@@ -145,5 +145,27 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-452",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, intervals, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-452",
+    "erdos-1106",
+    "erdos-368"
+  ]
 }

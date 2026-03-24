@@ -176,5 +176,27 @@
     "axiomCount": 4,
     "theoremCount": 11,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-937",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, powerful-numbers, solved"
+    },
+    {
+      "targetId": "erdos-942",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, powerful-numbers, squarefull"
+    },
+    {
+      "targetId": "erdos-943",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-representation, number-theory, powerful-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-937",
+    "erdos-942",
+    "erdos-943"
+  ]
 }

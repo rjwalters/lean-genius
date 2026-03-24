@@ -189,5 +189,27 @@
     "axiomCount": 13,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, prime-numbers"
+    },
+    {
+      "targetId": "erdos-680",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, prime-numbers"
+    },
+    {
+      "targetId": "erdos-950",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, prime-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-238",
+    "erdos-680",
+    "erdos-950"
+  ]
 }

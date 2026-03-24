@@ -154,5 +154,27 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-133",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
+    },
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
+    },
+    {
+      "targetId": "erdos-619",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-133",
+    "erdos-134",
+    "erdos-619"
+  ]
 }

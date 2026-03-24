@@ -148,5 +148,27 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, sieve-theory"
+    },
+    {
+      "targetId": "erdos-145",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-208",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1101",
+    "erdos-145",
+    "erdos-208"
+  ]
 }

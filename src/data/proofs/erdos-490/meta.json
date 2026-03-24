@@ -192,5 +192,27 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1161",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-297",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1161",
+    "erdos-297",
+    "erdos-310"
+  ]
 }

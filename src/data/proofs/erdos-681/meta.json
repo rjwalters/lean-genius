@@ -129,5 +129,27 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-463",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: composites, least-prime-factor, number-theory"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1073",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: composites, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-463",
+    "erdos-1059",
+    "erdos-1073"
+  ]
 }

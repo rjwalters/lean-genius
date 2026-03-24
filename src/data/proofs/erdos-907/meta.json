@@ -175,5 +175,27 @@
     "axiomCount": 10,
     "theoremCount": 12,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-908",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-functions, analysis, functional-equations"
+    },
+    {
+      "targetId": "erdos-1125",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, functional-equations"
+    },
+    {
+      "targetId": "erdos-1126",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, functional-equations"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-908",
+    "erdos-1125",
+    "erdos-1126"
+  ]
 }

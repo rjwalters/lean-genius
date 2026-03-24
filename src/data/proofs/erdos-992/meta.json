@@ -169,5 +169,27 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-492",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, uniform-distribution"
+    },
+    {
+      "targetId": "erdos-67",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrepancy, number-theory"
+    },
+    {
+      "targetId": "erdos-987",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrepancy, uniform-distribution"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-492",
+    "erdos-67",
+    "erdos-987"
+  ]
 }

@@ -158,5 +158,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials, potential-theory"
+    },
+    {
+      "targetId": "erdos-1042",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials, potential-theory"
+    },
+    {
+      "targetId": "erdos-1047",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials, potential-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1040",
+    "erdos-1042",
+    "erdos-1047"
+  ]
 }

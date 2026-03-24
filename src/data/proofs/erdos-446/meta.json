@@ -144,5 +144,27 @@
     "axiomCount": 12,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-427",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-459",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-density, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-728",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-427",
+    "erdos-459",
+    "erdos-728"
+  ]
 }

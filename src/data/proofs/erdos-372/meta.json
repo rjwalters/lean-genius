@@ -168,5 +168,27 @@
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-371",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1106",
+    "erdos-368",
+    "erdos-371"
+  ]
 }

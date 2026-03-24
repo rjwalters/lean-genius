@@ -139,5 +139,27 @@
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-189",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-223",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, extremal-problems"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-189",
+    "erdos-223"
+  ]
 }

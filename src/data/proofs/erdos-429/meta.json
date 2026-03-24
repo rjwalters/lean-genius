@@ -148,5 +148,27 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-203",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1113",
+    "erdos-203",
+    "erdos-273"
+  ]
 }

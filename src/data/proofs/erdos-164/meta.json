@@ -144,5 +144,27 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes, solved"
+    },
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-473",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-237",
+    "erdos-444",
+    "erdos-473"
+  ]
 }

@@ -173,5 +173,27 @@
     "axiomCount": 14,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-443",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, diophantine-equations, number-theory"
+    },
+    {
+      "targetId": "erdos-1108",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, perfect-powers"
+    },
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-443",
+    "erdos-1108",
+    "erdos-141"
+  ]
 }

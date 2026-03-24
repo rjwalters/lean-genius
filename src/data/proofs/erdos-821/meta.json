@@ -151,5 +151,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, totient"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1055",
+    "erdos-1065",
+    "erdos-249"
+  ]
 }

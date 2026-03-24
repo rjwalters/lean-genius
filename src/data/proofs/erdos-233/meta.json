@@ -146,5 +146,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, prime-gaps"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1137",
+    "erdos-15",
+    "erdos-4"
+  ]
 }

@@ -196,5 +196,27 @@
     "axiomCount": 14,
     "theoremCount": 1,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-210",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry, solved"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-210",
+    "erdos-224",
+    "erdos-654"
+  ]
 }

@@ -143,5 +143,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-906",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, derivatives, entire-functions"
+    },
+    {
+      "targetId": "erdos-1115",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions"
+    },
+    {
+      "targetId": "erdos-1116",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-906",
+    "erdos-1115",
+    "erdos-1116"
+  ]
 }

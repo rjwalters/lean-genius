@@ -141,10 +141,9 @@
     ]
   },
   "relatedProofs": [
+    "erdos-340",
     "erdos-28",
-    "erdos-533",
-    "erdos-117",
-    "erdos-839"
+    "erdos-30"
   ],
   "leanFile": {
     "imports": [
@@ -165,5 +164,22 @@
     "Rosen: greedy sequence construction",
     "OEIS A390642: the Rosen sequence",
     "https://erdosproblems.com/954"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, greedy-algorithms, number-theory, sidon-sets"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, representation-functions"
+    },
+    {
+      "targetId": "erdos-30",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sidon-sets"
+    }
   ]
 }

@@ -161,5 +161,27 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-441",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, lcm, number-theory"
+    },
+    {
+      "targetId": "erdos-1062",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-168",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-441",
+    "erdos-1062",
+    "erdos-168"
+  ]
 }

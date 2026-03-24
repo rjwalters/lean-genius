@@ -158,5 +158,27 @@
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+    },
+    {
+      "targetId": "erdos-1094",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-1093",
+    "erdos-1094"
+  ]
 }

@@ -119,5 +119,27 @@
     "axiomCount": 2,
     "theoremCount": 10,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: polynomials, solved"
+    },
+    {
+      "targetId": "erdos-391",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, solved"
+    },
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: polynomials, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1114",
+    "erdos-391",
+    "erdos-523"
+  ]
 }

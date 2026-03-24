@@ -205,5 +205,27 @@
     "axiomCount": 7,
     "theoremCount": 11,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-256",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: harmonic-analysis, solved"
+    },
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: fourier-analysis, solved"
+    },
+    {
+      "targetId": "erdos-510",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: exponential-sums, harmonic-analysis"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-256",
+    "erdos-484",
+    "erdos-510"
+  ]
 }

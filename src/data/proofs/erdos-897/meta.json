@@ -148,5 +148,27 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1122",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-functions, analytic-number-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, arithmetic-functions, number-theory"
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1122",
+    "erdos-673",
+    "erdos-1004"
+  ]
 }

@@ -167,5 +167,27 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-404",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, factorials, number-theory, p-adic-valuation"
+    },
+    {
+      "targetId": "erdos-646",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, p-adic-valuation, solved"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, factorials, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-404",
+    "erdos-646",
+    "erdos-400"
+  ]
 }

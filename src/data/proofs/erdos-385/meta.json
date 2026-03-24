@@ -189,5 +189,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-276",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: composite-numbers, number-theory, open"
+    },
+    {
+      "targetId": "erdos-375",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: composite-numbers, number-theory, open"
+    },
+    {
+      "targetId": "erdos-383",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-divisors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-276",
+    "erdos-375",
+    "erdos-383"
+  ]
 }

@@ -108,5 +108,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-889",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-890",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, prime-factors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-369",
+    "erdos-889",
+    "erdos-890"
+  ]
 }

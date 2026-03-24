@@ -106,11 +106,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-839",
-    "erdos-852",
-    "erdos-867",
-    "erdos-533",
-    "erdos-347"
+    "erdos-126",
+    "erdos-369",
+    "erdos-394"
   ],
   "leanFile": {
     "imports": [
@@ -132,5 +130,22 @@
     "axiomCount": 2,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-126",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-394",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, consecutive-integers, number-theory"
+    }
+  ]
 }

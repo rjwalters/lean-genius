@@ -146,5 +146,27 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: edge-coloring, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-76",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: edge-coloring, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-129",
+    "erdos-76",
+    "erdos-1014"
+  ]
 }

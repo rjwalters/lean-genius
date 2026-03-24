@@ -170,5 +170,27 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-990",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    },
+    {
+      "targetId": "erdos-998",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-990",
+    "erdos-997",
+    "erdos-998"
+  ]
 }

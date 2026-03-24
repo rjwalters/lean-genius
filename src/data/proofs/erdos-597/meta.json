@@ -147,5 +147,27 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1128",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partition-calculus, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partition-calculus, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-474",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partition-calculus, ramsey-theory, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1128",
+    "erdos-1167",
+    "erdos-474"
+  ]
 }

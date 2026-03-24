@@ -190,5 +190,27 @@
     "axiomCount": 6,
     "theoremCount": 13,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, density, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-449",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-144",
+    "erdos-449"
+  ]
 }

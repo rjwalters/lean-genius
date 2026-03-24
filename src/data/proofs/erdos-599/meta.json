@@ -152,5 +152,27 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: connectivity, graph-theory, infinite-graphs"
+    },
+    {
+      "targetId": "erdos-110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, infinite-graphs"
+    },
+    {
+      "targetId": "erdos-594",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, infinite-graphs"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1067",
+    "erdos-110",
+    "erdos-594"
+  ]
 }

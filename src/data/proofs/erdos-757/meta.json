@@ -160,5 +160,27 @@
     "axiomCount": 11,
     "theoremCount": 8,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-153",
+    "erdos-155",
+    "erdos-156"
+  ]
 }

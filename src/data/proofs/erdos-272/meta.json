@@ -162,5 +162,27 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-194",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-645",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-702",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-194",
+    "erdos-645",
+    "erdos-702"
+  ]
 }

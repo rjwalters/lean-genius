@@ -137,5 +137,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-258",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1049",
+    "erdos-258",
+    "erdos-1050"
+  ]
 }

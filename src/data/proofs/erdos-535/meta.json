@@ -145,5 +145,27 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-302",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, open"
+    },
+    {
+      "targetId": "erdos-534",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, gcd, number-theory"
+    },
+    {
+      "targetId": "erdos-539",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gcd, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-302",
+    "erdos-534",
+    "erdos-539"
+  ]
 }

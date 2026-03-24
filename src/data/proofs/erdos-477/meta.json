@@ -122,5 +122,27 @@
     "axiomCount": 3,
     "theoremCount": 22,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    },
+    {
+      "targetId": "erdos-53",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    },
+    {
+      "targetId": "erdos-530",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-10",
+    "erdos-53",
+    "erdos-530"
+  ]
 }

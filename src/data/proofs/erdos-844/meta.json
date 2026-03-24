@@ -170,5 +170,27 @@
     "axiomCount": 16,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-534",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, intersecting-families, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-848",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved, squarefree"
+    },
+    {
+      "targetId": "erdos-378",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved, squarefree"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-534",
+    "erdos-848",
+    "erdos-378"
+  ]
 }
