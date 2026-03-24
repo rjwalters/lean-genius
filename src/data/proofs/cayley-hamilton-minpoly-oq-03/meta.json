@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-03",
   "title": "Computational Complexity of Finding the Minimal Polynomial",
   "slug": "cayley-hamilton-minpoly-oq-03",
-  "description": "Formalizes the Krylov method for computing the minimal polynomial of a matrix: the sequence v, Mv, M\u00b2v, ... becomes linearly dependent within deg(\u03bc_M) \u2264 n steps, giving an O(n\u00b3) algorithm. Proves the Krylov recurrence, annihilation theorem, and dimension bounds.",
+  "description": "Formalizes the Krylov method for computing the minimal polynomial of a matrix: the sequence v, Mv, M²v, ... becomes linearly dependent within deg(μ_M) ≤ n steps, giving an O(n³) algorithm. Proves the Krylov recurrence, annihilation theorem, and dimension bounds.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)#Computation",
@@ -19,7 +19,7 @@
       "research"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.monic",
@@ -49,11 +49,11 @@
     ],
     "originalContributions": [
       "Krylov sequence definition: krylovVec M v k = (M^k).mulVec v",
-      "Krylov recurrence: krylovVec M v (k+1) = M.mulVec (krylovVec M v k), enabling O(n\u00b2)-per-step computation",
-      "Minimal polynomial annihilates every vector: \u03bc_M(M)\u00b7v = 0",
-      "Krylov termination: {v, Mv, ..., M^d\u00b7v} are dependent where d = deg(\u03bc_M)",
-      "Krylov dimension bound: at most deg(\u03bc_M) linearly independent Krylov vectors",
-      "Overall complexity bound: deg(\u03bc_M) \u2264 n, giving O(n\u00b3) total field operations",
+      "Krylov recurrence: krylovVec M v (k+1) = M.mulVec (krylovVec M v k), enabling O(n²)-per-step computation",
+      "Minimal polynomial annihilates every vector: μ_M(M)·v = 0",
+      "Krylov termination: {v, Mv, ..., M^d·v} are dependent where d = deg(μ_M)",
+      "Krylov dimension bound: at most deg(μ_M) linearly independent Krylov vectors",
+      "Overall complexity bound: deg(μ_M) ≤ n, giving O(n³) total field operations",
       "Nonderogatory optimality: cyclic vector produces exactly n independent Krylov vectors",
       "Krylov subspace M-invariance: M maps Krylov vectors to Krylov vectors"
     ],
