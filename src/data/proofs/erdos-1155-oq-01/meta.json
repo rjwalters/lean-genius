@@ -329,19 +329,15 @@
     }
   ],
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Filter",
-      "SimpleGraph",
-      "Finset"
-    ],
-    "namespace": null,
     "lineCount": 489,
+    "structureCount": 0,
     "axiomCount": 5,
     "theoremCount": 20,
-    "definitionCount": 6
+    "lemmaCount": 0,
+    "defCount": 6,
+    "imports": [
+      "Mathlib"
+    ]
   },
   "conclusion": {
     "summary": "Complete formalization of the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. All theorems fully proved (0 sorries). Includes BFL sandwich, exact exponent characterization, conjecture decomposition, Mantel connection, hierarchy of bounds, and ratio tightness characterization.",
