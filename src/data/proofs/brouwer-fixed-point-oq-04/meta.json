@@ -55,7 +55,7 @@
     "assumptions": "2 axiom(s), 0 sorry(s). brouwer_compact_convex_axiom (Brouwer for compact convex sets) and kakutani_fixed_point_axiom (the main Kakutani FPT, requires Brouwer + finite-dimensional approximation/triangulation)."
   },
   "overview": {
-    "historicalContext": "Kakutani's fixed point theorem (1941) is one of the most consequential generalizations in mathematics. It extends Brouwer's theorem from continuous functions to upper hemicontinuous set-valued maps (correspondences). John Nash's 1950 proof of equilibrium existence in non-cooperative games -- for which he received the 1994 Nobel Prize -- relies essentially on Kakutani's theorem. The Arrow-Debreu proof of general economic equilibrium (1954) also uses it.",
+    "historicalContext": "Shizuo Kakutani proved his fixed point theorem in 1941, motivated by von Neumann's 1937 minimax theorem and its use of Brouwer's theorem for existence proofs in economics. Kakutani's insight was that many economic and game-theoretic models naturally involve set-valued maps (e.g., a consumer's demand given prices is a set of optimal bundles, not a single point), and that Brouwer's theorem could be extended to handle these. John Nash's 1950 proof of equilibrium existence in non-cooperative games — for which he received the 1994 Nobel Prize in Economics — relies essentially on Kakutani's theorem applied to the best-response correspondence. The Arrow-Debreu proof of general competitive equilibrium (1954), which earned Arrow the 1972 Nobel Prize, also depends on it. The theorem has since become indispensable in mathematical economics, optimal control theory (Filippov's lemma for differential inclusions, 1962), and nonlinear analysis. The infinite-dimensional generalization by Glicksberg (1952) and Fan (1952) extends it to locally convex spaces, enabling applications to infinite-horizon economic models.",
     "problemStatement": "**Kakutani Fixed Point Theorem**: Let S be a nonempty compact convex subset of $\\mathbb{R}^n$. Let $F: S \\to 2^S$ be an upper hemicontinuous correspondence with nonempty, convex, closed values. Then F has a fixed point: $\\exists x^* \\in S, x^* \\in F(x^*)$.",
     "text": "Kakutani's generalization of Brouwer to set-valued maps, with applications to Nash equilibrium.",
     "proofStrategy": "The formalization builds in 8 parts: (1) Define correspondences as structures with nonempty/closed values and maps-to constraints. (2) Define upper hemicontinuity via the Berge (1959) neighborhood formulation. (3) Axiomatize Kakutani FPT with detailed proof sketch. (4) Prove Kakutani reduces to Brouwer for singleton correspondences. (5) Prove 1D Kakutani using IVT (fully proved, no axioms). (6) Build correspondence algebra (constant, identity). (7) Develop Nash equilibrium framework: mixed strategies are compact, convex, closed. (8) Prove UHC properties for constant maps and continuous images.",
@@ -63,7 +63,8 @@
       "**Singleton reduction**: When F(x) = {f(x)} for a continuous f, Kakutani's conditions reduce to Brouwer's. This is proved constructively.",
       "**1D Kakutani via IVT**: For interval correspondences F(x) = [l(x), u(x)] on [0,1], the IVT on g(x) = u(x) - x gives a fixed point. This is the only fully proved case.",
       "**Mixed strategies are compact convex**: The simplex {sigma | sigma_i >= 0, sum = 1} is closed (intersection of halfspaces and hyperplane), bounded, hence compact.",
-      "**Upper hemicontinuity generalizes continuity**: A continuous function f induces a UHC singleton correspondence {f(x)} -- the preimage characterization reduces to ordinary continuity."
+      "**Upper hemicontinuity generalizes continuity**: A continuous function f induces a UHC singleton correspondence {f(x)} -- the preimage characterization reduces to ordinary continuity.",
+      "**Approximation architecture**: The classical proof of Kakutani works by approximating the correspondence with single-valued functions via triangulation, applying Brouwer to each approximation, and taking limits. This reveals that Kakutani is not a fundamentally new existence principle but rather a careful limiting argument built on Brouwer — the correspondence structure is tamed by convexity."
     ],
     "prerequisites": [
       "Topology: compactness, continuity, open/closed sets",
@@ -78,56 +79,83 @@
       "title": "Correspondences (Set-Valued Maps)",
       "startLine": 60,
       "endLine": 87,
-      "summary": "Defines the `Correspondence` structure and fixed points for set-valued maps."
+      "summary": "Defines the `Correspondence` structure bundling a function $F: \\alpha \\to 2^\\alpha$ with nonemptiness, closedness, and maps-to constraints. Defines fixed points ($x^* \\in F(x^*)$) and convex-valuedness.",
+      "mathContext": "A correspondence $F: S \\to 2^S$ satisfies $F(x) \\neq \\emptyset$, $F(x)$ closed, $F(x) \\subseteq S$. A fixed point is $x^* \\in S$ with $x^* \\in F(x^*)$."
     },
     {
       "id": "upper-hemicontinuity",
       "title": "Upper Hemicontinuity",
       "startLine": 88,
       "endLine": 111,
-      "summary": "Defines upper hemicontinuity (Berge 1959) and proves continuous functions induce UHC singleton correspondences."
+      "summary": "Defines upper hemicontinuity via Berge's neighborhood formulation and proves continuous functions induce UHC singleton correspondences.",
+      "mathContext": "$F$ is UHC if $\\forall x,\\, \\forall V \\text{ open} \\supseteq F(x),\\, \\exists U \\in \\mathcal{N}(x),\\, \\forall y \\in U \\cap S,\\, F(y) \\subseteq V$."
     },
     {
       "id": "kakutani-fpt",
       "title": "The Kakutani Fixed Point Theorem",
       "startLine": 113,
       "endLine": 175,
-      "summary": "Axiomatizes Brouwer for compact convex sets and Kakutani FPT with detailed classical proof sketch."
+      "summary": "Defines the closed unit ball $\\bar{B}^n$ in $\\mathbb{R}^n$, proves its compactness/convexity, and axiomatizes both Brouwer for compact convex sets and Kakutani FPT with a detailed classical proof sketch.",
+      "mathContext": "If $S \\subseteq \\mathbb{R}^n$ is nonempty, compact, convex, and $F: S \\to 2^S$ is UHC with nonempty convex closed values, then $\\exists x^* \\in F(x^*)$."
     },
     {
       "id": "singleton-reduction",
       "title": "Single-Valued Reduction",
       "startLine": 177,
       "endLine": 226,
-      "summary": "Proves Kakutani generalizes Brouwer: singleton correspondences satisfy Kakutani's hypotheses, and fixed points correspond to classical fixed points."
+      "summary": "Constructs singleton correspondences $F(x) = \\{f(x)\\}$ from continuous maps, proves they satisfy Kakutani's hypotheses, and derives Brouwer as a corollary of Kakutani.",
+      "mathContext": "$x^* \\in \\{f(x^*)\\} \\iff f(x^*) = x^*$, so Brouwer follows from Kakutani applied to $F(x) = \\{f(x)\\}$."
     },
     {
       "id": "1d-kakutani",
       "title": "1D Kakutani via IVT",
       "startLine": 228,
       "endLine": 283,
-      "summary": "Fully proves the 1D Kakutani theorem for interval correspondences F(x) = [l(x), u(x)] using the Intermediate Value Theorem."
+      "summary": "Fully proves the 1D Kakutani theorem for interval correspondences $F(x) = [l(x), u(x)]$ on $[0,1]$ using the Intermediate Value Theorem on $g(x) = u(x) - x$. No axioms needed.",
+      "mathContext": "Define $g(x) = u(x) - x$. Since $g(0) \\geq 0$ and $g(1) \\leq 0$, the IVT gives $x_0$ with $u(x_0) = x_0$, hence $l(x_0) \\leq x_0 \\leq u(x_0)$."
+    },
+    {
+      "id": "correspondence-algebra",
+      "title": "Correspondence Algebra",
+      "startLine": 285,
+      "endLine": 317,
+      "summary": "Constructs the constant correspondence $F(x) = S$ (every point is a fixed point) and the identity correspondence $F(x) = \\{x\\}$ (every point is a fixed point), verifying the correspondence framework on trivial examples.",
+      "mathContext": "Constant: $F(x) = S \\Rightarrow x \\in S = F(x)$. Identity: $F(x) = \\{x\\} \\Rightarrow x \\in \\{x\\} = F(x)$."
     },
     {
       "id": "nash-framework",
       "title": "Nash Equilibrium Framework",
       "startLine": 319,
-      "endLine": 395,
-      "summary": "Defines finite games, mixed strategies, and proves mixed strategy spaces are compact convex sets -- the prerequisites for Nash equilibrium existence via Kakutani."
+      "endLine": 396,
+      "summary": "Defines $N$-player finite games, mixed strategy simplices $\\Delta_k$, and proves the product of mixed strategy spaces is compact, convex, and closed — the prerequisites for Nash's existence proof via Kakutani.",
+      "mathContext": "The simplex $\\Delta_k = \\{\\sigma \\in \\mathbb{R}^k : \\sigma_i \\geq 0,\\, \\sum \\sigma_i = 1\\}$ is compact and convex. The product $\\prod_i \\Delta_{k_i}$ is compact by Tychonoff."
+    },
+    {
+      "id": "uhc-properties",
+      "title": "Properties of Upper Hemicontinuity",
+      "startLine": 398,
+      "endLine": 425,
+      "summary": "Proves closure properties of UHC: constant correspondences are UHC, and continuous images of UHC correspondences remain UHC.",
+      "mathContext": "If $F$ is UHC and $g$ is continuous, then $G(x) = g(F(x))$ is UHC: given open $V \\supseteq G(x)$, use $g^{-1}(V)$ open and UHC of $F$."
     }
   ],
   "conclusion": {
     "summary": "This formalization captures the Kakutani Fixed Point Theorem, its relationship to Brouwer, and its application to Nash equilibrium. 0 sorries, 2 axioms (Brouwer for compact convex sets and Kakutani FPT). The 1D case is fully proved via IVT.",
     "implications": "Kakutani's theorem is the bridge between pure topology and applied mathematics. It transforms Brouwer's abstract existence result into a tool for economics (equilibrium existence), game theory (Nash equilibria), and control theory (differential inclusions). The formalization demonstrates this bridge explicitly.",
     "openQuestions": [
-      "Can the main Kakutani FPT be proved from Brouwer using only Mathlib's current topology?",
-      "Can the Nash equilibrium existence theorem be fully formalized using the Kakutani axiom?",
-      "What is needed to extend to infinite-dimensional Kakutani (Glicksberg-Fan theorem)?"
+      "Can the main Kakutani FPT be proved from Brouwer using only Mathlib's current topology (requires triangulation and simplicial approximation)?",
+      "Can the Nash equilibrium existence theorem be fully formalized using the Kakutani axiom (requires defining best-response correspondences and proving their UHC)?",
+      "What is needed to extend to infinite-dimensional Kakutani (Glicksberg-Fan theorem) — locally convex spaces and appropriate compactness?",
+      "Can the constructive content of Kakutani's theorem be extracted — is there an effective algorithm to approximate fixed points of correspondences?"
     ],
     "crossReferences": [
       {
         "proofId": "brouwer-fixed-point",
         "relationship": "Parent theorem -- Kakutani generalizes Brouwer to set-valued maps"
+      },
+      {
+        "proofId": "schauder-fixed-point",
+        "relationship": "Sibling generalization -- Schauder extends Brouwer to infinite-dimensional spaces; Kakutani extends to set-valued maps"
       }
     ]
   },
@@ -135,6 +163,14 @@
     {
       "relationship": "Parent theorem -- Kakutani generalizes Brouwer's fixed point theorem from continuous functions to upper hemicontinuous correspondences",
       "targetId": "brouwer-fixed-point"
+    },
+    {
+      "relationship": "Sibling generalization -- Schauder extends Brouwer to infinite-dimensional Banach spaces; Kakutani extends Brouwer to set-valued maps. Glicksberg-Fan combines both.",
+      "targetId": "schauder-fixed-point"
+    },
+    {
+      "relationship": "Explores further consequences of Brouwer FPT beyond Kakutani (topological degree, dimension theory)",
+      "targetId": "brouwer-fixed-point-oq-02"
     }
   ],
   "leanFile": {
@@ -181,6 +217,20 @@
       "year": "1959",
       "venue": "Oliver & Boyd",
       "note": "Standard definition of upper hemicontinuity used in this formalization"
+    },
+    {
+      "authors": "Kenneth Arrow, Gerard Debreu",
+      "title": "Existence of an Equilibrium for a Competitive Economy",
+      "year": "1954",
+      "venue": "Econometrica",
+      "note": "Used Kakutani FPT to prove existence of general competitive equilibrium"
+    },
+    {
+      "authors": "Irving Glicksberg",
+      "title": "A Further Generalization of the Kakutani Fixed Point Theorem, with Application to Nash Equilibrium Points",
+      "year": "1952",
+      "venue": "Proceedings of the AMS",
+      "note": "Extended Kakutani to locally convex topological vector spaces"
     }
   ]
 }

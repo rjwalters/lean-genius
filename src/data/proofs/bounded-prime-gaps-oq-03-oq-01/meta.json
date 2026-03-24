@@ -55,35 +55,40 @@
       "title": "Minimum Diameter of Admissible k-Tuples",
       "startLine": 32,
       "endLine": 55,
-      "summary": "Defines the opaque function D(k) for the minimum admissible k-tuple diameter and axiomatizes known computed values: D(2) = 2, D(3) = 6, and D(50) = 246 from Engelsma's exhaustive 2013 computation."
+      "summary": "Defines the opaque function D(k) for the minimum admissible k-tuple diameter and axiomatizes known computed values: D(2) = 2, D(3) = 6, and D(50) = 246 from Engelsma's exhaustive 2013 computation.",
+      "mathContext": "$D(k) = \\min\\{\\mathrm{diam}(\\mathcal{H}) : \\mathcal{H} \\text{ admissible},\\, |\\mathcal{H}|=k\\}$. Known values: $D(2)=2$, $D(3)=6$, $D(50)=246$ (Engelsma 2013)."
     },
     {
       "id": "small-tuples",
       "title": "Small Admissible Tuples (Verified)",
       "startLine": 56,
       "endLine": 85,
-      "summary": "Constructs concrete admissible tuples {0,2}, {0,2,6}, and {0,2,6,8} as Finsets and verifies their cardinalities and diameters using native_decide, providing machine-checked witnesses for the smallest admissible k-tuples."
+      "summary": "Constructs concrete admissible tuples {0,2}, {0,2,6}, and {0,2,6,8} as Finsets and verifies their cardinalities and diameters using native_decide, providing machine-checked witnesses for the smallest admissible k-tuples.",
+      "mathContext": "A $k$-tuple $\\mathcal{H}=\\{h_1,\\ldots,h_k\\}$ is admissible if for every prime $p$, $\\mathcal{H} \\pmod{p}$ omits at least one residue class. Witnesses: $\\{0,2\\}$, $\\{0,2,6\\}$, $\\{0,2,6,8\\}$."
     },
     {
       "id": "asymptotic-growth",
       "title": "Asymptotic Growth of D(k)",
       "startLine": 86,
       "endLine": 103,
-      "summary": "States the fundamental bounds on D(k): a linear lower bound from the pigeonhole/covering argument and a near-linear upper bound D(k) <= C * k * (log k)^2 from greedy construction via the prime number theorem. Both remain as sorry targets."
+      "summary": "States the fundamental bounds on D(k): a linear lower bound from the pigeonhole/covering argument and a near-linear upper bound D(k) <= C * k * (log k)^2 from greedy construction via the prime number theorem. Both remain as sorry targets.",
+      "mathContext": "$k - 1 \\le D(k) \\le C\\,k\\,(\\log k)^2$. Lower bound: pigeonhole on residue classes. Upper bound: greedy construction using the prime number theorem."
     },
     {
       "id": "maynard-tao-barrier",
       "title": "The Maynard-Tao Barrier",
       "startLine": 104,
       "endLine": 136,
-      "summary": "Formalizes the Maynard-Tao sieve framework as a structure with parameters (k, m, bound) and proves two key instances: k=2 giving bound 2 (twin primes) and k=50 giving bound 246 (Polymath 8b). Establishes barrier_246 showing D(50) = 246 is sharp."
+      "summary": "Formalizes the Maynard-Tao sieve framework as a structure with parameters (k, m, bound) and proves two key instances: k=2 giving bound 2 (twin primes) and k=50 giving bound 246 (Polymath 8b). Establishes barrier_246 showing D(50) = 246 is sharp.",
+      "mathContext": "Maynard-Tao: if $k \\ge k_0$ then $\\liminf_{n\\to\\infty}(p_{n+1}-p_n) \\le D(k)$. At $k_0=50$: $\\liminf(p_{n+1}-p_n) \\le D(50) = 246$."
     },
     {
       "id": "beyond-maynard-tao",
       "title": "Improving Beyond Maynard-Tao",
       "startLine": 137,
       "endLine": 162,
-      "summary": "Explores routes past the 246 barrier: the Elliott-Halberstam conjecture would reduce the bound to 12, and the twin prime conjecture is equivalent to D(2) being achievable. Axiomatizes the conditional EH improvement."
+      "summary": "Explores routes past the 246 barrier: the Elliott-Halberstam conjecture would reduce the bound to 12, and the twin prime conjecture is equivalent to D(2) being achievable. Axiomatizes the conditional EH improvement.",
+      "mathContext": "Elliott-Halberstam: $\\sum_{q\\le x^\\theta} \\max_{(a,q)=1}|\\pi(x;q,a)-\\frac{\\mathrm{li}(x)}{\\varphi(q)}| \\ll \\frac{x}{(\\log x)^A}$ for all $\\theta < 1$. Conditionally: $\\liminf(p_{n+1}-p_n) \\le 12$."
     }
   ],
   "conclusion": {

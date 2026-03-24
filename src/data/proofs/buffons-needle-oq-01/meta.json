@@ -91,35 +91,40 @@
       "title": "Proof Strategy and Connection to Prior Work",
       "startLine": 1,
       "endLine": 43,
-      "summary": "Documents the gap being filled: ContDiff ℝ 1 γ → IntervalIntegrable. Explains the proof chain and connection to BuffonsNeedle.lean, BuffonsNoodle.lean, and BuffonsNeedleOQ01OQ01.lean."
+      "summary": "Documents the gap being filled: ContDiff ℝ 1 γ → IntervalIntegrable. Explains the proof chain and connection to BuffonsNeedle.lean, BuffonsNoodle.lean, and BuffonsNeedleOQ01OQ01.lean.",
+      "mathContext": "Buffon-Barbier theorem for $C^1$ curves: if $\\gamma : \\mathbb{R} \\to \\mathbb{R}^2$ is $C^1$ on $[a,b]$ with line spacing $d > 0$, then $E[\\text{crossings}] = \\frac{2 \\cdot \\text{arcLength}(\\gamma, a, b)}{\\pi d}$. The key gap: showing `ContDiff ℝ 1 γ` alone implies `IntervalIntegrable` for the inner integral."
     },
     {
       "id": "part-i-deriv-continuity",
       "title": "Part I: Derivative Continuity from C¹ Smoothness",
       "startLine": 44,
       "endLine": 82,
-      "summary": "contDiff_one_continuous_deriv (key helper), deriv_fst_continuous, deriv_snd_continuous: C¹ implies continuous scalar derivative via ContDiff.continuous_fderiv + clm_apply."
+      "summary": "contDiff_one_continuous_deriv (key helper), deriv_fst_continuous, deriv_snd_continuous: C¹ implies continuous scalar derivative via ContDiff.continuous_fderiv + clm_apply.",
+      "mathContext": "Key lemma: if $f : \\mathbb{R} \\to F$ is $C^1$ (i.e., `ContDiff ℝ 1 f`), then $\\text{deriv}\\,f$ is continuous. Proof: $C^1$ gives continuous Fréchet derivative $Df : \\mathbb{R} \\to \\mathbb{R} \\to_L F$, and $\\text{deriv}\\,f(t) = Df(t)(1)$, so continuity follows from `Continuous.clm_apply`. Applied to $\\gamma = (\\gamma_1, \\gamma_2)$: both $\\gamma_1'$ and $\\gamma_2'$ are continuous."
     },
     {
       "id": "part-ii-integrability",
       "title": "Part II: Inner Integral is Integrable for C¹ Curves",
       "startLine": 83,
       "endLine": 122,
-      "summary": "inner_integral_eq (angular_average applied pointwise), inner_integral_continuous (2√(dx²+dy²) is continuous), inner_integral_integrable (continuous → interval integrable)."
+      "summary": "inner_integral_eq (angular_average applied pointwise), inner_integral_continuous (2√(dx²+dy²) is continuous), inner_integral_integrable (continuous → interval integrable).",
+      "mathContext": "The angular average identity: $\\int_0^\\pi |\\gamma_1'(t)\\sin\\theta + \\gamma_2'(t)\\cos\\theta|\\,d\\theta = 2\\sqrt{\\gamma_1'(t)^2 + \\gamma_2'(t)^2}$. Since $\\gamma_1'$ and $\\gamma_2'$ are continuous ($C^1$ hypothesis), the composition $t \\mapsto 2\\sqrt{\\gamma_1'(t)^2 + \\gamma_2'(t)^2}$ is continuous, hence `IntervalIntegrable` on $[a,b]$ by `Continuous.intervalIntegrable`."
     },
     {
       "id": "part-iii-main-theorem",
       "title": "Part III: The Complete Buffon-Barbier Theorem",
       "startLine": 123,
       "endLine": 155,
-      "summary": "buffon_smooth_of_contDiff: E[crossings] = 2·arcLength/(π·d) requiring only ContDiff ℝ 1 γ. All hypotheses derived automatically."
+      "summary": "buffon_smooth_of_contDiff: E[crossings] = 2·arcLength/(π·d) requiring only ContDiff ℝ 1 γ. All hypotheses derived automatically.",
+      "mathContext": "Main theorem: for $\\gamma : \\mathbb{R} \\to \\mathbb{R}^2$ with `ContDiff ℝ 1 γ` and $d > 0$, $$E[\\text{crossings}] = \\frac{2}{\\pi d}\\int_a^b \\sqrt{\\gamma_1'(t)^2 + \\gamma_2'(t)^2}\\,dt = \\frac{2 \\cdot \\text{arcLength}(\\gamma,a,b)}{\\pi d}.$$ All hypotheses (integrability, measurability) are derived from the single $C^1$ assumption."
     },
     {
       "id": "part-iv-corollaries",
       "title": "Part IV: Shape Independence and Corollaries",
       "startLine": 156,
       "endLine": 250,
-      "summary": "smooth_shape_independence, straight_line_arclength, straight_line_crossings (consistency with Wiedijk #99), smooth_crossings_mono, crossings_tendsto_zero (limit as d → ∞)."
+      "summary": "smooth_shape_independence, straight_line_arclength, straight_line_crossings (consistency with Wiedijk #99), smooth_crossings_mono, crossings_tendsto_zero (limit as d → ∞).",
+      "mathContext": "Shape independence: if $\\text{arcLength}(\\gamma_1) = \\text{arcLength}(\\gamma_2)$, then $E[\\text{crossings}(\\gamma_1)] = E[\\text{crossings}(\\gamma_2)]$. For a straight needle on $[a,b]$: $\\text{arcLength} = b - a$, recovering the classical Buffon formula $P = \\frac{2\\ell}{\\pi d}$ (Wiedijk #99). Monotonicity: $L_1 \\leq L_2 \\implies E_1 \\leq E_2$. Limit: $E[\\text{crossings}] = \\frac{2L}{\\pi d} \\to 0$ as $d \\to \\infty$."
     }
   ],
   "conclusion": {

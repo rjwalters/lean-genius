@@ -117,35 +117,40 @@
       "title": "Imports and Module Setup",
       "startLine": 1,
       "endLine": 45,
-      "summary": "Imports Mathlib's calculus and interval integral infrastructure. Opens `Real`, `MeasureTheory`, `intervalIntegral`, and `Topology` namespaces within `AreaFromCircumferenceIntegral`."
+      "summary": "Imports Mathlib's calculus and interval integral infrastructure. Opens `Real`, `MeasureTheory`, `intervalIntegral`, and `Topology` namespaces within `AreaFromCircumferenceIntegral`.",
+      "mathContext": "Sets up the Mathlib infrastructure for interval integrals $\\int_a^b f(x)\\,dx$, the Fundamental Theorem of Calculus (`integral_eq_sub_of_hasDerivAt`), and derivatives of power functions (`hasDerivAt_pow`). These are the core tools for proving $\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$."
     },
     {
       "id": "definitions",
       "title": "Area and Circumference Functions",
       "startLine": 46,
       "endLine": 57,
-      "summary": "Defines `circleArea(r) = π * r²` and `circumference(ρ) = 2 * π * ρ` as noncomputable real-valued functions. Proves continuity of both functions."
+      "summary": "Defines `circleArea(r) = π * r²` and `circumference(ρ) = 2 * π * ρ` as noncomputable real-valued functions. Proves continuity of both functions.",
+      "mathContext": "Defines the area function $A(r) = \\pi r^2$ and circumference function $C(\\rho) = 2\\pi\\rho$ as real-valued functions $\\mathbb{R} \\to \\mathbb{R}$. Both are continuous (polynomial), which guarantees integrability on any interval $[a,b]$ via `Continuous.intervalIntegrable`."
     },
     {
       "id": "derivative",
       "title": "Derivative of Area Equals Circumference",
       "startLine": 58,
       "endLine": 73,
-      "summary": "Proves `hasDerivAt_circleArea`: the area function has derivative `circumference r` at every point `r`, using the power rule and constant multiplication. This is the bridge to FTC."
+      "summary": "Proves `hasDerivAt_circleArea`: the area function has derivative `circumference r` at every point `r`, using the power rule and constant multiplication. This is the bridge to FTC.",
+      "mathContext": "The derivative relationship $\\frac{d}{dr}(\\pi r^2) = 2\\pi r = C(r)$: the area function is an antiderivative of the circumference. Uses the power rule $\\frac{d}{dr}(r^2) = 2r$ scaled by $\\pi$. This establishes $A'(r) = C(r)$, which is the hypothesis needed for FTC Part 2."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Integration Recovers Area",
       "startLine": 74,
       "endLine": 92,
-      "summary": "Proves `area_from_integral`: ∫ ρ in 0..r, circumference ρ = circleArea r for all r. Uses FTC Part 2 (integral_eq_sub_of_hasDerivAt) with continuity of circumference for integrability."
+      "summary": "Proves `area_from_integral`: ∫ ρ in 0..r, circumference ρ = circleArea r for all r. Uses FTC Part 2 (integral_eq_sub_of_hasDerivAt) with continuity of circumference for integrability.",
+      "mathContext": "The main theorem: $A(r) = \\int_0^r C(\\rho)\\,d\\rho$, i.e., $\\pi r^2 = \\int_0^r 2\\pi\\rho\\,d\\rho$. By FTC Part 2, $\\int_0^r A'(\\rho)\\,d\\rho = A(r) - A(0) = \\pi r^2 - 0 = \\pi r^2$. This formalizes Archimedes' vision of the disk as a union of concentric rings of circumference $2\\pi\\rho$ and width $d\\rho$."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Special Cases",
       "startLine": 93,
       "endLine": 146,
-      "summary": "Derives: explicit form (∫₀ʳ 2πρ dρ = πr²), annulus area formula (∫_{r₁}^{r₂} 2πρ dρ = π(r₂² - r₁²)), FTC Part 1 duality (differentiating the integral recovers circumference), unit disk area (= π), and quadratic scaling law."
+      "summary": "Derives: explicit form (∫₀ʳ 2πρ dρ = πr²), annulus area formula (∫_{r₁}^{r₂} 2πρ dρ = π(r₂² - r₁²)), FTC Part 1 duality (differentiating the integral recovers circumference), unit disk area (= π), and quadratic scaling law.",
+      "mathContext": "Corollaries: (1) annulus area $\\int_{r_1}^{r_2} 2\\pi\\rho\\,d\\rho = \\pi(r_2^2 - r_1^2)$; (2) FTC Part 1 duality: $\\frac{d}{dr}\\int_0^r 2\\pi\\rho\\,d\\rho = 2\\pi r$, recovering the circumference by differentiating the area integral; (3) unit disk $\\int_0^1 2\\pi\\rho\\,d\\rho = \\pi$; (4) scaling: $A(cr) = c^2 A(r)$, reflecting the quadratic dependence on radius."
     }
   ],
   "conclusion": {
