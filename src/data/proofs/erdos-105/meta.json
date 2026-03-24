@@ -180,7 +180,14 @@
       "description": "Beck's counting argument establishing f(n) \u2265 cn is an instance of the first-moment (expectation) method: a random obstacle point lies on O(n) rich lines, so cn obstacles cover only O(cn\u00b2) rich lines, leaving some uncovered"
     }
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-211",
+    "erdos-102",
+    "erdos-101",
+    "erdos-104",
+    "szemeredi-regularity",
+    "prob-method-expectation"
+  ],
   "references": [
     {
       "authors": [

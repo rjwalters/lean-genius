@@ -153,7 +153,14 @@
       "description": "The Larman-Rogers theorem \u2014 the key lower bound f(n) \u2265 m\u2081\u00b7n \u2014 is proved via a first-moment probabilistic argument: a random translate of a high-density unit-distance-free set captures at least m\u2081\u00b7n of any given n points in expectation, so some translate achieves this bound deterministically."
     }
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-508",
+    "erdos-232",
+    "erdos-1066",
+    "erdos-1069",
+    "four-color-theorem",
+    "prob-method-expectation"
+  ],
   "references": [
     {
       "authors": [

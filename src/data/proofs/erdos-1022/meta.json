@@ -165,7 +165,14 @@
       "description": "Problem #562 on hypergraph Ramsey tower growth concerns r-uniform hypergraph Ramsey numbers, where r-colorings of complete hypergraphs are forced to contain monochromatic cliques. The tower-growth phenomenon arises from the difficulty of r-uniform hypergraph coloring, the same difficulty underlying Problem #1022's open cases for t \u2265 3."
     }
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "prob-method-lovasz-local",
+    "prob-method-applications",
+    "erdos-836",
+    "erdos-1020",
+    "erdos-1023",
+    "erdos-562"
+  ],
   "references": [
     {
       "authors": [

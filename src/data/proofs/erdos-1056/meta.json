@@ -146,7 +146,14 @@
       "description": "The Chinese Remainder Theorem provides tools for constructing simultaneous congruence solutions. Multi-interval congruence conditions of the form $\\prod_{i=a_j}^{b_j-1} i \\equiv 1 \\pmod{p}$ can be analyzed via CRT when multiple primes are considered."
     }
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "wilsons-theorem",
+    "erdos-1058",
+    "primitive-roots",
+    "erdos-1055",
+    "erdos-945",
+    "chinese-remainder-constructive"
+  ],
   "references": [
     {
       "key": "Er79",
