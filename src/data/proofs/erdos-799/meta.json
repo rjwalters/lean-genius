@@ -187,5 +187,33 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1155",
+      "relationship": "related",
+      "description": "Both concern random graph processes and extremal graph theory with probabilistic combinatorial techniques"
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The probabilistic method with alteration is used in list coloring bounds for random graphs"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The LLL provides list coloring bounds by handling dependent bad events in random vertex colorings"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey-type arguments connect to chromatic number lower bounds via clique number constraints"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1155",
+    "prob-method-alteration",
+    "prob-method-lovasz-local",
+    "ramseys-theorem"
+  ]
 }

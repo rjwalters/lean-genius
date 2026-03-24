@@ -217,5 +217,51 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-995",
+      "relationship": "related",
+      "description": "Companion problem on estimating ∑f({αnₖ}) for lacunary sequences, sharing the same equidistribution framework"
+    },
+    {
+      "targetId": "erdos-992",
+      "relationship": "related",
+      "description": "Discrepancy of sequences mod 1 using Weyl's criterion and exponential sum bounds"
+    },
+    {
+      "targetId": "erdos-987",
+      "relationship": "related",
+      "description": "Exponential sums controlling equidistribution via the Erdős-Turán inequality, related Fourier methods"
+    },
+    {
+      "targetId": "erdos-989",
+      "relationship": "related",
+      "description": "Circle discrepancy using Fourier analysis and Bessel functions; same harmonic analysis toolkit"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Foundational Fourier series theory: partial sums, Parseval's identity, L² approximation"
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "related",
+      "description": "Core probability foundation: the weak and strong laws of large numbers that this problem generalizes to lacunary sampling"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "Related limit theorem; the exponent c > 1/2 in Matsuyama's result is reminiscent of CLT variance scaling"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-995",
+    "erdos-992",
+    "erdos-987",
+    "erdos-989",
+    "fourier-series",
+    "laws-of-large-numbers",
+    "central-limit-theorem"
+  ]
 }

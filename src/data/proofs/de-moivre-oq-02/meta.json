@@ -176,5 +176,15 @@
       "venue": "Wiley",
       "note": "Classical treatment of Chebyshev polynomial identities"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "de-moivre"
   ]
 }

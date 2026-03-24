@@ -188,5 +188,27 @@
       "citation": "Keevash, P. (2011). Hypergraph Turán problems. In Surveys in Combinatorics 2011, London Math. Soc. Lecture Note Ser. 392, 83–139.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-720",
+      "relationship": "related",
+      "description": "Turán densities for higher uniformity — the Turán number in the conjecture is itself open for r ≥ 3"
+    },
+    {
+      "targetId": "erdos-76",
+      "relationship": "related",
+      "description": "Monochromatic triangle packings — related edge-disjoint decomposition in colored complete graphs"
+    },
+    {
+      "targetId": "erdos-746",
+      "relationship": "related",
+      "description": "Hamiltonicity and random graphs — structural decomposition questions in extremal graph theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-720",
+    "erdos-76",
+    "erdos-746"
   ]
 }

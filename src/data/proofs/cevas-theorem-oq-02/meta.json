@@ -151,5 +151,15 @@
     "axiomCount": 0,
     "theoremCount": 22,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "cevas-theorem"
+  ]
 }
