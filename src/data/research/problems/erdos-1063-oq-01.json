@@ -2,7 +2,7 @@
   "slug": "erdos-1063-oq-01",
   "title": "Is $n_k$ polynomial in $k$",
   "phase": "NEW",
-  "status": "active",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-24T00:48:59.904Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination via computational verification",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated 4 of 7 axioms by computational verification. Made divisibilityCount computable, proved all known threshold values (n_2=4, n_3=6, n_4=9, n_5=12) using native_decide.",
+    "builtItems": [
+      "threshold_k2 theorem (proved by native_decide + omega)",
+      "threshold_k3 theorem (proved by native_decide + omega)",
+      "threshold_k4 theorem (proved by native_decide + omega, m=8 check)",
+      "threshold_k5 theorem (proved by native_decide + omega, m\u2208{10,11} check)"
+    ],
+    "insights": [
+      "Threshold axioms (k=2,3,4,5) are computationally verifiable using native_decide",
+      "Key: remove noncomputable from divisibilityCount and mark AllButOneDivide as @[reducible]",
+      "For k=2,3 minimality is vacuous (2k = nk). For k=4 check m=8, k=5 check m\u2208{10,11}",
+      "Remaining 3 axioms are deep results: Erd\u0151s-Selfridge nondivisibility, Monier factorial bound, Cambie lcm bound"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Could compute threshold values for k=6,7,... by extending the pattern",
+      "Erd\u0151s-Selfridge nondivisibility result might be provable for small k values",
+      "Consider proving Monier bound for specific small k values"
+    ]
   },
   "tags": [
     "erdos",

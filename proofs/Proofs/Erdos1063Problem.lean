@@ -45,13 +45,13 @@ def DividesChoose (n k i : ℕ) : Prop :=
 /--
 The count of values 0 ≤ i < k for which (n - i) | C(n, k).
 -/
-noncomputable def divisibilityCount (n k : ℕ) : ℕ :=
+def divisibilityCount (n k : ℕ) : ℕ :=
   ((Finset.range k).filter (fun i => (n - i) ∣ Nat.choose n k)).card
 
 /--
 All but one of {n, n-1, ..., n-k+1} divide C(n, k).
 -/
-def AllButOneDivide (n k : ℕ) : Prop :=
+@[reducible] def AllButOneDivide (n k : ℕ) : Prop :=
   n ≥ 2 * k ∧ divisibilityCount n k ≥ k - 1
 
 /- ## Part II: The Threshold n_k -/
@@ -82,25 +82,35 @@ axiom erdos_selfridge_nondivisibility :
 /- ## Part IV: Known Small Values -/
 
 /--
-n_2 = 4: C(4,2) = 6, and 4 | 6 is false but 3 | 6 is true.
+n_2 = 4: C(4,2) = 6, and 4 ∤ 6 but 3 | 6.
 So all but one (i.e., 1 out of 2) of {4,3} divides C(4,2).
--/
-axiom threshold_k2 : IsThreshold 4 2
+Minimality is vacuous since 2·2 = 4. -/
+theorem threshold_k2 : IsThreshold 4 2 := by
+  refine ⟨⟨by norm_num, by native_decide⟩, fun m hm hge => by omega⟩
 
 /--
-n_3 = 6.
--/
-axiom threshold_k3 : IsThreshold 6 3
+n_3 = 6: C(6,3) = 20, and 5 | 20, 4 | 20, but 6 ∤ 20.
+Minimality is vacuous since 2·3 = 6. -/
+theorem threshold_k3 : IsThreshold 6 3 := by
+  refine ⟨⟨by norm_num, by native_decide⟩, fun m hm hge => by omega⟩
 
 /--
-n_4 = 9.
--/
-axiom threshold_k4 : IsThreshold 9 4
+n_4 = 9: C(9,4) = 126, and 9 | 126, 7 | 126, 6 | 126, but 8 ∤ 126.
+Minimality checked at m = 8: C(8,4) = 70 has only 2 divisors from {8,7,6,5}. -/
+theorem threshold_k4 : IsThreshold 9 4 := by
+  refine ⟨⟨by norm_num, by native_decide⟩, ?_⟩
+  intro m hm hge
+  have : m = 8 := by omega
+  subst this; native_decide
 
 /--
-n_5 = 12.
--/
-axiom threshold_k5 : IsThreshold 12 5
+n_5 = 12: C(12,5) = 792, and 12 | 792, 11 | 792, 9 | 792, 8 | 792, but 10 ∤ 792.
+Minimality checked at m ∈ {10, 11}: neither achieves 4 divisors. -/
+theorem threshold_k5 : IsThreshold 12 5 := by
+  refine ⟨⟨by norm_num, by native_decide⟩, ?_⟩
+  intro m hm hge
+  have : m = 10 ∨ m = 11 := by omega
+  rcases this with rfl | rfl <;> native_decide
 
 /- ## Part V: Upper Bounds -/
 
