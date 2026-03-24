@@ -28,9 +28,9 @@ References:
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Finset.Basic
 import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.Tactic
 
 open Set Nat Real
 
@@ -84,7 +84,7 @@ axiom qSequence_initial (q : ℝ) (hq : 1 < q) (hq2 : q < 2) :
     qSequence q 1 = 0 ∧ qSequence q 2 = 1 ∧ qSequence q 3 = q
 
 /-- The gap between consecutive terms: x_{k+1} - x_k -/
-def gap (q : ℝ) (k : ℕ) : ℝ := qSequence q (k + 1) - qSequence q k
+noncomputable def gap (q : ℝ) (k : ℕ) : ℝ := qSequence q (k + 1) - qSequence q k
 
 /- ## Part III: Pisot-Vijayaraghavan Numbers
 
@@ -112,6 +112,22 @@ axiom smallestPisot_minimal :
 noncomputable def goldenRatio : ℝ := (1 + Real.sqrt 5) / 2
 
 axiom goldenRatio_is_pisot : IsPisot goldenRatio
+
+/-- The golden ratio satisfies φ > 1. -/
+theorem goldenRatio_gt_one : 1 < goldenRatio := by
+  unfold goldenRatio
+  have h : (1 : ℝ) < Real.sqrt 5 := by
+    rw [show (1:ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]
+    exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  linarith
+
+/-- The golden ratio satisfies φ < 2. -/
+theorem goldenRatio_lt_two : goldenRatio < 2 := by
+  unfold goldenRatio
+  have h : Real.sqrt 5 < 3 := by
+    have hsq : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [sq_nonneg (Real.sqrt 5 - 3)]
+  linarith
 
 /- ## Part IV: The Erdős-Joó-Komornik Results (1990)
 -/
@@ -158,7 +174,7 @@ def QRepresentableM (q : ℝ) (m : ℕ) : Set ℝ :=
 /-- The k-th element of the m-digit ordered sequence. -/
 axiom qSequenceM (q : ℝ) (m : ℕ) (k : ℕ) : ℝ
 
-def gapM (q : ℝ) (m : ℕ) (k : ℕ) : ℝ :=
+noncomputable def gapM (q : ℝ) (m : ℕ) (k : ℕ) : ℝ :=
   qSequenceM q m (k + 1) - qSequenceM q m k
 
 /-- Bugeaud's Characterization (1996):
@@ -194,5 +210,23 @@ theorem erdos_1096_summary :
     -- The smallest Pisot doesn't have the property
     (¬HasGapProperty smallestPisot) := by
   exact ⟨pisot_no_gap_property, gap_universal_bound, conjecture_second_part⟩
+
+/- ## Part IX: Consequences for the Golden Ratio -/
+
+/-- The golden ratio does not have the gap property
+    (it is a Pisot number, so gaps persist at all scales). -/
+theorem goldenRatio_no_gap_property : ¬HasGapProperty goldenRatio :=
+  pisot_no_gap_property goldenRatio goldenRatio_is_pisot
+
+/-- Gaps in the golden ratio q-expansion are bounded by 1. -/
+theorem goldenRatio_gap_bound (k : ℕ) : gap goldenRatio k ≤ 1 :=
+  gap_universal_bound goldenRatio goldenRatio_gt_one (le_of_lt goldenRatio_lt_two) k
+
+/-- Bugeaud characterization applied to the golden ratio:
+    since φ is Pisot, for every m ≥ 1, the m-digit gaps have positive liminf. -/
+theorem goldenRatio_persistent_gaps :
+    ∀ m : ℕ, m ≥ 1 → ∃ δ : ℝ, δ > 0 ∧ ∀ᶠ k in Filter.atTop, gapM goldenRatio m k ≥ δ :=
+  (bugeaud_characterization goldenRatio goldenRatio_gt_one (le_of_lt goldenRatio_lt_two)).mp
+    goldenRatio_is_pisot
 
 end Erdos1096
