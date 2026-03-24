@@ -22,9 +22,7 @@ and A = {odd positive integers}?
 Reference: https://erdosproblems.com/282
 -/
 
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
+import Mathlib
 import Mathlib.Tactic
 
 /- ## Core Definitions -/
@@ -39,18 +37,60 @@ def IsEgyptianFracRep (x : ℚ) (S : Finset ℕ) (A : Set ℕ) : Prop :=
 def IsRepresentable (x : ℚ) (A : Set ℕ) : Prop :=
   ∃ S : Finset ℕ, IsEgyptianFracRep x S A
 
-/-- The greedy step: given x > 0 and a set A, find the smallest n ∈ A
-    with 1/n ≤ x (equivalently, n ≥ ⌈1/x⌉). -/
-axiom greedyStep (x : ℚ) (A : Set ℕ) (hx : 0 < x) (hx1 : x ≤ 1) : ℕ
+/-- For any infinite set of naturals and any bound, there exists an element
+    at least that large. -/
+private lemma infinite_nat_above (A : Set ℕ) (hinf : Set.Infinite A) (m : ℕ) :
+    ∃ n ∈ A, m ≤ n := by
+  by_contra h
+  push_neg at h
+  exact hinf (Set.Finite.subset (Set.finite_Iio m) (fun n hn => h n hn))
+
+/-- Existence of a greedy candidate: some n ∈ A with n > 0 and 1/n ≤ x. -/
+private lemma exists_greedy_candidate (x : ℚ) (A : Set ℕ) (hx : 0 < x) (hx1 : x ≤ 1)
+    (hinf : Set.Infinite A) : ∃ n, n ∈ A ∧ 0 < n ∧ (1 : ℚ) / n ≤ x := by
+  obtain ⟨n, hn_mem, hn_ge⟩ := infinite_nat_above A hinf x.den
+  have hden_pos := x.den_pos
+  refine ⟨n, hn_mem, by omega, ?_⟩
+  -- 1/n ≤ x: since n ≥ x.den and x = x.num/x.den with x.num ≥ 1
+  have hn_pos : (0 : ℚ) < (n : ℚ) := Nat.cast_pos.mpr (by omega)
+  rw [div_le_iff₀ hn_pos]
+  -- Goal: 1 ≤ x * ↑n
+  have hx_num_pos : 0 < x.num := Rat.num_pos.mpr hx
+  -- x * n ≥ x * x.den = x.num ≥ 1
+  have h_xden : x * (x.den : ℚ) = (x.num : ℚ) := by
+    have := Rat.num_div_den x  -- : (x.num : ℚ) / (x.den : ℚ) = x
+    field_simp at this ⊢
+    linarith
+  calc (1 : ℚ) ≤ (x.num : ℤ) := by exact_mod_cast hx_num_pos
+    _ = x * (x.den : ℚ) := h_xden.symm
+    _ ≤ x * (n : ℚ) := by
+        apply mul_le_mul_of_nonneg_left
+        · exact_mod_cast hn_ge
+        · exact le_of_lt hx
+
+/-- The greedy step: find smallest n ∈ A with n > 0 and 1/n ≤ x.
+    Returns 0 if no such n exists (only possible for finite A). -/
+noncomputable instance (p : Prop) : Decidable p := Classical.dec p
+
+noncomputable def greedyStep (x : ℚ) (A : Set ℕ) (hx : 0 < x) (hx1 : x ≤ 1) : ℕ :=
+  if h : ∃ n, n ∈ A ∧ 0 < n ∧ (1 : ℚ) / n ≤ x then
+    Nat.find h
+  else 0
 
 /-- The greedy step picks an element of A. -/
-axiom greedyStep_mem (x : ℚ) (A : Set ℕ) (hx : 0 < x) (hx1 : x ≤ 1)
-    (hinf : Set.Infinite A) : greedyStep x A hx hx1 ∈ A
+theorem greedyStep_mem (x : ℚ) (A : Set ℕ) (hx : 0 < x) (hx1 : x ≤ 1)
+    (hinf : Set.Infinite A) : greedyStep x A hx hx1 ∈ A := by
+  have h_ex := exists_greedy_candidate x A hx hx1 hinf
+  simp only [greedyStep, dif_pos h_ex]
+  exact (Nat.find_spec h_ex).1
 
 /-- The greedy step satisfies 1/n ≤ x. -/
-axiom greedyStep_le (x : ℚ) (A : Set ℕ) (hx : 0 < x) (hx1 : x ≤ 1)
+theorem greedyStep_le (x : ℚ) (A : Set ℕ) (hx : 0 < x) (hx1 : x ≤ 1)
     (hinf : Set.Infinite A) :
-    (1 : ℚ) / (greedyStep x A hx hx1) ≤ x
+    (1 : ℚ) / (greedyStep x A hx hx1) ≤ x := by
+  have h_ex := exists_greedy_candidate x A hx hx1 hinf
+  simp only [greedyStep, dif_pos h_ex]
+  exact (Nat.find_spec h_ex).2.2
 
 /-- The greedy algorithm terminates if the iterative process eventually reaches x = 0. -/
 def GreedyTerminates (x : ℚ) (A : Set ℕ) : Prop :=
@@ -132,6 +172,8 @@ theorem unit_frac_representable (n : ℕ) (hn : n > 0) (A : Set ℕ) (hmem : n �
 
 /-- **The odd positive integers are infinite.** -/
 theorem oddPositives_infinite : Set.Infinite oddPositives := by
-  apply Set.infinite_of_injective_forall_mem (f := fun n : ℕ => 2 * n + 1)
-  · intro a b h; omega
-  · intro n; simp [oddPositives]; omega
+  rw [Set.infinite_iff_exists_gt]
+  intro n
+  refine ⟨2 * n + 1, ?_, by omega⟩
+  simp only [oddPositives, Set.mem_setOf_eq]
+  omega
