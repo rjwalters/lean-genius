@@ -167,11 +167,11 @@
       "title": "Part VII: Asymptotic Behavior",
       "startLine": 224,
       "endLine": 236,
-      "summary": "States (with sorry) that αₙ → 0 as n → ∞: in high dimensions, the expected projection of a random unit vector onto any fixed axis vanishes. This follows from the Wallis-type product ∏(j/(j+1)) → 0, a consequence of the divergence of ∑1/j. This is the file's sole sorry — a natural candidate for Aristotle proof search."
+      "summary": "Proves that αₙ → 0 as n → ∞: in high dimensions, the expected projection of a random unit vector onto any fixed axis vanishes. Uses a squeeze argument with 1/√n bound."
     }
   ],
   "conclusion": {
-    "summary": "The n-dimensional Buffon noodle formula is formalized with 17 theorems, 1 sorry (asymptotic limit), and 0 axioms. The crossing factor recurrence α_{n+2} = (n/(n+1))·αₙ provides a clean characterization of how expected hyperplane crossings depend on dimension. The strict decrease and specific value computations extend the 2D and 3D results to arbitrary dimension.",
+    "summary": "The n-dimensional Buffon noodle formula is formalized with 20 theorems, 0 sorries, and 0 axioms. The crossing factor recurrence α_{n+2} = (n/(n+1))·αₙ provides a clean characterization of how expected hyperplane crossings depend on dimension. The strict decrease and specific value computations extend the 2D and 3D results to arbitrary dimension.",
     "implications": "**Mathematical Significance**:\n\n**1. Dimension-Parametric Formula**\nThe recurrence captures the full family of crossing factors without requiring explicit Gamma function computations.\n\n**2. Even/Odd Dichotomy**\nEven dimensions involve π (transcendental factors) while odd dimensions are purely rational. This is a formal consequence of Γ(n) being rational for integers and involving √π for half-integers.\n\n**3. Infrastructure for Integral Geometry**\nThe buffonNd framework with proved additivity, scaling, and monotonicity provides infrastructure for Cauchy-Crofton type formulas in arbitrary dimension.\n\n**4. Asymptotic Vanishing**\nThe stated (sorry) limit αₙ → 0 captures the concentration of measure phenomenon: in high dimensions, most of a unit vector's length is spread across many coordinates.",
     "openQuestions": [
       "Prove crossingFactor_tendsto_zero: αₙ → 0 as n → ∞ (Wallis product argument)",
