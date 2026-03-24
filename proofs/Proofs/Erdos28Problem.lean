@@ -17,16 +17,12 @@ Stronger conjectures:
 Reference: https://erdosproblems.com/28
 -/
 
-import Mathlib.Combinatorics.Additive.SumConv
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.Order.Filter.ENNReal
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Tactic
+import Mathlib
 
-open Filter Set
+open Filter Set Classical
 open scoped Pointwise
+
+noncomputable section
 
 /- ## Core Definitions -/
 
@@ -78,19 +74,28 @@ axiom basis_counting_lower (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
 
 /-- If A is a Sidon set (B₂ sequence), then A + A has density 0,
     so A cannot be a basis of order 2. Sidon sets have r(n) ≤ 1,
-    confirming the conjecture vacuously for this extremal case. -/
-axiom sidon_not_basis (A : Set ℕ) :
+    confirming the conjecture vacuously for this extremal case.
+    Proved: special case of erdos_40_from_28 with g = 1. -/
+theorem sidon_not_basis (A : Set ℕ) :
     (∀ n, repFunction A n ≤ 1) →
-    ¬ IsAsymptoticBasis2 A
+    ¬ IsAsymptoticBasis2 A := by
+  intro hbound h_basis
+  have ⟨n, hn⟩ := erdos_turan_conjecture A h_basis 2
+  have := hbound n
+  omega
 
 /- ## Connection to Problem #40 -/
 
 /-- Problem #40 (also Erdős–Turán): If A is a B₂[g] set
     (r(n) ≤ g for all n), then A cannot be a basis of order 2.
-    This is implied by Problem #28. -/
-axiom erdos_40_from_28 (g : ℕ) (A : Set ℕ) :
+    Proved: immediate from the Erdős–Turán conjecture (axiom). -/
+theorem erdos_40_from_28 (g : ℕ) (A : Set ℕ) :
     (∀ n, repFunction A n ≤ g) →
-    ¬ IsAsymptoticBasis2 A
+    ¬ IsAsymptoticBasis2 A := by
+  intro hbound h_basis
+  have ⟨n, hn⟩ := erdos_turan_conjecture A h_basis (g + 1)
+  have := hbound n
+  omega
 
 /- ## Partial Results -/
 
