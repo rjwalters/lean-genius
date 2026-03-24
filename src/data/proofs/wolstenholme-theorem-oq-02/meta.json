@@ -62,7 +62,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Wolstenholme's theorem (1862) states that $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for all primes $p \\geq 5$. A prime $p$ satisfying the stronger congruence modulo $p^4$ is called a Wolstenholme prime. Only two are known: 16843, discovered by McIntosh (1995) via computation of Bernoulli numbers, and 2124679, found by McIntosh and Roettger (2007). No others exist below $10^9$.\n\nStrikingly, both known Wolstenholme primes satisfy $p \\equiv 3 \\pmod{4}$. Whether this pattern persists — or whether a Wolstenholme prime $p \\equiv 1 \\pmod{4}$ exists — is an open question in computational number theory, with no known theoretical obstruction in either direction.",
+    "historicalContext": "Joseph Wolstenholme proved in 1862 that $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for all primes $p \\geq 5$, strengthening an earlier result of Charles Babbage (1819) who had established the mod $p^2$ version. A prime satisfying the even stronger congruence modulo $p^4$ is called a **Wolstenholme prime**, a concept introduced and studied by Richard McIntosh.\n\nMcIntosh discovered the first Wolstenholme prime, $p = 16843$, in 1995 through systematic computation of Bernoulli numbers — specifically by checking which primes satisfy $p \\mid B_{p-3}$, an equivalent characterization. The second, $p = 2124679$, was found by McIntosh and E. L. Roettger in 2007 using a refined search algorithm. Their exhaustive computation up to $10^9$ confirmed these are the only two below that bound.\n\nThe mod 4 pattern is tantalizing: $16843 \\equiv 3 \\pmod{4}$ and $2124679 \\equiv 3 \\pmod{4}$. Finer analysis reveals $16843 \\equiv 3 \\pmod{8}$ and $2124679 \\equiv 7 \\pmod{8}$ (different mod 8 classes), yet both share $p \\equiv 7 \\pmod{12}$. Whether there exists a Wolstenholme prime $p \\equiv 1 \\pmod{4}$ remains open, with no theoretical obstruction known in either direction. The question connects to irregular prime theory (via $p \\mid B_{p-3}$) and to the broader study of arithmetic properties of exceptional primes (Wieferich, Wall-Sun-Sun, Fibonacci-Wieferich).",
     "problemStatement": "**Open Question**: Does there exist a Wolstenholme prime $p$ with $p \\equiv 1 \\pmod{4}$?\n\nA Wolstenholme prime is a prime $p$ such that:\n$$\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^4}$$\n\nThe only known Wolstenholme primes are 16843 and 2124679, both $\\equiv 3 \\pmod{4}$.",
     "text": "Formalizes Wolstenholme primes and the open question of whether any is ≡ 1 (mod 4). Proves primes 5-23 are not Wolstenholme, both known WPs are ≡ 3 (mod 4), and establishes logical equivalences between the open question and the all-mod-3 conjecture.",
     "proofStrategy": "The formalization takes a three-pronged approach:\n\n1. **Computational exclusion**: Using `native_decide`, we verify that every prime from 5 to 23 fails the mod $p^4$ test. This establishes a large computational gap before the first Wolstenholme prime.\n\n2. **Known examples**: The two known Wolstenholme primes 16843 and 2124679 are axiomatized (binomial coefficients too large for the kernel), while their primality is verified computationally.\n\n3. **Residue analysis**: We prove both known WPs are $\\equiv 3 \\pmod{4}$ (and analyze finer residues mod 8 and mod 12), then formalize the open question and its logical equivalence with the conjecture that all WPs are $\\equiv 3 \\pmod{4}$.",
@@ -71,7 +71,9 @@
       "The two known Wolstenholme primes 16843 ≡ 3 (mod 8) and 2124679 ≡ 7 (mod 8) cover different mod 8 classes, both mapping to 3 (mod 4)",
       "Both known WPs share the same residue mod 12: $16843 \\equiv 2124679 \\equiv 7 \\pmod{12}$, possibly hinting at a deeper structural constraint",
       "The AllWPMod3 conjecture is logically equivalent to ¬WPMod1Exists: the open question has a clean dichotomy with no middle ground",
-      "Any third Wolstenholme prime must exceed $10^9$ by the McIntosh-Roettger computational search, making empirical investigation extremely expensive"
+      "Any third Wolstenholme prime must exceed $10^9$ by the McIntosh-Roettger computational search, making empirical investigation extremely expensive",
+      "**Bernoulli number characterization**: A prime $p$ is Wolstenholme iff $p \\mid B_{p-3}$, connecting to irregular prime theory. This links the binomial coefficient condition to the deep arithmetic of Bernoulli numbers and Kummer's criterion for regularity",
+      "**Computational methodology**: The formalization uses `native_decide` for small primes but axiomatizes the two known WPs because $\\binom{33685}{16842}$ has thousands of digits — beyond the Lean kernel's practical computation limit"
     ],
     "prerequisites": [
       "Binomial coefficients and Wolstenholme's theorem",
@@ -173,11 +175,29 @@
     {
       "targetId": "wolstenholme-theorem",
       "relationship": "extends",
-      "description": "Extends Wolstenholme's theorem (mod p³) to study the stronger mod p⁴ condition defining Wolstenholme primes"
+      "description": "Extends Wolstenholme's theorem ($\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for $p \\geq 5$) to study the stronger mod $p^4$ condition defining Wolstenholme primes. Every WP satisfies the parent theorem as a divisibility consequence"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Both Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) and Wolstenholme's theorem concern mod $p^k$ congruences for factorial/binomial expressions. Wilson characterizes primes via factorials; Wolstenholme strengthens this to mod $p^3$ for central binomials"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial coefficient $\\binom{2p-1}{p-1}$ (the central object of this formalization) arises from the binomial expansion. Properties of binomial coefficients underpin both Wolstenholme's theorem and its mod $p^4$ strengthening"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "related",
+      "description": "Kummer's theorem characterizes the $p$-adic valuation of binomial coefficients via base-$p$ carry counting. It provides the theoretical framework for understanding when $p^k \\mid \\binom{n}{m}$, which is central to the Wolstenholme prime condition $p^4 \\mid \\binom{2p-1}{p-1} - 1$"
     }
   ],
   "relatedProofs": [
-    "wolstenholme-theorem"
+    "wolstenholme-theorem",
+    "wilsons-theorem",
+    "binomial-theorem",
+    "kummer-theorem"
   ],
   "references": [
     {
@@ -193,6 +213,20 @@
       "year": "1862",
       "venue": "The Quarterly Journal of Pure and Applied Mathematics 5, 35-39",
       "note": "Original proof of the mod p³ congruence"
+    },
+    {
+      "authors": "McIntosh, Richard J.",
+      "title": "On the converse of Wolstenholme's theorem",
+      "year": "1995",
+      "venue": "Acta Arithmetica 71, 381-389",
+      "note": "First discovery of 16843 as a Wolstenholme prime, via the Bernoulli number characterization p | B_{p-3}"
+    },
+    {
+      "authors": "Babbage, Charles",
+      "title": "Demonstration of a theorem relating to prime numbers",
+      "year": "1819",
+      "venue": "Edinburgh Philosophical Journal 1, 46-49",
+      "note": "Proved the mod p² version of Wolstenholme's theorem: C(2p-1, p-1) ≡ 1 (mod p²), which Wolstenholme strengthened to mod p³ in 1862"
     }
   ]
 }
