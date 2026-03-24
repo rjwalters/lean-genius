@@ -22,7 +22,7 @@
     "id": "ann-1105-graph",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 40,
+      "startLine": 41,
       "endLine": 52
     },
     "type": "definition",
@@ -40,7 +40,7 @@
     "id": "ann-1105-paths",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 67,
+      "startLine": 68,
       "endLine": 79
     },
     "type": "definition",
@@ -59,7 +59,7 @@
     "id": "ann-1105-embedding",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 87,
+      "startLine": 88,
       "endLine": 96
     },
     "type": "definition",
@@ -78,7 +78,7 @@
     "id": "ann-1105-rainbow",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 98,
+      "startLine": 99,
       "endLine": 109
     },
     "type": "definition",
@@ -97,7 +97,7 @@
     "id": "ann-1105-ar",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 117,
+      "startLine": 118,
       "endLine": 126
     },
     "type": "definition",
@@ -116,7 +116,7 @@
     "id": "ann-1105-cycle-conj",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 134,
+      "startLine": 135,
       "endLine": 147
     },
     "type": "definition",
@@ -135,7 +135,7 @@
     "id": "ann-1105-path-conj",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 156,
+      "startLine": 157,
       "endLine": 182
     },
     "type": "definition",
@@ -154,10 +154,10 @@
     "id": "ann-1105-bounds",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 190,
+      "startLine": 191,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds on AR",
     "content": "ar_lower_bound: AR(n, H) >= 1. ar_upper_bound: AR(n, H) <= C(n,2). ar_mono_n: monotone in n.",
     "mathContext": "Basic bounds. Upper bound is trivial (each edge gets own color). Monotonicity follows from restriction.",
@@ -173,7 +173,7 @@
     "id": "ann-1105-turan",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 209,
+      "startLine": 210,
       "endLine": 217
     },
     "type": "concept",
@@ -192,7 +192,7 @@
     "id": "ann-1105-special",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 227,
+      "startLine": 231,
       "endLine": 234
     },
     "type": "concept",
@@ -210,7 +210,7 @@
     "id": "ann-1105-status",
     "proofId": "erdos-1105",
     "range": {
-      "startLine": 242,
+      "startLine": 243,
       "endLine": 273
     },
     "type": "concept",

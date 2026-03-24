@@ -576,6 +576,79 @@ theorem dePolignacModulus_factored : dePolignacModulus = 2 * 3 * 5 * 7 * 13 * 17
     These satisfy: for all k, n - 2^k is composite. -/
 def dePolignacResidue : ℕ := 7629217
 
+/- ### Covering System Verification
+
+The covering system uses 6 primes: {3, 5, 7, 13, 17, 241}. For each exponent a,
+the covering prime is determined by a % 24. The key property: for each residue class
+r mod 24, the covering prime q divides 7629217 - 2^r.
+
+| a mod 24 | Covering prime | Divisor order |
+|----------|---------------|---------------|
+| 0,2,4,6,8,10,12,14,16,18,20,22 | 3 | ord₂(3) = 2 |
+| 1,5,9,13,17,21 | 5 | ord₂(5) = 4 |
+| 3,15 | 7 | ord₂(7) = 3 |
+| 7 | 13 | ord₂(13) = 12 |
+| 11,19 | 17 | ord₂(17) = 8 |
+| 23 | 241 | ord₂(241) = 24 |
+-/
+
+/-- The covering prime for each residue class mod 24. -/
+def coverPrime : Fin 24 → ℕ := ![
+  3, 5, 3, 7, 3, 5, 3, 13, 3, 5, 3, 17, 3, 5, 3, 7, 3, 5, 3, 17, 3, 5, 3, 241]
+
+/-- Each covering prime divides the de Polignac modulus. -/
+theorem coverPrime_dvd_mod (r : Fin 24) : coverPrime r ∣ dePolignacModulus := by
+  fin_cases r <;> simp [coverPrime, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, dePolignacModulus] <;> omega
+
+/-- Key covering property: 7629217 ≡ 2^r (mod coverPrime r) for each r.
+    Equivalently: coverPrime r divides (7629217 - 2^r) in ℤ. -/
+theorem residue_match (r : Fin 24) :
+    dePolignacResidue % coverPrime r = 2 ^ r.val % coverPrime r := by
+  fin_cases r <;> simp [coverPrime, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, dePolignacResidue] <;> norm_num
+
+/-- 2^24 ≡ 1 (mod coverPrime r) for all r, ensuring periodicity. -/
+theorem pow24_period (r : Fin 24) : 2 ^ 24 % coverPrime r = 1 := by
+  fin_cases r <;> simp [coverPrime, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons] <;> norm_num
+
+private theorem coverPrime_gt_one (r : Fin 24) : 1 < coverPrime r := by
+  fin_cases r <;> native_decide
+
+/-- For any a, the covering prime at (a % 24) divides (dePolignacResidue + dePolignacModulus * m - 2^a)
+    in ℤ. In ℕ: n and 2^a have the same remainder mod the covering prime. -/
+theorem covering_divides (a m : ℕ) :
+    (dePolignacResidue + dePolignacModulus * m) % coverPrime ⟨a % 24, Nat.mod_lt a (by omega)⟩ =
+    2 ^ a % coverPrime ⟨a % 24, Nat.mod_lt a (by omega)⟩ := by
+  set r : Fin 24 := ⟨a % 24, Nat.mod_lt a (by omega)⟩
+  have hmod : coverPrime r ∣ dePolignacModulus := coverPrime_dvd_mod r
+  have hres : dePolignacResidue % coverPrime r = 2 ^ r.val % coverPrime r := residue_match r
+  -- Step 1: n ≡ dePolignacResidue (mod coverPrime r)
+  have h1 : (dePolignacResidue + dePolignacModulus * m) % coverPrime r =
+      dePolignacResidue % coverPrime r := by
+    obtain ⟨k, hk⟩ := hmod
+    conv_lhs => rw [hk, show coverPrime r * k * m = coverPrime r * (k * m) from by ring]
+    rw [Nat.add_mul_mod_self_left]
+  -- Step 2: 2^a ≡ 2^(a % 24) (mod coverPrime r)
+  have h2 : 2 ^ a % coverPrime r = 2 ^ r.val % coverPrime r := by
+    -- 2^24 ≡ 1 mod coverPrime r
+    have hcp_gt1 : 1 < coverPrime r := coverPrime_gt_one r
+    have hperiod : 2 ^ 24 ≡ 1 [MOD coverPrime r] := by
+      show 2 ^ 24 % coverPrime r = 1 % coverPrime r
+      rw [pow24_period r, Nat.mod_eq_of_lt hcp_gt1]
+    -- Write a = 24 * (a / 24) + a % 24
+    conv_lhs => rw [show a = 24 * (a / 24) + a % 24 from (Nat.div_add_mod a 24).symm]
+    rw [pow_add, pow_mul]
+    -- (2^24)^(a/24) ≡ 1 mod coverPrime r
+    have h_pow_one : (2 ^ 24) ^ (a / 24) ≡ 1 [MOD coverPrime r] := by
+      have := hperiod.pow (a / 24); rwa [one_pow] at this
+    -- So (2^24)^(a/24) * 2^(a%24) ≡ 2^(a%24) mod coverPrime r
+    have h_eq := h_pow_one.mul_right (2 ^ (a % 24))
+    rw [one_mul] at h_eq
+    exact h_eq
+  rw [h1, hres, h2]
+
 /-- Erdős's covering congruence theorem: The arithmetic progression
     {7629217 + 11184810 * m | m ∈ ℕ} consists entirely of de Polignac numbers.
 

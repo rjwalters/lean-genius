@@ -116,7 +116,7 @@
       "startLine": 79,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Number Theorem: $p_n/(n \\ln n) \\to 1$",
     "content": "The foundational result of analytic number theory: $p_n \\sim n \\ln n$ as $n \\to \\infty$. First proved independently by Hadamard and de la Vallée-Poussin in 1896 using complex-analytic methods (non-vanishing of $\\zeta(s)$ on $\\Re(s) = 1$). Elementary proofs by Erdős and Selberg (1949). The PNT implies $n/p_n \\sim 1/\\ln n \\to 0$, establishing the necessary condition for the alternating series.",
     "mathContext": "$p_n / (n \\ln n) \\to 1$ as $n \\to \\infty$. Equivalent to $\\pi(x) \\sim x/\\ln x$ where $\\pi(x)$ counts primes $\\le x$.",
@@ -139,7 +139,7 @@
       "startLine": 85,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Terms Tend to Zero: $n/p_n \\to 0$",
     "content": "A direct consequence of PNT: $n/p_n \\sim 1/\\ln n \\to 0$. This is the necessary condition for convergence of any series. The rate of decay $1/\\ln n$ is very slow — much slower than $1/n$ — which is why the series does not converge absolutely.",
     "mathContext": "$n/p_n \\to 0$ as $n \\to \\infty$. The decay rate $1/\\ln n$ means $\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (divergent).",
@@ -160,7 +160,7 @@
       "startLine": 92,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alternating Terms Vanish: $|a_n| \\to 0$",
     "content": "The absolute values $|a_n| = n/p_n \\to 0$. This is necessary for convergence but not sufficient — the Leibniz test additionally requires monotone decrease of $|a_n|$, which fails here due to prime gap irregularity.",
     "mathContext": "$|(-1)^n \\cdot n/p_n| = n/p_n \\to 0$. Necessary condition for $\\sum a_n$ to converge.",
@@ -181,7 +181,7 @@
       "startLine": 115,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Monotonicity of $n/p_n$",
     "content": "The sequence $n/p_n$ is NOT monotonically decreasing, which prevents the Alternating Series Test (Leibniz criterion) from applying. The failure occurs near twin primes: at $(p_5, p_6) = (11, 13)$, we have $5/11 \\approx 0.4545 < 6/13 \\approx 0.4615$, so the ratio increased. More generally, when $p_{n+1} - p_n = 2$ (twin prime gap), the numerator increases by 1 while the denominator increases by only 2, potentially causing an increase in the ratio.",
     "mathContext": "$\\neg(\\forall n \\ge 1 : (n+1)/p_{n+1} \\le n/p_n)$. Counterexample: $5/11 < 6/13$. The condition $(n+1)/p_{n+1} > n/p_n$ holds iff $p_{n+1}/p_n < (n+1)/n$, i.e., the prime gap is small relative to $p_n/n$.",
@@ -227,7 +227,7 @@
       "startLine": 140,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tao's Conditional Convergence (2023)",
     "content": "Terence Tao proved in 2023 that the alternating prime series converges, **assuming** the Hardy–Littlewood prime $k$-tuples conjecture. This is the best known result on Problem #15. Tao's approach uses the Hardy–Littlewood prediction to control the cancellation between consecutive terms: the conjecture provides enough regularity in prime distribution to bound the oscillation of partial sums. The result is conditional — removing the hypothesis is the open problem.",
     "mathContext": "$\\text{HardyLittlewood} \\Rightarrow \\exists L : S_N \\to L$. The proof uses the predicted asymptotic for twin prime density to bound $|S_{N+1} - S_N|$ and show the partial sums form a Cauchy sequence.",
@@ -315,7 +315,7 @@
       "startLine": 171,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Zhang's Bounded Gaps Theorem (2014)",
     "content": "Yitang Zhang's revolutionary 2014 result: $\\liminf_{n \\to \\infty} g_n < \\infty$. Specifically, $g_n \\le 70{,}000{,}000$ for infinitely many $n$. This was the first proof that prime gaps are bounded infinitely often. Maynard (2015) and the Polymath 8 project improved the bound to $g_n \\le 246$, and conditionally (assuming Elliott–Halberstam) to $g_n \\le 6$. The twin prime conjecture asserts $g_n = 2$ infinitely often.",
     "mathContext": "$\\exists H : \\{n : g_n \\le H\\}$ is infinite. Zhang: $H = 70{,}000{,}000$. Maynard/Polymath: $H = 246$. Twin prime conjecture: $H = 2$.",
@@ -338,7 +338,7 @@
       "startLine": 178,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Gap Conjecture 2 Is True",
     "content": "Bounded gaps (Zhang 2014) imply $\\sum (-1)^n / g_n$ diverges. Since $g_n \\le H$ for infinitely many $n$, the subsequence of terms with $|1/g_n| \\ge 1/H$ does not tend to zero fast enough. More precisely, the alternating partial sums oscillate by at least $1/H$ infinitely often, preventing convergence.",
     "mathContext": "Bounded gaps $\\Rightarrow |(-1)^n/g_n| \\ge 1/H$ for infinitely many $n$, so $\\sum (-1)^n/g_n$ fails the Cauchy criterion.",
@@ -360,7 +360,7 @@
       "startLine": 200,
       "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Not Finitely Resolvable",
     "content": "No finite computation can determine convergence: for any $N$, there exist two real-valued sequences $f$ and $g$ that agree with $a_n$ for all $n \\le N$, yet one converges and the other diverges. This means the answer depends entirely on the infinite tail behavior, which is controlled by the deep structure of prime distribution.",
     "mathContext": "$\\forall N, \\exists f, g : (\\forall n \\le N, f(n) = g(n) = a_n) \\wedge (\\sum f_n \\text{ converges}) \\wedge (\\sum g_n \\text{ diverges})$.",
@@ -381,7 +381,7 @@
       "startLine": 218,
       "endLine": 221
     },
-    "type": "technique",
+    "type": "concept",
     "title": "No Absolute Convergence: $\\sum n/p_n = \\infty$",
     "content": "The series $\\sum n/p_n$ diverges, so the alternating series cannot converge absolutely. By PNT, $n/p_n \\sim 1/\\ln n$, and $\\sum 1/\\ln n$ diverges (by comparison with the integral $\\int_2^\\infty dx/\\ln x = \\text{Li}(x) \\to \\infty$). Thus if $\\sum (-1)^n \\cdot n/p_n$ converges at all, it does so only conditionally.",
     "mathContext": "$\\sum_{n=1}^{\\infty} n/p_n = \\infty$ since $n/p_n \\sim 1/\\ln n$ and $\\sum 1/\\ln n$ diverges. The logarithmic integral $\\text{Li}(x) = \\int_2^x dt/\\ln t \\to \\infty$.",
@@ -402,7 +402,7 @@
       "startLine": 224,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Harmonic-Log Series Diverges",
     "content": "The series $\\sum_{n=2}^{\\infty} 1/\\ln n$ diverges. This is the comparison series for $\\sum n/p_n$: since $n/p_n \\sim 1/\\ln n$ by PNT and $\\sum 1/\\ln n = \\infty$, we get $\\sum n/p_n = \\infty$ by limit comparison. The divergence of $\\sum 1/\\ln n$ follows from $1/\\ln n > 1/n$ for $n \\ge 3$ being false, but rather from the integral test: $\\int_2^N dx/\\ln x \\sim N/\\ln N \\to \\infty$.",
     "mathContext": "$\\sum_{n=2}^{\\infty} 1/\\ln n = \\infty$. Proof via integral test: $\\int_2^N dx/\\ln x = \\text{Li}(N) \\sim N/\\ln N \\to \\infty$.",
@@ -423,7 +423,7 @@
       "startLine": 239,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Empirical Limit $\\approx -1$",
     "content": "Computational evidence: the partial sums $S_N$ appear to oscillate around $\\approx -1$. The axiom states that for large $N$, $|S_N - (-1)| < 1 + \\varepsilon$ for any $\\varepsilon > 0$, capturing that the partial sums stay near $-1$ but don't necessarily converge. This numerical evidence is suggestive but cannot constitute a proof, as the tail behavior remains unknown.",
     "mathContext": "$|S_N - (-1)| < 1 + \\varepsilon$ for $N \\ge N_0(\\varepsilon)$. Numerical: $S_{10^4} \\approx -1.003$, $S_{10^6} \\approx -0.998$.",

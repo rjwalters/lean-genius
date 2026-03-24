@@ -1,5 +1,22 @@
 [
   {
+    "id": "ann-fclt-header",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 69,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "context",
+    "title": "Free CLT: From Commutative to Non-Commutative Universality",
+    "content": "This file answers a fundamental question: does the topological interpretation of the CLT — the Gaussian as a renormalization fixed point — extend beyond commutative probability? The answer is yes, and the extension is remarkably clean. Voiculescu's **free probability** (1985) replaces classical independence with **free independence**, convolution with **free convolution** $\\boxplus$, and the Gaussian with the **semicircle distribution**. The entire renormalization story carries over: the semicircle is the unique fixed point and global attractor of the free renormalization flow. The file also introduces `CLTStructure`, an abstract Lean 4 structure capturing the universal pattern shared by all five independence types classified by Muraki (2003).",
+    "mathContext": "Classical CLT: $(X_1 + \\cdots + X_n)/\\sqrt{n} \\xrightarrow{d} \\mathcal{N}(0,1)$ for i.i.d. $X_i$ with mean 0, variance 1.\n\nFree CLT: $(a_1 + \\cdots + a_n)/\\sqrt{n} \\xrightarrow{d} w(0,1)$ for freely independent $a_i$ with mean 0, variance 1, where $w(0,1)$ is the Wigner semicircle distribution with density $\\rho(x) = \\frac{2}{\\pi}\\sqrt{1-x^2}$ on $[-1,1]$.\n\nThe R-transform $R_\\mu(z)$ linearizes free convolution just as the log-characteristic function linearizes classical convolution.",
+    "significance": "key",
+    "relatedConcepts": ["free probability", "Wigner semicircle law", "renormalization group", "non-commutative probability", "CLT universality"],
+    "prerequisites": ["probability theory", "operator algebras (motivation)", "central limit theorem"]
+  },
+  {
     "id": "ann-fclt-ncdist",
     "proofId": "central-limit-theorem-oq-04",
     "range": {
@@ -142,6 +159,23 @@
     "relatedConcepts": ["Wigner semicircle law", "Catalan numbers", "random matrix theory", "Gaussian distribution", "cumulant characterization"],
     "prerequisites": ["free cumulants", "Catalan numbers", "moment sequences"],
     "importance": "high"
+  },
+  {
+    "id": "ann-fclt-semicircle-cumulants",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 353,
+      "endLine": 369,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "insight",
+    "title": "Semicircle Cumulant Structure: The Defining Signature of a CLT Limit",
+    "content": "The semicircle's free cumulant structure — $\\kappa_1 = 0$, $\\kappa_2 = 1$, $\\kappa_n = 0$ for $n \\geq 3$ — is the **universal signature** of any CLT limit law. The Gaussian has the identical classical cumulant structure. The resulting R-transform $R_w(z) = z$ (linear) mirrors the Gaussian's log-characteristic function $\\log \\varphi_G(t) = -t^2/2$ (quadratic). This is not a coincidence: in any independence framework where cumulants linearize convolution, the distribution with only $\\kappa_2 \\neq 0$ is necessarily the CLT attractor — the partition lattice determines which distribution has this property (non-crossing → semicircle, all partitions → Gaussian, interval → Bernoulli).",
+    "mathContext": "The cumulant characterization is universal: For classical independence (all partitions $\\Pi(n)$): $\\kappa_2^{\\text{class}} = 1 \\Rightarrow$ Gaussian $N(0,1)$. For free independence (non-crossing $NC(n)$): $\\kappa_2^{\\text{free}} = 1 \\Rightarrow$ semicircle $w(0,1)$. For Boolean independence (interval partitions): $\\beta_2 = 1 \\Rightarrow$ symmetric Bernoulli $\\frac{1}{2}(\\delta_{-1}+\\delta_{+1})$. Each case: the limit law's moments equal the number of pair partitions in the corresponding lattice, giving Catalan numbers for free (semicircle moments $m_{2k} = C_k$).",
+    "significance": "key",
+    "relatedConcepts": ["universality", "cumulant characterization", "partition lattice", "Gaussian cumulants", "Catalan numbers"],
+    "prerequisites": ["combinatorics", "probability theory"]
   },
   {
     "id": "ann-fclt-dilation",

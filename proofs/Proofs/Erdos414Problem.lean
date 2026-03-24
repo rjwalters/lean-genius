@@ -103,12 +103,28 @@ theorem h_three : h 3 = 5 := by native_decide
 axiom erdos_414_conjecture :
   ∀ m n : ℕ, m ≥ 1 → n ≥ 1 → ∃ i j : ℕ, hOrbit m i = hOrbit n j
 
+/-- Key lemma: once two orbits meet, they stay merged forever.
+    If h^i(a) = h^j(b), then h^{i+d}(a) = h^{j+d}(b) for all d. -/
+theorem hOrbit_continuation (a b : ℕ) (i j d : ℕ)
+    (hmeet : hOrbit a i = hOrbit b j) :
+    hOrbit a (i + d) = hOrbit b (j + d) := by
+  induction d with
+  | zero => simpa using hmeet
+  | succ d ih => simp [hOrbit, ih]
+
 /-- Equivalently: there is a single eventual orbit that all
-    positive integers converge to. -/
-axiom single_eventual_orbit :
-  ∃ S : ℕ → ℕ, ∀ n : ℕ, n ≥ 1 →
-    ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
-      ∃ j : ℕ, hOrbit n k = S j
+    positive integers converge to.
+    PROVED from erdos_414_conjecture via orbit continuation:
+    take the orbit of 1 as the reference orbit S. -/
+theorem single_eventual_orbit :
+    ∃ S : ℕ → ℕ, ∀ n : ℕ, n ≥ 1 →
+      ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        ∃ j : ℕ, hOrbit n k = S j := by
+  refine ⟨hOrbit 1, fun n hn => ?_⟩
+  obtain ⟨i, j, hij⟩ := erdos_414_conjecture n 1 hn (by omega)
+  exact ⟨i, fun k hk => ⟨j + (k - i), by
+    have := hOrbit_continuation n 1 i j (k - i) hij
+    rwa [Nat.add_sub_cancel' hk] at this⟩⟩
 
 /- ## Orbit Examples -/
 

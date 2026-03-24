@@ -48,63 +48,63 @@
       "id": "imports",
       "title": "Imports and Dependencies",
       "startLine": 24,
-      "endLine": 32,
+      "endLine": 30,
       "summary": "Imports Mathlib's Euler totient $\\varphi(n) = |\\{k \\leq n : \\gcd(k,n) = 1\\}|$, primality, and the filter framework for $o(\\cdot)$ asymptotics."
     },
     {
       "id": "core-defs",
       "title": "Core Definitions",
-      "startLine": 33,
-      "endLine": 46,
+      "startLine": 32,
+      "endLine": 44,
       "summary": "Defines the totient-plus-one map $T(n) = \\varphi(n) + 1$, its $k$-th iterate $T^k(n)$ via $\\texttt{Nat.iterate}$, and the stopping time $F(n) = \\min\\{k : T^k(n) \\text{ is prime}\\}$ using $\\texttt{sSup}$."
     },
     {
       "id": "termination",
       "title": "Termination and Descent",
-      "startLine": 47,
-      "endLine": 135,
+      "startLine": 46,
+      "endLine": 131,
       "summary": "Proves that every orbit reaches a prime: $\\forall n > 0,\\; \\exists k,\\; T^k(n)$ is prime. The key lemma `iterate_decreasing` shows $T(n) < n$ for composite $n > 1$ via Finset reasoning (0 and minFac are non-coprime elements in range $n$, giving $\\varphi(n) \\leq n - 2$). Termination follows by strong induction on $n$."
     },
     {
       "id": "part-i",
       "title": "Part (i): Asymptotic Bound $F(n) = o(n)$",
-      "startLine": 60,
-      "endLine": 68,
+      "startLine": 133,
+      "endLine": 140,
       "summary": "The trivial bound $F(n) = o(n)$ follows from the fact that each iteration reduces $n$ by at least 1 for composites. The open question is whether $F(n) = O(\\log n)$ or even $O(\\log \\log n)$."
     },
     {
       "id": "part-ii",
       "title": "Part (ii): Infinite Basins of Attraction",
-      "startLine": 69,
-      "endLine": 75,
+      "startLine": 142,
+      "endLine": 147,
       "summary": "Asks whether some prime $p$ has $|\\{n : \\exists k,\\; T^k(n) = p\\}| = \\infty$. The basin of attraction of $p$ under $T$ --- likely infinite for small primes like 2 and 3."
     },
     {
       "id": "part-iii",
       "title": "Part (iii): Natural Density of Basins",
-      "startLine": 76,
-      "endLine": 81,
+      "startLine": 149,
+      "endLine": 153,
       "summary": "For each prime $p$, asks whether $\\alpha(p) = \\lim_{N \\to \\infty} |\\{n \\leq N : \\exists k,\\; T^k(n) = p\\}|/N$ exists and what its value is."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 82,
-      "endLine": 98,
+      "startLine": 155,
+      "endLine": 174,
       "summary": "Establishes $F(p) = 0$ for primes, the criterion $F(n) = 1 \\iff \\varphi(n) + 1$ is prime, and the parity result that $\\varphi(n) + 1$ is odd for $n \\geq 3$ (since $\\varphi(n)$ is even)."
     },
     {
       "id": "sigma-variant",
       "title": "Sigma Variant: $n \\mapsto \\sigma(n) - 1$",
-      "startLine": 99,
-      "endLine": 113,
+      "startLine": 176,
+      "endLine": 189,
       "summary": "The companion problem using $\\sigma(n)$ instead of $\\varphi(n)$. Since $\\sigma(n) \\geq 1 + n$ for composites, $\\sigma(n) - 1 \\geq n$, so the sigma iteration is non-decreasing --- a fundamentally different dynamical regime."
     },
     {
       "id": "small-cases",
       "title": "Small Cases and Fixed Points",
-      "startLine": 114,
-      "endLine": 127,
+      "startLine": 191,
+      "endLine": 205,
       "summary": "Concrete computations: $T(2) = 2$ (fixed point, proved by $\\texttt{simp}$), $T(4) = 3$ (one-step example), and $F(n) = 1$ infinitely often since $\\{n > 1 : \\varphi(n) + 1 \\text{ is prime}\\}$ is infinite."
     }
   ],

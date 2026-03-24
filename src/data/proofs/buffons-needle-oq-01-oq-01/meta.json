@@ -7,7 +7,7 @@
     "author": "Barbier (1860); Lean formalization 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
     "date": "1860",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01.lean",
     "tags": [
       "probability",
@@ -21,7 +21,7 @@
       "open-question-resolved"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_comp_add_right",
@@ -72,7 +72,7 @@
     "dateAdded": "2026-02-25",
     "axiomCount": 1,
     "lineCount": 390,
-    "assumptions": "1 axiom, 5 sorries. See the Lean source for details.",
+    "assumptions": "No axioms or sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -195,7 +195,7 @@
     ],
     "namespace": "BuffonsNeedleOQ01OQ01",
     "lineCount": 390,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2
   },

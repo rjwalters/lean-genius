@@ -34,7 +34,7 @@
     "id": "ann-603-family",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 34,
+      "startLine": 35,
       "endLine": 44
     },
     "type": "definition",
@@ -63,7 +63,7 @@
     "id": "ann-603-coloring",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 50,
+      "startLine": 51,
       "endLine": 56
     },
     "type": "definition",
@@ -91,7 +91,7 @@
     "id": "ann-603-chromatic",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 64,
+      "startLine": 65,
       "endLine": 78
     },
     "type": "definition",
@@ -121,8 +121,8 @@
     "id": "ann-603-conjecture",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 72,
-      "endLine": 78
+      "startLine": 74,
+      "endLine": 79
     },
     "type": "definition",
     "title": "The Main Conjecture",
@@ -145,8 +145,8 @@
     "id": "ann-603-komjath",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 86,
-      "endLine": 96
+      "startLine": 88,
+      "endLine": 97
     },
     "type": "concept",
     "title": "Komjath's Theorem",
@@ -174,10 +174,10 @@
     "id": "ann-603-bounds",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 104,
-      "endLine": 125
+      "startLine": 111,
+      "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds",
     "content": "`lower_bound_2` proves $C \\geq 2$ by contradiction: with $< 2$ colors, any infinite set is automatically monochromatic (has a `sorry` for the cardinal $< 2$ case analysis). `countable_suffices_trivial` axiomatizes the trivial upper bound: assign each element a distinct natural number color, so no infinite set can be monochromatic. Together these give $2 \\leq C \\leq \\aleph_0$.",
     "mathContext": "Lower bound: with $|\\Gamma| < 2$, pigeonhole forces any infinite set to have all elements the same color. Upper bound: the identity coloring $c(x) = x$ (after injection into $\\mathbb{N}$) gives $\\aleph_0$ colors with no monochromatic infinite set.",
@@ -204,8 +204,8 @@
     "id": "ann-603-finite",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 119,
-      "endLine": 125
+      "startLine": 165,
+      "endLine": 170
     },
     "type": "definition",
     "title": "Finite vs Infinite",
@@ -228,8 +228,8 @@
     "id": "ann-603-hypergraph",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 133,
-      "endLine": 146
+      "startLine": 179,
+      "endLine": 191
     },
     "type": "definition",
     "title": "Hypergraph Perspective",
@@ -257,10 +257,10 @@
     "id": "ann-603-disjoint",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 154,
-      "endLine": 157
+      "startLine": 201,
+      "endLine": 236
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Disjoint Families",
     "content": "`disjoint_2_colors` (has `sorry`): if $A_i \\cap A_j = \\emptyset$ for all $i \\neq j$, then 2 colors suffice. The proof idea: for disjoint infinite sets, color half of each set one color and half the other. This is the easiest special case — the difficulty in #603 comes from families where intersections exist but avoid size 2.",
     "mathContext": "Disjoint families vacuously satisfy $|A_i \\cap A_j| \\neq 2$ (since $|\\emptyset| = 0 \\neq 2$). The 2-coloring uses the fact that each infinite set can be split into two infinite subsets.",
@@ -284,10 +284,10 @@
     "id": "ann-603-both",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 161,
-      "endLine": 169
+      "startLine": 240,
+      "endLine": 248
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Satisfying Both Constraints",
     "content": "SatisfiesBoth: intersection != 1 AND != 2. both_constraints: Komjath's bound applies.",
     "mathContext": "Families avoiding both 1 and 2 are covered by Komjath's result.",
@@ -307,10 +307,10 @@
     "id": "ann-603-statement",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 186,
-      "endLine": 196
+      "startLine": 266,
+      "endLine": 271
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Formal Statement",
     "content": "`erdos_603_statement` proves the formal equivalence: $\\exists C, \\text{ErdosConjecture603}(C)$ iff $\\exists C, \\forall \\mathcal{A}$ valid, $C$ suffices for $\\mathcal{A}$. This is essentially unfolding the definition — the proof is a straightforward `constructor` with both directions wrapping/unwrapping the `IsValidFamily` conjunction. The theorem confirms the formalization correctly captures the intended mathematical statement.",
     "mathContext": "The formal statement unfolds to: $\\exists C, \\forall \\alpha\\, I\\, (A : I \\to \\text{Set}\\,\\alpha), (\\text{countably infinite family} \\wedge |A_i \\cap A_j| \\neq 2) \\to \\exists \\Gamma\\, (|\\Gamma| \\leq C) \\, (c : \\alpha \\to \\Gamma)$ valid.",
@@ -336,8 +336,8 @@
     "id": "ann-603-status",
     "proofId": "erdos-603",
     "range": {
-      "startLine": 177,
-      "endLine": 184
+      "startLine": 257,
+      "endLine": 257
     },
     "type": "concept",
     "title": "Problem Status",

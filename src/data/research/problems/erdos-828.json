@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T09:39:18.200Z",
-    "iteration": 2,
-    "focus": "Session 2: Proved n must be even in forward direction. Documented 3-step proof path.",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Prove Steps 2-3 of totient_dvd_self_iff: decompose n=2^a·m, show m=3^b via valuation argument",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 2 partially proved totient_dvd_self_iff forward direction: established n must be even (2|n) using totient_even. Remaining sorry needs: decompose into 2^a·m, prove m=3^b via 2-adic valuation.",
+    "progressSummary": "PROGRESS: Eliminated 4 of 5 axioms. Only totient_dvd_self_iff remains (deep characterization, not in Mathlib). Axiom count: 5 → 1.",
     "builtItems": [
       "Proved totientDivisors_zero_infinite via Set.infinite_of_injective_forall_mem with f(k)=2^(k+1)",
       "Proved totientDivisors_neg_one_infinite via Set.Infinite.mono from Nat.infinite_setOf_prime",
       "Proved totient_even from Nat.totient_even",
-      "Proved totient_prime_pow_formula from Nat.totient_prime_pow",
-      "Partial proof of totient_dvd_self_iff forward direction: n≤1 case + n-must-be-even via totient_even + dvd_trans"
+      "Proved totient_prime_pow_formula from Nat.totient_prime_pow"
     ],
     "insights": [
       "4 of 5 axioms proved from Mathlib: totient_even, totient_prime_pow_formula, totientDivisors_zero_infinite, totientDivisors_neg_one_infinite",
       "totientDivisors_zero_infinite proved via powers-of-2 family: phi(2^(k+1))=2^k divides 2^(k+1)",
       "totientDivisors_neg_one_infinite proved via Set.Infinite.mono with Nat.infinite_setOf_prime",
       "Only totient_dvd_self_iff (characterization of phi(n)|n) remains axiomatized - deep result not in Mathlib",
-      "n even proof: totient_even gives 2|φ(n) for n>2, then φ(n)|n gives 2|n by dvd_trans. Clean 3-line proof.",
-      "Full proof path: (1) n even [DONE], (2) write n=2^a·m via factorization, show φ(m)|2m, (3) ν₂ argument: Σν₂(pᵢ-1)≤1 forces ≤1 odd prime, (4) (p-1)|2 forces p=3"
+      "n/φ(n) = Π_{p|n} p/(p-1) regardless of exponents. Integer iff prime set ⊆ {2,3} with 2 present.",
+      "2-adic valuation proof: ν₂(Π(p-1)) ≥ |{odd primes}| but ν₂(Π p) = 1 (only from p=2), so ≤1 odd prime",
+      "If {2,q}: (q-1)|2q and gcd(q,q-1)=1 gives (q-1)|2, so q≤3"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove forward direction of totient_dvd_self_iff via 2-adic valuation: n/φ(n) = Π_{p|n} p/(p-1), ν₂(denominator) forces ≤1 odd prime factor, gcd forces q=3",
+      "Key helper: Nat.factorization API + Nat.totient_mul for multiplicativity",
+      "Alternative: direct proof for each prime ≥ 5 showing φ(n) ∤ n when p|n"
+    ],
     "markdown": "# Erdős #828 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any $a\\in\\mathbb{Z}$, there are infinitely many $n$ such that\\[\\phi(n) \\mid n+a?\\]\n\n\n\nA conjecture of Graham. Lehmer has conjectured that $\\phi(n)\\mid n-1$ if and only if $n$ is prime. It is an easy exercise to show that $\\phi(n) \\mid n$ if and only if $n=2^a3^b$.\n\nThis is discussed in problem B37 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #827\n- Problem #829\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er83\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -63,7 +67,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T09:39:18.200Z",
-  "lastUpdate": "2026-03-23T05:00:00Z",
+  "lastUpdate": "2026-03-13T07:52:17.053Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

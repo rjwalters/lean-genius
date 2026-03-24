@@ -48,28 +48,6 @@
     ]
   },
   {
-    "id": "ann-namespace-setup",
-    "proofId": "basel-problem",
-    "range": {
-      "startLine": 54,
-      "endLine": 61
-    },
-    "type": "context",
-    "title": "Namespace and Open Declarations",
-    "content": "The `namespace BaselProblem` scopes all definitions to prevent name collisions with Mathlib's own zeta value lemmas. The `open` declaration brings five Mathlib namespaces into scope:\n\n- **Finset**: Finite set operations for partial sums $\\sum_{n \\in S} f(n)$\n- **BigOperators**: The `∑` and `∏` notation for sums and products over finite sets\n- **Filter**: Limit theory infrastructure (`Filter.atTop`, `Filter.Tendsto`) used by the `HasSum` API to define convergence of infinite series as limits of partial sums along the cofinite filter\n- **Topology**: Topological convergence predicates underlying the `HasSum` and `tsum` definitions\n- **Real**: The `Real.sqrt`, `Real.pi`, and real-valued power function `rpow` used throughout\n\nThese five opens are the standard 'analytic number theory toolkit' in Mathlib formalizations involving infinite sums.",
-    "mathContext": "In Lean 4, `open Finset BigOperators` makes `∑ n ∈ s, f n` available without the `Finset.sum` prefix. The `HasSum` predicate lives in the `Topology` namespace and defines $\\text{HasSum}\\,f\\,s \\iff \\lim_{S \\to \\text{univ}} \\sum_{n \\in S} f(n) = s$ where the limit is along the filter of cofinite complements.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Lean 4 namespaces",
-      "open declarations",
-      "Filter API",
-      "BigOperators notation"
-    ],
-    "prerequisites": [
-      "Lean 4 module system"
-    ]
-  },
-  {
     "id": "ann-basel-main",
     "proofId": "basel-problem",
     "range": {
@@ -207,28 +185,6 @@
       "Weierstrass factorization",
       "Taylor series",
       "infinite products"
-    ]
-  },
-  {
-    "id": "ann-zeta-values-header",
-    "proofId": "basel-problem",
-    "range": {
-      "startLine": 125,
-      "endLine": 129
-    },
-    "type": "context",
-    "title": "Transition to General Zeta Values",
-    "content": "This section header marks the transition from the specific Basel identity $\\zeta(2) = \\pi^2/6$ to the general pattern $\\zeta(2k) = \\text{rational} \\times \\pi^{2k}$. Euler computed these values systematically: $\\zeta(4) = \\pi^4/90$, $\\zeta(6) = \\pi^6/945$, $\\zeta(8) = \\pi^8/9450$, eventually tabulating up to $\\zeta(26)$. Each involves a Bernoulli number $B_{2k}$, connecting the sum over integers to the combinatorics of Bernoulli polynomials. The contrast with odd zeta values ($\\zeta(3), \\zeta(5), \\ldots$, which have no known closed form in terms of $\\pi$) is one of the deepest mysteries in analytic number theory.",
-    "mathContext": "$\\zeta(2k) = \\frac{(-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}}{(2k)!}$. First values: $\\zeta(2) = \\pi^2/6$, $\\zeta(4) = \\pi^4/90$, $\\zeta(6) = \\pi^6/945$. Bernoulli numbers: $B_2 = 1/6$, $B_4 = -1/30$, $B_6 = 1/42$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Bernoulli numbers",
-      "even zeta values",
-      "odd zeta values",
-      "Apéry's theorem"
-    ],
-    "prerequisites": [
-      "Basel identity (ann-basel-main)"
     ]
   },
   {

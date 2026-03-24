@@ -29,11 +29,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "COMPLETED: Created Lean formalization (148 lines, 4 axioms, 0 sorries, 10 theorems). Defines AllPrimesExceed predicate, axiomatizes g(k), proves structural lemmas and concrete computations. Main asymptotic conjecture stated informally.",
+    "builtItems": [
+      "AllPrimesExceed: predicate definition",
+      "gFunc: axiomatized with gt, spec, minimal properties",
+      "allPrimesExceed_one: proved (no prime divides 1)",
+      "allPrimesExceed_of_dvd: proved (divisor inheritance)",
+      "allPrimesExceed_mono: proved (monotone in k)",
+      "choose_odd_of_allPrimesExceed: proved (C(n,k) must be odd for k≥2)",
+      "choose_3_1, choose_6_2, choose_4_2, choose_5_2: concrete computations",
+      "gFunc_ge_k_plus_two: proved from gFunc_gt",
+      "Gallery entry created with meta.json"
+    ],
+    "insights": [
+      "g(k) = smallest n > k+1 such that all prime factors of C(n,k) exceed k",
+      "Known bounds: k^(1+c) < g(k) ≤ exp((1+o(1))k), with Konyagin lower bound exp(c(log k)²)",
+      "Conjecture: log g(k) ~ c·k/log k — places g(k) between polynomial and exponential growth",
+      "For k ≥ 2, the AllPrimesExceed condition forces C(n,k) to be odd (since 2 ≤ k)",
+      "Kummer's theorem: C(n,k) is odd iff no carries in binary addition of k and n-k — constrains valid n",
+      "g(1) = 3 (C(3,1) = 3, prime > 1), g(2) = 6 (C(6,2) = 15 = 3×5, both > 2)"
+    ],
+    "mathlibGaps": [
+      "Real.log and Filter.Tendsto needed for formal asymptotic statement",
+      "Nat.choose decidability for larger computations"
+    ],
+    "nextSteps": [
+      "Formalize asymptotic conjecture with Filter.Tendsto and Real.log",
+      "Prove g(1) = 3 and g(2) = 6 from axioms (need norm_num for divisibility)",
+      "Add Kummer's theorem connection (binary carry characterization)",
+      "Create Aristotle companion file for provable supporting lemmas"
+    ]
   },
   "tags": [
     "erdos",
@@ -57,5 +82,18 @@
   "started": "2026-03-24T00:48:59.904Z",
   "lastUpdate": "2026-03-24T00:48:59.904Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1095OQ01Problem.lean",
+      "filename": "Erdos1095OQ01Problem.lean",
+      "lineCount": 148,
+      "theoremCount": 10,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1095OQ01Problem.lean"
+    }
+  ]
 }

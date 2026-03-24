@@ -23,11 +23,7 @@ References:
 - Lehmer (1932)
 -/
 
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Set
 
@@ -70,6 +66,25 @@ private lemma totient_dvd_two_pow_mul_three_pow (a : ℕ) (ha : 0 < a) (b : ℕ)
       _ = 2 ^ a * 3 ^ b := by rw [h2a]
       _ ∣ 2 ^ a * 3 ^ (b + 1) :=
           Nat.mul_dvd_mul_left _ (pow_dvd_pow 3 (by omega))
+
+/-- If p is an odd prime with (p-1) | 2p, then p = 3. -/
+private lemma odd_prime_of_pred_dvd_two_mul (p : ℕ) (hp : p.Prime) (hodd : p ≠ 2)
+    (h : (p - 1) ∣ 2 * p) : p = 3 := by
+  have hp2 : 2 ≤ p := hp.two_le
+  have hp1 : 1 ≤ p := by omega
+  -- gcd(p, p-1) = 1 since p is prime and p-1 < p
+  -- gcd(p, p-1) = 1 since p is prime and p ∤ (p-1)
+  have hcop : Nat.Coprime (p - 1) p :=
+    (hp.coprime_iff_not_dvd.mpr (fun hdvd =>
+      absurd (Nat.le_of_dvd (by omega) hdvd) (by omega))).symm
+  -- (p-1) | 2p and gcd(p-1, p) = 1 implies (p-1) | 2
+  have h2 : (p - 1) ∣ 2 := hcop.dvd_of_dvd_mul_right h
+  -- p - 1 ≤ 2, so p ≤ 3
+  have hp3 : p ≤ 3 := by
+    have := Nat.le_of_dvd (by omega) h2
+    omega
+  -- p is prime and odd and ≤ 3, so p = 3
+  interval_cases p <;> simp_all [Nat.Prime] <;> omega
 
 /-- Characterization: φ(n) | n iff n ≤ 1 or n = 2^a · 3^b for some a > 0.
     Backward direction proved. Forward direction (the hard part) requires showing

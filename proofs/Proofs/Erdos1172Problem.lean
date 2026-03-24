@@ -197,8 +197,45 @@ theorem partition_independence :
 def erdos_1172_all_questions : Prop :=
   question1 ∧ question2 ∧ question3 ∧ question4
 
-axiom q3_first_target_large : omega1 < omega1 ^ (omegaOrd + 2) + 2
-axiom q2_targets_lt_omega3 :
-    omega2 + omega1 < omega3 ∧ omega2 + omegaOrd < omega3
+/-- ω₁ < ω₁^(ω+2) + 2: the first target in Q3 exceeds ω₁. -/
+theorem q3_first_target_large : omega1 < omega1 ^ (omegaOrd + 2) + 2 := by
+  calc omega1
+      = omega1 ^ (1 : Ordinal) := (Ordinal.opow_one omega1).symm
+    _ ≤ omega1 ^ (omegaOrd + 2) := by
+        apply Ordinal.opow_le_opow_right omega1_pos
+        calc (1 : Ordinal) ≤ omegaOrd := le_of_lt (by unfold omegaOrd; exact Ordinal.one_lt_omega0)
+          _ ≤ omegaOrd + 2 := le_self_add
+    _ < omega1 ^ (omegaOrd + 2) + 2 := by
+        apply Ordinal.lt_add_of_limit_left
+        · exact Ordinal.isLimit_iff_omega0_dvd.mpr ⟨by omega, ⟨omega1 ^ (omegaOrd + 1), by ring⟩⟩
+        · exact Ordinal.pos_iff_ne_zero.mp (by norm_num)
+
+/-- ω₂ + ω₁ < ω₃ and ω₂ + ω < ω₃. -/
+theorem q2_targets_lt_omega3 :
+    omega2 + omega1 < omega3 ∧ omega2 + omegaOrd < omega3 := by
+  constructor
+  · -- ω₂ + ω₁ < ω₃: use cardinal arithmetic
+    -- card(ω₂ + ω₁) ≤ ℵ₂ + ℵ₁ = ℵ₂ < ℵ₃ = card(ω₃)
+    rw [show omega3 = (Cardinal.aleph 3).ord from rfl]
+    rw [Cardinal.lt_ord]
+    calc (omega2 + omega1).card
+        ≤ omega2.card + omega1.card := Ordinal.card_add_le_card_add_card omega2 omega1
+      _ = Cardinal.aleph 2 + Cardinal.aleph 1 := by
+          simp [omega2, omega1, Cardinal.card_ord]
+      _ = Cardinal.aleph 2 := by
+          rw [Cardinal.add_eq_max (Cardinal.aleph0_le_aleph 2)]
+          exact max_eq_left (Cardinal.aleph_le_aleph.mpr (by norm_num))
+      _ < Cardinal.aleph 3 := Cardinal.aleph_lt_aleph.mpr (by norm_num)
+  · -- ω₂ + ω < ω₃: similar argument
+    rw [show omega3 = (Cardinal.aleph 3).ord from rfl]
+    rw [Cardinal.lt_ord]
+    calc (omega2 + omegaOrd).card
+        ≤ omega2.card + omegaOrd.card := Ordinal.card_add_le_card_add_card omega2 omegaOrd
+      _ = Cardinal.aleph 2 + ℵ₀ := by
+          simp [omega2, omegaOrd, Cardinal.card_ord, Cardinal.card_omega0]
+      _ = Cardinal.aleph 2 := by
+          rw [Cardinal.add_eq_max (Cardinal.aleph0_le_aleph 2)]
+          exact max_eq_left (Cardinal.aleph0_le_aleph 2)
+      _ < Cardinal.aleph 3 := Cardinal.aleph_lt_aleph.mpr (by norm_num)
 
 end Erdos1172

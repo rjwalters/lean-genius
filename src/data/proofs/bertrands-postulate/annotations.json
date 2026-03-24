@@ -14,9 +14,7 @@
       "prime gaps",
       "prime distribution",
       "number theory"
-    ],
-    "mathContext": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime.",
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-historical",
@@ -27,14 +25,13 @@
     },
     "type": "insight",
     "title": "Three Mathematical Giants",
-    "content": "**Bertrand (1845)**: Conjectured the result after checking it for all $n$ up to 3 million by hand calculation.\n\n**Chebyshev (1852)**: Proved the conjecture using analytic techniques involving his famous $\\vartheta$ and $\\psi$ functions.\n\n**Erd\u0151s (1932)**: Published an elementary proof at age 19\u2014his first paper. This launched a legendary career of 1,500+ papers and became the standard approach taught today.",
+    "content": "**Bertrand (1845)**: Conjectured the result after checking it for all $n$ up to 3 million by hand calculation.\n\n**Chebyshev (1852)**: Proved the conjecture using analytic techniques involving his famous $\\vartheta$ and $\\psi$ functions.\n\n**Erdős (1932)**: Published an elementary proof at age 19—his first paper. This launched a legendary career of 1,500+ papers and became the standard approach taught today.",
     "mathContext": "The proof evolved from analytic to elementary methods.",
     "significance": "key",
     "relatedConcepts": [
       "history of mathematics",
       "analytic number theory"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -43,16 +40,15 @@
       "startLine": 54,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Main Statement",
-    "content": "**Bertrand's Postulate**: For any positive natural number $n$, there exists a prime $p$ with $n < p \\leq 2n$.\n\n```lean\ntheorem bertrand_postulate (n : \u2115) (hn : 0 < n) :\n    \u2203 p, Nat.Prime p \u2227 n < p \u2227 p \u2264 2 * n\n```\n\nWe wrap Mathlib's `Nat.exists_prime_lt_and_le_two_mul`, converting the hypothesis from `n \u2260 0` to `0 < n`.",
+    "content": "**Bertrand's Postulate**: For any positive natural number $n$, there exists a prime $p$ with $n < p \\leq 2n$.\n\n```lean\ntheorem bertrand_postulate (n : ℕ) (hn : 0 < n) :\n    ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n\n```\n\nWe wrap Mathlib's `Nat.exists_prime_lt_and_le_two_mul`, converting the hypothesis from `n ≠ 0` to `0 < n`.",
     "mathContext": "$\\exists p \\text{ prime}: n < p \\leq 2n$",
     "significance": "key",
     "relatedConcepts": [
       "prime numbers",
       "existence proofs"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-prime-gaps",
@@ -69,8 +65,7 @@
     "relatedConcepts": [
       "prime gaps",
       "consecutive primes"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-infinitude",
@@ -86,9 +81,7 @@
     "relatedConcepts": [
       "infinitude of primes",
       "Euclid's theorem"
-    ],
-    "mathContext": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1.",
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-erdos-proof",
@@ -98,15 +91,14 @@
       "endLine": 119
     },
     "type": "technique",
-    "title": "Erd\u0151s's Central Binomial Approach",
-    "content": "For large $n$ (\u2265 512), the proof analyzes the **central binomial coefficient** $\\binom{2n}{n}$:\n\n1. **Lower bound**: $\\binom{2n}{n} > \\frac{4^n}{2n}$\n\n2. **Upper bound (if no prime in $(n, 2n]$)**: The prime factorization is constrained by primes \u2264 $n$\n\n3. **Contradiction**: These bounds conflict for $n \\geq 512$\n\nThe key insight: primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once, so their absence shrinks the factorization.",
+    "title": "Erdős's Central Binomial Approach",
+    "content": "For large $n$ (≥ 512), the proof analyzes the **central binomial coefficient** $\\binom{2n}{n}$:\n\n1. **Lower bound**: $\\binom{2n}{n} > \\frac{4^n}{2n}$\n\n2. **Upper bound (if no prime in $(n, 2n]$)**: The prime factorization is constrained by primes ≤ $n$\n\n3. **Contradiction**: These bounds conflict for $n \\geq 512$\n\nThe key insight: primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once, so their absence shrinks the factorization.",
     "mathContext": "Analyze $\\binom{2n}{n} = \\frac{(2n)!}{(n!)^2}$",
     "significance": "key",
     "relatedConcepts": [
       "binomial coefficients",
       "prime factorization"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-small-cases",
@@ -117,56 +109,11 @@
     },
     "type": "insight",
     "title": "The Descending Prime Chain",
-    "content": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime. This ensures every $n < 521$ has a prime in $(n, 2n]$.\n\nExample: For $n = 50$, we find 61 in the chain with $50 < 61 \\leq 100$. \u2713",
+    "content": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime. This ensures every $n < 521$ has a prime in $(n, 2n]$.\n\nExample: For $n = 50$, we find 61 in the chain with $50 < 61 \\leq 100$. ✓",
     "significance": "key",
     "relatedConcepts": [
       "constructive proofs",
       "explicit bounds"
-    ],
-    "mathContext": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime.",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-corollaries-section",
-    "proofId": "bertrands-postulate",
-    "range": {
-      "startLine": 63,
-      "endLine": 76
-    },
-    "type": "technique",
-    "title": "Alternative Name and Existence Corollary",
-    "content": "`bertrand` provides an alias using Mathlib's `Nat.bertrand` (vs `Nat.exists_prime_lt_and_le_two_mul` in the main theorem). `exists_prime_between` is a trivial corollary repackaging the main theorem for the common use case $n \\geq 1$.\n\nHistorically, Bertrand conjectured this in 1845 based on checking primes up to 6,000,000. Chebyshev gave the first proof in 1852 using bounds on $\\theta(x) = \\sum_{p \\leq x} \\ln p$. Erdős gave a celebrated elementary proof in 1932 (at age 19) using properties of $\\binom{2n}{n}$.",
-    "mathContext": "Bertrand's postulate: $\\forall n \\geq 1, \\exists p \\text{ prime}, n < p \\leq 2n$. The PNT strengthens this: $\\pi(2n) - \\pi(n) \\sim n/\\ln n$.",
-    "significance": "supporting",
-    "prerequisites": [
-      "bertrand_postulate"
-    ],
-    "relatedConcepts": [
-      "Chebyshev's theorem",
-      "Erdős's proof",
-      "central binomial coefficient"
-    ]
-  },
-  {
-    "id": "ann-no-largest-bertrand",
-    "proofId": "bertrands-postulate",
-    "range": {
-      "startLine": 99,
-      "endLine": 113
-    },
-    "type": "insight",
-    "title": "No Largest Prime via Bertrand and Proof Architecture",
-    "content": "`no_largest_prime_via_bertrand` derives prime infinitude from Bertrand — much stronger than Euclid's theorem.\n\nThe commentary explains Erdős's proof architecture: large $n$ ($\\geq 512$) uses $\\binom{2n}{n}$ analysis (primes in $(n,2n]$ divide $\\binom{2n}{n}$, and growth bounds force their existence), while small $n$ ($< 512$) is verified computationally via a descending chain of known primes.",
-    "mathContext": "Erdős's key bound: $\\binom{2n}{n} \\geq 4^n/(2n+1)$ grows exponentially, but if no prime existed in $(n,2n]$, $\\binom{2n}{n}$ would be bounded by $\\prod_{p \\leq n} p^{\\lfloor \\log_p(2n) \\rfloor}$ — polynomial growth, yielding a contradiction for large $n$.",
-    "significance": "key",
-    "prerequisites": [
-      "primes_infinite_via_bertrand",
-      "central binomial coefficient"
-    ],
-    "relatedConcepts": [
-      "Erdős's proof style",
-      "central binomial coefficient",
-      "prime factorization bounds"
     ]
   },
   {
@@ -178,14 +125,13 @@
     },
     "type": "insight",
     "title": "Beyond Bertrand: The Prime Number Theorem",
-    "content": "Bertrand's Postulate is a \"first step\" toward understanding prime distribution. The **Prime Number Theorem** (1896) goes further:\n\n$$\\pi(x) \\sim \\frac{x}{\\ln x}$$\n\nThis tells us *how many* primes exist below $x$, not just that primes exist in certain ranges.\n\nFor the interval $(n, 2n]$, the PNT predicts roughly $n/\\ln n$ primes\u2014far more than Bertrand's guaranteed minimum of 1.",
+    "content": "Bertrand's Postulate is a \"first step\" toward understanding prime distribution. The **Prime Number Theorem** (1896) goes further:\n\n$$\\pi(x) \\sim \\frac{x}{\\ln x}$$\n\nThis tells us *how many* primes exist below $x$, not just that primes exist in certain ranges.\n\nFor the interval $(n, 2n]$, the PNT predicts roughly $n/\\ln n$ primes—far more than Bertrand's guaranteed minimum of 1.",
     "mathContext": "$\\pi(x)$ counts primes up to $x$",
     "significance": "key",
     "relatedConcepts": [
       "Prime Number Theorem",
       "asymptotic analysis",
       "Riemann Hypothesis"
-    ],
-    "prerequisites": []
+    ]
   }
 ]
