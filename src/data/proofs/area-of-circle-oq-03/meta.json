@@ -40,6 +40,21 @@
         "theorem": "Metric.tendsto_atTop",
         "description": "Equivalence between Filter.Tendsto and ε-N definition of convergence",
         "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "hasDerivAt_iff_tendsto_slope",
+        "description": "Converts HasDerivAt f f' a to slope limit (f x - f a)/(x - a) → f' in nhdsWithin — the key technique enabling sin(h)/h → 1 and tan(h)/h → 1",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Slope"
+      },
+      {
+        "theorem": "tendsto_nhds_unique",
+        "description": "Limit uniqueness in Hausdorff spaces — used for archimedes_exhaustion_unique",
+        "module": "Mathlib.Topology.Separation.Basic"
+      },
+      {
+        "theorem": "Real.sin_two_mul",
+        "description": "sin(2θ) = 2·sin(θ)·cos(θ) — used in inscribed_le_circumscribed sandwich proof",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
     "originalContributions": [
@@ -48,7 +63,7 @@
       "tendsto_n_tan_pi_div_n: n·tan(π/n) → π (core limit for circumscribed polygons)",
       "inscribed_area_le_circle: inscribedArea n r ≤ πr² via sin x < x bound",
       "inscribed_le_circumscribed: sandwich inequality with sin(2x) = 2sin(x)cos(x) decomposition",
-      "archimedes_exhaustion_unique: πr² uniquely determined as limit of inscribed areas"
+      "archimedes_exhaustion_unique: πr² uniquely determined as inscribed area limit, via Mathlib's tendsto_nhds_unique (Hausdorff limit uniqueness)"
     ],
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
@@ -125,7 +140,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Archimedes' method of exhaustion is fully formalized with 17 theorems and 0 sorries. The key insight is that the fundamental limits sin(h)/h → 1 and tan(h)/h → 1 are exactly the derivative definition, accessed via `hasDerivAt_iff_tendsto_slope`. The proof predates calculus by 1900 years but is proved using calculus concepts (derivatives, limits) that provide its rigorous foundation.",
+    "summary": "Archimedes' method of exhaustion is fully formalized with 17 theorems and 0 sorries. The key insight is that the fundamental limits sin(h)/h → 1 and tan(h)/h → 1 are exactly the derivative definition, accessed via `hasDerivAt_iff_tendsto_slope`. Archimedes' original argument predates calculus by 1900 years; this formalization uses the calculus concepts (derivatives, limits) that provide its rigorous modern foundation.",
     "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Connection to area-of-circle**: The main gallery proof proves πr² = πr² as a formality. This OQ-03 file shows HOW Archimedes would have arrived at that formula: by the limiting process of inscribed polygon exhaustion.\n\n2. **Connection to area-of-circle-oq-01**: That file proves the isoperimetric inequality. This file uses the same key limit n·sin(2π/n) → 2π, showing the deep connections between these results.\n\n**3. HasDerivAt as a universal tool**: The pattern `hasDerivAt_iff_tendsto_slope` converts any derivative fact into a limit fact. This is the most natural way to prove trigonometric limits in Lean 4.\n\n4. **Historical significance**: Archimedes' method anticipated integration by 1900 years. The inscribed area formula n·r²/2·sin(2π/n) is exactly what a Riemann sum for the area would give if we inscribed unit triangles.\n\n5. **sin x < x for x > 0**: `Real.sin_lt` is a powerful lemma. Combined with composition of limits, it gives both the upper bound and the lower convergence in one package.",
     "openQuestions": [
       "Can the convergence rate |inscribedArea(n,r) - πr²| = O(1/n²) be formalized? (Since sin(2π/n) ≈ 2π/n - (2π/n)³/6, the error is ~π³r²/(3n²))",
