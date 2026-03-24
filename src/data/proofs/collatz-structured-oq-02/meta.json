@@ -171,5 +171,27 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "references": [
+    {
+      "key": "La85",
+      "citation": "Lagarias, J.C., The 3x+1 problem and its generalizations, The American Mathematical Monthly 92(1) (1985), 3–23. Foundational survey of the Collatz conjecture.",
+      "type": "paper"
+    },
+    {
+      "key": "El93",
+      "citation": "Eliahou, S., The 3x+1 problem: new lower bounds on nontrivial cycle lengths, Discrete Mathematics 118 (1993), 45–56. Non-existence results for small Collatz cycles.",
+      "type": "paper"
+    },
+    {
+      "key": "La10",
+      "citation": "Lagarias, J.C. (ed.), The Ultimate Challenge: The 3x+1 Problem, AMS (2010). Comprehensive collection of results on the Collatz problem.",
+      "type": "book"
+    },
+    {
+      "key": "Ta20",
+      "citation": "Tao, T., Almost all orbits of the Collatz map attain almost bounded values, Forum of Mathematics, Pi 10, e12 (2022). Best known partial result toward the Collatz conjecture.",
+      "type": "paper"
+    }
+  ]
 }
