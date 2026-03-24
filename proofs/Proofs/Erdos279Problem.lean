@@ -18,7 +18,6 @@ Reference: https://erdosproblems.com/279
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 /- ## Covering by Shifted Progressions -/
@@ -39,11 +38,10 @@ def CoversEventually (a : ResidueChoice) (k : ℕ) : Prop :=
 /- ## Known Results for Small k -/
 
 /-- For k = 1 or k = 2: any set A with divergent Σ 1/n can cover
-    all sufficiently large integers -/
-axiom small_k_covers :
-  ∀ k : ℕ, k ≤ 2 →
-    -- A set with divergent reciprocal sum suffices
-    True
+    all sufficiently large integers (placeholder — conclusion is True) -/
+theorem small_k_covers :
+  ∀ k : ℕ, k ≤ 2 → True := by
+  intros; trivial
 
 /- ## Density Conditions for Generalization -/
 
@@ -65,9 +63,10 @@ def HasLogLogDivergence (A : Set ℕ) : Prop :=
 axiom ErdosProblem279 (k : ℕ) (hk : 3 ≤ k) :
   ∃ a : ResidueChoice, CoversEventually a k
 
-/-- The case k = 3: already difficult -/
-axiom ErdosProblem279_k3 :
-  ∃ a : ResidueChoice, CoversEventually a 3
+/-- The case k = 3: follows from the general conjecture -/
+theorem ErdosProblem279_k3 :
+  ∃ a : ResidueChoice, CoversEventually a 3 :=
+  ErdosProblem279 3 (le_refl 3)
 
 /- ## Generalization to Dense Sets -/
 
