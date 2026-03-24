@@ -62,7 +62,7 @@
   "overview": {
     "historicalContext": "Graham posed this conjecture in 1970 as an **extremal problem** on GCD structure in finite sets. The conjecture attracted attention because it connects the multiplicative structure (GCD) of a set to its combinatorial size. **Szegedy** (1986) proved the conjecture for sets larger than an effective constant $N_0$, using a probabilistic argument on prime factorizations. **Zaharescu** (1987) obtained an independent proof for large sets via analytic methods. **Balasubramanian and Soundararajan** (1996) completed the proof for all finite sets by a refined sieve argument, handling the difficult small-set cases. Graham also conjectured that equality $\\gcd(a,b) = \\lfloor a/|A| \\rfloor$ for the optimal pair occurs only for three families of primitive sets, but Aristotle's automated proof search discovered that $\\{1, 2, 4\\}$ is a counterexample to this characterization.",
     "problemStatement": "For any finite set A ⊂ ℕ with positive elements, prove there exist a, b ∈ A such that gcd(a, b) ≤ a/|A|.",
-    "text": "For any finite set A ⊂ ℕ, there exist a, b ∈ A such that gcd(a, b) ≤ a/|A|. Graham's conjecture was proved by Balasubramanian and Soundararajan in 1996.",
+    "text": "This formalization treats Graham's GCD Conjecture, which asserts that for any finite set A of positive integers, there exist elements a, b in A satisfying gcd(a, b) <= a/|A|. The Lean development states the main conjecture as a theorem over Finset N, provides an equivalent rational formulation (MinGcdRatio <= 1/|A|) proved by Aristotle from the integer version, and verifies several special cases: singleton sets, the range {1,...,n} (proved by Aristotle via case analysis), and the sporadic equality case {2, 3, 4, 6}. The formalization also encodes Graham's characterization of equality cases via the IsGrahamEqualityCase predicate and the HasNoCommonDivisor primitivity condition. A notable outcome of the automated proof search is Aristotle's discovery that {1, 2, 4} satisfies the equality condition but does not belong to any of the three families Graham conjectured, demonstrating that the equality characterization as originally stated is incomplete. The coprime reduction lemma gcd_one_suffices shows that finding any coprime pair with a >= |A| immediately yields the bound, reducing the conjecture to a density argument about coprime elements in finite sets.",
     "proofStrategy": "We formalize the main statement and prove special cases: singleton sets, the Graham special set {2,3,4,6}, and derive a key lemma that coprime pairs suffice when |A| ≤ a.",
     "keyInsights": [
       "**GCD bound**: $\\forall A \\subseteq \\mathbb{N}^+$ finite, $\\exists a,b \\in A: \\gcd(a,b) \\le \\lfloor a/|A| \\rfloor$ — proved by Balasubramanian–Soundararajan (1996)",
@@ -130,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Graham's GCD Conjecture (Erdős #402). For any finite set A of positive integers, there exist a, b in A with gcd(a,b) ≤ a/|A|. The proof was completed by Balasubramanian and Soundararajan in 1996. Notably, Aristotle's automated proof search discovered a counterexample to the equality characterization.",
-    "implications": "This result connects combinatorial properties of finite sets to the structure of their greatest common divisors, with applications in additive combinatorics and multiplicative number theory.",
+    "implications": "Graham's GCD Conjecture sits at the intersection of multiplicative number theory and extremal combinatorics. The bound gcd(a, b) <= a/|A| reveals a fundamental constraint: no finite set of positive integers can avoid having a pair whose GCD is small relative to the set's cardinality. This is a multiplicative analogue of pigeonhole-type results in additive combinatorics, where density forces additive structure. The proof by Balasubramanian and Soundararajan (1996) relies on sieve methods and careful analysis of the prime factorization structure of set elements, connecting the problem to the distribution of primes and the analytic machinery underlying results like the prime number theorem.\n\nThe coprime reduction lemma formalized here (gcd_one_suffices) illustrates a powerful proof strategy: if any coprime pair (a, b) exists with a >= |A|, the conjecture holds immediately. This reduces the full conjecture to showing that large finite sets of positive integers must contain coprime pairs with sufficiently large elements, a fact that follows from the density of coprime pairs among the integers (the probability that two random integers are coprime is 6/pi^2). Szegedy's 1986 proof for large sets exploits exactly this probabilistic structure.\n\nThe equality characterization raises deeper structural questions. Graham conjectured that only three families of primitive sets achieve equality: {1,...,n}, {lcm(1,...,n)/k : 1 <= k <= n}, and the sporadic {2, 3, 4, 6}. Aristotle's automated discovery that {1, 2, 4} is a counterexample to this characterization is a striking example of machine-assisted mathematical discovery. The set {1, 2, 4} is primitive (gcd = 1), satisfies gcd(a,b) >= a/|A| for all pairs, yet belongs to none of the three conjectured families. This finding opens the question of whether the equality cases can be completely classified, or whether additional sporadic examples exist.\n\nThe formalization also demonstrates the value of equivalent reformulations in formal mathematics. The rational form gcd(a,b)/a <= 1/|A| avoids the floor function entirely, yielding cleaner inequalities amenable to Lean's rational arithmetic. Aristotle's proof of this equivalence uses field_simp and div_le_one_of_le, showing how automated tools can handle the algebraic bookkeeping that accompanies changes of formulation.\n\nMore broadly, Graham-type GCD bounds connect to the study of multiplicative structure in sets of integers, a theme that appears in problems about LCM bounds, divisor sums, and the multiplicative energy of sets. The interplay between additive and multiplicative structure in finite sets remains a central topic in combinatorial number theory, with connections to sum-product phenomena and the Erdos-Szmeredi conjecture.",
     "openQuestions": [
       "What is the correct characterization of equality cases? ({1,2,4} is missing from the current formulation)",
       "Can the proof be made more constructive?",
@@ -142,6 +142,34 @@
     {
       "relationship": "Problem 403 concerns related GCD and divisibility questions in finite sets, sharing the Erdős–Graham framework",
       "targetId": "erdos-403"
+    },
+    {
+      "relationship": "Erdős #487 asks about LCM triples in dense sets, exploring multiplicative structure (LCM) in finite subsets of the integers in the same spirit as Graham's GCD bounds",
+      "targetId": "erdos-487"
+    },
+    {
+      "relationship": "Erdős #316 studies partitioning finite sets by reciprocal sums, another extremal problem on the arithmetic structure of integer sets that connects to GCD-based divisibility arguments",
+      "targetId": "erdos-316"
+    },
+    {
+      "relationship": "Erdős #36 (minimum overlap problem) is an extremal combinatorics result on partitions of {1,...,2N}, sharing the theme of extracting forced structure from finite sets of integers",
+      "targetId": "erdos-36"
+    },
+    {
+      "relationship": "Erdős #818 concerns product set lower bounds for sets with small sumsets, connecting additive and multiplicative structure in finite sets in the same way Graham's conjecture links GCD to cardinality",
+      "targetId": "erdos-818"
+    },
+    {
+      "relationship": "The prime number theorem underlies the sieve methods used by Balasubramanian and Soundararajan in their proof of Graham's conjecture, as the distribution of primes governs coprime pair density",
+      "targetId": "prime-number-theorem"
+    },
+    {
+      "relationship": "Bertrand's postulate guarantees primes in intervals [n, 2n], supporting the coprime pair arguments central to proving GCD bounds in finite sets of consecutive integers",
+      "targetId": "bertrands-postulate"
+    },
+    {
+      "relationship": "The divergence of prime reciprocals ensures that large finite sets must contain elements with diverse prime factorizations, a density fact underlying the coprime reduction strategy in Graham's conjecture",
+      "targetId": "prime-reciprocal-divergence"
     }
   ],
   "leanFile": {
@@ -169,7 +197,14 @@
     "definitionCount": 5
   },
   "relatedProofs": [
-    ""
+    "erdos-403",
+    "erdos-487",
+    "erdos-316",
+    "erdos-36",
+    "erdos-818",
+    "prime-number-theorem",
+    "bertrands-postulate",
+    "prime-reciprocal-divergence"
   ],
   "references": [
     {
@@ -179,16 +214,28 @@
       "relevance": "Original conjecture on GCD bounds in finite sets"
     },
     {
+      "cite": "Erdős–Graham 1980",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": 1980,
+      "relevance": "Monograph collecting Erdős–Graham problems including #402, placing it in the broader context of combinatorial number theory"
+    },
+    {
       "cite": "Szegedy 1986",
       "title": "On a conjecture of R. L. Graham",
       "year": 1986,
-      "relevance": "Proved the conjecture for sufficiently large sets"
+      "relevance": "Proved the conjecture for sufficiently large sets using a probabilistic argument on prime factorizations"
+    },
+    {
+      "cite": "Zaharescu 1987",
+      "title": "On a conjecture of Graham",
+      "year": 1987,
+      "relevance": "Independent proof for large sets via analytic methods"
     },
     {
       "cite": "Balasubramanian–Soundararajan 1996",
       "title": "On a conjecture of R. L. Graham",
       "year": 1996,
-      "relevance": "Complete proof of the conjecture for all finite sets of positive integers"
+      "relevance": "Complete proof of the conjecture for all finite sets of positive integers, using refined sieve arguments to handle small sets"
     }
   ]
 }
