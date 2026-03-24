@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved relation_to_592 (was redundant axiom). Fixed pre-existing build failure: added Ordinal.{0} universe annotations, Ordinal.omega0 for omega, imported Ordinal.Exponential. Axioms: 8->7, build now passes.",
+    "builtItems": [
+      "Proved relation_to_592 as theorem (trivially follows from counterexample axioms)",
+      "Fixed build: Ordinal universe annotations (.{0}), Ordinal.omega->omega0, added Exponential import"
+    ],
+    "insights": [
+      "relation_to_592 was redundant: directly provable from counter_partition_3 and counter_not_partition_5",
+      "File had pre-existing build failure: Ordinal.omega not available as Ordinal value in Mathlib v4.26.0, needed Ordinal.omega0",
+      "All Ordinal binders needed explicit .{0} universe annotation to avoid universe polymorphism inference failure",
+      "threshold_exact axiom has guard (threshold+1>2) that prevents proving omega_omega2_threshold from other axioms",
+      "omega_omega2_threshold remains an independent axiom - the guard in threshold_exact blocks the proof when threshold < 2"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Define ordPartition constructively to eliminate axiom + enable proving partition_monotone_down",
+      "Fix threshold_exact guard or define partitionThreshold constructively",
+      "omega_omega2_threshold provable if threshold_exact guard is fixed"
+    ]
   },
   "tags": [
     "erdos",
