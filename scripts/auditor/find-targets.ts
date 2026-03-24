@@ -77,6 +77,66 @@ function loadTracker(): Tracker {
   return { version: 1, entries: {} }
 }
 
+/**
+ * Strip Lean comments from source code.
+ * Handles line comments (--) and nested block comments (/- ... -/).
+ */
+function stripLeanComments(content: string): string {
+  let result = ''
+  let i = 0
+  let depth = 0
+
+  while (i < content.length) {
+    if (depth === 0) {
+      if (content[i] === '-' && i + 1 < content.length && content[i + 1] === '-') {
+        // Line comment: skip to end of line, preserve newline
+        while (i < content.length && content[i] !== '\n') i++
+        continue
+      }
+      if (content[i] === '/' && i + 1 < content.length && content[i + 1] === '-') {
+        depth = 1
+        i += 2
+        continue
+      }
+      result += content[i]
+    } else {
+      if (content[i] === '/' && i + 1 < content.length && content[i + 1] === '-') {
+        depth++
+        i += 2
+        continue
+      }
+      if (content[i] === '-' && i + 1 < content.length && content[i + 1] === '/') {
+        depth--
+        i += 2
+        continue
+      }
+    }
+    i++
+  }
+
+  return result
+}
+
+/** Namespaces whose members should not trigger "major Mathlib dependency" flag */
+const BASIC_MATHLIB_NAMES = new Set([
+  'Function', 'Set', 'Finset', 'Nat', 'Int', 'Real', 'Complex',
+  'List', 'Array', 'Option', 'Bool', 'Prod', 'Sum', 'Equiv',
+  'Order', 'Filter', 'Topology', 'Metric', 'Norm', 'Subtype',
+  'Classical', 'Decidable',
+  // Common standalone utilities
+  'congr_fun', 'congr_arg', 'funext', 'rfl', 'Iff',
+])
+
+/** Check whether a Mathlib dependency represents a major named result */
+function isMajorMathlibDep(theorem: string, module: string): boolean {
+  if (!theorem) return false
+  if (module === 'Lean core' || module.startsWith('Init.')) return false
+  const topNamespace = theorem.split('.')[0]
+  if (BASIC_MATHLIB_NAMES.has(topNamespace)) return false
+  if (BASIC_MATHLIB_NAMES.has(theorem)) return false
+  return true
+}
+
 function countInFile(filePath: string, pattern: RegExp): number {
   if (!fs.existsSync(filePath)) return 0
   const content = fs.readFileSync(filePath, 'utf-8')
@@ -97,9 +157,10 @@ function detectIssues(target: AuditTarget): string[] {
     issues.push(`sorry mismatch: claims ${target.meta.claimedSorries}, actual ${target.actual.sorryCount}`)
   }
 
-  // Axiom count mismatch
-  if (target.meta.claimedAxioms >= 0 && target.meta.claimedAxioms !== target.actual.axiomCount) {
-    issues.push(`axiom mismatch: claims ${target.meta.claimedAxioms}, actual ${target.actual.axiomCount}`)
+  // Axiom count mismatch -- only flag when meta undercounts actual declarations.
+  // When claimed > actual, the difference may be structure-encoded assumptions (intentional).
+  if (target.meta.claimedAxioms >= 0 && target.actual.axiomCount > target.meta.claimedAxioms) {
+    issues.push(`axiom undercount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
   }
 
   // Verified with sorries
@@ -139,16 +200,27 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
   let hasMajorMathlibDep = false
 
   if (leanPath && fs.existsSync(leanPath)) {
-    const content = fs.readFileSync(leanPath, 'utf-8')
-    sorryCount = (content.match(/\bsorry\b/g) || []).length
-    axiomCount = (content.match(/^axiom /gm) || []).length
-    trueStubCount = (content.match(/:= trivial|: True :=|: True\b.*:= by\b/g) || []).length
+    const rawContent = fs.readFileSync(leanPath, 'utf-8')
+    // Strip comments to avoid counting sorry/True in comments (Issue #6130)
+    const content = stripLeanComments(rawContent)
 
-    // Check if major Mathlib theorems from dependencies are directly called
+    sorryCount = (content.match(/\bsorry\b/g) || []).length
+    axiomCount = (rawContent.match(/^axiom /gm) || []).length
+
+    // True stubs: only count theorem/lemma declarations, not example (Issue #6130)
+    for (const line of content.split('\n')) {
+      const trimmed = line.trim()
+      if (/^(theorem|lemma)\b/.test(trimmed) && /(:= trivial\b|: True\b)/.test(trimmed)) {
+        trueStubCount++
+      }
+    }
+
+    // Mathlib dependency check: only flag genuinely major named results (Issue #6130)
     const deps = proofMeta.mathlibDependencies || []
     for (const dep of deps) {
       const theorem = dep.theorem || ''
-      if (theorem && theorem.includes('_') && content.includes(theorem)) {
+      const module = dep.module || ''
+      if (isMajorMathlibDep(theorem, module) && rawContent.includes(theorem)) {
         hasMajorMathlibDep = true
         break
       }
