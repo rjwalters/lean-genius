@@ -160,5 +160,17 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "key": "Br41",
+      "citation": "Brooks, R.L., On colouring the nodes of a network, Proceedings of the Cambridge Philosophical Society 37(2) (1941), 194-197. Brooks' theorem: χ(G) ≤ Δ(G) unless G is a complete graph or odd cycle.",
+      "type": "paper"
+    },
+    {
+      "key": "Re98",
+      "citation": "Reed, B., ω, Δ, and χ, Journal of Graph Theory 27(4) (1998), 177-212. Reed's conjecture relating chromatic number to clique number and maximum degree.",
+      "type": "paper"
+    }
+  ]
 }

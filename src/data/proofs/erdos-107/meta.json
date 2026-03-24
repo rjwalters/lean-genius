@@ -202,5 +202,22 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "key": "ES35",
+      "citation": "Erdős, P. and Szekeres, G., A combinatorial problem in geometry, Compositio Mathematica 2 (1935), 463-470. Original Happy Ending Problem paper proving that any 5 points in general position contain a convex quadrilateral.",
+      "type": "paper"
+    },
+    {
+      "key": "ES60",
+      "citation": "Erdős, P. and Szekeres, G., On some extremal problems in elementary geometry, Annales Universitatis Scientiarum Budapestinensis 3-4 (1960-1961), 53-62. Improved bounds for the Erdős-Szekeres conjecture.",
+      "type": "paper"
+    },
+    {
+      "key": "SS06",
+      "citation": "Suk, A., On the Erdős-Szekeres conjecture, Journal of the AMS 30(4) (2017), 1047-1085. Near-optimal bound: f(n) ≤ 2^{n+o(n)}.",
+      "type": "paper"
+    }
+  ]
 }
