@@ -2,7 +2,7 @@
   "id": "erdos-1139",
   "title": "Erdős Problem #1139: Gaps in the Almost-Prime Sequence",
   "slug": "erdos-1139",
-  "description": "For the sequence of integers with at most 2 prime factors (primes and semiprimes), do the gaps grow faster than log k? Formalization with 11 proved theorems including prime membership, small cases, and counting bounds.",
+  "description": "For the sequence of integers with at most 2 prime factors (primes and semiprimes), do the gaps grow faster than log k? Formalization with 16 proved theorems including enumeration via Nat.nth, gap function, structural properties, and counting bounds.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1139",
@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1139,
     "erdosUrl": "https://erdosproblems.com/1139",
     "erdosProblemStatus": "open",
@@ -51,7 +51,7 @@
     "dateAdded": "2026-03-24",
     "axiomCount": 2,
     "lineCount": 157,
-    "assumptions": "2 axioms: erdos_1139 (the open conjecture), hardy_ramanujan_asymptotic (density estimate). 3 sorries in supporting lemmas."
+    "assumptions": "2 axioms: erdos_1139 (the open conjecture), hardy_ramanujan_asymptotic (density estimate). 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős #1139 asks about the distribution of gaps in the sequence of integers with at most 2 prime factors (primes and semiprimes). The study of almost-primes dates to Viggo Brun's 1915 sieve work, which first established that the sum of reciprocals of twin primes converges — in contrast to the divergent sum over primes. The counting function for integers with at most $k$ prime factors was studied by Landau (1900) and refined by Ramanujan, Sathe (1953), and Selberg (1954), giving the asymptotic $\\pi_2(N) \\sim cN \\log \\log N / \\log N$. Despite the almost-primes being denser than the primes by a factor of $\\log \\log N$, Erdős conjectured that their gaps still grow faster than $\\log k$. This is surprising: for primes, Cramér's conjecture predicts gaps of order $(\\log p)^2$, and one might expect the denser almost-prime sequence to have comparatively tamer gaps. The problem connects to Maier's 1985 theorem showing irregularities in prime distribution that defeat simple probabilistic models, and to the Jacobsthal function measuring maximal gaps in sieved sequences.",
@@ -91,9 +91,9 @@
       "id": "enumeration",
       "title": "Enumeration and Gap Definition",
       "startLine": 76,
-      "endLine": 84,
-      "summary": "Defines the finite set of almost-primes up to N via Finset.filter and the gap function between consecutive terms (sorry — requires well-ordering).",
-      "mathContext": "$\\pi_2(N) = |\\{n \\leq N : \\Omega(n) \\leq 2\\}|$; $g_k = u_{k+1} - u_k$"
+      "endLine": 111,
+      "summary": "Proves the set of almost-primes is infinite (contains all primes), defines the k-th almost-prime via Mathlib's Nat.nth enumeration, and defines the gap function g(k) = u_{k+1} - u_k. Derives strict monotonicity, membership, surjectivity, and positivity of gaps.",
+      "mathContext": "$\\pi_2(N) = |\\{n \\leq N : \\Omega(n) \\leq 2\\}|$; $u_k = \\text{nth}(\\text{IsAlmostPrime}, k)$; $g_k = u_{k+1} - u_k > 0$"
     },
     {
       "id": "structural-results",
@@ -137,23 +137,23 @@
     }
   ],
   "conclusion": {
-    "summary": "A new formalization of Erdős #1139 with 11 proved theorems establishing the basic theory of almost-primes via Mathlib's factorization API. The formalization covers definitions, small case verification, enumeration, semiprime inclusion, and a structural gap obstruction from divisibility by 8. The main conjecture (lim sup gₖ/log k = ∞) and the Hardy-Ramanujan density asymptotic remain axiomatized.",
+    "summary": "A formalization of Erdős #1139 with 16 proved theorems and 0 sorries. The almost-prime sequence is enumerated via Mathlib's Nat.nth on the infinite set of IsAlmostPrime numbers, with the gap function defined as g(k) = u_{k+1} - u_k. Key structural results include strict monotonicity, membership, surjectivity, gap positivity, semiprime inclusion, and a gap obstruction from divisibility by 8. The main conjecture (lim sup gₖ/log k = ∞) and the Hardy-Ramanujan density asymptotic remain axiomatized.",
     "implications": "Resolution would illuminate the fine structure of almost-prime distribution and complement the extensive body of results on prime gaps (Cramér, Maier, Maynard-Tao). A positive answer would demonstrate that even in sequences much denser than the primes, irregular gaps persist — a phenomenon related to the failure of naive probabilistic models in analytic number theory. The formalization also contributes reusable definitions (bigOmega, IsAlmostPrime) that could support formalizations of other problems involving k-almost primes.",
     "openQuestions": [
       "Does lim sup (u_{k+1} - u_k) / log k = ∞? (the main open conjecture)",
       "What is the correct order of growth for maximal almost-prime gaps — is it closer to (log k)² as in Cramér's conjecture for primes?",
       "Can the cube_gap_obstruction approach be extended to produce explicit gap lower bounds of order log k?",
-      "Is Ω(p·q) = Ω(p) + Ω(q) = 2 provable from Mathlib's factorization_mul without native_decide?"
+      "Can the nthAlmostPrime enumeration be connected to the counting function almostPrimesUpTo to bound gaps?"
     ]
   },
   "leanFile": {
     "imports": ["Mathlib"],
     "opens": [],
     "namespace": "Erdos1139",
-    "lineCount": 157,
+    "lineCount": 192,
     "axiomCount": 2,
-    "theoremCount": 11,
-    "definitionCount": 5
+    "theoremCount": 16,
+    "definitionCount": 7
   },
   "crossReferences": [
     {
