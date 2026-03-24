@@ -104,7 +104,8 @@
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite meta.json originalContributions to accurately reflect the file's contributions: pedagogical organization, Fubini multi-step proof, Dirichlet function ae-proof, bounded-measurable bridge theorem. Remove claims about 'Jordan measure comparison' and 'non-measurable sets' which do not appear in the Lean source.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Rewrote originalContributions: removed phantom claims (Jordan measure, non-measurable sets), replaced with 4 accurate items."
     },
     {
       "id": "ai-2",
@@ -132,7 +133,8 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Update meta.json assumptions field to acknowledge the 2 placeholder (True) theorems instead of claiming 'fully verified' without qualification.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Updated assumptions to note 2 True placeholder stubs."
     },
     {
       "id": "ai-6",
