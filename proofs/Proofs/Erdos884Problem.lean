@@ -188,12 +188,69 @@ theorem consecutivePairsSum_num_terms (n : ℕ) (_hn : n > 0) :
 theorem divisors_6 : divisorList 6 = [1, 2, 3, 6] := by native_decide
 
 /-- For prime p, divisors are [1, p]. -/
-axiom divisors_prime (p : ℕ) (hp : p.Prime) :
-    divisorList p = [1, p]
+theorem divisors_prime (p : ℕ) (hp : p.Prime) :
+    divisorList p = [1, p] := by
+  unfold divisorList
+  rw [Nat.Prime.divisors hp]
+  -- Use pairwise_getD_lt from divisorList_pairwise_lt to characterize the sorted list
+  -- Alternative: use the length-2 sorted list characterization
+  have hlt : (1 : ℕ) < p := hp.one_lt
+  have hne : (1 : ℕ) ≠ p := Nat.ne_of_lt hlt
+  -- The sorted list has length 2 and contains exactly 1 and p
+  -- Use properties: mem_sort, length_sort, sort_nodup, sort_sorted
+  -- Extract as a length-2 list
+  have hlen : (({1, p} : Finset ℕ).sort (· ≤ ·)).length = 2 := by
+    rw [Finset.length_sort]; exact Finset.card_pair hne
+  obtain ⟨a, b, hab⟩ := List.length_eq_two.mp hlen
+  -- a and b are in {1, p}
+  have ha : a ∈ ({1, p} : Finset ℕ) := by
+    rw [← Finset.mem_sort (r := (· ≤ ·)), hab]; simp
+  have hb : b ∈ ({1, p} : Finset ℕ) := by
+    rw [← Finset.mem_sort (r := (· ≤ ·)), hab]; simp
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb
+  -- No duplicates
+  have hnd : a ≠ b := by
+    have hnodup := (({1, p} : Finset ℕ).sort_nodup (· ≤ ·))
+    rw [hab] at hnodup
+    simp [List.nodup_cons, List.not_mem_nil] at hnodup
+    exact hnodup
+  -- Sorted: a ≤ b
+  have _hle : a ≤ b := by
+    have hs := (({1, p} : Finset ℕ).sort_sorted (· ≤ ·))
+    rw [hab] at hs
+    simp [List.Sorted, List.Pairwise] at hs
+    exact hs
+  rw [hab]
+  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+  · exact absurd rfl hnd
+  · rfl
+  · exfalso; omega
+  · exact absurd rfl hnd
+
+/-- For primes, numDivisors p = 2. -/
+theorem numDivisors_prime (p : ℕ) (hp : p.Prime) : numDivisors p = 2 := by
+  unfold numDivisors
+  rw [Nat.Prime.divisors hp]
+  exact Finset.card_pair (Nat.ne_of_lt hp.one_lt)
+
+/-- generalGap n 0 1 = consecutiveGap n 0 by definition. -/
+private theorem generalGap_zero_one (n : ℕ) :
+    generalGap n 0 1 = consecutiveGap n 0 := by
+  unfold generalGap consecutiveGap
+  rfl
 
 /-- For primes, allPairsSum = consecutivePairsSum (trivially: only one pair). -/
-axiom prime_case_equality (p : ℕ) (hp : p.Prime) :
-    allPairsSum p = consecutivePairsSum p
+theorem prime_case_equality (p : ℕ) (hp : p.Prime) :
+    allPairsSum p = consecutivePairsSum p := by
+  unfold allPairsSum consecutivePairsSum
+  rw [numDivisors_prime p hp]
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add]
+  -- LHS: 0 + (∑ j ∈ Ioo 0 2, 1/generalGap p 0 j) + (∑ j ∈ Ioo 1 2, 1/generalGap p 1 j)
+  -- Ioo 1 2 = ∅, Ioo 0 2 = {1}
+  have h1 : Finset.Ioo 1 2 = (∅ : Finset ℕ) := by decide
+  have h2 : Finset.Ioo 0 2 = ({1} : Finset ℕ) := by decide
+  rw [h1, h2, Finset.sum_empty, add_zero, Finset.sum_singleton]
+  rw [generalGap_zero_one]
 
 /- ## Structural Lemmas -/
 
@@ -208,13 +265,19 @@ theorem gap_lower_bound (n i j : ℕ) (hij : i < j) (hj : j < numDivisors n) :
   have hj' : j < (divisorList n).length := by omega
   exact pairwise_getD_le (divisorList_pairwise_lt n) (by omega : i + 1 ≤ j) hj'
 
+/-- σ₀(n) = τ(n) = n.divisors.card. -/
+private theorem sigma_zero_eq_card (n : ℕ) :
+    ArithmeticFunction.sigma 0 n = numDivisors n := by
+  unfold numDivisors
+  simp [ArithmeticFunction.sigma_apply]
+
 /-- For coprime m, n: τ(mn) = τ(m) · τ(n). -/
-/- Note: Nat.Coprime.divisors_mul was removed/renamed in Mathlib v4.26.0.
-   This theorem was proved in the original file but needs API update. -/
+/- Proved via σ₀ multiplicativity after Nat.Coprime.divisors_mul was renamed. -/
 theorem numDivisors_mul_coprime (m n : ℕ) (_hm : m > 0) (_hn : n > 0)
-    (_hcop : Nat.Coprime m n) :
+    (hcop : Nat.Coprime m n) :
     numDivisors (m * n) = numDivisors m * numDivisors n := by
-  sorry
+  rw [← sigma_zero_eq_card, ← sigma_zero_eq_card, ← sigma_zero_eq_card]
+  exact ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime hcop
 
 /- ## Connections -/
 
