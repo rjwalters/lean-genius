@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-oq-01-oq-01",
   "title": "Cauchy-Schwarz Equality for Complex Inner Product Spaces",
   "slug": "cauchy-schwarz-oq-01-oq-01",
-  "description": "Equality characterization for the Cauchy-Schwarz inequality in complex (and general RCLike) inner product spaces: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ if and only if u and v are linearly dependent.",
+  "description": "Equality characterization for the Cauchy-Schwarz inequality in complex (and general RCLike) inner product spaces: \u2016\u27eau,v\u27eb\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 if and only if u and v are linearly dependent.",
   "meta": {
     "author": "Cauchy (1821), Schwarz (1885), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Equality_condition",
@@ -23,37 +23,37 @@
     "mathlibDependencies": [
       {
         "theorem": "norm_inner_le_norm",
-        "description": "Cauchy-Schwarz inequality: ‖⟪x, y⟫_𝕜‖ ≤ ‖x‖ · ‖y‖",
+        "description": "Cauchy-Schwarz inequality: \u2016\u27eax, y\u27eb_\ud835\udd5c\u2016 \u2264 \u2016x\u2016 \u00b7 \u2016y\u2016",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
         "theorem": "inner_self_eq_norm_sq_to_K",
-        "description": "Self-inner product: ⟪x, x⟫_𝕜 = (‖x‖²:𝕜)",
+        "description": "Self-inner product: \u27eax, x\u27eb_\ud835\udd5c = (\u2016x\u2016\u00b2:\ud835\udd5c)",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
         "theorem": "inner_self_eq_zero",
-        "description": "Positive-definiteness: ⟪x, x⟫_𝕜 = 0 ↔ x = 0",
+        "description": "Positive-definiteness: \u27eax, x\u27eb_\ud835\udd5c = 0 \u2194 x = 0",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
         "theorem": "norm_add_sq",
-        "description": "Expansion: ‖u+v‖² = ‖u‖² + 2·Re⟪u,v⟫ + ‖v‖²",
+        "description": "Expansion: \u2016u+v\u2016\u00b2 = \u2016u\u2016\u00b2 + 2\u00b7Re\u27eau,v\u27eb + \u2016v\u2016\u00b2",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
         "theorem": "inner_conj_symm",
-        "description": "Conjugate symmetry: star⟪x,y⟫_𝕜 = ⟪y,x⟫_𝕜",
+        "description": "Conjugate symmetry: star\u27eax,y\u27eb_\ud835\udd5c = \u27eay,x\u27eb_\ud835\udd5c",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       }
     ],
     "originalContributions": [
-      "Complex CS equality: ‖⟪u,v⟫_ℂ‖ = ‖u‖·‖v‖ ↔ ∃ c : ℂ, u = c • v (for v ≠ 0)",
-      "Uniform RCLike CS equality covering both ℝ and ℂ simultaneously",
-      "Orthogonal projection residual lemma: u − (⟪v,u⟫/⟪v,v⟫)·v ⊥ v",
+      "Complex CS equality: \u2016\u27eau,v\u27eb_\u2102\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 \u2194 \u2203 c : \u2102, u = c \u2022 v (for v \u2260 0)",
+      "Uniform RCLike CS equality covering both \u211d and \u2102 simultaneously",
+      "Orthogonal projection residual lemma: u \u2212 (\u27eav,u\u27eb/\u27eav,v\u27eb)\u00b7v \u22a5 v",
       "Forward proof via Pythagoras: equality forces residual norm to zero",
       "Backward proof: scalar multiple implies equality via direct computation",
-      "Symmetric version: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ ↔ ∃ c, v = c • u (for u ≠ 0)",
+      "Symmetric version: \u2016\u27eau,v\u27eb\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 \u2194 \u2203 c, v = c \u2022 u (for u \u2260 0)",
       "Edge cases: equality trivially holds when either vector is zero"
     ],
     "dateAdded": "2026-03-21",
@@ -72,7 +72,7 @@
       {
         "proofId": "cauchy-schwarz-oq-03",
         "relationship": "related",
-        "description": "Hölder's inequality as a generalization of CS; analogous equality conditions exist"
+        "description": "H\u00f6lder's inequality as a generalization of CS; analogous equality conditions exist"
       },
       {
         "proofId": "cauchy-schwarz-integral",
@@ -84,16 +84,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**When Does Equality Hold in Cauchy-Schwarz?**\n\nThe Cauchy-Schwarz inequality has a remarkable history spanning three independent discoveries. Augustin-Louis Cauchy proved the finite sum version in his 1821 *Cours d'Analyse*: $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$. Viktor Bunyakovsky extended it to integrals in 1859, and Hermann Amandus Schwarz independently proved the integral version in 1885 while studying minimal surfaces.\n\nThe equality condition — that equality holds if and only if the vectors are linearly dependent — was understood from the beginning for finite-dimensional real spaces, where it amounts to the geometric statement that the angle between two vectors is 0 or π. For complex inner product spaces, the characterization requires allowing the proportionality constant to be complex ($u = cv$ with $c \\in \\mathbb{C}$), reflecting the richer scalar structure.\n\nThe proof technique here — orthogonal projection followed by the Pythagorean theorem — is due to Schwarz himself and predates the Gram-Schmidt process (1907). The projection coefficient $c = \\langle v,u\\rangle/\\langle v,v\\rangle$ is the best approximation of $u$ in the span of $v$, connecting CS equality to approximation theory and least squares. In quantum mechanics, this characterization identifies when two state vectors represent the same physical state (up to global phase $e^{i\\theta}$), a foundational concept in the theory of projective Hilbert spaces.",
-    "problemStatement": "**Cauchy-Schwarz Equality (Complex)**\n\nFor vectors u, v in a complex inner product space H with v ≠ 0:\n$$\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| = \\|u\\| \\cdot \\|v\\| \\quad\\iff\\quad \\exists\\, c \\in \\mathbb{C} :\\ u = c \\cdot v$$\n\nThe scalar c is explicitly given by the projection coefficient c = ⟪v,u⟫/⟪v,v⟫.",
-    "text": "Equality characterization for the Cauchy-Schwarz inequality in complex (and general RCLike) inner product spaces: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ if and only if u and v are linearly dependent.",
-    "proofStrategy": "**Proof via Orthogonal Decomposition**\n\nThe key idea is to decompose u into a component along v and an orthogonal residual:\n\n1. **Define** c = ⟪v,u⟫/⟪v,v⟫ (projection coefficient)\n2. **Show** ⟪u − c·v, v⟫ = 0 (residual is orthogonal to v)\n3. **Pythagoras** gives ‖u‖² = ‖u−c·v‖² + ‖c·v‖²\n4. **Compute** ‖⟪u,v⟫‖ = ‖c‖·‖v‖² from the decomposition\n5. **Equality** forces ‖u−c·v‖ = 0, hence u = c·v\n\nThe backward direction is a direct computation using inner_smul_left.",
+    "historicalContext": "**When Does Equality Hold in Cauchy-Schwarz?**\n\nThe Cauchy-Schwarz inequality has a remarkable history spanning three independent discoveries. Augustin-Louis Cauchy proved the finite sum version in his 1821 *Cours d'Analyse*: $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$. Viktor Bunyakovsky extended it to integrals in 1859, and Hermann Amandus Schwarz independently proved the integral version in 1885 while studying minimal surfaces.\n\nThe equality condition \u2014 that equality holds if and only if the vectors are linearly dependent \u2014 was understood from the beginning for finite-dimensional real spaces, where it amounts to the geometric statement that the angle between two vectors is 0 or \u03c0. For complex inner product spaces, the characterization requires allowing the proportionality constant to be complex ($u = cv$ with $c \\in \\mathbb{C}$), reflecting the richer scalar structure.\n\nThe proof technique here \u2014 orthogonal projection followed by the Pythagorean theorem \u2014 is due to Schwarz himself and predates the Gram-Schmidt process (1907). The projection coefficient $c = \\langle v,u\\rangle/\\langle v,v\\rangle$ is the best approximation of $u$ in the span of $v$, connecting CS equality to approximation theory and least squares. In quantum mechanics, this characterization identifies when two state vectors represent the same physical state (up to global phase $e^{i\\theta}$), a foundational concept in the theory of projective Hilbert spaces.",
+    "problemStatement": "**Cauchy-Schwarz Equality (Complex)**\n\nFor vectors u, v in a complex inner product space H with v \u2260 0:\n$$\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| = \\|u\\| \\cdot \\|v\\| \\quad\\iff\\quad \\exists\\, c \\in \\mathbb{C} :\\ u = c \\cdot v$$\n\nThe scalar c is explicitly given by the projection coefficient c = \u27eav,u\u27eb/\u27eav,v\u27eb.",
+    "text": "Equality characterization for the Cauchy-Schwarz inequality in complex (and general RCLike) inner product spaces: \u2016\u27eau,v\u27eb\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 if and only if u and v are linearly dependent.",
+    "proofStrategy": "**Proof via Orthogonal Decomposition**\n\nThe key idea is to decompose u into a component along v and an orthogonal residual:\n\n1. **Define** c = \u27eav,u\u27eb/\u27eav,v\u27eb (projection coefficient)\n2. **Show** \u27eau \u2212 c\u00b7v, v\u27eb = 0 (residual is orthogonal to v)\n3. **Pythagoras** gives \u2016u\u2016\u00b2 = \u2016u\u2212c\u00b7v\u2016\u00b2 + \u2016c\u00b7v\u2016\u00b2\n4. **Compute** \u2016\u27eau,v\u27eb\u2016 = \u2016c\u2016\u00b7\u2016v\u2016\u00b2 from the decomposition\n5. **Equality** forces \u2016u\u2212c\u00b7v\u2016 = 0, hence u = c\u00b7v\n\nThe backward direction is a direct computation using inner_smul_left.",
     "keyInsights": [
-      "**Orthogonal decomposition works over any RCLike field**: The projection coefficient c = ⟪v,u⟫/⟪v,v⟫ and the orthogonality proof use only sesquilinearity and field_simp, not any ℝ-specific properties.",
-      "**Conjugate symmetry is essential**: The proof that star(⟪v,u⟫/⟪v,v⟫) simplifies correctly relies on inner_conj_symm and the fact that ⟪v,v⟫ is self-conjugate (it equals the real number ‖v‖²).",
-      "**The equality condition generalizes uniformly**: The same proof works for ℝ, ℂ, and any RCLike field. No case split on the scalar field is needed.",
+      "**Orthogonal decomposition works over any RCLike field**: The projection coefficient c = \u27eav,u\u27eb/\u27eav,v\u27eb and the orthogonality proof use only sesquilinearity and field_simp, not any \u211d-specific properties.",
+      "**Conjugate symmetry is essential**: The proof that star(\u27eav,u\u27eb/\u27eav,v\u27eb) simplifies correctly relies on inner_conj_symm and the fact that \u27eav,v\u27eb is self-conjugate (it equals the real number \u2016v\u2016\u00b2).",
+      "**The equality condition generalizes uniformly**: The same proof works for \u211d, \u2102, and any RCLike field. No case split on the scalar field is needed.",
       "**Pythagoras + norm manipulation**: The forward direction reduces to showing a sum of non-negative reals equals zero, which forces each summand to zero. This is the key algebraic step.",
-      "**Connection to quantum mechanics**: In projective Hilbert spaces, CS equality precisely identifies when two state vectors are physically equivalent — proportional vectors with $|c| = 1$ represent the same quantum state (global phase invariance)."
+      "**Connection to quantum mechanics**: In projective Hilbert spaces, CS equality precisely identifies when two state vectors are physically equivalent \u2014 proportional vectors with $|c| = 1$ represent the same quantum state (global phase invariance)."
     ],
     "prerequisites": [
       "Mathematical analysis",
@@ -104,29 +104,29 @@
   "sections": [
     {
       "id": "backward",
-      "title": "Backward Direction: Scalar Multiple → Equality",
-      "summary": "Direct computation: ‖⟪c·v, v⟫‖ = ‖c·v‖·‖v‖ via inner_smul_left, norm_star, and algebraic simplification.",
+      "title": "Backward Direction: Scalar Multiple \u2192 Equality",
+      "summary": "Direct computation: \u2016\u27eac\u00b7v, v\u27eb\u2016 = \u2016c\u00b7v\u2016\u00b7\u2016v\u2016 via inner_smul_left, norm_star, and algebraic simplification.",
       "startLine": 36,
       "endLine": 48
     },
     {
       "id": "orthogonal",
       "title": "Orthogonal Projection Lemma",
-      "summary": "The residual u − (⟪v,u⟫/⟪v,v⟫)·v is orthogonal to v. Proved via inner_sub_left, inner_smul_left, inner_conj_symm, and field_simp.",
+      "summary": "The residual u \u2212 (\u27eav,u\u27eb/\u27eav,v\u27eb)\u00b7v is orthogonal to v. Proved via inner_sub_left, inner_smul_left, inner_conj_symm, and field_simp.",
       "startLine": 53,
       "endLine": 63
     },
     {
       "id": "forward",
-      "title": "Forward Direction: Equality → Scalar Multiple",
-      "summary": "Seven-step proof: define projection, show orthogonality, apply Pythagoras, compute inner product norm, derive ‖c‖·‖v‖ = ‖u‖, show residual vanishes, conclude u = c·v.",
+      "title": "Forward Direction: Equality \u2192 Scalar Multiple",
+      "summary": "Seven-step proof: define projection, show orthogonality, apply Pythagoras, compute inner product norm, derive \u2016c\u2016\u00b7\u2016v\u2016 = \u2016u\u2016, show residual vanishes, conclude u = c\u00b7v.",
       "startLine": 68,
       "endLine": 114
     },
     {
       "id": "main-iff",
       "title": "Main Equivalence Theorems",
-      "summary": "Complex-specific and uniform RCLike versions of the equality characterization: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ ↔ ∃ c, u = c·v.",
+      "summary": "Complex-specific and uniform RCLike versions of the equality characterization: \u2016\u27eau,v\u27eb\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 \u2194 \u2203 c, u = c\u00b7v.",
       "startLine": 119,
       "endLine": 139
     },
@@ -140,18 +140,18 @@
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "summary": "A single conjunction asserting that the equality characterization works for both the ℂ-specific and uniform RCLike settings.",
+      "summary": "A single conjunction asserting that the equality characterization works for both the \u2102-specific and uniform RCLike settings.",
       "startLine": 170,
       "endLine": 185
     }
   ],
   "conclusion": {
     "summary": "The open question is answered affirmatively: the equality characterization of Cauchy-Schwarz extends to complex inner product spaces. All 12 theorems are proved with 0 sorries and 0 axioms.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Quantum mechanics**: In complex Hilbert spaces (the setting of quantum mechanics), this characterization tells us when two quantum states are proportional — i.e., physically equivalent up to a global phase.\n\n**2. Tight bounds**: Any use of Cauchy-Schwarz that achieves equality (e.g., in optimization or estimation) corresponds to vectors that are scalar multiples of each other.\n\n3. **Connection to CauchySchwarz.lean**: That file proves equality for real IPS using norm_inner_eq_norm_iff. This file proves it for complex (and all RCLike) IPS via orthogonal decomposition — a fundamentally different proof technique.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Quantum mechanics**: In complex Hilbert spaces (the setting of quantum mechanics), this characterization tells us when two quantum states are proportional \u2014 i.e., physically equivalent up to a global phase.\n\n**2. Tight bounds**: Any use of Cauchy-Schwarz that achieves equality (e.g., in optimization or estimation) corresponds to vectors that are scalar multiples of each other.\n\n3. **Connection to CauchySchwarz.lean**: That file proves equality for real IPS using norm_inner_eq_norm_iff. This file proves it for complex (and all RCLike) IPS via orthogonal decomposition \u2014 a fundamentally different proof technique.",
     "openQuestions": [
       "Can the complex Gram-Schmidt process be formalized using this equality characterization?",
       "Can the Heisenberg uncertainty principle be derived from the complex Cauchy-Schwarz equality in Lean 4?",
-      "Can the projection coefficient c = ⟪v,u⟫/⟪v,v⟫ be connected to Mathlib's orthogonalProjection?"
+      "Can the projection coefficient c = \u27eav,u\u27eb/\u27eav,v\u27eb be connected to Mathlib's orthogonalProjection?"
     ]
   },
   "leanFile": {
@@ -179,10 +179,44 @@
     },
     {
       "authors": "H. A. Schwarz",
-      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem",
+      "title": "\u00dcber ein die Fl\u00e4chen kleinsten Fl\u00e4cheninhalts betreffendes Problem",
       "year": "1885",
       "venue": "Acta Societatis Scientiarum Fennicae",
       "note": "Inner product space formulation with equality condition"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-03",
+      "relationship": "related",
+      "description": "Both involve inner-product-spaces, functional-analysis"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "related",
+      "description": "Both involve inner-product-spaces, analysis"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "related",
+      "description": "Both involve functional-analysis, analysis"
+    },
+    {
+      "targetId": "hilbert-20",
+      "relationship": "related",
+      "description": "Both involve functional-analysis, analysis"
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-integral-oq-03",
+    "cauchy-schwarz-oq-04",
+    "cauchy-schwarz-oq-03",
+    "hilbert-20"
   ]
 }

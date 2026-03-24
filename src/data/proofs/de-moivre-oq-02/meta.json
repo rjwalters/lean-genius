@@ -2,7 +2,7 @@
   "id": "de-moivre-oq-02",
   "title": "Chebyshev Polynomial Properties via De Moivre's Theorem",
   "slug": "de-moivre-oq-02",
-  "description": "A complete formalization of deeper Chebyshev polynomial properties derived from De Moivre's theorem: the composition identity T_m(T_n(cos θ)) = T_{mn}(cos θ), the product-to-sum formula 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x), parity relations T_n(-x) = (-1)^n·T_n(x), special values T_n(±1) and T_n(0), and the roots T_n(cos((2k+1)π/(2n))) = 0.",
+  "description": "A complete formalization of deeper Chebyshev polynomial properties derived from De Moivre's theorem: the composition identity T_m(T_n(cos \u03b8)) = T_{mn}(cos \u03b8), the product-to-sum formula 2\u00b7T_m(x)\u00b7T_n(x) = T_{m+n}(x) + T_{m-n}(x), parity relations T_n(-x) = (-1)^n\u00b7T_n(x), special values T_n(\u00b11) and T_n(0), and the roots T_n(cos((2k+1)\u03c0/(2n))) = 0.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials",
@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.Chebyshev.T_real_cos",
-        "description": "T_n(cos θ) = cos(nθ): the fundamental bridge between Chebyshev polynomials and trigonometry",
+        "description": "T_n(cos \u03b8) = cos(n\u03b8): the fundamental bridge between Chebyshev polynomials and trigonometry",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev"
       },
       {
@@ -41,26 +41,26 @@
       },
       {
         "theorem": "Real.cos_int_mul_pi",
-        "description": "cos(nπ) = (-1)^n: used for T_n(-1) = (-1)^n",
+        "description": "cos(n\u03c0) = (-1)^n: used for T_n(-1) = (-1)^n",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
         "theorem": "Real.cos_int_mul_pi_sub",
-        "description": "cos(nπ - θ) = (-1)^n · cos θ: used for parity T_n(-x) = (-1)^n · T_n(x)",
+        "description": "cos(n\u03c0 - \u03b8) = (-1)^n \u00b7 cos \u03b8: used for parity T_n(-x) = (-1)^n \u00b7 T_n(x)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
         "theorem": "Real.cos_pi_sub",
-        "description": "cos(π - θ) = -cos θ: bridges -cos θ to cos(π-θ) for parity proofs",
+        "description": "cos(\u03c0 - \u03b8) = -cos \u03b8: bridges -cos \u03b8 to cos(\u03c0-\u03b8) for parity proofs",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
     "originalContributions": [
-      "Composition identity: T_m(T_n(cos θ)) = T_{mn}(cos θ), proving Chebyshev polynomials form a commutative monoid under composition",
-      "Product-to-sum formula: 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x), the Chebyshev analog of trigonometric product-to-sum",
-      "Parity: T_n(-x) = (-1)^n · T_n(x), with even/odd specializations showing T_{2n} even and T_{2n+1} odd",
-      "Special values: T_n(1) = 1, T_n(-1) = (-1)^n, T_n(0) = cos(nπ/2)",
-      "Roots: T_n vanishes at cos((2k+1)π/(2n)) for all k ∈ ℤ"
+      "Composition identity: T_m(T_n(cos \u03b8)) = T_{mn}(cos \u03b8), proving Chebyshev polynomials form a commutative monoid under composition",
+      "Product-to-sum formula: 2\u00b7T_m(x)\u00b7T_n(x) = T_{m+n}(x) + T_{m-n}(x), the Chebyshev analog of trigonometric product-to-sum",
+      "Parity: T_n(-x) = (-1)^n \u00b7 T_n(x), with even/odd specializations showing T_{2n} even and T_{2n+1} odd",
+      "Special values: T_n(1) = 1, T_n(-1) = (-1)^n, T_n(0) = cos(n\u03c0/2)",
+      "Roots: T_n vanishes at cos((2k+1)\u03c0/(2n)) for all k \u2208 \u2124"
     ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0",
@@ -70,15 +70,15 @@
   },
   "overview": {
     "historicalContext": "**Beyond the Basic Identity**\n\nThe OQ-01 extension established the fundamental connection: $T_n(\\cos\\theta) = \\cos(n\\theta)$. This OQ-02 extension explores the rich algebraic structure that follows from this identity.\n\n**Composition Monoid**\n\nSince $T_m(T_n(\\cos\\theta)) = T_m(\\cos(n\\theta)) = \\cos(mn\\theta) = T_{mn}(\\cos\\theta)$, the Chebyshev polynomials form a commutative monoid under function composition. This is a remarkable algebraic structure: $T_m \\circ T_n = T_{mn}$, with $T_1$ as the identity element.\n\n**Product-to-Sum**\n\nThe identity $2T_m(x)T_n(x) = T_{m+n}(x) + T_{m-n}(x)$ is the polynomial analog of the trigonometric product-to-sum formula $2\\cos(A)\\cos(B) = \\cos(A+B) + \\cos(A-B)$. This identity is central to Chebyshev spectral methods in numerical analysis.\n\n**Parity and Roots**\n\nThe parity relation $T_n(-x) = (-1)^nT_n(x)$ shows that even-index Chebyshev polynomials are even functions and odd-index ones are odd. The roots $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$ are the Chebyshev nodes, optimal for polynomial interpolation.",
-    "problemStatement": "**The Open Question**\n\nCan we formalize deeper Chebyshev polynomial properties — composition, product-to-sum, parity, special values, and roots — directly from the De Moivre connection?\n\n**Answer: YES**\n\nAll properties follow elegantly from the single identity $T_n(\\cos\\theta) = \\cos(n\\theta)$ combined with standard trigonometric identities.",
-    "text": "A complete formalization of deeper Chebyshev polynomial properties derived from De Moivre's theorem: the composition identity T_m(T_n(cos θ)) = T_{mn}(cos θ), the product-to-sum formula 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x), parity relations T_n(-x) = (-1)^n·T_n(x), special values T_n(±1) and T_n(0), and the roots T_n(cos((2k+1)π/(2n))) = 0.",
+    "problemStatement": "**The Open Question**\n\nCan we formalize deeper Chebyshev polynomial properties \u2014 composition, product-to-sum, parity, special values, and roots \u2014 directly from the De Moivre connection?\n\n**Answer: YES**\n\nAll properties follow elegantly from the single identity $T_n(\\cos\\theta) = \\cos(n\\theta)$ combined with standard trigonometric identities.",
+    "text": "A complete formalization of deeper Chebyshev polynomial properties derived from De Moivre's theorem: the composition identity T_m(T_n(cos \u03b8)) = T_{mn}(cos \u03b8), the product-to-sum formula 2\u00b7T_m(x)\u00b7T_n(x) = T_{m+n}(x) + T_{m-n}(x), parity relations T_n(-x) = (-1)^n\u00b7T_n(x), special values T_n(\u00b11) and T_n(0), and the roots T_n(cos((2k+1)\u03c0/(2n))) = 0.",
     "proofStrategy": "**Formalization Strategy**\n\nEvery theorem follows the same pattern: (1) apply `T_real_cos` to convert Chebyshev evaluations to cosine expressions, (2) use trigonometric identities (`cos_add`, `cos_sub`, `cos_pi_sub`, etc.) to simplify, (3) close with algebraic tactics (`ring`, `linarith`, `push_cast`).\n\n1. **Composition**: Rewrite both sides via `T_real_cos`, reducing to $\\cos(m \\cdot n\\theta) = \\cos(mn \\cdot \\theta)$ which is `push_cast; ring`.\n2. **Product-to-sum**: Rewrite via `T_real_cos`, then use `cos_add` and `cos_sub` to get `linarith`.\n3. **Parity**: Bridge $-\\cos\\theta = \\cos(\\pi - \\theta)$ via `cos_pi_sub`, then `cos_int_mul_pi_sub`.\n4. **Special values**: Use $\\cos(0) = 1$, $\\cos(\\pi) = -1$, $\\cos(\\pi/2) = 0$.\n5. **Roots**: Simplify $n \\cdot \\frac{(2k+1)\\pi}{2n} = (2k+1)\\frac{\\pi}{2} = k\\pi + \\frac{\\pi}{2}$, then $\\cos(k\\pi + \\pi/2) = 0$.",
     "keyInsights": [
-      "**One identity rules them all**: Every theorem reduces to T_real_cos followed by trigonometric manipulation — the power of the De Moivre bridge.",
-      "**Composition = multiplication of indices**: T_m ∘ T_n = T_{mn} because cos(m · nθ) = cos(mn · θ), making Chebyshev composition transparently multiplicative.",
-      "**zpow_add₀ for nonzero base**: ℝ is not a Group under multiplication (0 has no inverse), so zpow_add needs the variant zpow_add₀ with a proof that the base is nonzero.",
-      "**conv_lhs prevents unwanted rewrites**: When rewriting (-1) as cos(π), conv_lhs restricts the rewrite to the LHS, preventing the RHS (-1)^n from being affected.",
-      "**field_simp for rational expressions**: The root theorem requires simplifying n · ((2k+1)π/(2n)) = (2k+1)π/2, which field_simp handles after establishing n ≠ 0."
+      "**One identity rules them all**: Every theorem reduces to T_real_cos followed by trigonometric manipulation \u2014 the power of the De Moivre bridge.",
+      "**Composition = multiplication of indices**: T_m \u2218 T_n = T_{mn} because cos(m \u00b7 n\u03b8) = cos(mn \u00b7 \u03b8), making Chebyshev composition transparently multiplicative.",
+      "**zpow_add\u2080 for nonzero base**: \u211d is not a Group under multiplication (0 has no inverse), so zpow_add needs the variant zpow_add\u2080 with a proof that the base is nonzero.",
+      "**conv_lhs prevents unwanted rewrites**: When rewriting (-1) as cos(\u03c0), conv_lhs restricts the rewrite to the LHS, preventing the RHS (-1)^n from being affected.",
+      "**field_simp for rational expressions**: The root theorem requires simplifying n \u00b7 ((2k+1)\u03c0/(2n)) = (2k+1)\u03c0/2, which field_simp handles after establishing n \u2260 0."
     ],
     "prerequisites": []
   },
@@ -86,35 +86,35 @@
     {
       "id": "composition",
       "title": "Composition Identity",
-      "summary": "Proves T_m(T_n(cos θ)) = T_{mn}(cos θ): Chebyshev polynomials form a commutative monoid under composition. Also proves commutativity, identity (T_1), associativity, and special cases T_2 ∘ T_n and T_n ∘ T_n.",
+      "summary": "Proves T_m(T_n(cos \u03b8)) = T_{mn}(cos \u03b8): Chebyshev polynomials form a commutative monoid under composition. Also proves commutativity, identity (T_1), associativity, and special cases T_2 \u2218 T_n and T_n \u2218 T_n.",
       "startLine": 25,
       "endLine": 60
     },
     {
       "id": "product-to-sum",
       "title": "Product-to-Sum Formula",
-      "summary": "Proves 2·T_m(cos θ)·T_n(cos θ) = T_{m+n}(cos θ) + T_{m-n}(cos θ) from cos_add and cos_sub. Also derives the squaring identity 2·T_n²(cos θ) = T_{2n}(cos θ) + 1.",
+      "summary": "Proves 2\u00b7T_m(cos \u03b8)\u00b7T_n(cos \u03b8) = T_{m+n}(cos \u03b8) + T_{m-n}(cos \u03b8) from cos_add and cos_sub. Also derives the squaring identity 2\u00b7T_n\u00b2(cos \u03b8) = T_{2n}(cos \u03b8) + 1.",
       "startLine": 62,
       "endLine": 82
     },
     {
       "id": "parity",
       "title": "Parity Relations",
-      "summary": "Proves T_n(-cos θ) = (-1)^n · T_n(cos θ) via cos(π - θ) = -cos θ and cos(nπ - nθ) = (-1)^n cos(nθ). Derives even parity T_{2n}(-x) = T_{2n}(x) and odd parity T_{2n+1}(-x) = -T_{2n+1}(x).",
+      "summary": "Proves T_n(-cos \u03b8) = (-1)^n \u00b7 T_n(cos \u03b8) via cos(\u03c0 - \u03b8) = -cos \u03b8 and cos(n\u03c0 - n\u03b8) = (-1)^n cos(n\u03b8). Derives even parity T_{2n}(-x) = T_{2n}(x) and odd parity T_{2n+1}(-x) = -T_{2n+1}(x).",
       "startLine": 84,
       "endLine": 108
     },
     {
       "id": "special-values",
       "title": "Special Values",
-      "summary": "Proves T_n(1) = 1 (from cos(0) = 1), T_n(-1) = (-1)^n (from cos(nπ) = (-1)^n), and T_n(0) = cos(nπ/2) (from cos(π/2) = 0).",
+      "summary": "Proves T_n(1) = 1 (from cos(0) = 1), T_n(-1) = (-1)^n (from cos(n\u03c0) = (-1)^n), and T_n(0) = cos(n\u03c0/2) (from cos(\u03c0/2) = 0).",
       "startLine": 110,
       "endLine": 129
     },
     {
       "id": "roots",
       "title": "Roots of Chebyshev Polynomials",
-      "summary": "Proves T_n vanishes at cos((2k+1)π/(2n)) for all k ∈ ℤ and positive n. The proof simplifies n · (2k+1)π/(2n) = kπ + π/2, then uses cos(kπ + π/2) = 0.",
+      "summary": "Proves T_n vanishes at cos((2k+1)\u03c0/(2n)) for all k \u2208 \u2124 and positive n. The proof simplifies n \u00b7 (2k+1)\u03c0/(2n) = k\u03c0 + \u03c0/2, then uses cos(k\u03c0 + \u03c0/2) = 0.",
       "startLine": 131,
       "endLine": 144
     },
@@ -127,10 +127,10 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization proves 15 theorems with 0 sorries, establishing the complete algebraic structure of Chebyshev polynomials via De Moivre's theorem. Every proof follows the same elegant pattern: convert to trigonometric form via T_real_cos, apply standard trig identities, close with algebra. The composition identity T_m ∘ T_n = T_{mn} reveals Chebyshev polynomials as a commutative monoid, a structure with applications in dynamical systems and symbolic computation.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Commutative Composition Monoid**: {T_n : n ∈ ℤ} under composition forms a commutative monoid, isomorphic to (ℤ, ×). This structure underpins iterative methods in dynamical systems.\n\n**2. Spectral Methods**: The product-to-sum formula enables efficient Chebyshev spectral methods in numerical analysis — multiplying two Chebyshev expansions reduces to index arithmetic.\n\n3. **Optimal Interpolation**: The root characterization cos((2k+1)π/(2n)) gives the Chebyshev nodes, which minimize the maximum interpolation error among all polynomial node sets of degree n.\n\n4. **Symmetry Classification**: The parity result classifies Chebyshev polynomials as even/odd functions, simplifying analysis of symmetric integrals and boundary value problems.",
+    "summary": "The formalization proves 15 theorems with 0 sorries, establishing the complete algebraic structure of Chebyshev polynomials via De Moivre's theorem. Every proof follows the same elegant pattern: convert to trigonometric form via T_real_cos, apply standard trig identities, close with algebra. The composition identity T_m \u2218 T_n = T_{mn} reveals Chebyshev polynomials as a commutative monoid, a structure with applications in dynamical systems and symbolic computation.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Commutative Composition Monoid**: {T_n : n \u2208 \u2124} under composition forms a commutative monoid, isomorphic to (\u2124, \u00d7). This structure underpins iterative methods in dynamical systems.\n\n**2. Spectral Methods**: The product-to-sum formula enables efficient Chebyshev spectral methods in numerical analysis \u2014 multiplying two Chebyshev expansions reduces to index arithmetic.\n\n3. **Optimal Interpolation**: The root characterization cos((2k+1)\u03c0/(2n)) gives the Chebyshev nodes, which minimize the maximum interpolation error among all polynomial node sets of degree n.\n\n4. **Symmetry Classification**: The parity result classifies Chebyshev polynomials as even/odd functions, simplifying analysis of symmetric integrals and boundary value problems.",
     "openQuestions": [
-      "Can the Chebyshev composition monoid structure be formalized abstractly as a monoid homomorphism (ℤ, ×) → (ℝ[X], ∘)?",
+      "Can the Chebyshev composition monoid structure be formalized abstractly as a monoid homomorphism (\u2124, \u00d7) \u2192 (\u211d[X], \u2218)?",
       "Can the product-to-sum formula be extended to Chebyshev polynomials of the second kind U_n?",
       "Can the minimax property (T_n has the smallest supremum norm among monic polynomials of degree n on [-1,1]) be formalized?",
       "Can the connection between Chebyshev nodes and Gaussian quadrature be made formal?"
@@ -143,7 +143,7 @@
     },
     {
       "id": "de-moivre-oq-01",
-      "relationship": "OQ-01 established T_n(cos θ) = cos(nθ) and computed explicit polynomials; OQ-02 derives algebraic identities from this connection."
+      "relationship": "OQ-01 established T_n(cos \u03b8) = cos(n\u03b8) and computed explicit polynomials; OQ-02 derives algebraic identities from this connection."
     }
   ],
   "leanFile": {
@@ -176,5 +176,39 @@
       "venue": "Wiley",
       "note": "Classical treatment of Chebyshev polynomial identities"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "related",
+      "description": "Both involve chebyshev-polynomials, de-moivre"
+    },
+    {
+      "targetId": "de-moivre-oq-03",
+      "relationship": "related",
+      "description": "Both involve de-moivre, trigonometry"
+    },
+    {
+      "targetId": "erdos-1129",
+      "relationship": "related",
+      "description": "Both involve chebyshev-polynomials"
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "related",
+      "description": "Both involve trigonometry"
+    }
+  ],
+  "relatedProofs": [
+    "de-moivre",
+    "de-moivre-oq-01",
+    "de-moivre-oq-03",
+    "erdos-1129",
+    "area-of-circle-oq-03"
   ]
 }

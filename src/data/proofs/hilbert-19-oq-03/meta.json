@@ -2,7 +2,7 @@
   "id": "hilbert-19-oq-03",
   "title": "Fully Nonlinear Elliptic Regularity (Evans-Krylov)",
   "slug": "hilbert-19-oq-03",
-  "description": "Formalizes the extension of Hilbert's 19th problem to fully nonlinear elliptic equations. Defines fully nonlinear elliptic operators with uniform ellipticity conditions, proves properties of Pucci extremal operators (M⁺ ≤ M⁻, superadditivity, sign cases, uniform ellipticity), establishes a viscosity solution framework with touching functions, and states the Evans-Krylov theorem (C^{2,α} regularity for convex uniformly elliptic equations). Proves the full regularity chain: Evans-Krylov + Schauder bootstrap = C^∞ for smooth convex F.",
+  "description": "Formalizes the extension of Hilbert's 19th problem to fully nonlinear elliptic equations. Defines fully nonlinear elliptic operators with uniform ellipticity conditions, proves properties of Pucci extremal operators (M\u207a \u2264 M\u207b, superadditivity, sign cases, uniform ellipticity), establishes a viscosity solution framework with touching functions, and states the Evans-Krylov theorem (C^{2,\u03b1} regularity for convex uniformly elliptic equations). Proves the full regularity chain: Evans-Krylov + Schauder bootstrap = C^\u221e for smooth convex F.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Evans%E2%80%93Krylov_theorem",
@@ -50,8 +50,8 @@
     ],
     "originalContributions": [
       "Reduced axiom count from 8 to 2 by proving 6 axioms with trivially satisfiable conclusions",
-      "Fully nonlinear operator framework with ellipticity constants (λ, Λ)",
-      "Pucci extremal operators in 1D with proved bounds (M⁻ ≤ M⁺, superadditivity)",
+      "Fully nonlinear operator framework with ellipticity constants (\u03bb, \u039b)",
+      "Pucci extremal operators in 1D with proved bounds (M\u207b \u2264 M\u207a, superadditivity)",
       "Pucci maximal operator proved uniformly elliptic (all sandwich bounds)",
       "Uniform ellipticity implies monotonicity (proved)",
       "Viscosity solution definitions (sub/super/solution) with touching functions",
@@ -68,14 +68,14 @@
   },
   "overview": {
     "historicalContext": "Hilbert's 19th problem (1900) asked whether minimizers of variational integrals are always analytic. De Giorgi (1957) and Nash (1958) independently resolved this for divergence-form (quasilinear) equations by proving Holder continuity of weak solutions. The natural extension to fully nonlinear equations $F(D^2 u) = 0$ required entirely new techniques: the classical energy methods fail because the equation cannot be written in divergence form. Alexandrov (1960s) introduced the ABP maximum principle using contact sets and convex envelopes. Krylov and Safonov (1980) proved the Harnack inequality for nondivergence-form equations, establishing $C^\\alpha$ regularity without convexity. The breakthrough came in 1982 when Evans and Krylov independently proved $C^{2,\\alpha}$ regularity for convex (or concave) uniformly elliptic $F$, using the Ishii-Lions method and Krylov-Safonov theory. Caffarelli and Cabre (1995) systematized the theory in their monograph. Nadirashvili and Vladut (2008) showed that convexity is essential: they constructed non-convex uniformly elliptic operators in dimension $\\geq 5$ with solutions failing $C^{1,1}$ regularity. Crandall and Lions (1983) introduced viscosity solutions as the correct weak solution framework for fully nonlinear PDEs.",
-    "problemStatement": "Does the regularity theory of Hilbert's 19th problem extend to fully nonlinear equations F(D²u) = 0? Answer: Yes, when F is convex/concave and uniformly elliptic (Evans-Krylov).",
-    "text": "Formalizes the extension of Hilbert's 19th problem to fully nonlinear elliptic equations. Defines fully nonlinear elliptic operators with uniform ellipticity conditions, proves properties of Pucci extremal operators (M⁺ ≤ M⁻, superadditivity, sign cases, uniform ellipticity), establishes a viscosity solution framework with touching functions, and states the Evans-Krylov theorem (C^{2,α} regularity for convex uniformly elliptic equations). Proves the full regularity chain: Evans-Krylov + Schauder bootstrap = C^∞ for smooth convex F.",
+    "problemStatement": "Does the regularity theory of Hilbert's 19th problem extend to fully nonlinear equations F(D\u00b2u) = 0? Answer: Yes, when F is convex/concave and uniformly elliptic (Evans-Krylov).",
+    "text": "Formalizes the extension of Hilbert's 19th problem to fully nonlinear elliptic equations. Defines fully nonlinear elliptic operators with uniform ellipticity conditions, proves properties of Pucci extremal operators (M\u207a \u2264 M\u207b, superadditivity, sign cases, uniform ellipticity), establishes a viscosity solution framework with touching functions, and states the Evans-Krylov theorem (C^{2,\u03b1} regularity for convex uniformly elliptic equations). Proves the full regularity chain: Evans-Krylov + Schauder bootstrap = C^\u221e for smooth convex F.",
     "proofStrategy": "Define fully nonlinear operators with uniform ellipticity, formalize Pucci extremal operators as canonical bounds, define viscosity solutions, state Evans-Krylov as axiom, and prove the regularity chain from Evans-Krylov through Schauder bootstrap to full smoothness.",
     "keyInsights": [
       "**Pucci extremal operators** $M^+, M^-$ bound all uniformly elliptic operators with given constants $(\\lambda, \\Lambda)$, serving as the universal comparison objects for the ellipticity class $S(\\lambda, \\Lambda)$",
-      "**Viscosity solutions** (Crandall-Lions 1983) are the correct weak solution concept for fully nonlinear PDEs — they replace Sobolev-space weak solutions by testing against smooth touching functions, avoiding the need for the equation to be in divergence form",
+      "**Viscosity solutions** (Crandall-Lions 1983) are the correct weak solution concept for fully nonlinear PDEs \u2014 they replace Sobolev-space weak solutions by testing against smooth touching functions, avoiding the need for the equation to be in divergence form",
       "**Convexity of $F$ is essential**: Nadirashvili-Vladut (2008) constructed non-convex uniformly elliptic operators in dimension $\\geq 5$ with solutions failing $C^{1,1}$ regularity, proving Evans-Krylov cannot be extended without structural assumptions",
-      "**The regularity chain** ABP $\\to$ Krylov-Safonov ($C^\\alpha$) $\\to$ Evans-Krylov ($C^{2,\\alpha}$) $\\to$ Schauder ($C^\\infty$) parallels but does not reduce to the De Giorgi-Nash-Moser theory — entirely different techniques (contact sets, doubling of variables) replace energy methods",
+      "**The regularity chain** ABP $\\to$ Krylov-Safonov ($C^\\alpha$) $\\to$ Evans-Krylov ($C^{2,\\alpha}$) $\\to$ Schauder ($C^\\infty$) parallels but does not reduce to the De Giorgi-Nash-Moser theory \u2014 entirely different techniques (contact sets, doubling of variables) replace energy methods",
       "**Bellman equations** from stochastic optimal control automatically satisfy the convexity hypothesis ($\\sup$ of affine functions is convex), making Evans-Krylov directly applicable to the most important class of fully nonlinear PDEs in applications"
     ],
     "prerequisites": []
@@ -168,10 +168,10 @@
   ],
   "conclusion": {
     "summary": "Complete formalization of the fully nonlinear extension of Hilbert's 19th problem. The Evans-Krylov theorem (1982) resolves the regularity question affirmatively for convex/concave $F$: viscosity solutions of uniformly elliptic $F(D^2 u) = 0$ are $C^\\infty$ when $F$ is smooth. The formalization covers the full chain from operator definitions through Pucci extremal operators, viscosity solutions, and the regularity hierarchy. Reduced from 8 axioms to 2 by proving 6 axioms whose conclusions were trivially satisfiable (existence of constants, True). Remaining 2 axioms (viscosity comparison principle, Schauder bootstrap) have substantive conclusions requiring deep PDE theory. 1 sorry (second derivative test).",
-    "implications": "**Theoretical Significance**: The Evans-Krylov regularity theory opens the fully nonlinear PDE world to the same smoothness guarantees that De Giorgi-Nash-Moser provides for quasilinear equations. The remaining sorry (classical_implies_viscosity_sub) requires formalizing the second derivative test for touching functions — a natural Mathlib target.\n\nThe 2 remaining axioms encode results requiring doubling-of-variables technique (comparison principle) and Schauder estimates (bootstrap) — both beyond current Mathlib capabilities. Six former axioms were proved trivially because their formal conclusions (∃ C > 0, ∃ α ∈ (0,1], etc.) did not capture the full mathematical content.",
+    "implications": "**Theoretical Significance**: The Evans-Krylov regularity theory opens the fully nonlinear PDE world to the same smoothness guarantees that De Giorgi-Nash-Moser provides for quasilinear equations. The remaining sorry (classical_implies_viscosity_sub) requires formalizing the second derivative test for touching functions \u2014 a natural Mathlib target.\n\nThe 2 remaining axioms encode results requiring doubling-of-variables technique (comparison principle) and Schauder estimates (bootstrap) \u2014 both beyond current Mathlib capabilities. Six former axioms were proved trivially because their formal conclusions (\u2203 C > 0, \u2203 \u03b1 \u2208 (0,1], etc.) did not capture the full mathematical content.",
     "openQuestions": [
       "Can Evans-Krylov be proved for broader classes beyond convex/concave?",
-      "What is the optimal Holder exponent α in Evans-Krylov?",
+      "What is the optimal Holder exponent \u03b1 in Evans-Krylov?",
       "Can viscosity solution theory be formalized in Mathlib?"
     ]
   },
@@ -211,10 +211,44 @@
       "venue": "Izv. Akad. Nauk SSSR"
     },
     {
-      "authors": "L. Caffarelli, X. Cabré",
+      "authors": "L. Caffarelli, X. Cabr\u00e9",
       "title": "Fully Nonlinear Elliptic Equations",
       "year": "1995",
       "venue": "AMS Colloquium Publications"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-19",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "hilbert-20",
+      "relationship": "related",
+      "description": "Both involve pde"
+    },
+    {
+      "targetId": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "Both involve pde"
+    },
+    {
+      "targetId": "navier-stokes-oq-01",
+      "relationship": "related",
+      "description": "Both involve pde"
+    },
+    {
+      "targetId": "navier-stokes-oq-02",
+      "relationship": "related",
+      "description": "Both involve pde"
+    }
+  ],
+  "relatedProofs": [
+    "hilbert-19",
+    "hilbert-20",
+    "navier-stokes-existence",
+    "navier-stokes-oq-01",
+    "navier-stokes-oq-02"
   ]
 }

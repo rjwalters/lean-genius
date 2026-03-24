@@ -127,8 +127,40 @@
       "What is the connection to the Erd\u0151s conjecture on the maximum of \u03a3 1/(a\u2099 log a\u2099) over primitive sets?"
     ]
   },
-  "crossReferences": [],
-  "relatedProofs": [],
+  "crossReferences": [
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Both involve divisibility, primitive-sets"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Both involve sequences, number-theory"
+    },
+    {
+      "targetId": "erdos-243",
+      "relationship": "related",
+      "description": "Both involve sequences, number-theory"
+    },
+    {
+      "targetId": "erdos-255",
+      "relationship": "related",
+      "description": "Both involve sequences, number-theory"
+    },
+    {
+      "targetId": "erdos-260",
+      "relationship": "related",
+      "description": "Both involve sequences, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-793",
+    "erdos-1101",
+    "erdos-243",
+    "erdos-255",
+    "erdos-260"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

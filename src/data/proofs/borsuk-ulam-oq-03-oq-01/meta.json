@@ -200,5 +200,39 @@
       "venue": "Fundamenta Mathematicae",
       "note": "Original Borsuk-Ulam theorem"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Both involve combinatorial-topology, tucker-lemma"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Both involve tucker-lemma, borsuk-ulam"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02",
+      "relationship": "related",
+      "description": "Both involve borsuk-ulam, topology"
+    },
+    {
+      "targetId": "intermediate-value-theorem-oq-01",
+      "relationship": "related",
+      "description": "Both involve bisection"
+    }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-03-oq-01-oq-01",
+    "borsuk-ulam-oq-02",
+    "intermediate-value-theorem-oq-01"
   ]
 }

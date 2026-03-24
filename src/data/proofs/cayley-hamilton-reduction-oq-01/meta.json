@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-reduction-oq-01",
   "title": "Efficient Cayley-Hamilton Reduction for Sparse Matrices",
   "slug": "cayley-hamilton-reduction-oq-01",
-  "description": "The Cayley-Hamilton reduction is computationally efficient for structured sparse matrices: upper triangular matrices have charpoly = ∏(X - diagonal), block triangular matrices decompose into independent reductions, and nilpotent matrices have bounded polynomial basis.",
+  "description": "The Cayley-Hamilton reduction is computationally efficient for structured sparse matrices: upper triangular matrices have charpoly = \u220f(X - diagonal), block triangular matrices decompose into independent reductions, and nilpotent matrices have bounded polynomial basis.",
   "meta": {
     "author": "Lean Genius Research (Lean 4 formalization)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem",
@@ -33,13 +33,13 @@
         "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
       },
       {
-        "theorem": "Matrix.charpoly_fromBlocks_zero₁₂",
-        "description": "2×2 block lower triangular charpoly factorization",
+        "theorem": "Matrix.charpoly_fromBlocks_zero\u2081\u2082",
+        "description": "2\u00d72 block lower triangular charpoly factorization",
         "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
       },
       {
-        "theorem": "Matrix.charpoly_fromBlocks_zero₂₁",
-        "description": "2×2 block upper triangular charpoly factorization",
+        "theorem": "Matrix.charpoly_fromBlocks_zero\u2082\u2081",
+        "description": "2\u00d72 block upper triangular charpoly factorization",
         "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
       },
       {
@@ -49,10 +49,10 @@
       }
     ],
     "originalContributions": [
-      "Upper triangular reduction theorem: aeval M f = aeval M (f %ₘ M.charpoly) with factored charpoly",
+      "Upper triangular reduction theorem: aeval M f = aeval M (f %\u2098 M.charpoly) with factored charpoly",
       "Strictly upper triangular nilpotency: M^n = 0 directly from charpoly = X^n",
       "Block diagonal charpoly factorization theorem",
-      "Diagonal matrix power formula: (D^k) i j = 0 for i ≠ j, (D^k) i i = (D i i)^k",
+      "Diagonal matrix power formula: (D^k) i j = 0 for i \u2260 j, (D^k) i i = (D i i)^k",
       "Higher nilpotent power vanishing theorem"
     ],
     "dateAdded": "2026-02-23",
@@ -61,13 +61,13 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Cayley-Hamilton theorem (1858) underpins efficient matrix computation. The open question from the cayley-hamilton-reduction gallery entry asks: 'Can this reduction be made computationally efficient for sparse matrices?' This formalization answers YES for four key sparse structures.\n\nFor dense n×n matrices, computing the characteristic polynomial requires O(n³) operations (via determinant expansion). For sparse/structured matrices, this drops dramatically:\n- Upper triangular: O(n) — just read the diagonal\n- Block triangular: O(Σ kᵢ³) where kᵢ are block sizes — up to O(n³/k²) savings for k blocks of equal size\n- Diagonal: O(n) — entry-wise computation\n\nThe Wiedemann algorithm (1986) exploits sparsity to compute charpolys in O(n²s) where s is sparsity, giving O(n²) for s = O(1) sparse matrices.",
-    "problemStatement": "**Open Question** (from CayleyHamiltonOQ02): Can the Cayley-Hamilton reduction aeval A p = aeval A (p %ₘ charpoly A) be made computationally efficient for sparse matrices?\n\n**Answer**: Yes, for structured sparse matrices. Four key cases:\n\n1. **Upper triangular M**: charpoly M = ∏ᵢ (X - M i i), computable in O(n)\n2. **Block triangular M**: charpoly M = ∏ blocks charpoly(block), divide-and-conquer\n3. **Nilpotent M** (strictly upper triangular, zero diagonal): charpoly = Xⁿ → M^n = 0, bounded reduction basis\n4. **Diagonal M**: polynomial evaluation is entry-wise, (D^k) i i = (D i i)^k",
-    "text": "The Cayley-Hamilton reduction is computationally efficient for structured sparse matrices: upper triangular matrices have charpoly = ∏(X - diagonal), block triangular matrices decompose into independent reductions, and nilpotent matrices have bounded polynomial basis.",
-    "proofStrategy": "The proofs proceed in four sections:\n\n**Section 1 (Upper Triangular)**: Uses `Matrix.charpoly_of_upperTriangular` (requires `BlockTriangular id` condition) to establish the factored form. The Cayley-Hamilton reduction follows the same pattern as CayleyHamiltonOQ02: use polynomial division and `Matrix.aeval_self_charpoly = 0` to reduce.\n\n**Section 2 (Block Triangular)**: Uses `Matrix.BlockTriangular.charpoly` for the general case and `Matrix.charpoly_fromBlocks_zero₁₂/₂₁` for the 2×2 block cases.\n\n**Section 3 (Nilpotent)**: Combines the upper triangular factorization with `hdiag : ∀ i, M i i = 0` to get charpoly = X^n, then applies Cayley-Hamilton to get M^n = 0.\n\n**Section 4 (Diagonal)**: Proves by induction that diagonal structure is preserved under matrix powers, with the diagonal entry formula (D^k) i i = (D i i)^k.",
+    "historicalContext": "The Cayley-Hamilton theorem (1858) underpins efficient matrix computation. The open question from the cayley-hamilton-reduction gallery entry asks: 'Can this reduction be made computationally efficient for sparse matrices?' This formalization answers YES for four key sparse structures.\n\nFor dense n\u00d7n matrices, computing the characteristic polynomial requires O(n\u00b3) operations (via determinant expansion). For sparse/structured matrices, this drops dramatically:\n- Upper triangular: O(n) \u2014 just read the diagonal\n- Block triangular: O(\u03a3 k\u1d62\u00b3) where k\u1d62 are block sizes \u2014 up to O(n\u00b3/k\u00b2) savings for k blocks of equal size\n- Diagonal: O(n) \u2014 entry-wise computation\n\nThe Wiedemann algorithm (1986) exploits sparsity to compute charpolys in O(n\u00b2s) where s is sparsity, giving O(n\u00b2) for s = O(1) sparse matrices.",
+    "problemStatement": "**Open Question** (from CayleyHamiltonOQ02): Can the Cayley-Hamilton reduction aeval A p = aeval A (p %\u2098 charpoly A) be made computationally efficient for sparse matrices?\n\n**Answer**: Yes, for structured sparse matrices. Four key cases:\n\n1. **Upper triangular M**: charpoly M = \u220f\u1d62 (X - M i i), computable in O(n)\n2. **Block triangular M**: charpoly M = \u220f blocks charpoly(block), divide-and-conquer\n3. **Nilpotent M** (strictly upper triangular, zero diagonal): charpoly = X\u207f \u2192 M^n = 0, bounded reduction basis\n4. **Diagonal M**: polynomial evaluation is entry-wise, (D^k) i i = (D i i)^k",
+    "text": "The Cayley-Hamilton reduction is computationally efficient for structured sparse matrices: upper triangular matrices have charpoly = \u220f(X - diagonal), block triangular matrices decompose into independent reductions, and nilpotent matrices have bounded polynomial basis.",
+    "proofStrategy": "The proofs proceed in four sections:\n\n**Section 1 (Upper Triangular)**: Uses `Matrix.charpoly_of_upperTriangular` (requires `BlockTriangular id` condition) to establish the factored form. The Cayley-Hamilton reduction follows the same pattern as CayleyHamiltonOQ02: use polynomial division and `Matrix.aeval_self_charpoly = 0` to reduce.\n\n**Section 2 (Block Triangular)**: Uses `Matrix.BlockTriangular.charpoly` for the general case and `Matrix.charpoly_fromBlocks_zero\u2081\u2082/\u2082\u2081` for the 2\u00d72 block cases.\n\n**Section 3 (Nilpotent)**: Combines the upper triangular factorization with `hdiag : \u2200 i, M i i = 0` to get charpoly = X^n, then applies Cayley-Hamilton to get M^n = 0.\n\n**Section 4 (Diagonal)**: Proves by induction that diagonal structure is preserved under matrix powers, with the diagonal entry formula (D^k) i i = (D i i)^k.",
     "keyInsights": [
-      "Upper triangular matrices have completely explicit charpoly — no dense matrix arithmetic required",
-      "Block structure reduces the 'size' of the reduction: k blocks of size n/k give k² speedup",
+      "Upper triangular matrices have completely explicit charpoly \u2014 no dense matrix arithmetic required",
+      "Block structure reduces the 'size' of the reduction: k blocks of size n/k give k\u00b2 speedup",
       "Strictly upper triangular = nilpotent: zero diagonal forces charpoly = X^n by Cayley-Hamilton",
       "Diagonal matrix polynomial evaluation decomposes entry-wise: f(D) is diagonal with (f(D i i)) on diagonal",
       "All results hold over arbitrary commutative rings R (not just fields)",
@@ -90,37 +90,37 @@
       "title": "Upper Triangular Matrices",
       "startLine": 72,
       "endLine": 130,
-      "summary": "For upper triangular M (BlockTriangular id), charpoly = ∏(X - Mᵢᵢ). The Cayley-Hamilton reduction applies with this factored charpoly, enabling O(n) charpoly computation."
+      "summary": "For upper triangular M (BlockTriangular id), charpoly = \u220f(X - M\u1d62\u1d62). The Cayley-Hamilton reduction applies with this factored charpoly, enabling O(n) charpoly computation."
     },
     {
       "id": "block-triangular",
       "title": "Block Triangular Matrices",
       "startLine": 132,
       "endLine": 180,
-      "summary": "For block triangular matrices, charpoly decomposes as a product over diagonal blocks. Includes general BlockTriangular case and specialized 2×2 block theorems (lower triangular, upper triangular, block diagonal)."
+      "summary": "For block triangular matrices, charpoly decomposes as a product over diagonal blocks. Includes general BlockTriangular case and specialized 2\u00d72 block theorems (lower triangular, upper triangular, block diagonal)."
     },
     {
       "id": "nilpotent",
       "title": "Strictly Upper Triangular (Nilpotent) Matrices",
       "startLine": 182,
       "endLine": 230,
-      "summary": "Zero diagonal implies charpoly = X^n, hence M^n = 0 (nilpotent). Higher powers M^k = 0 for k ≥ n. The reduction basis is bounded by nilpotency index."
+      "summary": "Zero diagonal implies charpoly = X^n, hence M^n = 0 (nilpotent). Higher powers M^k = 0 for k \u2265 n. The reduction basis is bounded by nilpotency index."
     },
     {
       "id": "diagonal",
       "title": "Diagonal Matrices",
       "startLine": 232,
       "endLine": 285,
-      "summary": "Diagonal structure preserved under powers: (D^k) i j = 0 for i ≠ j, and (D^k) i i = (D i i)^k. Enables O(n) polynomial evaluation entry-by-entry."
+      "summary": "Diagonal structure preserved under powers: (D^k) i j = 0 for i \u2260 j, and (D^k) i i = (D i i)^k. Enables O(n) polynomial evaluation entry-by-entry."
     }
   ],
   "conclusion": {
     "summary": "This formalization proves that the Cayley-Hamilton reduction IS computationally efficient for four classes of structured sparse matrices: upper triangular (O(n) charpoly), block triangular (divide-and-conquer), nilpotent/strictly upper triangular (bounded reduction basis), and diagonal (entry-wise O(n) evaluation). All 14 theorems are fully proved (0 sorries).",
-    "implications": "**Algorithmic**: These structural results underpin efficient matrix computation in numerical linear algebra — computing matrix exponentials, solving ODEs with sparse coefficient matrices, and signal processing with structured system matrices.\n\n**Theoretical**: The factored charpoly for upper triangular matrices connects to the theory of Jordan normal form: any matrix is similar to an upper triangular matrix (Jordan form), so the factored charpoly is always achievable after change of basis.\n\n**Formal verification**: Lean/Mathlib's BlockTriangular framework provides a unified treatment of triangular and block triangular cases, enabling clean parametric proofs over arbitrary commutative rings.",
+    "implications": "**Algorithmic**: These structural results underpin efficient matrix computation in numerical linear algebra \u2014 computing matrix exponentials, solving ODEs with sparse coefficient matrices, and signal processing with structured system matrices.\n\n**Theoretical**: The factored charpoly for upper triangular matrices connects to the theory of Jordan normal form: any matrix is similar to an upper triangular matrix (Jordan form), so the factored charpoly is always achievable after change of basis.\n\n**Formal verification**: Lean/Mathlib's BlockTriangular framework provides a unified treatment of triangular and block triangular cases, enabling clean parametric proofs over arbitrary commutative rings.",
     "openQuestions": [
       "What is the analog for infinite-dimensional operators (compact operators on Hilbert spaces)?",
       "Can the minimal polynomial reduction (CayleyHamiltonOQ01) also be made efficient for sparse matrices?",
-      "How does the Wiedemann algorithm's O(n²) complexity for sparse charpoly computation formalize in Lean?"
+      "How does the Wiedemann algorithm's O(n\u00b2) complexity for sparse charpoly computation formalize in Lean?"
     ]
   },
   "leanFile": {
@@ -142,5 +142,39 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both involve linear-algebra, matrices"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "Both involve linear-algebra, matrices"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "related",
+      "description": "Both involve linear-algebra, matrices"
+    },
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "related",
+      "description": "Both involve linear-algebra, matrices"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-reduction",
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-02",
+    "cramers-rule-oq-01"
+  ]
 }

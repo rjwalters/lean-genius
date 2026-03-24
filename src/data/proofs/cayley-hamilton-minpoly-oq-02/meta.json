@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-02",
   "title": "Similar Matrices Have Identical Minimal Polynomials",
   "slug": "cayley-hamilton-minpoly-oq-02",
-  "description": "A formal proof that similar matrices B = P⁻¹AP share the same minimal polynomial over any field K. The inner conjugation map A ↦ P⁻¹AP is formalized as a K-algebra endomorphism, and polynomial evaluation is shown to commute with conjugation via aeval_algHom_apply.",
+  "description": "A formal proof that similar matrices B = P\u207b\u00b9AP share the same minimal polynomial over any field K. The inner conjugation map A \u21a6 P\u207b\u00b9AP is formalized as a K-algebra endomorphism, and polynomial evaluation is shown to commute with conjugation via aeval_algHom_apply.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)",
@@ -44,7 +44,7 @@
       },
       {
         "theorem": "Polynomial.aeval_algHom_apply",
-        "description": "Polynomial evaluation commutes with algebra homomorphisms: aeval (φ x) p = φ (aeval x p)",
+        "description": "Polynomial evaluation commutes with algebra homomorphisms: aeval (\u03c6 x) p = \u03c6 (aeval x p)",
         "module": "Mathlib.RingTheory.Polynomial.Basic"
       },
       {
@@ -59,11 +59,11 @@
       }
     ],
     "originalContributions": [
-      "Inner conjugation AlgHom: the map A ↦ P⁻¹AP is a K-algebra endomorphism (conjAlgHom)",
+      "Inner conjugation AlgHom: the map A \u21a6 P\u207b\u00b9AP is a K-algebra endomorphism (conjAlgHom)",
       "aeval_conj: polynomial evaluation commutes with matrix conjugation via aeval_algHom_apply",
-      "conj_eq_zero_iff: P⁻¹MP = 0 iff M = 0 (conjugation preserves invertibility)",
-      "minpoly_similar: similar matrices B = P⁻¹AP have identical minimal polynomials",
-      "minpoly_conj_inv: minpoly(PAP⁻¹) = minpoly(A) via the inverse conjugation",
+      "conj_eq_zero_iff: P\u207b\u00b9MP = 0 iff M = 0 (conjugation preserves invertibility)",
+      "minpoly_similar: similar matrices B = P\u207b\u00b9AP have identical minimal polynomials",
+      "minpoly_conj_inv: minpoly(PAP\u207b\u00b9) = minpoly(A) via the inverse conjugation",
       "minpoly_of_similar: reformulation using an explicit similarity witness"
     ],
     "dateAdded": "2026-02-23",
@@ -82,14 +82,14 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Similarity Invariance of the Minimal Polynomial**\n\nTwo matrices $A$ and $B$ are *similar* if $B = P^{-1}AP$ for some invertible matrix $P$. Similarity is the natural equivalence relation on matrices over a field: it corresponds to change of basis for a linear map. A fundamental fact is that similar matrices share all their intrinsic invariants — determinant, trace, characteristic polynomial, and minimal polynomial.\n\nThe minimal polynomial $\\mu_M$ is the monic polynomial of least degree annihilating $M$, i.e., the generator of the kernel of the evaluation map $K[X] \\to M_n(K)$, $p \\mapsto p(M)$. That $\\mu_A = \\mu_B$ for similar $A, B$ follows from the observation that any polynomial relation $p(A) = 0$ immediately gives $p(B) = p(P^{-1}AP) = P^{-1}p(A)P = 0$, since polynomial evaluation commutes with conjugation by an invertible matrix.\n\nThis invariance is key to the Jordan canonical form theory (Jordan, 1870): similar matrices share all elementary divisors, and the minimal polynomial determines the sizes of the largest Jordan blocks per eigenvalue. The result was well-known to Frobenius and Weierstrass by the 1880s.\n\nThis Lean 4 formalization establishes the result by defining the conjugation map as a $K$-algebra endomorphism and applying Mathlib's `Polynomial.aeval_algHom_apply`.",
+    "historicalContext": "**Similarity Invariance of the Minimal Polynomial**\n\nTwo matrices $A$ and $B$ are *similar* if $B = P^{-1}AP$ for some invertible matrix $P$. Similarity is the natural equivalence relation on matrices over a field: it corresponds to change of basis for a linear map. A fundamental fact is that similar matrices share all their intrinsic invariants \u2014 determinant, trace, characteristic polynomial, and minimal polynomial.\n\nThe minimal polynomial $\\mu_M$ is the monic polynomial of least degree annihilating $M$, i.e., the generator of the kernel of the evaluation map $K[X] \\to M_n(K)$, $p \\mapsto p(M)$. That $\\mu_A = \\mu_B$ for similar $A, B$ follows from the observation that any polynomial relation $p(A) = 0$ immediately gives $p(B) = p(P^{-1}AP) = P^{-1}p(A)P = 0$, since polynomial evaluation commutes with conjugation by an invertible matrix.\n\nThis invariance is key to the Jordan canonical form theory (Jordan, 1870): similar matrices share all elementary divisors, and the minimal polynomial determines the sizes of the largest Jordan blocks per eigenvalue. The result was well-known to Frobenius and Weierstrass by the 1880s.\n\nThis Lean 4 formalization establishes the result by defining the conjugation map as a $K$-algebra endomorphism and applying Mathlib's `Polynomial.aeval_algHom_apply`.",
     "problemStatement": "**Theorem**: For any field $K$, finite type $n$, matrix $A : M_n(K)$, and invertible matrix $P : M_n(K)^\\times$:\n$$\\text{minpoly}(K, A) = \\text{minpoly}(K, P^{-1}AP)$$\n\nEquivalently, the minimal polynomial is invariant under similarity: if $B = P^{-1}AP$ then $\\mu_B = \\mu_A$.",
-    "text": "A formal proof that similar matrices B = P⁻¹AP share the same minimal polynomial over any field K. The inner conjugation map A ↦ P⁻¹AP is formalized as a K-algebra endomorphism, and polynomial evaluation is shown to commute with conjugation via aeval_algHom_apply.",
-    "proofStrategy": "The proof uses the **algebra homomorphism approach**: define `conjAlgHom P : Matrix n n K →ₐ[K] Matrix n n K` by `A ↦ P⁻¹AP`. This is verified to be a $K$-algebra endomorphism.\n\nMathlib's `Polynomial.aeval_algHom_apply` then gives `aeval (conjAlgHom P A) p = conjAlgHom P (aeval A p)` for any polynomial `p`, i.e., `aeval (P⁻¹AP) p = P⁻¹ · aeval(A, p) · P`.\n\nThe main theorem uses `minpoly.unique` with three goals:\n1. **Monic**: `minpoly K A` is monic (by `minpoly.monic`)\n2. **Annihilates**: `aeval (P⁻¹AP) (minpoly K A) = 0` (from `aeval_conj` and `minpoly.aeval`)\n3. **Minimal**: any monic $q$ annihilating $P^{-1}AP$ must be divisible by `minpoly K A` (using `aeval_conj` and `conj_eq_zero_iff` to transfer annihilation back to $A$, then `minpoly.min`)",
+    "text": "A formal proof that similar matrices B = P\u207b\u00b9AP share the same minimal polynomial over any field K. The inner conjugation map A \u21a6 P\u207b\u00b9AP is formalized as a K-algebra endomorphism, and polynomial evaluation is shown to commute with conjugation via aeval_algHom_apply.",
+    "proofStrategy": "The proof uses the **algebra homomorphism approach**: define `conjAlgHom P : Matrix n n K \u2192\u2090[K] Matrix n n K` by `A \u21a6 P\u207b\u00b9AP`. This is verified to be a $K$-algebra endomorphism.\n\nMathlib's `Polynomial.aeval_algHom_apply` then gives `aeval (conjAlgHom P A) p = conjAlgHom P (aeval A p)` for any polynomial `p`, i.e., `aeval (P\u207b\u00b9AP) p = P\u207b\u00b9 \u00b7 aeval(A, p) \u00b7 P`.\n\nThe main theorem uses `minpoly.unique` with three goals:\n1. **Monic**: `minpoly K A` is monic (by `minpoly.monic`)\n2. **Annihilates**: `aeval (P\u207b\u00b9AP) (minpoly K A) = 0` (from `aeval_conj` and `minpoly.aeval`)\n3. **Minimal**: any monic $q$ annihilating $P^{-1}AP$ must be divisible by `minpoly K A` (using `aeval_conj` and `conj_eq_zero_iff` to transfer annihilation back to $A$, then `minpoly.min`)",
     "keyInsights": [
-      "The inner conjugation map A ↦ P⁻¹AP is a K-algebra homomorphism, making polynomial evaluation commute automatically",
-      "The key identity aeval(P⁻¹AP)(p) = P⁻¹ · aeval(A)(p) · P transfers zeros bidirectionally between A and P⁻¹AP",
-      "P⁻¹MP = 0 iff M = 0: conjugation by an invertible matrix is an automorphism, so it preserves and reflects zero",
+      "The inner conjugation map A \u21a6 P\u207b\u00b9AP is a K-algebra homomorphism, making polynomial evaluation commute automatically",
+      "The key identity aeval(P\u207b\u00b9AP)(p) = P\u207b\u00b9 \u00b7 aeval(A)(p) \u00b7 P transfers zeros bidirectionally between A and P\u207b\u00b9AP",
+      "P\u207b\u00b9MP = 0 iff M = 0: conjugation by an invertible matrix is an automorphism, so it preserves and reflects zero",
       "Using simp [mul_assoc] instead of ring is essential for non-commutative matrices (ring requires CommSemiring)",
       "The algebra homomorphism approach is cleaner than direct polynomial induction: aeval_algHom_apply reduces the proof to a one-liner"
     ],
@@ -110,35 +110,35 @@
       "title": "Conjugation as an Algebra Endomorphism",
       "startLine": 28,
       "endLine": 55,
-      "summary": "Defines `conjAlgHom P : Matrix n n K →ₐ[K] Matrix n n K` by `A ↦ P⁻¹.val * A * P.val`. Verifies all algebra homomorphism axioms: `map_one'` (via `Units.inv_mul`), `map_mul'` (via `simp [mul_assoc]` + `Units.mul_inv`), `map_zero'`, `map_add'`, `commutes'` (scalars central via `smul_mul_assoc`)."
+      "summary": "Defines `conjAlgHom P : Matrix n n K \u2192\u2090[K] Matrix n n K` by `A \u21a6 P\u207b\u00b9.val * A * P.val`. Verifies all algebra homomorphism axioms: `map_one'` (via `Units.inv_mul`), `map_mul'` (via `simp [mul_assoc]` + `Units.mul_inv`), `map_zero'`, `map_add'`, `commutes'` (scalars central via `smul_mul_assoc`)."
     },
     {
       "id": "aeval-conj",
       "title": "Polynomial Evaluation Commutes with Conjugation",
       "startLine": 57,
       "endLine": 68,
-      "summary": "Lemma `aeval_conj`: `aeval (P⁻¹AP) p = P⁻¹ · aeval(A)(p) · P`. Proved by `aeval_algHom_apply (conjAlgHom P) A p` in 4 lines."
+      "summary": "Lemma `aeval_conj`: `aeval (P\u207b\u00b9AP) p = P\u207b\u00b9 \u00b7 aeval(A)(p) \u00b7 P`. Proved by `aeval_algHom_apply (conjAlgHom P) A p` in 4 lines."
     },
     {
       "id": "conj-zero",
       "title": "Conjugation Preserves Zero",
       "startLine": 70,
       "endLine": 80,
-      "summary": "Lemma `conj_eq_zero_iff`: `P⁻¹MP = 0 ↔ M = 0`. The forward direction inverts conjugation using `P.val * P⁻¹.val = 1`."
+      "summary": "Lemma `conj_eq_zero_iff`: `P\u207b\u00b9MP = 0 \u2194 M = 0`. The forward direction inverts conjugation using `P.val * P\u207b\u00b9.val = 1`."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Similar Matrices, Same Minimal Polynomial",
       "startLine": 82,
       "endLine": 97,
-      "summary": "Theorem `minpoly_similar`: `minpoly K A = minpoly K (P⁻¹AP)`. Applied via `minpoly.unique` with three goals: monic, annihilation, minimality."
+      "summary": "Theorem `minpoly_similar`: `minpoly K A = minpoly K (P\u207b\u00b9AP)`. Applied via `minpoly.unique` with three goals: monic, annihilation, minimality."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Reformulations",
       "startLine": 99,
       "endLine": 127,
-      "summary": "Symmetric form `minpoly_similar_symm`, witness form `minpoly_of_similar` (explicit `B = P⁻¹AP` hypothesis), inverse conjugation `minpoly_conj_inv` (minpoly(PAP⁻¹) = minpoly(A)), and divisibility `minpoly_dvd_charpoly`."
+      "summary": "Symmetric form `minpoly_similar_symm`, witness form `minpoly_of_similar` (explicit `B = P\u207b\u00b9AP` hypothesis), inverse conjugation `minpoly_conj_inv` (minpoly(PAP\u207b\u00b9) = minpoly(A)), and divisibility `minpoly_dvd_charpoly`."
     }
   ],
   "conclusion": {
@@ -161,5 +161,39 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Both involve linear-algebra, similarity"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both involve linear-algebra, matrices"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "related",
+      "description": "Both involve linear-algebra, matrices"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-01",
+      "relationship": "related",
+      "description": "Both involve linear-algebra, matrices"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton",
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-reduction-oq-01"
+  ]
 }

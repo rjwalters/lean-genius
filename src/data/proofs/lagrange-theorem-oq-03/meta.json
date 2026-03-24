@@ -2,7 +2,7 @@
   "id": "lagrange-theorem-oq-03",
   "title": "Hall's Theorem for Solvable Groups (Converse of Lagrange)",
   "slug": "lagrange-theorem-oq-03",
-  "description": "Formalizes Hall's theorem (1928) — the partial converse of Lagrange's theorem for solvable groups. A Hall subgroup has order coprime to its index; Hall's theorem states every Hall divisor of a solvable group's order yields a subgroup, and all such subgroups are conjugate. Proves Hall subgroup properties, Sylow-Hall relationship, index-2 Hall criterion, coprimality infrastructure, the A₄ counterexample (6|12 but no subgroup of order 6), and normal Hall uniqueness.",
+  "description": "Formalizes Hall's theorem (1928) \u2014 the partial converse of Lagrange's theorem for solvable groups. A Hall subgroup has order coprime to its index; Hall's theorem states every Hall divisor of a solvable group's order yields a subgroup, and all such subgroups are conjugate. Proves Hall subgroup properties, Sylow-Hall relationship, index-2 Hall criterion, coprimality infrastructure, the A\u2084 counterexample (6|12 but no subgroup of order 6), and normal Hall uniqueness.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hall_subgroup",
@@ -46,11 +46,11 @@
       "Hall subgroup definition (coprime order and index)",
       "Trivial subgroup is Hall (proved)",
       "Hall subgroup order divides group order (proved)",
-      "Product formula |G| = |H| × [G:H] (proved from Mathlib)",
+      "Product formula |G| = |H| \u00d7 [G:H] (proved from Mathlib)",
       "Sylow subgroups are Hall divisors (proved)",
       "Abelian groups satisfy Hall existence (proved from solvability)",
       "Normal Hall subgroups are unique at their order (proved from conjugacy axiom)",
-      "A₄ counterexample: 6|12 but gcd(6,2)≠1 (proved)",
+      "A\u2084 counterexample: 6|12 but gcd(6,2)\u22601 (proved)",
       "Index-2 subgroups are Hall when half-order is odd (proved)",
       "Cauchy's theorem wrapper (from Mathlib)",
       "Hall generalizes Sylow for solvable groups (proved from existence axiom)",
@@ -65,12 +65,12 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Joseph-Louis Lagrange (1771) proved that the order of a subgroup divides the order of the group, a cornerstone of finite group theory. The natural converse — does every divisor of $|G|$ yield a subgroup? — fails dramatically: the alternating group $A_4$ (order 12) has no subgroup of order 6, despite $6 \\mid 12$. Philip Hall (1928) discovered the precise obstruction: the divisor must be coprime to its cofactor. His theorem states that in a finite solvable group, every such 'Hall divisor' yields a subgroup, and all subgroups of a given Hall order are conjugate. This simultaneously generalizes Sylow's theorems (1872) from prime-power to coprime factorizations. The Schur-Zassenhaus theorem (Schur 1904, Zassenhaus 1937) handles the special case where the subgroup is normal, without requiring solvability. Hall's theorem remains one of the deepest results in finite group theory, with its proof requiring induction on group order via the derived series. The connection to solvability is essential: $A_5$ (the smallest non-solvable group, order 60) fails to have Hall subgroups of certain orders.",
+    "historicalContext": "Joseph-Louis Lagrange (1771) proved that the order of a subgroup divides the order of the group, a cornerstone of finite group theory. The natural converse \u2014 does every divisor of $|G|$ yield a subgroup? \u2014 fails dramatically: the alternating group $A_4$ (order 12) has no subgroup of order 6, despite $6 \\mid 12$. Philip Hall (1928) discovered the precise obstruction: the divisor must be coprime to its cofactor. His theorem states that in a finite solvable group, every such 'Hall divisor' yields a subgroup, and all subgroups of a given Hall order are conjugate. This simultaneously generalizes Sylow's theorems (1872) from prime-power to coprime factorizations. The Schur-Zassenhaus theorem (Schur 1904, Zassenhaus 1937) handles the special case where the subgroup is normal, without requiring solvability. Hall's theorem remains one of the deepest results in finite group theory, with its proof requiring induction on group order via the derived series. The connection to solvability is essential: $A_5$ (the smallest non-solvable group, order 60) fails to have Hall subgroups of certain orders.",
     "problemStatement": "OQ-03: Can the converse of Lagrange's theorem be established for solvable groups via Hall's theorem?\n\nGiven a finite solvable group $G$ and a divisor $m$ of $|G|$ with $\\gcd(m, |G|/m) = 1$, does there exist a subgroup $H \\leq G$ with $|H| = m$? What is the precise obstruction for non-Hall divisors?",
-    "text": "Formalizes Hall's theorem (1928) — the partial converse of Lagrange's theorem for solvable groups. A Hall subgroup has order coprime to its index; Hall's theorem states every Hall divisor of a solvable group's order yields a subgroup, and all such subgroups are conjugate. Proves Hall subgroup properties, Sylow-Hall relationship, index-2 Hall criterion, coprimality infrastructure, the A₄ counterexample (6|12 but no subgroup of order 6), and normal Hall uniqueness.",
+    "text": "Formalizes Hall's theorem (1928) \u2014 the partial converse of Lagrange's theorem for solvable groups. A Hall subgroup has order coprime to its index; Hall's theorem states every Hall divisor of a solvable group's order yields a subgroup, and all such subgroups are conjugate. Proves Hall subgroup properties, Sylow-Hall relationship, index-2 Hall criterion, coprimality infrastructure, the A\u2084 counterexample (6|12 but no subgroup of order 6), and normal Hall uniqueness.",
     "proofStrategy": "The formalization proceeds in layers:\n\n1. **Definition**: Hall subgroups via coprimality $\\gcd(|H|, [G:H]) = 1$\n2. **Basic properties**: Trivial subgroup is Hall, product formula, divisibility\n3. **Sylow connection**: Every Sylow $p$-subgroup is a Hall subgroup\n4. **Hall's theorem**: Existence and conjugacy axiomatized for solvable groups\n5. **Consequences**: Abelian Hall existence, normal Hall uniqueness\n6. **Counterexample**: $A_4$ has no subgroup of order 6 (axiomatized non-existence + proved $\\gcd(6,2) \\neq 1$)\n7. **Schur-Zassenhaus**: Normal Hall subgroups have complements (from Mathlib)\n8. **Summary**: Lagrange + counterexample bundled into a single theorem",
     "keyInsights": [
-      "**Hall divisors** $m \\mid |G|$ with $\\gcd(m, |G|/m) = 1$ are exactly the divisors guaranteed to yield subgroups in solvable groups — the coprimality condition is both necessary and sufficient",
+      "**Hall divisors** $m \\mid |G|$ with $\\gcd(m, |G|/m) = 1$ are exactly the divisors guaranteed to yield subgroups in solvable groups \u2014 the coprimality condition is both necessary and sufficient",
       "**Sylow subgroups are Hall subgroups**: $p^k \\| |G|$ implies $\\gcd(p^k, |G|/p^k) = 1$, so Hall's theorem strictly generalizes Sylow's first theorem for solvable groups",
       "**The $A_4$ counterexample** shows the converse of Lagrange fails even for solvable groups when the coprimality condition is dropped: $6 \\mid 12$ but $\\gcd(6, 2) = 2 \\neq 1$",
       "**Normal Hall subgroups are unique**: conjugacy ($K = gHg^{-1}$) plus normality ($gHg^{-1} = H$) forces $K = H$, the group-theoretic analogue of unique Sylow $p$-subgroups",
@@ -123,7 +123,7 @@
     },
     {
       "id": "counterexample",
-      "title": "The A₄ Counterexample",
+      "title": "The A\u2084 Counterexample",
       "startLine": 160,
       "endLine": 244,
       "summary": "Establishes that $|A_4| = 12$ and $6 \\mid 12$, but $\\gcd(6, 2) = 2 \\neq 1$, so 6 is not a Hall divisor. The non-existence of a subgroup of order 6 in $A_4$ is axiomatized. The proof that every element of an index-2 subgroup must contain all squares ($g^2 \\in H$ for all $g$) provides the key structural argument, and counting shows $A_4$ has too many squares for an order-6 subgroup."
@@ -165,13 +165,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides a comprehensive treatment of Hall's theorem as the definitive partial converse of Lagrange's theorem for solvable groups. The 373-line file proves all structural consequences (0 sorries) while axiomatizing the three deep results requiring induction on group order (Hall existence, Hall conjugacy, A₄ non-existence). The Schur-Zassenhaus complement results are fully proved from Mathlib.",
+    "summary": "This formalization provides a comprehensive treatment of Hall's theorem as the definitive partial converse of Lagrange's theorem for solvable groups. The 373-line file proves all structural consequences (0 sorries) while axiomatizing the three deep results requiring induction on group order (Hall existence, Hall conjugacy, A\u2084 non-existence). The Schur-Zassenhaus complement results are fully proved from Mathlib.",
     "implications": "**Theoretical Significance**: Hall's theorem is foundational for the structure theory of solvable groups, providing a complete description of which subgroup orders are realized.\n\nThe Schur-Zassenhaus complement gives semidirect product decompositions $G \\cong N \\rtimes K$ for normal Hall subgroups. In applications, Hall subgroups appear in the classification of finite solvable groups (Hall's theorem is the solvable-group analogue of the Sylow theorems) and in computational group theory where finding Hall subgroups is a key algorithmic primitive.",
     "openQuestions": [
       "Can Hall existence be proved constructively in Lean using derived series induction?",
-      "Can the A₄ counterexample be computationally verified using native_decide on the explicit group table?",
-      "What is the relationship between Hall subgroups and Burnside's p^a·q^b theorem for solvable groups of order p^a·q^b?",
-      "Can the formalization be extended to π-separable groups (Chunikhin's generalization of Hall's theorem)?"
+      "Can the A\u2084 counterexample be computationally verified using native_decide on the explicit group table?",
+      "What is the relationship between Hall subgroups and Burnside's p^a\u00b7q^b theorem for solvable groups of order p^a\u00b7q^b?",
+      "Can the formalization be extended to \u03c0-separable groups (Chunikhin's generalization of Hall's theorem)?"
     ]
   },
   "relatedProblems": [
@@ -208,5 +208,39 @@
       "venue": "Springer GTM",
       "note": "Chapter 5: Sylow and Hall subgroups"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both involve group-theory"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Both involve group-theory"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "related",
+      "description": "Both involve group-theory"
+    },
+    {
+      "targetId": "erdos-1098",
+      "relationship": "related",
+      "description": "Both involve group-theory"
+    }
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "abel-ruffini",
+    "abel-ruffini-oq-04",
+    "elementary-quadratic-reciprocity-oq-01",
+    "erdos-1098"
   ]
 }

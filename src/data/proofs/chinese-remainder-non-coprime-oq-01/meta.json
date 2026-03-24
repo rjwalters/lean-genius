@@ -2,7 +2,7 @@
   "id": "chinese-remainder-non-coprime-oq-01",
   "title": "CRT Computational Efficiency for Non-Coprime Moduli",
   "slug": "chinese-remainder-non-coprime-oq-01",
-  "description": "Can the non-coprime CRT construction be made computationally efficient for large moduli? YES — three complementary improvements: (1) Solutions canonicalize to [0, lcm(m,n)) saving gcd(m,n) bits vs the naive product bound; (2) The Bézout step operates on the smaller coprime pair m/g, n/g; (3) Garner's 1959 mixed-radix decomposition bounds all arithmetic by max(m,n) per step. Together these make non-coprime CRT practical for cryptographic and computer arithmetic applications.",
+  "description": "Can the non-coprime CRT construction be made computationally efficient for large moduli? YES \u2014 three complementary improvements: (1) Solutions canonicalize to [0, lcm(m,n)) saving gcd(m,n) bits vs the naive product bound; (2) The B\u00e9zout step operates on the smaller coprime pair m/g, n/g; (3) Garner's 1959 mixed-radix decomposition bounds all arithmetic by max(m,n) per step. Together these make non-coprime CRT practical for cryptographic and computer arithmetic applications.",
   "meta": {
     "author": "Garner (1959) for efficiency algorithm; formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Garner%27s_algorithm",
@@ -24,7 +24,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.gcd_mul_lcm",
-        "description": "gcd(m,n) × lcm(m,n) = m × n",
+        "description": "gcd(m,n) \u00d7 lcm(m,n) = m \u00d7 n",
         "module": "Mathlib.Data.Nat.GCD.Basic"
       },
       {
@@ -34,31 +34,31 @@
       },
       {
         "theorem": "Nat.dvd_lcm_left",
-        "description": "m | lcm(m,n) — used for canonical reduction",
+        "description": "m | lcm(m,n) \u2014 used for canonical reduction",
         "module": "Mathlib.Data.Nat.GCD.Basic"
       },
       {
         "theorem": "Int.gcdA",
-        "description": "Bézout coefficient s with m·s + n·t = gcd(m,n)",
+        "description": "B\u00e9zout coefficient s with m\u00b7s + n\u00b7t = gcd(m,n)",
         "module": "Mathlib.Data.Int.GCD"
       },
       {
         "theorem": "Int.modEq_iff_dvd",
-        "description": "a ≡ b [ZMOD n] ↔ n ∣ (b - a)",
+        "description": "a \u2261 b [ZMOD n] \u2194 n \u2223 (b - a)",
         "module": "Mathlib.Data.Nat.ModEq"
       }
     ],
     "originalContributions": [
       "lcm_lt_mul_of_gcd_gt_one: lcm(m,n) < m*n when gcd > 1 (core efficiency theorem)",
-      "lcm_le_half_product: lcm(m,n) ≤ m*n/2 when gcd ≥ 2",
+      "lcm_le_half_product: lcm(m,n) \u2264 m*n/2 when gcd \u2265 2",
       "noncoprime_crt_canonical_form: any CRT solution can be reduced to [0, lcm(m,n))",
-      "bezout_reduction_coprime: m/g and n/g are coprime (enabling Bézout on smaller operands)",
+      "bezout_reduction_coprime: m/g and n/g are coprime (enabling B\u00e9zout on smaller operands)",
       "bezout_reduction_strictly_smaller: m/g < m and n/g < n when gcd > 1",
-      "garner_mixed_radix: any x < m*n has unique form x = c₁ + c₂*m with c₁ < m, c₂ < n",
-      "garner_coefficients_bounded: Garner coefficients satisfy c₁ = x%m, c₂ = x/m < n",
+      "garner_mixed_radix: any x < m*n has unique form x = c\u2081 + c\u2082*m with c\u2081 < m, c\u2082 < n",
+      "garner_coefficients_bounded: Garner coefficients satisfy c\u2081 = x%m, c\u2082 = x/m < n",
       "noncoprime_crt_efficiency_summary: constructs canonical solution in [0, lcm) from compatibility condition",
       "noncoprime_crt_three_canonical: generalizes to three moduli via iterated lcm",
-      "iterated_lcm_le_product: lcm(lcm(m₁,m₂),m₃) ≤ m₁*m₂*m₃"
+      "iterated_lcm_le_product: lcm(lcm(m\u2081,m\u2082),m\u2083) \u2264 m\u2081*m\u2082*m\u2083"
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
@@ -66,16 +66,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Chinese Remainder Theorem (CRT) is among the oldest results in number theory, with roots in ancient Chinese mathematics (Sunzi Suanjing, ~3rd century). The classical version requires coprime moduli: given m,n coprime and residues a,b, there is a unique x < mn with x ≡ a (mod m) and x ≡ b (mod n).\n\nThe NON-COPRIME generalization (solvable iff gcd(m,n) | (a-b), unique mod lcm(m,n)) is well-known but raises a practical question: can it be computed efficiently?\n\nFor naive implementation, the solution lives in [0, m*n), requiring O(log(m*n)) = O(log m + log n) bits. But the solution is actually periodic mod lcm(m,n), which can be gcd(m,n) times smaller.\n\nGarner (1959) observed that a mixed-radix decomposition x = c₁ + c₂*m keeps all intermediate arithmetic bounded by max(m,n), avoiding the m*n-bit bottleneck. This was a foundational insight for residue number systems (RNS) used in modern cryptographic hardware.",
-    "problemStatement": "**Open Question**: Can the non-coprime CRT construction be made computationally efficient for large moduli?\n\n**Answer**: YES, with three complementary efficiency improvements:\n\n1. **LCM Bound**: Solutions lie in [0, lcm(m,n)), not [0, m*n). The bit savings = log₂(gcd(m,n)).\n\n2. **Bézout Reduction**: The Bézout step operates on m/g and n/g (strictly smaller when g > 1), costing O(log min(m,n)/g) instead of O(log min(m,n)).\n\n3. **Garner Decomposition**: Any x < m*n has form x = c₁ + c₂*m with c₁ < m, c₂ < n. Reconstruction keeps all arithmetic ≤ max(m,n).",
-    "text": "Can the non-coprime CRT construction be made computationally efficient for large moduli? YES — three complementary improvements: (1) Solutions canonicalize to [0, lcm(m,n)) saving gcd(m,n) bits vs the naive product bound; (2) The Bézout step operates on the smaller coprime pair m/g, n/g; (3) Garner's 1959 mixed-radix decomposition bounds all arithmetic by max(m,n) per step. Together these make non-coprime CRT practical for cryptographic and computer arithmetic applications.",
-    "proofStrategy": "The proof proceeds in five parts:\n\n**Part I (LCM Efficiency)**: From gcd(m,n) × lcm(m,n) = m*n, we derive lcm(m,n) < m*n when gcd > 1, and lcm ≤ m*n/2 when gcd ≥ 2.\n\n**Part II (Canonical Form)**: Using `Nat.dvd_lcm_left` and `Nat.dvd_lcm_right`, we show any solution y satisfies `y % lcm(m,n) ≡ y (mod m)` and `y % lcm(m,n) ≡ y (mod n)`. This reduces the solution to [0, lcm(m,n)).\n\n**Part III (Bézout Reduction)**: `Nat.coprime_div_gcd_div_gcd` gives coprimality of m/g and n/g. `Nat.div_lt_self` shows they're strictly smaller when g > 1.\n\n**Part IV (Garner Decomposition)**: Pure arithmetic: x = (x % m) + (x / m) * m with (x % m) < m and (x / m) < n (from x < m*n).\n\n**Part V (Full Construction)**: Combines all parts: given gcd(m,n) | (a-b), uses Bézout on reduced coprime moduli m/g, n/g, constructs the raw solution y, then reduces to [0, lcm(m,n)).",
+    "historicalContext": "The Chinese Remainder Theorem (CRT) is among the oldest results in number theory, with roots in ancient Chinese mathematics (Sunzi Suanjing, ~3rd century). The classical version requires coprime moduli: given m,n coprime and residues a,b, there is a unique x < mn with x \u2261 a (mod m) and x \u2261 b (mod n).\n\nThe NON-COPRIME generalization (solvable iff gcd(m,n) | (a-b), unique mod lcm(m,n)) is well-known but raises a practical question: can it be computed efficiently?\n\nFor naive implementation, the solution lives in [0, m*n), requiring O(log(m*n)) = O(log m + log n) bits. But the solution is actually periodic mod lcm(m,n), which can be gcd(m,n) times smaller.\n\nGarner (1959) observed that a mixed-radix decomposition x = c\u2081 + c\u2082*m keeps all intermediate arithmetic bounded by max(m,n), avoiding the m*n-bit bottleneck. This was a foundational insight for residue number systems (RNS) used in modern cryptographic hardware.",
+    "problemStatement": "**Open Question**: Can the non-coprime CRT construction be made computationally efficient for large moduli?\n\n**Answer**: YES, with three complementary efficiency improvements:\n\n1. **LCM Bound**: Solutions lie in [0, lcm(m,n)), not [0, m*n). The bit savings = log\u2082(gcd(m,n)).\n\n2. **B\u00e9zout Reduction**: The B\u00e9zout step operates on m/g and n/g (strictly smaller when g > 1), costing O(log min(m,n)/g) instead of O(log min(m,n)).\n\n3. **Garner Decomposition**: Any x < m*n has form x = c\u2081 + c\u2082*m with c\u2081 < m, c\u2082 < n. Reconstruction keeps all arithmetic \u2264 max(m,n).",
+    "text": "Can the non-coprime CRT construction be made computationally efficient for large moduli? YES \u2014 three complementary improvements: (1) Solutions canonicalize to [0, lcm(m,n)) saving gcd(m,n) bits vs the naive product bound; (2) The B\u00e9zout step operates on the smaller coprime pair m/g, n/g; (3) Garner's 1959 mixed-radix decomposition bounds all arithmetic by max(m,n) per step. Together these make non-coprime CRT practical for cryptographic and computer arithmetic applications.",
+    "proofStrategy": "The proof proceeds in five parts:\n\n**Part I (LCM Efficiency)**: From gcd(m,n) \u00d7 lcm(m,n) = m*n, we derive lcm(m,n) < m*n when gcd > 1, and lcm \u2264 m*n/2 when gcd \u2265 2.\n\n**Part II (Canonical Form)**: Using `Nat.dvd_lcm_left` and `Nat.dvd_lcm_right`, we show any solution y satisfies `y % lcm(m,n) \u2261 y (mod m)` and `y % lcm(m,n) \u2261 y (mod n)`. This reduces the solution to [0, lcm(m,n)).\n\n**Part III (B\u00e9zout Reduction)**: `Nat.coprime_div_gcd_div_gcd` gives coprimality of m/g and n/g. `Nat.div_lt_self` shows they're strictly smaller when g > 1.\n\n**Part IV (Garner Decomposition)**: Pure arithmetic: x = (x % m) + (x / m) * m with (x % m) < m and (x / m) < n (from x < m*n).\n\n**Part V (Full Construction)**: Combines all parts: given gcd(m,n) | (a-b), uses B\u00e9zout on reduced coprime moduli m/g, n/g, constructs the raw solution y, then reduces to [0, lcm(m,n)).",
     "keyInsights": [
-      "The key identity gcd × lcm = m × n means the 'redundancy' in the modular representation is exactly captured by gcd",
-      "When moduli share factors, Bézout coefficients for m/g and n/g are sufficient — the gcd factor cancels cleanly in the compatibility condition",
-      "Garner's insight: x = c₁ + c₂*m is the integer analogue of positional notation — 'digit' c₁ (< m) and 'carry' c₂ (< n) each fit in small word sizes",
-      "The three efficiency gains are independent and multiplicative: LCM saves bits in representation, Bézout saves computation, Garner saves reconstruction overhead",
-      "In practice, for moduli like m = n = 2^64 with gcd = 2^32: the representation needs 65 bits (not 128), the Bézout step works on 32-bit numbers, and Garner reconstruction stays within 64 bits"
+      "The key identity gcd \u00d7 lcm = m \u00d7 n means the 'redundancy' in the modular representation is exactly captured by gcd",
+      "When moduli share factors, B\u00e9zout coefficients for m/g and n/g are sufficient \u2014 the gcd factor cancels cleanly in the compatibility condition",
+      "Garner's insight: x = c\u2081 + c\u2082*m is the integer analogue of positional notation \u2014 'digit' c\u2081 (< m) and 'carry' c\u2082 (< n) each fit in small word sizes",
+      "The three efficiency gains are independent and multiplicative: LCM saves bits in representation, B\u00e9zout saves computation, Garner saves reconstruction overhead",
+      "In practice, for moduli like m = n = 2^64 with gcd = 2^32: the representation needs 65 bits (not 128), the B\u00e9zout step works on 32-bit numbers, and Garner reconstruction stays within 64 bits"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)"
@@ -87,11 +87,11 @@
       "title": "Problem Statement and Efficiency Strategy",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Open question: can non-coprime CRT be efficient? Three efficiency improvements outlined: LCM bound, Bézout reduction, Garner decomposition."
+      "summary": "Open question: can non-coprime CRT be efficient? Three efficiency improvements outlined: LCM bound, B\u00e9zout reduction, Garner decomposition."
     },
     {
       "id": "lcm-efficiency",
-      "title": "Part I: LCM vs Product — Core Efficiency Gain",
+      "title": "Part I: LCM vs Product \u2014 Core Efficiency Gain",
       "startLine": 36,
       "endLine": 73,
       "summary": "gcd_lcm_product, lcm_lt_mul_of_gcd_gt_one (lcm < m*n when gcd > 1), efficiency_ratio, lcm_le_half_product."
@@ -105,7 +105,7 @@
     },
     {
       "id": "bezout-reduction",
-      "title": "Part III: Bézout Reduction on Smaller Moduli",
+      "title": "Part III: B\u00e9zout Reduction on Smaller Moduli",
       "startLine": 101,
       "endLine": 132,
       "summary": "bezout_reduction_coprime (m/g and n/g are coprime), bezout_reduction_strictly_smaller (m/g < m when g > 1), reduced_product_le_lcm."
@@ -115,14 +115,14 @@
       "title": "Part IV: Garner's Mixed-Radix Decomposition",
       "startLine": 133,
       "endLine": 168,
-      "summary": "garner_mixed_radix: x = c₁ + c₂*m with c₁ < m, c₂ < n (existence and uniqueness). garner_coefficients_bounded: c₁ = x%m, c₂ = x/m < n."
+      "summary": "garner_mixed_radix: x = c\u2081 + c\u2082*m with c\u2081 < m, c\u2082 < n (existence and uniqueness). garner_coefficients_bounded: c\u2081 = x%m, c\u2082 = x/m < n."
     },
     {
       "id": "efficiency-summary",
       "title": "Part V: Main Efficiency Theorem",
       "startLine": 169,
       "endLine": 226,
-      "summary": "noncoprime_crt_efficiency_summary: given gcd(m,n) | (a-b), constructs canonical solution in [0, lcm(m,n)) using Bézout on reduced coprime moduli."
+      "summary": "noncoprime_crt_efficiency_summary: given gcd(m,n) | (a-b), constructs canonical solution in [0, lcm(m,n)) using B\u00e9zout on reduced coprime moduli."
     },
     {
       "id": "examples",
@@ -136,12 +136,12 @@
       "title": "Part VII: Extension to Three Non-Coprime Moduli",
       "startLine": 265,
       "endLine": 308,
-      "summary": "noncoprime_crt_three_canonical: iterated lcm gives canonical form for three moduli. iterated_lcm_le_product: lcm(lcm(m₁,m₂),m₃) ≤ m₁*m₂*m₃."
+      "summary": "noncoprime_crt_three_canonical: iterated lcm gives canonical form for three moduli. iterated_lcm_le_product: lcm(lcm(m\u2081,m\u2082),m\u2083) \u2264 m\u2081*m\u2082*m\u2083."
     }
   ],
   "conclusion": {
-    "summary": "The non-coprime CRT construction IS computationally efficient. This formalization proves three efficiency improvements: (1) LCM bound (solutions in [0, lcm) not [0, m*n)), (2) Bézout reduction to coprime pair m/g, n/g (smaller and coprime), and (3) Garner's mixed-radix decomposition (arithmetic bounded by max(m,n)). All 17+ theorems compile with 0 sorries. The proof strategy mirrors Garner's 1959 algorithm which is now standard in residue number system arithmetic.",
-    "implications": "**Theoretical Significance**: **For Cryptography**: RSA and ECC implementations use CRT for fast multi-precision arithmetic. These theorems formalize why moduli sharing factors don't break efficiency — the lcm savings compensate.\n\n**For Computer Arithmetic**: Residue Number Systems (RNS) use non-coprime moduli in hardware implementations.\n\nGarner's theorem shows reconstruction is O(k) operations at word-size arithmetic.\n\n**For Mathlib**: The combination of `Nat.gcd_mul_lcm`, `Nat.coprime_div_gcd_div_gcd`, `Int.gcdA`, and `Int.modEq_iff_dvd` gives a complete toolkit for CRT efficiency proofs. No new Mathlib infrastructure needed.",
+    "summary": "The non-coprime CRT construction IS computationally efficient. This formalization proves three efficiency improvements: (1) LCM bound (solutions in [0, lcm) not [0, m*n)), (2) B\u00e9zout reduction to coprime pair m/g, n/g (smaller and coprime), and (3) Garner's mixed-radix decomposition (arithmetic bounded by max(m,n)). All 17+ theorems compile with 0 sorries. The proof strategy mirrors Garner's 1959 algorithm which is now standard in residue number system arithmetic.",
+    "implications": "**Theoretical Significance**: **For Cryptography**: RSA and ECC implementations use CRT for fast multi-precision arithmetic. These theorems formalize why moduli sharing factors don't break efficiency \u2014 the lcm savings compensate.\n\n**For Computer Arithmetic**: Residue Number Systems (RNS) use non-coprime moduli in hardware implementations.\n\nGarner's theorem shows reconstruction is O(k) operations at word-size arithmetic.\n\n**For Mathlib**: The combination of `Nat.gcd_mul_lcm`, `Nat.coprime_div_gcd_div_gcd`, `Int.gcdA`, and `Int.modEq_iff_dvd` gives a complete toolkit for CRT efficiency proofs. No new Mathlib infrastructure needed.",
     "openQuestions": [
       "Can the efficiency theorem be extended to k non-coprime moduli with optimal lcm bounds?",
       "Formalize the full Garner algorithm (not just the mixed-radix decomposition) with runtime complexity bounds",
@@ -164,5 +164,39 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "erdos-678",
+      "relationship": "related",
+      "description": "Both involve computational, lcm"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Both involve computational, number-theory"
+    },
+    {
+      "targetId": "erdos-1141",
+      "relationship": "related",
+      "description": "Both involve computational, number-theory"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Both involve modular-arithmetic, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "chinese-remainder-non-coprime",
+    "erdos-678",
+    "area-of-circle-oq-03-oq-02",
+    "erdos-1141",
+    "chinese-remainder-constructive"
+  ]
 }

@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-oq-01",
   "title": "Cauchy-Schwarz for Complex Inner Product Spaces",
   "slug": "cauchy-schwarz-oq-01",
-  "description": "Extension of Cauchy-Schwarz to complex inner product spaces: ‖⟪u,v⟫_ℂ‖ ≤ ‖u‖·‖v‖. Mathlib's norm_inner_le_norm works uniformly for all RCLike fields, answering yes to the open question.",
+  "description": "Extension of Cauchy-Schwarz to complex inner product spaces: \u2016\u27eau,v\u27eb_\u2102\u2016 \u2264 \u2016u\u2016\u00b7\u2016v\u2016. Mathlib's norm_inner_le_norm works uniformly for all RCLike fields, answering yes to the open question.",
   "meta": {
     "author": "Cauchy (1821), Schwarz (1885), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
@@ -23,33 +23,33 @@
     "mathlibDependencies": [
       {
         "theorem": "norm_inner_le_norm",
-        "description": "Cauchy-Schwarz: ‖⟪x, y⟫_𝕜‖ ≤ ‖x‖ · ‖y‖ for any RCLike field 𝕜",
+        "description": "Cauchy-Schwarz: \u2016\u27eax, y\u27eb_\ud835\udd5c\u2016 \u2264 \u2016x\u2016 \u00b7 \u2016y\u2016 for any RCLike field \ud835\udd5c",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
         "theorem": "inner_self_eq_norm_sq_to_K",
-        "description": "Self-inner product identity: ⟪x, x⟫_𝕜 = ‖x‖² (cast to 𝕜)",
+        "description": "Self-inner product identity: \u27eax, x\u27eb_\ud835\udd5c = \u2016x\u2016\u00b2 (cast to \ud835\udd5c)",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
         "theorem": "norm_add_sq",
-        "description": "Norm-squared of a sum: ‖u+v‖² = ‖u‖² + 2·Re⟪u,v⟫ + ‖v‖²",
+        "description": "Norm-squared of a sum: \u2016u+v\u2016\u00b2 = \u2016u\u2016\u00b2 + 2\u00b7Re\u27eau,v\u27eb + \u2016v\u2016\u00b2",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
         "theorem": "RCLike.norm_re_le_norm",
-        "description": "Real part bounded by norm: |Re(z)| ≤ ‖z‖",
+        "description": "Real part bounded by norm: |Re(z)| \u2264 \u2016z\u2016",
         "module": "Mathlib.Analysis.RCLike.Basic"
       }
     ],
     "originalContributions": [
       "Complex Cauchy-Schwarz directly from norm_inner_le_norm (no extra proof needed)",
-      "Uniform RCLike Cauchy-Schwarz (covers ℝ and ℂ simultaneously)",
-      "Real part bound: Re(⟪u,v⟫_ℂ) ≤ ‖u‖·‖v‖ via RCLike.norm_re_le_norm",
-      "Squared form: ‖⟪u,v⟫_ℂ‖² ≤ ‖u‖²·‖v‖² via nlinarith",
-      "Self-inner product identity: ⟪u,u⟫_ℂ = (‖u‖:ℂ)² via inner_self_eq_norm_sq_to_K",
-      "Triangle inequality for inner products: ‖⟪u,v⟫+⟪v,w⟫‖ ≤ ‖u‖·‖v‖+‖v‖·‖w‖",
-      "Pythagorean theorem from orthogonality: ⟪u,v⟫=0 → ‖u+v‖²=‖u‖²+‖v‖²"
+      "Uniform RCLike Cauchy-Schwarz (covers \u211d and \u2102 simultaneously)",
+      "Real part bound: Re(\u27eau,v\u27eb_\u2102) \u2264 \u2016u\u2016\u00b7\u2016v\u2016 via RCLike.norm_re_le_norm",
+      "Squared form: \u2016\u27eau,v\u27eb_\u2102\u2016\u00b2 \u2264 \u2016u\u2016\u00b2\u00b7\u2016v\u2016\u00b2 via nlinarith",
+      "Self-inner product identity: \u27eau,u\u27eb_\u2102 = (\u2016u\u2016:\u2102)\u00b2 via inner_self_eq_norm_sq_to_K",
+      "Triangle inequality for inner products: \u2016\u27eau,v\u27eb+\u27eav,w\u27eb\u2016 \u2264 \u2016u\u2016\u00b7\u2016v\u2016+\u2016v\u2016\u00b7\u2016w\u2016",
+      "Pythagorean theorem from orthogonality: \u27eau,v\u27eb=0 \u2192 \u2016u+v\u2016\u00b2=\u2016u\u2016\u00b2+\u2016v\u2016\u00b2"
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
@@ -57,16 +57,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**From Real to Complex: Extending Cauchy-Schwarz**\n\nThe classical Cauchy-Schwarz inequality for real inner product spaces states:\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor complex inner product spaces, the inner product $\\langle u, v \\rangle_\\mathbb{C}$ is **sesquilinear**: conjugate-linear in the first argument, linear in the second. The generalization requires the complex modulus:\n$$\\|\\langle u, v \\rangle_\\mathbb{C}\\| \\leq \\|u\\| \\cdot \\|v\\|$$\n\n**The Open Question**: Can the existing real Cauchy-Schwarz formalization be extended to complex inner product spaces using Mathlib's `inner_mul_le_norm_mul_norm`?\n\n**The Answer**: YES — and even more is true. Mathlib's `norm_inner_le_norm` works uniformly for any field `𝕜` satisfying `[RCLike 𝕜]`, which includes both `ℝ` and `ℂ`. The complex case requires no additional work beyond what Mathlib already provides.",
-    "problemStatement": "**Cauchy-Schwarz for Complex Inner Products (OQ-01)**\n\nFor vectors $u, v$ in a complex inner product space $H$:\n$$\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nwhere $\\|\\langle u, v \\rangle_{\\mathbb{C}}\\|$ denotes the complex modulus of the inner product.\n\n**Key extension**: The real case `|⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖` is a special case. For complex spaces, conjugate-linearity means $\\langle u, v \\rangle_\\mathbb{C} \\in \\mathbb{C}$, and we bound its complex modulus rather than its real absolute value.",
-    "text": "Extension of Cauchy-Schwarz to complex inner product spaces: ‖⟪u,v⟫_ℂ‖ ≤ ‖u‖·‖v‖. Mathlib's norm_inner_le_norm works uniformly for all RCLike fields, answering yes to the open question.",
-    "proofStrategy": "**Formalization Strategy**\n\nThe core insight is that Mathlib's `norm_inner_le_norm` is already parameterized by an `[RCLike 𝕜]` field:\n\n```lean\ntheorem norm_inner_le_norm {𝕜 : Type*} [RCLike 𝕜] {E : Type*}\n    [SeminormedAddCommGroup E] [InnerProductSpace 𝕜 E] (x y : E) :\n    ‖⟪x, y⟫_𝕜‖ ≤ ‖x‖ * ‖y‖\n```\n\nThis covers both `ℝ` and `ℂ` (and any other `RCLike` field) in one statement. The derived results follow:\n\n1. **Real part bound**: `Re(⟪u,v⟫_ℂ) ≤ ‖u‖·‖v‖` via `le_abs_self` + `RCLike.norm_re_le_norm` + Cauchy-Schwarz\n2. **Squared form**: `‖⟪u,v⟫_ℂ‖² ≤ ‖u‖²·‖v‖²` via `nlinarith` with the linear form as a hypothesis\n3. **Pythagoras**: `⟪u,v⟫=0 → ‖u+v‖²=‖u‖²+‖v‖²` via `norm_add_sq` + `ring`\n4. **Self-inner product**: `⟪u,u⟫_ℂ = (↑‖u‖)²` via `inner_self_eq_norm_sq_to_K`",
+    "historicalContext": "**From Real to Complex: Extending Cauchy-Schwarz**\n\nThe classical Cauchy-Schwarz inequality for real inner product spaces states:\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor complex inner product spaces, the inner product $\\langle u, v \\rangle_\\mathbb{C}$ is **sesquilinear**: conjugate-linear in the first argument, linear in the second. The generalization requires the complex modulus:\n$$\\|\\langle u, v \\rangle_\\mathbb{C}\\| \\leq \\|u\\| \\cdot \\|v\\|$$\n\n**The Open Question**: Can the existing real Cauchy-Schwarz formalization be extended to complex inner product spaces using Mathlib's `inner_mul_le_norm_mul_norm`?\n\n**The Answer**: YES \u2014 and even more is true. Mathlib's `norm_inner_le_norm` works uniformly for any field `\ud835\udd5c` satisfying `[RCLike \ud835\udd5c]`, which includes both `\u211d` and `\u2102`. The complex case requires no additional work beyond what Mathlib already provides.",
+    "problemStatement": "**Cauchy-Schwarz for Complex Inner Products (OQ-01)**\n\nFor vectors $u, v$ in a complex inner product space $H$:\n$$\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nwhere $\\|\\langle u, v \\rangle_{\\mathbb{C}}\\|$ denotes the complex modulus of the inner product.\n\n**Key extension**: The real case `|\u27eau,v\u27eb_\u211d| \u2264 \u2016u\u2016\u00b7\u2016v\u2016` is a special case. For complex spaces, conjugate-linearity means $\\langle u, v \\rangle_\\mathbb{C} \\in \\mathbb{C}$, and we bound its complex modulus rather than its real absolute value.",
+    "text": "Extension of Cauchy-Schwarz to complex inner product spaces: \u2016\u27eau,v\u27eb_\u2102\u2016 \u2264 \u2016u\u2016\u00b7\u2016v\u2016. Mathlib's norm_inner_le_norm works uniformly for all RCLike fields, answering yes to the open question.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe core insight is that Mathlib's `norm_inner_le_norm` is already parameterized by an `[RCLike \ud835\udd5c]` field:\n\n```lean\ntheorem norm_inner_le_norm {\ud835\udd5c : Type*} [RCLike \ud835\udd5c] {E : Type*}\n    [SeminormedAddCommGroup E] [InnerProductSpace \ud835\udd5c E] (x y : E) :\n    \u2016\u27eax, y\u27eb_\ud835\udd5c\u2016 \u2264 \u2016x\u2016 * \u2016y\u2016\n```\n\nThis covers both `\u211d` and `\u2102` (and any other `RCLike` field) in one statement. The derived results follow:\n\n1. **Real part bound**: `Re(\u27eau,v\u27eb_\u2102) \u2264 \u2016u\u2016\u00b7\u2016v\u2016` via `le_abs_self` + `RCLike.norm_re_le_norm` + Cauchy-Schwarz\n2. **Squared form**: `\u2016\u27eau,v\u27eb_\u2102\u2016\u00b2 \u2264 \u2016u\u2016\u00b2\u00b7\u2016v\u2016\u00b2` via `nlinarith` with the linear form as a hypothesis\n3. **Pythagoras**: `\u27eau,v\u27eb=0 \u2192 \u2016u+v\u2016\u00b2=\u2016u\u2016\u00b2+\u2016v\u2016\u00b2` via `norm_add_sq` + `ring`\n4. **Self-inner product**: `\u27eau,u\u27eb_\u2102 = (\u2191\u2016u\u2016)\u00b2` via `inner_self_eq_norm_sq_to_K`",
     "keyInsights": [
-      "**RCLike Unification**: Mathlib's `[RCLike 𝕜]` typeclass abstracts over ℝ and ℂ simultaneously. The Cauchy-Schwarz `norm_inner_le_norm` works for both without any case split.",
-      "**No Extra Proof**: The complex case requires zero additional mathematical work. The `open scoped InnerProductSpace` notation opens `⟪·,·⟫_𝕜` and `norm_inner_le_norm` does the rest.",
+      "**RCLike Unification**: Mathlib's `[RCLike \ud835\udd5c]` typeclass abstracts over \u211d and \u2102 simultaneously. The Cauchy-Schwarz `norm_inner_le_norm` works for both without any case split.",
+      "**No Extra Proof**: The complex case requires zero additional mathematical work. The `open scoped InnerProductSpace` notation opens `\u27ea\u00b7,\u00b7\u27eb_\ud835\udd5c` and `norm_inner_le_norm` does the rest.",
       "**Conjugate-linearity is handled**: In Mathlib, complex inner products are built with conjugate-linearity in the first argument by convention. The `norm_inner_le_norm` inequality correctly bounds the complex modulus, handling the conjugation automatically.",
-      "**Self-inner product elaboration**: `inner_self_eq_norm_sq_to_K` gives `⟪u,u⟫_𝕜 = (↑‖u‖)^2` where the coercion is `‖u‖ : ℝ → 𝕜`. For `𝕜 = ℂ`, this is `(↑‖u‖ : ℂ)^2 = (Complex.ofReal ‖u‖)^2`, whose imaginary part is 0 by `Complex.mul_im` and `Complex.ofReal_im`.",
-      "**Concrete instantiation**: The EuclideanSpace ℝ n specialization demonstrates that abstract inner product theorems apply to $\\mathbb{R}^n$ with the standard dot product, bridging abstract and concrete linear algebra"
+      "**Self-inner product elaboration**: `inner_self_eq_norm_sq_to_K` gives `\u27eau,u\u27eb_\ud835\udd5c = (\u2191\u2016u\u2016)^2` where the coercion is `\u2016u\u2016 : \u211d \u2192 \ud835\udd5c`. For `\ud835\udd5c = \u2102`, this is `(\u2191\u2016u\u2016 : \u2102)^2 = (Complex.ofReal \u2016u\u2016)^2`, whose imaginary part is 0 by `Complex.mul_im` and `Complex.ofReal_im`.",
+      "**Concrete instantiation**: The EuclideanSpace \u211d n specialization demonstrates that abstract inner product theorems apply to $\\mathbb{R}^n$ with the standard dot product, bridging abstract and concrete linear algebra"
     ],
     "prerequisites": [
       "Mathematical analysis",
@@ -78,51 +78,51 @@
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "summary": "Imports Mathlib's InnerProductSpace.Basic (which provides norm_inner_le_norm), PiL2 (EuclideanSpace), RCLike.Basic, and Tactic. Opens InnerProductSpace scope for ⟪·,·⟫_𝕜 notation.",
+      "summary": "Imports Mathlib's InnerProductSpace.Basic (which provides norm_inner_le_norm), PiL2 (EuclideanSpace), RCLike.Basic, and Tactic. Opens InnerProductSpace scope for \u27ea\u00b7,\u00b7\u27eb_\ud835\udd5c notation.",
       "startLine": 1,
       "endLine": 34
     },
     {
       "id": "core-cs",
       "title": "Core Cauchy-Schwarz Theorems",
-      "summary": "Three forms of Cauchy-Schwarz: (1) complex ‖⟪u,v⟫_ℂ‖ ≤ ‖u‖·‖v‖, (2) real ‖⟪u,v⟫_ℝ‖ ≤ ‖u‖·‖v‖, (3) uniform RCLike ‖⟪u,v⟫_𝕜‖ ≤ ‖u‖·‖v‖. All are one-line applications of norm_inner_le_norm.",
+      "summary": "Three forms of Cauchy-Schwarz: (1) complex \u2016\u27eau,v\u27eb_\u2102\u2016 \u2264 \u2016u\u2016\u00b7\u2016v\u2016, (2) real \u2016\u27eau,v\u27eb_\u211d\u2016 \u2264 \u2016u\u2016\u00b7\u2016v\u2016, (3) uniform RCLike \u2016\u27eau,v\u27eb_\ud835\udd5c\u2016 \u2264 \u2016u\u2016\u00b7\u2016v\u2016. All are one-line applications of norm_inner_le_norm.",
       "startLine": 37,
       "endLine": 62
     },
     {
       "id": "derived",
       "title": "Derived Inequalities",
-      "summary": "Re(⟪u,v⟫_ℂ) ≤ ‖u‖·‖v‖ via RCLike.norm_re_le_norm chained with Cauchy-Schwarz. Squared form ‖⟪u,v⟫_ℂ‖² ≤ ‖u‖²·‖v‖² via nlinarith from the linear bound.",
+      "summary": "Re(\u27eau,v\u27eb_\u2102) \u2264 \u2016u\u2016\u00b7\u2016v\u2016 via RCLike.norm_re_le_norm chained with Cauchy-Schwarz. Squared form \u2016\u27eau,v\u27eb_\u2102\u2016\u00b2 \u2264 \u2016u\u2016\u00b2\u00b7\u2016v\u2016\u00b2 via nlinarith from the linear bound.",
       "startLine": 64,
       "endLine": 88
     },
     {
       "id": "self-inner",
       "title": "Self-Inner Product Identity",
-      "summary": "inner_self_eq_norm_sq_to_K gives ⟪u,u⟫_ℂ = (↑‖u‖)² in ℂ. The imaginary part zero follows from Complex.mul_im and Complex.ofReal_im.",
+      "summary": "inner_self_eq_norm_sq_to_K gives \u27eau,u\u27eb_\u2102 = (\u2191\u2016u\u2016)\u00b2 in \u2102. The imaginary part zero follows from Complex.mul_im and Complex.ofReal_im.",
       "startLine": 90,
       "endLine": 107
     },
     {
       "id": "consequences",
       "title": "Triangle Inequality and Pythagoras",
-      "summary": "Triangle inequality for inner products via norm_add_le applied to ⟪u,v⟫+⟪v,w⟫. Pythagorean theorem from orthogonality via norm_add_sq and ring.",
+      "summary": "Triangle inequality for inner products via norm_add_le applied to \u27eau,v\u27eb+\u27eav,w\u27eb. Pythagorean theorem from orthogonality via norm_add_sq and ring.",
       "startLine": 109,
       "endLine": 130
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "summary": "A single ∧-statement asserting that norm_inner_le_norm gives complex Cauchy-Schwarz both as a ℂ-specific result and as the uniform RCLike result.",
+      "summary": "A single \u2227-statement asserting that norm_inner_le_norm gives complex Cauchy-Schwarz both as a \u2102-specific result and as the uniform RCLike result.",
       "startLine": 131,
       "endLine": 138
     }
   ],
   "conclusion": {
-    "summary": "The open question is answered affirmatively: Cauchy-Schwarz for complex inner product spaces follows directly from Mathlib's `norm_inner_le_norm`, which is parameterized by `[RCLike 𝕜]` and thus works uniformly for ℝ and ℂ. All 10 theorems are proved with 0 sorries.",
-    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Unified Framework**: The `[RCLike 𝕜]` abstraction means ℝ and ℂ are treated uniformly. There is no need for separate proofs for the two cases.\n\n2. **Quantum Mechanics**: Complex inner product spaces are the mathematical foundation of quantum mechanics (Hilbert spaces).\n\nThis Cauchy-Schwarz inequality is used to prove the Heisenberg uncertainty principle: `ΔA · ΔB ≥ |⟨[A,B]⟩|/2`.\n\n3. **Functional Analysis**: The inequality characterizes bounded linear functionals via the Riesz representation theorem: every bounded functional on a Hilbert space is of the form `u ↦ ⟪f, u⟫` for some `f`, with norm `‖f‖`.\n\n4. **Connection to CauchySchwarz.lean**: That file proves the real version `|⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖`. This file extends it to complex spaces and the general RCLike framework.\n\n5. **Bridge to CauchySchwarzIntegralOQ01.lean**: The discrete (inner product space) Cauchy-Schwarz shown here is the abstract version; Hölder's inequality in the integral file generalizes it to L² spaces.",
+    "summary": "The open question is answered affirmatively: Cauchy-Schwarz for complex inner product spaces follows directly from Mathlib's `norm_inner_le_norm`, which is parameterized by `[RCLike \ud835\udd5c]` and thus works uniformly for \u211d and \u2102. All 10 theorems are proved with 0 sorries.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Unified Framework**: The `[RCLike \ud835\udd5c]` abstraction means \u211d and \u2102 are treated uniformly. There is no need for separate proofs for the two cases.\n\n2. **Quantum Mechanics**: Complex inner product spaces are the mathematical foundation of quantum mechanics (Hilbert spaces).\n\nThis Cauchy-Schwarz inequality is used to prove the Heisenberg uncertainty principle: `\u0394A \u00b7 \u0394B \u2265 |\u27e8[A,B]\u27e9|/2`.\n\n3. **Functional Analysis**: The inequality characterizes bounded linear functionals via the Riesz representation theorem: every bounded functional on a Hilbert space is of the form `u \u21a6 \u27eaf, u\u27eb` for some `f`, with norm `\u2016f\u2016`.\n\n4. **Connection to CauchySchwarz.lean**: That file proves the real version `|\u27eau,v\u27eb_\u211d| \u2264 \u2016u\u2016\u00b7\u2016v\u2016`. This file extends it to complex spaces and the general RCLike framework.\n\n5. **Bridge to CauchySchwarzIntegralOQ01.lean**: The discrete (inner product space) Cauchy-Schwarz shown here is the abstract version; H\u00f6lder's inequality in the integral file generalizes it to L\u00b2 spaces.",
     "openQuestions": [
-      "Can the equality characterization (‖⟪u,v⟫_ℂ‖ = ‖u‖·‖v‖ ↔ u and v are linearly dependent) be stated and proved for complex inner product spaces?",
+      "Can the equality characterization (\u2016\u27eau,v\u27eb_\u2102\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 \u2194 u and v are linearly dependent) be stated and proved for complex inner product spaces?",
       "Can the complex Gram-Schmidt process be formalized using this Cauchy-Schwarz bound?",
       "Can the Heisenberg uncertainty principle be derived from this complex Cauchy-Schwarz in Lean 4?"
     ]
@@ -153,7 +153,7 @@
     },
     {
       "authors": "H. A. Schwarz",
-      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
+      "title": "\u00dcber ein die Fl\u00e4chen kleinsten Fl\u00e4cheninhalts betreffendes Problem der Variationsrechnung",
       "year": "1885",
       "venue": "Acta Societatis Scientiarum Fennicae",
       "note": "Continuous/integral form; led to the inner product space formulation"
@@ -165,5 +165,39 @@
       "venue": "Memoires de l'Academie Imperiale des Sciences de St.-Petersbourg",
       "note": "Independent discovery of the integral form"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Both involve inner-product-spaces, functional-analysis"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-03",
+      "relationship": "related",
+      "description": "Both involve inner-product-spaces, functional-analysis"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "related",
+      "description": "Both involve inner-product-spaces, analysis"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "related",
+      "description": "Both involve functional-analysis, analysis"
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-03",
+    "cauchy-schwarz-oq-04",
+    "cauchy-schwarz-oq-03"
   ]
 }

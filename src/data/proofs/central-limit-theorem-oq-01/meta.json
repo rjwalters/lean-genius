@@ -2,11 +2,11 @@
   "id": "central-limit-theorem-oq-01",
   "title": "What Happens When Variance is Infinite?",
   "slug": "central-limit-theorem-oq-01",
-  "description": "When a distribution has infinite variance, the classical Central Limit Theorem fails—but a generalized version holds. This proof formalizes α-stable characteristic functions and proves the key stability property: exp(-|t|^α) satisfies [φ(t/n^(1/α))]^n = φ(t), showing that Cauchy (α=1), Lévy (α=1/2), and all α-stable distributions remain stable under the correct normalization.",
+  "description": "When a distribution has infinite variance, the classical Central Limit Theorem fails\u2014but a generalized version holds. This proof formalizes \u03b1-stable characteristic functions and proves the key stability property: exp(-|t|^\u03b1) satisfies [\u03c6(t/n^(1/\u03b1))]^n = \u03c6(t), showing that Cauchy (\u03b1=1), L\u00e9vy (\u03b1=1/2), and all \u03b1-stable distributions remain stable under the correct normalization.",
   "meta": {
-    "author": "Gnedenko, Kolmogorov, Lévy, Khintchine (formalized in Lean 4)",
+    "author": "Gnedenko, Kolmogorov, L\u00e9vy, Khintchine (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stable_distribution",
-    "date": "1937–1954 (Lévy, Gnedenko-Kolmogorov), formalized 2026",
+    "date": "1937\u20131954 (L\u00e9vy, Gnedenko-Kolmogorov), formalized 2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/CentralLimitTheoremOQ01.lean",
     "tags": [
@@ -25,7 +25,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.rpow",
-        "description": "Real power function used to define |t|^α",
+        "description": "Real power function used to define |t|^\u03b1",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
@@ -45,12 +45,12 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of α-stable characteristic function φ_α(t) = exp(-|t|^α) in Lean 4",
-      "Proved the normalization identity |t/n^(1/α)|^α = |t|^α/n — the algebraic core of stability",
-      "Proved the main stability theorem: [φ_α(t/n^(1/α))]^n = φ_α(t) for all α > 0",
-      "Proved Gaussian (α=2) and Cauchy (α=1) are special stable cases with correct normalizations",
-      "Proved Lévy distribution (α=1/2) is 1/2-stable with normalization n²",
-      "Proved that non-Gaussian stable laws (α < 2) have different characteristic functions from Gaussian",
+      "Formal definition of \u03b1-stable characteristic function \u03c6_\u03b1(t) = exp(-|t|^\u03b1) in Lean 4",
+      "Proved the normalization identity |t/n^(1/\u03b1)|^\u03b1 = |t|^\u03b1/n \u2014 the algebraic core of stability",
+      "Proved the main stability theorem: [\u03c6_\u03b1(t/n^(1/\u03b1))]^n = \u03c6_\u03b1(t) for all \u03b1 > 0",
+      "Proved Gaussian (\u03b1=2) and Cauchy (\u03b1=1) are special stable cases with correct normalizations",
+      "Proved L\u00e9vy distribution (\u03b1=1/2) is 1/2-stable with normalization n\u00b2",
+      "Proved that non-Gaussian stable laws (\u03b1 < 2) have different characteristic functions from Gaussian",
       "Formal statement of Gnedenko-Kolmogorov domain of attraction theorem"
     ],
     "dateAdded": "2026-02-23",
@@ -59,17 +59,17 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The classical Central Limit Theorem (CLT), proved by Lyapunov in 1901, assumes finite variance. But many real-world distributions — financial returns, earthquake magnitudes, internet traffic — exhibit power-law tails with infinite variance. What happens then?\n\nPaul Lévy studied this question in the 1920s–1930s, discovering the class of stable distributions: probability laws that are preserved under convolution and rescaling. The Gaussian is the only stable law with finite variance. All others have infinite variance and require a different normalization.\n\nGnedenko and Kolmogorov (1954) completed the theory, characterizing precisely which distributions are in the 'domain of attraction' of each stable law. Their result is the true generalization of the CLT: any distribution with power-law tails P(|X|>x) ~ x^(-α) will produce an α-stable limit.\n\nThe characteristic function approach — encoding distributions via their Fourier transforms — makes the stability property purely algebraic and reveals why exp(-|t|^α) is the canonical form.",
-    "problemStatement": "**Open Question**: What happens to the Central Limit Theorem when the variance is infinite?\n\n**Answer**: The CLT generalizes! Instead of converging to a Gaussian, normalized sums of i.i.d. random variables with power-law tails converge to an α-stable distribution:\n\n$$\\frac{X_1 + X_2 + \\cdots + X_n}{n^{1/\\alpha}} \\xrightarrow{d} \\text{Stable}(\\alpha)$$\n\nThe characteristic function of the α-stable law is $\\varphi_\\alpha(t) = e^{-|t|^\\alpha}$, and the **stability property** states:\n$$[\\varphi_\\alpha(t/n^{1/\\alpha})]^n = \\varphi_\\alpha(t)$$\n\n**Key cases**:\n- α = 2: Gaussian (finite variance, normalization √n)\n- α = 1: Cauchy (infinite variance AND mean, normalization n)\n- α = 1/2: Lévy (normalization n²)\n- 1 < α < 2: finite mean but infinite variance → α-stable limit",
-    "text": "When a distribution has infinite variance, the classical Central Limit Theorem fails—but a generalized version holds. This proof formalizes α-stable characteristic functions and proves the key stability property: exp(-|t|^α) satisfies [φ(t/n^(1/α))]^n = φ(t), showing that Cauchy (α=1), Lévy (α=1/2), and all α-stable distributions remain stable under the correct normalization.",
-    "proofStrategy": "The proof strategy is algebraic via characteristic functions:\n\n1. **Define** the α-stable characteristic function: $\\varphi_\\alpha(t) = \\exp(-|t|^\\alpha)$, computed in ℝ then cast to ℂ to avoid the missing HPow ℂ ℝ ℂ instance in Lean 4.26.\n\n2. **Prove the normalization identity**: $|t/n^{1/\\alpha}|^\\alpha = |t|^\\alpha/n$. This is the key algebraic fact explaining why $n^{1/\\alpha}$ is the right normalization.\n\n3. **Prove stability**: $[\\varphi_\\alpha(t/n^{1/\\alpha})]^n = \\varphi_\\alpha(t)$ by using Complex.exp_nat_mul and the normalization identity.\n\n4. **Special cases**: Gaussian (α=2, normalization √n), Cauchy (α=1, normalization n), Lévy (α=1/2, normalization n²).\n\n5. **Distinctness**: Prove that for α < 2, the α-stable law differs from the Gaussian. The proof uses log-injectivity: if |t|^α = |t|^2 and |t| ≠ 0,1, then α·log|t| = 2·log|t| implies α = 2, contradiction.",
+    "historicalContext": "The classical Central Limit Theorem (CLT), proved by Lyapunov in 1901, assumes finite variance. But many real-world distributions \u2014 financial returns, earthquake magnitudes, internet traffic \u2014 exhibit power-law tails with infinite variance. What happens then?\n\nPaul L\u00e9vy studied this question in the 1920s\u20131930s, discovering the class of stable distributions: probability laws that are preserved under convolution and rescaling. The Gaussian is the only stable law with finite variance. All others have infinite variance and require a different normalization.\n\nGnedenko and Kolmogorov (1954) completed the theory, characterizing precisely which distributions are in the 'domain of attraction' of each stable law. Their result is the true generalization of the CLT: any distribution with power-law tails P(|X|>x) ~ x^(-\u03b1) will produce an \u03b1-stable limit.\n\nThe characteristic function approach \u2014 encoding distributions via their Fourier transforms \u2014 makes the stability property purely algebraic and reveals why exp(-|t|^\u03b1) is the canonical form.",
+    "problemStatement": "**Open Question**: What happens to the Central Limit Theorem when the variance is infinite?\n\n**Answer**: The CLT generalizes! Instead of converging to a Gaussian, normalized sums of i.i.d. random variables with power-law tails converge to an \u03b1-stable distribution:\n\n$$\\frac{X_1 + X_2 + \\cdots + X_n}{n^{1/\\alpha}} \\xrightarrow{d} \\text{Stable}(\\alpha)$$\n\nThe characteristic function of the \u03b1-stable law is $\\varphi_\\alpha(t) = e^{-|t|^\\alpha}$, and the **stability property** states:\n$$[\\varphi_\\alpha(t/n^{1/\\alpha})]^n = \\varphi_\\alpha(t)$$\n\n**Key cases**:\n- \u03b1 = 2: Gaussian (finite variance, normalization \u221an)\n- \u03b1 = 1: Cauchy (infinite variance AND mean, normalization n)\n- \u03b1 = 1/2: L\u00e9vy (normalization n\u00b2)\n- 1 < \u03b1 < 2: finite mean but infinite variance \u2192 \u03b1-stable limit",
+    "text": "When a distribution has infinite variance, the classical Central Limit Theorem fails\u2014but a generalized version holds. This proof formalizes \u03b1-stable characteristic functions and proves the key stability property: exp(-|t|^\u03b1) satisfies [\u03c6(t/n^(1/\u03b1))]^n = \u03c6(t), showing that Cauchy (\u03b1=1), L\u00e9vy (\u03b1=1/2), and all \u03b1-stable distributions remain stable under the correct normalization.",
+    "proofStrategy": "The proof strategy is algebraic via characteristic functions:\n\n1. **Define** the \u03b1-stable characteristic function: $\\varphi_\\alpha(t) = \\exp(-|t|^\\alpha)$, computed in \u211d then cast to \u2102 to avoid the missing HPow \u2102 \u211d \u2102 instance in Lean 4.26.\n\n2. **Prove the normalization identity**: $|t/n^{1/\\alpha}|^\\alpha = |t|^\\alpha/n$. This is the key algebraic fact explaining why $n^{1/\\alpha}$ is the right normalization.\n\n3. **Prove stability**: $[\\varphi_\\alpha(t/n^{1/\\alpha})]^n = \\varphi_\\alpha(t)$ by using Complex.exp_nat_mul and the normalization identity.\n\n4. **Special cases**: Gaussian (\u03b1=2, normalization \u221an), Cauchy (\u03b1=1, normalization n), L\u00e9vy (\u03b1=1/2, normalization n\u00b2).\n\n5. **Distinctness**: Prove that for \u03b1 < 2, the \u03b1-stable law differs from the Gaussian. The proof uses log-injectivity: if |t|^\u03b1 = |t|^2 and |t| \u2260 0,1, then \u03b1\u00b7log|t| = 2\u00b7log|t| implies \u03b1 = 2, contradiction.",
     "keyInsights": [
-      "**The normalization n^(1/α)**: The algebraic identity |t/n^(1/α)|^α = |t|^α/n is why α-stable laws require normalization n^(1/α) rather than √n. For α=2 (Gaussian), n^(1/2) = √n; for α=1 (Cauchy), n^1 = n.",
-      "**Stability is algebraic**: The stability property [exp(-|t/c|^α)]^n = exp(-|t|^α) is a pure algebraic identity for characteristic functions, with no probability theory needed!",
-      "**Why Gaussian is special**: The Gaussian is the ONLY α-stable law with finite variance. The proof shows that exp(-|t|^α) ≠ exp(-t²) whenever α ≠ 2 and |t| ≠ 0,1, using logarithmic injectivity.",
-      "**Infinite variance has structure**: 'Infinite variance' does not mean 'no limiting behavior' — it means the limit is a heavier-tailed stable law, with a slower (n^(1/α) > √n) normalization.",
-      "**Cauchy as the boundary case**: At α=1, even the mean may not exist (Cauchy principal value needed). The Cauchy distribution is stable under normalization by n (linear, not square-root).",
-      "**The Lévy distribution**: At α=1/2, the normalization is n² (quadratic!), and the Lévy distribution arises as the distribution of first passage times in Brownian motion."
+      "**The normalization n^(1/\u03b1)**: The algebraic identity |t/n^(1/\u03b1)|^\u03b1 = |t|^\u03b1/n is why \u03b1-stable laws require normalization n^(1/\u03b1) rather than \u221an. For \u03b1=2 (Gaussian), n^(1/2) = \u221an; for \u03b1=1 (Cauchy), n^1 = n.",
+      "**Stability is algebraic**: The stability property [exp(-|t/c|^\u03b1)]^n = exp(-|t|^\u03b1) is a pure algebraic identity for characteristic functions, with no probability theory needed!",
+      "**Why Gaussian is special**: The Gaussian is the ONLY \u03b1-stable law with finite variance. The proof shows that exp(-|t|^\u03b1) \u2260 exp(-t\u00b2) whenever \u03b1 \u2260 2 and |t| \u2260 0,1, using logarithmic injectivity.",
+      "**Infinite variance has structure**: 'Infinite variance' does not mean 'no limiting behavior' \u2014 it means the limit is a heavier-tailed stable law, with a slower (n^(1/\u03b1) > \u221an) normalization.",
+      "**Cauchy as the boundary case**: At \u03b1=1, even the mean may not exist (Cauchy principal value needed). The Cauchy distribution is stable under normalization by n (linear, not square-root).",
+      "**The L\u00e9vy distribution**: At \u03b1=1/2, the normalization is n\u00b2 (quadratic!), and the L\u00e9vy distribution arises as the distribution of first passage times in Brownian motion."
     ],
     "prerequisites": [
       "Probability theory",
@@ -82,59 +82,59 @@
       "title": "Introduction and Motivation",
       "startLine": 1,
       "endLine": 42,
-      "summary": "Module documentation explaining the question, answer, and key insight about α-stable distributions."
+      "summary": "Module documentation explaining the question, answer, and key insight about \u03b1-stable distributions."
     },
     {
       "id": "definition",
-      "title": "The α-Stable Characteristic Function",
+      "title": "The \u03b1-Stable Characteristic Function",
       "startLine": 43,
       "endLine": 82,
-      "summary": "Definition of stableCharFun α t = exp(-|t|^α), with basic properties: φ(0)=1 and ‖φ‖≤1."
+      "summary": "Definition of stableCharFun \u03b1 t = exp(-|t|^\u03b1), with basic properties: \u03c6(0)=1 and \u2016\u03c6\u2016\u22641."
     },
     {
       "id": "stability-core",
       "title": "Core Stability Theorem",
       "startLine": 83,
       "endLine": 126,
-      "summary": "The normalization identity |t/n^(1/α)|^α = |t|^α/n and the main stability theorem [φ_α(t/n^(1/α))]^n = φ_α(t)."
+      "summary": "The normalization identity |t/n^(1/\u03b1)|^\u03b1 = |t|^\u03b1/n and the main stability theorem [\u03c6_\u03b1(t/n^(1/\u03b1))]^n = \u03c6_\u03b1(t)."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases: Gaussian, Cauchy, Lévy",
+      "title": "Special Cases: Gaussian, Cauchy, L\u00e9vy",
       "startLine": 127,
       "endLine": 185,
-      "summary": "Gaussian is 2-stable (normalization √n), Cauchy is 1-stable (normalization n), Lévy is 1/2-stable (normalization n²)."
+      "summary": "Gaussian is 2-stable (normalization \u221an), Cauchy is 1-stable (normalization n), L\u00e9vy is 1/2-stable (normalization n\u00b2)."
     },
     {
       "id": "infinite-variance",
       "title": "Why Infinite Variance: Distinctness from Gaussian",
       "startLine": 186,
       "endLine": 245,
-      "summary": "Proof that α-stable (α<2) differs from Gaussian via log-injectivity argument. Formal statement of domain of attraction theorem."
+      "summary": "Proof that \u03b1-stable (\u03b1<2) differs from Gaussian via log-injectivity argument. Formal statement of domain of attraction theorem."
     },
     {
       "id": "generalized-clt",
-      "title": "The Generalized CLT and Lévy-Khintchine",
+      "title": "The Generalized CLT and L\u00e9vy-Khintchine",
       "startLine": 246,
       "endLine": 295,
-      "summary": "Axiomatized Lévy-Khintchine representation and Gnedenko-Kolmogorov domain of attraction theorem."
+      "summary": "Axiomatized L\u00e9vy-Khintchine representation and Gnedenko-Kolmogorov domain of attraction theorem."
     },
     {
       "id": "summary",
       "title": "Main Result and Summary",
       "startLine": 296,
       "endLine": 313,
-      "summary": "Summary of what happens with infinite variance: α-stable limit with normalization n^(1/α)."
+      "summary": "Summary of what happens with infinite variance: \u03b1-stable limit with normalization n^(1/\u03b1)."
     }
   ],
   "conclusion": {
-    "summary": "When variance is infinite, the Central Limit Theorem generalizes beautifully. The Gaussian is merely one member of the α-stable family — the unique member with finite variance. For distributions with power-law tails P(|X|>x) ~ x^(-α), normalized sums converge to the α-stable law with characteristic function exp(-|t|^α) and normalization n^(1/α).\n\nThe proof is entirely algebraic: the stability property [φ_α(t/n^(1/α))]^n = φ_α(t) follows from the normalization identity |t/n^(1/α)|^α = |t|^α/n, with no probability theory required beyond the characteristic function framework.",
-    "implications": "**Practical Significance**:\n- Financial returns and market crashes exhibit α-stable behavior with α ≈ 1.5–1.8\n- Internet traffic and file sizes follow power laws with infinite variance\n- Earthquake magnitude distributions have Lévy-stable tails\n- Lévy flights (random walks with stable steps) model anomalous diffusion in physics\n\n**Mathematical Significance**:\n- Completes the classification of possible limit distributions for i.i.d. sums\n- Lévy-Khintchine representation characterizes all infinitely divisible distributions\n- Connects probability to Fourier analysis (characteristic functions) and complex analysis\n- Reveals the Gaussian as a special case, not the universal limit",
+    "summary": "When variance is infinite, the Central Limit Theorem generalizes beautifully. The Gaussian is merely one member of the \u03b1-stable family \u2014 the unique member with finite variance. For distributions with power-law tails P(|X|>x) ~ x^(-\u03b1), normalized sums converge to the \u03b1-stable law with characteristic function exp(-|t|^\u03b1) and normalization n^(1/\u03b1).\n\nThe proof is entirely algebraic: the stability property [\u03c6_\u03b1(t/n^(1/\u03b1))]^n = \u03c6_\u03b1(t) follows from the normalization identity |t/n^(1/\u03b1)|^\u03b1 = |t|^\u03b1/n, with no probability theory required beyond the characteristic function framework.",
+    "implications": "**Practical Significance**:\n- Financial returns and market crashes exhibit \u03b1-stable behavior with \u03b1 \u2248 1.5\u20131.8\n- Internet traffic and file sizes follow power laws with infinite variance\n- Earthquake magnitude distributions have L\u00e9vy-stable tails\n- L\u00e9vy flights (random walks with stable steps) model anomalous diffusion in physics\n\n**Mathematical Significance**:\n- Completes the classification of possible limit distributions for i.i.d. sums\n- L\u00e9vy-Khintchine representation characterizes all infinitely divisible distributions\n- Connects probability to Fourier analysis (characteristic functions) and complex analysis\n- Reveals the Gaussian as a special case, not the universal limit",
     "openQuestions": [
       "Can the full Gnedenko-Kolmogorov domain of attraction theorem be formalized in Lean 4 using Mathlib's probability theory infrastructure?",
-      "Can the Lévy-Khintchine representation be formally proved in Lean 4 (requires Bochner's theorem and measure theory)?",
+      "Can the L\u00e9vy-Khintchine representation be formally proved in Lean 4 (requires Bochner's theorem and measure theory)?",
       "How do stable distributions appear in free probability theory (non-commutative analog of CLT)?",
-      "Can the Berry-Esseen rate-of-convergence theorem be generalized to α-stable limits?"
+      "Can the Berry-Esseen rate-of-convergence theorem be generalized to \u03b1-stable limits?"
     ]
   },
   "leanFile": {
@@ -155,5 +155,39 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Both involve characteristic-functions, stable-distributions"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Both involve stable-distributions, probability"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Both involve probability, analysis"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Both involve probability, analysis"
+    }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "central-limit-theorem-oq-01-oq-02",
+    "central-limit-theorem-oq-01-oq-01",
+    "erdos-1138",
+    "erdos-1144"
+  ]
 }

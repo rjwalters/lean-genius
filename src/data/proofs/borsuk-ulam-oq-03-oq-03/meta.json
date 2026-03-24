@@ -2,7 +2,7 @@
   "id": "borsuk-ulam-oq-03-oq-03",
   "title": "Constructive 2D Borsuk-Ulam via Tucker's Lemma",
   "slug": "borsuk-ulam-oq-03-oq-03",
-  "description": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's lemma is verified computationally for the 5-vertex triangulated disk (64 labelings) and the 9-vertex grid triangulation (1024 labelings). The logical chain Tucker 2D → approximate BU → exact BU is formalized. BU for linear maps is proved algebraically via rank-nullity.",
+  "description": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's lemma is verified computationally for the 5-vertex triangulated disk (64 labelings) and the 9-vertex grid triangulation (1024 labelings). The logical chain Tucker 2D \u2192 approximate BU \u2192 exact BU is formalized. BU for linear maps is proved algebraically via rank-nullity.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Tucker%27s_lemma",
@@ -63,7 +63,7 @@
   "overview": {
     "historicalContext": "Tucker's lemma (1946) is the combinatorial analog of the Borsuk-Ulam theorem. While BU states that every continuous map from S^n to R^n has an antipodal pair, Tucker's lemma states that every antipodally-labeled triangulation of the disk has a complementary edge. The connection: discretize a continuous map via Tucker labeling, apply Tucker's lemma to find complementary edges, take limits to get exact antipodal pairs. This provides a constructive/combinatorial proof of BU, avoiding algebraic topology (degree theory, homology).",
     "problemStatement": "Can the 2D Borsuk-Ulam theorem be proved constructively using Tucker's lemma instead of algebraic topology? We formalize the key combinatorial ingredient (Tucker 2D) and the logical reduction to BU.",
-    "text": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's lemma is verified computationally for the 5-vertex triangulated disk (64 labelings) and the 9-vertex grid triangulation (1024 labelings). The logical chain Tucker 2D → approximate BU → exact BU is formalized. BU for linear maps is proved algebraically via rank-nullity.",
+    "text": "The 2D Borsuk-Ulam theorem can be proved combinatorially via Tucker's 2D lemma, avoiding algebraic topology. Tucker's lemma is verified computationally for the 5-vertex triangulated disk (64 labelings) and the 9-vertex grid triangulation (1024 labelings). The logical chain Tucker 2D \u2192 approximate BU \u2192 exact BU is formalized. BU for linear maps is proved algebraically via rank-nullity.",
     "proofStrategy": "1. Define Tucker labels {-2,-1,+1,+2} with negation and complementarity. 2. Verify Tucker's 2D lemma computationally for specific triangulations (5-vertex, 9-vertex). 3. State the general Tucker 2D lemma (axiom). 4. Build the logical chain: Tucker 2D -> approximate BU -> exact BU. 5. Prove BU for linear maps algebraically as an alternative.",
     "keyInsights": [
       "Tucker 2D is purely combinatorial and computationally verifiable for finite triangulations",
@@ -95,49 +95,49 @@
     {
       "id": "odd-framework",
       "title": "Odd Function Framework and Approximate Solutions",
-      "summary": "Establishes properties of odd functions on S¹/S²: g(0)=0, symmetric zero set, norm preservation. Defines ε-approximate antipodal pairs and proves the approximate→exact bridge via compactness.",
+      "summary": "Establishes properties of odd functions on S\u00b9/S\u00b2: g(0)=0, symmetric zero set, norm preservation. Defines \u03b5-approximate antipodal pairs and proves the approximate\u2192exact bridge via compactness.",
       "startLine": 400,
       "endLine": 575
     },
     {
       "id": "corrected-bu",
-      "title": "Corrected 2D Borsuk-Ulam (S² → ℝ²)",
-      "summary": "The correct 2D BU statement uses S² ⊂ ℝ³ (not S¹). Defines neg3, antisymmetricDiff3, sphere compactness. Proves approximate and exact BU via Tucker on the disk + hemisphere projection.",
+      "title": "Corrected 2D Borsuk-Ulam (S\u00b2 \u2192 \u211d\u00b2)",
+      "summary": "The correct 2D BU statement uses S\u00b2 \u2282 \u211d\u00b3 (not S\u00b9). Defines neg3, antisymmetricDiff3, sphere compactness. Proves approximate and exact BU via Tucker on the disk + hemisphere projection.",
       "startLine": 595,
       "endLine": 845
     },
     {
       "id": "hemisphere-projection",
       "title": "Hemisphere Projection Infrastructure",
-      "summary": "Maps D² to upper hemisphere of S² via diskLift: (u,v) ↦ (u,v,√(1-u²-v²)). Proves the crucial boundary property: diskLift(-p) = neg3(diskLift(p)) on ∂D², making Tucker's lemma applicable.",
+      "summary": "Maps D\u00b2 to upper hemisphere of S\u00b2 via diskLift: (u,v) \u21a6 (u,v,\u221a(1-u\u00b2-v\u00b2)). Proves the crucial boundary property: diskLift(-p) = neg3(diskLift(p)) on \u2202D\u00b2, making Tucker's lemma applicable.",
       "startLine": 846,
       "endLine": 920
     },
     {
       "id": "ivt-segments",
       "title": "IVT on Line Segments",
-      "summary": "Proves the Intermediate Value Theorem on parameterized line segments in ℝ². Given a complementary edge where g changes sign in coordinate k, extracts a point where g(w)_k = 0. Key tool for converting Tucker's complementary edges into approximate zeros.",
+      "summary": "Proves the Intermediate Value Theorem on parameterized line segments in \u211d\u00b2. Given a complementary edge where g changes sign in coordinate k, extracts a point where g(w)_k = 0. Key tool for converting Tucker's complementary edges into approximate zeros.",
       "startLine": 921,
       "endLine": 1080
     },
     {
       "id": "dominant-bounds",
       "title": "Dominant Component Modulus of Continuity",
-      "summary": "At a dominant-component vertex near an IVT zero, both components of g are bounded by the modulus of continuity. Proves |g(w)_{3-k}| ≤ 2·dist(g(u),g(w)), enabling the mesh refinement argument.",
+      "summary": "At a dominant-component vertex near an IVT zero, both components of g are bounded by the modulus of continuity. Proves |g(w)_{3-k}| \u2264 2\u00b7dist(g(u),g(w)), enabling the mesh refinement argument.",
       "startLine": 1081,
       "endLine": 1150
     },
     {
       "id": "tucker-5v",
       "title": "Tucker 2D: 5-Vertex Disk (Computational)",
-      "summary": "Verifies Tucker's 2D lemma for the minimal centrally-symmetric triangulated disk (4 boundary + 1 center vertex, 8 edges). Exhaustive check over 4³ = 64 valid labelings via decide.",
+      "summary": "Verifies Tucker's 2D lemma for the minimal centrally-symmetric triangulated disk (4 boundary + 1 center vertex, 8 edges). Exhaustive check over 4\u00b3 = 64 valid labelings via decide.",
       "startLine": 1153,
       "endLine": 1260
     },
     {
       "id": "tucker-9v",
       "title": "Tucker 2D: 9-Vertex Grid (Computational)",
-      "summary": "Verifies Tucker's 2D lemma for a 3×3 grid triangulation (8 boundary + 1 interior vertex, 16 edges). Exhaustive check over 4⁵ = 1024 valid labelings via native_decide.",
+      "summary": "Verifies Tucker's 2D lemma for a 3\u00d73 grid triangulation (8 boundary + 1 interior vertex, 16 edges). Exhaustive check over 4\u2075 = 1024 valid labelings via native_decide.",
       "startLine": 1261,
       "endLine": 1330
     },
@@ -157,7 +157,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization demonstrates that the 2D Borsuk-Ulam theorem has a purely combinatorial proof via Tucker's lemma. Tucker 2D is computationally verified for specific triangulations (5-vertex: 64 cases via decide, 9-vertex: 1024 cases via native_decide). The boundary parity theorem (even complementary boundary edges) is verified for both triangulations. The necessity of the antipodal condition is proved by counterexample. The logical chain Tucker → approximate BU → exact BU is formalized with 3 axioms and 0 sorries. IVT on line segments extracts zeros from complementary edges.",
+    "summary": "The formalization demonstrates that the 2D Borsuk-Ulam theorem has a purely combinatorial proof via Tucker's lemma. Tucker 2D is computationally verified for specific triangulations (5-vertex: 64 cases via decide, 9-vertex: 1024 cases via native_decide). The boundary parity theorem (even complementary boundary edges) is verified for both triangulations. The necessity of the antipodal condition is proved by counterexample. The logical chain Tucker \u2192 approximate BU \u2192 exact BU is formalized with 3 axioms and 0 sorries. IVT on line segments extracts zeros from complementary edges.",
     "implications": "**Theoretical Significance**: 1. BU is 'morally constructive': Tucker's lemma IS constructive; only the limiting argument requires classical analysis. 2. Tucker 2D is computationally verified for finite triangulations, confirming the axiom.\n\n3. The boundary parity theorem is a key structural invariant of Tucker labelings. 4. The framework is extensible: proving Tucker 2D generally would eliminate all combinatorial axioms.",
     "openQuestions": [
       "Can Tucker's 2D lemma be proved formally in Lean using path-following in simplicial complexes?",
@@ -206,5 +206,39 @@
       "venue": "Fundamenta Mathematicae",
       "note": "Original Borsuk-Ulam theorem"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Both involve combinatorial-topology, tucker-lemma"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Both involve tucker-lemma, borsuk-ulam"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02",
+      "relationship": "related",
+      "description": "Both involve borsuk-ulam, topology"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Both involve linear-algebra"
+    }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01",
+    "borsuk-ulam-oq-03-oq-01-oq-01",
+    "borsuk-ulam-oq-02",
+    "cauchy-schwarz"
   ]
 }

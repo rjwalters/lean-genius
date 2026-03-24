@@ -1,10 +1,10 @@
 {
   "id": "erdos-825",
-  "title": "Erdős Problem #825: Abundancy Bound for Weird Numbers",
+  "title": "Erd\u0151s Problem #825: Abundancy Bound for Weird Numbers",
   "slug": "erdos-825",
-  "description": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
+  "description": "Is there an absolute constant C > 0 such that every n with \u03c3(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/825",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos825Problem.lean",
@@ -25,16 +25,16 @@
     "lineCount": 94
   },
   "overview": {
-    "historicalContext": "Benkoski and Erdős studied weird numbers—abundant numbers that are not semiperfect. The smallest weird number is 70. Erdős asked whether sufficiently high abundancy σ(n)/n forces semiperfectness, offering a $25 prize. The problem remains open. No odd weird number is known (Erdős Problem #470). Perfect numbers (σ(n) = 2n) have been studied since antiquity, and abundant numbers were classified by Nicomachus around 100 CE. Semiperfect numbers were introduced by Sierpinski in 1965, and Benkoski coined the term weird in 1972 for abundant numbers lacking a subset-sum representation using proper divisors.",
-    "problemStatement": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n?",
+    "historicalContext": "Benkoski and Erd\u0151s studied weird numbers\u2014abundant numbers that are not semiperfect. The smallest weird number is 70. Erd\u0151s asked whether sufficiently high abundancy \u03c3(n)/n forces semiperfectness, offering a $25 prize. The problem remains open. No odd weird number is known (Erd\u0151s Problem #470). Perfect numbers (\u03c3(n) = 2n) have been studied since antiquity, and abundant numbers were classified by Nicomachus around 100 CE. Semiperfect numbers were introduced by Sierpinski in 1965, and Benkoski coined the term weird in 1972 for abundant numbers lacking a subset-sum representation using proper divisors.",
+    "problemStatement": "Is there an absolute constant C > 0 such that every n with \u03c3(n) > Cn is the distinct sum of proper divisors of n?",
     "text": "Is there an absolute constant C > 0 such that every n with \u03c3(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
     "proofStrategy": "The formalization defines divisor sums, proper divisors, semiperfectness, and weird numbers. It axiomatises the known lower bound C > 2 (from the counterexample n = 70) and the connection to odd weird numbers. The main conjecture and the strengthened C = 3 version are stated.",
     "keyInsights": [
       "A weird number is abundant but not semiperfect; 70 is the smallest",
-      "The constant C must exceed 2, as σ(70) > 2·70 but 70 is weird",
+      "The constant C must exceed 2, as \u03c3(70) > 2\u00b770 but 70 is weird",
       "If no odd weird numbers exist, all weird numbers have abundancy < 4",
       "The conjectured threshold is C = 3",
-      "The existence of odd weird numbers remains one of the oldest open problems in number theory — settling it would resolve the abundancy bound question"
+      "The existence of odd weird numbers remains one of the oldest open problems in number theory \u2014 settling it would resolve the abundancy bound question"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -46,7 +46,7 @@
       "title": "Divisor Sum and Proper Divisors",
       "startLine": 20,
       "endLine": 35,
-      "summary": "Definitions of σ(n), proper divisors, and abundant numbers.",
+      "summary": "Definitions of \u03c3(n), proper divisors, and abundant numbers.",
       "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. Proper divisors: $\\{d : d \\mid n,\\, d < n\\}$. $\\text{IsAbundant}(n) \\iff \\sigma(n) > 2n$ (equivalently, sum of proper divisors exceeds $n$)."
     },
     {
@@ -62,7 +62,7 @@
       "title": "Abundancy Ratio",
       "startLine": 49,
       "endLine": 52,
-      "summary": "The abundancy index σ(n)/n as a rational number.",
+      "summary": "The abundancy index \u03c3(n)/n as a rational number.",
       "mathContext": "$\\text{abundancy}(n) = \\sigma(n)/n \\in \\mathbb{Q}$. The abundancy index measures divisor density. Weird numbers are abundant ($\\sigma(n)/n > 2$) but resist subset-sum representation."
     },
     {
@@ -70,7 +70,7 @@
       "title": "Known Examples",
       "startLine": 54,
       "endLine": 59,
-      "summary": "70 is the smallest weird number with σ(70) = 144.",
+      "summary": "70 is the smallest weird number with \u03c3(70) = 144.",
       "mathContext": "$\\sigma(70) = 144$, proper divisors $\\{1, 2, 5, 7, 10, 14, 35\\}$, sum $= 74 > 70$. No subset of $\\{1,2,5,7,10,14,35\\}$ sums to $70$ (verified exhaustively over $2^7 = 128$ subsets)."
     },
     {
@@ -86,20 +86,20 @@
       "title": "Odd Weird Numbers",
       "startLine": 68,
       "endLine": 79,
-      "summary": "No odd weird number is known up to 10²¹. If none exist, weird numbers have abundancy < 4.",
-      "mathContext": "No odd weird number known up to $10^{21}$ (Erdős Problem #470). If none exist, all weird numbers have even structure constraining abundancy $< 4$, implying $C = 3$ suffices."
+      "summary": "No odd weird number is known up to 10\u00b2\u00b9. If none exist, weird numbers have abundancy < 4.",
+      "mathContext": "No odd weird number known up to $10^{21}$ (Erd\u0151s Problem #470). If none exist, all weird numbers have even structure constraining abundancy $< 4$, implying $C = 3$ suffices."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 81,
       "endLine": 93,
-      "summary": "Erdős Problem 825: weird numbers have bounded abundancy, conjecturally C = 3.",
-      "mathContext": "$\\exists C > 2: \\forall n,\\, \\sigma(n) > Cn \\implies \\text{IsSemiperfect}(n)$. Strengthened: $C = 3$ suffices. Equivalently, every weird number has $\\sigma(n)/n < 3$. Erdős prize: \\$25."
+      "summary": "Erd\u0151s Problem 825: weird numbers have bounded abundancy, conjecturally C = 3.",
+      "mathContext": "$\\exists C > 2: \\forall n,\\, \\sigma(n) > Cn \\implies \\text{IsSemiperfect}(n)$. Strengthened: $C = 3$ suffices. Equivalently, every weird number has $\\sigma(n)/n < 3$. Erd\u0151s prize: \\$25."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 825, asking whether weird numbers have bounded abundancy index. The known lower bound C > 2 and the conjectured C = 3 are both stated.",
+    "summary": "The formalization captures Erd\u0151s Problem 825, asking whether weird numbers have bounded abundancy index. The known lower bound C > 2 and the conjectured C = 3 are both stated.",
     "implications": "A positive answer would show that sufficiently abundant numbers are always semiperfect, limiting the 'density' of weirdness. This connects to the open question on odd weird numbers (Problem #470).",
     "openQuestions": [
       "Does the constant C exist at all?",
@@ -121,5 +121,39 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    },
+    {
+      "targetId": "erdos-121",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    },
+    {
+      "targetId": "erdos-289",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    },
+    {
+      "targetId": "erdos-346",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-10",
+    "erdos-121",
+    "erdos-281",
+    "erdos-289",
+    "erdos-346"
+  ]
 }

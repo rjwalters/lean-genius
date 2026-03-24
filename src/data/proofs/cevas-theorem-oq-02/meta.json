@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.sin_pos_of_pos_of_lt_pi",
-        "description": "sin(x) > 0 for x ∈ (0, π)",
+        "description": "sin(x) > 0 for x \u2208 (0, \u03c0)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
@@ -41,7 +41,7 @@
       },
       {
         "theorem": "div_eq_one_iff_eq",
-        "description": "a/b = 1 ↔ a = b (for b ≠ 0)",
+        "description": "a/b = 1 \u2194 a = b (for b \u2260 0)",
         "module": "Mathlib.Algebra.Field.Basic"
       }
     ],
@@ -50,14 +50,14 @@
       "MenelausConfig with unsigned measure-function framework",
       "Formal Ceva-Menelaus duality: negating one ratio converts Ceva to Menelaus",
       "ceva_menelaus_exclusive: the two conditions are mutually exclusive",
-      "spherical_menelaus: sin(BD)·sin(CE)·sin(AF) = sin(DC)·sin(EA)·sin(FB)",
-      "hyperbolic_menelaus: sinh(BD)·sinh(CE)·sinh(AF) = sinh(DC)·sinh(EA)·sinh(FB)",
+      "spherical_menelaus: sin(BD)\u00b7sin(CE)\u00b7sin(AF) = sin(DC)\u00b7sin(EA)\u00b7sin(FB)",
+      "hyperbolic_menelaus: sinh(BD)\u00b7sinh(CE)\u00b7sinh(AF) = sinh(DC)\u00b7sinh(EA)\u00b7sinh(FB)",
       "sinh_pos_of_pos': original proof that sinh(x) > 0 for x > 0",
       "sphericalExcess and hyperbolicDefect formalizations",
-      "gaussBonnetTriangle: angle sum = π + κ·area for constant curvature κ",
+      "gaussBonnetTriangle: angle sum = \u03c0 + \u03ba\u00b7area for constant curvature \u03ba",
       "gauss_bonnet_sign_consistency: sign of curvature determines angle sum comparison",
-      "ceva_menelaus_dichotomy: unified Ceva/Menelaus dichotomy for any measure function ρ",
-      "Numerical verifications: equilateral spherical triangle (excess = π/2), ideal hyperbolic triangle (defect = π)"
+      "ceva_menelaus_dichotomy: unified Ceva/Menelaus dichotomy for any measure function \u03c1",
+      "Numerical verifications: equilateral spherical triangle (excess = \u03c0/2), ideal hyperbolic triangle (defect = \u03c0)"
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
@@ -65,17 +65,17 @@
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Ceva's theorem was proved by Giovanni Ceva in 1678 (though Menelaus treated the dual result in ~100 AD). The Euclidean version states: in a triangle ABC, cevians AD, BE, CF are concurrent if and only if (BD/DC)·(CE/EA)·(AF/FB) = 1.\n\nThe generalization to non-Euclidean geometries replaces the ratio BD/DC with sin(BD)/sin(DC) (spherical) or sinh(BD)/sinh(DC) (hyperbolic), where the measures are now arc lengths or hyperbolic distances rather than Euclidean lengths.\n\nMenelaus's theorem is the 'dual': a transversal line cuts the sides of a triangle such that the SIGNED product of ratios equals -1 (rather than 1 for Ceva). The Ceva-Menelaus duality is a deep algebraic relationship: negating exactly one ratio converts one condition to the other.\n\nThe Gauss-Bonnet theorem (angle sum = π + κ·Area for constant curvature κ) ties everything together: it explains WHY spherical triangles have angle sum > π (positive curvature) and hyperbolic triangles have angle sum < π (negative curvature), and this angle sum directly relates to the 'excess' or 'defect' that appears in the non-Euclidean Ceva/Menelaus conditions.",
-    "problemStatement": "**Theorem (Non-Euclidean Ceva - Spherical)**: For a geodesic triangle on a sphere with cevian arcs of lengths BD, DC, CE, EA, AF, FB, the cevians are concurrent iff:\n  sin(BD)/sin(DC) · sin(CE)/sin(EA) · sin(AF)/sin(FB) = 1\n\n**Theorem (Non-Euclidean Ceva - Hyperbolic)**: Similarly, using hyperbolic distances:\n  sinh(BD)/sinh(DC) · sinh(CE)/sinh(EA) · sinh(AF)/sinh(FB) = 1\n\n**Theorem (Ceva-Menelaus Duality)**: If (r₁,r₂,r₃) satisfies Ceva (product = 1), then (-r₁,r₂,r₃) satisfies Menelaus (product = -1).\n\n**Theorem (Gauss-Bonnet)**: For a geodesic triangle on a surface of constant curvature κ:\n  α + β + γ = π + κ·Area\n\nwhere α, β, γ are the triangle's angles and Area is its area.\n\n**Open Question**: Full formalization in Lean using Mathlib's differential geometry infrastructure (Riemannian manifolds, geodesics, actual area on spheres/hyperbolic plane).",
+    "historicalContext": "Ceva's theorem was proved by Giovanni Ceva in 1678 (though Menelaus treated the dual result in ~100 AD). The Euclidean version states: in a triangle ABC, cevians AD, BE, CF are concurrent if and only if (BD/DC)\u00b7(CE/EA)\u00b7(AF/FB) = 1.\n\nThe generalization to non-Euclidean geometries replaces the ratio BD/DC with sin(BD)/sin(DC) (spherical) or sinh(BD)/sinh(DC) (hyperbolic), where the measures are now arc lengths or hyperbolic distances rather than Euclidean lengths.\n\nMenelaus's theorem is the 'dual': a transversal line cuts the sides of a triangle such that the SIGNED product of ratios equals -1 (rather than 1 for Ceva). The Ceva-Menelaus duality is a deep algebraic relationship: negating exactly one ratio converts one condition to the other.\n\nThe Gauss-Bonnet theorem (angle sum = \u03c0 + \u03ba\u00b7Area for constant curvature \u03ba) ties everything together: it explains WHY spherical triangles have angle sum > \u03c0 (positive curvature) and hyperbolic triangles have angle sum < \u03c0 (negative curvature), and this angle sum directly relates to the 'excess' or 'defect' that appears in the non-Euclidean Ceva/Menelaus conditions.",
+    "problemStatement": "**Theorem (Non-Euclidean Ceva - Spherical)**: For a geodesic triangle on a sphere with cevian arcs of lengths BD, DC, CE, EA, AF, FB, the cevians are concurrent iff:\n  sin(BD)/sin(DC) \u00b7 sin(CE)/sin(EA) \u00b7 sin(AF)/sin(FB) = 1\n\n**Theorem (Non-Euclidean Ceva - Hyperbolic)**: Similarly, using hyperbolic distances:\n  sinh(BD)/sinh(DC) \u00b7 sinh(CE)/sinh(EA) \u00b7 sinh(AF)/sinh(FB) = 1\n\n**Theorem (Ceva-Menelaus Duality)**: If (r\u2081,r\u2082,r\u2083) satisfies Ceva (product = 1), then (-r\u2081,r\u2082,r\u2083) satisfies Menelaus (product = -1).\n\n**Theorem (Gauss-Bonnet)**: For a geodesic triangle on a surface of constant curvature \u03ba:\n  \u03b1 + \u03b2 + \u03b3 = \u03c0 + \u03ba\u00b7Area\n\nwhere \u03b1, \u03b2, \u03b3 are the triangle's angles and Area is its area.\n\n**Open Question**: Full formalization in Lean using Mathlib's differential geometry infrastructure (Riemannian manifolds, geodesics, actual area on spheres/hyperbolic plane).",
     "text": "Extension of Ceva's theorem to non-Euclidean geometries: spherical Ceva (using sin-ratios) and hyperbolic Ceva (using sinh-ratios). Includes Menelaus duality (signed product = -1 for collinear transversals), spherical excess, hyperbolic defect, and the Gauss-Bonnet formula connecting angle sums to curvature and area.",
-    "proofStrategy": "**Algebraic Framework**:\n\nThe key insight is that all non-Euclidean Ceva conditions have the same algebraic form:\n  ρ(BD)/ρ(DC) · ρ(CE)/ρ(EA) · ρ(AF)/ρ(FB) = 1\n\nwhere ρ is the 'measure function':\n- Euclidean: ρ = id (ordinary length ratios)\n- Spherical: ρ = sin (arc length ratios via sine)\n- Hyperbolic: ρ = sinh (distance ratios via hyperbolic sine)\n\n**Proof of Menelaus (spherical)**:\n1. Define `MenelausConfig` with positive measures sin(BD), sin(DC), etc.\n2. `generalized_menelaus`: product = 1 ↔ numerator product = denominator product\n3. Apply `div_mul_div_comm` and `div_eq_one_iff_eq` for the ratio simplification.\n4. Use `Real.sin_pos_of_pos_of_lt_pi` to show the denominators are nonzero.\n\n**Proof of Gauss-Bonnet (sign consistency)**:\nFor `gaussBonnetTriangle κ α β γ area`: angle_sum = π + κ·area.\n- κ > 0, area > 0: angle_sum > π (positive excess = spherical case)\n- κ = 0: angle_sum = π (Euclidean)\n- κ < 0: angle_sum < π (negative defect = hyperbolic case)\nProved by `nlinarith` from the Gauss-Bonnet definition.",
+    "proofStrategy": "**Algebraic Framework**:\n\nThe key insight is that all non-Euclidean Ceva conditions have the same algebraic form:\n  \u03c1(BD)/\u03c1(DC) \u00b7 \u03c1(CE)/\u03c1(EA) \u00b7 \u03c1(AF)/\u03c1(FB) = 1\n\nwhere \u03c1 is the 'measure function':\n- Euclidean: \u03c1 = id (ordinary length ratios)\n- Spherical: \u03c1 = sin (arc length ratios via sine)\n- Hyperbolic: \u03c1 = sinh (distance ratios via hyperbolic sine)\n\n**Proof of Menelaus (spherical)**:\n1. Define `MenelausConfig` with positive measures sin(BD), sin(DC), etc.\n2. `generalized_menelaus`: product = 1 \u2194 numerator product = denominator product\n3. Apply `div_mul_div_comm` and `div_eq_one_iff_eq` for the ratio simplification.\n4. Use `Real.sin_pos_of_pos_of_lt_pi` to show the denominators are nonzero.\n\n**Proof of Gauss-Bonnet (sign consistency)**:\nFor `gaussBonnetTriangle \u03ba \u03b1 \u03b2 \u03b3 area`: angle_sum = \u03c0 + \u03ba\u00b7area.\n- \u03ba > 0, area > 0: angle_sum > \u03c0 (positive excess = spherical case)\n- \u03ba = 0: angle_sum = \u03c0 (Euclidean)\n- \u03ba < 0: angle_sum < \u03c0 (negative defect = hyperbolic case)\nProved by `nlinarith` from the Gauss-Bonnet definition.",
     "keyInsights": [
-      "The measure function ρ (id/sin/sinh) unifies Euclidean, spherical, and hyperbolic Ceva into a single algebraic framework",
+      "The measure function \u03c1 (id/sin/sinh) unifies Euclidean, spherical, and hyperbolic Ceva into a single algebraic framework",
       "Ceva (product = 1) and Menelaus (signed product = -1) are algebraic duals: one ratio's sign flip converts one to the other",
       "sinh(x) > 0 for x > 0 is proved from the definition sinh(x) = (exp(x) - exp(-x))/2 using exp strict monotonicity",
-      "Gauss-Bonnet: angle_sum = π + κ·Area — this single formula encodes ALL of Euclidean/spherical/hyperbolic triangle geometry",
-      "The ideal hyperbolic triangle (all angles 0) has defect = π and area = π (maximum possible area)",
-      "An octant of the unit sphere (equilateral triangle with all angles π/2) has excess = π/2 and area = π/2",
+      "Gauss-Bonnet: angle_sum = \u03c0 + \u03ba\u00b7Area \u2014 this single formula encodes ALL of Euclidean/spherical/hyperbolic triangle geometry",
+      "The ideal hyperbolic triangle (all angles 0) has defect = \u03c0 and area = \u03c0 (maximum possible area)",
+      "An octant of the unit sphere (equilateral triangle with all angles \u03c0/2) has excess = \u03c0/2 and area = \u03c0/2",
       "The full geometric proof (that these ratio conditions ACTUALLY correspond to concurrence/collinearity) requires Riemannian geometry infrastructure not yet in Mathlib"
     ],
     "prerequisites": [
@@ -109,26 +109,26 @@
       "title": "Spherical Excess and Hyperbolic Defect",
       "startLine": 275,
       "endLine": 360,
-      "summary": "sphericalExcess = α+β+γ-π, hyperbolicDefect = π-(α+β+γ). Positivity theorems and Euclidean limit (excess/defect = 0)."
+      "summary": "sphericalExcess = \u03b1+\u03b2+\u03b3-\u03c0, hyperbolicDefect = \u03c0-(\u03b1+\u03b2+\u03b3). Positivity theorems and Euclidean limit (excess/defect = 0)."
     },
     {
       "id": "gauss-bonnet",
       "title": "Gauss-Bonnet Formula",
       "startLine": 350,
       "endLine": 460,
-      "summary": "gaussBonnetTriangle: angle_sum = π + κ·area. Spherical (κ=1), hyperbolic (κ=-1), Euclidean (κ=0) specializations. Sign consistency theorem."
+      "summary": "gaussBonnetTriangle: angle_sum = \u03c0 + \u03ba\u00b7area. Spherical (\u03ba=1), hyperbolic (\u03ba=-1), Euclidean (\u03ba=0) specializations. Sign consistency theorem."
     },
     {
       "id": "unified-picture",
       "title": "Unified Ceva-Menelaus-Gauss-Bonnet Picture",
       "startLine": 400,
       "endLine": 487,
-      "summary": "ceva_menelaus_dichotomy for arbitrary measure ρ. gauss_bonnet_sign_consistency. Numerical examples: equilateral spherical (excess=π/2), ideal hyperbolic (defect=π)."
+      "summary": "ceva_menelaus_dichotomy for arbitrary measure \u03c1. gauss_bonnet_sign_consistency. Numerical examples: equilateral spherical (excess=\u03c0/2), ideal hyperbolic (defect=\u03c0)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization extends Ceva's theorem to all three constant-curvature geometries (Euclidean, spherical, hyperbolic) using a unified measure-function framework. The key results — spherical Menelaus (sin-ratios), hyperbolic Menelaus (sinh-ratios), Ceva-Menelaus duality, and the Gauss-Bonnet formula — are all fully proved in Lean 4 without any sorries. The remaining open question is the full geometric formalization using Riemannian manifold theory.",
-    "implications": "**Mathematical Significance**:\n\n**1. Unification of Geometries**\nThe measure function ρ (id/sin/sinh) provides a single algebraic framework that works for all three constant-curvature geometries. This is a concrete example of the general principle that many classical theorems have natural non-Euclidean analogues.\n\n**2. Ceva-Menelaus as Algebraic Duality**\nThe sign relationship between concurrent cevians (product = 1) and collinear transversals (signed product = -1) is a deep algebraic fact that persists in all geometries. It reflects the projective duality between points and lines.\n\n**3. Gauss-Bonnet as Unifying Principle**\nThe Gauss-Bonnet formula angle_sum = π + κ·Area shows that the 'excess' or 'defect' in non-Euclidean triangles is not an anomaly but is precisely proportional to the area — and the constant of proportionality is the Gaussian curvature.\n\n**4. Open: Full Geometric Formalization**\nThe current proofs are algebraic/analytic. The full geometric proof (that the ratio conditions ACTUALLY correspond to geometric concurrence on spheres/hyperbolic planes) requires:\n- Riemannian manifold API in Mathlib (developing)\n- Geodesics on S² and H²\n- Actual area computations using integration\nThis represents a significant but achievable formalization target.",
+    "summary": "This formalization extends Ceva's theorem to all three constant-curvature geometries (Euclidean, spherical, hyperbolic) using a unified measure-function framework. The key results \u2014 spherical Menelaus (sin-ratios), hyperbolic Menelaus (sinh-ratios), Ceva-Menelaus duality, and the Gauss-Bonnet formula \u2014 are all fully proved in Lean 4 without any sorries. The remaining open question is the full geometric formalization using Riemannian manifold theory.",
+    "implications": "**Mathematical Significance**:\n\n**1. Unification of Geometries**\nThe measure function \u03c1 (id/sin/sinh) provides a single algebraic framework that works for all three constant-curvature geometries. This is a concrete example of the general principle that many classical theorems have natural non-Euclidean analogues.\n\n**2. Ceva-Menelaus as Algebraic Duality**\nThe sign relationship between concurrent cevians (product = 1) and collinear transversals (signed product = -1) is a deep algebraic fact that persists in all geometries. It reflects the projective duality between points and lines.\n\n**3. Gauss-Bonnet as Unifying Principle**\nThe Gauss-Bonnet formula angle_sum = \u03c0 + \u03ba\u00b7Area shows that the 'excess' or 'defect' in non-Euclidean triangles is not an anomaly but is precisely proportional to the area \u2014 and the constant of proportionality is the Gaussian curvature.\n\n**4. Open: Full Geometric Formalization**\nThe current proofs are algebraic/analytic. The full geometric proof (that the ratio conditions ACTUALLY correspond to geometric concurrence on spheres/hyperbolic planes) requires:\n- Riemannian manifold API in Mathlib (developing)\n- Geodesics on S\u00b2 and H\u00b2\n- Actual area computations using integration\nThis represents a significant but achievable formalization target.",
     "openQuestions": [
       "Full geometric proof of non-Euclidean Ceva using Riemannian manifolds in Mathlib",
       "Generalization to spherical polygons (not just triangles): when do n cevians concur?",
@@ -151,5 +151,39 @@
     "axiomCount": 0,
     "theoremCount": 22,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "pythagorean-theorem-oq-03",
+      "relationship": "related",
+      "description": "Both involve hyperbolic, spherical"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Both involve triangle, spherical"
+    },
+    {
+      "targetId": "cevas-theorem-oq-04",
+      "relationship": "related",
+      "description": "Both involve triangle, concurrency"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Both involve spherical, concurrency"
+    }
+  ],
+  "relatedProofs": [
+    "cevas-theorem",
+    "pythagorean-theorem-oq-03",
+    "cevas-theorem-oq-02-oq-01",
+    "cevas-theorem-oq-04",
+    "cevas-theorem-oq-02-oq-02"
+  ]
 }

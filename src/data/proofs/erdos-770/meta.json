@@ -135,8 +135,40 @@
       "What is the average order of h(n)? Is it O(log n), O(log log n), or something else?"
     ]
   },
-  "crossReferences": [],
-  "relatedProofs": [],
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals-oq-03",
+      "relationship": "related",
+      "description": "Both involve coprimality, number-theory"
+    },
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Both involve coprimality, number-theory"
+    },
+    {
+      "targetId": "erdos-1149",
+      "relationship": "related",
+      "description": "Both involve coprimality, number-theory"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Both involve coprimality, number-theory"
+    },
+    {
+      "targetId": "erdos-460",
+      "relationship": "related",
+      "description": "Both involve coprimality, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "denumerability-rationals-oq-03",
+    "erdos-1100",
+    "erdos-1149",
+    "erdos-432",
+    "erdos-460"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

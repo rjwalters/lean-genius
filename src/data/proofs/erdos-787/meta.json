@@ -1,10 +1,10 @@
 {
   "id": "erdos-787",
-  "title": "Erdős Problem #787: Sum-Free Subsets (Erdős-Moser Problem)",
+  "title": "Erd\u0151s Problem #787: Sum-Free Subsets (Erd\u0151s-Moser Problem)",
   "slug": "erdos-787",
-  "description": "Let g(n) be maximal such that every n-set A has a sum-avoiding subset B of size ≥ g(n). Current bounds: (log n)^(1+c) ≪ g(n) ≪ exp(√(log n)). The exact order remains open.",
+  "description": "Let g(n) be maximal such that every n-set A has a sum-avoiding subset B of size \u2265 g(n). Current bounds: (log n)^(1+c) \u226a g(n) \u226a exp(\u221a(log n)). The exact order remains open.",
   "meta": {
-    "author": "Erdős-Moser, Klarner, Choi (1971), Ruzsa (2005), Sanders (2021), Beker (2025)",
+    "author": "Erd\u0151s-Moser, Klarner, Choi (1971), Ruzsa (2005), Sanders (2021), Beker (2025)",
     "sourceUrl": "https://erdosproblems.com/787",
     "date": "1971-2025",
     "status": "axiomatized",
@@ -44,11 +44,11 @@
       "IsSumAvoidingIn, HasSumAvoidingSubset, maxSumAvoidingSize definitions",
       "g axiomatized with g_spec specification",
       "empty_is_sum_avoiding and singleton_is_sum_avoiding proved theorems",
-      "klarner_lower_bound: g(n) ≫ log n",
-      "choi_1971_upper_bound: g(n) ≪ n^(2/5+ε)",
-      "ruzsa_2005_upper_bound: g(n) ≪ exp(√log n)",
-      "sanders_2021_lower_bound: (log n)^(1+c) ≪ g(n)",
-      "beker_2025_lower_bound: (log n)^(1+1/68-ε) ≪ g(n)",
+      "klarner_lower_bound: g(n) \u226b log n",
+      "choi_1971_upper_bound: g(n) \u226a n^(2/5+\u03b5)",
+      "ruzsa_2005_upper_bound: g(n) \u226a exp(\u221alog n)",
+      "sanders_2021_lower_bound: (log n)^(1+c) \u226a g(n)",
+      "beker_2025_lower_bound: (log n)^(1+1/68-\u03b5) \u226a g(n)",
       "IsKConfiguration definition",
       "erdos_787_summary: three-part conjunction of known bounds"
     ],
@@ -57,16 +57,16 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The Erdős-Moser sum-free set problem asks: given any n-element set A of integers, how large a subset B can we guarantee to find such that no sum b₁ + b₂ of distinct elements of B lies in A? Choi (1971) observed that without loss of generality we can take A ⊆ ℤ, and proved the first polynomial upper bound g(n) ≪ n^{2/5+o(1)}.\n\nThe lower bound story begins with Klarner's greedy argument giving g(n) ≫ log n. Sanders (2021) made a breakthrough by proving g(n) ≫ (log n)^{1+c} for some c > 0, using bounds on k-configurations — subsets where all pairwise sums remain in A. Beker (2025) refined this to the specific exponent 1 + 1/68. On the upper side, Ruzsa (2005) dramatically improved Choi's bound to g(n) ≪ exp(√(log n)).\n\nThe gap between the polylogarithmic lower bound and subpolynomial upper bound remains enormous. Determining the true order of g(n) is one of the major open problems in additive combinatorics. The function grows faster than any power of log n but slower than any power of n.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet $g(n)$ be maximal such that given any $A \\subset \\mathbb{R}$ with $|A| = n$, there exists $B \\subseteq A$ with $|B| \\geq g(n)$ such that $b_1 + b_2 \\notin A$ for all $b_1 \\neq b_2 \\in B$.\n\nEstimate $g(n)$.\n\n**Current best bounds:**\n$$(\\log n)^{1+c} \\ll g(n) \\ll \\exp(\\sqrt{\\log n})$$\n\n**Status: OPEN** — the exact order of $g(n)$ is unknown.",
-    "text": "Let g(n) be maximal such that every n-set A has a sum-avoiding subset B of size ≥ g(n). Current bounds: (log n)^(1+c) ≪ g(n) ≪ exp(√(log n)). The exact order remains open.",
-    "proofStrategy": "The formalization defines sum-avoiding subsets (IsSumAvoidingIn) and axiomatizes g(n) with a specification capturing its extremal property. Proved theorems establish that empty sets and singletons are sum-avoiding. Historical bounds are axiomatized: Klarner (log n), Choi (n^{2/5+ε}), Ruzsa (exp(√log n)), Sanders ((log n)^{1+c}), and Beker ((log n)^{1+1/68-ε}). k-configurations are defined as the dual notion. The summary theorem combines the three key bounds.",
+    "historicalContext": "The Erd\u0151s-Moser sum-free set problem asks: given any n-element set A of integers, how large a subset B can we guarantee to find such that no sum b\u2081 + b\u2082 of distinct elements of B lies in A? Choi (1971) observed that without loss of generality we can take A \u2286 \u2124, and proved the first polynomial upper bound g(n) \u226a n^{2/5+o(1)}.\n\nThe lower bound story begins with Klarner's greedy argument giving g(n) \u226b log n. Sanders (2021) made a breakthrough by proving g(n) \u226b (log n)^{1+c} for some c > 0, using bounds on k-configurations \u2014 subsets where all pairwise sums remain in A. Beker (2025) refined this to the specific exponent 1 + 1/68. On the upper side, Ruzsa (2005) dramatically improved Choi's bound to g(n) \u226a exp(\u221a(log n)).\n\nThe gap between the polylogarithmic lower bound and subpolynomial upper bound remains enormous. Determining the true order of g(n) is one of the major open problems in additive combinatorics. The function grows faster than any power of log n but slower than any power of n.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $g(n)$ be maximal such that given any $A \\subset \\mathbb{R}$ with $|A| = n$, there exists $B \\subseteq A$ with $|B| \\geq g(n)$ such that $b_1 + b_2 \\notin A$ for all $b_1 \\neq b_2 \\in B$.\n\nEstimate $g(n)$.\n\n**Current best bounds:**\n$$(\\log n)^{1+c} \\ll g(n) \\ll \\exp(\\sqrt{\\log n})$$\n\n**Status: OPEN** \u2014 the exact order of $g(n)$ is unknown.",
+    "text": "Let g(n) be maximal such that every n-set A has a sum-avoiding subset B of size \u2265 g(n). Current bounds: (log n)^(1+c) \u226a g(n) \u226a exp(\u221a(log n)). The exact order remains open.",
+    "proofStrategy": "The formalization defines sum-avoiding subsets (IsSumAvoidingIn) and axiomatizes g(n) with a specification capturing its extremal property. Proved theorems establish that empty sets and singletons are sum-avoiding. Historical bounds are axiomatized: Klarner (log n), Choi (n^{2/5+\u03b5}), Ruzsa (exp(\u221alog n)), Sanders ((log n)^{1+c}), and Beker ((log n)^{1+1/68-\u03b5}). k-configurations are defined as the dual notion. The summary theorem combines the three key bounds.",
     "keyInsights": [
-      "**Sum-avoiding vs sum-free:** B is sum-avoiding in A if sums b₁+b₂ stay outside A, not outside B",
-      "**Greedy gives log n:** Klarner's greedy construction achieves g(n) ≫ log n",
+      "**Sum-avoiding vs sum-free:** B is sum-avoiding in A if sums b\u2081+b\u2082 stay outside A, not outside B",
+      "**Greedy gives log n:** Klarner's greedy construction achieves g(n) \u226b log n",
       "**Sanders' breakthrough:** (log n)^{1+c} via k-configuration bounds",
       "**Beker's exponent 1+1/68:** Refined k-configuration analysis",
-      "**Ruzsa's exp(√log n):** Dramatic improvement over Choi's n^{2/5}, still best upper bound",
+      "**Ruzsa's exp(\u221alog n):** Dramatic improvement over Choi's n^{2/5}, still best upper bound",
       "**Massive gap:** The true order is between polylog and subpolynomial"
     ],
     "prerequisites": [
@@ -92,28 +92,28 @@
     {
       "id": "klarner-lower",
       "title": "Klarner's Lower Bound",
-      "summary": "klarner_lower_bound: g(n) ≫ log n",
+      "summary": "klarner_lower_bound: g(n) \u226b log n",
       "startLine": 82,
       "endLine": 86
     },
     {
       "id": "choi-upper",
       "title": "Choi's Upper Bound (1971)",
-      "summary": "choi_1971_upper_bound: g(n) ≪ n^(2/5+ε)",
+      "summary": "choi_1971_upper_bound: g(n) \u226a n^(2/5+\u03b5)",
       "startLine": 88,
       "endLine": 93
     },
     {
       "id": "ruzsa-upper",
       "title": "Ruzsa's Upper Bound (2005)",
-      "summary": "ruzsa_2005_upper_bound: g(n) ≪ exp(√log n)",
+      "summary": "ruzsa_2005_upper_bound: g(n) \u226a exp(\u221alog n)",
       "startLine": 95,
       "endLine": 100
     },
     {
       "id": "sanders-lower",
       "title": "Sanders' Lower Bound (2021)",
-      "summary": "sanders_2021_lower_bound: (log n)^(1+c) ≪ g(n)",
+      "summary": "sanders_2021_lower_bound: (log n)^(1+c) \u226a g(n)",
       "startLine": 102,
       "endLine": 107
     },
@@ -140,7 +140,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #787 is OPEN (exact order unknown). The current best bounds are (log n)^(1+c) ≪ g(n) ≪ exp(√(log n)), with Beker (2025) establishing c ≥ 1/68. The summary theorem combines Sanders' lower bound, Ruzsa's upper bound, and Beker's refinement.",
+    "summary": "Erd\u0151s Problem #787 is OPEN (exact order unknown). The current best bounds are (log n)^(1+c) \u226a g(n) \u226a exp(\u221a(log n)), with Beker (2025) establishing c \u2265 1/68. The summary theorem combines Sanders' lower bound, Ruzsa's upper bound, and Beker's refinement.",
     "implications": "This is a fundamental problem in additive combinatorics connecting sum-free set theory to extremal combinatorics. The massive gap between lower and upper bounds indicates deep uncertainty about the true behavior of g(n).",
     "openQuestions": [
       "What is the true order of g(n)?",
@@ -165,5 +165,39 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Both involve additive-combinatorics"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Both involve additive-combinatorics"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Both involve additive-combinatorics"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Both involve additive-combinatorics"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Both involve additive-combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-109",
+    "erdos-11",
+    "erdos-1103",
+    "erdos-1107"
+  ]
 }

@@ -4,7 +4,7 @@
   "slug": "erdos-730",
   "description": "Are there infinitely many pairs n < m with C(2n,n) and C(2m,m) having the same set of prime divisors? Known pairs: (87,88), (607,608). Triple: 10003-10005. EGRS (1975) expect yes.",
   "meta": {
-    "author": "Erdős, Graham, Ruzsa, Straus",
+    "author": "Erd\u0151s, Graham, Ruzsa, Straus",
     "sourceUrl": "https://erdosproblems.com/730",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos730Problem.lean",
@@ -30,15 +30,15 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős, Graham, Ruzsa, and Straus posed this problem in their influential 1975 paper on the arithmetic properties of binomial coefficients, expressing 'no doubt' that infinitely many matching pairs exist. The conjecture connects to Kummer's theorem (1852), which characterizes $p \\mid \\binom{m+n}{m}$ via carries in base-$p$ addition — for central binomials, $p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ exceeds $\\lceil p/2 \\rceil$. The known examples $(87, 88)$ and $(607, 608)$ were found by exhaustive computation of prime factorizations of central binomial coefficients — numbers with 52 and 364 digits respectively. The remarkable triple at $n = 10003, 10004, 10005$ shows that even three consecutive values can share prime divisor sets, requiring carry-pattern stability across all prime bases simultaneously. These examples are catalogued in OEIS A129515. The problem sits at the intersection of combinatorial number theory and computational mathematics, with connections to Bertrand's postulate (which guarantees 'middle primes' in $(n, 2n]$), Legendre's formula for $\\nu_p(n!)$, and the general question of how arithmetic functions behave on structured subsequences.",
+    "historicalContext": "Erd\u0151s, Graham, Ruzsa, and Straus posed this problem in their influential 1975 paper on the arithmetic properties of binomial coefficients, expressing 'no doubt' that infinitely many matching pairs exist. The conjecture connects to Kummer's theorem (1852), which characterizes $p \\mid \\binom{m+n}{m}$ via carries in base-$p$ addition \u2014 for central binomials, $p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ exceeds $\\lceil p/2 \\rceil$. The known examples $(87, 88)$ and $(607, 608)$ were found by exhaustive computation of prime factorizations of central binomial coefficients \u2014 numbers with 52 and 364 digits respectively. The remarkable triple at $n = 10003, 10004, 10005$ shows that even three consecutive values can share prime divisor sets, requiring carry-pattern stability across all prime bases simultaneously. These examples are catalogued in OEIS A129515. The problem sits at the intersection of combinatorial number theory and computational mathematics, with connections to Bertrand's postulate (which guarantees 'middle primes' in $(n, 2n]$), Legendre's formula for $\\nu_p(n!)$, and the general question of how arithmetic functions behave on structured subsequences.",
     "problemStatement": "Are there infinitely many pairs $n < m$ such that $\\binom{2n}{n}$ and $\\binom{2m}{m}$ have the same set of prime divisors?",
     "text": "Are there infinitely many pairs n < m with C(2n,n) and C(2m,m) having the same set of prime divisors? Known pairs: (87,88), (607,608). Triple: 10003-10005. EGRS (1975) expect yes.",
     "proofStrategy": "The formalization defines central binomial coefficients $\\binom{2n}{n}$, prime divisor sets via `Nat.primeFactors`, the matching relation, and the pair set. Known examples are axiomatized (verification requires large integer factorization). Kummer's divisibility criterion, evenness, large prime exclusion, and middle prime inclusion provide structural results. The spacing conjecture generalizes to arbitrary gaps $k$, and we prove `spacing1_implies_main` and `delta_ne_one` as formal theorems.",
     "keyInsights": [
       "**Kummer's carry criterion**: $p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ is $\\ge \\lceil p/2 \\rceil$, reducing the prime divisor question to digit analysis in multiple bases simultaneously",
-      "**Middle prime predictability**: primes in $(n, 2n]$ always divide $\\binom{2n}{n}$ with multiplicity exactly 1, so matching pairs must have compatible 'middle prime' intervals — the shift from $(n, 2n]$ to $(m, 2m]$ must not introduce or remove primes",
+      "**Middle prime predictability**: primes in $(n, 2n]$ always divide $\\binom{2n}{n}$ with multiplicity exactly 1, so matching pairs must have compatible 'middle prime' intervals \u2014 the shift from $(n, 2n]$ to $(m, 2m]$ must not introduce or remove primes",
       "**Local stability heuristic**: for consecutive $n$, the intervals $(n, 2n]$ and $(n+1, 2n+2]$ differ by $O(1/\\log n)$ primes on average (by PNT), and carry patterns change at $O(1/p)$ frequency for each prime $p$, suggesting matches have positive density",
-      "**Triple rarity**: the triple at $10003$–$10005$ requires simultaneous carry stability across all prime bases, a much stronger condition than pairwise matching — its existence strongly supports the conjecture",
+      "**Triple rarity**: the triple at $10003$\u2013$10005$ requires simultaneous carry stability across all prime bases, a much stronger condition than pairwise matching \u2014 its existence strongly supports the conjecture",
       "**Spacing generalization**: the stronger conjecture that every gap $k \\ge 1$ yields infinitely many matches is formally reduced to the $k=1$ case via an injective image argument"
     ],
     "prerequisites": [
@@ -54,7 +54,7 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 19,
-      "summary": "Module docstring introducing Erdős Problem #730: are there infinitely many pairs of central binomials sharing prime divisor sets? Cites EGRS (1975), known examples, and OEIS A129515."
+      "summary": "Module docstring introducing Erd\u0151s Problem #730: are there infinitely many pairs of central binomials sharing prime divisor sets? Cites EGRS (1975), known examples, and OEIS A129515."
     },
     {
       "id": "imports",
@@ -121,12 +121,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #730 with complete structural analysis: central binomial definitions, Kummer's carry criterion, the three-part prime divisor structure (evenness, large prime exclusion, middle prime inclusion), known examples including the remarkable triple at 10003–10005, and a formal reduction from the spacing-1 case to the main conjecture.",
+    "summary": "Formalizes Erd\u0151s Problem #730 with complete structural analysis: central binomial definitions, Kummer's carry criterion, the three-part prime divisor structure (evenness, large prime exclusion, middle prime inclusion), known examples including the remarkable triple at 10003\u201310005, and a formal reduction from the spacing-1 case to the main conjecture.",
     "implications": "A resolution would reveal deep structure in the arithmetic of central binomial coefficients, connecting Kummer's carry analysis across multiple prime bases to asymptotic equidistribution. It would also provide evidence for the stronger spacing conjecture and illuminate how prime factorization patterns propagate through structured combinatorial sequences.",
     "openQuestions": [
       "Can Kummer's criterion be used to construct infinite families of matching pairs by engineering simultaneous carry stability across all prime bases?",
-      "What is the asymptotic density of n for which a matching m exists — does the set have positive lower density?",
-      "For the spacing conjecture: is there a threshold k₀ beyond which the conjecture becomes easier or harder due to the changing overlap of middle-prime intervals?",
+      "What is the asymptotic density of n for which a matching m exists \u2014 does the set have positive lower density?",
+      "For the spacing conjecture: is there a threshold k\u2080 beyond which the conjecture becomes easier or harder due to the changing overlap of middle-prime intervals?",
       "Can sieve methods or the large sieve inequality bound the number of primes in the symmetric difference of divisor sets for consecutive central binomials?"
     ]
   },
@@ -143,5 +143,39 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    },
+    {
+      "targetId": "erdos-121",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    },
+    {
+      "targetId": "erdos-289",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    },
+    {
+      "targetId": "erdos-346",
+      "relationship": "related",
+      "description": "Both involve number theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-10",
+    "erdos-121",
+    "erdos-281",
+    "erdos-289",
+    "erdos-346"
+  ]
 }

@@ -2,7 +2,7 @@
   "id": "cantor-diagonalization-oq-02",
   "title": "Cardinality of the Set of All Countable Ordinals",
   "slug": "cantor-diagonalization-oq-02",
-  "description": "What is the cardinality of the set of all countable ordinals? A Cantor-style diagonal argument shows this set is uncountable: any countable enumeration of countable ordinals misses a countable ordinal, proving the set has cardinality ℵ₁.",
+  "description": "What is the cardinality of the set of all countable ordinals? A Cantor-style diagonal argument shows this set is uncountable: any countable enumeration of countable ordinals misses a countable ordinal, proving the set has cardinality \u2135\u2081.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/First_uncountable_ordinal",
@@ -30,27 +30,27 @@
       },
       {
         "theorem": "Cardinal.lt_ord",
-        "description": "o < c.ord ↔ o.card < c: ordinal/cardinal initial segment correspondence",
+        "description": "o < c.ord \u2194 o.card < c: ordinal/cardinal initial segment correspondence",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       },
       {
         "theorem": "Cardinal.aleph_succ",
-        "description": "aleph(α+1) = Order.succ(aleph α): successor of aleph numbers",
+        "description": "aleph(\u03b1+1) = Order.succ(aleph \u03b1): successor of aleph numbers",
         "module": "Mathlib.SetTheory.Cardinal.Aleph"
       },
       {
         "theorem": "Cardinal.aleph_lt_aleph",
-        "description": "aleph α < aleph β ↔ α < β: aleph numbers are strictly monotone",
+        "description": "aleph \u03b1 < aleph \u03b2 \u2194 \u03b1 < \u03b2: aleph numbers are strictly monotone",
         "module": "Mathlib.SetTheory.Cardinal.Aleph"
       },
       {
         "theorem": "Order.lt_succ_iff",
-        "description": "a < Order.succ b ↔ a ≤ b: characterization of strict order via successor",
+        "description": "a < Order.succ b \u2194 a \u2264 b: characterization of strict order via successor",
         "module": "Mathlib.Order.SuccPred.Basic"
       },
       {
         "theorem": "Cardinal.isRegular_aleph_one",
-        "description": "ℵ₁ is a regular cardinal: cof(ω₁) = ℵ₁",
+        "description": "\u2135\u2081 is a regular cardinal: cof(\u03c9\u2081) = \u2135\u2081",
         "module": "Mathlib.SetTheory.Cardinal.Cofinality"
       },
       {
@@ -60,25 +60,25 @@
       },
       {
         "theorem": "Ordinal.card_succ",
-        "description": "card (succ α) = card α + 1: cardinality of ordinal successor",
+        "description": "card (succ \u03b1) = card \u03b1 + 1: cardinality of ordinal successor",
         "module": "Mathlib.SetTheory.Ordinal.Basic"
       },
       {
         "theorem": "Cardinal.add_one_of_aleph0_le",
-        "description": "ℵ₀ ≤ c → c + 1 = c: infinite cardinals absorb +1",
+        "description": "\u2135\u2080 \u2264 c \u2192 c + 1 = c: infinite cardinals absorb +1",
         "module": "Mathlib.SetTheory.Cardinal.Basic"
       },
       {
         "theorem": "le_csSup",
-        "description": "Members are ≤ the conditional supremum of bounded sets",
+        "description": "Members are \u2264 the conditional supremum of bounded sets",
         "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
       }
     ],
     "originalContributions": [
-      "Diagonal argument: for any f : ℕ → Ordinal with all f(n) countable, sSup(range f) + 1 is countable and exceeds all f(n)",
-      "Proof that no surjection ℕ → {countable ordinals} exists via ordinal clipping technique",
-      "Characterization of ω₁ = (aleph 1).ord as the exact threshold between countable and uncountable ordinals",
-      "ℵ₁ as minimum uncountable cardinal: no cardinal strictly between ℵ₀ and ℵ₁"
+      "Diagonal argument: for any f : \u2115 \u2192 Ordinal with all f(n) countable, sSup(range f) + 1 is countable and exceeds all f(n)",
+      "Proof that no surjection \u2115 \u2192 {countable ordinals} exists via ordinal clipping technique",
+      "Characterization of \u03c9\u2081 = (aleph 1).ord as the exact threshold between countable and uncountable ordinals",
+      "\u2135\u2081 as minimum uncountable cardinal: no cardinal strictly between \u2135\u2080 and \u2135\u2081"
     ],
     "dateAdded": "2026-02-25",
     "mathlib_version": "4.26.0",
@@ -87,16 +87,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**The First Uncountable Ordinal**\n\nCantor's development of transfinite ordinals in 1883 culminated in the definition of ω₁ — the first ordinal that cannot be put in bijection with ℕ. The collection of all countable ordinals {α | α.card ≤ ℵ₀} forms a well-ordered set of extraordinary richness: it contains ω, ω², ω^ω, ε₀, and all other 'small' infinite ordinals.\n\n**Why ℵ₁?**\n\nThe cardinality of this collection is ℵ₁, the first uncountable cardinal. This is not a coincidence: ω₁ is defined as the initial ordinal of ℵ₁, meaning it is the smallest ordinal of cardinality ℵ₁. The set of ordinals below ω₁ (i.e., the countable ordinals) then has exactly ℵ₁ many elements.\n\n**The Diagonal Argument Connection**\n\nThe uncountability of the countable ordinals admits a beautiful diagonal proof: if f : ℕ → Ordinal claimed to enumerate all countable ordinals, we could form β = sSup(range f) + 1. Since ω₁ is regular (a countable union of countable sets is countable), β < ω₁. But β > f(n) for all n, contradicting surjectivity.",
-    "problemStatement": "**The Open Question**\n\nGiven that Cantor's diagonal argument establishes 2^ℵ₀ > ℵ₀, can a similar diagonal argument establish that the collection of all countable ordinals is itself uncountable?\n\n**Answer: YES**\n\nThe ordinal diagonal argument: for any countable enumeration f(0), f(1), f(2), ... of countable ordinals, the ordinal β = sSup{f(0), f(1), ...} + 1 is countable (by regularity of ω₁) but exceeds all listed ordinals. So no countable enumeration can cover all countable ordinals.",
-    "text": "What is the cardinality of the set of all countable ordinals? A Cantor-style diagonal argument shows this set is uncountable: any countable enumeration of countable ordinals misses a countable ordinal, proving the set has cardinality ℵ₁.",
-    "proofStrategy": "**Formalization Strategy (Zero Axioms)**\n\n1. **Define ω₁**: Use `omega1 = (Cardinal.aleph 1).ord`, the initial ordinal of ℵ₁.\n2. **Establish ℵ₁ is a successor**: `aleph 1 = Order.succ ℵ₀` via `Cardinal.aleph_succ`.\n3. **Characterize countable ordinals**: `α < omega1 ↔ α.card ≤ ℵ₀` — proved via `Cardinal.lt_ord` (the ordinal/cardinal initial segment correspondence): `o < c.ord ↔ o.card < c`.\n4. **ω₁ is a limit ordinal**: Proved via cardinality: `card(α+1) = card α + 1 ≤ ℵ₀ + 1 = ℵ₀` using `Ordinal.card_succ` and `Cardinal.add_one_of_aleph0_le`.\n5. **Countable sup is bounded**: `sSup (Set.range f) = iSup f < omega1` — proved via `Ordinal.iSup_lt_ord`: since ℵ₁ is regular (`Cardinal.isRegular_aleph_one`), `#ℕ = ℵ₀ < ℵ₁ = omega1.cof` implies the sup stays below omega1.\n6. **Diagonal argument**: Given f : ℕ → Ordinal with all f(n) < omega1:\n   - `sSup (Set.range f) < omega1` (step 5)\n   - `sSup (Set.range f) + 1 < omega1` (step 4)\n   - `f(n) < sSup + 1` for all n (via `le_csSup` + `lt_add_of_pos_right`)\n7. **No surjection**: Clip any f to countable values, apply diagonal argument, derive contradiction.",
+    "historicalContext": "**The First Uncountable Ordinal**\n\nCantor's development of transfinite ordinals in 1883 culminated in the definition of \u03c9\u2081 \u2014 the first ordinal that cannot be put in bijection with \u2115. The collection of all countable ordinals {\u03b1 | \u03b1.card \u2264 \u2135\u2080} forms a well-ordered set of extraordinary richness: it contains \u03c9, \u03c9\u00b2, \u03c9^\u03c9, \u03b5\u2080, and all other 'small' infinite ordinals.\n\n**Why \u2135\u2081?**\n\nThe cardinality of this collection is \u2135\u2081, the first uncountable cardinal. This is not a coincidence: \u03c9\u2081 is defined as the initial ordinal of \u2135\u2081, meaning it is the smallest ordinal of cardinality \u2135\u2081. The set of ordinals below \u03c9\u2081 (i.e., the countable ordinals) then has exactly \u2135\u2081 many elements.\n\n**The Diagonal Argument Connection**\n\nThe uncountability of the countable ordinals admits a beautiful diagonal proof: if f : \u2115 \u2192 Ordinal claimed to enumerate all countable ordinals, we could form \u03b2 = sSup(range f) + 1. Since \u03c9\u2081 is regular (a countable union of countable sets is countable), \u03b2 < \u03c9\u2081. But \u03b2 > f(n) for all n, contradicting surjectivity.",
+    "problemStatement": "**The Open Question**\n\nGiven that Cantor's diagonal argument establishes 2^\u2135\u2080 > \u2135\u2080, can a similar diagonal argument establish that the collection of all countable ordinals is itself uncountable?\n\n**Answer: YES**\n\nThe ordinal diagonal argument: for any countable enumeration f(0), f(1), f(2), ... of countable ordinals, the ordinal \u03b2 = sSup{f(0), f(1), ...} + 1 is countable (by regularity of \u03c9\u2081) but exceeds all listed ordinals. So no countable enumeration can cover all countable ordinals.",
+    "text": "What is the cardinality of the set of all countable ordinals? A Cantor-style diagonal argument shows this set is uncountable: any countable enumeration of countable ordinals misses a countable ordinal, proving the set has cardinality \u2135\u2081.",
+    "proofStrategy": "**Formalization Strategy (Zero Axioms)**\n\n1. **Define \u03c9\u2081**: Use `omega1 = (Cardinal.aleph 1).ord`, the initial ordinal of \u2135\u2081.\n2. **Establish \u2135\u2081 is a successor**: `aleph 1 = Order.succ \u2135\u2080` via `Cardinal.aleph_succ`.\n3. **Characterize countable ordinals**: `\u03b1 < omega1 \u2194 \u03b1.card \u2264 \u2135\u2080` \u2014 proved via `Cardinal.lt_ord` (the ordinal/cardinal initial segment correspondence): `o < c.ord \u2194 o.card < c`.\n4. **\u03c9\u2081 is a limit ordinal**: Proved via cardinality: `card(\u03b1+1) = card \u03b1 + 1 \u2264 \u2135\u2080 + 1 = \u2135\u2080` using `Ordinal.card_succ` and `Cardinal.add_one_of_aleph0_le`.\n5. **Countable sup is bounded**: `sSup (Set.range f) = iSup f < omega1` \u2014 proved via `Ordinal.iSup_lt_ord`: since \u2135\u2081 is regular (`Cardinal.isRegular_aleph_one`), `#\u2115 = \u2135\u2080 < \u2135\u2081 = omega1.cof` implies the sup stays below omega1.\n6. **Diagonal argument**: Given f : \u2115 \u2192 Ordinal with all f(n) < omega1:\n   - `sSup (Set.range f) < omega1` (step 5)\n   - `sSup (Set.range f) + 1 < omega1` (step 4)\n   - `f(n) < sSup + 1` for all n (via `le_csSup` + `lt_add_of_pos_right`)\n7. **No surjection**: Clip any f to countable values, apply diagonal argument, derive contradiction.",
     "keyInsights": [
-      "**ω₁ as Initial Ordinal**: ω₁ = (aleph 1).ord is both the largest countable ordinal's successor and the smallest uncountable ordinal. This dual characterization is key.",
-      "**Regularity of ω₁**: A countable union of countable ordinals is countable — this is why sSup of a countable sequence below ω₁ stays below ω₁. This is the set-theoretic heart of the argument.",
+      "**\u03c9\u2081 as Initial Ordinal**: \u03c9\u2081 = (aleph 1).ord is both the largest countable ordinal's successor and the smallest uncountable ordinal. This dual characterization is key.",
+      "**Regularity of \u03c9\u2081**: A countable union of countable ordinals is countable \u2014 this is why sSup of a countable sequence below \u03c9\u2081 stays below \u03c9\u2081. This is the set-theoretic heart of the argument.",
       "**Clipping Technique**: The surjection proof clips f to countable values (g n = if f n < omega1 then f n else 0), making the diagonal argument apply cleanly.",
-      "**ℵ₁ Minimality**: ℵ₁ is not just uncountable but the MINIMUM uncountable cardinal: any uncountable κ satisfies ℵ₁ ≤ κ.",
-      "**Universe Subtlety**: The set {α : Ordinal.{0} | α.card ≤ ℵ₀} lives in Type 1, so its cardinality is Cardinal.{1}. The key result ω₁.card = aleph 1 remains in Cardinal.{0} and is proved directly."
+      "**\u2135\u2081 Minimality**: \u2135\u2081 is not just uncountable but the MINIMUM uncountable cardinal: any uncountable \u03ba satisfies \u2135\u2081 \u2264 \u03ba.",
+      "**Universe Subtlety**: The set {\u03b1 : Ordinal.{0} | \u03b1.card \u2264 \u2135\u2080} lives in Type 1, so its cardinality is Cardinal.{1}. The key result \u03c9\u2081.card = aleph 1 remains in Cardinal.{0} and is proved directly."
     ],
     "prerequisites": [
       "Set theory and cardinality"
@@ -105,72 +105,72 @@
   "sections": [
     {
       "id": "omega1-definition",
-      "title": "The First Uncountable Ordinal ω₁",
-      "summary": "Defines ω₁ = (Cardinal.aleph 1).ord and proves ω₁.card = aleph 1 via Cardinal.card_ord. This is the initial ordinal of ℵ₁.",
+      "title": "The First Uncountable Ordinal \u03c9\u2081",
+      "summary": "Defines \u03c9\u2081 = (Cardinal.aleph 1).ord and proves \u03c9\u2081.card = aleph 1 via Cardinal.card_ord. This is the initial ordinal of \u2135\u2081.",
       "startLine": 53,
       "endLine": 68
     },
     {
       "id": "aleph1-successor",
-      "title": "ℵ₁ as Successor of ℵ₀",
-      "summary": "Proves aleph 1 = Order.succ ℵ₀ and the key characterization κ < ℵ₁ ↔ κ ≤ ℵ₀. Establishes ℵ₁ as the minimum uncountable cardinal.",
+      "title": "\u2135\u2081 as Successor of \u2135\u2080",
+      "summary": "Proves aleph 1 = Order.succ \u2135\u2080 and the key characterization \u03ba < \u2135\u2081 \u2194 \u03ba \u2264 \u2135\u2080. Establishes \u2135\u2081 as the minimum uncountable cardinal.",
       "startLine": 70,
       "endLine": 86
     },
     {
       "id": "uncountability",
-      "title": "Uncountability of ω₁",
-      "summary": "Proves ℵ₀ < ℵ₁ via aleph_lt_aleph, then ω₁.card > ℵ₀ (ω₁ is uncountable). Also establishes ℵ₁ is minimum uncountable with no cardinal between ℵ₀ and ℵ₁.",
+      "title": "Uncountability of \u03c9\u2081",
+      "summary": "Proves \u2135\u2080 < \u2135\u2081 via aleph_lt_aleph, then \u03c9\u2081.card > \u2135\u2080 (\u03c9\u2081 is uncountable). Also establishes \u2135\u2081 is minimum uncountable with no cardinal between \u2135\u2080 and \u2135\u2081.",
       "startLine": 88,
       "endLine": 121
     },
     {
       "id": "countable-ordinals",
-      "title": "Countable Ordinals as Iio(ω₁)",
-      "summary": "Defines IsCountableOrdinal α ↔ α.card ≤ ℵ₀. States the axiom α < ω₁ ↔ IsCountableOrdinal α and derives that the set of countable ordinals equals Set.Iio omega1.",
+      "title": "Countable Ordinals as Iio(\u03c9\u2081)",
+      "summary": "Defines IsCountableOrdinal \u03b1 \u2194 \u03b1.card \u2264 \u2135\u2080. States the axiom \u03b1 < \u03c9\u2081 \u2194 IsCountableOrdinal \u03b1 and derives that the set of countable ordinals equals Set.Iio omega1.",
       "startLine": 123,
       "endLine": 143
     },
     {
       "id": "diagonal-argument",
       "title": "The Cantor Diagonal Argument",
-      "summary": "Proves cantor_diagonal_countable_ordinals: for any f : ℕ → Ordinal with all f(n) < omega1, there exists β < omega1 exceeding all f(n). Uses sSup of range f plus ordinal successor.",
+      "summary": "Proves cantor_diagonal_countable_ordinals: for any f : \u2115 \u2192 Ordinal with all f(n) < omega1, there exists \u03b2 < omega1 exceeding all f(n). Uses sSup of range f plus ordinal successor.",
       "startLine": 155,
       "endLine": 193
     },
     {
       "id": "no-surjection",
-      "title": "No Surjection from ℕ onto Countable Ordinals",
-      "summary": "Derives that no function f : ℕ → Ordinal can surject onto all countable ordinals. Uses a clipping technique to handle f values that may exceed ω₁, then applies the diagonal argument.",
+      "title": "No Surjection from \u2115 onto Countable Ordinals",
+      "summary": "Derives that no function f : \u2115 \u2192 Ordinal can surject onto all countable ordinals. Uses a clipping technique to handle f values that may exceed \u03c9\u2081, then applies the diagonal argument.",
       "startLine": 195,
       "endLine": 226
     },
     {
       "id": "summary",
       "title": "Summary: Four Key Results",
-      "summary": "Capstone theorem combining: (1) ℵ₀ < ℵ₁, (2) ℵ₁ is minimum uncountable, (3) no surjection ℕ → countable ordinals, (4) ω₁.card = ℵ₁.",
+      "summary": "Capstone theorem combining: (1) \u2135\u2080 < \u2135\u2081, (2) \u2135\u2081 is minimum uncountable, (3) no surjection \u2115 \u2192 countable ordinals, (4) \u03c9\u2081.card = \u2135\u2081.",
       "startLine": 228,
       "endLine": 248
     }
   ],
   "conclusion": {
-    "summary": "The formalization proves that the set of all countable ordinals is uncountable via a diagonal argument, and that ω₁ (the first uncountable ordinal) has cardinality exactly ℵ₁. The key chain: ω₁ = (aleph 1).ord → ω₁.card = aleph 1 → ℵ₁ > ℵ₀ → no countable enumeration covers all countable ordinals (diagonal). All theorems are fully proved from Mathlib with 0 axioms and 0 sorries. Key Mathlib bridges: Cardinal.lt_ord for the ordinal/cardinal threshold, Cardinal.isRegular_aleph_one + Ordinal.iSup_lt_ord for the regularity argument.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **ℵ₁ Characterization**: The set of countable ordinals is the canonical representative of cardinality ℵ₁ — it has exactly ℵ₁ elements, making it 'maximally countable'.\n\n2. **Regularity of ω₁**: The proof uses (as an axiom) that ω₁ is regular — a countable union of countable ordinals is countable. This is a profound set-theoretic fact.\n\n**3. CH Connection**: From OQ-01, ℵ₁ ≤ 2^ℵ₀. The Continuum Hypothesis asks: is ℵ₁ = 2^ℵ₀? This is independent of ZFC (Gödel, Cohen). The current result establishes ℵ₁ as the minimum uncountable cardinal.\n\n4. **Ordinal Arithmetic**: The proof demonstrates ordinal successor (β + 1) and conditional supremum (sSup) working together, a key pattern in transfinite induction.",
+    "summary": "The formalization proves that the set of all countable ordinals is uncountable via a diagonal argument, and that \u03c9\u2081 (the first uncountable ordinal) has cardinality exactly \u2135\u2081. The key chain: \u03c9\u2081 = (aleph 1).ord \u2192 \u03c9\u2081.card = aleph 1 \u2192 \u2135\u2081 > \u2135\u2080 \u2192 no countable enumeration covers all countable ordinals (diagonal). All theorems are fully proved from Mathlib with 0 axioms and 0 sorries. Key Mathlib bridges: Cardinal.lt_ord for the ordinal/cardinal threshold, Cardinal.isRegular_aleph_one + Ordinal.iSup_lt_ord for the regularity argument.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **\u2135\u2081 Characterization**: The set of countable ordinals is the canonical representative of cardinality \u2135\u2081 \u2014 it has exactly \u2135\u2081 elements, making it 'maximally countable'.\n\n2. **Regularity of \u03c9\u2081**: The proof uses (as an axiom) that \u03c9\u2081 is regular \u2014 a countable union of countable ordinals is countable. This is a profound set-theoretic fact.\n\n**3. CH Connection**: From OQ-01, \u2135\u2081 \u2264 2^\u2135\u2080. The Continuum Hypothesis asks: is \u2135\u2081 = 2^\u2135\u2080? This is independent of ZFC (G\u00f6del, Cohen). The current result establishes \u2135\u2081 as the minimum uncountable cardinal.\n\n4. **Ordinal Arithmetic**: The proof demonstrates ordinal successor (\u03b2 + 1) and conditional supremum (sSup) working together, a key pattern in transfinite induction.",
     "openQuestions": [
       "ANSWERED: The three previously axiomatized facts (lt_omega1_iff_countable, omega1_isLimit, countable_sup_lt_omega1) are now fully proved using Cardinal.lt_ord, Ordinal.card_succ, and Ordinal.iSup_lt_ord respectively.",
       "Can the cardinality equality #{countable ordinals} = aleph 1 be proved directly in Lean without universe lifting?",
-      "What is the relationship between ω₁ and Hartogs numbers in this formalization?",
-      "Can the diagonal argument be generalized: for any regular cardinal κ, the set of ordinals of cardinality < κ has cardinality κ?"
+      "What is the relationship between \u03c9\u2081 and Hartogs numbers in this formalization?",
+      "Can the diagonal argument be generalized: for any regular cardinal \u03ba, the set of ordinals of cardinality < \u03ba has cardinality \u03ba?"
     ]
   },
   "relatedProblems": [
     {
       "id": "cantor-diagonalization-oq-01",
-      "relationship": "OQ-01 establishes ℵ₁ ≤ 2^ℵ₀ (Continuum Hypothesis). This proof establishes ℵ₁ as the cardinality of countable ordinals, giving the two ends of the CH question."
+      "relationship": "OQ-01 establishes \u2135\u2081 \u2264 2^\u2135\u2080 (Continuum Hypothesis). This proof establishes \u2135\u2081 as the cardinality of countable ordinals, giving the two ends of the CH question."
     },
     {
       "id": "cantor-diagonalization",
-      "relationship": "The base proof establishes ℵ₀ < 2^ℵ₀. This extension applies the diagonal idea to ordinals, showing the countable ordinals themselves are uncountable."
+      "relationship": "The base proof establishes \u2135\u2080 < 2^\u2135\u2080. This extension applies the diagonal idea to ordinals, showing the countable ordinals themselves are uncountable."
     }
   ],
   "leanFile": {
@@ -195,17 +195,51 @@
   "references": [
     {
       "authors": "G. Cantor",
-      "title": "Über unendliche, lineare Punktmannigfaltigkeiten",
+      "title": "\u00dcber unendliche, lineare Punktmannigfaltigkeiten",
       "year": "1883",
       "venue": "Mathematische Annalen",
-      "note": "Introduced transfinite ordinals and the first uncountable ordinal ω₁"
+      "note": "Introduced transfinite ordinals and the first uncountable ordinal \u03c9\u2081"
     },
     {
       "authors": "F. Hausdorff",
-      "title": "Grundzüge der Mengenlehre",
+      "title": "Grundz\u00fcge der Mengenlehre",
       "year": "1914",
       "venue": "Leipzig: Veit",
       "note": "Systematic treatment of uncountable ordinals and their cardinality"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "related",
+      "description": "Both involve infinity, cardinality"
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "related",
+      "description": "Both involve infinity, cardinality"
+    },
+    {
+      "targetId": "cantors-theorem-oq-01",
+      "relationship": "related",
+      "description": "Both involve cardinality, foundations"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Both involve cardinality, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "cantor-diagonalization-oq-01",
+    "denumerability-rationals",
+    "cantors-theorem-oq-01",
+    "cantors-theorem"
   ]
 }

@@ -21,32 +21,32 @@
     "mathlibDependencies": [
       {
         "theorem": "Complex.exp_mul_I",
-        "description": "Euler's formula: exp(θ*I) = cos(θ) + i*sin(θ)",
+        "description": "Euler's formula: exp(\u03b8*I) = cos(\u03b8) + i*sin(\u03b8)",
         "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
       },
       {
         "theorem": "Complex.exp_two_pi_mul_I",
-        "description": "exp(2πi) = 1",
+        "description": "exp(2\u03c0i) = 1",
         "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
       },
       {
         "theorem": "Complex.log_exp",
-        "description": "Principal logarithm inverts exp for -π < im(z) ≤ π",
+        "description": "Principal logarithm inverts exp for -\u03c0 < im(z) \u2264 \u03c0",
         "module": "Mathlib.Analysis.SpecialFunctions.Complex.Log"
       },
       {
         "theorem": "Complex.cpow_def_of_ne_zero",
-        "description": "z^w = exp(w * log(z)) for z ≠ 0",
+        "description": "z^w = exp(w * log(z)) for z \u2260 0",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
       },
       {
         "theorem": "Complex.exp_eq_exp_iff_exists_int",
-        "description": "exp(z) = exp(w) iff z = w + 2πik for some integer k",
+        "description": "exp(z) = exp(w) iff z = w + 2\u03c0ik for some integer k",
         "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
       },
       {
         "theorem": "Complex.cpow_intCast",
-        "description": "z^(n:ℂ) = z^n for integer n",
+        "description": "z^(n:\u2102) = z^n for integer n",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
       }
     ],
@@ -72,7 +72,7 @@
     "keyInsights": [
       "The **multi-valuedness** of $z^{p/q}$ arises from the periodicity of exp: $\\exp(z) = \\exp(z + 2\\pi ik)$, so the inverse $\\log$ is inherently multi-valued with branches separated by $2\\pi i$",
       "**Root distinctness** reduces to a pigeonhole argument: if $\\zeta_j = \\zeta_k$ then $j - k = mq$ for some integer $m$, but $|j - k| < q$ forces $m = 0$",
-      "Mathlib's `cpow` selects the **principal branch** via `log`, which requires $-\\pi < \\theta \\leq \\pi$ — this convention matches the standard branch cut along the negative real axis",
+      "Mathlib's `cpow` selects the **principal branch** via `log`, which requires $-\\pi < \\theta \\leq \\pi$ \u2014 this convention matches the standard branch cut along the negative real axis",
       "All $q$ roots factor as **principal root times roots of unity**: $\\zeta_k = \\zeta_0 \\cdot \\omega_k$, reflecting the coset decomposition $z^{1/q} \\cdot \\mu_q$ where $\\mu_q$ is the cyclic group of $q$-th roots of unity",
       "The **square root negation** $\\zeta_1 = -\\zeta_0$ is a direct consequence of Euler's identity $e^{i\\pi} = -1$, providing a satisfying concrete instance of the general theory"
     ],
@@ -163,7 +163,7 @@
     "summary": "This formalization fully extends De Moivre's theorem to fractional exponents z^(p/q), proving root enumeration, factorization via roots of unity, distinctness, and consistency with both integer De Moivre and Mathlib's cpow. All theorems are fully proved with zero sorries.",
     "implications": "Completes the De Moivre open question series (OQ-01: Chebyshev extraction, OQ-02: Chebyshev properties, OQ-03: fractional exponents). Provides a foundation for formal treatment of multi-valued complex functions.",
     "openQuestions": [
-      "Extend to irrational exponents z^α via limits of rational approximations",
+      "Extend to irrational exponents z^\u03b1 via limits of rational approximations",
       "Formalize the full Riemann surface structure of z^(p/q)",
       "Connect root enumeration to Galois theory of cyclotomic extensions"
     ]
@@ -215,5 +215,39 @@
       "year": "1997",
       "venue": "Oxford University Press"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Both involve complex-analysis, wiedijk-100"
+    },
+    {
+      "targetId": "erdos-974",
+      "relationship": "related",
+      "description": "Both involve complex-analysis, roots-of-unity"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Both involve complex-analysis, wiedijk-100"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both involve wiedijk-100, trigonometry"
+    }
+  ],
+  "relatedProofs": [
+    "de-moivre",
+    "euler-identity",
+    "erdos-974",
+    "fundamental-theorem-algebra",
+    "law-of-cosines"
   ]
 }

@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-oq-03-oq-01",
   "title": "Cauchy-Schwarz Equality Characterization",
   "slug": "cauchy-schwarz-oq-03-oq-01",
-  "description": "Formalizes when equality holds in the Cauchy-Schwarz and Hölder inequalities. CS equality (∑fᵢgᵢ)² = (∑fᵢ²)(∑gᵢ²) iff proportional, proved via Lagrange identity. Extended to general Hölder: equality iff power proportionality fᵢ^p = c·gᵢ^q, proved via Young deficit reduction. Lifted to measure-theoretic integrals.",
+  "description": "Formalizes when equality holds in the Cauchy-Schwarz and H\u00f6lder inequalities. CS equality (\u2211f\u1d62g\u1d62)\u00b2 = (\u2211f\u1d62\u00b2)(\u2211g\u1d62\u00b2) iff proportional, proved via Lagrange identity. Extended to general H\u00f6lder: equality iff power proportionality f\u1d62^p = c\u00b7g\u1d62^q, proved via Young deficit reduction. Lifted to measure-theoretic integrals.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Equality_condition",
@@ -31,22 +31,22 @@
       },
       {
         "theorem": "norm_inner_eq_norm_iff",
-        "description": "‖inner u v‖ = ‖u‖·‖v‖ iff u and v are related by a nonzero scalar multiple.",
+        "description": "\u2016inner u v\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 iff u and v are related by a nonzero scalar multiple.",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
         "theorem": "NNReal.inner_le_Lp_mul_Lq",
-        "description": "Hölder's inequality for NNReal finite sums.",
+        "description": "H\u00f6lder's inequality for NNReal finite sums.",
         "module": "Mathlib.Analysis.MeanInequalities"
       },
       {
         "theorem": "convexOn_exp",
-        "description": "The exponential function is convex on ℝ; used in Young's inequality proof.",
+        "description": "The exponential function is convex on \u211d; used in Young's inequality proof.",
         "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
       },
       {
         "theorem": "strictConvexOn_exp",
-        "description": "The exponential function is strictly convex on ℝ; used for Young's equality reverse direction.",
+        "description": "The exponential function is strictly convex on \u211d; used for Young's equality reverse direction.",
         "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
       },
       {
@@ -56,22 +56,22 @@
       }
     ],
     "originalContributions": [
-      "Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2·[(∑f²)(∑g²) - (∑fg)²]",
+      "Lagrange identity: \u2211\u1d62\u2211\u2c7c(f\u1d62g\u2c7c - f\u2c7cg\u1d62)\u00b2 = 2\u00b7[(\u2211f\u00b2)(\u2211g\u00b2) - (\u2211fg)\u00b2]",
       "Sum-of-squares-equals-zero characterization (single and double sum)",
-      "Full iff characterization: CS equality ⟺ all cross-terms vanish",
+      "Full iff characterization: CS equality \u27fa all cross-terms vanish",
       "Proportionality extraction from cross-term condition",
       "Inner product space equality via Mathlib's norm_inner_eq_norm_iff",
       "Cauchy-Schwarz inequality from Lagrange identity (independent proof)",
       "Conjugate exponent identities: q=p/(p-1), (p-1)(q-1)=1, p+q=pq",
-      "Young deficit framework: reduces Hölder equality to pointwise Young equality",
+      "Young deficit framework: reduces H\u00f6lder equality to pointwise Young equality",
       "Sum of Young deficits = 0 iff each = 0 (generalized sum-of-nonneg technique)",
-      "Hölder equality (normalized): ∑fᵢgᵢ = 1 with ∑fᵢ^p = ∑gᵢ^q = 1 implies fᵢ^p = gᵢ^q",
+      "H\u00f6lder equality (normalized): \u2211f\u1d62g\u1d62 = 1 with \u2211f\u1d62^p = \u2211g\u1d62^q = 1 implies f\u1d62^p = g\u1d62^q",
       "Power proportionality to linear proportionality reduction (p=q=2 specialization)",
-      "Reverse direction: proportional → CS equality (substitution proof)",
+      "Reverse direction: proportional \u2192 CS equality (substitution proof)",
       "Full iff for CS proportionality characterization",
-      "Reverse direction: power proportionality → Hölder equality (normalized, via Young deficit)",
-      "Integral Young deficit identity and Hölder equality (normalized, measure-theoretic)",
-      "General integral Hölder equality: normalization reduction to get f^p =ᵃᵉ c·g^q"
+      "Reverse direction: power proportionality \u2192 H\u00f6lder equality (normalized, via Young deficit)",
+      "Integral Young deficit identity and H\u00f6lder equality (normalized, measure-theoretic)",
+      "General integral H\u00f6lder equality: normalization reduction to get f^p =\u1d43\u1d49 c\u00b7g^q"
     ],
     "axiomCount": 0,
     "lineCount": 835,
@@ -81,94 +81,94 @@
     {
       "id": "lagrange-identity",
       "title": "Lagrange Identity",
-      "summary": "Proves the Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2·[(∑f²)(∑g²) - (∑fg)²]. The LHS is manifestly non-negative, giving CS as a corollary.",
+      "summary": "Proves the Lagrange identity: \u2211\u1d62\u2211\u2c7c(f\u1d62g\u2c7c - f\u2c7cg\u1d62)\u00b2 = 2\u00b7[(\u2211f\u00b2)(\u2211g\u00b2) - (\u2211fg)\u00b2]. The LHS is manifestly non-negative, giving CS as a corollary.",
       "startLine": 26,
       "endLine": 57
     },
     {
       "id": "sum-sq-zero",
       "title": "Sum of Squares Zero Characterization",
-      "summary": "∑hᵢ² = 0 iff each hᵢ = 0. Extended to double sums. The fundamental technique reused for Hölder via Young deficits.",
+      "summary": "\u2211h\u1d62\u00b2 = 0 iff each h\u1d62 = 0. Extended to double sums. The fundamental technique reused for H\u00f6lder via Young deficits.",
       "startLine": 59,
       "endLine": 81
     },
     {
       "id": "cs-equality-iff",
       "title": "Cauchy-Schwarz Equality Characterization",
-      "summary": "Full iff: equality in CS holds iff all cross-terms fᵢgⱼ = fⱼgᵢ vanish. Extracts proportionality: fᵢ = c·gᵢ when some gₖ ≠ 0.",
+      "summary": "Full iff: equality in CS holds iff all cross-terms f\u1d62g\u2c7c = f\u2c7cg\u1d62 vanish. Extracts proportionality: f\u1d62 = c\u00b7g\u1d62 when some g\u2096 \u2260 0.",
       "startLine": 83,
       "endLine": 149
     },
     {
       "id": "inner-product-equality",
       "title": "Inner Product Space Equality",
-      "summary": "Abstract characterization: ‖⟨u,v⟩‖ = ‖u‖·‖v‖ iff ∃c, u = c•v. Both norm and absolute value forms.",
+      "summary": "Abstract characterization: \u2016\u27e8u,v\u27e9\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 iff \u2203c, u = c\u2022v. Both norm and absolute value forms.",
       "startLine": 150,
       "endLine": 176
     },
     {
       "id": "holder-cs-finite",
-      "title": "Hölder/CS for Finite Sums and Examples",
-      "summary": "Hölder for NNReal sums via Mathlib, CS from Lagrange, and concrete equality/strict-inequality examples.",
+      "title": "H\u00f6lder/CS for Finite Sums and Examples",
+      "summary": "H\u00f6lder for NNReal sums via Mathlib, CS from Lagrange, and concrete equality/strict-inequality examples.",
       "startLine": 178,
       "endLine": 229
     },
     {
       "id": "conjugate-identities",
       "title": "Conjugate Exponent Identities",
-      "summary": "Five identities for Hölder conjugate pairs: q=p/(p-1), (p-1)(q-1)=1, q/p+1=q, 1<q, p+q=pq.",
+      "summary": "Five identities for H\u00f6lder conjugate pairs: q=p/(p-1), (p-1)(q-1)=1, q/p+1=q, 1<q, p+q=pq.",
       "startLine": 231,
       "endLine": 292
     },
     {
       "id": "young-equality",
       "title": "Young's Equality Case",
-      "summary": "Defines Young deficit a^p/p + b^q/q - ab. Full iff: deficit = 0 ↔ a^p = b^q. Forward via exp/log; reverse via strict convexity of exp.",
+      "summary": "Defines Young deficit a^p/p + b^q/q - ab. Full iff: deficit = 0 \u2194 a^p = b^q. Forward via exp/log; reverse via strict convexity of exp.",
       "startLine": 294,
       "endLine": 460
     },
     {
       "id": "holder-equality",
-      "title": "General Hölder Equality (Finite Sums)",
-      "summary": "Reduces Hölder equality to pointwise Young equality: sum of deficits = 0 forces each deficit = 0. Normalized and general cases with both directions.",
+      "title": "General H\u00f6lder Equality (Finite Sums)",
+      "summary": "Reduces H\u00f6lder equality to pointwise Young equality: sum of deficits = 0 forces each deficit = 0. Normalized and general cases with both directions.",
       "startLine": 462,
       "endLine": 600
     },
     {
       "id": "cs-from-holder",
-      "title": "Recovering Cauchy-Schwarz from Hölder",
-      "summary": "At p=q=2, power proportionality fᵢ² = c·gᵢ² reduces to linear proportionality fᵢ = √c·gᵢ for non-negative functions.",
+      "title": "Recovering Cauchy-Schwarz from H\u00f6lder",
+      "summary": "At p=q=2, power proportionality f\u1d62\u00b2 = c\u00b7g\u1d62\u00b2 reduces to linear proportionality f\u1d62 = \u221ac\u00b7g\u1d62 for non-negative functions.",
       "startLine": 626,
       "endLine": 650
     },
     {
       "id": "integral-holder-equality",
-      "title": "Integral Hölder Equality (Measure Theory)",
-      "summary": "Lifts Hölder equality to integrals: ∫fg = ‖f‖_p‖g‖_q iff f^p =ᵃᵉ c·g^q. Uses integral_eq_zero_iff_of_nonneg_ae as the measure-theoretic 'sum of nonneg = 0'.",
+      "title": "Integral H\u00f6lder Equality (Measure Theory)",
+      "summary": "Lifts H\u00f6lder equality to integrals: \u222bfg = \u2016f\u2016_p\u2016g\u2016_q iff f^p =\u1d43\u1d49 c\u00b7g^q. Uses integral_eq_zero_iff_of_nonneg_ae as the measure-theoretic 'sum of nonneg = 0'.",
       "startLine": 652,
       "endLine": 834
     }
   ],
   "overview": {
-    "historicalContext": "The Cauchy-Schwarz inequality has a rich multi-national history: Cauchy proved the finite-sum version in 1821, Bunyakovsky extended it to integrals in 1859, and Schwarz independently proved the integral form in 1885. The equality condition — proportionality of the vectors — was recognized by Cauchy himself. Lagrange's identity (1773), originally developed for studying $2 \\times 2$ determinants, provides an elegant proof by expressing the CS deficit as a sum of squared cross-terms $(f_ig_j - f_jg_i)^2$. For the general Holder inequality (Holder 1889, Rogers 1888), the equality case was fully characterized by Hardy, Littlewood, and Polya in their landmark 1934 monograph 'Inequalities': equality holds iff $f_i^p$ and $g_i^q$ are proportional, proved via Young's inequality (1912) and strict convexity of the exponential. The measure-theoretic extension, needed for $L^p$ space theory, requires the almost-everywhere version: $f^p =_{\\text{a.e.}} c \\cdot g^q$.",
+    "historicalContext": "The Cauchy-Schwarz inequality has a rich multi-national history: Cauchy proved the finite-sum version in 1821, Bunyakovsky extended it to integrals in 1859, and Schwarz independently proved the integral form in 1885. The equality condition \u2014 proportionality of the vectors \u2014 was recognized by Cauchy himself. Lagrange's identity (1773), originally developed for studying $2 \\times 2$ determinants, provides an elegant proof by expressing the CS deficit as a sum of squared cross-terms $(f_ig_j - f_jg_i)^2$. For the general Holder inequality (Holder 1889, Rogers 1888), the equality case was fully characterized by Hardy, Littlewood, and Polya in their landmark 1934 monograph 'Inequalities': equality holds iff $f_i^p$ and $g_i^q$ are proportional, proved via Young's inequality (1912) and strict convexity of the exponential. The measure-theoretic extension, needed for $L^p$ space theory, requires the almost-everywhere version: $f^p =_{\\text{a.e.}} c \\cdot g^q$.",
     "problemStatement": "When does equality hold in the Cauchy-Schwarz and Holder inequalities? Characterize equality at three levels: finite sums (proportionality), inner product spaces (scalar multiple), and measure-theoretic integrals (a.e. power proportionality $f^p =_{\\text{a.e.}} c \\cdot g^q$).",
-    "text": "Formalizes when equality holds in the Cauchy-Schwarz and Hölder inequalities. CS equality (∑fᵢgᵢ)² = (∑fᵢ²)(∑gᵢ²) iff proportional, proved via Lagrange identity. Extended to general Hölder: equality iff power proportionality fᵢ^p = c·gᵢ^q, proved via Young deficit reduction. Lifted to measure-theoretic integrals.",
+    "text": "Formalizes when equality holds in the Cauchy-Schwarz and H\u00f6lder inequalities. CS equality (\u2211f\u1d62g\u1d62)\u00b2 = (\u2211f\u1d62\u00b2)(\u2211g\u1d62\u00b2) iff proportional, proved via Lagrange identity. Extended to general H\u00f6lder: equality iff power proportionality f\u1d62^p = c\u00b7g\u1d62^q, proved via Young deficit reduction. Lifted to measure-theoretic integrals.",
     "proofStrategy": "Three-layer generalization: (1) CS equality via Lagrange identity and squared cross-terms; (2) Holder equality via Young deficit and strict convexity of exp, reducing normalized Holder equality to pointwise Young equality; (3) integral Holder equality via integral_eq_zero_iff_of_nonneg_ae, lifting the finite argument to measure spaces. Each layer uses normalization to reduce to the unit-norm case.",
     "keyInsights": [
-      "**Sum-of-nonnegatives-equals-zero principle** unifies CS equality (squared cross-terms $(f_ig_j - f_jg_i)^2$) and Holder equality (Young deficits $a^p/p + b^q/q - ab$) — the proof structures are parallel across all three levels",
+      "**Sum-of-nonnegatives-equals-zero principle** unifies CS equality (squared cross-terms $(f_ig_j - f_jg_i)^2$) and Holder equality (Young deficits $a^p/p + b^q/q - ab$) \u2014 the proof structures are parallel across all three levels",
       "**Young's equality case** $a^p/p + b^q/q = ab \\iff a^p = b^q$ is the pointwise engine: strict convexity of $\\exp$ (`strictConvexOn_exp`) provides the reverse direction via Jensen equality conditions",
       "**Normalization reduction**: dividing by $L^p/L^q$ norms reduces general Holder equality to the unit-norm case where the target sum/integral equals 1, transforming a scale-dependent problem into a scale-free one",
-      "**Measure-theoretic lifting**: replacing finite `sum_eq_zero_iff_of_nonneg` with Mathlib's `integral_eq_zero_iff_of_nonneg_ae` gives almost-everywhere proportionality — the same argument works verbatim with sums replaced by integrals",
+      "**Measure-theoretic lifting**: replacing finite `sum_eq_zero_iff_of_nonneg` with Mathlib's `integral_eq_zero_iff_of_nonneg_ae` gives almost-everywhere proportionality \u2014 the same argument works verbatim with sums replaced by integrals",
       "**Holder-to-CS specialization**: at $p = q = 2$, power proportionality $f_i^2 = c \\cdot g_i^2$ reduces to linear proportionality $f_i = \\sqrt{c} \\cdot g_i$ for non-negative functions, closing the circle from general Holder back to classical Cauchy-Schwarz"
     ],
     "prerequisites": []
   },
   "conclusion": {
-    "summary": "Complete formalization of equality characterizations for Cauchy-Schwarz, general Hölder, and integral Hölder inequalities. CS via Lagrange identity with full iff proportionality. Hölder via Young deficit reduction with both directions. Integral case via normalization and integral_eq_zero_iff_of_nonneg_ae. All 835 lines, zero axioms, zero sorries.",
-    "implications": "The equality characterization is foundational for projection theory: in inner product spaces, CS equality determines when one vector lies in the span of another\nThe Young deficit framework provides a template for characterizing equality in other convexity-based inequalities\nThe integral Hölder equality f^p =ᵃᵉ c·g^q characterizes extremizers of the Hölder inequality, relevant to sharp constant problems in functional analysis\nThe normalization technique (dividing by Lp norms) is a general strategy for reducing inequality equality cases to the unit-ball case",
+    "summary": "Complete formalization of equality characterizations for Cauchy-Schwarz, general H\u00f6lder, and integral H\u00f6lder inequalities. CS via Lagrange identity with full iff proportionality. H\u00f6lder via Young deficit reduction with both directions. Integral case via normalization and integral_eq_zero_iff_of_nonneg_ae. All 835 lines, zero axioms, zero sorries.",
+    "implications": "The equality characterization is foundational for projection theory: in inner product spaces, CS equality determines when one vector lies in the span of another\nThe Young deficit framework provides a template for characterizing equality in other convexity-based inequalities\nThe integral H\u00f6lder equality f^p =\u1d43\u1d49 c\u00b7g^q characterizes extremizers of the H\u00f6lder inequality, relevant to sharp constant problems in functional analysis\nThe normalization technique (dividing by Lp norms) is a general strategy for reducing inequality equality cases to the unit-ball case",
     "openQuestions": [
       "Can the strict convexity argument for Young's equality be replaced by a purely algebraic proof?",
-      "Can the integral equality characterization be extended to the endpoint cases p=1 and p=∞?",
+      "Can the integral equality characterization be extended to the endpoint cases p=1 and p=\u221e?",
       "Can the same Young deficit technique characterize equality in Minkowski's inequality $\\|f+g\\|_p \\le \\|f\\|_p + \\|g\\|_p$?"
     ]
   },
@@ -191,21 +191,21 @@
   "references": [
     {
       "authors": "Joseph-Louis Lagrange",
-      "title": "Identity for 2×2 determinants",
+      "title": "Identity for 2\u00d72 determinants",
       "year": "1773",
-      "venue": "Recherches d'arithmétique",
+      "venue": "Recherches d'arithm\u00e9tique",
       "note": "The Lagrange identity relating cross-terms to the Cauchy-Schwarz deficit"
     },
     {
-      "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "authors": "G. H. Hardy, J. E. Littlewood, G. P\u00f3lya",
       "title": "Inequalities",
       "year": "1934",
       "venue": "Cambridge University Press",
-      "note": "Chapter 2, Theorem 15: equality conditions for Hölder and Cauchy-Schwarz"
+      "note": "Chapter 2, Theorem 15: equality conditions for H\u00f6lder and Cauchy-Schwarz"
     },
     {
       "authors": "Augustin-Louis Cauchy",
-      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "title": "Cours d'analyse de l'\u00c9cole Royale Polytechnique",
       "year": "1821",
       "venue": "Imprimerie Royale",
       "note": "Original statement of the Cauchy inequality for finite sums; equality case noted as proportionality"
@@ -215,7 +215,41 @@
       "title": "On classes of summable functions and their Fourier series",
       "year": "1912",
       "venue": "Proceedings of the Royal Society A",
-      "note": "Young's inequality ab ≤ a^p/p + b^q/q for conjugate exponents"
+      "note": "Young's inequality ab \u2264 a^p/p + b^q/q for conjugate exponents"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-02",
+      "relationship": "related",
+      "description": "Both involve measure-theory, functional-analysis"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "related",
+      "description": "Both involve measure-theory, cauchy-schwarz"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Both involve measure-theory, cauchy-schwarz"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02",
+      "relationship": "related",
+      "description": "Both involve measure-theory, cauchy-schwarz"
+    }
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-oq-03",
+    "lebesgue-measure-oq-02",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-02"
   ]
 }

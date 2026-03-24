@@ -61,7 +61,7 @@
         "title": "Disquisitiones Arithmeticae",
         "year": "1801",
         "venue": "Leipzig: Gerhard Fleischer",
-        "note": "General formulation for arbitrary number of pairwise coprime moduli (§36)"
+        "note": "General formulation for arbitrary number of pairwise coprime moduli (\u00a736)"
       },
       {
         "authors": "Qin Jiushao",
@@ -92,22 +92,22 @@
       {
         "proofId": "chinese-remainder-non-coprime",
         "relationship": "complementary",
-        "description": "Handles the non-coprime case where gcd(m,n) > 1 with compatibility conditions — the complementary extension direction to this proof's arbitrary-length generalization"
+        "description": "Handles the non-coprime case where gcd(m,n) > 1 with compatibility conditions \u2014 the complementary extension direction to this proof's arbitrary-length generalization"
       },
       {
         "proofId": "gcd-algorithm",
         "relationship": "foundational",
-        "description": "The Euclidean algorithm computes GCDs that determine coprimality — the coprime_prod_of_forall lemma ultimately rests on GCD computations"
+        "description": "The Euclidean algorithm computes GCDs that determine coprimality \u2014 the coprime_prod_of_forall lemma ultimately rests on GCD computations"
       },
       {
         "proofId": "euler-totient",
         "relationship": "related",
-        "description": "Euler's totient function is multiplicative for coprime arguments: φ(mn) = φ(m)φ(n) when gcd(m,n)=1. CRT provides the structural explanation: (Z/mnZ)× ≅ (Z/mZ)× × (Z/nZ)× for coprime m,n"
+        "description": "Euler's totient function is multiplicative for coprime arguments: \u03c6(mn) = \u03c6(m)\u03c6(n) when gcd(m,n)=1. CRT provides the structural explanation: (Z/mnZ)\u00d7 \u2245 (Z/mZ)\u00d7 \u00d7 (Z/nZ)\u00d7 for coprime m,n"
       },
       {
         "proofId": "fundamental-arithmetic",
         "relationship": "foundational",
-        "description": "Unique prime factorization guarantees that distinct primes are pairwise coprime — the standard source of CRT-applicable moduli systems"
+        "description": "Unique prime factorization guarantees that distinct primes are pairwise coprime \u2014 the standard source of CRT-applicable moduli systems"
       }
     ],
     "dateAdded": "2026-03-23",
@@ -115,16 +115,16 @@
     "lineCount": 156
   },
   "overview": {
-    "historicalContext": "The Chinese Remainder Theorem has a rich history spanning nearly two millennia. Sun Zi's *Sunzi Suanjing* (~400 CE) posed the earliest known instance: find a number leaving remainders 2, 3, 2 when divided by 3, 5, 7 (answer: 23). The Indian mathematician Brahmagupta (628 CE) solved similar systems in his *Brahmasphutasiddhanta*, and the method was refined by Qin Jiushao in 1247 CE (*Shushu Jiuzhang*), who gave a general algorithm for arbitrary systems — anticipating Gauss by over 500 years.\n\nGauss provided the modern formulation in *Disquisitiones Arithmeticae* (1801, §36), stating the theorem for any number of pairwise coprime moduli and proving both existence and uniqueness. His proof used Bezout's identity to construct solutions, the same approach Mathlib's `Nat.chineseRemainder` implements.\n\nThe parent formalization (`chinese-remainder-constructive`) proves CRT for 2, 3, and 4 moduli with separate theorems (`crt_exists`, `crt_three`, `crt_four`), each requiring its own proof. This formalization answers the natural generalization question: the entire family of CRT theorems for any number of moduli collapses into a single theorem proved by list induction, mirroring Gauss's observation that the two-moduli case is the essential building block.",
+    "historicalContext": "The Chinese Remainder Theorem has a rich history spanning nearly two millennia. Sun Zi's *Sunzi Suanjing* (~400 CE) posed the earliest known instance: find a number leaving remainders 2, 3, 2 when divided by 3, 5, 7 (answer: 23). The Indian mathematician Brahmagupta (628 CE) solved similar systems in his *Brahmasphutasiddhanta*, and the method was refined by Qin Jiushao in 1247 CE (*Shushu Jiuzhang*), who gave a general algorithm for arbitrary systems \u2014 anticipating Gauss by over 500 years.\n\nGauss provided the modern formulation in *Disquisitiones Arithmeticae* (1801, \u00a736), stating the theorem for any number of pairwise coprime moduli and proving both existence and uniqueness. His proof used Bezout's identity to construct solutions, the same approach Mathlib's `Nat.chineseRemainder` implements.\n\nThe parent formalization (`chinese-remainder-constructive`) proves CRT for 2, 3, and 4 moduli with separate theorems (`crt_exists`, `crt_three`, `crt_four`), each requiring its own proof. This formalization answers the natural generalization question: the entire family of CRT theorems for any number of moduli collapses into a single theorem proved by list induction, mirroring Gauss's observation that the two-moduli case is the essential building block.",
     "problemStatement": "**General CRT**: Given pairwise coprime moduli [m1, ..., mk] and remainders [a1, ..., ak], prove:\n1. **Existence**: There exists x satisfying x = ai (mod mi) for all i\n2. **Uniqueness**: Any two solutions are congruent modulo m1 * m2 * ... * mk",
     "proofStrategy": "Both theorems are proved by induction on the list of (remainder, modulus) pairs.\n\n**Existence**: Base case is trivial (empty system). For (a, m) :: rest, the IH gives y satisfying the tail. A key helper (coprime_prod_of_forall) shows m is coprime to the product of remaining moduli. Apply Nat.chineseRemainder for x = a (mod m) and x = y (mod prod). For any tail congruence p, since p.2 divides the product, x = y (mod p.2), and y = p.1 (mod p.2) by IH.\n\n**Uniqueness**: For the cons case, x = y (mod m) follows from both satisfying the head congruence. x = y (mod prod_rest) by IH. Coprimality gives x = y (mod m * prod_rest) via Nat.modEq_and_modEq_iff_modEq_mul.",
     "keyInsights": [
-      "**Inductive reduction to two-moduli CRT**: The inductive step reduces a $k$-moduli system to the two-moduli case: solve for $(\\text{head modulus}, \\text{product of tail moduli})$. This mirrors how Gauss structured his proof — the two-moduli case is the universal building block.",
+      "**Inductive reduction to two-moduli CRT**: The inductive step reduces a $k$-moduli system to the two-moduli case: solve for $(\\text{head modulus}, \\text{product of tail moduli})$. This mirrors how Gauss structured his proof \u2014 the two-moduli case is the universal building block.",
       "**coprime_prod_of_forall as the bridge lemma**: Pairwise coprimality of $[m_1, \\ldots, m_k]$ implies $\\gcd(m_1, m_2 \\cdots m_k) = 1$, which is exactly the coprimality hypothesis `Nat.chineseRemainder` requires. Without this bridge, the inductive step cannot apply the two-moduli CRT.",
-      "**Divisibility chain**: Each modulus $m_i$ divides the product $\\prod m_j$, so a congruence modulo the product implies congruences modulo each factor. The chain `dvd_list_prod` → `modEq_of_dvd` → individual congruences is the mechanism that propagates the product-level solution to each component.",
+      "**Divisibility chain**: Each modulus $m_i$ divides the product $\\prod m_j$, so a congruence modulo the product implies congruences modulo each factor. The chain `dvd_list_prod` \u2192 `modEq_of_dvd` \u2192 individual congruences is the mechanism that propagates the product-level solution to each component.",
       "**List.Pairwise.cons decomposition**: `List.pairwise_cons.mp` cleanly separates 'head coprime to every tail element' from 'tail elements pairwise coprime.' This structural decomposition aligns perfectly with the mathematical argument and avoids manual case analysis.",
       "**Elimination of code duplication**: The parent proof needed separate `crt_three` and `crt_four` theorems, each repeating the same argument pattern. The list-based formulation captures the general pattern once, demonstrating how the right abstraction level can dramatically simplify a formalization.",
-      "**Constructive witness via Nat.chineseRemainder**: The existence proof doesn't just assert a solution exists — it constructs one via iterated application of Bezout's identity. The `sol.val` at each step is a concrete natural number, making the proof computationally meaningful."
+      "**Constructive witness via Nat.chineseRemainder**: The existence proof doesn't just assert a solution exists \u2014 it constructs one via iterated application of Bezout's identity. The `sol.val` at each step is a concrete natural number, making the proof computationally meaningful."
     ],
     "prerequisites": [
       "Nat.ModEq (modular congruences)",
@@ -204,6 +204,36 @@
     "chinese-remainder-non-coprime",
     "gcd-algorithm",
     "euler-totient",
-    "fundamental-arithmetic"
+    "fundamental-arithmetic",
+    "arithmetic-series-oq-02",
+    "chinese-remainder-non-coprime-oq-01",
+    "divisibility-by-3"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "parent",
+      "description": "Parent formalization that this open question extends"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "related",
+      "description": "Both involve induction, number-theory"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Both involve modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-01",
+      "relationship": "related",
+      "description": "Both involve modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Both involve modular-arithmetic, number-theory"
+    }
   ]
 }

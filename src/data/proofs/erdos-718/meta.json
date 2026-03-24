@@ -1,10 +1,10 @@
 {
   "id": "erdos-718",
-  "title": "Erdős Problem #718: Subdivisions of Complete Graphs",
+  "title": "Erd\u0151s Problem #718: Subdivisions of Complete Graphs",
   "slug": "erdos-718",
-  "description": "Is there a constant C > 0 such that any graph on n vertices with ≥ Cr²n edges contains a subdivision of Kᵣ? Yes, proved independently by Komlós-Szemerédi and Bollobás-Thomason in 1996.",
+  "description": "Is there a constant C > 0 such that any graph on n vertices with \u2265 Cr\u00b2n edges contains a subdivision of K\u1d63? Yes, proved independently by Koml\u00f3s-Szemer\u00e9di and Bollob\u00e1s-Thomason in 1996.",
   "meta": {
-    "author": "Komlós-Szemerédi (1996), Bollobás-Thomason (1996)",
+    "author": "Koml\u00f3s-Szemer\u00e9di (1996), Bollob\u00e1s-Thomason (1996)",
     "sourceUrl": "https://erdosproblems.com/718",
     "date": "1996",
     "status": "axiomatized",
@@ -44,12 +44,12 @@
     ],
     "originalContributions": [
       "GraphWithDensity definition: graphs with specified vertex/edge counts",
-      "IsSubdivisionOfKr definition: subdivision of complete graph Kᵣ",
-      "ContainsSubdivisionOfKr definition: containing a Kᵣ subdivision",
-      "MaderConjecture definition: the Erdős-Hajnal-Mader conjecture",
-      "dirac_1960 axiom: 2n-2 edges forces K₄ subdivision",
+      "IsSubdivisionOfKr definition: subdivision of complete graph K\u1d63",
+      "ContainsSubdivisionOfKr definition: containing a K\u1d63 subdivision",
+      "MaderConjecture definition: the Erd\u0151s-Hajnal-Mader conjecture",
+      "dirac_1960 axiom: 2n-2 edges forces K\u2084 subdivision",
       "mader_1967 axiom: exponential bound 2^{r choose 2} suffices",
-      "komlos_szemeredi_1996 axiom: quadratic bound Cr²n suffices",
+      "komlos_szemeredi_1996 axiom: quadratic bound Cr\u00b2n suffices",
       "bollobas_thomason_1996 axiom: alternative proof",
       "IsKLinked definition: k-linked graphs",
       "dense_graphs_linked axiom: dense graphs are highly linked",
@@ -60,20 +60,20 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #718: Subdivisions of Complete Graphs**\n\nThis problem concerns forced substructures in dense graphs, a central theme in extremal graph theory.\n\n**Key History:**\n- Dirac (1960): Proved 2n-2 edges forces a K₄ subdivision; conjectured 3n-5 forces K₅\n- Mader (1967): Proved exponential bound 2^{r choose 2} · n edges suffices for Kᵣ subdivision\n- Erdős, Hajnal, and Mader: Conjectured quadratic bound Cr²n suffices\n- Komlós-Szemerédi (1996): Proved the conjecture\n- Bollobás-Thomason (1996): Independent proof, also characterized highly linked graphs\n\n**Mathematical Setting:**\nA subdivision of a graph H replaces each edge with a path. A subdivision of Kᵣ (the complete graph on r vertices) is called a topological Kᵣ. The question asks: how many edges force a topological Kᵣ?",
-    "problemStatement": "**Problem Statement (Solved)**\n\nIs there some constant C > 0 such that any graph on n vertices with ≥ Cr²n edges contains a subdivision of Kᵣ?\n\n**Answer: YES**\n\nProved independently by:\n- Komlós and Szemerédi (1996): \"Topological cliques in graphs II\"\n- Bollobás and Thomason (1996): \"Highly linked graphs\"\n\nThe quadratic bound Cr²n is optimal up to the constant C.",
-    "text": "Is there a constant C > 0 such that any graph on n vertices with ≥ Cr²n edges contains a subdivision of Kᵣ? Yes, proved independently by Komlós-Szemerédi and Bollobás-Thomason in 1996.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsSubdivisionOfKr: r branch vertices with internally disjoint paths between all pairs\n   - ContainsSubdivisionOfKr: graph contains a Kᵣ subdivision as subgraph\n   - MaderConjecture: ∃ C > 0 such that Cr²n edges forces Kᵣ subdivision\n\n2. **Historical Axioms:**\n   - Dirac 1960: 2n-2 edges → K₄ subdivision\n   - Mader 1967: 2^{r(r-1)/2} · n edges → Kᵣ subdivision (exponential)\n   - Komlós-Szemerédi/Bollobás-Thomason 1996: Cr²n edges → Kᵣ subdivision (quadratic)\n\n3. **Related Results:**\n   - Highly linked graphs: Ckn edges makes a graph k-linked\n   - Minor vs subdivision: subdivision is stronger than minor\n\n4. **Main Theorem:** erdos_718_solved proves MaderConjecture is true",
+    "historicalContext": "**Erd\u0151s Problem #718: Subdivisions of Complete Graphs**\n\nThis problem concerns forced substructures in dense graphs, a central theme in extremal graph theory.\n\n**Key History:**\n- Dirac (1960): Proved 2n-2 edges forces a K\u2084 subdivision; conjectured 3n-5 forces K\u2085\n- Mader (1967): Proved exponential bound 2^{r choose 2} \u00b7 n edges suffices for K\u1d63 subdivision\n- Erd\u0151s, Hajnal, and Mader: Conjectured quadratic bound Cr\u00b2n suffices\n- Koml\u00f3s-Szemer\u00e9di (1996): Proved the conjecture\n- Bollob\u00e1s-Thomason (1996): Independent proof, also characterized highly linked graphs\n\n**Mathematical Setting:**\nA subdivision of a graph H replaces each edge with a path. A subdivision of K\u1d63 (the complete graph on r vertices) is called a topological K\u1d63. The question asks: how many edges force a topological K\u1d63?",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs there some constant C > 0 such that any graph on n vertices with \u2265 Cr\u00b2n edges contains a subdivision of K\u1d63?\n\n**Answer: YES**\n\nProved independently by:\n- Koml\u00f3s and Szemer\u00e9di (1996): \"Topological cliques in graphs II\"\n- Bollob\u00e1s and Thomason (1996): \"Highly linked graphs\"\n\nThe quadratic bound Cr\u00b2n is optimal up to the constant C.",
+    "text": "Is there a constant C > 0 such that any graph on n vertices with \u2265 Cr\u00b2n edges contains a subdivision of K\u1d63? Yes, proved independently by Koml\u00f3s-Szemer\u00e9di and Bollob\u00e1s-Thomason in 1996.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - IsSubdivisionOfKr: r branch vertices with internally disjoint paths between all pairs\n   - ContainsSubdivisionOfKr: graph contains a K\u1d63 subdivision as subgraph\n   - MaderConjecture: \u2203 C > 0 such that Cr\u00b2n edges forces K\u1d63 subdivision\n\n2. **Historical Axioms:**\n   - Dirac 1960: 2n-2 edges \u2192 K\u2084 subdivision\n   - Mader 1967: 2^{r(r-1)/2} \u00b7 n edges \u2192 K\u1d63 subdivision (exponential)\n   - Koml\u00f3s-Szemer\u00e9di/Bollob\u00e1s-Thomason 1996: Cr\u00b2n edges \u2192 K\u1d63 subdivision (quadratic)\n\n3. **Related Results:**\n   - Highly linked graphs: Ckn edges makes a graph k-linked\n   - Minor vs subdivision: subdivision is stronger than minor\n\n4. **Main Theorem:** erdos_718_solved proves MaderConjecture is true",
     "keyInsights": [
-      "**Quadratic Growth:** The edge bound Cr²n is quadratic in r, vastly improving the exponential 2^{r choose 2} bound",
-      "**Two Independent Proofs:** Both Komlós-Szemerédi and Bollobás-Thomason found proofs in the same year using different methods",
-      "**Highly Linked Graphs:** Bollobás-Thomason also proved dense graphs are highly linked (k disjoint paths between any 2k vertices)",
+      "**Quadratic Growth:** The edge bound Cr\u00b2n is quadratic in r, vastly improving the exponential 2^{r choose 2} bound",
+      "**Two Independent Proofs:** Both Koml\u00f3s-Szemer\u00e9di and Bollob\u00e1s-Thomason found proofs in the same year using different methods",
+      "**Highly Linked Graphs:** Bollob\u00e1s-Thomason also proved dense graphs are highly linked (k disjoint paths between any 2k vertices)",
       "**Subdivision vs Minor:** A subdivision is stronger than a minor - subdivisions preserve topological structure",
       "**Optimal Order:** The quadratic bound is best possible up to the constant; examples show linear bounds fail"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -101,7 +101,7 @@
     {
       "id": "mader-conjecture",
       "title": "The Mader Conjecture",
-      "summary": "Definition of MaderConjecture: quadratic edge bound for Kᵣ subdivisions",
+      "summary": "Definition of MaderConjecture: quadratic edge bound for K\u1d63 subdivisions",
       "startLine": 56,
       "endLine": 68
     },
@@ -115,7 +115,7 @@
     {
       "id": "solution-1996",
       "title": "The Solution (1996)",
-      "summary": "Axioms for Komlós-Szemerédi and Bollobás-Thomason proofs",
+      "summary": "Axioms for Koml\u00f3s-Szemer\u00e9di and Bollob\u00e1s-Thomason proofs",
       "startLine": 88,
       "endLine": 98
     },
@@ -149,12 +149,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #718 asked whether there exists C > 0 such that any graph with ≥ Cr²n edges contains a subdivision of Kᵣ. The answer is YES, proved independently by Komlós-Szemerédi and Bollobás-Thomason in 1996. This resolved the Erdős-Hajnal-Mader conjecture and dramatically improved Mader's exponential bound to a quadratic one.",
-    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Extremal Graph Theory:** Fundamental result on forced topological subgraphs\n\n2. **Graph Minor Theory:** Subdivisions are a key tool in understanding graph minors\n\n**3. Highly Linked Graphs:** The Bollobás-Thomason paper also characterizes when graphs are k-linked\n\n4. **Hadwiger's Conjecture:** Related to Hadwiger's conjecture that χ(G) ≥ r implies Kᵣ minor\n\n5. **Topological Graph Theory:** Subdivisions preserve important topological properties.",
+    "summary": "Erd\u0151s Problem #718 asked whether there exists C > 0 such that any graph with \u2265 Cr\u00b2n edges contains a subdivision of K\u1d63. The answer is YES, proved independently by Koml\u00f3s-Szemer\u00e9di and Bollob\u00e1s-Thomason in 1996. This resolved the Erd\u0151s-Hajnal-Mader conjecture and dramatically improved Mader's exponential bound to a quadratic one.",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Extremal Graph Theory:** Fundamental result on forced topological subgraphs\n\n2. **Graph Minor Theory:** Subdivisions are a key tool in understanding graph minors\n\n**3. Highly Linked Graphs:** The Bollob\u00e1s-Thomason paper also characterizes when graphs are k-linked\n\n4. **Hadwiger's Conjecture:** Related to Hadwiger's conjecture that \u03c7(G) \u2265 r implies K\u1d63 minor\n\n5. **Topological Graph Theory:** Subdivisions preserve important topological properties.",
     "openQuestions": [
-      "What is the optimal constant C in the bound Cr²n?",
+      "What is the optimal constant C in the bound Cr\u00b2n?",
       "Lower bounds on C from explicit constructions",
-      "Algorithmic aspects: efficiently finding Kᵣ subdivisions",
+      "Algorithmic aspects: efficiently finding K\u1d63 subdivisions",
       "Extensions to directed graphs or hypergraphs",
       "Relationship to Hadwiger's conjecture for specific graph classes"
     ]
@@ -172,5 +172,39 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-717",
+      "relationship": "related",
+      "description": "Both involve subdivisions"
+    },
+    {
+      "targetId": "erdos-800",
+      "relationship": "related",
+      "description": "Both involve subdivisions"
+    },
+    {
+      "targetId": "erdos-916",
+      "relationship": "related",
+      "description": "Both involve subdivisions"
+    },
+    {
+      "targetId": "erdos-136",
+      "relationship": "related",
+      "description": "Both involve complete-graphs"
+    },
+    {
+      "targetId": "erdos-639",
+      "relationship": "related",
+      "description": "Both involve complete-graphs"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-717",
+    "erdos-800",
+    "erdos-916",
+    "erdos-136",
+    "erdos-639"
+  ]
 }
