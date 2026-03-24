@@ -29,22 +29,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 3 eliminated 2/3 sorries. Proved semiprime_isAlmostPrime (Ω additivity) and cube_gap_obstruction (Ω(8k) ≥ 3). Only almostPrimeGap definition sorry remains.",
+    "progressSummary": "COMPLETE: 0 sorries, 2 axioms (open conjecture + density asymptotic), 16 theorems. Defined almostPrimeGap via Nat.nth on infinite almost-prime set.",
     "builtItems": [
       "Created Erdos1139Problem.lean (157 lines, 11 theorems, 2 axioms, 3 sorries)",
       "Proved prime_isAlmostPrime, four_isAlmostPrime, eight_not_almostPrime",
       "Proved almostPrimes_contain_primes (primes ⊆ almost-primes)",
       "Proved semiprime_isAlmostPrime: Ω(pq) = Ω(p) + Ω(q) = 2 via factorization_mul + sum_add_index",
-      "Proved cube_gap_obstruction: Ω(8k) = Ω(8) + Ω(k) ≥ 3 > 2 via bigOmega additivity"
+      "Proved cube_gap_obstruction: Ω(8k) = Ω(8) + Ω(k) ≥ 3 > 2 via bigOmega additivity",
+      "infinite_almostPrimes: proved set is infinite (superset of primes)",
+      "nthAlmostPrime: defined k-th almost-prime via Nat.nth",
+      "nthAlmostPrime_strictMono: strict monotonicity (proved)",
+      "nthAlmostPrime_isAlmostPrime: membership (proved)",
+      "nthAlmostPrime_surj: surjectivity (proved)",
+      "almostPrimeGap: defined as nthAlmostPrime(k+1) - nthAlmostPrime(k)",
+      "almostPrimeGap_pos: gap is positive (proved)"
     ],
     "insights": [
       "Ω(n) available via n.factorization.sum in Mathlib",
       "Nat.Prime.factorization gives clean single-index sum for primes",
       "native_decide works for small Ω computations (4, 8)",
-      "Nat.primeFactorsList is the modern API for factor lists"
+      "Nat.primeFactorsList is the modern API for factor lists",
+      "Set.Infinite.mono applied to Nat.infinite_setOf_prime gives infinite_almostPrimes",
+      "Nat.nth provides 0-indexed enumeration with strictMono, mem_of_infinite, nth_count API",
+      "Classical.decPred needed since bigOmega is noncomputable (uses Finsupp.sum)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Connect nthAlmostPrime enumeration to almostPrimesUpTo counting function",
+      "Prove almost-prime gaps are unbounded (weaker than main conjecture but provable)",
+      "Explore connections to Jacobsthal function for gap lower bounds"
+    ],
     "markdown": "# Erdős #1139 - Knowledge Base\n\n## Problem Statement\n\nLet 1&#x2264;u1&lt;u2&lt;&#x22EF;\" role=\"presentation\" style=\"position: relative;\">1≤u1u2⋯1≤u1u2⋯1\\leq u_1 be the sequence of integers with at most 2\" role=\"presentation\" style=\"position: relative;\">222 prime factors. Is it true thatlim&#x2006;supuk+1&#x2212;uklog&#x2061;k=&#x221E;?\" role=\"presentation\" style=\"text-align: center; position: relative;\">limsupuk+1−uklogk=∞?lim supuk+1−uklog⁡k=∞? View the LaTeX source This page was last edited 23 January 2026.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1138\n- Problem #1140\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #7\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
   },
   "tags": [
@@ -66,8 +80,8 @@
   "tractability": 5,
   "leanFiles": [
     {
-      "sorryCount": 1,
-      "theoremCount": 11
+      "sorryCount": 0,
+      "theoremCount": 16
     }
   ]
 }

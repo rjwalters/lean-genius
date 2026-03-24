@@ -79,9 +79,36 @@ theorem eight_not_almostPrime : ¬IsAlmostPrime 8 := by
 def almostPrimesUpTo (N : ℕ) : Finset ℕ :=
   (Finset.range (N + 1)).filter (fun n => checkAlmostPrime n)
 
-/-- The gap between the k-th and (k+1)-th almost-prime. Defined via the
-    enumeration of the almost-prime sequence. -/
-noncomputable def almostPrimeGap : ℕ → ℕ := sorry
+/-- The set of almost-primes is infinite (it contains all primes). -/
+theorem infinite_almostPrimes : (setOf IsAlmostPrime).Infinite :=
+  Nat.infinite_setOf_prime.mono (fun _ hn => prime_isAlmostPrime hn)
+
+noncomputable instance : DecidablePred IsAlmostPrime := Classical.decPred _
+
+/-- The k-th almost-prime (0-indexed): u₀ = 2, u₁ = 3, u₂ = 4, u₃ = 5, ... -/
+noncomputable def nthAlmostPrime (k : ℕ) : ℕ := Nat.nth IsAlmostPrime k
+
+/-- nthAlmostPrime is strictly increasing. -/
+theorem nthAlmostPrime_strictMono : StrictMono nthAlmostPrime :=
+  Nat.nth_strictMono infinite_almostPrimes
+
+/-- Every value of nthAlmostPrime is an almost-prime. -/
+theorem nthAlmostPrime_isAlmostPrime (k : ℕ) : IsAlmostPrime (nthAlmostPrime k) :=
+  Nat.nth_mem_of_infinite infinite_almostPrimes k
+
+/-- Every almost-prime appears in the enumeration. -/
+theorem nthAlmostPrime_surj (m : ℕ) (hm : IsAlmostPrime m) :
+    ∃ k, nthAlmostPrime k = m :=
+  ⟨Nat.count IsAlmostPrime m, Nat.nth_count hm⟩
+
+/-- The gap between consecutive almost-primes:
+    g(k) = u_{k+1} - u_k where u_k is the k-th almost-prime. -/
+noncomputable def almostPrimeGap (k : ℕ) : ℕ :=
+  nthAlmostPrime (k + 1) - nthAlmostPrime k
+
+/-- The gap is always positive (consecutive almost-primes are distinct). -/
+theorem almostPrimeGap_pos (k : ℕ) : 0 < almostPrimeGap k :=
+  Nat.sub_pos_of_lt (nthAlmostPrime_strictMono (by omega))
 
 -- ## Part 4: Structural Results
 
