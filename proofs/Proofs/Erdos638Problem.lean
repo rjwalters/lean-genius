@@ -72,13 +72,24 @@ triangle. -/
 axiom ramsey_triangle (n : ℕ) (hn : 1 ≤ n) :
     ∃ N : ℕ, HasTriangleRamsey (⊤ : SimpleGraph (Fin N)) n
 
-/-- The family of complete graphs is a Ramsey family. -/
-axiom complete_graphs_ramsey :
-    IsRamseyFamily (fun m => {⊤ : SimpleGraph (Fin m)})
+/-- The family of complete graphs is a Ramsey family.
+    Proved from ramsey_triangle: for each n, it provides an N with K_N Ramsey. -/
+theorem complete_graphs_ramsey :
+    IsRamseyFamily (fun m => {⊤ : SimpleGraph (Fin m)}) := by
+  intro n hn
+  obtain ⟨N, hN⟩ := ramsey_triangle n hn
+  exact ⟨N, ⊤, Set.mem_singleton _, hN⟩
 
 /- ## Basic observations -/
 
 /-- Monotonicity: if `G` has the `n`-colour property and `m ≤ n`, then
-`G` also has the `m`-colour property. -/
-axiom triangle_ramsey_mono {V : Type*} (G : SimpleGraph V) (m n : ℕ)
-    (hmn : m ≤ n) (h : HasTriangleRamsey G n) : HasTriangleRamsey G m
+`G` also has the `m`-colour property. Proved by embedding Fin m into
+Fin n via castLE; injectivity preserves monochromaticity. -/
+theorem triangle_ramsey_mono {V : Type*} (G : SimpleGraph V) (m n : ℕ)
+    (hmn : m ≤ n) (h : HasTriangleRamsey G n) : HasTriangleRamsey G m := by
+  intro c
+  obtain ⟨a, b, d, hab, hbd, had, eab, ebd, ead, hc1, hc2⟩ :=
+    h (fun v w => (c v w).castLE hmn)
+  have hInj : Function.Injective (Fin.castLE hmn) := by
+    intro x y hxy; ext; exact congrArg Fin.val hxy
+  exact ⟨a, b, d, hab, hbd, had, eab, ebd, ead, hInj hc1, hInj hc2⟩
