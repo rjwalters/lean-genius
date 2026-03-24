@@ -1,7 +1,7 @@
 {
   "slug": "erdos-603",
   "title": "Erdős #603",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T18:05:31.779Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Eliminated countable_suffices_trivial axiom",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Only komjath_not1 remains (deep published result, keep as axiom)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Both sorries proved (lower_bound_2 and disjoint_2_colors). File compiles with 0 errors, 0 sorries. Universe issues in 5 pre-existing definitions also fixed. Only 2 deep axioms remain (komjath_not1, countable_suffices_trivial).",
+    "progressSummary": "AXIOM ELIMINATION: Proved countable_suffices (replacing axiom countable_suffices_trivial). For countable index sets, ℵ₀ colors suffice via injective encoding of countable union. Axiom count: 2→1. File: 6 theorems, 1 axiom (komjath_not1 only), 0 sorries.",
     "builtItems": [
       "Proved lower_bound_2: C >= 2 for valid families (0 sorries)",
       "Proved disjoint_2_colors: disjoint infinite families, 2 colors (0 sorries)",
       "Added IsCountablyInfiniteFamily.nonempty lemma",
-      "Fixed universe annotations on 5 pre-existing definitions"
+      "Fixed universe annotations on 5 pre-existing definitions",
+      "Proved countable_suffices: ℵ₀ colors suffice for countable I (was axiom)",
+      "Proof strategy: encode countable union ⋃A_i → ℕ; injection non-constant on infinite sets"
     ],
     "insights": [
       "lower_bound_2 proved: C >= 2 via Subsingleton argument (Fintype.card < 2 → Subsingleton)",
       "disjoint_2_colors proved: disjoint infinite families need only 2 colors via ULift (Fin 2) coloring",
-      "Pre-existing universe metavariable errors fixed in ErdosConjecture603, minimalChromatic, CanDoBetterThanAleph0, Aleph0Necessary, erdos_603_statement"
+      "Pre-existing universe metavariable errors fixed in ErdosConjecture603, minimalChromatic, CanDoBetterThanAleph0, Aleph0Necessary, erdos_603_statement",
+      "countable_suffices_trivial was overclaiming for uncountable I (union may be uncountable)",
+      "For countable I, Set.countable_iUnion + Encodable.encode_injective gives clean proof",
+      "Remaining axiom komjath_not1 (Komjáth 2003) is a deep published result, not provable from Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -59,16 +64,16 @@
     "mathlib": []
   },
   "started": "2026-01-13T18:05:31.780Z",
-  "lastUpdate": "2026-03-13T07:52:17.050Z",
+  "lastUpdate": "2026-03-23T03:30:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos603Problem.lean",
       "filename": "Erdos603Problem.lean",
-      "lineCount": 265,
-      "theoremCount": 5,
-      "axiomCount": 2,
+      "lineCount": 287,
+      "theoremCount": 6,
+      "axiomCount": 1,
       "defCount": 18,
       "sorryCount": 0,
       "isAristotle": false,
