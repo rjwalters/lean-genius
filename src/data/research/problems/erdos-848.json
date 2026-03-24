@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T21:30:00Z",
-    "iteration": 3,
-    "focus": "Axiom elimination: converted maxNonSqfreeSet to noncomputable def, proved maxNonSqfreeSet_le and lower_bound (6→3 axioms)",
+    "iteration": 4,
+    "focus": "Proved Van Doorn constraint: diagonal + p≡1(mod4) via QR theory",
     "blockers": [],
-    "nextAction": "Remaining 3 axioms are deep results (Van Doorn, Sawhney). Further progress would require formalizing analytic number theory.",
+    "nextAction": "Remaining 3 axioms still require deep analytic NT. Van Doorn bound needs union bound over primes. Sawhney results need additive combinatorics.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 2,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 more axioms (6→3). Converted maxNonSqfreeSet from axiom to noncomputable def via Finset.sup. Proved maxNonSqfreeSet_le via injection x↦x-1. Proved lower_bound via witness construction k↦25k+7. All builds verified.",
+    "progressSummary": "PROGRESS: Proved 5 new theorems formalizing Van Doorn intermediate steps. Key result: vanDoorn_constraint shows every element of A must have a² ≡ -1 (mod p²) for some prime p ≡ 1 (mod 4). Uses Mathlib QR theory (first supplement). File now has 13 proved theorems, 3 deep axioms, 0 sorries.",
     "builtItems": [
       "Proved mod25_achieves (axiom→theorem): 5²|ab+1 when a≡b≡7(mod25)",
       "Proved mod25_achieves_18: symmetric case for a≡b≡18(mod25)",
@@ -38,7 +38,12 @@
       "Converted maxNonSqfreeSet from axiom to noncomputable def via Finset.sup over powerset",
       "Proved maxNonSqfreeSet_le: |A| ≤ |Icc 1 N| ≤ N via injection x↦x-1 to range N",
       "Proved lower_bound: N/25 ≤ maxNonSqfreeSet N via mod7Set witness and injection k↦25k+7",
-      "Added mod7Set helper def with residue, subset, and cardinality lemmas"
+      "Added mod7Set helper def with residue, subset, and cardinality lemmas",
+      "Proved diagonal_constraint: ∀ a ∈ A, ∃ p prime, p² | a²+1",
+      "Proved not_four_dvd_sq_succ: ¬(4 | a²+1) via even/odd case split",
+      "Proved prime_sq_dvd_sq_succ_ne_two: p prime, p² | a²+1 → p ≠ 2",
+      "Proved prime_sq_dvd_sq_succ_mod_four: p prime, p² | a²+1 → p ≡ 1 (mod 4) via ZMod QR",
+      "Proved vanDoorn_constraint: combined result packaging all intermediate steps"
     ],
     "insights": [
       "mod25_achieves is pure arithmetic: 7*7+1=50, 25|50, so 5²|ab+1 for a≡b≡7(mod25)",
@@ -47,7 +52,11 @@
       "maxNonSqfreeSet can be defined as Finset.sup (powerset.filter HasNonSqfreeProductProp) card using open Classical for decidability",
       "Upper bound proof: injection x↦x-1 from Icc 1 N to range N avoids needing Finset.card_Icc",
       "Lower bound proof: injection k↦25k+7 from range(N/25) to mod7Set N, using Nat.div_mul_le_self for the bound 25k+7 ≤ N",
-      "Remaining 3 axioms are genuinely deep: Van Doorn's analytic upper bound, Sawhney's exact solution, and structural characterization"
+      "Remaining 3 axioms are genuinely deep: Van Doorn's analytic upper bound, Sawhney's exact solution, and structural characterization",
+      "Van Doorn constraint proved: every a in A must have p^2 | a^2+1 for some prime p ≡ 1 (mod 4)",
+      "Proved not_four_dvd_sq_succ: 4 never divides a^2+1 (rules out p=2 via mod 4 case analysis)",
+      "Used Mathlib first supplement (ZMod.exists_sq_eq_neg_one_iff) to derive p % 4 = 1 from IsSquare(-1) mod p",
+      "Import of Mathlib.NumberTheory.SumTwoSquares required fixing existing proof (Set coercion in card_le_card_of_injOn)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -78,10 +87,10 @@
     {
       "path": "Proofs/Erdos848Problem.lean",
       "filename": "Erdos848Problem.lean",
-      "lineCount": 177,
-      "theoremCount": 8,
+      "lineCount": 255,
+      "theoremCount": 13,
       "axiomCount": 3,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos848Problem.lean"
