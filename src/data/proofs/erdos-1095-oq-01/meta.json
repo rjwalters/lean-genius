@@ -35,7 +35,8 @@
       "**Even binomial coefficients**: For k ≥ 2, g(k) must produce odd C(n,k), severely constraining possible n",
       "**Growth rate**: The conjecture places g(k) between polynomial and exponential growth",
       "**Kummer's theorem connection**: C(n,k) is odd iff there are no carries in binary addition of k and n-k",
-      "**Wide gap between known bounds**: The gap between the best lower bound $\\exp(c(\\log k)^2)$ (Konyagin) and the conjectured $\\exp(c \\cdot k/\\log k)$ is enormous — the exponent differs by a factor of $k/(\\log k)^3$. Closing this gap is a major open problem in analytic number theory"
+      "**Wide gap between known bounds**: The gap between the best lower bound $\\exp(c(\\log k)^2)$ (Konyagin) and the conjectured $\\exp(c \\cdot k/\\log k)$ is enormous — the exponent differs by a factor of $k/(\\log k)^3$. Closing this gap is a major open problem in analytic number theory",
+      "**Bertrand's postulate inversion**: Erdős' 1932 proof of Bertrand's postulate showed that $\\binom{2n}{n}$ always has prime factors in $(n, 2n]$; the $g(k)$ problem inverts this by asking when binomial coefficients *avoid* all primes $\\leq k$ — a much rarer phenomenon"
     ],
     "prerequisites": [
       "Number theory basics",
@@ -170,13 +171,13 @@
     },
     {
       "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Primes in (k, 2k] relevant to prime factorization of binomial coefficients"
+      "title": "Bertrand's Postulate",
+      "relationship": "thematic inverse — Erdős' proof shows C(2n,n) always has prime factors in (n,2n], while g(k) asks when C(n,k) avoids ALL primes ≤ k"
     },
     {
       "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "Ensures primes exceeding k exist"
+      "title": "Infinitude of Primes",
+      "relationship": "foundational — ensures primes exceeding k exist, making the AllPrimesExceed condition achievable"
     }
   ],
   "references": [
