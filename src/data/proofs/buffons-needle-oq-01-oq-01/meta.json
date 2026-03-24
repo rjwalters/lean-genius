@@ -21,7 +21,7 @@
       "open-question-resolved"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 5,
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_comp_add_right",
@@ -70,9 +70,9 @@
       "buffon_smooth_full: the complete Buffon-Barbier theorem with all hypotheses explicit"
     ],
     "dateAdded": "2026-02-25",
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 390,
-    "assumptions": "No axioms or sorries.",
+    "assumptions": "2 axioms (smoothExpectedCrossings definition and buffon_noodle_smooth_eq hypothesis). 5 sorries remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -195,7 +195,7 @@
     ],
     "namespace": "BuffonsNeedleOQ01OQ01",
     "lineCount": 390,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 2
   },
