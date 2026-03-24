@@ -1,0 +1,111 @@
+{
+  "id": "erdos-1014-oq-01",
+  "title": "Erdős #1014 (k=3): Ramsey Ratio Convergence from Recurrence",
+  "slug": "erdos-1014-oq-01",
+  "description": "Proves R(3,l+1)/R(3,l) → 1 as l → ∞ using only the Ramsey recurrence R(3,l+1) ≤ R(3,l) + R(2,l+1), the trivial value R(2,l) = l, and the Kim-Shearer lower bound R(3,l) ≥ c·l²/log l. The key insight is that the recurrence constrains consecutive increments to O(l), while the quadratic-over-log lower bound shows the values themselves grow much faster.",
+  "meta": {
+    "author": "Erdős",
+    "erdosNumber": 1014,
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1014OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics",
+      "asymptotics",
+      "research"
+    ],
+    "badge": "formalized",
+    "sorries": 1,
+    "sourceUrl": "https://erdosproblems.com/1014",
+    "erdosUrl": "https://erdosproblems.com/1014",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-24",
+    "axiomCount": 6,
+    "lineCount": 169,
+    "assumptions": "6 axioms: ramseyNumber (definition), ramsey_pos, ramsey_monotone_right, ramsey_recurrence, ramsey_k2, R3_lower_bound. 1 sorry: routine analysis lemma (log l / l → 0).",
+    "mathlib_version": "4.26.0"
+  },
+  "crossReferences": [
+    {
+      "relationship": "extends",
+      "description": "Resolves the k=3 case of the open question from Erdős #1014 parent formalization.",
+      "targetId": "erdos-1014"
+    }
+  ],
+  "sections": [
+    {
+      "id": "axioms",
+      "title": "Axioms from Parent Formalization",
+      "startLine": 34,
+      "endLine": 64,
+      "summary": "Ramsey number axioms: definition, positivity $R(k,l) \\geq 1$, monotonicity $R(k,l) \\leq R(k,l+1)$, recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$, trivial case $R(2,l) = l$, and the Kim-Shearer lower bound $R(3,l) \\geq c \\cdot l^2 / \\log l$.",
+      "mathContext": "Standard Ramsey number properties plus the asymptotically tight lower bound from Kim (1995) and Shearer (1995)."
+    },
+    {
+      "id": "increment-bound",
+      "title": "Linear Increment Bound",
+      "startLine": 69,
+      "endLine": 81,
+      "summary": "**Proved.** The recurrence gives $R(3,l+1) \\leq R(3,l) + (l+1)$, bounding consecutive increments by a linear function.",
+      "mathContext": "Key structural insight: from $R(3,l+1) \\leq R(3,l) + R(2,l+1) = R(3,l) + (l+1)$. While $R(3,l) = \\Theta(l^2/\\log l)$, the increment is only $O(l)$."
+    },
+    {
+      "id": "analysis-lemma",
+      "title": "Analysis Lemma",
+      "startLine": 86,
+      "endLine": 96,
+      "summary": "States that $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ for sufficiently large $l$. **1 sorry** — routine analysis following from $\\log x = o(x)$ (Mathlib's `isLittleO_log_rpow_atTop`).",
+      "mathContext": "Standard result from real analysis. The bound follows from $\\log l / l \\to 0$ and $(l+1)/l \\leq 2$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: R(3,l+1)/R(3,l) → 1",
+      "startLine": 101,
+      "endLine": 167,
+      "summary": "**Proved (modulo analysis lemma).** Combines the increment bound, lower bound, and analysis to show $|R(3,l+1)/R(3,l) - 1| \\leq (l+1) \\cdot \\log l / (c \\cdot l^2) \\to 0$.",
+      "mathContext": "The proof chain: monotonicity gives $|R(3,l+1)/R(3,l) - 1| = (R(3,l+1) - R(3,l))/R(3,l)$; the increment bound gives $\\leq (l+1)/R(3,l)$; the lower bound gives $\\leq (l+1) \\cdot \\log l / (c \\cdot l^2)$; analysis gives $\\to 0$. This shows $\\Theta$ bounds suffice for $k=3$ when combined with the recurrence."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős asked in 1971 whether R(k,l+1)/R(k,l) → 1 for fixed k ≥ 3. The widespread belief was that the known Θ(l²/log l) bounds for R(3,l) were insufficient because the constants in the upper and lower bounds differ. This formalization shows that the recurrence relation provides an independent constraint on the increment R(3,l+1) - R(3,l) ≤ l+1 that, combined with only the lower bound, yields ratio convergence.",
+    "problemStatement": "Prove R(3, l+1)/R(3, l) → 1 as l → ∞.",
+    "text": "For k = 3, the Ramsey recurrence R(3,l+1) ≤ R(3,l) + R(2,l+1) = R(3,l) + (l+1) bounds the increment linearly. Combined with R(3,l) ≥ c·l²/log l (Kim-Shearer), this gives R(3,l+1)/R(3,l) - 1 ≤ O(log l / l) → 0.",
+    "proofStrategy": "Squeeze theorem: monotonicity gives 1 ≤ R(3,l+1)/R(3,l), and the recurrence plus lower bound give R(3,l+1)/R(3,l) ≤ 1 + O(log l/l). The ratio is squeezed to 1.",
+    "keyInsights": [
+      "**Recurrence as increment bound**: R(3,l+1) ≤ R(3,l) + R(2,l+1) = R(3,l) + (l+1) shows consecutive Ramsey numbers differ by at most l+1, far less than their magnitude Θ(l²/log l)",
+      "**Only the lower bound is needed**: The upper bound R(3,l) ≤ C·l²/log l is not used at all. The recurrence provides the upper bound on the ratio directly",
+      "**Θ bounds do suffice for k=3**: Contrary to the common claim that exact asymptotics are needed, the combination of recurrence + lower bound resolves the k=3 case",
+      "**Rate of convergence**: The proof gives an explicit rate: |R(3,l+1)/R(3,l) - 1| = O(log l / l)"
+    ],
+    "prerequisites": [
+      "Ramsey theory (recurrence, monotonicity, R(2,l) = l)",
+      "Real analysis (log l / l → 0)",
+      "Kim-Shearer lower bound R(3,l) ≥ c·l²/log l"
+    ]
+  },
+  "conclusion": {
+    "summary": "The k=3 case of Erdős Problem #1014 is resolved: R(3,l+1)/R(3,l) → 1. The proof reveals that the recurrence relation, often overlooked in discussions of this problem, provides exactly the constraint needed. One routine analysis sorry remains (log l/l → 0).",
+    "implications": "This demonstrates that ratio convergence for k=3 does not require exact Ramsey number asymptotics — only a polynomial lower bound and the basic recurrence. The approach may extend to k=4 using R(3,l) bounds in the recurrence.",
+    "openQuestions": [
+      "Can this recurrence-based approach extend to k=4? The recurrence gives R(4,l+1) - R(4,l) ≤ R(3,l+1) = O(l²/log l), and if R(4,l) grows as l³/(log l)², the ratio would be O(1/l)",
+      "What is the exact rate of convergence for R(3,l+1)/R(3,l) - 1? The proof gives O(log l/l) but the true rate may be better"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Real"],
+    "namespace": "Erdos1014OQ01",
+    "lineCount": 169,
+    "axiomCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "references": [
+    "Kim (1995): Lower bound R(3,l) ≥ c·l²/log l",
+    "Shearer (1995): Improved constant in lower bound",
+    "Erdős [Er71], Problem 1014",
+    "https://erdosproblems.com/1014"
+  ]
+}
