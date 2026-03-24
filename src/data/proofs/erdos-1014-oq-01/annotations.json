@@ -1,1 +1,188 @@
-[]
+[
+  {
+    "id": "ann-module-doc",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Module Documentation: Ramsey Ratio Convergence for k=3",
+    "content": "This module proves the k=3 case of Erdős Problem #1014: $R(3, l+1)/R(3, l) \\to 1$ as $l \\to \\infty$. The proof strategy is elegant in its economy — it uses only the Ramsey recurrence, the trivial identity $R(2,l) = l$, the Kim-Shearer lower bound, and monotonicity. The key insight is that the recurrence constrains the *increment* $R(3,l+1) - R(3,l)$ to be at most $l+1$ (linear), while the *values* $R(3,l)$ grow as $\\Theta(l^2/\\log l)$ (superlinear). This gap between increment and magnitude forces the ratio to 1.\n\nThe references cite Kim (1995) and Shearer (1995) for the lower bound, and the recent Mattheus-Verstraëte (2024) improvement that determined the leading constant.",
+    "mathContext": "The central quantity is $|R(3,l+1)/R(3,l) - 1| = (R(3,l+1) - R(3,l))/R(3,l) \\leq (l+1)/(c \\cdot l^2/\\log l) = O(\\log l / l) \\to 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "Ramsey numbers",
+      "asymptotic analysis",
+      "Kim-Shearer lower bound"
+    ],
+    "relatedConcepts": [
+      "Ramsey theory",
+      "ratio convergence",
+      "squeeze theorem",
+      "Erdős problems"
+    ]
+  },
+  {
+    "id": "ann-axioms-definition",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 34, "endLine": 39 },
+    "type": "definition",
+    "title": "Ramsey Number Axiom",
+    "content": "The Ramsey number $R(k,l)$ is axiomatized as a function $\\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$. In Ramsey theory, $R(k,l)$ is the minimum $n$ such that every red-blue coloring of the edges of $K_n$ contains either a red $K_k$ or a blue $K_l$. The axiomatization is standard for formalizations where the full combinatorial definition would be overly complex — the key properties (positivity, monotonicity, recurrence, boundary values) are stated as axioms instead.",
+    "mathContext": "$R(k,l)$ is the smallest integer $n$ such that every 2-coloring of $E(K_n)$ contains a monochromatic $K_k$ (color 1) or $K_l$ (color 2). Ramsey's theorem (1930) guarantees $R(k,l) < \\infty$ for all $k,l \\geq 1$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "graph theory",
+      "complete graphs",
+      "Ramsey's theorem"
+    ],
+    "relatedConcepts": [
+      "Ramsey number",
+      "graph coloring",
+      "axiomatization"
+    ]
+  },
+  {
+    "id": "ann-axioms-properties",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 41, "endLine": 54 },
+    "type": "concept",
+    "title": "Standard Ramsey Number Properties",
+    "content": "Four standard properties are axiomatized:\n\n1. **Positivity** ($R(k,l) \\geq 1$ for $k,l \\geq 1$): The trivial lower bound — any 1-vertex graph witnesses the empty clique.\n\n2. **Monotonicity** ($R(k,l) \\leq R(k,l+1)$): Requiring a larger monochromatic clique in one color can only increase the threshold.\n\n3. **Recurrence** ($R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$): The Erdős-Szekeres bound (1935). In any 2-coloring of $K_n$, pick a vertex $v$; its red neighborhood has $\\geq R(k-1,l+1)$ or its blue neighborhood has $\\geq R(k,l)$ vertices.\n\n4. **Boundary** ($R(2,l) = l$): The trivial case — among $l$ vertices with all edges colored, there is trivially a blue edge (2-clique) or the entire $l$-set is red.",
+    "mathContext": "The recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$ is the key tool. For $k=3$: $R(3,l+1) \\leq R(3,l) + R(2,l+1) = R(3,l) + (l+1)$. This collapses the two-parameter recurrence into a single-variable inequality with a linear increment.",
+    "significance": "key",
+    "prerequisites": [
+      "Ramsey number definition",
+      "Erdős-Szekeres recurrence"
+    ],
+    "relatedConcepts": [
+      "Erdős-Szekeres bound",
+      "monotonicity",
+      "recurrence relation",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 56, "endLine": 64 },
+    "type": "concept",
+    "title": "Kim-Shearer Lower Bound for R(3,l)",
+    "content": "The axiom states that there exists $c > 0$ such that $R(3,l) \\geq c \\cdot l^2/\\log l$ for all sufficiently large $l$. This is a deep result in probabilistic combinatorics.\n\nJeong Han Kim (1995) proved $R(3,l) \\geq c \\cdot l^2/\\log l$ using a semi-random ('triangle-free process') construction. James Shearer (1995) independently obtained a similar bound with an improved constant via the Lovász Local Lemma. These lower bounds matched the Ajtai-Komlós-Szemerédi (1980) upper bound $R(3,l) \\leq C \\cdot l^2/\\log l$ up to the constant, establishing $R(3,l) = \\Theta(l^2/\\log l)$.\n\nMost recently, Mattheus and Verstraëte (2024) proved $R(3,t) \\geq (1/4 - o(1)) \\cdot t^2/\\log t$ using algebraic geometry over finite fields, pinning down the leading constant.",
+    "mathContext": "$R(3,l) = \\Theta(l^2/\\log l)$. Specifically:\n- **Upper**: $R(3,l) \\leq (1 + o(1)) \\cdot l^2/(2\\log l)$ (Ajtai-Komlós-Szemerédi 1980, Shearer 1983)\n- **Lower**: $R(3,l) \\geq (1/4 - o(1)) \\cdot l^2/\\log l$ (Mattheus-Verstraëte 2024)\n\nThe proof only uses the lower bound — the upper bound is not needed because the recurrence already provides a bound on the increment.",
+    "significance": "key",
+    "prerequisites": [
+      "probabilistic method",
+      "Lovász Local Lemma",
+      "triangle-free process"
+    ],
+    "relatedConcepts": [
+      "Ramsey number asymptotics",
+      "probabilistic combinatorics",
+      "Kim's theorem",
+      "algebraic construction"
+    ]
+  },
+  {
+    "id": "ann-increment-bound",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 66, "endLine": 81 },
+    "type": "theorem",
+    "title": "Linear Increment Bound: The Key Structural Lemma",
+    "content": "**Theorem** (`increment_bound`): $R(3, l+1) \\leq R(3, l) + (l+1)$ for $l \\geq 1$.\n\nThis is the pivotal observation. The proof instantiates the Ramsey recurrence at $k=3$: $R(3,l+1) \\leq R(3,l) + R(3-1, l+1) = R(3,l) + R(2, l+1) = R(3,l) + (l+1)$.\n\nThe Lean proof uses `omega` to handle the arithmetic after rewriting $3-1 = 2$ and substituting $R(2, l+1) = l+1$. This is clean tactic-mode Lean: `have h_rec`, `rw [h3]`, `have h_k2`, `omega`.\n\nThe mathematical significance: while $R(3,l)$ grows as $\\Theta(l^2/\\log l)$, consecutive values differ by at most $l+1$. The increment-to-value ratio is $O(\\log l / l) \\to 0$, which is exactly what drives ratio convergence.",
+    "mathContext": "$R(3, l+1) - R(3, l) \\leq R(2, l+1) = l+1$.\n\nCompare: $R(3,l) \\approx l^2/\\log l$, so the increment $\\leq l+1$ is $O(l)$ while the value is $\\Omega(l^2/\\log l)$. The ratio of increment to value is $O((l \\cdot \\log l)/l^2) = O(\\log l / l) \\to 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "Ramsey recurrence",
+      "R(2,l) = l identity"
+    ],
+    "relatedConcepts": [
+      "telescoping bound",
+      "increment analysis",
+      "recurrence relation"
+    ]
+  },
+  {
+    "id": "ann-analysis-lemma",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 83, "endLine": 96 },
+    "type": "theorem",
+    "title": "Analysis Lemma: Asymptotic Vanishing (sorry)",
+    "content": "**Theorem** (`eventually_ratio_small`): For any $c > 0$ and $\\varepsilon > 0$, there exists $L$ such that for all $l > L$, $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$.\n\nThis is the one remaining `sorry` in the file. The proof sketch in the comments outlines the argument: from Mathlib's `isLittleO_log_rpow_atTop` (which gives $\\log x = o(x^p)$ for any $p > 0$), one obtains $\\log l \\leq \\delta \\cdot l$ for sufficiently large $l$, where $\\delta = c\\varepsilon/4$. Then $(l+1) \\cdot \\log l / (c \\cdot l^2) \\leq 2l \\cdot \\delta l / (c \\cdot l^2) = 2\\delta/c = \\varepsilon/2 < \\varepsilon$.\n\nThis is a routine analysis lemma that follows from the standard fact $\\log l / l \\to 0$.",
+    "mathContext": "$(l+1) \\cdot \\log l / (c \\cdot l^2) \\leq 2 \\cdot \\log l / (c \\cdot l) \\to 0$ as $l \\to \\infty$, since $\\log l = o(l)$.\n\nIn Mathlib, `Real.isLittleO_log_rpow_atTop` gives $\\log x = o(x^p)$ for $p > 0$. Taking $p = 1$ yields $\\log l / l \\to 0$, from which the bound follows.",
+    "significance": "supporting",
+    "prerequisites": [
+      "real analysis",
+      "little-o notation",
+      "isLittleO_log_rpow_atTop"
+    ],
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "logarithmic growth",
+      "eventually predicate",
+      "Mathlib filter API"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 98, "endLine": 169 },
+    "type": "theorem",
+    "title": "Main Theorem: R(3,l+1)/R(3,l) → 1",
+    "content": "**Theorem** (`erdos_1014_k3_ratio_convergence`): For all $\\varepsilon > 0$, there exists $L_0$ such that for all $l > L_0$, $|R(3,l+1)/R(3,l) - 1| < \\varepsilon$.\n\nThe proof is a beautiful chain of inequalities assembled via `calc`:\n\n1. **Obtain constants**: Extract $c > 0$ and thresholds $L_1, L_2$ from `R3_lower_bound` and `eventually_ratio_small`.\n2. **Set threshold**: $L_0 = \\max(\\max(L_1, L_2), 2)$ ensures all hypotheses hold simultaneously.\n3. **Cast to reals**: Set $R = R(3,l)$ and $R' = R(3,l+1)$ as real numbers.\n4. **Absolute value**: Since $R' \\geq R > 0$ by monotonicity and positivity, $|R'/R - 1| = (R' - R)/R$.\n5. **Calc chain**: $(R' - R)/R \\leq (l+1)/R \\leq (l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$.\n\nThe `calc` block uses `div_le_div_of_nonneg_right` (for the increment bound), `div_le_div_of_nonneg_left` (for the lower bound), and `div_div_eq_mul_div` (for the algebraic rearrangement).",
+    "mathContext": "$|R(3,l+1)/R(3,l) - 1| = \\frac{R(3,l+1) - R(3,l)}{R(3,l)} \\leq \\frac{l+1}{R(3,l)} \\leq \\frac{(l+1)\\log l}{c \\cdot l^2} < \\varepsilon$.\n\nThe three inequalities use: (1) `increment_bound`, (2) `R3_lower_bound`, (3) `eventually_ratio_small`. The proof is an $\\varepsilon$-$N$ argument with explicit dependence on two thresholds.",
+    "significance": "key",
+    "prerequisites": [
+      "increment_bound",
+      "R3_lower_bound",
+      "eventually_ratio_small",
+      "calc tactic"
+    ],
+    "relatedConcepts": [
+      "squeeze theorem",
+      "epsilon-N proof",
+      "division inequalities",
+      "Nat.cast coercion"
+    ]
+  },
+  {
+    "id": "ann-cast-technique",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 124, "endLine": 143 },
+    "type": "insight",
+    "title": "Natural-to-Real Casting Pattern",
+    "content": "The proof casts natural number Ramsey values to $\\mathbb{R}$ to work with division and absolute values. The pattern `set R := (ramseyNumber 3 l : ℝ)` creates a local abbreviation, then `Nat.cast_le.mpr` transfers the natural number monotonicity to reals, and `exact_mod_cast` handles the increment bound cast.\n\nThis is a common pattern in Lean formalizations of combinatorics: the underlying objects are natural numbers, but the asymptotic analysis requires real analysis. The `exact_mod_cast` and `Nat.cast_le` bridges are the standard tools for moving between these worlds.",
+    "mathContext": "The coercion $\\mathbb{N} \\hookrightarrow \\mathbb{R}$ preserves order ($a \\leq b \\Leftrightarrow (a : \\mathbb{R}) \\leq (b : \\mathbb{R})$) and arithmetic ($\\overline{a + b} = \\overline{a} + \\overline{b}$). `exact_mod_cast` automates these conversions.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Nat.cast",
+      "exact_mod_cast tactic",
+      "coercion"
+    ],
+    "relatedConcepts": [
+      "type coercion",
+      "Nat.cast_le",
+      "exact_mod_cast",
+      "positivity tactic"
+    ]
+  },
+  {
+    "id": "ann-calc-chain",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 158, "endLine": 167 },
+    "type": "insight",
+    "title": "The Calc Chain: Three-Step Squeeze",
+    "content": "The `calc` block chains three inequalities:\n\n1. $(R' - R)/R \\leq (l+1)/R$ — uses `div_le_div_of_nonneg_right` with the increment bound $R' - R \\leq l + 1$.\n2. $(l+1)/R \\leq (l+1)/(c \\cdot l^2/\\log l)$ — uses `div_le_div_of_nonneg_left` with the lower bound $R \\geq c \\cdot l^2/\\log l$. Note the denominator *decreases* when we replace $R$ with its lower bound.\n3. $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ — uses the analysis lemma directly.\n\nThe algebraic rearrangement $(l+1)/(c \\cdot l^2/\\log l) = (l+1) \\cdot \\log l / (c \\cdot l^2)$ is handled by `div_div_eq_mul_div`.\n\nThis calc chain is the mathematical heart: it transforms the Ramsey-theoretic ratio question into a pure analysis question about $\\log l / l \\to 0$.",
+    "mathContext": "$\\frac{R' - R}{R} \\leq \\frac{l+1}{R} \\leq \\frac{l+1}{c \\cdot l^2 / \\log l} = \\frac{(l+1) \\log l}{c \\cdot l^2} < \\varepsilon$.",
+    "significance": "key",
+    "prerequisites": [
+      "calc tactic",
+      "div_le_div lemmas",
+      "field_simp"
+    ],
+    "relatedConcepts": [
+      "calc block",
+      "inequality chaining",
+      "squeeze argument",
+      "division manipulation"
+    ]
+  }
+]
