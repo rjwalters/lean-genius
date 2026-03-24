@@ -1,0 +1,74 @@
+{
+  "slug": "erdos-1032-oq-01",
+  "title": "Do 4-chromatic critical graphs with δ ≫ n exist",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-24T00:48:59.903Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "critical-graphs",
+    "minimum-degree",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-103",
+    "erdos-1032"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.903Z",
+  "lastUpdate": "2026-03-24T00:48:59.903Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1032Problem.lean",
+      "filename": "Erdos1032Problem.lean",
+      "lineCount": 88,
+      "theoremCount": 0,
+      "axiomCount": 6,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1032Problem.lean"
+    }
+  ]
+}

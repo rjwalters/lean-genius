@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1141",
-  "title": "Erd\u0151s #1141",
+  "title": "Erdős #1141",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-15T16:10:18.694Z",
     "iteration": 2,
-    "focus": "Fixed build issues: Decidable instance, omega\u2192nlinarith, apply\u2192explicit",
+    "focus": "Fixed build issues: Decidable instance, omega→nlinarith, apply→explicit",
     "blockers": [],
     "nextAction": "File compiles cleanly. Only 1 irreducible axiom (open conjecture).",
     "attemptCounts": {
@@ -29,26 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FIX: Added Decidable instance for IsErdos1141Good, fixed omega\u2192nlinarith for quadratic bound, fixed apply\u2192explicit application in good_implies_pred_prime. File now compiles with 29 theorems, 1 axiom (open: is the sequence infinite?), 0 sorries.",
+    "progressSummary": "FIX: Added Decidable instance for IsErdos1141Good, fixed omega→nlinarith for quadratic bound, fixed apply→explicit application in good_implies_pred_prime. File now compiles with 29 theorems, 1 axiom (open: is the sequence infinite?), 0 sorries.",
     "builtItems": [
       "Added Decidable instance for IsErdos1141Good (required for native_decide)",
-      "Fixed isErdos1141Good_iff_unbounded: omega\u2192nlinarith for k < n from k^2 < n",
+      "Fixed isErdos1141Good_iff_unbounded: omega→nlinarith for k < n from k^2 < n",
       "Fixed good_implies_pred_prime: explicit hg 1 application instead of apply hg",
-      "Changed decide\u2192native_decide for all computational verifications"
+      "Changed decide→native_decide for all computational verifications"
     ],
     "insights": [
       "29 theorems verify computational examples and structural properties",
       "Single axiom erdos_1141_infinitely_many is genuinely open",
       "Known good values: 3,4,6,8,12,14,18,20,24,30,...,1722 (OEIS A214583)",
-      "omega cannot handle k < n from k^2 < n (quadratic) \u2014 use nlinarith",
+      "omega cannot handle k < n from k^2 < n (quadratic) — use nlinarith",
       "IsErdos1141Good needs explicit Decidable instance for native_decide to work"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "No axiom elimination possible \u2014 single axiom is open conjecture",
+      "No axiom elimination possible — single axiom is open conjecture",
       "Could add more computational verifications for larger good values"
     ],
-    "markdown": "# Erd\u0151s #1141 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1141 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -72,7 +72,7 @@
     {
       "path": "Proofs/Erdos1141Problem.lean",
       "filename": "Erdos1141Problem.lean",
-      "lineCount": 159,
+      "lineCount": 161,
       "theoremCount": 29,
       "axiomCount": 1,
       "defCount": 2,

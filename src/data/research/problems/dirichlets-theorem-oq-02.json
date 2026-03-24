@@ -1,0 +1,83 @@
+{
+  "slug": "dirichlets-theorem-oq-02",
+  "title": "Generalized Riemann Hypothesis for Dirichlet L-functions: All non-trivial zer...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-24T00:48:59.817Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "classic",
+    "dirichlet",
+    "analytic-number-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "dirichlets-theorem",
+    "dirichlets-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.817Z",
+  "lastUpdate": "2026-03-24T00:48:59.817Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DirichletsTheorem.lean",
+      "filename": "DirichletsTheorem.lean",
+      "lineCount": 314,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheorem.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ01.lean",
+      "filename": "DirichletsTheoremOQ01.lean",
+      "lineCount": 706,
+      "theoremCount": 31,
+      "axiomCount": 5,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01.lean"
+    }
+  ]
+}
