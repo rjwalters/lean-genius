@@ -188,8 +188,8 @@
       "issues": []
     },
     "bezout-identity-oq-02-oq-02-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T03:46:52Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T07:59:25Z",
       "result": "clean",
       "issues": []
     },
@@ -1206,6 +1206,36 @@
       "auditCount": 1,
       "lastAudited": "2026-03-24T07:31:27Z",
       "result": "issues-fixed",
+      "issues": []
+    },
+    "cantor-diagonalization": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T08:00:55Z",
+      "result": "clean",
+      "issues": []
+    },
+    "birthday-problem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T08:00:55Z",
+      "result": "clean",
+      "issues": []
+    },
+    "central-limit-theorem-oq-01-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T08:00:56Z",
+      "result": "clean",
+      "issues": []
+    },
+    "borsuk-ulam": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T08:00:56Z",
+      "result": "clean",
+      "issues": []
+    },
+    "basel-problem-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T08:00:56Z",
+      "result": "issues-found",
       "issues": []
     }
   }
