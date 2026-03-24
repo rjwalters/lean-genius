@@ -199,6 +199,43 @@
       "description": "Related gallery proof"
     }
   ],
+  "references": [
+    {
+      "authors": "Buffon, G.-L. L.",
+      "title": "Essai d'arithmétique morale",
+      "year": "1777",
+      "venue": "Supplément à l'Histoire Naturelle, vol. 4",
+      "note": "Original presentation of Buffon's needle problem; first use of geometric probability"
+    },
+    {
+      "authors": "Santaló, L. A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "venue": "Addison-Wesley (Encyclopedia of Mathematics and its Applications, vol. 1)",
+      "note": "Definitive treatment of integral geometry including n-dimensional Buffon formulas, the Cauchy-Crofton formula, and the sphere-averaged projection giving α_n = E_{S^{n-1}}[|u₁|]"
+    },
+    {
+      "authors": "Klain, D. A. and Rota, G.-C.",
+      "title": "Introduction to Geometric Probability",
+      "year": "1997",
+      "venue": "Cambridge University Press (Lezioni Lincee)",
+      "note": "Modern introduction to geometric probability and Cauchy-Crofton theory; includes clean derivation of Buffon's noodle formula via linearity of expectation"
+    },
+    {
+      "authors": "Kendall, M. G. and Moran, P. A. P.",
+      "title": "Geometrical Probability",
+      "year": "1963",
+      "venue": "Charles Griffin & Company (Griffin's Statistical Monographs, no. 10)",
+      "note": "Classical treatment of Buffon's needle, noodle, and generalizations to 3D parallel planes; covers the crossing factor comparison between 2D and 3D"
+    },
+    {
+      "authors": "Mathai, A. M.",
+      "title": "An Introduction to Geometrical Probability: Distributional Aspects with Applications",
+      "year": "1999",
+      "venue": "Gordon and Breach Science Publishers",
+      "note": "Covers the sphere average E_{S²}[|cos φ|] = 1/2 and its role as the 3D Buffon crossing factor; connects to multivariate statistics and stereology"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

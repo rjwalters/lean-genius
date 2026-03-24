@@ -179,6 +179,43 @@
       "What types admit Lawvere fixed-point theorems? (Any pointed dcpo satisfies a version — connection to Scott's fixed-point theorem)"
     ]
   },
+  "references": [
+    {
+      "authors": "Lawvere, F. W.",
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Category Theory, Homology Theory and their Applications II (Lecture Notes in Mathematics, vol. 92), pp. 134–145. Springer",
+      "note": "The original paper proving the categorical fixed-point theorem unifying Cantor, Russell, and Gödel; the central reference for this entry"
+    },
+    {
+      "authors": "Cantor, G.",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1:75–78",
+      "note": "Original diagonal argument proving no surjection from a set to its powerset; the result derived as a corollary of Lawvere's theorem in this entry"
+    },
+    {
+      "authors": "Yanofsky, N. S.",
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic, 9(3):362–386",
+      "note": "Accessible exposition unifying Cantor, Russell, Gödel, Tarski, and Halting Problem through Lawvere's framework; directly relevant to the unification proved in this entry"
+    },
+    {
+      "authors": "Hurkens, A. J. C.",
+      "title": "A simplification of Girard's paradox",
+      "year": "1995",
+      "venue": "Typed Lambda Calculi and Applications (Lecture Notes in Computer Science, vol. 902), pp. 266–278. Springer",
+      "note": "Constructs Girard's paradox (Type : Type inconsistency) using a compact version of the Lawvere diagonal; directly relevant to the type-universe discussion in this entry"
+    },
+    {
+      "authors": "Abramsky, S. and Jung, A.",
+      "title": "Domain Theory",
+      "year": "1994",
+      "venue": "Handbook of Logic in Computer Science, vol. 3, pp. 1–168. Oxford University Press",
+      "note": "Covers Scott's fixed-point theorem and its connections to Lawvere's categorical fixed-point framework in pointed dcpos"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Logic.Function.Basic",
