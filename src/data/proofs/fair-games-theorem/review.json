@@ -1,14 +1,19 @@
 {
-  "version": 1,
+  "version": 2,
   "proofId": "fair-games-theorem",
-  "reviewDate": "2026-03-24T12:30:00Z",
+  "reviewDate": "2026-03-24T20:00:00Z",
   "reviewer": "peer-reviewer",
+  "previousReview": {
+    "grade": "C-",
+    "date": "2026-03-24T12:30:00Z",
+    "note": "Re-review after enricher addressed critical framing issues (ai-1, ai-2, ai-4, ai-5, ai-6 resolved)"
+  },
 
   "overallAssessment": {
-    "grade": "C-",
-    "oneLiner": "Contains a genuine Optional Stopping Theorem proof, but the meta.json describes a completely different theorem (gambler's ruin), 5 of 11 theorems are filler proving 1+1=2, and the status/badge are wrong for a file whose main result is actually proved.",
+    "grade": "B",
+    "oneLiner": "A genuine Optional Stopping Theorem proof via sub/supermartingale sandwich, now accurately framed and honestly documented — but still padded with 6 filler theorems that dilute the real mathematical content.",
     "tier": "B",
-    "tierJustification": "Tier B: The core Optional Stopping Theorem is formalized using Mathlib, with a genuine ~20-line proof combining sub- and supermartingale inequalities via le_antisymm. However, the surrounding content is heavily padded with filler theorems, thin definition wrappers, and one supplementary axiom. The low grade reflects catastrophic framing (description describes a different theorem) rather than lack of mathematical substance."
+    "tierJustification": "Tier B: The core Optional Stopping Theorem is formalized using Mathlib's measure-theoretic probability API, with a genuine ~15-line sandwich proof combining submartingale and supermartingale inequalities via le_antisymm. The proof involves real reasoning (negation trick, integral_neg, linarith) rather than being a single Mathlib call. The supplementary characterization adds value. One axiom for a supplementary result, honestly documented."
   },
 
   "findings": [
@@ -16,85 +21,57 @@
       "severity": "positive",
       "category": "strength",
       "location": "fair_games_theorem, lines 195-227",
-      "finding": "The main theorem is a genuine, substantive proof. It uses le_antisymm to combine Mathlib's submartingale inequality (E[f_τ] ≤ E[f_π]) with the supermartingale inequality (obtained by negating f and using Submartingale.neg + integral_neg + linarith). This is a clever sandwich argument that constitutes real formal reasoning, not just a Mathlib wrapper. The proof works with Mathlib's deep measure theory API at a non-trivial level.",
-      "recommendation": "Preserve. This is the file's core value."
+      "finding": "The main theorem is a genuine, substantive proof. The sub/supermartingale sandwich via le_antisymm is elegant: the submartingale direction (line 216) calls expected_stoppedValue_mono directly, while the supermartingale direction (lines 220-227) uses the negation trick — converting f's supermartingale property to (-f)'s submartingale property via Supermartingale.neg, then unwinding with integral_neg and linarith. This is real formal reasoning that works with Mathlib's deep measure theory API at a non-trivial level, not a one-line Mathlib wrapper.",
+      "recommendation": "Preserve. This is the file's core value and a good example of how to work with Mathlib's probability API."
     },
     {
       "severity": "positive",
       "category": "strength",
-      "location": "Lean file docstring (lines 8-84) and meta.json overview.historicalContext",
-      "finding": "The exposition of martingale history is well-researched and well-written: Bachelier (1900/1906), Lévy (1930s), Ville (1939 coining 'martingale'), Doob (1953). The intuitive explanations of why stopping strategies fail in fair games are clear and accessible. The Lean file comments explaining the proof strategy (sub/supermartingale sandwich) are accurate and helpful.",
-      "recommendation": "Preserve the historical and intuitive exposition. It just needs to describe the correct theorem."
+      "location": "meta.json (entire entry after enrichment fix)",
+      "finding": "The gallery entry has been dramatically improved since the previous C- review. The description, problemStatement, proofStrategy, keyInsights, and originalContributions now all accurately describe the Optional Stopping Theorem. The sourceUrl correctly links to the Optional Stopping Theorem Wikipedia page. The mathlibDependencies list 5 specific APIs, all verified against the code. The fillerNote, sections, and annotations all honestly acknowledge the 6 filler theorems. The assumptions field clearly explains the axiom's limited scope. This is an exemplary enrichment response.",
+      "recommendation": "Preserve. The honesty and precision of the current framing is a model for other entries."
     },
     {
-      "severity": "critical",
-      "category": "precision",
-      "location": "meta.json description, overview.problemStatement, overview.text, sourceUrl",
-      "finding": "The description says: 'a gambler with finite wealth playing against an infinitely wealthy opponent will eventually go bankrupt with probability 1.' The problemStatement says: 'will eventually go bankrupt with probability 1. The expected time to ruin is infinite, but ruin is certain.' This is GAMBLER'S RUIN — a theorem about random walk recurrence and hitting times. The Lean file proves the OPTIONAL STOPPING THEOREM: E[X_τ] = E[X_0] for bounded stopping times, which is a different result (about expectations, not probabilities of ruin). The sourceUrl links to Wikipedia's Gambler's Ruin page, reinforcing the confusion. A mathematician reading the gallery entry would expect to find a formalization of P(ruin)=1 and instead find E[X_τ]=E[X_0].",
-      "recommendation": "Rewrite description to: 'The Optional Stopping Theorem (Wiedijk #62): for a martingale (fair game) and bounded stopping times τ ≤ π, E[X_τ] = E[X_π]. No betting strategy can change the expected outcome of a fair game.' Change sourceUrl to the Optional Stopping Theorem Wikipedia page. Rewrite problemStatement accordingly."
-    },
-    {
-      "severity": "major",
-      "category": "filler",
-      "location": "gamblers_ruin_fair_game (line 373), betting_systems_fail (line 392), option_pricing_martingale (line 408), doobs_inequality_statement (line 422), fair_games_summary (line 469)",
-      "finding": "Five theorems each prove `(1 : ℕ) + 1 = 2 := rfl`. Their docstrings discuss substantive mathematics (gambler's ruin probabilities, betting system analysis, Black-Scholes pricing, Doob's maximal inequality) but the formal content is completely vacuous. These inflate the theorem count from 6 to 11 and create a misleading impression of formal coverage. A reader browsing the gallery would think gambler's ruin, option pricing, and Doob's inequality are formalized when they are not.",
-      "recommendation": "Remove all filler theorems entirely, or replace them with honest placeholder comments. If the goal is to sketch future directions, use Lean comments rather than theorems. Do not count these in theoremCount."
+      "severity": "positive",
+      "category": "strength",
+      "location": "overview.historicalContext and Lean file docstrings (lines 8-84)",
+      "finding": "The historical exposition is well-researched: Bachelier (1900), Levy (1930s), Ville (1939 coining 'martingale'), Doob (1953), Harrison-Pliska (1979). The intuitive explanations of why stopping strategies fail in fair games are clear and accessible. The Lean file's proof comments (lines 208-227) accurately narrate the sandwich argument step by step.",
+      "recommendation": "Preserve. Minor fix: Lean file line 77 says '1906' for Bachelier, but his thesis was 1900 (the overview correctly says 1900)."
     },
     {
       "severity": "major",
       "category": "filler",
-      "location": "fair_coin_flip_martingale_property, line 111-114",
-      "finding": "This theorem proves `True := by trivial`. Its docstring promises an example about fair coin flips forming a martingale. The theorem statement and body have zero mathematical content. This is the most egregious form of filler — a True theorem dressed as a mathematical result.",
-      "recommendation": "Either formalize the actual claim (construct a simple random walk martingale) or remove entirely."
+      "location": "Lines 111-114 (fair_coin_flip_martingale_property), 373-377 (gamblers_ruin_fair_game), 392-395 (betting_systems_fail), 408-411 (option_pricing_martingale), 422-425 (doobs_inequality_statement), 469-472 (fair_games_summary)",
+      "finding": "6 of 11 theorems are vacuous filler: 5 prove (1:N)+1=2 via rfl, 1 proves True via trivial. Their docstrings describe genuine mathematics (gambler's ruin, betting systems, option pricing, Doob's inequality) but the formal content is zero. This is correctly documented in meta.json (fillerNote, sections labeled 'Placeholder Theorems') but the filler still exists in the Lean source, inflating apparent coverage. The real substantive content is 5 theorems + 1 axiom in ~120 lines of a 476-line file.",
+      "recommendation": "Remove all 6 filler theorems from the Lean file. Replace with comments sketching future directions, or better yet, formalize at least one: construct a simple random walk as a martingale and apply fair_games_theorem to it. This would add genuine mathematical content."
     },
     {
-      "severity": "major",
-      "category": "inconsistency",
-      "location": "meta.json status: 'axiomatized', badge: 'axiom'",
-      "finding": "The main theorem (fair_games_theorem / Optional Stopping Theorem) IS proved — it is not axiomatized. The single axiom (submartingale_of_stoppedValue_mono) is for a supplementary characterization theorem, not the main result. Marking the file as 'axiomatized' with badge 'axiom' is incorrect. The file should be 'verified' with badge 'mathlib' (the proof relies on Mathlib's submartingale API), with a note that one supplementary characterization uses an axiom.",
-      "recommendation": "Change status to 'verified', badge to 'mathlib'. Update assumptions to clarify the axiom is for the supplementary characterization, not the main result."
-    },
-    {
-      "severity": "major",
-      "category": "overclaim",
-      "location": "meta.json originalContributions",
-      "finding": "The three listed contributions are all overclaimed: (1) 'Framework for fair games and random walks' — isFairGame is literally `= Martingale`, not a framework. (2) 'Ruin probability calculations' — the 'calculation' proves 1+1=2. (3) 'Connection to martingale stopping theorems' — the proof IS the stopping theorem; calling it a 'connection' is circular. The actual original contribution is the le_antisymm sandwich proof combining sub/supermartingale inequalities.",
-      "recommendation": "Replace with: ['Proof of Optional Stopping Theorem equality via submartingale/supermartingale sandwich argument (le_antisymm)', 'E[X_τ]=E[X_0] corollary for bounded stopping times', 'Submartingale characterization via stopped values (forward direction from Mathlib, converse axiomatized)']."
-    },
-    {
-      "severity": "major",
+      "severity": "moderate",
       "category": "precision",
-      "location": "meta.json overview.proofStrategy",
-      "finding": "The proofStrategy says: 'Model the game as a random walk on integers. The player's wealth is a martingale. By the martingale convergence theorem and recurrence properties of 1D random walks, the walk will hit 0 with probability 1.' This describes a proof of gambler's ruin via random walk recurrence, NOT the Optional Stopping Theorem. The actual proof strategy is: use le_antisymm with the submartingale inequality E[f_τ] ≤ E[f_π] and the supermartingale inequality (obtained by negating f), yielding equality.",
-      "recommendation": "Rewrite to describe the actual proof: 'A martingale is both a submartingale and supermartingale. The submartingale property gives E[f_τ] ≤ E[f_π], while negating to get a supermartingale gives E[f_τ] ≥ E[f_π]. By le_antisymm, E[f_τ] = E[f_π].'"
+      "location": "meta.json date: '1700s'",
+      "finding": "The date field says '1700s'. While the gambling term 'martingale' originated in 18th-century French parlance, the mathematical theorem (Optional Stopping Theorem) is from Doob (1953). Setting date to '1700s' misleadingly implies the formal mathematical result predates its actual proof by over 200 years.",
+      "recommendation": "Change date to '1953' (Doob's proof) or '1939-1953' (Ville's formalization through Doob's theorem). The 18th-century gambling origin belongs in historicalContext, not in the date field."
     },
     {
       "severity": "moderate",
-      "category": "overclaim",
-      "location": "meta.json overview.keyInsights",
-      "finding": "4 of 5 keyInsights describe content not formalized in the Lean file: gambler's ruin probability (P=1), Pólya's random walk recurrence, expected time to ruin (E[τ]=∞), and Harrison-Pliska/Black-Scholes. Only insight #4 ('Optional Stopping Theorem says E[X_τ]=E[X_0]') describes what is actually proved.",
-      "recommendation": "Rewrite insights to focus on the formalized content: the sandwich proof technique, the role of boundedness, the sub/supermartingale duality."
-    },
-    {
-      "severity": "moderate",
-      "category": "inconsistency",
-      "location": "crossReferences: infinitude-primes",
-      "finding": "The cross-reference to infinitude-primes claims both are 'inevitability results: infinitely many primes exist (Euclid) and ruin is certain in a fair game (Doob).' This is purely metaphorical — there is no mathematical connection between the infinitude of primes and the Optional Stopping Theorem. Additionally, gambler's ruin is NOT what this file proves.",
-      "recommendation": "Remove this cross-reference. Replace with a connection to a proof that has a genuine mathematical relationship (e.g., central-limit-theorem, or another probability result)."
-    },
-    {
-      "severity": "moderate",
-      "category": "inconsistency",
-      "location": "meta.json leanFile.theoremCount: 11",
-      "finding": "Of the 11 theorems: 5 prove `1+1=2`, 1 proves `True`, so only 5 contain any mathematical content. The count of 11 creates a false impression of substantive coverage.",
-      "recommendation": "Update to 5 (actual content theorems) after removing filler, or note that 6 are placeholder theorems."
+      "category": "precision",
+      "location": "Lean file line 77 vs meta.json overview.historicalContext",
+      "finding": "The Lean file docstring (line 77) says '1906: Louis Bachelier applies fair game concepts to financial markets'. Bachelier's thesis 'Theorie de la speculation' was defended and published in 1900, not 1906. The overview.historicalContext correctly says 1900. This is a factual error in the Lean source that contradicts the (correct) meta.json.",
+      "recommendation": "Change line 77 from '1906' to '1900' to match the correct date in the overview."
     },
     {
       "severity": "minor",
       "category": "precision",
-      "location": "Lean file line 8: '/-!' docstring",
-      "finding": "The file uses `/-!` (module docstring syntax) at line 8. Per Aristotle compatibility notes, `/-!` can cause parsing errors. Additionally, `/-!` appears again at lines 88, 118, 163, 269, 350, 429.",
-      "recommendation": "Replace `/-!` with `/-` for compatibility, unless the file is not intended for Aristotle submission."
+      "location": "meta.json leanFile section",
+      "finding": "The definitions isFairGame, isValidStoppingStrategy, isBoundedStoppingTime, and stoppedValue' are all thin Mathlib wrappers or simple predicates. None are used in the main theorem — fair_games_theorem works directly with Mathlib's Martingale, IsStoppingTime, and stoppedValue. The definitions serve pedagogical purposes (readable names) but add no mathematical value.",
+      "recommendation": "No action needed — this is a legitimate pedagogical choice. Just note that definitionCount: 4 is all wrappers."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "Lean file, multiple locations: lines 8, 88, 118, 163, 269, 350, 429",
+      "finding": "The file uses /-! (module docstring syntax) 7 times. Per Aristotle compatibility notes, /-! can cause parsing errors. However, this file's main theorem is fully proved and not an Aristotle candidate.",
+      "recommendation": "Low priority. Replace /-! with /- only if the file will be submitted to Aristotle for the filler replacement work."
     }
   ],
 
@@ -103,57 +80,67 @@
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
-      "description": "Critical reframing: rewrite meta.json description, overview.problemStatement, overview.text, and overview.proofStrategy to describe the Optional Stopping Theorem (what the file proves) instead of gambler's ruin (what it doesn't prove). Change sourceUrl from Gambler's Ruin to Optional Stopping Theorem. This is the single most important fix.",
-      "status": "resolved"
+      "description": "Critical reframing: rewrite meta.json to describe Optional Stopping Theorem instead of gambler's ruin.",
+      "status": "resolved",
+      "resolution": "Enricher rewrote description, problemStatement, proofStrategy, keyInsights, originalContributions, sourceUrl. All now accurately describe the Optional Stopping Theorem."
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
-      "description": "Fix status and badge: change status from 'axiomatized' to 'verified', badge from 'axiom' to 'mathlib'. The main theorem IS proved; the single axiom is for a supplementary characterization, not the main result. Update assumptions to clarify.",
+      "description": "Fix status and badge to reflect that the main theorem IS proved.",
       "status": "resolved",
-      "resolution": "Kept status=axiomatized and badge=axiom per CLAUDE.md axiom integrity policy (file has 1 axiom declaration → status must be axiomatized). Updated assumptions field to clarify the axiom is for supplementary characterization only, not the main result."
+      "resolution": "Kept status=axiomatized and badge=axiom per CLAUDE.md axiom integrity policy (file has 1 axiom declaration). Updated assumptions field to clarify axiom is supplementary only. This is correct per project policy."
     },
     {
       "id": "ai-3",
       "priority": "high",
       "target": "researcher",
-      "description": "Remove or replace the 6 filler theorems: 5 that prove (1:ℕ)+1=2 and 1 that proves True. Either delete them entirely (preferred), replace with comments sketching future directions, or formalize at least one application (e.g., construct a simple random walk and show it's a martingale).",
+      "description": "Remove or replace the 6 filler theorems: 5 that prove (1:N)+1=2 and 1 that proves True. Preferred approach: delete all filler and replace with either (a) Lean comments sketching future directions, or (b) at least one substantive formalization (e.g., construct a simple random walk martingale and apply fair_games_theorem). After removal, update meta.json theoremCount and fillerTheoremCount.",
       "status": "open"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
-      "description": "Rewrite originalContributions to reflect the actual proof: le_antisymm sandwich argument, E[X_τ]=E[X_0] corollary, partial submartingale characterization. Remove claims about 'framework' and 'ruin probability calculations'.",
-      "status": "resolved"
+      "description": "Rewrite originalContributions to reflect actual proof content.",
+      "status": "resolved",
+      "resolution": "Enricher replaced with accurate descriptions: sandwich argument, corollary, partial characterization."
     },
     {
       "id": "ai-5",
       "priority": "medium",
       "target": "enricher",
-      "description": "Rewrite keyInsights to focus on formalized content (sandwich proof technique, bounded stopping time requirement, sub/supermartingale duality). Remove insights about gambler's ruin, Pólya's theorem, and Harrison-Pliska that are not formalized.",
-      "status": "resolved"
+      "description": "Rewrite keyInsights to focus on formalized content.",
+      "status": "resolved",
+      "resolution": "All 5 insights now describe formalized content: sandwich technique, negation trick, boundedness, two-stopping-time generality, submartingale characterization."
     },
     {
       "id": "ai-6",
       "priority": "low",
       "target": "enricher",
-      "description": "Remove spurious cross-reference to infinitude-primes. Update mathlibDependencies to list specific API used (expected_stoppedValue_mono, Submartingale.neg, etc.) instead of just the general module. Fix theoremCount after filler removal.",
+      "description": "Fix cross-references, mathlibDependencies, and theoremCount.",
       "status": "resolved",
-      "resolution": "Removed infinitude-primes cross-reference. Updated mathlibDependencies with 5 specific APIs. Added substantiveTheoremCount/fillerTheoremCount/fillerNote to leanFile section (filler not removed since that's researcher scope, but clearly documented)."
+      "resolution": "Removed infinitude-primes cross-reference. Added 5 specific mathlibDependencies (all verified). Added fillerNote and substantiveTheoremCount."
+    },
+    {
+      "id": "ai-7",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix date field from '1700s' to '1953' (Doob's proof). Fix Lean file line 77 Bachelier date from '1906' to '1900'.",
+      "status": "open"
     }
   ],
 
   "qualityScores": {
-    "mathematicalSubstance": 5,
-    "originalityAccuracy": 3,
-    "completeness": 5,
-    "framingPrecision": 3,
-    "pedagogicalQuality": 6,
-    "internalConsistency": 3,
-    "overall": 4.2
+    "mathematicalSubstance": 6,
+    "originalityAccuracy": 8,
+    "completeness": 7,
+    "framingPrecision": 8,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 9,
+    "overall": 7.7
   },
 
-  "suggestedBestFraming": "A Lean 4 proof of the Optional Stopping Theorem (Wiedijk #62): for a martingale and bounded stopping times τ ≤ π, E[X_τ] = E[X_π], proved via a sub/supermartingale sandwich argument using Mathlib's measure-theoretic probability API."
+  "suggestedBestFraming": "A Lean 4 proof of the Optional Stopping Theorem (Wiedijk #62): for a martingale and bounded stopping times τ ≤ π, E[X_τ] = E[X_π], proved via a sub/supermartingale sandwich argument using Mathlib's measure-theoretic probability API. One supplementary axiom for the converse of submartingale characterization; 6 placeholder theorems awaiting substantive formalization."
 }
