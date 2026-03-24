@@ -2319,13 +2319,23 @@ cmd_spawn() {
             fi
             ;;
         auditor)
-            echo -e "${BLUE}Spawning Auditor agent...${NC}"
+            echo -e "${BLUE}Spawning additional Auditor...${NC}"
+            for i in 1 2 3; do
+                local sname="auditor-$i"
+                if ! tmux has-session -t "$sname" 2>/dev/null; then
+                    SESSION_NAME="$sname" ./scripts/auditor/launch-agent.sh &
+                    sleep 2
+                    echo -e "${GREEN}✓ Auditor spawned (slot $i)${NC}"
+                    exit 0
+                fi
+            done
+            # Check legacy singleton name too
             if tmux has-session -t "auditor-agent" 2>/dev/null; then
-                echo -e "${YELLOW}Auditor agent already running${NC}"
+                echo -e "${YELLOW}All Auditor slots are full (max: $MAX_AUDITOR)${NC}"
             else
-                ./scripts/auditor/launch-agent.sh &
-                sleep 1
-                echo -e "${GREEN}✓ Auditor agent spawned${NC}"
+                SESSION_NAME="auditor-agent" ./scripts/auditor/launch-agent.sh &
+                sleep 2
+                echo -e "${GREEN}✓ Auditor spawned (legacy slot)${NC}"
             fi
             ;;
         peer-reviewer)

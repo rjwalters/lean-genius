@@ -37,11 +37,11 @@ REPO_ROOT="$(find_repo_root)"
 WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
-SESSION_NAME="auditor-agent"
-LOG_FILE="$LOGS_DIR/auditor.log"
+SESSION_NAME="${SESSION_NAME:-auditor-agent}"
+LOG_FILE="$LOGS_DIR/${SESSION_NAME}.log"
 INTERVAL="${AUDITOR_INTERVAL:-10}"
-WORKTREE_PATH="$WORKTREES_DIR/auditor"
-BRANCH_NAME="feature/auditor"
+WORKTREE_PATH="$WORKTREES_DIR/${SESSION_NAME}"
+BRANCH_NAME="feature/${SESSION_NAME}"
 
 # Colors
 RED='\033[0;31m'
