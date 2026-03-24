@@ -48,10 +48,14 @@ def DisjointDiffs (A B : Finset ℕ) : Prop :=
 
 /- ## Basic Properties -/
 
-/-- A Sidon set in {1,...,N} has size at most ~√N -/
+/-- A Sidon set in {1,...,N} has size at most ~√(2N).
+    By difference counting: all A.card*(A.card-1) ordered nonzero differences
+    are distinct and lie in {-(N-1),...,-1, 1,...,N-1} (2*(N-1) elements).
+    Note: the previous bound A.card² ≤ 2N+1 was incorrect
+    (counterexample: {1,2,5,7} ⊂ [1,7] has |A|²=16 > 15=2·7+1). -/
 axiom sidon_size_bound (A : Finset ℕ) (N : ℕ) (hn : 1 ≤ N)
     (hs : IsSidonSet A) (hi : InInterval A N) :
-  A.card * A.card ≤ 2 * N + 1
+  A.card * (A.card - 1) ≤ 2 * (N - 1)
 
 /-- 0 is always in A − A: pick any a ∈ A, then a - a = 0. -/
 theorem zero_in_diffSet (A : Finset ℕ) (hne : A.Nonempty) :
