@@ -1,46 +1,81 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-03",
   "title": "What is the computational complexity of finding $\\mu_M$",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "The Krylov method computes \\mu_M using at most n matrix-vector products, each O(n^2), for total O(n^3) field operations.",
+    "plain": "The minimal polynomial of an n×n matrix can be computed in O(n³) field operations using the Krylov subspace method.",
+    "whyMatters": [
+      "Minimal polynomial computation is fundamental to matrix algorithms (canonical forms, function evaluation, eigenvalue methods)",
+      "The Krylov method is the basis of practical iterative solvers (Lanczos, Arnoldi, GMRES)",
+      "Connects algebraic structure (minpoly divides charpoly) to computational efficiency"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Krylov recurrence: v_{k+1} = M · v_k (O(n²) per step)",
+      "Minpoly annihilates every vector: μ_M(M)·v = 0",
+      "Minpoly degree bound: deg(μ_M) ≤ n",
+      "Krylov subspace is M-invariant"
+    ],
+    "open": [
+      "aeval_mulVec_eq_krylov_sum: polynomial evaluation distributes as Krylov linear combination",
+      "krylov_dependent_at_minpoly_degree: termination from monic minpoly",
+      "nonderogatory_krylov_optimal: cyclic vector gives n independent Krylov vectors"
+    ],
+    "goal": "Fully proved Krylov termination chain (all 3 sorries)"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-24T00:48:59.896Z",
+    "phase": "ACT",
+    "since": "2026-03-24T12:30:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Proving the polynomial-Krylov expansion theorem",
+    "blockers": [
+      "aeval_mulVec_eq_krylov_sum needs careful Mathlib API work to distribute polynomial evaluation through mulVec"
+    ],
+    "nextAction": "Prove aeval_mulVec_eq_krylov_sum using Polynomial.eval₂ expansion and mulVec linearity",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Created 326-line Lean formalization of Krylov method for minpoly computation. 12 theorems (9 proved, 3 sorry). Proved Krylov recurrence, annihilation, M-invariance, deg bound. Created Aristotle companion file. Gallery entry complete.",
+    "builtItems": [
+      "proofs/Proofs/CayleyHamiltonMinpolyOQ03.lean (326 lines, 12 theorems, 3 sorry)",
+      "proofs/Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean (companion for Aristotle)",
+      "src/data/proofs/cayley-hamilton-minpoly-oq-03/ (full gallery entry)"
+    ],
+    "insights": [
+      "The Krylov sequence v, Mv, M²v, ... becomes dependent at step d = deg(minpoly) because the monic minpoly provides a nontrivial linear relation with leading coefficient 1",
+      "Key technical gap: proving aeval_mulVec_eq_krylov_sum requires distributing Polynomial.eval₂ as a Finset.sum through Matrix.mulVec -- needs eval₂_eq_sum_range and mulVec linearity",
+      "OQ-04 already has cyclic vector definitions (IsCyclicVector, IsCyclicVectorLI) that directly relate to Krylov sequences",
+      "The nonderogatory_krylov_optimal theorem is essentially IsCyclicVector → IsCyclicVectorLI, connecting the annihilator formulation to linear independence",
+      "For sparse matrices, Wiedemann's algorithm exploits Krylov structure for O(n·s) complexity where s = nnz(M)"
+    ],
+    "mathlibGaps": [
+      "No Finset.sum_mulVec lemma (sum of matrices applied to vector = sum of each applied to vector)",
+      "No direct lemma connecting Polynomial.eval₂ sum expansion to Matrix.mulVec distribution",
+      "Krylov sequences are not formalized in Mathlib at all"
+    ],
+    "nextSteps": [
+      "Prove aeval_mulVec_eq_krylov_sum using Polynomial.eval₂ and mulVec linearity",
+      "Once above is proved, krylov_dependent_at_minpoly_degree follows from Monic.ne_zero",
+      "Prove nonderogatory_krylov_optimal by constructing polynomial from coefficients and applying IsCyclicVector",
+      "Consider formalizing the vector minimal polynomial and showing it divides minpoly(M)"
+    ]
   },
   "tags": [
     "linear-algebra",
     "matrices",
     "polynomials",
     "minimal-polynomial",
-    "annihilator-ideal",
+    "krylov-method",
+    "computational-complexity",
     "seeker-selected"
   ],
   "relatedProofs": [
@@ -48,19 +83,53 @@
     "cayley-hamilton-minpoly",
     "cayley-hamilton-minpoly-oq-02",
     "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-minpoly-oq-04",
     "cayley-hamilton-minpoly-oq-05",
     "cayley-hamilton-minpoly-oq-05-oq-01"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Krylov (1931): Iterative subspace methods for characteristic polynomials",
+      "Keller-Gehrig (1985): O(n^omega) characteristic polynomial algorithm",
+      "Wiedemann (1986): Sparse linear equations over finite fields, O(n·s) Krylov method"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)#Computation",
+      "https://en.wikipedia.org/wiki/Krylov_subspace"
+    ],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.LinearIndependent.Basic"
+    ]
   },
   "started": "2026-03-24T00:48:59.896Z",
-  "lastUpdate": "2026-03-24T00:48:59.896Z",
+  "lastUpdate": "2026-03-24T12:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ03.lean",
+      "filename": "CayleyHamiltonMinpolyOQ03.lean",
+      "lineCount": 326,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ03.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean",
+      "filename": "CayleyHamiltonMinpolyOQ03Aristotle.lean",
+      "lineCount": 58,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean"
+    },
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ01.lean",
       "filename": "CayleyHamiltonMinpolyOQ01.lean",
