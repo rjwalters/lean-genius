@@ -29,8 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Classified 12 axioms across 2 files. 3 are the OPEN conjecture, 4 deep known results, 2 Sidon-related (tractable), 3 analytical. sidon_density_bound can likely be replaced by importing sidon_upper_bound_weak from Erdos340GreedySidon.lean.",
-    "builtItems": [],
+    "progressSummary": "STRUCTURAL RESULTS: Proved conjecture holds for \u2115, proved basis density lower bound |A\u2229[0,N]|\u00b2 \u2265 N-N\u2080+1, connected ordered/unordered rep counts. Meta.json updated from legacy file (6 axioms) to main file (4 axioms, 18 theorems).",
+    "builtItems": [
+      "repFunc_ge_repFuncUnordered: proved (ordered \u2265 unordered)",
+      "nat_repFuncUnordered_unbounded: proved",
+      "erdos_turan_holds_for_nat: proved (conjecture holds for \u2115)",
+      "basis_element_count_sq: proved (|A\u2229[0,N]|\u00b2 \u2265 N-N\u2080+1 for bases)"
+    ],
     "insights": [
       "The Erd\u0151s-Tur\u00e1n conjecture (3 forms) is OPEN with $500 prize - cannot be proved",
       "sidon_density_bound in Erdos28AdditiveBases.lean duplicates sidon_upper_bound_weak in Erdos340GreedySidon.lean - needs IsSidon definition reconciliation",
@@ -38,14 +43,22 @@
       "basis_counting_lower is a counting argument: if A+A \u2287 [N\u2080,\u221e), then \u2211_{a\u2208A,a\u2264N} 1 \u2265 c\u221aN",
       "Erd\u0151s-Fuchs theorem and average_rep_unbounded are deep analytical results, unlikely provable from Mathlib alone",
       "Erdos28AdditiveBases.lean (418 lines) is well-structured with 9 proved theorems including evens_repFunc and nat_repFunc",
-      "The AdditiveBases file proves isAsymptoticBasis_iff, sidon_repFunc_bounded, and several example constructions"
+      "The AdditiveBases file proves isAsymptoticBasis_iff, sidon_repFunc_bounded, and several example constructions",
+      "Proved repFunc_ge_repFuncUnordered: ordered rep count \u2265 unordered, via Set.ncard_le_ncard on subset",
+      "Proved erdos_turan_holds_for_nat: conjecture holds trivially for \u2115 (repFunc(\u2115, 2k+2) \u2265 k+2)",
+      "Proved basis_element_count_sq: any basis A has |A \u2229 [0,N]|\u00b2 \u2265 N - N\u2080 + 1 (counting argument via sumset image)",
+      "Meta.json was pointing to legacy Erdos28Problem.lean (6 axioms); updated to Erdos28AdditiveBases.lean (4 axioms, 18 theorems)",
+      "basis_element_count_sq uses: [N\u2080,N] \u2286 sumset(A\u2229[0,N]) and |sumset(S)| \u2264 |S\u00d7S| = |S|\u00b2"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Eliminate sidon_density_bound axiom by importing Erdos340GreedySidon.sidon_upper_bound_weak (needs IsSidon reconciliation)",
       "Prove sidon_not_basis using the outlined density argument (requires tight Sidon bound or alternative approach)",
       "Prove basis_counting_lower from basic combinatorics (~100-150 lines)",
-      "Consider proving average_rep_unbounded from counting arguments"
+      "Consider proving average_rep_unbounded from counting arguments",
+      "Reconcile IsSidon definitions (Set vs Finset) to import sidon_upper_bound_weak from Erdos340",
+      "Prove sidon_not_basis if tight Sidon bound becomes available",
+      "Consider proving average_rep_unbounded from basis_element_count_sq"
     ],
     "markdown": "# Erd\u0151s #28 - Knowledge Base\n\n## Problem Statement\n\nIf $A\\subseteq \\mathbb{N}$ is such that $A+A$ contains all but finitely many integers then $\\limsup 1_A\\ast 1_A(n)=\\infty$. Conjectured by Erd\u0151s and Tur\u00e1n. They also suggest the stronger conjecture that $\\limsup 1_A\\ast 1_A(n)/\\log n>0$. Another stronger conjecture would be that the hypothesis $\\lvert A\\cap [1,N]\\rvert \\gg N^{1/2}$ for all large $N$ suffices. Erd\u0151s and S\u00e1rk\u00f6zy conjectured the stronger version that if $A=\\{a_1[40]. This is discussed in problem C9 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 18 November 2025.\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #40\n- Problem #27\n- Problem #29\n- Problem #39\n- Problem #1\n\n## References\n\n- ErTu41\n- Er56\n- Er57\n- Er59\n- Er61\n- Er65\n- Er65b\n- Er69\n- Er70c\n- Er73\n- Er77c\n- ErGr80\n- Er81\n- Er85c\n- Er89d\n- Er90\n- Er94b\n- Er95\n- Er97c\n- Er97f\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },

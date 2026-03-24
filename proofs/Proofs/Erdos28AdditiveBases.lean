@@ -410,8 +410,88 @@ The key prerequisite is proving sidon_upper_bound in Erdos340GreedySidon.lean.
 axiom sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
     ¬IsAsymptoticBasis A
 
-#check erdos_28
-#check erdos_turan_weak
-#check erdos_turan_strong
+/- ## Part VIII: Ordered vs Unordered Representations -/
+
+/-- Ordered representation count is at least the unordered count.
+    Every unordered pair (a, b) with a ≤ b also satisfies the ordered condition
+    (just without the a ≤ b constraint). -/
+theorem repFunc_ge_repFuncUnordered (A : Set ℕ) (n : ℕ) :
+    repFunc A n ≥ repFuncUnordered A n := by
+  unfold repFunc repFuncUnordered
+  apply Set.ncard_le_ncard
+  · intro ⟨a, b⟩ ⟨ha, hb, _, hadd⟩
+    exact ⟨ha, hb, hadd⟩
+  · exact pairs_summing_finite A n
+
+/- ## Part IX: The Conjecture Holds for ℕ -/
+
+/-- For ℕ, the unordered representation function is unbounded:
+    repFuncUnordered(ℕ, 2k+2) = k + 2 > k. -/
+theorem nat_repFuncUnordered_unbounded :
+    ∀ k : ℕ, ∃ n : ℕ, repFuncUnordered (Set.univ : Set ℕ) n > k := by
+  intro k
+  use 2 * k + 2
+  rw [nat_repFunc]
+  -- (2k+2) / 2 + 1 = k + 1 + 1 = k + 2 > k
+  omega
+
+/-- The Erdős-Turán conjecture holds trivially for ℕ.
+    Since repFunc ≥ repFuncUnordered and the unordered count is unbounded,
+    the ordered count is also unbounded. -/
+theorem erdos_turan_holds_for_nat :
+    ∀ k : ℕ, ∃ n : ℕ, repFunc (Set.univ : Set ℕ) n > k := by
+  intro k
+  obtain ⟨n, hn⟩ := nat_repFuncUnordered_unbounded k
+  exact ⟨n, lt_of_lt_of_le hn (repFunc_ge_repFuncUnordered Set.univ n)⟩
+
+/- ## Part X: Basis Density Lower Bound -/
+
+/-- **Counting Argument**: For any asymptotic basis A with threshold N₀,
+    the number of elements of A up to N satisfies |A ∩ [0, N]|² ≥ N - N₀ + 1.
+
+    **Proof**:
+    1. Every n ∈ [N₀, N] is in sumset(A), so n = a + b with a, b ∈ A and a, b ≤ N.
+    2. Thus [N₀, N] ⊆ sumset(A ∩ [0, N]).
+    3. sumset(S) is the image of addition on S × S, so |sumset(S)| ≤ |S|².
+    4. |[N₀, N]| = N - N₀ + 1, giving N - N₀ + 1 ≤ |S|².
+
+    This implies |A ∩ [0, N]| ≥ √(N - N₀ + 1) ≥ c·√N for large N,
+    establishing that bases of order 2 must have density at least √N. -/
+theorem basis_element_count_sq (A : Set ℕ) (hA : IsAsymptoticBasis A) :
+    ∃ N₀ : ℕ, ∀ N ≥ N₀,
+      (A ∩ Set.Iic N).ncard ^ 2 ≥ N - N₀ + 1 := by
+  obtain ⟨N₀, hN₀⟩ := hA
+  use N₀
+  intro N hN
+  set S := A ∩ Set.Iic N
+  have hS_fin : S.Finite := Set.Finite.subset (Set.finite_Iic N) Set.inter_subset_right
+  -- [N₀, N] ⊆ sumset S: every n ∈ [N₀, N] has a representation in S
+  have h_cover : Set.Icc N₀ N ⊆ sumset S := by
+    intro n hn
+    simp only [Set.mem_Icc] at hn
+    obtain ⟨a, b, ha, hb, heq⟩ := hN₀ n hn.1
+    exact ⟨a, b, ⟨ha, Set.mem_Iic.mpr (by omega)⟩,
+                  ⟨hb, Set.mem_Iic.mpr (by omega)⟩, heq⟩
+  -- sumset S is the image of addition on S × S
+  have h_sumset_img : sumset S = (fun p : ℕ × ℕ => p.1 + p.2) '' (S ×ˢ S) := by
+    ext n
+    simp only [sumset, Set.mem_setOf_eq, Set.mem_image, Set.mem_prod, Prod.exists]
+    exact ⟨fun ⟨a, b, ha, hb, h⟩ => ⟨a, b, ⟨ha, hb⟩, h.symm⟩,
+           fun ⟨a, b, ⟨ha, hb⟩, h⟩ => ⟨a, b, ha, hb, h.symm⟩⟩
+  -- sumset S is finite
+  have h_sumset_fin : (sumset S).Finite := by
+    rw [h_sumset_img]; exact (hS_fin.prod hS_fin).image _
+  -- |sumset S| ≤ |S × S| = |S|²
+  have h_sumset_bound : (sumset S).ncard ≤ S.ncard ^ 2 := by
+    rw [h_sumset_img]
+    calc ((fun p : ℕ × ℕ => p.1 + p.2) '' (S ×ˢ S)).ncard
+        ≤ (S ×ˢ S).ncard := Set.ncard_image_le (hS_fin.prod hS_fin)
+      _ = S.ncard * S.ncard := Set.ncard_prod hS_fin hS_fin
+      _ = S.ncard ^ 2 := by ring
+  -- Chain: N - N₀ + 1 ≤ |[N₀, N]| ≤ |sumset S| ≤ |S|²
+  calc N - N₀ + 1
+      = (Set.Icc N₀ N).ncard := by simp [Set.ncard_Icc]; omega
+    _ ≤ (sumset S).ncard := Set.ncard_le_ncard h_cover h_sumset_fin
+    _ ≤ S.ncard ^ 2 := h_sumset_bound
 
 end Erdos28
