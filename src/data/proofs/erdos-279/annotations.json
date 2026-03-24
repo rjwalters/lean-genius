@@ -1,5 +1,53 @@
 [
   {
+    "id": "ann-header-imports",
+    "proofId": "erdos-279",
+    "type": "context",
+    "title": "Problem Statement and Imports",
+    "content": "The file opens with a detailed doc comment stating Erdős Problem #279: for $k \\geq 3$, can residue classes $a_p \\pmod{p}$ be chosen for every prime $p$ so that every sufficiently large integer $n$ is representable as $n = a_p + tp$ for some prime $p$ and $t \\geq k$? The comment notes that even $k = 3$ is difficult, describes the generalization to dense subsets of $\\mathbb{N}$, and records that $k \\leq 2$ is solved. Imports `Nat.Basic`, `Nat.Prime.Basic`, and `Tactic` from Mathlib.\n\n**Historical note:** This problem appears in Erdős and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (Enseign. Math., Geneva). The monograph collected hundreds of problems across combinatorial number theory, many of which remain open. Problem 279 belongs to a cluster of questions about covering integers with arithmetic progressions of prescribed moduli.",
+    "mathContext": "The problem: $\\forall k \\geq 3$, $\\exists (a_p)_p$, $\\forall n \\gg 0$, $\\exists$ prime $p$, $\\exists t \\geq k$: $n = a_p + tp$. The imports provide `Nat.Prime` (primality predicate) and basic arithmetic tactics.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős-Graham monograph",
+      "covering systems",
+      "shifted arithmetic progressions",
+      "Mathlib imports"
+    ],
+    "prerequisites": [
+      "arithmetic progressions",
+      "prime numbers",
+      "Lean module system"
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    }
+  },
+  {
+    "id": "ann-log-log-divergence",
+    "proofId": "erdos-279",
+    "type": "definition",
+    "title": "Log-Log Divergence Condition",
+    "content": "**HasLogLogDivergence A**: the reciprocal sum $\\sum_{n \\in A, n \\leq N} 1/n$ exceeds $\\log\\log N$ by an unbounded amount as $N \\to \\infty$. This condition, combined with HasPrimeLikeDensity, characterizes sets dense enough to potentially cover all large integers.\n\n**Connection to Mertens' theorem:** For the primes, $\\sum_{p \\leq N} 1/p = \\log\\log N + M + o(1)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant. The condition asks that $A$ matches this behavior asymptotically.\n\n**Current status:** Placeholder `True` definition. A full formalization would use Mathlib's `Filter.Tendsto` with `Filter.atTop` to express the divergence condition.",
+    "mathContext": "$\\sum_{n \\in A, n \\leq N} \\frac{1}{n} - \\log\\log N \\to \\infty$ as $N \\to \\infty$. For primes: $\\sum_{p \\leq N} 1/p = \\log\\log N + M + o(1)$ (Mertens, 1874) where $M \\approx 0.2615$ is the Meissel-Mertens constant.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mertens' theorem",
+      "Meissel-Mertens constant",
+      "reciprocal sum divergence",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "harmonic sum over primes",
+      "logarithmic growth"
+    ],
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    }
+  },
+  {
     "id": "residue-choice",
     "proofId": "erdos-279",
     "type": "definition",
