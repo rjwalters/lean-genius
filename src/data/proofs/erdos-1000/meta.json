@@ -7,7 +7,7 @@
     "author": "J.W.S. Cassels, Paul Erdős, J.A. Haight",
     "sourceUrl": "https://erdosproblems.com/1000",
     "date": "1950-1964",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1000Problem.lean",
     "tags": [
       "erdos",
@@ -16,14 +16,14 @@
       "totient-function",
       "cesaro-averages"
     ],
-    "badge": "wip",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 1000,
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 4,
+    "lineCount": 285,
+    "assumptions": "cassels_liminf_zero (Cassels' liminf=0 construction), erdos_no_zero_limit (individual limit cannot be 0), erdos_liminf_limsup (liminf=0 implies limsup=1 dichotomy), haight_theorem (vanishing-average sequences exist)",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -51,79 +51,79 @@
       "title": "Imports and Setup",
       "summary": "Module imports for Nat.GCD, Finset, real casts, and filter limits",
       "startLine": 1,
-      "endLine": 1,
+      "endLine": 30,
       "mathContext": "Module imports for Nat.GCD, Finset, real casts, and filter limits"
     },
     {
       "id": "generalized-totient",
       "title": "The Generalized Totient φ_A",
       "summary": "IncreasingSeq, reducedDenom, and φ_A definitions",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 31,
+      "endLine": 72,
       "mathContext": "IncreasingSeq, reducedDenom, and φ_A definitions"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "φ_A(k) ≥ φ(n_k) bound and naturalSeq baseline",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 74,
+      "endLine": 100,
       "mathContext": "φ_A(k) ≥ φ(n_k) bound and naturalSeq baseline"
     },
     {
       "id": "average-density",
       "title": "Average Density",
       "summary": "Density ratio ρ_A(k) = φ_A(k)/n_k and Cesàro average C_A(N)",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 102,
+      "endLine": 125,
       "mathContext": "Density ratio ρ_A(k) = φ_A(k)/n_k and Cesàro average C_A(N)"
     },
     {
       "id": "cassels-result",
       "title": "Cassels' Result (1950)",
       "summary": "Liminf of Cesàro average can be 0; Diophantine approximation connection",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 127,
+      "endLine": 140,
       "mathContext": "Liminf of Cesàro average can be 0; Diophantine approximation connection"
     },
     {
       "id": "erdos-results",
       "title": "Erdős' Results (1964)",
       "summary": "No-zero-limit theorem and liminf/limsup dichotomy",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 142,
+      "endLine": 177,
       "mathContext": "No-zero-limit theorem and liminf/limsup dichotomy"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "VanishingAverage predicate and Erdős' conjecture",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 179,
+      "endLine": 203,
       "mathContext": "VanishingAverage predicate and Erdős' conjecture"
     },
     {
       "id": "haight-resolution",
       "title": "Haight's Resolution",
       "summary": "Haight's theorem: vanishing-average sequences exist (SOLVED)",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 205,
+      "endLine": 220,
       "mathContext": "Haight's theorem: vanishing-average sequences exist (SOLVED)"
     },
     {
       "id": "diophantine-connection",
       "title": "Connection to Diophantine Approximation",
       "summary": "Cassels' characterization via Khinchin-Groshev theory",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 222,
+      "endLine": 245,
       "mathContext": "Cassels' characterization via Khinchin-Groshev theory"
     },
     {
       "id": "observations",
       "title": "Observations and Corollaries",
       "summary": "Haight oscillation: vanishing average with maximal oscillation",
-      "startLine": 1,
-      "endLine": 1,
+      "startLine": 247,
+      "endLine": 285,
       "mathContext": "Haight oscillation: vanishing average with maximal oscillation"
     }
   ],
@@ -177,12 +177,19 @@
     }
   ],
   "leanFile": {
-    "imports": [],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Topology.Instances.Real.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": ["Nat", "Set", "Filter"],
+    "namespace": "Erdos1000",
+    "lineCount": 285,
+    "axiomCount": 4,
+    "theoremCount": 4,
+    "definitionCount": 8
   }
 }
