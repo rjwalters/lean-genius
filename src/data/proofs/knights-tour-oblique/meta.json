@@ -117,7 +117,17 @@
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "related",
-      "description": "Both are combinatorial/graph-theoretic results with connections to Euler's work."
+      "description": "Both are combinatorial results with deep connections to Euler's pioneering work in graph theory and combinatorics. Euler's formula $V - E + F = 2$ governs planar graph topology, while the knight's tour is a Hamiltonian path problem on a specific graph — both exemplify Euler's legacy in discrete mathematics"
+    },
+    {
+      "targetId": "konigsberg",
+      "relationship": "related",
+      "description": "Euler's Königsberg bridges problem (1736) founded graph theory by asking whether an Eulerian path exists. The knight's tour is the dual question: does a Hamiltonian path exist on the knight's graph? Both reduce geometric/chessboard questions to pure graph-theoretic properties (vertex degrees for Euler, graph structure for Hamilton)"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both are celebrated combinatorial results on planar graphs requiring computer-assisted verification. The knight's graph on an $n \\times n$ board is planar for small $n$, and the $D_4$ symmetry group exploited here for tour classification echoes the symmetry reductions used in the four-color theorem's proof"
     }
   ],
   "references": [

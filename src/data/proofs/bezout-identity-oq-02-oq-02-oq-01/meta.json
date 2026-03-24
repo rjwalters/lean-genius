@@ -61,8 +61,7 @@
       "quotient_formula: Core algebraic identity a*(u*c + v*k) = c proved by calc chain in any CommRing",
       "euclids_lemma_constructive: Euclid's lemma with explicit divisibility witness extraction",
       "constructive_div: Computable quotient function combining extGcd with the quotient formula",
-      "constructive_quotient_unique: Quotient uniqueness in integral domains",
-      "abstract_euclids_lemma: Shows the construction agrees with Mathlib's IsCoprime.dvd_of_dvd_mul_left"
+      "Quotient uniqueness via cancellation and Mathlib IsCoprime compatibility, confirming the construction integrates cleanly with the standard library"
     ],
     "dateAdded": "2026-03-06",
     "axiomCount": 0,
@@ -184,7 +183,7 @@
   ],
   "conclusion": {
     "summary": "The answer is YES: Bézout coefficients from extGcd combine with the quotient formula to give a constructive divisibility algorithm. The explicit quotient $q = uc + vk$ is correct in any CommRing, computed over $\\mathbb{N}$ via the extended Euclidean algorithm, and unique in integral domains. Zero sorries.",
-    "implications": "**Constructive Number Theory**: This formalization completes the bezout-identity open question chain with a fully constructive algorithm, demonstrating that classical existence proofs in number theory often contain implicit algorithms extractable via the Curry-Howard correspondence. The formula $q = uc + vk$ is the computational content of Euclid's lemma — the 2300-year-old Euclidean algorithm already *contained* this constructive proof, centuries before the abstract algebraic formulation.\n\n**Ring-Axiomatic Generality**: The quotient formula works in ANY commutative ring, not just $\\mathbb{Z}$. This means the same identity applies to polynomial rings $F[x]$ (yielding constructive polynomial divisibility), Gaussian integers $\\mathbb{Z}[i]$ (relevant to Fermat's two-squares theorem), and any Bézout domain — any integral domain where every finitely generated ideal is principal. The only $\\mathbb{N}$-specific part is computing the Bézout coefficients via the extended Euclidean algorithm.\n\n**Cryptographic Applications**: The extended GCD provides modular inverses: when $\\gcd(a,b) = 1$, the Bézout coefficient $u$ satisfies $au \\equiv 1 \\pmod{b}$. This is the foundation of RSA key generation ($d = e^{-1} \\bmod \\varphi(n)$), Diffie-Hellman key exchange, and elliptic curve cryptography. The constructive algorithm formalized here is the exact computation that runs in every TLS handshake.\n\n**Formalization Architecture**: The three-layer architecture (algorithm → ring-theoretic formula → assembly over $\\mathbb{N}$) is a reusable pattern for constructive formalization: separate the computation engine from the algebraic correctness proof, then combine at the concrete type level. The `noncomputable` limitation in the original formulation was resolved in the child entry (see `bezout-identity-oq-02-oq-02-oq-01-oq-01`), showing that classical choice can always be eliminated when the underlying computation is decidable.\n\n**Proof Chain Significance**: This entry sits in a chain: Bézout's identity → Euclid's lemma → constructive quotient → computable quotient (child entry). The chain demonstrates how a single foundational identity propagates through increasingly concrete instantiations, each adding algorithmic content while preserving mathematical correctness.",
+    "implications": "**Constructive Number Theory**: This formalization completes the bezout-identity open question chain with a fully constructive algorithm, demonstrating that classical existence proofs in number theory often contain implicit algorithms extractable via the Curry-Howard correspondence. The formula $q = uc + vk$ is the computational content of Euclid's lemma — the 2300-year-old Euclidean algorithm already *contained* this constructive proof, centuries before the abstract algebraic formulation.\n\n**Ring-Axiomatic Generality**: The quotient formula works in ANY commutative ring, not just $\\mathbb{Z}$. This means the same identity applies to polynomial rings $F[x]$ (yielding constructive polynomial divisibility), Gaussian integers $\\mathbb{Z}[i]$ (relevant to Fermat's two-squares theorem), and any Bézout domain — any integral domain where every finitely generated ideal is principal. The only $\\mathbb{N}$-specific part is computing the Bézout coefficients via the extended Euclidean algorithm.\n\n**Cryptographic Applications**: The extended GCD computation formalized here underlies modular inverse computation in RSA key generation ($d = e^{-1} \\bmod \\varphi(n)$), Diffie-Hellman key exchange, and elliptic curve cryptography: when $\\gcd(a,b) = 1$, the Bézout coefficient $u$ satisfies $au \\equiv 1 \\pmod{b}$. A formal connection between this formalization and specific cryptographic protocols would be a natural extension.\n\n**Formalization Architecture**: The three-layer architecture (algorithm → ring-theoretic formula → assembly over $\\mathbb{N}$) is a reusable pattern for constructive formalization: separate the computation engine from the algebraic correctness proof, then combine at the concrete type level. The `noncomputable` limitation in the original formulation was resolved in the child entry (see `bezout-identity-oq-02-oq-02-oq-01-oq-01`), showing that classical choice can always be eliminated when the underlying computation is decidable.\n\n**Proof Chain Significance**: This entry sits in a chain: Bézout's identity → Euclid's lemma → constructive quotient → computable quotient (child entry). The chain demonstrates how a single foundational identity propagates through increasingly concrete instantiations, each adding algorithmic content while preserving mathematical correctness.",
     "openQuestions": [
       "**RESOLVED** (see bezout-identity-oq-02-oq-02-oq-01-oq-01): The noncomputable annotation was removed by replacing classical choice (`hdvd.choose`) with computable integer division (`b * c / a`), making the full algorithm executable.",
       "Can the algorithm be extended to multivariate Bézout identities in polynomial rings?",
@@ -229,29 +228,9 @@
       "description": "Extends CRT to non-coprime moduli, where Bézout's identity gives $\\gcd(m,n) = um + vn$ rather than $1 = um + vn$. The extended GCD from this file computes the same coefficients but the quotient formula requires the coprimality normalization $\\gcd = 1$"
     },
     {
-      "targetId": "bezout-identity-oq-03",
-      "relationship": "sibling",
-      "description": "Sibling open question from the Bézout identity chain, exploring different extensions of the core identity — together these entries map the space of constructive number-theoretic algorithms derivable from the extended Euclidean algorithm"
-    },
-    {
       "targetId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
       "relationship": "extended-by",
       "description": "Child entry that resolves the first open question: removes the noncomputable annotation from constructive_div by replacing classical choice (hdvd.choose) with computable integer division, making the full algorithm executable"
-    },
-    {
-      "targetId": "bezout-identity-oq-04",
-      "relationship": "sibling",
-      "description": "Complete parametric solution set of linear Diophantine equations ax + by = c: solutions form a 1D lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ}. Extends the single-solution Bézout computation here to the full solution family, using the same extended GCD infrastructure"
-    },
-    {
-      "targetId": "bezout-identity-oq-02-oq-01",
-      "relationship": "sibling",
-      "description": "Proves the Fundamental Theorem of Arithmetic from Euclid's lemma — a direct consumer of the constructive Euclid's lemma developed here. The proof chain Bézout → Euclid's lemma → unique factorization shows that the constructive quotient extraction formalized in this entry is a building block for the most fundamental theorem in number theory"
-    },
-    {
-      "targetId": "bezout-identity-oq-03-oq-01",
-      "relationship": "sibling",
-      "description": "The CRT ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ is constructed from the same Bézout coefficients computed by the extended Euclidean algorithm. The isomorphism maps $x \\mapsto (x \\bmod m, x \\bmod n)$ with inverse $a \\mapsto a_1 vn + a_2 um$ where $um + vn = 1$ — directly using the output of extGcd"
     }
   ],
   "references": [
@@ -337,14 +316,19 @@
       "description": "Parent open question about Euclid's lemma; this entry resolves the sub-question about constructive quotient computation"
     },
     {
-      "id": "chinese-remainder-constructive",
-      "relationship": "related",
-      "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for explicit quotient extraction"
-    },
-    {
       "id": "bezout-identity-oq-02-oq-02",
       "relationship": "extends",
       "description": "Direct parent in the open question chain: generalizes Euclid's lemma to commutative rings. This entry adds the constructive quotient computation"
+    },
+    {
+      "id": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Child entry that resolves the first open question: removes the noncomputable annotation from constructive_div by replacing classical choice (hdvd.choose) with computable integer division, making the full algorithm executable"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for explicit quotient extraction"
     },
     {
       "id": "gcd-algorithm",
@@ -355,36 +339,6 @@
       "id": "fundamental-arithmetic",
       "relationship": "related",
       "description": "Unique prime factorization relies on Euclid's lemma (if p | ab and p prime, then p | a or p | b) — the constructive version here gives the explicit quotient"
-    },
-    {
-      "id": "chinese-remainder-non-coprime",
-      "relationship": "complementary",
-      "description": "Extends CRT to non-coprime moduli, where Bézout's identity gives $\\gcd(m,n) = um + vn$ rather than $1 = um + vn$. The extended GCD from this file computes the same coefficients but the quotient formula requires the coprimality normalization $\\gcd = 1$"
-    },
-    {
-      "id": "bezout-identity-oq-03",
-      "relationship": "sibling",
-      "description": "Sibling open question from the Bézout identity chain, exploring different extensions of the core identity — together these entries map the space of constructive number-theoretic algorithms derivable from the extended Euclidean algorithm"
-    },
-    {
-      "id": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
-      "relationship": "extended-by",
-      "description": "Child entry that resolves the first open question: removes the noncomputable annotation from constructive_div by replacing classical choice (hdvd.choose) with computable integer division, making the full algorithm executable"
-    },
-    {
-      "id": "bezout-identity-oq-04",
-      "relationship": "sibling",
-      "description": "Complete parametric solution set of linear Diophantine equations ax + by = c: solutions form a 1D lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ}. Extends the single-solution Bézout computation here to the full solution family, using the same extended GCD infrastructure"
-    },
-    {
-      "id": "bezout-identity-oq-02-oq-01",
-      "relationship": "sibling",
-      "description": "Proves the Fundamental Theorem of Arithmetic from Euclid's lemma — a direct consumer of the constructive Euclid's lemma developed here. The proof chain Bézout → Euclid's lemma → unique factorization shows that the constructive quotient extraction formalized in this entry is a building block for the most fundamental theorem in number theory"
-    },
-    {
-      "id": "bezout-identity-oq-03-oq-01",
-      "relationship": "sibling",
-      "description": "The CRT ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ is constructed from the same Bézout coefficients computed by the extended Euclidean algorithm. The isomorphism maps $x \\mapsto (x \\bmod m, x \\bmod n)$ with inverse $a \\mapsto a_1 vn + a_2 um$ where $um + vn = 1$ — directly using the output of extGcd"
     }
   ]
 }

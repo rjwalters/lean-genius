@@ -217,6 +217,16 @@
   },
   "crossReferences": [
     {
+      "targetId": "minkowski-theorem",
+      "relationship": "related",
+      "description": "Minkowski's lattice point theorem guarantees lattice points in convex bodies of sufficient volume. Ehrhart theory quantifies this precisely for polytopes: the leading coefficient of the Ehrhart polynomial equals the volume, so $L(nP) \\sim \\text{vol}(P) \\cdot n^d$ as $n \\to \\infty$, providing the exact lattice point count that Minkowski bounds from below"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "technique",
+      "description": "The h*-vector identity $h^*_{\\beta_d}(z) = (1+z)^d$ for cross-polytopes directly invokes the binomial theorem. More broadly, the Ehrhart polynomial $L(P, t) = \\sum_{i=0}^d h^*_i \\binom{t+d-i}{d}$ expresses lattice point counts via binomial coefficients — the combinatorial encoding at the heart of Ehrhart theory"
+    },
+    {
       "relationship": "Pick's theorem is the d=2 specialization of Ehrhart's theorem. This file derives Pick's formula from the 2D Ehrhart polynomial and explains why it fails in 3D.",
       "sharedConcepts": [
         "lattice-points",

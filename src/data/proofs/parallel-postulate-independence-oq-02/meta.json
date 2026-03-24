@@ -181,7 +181,17 @@
     {
       "targetId": "parallel-postulate-independence",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization establishing the independence of the parallel postulate. This entry verifies the Beltrami-Klein model — a projective model of hyperbolic geometry inside a Euclidean disk where 'lines' are chords, providing a concrete consistency proof"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both are impossibility/independence results in classical geometry proved by constructing models. Angle trisection's impossibility uses algebraic degree arguments; the parallel postulate's independence uses the Beltrami-Klein disk model to show the negation is consistent"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Both establish independence via model construction. Gödel's incompleteness constructs a sentence independent of Peano arithmetic; the Beltrami-Klein model constructs a geometry where all axioms except the parallel postulate hold, proving independence. The model-theoretic technique — finding a structure satisfying all but one axiom — is the same"
     }
   ]
 }

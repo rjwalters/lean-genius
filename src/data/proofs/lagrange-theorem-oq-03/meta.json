@@ -223,6 +223,16 @@
   ],
   "crossReferences": [
     {
+      "targetId": "sylow-theorems",
+      "relationship": "extends",
+      "description": "Hall's existence theorem subsumes Sylow's first theorem for solvable groups: since $p^k$ is always a Hall divisor when $p^k \\| |G|$, Hall existence implies Sylow existence. Hall subgroups are the solvable-group generalization of Sylow subgroups, with conjugacy replacing the Sylow counting theorems"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini's proof that $S_5$ is not solvable (because $A_5$ is simple) uses the same solvability concept central to Hall's theorem. The $A_4$ counterexample here ($A_4$ has no subgroup of order 6) illustrates the structural difference between $A_4$ (solvable, derived series terminates) and $A_5$ (simple, derived series stuck)"
+    },
+    {
       "targetId": "lagrange-theorem",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"

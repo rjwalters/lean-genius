@@ -205,7 +205,12 @@
     {
       "targetId": "sylow-theorems",
       "relationship": "foundational",
-      "description": "Sylow's theorems on p-subgroups provide structural information about finite groups that extends to the locally compact setting. The solution of Hilbert's 5th problem relies on understanding the local structure of topological groups"
+      "description": "Sylow's theorems on $p$-subgroups provide structural information about finite groups. The $p$-adic integers $\\mathbb{Z}_p$ — the key counterexample in this formalization (they have small subgroups, hence are not Lie) — are built from Sylow-type $p$-group structure in the projective limit $\\mathbb{Z}_p = \\varprojlim \\mathbb{Z}/p^n\\mathbb{Z}$"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "technique",
+      "description": "Brouwer's fixed point theorem (and its generalizations) appears in the proof of Hilbert's 5th: Gleason's 1952 argument uses topological fixed-point theory to construct one-parameter subgroups in locally compact groups with no small subgroups. The existence of enough one-parameter subgroups is what produces the Lie algebra structure"
     }
   ],
   "references": [

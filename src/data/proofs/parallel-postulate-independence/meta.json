@@ -118,7 +118,17 @@
     {
       "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "Both concern independence/impossibility results in classical geometry. Angle trisection is impossible with compass and straightedge; the parallel postulate is independent of the other axioms."
+      "description": "Both are impossibility results in classical geometry proved via algebraic methods: angle trisection is impossible with compass and straightedge (Galois theory), while the parallel postulate is independent of the remaining axioms (model theory). Both show that natural geometric questions have negative answers requiring new mathematical frameworks"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Both are independence results: Gödel showed arithmetic truths independent of any consistent axiom system (1931), while the parallel postulate is independent of the other geometric axioms (Lobachevsky/Bolyai, 1830s). The model-theoretic technique — constructing a model satisfying all axioms except the target — is the same in both: Poincaré's disk model for geometry, and Gödel's constructible universe for set theory"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "The continuum hypothesis is independent of ZFC (Gödel 1940, Cohen 1963), paralleling the parallel postulate's independence from the other geometric axioms. Both are paradigmatic examples of statements that are consistent with, but not provable from, a standard axiom system — demonstrating the limits of axiomatization in their respective domains"
     }
   ],
   "leanFile": {

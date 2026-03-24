@@ -154,7 +154,7 @@
     "title": "Connection to Abstract Algebra and Mathlib",
     "content": "abstract_euclids_lemma shows that our constructive approach works directly with Mathlib's IsCoprime type class: given IsCoprime a b (which provides B\u00e9zout witnesses u, v with ua + vb = 1) and a \u2223 b*c, we extract the divisibility witness via euclids_lemma_constructive.\n\nThe companion example shows this agrees with Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming that our explicit construction is consistent with the library's abstract approach. The key difference: our version gives you the explicit quotient q = u*c + v*k, while Mathlib's version only asserts existence.\n\nThis compatibility theorem closes the loop: the constructive machinery works within Mathlib's abstraction hierarchy, so users can freely switch between the explicit formula (when they need the quotient value) and Mathlib's abstract API (when they only need the divisibility fact).",
     "mathContext": "Mathlib's `IsCoprime a b` is defined as $\\exists u v, ua + vb = 1$ \u2014 exactly the B\u00e9zout condition. The `dvd_of_dvd_mul_left` method proves Euclid's lemma from this, but without exposing the quotient formula. Our approach makes the algorithm explicit while remaining compatible with the abstract framework. In a B\u00e9zout domain (an integral domain where every finitely generated ideal is principal), every pair of elements satisfies `IsCoprime` iff their GCD is a unit \u2014 the abstract setting that unifies $\\mathbb{Z}$, polynomial rings $k[x]$, and valuation rings.",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "IsCoprime",
       "Mathlib compatibility",

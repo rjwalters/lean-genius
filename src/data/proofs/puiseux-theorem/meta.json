@@ -170,6 +170,21 @@
       "targetId": "abel-ruffini",
       "relationship": "complementary",
       "description": "Abel-Ruffini (1824) proves polynomial roots cannot always be expressed by radicals ($S_5$ is not solvable), while Puiseux series provide an alternative algebraically closed framework where all polynomial roots have representations. Together they show the impossibility is specific to radical operations, not to all closed-form representations"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA proves $\\mathbb{C}$ is algebraically closed (every polynomial has roots). Puiseux's theorem is the formal power series analogue: the Puiseux series field $K\\{\\{x\\}\\}$ is the algebraic closure of the Laurent series field $K((x))$, providing a local analytic counterpart to the global complex-analytic FTA"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The Galois group $\\text{Gal}(K\\{\\{x\\}\\}/K((x))) \\cong \\hat{\\mathbb{Z}}$ (profinite integers) is a key example in infinite Galois theory. Every finite quotient $\\mathbb{Z}/n\\mathbb{Z}$ occurs as a Galois group of $K((x^{1/n}))/K((x))$, giving a complete answer to the inverse Galois problem over Laurent series fields"
+    },
+    {
+      "targetId": "newton-inductive-step",
+      "relationship": "technique",
+      "description": "Newton's method for polynomial root approximation underlies the Newton-Puiseux algorithm: the Newton polygon identifies leading exponents, and Newton's iterative refinement constructs successive terms of the Puiseux expansion — the same inductive step principle applied to fractional power series"
     }
   ]
 }
