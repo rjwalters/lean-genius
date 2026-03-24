@@ -2,8 +2,8 @@
   "version": 1,
   "entries": {
     "pythagorean-triples": {
-      "auditCount": 6,
-      "lastAudited": "2026-03-24T09:00:12Z",
+      "auditCount": 7,
+      "lastAudited": "2026-03-24T11:54:24Z",
       "result": "clean",
       "issues": []
     },
@@ -417,15 +417,15 @@
       "issues": []
     },
     "cayley-hamilton-reduction-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T05:01:54Z",
-      "result": "clean",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T11:59:37Z",
+      "result": "issues-fixed",
       "issues": []
     },
     "cayley-hamilton-reduction-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T05:01:54Z",
-      "result": "clean",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T12:00:27Z",
+      "result": "issues-fixed",
       "issues": []
     },
     "cevas-theorem-oq-02-oq-01": {
@@ -435,20 +435,20 @@
       "issues": []
     },
     "cevas-theorem-oq-02-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T05:01:55Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T12:01:38Z",
       "result": "clean",
       "issues": []
     },
     "chinese-remainder-constructive-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T05:01:55Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T12:01:38Z",
       "result": "clean",
       "issues": []
     },
     "chinese-remainder-non-coprime-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T05:01:55Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T12:00:57Z",
       "result": "clean",
       "issues": []
     },
@@ -1373,6 +1373,30 @@
     "erdos-680": {
       "auditCount": 1,
       "lastAudited": "2026-03-24T09:26:13Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "cevas-theorem-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T11:56:11Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1060": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T11:57:01Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-1143": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T11:57:37Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-409": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T11:58:32Z",
       "result": "issues-fixed",
       "issues": []
     }
