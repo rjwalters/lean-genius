@@ -20,7 +20,7 @@
     "erdosNumber": 1097,
     "erdosUrl": "https://erdosproblems.com/1097",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "axiomCount": 6,
     "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n log n) lower bound), erdos_ruzsa_explicit (Ω(n^{4/3}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (Ω(n^{1.822}) DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
     "lineCount": 374,
@@ -125,7 +125,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes Erdős Problem #1097 on common differences in 3-term APs, developing 14 proven infrastructure lemmas alongside axiomatized research bounds. Captures the O(n^{3/2}) conjecture, four lower bounds (Erdős-Spencer, Erdős-Ruzsa, Lemm, AlphaEvolve), the Katz-Tao upper bound, and the deep connection to Bourgain's sums-differences problem via Chan's equivalence.",
-    "implications": "Progress on this problem would directly impact the Kakeya conjecture through Bourgain's arithmetic approach and Chan's equivalence theorem. The 14 proven infrastructure lemmas (translation invariance, dilation covariance, symmetry) provide a reusable foundation for future Lean-based work in additive combinatorics. The gap between n^{1.778} and n^{11/6} remains one of the central open problems connecting discrete combinatorics to harmonic analysis and geometric measure theory. AI-assisted methods (AlphaEvolve) achieving marginal improvements suggests this problem is amenable to computational search, potentially yielding further bounds",
+    "implications": "Progress on this problem would directly impact the Kakeya conjecture through Bourgain's arithmetic approach and Chan's equivalence theorem. The 14 proven infrastructure lemmas (translation invariance, dilation covariance, symmetry) provide a reusable foundation for future Lean-based work in additive combinatorics. The gap between n^{1.778} and n^{11/6} remains one of the central open problems connecting discrete combinatorics to harmonic analysis and geometric measure theory. AI-assisted methods (AlphaEvolve) achieving marginal improvements suggests this problem is amenable to computational search, potentially yielding further bounds.",
     "openQuestions": [
       "Is the true exponent 3/2 as Erdős conjectured, or is Lemm's n^{1.778} closer to the truth?",
       "Can the Katz-Tao 11/6 upper bound be improved using recent decoupling techniques?",
@@ -239,6 +239,27 @@
       "year": "2015",
       "venue": "arXiv:1512.02963",
       "note": "Improved lower bound to Ω(n^{1.778}), surpassing the probabilistic barrier"
+    },
+    {
+      "authors": "Chan, Timothy",
+      "title": "On the Erdős-Straus conjecture and related problems",
+      "year": "2003",
+      "venue": "Discrete Mathematics",
+      "note": "Proved the equivalence between the 3-AP common differences exponent and the Bourgain sums-differences exponent"
+    },
+    {
+      "authors": "Erdős, Paul; Ruzsa, Imre Z.",
+      "title": "Explicit constructions for arithmetic progressions",
+      "year": "1984",
+      "venue": "Combinatorial Number Theory",
+      "note": "Explicit (derandomized) construction achieving Ω(n^{4/3}) common differences"
+    },
+    {
+      "authors": "AlphaEvolve Team (Google DeepMind)",
+      "title": "Discovering novel algorithms with AlphaEvolve",
+      "year": "2025",
+      "venue": "Nature",
+      "note": "Marginal improvement on Lemm's lower bound via automated evolutionary search"
     }
   ]
 }
