@@ -135,13 +135,31 @@ lemma f_nonneg (n : ℕ) : f n ≥ 0 := by
 
 /-- f(2) = 0 since there are no primes < 2. -/
 lemma f_two : f 2 = 0 := by
-  simp [f, primesLessThan]
+  unfold f primesLessThan
+  simp [Finset.filter_eq_empty_iff, Finset.mem_range]
+  intro p hp
+  interval_cases p <;> simp [Nat.Prime] at *
 
 /-- f(3) = 1 since 2 is the only prime < 3, and 1/(3−2) = 1. -/
-axiom f_three : f 3 = 1
+theorem f_three : f 3 = 1 := by
+  unfold f primesLessThan
+  -- primesLessThan 3 = {2}
+  have h : (Finset.range 3).filter Nat.Prime = {2} := by
+    ext p; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]
+    constructor
+    · intro ⟨hp_lt, hp_prime⟩; interval_cases p <;> simp_all [Nat.Prime]
+    · intro h; subst h; exact ⟨by omega, Nat.prime_iff.mpr ⟨by omega, by omega⟩⟩
+  rw [h, Finset.sum_singleton]; norm_num
 
 /-- f(4) = 3/2 since primes < 4 are 2, 3 with distances 2, 1. -/
-axiom f_four : f 4 = 3 / 2
+theorem f_four : f 4 = 3 / 2 := by
+  unfold f primesLessThan
+  have h : (Finset.range 4).filter Nat.Prime = {2, 3} := by
+    ext p; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · intro ⟨hp_lt, hp_prime⟩; interval_cases p <;> simp_all [Nat.Prime]
+    · intro h; rcases h with rfl | rfl <;> exact ⟨by omega, by omega⟩
+  rw [h, Finset.sum_pair (by omega : (2 : ℕ) ≠ 3)]; norm_num
 
 /-
 ## Part 5: Weaker Conjecture and Connections
@@ -172,10 +190,11 @@ noncomputable def primeGap (m : ℕ) : ℕ :=
   Nat.nth Nat.Prime (m + 1) - Nat.nth Nat.Prime m
 
 /-- Having primes in [n−k, n) guarantees f(n) ≥ 1/k.
-    This connects prime density near n to the size of f(n). -/
-axiom dense_primes_increase_f (n k : ℕ) (hk : k > 0) :
+    Proof: some prime p has distance n-p ≤ k, so 1/(n-p) ≥ 1/k. -/
+theorem dense_primes_increase_f (n k : ℕ) (hk : k > 0) :
     (primesLessThan n ∩ Finset.Ico (n - k) n).card > 0 →
-    f n ≥ 1 / k
+    f n ≥ 1 / k := by
+  sorry -- Elementary: extract prime p with n-k ≤ p < n, then f(n) ≥ 1/(n-p) ≥ 1/k
 
 /-- The existence of c > 0 with ≫ n^c/log n primes in [n, n+n^c]
     implies lim inf f(n) > 0 (Erdős's observation). -/
