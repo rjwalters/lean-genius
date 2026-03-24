@@ -15,8 +15,7 @@
       "Mathlib",
       "number theory",
       "sum of squares"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-historical",
@@ -35,8 +34,7 @@
       "Hamilton",
       "division algebras",
       "Frobenius theorem"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-euler-identity",
@@ -45,7 +43,7 @@
       "startLine": 44,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Euler's Four-Square Identity",
     "content": "**The Heart of the Proof**\n\nEuler proved in 1748 that:\n$$(a^2 + b^2 + c^2 + d^2)(x^2 + y^2 + z^2 + w^2) = A^2 + B^2 + C^2 + D^2$$\n\nwhere:\n- $A = ax - by - cz - dw$\n- $B = ay + bx + cw - dz$\n- $C = az - bw + cx + dy$\n- $D = aw + bz - cy + dx$\n\nThese are exactly the components of the quaternion product $(a + bi + cj + dk)(x + yi + zj + wk)$!\n\nThe proof is pure algebra - Lean's `ring` tactic handles it instantly.",
     "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = (ax-by-cz-dw)^2 + (ay+bx+cw-dz)^2 + (az-bw+cx+dy)^2 + (aw+bz-cy+dx)^2$",
@@ -54,8 +52,7 @@
       "quaternions",
       "bilinear forms",
       "algebraic identities"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-ring-tactic",
@@ -73,8 +70,7 @@
       "proof automation",
       "polynomial identities",
       "commutative algebra"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-why-not-three",
@@ -92,8 +88,7 @@
       "Legendre's theorem",
       "quadratic forms",
       "three squares problem"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-example-seven",
@@ -104,14 +99,13 @@
     },
     "type": "example",
     "title": "The Notorious Seven",
-    "content": "7 is the smallest number that requires all four squares:\n$$7 = 1^2 + 1^2 + 1^2 + 2^2 = 1 + 1 + 1 + 4$$\n\nYou can verify: there's no way to write 7 = a\u00b2 + b\u00b2 + c\u00b2 with integers.",
-    "mathContext": "7 = 4\u2070(8\u00b70 + 7) fits Legendre's obstruction.",
+    "content": "7 is the smallest number that requires all four squares:\n$$7 = 1^2 + 1^2 + 1^2 + 2^2 = 1 + 1 + 1 + 4$$\n\nYou can verify: there's no way to write 7 = a² + b² + c² with integers.",
+    "mathContext": "7 = 4⁰(8·0 + 7) fits Legendre's obstruction.",
     "significance": "key",
     "relatedConcepts": [
       "counterexamples",
       "three squares theorem"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -120,7 +114,7 @@
       "startLine": 71,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Lagrange's Four Squares Theorem",
     "content": "**Every natural number is a sum of four squares.**\n\nThe proof in Mathlib follows the classical strategy:\n\n1. **Euler's Identity** reduces the problem to primes\n2. **Existence**: For each prime p, show some mp (m < p) is a sum of four squares\n3. **Descent**: If m > 1, find a smaller working multiple\n4. **Conclusion**: By descent, p itself is a sum of four squares\n5. **Extension**: Use Euler's identity for composites\n\nThis is #19 on Wiedijk's list of 100 famous theorems.",
     "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{N}: a^2 + b^2 + c^2 + d^2 = n$",
@@ -149,8 +143,7 @@
     "relatedConcepts": [
       "integer arithmetic",
       "type coercion"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-two-squares-connection",
@@ -161,14 +154,13 @@
     },
     "type": "insight",
     "title": "Connection to Two Squares",
-    "content": "**Fermat's Two Squares Theorem**: An odd prime p is a sum of two squares iff p \u2261 1 (mod 4).\n\n- 5 \u2261 1 (mod 4): 5 = 1\u00b2 + 2\u00b2\n- 13 \u2261 1 (mod 4): 13 = 2\u00b2 + 3\u00b2\n- 7 \u2261 3 (mod 4): 7 is NOT a sum of two squares\n\nTwo squares is much more restrictive than four. Fermat proved the two-square theorem; Lagrange proved the four-square theorem. Together they reveal the arithmetic of quadratic forms.",
-    "mathContext": "Odd prime p = a\u00b2 + b\u00b2 $\\Leftrightarrow$ p \u2261 1 (mod 4).",
+    "content": "**Fermat's Two Squares Theorem**: An odd prime p is a sum of two squares iff p ≡ 1 (mod 4).\n\n- 5 ≡ 1 (mod 4): 5 = 1² + 2²\n- 13 ≡ 1 (mod 4): 13 = 2² + 3²\n- 7 ≡ 3 (mod 4): 7 is NOT a sum of two squares\n\nTwo squares is much more restrictive than four. Fermat proved the two-square theorem; Lagrange proved the four-square theorem. Together they reveal the arithmetic of quadratic forms.",
+    "mathContext": "Odd prime p = a² + b² $\\Leftrightarrow$ p ≡ 1 (mod 4).",
     "significance": "key",
     "relatedConcepts": [
       "Fermat two squares",
       "quadratic residues",
       "number theory"
-    ],
-    "prerequisites": []
+    ]
   }
 ]

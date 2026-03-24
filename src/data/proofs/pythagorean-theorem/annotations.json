@@ -196,30 +196,6 @@
     ]
   },
   {
-    "id": "ann-triple-examples",
-    "proofId": "pythagorean-theorem",
-    "range": {
-      "startLine": 123,
-      "endLine": 131
-    },
-    "type": "example",
-    "title": "Classic Pythagorean Triples: (3,4,5), (5,12,13), (8,15,17)",
-    "content": "Three classic Pythagorean triples verified by `norm_num`: $(3,4,5)$, $(5,12,13)$, and $(8,15,17)$. All three are **primitive** triples ($\\gcd(a,b,c) = 1$).\n\nEvery primitive triple has the form $(m^2 - n^2,\\, 2mn,\\, m^2 + n^2)$ for coprime integers $m > n > 0$ with $m - n$ odd (Euclid, *Elements* X.28). The examples: $(3,4,5)$ from $(m,n) = (2,1)$, $(5,12,13)$ from $(3,2)$, $(8,15,17)$ from $(4,1)$. The proof that this parameterization is complete uses unique factorization in $\\mathbb{Z}[i]$: $a^2 + b^2 = c^2$ factors as $(a+bi)(a-bi) = c^2$ in the Gaussian integers.",
-    "mathContext": "Euclid's parameterization: primitive triples $(a,b,c)$ with $2 | b$ are exactly $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ for $m > n > 0$, $\\gcd(m,n) = 1$, $m \\not\\equiv n \\pmod{2}$. Verify: $a^2 + b^2 = (m^2-n^2)^2 + (2mn)^2 = m^4 + n^4 - 2m^2n^2 + 4m^2n^2 = (m^2+n^2)^2 = c^2$.",
-    "significance": "supporting",
-    "prerequisites": [
-      "norm_num tactic",
-      "Pythagorean triple",
-      "Gaussian integers"
-    ],
-    "relatedConcepts": [
-      "Euclid's parameterization",
-      "primitive triple",
-      "Gaussian integers",
-      "unique factorization"
-    ]
-  },
-  {
     "id": "ann-right-triangle",
     "proofId": "pythagorean-theorem",
     "range": {
