@@ -53,7 +53,7 @@
       "Asymptotic notation (o(n), almost all)",
       "Prime factorization and coprimality"
     ],
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axioms: lucaPomerance_density_one, glw_infinitely_many. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "Erdős Problem 1064 concerns the comparison of φ(n) with φ(n - φ(n)), a natural iteration of Euler's totient function. The problem asks whether φ(n) is usually larger, and whether the reverse ever happens.\n\nGrytczuk, Luca, and Wójtowicz (2001) made initial progress, showing A₊ (where φ(n) > φ(n-φ(n))) has lower density at least 0.54 and A₋ is infinite. They gave the explicit pattern: n = 15·2^k gives n ∈ A₋.\n\nLuca and Pomerance (2002) completed the solution, proving A₊ has density 1. Their stronger result: for any f(n) = o(n), we have φ(n) > φ(n - φ(n)) + f(n) for almost all n.",
