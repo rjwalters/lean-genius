@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 16 reduced density_increment_large_M sorry to coprime case only. When gcd(val(r),N)≥2, the existing density_increment_lemma provides M≥2 directly. Remaining sorry only fires when r is coprime to N (all primes, some composites). File: 0 axioms, 2 sorries (both reduced), 1526 lines.",
+    "progressSummary": "PROGRESS: Fixed build errors in density_increment_dirichlet (omega N=1 failure with hN:4≤N). Else branch replaced with clean sorry+docs. File compiles: 0 axioms, 1 sorry (dead code), 1580 lines. Main theorem roth_density_bound fully proved via Mathlib.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -70,7 +70,8 @@
       "Fixed 4 linter warnings: unused simp args (true_and, Finset.mem_univ), unused vars (_hg, _hAP, _hdelta1, _hdelta)",
       "density_increment_large_M: TRUE sorry for Dirichlet-based density increment (M>=2, M<N) in RothTheorem.lean",
       "Comprehensive documentation of elimination strategy for FALSE sorry in density_increment_iter",
-      "Partial proof of density_increment_large_M: M≥2 case via density_increment_lemma (sorry only for coprime/M=1 case)"
+      "Partial proof of density_increment_large_M: M≥2 case via density_increment_lemma (sorry only for coprime/M=1 case)",
+      "Fixed build errors in density_increment_dirichlet: replaced broken omega N=1 proof + downstream type errors with clean sorry"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -122,7 +123,9 @@
       "density_increment_iter sorry (N=1, delta>0.99) is FALSE: conclusion requires |B|>M, impossible. Standard fix: Dirichlet approximation ensures M>=2",
       "density_increment_large_M (TRUE sorry): For N>=4, Dirichlet gives APs of length >=sqrt(N)>=2. Approximate Fourier analysis on APs gives density boost.",
       "To eliminate FALSE sorry: restructure roth_density_bound with N0=4^{2^K} so chain stays at M>=4. Requires density_increment_large_M proved.",
-      "For prime N: coset approach gives M=gcd(val(r),N)=1. AP-based (Dirichlet) approach gives M=floor(N/q)>=sqrt(N) instead."
+      "For prime N: coset approach gives M=gcd(val(r),N)=1. AP-based (Dirichlet) approach gives M=floor(N/q)>=sqrt(N) instead.",
+      "density_increment_dirichlet else branch had build error: omega tried N=1 with hN:4≤N hypothesis. Case 2 (d<sqrt(N)) is genuinely reachable for prime N. Fixed by replacing broken N=1 argument with clean sorry.",
+      "File compiles with 1 sorry (dead code only) + 0 axioms. Main theorem uses Mathlib roth_3ap_theorem_nat, not the Fourier-based density_increment_dirichlet."
     ],
     "mathlibGaps": [],
     "nextSteps": [

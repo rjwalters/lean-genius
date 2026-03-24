@@ -43,8 +43,8 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 1596,
-    "assumptions": "No axioms. 1 sorry: density_increment_iter N=1 hard case (delta ∈ (0.99, 1]) — requires Dirichlet approximation to prevent descent reaching N=1 with high density. DirichletApproximation.lean is already proved.",
+    "lineCount": 1580,
+    "assumptions": "No axioms. 1 sorry in dead code: density_increment_dirichlet Case 2 (gcd < sqrt(N), requires Dirichlet-based subprogression partition). Main theorem roth_density_bound is fully proved via Mathlib's corners-theorem chain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -201,7 +201,7 @@
     ],
     "opens": [],
     "namespace": "Szemeredi.Roth",
-    "lineCount": 1596,
+    "lineCount": 1580,
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 3
