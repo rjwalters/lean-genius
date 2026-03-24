@@ -24,14 +24,7 @@ Reference: [ErGr80, p.42]
 Tags: number-theory, unit-fractions, diophantine-approximation
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.Algebra.GCDMonoid.Finset
-import Mathlib.Tactic.NormNum
+import Mathlib
 
 open Finset Filter BigOperators
 
@@ -87,8 +80,8 @@ def counterexampleDelta : Fin 4 → ℤ
 
 /-- counterexampleDelta is a valid sign function -/
 theorem counterexampleDelta_isSign : IsSignFunction 4 counterexampleDelta := by
-  intro ⟨k, hk⟩
-  fin_cases ⟨k, hk⟩ <;> simp [counterexampleDelta] <;> omega
+  intro k
+  fin_cases k <;> simp [counterexampleDelta]
 
 /-- The signed sum of the counterexample equals -1/12 -/
 theorem counterexample_sum_eq :
@@ -107,7 +100,7 @@ theorem counterexample_small_n :
   · rw [counterexample_sum_eq]; norm_num
   · rw [counterexample_sum_eq]
     simp only [lcm_1_to_n]
-    norm_num
+    native_decide
 
 /-- The "all ones" sign function: δ_k = 1 for all k -/
 def allOnesDelta (n : ℕ) : Fin n → ℤ := fun _ => 1
@@ -119,14 +112,14 @@ theorem allOnesDelta_isSign (n : ℕ) : IsSignFunction n (allOnesDelta n) := by
 /-- For n ≥ 1, the all-ones sum equals the n-th harmonic number, which is positive -/
 theorem allOnes_sum_pos (n : ℕ) (hn : n ≥ 1) :
     signedSumAbs n (allOnesDelta n) > 0 := by
-  simp only [signedSumAbs, signedUnitFractionSum, allOnesDelta]
-  rw [abs_pos]
-  apply ne_of_gt
-  apply Finset.sum_pos
-  · intro i _
-    simp only [Int.cast_one, one_div]
-    positivity
-  · exact Finset.univ_nonempty_iff.mpr ⟨⟨0, hn⟩⟩
+  simp only [signedSumAbs]
+  have hpos : (0 : ℚ) < signedUnitFractionSum n (allOnesDelta n) := by
+    simp only [signedUnitFractionSum, allOnesDelta]
+    apply Finset.sum_pos
+    · intro i _; simp only [Int.cast_one, one_div]; positivity
+    · exact Finset.univ_nonempty_iff.mpr ⟨⟨0, hn⟩⟩
+  have : (0 : ℝ) < ↑(signedUnitFractionSum n (allOnesDelta n)) := by exact_mod_cast hpos
+  linarith [abs_of_pos this]
 
 /-- For every n ≥ 1, there exists a sign function giving a nonzero signed sum.
     (Trivially: all δ_k = 1 gives the harmonic number H_n > 0.) -/
