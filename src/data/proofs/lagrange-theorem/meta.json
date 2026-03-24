@@ -2,7 +2,7 @@
   "id": "lagrange-theorem",
   "title": "Lagrange's Theorem",
   "slug": "lagrange-theorem",
-  "description": "For a finite group G and subgroup H, the order of H divides the order of G. Fundamental to group theory.",
+  "description": "Lagrange's theorem: for a finite group $G$ and subgroup $H \\leq G$, $|H|$ divides $|G|$. Wiedijk 100 theorem #71, formalized in Lean 4 via Mathlib's coset theory. Derives six corollaries including element order divisibility, $g^{|G|}=1$, Fermat's little theorem from the group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, and prime-order cyclicity.",
   "meta": {
     "author": "Lagrange (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Lagrange%27s_theorem_(group_theory)",
@@ -62,7 +62,7 @@
     "wiedijkNumber": 71,
     "axiomCount": 0,
     "lineCount": 222,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core divisibility $|H| \\mid |G|$ delegates to Mathlib's `Subgroup.card_subgroup_dvd_card` (coset partition argument); all 11 theorems are pedagogical wrappers composing Mathlib lemmas (`orderOf_dvd_card`, `pow_card_eq_one`, `ZMod.card_units_eq_totient`, `isCyclic_of_prime_card`, etc.) with no custom axioms or definitions."
   },
   "overview": {
     "historicalContext": "Joseph-Louis Lagrange proved this theorem in 1771 in his *Reflexions sur la resolution algebrique des equations*, while studying permutation groups in connection with the solvability of polynomial equations by radicals. Lagrange observed that the number of 'values' (arrangements) of a rational function of the roots always divides $n!$, which is essentially the statement that subgroup orders divide the group order for symmetric groups. The theorem was not stated in the language of abstract groups (which didn't exist until the 1830s with Galois and later Cayley); Lagrange worked entirely with permutations. The abstract formulation emerged through the work of Galois (1832), Cayley (1854), and Jordan (1870). The coset-based proof — partitioning $G$ into translates $gH$ — is due to Dedekind. The theorem's converse is famously false: $A_4$ (order 12) has no subgroup of order 6, despite $6 | 12$. The Sylow theorems (1872) provide the best partial converse: subgroups of prime-power order $p^k | |G|$ always exist.",
@@ -74,7 +74,9 @@
       "Lagrange's theorem implies every element's order divides the group order. Applied to the cyclic subgroup $\\langle g \\rangle$, we get $\\text{ord}(g) | |G|$, hence $g^{|G|} = 1$. This single corollary yields both Fermat's little theorem ($a^{p-1} \\equiv 1 \\pmod{p}$) and Euler's theorem ($a^{\\phi(n)} \\equiv 1 \\pmod{n}$).",
       "The converse is spectacularly false: $n | |G|$ does not guarantee a subgroup of order $n$. The alternating group $A_4$ has order 12 but no subgroup of order 6. This failure motivates the Sylow theorems, which guarantee subgroups of prime-power order, and Hall's theorem for solvable groups.",
       "For groups of prime order $p$, Lagrange immediately implies the group is cyclic: any non-identity element $g$ generates a subgroup $\\langle g \\rangle$ of order dividing $p$, and since $\\text{ord}(g) > 1$, we must have $\\text{ord}(g) = p$, so $\\langle g \\rangle = G$.",
-      "The index $[G:H]$ counts the number of distinct cosets and satisfies the tower law: for $K \\leq H \\leq G$, we have $[G:K] = [G:H] \\cdot [H:K]$. This multiplicativity of the index is the algebraic backbone of the orbit-stabilizer theorem and the class equation."
+      "The index $[G:H]$ counts the number of distinct cosets and satisfies the tower law: for $K \\leq H \\leq G$, we have $[G:K] = [G:H] \\cdot [H:K]$. This multiplicativity of the index is the algebraic backbone of the orbit-stabilizer theorem and the class equation.",
+      "**Cauchy's theorem as a sharpening**: Lagrange shows $\\text{ord}(g) \\mid |G|$ for existing elements $g$. Cauchy's theorem (1845) proves the partial converse for primes: if $p \\mid |G|$ then $G$ contains an element of order $p$. This is strictly stronger than Lagrange and requires a separate proof (typically via the class equation or McKay's combinatorial argument). The Sylow theorems generalize further to prime powers.",
+      "**The Fermat derivation reveals a paradigm**: The proof of Fermat's little theorem in lines 145-152 is a `calc` chain: $a^{p-1} = a^{\\phi(p)} = a^{|\\text{units}|} = 1$. Each equality invokes a different Mathlib lemma (`Nat.totient_prime`, `ZMod.card_units_eq_totient`, `pow_card_eq_one`). This 'chain of reinterpretations' pattern — the same quantity viewed through different lenses — recurs throughout algebra: Lagrange's theorem is a statement about cosets, about element orders, about number theory, and about representation theory, depending on the lens."
     ],
     "prerequisites": [
       "Group theory: finite groups, subgroups, cosets, quotient groups",
@@ -154,7 +156,9 @@
     "openQuestions": [
       "Can the Sylow theorems (partial converse of Lagrange) be formalized, showing that subgroups of order p^k exist for every prime power p^k dividing |G|?",
       "Can the orbit-stabilizer theorem be formalized as a generalization of Lagrange's theorem, with Lagrange recovered as the special case of the action of G on cosets of H?",
-      "Can Hall's theorem be formalized: for solvable groups, the full converse of Lagrange holds — subgroups of order n exist for every n dividing |G|?"
+      "Can Hall's theorem be formalized: for solvable groups, the full converse of Lagrange holds — subgroups of order n exist for every n dividing |G|?",
+      "Can Cauchy's theorem be formalized as a strengthening: if prime $p$ divides $|G|$, then $G$ contains an element of order $p$? McKay's elegant proof uses the action of $\\mathbb{Z}/p\\mathbb{Z}$ on $p$-tuples $(g_1,\\ldots,g_p)$ with $g_1 \\cdots g_p = e$ and is entirely combinatorial.",
+      "Can the Burnside counting lemma (Cauchy-Frobenius) $|X/G| = \\frac{1}{|G|} \\sum_{g \\in G} |X^g|$ be formalized as a consequence of the orbit-stabilizer theorem, which itself generalizes Lagrange?"
     ]
   },
   "crossReferences": [
