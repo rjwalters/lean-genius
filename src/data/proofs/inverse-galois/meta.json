@@ -34,7 +34,7 @@
       "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
       "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ],
-    "assumptions": "3 axiom declarations across 2 files (all independent): (1) abelian_realizable — all finite abelian groups are realizable (needs Kronecker-Weber, not in Mathlib), (2) shafarevich_theorem — all finite solvable groups are realizable (deep class field theory, not in Mathlib), (3) three_dvd_gal_card — mod-7 factorization gives 3-cycle in Gal(q) via Dedekind's theorem (not in Mathlib). vandermondeProduct_sq_eq PROVED via ℂ embedding + Sophie Germain identity. gal_card_dvd_60 PROVED via Vandermonde chain. 2 sorries (open conjecture + Hilbert irreducibility).",
+    "assumptions": "2 axiom(s) and 2 sorry(s).",
     "leanFile": {
       "lineCount": 5735,
       "theoremCount": 374,
