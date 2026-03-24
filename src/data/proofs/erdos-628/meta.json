@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 11,
+    "sorries": 12,
     "erdosNumber": 628,
     "erdosUrl": "https://erdosproblems.com/628",
     "erdosProblemStatus": "open",
@@ -51,7 +51,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 246,
-    "assumptions": "4 axiom(s) and 12 sorry(s).",
+    "assumptions": "4 axioms and 12 sorries (2 definition sorries, 10 theorem/proof sorries). Line 209 has two sorry'd type annotations.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -212,6 +212,6 @@
     "lineCount": 246,
     "axiomCount": 4,
     "theoremCount": 10,
-    "definitionCount": 14
+    "definitionCount": 12
   }
 }
