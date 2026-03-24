@@ -96,78 +96,78 @@
       "id": "header",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 36,
-      "summary": "Problem header documenting the DISPROVED status, Ruzsa's binary counterexample, the unique representation property, and the reference to Erdős-Graham (1980, p. 50). Imports Mathlib for natural numbers, reals, finite sets, binary digits, and filters."
+      "endLine": 35,
+      "summary": "Problem header (lines 1–25) documenting the DISPROVED status, Ruzsa's binary counterexample, the unique representation property, and the reference to Erdős-Graham (1980, p. 50). Imports Mathlib for natural numbers, reals, finite sets, binary digits, and filters (lines 27–31). Opens Real and Filter namespaces (line 33), opens namespace Erdos331 (line 35)."
     },
     {
       "id": "counting-functions",
       "title": "Part I: Counting Functions",
-      "startLine": 37,
-      "endLine": 56,
+      "startLine": 41,
+      "endLine": 55,
       "summary": "Defines countingFunction via Finset.filter over Finset.Icc 1 N. HasDensityAtLeast(A, α) requires |A ∩ {1,...,N}| ≥ c·N^α for large N. HasSqrtDensity specializes to α = 1/2. HasExactSqrtDensity requires the counting function divided by √N to converge to c via Filter.Tendsto."
     },
     {
       "id": "common-differences",
       "title": "Part II: Common Differences",
-      "startLine": 57,
-      "endLine": 73,
-      "summary": "Defines HasCommonDifference(A, B, d) requiring d ≠ 0 with d ∈ (A−A) ∩ (B−B). The set commonDifferences(A, B) collects all such d. HasInfinitelyManyCommonDifferences requires Set.Infinite on this set."
+      "startLine": 61,
+      "endLine": 72,
+      "summary": "Defines HasCommonDifference(A, B, d) requiring d ≠ 0 with d ∈ (A−A) ∩ (B−B) over integers. The set commonDifferences(A, B) collects all such d. HasInfinitelyManyCommonDifferences requires Set.Infinite on this set."
     },
     {
       "id": "conjecture",
       "title": "Part III: The Original Conjecture",
-      "startLine": 74,
-      "endLine": 84,
+      "startLine": 78,
+      "endLine": 83,
       "summary": "Formalizes ErdosConjecture331: for all A, B with sqrt density, there are infinitely many common differences. This universal statement is what Ruzsa disproves with his binary construction."
     },
     {
       "id": "ruzsa-construction",
       "title": "Part IV: Ruzsa's Counterexample",
-      "startLine": 85,
-      "endLine": 115,
-      "summary": "Defines evenBinaryPositions (digits only in positions 0, 2, 4, ...) and oddBinaryPositions (digits only in positions 1, 3, 5, ...) via modular arithmetic. Names ruzsaA and ruzsaB as aliases. Axiomatizes sqrt density for both sets and the unique representation property: every n ≥ 1 has unique decomposition n = a + b."
+      "startLine": 89,
+      "endLine": 114,
+      "summary": "Defines evenBinaryPositions (digits only in positions 0, 2, 4, ...) and oddBinaryPositions (digits only in positions 1, 3, 5, ...) via modular arithmetic (lines 91–103). Names ruzsaA and ruzsaB as aliases. Axiomatizes sqrt density for both sets (lines 106, 109) and the unique representation property: every n ≥ 1 has unique decomposition n = a + b (lines 113–114)."
     },
     {
       "id": "disproof",
       "title": "Part V: The Disproof",
-      "startLine": 116,
-      "endLine": 142,
-      "summary": "Axiomatizes ruzsa_no_common_differences: CD(A,B) = ∅. GENUINELY PROVES ruzsa_counterexample by assembling density + emptiness + Set.not_infinite_empty. GENUINELY PROVES erdos_331_disproved by contradiction: instantiating the universal conjecture with Ruzsa's sets yields a contradiction."
+      "startLine": 120,
+      "endLine": 141,
+      "summary": "Axiomatizes ruzsa_no_common_differences: CD(A,B) = ∅ (lines 123–124). GENUINELY PROVES ruzsa_counterexample (lines 127–134) by assembling density + emptiness + Set.not_infinite_empty. GENUINELY PROVES erdos_331_disproved (lines 138–141) by contradiction: instantiating the universal conjecture with Ruzsa's sets yields a contradiction."
     },
     {
       "id": "understanding",
       "title": "Part VI: Understanding the Counterexample",
-      "startLine": 143,
-      "endLine": 162,
-      "summary": "Structural analysis: ruzsaA_characterization shows A = {sums of powers of 4}. Axiomatizes B = 2A (odd positions = doubled even positions). Axiomatizes exact growth ~c√N for both sets, confirming the construction sits precisely at the density threshold."
+      "startLine": 147,
+      "endLine": 161,
+      "summary": "Structural analysis: ruzsaA_characterization (lines 148–149) shows A = {sums of powers of 4}. Axiomatizes B = 2A via ruzsaB_eq_double_ruzsaA (lines 154–155). Axiomatizes exact growth ~c√N for both sets via ruzsa_exact_growth (lines 158–161), confirming the construction sits precisely at the density threshold."
     },
     {
       "id": "variant",
       "title": "Part VII: Ruzsa's Stronger Variant",
-      "startLine": 163,
-      "endLine": 179,
-      "summary": "Defines RuzsaVariant: with exact asymptotic density |A(N)| ~ c·√N (convergence, not just lower bound), must common differences exist? Axiomatized as OPEN. The distinction between ≫ √N and ~ c√N is subtle but may change the answer."
+      "startLine": 166,
+      "endLine": 178,
+      "summary": "Defines RuzsaVariant (lines 169–172): with exact asymptotic density |A(N)| ~ c·√N (convergence, not just lower bound), must common differences exist? Axiomatized as OPEN via ruzsaVariantOpen (line 178). The distinction between ≫ √N and ~ c√N is subtle but may change the answer."
     },
     {
       "id": "difference-set",
       "title": "Part VIII: The Difference Set",
-      "startLine": 180,
-      "endLine": 199,
-      "summary": "Defines differenceSet A − A = {a − a' : a, a' ∈ A}. Axiomatizes sparseness: |{d ∈ A−A : |d| ≤ N}| ≤ c√N for Ruzsa's A. This extreme sparseness (generic sets have |A−A| ~ N) is why (A−A) ∩ (B−B) can be empty."
+      "startLine": 184,
+      "endLine": 198,
+      "summary": "Defines differenceSet A − A = {a − a' : a, a' ∈ A} (lines 185–186). Axiomatizes sparseness via ruzsaA_sparse_differences (lines 189–192): |{d ∈ A−A : |d| ≤ N}| ≤ c√N for Ruzsa's A. The sparseness_explanation def (lines 195–198) is a trivially-true Prop documenting why this extreme sparseness allows (A−A) ∩ (B−B) to be empty."
     },
     {
       "id": "larger-density",
       "title": "Part IX: Comparison with Larger Densities",
-      "startLine": 200,
-      "endLine": 214,
-      "summary": "Axiomatizes larger_density_common_differences: for α > 1/2, density N^α forces infinite common differences. This establishes √N as a sharp threshold — the counterexample exists precisely at the critical exponent."
+      "startLine": 204,
+      "endLine": 213,
+      "summary": "Axiomatizes larger_density_common_differences (lines 205–207): for α > 1/2, density N^α forces infinite common differences. The threshold_critical def (lines 210–213) is a trivially-true Prop summarising the phase transition. Establishes √N as a sharp threshold — the counterexample exists precisely at the critical exponent."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 215,
       "endLine": 245,
-      "summary": "Three genuinely proved theorems: erdos_331 = ¬ErdosConjecture331, erdos_331_main (alias), and erdos_331_ruzsa (existential witness ∃ A, B with sqrt density and no infinite common differences). Clean proof chain from axioms through counterexample to disproof. File has 0 sorries and 9 axioms."
+      "summary": "Summary docstring comment (lines 219–233). Three genuinely proved theorems: erdos_331 = ¬ErdosConjecture331 (line 234), erdos_331_main alias (line 237), and erdos_331_ruzsa existential witness ∃ A, B with sqrt density and no infinite common differences (lines 240–243). Clean proof chain from axioms through counterexample to disproof. File has 0 sorries and 9 axioms."
     }
   ],
   "conclusion": {

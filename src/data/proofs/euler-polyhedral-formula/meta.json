@@ -76,25 +76,92 @@
       "summary": "Verification of Euler's formula for all five Platonic solids."
     },
     {
-      "id": "proof-strategy",
-      "title": "General Proof Strategy",
-      "startLine": 174,
-      "endLine": 218,
-      "summary": "Proof by constructive induction via edge/face subdivision preserving the Euler characteristic."
+      "id": "part2-constructible",
+      "title": "Part 2: Constructible Polyhedra (Axiom-Free Proof)",
+      "startLine": 65,
+      "endLine": 285,
+      "summary": "Defines `ConstructiblePoly` inductively from a tetrahedron via `subdivideEdge` (V+1, E+1, F unchanged) and `subdivideFace` (V, E+1, F+1). Proves `euler_constructible`: V-E+F=2 by structural induction with base case 4-6+4=2. Also proves edge bounds (E ≤ 3V-6, E ≤ 3F-6).",
+      "mathContext": "The key insight: both subdivision operations preserve $\\chi = V - E + F$. subdivideEdge adds a vertex and splits an edge ($\\Delta V = +1, \\Delta E = +1, \\Delta F = 0$). subdivideFace adds an edge connecting two vertices, splitting a face ($\\Delta V = 0, \\Delta E = +1, \\Delta F = +1$). Since $\\Delta\\chi = 0$ for both, $\\chi = 2$ propagates from the tetrahedron to all constructible polyhedra."
     },
     {
-      "id": "main-formula",
-      "title": "The Euler Polyhedral Formula",
-      "startLine": 219,
-      "endLine": 261,
-      "summary": "The main theorem stating V - E + F = 2 for all convex polyhedra."
+      "id": "part3-platonic",
+      "title": "Part 3: Platonic Solids (Axiomatic Verification)",
+      "startLine": 287,
+      "endLine": 355,
+      "summary": "Constructs all five Platonic solids as `PolyhedralGraph` instances with explicit VEF counts (tetrahedron 4-6-4, cube 8-12-6, octahedron 6-12-8, dodecahedron 20-30-12, icosahedron 12-30-20) and verifies V-E+F=2 for each.",
+      "mathContext": "The five Platonic solids are the only convex polyhedra with congruent regular polygon faces meeting the same number at each vertex: $\\{3,3\\}$ (tetrahedron), $\\{4,3\\}$ (cube), $\\{3,4\\}$ (octahedron), $\\{5,3\\}$ (dodecahedron), $\\{3,5\\}$ (icosahedron)."
     },
     {
-      "id": "topology",
-      "title": "Connection to Topology",
-      "startLine": 295,
-      "endLine": 1092,
-      "summary": "The Euler characteristic as a topological invariant."
+      "id": "part4-5-axiom",
+      "title": "Parts 4-5: Edge Operations and Axiomatic Formula",
+      "startLine": 356,
+      "endLine": 395,
+      "summary": "Part 4: `edge_removal_invariant` and `edge_contraction_invariant` prove chi-preservation for reduction operations. Part 5: `euler_formula_axiom` (the single axiom) and the main `euler_polyhedral_formula` restatement V-E+F=2.",
+      "mathContext": "The axiom `euler_formula_axiom` bridges the gap between the constructive proof (which works for `ConstructiblePoly`) and general polyhedral graphs. Mathlib lacks formal planarity definitions, so this axiom is needed for the general `PolyhedralGraph` representation."
+    },
+    {
+      "id": "part6-applications",
+      "title": "Part 6: Applications — Edge Bounds, K5, K3,3",
+      "startLine": 396,
+      "endLine": 460,
+      "summary": "Derives `edge_vertex_bound` (E ≤ 3V-6) and `edge_face_bound` (E ≤ 3F-6) from Euler's formula. Proves K5 non-planarity (`k5_not_planar`: 10 > 3·5-6=9) and K3,3 non-planarity (`k33_not_planar`: 9 > 2·6-4=8 via the bipartite bound). Also states the Euler characteristic as a topological invariant (Part 7).",
+      "mathContext": "K5 has $V=5, E=10$: since $E = 10 > 9 = 3V - 6$, K5 violates the edge bound and is non-planar. K3,3 has $V=6, E=9$: since K3,3 is bipartite (no triangles), the tighter bound $E \\leq 2V - 4 = 8$ applies, and $E = 9 > 8$."
+    },
+    {
+      "id": "part8-simplegraph",
+      "title": "Part 8: SimpleGraph Bridge",
+      "startLine": 463,
+      "endLine": 610,
+      "summary": "Connects the custom `PolyhedralGraph` to Mathlib's `SimpleGraph` via `PlanarEmbedding` structure. Proves `euler_for_planar_graph`, `edge_bound_planar`, and `exists_vertex_degree_le_five` using Mathlib's `sum_degrees_eq_twice_card_edges` (handshaking lemma). Reproofs K5/K3,3 non-planarity in the SimpleGraph framework.",
+      "mathContext": "The minimum degree bound proof: assume all degrees $\\geq 6$, then by handshaking $\\sum \\deg(v) = 2E$, so $6V \\leq 2E$, hence $3V \\leq E$. But Euler gives $E \\leq 3V - 6$, so $3V \\leq 3V - 6$ — contradiction. Therefore some vertex has degree $\\leq 5$."
+    },
+    {
+      "id": "part9-genus",
+      "title": "Part 9: Genus Generalization",
+      "startLine": 612,
+      "endLine": 705,
+      "summary": "`SurfaceEmbedding` structure for genus-g surfaces with V-E+F=2-2g. Defines `EulerGenus` structure, proves K7 embeds on the torus (genus 1), and derives surface-specific edge bounds. Computes the genus of complete graphs.",
+      "mathContext": "The Euler-Poincaré formula: for a surface of genus $g$ (number of handles), $V - E + F = 2 - 2g = \\chi$. A sphere has $g=0$, a torus has $g=1$ ($\\chi=0$). K7 embeds on the torus: $V=7, E=21, F=14$, and $7-21+14=0=2-2\\cdot1$."
+    },
+    {
+      "id": "part10-trees",
+      "title": "Part 10: Constructible Tree Formula",
+      "startLine": 707,
+      "endLine": 801,
+      "summary": "Defines `ConstructibleTree` inductively (single vertex + edge attachment). Proves the tree formula V=E+1 by structural induction: a tree is a polyhedron with F=1 (one face, the exterior), so V-E+1=2 gives V=E+1.",
+      "mathContext": "A tree on $V$ vertices has $E = V - 1$ edges. This follows from Euler: a connected planar graph with one face has $V - E + 1 = 2$, so $E = V - 1$."
+    },
+    {
+      "id": "part11-degree",
+      "title": "Part 11: Average Degree Bound for Planar Graphs",
+      "startLine": 803,
+      "endLine": 838,
+      "summary": "`PlanarDegree` namespace: proves average degree < 6 for planar graphs and that every planar graph has a vertex of degree ≤ 5, using Mathlib's handshaking lemma.",
+      "mathContext": "For a planar graph: $\\bar{d} = 2E/V \\leq 2(3V-6)/V = 6 - 12/V < 6$. Since average degree $< 6$, some vertex must have degree $\\leq 5$."
+    },
+    {
+      "id": "part12-descartes",
+      "title": "Part 12: Descartes' Theorem on Total Angular Deficiency",
+      "startLine": 840,
+      "endLine": 879,
+      "summary": "Proves `descartes_euler`: total angular deficiency of a convex polyhedron equals $4\\pi$. For regular polyhedra, `regular_descartes` gives $V(2\\pi - q\\alpha) = 4\\pi$ where $q$ faces meet at each vertex with face angle $\\alpha$.",
+      "mathContext": "At each vertex of a convex polyhedron, the angular deficiency is $\\delta_v = 2\\pi - \\sum \\text{(face angles at } v\\text{)}$. Descartes' theorem: $\\sum_v \\delta_v = 4\\pi = 2\\pi\\chi$. This is the discrete analog of the Gauss-Bonnet theorem $\\int_S K\\,dA = 2\\pi\\chi(S)$."
+    },
+    {
+      "id": "part13-dual",
+      "title": "Part 13: Dual Graph Properties",
+      "startLine": 881,
+      "endLine": 925,
+      "summary": "`DualGraph` namespace: defines `dual` (swap V and F), proves `dual_euler` (dual preserves Euler characteristic), `dual_involutive` (dual of dual is original), and `dual_platonic` (dual of Platonic solid is Platonic).",
+      "mathContext": "The dual of a polyhedron swaps vertices and faces: $V^* = F, E^* = E, F^* = V$. Since $V-E+F = V^*-E^*+F^*$, the Euler characteristic is preserved. The cube ($\\{4,3\\}$) and octahedron ($\\{3,4\\}$) are dual pairs; the dodecahedron ($\\{5,3\\}$) and icosahedron ($\\{3,5\\}$) are dual pairs; the tetrahedron ($\\{3,3\\}$) is self-dual."
+    },
+    {
+      "id": "part14-classification",
+      "title": "Part 14: Classification of Platonic Solids",
+      "startLine": 927,
+      "endLine": 1077,
+      "summary": "Complete classification: the Schlafli inequality ($pq < 2p + 2q$) is proved via `nlinarith` from the edge formula. `interval_cases` enumerates all $(p,q)$ with $p,q \\geq 3$ satisfying the inequality to yield exactly 5 solutions. `platonic_all_exist` constructs all 5 explicitly. Proves VEF counts are uniquely determined.",
+      "mathContext": "A convex polyhedron with regular $p$-gon faces, $q$ meeting at each vertex, has $E = pF/2 = qV/2$. Combined with $V-E+F=2$: $V = 4p/(2(p+q)-pq)$. For positive $V$: $pq < 2(p+q)$, i.e., $(p-2)(q-2) < 4$. With $p,q \\geq 3$: only $(3,3),(3,4),(4,3),(3,5),(5,3)$ — the five Platonic solids."
     }
   ],
   "conclusion": {

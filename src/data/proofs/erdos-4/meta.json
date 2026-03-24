@@ -180,22 +180,22 @@
       "summary": "**gap_0** = 1 (the only odd gap), **prime_gap_pos**, and **average_gap_asymptotic** ($p_n/(n\\log n) \\to 1$ via PNT).",
       "mathContext": "$g_0 = p_1 - p_0 = 3 - 2 = 1$ (only odd gap). $g_n \\geq 1$ for all $n$. Average: $\\sum_{k<n} g_k / n = p_n / n \\sim \\log n$ by PNT.",
       "startLine": 168,
-      "endLine": 180
+      "endLine": 179
     },
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
       "summary": "**erdos_function_growth**: $f(n) < (\\log n)^{1+\\varepsilon}$ eventually. **improved_stronger**: the FGKMT function dominates the original (sorry for technical inequality).",
       "mathContext": "$f(n) < (\\log n)^{1+\\varepsilon}$ eventually for any $\\varepsilon > 0$. The FGKMT improved function $f'(n)$ satisfies $f'(n) / f(n) \\to \\infty$.",
-      "startLine": 181,
-      "endLine": 193
+      "startLine": 180,
+      "endLine": 192
     },
     {
       "id": "related-conjectures",
       "title": "Related Conjectures",
       "summary": "**erdos_stronger_conjecture**: $g_n > (\\log n)^{1+c}$ for some $c > 0$ (Erdős's $\\$10{,}000$ prize, OPEN). **firoozbakht_conjecture**: $p_n^{1/n}$ strictly decreasing (OPEN, incompatible with the stronger conjecture).",
       "mathContext": "Erdős \\$10K: $\\exists c > 0: g_n > (\\log n)^{1+c}$ infinitely often (OPEN). Firoozbakht: $p_n^{1/n}$ strictly decreasing (OPEN, implies $g_n < (\\log p_n)^2 - \\log p_n$).",
-      "startLine": 194,
+      "startLine": 193,
       "endLine": 215
     },
     {
