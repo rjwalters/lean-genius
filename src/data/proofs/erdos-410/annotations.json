@@ -70,7 +70,7 @@
       "startLine": 89,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Growth of Iterates",
     "content": "sigma_iterate_increasing: sigma_k(n) < sigma_{k+1}(n) for n > 1. Iterates grow monotonically.",
     "mathContext": "For $n > 1$: $\\sigma_k(n) < \\sigma_{k+1}(n)$ since $\\sigma(m) > m$ for $m > 1$. By monotone convergence to $+\\infty$: $\\sigma_k(n) \\to \\infty$. But is the growth *super-exponential*?",
@@ -136,7 +136,7 @@
       "startLine": 144,
       "endLine": 158
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Perfect, Abundant, Deficient",
     "content": "Classifies integers by their relationship to σ: perfect (σ(n) = 2n, like 6 and 28), abundant (σ(n) > 2n), and deficient (σ(n) < 2n). Even perfect numbers are characterized by Euler's theorem: n = 2^{p-1}(2^p - 1) where 2^p - 1 is a Mersenne prime. Whether odd perfect numbers exist is one of the oldest unsolved problems in mathematics. For iterates, even perfect numbers satisfy σ(n) = 2n, so σ₂(n) = σ(2n).",
     "mathContext": "Perfect: $\\sigma(n) = 2n$ ($n = 6, 28, 496, 8128, \\ldots$). Euler: even perfect $\\iff n = 2^{p-1}(2^p - 1)$ with $2^p - 1$ prime. Abundant: $\\sigma(n) > 2n$ (e.g., $n = 12$). Deficient: $\\sigma(n) < 2n$ (e.g., primes).",
@@ -156,7 +156,7 @@
       "startLine": 166,
       "endLine": 177
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Aliquot Sequences",
     "content": "Defines the aliquot function s(n) = σ(n) - n (sum of proper divisors) and the Catalan-Dickson conjecture: every aliquot sequence n, s(n), s²(n), ... is eventually periodic. Amicable numbers (s(a) = b, s(b) = a) are period-2 cycles. The conjecture is related to Problem #410 because both study iteration of σ-related functions. Known: the Lehmer five (276, 552, 564, 660, 966) are open cases where the aliquot sequence may or may not terminate.",
     "mathContext": "$s(n) = \\sigma(n) - n = \\sum_{d \\mid n, d < n} d$. Catalan-Dickson: every orbit of $s$ is eventually periodic. Amicable pairs: $s(a) = b,\\, s(b) = a$ (e.g., $220, 284$). Known open cases: the 'Lehmer five'.",

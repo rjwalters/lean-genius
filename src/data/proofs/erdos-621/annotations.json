@@ -144,7 +144,7 @@
       "startLine": 63,
       "endLine": 67
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Full Edge Set is a Cover",
     "content": "The full edge set $E(G)$ is always a triangle edge cover: every triangle has all three of its edges in $E(G)$ by definition. This establishes well-definedness of $\\tau_1$ (the infimum is over a non-empty set).",
     "mathContext": "$E(G)$ is a triangle edge cover since for any triangle $(a,b,c)$, $\\{a,b\\} \\in E(G)$ by adjacency. Thus $\\tau_1(G) \\le |E(G)|$.",
@@ -166,7 +166,7 @@
       "startLine": 70,
       "endLine": 75
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Empty Set is Sparse",
     "content": "The empty edge set is vacuously triangle-sparse: no triangle can have two edges in $\\emptyset$. This establishes well-definedness of $\\alpha_1$ (the supremum is over a non-empty set, since $\\emptyset$ is always feasible).",
     "mathContext": "$\\emptyset$ is triangle-sparse since $|\\emptyset \\cap E(T)| = 0 \\le 1$ for every triangle $T$. Thus $\\alpha_1(G) \\ge 0$.",
@@ -260,7 +260,7 @@
       "startLine": 128,
       "endLine": 138
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Bipartite Implies Triangle-Free",
     "content": "Bipartite graphs contain no triangles. The proof uses a pigeonhole argument: in a 2-coloring $f: V \\to \\mathrm{Bool}$, edges connect differently-colored vertices. Three mutual adjacencies $a$-$b$, $b$-$c$, $a$-$c$ force $f(a) \\ne f(b)$, $f(b) \\ne f(c)$, hence $f(a) = f(c)$, contradicting $f(a) \\ne f(c)$. The proof uses `cases` on `Bool` values and `simp_all`.",
     "mathContext": "If $G$ is bipartite with 2-coloring $f$, then $G$ has no triangle, since a triangle on $\\{a,b,c\\}$ requires $f(a) \\ne f(b) \\ne f(c) \\ne f(a)$, impossible with $|\\mathrm{Bool}| = 2$. This is the contrapositive of: graphs with odd cycles are not 2-colorable.",
@@ -354,7 +354,7 @@
       "startLine": 163,
       "endLine": 169
     },
-    "type": "insight",
+    "type": "concept",
     "title": "EGT Conjecture Resolved",
     "content": "The main theorem: the EGT conjecture follows from Norin-Sun and $\\tau_1 \\le \\tau_B$. The proof unfolds both definitions, applies Norin-Sun, casts the natural number inequality $\\tau_1 \\le \\tau_B$ to reals via `Nat.cast_le`, and closes with `linarith`. This is the formal derivation showing the original conjecture is a corollary of the stronger result.",
     "mathContext": "$\\alpha_1 + \\tau_1 \\le \\alpha_1 + \\tau_B \\le n^2/4$ by monotonicity and Norin-Sun. The `linarith` tactic handles the real arithmetic chain.",
@@ -377,7 +377,7 @@
       "startLine": 181,
       "endLine": 192
     },
-    "type": "insight",
+    "type": "concept",
     "title": "τ₁ = 0 for Triangle-Free Graphs",
     "content": "For triangle-free graphs, the empty set is a valid triangle edge cover (vacuously), so $\\tau_1(G) = 0$. The proof uses `le_antisymm`: the empty set witnesses $\\tau_1 \\le 0$ via `Finset.inf'_le`, and $0 \\le \\tau_1$ is trivial.",
     "mathContext": "If $G$ has no triangles, then $\\tau_1(G) = 0$, since $\\emptyset$ is a triangle edge cover (vacuously hitting all zero triangles).",
@@ -399,7 +399,7 @@
       "startLine": 202,
       "endLine": 214
     },
-    "type": "insight",
+    "type": "concept",
     "title": "α₁ = |E(G)| for Triangle-Free Graphs",
     "content": "For triangle-free graphs, every edge set is vacuously triangle-sparse, so the maximum sparse set is the full edge set. The proof shows both $\\alpha_1 \\le |E|$ (all sparse sets are subsets of edges) and $\\alpha_1 \\ge |E|$ (the full edge set is sparse).",
     "mathContext": "If $G$ is triangle-free, $\\alpha_1(G) = |E(G)|$, since every subset of $E(G)$ is trivially triangle-sparse (no triangle exists to violate the sparsity condition).",
@@ -444,7 +444,7 @@
       "startLine": 224,
       "endLine": 229
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Triangle-Free EGT via Mantel",
     "content": "For triangle-free graphs, the EGT conjecture reduces to Mantel's theorem: $\\alpha_1 + \\tau_1 = |E| + 0 = |E| \\le n^2/4$. The proof rewrites using `triangle_free_tau1_zero` and `triangle_free_alpha1_all_edges`, then applies Mantel.",
     "mathContext": "Triangle-free case: $\\alpha_1(G) + \\tau_1(G) = |E(G)| + 0 = |E(G)| \\le n^2/4$ by Mantel. This shows the EGT bound is tight for triangle-free graphs when $G = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.",
@@ -467,7 +467,7 @@
       "startLine": 234,
       "endLine": 248
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Basic Upper Bounds",
     "content": "Proves $\\tau_1(G) \\le |E(G)|$ (the full edge set is a cover) and $\\alpha_1(G) \\le |E(G)|$ (sparse sets are subsets of edges). These follow directly from the definitions using `Finset.inf'_le` and `Finset.sup'_le` respectively.",
     "mathContext": "$\\tau_1(G) \\le |E(G)|$ and $\\alpha_1(G) \\le |E(G)|$ are trivial bounds. The interesting bound is $\\alpha_1(G) \\le n^2/4$ (from Norin-Sun).",
@@ -489,7 +489,7 @@
       "startLine": 252,
       "endLine": 256
     },
-    "type": "insight",
+    "type": "concept",
     "title": "α₁(G) ≤ n²/4 from Norin-Sun",
     "content": "Derives $\\alpha_1(G) \\le n^2/4$ as a corollary of Norin-Sun by observing $\\tau_B \\ge 0$. Since $\\alpha_1 + \\tau_B \\le n^2/4$ and $\\tau_B \\ge 0$, we get $\\alpha_1 \\le n^2/4$. Uses `Nat.cast_nonneg` and `linarith`.",
     "mathContext": "$\\alpha_1(G) \\le \\alpha_1(G) + \\tau_B(G) \\le n^2/4$ since $\\tau_B(G) \\ge 0$. This gives an independent bound on the triangle-sparse number without involving the covering number.",
@@ -511,7 +511,7 @@
       "startLine": 261,
       "endLine": 265
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Triangle-Free Sum Identity",
     "content": "For triangle-free graphs, $\\alpha_1(G) + \\tau_1(G) = |E(G)|$. This is a Gallai-type identity for the triangle hypergraph in the degenerate case: when there are no triangles, covering and independence partition the edge count exactly.",
     "mathContext": "$\\alpha_1(G) + \\tau_1(G) = |E(G)| + 0 = |E(G)|$ for triangle-free $G$. Compare with the Gallai identity $\\alpha(G) + \\tau(G) = n$ for vertex cover/independent set.",
@@ -579,7 +579,7 @@
       "startLine": 288,
       "endLine": 295
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Problem #23 Implies τ₁ Bound",
     "content": "If Problem #23 holds ($\\tau_B \\le n^2/25$), then $\\tau_1 \\le n^2/25$ via the chain $\\tau_1 \\le \\tau_B \\le n^2/25$. The proof uses `calc` with `Nat.cast_le` for the first step and the Problem #23 hypothesis for the second.",
     "mathContext": "$\\tau_1(G) \\le \\tau_B(G) \\le n^2/25$. Combined with Norin-Sun, this would give $\\alpha_1(G) \\ge n^2/4 - n^2/25 = 21n^2/100$, a strong lower bound on the sparse number.",

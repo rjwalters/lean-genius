@@ -80,7 +80,7 @@
       "startLine": 112,
       "endLine": 117
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Sums of Two Squarefull Numbers",
     "content": "**IsSumOfTwoSquarefull n:**\n\nn is expressible as a + b where both a and b are squarefull.\n\n**Definition:**\n```lean\ndef IsSumOfTwoSquarefull (n : ℕ) : Prop :=\n  ∃ a b : ℕ, IsSquarefull a ∧ IsSquarefull b ∧ n = a + b\n```\n\n**Examples:** 5 = 1 + 4, 13 = 4 + 9, 17 = 8 + 9, ...",
     "significance": "key",
@@ -116,7 +116,7 @@
       "startLine": 137,
       "endLine": 158
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Counting Function A(x)",
     "content": "**A(x):**\n\nCounts integers n ≤ x that are sums of two squarefull numbers.\n\n**Definition:**\n```lean\nnoncomputable def A (x : ℕ) : ℕ :=\n  (Finset.range (x + 1)).filter (fun n => IsSumOfTwoSquarefull n) |>.card\n```\n\n**Squarefull count S(x):**\nS(x) ~ ζ(3/2)/ζ(3) · √x ≈ 2.173 · √x\n\nThis density of squarefull numbers informs the naive heuristic for A(x).",
     "mathContext": "The constant ζ(3/2)/ζ(3) ≈ 2.173 comes from careful Dirichlet series analysis.",
@@ -135,7 +135,7 @@
       "startLine": 164,
       "endLine": 179
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős's Conjecture (Disproved)",
     "content": "**erdos_conjecture:**\n\nErdős conjectured (1976) that A(x) ~ c · x / √(log x) for some c > 0.\n\n**odoni_disproof:**\n```lean\naxiom odoni_disproof : ¬erdos_conjecture\n```\n\nOdoni (1981) proved this is FALSE. The count A(x) grows strictly faster than x/√(log x).",
     "mathContext": "Erdős's heuristic was based on naive probabilistic arguments that didn't account for the multiplicative structure of squarefull numbers.",
@@ -247,7 +247,7 @@
       "startLine": 280,
       "endLine": 309
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary",
     "content": "**erdos_1081_summary:**\n\nThe complete answer to Erdős Problem #1081.\n\n**Results:**\n1. ¬erdos_conjecture (the conjecture is false)\n2. alpha < 1/2 (true exponent is smaller)\n3. The answer is NO\n\n**Key Insight:**\nA(x) grows as x/(log x)^α with α ≈ 0.206, significantly faster than the conjectured x/√(log x) = x/(log x)^(1/2).",
     "significance": "key",

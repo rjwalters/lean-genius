@@ -28,8 +28,8 @@
       "startLine": 82,
       "endLine": 83
     },
-    "type": "technique",
-    "title": "Fundamental Inequality: 1 \u2212 x \u2264 exp(\u2212x)",
+    "type": "concept",
+    "title": "Fundamental Inequality: 1 − x ≤ exp(−x)",
     "content": "Proves the key analytic inequality $1 - x \\le e^{-x}$ for all $x \\in \\mathbb{R}$ by applying Mathlib's `add_one_le_exp` (which states $1 + t \\le e^t$) with $t = -x$. This inequality is tight at $x = 0$ and is the workhorse that converts each multiplicative factor of the product into an exponential, enabling the passage from a product to a sum in the exponent.",
     "mathContext": "$1 - x \\le e^{-x} \\quad \\text{for all } x \\in \\mathbb{R}$",
     "significance": "key",
@@ -50,7 +50,7 @@
       "startLine": 91,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Factor Nonnegativity and Boundedness",
     "content": "Establishes that each factor $(1 - i/d)$ is nonneg when $i < d$ and at most 1 when $d > 0$. These auxiliary lemmas are needed for `Finset.prod_le_prod`, which requires nonneg lower bounds to propagate a pointwise inequality through a product. The proof uses `sub_nonneg` and `div_le_one` from Mathlib's ordered field API.",
     "mathContext": "$0 \\le 1 - \\tfrac{i}{d} \\le 1 \\quad \\text{for } 0 \\le i < d$",
@@ -72,9 +72,9 @@
       "startLine": 110,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Product-to-Exponential Bound (Sum Form)",
-    "content": "The central technical step: applies $1 - i/d \\le e^{-i/d}$ factor-by-factor via `Finset.prod_le_prod`, then collapses the product of exponentials into a single exponential via `Real.exp_sum`. This yields $\\prod_{i<k}(1 - i/d) \\le \\exp\\!\\bigl(-\\sum_{i<k} i/d\\bigr)$. The three-step proof structure (pointwise bound \u2192 product of exp \u2192 sum in exponent) is a clean demonstration of how multiplicative product inequalities translate into additive exponential bounds.",
+    "content": "The central technical step: applies $1 - i/d \\le e^{-i/d}$ factor-by-factor via `Finset.prod_le_prod`, then collapses the product of exponentials into a single exponential via `Real.exp_sum`. This yields $\\prod_{i<k}(1 - i/d) \\le \\exp\\!\\bigl(-\\sum_{i<k} i/d\\bigr)$. The three-step proof structure (pointwise bound → product of exp → sum in exponent) is a clean demonstration of how multiplicative product inequalities translate into additive exponential bounds.",
     "mathContext": "$\\prod_{i=0}^{k-1}\\bigl(1 - \\tfrac{i}{d}\\bigr) \\le \\prod_{i=0}^{k-1} e^{-i/d} = e^{-\\sum_{i=0}^{k-1} i/d}$",
     "significance": "key",
     "relatedConcepts": [
@@ -95,7 +95,7 @@
       "startLine": 136,
       "endLine": 149
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Gauss Summation Formula",
     "content": "Proves $\\sum_{i=0}^{k-1} i = k(k-1)/2$ by induction on $k$, then divides by $d$ to obtain the closed form $\\sum_{i<k} i/d = k(k-1)/(2d)$. This is the formula attributed to young Gauss summing $1 + 2 + \\cdots + 99$ and is what gives the birthday bound its characteristic quadratic dependence on $k$. The inductive proof uses `Finset.sum_range_succ` and `ring` for the algebraic simplification.",
     "mathContext": "$\\sum_{i=0}^{k-1} \\frac{i}{d} = \\frac{k(k-1)}{2d}$",
@@ -118,7 +118,7 @@
       "startLine": 158,
       "endLine": 163
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Main Asymptotic Bound (Closed Form)",
     "content": "The headline result: combines the product-to-exponential bound with the Gauss sum to obtain $P(\\text{all distinct}) \\le \\exp\\!\\bigl(-k(k-1)/(2d)\\bigr)$. This closed-form bound is the rigorous version of the well-known approximation $P \\approx e^{-k^2/(2d)}$ used throughout cryptography and probability theory. The proof is a direct rewrite of the sum form using `gauss_sum_div`.",
     "mathContext": "$P(\\text{all distinct}) \\le \\exp\\!\\left(-\\frac{k(k-1)}{2d}\\right)$",
@@ -140,7 +140,7 @@
       "startLine": 173,
       "endLine": 177
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Collision Probability Lower Bound",
     "content": "Takes the complement of the main bound to obtain $P(\\text{collision}) \\ge 1 - \\exp\\!\\bigl(-k(k-1)/(2d)\\bigr)$. This is the form most commonly cited in cryptographic analyses: the actual collision probability is always at least as large as the exponential approximation predicts. The proof is a one-line `linarith` from the upper bound on $P(\\text{all distinct})$.",
     "mathContext": "$P(\\text{collision}) \\ge 1 - \\exp\\!\\left(-\\frac{k(k-1)}{2d}\\right)$",
@@ -162,7 +162,7 @@
       "startLine": 184,
       "endLine": 205
     },
-    "type": "context",
+    "type": "concept",
     "title": "Trivial Base Cases",
     "content": "Verifies the boundary conditions: with 0 or 1 people, all birthdays are trivially distinct (empty/singleton products equal 1), and the collision probability is 0. These provide sanity checks and base cases for inductive reasoning about the birthday problem.",
     "mathContext": "$P(\\text{all distinct with } k=0) = P(\\text{all distinct with } k=1) = 1$",
@@ -183,7 +183,7 @@
       "startLine": 212,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Probability Bounds: [0, 1] Containment",
     "content": "Proves that $P(\\text{all distinct}) \\in [0, 1]$ and $P(\\text{collision}) \\in [0, 1]$ for $k \\le d$. The upper bound uses `Finset.prod_le_prod` with the fact that each factor is at most 1; the lower bound uses nonnegativity of all factors. These ensure the definitions behave as genuine probabilities.",
     "mathContext": "$0 \\le P(\\text{all distinct}) \\le 1 \\quad \\text{and} \\quad 0 \\le P(\\text{collision}) \\le 1$",
@@ -206,7 +206,7 @@
       "startLine": 252,
       "endLine": 269
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Threshold Characterization",
     "content": "Proves that if $k(k-1)/(2d) > \\ln(1/(1-p))$, then $P(\\text{collision}) > p$. This characterizes the exact threshold: for the classic 50% case, setting $p = 1/2$ gives $k(k-1)/(2d) > \\ln 2 \\approx 0.693$, which with $d = 365$ yields $k(k-1) > 506$, explaining why $k = 23$ (since $23 \\times 22 = 506$). The proof converts the logarithmic condition into an exponential bound via `Real.exp_lt_exp` and `Real.exp_log`.",
     "mathContext": "$\\frac{k(k-1)}{2d} > \\ln\\!\\left(\\frac{1}{1-p}\\right) \\implies P(\\text{collision}) > p$",
@@ -229,7 +229,7 @@
       "startLine": 276,
       "endLine": 278
     },
-    "type": "context",
+    "type": "concept",
     "title": "Consistency with Parent File",
     "content": "Verifies that `probAllDistinct k 365` specializes to the exact same product formula used in the parent birthday problem file. This is proved by `rfl` (definitional equality), confirming that the generalization to arbitrary $d$ is a true extension of the original $d = 365$ formalization.",
     "mathContext": "$\\text{probAllDistinct}(k, 365) = \\prod_{i<k}\\bigl(1 - \\tfrac{i}{365}\\bigr)$",
@@ -250,8 +250,8 @@
       "startLine": 286,
       "endLine": 299
     },
-    "type": "technique",
-    "title": "Monotonicity: More People \u2192 More Collisions",
+    "type": "concept",
+    "title": "Monotonicity: More People → More Collisions",
     "content": "Proves that $P(\\text{all distinct with } k+1) \\le P(\\text{all distinct with } k)$: adding one more person can only decrease the probability that all birthdays are distinct, since the product gains one more factor that is at most 1. The proof uses `Finset.prod_range_succ` to split off the last factor and `mul_le_mul_of_nonneg_left` to bound it. This establishes that collision probability is monotonically increasing in the number of people.",
     "mathContext": "$P(\\text{all distinct}, k+1, d) \\le P(\\text{all distinct}, k, d)$ for $k+1 \\le d$",
     "significance": "supporting",

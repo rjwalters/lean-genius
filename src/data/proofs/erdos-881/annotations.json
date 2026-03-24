@@ -43,7 +43,7 @@
       "startLine": 47,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Order 1 Characterization",
     "content": "**order_one_basis**: A set is a basis of order 1 iff it contains all sufficiently large integers. This is because order 1 means each number represents itself (one element sum). This is a fully proved theorem, not an axiom.",
     "mathContext": "The proof uses that a singleton sum {n} requires n ∈ A, and conversely if n ∈ A then {n} represents n.",
@@ -61,7 +61,7 @@
       "startLine": 70,
       "endLine": 81
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Minimal Additive Basis",
     "content": "**IsMinimalAsymptoticAddBasisOfOrder k A** means A is a basis of order k that is 'tight': removing ANY infinite subset B ⊆ A destroys the order-k property (makes A\\B not a basis of order k). These are bases with no redundancy.",
     "mathContext": "Formally: IsAsymptoticAddBasisOfOrder k A ∧ ∀ B ⊆ A infinite, ¬IsAsymptoticAddBasisOfOrder k (A\\B).",
@@ -97,7 +97,7 @@
       "startLine": 90,
       "endLine": 102
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Main Conjecture (OPEN)",
     "content": "**erdos881Conjecture**: For every minimal basis A of order k, there exists an infinite B ⊆ A such that A\\B is a basis of order exactly k+1. This asks: can minimal bases always 'degrade gracefully' by exactly one order?",
     "mathContext": "The conjecture is stated as a Prop and axiomatized via erdos_881. The challenge is proving the order increases by exactly 1, not 2 or more.",
@@ -115,7 +115,7 @@
       "startLine": 109,
       "endLine": 118
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Weak Version",
     "content": "**erdos881Weak**: A weaker question asks if we can increase the order by SOME finite amount m > 0, not necessarily 1. This is easier than the main conjecture but still open.",
     "significance": "key",
@@ -169,7 +169,7 @@
       "startLine": 149,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Monotonicity of Order",
     "content": "**basis_order_monotone**: If A is a basis of order k and k' ≥ k, then A is also a basis of order k'. Using more summands can only make representation easier. Fully proved.",
     "mathContext": "The proof simply observes that any k-representation is also a k'-representation when k' ≥ k.",
@@ -205,7 +205,7 @@
       "startLine": 177,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_881_summary**: Erdős Problem #881 remains OPEN. The summary theorem shows the conjecture is definitionally equal to its natural language form. Related to Waring's problem, Sidon sets, and the Erdős-Turán conjecture.",
     "significance": "key",

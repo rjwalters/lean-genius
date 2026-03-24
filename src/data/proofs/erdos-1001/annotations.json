@@ -235,7 +235,7 @@
       "startLine": 96,
       "endLine": 106
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős-Szüsz-Turán Theorem (1958)",
     "content": "**Axiom erdos_szusz_turan:**\n\nIn the EST regime (0 < A < c/(1+c²)):\n\nlim_{N→∞} S(N, A, c) = f(A, c) = 12A log(c) / π²\n\nThis explicit formula was the main achievement of the 1958 paper.",
     "mathContext": "The proof uses careful counting of Farey fractions and their spacing properties. The π² appears because the density of coprime pairs (m,n) with m ≤ n is 6/π².",
@@ -439,7 +439,7 @@
       "startLine": 173,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "concept",
     "title": "π² Explanation",
     "content": "**Theorem est_pi_squared_explanation:**\n\nf(1, e) = 12/π²\n\nSetting A = 1 and c = e reveals the fundamental constant 12/π² ≈ 1.216.\n\nThis comes from:\n- 3/π² (Farey fraction density)\n- Factor of 4 from symmetry and normalization",
     "mathContext": "The appearance of π² is ubiquitous in problems involving coprime counting. It traces back to ζ(2) = π²/6, first computed by Euler in 1734.",

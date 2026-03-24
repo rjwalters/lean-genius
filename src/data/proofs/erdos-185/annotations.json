@@ -240,7 +240,7 @@
       "startLine": 143,
       "endLine": 150
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Moser's Construction",
     "content": "**moserSet(n):**\n\nPoints with coordinate sum ≡ 0 or 1 (mod 3).\n\n```lean\ndef moserSet (n : ℕ) : Finset (TernaryHypercube n) :=\n  Finset.univ.filter (fun x =>\n    (Finset.univ.sum x) = 0 ∨ (Finset.univ.sum x) = 1)\n```\n\nThis forms a large cap set achieving Moser's lower bound.",
     "mathContext": "If x + z = 2y (line condition), then sum(x) + sum(z) = 2·sum(y). For points with sum ≡ 0 or 1, this is impossible.",
@@ -391,7 +391,7 @@
       "startLine": 256,
       "endLine": 260
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Main Theorem: erdos_185",
     "content": "**erdos_185:** f₃(n) = o(3^n).\n\n```lean\ntheorem erdos_185 : (fun n => (f3 n : ℝ)) =o[atTop] (fun n => (3 : ℝ)^n) :=\n  f3_is_little_o\n```\n\n**Answer to Erdős #185: YES**",
     "significance": "key",

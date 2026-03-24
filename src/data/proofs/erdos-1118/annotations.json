@@ -194,7 +194,7 @@
       "startLine": 227,
       "endLine": 274
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorems: Both Questions Resolved",
     "content": "The culminating results: (1) `erdos_1118_question1` = `camera_goldberg_theorem`: the growth integral criterion. (2) `erdos_1118_question2_negative`: constructive proof that $T(f)$ can have gaps, using `goldberg_counterexample` to find $f$ with $T(f) = [m, \\infty)$ and then exhibiting $c = m+1 \\in T(f)$ but $c' = m/2 \\notin T(f)$. (3) `erdos_1118`: conjunction of both answers. (4) `erdos_1118_summary`: adds the $T(f) = \\emptyset$ case from the full classification.",
     "mathContext": "Q1: $\\text{HaymanConjecture}$. Q2: $\\exists f,\\, \\exists c > 0,\\, \\lambda(E(c)) < \\infty \\wedge \\exists c' \\in (0, c),\\, \\lambda(E(c')) = \\infty$.",

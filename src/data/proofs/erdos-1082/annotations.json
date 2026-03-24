@@ -59,7 +59,7 @@
       "startLine": 75,
       "endLine": 85
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Counting Distances",
     "content": "**distinctDistances, distancesFromPoint, numDistancesFromPoint:**\n\n- distinctDistances(S) = set of all pairwise distances in S\n- distancesFromPoint(p, S) = distances from p to all other points in S\n- numDistancesFromPoint(p, S) = cardinality of distancesFromPoint\n\nThe two conjectures differ: total distinct distances vs. single-point view.",
     "significance": "key",
@@ -74,7 +74,7 @@
       "startLine": 91,
       "endLine": 106
     },
-    "type": "context",
+    "type": "concept",
     "title": "Szemeredi's n/3 Bound",
     "content": "**szemeredi_n_over_3:**\n\nIf S has n points in general position, then S determines at least n/3 distinct distances.\n\n**Stronger result:** If no k points are collinear, some point determines >> n/k distances.\n\nThis was unpublished but cited in Erdos's 1975 paper. It's the best proven lower bound for the total distances question.",
     "mathContext": "Szemeredi's proof uses incidence geometry and careful counting arguments.",
@@ -92,7 +92,7 @@
       "startLine": 112,
       "endLine": 118
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Conjecture 1: Total Distances",
     "content": "**Conjecture1:**\n\nIf S has n points in general position, then S determines at least n/2 distinct distances.\n\nThis is OPEN. The gap between n/3 (proven) and n/2 (conjectured) is significant.\n\nNote: This is weaker than Conjecture 2 - total distances could be n/2 even if no single point achieves it.",
     "significance": "key",
@@ -122,7 +122,7 @@
       "startLine": 133,
       "endLine": 142
     },
-    "type": "context",
+    "type": "concept",
     "title": "Xichuan's Counterexample",
     "content": "**xichuan_counterexample:**\n\nThere exist 42 points in R^2 with no three collinear, such that every point determines only 20 distinct distances.\n\nSince 20 < 21 = floor(42/2), this disproves Conjecture 2.\n\nThe construction uses symmetric patterns that repeat distances while maintaining general position.",
     "mathContext": "Finding such constructions is highly non-trivial and requires sophisticated geometric design.",
@@ -155,7 +155,7 @@
       "startLine": 169,
       "endLine": 176
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Status",
     "content": "**erdos_1082_status:**\n\nCombines the current state of knowledge:\n1. Szemeredi's n/3 bound is proven\n2. Conjecture 2 (single point n/2) is FALSE\n3. Conjecture 1 (total n/2) remains OPEN\n\nThe problem represents a gap in our understanding of distance patterns.",
     "significance": "key",
@@ -206,7 +206,7 @@
       "startLine": 224,
       "endLine": 232
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The 42-Point Gap",
     "content": "**counterexample_gap:**\n\nShows explicitly that Xichuan's 42 points satisfy:\n- Every point has < 21 = floor(42/2) distances\n\nThe gap 20 < 21 is tight - the counterexample is minimally failing the conjecture.\n\nFinding the minimum n with such a counterexample is an interesting question.",
     "significance": "key",
@@ -221,7 +221,7 @@
       "startLine": 250,
       "endLine": 258
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_1082_summary:**\n\nFinal statement:\n1. Szemeredi's n/3 bound holds\n2. Conjecture 2 is false\n3. Conjecture 1 (total n/2 distances) remains open\n\nThe problem represents the boundary of our knowledge about distance patterns in general position point sets.",
     "significance": "key",

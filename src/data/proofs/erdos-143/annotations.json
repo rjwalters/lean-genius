@@ -56,7 +56,7 @@
       "startLine": 51,
       "endLine": 62
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Counting Function",
     "content": "The counting function counts how many elements of A lie in the interval [1, x]. This measures the \"density\" of A.\n\nFor sparse sets, the counting function grows slowly compared to x.",
     "mathContext": "countingFn(A, x) = |A ∩ [1, x]| using Set.ncard for the cardinality of possibly infinite intersections.",

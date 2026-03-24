@@ -165,7 +165,7 @@
       "startLine": 102,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ruzsa Set Has Positive Density",
     "content": "The lacunary squarefree numbers have positive lower density. Axiomatized since the proof requires careful counting: one must show that the lacunary condition excludes only a vanishing fraction of squarefree numbers. The density of squarefree numbers is 6/π², and the lacunary condition preserves a positive fraction.",
     "mathContext": "$\\underline{d}(\\text{RuzsaSet}) > 0$. The proof estimates the density via an Euler product argument: the probability that a random number $n$ is squarefree with all consecutive prime factors having ratio $> 2$ is $\\prod_p (1 - 1/p^2) \\cdot (\\text{correction for lacunary condition}) > 0$. The squarefree density $6/\\pi^2$ is reduced but remains positive.",
@@ -188,7 +188,7 @@
       "startLine": 130,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ratio Bound Theorem",
     "content": "If a₂ > a₃ both lie in the interval (N/2, N], then a₂/a₃ ∈ (1, 2). This is the only fully proved theorem in the file (no sorry). The proof uses the interval containment: a₂ ≤ N and a₃ > N/2 give a₂/a₃ < N/(N/2) = 2. The bound a₂ > a₃ gives the lower bound > 1.",
     "mathContext": "For $a_2, a_3 \\in (N/2, N]$ with $a_2 > a_3$: $1 < a_2/a_3 < N/(N/2) = 2$. The proof works in $\\mathbb{Q}$: `one_lt_div` gives $a_2/a_3 > 1$ from $a_2 > a_3 > 0$, and `div_lt_iff` with $a_2 \\leq N$ and $a_3 > N/2$ gives $a_2/a_3 < 2$ via `linarith`. This interval constraint is incompatible with the gap property $p_3/p_2 > 2$.",
@@ -211,7 +211,7 @@
       "startLine": 149,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ruzsa Contradiction",
     "content": "The heart of the disproof: if three equal prime products exist in the Ruzsa set restricted to (N/2, N], we get a contradiction. The argument: WLOG a₂ > a₃, then p₂ < p₃ (since a₂p₂ = a₃p₃). Since p₂, p₃ are consecutive prime divisors of a₁ (both divide a₁p₁ = a₂p₂ = a₃p₃), the gap property gives p₃ > 2p₂, i.e., p₃/p₂ > 2. But p₃/p₂ = a₂/a₃ < 2 by the ratio bound. Contradiction.",
     "mathContext": "The contradiction chain: $a_2 p_2 = a_3 p_3$ with $a_2 > a_3$ implies $p_2 < p_3$. Since $p_2 p_3 \\mid a_1 p_1 = a_2 p_2$ and $a_1$ is lacunary squarefree, $p_2$ and $p_3$ are consecutive prime divisors of some element, giving $p_3 > 2p_2$. But $p_3/p_2 = a_2/a_3 \\in (1, 2)$. The interval $(1,2) \\cap (2, \\infty) = \\emptyset$ gives $\\bot$.",
@@ -233,7 +233,7 @@
       "startLine": 166,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "No Three Products in Ruzsa Set",
     "content": "The Ruzsa set restricted to (N/2, N] has no three equal prime products. Proved by destructuring the HasThreeEqualPrimeProducts hypothesis and applying ruzsa_contradiction. Uses Finset.mem_filter and Finset.mem_Ioc to extract the membership and lacunary squarefree conditions.",
     "mathContext": "$\\forall N > 0,\\; \\neg\\text{HasThreeEqualPrimeProducts}(\\text{RuzsaSet} \\cap (N/2, N])$. The proof destructs the existential $\\exists a_i, p_i$ and applies `ruzsa_contradiction` with the extracted conditions. The `simp only [Finset.mem_filter, Finset.mem_Ioc]` step converts Finset membership into the conjunction of interval containment and lacunary squarefree property.",
@@ -255,7 +255,7 @@
       "startLine": 181,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős #537 Disproved",
     "content": "The main theorem: ¬Erdos537Conjecture. The proof assumes the conjecture and derives a contradiction: Ruzsa's set is dense enough to trigger the conjecture's conclusion but has no three equal prime products. Contains 1 sorry for the final bookkeeping step connecting the density of the Ruzsa set in (N/2, N] to the IsDenseSubset predicate.",
     "mathContext": "$\\neg\\text{Erdos537Conjecture}$: the proof proceeds by contradiction. Assuming the conjecture, for $\\varepsilon$ from `ruzsa_set_positive_density` and $N = \\max(N_0, N_1) + 1$, the Ruzsa set restricted to $(N/2, N]$ is $\\varepsilon/2$-dense (by `ruzsa_set_large_intersection`) and thus must contain three equal prime products (by the conjecture). But `ruzsa_no_three_products` says it doesn't. The `sorry` is for the final technical step converting between the two density formulations.",
@@ -278,7 +278,7 @@
       "startLine": 262,
       "endLine": 262
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős 537 Main Statement",
     "content": "The clean statement: ¬Erdos537Conjecture, defined as erdos_537 := erdos_537_disproved. This is the formal answer to Problem #537: the conjecture is FALSE.",
     "mathContext": "$\\text{erdos\\_537} : \\neg\\text{Erdos537Conjecture}$, a direct alias for `erdos_537_disproved`. The naming convention `erdos_NNN` provides a uniform interface for the gallery to identify the main result of each Erdős problem formalization.",
@@ -299,7 +299,7 @@
       "startLine": 269,
       "endLine": 274
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Disproof with Density Witness",
     "content": "The summary theorem: ¬Erdos537Conjecture ∧ HasPositiveDensity RuzsaSet. Packages the disproof together with the fact that the Ruzsa set is a valid counterexample (it has positive density). Proved by the anonymous constructor ⟨erdos_537, ruzsa_set_positive_density⟩.",
     "mathContext": "$\\text{erdos\\_537\\_summary} : \\neg\\text{Erdos537Conjecture} \\wedge \\text{HasPositiveDensity}(\\text{RuzsaSet})$. The conjunction asserts both that the conjecture fails and that the counterexample has the required density property. This is the complete resolution: the Ruzsa set simultaneously satisfies the hypothesis (positive density) and violates the conclusion (no three equal prime products).",

@@ -101,7 +101,7 @@
       "startLine": 136,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Beck's Theorem (1983) and Dudek-Prałat",
     "content": "**beck_path_theorem** (axiom): $\\exists c > 0, \\forall n \\ge 2, \\hat{R}(P_n) \\le cn$.\n\n**beck_cycle_theorem** (axiom): $\\exists c' > 0, \\forall n \\ge 3, \\hat{R}(C_n) \\le c'n$.\n\n**dudek_pralat_bound** (axiom): $\\hat{R}(P_n) \\le 900n$ for $n \\ge 2$ (improved constant).\n\nBeck's 1983 proof earned a $100 Erdős prize.",
     "mathContext": "Beck's proof uses the probabilistic method and a sophisticated combinatorial argument. He constructs a host graph $H$ with $O(n)$ edges (a random graph with carefully tuned parameters) and shows that any 2-coloring must contain a long monochromatic path. The proof technique later influenced the broader study of size Ramsey numbers for bounded-degree graphs. Dudek and Prałat (2017) improved the constant to 900 using a refined random graph construction and a deterministic lemma.",
@@ -147,7 +147,7 @@
       "startLine": 186,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Answers to Erdős's Questions",
     "content": "**answer_720a** (axiom): $\\neg$ErdosQuestion720a — NO, $\\hat{R}(P_n)/n$ does NOT tend to $\\infty$ (it's bounded by Beck's theorem).\n\n**answer_720b** (axiom): ErdosQuestion720b — YES, $\\hat{R}(P_n)/n^2 \\to 0$ (since $\\hat{R}(P_n) \\le cn$, we get $cn/n^2 = c/n \\to 0$).\n\n**answer_720c** (axiom): ErdosQuestion720c — YES, $\\hat{R}(C_n) = o(n^2)$ (in fact $O(n)$).",
     "mathContext": "The answers are more dramatic than Erdős expected. Question (a) received a negative answer because the growth is slower than predicted — $\\hat{R}(P_n)/n$ stays bounded rather than diverging. Questions (b) and (c) received positive answers, but for a much stronger reason: the size Ramsey numbers are linear, not merely subquadratic. This is a rare case where the answer to an Erdős problem overshot the conjecture in both directions.",
@@ -169,7 +169,7 @@
       "startLine": 218,
       "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Related Results and Generalizations",
     "content": "**tree_size_ramsey** (axiom): Size Ramsey of bounded-degree trees is linear ($\\hat{R}(T) \\le cn$ for max degree $\\Delta$).\n\n**problemConnection559**: Connection to Problem #559 on size Ramsey of bounded-degree graphs.\n\n**exactConstantOpen**: The precise constant in $\\hat{R}(P_n) = \\Theta(n)$ remains unknown ($3.75n \\le \\hat{R}(P_n) \\le 900n$).",
     "mathContext": "Beck's result for paths generalizes to trees: Friedman and Pippenger (1987) proved that trees of bounded degree have linear size Ramsey numbers. The full generalization to all bounded-degree graphs is Problem #559 (also solved by Kohayakawa, Rödl, Schacht, and Szemerédi). The theory connects to random graph theory and the regularity method.",
@@ -192,7 +192,7 @@
       "startLine": 249,
       "endLine": 267
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results Summary",
     "content": "**erdos_720** (proved): $\\hat{R}(P_n)/n^2 \\to 0$ AND $\\hat{R}(C_n)/n^2 \\to 0$.\n\n**erdos_720_main** (proved): All three answers: (b) YES, (c) YES, (a) NO.\n\n**erdos_720_beck** (proved from axioms): Both `pathIsLinear` and `cycleIsLinear` — $\\hat{R}(P_n) = \\Theta(n)$ and $\\hat{R}(C_n) = \\Theta(n)$ — combining Beck's upper bounds with the matching lower bounds.",
     "mathContext": "The summary theorem packages the complete solution to Erdős #720. The proved `erdos_720_beck` demonstrates that the linear characterization follows directly from combining the upper bounds (Beck 1983) and lower bounds. The $\\$100$ prize-winning result fundamentally changed the study of size Ramsey numbers by showing that sparse graphs can have sparse Ramsey hosts.",

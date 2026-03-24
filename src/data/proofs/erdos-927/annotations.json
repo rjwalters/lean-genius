@@ -95,7 +95,7 @@
       "startLine": 83,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Upper Bound $g(n) \\leq n$",
     "content": "Axiomatizes $g(n) \\leq n$: clique sizes in an $n$-vertex graph lie in $\\{1, \\ldots, n\\}$, so at most $n$ distinct values exist.",
     "mathContext": "$g(n) \\leq n$ since $\\text{cliqueSizes}(G) \\subseteq \\{1, \\ldots, n\\}$ for any $n$-vertex graph $G$.",
@@ -115,7 +115,7 @@
       "startLine": 88,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singleton is a Clique (Proved)",
     "content": "**Proved theorem**: every single vertex $\\{v\\}$ forms a clique in any graph $G$. The proof handles the vacuous case: the only element in $\\{v\\}$ is $v$ itself, and the condition $u \\neq v$ is never satisfied for $u, v \\in \\{v\\}$, making the adjacency requirement vacuously true. Uses `simp` to reduce membership and `absurd rfl hne` for the contradiction.",
     "mathContext": "$\\forall G,\\, \\forall v,\\, \\text{IsClique}(G, \\{v\\})$ — a singleton is trivially a complete subgraph.",
@@ -270,7 +270,7 @@
       "startLine": 267,
       "endLine": 273
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem (Proved)",
     "content": "**Proved theorem** `erdos_927_summary`: combines Spencer's theorem ($\\exists C > 0$ with $g(n) > n - \\log_2 n - C$) and the disproof ($\\neg\\text{ErdosConjecture}$) into a single conjunction. Proved by `exact ⟨spencer_theorem, conjecture_disproved⟩`, directly combining the two axioms.",
     "mathContext": "$\\text{erdos\\_927\\_summary} : (\\exists C > 0,\\, \\forall n \\geq 2,\\, g(n) > n - \\log_2 n - C) \\land \\neg\\text{ErdosConjecture}$.",

@@ -101,7 +101,7 @@
       "startLine": 64,
       "endLine": 79
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The ENR Condition",
     "content": "hasENRCondition(A, epsilon): Every finite subset B of A has an AP-free subset C of size >= epsilon * |B|. This says 'uniformly large AP-free parts exist.'",
     "mathContext": "Named for Erdos-Nesetril-Rodl. The key is that epsilon is fixed - it works for ALL finite subsets B.",
@@ -268,7 +268,7 @@
       "startLine": 160,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Finite Union Implies ENR",
     "content": "If A is a finite union of k AP-free sets, then A satisfies ENR with epsilon = 1/k. Any finite subset can be partitioned into k AP-free parts, one in each Ai.",
     "mathContext": "The converse direction works - finite union is stronger than ENR.",

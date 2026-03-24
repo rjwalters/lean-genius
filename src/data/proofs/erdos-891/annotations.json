@@ -93,7 +93,7 @@
       "startLine": 147,
       "endLine": 152
     },
-    "type": "definition",
+    "type": "concept",
     "title": "HasManyFactors Predicate",
     "content": "**HasManyFactors(n, k):** The interval [n, n + primorial(k)) contains an integer m with Ω(m) > k.\n\nThis is the core property that Erdős #891 conjectures holds for all sufficiently large n.\n\n**For k = 2:** Asks if [n, n+6) contains an integer with ≥ 3 prime factors.",
     "significance": "key",
@@ -138,7 +138,7 @@
       "startLine": 179,
       "endLine": 206
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "**Concrete computations** using native_decide:\n\n- Ω(8) = 3 (since 8 = 2³)\n- Ω(12) = 3 (since 12 = 2² · 3)\n- Ω(18) = 3 (since 18 = 2 · 3²)\n- Ω(24) = 4 (since 24 = 2³ · 3)\n\n**example_interval_8_14:** Shows [8, 14) satisfies the k=2 condition since 8 has 3 prime factors.\n\nThese examples demonstrate the conjecture works for specific intervals.",
     "significance": "key",

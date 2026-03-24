@@ -99,7 +99,7 @@
       "startLine": 69,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Costa-Pellegrini (2020): Small Cases t ≤ 12",
     "content": "Axiomatizes: for p > 12 and |A| ≤ 12 with A ⊆ 𝔽ₚ \\ {0}, a valid ordering exists. Costa and Pellegrini verified this through exhaustive computation for small primes and theoretical reductions leveraging the structure of small subsets.",
     "significance": "key",
@@ -121,7 +121,7 @@
       "startLine": 74,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "small_sets_have_valid_orderings",
     "content": "Wrapper theorem directly applying costa_pellegrini_2020 to show that sets of size ≤ 12 in 𝔽ₚ (with p > 12) have valid orderings. Proved by exact application of the axiom.",
     "significance": "supporting",
@@ -141,7 +141,7 @@
       "startLine": 87,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hicks-Ollis-Schmitt (2019): Large Cases t ≥ p-3",
     "content": "Axiomatizes: for p-3 ≤ |A| ≤ p-1 with A ⊆ 𝔽ₚ \\ {0}, a valid ordering exists. When A is nearly all of the non-zero field, the missing elements impose strong constraints that allow structural proofs.",
     "significance": "key",
@@ -163,7 +163,7 @@
       "startLine": 97,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graham's Original: Full Non-Zero Set",
     "content": "Axiomatizes Graham's constructive proof: for A = 𝔽ₚ \\ {0} (the full non-zero set, t = p-1), a valid ordering exists. Graham gave an explicit algorithm producing such an ordering.",
     "significance": "key",
@@ -186,7 +186,7 @@
       "startLine": 109,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kravitz (2024): Logarithmic Range",
     "content": "Axiomatizes: for p > 2 and |A| ≤ log p / log log p with A ⊆ 𝔽ₚ \\ {0}, a valid ordering exists. This was the strongest small-side result before the rectification barrier was broken. Will Sawin independently observed the same bound.",
     "significance": "key",
@@ -209,7 +209,7 @@
       "startLine": 128,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bedert-Kravitz (2024): Beyond the Rectification Barrier",
     "content": "Axiomatizes: for p > 2 and |A| ≤ exp((log p)^{1/4}) with A ⊆ 𝔽ₚ \\ {0}, a valid ordering exists. This is a major breakthrough: exp((log p)^{1/4}) grows much faster than log p / log log p, breaking through the rectification barrier.",
     "significance": "key",
@@ -257,7 +257,7 @@
       "startLine": 147,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graham ↔ Alspach for Prime Fields",
     "content": "Proves GrahamConjecture p ↔ AlspachConjecture (ZMod p) by direct unfolding of definitions. Both directions follow by applying the hypothesis, since IsValidOrdering unfolds to the same conditions used in AlspachConjecture.",
     "significance": "key",
@@ -303,7 +303,7 @@
       "startLine": 192,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_475_summary — Combined Result",
     "content": "Combines the three main verified ranges into a single theorem: (1) small t ≤ 12 (Costa-Pellegrini), (2) large p-3 ≤ t ≤ p-1 (Hicks-Ollis-Schmitt), (3) medium t ≤ exp((log p)^{1/4}) (Bedert-Kravitz). Proved as a conjunction from the three axioms.",
     "significance": "key",

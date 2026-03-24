@@ -196,7 +196,7 @@
       "startLine": 161,
       "endLine": 164
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_988_solved",
     "content": "**Erdős Problem #988: SOLVED (YES)**. For all dimensions d ≥ 1, the minimum discrepancy over n-point configurations tends to infinity. Perfect uniformity is impossible!",
     "mathContext": "The theorem erdos_988_solved wraps min_discrepancy_tends_to_infinity with the universal quantifier over dimensions. The proof is immediate from the helper theorem.",
@@ -253,7 +253,7 @@
       "startLine": 218,
       "endLine": 226
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_988_summary** packages both results: (1) Schmidt's theorem for all dimensions, and (2) Roth's precedent for the square. Together they establish the general impossibility of perfect uniformity.",
     "mathContext": "The conjunction ∧ combines the spherical result (polynomial growth) with the square result (logarithmic growth). Both demonstrate fundamental limits on uniform distribution.",

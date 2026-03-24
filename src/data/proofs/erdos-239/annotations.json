@@ -228,7 +228,7 @@
       "startLine": 161,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos Problem #239: SOLVED",
     "content": "**erdos_239:**\n\nFor all f in MultPlusMinusOne, f has a convergent mean.\n\n```lean\ntheorem erdos_239 (f : N -> Z) (hf : f in MultPlusMinusOne) :\n    HasConvergentMean f\n```\n\nDirect application of Wirsing's theorem.",
     "significance": "key",
@@ -338,7 +338,7 @@
       "startLine": 289,
       "endLine": 291
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Answer",
     "content": "**erdos_239_answer:**\n\n\"YES - Every multiplicative {-1,1}-valued function has a convergent mean (Wirsing 1967)\"\n\nThe problem is completely solved.",
     "significance": "key",

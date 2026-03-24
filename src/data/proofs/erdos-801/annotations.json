@@ -97,7 +97,7 @@
       "startLine": 75,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alon's Theorem (1996)",
     "content": "**alon_1996** (axiom): asserts `Erdos801Statement` holds. Alon's proof uses the **probabilistic method**: sample a random subset $S$ of $\\sqrt{n}$ vertices. The expected number of induced edges is $e(G) \\cdot \\binom{\\sqrt{n}}{2}/\\binom{n}{2} \\approx e(G)/n$. Since $\\alpha(G) \\leq \\sqrt{n}$, Ramsey-type arguments show $e(G) \\geq \\Omega(n \\log n)$, giving expected $e(S) \\geq \\Omega(\\sqrt{n} \\log n)$.\n\n**erdos_801_solved**: a wrapper theorem equating `Erdos801Statement` with `alon_1996`.",
     "mathContext": "Alon (1996) proved this in 'Independence numbers of locally sparse graphs and a Ramsey type problem.' The key probabilistic argument: if $\\alpha(G) \\leq \\sqrt{n}$, then by Ramsey theory $e(G) = \\Omega(n \\log n)$. Random $\\sqrt{n}$-subsets inherit a proportional fraction of edges, yielding the $\\sqrt{n}\\log n$ bound after concentration.",
@@ -127,7 +127,7 @@
       "startLine": 87,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Logarithmic Factor is Necessary",
     "content": "**log_factor_necessary** (axiom): for any constant $C > 0$ and $n \\geq 2$, there exists a graph $G$ with $\\alpha(G) \\leq \\sqrt{n}$ such that every $S$ with $|S| \\leq \\sqrt{n}$ satisfies $e(S) \\leq C \\sqrt{n} \\log n$.\n\nThis shows the $\\sqrt{n}\\log n$ bound is tight up to the constant $c$ — the logarithmic factor cannot be improved to, say, $(\\log n)^2$. The tightness comes from **Paley graphs** or random Cayley graphs, which have $\\alpha \\approx \\sqrt{n}\\log n$ but uniform local edge density.",
     "mathContext": "The lower bound construction uses graphs where edges are distributed uniformly enough that no $\\sqrt{n}$-vertex subset is significantly denser than average. Paley graphs $P(p)$ (adjacency iff difference is a quadratic residue) achieve $\\alpha(P) = O(\\sqrt{p}\\log p)$ and near-uniform edge distribution.",
@@ -157,7 +157,7 @@
       "startLine": 97,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Vertex Set Size $\\sqrt{n}$ is Optimal",
     "content": "**vertex_set_size_optimal** (axiom): for any $0 < \\varepsilon < 1$, eventually (for large $n$) there exists $G$ with $\\alpha(G) \\leq \\sqrt{n}$ such that every $S$ with $|S| \\leq \\varepsilon\\sqrt{n}$ satisfies $e(S) < \\sqrt{n}$.\n\nThis means the vertex budget $\\sqrt{n}$ cannot be reduced to $o(\\sqrt{n})$ while maintaining $\\Omega(\\sqrt{n}\\log n)$ edges. The `Filter.atTop` quantifier handles the \"eventually\" condition. The threshold $\\sqrt{n}$ (without $\\log$) in the edge bound is intentionally weaker — even this weak bound fails for smaller subsets.",
     "mathContext": "If $|S| = \\varepsilon\\sqrt{n}$, the expected induced edges in a random $G$ with $e(G) = \\Theta(n\\log n)$ are $\\Theta(\\varepsilon^2 \\sqrt{n}\\log n)$, which is $o(\\sqrt{n}\\log n)$ for $\\varepsilon \\ll 1$. The axiom shows this is not just an artifact of random graphs but holds for all graphs with the independence constraint.",
@@ -187,7 +187,7 @@
       "startLine": 112,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_801_summary** (proved): conjunction of Alon's theorem and the log-factor tightness:\n1. `Erdos801Statement` — $\\exists$ dense $\\sqrt{n}$-subset with $\\Omega(\\sqrt{n}\\log n)$ edges\n2. `log_factor_necessary` — the $\\sqrt{n}\\log n$ bound cannot be asymptotically improved\n\nProved as `⟨alon_1996, log_factor_necessary⟩` — a direct pairing of the two axioms.\n\nThe contrast between existence (Alon) and tightness (matching construction) completely characterizes the extremal behavior of locally dense subgraphs in graphs with bounded independence number.",
     "mathContext": "The summary captures a sharp result: $\\max_{|S| \\leq \\sqrt{n}} e(S) = \\Theta(\\sqrt{n}\\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$. The lower bound is Alon's theorem; the upper bound is the tightness construction. This is optimal up to the constant $c$.",

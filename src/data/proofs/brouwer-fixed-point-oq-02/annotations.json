@@ -289,7 +289,7 @@
       "startLine": 335,
       "endLine": 364
     },
-    "type": "technique",
+    "type": "concept",
     "title": "PPAD Solution Existence",
     "content": "The main PPAD theorem: every finite PPAD instance has a solution. Combines the three preceding lemmas: path injectivity ensures distinct vertices are visited, pigeonhole forces termination at some vertex $v$, and since $\\text{succ}(v) = \\text{none}$ while $v$ was reached from the path (so $\\text{pred}(v) \\neq \\text{none}$), $v$ is a sink. Since the source has $\\text{succ} \\neq \\text{none}$, $v \\neq s$, making $v$ a solution. This formalizes the 'parity argument' at the heart of PPAD.",
     "mathContext": "For finite $V$: $\\exists v \\in V,\\ v \\neq s \\wedge (\\text{succ}(v) = \\text{none} \\wedge \\text{pred}(v) \\neq \\text{none})$. The constructive content is: follow the unique directed path from $s$ until it terminates. The path must terminate (pigeonhole), and the endpoint is a sink distinct from $s$. This is the formal core of the PPAD complexity class introduced by Papadimitriou (1994).",

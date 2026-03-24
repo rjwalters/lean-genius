@@ -259,7 +259,7 @@
       "startLine": 194,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "exact_interpolation_case (Fully Proved)",
     "content": "For ε = 0 (exact interpolation): given n distinct points and arbitrary target values, Lagrange interpolation provides the unique polynomial of degree < n through all points. Proved by applying lagrange_interpolation axiom via Classical.choose_spec.",
     "mathContext": "This is the $\\varepsilon = 0$ reduction: when ALL $n$ points must be matched and $\\deg P < n$, the Lagrange polynomial is the unique solution. The conjecture for $\\varepsilon = 0$ asks: can we choose $y_i$ so the Lagrange polynomial has $\\|L_n\\|_{\\infty} > C$? Since $L_n(x) = \\sum y_i \\ell_i(x)$ where $\\ell_i$ are the Lagrange basis polynomials, this asks: does $\\max_i |\\ell_i(x^*)| > C/n$ for some $x^*$? This is related to the Lebesgue constant.",

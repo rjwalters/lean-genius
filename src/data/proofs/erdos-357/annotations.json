@@ -137,7 +137,7 @@
       "startLine": 72,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "f(n) Well-Defined",
     "content": "f_nonempty proves the set of valid k values is nonempty by exhibiting k = 0 (empty sequence) as a valid configuration. Uses Fin.elim0 for the vacuous case.",
     "significance": "supporting",
@@ -159,7 +159,7 @@
       "startLine": 86,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Upper Bound f(n) ≤ n",
     "content": "f(n) ≤ n since at most n distinct integers fit in [1, n]. The interesting question is whether f(n) is o(n) or Θ(n).",
     "significance": "supporting",
@@ -179,7 +179,7 @@
       "startLine": 101,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Counting Contiguous Intervals",
     "content": "A sequence of k elements has exactly k(k+1)/2 contiguous intervals. Since these must all produce distinct sums bounded by k·n, we get the weak bound k ≤ 2n.",
     "significance": "key",
@@ -201,7 +201,7 @@
       "startLine": 119,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Weisenberg's Lower Bound",
     "content": "f(n) ≥ (2 + o(1))√n. Any B₂ sequence (Sidon set) in [1, n] automatically has distinct consecutive sums, and the largest B₂ set in [1, n] has size (1+o(1))√n.",
     "significance": "key",
@@ -224,7 +224,7 @@
       "startLine": 124,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "At Least √n Growth",
     "content": "f_grows_at_least_sqrt derives ∃ C > 0, f(n) ≥ C√n eventually, as a corollary of Weisenberg's bound. The proof extracts the constant from the little-o term.",
     "significance": "supporting",
@@ -288,7 +288,7 @@
       "startLine": 164,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hegyvári's Linear Bounds for g(n)",
     "content": "Hegyvári (1986) proved (1/3 + o(1))n ≤ g(n) ≤ (2/3 + o(1))n: the non-monotone variant grows linearly, with constants between 1/3 and 2/3.",
     "significance": "key",
@@ -353,7 +353,7 @@
       "startLine": 199,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Density Zero",
     "content": "Any infinite sequence with distinct consecutive sums has lower density 0: liminf of |{k : A(k) ≤ n}|/n = 0 as n → ∞.",
     "significance": "key",
@@ -375,7 +375,7 @@
       "startLine": 229,
       "endLine": 230
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 Have Distinct Sums",
     "content": "powers_of_2_distinct states that {1, 2, 4, 8, ...} has all consecutive sums distinct for any prefix. This follows from binary representation uniqueness: Σᵢ₌ᵤᵛ 2^i = 2^(v+1) - 2^u determines (u,v).",
     "significance": "supporting",
@@ -415,7 +415,7 @@
       "startLine": 240,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "B₂ Implies Distinct Consecutive Sums",
     "content": "B2_implies_distinct_consecutive shows that any B₂ sequence has distinct consecutive sums. Consecutive sums are partial-sum differences, and B₂ ensures these are distinct.",
     "significance": "key",

@@ -165,7 +165,7 @@
       "startLine": 114,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Beker's Maximizer Theorem",
     "content": "**beker_maximizer_achieves**: For $n \\geq 100$, if $k$ is the minimal positive integer with $\\mathrm{lcm}(1, \\ldots, n-k) \\mid k$, then $f_k(n) = (n-1)!$.\n\nThis is the sufficient condition: the minimal $k$ satisfying the lcm divisibility condition achieves exactly $(n-1)!$ permutations, which is the maximum. Combined with the characterization, this completely determines the maximizer.",
     "mathContext": "$k$ minimal with $\\mathrm{lcm}(1,\\ldots,n-k) \\mid k$ $\\Rightarrow$ $f_k(n) = (n-1)!$",
@@ -187,7 +187,7 @@
       "startLine": 121,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Asymptotic Lower Bound",
     "content": "**max_permCount_ge_sub_factorial**: For $n \\geq 2$, there exists $k$ with $f_k(n) \\geq (n-1)!$.\n\nThis establishes the lower bound direction: $\\max_k f_k(n) \\geq (n-1)!$. Since $(n-1)! = n!/n$, this means the most popular order accounts for at least a $1/n$ fraction of all permutations.",
     "mathContext": "$\\forall n \\geq 2, \\exists k : f_k(n) \\geq (n-1)!$",
@@ -209,7 +209,7 @@
       "startLine": 127,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Upper Bound: f_k(n) ≤ n!",
     "content": "**permCountByOrder_le_factorial**: $f_k(n) \\leq n!$ for all $k$.\n\nTrivially, since $f_k(n)$ counts a subset of $S_n$ and $|S_n| = n!$. Proved via `Finset.card_filter_le` and `Fintype.card_perm`. This is one of the few fully proved results in the file.",
     "mathContext": "$f_k(n) \\leq |S_n| = n!$",
@@ -254,7 +254,7 @@
       "startLine": 145,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "LCM Range Properties",
     "content": "**lcmRange_dvd_lcmRange**: $m \\leq m' \\Rightarrow \\mathrm{lcm}(1,\\ldots,m) \\mid \\mathrm{lcm}(1,\\ldots,m')$. Monotonicity of lcmRange: extending the range can only add prime factors.\n\n**dvd_lcmRange**: For $1 \\leq j \\leq m$, $j \\mid \\mathrm{lcm}(1,\\ldots,m)$. Each integer in the range divides the lcm by definition.\n\nBoth are proved directly using `Finset.lcm_dvd` and `Finset.dvd_lcm`. These structural lemmas support Beker's characterization.",
     "mathContext": "$m \\leq m' \\Rightarrow \\mathrm{lcm}(1,\\ldots,m) \\mid \\mathrm{lcm}(1,\\ldots,m')$; $j \\leq m \\Rightarrow j \\mid \\mathrm{lcm}(1,\\ldots,m)$",

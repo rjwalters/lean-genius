@@ -8,7 +8,7 @@
     },
     "type": "context",
     "title": "Problem Documentation and References",
-    "content": "The header documents Erd\u0151s Problem #1015 on partitioning 2-colored complete graphs into monochromatic cliques. Key references: Moon (1966) proved $f(3)=4$, and Burr-Erd\u0151s-Spencer (1975) gave the exact formula $f(t) = R(t,t-1) + x$ with $0 \\le x < t$. The problem sits at the intersection of Ramsey theory and graph partitioning\u2014the leftover is controlled by an off-diagonal Ramsey number.",
+    "content": "The header documents Erdős Problem #1015 on partitioning 2-colored complete graphs into monochromatic cliques. Key references: Moon (1966) proved $f(3)=4$, and Burr-Erdős-Spencer (1975) gave the exact formula $f(t) = R(t,t-1) + x$ with $0 \\le x < t$. The problem sits at the intersection of Ramsey theory and graph partitioning—the leftover is controlled by an off-diagonal Ramsey number.",
     "mathContext": "$f(t) = \\sup_n \\max_c \\min_P |V(K_n) \\setminus \\bigcup P|$ where $c$ ranges over 2-colorings and $P$ over partitions into monochromatic $K_t$'s",
     "significance": "supporting",
     "relatedConcepts": [
@@ -31,7 +31,7 @@
     },
     "type": "definition",
     "title": "Two-Coloring of Complete Graph",
-    "content": "A two-coloring assigns a Boolean value (red/blue) to each edge of $K_n$. Represented as $c : \\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$. By Ramsey's theorem, any such coloring contains large monochromatic cliques\u2014the question is how efficiently we can pack vertex-disjoint copies of $K_t$.",
+    "content": "A two-coloring assigns a Boolean value (red/blue) to each edge of $K_n$. Represented as $c : \\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$. By Ramsey's theorem, any such coloring contains large monochromatic cliques—the question is how efficiently we can pack vertex-disjoint copies of $K_t$.",
     "mathContext": "$c : \\binom{[n]}{2} \\to \\{\\text{red}, \\text{blue}\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -95,7 +95,7 @@
     },
     "type": "definition",
     "title": "Vertex-Disjoint Collection",
-    "content": "A list of vertex sets is disjoint if no two share a vertex: $S_i \\cap S_j = \\emptyset$ for $i \\ne j$. This constraint makes the partitioning hard\u2014without it, overlapping cliques could cover all vertices trivially. The disjointness requirement connects the problem to Ramsey theory.",
+    "content": "A list of vertex sets is disjoint if no two share a vertex: $S_i \\cap S_j = \\emptyset$ for $i \\ne j$. This constraint makes the partitioning hard—without it, overlapping cliques could cover all vertices trivially. The disjointness requirement connects the problem to Ramsey theory.",
     "mathContext": "$\\text{areDisjoint}(\\{S_1,\\ldots,S_m\\}) \\iff \\forall i \\ne j: S_i \\cap S_j = \\emptyset$",
     "significance": "key",
     "relatedConcepts": [
@@ -160,7 +160,7 @@
     },
     "type": "definition",
     "title": "Function $f_n(t)$: Worst-Case over Colorings",
-    "content": "$f_n(t) = \\sup_c \\text{minLeftover}(c, t)$: the adversarial coloring that maximizes the minimum leftover on $K_n$. This is the natural minimax formulation\u2014the adversary chooses the worst coloring, then we optimize the partition.",
+    "content": "$f_n(t) = \\sup_c \\text{minLeftover}(c, t)$: the adversarial coloring that maximizes the minimum leftover on $K_n$. This is the natural minimax formulation—the adversary chooses the worst coloring, then we optimize the partition.",
     "mathContext": "$f_n(t) = \\max_c \\min_P \\text{leftover}(P)$ over 2-colorings $c$ of $K_n$",
     "significance": "key",
     "relatedConcepts": [
@@ -182,7 +182,7 @@
     },
     "type": "definition",
     "title": "Function $f(t)$: The Fundamental Quantity",
-    "content": "$f(t) = \\sup_n f_n(t)$: the worst-case leftover over all graph sizes and all colorings. For large $n$, $f_n(t)$ stabilizes at the Burr-Erd\u0151s-Spencer value. This is the quantity Erd\u0151s asked about\u2014how badly can the packing fail?",
+    "content": "$f(t) = \\sup_n f_n(t)$: the worst-case leftover over all graph sizes and all colorings. For large $n$, $f_n(t)$ stabilizes at the Burr-Erdős-Spencer value. This is the quantity Erdős asked about—how badly can the packing fail?",
     "mathContext": "$f(t) = \\sup_{n \\ge 1} f_n(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$",
     "significance": "key",
     "relatedConcepts": [
@@ -203,7 +203,7 @@
       "endLine": 113
     },
     "type": "insight",
-    "title": "Moon's Theorem (1966) \u2014 $f(3) = 4$",
+    "title": "Moon's Theorem (1966) — $f(3) = 4$",
     "content": "Moon proved the first non-trivial case: when packing monochromatic triangles into a 2-colored $K_n$ ($n \\ge 8$), at most 4 vertices remain uncovered. The value 4 matches $R(3,2) + x = 3 + 1 = 4$ in the BES formula (since $R(3,2) = 3$). Moon's proof analyzes the triangle structure in random-like colorings.",
     "mathContext": "$f(3) = 4$; for $n \\ge 8$: $f_n(3) = 4$; note $R(3,2) = 3$",
     "significance": "key",
@@ -224,13 +224,13 @@
       "endLine": 126
     },
     "type": "definition",
-    "title": "Ramsey Numbers and Erd\u0151s Bound",
-    "content": "The Ramsey number $R(s,t)$ is the minimum $n$ such that any 2-coloring of $K_n$ has a red $K_s$ or blue $K_t$. Erd\u0151s observed $f(t) < R(t,t) \\le 4^t$: leftover vertices form a colored graph without monochromatic $K_t$, so their count is $< R(t,t)$. The bound $R(t,t) \\le \\binom{2t-2}{t-1} \\le 4^t$ is the classical Erd\u0151s-Szekeres result.",
+    "title": "Ramsey Numbers and Erdős Bound",
+    "content": "The Ramsey number $R(s,t)$ is the minimum $n$ such that any 2-coloring of $K_n$ has a red $K_s$ or blue $K_t$. Erdős observed $f(t) < R(t,t) \\le 4^t$: leftover vertices form a colored graph without monochromatic $K_t$, so their count is $< R(t,t)$. The bound $R(t,t) \\le \\binom{2t-2}{t-1} \\le 4^t$ is the classical Erdős-Szekeres result.",
     "mathContext": "$R(s,t) = \\min\\{n : \\text{every 2-coloring of } K_n \\text{ has red } K_s \\text{ or blue } K_t\\}$; $f(t) < R(t,t) \\le 4^t$",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey's theorem",
-      "Erd\u0151s-Szekeres bound",
+      "Erdős-Szekeres bound",
       "probabilistic method"
     ],
     "prerequisites": [
@@ -245,7 +245,7 @@
       "endLine": 140
     },
     "type": "insight",
-    "title": "Burr-Erd\u0151s-Spencer Exact Formula",
+    "title": "Burr-Erdős-Spencer Exact Formula",
     "content": "The main result: for $t \\ge 3$ and $n$ large, $f(t) = R(t, t-1) + x$ where $0 \\le x < t$ and $n + 1 \\equiv R(t,t-1) + x \\pmod{t}$. The key insight: leftover vertices form a graph avoiding monochromatic $K_t$, so they number at most $R(t,t-1) - 1$ (they might have a $K_{t-1}$ but not $K_t$). The modular correction $x$ accounts for divisibility of $n$ by $t$.",
     "mathContext": "$\\forall t \\ge 3: R(t,t-1) \\le f(t) < R(t,t-1) + t$; exact: $f(t) = R(t,t-1) + x$, $0 \\le x < t$",
     "significance": "key",
@@ -268,7 +268,7 @@
     },
     "type": "insight",
     "title": "Root Limit: $f(t)^{1/t} \\to 4$",
-    "content": "Since $f(t) \\approx R(t, t-1)$ and Ramsey numbers satisfy $R(t,t)^{1/t} \\to 4$ (the exponential growth rate), we get $f(t)^{1/t} \\to 4$. This answers Erd\u0151s's first question definitively: the growth rate is exponential with base 4, not subexponential as he hoped.",
+    "content": "Since $f(t) \\approx R(t, t-1)$ and Ramsey numbers satisfy $R(t,t)^{1/t} \\to 4$ (the exponential growth rate), we get $f(t)^{1/t} \\to 4$. This answers Erdős's first question definitively: the growth rate is exponential with base 4, not subexponential as he hoped.",
     "mathContext": "$\\lim_{t \\to \\infty} f(t)^{1/t} = 4$",
     "significance": "key",
     "relatedConcepts": [
@@ -288,9 +288,9 @@
       "startLine": 151,
       "endLine": 152
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Not Linear Growth",
-    "content": "$f(t)$ is NOT $O(t)$: since $f(t) \\ge R(t, t-1) \\ge 2^{t/2}$ (by the Erd\u0151s probabilistic lower bound on Ramsey numbers), no linear function $Ct$ can dominate $f(t)$. This answers Erd\u0151s's second question\u2014the leftover grows exponentially in the clique size $t$.",
+    "content": "$f(t)$ is NOT $O(t)$: since $f(t) \\ge R(t, t-1) \\ge 2^{t/2}$ (by the Erdős probabilistic lower bound on Ramsey numbers), no linear function $Ct$ can dominate $f(t)$. This answers Erdős's second question—the leftover grows exponentially in the clique size $t$.",
     "mathContext": "$\\neg\\exists C: \\forall t, f(t) \\le Ct$; since $f(t) \\ge 2^{\\Omega(t)}$",
     "significance": "key",
     "relatedConcepts": [
@@ -299,7 +299,7 @@
       "non-linear growth"
     ],
     "prerequisites": [
-      "Erd\u0151s probabilistic lower bound for Ramsey numbers"
+      "Erdős probabilistic lower bound for Ramsey numbers"
     ]
   }
 ]

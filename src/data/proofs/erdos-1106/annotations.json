@@ -95,7 +95,7 @@
       "startLine": 110,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Schinzel-Wirsing Lower Bound (1987)",
     "content": "Schinzel and Wirsing proved $F(n) \\gg \\log n$, i.e., $\\exists c > 0$ such that $F(n) \\ge c \\log n$ for large $n$. This is the best known unconditional lower bound. The proof analyzes the prime factorization structure of the partition product using multiplicative number theory. The gap between $\\log n$ and the conjectured $n$ is enormous.",
     "mathContext": "$\\exists c > 0,\\; F(n) \\ge c \\log n$ for $n$ sufficiently large",
@@ -140,7 +140,7 @@
       "startLine": 131,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ono's Prime Divisibility Theorem (2000)",
     "content": "Ken Ono proved that every prime $p$ divides $p(n)$ for some $n \\ge 1$, and in fact for a positive proportion of $n$. The proof uses the theory of modular forms and Galois representations, building on Ramanujan's congruences $p(5n+4) \\equiv 0 \\pmod{5}$, $p(7n+5) \\equiv 0 \\pmod{7}$, $p(11n+6) \\equiv 0 \\pmod{11}$.",
     "mathContext": "$\\forall p \\in \\mathbb{P},\\; \\exists n \\ge 1,\\; p \\mid p(n)$",
@@ -162,7 +162,7 @@
       "startLine": 141,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Part 1: F(n) → ∞ (PROVED)",
     "content": "The first part of Erdos's question is resolved: $F(n) \\to \\infty$. Schinzel observed this follows from combining Hardy-Ramanujan's exponential growth $p(n) \\sim ce^{\\alpha\\sqrt{n}}$ with Tijdeman's 1973 theorem: any sequence of integers growing at least exponentially must accumulate infinitely many distinct prime factors. Full details appear in Erdos-Ivic (1990), page 69.",
     "mathContext": "$F(n) = \\omega\\!\\left(\\prod_{k=1}^n p(k)\\right) \\to \\infty$ as $n \\to \\infty$",
@@ -206,7 +206,7 @@
       "startLine": 173,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "definition",
     "title": "F(5) = 4",
     "content": "$\\prod_{k=1}^5 p(k) = 1 \\cdot 2 \\cdot 3 \\cdot 5 \\cdot 7 = 210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$. So $F(5) = 4$. Notably, this product is $210 = \\binom{10}{4}$, a primorial. Proved by `native_decide` (kernel-level computation).",
     "mathContext": "$F(5) = \\omega(1 \\cdot 2 \\cdot 3 \\cdot 5 \\cdot 7) = \\omega(210) = 4$",

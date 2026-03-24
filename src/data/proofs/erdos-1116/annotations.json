@@ -212,7 +212,7 @@
       "startLine": 298,
       "endLine": 318
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_1116_summary:**\n\nCombines the main results:\n\n```lean\ntheorem erdos_1116_summary :\n    (∃ f : ℂ → ℂ, IsEntire f ∧ HasExtremeValueDistribution f) ∧\n    ¬ HasExtremeValueDistribution expFunction\n```\n\n- Such functions exist (Gol'dberg-Toppila)\n- But the exponential is NOT such a function",
     "significance": "key",

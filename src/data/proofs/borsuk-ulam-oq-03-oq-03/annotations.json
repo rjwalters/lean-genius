@@ -54,7 +54,7 @@
       "startLine": 120,
       "endLine": 399
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Triangulated Disk and Grid Construction",
     "content": "Defines the `TriangulatedDisk2D` structure encoding a 2D triangulated disk with boundary, interior, antipodal map, and mesh size. Then constructs the concrete $N \\times N$ grid triangulation of $[-1,1]^2$, where vertex $(i,j)$ maps to real coordinates $((i-N)/N, (j-N)/N)$. Key properties verified: the center maps to the origin, vertices lie in $[-1,1]^2$, the antipodal map $(i,j) \\mapsto (2N-i, 2N-j)$ negates coordinates, and boundary vertices are preserved under the antipodal map. The mesh size $\\sqrt{2}/N$ is shown to tend to zero.",
     "mathContext": "Grid triangulation with $(2N+1)^2$ vertices. Vertex coordinates: $v(i,j) = \\bigl(\\tfrac{i}{N} - 1,\\; \\tfrac{j}{N} - 1\\bigr) \\in [-1,1]^2$. Antipodal map: $v(2N-i, 2N-j) = -v(i,j)$. Mesh size: $\\delta_N = \\sqrt{2}/N \\to 0$ as $N \\to \\infty$.",
@@ -172,7 +172,7 @@
       "startLine": 921,
       "endLine": 1077
     },
-    "type": "technique",
+    "type": "concept",
     "title": "IVT on Line Segments and Complementary Edge Zero-Finding",
     "content": "Formalizes the Intermediate Value Theorem on line segments in $\\mathbb{R}^2$, which extracts approximate zeros from Tucker's complementary edges. The parametrization $w(t) = (1-t)u + tv$ for $t \\in [0,1]$ traces the segment from $u$ to $v$. When a complementary edge has labels $+k$ and $-k$, the $k$-th component of $g$ changes sign along the edge, so IVT gives $t^*$ with $g(w(t^*))_k = 0$. The theorem `complementary_edge_zero_fst` packages this: given opposite signs, it produces a point $w$ on the segment with $g(w)_k = 0$ and $\\text{dist}(w, u) \\leq \\text{dist}(u, v)$.",
     "mathContext": "Parametrize segment: $\\gamma(t) = (1-t)u + tv$ for $t \\in [0,1]$. If $g(u)_k \\cdot g(v)_k \\leq 0$ (opposite signs), IVT on $h(t) = g(\\gamma(t))_k$ gives $t^* \\in [0,1]$ with $h(t^*) = 0$. The zero-crossing point satisfies $\\text{dist}(\\gamma(t^*), u) \\leq \\text{dist}(u, v) \\leq \\delta_N$ (mesh size).",

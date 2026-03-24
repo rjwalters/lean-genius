@@ -248,7 +248,7 @@
       "startLine": 179,
       "endLine": 183
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_668_summary:**\n\nCombines the known results:\n1. f(4) = 1 (unique double-triangle)\n2. Any two 4-point extremals are congruent\n\n```lean\ntheorem erdos_668_summary :\n    f 4 = 1 and\n    (forall S T, S.card = 4 -> T.card = 4 ->\n      isExtremal S -> isExtremal T -> areCongruent S T)\n```\n\n**Status:** The main questions remain OPEN.",
     "significance": "key",

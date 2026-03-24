@@ -174,7 +174,7 @@
   {
     "id": "ann-e472-candidate-self-odd",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Self-Candidate Oddness",
     "content": "For p ≥ 2, the self-candidate p + p − 1 = 2p − 1 is always odd, hence potentially prime.",
     "mathContext": "The **self-candidate** $2p - 1$ (using $q_i = q_n = p$ itself) is a Mersenne-like number. For prime $p$, $2p - 1$ is odd and may be prime, providing a guaranteed candidate at each step. If $2p - 1$ is always prime for the sequence's values, the sequence would be infinite—but this is far stronger than needed and almost certainly false.",
@@ -196,7 +196,7 @@
   {
     "id": "ann-e472-ulam-seq-ge-two",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "All Terms at Least 2",
     "content": "Every term in a Ulam prime sequence is at least 2, since all terms are prime.",
     "mathContext": "Follows immediately from `Nat.Prime.two_le`. This lower bound is used in the gap theorem to distinguish the case $f(n) = 2$.",
@@ -217,7 +217,7 @@
   {
     "id": "ann-e472-gap-theorem",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Consecutive Gap Bound",
     "content": "In any Ulam prime sequence, f(n+1) ≥ f(n) + 2 unless f(n) = 2 and f(n+1) = 3. This follows from the fact that consecutive odd primes differ by at least 2.",
     "mathContext": "The proof splits on whether $f(n) = 2$. If $f(n) \\geq 3$, both $f(n)$ and $f(n+1)$ are odd primes, so their difference is even and at least $2$. The case analysis uses `Nat.Prime.eq_one_or_self_of_dvd` to establish oddness. This gap bound constrains the growth rate: the sequence grows at least linearly.",
@@ -325,7 +325,7 @@
   {
     "id": "ann-e472-term-verification",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Individual Term Verification",
     "content": "Verified by native_decide: ulamNextCandidate applied to growing prefixes yields 7, 11, 13, 17 respectively.",
     "mathContext": "Each theorem proves one step of the extension: $[3,5] \\to 7$, $[3,5,7] \\to 11$, $[3,5,7,11] \\to 13$, $[3,5,7,11,13] \\to 17$. The `native_decide` tactic compiles the computation to native code, making these proofs fast despite the primality checks. This is a validated **computational trace** of the greedy algorithm.",
@@ -369,7 +369,7 @@
   {
     "id": "ann-e472-candidates-odd",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Odd + Odd Candidates Are Odd",
     "content": "If both last and q are odd (and q ≥ 1), then last + q − 1 is odd.",
     "mathContext": "This parity lemma explains why odd seeds are preferred: $\\text{odd} + \\text{odd} - 1 = \\text{even} + \\text{odd} - 1 = \\text{odd}$. All candidates from an all-odd sequence are odd, so they're never excluded by being even (except $2$). This contrasts with seeds containing $2$, where $p + 2 - 1 = p + 1$ is even for odd $p$.",
@@ -391,7 +391,7 @@
   {
     "id": "ann-e472-seed-two-even",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Seed Element 2 Produces Even Candidates",
     "content": "For p ≥ 3, the candidate p + 2 − 1 = p + 1 is even, hence never prime. Seeds containing 2 produce dead-end candidates.",
     "mathContext": "This theorem formalizes why $2$ is a poor seed element: for any $p \\geq 3$, the candidate $p + 2 - 1 = p + 1$ is always even and $> 2$, hence composite. In effect, $q_i = 2$ contributes nothing useful to the candidate pool once the sequence passes $3$. This motivates restricting to all-odd seeds.",
@@ -413,7 +413,7 @@
   {
     "id": "ann-e472-odd-candidate",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Odd Inputs Give Odd Candidates",
     "content": "For odd p and odd q, the candidate p + q − 1 is odd, complementing the parity analysis.",
     "mathContext": "Uses the `Odd` predicate to show $p + q - 1$ is odd when both inputs are odd. Combined with `seed_two_gives_even`, this completes the parity picture: the viability of candidates depends entirely on the parity of the seed elements and current last term.",

@@ -295,7 +295,7 @@
       "startLine": 278,
       "endLine": 289
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_869_status:**\n\nSummarizes what we know:\n\n```lean\ntheorem erdos_869_status :\n    (∃ A₁ A₂, areDisjointBases A₁ A₂) ∧\n    (∃ A, isAdditiveBasis2 A ∧ ¬containsMinimalBasis A) ∧\n    (∀ A₁ A₂, areDisjointBases A₁ A₂ →\n      isAdditiveBasis2 (A₁ ∪ A₂))\n```\n\n1. Disjoint bases exist\n2. Some bases lack minimal sub-bases (Härtter-Nathanson)\n3. Union of disjoint bases is always a basis\n\nThe question: Does (3)'s special structure overcome (2)?",
     "significance": "key",

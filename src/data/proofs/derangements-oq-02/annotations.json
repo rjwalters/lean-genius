@@ -6,7 +6,7 @@
       "startLine": 50,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fixed Points ↔ Support Size",
     "content": "**Theorem** `kFixed_iff_support_card` (requires `hk : k ≤ n`):\n```\n(Finset.univ.filter (fun x => σ x = x)).card = k ↔ σ.support.card = n - k\n```\n\nThe key identity: fixed points = support complement. Since `Fix(σ) = σ.supportᶜ` in `Fin n`, we have `|Fix(σ)| = n - |σ.support|`. The iff then reduces to `n - a = k ↔ a = n - k` in ℕ, which requires both `a ≤ n` (from `Finset.card_le_univ`) and `k ≤ n` (hypothesis) for `omega` to succeed.\n\n**Nat subtraction subtlety**: Without `hk : k ≤ n`, the iff fails! Example: n=3, σ=id (support.card=0), k=5. LHS: 3=5 (false). RHS: 0=3-5=0 (true by truncation). `omega` correctly rejects the unprovable goal.",
     "mathContext": "|\\text{Fix}(\\sigma)| = k \\iff |\\sigma.\\text{support}| = n - k \\quad (k \\leq n)",
@@ -26,7 +26,7 @@
       "startLine": 115,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Bijection: Support = S ↔ Derangements of S",
     "content": "**Definition** `permSupportEqEquiv S`: An explicit bijection\n```\n{σ : Equiv.Perm (Fin n) | σ.support = S} ≃ derangements {x : Fin n // x ∈ S}\n```\n\n**Forward** (`toFun`): `σ ↦ σ.subtypePerm h` where `h : ∀ x, x ∈ S ↔ σ x ∈ S`. Since `S = σ.support`, every element of `S` is moved by `σ`, making the restriction a derangement.\n\n**Backward** (`invFun`): `τ ↦ ofSubtype τ`. The extension by identity has support exactly `S` because: elements in `S` are moved (τ is a derangement, so τ ⟨x,hx⟩ ≠ ⟨x,hx⟩, hence ofSubtype τ x ≠ x); elements outside `S` are fixed by `ofSubtype_apply_of_not_mem`.\n\n**Left inverse**: `ofSubtype_subtypePerm` gives the round-trip `ofSubtype ∘ subtypePerm = id`, with the single explicit hypothesis `h2 : ∀ x, σ x ≠ x → x ∈ S`.\n\n**Right inverse**: `simp` closes the goal via the definitional equality of `subtypePerm ∘ ofSubtype`.",
     "mathContext": "\\{\\sigma \\mid \\sigma.\\text{support} = S\\} \\cong \\text{derangements}(\\uparrow S)",
@@ -47,7 +47,7 @@
       "startLine": 159,
       "endLine": 193
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Formula: S(n,k) = C(n,k)·D(n-k)",
     "content": "**Theorem** `card_perms_with_kfixed` (for `hk : k ≤ n`):\n```\n|{σ ∈ Sₙ | |Fix(σ)| = k}| = C(n,k) · numDerangements(n-k)\n```\n\n**Proof via 5 rewrites**:\n1. **kFixed → support**: `|Fix(σ)| = k` ↔ `σ.support.card = n-k` (uses `kFixed_iff_support_card`)\n2. **biUnion decomposition**: `{σ | support.card = n-k}` = `⊎_{S ∈ C(Fin n, n-k)} {σ | support = S}` (each σ belongs to exactly one class by its support)\n3. **Count biUnion**: `|biUnion| = Σ |{σ | support = S}|` (by `Finset.card_biUnion`, using disjointness: two permutations with the same support card but different supports land in different buckets)\n4. **Each piece = D(n-k)**: `|{σ | support = S}| = numDerangements(n-k)` via `permSupportEqEquiv` and `card_derangements_eq_numDerangements`\n5. **Binomial count**: `|C(Fin n, n-k)| = C(n,n-k) = C(n,k)` (by `Nat.choose_symm hk`)",
     "mathContext": "S(n,k) = \\binom{n}{k} \\cdot D(n-k)",

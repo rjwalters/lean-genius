@@ -187,7 +187,7 @@
       "startLine": 65,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Lattice Shell Values",
     "content": "The triangular lattice has exactly 6 nearest neighbors at distance 1 (coordination number), 12 points within distance √3 (first two shells), and 18 within distance 3 (first several shells). These correspond to counting integer solutions of a² + ab + b² ≤ t² for the given values of t.",
     "mathContext": "$f(1) = |\\{(a,b) \\ne (0,0) : a^2+ab+b^2 \\le 1\\}| = 6$ (the 6 neighbors $\\pm(1,0), \\pm(0,1), \\pm(1,-1)$). $f(\\sqrt{3}) = 12$ adds the 6 second-shell points at $d^2 = 3$. The coordination sequence of the triangular lattice begins 1, 6, 6, 6, 6, ...",
@@ -209,7 +209,7 @@
       "startLine": 75,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Unit Neighbor Bound (Contact Number)",
     "content": "In any 1-separated planar point set, each point has at most 6 neighbors at distance exactly 1. This is because the angular separation between unit-distance neighbors must be at least π/3 (by the triangle inequality and 1-separation), so at most 6 can fit around a point. This is the hexagonal kissing number in ℝ².",
     "mathContext": "For 1-separated $S \\subset \\mathbb{R}^2$ and $p \\in S$: $|N_1(p)| \\le 6$. Proof sketch: if $q, r \\in N_1(p)$ with $q \\ne r$, then $d(q,r) \\ge 1$ and $d(p,q), d(p,r) \\le 1$, so the angle $\\angle qpr \\ge \\pi/3$. The 2D kissing number is 6.",
@@ -255,7 +255,7 @@
       "startLine": 85,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Contact Number Bound (3n)",
     "content": "The number of unordered unit-distance pairs in a 1-separated n-point set is at most 3n. This is proved by dividing the ordered bound (6n) by 2 and applying omega. This is the t = 1 case of the Erdős–Lovász–Vesztergombi conjecture, and it is tight: the triangular lattice achieves 3n − O(√n).",
     "mathContext": "$\\text{pairs}_1(S) = \\frac{1}{2}\\sum_{p \\in S}|N_1(p)| \\le 3n$. Harborth (1974) showed the exact maximum contact number is $\\lfloor 3n - \\sqrt{12n - 3}\\rfloor$, achieved by hexagonal configurations.",

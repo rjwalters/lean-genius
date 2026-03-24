@@ -117,7 +117,7 @@
       "startLine": 3300,
       "endLine": 3317
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Axiom Reduction: 4 Axioms Collapse to 1 Independent Axiom",
     "content": "The axiom reduction chain is the architectural centerpiece of the formalization. Starting with 4 declared axioms (borsuk_ulam_general, no_retraction, brouwer_fixed_point, lusternik_schnirelmann), the file proves 3 are redundant: BU → no_retraction via hemisphere folding and radial extension, no_retraction → Brouwer FP via ball projection and ray-sphere retraction, and BU → LS via the infDist technique. The single remaining independent axiom borsuk_ulam_general requires algebraic topology (Brouwer degree or homology) for its proof, which is not yet available in Mathlib. This reduction demonstrates that all major fixed-point and covering theorems in this family are logically equivalent.",
     "mathContext": "The equivalence chain: $\\text{BU} \\Rightarrow \\text{no-retraction} \\Rightarrow \\text{Brouwer FP}$ and $\\text{BU} \\Rightarrow \\text{LS}$. Conversely, no-retraction $\\Rightarrow$ BU and Brouwer FP $\\Rightarrow$ no-retraction, closing the cycle. The 1D cases are all provable from IVT alone (no axioms needed).",

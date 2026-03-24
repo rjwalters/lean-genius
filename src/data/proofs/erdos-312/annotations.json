@@ -64,7 +64,7 @@
       "startLine": 51,
       "endLine": 61
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Main Conjecture (OPEN)",
     "content": "**mainConjecture:** ∃ c > 0, ∀ K > 1, ∃ N₀, ∀ multisets of size ≥ N₀ with reciprocal sum > K, the exponential precision property holds.\n\nNote the quantifier structure: the constant c is universal (works for all K), but the threshold N₀ can depend on K. This means for each K, 'sufficiently large' may mean different things.\n\nThis is defined as a Prop rather than stated as a theorem with sorry, reflecting that this is a genuine open question — not something we claim to know the answer to.",
     "mathContext": "The formal statement matches the formal-conjectures project (FormalConjectures/ErdosProblems/312.lean), ensuring compatibility with the broader formalization effort.",

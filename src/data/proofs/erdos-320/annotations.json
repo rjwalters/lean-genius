@@ -366,7 +366,7 @@
       "startLine": 240,
       "endLine": 248
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary and Status",
     "content": "The summary theorem erdos_320_summary is genuinely proved, extracting the four key values S(1) = 2, S(2) = 4, S(3) = 8, S(8) = 255 from the oeis_A072207 axiom via nested projections. The status string records the OPEN status with the known bound gap. The file has 6 sorries (S_pos, lower_bound_growth, S_one, S_two, S_three, log_S_leading_term) and 6 axioms (the two Bleicher-Erdős bounds, BGMS bound, S_small, S_collisions, erdos_320_open_bounds, oeis_A072207, problem_321_connection). The core comparison theorem bgms_improves_bleicher_erdos is fully proved using nlinarith.",
     "mathContext": "**Proved**: $S(1) = 2 \\land S(2) = 4 \\land S(3) = 8 \\land S(8) = 255$, extracted from `oeis_A072207` via tuple projections. **Proved**: BGMS improves Bleicher-Erdős ($2\\log 2(1 - 3/(2t)) > \\log 2$ for $t \\ge 4$). **Sorry**: $S_1 = 2$, $S_2 = 4$, $S_3 = 8$ individually, and the growth rate theorems.",

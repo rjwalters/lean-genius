@@ -150,7 +150,7 @@
       "startLine": 61,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence: Midpoint vs Gap Characterization",
     "content": "**descending_wave_equiv_gaps (axiom):**\n\nFor strictly increasing sequences, `IsDescendingWave ↔ HasNonIncreasingGaps`.\n\n```lean\naxiom descending_wave_equiv_gaps {k : ℕ} (seq : Fin k → ℕ)\n    (hinc : StrictlyIncreasing seq) :\n    IsDescendingWave seq ↔ HasNonIncreasingGaps seq\n```\n\nThe `StrictlyIncreasing` hypothesis is essential for natural subtraction safety.",
     "mathContext": "`IsDescendingWave ↔ HasNonIncreasingGaps` for strictly increasing sequences. The proof requires: $2x_j \\geq x_{j-1} + x_{j+1} \\iff x_j - x_{j-1} \\geq x_{j+1} - x_j$ (rearrangement). In $\\mathbb{Z}$ this is trivial; in $\\mathbb{N}$ one needs $x_j > x_{j-1}$ to avoid subtraction underflow. The `axiom` avoids this Nat arithmetic.",
@@ -596,7 +596,7 @@
       "startLine": 256,
       "endLine": 258
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Erdős #781 is DISPROVED",
     "content": "The final theorem: the conjectured formula f(k) = k² - k + 1 is FALSE.\n\n```lean\ntheorem erdos_781 : ¬ErdosConjecture781 := conjecture_disproved\n```\n\nOne-line proof by term assignment. The conjecture is DISPROVED.",
     "mathContext": "`erdos_781 : ¬ErdosConjecture781 := conjecture_disproved`. Definitionally equal to `conjecture_disproved`. Historical note: Alon and Spencer (1989) proved $f(k) \\gg k^3$ *before* Brown-Erdős-Freedman (1990) published the explicit conjecture $f(k) = k^2 - k + 1$. So the disproof predates the formal written conjecture — Erdős had stated it informally before BEF formalized it in print.",

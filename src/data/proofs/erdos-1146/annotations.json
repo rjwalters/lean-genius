@@ -99,7 +99,7 @@
       "startLine": 143,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Schnirelmann Density Zero",
     "content": "`smooth23_schnirelmann_zero` (axiom) states d_S(smoothNumbers23) = 0. Since the 3-smooth numbers become increasingly sparse (the gaps grow as numbers get larger), the infimum of counting(N)/N over all N ≥ 1 is 0. This is crucial for the Mann's theorem application: d_S(A) = 0 means Mann only gives d_S(A+B) ≥ d_S(B), never strict inequality from the general theorem.",
     "mathContext": "$d_S(\\{2^m 3^n\\}) = \\inf_{N \\geq 1} \\frac{|\\{2^m 3^n \\leq N\\}|}{N} = 0$ because $\\frac{(\\log N)^2}{N} \\to 0$. The density is 0 despite the counting function growing to infinity.",
@@ -143,7 +143,7 @@
       "startLine": 52,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiplicative Closure",
     "content": "The 3-smooth numbers are closed under multiplication by 2, by 3, and by each other. This follows directly from the definition: if n = 2^m · 3^k, then 2n = 2^{m+1} · 3^k and 3n = 2^m · 3^{k+1}. For the product, (2^{m₁}·3^{k₁}) · (2^{m₂}·3^{k₂}) = 2^{m₁+m₂} · 3^{k₁+k₂}.",
     "mathContext": "Multiplicative closure is a key structural property. It means the 3-smooth numbers form a multiplicative monoid. This structure distinguishes them from lacunary sets and gives them richer additive behavior.",
@@ -162,7 +162,7 @@
       "startLine": 163,
       "endLine": 174
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Mann's Theorem Gives Only Non-Strict Inequality",
     "content": "Mann's theorem states d_s(A + B) ≥ min(1, d_s(A) + d_s(B)). Since d_s(smoothNumbers23) = 0, this gives d_s(A + B) ≥ min(1, d_s(B)) = d_s(B). This is a non-strict inequality — it shows the density doesn't decrease, but doesn't prove it strictly increases. The essential component question asks for strict inequality.",
     "mathContext": "This is the crux of why the problem is hard. All known general tools (Mann, Schnirelmann, Kneser) give only ≥, not >. Proving strict inequality requires understanding the specific arithmetic structure of {2^m · 3^n}.",

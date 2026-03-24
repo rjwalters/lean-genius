@@ -118,7 +118,7 @@
       "startLine": 57,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Infrastructure Lemmas",
     "content": "Five proved lemmas supporting the main theorems: (1) intervalProd_empty: empty intervals have product 1; (2-4) IsValidBoundary helpers extracting length, chain, and count properties; (5) intervalProd_pos: products are positive when starting at >= 1; (6) mod_mul_of_mod_eq_one: products of congruent-to-1 values remain congruent to 1. These establish the basic algebraic and structural properties needed for the verified examples.",
     "mathContext": "Key results: $\\prod_{i=a}^{b-1} i = 1$ when $b \\le a$ (empty product), and $a \\equiv 1, b \\equiv 1 \\pmod{p} \\implies ab \\equiv 1 \\pmod{p}$ (closure of the trivial residue class under multiplication). The positivity lemma $\\text{intervalProd}(a,b) > 0$ for $a \\ge 1, a < b$ ensures interval products are meaningful natural numbers.",
@@ -142,7 +142,7 @@
       "startLine": 115,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos k=2 Solution (p=11)",
     "content": "Verified proof that HasSolution 2 holds, using p=11 with boundaries [3, 5, 8]. The two intervals are [3,5) = {3,4} with product 12 and [5,8) = {5,6,7} with product 210. Both 12 % 11 = 1 and 210 % 11 = 1. The proof unfolds all definitions and uses fin_cases with native_decide for computational verification.",
     "mathContext": "Erdos (1979): $p = 11$, boundaries $[3, 5, 8]$. Interval $[3,5)$: $3 \\cdot 4 = 12 = 11 + 1 \\equiv 1 \\pmod{11}$. Interval $[5,8)$: $5 \\cdot 6 \\cdot 7 = 210 = 19 \\cdot 11 + 1 \\equiv 1 \\pmod{11}$. In factorial form: $2! = 2$, $4! = 24 \\equiv 2$, $7! = 5040 \\equiv 2 \\pmod{11}$.",
@@ -166,7 +166,7 @@
       "startLine": 126,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Makowski k=3 Solution (p=17)",
     "content": "Verified proof that HasSolution 3 holds, using p=17 with boundaries [2, 6, 12, 16]. Three intervals: [2,6) with product 120, [6,12) with product 332640, [12,16) with product 32760. All congruent to 1 modulo 17. The proof structure mirrors erdos_k2 with one additional fin_cases branch.",
     "mathContext": "Makowski (1983): $p = 17$, boundaries $[2, 6, 12, 16]$. Products: $2 \\cdot 3 \\cdot 4 \\cdot 5 = 120 = 7 \\cdot 17 + 1$, $6 \\cdot 7 \\cdots 11 = 332640 = 19567 \\cdot 17 + 1$, $12 \\cdot 13 \\cdot 14 \\cdot 15 = 32760 = 1927 \\cdot 17 + 1$. Factorial form: $1! \\equiv 5! \\equiv 11! \\equiv 15! \\pmod{17}$.",
@@ -210,7 +210,7 @@
       "startLine": 141,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Solutions Use Odd Primes",
     "content": "Both verified solutions use odd primes (11 and 17, both > 2). This is expected: for p=2, intervalProd a b % 2 = 1 requires an odd product, but consecutive integers alternate parity, making solutions impossible for even-length intervals. The odd prime constraint is likely necessary for all solutions.",
     "mathContext": "For $p = 2$: $\\prod_{i=a}^{b-1} i \\equiv 1 \\pmod{2}$ requires all factors odd, impossible for consecutive integers when $b - a \\ge 2$. Thus solutions require $p > 2$, i.e., odd primes. Both known solutions ($p = 11, 17$) satisfy $p > 2$.",
@@ -233,7 +233,7 @@
       "startLine": 156,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Wilson's Theorem for p=11 and p=17",
     "content": "Computationally verified instances of Wilson's theorem for the two primes used in known solutions: (10)! % 11 = 10 and (16)! % 17 = 16. These confirm that (p-1)! = p-1 (mod p), which equals -1 (mod p). Proved by native_decide.",
     "mathContext": "$10! = 3628800 \\equiv 10 \\pmod{11}$ and $16! = 20922789888000 \\equiv 16 \\pmod{17}$. In both cases $(p-1)! \\equiv p-1 \\equiv -1 \\pmod{p}$, confirming Wilson's theorem for the specific primes in the known solutions.",
@@ -255,7 +255,7 @@
       "startLine": 170,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "General Wilson's Theorem Constraint",
     "content": "States Wilson's theorem in general: for any prime p, the product of [1, p) equals p-1 modulo p. Declared as an axiom since the general proof requires Mathlib's Wilson's theorem infrastructure. This is the key structural constraint: if k intervals with product 1 partitioned {1,...,p-1}, the total product would be 1^k = 1 != -1 (mod p), a contradiction.",
     "mathContext": "**Wilson's theorem** (axiomatized): $\\forall p$ prime, $\\prod_{i=1}^{p-1} i \\equiv p - 1 \\pmod{p}$, i.e., $(p-1)! \\equiv -1 \\pmod{p}$. **Consequence**: if $k$ intervals partition $\\{1, \\ldots, p-1\\}$ with each product $\\equiv 1$, then $(p-1)! \\equiv 1^k = 1 \\pmod{p}$, contradicting $-1 \\ne 1$ for $p > 2$. So solutions must leave gaps.",
@@ -301,7 +301,7 @@
       "startLine": 189,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Noll-Simmons Factorial Generalization",
     "content": "Generalizes the conjecture: for every k, there exist a prime p and k values q_1 < ... < q_k < p with q_1! = ... = q_k! (mod p). This drops the 'consecutive intervals' structure, asking only for factorial collisions. The interval product conjecture implies Noll-Simmons (take q_i = a_i), but Noll-Simmons could be easier since it removes the consecutiveness constraint.",
     "mathContext": "**Noll-Simmons conjecture** (axiomatized): $\\forall k,\\; \\exists p$ prime, $\\exists Q : \\text{Fin}\\;k \\to \\mathbb{N}$, $(\\forall i,\\; Q(i) < p) \\land (\\forall i\\;j,\\; Q(i)! \\equiv Q(j)! \\pmod{p})$. This is weaker than Erdos #1056 since consecutive intervals give factorial collisions but not vice versa. The factorial function $n \\mapsto n! \\bmod p$ takes $p$ values in $\\{0, \\ldots, p-1\\}$; by pigeonhole, some collisions must occur, but the question is whether the maximum collision multiplicity grows without bound.",
@@ -324,7 +324,7 @@
       "startLine": 198,
       "endLine": 202
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Comprehensive Summary Theorem",
     "content": "Bundles all verified results into one conjunction: HasSolution 2, HasSolution 3, Wilson constraint for p=11, and Wilson constraint for p=17. This serves as the single 'deliverable' of the formalization, packaging the two verified examples alongside the Wilson's theorem confirmations that constrain the solution structure.",
     "mathContext": "$\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$. The conjunction packages the complete verified content of the formalization.",

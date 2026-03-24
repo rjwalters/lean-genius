@@ -215,7 +215,7 @@
       "startLine": 196,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "N is a Trivial Basis",
     "content": "**univ_is_basis**: The set of all natural numbers N is an additive basis of any order h > 0.\n\nThis is trivial: any n can be written as n + 0 + 0 + ... + 0 (using h summands).\n\n**nat_basis_order2**: N is specifically a basis of order 2 (n = 0 + n or n = 1 + (n-1)).",
     "mathContext": "The proof uses sorry because the representation function argument is non-trivial to construct in Lean. The intuition is clear: use (n, 0, ..., 0) as the representation.",
@@ -234,7 +234,7 @@
       "startLine": 205,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "concept",
     "title": "N is NOT a Minimal Basis",
     "content": "**nat_not_minimal**: The set N is NOT a minimal basis of order 2.\n\nWhy? We can remove 0: N \\ {0} is still a basis of order 2. Every n >= 2 can be written as 1 + (n-1).\n\nIn fact, we can remove any finite set of small numbers and still have a basis. N is maximally 'non-minimal'.",
     "mathContext": "The proof shows: if N were minimal, removing 0 would destroy the basis property. But N \\ {0} is still a basis, contradiction. The sorry handles the technical details.",
@@ -253,7 +253,7 @@
       "startLine": 222,
       "endLine": 229
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Essential Elements in Minimal Bases",
     "content": "**minimal_basis_essential**: In a minimal basis B, every element b is 'essential':\n\nRemoving b creates **infinitely many gaps** - numbers that cannot be represented using B \\ {b}.\n\nThis is the defining property: not just that B \\ {b} isn't a basis, but that it fails spectacularly with infinitely many unrepresentable numbers.",
     "mathContext": "The proof uses the definition of IsAdditiveBasis via Set.Finite. If B \\ {b} is not a basis, the set of unrepresentable numbers is not finite, hence infinite (using Set.Infinite).",
@@ -272,7 +272,7 @@
       "startLine": 246,
       "endLine": 255
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_868_summary** packages the two main results:\n\n1. **There exists a basis with no minimal subbasis**: From Erdos-Nathanson 1989\n2. **Large f(n) guarantees minimal subbasis**: From Erdos-Nathanson 1979\n\nThis formalizes the GAP: we know both extremes but not the middle ground where f(n) -> infinity or f(n) > epsilon log n.",
     "mathContext": "The proof extracts the existence statement from erdos_nathanson_1989 (taking t=1) and directly applies erdos_nathanson_1979 for the sufficient condition.",

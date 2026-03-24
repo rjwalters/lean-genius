@@ -112,7 +112,7 @@
       "startLine": 198,
       "endLine": 234
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kempe Chain Swap Correctness (Four-Case Proof)",
     "content": "The proof that kempeSwap preserves proper coloring handles four edge cases: both endpoints in the chain (injectivity of swap), both outside (unchanged), and the two crossing cases where one endpoint is in and the other is out. The crossing cases use the maximality condition: no edge crosses the chain boundary between vertices of the same two colors.",
     "mathContext": "The maximality hypothesis states: for any edge $(u,v)$ with $u \\in \\text{chain}$ and $v \\notin \\text{chain}$, we have $f(v) \\ne c_1$ and $f(v) \\ne c_2$. This ensures that swapping inside the chain cannot create a color conflict at the boundary, because the outside vertex uses a third color.",
@@ -156,7 +156,7 @@
       "startLine": 310,
       "endLine": 335
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Five Color Theorem: Inductive Proof Structure",
     "content": "The main theorem proves every planar graph is 5-colorable by induction on vertex count. The base case (at most 5 vertices) uses Fintype.equivFin to assign distinct colors. The inductive case uses the low-degree vertex, but the full connection to vertex deletion is bridged by the five_color_axiom due to Mathlib lacking vertex deletion with Fintype preservation.",
     "mathContext": "The inductive argument: remove a vertex $v$ of degree $\\le 5$, color $G - v$ by induction. If $\\deg(v) \\le 4$, a free color exists among 5 choices. If $\\deg(v) = 5$, use Kempe chain recoloring to reduce distinct neighbor colors from 5 to 4, then assign the freed color to $v$.",

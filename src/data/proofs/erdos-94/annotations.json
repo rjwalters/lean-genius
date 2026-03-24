@@ -50,7 +50,7 @@
       "startLine": 82,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sum of Multiplicities Equals $\\binom{n}{2}$ (Proved by Aristotle)",
     "content": "The theorem $\\sum_u f(u) = \\binom{n}{2}$ is fully proved in Lean (no sorry). Each unordered pair contributes to exactly one distance value, so the total count equals the number of pairs. The proof establishes evenness of ordered multiplicities via a symmetry argument (pairing $(p,q)$ with $(q,p)$), then converts to unordered counts. This is one of Aristotle's successful proof-search results.",
     "significance": "key",
@@ -118,7 +118,7 @@
       "startLine": 239,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fishburn's Theorem: $\\sum f(u)^2 = O(n^3)$",
     "content": "The main result solving Erdős Problem #94: there exists $C > 0$ such that $\\sum f(u)^2 \\leq C n^3$ for any $n$ points in convex position. Fishburn also showed asymptotically $C$ can be taken as $1 + \\varepsilon$ for any $\\varepsilon > 0$ when $n$ is large enough. Both are axiomatized (sorry). This was a $\\$44$ Erdős prize problem.",
     "significance": "key",
@@ -139,7 +139,7 @@
       "startLine": 271,
       "endLine": 274
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lefmann-Theile Strengthening (1995)",
     "content": "Lefmann and Theile (1995) proved $\\sum f(u)^2 = O(n^3)$ under the weaker assumption that no three points are collinear, rather than requiring convexity. This is a strict generalization: every convex polygon has no three collinear points, but not conversely.",
     "significance": "key",
@@ -182,7 +182,7 @@
       "startLine": 348,
       "endLine": 372
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Erdős-Fishburn Extremal Conjecture",
     "content": "Conjectures that for sufficiently large $n$, the regular $n$-gon maximizes $\\sum f(u)^2$ among all convex $n$-gons. Formalized as `ErdosFishburnConjecture : Prop`. Computationally verified for $n \\leq 10$ (axiomatized). Related to OEIS A387858.",
     "significance": "supporting",

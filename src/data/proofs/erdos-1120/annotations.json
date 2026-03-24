@@ -116,7 +116,7 @@
       "startLine": 55,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "definition",
     "title": "f(0) = Product of Negated Roots",
     "content": "$f(0) = \\prod_{i=1}^n (-r_i)$ and $|f(0)| = \\prod_{i=1}^n |r_i|$. Since each $|r_i| \\le 1$, we get $|f(0)| \\le 1$, so the origin always lies in the sublevel set $E$. This is the starting point of the path problem.",
     "mathContext": "$|f(0)| = \\prod_{i=1}^n |r_i| \\le 1$, so $0 \\in E$",
@@ -138,7 +138,7 @@
       "startLine": 72,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Origin Always in E",
     "content": "The origin $0$ always belongs to the sublevel set $E$ for any unit-rooted polynomial. This is proved by showing $|f(0)| = \\prod |r_i| \\le 1$ since each $|r_i| \\le 1$. This guarantees the path problem is well-posed: the starting point $0$ is always in $E$.",
     "mathContext": "$0 \\in E$ for all unit-rooted polynomials",
@@ -159,7 +159,7 @@
       "startLine": 80,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Case f(z) = z^n: Unit Disk",
     "content": "When all roots are at the origin ($r_i = 0$), $f(z) = z^n$ and the sublevel set is exactly the closed unit disk $\\{|z| \\le 1\\}$. The proof uses `map_pow` and the equivalence $|z|^n \\le 1 \\iff |z| \\le 1$ (for $n \\ge 1$). This is the trivial case where the shortest path has length 1 (the segment $[0,1]$).",
     "mathContext": "$f(z) = z^n \\implies E = \\overline{\\mathbb{D}},\\; \\ell(f) = 1$",
@@ -181,7 +181,7 @@
       "startLine": 114,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Degree 1: Shifted Disk",
     "content": "For degree 1 with root $r$ ($|r| \\le 1$), $f(z) = z - r$ and $E = \\{|z - r| \\le 1\\}$ is a closed disk of radius 1 centered at $r$. The origin is in this disk since $|0 - r| = |r| \\le 1$. The shortest path from 0 to the unit circle depends on the position of $r$.",
     "mathContext": "$f(z) = z - r \\implies E = \\{|z - r| \\le 1\\} = \\overline{B}(r, 1)$",
@@ -203,7 +203,7 @@
       "startLine": 134,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Unimodular Roots: |f(0)| = 1",
     "content": "When all roots have $|r_i| = 1$ (unimodular/roots on the unit circle), $|f(0)| = \\prod |r_i| = 1$. This means 0 is on the boundary of $E$, making the path problem hardest — the origin barely qualifies as a starting point. Unimodular configurations are expected to produce the extremal cases.",
     "mathContext": "$|r_i| = 1\\; \\forall i \\implies |f(0)| = 1$",
@@ -246,7 +246,7 @@
       "startLine": 147,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Clunie-Netanyahu: Path Always Exists",
     "content": "Clunie and Netanyahu proved that for any unit-rooted polynomial of degree $\\ge 1$, there exists a continuous path from 0 to the unit circle lying entirely within $E$. This is non-trivial: the sublevel set could a priori be disconnected between 0 and $|z| = 1$. Their result guarantees the path problem is always solvable, making $\\ell(f)$ well-defined and finite.",
     "mathContext": "$\\forall f,\\; \\exists \\gamma : [0,1] \\to E,\\; \\gamma(0) = 0,\\; |\\gamma(1)| = 1$",

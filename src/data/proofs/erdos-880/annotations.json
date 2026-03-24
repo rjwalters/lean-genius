@@ -204,7 +204,7 @@
       "startLine": 183,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Resolution (Proved in Lean)",
     "content": "The theorem `burr_erdos_complete_answer` combines both cases into a single statement: (1) for $k=2$, every basis $A$ has $\\Delta(2 \\times A) \\leq 2$, and (2) for $k \\geq 3$, there exist bases with $\\Delta(k \\times A) = \\infty$. This is fully proved in Lean from the axiomatized `k2_bounded_gaps` and `k_ge_3_unbounded_gaps`.",
     "mathContext": "$(\\forall\\, A: 2A \\sim \\mathbb{N} \\implies \\Delta(2 \\times A) \\leq 2) \\wedge (\\forall\\, k \\geq 3,\\; \\exists\\, A: kA \\sim \\mathbb{N} \\wedge \\Delta(k \\times A) = \\infty)$.",
@@ -267,7 +267,7 @@
       "startLine": 277,
       "endLine": 295
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Final Status: $\\text{burrErdosQuestion}(2) \\wedge \\forall k \\geq 3, \\neg\\text{burrErdosQuestion}(k)$ (Proved)",
     "content": "The theorems `erdos_880_status` and `erdos_880_resolved` both prove the complete dichotomy using `burrErdosQuestion`: $k=2$ gives TRUE (via `k2_bounded_gaps`), $k \\geq 3$ gives FALSE (via `push_neg` and `k_ge_3_unbounded_gaps`). These are fully proved in Lean, combining the axiomatized positive and negative results.",
     "mathContext": "$\\text{burrErdosQuestion}(2) = \\text{True}$, $\\text{burrErdosQuestion}(k) = \\text{False}$ for $k \\geq 3$.",

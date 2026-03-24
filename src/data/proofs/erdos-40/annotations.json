@@ -118,7 +118,7 @@
       "startLine": 52,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Turan Conjecture (Problem #28)",
     "content": "Every additive basis of order 2 has $\\limsup r_A(n) = \\infty$. This 1941 conjecture by Erdős and Pál Turán is one of the most famous open problems in additive combinatorics. It asserts that being an additive basis forces the representation function to be unbounded. The conjecture has been verified for structured sets but remains open in general.",
     "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\; A \\text{ is a basis of order 2} \\Rightarrow \\limsup r_A(n) = \\infty$.",
@@ -162,7 +162,7 @@
       "startLine": 65,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem #40: Strongest Form ($500 Bounty)",
     "content": "The strongest form of Problem #40: for ALL functions $g(N) \\to \\infty$, the density condition $A(N) \\gg \\sqrt{N}/g(N)$ implies $\\limsup r_A(n) = \\infty$. This is strictly stronger than the Erdős-Turán conjecture. Erdős offered $500 for a solution. The conjecture quantifies over all divergent $g$, making it a statement about the minimal density threshold for unbounded representations.",
     "mathContext": "$\\forall g : \\mathbb{N} \\to \\mathbb{R},\\; g(N) \\to \\infty \\Rightarrow \\left(A(N) \\gg \\frac{\\sqrt{N}}{g(N)} \\Rightarrow \\limsup r_A(n) = \\infty\\right)$.",
@@ -185,7 +185,7 @@
       "startLine": 74,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem #40 Implies Problem #28",
     "content": "If Problem #40 holds for ANY $g \\to \\infty$, then the Erdős-Turán conjecture follows. An additive basis of order 2 has $A(N) \\geq c\\sqrt{N}$ (since $A + A$ must cover $\\{1, \\ldots, 2N\\}$, requiring $|A|^2/2 \\geq N$). Choosing any divergent $g$ then places the basis within Problem #40's scope.",
     "mathContext": "$\\text{Problem 40} \\Rightarrow \\text{Problem 28}$. The key: basis density $A(N) \\geq c\\sqrt{N} \\geq c\\sqrt{N}/g(N)$ for any $g \\to \\infty$.",
@@ -207,7 +207,7 @@
       "startLine": 84,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Set Density Bound",
     "content": "If $r_A(n) \\leq 1$ for all $n$ ($A$ is a Sidon or $B_2$ set), then $A(N) \\leq (1+o(1))\\sqrt{N}$. This classical result (Erdős-Turán 1941, sharp constant by Lindström 1969) shows $\\sqrt{N}$ is the natural threshold: Sidon sets have bounded representation and sit exactly at this density. The proof counts pairs: all $\\binom{|A|}{2}$ pairwise sums are distinct, so $\\binom{|A|}{2} \\leq 2N$.",
     "mathContext": "$r_A(n) \\leq 1 \\;\\forall n \\Rightarrow |A \\cap [1,N]| \\leq (1+o(1))\\sqrt{N}$. Proof: $\\binom{|A|}{2} \\leq 2N$.",
@@ -230,7 +230,7 @@
       "startLine": 92,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "$B_2[g]$ Set Density Bound",
     "content": "For $B_2[g]$ sets (where $r_A(n) \\leq g$ for all $n$), the density satisfies $A(N) \\leq c_g\\sqrt{N}$. This generalizes the Sidon bound: even allowing up to $g$ representations per integer, the density remains $O(\\sqrt{N})$. Bounded representation forces the $\\sqrt{N}$ density barrier.",
     "mathContext": "$r_A(n) \\leq g \\;\\forall n \\Rightarrow |A \\cap [1,N]| \\leq c_g \\sqrt{N}$ where $c_g = O(\\sqrt{g})$.",

@@ -93,7 +93,7 @@
       "startLine": 44,
       "endLine": 44
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Classical Ramsey Number (Axiomatized)",
     "content": "The classical Ramsey number $R(G,H)$ is the smallest $N$ such that every 2-coloring of $K_N$ contains a red $G$ or blue $H$. Axiomatized since the full construction requires existence proofs from Ramsey's theorem. This is the **classical** notion — the conjecture asks whether growth rates of $R(G, \\cdot)$ control the **size** variant $\\hat{r}(G, \\cdot)$.",
     "mathContext": "$R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$, where $K_N \\to (G,H)$ means every 2-coloring of $E(K_N)$ yields a monochromatic $G$ or $H$.",
@@ -116,7 +116,7 @@
       "startLine": 50,
       "endLine": 50
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Size Ramsey Number (Axiomatized)",
     "content": "The size Ramsey number $\\hat{r}(G,H)$ is the smallest $m$ such that some graph $F$ with $m$ edges has the property that every 2-coloring of $E(F)$ yields a monochromatic $G$ or $H$. The key distinction from $R(G,H)$: the classical number minimizes **vertices** (via $K_N$), while the size number minimizes **edges** (via arbitrary $F$). The crude bound $\\hat{r}(G,H) \\le \\binom{R(G,H)}{2}$ follows from taking $F = K_{R(G,H)}$.",
     "mathContext": "$\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$. Trivially, $\\hat{r}(G,H) \\le \\binom{R(G,H)}{2}$.",
@@ -251,7 +251,7 @@
       "startLine": 84,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "EFRS Conjecture: Classical Bounds Imply Size Linearity",
     "content": "The central conjecture of Problem #568: if $G$ satisfies both $R(G, T_n) = O(n)$ for all trees and $R(G, K_n) = O(n^2)$ for all cliques, then $G$ is Ramsey size linear. This would establish a **bridge between classical and size Ramsey theory**: the growth rates of $R(G, \\cdot)$ at two extremes (sparse trees and dense cliques) would control the edge-based quantity $\\hat{r}(G, \\cdot)$. The axiom form reflects the open status.",
     "mathContext": "$\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$.",

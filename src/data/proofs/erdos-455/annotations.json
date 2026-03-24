@@ -76,7 +76,7 @@
       "startLine": 68,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Richter's Lower Bound (1976)",
     "content": "**Richter (1976)** proved that for any monotone-gap prime sequence, $\\liminf_{n \\to \\infty} q_n / n^2 > 0.352$. This shows such sequences must grow at least quadratically. The proof uses careful analysis of the distribution of primes and appeared in *Acta Arithmetica*.",
     "mathContext": "Axiomatized as: `axiom richter_lower_bound (q : MonotoneGapPrimeSeq) : liminf (fun n : ℕ => (q.seq n : ℝ) / (n : ℝ) ^ 2) atTop > (0.352 : ℝ)`. The cast `(q.seq n : ℝ)` coerces from $\\mathbb{N}$ to $\\mathbb{R}$ for the division. The `liminf` is taken along the `atTop` filter. Proof requires prime distribution estimates (PNT-strength) not yet in Mathlib.",
@@ -101,7 +101,7 @@
       "startLine": 80,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Open Conjecture and Equivalence",
     "content": "**Erdős's full conjecture remains open**: must $\\lim q_n/n^2 = \\infty$? The formalization introduces `erdos_455_conjecture` as an abstract `Prop` and states its equivalence to: for all `MonotoneGapPrimeSeq` $q$, the ratio $q_n/n^2$ tends to infinity via `Tendsto`.",
     "mathContext": "Two axioms: `erdos_455_conjecture : Prop` (the abstract statement) and `erdos_455_statement : erdos_455_conjecture ↔ ∀ q : MonotoneGapPrimeSeq, Tendsto (fun n : ℕ => (q.seq n : ℝ) / (n : ℝ) ^ 2) atTop atTop`. The `Tendsto f atTop atTop` means $\\forall M,\\, \\exists^\\infty n,\\, f(n) > M$, i.e., $f(n) \\to \\infty$.",
@@ -125,7 +125,7 @@
       "startLine": 102,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Quadratic Growth Consequence",
     "content": "As a consequence of Richter's bound, we know $q_n \\geq c \\cdot n^2$ for some $c > 0$ and all sufficiently large $n$. This follows from the definition of liminf: if $\\liminf > 0.352$, then eventually the ratio stays above $0.35$.",
     "mathContext": "Axiomatized as: `axiom growth_at_least_quadratic (q : MonotoneGapPrimeSeq) : ∃ c : ℝ, c > 0 ∧ ∀ᶠ n in atTop, (q.seq n : ℝ) ≥ c * (n : ℝ) ^ 2`. The `∀ᶠ n in atTop` is Mathlib's notation for \"for all sufficiently large $n$\", formally `{n | P n} ∈ atTop`.",
@@ -191,7 +191,7 @@
       "startLine": 139,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alternative Characterization of Non-Decreasing Gaps",
     "content": "**nonDecGaps_alt**: The non-decreasing gaps condition is equivalent to the same statement restricted to $n \\geq 1$. The $n = 0$ case is vacuously true because `simp` closes it (the natural number subtraction $q(0) - q(0-1)$ simplifies).",
     "mathContext": "Proved: `theorem nonDecGaps_alt (q : ℕ → ℕ) (hq : StrictMono q) : HasNonDecreasingGaps q ↔ ∀ n ≥ 1, q (n + 1) - q n ≥ q n - q (n - 1)`. The proof splits into two directions via `constructor`. The reverse direction handles $n = 0$ separately using `by_cases hn : n ≥ 1` and `simp [hn]`.",

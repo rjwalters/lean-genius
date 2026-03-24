@@ -184,7 +184,7 @@
       "startLine": 97,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solution Implies Conjecture False (PROVED)",
     "content": "**solution_implies_not_conjecture**: If `erdos_2_solution` holds, then `erdos_original_conjecture` is false. The proof requests a covering system with minimum modulus $N+1$, but the bound gives a class with modulus $\\leq N$, yielding contradiction via `omega`.",
     "significance": "key",
@@ -206,7 +206,7 @@
       "startLine": 114,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hough's Theorem (2015)",
     "content": "**hough_bound**: $\\forall$ covering systems, $\\exists\\, c$ with modulus $\\leq 10^{16}$. Hough's groundbreaking 2015 proof disproved Erdős's conjecture using the Lovász Local Lemma and a random sieving argument building on Filaseta-Ford-Konyagin-Pomerance-Yu (2007).",
     "significance": "key",
@@ -229,7 +229,7 @@
       "startLine": 120,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hough Implies Solution (PROVED)",
     "content": "**hough_implies_solution**: Hough's bound of $10^{16}$ immediately yields `erdos_2_solution` by setting $N = 10^{16}$. A one-line proof witnessing the existential with `hough_N`.",
     "significance": "key",
@@ -250,7 +250,7 @@
       "startLine": 131,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Balister-Bollobás-Morris-Sahasrabudhe-Tiba (2022)",
     "content": "**balister_bound**: $\\forall$ covering systems, $\\exists\\, c$ with modulus $\\leq 616{,}000$. A dramatic improvement over Hough's $10^{16}$, achieved with a fundamentally simpler proof using the **distortion method** — a new technique for analyzing random covering constructions.",
     "significance": "key",
@@ -273,7 +273,7 @@
       "startLine": 147,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Owens' Construction (2014)",
     "content": "**owens_construction**: $\\exists$ a covering system with minimum modulus $\\geq 42$. Owens constructed an explicit covering system with all moduli $\\geq 42$ and distinct, giving the best known lower bound on the maximum possible minimum modulus.",
     "significance": "key",
@@ -296,7 +296,7 @@
       "startLine": 154,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds Summary (PROVED)",
     "content": "**bounds_summary**: Combines Owens' construction ($\\exists$ system with min modulus $\\geq 42$) and Balister's bound ($\\forall$ systems, $\\exists$ modulus $\\leq 616{,}000$) into a single conjunction. The maximum possible minimum modulus $M$ satisfies $42 \\leq M \\leq 616{,}000$.",
     "significance": "key",
@@ -339,7 +339,7 @@
       "startLine": 166,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even/Odd Partition (PROVED)",
     "content": "**even_odd_cover**: $\\forall x \\in \\mathbb{Z},\\, x \\in \\text{mod2\\_even.toSet} \\lor x \\in \\text{mod2\\_odd.toSet}$. Proved by case analysis on $x \\bmod 2$ using `Int.emod_two_eq_zero_or_one` and `omega`.",
     "significance": "supporting",
@@ -362,7 +362,7 @@
       "startLine": 176,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Covering System (PROVED)",
     "content": "**trivial_cover_min_modulus**: $\\exists$ a covering system with minimum modulus $\\geq 2$. Constructs the system explicitly from `mod2_even` and `mod2_odd`, using `even_odd_cover` for the covering property. Verifies modulus $\\geq 2$ by case analysis.",
     "significance": "supporting",
@@ -409,7 +409,7 @@
       "startLine": 219,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reciprocal Sum Bound",
     "content": "**reciprocal_sum_ge_one**: $\\text{reciprocalSum}(cs) \\geq 1$ for every covering system $cs$. The density of each class $a \\bmod n$ is $1/n$, and since the classes cover all of $\\mathbb{Z}$, the sum of densities is at least 1.",
     "significance": "key",

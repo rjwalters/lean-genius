@@ -75,7 +75,7 @@
     },
     "type": "technique",
     "title": "The IBP Theorem for Fourier Coefficients",
-    "content": "The main theorem states that for a $C^1$ function $f: \\mathbb{R} \\to \\mathbb{R}$ with period $2\\pi$ and integer $n \\neq 0$:\n$$\\text{fourierCoeffOn}(\\text{ofReal} \\circ f', n) = I \\cdot n \\cdot \\text{fourierCoeffOn}(\\text{ofReal} \\circ f, n)$$\n\nThe hypotheses are carefully chosen:\n- **$C^1$ regularity** (`ContDiff \u211d 1 f`): ensures the derivative exists and is continuous, making both sides well-defined\n- **$2\\pi$-periodicity** (`\u2200 t, f(t + 2\u03c0) = f(t)`): kills the boundary term in integration by parts\n- **$n \\neq 0$**: the formula is trivially true but differently structured for $n = 0$ (the average term)",
+    "content": "The main theorem states that for a $C^1$ function $f: \\mathbb{R} \\to \\mathbb{R}$ with period $2\\pi$ and integer $n \\neq 0$:\n$$\\text{fourierCoeffOn}(\\text{ofReal} \\circ f', n) = I \\cdot n \\cdot \\text{fourierCoeffOn}(\\text{ofReal} \\circ f, n)$$\n\nThe hypotheses are carefully chosen:\n- **$C^1$ regularity** (`ContDiff ℝ 1 f`): ensures the derivative exists and is continuous, making both sides well-defined\n- **$2\\pi$-periodicity** (`∀ t, f(t + 2π) = f(t)`): kills the boundary term in integration by parts\n- **$n \\neq 0$**: the formula is trivially true but differently structured for $n = 0$ (the average term)",
     "mathContext": "$\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$ for $f \\in C^1(\\mathbb{R}/2\\pi\\mathbb{Z})$, $n \\in \\mathbb{Z} \\setminus \\{0\\}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -94,9 +94,9 @@
       "startLine": 59,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Five-Step Proof: From Derivative Hypothesis to Algebraic Closure",
-    "content": "The proof proceeds in five clean steps:\n\n**Step 1 (Derivative)**: Establish the `HasDerivAt` hypothesis for every $x \\in [0, 2\\pi]$ using the chain rule lemma.\n\n**Step 2 (Integrability)**: Show the integrand is interval-integrable \u2014 follows from continuity of `ofReal \u2218 deriv f` (composition of continuous functions).\n\n**Step 3 (Mathlib IBP)**: Apply `fourierCoeffOn_of_hasDerivAt`, which gives the IBP formula with a boundary term: $\\hat{c}_n(f') = [\\text{boundary}] + in \\cdot \\hat{c}_n(f)$.\n\n**Step 4 (Kill boundary)**: Periodicity gives $f(2\\pi) = f(0)$, so the boundary term $f(2\\pi) - f(0) = 0$ vanishes.\n\n**Step 5 (Algebra)**: After `simp` eliminates the zeros, `field_simp` and `ring` close the remaining complex arithmetic involving $\\pi$, $I$, $n$, and the coefficient formula.\n\nThe non-zero checks for $\\pi$, $I$, and $n$ (as complex numbers) are needed for `field_simp` to safely divide.",
+    "content": "The proof proceeds in five clean steps:\n\n**Step 1 (Derivative)**: Establish the `HasDerivAt` hypothesis for every $x \\in [0, 2\\pi]$ using the chain rule lemma.\n\n**Step 2 (Integrability)**: Show the integrand is interval-integrable — follows from continuity of `ofReal ∘ deriv f` (composition of continuous functions).\n\n**Step 3 (Mathlib IBP)**: Apply `fourierCoeffOn_of_hasDerivAt`, which gives the IBP formula with a boundary term: $\\hat{c}_n(f') = [\\text{boundary}] + in \\cdot \\hat{c}_n(f)$.\n\n**Step 4 (Kill boundary)**: Periodicity gives $f(2\\pi) = f(0)$, so the boundary term $f(2\\pi) - f(0) = 0$ vanishes.\n\n**Step 5 (Algebra)**: After `simp` eliminates the zeros, `field_simp` and `ring` close the remaining complex arithmetic involving $\\pi$, $I$, $n$, and the coefficient formula.\n\nThe non-zero checks for $\\pi$, $I$, and $n$ (as complex numbers) are needed for `field_simp` to safely divide.",
     "mathContext": "Integration by parts on $[0, 2\\pi]$: $\\int_0^{2\\pi} f'(t)e^{-int}\\,dt = [f(t)e^{-int}]_0^{2\\pi} + in\\int_0^{2\\pi} f(t)e^{-int}\\,dt$. Periodicity: $f(2\\pi)e^{-2\\pi in} - f(0) = f(0)(e^{-2\\pi in} - 1) = 0$ since $e^{-2\\pi in} = 1$.",
     "significance": "key",
     "relatedConcepts": [

@@ -152,7 +152,7 @@
       "startLine": 306,
       "endLine": 327
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dirichlet Pointwise Convergence Theorem (Main Result)",
     "content": "The main theorem is proved (not axiomatized) by chaining four ingredients: (1) obtain one-sided limit witnesses Lp, Lm from the BV existence axioms, (2) identify rightLimit/leftLimit with Lp/Lm via Tendsto.limUnder_eq (uniqueness of limits in Hausdorff spaces), (3) rewrite the partial sums as convolutions using fourierPartialSum_eq_convolution, and (4) apply the dirichlet_localization axiom. The proof is 12 lines of tactic mode, showing that the main theorem is a clean composition of the analytical building blocks.",
     "mathContext": "$S_N f(x_0) \\to \\frac{f(x_0^+) + f(x_0^-)}{2}$ as $N \\to \\infty$, for all $f$ of bounded variation on $\\mathbb{R}/T\\mathbb{Z}$.",
@@ -177,7 +177,7 @@
       "startLine": 360,
       "endLine": 374
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Convergence to f(x) at Continuity Points",
     "content": "At a continuity point, both one-sided limits equal the function value, so the midpoint (f(x+) + f(x-))/2 simplifies to f(x). The proof uses the helper lemmas rightLimit_eq_of_continuousAt and leftLimit_eq_of_continuousAt, which show that nhdsWithin limits agree with the full nhds limit via mono_left nhdsWithin_le_nhds. The final simplification (f(x) + f(x))/2 = f(x) is handled by field_simp and ring.",
     "mathContext": "If $f$ is continuous at $x_0$, then $f(x_0^+) = f(x_0^-) = f(x_0)$, so $S_N f(x_0) \\to f(x_0)$.",
@@ -201,7 +201,7 @@
       "startLine": 445,
       "endLine": 504
     },
-    "type": "context",
+    "type": "concept",
     "title": "Fejer Kernel and the Sum of Odd Numbers Identity",
     "content": "The Fejer kernel F_N is the Cesaro mean of the first N Dirichlet kernels. Unlike D_N, the Fejer kernel is non-negative and forms a genuine approximate identity, yielding uniform convergence for all continuous functions (Fejer's theorem). The proof that F_N(0) = N uses the classical identity that the sum of the first N odd numbers equals N^2: since D_k(0) = 2k+1, we get F_N(0) = (1/N) * N^2 = N. The inductive proof of sum_odd_eq_sq is a clean algebraic calculation via push_cast and ring.",
     "mathContext": "$F_N(t) = \\frac{1}{N} \\sum_{k=0}^{N-1} D_k(t)$, $F_N(0) = \\frac{1}{N} \\sum_{k=0}^{N-1} (2k+1) = \\frac{N^2}{N} = N$.",
@@ -225,7 +225,7 @@
       "startLine": 631,
       "endLine": 700
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Riemann-Lebesgue from Parseval via Squeeze Argument",
     "content": "The proof that Fourier coefficients tend to zero (the L^2 Riemann-Lebesgue lemma) proceeds by a squeeze argument from Parseval's theorem. Since the partial sums of |c_n|^2 converge to ||f||^2, the consecutive differences tend to zero. Each individual |c_n|^2 is bounded by the corresponding difference (since it appears in the larger sum but not the smaller). The final step uses a proof by contradiction: if ||c_n|| >= epsilon, then ||c_n||^2 >= epsilon^2, contradicting ||c_n||^2 < epsilon^2. This is a 70-line proof that avoids any integration-by-parts machinery.",
     "mathContext": "$\\sum_{|n| \\le N} |\\hat{c}_n|^2 \\to \\|f\\|_2^2$ (Parseval) implies $|\\hat{c}_n| \\to 0$ as $|n| \\to \\infty$.",

@@ -146,7 +146,7 @@
       "startLine": 59,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "2^k ≥ 4 for k ≥ 2",
     "content": "Proves $2^k \\ge 4$ for $k \\ge 2$ via `Nat.pow_le_pow_right` (monotonicity of exponentiation) and `norm_num` for $2^2 = 4$. This ensures all cycle lengths in the conjecture are valid ($\\ge 3$).",
     "mathContext": "$2^k \\ge 2^2 = 4 \\ge 3$ for $k \\ge 2$, so every element of $\\{2^k : k \\ge 2\\}$ is a valid cycle length (cycles require $\\ge 3$ vertices).",
@@ -168,7 +168,7 @@
       "startLine": 64,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of Two are Even",
     "content": "Proves $2^k$ is even for $k \\ge 2$ by writing $k = m + 1$ and factoring $2^{m+1} = 2 \\cdot 2^m$. This connects to Liu-Montgomery's result about even cycle lengths: their theorem gives even cycles, which include powers of 2.",
     "mathContext": "$2^k = 2 \\cdot 2^{k-1}$ for $k \\ge 1$, so $2 \\mid 2^k$. All target cycle lengths are even, connecting the conjecture to the study of even vs. odd cycle lengths in graphs.",
@@ -238,7 +238,7 @@
       "startLine": 102,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Liu-Montgomery Threshold Theorem (2020)",
     "content": "Axiomatizes the Liu-Montgomery result: there exists a constant $D$ such that every graph with $\\delta(G) \\ge D$ contains a cycle of length $2^k$ for some $k \\ge 2$. This disproves the Erdős-Gyárfás conjecture for $r \\ge D$ but leaves $r < D$ (especially $r = 3$) open.",
     "mathContext": "$\\exists D \\in \\mathbb{N}$ such that $\\delta(G) \\ge D \\implies \\exists k \\ge 2,\\, C_{2^k} \\subseteq G$. The exact value of $D$ is unknown; the proof gives a tower-type bound.",
@@ -262,7 +262,7 @@
       "startLine": 116,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Liu-Montgomery Even Cycles Theorem",
     "content": "Axiomatizes the stronger result: graphs with $\\delta(G) \\ge D$ contain all even cycle lengths in $[4, L]$ for some $L \\ge 16$. This is much stronger than just finding one power-of-two cycle—it gives a full spectrum of even cycles.",
     "mathContext": "$\\delta(G) \\ge D \\implies \\exists L \\ge 16$ such that $\\forall m \\in \\{4, 6, 8, \\ldots, L\\},\\, C_m \\subseteq G$. The range $[4, L]$ contains $2^k = 4$ whenever $L \\ge 4$.",
@@ -286,7 +286,7 @@
       "startLine": 124,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Range Contains Power of Two",
     "content": "Proves that any range $[4, L]$ with $L \\ge 16$ contains $2^k = 4$ (with $k = 2$). This connects Liu-Montgomery's even cycle result to the power-of-two conjecture: since the even cycle range always includes 4, the threshold result gives a $2^k$-cycle.",
     "mathContext": "For $L \\ge 16$: $2^2 = 4 \\le 16 \\le L$, so $4 \\in [4, L]$. More generally, $[4, L]$ contains $\\lfloor \\log_2 L \\rfloor - 1$ distinct powers of two.",
@@ -332,7 +332,7 @@
       "startLine": 159,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Infinite 3-Regular Tree Exists",
     "content": "Axiomatizes the existence of an infinite 3-regular tree: a connected acyclic graph where every vertex has exactly 3 neighbors. This shows finiteness is essential for the conjecture—without it, 3-regular acyclic graphs exist and trivially avoid all cycles.",
     "mathContext": "$\\exists$ infinite graph $T$ with $\\deg(v) = 3$ for all $v$ and no cycles. This is the infinite binary tree where each vertex connects to a parent and two children (the root has three children). $T$ has $\\delta = 3$ but $C_k \\not\\subseteq T$ for all $k \\ge 3$.",
@@ -378,7 +378,7 @@
       "startLine": 183,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dirac's Theorem (1952)",
     "content": "Axiomatizes Dirac's theorem: if $n \\ge 3$ and $\\delta(G) \\ge n/2$, then $G$ is Hamiltonian (contains a cycle through all $n$ vertices). This shows that high minimum degree forces long cycles, but does not directly control which specific lengths appear.",
     "mathContext": "Dirac (1952): $|V(G)| = n \\ge 3$ and $\\delta(G) \\ge n/2 \\implies G$ contains $C_n$. This is the classical sufficient condition for Hamiltonicity. It does not directly help with Problem #64 (which needs specific lengths, not just long cycles).",
@@ -402,7 +402,7 @@
       "startLine": 192,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bondy's Pancyclicity Theorem (1971)",
     "content": "Axiomatizes Bondy's theorem: if $|E(G)| \\ge n^2/4$ and $n \\ge 3$, then either $G$ is bipartite or $G$ contains all cycle lengths $3, 4, \\ldots, n$. Dense non-bipartite graphs have all cycle lengths, so they trivially satisfy Problem #64.",
     "mathContext": "Bondy (1971): $|E(G)| \\ge n^2/4$ and $G$ not bipartite $\\implies$ $G$ contains $C_k$ for all $3 \\le k \\le n$. Combined with Mantel's theorem ($n^2/4$ is the max for triangle-free), this characterizes dense graphs as pancyclic or bipartite.",
@@ -426,7 +426,7 @@
       "startLine": 207,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Random Graphs Contain Power-of-Two Cycles",
     "content": "Axiomatizes that random graphs $G(n, c/n)$ with appropriate constant $c$ have minimum degree $\\ge 3$ and contain $C_{2^k}$ for all $k \\le 10$. This probabilistic argument shows that 'most' sparse graphs satisfy the conjecture, so counterexamples must be specially constructed.",
     "mathContext": "$\\exists c > 0$ such that $G(n, c/n)$ a.s. has $\\delta \\ge 3$ and $C_{2^k} \\subseteq G$ for $2 \\le k \\le 10$. The random graph model $G(n, p)$ at $p = c/n$ is in the sparse regime where cycles of length $\\ell$ appear with probability related to $(np)^\\ell / \\ell$.",

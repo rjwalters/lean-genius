@@ -139,7 +139,7 @@
       "startLine": 85,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Upper Bound",
     "content": "For α < 1: δ(m, α) → 0 as m → ∞.\n\nThe count of d ≡ 1 (mod m) with d < exp(m^α) is about exp(m^α)/m. When α < 1, this is m^{α−1} → 0, so there aren't enough admissible divisors to cover a positive density.",
     "mathContext": "$|\\{d \\equiv 1 \\pmod{m} : 1 < d < e^{m^\\alpha}\\}| \\approx \\frac{e^{m^\\alpha}}{m} \\approx m^{\\alpha - 1} \\to 0$ when $\\alpha < 1$.",
@@ -160,7 +160,7 @@
       "startLine": 107,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős α = 1 Claim",
     "content": "**Erdős (1979):** δ(m, 1) → 0 as m → ∞.\n\nErdős claimed this in \"Some unconventional problems in number theory\" (Astérisque, 1979) without a full proof. It was later confirmed by Hall's more general result. This is the boundary of the trivial range.",
     "mathContext": "$\\delta(m, 1) \\to 0$ as $m \\to \\infty$. At $\\alpha = 1$, there are about $e^m / m$ admissible divisors, but their multiplicative structure doesn't cover enough integers.",
@@ -204,7 +204,7 @@
       "startLine": 129,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Threshold is 1/log 2",
     "content": "Combines Hall's theorem to produce the full result: the threshold exists, equals 1/log 2, is greater than 1, and the density converges to 0 below and 1 above. This is the definitive answer to Erdős's question.",
     "mathContext": "$\\text{HasSharpThreshold} \\wedge \\beta = 1/\\ln 2 \\wedge \\beta > 1 \\wedge (\\alpha < \\beta \\Rightarrow \\delta \\to 0) \\wedge (\\alpha > \\beta \\Rightarrow \\delta \\to 1)$",
@@ -268,7 +268,7 @@
       "startLine": 209,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Answer is YES",
     "content": "`erdos_697_answer : HasSharpThreshold` — the headline result extracting the threshold existence from Hall's theorem.",
     "mathContext": "Extracts the first component of `hall_theorem : HasSharpThreshold ∧ ...` to confirm $\\exists \\beta > 1$ with the sharp threshold property.",

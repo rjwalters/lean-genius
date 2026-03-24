@@ -32,7 +32,7 @@
       "startLine": 47,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Symmetry and Irreflexivity of Q_n",
     "content": "**hypercubeAdj_symm**: If $x \\sim y$ in $Q_n$ then $y \\sim x$, proved by applying `Ne.symm` to the bit-difference witness. **hypercubeAdj_irrefl**: No vertex is adjacent to itself, proved by contradiction since $x = y$ implies all bits agree, contradicting the existence of a differing bit. These two properties establish that `hypercubeAdj` defines a valid simple graph (symmetric and irreflexive).",
     "mathContext": "$x \\sim y \\Rightarrow y \\sim x$; $\\neg(x \\sim x)$",
@@ -56,7 +56,7 @@
       "startLine": 59,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Vertex and Edge Counts",
     "content": "**hypercube_vertex_count**: $|V(Q_n)| = 2^n$, proved directly via `Fintype.card_fin`. **hypercube_edge_count_formula**: The edge count satisfies $n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$, proved by algebraic manipulation. Since each vertex has degree $n$ (one neighbor per bit flip), the handshaking lemma gives $|E(Q_n)| = n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$.",
     "mathContext": "$|V(Q_n)| = 2^n$, $|E(Q_n)| = n \\cdot 2^{n-1}$, $\\deg(v) = n$ for all $v$",
@@ -105,7 +105,7 @@
       "startLine": 88,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Base Case: R(Q_0) ≤ 1",
     "content": "**ramseyNumber_zero_bound**: $R(Q_0) \\leq 1$, proved constructively. The 0-cube $Q_0$ has vertex set $\\text{Fin}(2^0) = \\text{Fin}(1)$, so it is a single vertex with no edges (by irreflexivity). Any 1-vertex graph trivially contains a monochromatic copy. The proof constructs the constant embedding $f(x) = 0$ and uses `hypercubeAdj_irrefl` to discharge the vacuous edge condition.",
     "mathContext": "$R(Q_0) \\leq 1$ since $Q_0$ has one vertex and no edges",
@@ -220,7 +220,7 @@
       "startLine": 190,
       "endLine": 194
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bound Gap Illustration",
     "content": "**bound_gap_description**: Proves $2^n \\leq 2^{2n}$ for all $n$, illustrating the exponent gap between the lower bound (exponent 1) and the trivial quadratic upper bound (exponent 2). The actual gap is between exponent 1 (conjectured) and exponent $2-c \\approx 1.964$ (Tikhomirov). Proved via `Nat.pow_le_pow_right` and `omega`.",
     "mathContext": "$2^n \\leq 2^{2n}$, illustrating gap between exponents 1 and 2",

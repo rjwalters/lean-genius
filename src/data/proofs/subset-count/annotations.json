@@ -135,7 +135,7 @@
       "startLine": 120,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sum of Binomial Coefficients",
     "content": "The subsets of an n-element set can be partitioned by size:\n- 0-element subsets: $\\binom{n}{0}$\n- 1-element subsets: $\\binom{n}{1}$\n- ...\n- n-element subsets: $\\binom{n}{n}$\n\nSumming all sizes:\n$$\\sum_{k=0}^{n} \\binom{n}{k} = 2^n$$\n\nThis is a special case of the binomial theorem with $x = y = 1$.",
     "mathContext": "$\\sum \\binom{n}{k} = 2^n$",

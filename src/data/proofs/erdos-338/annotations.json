@@ -245,7 +245,7 @@
       "startLine": 349,
       "endLine": 361
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "The summary theorem erdos_338_summary is genuinely proved, assembling four key results: (1) Kelly's theorem (∀ order-2 basis, restricted order ≤ 4), (2) Kelly's conjecture is false (¬kellyConjecture via hennecart_disproves_kelly), (3) squares have order 4 and restricted order 5, (4) triangular numbers have both orders equal to 3. The proof uses refine to split the conjunction, then dispatches each goal with the appropriate axiom combination. Final tally: 2 sorries (kelly_conjecture_false has a sorry but is superseded by hennecart_disproves_kelly which is fully proved; order_le_restricted_order has a sorry), 11 axioms, and 7 genuinely proved theorems.",
     "mathContext": "**Proved**: Kelly's theorem $\\land$ $\\neg$Kelly's conjecture $\\land$ squares$(4, 5)$ $\\land$ triangulars$(3, 3)$.\n\nThe file status: $2$ sorries, $11$ axioms, $7$ genuinely proved theorems (bateman_observation, hennecart_disproves_kelly, triangular_orders_equal, squares_orders_differ, exponential_gap, restricted_implies_regular, restricted_order_monotone, erdos_338_summary).",

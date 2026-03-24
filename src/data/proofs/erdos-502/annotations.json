@@ -97,7 +97,7 @@
       "startLine": 45,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Binary Vector Distances",
     "content": "Any two distinct binary two-vectors have distance √2 or 2. This verifies that the binary construction is indeed a two-distance set.",
     "mathContext": "For distinct pairs $(i_1, j_1) \\neq (i_2, j_2)$: $\\|v_{i_1 j_1} - v_{i_2 j_2}\\|^2 = 4 - 2|\\{i_1,j_1\\} \\cap \\{i_2,j_2\\}|$, giving distance $\\sqrt{2}$ (one shared index) or $2$ (no shared index).",
@@ -120,7 +120,7 @@
       "startLine": 54,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Lower Bound f(n) ≥ C(n, 2)",
     "content": "The binary vector construction gives C(n, 2) = n(n-1)/2 distinct points in ℝⁿ, each a two-distance set. This is the simplest lower bound.",
     "mathContext": "$|\\{e_i + e_j : 1 \\leq i < j \\leq n\\}| = \\binom{n}{2}$, so $f(n) \\geq \\binom{n}{2}$.",
@@ -143,7 +143,7 @@
       "startLine": 58,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Improved Lower Bound f(n) ≥ C(n+1, 2)",
     "content": "By taking the binary construction in ℝⁿ⁺¹ (giving C(n+1, 2) points) and projecting onto an n-dimensional subspace that preserves the two-distance property, we get f(n) ≥ n(n+1)/2.",
     "mathContext": "$f(n) \\geq \\binom{n+1}{2} = \\frac{n(n+1)}{2}$. The key insight: the binary vectors in $\\mathbb{R}^{n+1}$ lie in an $n$-dimensional affine subspace (they sum to $2$), so after translation they embed in $\\mathbb{R}^n$.",
@@ -165,7 +165,7 @@
       "startLine": 66,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bannai–Bannai–Stanton Upper Bound",
     "content": "f(n) ≤ C(n+2, 2) = (n+1)(n+2)/2. The polynomial method: for each point a ∈ A, define p_a(x) = (‖x-a‖² - d₁²)(‖x-a‖² - d₂²). These polynomials are linearly independent in a space of dimension C(n+2, 2).",
     "mathContext": "BBS (1983): For a two-distance set $A$ with distances $d_1, d_2$, define $p_a(x) = (\\|x-a\\|^2 - d_1^2)(\\|x-a\\|^2 - d_2^2)$. Then $p_a(b) = 0$ for $b \\neq a$ and $p_a(a) = d_1^2 d_2^2 > 0$, so $\\{p_a\\}_{a \\in A}$ are linearly independent. Since $p_a \\in \\mathbb{R}[x_1,\\ldots,x_n]_{\\leq 2}$, we get $|A| \\leq \\dim \\mathbb{R}[x_1,\\ldots,x_n]_{\\leq 2} = \\binom{n+2}{2}$.",
@@ -189,7 +189,7 @@
       "startLine": 72,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Sandwich Bound",
     "content": "The main result: C(n+1,2) ≤ f(n) ≤ C(n+2,2), giving f(n) = Θ(n²). The additive gap is exactly n+1, so the answer is determined up to a linear correction term.",
     "mathContext": "$\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$, i.e., $\\frac{n(n+1)}{2} \\leq f(n) \\leq \\frac{(n+1)(n+2)}{2}$. The gap is $\\binom{n+2}{2} - \\binom{n+1}{2} = n + 1$. This establishes $f(n) = \\frac{n^2}{2} + O(n)$.",
@@ -211,7 +211,7 @@
       "startLine": 80,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Planar Case f(2) = 5",
     "content": "In ℝ², the maximum two-distance set has exactly 5 points — the vertices of a regular pentagon. Note that C(3,2) = 3 < 5 < 6 = C(4,2), so this small case exceeds the projection lower bound.",
     "mathContext": "$f(2) = 5$. The regular pentagon with unit edge has distances $1$ and $\\phi = \\frac{1+\\sqrt{5}}{2}$ (the golden ratio). Kelly (1947) proved $5$ is optimal in the plane.",
@@ -233,7 +233,7 @@
       "startLine": 83,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Three-Dimensional Case f(3) = 6",
     "content": "In ℝ³, the maximum two-distance set has 6 points, matching the lower bound C(4,2) = 6 exactly.",
     "mathContext": "$f(3) = 6 = \\binom{4}{2}$. Unlike the planar case, the lower bound is tight here. The extremal configuration can be realized as the vertices of a regular octahedron.",
@@ -255,7 +255,7 @@
       "startLine": 89,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Coxeter's Polynomial Growth Question",
     "content": "Coxeter asked whether f(n) is polynomial in n. The BBS upper bound C(n+2,2) = O(n²) confirms polynomial growth, answering the original motivating question.",
     "mathContext": "Coxeter's question: Is $f(n) \\leq n^{O(1)}$? Answer: Yes, $f(n) \\leq \\binom{n+2}{2} = \\frac{(n+1)(n+2)}{2} = O(n^2)$. This is a direct corollary of the BBS theorem.",
@@ -277,7 +277,7 @@
       "startLine": 96,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Original Weaker Bound",
     "content": "Erdős obtained only f(n) ≤ n! (factorial/exponential) before BBS. This historical bound shows the dramatic improvement from exponential to quadratic achieved by the polynomial method.",
     "mathContext": "$f(n) \\leq n!$. This exponential bound was the best Erdős could achieve after finding the error in his polynomial bound attempt. The BBS result $f(n) \\leq \\binom{n+2}{2} = O(n^2)$ was a dramatic improvement.",

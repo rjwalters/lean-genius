@@ -98,7 +98,7 @@
       "startLine": 187,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Negative Roots via Substitution",
     "content": "**For Negative Roots**: Apply rule to $p(-x)$.\n\n```lean\nnoncomputable def negSubst (p : ℝ[X]) : ℝ[X] := p.comp (-X)\n\ntheorem negative_root_iff_positive_of_negSubst (p : ℝ[X]) (r : ℝ) :\n    (r < 0 ∧ p.eval r = 0) ↔ (-r > 0 ∧ (negSubst p).eval (-r) = 0)\n```\n\n**Effect on Coefficients**: $p(-x)$ alternates signs of odd-degree terms.\n\n**Example**: $p(x) = x^3 - 2x^2 + x - 1$\n- Sign changes in $p(x)$: 3 → at most 3 positive roots\n- $p(-x) = -x^3 - 2x^2 - x - 1$: 0 sign changes → 0 negative roots",
     "mathContext": "negative roots of p = positive roots of p(-x)",
@@ -167,7 +167,7 @@
       "startLine": 292,
       "endLine": 324
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connection to Rolle's Theorem",
     "content": "**Rolle's Theorem for Polynomials**:\n\nBetween any two distinct roots of $p$, there exists a root of $p'$.\n\n```lean\ntheorem rolle_polynomial (p : ℝ[X]) (a b : ℝ) (hab : a < b)\n    (ha : p.eval a = 0) (hb : p.eval b = 0) :\n    ∃ c, a < c ∧ c < b ∧ (derivative p).eval c = 0\n```\n\n**Key Insight**: Differentiation can reduce sign changes by at most 1.\n\n```lean\ntheorem derivative_reduces_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :\n    signChangesInCoeffs (derivative p) ≤ signChangesInCoeffs p - 1 ∨\n    signChangesInCoeffs (derivative p) = signChangesInCoeffs p\n```\n\nThis links root count changes to sign change decreases under differentiation.",
     "mathContext": "Rolle connects roots of p to roots of p'",

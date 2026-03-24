@@ -75,7 +75,7 @@
       "startLine": 144,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Power Reduction",
     "content": "**Theorem** (power_eq_aeval_mod): A^k = aeval A (X^k mod charpoly(A)).\n\nThis is the specialization of the reduction theorem to monomials X^k. For k >= n, the power A^k is a linear combination of lower powers. For example, with a 3x3 matrix, A^100 reduces to c_0*I + c_1*A + c_2*A^2.",
     "mathContext": "The practical payoff: computing high matrix powers requires only polynomial arithmetic modulo a degree-n polynomial.",
@@ -167,7 +167,7 @@
       "startLine": 239,
       "endLine": 251
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Nilpotent Matrix Characterization",
     "content": "**Theorem** (nilpotent_from_charpoly): If charpoly(A) = X^n, then A^n = 0.\n\nFor nilpotent matrices, the matrix exponential truncates exactly: exp(A) = I + A + A^2/2! + ... + A^{n-1}/(n-1)! since all higher terms vanish.",
     "mathContext": "Nilpotent matrices are the simplest case where Cayley-Hamilton gives explicit vanishing of powers.",
@@ -190,7 +190,7 @@
       "startLine": 261,
       "endLine": 269
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Idempotent Power Theorem",
     "content": "**Theorem** (idempotent_power): If A^2 = A, then A^k = A for all k > 0.\n\nFor idempotent matrices, the matrix exponential becomes: exp(tA) = I + (e^t - 1)*A. All the complexity of the exponential series collapses to a single coefficient.",
     "mathContext": "Idempotent matrices are projections. Their spectral decomposition is trivially A = P where P projects onto the range.",

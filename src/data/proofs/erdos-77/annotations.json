@@ -120,7 +120,7 @@
       "startLine": 142,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos's Combined Bounds",
     "content": "**theorem erdos_bounds**: sqrt(2) <= liminf R(k)^{1/k} AND limsup R(k)^{1/k} <= 4\n\nVerified from the axioms!\n\nThis means: 1.414... <= limit (if exists) <= 4",
     "mathContext": "From R(k) >= 2^{k/2}: R(k)^{1/k} >= 2^{1/2} = sqrt(2). From R(k) <= 4^k: R(k)^{1/k} <= 4.",
@@ -196,7 +196,7 @@
       "startLine": 210,
       "endLine": 216
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Consistency Check",
     "content": "**theorem erdos_conjecture_consistent**: sqrt(2) < 2 AND 2 < 3.7993\n\nVerified! Erdos's conjecture (L = 2) is consistent with current bounds.\n\nNote: sqrt(2) ~ 1.414 < 2 < 3.7993",
     "mathContext": "If the limit exists and equals 2, this would be consistent with all known bounds.",

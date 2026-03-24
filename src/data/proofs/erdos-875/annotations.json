@@ -216,7 +216,7 @@
   {
     "id": "ann-e875-pow2Increasing",
     "proofId": "erdos-875",
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 Strictly Increasing (Fully Proved)",
     "content": "2^n < 2^(n+1) for all n, proved by Nat.pow_lt_pow_right.",
     "mathContext": "The **fully proved** lemma that $2^n < 2^{n+1}$ establishes `StrictlyIncreasing (fun n => 2^n)`. The proof uses `Nat.pow_lt_pow_right` with base $\\geq 2$ and exponent increase. This is the first half of showing powers of 2 are admissible.",
@@ -255,7 +255,7 @@
   {
     "id": "ann-e875-pow2Admissible",
     "proofId": "erdos-875",
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 Admissible (Partially Proved)",
     "content": "a(n) = 2^n is admissible. Strict increase is proved; disjoint sumsets part uses sorry (relies on popcount argument).",
     "mathContext": "The theorem that $a(n) = 2^n$ is admissible is **partially proved**: the `StrictlyIncreasing` half is established via `pow2_strictly_increasing`, but the `DisjointSumsets` half is left as `sorry`. The full proof would use the popcount axiom: if a sum $\\sum 2^{i_j}$ with $r$ terms equals a sum $\\sum 2^{i'_j}$ with $s$ terms, then popcount gives $r = s$, so sumsets of different sizes are disjoint.",
@@ -277,7 +277,7 @@
   {
     "id": "ann-e875-growthLower",
     "proofId": "erdos-875",
-    "type": "technique",
+    "type": "concept",
     "title": "Growth Lower Bound a(n) ≥ n+1 (Fully Proved)",
     "content": "Every admissible sequence with a(0) ≥ 1 satisfies a(n) ≥ n+1, proved by induction using strict increase.",
     "mathContext": "A **fully proved** growth lower bound: if $a(0) \\geq 1$ and $a$ is admissible (hence strictly increasing), then $a(n) \\geq n+1$ for all $n$. The proof is by induction: base case $a(0) \\geq 1$, and if $a(n) \\geq n+1$ then $a(n+1) > a(n) \\geq n+1$ so $a(n+1) \\geq n+2$. The `omega` tactic handles the final inequality. This is a crude bound; the disjoint sumsets condition forces much faster growth.",

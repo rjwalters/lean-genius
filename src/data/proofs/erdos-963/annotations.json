@@ -97,7 +97,7 @@
       "startLine": 54,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Conjecture: f(n) ≥ ⌊log₂ n⌋",
     "content": "The central open problem of Erdős #963: every $n$-element set of reals contains a dissociated subset of size at least $\\lfloor\\log_2 n\\rfloor$. Combined with the trivial upper bound $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$, this would pin down $f(n)$ to within an additive constant of 1. The conjecture remains open as of 2026.",
     "mathContext": "$f(n) \\ge \\lfloor\\log_2 n\\rfloor$ for all $n \\ge 1$. Uses `Nat.log 2 n` which computes $\\lfloor\\log_2 n\\rfloor$ for natural numbers.",
@@ -119,7 +119,7 @@
       "startLine": 64,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Greedy Lower Bound: ⌊log₃ n⌋",
     "content": "Erdős's greedy algorithm: build a dissociated subset by iteratively adding elements. After choosing $k$ elements with distinct subset sums, a new element $a$ is forbidden if $a = s_1 - s_2$ for existing subset sums $s_1, s_2$. There are at most $2^k$ subset sums, giving at most $(2^k)^2 - 1 < 3^k$ forbidden values (using $4^k < 3^{k+1}$ for the accounting). So the process continues as long as $3^k \\le n$, yielding $k \\ge \\lfloor\\log_3 n\\rfloor$.",
     "mathContext": "At step $k$: forbidden set has $|\\{s_i - s_j : 0 \\le i,j \\le 2^k-1\\}| \\le (2^k)^2 = 4^k$. Since $4^k < 3^{k+1}$, the greedy succeeds while $3^k < n$, giving $f(n) \\ge \\lfloor\\log_3 n\\rfloor$.",

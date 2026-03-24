@@ -298,7 +298,7 @@
       "startLine": 134,
       "endLine": 146
     },
-    "type": "insight",
+    "type": "concept",
     "title": "The Open Gap",
     "content": "The current knowledge gap is immense: $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. The lower bound is subexponential (slower than any polynomial $N^\\alpha$) while the upper bound is polynomial. Determining whether $F(N)$ is polynomial or subexponential is the central open question.",
     "mathContext": "$\\exp(c\\sqrt{\\log N}) = o(N^\\alpha)$ for all $\\alpha > 0$, while $N^{1/4+o(1)}$ is polynomial. The question is whether $F(N) = N^{\\theta + o(1)}$ for some $0 < \\theta \\leq 1/4$, or whether $F$ has intermediate (subexponential) growth.",

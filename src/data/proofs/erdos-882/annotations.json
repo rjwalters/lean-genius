@@ -438,7 +438,7 @@
       "startLine": 152,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "upper_bound_max",
     "content": "For $n \\geq 16$, every valid $A$ satisfies $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2(\\log_2 n) + 3$. This is the only non-axiom theorem proving an upper bound, delegating to `upper_bound_refined`.",
     "mathContext": "This theorem instantiates the refined upper bound axiom. The gap between the lower bound $\\log_2 n - 2$ and upper bound $\\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$ is $\\frac{1}{2}\\log_2 \\log_2 n + 5$, which is $o(\\log n)$. Both bounds confirm $f(n) = (1+o(1))\\log_2 n$.",

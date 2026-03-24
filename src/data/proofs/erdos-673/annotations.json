@@ -127,7 +127,7 @@
       "startLine": 77,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Upper Bound",
     "content": "**G_upper_bound.** G(n) ≤ τ(n) - 1 for n ≥ 1. Since each ratio dᵢ/dᵢ₊₁ < 1 and there are τ(n) - 1 terms, the sum is bounded by the number of terms.",
     "mathContext": "This elementary bound follows from $d_i < d_{i+1}$ for all consecutive divisors, giving each ratio strictly less than 1. The bound is nearly tight for numbers like $n = 2^k$ where consecutive divisors have ratio $1/2$ and $G(2^k) = k/2 = \\tau(n)/2 - 1/2$. The bound also shows $G(n) = O(\\tau(n))$, which, combined with Tao's matching lower bound, gives $G(n) \\asymp \\tau(n)$ on average.",
@@ -150,7 +150,7 @@
       "startLine": 82,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tao's Bounds on G(n)",
     "content": "**Tao's bounds.** The key structural results: (1) G(n) ≤ τ(n), (2) G(n) ≥ τ(n/m)/m for any divisor m of n, (3) For even n: G(n) ≥ τ(n)/4 (taking m = 2 in the lower bound, using τ(n/2) ≥ τ(n)/2).",
     "mathContext": "Tao's lower bound $G(n) \\geq \\tau(n/m)/m$ is the deepest result in the formalization. The idea is that if $m | n$, then among the divisors of $n$, those that are multiples of $m$ contribute ratios summing to at least $\\tau(n/m)/m$. For even $n$, taking $m = 2$ gives $G(n) \\geq \\tau(n/2)/2 \\geq \\tau(n)/4$ (since $n/2$ inherits most divisors of $n$). This shows G(n) is bounded below by a constant fraction of $\\tau(n)$ for even numbers — which comprise density 1/2 of all integers. Combined with the upper bound, it gives $G(n) \\asymp \\tau(n)$ for even $n$.",
@@ -175,7 +175,7 @@
       "startLine": 97,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Asymptotic Behavior",
     "content": "**Average and almost-all behavior.** (1) The average (1/X) Σ G(n) → ∞ as X → ∞. (2) G(n) → ∞ for density 1 of integers (the 'almost all' result). The first question of Erdős is trivially answered affirmatively.",
     "mathContext": "The average of G(n) growing without bound follows from $\\sum_{n \\leq X} G(n) \\sim c X \\log X$ (proven later) and $X \\log X / X = \\log X \\to \\infty$. The 'almost all' result $G(n) \\to \\infty$ for density 1 follows from Tao's lower bound: for even $n$, $G(n) \\geq \\tau(n)/4$, and $\\tau(n) \\to \\infty$ for almost all $n$ by the Hardy-Ramanujan theorem on the normal order of $\\tau$. Erdős noted this was 'trivial' — the interesting question is the precise asymptotic formula.",
@@ -201,7 +201,7 @@
       "startLine": 115,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Erdős-Tenenbaum Distribution",
     "content": "**Erdős-Tenenbaum theorem.** The ratio G(n)/τ(n) has a continuous distribution function F: for every t, the density of integers n with G(n)/τ(n) ≤ t converges to F(t), where F is continuous, F(-∞) = 0, F(+∞) = 1.",
     "mathContext": "The Erdős-Tenenbaum result (from the 1980s) is the deepest theorem formalized here. It says that the 'efficiency' G(n)/τ(n) — how much of the theoretical maximum τ(n) the sum G(n) achieves — has a well-defined statistical distribution across integers. The continuity of F means there is no single efficiency level that a positive density of integers achieves. This is analogous to the Erdős-Kac theorem (which gives a Gaussian distribution for ω(n)/√(log log n)) and reflects the complex interplay between the multiplicative structure of n and the ordering of its divisors. The GRatio definition handles the τ(n) = 0 edge case (only n = 0) by defaulting to 0.",
@@ -251,7 +251,7 @@
       "startLine": 157,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiplicative Properties",
     "content": "**Non-multiplicativity and coprime relations.** G is not a multiplicative function: there exist coprime a, b with G(ab) ≠ G(a)G(b). However, for coprime m, n: G(mn) ≥ G(m) + G(n) — the divisor ratios of the product are at least as rich as those of the factors.",
     "mathContext": "The non-multiplicativity of G is a fundamental distinction from classical arithmetic functions (τ, σ, φ are all multiplicative). For coprime $m, n$, the divisors of $mn$ include products $d_1 d_2$ where $d_1 | m$ and $d_2 | n$. However, the sorting of these $\\tau(m) \\cdot \\tau(n)$ divisors interleaves the two factor sequences in a complex way that depends on the actual sizes, not just the divisibility structure. The superadditivity $G(mn) \\geq G(m) + G(n)$ says that combining divisor sequences can only increase the total ratio sum.",
@@ -275,7 +275,7 @@
       "startLine": 170,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Asymptotic Formula",
     "content": "**Σ G(n) ~ c X log X.** There exists a constant c > 0 such that the sum of G(n) over n ≤ X is asymptotic to c X log X. The precise formulation bounds the relative error.",
     "mathContext": "The asymptotic formula $\\sum_{n \\leq X} G(n) \\sim c X \\log X$ parallels Dirichlet's classical result $\\sum_{n \\leq X} \\tau(n) \\sim X \\log X$. Since Tao's bounds give $c_1 \\tau(n) \\leq G(n) \\leq \\tau(n)$ on average, the same order of growth follows. Determining the exact constant $c$ remains an open problem and would require understanding the precise distribution of $G(n)/\\tau(n)$. The `AsymptoticFormula` definition provides an $\\varepsilon$-$N$ characterization of this asymptotic equivalence.",
@@ -300,7 +300,7 @@
       "startLine": 184,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connection to τ(n)",
     "content": "**G and τ have similar average behavior.** The sum of τ(n) is asymptotic to X log X (Dirichlet). The sum of G(n) is sandwiched between constant multiples of the sum of τ(n), confirming G and τ have the same order of average growth.",
     "mathContext": "The theorem `G_tau_similar_average` formalizes the sandwich: $c_1 \\sum \\tau(n) \\leq \\sum G(n) \\leq c_2 \\sum \\tau(n)$ for constants $0 < c_1 \\leq c_2$. Combined with Dirichlet's theorem $\\sum \\tau(n) \\sim X \\log X$, this gives $\\sum G(n) \\asymp X \\log X$. The connection is natural: G(n) is controlled by τ(n) via Tao's bounds, so their averages must be comparable. The Dirichlet divisor problem (improving the error term in $\\sum \\tau(n) = X \\log X + (2\\gamma - 1)X + O(X^\\theta)$) is one of the oldest open problems in analytic number theory.",

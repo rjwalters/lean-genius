@@ -163,7 +163,7 @@
       "startLine": 128,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Representable Set Is Nonempty (Proved)",
     "content": "**representable_set_nonempty**: For any C > 1, the set R(C) is nonempty. The witness is 3 = 2 + ⌊C⁰⌋ = 2 + 1, using the prime 2 and k = 0.",
     "mathContext": "The proof witnesses $3 \\in R(C)$ by choosing $p = 2$ (prime) and $k = 0$. Since $C^0 = 1$ for any $C$, we have $\\lfloor 1 \\rfloor_+ = 1$, giving $2 + 1 = 3$. The proof uses `Nat.prime_two` and `norm_num` for the floor computation.",
@@ -275,7 +275,7 @@
       "startLine": 221,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary of Known Results",
     "content": "`problem_244_summary` combines the main results as a conjunction:\n\n1. **Romanoff (1934)**: ∀ C ∈ ℕ, C ≥ 2 → HasPositiveDensity(R(C))\n2. **Ding (2025)**: ∃ N with μ(N) = 0, ∀ C > 1, C ∉ N → HasPositiveDensity(R(C))\n\nThe proof is `⟨romanoff_theorem, ding_almost_all⟩`. The general conjecture for ALL C > 1 remains OPEN.",
     "mathContext": "The summary packages known results: $$(\\forall C \\in \\mathbb{N}_{\\geq 2}, \\underline{d}(R(C)) > 0) \\wedge (\\exists N, \\mu(N) = 0 \\wedge \\forall C > 1, C \\notin N \\implies \\underline{d}(R(C)) > 0)$$\nThe gap between 'integers' and 'almost all reals' vs 'all reals' is the remaining open problem.",

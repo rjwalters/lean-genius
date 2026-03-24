@@ -141,7 +141,7 @@
       "startLine": 119,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős 1970 Upper Bound",
     "content": "Axiomatizes Erdős's bound f_k(N) ≤ C · log(N)/log(log(N)). The proof idea: for each t, the number of a ∈ A with t = ap for some prime p is < k (else k elements have uniform LCM = t). Summing over primes gives the bound. Also axiomatizes the key prime factorization lemma.",
     "mathContext": "$f_k(N) \\leq C \\cdot \\frac{\\log N}{\\log\\log N}$. Key lemma: $|\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}| < k$ for each $t$, since otherwise $k$ elements of $A$ have $\\text{lcm} = t$.",
@@ -277,7 +277,7 @@
       "startLine": 235,
       "endLine": 239
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Divisor Set LCM Property (PROVED)",
     "content": "Proves that if a, b both divide n, then lcm(a,b) divides n. This is a genuine Lean proof using Nat.lcm_dvd_iff. It shows divisor sets naturally have LCM structure, motivating the avoidance condition.",
     "mathContext": "$a \\mid n \\land b \\mid n \\Rightarrow \\text{lcm}(a, b) \\mid n$. Proof: $\\text{lcm}(a,b) \\mid n \\iff a \\mid n \\land b \\mid n$ (`Nat.lcm_dvd_iff`).",
@@ -299,7 +299,7 @@
       "startLine": 256,
       "endLine": 274
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Open Problem and Gap Analysis",
     "content": "Formalizes the open problem: does there exist a unique c_k such that f_k(N) = (log N)^{c_k ± o(1)}? The gap analysis for k = 3 shows exponents between 0.438 and 0.889 — the true value is unknown.",
     "mathContext": "Open: $\\exists! c_k: \\forall \\varepsilon > 0,\\, (\\log N)^{c_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ eventually. For $k = 3$: $0.438 \\leq c_3 \\leq 0.889$.",
@@ -321,7 +321,7 @@
       "startLine": 296,
       "endLine": 305
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem (PROVED)",
     "content": "Trivially proved summary: problem is OPEN, Erdős gave initial bound, Tang–Zhang improved it, and the problem connects to the sunflower conjecture. Each clause is True, proved by exact ⟨trivial, trivial, trivial, trivial⟩.",
     "mathContext": "$(\\text{OPEN}) \\land (\\text{Erdős bound}) \\land (\\text{Tang–Zhang}) \\land (\\text{sunflower connection}) = \\text{True}^4$. Proved trivially.",

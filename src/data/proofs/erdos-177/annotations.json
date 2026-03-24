@@ -187,7 +187,7 @@
       "startLine": 95,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_177",
     "content": "**Erdős Problem #177: OPEN.**\n\nThe main theorem states the Roth lower bound $h(d) \\geq c\\sqrt{d}$, proved via `roth_lower_bound`. This captures the strongest known unconditional result. Combined with the axiomatized Beck upper bound $h(d) \\leq d^{8+\\varepsilon}$, the current state of knowledge is:\n$$c\\sqrt{d} \\leq h(d) \\leq Cd^{8+\\varepsilon}$$\nThe exact polynomial exponent $\\alpha$ in $h(d) \\approx d^\\alpha$ remains unknown.",
     "significance": "key",

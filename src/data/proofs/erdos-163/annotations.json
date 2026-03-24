@@ -78,7 +78,7 @@
       "startLine": 68,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence of Degeneracy Definitions",
     "content": "States that the two definitions of $d$-degeneracy are equivalent: every subgraph having a vertex of degree $\\le d$ is the same as admitting a vertex ordering with $\\le d$ backward neighbors. The proof proceeds by induction: given the subgraph condition, repeatedly remove a minimum-degree vertex from the remaining subgraph to build the ordering.",
     "mathContext": "$\\text{IsDDegenerate}(G, d) \\leftrightarrow \\text{HasDegeneracyOrdering}(G, d)$. The forward direction uses strong induction on $|V|$: pick $v$ with $\\deg_S(v) \\le d$, place $v$ first, and recurse on $S \\setminus \\{v\\}$. The backward direction uses the ordering directly: any subgraph inherits the ordering, so the last vertex in the ordering restricted to $S$ has $\\le d$ neighbors in $S$.",
@@ -193,7 +193,7 @@
       "startLine": 143,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lee's Theorem (2017)",
     "content": "States Lee's main result as axioms: (1) `lee_theorem`: for every $d \\ge 1$, there exists $C > 0$ such that all $d$-degenerate $H$ on $n$ vertices satisfy $R(H) \\le Cn$; (2) `lee_constant_bound`: the constant is $C = 2^{2^{cd}}$ for some absolute constant $c$; (3) `lee_chromatic_refinement`: a tighter bound $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$ using the chromatic number $\\chi(H)$. The chromatic refinement is significant: for bipartite degenerate graphs ($\\chi = 2$), it gives the conjectured optimal $R(H) \\le 2^{O(d)} \\cdot n$.",
     "mathContext": "Lee's paper 'Ramsey numbers of degenerate graphs' (Annals of Mathematics, 2017) established: $R(H) \\le 2^{2^{c_1 d}} \\cdot n$ for $d$-degenerate $H$, and the refined $R(H) \\le 2^{c_2 d \\cdot 2^{c_3 \\chi(H)}} \\cdot n$. The doubly exponential dependence on $d$ arises from the tower-type bounds in the Szemerédi regularity lemma. The chromatic refinement avoids one level of the tower when $\\chi$ is bounded.",
@@ -217,7 +217,7 @@
       "startLine": 170,
       "endLine": 176
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Burr-Erdős Conjecture is TRUE",
     "content": "Proves `burr_erdos_solved : BurrErdosConjecture` by directly applying `lee_theorem`. The proof is a one-step application: Lee's theorem provides exactly the constant $C$ and bound needed by the conjecture. The alias `erdos_163` makes the connection to the Erdős problem numbering explicit.",
     "mathContext": "The proof is: given $d \\ge 1$, obtain $\\langle C, C > 0, \\text{bound}\\rangle$ from `lee_theorem d hd`, and return $\\langle C, C > 0, \\text{bound}\\rangle$. This is essentially the identity, demonstrating that Lee's theorem is the exact content of the Burr-Erdős Conjecture.",
@@ -309,7 +309,7 @@
       "startLine": 296,
       "endLine": 306
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "Proves `erdos_163_summary`: a combined statement witnessing both the Burr-Erdős Conjecture and the explicit quantitative bound. The first conjunct uses `burr_erdos_solved`, and the second conjunct applies `lee_theorem` to provide the constant $C_d$ for each $d \\ge 1$. This summary theorem packages the entire formalization into a single verifiable statement.",
     "mathContext": "$\\text{erdos\\_163\\_summary}: \\text{BurrErdosConjecture} \\land (\\forall d \\ge 1, \\exists C > 0, \\forall H \\text{ $d$-degenerate}: R(H) \\le C \\cdot |V(H)|)$. The two conjuncts are logically equivalent, but stating both emphasizes both the qualitative (conjecture is true) and quantitative (explicit bound) aspects.",

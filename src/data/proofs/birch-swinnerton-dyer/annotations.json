@@ -169,7 +169,7 @@
       "startLine": 580,
       "endLine": 628
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proven Cases: Rank 0, 1, and CM",
     "content": "**Rank 0** (Kolyvagin 1990): $L(E, 1) \\neq 0 \\Rightarrow \\text{rank} = 0$ and $\\text{III}$ is finite.\n**Rank 1** (Gross-Zagier 1986 + Kolyvagin): $L(E, 1) = 0, L'(E, 1) \\neq 0 \\Rightarrow \\text{rank} = 1$ and $\\text{III}$ is finite.\n**CM curves** (Coates-Wiles 1977): BSD for CM curves with $L(E, 1) \\neq 0$.\n\nEach case wraps an axiom with a theorem for clean API. `BSD_rank_zero` takes a hypothesis `LFunction E 1 \\neq 0` and returns both `algebraicRank E = 0` and `analyticRank E = 0`.\n\n**Rank $\\geq 2$ is completely open!**",
     "mathContext": "$$L(E, 1) \\neq 0 \\Rightarrow r = 0; \\quad L'(E, 1) \\neq 0 \\Rightarrow r \\leq 1; \\quad L'(E, 1) = c \\cdot \\hat{h}(P_K)$$\nKolyvagin's Euler system method is the deepest technique available for BSD. The Gross-Zagier formula bridges L-functions and Heegner points. Both methods fundamentally cannot handle rank $\\geq 2$.",
@@ -217,7 +217,7 @@
       "startLine": 691,
       "endLine": 885
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Congruent Number Problem and Famous Curves",
     "content": "The **congruent number problem**: $n$ is congruent iff it is the area of a rational right triangle iff $\\text{rank}(E_n) > 0$ where $E_n: y^2 = x^3 - n^2x$. By BSD, this is equivalent to $L(E_n, 1) = 0$. The file defines `congruentNumberCurve n` and proves $\\Delta = 64n^6$ and $j = 108$ (CM by $\\mathbb{Z}[i]$). Three famous curves (`curveMinusX`, `curveJZero`, `cremona11a1`) have verified discriminants and j-invariants. BSD is proved for each via `BSD_rank_zero` with axiomatized L-values.",
     "mathContext": "$$n \\text{ congruent} \\;\\Leftrightarrow\\; \\text{rank}(E_n) > 0 \\;\\Leftrightarrow\\; L(E_n, 1) = 0, \\quad E_n: y^2 = x^3 - n^2x$$\nCongruent numbers $\\{5, 6, 7, 15, 20, 21, 24, 30, 34\\}$ have axiomatized positive rank. Non-congruent numbers $\\{1, 2, 3\\}$ have rank 0 (proved by Fermat via infinite descent). The `congruentNumberCurve_discriminant` and `congruentNumberCurve_jInvariant` theorems are fully proved by `norm_num` and `field_simp`.",
@@ -240,7 +240,7 @@
       "startLine": 1186,
       "endLine": 1254
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Koblitz Correspondence: Triangles and Curve Points",
     "content": "**The Koblitz correspondence** establishes a bijection between rational right triangles with area $n$ and non-torsion rational points on $y^2 = x^3 - n^2x$. Forward: $(a,b,c) \\mapsto ((c/2)^2, \\, (c/2)(a^2-b^2)/4)$. The proof that $Y^2 = X^3 - n^2X$ uses `nlinarith` with the Pythagorean identity $a^2 + b^2 = c^2$. The proof that $Y \\neq 0$ uses the irrationality of $\\sqrt{2}$: if $a^2 = b^2$ then $c^2 = 2a^2$, contradicting `irrational_sqrt_two`.\n\nThe structural theorem `triangle_gives_congruent_number_point` subsumes all individual point verifications.",
     "mathContext": "$$\\text{Forward}: (a,b,c) \\mapsto \\left((c/2)^2, \\; \\frac{c(a^2-b^2)}{8}\\right) \\qquad Y^2 = X(X-n)(X+n)$$\nThe forward map is proved via `triangle_to_point_on_curve` (pure algebraic identity) and `triangle_to_point_y_ne_zero` (using $\\sqrt{2} \\notin \\mathbb{Q}$ from Mathlib's `irrational_sqrt_two`). This is one of the most elegant parts of the formalization: a single theorem replacing all case-by-case verifications.",
@@ -264,7 +264,7 @@
       "startLine": 1325,
       "endLine": 1372
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Inverse Koblitz: Point to Triangle",
     "content": "**Inverse Koblitz map**: $(X, Y) \\mapsto (a, b, c) = (|X^2-n^2|/|Y|, \\; 2n|X|/|Y|, \\; (X^2+n^2)/|Y|)$. Three theorems are fully proved: `inverse_koblitz_pythagorean` ($a^2 + b^2 = c^2$ via `field_simp` and `ring`), `inverse_koblitz_area` ($ab/2 = n$ using the key identity $|X| \\cdot |X^2-n^2| = Y^2$), and supporting lemmas that $X \\neq 0$ and $X^2 \\neq n^2$ when $Y \\neq 0$.",
     "mathContext": "$$a^2 + b^2 = \\frac{(X^2-n^2)^2 + 4n^2X^2}{Y^2} = \\frac{(X^2+n^2)^2}{Y^2} = c^2$$\n$$ab/2 = \\frac{n \\cdot |X| \\cdot |X^2-n^2|}{Y^2} = \\frac{n \\cdot Y^2}{Y^2} = n$$\nThe key identity `abs_x_mul_abs_diff_sq_eq_y_sq` uses $Y^2 = X(X^2 - n^2)$ with $Y^2 \\geq 0$ to get $|X| \\cdot |X^2 - n^2| = Y^2$. Together with the forward map, this establishes the full bijection.",

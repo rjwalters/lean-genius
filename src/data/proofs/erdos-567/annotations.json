@@ -144,7 +144,7 @@
       "startLine": 72,
       "endLine": 72
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Size Ramsey Number (Axiomatized)",
     "content": "The size Ramsey number $\\hat{r}(G,H)$ is axiomatized as a function from pairs of graphs to natural numbers. Unlike Problem #566 which gives a constructive definition, here it is taken as a primitive, reflecting that the problem concerns the *growth rate* rather than exact computation.",
     "mathContext": "$\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$ where $F \\to (G,H)$ means every 2-edge-coloring of $F$ contains a monochromatic $G$ or $H$.",
@@ -188,7 +188,7 @@
       "startLine": 83,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Question 1: Is Q₃ Ramsey Size Linear?",
     "content": "The first of Erdős's three specific questions. The 3-cube $Q_3$ has $|E| = 12$ and is vertex-transitive, edge-transitive, and bipartite. Its high symmetry makes it a natural candidate for linearity, but the edge count exceeds the EFRS threshold. No proof or disproof is known.",
     "mathContext": "Is $\\hat{r}(Q_3, H) = O(|E(H)|)$ for all $H$ with no isolated vertices?",
@@ -210,7 +210,7 @@
       "startLine": 86,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Question 2: Is K₃,₃ Ramsey Size Linear?",
     "content": "The second question targets the complete bipartite graph $K_{3,3}$. Bipartite graphs often exhibit different Ramsey behavior: for example, the bipartite Ramsey number $R(K_{s,t}, K_{s,t})$ has been studied extensively by Conlon, Fox, and Sudakov. The bipartite structure makes this case particularly interesting.",
     "mathContext": "Is $\\hat{r}(K_{3,3}, H) = O(|E(H)|)$ for all $H$ with no isolated vertices?",
@@ -232,7 +232,7 @@
       "startLine": 89,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Question 3: Is H₅ Ramsey Size Linear?",
     "content": "The third question asks about $H_5 = K_4^*$. This is the most promising case due to the Bradač-Gishboliner-Sudakov result on $K_4$-subdivisions with $\\ge 6$ vertices. However, $H_5$ has only 5 vertices, so it falls just below their threshold, leaving this specific case unresolved.",
     "mathContext": "Is $\\hat{r}(H_5, H) = O(|E(H)|)$? BGS proved this for $K_4$-subdivisions with $\\ge 6$ vertices; $H_5$ has 5.",
@@ -254,7 +254,7 @@
       "startLine": 95,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bradač-Gishboliner-Sudakov: K₄ Subdivisions",
     "content": "Bradač, Gishboliner, and Sudakov proved that every subdivision of $K_4$ with at least 6 vertices is Ramsey size linear. This is a major breakthrough in size Ramsey theory of sparse graphs. Since $H_5 = K_4^*$ is a $K_4$-subdivision, their result nearly resolves the $H_5$ case — the gap is that $H_5$ has exactly 5 vertices, one below their 6-vertex threshold.",
     "mathContext": "If $G$ is a subdivision of $K_4$ with $|V(G)| \\ge 6$, then $\\hat{r}(G,H) = O(|E(H)|)$.",
@@ -277,7 +277,7 @@
       "startLine": 101,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "EFRS Sparse Linearity (1993)",
     "content": "The foundational result: Erdős, Faudree, Rousseau, and Schelp proved that any graph with $n$ vertices and at most $n + 1$ edges (and no isolated vertices) is Ramsey size linear. All three graphs in Problem #567 exceed this edge bound ($Q_3$: 12 > 9, $K_{3,3}$: 9 > 7, $H_5$: 7 > 6), which is precisely why Erdős singled them out.",
     "mathContext": "$|E(G)| \\le |V(G)| + 1 \\implies \\hat{r}(G,H) = O(|E(H)|)$. Thresholds: $Q_3$ needs $\\le 9$, has 12; $K_{3,3}$ needs $\\le 7$, has 9; $H_5$ needs $\\le 6$, has 7.",

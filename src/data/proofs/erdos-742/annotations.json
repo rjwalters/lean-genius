@@ -247,7 +247,7 @@
       "startLine": 100,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Bipartite Has Diameter 2",
     "content": "The complete bipartite graph $K_{a,b}$ (with $a,b \\ge 1$) has diameter 2 and exactly $a \\cdot b$ edges. Any two vertices in the same part are connected via a vertex in the other part.",
     "significance": "key",
@@ -269,7 +269,7 @@
       "startLine": 112,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Balanced Bipartite Is Minimal",
     "content": "$K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is a minimal diameter-2 graph: every edge is critical. Deleting any cross-edge disconnects the two endpoints from the 2-step path.",
     "significance": "key",
@@ -290,7 +290,7 @@
       "startLine": 125,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Füredi's Theorem (1992)",
     "content": "For sufficiently large $n$, every minimal diameter-2 graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges. This settles the Murty-Plesník-Ore conjecture.",
     "significance": "key",
@@ -313,7 +313,7 @@
       "startLine": 132,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bound Is Tight",
     "content": "Proved theorem: for every $n \\ge 2$, there exists a minimal diameter-2 graph with exactly $\\lfloor n^2/4 \\rfloor$ edges. The proof instantiates the balanced complete bipartite graph axiom.",
     "significance": "key",
@@ -357,7 +357,7 @@
       "startLine": 171,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Minimal Iff Critical",
     "content": "Proved theorem: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. The two definitions coincide for diameter 2, showing our specialized definition is consistent with the general framework.",
     "significance": "supporting",
@@ -379,7 +379,7 @@
       "startLine": 204,
       "endLine": 212
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Erdős Problem #742",
     "content": "Proved theorem combining both directions: (1) Füredi's bound $|E(G)| \\le n^2/4$ for large $n$, and (2) tightness via the balanced complete bipartite graph. The proof is `⟨furedi_theorem, bound_is_tight⟩`.",
     "significance": "key",

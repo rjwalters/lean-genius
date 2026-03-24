@@ -138,7 +138,7 @@
       "startLine": 125,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hecke-Ostrowski Theorem",
     "content": "hecke_ostrowski (axiomatized): If u = {alpha*k} and v = {alpha*l}, then [u,v) has O(1) discrepancy. The easier direction, proved by Hecke (1922) and Ostrowski (1927-1930).",
     "mathContext": "Erich Hecke proved this in 'Uber analytische Funktionen und die Verteilung von Zahlen mod. eins' (1922). Alexander Ostrowski extended the result in his 1927 and 1930 papers on Diophantine approximation. The proof uses the three-distance theorem: orbit-aligned intervals have endpoints that respect the gap structure, so the count stays close to the expected value.",
@@ -161,7 +161,7 @@
       "startLine": 133,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kesten's Theorem (1966)",
     "content": "kesten_theorem (axiomatized): If [u,v) has O(1) discrepancy, then u and v must be orbit endpoints. The hard direction, proved by Harry Kesten in 'On a conjecture of Erdos and Szusz related to uniform distribution mod 1' (1966).",
     "mathContext": "Kesten's proof appeared in Acta Arithmetica 12 (1966), 193-212. The argument uses properties of continued fraction convergents of alpha and the structure of Ostrowski representations. Kesten showed that if an endpoint is NOT an orbit point, then the three-distance gap structure forces the discrepancy to grow unboundedly.",
@@ -185,7 +185,7 @@
       "startLine": 141,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Characterization",
     "content": "erdos_szusz_characterization: hasBoundedDiscrepancy alpha u v <-> endpointsFromOrbit alpha u v. The complete biconditional combining Hecke-Ostrowski (backward) and Kesten (forward). Proved by constructor with exact applications of the two axioms.",
     "mathContext": "This biconditional fully characterizes O(1) discrepancy intervals for irrational rotations. It resolves the Erdos-Szusz conjecture affirmatively. The Lean proof is a clean two-line iff construction, reflecting that the mathematical content is in the two constituent theorems.",
@@ -207,7 +207,7 @@
       "startLine": 157,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Three-Distance Theorem",
     "content": "three_distance_theorem (axiomatized): The n fractional parts {alpha}, {2*alpha}, ..., {n*alpha} partition [0,1) into n+1 intervals of at most 3 distinct lengths L1, L2, L3 with L3 = L1 + L2.",
     "mathContext": "Also known as the Steinhaus conjecture or three-gap theorem, proved independently by Sos (1958), Suranyi (1958), and Swierczkowski (1958). The three gap lengths are related to the continued fraction expansion of alpha: if alpha = [a0; a1, a2, ...], the gaps correspond to the denominators of convergents. This structural regularity is what makes orbit-aligned intervals special.",
@@ -230,7 +230,7 @@
       "startLine": 169,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Weyl's Equidistribution",
     "content": "weyl_equidistribution (axiomatized): For irrational alpha, N(n,u,v,alpha)/n -> (v-u) as n -> infinity. This is Weyl's celebrated equidistribution theorem, the foundation of discrepancy theory.",
     "mathContext": "Hermann Weyl proved this in 'Uber die Gleichverteilung von Zahlen mod. Eins' (Mathematische Annalen, 1916). The proof uses Weyl's criterion: a sequence is equidistributed iff its exponential sums (1/N) sum_{m=1}^N e^{2*pi*i*h*x_m} -> 0 for all nonzero integers h. For {m*alpha}, these sums are geometric series that vanish for irrational alpha.",
@@ -253,7 +253,7 @@
       "startLine": 199,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_998_summary",
     "content": "erdos_998_summary restates the complete characterization in universal form: for all intervals [u,v) in [0,1) and irrational alpha, O(1) discrepancy holds iff both endpoints are orbit points. Proved by exact application of erdos_szusz_characterization.",
     "mathContext": "This theorem packages the full result in a clean, referenceable form. The universal quantification over u, v makes it directly applicable as a black-box tool: given any interval and any irrational rotation, the discrepancy classification is immediate.",

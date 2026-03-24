@@ -262,7 +262,7 @@
       "startLine": 144,
       "endLine": 146
     },
-    "type": "context",
+    "type": "concept",
     "title": "Alon's Observation",
     "content": "`alon_observation` axiomatizes Noga Alon's key insight: the original problem (forbidding blue APs with arbitrary step length) has no solution for any $k$. If the red set is independent in the unit distance graph, blue contains a copy of $\\mathbb{Z}$ via unit translations, and van der Waerden forces arbitrarily long monochromatic APs. This motivates the unit-step restriction.",
     "mathContext": "$\\lnot\\exists k,\\, \\forall c,\\, \\text{RedUnitDistFree}(c) \\implies \\lnot\\exists a, d \\neq 0,\\, \\forall i < k,\\, c(a + id) = 1$. Alon's argument: embed $\\mathbb{Z}$ into blue via collinear unit-spaced points; by van der Waerden, blue must contain arbitrarily long APs regardless of $k$.",
@@ -307,7 +307,7 @@
       "startLine": 170,
       "endLine": 201
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Problem Status and Formal Statement",
     "content": "Records the problem as OPEN via `erdos_188_status`. The theorem `erdos_188_statement` proves the equivalence between `ErdosProblem188` (defined via `IsLeast`) and the more explicit formulation: $\\exists k \\in s,\\, \\forall k' \\in s,\\, k \\leq k'$. This is a definitional unfolding of `IsLeast` in Lean.",
     "mathContext": "$\\text{ErdosProblem188} \\iff \\exists k \\in s,\\, \\forall k' \\in s,\\, k \\leq k'$. The equivalence follows from the definition `IsLeast s k :\\equiv k \\in s \\land \\forall k' \\in s,\\, k \\leq k'$. The proof is by splitting the conjunction in both directions.",

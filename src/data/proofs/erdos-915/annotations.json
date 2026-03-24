@@ -424,7 +424,7 @@
       "startLine": 278,
       "endLine": 292
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results Summary",
     "content": "`erdos_915_summary` is the capstone theorem combining all four main results into a single conjunction:\n1. $\\text{BollobasErdosConjecture}(m)$ holds for $m = 2, 3, 4$\n2. $\\neg\\text{BollobasErdosConjecture}(5)$\n3. $\\forall m \\geq 6$, $\\neg\\text{BollobasErdosConjecture}(m)$\n4. $\\forall m \\geq 2$, $\\text{EdgeDisjointConjecture}(m)$\n\nThe proof is a direct tuple of the component results.",
     "mathContext": "The four-part conjunction cleanly separates the problem's resolution: parts (1)-(3) completely classify the vertex-disjoint conjecture by the value of $m$, while part (4) affirms the edge-disjoint version unconditionally. The proof `⟨conjecture_small_m, conjecture_false_m5, conjecture_false_large_m, edge_disjoint_solved⟩` is an anonymous constructor for the product type.",

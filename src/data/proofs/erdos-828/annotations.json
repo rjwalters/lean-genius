@@ -122,7 +122,7 @@
       "startLine": 92,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_828_summary** combines the two main known results: totientDivisors(0) is infinite (the 3-smooth numbers) and totientDivisors(-1) is infinite (the primes). The proof is constructive, using `exact ⟨totientDivisors_zero_infinite, totientDivisors_neg_one_infinite⟩` to build the conjunction from the two axioms. This captures the complete state of rigorous knowledge: the conjecture is verified for a = 0 and a = -1, but open for all other values of a.",
     "mathContext": "The conjunction type (totientDivisors 0).Infinite ∧ (totientDivisors (-1)).Infinite is the strongest statement the formalization can make without resolving the full conjecture.",

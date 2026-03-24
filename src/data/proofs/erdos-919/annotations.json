@@ -101,7 +101,7 @@
       "startLine": 90,
       "endLine": 107
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Erdős-Hajnal Construction",
     "content": "Erdős and Hajnal constructed a graph on ω₁² where vertices (x_α, y_β) and (x_γ, y_δ) are adjacent iff α < γ and β > δ (or vice versa). This graph has χ = ℵ₁, but every subgraph of smaller order type is countably colorable.",
     "mathContext": "The construction uses the comparability of coordinates in opposite directions. Think of it as: adjacent if one is 'northeast' and the other 'southwest' on the ordinal grid.",
@@ -158,7 +158,7 @@
       "startLine": 149,
       "endLine": 170
     },
-    "type": "definition",
+    "type": "concept",
     "title": "General Framework",
     "content": "The questions generalize to arbitrary cardinals: for cardinals κ, λ, μ, does a graph on κ² exist with χ = λ and smaller subgraphs having χ ≤ μ? The E-H result is the case (ℵ₁, ℵ₁, ℵ₀) which is true.",
     "mathContext": "This parameterized view helps understand what makes Problem #919 hard: we're asking about (ℵ₂, ℵ₂, ℵ₀) or (ℵ₂, ℵ₁, ℵ₀), with a larger gap.",

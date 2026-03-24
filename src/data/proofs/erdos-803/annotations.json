@@ -44,7 +44,7 @@
       "startLine": 49,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Balance Properties",
     "content": "**Two proved theorems:**\n\n1. **regular_is_1_balanced:** If all vertices have the same degree k, then Δ = δ = k, so the graph is 1-balanced. Proved by showing Finset.sup and Finset.inf both equal k when the degree function is constant.\n\n2. **balanced_monotone:** If G is D-balanced and D ≤ D', then G is D'-balanced. The proof uses Nat.mul_le_mul_right to scale the inequality Δ ≤ D·δ up to Δ ≤ D'·δ.\n\nThese are the only fully proved results in the formalization — the deeper results require axioms.",
     "mathContext": "The monotonicity property shows that IsDBalanced defines a filtration: every D-balanced graph is also D'-balanced for D' ≥ D. The 'balanced number' of a graph (minimum D for which it is D-balanced) measures its degree irregularity.",

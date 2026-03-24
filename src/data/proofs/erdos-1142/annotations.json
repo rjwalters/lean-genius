@@ -120,7 +120,7 @@
       "startLine": 131,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Logarithmic Growth of Conditions",
     "content": "The theorem `powersOfTwoBetween_card` establishes that the cardinality of `powersOfTwoBetween n` equals $\\lfloor \\log_2 n \\rfloor$ for $n \\geq 4$. This quantifies the difficulty: for $n = 10^6$, approximately 20 differences must all be prime. Using the Prime Number Theorem heuristic, the probability of a random number near $n$ being prime is $\\sim 1/\\ln n$, so the probability that all $\\lfloor \\log_2 n \\rfloor$ differences are simultaneously prime is roughly $(1/\\ln n)^{\\log_2 n}$, which decreases super-polynomially in $n$.",
     "mathContext": "The theorem `powersOfTwoBetween_card` states:\n$$|\\text{powersOfTwoBetween}(n)| = \\lfloor \\log_2 n \\rfloor \\quad \\text{for } n \\geq 4$$\n\nThis is the key quantitative fact: the number of conditions that must simultaneously hold grows logarithmically. For $n = 10^6$, approximately 20 differences must all be prime. The heuristic probability of all being prime is roughly $(1/\\ln n)^{\\log_2 n}$, which decreases super-polynomially — supporting the conjecture that solutions are finite.",
@@ -143,7 +143,7 @@
       "startLine": 142,
       "endLine": 143
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Open Conjecture: Infinitely Many Solutions?",
     "content": "The conjecture `erdos_1142_conjecture` asserts that the set $\\{n : \\text{SatisfiesErdos1142}(n)\\}$ is infinite, formalized using `Set.Infinite`. Despite the problem asking 'are there infinitely many', the computational evidence overwhelmingly suggests the answer is NO: the gap between the last known solution ($n = 105$) and the search boundary ($2^{44}$) spans 13 orders of magnitude with no new solutions found. The set is conjectured to be exactly $\\{4, 7, 15, 21, 45, 75, 105\\}$.",
     "mathContext": "`erdos_1142_conjecture` asserts:\n$$\\{n \\in \\mathbb{N} : \\text{SatisfiesErdos1142}(n)\\} \\text{ is infinite}$$\n\nDespite the problem title asking 'are there infinitely many', the evidence strongly suggests NO — the set is likely finite, with $\\{4, 7, 15, 21, 45, 75, 105\\}$ being the complete list. The gap between 105 and the search bound $2^{44}$ spans 13 orders of magnitude with no new solutions found.",

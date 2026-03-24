@@ -117,7 +117,7 @@
       "startLine": 90,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proved Infrastructure Lemmas",
     "content": "**Six proved results:**\n\n1. **cliqueTransversal_nonneg:** 0 ≤ τ(G) (trivially from ℕ)\n2. **empty_transversal_iff:** ∅ is a transversal iff all maximal cliques have size < 2\n3. **conjecture_implies_easy_bound:** the conjecture implies the easier τ ≤ n − √n\n4. **triangleFree_isK4Free:** triangle-free ⟹ K₄-free (axiomatised)\n5. **complement_of_indep_is_transversal:** V \\ I is a transversal when I is independent\n\nThese form the logical backbone connecting the definitions to the conjecture.",
     "mathContext": "The complement-of-independent-set argument is the key structural insight: if I is independent, then every maximal clique must contain at least one vertex outside I.",
@@ -144,7 +144,7 @@
       "startLine": 133,
       "endLine": 138
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Easy Bound: τ(G) ≤ n − √n",
     "content": "**clique_transversal_easy_bound:**\n\nEvery n-vertex graph has τ(G) ≤ n − √n.\n\n**Proof idea:** Take a maximum independent set I in G. Then V \\ I is a clique transversal of size n − α(G). Since every graph has α(G) ≥ √n (by Ramsey: R(ω,t) bounds), we get τ ≤ n − √n.\n\nThe conjecture strengthens √n to H(n) ≥ √n.",
     "mathContext": "This is the baseline result against which Problem #151 is compared. The conjecture asks for a tighter bound using the exact Ramsey function for triangle-free graphs.",
@@ -199,7 +199,7 @@
       "startLine": 165,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Corollaries and Summary",
     "content": "**conjecture_strengthens_easy_bound:** H(n) ≥ √n, so the conjecture is indeed stronger than the easy bound.\n\n**conjecture_reformulation:** If the conjecture holds, then τ(G) + H(n) ≤ n (additive reformulation).\n\n**erdos_151_summary** combines:\n1. The easy bound τ ≤ n − √n\n2. H(n) ≥ √n\n3. The conjecture implies the easy bound\n\nThis provides a clean summary of the current state of knowledge.",
     "mathContext": "The reformulation τ + H ≤ n is a partition-type inequality: the graph's 'clique vulnerability' plus the Ramsey guarantee for triangle-free graphs cannot exceed the vertex count.",

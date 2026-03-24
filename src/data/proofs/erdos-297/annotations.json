@@ -245,7 +245,7 @@
       "startLine": 258,
       "endLine": 269
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_297_main:**\n\nThere exists c ∈ (0.9, 0.93) such that for all ε > 0, eventually:\n  2^{(c-ε)N} ≤ egyptianCount(N) ≤ 2^{(c+ε)N}\n\n**Proof:** Uses liuSawhneyConstant as the witness. The bounds on c come from liuSawhney_constant_bounds, and the asymptotic from liuSawhney_asymptotic. This is one of the few theorems with a complete (non-axiom) proof in the file.",
     "significance": "key",

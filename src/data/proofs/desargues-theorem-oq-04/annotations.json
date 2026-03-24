@@ -143,7 +143,7 @@
       "startLine": 154,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lagrange Cross Product Identity",
     "content": "The Lagrange identity expresses the cross product of two cross products as a linear combination of the original vectors: $\\text{cross3}(a \\times b, c \\times d) = \\det(a,b,d) \\cdot c - \\det(a,b,c) \\cdot d$. This is the algebraic engine behind the Desargues identity, reducing the degree-9 polynomial to manageable factors.",
     "mathContext": "$(a \\times b) \\times (c \\times d) = \\det(a,b,d) \\cdot c - \\det(a,b,c) \\cdot d$. Proved component-wise using `ring` after expanding via `cross3_zero/one/two` and `threeVecMat_det_explicit`.",
@@ -170,7 +170,7 @@
       "startLine": 174,
       "endLine": 204
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Desargues Identity",
     "content": "The Desargues identity: det(P,Q,R) = det(AA',BB',CC') · det(ABC) · det(A'B'C'). This algebraic identity over any CommRing K is the engine behind both the forward direction and the self-duality. The RHS is manifestly symmetric in the two triangles.",
     "mathContext": "$$\\det(P,Q,R) = \\det(AA', BB', CC') \\cdot \\det(A,B,C) \\cdot \\det(A',B',C')$$\nwhere $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$. The proof substitutes Lagrange identity results, reduces to a polynomial identity in 6 auxiliary determinants $d_1, \\ldots, d_6$.",

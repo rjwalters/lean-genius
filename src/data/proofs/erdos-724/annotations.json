@@ -282,7 +282,7 @@
       "startLine": 305,
       "endLine": 310
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary of Known Results",
     "content": "**erdos_724_status:**\n\nCombines the main established results about f(n):\n\n```lean\ntheorem erdos_724_status :\n    (∀ n, n ≥ 2 → f(n) ≤ n - 1) ∧\n    (∀ p k, Nat.Prime p → k ≥ 1 → f(p^k) = p^k - 1) ∧\n    (∀ n, n ≥ 7 → f(n) ≥ 2)\n```\n\n1. Upper bound: f(n) ≤ n - 1\n2. Prime powers achieve equality: f(p^k) = p^k - 1\n3. Bose-Parker-Shrikhande: f(n) ≥ 2 for n ≥ 7",
     "significance": "key",

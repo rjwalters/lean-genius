@@ -77,7 +77,7 @@
       "startLine": 145,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cyclotomic Galois Groups are Abelian (PROVEN)",
     "content": "**Key Fact**: Cyclotomic extensions have abelian Galois groups!\n\n$$\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^\\times$$\n\n**Why?** Each automorphism σ sends ζₙ ↦ ζₙᵏ for some k coprime to n.\n\nThe map σ ↦ k gives the isomorphism. Since multiplication in (ℤ/nℤ)× is commutative, so is the Galois group.\n\n**Genuinely proven in Lean** using `IsCyclotomicExtension.autEquivPow` — this is one of the file's real mathematical achievements.",
     "mathContext": "The proof in Lean establishes `Std.Commutative (· * ·)` for the Galois group via the chain: $\\sigma\\tau = e^{-1}(e(\\sigma\\tau)) = e^{-1}(e(\\sigma) \\cdot e(\\tau)) = e^{-1}(e(\\tau) \\cdot e(\\sigma)) = \\tau\\sigma$, where $e$ is the equivalence `IsCyclotomicExtension.autEquivPow`. The key Mathlib lemma `IsCyclotomicExtension.autEquivPow` provides $\\mathrm{Aut}(K/\\mathbb{Q}) \\simeq (\\mathbb{Z}/n\\mathbb{Z})^\\times$.",
@@ -101,7 +101,7 @@
       "startLine": 177,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cyclotomic Degree (PROVEN)",
     "content": "**Theorem**: The degree of the cyclotomic extension equals Euler's totient:\n\n$$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$$\n\nThis follows from the irreducibility of the nth cyclotomic polynomial Φₙ(x) over ℚ.\n\n**Examples**:\n- [ℚ(ζ₄):ℚ] = φ(4) = 2\n- [ℚ(ζ₇):ℚ] = φ(7) = 6",
     "mathContext": "Proved directly via `IsCyclotomicExtension.finrank`, which computes $[K:\\mathbb{Q}] = \\varphi(n)$ from the fact that the minimal polynomial of a primitive $n$th root of unity is $\\Phi_n(x)$ with $\\deg \\Phi_n = \\varphi(n)$.",
@@ -199,7 +199,7 @@
       "startLine": 306,
       "endLine": 323
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Examples and Irreducibility",
     "content": "**Cyclotomic Field Examples**:\n\n- ℚ(i) = ℚ(ζ₄): The 4th roots of unity\n- ℚ(ω) = ℚ(ζ₃): The cube roots of unity (ω = e^(2πi/3))\n- ℚ(√-3) = ℚ(ζ₃): Same field!\n\n**Key fact**: The nth cyclotomic polynomial Φₙ(x) is irreducible over ℤ (hence over ℚ by Gauss's lemma).\n\n**Proven in Lean**: `cyclotomic_irreducible` using `cyclotomic.irreducible_rat`, and two `IsCyclotomicExtension.refl` examples.",
     "mathContext": "The irreducibility $\\Phi_n(x) \\in \\mathbb{Z}[x]$ irreducible is proved via `cyclotomic.irreducible_rat n`. The examples demonstrate `IsCyclotomicExtension {4} \\mathbb{Z} (\\text{CyclotomicField}\\,4\\,\\mathbb{Q})` and similarly for $n=3$, using `IsCyclotomicExtension.refl`.",

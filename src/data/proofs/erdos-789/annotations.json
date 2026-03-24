@@ -104,7 +104,7 @@
       "startLine": 126,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Bounds",
     "content": "**combined_bounds**: (n log n)^{1/3} ≪ h(n) ≪ √n. Proved by combining erdos_choi_1974_lower and straus_1966_upper. At n = 10^6: lower ≈ 239, upper = 1000 — a substantial gap.",
     "mathContext": "$(n \\log n)^{1/3} \\ll h(n) \\ll \\sqrt{n}$; the gap between exponents $1/3$ and $1/2$ is the core open question",
@@ -145,7 +145,7 @@
       "startLine": 159,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Examples",
     "content": "**√1000 = 31** and **√1000000 = 1000** verified via native_decide, illustrating the scale of bounds at moderate n. At n = 1000: lower ≈ 19, upper ≈ 32. At n = 10^6: lower ≈ 239, upper = 1000.",
     "significance": "supporting",

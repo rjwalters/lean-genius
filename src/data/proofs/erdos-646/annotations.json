@@ -127,7 +127,7 @@
       "startLine": 160,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: n=31 for {2,3}",
     "content": "**example_even_vals_at_31:**\n\nn = 31 has even valuations for both 2 and 3.\n\n**Computation:**\n- v₂(31!) = 26 (even) ✓\n- v₃(31!) = 14 (even) ✓\n\nThis is a concrete witness for the set {2, 3}.",
     "significance": "key",
@@ -290,7 +290,7 @@
       "startLine": 351,
       "endLine": 355
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_646_summary:**\n\nCombines the two main results:\n1. ErdosConjecture646 is TRUE\n2. The sequence has bounded gaps for any prime set\n\n```lean\ntheorem erdos_646_summary :\n  ErdosConjecture646 ∧\n  (∀ S : Finset ℕ, (∀ p ∈ S, p.Prime) →\n    ∃ B : ℕ, ∀ n : ℕ, ∃ m : ℕ, n ≤ m ∧ m ≤ n + B ∧ hasAllEvenValuations S m)\n```",
     "significance": "key",

@@ -28,7 +28,7 @@
       "startLine": 33,
       "endLine": 38
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Sum-of-Divisors Function σ(n)",
     "content": "Axiomatizes the sum-of-divisors function $\\sigma(n)$ and its defining property: $\\sigma(n) = \\sum_{d \\mid n} d$ for positive $n$. This is the fundamental multiplicative arithmetic function at the heart of perfect number theory. The multiplicativity of $\\sigma$ (i.e., $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n)=1$) is crucial for computing $\\sigma$ on prime factorizations.",
     "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. For a prime power, $\\sigma(p^a) = \\frac{p^{a+1}-1}{p-1}$. For coprime $m,n$: $\\sigma(mn) = \\sigma(m)\\sigma(n)$.",

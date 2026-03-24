@@ -81,7 +81,7 @@
       "startLine": 56,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Sequence: Values and Monotonicity",
     "content": "**Three properties of the prime sequence:**\n\n1. **nthPrime_values (sorry):** $p_1=2, p_2=3, p_3=5, p_4=7$\n\n2. **nthPrime_is_prime (axiom):** For $n \\geq 1$, `nthPrime n` is prime\n\n3. **nthPrime_strictMono (axiom):** The sequence $n \\mapsto p_{n+1}$ is strictly monotone\n\nThe `sorry` in `nthPrime_values` is provable via `native_decide` but left for future work.",
     "mathContext": "`StrictMono (fun n => nthPrime (n + 1))` means $p_{n+1} < p_{n+2}$ for all $n$: the shifted sequence is strictly increasing. This rules out repeated primes. The axioms `nthPrime_is_prime` and `nthPrime_strictMono` formalize the two key properties of prime enumeration needed for Pomerance's argument.",

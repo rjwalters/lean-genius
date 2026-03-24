@@ -134,7 +134,7 @@
       "startLine": 52,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #661: Bipartite Advantage Conjecture",
     "content": "**Main Conjecture**: For all ε > 0, there exists N₀ such that F(2n) ≤ ε · f(2n) for all n ≥ N₀. This is the formal statement that F(2n) = o(f(2n)) — the bipartite arrangement provides asymptotically fewer distinct distances.",
     "significance": "key",
@@ -156,7 +156,7 @@
       "startLine": 60,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Guth–Katz Lower Bound (2015)",
     "content": "**Guth–Katz**: There exists C > 0 such that f(2n) ≥ C · n/log n for all n ≥ 2. This landmark result essentially resolved Erdős's original distinct distances problem (Problem #89) and establishes the baseline for the bipartite variant.",
     "significance": "key",
@@ -178,7 +178,7 @@
       "startLine": 67,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lattice Upper Bound",
     "content": "**Integer Lattice Bound**: There exists C > 0 such that f(2n) ≤ C · n/√(log n) for all n ≥ 2. This is achieved by the grid {1,...,√n}² and follows from Landau's estimate on numbers representable as sums of two squares.",
     "significance": "key",

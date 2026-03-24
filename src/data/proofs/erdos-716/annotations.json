@@ -156,7 +156,7 @@
       "startLine": 152,
       "endLine": 153
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Little-o Notation",
     "content": "**isLittleO f g** means f(n) = o(g(n)): the ratio f(n)/g(n) → 0 as n → ∞. The main theorem is ex63(n) = o(n²), meaning subquadratic growth.",
     "significance": "supporting",

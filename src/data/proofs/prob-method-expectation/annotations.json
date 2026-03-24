@@ -120,7 +120,7 @@
       "startLine": 77,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Ramsey Lower Bound (1947)",
     "content": "Erdős's 1947 result: $R(k,k) \\geq 2^{k/2}$. This means that for $n < 2^{k/2}$, the edges of $K_n$ can be 2-colored with no monochromatic $K_k$. The formalization provides a simplified existential statement. A full proof would combine the expected monochromatic clique count with the first moment principle: if $E[X] < 1$ for a non-negative integer $X$, then $\\Pr[X = 0] > 0$. The bound $2^{k/2}$ stood for over 75 years until Campos, Griffiths, Morris, and Sahasrabudhe (2023) improved the upper bound to $R(k,k) \\leq (4 - \\varepsilon)^k$.",
     "mathContext": "$R(k,k) \\geq 2^{k/2}$; equivalently, $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}} < 1$ when $n < 2^{k/2}$",

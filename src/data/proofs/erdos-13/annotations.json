@@ -50,7 +50,7 @@
       "startLine": 59,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alternative Characterization (Proved)",
     "content": "**divisibilityFree_iff** (proved): Equivalently, $A$ is divisibility-free iff for all $a, b, c \\in A$ with $a < b$ and $a < c$, we have $a \\nmid (b + c)$.\n\nThis reformulation separates the ordering condition from the non-divisibility conclusion, making it easier to work with in proofs. The proof unfolds both definitions and matches the components.",
     "mathContext": "DivisibilityFree A ↔ ∀ a b c ∈ A, a < b → a < c → ¬(a ∣ (b + c))",
@@ -182,7 +182,7 @@
       "startLine": 142,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "r=2 Recovers Original (Proved)",
     "content": "**rDivisibilityFree_two** (proved): $\\text{RDivisibilityFree}\\;2\\;A$ is equivalent to the original condition: for all $a, b, c \\in A$ with $a < b$ and $a < c$, $a \\nmid (b + c)$.\n\nThe proof uses `Fin.forall_fin_two` to convert between `Fin 2 → ℕ` tuples and explicit pairs, and `Fin.sum_univ_two` to reduce $\\sum_{i : \\text{Fin}\\;2} bs\\;i$ to $bs\\;0 + bs\\;1$.",
     "mathContext": "RDivisibilityFree 2 A ↔ ∀ a b c ∈ A, a < b → a < c → ¬(a ∣ (b + c))",
@@ -227,7 +227,7 @@
       "startLine": 172,
       "endLine": 179
     },
-    "type": "technique",
+    "type": "concept",
     "title": "r=2 Case is Bedert (Proved)",
     "content": "**erdos_rsum_two** (proved): `ErdosRSumConjecture 2` holds.\n\nThe proof extracts the constant $C$ from `bedert_theorem`, then uses `rDivisibilityFree_two` to convert the $r$-divisibility-free condition to the original formulation, and applies Bedert's bound. Note that $N/(2+1) = N/3$, matching Bedert's result.",
     "mathContext": "ErdosRSumConjecture 2 follows from bedert_theorem via rDivisibilityFree_two",
@@ -250,7 +250,7 @@
       "startLine": 196,
       "endLine": 204
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Membership Characterization (Proved)",
     "content": "**mem_upperThird_iff** (proved): $k \\in \\text{upperThird}(N)$ iff $k \\leq N$ and $2N < 3k$.\n\nThis characterization unfolds the filter definition and uses `omega` to handle the range condition. It provides an explicit criterion for membership in the optimal construction.",
     "mathContext": "k ∈ upperThird N ↔ k ≤ N ∧ 2*N < 3*k",

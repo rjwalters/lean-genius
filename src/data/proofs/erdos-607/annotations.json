@@ -223,7 +223,7 @@
       "startLine": 94,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "szemeredi_trotter_607",
     "content": "**szemeredi_trotter_607**: The Erdős conjecture is TRUE.\n\nSzemerédi and Trotter proved $F(n) \\leq \\exp(C\\sqrt{n})$ using their incidence theorem. This earned the \\$250 prize.",
     "mathContext": "The proof uses the Szemerédi-Trotter incidence bound to show that the constraint $\\sum \\binom{k_i}{2} = \\binom{n}{2}$ together with $I \\leq O((nm)^{2/3} + n + m)$ limits the achievable partitions to $\\exp(O(\\sqrt{n}))$ many.",
@@ -244,7 +244,7 @@
       "startLine": 100,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "incidence_at_least_two",
     "content": "**incidence_at_least_two**: Every determined line contains $\\geq 2$ configuration points.\n\nThis is immediate: the line is determined by a pair of points, both of which lie on it.",
     "mathContext": "The lower bound $|\\ell \\cap P| \\geq 2$ means incidence counts live in $\\{2, 3, \\ldots, n\\}$, not $\\{0, 1, \\ldots, n\\}$. This constraint reduces the space of possible signatures.",
@@ -265,7 +265,7 @@
       "startLine": 105,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "incidence_at_most_n",
     "content": "**incidence_at_most_n**: Every line contains $\\leq n$ configuration points (trivially).\n\nEquality $|\\ell \\cap P| = n$ holds only for collinear configurations where all points lie on one line.",
     "mathContext": "The upper bound $n$ is achieved by the collinear configuration, which has signature $A = \\{n\\}$. This is one extreme; the other is general position with $A = \\{2\\}$.",
@@ -368,7 +368,7 @@
       "startLine": 154,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "szemeredi_trotter_incidence",
     "content": "**szemeredi_trotter_incidence**: The famous Szemerédi-Trotter theorem (1983):\n\n$$I(P,L) \\leq C \\cdot (nm)^{2/3} + n + m$$\n\nwhere $I$ counts point-line incidences, $n = |P|$, $m = |L|$.",
     "mathContext": "This is one of the most important results in combinatorial geometry. The proof uses the crossing number inequality: any graph drawn in the plane with $v$ vertices and $e > 4v$ edges has $\\geq e^3/(64v^2)$ crossings. Applying this to the incidence graph yields the $O((nm)^{2/3})$ bound. Alternative proofs use polynomial partitioning (Guth-Katz 2015).",
@@ -413,7 +413,7 @@
       "startLine": 191,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_607",
     "content": "**erdos_607**: The complete solution combining both bounds:\n$$\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$$\n\nProved by `⟨szemeredi_trotter_607, lower_bound_construction⟩`.",
     "mathContext": "This gives a tight characterization of $F(n)$ up to constants in the exponent. The upper bound uses the Szemerédi-Trotter incidence theorem; the lower bound uses explicit constructions. The problem is completely resolved: $F(n) = \\exp(\\Theta(\\sqrt{n}))$.",
@@ -434,7 +434,7 @@
       "startLine": 195,
       "endLine": 199
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_607_tight",
     "content": "**erdos_607_tight**: Restates the tight asymptotic with explicit existential constants:\n\n$\\exists c, C$ with $0 < c < C$ such that eventually $\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$.\n\nDefined as `partition_count_growth`.",
     "mathContext": "The exact values of $c$ and $C$ are not determined by the formalization. Finding them is listed as an open question. The gap between $c$ and $C$ reflects the difference between the best known constructions and the best known upper bound.",

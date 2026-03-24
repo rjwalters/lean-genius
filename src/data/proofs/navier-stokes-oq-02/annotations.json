@@ -5,7 +5,7 @@
       "startLine": 2710,
       "endLine": 2732
     },
-    "type": "context",
+    "type": "definition",
     "title": "NSSolutionPair2D: Comparing Two Solutions via Difference Energy",
     "mathContext": "For two solutions $u_1, u_2$ of 2D incompressible Navier-Stokes, define $W(t) = \\|u_1(t) - u_2(t)\\|_{L^2}^2$. The difference $w = u_1 - u_2$ satisfies a linearized equation, and the Ladyzhenskaya inequality in 2D gives:\n$$\\frac{d}{dt}W(t) \\leq C \\cdot E(t) \\cdot W(t),$$\nwhere $E(t) = \\|\\nabla u_1(t)\\|_{L^2}^2$ is the enstrophy and $C$ depends on the domain. This is the critical estimate that enables the Gronwall argument.",
     "significance": "key",
@@ -28,7 +28,7 @@
       "startLine": 2734,
       "endLine": 2815
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gronwall L² Stability: The Integrating Factor Proof",
     "mathContext": "Set $K = C \\cdot E(0)$. Since $E(t) \\leq E(0)$ in 2D (bounded enstrophy), $W'(t) \\leq C \\cdot E(t) \\cdot W(t) \\leq K \\cdot W(t)$.\n\nDefine $g(s) = W(s) \\cdot e^{-Ks}$. Then:\n$$g'(s) = W'(s) e^{-Ks} - K W(s) e^{-Ks} = (W'(s) - KW(s)) e^{-Ks} \\leq 0.$$\n\nSo $g$ is antitone on $[0,\\infty)$: $g(t) \\leq g(0) = W(0)$. Hence:\n$$W(t) e^{-Kt} \\leq W(0) \\implies W(t) \\leq W(0) \\cdot e^{Kt} = W(0) \\cdot e^{CE(0)t}.$$",
     "significance": "key",
@@ -54,7 +54,7 @@
       "startLine": 2817,
       "endLine": 2827
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Uniqueness of 2D Navier-Stokes: A One-Line Corollary",
     "mathContext": "From $W(0) = 0$:\n$$0 \\leq W(t) \\leq W(0) \\cdot e^{Kt} = 0 \\cdot e^{Kt} = 0.$$\nHence $W(t) = 0$, meaning $\\|u_1(t) - u_2(t)\\|^2 = 0$, i.e., $u_1(t) = u_2(t)$ for all $t > 0$.",
     "significance": "key",
@@ -77,7 +77,7 @@
       "startLine": 2836,
       "endLine": 2853
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Stability Amplification Factor: Uniform Bound on [0,T]",
     "mathContext": "For $0 < t < T$, since $t \\leq T$ and $\\exp$ is monotone:\n$$W(t) \\leq W(0) \\cdot e^{CE(0)t} \\leq W(0) \\cdot e^{CE(0)T}.$$\nThe amplification factor $e^{CE(0)T}$ depends on:\n- $C$: the Ladyzhenskaya constant (geometry-dependent)\n- $E(0)$: initial enstrophy (finite in 2D)\n- $T$: time horizon (finite for any fixed interval)\n\nIn 3D, $E(t)$ could potentially blow up, making $\\int_0^T CE(t)\\,dt$ infinite.",
     "significance": "key",
@@ -101,7 +101,7 @@
       "startLine": 2864,
       "endLine": 2893
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Continuous Dependence: Completing Hadamard Well-Posedness",
     "mathContext": "Given $\\varepsilon > 0$, set $\\delta = \\varepsilon \\cdot e^{-CE(0)T} > 0$. If $W(0) \\leq \\delta$, then:\n$$W(t) \\leq W(0) \\cdot e^{CE(0)T} \\leq \\delta \\cdot e^{CE(0)T} = \\varepsilon \\cdot e^{-CE(0)T} \\cdot e^{CE(0)T} = \\varepsilon.$$\n\nThe explicit formula $\\delta = \\varepsilon \\cdot e^{-CE(0)T}$ shows that:\n- Longer time horizons $T$ require closer initial data (smaller $\\delta$)\n- Higher initial enstrophy $E(0)$ also requires closer initial data\n- For fixed $T$ and $E(0)$, the dependence is continuous (not just upper semicontinuous)",
     "significance": "key",

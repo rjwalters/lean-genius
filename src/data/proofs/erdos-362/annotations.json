@@ -74,7 +74,7 @@
       "startLine": 67,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős–Moser Bound (1965)",
     "content": "The original bound with a logarithmic factor:\n$$|\\{S \\subseteq A : \\sum S = t\\}| \\le C \\cdot \\frac{2^N}{N^{3/2}} \\cdot (\\log N)^{3/2}$$\n\nThis was the first result showing polynomial concentration improvement over the trivial $2^N$ bound.",
     "mathContext": "Erdős and Moser proved this by a combinatorial argument bounding the number of sign patterns $\\epsilon_1 a_1 + \\cdots + \\epsilon_N a_N$ that hit a target, related to the Littlewood-Offord problem. The $(\\log N)^{3/2}$ factor comes from their less refined treatment of the Fourier integral. Sárközy and Szemerédi's sharper analysis removed it.",

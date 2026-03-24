@@ -148,7 +148,7 @@
       "startLine": 149,
       "endLine": 154
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Three-Set Partition of N",
     "content": "**isThreePartition:**\n\nA, B, C form a partition of N if they are pairwise disjoint and cover N.\n\n```lean\ndef isThreePartition (A B C : Set N) : Prop :=\n  Disjoint A B and Disjoint B C and Disjoint A C and A union B union C = Set.univ\n```",
     "significance": "key",

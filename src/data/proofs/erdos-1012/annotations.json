@@ -8,13 +8,13 @@
     },
     "type": "context",
     "title": "Problem Documentation",
-    "content": "The header documents Erd\u0151s Problem #1012: for $k \\ge 0$, what is the minimum $f(k)$ such that every graph on $n \\ge f(k)$ vertices with at least $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ edges contains an $(n-k)$-cycle? Woodall (1972) solved this completely, showing $f(k) \\le 2k+3$ with the bonus that such graphs are pancyclic from $3$ to $n-k$.",
+    "content": "The header documents Erdős Problem #1012: for $k \\ge 0$, what is the minimum $f(k)$ such that every graph on $n \\ge f(k)$ vertices with at least $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ edges contains an $(n-k)$-cycle? Woodall (1972) solved this completely, showing $f(k) \\le 2k+3$ with the bonus that such graphs are pancyclic from $3$ to $n-k$.",
     "mathContext": "$f(k) := \\min\\{n_0 : \\forall n \\ge n_0, |E(G)| \\ge \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1 \\Rightarrow C_{n-k} \\subseteq G\\}$",
     "significance": "supporting",
     "relatedConcepts": [
       "extremal graph theory",
       "Hamiltonian cycles",
-      "Tur\u00e1n-type problems"
+      "Turán-type problems"
     ],
     "prerequisites": [
       "graph theory basics",
@@ -58,7 +58,7 @@
     "relatedConcepts": [
       "extremal graph",
       "binomial coefficient",
-      "Tur\u00e1n number"
+      "Turán number"
     ],
     "prerequisites": [
       "Nat.choose",
@@ -118,7 +118,7 @@
     },
     "type": "definition",
     "title": "Hamiltonian Cycle",
-    "content": "A Hamiltonian cycle is a cycle visiting all $n$ vertices: `hasCycleOfLength G (Fintype.card V)`. The Hamiltonian cycle problem is NP-complete in general, but sufficient edge density guarantees existence\u2014this is the content of Ore's theorem ($k=0$ case of the problem).",
+    "content": "A Hamiltonian cycle is a cycle visiting all $n$ vertices: `hasCycleOfLength G (Fintype.card V)`. The Hamiltonian cycle problem is NP-complete in general, but sufficient edge density guarantees existence—this is the content of Ore's theorem ($k=0$ case of the problem).",
     "mathContext": "$G$ is Hamiltonian $\\iff G$ has $C_n$ where $n = |V(G)|$",
     "significance": "key",
     "relatedConcepts": [
@@ -141,7 +141,7 @@
     },
     "type": "definition",
     "title": "Pancyclic Up To $m$",
-    "content": "A graph is pancyclic up to $m$ if it contains cycles of every length from $3$ to $m$. Woodall's surprising result shows that dense graphs aren't just forced to have one long cycle\u2014they have the complete spectrum of cycle lengths. Bondy's metaconjecture (1971) predicted this: conditions forcing Hamiltonicity usually force pancyclicity.",
+    "content": "A graph is pancyclic up to $m$ if it contains cycles of every length from $3$ to $m$. Woodall's surprising result shows that dense graphs aren't just forced to have one long cycle—they have the complete spectrum of cycle lengths. Bondy's metaconjecture (1971) predicted this: conditions forcing Hamiltonicity usually force pancyclicity.",
     "mathContext": "$G$ is pancyclic up to $m \\iff \\forall l \\in \\{3,4,\\ldots,m\\}, C_l \\subseteq G$",
     "significance": "key",
     "relatedConcepts": [
@@ -184,7 +184,7 @@
       "endLine": 142
     },
     "type": "insight",
-    "title": "Ore's Theorem (1961) \u2014 Axiomatized",
+    "title": "Ore's Theorem (1961) — Axiomatized",
     "content": "Ore's theorem: every graph on $n \\ge 1$ vertices with $\\ge \\binom{n-1}{2} + 2$ edges has a Hamiltonian cycle. This is the $k=0$ case: $f(0) = 1$. Ore's original proof uses a degree-sum condition ($\\deg(u) + \\deg(v) \\ge n$ for non-adjacent $u,v$), from which the edge count follows. The theorem is axiomatized because formalizing the full proof would require extensive graph theory infrastructure.",
     "mathContext": "$\\forall n \\ge 1: |E(G)| \\ge \\binom{n-1}{2} + 2 \\Rightarrow G$ has a Hamiltonian cycle",
     "significance": "key",
@@ -206,8 +206,8 @@
       "startLine": 144,
       "endLine": 148
     },
-    "type": "insight",
-    "title": "Bondy's Theorem (1971) \u2014 Axiomatized",
+    "type": "concept",
+    "title": "Bondy's Theorem (1971) — Axiomatized",
     "content": "Bondy's theorem extends Ore to $k=1$: every graph on $n \\ge 1$ vertices with $\\ge \\binom{n-2}{2} + 4$ edges has an $(n-1)$-cycle. Bondy also formulated his famous metaconjecture: almost any condition on a graph sufficient to imply it is Hamiltonian is also sufficient to imply it is pancyclic. Woodall's pancyclicity result confirms this metaconjecture for the edge-threshold setting.",
     "mathContext": "$\\forall n \\ge 1: |E(G)| \\ge \\binom{n-2}{2} + 4 \\Rightarrow C_{n-1} \\subseteq G$",
     "significance": "key",
@@ -228,7 +228,7 @@
       "endLine": 153
     },
     "type": "insight",
-    "title": "Woodall's Theorem (1972) \u2014 Complete Solution",
+    "title": "Woodall's Theorem (1972) — Complete Solution",
     "content": "Woodall's definitive result: for $n \\ge 2k+3$, every graph on $n$ vertices with $\\ge T(n,k)$ edges has an $(n-k)$-cycle. This gives $f(k) \\le 2k+3$ for all $k$, completely solving Problem #1012. The bound $2k+3$ arises from the symmetry of the threshold at the boundary: when $n = 2k+3$, both binomial terms in the threshold are equal ($\\binom{k+2}{2}$).",
     "mathContext": "$\\forall k, \\forall n \\ge 2k+3: |E(G)| \\ge \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1 \\Rightarrow C_{n-k} \\subseteq G$",
     "significance": "key",
@@ -251,8 +251,8 @@
       "endLine": 161
     },
     "type": "insight",
-    "title": "Woodall Pancyclicity \u2014 Stronger Than Asked",
-    "content": "Woodall proved more than Erd\u0151s asked: under the same conditions, the graph has cycles of ALL lengths from $3$ to $n-k$, not just length $n-k$. This is the pancyclicity surprise\u2014dense graphs have a complete cycle spectrum. The result validates Bondy's metaconjecture: the edge condition that forces long cycles actually forces all intermediate cycle lengths.",
+    "title": "Woodall Pancyclicity — Stronger Than Asked",
+    "content": "Woodall proved more than Erdős asked: under the same conditions, the graph has cycles of ALL lengths from $3$ to $n-k$, not just length $n-k$. This is the pancyclicity surprise—dense graphs have a complete cycle spectrum. The result validates Bondy's metaconjecture: the edge condition that forces long cycles actually forces all intermediate cycle lengths.",
     "mathContext": "$n \\ge 2k+3 \\wedge |E(G)| \\ge T(n,k) \\Rightarrow \\forall l \\in \\{3,\\ldots,n-k\\}: C_l \\subseteq G$",
     "significance": "key",
     "relatedConcepts": [
@@ -273,14 +273,14 @@
       "endLine": 169
     },
     "type": "insight",
-    "title": "Threshold Tightness \u2014 Axiomatized",
-    "content": "The edge threshold is sharp: there exist graphs with $T(n,k) - 1$ edges that avoid $(n-k)$-cycles. The extremal construction is $K_{n-k-1} \\cup K_{k+2}$ plus some edges\u2014a graph with two dense components connected by a bottleneck that prevents long cycles. This shows $T(n,k)$ cannot be reduced.",
+    "title": "Threshold Tightness — Axiomatized",
+    "content": "The edge threshold is sharp: there exist graphs with $T(n,k) - 1$ edges that avoid $(n-k)$-cycles. The extremal construction is $K_{n-k-1} \\cup K_{k+2}$ plus some edges—a graph with two dense components connected by a bottleneck that prevents long cycles. This shows $T(n,k)$ cannot be reduced.",
     "mathContext": "$\\exists G: |V(G)|=n, |E(G)| = T(n,k)-1, C_{n-k} \\not\\subseteq G$",
     "significance": "key",
     "relatedConcepts": [
       "extremal construction",
       "sharpness",
-      "Tur\u00e1n graph analogue"
+      "Turán graph analogue"
     ],
     "prerequisites": [
       "edgeThreshold"
@@ -325,7 +325,7 @@
       "monotonicity",
       "boundary symmetry",
       "binomial coefficient growth",
-      "Tur\u00e1n-type bounds"
+      "Turán-type bounds"
     ],
     "prerequisites": [
       "Nat.choose_two_right",
@@ -341,8 +341,8 @@
     },
     "type": "context",
     "title": "File Summary",
-    "content": "Summarizes the 345-line formalization: 5 axioms encoding the deep graph theory results (Ore, Bondy, Woodall cycle and pancyclic theorems, threshold tightness) and 29 proved theorems analyzing the threshold structure. Zero sorries\u2014all unproved statements are correctly marked as axioms rather than using sorry. The file demonstrates the formal structure of an extremal graph theory result.",
-    "mathContext": "5 axioms (Ore, Bondy, Woodall\u00d72, tightness) + 29 proved theorems, 0 sorries",
+    "content": "Summarizes the 345-line formalization: 5 axioms encoding the deep graph theory results (Ore, Bondy, Woodall cycle and pancyclic theorems, threshold tightness) and 29 proved theorems analyzing the threshold structure. Zero sorries—all unproved statements are correctly marked as axioms rather than using sorry. The file demonstrates the formal structure of an extremal graph theory result.",
+    "mathContext": "5 axioms (Ore, Bondy, Woodall×2, tightness) + 29 proved theorems, 0 sorries",
     "significance": "supporting",
     "relatedConcepts": [
       "axiom vs sorry",

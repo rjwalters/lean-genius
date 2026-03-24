@@ -524,7 +524,7 @@
       "startLine": 215,
       "endLine": 218
     },
-    "type": "context",
+    "type": "concept",
     "title": "Practical Number Examples",
     "content": "Small practical numbers: 1, 2, 4, 6, 8, 12, 16, 18, 20, 24, 28, 30, 32, 36, ... All powers of 2 are practical (binary representation). All even perfect numbers are practical. The sequence grows denser: among $n \\le 1000$, about 20% are practical.",
     "mathContext": "First practical numbers: $1, 2, 4, 6, 8, 12, 16, 18, 20, 24, 28, 30, 32, 36, 40, 42, 48, \\ldots$ Every power of 2 is practical since $\\mathrm{div}(2^a) = \\{1, 2, 4, \\ldots, 2^a\\}$ and binary representation covers $[0, 2^{a+1}-1]$.",
@@ -593,7 +593,7 @@
       "startLine": 233,
       "endLine": 236
     },
-    "type": "technique",
+    "type": "concept",
     "title": "DivisorSumSet as Subset Sum",
     "content": "$n \\in D_t \\iff \\mathrm{SubsetSumExists}(\\mathrm{div}(n), t)$. The proof is by `simp` unfolding both definitions. This equivalence bridges the number-theoretic formulation (divisor sums) with the combinatorial formulation (subset sums), enabling tools from both fields.",
     "mathContext": "$n \\in D_t \\iff \\exists S \\subseteq \\mathrm{div}(n),\\; \\sum_{d \\in S} d = t \\iff \\mathrm{SubsetSumExists}(\\mathrm{div}(n), t)$.",

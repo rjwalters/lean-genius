@@ -101,7 +101,7 @@
       "startLine": 76,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Kaplansky (1946)",
     "content": "The foundational 1946 result: for $k = o((\\log n)^{3/2 - \\varepsilon})$, the ratio $L(k,n) / [e^{-\\binom{k}{2}} (n!)^k] \\to 1$ as $n \\to \\infty$. This was the first rigorous asymptotic formula for Latin rectangle counting, proved using a careful inclusion-exclusion argument over column collisions.",
     "mathContext": "Erdős and Kaplansky used a sieve method: define bad events $B_{i_1,i_2,j}$ = 'rows $i_1, i_2$ agree in column $j$'. The inclusion-exclusion over these $\\binom{k}{2} \\cdot n$ events, combined with moment bounds showing higher-order terms are negligible when $k$ is small, yields the asymptotic. The regime $k = o((\\log n)^{3/2-\\varepsilon})$ ensures the error terms vanish.",
@@ -125,7 +125,7 @@
       "startLine": 93,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Yamamoto (1951)",
     "content": "Yamamoto extended the Erdős-Kaplansky formula to the much larger regime $k \\leq n^{1/3 - o(1)}$, a dramatic improvement from $k = o((\\log n)^{3/2})$. The same formula $e^{-\\binom{k}{2}} (n!)^k$ holds asymptotically throughout this extended range.",
     "mathContext": "The `InYamamotoRegime` condition formalizes $k \\leq n^{1/3 - o(1)}$ using a function $f(n) \\to 0$ with $k(n) \\leq n^{1/3 - f(n)}$. Yamamoto's proof refined the error estimates using permanent bounds and combinatorial identities, showing that the inclusion-exclusion corrections remain negligible even when $k$ grows polynomially in $n$ (up to exponent $1/3$).",
@@ -148,7 +148,7 @@
       "startLine": 108,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Permanent Methods and Godsil-McKay Bounds",
     "content": "The permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_{i} A_{i,\\sigma(i)}$ sums over all permutations, always with positive sign (unlike the determinant). Godsil and McKay (1990) showed that $L(k,n)$ can be expressed as a permanent of a specific $0\\text{-}1$ matrix, and established two-sided bounds: $c_1 \\cdot e^{-\\binom{k}{2}} (n!)^k \\leq L(k,n) \\leq c_2 \\cdot e^{-\\binom{k}{2}} (n!)^k$ for constants $c_1, c_2 > 0$.",
     "mathContext": "The permanent connection arises because extending a $(k-1) \\times n$ Latin rectangle by one row requires choosing a permutation avoiding all values already in each column. This is equivalent to computing the permanent of the $n \\times n$ matrix $A$ where $A_{ij} = 1$ if symbol $j$ has not appeared in column $i$. The Godsil-McKay bounds use van der Waerden's inequality (proved by Egorychev and Falikman in 1981) as a key tool.",
@@ -221,7 +221,7 @@
       "startLine": 160,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_725_summary",
     "content": "The summary theorem combines two key established results: (1) the exact formula $L(1,n) = n!$ from `L_1_n`, and (2) the Godsil-McKay bounds establishing that $L(k,n)$ lies within constant factors of the Erdős-Kaplansky formula for all $k \\leq n$. The proof is an exact construction `⟨L_1_n, godsil_mckay_bounds⟩`.",
     "mathContext": "This theorem synthesizes the formalization: the trivial case $k=1$ is exact, and for general $k \\leq n$, the multiplicative bounds $c_1 \\cdot e^{-\\binom{k}{2}}(n!)^k \\leq L(k,n) \\leq c_2 \\cdot e^{-\\binom{k}{2}}(n!)^k$ show the Erdős-Kaplansky formula captures the correct order of magnitude. The gap between bounds and exact asymptotics is precisely what Problem #725 asks to close.",

@@ -180,7 +180,7 @@
       "startLine": 77,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Burr-Erdős Lower Bound (1985)",
     "content": "For $r=2$: there exists $c > 0$ such that no Ramsey 2-complete set $A$ satisfies $|A \\cap [1,N]| \\leq c(\\log N)^2$ for all large $N$. This establishes $(\\log N)^2$ as a lower bound on the growth of any Ramsey 2-complete set.",
     "significance": "key",
@@ -203,7 +203,7 @@
       "startLine": 86,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Burr-Erdős Upper Bound (1985)",
     "content": "There exists a Ramsey 2-complete set $A$ with $|A \\cap [1,N]| \\leq C(\\log N)^3$ for some constant $C > 0$. This constructive result demonstrated sparse Ramsey 2-complete sets exist, but left a gap with the $(\\log N)^2$ lower bound.",
     "significance": "key",
@@ -225,7 +225,7 @@
       "startLine": 93,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers are Ramsey Complete (Burr)",
     "content": "**Burr's Theorem**: The set of $k$-th powers $\\{1^k, 2^k, 3^k, \\ldots\\}$ is Ramsey $r$-complete for all $r, k \\geq 1$. Since the $k$-th powers have counting function $\\Theta(N^{1/k})$, these are far denser than the optimal $(\\log N)^2$ threshold — but they provide concrete, natural examples.",
     "significance": "supporting",
@@ -246,7 +246,7 @@
       "startLine": 105,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conlon-Fox-Pham Upper Bound (2021)",
     "content": "For every $r \\geq 2$, there exists an $r$-Ramsey complete set $A$ with $|A \\cap [1,N]| \\leq Cr(\\log N)^2$ for a universal constant $C > 0$. This constructs optimally sparse Ramsey $r$-complete sets, matching the lower bound up to the constant factor.",
     "significance": "key",
@@ -268,7 +268,7 @@
       "startLine": 116,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conlon-Fox-Pham Lower Bound (2021)",
     "content": "There exists a universal constant $c > 0$ such that for all $r \\geq 2$: if $|A \\cap [1,N]| \\leq cr(\\log N)^2$ for all large $N$, then $A$ is **not** $r$-Ramsey complete. This proves the upper bound construction is optimal, yielding the tight characterization $\\Theta(r(\\log N)^2)$.",
     "significance": "key",
@@ -290,7 +290,7 @@
       "startLine": 132,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #55: Complete Solution",
     "content": "The optimal growth rate for $r$-Ramsey complete sets is $\\Theta(r(\\log N)^2)$. The theorem combines both Conlon-Fox-Pham bounds into a single statement: (1) for each $r \\geq 2$, an $r$-Ramsey complete set with growth $O(r(\\log N)^2)$ exists, and (2) no set with growth $o(r(\\log N)^2)$ is $r$-Ramsey complete.",
     "significance": "key",
@@ -312,7 +312,7 @@
       "startLine": 147,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Optimal Growth for r=2",
     "content": "For $r=2$, the optimal growth rate is $\\Theta((\\log N)^2)$. This closes the Burr-Erdős gap of 1985 where the best bounds were between $(\\log N)^2$ and $(\\log N)^3$. The proof derives this as a corollary by substituting $r=2$ into the general CFP bounds and simplifying the constants with `ring` and `linarith`.",
     "significance": "key",
