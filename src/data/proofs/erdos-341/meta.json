@@ -24,12 +24,22 @@
     "axiomCount": 9,
     "assumptions": "9 axiom declarations: erdos_341_conjecture (eventual periodicity conjecture), dickson_strictly_increasing (strict monotonicity), dickson_diff_pos (positive differences), dickson_avoids_sums (sum avoidance property), dickson_minimal (greedy minimality), singleton_one_example (Mian-Chowla special case), squares_slow_periodicity (slow emergence for squares), period_depends_on_initial (period varies with start), dickson_linear_growth (at-least-linear growth)",
     "lineCount": 116,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Formal framework: pairwiseSums, IsSumRepresentable, dicksonSeq (greedy via Nat.find), IsEventuallyPeriodic",
+      "Universal quantification of Dickson conjecture over all finite nonempty starting sets",
+      "Connection to Mian–Chowla sequence (Problem #340) via singleton case formalization"
+    ],
+    "prerequisites": [
+      "Additive combinatorics: sum-free sets, pairwise sums",
+      "Sequences and recurrences: greedy algorithms, eventual periodicity",
+      "Elementary number theory: natural number arithmetic"
+    ]
   },
   "overview": {
     "historicalContext": "This is an old problem of Dickson from the early 20th century, brought to wider attention by Erdős and Graham in their 1980 monograph (p. 53). The construction is beautifully simple: start with any finite set of positive integers, then repeatedly adjoin the smallest integer not expressible as a sum of two elements already in the set. The resulting sequence always appears to develop eventually periodic differences, but proving this has resisted all attempts. The problem connects greedy algorithms to questions of periodicity in dynamical systems — a theme that appears throughout number theory (Collatz conjecture, continued fractions, digit patterns). Even starting from the first five perfect squares {1,4,9,16,25}, periodicity takes thousands of terms to emerge, making computational verification impractical for all but small starting sets. Ben Green includes this as Problem 7 on his influential open problems list, reflecting its position at the frontier of additive combinatorics. The singleton starting set {1} produces the Mian-Chowla sequence (Problem #340), creating a direct link between the two problems.",
     "problemStatement": "For any finite starting set A, is the sequence of consecutive differences in the Dickson extension eventually periodic?",
-    "text": "Given a finite set A of positive integers, extend by always choosing the smallest integer not expressible as a sum of two previous elements. Is the difference sequence a_{m+1} - a_m eventually periodic? An old problem of Dickson.",
+    "text": "A 116-line formalization of Erdős Problem #341 (Dickson's sum-free extension, OPEN). Defines `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find` (the greedy choice of smallest non-sum), `dicksonDiff A0` for consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture (`erdos_341_conjecture`) universally quantifies over all nonempty finite starting sets. The 9 axioms encode structural properties (strict monotonicity, sum avoidance, greedy minimality) and empirical observations (slow periodicity for squares, period dependence on initial conditions, linear growth). The singleton {1} case recovers the Mian–Chowla sequence (Problem #340).",
     "proofStrategy": "We formalize `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find`, `dicksonDiff A0` as the consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture universally quantifies over all nonempty finite starting sets. Structural properties (strict monotonicity, sum avoidance, minimality) are axiomatized, along with examples showing slow periodicity and period dependence on initial conditions.",
     "keyInsights": [
       "The greedy rule — always pick the smallest non-sum — creates a partition of integers above the maximum into sequence elements and pairwise sums, with the minimality property ensuring no gaps",
@@ -77,35 +87,40 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 22,
-      "summary": "File header documenting Dickson's sum-free extension problem, the eventual periodicity conjecture, and its OPEN status. Imports Mathlib for Finset, natural numbers, and tactics."
+      "summary": "File header documenting Dickson's sum-free extension problem, the eventual periodicity conjecture, and its OPEN status. Imports Mathlib for Finset, natural numbers, and tactics.",
+      "mathContext": "Dickson's construction: start with $A_0 \\subset \\mathbb{N}^+$ finite, extend by $a_{n+1} = \\min\\{m \\notin \\text{pairwiseSums}(A_n)\\}$. Conjecture: $a_{n+1} - a_n$ is eventually periodic."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 23,
       "endLine": 54,
-      "summary": "`pairwiseSums`, `IsSumRepresentable`, `dicksonSeq` (greedy extension via `Nat.find`), `dicksonDiff`, and `IsEventuallyPeriodic`."
+      "summary": "`pairwiseSums`, `IsSumRepresentable`, `dicksonSeq` (greedy extension via `Nat.find`), `dicksonDiff`, and `IsEventuallyPeriodic`.",
+      "mathContext": "`pairwiseSums(S) = \\{a + b : a, b \\in S\\}$; `dicksonSeq A0 n` defined recursively via `Nat.find` (smallest $m$ not in pairwiseSums); `IsEventuallyPeriodic f p N` $\\iff$ $\\forall n \\geq N, f(n+p) = f(n)$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 55,
       "endLine": 62,
-      "summary": "Erdos-Dickson conjecture: for every finite nonempty starting set, the difference sequence is eventually periodic."
+      "summary": "Erdos-Dickson conjecture: for every finite nonempty starting set, the difference sequence is eventually periodic.",
+      "mathContext": "$\\forall A_0 \\subseteq \\mathbb{N}^+$ finite nonempty, $\\exists p > 0, N: \\forall n \\geq N, (a_{n+1} - a_n) = (a_{n+p+1} - a_{n+p})$."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 63,
       "endLine": 88,
-      "summary": "Strict monotonicity, positive differences, sum avoidance at each step, and minimality of the greedy choice."
+      "summary": "Strict monotonicity, positive differences, sum avoidance at each step, and minimality of the greedy choice.",
+      "mathContext": "Axiomatized: $a_n < a_{n+1}$ (strict), $a_{n+1} - a_n > 0$, $a_{n+1} \\notin \\text{pairwiseSums}(\\{a_0, \\ldots, a_n\\})$, $a_{n+1} = \\min\\{m : m \\notin \\text{pairwiseSums}\\}$."
     },
     {
       "id": "examples",
       "title": "Examples and Growth",
       "startLine": 89,
       "endLine": 116,
-      "summary": "Singleton example, slow periodicity for squares, period dependence on initial set, and at-least-linear growth."
+      "summary": "Singleton example, slow periodicity for squares, period dependence on initial set, and at-least-linear growth.",
+      "mathContext": "Axiomatized: $A_0 = \\{1\\}$ gives Mian–Chowla (Problem #340); $A_0 = \\{1,4,9,16,25\\}$ takes $>1000$ terms for periodicity; $a_n \\geq cn$ (linear growth lower bound)."
     }
   ],
   "conclusion": {
