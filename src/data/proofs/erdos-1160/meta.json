@@ -33,68 +33,145 @@
         "theorem": "Finset.sum",
         "description": "Sum over finite sets",
         "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.single_le_sum",
+        "description": "Any single term ≤ non-negative sum (used in strong_implies_original)",
+        "module": "Mathlib.Algebra.BigOperators.Order"
       }
     ],
     "originalContributions": [
       "numGroups axiomatization: group counting function g(n) with known values",
       "erdos_1160 conjecture: formal statement that 2^m maximizes g(n) for n ≤ 2^m",
-      "erdos_1160_strong: stronger conjecture about sum of g(n) for n < 2^m",
       "erdos_1160_equiv: proved equivalence of two formulations",
-      "strong_implies_original: proved stronger conjecture implies original",
+      "strong_implies_original: proved stronger conjecture implies original via Finset.single_le_sum",
       "erdos_1160_n_eq_one: proved conjecture for n=1",
-      "erdos_1160_prime: proved conjecture for prime n",
-      "pantelidakis_odd: axiomatized partial result for odd n"
+      "erdos_1160_prime: proved conjecture for prime n"
     ],
-    "assumptions": [
-      "numGroups is axiomatized (Lean/Mathlib lacks group enumeration)",
-      "Known values g(1)=1, g(2)=1, g(4)=2, g(8)=5, g(16)=14, g(32)=51 are axiomatized",
-      "Pantelidakis's result for odd n (m ≥ 3619) is axiomatized",
-      "Asymptotic growth formula log₂(g(2^m)) ~ (2/27)m³ is axiomatized"
+    "lineCount": 156,
+    "assumptions": "11 axioms: numGroups (function), numGroups_zero, numGroups_one, numGroups_prime (g(p)=1), numGroups_two/four/eight/sixteen/thirtytwo (known values), numGroups_pos (g(n)>0 for n≥1), numGroups_prime_power_mono (monotonicity), pantelidakis_odd (partial result for odd n), numGroups_two_power_growth (asymptotic formula ~(2/27)m³). 4 theorems proved: erdos_1160_equiv, strong_implies_original, erdos_1160_n_eq_one, erdos_1160_prime."
+  },
+  "overview": {
+    "historicalContext": "The problem of which integer orders maximize the group counting function has been studied since at least the 1960s. The conjecture that powers of 2 are the maximizers is attributed variously to Erdős, Higman, and others. The super-exponential growth of g(2^m), approximately $2^{(2/27)m^3}$, arises from the rich structure of p-groups: as the exponent m grows, the number of non-isomorphic 2-groups explodes due to the combinatorial explosion of possible commutator structures.\n\nPantelidakis (2003) made the first major progress by proving the conjecture for odd n when m is sufficiently large ($m \\geq 3619$). The stronger conjecture of Blackburn-Neumann-Venkataraman (2007) asserts that the sum of g(n) for all $n < 2^m$ is dominated by $g(2^m)$ alone, reflecting how overwhelmingly 2-groups dominate the landscape of finite group theory.\n\nThe asymptotic formula $g(2^m) \\sim 2^{(2/27)m^3 + O(m^{8/3})}$ was established by Sims (1965) and refined by others. By contrast, g(n) for non-prime-power n grows much more slowly, governed by Sylow theory constraints. The sequence g(n) is OEIS A000001.",
+    "problemStatement": "**Erdős Problem #1160**: Let $g(n)$ denote the number of non-isomorphic groups of order $n$. Conjecture: for all $m \\geq 0$ and $n \\leq 2^m$, $g(n) \\leq g(2^m)$. That is, powers of 2 maximize the group counting function.\n\n**Stronger form** (BNV07, Question 22.18): $\\sum_{n < 2^m} g(n) \\leq g(2^m)$ for all sufficiently large $m$.",
+    "text": "A 156-line formalization of Erdős Problem #1160 with 11 axioms and 4 proved theorems. The group counting function $g(n)$ (OEIS A000001) is axiomatized with known values $g(1)=1, g(2)=1, g(4)=2, g(8)=5, g(16)=14, g(32)=51$, positivity, and prime-power monotonicity. The main conjecture (powers of 2 maximize $g$) is formalized in two equivalent forms connected by `erdos_1160_equiv`. A stronger conjecture from BNV07 ($\\sum_{n<2^m} g(n) \\leq g(2^m)$) is shown to imply the original via `Finset.single_le_sum`. Partial results: the conjecture is proved for $n=1$ and prime $n$, and Pantelidakis's result for odd $n$ ($m \\geq 3619$) is axiomatized. The asymptotic formula $\\log_2 g(2^m) \\sim (2/27)m^3$ is axiomatized.",
+    "proofStrategy": "1. **Axiomatize** $g(n)$ with known values and structural properties (positivity, prime-power monotonicity)\n2. **State** the conjecture as `erdos_1160 : ∀ m n, n ≤ 2^m → g(n) ≤ g(2^m)`\n3. **Prove equivalence** of two formulations (universal quantification vs Finset.range)\n4. **State stronger conjecture** (sum form) and prove it implies the original via `Finset.single_le_sum`\n5. **Prove special cases**: $n=1$ (by `numGroups_one` + `numGroups_pos`), prime $n$ (by `numGroups_prime` + `numGroups_pos`)\n6. **Axiomatize** Pantelidakis's partial result and asymptotic growth formula",
+    "keyInsights": [
+      "Powers of 2 are the 'hardest' orders for group theory: the number of 2-groups grows super-exponentially as $2^{(2/27)m^3}$, dwarfing all other orders",
+      "The stronger BNV conjecture ($\\sum_{n<2^m} g(n) \\leq g(2^m)$) says a single 2-power order has MORE groups than all smaller orders combined — reflecting the overwhelming dominance of p-groups",
+      "For prime $p$, $g(p) = 1$ (only the cyclic group $\\mathbb{Z}/p\\mathbb{Z}$), so the conjecture is trivially true for prime orders",
+      "Pantelidakis's partial result covers odd orders, leaving only even non-2-power orders as the hard case",
+      "The rich structure of 2-groups arises from the freedom in choosing commutator relations: with $m$ generators, there are roughly $m^3/27$ independent commutator choices"
     ],
-    "historicalContext": "The problem of which integer orders maximize the group counting function has been studied since at least the 1960s. The conjecture that powers of 2 are the maximizers is attributed variously to Erdős, Higman, and others. The super-exponential growth of g(2^m), approximately 2^{(2/27)m³}, arises from the rich structure of p-groups: as the exponent m grows, the number of non-isomorphic 2-groups explodes due to the combinatorial explosion of possible commutator structures.\n\nPantelidakis (2003) made the first major progress by proving the conjecture for odd n when m is sufficiently large (m ≥ 3619). The stronger conjecture of Blackburn-Neumann-Venkataraman (2007) asserts that the sum of g(n) for all n < 2^m is dominated by g(2^m) alone, reflecting how overwhelmingly 2-groups dominate the landscape of finite group theory.\n\nThe asymptotic formula g(2^m) ~ 2^{(2/27)m³ + O(m^{8/3})} was established by Sims (1965) and refined by others. By contrast, g(n) for non-prime-power n grows much more slowly, governed by Sylow theory constraints."
+    "prerequisites": [
+      "Group theory: groups, isomorphism, classification",
+      "p-groups and Sylow theory",
+      "Asymptotic analysis and growth rates"
+    ]
   },
   "sections": [
     {
       "id": "group-counting",
       "title": "The Group Counting Function",
       "startLine": 30,
-      "endLine": 60,
-      "summary": "Axiomatization of numGroups and known values"
+      "endLine": 57,
+      "summary": "Axiomatizes numGroups with values g(0)=0, g(1)=1, g(p)=1 for primes, and g(2^k) for k=1..5.",
+      "mathContext": "$g(n) = |\\{G : |G|=n\\}/\\cong|$. Known: $g(1)=1, g(4)=2, g(8)=5, g(16)=14, g(32)=51$."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 62,
-      "endLine": 77,
-      "summary": "Positivity and monotonicity for prime powers"
+      "startLine": 58,
+      "endLine": 69,
+      "summary": "Axiomatizes positivity ($g(n) > 0$ for $n \\geq 1$) and prime-power monotonicity ($g(p^{k_1}) \\leq g(p^{k_2})$ for $k_1 \\leq k_2$).",
+      "mathContext": "$g(n) \\geq 1$ for $n \\geq 1$ (witness: $\\mathbb{Z}/n\\mathbb{Z}$). $k_1 \\leq k_2 \\implies g(p^{k_1}) \\leq g(p^{k_2})$."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "startLine": 79,
-      "endLine": 97,
-      "summary": "Formal statement and equivalent formulations"
+      "startLine": 71,
+      "endLine": 95,
+      "summary": "States `erdos_1160` and `erdos_1160_alt` (Finset.range version), proves their equivalence.",
+      "mathContext": "$\\forall m, n \\leq 2^m \\implies g(n) \\leq g(2^m)$. Equivalently: $\\forall n \\in [0, 2^m], g(n) \\leq g(2^m)$."
     },
     {
       "id": "stronger-conjecture",
-      "title": "Stronger Conjecture",
-      "startLine": 99,
+      "title": "Stronger Conjecture (BNV07)",
+      "startLine": 97,
       "endLine": 114,
-      "summary": "BNV07 stronger form and implication"
+      "summary": "States $\\sum_{n<2^m} g(n) \\leq g(2^m)$ for large $m$ and proves it implies the original via `Finset.single_le_sum`.",
+      "mathContext": "$\\exists M,\\, \\forall m \\geq M,\\, \\sum_{n=0}^{2^m-1} g(n) \\leq g(2^m)$. Implies original: $g(n) \\leq \\sum g \\leq g(2^m)$."
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "startLine": 116,
-      "endLine": 138,
-      "summary": "Proved cases: n=1, prime n, odd n (Pantelidakis)"
+      "endLine": 137,
+      "summary": "Pantelidakis (axiom, odd $n$, $m \\geq 3619$); proved: $n=1$ (by positivity), prime $n$ (by $g(p)=1$).",
+      "mathContext": "Proved: $g(1) = 1 \\leq g(2^m)$ and $g(p) = 1 \\leq g(2^m)$. Axiom: odd $n \\leq 2^m$, $m \\geq 3619 \\implies g(n) \\leq g(2^m)$."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Growth",
-      "startLine": 140,
-      "endLine": 152,
-      "summary": "Super-exponential growth of g(2^m)"
+      "startLine": 139,
+      "endLine": 156,
+      "summary": "Axiomatizes $\\log_2 g(2^m) / m^3 \\to 2/27$ as $m \\to \\infty$, plus #check commands.",
+      "mathContext": "$\\log_2 g(2^m) \\sim (2/27)m^3$: super-exponential growth from commutator structure of 2-groups."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the full structure of Erdős Problem #1160: the group counting function is axiomatized, the conjecture is stated in two equivalent forms, the stronger BNV form is shown to imply the original, and partial results cover the $n=1$, prime $n$, and odd $n$ cases. The asymptotic formula $\\log_2 g(2^m) \\sim (2/27)m^3$ explains why 2-powers dominate.",
+    "implications": "Resolution would establish a fundamental ordering principle in finite group theory: that the 'complexity' of groups (measured by isomorphism class count) is maximized at 2-power orders. The stronger BNV conjecture would show this dominance is so extreme that a single 2-power has more groups than all smaller orders combined.",
+    "openQuestions": [
+      "Does the conjecture hold for all even non-2-power orders? This is the remaining hard case after Pantelidakis's odd-order result.",
+      "Is the threshold $m \\geq 3619$ in Pantelidakis's result optimal, or can it be reduced?",
+      "Can the stronger BNV conjecture ($\\sum_{n<2^m} g(n) \\leq g(2^m)$) be established for all $m \\geq 7$?",
+      "What is the precise asymptotic ratio $g(2^m) / g(n)$ for the 'hardest' non-2-power $n < 2^m$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow theory constrains the structure of groups of non-prime-power order, explaining why g(n) grows slower for composite n than for prime powers"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the analysis of group structure by order"
+    }
+  ],
+  "relatedProofs": [
+    "sylow-theorems",
+    "lagrange-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Blackburn, Simon R.; Neumann, Peter M.; Venkataraman, Geetha",
+      "title": "Enumeration of Finite Groups",
+      "year": "2007",
+      "venue": "Cambridge Tracts in Mathematics, vol. 173",
+      "note": "Comprehensive survey including Question 22.18 (the stronger form of the conjecture)"
+    },
+    {
+      "authors": "Sims, Charles C.",
+      "title": "Enumerating p-groups",
+      "year": "1965",
+      "venue": "Proceedings of the London Mathematical Society, 3rd series, vol. 15, pp. 151-166",
+      "note": "Established the asymptotic formula g(p^m) ~ p^{(2/27)m³}"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.GroupTheory.Sylow",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1160",
+    "lineCount": 156,
+    "axiomCount": 11,
+    "theoremCount": 4,
+    "definitionCount": 3
+  }
 }
