@@ -54,14 +54,16 @@
     "assumptions": "2 axioms: erdos_1139 (the open conjecture), hardy_ramanujan_asymptotic (density estimate). 3 sorries in supporting lemmas."
   },
   "overview": {
-    "historicalContext": "Erdős #1139 asks about the distribution of gaps in the sequence of integers with at most 2 prime factors (primes and semiprimes). These 'almost-primes' form a denser sequence than the primes themselves, with counting function π₂(N) ~ cN log log N / log N (Hardy-Ramanujan). Despite their density, Erdős conjectured that gaps can still grow faster than log k, which would be surprising given the abundance of almost-primes.",
+    "historicalContext": "The study of almost-primes ($P_2$ numbers) originates in the early 20th century work of Landau (1900) and Hardy-Ramanujan (1917), who established the density of integers with a given number of prime factors. The counting function $\\pi_2(N) \\sim cN \\log\\log N / \\log N$ shows almost-primes are significantly denser than primes, by an extra $\\log\\log N$ factor. Erdős, who worked extensively on prime gaps from the 1930s onwards, conjectured that despite this density, the gaps $u_{k+1} - u_k$ in the almost-prime sequence still grow faster than $\\log k$. This is striking: for primes, Cramér conjectured gaps of order $(\\log p)^2$, yet even the weaker almost-prime analogue remains open. The problem connects to sieve methods (Brun, Selberg) and the Selberg-Delange method for counting integers with restricted prime factorizations.",
     "problemStatement": "Let u₁ < u₂ < ⋯ be integers with Ω(n) ≤ 2. Is lim sup (u_{k+1} - uₖ) / log k = ∞?",
     "text": "For the sequence of integers with at most 2 prime factors (primes and semiprimes), do the gaps grow faster than log k?",
     "proofStrategy": "The formalization defines Ω(n) via Mathlib's factorization API and establishes the IsAlmostPrime predicate. Key proved results include that every prime is almost-prime (via Nat.Prime.factorization), specific small cases (4 is, 8 is not), and that the set of primes up to N is contained in the set of almost-primes up to N. The main conjecture is axiomatized as a lim sup statement.",
     "keyInsights": [
-      "Almost-primes (Ω(n) ≤ 2) include all primes and all semiprimes p·q, making them significantly denser than primes alone",
-      "The counting function π₂(N) has an extra log log N factor compared to the prime counting function, by Hardy-Ramanujan",
-      "Despite this density, gaps may still grow unboundedly relative to log k"
+      "Almost-primes ($\\Omega(n) \\leq 2$) include all primes and all semiprimes $pq$, making them significantly denser than primes alone",
+      "The counting function $\\pi_2(N)$ has an extra $\\log\\log N$ factor compared to $\\pi(N) \\sim N / \\log N$, by Landau-Ramanujan",
+      "Despite this density, Erdős conjectured gaps still grow super-logarithmically — a non-trivial assertion given the sequence's abundance",
+      "The cube gap obstruction ($8 \\mid m \\implies \\Omega(m) \\geq 3$) provides a constructive source of forced gaps in the sequence",
+      "The formalization cleanly separates the $\\Omega$ function (via Mathlib's `Finsupp.sum` on `Nat.factorization`) from the membership predicate, enabling both symbolic and computational verification"
     ],
     "prerequisites": [
       "Number theory (prime factorization, Omega function)",
@@ -84,11 +86,39 @@
       "summary": "Proved: every prime is almost-prime, 1 is not, 2 and 3 are, 4 is, 8 is not."
     },
     {
+      "id": "structural",
+      "title": "Structural Results",
+      "startLine": 86,
+      "endLine": 105,
+      "summary": "Primes are a subsequence of almost-primes; products of two primes (semiprimes) are almost-prime with Ω = 2."
+    },
+    {
+      "id": "counting",
+      "title": "Counting and Set Inclusion",
+      "startLine": 107,
+      "endLine": 117,
+      "summary": "Primes up to N form a subset of almost-primes up to N, establishing π₂(N) ≥ π(N)."
+    },
+    {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "startLine": 110,
-      "endLine": 118,
-      "summary": "The open conjecture: lim sup gap/log k = ∞."
+      "startLine": 119,
+      "endLine": 127,
+      "summary": "The open conjecture axiomatized as lim sup gap/log k = ∞."
+    },
+    {
+      "id": "cube-obstruction",
+      "title": "Cube Gap Obstruction",
+      "startLine": 129,
+      "endLine": 141,
+      "summary": "Multiples of 8 between consecutive cubes are excluded from the almost-prime sequence, providing a structural source of gaps."
+    },
+    {
+      "id": "density",
+      "title": "Hardy-Ramanujan Density Asymptotic",
+      "startLine": 143,
+      "endLine": 157,
+      "summary": "Axiomatized density estimate: π₂(N) ~ cN log log N / log N (Landau-Ramanujan theorem)."
     }
   ],
   "conclusion": {
@@ -109,6 +139,33 @@
     "theoremCount": 11,
     "definitionCount": 5
   },
-  "crossReferences": [],
-  "relatedProofs": []
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundation",
+      "description": "PNT gives π(N) ~ N/log N, the baseline density that almost-primes exceed by a log log N factor"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "prerequisite",
+      "description": "The almost-prime sequence is infinite because it contains all primes"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "prime-number-theorem",
+      "title": "The Prime Number Theorem",
+      "relationship": "provides the baseline density π(N) ~ N/log N that the almost-prime counting function exceeds"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "title": "Bounded Prime Gaps (Zhang/Maynard-Tao/Polymath 8b)",
+      "relationship": "related gap problem — for primes, liminf of gaps is bounded; for almost-primes, limsup of gaps/log k is conjectured infinite"
+    },
+    {
+      "id": "infinitude-primes",
+      "title": "Infinitude of Prime Numbers",
+      "relationship": "the almost-prime sequence contains all primes as a subsequence, hence is infinite"
+    }
+  ]
 }
