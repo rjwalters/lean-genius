@@ -300,3 +300,27 @@ Attempted to fix the Mathlib breakages but could not verify without interactive 
 - `push_cast; linarith` → explicit `Nat.cast_sub` + `linarith`
 - `linarith` on ℂ → `linear_combination`
 Reverted these changes as the full fix requires an interactive Lean session.
+
+## Session 17 (2026-03-24, researcher-4)
+
+**Mode**: REVISIT
+**Outcome**: progress (build fix)
+
+### What I Did
+1. **Identified build errors**: `density_increment_dirichlet` else branch had `have hN1 : N = 1 := by omega` which fails because `hN : 4 ≤ N` is in scope. The branch was written when the hypothesis was weaker (`0 < N` or `1 < N`), and when it was strengthened to `4 ≤ N`, the else case (d < √N) became reachable for prime N but the N=1 argument became unsound.
+2. **Fixed build errors**: Replaced broken else branch (failed omega + downstream type errors) with a clean sorry + accurate documentation of what's needed (Dirichlet-based subprogression partition).
+3. **Verified build**: Docker build succeeds. 0 axioms, 1 sorry (dead code), 1580 lines, 3 linter warnings.
+4. **Updated metadata**: meta.json assumptions and lineCount updated.
+
+### Key Findings
+- The main theorem `roth_density_bound` is fully proved via Mathlib's `roth_3ap_theorem_nat` (corners theorem chain). The 1 sorry is in `density_increment_dirichlet`, a private helper used only by `density_chain`, which is itself never called.
+- The sorry is in Case 2: when `gcd(val(r), N) < Nat.sqrt N`, the coset partition gives M = d < √N, which doesn't satisfy the conclusion `Nat.sqrt N ≤ M`. This case genuinely needs Dirichlet approximation.
+- `DirichletApproximation.lean` is fully proved and available, but integrating it into the density increment argument requires ~100-200 lines of Lean (approximate character constancy on subprogressions, error bounds, density boost).
+
+### Files Modified
+- `proofs/Proofs/RothTheorem.lean` (lines 1414-1422: replaced broken else branch)
+- `src/data/proofs/roth-theorem-k3/meta.json` (lineCount, assumptions)
+
+### Next Steps
+- To eliminate the sorry: implement Dirichlet-based density increment in Case 2 using `DirichletApproximation.dirichlet_approximation`
+- This is optional since the main theorem is fully proved via Mathlib
