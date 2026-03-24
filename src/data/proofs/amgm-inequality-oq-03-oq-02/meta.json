@@ -62,7 +62,7 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. All 10 theorems proved from Mathlib with no custom axioms or structure-encoded assumptions.",
+    "assumptions": "0 axioms, 0 sorries. Main limit theorem is original; uses Mathlib calculus infrastructure (derivatives, exp/log, AM-GM) as building blocks.",
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
       "Real exp/log/rpow identities and derivatives",
