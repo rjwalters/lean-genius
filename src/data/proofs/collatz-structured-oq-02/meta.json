@@ -162,5 +162,18 @@
     "collatz-structured",
     "dirichlets-theorem",
     "fermat-two-squares"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CollatzCycles",
+    "lineCount": 257,
+    "axiomCount": 0,
+    "theoremCount": 25,
+    "lemmaCount": 0,
+    "defCount": 4,
+    "definitionCount": 4
+  }
 }

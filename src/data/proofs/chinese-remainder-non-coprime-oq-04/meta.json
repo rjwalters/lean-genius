@@ -87,21 +87,21 @@
       "title": "Pigeonhole Setup for Fractional Part Binning",
       "startLine": 27,
       "endLine": 65,
-      "summary": "Defines the bin function binFn : Fin(N+1) → Fin(N) mapping index i to ⌊N · fract(iα)⌋, with supporting lemmas for well-typedness (floor non-negative, floor < N) and the key same_bin_fract_close lemma showing colliding bins imply fractional parts within 1/N."
+      "summary": "Defines the bin function binFn : Fin(N+1) \u2192 Fin(N) mapping index i to \u230aN \u00b7 fract(i\u03b1)\u230b, with supporting lemmas for well-typedness (floor non-negative, floor < N) and the key same_bin_fract_close lemma showing colliding bins imply fractional parts within 1/N."
     },
     {
       "id": "dirichlet-theorem",
       "title": "Dirichlet's Approximation Theorem",
       "startLine": 66,
       "endLine": 112,
-      "summary": "Proves Dirichlet's approximation theorem: for any real α and N ≥ 1, there exist p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. Applies pigeonhole via Fintype.exists_ne_map_eq_of_card_lt to binFn, then converts the bin collision to an approximation bound through fract_sub_eq and careful cast gymnastics."
+      "summary": "Proves Dirichlet's approximation theorem: for any real \u03b1 and N \u2265 1, there exist p, q with 1 \u2264 q \u2264 N and |q\u03b1 - p| < 1/N. Applies pigeonhole via Fintype.exists_ne_map_eq_of_card_lt to binFn, then converts the bin collision to an approximation bound through fract_sub_eq and careful cast gymnastics."
     },
     {
       "id": "consequences",
       "title": "Consequences: Nearest Integer Bound",
       "startLine": 114,
       "endLine": 122,
-      "summary": "Derives the nearest integer bound: every real number has an integer within distance 1/2. A direct corollary using the floor of α + 1/2."
+      "summary": "Derives the nearest integer bound: every real number has an integer within distance 1/2. A direct corollary using the floor of \u03b1 + 1/2."
     },
     {
       "id": "lattice-points",
@@ -122,14 +122,14 @@
       "title": "Golden Ratio Properties",
       "startLine": 176,
       "endLine": 207,
-      "summary": "Defines φ = (1+√5)/2 and proves its key algebraic identities: positivity, φ > 1, φ² = φ + 1, 1/φ = φ - 1, and the minimal polynomial root property. Includes Fibonacci verification examples showing the denominators of φ's best rational approximations."
+      "summary": "Defines \u03c6 = (1+\u221a5)/2 and proves its key algebraic identities: positivity, \u03c6 > 1, \u03c6\u00b2 = \u03c6 + 1, 1/\u03c6 = \u03c6 - 1, and the minimal polynomial root property. Includes Fibonacci verification examples showing the denominators of \u03c6's best rational approximations."
     },
     {
       "id": "crt-examples",
       "title": "CRT Non-Coprime Lattice Examples",
       "startLine": 209,
       "endLine": 239,
-      "summary": "Concrete computational examples: a solvable non-coprime system (x ≡ 3 mod 6, x ≡ 1 mod 4 → x = 9 mod 12), an unsolvable system (gcd doesn't divide residue difference), Bézout witness verification, and the classical Sunzi problem for coprime moduli."
+      "summary": "Concrete computational examples: a solvable non-coprime system (x \u2261 3 mod 6, x \u2261 1 mod 4 \u2192 x = 9 mod 12), an unsolvable system (gcd doesn't divide residue difference), B\u00e9zout witness verification, and the classical Sunzi problem for coprime moduli."
     }
   ],
   "crossReferences": [
@@ -174,8 +174,23 @@
     ],
     "openQuestions": [
       "Can the pigeonhole-based proof be extended to simultaneous Diophantine approximation in Lean, formalizing Minkowski's lattice point theorem for convex bodies?",
-      "What is the formal relationship between the Stern-Brocot mediant operation and the convergents of continued fraction expansions — can this be unified in Lean's Mathlib?",
-      "The Littlewood conjecture (1930, still open): for all real α, β, is it true that lim inf n·‖nα‖·‖nβ‖ = 0? This is the natural two-dimensional extension of Dirichlet's theorem."
+      "What is the formal relationship between the Stern-Brocot mediant operation and the convergents of continued fraction expansions \u2014 can this be unified in Lean's Mathlib?",
+      "The Littlewood conjecture (1930, still open): for all real \u03b1, \u03b2, is it true that lim inf n\u00b7\u2016n\u03b1\u2016\u00b7\u2016n\u03b2\u2016 = 0? This is the natural two-dimensional extension of Dirichlet's theorem."
     ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "DirichletApprox",
+    "lineCount": 240,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "lemmaCount": 4,
+    "defCount": 2,
+    "definitionCount": 2
   }
 }

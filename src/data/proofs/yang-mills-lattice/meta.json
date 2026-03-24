@@ -38,17 +38,17 @@
     "dateAdded": "2026-03-23"
   },
   "overview": {
-    "historicalContext": "Kenneth Wilson introduced lattice gauge theory in 1974, providing the first non-perturbative definition of Yang-Mills theory and earning the 1982 Nobel Prize in Physics. By discretizing spacetime into a hypercubic lattice and placing gauge group elements $U_\\ell \\in G$ on links (edges), Wilson showed that gauge invariance is exact on the lattice — not an approximate symmetry that must be recovered in a limit, but an exact property of the discretized theory. Wilson's key insight was that confinement (area law for Wilson loops) emerges naturally in the strong coupling regime: at large $g^2$, the lattice path integral is dominated by disordered configurations that produce area-law decay $\\langle W(C) \\rangle \\sim e^{-\\sigma A}$ with positive string tension $\\sigma$. This framework enabled Michael Creutz's pioneering Monte Carlo simulations (1980), which provided the first numerical evidence for confinement in SU(2) and SU(3) gauge theories. Today, lattice QCD is the standard tool for non-perturbative calculations in the Standard Model — hadronic spectra, decay constants, and form factors computed on the lattice agree with experiment to percent-level precision. The Clay Millennium Prize problem asks whether the continuum limit ($a \\to 0$) of lattice Yang-Mills exists rigorously and exhibits a mass gap, connecting Wilson's practical framework to fundamental questions in mathematical physics.",
+    "historicalContext": "Kenneth Wilson introduced lattice gauge theory in 1974, providing the first non-perturbative definition of Yang-Mills theory and earning the 1982 Nobel Prize in Physics. By discretizing spacetime into a hypercubic lattice and placing gauge group elements $U_\\ell \\in G$ on links (edges), Wilson showed that gauge invariance is exact on the lattice \u2014 not an approximate symmetry that must be recovered in a limit, but an exact property of the discretized theory. Wilson's key insight was that confinement (area law for Wilson loops) emerges naturally in the strong coupling regime: at large $g^2$, the lattice path integral is dominated by disordered configurations that produce area-law decay $\\langle W(C) \\rangle \\sim e^{-\\sigma A}$ with positive string tension $\\sigma$. This framework enabled Michael Creutz's pioneering Monte Carlo simulations (1980), which provided the first numerical evidence for confinement in SU(2) and SU(3) gauge theories. Today, lattice QCD is the standard tool for non-perturbative calculations in the Standard Model \u2014 hadronic spectra, decay constants, and form factors computed on the lattice agree with experiment to percent-level precision. The Clay Millennium Prize problem asks whether the continuum limit ($a \\to 0$) of lattice Yang-Mills exists rigorously and exhibits a mass gap, connecting Wilson's practical framework to fundamental questions in mathematical physics.",
     "problemStatement": "Formalize Wilson's lattice gauge theory: define the lattice, link variables, plaquettes, and Wilson action, then prove gauge invariance and establish bounds on the action.",
-    "text": "Wilson's lattice gauge theory — the only known non-perturbative definition of Yang-Mills theory — formalized in Lean 4. The formalization builds from first principles: lattice sites, directed links carrying group elements, and plaquettes (elementary squares) whose ordered products approximate the field strength tensor. The central results are proven gauge invariance of the Wilson action (via conjugation invariance of the character function) and tight bounds $0 \\leq S_W \\leq 2\\beta N_P$. The 2D case is exactly solvable via the Migdal formula, giving an analytically proven area law with string tension $\\sigma = g^2 C_2(R)/(2\\dim R)$. The transfer matrix formalism extracts the mass gap from the spectral gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$, connecting lattice eigenvalues to physical energy scales.",
+    "text": "Wilson's lattice gauge theory \u2014 the only known non-perturbative definition of Yang-Mills theory \u2014 formalized in Lean 4. The formalization builds from first principles: lattice sites, directed links carrying group elements, and plaquettes (elementary squares) whose ordered products approximate the field strength tensor. The central results are proven gauge invariance of the Wilson action (via conjugation invariance of the character function) and tight bounds $0 \\leq S_W \\leq 2\\beta N_P$. The 2D case is exactly solvable via the Migdal formula, giving an analytically proven area law with string tension $\\sigma = g^2 C_2(R)/(2\\dim R)$. The transfer matrix formalism extracts the mass gap from the spectral gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$, connecting lattice eigenvalues to physical energy scales.",
     "proofStrategy": "The Wilson lattice action $S_W = \\beta \\sum_P (1 - \\chi(U_P)/\\chi(1))$ is shown to be gauge-invariant because the plaquette variable $U_P = U_1 U_2 U_3^{-1} U_4^{-1}$ transforms by conjugation under gauge transformations, and the character $\\chi$ is conjugation-invariant. Bounds follow from $0 \\leq 1 - \\chi(U)/\\chi(1) \\leq 2$.",
     "keyInsights": [
-      "Gauge invariance is EXACT on the lattice — the plaquette transforms by conjugation $U_P \\mapsto g U_P g^{-1}$, and conjugation invariance of $\\chi$ makes the action exactly invariant, with no approximation or continuum limit needed",
+      "Gauge invariance is EXACT on the lattice \u2014 the plaquette transforms by conjugation $U_P \\mapsto g U_P g^{-1}$, and conjugation invariance of $\\chi$ makes the action exactly invariant, with no approximation or continuum limit needed",
       "The Wilson action is bounded: $0 \\leq S_W \\leq 2\\beta N_P$, ensuring the Boltzmann weight $e^{-S_W}$ is always positive and bounded, giving a well-defined partition function on any finite lattice",
       "Wilson loops are the confinement order parameter: area law ($\\langle W \\rangle \\sim e^{-\\sigma A}$) implies linear potential $V(R) = \\sigma R$ (confinement), while perimeter law ($\\langle W \\rangle \\sim e^{-mP}$) implies screened potential (deconfinement)",
-      "The 2D theory is exactly solvable via Migdal's formula because the path integral factorizes over independent plaquettes — there are no propagating gluon degrees of freedom in 2D, making it a topological field theory",
+      "The 2D theory is exactly solvable via Migdal's formula because the path integral factorizes over independent plaquettes \u2014 there are no propagating gluon degrees of freedom in 2D, making it a topological field theory",
       "The transfer matrix connects the lattice path integral to Hamiltonian quantum mechanics: the mass gap equals $-\\ln(\\lambda_1/\\lambda_0)/a$, reducing the Millennium Prize question to whether this spectral gap survives the continuum limit $a \\to 0$",
-      "The strong coupling expansion ($\\beta \\to 0$) gives rigorous control: the total action is bounded by $2\\beta N_P$, so for small enough $\\beta$ the theory is provably controlled — but physical QCD lives at weak coupling, where the expansion breaks down"
+      "The strong coupling expansion ($\\beta \\to 0$) gives rigorous control: the total action is bounded by $2\\beta N_P$, so for small enough $\\beta$ the theory is provably controlled \u2014 but physical QCD lives at weak coupling, where the expansion breaks down"
     ],
     "prerequisites": [
       "Group theory (compact Lie groups, representations, characters)",
@@ -118,7 +118,7 @@
   ],
   "conclusion": {
     "summary": "This formalization establishes the rigorous mathematical framework of Wilson's lattice gauge theory in Lean 4: exact gauge invariance of the plaquette action, tight bounds $0 \\leq S_W \\leq 2\\beta N_P$, the area law confinement criterion, the exact 2D solution via Migdal's formula, and the transfer matrix connection between lattice eigenvalues and the mass gap. All lattice-level results are fully proved given the axiomatized structures; the open challenge is whether these properties survive the continuum limit.",
-    "implications": "The lattice formulation is the only known non-perturbative definition of Yang-Mills theory, and its computational implementation (lattice QCD) is the primary tool for first-principles predictions in hadron physics. The proven gauge invariance and action bounds are not merely mathematical curiosities — they guarantee that the lattice partition function is well-defined and that Monte Carlo sampling converges, underpinning billions of CPU-hours of lattice QCD simulations worldwide. The 2D exact solution serves as a proving ground: it shows that area-law confinement can be rigorously established when the path integral simplifies. The transfer matrix formalism bridges the Euclidean lattice path integral to Hamiltonian quantum mechanics, reducing the mass gap question to spectral analysis. The Clay Millennium Prize ($1M) asks precisely whether the spectral gap proven here on finite lattices persists in the thermodynamic and continuum limits.",
+    "implications": "The lattice formulation is the only known non-perturbative definition of Yang-Mills theory, and its computational implementation (lattice QCD) is the primary tool for first-principles predictions in hadron physics. The proven gauge invariance and action bounds are not merely mathematical curiosities \u2014 they guarantee that the lattice partition function is well-defined and that Monte Carlo sampling converges, underpinning billions of CPU-hours of lattice QCD simulations worldwide. The 2D exact solution serves as a proving ground: it shows that area-law confinement can be rigorously established when the path integral simplifies. The transfer matrix formalism bridges the Euclidean lattice path integral to Hamiltonian quantum mechanics, reducing the mass gap question to spectral analysis. The Clay Millennium Prize ($1M) asks precisely whether the spectral gap proven here on finite lattices persists in the thermodynamic and continuum limits.",
     "openQuestions": [
       "Does the continuum limit of 4D lattice Yang-Mills exist as a Wightman QFT satisfying the Osterwalder-Schrader axioms?",
       "Can the strong coupling confinement (area law, rigorous at large $g^2$) be analytically continued to the weak coupling regime relevant to physical QCD?",
@@ -143,5 +143,29 @@
     "yang-mills",
     "yang-mills-transfer-matrix",
     "yang-mills-2d"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.YangMills.Classical",
+      "Proofs.YangMills.Quantum"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "scoped",
+      "Topology",
+      "BigOperators",
+      "Matrix"
+    ],
+    "namespace": "YangMillsMassGap",
+    "lineCount": 28002,
+    "axiomCount": 0,
+    "theoremCount": 1786,
+    "lemmaCount": 0,
+    "defCount": 637,
+    "definitionCount": 637
+  }
 }

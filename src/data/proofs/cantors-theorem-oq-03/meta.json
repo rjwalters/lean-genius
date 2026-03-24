@@ -187,5 +187,20 @@
     "cantor-diagonalization",
     "cantor-diagonalization-oq-01",
     "cantors-theorem-oq-01"
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Function"
+    ],
+    "namespace": "CantorsTheoremOQ03",
+    "lineCount": 311,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "lemmaCount": 0,
+    "defCount": 0,
+    "definitionCount": 0
+  }
 }

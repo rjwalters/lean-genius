@@ -61,14 +61,16 @@
       "theoremCount": 18,
       "lemmaCount": 0,
       "defCount": 4,
-      "imports": ["Mathlib"]
+      "imports": [
+        "Mathlib"
+      ]
     }
   },
   "overview": {
-    "historicalContext": "The birthday problem, first stated by Richard von Mises in *Über Aufteilungs- und Besetzungswahrscheinlichkeiten* (1939), asks how many people are needed for a >50% chance of a shared birthday. The answer — just 23 — is famously counterintuitive and became a staple of probability pedagogy.\n\nThe natural generalization to k-way coincidences asks: when do k people share a birthday? This connects to the classical occupancy problem in combinatorics, studied by Flajolet, Gardy, and Thimonier (1992) using analytic combinatorics, and by Wendl (2003) in the context of DNA sequence assembly. The threshold for a k-way collision scales roughly as $d^{(k-1)/k} \\cdot (k!)^{1/k}$: for $d = 365$ days, $k=2$ needs ~23 people, $k=3$ needs ~88, and $k=4$ needs ~187.\n\nThe generalized pigeonhole principle underlying this formalization was first explicitly formulated by Dirichlet (1834) as the *Schubfachprinzip* (drawer principle). The k-way version — if $n > (k-1)d$ items are placed in $d$ containers, some container holds $\\geq k$ items — is a straightforward extension that appears in virtually every combinatorics textbook. Applications range from hash table collision analysis in computer science to the coupon collector's problem and urn models in probability.",
+    "historicalContext": "The birthday problem, first stated by Richard von Mises in *\u00dcber Aufteilungs- und Besetzungswahrscheinlichkeiten* (1939), asks how many people are needed for a >50% chance of a shared birthday. The answer \u2014 just 23 \u2014 is famously counterintuitive and became a staple of probability pedagogy.\n\nThe natural generalization to k-way coincidences asks: when do k people share a birthday? This connects to the classical occupancy problem in combinatorics, studied by Flajolet, Gardy, and Thimonier (1992) using analytic combinatorics, and by Wendl (2003) in the context of DNA sequence assembly. The threshold for a k-way collision scales roughly as $d^{(k-1)/k} \\cdot (k!)^{1/k}$: for $d = 365$ days, $k=2$ needs ~23 people, $k=3$ needs ~88, and $k=4$ needs ~187.\n\nThe generalized pigeonhole principle underlying this formalization was first explicitly formulated by Dirichlet (1834) as the *Schubfachprinzip* (drawer principle). The k-way version \u2014 if $n > (k-1)d$ items are placed in $d$ containers, some container holds $\\geq k$ items \u2014 is a straightforward extension that appears in virtually every combinatorics textbook. Applications range from hash table collision analysis in computer science to the coupon collector's problem and urn models in probability.",
     "problemStatement": "Formalize k-way birthday coincidences: given n people and d days, prove the generalized pigeonhole bound (n > (k-1)*d implies a k-way coincidence is certain), and show the k=2 case recovers the classical birthday problem.",
     "text": "Generalizes the Birthday Problem from pairwise collisions to k-way coincidences. Proves the generalized pigeonhole bound, classical recovery (k=2 equals non-injectivity), monotonicity, and probability formulas. Fully proved with 0 axioms and 0 sorries.",
-    "proofStrategy": "The proof architecture has three layers. **Layer 1 (Structural foundation)**: Model birthday assignments as functions $f : \\text{Fin}\\,n \\to \\text{Fin}\\,d$ and define fibers $f^{-1}(j)$ via `Finset.filter`. Prove the partition-of-unity identity $\\sum_j |f^{-1}(j)| = n$ using `Finset.card_eq_sum_card_fiberwise`. **Layer 2 (Combinatorial core)**: The generalized pigeonhole follows by contradiction — if every fiber has $< k$ elements then $n \\leq (k-1)d$, contradicting the hypothesis. Classical recovery shows `HasKWay f 2 ↔ ¬Injective f` by extracting distinct witnesses from fibers of size $\\geq 2$ via `Finset.one_lt_card`. Monotonicity is a direct `le_trans`. **Layer 3 (Probabilistic framework)**: Define `noKWaySet` (safe assignments) and `probKWay` via complementary counting. The pigeonhole bound lifts to $P = 1$, the population bound gives $P = 0$, and set containment gives monotonicity in $k$. The $k=2$ case connects to the classical formula by identifying safe assignments with injections.",
+    "proofStrategy": "The proof architecture has three layers. **Layer 1 (Structural foundation)**: Model birthday assignments as functions $f : \\text{Fin}\\,n \\to \\text{Fin}\\,d$ and define fibers $f^{-1}(j)$ via `Finset.filter`. Prove the partition-of-unity identity $\\sum_j |f^{-1}(j)| = n$ using `Finset.card_eq_sum_card_fiberwise`. **Layer 2 (Combinatorial core)**: The generalized pigeonhole follows by contradiction \u2014 if every fiber has $< k$ elements then $n \\leq (k-1)d$, contradicting the hypothesis. Classical recovery shows `HasKWay f 2 \u2194 \u00acInjective f` by extracting distinct witnesses from fibers of size $\\geq 2$ via `Finset.one_lt_card`. Monotonicity is a direct `le_trans`. **Layer 3 (Probabilistic framework)**: Define `noKWaySet` (safe assignments) and `probKWay` via complementary counting. The pigeonhole bound lifts to $P = 1$, the population bound gives $P = 0$, and set containment gives monotonicity in $k$. The $k=2$ case connects to the classical formula by identifying safe assignments with injections.",
     "keyInsights": [
       "The fiber decomposition (using Finset.card_eq_sum_card_fiberwise) is the key structural tool: it converts the global constraint on n into local constraints on each day",
       "The generalized pigeonhole follows from a simple averaging argument: n people in d bins with each bin having < k means n < k*d",
@@ -79,7 +81,7 @@
     ],
     "prerequisites": [
       "Finite sets and cardinality (Finset, Finset.card)",
-      "Functions between finite types (Fin n → Fin d)",
+      "Functions between finite types (Fin n \u2192 Fin d)",
       "Injectivity and the pigeonhole principle",
       "Basic probability as counting over finite sample spaces"
     ]
@@ -90,14 +92,14 @@
       "title": "Core Definitions",
       "startLine": 34,
       "endLine": 47,
-      "summary": "Defines `fiberAt f j` (the preimage fiber — the set of people assigned to day j) and `HasKWay f k` (existential predicate: some day has ≥ k people). These two definitions drive the entire formalization."
+      "summary": "Defines `fiberAt f j` (the preimage fiber \u2014 the set of people assigned to day j) and `HasKWay f k` (existential predicate: some day has \u2265 k people). These two definitions drive the entire formalization."
     },
     {
       "id": "fiber-partition",
       "title": "Fiber Partition of Unity",
       "startLine": 49,
       "endLine": 63,
-      "summary": "Proves the partition-of-unity identity: fiber sizes sum to n. Uses `Finset.card_eq_sum_card_fiberwise` — the structural foundation for the generalized pigeonhole argument."
+      "summary": "Proves the partition-of-unity identity: fiber sizes sum to n. Uses `Finset.card_eq_sum_card_fiberwise` \u2014 the structural foundation for the generalized pigeonhole argument."
     },
     {
       "id": "pigeonhole",
@@ -158,7 +160,7 @@
   ],
   "conclusion": {
     "summary": "Provides a complete formalization of k-way birthday coincidences with 0 axioms and 0 sorries. The 25 theorems cover the generalized pigeonhole principle, classical recovery, monotonicity, probability formulas, and counting results.",
-    "implications": "**Computer Science**: k-way collisions directly model hash table overflow — a hash function $h : \\text{Keys} \\to \\text{Buckets}$ with $k$ collisions at one bucket triggers expensive chain traversal or rehashing. The pigeonhole bound $(k-1) \\cdot d < n$ gives the hard threshold where overflow is guaranteed, informing hash table sizing. In cryptography, k-way collision resistance is strictly stronger than pairwise collision resistance: the birthday attack on hash functions uses $k=2$, but multi-collision attacks (Joux 2004) exploit $k > 2$ to break iterated hash constructions.\n\n**Load Balancing**: In distributed systems, ensuring no server receives more than $k$ requests requires $n \\leq (k-1) \\cdot d$ where $d$ is the number of servers. This formalization proves the exact capacity limit.\n\n**DNA Sequencing**: Wendl (2003) applied k-way birthday statistics to shotgun DNA sequencing, where $k$-fold coverage (at least $k$ reads covering each position) is needed for reliable assembly. The probability framework formalized here gives the theoretical foundation for coverage depth analysis.",
+    "implications": "**Computer Science**: k-way collisions directly model hash table overflow \u2014 a hash function $h : \\text{Keys} \\to \\text{Buckets}$ with $k$ collisions at one bucket triggers expensive chain traversal or rehashing. The pigeonhole bound $(k-1) \\cdot d < n$ gives the hard threshold where overflow is guaranteed, informing hash table sizing. In cryptography, k-way collision resistance is strictly stronger than pairwise collision resistance: the birthday attack on hash functions uses $k=2$, but multi-collision attacks (Joux 2004) exploit $k > 2$ to break iterated hash constructions.\n\n**Load Balancing**: In distributed systems, ensuring no server receives more than $k$ requests requires $n \\leq (k-1) \\cdot d$ where $d$ is the number of servers. This formalization proves the exact capacity limit.\n\n**DNA Sequencing**: Wendl (2003) applied k-way birthday statistics to shotgun DNA sequencing, where $k$-fold coverage (at least $k$ reads covering each position) is needed for reliable assembly. The probability framework formalized here gives the theoretical foundation for coverage depth analysis.",
     "openQuestions": [
       "Can the exact threshold for k=3 (approximately n=88 for d=365) be computed using multinomial coefficient sums?",
       "Can the Poisson approximation for k-way coincidences be formalized, connecting to Mathlib's probability theory?",
@@ -174,7 +176,7 @@
     {
       "targetId": "birthday-problem-oq-02",
       "relationship": "related",
-      "description": "The asymptotic bound formalization complements this combinatorial approach — OQ-02 provides the $\\sqrt{2d \\ln 2} \\approx 22.5$ threshold formula, while this entry provides the exact pigeonhole bound and extends to $k > 2$"
+      "description": "The asymptotic bound formalization complements this combinatorial approach \u2014 OQ-02 provides the $\\sqrt{2d \\ln 2} \\approx 22.5$ threshold formula, while this entry provides the exact pigeonhole bound and extends to $k > 2$"
     },
     {
       "targetId": "ramseys-theorem",
@@ -184,7 +186,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "technique",
-      "description": "Both use counting/contradiction arguments: the generalized pigeonhole bounds fiber sizes, while Euclid's proof bounds the number of primes. The proof structure — assume a bound, sum over components, derive a contradiction — is shared"
+      "description": "Both use counting/contradiction arguments: the generalized pigeonhole bounds fiber sizes, while Euclid's proof bounds the number of primes. The proof structure \u2014 assume a bound, sum over components, derive a contradiction \u2014 is shared"
     }
   ],
   "relatedProofs": [
@@ -196,13 +198,13 @@
   "references": [
     {
       "authors": "von Mises, Richard",
-      "title": "Über Aufteilungs- und Besetzungswahrscheinlichkeiten",
+      "title": "\u00dcber Aufteilungs- und Besetzungswahrscheinlichkeiten",
       "year": "1939",
-      "venue": "Revue de la Faculté des Sciences de l'Université d'Istanbul",
+      "venue": "Revue de la Facult\u00e9 des Sciences de l'Universit\u00e9 d'Istanbul",
       "note": "First formal statement of the birthday problem in its modern probabilistic form"
     },
     {
-      "authors": "Flajolet, Philippe; Gardy, Danièle; Thimonier, Loÿs",
+      "authors": "Flajolet, Philippe; Gardy, Dani\u00e8le; Thimonier, Lo\u00ffs",
       "title": "Birthday Paradox, Coupon Collectors, Caching Algorithms and Self-Organizing Search",
       "year": "1992",
       "venue": "Discrete Applied Mathematics, vol. 39, pp. 207-229",
@@ -219,8 +221,21 @@
       "authors": "Joux, Antoine",
       "title": "Multicollisions in Iterated Hash Functions",
       "year": "2004",
-      "venue": "Advances in Cryptology – CRYPTO 2004, LNCS 3152, pp. 306-316",
+      "venue": "Advances in Cryptology \u2013 CRYPTO 2004, LNCS 3152, pp. 306-316",
       "note": "Showed that k-way collisions (multicollisions) in iterated hash functions are surprisingly easy to find, extending the birthday attack from k=2 to arbitrary k with cost only k times the pairwise birthday bound"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "BirthdayKWay",
+    "lineCount": 369,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "lemmaCount": 0,
+    "defCount": 4,
+    "definitionCount": 4
+  }
 }

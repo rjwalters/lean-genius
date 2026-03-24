@@ -172,5 +172,22 @@
       "text": "Robert, A.M. (2000). A Course in p-adic Analysis. Graduate Texts in Mathematics 198, Springer.",
       "url": "https://en.wikipedia.org/wiki/P-adic_analysis"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.MetricSpace.Ultra.Basic",
+      "Mathlib.NumberTheory.Padics.PadicNorm",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Metric"
+    ],
+    "namespace": "TriangleInequalityOQ03",
+    "lineCount": 256,
+    "axiomCount": 1,
+    "theoremCount": 15,
+    "lemmaCount": 0,
+    "defCount": 0,
+    "definitionCount": 0
+  }
 }
