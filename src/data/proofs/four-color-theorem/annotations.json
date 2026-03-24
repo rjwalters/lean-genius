@@ -14,7 +14,8 @@
       "graph theory",
       "computer-assisted proof",
       "planar graphs"
-    ]
+    ],
+    "mathContext": "Four Color Theorem: Every planar graph $G$ satisfies $\\chi(G) \\leq 4$."
   },
   {
     "id": "ann-graph-structure",
@@ -31,7 +32,8 @@
       "vertex",
       "edge",
       "adjacency"
-    ]
+    ],
+    "mathContext": "A simple graph $G = (V, E)$ with $E \\subseteq \\binom{V}{2}$. Map coloring reduces to graph coloring via the dual graph."
   },
   {
     "id": "ann-coloring",
@@ -66,7 +68,8 @@
       "planar embedding",
       "Kuratowski's theorem",
       "forbidden minors"
-    ]
+    ],
+    "mathContext": "A graph $G$ is planar iff it has no $K_5$ or $K_{3,3}$ minor (Wagner 1937). For planar graphs, $|E| \\leq 3|V| - 6$."
   },
   {
     "id": "ann-euler",
@@ -144,7 +147,8 @@
       "color swapping",
       "connected component",
       "Kempe's fallacy"
-    ]
+    ],
+    "mathContext": "A Kempe $(a,b)$-chain at $v$: the connected component of $v$ in $G[c^{-1}(\\{a,b\\})]$. Swapping $a \\leftrightarrow b$ preserves properness."
   },
   {
     "id": "ann-kempe-swap",
@@ -181,7 +185,8 @@
       "minimal counterexample",
       "configuration",
       "extendability"
-    ]
+    ],
+    "mathContext": "A configuration $C$ is reducible if any proper 4-coloring of $G - C$ extends to $G$. Appel-Haken verified 1,936 such configurations."
   },
   {
     "id": "ann-computer-verification",
@@ -198,7 +203,8 @@
       "Coq",
       "formal verification",
       "proof assistant"
-    ]
+    ],
+    "mathContext": "Unavoidability + reducibility: every planar graph contains a reducible configuration $\\Rightarrow$ no minimal counterexample $\\Rightarrow$ 4CT."
   },
   {
     "id": "ann-gonthier",
@@ -215,6 +221,7 @@
       "Coq proof assistant",
       "SSReflect",
       "proof certificate"
-    ]
+    ],
+    "mathContext": "Gonthier's Coq proof (~60k lines) uses SSReflect Boolean reflection. Trust reduces to Coq's ~10k-line kernel."
   }
 ]
