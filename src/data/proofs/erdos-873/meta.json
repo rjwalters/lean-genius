@@ -17,7 +17,7 @@
       "multiplicative-structure"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 873,
     "erdosUrl": "https://erdosproblems.com/873",
     "erdosProblemStatus": "open",
@@ -72,7 +72,7 @@
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Szemerédi in their work on multiplicative properties of sequences. It asks about the fundamental question: how many consecutive terms of a sequence can have 'small' LCM?\n\nThe LCM of consecutive terms measures their multiplicative dependence. If terms share many prime factors, their LCM is relatively small. The question is whether, for any sequence, we can always find a window size k such that few k-tuples have LCM below any threshold X^ε.\n\nErdős and Szemerédi proved tight bounds for k=3: F(A,X,3) grows like X^(1/3) log X in the worst case. The general conjecture asks whether the exponent can be made arbitrarily small by increasing k.",
     "problemStatement": "**Conjecture (Erdős-Szemerédi)**: Let $A = \\{a_1 < a_2 < \\cdots\\} \\subseteq \\mathbb{N}$ and let $F(A,X,k)$ count positions $i$ where $[a_i, a_{i+1}, \\ldots, a_{i+k-1}] < X$ (LCM of $k$ consecutive terms).\n\nFor every $\\varepsilon > 0$, does there exist $k$ such that $F(A,X,k) < X^\\varepsilon$?\n\n**Status**: OPEN\n\n**Known**: For $k=3$, we have $F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and this is tight.",
-    "text": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erd\u0151s and Szemer\u00e9di on multiplicative structure of sequences.",
+    "text": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erdős and Szemerédi on multiplicative structure of sequences.",
     "proofStrategy": "We formalize the conjecture and known results:\n\n1. **Counting Function**: Define consecutiveLcm(a,i,k) as the LCM of k terms starting at position i, and F(a,X,k) as the count of positions where this LCM is less than X.\n\n2. **Monotonicity**: Prove that F decreases as k increases (more terms means larger LCM, so fewer qualify).\n\n3. **Conjecture Statement**: State the open problem asking whether F can always be made subpolynomial in X.\n\n4. **Known Bounds**: State the Erdős-Szemerédi theorem for k=3 as axioms.\n\n5. **Examples**: Verify behavior for specific sequences (naturals, powers of 2).",
     "keyInsights": [
       "**Multiplicative dependence**: The LCM measures how much consecutive terms share prime factors. Small LCM means high dependence.",
