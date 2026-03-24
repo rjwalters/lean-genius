@@ -29,11 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Axiom elimination (8→7) + sorry elimination (3→2). Proved smoothPart_dvd and f_lower_bound. Fixed mahler_ineffective inconsistency and 4 pre-existing build issues. File now builds cleanly.",
+    "builtItems": [
+      "Proved smoothPart_dvd via prod_pow_factorization_dvd helper (Finset induction + coprimality)",
+      "Proved f_lower_bound theorem from f_property axiom",
+      "Fixed mahler_ineffective axiom (∀ k ≤ n → ∀ k₀ fixed)",
+      "Fixed noncomputable defs: tang_exponent, rh_exponent, heuristic_bound",
+      "Fixed prime_binomial_structure to use current Mathlib API",
+      "Fixed heuristic_conjecture to use DecidablePred"
+    ],
+    "insights": [
+      "smoothPart_dvd proved: product of p^(factorization p) for primes p ≤ k divides m, via coprimality of distinct prime powers and Finset induction",
+      "f_lower_bound converted from axiom to theorem: no primes exist ≤ 0 or ≤ 1, so smoothPart 0 and smoothPart 1 both equal 1, which is ≤ n² for n ≥ 4",
+      "mahler_ineffective axiom was INCONSISTENT (∀ k ≤ n would contradict f_property). Fixed to correct statement: for fixed k₀ and ε>0",
+      "kummer_theorem has a Mathlib equivalent via Nat.Prime.multiplicity_choose — convertible but requires bridging multiplicity vs factorization APIs",
+      "4 pre-existing build issues fixed: noncomputable defs, deprecated API names, heuristic_conjecture decidability issue"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove kummer_theorem by bridging Nat.Prime.multiplicity_choose to factorization API",
+      "Prove f_tendsto_infty_weak from corrected mahler_ineffective + f_property (complex ℝ/ℕ proof)",
+      "Create Aristotle companion file for remaining routine lemmas"
+    ],
     "markdown": "# Erdős #684 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $0\\leq k\\leq n$ write\\[\\binom{n}{k} = uv\\]where the only primes dividing $u$ are in $[2,k]$ and the only primes dividing $v$ are in $(k,n]$.\n\nLet $f(n)$ be the smallest $k$ such that $u>n^2$. Give bounds for $f(n)$.\n\n\n\nA classical theorem of Mahler states that for any $\\epsilon>0$ and integers $k$ and $l$ then, writing\\[(n+1)\\cdots (n+k) = ab\\]where the only primes dividing $a$ are $\\leq l$ and the only primes dividing $b$ are $>l$, we have $a < n^{1+\\epsilon}$ for all sufficiently large (depending on $\\epsilon,k,l$) $n$.\n\nMahler's theorem implies $f(n)\\to \\infty$ as $n\\to \\infty$, but is ineffective, and so gives no bounds on the growth of $f(n)$.\n\nOne can similarly ask for estimates on the smallest integer $f(n,k)$ such that if $m$ is the factor of $\\binom{n}{k}$ containing all primes $\\leq f(n,k)$ then $m > n^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #683\n- Problem #685\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [

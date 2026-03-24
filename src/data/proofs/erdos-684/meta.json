@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "erdosNumber": 684,
     "erdosUrl": "https://erdosproblems.com/684",
     "erdosProblemStatus": "open",
@@ -57,9 +57,9 @@
       "prime_binomial_structure theorem: p divides C(p,k)",
       "fGeneral definition: generalized problem"
     ],
-    "axiomCount": 8,
-    "lineCount": 245,
-    "assumptions": "8 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "axiomCount": 7,
+    "lineCount": 312,
+    "assumptions": "7 axiom(s) and 2 sorry(s). Proved smoothPart_dvd and f_lower_bound. Fixed mahler_ineffective inconsistency."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er79d]. For binomial coefficient C(n,k), we decompose it as u·v where u is the k-smooth part (primes ≤ k) and v is the k-rough part (primes > k).\n\nThe function f(n) asks: how small can k be while still having the smooth part exceed n²?\n\nMahler's classical theorem gives an ineffective bound. Recent work by Tang & ChatGPT (2026) proved f(n) ≤ n^{30/43+o(1)}, with n^{2/3+o(1)} conditional on the Riemann Hypothesis.\n\nRemarkably, heuristic arguments by Sothanaphan & ChatGPT suggest f(n) ~ 2 log n for most n - vastly smaller than proven bounds!\n\nThe sequence f(n) is recorded in OEIS A392019.",
@@ -165,14 +165,7 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Choose.Factorization",
-      "Mathlib.Data.Nat.Choose.Dvd",
-      "Mathlib.Data.Nat.Factorization.Basic",
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Algebra.BigOperators.Group.Finset",
-      "Mathlib.Algebra.Order.Ring.Lemmas",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Order.Filter.AtTopBot"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
@@ -180,9 +173,9 @@
       "Finset"
     ],
     "namespace": "Erdos684",
-    "lineCount": 245,
-    "axiomCount": 8,
-    "theoremCount": 6,
+    "lineCount": 312,
+    "axiomCount": 7,
+    "theoremCount": 8,
     "definitionCount": 10
   },
   "crossReferences": [
