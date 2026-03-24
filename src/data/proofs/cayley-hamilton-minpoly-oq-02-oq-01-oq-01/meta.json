@@ -204,5 +204,35 @@
     "axiomCount": 0,
     "theoremCount": 26,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Skolem, Thoralf",
+      "title": "Zur Theorie der assoziativen Zahlensysteme",
+      "year": "1927",
+      "venue": "Skrifter utgitt av Det Norske Videnskaps-Akademi i Oslo, I. Mat.-naturv. klasse, no. 12",
+      "note": "First proof of the theorem: every automorphism of a simple algebra over a field is inner"
+    },
+    {
+      "authors": "Noether, Emmy",
+      "title": "Nichtkommutative Algebra",
+      "year": "1933",
+      "venue": "Mathematische Zeitschrift 37, 514–541",
+      "note": "Extended Skolem's result to the general setting of central simple algebras, establishing the Skolem-Noether theorem in its modern form"
+    },
+    {
+      "authors": "Lam, Tsit-Yuen",
+      "title": "A First Course in Noncommutative Rings",
+      "year": "2001",
+      "venue": "Springer GTM 131, 2nd edition",
+      "note": "Standard reference for the Skolem-Noether theorem (Chapter 4) in the context of noncommutative ring theory and central simple algebras"
+    },
+    {
+      "authors": "Artin, Michael",
+      "title": "Algebra",
+      "year": "2011",
+      "venue": "Pearson, 2nd edition",
+      "note": "Undergraduate treatment of matrix algebra automorphisms and the proof that Aut(Mₙ(K)) ≅ PGLₙ(K)"
+    }
+  ]
 }
