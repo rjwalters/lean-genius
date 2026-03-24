@@ -60,7 +60,7 @@
     "assumptions": "0 axioms, 0 sorries. Core FTC (integral_eq_sub_of_hasDerivAt) and integral operations from Mathlib; original work is the Green's theorem reformulation."
   },
   "overview": {
-    "historicalContext": "**George Green (1793–1841)** published his theorem in 1828 in 'An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism.' The theorem relates a line integral around a simple closed curve C to a double integral over the region D enclosed by C:\n\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,dA$$\n\nGreen's theorem is a special case of **Stokes' theorem** in 2D, itself a vast generalization of the Fundamental Theorem of Calculus. For a rectangle, the proof reduces to applying FTC twice (once in each variable) and Fubini to interchange the order of integration.\n\nThe **original formalization** of Green's theorem in this gallery (Wiedijk #21) used abstract definitions for `lineIntegral` and `doubleIntegralCurl` that returned 0 as stubs. **This extension (OQ-01)** replaces those stubs with genuine Mathlib `intervalIntegral` objects, making the formalization mathematically substantive.",
+    "historicalContext": "**George Green (1793–1841)** was a self-taught English mathematician — the son of a baker and miller in Nottingham, with only one year of formal schooling. He published his theorem in 1828 in 'An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism,' a privately printed pamphlet of which only about 100 copies circulated. The work was virtually unknown until **William Thomson (Lord Kelvin)** rediscovered it in 1845, recognized its profound importance, and arranged for its republication in *Crelle's Journal* (1850–1854).\n\nGreen's theorem relates a line integral around a simple closed curve $C$ to a double integral over the enclosed region $D$:\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA.$$\n\nThe theorem is a special case of the **generalized Stokes' theorem** ($\\int_{\\partial M} \\omega = \\int_M d\\omega$), which unifies Green's theorem, the classical Stokes' theorem, and the divergence theorem as instances of integrating a differential form over a manifold with boundary. For smooth manifolds, this was established rigorously by **Élie Cartan** (1899) and codified in modern form by **Michael Spivak** (*Calculus on Manifolds*, 1965).\n\nFor a rectangle $[a,b] \\times [c,d]$, the proof reduces to applying the Fundamental Theorem of Calculus twice (once in each coordinate) and using Fubini's theorem to interchange the order of integration. This is the approach taken in most rigorous textbooks (e.g., Spivak, Munkres) and is particularly well-suited to formal verification because it avoids the complications of parametrizing curved boundaries.\n\nThe **original formalization** of Green's theorem in this gallery (Wiedijk #21) used abstract definitions for `lineIntegral` and `doubleIntegralCurl` that returned 0 as stubs. **This extension (OQ-01)** replaces those stubs with genuine Mathlib `intervalIntegral` objects, making the formalization mathematically substantive — a concrete proof rather than a definitional triviality.",
     "problemStatement": "**Open Question (greens-theorem-oq-01)**: Can the abstract `lineIntegral` and `doubleIntegralCurl` stubs in `GreensTheorem.lean` be replaced with Mathlib's `intervalIntegral` machinery, giving a genuine (non-axiomatic) formalization?\n\n**Answer: YES** — using `intervalIntegral` + FTC.\n\nThe key insight: Mathlib's `intervalIntegral.integral_eq_sub_of_hasDerivAt` provides the Fundamental Theorem of Calculus needed to replace each abstract stub with a concrete integral.",
     "text": "Green's theorem for rectangles formalized using Mathlib's intervalIntegral machinery, replacing the abstract stub definitions with genuine FTC-based computations. The proof uses only FTC, Fubini (as hypothesis), linearity of integration, and ring arithmetic — demonstrating that Mathlib's analysis library is powerful enough for multivariable calculus.",
     "proofStrategy": "**Green's theorem for rectangle** [a,b]×[c,d]:\n\n```\n∮_{∂R} (P dx + Q dy) = ∬_R (∂Q/∂x - ∂P/∂y) dA\n```\n\nThe line integral decomposes into four edges:\n- Bottom (y=c): ∫_a^b P(x,c) dx\n- Right (x=b): ∫_c^d Q(b,y) dy  \n- Top (y=d): −∫_a^b P(x,d) dx (right→left)\n- Left (x=a): −∫_c^d Q(a,y) dy (top→bottom)\n\n**Eight proof steps:**\n1. Split inner integral: ∫_x (∂Q/∂x − ∂P/∂y) = ∫_x ∂Q/∂x − ∫_x ∂P/∂y (integral_sub)\n2. Lift to outer integral (integral_congr)\n3. Split outer: ∫_y (A − B) = ∫_y A − ∫_y B (integral_sub)\n4. Apply FTC to ∂Q/∂x: ∫_a^b ∂Q/∂x dx = Q(b,y) − Q(a,y) (integral_eq_sub_of_hasDerivAt)\n5. Split ∫_y (Q(b,y) − Q(a,y)) = ∫_y Q(b,y) − ∫_y Q(a,y) (integral_sub)\n6. Apply Fubini: swap ∫_y ∫_x ∂P/∂y = ∫_x ∫_y ∂P/∂y (hypothesis)\n7. Apply FTC to ∂P/∂y: ∫_c^d ∂P/∂y dy = P(x,d) − P(x,c) (integral_eq_sub_of_hasDerivAt)\n8. Split and rearrange: pure `ring` arithmetic closes the goal",
@@ -166,6 +166,11 @@
       "targetId": "greens-theorem-oq-03",
       "relationship": "sibling",
       "description": "Sibling open question exploring Green's theorem in different settings — together these entries demonstrate multiple approaches to formalizing the line-integral/double-integral connection in Lean 4"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus-oq-01",
+      "relationship": "related",
+      "description": "Both entries build on Mathlib's FTC infrastructure (integral_eq_sub_of_hasDerivAt). This OQ-01 applies FTC to multivariable calculus, showing the single-variable FTC generalizes cleanly to partial derivatives"
     }
   ],
   "references": [
@@ -189,6 +194,20 @@
       "year": "2023",
       "venue": "Mathlib4 documentation",
       "note": "The Mathlib measure theory and integration library underpinning this formalization, including intervalIntegral, integral_eq_sub_of_hasDerivAt (FTC), and integral_integral_swap (Fubini)"
+    },
+    {
+      "authors": "Munkres, James R.",
+      "title": "Analysis on Manifolds",
+      "year": "1991",
+      "venue": "Addison-Wesley",
+      "note": "Rigorous treatment of Green's, Stokes', and the divergence theorem with careful attention to the regularity conditions (C¹ hypotheses, orientability, boundary parametrization) that this formalization makes explicit as 12 Lean hypotheses"
+    },
+    {
+      "authors": "Green, George",
+      "title": "Mathematical Papers of the Late George Green",
+      "year": "1871",
+      "venue": "Macmillan (edited by N.M. Ferrers)",
+      "note": "Collected works including the original 1828 Essay, with Ferrers' introduction documenting Green's remarkable self-education and the rediscovery of his work by Thomson (Lord Kelvin) in 1845"
     }
   ]
 }

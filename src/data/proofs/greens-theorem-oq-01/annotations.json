@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-doc",
+    "range": { "startLine": 3, "endLine": 55 },
+    "type": "context",
+    "title": "Module Documentation: Concrete Green's Theorem via intervalIntegral",
+    "content": "The module docstring frames the open question (OQ-01): can the abstract line integral and double integral stubs in the parent GreensTheorem.lean be replaced with Mathlib's intervalIntegral machinery? The answer is YES. The docstring outlines the five-part proof structure and the key Mathlib API (integral_eq_sub_of_hasDerivAt for FTC, integral_sub for linearity, integral_congr for pointwise rewriting). The proof status checklist shows all five parts verified with zero sorries. This demonstrates that Mathlib's single-variable analysis library, combined with Fubini (as a hypothesis), is sufficient for multivariable calculus theorems.",
+    "mathContext": "The open question asks whether $\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R (\\partial_x Q - \\partial_y P)\\,dA$ can be formalized using concrete `intervalIntegral` objects rather than abstract stubs. The answer reduces to: (1) FTC gives $\\int_a^b \\partial_x Q\\,dx = Q(b,y) - Q(a,y)$, (2) FTC gives $\\int_c^d \\partial_y P\\,dy = P(x,d) - P(x,c)$, (3) Fubini swaps the order, (4) `ring` closes.",
+    "significance": "key",
+    "relatedConcepts": ["Green's theorem", "intervalIntegral", "Fundamental Theorem of Calculus", "open question resolution"],
+    "prerequisites": ["Green's theorem (classical statement)", "Mathlib measure theory", "intervalIntegral API"],
+    "proofId": "greens-theorem-oq-01"
+  },
+  {
     "id": "ann-concrete-defs",
     "range": {
       "startLine": 67,
