@@ -16,7 +16,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 126,
+    "axiomCount": 121,
     "assumptions": "126 axiom declarations across ComplexityCore.lean (5 core model axioms) and PNPBarriersUnified.lean (121 landscape axioms): core model (Phi_countably_many, Phi_pair_project_first, Phi_negate, poly_time_compose, reduction_preserves_P), barrier axioms (Baker-Gill-Solovay eq/sep, razborov_rudich, Aaronson-Wigderson eq/neq, algebrization_subsumes_relativization), containments (P subset NP subset PSPACE subset EXP), Cook-Levin theorem, Ladner's theorem, polynomial hierarchy, space complexity (Savitch, Immerman-Szelepcsenyi), probabilistic classes (BPP, Sipser-Lautemann), interactive proofs (IP=PSPACE, AM, MIP*=RE), PCP theorem, fine-grained complexity (ETH, SETH), meta-complexity (MCSP, Kolmogorov), circuit complexity (AC0, TC0, NC), derandomization (Nisan-Wigderson, Impagliazzo-Wigderson), TFNP subclasses (PPAD, PLS, PPP, CLS), descriptive complexity (Fagin, Immerman-Vardi), counting complexity (#P, Toda's theorem), quantum complexity (QMA, QIP=PSPACE), zero-knowledge proofs, Reingold's USTCON in L, Unique Games Conjecture, Barrington's theorem, and more. The P vs NP question itself remains open.",
     "mathlibDependencies": [
       {
