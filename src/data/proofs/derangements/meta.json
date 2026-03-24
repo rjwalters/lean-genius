@@ -86,7 +86,7 @@
       "id": "docstring",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "Imports `Combinatorics.Derangements.Finite` and `.Basic`. Docstring with $D_n = n! \\sum (-1)^k/k!$, approach, Mathlib dependencies, and historical note on Montmort (1708) and Euler (1751).",
       "mathContext": "The four Mathlib dependencies form a complete API: `numDerangements_sum` (closed-form), `numDerangements_add_two` (recurrence), `card_derangements_eq_numDerangements` (cardinality bridge), `mem_derangements_iff_fixedPoints_eq_empty` (definition). Together they encode the full algebraic and combinatorial theory of derangements."
     },
@@ -94,7 +94,7 @@
       "id": "core-definition",
       "title": "Core Definition",
       "startLine": 55,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Formal characterization: $f \\in \\text{derangements}(\\alpha) \\iff \\forall x, f(x) \\neq x$, equivalently `fixedPoints f = ∅`. Connects to `Equiv.Perm` and `Function.fixedPoints`.",
       "mathContext": "A derangement is a permutation $\\sigma \\in S_n$ with no fixed points: $\\sigma(i) \\neq i$ for all $i$. In Lean: `f ∈ derangements α ↔ ∀ x, f x ≠ x`."
     },
@@ -102,7 +102,7 @@
       "id": "recurrence",
       "title": "Base Cases and Recurrence",
       "startLine": 77,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "$D_0 = 1$, $D_1 = 0$, and the recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$ via `numDerangements_add_two`. Combinatorial proof by case analysis on element 1's image.",
       "mathContext": "$D_0 = 1$ (empty permutation), $D_1 = 0$ (identity is the only permutation of 1 element). Recurrence: $D_{n+2} = (n+1)(D_{n+1} + D_n)$. Proof: element 1 maps to some $j \\neq 1$ ($n+1$ choices); if $j$ maps back to 1, the rest is a derangement of $n$ elements ($D_n$); otherwise, it's a derangement of $n+1$ elements with 1 replaced by $j$ ($D_{n+1}$)."
     },
@@ -118,7 +118,7 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 128,
-      "endLine": 160,
+      "endLine": 161,
       "summary": "$D_2=1$ through $D_6=265$ verified by `native_decide`. Hat-check probability table showing $D_n/n!$ oscillating toward $1/e \\approx 0.3679$.",
       "mathContext": "$D_2 = 1$ (just $(12)$), $D_3 = 2$ (two 3-cycles), $D_4 = 9$ (nine derangements including three products of disjoint transpositions and six 4-cycles), $D_5 = 44$, $D_6 = 265$. The ratios $D_n/n! = 1/2, 1/3, 3/8, 11/30, 53/144$ alternate around $1/e$."
     },
@@ -126,7 +126,7 @@
       "id": "properties",
       "title": "Algebraic Properties",
       "startLine": 162,
-      "endLine": 201,
+      "endLine": 202,
       "summary": "Identity $\\notin$ derangements (for nonempty types). Derangements not closed under composition: $(0\\,1)^2 = \\text{id}$. Subfactorial $!n$ notation and value table.",
       "mathContext": "The derangement set $\\mathcal{D}_n \\subset S_n$ is conjugacy-invariant (conjugation preserves having no fixed points) but not a subgroup: $(01) \\in \\mathcal{D}_2$ but $(01)^2 = \\text{id} \\notin \\mathcal{D}_2$. The identity $\\text{id}$ has $n$ fixed points, so $\\text{id} \\notin \\mathcal{D}_n$ for $n \\geq 1$, meaning $\\mathcal{D}_n$ lacks the identity element required of any subgroup."
     },
@@ -134,7 +134,7 @@
       "id": "inclusion-exclusion",
       "title": "Inclusion-Exclusion Derivation",
       "startLine": 203,
-      "endLine": 220,
+      "endLine": 221,
       "summary": "Derivation of $D_n = n! \\sum (-1)^k/k!$ via inclusion-exclusion on fixed-point sets $A_i$, using $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$.",
       "mathContext": "Let $A_i = \\{\\sigma \\in S_n : \\sigma(i) = i\\}$. Then $D_n = |S_n \\setminus \\bigcup A_i| = \\sum_{k=0}^n (-1)^k \\binom{n}{k}(n-k)! = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}$, using $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ (permutations fixing $k$ specified points)."
     },
