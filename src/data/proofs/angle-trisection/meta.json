@@ -154,6 +154,11 @@
       "targetId": "nth-root-irrational",
       "relationship": "foundational",
       "description": "The irrationality of $\\sqrt[3]{2}$ (a special case of the $n$-th root irrationality) is the simplest instance of the degree-3 obstruction to constructibility: $[\\mathbb{Q}(\\sqrt[3]{2}):\\mathbb{Q}] = 3$, and $3 \\nmid 2^n$. The same argument proves the impossibility of doubling the cube"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Extends the constructibility framework to the Gauss-Wantzel theorem for regular polygons: the regular $n$-gon is constructible iff $\\phi(n)$ is a power of 2, i.e., $n = 2^a p_1 \\cdots p_m$ with distinct Fermat primes $p_i$. This connects the same degree-criterion used here to cyclotomic field theory and Euler's totient function"
     }
   ],
   "overview": {
@@ -258,7 +263,8 @@
     "solution-of-cubic",
     "angle-trisection-oq-02",
     "angle-trisection-oq-02-oq-01",
-    "nth-root-irrational"
+    "nth-root-irrational",
+    "angle-trisection-oq-02-oq-03"
   ],
   "references": [
     {
