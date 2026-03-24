@@ -1323,11 +1323,20 @@ theorem density_increment_lemma {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
 /-- Extension of density_increment_lemma to N ≥ 1 for use in the iteration.
     Delegates to the fully-verified density_increment_lemma when N ≥ 2.
 
-    The N = 1 sorry is a known gap: the coset decomposition gives
-    M = gcd(val(r), N), which equals 1 for prime N. The standard proof
-    of Roth's theorem uses Dirichlet's approximation theorem to find
-    subprogressions of length ≥ √N, guaranteeing M ≥ 2. Formalizing
-    Dirichlet approximation would close this gap. -/
+    For N = 1 with delta + delta²/100 ≤ 1: uses the trivial set {0} ⊆ ZMod 1.
+
+    For N = 1 with delta + delta²/100 > 1 (i.e., delta > ~0.99): the conclusion
+    requires |B| > M which is impossible for any B ⊆ ZMod M. This case is
+    genuinely FALSE as stated — the hypotheses (APFree A in ZMod 1, delta ≈ 0.995)
+    are consistent but the conclusion is unreachable. Closing this sorry requires
+    restructuring roth_density_bound to avoid calling this lemma when N = 1 and
+    delta is large. The standard proof uses Dirichlet's approximation theorem
+    (already proved in DirichletApproximation.lean) to ensure M ≥ √N ≥ 2
+    at each iteration step, bypassing N = 1 entirely. The integration path:
+    1. Use Dirichlet to find q ≤ √N with |q·val(r)/N - p| < 1/√N
+    2. Partition ZMod N into subprogressions of length L ≥ ⌊√N⌋ ≥ 2
+    3. Show density increment on approximately-constant character subprogressions
+    4. Guarantee M ≥ 2 at every iteration step -/
 private theorem density_increment_iter {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
@@ -1338,8 +1347,23 @@ private theorem density_increment_iter {N : ℕ} (hN : 0 < N) (A : Finset (ZMod 
   by_cases hN2 : 1 < N
   · obtain ⟨M, B, hMpos, _, hBAP, hBdens⟩ := density_increment_lemma hN2 A hAP delta hdelta hdensity
     exact ⟨M, B, hMpos, hBAP, hBdens⟩
-  · -- N = 1: requires Dirichlet approximation (see docstring above)
-    sorry
+  · -- N = 1: ZMod 1 is trivial (single element)
+    have hN1 : N = 1 := by omega
+    subst hN1
+    by_cases hle : delta + delta ^ 2 / 100 ≤ 1
+    · -- delta + delta²/100 ≤ 1: use M = 1, B = {0}
+      refine ⟨1, Finset.univ, one_pos, ?_, ?_⟩
+      · -- APFree in ZMod 1: vacuously true (only element is 0, so d ≠ 0 is always false)
+        intro a d hd
+        exact absurd (Subsingleton.elim d 0) hd
+      · -- |Finset.univ| = 1 ≥ (delta + delta²/100) * 1
+        have : Fintype.card (ZMod 1) = 1 := ZMod.card 1
+        rw [Finset.card_univ, this, Nat.cast_one, mul_one]
+        linarith
+    · -- delta + delta²/100 > 1 with N = 1:
+      -- The conclusion requires |B| > M (impossible for B ⊆ ZMod M).
+      -- Requires Dirichlet-based proof restructuring (see docstring).
+      sorry
 
 /-- After k iterations of density increment starting from density delta,
     the density reaches at least delta + k * delta² / 100. -/
