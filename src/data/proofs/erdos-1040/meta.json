@@ -45,7 +45,8 @@
         "context": "Both problems concern extremal properties of polynomial configurations in the complex plane"
       }
     ],
-    "lineCount": 249
+    "lineCount": 249,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős-Herzog-Piranian Problem (1958)**\n\nThis problem originates from the 1958 paper \"Metric properties of polynomials\" by Paul Erdős, Fritz Herzog, and George Piranian, published in the Journal d'Analyse Mathématique. The paper studied the geometry of polynomial sublevel sets $\\{z : |f(z)| < 1\\}$ — also known as **polynomial lemniscates** — and their relationship to the distribution of roots.\n\nThe central quantity $\\mu(F)$ measures the smallest possible area of a lemniscate whose roots are constrained to lie in $F$. The **transfinite diameter** (or logarithmic capacity) $\\rho(F)$, introduced by Fekete in 1923 and developed by Szegő, Pólya, and others, measures the 'size' of $F$ from the perspective of potential theory. Fekete proved that $\\rho(F) = \\lim_{n \\to \\infty} d_n(F)$ where $d_n(F)$ is the geometric mean of pairwise distances among optimal $n$-point configurations (Fekete points).\n\n**Key historical milestones**:\n- **1923**: Michael Fekete introduced the transfinite diameter and proved the fundamental limit theorem, establishing the triple equivalence $\\rho(F) = \\text{cap}(F) = \\tau(F)$ (Chebyshev constant)\n- **1924**: Gábor Szegő connected transfinite diameter to conformal mapping radius, showing $\\rho(F) = \\text{cap}(F)$ equals the conformal radius of $\\mathbb{C} \\setminus F$ at infinity\n- **1958**: Erdős, Herzog, and Piranian proved the conjecture for **line segments** (using Chebyshev polynomials $T_n$) and **closed discs** (using roots of unity), and posed the general question\n- **1973**: Erdős and Elisha Netanyahu strengthened the small-diameter result, proving explicit quantitative disc bounds for bounded connected sets with $0 < \\rho(F) < 1$\n\nThe problem connects potential theory to the geometry of polynomial level curves, a topic with roots in the work of Chebyshev (1850s), Bernstein, Walsh, and the classical approximation theory school.",
@@ -72,7 +73,7 @@
       "title": "Transfinite Diameter (Logarithmic Capacity)",
       "summary": "Defines the $n$-th diameter $d_n(F)$ as the supremum of geometric means of pairwise distances over $n$-point configurations in $F$, then the transfinite diameter $\\rho(F) = \\inf_n d_n(F)$. Includes an alternative liminf definition and an axiom asserting their equivalence via Fekete's lemma.",
       "startLine": 26,
-      "endLine": 46,
+      "endLine": 47,
       "mathContext": "$d_n(F) = \\sup\\left\\{\\left(\\prod_{i<j} |z_i - z_j|\\right)^{2/(n(n-1))} : z_i \\in F\\right\\}$, $\\rho(F) = \\inf_n d_n(F) = \\lim_n d_n(F)$ by Fekete's lemma."
     },
     {
@@ -80,7 +81,7 @@
       "title": "Polynomials with Roots in F",
       "summary": "Introduces the `PolynomialInF` structure packaging a monic polynomial $f(z) = \\prod(z - z_i)$ with roots in $F$, its evaluation map, the sublevel set $S(f) = \\{z : |f(z)| < 1\\}$, and the Lebesgue measure $|S(f)|$ using `MeasureTheory.volume`.",
       "startLine": 48,
-      "endLine": 73,
+      "endLine": 74,
       "mathContext": "$f(z) = \\prod_{i=1}^n (z - z_i)$, $z_i \\in F$, $S(f) = \\{z : |f(z)| < 1\\}$, $|S(f)| = \\text{Leb}(S(f))$."
     },
     {
@@ -88,7 +89,7 @@
       "title": "The Function μ(F)",
       "summary": "Defines the central quantity $\\mu(F) = \\inf_f |S(f)|$ as an infimum over all polynomials with roots in $F$, in extended non-negative reals. Provides a real-valued coercion `muReal` for comparisons with $\\rho(F)$.",
       "startLine": 75,
-      "endLine": 85,
+      "endLine": 86,
       "mathContext": "$\\mu(F) = \\inf\\{|S(f)| : f \\text{ monic}, \\text{roots}(f) \\subseteq F\\} \\in [0, \\infty]$."
     },
     {
@@ -96,7 +97,7 @@
       "title": "The Main Conjecture",
       "summary": "States the two conjectures: `muDeterminedByDiameter` (same $\\rho$ implies same $\\mu$) and the stronger `diameterOneConjecture` ($\\rho \\geq 1$ implies $\\mu = 0$). Records the problem as open via an axiom negating excluded middle.",
       "startLine": 87,
-      "endLine": 105,
+      "endLine": 106,
       "mathContext": "Conjecture 1: $\\rho(F) = \\rho(G) \\implies \\mu(F) = \\mu(G)$. Conjecture 2: $\\rho(F) \\geq 1 \\implies \\mu(F) = 0$."
     },
     {
@@ -104,7 +105,7 @@
       "title": "Known Results: Line Segments and Discs",
       "summary": "Axiomatizes the EHP 1958 results: for line segments and closed discs, $\\mu$ is determined by $\\rho$. Includes the classical formulas $\\rho([a,b]) = |b-a|/4$ (from Chebyshev theory) and $\\rho(\\overline{B}(c,r)) = r$ (from roots of unity).",
       "startLine": 107,
-      "endLine": 133,
+      "endLine": 134,
       "mathContext": "$\\rho([a,b]) = |b-a|/4$ (Chebyshev), $\\rho(\\overline{B}(c,r)) = r$ (roots of unity). EHP 1958: $\\mu$ is a function of $\\rho$ for these sets."
     },
     {
@@ -112,7 +113,7 @@
       "title": "Small Transfinite Diameter: Disc Containment",
       "summary": "When $\\rho(F) < 1$, every sublevel set contains a disc of radius $\\geq c > 0$ depending on $F$. This implies $\\mu(F) > 0$ for sets of small capacity. Defines the disc constant $c(F)$ as the supremum of achievable radii.",
       "startLine": 135,
-      "endLine": 149,
+      "endLine": 150,
       "mathContext": "$\\rho(F) < 1 \\implies \\exists c > 0: \\forall f,\\; B(z_0, c) \\subseteq S(f)$, hence $\\mu(F) \\geq \\pi c^2 > 0$."
     },
     {
@@ -120,7 +121,7 @@
       "title": "Erdős-Netanyahu Result (1973)",
       "summary": "For bounded connected $F$ with $0 < \\rho(F) < 1$, Erdős and Netanyahu gave explicit disc radius bounds $r(\\rho)$ as a function of the transfinite diameter alone, strengthening the qualitative small-diameter result with quantitative control.",
       "startLine": 151,
-      "endLine": 161,
+      "endLine": 162,
       "mathContext": "$F$ bounded connected, $0 < \\rho(F) < 1 \\implies$ inscribed disc radius $\\geq r(\\rho(F))$ for explicit function $r$."
     },
     {
@@ -128,7 +129,7 @@
       "title": "Relationship to Problem 1039",
       "summary": "The unit disc $\\overline{B}(0,1)$ with $\\rho = 1$ connects to Problem 1039 (inscribed disc radius in sublevel sets). Includes a proved theorem `unitDisc_diameter` deriving $\\rho(\\overline{B}(0,1)) = 1$ from the disc capacity formula.",
       "startLine": 163,
-      "endLine": 177,
+      "endLine": 178,
       "mathContext": "$\\rho(\\overline{B}(0,1)) = 1$ (critical threshold). Problem 1039 asks about inscribed disc radius vs sublevel area."
     },
     {
@@ -136,7 +137,7 @@
       "title": "Properties of Transfinite Diameter",
       "summary": "Four structural theorems (all sorry): monotonicity ($F \\subseteq G \\implies \\rho(F) \\leq \\rho(G)$), non-negativity ($\\rho \\geq 0$), finite sets have $\\rho = 0$, and scaling ($\\rho(cF) = |c| \\cdot \\rho(F)$). These are standard results in potential theory.",
       "startLine": 179,
-      "endLine": 202,
+      "endLine": 203,
       "mathContext": "$F \\subseteq G \\implies \\rho(F) \\leq \\rho(G)$; $\\rho(F) \\geq 0$; $|F| < \\infty \\implies \\rho(F) = 0$; $\\rho(cF) = |c|\\rho(F)$."
     },
     {
@@ -144,7 +145,7 @@
       "title": "Properties of μ",
       "summary": "Two structural theorems (sorry): anti-monotonicity ($F \\subseteq G \\implies \\mu(G) \\leq \\mu(F)$, note reversal) and infimum approximation ($\\mu(F)$ can be approached within $\\varepsilon$ by some polynomial).",
       "startLine": 204,
-      "endLine": 216,
+      "endLine": 217,
       "mathContext": "$F \\subseteq G \\implies \\mu(G) \\leq \\mu(F)$ (anti-monotone). $\\forall \\varepsilon > 0, \\exists f: |S(f)| < \\mu(F) + \\varepsilon$."
     },
     {
@@ -152,7 +153,7 @@
       "title": "The Open Question and Current State",
       "summary": "Names the main open question `erdos_1040_question` and states the current knowledge: $\\mu = 0$ for line segments and discs with $\\rho \\geq 1$, and $\\mu > 0$ for all closed infinite sets with $\\rho < 1$. The general case remains unresolved since 1958.",
       "startLine": 218,
-      "endLine": 231,
+      "endLine": 249,
       "mathContext": "Known: $\\rho(F) \\geq 1 \\implies \\mu(F) = 0$ for segments and discs; $\\rho(F) < 1 \\implies \\mu(F) > 0$ for all $F$. General case open since 1958."
     }
   ],
@@ -249,13 +250,12 @@
       "Mathlib"
     ],
     "opens": [],
-    "namespace": "Erdos1040",
+    "namespace": null,
     "lineCount": 249,
     "axiomCount": 8,
     "theoremCount": 8,
     "substantiveTheoremCount": 8,
     "trivialSpecializations": 0,
-    "definitionCount": 15,
-    "namespace": null
+    "definitionCount": 15
   }
 }
