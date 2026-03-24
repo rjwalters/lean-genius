@@ -25,11 +25,18 @@ open Filter Asymptotics Real
 
 -- ## Prime Sequence and Gaps (Axiomatized)
 
-/-- The n-th prime (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...) -/
-axiom nthPrime : ℕ → ℕ
-axiom nthPrime_prime (n : ℕ) : Nat.Prime (nthPrime n)
-axiom nthPrime_strictMono : StrictMono nthPrime
-axiom nthPrime_initial : nthPrime 0 = 2 ∧ nthPrime 1 = 3
+/-- The n-th prime (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...).
+    Defined via Nat.nth from Mathlib. -/
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
+
+theorem nthPrime_prime (n : ℕ) : Nat.Prime (nthPrime n) :=
+  Nat.nth_mem_of_lt_card (by simp [Set.Infinite.lt_coeSort_card Nat.infinite_setOf_prime])
+
+theorem nthPrime_strictMono : StrictMono nthPrime :=
+  Nat.nth_strictMono Nat.infinite_setOf_prime
+
+theorem nthPrime_initial : nthPrime 0 = 2 ∧ nthPrime 1 = 3 := by
+  constructor <;> native_decide
 
 /-- The n-th prime gap: dₙ = pₙ₊₁ − pₙ -/
 noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
