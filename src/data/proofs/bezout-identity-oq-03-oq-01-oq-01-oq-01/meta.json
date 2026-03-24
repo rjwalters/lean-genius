@@ -85,35 +85,40 @@
       "title": "Coprimality of Ideals",
       "startLine": 27,
       "endLine": 50,
-      "summary": "Characterization of ideal coprimality as I ⊔ J = ⊤, and the key structural theorem inf_eq_mul_of_coprime: for coprime ideals, the intersection equals the product."
+      "summary": "Characterization of ideal coprimality as I ⊔ J = ⊤, and the key structural theorem inf_eq_mul_of_coprime: for coprime ideals, the intersection equals the product.",
+      "mathContext": "Two ideals $I, J \\subseteq R$ are coprime iff $I + J = R$, i.e., $\\exists a \\in I, b \\in J: a + b = 1$. The key structural result: coprime ideals satisfy $I \\cap J = I \\cdot J$. Proof: $I \\cdot J \\subseteq I \\cap J$ always holds; for the reverse, if $x \\in I \\cap J$ and $a + b = 1$ with $a \\in I, b \\in J$, then $x = x \\cdot 1 = x \\cdot a + x \\cdot b \\in J \\cdot I + I \\cdot J = I \\cdot J$."
     },
     {
       "id": "two-fold-crt",
       "title": "Two-Fold CRT",
       "startLine": 51,
       "endLine": 69,
-      "summary": "The 2-fold ideal CRT: R/(I∩J) ≅ R/I × R/J for coprime ideals, wrapping Mathlib's quotientInfEquivQuotientProd with surjectivity and injectivity."
+      "summary": "The 2-fold ideal CRT: R/(I∩J) ≅ R/I × R/J for coprime ideals, wrapping Mathlib's quotientInfEquivQuotientProd with surjectivity and injectivity.",
+      "mathContext": "For coprime ideals $I + J = R$, the natural map $\\pi: R/(I \\cap J) \\to R/I \\times R/J$ defined by $\\pi(r + I \\cap J) = (r + I, r + J)$ is a ring isomorphism. Surjectivity: given $(a + I, b + J)$, write $1 = u + v$ with $u \\in I, v \\in J$; then $r = bv + au$ maps to $(a + I, b + J)$. Injectivity: $\\ker \\pi = I \\cap J$."
     },
     {
       "id": "k-fold-crt",
       "title": "General k-Fold CRT",
       "startLine": 62,
       "endLine": 88,
-      "summary": "The k-fold ideal CRT: R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals, wrapping Mathlib's quotientInfRingEquivPiQuotient."
+      "summary": "The k-fold ideal CRT: R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals, wrapping Mathlib's quotientInfRingEquivPiQuotient.",
+      "mathContext": "For pairwise coprime ideals $I_1, \\ldots, I_k$ in a commutative ring $R$ (i.e., $I_i + I_j = R$ for $i \\neq j$), the canonical map $R / \\bigcap_i I_i \\to \\prod_i R/I_i$ is a ring isomorphism. This wraps Mathlib's `Ideal.quotientInfRingEquivPiQuotient`, which uses $\\bigsqcap$ (infimum in the ideal lattice) rather than $\\bigcap$; these coincide for ideals."
     },
     {
       "id": "product-crt",
       "title": "CRT for Products",
       "startLine": 89,
       "endLine": 99,
-      "summary": "R/(I·J) ≅ R/I × R/J for coprime ideals, using I∩J = I·J to reduce to the intersection case."
+      "summary": "R/(I·J) ≅ R/I × R/J for coprime ideals, using I∩J = I·J to reduce to the intersection case.",
+      "mathContext": "Combining the structural result $I \\cap J = I \\cdot J$ (for coprime $I, J$) with the 2-fold CRT $R/(I \\cap J) \\cong R/I \\times R/J$ gives $R/(I \\cdot J) \\cong R/I \\times R/J$. This product form is often more natural in applications: e.g., $\\mathbb{Z}/(pq) \\cong \\mathbb{Z}/p \\times \\mathbb{Z}/q$ where $pq$ is the product of distinct primes."
     },
     {
       "id": "corollaries",
       "title": "Key Corollaries",
       "startLine": 100,
       "endLine": 160,
-      "summary": "Uniqueness of CRT solutions modulo I∩J, coprimality symmetry, and coprimality inheritance: coprime to both J and K implies coprime to J∩K."
+      "summary": "Uniqueness of CRT solutions modulo I∩J, coprimality symmetry, and coprimality inheritance: coprime to both J and K implies coprime to J∩K.",
+      "mathContext": "CRT uniqueness: if $r_1 \\equiv r_2 \\pmod{I}$ and $r_1 \\equiv r_2 \\pmod{J}$, then $r_1 \\equiv r_2 \\pmod{I \\cap J}$. Coprimality inheritance: $I + J = R$ and $I + K = R$ imply $I + (J \\cap K) = R$. Proof uses `IsCoprime.mul_right` ($I + JK = R$) and $JK \\leq J \\cap K$ (`Ideal.mul_le_inf`), giving $R = I + JK \\leq I + (J \\cap K) \\leq R$."
     }
   ],
   "crossReferences": [
