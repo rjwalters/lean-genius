@@ -17,14 +17,14 @@
       "turan-theory"
     ],
     "badge": "formalized",
-    "sorries": 5,
+    "sorries": 2,
     "erdosNumber": 1019,
     "erdosUrl": "https://erdosproblems.com/1019",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
     "axiomCount": 8,
-    "lineCount": 316,
-    "assumptions": "8 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "lineCount": 349,
+    "assumptions": "8 axiom(s) and 2 sorry(s). Remaining sorries: isPlanar definition (needs topological planarity theory) and bipartite_not_saturated. See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
