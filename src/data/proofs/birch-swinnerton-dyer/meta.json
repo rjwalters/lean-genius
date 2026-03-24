@@ -15,7 +15,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 21,
+    "axiomCount": 24,
     "assumptions": "21 axiom declarations (algebraicRank, torsionSubgroup, localLFactor, conductor, LFunction, completedLFunction, rootNumber, analyticRank, realPeriod, regulator, shaOrder, tamagawaNumber, tamagawaProduct, torsionOrder, HasCM, NeronTateHeight, traceOfFrobenius, BSD_NumberField, BSD_AbelianVariety, regulatorValue, classNumber) converted to opaque — these are vocabulary declarations (type/constant definitions), not mathematical assumptions. Remaining 22 axioms encode proven BSD cases (rank 0 via Kolyvagin, rank 1 via Gross-Zagier, CM via Coates-Wiles), the Gross-Zagier formula, Hasse bound, specific curve data, congruent number results, parity conjecture, BSD generalizations, and more. Additionally, 3 structure-encoded assumptions: MordellWeilGroup.finitely_generated, GrossZagierData.gross_zagier, KolyvaginResult.sha_finite. The BSD conjecture itself remains open.",
     "mathlibDependencies": [
       {
@@ -52,7 +52,7 @@
     "leanFile": {
       "lineCount": 7446,
       "structureCount": 92,
-      "axiomCount": 22,
+      "axiomCount": 21,
       "theoremCount": 254,
       "lemmaCount": 3,
       "defCount": 143,
