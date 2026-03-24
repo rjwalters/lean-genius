@@ -200,6 +200,11 @@
       "targetId": "area-of-circle-oq-03-oq-02",
       "relationship": "extended-by",
       "description": "Archimedes' bounds $223/71 < \\pi < 22/7$ via inscribed and circumscribed regular 96-gons — the computational complement to the area formula, providing the first rigorous numerical approximation of the constant $\\pi$ that appears in $A = \\pi r^2$"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "This proof formalizes area as Lebesgue measure $\\lambda^2$. The Lebesgue measure entry provides the measure-theoretic infrastructure underpinning `MeasureTheory.volume` and the $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ that specializes to $\\pi r^2$ for $n=2$"
     }
   ],
   "relatedProofs": [
@@ -214,7 +219,8 @@
     "isoperimetric-theorem",
     "area-of-circle-oq-01-oq-02",
     "area-of-circle-oq-01-oq-03",
-    "area-of-circle-oq-03-oq-02"
+    "area-of-circle-oq-03-oq-02",
+    "lebesgue-measure"
   ],
   "leanFile": {
     "imports": [
