@@ -136,6 +136,19 @@ def countAdjacentDiffs : List ℤ → ℕ
 @[simp] theorem countAdjacentDiffs_nil : countAdjacentDiffs [] = 0 := rfl
 @[simp] theorem countAdjacentDiffs_singleton (a : ℤ) : countAdjacentDiffs [a] = 0 := rfl
 
+/-- countAdjacentDiffs is bounded by length minus 1. -/
+theorem countAdjacentDiffs_le_length_sub_one (l : List ℤ) :
+    countAdjacentDiffs l ≤ l.length - 1 := by
+  induction l with
+  | nil => simp
+  | cons a t ih =>
+    cases t with
+    | nil => simp
+    | cons b rest =>
+      show (if a ≠ b then 1 else 0) + countAdjacentDiffs (b :: rest) ≤ (a :: b :: rest).length - 1
+      simp only [List.length_cons] at ih ⊢
+      split_ifs <;> omega
+
 /-- Count sign changes in a list of reals, ignoring zeros.
     Filters out zeros, maps remaining to ±1, counts adjacent differences. -/
 noncomputable def signChangesInList (l : List ℝ) : ℕ :=
@@ -146,6 +159,18 @@ noncomputable def signChangesInList (l : List ℝ) : ℕ :=
 @[simp]
 theorem signChangesInList_nil : signChangesInList [] = 0 := by
   simp [signChangesInList, countAdjacentDiffs]
+
+/-- Sign changes in a list are bounded by the list length minus 1. -/
+theorem signChangesInList_le_length_sub_one (l : List ℝ) :
+    signChangesInList l ≤ l.length - 1 := by
+  unfold signChangesInList
+  have h1 := countAdjacentDiffs_le_length_sub_one
+    ((l.filter (· ≠ 0)).map (fun x => if x > 0 then (1 : ℤ) else -1))
+  simp only [List.length_map] at h1
+  calc countAdjacentDiffs _ ≤ (l.filter (· ≠ 0)).length - 1 := h1
+    _ ≤ l.length - 1 := by
+      have := List.length_filter_le (· ≠ 0) l
+      omega
 
 /-
 ## Part III: The Budan-Fourier Count V_p(x)
@@ -315,7 +340,22 @@ p⁽ᵏ⁾(0) = k! · aₖ, and k! > 0 preserves signs.
     The k-th derivative at 0 extracts the k-th coefficient up to factorial. -/
 theorem iterDeriv_eval_zero (p : ℝ[X]) (k : ℕ) :
     (iterDeriv p k).eval 0 = (k.factorial : ℝ) * p.coeff k := by
-  sorry
+  induction k generalizing p with
+  | zero =>
+    simp only [iterDeriv_zero, Nat.factorial_zero, Nat.cast_one, one_mul]
+    induction p using Polynomial.induction_on' with
+    | add p q hp hq => simp [eval_add, coeff_add, hp, hq]
+    | monomial n a =>
+      simp only [eval_monomial, coeff_monomial]
+      cases n with
+      | zero => simp
+      | succ n => simp [zero_pow, Nat.succ_ne_zero]
+  | succ k ih =>
+    rw [(iterDeriv_derivative p k).symm, ih (derivative p), coeff_derivative]
+    push_cast
+    rw [Nat.factorial_succ]
+    push_cast
+    ring
 
 /-- Since k! > 0, the sign of p⁽ᵏ⁾(0) equals the sign of aₖ.
     Therefore V_p(0) = signVariations of the coefficient sequence. -/
@@ -332,7 +372,10 @@ theorem budanCount_zero_eq_coeff_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :
     (A list of n+1 entries has at most n sign changes.) -/
 theorem budanCount_le_natDegree (p : ℝ[X]) (x : ℝ) :
     budanCount p x ≤ p.natDegree := by
-  sorry
+  unfold budanCount
+  have h := signChangesInList_le_length_sub_one (budanSequence p p.natDegree x)
+  rw [budanSequence_length] at h
+  omega
 
 /-- Scaling by a nonzero constant preserves the Budan count.
     Since (c·p)⁽ᵏ⁾ = c·p⁽ᵏ⁾ and c ≠ 0 preserves all signs. -/
@@ -348,7 +391,31 @@ theorem budanCount_smul (p : ℝ[X]) (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
 theorem rootsInInterval_split (p : ℝ[X]) (hp : p ≠ 0) (a c b : ℝ)
     (_hac : a < c) (hcb : c < b) :
     rootsInInterval p a b = rootsInInterval p a c + rootsInInterval p c b := by
-  sorry
+  simp only [rootsInInterval, if_neg hp, ← Multiset.card_add]
+  congr 1
+  ext r
+  simp only [Multiset.count_add, Multiset.count_filter]
+  rcases le_or_lt r a with hra | har
+  · -- r ≤ a: all predicates false
+    rw [if_neg (fun h : a < r ∧ r ≤ b => absurd h.1 (not_lt.mpr hra)),
+        if_neg (fun h : a < r ∧ r ≤ c => absurd h.1 (not_lt.mpr hra)),
+        if_neg (fun h : c < r ∧ r ≤ b => absurd h.1 (not_lt.mpr (le_trans hra _hac.le)))]
+  · rcases le_or_lt r c with hrc | hcr
+    · -- a < r ≤ c: first two true, third false
+      rw [if_pos ⟨har, le_trans hrc hcb.le⟩,
+          if_pos ⟨har, hrc⟩,
+          if_neg (fun h : c < r ∧ r ≤ b => absurd h.1 (not_lt.mpr hrc))]
+      omega
+    · rcases le_or_lt r b with hrb | hbr
+      · -- c < r ≤ b: first and third true, second false
+        rw [if_pos ⟨_hac.trans hcr, hrb⟩,
+            if_neg (fun h : a < r ∧ r ≤ c => absurd hcr (not_lt.mpr h.2)),
+            if_pos ⟨hcr, hrb⟩]
+        omega
+      · -- r > b: all false
+        rw [if_neg (fun h : a < r ∧ r ≤ b => absurd h.2 (not_le.mpr hbr)),
+            if_neg (fun h : a < r ∧ r ≤ c => absurd (le_trans h.2 hcb.le) (not_le.mpr hbr)),
+            if_neg (fun h : c < r ∧ r ≤ b => absurd h.2 (not_le.mpr hbr))]
 
 /-- Budan count differences are additive: V(a) - V(b) = (V(a) - V(c)) + (V(c) - V(b)).
     This is just arithmetic: the V(c) terms cancel. -/
@@ -413,6 +480,11 @@ noncomputable def budanChain (p : ℝ[X]) : PolyChain p.natDegree where
 /-- The Budan chain's variation equals budanCount. -/
 theorem chainVariation_budanChain (p : ℝ[X]) (x : ℝ) :
     chainVariation (budanChain p) x = budanCount p x := by
-  sorry
+  simp only [chainVariation, budanChain, budanCount, budanSequence]
+  congr 1
+  apply List.ext_getElem
+  · simp
+  · intro i h1 h2
+    simp
 
 end BudanTheorem
