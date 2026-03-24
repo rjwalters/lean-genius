@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/602",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos602Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "infinite-sets",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 602,
     "erdosUrl": "https://erdosproblems.com/602",
@@ -60,7 +60,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 299,
-    "assumptions": "No axioms. 1 sorry(s) remain in the formalization."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries."
   },
   "overview": {
     "historicalContext": "This problem was posed by Komjáth and appears in [Er87]. It concerns 'Property B' for families of infinite sets - the existence of 2-colorings avoiding monochromatic members.\n\nProperty B is well-studied for finite hypergraphs (where it always holds for 2-uniform). The extension to infinite sets with specific intersection constraints is more subtle.\n\nThe condition that intersections ≠ 1 is crucial and non-obvious. Single-element intersections allow counterexamples via constraint-forcing arguments.",

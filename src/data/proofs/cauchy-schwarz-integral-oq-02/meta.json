@@ -7,7 +7,7 @@
     "author": "Minkowski (1896), Hölder (1889)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski_inequality",
     "date": "1896",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ02.lean",
     "tags": [
       "analysis",
@@ -20,7 +20,7 @@
       "open-problem",
       "research"
     ],
-    "badge": "open",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -67,7 +67,7 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 263,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries."
   },
   "overview": {
     "historicalContext": "Hermann Minkowski (1896) proved the triangle inequality for Lp spaces: ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p. His proof used Hölder's inequality (1889), which generalized Cauchy-Schwarz to conjugate exponents 1/p + 1/q = 1. This created a beautiful hierarchy: CS → Hölder → Minkowski.\n\nFor the special case p=2 (L² spaces), a more direct proof exists using the inner product structure. The norm-squared identity ‖u+v‖² = ‖u‖² + 2⟪u,v⟫ + ‖v‖², combined with the CS bound ⟪u,v⟫ ≤ ‖u‖·‖v‖, gives ‖u+v‖² ≤ (‖u‖+‖v‖)², from which Minkowski follows by taking square roots.\n\nIn Mathlib, L² is formalized as an InnerProductSpace (Hilbert space), and `abs_real_inner_le_norm` provides the CS inequality. The Minkowski inequality for L² then follows from these two results.",

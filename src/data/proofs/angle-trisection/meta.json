@@ -7,7 +7,7 @@
     "author": "Pierre Wantzel (1837)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Angle_trisection",
     "date": "1837",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "geometry",
       "galois-theory",
@@ -17,7 +17,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/AngleTrisection.lean",
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,7 +49,7 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 8,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "prerequisites": [
       "Field extensions and algebraic degree",
       "Polynomial rings and irreducibility over Q",
@@ -71,7 +71,7 @@
         "relationship": "Further extensions of the constructibility framework"
       }
     ],
-    "assumptions": "1 axiom (transitive): pi_transcendental from PiTranscendental.lean — transcendence of π over ℤ, not yet in Mathlib. Angle trisection and cube doubling are fully verified (0 axioms). Circle squaring depends on this axiom via pi_transcendental_over_rationals. Wantzel's constructibility criterion and trisection polynomial irreducibility are proved without axioms."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries."
   },
   "leanFile": {
     "imports": [
