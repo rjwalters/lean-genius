@@ -61,7 +61,7 @@ Allowing rational functions g²/h² = (g/h)² provides more flexibility.
 - [x] Connection to real closed fields
 - [x] Explanation of why rational functions are needed
 - [x] Pedagogical example
-- [ ] Incomplete (has sorries - full proof requires substantial model theory)
+- [ ] Incomplete (10 axioms - full proof requires model theory and real algebraic geometry)
 
 ## Mathlib Dependencies
 

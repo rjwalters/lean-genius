@@ -118,14 +118,14 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix meta.json: list all 10 axioms in assumptions field, remove 3 empty relatedProofs entries, fix field swaps in populated relatedProofs, add Motzkin and Pfister references, fix originalContributions 'proofs' → 'axiomatized properties'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix docstring status checklist: change 'has sorries' to 'has axioms'. Note the axiom-wrapper pattern in meta.json (9 of 11 theorems are wrappers).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",

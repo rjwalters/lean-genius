@@ -152,7 +152,7 @@
     "title": "Totient of a Prime",
     "content": "$\\varphi(p) = p - 1$ for prime $p$: every element $1, 2, \\ldots, p-1$ is coprime to $p$. Direct application of `Nat.totient_prime`.",
     "mathContext": "This is the bridge from Euler's theorem to Fermat's: substituting $\\varphi(p) = p-1$ into $a^{\\varphi(n)} = 1$ gives $a^{p-1} = 1$. More generally, $\\mathbb{Z}/p\\mathbb{Z}$ is a field for prime $p$, so $(\\mathbb{Z}/p\\mathbb{Z})^\\times = \\mathbb{Z}/p\\mathbb{Z} \\setminus \\{0\\}$ has order $p - 1$.",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.totient_prime",
       "prime fields",
@@ -174,7 +174,7 @@
     "title": "Totient of a Prime Power",
     "content": "$\\varphi(p^k) = p^{k-1}(p-1)$ for prime $p$ and $k > 0$. Among $1, \\ldots, p^k$, exactly $p^{k-1}$ are divisible by $p$, so $\\varphi(p^k) = p^k - p^{k-1} = p^{k-1}(p-1)$.",
     "mathContext": "This, combined with the multiplicative property $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m, n$, gives the product formula: $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$. For example, $\\varphi(12) = \\varphi(4)\\varphi(3) = 2 \\cdot 2 = 4$. The identity $n = \\sum_{d \\mid n} \\varphi(d)$ (counting elements of $\\mathbb{Z}/n\\mathbb{Z}$ by their order) is a deep consequence.",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.totient_prime_pow",
       "prime powers",
