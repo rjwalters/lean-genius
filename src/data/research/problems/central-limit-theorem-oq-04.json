@@ -1,45 +1,64 @@
 {
   "slug": "central-limit-theorem-oq-04",
   "title": "How does the topological perspective extend to non-commutative probability (f...",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
+    "formal": "For any NCDistribution μ with freeCumulant μ 1 = 0 and freeCumulant μ 2 = 1, the normalized free convolution powers converge: D_{1/√n}(μ^{⊞n}) → semicircle.",
+    "plain": "How does the topological CLT perspective (renormalization flow, fixed points, attractors) extend to non-commutative (free) probability? Answer: the semicircle distribution replaces the Gaussian as the unique fixed-point attractor under free convolution and renormalization.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Free convolution monoid structure (commutativity, associativity, identity)",
+      "Free cumulant scaling: κₖ(μ^{⊞n}) = n·κₖ(μ) (freeConvPow_cumulant)",
+      "R-transform scaling: R(μ^{⊞n})(z) = n·R(μ)(z) (Rtransform_freeConvPow)",
+      "Free convolution power distribution law (freeConvPow_add)",
+      "Semicircle is fixed point of free renormalization",
+      "Semicircle is global attractor (Free CLT)",
+      "CLTStructure: universal CLT pattern across all independences"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Full Lean formalization of the free CLT with gallery integration"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-23T00:42:35.519Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-03-24T12:00:00Z",
+    "iteration": 2,
+    "focus": "Created full Lean formalization of free CLT",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider axiom reduction: moment-cumulant bijection via non-crossing partitions",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: No dedicated Lean file for this OQ. The problem asks about extending CLT topological perspective to free/non-commutative probability. Parent CLT files exist but this generalization direction has no formalization.",
-    "builtItems": [],
-    "insights": [
-      "No CentralLimitTheoremOQ04.lean file exists - problem is purely theoretical/aspirational",
-      "Free probability CLT (Voiculescu) is well-known but not in Mathlib",
-      "Related CLT files have significant axiom counts (13+14) but are separate formalization concerns"
+    "progressSummary": "COMPLETED: Created CentralLimitTheoremOQ04.lean (648 lines, 15 theorems, 25 axioms, 0 sorries). Formalized free probability CLT with NCDistribution, free convolution monoid, R-transform, semicircle distribution, and CLTStructure abstraction. Docker build succeeds.",
+    "builtItems": [
+      "proofs/Proofs/CentralLimitTheoremOQ04.lean (648 lines, builds clean)",
+      "src/data/proofs/central-limit-theorem-oq-04/ (gallery entry: meta.json, index.ts, annotations.json)"
     ],
-    "mathlibGaps": [],
+    "insights": [
+      "The semicircle R-transform R_w(z) = z is the simplest possible — only κ₂=1 nonzero, just like the Gaussian",
+      "CLTStructure abstraction captures the universal pattern: convolution monoid + cumulant linearization + renormalization = CLT",
+      "Muraki classification: exactly 5 universal independences (classical, free, Boolean, monotone, anti-monotone) each with own CLT",
+      "Free cumulant scaling proved from linearization axiom + Dirac identity trick (induction)",
+      "Free probability not in Mathlib — all core objects axiomatized, structural theorems proved from axioms"
+    ],
+    "mathlibGaps": [
+      "No free probability theory in Mathlib (non-commutative probability spaces, free convolution, R-transforms)",
+      "No non-crossing partition combinatorics in Mathlib (needed for moment-cumulant formula)",
+      "No semicircle/Wigner distribution in Mathlib"
+    ],
     "nextSteps": [
-      "Create CentralLimitTheoremOQ04.lean with basic free probability definitions if formalization desired",
-      "Alternatively, mark as not-tractable for formalization (pure research question)"
+      "Reduce axiom count by constructing moment-cumulant bijection via non-crossing partitions",
+      "Add concrete examples: Bernoulli → semicircle convergence (free CLT instance)",
+      "Connect to random matrix theory: Wigner semicircle law for GUE eigenvalues",
+      "Formalize Boolean CLT with same CLTStructure framework"
     ]
   },
   "tags": [
@@ -54,12 +73,17 @@
     "central-limit-theorem-oq-03"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Voiculescu 1985: Symmetries of reduced free product C*-algebras",
+      "Speicher 1990: Free cumulants and non-crossing partitions",
+      "Nica-Speicher 2006: Lectures on Combinatorics of Free Probability",
+      "Muraki 2003: The five independences as natural products"
+    ],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-03-23T00:42:35.519Z",
-  "lastUpdate": "2026-03-23T00:42:35.519Z",
+  "lastUpdate": "2026-03-24T12:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -128,6 +152,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ04.lean",
+      "filename": "CentralLimitTheoremOQ04.lean",
+      "lineCount": 648,
+      "theoremCount": 15,
+      "axiomCount": 25,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ04.lean"
     }
   ]
 }
