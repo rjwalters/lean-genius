@@ -7,7 +7,7 @@
     "author": "Taylor (1715), Lagrange (1797), Cauchy (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Taylor%27s_theorem",
     "date": "1715",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/TaylorTheoremOQ03.lean",
     "tags": [
       "analysis",
@@ -18,7 +18,7 @@
       "approximation",
       "open-question"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -60,7 +60,7 @@
     "lineCount": 301,
     "theoremCount": 20,
     "definitionCount": 2,
-    "assumptions": "2 axioms: exp_taylor_remainder_pos (Lagrange remainder bound for x > 0) and exp_taylor_remainder_neg (Lagrange remainder bound for x < 0). Both follow from taylor_mean_remainder_bound + monotonicity of exp, but connecting taylorWithinEval to expPartialSum requires relating iteratedDerivWithin on Icc to iteratedDeriv for globally smooth functions."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries."
   },
   "overview": {
     "historicalContext": "Taylor's theorem (1715) provides the theoretical foundation for polynomial approximation of smooth functions, but the question of *convergence* of the Taylor series is more subtle. A function can be infinitely differentiable yet have a divergent Taylor series (e.g., f(x) = e^{-1/x^2} at x=0 in the real-analytic sense). The exponential function is the prototypical example where convergence succeeds everywhere: since every derivative of exp is exp itself, the Lagrange remainder exp(xi) * |x|^{n+1}/(n+1)! tends to zero because factorial growth dominates any fixed power. This was understood by Euler, who used the series e = sum 1/n! to compute e to arbitrary precision. The Cauchy remainder form, introduced by Augustin-Louis Cauchy in his 1823 Resume des lecons, provides an alternative that is sometimes sharper for bounding the error. This formalization answers the third open question from the parent Taylor's theorem entry (Wiedijk #35): can the Cauchy remainder be used to prove convergence of exp's Taylor series?",

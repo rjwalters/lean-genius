@@ -7,7 +7,7 @@
     "author": "Gnedenko, Kolmogorov, Lévy, Khintchine (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stable_distribution",
     "date": "1937–1954 (Lévy, Gnedenko-Kolmogorov), formalized 2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CentralLimitTheoremOQ01.lean",
     "tags": [
       "probability",
@@ -20,7 +20,7 @@
       "cauchy",
       "levy-distribution"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -56,7 +56,7 @@
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
     "lineCount": 313,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries."
   },
   "overview": {
     "historicalContext": "The classical Central Limit Theorem (CLT), proved by Lyapunov in 1901, assumes finite variance. But many real-world distributions — financial returns, earthquake magnitudes, internet traffic — exhibit power-law tails with infinite variance. What happens then?\n\nPaul Lévy studied this question in the 1920s–1930s, discovering the class of stable distributions: probability laws that are preserved under convolution and rescaling. The Gaussian is the only stable law with finite variance. All others have infinite variance and require a different normalization.\n\nGnedenko and Kolmogorov (1954) completed the theory, characterizing precisely which distributions are in the 'domain of attraction' of each stable law. Their result is the true generalization of the CLT: any distribution with power-law tails P(|X|>x) ~ x^(-α) will produce an α-stable limit.\n\nThe characteristic function approach — encoding distributions via their Fourier transforms — makes the stability property purely algebraic and reveals why exp(-|t|^α) is the canonical form.",
