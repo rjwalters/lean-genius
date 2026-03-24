@@ -8,8 +8,8 @@
       "endLine": 31
     },
     "title": "Problem Overview",
-    "content": "Erdős Problem #932 asks: for infinitely many r, are there at least two integers in the prime gap (p_r, p_{r+1}) whose prime factors are all smaller than the gap size? This connects prime gap distribution with smooth number theory.",
-    "mathContext": "The problem concerns B-smooth numbers in short intervals. A number n is B-smooth if all prime factors of n are ≤ B. Here B = p_{r+1} - p_r (the gap size).",
+    "content": "Erd\u0151s Problem #932 asks: for infinitely many r, are there at least two integers in the prime gap (p_r, p_{r+1}) whose prime factors are all smaller than the gap size? This connects prime gap distribution with smooth number theory.",
+    "mathContext": "The problem concerns B-smooth numbers in short intervals. A number n is B-smooth if all prime factors of n are \u2264 B. Here B = p_{r+1} - p_r (the gap size).",
     "significance": "key",
     "relatedConcepts": [
       "prime gaps",
@@ -62,13 +62,13 @@
       "endLine": 103
     },
     "title": "Maximum Prime Factor",
-    "content": "maxPrimeFactor(n) returns the largest prime dividing n, or 0 if n ≤ 1. For primes p, maxPrimeFactor(p) = p. For coprime products, it distributes as the max of the factors' maxPrimeFactor values.",
+    "content": "maxPrimeFactor(n) returns the largest prime dividing n, or 0 if n \u2264 1. For primes p, maxPrimeFactor(p) = p. For coprime products, it distributes as the max of the factors' maxPrimeFactor values.",
     "mathContext": "maxPrimeFactor n = n.primeFactorsList.maximum?.getD 0 for n > 1, else 0. Key property: multiplicativity over coprime products.",
     "significance": "supporting",
     "relatedConcepts": [
       "prime factorization",
       "greatest prime factor",
-      "P⁺(n)"
+      "P\u207a(n)"
     ]
   },
   {
@@ -80,8 +80,8 @@
       "endLine": 119
     },
     "title": "B-Smooth Numbers",
-    "content": "A number n is B-smooth if all its prime factors are at most B, i.e., maxPrimeFactor(n) ≤ B. The number 1 is B-smooth for any B. Prime powers p^k are B-smooth whenever p ≤ B.",
-    "mathContext": "isSmooth B n ≡ maxPrimeFactor n ≤ B. Theorem: one_isSmooth shows 1 is always smooth. Axiom: prime_power_isSmooth for p^k when p ≤ B.",
+    "content": "A number n is B-smooth if all its prime factors are at most B, i.e., maxPrimeFactor(n) \u2264 B. The number 1 is B-smooth for any B. Prime powers p^k are B-smooth whenever p \u2264 B.",
+    "mathContext": "isSmooth B n \u2261 maxPrimeFactor n \u2264 B. Theorem: one_isSmooth shows 1 is always smooth. Axiom: prime_power_isSmooth for p^k when p \u2264 B.",
     "significance": "key",
     "relatedConcepts": [
       "smooth numbers",
@@ -116,13 +116,13 @@
       "endLine": 183
     },
     "title": "Main Conjecture (OPEN)",
-    "content": "The set { r : smoothCount(r) ≥ 2 } is infinite. In other words, infinitely many prime gaps contain at least two numbers that are smooth relative to the gap size. An alternative formulation unfolds smoothCount into explicit Finset operations.",
-    "mathContext": "erdos_932: {r : ℕ | erdos932Condition r}.Infinite where erdos932Condition r ≡ smoothCount r ≥ 2.",
+    "content": "The set { r : smoothCount(r) \u2265 2 } is infinite. In other words, infinitely many prime gaps contain at least two numbers that are smooth relative to the gap size. An alternative formulation unfolds smoothCount into explicit Finset operations.",
+    "mathContext": "erdos_932: {r : \u2115 | erdos932Condition r}.Infinite where erdos932Condition r \u2261 smoothCount r \u2265 2.",
     "significance": "key",
     "relatedConcepts": [
       "Set.Infinite",
       "infinitude results",
-      "Erdős conjecture"
+      "Erd\u0151s conjecture"
     ]
   },
   {
@@ -133,9 +133,9 @@
       "startLine": 185,
       "endLine": 218
     },
-    "title": "Erdős's Density-Zero Result (SOLVED)",
-    "content": "Erdős proved that the natural density of r with smoothCount(r) ≥ 1 is 0. This shows that even finding ONE smooth number in most prime gaps is impossible, making the conjecture of infinitely many gaps with TWO smooth numbers highly non-trivial.",
-    "mathContext": "HasDensity {r : ℕ | erdos932WeakCondition r} 0, where HasDensity S d uses Filter.Tendsto of counting ratios to nhds d.",
+    "title": "Erd\u0151s's Density-Zero Result (SOLVED)",
+    "content": "Erd\u0151s proved that the natural density of r with smoothCount(r) \u2265 1 is 0. This shows that even finding ONE smooth number in most prime gaps is impossible, making the conjecture of infinitely many gaps with TWO smooth numbers highly non-trivial.",
+    "mathContext": "HasDensity {r : \u2115 | erdos932WeakCondition r} 0, where HasDensity S d uses Filter.Tendsto of counting ratios to nhds d.",
     "significance": "key",
     "relatedConcepts": [
       "natural density",
@@ -152,7 +152,7 @@
       "endLine": 243
     },
     "title": "Concrete Example: r = 3",
-    "content": "For r=3, primes 7 and 11 have gap 4. The interval (7,11) = {8,9,10}. Here 8 = 2³ has maxPrimeFactor 2 < 4, and 9 = 3² has maxPrimeFactor 3 < 4. Both are 4-smooth, so smoothCount(3) = 2, satisfying the Erdős condition.",
+    "content": "For r=3, primes 7 and 11 have gap 4. The interval (7,11) = {8,9,10}. Here 8 = 2\u00b3 has maxPrimeFactor 2 < 4, and 9 = 3\u00b2 has maxPrimeFactor 3 < 4. Both are 4-smooth, so smoothCount(3) = 2, satisfying the Erd\u0151s condition.",
     "mathContext": "example_r3: smoothCount 3 = 2. example_satisfies: erdos932Condition 3, proved via omega from example_r3.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -171,7 +171,7 @@
     },
     "title": "Why This Problem Is Hard",
     "content": "The challenge is proving infinitely many r exist despite their density being zero. Smooth numbers must lie in short intervals (prime gaps) AND have only small prime factors. The interplay between gap size and smooth number distribution is subtle, requiring delicate sieve-theoretic arguments.",
-    "mathContext": "For n to be (gap-size)-smooth: n ∈ (p_r, p_{r+1}) and P⁺(n) < p_{r+1} - p_r. Larger gaps allow larger smoothness bounds but are rarer.",
+    "mathContext": "For n to be (gap-size)-smooth: n \u2208 (p_r, p_{r+1}) and P\u207a(n) < p_{r+1} - p_r. Larger gaps allow larger smoothness bounds but are rarer.",
     "significance": "supporting",
     "relatedConcepts": [
       "density zero vs infinite",
@@ -188,12 +188,12 @@
       "endLine": 284
     },
     "title": "Smooth Number Distribution",
-    "content": "The counting function Ψ(x,y) = |{n ≤ x : n is y-smooth}| satisfies Ψ(x,y) ∼ x·ρ(log x/log y) where ρ is the Dickman function. The smooth count up to x is monotone in the smoothness bound y.",
-    "mathContext": "smoothCountUpTo x y = |{n ∈ [1,x] : isSmooth y n}|. Axiom: smoothCountUpTo_mono shows monotonicity in y.",
+    "content": "The counting function \u03a8(x,y) = |{n \u2264 x : n is y-smooth}| satisfies \u03a8(x,y) \u223c x\u00b7\u03c1(log x/log y) where \u03c1 is the Dickman function. The smooth count up to x is monotone in the smoothness bound y.",
+    "mathContext": "smoothCountUpTo x y = |{n \u2208 [1,x] : isSmooth y n}|. Axiom: smoothCountUpTo_mono shows monotonicity in y.",
     "significance": "supporting",
     "relatedConcepts": [
       "Dickman function",
-      "Ψ(x,y)",
+      "\u03a8(x,y)",
       "de Bruijn"
     ]
   },
@@ -203,16 +203,16 @@
     "type": "insight",
     "range": {
       "startLine": 286,
-      "endLine": 320
+      "endLine": 314
     },
     "title": "Summary",
-    "content": "The summary theorem combines: (1) the density-zero result for smoothCount ≥ 1, (2) the concrete example smoothCount(3) ≥ 2, and (3) the open status. The problem remains one of the outstanding questions connecting prime gap structure with smooth number distribution.",
-    "mathContext": "erdos_932_summary: HasDensity {r | smoothCount r ≥ 1} 0 ∧ smoothCount 3 ≥ 2 ∧ True.",
+    "content": "The summary theorem combines: (1) the density-zero result for smoothCount \u2265 1, (2) the concrete example smoothCount(3) \u2265 2, and (3) the open status. The problem remains one of the outstanding questions connecting prime gap structure with smooth number distribution.",
+    "mathContext": "erdos_932_summary: HasDensity {r | smoothCount r \u2265 1} 0 \u2227 smoothCount 3 \u2265 2 \u2227 True.",
     "significance": "key",
     "relatedConcepts": [
       "open problems",
       "analytic number theory",
-      "Erdős problems"
+      "Erd\u0151s problems"
     ]
   }
 ]

@@ -31,7 +31,7 @@
     },
     "type": "definition",
     "title": "Chromatic Number and k-Colorability",
-    "content": "Defines chromaticNumber G as the minimum k for k-colorability (sorry), and IsKColorable G k as the existence of a proper k-coloring f : V → Fin k with f(v) ≠ f(w) for adjacent v, w.",
+    "content": "Defines chromaticNumber G as the minimum k for k-colorability (sorry), and IsKColorable G k as the existence of a proper k-coloring f : V \u2192 Fin k with f(v) \u2260 f(w) for adjacent v, w.",
     "significance": "key",
     "mathContext": "The chromatic number $\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$. A proper $k$-coloring is a function $f: V \\to [k]$ with $f(v) \\neq f(w)$ whenever $vw \\in E(G)$. The Four Color Theorem states $\\chi(G) \\leq 4$ for planar $G$. The definition sorry reflects that $\\chi(G)$ requires a $\\min$ over a computable predicate, which is non-trivial to formalize constructively.",
     "relatedConcepts": [
@@ -75,7 +75,7 @@
     },
     "type": "definition",
     "title": "List Coloring and k-Choosability",
-    "content": "IsListColoring requires each vertex's color to come from its list AND the coloring to be proper. IsKChoosable G k requires that for ANY list assignment with lists of size ≥ k, a proper list coloring exists.",
+    "content": "IsListColoring requires each vertex's color to come from its list AND the coloring to be proper. IsKChoosable G k requires that for ANY list assignment with lists of size \u2265 k, a proper list coloring exists.",
     "significance": "key",
     "mathContext": "A graph $G$ is *$k$-choosable* (or *$k$-list-colorable*) if for every list assignment $L$ with $|L(v)| \\geq k$ for all $v$, there exists a proper coloring $f$ with $f(v) \\in L(v)$. The universal quantification over all list assignments makes $k$-choosability strictly stronger than $k$-colorability: $k$-choosable $\\Rightarrow$ $k$-colorable (take all lists equal to $[k]$), but not conversely. The formalization quantifies over all color types $C$, ensuring the result holds regardless of the color universe.",
     "relatedConcepts": [
@@ -98,7 +98,7 @@
     },
     "type": "definition",
     "title": "List Chromatic Number",
-    "content": "The list chromatic number χ_L(G) is the minimum k such that G is k-choosable. Also called the choosability or choice number of G.",
+    "content": "The list chromatic number \u03c7_L(G) is the minimum k such that G is k-choosable. Also called the choosability or choice number of G.",
     "significance": "key",
     "mathContext": "The *list chromatic number* $\\chi_L(G) = \\min\\{k : G \\text{ is } k\\text{-choosable}\\}$ satisfies $\\chi_L(G) \\geq \\chi(G)$ always (since $k$-choosability implies $k$-colorability). The gap $\\chi_L - \\chi$ can be arbitrarily large: the complete bipartite graph $K_{n,n}$ has $\\chi = 2$ but $\\chi_L = \\lceil \\log_2 n \\rceil + 1$. For planar graphs, Thomassen proved $\\chi_L \\leq 5$ while the Four Color Theorem gives $\\chi \\leq 4$.",
     "relatedConcepts": [
@@ -118,7 +118,7 @@
       "endLine": 64
     },
     "type": "technique",
-    "title": "χ_L ≥ χ",
+    "title": "\u03c7_L \u2265 \u03c7",
     "content": "The list chromatic number is always at least the chromatic number. Proved by observing that k-choosability with identical lists reduces to k-colorability.",
     "significance": "key",
     "mathContext": "The inequality $\\chi_L(G) \\geq \\chi(G)$ follows because ordinary $k$-coloring is a special case of list coloring where $L(v) = [k]$ for all $v$. If $G$ is $k$-choosable, it can handle *any* lists of size $k$, including identical ones, so it is $k$-colorable. The converse fails: $K_{3,3}$ is 2-colorable but not 2-choosable.",
@@ -164,7 +164,7 @@
     },
     "type": "definition",
     "title": "Planar Graphs and Euler's Formula",
-    "content": "Defines IsPlanar G (sorry — embeddable in the plane). Axiomatizes Euler's formula V - E + F = 2 for connected planar graphs and the edge bound |E| ≤ 3|V| - 6.",
+    "content": "Defines IsPlanar G (sorry \u2014 embeddable in the plane). Axiomatizes Euler's formula V - E + F = 2 for connected planar graphs and the edge bound |E| \u2264 3|V| - 6.",
     "significance": "key",
     "mathContext": "A graph $G$ is *planar* if it can be embedded in $\\mathbb{R}^2$ without edge crossings. Euler's formula $|V| - |E| + |F| = 2$ for connected planar graphs implies $|E| \\leq 3|V| - 6$ (since each face has $\\geq 3$ boundary edges and each edge borders $\\leq 2$ faces). This sparsity bound is crucial: it implies every planar graph has a vertex of degree $\\leq 5$, enabling inductive proofs like Thomassen's. Planarity is defined as sorry because formalizing topological embeddings in Lean is non-trivial.",
     "relatedConcepts": [
@@ -188,9 +188,9 @@
     },
     "type": "concept",
     "title": "Four Color and Five Color Theorems",
-    "content": "Axiomatizes both the Four Color Theorem (χ ≤ 4 for planar, Appel-Haken 1976) and the easier Five Color Theorem (χ ≤ 5).",
+    "content": "Axiomatizes both the Four Color Theorem (\u03c7 \u2264 4 for planar, Appel-Haken 1976) and the easier Five Color Theorem (\u03c7 \u2264 5).",
     "significance": "key",
-    "mathContext": "The Four Color Theorem ($\\chi(G) \\leq 4$ for planar $G$) was proved by Appel and Haken (1976) using extensive computer verification, later verified by Gonthier et al. in Coq. The Five Color Theorem ($\\chi(G) \\leq 5$) has a short human proof via vertex of degree $\\leq 5$. For list coloring, the Four Color Theorem does NOT directly imply $\\chi_L \\leq 4$ because list coloring is strictly harder — this gap motivates Problem #631.",
+    "mathContext": "The Four Color Theorem ($\\chi(G) \\leq 4$ for planar $G$) was proved by Appel and Haken (1976) using extensive computer verification, later verified by Gonthier et al. in Coq. The Five Color Theorem ($\\chi(G) \\leq 5$) has a short human proof via vertex of degree $\\leq 5$. For list coloring, the Four Color Theorem does NOT directly imply $\\chi_L \\leq 4$ because list coloring is strictly harder \u2014 this gap motivates Problem #631.",
     "relatedConcepts": [
       "Appel-Haken proof",
       "computer-verified proof",
@@ -210,7 +210,7 @@
     },
     "type": "concept",
     "title": "Thomassen's 5-List Theorem",
-    "content": "Thomassen (1994): every planar graph has χ_L ≤ 5. The proof uses induction on |V| + |E| with reduction to near-triangulations where two adjacent vertices on the outer face are precolored. This is the main result answering Question 1.",
+    "content": "Thomassen (1994): every planar graph has \u03c7_L \u2264 5. The proof uses induction on |V| + |E| with reduction to near-triangulations where two adjacent vertices on the outer face are precolored. This is the main result answering Question 1.",
     "significance": "key",
     "mathContext": "Thomassen's proof is celebrated for its brevity (3 pages) and elegance. The key technique: consider a *near-triangulation* (planar graph where all bounded faces are triangles) with outer cycle $C$, and two adjacent vertices $v_1, v_2$ on $C$ already colored. If all vertices on $C$ have lists of size $\\geq 3$ and all interior vertices have lists of size $\\geq 5$, a proper list coloring exists. The proof proceeds by induction on $|V| + |E|$: either find a chord of $C$ (splitting into smaller near-triangulations) or use a vertex of degree $\\leq 4$ on $C$ to reduce.",
     "relatedConcepts": [
@@ -234,7 +234,7 @@
     },
     "type": "concept",
     "title": "Voigt's Construction and Sharpness",
-    "content": "Voigt (1993): there exists a planar graph with χ_L = 5, showing Thomassen's bound is tight. The original construction has 238 vertices. Gutner (1996) simplified it, and the smallest known example has ≤ 63 vertices.",
+    "content": "Voigt (1993): there exists a planar graph with \u03c7_L = 5, showing Thomassen's bound is tight. The original construction has 238 vertices. Gutner (1996) simplified it, and the smallest known example has \u2264 63 vertices.",
     "significance": "key",
     "mathContext": "Voigt's construction answers Question 2: 5-choosability is best possible for planar graphs. The construction builds a planar graph $G$ and exhibits specific 4-element lists $L(v)$ for which no proper list coloring exists. The graph must be intricate enough that the list assignment creates a combinatorial deadlock. Finding smaller examples is an active area: Voigt's 238-vertex graph was reduced to $\\sim 63$ vertices. The exact minimum size is unknown and connects to the structure theory of non-4-choosable planar graphs.",
     "relatedConcepts": [
@@ -256,7 +256,7 @@
     },
     "type": "definition",
     "title": "List Coloring Conjecture and the Gap",
-    "content": "The List Coloring Conjecture asks: is every planar graph 4-choosable? This would close the gap between χ ≤ 4 (Four Color) and χ_L ≤ 5 (Thomassen). The chromatic_list_gap theorem formally states both bounds.",
+    "content": "The List Coloring Conjecture asks: is every planar graph 4-choosable? This would close the gap between \u03c7 \u2264 4 (Four Color) and \u03c7_L \u2264 5 (Thomassen). The chromatic_list_gap theorem formally states both bounds.",
     "significance": "key",
     "mathContext": "The *List Coloring Conjecture* for planar graphs: $\\chi_L(G) \\leq 4$ for all planar $G$. This is distinct from the general List Coloring Conjecture (also called the List Edge Coloring Conjecture), which states $\\chi_L'(G) = \\chi'(G)$ for all graphs. For planar graphs, we have $\\chi \\leq 4$ (Four Color) and $\\chi_L \\leq 5$ (Thomassen), so the gap is exactly 1. The theorem $\\texttt{chromatic\\_list\\_gap}$ bundles both bounds cleanly using $\\texttt{four\\_color\\_theorem}$ and $\\texttt{thomassen\\_five\\_list\\_theorem}$.",
     "relatedConcepts": [
@@ -279,7 +279,7 @@
     },
     "type": "context",
     "title": "Related Results",
-    "content": "Better bounds for restricted planar graphs: (1) Alon-Tarsi (1992): bipartite planar → χ_L ≤ 3; (2) outerplanar → χ_L ≤ 3; (3) planar with girth ≥ 5 → χ_L ≤ 3. Also includes Thomassen's proof structure: key lemma about precolored edges and induction strategy.",
+    "content": "Better bounds for restricted planar graphs: (1) Alon-Tarsi (1992): bipartite planar \u2192 \u03c7_L \u2264 3; (2) outerplanar \u2192 \u03c7_L \u2264 3; (3) planar with girth \u2265 5 \u2192 \u03c7_L \u2264 3. Also includes Thomassen's proof structure: key lemma about precolored edges and induction strategy.",
     "significance": "key",
     "mathContext": "These results show that structural restrictions on planar graphs can dramatically improve choosability bounds: **Alon-Tarsi** uses the combinatorial nullstellensatz to prove that bipartite planar graphs are 3-choosable (since they have an orientation where outdegree $\\leq 2$ everywhere). **Girth $\\geq 5$**: the absence of short cycles allows discharge arguments to work with lists of size 3. **Outerplanar**: all vertices on the outer face means maximum degree is bounded by a function of the graph structure. These results suggest that 4-choosability might hold for all planar graphs if the right technique is found.",
     "relatedConcepts": [
@@ -300,11 +300,11 @@
     "proofId": "erdos-631",
     "range": {
       "startLine": 245,
-      "endLine": 276
+      "endLine": 269
     },
     "type": "technique",
     "title": "Main Status: erdos_631_status",
-    "content": "The main theorem erdos_631_status bundles both answers: (1) ∀ planar G, χ_L(G) ≤ 5 (Thomassen), and (2) ∃ planar G with χ_L(G) = 5 (Voigt). Both are direct applications of the axiomatized results.",
+    "content": "The main theorem erdos_631_status bundles both answers: (1) \u2200 planar G, \u03c7_L(G) \u2264 5 (Thomassen), and (2) \u2203 planar G with \u03c7_L(G) = 5 (Voigt). Both are direct applications of the axiomatized results.",
     "significance": "key",
     "mathContext": "The theorem $\\texttt{erdos\\_631\\_status}$ is proved by $\\langle\\texttt{thomassen\\_five\\_list\\_theorem}, \\texttt{voigt\\_construction}\\rangle$, cleanly packaging both answers. The conjunction type captures the complete resolution: the upper bound $\\chi_L \\leq 5$ is tight. The remaining open question (List Coloring Conjecture) is recorded separately as $\\texttt{listColoringConjecture}$.",
     "relatedConcepts": [

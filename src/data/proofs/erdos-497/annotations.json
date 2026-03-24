@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #497** (SOLVED):\n\nHow many antichains (Sperner families) exist in the power set P([n])?\n\n**Answer:** 2^{(1+o(1)) · C(n, ⌊n/2⌋)} (Kleitman 1969).\n\nThis is closely related to Dedekind's problem (OEIS A000372) on the number of monotone Boolean functions, one of the oldest problems in combinatorics.",
-    "mathContext": "The Dedekind numbers D(n) count antichains in P([n]). They grow doubly exponentially — roughly 2^{C(n,n/2)} — making them extremely difficult to compute. D(9) was only determined in 2023.",
+    "content": "**Erd\u0151s Problem #497** (SOLVED):\n\nHow many antichains (Sperner families) exist in the power set P([n])?\n\n**Answer:** 2^{(1+o(1)) \u00b7 C(n, \u230an/2\u230b)} (Kleitman 1969).\n\nThis is closely related to Dedekind's problem (OEIS A000372) on the number of monotone Boolean functions, one of the oldest problems in combinatorics.",
+    "mathContext": "The Dedekind numbers D(n) count antichains in P([n]). They grow doubly exponentially \u2014 roughly 2^{C(n,n/2)} \u2014 making them extremely difficult to compute. D(9) was only determined in 2023.",
     "significance": "key",
     "relatedConcepts": [
       "Dedekind numbers",
@@ -27,8 +27,8 @@
     },
     "type": "definition",
     "title": "Antichain and Counting",
-    "content": "**IsAntichain n F:** F is a family of subsets of Fin n with no containment between distinct members. If A ⊆ B and both are in F, then A = B.\n\n**antichainCount n:** the total number of antichains in P([n]), computed by filtering all subfamilies of the powerset.\n\nThese are also called Sperner families (after Sperner's 1928 theorem) or antichains in the Boolean lattice 2^[n].",
-    "mathContext": "The Boolean lattice 2^[n] has 2^n elements ordered by inclusion. An antichain is a set of pairwise incomparable elements. The width (maximum antichain size) is C(n, ⌊n/2⌋) by Sperner's theorem.",
+    "content": "**IsAntichain n F:** F is a family of subsets of Fin n with no containment between distinct members. If A \u2286 B and both are in F, then A = B.\n\n**antichainCount n:** the total number of antichains in P([n]), computed by filtering all subfamilies of the powerset.\n\nThese are also called Sperner families (after Sperner's 1928 theorem) or antichains in the Boolean lattice 2^[n].",
+    "mathContext": "The Boolean lattice 2^[n] has 2^n elements ordered by inclusion. An antichain is a set of pairwise incomparable elements. The width (maximum antichain size) is C(n, \u230an/2\u230b) by Sperner's theorem.",
     "significance": "key",
     "relatedConcepts": [
       "Boolean lattice",
@@ -45,8 +45,8 @@
     },
     "type": "insight",
     "title": "Sperner's Theorem and Middle Layer",
-    "content": "**sperner_theorem:** Every antichain in P([n]) has size ≤ C(n, ⌊n/2⌋).\n\nThis is the maximum width of the Boolean lattice, achieved by the middle layer.\n\n**middle_layer_antichain:** The family of all ⌊n/2⌋-element subsets of [n] is an antichain achieving the Sperner bound.\n\nSperner's theorem (1928) is one of the foundational results of extremal set theory.",
-    "mathContext": "The proof uses the LYM inequality (Lubell-Yamamoto-Meshalkin): Σ 1/C(n,|A|) ≤ 1 for any antichain. Since C(n, ⌊n/2⌋) is the largest binomial coefficient, this gives the bound.",
+    "content": "**sperner_theorem:** Every antichain in P([n]) has size \u2264 C(n, \u230an/2\u230b).\n\nThis is the maximum width of the Boolean lattice, achieved by the middle layer.\n\n**middle_layer_antichain:** The family of all \u230an/2\u230b-element subsets of [n] is an antichain achieving the Sperner bound.\n\nSperner's theorem (1928) is one of the foundational results of extremal set theory.",
+    "mathContext": "The proof uses the LYM inequality (Lubell-Yamamoto-Meshalkin): \u03a3 1/C(n,|A|) \u2264 1 for any antichain. Since C(n, \u230an/2\u230b) is the largest binomial coefficient, this gives the bound.",
     "significance": "key",
     "relatedConcepts": [
       "Sperner's theorem",
@@ -82,7 +82,7 @@
     },
     "type": "insight",
     "title": "Trivial Upper Bound",
-    "content": "**trivial_upper_bound:** antichainCount(n) ≤ 2^{C(n, ⌊n/2⌋)}.\n\nEvery antichain is a subset of the middle layer's 'neighbourhood,' giving at most 2^{C(n,n/2)} choices.\n\nThis bound is tight in the logarithmic sense: log₂(antichainCount(n)) ~ C(n, n/2).",
+    "content": "**trivial_upper_bound:** antichainCount(n) \u2264 2^{C(n, \u230an/2\u230b)}.\n\nEvery antichain is a subset of the middle layer's 'neighbourhood,' giving at most 2^{C(n,n/2)} choices.\n\nThis bound is tight in the logarithmic sense: log\u2082(antichainCount(n)) ~ C(n, n/2).",
     "mathContext": "The key insight is that most antichains consist primarily of sets near the middle layer. Sets far from the middle layer contribute negligibly to the count.",
     "significance": "key",
     "relatedConcepts": [
@@ -96,12 +96,12 @@
     "proofId": "erdos-497",
     "range": {
       "startLine": 67,
-      "endLine": 87
+      "endLine": 86
     },
     "type": "technique",
-    "title": "Kleitman's Theorem (Erdős Problem 497 — SOLVED)",
-    "content": "**kleitman_lower + kleitman_upper:**\n\nFor every ε > 0 and large enough n:\n(1−ε) · C(n,n/2) ≤ log₂(antichainCount(n)) ≤ (1+ε) · C(n,n/2)\n\nEquivalently: antichainCount(n) = 2^{(1+o(1)) · C(n, ⌊n/2⌋)}.\n\n**ErdosProblem497** formalises this as the conjunction of lower and upper asymptotic bounds.\n\nKleitman's proof (1969) uses a delicate entropy argument and correlation inequalities.",
-    "mathContext": "This determines the logarithmic order of the Dedekind numbers: log₂ D(n) ~ C(n, ⌊n/2⌋) ~ 2^n · √(2/(πn)). The exact constant in front remains an open question.",
+    "title": "Kleitman's Theorem (Erd\u0151s Problem 497 \u2014 SOLVED)",
+    "content": "**kleitman_lower + kleitman_upper:**\n\nFor every \u03b5 > 0 and large enough n:\n(1\u2212\u03b5) \u00b7 C(n,n/2) \u2264 log\u2082(antichainCount(n)) \u2264 (1+\u03b5) \u00b7 C(n,n/2)\n\nEquivalently: antichainCount(n) = 2^{(1+o(1)) \u00b7 C(n, \u230an/2\u230b)}.\n\n**ErdosProblem497** formalises this as the conjunction of lower and upper asymptotic bounds.\n\nKleitman's proof (1969) uses a delicate entropy argument and correlation inequalities.",
+    "mathContext": "This determines the logarithmic order of the Dedekind numbers: log\u2082 D(n) ~ C(n, \u230an/2\u230b) ~ 2^n \u00b7 \u221a(2/(\u03c0n)). The exact constant in front remains an open question.",
     "significance": "key",
     "relatedConcepts": [
       "Kleitman",

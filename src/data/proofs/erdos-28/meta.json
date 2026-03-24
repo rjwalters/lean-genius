@@ -1,8 +1,8 @@
 {
   "id": "erdos-28",
-  "title": "Erdős Problem #28: The Erdős–Turán Conjecture on Additive Bases",
+  "title": "Erd\u0151s Problem #28: The Erd\u0151s\u2013Tur\u00e1n Conjecture on Additive Bases",
   "slug": "erdos-28",
-  "description": "If A ⊆ ℕ is an additive basis of order 2 (A+A covers all but finitely many integers), must the representation function r(n) be unbounded? $500 bounty. Status: OPEN.",
+  "description": "If A \u2286 \u2115 is an additive basis of order 2 (A+A covers all but finitely many integers), must the representation function r(n) be unbounded? $500 bounty. Status: OPEN.",
   "meta": {
     "erdosNumber": 28,
     "status": "axiomatized",
@@ -29,7 +29,8 @@
       "Sidon sets and B_2 sequences",
       "Basic analytic number theory (Fourier analysis on integers)",
       "Asymptotic notation and density of integer sets"
-    ]
+    ],
+    "lineCount": 111
   },
   "sections": [
     {
@@ -45,7 +46,7 @@
       "title": "Core Definitions",
       "startLine": 31,
       "endLine": 45,
-      "summary": "Three foundational definitions: the **representation function** $r_A(n) = |\\{(a,b) : a+b=n, a \\leq b, a,b \\in A\\}|$, the **asymptotic basis** condition $(A+A)^c$ finite, and the **counting function** $A(N) = |A \\cap [1,N]|$. These encode the core objects of the Erdős–Turán conjecture in Lean 4.",
+      "summary": "Three foundational definitions: the **representation function** $r_A(n) = |\\{(a,b) : a+b=n, a \\leq b, a,b \\in A\\}|$, the **asymptotic basis** condition $(A+A)^c$ finite, and the **counting function** $A(N) = |A \\cap [1,N]|$. These encode the core objects of the Erd\u0151s\u2013Tur\u00e1n conjecture in Lean 4.",
       "mathContext": "$r_A(n) = |\\{(a,b) : a+b=n,\\, a \\leq b,\\, a,b \\in A\\}|$; $A$ basis iff $(A+A)^c$ finite; $A(N) = |A \\cap [1,N]|$."
     },
     {
@@ -53,7 +54,7 @@
       "title": "The Main Conjecture",
       "startLine": 47,
       "endLine": 56,
-      "summary": "The Erdős–Turán conjecture (1941): $\\forall B, \\exists n: r_A(n) \\geq B$ whenever $A$ is an asymptotic basis of order 2. Stated as an axiom since the problem remains **OPEN** with a \\$500 bounty. Equivalent to $\\limsup r_A(n) = \\infty$.",
+      "summary": "The Erd\u0151s\u2013Tur\u00e1n conjecture (1941): $\\forall B, \\exists n: r_A(n) \\geq B$ whenever $A$ is an asymptotic basis of order 2. Stated as an axiom since the problem remains **OPEN** with a \\$500 bounty. Equivalent to $\\limsup r_A(n) = \\infty$.",
       "mathContext": "$\\text{IsAsymptoticBasis2}(A) \\Rightarrow \\limsup_{n \\to \\infty} r_A(n) = \\infty$. Axiom: open conjecture with \\$500 bounty."
     },
     {
@@ -85,27 +86,27 @@
       "title": "Connection to Problem #40",
       "startLine": 86,
       "endLine": 93,
-      "summary": "Problem #40 generalizes the Sidon observation: can any $B_2[g]$ set (with $r_A(n) \\leq g$) be a basis? The Erdős–Turán conjecture implies the answer is **no** for every finite $g$. This formalizes the implication #28 $\\Rightarrow$ #40.",
+      "summary": "Problem #40 generalizes the Sidon observation: can any $B_2[g]$ set (with $r_A(n) \\leq g$) be a basis? The Erd\u0151s\u2013Tur\u00e1n conjecture implies the answer is **no** for every finite $g$. This formalizes the implication #28 $\\Rightarrow$ #40.",
       "mathContext": "#28 $\\Rightarrow$ #40: $\\limsup r_A(n) = \\infty$ implies no $B_2[g]$ set can be a basis for any finite $g$."
     },
     {
       "id": "partial-results",
-      "title": "Partial Results: Erdős–Fuchs and Averages",
+      "title": "Partial Results: Erd\u0151s\u2013Fuchs and Averages",
       "startLine": 95,
-      "endLine": 112,
-      "summary": "Two key partial results: (1) the **Erdős–Fuchs theorem** (1956) showing $\\sum_{n \\leq N} r_A(n) \\neq cN + o(N^{1/4}/\\sqrt{\\log N})$ — representations must oscillate, but this doesn't imply individual unboundedness; (2) **Halberstam–Roth** showing the average $\\frac{1}{N}\\sum r_A(n) \\to \\infty$, which also falls short of proving the conjecture.",
-      "mathContext": "Erdős–Fuchs: $\\sum_{n \\leq N} r_A(n) - cN = \\Omega(N^{1/4}/\\sqrt{\\log N})$. Halberstam–Roth: $\\frac{1}{N}\\sum r_A(n) \\to \\infty$."
+      "endLine": 111,
+      "summary": "Two key partial results: (1) the **Erd\u0151s\u2013Fuchs theorem** (1956) showing $\\sum_{n \\leq N} r_A(n) \\neq cN + o(N^{1/4}/\\sqrt{\\log N})$ \u2014 representations must oscillate, but this doesn't imply individual unboundedness; (2) **Halberstam\u2013Roth** showing the average $\\frac{1}{N}\\sum r_A(n) \\to \\infty$, which also falls short of proving the conjecture.",
+      "mathContext": "Erd\u0151s\u2013Fuchs: $\\sum_{n \\leq N} r_A(n) - cN = \\Omega(N^{1/4}/\\sqrt{\\log N})$. Halberstam\u2013Roth: $\\frac{1}{N}\\sum r_A(n) \\to \\infty$."
     }
   ],
   "overview": {
-    "historicalContext": "Paul Erdős and Pál Turán posed this conjecture in their landmark 1941 paper 'On a problem of Sidon in additive number theory and some related problems' (J. London Math. Soc.), which also introduced the systematic study of $B_2$ sequences. The conjecture emerged from their investigation of how the representation function $r_A(n)$ behaves for additive bases — sets $A$ whose sumset $A + A$ covers all sufficiently large integers. Erdős attached a $500 bounty, one of his largest prizes, signaling its depth within additive combinatorics. Key partial results include the Erdős–Fuchs theorem (1956), which proved that cumulative representations must fluctuate (sharpened by Montgomery and Vaughan in 1990 to the optimal exponent $1/4$), and the Halberstam–Roth observation that average representations diverge. The conjecture connects to a web of related problems: Problem #40 on $B_2[g]$ sets, the structure theory of Sidon sets (initiated by Simon Sidon in the 1930s), and Waring-type problems on additive bases of higher order. Despite 85 years of effort by leaders in additive combinatorics — including Nathanson, Cilleruelo, and Lev — even the basic conjecture remains completely open.",
+    "historicalContext": "Paul Erd\u0151s and P\u00e1l Tur\u00e1n posed this conjecture in their landmark 1941 paper 'On a problem of Sidon in additive number theory and some related problems' (J. London Math. Soc.), which also introduced the systematic study of $B_2$ sequences. The conjecture emerged from their investigation of how the representation function $r_A(n)$ behaves for additive bases \u2014 sets $A$ whose sumset $A + A$ covers all sufficiently large integers. Erd\u0151s attached a $500 bounty, one of his largest prizes, signaling its depth within additive combinatorics. Key partial results include the Erd\u0151s\u2013Fuchs theorem (1956), which proved that cumulative representations must fluctuate (sharpened by Montgomery and Vaughan in 1990 to the optimal exponent $1/4$), and the Halberstam\u2013Roth observation that average representations diverge. The conjecture connects to a web of related problems: Problem #40 on $B_2[g]$ sets, the structure theory of Sidon sets (initiated by Simon Sidon in the 1930s), and Waring-type problems on additive bases of higher order. Despite 85 years of effort by leaders in additive combinatorics \u2014 including Nathanson, Cilleruelo, and Lev \u2014 even the basic conjecture remains completely open.",
     "problemStatement": "If $A \\subseteq \\mathbb{N}$ and $A + A$ contains all but finitely many natural numbers, must $\\limsup_{n \\to \\infty} r_A(n) = \\infty$, where $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n, \\; a \\leq b\\}|$?",
-    "text": "If A ⊆ ℕ is an additive basis of order 2 (A+A covers all but finitely many integers), must the representation function r(n) be unbounded? $500 bounty. Status: OPEN.",
-    "proofStrategy": "We formalize the core objects of the conjecture — the representation function $r_A(n)$, the asymptotic basis condition, and the counting function — then state the main conjecture and two strengthenings (logarithmic growth and density version) as axioms. We connect these to known results: the basis counting lower bound ($A(N) \\gg \\sqrt{N}$), the Sidon set exclusion, the implication to Problem #40, the Erdős–Fuchs fluctuation theorem, and the Halberstam–Roth average divergence.",
+    "text": "If A \u2286 \u2115 is an additive basis of order 2 (A+A covers all but finitely many integers), must the representation function r(n) be unbounded? $500 bounty. Status: OPEN.",
+    "proofStrategy": "We formalize the core objects of the conjecture \u2014 the representation function $r_A(n)$, the asymptotic basis condition, and the counting function \u2014 then state the main conjecture and two strengthenings (logarithmic growth and density version) as axioms. We connect these to known results: the basis counting lower bound ($A(N) \\gg \\sqrt{N}$), the Sidon set exclusion, the implication to Problem #40, the Erd\u0151s\u2013Fuchs fluctuation theorem, and the Halberstam\u2013Roth average divergence.",
     "keyInsights": [
-      "**No thin basis can exist**: The conjecture asserts that controlling $r_A(n) \\leq C$ is fundamentally incompatible with $A + A$ covering all large integers — a profound structural constraint on sumsets",
+      "**No thin basis can exist**: The conjecture asserts that controlling $r_A(n) \\leq C$ is fundamentally incompatible with $A + A$ covering all large integers \u2014 a profound structural constraint on sumsets",
       "**Logarithmic growth from probabilistic heuristics**: For a 'random' set of density $\\sim \\sqrt{N}$, each $r_A(n)$ has expectation $\\sim \\log n$, suggesting $\\limsup r_A(n)/\\log n > 0$ as the natural quantitative form",
-      "**Erdős–Fuchs falls short**: The cumulative sum $\\sum r_A(n)$ must oscillate by $\\Omega(N^{1/4}/\\sqrt{\\log N})$, but these fluctuations could concentrate in a few large terms without any single $r_A(n)$ being large — a subtle gap between average and pointwise behavior",
+      "**Erd\u0151s\u2013Fuchs falls short**: The cumulative sum $\\sum r_A(n)$ must oscillate by $\\Omega(N^{1/4}/\\sqrt{\\log N})$, but these fluctuations could concentrate in a few large terms without any single $r_A(n)$ being large \u2014 a subtle gap between average and pointwise behavior",
       "**Sidon sets confirm the extremal case**: Sets with $r \\leq 1$ (Sidon/$B_2$ sets) satisfy $A(N) \\leq \\sqrt{N} + O(N^{1/4})$, which is too sparse for a basis, confirming the conjecture vacuously at the boundary",
       "**Hierarchy of related problems**: #28 implies #40 ($B_2[g]$ sets cannot be bases), connects to #1145 on dense $B_2[g]$ constructions, and motivates the density version that weakens the basis hypothesis to $A(N) \\gg \\sqrt{N}$"
     ],
@@ -117,10 +118,10 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures the full landscape of the Erdős–Turán conjecture on additive bases: the core definitions, the main conjecture and its strengthenings, connections to Sidon sets and Problem #40, and the partial results (Erdős–Fuchs, Halberstam–Roth) that illuminate why the problem is so hard. The gap between what is known (average representations diverge, cumulative sums oscillate) and what is conjectured (individual representations are unbounded) highlights a deep open question about the pointwise behavior of additive structure.",
-    "implications": "**Theoretical Significance**: A proof would establish that no additive basis of order 2 can have uniformly bounded representations — a fundamental dichotomy in additive number theory.\n\nThis would resolve Problem #40 as a corollary, settle the structure of $B_2[g]$ sets relative to bases, and likely introduce new techniques at the intersection of additive combinatorics and analytic number theory. The density version, if true, would extend the result far beyond bases to any sufficiently dense set.",
+    "summary": "This formalization captures the full landscape of the Erd\u0151s\u2013Tur\u00e1n conjecture on additive bases: the core definitions, the main conjecture and its strengthenings, connections to Sidon sets and Problem #40, and the partial results (Erd\u0151s\u2013Fuchs, Halberstam\u2013Roth) that illuminate why the problem is so hard. The gap between what is known (average representations diverge, cumulative sums oscillate) and what is conjectured (individual representations are unbounded) highlights a deep open question about the pointwise behavior of additive structure.",
+    "implications": "**Theoretical Significance**: A proof would establish that no additive basis of order 2 can have uniformly bounded representations \u2014 a fundamental dichotomy in additive number theory.\n\nThis would resolve Problem #40 as a corollary, settle the structure of $B_2[g]$ sets relative to bases, and likely introduce new techniques at the intersection of additive combinatorics and analytic number theory. The density version, if true, would extend the result far beyond bases to any sufficiently dense set.",
     "openQuestions": [
-      "Can the Erdős–Fuchs fluctuation theorem be strengthened to imply pointwise unboundedness of $r_A(n)$, or is there a fundamental barrier?",
+      "Can the Erd\u0151s\u2013Fuchs fluctuation theorem be strengthened to imply pointwise unboundedness of $r_A(n)$, or is there a fundamental barrier?",
       "Does the conjecture hold under the weaker density hypothesis $A(N) \\geq c\\sqrt{N}$, without assuming $A + A$ covers almost all integers?",
       "What is the correct growth rate: is $\\limsup r_A(n)/\\log n > 0$, or could representations grow slower than logarithmically?",
       "Can Fourier-analytic or circle-method techniques (as used in Waring's problem) be adapted to attack this conjecture?"
@@ -135,7 +136,7 @@
     {
       "targetId": "erdos-3",
       "relationship": "related",
-      "description": "Both bear the name Erdős-Turán and concern how arithmetic structure is forced by density. Problem #3 asks whether dense sets must contain APs; Problem #28 asks whether bases must have unbounded representations. Both remain open after 80+ years"
+      "description": "Both bear the name Erd\u0151s-Tur\u00e1n and concern how arithmetic structure is forced by density. Problem #3 asks whether dense sets must contain APs; Problem #28 asks whether bases must have unbounded representations. Both remain open after 80+ years"
     },
     {
       "targetId": "erdos-39",
@@ -145,35 +146,35 @@
     {
       "targetId": "erdos-41",
       "relationship": "extends",
-      "description": "Problem #41 on $B_h$ sequence density bounds generalizes Sidon sets to higher-order representation constraints. The Erdős-Turán conjecture on bases of order 2 connects directly to whether $B_2[g]$ sets can be bases — Problem #28 implies they cannot"
+      "description": "Problem #41 on $B_h$ sequence density bounds generalizes Sidon sets to higher-order representation constraints. The Erd\u0151s-Tur\u00e1n conjecture on bases of order 2 connects directly to whether $B_2[g]$ sets can be bases \u2014 Problem #28 implies they cannot"
     },
     {
       "targetId": "erdos-42",
       "relationship": "related",
-      "description": "Problem #42 on Sidon sets with disjoint difference sets explores the structure theory of $B_2$ sets, the same objects whose density limitations make the Erdős-Turán conjecture plausible"
+      "description": "Problem #42 on Sidon sets with disjoint difference sets explores the structure theory of $B_2$ sets, the same objects whose density limitations make the Erd\u0151s-Tur\u00e1n conjecture plausible"
     }
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Turán, Paul",
+      "authors": "Erd\u0151s, Paul; Tur\u00e1n, Paul",
       "title": "On a problem of Sidon in additive number theory and some related problems",
       "year": "1941",
-      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212\u2013215",
       "note": "Original formulation of the conjecture that representation functions of bases must be unbounded"
     },
     {
-      "authors": "Erdős, Paul; Fuchs, Wolfgang H. J.",
+      "authors": "Erd\u0151s, Paul; Fuchs, Wolfgang H. J.",
       "title": "On a problem of additive number theory",
       "year": "1956",
-      "venue": "Journal of the London Mathematical Society, vol. 31, pp. 67–73",
-      "note": "Proved cumulative representations must oscillate: sum r_A(n) ≠ cN + o(N^{1/4}/√(log N))"
+      "venue": "Journal of the London Mathematical Society, vol. 31, pp. 67\u201373",
+      "note": "Proved cumulative representations must oscillate: sum r_A(n) \u2260 cN + o(N^{1/4}/\u221a(log N))"
     },
     {
       "authors": "Montgomery, Hugh L.; Vaughan, Robert C.",
-      "title": "On the Erdős-Fuchs theorems",
+      "title": "On the Erd\u0151s-Fuchs theorems",
       "year": "1990",
-      "venue": "In: A Tribute to Paul Erdős, Cambridge University Press, pp. 331–338",
-      "note": "Sharpened the Erdős-Fuchs theorem to the optimal exponent 1/4"
+      "venue": "In: A Tribute to Paul Erd\u0151s, Cambridge University Press, pp. 331\u2013338",
+      "note": "Sharpened the Erd\u0151s-Fuchs theorem to the optimal exponent 1/4"
     },
     {
       "authors": "Halberstam, Heini; Roth, Klaus F.",
@@ -187,7 +188,7 @@
       "title": "Additive Number Theory: The Classical Bases",
       "year": "1996",
       "venue": "Springer GTM 164",
-      "note": "Chapter 1 covers additive bases and Sidon sets; Chapter 2 treats Waring's problem; comprehensive modern reference for the Erdős–Turán conjecture and related problems"
+      "note": "Chapter 1 covers additive bases and Sidon sets; Chapter 2 treats Waring's problem; comprehensive modern reference for the Erd\u0151s\u2013Tur\u00e1n conjecture and related problems"
     }
   ],
   "relatedProofs": [

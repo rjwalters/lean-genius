@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #1123: Boolean Algebras Modulo Density Zero Sets**\n\nAre B₁ = P(ℕ)/{density 0} and B₂ = P(ℕ)/{log-density 0} isomorphic?\n\n**Resolution:** Just-Krawczyk (1984) proved YES under the Continuum Hypothesis. The answer is set-theoretically dependent.\n\n**History:** Erdős and Ulam believed they proved non-isomorphism (1943-44), but the proof was 'lost.' Erdős offered $100 for a resolution.",
+    "content": "**Erd\u0151s Problem #1123: Boolean Algebras Modulo Density Zero Sets**\n\nAre B\u2081 = P(\u2115)/{density 0} and B\u2082 = P(\u2115)/{log-density 0} isomorphic?\n\n**Resolution:** Just-Krawczyk (1984) proved YES under the Continuum Hypothesis. The answer is set-theoretically dependent.\n\n**History:** Erd\u0151s and Ulam believed they proved non-isomorphism (1943-44), but the proof was 'lost.' Erd\u0151s offered $100 for a resolution.",
     "mathContext": "The question connects number theory (density concepts), algebra (Boolean algebras), and set theory (CH independence). The surprising answer is that set-theoretic axioms determine the isomorphism type.",
     "significance": "key",
     "relatedConcepts": [
@@ -33,8 +33,8 @@
     },
     "type": "definition",
     "title": "Density Definitions and Relations",
-    "content": "**hasDensityZero A:** |A ∩ {0,...,n-1}| / n → 0 as n → ∞.\n\n**hasLogDensityZero A:** Logarithmic density zero (simplified; actual definition involves harmonic partial sums).\n\n**density_zero_implies_log_density_zero:** d(A)=0 ⟹ δ(A)=0. The converse is false.\n\n**log_density_ideal_strictly_larger:** ∃ A with δ(A)=0 but d(A)>0. I₁ ⊊ I₂.",
-    "mathContext": "The strict containment I₁ ⊊ I₂ is the structural asymmetry driving the problem. More sets become 'negligible' under logarithmic density, making B₂ a coarser quotient than B₁.",
+    "content": "**hasDensityZero A:** |A \u2229 {0,...,n-1}| / n \u2192 0 as n \u2192 \u221e.\n\n**hasLogDensityZero A:** Logarithmic density zero (simplified; actual definition involves harmonic partial sums).\n\n**density_zero_implies_log_density_zero:** d(A)=0 \u27f9 \u03b4(A)=0. The converse is false.\n\n**log_density_ideal_strictly_larger:** \u2203 A with \u03b4(A)=0 but d(A)>0. I\u2081 \u228a I\u2082.",
+    "mathContext": "The strict containment I\u2081 \u228a I\u2082 is the structural asymmetry driving the problem. More sets become 'negligible' under logarithmic density, making B\u2082 a coarser quotient than B\u2081.",
     "significance": "key",
     "relatedConcepts": [
       "Natural density",
@@ -56,9 +56,9 @@
       "endLine": 78
     },
     "type": "definition",
-    "title": "The Boolean Algebras B₁ and B₂",
-    "content": "**B1:** Quotient P(ℕ)/I₁ via symmetric difference. A ~ B iff A Δ B has density 0.\n\n**B2:** Quotient P(ℕ)/I₂ via symmetric difference. A ~ B iff A Δ B has log-density 0.\n\n**erdos_ulam_question:** ∃ f : B1 → B2, Bijective f. The central isomorphism question.",
-    "mathContext": "Both are constructed as Lean Quotient types over Setoid instances. The equivalence relation is density of the symmetric difference. Since I₁ ⊊ I₂, B₂ identifies more sets.",
+    "title": "The Boolean Algebras B\u2081 and B\u2082",
+    "content": "**B1:** Quotient P(\u2115)/I\u2081 via symmetric difference. A ~ B iff A \u0394 B has density 0.\n\n**B2:** Quotient P(\u2115)/I\u2082 via symmetric difference. A ~ B iff A \u0394 B has log-density 0.\n\n**erdos_ulam_question:** \u2203 f : B1 \u2192 B2, Bijective f. The central isomorphism question.",
+    "mathContext": "Both are constructed as Lean Quotient types over Setoid instances. The equivalence relation is density of the symmetric difference. Since I\u2081 \u228a I\u2082, B\u2082 identifies more sets.",
     "significance": "key",
     "relatedConcepts": [
       "Quotient type",
@@ -81,8 +81,8 @@
     },
     "type": "concept",
     "title": "Just-Krawczyk's Resolution",
-    "content": "**just_krawczyk_theorem_CH:** Under the Continuum Hypothesis, ∃ bijection B1 → B2. Both algebras have cardinality ℵ₁ under CH with similar saturation, enabling back-and-forth.\n\n**independence_from_ZFC:** The question is ZFC-independent. There exist axiom systems making the algebras isomorphic, and others making them non-isomorphic.",
-    "mathContext": "The back-and-forth method constructs an isomorphism by iteratively extending partial maps. CH ensures both algebras are small enough (ℵ₁) for this enumeration to work.",
+    "content": "**just_krawczyk_theorem_CH:** Under the Continuum Hypothesis, \u2203 bijection B1 \u2192 B2. Both algebras have cardinality \u2135\u2081 under CH with similar saturation, enabling back-and-forth.\n\n**independence_from_ZFC:** The question is ZFC-independent. There exist axiom systems making the algebras isomorphic, and others making them non-isomorphic.",
+    "mathContext": "The back-and-forth method constructs an isomorphism by iteratively extending partial maps. CH ensures both algebras are small enough (\u2135\u2081) for this enumeration to work.",
     "significance": "key",
     "relatedConcepts": [
       "Just-Krawczyk 1984",
@@ -106,13 +106,13 @@
     },
     "type": "concept",
     "title": "Ideal Properties",
-    "content": "**density_ideals_are_sigma_ideals:** Both I₁ and I₂ are closed under subsets.\n\n**finite_quotient_different:** Every finite set has density zero. This shows Fin ⊆ I₁ ⊆ I₂, but P(ℕ)/Fin has different structure from B₁ and B₂.",
-    "mathContext": "The σ-ideal property (closed under countable unions) is important for the Boolean algebra structure. The finite ideal Fin is strictly contained in both I₁ and I₂.",
+    "content": "**density_ideals_are_sigma_ideals:** Both I\u2081 and I\u2082 are closed under subsets.\n\n**finite_quotient_different:** Every finite set has density zero. This shows Fin \u2286 I\u2081 \u2286 I\u2082, but P(\u2115)/Fin has different structure from B\u2081 and B\u2082.",
+    "mathContext": "The \u03c3-ideal property (closed under countable unions) is important for the Boolean algebra structure. The finite ideal Fin is strictly contained in both I\u2081 and I\u2082.",
     "significance": "key",
     "relatedConcepts": [
-      "σ-ideal",
+      "\u03c3-ideal",
       "Subset closure",
-      "P(ℕ)/Fin"
+      "P(\u2115)/Fin"
     ],
     "tags": [
       "ideals",
@@ -125,11 +125,11 @@
     "proofId": "erdos-1123",
     "range": {
       "startLine": 111,
-      "endLine": 127
+      "endLine": 126
     },
     "type": "technique",
     "title": "Summary Theorem",
-    "content": "**erdos_1123_summary (PROVED):** Conjunction of:\n1. density 0 ⟹ log-density 0 (from density_zero_implies_log_density_zero)\n2. ∃ set with log-density 0 but not density 0 (from log_density_ideal_strictly_larger)\n\nThe problem is SET-THEORETICALLY DEPENDENT: under CH, B₁ ≅ B₂.",
+    "content": "**erdos_1123_summary (PROVED):** Conjunction of:\n1. density 0 \u27f9 log-density 0 (from density_zero_implies_log_density_zero)\n2. \u2203 set with log-density 0 but not density 0 (from log_density_ideal_strictly_larger)\n\nThe problem is SET-THEORETICALLY DEPENDENT: under CH, B\u2081 \u2245 B\u2082.",
     "mathContext": "The summary establishes the key structural fact: the two density ideals are genuinely different (strict containment). The isomorphism question for their quotients depends on set-theoretic axioms beyond ZFC.",
     "significance": "key",
     "relatedConcepts": [

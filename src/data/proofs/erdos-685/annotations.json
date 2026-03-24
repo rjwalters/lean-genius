@@ -8,8 +8,8 @@
       "endLine": 11
     },
     "title": "Problem Overview",
-    "content": "Erdős Problem 685 asks for the asymptotic number of distinct prime divisors of the binomial coefficient C(n,k) when n^ε < k ≤ n^{1-ε}. The conjectured answer is ω(C(n,k)) ~ k · Σ_{k<p<n} 1/p.",
-    "mathContext": "Binomial coefficients encode rich arithmetic information. The prime factorization of C(n,k) reflects how primes in various ranges divide the product n(n-1)···(n-k+1)/k!. Primes p in (k,n) each divide C(n,k) exactly when ⌊n/p⌋ > ⌊k/p⌋ + ⌊(n-k)/p⌋, which happens with probability ~k/p by Kummer's theorem.",
+    "content": "Erd\u0151s Problem 685 asks for the asymptotic number of distinct prime divisors of the binomial coefficient C(n,k) when n^\u03b5 < k \u2264 n^{1-\u03b5}. The conjectured answer is \u03c9(C(n,k)) ~ k \u00b7 \u03a3_{k<p<n} 1/p.",
+    "mathContext": "Binomial coefficients encode rich arithmetic information. The prime factorization of C(n,k) reflects how primes in various ranges divide the product n(n-1)\u00b7\u00b7\u00b7(n-k+1)/k!. Primes p in (k,n) each divide C(n,k) exactly when \u230an/p\u230b > \u230ak/p\u230b + \u230a(n-k)/p\u230b, which happens with probability ~k/p by Kummer's theorem.",
     "significance": "key",
     "relatedConcepts": [
       "binomial-coefficients",
@@ -25,9 +25,9 @@
       "startLine": 23,
       "endLine": 25
     },
-    "title": "Prime Divisor Count ω(n)",
-    "content": "**`omega n`** = `n.primeFactors.card`, the number of distinct prime divisors of n. This is the additive function ω, not the big-Ω that counts multiplicity.",
-    "mathContext": "By the Hardy–Ramanujan theorem, ω(n) ~ log log n for typical n. For binomial coefficients, the prime divisor count can be much larger due to the product structure.",
+    "title": "Prime Divisor Count \u03c9(n)",
+    "content": "**`omega n`** = `n.primeFactors.card`, the number of distinct prime divisors of n. This is the additive function \u03c9, not the big-\u03a9 that counts multiplicity.",
+    "mathContext": "By the Hardy\u2013Ramanujan theorem, \u03c9(n) ~ log log n for typical n. For binomial coefficients, the prime divisor count can be much larger due to the product structure.",
     "significance": "key",
     "relatedConcepts": [
       "prime-omega",
@@ -44,8 +44,8 @@
       "endLine": 29
     },
     "title": "Prime Reciprocal Sum",
-    "content": "**`primeSumInRange k n`** = Σ_{k<p<n, p prime} 1/p, the sum of prime reciprocals in the open interval (k, n).",
-    "mathContext": "By Mertens' theorem, Σ_{p≤x} 1/p ~ log log x. So primeSumInRange(k,n) ~ log log n - log log k. When k = n^ε, this is ~ (1-ε) log log n, giving ω(C(n,k)) ~ k · (1-ε) log log n.",
+    "content": "**`primeSumInRange k n`** = \u03a3_{k<p<n, p prime} 1/p, the sum of prime reciprocals in the open interval (k, n).",
+    "mathContext": "By Mertens' theorem, \u03a3_{p\u2264x} 1/p ~ log log x. So primeSumInRange(k,n) ~ log log n - log log k. When k = n^\u03b5, this is ~ (1-\u03b5) log log n, giving \u03c9(C(n,k)) ~ k \u00b7 (1-\u03b5) log log n.",
     "significance": "key",
     "relatedConcepts": [
       "mertens-theorem",
@@ -61,8 +61,8 @@
       "endLine": 41
     },
     "title": "Main Conjecture",
-    "content": "**Erdős Problem 685**: For n^ε < k ≤ n^{1-ε}, the number of distinct prime divisors of C(n,k) satisfies ω(C(n,k)) = (1+o(1)) · k · Σ_{k<p<n} 1/p. The formalization captures this as a (1±δ)-sandwich for any δ > 0 and all large n.",
-    "mathContext": "The conjecture says that primes p ∈ (k,n) each independently divide C(n,k) with probability ~k/p, and the total count concentrates around its expectation. This is a concentration phenomenon for the additive function ω applied to a highly structured number.",
+    "content": "**Erd\u0151s Problem 685**: For n^\u03b5 < k \u2264 n^{1-\u03b5}, the number of distinct prime divisors of C(n,k) satisfies \u03c9(C(n,k)) = (1+o(1)) \u00b7 k \u00b7 \u03a3_{k<p<n} 1/p. The formalization captures this as a (1\u00b1\u03b4)-sandwich for any \u03b4 > 0 and all large n.",
+    "mathContext": "The conjecture says that primes p \u2208 (k,n) each independently divide C(n,k) with probability ~k/p, and the total count concentrates around its expectation. This is a concentration phenomenon for the additive function \u03c9 applied to a highly structured number.",
     "significance": "key",
     "relatedConcepts": [
       "concentration",
@@ -79,7 +79,7 @@
       "endLine": 47
     },
     "title": "Trivial Lower Bound",
-    "content": "ω(C(n,k)) ≥ log C(n,k) / log n. Since each prime divisor is at most n, C(n,k) ≤ n^{ω(C(n,k))}.",
+    "content": "\u03c9(C(n,k)) \u2265 log C(n,k) / log n. Since each prime divisor is at most n, C(n,k) \u2264 n^{\u03c9(C(n,k))}.",
     "mathContext": "This bound is tight when k > n^{1-o(1)}, because then C(n,k) ~ n^k/k! and the prime factorization is dominated by small primes appearing with high multiplicity.",
     "significance": "key",
     "relatedConcepts": [
@@ -96,7 +96,7 @@
       "endLine": 55
     },
     "title": "Tightness Near n",
-    "content": "For k > n^{1-ε}, the trivial lower bound is asymptotically tight: ω(C(n,k)) ≤ (1+ε) · log C(n,k) / log n. This shows the conjecture's range restriction n^ε < k ≤ n^{1-ε} is necessary.",
+    "content": "For k > n^{1-\u03b5}, the trivial lower bound is asymptotically tight: \u03c9(C(n,k)) \u2264 (1+\u03b5) \u00b7 log C(n,k) / log n. This shows the conjecture's range restriction n^\u03b5 < k \u2264 n^{1-\u03b5} is necessary.",
     "significance": "supporting",
     "relatedConcepts": [
       "tightness",
@@ -113,8 +113,8 @@
       "endLine": 69
     },
     "title": "Verified Basic Properties",
-    "content": "Three properties proved constructively: **ω(1) = 0** (1 has no prime divisors), **ω(C(n,0)) = 0** (since C(n,0) = 1), and **ω(C(n,1)) = ω(n)** (since C(n,1) = n). These are verified by Lean's kernel, not axiomatized.",
-    "mathContext": "These boundary cases ground the formalization: the conjecture's interesting range starts at k ≥ 2 where the binomial coefficient has non-trivial factorization.",
+    "content": "Three properties proved constructively: **\u03c9(1) = 0** (1 has no prime divisors), **\u03c9(C(n,0)) = 0** (since C(n,0) = 1), and **\u03c9(C(n,1)) = \u03c9(n)** (since C(n,1) = n). These are verified by Lean's kernel, not axiomatized.",
+    "mathContext": "These boundary cases ground the formalization: the conjecture's interesting range starts at k \u2265 2 where the binomial coefficient has non-trivial factorization.",
     "significance": "supporting",
     "relatedConcepts": [
       "verified-examples",
@@ -127,15 +127,15 @@
     "type": "insight",
     "range": {
       "startLine": 71,
-      "endLine": 73
+      "endLine": 72
     },
-    "title": "Characterization of ω = 0",
-    "content": "ω(n) = 0 if and only if n ≤ 1. This axiom connects the prime divisor count to the structure of small numbers.",
+    "title": "Characterization of \u03c9 = 0",
+    "content": "\u03c9(n) = 0 if and only if n \u2264 1. This axiom connects the prime divisor count to the structure of small numbers.",
     "significance": "supporting",
     "relatedConcepts": [
       "characterization",
       "small-cases"
     ],
-    "mathContext": "See annotation content for formal details of characterization of ω = 0"
+    "mathContext": "See annotation content for formal details of characterization of \u03c9 = 0"
   }
 ]

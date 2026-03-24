@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #209: Gallai Triangles in Line Arrangements**\n\nThe problem asks: if we have d ≥ 4 non-parallel lines where no 4 meet at a point, must there be a \"Gallai triangle\" — three lines forming a triangle where each vertex has exactly 2 lines passing through it?\n\n**Answer: NO!**\n\nFüredi-Palásti (1984) and Escudero (2016) proved counterexamples exist for ALL d ≥ 4.\n\nWhile Sylvester-Gallai guarantees \"ordinary\" points (where only 2 lines meet) exist, they can be positioned to avoid forming triangles.",
-    "mathContext": "A Gallai triangle (or ordinary triangle) requires all three vertices to be ordinary points — points where exactly 2 lines meet, not 3 or more.",
+    "content": "**Erd\u0151s Problem #209: Gallai Triangles in Line Arrangements**\n\nThe problem asks: if we have d \u2265 4 non-parallel lines where no 4 meet at a point, must there be a \"Gallai triangle\" \u2014 three lines forming a triangle where each vertex has exactly 2 lines passing through it?\n\n**Answer: NO!**\n\nF\u00fcredi-Pal\u00e1sti (1984) and Escudero (2016) proved counterexamples exist for ALL d \u2265 4.\n\nWhile Sylvester-Gallai guarantees \"ordinary\" points (where only 2 lines meet) exist, they can be positioned to avoid forming triangles.",
+    "mathContext": "A Gallai triangle (or ordinary triangle) requires all three vertices to be ordinary points \u2014 points where exactly 2 lines meet, not 3 or more.",
     "significance": "key",
     "relatedConcepts": [
       "Sylvester-Gallai theorem",
@@ -25,14 +25,14 @@
       "endLine": 54
     },
     "type": "definition",
-    "title": "Line in ℝ²",
-    "content": "**Line2D:**\n\nA line is represented by coefficients (a, b, c) where:\n$$ax + by + c = 0$$\n\nwith (a, b) ≠ (0, 0).\n\n**Examples:**\n- y = 2x + 1 → -2x + y - 1 = 0, so (a, b, c) = (-2, 1, -1)\n- x = 3 (vertical) → 1x + 0y - 3 = 0, so (a, b, c) = (1, 0, -3)",
+    "title": "Line in \u211d\u00b2",
+    "content": "**Line2D:**\n\nA line is represented by coefficients (a, b, c) where:\n$$ax + by + c = 0$$\n\nwith (a, b) \u2260 (0, 0).\n\n**Examples:**\n- y = 2x + 1 \u2192 -2x + y - 1 = 0, so (a, b, c) = (-2, 1, -1)\n- x = 3 (vertical) \u2192 1x + 0y - 3 = 0, so (a, b, c) = (1, 0, -3)",
     "significance": "key",
     "relatedConcepts": [
       "Implicit form",
       "Coordinate geometry"
     ],
-    "mathContext": "See annotation content for formal details of line in ℝ²"
+    "mathContext": "See annotation content for formal details of line in \u211d\u00b2"
   },
   {
     "id": "ann-e209-parallel",
@@ -43,7 +43,7 @@
     },
     "type": "definition",
     "title": "Parallel Lines",
-    "content": "**areParallel l₁ l₂:**\n\nTwo lines are parallel if their direction vectors are proportional:\n$$a_1 \\cdot b_2 = b_1 \\cdot a_2$$\n\nGeometrically: same slope, or both vertical.\n\nParallel lines never intersect in ℝ² (they intersect \"at infinity\" in projective geometry).",
+    "content": "**areParallel l\u2081 l\u2082:**\n\nTwo lines are parallel if their direction vectors are proportional:\n$$a_1 \\cdot b_2 = b_1 \\cdot a_2$$\n\nGeometrically: same slope, or both vertical.\n\nParallel lines never intersect in \u211d\u00b2 (they intersect \"at infinity\" in projective geometry).",
     "significance": "key",
     "relatedConcepts": [
       "Slope",
@@ -129,7 +129,7 @@
     },
     "type": "definition",
     "title": "Gallai Triangle",
-    "content": "**IsGallaiTriangle A l₁ l₂ l₃:**\n\nThree lines form a Gallai triangle if:\n1. All three lines are in the arrangement\n2. No two are parallel (they form a triangle)\n3. Each pairwise intersection is an ordinary point\n\n**Visual:** A triangle where each vertex has exactly 2 lines passing through it — no \"extra\" lines messing things up.",
+    "content": "**IsGallaiTriangle A l\u2081 l\u2082 l\u2083:**\n\nThree lines form a Gallai triangle if:\n1. All three lines are in the arrangement\n2. No two are parallel (they form a triangle)\n3. Each pairwise intersection is an ordinary point\n\n**Visual:** A triangle where each vertex has exactly 2 lines passing through it \u2014 no \"extra\" lines messing things up.",
     "mathContext": "Also called an \"ordinary triangle\" in the literature.",
     "significance": "key",
     "relatedConcepts": [
@@ -146,12 +146,12 @@
     },
     "type": "concept",
     "title": "Sylvester-Gallai Theorem",
-    "content": "**sylvester_gallai:**\n\nAny finite set of non-collinear points in ℝ² determines at least one ordinary line (containing exactly 2 points).\n\n**Dual version:** Any arrangement of ≥ 3 non-concurrent lines has at least one ordinary point.\n\n**History:** Posed by Sylvester (1893), proved by Gallai (1944).\n\n**Importance:** This guarantees ordinary points exist, but Erdős asked if three of them must form a triangle.",
+    "content": "**sylvester_gallai:**\n\nAny finite set of non-collinear points in \u211d\u00b2 determines at least one ordinary line (containing exactly 2 points).\n\n**Dual version:** Any arrangement of \u2265 3 non-concurrent lines has at least one ordinary point.\n\n**History:** Posed by Sylvester (1893), proved by Gallai (1944).\n\n**Importance:** This guarantees ordinary points exist, but Erd\u0151s asked if three of them must form a triangle.",
     "mathContext": "The theorem fails over finite fields (e.g., the Fano plane has no ordinary points).",
     "significance": "key",
     "relatedConcepts": [
       "Incidence theorems",
-      "Gallai (Tibor Grünwald)"
+      "Gallai (Tibor Gr\u00fcnwald)"
     ]
   },
   {
@@ -162,8 +162,8 @@
       "endLine": 208
     },
     "type": "concept",
-    "title": "Füredi-Palásti (1984)",
-    "content": "**furedi_palasti_1984:**\n\nFor d not divisible by 9, there exist d-line arrangements with:\n- No parallels\n- No 4-concurrent points\n- No Gallai triangles\n\n**Contribution:** First partial disproof of Erdős's conjecture.\n\n**Gap:** Left open the case d ≡ 0 (mod 9).",
+    "title": "F\u00fcredi-Pal\u00e1sti (1984)",
+    "content": "**furedi_palasti_1984:**\n\nFor d not divisible by 9, there exist d-line arrangements with:\n- No parallels\n- No 4-concurrent points\n- No Gallai triangles\n\n**Contribution:** First partial disproof of Erd\u0151s's conjecture.\n\n**Gap:** Left open the case d \u2261 0 (mod 9).",
     "mathContext": "Published in Proc. Amer. Math. Soc. (1984), 'Arrangements of lines with a large number of triangles.'",
     "significance": "key",
     "relatedConcepts": [
@@ -180,7 +180,7 @@
     },
     "type": "concept",
     "title": "Escudero's Construction (2016)",
-    "content": "**escudero_2016:**\n\nFor ALL d ≥ 4, there exist d-line arrangements with:\n- No parallels\n- No 4-concurrent points\n- No Gallai triangles\n\n**This completely resolves Erdős Problem #209!**\n\nEscudero filled the gap left by Füredi-Palásti, handling the d ≡ 0 (mod 9) case.",
+    "content": "**escudero_2016:**\n\nFor ALL d \u2265 4, there exist d-line arrangements with:\n- No parallels\n- No 4-concurrent points\n- No Gallai triangles\n\n**This completely resolves Erd\u0151s Problem #209!**\n\nEscudero filled the gap left by F\u00fcredi-Pal\u00e1sti, handling the d \u2261 0 (mod 9) case.",
     "mathContext": "Published in C. R. Math. Acad. Sci. Paris (2016), 'Gallai triangles in configurations of lines in the projective plane.'",
     "significance": "key",
     "relatedConcepts": [
@@ -197,10 +197,10 @@
     },
     "type": "technique",
     "title": "Main Theorem",
-    "content": "**erdos_209:**\n\n```lean\ntheorem erdos_209 :\n    ∀ d ≥ 4, ∃ A : LineArrangement,\n      A.card = d ∧ NoParallels A ∧ NoFourConcurrent A ∧ ¬HasGallaiTriangle A\n```\n\n**The answer to Erdős's question is NO.**\n\nCounterexamples exist for every d ≥ 4. The proof uses Escudero's 2016 construction.",
+    "content": "**erdos_209:**\n\n```lean\ntheorem erdos_209 :\n    \u2200 d \u2265 4, \u2203 A : LineArrangement,\n      A.card = d \u2227 NoParallels A \u2227 NoFourConcurrent A \u2227 \u00acHasGallaiTriangle A\n```\n\n**The answer to Erd\u0151s's question is NO.**\n\nCounterexamples exist for every d \u2265 4. The proof uses Escudero's 2016 construction.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős Problem #209",
+      "Erd\u0151s Problem #209",
       "Disproof"
     ],
     "mathContext": "See annotation content for formal details of main theorem"
@@ -210,11 +210,11 @@
     "proofId": "erdos-209",
     "range": {
       "startLine": 248,
-      "endLine": 275
+      "endLine": 274
     },
     "type": "technique",
     "title": "Summary Theorem",
-    "content": "**erdos_209_summary:**\n\nThe summary theorem restates the complete disproof: for every d ≥ 4, there exists a d-line arrangement with no parallels, no 4-concurrent points, and no Gallai triangle. This is proved as a direct consequence of Escudero's 2016 construction.\n\n**Key takeaway:** While Sylvester-Gallai guarantees ordinary points exist, three such points need not form a triangle. The counterexamples use algebraic configurations where 3-rich points block every potential Gallai triangle.",
+    "content": "**erdos_209_summary:**\n\nThe summary theorem restates the complete disproof: for every d \u2265 4, there exists a d-line arrangement with no parallels, no 4-concurrent points, and no Gallai triangle. This is proved as a direct consequence of Escudero's 2016 construction.\n\n**Key takeaway:** While Sylvester-Gallai guarantees ordinary points exist, three such points need not form a triangle. The counterexamples use algebraic configurations where 3-rich points block every potential Gallai triangle.",
     "significance": "key",
     "relatedConcepts": [
       "Main result",

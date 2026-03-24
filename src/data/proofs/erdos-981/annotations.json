@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #981 asks for the asymptotic behavior of ∑_{p<x} f_ε(p) where f_ε(p) is the stabilization threshold for character sums. Elliott (1969) proved ∑_{p<x} f_ε(p) ~ c_ε · x/log x. Tang-Zhang (2025) studied an alternative first-passage formulation.",
+    "content": "Erd\u0151s Problem #981 asks for the asymptotic behavior of \u2211_{p<x} f_\u03b5(p) where f_\u03b5(p) is the stabilization threshold for character sums. Elliott (1969) proved \u2211_{p<x} f_\u03b5(p) ~ c_\u03b5 \u00b7 x/log x. Tang-Zhang (2025) studied an alternative first-passage formulation.",
     "mathContext": "The problem connects character sums (Legendre symbol), quadratic residues, and prime distribution.",
     "significance": "key",
     "relatedConcepts": [
@@ -26,7 +26,7 @@
     },
     "type": "definition",
     "title": "Core Definitions: Legendre Symbol and Stabilization",
-    "content": "legendreInt n p: Legendre symbol (n/p) as integer (+1, -1, or 0). characterSum N p: partial sum ∑_{n<N} (n/p). isBoundedFrom ε p m: |characterSum N p| < εN for all N ≥ m. fEps ε p: smallest m satisfying the bound (stabilization threshold). These definitions formalize when character sum cancellation becomes permanently effective.",
+    "content": "legendreInt n p: Legendre symbol (n/p) as integer (+1, -1, or 0). characterSum N p: partial sum \u2211_{n<N} (n/p). isBoundedFrom \u03b5 p m: |characterSum N p| < \u03b5N for all N \u2265 m. fEps \u03b5 p: smallest m satisfying the bound (stabilization threshold). These definitions formalize when character sum cancellation becomes permanently effective.",
     "significance": "key",
     "relatedConcepts": [
       "Legendre symbol",
@@ -44,7 +44,7 @@
     },
     "type": "definition",
     "title": "Sum Over Primes and Asymptotic Function",
-    "content": "sumFEps ε x (axiom): ∑_{p<x} f_ε(p), the sum of stabilization thresholds over primes less than x. Axiomatized because constructing Fact instances from Finset membership requires complex dependent types. asymptoticFunc x = x/log x: the Prime Number Theorem form that appears in the asymptotic.",
+    "content": "sumFEps \u03b5 x (axiom): \u2211_{p<x} f_\u03b5(p), the sum of stabilization thresholds over primes less than x. Axiomatized because constructing Fact instances from Finset membership requires complex dependent types. asymptoticFunc x = x/log x: the Prime Number Theorem form that appears in the asymptotic.",
     "mathContext": "Axiomatizing sumFEps avoids sorry in the original definition while preserving the mathematical content.",
     "significance": "key",
     "relatedConcepts": [
@@ -62,7 +62,7 @@
     },
     "type": "concept",
     "title": "Elliott's Theorem (1969)",
-    "content": "elliott_1969: For any ε > 0, ∃ c_ε > 0 such that sumFEps(ε,x)/asymptoticFunc(x) → c_ε. This is the main result resolving Erdős's conjecture. elliott_1969_quantitative: the ε-δ form — for any δ > 0, eventually the ratio is within δ of c_ε.",
+    "content": "elliott_1969: For any \u03b5 > 0, \u2203 c_\u03b5 > 0 such that sumFEps(\u03b5,x)/asymptoticFunc(x) \u2192 c_\u03b5. This is the main result resolving Erd\u0151s's conjecture. elliott_1969_quantitative: the \u03b5-\u03b4 form \u2014 for any \u03b4 > 0, eventually the ratio is within \u03b4 of c_\u03b5.",
     "mathContext": "Elliott's 1969 paper in Indag. Math. completely resolved the conjecture using deep analytic techniques.",
     "significance": "key",
     "relatedConcepts": [
@@ -80,11 +80,11 @@
     },
     "type": "concept",
     "title": "Character Sum Bounds and Properties",
-    "content": "polya_vinogradov: |characterSum N p| ≤ √p · log p (classical 1918 bound). character_sum_cancellation: eventually |characterSum N p| ≤ √N · log N (square-root cancellation). fEps_finite: f_ε(p) is well-defined for all primes. burgess_bound: improved bounds for short character sums (1962). These results provide the theoretical foundation for Elliott's asymptotic.",
-    "mathContext": "The Pólya-Vinogradov inequality guarantees f_ε(p) is finite; Burgess gives sharper estimates for subintervals.",
+    "content": "polya_vinogradov: |characterSum N p| \u2264 \u221ap \u00b7 log p (classical 1918 bound). character_sum_cancellation: eventually |characterSum N p| \u2264 \u221aN \u00b7 log N (square-root cancellation). fEps_finite: f_\u03b5(p) is well-defined for all primes. burgess_bound: improved bounds for short character sums (1962). These results provide the theoretical foundation for Elliott's asymptotic.",
+    "mathContext": "The P\u00f3lya-Vinogradov inequality guarantees f_\u03b5(p) is finite; Burgess gives sharper estimates for subintervals.",
     "significance": "key",
     "relatedConcepts": [
-      "Pólya-Vinogradov",
+      "P\u00f3lya-Vinogradov",
       "Burgess",
       "Square-root cancellation"
     ]
@@ -98,7 +98,7 @@
     },
     "type": "definition",
     "title": "Quadratic Residues and Complete Sums",
-    "content": "isQuadraticResidue a p: ∃ x, x² ≡ a (mod p). Exactly (p-1)/2 residues and (p-1)/2 non-residues exist among nonzero classes mod p. complete_sum_zero: ∑_{n=0}^{p-1} (n/p) = 0, since QRs and NQRs cancel perfectly over a full period. This periodicity constrains the growth of partial character sums.",
+    "content": "isQuadraticResidue a p: \u2203 x, x\u00b2 \u2261 a (mod p). Exactly (p-1)/2 residues and (p-1)/2 non-residues exist among nonzero classes mod p. complete_sum_zero: \u2211_{n=0}^{p-1} (n/p) = 0, since QRs and NQRs cancel perfectly over a full period. This periodicity constrains the growth of partial character sums.",
     "significance": "key",
     "relatedConcepts": [
       "Quadratic residue",
@@ -116,7 +116,7 @@
     },
     "type": "concept",
     "title": "Alternative Formulation (Tang-Zhang 2025)",
-    "content": "fEpsAlt ε p: smallest m with |characterSum m p| < εm (first-passage time, not eventual-time). sumFEpsAlt ε x (axiom): sum of fEpsAlt over primes < x. tang_zhang_2025: ∃ c' > 0 with sumFEpsAlt(ε,x)/asymptoticFunc(x) → c'. Both formulations give PNT-form asymptotics but with potentially different constants.",
+    "content": "fEpsAlt \u03b5 p: smallest m with |characterSum m p| < \u03b5m (first-passage time, not eventual-time). sumFEpsAlt \u03b5 x (axiom): sum of fEpsAlt over primes < x. tang_zhang_2025: \u2203 c' > 0 with sumFEpsAlt(\u03b5,x)/asymptoticFunc(x) \u2192 c'. Both formulations give PNT-form asymptotics but with potentially different constants.",
     "mathContext": "First-passage (when does it first become small?) vs eventual-time (when does it stay small?) give different thresholds.",
     "significance": "key",
     "relatedConcepts": [
@@ -130,11 +130,11 @@
     "proofId": "erdos-981",
     "range": {
       "startLine": 173,
-      "endLine": 205
+      "endLine": 195
     },
     "type": "technique",
     "title": "Complete Resolution",
-    "content": "erdos_981 (main theorem): combines Elliott's asymptotic and Tang-Zhang's alternative into a conjunction. Proved by exact ⟨elliott_1969 ε hε, tang_zhang_2025 ε hε⟩. Both the original stabilization and the first-passage formulation have PNT-form asymptotics ∑_{p<x} f(p) ~ c · x/log x.",
+    "content": "erdos_981 (main theorem): combines Elliott's asymptotic and Tang-Zhang's alternative into a conjunction. Proved by exact \u27e8elliott_1969 \u03b5 h\u03b5, tang_zhang_2025 \u03b5 h\u03b5\u27e9. Both the original stabilization and the first-passage formulation have PNT-form asymptotics \u2211_{p<x} f(p) ~ c \u00b7 x/log x.",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

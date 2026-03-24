@@ -1,10 +1,10 @@
 {
   "id": "erdos-1011",
-  "title": "Erdős Problem #1011: Triangles in Graphs with High Chromatic Number",
+  "title": "Erd\u0151s Problem #1011: Triangles in Graphs with High Chromatic Number",
   "slug": "erdos-1011",
-  "description": "Let f_r(n) be minimal such that every n-vertex graph with ≥ f_r(n) edges and χ ≥ r contains a triangle. Known: f_2(n) = ⌊n²/4⌋+1 (Turán), f_3(n) = ⌊(n-1)²/4⌋+2 (Erdős-Gallai). Asymptotic involves g(r) ~ r² log r. OPEN.",
+  "description": "Let f_r(n) be minimal such that every n-vertex graph with \u2265 f_r(n) edges and \u03c7 \u2265 r contains a triangle. Known: f_2(n) = \u230an\u00b2/4\u230b+1 (Tur\u00e1n), f_3(n) = \u230a(n-1)\u00b2/4\u230b+2 (Erd\u0151s-Gallai). Asymptotic involves g(r) ~ r\u00b2 log r. OPEN.",
   "meta": {
-    "author": "Erdős, Simonovits",
+    "author": "Erd\u0151s, Simonovits",
     "sourceUrl": "https://erdosproblems.com/1011",
     "date": "1962",
     "status": "axiomatized",
@@ -24,26 +24,26 @@
     "erdosUrl": "https://erdosproblems.com/1011",
     "erdosProblemStatus": "open",
     "axiomCount": 15,
-    "lineCount": 219,
+    "lineCount": 213,
     "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1011 connects three fundamental graph invariants: edge count, chromatic number, and triangle existence. The threshold function f_r(n) gives the minimum number of edges such that every n-vertex graph with at least f_r(n) edges and chromatic number ≥ r must contain a triangle. Turán's theorem (1941) solved the case r=2: f_2(n) = ⌊n²/4⌋ + 1.\n\nErdős and Gallai (1962) determined f_3(n) = ⌊(n-1)²/4⌋ + 2, and Simonovits established the general asymptotic form f_r(n) = n²/4 - g(r)·n/2 + O(1) in his PhD thesis. Here g(r) measures how far triangle-free graphs with chromatic number ≥ r can be from bipartite. The problem thus reduces to understanding g(r).\n\nRecent progress has narrowed the bounds significantly. Davies and Illingworth (2022) proved g(r) ≥ (1/2 - o(1))r² log r using χ-Ramsey techniques, while Hefty, Horn, King, and Pfender (2025) showed g(r) ≤ (2 + o(1))r² log r, building on advances in off-diagonal Ramsey numbers R(3,k). The factor-of-4 gap between these bounds remains open. Ren, Wang, Wang, and Yang (2024) recently determined the exact value f_4(n) for n ≥ 150.",
+    "historicalContext": "Erd\u0151s Problem #1011 connects three fundamental graph invariants: edge count, chromatic number, and triangle existence. The threshold function f_r(n) gives the minimum number of edges such that every n-vertex graph with at least f_r(n) edges and chromatic number \u2265 r must contain a triangle. Tur\u00e1n's theorem (1941) solved the case r=2: f_2(n) = \u230an\u00b2/4\u230b + 1.\n\nErd\u0151s and Gallai (1962) determined f_3(n) = \u230a(n-1)\u00b2/4\u230b + 2, and Simonovits established the general asymptotic form f_r(n) = n\u00b2/4 - g(r)\u00b7n/2 + O(1) in his PhD thesis. Here g(r) measures how far triangle-free graphs with chromatic number \u2265 r can be from bipartite. The problem thus reduces to understanding g(r).\n\nRecent progress has narrowed the bounds significantly. Davies and Illingworth (2022) proved g(r) \u2265 (1/2 - o(1))r\u00b2 log r using \u03c7-Ramsey techniques, while Hefty, Horn, King, and Pfender (2025) showed g(r) \u2264 (2 + o(1))r\u00b2 log r, building on advances in off-diagonal Ramsey numbers R(3,k). The factor-of-4 gap between these bounds remains open. Ren, Wang, Wang, and Yang (2024) recently determined the exact value f_4(n) for n \u2265 150.",
     "problemStatement": "Let f_r(n) be minimal such that every graph on n vertices with at least f_r(n) edges and chromatic number at least r contains a triangle. Determine f_r(n).",
-    "text": "Let f_r(n) be minimal such that every n-vertex graph with ≥ f_r(n) edges and χ ≥ r contains a triangle. Known: f_2(n) = ⌊n²/4⌋+1 (Turán), f_3(n) = ⌊(n-1)²/4⌋+2 (Erdős-Gallai). Asymptotic involves g(r) ~ r² log r. OPEN.",
-    "proofStrategy": "The Lean formalization defines f_r(n) as a threshold function on graphs with chromatic number constraints. Known exact values for r=2,3,4 are stated as axioms. The Simonovits asymptotic f_r(n) = n²/4 - g(r)n/2 + O(1) introduces the key quantity g(r). Bounds on g(r) capture current knowledge: (1/2)r² log r ≤ g(r) ≤ 2r² log r.",
+    "text": "Let f_r(n) be minimal such that every n-vertex graph with \u2265 f_r(n) edges and \u03c7 \u2265 r contains a triangle. Known: f_2(n) = \u230an\u00b2/4\u230b+1 (Tur\u00e1n), f_3(n) = \u230a(n-1)\u00b2/4\u230b+2 (Erd\u0151s-Gallai). Asymptotic involves g(r) ~ r\u00b2 log r. OPEN.",
+    "proofStrategy": "The Lean formalization defines f_r(n) as a threshold function on graphs with chromatic number constraints. Known exact values for r=2,3,4 are stated as axioms. The Simonovits asymptotic f_r(n) = n\u00b2/4 - g(r)n/2 + O(1) introduces the key quantity g(r). Bounds on g(r) capture current knowledge: (1/2)r\u00b2 log r \u2264 g(r) \u2264 2r\u00b2 log r.",
     "keyInsights": [
-      "f_2(n) = ⌊n²/4⌋ + 1 (Turán's theorem)",
-      "f_3(n) = ⌊(n-1)²/4⌋ + 2 (Erdős-Gallai 1962)",
-      "f_4(n) = ⌊(n-3)²/4⌋ + 6 for n ≥ 150 (Ren-Wang-Wang-Yang 2024)",
-      "Simonovits asymptotic: f_r(n) = n²/4 - g(r)n/2 + O(1)",
-      "g(r) = max vertices to remove from χ≥r triangle-free graph to make bipartite",
-      "Bounds: (1/2-o(1))r² log r ≤ g(r) ≤ (2+o(1))r² log r"
+      "f_2(n) = \u230an\u00b2/4\u230b + 1 (Tur\u00e1n's theorem)",
+      "f_3(n) = \u230a(n-1)\u00b2/4\u230b + 2 (Erd\u0151s-Gallai 1962)",
+      "f_4(n) = \u230a(n-3)\u00b2/4\u230b + 6 for n \u2265 150 (Ren-Wang-Wang-Yang 2024)",
+      "Simonovits asymptotic: f_r(n) = n\u00b2/4 - g(r)n/2 + O(1)",
+      "g(r) = max vertices to remove from \u03c7\u2265r triangle-free graph to make bipartite",
+      "Bounds: (1/2-o(1))r\u00b2 log r \u2264 g(r) \u2264 (2+o(1))r\u00b2 log r"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -63,15 +63,15 @@
     },
     {
       "id": "turan",
-      "title": "Turán's Theorem (r = 2)",
-      "summary": "The classical case: > n²/4 edges implies triangle",
+      "title": "Tur\u00e1n's Theorem (r = 2)",
+      "summary": "The classical case: > n\u00b2/4 edges implies triangle",
       "startLine": 80,
       "endLine": 98
     },
     {
       "id": "r3",
-      "title": "Erdős-Gallai (r = 3)",
-      "summary": "f_3(n) = ⌊(n-1)²/4⌋ + 2",
+      "title": "Erd\u0151s-Gallai (r = 3)",
+      "summary": "f_3(n) = \u230a(n-1)\u00b2/4\u230b + 2",
       "startLine": 100,
       "endLine": 111
     },
@@ -85,7 +85,7 @@
     {
       "id": "asymptotic",
       "title": "The Simonovits Asymptotic",
-      "summary": "f_r(n) = n²/4 - g(r)n/2 + O(1)",
+      "summary": "f_r(n) = n\u00b2/4 - g(r)n/2 + O(1)",
       "startLine": 126,
       "endLine": 143
     },
@@ -119,10 +119,10 @@
     }
   ],
   "conclusion": {
-    "summary": "The threshold f_r(n) for forcing triangles in graphs with chromatic number ≥ r is well-understood for small r but the general asymptotic remains open. Simonovits showed f_r(n) = n²/4 - g(r)n/2 + O(1) where g(r) captures how far triangle-free χ≥r graphs are from bipartite. Current bounds show g(r) ~ r² log r with a factor-of-4 gap in the constant.",
-    "implications": "**Theoretical Significance**: This connects extremal graph theory (Turán-type problems) with chromatic theory.\n\nUnderstanding g(r) would reveal how chromatic number constrains triangle-free graphs. The recent progress on R(3,k) (the Ramsey number) directly impacts the upper bound on g(r).",
+    "summary": "The threshold f_r(n) for forcing triangles in graphs with chromatic number \u2265 r is well-understood for small r but the general asymptotic remains open. Simonovits showed f_r(n) = n\u00b2/4 - g(r)n/2 + O(1) where g(r) captures how far triangle-free \u03c7\u2265r graphs are from bipartite. Current bounds show g(r) ~ r\u00b2 log r with a factor-of-4 gap in the constant.",
+    "implications": "**Theoretical Significance**: This connects extremal graph theory (Tur\u00e1n-type problems) with chromatic theory.\n\nUnderstanding g(r) would reveal how chromatic number constrains triangle-free graphs. The recent progress on R(3,k) (the Ramsey number) directly impacts the upper bound on g(r).",
     "openQuestions": [
-      "What is the exact constant c such that g(r) ~ c·r² log r?",
+      "What is the exact constant c such that g(r) ~ c\u00b7r\u00b2 log r?",
       "Is c = 1 (the 'natural' guess)?",
       "What is f_5(n)? Higher exact values unknown.",
       "Can Simonovits's O(1) error be made explicit?"
@@ -132,32 +132,32 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "uses",
-      "description": "Off-diagonal Ramsey numbers R(3,k) directly impact the upper bound on g(r); recent progress on R(3,k) by Campos et al. is what enables the HHKP upper bound g(r) ≤ (2+o(1))r² log r."
+      "description": "Off-diagonal Ramsey numbers R(3,k) directly impact the upper bound on g(r); recent progress on R(3,k) by Campos et al. is what enables the HHKP upper bound g(r) \u2264 (2+o(1))r\u00b2 log r."
     },
     {
       "targetId": "erdos-1009",
       "relationship": "related",
-      "description": "Erdős Problem #1009 also concerns triangles and chromatic number in extremal graph theory, sharing the Turán-type framework and the role of bipartite graphs as extremal constructions."
+      "description": "Erd\u0151s Problem #1009 also concerns triangles and chromatic number in extremal graph theory, sharing the Tur\u00e1n-type framework and the role of bipartite graphs as extremal constructions."
     },
     {
       "targetId": "erdos-1010",
       "relationship": "related",
-      "description": "Erdős Problem #1010 is a companion extremal problem on triangle-free graphs with high chromatic number, directly feeding into the quantity g(r) central to Problem #1011."
+      "description": "Erd\u0151s Problem #1010 is a companion extremal problem on triangle-free graphs with high chromatic number, directly feeding into the quantity g(r) central to Problem #1011."
     },
     {
       "targetId": "erdos-1012",
       "relationship": "related",
-      "description": "Erdős Problem #1012 explores further Turán-type thresholds for subgraph containment, forming part of the same extremal graph theory program as Problem #1011."
+      "description": "Erd\u0151s Problem #1012 explores further Tur\u00e1n-type thresholds for subgraph containment, forming part of the same extremal graph theory program as Problem #1011."
     },
     {
       "targetId": "erdos-500",
       "relationship": "related",
-      "description": "Erdős Problem #500 on chromatic number and subgraph structure shares the core tension between local sparsity (triangle-free) and global complexity (high chromatic number)."
+      "description": "Erd\u0151s Problem #500 on chromatic number and subgraph structure shares the core tension between local sparsity (triangle-free) and global complexity (high chromatic number)."
     },
     {
       "targetId": "szemeredi-regularity",
       "relationship": "uses",
-      "description": "Szemerédi's Regularity Lemma is the principal tool in proving asymptotic Turán-type results; the Simonovits asymptotic for f_r(n) relies on regularity-based graph decompositions."
+      "description": "Szemer\u00e9di's Regularity Lemma is the principal tool in proving asymptotic Tur\u00e1n-type results; the Simonovits asymptotic for f_r(n) relies on regularity-based graph decompositions."
     }
   ],
   "relatedProofs": [
@@ -171,22 +171,22 @@
   "references": [
     {
       "authors": [
-        "P. Turán"
+        "P. Tur\u00e1n"
       ],
       "title": "On an extremal problem in graph theory",
       "year": 1941,
-      "venue": "Matematikai és Fizikai Lapok",
-      "note": "Establishes Turán's theorem: every n-vertex triangle-free graph has at most ⌊n²/4⌋ edges, giving f_2(n) = ⌊n²/4⌋ + 1."
+      "venue": "Matematikai \u00e9s Fizikai Lapok",
+      "note": "Establishes Tur\u00e1n's theorem: every n-vertex triangle-free graph has at most \u230an\u00b2/4\u230b edges, giving f_2(n) = \u230an\u00b2/4\u230b + 1."
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "T. Gallai"
       ],
       "title": "On the minimal number of vertices representing the edges of a graph",
       "year": 1962,
-      "venue": "Magyar Tudományos Akadémia Matematikai Kutató Intézetének Közleményei",
-      "note": "Determines f_3(n) = ⌊(n-1)²/4⌋ + 2, the case of graphs with chromatic number ≥ 3."
+      "venue": "Magyar Tudom\u00e1nyos Akad\u00e9mia Matematikai Kutat\u00f3 Int\u00e9zet\u00e9nek K\u00f6zlem\u00e9nyei",
+      "note": "Determines f_3(n) = \u230a(n-1)\u00b2/4\u230b + 2, the case of graphs with chromatic number \u2265 3."
     },
     {
       "authors": [
@@ -195,7 +195,7 @@
       "title": "A method for solving extremal problems in graph theory",
       "year": 1966,
       "venue": "Theory of Graphs (Proc. Colloq., Tihany, 1966)",
-      "note": "Establishes the Simonovits asymptotic f_r(n) = n²/4 - g(r)n/2 + O(1) and introduces the key quantity g(r)."
+      "note": "Establishes the Simonovits asymptotic f_r(n) = n\u00b2/4 - g(r)n/2 + O(1) and introduces the key quantity g(r)."
     },
     {
       "authors": [
@@ -205,7 +205,7 @@
       "title": "Triangles in graphs with forbidden subgraphs and large chromatic number",
       "year": 2022,
       "venue": "arXiv preprint",
-      "note": "Proves g(r) ≥ (1/2 - o(1))r² log r using χ-Ramsey techniques, establishing the current best lower bound."
+      "note": "Proves g(r) \u2265 (1/2 - o(1))r\u00b2 log r using \u03c7-Ramsey techniques, establishing the current best lower bound."
     },
     {
       "authors": [
@@ -217,7 +217,7 @@
       "title": "Triangles in graphs with high chromatic number",
       "year": 2025,
       "venue": "arXiv preprint",
-      "note": "Proves g(r) ≤ (2 + o(1))r² log r, establishing the current best upper bound, building on new bounds for off-diagonal Ramsey numbers R(3,k)."
+      "note": "Proves g(r) \u2264 (2 + o(1))r\u00b2 log r, establishing the current best upper bound, building on new bounds for off-diagonal Ramsey numbers R(3,k)."
     }
   ],
   "leanFile": {
@@ -229,7 +229,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 219,
+    "lineCount": 213,
     "axiomCount": 15,
     "theoremCount": 0,
     "definitionCount": 11

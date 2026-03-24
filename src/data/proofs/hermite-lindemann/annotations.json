@@ -32,14 +32,14 @@
     },
     "type": "definition",
     "title": "Key Definitions from Mathlib",
-    "content": "**Algebraic over R**:\n$$\\text{IsAlgebraic } R \\ x : \\exists P \\in R[X] \\setminus \\{0\\}, P(x) = 0$$\n\n**Transcendental over R**:\n$$\\text{Transcendental } R \\ x : \\neg(\\text{IsAlgebraic } R \\ x)$$\n\n**Linear Independence**:\n$$\\text{LinearIndependent } R \\ v$$\n\n**Key equivalence**: `Transcendental ℤ x ⟺ Transcendental ℚ x` — clear denominators to convert $\\mathbb{Q}$-polynomial to $\\mathbb{Z}$-polynomial and vice versa.",
-    "mathContext": "`IsAlgebraic R x`, `Transcendental R x := ¬ IsAlgebraic R x`, `LinearIndependent R v`",
+    "content": "**Algebraic over R**:\n$$\\text{IsAlgebraic } R \\ x : \\exists P \\in R[X] \\setminus \\{0\\}, P(x) = 0$$\n\n**Transcendental over R**:\n$$\\text{Transcendental } R \\ x : \\neg(\\text{IsAlgebraic } R \\ x)$$\n\n**Linear Independence**:\n$$\\text{LinearIndependent } R \\ v$$\n\n**Key equivalence**: `Transcendental \u2124 x \u27fa Transcendental \u211a x` \u2014 clear denominators to convert $\\mathbb{Q}$-polynomial to $\\mathbb{Z}$-polynomial and vice versa.",
+    "mathContext": "`IsAlgebraic R x`, `Transcendental R x := \u00ac IsAlgebraic R x`, `LinearIndependent R v`",
     "significance": "key",
     "relatedConcepts": [
       "algebraic numbers",
       "polynomial roots",
       "Mathlib API",
-      "ℤ vs ℚ equivalence"
+      "\u2124 vs \u211a equivalence"
     ],
     "prerequisites": [
       "ring theory",
@@ -56,7 +56,7 @@
     },
     "type": "technique",
     "title": "Hermite-Lindemann Theorem (Axiomatized)",
-    "content": "**Two axiomatized forms**:\n\n1. **Main theorem**: `hermite_lindemann : ∀ α : ℂ, α ≠ 0 → IsAlgebraic ℚ α → Transcendental ℤ (Complex.exp α)`\n\n2. **Contrapositive**: `exp_algebraic_imp_base_transcendental`: if $e^\\alpha$ is algebraic (for $\\alpha \\neq 0$), then $\\alpha$ is transcendental.\n\n**The contrapositive** is useful for proving transcendence of logarithms: since $e^{\\ln 2} = 2$ is algebraic, $\\ln 2$ must be transcendental.\n\n**Status**: Axiomatized pending full formalization. Requires polynomial manipulation, asymptotic analysis, and prime selection arguments.",
+    "content": "**Two axiomatized forms**:\n\n1. **Main theorem**: `hermite_lindemann : \u2200 \u03b1 : \u2102, \u03b1 \u2260 0 \u2192 IsAlgebraic \u211a \u03b1 \u2192 Transcendental \u2124 (Complex.exp \u03b1)`\n\n2. **Contrapositive**: `exp_algebraic_imp_base_transcendental`: if $e^\\alpha$ is algebraic (for $\\alpha \\neq 0$), then $\\alpha$ is transcendental.\n\n**The contrapositive** is useful for proving transcendence of logarithms: since $e^{\\ln 2} = 2$ is algebraic, $\\ln 2$ must be transcendental.\n\n**Status**: Axiomatized pending full formalization. Requires polynomial manipulation, asymptotic analysis, and prime selection arguments.",
     "mathContext": "$\\alpha \\neq 0,\\, \\alpha \\in \\overline{\\mathbb{Q}} \\implies e^\\alpha \\notin \\overline{\\mathbb{Q}}$; contrapositive: $e^\\alpha \\in \\overline{\\mathbb{Q}},\\, \\alpha \\neq 0 \\implies \\alpha \\notin \\overline{\\mathbb{Q}}$",
     "significance": "key",
     "relatedConcepts": [
@@ -80,8 +80,8 @@
     },
     "type": "technique",
     "title": "Lindemann-Weierstrass Theorem (Two Forms)",
-    "content": "**Two forms axiomatized**:\n\n1. **Classical**: Distinct algebraic $\\alpha_1, \\ldots, \\alpha_n$ $\\Rightarrow$ $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ linearly independent over $\\mathbb{Q}$.\n   Uses `LinearIndependent ℚ (fun i => Complex.exp (α i))`\n\n2. **Strong**: $\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials.\n   Uses custom `AlgebraicallyIndependent` definition with `MvPolynomial`.\n\n**Algebraic independence** means no nontrivial polynomial relation holds:\n$$\\forall P \\in \\mathbb{Q}[X_1, \\ldots, X_n] \\setminus \\{0\\}: P(e^{\\alpha_1}, \\ldots, e^{\\alpha_n}) \\neq 0$$\n\nThe strong form is the most powerful unconditional result on exponentials of algebraic numbers.",
-    "mathContext": "Classical: distinct algebraics $\\alpha_i \\Rightarrow$ `LinearIndependent ℚ (exp ∘ α)`; Strong: lin. indep. algebraics $\\Rightarrow$ `AlgebraicallyIndependent`",
+    "content": "**Two forms axiomatized**:\n\n1. **Classical**: Distinct algebraic $\\alpha_1, \\ldots, \\alpha_n$ $\\Rightarrow$ $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ linearly independent over $\\mathbb{Q}$.\n   Uses `LinearIndependent \u211a (fun i => Complex.exp (\u03b1 i))`\n\n2. **Strong**: $\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials.\n   Uses custom `AlgebraicallyIndependent` definition with `MvPolynomial`.\n\n**Algebraic independence** means no nontrivial polynomial relation holds:\n$$\\forall P \\in \\mathbb{Q}[X_1, \\ldots, X_n] \\setminus \\{0\\}: P(e^{\\alpha_1}, \\ldots, e^{\\alpha_n}) \\neq 0$$\n\nThe strong form is the most powerful unconditional result on exponentials of algebraic numbers.",
+    "mathContext": "Classical: distinct algebraics $\\alpha_i \\Rightarrow$ `LinearIndependent \u211a (exp \u2218 \u03b1)`; Strong: lin. indep. algebraics $\\Rightarrow$ `AlgebraicallyIndependent`",
     "significance": "key",
     "relatedConcepts": [
       "algebraic independence",
@@ -104,7 +104,7 @@
     },
     "type": "technique",
     "title": "Fundamental Corollaries",
-    "content": "**$e$ is transcendental** (Wiedijk #67):\n- Take $\\alpha = 1$ (algebraic, nonzero); $e = e^1$ is transcendental (Hermite 1873)\n- Axiomatized as `e_transcendental_from_hermite_lindemann`\n\n**$\\pi$ is transcendental** (Wiedijk #53):\n1. Assume $\\pi$ algebraic $\\Rightarrow$ $i\\pi$ algebraic ($i$ root of $X^2+1$)\n2. $e^{i\\pi} = -1$ must be transcendental (Hermite-Lindemann)\n3. But $-1$ is algebraic — contradiction!\n- Axiomatized as `pi_transcendental`\n\n**$e^n$ transcendental** for $n \\in \\mathbb{Z} \\setminus \\{0\\}$:\n- **Fully proved** (not axiomatized!) via `hermite_lindemann` + `isAlgebraic_int n`\n- Uses `simp [hn]` to show $n \\neq 0$\n\n**$e^{n\\alpha}$ transcendental** for algebraic $\\alpha \\neq 0$, $n \\neq 0$: axiomatized.",
+    "content": "**$e$ is transcendental** (Wiedijk #67):\n- Take $\\alpha = 1$ (algebraic, nonzero); $e = e^1$ is transcendental (Hermite 1873)\n- Axiomatized as `e_transcendental_from_hermite_lindemann`\n\n**$\\pi$ is transcendental** (Wiedijk #53):\n1. Assume $\\pi$ algebraic $\\Rightarrow$ $i\\pi$ algebraic ($i$ root of $X^2+1$)\n2. $e^{i\\pi} = -1$ must be transcendental (Hermite-Lindemann)\n3. But $-1$ is algebraic \u2014 contradiction!\n- Axiomatized as `pi_transcendental`\n\n**$e^n$ transcendental** for $n \\in \\mathbb{Z} \\setminus \\{0\\}$:\n- **Fully proved** (not axiomatized!) via `hermite_lindemann` + `isAlgebraic_int n`\n- Uses `simp [hn]` to show $n \\neq 0$\n\n**$e^{n\\alpha}$ transcendental** for algebraic $\\alpha \\neq 0$, $n \\neq 0$: axiomatized.",
     "mathContext": "$e = e^1 \\notin \\overline{\\mathbb{Q}}$; $\\pi \\notin \\overline{\\mathbb{Q}}$ via $e^{i\\pi} = -1$; $e^n \\notin \\overline{\\mathbb{Q}}$ for $n \\in \\mathbb{Z} \\setminus \\{0\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -128,7 +128,7 @@
     },
     "type": "technique",
     "title": "Applications: Circle Squaring and Irrationality",
-    "content": "**$\\sqrt{\\pi}$ is transcendental** (axiomatized):\n- If $\\sqrt{\\pi}$ were algebraic, then $(\\sqrt{\\pi})^2 = \\pi$ would be algebraic\n- But $\\pi$ is transcendental — contradiction!\n- Transcendental $\\Rightarrow$ not constructible, so squaring the circle is impossible\n\n**$e$ is irrational** (axiomatized):\n- If $e = p/q$, then $e$ is root of $qX - p$, making $e$ algebraic\n- But $e$ is transcendental — contradiction!\n- Implies non-periodic decimal expansion in every base",
+    "content": "**$\\sqrt{\\pi}$ is transcendental** (axiomatized):\n- If $\\sqrt{\\pi}$ were algebraic, then $(\\sqrt{\\pi})^2 = \\pi$ would be algebraic\n- But $\\pi$ is transcendental \u2014 contradiction!\n- Transcendental $\\Rightarrow$ not constructible, so squaring the circle is impossible\n\n**$e$ is irrational** (axiomatized):\n- If $e = p/q$, then $e$ is root of $qX - p$, making $e$ algebraic\n- But $e$ is transcendental \u2014 contradiction!\n- Implies non-periodic decimal expansion in every base",
     "mathContext": "$\\sqrt{\\pi} \\notin \\overline{\\mathbb{Q}} \\Rightarrow$ not constructible; $e \\notin \\mathbb{Q}$ since $e \\notin \\overline{\\mathbb{Q}}$",
     "significance": "key",
     "relatedConcepts": [
@@ -138,7 +138,7 @@
       "compass and straightedge"
     ],
     "prerequisites": [
-      "transcendence of π",
+      "transcendence of \u03c0",
       "transcendence of e",
       "algebraic closure properties"
     ]
@@ -172,11 +172,11 @@
     "proofId": "hermite-lindemann",
     "range": {
       "startLine": 360,
-      "endLine": 397
+      "endLine": 374
     },
     "type": "concept",
     "title": "Auxiliary Polynomial Method (Pedagogical)",
-    "content": "**Hermite's Innovation** (detailed pedagogical exposition):\n\n**Setup**: Assume $a_0 + a_1 e + \\cdots + a_n e^n = 0$ for integers $a_i$.\n\n**Step 1** — Auxiliary polynomial for large prime $p$:\n$$f(x) = \\frac{x^{p-1}(x-1)^p(x-2)^p \\cdots (x-n)^p}{(p-1)!}$$\n\n**Step 2** — Define $F(x) = \\sum_{k=0}^{\\deg f} f^{(k)}(x)$ (finite sum). Key: $F'(x) = F(x) - f(x)$.\n\n**Step 3** — Integration by parts:\n$$I_k = \\int_0^k f(x) e^x\\, dx = e^k F(0) - F(k)$$\n\n**Step 4** — Form $S = \\sum a_k I_k$:\n1. $f^{(p-1)}(0) = (-1)^{np}(n!)^p \\neq 0$, so $S$ is a nonzero integer\n2. $f^{(j)}(k) \\equiv 0 \\pmod{p}$ for $k \\geq 1$, so $S \\equiv 0 \\pmod{p}$\n3. $|S| \\to 0$ as $p \\to \\infty$ from integral estimates\n\n**Contradiction!** A nonzero integer cannot have absolute value less than 1.",
+    "content": "**Hermite's Innovation** (detailed pedagogical exposition):\n\n**Setup**: Assume $a_0 + a_1 e + \\cdots + a_n e^n = 0$ for integers $a_i$.\n\n**Step 1** \u2014 Auxiliary polynomial for large prime $p$:\n$$f(x) = \\frac{x^{p-1}(x-1)^p(x-2)^p \\cdots (x-n)^p}{(p-1)!}$$\n\n**Step 2** \u2014 Define $F(x) = \\sum_{k=0}^{\\deg f} f^{(k)}(x)$ (finite sum). Key: $F'(x) = F(x) - f(x)$.\n\n**Step 3** \u2014 Integration by parts:\n$$I_k = \\int_0^k f(x) e^x\\, dx = e^k F(0) - F(k)$$\n\n**Step 4** \u2014 Form $S = \\sum a_k I_k$:\n1. $f^{(p-1)}(0) = (-1)^{np}(n!)^p \\neq 0$, so $S$ is a nonzero integer\n2. $f^{(j)}(k) \\equiv 0 \\pmod{p}$ for $k \\geq 1$, so $S \\equiv 0 \\pmod{p}$\n3. $|S| \\to 0$ as $p \\to \\infty$ from integral estimates\n\n**Contradiction!** A nonzero integer cannot have absolute value less than 1.",
     "mathContext": "$f(x) = x^{p-1}\\prod_{k=1}^n (x-k)^p / (p-1)!$; $S = \\sum a_k (e^k F(0) - F(k))$ is a nonzero integer with $|S| < 1$ for large $p$",
     "significance": "key",
     "relatedConcepts": [

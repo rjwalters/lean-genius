@@ -13,7 +13,7 @@
     "significance": "key",
     "relatedConcepts": [
       "prime factorization",
-      "Möbius function",
+      "M\u00f6bius function",
       "squarefree density",
       "radical of an integer"
     ],
@@ -53,7 +53,7 @@
     },
     "type": "definition",
     "title": "Squarefree + Power of 2 Representation",
-    "content": "A number $n$ has the **squarefree + power of 2 representation** if $n = s + 2^k$ for some squarefree $s \\geq 0$ and $k \\geq 0$. This is the core property in Erdős Problem #11.\n\n**Heuristic**: For odd $n$, the candidates $n - 2^k$ for $k = 0, 1, \\ldots, \\lfloor \\log_2 n \\rfloor$ give $\\sim \\log_2 n$ chances. Each is squarefree with probability $\\sim 6/\\pi^2$. Since there are $\\log_2 n$ independent trials, the probability of failure is $(1 - 6/\\pi^2)^{\\log_2 n} \\to 0$.",
+    "content": "A number $n$ has the **squarefree + power of 2 representation** if $n = s + 2^k$ for some squarefree $s \\geq 0$ and $k \\geq 0$. This is the core property in Erd\u0151s Problem #11.\n\n**Heuristic**: For odd $n$, the candidates $n - 2^k$ for $k = 0, 1, \\ldots, \\lfloor \\log_2 n \\rfloor$ give $\\sim \\log_2 n$ chances. Each is squarefree with probability $\\sim 6/\\pi^2$. Since there are $\\log_2 n$ independent trials, the probability of failure is $(1 - 6/\\pi^2)^{\\log_2 n} \\to 0$.",
     "mathContext": "`IsSquarefreePlusPow2 n` iff $\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge n = s + p$",
     "significance": "key",
     "relatedConcepts": [
@@ -75,7 +75,7 @@
     },
     "type": "technique",
     "title": "Basic Properties",
-    "content": "**Elementary lemmas**:\n- `one_squarefree`: $1$ is squarefree (vacuously: no primes divide 1) — from `squarefree_one`\n- `one_is_pow2`: $1 = 2^0$ is a power of 2\n- `two_is_pow2`: $2 = 2^1$ is a power of 2\n- `prime_squarefree`: Every prime $p$ is squarefree (only $p^1$ divides $p$) — from `hp.squarefree`\n\nThese building blocks are used to construct the small examples.",
+    "content": "**Elementary lemmas**:\n- `one_squarefree`: $1$ is squarefree (vacuously: no primes divide 1) \u2014 from `squarefree_one`\n- `one_is_pow2`: $1 = 2^0$ is a power of 2\n- `two_is_pow2`: $2 = 2^1$ is a power of 2\n- `prime_squarefree`: Every prime $p$ is squarefree (only $p^1$ divides $p$) \u2014 from `hp.squarefree`\n\nThese building blocks are used to construct the small examples.",
     "mathContext": "`squarefree_one`, `hp.squarefree` from Mathlib",
     "significance": "supporting",
     "relatedConcepts": [
@@ -120,7 +120,7 @@
     "type": "definition",
     "title": "Wieferich Primes",
     "content": "A prime $p$ is a **Wieferich prime** if $2^{p-1} \\equiv 1 \\pmod{p^2}$. By Fermat's little theorem, $2^{p-1} \\equiv 1 \\pmod{p}$ for all odd primes $p$, but the condition modulo $p^2$ is much stronger.\n\n**Known Wieferich primes**: 1093 (Meissner, 1913) and 3511 (Beeger, 1922). No others below $6.7 \\times 10^{15}$.\n\n**Connection to Fermat's Last Theorem**: Wieferich (1909) showed that the first case of FLT ($x^p + y^p = z^p$ with $p \\nmid xyz$) requires $p$ to be a Wieferich prime.",
-    "mathContext": "`IsWieferichPrime p` iff `Nat.Prime p ∧ 2^(p-1) % (p^2) = 1`",
+    "mathContext": "`IsWieferichPrime p` iff `Nat.Prime p \u2227 2^(p-1) % (p^2) = 1`",
     "significance": "key",
     "relatedConcepts": [
       "Fermat's little theorem",
@@ -165,7 +165,7 @@
     },
     "type": "definition",
     "title": "Infinitely Many Non-Wieferich Primes",
-    "content": "The statement `InfinitelyManyNonWieferich`: for every $N$, there exists a prime $p > N$ that is **not** a Wieferich prime.\n\nThis is widely believed — if Wieferich primes have density $\\sim \\ln \\ln N / N$, there should be infinitely many non-Wieferich primes. But it remains unproven unconditionally. The Granville-Soundararajan result shows Erdős #11 would imply it.",
+    "content": "The statement `InfinitelyManyNonWieferich`: for every $N$, there exists a prime $p > N$ that is **not** a Wieferich prime.\n\nThis is widely believed \u2014 if Wieferich primes have density $\\sim \\ln \\ln N / N$, there should be infinitely many non-Wieferich primes. But it remains unproven unconditionally. The Granville-Soundararajan result shows Erd\u0151s #11 would imply it.",
     "mathContext": "$\\forall N, \\exists p > N: \\text{Prime}(p) \\wedge \\neg \\text{IsWieferichPrime}(p)$",
     "significance": "key",
     "relatedConcepts": [
@@ -186,8 +186,8 @@
       "endLine": 84
     },
     "type": "definition",
-    "title": "Erdős Problem #11 (OPEN)",
-    "content": "**Main Conjecture**: Every odd integer $n > 1$ can be written as $n = s + 2^k$ where $s$ is squarefree.\n\n`Erdos11Conjecture : Prop := ∀ n : ℕ, Odd n → n > 1 → IsSquarefreePlusPow2 n`\n\n**Status**: OPEN despite verification up to $2^{50}$, density-1 result, and the Granville-Soundararajan connection. No theoretical approach has succeeded in proving the full conjecture.",
+    "title": "Erd\u0151s Problem #11 (OPEN)",
+    "content": "**Main Conjecture**: Every odd integer $n > 1$ can be written as $n = s + 2^k$ where $s$ is squarefree.\n\n`Erdos11Conjecture : Prop := \u2200 n : \u2115, Odd n \u2192 n > 1 \u2192 IsSquarefreePlusPow2 n`\n\n**Status**: OPEN despite verification up to $2^{50}$, density-1 result, and the Granville-Soundararajan connection. No theoretical approach has succeeded in proving the full conjecture.",
     "mathContext": "$\\forall n$ odd, $n > 1 \\Rightarrow \\exists s, k: \\text{Squarefree}(s) \\wedge n = s + 2^k$",
     "significance": "key",
     "relatedConcepts": [
@@ -231,7 +231,7 @@
     },
     "type": "definition",
     "title": "Two Powers of 2 Variant",
-    "content": "**Variant**: $n = s + 2^j + 2^k$ for squarefree $s$. Erdős thought this might be easier to prove since allowing two powers of 2 gives more flexibility.\n\nWith two powers of 2, there are $\\binom{\\log_2 n}{2} \\sim (\\log_2 n)^2 / 2$ candidate pairs, dramatically increasing the chance that some $n - 2^j - 2^k$ is squarefree.",
+    "content": "**Variant**: $n = s + 2^j + 2^k$ for squarefree $s$. Erd\u0151s thought this might be easier to prove since allowing two powers of 2 gives more flexibility.\n\nWith two powers of 2, there are $\\binom{\\log_2 n}{2} \\sim (\\log_2 n)^2 / 2$ candidate pairs, dramatically increasing the chance that some $n - 2^j - 2^k$ is squarefree.",
     "mathContext": "`IsSquarefreePlusTwoPow2 n`: $\\exists s, p, q: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge \\text{Pow2}(q) \\wedge n = s + p + q$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -253,8 +253,8 @@
     },
     "type": "technique",
     "title": "Granville-Soundararajan Connection (1998)",
-    "content": "**Deep Connection** (axiomatized): If Erdős Problem #11 is true, then infinitely many primes are non-Wieferich.\n\n`axiom granville_soundararajan : Erdos11Conjecture → InfinitelyManyNonWieferich`\n\n**The argument**: If $n$ is odd and $n - 2^k$ is squarefree for some $k$, then primes dividing $n - 2^k$ satisfy certain Fermat quotient conditions. If all but finitely many primes were Wieferich, this would impose too many square divisibility constraints, eventually preventing all $n - 2^k$ from being squarefree.\n\n**Published in**: \"A binary additive problem of Erdős and the order of $2 \\bmod p^2$\" (1998).",
-    "mathContext": "Erdős #11 $\\Rightarrow$ infinitely many non-Wieferich primes; connects additive structure to Fermat quotients",
+    "content": "**Deep Connection** (axiomatized): If Erd\u0151s Problem #11 is true, then infinitely many primes are non-Wieferich.\n\n`axiom granville_soundararajan : Erdos11Conjecture \u2192 InfinitelyManyNonWieferich`\n\n**The argument**: If $n$ is odd and $n - 2^k$ is squarefree for some $k$, then primes dividing $n - 2^k$ satisfy certain Fermat quotient conditions. If all but finitely many primes were Wieferich, this would impose too many square divisibility constraints, eventually preventing all $n - 2^k$ from being squarefree.\n\n**Published in**: \"A binary additive problem of Erd\u0151s and the order of $2 \\bmod p^2$\" (1998).",
+    "mathContext": "Erd\u0151s #11 $\\Rightarrow$ infinitely many non-Wieferich primes; connects additive structure to Fermat quotients",
     "significance": "key",
     "relatedConcepts": [
       "Fermat quotient",
@@ -315,11 +315,11 @@
     "proofId": "erdos-11",
     "range": {
       "startLine": 112,
-      "endLine": 118
+      "endLine": 117
     },
     "type": "technique",
-    "title": "Erdős Density Result",
-    "content": "**Erdős proved** (axiomatized): The set of odd $n$ satisfying the conjecture has natural density 1. The set of exceptions (if any) has density 0.\n\nFormalized using `Filter.Tendsto` to express that the proportion of $n \\leq N$ in the \"good\" set $S$ tends to 1.\n\n**Proof idea**: For most odd $n$, at least one of $n - 1, n - 2, n - 4, \\ldots, n - 2^k$ is squarefree. The probability that all $\\lfloor \\log_2 n \\rfloor + 1$ candidates are non-squarefree is $(1 - 6/\\pi^2)^{\\sim \\log_2 n}$, which is summable, so Borel-Cantelli gives density 0 for exceptions.",
+    "title": "Erd\u0151s Density Result",
+    "content": "**Erd\u0151s proved** (axiomatized): The set of odd $n$ satisfying the conjecture has natural density 1. The set of exceptions (if any) has density 0.\n\nFormalized using `Filter.Tendsto` to express that the proportion of $n \\leq N$ in the \"good\" set $S$ tends to 1.\n\n**Proof idea**: For most odd $n$, at least one of $n - 1, n - 2, n - 4, \\ldots, n - 2^k$ is squarefree. The probability that all $\\lfloor \\log_2 n \\rfloor + 1$ candidates are non-squarefree is $(1 - 6/\\pi^2)^{\\sim \\log_2 n}$, which is summable, so Borel-Cantelli gives density 0 for exceptions.",
     "mathContext": "$\\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : n \\text{ odd}, \\text{IsSquarefreePlusPow2}(n)\\}|}{N} = 1$",
     "significance": "key",
     "relatedConcepts": [

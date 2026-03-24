@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #231**\n\nMust a string of length 2^k - 1 over k letters contain an abelian square?\n\n**Status:** DISPROVED (Keränen 1992)\n\nFor k ≥ 4, the answer is NO - abelian-square-free strings exist.",
+    "content": "**Erd\u0151s Problem #231**\n\nMust a string of length 2^k - 1 over k letters contain an abelian square?\n\n**Status:** DISPROVED (Ker\u00e4nen 1992)\n\nFor k \u2265 4, the answer is NO - abelian-square-free strings exist.",
     "mathContext": "Abelian squares are a central concept in combinatorics on words.",
     "significance": "key",
     "relatedConcepts": [
@@ -79,7 +79,7 @@
     },
     "type": "definition",
     "title": "Contains Abelian Square",
-    "content": "**containsAbelianSquare w:**\n\nw has a factor (consecutive subword) that is an abelian square.\n\nThis is what Erdős asked about.",
+    "content": "**containsAbelianSquare w:**\n\nw has a factor (consecutive subword) that is an abelian square.\n\nThis is what Erd\u0151s asked about.",
     "significance": "key",
     "relatedConcepts": [
       "Factor",
@@ -131,7 +131,7 @@
     },
     "type": "technique",
     "title": "Avoidance Hierarchy",
-    "content": "**square_is_abelian_square, abelian_square_free_implies_squarefree:**\n\nEvery square is an abelian square.\n\nSo abelian-square-free ⟹ squarefree.",
+    "content": "**square_is_abelian_square, abelian_square_free_implies_squarefree:**\n\nEvery square is an abelian square.\n\nSo abelian-square-free \u27f9 squarefree.",
     "mathContext": "This hierarchy is fundamental in combinatorics on words.",
     "significance": "key",
     "relatedConcepts": [
@@ -148,14 +148,14 @@
       "endLine": 118
     },
     "type": "definition",
-    "title": "Erdős's Question",
-    "content": "**erdos_231_question k:**\n\nFor strings of length 2^k - 1 over k letters, must the string contain an abelian square?\n\nErdős conjectured YES, but this was disproved for k ≥ 4.",
+    "title": "Erd\u0151s's Question",
+    "content": "**erdos_231_question k:**\n\nFor strings of length 2^k - 1 over k letters, must the string contain an abelian square?\n\nErd\u0151s conjectured YES, but this was disproved for k \u2265 4.",
     "significance": "key",
     "relatedConcepts": [
       "Main question",
       "Conjecture"
     ],
-    "mathContext": "Must every string of length $2^k - 1$ over a $k$-letter alphabet contain an abelian square? Erdős conjectured YES (disproved for $k \\geq 4$)"
+    "mathContext": "Must every string of length $2^k - 1$ over a $k$-letter alphabet contain an abelian square? Erd\u0151s conjectured YES (disproved for $k \\geq 4$)"
   },
   {
     "id": "ann-231-thue",
@@ -200,12 +200,12 @@
       "endLine": 145
     },
     "type": "concept",
-    "title": "Keränen's Construction",
+    "title": "Ker\u00e4nen's Construction",
     "content": "**keranen_1992:**\n\nFor every n, there exists an abelian-square-free string of length n over 4 letters.\n\nEquivalently, infinite abelian-square-free strings exist over {1,2,3,4}.",
     "mathContext": "Published in ICALP 1992, pp. 41-52.",
     "significance": "key",
     "relatedConcepts": [
-      "Keränen 1992",
+      "Ker\u00e4nen 1992",
       "Infinite string",
       "4 letters"
     ]
@@ -218,9 +218,9 @@
       "endLine": 155
     },
     "type": "concept",
-    "title": "Keränen Morphism",
-    "content": "**keranen_morphism:**\n\nThere exists a morphism μ : Σ → Σ* where |μ(a)| = 85 for each letter a.\n\nApplying μ preserves abelian-square-freeness.",
-    "mathContext": "The 85-letter morphism is the heart of Keränen's construction.",
+    "title": "Ker\u00e4nen Morphism",
+    "content": "**keranen_morphism:**\n\nThere exists a morphism \u03bc : \u03a3 \u2192 \u03a3* where |\u03bc(a)| = 85 for each letter a.\n\nApplying \u03bc preserves abelian-square-freeness.",
+    "mathContext": "The 85-letter morphism is the heart of Ker\u00e4nen's construction.",
     "significance": "key",
     "relatedConcepts": [
       "Morphism",
@@ -237,13 +237,13 @@
     },
     "type": "concept",
     "title": "Conjecture Disproved",
-    "content": "**erdos_231_disproved:**\n\nFor k ≥ 4, Erdős's conjecture is FALSE.\n\nStrings of length 2^k - 1 over k letters CAN avoid abelian squares.",
+    "content": "**erdos_231_disproved:**\n\nFor k \u2265 4, Erd\u0151s's conjecture is FALSE.\n\nStrings of length 2^k - 1 over k letters CAN avoid abelian squares.",
     "significance": "key",
     "relatedConcepts": [
       "Disproof",
-      "k ≥ 4"
+      "k \u2265 4"
     ],
-    "mathContext": "For $k \\geq 4$: $\\exists w \\in \\{1,2,3,4\\}^{2^k-1}$ with no abelian square factors. Proved by Keränen's 85-uniform morphism"
+    "mathContext": "For $k \\geq 4$: $\\exists w \\in \\{1,2,3,4\\}^{2^k-1}$ with no abelian square factors. Proved by Ker\u00e4nen's 85-uniform morphism"
   },
   {
     "id": "ann-231-k2",
@@ -254,13 +254,13 @@
     },
     "type": "technique",
     "title": "k = 2 Case",
-    "content": "**k_equals_2_abelian_square:**\n\nFor k = 2 (binary alphabet), all strings of length ≥ 4 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 2.",
+    "content": "**k_equals_2_abelian_square:**\n\nFor k = 2 (binary alphabet), all strings of length \u2265 4 contain abelian squares.\n\nSo Erd\u0151s's conjecture holds for k = 2.",
     "significance": "supporting",
     "relatedConcepts": [
       "Binary",
       "Small k"
     ],
-    "mathContext": "Over $\\{0, 1\\}$: every string of length $\\geq 4$ contains an abelian square. Erdős's conjecture holds for $k = 2$ ($2^2 - 1 = 3$, length 3 is trivially short)"
+    "mathContext": "Over $\\{0, 1\\}$: every string of length $\\geq 4$ contains an abelian square. Erd\u0151s's conjecture holds for $k = 2$ ($2^2 - 1 = 3$, length 3 is trivially short)"
   },
   {
     "id": "ann-231-k3",
@@ -271,13 +271,13 @@
     },
     "type": "concept",
     "title": "k = 3 Case",
-    "content": "**k_equals_3_contains:**\n\nFor k = 3, all strings of length 7 = 2³ - 1 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 3.",
+    "content": "**k_equals_3_contains:**\n\nFor k = 3, all strings of length 7 = 2\u00b3 - 1 contain abelian squares.\n\nSo Erd\u0151s's conjecture holds for k = 3.",
     "significance": "supporting",
     "relatedConcepts": [
       "Ternary",
       "Small k"
     ],
-    "mathContext": "Over $\\{a, b, c\\}$: every string of length $7 = 2^3 - 1$ contains an abelian square. Erdős's conjecture holds for $k = 3$"
+    "mathContext": "Over $\\{a, b, c\\}$: every string of length $7 = 2^3 - 1$ contains an abelian square. Erd\u0151s's conjecture holds for $k = 3$"
   },
   {
     "id": "ann-231-example",
@@ -305,8 +305,8 @@
     },
     "type": "definition",
     "title": "Counterexample",
-    "content": "**counterexample_k4:**\n\nThe string 1213121412132124 (length 16 = 2^4) is abelian-square-free.\n\nThis shows Erdős's conjecture fails for k = 4.",
-    "mathContext": "Mentioned by Erdős as evidence against his original conjecture.",
+    "content": "**counterexample_k4:**\n\nThe string 1213121412132124 (length 16 = 2^4) is abelian-square-free.\n\nThis shows Erd\u0151s's conjecture fails for k = 4.",
+    "mathContext": "Mentioned by Erd\u0151s as evidence against his original conjecture.",
     "significance": "key",
     "relatedConcepts": [
       "Counterexample",
@@ -322,46 +322,46 @@
     },
     "type": "technique",
     "title": "Connection to #192",
-    "content": "**connection_to_192:**\n\nProblem #192 asks about infinite abelian-square-free sequences.\n\nKeränen's result answers both problems.",
+    "content": "**connection_to_192:**\n\nProblem #192 asks about infinite abelian-square-free sequences.\n\nKer\u00e4nen's result answers both problems.",
     "significance": "supporting",
     "relatedConcepts": [
       "Problem #192",
       "Related problems"
     ],
-    "mathContext": "Erdős #192: do infinite abelian-square-free sequences over a finite alphabet exist? YES (Keränen 1992, 4-letter alphabet)"
+    "mathContext": "Erd\u0151s #192: do infinite abelian-square-free sequences over a finite alphabet exist? YES (Ker\u00e4nen 1992, 4-letter alphabet)"
   },
   {
     "id": "ann-231-summary",
     "proofId": "erdos-231",
     "range": {
-      "startLine": 254,
-      "endLine": 257
+      "startLine": 238,
+      "endLine": 248
     },
     "type": "technique",
     "title": "Summary Theorem",
-    "content": "**erdos_231_summary:**\n\nErdős's conjecture was disproved for k ≥ 4.\n\nThe Keränen construction provides infinite counterexamples.",
+    "content": "**erdos_231_summary:**\n\nErd\u0151s's conjecture was disproved for k \u2265 4.\n\nThe Ker\u00e4nen construction provides infinite counterexamples.",
     "significance": "key",
     "relatedConcepts": [
       "Main result",
       "Summary"
     ],
-    "mathContext": "Erdős's conjecture fails for $k \\geq 4$: Keränen's morphism generates infinite abelian-square-free words over 4 letters"
+    "mathContext": "Erd\u0151s's conjecture fails for $k \\geq 4$: Ker\u00e4nen's morphism generates infinite abelian-square-free words over 4 letters"
   },
   {
     "id": "ann-231-solved",
     "proofId": "erdos-231",
     "range": {
-      "startLine": 259,
-      "endLine": 260
+      "startLine": 238,
+      "endLine": 248
     },
     "type": "technique",
     "title": "Problem Resolved",
-    "content": "**erdos_231_resolved:**\n\nErdős Problem #231 was completely resolved by Keränen in 1992.",
+    "content": "**erdos_231_resolved:**\n\nErd\u0151s Problem #231 was completely resolved by Ker\u00e4nen in 1992.",
     "significance": "supporting",
     "relatedConcepts": [
       "Resolved",
       "1992"
     ],
-    "mathContext": "Problem #231 resolved: conjecture holds for $k \\leq 3$, fails for $k \\geq 4$ (Keränen 1992)"
+    "mathContext": "Problem #231 resolved: conjecture holds for $k \\leq 3$, fails for $k \\geq 4$ (Ker\u00e4nen 1992)"
   }
 ]

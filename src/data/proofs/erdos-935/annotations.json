@@ -8,8 +8,8 @@
       "endLine": 22
     },
     "title": "Problem Overview",
-    "content": "Erdős Problem 935 studies the powerful part Q₂ of consecutive integer products n(n+1)···(n+l). Three conjectures address how Q₂ grows: (1) Q₂ < n^{2+ε}, (2) lim sup Q₂/n² = ∞ for l ≥ 2, and (3) Q₂/n^{l+1} → 0.",
-    "mathContext": "The powerful part extracts the 'square-full' component of a number: the product of all prime powers p^{kₚ} with kₚ ≥ 2. Consecutive products have rich factorization structure because consecutive integers share no common factor, making Q₂ sensitive to how prime squares distribute among them.",
+    "content": "Erd\u0151s Problem 935 studies the powerful part Q\u2082 of consecutive integer products n(n+1)\u00b7\u00b7\u00b7(n+l). Three conjectures address how Q\u2082 grows: (1) Q\u2082 < n^{2+\u03b5}, (2) lim sup Q\u2082/n\u00b2 = \u221e for l \u2265 2, and (3) Q\u2082/n^{l+1} \u2192 0.",
+    "mathContext": "The powerful part extracts the 'square-full' component of a number: the product of all prime powers p^{k\u209a} with k\u209a \u2265 2. Consecutive products have rich factorization structure because consecutive integers share no common factor, making Q\u2082 sensitive to how prime squares distribute among them.",
     "significance": "key",
     "relatedConcepts": [
       "powerful-numbers",
@@ -52,9 +52,9 @@
       "startLine": 29,
       "endLine": 48
     },
-    "title": "Powerful Part Q₂(n) and Properties",
-    "content": "**`powerfulPart n`** extracts the product of all prime powers p^{kₚ} with kₚ ≥ 2. Key properties: Q₂(1) = 1, Q₂(n) | n, Q₂(n) is powerful (every prime divides it to power ≥ 2), and Q₂ is multiplicative on coprime inputs.",
-    "mathContext": "For n = 2³ · 3 · 5² · 7, we have Q₂(n) = 2³ · 5² = 200. The squarefree part n/Q₂(n) = 3 · 7 = 21 captures the 'thin' component. Multiplicativity on coprimes is crucial for analyzing consecutive products since gcd(n, n+1) = 1.",
+    "title": "Powerful Part Q\u2082(n) and Properties",
+    "content": "**`powerfulPart n`** extracts the product of all prime powers p^{k\u209a} with k\u209a \u2265 2. Key properties: Q\u2082(1) = 1, Q\u2082(n) | n, Q\u2082(n) is powerful (every prime divides it to power \u2265 2), and Q\u2082 is multiplicative on coprime inputs.",
+    "mathContext": "For n = 2\u00b3 \u00b7 3 \u00b7 5\u00b2 \u00b7 7, we have Q\u2082(n) = 2\u00b3 \u00b7 5\u00b2 = 200. The squarefree part n/Q\u2082(n) = 3 \u00b7 7 = 21 captures the 'thin' component. Multiplicativity on coprimes is crucial for analyzing consecutive products since gcd(n, n+1) = 1.",
     "significance": "key",
     "relatedConcepts": [
       "powerful-number",
@@ -76,8 +76,8 @@
       "endLine": 58
     },
     "title": "Consecutive Product and Its Powerful Part",
-    "content": "**`consecutiveProduct n l`** = n(n+1)···(n+l). **`Q2consec n l`** = Q₂(consecutiveProduct n l). These compose the powerful part extractor with the product of l+1 consecutive integers.",
-    "mathContext": "The product of l+1 consecutive integers starting at n grows as ~n^{l+1}. Its powerful part captures how much 'square-full' content accumulates. For l = 0, Q₂(n) depends on individual factorization; for larger l, the interaction between consecutive factors matters.",
+    "content": "**`consecutiveProduct n l`** = n(n+1)\u00b7\u00b7\u00b7(n+l). **`Q2consec n l`** = Q\u2082(consecutiveProduct n l). These compose the powerful part extractor with the product of l+1 consecutive integers.",
+    "mathContext": "The product of l+1 consecutive integers starting at n grows as ~n^{l+1}. Its powerful part captures how much 'square-full' content accumulates. For l = 0, Q\u2082(n) depends on individual factorization; for larger l, the interaction between consecutive factors matters.",
     "significance": "key",
     "relatedConcepts": [
       "consecutive-integers",
@@ -98,8 +98,8 @@
       "endLine": 67
     },
     "title": "Mahler's Lower Bound",
-    "content": "**Mahler's theorem**: For every l ≥ 1, lim sup Q₂(n(n+1)···(n+l))/n² ≥ 1. Formalized as: for every N₀, there exists n ≥ N₀ with Q₂(···) ≥ n².",
-    "mathContext": "Mahler's result provides the baseline: the powerful part infinitely often reaches the n² scale. The conjectures ask whether it can exceed n² (Part 2 says yes for l ≥ 2) and whether it stays below n^{2+ε} (Part 1).",
+    "content": "**Mahler's theorem**: For every l \u2265 1, lim sup Q\u2082(n(n+1)\u00b7\u00b7\u00b7(n+l))/n\u00b2 \u2265 1. Formalized as: for every N\u2080, there exists n \u2265 N\u2080 with Q\u2082(\u00b7\u00b7\u00b7) \u2265 n\u00b2.",
+    "mathContext": "Mahler's result provides the baseline: the powerful part infinitely often reaches the n\u00b2 scale. The conjectures ask whether it can exceed n\u00b2 (Part 2 says yes for l \u2265 2) and whether it stays below n^{2+\u03b5} (Part 1).",
     "significance": "key",
     "relatedConcepts": [
       "mahler",
@@ -120,9 +120,9 @@
       "startLine": 71,
       "endLine": 76
     },
-    "title": "Part 1: Upper Bound n^{2+ε}",
-    "content": "For every ε > 0 and l ≥ 1, Q₂(n(n+1)···(n+l)) < n^{2+ε} for sufficiently large n. This says the powerful part never significantly exceeds n².",
-    "mathContext": "Combined with Mahler's lower bound, Part 1 would show Q₂ ~ n² in a logarithmic sense. The ε-room is necessary: the powerful part can exceed n² by subpolynomial factors.",
+    "title": "Part 1: Upper Bound n^{2+\u03b5}",
+    "content": "For every \u03b5 > 0 and l \u2265 1, Q\u2082(n(n+1)\u00b7\u00b7\u00b7(n+l)) < n^{2+\u03b5} for sufficiently large n. This says the powerful part never significantly exceeds n\u00b2.",
+    "mathContext": "Combined with Mahler's lower bound, Part 1 would show Q\u2082 ~ n\u00b2 in a logarithmic sense. The \u03b5-room is necessary: the powerful part can exceed n\u00b2 by subpolynomial factors.",
     "significance": "key",
     "relatedConcepts": [
       "upper-bound",
@@ -143,9 +143,9 @@
       "startLine": 78,
       "endLine": 82
     },
-    "title": "Part 2: Divergent Lim Sup for l ≥ 2",
-    "content": "For l ≥ 2, lim sup Q₂(n(n+1)···(n+l))/n² = ∞. Multiple consecutive factors push Q₂ well beyond n². Formalized as: for every M > 0, there exists n with Q₂ > M · n².",
-    "mathContext": "The l ≥ 2 threshold is key: with 3+ consecutive integers, there are more opportunities for prime squares to accumulate. For l = 1, Mahler's bound may be tight (lim sup could equal 1).",
+    "title": "Part 2: Divergent Lim Sup for l \u2265 2",
+    "content": "For l \u2265 2, lim sup Q\u2082(n(n+1)\u00b7\u00b7\u00b7(n+l))/n\u00b2 = \u221e. Multiple consecutive factors push Q\u2082 well beyond n\u00b2. Formalized as: for every M > 0, there exists n with Q\u2082 > M \u00b7 n\u00b2.",
+    "mathContext": "The l \u2265 2 threshold is key: with 3+ consecutive integers, there are more opportunities for prime squares to accumulate. For l = 1, Mahler's bound may be tight (lim sup could equal 1).",
     "significance": "key",
     "relatedConcepts": [
       "divergence",
@@ -154,7 +154,7 @@
     "prerequisites": [
       "Q2consec",
       "lim sup divergence",
-      "l ≥ 2 condition"
+      "l \u2265 2 condition"
     ]
   },
   {
@@ -166,8 +166,8 @@
       "endLine": 88
     },
     "title": "Part 3: Decay Relative to n^{l+1}",
-    "content": "For l ≥ 2, Q₂(n(n+1)···(n+l))/n^{l+1} → 0. Even though Q₂ grows faster than n², it is negligible compared to the full product ~n^{l+1}.",
-    "mathContext": "Since the product n(n+1)···(n+l) ~ n^{l+1}, and Q₂ ≤ n^{2+ε} by Part 1, we need 2+ε < l+1, i.e., l ≥ 2. Parts 1-3 together paint a complete picture: Q₂ is concentrated in a narrow band around n².",
+    "content": "For l \u2265 2, Q\u2082(n(n+1)\u00b7\u00b7\u00b7(n+l))/n^{l+1} \u2192 0. Even though Q\u2082 grows faster than n\u00b2, it is negligible compared to the full product ~n^{l+1}.",
+    "mathContext": "Since the product n(n+1)\u00b7\u00b7\u00b7(n+l) ~ n^{l+1}, and Q\u2082 \u2264 n^{2+\u03b5} by Part 1, we need 2+\u03b5 < l+1, i.e., l \u2265 2. Parts 1-3 together paint a complete picture: Q\u2082 is concentrated in a narrow band around n\u00b2.",
     "significance": "key",
     "relatedConcepts": [
       "decay-rate",
@@ -185,10 +185,10 @@
     "type": "concept",
     "range": {
       "startLine": 90,
-      "endLine": 93
+      "endLine": 92
     },
     "title": "Combined Statement",
-    "content": "**`ErdosProblem935`** is the conjunction of all three parts. Together they characterize the powerful part of consecutive products: it grows like n² (up to subpolynomial factors), diverges relative to n² for l ≥ 2, but is o(n^{l+1}).",
+    "content": "**`ErdosProblem935`** is the conjunction of all three parts. Together they characterize the powerful part of consecutive products: it grows like n\u00b2 (up to subpolynomial factors), diverges relative to n\u00b2 for l \u2265 2, but is o(n^{l+1}).",
     "significance": "key",
     "relatedConcepts": [
       "complete-characterization",

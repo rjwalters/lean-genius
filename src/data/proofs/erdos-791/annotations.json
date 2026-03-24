@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #791: Finite Additive 2-Bases**\n\nLet g(n) be the minimal size of a set A ⊆ {0,...,n} such that every element can be written as a sum of two elements of A.\n\n**Question:** Is g(n) ~ 2√n?\n**Answer:** NO — Mrose (1979) disproved this.\n\n**Current Bounds:**\n- Lower: g(n)² ≥ 2.181n (Yu, 2015)\n- Upper: g(n)² ≤ 3.458n (Kohonen, 2017)\n\nThis is far from the conjectured g(n)² ~ 4n. The true asymptotic constant for g(n)² lies somewhere between 2.181 and 3.458.",
-    "mathContext": "Additive combinatorics studies how sets combine under addition. A 2-basis is a fundamental object: a set A such that every target integer can be written as a + b with a, b ∈ A. The efficiency question — how small can A be? — connects to sumset theory (Cauchy-Davenport, Plünnecke-Ruzsa) and coding theory.",
+    "content": "**Erd\u0151s Problem #791: Finite Additive 2-Bases**\n\nLet g(n) be the minimal size of a set A \u2286 {0,...,n} such that every element can be written as a sum of two elements of A.\n\n**Question:** Is g(n) ~ 2\u221an?\n**Answer:** NO \u2014 Mrose (1979) disproved this.\n\n**Current Bounds:**\n- Lower: g(n)\u00b2 \u2265 2.181n (Yu, 2015)\n- Upper: g(n)\u00b2 \u2264 3.458n (Kohonen, 2017)\n\nThis is far from the conjectured g(n)\u00b2 ~ 4n. The true asymptotic constant for g(n)\u00b2 lies somewhere between 2.181 and 3.458.",
+    "mathContext": "Additive combinatorics studies how sets combine under addition. A 2-basis is a fundamental object: a set A such that every target integer can be written as a + b with a, b \u2208 A. The efficiency question \u2014 how small can A be? \u2014 connects to sumset theory (Cauchy-Davenport, Pl\u00fcnnecke-Ruzsa) and coding theory.",
     "significance": "key",
     "relatedConcepts": [
       "sumsets",
@@ -26,8 +26,8 @@
     },
     "type": "definition",
     "title": "Core Definitions",
-    "content": "**Three key definitions:**\n\n**sumset(A):** The set A + A = {a + b : a, b ∈ A}. Defined as the image of the Cartesian product A × A under the addition function. For example, if A = {0, 1, 3}, then sumset(A) = {0, 1, 2, 3, 4, 6}.\n\n**isAdditiveBasis(A, n):** A is a 2-basis for {0,...,n} if A ⊆ {0,...,n} and {0,...,n} ⊆ sumset(A). Every integer from 0 to n must be expressible as a sum of two elements of A.\n\n**g(n):** The minimum cardinality of any 2-basis for {0,...,n}. Defined as sInf of the set of valid cardinalities. This is the central object of study.",
-    "mathContext": "The sumset uses Finset.product (×ˢ) for the Cartesian product and Finset.image for applying addition. The infimum g(n) is well-defined because the trivial basis {0,...,n} always exists, guaranteeing the set is nonempty.",
+    "content": "**Three key definitions:**\n\n**sumset(A):** The set A + A = {a + b : a, b \u2208 A}. Defined as the image of the Cartesian product A \u00d7 A under the addition function. For example, if A = {0, 1, 3}, then sumset(A) = {0, 1, 2, 3, 4, 6}.\n\n**isAdditiveBasis(A, n):** A is a 2-basis for {0,...,n} if A \u2286 {0,...,n} and {0,...,n} \u2286 sumset(A). Every integer from 0 to n must be expressible as a sum of two elements of A.\n\n**g(n):** The minimum cardinality of any 2-basis for {0,...,n}. Defined as sInf of the set of valid cardinalities. This is the central object of study.",
+    "mathContext": "The sumset uses Finset.product (\u00d7\u02e2) for the Cartesian product and Finset.image for applying addition. The infimum g(n) is well-defined because the trivial basis {0,...,n} always exists, guaranteeing the set is nonempty.",
     "significance": "key",
     "relatedConcepts": [
       "Finset.product",
@@ -44,7 +44,7 @@
     },
     "type": "technique",
     "title": "Basic Properties and Trivial Basis",
-    "content": "**Key properties of additive bases:**\n\n**basis_contains_zero** (axiom): 0 must be in any 2-basis, since 0 ∈ A+A with a, b ∈ ℕ forces a = b = 0.\n\n**trivial_basis** (proved): {0, 1, ..., n} is always a 2-basis for {0,...,n}. The proof is simple: for any k ≤ n, k = 0 + k with both 0, k in the range.\n\n**g_le_n_plus_one** (axiom): g(n) ≤ n + 1, since the trivial basis has n+1 elements. But optimal bases are much smaller — roughly √n elements.\n\n**g_pos** (axiom): g(n) ≥ 1, since we need at least {0}.",
+    "content": "**Key properties of additive bases:**\n\n**basis_contains_zero** (axiom): 0 must be in any 2-basis, since 0 \u2208 A+A with a, b \u2208 \u2115 forces a = b = 0.\n\n**trivial_basis** (proved): {0, 1, ..., n} is always a 2-basis for {0,...,n}. The proof is simple: for any k \u2264 n, k = 0 + k with both 0, k in the range.\n\n**g_le_n_plus_one** (axiom): g(n) \u2264 n + 1, since the trivial basis has n+1 elements. But optimal bases are much smaller \u2014 roughly \u221an elements.\n\n**g_pos** (axiom): g(n) \u2265 1, since we need at least {0}.",
     "mathContext": "The trivial_basis proof uses Finset.mem_range and the pair (0, k) to witness each target. The proof is constructive and doesn't require any axioms.",
     "significance": "key",
     "relatedConcepts": [
@@ -61,7 +61,7 @@
     },
     "type": "concept",
     "title": "Rohrbach's Bounds (1937)",
-    "content": "**The first non-trivial bounds on g(n):**\n\n**rohrbach_lower:** 2n ≤ g(n)². A set of size k can produce at most k(k+1)/2 distinct sums (counting with repetition), so covering n+1 values requires k² ≥ 2n approximately.\n\n**rohrbach_upper:** g(n)² ≤ 4n. Rohrbach constructed explicit 2-bases using arithmetic progressions that achieve this. This gives g(n) ≤ 2√n.\n\nTogether: √(2n) ≤ g(n) ≤ 2√n. Erdős conjectured the upper bound is tight (g(n) ~ 2√n), which turned out to be wrong.",
+    "content": "**The first non-trivial bounds on g(n):**\n\n**rohrbach_lower:** 2n \u2264 g(n)\u00b2. A set of size k can produce at most k(k+1)/2 distinct sums (counting with repetition), so covering n+1 values requires k\u00b2 \u2265 2n approximately.\n\n**rohrbach_upper:** g(n)\u00b2 \u2264 4n. Rohrbach constructed explicit 2-bases using arithmetic progressions that achieve this. This gives g(n) \u2264 2\u221an.\n\nTogether: \u221a(2n) \u2264 g(n) \u2264 2\u221an. Erd\u0151s conjectured the upper bound is tight (g(n) ~ 2\u221an), which turned out to be wrong.",
     "mathContext": "Rohrbach's 1937 paper 'Ein Beitrag zur additiven Zahlentheorie' established these foundational bounds. The lower bound is essentially a pigeonhole argument on the number of available sums.",
     "significance": "key",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
     },
     "type": "concept",
     "title": "Mrose's Disproof (1979)",
-    "content": "**The key disproof of Erdős's conjecture:**\n\n**mrose_upper:** Mrose constructed 2-bases with g(n)² ≤ (7/2)n = 3.5n for large n. Since the conjecture g(n) ~ 2√n implies g(n)² ~ 4n, having g(n)² ≤ 3.5n < 4n contradicts the conjecture.\n\n**erdos_conjecture_false:** Formalizes the disproof: ∃ ε > 0 such that eventually g(n)² < (4 - 2ε)n. This uses Filter.atTop to express 'for all sufficiently large n'.\n\nMrose's paper 'Untere Schranken für die Reichweiten von Extremalbasen fester Ordnung' was published in 1979 and resolved the problem after 42 years.",
+    "content": "**The key disproof of Erd\u0151s's conjecture:**\n\n**mrose_upper:** Mrose constructed 2-bases with g(n)\u00b2 \u2264 (7/2)n = 3.5n for large n. Since the conjecture g(n) ~ 2\u221an implies g(n)\u00b2 ~ 4n, having g(n)\u00b2 \u2264 3.5n < 4n contradicts the conjecture.\n\n**erdos_conjecture_false:** Formalizes the disproof: \u2203 \u03b5 > 0 such that eventually g(n)\u00b2 < (4 - 2\u03b5)n. This uses Filter.atTop to express 'for all sufficiently large n'.\n\nMrose's paper 'Untere Schranken f\u00fcr die Reichweiten von Extremalbasen fester Ordnung' was published in 1979 and resolved the problem after 42 years.",
     "mathContext": "The construction uses sophisticated combinatorial techniques to pack more representation power into fewer elements, beating Rohrbach's approach. The key insight is using non-uniform arithmetic progressions.",
     "significance": "key",
     "relatedConcepts": [
@@ -96,8 +96,8 @@
     },
     "type": "concept",
     "title": "Modern Bounds (2015-2017)",
-    "content": "**Recent improvements to both bounds:**\n\n**yu_lower (2015):** (2.181... + o(1))n ≤ g(n)², improving Rohrbach's constant from 2 to 2.181. Published in J. Number Theory.\n\n**kohonen_upper (2017):** g(n)² ≤ (3.458... + o(1))n, improving Mrose's 3.5 to 3.458. Published in J. Number Theory.\n\nThe gap between 2.181 and 3.458 represents our current uncertainty. In terms of g(n): 1.477√n ≤ g(n) ≤ 1.860√n approximately.",
-    "mathContext": "Both bounds are formalized using integer arithmetic to avoid real number precision issues: e.g., 218n ≤ 100·g(n)² + 100n encodes 2.18n ≤ g(n)² approximately. This is a common technique for encoding rational bounds in natural number arithmetic.",
+    "content": "**Recent improvements to both bounds:**\n\n**yu_lower (2015):** (2.181... + o(1))n \u2264 g(n)\u00b2, improving Rohrbach's constant from 2 to 2.181. Published in J. Number Theory.\n\n**kohonen_upper (2017):** g(n)\u00b2 \u2264 (3.458... + o(1))n, improving Mrose's 3.5 to 3.458. Published in J. Number Theory.\n\nThe gap between 2.181 and 3.458 represents our current uncertainty. In terms of g(n): 1.477\u221an \u2264 g(n) \u2264 1.860\u221an approximately.",
+    "mathContext": "Both bounds are formalized using integer arithmetic to avoid real number precision issues: e.g., 218n \u2264 100\u00b7g(n)\u00b2 + 100n encodes 2.18n \u2264 g(n)\u00b2 approximately. This is a common technique for encoding rational bounds in natural number arithmetic.",
     "significance": "key",
     "relatedConcepts": [
       "Yu (2015)",
@@ -114,7 +114,7 @@
     },
     "type": "technique",
     "title": "Main Results",
-    "content": "**Two key results resolving Problem #791:**\n\n**erdos_791** (proved): There exist constants C₁ ≥ 2 and C₂ ≤ 4 such that C₁·n ≤ g(n)² ≤ C₂·n for all n ≥ 1. The proof instantiates C₁ = 2, C₂ = 4 using Rohrbach's bounds.\n\n**erdos_791_answer** (axiom): The conjecture g(n) ~ 2√n is FALSE. Formalized as the negation of asymptotic equivalence. Axiomatized because the proof involves real analysis and limit arguments from Mrose's bound.\n\nTogether these completely resolve Erdős Problem #791: the conjecture is disproved, and we have explicit (though not tight) bounds on g(n).",
+    "content": "**Two key results resolving Problem #791:**\n\n**erdos_791** (proved): There exist constants C\u2081 \u2265 2 and C\u2082 \u2264 4 such that C\u2081\u00b7n \u2264 g(n)\u00b2 \u2264 C\u2082\u00b7n for all n \u2265 1. The proof instantiates C\u2081 = 2, C\u2082 = 4 using Rohrbach's bounds.\n\n**erdos_791_answer** (axiom): The conjecture g(n) ~ 2\u221an is FALSE. Formalized as the negation of asymptotic equivalence. Axiomatized because the proof involves real analysis and limit arguments from Mrose's bound.\n\nTogether these completely resolve Erd\u0151s Problem #791: the conjecture is disproved, and we have explicit (though not tight) bounds on g(n).",
     "mathContext": "The erdos_791 theorem is proved constructively using omega for the constant bounds and exact application of the Rohrbach axioms. The answer theorem involves Filter.atTop and rational arithmetic.",
     "significance": "key",
     "relatedConcepts": [
@@ -128,12 +128,12 @@
     "proofId": "erdos-791",
     "range": {
       "startLine": 217,
-      "endLine": 237
+      "endLine": 236
     },
     "type": "technique",
     "title": "Summary Theorem",
-    "content": "**erdos_791_summary combines three key results:**\n\n1. **Mrose-type bound:** ∃ C < 4 such that g(n)² ≤ Cn + n for all n ≥ 1 (with C = 3, giving g(n)² ≤ 4n which subsumes Rohrbach's upper bound)\n2. **Rohrbach lower:** 2n ≤ g(n)² for all n ≥ 1\n3. **Rohrbach upper:** g(n)² ≤ 4n for all n ≥ 1\n\nThe proof uses ⟨⟨3, by omega, ...⟩, rohrbach_lower, rohrbach_upper⟩ to construct the conjunction. The existence of C = 3 < 4 is the formal content of Mrose's disproof.",
-    "mathContext": "The C = 3 instantiation gives g(n)² ≤ 3n + n = 4n, which is actually just Rohrbach's upper bound. A tighter formalization would use C = 3 with the bound g(n)² ≤ 3.5n, but integer arithmetic makes this cleaner.",
+    "content": "**erdos_791_summary combines three key results:**\n\n1. **Mrose-type bound:** \u2203 C < 4 such that g(n)\u00b2 \u2264 Cn + n for all n \u2265 1 (with C = 3, giving g(n)\u00b2 \u2264 4n which subsumes Rohrbach's upper bound)\n2. **Rohrbach lower:** 2n \u2264 g(n)\u00b2 for all n \u2265 1\n3. **Rohrbach upper:** g(n)\u00b2 \u2264 4n for all n \u2265 1\n\nThe proof uses \u27e8\u27e83, by omega, ...\u27e9, rohrbach_lower, rohrbach_upper\u27e9 to construct the conjunction. The existence of C = 3 < 4 is the formal content of Mrose's disproof.",
+    "mathContext": "The C = 3 instantiation gives g(n)\u00b2 \u2264 3n + n = 4n, which is actually just Rohrbach's upper bound. A tighter formalization would use C = 3 with the bound g(n)\u00b2 \u2264 3.5n, but integer arithmetic makes this cleaner.",
     "significance": "key",
     "relatedConcepts": [
       "conjunction",

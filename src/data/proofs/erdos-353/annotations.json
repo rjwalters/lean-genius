@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #353: Geometric Configurations in Infinite Measure Sets**\n\nLet A ⊆ ℝ² have infinite Lebesgue measure. Must A contain vertices of:\n- Isosceles trapezoid of area 1?\n- Isosceles triangle of area 1?\n- Right-angled triangle of area 1?\n\n**Answer:** YES for all three (Koizumi 2025)\n\nParallelograms can fail (Kovač 2023 counterexample).",
+    "content": "**Erd\u0151s Problem #353: Geometric Configurations in Infinite Measure Sets**\n\nLet A \u2286 \u211d\u00b2 have infinite Lebesgue measure. Must A contain vertices of:\n- Isosceles trapezoid of area 1?\n- Isosceles triangle of area 1?\n- Right-angled triangle of area 1?\n\n**Answer:** YES for all three (Koizumi 2025)\n\nParallelograms can fail (Kova\u010d 2023 counterexample).",
     "mathContext": "This connects geometric measure theory with combinatorial geometry.",
     "significance": "key",
     "relatedConcepts": [
@@ -26,7 +26,7 @@
     },
     "type": "definition",
     "title": "Infinite Measure Sets",
-    "content": "**HasInfiniteMeasure A:**\n\nA set A ⊆ ℝ² satisfies:\n1. A is Lebesgue measurable\n2. volume(A) = ∞\n\nExamples:\n- The whole plane ℝ²\n- Any half-plane\n- Unbounded strips\n\nKey: Infinite measure ensures sufficient density for configurations.",
+    "content": "**HasInfiniteMeasure A:**\n\nA set A \u2286 \u211d\u00b2 satisfies:\n1. A is Lebesgue measurable\n2. volume(A) = \u221e\n\nExamples:\n- The whole plane \u211d\u00b2\n- Any half-plane\n- Unbounded strips\n\nKey: Infinite measure ensures sufficient density for configurations.",
     "mathContext": "Lebesgue measure extends the notion of area to irregular sets.",
     "significance": "key",
     "relatedConcepts": [
@@ -43,7 +43,7 @@
     },
     "type": "definition",
     "title": "Triangle and Quadrilateral Area",
-    "content": "**triangleArea p q r:**\n\nArea = |det([q-p, r-p])| / 2\n\nUsing the cross product formula:\n|(q-p)₀·(r-p)₁ - (q-p)₁·(r-p)₀| / 2\n\n**quadrilateralArea p q r s:**\n\nSum of areas of triangles (p,q,r) and (p,r,s).",
+    "content": "**triangleArea p q r:**\n\nArea = |det([q-p, r-p])| / 2\n\nUsing the cross product formula:\n|(q-p)\u2080\u00b7(r-p)\u2081 - (q-p)\u2081\u00b7(r-p)\u2080| / 2\n\n**quadrilateralArea p q r s:**\n\nSum of areas of triangles (p,q,r) and (p,r,s).",
     "mathContext": "The shoelace formula generalizes to any simple polygon.",
     "significance": "key",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
     },
     "type": "definition",
     "title": "Right-Angled Triangle",
-    "content": "**IsRightTriangle p q r:**\n\nA triangle with one 90° angle.\n\nDetected via inner product = 0:\n- inner(q-p, r-p) = 0 (right angle at p)\n- inner(p-q, r-q) = 0 (right angle at q)\n- inner(p-r, q-r) = 0 (right angle at r)",
+    "content": "**IsRightTriangle p q r:**\n\nA triangle with one 90\u00b0 angle.\n\nDetected via inner product = 0:\n- inner(q-p, r-p) = 0 (right angle at p)\n- inner(p-q, r-q) = 0 (right angle at q)\n- inner(p-r, q-r) = 0 (right angle at r)",
     "mathContext": "The inner product being zero means perpendicular vectors.",
     "significance": "key",
     "relatedConcepts": [
@@ -112,7 +112,7 @@
     },
     "type": "definition",
     "title": "Parallelogram",
-    "content": "**IsParallelogram p q r s:**\n\nBoth pairs of opposite sides are parallel and equal:\n- q - p = r - s (top ∥ bottom)\n- s - p = r - q (left ∥ right)\n\n**Important:** Kovač showed parallelograms of area 1 need NOT exist in infinite measure sets!",
+    "content": "**IsParallelogram p q r s:**\n\nBoth pairs of opposite sides are parallel and equal:\n- q - p = r - s (top \u2225 bottom)\n- s - p = r - q (left \u2225 right)\n\n**Important:** Kova\u010d showed parallelograms of area 1 need NOT exist in infinite measure sets!",
     "significance": "key",
     "relatedConcepts": [
       "Vector equality",
@@ -129,7 +129,7 @@
     },
     "type": "definition",
     "title": "Cyclic Quadrilateral",
-    "content": "**IsCyclicQuadrilateral p q r s:**\n\nAll four vertices lie on a common circle:\n∃ center, radius > 0 such that:\n- dist(center, p) = radius\n- dist(center, q) = radius\n- dist(center, r) = radius\n- dist(center, s) = radius\n\nKovač-Predojević (2024): These always exist with area 1!",
+    "content": "**IsCyclicQuadrilateral p q r s:**\n\nAll four vertices lie on a common circle:\n\u2203 center, radius > 0 such that:\n- dist(center, p) = radius\n- dist(center, q) = radius\n- dist(center, r) = radius\n- dist(center, s) = radius\n\nKova\u010d-Predojevi\u0107 (2024): These always exist with area 1!",
     "significance": "key",
     "relatedConcepts": [
       "Circumscribed circle",
@@ -146,7 +146,7 @@
     },
     "type": "concept",
     "title": "Koizumi's Theorems (2025)",
-    "content": "**koizumi_isosceles_trapezoid, koizumi_isosceles_triangle, koizumi_right_triangle:**\n\nEvery measurable set with infinite measure contains:\n1. An isosceles trapezoid of area 1\n2. An isosceles triangle of area 1\n3. A right-angled triangle of area 1\n\nThis completely resolves Erdős Problem #353 for these shapes.\n\n**Reference:** arXiv:2501.01914 (January 2025)",
+    "content": "**koizumi_isosceles_trapezoid, koizumi_isosceles_triangle, koizumi_right_triangle:**\n\nEvery measurable set with infinite measure contains:\n1. An isosceles trapezoid of area 1\n2. An isosceles triangle of area 1\n3. A right-angled triangle of area 1\n\nThis completely resolves Erd\u0151s Problem #353 for these shapes.\n\n**Reference:** arXiv:2501.01914 (January 2025)",
     "mathContext": "The proof uses measure-theoretic density arguments.",
     "significance": "key",
     "relatedConcepts": [
@@ -164,7 +164,7 @@
     "type": "concept",
     "title": "Parallelogram Counterexample",
     "content": "**kovac_parallelogram_counterexample:**\n\nThere EXISTS a set A with infinite measure such that A does NOT contain the vertices of any parallelogram with area 1.\n\nThis shows parallelograms are fundamentally different from trapezoids!\n\n**Why?** Parallelograms have two parallel pairs, giving more constraints. The counterexample exploits this rigidity.",
-    "mathContext": "Kovač (2023) arXiv:2309.09973",
+    "mathContext": "Kova\u010d (2023) arXiv:2309.09973",
     "significance": "key",
     "relatedConcepts": [
       "Counterexample",
@@ -180,7 +180,7 @@
     },
     "type": "concept",
     "title": "Cyclic Quadrilaterals Exist",
-    "content": "**kovac_predojevic_cyclic:**\n\nEvery set with infinite measure contains four points on a circle forming a quadrilateral of area 1.\n\n**Reference:** Kovač-Predojević (2024) arXiv:2412.11725",
+    "content": "**kovac_predojevic_cyclic:**\n\nEvery set with infinite measure contains four points on a circle forming a quadrilateral of area 1.\n\n**Reference:** Kova\u010d-Predojevi\u0107 (2024) arXiv:2412.11725",
     "significance": "key",
     "relatedConcepts": [
       "Cyclic quadrilateral",
@@ -197,7 +197,7 @@
     },
     "type": "technique",
     "title": "Scaling Property",
-    "content": "**scaling_property:**\n\nIf infinite measure sets contain configurations of area 1, they contain configurations of ANY positive area t.\n\n**Proof idea:** Scale the set by factor √t. The scaled set still has infinite measure, so it contains area-1 configurations. Scaling back gives area-t configurations in the original set.",
+    "content": "**scaling_property:**\n\nIf infinite measure sets contain configurations of area 1, they contain configurations of ANY positive area t.\n\n**Proof idea:** Scale the set by factor \u221at. The scaled set still has infinite measure, so it contains area-1 configurations. Scaling back gives area-t configurations in the original set.",
     "significance": "key",
     "relatedConcepts": [
       "Scaling",
@@ -210,11 +210,11 @@
     "proofId": "erdos-353",
     "range": {
       "startLine": 342,
-      "endLine": 393
+      "endLine": 390
     },
     "type": "technique",
     "title": "Summary",
-    "content": "**Erdős Problem #353: SOLVED**\n\n**Results:**\n- Isosceles trapezoid: YES (Koizumi 2025)\n- Isosceles triangle: YES (Koizumi 2025)\n- Right triangle: YES (Koizumi 2025)\n- Cyclic quadrilateral: YES (Kovač-Predojević 2024)\n- Parallelogram: NO (counterexample exists)\n\n**Key Insight:** One parallel pair (trapezoid) is weak enough to guarantee existence, but two parallel pairs (parallelogram) can fail.",
+    "content": "**Erd\u0151s Problem #353: SOLVED**\n\n**Results:**\n- Isosceles trapezoid: YES (Koizumi 2025)\n- Isosceles triangle: YES (Koizumi 2025)\n- Right triangle: YES (Koizumi 2025)\n- Cyclic quadrilateral: YES (Kova\u010d-Predojevi\u0107 2024)\n- Parallelogram: NO (counterexample exists)\n\n**Key Insight:** One parallel pair (trapezoid) is weak enough to guarantee existence, but two parallel pairs (parallelogram) can fail.",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

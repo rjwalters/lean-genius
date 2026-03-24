@@ -180,7 +180,7 @@
     "type": "concept",
     "range": {
       "startLine": 101,
-      "endLine": 109
+      "endLine": 108
     },
     "title": "Infinite Sidon Set Version",
     "content": "The analogous question for infinite Sidon sets: if $A \\subset \\mathbb{N}$ is an infinite Sidon set and $A_N = A \\cap [1, N]$, does the isolated count of $A_N + A_N$ tend to infinity as $N \\to \\infty$? This is potentially easier than the finite version since infinite Sidon sets have additional structural constraints (e.g., $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$).",

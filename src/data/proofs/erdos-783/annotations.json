@@ -171,7 +171,7 @@
     },
     "type": "concept",
     "title": "Main Conjecture: Primes Are Optimal",
-    "content": "Erdős Problem #783: for any budget $C > 0$, there exists $N$ such that for all $n \\geq N$, the prime sieving set minimizes the unsieved count among all valid sieving sets. The 'large $n$' condition is needed because for small $n$, finite effects may dominate. The conjecture asserts that the greedy prime strategy is globally optimal in the asymptotic regime.",
+    "content": "Erd\u0151s Problem #783: for any budget $C > 0$, there exists $N$ such that for all $n \\geq N$, the prime sieving set minimizes the unsieved count among all valid sieving sets. The 'large $n$' condition is needed because for small $n$, finite effects may dominate. The conjecture asserts that the greedy prime strategy is globally optimal in the asymptotic regime.",
     "mathContext": "$\\forall C > 0,\\; \\exists N$ such that $\\forall n \\geq N,\\; \\forall A$ valid: $\\text{unsievedCount}(\\text{primeSievingSet}(k), n) \\leq \\text{unsievedCount}(A, n)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -199,7 +199,7 @@
     "significance": "key",
     "relatedConcepts": [
       "Chinese remainder theorem",
-      "Möbius function",
+      "M\u00f6bius function",
       "inclusion-exclusion",
       "Brun sieve"
     ],
@@ -261,11 +261,11 @@
     "proofId": "erdos-783",
     "range": {
       "startLine": 188,
-      "endLine": 191
+      "endLine": 190
     },
     "type": "technique",
     "title": "Sieving Monotonicity",
-    "content": "Adding any element $a \\geq 2$ to the sieving set can only reduce the unsieved count: every multiple of $a$ that was previously unsieved gets eliminated. This monotonicity property justifies the greedy approach — the question is not whether adding an element helps, but which element gives the best return per unit of reciprocal budget.",
+    "content": "Adding any element $a \\geq 2$ to the sieving set can only reduce the unsieved count: every multiple of $a$ that was previously unsieved gets eliminated. This monotonicity property justifies the greedy approach \u2014 the question is not whether adding an element helps, but which element gives the best return per unit of reciprocal budget.",
     "mathContext": "$a \\geq 2,\\; a \\notin A \\Rightarrow \\text{unsievedCount}(A \\cup \\{a\\}, n) \\leq \\text{unsievedCount}(A, n)$.",
     "significance": "supporting",
     "relatedConcepts": [

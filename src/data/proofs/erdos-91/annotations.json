@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #91: Non-Uniqueness of Minimal Distance Sets**\n\nFor n-point sets minimizing distinct distances, are there multiple non-similar optimal configurations?\n\n**Known Results:**\n- n=3: UNIQUE (equilateral triangle)\n- n=4: NON-UNIQUE (square vs bowtie)\n- n=5: UNIQUE (pentagon) - Kovács 2024\n- n=6-9: NON-UNIQUE\n- Large n: OPEN",
-    "mathContext": "The problem connects to the Erdős distinct distances problem (#89) which asks for the minimum number of distinct distances.",
+    "content": "**Erd\u0151s Problem #91: Non-Uniqueness of Minimal Distance Sets**\n\nFor n-point sets minimizing distinct distances, are there multiple non-similar optimal configurations?\n\n**Known Results:**\n- n=3: UNIQUE (equilateral triangle)\n- n=4: NON-UNIQUE (square vs bowtie)\n- n=5: UNIQUE (pentagon) - Kov\u00e1cs 2024\n- n=6-9: NON-UNIQUE\n- Large n: OPEN",
+    "mathContext": "The problem connects to the Erd\u0151s distinct distances problem (#89) which asks for the minimum number of distinct distances.",
     "significance": "key",
     "relatedConcepts": [
       "Distinct distances",
@@ -26,7 +26,7 @@
     },
     "type": "definition",
     "title": "Point and Distance",
-    "content": "**Point and dist:**\n\nPoints are pairs (x, y) ∈ ℝ². Distance is Euclidean:\n\n```lean\nabbrev Point := ℝ × ℝ\n\nnoncomputable def dist (p q : Point) : ℝ :=\n  Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)\n```",
+    "content": "**Point and dist:**\n\nPoints are pairs (x, y) \u2208 \u211d\u00b2. Distance is Euclidean:\n\n```lean\nabbrev Point := \u211d \u00d7 \u211d\n\nnoncomputable def dist (p q : Point) : \u211d :=\n  Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)\n```",
     "significance": "supporting",
     "relatedConcepts": [
       "Euclidean distance",
@@ -44,7 +44,7 @@
     "type": "definition",
     "title": "Distinct Distances",
     "content": "**distinctDistances A:**\n\nThe set of all pairwise distances in point set A.\n\n**numDistinctDistances A:**\n\nThe cardinality of the distinct distance set.\n\nFor n points, this ranges from 1 (equilateral triangle) to C(n,2) (general position).",
-    "mathContext": "Minimizing this count is the Erdős distinct distances problem.",
+    "mathContext": "Minimizing this count is the Erd\u0151s distinct distances problem.",
     "significance": "key",
     "relatedConcepts": [
       "Distance sets",
@@ -60,7 +60,7 @@
     },
     "type": "definition",
     "title": "Optimal Configurations",
-    "content": "**IsOptimal A:**\n\nA configuration A is optimal if it achieves the minimum number of distinct distances among all |A|-point sets.\n\n```lean\ndef IsOptimal (A : Finset Point) : Prop :=\n  A.card > 0 ∧ numDistinctDistances A = minDistinctDistances A.card\n```",
+    "content": "**IsOptimal A:**\n\nA configuration A is optimal if it achieves the minimum number of distinct distances among all |A|-point sets.\n\n```lean\ndef IsOptimal (A : Finset Point) : Prop :=\n  A.card > 0 \u2227 numDistinctDistances A = minDistinctDistances A.card\n```",
     "significance": "key",
     "relatedConcepts": [
       "Extremal configurations",
@@ -111,7 +111,7 @@
     },
     "type": "concept",
     "title": "n=4: Two Non-Similar Optima",
-    "content": "**n4_two_optima:**\n\nTwo non-similar 4-point configurations achieve the minimum 2 distinct distances:\n1. **Square:** side s, diagonal s√2\n2. **Bowtie:** Two equilateral triangles sharing an edge\n\nThis is the first case of non-uniqueness.",
+    "content": "**n4_two_optima:**\n\nTwo non-similar 4-point configurations achieve the minimum 2 distinct distances:\n1. **Square:** side s, diagonal s\u221a2\n2. **Bowtie:** Two equilateral triangles sharing an edge\n\nThis is the first case of non-uniqueness.",
     "significance": "key",
     "relatedConcepts": [
       "Square",
@@ -128,13 +128,13 @@
       "endLine": 143
     },
     "type": "concept",
-    "title": "n=5: Pentagon Unique (Kovács 2024)",
-    "content": "**kovacs_2024_n5_unique:**\n\nThe regular pentagon is uniquely optimal for n=5, achieving 2 distinct distances.\n\n**Historical note:** Erdős attributed this to 'a colleague from Zagreb' whose letter he lost. Kovács (2024) finally published a rigorous proof.",
+    "title": "n=5: Pentagon Unique (Kov\u00e1cs 2024)",
+    "content": "**kovacs_2024_n5_unique:**\n\nThe regular pentagon is uniquely optimal for n=5, achieving 2 distinct distances.\n\n**Historical note:** Erd\u0151s attributed this to 'a colleague from Zagreb' whose letter he lost. Kov\u00e1cs (2024) finally published a rigorous proof.",
     "mathContext": "The mystery of the 'Zagreb colleague' was a famous anecdote in combinatorics for decades.",
     "significance": "key",
     "relatedConcepts": [
       "Regular pentagon",
-      "Kovács 2024",
+      "Kov\u00e1cs 2024",
       "Zagreb mystery"
     ]
   },
@@ -147,7 +147,7 @@
     },
     "type": "concept",
     "title": "n=6-9: Non-Uniqueness Holds",
-    "content": "**n6_to_9_nonunique:**\n\nFor each n from 6 to 9, there exist at least two non-similar optimal configurations.\n\nErdős verified this for these small cases, but the pattern for all large n is unknown.",
+    "content": "**n6_to_9_nonunique:**\n\nFor each n from 6 to 9, there exist at least two non-similar optimal configurations.\n\nErd\u0151s verified this for these small cases, but the pattern for all large n is unknown.",
     "significance": "key",
     "relatedConcepts": [
       "Small cases",
@@ -164,7 +164,7 @@
     },
     "type": "definition",
     "title": "The Main Conjecture (OPEN)",
-    "content": "**erdos_91_conjecture:**\n\nFor sufficiently large n, there exist at least two non-similar optimal n-point configurations.\n\n```lean\ndef erdos_91_conjecture : Prop :=\n  ∃ N : ℕ, ∀ n : ℕ, n ≥ N →\n    ∃ A B : Finset Point, ...\n```\n\n**Status: OPEN**",
+    "content": "**erdos_91_conjecture:**\n\nFor sufficiently large n, there exist at least two non-similar optimal n-point configurations.\n\n```lean\ndef erdos_91_conjecture : Prop :=\n  \u2203 N : \u2115, \u2200 n : \u2115, n \u2265 N \u2192\n    \u2203 A B : Finset Point, ...\n```\n\n**Status: OPEN**",
     "mathContext": "The non-monotonic pattern (unique at n=5 but non-unique at n=4,6) makes this hard to prove.",
     "significance": "key",
     "relatedConcepts": [
@@ -177,11 +177,11 @@
     "proofId": "erdos-91",
     "range": {
       "startLine": 243,
-      "endLine": 277
+      "endLine": 276
     },
     "type": "technique",
     "title": "Problem Summary",
-    "content": "**erdos_91_summary:**\n\nCombines the known results:\n\n| n | Status | Configuration |\n|---|--------|---------------|\n| 3 | UNIQUE | Equilateral triangle |\n| 4 | NON-UNIQUE | Square, Bowtie |\n| 5 | UNIQUE | Regular pentagon (Kovács 2024) |\n| 6-9 | NON-UNIQUE | Multiple examples |\n| Large | OPEN | Conjectured non-unique |",
+    "content": "**erdos_91_summary:**\n\nCombines the known results:\n\n| n | Status | Configuration |\n|---|--------|---------------|\n| 3 | UNIQUE | Equilateral triangle |\n| 4 | NON-UNIQUE | Square, Bowtie |\n| 5 | UNIQUE | Regular pentagon (Kov\u00e1cs 2024) |\n| 6-9 | NON-UNIQUE | Multiple examples |\n| Large | OPEN | Conjectured non-unique |",
     "significance": "key",
     "relatedConcepts": [
       "Known results",

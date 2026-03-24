@@ -1,10 +1,10 @@
 {
   "id": "erdos-413",
-  "title": "Erdős Problem #413: Barriers for the Omega Function",
+  "title": "Erd\u0151s Problem #413: Barriers for the Omega Function",
   "slug": "erdos-413",
-  "description": "Are there infinitely many n such that m + ω(m) ≤ n for all m < n?",
+  "description": "Are there infinitely many n such that m + \u03c9(m) \u2264 n for all m < n?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/413",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos413Problem.lean",
@@ -51,30 +51,30 @@
     ],
     "originalContributions": [
       "Barrier definition and basic structural theorems for general arithmetic functions",
-      "Machine-verified ω-barriers up to 128 via native_decide (OEIS A005236)",
-      "Machine-verified Ω-barriers and expProd-barriers with barrier counting",
-      "Proof that φ has no barriers beyond 3 and σ₁ has no barriers beyond 2",
+      "Machine-verified \u03c9-barriers up to 128 via native_decide (OEIS A005236)",
+      "Machine-verified \u03a9-barriers and expProd-barriers with barrier counting",
+      "Proof that \u03c6 has no barriers beyond 3 and \u03c3\u2081 has no barriers beyond 2",
       "Proof that barriers force predecessors to be prime powers",
       "Barrier spacing, gap, and offset bound theorems",
       "Iterated dynamics: orbit definitions and barrier-orbit interaction",
-      "Coprime multiplicativity of ω and subadditivity for products",
+      "Coprime multiplicativity of \u03c9 and subadditivity for products",
       "Computable barrier checking framework with soundness and completeness proofs",
-      "Barrier comparison hierarchy: F >> ω >> Ω verified computationally"
+      "Barrier comparison hierarchy: F >> \u03c9 >> \u03a9 verified computationally"
     ],
     "axiomCount": 6,
-    "lineCount": 1102,
+    "lineCount": 1048,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős introduced the concept of 'barriers' for arithmetic functions in his 1979 paper on consecutive integers [Er79d]. A natural number $n$ is a *barrier* for a function $f$ if $m + f(m) \\leq n$ for all $m < n$ — meaning $n$ 'blocks' all trajectories of the iteration $m \\mapsto m + f(m)$ from below. This concept connects additive number theory to discrete dynamical systems.\n\nThe barrier question distinguishes slow-growing from fast-growing arithmetic functions. Euler's totient $\\varphi(n)$ and the sum-of-divisors $\\sigma_1(n)$ grow too quickly: since $\\varphi(n) \\geq 2$ for $n \\geq 3$ and $\\sigma_1(n) \\geq n + 1$ for $n \\geq 2$, neither can have barriers beyond small values. In contrast, $\\omega(n)$ (the number of distinct prime divisors) grows logarithmically — $\\omega(n) \\leq \\log_2 n$ — leaving room for barriers. Erdős proved that the exponent product function $F(n) = \\prod k_i$ (where $n = \\prod p_i^{k_i}$) has barriers with positive density, motivating the conjecture that $\\omega$ behaves similarly.\n\nSelfridge computed that 99840 is the largest $\\Omega$-barrier (counting prime factors with multiplicity) below $10^5$, showing that $\\Omega$-barriers become very sparse. OEIS A005236 lists $\\omega$-barriers: 1, 2, 4, 6, 12, 24, 30, 32, 48, 60, 64, 90, 120, 128, ... The problem connects to Erdős problems #412 (do all trajectories of $n \\mapsto n + \\omega(n)$ eventually merge?) and #414 (similar questions for other additive functions).",
+    "historicalContext": "Erd\u0151s introduced the concept of 'barriers' for arithmetic functions in his 1979 paper on consecutive integers [Er79d]. A natural number $n$ is a *barrier* for a function $f$ if $m + f(m) \\leq n$ for all $m < n$ \u2014 meaning $n$ 'blocks' all trajectories of the iteration $m \\mapsto m + f(m)$ from below. This concept connects additive number theory to discrete dynamical systems.\n\nThe barrier question distinguishes slow-growing from fast-growing arithmetic functions. Euler's totient $\\varphi(n)$ and the sum-of-divisors $\\sigma_1(n)$ grow too quickly: since $\\varphi(n) \\geq 2$ for $n \\geq 3$ and $\\sigma_1(n) \\geq n + 1$ for $n \\geq 2$, neither can have barriers beyond small values. In contrast, $\\omega(n)$ (the number of distinct prime divisors) grows logarithmically \u2014 $\\omega(n) \\leq \\log_2 n$ \u2014 leaving room for barriers. Erd\u0151s proved that the exponent product function $F(n) = \\prod k_i$ (where $n = \\prod p_i^{k_i}$) has barriers with positive density, motivating the conjecture that $\\omega$ behaves similarly.\n\nSelfridge computed that 99840 is the largest $\\Omega$-barrier (counting prime factors with multiplicity) below $10^5$, showing that $\\Omega$-barriers become very sparse. OEIS A005236 lists $\\omega$-barriers: 1, 2, 4, 6, 12, 24, 30, 32, 48, 60, 64, 90, 120, 128, ... The problem connects to Erd\u0151s problems #412 (do all trajectories of $n \\mapsto n + \\omega(n)$ eventually merge?) and #414 (similar questions for other additive functions).",
     "problemStatement": "Let $\\omega(n)$ denote the number of distinct primes dividing $n$. A number $n$ is a **barrier** for $\\omega$ if $m + \\omega(m) \\leq n$ for all $m < n$.\n\n**Part 1**: Are there infinitely many barriers for $\\omega$?\n\n**Part 2**: Does there exist $\\varepsilon > 0$ such that infinitely many $n$ satisfy $m + \\varepsilon \\cdot \\omega(m) \\leq n$ for all $m < n$?",
-    "text": "Are there infinitely many n such that m + ω(m) ≤ n for all m < n?",
+    "text": "Are there infinitely many n such that m + \u03c9(m) \u2264 n for all m < n?",
     "proofStrategy": "The formalization takes a comprehensive approach to barriers. First, three arithmetic functions ($\\omega$, $\\Omega$, and $\\text{expProd}$) are defined, along with a general `IsBarrier` predicate for any $f : \\mathbb{N} \\to \\mathbb{N}$. Basic structural theorems are proved: barriers are vacuously true at 0 and 1, barrier-ness is monotone in the function, and barriers constrain predecessors to have $f(n-1) \\leq 1$.\n\nA key proof shows that at any $\\omega$-barrier $n \\geq 3$, the predecessor $n-1$ must be a prime power (since $\\omega(n-1) \\leq 1$ and $n-1 \\geq 2$ forces exactly one prime factor). The formalization proves $\\varphi$ has no barriers beyond 3 and $\\sigma_1$ has no barriers beyond 2, illustrating why slow growth matters.\n\nThe computational section provides a decidable barrier-checking framework: `isBarrierBool` tests all $m < n$ and is proved both sound and complete. Using `native_decide`, barriers for $\\omega$ are machine-verified up to 128, and barrier counts are verified at several thresholds. The barrier comparison hierarchy $F \\gg \\omega \\gg \\Omega$ is verified computationally. Orbit definitions formalize the dynamical interpretation $n \\mapsto n + \\omega(n)$, with theorems showing barriers trap orbits.",
     "keyInsights": [
       "**Logarithmic growth enables barriers**: Since $2^{\\omega(n)} \\leq n$, we get $\\omega(n) \\leq \\log_2 n$. This slow growth means $m + \\omega(m)$ can stay below $n$ for all $m < n$. By contrast, $\\varphi(n) \\geq 2$ for $n \\geq 3$ immediately kills barriers: $(n-1) + \\varphi(n-1) \\geq n + 1 > n$",
       "**Barriers force prime power predecessors**: At any $\\omega$-barrier $n \\geq 3$, $\\omega(n-1) \\leq 1$ forces $n-1$ to be a prime power $p^k$. This structural constraint means barriers can only occur at $n = p^k + 1$ for some prime power, dramatically limiting candidates",
-      "**Barrier hierarchy: $F \\gg \\omega \\gg \\Omega$**: The exponent product $F(n) = 1$ for all squarefree $n$ (about $6/\\pi^2 \\approx 61\\%$ of integers), so $F$-barriers are abundant — Erdős proved positive density. $\\Omega \\geq \\omega$ makes $\\Omega$-barriers rarer: only 4 exist below 5 vs 9 for $\\omega$ below 32",
-      "**Dynamical systems interpretation**: Barriers are fixed points of a discrete dynamical system. The iteration $n \\mapsto n + \\omega(n)$ defines orbits, and barriers are values no orbit can jump over. Erdős problem #412 asks whether all orbits eventually merge — a question about the attractor structure of this system",
+      "**Barrier hierarchy: $F \\gg \\omega \\gg \\Omega$**: The exponent product $F(n) = 1$ for all squarefree $n$ (about $6/\\pi^2 \\approx 61\\%$ of integers), so $F$-barriers are abundant \u2014 Erd\u0151s proved positive density. $\\Omega \\geq \\omega$ makes $\\Omega$-barriers rarer: only 4 exist below 5 vs 9 for $\\omega$ below 32",
+      "**Dynamical systems interpretation**: Barriers are fixed points of a discrete dynamical system. The iteration $n \\mapsto n + \\omega(n)$ defines orbits, and barriers are values no orbit can jump over. Erd\u0151s problem #412 asks whether all orbits eventually merge \u2014 a question about the attractor structure of this system",
       "**Computational verification builds confidence**: Machine-verified barriers up to 128 (15 values) and barrier counts up to 121 match OEIS A005236, providing empirical evidence for the conjecture. The gap between consecutive barriers grows but never appears to terminate"
     ],
     "prerequisites": [
@@ -88,15 +88,15 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 21,
-      "summary": "Module docstring describing barriers for ω, Erdős's conjecture, known results (expProd density, Selfridge's computation, OEIS A005236), and Mathlib import.",
-      "mathContext": "Erdős #413: Are there infinitely many barriers for $\\omega(n)$? A barrier $n$ satisfies $m + \\omega(m) \\leq n$ for all $m < n$."
+      "summary": "Module docstring describing barriers for \u03c9, Erd\u0151s's conjecture, known results (expProd density, Selfridge's computation, OEIS A005236), and Mathlib import.",
+      "mathContext": "Erd\u0151s #413: Are there infinitely many barriers for $\\omega(n)$? A barrier $n$ satisfies $m + \\omega(m) \\leq n$ for all $m < n$."
     },
     {
       "id": "arithmetic-functions",
       "title": "Arithmetic Functions",
       "startLine": 23,
       "endLine": 40,
-      "summary": "Defines three noncomputable arithmetic functions: ω(n) = number of distinct prime divisors, Ω(n) = prime factors with multiplicity, and expProd(n) = product of prime exponents.",
+      "summary": "Defines three noncomputable arithmetic functions: \u03c9(n) = number of distinct prime divisors, \u03a9(n) = prime factors with multiplicity, and expProd(n) = product of prime exponents.",
       "mathContext": "$\\omega(n) = |\\{p \\text{ prime} : p \\mid n\\}|$ (number of distinct prime divisors), $\\Omega(n) = \\sum_{p^k \\| n} k$ (with multiplicity), $\\text{expProd}(n) = \\prod_{p \\mid n} p$."
     },
     {
@@ -104,7 +104,7 @@
       "title": "Barrier Definitions",
       "startLine": 42,
       "endLine": 61,
-      "summary": "Defines IsBarrier for ℕ → ℕ functions, IsBarrierReal for ℝ-valued functions (ε-variant), and the set of barriers.",
+      "summary": "Defines IsBarrier for \u2115 \u2192 \u2115 functions, IsBarrierReal for \u211d-valued functions (\u03b5-variant), and the set of barriers.",
       "mathContext": "$n$ is a barrier for $f$ if $\\forall m < n, m + f(m) \\leq n$. Real variant: $\\forall m < n, m + f(m) < n + \\varepsilon$."
     },
     {
@@ -117,27 +117,27 @@
     },
     {
       "id": "omega-values-bounds",
-      "title": "ω Values and Upper Bound",
+      "title": "\u03c9 Values and Upper Bound",
       "startLine": 101,
       "endLine": 159,
-      "summary": "Computes ω for small inputs, proves ω(p) = 1 for primes, and establishes the key bound 2^ω(n) ≤ n (equivalently ω(n) ≤ log₂ n) via prime factorization.",
+      "summary": "Computes \u03c9 for small inputs, proves \u03c9(p) = 1 for primes, and establishes the key bound 2^\u03c9(n) \u2264 n (equivalently \u03c9(n) \u2264 log\u2082 n) via prime factorization.",
       "mathContext": "$\\omega(1) = 0, \\omega(p) = 1, \\omega(p^k) = 1, \\omega(pq) = 2$. Key bound: $\\omega(n) \\leq \\log_2(n)$ since $2^{\\omega(n)} \\leq n$."
     },
     {
       "id": "phi-sigma-no-barriers",
-      "title": "φ and σ₁ Have No Barriers",
+      "title": "\u03c6 and \u03c3\u2081 Have No Barriers",
       "startLine": 160,
       "endLine": 218,
-      "summary": "Proves φ has no barriers beyond 3 (since φ(n) ≥ 2 for n ≥ 3) and σ₁ has no barriers beyond 2 (since σ₁(n) ≥ n+1 for n ≥ 2). Also proves ω ≤ Ω.",
+      "summary": "Proves \u03c6 has no barriers beyond 3 (since \u03c6(n) \u2265 2 for n \u2265 3) and \u03c3\u2081 has no barriers beyond 2 (since \u03c3\u2081(n) \u2265 n+1 for n \u2265 2). Also proves \u03c9 \u2264 \u03a9.",
       "mathContext": "$\\varphi$ has no barriers beyond 3 (since $\\varphi(n) \\geq 2$ for $n \\geq 3$, making $n + \\varphi(n) > n+1$). Similarly $\\sigma_1$ has no barriers beyond 2."
     },
     {
       "id": "decidable-omega-barriers",
-      "title": "Machine-Verified ω-Barriers",
+      "title": "Machine-Verified \u03c9-Barriers",
       "startLine": 244,
       "endLine": 401,
-      "summary": "Computable barrier checking via isBarrierBool with soundness/completeness proofs. Machine-verifies ω-barriers at 0-128 and non-barriers at 3,5,7-10,15,16,20 via native_decide. Counts barriers at thresholds.",
-      "mathContext": "Computable barrier checking via `isBarrierBool` with decidable arithmetic. Sound and complete: `isBarrierBool n = true ↔ IsBarrier omega n`."
+      "summary": "Computable barrier checking via isBarrierBool with soundness/completeness proofs. Machine-verifies \u03c9-barriers at 0-128 and non-barriers at 3,5,7-10,15,16,20 via native_decide. Counts barriers at thresholds.",
+      "mathContext": "Computable barrier checking via `isBarrierBool` with decidable arithmetic. Sound and complete: `isBarrierBool n = true \u2194 IsBarrier omega n`."
     },
     {
       "id": "structural-theorems",
@@ -152,7 +152,7 @@
       "title": "General Barrier Theory",
       "startLine": 519,
       "endLine": 584,
-      "summary": "Barriers for zero function = all of ℕ, constant function characterization, bounded-by-one implies universal barrier, barrier sum decomposition, and inter-barrier witness theorem.",
+      "summary": "Barriers for zero function = all of \u2115, constant function characterization, bounded-by-one implies universal barrier, barrier sum decomposition, and inter-barrier witness theorem.",
       "mathContext": "Zero function: all $n$ are barriers. Constant $c$: barriers are exactly $\\{0, \\ldots, c\\}$. Bounded $f$: barrier set is cofinite."
     },
     {
@@ -160,23 +160,23 @@
       "title": "Iterated Dynamics",
       "startLine": 605,
       "endLine": 709,
-      "summary": "Defines iterOmega, iterOmegaPow, eventuallyMeet, and orbit. Proves orbits are strictly increasing for n ≥ 2, barriers trap orbits, and orbits respect barrier ordering.",
+      "summary": "Defines iterOmega, iterOmegaPow, eventuallyMeet, and orbit. Proves orbits are strictly increasing for n \u2265 2, barriers trap orbits, and orbits respect barrier ordering.",
       "mathContext": "iterOmega: $\\omega^{(k)}(n)$. orbits are strictly decreasing until reaching 0 or 1. eventuallyMeet: do all orbits merge?"
     },
     {
       "id": "decidable-bigomega-expprod",
-      "title": "Verified Ω and expProd Barriers",
+      "title": "Verified \u03a9 and expProd Barriers",
       "startLine": 710,
       "endLine": 855,
-      "summary": "Computable Ω and expProd, machine-verified barriers for each, barrier counts, and computational comparison hierarchy: F >> ω >> Ω.",
+      "summary": "Computable \u03a9 and expProd, machine-verified barriers for each, barrier counts, and computational comparison hierarchy: F >> \u03c9 >> \u03a9.",
       "mathContext": "Machine-verified: $\\Omega$-barriers are $\\{0,1,2,3,4,8\\}$. expProd-barriers are $\\{0,1,2\\}$."
     },
     {
       "id": "omega-multiplicativity",
-      "title": "ω Multiplicativity and Subadditivity",
+      "title": "\u03c9 Multiplicativity and Subadditivity",
       "startLine": 1025,
-      "endLine": 1077,
-      "summary": "Proves ω(mn) = ω(m) + ω(n) for coprime m,n, derives ω(6) = 2 and ω(30) = 3, and proves the subadditive bound ω(mn) ≤ ω(m) + ω(n) for general products.",
+      "endLine": 1048,
+      "summary": "Proves \u03c9(mn) = \u03c9(m) + \u03c9(n) for coprime m,n, derives \u03c9(6) = 2 and \u03c9(30) = 3, and proves the subadditive bound \u03c9(mn) \u2264 \u03c9(m) + \u03c9(n) for general products.",
       "mathContext": "$\\omega(mn) = \\omega(m) + \\omega(n)$ for $\\gcd(m,n) = 1$. Derives $\\omega(6) = 2$, $\\omega(30) = 3$."
     },
     {
@@ -184,27 +184,27 @@
       "title": "Main Conjectures and Open Problem",
       "startLine": 974,
       "endLine": 1024,
-      "summary": "States the main conjecture (ω-barriers infinite), ε-variant, trajectory merging conjecture (related to #412), Erdős's expProd density result, Selfridge's computation, and the combined open problem.",
+      "summary": "States the main conjecture (\u03c9-barriers infinite), \u03b5-variant, trajectory merging conjecture (related to #412), Erd\u0151s's expProd density result, Selfridge's computation, and the combined open problem.",
       "mathContext": "Main conjecture: $|\\{n : \\text{IsBarrier}(\\omega, n)\\}| = \\infty$. Trajectory merging: do all $\\omega$-orbits eventually meet?"
     },
     {
       "id": "strong-prime-power",
       "title": "Strong Prime Power Predecessor",
-      "startLine": 1078,
-      "endLine": 1102,
-      "summary": "Proves the strong form: at any barrier n ≥ 3, n-1 is necessarily a prime power p^k with k ≥ 1, using the fact that ω(n-1) = 1 for n ≥ 3 at a barrier.",
+      "startLine": 1038,
+      "endLine": 1048,
+      "summary": "Proves the strong form: at any barrier n \u2265 3, n-1 is necessarily a prime power p^k with k \u2265 1, using the fact that \u03c9(n-1) = 1 for n \u2265 3 at a barrier.",
       "mathContext": "At any barrier $n \\geq 3$: $n - 1$ is a prime power $p^k$. Proof: if $n-1 = ab$ with $a,b > 1$ coprime, then $\\omega(n-1) \\geq 2$, violating the barrier condition."
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides a comprehensive treatment of Erdős Problem #413 on barriers for the ω function. It defines barriers for general arithmetic functions, proves structural constraints (predecessors must be prime powers, φ and σ₁ cannot have large barriers), machine-verifies specific barriers up to 128, establishes a barrier hierarchy F >> ω >> Ω, and connects barriers to the iterated dynamics of n ↦ n + ω(n). The 1100-line file includes 50+ theorems, a decidable barrier-checking framework, and extensive computational verification.",
-    "implications": "**Theoretical Significance**: Resolution of the barrier conjecture would illuminate the distribution of prime factors among consecutive integers and clarify the dynamical structure of additive arithmetic iterations.\n\nThe barrier concept bridges additive number theory and discrete dynamics — infinite barriers would imply a kind of 'recurrence' in the prime factorization structure of integers. The ε-variant connects to the fine distribution of smooth numbers and the Erdős-Kac theorem on the normal order of ω.",
+    "summary": "This formalization provides a comprehensive treatment of Erd\u0151s Problem #413 on barriers for the \u03c9 function. It defines barriers for general arithmetic functions, proves structural constraints (predecessors must be prime powers, \u03c6 and \u03c3\u2081 cannot have large barriers), machine-verifies specific barriers up to 128, establishes a barrier hierarchy F >> \u03c9 >> \u03a9, and connects barriers to the iterated dynamics of n \u21a6 n + \u03c9(n). The 1100-line file includes 50+ theorems, a decidable barrier-checking framework, and extensive computational verification.",
+    "implications": "**Theoretical Significance**: Resolution of the barrier conjecture would illuminate the distribution of prime factors among consecutive integers and clarify the dynamical structure of additive arithmetic iterations.\n\nThe barrier concept bridges additive number theory and discrete dynamics \u2014 infinite barriers would imply a kind of 'recurrence' in the prime factorization structure of integers. The \u03b5-variant connects to the fine distribution of smooth numbers and the Erd\u0151s-Kac theorem on the normal order of \u03c9.",
     "openQuestions": [
-      "Are there infinitely many ω-barriers? What is their asymptotic density?",
-      "Does there exist ε > 0 with infinitely many ε-barriers for ω?",
-      "Do all trajectories of n ↦ n + ω(n) eventually merge (Erdős #412)?",
-      "Is there a constructive characterization of ω-barriers, perhaps via prime constellation conditions?",
-      "What is the next Ω-barrier after 99840 (Selfridge's computation)?"
+      "Are there infinitely many \u03c9-barriers? What is their asymptotic density?",
+      "Does there exist \u03b5 > 0 with infinitely many \u03b5-barriers for \u03c9?",
+      "Do all trajectories of n \u21a6 n + \u03c9(n) eventually merge (Erd\u0151s #412)?",
+      "Is there a constructive characterization of \u03c9-barriers, perhaps via prime constellation conditions?",
+      "What is the next \u03a9-barrier after 99840 (Selfridge's computation)?"
     ]
   },
   "leanFile": {
@@ -213,7 +213,7 @@
     ],
     "opens": [],
     "namespace": "Erdos413",
-    "lineCount": 1102,
+    "lineCount": 1048,
     "axiomCount": 6,
     "theoremCount": 116,
     "definitionCount": 17
@@ -222,27 +222,27 @@
     {
       "targetId": "erdos-414",
       "relationship": "related",
-      "description": "Erdős #414 studies merging orbits of h(n) = n + τ(n), closely related to the ω-barrier dynamics here. Both concern iterated arithmetic-function maps and their eventual behavior"
+      "description": "Erd\u0151s #414 studies merging orbits of h(n) = n + \u03c4(n), closely related to the \u03c9-barrier dynamics here. Both concern iterated arithmetic-function maps and their eventual behavior"
     },
     {
       "targetId": "erdos-415",
       "relationship": "related",
-      "description": "Erdős #415 extends the barrier question to other arithmetic functions, part of the same cluster of problems on additive perturbations by multiplicative functions"
+      "description": "Erd\u0151s #415 extends the barrier question to other arithmetic functions, part of the same cluster of problems on additive perturbations by multiplicative functions"
     },
     {
       "targetId": "erdos-412",
       "relationship": "related",
-      "description": "Erdős #412 is a sibling problem in the barrier cluster, studying related additive combinatorics of arithmetic functions"
+      "description": "Erd\u0151s #412 is a sibling problem in the barrier cluster, studying related additive combinatorics of arithmetic functions"
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "The Euler totient φ(n) is shown to have no barriers beyond 3 (since φ(n) ≥ 2 for n ≥ 3), contrasting with ω(n) which conjecturally has infinitely many barriers"
+      "description": "The Euler totient \u03c6(n) is shown to have no barriers beyond 3 (since \u03c6(n) \u2265 2 for n \u2265 3), contrasting with \u03c9(n) which conjecturally has infinitely many barriers"
     },
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization underlies ω(n): the count of distinct prime factors requires knowing the full factorization. The multiplicativity ω(mn) = ω(m) + ω(n) for coprime m,n follows from UFD"
+      "description": "Unique prime factorization underlies \u03c9(n): the count of distinct prime factors requires knowing the full factorization. The multiplicativity \u03c9(mn) = \u03c9(m) + \u03c9(n) for coprime m,n follows from UFD"
     }
   ],
   "relatedProofs": [
@@ -255,11 +255,11 @@
   "references": [
     {
       "key": "Er79d",
-      "citation": "P. Erdős, 'Problems and results on consecutive integers', Publicationes Mathematicae Debrecen (1979)"
+      "citation": "P. Erd\u0151s, 'Problems and results on consecutive integers', Publicationes Mathematicae Debrecen (1979)"
     },
     {
       "key": "ErGr80",
-      "citation": "P. Erdős, R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de L'Enseignement Mathématique (1980)"
+      "citation": "P. Erd\u0151s, R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de L'Enseignement Math\u00e9matique (1980)"
     },
     {
       "key": "Gu04",

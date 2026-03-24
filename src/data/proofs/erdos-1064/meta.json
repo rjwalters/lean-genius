@@ -1,10 +1,10 @@
 {
   "id": "erdos-1064",
-  "title": "Erdős Problem #1064: Comparing φ(n) and φ(n - φ(n))",
+  "title": "Erd\u0151s Problem #1064: Comparing \u03c6(n) and \u03c6(n - \u03c6(n))",
   "slug": "erdos-1064",
-  "description": "Is φ(n) > φ(n - φ(n)) for almost all n? Yes (density 1), but the reverse holds infinitely often. Solved by Luca-Pomerance and Grytczuk-Luca-Wójtowicz.",
+  "description": "Is \u03c6(n) > \u03c6(n - \u03c6(n)) for almost all n? Yes (density 1), but the reverse holds infinitely often. Solved by Luca-Pomerance and Grytczuk-Luca-W\u00f3jtowicz.",
   "meta": {
-    "author": "Luca-Pomerance (2002), Grytczuk-Luca-Wójtowicz (2001)",
+    "author": "Luca-Pomerance (2002), Grytczuk-Luca-W\u00f3jtowicz (2001)",
     "sourceUrl": "https://erdosproblems.com/1064",
     "date": "2002",
     "status": "axiomatized",
@@ -25,7 +25,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function \u03c6(n)",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
@@ -40,36 +40,36 @@
       }
     ],
     "originalContributions": [
-      "Formal statement of both parts of Erdős Problem 1064",
+      "Formal statement of both parts of Erd\u0151s Problem 1064",
       "Explicit counterexamples (30, 60, 66) verified computationally",
-      "The pattern 15·2^k for the reverse inequality",
+      "The pattern 15\u00b72^k for the reverse inequality",
       "Generalized statement for f(n) = o(n)"
     ],
     "axiomCount": 2,
     "lineCount": 132,
     "prerequisites": [
-      "Euler's totient function φ(n) and its multiplicativity",
-      "Natural density of subsets of ℕ",
+      "Euler's totient function \u03c6(n) and its multiplicativity",
+      "Natural density of subsets of \u2115",
       "Asymptotic notation (o(n), almost all)",
       "Prime factorization and coprimality"
     ],
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem 1064 concerns the comparison of φ(n) with φ(n - φ(n)), a natural iteration of Euler's totient function. The problem asks whether φ(n) is usually larger, and whether the reverse ever happens.\n\nGrytczuk, Luca, and Wójtowicz (2001) made initial progress, showing A₊ (where φ(n) > φ(n-φ(n))) has lower density at least 0.54 and A₋ is infinite. They gave the explicit pattern: n = 15·2^k gives n ∈ A₋.\n\nLuca and Pomerance (2002) completed the solution, proving A₊ has density 1. Their stronger result: for any f(n) = o(n), we have φ(n) > φ(n - φ(n)) + f(n) for almost all n.",
+    "historicalContext": "Erd\u0151s Problem 1064 concerns the comparison of \u03c6(n) with \u03c6(n - \u03c6(n)), a natural iteration of Euler's totient function. The problem asks whether \u03c6(n) is usually larger, and whether the reverse ever happens.\n\nGrytczuk, Luca, and W\u00f3jtowicz (2001) made initial progress, showing A\u208a (where \u03c6(n) > \u03c6(n-\u03c6(n))) has lower density at least 0.54 and A\u208b is infinite. They gave the explicit pattern: n = 15\u00b72^k gives n \u2208 A\u208b.\n\nLuca and Pomerance (2002) completed the solution, proving A\u208a has density 1. Their stronger result: for any f(n) = o(n), we have \u03c6(n) > \u03c6(n - \u03c6(n)) + f(n) for almost all n.",
     "problemStatement": "Prove that $\\phi(n) > \\phi(n - \\phi(n))$ for almost all $n$, but that $\\phi(n) < \\phi(n - \\phi(n))$ for infinitely many $n$.\n\n**Part 1:** The set $A_> = \\{n : \\phi(n) > \\phi(n - \\phi(n))\\}$ has density 1.\n\n**Part 2:** The set $A_< = \\{n : \\phi(n) < \\phi(n - \\phi(n))\\}$ is infinite.\n\nBoth parts are now proved.",
-    "text": "Is φ(n) > φ(n - φ(n)) for almost all n? Yes (density 1), but the reverse holds infinitely often. Solved by Luca-Pomerance and Grytczuk-Luca-Wójtowicz.",
-    "proofStrategy": "The two parts require different approaches:\n\n**Part 1 (Density 1):** Luca-Pomerance use analytic methods to show that for typical n, the value n - φ(n) has a smaller totient than n. This uses properties of the distribution of φ values.\n\n**Part 2 (Infinitude):** The explicit construction n = 15·2^k works because:\n- φ(15·2^k) = φ(15)·φ(2^k) = 8·2^(k-1) = 4·2^k\n- n - φ(n) = 15·2^k - 4·2^k = 11·2^k\n- φ(11·2^k) = φ(11)·φ(2^k) = 10·2^(k-1) = 5·2^k > 4·2^k",
+    "text": "Is \u03c6(n) > \u03c6(n - \u03c6(n)) for almost all n? Yes (density 1), but the reverse holds infinitely often. Solved by Luca-Pomerance and Grytczuk-Luca-W\u00f3jtowicz.",
+    "proofStrategy": "The two parts require different approaches:\n\n**Part 1 (Density 1):** Luca-Pomerance use analytic methods to show that for typical n, the value n - \u03c6(n) has a smaller totient than n. This uses properties of the distribution of \u03c6 values.\n\n**Part 2 (Infinitude):** The explicit construction n = 15\u00b72^k works because:\n- \u03c6(15\u00b72^k) = \u03c6(15)\u00b7\u03c6(2^k) = 8\u00b72^(k-1) = 4\u00b72^k\n- n - \u03c6(n) = 15\u00b72^k - 4\u00b72^k = 11\u00b72^k\n- \u03c6(11\u00b72^k) = \u03c6(11)\u00b7\u03c6(2^k) = 10\u00b72^(k-1) = 5\u00b72^k > 4\u00b72^k",
     "keyInsights": [
-      "**The iteration n ↦ n - φ(n):** This maps n to the count of integers ≤ n sharing a factor with n.",
-      "**Typical behavior:** For most n, φ(n) dominates φ(n - φ(n)) because n - φ(n) is typically smaller.",
-      "**Exceptional n:** The pattern 15·2^k gives counterexamples because 11 has larger relative totient than 15.",
-      "**Density vs infinitude:** A set can have density 0 yet be infinite—A₋ has density 0 but is infinite.",
-      "**Multiplicativity is key:** The explicit counterexamples exploit φ(15·2^k) = φ(15)·φ(2^k) and φ(11·2^k) = φ(11)·φ(2^k) — the multiplicativity of Euler's totient reduces the comparison to φ(11)/11 vs φ(15)/15"
+      "**The iteration n \u21a6 n - \u03c6(n):** This maps n to the count of integers \u2264 n sharing a factor with n.",
+      "**Typical behavior:** For most n, \u03c6(n) dominates \u03c6(n - \u03c6(n)) because n - \u03c6(n) is typically smaller.",
+      "**Exceptional n:** The pattern 15\u00b72^k gives counterexamples because 11 has larger relative totient than 15.",
+      "**Density vs infinitude:** A set can have density 0 yet be infinite\u2014A\u208b has density 0 but is infinite.",
+      "**Multiplicativity is key:** The explicit counterexamples exploit \u03c6(15\u00b72^k) = \u03c6(15)\u00b7\u03c6(2^k) and \u03c6(11\u00b72^k) = \u03c6(11)\u00b7\u03c6(2^k) \u2014 the multiplicativity of Euler's totient reduces the comparison to \u03c6(11)/11 vs \u03c6(15)/15"
     ],
     "prerequisites": [
-      "Euler's totient function φ(n) and its multiplicativity",
-      "Natural density of subsets of ℕ",
+      "Euler's totient function \u03c6(n) and its multiplicativity",
+      "Natural density of subsets of \u2115",
       "Asymptotic notation (o(n), almost all)",
       "Prime factorization and coprimality"
     ]
@@ -85,15 +85,15 @@
     },
     {
       "id": "examples-greater",
-      "title": "Examples: φ(n) > φ(n - φ(n))",
+      "title": "Examples: \u03c6(n) > \u03c6(n - \u03c6(n))",
       "startLine": 83,
       "endLine": 89,
       "summary": "Verified examples: $n = 10$: $\\phi(10) = 4 > 2 = \\phi(6)$; $n = 15$: $\\phi(15) = 8 > 4 = \\phi(7)$.",
-      "mathContext": "For $n = 10 = 2 \\cdot 5$: $\\phi(10) = 4$, $n - \\phi(n) = 6$, $\\phi(6) = 2$. The inequality $4 > 2$ holds. This is the 'typical' case — most $n$ satisfy the inequality because $n - \\phi(n)$ tends to be smooth (many small prime factors) while $\\phi$ of smooth numbers is relatively small."
+      "mathContext": "For $n = 10 = 2 \\cdot 5$: $\\phi(10) = 4$, $n - \\phi(n) = 6$, $\\phi(6) = 2$. The inequality $4 > 2$ holds. This is the 'typical' case \u2014 most $n$ satisfy the inequality because $n - \\phi(n)$ tends to be smooth (many small prime factors) while $\\phi$ of smooth numbers is relatively small."
     },
     {
       "id": "examples-less",
-      "title": "Examples: φ(n) < φ(n - φ(n)) and the 15·2^k Pattern",
+      "title": "Examples: \u03c6(n) < \u03c6(n - \u03c6(n)) and the 15\u00b72^k Pattern",
       "startLine": 91,
       "endLine": 109,
       "summary": "Verified counterexamples: $n = 30, 60, 66$. The infinite family $n = 15 \\cdot 2^k$ gives $\\phi(n) = 4 \\cdot 2^k < 5 \\cdot 2^k = \\phi(n - \\phi(n))$.",
@@ -104,25 +104,25 @@
       "title": "Main Theorems: Density 1 and Infinitude",
       "startLine": 116,
       "endLine": 132,
-      "summary": "Two axioms encoding the solution: `density_of_greater` ($A_>$ has natural density 1, Luca-Pomerance 2002) and `less_is_infinite` ($A_<$ is infinite, Grytczuk-Luca-Wójtowicz 2001).",
+      "summary": "Two axioms encoding the solution: `density_of_greater` ($A_>$ has natural density 1, Luca-Pomerance 2002) and `less_is_infinite` ($A_<$ is infinite, Grytczuk-Luca-W\u00f3jtowicz 2001).",
       "mathContext": "Natural density: $d(A) = \\lim_{N \\to \\infty} |A \\cap [1, N]| / N$. The density-1 result means: for any $\\epsilon > 0$, all but $o(N)$ integers $n \\leq N$ satisfy $\\phi(n) > \\phi(n - \\phi(n))$. The infinitude of $A_<$ follows from the explicit family $15 \\cdot 2^k$ (but there are other counterexamples too, like $n = 30, 66$)."
     },
     {
       "id": "generalization",
       "title": "Generalization: Stronger Dominance",
-      "startLine": 143,
+      "startLine": 122,
       "endLine": 132,
       "summary": "Luca-Pomerance's stronger result: for any $f(n) = o(n)$, the set $\\{n : \\phi(n) > \\phi(n - \\phi(n)) + f(n)\\}$ has density 1.",
-      "mathContext": "This says the dominance $\\phi(n) > \\phi(n - \\phi(n))$ is not borderline — the gap $\\phi(n) - \\phi(n - \\phi(n))$ grows faster than any $o(n)$ function for typical $n$. Heuristically, $\\phi(n) \\sim n \\prod_{p|n} (1 - 1/p)$ and $n - \\phi(n) \\sim n(1 - \\prod_{p|n}(1-1/p))$, so the ratio $\\phi(n)/\\phi(n-\\phi(n))$ is typically large."
+      "mathContext": "This says the dominance $\\phi(n) > \\phi(n - \\phi(n))$ is not borderline \u2014 the gap $\\phi(n) - \\phi(n - \\phi(n))$ grows faster than any $o(n)$ function for typical $n$. Heuristically, $\\phi(n) \\sim n \\prod_{p|n} (1 - 1/p)$ and $n - \\phi(n) \\sim n(1 - \\prod_{p|n}(1-1/p))$, so the ratio $\\phi(n)/\\phi(n-\\phi(n))$ is typically large."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures both parts of Erdős Problem 1064. Luca-Pomerance showed φ(n) > φ(n - φ(n)) has density 1, while Grytczuk-Luca-Wójtowicz showed the reverse inequality holds for infinitely many n (including all n = 15·2^k). We state both results as axioms and verify concrete examples.",
-    "implications": "**Theoretical Significance**: The resolution has implications for understanding iterated arithmetic functions:\n\n1. **Typical vs exceptional:** Density-1 sets can have infinite complements with special structure.\n\n**2. Multiplicative structure:** The pattern 15·2^k exploits multiplicativity of φ.\n\n3. **Related problems:** Similar questions for σ(n) vs σ(n - σ(n)) lead to different behavior.",
+    "summary": "This formalization captures both parts of Erd\u0151s Problem 1064. Luca-Pomerance showed \u03c6(n) > \u03c6(n - \u03c6(n)) has density 1, while Grytczuk-Luca-W\u00f3jtowicz showed the reverse inequality holds for infinitely many n (including all n = 15\u00b72^k). We state both results as axioms and verify concrete examples.",
+    "implications": "**Theoretical Significance**: The resolution has implications for understanding iterated arithmetic functions:\n\n1. **Typical vs exceptional:** Density-1 sets can have infinite complements with special structure.\n\n**2. Multiplicative structure:** The pattern 15\u00b72^k exploits multiplicativity of \u03c6.\n\n3. **Related problems:** Similar questions for \u03c3(n) vs \u03c3(n - \u03c3(n)) lead to different behavior.",
     "openQuestions": [
-      "What is the density of A₌ where φ(n) = φ(n - φ(n))?",
-      "Can we characterize all n with φ(n) < φ(n - φ(n))?",
-      "What happens for higher iterates: φ(n) vs φ(n - φ(n - φ(n)))?"
+      "What is the density of A\u208c where \u03c6(n) = \u03c6(n - \u03c6(n))?",
+      "Can we characterize all n with \u03c6(n) < \u03c6(n - \u03c6(n))?",
+      "What happens for higher iterates: \u03c6(n) vs \u03c6(n - \u03c6(n - \u03c6(n)))?"
     ]
   },
   "crossReferences": [
@@ -150,17 +150,17 @@
   "references": [
     {
       "authors": "Luca, Florian; Pomerance, Carl",
-      "title": "On some problems of Mąkowski-Schinzel and Erdős concerning the arithmetical functions φ and σ",
+      "title": "On some problems of M\u0105kowski-Schinzel and Erd\u0151s concerning the arithmetical functions \u03c6 and \u03c3",
       "year": "2002",
-      "venue": "Colloquium Mathematicum, vol. 92, no. 1, pp. 111–130",
-      "note": "Proved that φ(n) > φ(n - φ(n)) holds for a set of density 1, completing the solution of Problem 1064. The stronger result: for any f(n) = o(n), the dominance φ(n) > φ(n - φ(n)) + f(n) holds almost always"
+      "venue": "Colloquium Mathematicum, vol. 92, no. 1, pp. 111\u2013130",
+      "note": "Proved that \u03c6(n) > \u03c6(n - \u03c6(n)) holds for a set of density 1, completing the solution of Problem 1064. The stronger result: for any f(n) = o(n), the dominance \u03c6(n) > \u03c6(n - \u03c6(n)) + f(n) holds almost always"
     },
     {
-      "authors": "Grytczuk, Aleksander; Luca, Florian; Wójtowicz, Marek",
-      "title": "Another note on the equation φ(n) = φ(n - φ(n))",
+      "authors": "Grytczuk, Aleksander; Luca, Florian; W\u00f3jtowicz, Marek",
+      "title": "Another note on the equation \u03c6(n) = \u03c6(n - \u03c6(n))",
       "year": "2001",
-      "venue": "Colloquium Mathematicum, vol. 87, no. 1, pp. 133–138",
-      "note": "Initial progress toward Problem 1064: showed the set where φ(n) > φ(n - φ(n)) has lower density ≥ 0.54 and gave the explicit infinite family n = 15·2^k where the reverse inequality holds"
+      "venue": "Colloquium Mathematicum, vol. 87, no. 1, pp. 133\u2013138",
+      "note": "Initial progress toward Problem 1064: showed the set where \u03c6(n) > \u03c6(n - \u03c6(n)) has lower density \u2265 0.54 and gave the explicit infinite family n = 15\u00b72^k where the reverse inequality holds"
     }
   ],
   "leanFile": {

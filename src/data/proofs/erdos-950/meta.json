@@ -1,10 +1,10 @@
 {
   "id": "erdos-950",
-  "title": "Erdős Problem #950: Sum of Reciprocal Prime Gaps",
+  "title": "Erd\u0151s Problem #950: Sum of Reciprocal Prime Gaps",
   "slug": "erdos-950",
-  "description": "Define f(n) = ∑_{p<n} 1/(n−p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1 (de Bruijn–Erdős–Turán). OPEN.",
+  "description": "Define f(n) = \u2211_{p<n} 1/(n\u2212p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = \u221e? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1 (de Bruijn\u2013Erd\u0151s\u2013Tur\u00e1n). OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/950",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos950Problem.lean",
@@ -26,16 +26,16 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem concerns the function f(n) = ∑_{p<n} 1/(n−p), which measures how close n is to primes by weighting nearby primes more heavily. De Bruijn, Erdős, and Turán showed that ∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x, meaning f(n) averages to 1 and concentrates near 1. The three questions probe the extremal behavior. Functions measuring proximity of integers to primes connect to the Hardy-Ramanujan theorem on additive arithmetic functions and Cramér model of primes; the harmonic weighting 1/(n-p) echoes the classical harmonic series and Mertens theorem on ∑ 1/p. Understanding when f(n) is large or unusually small yields information about local prime gaps and prime distribution.",
-    "problemStatement": "Define f(n) = ∑_{p<n} 1/(n−p) where p ranges over primes. Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? All three remain OPEN.",
-    "text": "Define f(n) = ∑_{p<n} 1/(n−p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1 (de Bruijn–Erdős–Turán). OPEN.",
+    "historicalContext": "This problem concerns the function f(n) = \u2211_{p<n} 1/(n\u2212p), which measures how close n is to primes by weighting nearby primes more heavily. De Bruijn, Erd\u0151s, and Tur\u00e1n showed that \u2211_{n<x} f(n) ~ x and \u2211_{n<x} f(n)\u00b2 ~ x, meaning f(n) averages to 1 and concentrates near 1. The three questions probe the extremal behavior. Functions measuring proximity of integers to primes connect to the Hardy-Ramanujan theorem on additive arithmetic functions and Cram\u00e9r model of primes; the harmonic weighting 1/(n-p) echoes the classical harmonic series and Mertens theorem on \u2211 1/p. Understanding when f(n) is large or unusually small yields information about local prime gaps and prime distribution.",
+    "problemStatement": "Define f(n) = \u2211_{p<n} 1/(n\u2212p) where p ranges over primes. Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = \u221e? (3) Is f(n) = o(log log n)? All three remain OPEN.",
+    "text": "Define f(n) = \u2211_{p<n} 1/(n\u2212p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = \u221e? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1 (de Bruijn\u2013Erd\u0151s\u2013Tur\u00e1n). OPEN.",
     "proofStrategy": "The formalization defines primesLessThan, f, and fReal. The three questions are stated as formal propositions using Filter.liminf, Filter.limsup, and Filter.Eventually. Known average results are axioms. Basic properties (nonnegativity, small values) are proved or axiomatized. A weaker conjecture and its implication are included. A summary theorem combines the known results.",
     "keyInsights": [
-      "f(n) weights nearby primes more heavily via 1/(n−p)",
-      "de Bruijn–Erdős–Turán: f(n) averages to 1 (∑ f(n) ~ x, ∑ f(n)² ~ x)",
+      "f(n) weights nearby primes more heavily via 1/(n\u2212p)",
+      "de Bruijn\u2013Erd\u0151s\u2013Tur\u00e1n: f(n) averages to 1 (\u2211 f(n) ~ x, \u2211 f(n)\u00b2 ~ x)",
       "f(n) is large when n has many nearby primes, small in 'prime deserts'",
-      "The integral approximation ∫ dt/((n−t) log t) ~ 1 explains the average",
-      "A weaker prime distribution conjecture would give f(n) ≪ log log log n"
+      "The integral approximation \u222b dt/((n\u2212t) log t) ~ 1 explains the average",
+      "A weaker prime distribution conjecture would give f(n) \u226a log log log n"
     ],
     "prerequisites": [
       "Prime number theorem and prime counting function: the asymptotic pi(x) ~ x/log(x) and its consequences for the average gap between consecutive primes near n",
@@ -50,21 +50,21 @@
       "title": "Part 1: The Function f(n)",
       "startLine": 38,
       "endLine": 67,
-      "summary": "primesLessThan, f(n) = ∑_{p<n} 1/(n−p), and real-valued variant fReal."
+      "summary": "primesLessThan, f(n) = \u2211_{p<n} 1/(n\u2212p), and real-valued variant fReal."
     },
     {
       "id": "three-questions",
       "title": "Part 2: The Three Questions",
       "startLine": 69,
       "endLine": 119,
-      "summary": "question1 (lim inf = 1), question2 (lim sup = ∞), question3 (o(log log n)), fLittleO. All OPEN."
+      "summary": "question1 (lim inf = 1), question2 (lim sup = \u221e), question3 (o(log log n)), fLittleO. All OPEN."
     },
     {
       "id": "known-results",
-      "title": "Part 3: Known Results (de Bruijn–Erdős–Turán)",
+      "title": "Part 3: Known Results (de Bruijn\u2013Erd\u0151s\u2013Tur\u00e1n)",
       "startLine": 121,
       "endLine": 152,
-      "summary": "∑ f(n) ~ x and ∑ f(n)² ~ x as axioms. f_average_one proved from axiom."
+      "summary": "\u2211 f(n) ~ x and \u2211 f(n)\u00b2 ~ x as axioms. f_average_one proved from axiom."
     },
     {
       "id": "basic-properties",
@@ -83,41 +83,41 @@
     {
       "id": "weaker-conjecture",
       "title": "Part 6: Weaker Conjecture and Connection",
-      "startLine": 213,
+      "startLine": 198,
       "endLine": 208,
-      "summary": "primeCountingFunction, weakerConjecture, weaker_implies_bound axiom (f ≪ log log log n)."
+      "summary": "primeCountingFunction, weakerConjecture, weaker_implies_bound axiom (f \u226a log log log n)."
     },
     {
       "id": "prime-distribution",
       "title": "Part 7: Connection to Prime Distribution",
-      "startLine": 246,
+      "startLine": 198,
       "endLine": 208,
-      "summary": "primeGap definition, dense_primes_increase_f axiom (f(n) ≥ 1/k)."
+      "summary": "primeGap definition, dense_primes_increase_f axiom (f(n) \u2265 1/k)."
     },
     {
       "id": "summary",
       "title": "Part 8: Summary",
-      "startLine": 269,
+      "startLine": 198,
       "endLine": 208,
       "summary": "erdos_950_summary theorem combining both average results and True. Status: OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #950 asks three questions about f(n) = ∑_{p<n} 1/(n−p): Is lim inf = 1? Is lim sup = ∞? Is f(n) = o(log log n)? The average is known to be 1 (de Bruijn–Erdős–Turán), but extremal behavior is open.",
+    "summary": "Erd\u0151s Problem #950 asks three questions about f(n) = \u2211_{p<n} 1/(n\u2212p): Is lim inf = 1? Is lim sup = \u221e? Is f(n) = o(log log n)? The average is known to be 1 (de Bruijn\u2013Erd\u0151s\u2013Tur\u00e1n), but extremal behavior is open.",
     "implications": "Resolution would illuminate the fine structure of prime distribution near integers, characterizing fluctuations of the reciprocal-distance sum around its mean.",
     "openQuestions": [
       "Is lim inf f(n) = 1?",
-      "Is lim sup f(n) = ∞?",
+      "Is lim sup f(n) = \u221e?",
       "Is f(n) = o(log log n)?",
-      "What is the true growth rate of max_{n ≤ x} f(n)?"
+      "What is the true growth rate of max_{n \u2264 x} f(n)?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80]"
     }
   ],
@@ -125,7 +125,7 @@
     {
       "targetId": "erdos-951",
       "relationship": "related",
-      "description": "Nearby Erdős problem in the combinatorial number theory collection"
+      "description": "Nearby Erd\u0151s problem in the combinatorial number theory collection"
     }
   ],
   "relatedProofs": [

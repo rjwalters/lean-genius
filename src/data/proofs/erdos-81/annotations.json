@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #81: Clique Partitions of Chordal Graphs**\n\n**Question:** For a chordal graph $G$ on $n$ vertices, can its edges be partitioned into $n^2/6 + O(n)$ cliques?\n\n**Status:** OPEN\n\n**Gap:** Current bounds are $(1/4 - \\varepsilon)n^2$ (upper) vs $n^2/6$ (lower).",
+    "content": "**Erd\u0151s Problem #81: Clique Partitions of Chordal Graphs**\n\n**Question:** For a chordal graph $G$ on $n$ vertices, can its edges be partitioned into $n^2/6 + O(n)$ cliques?\n\n**Status:** OPEN\n\n**Gap:** Current bounds are $(1/4 - \\varepsilon)n^2$ (upper) vs $n^2/6$ (lower).",
     "mathContext": "The problem sits at the intersection of structural graph theory and extremal combinatorics. Chordal graphs generalize trees and complete graphs; they are exactly the graphs with perfect elimination orderings. The clique partition problem is related to intersection number and chromatic number of the complement.",
     "relatedConcepts": [
       "Chordal graphs",
@@ -29,7 +29,7 @@
     "type": "definition",
     "title": "Induced Cycle",
     "content": "`hasInducedCycleOfLength G k` defines an induced cycle of length $k$ as an injective map $\\text{Fin}\\,k \\to V$ where consecutive vertices are adjacent and non-consecutive vertices are non-adjacent. The modular arithmetic in the non-adjacency condition handles the cyclic structure.",
-    "mathContext": "An induced cycle (or hole) of length $k \\geq 4$ is the obstruction to being chordal. The condition requires both injectivity (distinct vertices) and that the only adjacencies are consecutive edges — no 'chords' exist. This is strictly stronger than containing a cycle as a subgraph.",
+    "mathContext": "An induced cycle (or hole) of length $k \\geq 4$ is the obstruction to being chordal. The condition requires both injectivity (distinct vertices) and that the only adjacencies are consecutive edges \u2014 no 'chords' exist. This is strictly stronger than containing a cycle as a subgraph.",
     "relatedConcepts": [
       "Function.Injective",
       "Fin",
@@ -66,7 +66,7 @@
     },
     "type": "definition",
     "title": "Clique Partition Structure",
-    "content": "`CliquePartition G` bundles a finite set of cliques with proofs that: (1) each set is a valid clique, (2) every edge is covered, and (3) each edge belongs to exactly one clique (`∃!` uniqueness). The `cliquePartitionNumber` (line 93) is the minimum over all such partitions.",
+    "content": "`CliquePartition G` bundles a finite set of cliques with proofs that: (1) each set is a valid clique, (2) every edge is covered, and (3) each edge belongs to exactly one clique (`\u2203!` uniqueness). The `cliquePartitionNumber` (line 93) is the minimum over all such partitions.",
     "mathContext": "The clique partition number $\\overline{\\chi}(G)$ equals the chromatic number of the complement: $\\overline{\\chi}(G) = \\chi(\\overline{G})$. For chordal graphs, $\\overline{G}$ is co-chordal, and the relationship to perfect graph theory is central. The `Nat.find` construction ensures the minimum exists by providing a trivial upper bound of $|V|^2$.",
     "relatedConcepts": [
       "Finset",
@@ -86,13 +86,13 @@
     },
     "type": "definition",
     "title": "Split Graph",
-    "content": "`IsSplitGraph G` states that the vertex set partitions into $K$ (a clique — all pairwise adjacent) and $I$ (an independent set — no edges within). The conditions require disjointness ($K \\cap I = \\emptyset$) and completeness ($K \\cup I = V$).\n\nSplit graphs are chordal (line 118), and the extremal construction for Problem #81 is a split graph.",
-    "mathContext": "Split graphs were introduced by Földes and Hammer (1977). They are exactly the graphs where both $G$ and $\\overline{G}$ are chordal. A graph is split if and only if it has no induced $2K_2$, $C_4$, or $C_5$. The Erdős-Ko-Rado theorem and Turán-type problems often involve split-like structures.",
+    "content": "`IsSplitGraph G` states that the vertex set partitions into $K$ (a clique \u2014 all pairwise adjacent) and $I$ (an independent set \u2014 no edges within). The conditions require disjointness ($K \\cap I = \\emptyset$) and completeness ($K \\cup I = V$).\n\nSplit graphs are chordal (line 118), and the extremal construction for Problem #81 is a split graph.",
+    "mathContext": "Split graphs were introduced by F\u00f6ldes and Hammer (1977). They are exactly the graphs where both $G$ and $\\overline{G}$ are chordal. A graph is split if and only if it has no induced $2K_2$, $C_4$, or $C_5$. The Erd\u0151s-Ko-Rado theorem and Tur\u00e1n-type problems often involve split-like structures.",
     "relatedConcepts": [
       "IsClique",
       "Disjoint",
       "Finset.univ",
-      "Földes-Hammer characterization"
+      "F\u00f6ldes-Hammer characterization"
     ],
     "significance": "key"
   },
@@ -123,8 +123,8 @@
     },
     "type": "technique",
     "title": "Extremal Construction and Lower Bound",
-    "content": "`extremal_construction_exists` (axiom): For $n \\geq 3$, there exists a split graph on $n$ vertices requiring $\\geq n^2/6$ cliques.\n\n`lower_bound` (theorem, line 140): Derives the chordal lower bound from the split graph construction by applying `split_is_chordal`. This is a genuine theorem — the proof extracts the split graph, converts it to chordal, and preserves the partition bound.",
-    "mathContext": "The construction takes $K_{n/3}$ and $2n/3$ isolated vertices, connecting all pairs. The bipartite edges between $K_{n/3}$ and the independent set form $(n/3)(2n/3) = 2n^2/9$ edges. Each clique in a partition can cover at most one edge from each 'star' centered at an isolated vertex, leading to $\\geq n^2/6$ cliques. The proof at line 144–147 is a clean application of `split_is_chordal`.",
+    "content": "`extremal_construction_exists` (axiom): For $n \\geq 3$, there exists a split graph on $n$ vertices requiring $\\geq n^2/6$ cliques.\n\n`lower_bound` (theorem, line 140): Derives the chordal lower bound from the split graph construction by applying `split_is_chordal`. This is a genuine theorem \u2014 the proof extracts the split graph, converts it to chordal, and preserves the partition bound.",
+    "mathContext": "The construction takes $K_{n/3}$ and $2n/3$ isolated vertices, connecting all pairs. The bipartite edges between $K_{n/3}$ and the independent set form $(n/3)(2n/3) = 2n^2/9$ edges. Each clique in a partition can cover at most one edge from each 'star' centered at an isolated vertex, leading to $\\geq n^2/6$ cliques. The proof at line 144\u2013147 is a clean application of `split_is_chordal`.",
     "relatedConcepts": [
       "extremal_construction_exists",
       "split_is_chordal",
@@ -141,9 +141,9 @@
       "endLine": 159
     },
     "type": "concept",
-    "title": "Erdős-Ordman-Zalcstein Upper Bound",
+    "title": "Erd\u0151s-Ordman-Zalcstein Upper Bound",
     "content": "`erdos_ordman_zalcstein` (1993): Every chordal graph on $n$ vertices has a clique partition with $\\leq (1/4 - \\varepsilon)n^2$ cliques for some $\\varepsilon > 0$.\n\n**Gap:** $1/4 \\approx 0.25$ vs $1/6 \\approx 0.167$ (factor $\\approx 1.5$).",
-    "mathContext": "The bound improves on the trivial $\\binom{n}{2}$ by exploiting the chordal structure. The small $\\varepsilon$ represents a modest improvement over $n^2/4$. The proof uses the perfect elimination ordering to group edges efficiently, but the greedy approach alone gives only $(1/4)n^2$ — the $\\varepsilon$ improvement requires a more refined analysis.",
+    "mathContext": "The bound improves on the trivial $\\binom{n}{2}$ by exploiting the chordal structure. The small $\\varepsilon$ represents a modest improvement over $n^2/4$. The proof uses the perfect elimination ordering to group edges efficiently, but the greedy approach alone gives only $(1/4)n^2$ \u2014 the $\\varepsilon$ improvement requires a more refined analysis.",
     "relatedConcepts": [
       "IsChordal",
       "cliquePartitionNumber",
@@ -159,7 +159,7 @@
       "endLine": 167
     },
     "type": "concept",
-    "title": "Chen-Erdős-Ordman Split Graph Bound",
+    "title": "Chen-Erd\u0151s-Ordman Split Graph Bound",
     "content": "`chen_erdos_ordman_split` (1994): Every split graph on $n$ vertices needs $\\leq 3n^2/16 + O(n)$ cliques.\n\n**Note:** $3/16 = 0.1875$, between $1/6 \\approx 0.167$ (conjectured) and $1/4 \\approx 0.25$ (general chordal). This is already close to optimal for the extremal split graph case.",
     "mathContext": "For a split graph with clique $K$ of size $k$ and independent set $I$ of size $n-k$, the clique partition number depends on $k$. The bound $3n^2/16$ is optimized at $k = n/4$: the $\\binom{k}{2}$ edges within $K$ need $O(k)$ cliques (from a clique cover of $K_{k}$), and the $k(n-k)$ bipartite edges need careful grouping.",
     "relatedConcepts": [
@@ -177,9 +177,9 @@
       "endLine": 181
     },
     "type": "definition",
-    "title": "The Erdős-81 Conjecture",
+    "title": "The Erd\u0151s-81 Conjecture",
     "content": "`erdos_81_conjecture` states that every chordal graph on $n$ vertices has a clique partition with $\\leq n^2/6 + n$ cliques. Defined as a `Prop` (not axiom), so it can be referenced without assuming it.",
-    "mathContext": "The conjecture asserts that the extremal split graph construction is essentially tight — no chordal graph requires significantly more than $n^2/6$ cliques. The linear term $+n$ absorbs boundary effects. If true, this would mean the leading coefficient is exactly $1/6$, matching the lower bound.",
+    "mathContext": "The conjecture asserts that the extremal split graph construction is essentially tight \u2014 no chordal graph requires significantly more than $n^2/6$ cliques. The linear term $+n$ absorbs boundary effects. If true, this would mean the leading coefficient is exactly $1/6$, matching the lower bound.",
     "relatedConcepts": [
       "erdos_81_conjecture",
       "IsChordal",
@@ -197,7 +197,7 @@
     "type": "technique",
     "title": "Gap Analysis",
     "content": "`gap_analysis`: The rational inequality $(1 : \\mathbb{Q})/4 > 1/6$, proved by `norm_num`. This quantifies the gap between the upper bound coefficient $1/4$ and the conjectured coefficient $1/6$.",
-    "mathContext": "The gap factor is $\\frac{1/4}{1/6} = 3/2$, meaning the current upper bound allows up to 50% more cliques than conjectured. Closing this gap — either by improving the upper bound or finding a counterexample to the conjecture — is the core open question.",
+    "mathContext": "The gap factor is $\\frac{1/4}{1/6} = 3/2$, meaning the current upper bound allows up to 50% more cliques than conjectured. Closing this gap \u2014 either by improving the upper bound or finding a counterexample to the conjecture \u2014 is the core open question.",
     "relatedConcepts": [
       "Rat",
       "norm_num",
@@ -214,7 +214,7 @@
     },
     "type": "definition",
     "title": "Simplicial Vertex",
-    "content": "`IsSimplicial G v` states that for vertex $v$, all pairs of neighbors are adjacent — i.e., the neighborhood $N(v)$ forms a clique.",
+    "content": "`IsSimplicial G v` states that for vertex $v$, all pairs of neighbors are adjacent \u2014 i.e., the neighborhood $N(v)$ forms a clique.",
     "mathContext": "Simplicial vertices are the building blocks of perfect elimination orderings. In a chordal graph, there is always at least one simplicial vertex (Dirac 1961). Removing a simplicial vertex preserves chordality, giving the inductive structure that characterizes chordal graphs. The simplicial vertex and its neighbors form a maximal clique.",
     "relatedConcepts": [
       "SimpleGraph.Adj",
@@ -234,7 +234,7 @@
     "type": "definition",
     "title": "Perfect Elimination Ordering and Characterization",
     "content": "`HasPerfectEliminationOrdering G` states that there exists a bijection $\\sigma : \\text{Fin}\\,|V| \\to V$ such that each $\\sigma(i)$ is simplicial in the subgraph induced by $\\{\\sigma(j) : j \\geq i\\}$.\n\n`chordal_iff_peo` (line 246): A graph is chordal if and only if it has a PEO. This is the Fulkerson-Gross theorem (1965).",
-    "mathContext": "The PEO characterization is computationally powerful: Lexicographic Breadth-First Search (Lex-BFS) produces a PEO in $O(n+m)$ time for chordal graphs. The PEO also gives the clique tree structure and allows computing the clique number, chromatic number, and maximum independent set in polynomial time — all NP-hard on general graphs.",
+    "mathContext": "The PEO characterization is computationally powerful: Lexicographic Breadth-First Search (Lex-BFS) produces a PEO in $O(n+m)$ time for chordal graphs. The PEO also gives the clique tree structure and allows computing the clique number, chromatic number, and maximum independent set in polynomial time \u2014 all NP-hard on general graphs.",
     "relatedConcepts": [
       "Function.Bijective",
       "Fintype.card",
@@ -291,7 +291,7 @@
     "type": "definition",
     "title": "Intersection Number and Relation",
     "content": "`intersectionNumber G` is the minimum number of cliques whose edges cover all of $G$'s edges (cliques may overlap). `partition_geq_intersection` (line 295): the clique partition number $\\geq$ the intersection number, since partition is more restrictive than cover.",
-    "mathContext": "The intersection number $\\theta(G)$ equals the clique cover number of $G$, which by König-type duality relates to the maximum matching in the edge-clique incidence structure. For chordal graphs, $\\theta(G) \\leq \\overline{\\chi}(G)$ with equality in some cases. The gap between cover and partition can be significant for non-chordal graphs.",
+    "mathContext": "The intersection number $\\theta(G)$ equals the clique cover number of $G$, which by K\u00f6nig-type duality relates to the maximum matching in the edge-clique incidence structure. For chordal graphs, $\\theta(G) \\leq \\overline{\\chi}(G)$ with equality in some cases. The gap between cover and partition can be significant for non-chordal graphs.",
     "relatedConcepts": [
       "Nat.find",
       "IsClique",
@@ -310,7 +310,7 @@
     },
     "type": "technique",
     "title": "Summary Theorem",
-    "content": "`erdos_81_summary` is a **genuine theorem** for $n \\geq 3$: combines (1) the lower bound — some chordal graph on $n$ vertices needs $\\geq n^2/6$ cliques — with (2) the gap $1/4 > 1/6$. The proof applies `lower_bound` and `norm_num`.",
+    "content": "`erdos_81_summary` is a **genuine theorem** for $n \\geq 3$: combines (1) the lower bound \u2014 some chordal graph on $n$ vertices needs $\\geq n^2/6$ cliques \u2014 with (2) the gap $1/4 > 1/6$. The proof applies `lower_bound` and `norm_num`.",
     "mathContext": "The proof uses the anonymous constructor $\\langle\\ldots, \\ldots\\rangle$ to combine the existential lower bound (from the `lower_bound` theorem, which itself uses `extremal_construction_exists` and `split_is_chordal`) with the arithmetic gap fact. The `by norm_num` tactic handles the rational arithmetic.",
     "relatedConcepts": [
       "lower_bound",
@@ -325,11 +325,11 @@
     "proofId": "erdos-81",
     "range": {
       "startLine": 304,
-      "endLine": 312
+      "endLine": 304
     },
     "type": "technique",
     "title": "Main Theorem",
-    "content": "`erdos_81` is a **genuine theorem**: for any chordal graph $G$, combines (1) the Erdős-Ordman-Zalcstein upper bound $(1/4 - \\varepsilon)n^2$ with (2) the PEO-based 2-approximation. The proof directly applies both axiomatized results.",
+    "content": "`erdos_81` is a **genuine theorem**: for any chordal graph $G$, combines (1) the Erd\u0151s-Ordman-Zalcstein upper bound $(1/4 - \\varepsilon)n^2$ with (2) the PEO-based 2-approximation. The proof directly applies both axiomatized results.",
     "mathContext": "The proof uses the anonymous constructor to pair the two results: `erdos_ordman_zalcstein G hChordal` (the upper bound) and `peo_gives_clique_partition G hChordal` (the algorithmic result). Both require the chordality hypothesis `hChordal`, which is passed directly. This theorem captures what is known constructively about any given chordal graph.",
     "relatedConcepts": [
       "erdos_ordman_zalcstein",

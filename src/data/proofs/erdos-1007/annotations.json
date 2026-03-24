@@ -8,7 +8,7 @@
     },
     "type": "context",
     "title": "Problem Overview",
-    "content": "Erdős #1007 asks for the minimum edges in a 4-dimensional graph. Graph dimension is a geometric invariant: the smallest n such that the graph embeds in ℝⁿ with all edges having unit length. The answer is 9 edges, achieved uniquely by K_{3,3}. Erdős posed this question to Soifer in 1992.",
+    "content": "Erd\u0151s #1007 asks for the minimum edges in a 4-dimensional graph. Graph dimension is a geometric invariant: the smallest n such that the graph embeds in \u211d\u207f with all edges having unit length. The answer is 9 edges, achieved uniquely by K_{3,3}. Erd\u0151s posed this question to Soifer in 1992.",
     "mathContext": "Graph dimension connects combinatorial graph theory with Euclidean geometry through unit-distance embeddings. The problem of determining minimum edges for each dimension generalizes the study of regular simplices.",
     "significance": "key",
     "relatedConcepts": [
@@ -29,8 +29,8 @@
     },
     "type": "definition",
     "title": "Unit Distance Embedding and Graph Dimension",
-    "content": "A unit distance embedding places vertices in ℝⁿ so every edge has Euclidean length exactly 1. The structure captures the embedding function and the distance constraint. We axiomatize that every finite graph has such an embedding in some dimension, then define graph dimension as the minimum such n via Nat.find.",
-    "mathContext": "The hasUnitEmbedding_exists axiom guarantees the well-definedness of graphDimension. In principle, any graph on n vertices embeds in ℝⁿ by placing vertices at appropriately scaled standard basis vectors.",
+    "content": "A unit distance embedding places vertices in \u211d\u207f so every edge has Euclidean length exactly 1. The structure captures the embedding function and the distance constraint. We axiomatize that every finite graph has such an embedding in some dimension, then define graph dimension as the minimum such n via Nat.find.",
+    "mathContext": "The hasUnitEmbedding_exists axiom guarantees the well-definedness of graphDimension. In principle, any graph on n vertices embeds in \u211d\u207f by placing vertices at appropriately scaled standard basis vectors.",
     "significance": "key",
     "relatedConcepts": [
       "Euclidean-distance",
@@ -50,7 +50,7 @@
     },
     "type": "definition",
     "title": "Complete Bipartite Graphs",
-    "content": "K_{m,n} is the complete bipartite graph: m vertices on one side, n on the other, with all m·n cross-edges present. We represent this on Fin m ⊕ Fin n, with adjacency between vertices from different sides. K_{3,3} has 3+3=6 vertices and 3×3=9 edges.",
+    "content": "K_{m,n} is the complete bipartite graph: m vertices on one side, n on the other, with all m\u00b7n cross-edges present. We represent this on Fin m \u2295 Fin n, with adjacency between vertices from different sides. K_{3,3} has 3+3=6 vertices and 3\u00d73=9 edges.",
     "mathContext": "The bipartite structure is key: adjacency holds precisely between the two parts (Sum.inl and Sum.inr), never within a part.",
     "significance": "key",
     "relatedConcepts": [
@@ -71,8 +71,8 @@
     },
     "type": "technique",
     "title": "Known Dimensions",
-    "content": "The complete graphs form a dimension ladder: K₃ (triangle) embeds in the plane (dimension 2), K₄ (tetrahedron) requires 3D. These are regular simplices. K_{3,3} breaks the pattern - it is not complete but still needs 4 dimensions due to its rigid bipartite distance constraints.",
-    "mathContext": "These dimension results are axiomatized. The proofs for K₃ and K₄ follow from regular simplex constructions; K_{3,3} requires a more careful analysis of unit distance constraints.",
+    "content": "The complete graphs form a dimension ladder: K\u2083 (triangle) embeds in the plane (dimension 2), K\u2084 (tetrahedron) requires 3D. These are regular simplices. K_{3,3} breaks the pattern - it is not complete but still needs 4 dimensions due to its rigid bipartite distance constraints.",
+    "mathContext": "These dimension results are axiomatized. The proofs for K\u2083 and K\u2084 follow from regular simplex constructions; K_{3,3} requires a more careful analysis of unit distance constraints.",
     "significance": "supporting",
     "relatedConcepts": [
       "regular-simplex",
@@ -109,11 +109,11 @@
     "proofId": "erdos-1007",
     "range": {
       "startLine": 123,
-      "endLine": 142
+      "endLine": 129
     },
     "type": "technique",
     "title": "Dimension 5 Extension (Chaffee-Noble 2016)",
-    "content": "Chaffee and Noble (2016) extended the analysis to dimension 5: the minimum is 15 edges, achieved by K₆ and K_{1,3,3}. Unlike dimension 4, the minimum is not unique - two non-isomorphic graphs achieve it. K₆ is complete with C(6,2)=15 edges; K_{1,3,3} is tripartite.",
+    "content": "Chaffee and Noble (2016) extended the analysis to dimension 5: the minimum is 15 edges, achieved by K\u2086 and K_{1,3,3}. Unlike dimension 4, the minimum is not unique - two non-isomorphic graphs achieve it. K\u2086 is complete with C(6,2)=15 edges; K_{1,3,3} is tripartite.",
     "mathContext": "The dimension-5 result shows the increasing complexity: at dimension 4, uniqueness holds; at dimension 5, multiple minimizers exist. The general pattern for dimension d remains open.",
     "significance": "key",
     "relatedConcepts": [

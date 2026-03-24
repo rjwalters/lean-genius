@@ -8,8 +8,8 @@
       "endLine": 22
     },
     "title": "Problem Overview",
-    "content": "Erdős Problem #950: Define f(n) = ∑_{p<n} 1/(n−p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1. OPEN.",
-    "mathContext": "f(n) = ∑_{p<n, p prime} 1/(n−p). De Bruijn–Erdős–Turán: ∑_{n<x} f(n) ~ x, ∑_{n<x} f(n)² ~ x.",
+    "content": "Erd\u0151s Problem #950: Define f(n) = \u2211_{p<n} 1/(n\u2212p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = \u221e? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1. OPEN.",
+    "mathContext": "f(n) = \u2211_{p<n, p prime} 1/(n\u2212p). De Bruijn\u2013Erd\u0151s\u2013Tur\u00e1n: \u2211_{n<x} f(n) ~ x, \u2211_{n<x} f(n)\u00b2 ~ x.",
     "significance": "key",
     "relatedConcepts": [
       "prime gaps",
@@ -28,8 +28,8 @@
       "endLine": 67
     },
     "title": "The Function f(n)",
-    "content": "primesLessThan(n) = {p prime : p < n}. f(n) = ∑_{p ∈ primesLessThan(n)} 1/(n−p). fReal extends to real arguments via floor. Nearby primes contribute more than distant ones.",
-    "mathContext": "primesLessThan n = (Finset.range n).filter Nat.Prime. f n = ∑ p ∈ primesLessThan n, 1/(n−p : ℕ). fReal uses ⌊n⌋₊.",
+    "content": "primesLessThan(n) = {p prime : p < n}. f(n) = \u2211_{p \u2208 primesLessThan(n)} 1/(n\u2212p). fReal extends to real arguments via floor. Nearby primes contribute more than distant ones.",
+    "mathContext": "primesLessThan n = (Finset.range n).filter Nat.Prime. f n = \u2211 p \u2208 primesLessThan n, 1/(n\u2212p : \u2115). fReal uses \u230an\u230b\u208a.",
     "significance": "key",
     "relatedConcepts": [
       "Finset.filter",
@@ -46,8 +46,8 @@
       "endLine": 119
     },
     "title": "The Three Questions (OPEN)",
-    "content": "Q1: lim inf f(n) = 1? (Filter.liminf). Q2: lim sup f(n) = ∞? (Filter.limsup = ⊤). Q3: f(n) = o(log log n)? (Eventually f(n) < log(log n)). Strong form: f(n)/log(log n) → 0 (Tendsto to nhds 0).",
-    "mathContext": "question1 = Filter.liminf f atTop = 1. question2 = Filter.limsup f atTop = ⊤. question3 = ∀ᶠ n, f n < log(log n). fLittleO = Tendsto (f/log∘log) atTop (nhds 0).",
+    "content": "Q1: lim inf f(n) = 1? (Filter.liminf). Q2: lim sup f(n) = \u221e? (Filter.limsup = \u22a4). Q3: f(n) = o(log log n)? (Eventually f(n) < log(log n)). Strong form: f(n)/log(log n) \u2192 0 (Tendsto to nhds 0).",
+    "mathContext": "question1 = Filter.liminf f atTop = 1. question2 = Filter.limsup f atTop = \u22a4. question3 = \u2200\u1da0 n, f n < log(log n). fLittleO = Tendsto (f/log\u2218log) atTop (nhds 0).",
     "significance": "key",
     "relatedConcepts": [
       "Filter.liminf",
@@ -65,12 +65,12 @@
       "startLine": 127,
       "endLine": 152
     },
-    "title": "de Bruijn–Erdős–Turán Results",
-    "content": "∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x. Both stated as axioms (Tendsto to nhds 1). f_average_one is proved directly from the first axiom.",
-    "mathContext": "de_bruijn_erdos_turan_sum: Tendsto (∑ f(n)/x) atTop (nhds 1). de_bruijn_erdos_turan_sum_sq: Tendsto (∑ f(n)²/x) atTop (nhds 1). f_average_one: proved from axiom.",
+    "title": "de Bruijn\u2013Erd\u0151s\u2013Tur\u00e1n Results",
+    "content": "\u2211_{n<x} f(n) ~ x and \u2211_{n<x} f(n)\u00b2 ~ x. Both stated as axioms (Tendsto to nhds 1). f_average_one is proved directly from the first axiom.",
+    "mathContext": "de_bruijn_erdos_turan_sum: Tendsto (\u2211 f(n)/x) atTop (nhds 1). de_bruijn_erdos_turan_sum_sq: Tendsto (\u2211 f(n)\u00b2/x) atTop (nhds 1). f_average_one: proved from axiom.",
     "significance": "key",
     "relatedConcepts": [
-      "Cesàro mean",
+      "Ces\u00e0ro mean",
       "second moment",
       "Tendsto",
       "average behavior"
@@ -85,8 +85,8 @@
       "endLine": 185
     },
     "title": "Basic Properties of f(n)",
-    "content": "f_nonneg: f(n) ≥ 0 (proved by Finset.sum_nonneg). f_two: f(2) = 0 (proved by simp). f_three: f(3) = 1 (axiom). f_four: f(4) = 3/2 (axiom). prime_contributes: membership lemma (proved).",
-    "mathContext": "f_nonneg: proved (sum_nonneg + cast_nonneg). f_two: proved (simp). f_three, f_four: axioms. prime_contributes: proved (⟨p, rfl⟩).",
+    "content": "f_nonneg: f(n) \u2265 0 (proved by Finset.sum_nonneg). f_two: f(2) = 0 (proved by simp). f_three: f(3) = 1 (axiom). f_four: f(4) = 3/2 (axiom). prime_contributes: membership lemma (proved).",
+    "mathContext": "f_nonneg: proved (sum_nonneg + cast_nonneg). f_two: proved (simp). f_three, f_four: axioms. prime_contributes: proved (\u27e8p, rfl\u27e9).",
     "significance": "key",
     "relatedConcepts": [
       "Finset.sum_nonneg",
@@ -100,10 +100,10 @@
     "type": "context",
     "range": {
       "startLine": 187,
-      "endLine": 211
+      "endLine": 208
     },
     "title": "Heuristic Analysis",
-    "content": "By PNT, primes have density ~1/log t, so ∑_{p<n} 1/(n−p) ≈ ∫₂ⁿ dt/((n−t) log t) ~ 1. This explains why f(n) averages to 1. f(n) is large when n immediately follows a prime (term 1/(n−p) = 1).",
+    "content": "By PNT, primes have density ~1/log t, so \u2211_{p<n} 1/(n\u2212p) \u2248 \u222b\u2082\u207f dt/((n\u2212t) log t) ~ 1. This explains why f(n) averages to 1. f(n) is large when n immediately follows a prime (term 1/(n\u2212p) = 1).",
     "mathContext": "integral_heuristic: True (placeholder). f_large_near_primes: True (placeholder). Both capture heuristic reasoning.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -117,12 +117,12 @@
     "proofId": "erdos-950",
     "type": "concept",
     "range": {
-      "startLine": 219,
-      "endLine": 244
+      "startLine": 198,
+      "endLine": 208
     },
     "title": "Weaker Conjecture and Implication",
-    "content": "Erdős's weaker conjecture: ∀ ε > 0, large x has y < x with π(x) < π(y) + ε·π(x−y). If a strong version holds, then f(n) ≪ log log log n — an extremely slow growth bound.",
-    "mathContext": "weakerConjecture: ∀ ε > 0, ∀ᶠ x, ∃ y < x, π(x) < π(y) + ε·π(x−y). weaker_implies_bound: weakerConjecture → ∃ C, ∀ᶠ n, f(n) ≤ C·log(log(log n)).",
+    "content": "Erd\u0151s's weaker conjecture: \u2200 \u03b5 > 0, large x has y < x with \u03c0(x) < \u03c0(y) + \u03b5\u00b7\u03c0(x\u2212y). If a strong version holds, then f(n) \u226a log log log n \u2014 an extremely slow growth bound.",
+    "mathContext": "weakerConjecture: \u2200 \u03b5 > 0, \u2200\u1da0 x, \u2203 y < x, \u03c0(x) < \u03c0(y) + \u03b5\u00b7\u03c0(x\u2212y). weaker_implies_bound: weakerConjecture \u2192 \u2203 C, \u2200\u1da0 n, f(n) \u2264 C\u00b7log(log(log n)).",
     "significance": "supporting",
     "relatedConcepts": [
       "prime counting function",
@@ -135,12 +135,12 @@
     "proofId": "erdos-950",
     "type": "definition",
     "range": {
-      "startLine": 252,
-      "endLine": 267
+      "startLine": 198,
+      "endLine": 208
     },
     "title": "Prime Distribution Connection",
-    "content": "primeGap(m) = p_{m+1} − p_m via Nat.nth. dense_primes_increase_f: if [n−k, n) contains a prime, then f(n) ≥ 1/k. More primes nearby means larger f(n).",
-    "mathContext": "primeGap m = Nat.nth Prime (m+1) − Nat.nth Prime m. dense_primes_increase_f: card(primesLessThan n ∩ Ico(n−k, n)) > 0 → f(n) ≥ 1/k (axiom).",
+    "content": "primeGap(m) = p_{m+1} \u2212 p_m via Nat.nth. dense_primes_increase_f: if [n\u2212k, n) contains a prime, then f(n) \u2265 1/k. More primes nearby means larger f(n).",
+    "mathContext": "primeGap m = Nat.nth Prime (m+1) \u2212 Nat.nth Prime m. dense_primes_increase_f: card(primesLessThan n \u2229 Ico(n\u2212k, n)) > 0 \u2192 f(n) \u2265 1/k (axiom).",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.nth",
@@ -153,12 +153,12 @@
     "proofId": "erdos-950",
     "type": "insight",
     "range": {
-      "startLine": 279,
-      "endLine": 291
+      "startLine": 198,
+      "endLine": 208
     },
     "title": "Summary and Known Results",
-    "content": "erdos_950_summary combines: de Bruijn–Erdős–Turán sum and sum-of-squares asymptotics, and True (all questions stated). Proved by ⟨de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq, trivial⟩. Status: OPEN.",
-    "mathContext": "erdos_950_summary: (∑ f ~ x) ∧ (∑ f² ~ x) ∧ True. Proof: ⟨de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq, trivial⟩.",
+    "content": "erdos_950_summary combines: de Bruijn\u2013Erd\u0151s\u2013Tur\u00e1n sum and sum-of-squares asymptotics, and True (all questions stated). Proved by \u27e8de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq, trivial\u27e9. Status: OPEN.",
+    "mathContext": "erdos_950_summary: (\u2211 f ~ x) \u2227 (\u2211 f\u00b2 ~ x) \u2227 True. Proof: \u27e8de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq, trivial\u27e9.",
     "significance": "key",
     "relatedConcepts": [
       "known results",

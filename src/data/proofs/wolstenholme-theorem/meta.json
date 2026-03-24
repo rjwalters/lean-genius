@@ -33,7 +33,7 @@
     "dateAdded": "2025-12-31",
     "axiomCount": 3,
     "assumptions": "3 axiom declarations: wolstenholme_theorem (C(2p-1,p-1)=1 mod p^3), harmonic_divisibility (p^2 divides numerator of H_{p-1}), plus 1 structure-encoded assumption in the formalization",
-    "lineCount": 214,
+    "lineCount": 220,
     "prerequisites": [
       "Binomial coefficients and central binomial coefficients",
       "Modular arithmetic and congruences mod p^3",
@@ -50,7 +50,7 @@
     "keyInsights": [
       "Wolstenholme's theorem strengthens Babbage's result by exactly one power of $p$: from $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^2}$ to $\\pmod{p^3}$, with $p = 3$ as the precise boundary where the extra power fails",
       "The failure at $p = 3$ is concrete: $\\binom{5}{2} = 10$ and $10 \\bmod 27 = 10 \\neq 1$, while $10 \\bmod 9 = 1$ (Babbage holds). The formalization verifies both cases via native_decide",
-      "The theorem is equivalent to $p^2 \\mid \\text{numerator}(H_{p-1})$ and to $q_p(2) \\equiv 0 \\pmod{p}$ where $q_p(a) = (a^{p-1}-1)/p$ is the Fermat quotient — connecting binomial coefficients, harmonic sums, and $p$-adic analysis",
+      "The theorem is equivalent to $p^2 \\mid \\text{numerator}(H_{p-1})$ and to $q_p(2) \\equiv 0 \\pmod{p}$ where $q_p(a) = (a^{p-1}-1)/p$ is the Fermat quotient \u2014 connecting binomial coefficients, harmonic sums, and $p$-adic analysis",
       "Wolstenholme primes ($p^4$ divides the binomial coefficient) are extraordinarily rare: only 16843 and 2124679 are known below $10^9$, suggesting a density of roughly $1/\\log p$",
       "The computational verification approach (native_decide for small primes) demonstrates correctness for $p = 5, 7, 11, 13$ while the full theorem for all $p \\geq 5$ requires harmonic sum analysis axiomatized in the formalization"
     ],
@@ -69,7 +69,7 @@
       "startLine": 40,
       "endLine": 49,
       "summary": "Central binomial coefficient and formal theorem statements.",
-      "mathContext": "Define centralBinomial(p) = C(2p-1, p-1). Wolstenholme: for prime p >= 5, C(2p-1,p-1) ≡ 1 (mod p³). Babbage: for prime p >= 3, the congruence holds mod p²."
+      "mathContext": "Define centralBinomial(p) = C(2p-1, p-1). Wolstenholme: for prime p >= 5, C(2p-1,p-1) \u2261 1 (mod p\u00b3). Babbage: for prime p >= 3, the congruence holds mod p\u00b2."
     },
     {
       "id": "verification",
@@ -77,7 +77,7 @@
       "startLine": 51,
       "endLine": 79,
       "summary": "Verification for p = 5, 7, 11, 13 using native_decide.",
-      "mathContext": "Computational verification: C(9,4) = 126 = 125+1 ≡ 1 (mod 5³), C(13,6) = 1716 = 5·343+1 ≡ 1 (mod 7³), C(21,10) = 352716 = 265·1331+1 ≡ 1 (mod 11³), C(25,12) = 5200300 = 2367·2197+1 ≡ 1 (mod 13³). All proved by native_decide."
+      "mathContext": "Computational verification: C(9,4) = 126 = 125+1 \u2261 1 (mod 5\u00b3), C(13,6) = 1716 = 5\u00b7343+1 \u2261 1 (mod 7\u00b3), C(21,10) = 352716 = 265\u00b71331+1 \u2261 1 (mod 11\u00b3), C(25,12) = 5200300 = 2367\u00b72197+1 \u2261 1 (mod 13\u00b3). All proved by native_decide."
     },
     {
       "id": "babbage",
@@ -85,7 +85,7 @@
       "startLine": 81,
       "endLine": 107,
       "summary": "The weaker mod p^2 version and failure cases.",
-      "mathContext": "Babbage (1819): C(2p-1,p-1) ≡ 1 (mod p²) for prime p >= 3. One power of p weaker than Wolstenholme. For p = 3: C(5,2) = 10 ≡ 1 (mod 9) but 10 ≢ 1 (mod 27). The gap between p² and p³ is where the difficulty lies."
+      "mathContext": "Babbage (1819): C(2p-1,p-1) \u2261 1 (mod p\u00b2) for prime p >= 3. One power of p weaker than Wolstenholme. For p = 3: C(5,2) = 10 \u2261 1 (mod 9) but 10 \u2262 1 (mod 27). The gap between p\u00b2 and p\u00b3 is where the difficulty lies."
     },
     {
       "id": "wolstenholme-primes",
@@ -93,7 +93,7 @@
       "startLine": 146,
       "endLine": 171,
       "summary": "Definition and non-examples (5 and 7 are not Wolstenholme primes).",
-      "mathContext": "A prime p is a Wolstenholme prime if C(2p-1,p-1) ≡ 1 (mod p⁴), one power beyond the theorem. Only two known: 16843 and 2124679 (none below 10⁹). Equivalent to p³ | B_{p-3} where B_k is a Bernoulli number."
+      "mathContext": "A prime p is a Wolstenholme prime if C(2p-1,p-1) \u2261 1 (mod p\u2074), one power beyond the theorem. Only two known: 16843 and 2124679 (none below 10\u2079). Equivalent to p\u00b3 | B_{p-3} where B_k is a Bernoulli number."
     },
     {
       "id": "harmonic",
@@ -101,7 +101,7 @@
       "startLine": 173,
       "endLine": 191,
       "summary": "The equivalent formulation using harmonic numbers.",
-      "mathContext": "Wolstenholme is equivalent to p² | num(H_{p-1}) where H_{p-1} = Σ_{k=1}^{p-1} 1/k. Connects to Fermat quotient q_p(a) = (a^{p-1}-1)/p via H_{p-1} ≡ -Σ q_p(k) (mod p)."
+      "mathContext": "Wolstenholme is equivalent to p\u00b2 | num(H_{p-1}) where H_{p-1} = \u03a3_{k=1}^{p-1} 1/k. Connects to Fermat quotient q_p(a) = (a^{p-1}-1)/p via H_{p-1} \u2261 -\u03a3 q_p(k) (mod p)."
     }
   ],
   "conclusion": {
@@ -124,7 +124,7 @@
       "Nat"
     ],
     "namespace": "WolstenholmeTheorem",
-    "lineCount": 214,
+    "lineCount": 220,
     "axiomCount": 3,
     "theoremCount": 16,
     "definitionCount": 6
@@ -133,12 +133,12 @@
     {
       "targetId": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem ((p-1)! ≡ -1 mod p) is a classical primality criterion; Wolstenholme's theorem strengthens the divisibility to p^3 for specific binomial coefficients"
+      "description": "Wilson's theorem ((p-1)! \u2261 -1 mod p) is a classical primality criterion; Wolstenholme's theorem strengthens the divisibility to p^3 for specific binomial coefficients"
     },
     {
       "targetId": "fermats-last-theorem",
       "relationship": "related",
-      "description": "Wolstenholme primes (primes where C(2p,p) ≡ 2 mod p^4) are connected to Fermat's Last Theorem: if p is a Wolstenholme prime, the first case of FLT holds for p"
+      "description": "Wolstenholme primes (primes where C(2p,p) \u2261 2 mod p^4) are connected to Fermat's Last Theorem: if p is a Wolstenholme prime, the first case of FLT holds for p"
     },
     {
       "targetId": "infinitude-primes",
@@ -156,8 +156,8 @@
       "authors": "Wolstenholme, Joseph",
       "title": "On certain properties of prime numbers",
       "year": "1862",
-      "venue": "The Quarterly Journal of Pure and Applied Mathematics 5, 35–39",
-      "note": "Proved that for primes p ≥ 5, the binomial coefficient C(2p,p) ≡ 2 (mod p³) — equivalently, the Bernoulli number numerator condition"
+      "venue": "The Quarterly Journal of Pure and Applied Mathematics 5, 35\u201339",
+      "note": "Proved that for primes p \u2265 5, the binomial coefficient C(2p,p) \u2261 2 (mod p\u00b3) \u2014 equivalently, the Bernoulli number numerator condition"
     }
   ]
 }

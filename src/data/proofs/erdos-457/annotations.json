@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #457: Small Prime Divisors of Consecutive Products**\n\nThe problem asks: is there a fixed ε > 0 such that infinitely many n have ALL primes p ≤ (2+ε)log(n) dividing the product of ⌊log n⌋ consecutive integers after n?\n\n**Equivalent formulation:** If q(n,k) is the least prime not dividing ∏(n+i), is q(n, log n) ≥ (2+ε)log(n) infinitely often?\n\n**Status:** OPEN\n\n**Known:** q(n, log n) ≥ (2+o(1))log(n) is achievable, but the fixed ε improvement (crossing the '2 barrier') remains open.\n\n**Origin:** Erdős [Er79d], Erdős-Pomerance [ErGr80]",
-    "mathContext": "The product of k consecutive integers ∏_{i=1}^k (n+i) automatically includes multiples of all primes ≤ k. The question asks how much further this divisibility extends when k = ⌊log n⌋.",
+    "content": "**Erd\u0151s Problem #457: Small Prime Divisors of Consecutive Products**\n\nThe problem asks: is there a fixed \u03b5 > 0 such that infinitely many n have ALL primes p \u2264 (2+\u03b5)log(n) dividing the product of \u230alog n\u230b consecutive integers after n?\n\n**Equivalent formulation:** If q(n,k) is the least prime not dividing \u220f(n+i), is q(n, log n) \u2265 (2+\u03b5)log(n) infinitely often?\n\n**Status:** OPEN\n\n**Known:** q(n, log n) \u2265 (2+o(1))log(n) is achievable, but the fixed \u03b5 improvement (crossing the '2 barrier') remains open.\n\n**Origin:** Erd\u0151s [Er79d], Erd\u0151s-Pomerance [ErGr80]",
+    "mathContext": "The product of k consecutive integers \u220f_{i=1}^k (n+i) automatically includes multiples of all primes \u2264 k. The question asks how much further this divisibility extends when k = \u230alog n\u230b.",
     "significance": "key",
     "relatedConcepts": [
       "Prime divisors",
@@ -26,8 +26,8 @@
     },
     "type": "definition",
     "title": "Consecutive Product",
-    "content": "**consecutiveProduct(n, k) = ∏_{i=1}^{k} (n + i)**\n\nThe product of k consecutive integers starting from n+1:\n(n+1)(n+2)···(n+k)\n\n**Connection to binomial coefficients:**\n∏(n+i) = (n+k)!/n! = k! · C(n+k, k)\n\n**Examples:**\n- consecutiveProduct(10, 3) = 11 · 12 · 13 = 1716\n- consecutiveProduct(0, k) = k! (factorial)\n\nDefined using Finset.Icc 1 k and Finset.prod.",
-    "mathContext": "This is the rising factorial or Pochhammer symbol (n+1)^{(k)} = (n+1)(n+2)···(n+k). Its prime factorization encodes how primes distribute among consecutive integers.",
+    "content": "**consecutiveProduct(n, k) = \u220f_{i=1}^{k} (n + i)**\n\nThe product of k consecutive integers starting from n+1:\n(n+1)(n+2)\u00b7\u00b7\u00b7(n+k)\n\n**Connection to binomial coefficients:**\n\u220f(n+i) = (n+k)!/n! = k! \u00b7 C(n+k, k)\n\n**Examples:**\n- consecutiveProduct(10, 3) = 11 \u00b7 12 \u00b7 13 = 1716\n- consecutiveProduct(0, k) = k! (factorial)\n\nDefined using Finset.Icc 1 k and Finset.prod.",
+    "mathContext": "This is the rising factorial or Pochhammer symbol (n+1)^{(k)} = (n+1)(n+2)\u00b7\u00b7\u00b7(n+k). Its prime factorization encodes how primes distribute among consecutive integers.",
     "significance": "key",
     "relatedConcepts": [
       "Pochhammer symbol",
@@ -44,8 +44,8 @@
     },
     "type": "concept",
     "title": "Small Primes Always Divide",
-    "content": "**small_primes_divide: Every prime p ≤ k divides ∏(n+i) for i ∈ [1,k]**\n\nAmong any k consecutive integers, there is always a multiple of p (when p ≤ k). This is because the integers n+1, n+2, ..., n+k cover all residues modulo p at least once when k ≥ p.\n\n**This is the trivial baseline:** it tells us q(n, k) > k always. The interesting question is: how much bigger can q be?",
-    "mathContext": "This follows from the pigeonhole principle: among k consecutive integers, at least ⌊k/p⌋ ≥ 1 are divisible by p when p ≤ k.",
+    "content": "**small_primes_divide: Every prime p \u2264 k divides \u220f(n+i) for i \u2208 [1,k]**\n\nAmong any k consecutive integers, there is always a multiple of p (when p \u2264 k). This is because the integers n+1, n+2, ..., n+k cover all residues modulo p at least once when k \u2265 p.\n\n**This is the trivial baseline:** it tells us q(n, k) > k always. The interesting question is: how much bigger can q be?",
+    "mathContext": "This follows from the pigeonhole principle: among k consecutive integers, at least \u230ak/p\u230b \u2265 1 are divisible by p when p \u2264 k.",
     "significance": "key",
     "relatedConcepts": [
       "Pigeonhole principle",
@@ -62,7 +62,7 @@
     },
     "type": "definition",
     "title": "The Function q(n, k)",
-    "content": "**q(n, k) = the least prime not dividing ∏_{i=1}^k (n+i)**\n\nThis function captures the 'prime saturation threshold' of the consecutive product. All primes below q(n,k) divide the product; q(n,k) is the first prime that fails.\n\n**Definition:** Uses Nat.find to constructively find the smallest prime not dividing the product. Such a prime always exists because the product is finite (and hence has finitely many prime factors).\n\n**Properties axiomatized:**\n- q(n,k) is prime (q_prime)\n- q(n,k) does not divide the product (q_not_dvd)\n- All smaller primes divide the product (q_minimal)\n- q(n,k) > k (q_lower_trivial)",
+    "content": "**q(n, k) = the least prime not dividing \u220f_{i=1}^k (n+i)**\n\nThis function captures the 'prime saturation threshold' of the consecutive product. All primes below q(n,k) divide the product; q(n,k) is the first prime that fails.\n\n**Definition:** Uses Nat.find to constructively find the smallest prime not dividing the product. Such a prime always exists because the product is finite (and hence has finitely many prime factors).\n\n**Properties axiomatized:**\n- q(n,k) is prime (q_prime)\n- q(n,k) does not divide the product (q_not_dvd)\n- All smaller primes divide the product (q_minimal)\n- q(n,k) > k (q_lower_trivial)",
     "mathContext": "Nat.find provides the constructive minimum. The existence proof uses Nat.exists_infinite_primes to find a prime larger than the product, which clearly cannot divide it.",
     "significance": "key",
     "relatedConcepts": [
@@ -80,7 +80,7 @@
     },
     "type": "concept",
     "title": "Properties of q(n, k)",
-    "content": "**Four axioms characterizing q(n, k):**\n\n1. **q_prime:** q(n,k) is always a prime number.\n\n2. **q_not_dvd:** q(n,k) does not divide ∏(n+i). This is what makes it the 'first failure.'\n\n3. **q_minimal:** Every prime p < q(n,k) divides the product. So q is truly the smallest non-divisor.\n\n4. **q_lower_trivial:** q(n,k) > k. This follows from small_primes_divide: all primes ≤ k divide the product, so the first non-divisor must be > k.\n\n**Together:** These axioms say q(n,k) is the unique smallest prime non-divisor of the consecutive product.",
+    "content": "**Four axioms characterizing q(n, k):**\n\n1. **q_prime:** q(n,k) is always a prime number.\n\n2. **q_not_dvd:** q(n,k) does not divide \u220f(n+i). This is what makes it the 'first failure.'\n\n3. **q_minimal:** Every prime p < q(n,k) divides the product. So q is truly the smallest non-divisor.\n\n4. **q_lower_trivial:** q(n,k) > k. This follows from small_primes_divide: all primes \u2264 k divide the product, so the first non-divisor must be > k.\n\n**Together:** These axioms say q(n,k) is the unique smallest prime non-divisor of the consecutive product.",
     "mathContext": "The minimality property makes q(n,k) a well-defined function. The trivial lower bound q > k is the starting point for the problem.",
     "significance": "key",
     "relatedConcepts": [
@@ -98,8 +98,8 @@
     },
     "type": "concept",
     "title": "The Main Conjecture (OPEN)",
-    "content": "**ErdosConjecture457: The 2 barrier can be crossed**\n\nFormal statement: There exists ε > 0 such that the set {n : all primes p ≤ (2+ε)log(n) divide ∏(n+i) for i ≤ ⌊log n⌋} is infinite.\n\n**Why 2?** The threshold 2 arises naturally: by the prime number theorem, the number of primes up to x is about x/ln(x). Among ⌊log n⌋ consecutive integers near n, we expect primes up to about 2·log(n) to appear as factors (by a sieving argument involving the Chinese Remainder Theorem).\n\n**The difficulty:** Going from (2+o(1)) to a fixed (2+ε) requires showing that the prime product construction cannot be 'tight' — there must always be room to spare.",
-    "mathContext": "The conjecture uses Set.Infinite to express 'infinitely often.' The parameter ε must be fixed (independent of n), which is the key difficulty beyond the known (2+o(1)) result.",
+    "content": "**ErdosConjecture457: The 2 barrier can be crossed**\n\nFormal statement: There exists \u03b5 > 0 such that the set {n : all primes p \u2264 (2+\u03b5)log(n) divide \u220f(n+i) for i \u2264 \u230alog n\u230b} is infinite.\n\n**Why 2?** The threshold 2 arises naturally: by the prime number theorem, the number of primes up to x is about x/ln(x). Among \u230alog n\u230b consecutive integers near n, we expect primes up to about 2\u00b7log(n) to appear as factors (by a sieving argument involving the Chinese Remainder Theorem).\n\n**The difficulty:** Going from (2+o(1)) to a fixed (2+\u03b5) requires showing that the prime product construction cannot be 'tight' \u2014 there must always be room to spare.",
+    "mathContext": "The conjecture uses Set.Infinite to express 'infinitely often.' The parameter \u03b5 must be fixed (independent of n), which is the key difficulty beyond the known (2+o(1)) result.",
     "significance": "key",
     "relatedConcepts": [
       "Set.Infinite",
@@ -116,7 +116,7 @@
     },
     "type": "concept",
     "title": "Equivalent q-Formulation",
-    "content": "**Two equivalent ways to state the conjecture:**\n\n1. **All primes below threshold divide:** All primes p ≤ (2+ε)log(n) divide the consecutive product.\n\n2. **First non-divisor is large:** q(n, ⌊log n⌋) ≥ (2+ε)log(n).\n\nThese are equivalent because q is the smallest non-dividing prime: saying q ≥ X is the same as saying all primes < X divide the product.\n\n**conjecture_equivalence axiom** formalizes this equivalence.",
+    "content": "**Two equivalent ways to state the conjecture:**\n\n1. **All primes below threshold divide:** All primes p \u2264 (2+\u03b5)log(n) divide the consecutive product.\n\n2. **First non-divisor is large:** q(n, \u230alog n\u230b) \u2265 (2+\u03b5)log(n).\n\nThese are equivalent because q is the smallest non-dividing prime: saying q \u2265 X is the same as saying all primes < X divide the product.\n\n**conjecture_equivalence axiom** formalizes this equivalence.",
     "mathContext": "The q-formulation is often preferred because it reduces the conjecture to a single inequality about a well-defined function.",
     "significance": "key",
     "relatedConcepts": [
@@ -133,8 +133,8 @@
     },
     "type": "concept",
     "title": "The Known Construction: (2+o(1)) Barrier",
-    "content": "**Achieving q(n, log n) ≥ (2+o(1))log(n):**\n\n**Construction:** Take n = ∏{p prime : log(n) ≤ p ≤ (2+o(1))log(n)}.\n\nSuch n is a product of primes in a specific range. The consecutive integers n+1, ..., n+⌊log n⌋ then have the property that all primes up to about (2+o(1))log(n) divide their product.\n\n**Why it works:** The Chinese Remainder Theorem ensures that among any k consecutive integers, there is a multiple of every prime p ≤ k. By choosing n carefully, we can extend this to primes up to about 2k.\n\n**The gap:** (2+o(1)) means for any ε > 0, we eventually achieve (2-ε), but we cannot guarantee a fixed positive margin above 2.",
-    "mathContext": "The o(1) term vanishes as n → ∞ but cannot be replaced by a fixed positive constant with current techniques. This is the essence of the open problem.",
+    "content": "**Achieving q(n, log n) \u2265 (2+o(1))log(n):**\n\n**Construction:** Take n = \u220f{p prime : log(n) \u2264 p \u2264 (2+o(1))log(n)}.\n\nSuch n is a product of primes in a specific range. The consecutive integers n+1, ..., n+\u230alog n\u230b then have the property that all primes up to about (2+o(1))log(n) divide their product.\n\n**Why it works:** The Chinese Remainder Theorem ensures that among any k consecutive integers, there is a multiple of every prime p \u2264 k. By choosing n carefully, we can extend this to primes up to about 2k.\n\n**The gap:** (2+o(1)) means for any \u03b5 > 0, we eventually achieve (2-\u03b5), but we cannot guarantee a fixed positive margin above 2.",
+    "mathContext": "The o(1) term vanishes as n \u2192 \u221e but cannot be replaced by a fixed positive constant with current techniques. This is the essence of the open problem.",
     "significance": "key",
     "relatedConcepts": [
       "Chinese Remainder Theorem",
@@ -151,8 +151,8 @@
     },
     "type": "concept",
     "title": "Upper Bound Sub-Question",
-    "content": "**UpperBoundConjecture: q(n, log n) < (1-ε)(log n)² eventually**\n\nThis companion question asks for an upper bound on q. If true, it would sandwich q(n, ⌊log n⌋) between:\n- Lower: ~ 2·log(n) (from the known construction)\n- Upper: ~ (log n)² (from this conjecture)\n\n**Uses Filter.atTop** to express 'for all sufficiently large n' — a standard Lean/Mathlib pattern for eventual properties.\n\n**Why (log n)²?** Since the consecutive product has about ⌊log n⌋ factors each of size about n, the total is roughly n^{log n}. This has at most O((log n)²) distinct prime factors, giving a heuristic upper bound.",
-    "mathContext": "The upper bound question is also open. Together with the main conjecture, it asks for the precise order of growth of q(n, ⌊log n⌋).",
+    "content": "**UpperBoundConjecture: q(n, log n) < (1-\u03b5)(log n)\u00b2 eventually**\n\nThis companion question asks for an upper bound on q. If true, it would sandwich q(n, \u230alog n\u230b) between:\n- Lower: ~ 2\u00b7log(n) (from the known construction)\n- Upper: ~ (log n)\u00b2 (from this conjecture)\n\n**Uses Filter.atTop** to express 'for all sufficiently large n' \u2014 a standard Lean/Mathlib pattern for eventual properties.\n\n**Why (log n)\u00b2?** Since the consecutive product has about \u230alog n\u230b factors each of size about n, the total is roughly n^{log n}. This has at most O((log n)\u00b2) distinct prime factors, giving a heuristic upper bound.",
+    "mathContext": "The upper bound question is also open. Together with the main conjecture, it asks for the precise order of growth of q(n, \u230alog n\u230b).",
     "significance": "key",
     "relatedConcepts": [
       "Filter.atTop",
@@ -169,7 +169,7 @@
     },
     "type": "definition",
     "title": "Smooth Numbers Connection",
-    "content": "**IsSmooth(m, y): m is y-smooth ⟺ all prime factors of m are ≤ y**\n\n**Definition:**\n```lean\ndef IsSmooth (m y : ℕ) : Prop :=\n  ∀ p : ℕ, p.Prime → p ∣ m → p ≤ y\n```\n\n**Connection to the problem:** The consecutive product being divisible by all primes up to X is equivalent to saying its 'smooth part' (with respect to threshold X) equals the product itself.\n\n**Smooth number theory** studies how many integers up to N are y-smooth. The Erdős problem asks a related question: when is a structured product (consecutive integers) smoother than expected?",
+    "content": "**IsSmooth(m, y): m is y-smooth \u27fa all prime factors of m are \u2264 y**\n\n**Definition:**\n```lean\ndef IsSmooth (m y : \u2115) : Prop :=\n  \u2200 p : \u2115, p.Prime \u2192 p \u2223 m \u2192 p \u2264 y\n```\n\n**Connection to the problem:** The consecutive product being divisible by all primes up to X is equivalent to saying its 'smooth part' (with respect to threshold X) equals the product itself.\n\n**Smooth number theory** studies how many integers up to N are y-smooth. The Erd\u0151s problem asks a related question: when is a structured product (consecutive integers) smoother than expected?",
     "mathContext": "Smooth numbers are fundamental in computational number theory (factoring algorithms, the quadratic sieve) and analytic number theory (Dickman's function, saddle-point methods).",
     "significance": "key",
     "relatedConcepts": [
@@ -183,11 +183,11 @@
     "proofId": "erdos-457",
     "range": {
       "startLine": 202,
-      "endLine": 225
+      "endLine": 219
     },
     "type": "concept",
     "title": "Summary and Status",
-    "content": "**Summary of Erdős Problem #457:**\n\n**The Central Question:** Can we cross the '2 barrier' for q(n, ⌊log n⌋)?\n\n**What we know:**\n- Trivially q(n,k) > k (all primes ≤ k divide k consecutive integers)\n- q(n, ⌊log n⌋) ≥ (2+o(1))log(n) via the prime product construction\n- The strict (2+ε) with fixed ε > 0 is OPEN\n- The upper bound q < (1-ε)(log n)² is also OPEN\n\n**The 2 barrier** is the central difficulty: the known construction gets arbitrarily close to 2 from below but cannot cross it. New ideas about the interplay between consecutive products and prime distribution are needed.\n\n**Related:** Problem #663 (also on prime factors of consecutive products)",
+    "content": "**Summary of Erd\u0151s Problem #457:**\n\n**The Central Question:** Can we cross the '2 barrier' for q(n, \u230alog n\u230b)?\n\n**What we know:**\n- Trivially q(n,k) > k (all primes \u2264 k divide k consecutive integers)\n- q(n, \u230alog n\u230b) \u2265 (2+o(1))log(n) via the prime product construction\n- The strict (2+\u03b5) with fixed \u03b5 > 0 is OPEN\n- The upper bound q < (1-\u03b5)(log n)\u00b2 is also OPEN\n\n**The 2 barrier** is the central difficulty: the known construction gets arbitrarily close to 2 from below but cannot cross it. New ideas about the interplay between consecutive products and prime distribution are needed.\n\n**Related:** Problem #663 (also on prime factors of consecutive products)",
     "mathContext": "The problem exemplifies a common phenomenon in number theory: o(1) results are achievable by construction, but fixed-constant improvements require deeper structural insights.",
     "significance": "key",
     "relatedConcepts": [

@@ -8,7 +8,7 @@
     },
     "type": "context",
     "title": "Problem Overview and Imports",
-    "content": "Module documentation for Erdős Problem #750: Almost bipartite graphs with infinite chromatic number. For any f(m) → ∞, does there exist a graph G with χ(G) = ∞ where every m-vertex subgraph has an independent set of size ≥ m/2 − f(m)? Linear case solved (EHS 1982); sublinear case open. Imports SimpleGraph.Basic, Finset.Card, Nat.Basic, Tactic.",
+    "content": "Module documentation for Erd\u0151s Problem #750: Almost bipartite graphs with infinite chromatic number. For any f(m) \u2192 \u221e, does there exist a graph G with \u03c7(G) = \u221e where every m-vertex subgraph has an independent set of size \u2265 m/2 \u2212 f(m)? Linear case solved (EHS 1982); sublinear case open. Imports SimpleGraph.Basic, Finset.Card, Nat.Basic, Tactic.",
     "mathContext": "A bipartite graph on $m$ vertices has independence number $\\geq \\lceil m/2 \\rceil$. The deviation $f(m)$ measures how far subgraphs are from bipartite: $\\alpha(G[S]) \\geq |S|/2 - f(|S|)$. The question is how slowly $f$ can grow while still permitting $\\chi(G) = \\infty$. Since $\\chi(G) = \\infty$ forces arbitrarily large clique minors (Hadwiger's conjecture direction), this probes the tension between local near-bipartiteness and global complexity.",
     "significance": "key",
     "relatedConcepts": [
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Core Definitions: HasInfiniteChromatic, maxIndSetSize, AlmostBipartite",
-    "content": "**HasInfiniteChromatic G**: no finite proper coloring exists (∀ k, ¬∃ c : V → Fin k with c v ≠ c w for adjacent v, w). **maxIndSetSize G S**: maximum independent set size in G[S], via Finset.powerset filtered by independence. **AlmostBipartite G f m₀**: for all subsets S with |S| ≥ m₀, maxIndSetSize(G, S) ≥ |S|/2 − f(|S|).",
+    "content": "**HasInfiniteChromatic G**: no finite proper coloring exists (\u2200 k, \u00ac\u2203 c : V \u2192 Fin k with c v \u2260 c w for adjacent v, w). **maxIndSetSize G S**: maximum independent set size in G[S], via Finset.powerset filtered by independence. **AlmostBipartite G f m\u2080**: for all subsets S with |S| \u2265 m\u2080, maxIndSetSize(G, S) \u2265 |S|/2 \u2212 f(|S|).",
     "mathContext": "$\\mathrm{HasInfiniteChromatic}(G) \\iff \\chi(G) = \\infty$, equivalent to containing $K_n$ minors for all $n$ by the Hadwiger conjecture (proved for many cases). $\\alpha(G[S])$ is computed as $\\max\\{|I| : I \\subseteq S, I \\text{ independent}\\}$. The almost-bipartite condition $\\alpha(G[S]) \\geq |S|/2 - f(|S|)$ says every local neighborhood looks nearly 2-colorable.",
     "significance": "key",
     "relatedConcepts": [
@@ -54,8 +54,8 @@
       "endLine": 56
     },
     "type": "concept",
-    "title": "Main Conjecture: Erdős Problem #750",
-    "content": "**erdos_750_conjecture** (axiom): For any f : ℕ → ℕ with f(m) → ∞ (formalized as: ∀ k, ∃ m₀, ∀ m ≥ m₀, f(m) > k), there exist V, G with HasInfiniteChromatic G and AlmostBipartite G f m₀ for all m₀. This is the full open conjecture: even the slowest-growing error function should suffice.",
+    "title": "Main Conjecture: Erd\u0151s Problem #750",
+    "content": "**erdos_750_conjecture** (axiom): For any f : \u2115 \u2192 \u2115 with f(m) \u2192 \u221e (formalized as: \u2200 k, \u2203 m\u2080, \u2200 m \u2265 m\u2080, f(m) > k), there exist V, G with HasInfiniteChromatic G and AlmostBipartite G f m\u2080 for all m\u2080. This is the full open conjecture: even the slowest-growing error function should suffice.",
     "mathContext": "The conjecture asserts: for every $f(m) \\to \\infty$ (however slowly), $\\exists G$ with $\\chi(G) = \\infty$ and $\\alpha(G[S]) \\geq |S|/2 - f(|S|)$ for all large finite $S$. The difficulty increases as $f$ grows more slowly. The linear case $f(m) = \\varepsilon m$ is settled, but even $f(m) = m^{1/2}$ remains open.",
     "significance": "key",
     "relatedConcepts": [
@@ -76,13 +76,13 @@
       "endLine": 72
     },
     "type": "concept",
-    "title": "Known Results: Erdős–Hajnal (1967) and EHS (1982)",
-    "content": "**erdos_hajnal_1967**: For c > 1/4, there exists an infinite-chromatic graph with independent sets ≥ (1/2−c)m in every m-vertex subgraph. **erdos_hajnal_szemeredi_1982**: Extends to all ε > 0, resolving the conjecture for f(m) = εm. The proof uses probabilistic constructions with shift graphs.",
-    "mathContext": "The 1967 result of Erdős–Hajnal constructs shift graphs: $G_k$ has vertex set $\\binom{\\mathbb{N}}{k}$ with edges between sets that interleave. These have $\\chi = k$ but large independence numbers. The 1982 extension by Erdős–Hajnal–Szemerédi refined the construction to handle all $\\varepsilon > 0$, proving that $f(m) = \\varepsilon m$ suffices. The key technique is the Lovász Local Lemma applied to random subgraph colorings.",
+    "title": "Known Results: Erd\u0151s\u2013Hajnal (1967) and EHS (1982)",
+    "content": "**erdos_hajnal_1967**: For c > 1/4, there exists an infinite-chromatic graph with independent sets \u2265 (1/2\u2212c)m in every m-vertex subgraph. **erdos_hajnal_szemeredi_1982**: Extends to all \u03b5 > 0, resolving the conjecture for f(m) = \u03b5m. The proof uses probabilistic constructions with shift graphs.",
+    "mathContext": "The 1967 result of Erd\u0151s\u2013Hajnal constructs shift graphs: $G_k$ has vertex set $\\binom{\\mathbb{N}}{k}$ with edges between sets that interleave. These have $\\chi = k$ but large independence numbers. The 1982 extension by Erd\u0151s\u2013Hajnal\u2013Szemer\u00e9di refined the construction to handle all $\\varepsilon > 0$, proving that $f(m) = \\varepsilon m$ suffices. The key technique is the Lov\u00e1sz Local Lemma applied to random subgraph colorings.",
     "significance": "key",
     "relatedConcepts": [
       "shift graphs",
-      "Lovász Local Lemma",
+      "Lov\u00e1sz Local Lemma",
       "probabilistic construction"
     ],
     "prerequisites": [
@@ -99,8 +99,8 @@
       "endLine": 88
     },
     "type": "concept",
-    "title": "Open Cases: √m and log m",
-    "content": "**sqrt_case** (axiom): The conjecture for f(m) = √m, using Nat.sqrt. **log_case** (axiom): For f(m) = C·log₂(m), using Nat.log2. Both are open — the sublinear frontier where current probabilistic methods fail. The gap between linear (solved) and sublinear (open) is the main challenge.",
+    "title": "Open Cases: \u221am and log m",
+    "content": "**sqrt_case** (axiom): The conjecture for f(m) = \u221am, using Nat.sqrt. **log_case** (axiom): For f(m) = C\u00b7log\u2082(m), using Nat.log2. Both are open \u2014 the sublinear frontier where current probabilistic methods fail. The gap between linear (solved) and sublinear (open) is the main challenge.",
     "mathContext": "For $f(m) = \\sqrt{m}$: an infinite-chromatic graph where every $m$-vertex subgraph has $\\alpha \\geq m/2 - \\sqrt{m}$. This would mean subgraphs are extremely close to bipartite. For $f(m) = C\\log m$: even closer to bipartite. Current shift graph constructions give $f(m) \\sim \\varepsilon m$; improving to $o(m)$ requires fundamentally new ideas, perhaps from topological combinatorics or algebraic constructions.",
     "significance": "key",
     "relatedConcepts": [
@@ -119,11 +119,11 @@
     "proofId": "erdos-750",
     "range": {
       "startLine": 90,
-      "endLine": 107
+      "endLine": 106
     },
     "type": "concept",
     "title": "Connections: Problem #75 and Bipartite Benchmark",
-    "content": "**problem_75_connection**: Problem #75 asks for χ(G) = ℵ₁ with α(G[S]) > |S|^{1−ε}. This is stronger than #750 and shares the local-vs-global theme. **bipartite_benchmark**: Bipartite graphs on m vertices have α ≥ m/2, establishing the baseline from which f(m) measures deviation. Together these frame Problem #750 in the hierarchy of local-vs-global chromatic questions.",
+    "content": "**problem_75_connection**: Problem #75 asks for \u03c7(G) = \u2135\u2081 with \u03b1(G[S]) > |S|^{1\u2212\u03b5}. This is stronger than #750 and shares the local-vs-global theme. **bipartite_benchmark**: Bipartite graphs on m vertices have \u03b1 \u2265 m/2, establishing the baseline from which f(m) measures deviation. Together these frame Problem #750 in the hierarchy of local-vs-global chromatic questions.",
     "mathContext": "Problem #75 requires uncountable chromatic number $\\chi(G) = \\aleph_1$ with polynomial independence $\\alpha(G[S]) > |S|^{1-\\varepsilon}$. This implies almost-bipartiteness with any sublinear $f$, making it strictly stronger. The bipartite benchmark $\\alpha(G[S]) \\geq \\lceil |S|/2 \\rceil$ is tight: take $K_{n,n}$ which has $\\alpha = n = m/2$. The deviation $f(m)$ is always nonnegative for almost-bipartite graphs.",
     "significance": "key",
     "relatedConcepts": [

@@ -39,7 +39,7 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 8,
-    "lineCount": 374,
+    "lineCount": 380,
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
@@ -50,7 +50,7 @@
     "keyInsights": [
       "**Contraposition via Euler's identity**: The proof hinges on $e^{i\\pi} = -1$; if $\\pi$ were algebraic, Lindemann's theorem would force $e^{i\\pi}$ to be transcendental, contradicting that $-1$ is algebraic",
       "**Lindemann-Weierstrass generalization**: Lindemann's theorem for a single exponent is a special case of the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$ over algebraic numbers",
-      "**Transcendence propagation**: Once $\\pi$ is transcendental, polynomial-compositional arguments show $2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, and $\\sqrt{\\pi}$ are all transcendental — any 'simple' algebraic expression in $\\pi$ remains transcendental",
+      "**Transcendence propagation**: Once $\\pi$ is transcendental, polynomial-compositional arguments show $2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, and $\\sqrt{\\pi}$ are all transcendental \u2014 any 'simple' algebraic expression in $\\pi$ remains transcendental",
       "**Constructibility barrier**: Constructible numbers lie in iterated quadratic extensions of $\\mathbb{Q}$, hence are algebraic with degree $2^n$. Since $\\pi$ is not even algebraic, $\\sqrt{\\pi}$ is transcendental and squaring the circle is impossible",
       "**Hierarchy of number properties**: Transcendence ($\\pi \\notin \\overline{\\mathbb{Q}}$) is strictly stronger than irrationality ($\\pi \\notin \\mathbb{Q}$), which is strictly stronger than non-constructibility. The Lean file makes these distinctions explicit"
     ],
@@ -93,7 +93,7 @@
       "title": "The Main Theorem (Axiomatized)",
       "startLine": 115,
       "endLine": 143,
-      "summary": "Axiomatizes Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental ℤ Real.pi`, plus `Transcendental ℚ Real.pi`. These await Mathlib's Lindemann-Weierstrass formalization."
+      "summary": "Axiomatizes Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental \u2124 Real.pi`, plus `Transcendental \u211a Real.pi`. These await Mathlib's Lindemann-Weierstrass formalization."
     },
     {
       "id": "algebraic-numbers",
@@ -107,7 +107,7 @@
       "title": "Corollaries of Transcendence",
       "startLine": 185,
       "endLine": 236,
-      "summary": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial composition arguments."
+      "summary": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental \u2014 each via polynomial composition arguments."
     },
     {
       "id": "squaring-circle",
@@ -133,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "This formalization axiomatizes Lindemann's 1882 proof that $\\pi$ is transcendental, resolving the 2,000-year-old problem of squaring the circle. The Lean file proves the supporting lemmas ($-1$ and $i$ are algebraic, Euler's identity) and derives corollaries ($2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, $\\sqrt{\\pi}$ are all transcendental). The main result and Lindemann's theorem are axiomatized pending Mathlib's formalization of the Lindemann-Weierstrass theorem.",
-    "implications": "**Theoretical Significance**: The transcendence of $\\pi$ established transcendental number theory as a major branch of mathematics.\n\nIt resolved the most famous classical construction problem and demonstrated that fundamental geometric constants lie beyond algebraic description. The proof techniques — auxiliary polynomials, integration by parts estimates, and algebraic independence arguments — became foundational tools leading to Gelfond-Schneider, Baker's theorem, and modern Diophantine approximation theory.",
+    "implications": "**Theoretical Significance**: The transcendence of $\\pi$ established transcendental number theory as a major branch of mathematics.\n\nIt resolved the most famous classical construction problem and demonstrated that fundamental geometric constants lie beyond algebraic description. The proof techniques \u2014 auxiliary polynomials, integration by parts estimates, and algebraic independence arguments \u2014 became foundational tools leading to Gelfond-Schneider, Baker's theorem, and modern Diophantine approximation theory.",
     "openQuestions": [
       "Is $\\pi + e$ transcendental? Both are individually transcendental, but their sum's status remains one of the great open problems in transcendental number theory",
       "Is $\\pi$ a normal number (equidistributed digits in every base)? Statistical evidence strongly suggests yes, but no proof is known",
@@ -144,7 +144,7 @@
   "crossReferences": [
     {
       "relationship": "generalizes",
-      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the key lemma axiomatized here; π's transcendence is a direct corollary",
+      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the key lemma axiomatized here; \u03c0's transcendence is a direct corollary",
       "targetId": "hermite-lindemann"
     },
     {
@@ -176,10 +176,10 @@
   "references": [
     {
       "authors": "Lindemann, Ferdinand von",
-      "title": "Über die Zahl π",
+      "title": "\u00dcber die Zahl \u03c0",
       "year": "1882",
       "venue": "Mathematische Annalen, 20, pp. 213-225",
-      "note": "Original proof that π is transcendental, resolving the ancient problem of squaring the circle"
+      "note": "Original proof that \u03c0 is transcendental, resolving the ancient problem of squaring the circle"
     }
   ],
   "leanFile": {
@@ -195,7 +195,7 @@
       "Polynomial"
     ],
     "namespace": null,
-    "lineCount": 374,
+    "lineCount": 380,
     "axiomCount": 8,
     "theoremCount": 11,
     "definitionCount": 0

@@ -2,145 +2,279 @@
   {
     "id": "ann-feuer-intro",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 8, "endLine": 45},
+    "range": {
+      "startLine": 8,
+      "endLine": 45
+    },
     "type": "context",
     "title": "Feuerbach's Theorem: Wiedijk #29",
     "content": "Feuerbach's Theorem (1822): the nine-point circle of any triangle is internally tangent to the incircle and externally tangent to all three excircles. The nine-point circle passes through 9 special points: midpoints of the three sides, feet of the three altitudes, and midpoints of segments from vertices to the orthocenter. Its radius is $R/2$ (half the circumradius) and its center $N$ is the midpoint of the orthocenter $H$ and circumcenter $O$.",
     "mathContext": "The nine-point circle $(N, R/2)$ satisfies $d(N, I) = |R/2 - r|$ (internal tangency with incircle) and $d(N, I_k) = R/2 + r_k$ (external tangency with each excircle $k \\in \\{a,b,c\\}$). The tangent point with the incircle is the Feuerbach point $F$.",
     "significance": "key",
-    "relatedConcepts": ["nine-point circle", "incircle", "excircle", "tangency", "Wiedijk 100"],
-    "prerequisites": ["Euclidean geometry", "circle tangency", "triangle centers"]
+    "relatedConcepts": [
+      "nine-point circle",
+      "incircle",
+      "excircle",
+      "tangency",
+      "Wiedijk 100"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "circle tangency",
+      "triangle centers"
+    ]
   },
   {
     "id": "ann-feuer-triangle",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 59, "endLine": 93},
+    "range": {
+      "startLine": 59,
+      "endLine": 93
+    },
     "type": "definition",
-    "title": "Triangle Configuration in R²",
+    "title": "Triangle Configuration in R\u00b2",
     "content": "Defines a non-degenerate triangle in $\\mathbb{R}^2$ via three vertices $A$, $B$, $C$ with a non-degeneracy condition ensuring positive area. Side lengths $a = |BC|$, $b = |CA|$, $c = |AB|$ are computed via the distance formula, the semi-perimeter $s = (a+b+c)/2$, and the area via the shoelace formula.",
     "mathContext": "Non-degeneracy: $(B_x - A_x)(C_y - A_y) - (C_x - A_x)(B_y - A_y) \\neq 0$, which is the signed area being nonzero. The shoelace formula gives $\\text{Area} = \\frac{1}{2}|\\det\\begin{pmatrix} B-A \\\\ C-A \\end{pmatrix}|$.",
     "significance": "supporting",
-    "relatedConcepts": ["coordinate geometry", "shoelace formula", "distance formula", "cross product"],
-    "prerequisites": ["Real.sqrt", "absolute value", "determinant"]
+    "relatedConcepts": [
+      "coordinate geometry",
+      "shoelace formula",
+      "distance formula",
+      "cross product"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "absolute value",
+      "determinant"
+    ]
   },
   {
     "id": "ann-feuer-special-points",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 94, "endLine": 136},
+    "range": {
+      "startLine": 94,
+      "endLine": 136
+    },
     "type": "definition",
     "title": "Triangle Special Points",
     "content": "Defines the circumcenter $O$ (equidistant from all vertices, computed via perpendicular bisector intersection), the circumradius $R = d(O, A)$, the orthocenter $H$ (intersection of altitudes, computed via $H = A + B + C - 2O$), and the centroid $G = (A+B+C)/3$. These three points lie on the Euler line.",
     "mathContext": "The Euler line relation: $G = \\frac{O + 2H}{3}$, so $G$ divides $\\overline{OH}$ in the ratio $1:2$ from $O$. The circumcenter formula uses the system of equations $|OA|^2 = |OB|^2 = |OC|^2$ solved explicitly in coordinates.",
     "significance": "key",
-    "relatedConcepts": ["circumcenter", "orthocenter", "centroid", "Euler line"],
-    "prerequisites": ["perpendicular bisectors", "altitude intersection", "linear systems"]
+    "relatedConcepts": [
+      "circumcenter",
+      "orthocenter",
+      "centroid",
+      "Euler line"
+    ],
+    "prerequisites": [
+      "perpendicular bisectors",
+      "altitude intersection",
+      "linear systems"
+    ]
   },
   {
     "id": "ann-feuer-nine-point",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 138, "endLine": 157},
+    "range": {
+      "startLine": 138,
+      "endLine": 157
+    },
     "type": "definition",
     "title": "Nine-Point Circle",
     "content": "The nine-point circle has center $N = \\frac{O+H}{2}$ (midpoint of circumcenter and orthocenter) and radius $R_9 = R/2$. Also defines the three Euler points: midpoints of $AH$, $BH$, $CH$ (segments from vertices to orthocenter). Together with the three side midpoints and three altitude feet, these give the 9 points on the circle.",
     "mathContext": "The nine-point center $N = \\frac{O + H}{2}$ lies on the Euler line, midway between $O$ and $H$. The radius $R_9 = R/2$ is proved as a definitional equality. The circle is also called the Euler circle, medioscribed circle, or Feuerbach circle.",
     "significance": "key",
-    "relatedConcepts": ["Euler circle", "nine special points", "midpoint theorem"],
-    "prerequisites": ["pointMidpoint", "circumradius", "orthocenter"]
+    "relatedConcepts": [
+      "Euler circle",
+      "nine special points",
+      "midpoint theorem"
+    ],
+    "prerequisites": [
+      "pointMidpoint",
+      "circumradius",
+      "orthocenter"
+    ]
   },
   {
     "id": "ann-feuer-incircle-excircle",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 159, "endLine": 210},
+    "range": {
+      "startLine": 159,
+      "endLine": 164
+    },
     "type": "definition",
     "title": "Incircle and Excircles",
     "content": "The incircle has center $I$ (incenter, the intersection of angle bisectors) and inradius $r = \\text{Area}/s$. The three excircles have centers $I_a$, $I_b$, $I_c$ (computed via signed barycentric coordinates) and exradii $r_k = \\text{Area}/(s - k)$. The incenter uses positive weights $a:b:c$; the excenter $I_a$ uses weights $-a:b:c$.",
     "mathContext": "$I = \\frac{aA + bB + cC}{a+b+c}$, $r = \\frac{\\Delta}{s}$. For the excircle opposite $A$: $I_a = \\frac{-aA + bB + cC}{-a+b+c}$, $r_a = \\frac{\\Delta}{s-a}$. The product of all four radii satisfies $r \\cdot r_a \\cdot r_b \\cdot r_c = \\Delta^2$.",
     "significance": "key",
-    "relatedConcepts": ["angle bisector theorem", "barycentric coordinates", "Heron's formula"],
-    "prerequisites": ["area formula", "semi-perimeter", "signed weights"]
+    "relatedConcepts": [
+      "angle bisector theorem",
+      "barycentric coordinates",
+      "Heron's formula"
+    ],
+    "prerequisites": [
+      "area formula",
+      "semi-perimeter",
+      "signed weights"
+    ]
   },
   {
     "id": "ann-feuer-tangency-defs",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 212, "endLine": 224},
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
     "type": "definition",
     "title": "Circle Tangency Conditions",
     "content": "Formalizes internal and external tangency between circles. Two circles with centers $c_1$, $c_2$ and radii $r_1$, $r_2$ are internally tangent if $d(c_1, c_2) = |r_1 - r_2|$ (one inside the other, touching at one point) and externally tangent if $d(c_1, c_2) = r_1 + r_2$ (disjoint interiors, touching at one point).",
     "mathContext": "Internal tangency: $d(c_1, c_2) = |r_1 - r_2|$ means the circles touch at exactly one point, with the smaller circle inside the larger. External tangency: $d(c_1, c_2) = r_1 + r_2$ means the circles touch at exactly one point, each outside the other.",
     "significance": "supporting",
-    "relatedConcepts": ["circle intersection", "radical axis", "inversive geometry"],
-    "prerequisites": ["dist2", "absolute value"]
+    "relatedConcepts": [
+      "circle intersection",
+      "radical axis",
+      "inversive geometry"
+    ],
+    "prerequisites": [
+      "dist2",
+      "absolute value"
+    ]
   },
   {
     "id": "ann-feuer-euler-line",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 226, "endLine": 243},
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
     "type": "technique",
     "title": "Euler Line Relations (Proved)",
     "content": "Two fully proved theorems: (1) the Euler line relation $G = (O + 2H)/3$, proved by coordinate computation with `ring`; (2) the nine-point center lies on the Euler line as the midpoint of $O$ and $H$, proved by reflexivity. These are among the few non-axiom results in the file.",
     "mathContext": "The Euler line theorem (Euler, 1767): $O$, $G$, $H$ are collinear with $\\overrightarrow{OG} = \\frac{1}{3}\\overrightarrow{OH}$. Equivalently, $G = \\frac{1}{3}O + \\frac{2}{3}H$. The nine-point center is $N = \\frac{1}{2}(O + H)$.",
     "significance": "key",
-    "relatedConcepts": ["Euler line", "collinearity", "coordinate proof"],
-    "prerequisites": ["centroid definition", "orthocenter definition", "ring tactic"]
+    "relatedConcepts": [
+      "Euler line",
+      "collinearity",
+      "coordinate proof"
+    ],
+    "prerequisites": [
+      "centroid definition",
+      "orthocenter definition",
+      "ring tactic"
+    ]
   },
   {
     "id": "ann-feuer-distance-axioms",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 245, "endLine": 270},
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
     "type": "insight",
     "title": "Key Distance Relations (Axiomatized)",
     "content": "The core of Feuerbach's theorem: four axiomatized distance relations. (1) $d(N, I) = |R/2 - r|$ establishes internal tangency with the incircle. (2-4) $d(N, I_k) = R/2 + r_k$ for $k \\in \\{a,b,c\\}$ establishes external tangency with each excircle. These are axiomatized because the coordinate-geometry proof requires extensive algebraic manipulation.",
     "mathContext": "The Feuerbach distance formula: $NI^2 = R(R - 2r)/4$ where $N$ is the nine-point center, $I$ the incenter. Since $NI = |R/2 - r|$ and $R_9 = R/2$, this gives $NI = |R_9 - r|$, the internal tangency condition. The classical proof uses Euler's identity $OI^2 = R^2 - 2Rr$.",
     "significance": "key",
-    "relatedConcepts": ["Euler's formula OI² = R² - 2Rr", "Feuerbach's distance", "algebraic computation"],
-    "prerequisites": ["ninePointCenter", "incenter", "excenter", "dist2"]
+    "relatedConcepts": [
+      "Euler's formula OI\u00b2 = R\u00b2 - 2Rr",
+      "Feuerbach's distance",
+      "algebraic computation"
+    ],
+    "prerequisites": [
+      "ninePointCenter",
+      "incenter",
+      "excenter",
+      "dist2"
+    ]
   },
   {
     "id": "ann-feuer-nine-point-props",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 272, "endLine": 302},
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
     "type": "context",
     "title": "Nine-Point Circle Properties (Axiomatized)",
     "content": "Six axioms asserting that specific points lie on the nine-point circle: the three side midpoints $M_a$, $M_b$, $M_c$ and the three Euler points (midpoints of $AH$, $BH$, $CH$). Each states $d(N, P) = R/2$. The altitude feet are not separately axiomatized but also lie on this circle.",
     "mathContext": "For each of the 9 points $P_i$: $d(N, P_i) = R_9 = R/2$. The proof that side midpoints lie on the nine-point circle follows from $N = (O+H)/2$ and $M_a = (B+C)/2$: the midpoint theorem in the medial triangle shows $NM_a = R/2$.",
     "significance": "supporting",
-    "relatedConcepts": ["nine special points", "midpoint theorem", "circle membership"],
-    "prerequisites": ["ninePointCenter", "ninePointRadius", "midpoint definitions"]
+    "relatedConcepts": [
+      "nine special points",
+      "midpoint theorem",
+      "circle membership"
+    ],
+    "prerequisites": [
+      "ninePointCenter",
+      "ninePointRadius",
+      "midpoint definitions"
+    ]
   },
   {
     "id": "ann-feuer-main",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 304, "endLine": 364},
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
     "type": "insight",
     "title": "Feuerbach's Theorem: Complete Statement",
     "content": "The complete theorem combining all four tangency results into a single conjunction: the nine-point circle is (1) internally tangent to the incircle ($d(N,I) = |R/2 - r|$) and (2-4) externally tangent to each excircle ($d(N,I_k) = R/2 + r_k$). Each part follows directly from the corresponding axiomatized distance relation. The tangent point with the incircle is the Feuerbach point $F$.",
     "mathContext": "The full statement: $d(N,I) = |R_9 - r| \\wedge \\bigwedge_{k \\in \\{a,b,c\\}} d(N, I_k) = R_9 + r_k$. This is Wiedijk's Theorem #29. The proof is a 4-tuple of the distance axioms.",
     "significance": "key",
-    "relatedConcepts": ["Feuerbach point", "Wiedijk 100 theorems", "tangent circles"],
-    "prerequisites": ["feuerbach_incircle_distance", "feuerbach_excircle distances"]
+    "relatedConcepts": [
+      "Feuerbach point",
+      "Wiedijk 100 theorems",
+      "tangent circles"
+    ],
+    "prerequisites": [
+      "feuerbach_incircle_distance",
+      "feuerbach_excircle distances"
+    ]
   },
   {
     "id": "ann-feuer-equilateral",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 366, "endLine": 403},
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
     "type": "insight",
     "title": "Equilateral Triangle Special Case",
-    "content": "For an equilateral triangle with side $s$: $R = s\\sqrt{3}/3$ and $r = s\\sqrt{3}/6$, so $R = 2r$. This means $R/2 = r$, so the nine-point circle and incircle have the same radius and are concentric — they coincide. The internal tangency degenerates to coincidence. Axiomatized because the proof requires extensive real arithmetic with $\\sqrt{3}$.",
+    "content": "For an equilateral triangle with side $s$: $R = s\\sqrt{3}/3$ and $r = s\\sqrt{3}/6$, so $R = 2r$. This means $R/2 = r$, so the nine-point circle and incircle have the same radius and are concentric \u2014 they coincide. The internal tangency degenerates to coincidence. Axiomatized because the proof requires extensive real arithmetic with $\\sqrt{3}$.",
     "mathContext": "For an equilateral triangle: $R = 2r$, $R_9 = R/2 = r$, and $N = I$ (all centers coincide). The Feuerbach tangency becomes $d(N,I) = |r - r| = 0$, confirming coincidence. The equilateral triangle is the unique triangle where all excircles have equal radii: $r_a = r_b = r_c$.",
     "significance": "supporting",
-    "relatedConcepts": ["equilateral triangle", "coincident circles", "R = 2r", "degenerate tangency"],
-    "prerequisites": ["Real.sqrt", "positivity tactic"]
+    "relatedConcepts": [
+      "equilateral triangle",
+      "coincident circles",
+      "R = 2r",
+      "degenerate tangency"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "positivity tactic"
+    ]
   },
   {
     "id": "ann-feuer-345",
     "proofId": "feuerbachs-theorem",
-    "range": {"startLine": 405, "endLine": 453},
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
     "type": "technique",
     "title": "Numerical Verification: 3-4-5 Right Triangle",
     "content": "Concrete verification with the 3-4-5 right triangle ($A = (0,0)$, $B = (3,0)$, $C = (0,4)$). Three fully proved results: area $= 6$, semi-perimeter $= 6$, inradius $= 1$. The side lengths are computed via $\\sqrt{9+16} = 5$, $\\sqrt{16} = 4$, $\\sqrt{9} = 3$ using `Real.sqrt_eq_iff_sq_eq`.",
     "mathContext": "For the 3-4-5 triangle: $a = 5$, $b = 4$, $c = 3$, $s = 6$, $\\Delta = 6$, $r = 1$, $R = 5/2$ (circumradius equals half the hypotenuse for right triangles), $R_9 = 5/4$. The Feuerbach distance is $|R/2 - r| = |5/4 - 1| = 1/4$.",
     "significance": "supporting",
-    "relatedConcepts": ["right triangle", "Pythagorean triple", "numerical verification"],
-    "prerequisites": ["Real.sqrt_eq_iff_sq_eq", "norm_num tactic"]
+    "relatedConcepts": [
+      "right triangle",
+      "Pythagorean triple",
+      "numerical verification"
+    ],
+    "prerequisites": [
+      "Real.sqrt_eq_iff_sq_eq",
+      "norm_num tactic"
+    ]
   }
 ]

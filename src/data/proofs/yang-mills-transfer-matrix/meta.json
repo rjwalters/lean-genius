@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 3,
     "assumptions": "Structure-encoded assumptions: TransferMatrix requires lambda_0 > lambda_1 > 0 (Perron-Frobenius eigenvalue ordering), and LatticeTransferMatrix requires positivity and strict gap. These encode the physical assumption that the transfer matrix has a spectral gap, which is proven for finite-volume lattice gauge theory.",
-    "lineCount": 5507,
+    "lineCount": 28001,
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pos",
@@ -156,7 +156,7 @@
       "Matrix"
     ],
     "namespace": "YangMillsMassGap",
-    "lineCount": 28002,
+    "lineCount": 28001,
     "axiomCount": 0,
     "theoremCount": 1786,
     "lemmaCount": 0,

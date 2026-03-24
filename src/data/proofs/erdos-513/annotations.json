@@ -173,7 +173,7 @@
     "type": "concept",
     "range": {
       "startLine": 140,
-      "endLine": 152
+      "endLine": 151
     },
     "title": "Erdos Problem #513: The Exact Supremum",
     "content": "The axiom **erdos_513_exact_value** asserts the existence of an exact value L in (1/2, 2/pi) such that: (1) every transcendental entire function has liminf ratio **at most L** (L is an upper bound); (2) for every epsilon > 0, some transcendental entire function has liminf ratio **exceeding L - epsilon** (L is tight). This formalization captures the supremum as a genuine extremal constant of complex analysis.",

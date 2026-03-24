@@ -8,8 +8,8 @@
       "endLine": 30
     },
     "title": "Problem Overview",
-    "content": "Erdős Problem #218: Let d_n = p_{n+1} - p_n. Conjectures: (1) {n : d_{n+1} ≥ d_n} has density 1/2, (2) {n : d_{n+1} ≤ d_n} has density 1/2, (3) infinitely many n have d_n = d_{n+1}. All three OPEN. Terence Tao: 'looks difficult'.",
-    "mathContext": "From Erdős [Er55c], [Er57], [Er61], [Er65b], [Er85c]. Conjecture 3 equivalent to infinitely many 3-term APs of consecutive primes.",
+    "content": "Erd\u0151s Problem #218: Let d_n = p_{n+1} - p_n. Conjectures: (1) {n : d_{n+1} \u2265 d_n} has density 1/2, (2) {n : d_{n+1} \u2264 d_n} has density 1/2, (3) infinitely many n have d_n = d_{n+1}. All three OPEN. Terence Tao: 'looks difficult'.",
+    "mathContext": "From Erd\u0151s [Er55c], [Er57], [Er61], [Er65b], [Er85c]. Conjecture 3 equivalent to infinitely many 3-term APs of consecutive primes.",
     "significance": "key",
     "relatedConcepts": [
       "prime gaps",
@@ -63,8 +63,8 @@
       "endLine": 126
     },
     "title": "Natural Density",
-    "content": "HasDensity(S, d): lim_{N→∞} |S ∩ [0,N)| / N = d via Tendsto/nhds. upperDensity via limsup, lowerDensity via liminf. hasDensity_iff_upper_lower: density exists iff upper = lower = d.",
-    "mathContext": "HasDensity S d ≡ Tendsto (fun N => (Finset.filter (· ∈ S) (Finset.range N)).card / N) atTop (nhds d).",
+    "content": "HasDensity(S, d): lim_{N\u2192\u221e} |S \u2229 [0,N)| / N = d via Tendsto/nhds. upperDensity via limsup, lowerDensity via liminf. hasDensity_iff_upper_lower: density exists iff upper = lower = d.",
+    "mathContext": "HasDensity S d \u2261 Tendsto (fun N => (Finset.filter (\u00b7 \u2208 S) (Finset.range N)).card / N) atTop (nhds d).",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic density",
@@ -82,8 +82,8 @@
       "endLine": 171
     },
     "title": "The Key Sets",
-    "content": "gapIncreasingSet = {n : d_n ≤ d_{n+1}}. gapDecreasingSet = {n : d_{n+1} ≤ d_n}. gapEqualSet = {n : d_n = d_{n+1}}. gapEqualSet_eq_inter: proved (equal = increasing ∩ decreasing). Examples: 0 ∈ increasing, 1 ∈ equal.",
-    "mathContext": "gapEqualSet = gapIncreasingSet ∩ gapDecreasingSet. Proved by le_antisymm.",
+    "content": "gapIncreasingSet = {n : d_n \u2264 d_{n+1}}. gapDecreasingSet = {n : d_{n+1} \u2264 d_n}. gapEqualSet = {n : d_n = d_{n+1}}. gapEqualSet_eq_inter: proved (equal = increasing \u2229 decreasing). Examples: 0 \u2208 increasing, 1 \u2208 equal.",
+    "mathContext": "gapEqualSet = gapIncreasingSet \u2229 gapDecreasingSet. Proved by le_antisymm.",
     "significance": "key",
     "relatedConcepts": [
       "set intersection",
@@ -118,8 +118,8 @@
       "endLine": 235
     },
     "title": "Connection to Arithmetic Progressions",
-    "content": "threePrimesInAP(n): p_n + p_{n+2} = 2·p_{n+1}. gapEqual_iff_ap (axiom): n ∈ gapEqualSet ↔ threePrimesInAP n. infinitely_many_3ap_from_218c: proved (gapEqualSet.Infinite → apTriples.Infinite, via convert).",
-    "mathContext": "d_n = d_{n+1} ⟺ p_n, p_{n+1}, p_{n+2} form an AP. Example: 3, 5, 7 with difference 2.",
+    "content": "threePrimesInAP(n): p_n + p_{n+2} = 2\u00b7p_{n+1}. gapEqual_iff_ap (axiom): n \u2208 gapEqualSet \u2194 threePrimesInAP n. infinitely_many_3ap_from_218c: proved (gapEqualSet.Infinite \u2192 apTriples.Infinite, via convert).",
+    "mathContext": "d_n = d_{n+1} \u27fa p_n, p_{n+1}, p_{n+2} form an AP. Example: 3, 5, 7 with difference 2.",
     "significance": "key",
     "relatedConcepts": [
       "arithmetic progressions",
@@ -136,11 +136,11 @@
       "endLine": 248
     },
     "title": "Green-Tao Theorem",
-    "content": "green_tao (axiom): For any k, ∃ a d > 0, ∀ i < k, (a + i·d).Prime. This gives arbitrarily long APs of primes, but they need not be consecutive. Does not directly imply Conjecture 3.",
+    "content": "green_tao (axiom): For any k, \u2203 a d > 0, \u2200 i < k, (a + i\u00b7d).Prime. This gives arbitrarily long APs of primes, but they need not be consecutive. Does not directly imply Conjecture 3.",
     "mathContext": "Green-Tao (2008) is much stronger than needed but addresses a different question (non-consecutive vs consecutive primes).",
     "significance": "supporting",
     "relatedConcepts": [
-      "Szemerédi's theorem",
+      "Szemer\u00e9di's theorem",
       "additive combinatorics",
       "arbitrarily long APs"
     ]
@@ -172,13 +172,13 @@
       "endLine": 300
     },
     "title": "Symmetry Heuristic and Partition",
-    "content": "Heuristic: if gap comparisons were random, density 1/2 for each direction. partition (proved): strictlyIncreasing ∪ strictlyDecreasing ∪ gapEqualSet = Set.univ. The difficulty is that primes have subtle correlations.",
-    "mathContext": "partition: proved by cases on Nat.lt_or_ge and le_antisymm. Decomposition of ℕ by gap comparison.",
+    "content": "Heuristic: if gap comparisons were random, density 1/2 for each direction. partition (proved): strictlyIncreasing \u222a strictlyDecreasing \u222a gapEqualSet = Set.univ. The difficulty is that primes have subtle correlations.",
+    "mathContext": "partition: proved by cases on Nat.lt_or_ge and le_antisymm. Decomposition of \u2115 by gap comparison.",
     "significance": "supporting",
     "relatedConcepts": [
       "probabilistic models",
       "prime randomness",
-      "Cramér model"
+      "Cram\u00e9r model"
     ]
   },
   {
@@ -187,11 +187,11 @@
     "type": "insight",
     "range": {
       "startLine": 302,
-      "endLine": 342
+      "endLine": 340
     },
     "title": "Summary: OPEN",
-    "content": "erdos_218_summary: (gapIncreasingSet.Infinite ∧ gapDecreasingSet.Infinite) ∧ (gapEqualSet.Infinite ↔ apTriples.Infinite). Proved from axioms. erdos_218_open: True (trivial). All three density conjectures remain OPEN.",
-    "mathContext": "Summary combines known results: both sets infinite (axioms), equal gaps ↔ 3-term APs (from gapEqual_iff_ap axiom).",
+    "content": "erdos_218_summary: (gapIncreasingSet.Infinite \u2227 gapDecreasingSet.Infinite) \u2227 (gapEqualSet.Infinite \u2194 apTriples.Infinite). Proved from axioms. erdos_218_open: True (trivial). All three density conjectures remain OPEN.",
+    "mathContext": "Summary combines known results: both sets infinite (axioms), equal gaps \u2194 3-term APs (from gapEqual_iff_ap axiom).",
     "significance": "key",
     "relatedConcepts": [
       "open problems",

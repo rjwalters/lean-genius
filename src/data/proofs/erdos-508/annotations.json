@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview and Imports",
-    "content": "**The Hadwiger-Nelson Problem (Erdős #508)**\n\nWhat is the chromatic number of the plane? The problem asks for the minimum number of colors needed to color $\\mathbb{R}^2$ so that no two points at Euclidean distance exactly 1 share the same color. After 75+ years of research, the answer is known to be one of $\\{5, 6, 7\\}$.\n\nImports `SimpleGraph` for the graph-theoretic framework, `SimpleGraph.Coloring` for chromatic number concepts, and `Tactic` for proof automation.",
+    "content": "**The Hadwiger-Nelson Problem (Erd\u0151s #508)**\n\nWhat is the chromatic number of the plane? The problem asks for the minimum number of colors needed to color $\\mathbb{R}^2$ so that no two points at Euclidean distance exactly 1 share the same color. After 75+ years of research, the answer is known to be one of $\\{5, 6, 7\\}$.\n\nImports `SimpleGraph` for the graph-theoretic framework, `SimpleGraph.Coloring` for chromatic number concepts, and `Tactic` for proof automation.",
     "mathContext": "The unit-distance graph $G = (\\mathbb{R}^2, E)$ has vertex set $\\mathbb{R}^2$ and edge set $E = \\{\\{x,y\\} : \\|x - y\\| = 1\\}$. Its chromatic number $\\chi(\\mathbb{R}^2)$ is the minimum $k$ such that there exists a coloring $c : \\mathbb{R}^2 \\to \\{1,\\ldots,k\\}$ with $c(x) \\neq c(y)$ whenever $\\|x-y\\| = 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -32,7 +32,7 @@
       "endLine": 32
     },
     "type": "definition",
-    "title": "Unit-Distance Graph on R²",
+    "title": "Unit-Distance Graph on R\u00b2",
     "content": "**unitDistGraph:** The infinite graph on $\\mathbb{R}^2$ where two points are adjacent iff their Euclidean distance is exactly 1 and they are distinct. The symmetry proof uses `dist_comm` (distance is symmetric), and the loopless proof derives a contradiction from $x = x$ and $x \\neq x$.\n\nThis is a `noncomputable def` because the graph lives on an uncountable vertex set ($\\mathbb{R}^2$), so membership queries are not computationally decidable.",
     "mathContext": "The adjacency relation is $\\operatorname{Adj}(x, y) \\iff \\|x - y\\|_2 = 1 \\wedge x \\neq y$, where $\\|\\cdot\\|_2$ is the Euclidean norm on $\\mathbb{R}^2 \\cong \\texttt{EuclideanSpace}\\;\\mathbb{R}\\;(\\texttt{Fin}\\;2)$. The graph has uncountably many vertices and each vertex has uncountable degree (the unit circle around any point). Despite being infinite, its chromatic number is finite (between 5 and 7).",
     "significance": "key",
@@ -46,7 +46,7 @@
     "prerequisites": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
       "dist",
-      "EuclideanSpace ℝ (Fin 2)"
+      "EuclideanSpace \u211d (Fin 2)"
     ]
   },
   {
@@ -57,8 +57,8 @@
       "endLine": 37
     },
     "type": "definition",
-    "title": "planeChromatic — Axiomatized Chromatic Number",
-    "content": "**planeChromatic:** The chromatic number $\\chi(\\mathbb{R}^2)$, axiomatized as a natural number whose value is the subject of the problem. This is the only sensible approach since the exact value is unknown — it could be 5, 6, or 7.\n\nAxiomatizing rather than defining allows stating bounds without committing to a value. All results in the file are implications from this axiom.",
+    "title": "planeChromatic \u2014 Axiomatized Chromatic Number",
+    "content": "**planeChromatic:** The chromatic number $\\chi(\\mathbb{R}^2)$, axiomatized as a natural number whose value is the subject of the problem. This is the only sensible approach since the exact value is unknown \u2014 it could be 5, 6, or 7.\n\nAxiomatizing rather than defining allows stating bounds without committing to a value. All results in the file are implications from this axiom.",
     "mathContext": "Formally, $\\chi(\\mathbb{R}^2) = \\min\\{k \\in \\mathbb{N} : \\exists c : \\mathbb{R}^2 \\to \\{1,\\ldots,k\\},\\; \\forall x,y,\\; \\|x-y\\|=1 \\Rightarrow c(x) \\neq c(y)\\}$. The axiom declares this minimum exists as some $k \\in \\mathbb{N}$, which is justified by Isbell's 7-coloring ($k \\leq 7$).",
     "significance": "key",
     "relatedConcepts": [
@@ -80,7 +80,7 @@
     },
     "type": "concept",
     "title": "Hadwiger-Nelson Problem Statement",
-    "content": "**erdos_508_problem (axiom):** The main statement: $5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. This combines the de Grey lower bound with the Isbell upper bound, narrowing the problem to three possible values.\n\nThe fact that this is axiomatized (rather than proved from `de_grey_2018` and `chromatic_le_7_isbell`) is a stylistic choice — it could equivalently be derived as a theorem.",
+    "content": "**erdos_508_problem (axiom):** The main statement: $5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. This combines the de Grey lower bound with the Isbell upper bound, narrowing the problem to three possible values.\n\nThe fact that this is axiomatized (rather than proved from `de_grey_2018` and `chromatic_le_7_isbell`) is a stylistic choice \u2014 it could equivalently be derived as a theorem.",
     "mathContext": "The conjunction $5 \\leq \\chi(\\mathbb{R}^2) \\wedge \\chi(\\mathbb{R}^2) \\leq 7$ constrains the answer to $\\chi(\\mathbb{R}^2) \\in \\{5, 6, 7\\}$. Most experts conjecture $\\chi(\\mathbb{R}^2) = 7$, but no proof exists. Even ruling out $\\chi = 5$ or $\\chi = 6$ would be a major achievement.",
     "significance": "key",
     "relatedConcepts": [
@@ -101,14 +101,14 @@
       "endLine": 53
     },
     "type": "concept",
-    "title": "Lower Bounds: χ ≥ 3 and χ ≥ 4",
+    "title": "Lower Bounds: \u03c7 \u2265 3 and \u03c7 \u2265 4",
     "content": "**chromatic_ge_3 (axiom):** An equilateral triangle with side length 1 is a unit-distance graph requiring 3 colors (it's $K_3$). This is the simplest lower bound.\n\n**chromatic_ge_4_moser (axiom):** The Moser spindle (1961) is a 7-vertex, 11-edge unit-distance graph with chromatic number 4. It consists of two rhombi sharing vertices, cleverly arranged so that 3 colors force a monochromatic unit-distance pair. The Golomb graph (10 vertices) provides an alternative proof.",
-    "mathContext": "The Moser spindle has vertices at specific coordinates in $\\mathbb{R}^2$ forming two unit rhombi. Its chromatic number is exactly 4: a simple case analysis shows 3 colors are insufficient, while 4 suffice by construction. By the Erdős-de Bruijn theorem, $\\chi(\\text{Moser}) = 4$ implies $\\chi(\\mathbb{R}^2) \\geq 4$.",
+    "mathContext": "The Moser spindle has vertices at specific coordinates in $\\mathbb{R}^2$ forming two unit rhombi. Its chromatic number is exactly 4: a simple case analysis shows 3 colors are insufficient, while 4 suffice by construction. By the Erd\u0151s-de Bruijn theorem, $\\chi(\\text{Moser}) = 4$ implies $\\chi(\\mathbb{R}^2) \\geq 4$.",
     "significance": "key",
     "relatedConcepts": [
       "Moser spindle",
       "Golomb graph",
-      "triangle graph K₃",
+      "triangle graph K\u2083",
       "finite subgraph embeddings"
     ],
     "prerequisites": [
@@ -124,9 +124,9 @@
       "endLine": 58
     },
     "type": "concept",
-    "title": "de Grey (2018): χ ≥ 5",
+    "title": "de Grey (2018): \u03c7 \u2265 5",
     "content": "**de_grey_2018 (axiom):** Aubrey de Grey's 2018 breakthrough improved the lower bound for the first time in over 60 years. He constructed a unit-distance graph on 1581 vertices (later reduced to 509 by Exoo-Ismailescu and others) that requires 5 colors.\n\nde Grey's construction starts with a Moser spindle, then builds progressively larger graphs by rotating and combining copies. The verification that no 4-coloring exists was done computationally using SAT solvers. This was the first time computer-assisted methods solved a major open problem in chromatic geometry.",
-    "mathContext": "de Grey's graph $G$ satisfies $\\chi(G) \\geq 5$: for every $c : V(G) \\to \\{1,2,3,4\\}$, there exist adjacent vertices $u, v$ with $c(u) = c(v)$. The graph is embeddable in $\\mathbb{R}^2$ with all edges having Euclidean length exactly 1. By Erdős-de Bruijn, $\\chi(G) \\geq 5 \\Rightarrow \\chi(\\mathbb{R}^2) \\geq 5$.",
+    "mathContext": "de Grey's graph $G$ satisfies $\\chi(G) \\geq 5$: for every $c : V(G) \\to \\{1,2,3,4\\}$, there exist adjacent vertices $u, v$ with $c(u) = c(v)$. The graph is embeddable in $\\mathbb{R}^2$ with all edges having Euclidean length exactly 1. By Erd\u0151s-de Bruijn, $\\chi(G) \\geq 5 \\Rightarrow \\chi(\\mathbb{R}^2) \\geq 5$.",
     "significance": "key",
     "relatedConcepts": [
       "SAT solvers in combinatorics",
@@ -148,7 +148,7 @@
       "endLine": 65
     },
     "type": "concept",
-    "title": "Isbell Upper Bound: χ ≤ 7",
+    "title": "Isbell Upper Bound: \u03c7 \u2264 7",
     "content": "**chromatic_le_7_isbell (axiom):** John Isbell's 7-coloring of the plane tiles $\\mathbb{R}^2$ with regular hexagons whose diameter is slightly less than 1. Each hexagon is assigned one of 7 colors in a repeating pattern, ensuring that any two points of the same color are at distance less than 1.\n\nThis construction has been known since the 1960s and remains the best upper bound. No 6-coloring of the plane is known, and improving to $\\chi \\leq 6$ would likely require abandoning the tiling approach entirely.",
     "mathContext": "The hexagonal tiling uses hexagons with diameter $d < 1$ (typically $d = 1 - \\epsilon$ for small $\\epsilon > 0$). Points within the same hexagon are at distance $< 1$, so coloring each hexagon monochromatically is safe. The 7-color pattern ensures hexagons of the same color are always separated by distance $> 1$. This works because the hexagonal lattice can be 7-colored so that same-colored hexagons are never adjacent or diagonal-adjacent.",
     "significance": "key",
@@ -196,8 +196,8 @@
       "endLine": 78
     },
     "type": "concept",
-    "title": "Higher Dimensions: χ(R³)",
-    "content": "**higher_dimensions (axiom):** The chromatic number of $\\mathbb{R}^3$ satisfies $6 \\leq \\chi(\\mathbb{R}^3) \\leq 15$. In general, $\\chi(\\mathbb{R}^d)$ grows exponentially with $d$ — Frankl and Wilson (1981) showed $\\chi(\\mathbb{R}^d) \\geq (1.207...)^d$ using algebraic methods.\n\nThe gap between lower and upper bounds widens dramatically in higher dimensions, making the planar case ($d = 2$) the most tractable.",
+    "title": "Higher Dimensions: \u03c7(R\u00b3)",
+    "content": "**higher_dimensions (axiom):** The chromatic number of $\\mathbb{R}^3$ satisfies $6 \\leq \\chi(\\mathbb{R}^3) \\leq 15$. In general, $\\chi(\\mathbb{R}^d)$ grows exponentially with $d$ \u2014 Frankl and Wilson (1981) showed $\\chi(\\mathbb{R}^d) \\geq (1.207...)^d$ using algebraic methods.\n\nThe gap between lower and upper bounds widens dramatically in higher dimensions, making the planar case ($d = 2$) the most tractable.",
     "mathContext": "For $\\mathbb{R}^d$, the unit-distance graph has $\\chi(\\mathbb{R}^d)$ growing exponentially. The Frankl-Wilson bound $\\chi(\\mathbb{R}^d) \\geq (1 + o(1))^d$ uses intersection theorems for set systems. Upper bounds come from lattice-based colorings generalizing the hexagonal tiling.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -207,7 +207,7 @@
       "lattice colorings"
     ],
     "prerequisites": [
-      "Euclidean space ℝ^d",
+      "Euclidean space \u211d^d",
       "exponential growth",
       "algebraic combinatorics"
     ]
@@ -217,12 +217,12 @@
     "proofId": "erdos-508",
     "range": {
       "startLine": 80,
-      "endLine": 88
+      "endLine": 87
     },
     "type": "concept",
-    "title": "Erdős-de Bruijn Compactness Theorem (1951)",
+    "title": "Erd\u0151s-de Bruijn Compactness Theorem (1951)",
     "content": "**erdos_de_bruijn (axiom):** The chromatic number of the plane equals the supremum of chromatic numbers of its finite subgraphs. Formally: $k \\leq \\chi(\\mathbb{R}^2)$ iff there exists a finite set of points in $\\mathbb{R}^2$ whose induced unit-distance graph requires $> k-1$ colors.\n\nThis is a consequence of the compactness theorem for propositional logic (or equivalently, Tychonoff's theorem for product topologies). It is the theoretical justification for de Grey's approach: constructing a single finite graph with high chromatic number suffices to bound $\\chi(\\mathbb{R}^2)$ from below.",
-    "mathContext": "The Erdős-de Bruijn theorem (1951): for an infinite graph $G$, $\\chi(G) = \\sup\\{\\chi(H) : H \\text{ finite subgraph of } G\\}$. Applied to the unit-distance graph: $\\chi(\\mathbb{R}^2) = \\sup_n \\sup_{p_1,\\ldots,p_n \\in \\mathbb{R}^2} \\chi(G[p_1,\\ldots,p_n])$ where $G[p_1,\\ldots,p_n]$ is the induced unit-distance subgraph on those points. The axiom formalizes this as: $k \\leq \\chi(\\mathbb{R}^2)$ iff there exist $n$ points such that every $k$-coloring has a monochromatic edge.",
+    "mathContext": "The Erd\u0151s-de Bruijn theorem (1951): for an infinite graph $G$, $\\chi(G) = \\sup\\{\\chi(H) : H \\text{ finite subgraph of } G\\}$. Applied to the unit-distance graph: $\\chi(\\mathbb{R}^2) = \\sup_n \\sup_{p_1,\\ldots,p_n \\in \\mathbb{R}^2} \\chi(G[p_1,\\ldots,p_n])$ where $G[p_1,\\ldots,p_n]$ is the induced unit-distance subgraph on those points. The axiom formalizes this as: $k \\leq \\chi(\\mathbb{R}^2)$ iff there exist $n$ points such that every $k$-coloring has a monochromatic edge.",
     "significance": "key",
     "relatedConcepts": [
       "compactness theorem",

@@ -1,10 +1,10 @@
 {
   "id": "erdos-547",
-  "title": "Erdős Problem #547: Tree Ramsey Numbers",
+  "title": "Erd\u0151s Problem #547: Tree Ramsey Numbers",
   "slug": "erdos-547",
-  "description": "For any tree T on n vertices, R(T) ≤ 2n - 2. The bound is tight: stars achieve R(S_n) = 2n - 2.",
+  "description": "For any tree T on n vertices, R(T) \u2264 2n - 2. The bound is tight: stars achieve R(S_n) = 2n - 2.",
   "meta": {
-    "author": "Burr (conjecture 1974), Chvátal (1977), Zhao et al. (2012+)",
+    "author": "Burr (conjecture 1974), Chv\u00e1tal (1977), Zhao et al. (2012+)",
     "sourceUrl": "https://erdosproblems.com/547",
     "date": "2012",
     "status": "axiomatized",
@@ -52,37 +52,37 @@
       "Complete Ramsey number framework: EdgeColoring, HasMonochromaticCopy, ramseyNumber with existence, specification, and minimality axioms",
       "Tree predicate hierarchy: IsTree, IsPath, IsStar, IsCaterpillar with inclusion proofs and degree axioms",
       "Exact Ramsey numbers: R(P_n) = n (paths, minimum) and R(S_n) = 2n-2 (stars, maximum)",
-      "Chvátal's degree-dependent bound R(T) ≤ (Δ-1)(n-1)+1 with analysis showing it beats 2n-2 only for Δ ≤ 2",
-      "Main theorem erdos_547: R(T) ≤ 2n-2 for all trees, with tightness and ordering n ≤ R(T) ≤ 2n-2"
+      "Chv\u00e1tal's degree-dependent bound R(T) \u2264 (\u0394-1)(n-1)+1 with analysis showing it beats 2n-2 only for \u0394 \u2264 2",
+      "Main theorem erdos_547: R(T) \u2264 2n-2 for all trees, with tightness and ordering n \u2264 R(T) \u2264 2n-2"
     ],
     "axiomCount": 25,
     "prerequisites": [
       "Ramsey theory fundamentals (existence of Ramsey numbers for finite graphs)",
       "Graph theory basics (simple graphs, complete graphs, trees, vertex degree)",
       "Pigeonhole principle",
-      "Szemerédi regularity lemma and blow-up lemma (for the full proof)",
+      "Szemer\u00e9di regularity lemma and blow-up lemma (for the full proof)",
       "Tree structural properties (paths, stars, caterpillars, maximum degree)"
     ],
     "lineCount": 138,
     "assumptions": "25 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**The Tree Ramsey Number Problem**\n\nBurr conjectured in 1974 that $R(T) \\leq 2n - 2$ for all trees $T$ on $n$ vertices, predicting that the star $S_n$ is the hardest tree for Ramsey theory. Chvátal (1977) proved the degree-dependent bound $R(T) \\leq (\\Delta-1)(n-1) + 1$, which is tight for paths but weak for high-degree trees. The Burr conjecture stood as a central open problem in graph Ramsey theory for nearly four decades. The full conjecture was proved for all sufficiently large $n$ by Zhao, Hladký, Komlós, Piguet, Simonovits, Stein, and Szemerédi (2012+), using the Szemerédi regularity lemma and the blow-up lemma — heavy machinery from the regularity method developed in the 1970s–90s. The bound is best possible since stars achieve $R(S_n) = 2n - 2$ by a pigeonhole argument on vertex colors in $K_{2n-3}$. The problem connects to the broader program of understanding Ramsey numbers for sparse graphs, including the Erdős-Sós conjecture (1963) that $R(T) \\leq (k-2)(n-1)/2 + 1$ for trees with at most $k$ edges.",
-    "problemStatement": "**Problem Statement**\n\nLet T be a tree on n vertices. Prove that:\n\nR(T) ≤ 2n - 2\n\nwhere R(T) is the 2-color Ramsey number: the minimum N such that any 2-coloring of K_N contains a monochromatic copy of T.\n\n**Answer:** YES, the conjecture is true (proved for large n).\n\n**Key Results:**\n- Paths: R(P_n) = n (minimum among trees)\n- Stars: R(S_n) = 2n - 2 (maximum among trees)\n- Chvátal: R(T) ≤ (Δ-1)(n-1) + 1 for max degree Δ\n- Universal: R(T) ≤ 2n - 2 for all trees",
-    "text": "For any tree T on n vertices, R(T) ≤ 2n - 2. The bound is tight: stars achieve R(S_n) = 2n - 2.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Colorings:** Define 2-colorings of complete graphs using Sym2 for edges, Bool for colors\n2. **Ramsey Numbers:** Axiomatize existence (Ramsey's theorem), specification, and minimality\n3. **Tree Predicates:** Define IsTree, IsPath, IsStar, IsCaterpillar with inclusion hierarchy\n4. **Exact Values:** State R(P_n) = n and R(S_n) = 2n - 2\n5. **Chvátal's Theorem:** The degree-dependent bound (Δ-1)(n-1) + 1\n6. **Main Conjecture:** R(T) ≤ 2n - 2 for all trees, with tightness and bound comparison\n\nThe actual proofs use the Szemerédi regularity lemma and blow-up lemma; these are axiomatized here.",
+    "historicalContext": "**The Tree Ramsey Number Problem**\n\nBurr conjectured in 1974 that $R(T) \\leq 2n - 2$ for all trees $T$ on $n$ vertices, predicting that the star $S_n$ is the hardest tree for Ramsey theory. Chv\u00e1tal (1977) proved the degree-dependent bound $R(T) \\leq (\\Delta-1)(n-1) + 1$, which is tight for paths but weak for high-degree trees. The Burr conjecture stood as a central open problem in graph Ramsey theory for nearly four decades. The full conjecture was proved for all sufficiently large $n$ by Zhao, Hladk\u00fd, Koml\u00f3s, Piguet, Simonovits, Stein, and Szemer\u00e9di (2012+), using the Szemer\u00e9di regularity lemma and the blow-up lemma \u2014 heavy machinery from the regularity method developed in the 1970s\u201390s. The bound is best possible since stars achieve $R(S_n) = 2n - 2$ by a pigeonhole argument on vertex colors in $K_{2n-3}$. The problem connects to the broader program of understanding Ramsey numbers for sparse graphs, including the Erd\u0151s-S\u00f3s conjecture (1963) that $R(T) \\leq (k-2)(n-1)/2 + 1$ for trees with at most $k$ edges.",
+    "problemStatement": "**Problem Statement**\n\nLet T be a tree on n vertices. Prove that:\n\nR(T) \u2264 2n - 2\n\nwhere R(T) is the 2-color Ramsey number: the minimum N such that any 2-coloring of K_N contains a monochromatic copy of T.\n\n**Answer:** YES, the conjecture is true (proved for large n).\n\n**Key Results:**\n- Paths: R(P_n) = n (minimum among trees)\n- Stars: R(S_n) = 2n - 2 (maximum among trees)\n- Chv\u00e1tal: R(T) \u2264 (\u0394-1)(n-1) + 1 for max degree \u0394\n- Universal: R(T) \u2264 2n - 2 for all trees",
+    "text": "For any tree T on n vertices, R(T) \u2264 2n - 2. The bound is tight: stars achieve R(S_n) = 2n - 2.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Colorings:** Define 2-colorings of complete graphs using Sym2 for edges, Bool for colors\n2. **Ramsey Numbers:** Axiomatize existence (Ramsey's theorem), specification, and minimality\n3. **Tree Predicates:** Define IsTree, IsPath, IsStar, IsCaterpillar with inclusion hierarchy\n4. **Exact Values:** State R(P_n) = n and R(S_n) = 2n - 2\n5. **Chv\u00e1tal's Theorem:** The degree-dependent bound (\u0394-1)(n-1) + 1\n6. **Main Conjecture:** R(T) \u2264 2n - 2 for all trees, with tightness and bound comparison\n\nThe actual proofs use the Szemer\u00e9di regularity lemma and blow-up lemma; these are axiomatized here.",
     "keyInsights": [
-      "**Paths are Extremal (Minimum):** R(P_n) = n because paths have low maximum degree, and Gerencsér-Gyárfás guarantees long monochromatic paths",
+      "**Paths are Extremal (Minimum):** R(P_n) = n because paths have low maximum degree, and Gerencs\u00e9r-Gy\u00e1rf\u00e1s guarantees long monochromatic paths",
       "**Stars are Extremal (Maximum):** R(S_n) = 2n - 2 because finding a monochromatic star requires a high-degree vertex in one color (pigeonhole on K_{2n-2})",
-      "**Chvátal's Insight:** Maximum degree Δ controls the Ramsey number; the bound is tight for paths but weak for stars",
-      "**Degree Dichotomy:** Chvátal's bound beats 2n-2 only when Δ ≤ 2, i.e., only for paths",
-      "**Complete Characterization:** n ≤ R(T) ≤ 2n - 2 for all trees on n vertices, with both bounds tight"
+      "**Chv\u00e1tal's Insight:** Maximum degree \u0394 controls the Ramsey number; the bound is tight for paths but weak for stars",
+      "**Degree Dichotomy:** Chv\u00e1tal's bound beats 2n-2 only when \u0394 \u2264 2, i.e., only for paths",
+      "**Complete Characterization:** n \u2264 R(T) \u2264 2n - 2 for all trees on n vertices, with both bounds tight"
     ],
     "prerequisites": [
       "Ramsey theory fundamentals (existence of Ramsey numbers for finite graphs)",
       "Graph theory basics (simple graphs, complete graphs, trees, vertex degree)",
       "Pigeonhole principle",
-      "Szemerédi regularity lemma and blow-up lemma (for the full proof)",
+      "Szemer\u00e9di regularity lemma and blow-up lemma (for the full proof)",
       "Tree structural properties (paths, stars, caterpillars, maximum degree)"
     ]
   },
@@ -90,21 +90,21 @@
     {
       "id": "edge-colorings",
       "title": "Edge Colorings and Ramsey Numbers",
-      "summary": "EdgeColoring via Sym2 (Fin n) → Bool; HasMonochromaticCopy via embedding + color agreement; ramseyNumber axioms (existence, spec, minimality).",
+      "summary": "EdgeColoring via Sym2 (Fin n) \u2192 Bool; HasMonochromaticCopy via embedding + color agreement; ramseyNumber axioms (existence, spec, minimality).",
       "startLine": 35,
       "endLine": 76
     },
     {
       "id": "trees",
       "title": "Trees: Predicates and Degree Bounds",
-      "summary": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 ≤ Δ ≤ n-1).",
+      "summary": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 \u2264 \u0394 \u2264 n-1).",
       "startLine": 78,
       "endLine": 103
     },
     {
       "id": "special-trees",
       "title": "Special Tree Families",
-      "summary": "IsPath (Δ ≤ 2), IsStar (one center), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms.",
+      "summary": "IsPath (\u0394 \u2264 2), IsStar (one center), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms.",
       "startLine": 105,
       "endLine": 137
     },
@@ -112,75 +112,75 @@
       "id": "specific-ramsey",
       "title": "Exact Ramsey Numbers: Paths and Stars",
       "summary": "R(P_n) = n (paths, minimum among trees) and R(S_n) = 2n - 2 (stars, maximum among trees).",
-      "startLine": 139,
+      "startLine": 128,
       "endLine": 138
     },
     {
       "id": "chvatal",
-      "title": "Chvátal's Theorem (1977)",
-      "summary": "R(T) ≤ (Δ-1)(n-1) + 1; tight for paths (chvatal_tight_for_paths). Analysis: weak for high-degree trees.",
-      "startLine": 159,
+      "title": "Chv\u00e1tal's Theorem (1977)",
+      "summary": "R(T) \u2264 (\u0394-1)(n-1) + 1; tight for paths (chvatal_tight_for_paths). Analysis: weak for high-degree trees.",
+      "startLine": 128,
       "endLine": 138
     },
     {
       "id": "main-conjecture",
-      "title": "Erdős-Burr Conjecture: R(T) ≤ 2n - 2",
+      "title": "Erd\u0151s-Burr Conjecture: R(T) \u2264 2n - 2",
       "summary": "Universal bound tree_ramsey_bound; tightness via bound_achieved_by_stars; proved for large n by regularity method.",
-      "startLine": 184,
+      "startLine": 128,
       "endLine": 138
     },
     {
       "id": "comparison",
-      "title": "Bound Comparison: Chvátal vs 2n-2",
-      "summary": "chvatal_vs_main: Chvátal beats 2n-2 iff Δ ∈ {1, 2}, so only for paths.",
-      "startLine": 206,
+      "title": "Bound Comparison: Chv\u00e1tal vs 2n-2",
+      "summary": "chvatal_vs_main: Chv\u00e1tal beats 2n-2 iff \u0394 \u2208 {1, 2}, so only for paths.",
+      "startLine": 128,
       "endLine": 138
     },
     {
       "id": "main-results",
       "title": "Main Results: erdos_547 and Ordering",
-      "summary": "erdos_547 theorem, tightness (erdos_547_tight), and tree_ramsey_ordering: n ≤ R(T) ≤ 2n - 2.",
-      "startLine": 215,
+      "summary": "erdos_547 theorem, tightness (erdos_547_tight), and tree_ramsey_ordering: n \u2264 R(T) \u2264 2n - 2.",
+      "startLine": 128,
       "endLine": 138
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #547 asked for the maximum Ramsey number of trees. The Erdős-Burr conjecture R(T) ≤ 2n - 2 was proved for large n by Zhao et al. using the regularity lemma. The bound is tight: stars achieve R(S_n) = 2n - 2, while paths achieve the minimum R(P_n) = n. The complete ordering n ≤ R(T) ≤ 2n - 2 characterizes tree Ramsey numbers.",
-    "implications": "**Theoretical Significance**: **Theoretical Connections**\n\n1. **Regularity Method:** The proof uses the Szemerédi regularity lemma and blow-up lemma, connecting to graph limit theory\n2. **Degree vs.\n\nRamsey:** Maximum degree is the key structural parameter; Chvátal's bound captures this for low-degree trees\n3. **Turán-Type Duality:** The Erdős-Sós conjecture (#548) is the Turán-side complement: dense graphs contain all trees\n4. **Bipartite Refinements:** Erdős #549 studies bipartite tree Ramsey numbers with sharper structural constraints\n5. **Size Ramsey Numbers:** Related variant asks for minimum edge count (not vertex count) guaranteeing monochromatic trees.",
+    "summary": "Erd\u0151s Problem #547 asked for the maximum Ramsey number of trees. The Erd\u0151s-Burr conjecture R(T) \u2264 2n - 2 was proved for large n by Zhao et al. using the regularity lemma. The bound is tight: stars achieve R(S_n) = 2n - 2, while paths achieve the minimum R(P_n) = n. The complete ordering n \u2264 R(T) \u2264 2n - 2 characterizes tree Ramsey numbers.",
+    "implications": "**Theoretical Significance**: **Theoretical Connections**\n\n1. **Regularity Method:** The proof uses the Szemer\u00e9di regularity lemma and blow-up lemma, connecting to graph limit theory\n2. **Degree vs.\n\nRamsey:** Maximum degree is the key structural parameter; Chv\u00e1tal's bound captures this for low-degree trees\n3. **Tur\u00e1n-Type Duality:** The Erd\u0151s-S\u00f3s conjecture (#548) is the Tur\u00e1n-side complement: dense graphs contain all trees\n4. **Bipartite Refinements:** Erd\u0151s #549 studies bipartite tree Ramsey numbers with sharper structural constraints\n5. **Size Ramsey Numbers:** Related variant asks for minimum edge count (not vertex count) guaranteeing monochromatic trees.",
     "openQuestions": [
-      "Determine R(T) exactly for all trees (not just paths and stars) — caterpillars and binary trees are partially understood",
+      "Determine R(T) exactly for all trees (not just paths and stars) \u2014 caterpillars and binary trees are partially understood",
       "Characterize which trees achieve R(T) = 2n - 2 besides stars (double stars come close)",
-      "Extend to k-color Ramsey numbers for trees: is R_k(T) ≤ (k+1)(n-1)?",
-      "Complete formal proofs of the axiomatized results (27 axioms), especially Chvátal's embedding theorem",
-      "Connect to size Ramsey numbers: ŝ(T) ≤ cn for some constant c (Beck's theorem)"
+      "Extend to k-color Ramsey numbers for trees: is R_k(T) \u2264 (k+1)(n-1)?",
+      "Complete formal proofs of the axiomatized results (27 axioms), especially Chv\u00e1tal's embedding theorem",
+      "Connect to size Ramsey numbers: \u015d(T) \u2264 cn for some constant c (Beck's theorem)"
     ]
   },
   "references": [
     {
-      "authors": "Chvátal, Václav",
+      "authors": "Chv\u00e1tal, V\u00e1clav",
       "title": "Tree-complete graph Ramsey numbers",
       "year": "1977",
       "venue": "J. Graph Theory 1, pp. 93-93",
-      "note": "Proved R(T_n, K_m) = (n-1)(m-1) + 1; for 2-color case gives R(T) ≤ (Δ-1)(n-1) + 1"
+      "note": "Proved R(T_n, K_m) = (n-1)(m-1) + 1; for 2-color case gives R(T) \u2264 (\u0394-1)(n-1) + 1"
     },
     {
       "authors": "Zhao, Yufei; et al.",
-      "title": "The Erdős-Burr conjecture for large n",
+      "title": "The Erd\u0151s-Burr conjecture for large n",
       "year": "2019",
       "venue": "Advances in Mathematics",
-      "note": "Proved R(T) ≤ 2n - 2 for sufficiently large n using the regularity method"
+      "note": "Proved R(T) \u2264 2n - 2 for sufficiently large n using the regularity method"
     }
   ],
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
       "relationship": "uses",
-      "description": "Tree Ramsey numbers are special cases of the general Ramsey problem; R(T) ≤ 2n-2 is tighter than the general Ramsey bound"
+      "description": "Tree Ramsey numbers are special cases of the general Ramsey problem; R(T) \u2264 2n-2 is tighter than the general Ramsey bound"
     },
     {
       "targetId": "erdos-548",
       "relationship": "related",
-      "description": "Turán-side complement: #548 (Erdős-Sós conjecture) asks about dense graphs containing all trees, while #547 asks about edge-colorings"
+      "description": "Tur\u00e1n-side complement: #548 (Erd\u0151s-S\u00f3s conjecture) asks about dense graphs containing all trees, while #547 asks about edge-colorings"
     },
     {
       "targetId": "erdos-549",

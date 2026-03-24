@@ -8,7 +8,7 @@
       "endLine": 26
     },
     "title": "Imports and Dependencies",
-    "content": "Imports Mathlib modules for prime number basics (`Nat.Prime.Basic`), filters for asymptotic statements (`Order.Filter.Basic`, `Topology.Algebra.Order.LiminfLimsup`), real numbers (`Data.Real.Basic`, `Data.Real.Sqrt`), and the general tactic library. The filter imports support expressing Cramér's and Granville's conjectures as asymptotic statements.",
+    "content": "Imports Mathlib modules for prime number basics (`Nat.Prime.Basic`), filters for asymptotic statements (`Order.Filter.Basic`, `Topology.Algebra.Order.LiminfLimsup`), real numbers (`Data.Real.Basic`, `Data.Real.Sqrt`), and the general tactic library. The filter imports support expressing Cram\u00e9r's and Granville's conjectures as asymptotic statements.",
     "mathContext": "The formalization uses `Nat.minFac` as the least prime factor function $p(m)$, `Real.exp` and `Real.sqrt` for the exponential variant $e^{(1+\\varepsilon)\\sqrt{k}}$, and `Real.log` for the prime gap bound $O((\\log p)^2)$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -31,7 +31,7 @@
       "endLine": 37
     },
     "title": "Main Conjecture and HasLargeLPF",
-    "content": "**ErdosProblem680**: For all sufficiently large $n$, there exists $k \\ge 1$ with $p(n+k) > k^2 + 1$, where $p(m) = \\text{minFac}(m)$ is the least prime factor.\n\n**HasLargeLPF n**: The predicate for individual $n$ — there exists $k \\ge 1$ with $p(n+k) > k^2 + 1$. The main conjecture is equivalent to: HasLargeLPF holds for all sufficiently large $n$.",
+    "content": "**ErdosProblem680**: For all sufficiently large $n$, there exists $k \\ge 1$ with $p(n+k) > k^2 + 1$, where $p(m) = \\text{minFac}(m)$ is the least prime factor.\n\n**HasLargeLPF n**: The predicate for individual $n$ \u2014 there exists $k \\ge 1$ with $p(n+k) > k^2 + 1$. The main conjecture is equivalent to: HasLargeLPF holds for all sufficiently large $n$.",
     "mathContext": "The conjecture states $\\exists N_0,\\, \\forall n \\ge N_0,\\, \\exists k \\ge 1 : p(n+k) > k^2 + 1$. The threshold $k^2 + 1$ is chosen so that finding such $k$ requires either a prime near $n$ or a number with unusually large smallest prime factor.",
     "significance": "key",
     "relatedConcepts": [
@@ -76,12 +76,12 @@
       "startLine": 58,
       "endLine": 70
     },
-    "title": "Cramér's Conjecture and Its Implication",
-    "content": "**CramerConjecture**: Prime gaps after prime $p$ are $O((\\log p)^2)$. Formalized using `Nat.find (Nat.exists_infinite_primes (p + 1))` to find the next prime after $p$.\n\n**cramer_implies_large_lpf** (axiom): If Cramér's conjecture holds, then for any $\\varepsilon > 0$ and sufficiently large $n$, there exists $k$ with $p(n+k) > \\lfloor e^{(1-\\varepsilon)\\sqrt{k}} \\rfloor$. This is strictly stronger than the $k^2 + 1$ threshold.",
-    "mathContext": "Cramér's conjecture (1936): $p_{n+1} - p_n = O((\\log p_n)^2)$. If true, for $n$ large, there exists a prime in $[n+1, n + O((\\log n)^2)]$. Setting $k = O((\\log n)^2)$ and using $p(n+k) = n+k$ when $n+k$ is prime gives the reduction: $n + k \\gg e^{(1-\\varepsilon)\\sqrt{k}}$ for $k = O((\\log n)^2)$.",
+    "title": "Cram\u00e9r's Conjecture and Its Implication",
+    "content": "**CramerConjecture**: Prime gaps after prime $p$ are $O((\\log p)^2)$. Formalized using `Nat.find (Nat.exists_infinite_primes (p + 1))` to find the next prime after $p$.\n\n**cramer_implies_large_lpf** (axiom): If Cram\u00e9r's conjecture holds, then for any $\\varepsilon > 0$ and sufficiently large $n$, there exists $k$ with $p(n+k) > \\lfloor e^{(1-\\varepsilon)\\sqrt{k}} \\rfloor$. This is strictly stronger than the $k^2 + 1$ threshold.",
+    "mathContext": "Cram\u00e9r's conjecture (1936): $p_{n+1} - p_n = O((\\log p_n)^2)$. If true, for $n$ large, there exists a prime in $[n+1, n + O((\\log n)^2)]$. Setting $k = O((\\log n)^2)$ and using $p(n+k) = n+k$ when $n+k$ is prime gives the reduction: $n + k \\gg e^{(1-\\varepsilon)\\sqrt{k}}$ for $k = O((\\log n)^2)$.",
     "significance": "key",
     "relatedConcepts": [
-      "Cramér's conjecture",
+      "Cram\u00e9r's conjecture",
       "prime gaps",
       "next prime function",
       "Nat.exists_infinite_primes"
@@ -125,14 +125,14 @@
       "endLine": 124
     },
     "title": "Granville's Refinement and Prime Distribution Reduction",
-    "content": "**granvilleConstant**: Approximation of $2e^{-\\gamma} \\approx 1.1229$ where $\\gamma$ is the Euler-Mascheroni constant.\n\n**GranvilleRefinement**: The maximal prime gap after $p$ is at most $(2e^{-\\gamma} + \\varepsilon)(\\log p)^2$ for large $p$. Refines Cramér's predicted constant from 1 to $2e^{-\\gamma}$.\n\n**problem680_from_prime_distribution** (proved): Reduces Erdős #680 to prime distribution: if for large $n$ there exists $k$ with $n + k$ prime and $k^2 + 1 < n + k$, then ErdosProblem680 holds. Uses `prime_offset_gives_large_lpf` as the key step.",
-    "mathContext": "Granville (1995) argued that Cramér's random model underestimates gaps near numbers divisible by many small primes. The corrected prediction is $\\max_{p_n \\le x}(p_{n+1} - p_n) \\sim 2e^{-\\gamma}(\\log x)^2$ where $\\gamma \\approx 0.5772$, giving $2e^{-\\gamma} \\approx 1.1229$. The reduction theorem `problem680_from_prime_distribution` shows Erdős #680 follows from any prime gap bound of the form $O(n^{1/2 - \\varepsilon})$.",
+    "content": "**granvilleConstant**: Approximation of $2e^{-\\gamma} \\approx 1.1229$ where $\\gamma$ is the Euler-Mascheroni constant.\n\n**GranvilleRefinement**: The maximal prime gap after $p$ is at most $(2e^{-\\gamma} + \\varepsilon)(\\log p)^2$ for large $p$. Refines Cram\u00e9r's predicted constant from 1 to $2e^{-\\gamma}$.\n\n**problem680_from_prime_distribution** (proved): Reduces Erd\u0151s #680 to prime distribution: if for large $n$ there exists $k$ with $n + k$ prime and $k^2 + 1 < n + k$, then ErdosProblem680 holds. Uses `prime_offset_gives_large_lpf` as the key step.",
+    "mathContext": "Granville (1995) argued that Cram\u00e9r's random model underestimates gaps near numbers divisible by many small primes. The corrected prediction is $\\max_{p_n \\le x}(p_{n+1} - p_n) \\sim 2e^{-\\gamma}(\\log x)^2$ where $\\gamma \\approx 0.5772$, giving $2e^{-\\gamma} \\approx 1.1229$. The reduction theorem `problem680_from_prime_distribution` shows Erd\u0151s #680 follows from any prime gap bound of the form $O(n^{1/2 - \\varepsilon})$.",
     "significance": "key",
     "relatedConcepts": [
       "Euler-Mascheroni constant",
       "Granville's conjecture",
       "prime gap models",
-      "Cramér random model"
+      "Cram\u00e9r random model"
     ],
     "prerequisites": [
       "CramerConjecture",
@@ -170,11 +170,11 @@
     "type": "technique",
     "range": {
       "startLine": 171,
-      "endLine": 195
+      "endLine": 194
     },
     "title": "Computational Verification",
     "content": "**Verified instances**: HasLargeLPF is confirmed for $n = 2, 4, 6, 8, 10, 12, 14, 20, 24, 100$ using `native_decide`.\n\nAll examples use $k = 1$, showing $p(n+1) > 2$ for each case:\n- $n = 2$: $p(3) = 3 > 2$ (prime)\n- $n = 8$: $p(9) = 3 > 2$ ($9 = 3^2$)\n- $n = 14$: $p(15) = 3 > 2$ ($15 = 3 \\cdot 5$)\n- $n = 100$: $p(101) = 101 > 2$ (prime)\n\nThe `native_decide` tactic compiles the decidable proposition to native code for efficient verification.",
-    "mathContext": "For even $n$, $n + 1$ is always odd, so $p(n+1) \\ge 3 > 2 = 1^2 + 1$, meaning $k = 1$ always works. The conjecture becomes interesting for large $n$ where one needs $k > 1$ and $p(n+k) > k^2 + 1$ for that larger $k$. The small-case verification is thus 'easy' — the real challenge is the asymptotic regime.",
+    "mathContext": "For even $n$, $n + 1$ is always odd, so $p(n+1) \\ge 3 > 2 = 1^2 + 1$, meaning $k = 1$ always works. The conjecture becomes interesting for large $n$ where one needs $k > 1$ and $p(n+k) > k^2 + 1$ for that larger $k$. The small-case verification is thus 'easy' \u2014 the real challenge is the asymptotic regime.",
     "significance": "supporting",
     "relatedConcepts": [
       "native_decide tactic",

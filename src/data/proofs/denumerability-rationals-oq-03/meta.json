@@ -38,7 +38,7 @@
       },
       {
         "theorem": "Int.natCast_dvd_natCast",
-        "description": "Bridge between ℕ and ℤ divisibility for the Bezout-style argument",
+        "description": "Bridge between \u2115 and \u2124 divisibility for the Bezout-style argument",
         "module": "Mathlib.Data.Int.Lemmas"
       },
       {
@@ -53,12 +53,12 @@
       "coprime_of_det_one: automatic coprimality from the determinant invariant via Bezout identity",
       "num_pos_path / den_pos_path: positivity of all tree nodes by structural induction",
       "mediant_strictly_between: ordering proof la/lb < mediant < ra/rb",
-      "value_between_ancestors: BST invariant — all descendant values lie strictly between the ancestor bounds",
+      "value_between_ancestors: BST invariant \u2014 all descendant values lie strictly between the ancestor bounds",
       "eval_injective: different paths yield different states (injectivity), via BST ordering and monotonicity",
       "toRat_pos: every tree node represents a positive rational",
       "7 concrete verification examples for first 3 tree levels"
     ],
-    "lineCount": 584,
+    "lineCount": 618,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
@@ -90,7 +90,7 @@
     {
       "targetId": "cantor-diagonalization",
       "relationship": "contrasts",
-      "description": "Cantor showed the reals are uncountable; this entry shows the rationals ARE countable, using a constructive tree enumeration rather than a bijection with ℕ"
+      "description": "Cantor showed the reals are uncountable; this entry shows the rationals ARE countable, using a constructive tree enumeration rather than a bijection with \u2115"
     }
   ],
   "sections": [
@@ -99,7 +99,7 @@
       "title": "Basic Definitions",
       "startLine": 38,
       "endLine": 95,
-      "summary": "Defines Dir (L/R directions), Path (list of directions), State (navigation state with four ℕ components), and the eval/evalPath navigation functions.",
+      "summary": "Defines Dir (L/R directions), Path (list of directions), State (navigation state with four \u2115 components), and the eval/evalPath navigation functions.",
       "mathContext": "State = $(\\frac{la}{lb}, \\frac{ra}{rb})$, current node = mediant $\\frac{la+ra}{lb+rb}$. Left: $ra \\gets la+ra, rb \\gets lb+rb$. Right: $la \\gets la+ra, lb \\gets lb+rb$."
     },
     {
@@ -136,7 +136,7 @@
     },
     {
       "id": "ordering",
-      "title": "Ordering — The Tree is Sorted",
+      "title": "Ordering \u2014 The Tree is Sorted",
       "startLine": 217,
       "endLine": 227,
       "summary": "Proves mediant_strictly_between: the mediant lies strictly between the left and right ancestors, in cross-multiplication form.",
@@ -147,7 +147,7 @@
       "title": "Concrete Examples",
       "startLine": 243,
       "endLine": 295,
-      "summary": "Seven verified examples confirming the first 3 levels: [] → 1/1, [L] → 1/2, [R] → 2/1, [L,L] → 1/3, [L,R] → 2/3, [R,L] → 3/2, [R,R] → 3/1.",
+      "summary": "Seven verified examples confirming the first 3 levels: [] \u2192 1/1, [L] \u2192 1/2, [R] \u2192 2/1, [L,L] \u2192 1/3, [L,R] \u2192 2/3, [R,L] \u2192 3/2, [R,R] \u2192 3/1.",
       "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All verified by computation."
     }
   ],
@@ -157,7 +157,7 @@
     "openQuestions": [
       "Prove surjectivity: every positive rational appears somewhere in the tree, via the Euclidean algorithm connection.",
       "Formalize the continued fraction correspondence: run-length encoding of Stern-Brocot paths equals continued fraction coefficients.",
-      "Establish the full bijection between binary words (or ℕ via BFS ordering) and ℚ⁺."
+      "Establish the full bijection between binary words (or \u2115 via BFS ordering) and \u211a\u207a."
     ]
   },
   "leanFile": {
@@ -176,16 +176,16 @@
   "references": [
     {
       "authors": "Stern, Moritz Abraham",
-      "title": "Über eine zahlentheoretische Funktion",
+      "title": "\u00dcber eine zahlentheoretische Funktion",
       "year": "1858",
-      "venue": "Journal für die reine und angewandte Mathematik, 55, pp. 193-220",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, 55, pp. 193-220",
       "note": "Introduced the diatomic series (Stern's sequence) which enumerates rationals via a binary tree structure"
     },
     {
       "authors": "Brocot, Achille",
-      "title": "Calcul des rouages par approximation, nouvelle méthode",
+      "title": "Calcul des rouages par approximation, nouvelle m\u00e9thode",
       "year": "1861",
-      "venue": "Revue Chronométrique, 3, pp. 186-194",
+      "venue": "Revue Chronom\u00e9trique, 3, pp. 186-194",
       "note": "Independently discovered the same tree structure for approximating gear ratios in clockmaking"
     },
     {

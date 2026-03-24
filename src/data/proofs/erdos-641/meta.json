@@ -49,7 +49,7 @@
     ],
     "relatedProblems": [],
     "axiomCount": 8,
-    "lineCount": 287,
+    "lineCount": 276,
     "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -138,7 +138,7 @@
       "title": "Main Result",
       "summary": "Final statement: Erd\u0151s Problem #641 is DISPROVED. High $\\chi$ does not guarantee $k$ edge-disjoint cycles on the same vertex set, even for $k = 2$. The JSS counterexample achieves $\\chi = \\Omega(\\log\\log n / \\log\\log\\log n)$ with no 4-regular subgraph.",
       "startLine": 253,
-      "endLine": 285
+      "endLine": 276
     }
   ],
   "conclusion": {
@@ -160,7 +160,7 @@
       "Function"
     ],
     "namespace": "Erdos641",
-    "lineCount": 287,
+    "lineCount": 276,
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 17

@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 410,
+    "lineCount": 459,
     "prerequisites": [
       "Probability distributions and discrete random variables",
       "Logarithm and convexity (Jensen's inequality)",
@@ -88,7 +88,7 @@
       "title": "Entropy Definition and Non-Negativity",
       "startLine": 20,
       "endLine": 29,
-      "summary": "Defines Shannon entropy with the 0·log(0) = 0 convention. States non-negativity H(p) >= 0 for probability distributions (sorry'd). Uses natural log (Real.log), not log₂.",
+      "summary": "Defines Shannon entropy with the 0\u00b7log(0) = 0 convention. States non-negativity H(p) >= 0 for probability distributions (sorry'd). Uses natural log (Real.log), not log\u2082.",
       "mathContext": "$H(X) = -\\sum_x p(x) \\ln p(x) \\geq 0$ for $p(x) \\geq 0$, $\\sum p(x) = 1$"
     },
     {
@@ -186,8 +186,8 @@
       "authors": "Shannon, Claude E.",
       "title": "A Mathematical Theory of Communication",
       "year": "1948",
-      "venue": "Bell System Technical Journal 27(3), 379–423 and 27(4), 623–656",
-      "note": "The founding paper of information theory — introduced entropy, channel capacity, and the source/channel coding theorems"
+      "venue": "Bell System Technical Journal 27(3), 379\u2013423 and 27(4), 623\u2013656",
+      "note": "The founding paper of information theory \u2014 introduced entropy, channel capacity, and the source/channel coding theorems"
     }
   ]
 }

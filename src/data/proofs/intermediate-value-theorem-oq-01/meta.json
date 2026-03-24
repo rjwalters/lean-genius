@@ -2,7 +2,7 @@
   "id": "intermediate-value-theorem-oq-01",
   "title": "Bisection Method: Constructive Root Finding from IVT",
   "slug": "intermediate-value-theorem-oq-01",
-  "description": "Formalizes the bisection method for constructive root finding. Defines the bisection step, iterated bisection sequence, and proves the fundamental width decay property (each step halves the interval). Includes constructive proof that √2 exists in [1,2] and convergence rate bounds (1/2^n after n steps).",
+  "description": "Formalizes the bisection method for constructive root finding. Defines the bisection step, iterated bisection sequence, and proves the fundamental width decay property (each step halves the interval). Includes constructive proof that \u221a2 exists in [1,2] and convergence rate bounds (1/2^n after n steps).",
   "meta": {
     "author": "Bolzano (1817), bisection method classical",
     "sourceUrl": "https://en.wikipedia.org/wiki/Bisection_method",
@@ -27,43 +27,43 @@
       "bisectStep_width: width halves at each step (with ordering hypothesis)",
       "bisectStep_width': width halves at each step (unconditional)",
       "bisect_width: after n steps, width is (b-a)/2^n (by induction)",
-      "bisect_error_bound: error bound ≤ (b-a)/2^n (from bisect_width)",
+      "bisect_error_bound: error bound \u2264 (b-a)/2^n (from bisect_width)",
       "midpoint_mem_Icc: midpoint lies in [a,b]",
-      "sqrt2_between_1_and_2: constructive √2 ∈ [1,2]",
+      "sqrt2_between_1_and_2: constructive \u221a2 \u2208 [1,2]",
       "bisect_10_width: 10 steps give width 1/1024",
-      "bisect_20_error: 20 steps give error < 10⁻⁶"
+      "bisect_20_error: 20 steps give error < 10\u207b\u2076"
     ],
     "mathlibDependencies": [
       {
         "theorem": "Real.sqrt_le_sqrt",
-        "description": "Monotonicity of square root: a ≤ b → √a ≤ √b — used to bound √2",
+        "description": "Monotonicity of square root: a \u2264 b \u2192 \u221aa \u2264 \u221ab \u2014 used to bound \u221a2",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
         "theorem": "Real.sq_sqrt",
-        "description": "(√a)² = a for a ≥ 0 — proves the witness satisfies x² = 2",
+        "description": "(\u221aa)\u00b2 = a for a \u2265 0 \u2014 proves the witness satisfies x\u00b2 = 2",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
         "theorem": "Real.sqrt_sq",
-        "description": "√(a²) = a for a ≥ 0 — used to simplify √4 = 2",
+        "description": "\u221a(a\u00b2) = a for a \u2265 0 \u2014 used to simplify \u221a4 = 2",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
-    "lineCount": 124,
+    "lineCount": 135,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Intermediate Value Theorem was first rigorously proved by Bernard Bolzano in 1817, though Cauchy gave a more widely known proof in 1821. Both proofs are non-constructive — they assert existence of a root without providing a method to find it. The bisection method, known since antiquity (used implicitly by the Babylonians for $\\sqrt{2}$ approximations and described by al-Tusi in the 13th century), makes the IVT constructive: given a continuous $f$ with $f(a) \\cdot f(b) < 0$, it produces an explicit sequence converging to a root. The method is the simplest root-finding algorithm with guaranteed convergence, requiring only function evaluation and sign comparison. While Newton's method converges quadratically (doubling correct digits each step), bisection's linear convergence ($\\sim$3.32 steps per decimal digit) is unconditionally reliable — no smoothness or initial guess quality required.",
+    "historicalContext": "The Intermediate Value Theorem was first rigorously proved by Bernard Bolzano in 1817, though Cauchy gave a more widely known proof in 1821. Both proofs are non-constructive \u2014 they assert existence of a root without providing a method to find it. The bisection method, known since antiquity (used implicitly by the Babylonians for $\\sqrt{2}$ approximations and described by al-Tusi in the 13th century), makes the IVT constructive: given a continuous $f$ with $f(a) \\cdot f(b) < 0$, it produces an explicit sequence converging to a root. The method is the simplest root-finding algorithm with guaranteed convergence, requiring only function evaluation and sign comparison. While Newton's method converges quadratically (doubling correct digits each step), bisection's linear convergence ($\\sim$3.32 steps per decimal digit) is unconditionally reliable \u2014 no smoothness or initial guess quality required.",
     "problemStatement": "Formalize the bisection method and prove its convergence:\n\n1. Define `bisectStep`: given $[a,b]$ with sign change, return the half $[a,m]$ or $[m,b]$ that preserves the sign change\n2. Define `bisectIter`: iterate bisectStep $n$ times\n3. Prove `bisectStep_width`: $b_1 - a_1 = (b_0 - a_0)/2$\n4. Prove `bisect_width` (sorry): $b_n - a_n = (b-a)/2^n$\n5. Constructive $\\sqrt{2} \\in [1,2]$",
-    "text": "Formalizes the bisection method for constructive root finding. Defines the bisection step, iterated bisection sequence, and proves the fundamental width decay property (each step halves the interval). Includes constructive proof that √2 exists in [1,2] and convergence rate bounds (1/2^n after n steps).",
+    "text": "Formalizes the bisection method for constructive root finding. Defines the bisection step, iterated bisection sequence, and proves the fundamental width decay property (each step halves the interval). Includes constructive proof that \u221a2 exists in [1,2] and convergence rate bounds (1/2^n after n steps).",
     "proofStrategy": "The file defines `bisectStep` as a conditional on $f(a) \\cdot f(\\text{mid}) \\leq 0$ (left half preserves sign change) and iterates it recursively. The single-step width halving is proved by `split` on the conditional and `ring` for each branch. The general $n$-step result needs induction with a maintained ordering invariant $a_k \\leq b_k$. The $\\sqrt{2}$ example sidesteps bisection entirely, using `Real.sqrt 2` as an explicit witness with bounds from sqrt monotonicity.",
     "keyInsights": [
-      "Each bisection step halves the interval width regardless of which half is chosen — the convergence rate is deterministic, not data-dependent",
+      "Each bisection step halves the interval width regardless of which half is chosen \u2014 the convergence rate is deterministic, not data-dependent",
       "The sign test $f(a) \\cdot f(\\text{mid}) \\leq 0$ detects which half contains a root by the IVT; if both halves contain roots, the left is chosen",
       "The sorry'd induction requires maintaining the invariant $a_k \\leq b_k$, which depends on sign persistence or direct interval containment",
-      "Linear convergence at rate $1/2$ means $\\log_2(10) \\approx 3.32$ steps per decimal digit — 20 steps on $[1,2]$ give $< 10^{-6}$ error",
-      "The $\\sqrt{2}$ proof is constructive via Mathlib's `Real.sqrt`, not via bisection — connecting the bisection sequence to sqrt requires the full convergence theorem"
+      "Linear convergence at rate $1/2$ means $\\log_2(10) \\approx 3.32$ steps per decimal digit \u2014 20 steps on $[1,2]$ give $< 10^{-6}$ error",
+      "The $\\sqrt{2}$ proof is constructive via Mathlib's `Real.sqrt`, not via bisection \u2014 connecting the bisection sequence to sqrt requires the full convergence theorem"
     ],
     "prerequisites": [
       "Mathematical analysis"
@@ -75,28 +75,28 @@
       "title": "Part I: The Bisection Step",
       "startLine": 26,
       "endLine": 51,
-      "summary": "Defines bisectStep (conditional midpoint selection), midpoint, and proves midpoint_mem_Icc, midpoint_sub_left, right_sub_midpoint — basic interval arithmetic for the building block."
+      "summary": "Defines bisectStep (conditional midpoint selection), midpoint, and proves midpoint_mem_Icc, midpoint_sub_left, right_sub_midpoint \u2014 basic interval arithmetic for the building block."
     },
     {
       "id": "part-ii",
       "title": "Part II: Iterated Bisection",
       "startLine": 53,
       "endLine": 68,
-      "summary": "Defines bisectIter (recursive iteration of bisectStep), bisectLeft, bisectRight — accessor functions for the nth interval endpoints."
+      "summary": "Defines bisectIter (recursive iteration of bisectStep), bisectLeft, bisectRight \u2014 accessor functions for the nth interval endpoints."
     },
     {
       "id": "part-iii",
       "title": "Part III: Width Decay",
       "startLine": 70,
       "endLine": 101,
-      "summary": "Proves bisectStep_width (single-step halving) by case split and ring. Proves bisectStep_width' (unconditional version). Proves bisect_width (n-step exponential decay) by induction using bisectStep_width' — the key insight is that the width formula holds without ordering, avoiding the need for an ordering invariant."
+      "summary": "Proves bisectStep_width (single-step halving) by case split and ring. Proves bisectStep_width' (unconditional version). Proves bisect_width (n-step exponential decay) by induction using bisectStep_width' \u2014 the key insight is that the width formula holds without ordering, avoiding the need for an ordering invariant."
     },
     {
       "id": "part-iv",
       "title": "Part IV: Error Bound",
       "startLine": 102,
       "endLine": 111,
-      "summary": "Proves bisect_error_bound (width ≤ (b-a)/2^n) as a direct corollary of bisect_width via le_of_eq."
+      "summary": "Proves bisect_error_bound (width \u2264 (b-a)/2^n) as a direct corollary of bisect_width via le_of_eq."
     },
     {
       "id": "part-v",
@@ -119,10 +119,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified formalization of the bisection method with 11 proved theorems and 0 sorries. Proves the single-step halving property (both with and without ordering hypothesis), the n-step exponential width decay by induction, the error bound as a corollary, and demonstrates convergence rates with concrete examples. The √2 existence is proved constructively via Mathlib's sqrt.",
-    "implications": "**For numerical analysis**: Provides a verified foundation for the simplest root-finding algorithm, establishing the convergence rate $O(2^{-n})$ that all students learn but rarely see formally proved.\n\n**For constructive mathematics**: Bridges the gap between the non-constructive IVT and a computational approximation scheme — the bisection sequence is an explicit Cauchy sequence converging to a root.\n\n**For Lean 4**: Demonstrates that `linarith` and `ring` handle the interval arithmetic cleanly, while the inductive step (maintaining ordering through conditional branching) is where the real formalization challenge lies.",
+    "summary": "Fully verified formalization of the bisection method with 11 proved theorems and 0 sorries. Proves the single-step halving property (both with and without ordering hypothesis), the n-step exponential width decay by induction, the error bound as a corollary, and demonstrates convergence rates with concrete examples. The \u221a2 existence is proved constructively via Mathlib's sqrt.",
+    "implications": "**For numerical analysis**: Provides a verified foundation for the simplest root-finding algorithm, establishing the convergence rate $O(2^{-n})$ that all students learn but rarely see formally proved.\n\n**For constructive mathematics**: Bridges the gap between the non-constructive IVT and a computational approximation scheme \u2014 the bisection sequence is an explicit Cauchy sequence converging to a root.\n\n**For Lean 4**: Demonstrates that `linarith` and `ring` handle the interval arithmetic cleanly, while the inductive step (maintaining ordering through conditional branching) is where the real formalization challenge lies.",
     "openQuestions": [
-      "Prove sign persistence: f(a_n) · f(b_n) ≤ 0 at each step (requires continuity or the IVT hypothesis)",
+      "Prove sign persistence: f(a_n) \u00b7 f(b_n) \u2264 0 at each step (requires continuity or the IVT hypothesis)",
       "Connect bisectIter to Mathlib's Filter.Tendsto to prove full convergence to a root",
       "Formalize Newton's method and prove its quadratic convergence for comparison"
     ]
@@ -139,7 +139,7 @@
       "Real"
     ],
     "namespace": "BisectionMethod",
-    "lineCount": 136,
+    "lineCount": 135,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 5
@@ -147,7 +147,7 @@
   "references": [
     {
       "authors": "Bolzano, Bernard",
-      "title": "Rein analytischer Beweis des Lehrsatzes dass zwischen je zwey Werthen, die ein entgegengesetztes Resultat gewähren, wenigstens eine reelle Wurzel der Gleichung liege",
+      "title": "Rein analytischer Beweis des Lehrsatzes dass zwischen je zwey Werthen, die ein entgegengesetztes Resultat gew\u00e4hren, wenigstens eine reelle Wurzel der Gleichung liege",
       "year": "1817",
       "venue": "Prague",
       "note": "First rigorous proof of the IVT (Bolzano's theorem), predating Cauchy's 1821 treatment"

@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Transcendence of e: Wiedijk #67",
     "content": "**Main Result**:\n\nEuler's number $e = 2.71828...$ is **transcendental**: it is not the root of any non-zero polynomial with integer coefficients.\n\n$$\\nexists P \\in \\mathbb{Z}[X] \\setminus \\{0\\}: P(e) = 0$$\n\n**Historical Significance**: Hermite (1873) - first proof that a \"naturally occurring\" number is transcendental.\n\n**Status**: Axiomatized pending Lindemann-Weierstrass formalization.",
-    "mathContext": "$\\text{Transcendental}\\; \\mathbb{Z}\\; (\\exp 1)$ — the statement that $e$ is not a root of any nonzero integer polynomial. This is Wiedijk's 100 theorems list entry #67.",
+    "mathContext": "$\\text{Transcendental}\\; \\mathbb{Z}\\; (\\exp 1)$ \u2014 the statement that $e$ is not a root of any nonzero integer polynomial. This is Wiedijk's 100 theorems list entry #67.",
     "significance": "key",
     "relatedConcepts": [
       "transcendental numbers",
@@ -98,7 +98,7 @@
     "type": "technique",
     "title": "Main Theorem (Axiomatized)",
     "content": "**Main Axiom**:\n$$\\text{Transcendental } \\mathbb{Z} \\ (\\exp 1)$$\n\n**Requirements for full proof**:\n1. Polynomial arithmetic over $\\mathbb{Z}$\n2. Integration by parts for polynomial $\\times$ exponential\n3. Divisibility analysis mod $p$\n4. Asymptotic estimates\n\n**Equivalence**:\n$$\\text{Transcendental } \\mathbb{Z} \\ e \\Leftrightarrow \\text{Transcendental } \\mathbb{Q} \\ e$$\n(Clear denominators to convert $\\mathbb{Q}$-polynomial to $\\mathbb{Z}$-polynomial)",
-    "mathContext": "`Transcendental ℤ (Real.exp 1)` — axiomatized because the Lindemann-Weierstrass theorem (the standard generalization) is not yet in Mathlib. The $\\mathbb{Z} \\leftrightarrow \\mathbb{Q}$ equivalence follows from clearing denominators.",
+    "mathContext": "`Transcendental \u2124 (Real.exp 1)` \u2014 axiomatized because the Lindemann-Weierstrass theorem (the standard generalization) is not yet in Mathlib. The $\\mathbb{Z} \\leftrightarrow \\mathbb{Q}$ equivalence follows from clearing denominators.",
     "significance": "key",
     "relatedConcepts": [
       "axiom",
@@ -119,7 +119,7 @@
     },
     "type": "technique",
     "title": "Corollaries: Irrationality and Closure Properties",
-    "content": "**$e$ is irrational**:\n- If $e = p/q$, then $e$ is root of $qX - p$\n- This makes $e$ algebraic — contradiction!\n\n**$e^n$ is transcendental** ($n \\neq 0$):\n- If $P(e^n) = 0$, then $Q(X) = P(X^n)$ has $e$ as root\n- Contradicts $e$ transcendental\n\n**$1/e$ is transcendental**:\n- Reciprocal polynomial argument: $Q(X) = X^n \\cdot P(1/X)$\n\n**$e + 1$ is transcendental**:\n- Shift polynomial: $Q(X) = P(X + 1)$",
+    "content": "**$e$ is irrational**:\n- If $e = p/q$, then $e$ is root of $qX - p$\n- This makes $e$ algebraic \u2014 contradiction!\n\n**$e^n$ is transcendental** ($n \\neq 0$):\n- If $P(e^n) = 0$, then $Q(X) = P(X^n)$ has $e$ as root\n- Contradicts $e$ transcendental\n\n**$1/e$ is transcendental**:\n- Reciprocal polynomial argument: $Q(X) = X^n \\cdot P(1/X)$\n\n**$e + 1$ is transcendental**:\n- Shift polynomial: $Q(X) = P(X + 1)$",
     "mathContext": "Each corollary follows from the **polynomial substitution** principle: if $\\alpha$ is transcendental and $\\phi$ is a polynomial automorphism of $\\overline{\\mathbb{Q}}(X)$, then $\\phi(\\alpha)$ is also transcendental.",
     "significance": "key",
     "relatedConcepts": [
@@ -160,7 +160,7 @@
     "proofId": "e-transcendental",
     "range": {
       "startLine": 237,
-      "endLine": 269
+      "endLine": 267
     },
     "type": "concept",
     "title": "Historical and Mathematical Significance",

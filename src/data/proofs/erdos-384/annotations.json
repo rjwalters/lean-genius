@@ -8,8 +8,8 @@
       "endLine": 18
     },
     "title": "Problem Overview",
-    "content": "Erdős Problem #384: If 1 < k < n−1, is C(n,k) divisible by a prime p < n/2? SOLVED by Ecklund (1969). The only exception is C(7,3) = 35 = 5 × 7.",
-    "mathContext": "C(n,k) = n!/(k!(n−k)!). Question: ∃ p prime, p ∣ C(n,k) ∧ p < n/2. Exception: C(7,3) = 35 = 5 × 7.",
+    "content": "Erd\u0151s Problem #384: If 1 < k < n\u22121, is C(n,k) divisible by a prime p < n/2? SOLVED by Ecklund (1969). The only exception is C(7,3) = 35 = 5 \u00d7 7.",
+    "mathContext": "C(n,k) = n!/(k!(n\u2212k)!). Question: \u2203 p prime, p \u2223 C(n,k) \u2227 p < n/2. Exception: C(7,3) = 35 = 5 \u00d7 7.",
     "significance": "key",
     "relatedConcepts": [
       "binomial coefficients",
@@ -38,8 +38,8 @@
       "endLine": 57
     },
     "title": "Basic Predicates",
-    "content": "primeDiv(p, n): p is prime and divides n. minPrimeDivisor(n): smallest prime factor via Nat.minFac (proved prime and dividing). hasSmallPrimeDivisor(n, bound): ∃ p prime, p ∣ n ∧ p < bound.",
-    "mathContext": "minPrimeDivisor_prime: proved (minFac_prime). minPrimeDivisor_dvd: proved (minFac_dvd). hasSmallPrimeDivisor n bound ≡ ∃ p, p.Prime ∧ p ∣ n ∧ p < bound.",
+    "content": "primeDiv(p, n): p is prime and divides n. minPrimeDivisor(n): smallest prime factor via Nat.minFac (proved prime and dividing). hasSmallPrimeDivisor(n, bound): \u2203 p prime, p \u2223 n \u2227 p < bound.",
+    "mathContext": "minPrimeDivisor_prime: proved (minFac_prime). minPrimeDivisor_dvd: proved (minFac_dvd). hasSmallPrimeDivisor n bound \u2261 \u2203 p, p.Prime \u2227 p \u2223 n \u2227 p < bound.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.minFac",
@@ -66,8 +66,8 @@
       "endLine": 89
     },
     "title": "The Unique Exception: C(7,3) = 35",
-    "content": "C(7,3) = 35 (native_decide). 35 = 5 × 7 (norm_num). minPrimeDivisor(35) = 5 (native_decide). choose_7_3_no_small_prime: ¬hasSmallPrimeDivisor 35 4 (proved by interval_cases). isException predicate for (7,3) and (7,4).",
-    "mathContext": "choose_7_3: proved. thirty_five_factorization: proved. minPrimeDivisor_35: proved. choose_7_3_no_small_prime: proved (interval_cases + simp_all). isException n k ≡ (n=7 ∧ k=3) ∨ (n=7 ∧ k=4).",
+    "content": "C(7,3) = 35 (native_decide). 35 = 5 \u00d7 7 (norm_num). minPrimeDivisor(35) = 5 (native_decide). choose_7_3_no_small_prime: \u00achasSmallPrimeDivisor 35 4 (proved by interval_cases). isException predicate for (7,3) and (7,4).",
+    "mathContext": "choose_7_3: proved. thirty_five_factorization: proved. minPrimeDivisor_35: proved. choose_7_3_no_small_prime: proved (interval_cases + simp_all). isException n k \u2261 (n=7 \u2227 k=3) \u2228 (n=7 \u2227 k=4).",
     "significance": "key",
     "relatedConcepts": [
       "native_decide",
@@ -95,7 +95,7 @@
       "endLine": 109
     },
     "title": "Ecklund's Theorem (1969)",
-    "content": "ecklund_1969: For 1 < k < n−1, either C(n,k) has a prime divisor < n/2+1, or (n,k) is the exception. ecklund_no_exception: proved by case analysis from the axiom.",
+    "content": "ecklund_1969: For 1 < k < n\u22121, either C(n,k) has a prime divisor < n/2+1, or (n,k) is the exception. ecklund_no_exception: proved by case analysis from the axiom.",
     "mathContext": "ecklund_1969: axiom. ecklund_no_exception: proved (cases h). erdos_384_main: proved (= ecklund_1969).",
     "significance": "key",
     "relatedConcepts": [
@@ -124,8 +124,8 @@
       "endLine": 133
     },
     "title": "Stronger Conjectures (Open)",
-    "content": "ecklundStrongConjecture: if n > k², then C(n,k) has prime < n/k. selfridgeConjecture: if n > 17.125k, then C(n,k) has prime ≤ n/k. partial_bound_known: ∃ c > 0, ∃ prime p ∣ C(n,k) with p ≤ n/k^c.",
-    "mathContext": "ecklundStrongConjecture: ∀ n k, 1<k → k<n−1 → n>k² → hasSmallPrimeDivisor(C(n,k), n/k+1). selfridgeConjecture: threshold 17.125k. partial_bound_known: axiom.",
+    "content": "ecklundStrongConjecture: if n > k\u00b2, then C(n,k) has prime < n/k. selfridgeConjecture: if n > 17.125k, then C(n,k) has prime \u2264 n/k. partial_bound_known: \u2203 c > 0, \u2203 prime p \u2223 C(n,k) with p \u2264 n/k^c.",
+    "mathContext": "ecklundStrongConjecture: \u2200 n k, 1<k \u2192 k<n\u22121 \u2192 n>k\u00b2 \u2192 hasSmallPrimeDivisor(C(n,k), n/k+1). selfridgeConjecture: threshold 17.125k. partial_bound_known: axiom.",
     "significance": "supporting",
     "relatedConcepts": [
       "Ecklund",
@@ -152,8 +152,8 @@
       "endLine": 151
     },
     "title": "Kummer's Theorem Connection",
-    "content": "Kummer's theorem: exponent of p in C(n,k) = carries when adding k and n−k in base p. Consequence: large_prime_not_divisor — if p > n then p ∤ C(n,k).",
-    "mathContext": "kummer_theorem: axiom (placeholder). large_prime_not_divisor: ∀ p > n, ¬(p ∣ C(n,k)) (axiom).",
+    "content": "Kummer's theorem: exponent of p in C(n,k) = carries when adding k and n\u2212k in base p. Consequence: large_prime_not_divisor \u2014 if p > n then p \u2224 C(n,k).",
+    "mathContext": "kummer_theorem: axiom (placeholder). large_prime_not_divisor: \u2200 p > n, \u00ac(p \u2223 C(n,k)) (axiom).",
     "significance": "supporting",
     "relatedConcepts": [
       "Kummer's theorem",
@@ -179,8 +179,8 @@
       "startLine": 159,
       "endLine": 175
     },
-    "title": "Edge Cases (k=1, k=n−1)",
-    "content": "choose_n_1: C(n,1) = n (proved by simp). choose_n_1_prime_divisor: C(n,1) has a prime divisor (proved via minFac). choose_n_nminus1: C(n,n−1) = n (proved by choose_symm_diff + simp).",
+    "title": "Edge Cases (k=1, k=n\u22121)",
+    "content": "choose_n_1: C(n,1) = n (proved by simp). choose_n_1_prime_divisor: C(n,1) has a prime divisor (proved via minFac). choose_n_nminus1: C(n,n\u22121) = n (proved by choose_symm_diff + simp).",
     "mathContext": "choose_n_1: proved (Nat.choose_one_right). choose_n_1_prime_divisor: proved (minFac_prime + minFac_dvd). choose_n_nminus1: proved (choose_symm_diff).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -237,8 +237,8 @@
       "endLine": 226
     },
     "title": "Primorial and Central Binomials",
-    "content": "primorial'(n) = primorial n (product of primes ≤ n). central_binomial_primes: C(2n,n) has a prime in (n, 2n] — related to Bertrand's postulate.",
-    "mathContext": "primorial' n = primorial n. central_binomial_primes: ∃ p prime, p ∣ C(2n,n) ∧ n < p ∧ p ≤ 2n (axiom).",
+    "content": "primorial'(n) = primorial n (product of primes \u2264 n). central_binomial_primes: C(2n,n) has a prime in (n, 2n] \u2014 related to Bertrand's postulate.",
+    "mathContext": "primorial' n = primorial n. central_binomial_primes: \u2203 p prime, p \u2223 C(2n,n) \u2227 n < p \u2227 p \u2264 2n (axiom).",
     "significance": "supporting",
     "relatedConcepts": [
       "primorial",
@@ -262,7 +262,7 @@
     "type": "insight",
     "range": {
       "startLine": 284,
-      "endLine": 292
+      "endLine": 289
     },
     "title": "Summary: SOLVED",
     "content": "erdos_384_main: the complete theorem statement, proved by direct application of ecklund_1969 axiom. Status: SOLVED by Ecklund (1969).",

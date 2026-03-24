@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #376**: Central Binomial Coefficients Coprime to 105\n\n**Question**: Are there infinitely many n such that C(2n,n) is coprime to 105?\n\n**Status**: OPEN (for three primes)\n**Prize**: $1000 (Graham)\n\n**Context**: 105 = 3 × 5 × 7 (first three odd primes)\n\n**Known**: EGRS (1975) proved the two-prime case.\n\n**Key Tool**: Kummer's Theorem - coprimality depends on digit restrictions.",
+    "content": "**Erd\u0151s Problem #376**: Central Binomial Coefficients Coprime to 105\n\n**Question**: Are there infinitely many n such that C(2n,n) is coprime to 105?\n\n**Status**: OPEN (for three primes)\n**Prize**: $1000 (Graham)\n\n**Context**: 105 = 3 \u00d7 5 \u00d7 7 (first three odd primes)\n\n**Known**: EGRS (1975) proved the two-prime case.\n\n**Key Tool**: Kummer's Theorem - coprimality depends on digit restrictions.",
     "mathContext": "The problem connects binomial coefficients to digit representations in multiple bases. OEIS A030979 lists the 105-good integers.",
     "significance": "key",
     "relatedConcepts": [
@@ -26,7 +26,7 @@
     },
     "type": "definition",
     "title": "Core Definitions",
-    "content": "**example**: n.centralBinom = (2n).choose n\n  The central binomial coefficient C(2n,n) = (2n)!/(n!)²\n\n**Is105Good n**: n.centralBinom.Coprime 105\n  C(2n,n) shares no prime factors with 105.\n\n**GoodSet105**: {n | Is105Good n}\n  The set of all 105-good integers.",
+    "content": "**example**: n.centralBinom = (2n).choose n\n  The central binomial coefficient C(2n,n) = (2n)!/(n!)\u00b2\n\n**Is105Good n**: n.centralBinom.Coprime 105\n  C(2n,n) shares no prime factors with 105.\n\n**GoodSet105**: {n | Is105Good n}\n  The set of all 105-good integers.",
     "mathContext": "Mathlib provides centralBinom directly. The sequence 1, 2, 6, 20, 70, 252, ... grows exponentially.",
     "significance": "key",
     "relatedConcepts": [
@@ -44,7 +44,7 @@
     },
     "type": "concept",
     "title": "Kummer's Theorem",
-    "content": "**HasSmallDigits n p**: All digits of n in base p are ≤ (p-1)/2\n\n**axiom kummer_theorem** (1852):\nThe power of p dividing C(m,k) = #carries when adding k + (m-k) in base p.\n\n**axiom centralBinom_coprime_iff_small_digits**:\n  C(2n,n) coprime to p ⟺ HasSmallDigits n p\n\nNo carries in n + n ⟺ all digits ≤ (p-1)/2.",
+    "content": "**HasSmallDigits n p**: All digits of n in base p are \u2264 (p-1)/2\n\n**axiom kummer_theorem** (1852):\nThe power of p dividing C(m,k) = #carries when adding k + (m-k) in base p.\n\n**axiom centralBinom_coprime_iff_small_digits**:\n  C(2n,n) coprime to p \u27fa HasSmallDigits n p\n\nNo carries in n + n \u27fa all digits \u2264 (p-1)/2.",
     "mathContext": "Kummer's theorem transforms a divisibility question into a digit constraint. This is the key insight connecting number theory to combinatorics.",
     "significance": "key",
     "relatedConcepts": [
@@ -62,7 +62,7 @@
     },
     "type": "technique",
     "title": "Conditions for 105 (Verified)",
-    "content": "**theorem factorization_105** ✓: 105 = 3 × 5 × 7\n\n**axiom coprime_105_iff**: Coprime to 105 ⟺ coprime to 3, 5, AND 7\n\n**Digit constraints**:\n- **coprime_3_digits**: digits in base 3 must be ≤ 1 (only 0,1)\n- **coprime_5_digits**: digits in base 5 must be ≤ 2 (only 0,1,2)\n- **coprime_7_digits**: digits in base 7 must be ≤ 3 (only 0,1,2,3)\n\nMust satisfy ALL THREE simultaneously!",
+    "content": "**theorem factorization_105** \u2713: 105 = 3 \u00d7 5 \u00d7 7\n\n**axiom coprime_105_iff**: Coprime to 105 \u27fa coprime to 3, 5, AND 7\n\n**Digit constraints**:\n- **coprime_3_digits**: digits in base 3 must be \u2264 1 (only 0,1)\n- **coprime_5_digits**: digits in base 5 must be \u2264 2 (only 0,1,2)\n- **coprime_7_digits**: digits in base 7 must be \u2264 3 (only 0,1,2,3)\n\nMust satisfy ALL THREE simultaneously!",
     "mathContext": "The intersection of three digit constraints makes the problem hard. Each constraint alone gives an infinite set, but the intersection is unknown.",
     "significance": "key",
     "relatedConcepts": [
@@ -80,8 +80,8 @@
     },
     "type": "concept",
     "title": "EGRS Theorem (Verified Corollaries)",
-    "content": "**axiom egrs_theorem** (1975):\nFor any two odd primes p, q: infinitely many n have C(2n,n) coprime to pq.\n\n**theorem infinitely_coprime_15** ✓: Infinite for 15 = 3×5\n**theorem infinitely_coprime_21** ✓: Infinite for 21 = 3×7\n**theorem infinitely_coprime_35** ✓: Infinite for 35 = 5×7\n\nAll three corollaries verified by applying egrs_theorem!",
-    "mathContext": "EGRS (Erdős-Graham-Ruzsa-Straus) 1975 is the key positive result. The jump from two primes to three is the open frontier.",
+    "content": "**axiom egrs_theorem** (1975):\nFor any two odd primes p, q: infinitely many n have C(2n,n) coprime to pq.\n\n**theorem infinitely_coprime_15** \u2713: Infinite for 15 = 3\u00d75\n**theorem infinitely_coprime_21** \u2713: Infinite for 21 = 3\u00d77\n**theorem infinitely_coprime_35** \u2713: Infinite for 35 = 5\u00d77\n\nAll three corollaries verified by applying egrs_theorem!",
+    "mathContext": "EGRS (Erd\u0151s-Graham-Ruzsa-Straus) 1975 is the key positive result. The jump from two primes to three is the open frontier.",
     "significance": "key",
     "relatedConcepts": [
       "egrs-1975",
@@ -93,12 +93,12 @@
     "id": "ann-e376-conjecture",
     "proofId": "erdos-376",
     "range": {
-      "startLine": 138,
-      "endLine": 144
+      "startLine": 116,
+      "endLine": 126
     },
     "type": "concept",
     "title": "Main Conjecture (OPEN)",
-    "content": "**axiom erdos_376_conjecture**:\n  GoodSet105.Infinite ∨ ¬GoodSet105.Infinite\n\nThe question: is {n | C(2n,n) coprime to 105} infinite?\n\n**axiom erdos_376_positive_answer**:\n  GoodSet105.Infinite\n\nThe expected answer is YES, but this remains OPEN.\n\n**Prize**: Graham offered $1000 for a solution!",
+    "content": "**axiom erdos_376_conjecture**:\n  GoodSet105.Infinite \u2228 \u00acGoodSet105.Infinite\n\nThe question: is {n | C(2n,n) coprime to 105} infinite?\n\n**axiom erdos_376_positive_answer**:\n  GoodSet105.Infinite\n\nThe expected answer is YES, but this remains OPEN.\n\n**Prize**: Graham offered $1000 for a solution!",
     "mathContext": "The problem has been open since the 1970s. The difficulty is proving the intersection of three infinite sets remains infinite.",
     "significance": "key",
     "relatedConcepts": [
@@ -111,12 +111,12 @@
     "id": "ann-e376-verified",
     "proofId": "erdos-376",
     "range": {
-      "startLine": 153,
-      "endLine": 169
+      "startLine": 116,
+      "endLine": 126
     },
     "type": "technique",
     "title": "Small Cases (Verified)",
-    "content": "**theorem one_is_good** ✓: Is105Good 1\n  C(2,1) = 2, coprime to 105.\n\n**theorem two_not_good** ✓: ¬Is105Good 2\n  C(4,2) = 6 = 2×3, divisible by 3.\n\n**theorem four_not_good** ✓: ¬Is105Good 4\n  C(8,4) = 70 = 2×5×7, divisible by 5 and 7.\n\nAll verified by native_decide!",
+    "content": "**theorem one_is_good** \u2713: Is105Good 1\n  C(2,1) = 2, coprime to 105.\n\n**theorem two_not_good** \u2713: \u00acIs105Good 2\n  C(4,2) = 6 = 2\u00d73, divisible by 3.\n\n**theorem four_not_good** \u2713: \u00acIs105Good 4\n  C(8,4) = 70 = 2\u00d75\u00d77, divisible by 5 and 7.\n\nAll verified by native_decide!",
     "mathContext": "The computational verification shows how rare 105-good numbers are. The sequence is very sparse.",
     "significance": "key",
     "relatedConcepts": [
@@ -129,12 +129,12 @@
     "id": "ann-e376-density",
     "proofId": "erdos-376",
     "range": {
-      "startLine": 179,
-      "endLine": 186
+      "startLine": 116,
+      "endLine": 126
     },
     "type": "concept",
     "title": "Density Considerations",
-    "content": "**axiom density_single_prime**:\nFor any odd prime p, infinitely many n have C(2n,n) coprime to p.\n\nDensity ≈ (1/2)^{log_p n} for a single prime.\n\n**axiom density_decreases_with_primes**:\nFor k primes, density decreases exponentially with k.\n\nThe three-prime intersection is extremely sparse!",
+    "content": "**axiom density_single_prime**:\nFor any odd prime p, infinitely many n have C(2n,n) coprime to p.\n\nDensity \u2248 (1/2)^{log_p n} for a single prime.\n\n**axiom density_decreases_with_primes**:\nFor k primes, density decreases exponentially with k.\n\nThe three-prime intersection is extremely sparse!",
     "mathContext": "The density argument explains why the problem is hard: each additional prime constraint dramatically reduces the count.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -147,12 +147,12 @@
     "id": "ann-e376-bases",
     "proofId": "erdos-376",
     "range": {
-      "startLine": 196,
-      "endLine": 216
+      "startLine": 116,
+      "endLine": 126
     },
     "type": "definition",
     "title": "Digit Set Characterization",
-    "content": "**Base3Good**: {n | digits in base 3 ≤ 1} (only 0,1)\n**Base5Good**: {n | digits in base 5 ≤ 2} (only 0,1,2)\n**Base7Good**: {n | digits in base 7 ≤ 3} (only 0,1,2,3)\n\n**axiom good_105_characterization**:\n  GoodSet105 = Base3Good ∩ Base5Good ∩ Base7Good\n\n**axiom base3Good_infinite**: Base3Good is infinite ✓\n**axiom base5Good_infinite**: Base5Good is infinite ✓\n**axiom base7Good_infinite**: Base7Good is infinite ✓\n\n**axiom intersection_question**: Intersection infinite ⟺ 105-good infinite",
+    "content": "**Base3Good**: {n | digits in base 3 \u2264 1} (only 0,1)\n**Base5Good**: {n | digits in base 5 \u2264 2} (only 0,1,2)\n**Base7Good**: {n | digits in base 7 \u2264 3} (only 0,1,2,3)\n\n**axiom good_105_characterization**:\n  GoodSet105 = Base3Good \u2229 Base5Good \u2229 Base7Good\n\n**axiom base3Good_infinite**: Base3Good is infinite \u2713\n**axiom base5Good_infinite**: Base5Good is infinite \u2713\n**axiom base7Good_infinite**: Base7Good is infinite \u2713\n\n**axiom intersection_question**: Intersection infinite \u27fa 105-good infinite",
     "mathContext": "The digit characterization transforms the problem into: is the intersection of three infinite sets infinite? This is a deep question about simultaneous digit constraints.",
     "significance": "key",
     "relatedConcepts": [
@@ -165,12 +165,12 @@
     "id": "ann-e376-history",
     "proofId": "erdos-376",
     "range": {
-      "startLine": 227,
-      "endLine": 231
+      "startLine": 116,
+      "endLine": 126
     },
     "type": "concept",
     "title": "Historical Results",
-    "content": "**axiom infinitely_many_divisible**:\nFor any prime p, infinitely many n have p | C(2n,n).\n\n**axiom centralBinom_even**:\nC(2n,n) is always even for n ≥ 1.\n\nThese show C(2n,n) is often highly composite, making coprimality rare.",
+    "content": "**axiom infinitely_many_divisible**:\nFor any prime p, infinitely many n have p | C(2n,n).\n\n**axiom centralBinom_even**:\nC(2n,n) is always even for n \u2265 1.\n\nThese show C(2n,n) is often highly composite, making coprimality rare.",
     "mathContext": "The central binomial coefficient is typically divisible by many primes. Finding coprime cases requires careful construction.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -183,12 +183,12 @@
     "id": "ann-e376-general",
     "proofId": "erdos-376",
     "range": {
-      "startLine": 241,
-      "endLine": 248
+      "startLine": 116,
+      "endLine": 126
     },
     "type": "concept",
     "title": "Generalizations",
-    "content": "**axiom general_conjecture**:\nFor any finite set P of odd primes, is {n | C(2n,n) coprime to ∏P} infinite?\n\n**axiom two_primes_solved**:\nFor |P| = 2, the answer is YES (EGRS).\n\nThe frontier:\n- 2 primes: SOLVED (EGRS 1975)\n- 3 primes: OPEN (Erdős #376)\n- k primes: OPEN for k ≥ 3",
+    "content": "**axiom general_conjecture**:\nFor any finite set P of odd primes, is {n | C(2n,n) coprime to \u220fP} infinite?\n\n**axiom two_primes_solved**:\nFor |P| = 2, the answer is YES (EGRS).\n\nThe frontier:\n- 2 primes: SOLVED (EGRS 1975)\n- 3 primes: OPEN (Erd\u0151s #376)\n- k primes: OPEN for k \u2265 3",
     "mathContext": "The generalization asks about arbitrary products of odd primes. The difficulty increases with each additional prime.",
     "significance": "key",
     "relatedConcepts": [
@@ -206,7 +206,7 @@
     },
     "type": "concept",
     "title": "Summary and Status",
-    "content": "**Erdős Problem #376: OPEN**\n**Prize: $1000 (Graham)**\n\n**Verified Theorems**:\n- factorization_105 ✓\n- infinitely_coprime_15/21/35 ✓ (EGRS applications)\n- one_is_good ✓, two_not_good ✓, four_not_good ✓\n\n**Key Results**:\n- Two primes: SOLVED (EGRS 1975)\n- Three primes: OPEN\n- Equivalent to: ∩(Base3Good, Base5Good, Base7Good) infinite?",
+    "content": "**Erd\u0151s Problem #376: OPEN**\n**Prize: $1000 (Graham)**\n\n**Verified Theorems**:\n- factorization_105 \u2713\n- infinitely_coprime_15/21/35 \u2713 (EGRS applications)\n- one_is_good \u2713, two_not_good \u2713, four_not_good \u2713\n\n**Key Results**:\n- Two primes: SOLVED (EGRS 1975)\n- Three primes: OPEN\n- Equivalent to: \u2229(Base3Good, Base5Good, Base7Good) infinite?",
     "mathContext": "The problem is equivalent to asking whether simultaneous digit constraints in bases 3, 5, 7 admit infinitely many solutions.",
     "significance": "key",
     "relatedConcepts": [

@@ -2,7 +2,7 @@
   "id": "navier-stokes-oq-02",
   "title": "2D Navier-Stokes: Gronwall Stability, Uniqueness, and Well-Posedness",
   "slug": "navier-stokes-oq-02",
-  "description": "For 2D incompressible Navier-Stokes, can we formalize L² stability, uniqueness, and continuous dependence on initial data using the Gronwall inequality? We prove: (1) W(t) ≤ W(0)·exp(C·E(0)·t) (Gronwall stability bound), (2) W(0) = 0 implies W(t) = 0 (uniqueness), (3) for any ε > 0, there exists δ > 0 such that W(0) ≤ δ implies W(t) ≤ ε on [0,T] (continuous dependence). Together these establish Hadamard well-posedness for 2D Navier-Stokes.",
+  "description": "For 2D incompressible Navier-Stokes, can we formalize L\u00b2 stability, uniqueness, and continuous dependence on initial data using the Gronwall inequality? We prove: (1) W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7t) (Gronwall stability bound), (2) W(0) = 0 implies W(t) = 0 (uniqueness), (3) for any \u03b5 > 0, there exists \u03b4 > 0 such that W(0) \u2264 \u03b4 implies W(t) \u2264 \u03b5 on [0,T] (continuous dependence). Together these establish Hadamard well-posedness for 2D Navier-Stokes.",
   "meta": {
     "author": "Ladyzhenskaya (1969)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations",
@@ -32,12 +32,12 @@
       },
       {
         "theorem": "HasDerivAt.const_mul",
-        "description": "Derivative of constant times a function: d/dx(c·f(x)) = c·f'(x)",
+        "description": "Derivative of constant times a function: d/dx(c\u00b7f(x)) = c\u00b7f'(x)",
         "module": "Mathlib.Analysis.Calculus.Deriv.Mul"
       },
       {
         "theorem": "Real.exp_add",
-        "description": "Exponential function addition law: exp(a+b) = exp(a)·exp(b), used for cancelling integrating factors",
+        "description": "Exponential function addition law: exp(a+b) = exp(a)\u00b7exp(b), used for cancelling integrating factors",
         "module": "Mathlib.Analysis.SpecialFunctions.Exp"
       },
       {
@@ -47,32 +47,32 @@
       },
       {
         "theorem": "Real.exp_le_exp",
-        "description": "Monotonicity of the exponential function: a ≤ b implies exp(a) ≤ exp(b)",
+        "description": "Monotonicity of the exponential function: a \u2264 b implies exp(a) \u2264 exp(b)",
         "module": "Mathlib.Analysis.SpecialFunctions.Exp"
       }
     ],
     "originalContributions": [
-      "Structure NSSolutionPair2D: abstract framework for comparing two 2D NS solutions via difference energy W(t) with Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t)",
-      "Theorem gronwall_stability_2d: W(t) ≤ W(0)·exp(C·E(0)·t) via integrating factor g(t) = W(t)·exp(-Kt) shown antitone",
+      "Structure NSSolutionPair2D: abstract framework for comparing two 2D NS solutions via difference energy W(t) with Ladyzhenskaya stability estimate W'(t) \u2264 C\u00b7E(t)\u00b7W(t)",
+      "Theorem gronwall_stability_2d: W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7t) via integrating factor g(t) = W(t)\u00b7exp(-Kt) shown antitone",
       "Theorem uniqueness_2d: W(0) = 0 implies W(t) = 0 for all t > 0, the classical 2D NS uniqueness result",
-      "Theorem stability_amplification_2d: W(t) ≤ W(0)·exp(C·E(0)·T) uniform bound on [0,T], finite because 2D enstrophy is bounded",
-      "Theorem continuous_dependence_2d: for any ε > 0, threshold δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε, establishing Hadamard well-posedness"
+      "Theorem stability_amplification_2d: W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7T) uniform bound on [0,T], finite because 2D enstrophy is bounded",
+      "Theorem continuous_dependence_2d: for any \u03b5 > 0, threshold \u03b4 = \u03b5\u00b7exp(-C\u00b7E(0)\u00b7T) gives W(0) \u2264 \u03b4 implies W(t) \u2264 \u03b5, establishing Hadamard well-posedness"
     ],
     "dateAdded": "2026-02-28",
-    "lineCount": 22350,
+    "lineCount": 21111,
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The well-posedness of 2D Navier-Stokes has been known since Ladyzhenskaya's work in 1969. The proof of uniqueness uses a Gronwall inequality argument: if two solutions u₁ and u₂ satisfy the same equations with the same initial data, then the difference energy W(t) = ‖u₁(t) - u₂(t)‖² satisfies a differential inequality W'(t) ≤ C·E(t)·W(t), where E(t) is the enstrophy of the reference solution. Since 2D enstrophy is bounded (E(t) ≤ E(0)), the Gronwall inequality gives exponential growth W(t) ≤ W(0)·exp(C·E(0)·t), and uniqueness follows from W(0) = 0.\n\nThis is a classical result in PDE theory, but its formalization in Lean 4 is new. The key challenge is encoding the stability estimate as a structural hypothesis (rather than deriving it from PDE theory, which would require Sobolev space infrastructure not yet in Mathlib).",
-    "problemStatement": "**Open Question (navier-stokes-oq-02)**: For 2D incompressible Navier-Stokes, can we formalize:\n\n(a) **Gronwall stability**: If W'(t) ≤ C·E(t)·W(t) and E(t) ≤ E(0), then W(t) ≤ W(0)·exp(C·E(0)·t)?\n\n(b) **Uniqueness**: W(0) = 0 implies W(t) = 0 for all t?\n\n(c) **Continuous dependence**: For any ε > 0, exists δ > 0 such that W(0) ≤ δ implies W(t) ≤ ε on [0,T]?\n\n**Answer: YES** — all three are formalized with 0 axioms and 0 sorries, using the integrating factor method and the bounded enstrophy from global_enstrophy_bound.",
-    "text": "For 2D incompressible Navier-Stokes, can we formalize L² stability, uniqueness, and continuous dependence on initial data using the Gronwall inequality? We prove: (1) W(t) ≤ W(0)·exp(C·E(0)·t) (Gronwall stability bound), (2) W(0) = 0 implies W(t) = 0 (uniqueness), (3) for any ε > 0, there exists δ > 0 such that W(0) ≤ δ implies W(t) ≤ ε on [0,T] (continuous dependence). Together these establish Hadamard well-posedness for 2D Navier-Stokes.",
-    "proofStrategy": "**Key structure**: NSSolutionPair2D encodes two solutions via their difference energy W(t) and the stability estimate W'(t) ≤ C·E(t)·W(t).\n\n**Gronwall stability proof**:\n1. Set K = C·E(0) (uniform upper bound on growth rate, since E(t) ≤ E(0) in 2D)\n2. Define integrating factor g(t) = W(t)·exp(-K·t)\n3. Show g'(t) = (W'(t) - K·W(t))·exp(-Kt) ≤ 0 (since W' ≤ C·E(t)·W ≤ K·W)\n4. g antitone: g(t) ≤ g(0) = W(0)\n5. Multiply by exp(Kt): W(t) ≤ W(0)·exp(Kt)\n\n**Uniqueness**: From Gronwall with W(0) = 0: W(t) ≤ 0·exp(Kt) = 0. Combined with W(t) ≥ 0.\n\n**Continuous dependence**: Set δ = ε·exp(-K·T). Then W(0) ≤ δ gives W(t) ≤ δ·exp(Kt) ≤ δ·exp(KT) = ε.",
+    "historicalContext": "The well-posedness of 2D Navier-Stokes has been known since Ladyzhenskaya's work in 1969. The proof of uniqueness uses a Gronwall inequality argument: if two solutions u\u2081 and u\u2082 satisfy the same equations with the same initial data, then the difference energy W(t) = \u2016u\u2081(t) - u\u2082(t)\u2016\u00b2 satisfies a differential inequality W'(t) \u2264 C\u00b7E(t)\u00b7W(t), where E(t) is the enstrophy of the reference solution. Since 2D enstrophy is bounded (E(t) \u2264 E(0)), the Gronwall inequality gives exponential growth W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7t), and uniqueness follows from W(0) = 0.\n\nThis is a classical result in PDE theory, but its formalization in Lean 4 is new. The key challenge is encoding the stability estimate as a structural hypothesis (rather than deriving it from PDE theory, which would require Sobolev space infrastructure not yet in Mathlib).",
+    "problemStatement": "**Open Question (navier-stokes-oq-02)**: For 2D incompressible Navier-Stokes, can we formalize:\n\n(a) **Gronwall stability**: If W'(t) \u2264 C\u00b7E(t)\u00b7W(t) and E(t) \u2264 E(0), then W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7t)?\n\n(b) **Uniqueness**: W(0) = 0 implies W(t) = 0 for all t?\n\n(c) **Continuous dependence**: For any \u03b5 > 0, exists \u03b4 > 0 such that W(0) \u2264 \u03b4 implies W(t) \u2264 \u03b5 on [0,T]?\n\n**Answer: YES** \u2014 all three are formalized with 0 axioms and 0 sorries, using the integrating factor method and the bounded enstrophy from global_enstrophy_bound.",
+    "text": "For 2D incompressible Navier-Stokes, can we formalize L\u00b2 stability, uniqueness, and continuous dependence on initial data using the Gronwall inequality? We prove: (1) W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7t) (Gronwall stability bound), (2) W(0) = 0 implies W(t) = 0 (uniqueness), (3) for any \u03b5 > 0, there exists \u03b4 > 0 such that W(0) \u2264 \u03b4 implies W(t) \u2264 \u03b5 on [0,T] (continuous dependence). Together these establish Hadamard well-posedness for 2D Navier-Stokes.",
+    "proofStrategy": "**Key structure**: NSSolutionPair2D encodes two solutions via their difference energy W(t) and the stability estimate W'(t) \u2264 C\u00b7E(t)\u00b7W(t).\n\n**Gronwall stability proof**:\n1. Set K = C\u00b7E(0) (uniform upper bound on growth rate, since E(t) \u2264 E(0) in 2D)\n2. Define integrating factor g(t) = W(t)\u00b7exp(-K\u00b7t)\n3. Show g'(t) = (W'(t) - K\u00b7W(t))\u00b7exp(-Kt) \u2264 0 (since W' \u2264 C\u00b7E(t)\u00b7W \u2264 K\u00b7W)\n4. g antitone: g(t) \u2264 g(0) = W(0)\n5. Multiply by exp(Kt): W(t) \u2264 W(0)\u00b7exp(Kt)\n\n**Uniqueness**: From Gronwall with W(0) = 0: W(t) \u2264 0\u00b7exp(Kt) = 0. Combined with W(t) \u2265 0.\n\n**Continuous dependence**: Set \u03b4 = \u03b5\u00b7exp(-K\u00b7T). Then W(0) \u2264 \u03b4 gives W(t) \u2264 \u03b4\u00b7exp(Kt) \u2264 \u03b4\u00b7exp(KT) = \u03b5.",
     "keyInsights": [
-      "The bounded enstrophy E(t) ≤ E(0) in 2D is what makes the Gronwall argument work: the growth rate C·E(t) is uniformly bounded by K = C·E(0), giving finite-time stability",
-      "In 3D, enstrophy could blow up (the Millennium Problem!), so K = C·E(0) would NOT bound C·E(t) for all t, and the Gronwall argument breaks down — this is exactly why 3D uniqueness is open",
-      "The integrating factor g(t) = W(t)·exp(-Kt) is the same technique used for enstrophy decay (Part X-B), but with opposite sign: here we bound GROWTH (W increasing) rather than DECAY (E decreasing)",
-      "The NSSolutionPair2D structure abstracts away PDE details: the Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t) is a hypothesis, not derived from Sobolev spaces, making the proof modular",
-      "Continuous dependence gives an explicit stability threshold δ = ε·exp(-C·E(0)·T) that decreases with time horizon T and initial enstrophy E(0)"
+      "The bounded enstrophy E(t) \u2264 E(0) in 2D is what makes the Gronwall argument work: the growth rate C\u00b7E(t) is uniformly bounded by K = C\u00b7E(0), giving finite-time stability",
+      "In 3D, enstrophy could blow up (the Millennium Problem!), so K = C\u00b7E(0) would NOT bound C\u00b7E(t) for all t, and the Gronwall argument breaks down \u2014 this is exactly why 3D uniqueness is open",
+      "The integrating factor g(t) = W(t)\u00b7exp(-Kt) is the same technique used for enstrophy decay (Part X-B), but with opposite sign: here we bound GROWTH (W increasing) rather than DECAY (E decreasing)",
+      "The NSSolutionPair2D structure abstracts away PDE details: the Ladyzhenskaya stability estimate W'(t) \u2264 C\u00b7E(t)\u00b7W(t) is a hypothesis, not derived from Sobolev spaces, making the proof modular",
+      "Continuous dependence gives an explicit stability threshold \u03b4 = \u03b5\u00b7exp(-C\u00b7E(0)\u00b7T) that decreases with time horizon T and initial enstrophy E(0)"
     ],
     "prerequisites": [
       "Mathematical analysis"
@@ -84,14 +84,14 @@
       "title": "NSSolutionPair2D: Framework for Comparing Solutions",
       "startLine": 2710,
       "endLine": 2732,
-      "summary": "Defines the NSSolutionPair2D structure: two 2D NS solutions compared via difference energy W(t) with the Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t). This abstracts the PDE analysis into a structural hypothesis."
+      "summary": "Defines the NSSolutionPair2D structure: two 2D NS solutions compared via difference energy W(t) with the Ladyzhenskaya stability estimate W'(t) \u2264 C\u00b7E(t)\u00b7W(t). This abstracts the PDE analysis into a structural hypothesis."
     },
     {
       "id": "gronwall-stability",
-      "title": "Gronwall L² Stability Bound",
+      "title": "Gronwall L\u00b2 Stability Bound",
       "startLine": 2734,
       "endLine": 2815,
-      "summary": "gronwall_stability_2d: W(t) ≤ W(0)·exp(C·E(0)·t). The integrating factor g(t) = W(t)·exp(-Kt) is shown antitone via g'(t) ≤ 0, using the bounded enstrophy E(t) ≤ E(0)."
+      "summary": "gronwall_stability_2d: W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7t). The integrating factor g(t) = W(t)\u00b7exp(-Kt) is shown antitone via g'(t) \u2264 0, using the bounded enstrophy E(t) \u2264 E(0)."
     },
     {
       "id": "uniqueness",
@@ -105,23 +105,23 @@
       "title": "Stability Amplification Factor",
       "startLine": 2836,
       "endLine": 2853,
-      "summary": "stability_amplification_2d: W(t) ≤ W(0)·exp(C·E(0)·T) for t ∈ (0,T). Finite amplification factor because 2D enstrophy E(0) < ∞."
+      "summary": "stability_amplification_2d: W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7T) for t \u2208 (0,T). Finite amplification factor because 2D enstrophy E(0) < \u221e."
     },
     {
       "id": "continuous-dependence",
       "title": "Continuous Dependence on Initial Data",
       "startLine": 2864,
       "endLine": 2893,
-      "summary": "continuous_dependence_2d: for any ε > 0, δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε on (0,T). Together with uniqueness, establishes Hadamard well-posedness."
+      "summary": "continuous_dependence_2d: for any \u03b5 > 0, \u03b4 = \u03b5\u00b7exp(-C\u00b7E(0)\u00b7T) gives W(0) \u2264 \u03b4 implies W(t) \u2264 \u03b5 on (0,T). Together with uniqueness, establishes Hadamard well-posedness."
     }
   ],
   "conclusion": {
-    "summary": "All three components of well-posedness are formalized with 0 axioms and 0 sorries. The Gronwall stability bound W(t) ≤ W(0)·exp(C·E(0)·t) is the key result, from which uniqueness and continuous dependence follow as corollaries. The proof uses the same integrating factor technique as the enstrophy decay theorems but with reversed sign (bounding growth instead of decay).",
-    "implications": "**Theoretical Significance**: **For 2D fluid mechanics**: This completes the well-posedness theory for 2D NS in our formal framework: existence (GlobalNSSolution2D), uniqueness (uniqueness_2d), and continuous dependence (continuous_dependence_2d) — the three pillars of Hadamard well-posedness.\n\n**For 3D comparison**: The proof reveals precisely WHERE the 3D argument breaks: the Gronwall growth rate K = C·E(0) relies on E(t) ≤ E(0), which holds in 2D but may fail in 3D.\n\nIf 3D enstrophy blows up, K(t) = C·E(t) → ∞ and the exponential bound becomes meaningless. This is a formal verification of the folklore that 2D uniqueness depends on bounded enstrophy.\n\n**For Mathlib**: The NSSolutionPair2D structure provides a reusable template for stability analysis of other evolution equations: any system with a Gronwall-type estimate W' ≤ f(t)·W and bounded f(t) gives well-posedness.",
+    "summary": "All three components of well-posedness are formalized with 0 axioms and 0 sorries. The Gronwall stability bound W(t) \u2264 W(0)\u00b7exp(C\u00b7E(0)\u00b7t) is the key result, from which uniqueness and continuous dependence follow as corollaries. The proof uses the same integrating factor technique as the enstrophy decay theorems but with reversed sign (bounding growth instead of decay).",
+    "implications": "**Theoretical Significance**: **For 2D fluid mechanics**: This completes the well-posedness theory for 2D NS in our formal framework: existence (GlobalNSSolution2D), uniqueness (uniqueness_2d), and continuous dependence (continuous_dependence_2d) \u2014 the three pillars of Hadamard well-posedness.\n\n**For 3D comparison**: The proof reveals precisely WHERE the 3D argument breaks: the Gronwall growth rate K = C\u00b7E(0) relies on E(t) \u2264 E(0), which holds in 2D but may fail in 3D.\n\nIf 3D enstrophy blows up, K(t) = C\u00b7E(t) \u2192 \u221e and the exponential bound becomes meaningless. This is a formal verification of the folklore that 2D uniqueness depends on bounded enstrophy.\n\n**For Mathlib**: The NSSolutionPair2D structure provides a reusable template for stability analysis of other evolution equations: any system with a Gronwall-type estimate W' \u2264 f(t)\u00b7W and bounded f(t) gives well-posedness.",
     "openQuestions": [
-      "Can the Poincaré inequality give a tighter stability bound? With exponential enstrophy decay E(t) ≤ E(0)·exp(-2νμ₁t), the integrated growth rate ∫C·E(s)ds would be finite as t→∞, giving a UNIFORM stability bound independent of time.",
-      "Can the NSSolutionPair2D framework be extended to handle weak solutions (where W'(t) ≤ C·E(t)·W(t) holds only in the distributional sense)?",
-      "What is the optimal Ladyzhenskaya stability constant C for specific domains (torus, bounded domain, ℝ²)?",
+      "Can the Poincar\u00e9 inequality give a tighter stability bound? With exponential enstrophy decay E(t) \u2264 E(0)\u00b7exp(-2\u03bd\u03bc\u2081t), the integrated growth rate \u222bC\u00b7E(s)ds would be finite as t\u2192\u221e, giving a UNIFORM stability bound independent of time.",
+      "Can the NSSolutionPair2D framework be extended to handle weak solutions (where W'(t) \u2264 C\u00b7E(t)\u00b7W(t) holds only in the distributional sense)?",
+      "What is the optimal Ladyzhenskaya stability constant C for specific domains (torus, bounded domain, \u211d\u00b2)?",
       "Can the 3D analogue NSSolutionPair3D be formalized, making explicit where the uniqueness argument fails?"
     ]
   },
@@ -184,7 +184,7 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 22350,
+    "lineCount": 21111,
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104

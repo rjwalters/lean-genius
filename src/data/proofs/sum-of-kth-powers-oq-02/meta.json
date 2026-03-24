@@ -2,7 +2,7 @@
   "id": "sum-of-kth-powers-oq-02",
   "title": "Sum of Powers: Extension to Non-Integer Exponents",
   "slug": "sum-of-kth-powers-oq-02",
-  "description": "Extends Faulhaber's formulas to real exponents via the p-series ζ(s) = ∑ 1/n^s. Proves convergence dichotomy (iff s > 1), recovers ζ(2) = π²/6 and ζ(4) = π⁴/90, establishes term and zeta monotonicity, and bridges real-exponent theory to integer power sums.",
+  "description": "Extends Faulhaber's formulas to real exponents via the p-series \u03b6(s) = \u2211 1/n^s. Proves convergence dichotomy (iff s > 1), recovers \u03b6(2) = \u03c0\u00b2/6 and \u03b6(4) = \u03c0\u2074/90, establishes term and zeta monotonicity, and bridges real-exponent theory to integer power sums.",
   "leanFile": "Proofs/SumOfKthPowersOQ02.lean",
   "meta": {
     "author": "Euler (1734); formalized here",
@@ -30,12 +30,12 @@
       },
       {
         "theorem": "hasSum_zeta_two",
-        "description": "Basel Problem: ζ(2) = π²/6",
+        "description": "Basel Problem: \u03b6(2) = \u03c0\u00b2/6",
         "module": "Mathlib.NumberTheory.ZetaValues"
       },
       {
         "theorem": "hasSum_zeta_four",
-        "description": "ζ(4) = π⁴/90",
+        "description": "\u03b6(4) = \u03c0\u2074/90",
         "module": "Mathlib.NumberTheory.ZetaValues"
       },
       {
@@ -46,21 +46,21 @@
     ],
     "originalContributions": [
       "summable_inv_rpow: convergence of p-series for s > 1 (wrapper)",
-      "not_summable_inv_rpow: divergence for s ≤ 1 (wrapper)",
-      "zeta_two_eq / zeta_four_eq: tsum forms of Basel and ζ(4)",
-      "inv_rpow_antitone: (n^s)⁻¹ is antitone in s for n ≥ 1",
-      "inv_rpow_strictAnti: strict version for n ≥ 2",
-      "tsum_inv_rpow_antitone: ζ(s) is antitone via hasSum_le",
-      "one_le_tsum_inv_rpow: ζ(s) ≥ 1 via le_hasSum at n=1",
-      "tsum_inv_rpow_le_zeta_two: ζ(s) ≤ π²/6 for s ≥ 2 via antitone + Basel",
-      "partialZeta_tendsto: partial sums converge to ζ(s)",
+      "not_summable_inv_rpow: divergence for s \u2264 1 (wrapper)",
+      "zeta_two_eq / zeta_four_eq: tsum forms of Basel and \u03b6(4)",
+      "inv_rpow_antitone: (n^s)\u207b\u00b9 is antitone in s for n \u2265 1",
+      "inv_rpow_strictAnti: strict version for n \u2265 2",
+      "tsum_inv_rpow_antitone: \u03b6(s) is antitone via hasSum_le",
+      "one_le_tsum_inv_rpow: \u03b6(s) \u2265 1 via le_hasSum at n=1",
+      "tsum_inv_rpow_le_zeta_two: \u03b6(s) \u2264 \u03c0\u00b2/6 for s \u2265 2 via antitone + Basel",
+      "partialZeta_tendsto: partial sums converge to \u03b6(s)",
       "partialZeta_mono: partial sums are monotone",
       "rpow_inv_eq_nat_inv: bridge from rpow to nat pow",
-      "summable_inv_nat_pow: summability for integer k ≥ 2",
-      "partial_sum_sq_tendsto: ∑ 1/n² → π²/6"
+      "summable_inv_nat_pow: summability for integer k \u2265 2",
+      "partial_sum_sq_tendsto: \u2211 1/n\u00b2 \u2192 \u03c0\u00b2/6"
     ],
     "dateAdded": "2026-03-23",
-    "lineCount": 173,
+    "lineCount": 175,
     "prerequisites": [
       "Real-valued power series and summability",
       "Zeta values from Mathlib",
@@ -155,7 +155,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "Johann Faulhaber (1631) published closed-form expressions for sums of consecutive kth powers, extending work by al-Haytham (c. 1000) and Bernoulli. The reciprocal series sum 1/n^2 was posed as the Basel Problem by Pietro Mengoli in 1644 and resisted solution for 90 years. Euler's breakthrough in 1734, showing zeta(2) = pi^2/6, stunned contemporary mathematicians by linking a discrete arithmetic sum to the circle constant. Euler subsequently computed zeta(2k) for all positive integers k using Bernoulli numbers and powers of pi. The convergence dichotomy at s = 1 — the harmonic series diverges while sum 1/n^s converges for any s > 1 — was first observed by Nicole Oresme (c. 1360) and later connected to the prime number theorem via the Euler product zeta(s) = prod (1 - p^{-s})^{-1}. Riemann's 1859 memoir extended zeta(s) to complex s via analytic continuation, transforming number theory forever.",
+    "historicalContext": "Johann Faulhaber (1631) published closed-form expressions for sums of consecutive kth powers, extending work by al-Haytham (c. 1000) and Bernoulli. The reciprocal series sum 1/n^2 was posed as the Basel Problem by Pietro Mengoli in 1644 and resisted solution for 90 years. Euler's breakthrough in 1734, showing zeta(2) = pi^2/6, stunned contemporary mathematicians by linking a discrete arithmetic sum to the circle constant. Euler subsequently computed zeta(2k) for all positive integers k using Bernoulli numbers and powers of pi. The convergence dichotomy at s = 1 \u2014 the harmonic series diverges while sum 1/n^s converges for any s > 1 \u2014 was first observed by Nicole Oresme (c. 1360) and later connected to the prime number theorem via the Euler product zeta(s) = prod (1 - p^{-s})^{-1}. Riemann's 1859 memoir extended zeta(s) to complex s via analytic continuation, transforming number theory forever.",
     "problemStatement": "Extend Faulhaber integer power sums to real exponents via zeta(s) = sum 1/n^s.",
     "proofStrategy": "Eight parts: convergence dichotomy, known values, term monotonicity, zeta monotonicity, bounds, partial sums, bridge to integers. Fully verified.",
     "keyInsights": [

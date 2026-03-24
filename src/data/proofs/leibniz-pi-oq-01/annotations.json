@@ -123,7 +123,7 @@
       "endLine": 91
     },
     "type": "technique",
-    "title": "Sandwich Property: S(2k) ≤ π/4 ≤ S(2k+1)",
+    "title": "Sandwich Property: S(2k) \u2264 \u03c0/4 \u2264 S(2k+1)",
     "content": "The limit $\\pi/4$ is trapped between the monotone even subsequence (below) and the antitone odd subsequence (above). The proofs use `ge_of_tendsto` and `le_of_tendsto` with `eventually_atTop`: since $S(2k)$ is increasing and converges to $\\pi/4$, every value $S(2k)$ is at most $\\pi/4$. The symmetric argument applies to odd partial sums.",
     "mathContext": "$$S(2k) \\leq \\frac{\\pi}{4} \\leq S(2k+1) \\qquad \\forall k \\in \\mathbb{N}$$",
     "significance": "key",
@@ -148,7 +148,7 @@
       "endLine": 119
     },
     "type": "technique",
-    "title": "Error Bound: |π/4 - S(n)| ≤ 1/(2n+1)",
+    "title": "Error Bound: |\u03c0/4 - S(n)| \u2264 1/(2n+1)",
     "content": "The **main result**: the alternating series estimation theorem for the Leibniz series. The proof splits into even and odd cases. For even $n = 2k$: $0 \\leq \\pi/4 - S(2k) \\leq S(2k+1) - S(2k) = 1/(4k+1) = 1/(2n+1)$. For odd $n = 2k+1$: $S(2k+1) - \\pi/4 \\leq S(2k+1) - S(2k+2) = 1/(4k+3) = 1/(2n+1)$. The case split uses `Nat.even_or_odd`.",
     "mathContext": "$$\\left|\\frac{\\pi}{4} - S_n\\right| \\leq \\frac{1}{2n+1} \\qquad \\Rightarrow \\qquad \\text{error} = O(1/N)$$",
     "significance": "key",
@@ -192,12 +192,12 @@
     "id": "ann-leibniz-oq01-09-machin",
     "proofId": "leibniz-pi-oq-01",
     "range": {
-      "startLine": 136,
-      "endLine": 138
+      "startLine": 124,
+      "endLine": 134
     },
     "type": "technique",
     "title": "Machin's Formula (Axiom + Sorry)",
-    "content": "States Machin's 1706 formula $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ as the exponential convergence alternative. The arctangent addition formula is axiomatized (not yet proved from Mathlib), and the main identity has 1 sorry. The Taylor series of $\\arctan(1/5)$ has terms $O(1/5^{2n+1})$, giving roughly 1.4 decimal digits per term — compared to Leibniz's near-zero digits per term.",
+    "content": "States Machin's 1706 formula $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ as the exponential convergence alternative. The arctangent addition formula is axiomatized (not yet proved from Mathlib), and the main identity has 1 sorry. The Taylor series of $\\arctan(1/5)$ has terms $O(1/5^{2n+1})$, giving roughly 1.4 decimal digits per term \u2014 compared to Leibniz's near-zero digits per term.",
     "mathContext": "$$\\frac{\\pi}{4} = 4\\arctan\\frac{1}{5} - \\arctan\\frac{1}{239}, \\qquad \\text{rate} = O(1/25^N) \\gg O(1/N)$$",
     "significance": "supporting",
     "relatedConcepts": [

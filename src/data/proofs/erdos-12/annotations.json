@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #12 (OPEN, 1970) studies sets A ⊆ ℕ where no element divides the sum of two larger elements. Erdős and Sárközy proved such sets have density 0, but the precise growth rate is unknown. Three open questions ask whether √N density is achievable, whether sparseness infinitely often is forced, and whether the reciprocal sum must converge.",
+    "content": "Erd\u0151s Problem #12 (OPEN, 1970) studies sets A \u2286 \u2115 where no element divides the sum of two larger elements. Erd\u0151s and S\u00e1rk\u00f6zy proved such sets have density 0, but the precise growth rate is unknown. Three open questions ask whether \u221aN density is achievable, whether sparseness infinitely often is forced, and whether the reciprocal sum must converge.",
     "mathContext": "Define $A$ to be \\emph{divisibility-free} if $\\forall a, b, c \\in A$ distinct with $a < b, a < c$: $a \\nmid (b+c)$. This is a multiplicative constraint ($a \\mid \\cdot$) on an additive structure ($b + c$), creating a rich interaction between the two fundamental operations on $\\mathbb{N}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "IsDivisibilityFree",
-    "content": "A set A is divisibility-free if for all distinct a, b, c ∈ A with a < b and a < c, we have a ∤ (b+c). The definition requires distinctness and strict ordering to avoid trivial cases.",
+    "content": "A set A is divisibility-free if for all distinct a, b, c \u2208 A with a < b and a < c, we have a \u2224 (b+c). The definition requires distinctness and strict ordering to avoid trivial cases.",
     "mathContext": "Formally: $\\texttt{IsDivisibilityFree}(A) \\iff \\forall a, b, c \\in A,\\; a \\neq b \\to a \\neq c \\to b \\neq c \\to a < b \\to a < c \\to \\neg(a \\mid b + c)$. The condition constrains the residues of elements: for each $a \\in A$, the set $\\{b \\bmod a : b \\in A, b > a\\}$ cannot contain any pair summing to $0 \\pmod{a}$. This is a \\emph{sum-free} condition on residues modulo each small element.",
     "significance": "key",
     "relatedConcepts": [
@@ -54,8 +54,8 @@
     },
     "type": "definition",
     "title": "countingFunction",
-    "content": "The counting function |A ∩ {1,...,N}| = Set.ncard(A ∩ Set.Icc 1 N) measures the growth of A. The central question is: how fast can this function grow while maintaining the divisibility-free property?",
-    "mathContext": "The counting function $A(N) = |A \\cap [1, N]|$ satisfies $A(N)/N \\to 0$ (Erdős-Sárközy), but the decay rate is unknown. Best construction: $A(N) \\geq \\sqrt{N}/(\\sqrt{\\log N} \\cdot (\\log\\log N)^2)$ (Elsholtz-Planitzer). Gap: is $A(N) = \\Theta(\\sqrt{N})$ possible?",
+    "content": "The counting function |A \u2229 {1,...,N}| = Set.ncard(A \u2229 Set.Icc 1 N) measures the growth of A. The central question is: how fast can this function grow while maintaining the divisibility-free property?",
+    "mathContext": "The counting function $A(N) = |A \\cap [1, N]|$ satisfies $A(N)/N \\to 0$ (Erd\u0151s-S\u00e1rk\u00f6zy), but the decay rate is unknown. Best construction: $A(N) \\geq \\sqrt{N}/(\\sqrt{\\log N} \\cdot (\\log\\log N)^2)$ (Elsholtz-Planitzer). Gap: is $A(N) = \\Theta(\\sqrt{N})$ possible?",
     "significance": "key",
     "relatedConcepts": [
       "Set.ncard",
@@ -97,8 +97,8 @@
       "endLine": 71
     },
     "type": "definition",
-    "title": "primeSquares3mod4 — The Key Construction",
-    "content": "The set {p² : p prime, p ≡ 3 (mod 4)} is a large divisibility-free set. The construction works because if p² | (q² + r²) for distinct primes p < q, r ≡ 3 (mod 4), then -1 would be a quadratic residue mod p — contradicting p ≡ 3 (mod 4).",
+    "title": "primeSquares3mod4 \u2014 The Key Construction",
+    "content": "The set {p\u00b2 : p prime, p \u2261 3 (mod 4)} is a large divisibility-free set. The construction works because if p\u00b2 | (q\u00b2 + r\u00b2) for distinct primes p < q, r \u2261 3 (mod 4), then -1 would be a quadratic residue mod p \u2014 contradicting p \u2261 3 (mod 4).",
     "mathContext": "The set $\\{p^2 : p \\equiv 3 \\pmod{4},\\; p \\text{ prime}\\}$ has counting function $\\sim \\sqrt{N}/\\log N$ by the prime number theorem for arithmetic progressions ($\\pi(x; 4, 3) \\sim x/(2\\log x)$, so the number of $p^2 \\leq N$ is $\\sim \\sqrt{N}/(2\\log\\sqrt{N}) = \\sqrt{N}/\\log N$). This is close to $\\sqrt{N}$ but misses by a $\\log N$ factor.",
     "significance": "key",
     "relatedConcepts": [
@@ -120,7 +120,7 @@
     },
     "type": "technique",
     "title": "neg_one_not_square_mod_three_mod_four (Fully Proved)",
-    "content": "The first supplementary law of quadratic reciprocity: -1 is a quadratic non-residue mod p when p ≡ 3 (mod 4). Proved using ZMod.exists_sq_eq_neg_one_iff and omega.",
+    "content": "The first supplementary law of quadratic reciprocity: -1 is a quadratic non-residue mod p when p \u2261 3 (mod 4). Proved using ZMod.exists_sq_eq_neg_one_iff and omega.",
     "mathContext": "The first supplementary law: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, so $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$. In Lean: $\\texttt{ZMod.exists\\_sq\\_eq\\_neg\\_one\\_iff}$ gives the equivalence $\\texttt{IsSquare}(-1 : \\texttt{ZMod } p) \\iff p \\% 4 \\neq 3$, and $\\texttt{omega}$ closes the goal from $p \\% 4 = 3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -142,7 +142,7 @@
     },
     "type": "technique",
     "title": "prime_3mod4_not_div_sum_squares (Fully Proved)",
-    "content": "If p, q, r are distinct primes ≡ 3 (mod 4) with p < q and p < r, then p ∤ (q² + r²). The proof works in ZMod p: if p | (q²+r²), then q²+r² ≡ 0 mod p, so (r/q)² ≡ -1 mod p, contradicting the first supplementary law.",
+    "content": "If p, q, r are distinct primes \u2261 3 (mod 4) with p < q and p < r, then p \u2224 (q\u00b2 + r\u00b2). The proof works in ZMod p: if p | (q\u00b2+r\u00b2), then q\u00b2+r\u00b2 \u2261 0 mod p, so (r/q)\u00b2 \u2261 -1 mod p, contradicting the first supplementary law.",
     "mathContext": "The proof strategy: assume $p \\mid (q^2 + r^2)$. In $\\mathbb{Z}/p\\mathbb{Z}$: $q^2 + r^2 \\equiv 0$, so $r^2 = -q^2$. Since $p \\nmid q$ (distinct primes with $p < q$), $q$ is a unit in $\\mathbb{Z}/p\\mathbb{Z}$, and $(r \\cdot q^{-1})^2 = r^2 \\cdot (q^2)^{-1} = -q^2 \\cdot (q^2)^{-1} = -1$. So $-1$ is a square mod $p$, contradicting $p \\equiv 3 \\pmod{4}$. The $\\texttt{calc}$ block shows $(r \\cdot q^{-1})^2 = r^2 \\cdot (q^2)^{-1} = -q^2 \\cdot (q^2)^{-1} = -1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -154,7 +154,7 @@
     "prerequisites": [
       "ZMod.natCast_eq_zero_iff",
       "inv_pow",
-      "mul_inv_cancel₀"
+      "mul_inv_cancel\u2080"
     ]
   },
   {
@@ -166,7 +166,7 @@
     },
     "type": "technique",
     "title": "primeSquares3mod4_divisibility_free (Fully Proved)",
-    "content": "The main construction theorem: squares of primes ≡ 3 (mod 4) form a divisibility-free set. If p² < q², r² are squares of distinct primes ≡ 3 (mod 4), then p² ∤ (q² + r²). The proof unpacks the set membership, derives p < q and p < r from p² < q² and p² < r², applies prime_3mod4_not_div_sum_squares to get p ∤ (q²+r²), then lifts to p² ∤ (q²+r²).",
+    "content": "The main construction theorem: squares of primes \u2261 3 (mod 4) form a divisibility-free set. If p\u00b2 < q\u00b2, r\u00b2 are squares of distinct primes \u2261 3 (mod 4), then p\u00b2 \u2224 (q\u00b2 + r\u00b2). The proof unpacks the set membership, derives p < q and p < r from p\u00b2 < q\u00b2 and p\u00b2 < r\u00b2, applies prime_3mod4_not_div_sum_squares to get p \u2224 (q\u00b2+r\u00b2), then lifts to p\u00b2 \u2224 (q\u00b2+r\u00b2).",
     "mathContext": "The key chain: $p^2 < q^2 \\implies p < q$ (since squaring is monotone on $\\mathbb{N}$), then $p \\nmid (q^2 + r^2)$ by the quadratic residue argument, then $p^2 \\nmid (q^2 + r^2)$ since $p \\mid p^2$ and divisibility is transitive. The final step uses $\\texttt{sq\\_not\\_dvd\\_of\\_not\\_dvd}$: if $p \\nmid n$ then $p^2 \\nmid n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -188,9 +188,9 @@
       "endLine": 198
     },
     "type": "concept",
-    "title": "Erdős-Sárközy: Density Zero",
-    "content": "Every infinite divisibility-free set has asymptotic density 0: |A ∩ {1,...,N}| / N → 0 as N → ∞. This rules out sets with positive density but leaves the decay rate completely open.",
-    "mathContext": "The density zero result $A(N)/N \\to 0$ follows from a counting argument: if $A$ had positive density $\\delta > 0$, then for large $N$, $A$ contains $\\sim \\delta N$ elements in $[1, N]$. For a typical $a \\in A \\cap [1, \\sqrt{N}]$, the residues $\\{b \\bmod a : b \\in A, b > a\\}$ would fill $\\Omega(\\delta N / a)$ of the $a$ residue classes. The sum-free constraint mod $a$ limits this to $< a/2$ classes, giving $\\delta N / a < a/2$, or $a > \\sqrt{2\\delta N}$. But $a \\leq \\sqrt{N}$ by assumption — contradiction for $\\delta > 1/2$. Iterating this argument drives $\\delta \\to 0$.",
+    "title": "Erd\u0151s-S\u00e1rk\u00f6zy: Density Zero",
+    "content": "Every infinite divisibility-free set has asymptotic density 0: |A \u2229 {1,...,N}| / N \u2192 0 as N \u2192 \u221e. This rules out sets with positive density but leaves the decay rate completely open.",
+    "mathContext": "The density zero result $A(N)/N \\to 0$ follows from a counting argument: if $A$ had positive density $\\delta > 0$, then for large $N$, $A$ contains $\\sim \\delta N$ elements in $[1, N]$. For a typical $a \\in A \\cap [1, \\sqrt{N}]$, the residues $\\{b \\bmod a : b \\in A, b > a\\}$ would fill $\\Omega(\\delta N / a)$ of the $a$ residue classes. The sum-free constraint mod $a$ limits this to $< a/2$ classes, giving $\\delta N / a < a/2$, or $a > \\sqrt{2\\delta N}$. But $a \\leq \\sqrt{N}$ by assumption \u2014 contradiction for $\\delta > 1/2$. Iterating this argument drives $\\delta \\to 0$.",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic density",
@@ -211,8 +211,8 @@
       "endLine": 215
     },
     "type": "definition",
-    "title": "Question 1: √N Density (OPEN)",
-    "content": "Can a divisibility-free set achieve positive √N-density? Formally: ∃ A infinite and divisibility-free with ∃ c > 0, ∀ᶠ N, A(N)/√N ≥ c. The Elsholtz-Planitzer construction gets within logarithmic factors: A(N) ≥ √N/(√(log N)·(log log N)²).",
+    "title": "Question 1: \u221aN Density (OPEN)",
+    "content": "Can a divisibility-free set achieve positive \u221aN-density? Formally: \u2203 A infinite and divisibility-free with \u2203 c > 0, \u2200\u1da0 N, A(N)/\u221aN \u2265 c. The Elsholtz-Planitzer construction gets within logarithmic factors: A(N) \u2265 \u221aN/(\u221a(log N)\u00b7(log log N)\u00b2).",
     "mathContext": "Question 1 asks: $\\exists A$ div-free with $\\liminf_{N \\to \\infty} A(N)/\\sqrt{N} > 0$? The best construction (Elsholtz-Planitzer 2017) achieves $A(N) \\geq \\sqrt{N} \\cdot (\\sqrt{\\log N} \\cdot (\\log\\log N)^2)^{-1}$, tantalizingly close. The prime squares construction gives $A(N) \\sim \\sqrt{N}/\\log N$, weaker by a full $\\log N$ factor. Closing the gap requires either a better construction or a proof that $\\sqrt{N}$ density is impossible.",
     "significance": "key",
     "relatedConcepts": [
@@ -256,7 +256,7 @@
     },
     "type": "definition",
     "title": "Question 3: Convergent Reciprocal Sum (OPEN)",
-    "content": "Must Σ_{n ∈ A} 1/n converge for every divisibility-free set A? This is the strongest sparseness condition. For comparison: primes have divergent reciprocal sum, while squares have convergent sum (π²/6). The Summable predicate is used for the Lean formalization.",
+    "content": "Must \u03a3_{n \u2208 A} 1/n converge for every divisibility-free set A? This is the strongest sparseness condition. For comparison: primes have divergent reciprocal sum, while squares have convergent sum (\u03c0\u00b2/6). The Summable predicate is used for the Lean formalization.",
     "mathContext": "Question 3: $\\forall A$ div-free, $\\sum_{n \\in A} 1/n < \\infty$? If $A(N) \\leq C\\sqrt{N}$, partial summation gives $\\sum_{n \\leq N, n \\in A} 1/n \\leq C \\int_1^N x^{-1/2} dx / x \\sim C\\sqrt{\\log N}$, which diverges. So $\\sqrt{N}$ density does NOT imply convergent reciprocal sum. Question 3 would require $A(N) = o(\\sqrt{N}/\\log N)$ on average, much sparser than $\\sqrt{N}$. The hierarchy: Q3 true $\\implies$ Q2 true $\\implies$ Q1 false.",
     "significance": "key",
     "relatedConcepts": [
@@ -301,7 +301,7 @@
     },
     "type": "technique",
     "title": "primeSquares3mod4_is_good (Fully Proved)",
-    "content": "Combines two proved results: primeSquares3mod4_infinite (the set is infinite, using Dirichlet's theorem as axiom + injectivity of squaring) and primeSquares3mod4_divisibility_free (the set satisfies the property, via quadratic residue argument). This provides a concrete infinite divisibility-free set with growth ~√N/log N.",
+    "content": "Combines two proved results: primeSquares3mod4_infinite (the set is infinite, using Dirichlet's theorem as axiom + injectivity of squaring) and primeSquares3mod4_divisibility_free (the set satisfies the property, via quadratic residue argument). This provides a concrete infinite divisibility-free set with growth ~\u221aN/log N.",
     "mathContext": "Infiniteness: the map $p \\mapsto p^2$ is injective on $\\{p : p \\equiv 3 \\pmod{4},\\; p \\text{ prime}\\}$, and this set is infinite by Dirichlet's theorem (axiomatized as $\\texttt{infinitely\\_many\\_primes\\_3mod4}$). So the image $\\{p^2\\}$ is infinite. Combined with $\\texttt{primeSquares3mod4\\_divisibility\\_free}$: the conjunction gives a fully-verified example.",
     "significance": "key",
     "relatedConcepts": [
@@ -319,11 +319,11 @@
     "proofId": "erdos-12",
     "range": {
       "startLine": 289,
-      "endLine": 296
+      "endLine": 295
     },
     "type": "definition",
-    "title": "Erdos12Problem — Combined Statement",
-    "content": "The combined problem packages all three questions as a disjunction/conjunction. The logical hierarchy is: Q3 (convergent sum) ⟹ Q2 (sparse i.o.) ⟹ ¬Q1 (no √N density). All three remain OPEN.",
+    "title": "Erdos12Problem \u2014 Combined Statement",
+    "content": "The combined problem packages all three questions as a disjunction/conjunction. The logical hierarchy is: Q3 (convergent sum) \u27f9 Q2 (sparse i.o.) \u27f9 \u00acQ1 (no \u221aN density). All three remain OPEN.",
     "mathContext": "The problem is stated as $\\texttt{Erdos12Question1} \\lor (\\neg\\texttt{Erdos12Question1} \\land \\texttt{Erdos12Question2} \\land \\texttt{Erdos12Question3})$. This disjunction is trivially true (law of excluded middle), so the real content is in the individual questions. The expected answer: Q1 is false (no $\\sqrt{N}$ density achievable), Q2 is true (forced sparseness i.o.), Q3 is true (convergent reciprocal sum).",
     "significance": "key",
     "relatedConcepts": [

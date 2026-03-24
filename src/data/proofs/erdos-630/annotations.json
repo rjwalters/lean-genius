@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview: List Coloring of Planar Bipartite Graphs",
-    "content": "**Erdős Problem #630** asks whether every planar bipartite graph has list chromatic number $\\chi_L \\le 3$. **SOLVED: YES** by Alon and Tarsi (1992) using the Combinatorial Nullstellensatz.\n\nThis is surprising because bipartite graphs have $\\chi = 2$, yet list coloring can require a third color even for planar ones. The bound 3 is tight: $K_{2,4}$ achieves $\\chi_L = 3$. The problem was originally posed by Erdős, Rubin, and Taylor in 1980.",
+    "content": "**Erd\u0151s Problem #630** asks whether every planar bipartite graph has list chromatic number $\\chi_L \\le 3$. **SOLVED: YES** by Alon and Tarsi (1992) using the Combinatorial Nullstellensatz.\n\nThis is surprising because bipartite graphs have $\\chi = 2$, yet list coloring can require a third color even for planar ones. The bound 3 is tight: $K_{2,4}$ achieves $\\chi_L = 3$. The problem was originally posed by Erd\u0151s, Rubin, and Taylor in 1980.",
     "mathContext": "$$\\chi_L(G) \\le 3 \\quad \\text{for all planar bipartite } G$$",
     "significance": "key",
     "relatedConcepts": [
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Basic Graph Coloring",
-    "content": "**`chromaticNumber G`**: $\\chi(G)$, the minimum $k$ for a proper $k$-coloring (sorry'd noncomputable).\n\n**`IsKColorable G k`**: there exists $f: V \\to \\text{Fin}\\,k$ such that $f(v) \\ne f(w)$ whenever $v, w$ are adjacent. This is ordinary coloring — all vertices choose from the same palette of $k$ colors.",
+    "content": "**`chromaticNumber G`**: $\\chi(G)$, the minimum $k$ for a proper $k$-coloring (sorry'd noncomputable).\n\n**`IsKColorable G k`**: there exists $f: V \\to \\text{Fin}\\,k$ such that $f(v) \\ne f(w)$ whenever $v, w$ are adjacent. This is ordinary coloring \u2014 all vertices choose from the same palette of $k$ colors.",
     "mathContext": "$$\\text{IsKColorable}(G,k) \\iff \\exists f: V \\to [k],\\; \\forall vw \\in E,\\; f(v) \\ne f(w)$$",
     "significance": "key",
     "relatedConcepts": [
@@ -77,13 +77,13 @@
     },
     "type": "technique",
     "title": "Properties of List Chromatic Number",
-    "content": "Three key facts about list chromatic number:\n\n1. **`list_chromatic_ge_chromatic`** (sorry'd): $\\chi_L(G) \\ge \\chi(G)$ always. When all lists are identical $\\{1,\\ldots,k\\}$, list coloring reduces to ordinary coloring.\n\n2. **`complete_graph_list_chromatic`** (sorry'd): $\\chi_L(K_n) = n$. For complete graphs, list and ordinary chromatic numbers coincide.\n\n3. **`complete_bipartite_list_chromatic`** (axiomatized): $K_{n,n}$ has $\\chi = 2$ but $\\chi_L > 2$ for $n \\ge 2$. This is the critical observation: list coloring is **strictly harder** than ordinary coloring, even for bipartite graphs.\n\nThe gap $\\chi_L - \\chi$ for $K_{n,n}$ grows as $\\Theta(\\log n)$ (Erdős, Rubin, Taylor 1980).",
+    "content": "Three key facts about list chromatic number:\n\n1. **`list_chromatic_ge_chromatic`** (sorry'd): $\\chi_L(G) \\ge \\chi(G)$ always. When all lists are identical $\\{1,\\ldots,k\\}$, list coloring reduces to ordinary coloring.\n\n2. **`complete_graph_list_chromatic`** (sorry'd): $\\chi_L(K_n) = n$. For complete graphs, list and ordinary chromatic numbers coincide.\n\n3. **`complete_bipartite_list_chromatic`** (axiomatized): $K_{n,n}$ has $\\chi = 2$ but $\\chi_L > 2$ for $n \\ge 2$. This is the critical observation: list coloring is **strictly harder** than ordinary coloring, even for bipartite graphs.\n\nThe gap $\\chi_L - \\chi$ for $K_{n,n}$ grows as $\\Theta(\\log n)$ (Erd\u0151s, Rubin, Taylor 1980).",
     "mathContext": "$$\\chi_L(G) \\ge \\chi(G); \\quad \\chi_L(K_{n,n}) \\ge \\lceil \\log_2 n \\rceil + 1 \\text{ but } \\chi(K_{n,n}) = 2$$",
     "significance": "key",
     "relatedConcepts": [
       "complete bipartite graphs",
       "list coloring gap",
-      "Erdős–Rubin–Taylor"
+      "Erd\u0151s\u2013Rubin\u2013Taylor"
     ],
     "prerequisites": [
       "complete graphs",
@@ -99,7 +99,7 @@
     },
     "type": "definition",
     "title": "Planar Graphs: Euler's Formula and Coloring Bounds",
-    "content": "**`IsPlanar G`**: $G$ can be drawn in the plane without edge crossings (sorry'd definition).\n\n**`euler_formula`** (axiomatized): $|V| - |E| + F = 2$ for connected planar graphs.\n\n**`four_color_theorem`** (axiomatized): $\\chi(G) \\le 4$ for planar $G$. Appel–Haken (1976). But $\\chi \\le 4$ does NOT imply $\\chi_L \\le 4$!\n\n**`thomassen_five_list`** (axiomatized): $\\chi_L(G) \\le 5$ for planar $G$. Thomassen's 1994 elegant inductive proof.",
+    "content": "**`IsPlanar G`**: $G$ can be drawn in the plane without edge crossings (sorry'd definition).\n\n**`euler_formula`** (axiomatized): $|V| - |E| + F = 2$ for connected planar graphs.\n\n**`four_color_theorem`** (axiomatized): $\\chi(G) \\le 4$ for planar $G$. Appel\u2013Haken (1976). But $\\chi \\le 4$ does NOT imply $\\chi_L \\le 4$!\n\n**`thomassen_five_list`** (axiomatized): $\\chi_L(G) \\le 5$ for planar $G$. Thomassen's 1994 elegant inductive proof.",
     "mathContext": "$$\\text{planar} \\implies \\chi \\le 4 \\;(\\text{4CT}),\\quad \\chi_L \\le 5 \\;(\\text{Thomassen})$$",
     "significance": "key",
     "relatedConcepts": [
@@ -144,12 +144,12 @@
       "endLine": 138
     },
     "type": "concept",
-    "title": "Alon–Tarsi Theorem: The Main Result",
+    "title": "Alon\u2013Tarsi Theorem: The Main Result",
     "content": "**`alon_tarsi_theorem`** (axiomatized): every planar bipartite graph is 3-choosable, i.e., $\\chi_L(G) \\le 3$.\n\n**`planar_bipartite_3_choosable`**: equivalent `IsKChoosable G 3` formulation, partially proved.\n\nThe Alon-Tarsi proof uses the graph polynomial and Combinatorial Nullstellensatz: it shows a certain coefficient in the product $\\prod_{uv \\in E} (x_u - x_v)$ is nonzero for planar bipartite graphs by relating it to even vs. odd Eulerian subgraphs in an appropriate orientation. This algebraic technique is a breakthrough method in combinatorics, connecting graph coloring to polynomial identity testing.",
     "mathContext": "$$\\text{planar} \\wedge \\text{bipartite} \\implies \\chi_L(G) \\le 3$$",
     "significance": "key",
     "relatedConcepts": [
-      "Alon–Tarsi number",
+      "Alon\u2013Tarsi number",
       "graph orientations",
       "Eulerian subgraphs"
     ],
@@ -168,7 +168,7 @@
     },
     "type": "definition",
     "title": "The Algebraic Method: Graph Polynomial and Nullstellensatz",
-    "content": "**`graphPolynomial G`**: $P_G = \\prod_{(u,v) \\in E} (x_u - x_v) \\in \\mathbb{Z}[x_v : v \\in V]$, as `MvPolynomial V ℤ` (sorry'd).\n\n**`combinatorial_nullstellensatz`** (axiomatized): if the coefficient of $\\prod_v x_v^{d_v}$ in $P_G$ is nonzero, then $G$ is $(\\max d_v + 1)$-choosable.\n\n**`alon_tarsi_coefficient`** (axiomatized): for planar bipartite graphs, this coefficient is nonzero.",
+    "content": "**`graphPolynomial G`**: $P_G = \\prod_{(u,v) \\in E} (x_u - x_v) \\in \\mathbb{Z}[x_v : v \\in V]$, as `MvPolynomial V \u2124` (sorry'd).\n\n**`combinatorial_nullstellensatz`** (axiomatized): if the coefficient of $\\prod_v x_v^{d_v}$ in $P_G$ is nonzero, then $G$ is $(\\max d_v + 1)$-choosable.\n\n**`alon_tarsi_coefficient`** (axiomatized): for planar bipartite graphs, this coefficient is nonzero.",
     "mathContext": "$$P_G = \\prod_{(u,v) \\in E(G)} (x_u - x_v); \\quad [\\prod x_v^{d_v}] P_G \\ne 0 \\implies G \\text{ is choosable}$$",
     "significance": "key",
     "relatedConcepts": [
@@ -192,7 +192,7 @@
     },
     "type": "technique",
     "title": "Sharpness: The Bound 3 is Tight",
-    "content": "**`bound_is_tight`** (sorry'd): there exist planar bipartite graphs with $\\chi_L = 3$.\n\n**`k24_list_chromatic`** (axiomatized): $K_{2,4}$ (6 vertices) is planar, bipartite, and has $\\chi_L = 3$.\n\nSo the Alon–Tarsi bound cannot be improved to $\\chi_L \\le 2$.",
+    "content": "**`bound_is_tight`** (sorry'd): there exist planar bipartite graphs with $\\chi_L = 3$.\n\n**`k24_list_chromatic`** (axiomatized): $K_{2,4}$ (6 vertices) is planar, bipartite, and has $\\chi_L = 3$.\n\nSo the Alon\u2013Tarsi bound cannot be improved to $\\chi_L \\le 2$.",
     "mathContext": "$$\\chi_L(K_{2,4}) = 3, \\quad K_{2,4} \\text{ is planar and bipartite}$$",
     "significance": "key",
     "relatedConcepts": [
@@ -232,15 +232,15 @@
     "proofId": "erdos-630",
     "range": {
       "startLine": 225,
-      "endLine": 254
+      "endLine": 246
     },
     "type": "technique",
     "title": "Main Problem Status",
-    "content": "`erdos_630_status` packages two results:\n1. $\\chi_L \\le 3$ for all planar bipartite graphs (Alon–Tarsi)\n2. Some planar bipartite graph achieves $\\chi_L = 3$ (tightness)\n\nProved by combining `alon_tarsi_theorem` and `bound_is_tight`.\n\n**Summary**: Problem #630 is **SOLVED**. The Combinatorial Nullstellensatz resolved this combinatorial question through algebra.",
+    "content": "`erdos_630_status` packages two results:\n1. $\\chi_L \\le 3$ for all planar bipartite graphs (Alon\u2013Tarsi)\n2. Some planar bipartite graph achieves $\\chi_L = 3$ (tightness)\n\nProved by combining `alon_tarsi_theorem` and `bound_is_tight`.\n\n**Summary**: Problem #630 is **SOLVED**. The Combinatorial Nullstellensatz resolved this combinatorial question through algebra.",
     "mathContext": "$$\\text{erdos\\_630\\_status}:\\; (\\forall G\\text{ planar bip},\\; \\chi_L \\le 3) \\;\\wedge\\; (\\exists G\\text{ planar bip},\\; \\chi_L = 3)$$",
     "significance": "key",
     "relatedConcepts": [
-      "solved Erdős problems",
+      "solved Erd\u0151s problems",
       "algebraic combinatorics",
       "optimal bounds"
     ],

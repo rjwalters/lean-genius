@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "This header documents **Erdős Problem #229** about prescribing zeros of derivatives of entire functions. Given discrete sets (Sₙ), can we find a transcendental entire function whose derivatives vanish on them? Answer: YES.",
+    "content": "This header documents **Erd\u0151s Problem #229** about prescribing zeros of derivatives of entire functions. Given discrete sets (S\u2099), can we find a transcendental entire function whose derivatives vanish on them? Answer: YES.",
     "mathContext": "The problem combines complex analysis (entire functions, derivatives) with topology (discrete sets). The solution by Barth-Schneider (1972) shows the answer is yes.",
     "significance": "key",
     "relatedConcepts": [
@@ -27,7 +27,7 @@
     "type": "definition",
     "title": "No Finite Limit Point",
     "content": "A set has **no finite limit point** if its derived set (set of accumulation points) is empty. This means the set is discrete - every point is isolated from the others.",
-    "mathContext": "HasNoFiniteLimitPoint S := derivedSet S = ∅. This is the standard condition for prescribing zeros of analytic functions, forced by the identity theorem.",
+    "mathContext": "HasNoFiniteLimitPoint S := derivedSet S = \u2205. This is the standard condition for prescribing zeros of analytic functions, forced by the identity theorem.",
     "significance": "key",
     "relatedConcepts": [
       "derivedSet",
@@ -44,8 +44,8 @@
     },
     "type": "definition",
     "title": "Entire Function",
-    "content": "A function ℂ → ℂ is **entire** if it is differentiable (holomorphic) at every point in the complex plane. Examples: eᶻ, sin(z), polynomials.",
-    "mathContext": "IsEntireFunction f := Differentiable ℂ f. This means f has a complex derivative at every point, equivalently it's analytic everywhere.",
+    "content": "A function \u2102 \u2192 \u2102 is **entire** if it is differentiable (holomorphic) at every point in the complex plane. Examples: e\u1dbb, sin(z), polynomials.",
+    "mathContext": "IsEntireFunction f := Differentiable \u2102 f. This means f has a complex derivative at every point, equivalently it's analytic everywhere.",
     "significance": "key",
     "relatedConcepts": [
       "Differentiable",
@@ -62,8 +62,8 @@
     },
     "type": "definition",
     "title": "Transcendental Function",
-    "content": "A **transcendental** entire function is one that is not a polynomial. It has infinitely many non-zero derivatives. Examples: eᶻ, sin(z), cos(z).",
-    "mathContext": "IsTranscendental f := IsEntireFunction f ∧ ¬∃ p : Polynomial ℂ, f = p.eval. The 'transcendental' condition ensures we're not just dealing with finite-degree polynomials.",
+    "content": "A **transcendental** entire function is one that is not a polynomial. It has infinitely many non-zero derivatives. Examples: e\u1dbb, sin(z), cos(z).",
+    "mathContext": "IsTranscendental f := IsEntireFunction f \u2227 \u00ac\u2203 p : Polynomial \u2102, f = p.eval. The 'transcendental' condition ensures we're not just dealing with finite-degree polynomials.",
     "significance": "key",
     "relatedConcepts": [
       "polynomial",
@@ -80,8 +80,8 @@
     },
     "type": "definition",
     "title": "The Main Question",
-    "content": "**Erdős Problem #229**: Given discrete sets (Sₙ), can we find a transcendental entire function f and indices kₙ such that f^(kₙ) vanishes on Sₙ for all n?",
-    "mathContext": "Erdos229Question := ∀ S, (∀ n, HasNoFiniteLimitPoint (S n)) → ∃ f, IsTranscendental f ∧ ∀ n ≥ 1, ∃ k, ∀ z ∈ S n, iteratedDeriv k f z = 0.",
+    "content": "**Erd\u0151s Problem #229**: Given discrete sets (S\u2099), can we find a transcendental entire function f and indices k\u2099 such that f^(k\u2099) vanishes on S\u2099 for all n?",
+    "mathContext": "Erdos229Question := \u2200 S, (\u2200 n, HasNoFiniteLimitPoint (S n)) \u2192 \u2203 f, IsTranscendental f \u2227 \u2200 n \u2265 1, \u2203 k, \u2200 z \u2208 S n, iteratedDeriv k f z = 0.",
     "significance": "key",
     "relatedConcepts": [
       "existence",
@@ -99,7 +99,7 @@
     "type": "technique",
     "title": "Why Discrete Sets?",
     "content": "The **identity theorem** says that if an analytic function has zeros with a limit point, it must be identically zero. Therefore, we can only prescribe zeros on discrete sets.",
-    "mathContext": "This axiom states that discrete sets are either empty or countable. The discreteness is essential - it's why the Sₙ must have no finite limit points.",
+    "mathContext": "This axiom states that discrete sets are either empty or countable. The discreteness is essential - it's why the S\u2099 must have no finite limit points.",
     "significance": "key",
     "relatedConcepts": [
       "identity theorem",
@@ -116,7 +116,7 @@
     },
     "type": "concept",
     "title": "Barth-Schneider Theorem",
-    "content": "**Theorem** (Barth-Schneider, 1972): The answer to Erdős Problem #229 is YES. For any sequence of discrete sets, there exists a transcendental entire function whose derivatives vanish on them.",
+    "content": "**Theorem** (Barth-Schneider, 1972): The answer to Erd\u0151s Problem #229 is YES. For any sequence of discrete sets, there exists a transcendental entire function whose derivatives vanish on them.",
     "mathContext": "axiom barth_schneider_theorem : Erdos229Question. The construction uses Weierstrass products and careful control of derivatives. Axiomatized because the proof requires advanced function theory.",
     "significance": "key",
     "relatedConcepts": [
@@ -134,7 +134,7 @@
     },
     "type": "technique",
     "title": "The Answer",
-    "content": "The answer to Erdős Problem #229 is **YES**: we can always find such a transcendental entire function.",
+    "content": "The answer to Erd\u0151s Problem #229 is **YES**: we can always find such a transcendental entire function.",
     "mathContext": "theorem erdos_229_answer : Erdos229Question := barth_schneider_theorem. This directly invokes the axiomatized Barth-Schneider result.",
     "significance": "key",
     "relatedConcepts": [
@@ -151,8 +151,8 @@
     },
     "type": "concept",
     "title": "Explicit Formulation",
-    "content": "An equivalent formulation: for any sequence of discrete sets, there exist a transcendental entire function f and a sequence of **positive** integers (nₖ) such that f^(nₖ) vanishes on Sₖ.",
-    "mathContext": "This makes explicit that the derivative indices nₖ are positive, not just non-negative. The function f and the sequence (nₖ) are constructed together.",
+    "content": "An equivalent formulation: for any sequence of discrete sets, there exist a transcendental entire function f and a sequence of **positive** integers (n\u2096) such that f^(n\u2096) vanishes on S\u2096.",
+    "mathContext": "This makes explicit that the derivative indices n\u2096 are positive, not just non-negative. The function f and the sequence (n\u2096) are constructed together.",
     "significance": "key",
     "relatedConcepts": [
       "explicit construction",
@@ -169,7 +169,7 @@
     "type": "concept",
     "title": "Weierstrass Factorization",
     "content": "The **Weierstrass factorization theorem** is a classical result: for any discrete set S, there exists an entire function vanishing exactly on S. This is a special case (k = 0) of the general result.",
-    "mathContext": "axiom weierstrass_factorization : ∀ S, HasNoFiniteLimitPoint S → ∃ f, IsEntireFunction f ∧ ∀ z ∈ S, f z = 0. This classical theorem is the foundation for prescribing zeros.",
+    "mathContext": "axiom weierstrass_factorization : \u2200 S, HasNoFiniteLimitPoint S \u2192 \u2203 f, IsEntireFunction f \u2227 \u2200 z \u2208 S, f z = 0. This classical theorem is the foundation for prescribing zeros.",
     "significance": "key",
     "relatedConcepts": [
       "Weierstrass product",
@@ -187,7 +187,7 @@
     "type": "concept",
     "title": "Derivative Zeros",
     "content": "We can also prescribe zeros of a **specific** derivative: given k and a discrete set S, there exists an entire function whose k-th derivative vanishes on S.",
-    "mathContext": "axiom derivative_zeros : ∀ k, ∀ S, HasNoFiniteLimitPoint S → ∃ f, IsEntireFunction f ∧ ∀ z ∈ S, iteratedDeriv k f z = 0. This extends Weierstrass to derivatives.",
+    "mathContext": "axiom derivative_zeros : \u2200 k, \u2200 S, HasNoFiniteLimitPoint S \u2192 \u2203 f, IsEntireFunction f \u2227 \u2200 z \u2208 S, iteratedDeriv k f z = 0. This extends Weierstrass to derivatives.",
     "significance": "key",
     "relatedConcepts": [
       "specific derivative",
@@ -199,11 +199,11 @@
     "proofId": "erdos-229",
     "range": {
       "startLine": 147,
-      "endLine": 160
+      "endLine": 159
     },
     "type": "technique",
     "title": "Summary",
-    "content": "The **summary** confirms the main result: Erdős Problem #229 has a positive answer via the Barth-Schneider theorem.",
+    "content": "The **summary** confirms the main result: Erd\u0151s Problem #229 has a positive answer via the Barth-Schneider theorem.",
     "mathContext": "theorem summary_erdos_229 : Erdos229Question := barth_schneider_theorem. This packages the key result for export.",
     "significance": "supporting",
     "relatedConcepts": [

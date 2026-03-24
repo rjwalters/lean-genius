@@ -51,7 +51,7 @@
     "relatedProofs": [
       "erdos-9"
     ],
-    "lineCount": 88,
+    "lineCount": 87,
     "axiomCount": 5,
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -111,7 +111,7 @@
       "id": "observations",
       "title": "LCM Structure and Related Problems",
       "startLine": 77,
-      "endLine": 88,
+      "endLine": 87,
       "summary": "Axiomatizes lcm_structure: equal pairwise LCMs L imply a|L, b|L, c|L. Notes connections to Problems #535, #537, #856, #857.",
       "mathContext": "$[a,b] = [b,c] = [a,c] = L \\Rightarrow a \\mid L \\wedge b \\mid L \\wedge c \\mid L$. Follows from $\\text{lcm}(x,y) = L \\Rightarrow x \\mid L$."
     }

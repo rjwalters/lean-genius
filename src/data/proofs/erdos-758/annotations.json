@@ -8,7 +8,7 @@
       "endLine": 25
     },
     "title": "Problem Overview",
-    "content": "Erdős Problem #758: Cochromatic number ζ(G) is the minimum colors such that each color class induces a clique or independent set. z(n) = max ζ over n-vertex graphs. Is z(12) = 4? YES (Bhavik Mehta, computational). SOLVED.",
+    "content": "Erd\u0151s Problem #758: Cochromatic number \u03b6(G) is the minimum colors such that each color class induces a clique or independent set. z(n) = max \u03b6 over n-vertex graphs. Is z(12) = 4? YES (Bhavik Mehta, computational). SOLVED.",
     "mathContext": "Cochromatic number generalizes both chromatic number and clique cover number. Connects to Ramsey theory since R(k,k) controls z(n).",
     "significance": "key",
     "relatedConcepts": [
@@ -27,7 +27,7 @@
       "endLine": 68
     },
     "title": "Cochromatic Coloring and z(n)",
-    "content": "CochromaticColoring(G): structure with numColors, color function, and validity (each class is clique or independent set). cochromaticNumber(G) = sInf{k : ∃ coloring with k colors}. z(n) = sSup{ζ(G) : G has n vertices}.",
+    "content": "CochromaticColoring(G): structure with numColors, color function, and validity (each class is clique or independent set). cochromaticNumber(G) = sInf{k : \u2203 coloring with k colors}. z(n) = sSup{\u03b6(G) : G has n vertices}.",
     "mathContext": "CochromaticColoring is a structure; cochromaticNumber uses sInf; z uses sSup over all n-vertex graphs.",
     "significance": "key",
     "relatedConcepts": [
@@ -46,7 +46,7 @@
       "endLine": 81
     },
     "title": "Basic Properties",
-    "content": "z_bounds (axiom): 1 ≤ z(n) ≤ n for n ≥ 1. z_monotone (axiom): z(n) ≤ z(n+1). cochromatic_bound (axiom): ζ(G) ≤ min(χ(G), χ(Ḡ)).",
+    "content": "z_bounds (axiom): 1 \u2264 z(n) \u2264 n for n \u2265 1. z_monotone (axiom): z(n) \u2264 z(n+1). cochromatic_bound (axiom): \u03b6(G) \u2264 min(\u03c7(G), \u03c7(\u1e20)).",
     "mathContext": "Cochromatic number bounded by both chromatic number and complement's chromatic number.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -61,10 +61,10 @@
     "type": "insight",
     "range": {
       "startLine": 83,
-      "endLine": 154
+      "endLine": 128
     },
     "title": "Known Exact Values",
-    "content": "z(1)=z(2)=1, z(3)=z(4)=2, z(5)–z(8)=3, z(9)–z(12)=4, z(13)–z(15)=5, z(16)–z(19)=6. All axioms. Main result: z_12 (axiom). z(20) = 6 or 7 (unknown). knownValues function encodes the table.",
+    "content": "z(1)=z(2)=1, z(3)=z(4)=2, z(5)\u2013z(8)=3, z(9)\u2013z(12)=4, z(13)\u2013z(15)=5, z(16)\u2013z(19)=6. All axioms. Main result: z_12 (axiom). z(20) = 6 or 7 (unknown). knownValues function encodes the table.",
     "mathContext": "z = {1,1,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6} for n = 1..19. known_values_correct: z(i+1) = knownValues(i).",
     "significance": "key",
     "relatedConcepts": [
@@ -78,11 +78,11 @@
     "proofId": "erdos-758",
     "type": "insight",
     "range": {
-      "startLine": 156,
-      "endLine": 169
+      "startLine": 118,
+      "endLine": 128
     },
     "title": "Asymptotic Behavior",
-    "content": "gimbel_asymptotic (axiom): z(n) ~ n/log n with sandwich bounds c₁·n/log n ≤ z(n) ≤ c₂·n/log n. z_sublinear (axiom): for every ε > 0, z(n) ≤ ε·n for large n.",
+    "content": "gimbel_asymptotic (axiom): z(n) ~ n/log n with sandwich bounds c\u2081\u00b7n/log n \u2264 z(n) \u2264 c\u2082\u00b7n/log n. z_sublinear (axiom): for every \u03b5 > 0, z(n) \u2264 \u03b5\u00b7n for large n.",
     "mathContext": "Gimbel [Gi86] proved the asymptotic. Growth is sublinear but unbounded.",
     "significance": "key",
     "relatedConcepts": [
@@ -96,11 +96,11 @@
     "proofId": "erdos-758",
     "type": "insight",
     "range": {
-      "startLine": 171,
-      "endLine": 177
+      "startLine": 118,
+      "endLine": 128
     },
-    "title": "Erdős-Gimbel Bounds",
-    "content": "erdos_gimbel_12 (axiom): 4 ≤ z(12) ≤ 5. erdos_gimbel_15 (axiom): 5 ≤ z(15) ≤ 6. These original bounds were tightened by Mehta's computation.",
+    "title": "Erd\u0151s-Gimbel Bounds",
+    "content": "erdos_gimbel_12 (axiom): 4 \u2264 z(12) \u2264 5. erdos_gimbel_15 (axiom): 5 \u2264 z(15) \u2264 6. These original bounds were tightened by Mehta's computation.",
     "mathContext": "The gap between 4 and 5 for z(12) is what Mehta's work resolved.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -114,15 +114,15 @@
     "proofId": "erdos-758",
     "type": "insight",
     "range": {
-      "startLine": 179,
-      "endLine": 198
+      "startLine": 118,
+      "endLine": 128
     },
     "title": "Mehta's Proof Method",
-    "content": "mehta_unique_graph (axiom): ∃! G on Fin 12 with G, Ḡ both K₄-free and χ ≥ 5. mehta_verification (axiom): that graph has ζ = 4. This resolves z(12) = 4.",
-    "mathContext": "If χ(G) ≤ 4 or χ(Ḡ) ≤ 4, then ζ(G) ≤ 4 automatically. Mehta found and verified the unique exception.",
+    "content": "mehta_unique_graph (axiom): \u2203! G on Fin 12 with G, \u1e20 both K\u2084-free and \u03c7 \u2265 5. mehta_verification (axiom): that graph has \u03b6 = 4. This resolves z(12) = 4.",
+    "mathContext": "If \u03c7(G) \u2264 4 or \u03c7(\u1e20) \u2264 4, then \u03b6(G) \u2264 4 automatically. Mehta found and verified the unique exception.",
     "significance": "key",
     "relatedConcepts": [
-      "K₄-free graphs",
+      "K\u2084-free graphs",
       "computational proof",
       "unique extremal graph"
     ]
@@ -132,12 +132,12 @@
     "proofId": "erdos-758",
     "type": "context",
     "range": {
-      "startLine": 200,
-      "endLine": 208
+      "startLine": 118,
+      "endLine": 128
     },
     "title": "Connection to Ramsey Theory",
-    "content": "ramsey_connection (axiom): R(k,k) ≤ n → z(n) ≤ k. Ramsey numbers control cochromatic number because they force either G or Ḡ to contain large cliques.",
-    "mathContext": "R(3) = 6 means z(5) ≤ 3. R(4) = 18 means z(17) ≤ 4. This explains the known values structure.",
+    "content": "ramsey_connection (axiom): R(k,k) \u2264 n \u2192 z(n) \u2264 k. Ramsey numbers control cochromatic number because they force either G or \u1e20 to contain large cliques.",
+    "mathContext": "R(3) = 6 means z(5) \u2264 3. R(4) = 18 means z(17) \u2264 4. This explains the known values structure.",
     "significance": "supporting",
     "relatedConcepts": [
       "Ramsey theory",
@@ -150,12 +150,12 @@
     "proofId": "erdos-758",
     "type": "insight",
     "range": {
-      "startLine": 210,
-      "endLine": 233
+      "startLine": 118,
+      "endLine": 128
     },
     "title": "Summary: SOLVED",
-    "content": "erdos_758_summary: z(12) = 4 ∧ (known values verified) ∧ True. Proved from z_12 and known_values_correct axioms. erdos_758: z(12) = 4 := z_12. Problem SOLVED.",
-    "mathContext": "erdos_758_summary := ⟨z_12, known_values_correct, trivial⟩.",
+    "content": "erdos_758_summary: z(12) = 4 \u2227 (known values verified) \u2227 True. Proved from z_12 and known_values_correct axioms. erdos_758: z(12) = 4 := z_12. Problem SOLVED.",
+    "mathContext": "erdos_758_summary := \u27e8z_12, known_values_correct, trivial\u27e9.",
     "significance": "key",
     "relatedConcepts": [
       "solved problems",

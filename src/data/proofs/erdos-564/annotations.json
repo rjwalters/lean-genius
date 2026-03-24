@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Statement and History",
-    "content": "**Erdős Problem #564** asks a deep question in hypergraph Ramsey theory: Is there a constant c > 0 such that R₃(n) ≥ 2^{2^{cn}}?\n\nHere R₃(n) is the hypergraph Ramsey number — the minimal number of vertices m such that any 2-colouring of all triples on m vertices contains a monochromatic complete 3-uniform hypergraph on n vertices.\n\nThis is a $500 open problem!",
-    "mathContext": "Known bounds (Erdős-Hajnal-Rado 1965): 2^{cn²} < R₃(n) < 2^{2^n}.\n\nThe lower bound is singly exponential in n², while the upper bound is doubly exponential in n (a 'tower' of height 2). The question asks whether the lower bound can be improved to also be doubly exponential, closing the 'tower height' gap.",
+    "content": "**Erd\u0151s Problem #564** asks a deep question in hypergraph Ramsey theory: Is there a constant c > 0 such that R\u2083(n) \u2265 2^{2^{cn}}?\n\nHere R\u2083(n) is the hypergraph Ramsey number \u2014 the minimal number of vertices m such that any 2-colouring of all triples on m vertices contains a monochromatic complete 3-uniform hypergraph on n vertices.\n\nThis is a $500 open problem!",
+    "mathContext": "Known bounds (Erd\u0151s-Hajnal-Rado 1965): 2^{cn\u00b2} < R\u2083(n) < 2^{2^n}.\n\nThe lower bound is singly exponential in n\u00b2, while the upper bound is doubly exponential in n (a 'tower' of height 2). The question asks whether the lower bound can be improved to also be doubly exponential, closing the 'tower height' gap.",
     "significance": "key",
     "relatedConcepts": [
       "hypergraph",
@@ -27,8 +27,8 @@
     },
     "type": "concept",
     "title": "Imports and Setup",
-    "content": "We import **Mathlib** for foundational mathematics. We open `Set`, `Finset`, and `Filter` namespaces.\n\nThe `Filter` namespace is needed for the 'eventually' quantifier (∀ᶠ) used in the main conjecture statement.",
-    "mathContext": "Key dependencies:\n- Finset for finite sets (hypergraph edges)\n- Filter.atTop for 'for all sufficiently large n'\n- Real numbers (ℝ) for expressing the bounds with exponentiation",
+    "content": "We import **Mathlib** for foundational mathematics. We open `Set`, `Finset`, and `Filter` namespaces.\n\nThe `Filter` namespace is needed for the 'eventually' quantifier (\u2200\u1da0) used in the main conjecture statement.",
+    "mathContext": "Key dependencies:\n- Finset for finite sets (hypergraph edges)\n- Filter.atTop for 'for all sufficiently large n'\n- Real numbers (\u211d) for expressing the bounds with exponentiation",
     "significance": "supporting",
     "relatedConcepts": [
       "mathlib",
@@ -64,7 +64,7 @@
     "type": "definition",
     "title": "The Hypergraph Ramsey Property",
     "content": "**HasHypergraphRamseyProperty k m n** expresses that for any 2-colouring of the complete k-uniform hypergraph on m vertices, there exists a monochromatic complete k-uniform hypergraph on n vertices.\n\nThis is the core Ramsey property generalized to hypergraphs.",
-    "mathContext": "Formally: for any colouring c : Finset(Fin m) → Bool, there exists a set S ⊆ Fin m with |S| = n and a colour such that all k-subsets of S receive that colour.\n\nFor k = 2 (graphs), this says: any edge-colouring contains a monochromatic clique K_n.\nFor k = 3, it says: any triple-colouring contains a monochromatic complete 3-graph on n vertices.",
+    "mathContext": "Formally: for any colouring c : Finset(Fin m) \u2192 Bool, there exists a set S \u2286 Fin m with |S| = n and a colour such that all k-subsets of S receive that colour.\n\nFor k = 2 (graphs), this says: any edge-colouring contains a monochromatic clique K_n.\nFor k = 3, it says: any triple-colouring contains a monochromatic complete 3-graph on n vertices.",
     "significance": "key",
     "relatedConcepts": [
       "ramsey-property",
@@ -81,8 +81,8 @@
     },
     "type": "concept",
     "title": "The Ramsey Function R_k(n)",
-    "content": "We axiomatize **R k n** as the hypergraph Ramsey number — the minimal m such that HasHypergraphRamseyProperty k m n holds.\n\n**R_has_property** asserts R k n has the Ramsey property.\n**R_is_minimal** asserts R k n is the smallest such m.",
-    "mathContext": "The existence of R k n is a deep theorem. For k = 2, this is the classical Ramsey theorem. For k ≥ 3, it was proved by Erdős and Rado (1952).\n\nWe axiomatize rather than prove because the full proof requires substantial Ramsey theory machinery beyond what we formalize.",
+    "content": "We axiomatize **R k n** as the hypergraph Ramsey number \u2014 the minimal m such that HasHypergraphRamseyProperty k m n holds.\n\n**R_has_property** asserts R k n has the Ramsey property.\n**R_is_minimal** asserts R k n is the smallest such m.",
+    "mathContext": "The existence of R k n is a deep theorem. For k = 2, this is the classical Ramsey theorem. For k \u2265 3, it was proved by Erd\u0151s and Rado (1952).\n\nWe axiomatize rather than prove because the full proof requires substantial Ramsey theory machinery beyond what we formalize.",
     "significance": "key",
     "relatedConcepts": [
       "ramsey-number",
@@ -98,9 +98,9 @@
       "endLine": 92
     },
     "type": "concept",
-    "title": "Erdős-Hajnal-Rado Bounds (1965)",
-    "content": "**erdos_hajnal_rado_upper**: R₃(n) < 2^{2^n} for n ≥ 3.\n**erdos_hajnal_rado_lower**: R₃(n) > 2^{cn²} for some c > 0.\n\nThese are the best known bounds for 3-uniform hypergraph Ramsey numbers.",
-    "mathContext": "The gap between these bounds is enormous:\n\n- Lower: 2^{cn²} — singly exponential in n²\n- Upper: 2^{2^n} — doubly exponential in n (tower height 2)\n\nFor n = 10: lower ~2^{100}, upper ~2^{1024}. The ratio is 2^{924}!\n\nThe question is whether R₃(n) is closer to the lower or upper bound in terms of 'tower height'.",
+    "title": "Erd\u0151s-Hajnal-Rado Bounds (1965)",
+    "content": "**erdos_hajnal_rado_upper**: R\u2083(n) < 2^{2^n} for n \u2265 3.\n**erdos_hajnal_rado_lower**: R\u2083(n) > 2^{cn\u00b2} for some c > 0.\n\nThese are the best known bounds for 3-uniform hypergraph Ramsey numbers.",
+    "mathContext": "The gap between these bounds is enormous:\n\n- Lower: 2^{cn\u00b2} \u2014 singly exponential in n\u00b2\n- Upper: 2^{2^n} \u2014 doubly exponential in n (tower height 2)\n\nFor n = 10: lower ~2^{100}, upper ~2^{1024}. The ratio is 2^{924}!\n\nThe question is whether R\u2083(n) is closer to the lower or upper bound in terms of 'tower height'.",
     "significance": "key",
     "relatedConcepts": [
       "bounds",
@@ -117,8 +117,8 @@
     },
     "type": "definition",
     "title": "The Main Conjecture (OPEN - $500)",
-    "content": "**erdos_564_conjecture** is the formal statement of the $500 prize problem:\n\n∃ c > 0 such that ∀ᶠ n in atTop, R₃(n) ≥ 2^{2^{cn}}\n\nThe ∀ᶠ quantifier means 'for all sufficiently large n'. This asks whether a doubly exponential lower bound exists.",
-    "mathContext": "If true, this would show that 3-uniform hypergraph Ramsey numbers are fundamentally 'tower type' — their growth requires iterated exponentiation to describe.\n\nIf false, R₃(n) might grow at some intermediate rate between 2^{poly(n)} and 2^{2^n}.\n\nThe axiom `erdos_564_is_open` simply marks this as unsolved.",
+    "content": "**erdos_564_conjecture** is the formal statement of the $500 prize problem:\n\n\u2203 c > 0 such that \u2200\u1da0 n in atTop, R\u2083(n) \u2265 2^{2^{cn}}\n\nThe \u2200\u1da0 quantifier means 'for all sufficiently large n'. This asks whether a doubly exponential lower bound exists.",
+    "mathContext": "If true, this would show that 3-uniform hypergraph Ramsey numbers are fundamentally 'tower type' \u2014 their growth requires iterated exponentiation to describe.\n\nIf false, R\u2083(n) might grow at some intermediate rate between 2^{poly(n)} and 2^{2^n}.\n\nThe axiom `erdos_564_is_open` simply marks this as unsolved.",
     "significance": "key",
     "relatedConcepts": [
       "open-problem",
@@ -135,8 +135,8 @@
     },
     "type": "definition",
     "title": "Tower Function Definition",
-    "content": "**tower k n** defines iterated exponentiation (Knuth's up-arrow notation 2↑↑k):\n\n- tower 0 n = n (base case)\n- tower (k+1) n = 2^{tower k n} (recursive case)\n\nExamples:\n- tower 1 n = 2^n\n- tower 2 n = 2^{2^n}\n- tower 3 n = 2^{2^{2^n}}",
-    "mathContext": "Tower functions capture different 'levels' of exponential growth:\n\n- Tower height 1: exponential (polynomial in the exponent)\n- Tower height 2: doubly exponential\n- Tower height 3: triply exponential\n\nRamsey theory for graphs (k=2) is tower 1. For hypergraphs (k≥3), bounds involve tower 2 and beyond.",
+    "content": "**tower k n** defines iterated exponentiation (Knuth's up-arrow notation 2\u2191\u2191k):\n\n- tower 0 n = n (base case)\n- tower (k+1) n = 2^{tower k n} (recursive case)\n\nExamples:\n- tower 1 n = 2^n\n- tower 2 n = 2^{2^n}\n- tower 3 n = 2^{2^{2^n}}",
+    "mathContext": "Tower functions capture different 'levels' of exponential growth:\n\n- Tower height 1: exponential (polynomial in the exponent)\n- Tower height 2: doubly exponential\n- Tower height 3: triply exponential\n\nRamsey theory for graphs (k=2) is tower 1. For hypergraphs (k\u22653), bounds involve tower 2 and beyond.",
     "significance": "key",
     "relatedConcepts": [
       "tower-function",
@@ -153,7 +153,7 @@
     },
     "type": "technique",
     "title": "Tower Function Properties",
-    "content": "**tower_zero**, **tower_one**, **tower_two** are definitional equalities verified by `rfl`.\n\n**tower_pos** proves that tower k n ≥ 1 whenever n ≥ 1, by induction on k. The base case uses n ≥ 1, and the inductive case uses Nat.one_le_two_pow.",
+    "content": "**tower_zero**, **tower_one**, **tower_two** are definitional equalities verified by `rfl`.\n\n**tower_pos** proves that tower k n \u2265 1 whenever n \u2265 1, by induction on k. The base case uses n \u2265 1, and the inductive case uses Nat.one_le_two_pow.",
     "mathContext": "These basic properties establish that tower functions are well-behaved. The positivity lemma ensures we can safely work with these as denominators or in logarithms.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -171,7 +171,7 @@
     },
     "type": "concept",
     "title": "Known Small Values",
-    "content": "**R3_3_eq_4**: R₃(3) = 4. This means any 2-colouring of triples on 4 vertices contains a monochromatic triangle (3 vertices with all their triples the same colour).\n\n**R3_4_eq_13**: R₃(4) = 13.",
+    "content": "**R3_3_eq_4**: R\u2083(3) = 4. This means any 2-colouring of triples on 4 vertices contains a monochromatic triangle (3 vertices with all their triples the same colour).\n\n**R3_4_eq_13**: R\u2083(4) = 13.",
     "mathContext": "These exact values are computed by exhaustive case analysis. They're interesting but give no hint about asymptotic behavior.\n\nCompare: for graphs, R(3) = 6 and R(4) = 18. Hypergraph Ramsey numbers grow faster than graph Ramsey numbers.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -189,7 +189,7 @@
     },
     "type": "concept",
     "title": "Graph Ramsey Comparison",
-    "content": "**graph_ramsey_exponential** states that graph Ramsey numbers (k = 2) grow exponentially:\n\n2^{cn} < R(n) < 2^{Cn} for some constants c, C > 0.\n\nThis is Erdős-Szekeres (1935). Graph Ramsey numbers are 'merely' exponential (tower height 1).",
+    "content": "**graph_ramsey_exponential** states that graph Ramsey numbers (k = 2) grow exponentially:\n\n2^{cn} < R(n) < 2^{Cn} for some constants c, C > 0.\n\nThis is Erd\u0151s-Szekeres (1935). Graph Ramsey numbers are 'merely' exponential (tower height 1).",
     "mathContext": "The contrast with hypergraphs is stark:\n- k = 2 (graphs): tower height 1 (exponential)\n- k = 3 (3-graphs): between tower 1 and 2\n- k = 4, 5, ...: even higher tower heights\n\n**bounds_summary** restates the 3-graph bounds using the axioms directly.",
     "significance": "key",
     "relatedConcepts": [
@@ -207,7 +207,7 @@
     },
     "type": "concept",
     "title": "The 4-Colour Evidence",
-    "content": "**four_colour_doubly_exponential** states that Erdős, Hajnal, Máté, and Rado (1984) proved a doubly exponential lower bound for the 4-colour version of this problem.\n\nThis is evidence that the 2-colour case might also have such a bound.",
+    "content": "**four_colour_doubly_exponential** states that Erd\u0151s, Hajnal, M\u00e1t\u00e9, and Rado (1984) proved a doubly exponential lower bound for the 4-colour version of this problem.\n\nThis is evidence that the 2-colour case might also have such a bound.",
     "mathContext": "For the 4-colour hypergraph Ramsey problem, they showed the lower bound matches tower height 2. The question is whether this extends to 2 colours.\n\nWe state this as `True` because formalizing the 4-colour Ramsey function would require additional machinery.",
     "significance": "key",
     "relatedConcepts": [
@@ -221,12 +221,12 @@
     "proofId": "erdos-564",
     "range": {
       "startLine": 214,
-      "endLine": 228
+      "endLine": 227
     },
     "type": "concept",
     "title": "Why the Problem is Hard",
-    "content": "The gap between known bounds is astronomically large. For n = 10:\n\n- Lower bound: ~2^{100} ≈ 10^{30}\n- Upper bound: 2^{1024} ≈ 10^{308}\n\nThe ratio is roughly 2^{924}, an incomprehensibly large number.",
-    "mathContext": "**bounds_gap_enormous** (stated with sorry) would formalize that the ratio exceeds 10^{100} for n ≥ 10.\n\nThe difficulty is that both bounds are proved using very different techniques:\n- Upper: counting/pigeonhole arguments\n- Lower: probabilistic method/explicit constructions\n\nNeither technique seems to give the 'true' answer.",
+    "content": "The gap between known bounds is astronomically large. For n = 10:\n\n- Lower bound: ~2^{100} \u2248 10^{30}\n- Upper bound: 2^{1024} \u2248 10^{308}\n\nThe ratio is roughly 2^{924}, an incomprehensibly large number.",
+    "mathContext": "**bounds_gap_enormous** (stated with sorry) would formalize that the ratio exceeds 10^{100} for n \u2265 10.\n\nThe difficulty is that both bounds are proved using very different techniques:\n- Upper: counting/pigeonhole arguments\n- Lower: probabilistic method/explicit constructions\n\nNeither technique seems to give the 'true' answer.",
     "significance": "key",
     "relatedConcepts": [
       "bounds-gap",

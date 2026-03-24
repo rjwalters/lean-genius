@@ -58,7 +58,7 @@
     "mathContext": "$A + B = \\{a + b : a \\in A, b \\in B\\}$. Defined as `\\{n \\mid \\exists a \\in A, \\exists b \\in B, n = a + b\\}$. Self-sumset $A + A$ includes both $2a$ (when $a = a'$) and $a + a'$ (when $a \\neq a'$).",
     "significance": "key",
     "prerequisites": [
-      "Set ℕ",
+      "Set \u2115",
       "existential quantification"
     ],
     "relatedConcepts": [
@@ -221,7 +221,7 @@
     "proofId": "erdos-741",
     "range": {
       "startLine": 241,
-      "endLine": 273
+      "endLine": 272
     },
     "type": "technique",
     "title": "Connections Between Parts: Tension Theorem",

@@ -5,7 +5,7 @@
     "type": "context",
     "title": "Mathlib Prime and List Imports",
     "content": "Imports Nat.Prime.Basic for primality testing and List.Basic for sequence operations from Mathlib.",
-    "mathContext": "The formalization models Ulam prime sequences as `ℕ → ℕ` functions with `List ℕ` seeds. Mathlib's `Nat.Prime` provides the primality predicate, while `List.Sorted` gives the monotonicity framework. The combination supports both the abstract specification and the `native_decide` computational verification.",
+    "mathContext": "The formalization models Ulam prime sequences as `\u2115 \u2192 \u2115` functions with `List \u2115` seeds. Mathlib's `Nat.Prime` provides the primality predicate, while `List.Sorted` gives the monotonicity framework. The combination supports both the abstract specification and the `native_decide` computational verification.",
     "significance": "supporting",
     "relatedConcepts": [
       "primality",
@@ -26,7 +26,7 @@
     "proofId": "erdos-472",
     "type": "definition",
     "title": "Candidate Next Prime",
-    "content": "A candidate next element p must be prime and equal last + qᵢ − 1 for some qᵢ already in the sequence. This is the greedy extension rule.",
+    "content": "A candidate next element p must be prime and equal last + q\u1d62 \u2212 1 for some q\u1d62 already in the sequence. This is the greedy extension rule.",
     "mathContext": "The rule $q_{n+1} = \\min\\{p : p = q_n + q_i - 1 \\text{ for some } i \\leq n, p \\text{ prime}\\}$ is a **greedy** process: always choose the smallest valid candidate. The shift by $-1$ is key: $q_n + q_i - 1$ rather than $q_n + q_i$ ensures the self-candidate $2q_n - 1$ is odd (hence potentially prime) when $q_n$ is odd. This differs from standard Ulam numbers, which use sums rather than shifted sums.",
     "significance": "key",
     "relatedConcepts": [
@@ -48,8 +48,8 @@
     "proofId": "erdos-472",
     "type": "definition",
     "title": "Ulam Prime Sequence Specification",
-    "content": "The full specification: an infinite function ℕ → ℕ matching the seed, all values prime, strictly increasing, and each f(n+1) is the smallest candidate prime.",
-    "mathContext": "The four conjuncts capture: (1) **seed matching** via `Fin seed.length`, (2) **primality** as `∀ n, (f n).Prime`, (3) **strict monotonicity** as `∀ n, f n < f (n+1)`, and (4) the **minimality rule** asserting $f(n+1)$ is the smallest prime of the form $f(n) + f(i) - 1$. The use of `List.ofFn` to reconstruct the history at each step is a clean formalization pattern for recursive sequence definitions.",
+    "content": "The full specification: an infinite function \u2115 \u2192 \u2115 matching the seed, all values prime, strictly increasing, and each f(n+1) is the smallest candidate prime.",
+    "mathContext": "The four conjuncts capture: (1) **seed matching** via `Fin seed.length`, (2) **primality** as `\u2200 n, (f n).Prime`, (3) **strict monotonicity** as `\u2200 n, f n < f (n+1)`, and (4) the **minimality rule** asserting $f(n+1)$ is the smallest prime of the form $f(n) + f(i) - 1$. The use of `List.ofFn` to reconstruct the history at each step is a clean formalization pattern for recursive sequence definitions.",
     "significance": "key",
     "relatedConcepts": [
       "recursive sequence specification",
@@ -70,13 +70,13 @@
     "id": "ann-e472-problem-statement",
     "proofId": "erdos-472",
     "type": "definition",
-    "title": "Erdős Problem 472 Statement",
+    "title": "Erd\u0151s Problem 472 Statement",
     "content": "The main conjecture: there exists a finite seed of at least 2 primes, sorted in increasing order, such that the Ulam prime extension produces an infinite sequence.",
-    "mathContext": "This is an **existence** problem: find *any* seed that works. The requirement `seed.length ≥ 2` excludes trivial single-prime seeds. The quantifier structure $\\exists \\text{seed}, \\exists f : \\mathbb{N} \\to \\mathbb{N}, \\text{IsUlamPrimeSeq seed } f$ reduces infiniteness to the existence of an infinite function satisfying the greedy rule. The problem is open even for the specific seed $[3, 5]$.",
+    "mathContext": "This is an **existence** problem: find *any* seed that works. The requirement `seed.length \u2265 2` excludes trivial single-prime seeds. The quantifier structure $\\exists \\text{seed}, \\exists f : \\mathbb{N} \\to \\mathbb{N}, \\text{IsUlamPrimeSeq seed } f$ reduces infiniteness to the existence of an infinite function satisfying the greedy rule. The problem is open even for the specific seed $[3, 5]$.",
     "significance": "key",
     "relatedConcepts": [
       "open problems",
-      "Erdős problems",
+      "Erd\u0151s problems",
       "infinite sequence existence"
     ],
     "prerequisites": [
@@ -94,7 +94,7 @@
     "type": "definition",
     "title": "Candidate Seed [3, 5]",
     "content": "The concrete seed [3, 5] that generates the sequence 3, 5, 7, 11, 13, 17, 19, 23, ... which Ulam conjectured to be infinite.",
-    "mathContext": "The choice of seed $[3, 5]$ is not arbitrary. Starting with $[2, 3]$ would give candidates $3 + 2 - 1 = 4$ (not prime), $3 + 3 - 1 = 5$ (prime), then $5 + 2 - 1 = 6$ (not prime), etc.—the even seed element $2$ frequently produces non-prime candidates. The all-odd seed $[3, 5]$ avoids this: since $\\text{odd} + \\text{odd} - 1 = \\text{odd}$, all candidates are odd and hence have a chance of being prime.",
+    "mathContext": "The choice of seed $[3, 5]$ is not arbitrary. Starting with $[2, 3]$ would give candidates $3 + 2 - 1 = 4$ (not prime), $3 + 3 - 1 = 5$ (prime), then $5 + 2 - 1 = 6$ (not prime), etc.\u2014the even seed element $2$ frequently produces non-prime candidates. The all-odd seed $[3, 5]$ avoids this: since $\\text{odd} + \\text{odd} - 1 = \\text{odd}$, all candidates are odd and hence have a chance of being prime.",
     "significance": "key",
     "relatedConcepts": [
       "seed selection",
@@ -137,7 +137,7 @@
     "type": "technique",
     "title": "Seed Sorted Verification",
     "content": "[3, 5] is sorted in increasing order, verified by decide.",
-    "mathContext": "Required by `ErdosProblem472` which demands `List.Sorted (· < ·) seed`.",
+    "mathContext": "Required by `ErdosProblem472` which demands `List.Sorted (\u00b7 < \u00b7) seed`.",
     "significance": "supporting",
     "relatedConcepts": [
       "List.Sorted",
@@ -157,7 +157,7 @@
     "type": "technique",
     "title": "Seed Length Verification",
     "content": "[3, 5] has at least 2 elements, verified by decide.",
-    "mathContext": "Confirms the seed satisfies `seed.length ≥ 2`, the minimum length requirement.",
+    "mathContext": "Confirms the seed satisfies `seed.length \u2265 2`, the minimum length requirement.",
     "significance": "supporting",
     "relatedConcepts": [
       "List.length",
@@ -176,8 +176,8 @@
     "proofId": "erdos-472",
     "type": "technique",
     "title": "Self-Candidate Oddness",
-    "content": "For p ≥ 2, the self-candidate p + p − 1 = 2p − 1 is always odd, hence potentially prime.",
-    "mathContext": "The **self-candidate** $2p - 1$ (using $q_i = q_n = p$ itself) is a Mersenne-like number. For prime $p$, $2p - 1$ is odd and may be prime, providing a guaranteed candidate at each step. If $2p - 1$ is always prime for the sequence's values, the sequence would be infinite—but this is far stronger than needed and almost certainly false.",
+    "content": "For p \u2265 2, the self-candidate p + p \u2212 1 = 2p \u2212 1 is always odd, hence potentially prime.",
+    "mathContext": "The **self-candidate** $2p - 1$ (using $q_i = q_n = p$ itself) is a Mersenne-like number. For prime $p$, $2p - 1$ is odd and may be prime, providing a guaranteed candidate at each step. If $2p - 1$ is always prime for the sequence's values, the sequence would be infinite\u2014but this is far stronger than needed and almost certainly false.",
     "significance": "key",
     "relatedConcepts": [
       "Mersenne-like numbers",
@@ -219,7 +219,7 @@
     "proofId": "erdos-472",
     "type": "technique",
     "title": "Consecutive Gap Bound",
-    "content": "In any Ulam prime sequence, f(n+1) ≥ f(n) + 2 unless f(n) = 2 and f(n+1) = 3. This follows from the fact that consecutive odd primes differ by at least 2.",
+    "content": "In any Ulam prime sequence, f(n+1) \u2265 f(n) + 2 unless f(n) = 2 and f(n+1) = 3. This follows from the fact that consecutive odd primes differ by at least 2.",
     "mathContext": "The proof splits on whether $f(n) = 2$. If $f(n) \\geq 3$, both $f(n)$ and $f(n+1)$ are odd primes, so their difference is even and at least $2$. The case analysis uses `Nat.Prime.eq_one_or_self_of_dvd` to establish oddness. This gap bound constrains the growth rate: the sequence grows at least linearly.",
     "significance": "key",
     "relatedConcepts": [
@@ -263,7 +263,7 @@
     "proofId": "erdos-472",
     "type": "definition",
     "title": "Computable Next Candidate",
-    "content": "Given a sequence, computes the next Ulam candidate: for each qᵢ, compute last + qᵢ − 1, filter for primes greater than last, return the minimum.",
+    "content": "Given a sequence, computes the next Ulam candidate: for each q\u1d62, compute last + q\u1d62 \u2212 1, filter for primes greater than last, return the minimum.",
     "mathContext": "This is the **computable** counterpart of `IsCandidateNext`. The `filterMap` computes all valid candidates, and `listMin` selects the smallest. The guard `c > last` ensures strict monotonicity. The `Nat.Prime` check uses Lean's decidable primality. Returning $0$ when no candidate exists signals sequence termination.",
     "significance": "key",
     "relatedConcepts": [
@@ -286,8 +286,8 @@
     "proofId": "erdos-472",
     "type": "definition",
     "title": "Single Extension Step",
-    "content": "Extends the sequence by one term if a valid candidate exists (next ≠ 0), otherwise leaves it unchanged.",
-    "mathContext": "The conditional `if next = 0 then seq else seq ++ [next]` models potential termination: the sequence stops if no $q_n + q_i - 1$ is prime for any $i$. This is the key question—whether termination ever occurs for some seeds.",
+    "content": "Extends the sequence by one term if a valid candidate exists (next \u2260 0), otherwise leaves it unchanged.",
+    "mathContext": "The conditional `if next = 0 then seq else seq ++ [next]` models potential termination: the sequence stops if no $q_n + q_i - 1$ is prime for any $i$. This is the key question\u2014whether termination ever occurs for some seeds.",
     "significance": "supporting",
     "relatedConcepts": [
       "sequence extension",
@@ -371,7 +371,7 @@
     "proofId": "erdos-472",
     "type": "technique",
     "title": "Odd + Odd Candidates Are Odd",
-    "content": "If both last and q are odd (and q ≥ 1), then last + q − 1 is odd.",
+    "content": "If both last and q are odd (and q \u2265 1), then last + q \u2212 1 is odd.",
     "mathContext": "This parity lemma explains why odd seeds are preferred: $\\text{odd} + \\text{odd} - 1 = \\text{even} + \\text{odd} - 1 = \\text{odd}$. All candidates from an all-odd sequence are odd, so they're never excluded by being even (except $2$). This contrasts with seeds containing $2$, where $p + 2 - 1 = p + 1$ is even for odd $p$.",
     "significance": "key",
     "relatedConcepts": [
@@ -393,7 +393,7 @@
     "proofId": "erdos-472",
     "type": "technique",
     "title": "Seed Element 2 Produces Even Candidates",
-    "content": "For p ≥ 3, the candidate p + 2 − 1 = p + 1 is even, hence never prime. Seeds containing 2 produce dead-end candidates.",
+    "content": "For p \u2265 3, the candidate p + 2 \u2212 1 = p + 1 is even, hence never prime. Seeds containing 2 produce dead-end candidates.",
     "mathContext": "This theorem formalizes why $2$ is a poor seed element: for any $p \\geq 3$, the candidate $p + 2 - 1 = p + 1$ is always even and $> 2$, hence composite. In effect, $q_i = 2$ contributes nothing useful to the candidate pool once the sequence passes $3$. This motivates restricting to all-odd seeds.",
     "significance": "key",
     "relatedConcepts": [
@@ -415,7 +415,7 @@
     "proofId": "erdos-472",
     "type": "technique",
     "title": "Odd Inputs Give Odd Candidates",
-    "content": "For odd p and odd q, the candidate p + q − 1 is odd, complementing the parity analysis.",
+    "content": "For odd p and odd q, the candidate p + q \u2212 1 is odd, complementing the parity analysis.",
     "mathContext": "Uses the `Odd` predicate to show $p + q - 1$ is odd when both inputs are odd. Combined with `seed_two_gives_even`, this completes the parity picture: the viability of candidates depends entirely on the parity of the seed elements and current last term.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -456,8 +456,8 @@
     "proofId": "erdos-472",
     "type": "concept",
     "title": "All Odd Primes Conjecture",
-    "content": "The strongest form of the conjecture: the [3, 5] Ulam prime sequence contains all primes p ≥ 3. This would immediately imply infiniteness.",
-    "mathContext": "If the $[3, 5]$ sequence contains every odd prime, then it is infinite by Euclid's theorem on the infinitude of primes. This is a **much stronger** conjecture than Problem 472 itself, which only asks for *some* seed producing an infinite sequence. The computational evidence through 8 terms (all odd primes $\\leq 23$) is consistent but far from conclusive—the sequence could diverge from the odd primes at any point.",
+    "content": "The strongest form of the conjecture: the [3, 5] Ulam prime sequence contains all primes p \u2265 3. This would immediately imply infiniteness.",
+    "mathContext": "If the $[3, 5]$ sequence contains every odd prime, then it is infinite by Euclid's theorem on the infinitude of primes. This is a **much stronger** conjecture than Problem 472 itself, which only asks for *some* seed producing an infinite sequence. The computational evidence through 8 terms (all odd primes $\\leq 23$) is consistent but far from conclusive\u2014the sequence could diverge from the odd primes at any point.",
     "significance": "key",
     "relatedConcepts": [
       "infinitude of primes",
@@ -469,8 +469,8 @@
       "Nat.Prime"
     ],
     "range": {
-      "startLine": 224,
-      "endLine": 226
+      "startLine": 213,
+      "endLine": 223
     }
   }
 ]

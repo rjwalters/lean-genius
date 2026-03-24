@@ -31,7 +31,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #923** asks: for every $k$, is there $f(k)$ such that $\\chi(G) \\geq f(k)$ implies $G$ has a triangle-free subgraph with $\\chi \\geq k$? Answer: YES (Rödl 1977). The threshold $f(k)$ is a tower of 2s of height $\\sim k$. The proof uses Ramsey-theoretic edge partition arguments.",
+    "content": "**Erd\u0151s Problem #923** asks: for every $k$, is there $f(k)$ such that $\\chi(G) \\geq f(k)$ implies $G$ has a triangle-free subgraph with $\\chi \\geq k$? Answer: YES (R\u00f6dl 1977). The threshold $f(k)$ is a tower of 2s of height $\\sim k$. The proof uses Ramsey-theoretic edge partition arguments.",
     "mathContext": "The problem lies at the intersection of chromatic graph theory and Ramsey theory. It asks whether chromatic complexity must 'spread' beyond triangles: even after removing all triangles, a graph with high enough $\\chi$ retains a subgraph of moderately high $\\chi$. The tower-type growth of $f(k)$ is intrinsic, reflecting that Ramsey numbers $R(3, t) = \\Theta(t^2/\\log t)$ grow polynomially, but iterated applications yield towers.",
     "significance": "key",
     "relatedConcepts": [
@@ -100,7 +100,7 @@
     },
     "type": "definition",
     "title": "High Chromatic Number",
-    "content": "`HasChromaticNumberAtLeast G k` means $\\chi(G) \\geq k$. This is the precondition for Rödl's theorem: the graph must have chromatic number at least $f(k)$.",
+    "content": "`HasChromaticNumberAtLeast G k` means $\\chi(G) \\geq k$. This is the precondition for R\u00f6dl's theorem: the graph must have chromatic number at least $f(k)$.",
     "mathContext": "High chromatic number does not imply the existence of large cliques. Mycielski (1955) and the Zykov construction produce triangle-free graphs with $\\chi$ as large as desired, showing $\\chi$ and $\\omega$ can be arbitrarily far apart. Random graphs $G(n, p)$ typically have $\\chi \\sim n/(2\\log_b n)$ where $b = 1/(1-p)$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -168,7 +168,7 @@
     "type": "definition",
     "title": "Spanning and Induced Subgraphs",
     "content": "**IsSpanningSubgraph** $H\\,G$: same vertex set, $E(H) \\subseteq E(G)$. **inducedSubgraph** $G\\,S$: the subgraph of $G$ on vertex set $S \\subseteq V$, using `comap` to restrict adjacency to the subtype.",
-    "mathContext": "A spanning subgraph preserves all vertices but may remove edges. For Rödl's theorem, the triangle-free subgraph $H$ is a spanning subgraph of $G$, meaning we only delete edges (those participating in triangles). The induced subgraph $G[S]$ restricts both vertices and edges: $G[S].\\text{Adj}\\,u\\,v \\iff G.\\text{Adj}\\,u.\\text{val}\\,v.\\text{val}$.",
+    "mathContext": "A spanning subgraph preserves all vertices but may remove edges. For R\u00f6dl's theorem, the triangle-free subgraph $H$ is a spanning subgraph of $G$, meaning we only delete edges (those participating in triangles). The induced subgraph $G[S]$ restricts both vertices and edges: $G[S].\\text{Adj}\\,u\\,v \\iff G.\\text{Adj}\\,u.\\text{val}\\,v.\\text{val}$.",
     "significance": "key",
     "relatedConcepts": [
       "spanning-subgraph",
@@ -234,12 +234,12 @@
       "endLine": 149
     },
     "type": "technique",
-    "title": "Rödl's Theorem (1977)",
-    "content": "**Axiom** (Rödl, 1977): For every $k \\in \\mathbb{N}$, there exists $f_k$ such that any graph $G$ with $\\chi(G) \\geq f_k$ contains a triangle-free spanning subgraph $H$ with $\\chi(H) \\geq k$. This is the core result solving Problem #923.",
-    "mathContext": "Published in *Proc. Amer. Math. Soc.* **64** (1977), 370--371, Rödl's remarkably short proof works by edge-coloring $G$ based on triangle participation and applying Ramsey's theorem to extract a monochromatic triangle-free subgraph retaining high chromatic number. Each Ramsey application exponentiates the required chromatic number, leading to the tower-type bound $f_k \\leq \\text{tower}(O(k))$.",
+    "title": "R\u00f6dl's Theorem (1977)",
+    "content": "**Axiom** (R\u00f6dl, 1977): For every $k \\in \\mathbb{N}$, there exists $f_k$ such that any graph $G$ with $\\chi(G) \\geq f_k$ contains a triangle-free spanning subgraph $H$ with $\\chi(H) \\geq k$. This is the core result solving Problem #923.",
+    "mathContext": "Published in *Proc. Amer. Math. Soc.* **64** (1977), 370--371, R\u00f6dl's remarkably short proof works by edge-coloring $G$ based on triangle participation and applying Ramsey's theorem to extract a monochromatic triangle-free subgraph retaining high chromatic number. Each Ramsey application exponentiates the required chromatic number, leading to the tower-type bound $f_k \\leq \\text{tower}(O(k))$.",
     "significance": "key",
     "relatedConcepts": [
-      "Rödl-theorem",
+      "R\u00f6dl-theorem",
       "edge-partition",
       "Ramsey-extraction",
       "Proc-AMS-1977"
@@ -260,7 +260,7 @@
     },
     "type": "technique",
     "title": "erdos_923_true",
-    "content": "The corollary `erdos_923_true` directly restates Rödl's theorem as the affirmative answer to Problem #923. The proof is `:= rodl_1977`, a definitional equality since the type signatures are identical.",
+    "content": "The corollary `erdos_923_true` directly restates R\u00f6dl's theorem as the affirmative answer to Problem #923. The proof is `:= rodl_1977`, a definitional equality since the type signatures are identical.",
     "mathContext": "This theorem serves as the human-readable formal answer: Problem #923 is TRUE. The proof is trivial (identity on the axiom) because the statement of `erdos_923_true` is literally the same as `rodl_1977`. The separation into axiom + corollary is a stylistic choice to distinguish the mathematical result from its problem-answer packaging.",
     "significance": "key",
     "relatedConcepts": [
@@ -282,7 +282,7 @@
     "type": "definition",
     "title": "Tower Function",
     "content": "**towerFunction**: $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Gives the sequence $1, 2, 4, 16, 65536, 2^{65536}, \\ldots$ The first four values are verified by `rfl`, and $\\text{tower}(4) = 65536$ by `native_decide`.",
-    "mathContext": "The tower function $\\text{tower}(n) = 2 \\uparrow\\uparrow n$ (Knuth up-arrow notation) grows faster than any fixed iteration of exponentiation. $\\text{tower}(5) = 2^{65536}$ has approximately $19{,}728$ decimal digits. Tower-type bounds are characteristic of Ramsey theory: the Hales-Jewett numbers, Szemerédi regularity applications, and Shelah's bounds all involve tower-type growth.",
+    "mathContext": "The tower function $\\text{tower}(n) = 2 \\uparrow\\uparrow n$ (Knuth up-arrow notation) grows faster than any fixed iteration of exponentiation. $\\text{tower}(5) = 2^{65536}$ has approximately $19{,}728$ decimal digits. Tower-type bounds are characteristic of Ramsey theory: the Hales-Jewett numbers, Szemer\u00e9di regularity applications, and Shelah's bounds all involve tower-type growth.",
     "significance": "key",
     "relatedConcepts": [
       "tower-of-exponentials",
@@ -303,7 +303,7 @@
       "endLine": 198
     },
     "type": "technique",
-    "title": "Rödl Tower Bound",
+    "title": "R\u00f6dl Tower Bound",
     "content": "**Axiom**: $f(k) \\leq \\text{tower}(C \\cdot k)$ for some universal constant $C$. Graphs with $\\chi \\geq \\text{tower}(C \\cdot k)$ must contain a triangle-free subgraph with $\\chi \\geq k$.",
     "mathContext": "The tower bound is believed to be qualitatively tight: the iterated Ramsey argument suggests $f(k)$ cannot be bounded by any function growing slower than tower-type. This parallels the situation in the Hales-Jewett theorem, where primitive recursive upper bounds were not known before Shelah's proof. The question of whether $f(k)$ is exactly tower-type or merely tower-bounded remains open.",
     "significance": "key",
@@ -326,14 +326,14 @@
     },
     "type": "definition",
     "title": "H-Free Subgraph Problem",
-    "content": "`HFreeSubgraphProblem H Hgraph`: for any fixed graph $H$, does $\\chi(G) \\geq f_H(k)$ imply $G$ has an $H$-free subgraph with $\\chi \\geq k$? This generalizes the triangle case ($H = K_3$) to arbitrary forbidden subgraphs, connecting to Erdős Problem #108.",
-    "mathContext": "When $H$ is bipartite, the answer is YES (Rödl). When $H$ contains an odd cycle, the problem is more subtle. The general Erdős-Hajnal-type question for non-bipartite $H$ connects to Problem #108, which asks about subgraphs with large girth and high chromatic number. Note that the definition omits the $H$-freeness condition on the subgraph (only requiring high $\\chi$), which is a simplification of the full problem.",
+    "content": "`HFreeSubgraphProblem H Hgraph`: for any fixed graph $H$, does $\\chi(G) \\geq f_H(k)$ imply $G$ has an $H$-free subgraph with $\\chi \\geq k$? This generalizes the triangle case ($H = K_3$) to arbitrary forbidden subgraphs, connecting to Erd\u0151s Problem #108.",
+    "mathContext": "When $H$ is bipartite, the answer is YES (R\u00f6dl). When $H$ contains an odd cycle, the problem is more subtle. The general Erd\u0151s-Hajnal-type question for non-bipartite $H$ connects to Problem #108, which asks about subgraphs with large girth and high chromatic number. Note that the definition omits the $H$-freeness condition on the subgraph (only requiring high $\\chi$), which is a simplification of the full problem.",
     "significance": "key",
     "relatedConcepts": [
       "H-free-graph",
       "forbidden-subgraph",
-      "Erdős-problem-108",
-      "Erdős-Hajnal-conjecture"
+      "Erd\u0151s-problem-108",
+      "Erd\u0151s-Hajnal-conjecture"
     ],
     "prerequisites": [
       "chromaticNumber",
@@ -348,15 +348,15 @@
       "endLine": 226
     },
     "type": "technique",
-    "title": "Rödl's General Theorem for Bipartite H",
-    "content": "**Axiom** (Rödl): The $H$-free subgraph problem holds whenever $H$ is bipartite (2-colorable). Bipartiteness is formalized as the existence of a `Coloring (Fin 2)` for $H$.",
-    "mathContext": "The bipartite case is special because the Kővári-Sós-Turán theorem provides $\\text{ex}(n, K_{r,s}) = O(n^{2-1/r})$, giving quantitative control on the density of $H$-free subgraphs. Rödl's general proof extends the triangle-free argument using bipartite Ramsey numbers. For non-bipartite $H$ (e.g., odd cycles $C_{2t+1}$), different techniques are needed, and the full generalization remains an active area connecting to Erdős Problem #108.",
+    "title": "R\u00f6dl's General Theorem for Bipartite H",
+    "content": "**Axiom** (R\u00f6dl): The $H$-free subgraph problem holds whenever $H$ is bipartite (2-colorable). Bipartiteness is formalized as the existence of a `Coloring (Fin 2)` for $H$.",
+    "mathContext": "The bipartite case is special because the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem provides $\\text{ex}(n, K_{r,s}) = O(n^{2-1/r})$, giving quantitative control on the density of $H$-free subgraphs. R\u00f6dl's general proof extends the triangle-free argument using bipartite Ramsey numbers. For non-bipartite $H$ (e.g., odd cycles $C_{2t+1}$), different techniques are needed, and the full generalization remains an active area connecting to Erd\u0151s Problem #108.",
     "significance": "key",
     "relatedConcepts": [
       "bipartite-Ramsey",
-      "Kővári-Sós-Turán",
-      "Turán-number",
-      "Erdős-problem-108"
+      "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n",
+      "Tur\u00e1n-number",
+      "Erd\u0151s-problem-108"
     ],
     "prerequisites": [
       "HFreeSubgraphProblem",
@@ -368,13 +368,13 @@
     "id": "ann-e923-summary",
     "proofId": "erdos-923",
     "range": {
-      "startLine": 247,
-      "endLine": 262
+      "startLine": 234,
+      "endLine": 244
     },
     "type": "technique",
     "title": "Summary Theorem",
-    "content": "**erdos_923_summary** combines: (1) Rödl's theorem that Problem #923 is YES, and (2) the tower-type bound $f(k) \\leq \\text{tower}(C \\cdot k)$. Proved by `exact ⟨rodl_1977, rodl_bound⟩`, packaging both the qualitative answer and quantitative estimate.",
-    "mathContext": "The conjunction $\\text{rodl\\_1977} \\land \\text{rodl\\_bound}$ packages the complete resolution: existence of $f(k)$ (qualitative) and $f(k) \\leq \\text{tower}(O(k))$ (quantitative). The anonymous constructor `⟨\\cdot, \\cdot⟩` in Lean produces the conjunction from its two components. This is the canonical formal summary of the SOLVED status of Problem #923.",
+    "content": "**erdos_923_summary** combines: (1) R\u00f6dl's theorem that Problem #923 is YES, and (2) the tower-type bound $f(k) \\leq \\text{tower}(C \\cdot k)$. Proved by `exact \u27e8rodl_1977, rodl_bound\u27e9`, packaging both the qualitative answer and quantitative estimate.",
+    "mathContext": "The conjunction $\\text{rodl\\_1977} \\land \\text{rodl\\_bound}$ packages the complete resolution: existence of $f(k)$ (qualitative) and $f(k) \\leq \\text{tower}(O(k))$ (quantitative). The anonymous constructor `\u27e8\\cdot, \\cdot\u27e9` in Lean produces the conjunction from its two components. This is the canonical formal summary of the SOLVED status of Problem #923.",
     "significance": "key",
     "relatedConcepts": [
       "problem-resolution",

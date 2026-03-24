@@ -8,7 +8,7 @@
       "endLine": 24
     },
     "title": "Problem Overview: Growth Rate of Schur Numbers",
-    "content": "Erdős Problem #483 asks whether the **Schur numbers** $f(k)$ are bounded by a simple exponential $c^k$ for some constant $c$. The Schur number $f(k)$ is the smallest $N$ such that every $k$-coloring of $\\{1, \\ldots, N\\}$ contains a **monochromatic solution** to $a + b = c$. Known bounds place $f(k)$ between exponential growth (from below) and factorial growth (from above).",
+    "content": "Erd\u0151s Problem #483 asks whether the **Schur numbers** $f(k)$ are bounded by a simple exponential $c^k$ for some constant $c$. The Schur number $f(k)$ is the smallest $N$ such that every $k$-coloring of $\\{1, \\ldots, N\\}$ contains a **monochromatic solution** to $a + b = c$. Known bounds place $f(k)$ between exponential growth (from below) and factorial growth (from above).",
     "mathContext": "Schur's theorem (1916) guarantees $f(k) < \\infty$ for all $k$. The gap between the exponential lower bound ($\\approx 3.28^k$ from known values) and the factorial upper bound ($\\approx e \\cdot k!$, Whitehead 1973) is one of the oldest open problems in Ramsey theory.",
     "relatedConcepts": [
       "Schur's theorem",
@@ -126,7 +126,7 @@
       "endLine": 131
     },
     "title": "S(2) = 5 (Fully Proved)",
-    "content": "**schurNumber_2 (proved):** $S(2) = 5$.\n\nUpper bound: every 2-coloring of $\\{1, \\ldots, 5\\}$ has a monochromatic triple (from `schur_2_upper`).\n\nLower bound: **not_schurProp_4_2** shows a sum-free 2-coloring of $\\{1, \\ldots, 4\\}$ exists (from `schur_2_lower`). The witness is $\\{1, 4\\}, \\{2, 3\\}$ — both classes are sum-free.\n\nThis is the first non-trivial exact Schur number, requiring genuine case analysis.",
+    "content": "**schurNumber_2 (proved):** $S(2) = 5$.\n\nUpper bound: every 2-coloring of $\\{1, \\ldots, 5\\}$ has a monochromatic triple (from `schur_2_upper`).\n\nLower bound: **not_schurProp_4_2** shows a sum-free 2-coloring of $\\{1, \\ldots, 4\\}$ exists (from `schur_2_lower`). The witness is $\\{1, 4\\}, \\{2, 3\\}$ \u2014 both classes are sum-free.\n\nThis is the first non-trivial exact Schur number, requiring genuine case analysis.",
     "mathContext": "The sum-free partition $\\{1,4\\}, \\{2,3\\}$ of $\\{1,2,3,4\\}$ shows $S(2) > 4$: neither $\\{1,4\\}$ (no $x+y=z$: $1+1=2\\notin\\{1,4\\}$, $1+4=5\\notin\\{1,4\\}$) nor $\\{2,3\\}$ ($2+2=4\\notin\\{2,3\\}$, $2+3=5\\notin\\{2,3\\}$) contains a Schur triple. But in $\\{1,\\ldots,5\\}$, pigeonhole forces 3 elements in one class, and case analysis yields a triple.",
     "relatedConcepts": [
       "sum-free sets",
@@ -149,7 +149,7 @@
       "endLine": 167
     },
     "title": "Positivity and Non-decreasing Sequence",
-    "content": "**schurNumber_pos (proved):** $S(k) \\geq 1$ for $k \\geq 1$. If $S(k) = 0$, then SchurProp 0 $k$ must hold, but $\\{1, \\ldots, 0\\} = \\emptyset$ has no elements to form a triple.\n\n**schurNumber_nondecreasing (proved):** $k_1 \\leq k_2 \\implies S(k_1) \\leq S(k_2)$. The proof uses a color embedding: any $k_1$-coloring lifts to a $k_2$-coloring by viewing `Fin k₁` inside `Fin k₂`. Any monochromatic triple for the $k_2$-coloring restricts to one for the original $k_1$-coloring.",
+    "content": "**schurNumber_pos (proved):** $S(k) \\geq 1$ for $k \\geq 1$. If $S(k) = 0$, then SchurProp 0 $k$ must hold, but $\\{1, \\ldots, 0\\} = \\emptyset$ has no elements to form a triple.\n\n**schurNumber_nondecreasing (proved):** $k_1 \\leq k_2 \\implies S(k_1) \\leq S(k_2)$. The proof uses a color embedding: any $k_1$-coloring lifts to a $k_2$-coloring by viewing `Fin k\u2081` inside `Fin k\u2082`. Any monochromatic triple for the $k_2$-coloring restricts to one for the original $k_1$-coloring.",
     "mathContext": "Monotonicity in colors: more colors makes it easier to avoid monochromatic triples, so a larger number of colors requires a larger set to force one. Formally: $k_1 \\leq k_2 \\implies S(k_1) \\leq S(k_2)$.",
     "relatedConcepts": [
       "color embedding",
@@ -172,7 +172,7 @@
       "endLine": 178
     },
     "title": "Known Values S(3), S(4), S(5)",
-    "content": "**Axiomatized values:** $S(3) = 14$, $S(4) = 45$, $S(5) = 161$.\n\n$S(5) = 161$ was determined by Heule (2017) using SAT solvers, requiring billions of clauses. No further exact values are known — $S(6)$ remains an open problem.\n\nThese are axiomatized because exhaustive verification in Lean would be prohibitively expensive.",
+    "content": "**Axiomatized values:** $S(3) = 14$, $S(4) = 45$, $S(5) = 161$.\n\n$S(5) = 161$ was determined by Heule (2017) using SAT solvers, requiring billions of clauses. No further exact values are known \u2014 $S(6)$ remains an open problem.\n\nThese are axiomatized because exhaustive verification in Lean would be prohibitively expensive.",
     "mathContext": "Known Schur numbers: $S(1)=2, S(2)=5, S(3)=14, S(4)=45, S(5)=161$. The ratios $S(k+1)/S(k) \\approx 2.5, 2.8, 3.2, 3.6$ suggest growth faster than $3^k$ but the exact rate is unknown. Computing $S(5)$ required a 2-petabyte proof certificate.",
     "relatedConcepts": [
       "SAT solving",
@@ -213,9 +213,9 @@
     "type": "concept",
     "range": {
       "startLine": 194,
-      "endLine": 199
+      "endLine": 198
     },
-    "title": "Erdős Problem #483: Simple Exponential Bound?",
+    "title": "Erd\u0151s Problem #483: Simple Exponential Bound?",
     "content": "**erdos_483_conjecture (axiom):** $\\exists c > 0 : S(k) < c^k$ for all $k \\geq 1$.\n\nIf true, Schur numbers grow at most simply exponentially, dramatically improving the factorial upper bound. If false, Schur numbers grow superexponentially, placing them in a fundamentally different complexity class.\n\nThe conjecture is stated as an axiom (asserting it holds) rather than just a `Prop` definition, reflecting its status as a widely-believed conjecture.",
     "mathContext": "The conjecture asks whether the factorial upper bound $S(k) = O(k!)$ can be replaced by $S(k) = O(c^k)$. A positive answer would align Schur numbers with Hales-Jewett numbers and other Ramsey quantities that grow at most exponentially. The known values $2, 5, 14, 45, 161$ are consistent with $S(k) \\approx 3.2^k$.",
     "relatedConcepts": [

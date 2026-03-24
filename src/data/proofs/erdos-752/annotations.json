@@ -8,7 +8,7 @@
       "endLine": 28
     },
     "title": "Problem Introduction",
-    "content": "**Erdős Problem #752: Cycle Lengths in High-Girth Graphs**\n\nLet G be a graph with minimum degree k and girth > 2s. Must there be ≫ k^s many distinct cycle lengths?\n\n**Status:** SOLVED by Sudakov-Verstraëte (2008)\n\n**Key Insight:** High girth forbids short cycles, while high degree forces many cycles to exist. The tension between these creates structure guaranteeing diverse cycle lengths.",
+    "content": "**Erd\u0151s Problem #752: Cycle Lengths in High-Girth Graphs**\n\nLet G be a graph with minimum degree k and girth > 2s. Must there be \u226b k^s many distinct cycle lengths?\n\n**Status:** SOLVED by Sudakov-Verstra\u00ebte (2008)\n\n**Key Insight:** High girth forbids short cycles, while high degree forces many cycles to exist. The tension between these creates structure guaranteeing diverse cycle lengths.",
     "mathContext": "This problem connects extremal graph theory with Moore graphs and Ramsey theory. The girth constraint is a local sparsity condition while minimum degree is a global density requirement.",
     "significance": "key",
     "relatedConcepts": [
@@ -28,7 +28,7 @@
       "endLine": 46
     },
     "title": "Minimum Degree",
-    "content": "**minDegree G:**\n\nThe minimum degree of a graph G is the smallest degree over all vertices.\n\n**Formula:** inf_{v ∈ V} deg(v)\n\nThis is a global density measure: high minimum degree means every vertex has many neighbors.",
+    "content": "**minDegree G:**\n\nThe minimum degree of a graph G is the smallest degree over all vertices.\n\n**Formula:** inf_{v \u2208 V} deg(v)\n\nThis is a global density measure: high minimum degree means every vertex has many neighbors.",
     "mathContext": "Implemented using Finset.inf' with the arbitrary vertex witness for nonemptiness.",
     "significance": "key",
     "relatedConcepts": [
@@ -46,7 +46,7 @@
       "endLine": 50
     },
     "title": "Girth Greater Than",
-    "content": "**GirthGreaterThan G g:**\n\nA graph has girth > g if it contains no cycles of length ≤ g.\n\n**Formula:** ∀ n ≤ g, ¬∃ cycle of length n\n\nThe girth of a graph is the length of its shortest cycle. Girth > 2s means the shortest cycle has length ≥ 2s + 1.",
+    "content": "**GirthGreaterThan G g:**\n\nA graph has girth > g if it contains no cycles of length \u2264 g.\n\n**Formula:** \u2200 n \u2264 g, \u00ac\u2203 cycle of length n\n\nThe girth of a graph is the length of its shortest cycle. Girth > 2s means the shortest cycle has length \u2265 2s + 1.",
     "mathContext": "High girth graphs are locally tree-like: the neighborhood of any vertex up to distance s is acyclic when girth > 2s.",
     "significance": "key",
     "relatedConcepts": [
@@ -64,9 +64,9 @@
       "startLine": 64,
       "endLine": 70
     },
-    "title": "The Erdős-Faudree-Schelp Conjecture",
-    "content": "**ErdosFaudreeSchelpConjecture:**\n\nThere exists c > 0 such that for all graphs G with minimum degree ≥ k and girth > 2s:\n\n|{cycle lengths in G}| ≥ c · k^s\n\nThis quantifies how many distinct cycle lengths are forced by the degree and girth conditions.",
-    "mathContext": "The ≫ notation in the original statement means 'grows at least as fast as' up to constants. The formal statement makes the constant c explicit.",
+    "title": "The Erd\u0151s-Faudree-Schelp Conjecture",
+    "content": "**ErdosFaudreeSchelpConjecture:**\n\nThere exists c > 0 such that for all graphs G with minimum degree \u2265 k and girth > 2s:\n\n|{cycle lengths in G}| \u2265 c \u00b7 k^s\n\nThis quantifies how many distinct cycle lengths are forced by the degree and girth conditions.",
+    "mathContext": "The \u226b notation in the original statement means 'grows at least as fast as' up to constants. The formal statement makes the constant c explicit.",
     "significance": "key",
     "relatedConcepts": [
       "Extremal bounds",
@@ -82,9 +82,9 @@
       "startLine": 92,
       "endLine": 99
     },
-    "title": "Sudakov-Verstraëte Theorem (2008)",
-    "content": "**sudakov_verstrate_2008:**\n\nThere exists c > 0 such that for graphs with average degree ≥ k and girth > 2s:\n\nThere exist Ω(k^s) consecutive even cycle lengths.\n\n**Reference:** Sudakov, Verstraëte, 'Cycle lengths in sparse graphs', Combinatorica 28 (2008), 357-372.\n\nThis is the main theorem that resolves Problem #752.",
-    "mathContext": "The paper also proves that the longest cycle has length Ω(d^⌊(g-1)/2⌋) for graphs with average degree d and girth g, improving all previous bounds.",
+    "title": "Sudakov-Verstra\u00ebte Theorem (2008)",
+    "content": "**sudakov_verstrate_2008:**\n\nThere exists c > 0 such that for graphs with average degree \u2265 k and girth > 2s:\n\nThere exist \u03a9(k^s) consecutive even cycle lengths.\n\n**Reference:** Sudakov, Verstra\u00ebte, 'Cycle lengths in sparse graphs', Combinatorica 28 (2008), 357-372.\n\nThis is the main theorem that resolves Problem #752.",
+    "mathContext": "The paper also proves that the longest cycle has length \u03a9(d^\u230a(g-1)/2\u230b) for graphs with average degree d and girth g, improving all previous bounds.",
     "significance": "key",
     "relatedConcepts": [
       "Main theorem",
@@ -101,7 +101,7 @@
       "endLine": 127
     },
     "title": "Main Proof: Conjecture from Stronger Result",
-    "content": "**erdos_752_solved:**\n\nThe original Erdős-Faudree-Schelp conjecture follows from the Sudakov-Verstraëte theorem.\n\n**Proof strategy:** Since min degree ≤ avg degree, the Sudakov-Verstraëte hypothesis (avg degree ≥ k) holds whenever min degree ≥ k. Their theorem gives Ω(k^s) consecutive even lengths, which gives at least that many distinct cycle lengths.\n\nThe constant halves from c to c/2 due to the floor function approximation.",
+    "content": "**erdos_752_solved:**\n\nThe original Erd\u0151s-Faudree-Schelp conjecture follows from the Sudakov-Verstra\u00ebte theorem.\n\n**Proof strategy:** Since min degree \u2264 avg degree, the Sudakov-Verstra\u00ebte hypothesis (avg degree \u2265 k) holds whenever min degree \u2265 k. Their theorem gives \u03a9(k^s) consecutive even lengths, which gives at least that many distinct cycle lengths.\n\nThe constant halves from c to c/2 due to the floor function approximation.",
     "mathContext": "This is a genuine Lean4 proof using calc chains, exact_mod_cast, and nlinarith. It combines the helper axioms min_degree_le_avg and consecutive_gives_distinct.",
     "significance": "key",
     "relatedConcepts": [
@@ -119,7 +119,7 @@
       "endLine": 142
     },
     "title": "Moore Bound and Moore Graphs",
-    "content": "**moore_bound_lower:**\n\nA graph with minimum degree d and girth > 2s has at least n ≥ 1 + d·((d-1)^s - 1)/(d-2) vertices.\n\n**IsMooreGraph:** A d-regular graph achieving girth exactly g and the Moore bound.\n\nMoore graphs show the result is tight: we can't have more than Θ(k^s) cycle lengths since that's the vertex count.",
+    "content": "**moore_bound_lower:**\n\nA graph with minimum degree d and girth > 2s has at least n \u2265 1 + d\u00b7((d-1)^s - 1)/(d-2) vertices.\n\n**IsMooreGraph:** A d-regular graph achieving girth exactly g and the Moore bound.\n\nMoore graphs show the result is tight: we can't have more than \u0398(k^s) cycle lengths since that's the vertex count.",
     "mathContext": "Moore graphs achieve this bound exactly. They exist only for specific degrees and girths (d = 2, 3, 7, and possibly 57 for girth 5).",
     "significance": "key",
     "relatedConcepts": [
@@ -138,7 +138,7 @@
       "endLine": 159
     },
     "title": "High Girth Spreads Cycles",
-    "content": "**high_girth_spreads_cycles:**\n\nIf G has girth > 2s, then all cycles in G have length ≥ 2s + 1.\n\n**Proof:** By definition of girth > 2s, there are no cycles of length ≤ 2s.\n\nThis basic observation is the foundation for understanding cycle structure in high-girth graphs.",
+    "content": "**high_girth_spreads_cycles:**\n\nIf G has girth > 2s, then all cycles in G have length \u2265 2s + 1.\n\n**Proof:** By definition of girth > 2s, there are no cycles of length \u2264 2s.\n\nThis basic observation is the foundation for understanding cycle structure in high-girth graphs.",
     "mathContext": "This theorem is proved directly from the definition using by_contra and push_neg tactics.",
     "significance": "key",
     "relatedConcepts": [
@@ -156,7 +156,7 @@
       "endLine": 198
     },
     "title": "Chromatic and Odd Cycle Extensions",
-    "content": "**chromatic_version:** The result also holds when 'minimum degree ≥ k' is replaced by 'chromatic number ≥ k'.\n\n**odd_cycle_version:** The result also holds for odd cycle lengths: if χ(G) ≥ k and girth > 2s, then G has Ω(k^s) distinct odd cycle lengths.\n\nThese generalizations show the phenomenon is robust across different graph parameters.",
+    "content": "**chromatic_version:** The result also holds when 'minimum degree \u2265 k' is replaced by 'chromatic number \u2265 k'.\n\n**odd_cycle_version:** The result also holds for odd cycle lengths: if \u03c7(G) \u2265 k and girth > 2s, then G has \u03a9(k^s) distinct odd cycle lengths.\n\nThese generalizations show the phenomenon is robust across different graph parameters.",
     "mathContext": "High chromatic number forces many edges but doesn't force high minimum degree. A graph is bipartite iff it has no odd cycles, so the odd version connects to bipartiteness.",
     "significance": "key",
     "relatedConcepts": [
@@ -175,7 +175,7 @@
       "endLine": 225
     },
     "title": "Quantitative Bounds",
-    "content": "**Explicit Bounds:**\n\n- The constant c in Sudakov-Verstraëte is computable (> 1/1000).\n- For s = 2 (girth > 4): at least k²/10 cycle lengths.\n- For s = 3 (girth > 6): at least k³/100 cycle lengths.\n\nThese explicit bounds are useful for algorithmic applications.",
+    "content": "**Explicit Bounds:**\n\n- The constant c in Sudakov-Verstra\u00ebte is computable (> 1/1000).\n- For s = 2 (girth > 4): at least k\u00b2/10 cycle lengths.\n- For s = 3 (girth > 6): at least k\u00b3/100 cycle lengths.\n\nThese explicit bounds are useful for algorithmic applications.",
     "mathContext": "The paper doesn't optimize constants, so the explicit values here are rough estimates based on the proof structure.",
     "significance": "key",
     "relatedConcepts": [
@@ -190,11 +190,11 @@
     "type": "technique",
     "range": {
       "startLine": 231,
-      "endLine": 253
+      "endLine": 246
     },
     "title": "Main Theorem Summary",
-    "content": "**erdos_752, erdos_752_strong, erdos_752_summary:**\n\nProblem #752 is completely resolved:\n\n1. **Original Question:** Must there be ≫ k^s cycle lengths? **YES** (erdos_752)\n2. **Stronger Result:** There are Ω(k^s) consecutive even cycle lengths (erdos_752_strong)\n3. **Summary:** Combines both results via exact ⟨erdos_752_solved, sudakov_verstrate_2008⟩\n\n**Key Contributors:**\n- Erdős-Faudree-Schelp: Original conjecture, case s = 2\n- Sudakov-Verstraëte (2008): Complete solution with stronger result",
-    "mathContext": "The summary theorem proves ErdosFaudreeSchelpConjecture ∧ (stronger consecutive even lengths result), combining the two main achievements.",
+    "content": "**erdos_752, erdos_752_strong, erdos_752_summary:**\n\nProblem #752 is completely resolved:\n\n1. **Original Question:** Must there be \u226b k^s cycle lengths? **YES** (erdos_752)\n2. **Stronger Result:** There are \u03a9(k^s) consecutive even cycle lengths (erdos_752_strong)\n3. **Summary:** Combines both results via exact \u27e8erdos_752_solved, sudakov_verstrate_2008\u27e9\n\n**Key Contributors:**\n- Erd\u0151s-Faudree-Schelp: Original conjecture, case s = 2\n- Sudakov-Verstra\u00ebte (2008): Complete solution with stronger result",
+    "mathContext": "The summary theorem proves ErdosFaudreeSchelpConjecture \u2227 (stronger consecutive even lengths result), combining the two main achievements.",
     "significance": "key",
     "relatedConcepts": [
       "Complete resolution",

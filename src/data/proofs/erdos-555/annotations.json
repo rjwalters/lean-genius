@@ -139,7 +139,7 @@
     "type": "definition",
     "range": {
       "startLine": 84,
-      "endLine": 95
+      "endLine": 94
     },
     "title": "Erdos Problem 555: The Exact Exponent",
     "content": "The main open problem: for each $n \\geq 2$, determine the exact exponent $\\alpha_n$ such that $R(C_{2n}; k) = \\Theta(k^{1+\\alpha_n})$. The axiom asserts the existence of such $\\alpha_n$ with $1/(2n) \\leq \\alpha_n \\leq 1/(n-1)$. For $n = 2$, the Chung-Graham bounds show $\\alpha_2 = 1$. For $n \\geq 3$, the gap $1/(2n) < 1/(n-1)$ is not closed, and even the correct order of magnitude is unknown. The problem is closely related to the Zarankiewicz problem $z(m; C_{2n})$ on $C_{2n}$-free graphs.",

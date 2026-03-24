@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/1055",
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: infinitely_many_in_each_class (infinitely many primes per class), erdos_growth_conjecture (p_r^(1/r) tends to infinity), selfridge_bounded_conjecture (p_r^(1/r) is bounded), class_density_subpolynomial (class-r primes have n^o(1) density)",
-    "lineCount": 305,
+    "lineCount": 206,
     "theoremCount": 36,
     "definitionCount": 4
   },
@@ -52,14 +52,14 @@
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 130,
-      "endLine": 254,
+      "endLine": 206,
       "summary": "Proves key structural results: class monotonicity ($c(q) < c(p)$ for nonSmooth factors), class-1 characterization ($c(p)=1 \\iff p+1$ is $3$-smooth), and positivity ($c(p) \\ge 1$ for primes). All fully proved with 0 sorries."
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures (OPEN)",
-      "startLine": 275,
-      "endLine": 305,
+      "startLine": 196,
+      "endLine": 206,
       "summary": "States the OPEN conjectures as axioms: infinitude of each class, Erd\u0151s growth conjecture ($p_r^{1/r} \\to \\infty$), Selfridge bounded conjecture ($p_r^{1/r}$ bounded), and subpolynomial density of each class."
     }
   ],
@@ -164,7 +164,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 305,
+    "lineCount": 206,
     "axiomCount": 4,
     "theoremCount": 36,
     "definitionCount": 4

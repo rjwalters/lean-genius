@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #1003** asks: Are there infinitely many n with φ(n) = φ(n+1)?\n\nThe Euler totient function φ(n) counts integers from 1 to n that are coprime to n. The question is whether consecutive integers can have equal totient values infinitely often.\n\n**Status**: OPEN — The conjecture is believed true but unproved.",
+    "content": "**Erd\u0151s Problem #1003** asks: Are there infinitely many n with \u03c6(n) = \u03c6(n+1)?\n\nThe Euler totient function \u03c6(n) counts integers from 1 to n that are coprime to n. The question is whether consecutive integers can have equal totient values infinitely often.\n\n**Status**: OPEN \u2014 The conjecture is believed true but unproved.",
     "mathContext": "Known solutions form OEIS A001274: 1, 3, 15, 104, 164, 194, 255, ... The sequence appears infinite computationally, but a proof remains elusive.",
     "significance": "key",
     "relatedConcepts": [
@@ -26,7 +26,7 @@
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import:\n- **Nat.Totient**: Euler's totient function φ\n- **Set.Finite.Basic**: Predicates for infinite sets\n- **Filter.AtTopBot**: The 'eventually' quantifier for asymptotic statements\n- **SpecialFunctions.Pow.Real**: Real exponentiation for bounds\n- **SpecialFunctions.Log.Basic**: Logarithms for the EPS bound",
+    "content": "We import:\n- **Nat.Totient**: Euler's totient function \u03c6\n- **Set.Finite.Basic**: Predicates for infinite sets\n- **Filter.AtTopBot**: The 'eventually' quantifier for asymptotic statements\n- **SpecialFunctions.Pow.Real**: Real exponentiation for bounds\n- **SpecialFunctions.Log.Basic**: Logarithms for the EPS bound",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -44,7 +44,7 @@
     },
     "type": "concept",
     "title": "Euler Totient Background",
-    "content": "The **Euler totient function** φ(n) satisfies:\n\n- φ(1) = 1\n- φ(p) = p - 1 for prime p\n- φ(p^k) = p^(k-1)(p - 1) for prime power\n- φ(mn) = φ(m)φ(n) when gcd(m,n) = 1\n\nThese properties determine φ completely via prime factorization.",
+    "content": "The **Euler totient function** \u03c6(n) satisfies:\n\n- \u03c6(1) = 1\n- \u03c6(p) = p - 1 for prime p\n- \u03c6(p^k) = p^(k-1)(p - 1) for prime power\n- \u03c6(mn) = \u03c6(m)\u03c6(n) when gcd(m,n) = 1\n\nThese properties determine \u03c6 completely via prime factorization.",
     "mathContext": "For consecutive n and n+1, we have gcd(n, n+1) = 1 always. So their totients depend on completely disjoint prime factorizations, making equal values surprising.",
     "significance": "key",
     "relatedConcepts": [
@@ -61,9 +61,9 @@
       "endLine": 56
     },
     "type": "concept",
-    "title": "When Can φ(n) = φ(n+1)?",
-    "content": "For φ(n) = φ(n+1) to hold, the prime factorizations must **conspire** to produce equal products.\n\n**Examples**:\n- n = 1: φ(1) = 1, φ(2) = 1 ✓\n- n = 3: φ(3) = 2, φ(4) = 2 ✓  \n- n = 15: φ(15) = 8, φ(16) = 8 ✓\n- n = 104: φ(104) = 48, φ(105) = 48 ✓",
-    "mathContext": "A common pattern: powers of 2 (which have totient 2^(k-1)) matching products of small primes. For instance, φ(16) = 8 = φ(15) = φ(3)φ(5) = 2×4.",
+    "title": "When Can \u03c6(n) = \u03c6(n+1)?",
+    "content": "For \u03c6(n) = \u03c6(n+1) to hold, the prime factorizations must **conspire** to produce equal products.\n\n**Examples**:\n- n = 1: \u03c6(1) = 1, \u03c6(2) = 1 \u2713\n- n = 3: \u03c6(3) = 2, \u03c6(4) = 2 \u2713  \n- n = 15: \u03c6(15) = 8, \u03c6(16) = 8 \u2713\n- n = 104: \u03c6(104) = 48, \u03c6(105) = 48 \u2713",
+    "mathContext": "A common pattern: powers of 2 (which have totient 2^(k-1)) matching products of small primes. For instance, \u03c6(16) = 8 = \u03c6(15) = \u03c6(3)\u03c6(5) = 2\u00d74.",
     "significance": "key",
     "relatedConcepts": [
       "prime factorization",
@@ -80,8 +80,8 @@
     },
     "type": "definition",
     "title": "The Solution Set",
-    "content": "**ConsecutiveEqualTotients** is the set of n where φ(n) = φ(n+1):\n\n```\ndef ConsecutiveEqualTotients : Set ℕ :=\n  { n : ℕ | φ n = φ (n + 1) }\n```\n\nThe main conjecture states this set is infinite.",
-    "mathContext": "Using Mathlib's native Nat.totient (denoted φ in the open Nat namespace), the set membership is decidable for any specific n.",
+    "content": "**ConsecutiveEqualTotients** is the set of n where \u03c6(n) = \u03c6(n+1):\n\n```\ndef ConsecutiveEqualTotients : Set \u2115 :=\n  { n : \u2115 | \u03c6 n = \u03c6 (n + 1) }\n```\n\nThe main conjecture states this set is infinite.",
+    "mathContext": "Using Mathlib's native Nat.totient (denoted \u03c6 in the open Nat namespace), the set membership is decidable for any specific n.",
     "significance": "key",
     "relatedConcepts": [
       "set builder notation",
@@ -116,8 +116,8 @@
     },
     "type": "concept",
     "title": "Verified Examples",
-    "content": "We verify small solutions using **native_decide**:\n\n| n | φ(n) | φ(n+1) | Verification |\n|---|------|--------|-------------|\n| 1 | 1 | 1 | `native_decide` |\n| 3 | 2 | 2 | `native_decide` |\n| 15 | 8 | 8 | `native_decide` |\n| 104 | 48 | 48 | `native_decide` |\n\nThese confirm membership in ConsecutiveEqualTotients.",
-    "mathContext": "The native_decide tactic computes φ using Mathlib's implementation and checks equality. This provides machine-verified confirmation of each example.",
+    "content": "We verify small solutions using **native_decide**:\n\n| n | \u03c6(n) | \u03c6(n+1) | Verification |\n|---|------|--------|-------------|\n| 1 | 1 | 1 | `native_decide` |\n| 3 | 2 | 2 | `native_decide` |\n| 15 | 8 | 8 | `native_decide` |\n| 104 | 48 | 48 | `native_decide` |\n\nThese confirm membership in ConsecutiveEqualTotients.",
+    "mathContext": "The native_decide tactic computes \u03c6 using Mathlib's implementation and checks equality. This provides machine-verified confirmation of each example.",
     "significance": "supporting",
     "relatedConcepts": [
       "native_decide",
@@ -134,8 +134,8 @@
     },
     "type": "definition",
     "title": "Consecutive k Equal Values",
-    "content": "**ConsecutiveKEqualTotients(k)** is the set where k+1 consecutive totients are equal:\n\n```\ndef ConsecutiveKEqualTotients (k : ℕ) : Set ℕ :=\n  { n : ℕ | ∀ i ≤ k, φ n = φ (n + i) }\n```\n\n**Erdős's Stronger Conjecture**: For every k ≥ 1, this set is infinite.",
-    "mathContext": "The k = 0 case is trivially true (every n satisfies φ(n) = φ(n)). The k = 1 case is the main conjecture. The k = 2 case (triples) is known to have solutions like n = 5186.",
+    "content": "**ConsecutiveKEqualTotients(k)** is the set where k+1 consecutive totients are equal:\n\n```\ndef ConsecutiveKEqualTotients (k : \u2115) : Set \u2115 :=\n  { n : \u2115 | \u2200 i \u2264 k, \u03c6 n = \u03c6 (n + i) }\n```\n\n**Erd\u0151s's Stronger Conjecture**: For every k \u2265 1, this set is infinite.",
+    "mathContext": "The k = 0 case is trivially true (every n satisfies \u03c6(n) = \u03c6(n)). The k = 1 case is the main conjecture. The k = 2 case (triples) is known to have solutions like n = 5186.",
     "significance": "key",
     "relatedConcepts": [
       "generalization",
@@ -151,14 +151,14 @@
       "endLine": 163
     },
     "type": "context",
-    "title": "Erdős-Pomerance-Sárközy Upper Bound",
-    "content": "**EPS [1987]** proved: the count of n ≤ x with φ(n) = φ(n+1) is at most:\n\n$$\\frac{x}{\\exp((\\log x)^{1/3})}$$\n\nThis is a **strong sparsity result**. Even if infinite, solutions are very rare.\n\nFor x = 10^6: bound ≈ 10^6 / e^10 ≈ 45 solutions (actual: ~25)",
+    "title": "Erd\u0151s-Pomerance-S\u00e1rk\u00f6zy Upper Bound",
+    "content": "**EPS [1987]** proved: the count of n \u2264 x with \u03c6(n) = \u03c6(n+1) is at most:\n\n$$\\frac{x}{\\exp((\\log x)^{1/3})}$$\n\nThis is a **strong sparsity result**. Even if infinite, solutions are very rare.\n\nFor x = 10^6: bound \u2248 10^6 / e^10 \u2248 45 solutions (actual: ~25)",
     "mathContext": "The bound exp((log x)^(1/3)) grows faster than any polynomial in log x but slower than any power of x. This is sometimes written as x/exp((log x)^(1/3+o(1))).",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic density",
       "upper bound",
-      "Erdős-Pomerance-Sárközy"
+      "Erd\u0151s-Pomerance-S\u00e1rk\u00f6zy"
     ]
   },
   {
@@ -170,7 +170,7 @@
     },
     "type": "concept",
     "title": "OEIS A001274",
-    "content": "The sequence of n where φ(n) = φ(n+1) begins:\n\n1, 3, 15, 104, 164, 194, 255, 495, 584, 975, 2204, 2625, 2834, 3255, 3705, **5186, 5187**, 10604, 11715, 13365, ...\n\nNote: **5186 and 5187** are consecutive members, meaning φ(5186) = φ(5187) = φ(5188). This is a triple!",
+    "content": "The sequence of n where \u03c6(n) = \u03c6(n+1) begins:\n\n1, 3, 15, 104, 164, 194, 255, 495, 584, 975, 2204, 2625, 2834, 3255, 3705, **5186, 5187**, 10604, 11715, 13365, ...\n\nNote: **5186 and 5187** are consecutive members, meaning \u03c6(5186) = \u03c6(5187) = \u03c6(5188). This is a triple!",
     "significance": "supporting",
     "relatedConcepts": [
       "OEIS",
@@ -188,7 +188,7 @@
     },
     "type": "concept",
     "title": "Connection to Carmichael's Conjecture",
-    "content": "**Carmichael's Totient Conjecture**: Every value in the range of φ is achieved at least twice.\n\nIn Lean:\n```\ndef carmichael_totient_conjecture : Prop :=\n  ∀ n ≥ 1, ∃ m, m ≠ n ∧ φ m = φ n\n```\n\nThis is also OPEN and would imply that totient values have 'multiplicity'.",
+    "content": "**Carmichael's Totient Conjecture**: Every value in the range of \u03c6 is achieved at least twice.\n\nIn Lean:\n```\ndef carmichael_totient_conjecture : Prop :=\n  \u2200 n \u2265 1, \u2203 m, m \u2260 n \u2227 \u03c6 m = \u03c6 n\n```\n\nThis is also OPEN and would imply that totient values have 'multiplicity'.",
     "mathContext": "If every totient value appears at least twice, consecutive equal values become more plausible. The two conjectures are related but neither implies the other directly.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -205,9 +205,9 @@
       "endLine": 227
     },
     "type": "concept",
-    "title": "Why φ(15) = φ(16)",
-    "content": "**The 15/16 coincidence**:\n\n- 15 = 3 × 5 → φ(15) = (3-1)(5-1) = 2 × 4 = **8**\n- 16 = 2⁴ → φ(16) = 2³ = **8**\n\nThe product of (p-1) for small primes 3 and 5 equals the power of 2 from 16.\n\nThis pattern recurs: powers of 2 often match products of small odd primes.",
-    "mathContext": "More generally, φ(2^k) = 2^(k-1). To match this with φ(2^k - 1), we need the factorization of 2^k - 1 to produce 2^(k-1) as a product of (p-1) terms.",
+    "title": "Why \u03c6(15) = \u03c6(16)",
+    "content": "**The 15/16 coincidence**:\n\n- 15 = 3 \u00d7 5 \u2192 \u03c6(15) = (3-1)(5-1) = 2 \u00d7 4 = **8**\n- 16 = 2\u2074 \u2192 \u03c6(16) = 2\u00b3 = **8**\n\nThe product of (p-1) for small primes 3 and 5 equals the power of 2 from 16.\n\nThis pattern recurs: powers of 2 often match products of small odd primes.",
+    "mathContext": "More generally, \u03c6(2^k) = 2^(k-1). To match this with \u03c6(2^k - 1), we need the factorization of 2^k - 1 to produce 2^(k-1) as a product of (p-1) terms.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mersenne numbers",
@@ -223,15 +223,15 @@
       "endLine": 237
     },
     "type": "concept",
-    "title": "Why φ(104) = φ(105)",
-    "content": "**The 104/105 coincidence**:\n\n- 104 = 2³ × 13 → φ(104) = 4 × 12 = **48**\n- 105 = 3 × 5 × 7 → φ(105) = 2 × 4 × 6 = **48**\n\nHere a prime power (2³) paired with prime 13 matches a product of three small primes.",
+    "title": "Why \u03c6(104) = \u03c6(105)",
+    "content": "**The 104/105 coincidence**:\n\n- 104 = 2\u00b3 \u00d7 13 \u2192 \u03c6(104) = 4 \u00d7 12 = **48**\n- 105 = 3 \u00d7 5 \u00d7 7 \u2192 \u03c6(105) = 2 \u00d7 4 \u00d7 6 = **48**\n\nHere a prime power (2\u00b3) paired with prime 13 matches a product of three small primes.",
     "significance": "supporting",
     "relatedConcepts": [
       "totient computation",
       "prime factorization",
       "numerical coincidences"
     ],
-    "mathContext": "See annotation content for formal details of why φ(104) = φ(105)"
+    "mathContext": "See annotation content for formal details of why \u03c6(104) = \u03c6(105)"
   },
   {
     "id": "ann-e1003-triple",
@@ -242,8 +242,8 @@
     },
     "type": "context",
     "title": "The Consecutive Triple",
-    "content": "**Remarkable fact**: φ(5186) = φ(5187) = φ(5188) = 1728\n\nThree consecutive integers with equal totient is much rarer than pairs.\n\nFactorizations:\n- 5186 = 2 × 2593\n- 5187 = 3 × 7 × 13 × 19 → φ = 2 × 6 × 12 × 18 = 2592... (axiomatized as 1728)\n- 5188 = 2² × 1297\n\nThe triple is axiomatized rather than verified by native_decide due to the large numbers involved.",
-    "mathContext": "Three consecutive integers with equal totient is much rarer than pairs. The existence of such triples supports the stronger Erdős conjecture for k = 2.",
+    "content": "**Remarkable fact**: \u03c6(5186) = \u03c6(5187) = \u03c6(5188) = 1728\n\nThree consecutive integers with equal totient is much rarer than pairs.\n\nFactorizations:\n- 5186 = 2 \u00d7 2593\n- 5187 = 3 \u00d7 7 \u00d7 13 \u00d7 19 \u2192 \u03c6 = 2 \u00d7 6 \u00d7 12 \u00d7 18 = 2592... (axiomatized as 1728)\n- 5188 = 2\u00b2 \u00d7 1297\n\nThe triple is axiomatized rather than verified by native_decide due to the large numbers involved.",
+    "mathContext": "Three consecutive integers with equal totient is much rarer than pairs. The existence of such triples supports the stronger Erd\u0151s conjecture for k = 2.",
     "significance": "key",
     "relatedConcepts": [
       "consecutive triples",
@@ -256,12 +256,12 @@
     "proofId": "erdos-1003",
     "range": {
       "startLine": 261,
-      "endLine": 280
+      "endLine": 276
     },
     "type": "context",
     "title": "Ford-Luca-Pomerance Lower Bound",
-    "content": "**FLP [2007]** proved: for any ε > 0, eventually the count of solutions up to x exceeds x^(1-ε).\n\n```\naxiom flp_lower_bound (ε : ℝ) (hε : 0 < ε) :\n    ∀ᶠ x : ℕ in atTop, (x : ℝ) ^ (1 - ε) ≤ \n      (countConsecutiveEqual x : ℝ)\n```\n\nThis would imply infinitely many solutions, effectively settling the conjecture.",
-    "mathContext": "The FLP result combined with the EPS upper bound of x/exp((log x)^(1/3)) brackets the count between x^(1-ε) and x^(1-o(1)). Both bounds are sub-linear in x, consistent with solutions being common but still sparse among all integers.",
+    "content": "**FLP [2007]** proved: for any \u03b5 > 0, eventually the count of solutions up to x exceeds x^(1-\u03b5).\n\n```\naxiom flp_lower_bound (\u03b5 : \u211d) (h\u03b5 : 0 < \u03b5) :\n    \u2200\u1da0 x : \u2115 in atTop, (x : \u211d) ^ (1 - \u03b5) \u2264 \n      (countConsecutiveEqual x : \u211d)\n```\n\nThis would imply infinitely many solutions, effectively settling the conjecture.",
+    "mathContext": "The FLP result combined with the EPS upper bound of x/exp((log x)^(1/3)) brackets the count between x^(1-\u03b5) and x^(1-o(1)). Both bounds are sub-linear in x, consistent with solutions being common but still sparse among all integers.",
     "significance": "key",
     "relatedConcepts": [
       "lower bound",

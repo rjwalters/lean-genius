@@ -8,9 +8,9 @@
     },
     "type": "definition",
     "title": "Cosine Sum Function",
-    "content": "**cosineSum A θ** = ∑_{n ∈ A} cos(nθ). The cosine sum of a finite set A ⊂ ℕ at angle θ ∈ ℝ.",
+    "content": "**cosineSum A \u03b8** = \u2211_{n \u2208 A} cos(n\u03b8). The cosine sum of a finite set A \u2282 \u2115 at angle \u03b8 \u2208 \u211d.",
     "significance": "key",
-    "mathContext": "The cosine sum Re(∑_{n ∈ A} e^{inθ}) = ∑_{n ∈ A} cos(nθ) is the real part of the **exponential sum** (or trigonometric polynomial) f_A(θ) = ∑_{n ∈ A} e^{inθ}. By Parseval's theorem, ∫₀²π |f_A(θ)|² dθ/(2π) = |A| = N, so the average of |f_A|² is N. Since f_A(0) = N (the maximum), the question is how *negative* the real part can be at some other angle. The cosine sum is a **real-valued trigonometric polynomial** of degree max(A), and by the intermediate value theorem, it must achieve negative values (since its average over [0, 2π] is 0 for sets not containing 0). The Lean definition uses `Finset.sum` and `Real.cos` from Mathlib.",
+    "mathContext": "The cosine sum Re(\u2211_{n \u2208 A} e^{in\u03b8}) = \u2211_{n \u2208 A} cos(n\u03b8) is the real part of the **exponential sum** (or trigonometric polynomial) f_A(\u03b8) = \u2211_{n \u2208 A} e^{in\u03b8}. By Parseval's theorem, \u222b\u2080\u00b2\u03c0 |f_A(\u03b8)|\u00b2 d\u03b8/(2\u03c0) = |A| = N, so the average of |f_A|\u00b2 is N. Since f_A(0) = N (the maximum), the question is how *negative* the real part can be at some other angle. The cosine sum is a **real-valued trigonometric polynomial** of degree max(A), and by the intermediate value theorem, it must achieve negative values (since its average over [0, 2\u03c0] is 0 for sets not containing 0). The Lean definition uses `Finset.sum` and `Real.cos` from Mathlib.",
     "relatedConcepts": [
       "exponential sums",
       "trigonometric polynomials",
@@ -31,9 +31,9 @@
     },
     "type": "definition",
     "title": "Minimum Cosine Sum",
-    "content": "**minCosineSum A** = inf_θ cosineSum(A, θ). The infimum of the cosine sum over all angles, measuring the 'most negative' the sum can be.",
+    "content": "**minCosineSum A** = inf_\u03b8 cosineSum(A, \u03b8). The infimum of the cosine sum over all angles, measuring the 'most negative' the sum can be.",
     "significance": "key",
-    "mathContext": "The minimum cosine sum m(A) = inf_{θ ∈ ℝ} ∑_{n ∈ A} cos(nθ) is the central quantity. Since cosineSum is a continuous periodic function (period 2π), the infimum is actually a minimum, achieved at some θ* ∈ [0, 2π]. The Lean formalization uses `iInf` (infimum over the type ℝ), which is well-defined in the complete lattice structure of ℝ ∪ {±∞}. Chowla's conjecture asserts m(A) < −c√N for all |A| = N, while the known bound is m(A) < −cN^{1/7}. The trivial bound is m(A) ≥ −N (when all cosines are −1, which cannot happen simultaneously for distinct n), and the average value ∫ cosineSum dθ / (2π) = 0 shows the minimum must be negative for non-trivial A.",
+    "mathContext": "The minimum cosine sum m(A) = inf_{\u03b8 \u2208 \u211d} \u2211_{n \u2208 A} cos(n\u03b8) is the central quantity. Since cosineSum is a continuous periodic function (period 2\u03c0), the infimum is actually a minimum, achieved at some \u03b8* \u2208 [0, 2\u03c0]. The Lean formalization uses `iInf` (infimum over the type \u211d), which is well-defined in the complete lattice structure of \u211d \u222a {\u00b1\u221e}. Chowla's conjecture asserts m(A) < \u2212c\u221aN for all |A| = N, while the known bound is m(A) < \u2212cN^{1/7}. The trivial bound is m(A) \u2265 \u2212N (when all cosines are \u22121, which cannot happen simultaneously for distinct n), and the average value \u222b cosineSum d\u03b8 / (2\u03c0) = 0 shows the minimum must be negative for non-trivial A.",
     "relatedConcepts": [
       "iInf",
       "continuous periodic functions",
@@ -53,14 +53,14 @@
       "endLine": 41
     },
     "type": "technique",
-    "title": "Chowla's Cosine Conjecture (Erdős #510)",
-    "content": "**erdos_510_chowla**: ∃ c > 0 such that for all finite A ⊂ ℕ⁺ of size N > 0, ∃ θ with cosineSum(A, θ) < −c√N. The minimum cosine sum of any set of N positive integers is at most −Ω(√N).",
+    "title": "Chowla's Cosine Conjecture (Erd\u0151s #510)",
+    "content": "**erdos_510_chowla**: \u2203 c > 0 such that for all finite A \u2282 \u2115\u207a of size N > 0, \u2203 \u03b8 with cosineSum(A, \u03b8) < \u2212c\u221aN. The minimum cosine sum of any set of N positive integers is at most \u2212\u03a9(\u221aN).",
     "significance": "key",
-    "mathContext": "**Sarvadaman Chowla** posed this problem, which Erdős publicized. The conjecture asserts a *universal* lower bound on how negative a cosine sum must become: no matter how cleverly A is chosen, some angle θ forces the sum below −c√N. The exponent 1/2 is **optimal**: Sidon difference sets achieve min cosine sum ≈ −√N (the `sidon_optimality` axiom). The conjecture is equivalent to saying the **L^∞ norm** of the trigonometric polynomial f_A(θ) = ∑ e^{inθ} satisfies max_θ |Re f_A(θ)| ≥ c√N, which by Parseval (‖f_A‖₂² = N) would follow from suitable *anti-concentration* of f_A. The problem appears as **Problem 81** on Ben Green's list of open problems in additive combinatorics. The Lean formalization quantifies: ∃ c > 0, ∀ A (positive, non-empty), ∃ θ, cosineSum A θ < −c · √(|A|).",
+    "mathContext": "**Sarvadaman Chowla** posed this problem, which Erd\u0151s publicized. The conjecture asserts a *universal* lower bound on how negative a cosine sum must become: no matter how cleverly A is chosen, some angle \u03b8 forces the sum below \u2212c\u221aN. The exponent 1/2 is **optimal**: Sidon difference sets achieve min cosine sum \u2248 \u2212\u221aN (the `sidon_optimality` axiom). The conjecture is equivalent to saying the **L^\u221e norm** of the trigonometric polynomial f_A(\u03b8) = \u2211 e^{in\u03b8} satisfies max_\u03b8 |Re f_A(\u03b8)| \u2265 c\u221aN, which by Parseval (\u2016f_A\u2016\u2082\u00b2 = N) would follow from suitable *anti-concentration* of f_A. The problem appears as **Problem 81** on Ben Green's list of open problems in additive combinatorics. The Lean formalization quantifies: \u2203 c > 0, \u2200 A (positive, non-empty), \u2203 \u03b8, cosineSum A \u03b8 < \u2212c \u00b7 \u221a(|A|).",
     "relatedConcepts": [
       "Chowla's conjecture",
       "exponential sum anti-concentration",
-      "L^∞ norm",
+      "L^\u221e norm",
       "Green's Problem 81"
     ],
     "prerequisites": [
@@ -77,9 +77,9 @@
     },
     "type": "technique",
     "title": "Bedert's Polynomial Bound (2025)",
-    "content": "**bedert_bound**: ∃ c > 0 such that for all finite A ⊂ ℕ⁺ of size N, ∃ θ with cosineSum(A, θ) < −c · N^{1/7}. The first polynomial bound toward Chowla's conjecture.",
+    "content": "**bedert_bound**: \u2203 c > 0 such that for all finite A \u2282 \u2115\u207a of size N, \u2203 \u03b8 with cosineSum(A, \u03b8) < \u2212c \u00b7 N^{1/7}. The first polynomial bound toward Chowla's conjecture.",
     "significance": "key",
-    "mathContext": "**Benjamin Bedert's 2025 result** was a major breakthrough: the first **polynomial bound** for Chowla's cosine problem, proving min_θ ∑ cos(nθ) < −cN^{1/7}. Prior to this, the best known bound was Ruzsa's (2004) sub-polynomial −exp(c√(log N)), which only barely exceeded the trivial −c₀ bound. Bedert's proof uses techniques from **additive combinatorics** — likely involving Freiman-type structural theorems and energy estimates — to show that sets with small negative cosine sums must have additive structure, which can then be exploited. The exponent 1/7 is far from the conjectured 1/2, leaving substantial room for improvement. **Jin, Milojević, Tomon, and Zhang (2025)** independently proved a polynomial bound around the same time, confirming the polynomial threshold. The formalization uses `(A.card : ℝ) ^ (1/7 : ℝ)` via `Real.rpow`.",
+    "mathContext": "**Benjamin Bedert's 2025 result** was a major breakthrough: the first **polynomial bound** for Chowla's cosine problem, proving min_\u03b8 \u2211 cos(n\u03b8) < \u2212cN^{1/7}. Prior to this, the best known bound was Ruzsa's (2004) sub-polynomial \u2212exp(c\u221a(log N)), which only barely exceeded the trivial \u2212c\u2080 bound. Bedert's proof uses techniques from **additive combinatorics** \u2014 likely involving Freiman-type structural theorems and energy estimates \u2014 to show that sets with small negative cosine sums must have additive structure, which can then be exploited. The exponent 1/7 is far from the conjectured 1/2, leaving substantial room for improvement. **Jin, Milojevi\u0107, Tomon, and Zhang (2025)** independently proved a polynomial bound around the same time, confirming the polynomial threshold. The formalization uses `(A.card : \u211d) ^ (1/7 : \u211d)` via `Real.rpow`.",
     "relatedConcepts": [
       "polynomial bounds",
       "Bedert's 2025 breakthrough",
@@ -100,13 +100,13 @@
     },
     "type": "concept",
     "title": "Prior Bounds: Bourgain (1986) and Ruzsa (2004)",
-    "content": "**Bourgain (1986)** gave the first non-trivial bound for Chowla's problem. **Ruzsa (2004)** improved it to min_θ ∑ cos(nθ) < −exp(c√(log N)), which stood as the best bound for nearly 20 years until the 2025 polynomial breakthroughs.",
+    "content": "**Bourgain (1986)** gave the first non-trivial bound for Chowla's problem. **Ruzsa (2004)** improved it to min_\u03b8 \u2211 cos(n\u03b8) < \u2212exp(c\u221a(log N)), which stood as the best bound for nearly 20 years until the 2025 polynomial breakthroughs.",
     "significance": "key",
-    "mathContext": "**Jean Bourgain's 1986 result** was the first proof that the minimum cosine sum must be at least slightly negative in N: better than −c₀ (constant), but the bound was sub-polynomial. **Imre Ruzsa (2004)** improved this to −exp(c√(log N)), a 'quasi-polynomial' bound that grows faster than any power of log N but slower than any polynomial N^ε. Ruzsa's proof used the **Balog-Szemerédi-Gowers theorem** and structural results about sets with small sumsets. The enormous gap between exp(√(log N)) and N^{1/2} persisted for 21 years until Bedert closed part of it. These bounds are mentioned in comments rather than formalized as axioms, since the focus is on the current best (Bedert) and the conjecture.",
+    "mathContext": "**Jean Bourgain's 1986 result** was the first proof that the minimum cosine sum must be at least slightly negative in N: better than \u2212c\u2080 (constant), but the bound was sub-polynomial. **Imre Ruzsa (2004)** improved this to \u2212exp(c\u221a(log N)), a 'quasi-polynomial' bound that grows faster than any power of log N but slower than any polynomial N^\u03b5. Ruzsa's proof used the **Balog-Szemer\u00e9di-Gowers theorem** and structural results about sets with small sumsets. The enormous gap between exp(\u221a(log N)) and N^{1/2} persisted for 21 years until Bedert closed part of it. These bounds are mentioned in comments rather than formalized as axioms, since the focus is on the current best (Bedert) and the conjecture.",
     "relatedConcepts": [
       "Bourgain's method",
       "Ruzsa's quasi-polynomial bound",
-      "Balog-Szemerédi-Gowers theorem",
+      "Balog-Szemer\u00e9di-Gowers theorem",
       "history of exponential sum bounds"
     ],
     "prerequisites": []
@@ -119,12 +119,12 @@
       "endLine": 66
     },
     "type": "technique",
-    "title": "Sidon Set Optimality: √N Cannot Be Improved",
-    "content": "**sidon_optimality**: For any ε > 0, there exists a finite A ⊂ ℕ⁺ with min_θ cosineSum(A, θ) > −(1+ε)√N. The conjectured exponent 1/2 is best possible.",
+    "title": "Sidon Set Optimality: \u221aN Cannot Be Improved",
+    "content": "**sidon_optimality**: For any \u03b5 > 0, there exists a finite A \u2282 \u2115\u207a with min_\u03b8 cosineSum(A, \u03b8) > \u2212(1+\u03b5)\u221aN. The conjectured exponent 1/2 is best possible.",
     "significance": "key",
-    "mathContext": "The optimality of √N follows from **Sidon sets** (B₂ sets): sets B where all pairwise sums b₁ + b₂ are distinct. If B is a Sidon set of size m, then A = B − B = {b − b' : b, b' ∈ B} has size |A| ≈ m² (since differences of Sidon elements are almost all distinct). The cosine sum of A satisfies: cosineSum(A, θ) = |∑_{b ∈ B} e^{ibθ}|² − |B|, because A = B − B makes the cosine sum the squared modulus minus a constant. By Parseval, ∫|∑ e^{ibθ}|² = |B| = m, so the minimum of |∑ e^{ibθ}|² is close to 0, giving cosineSum ≈ −m ≈ −√|A|. This construction shows that the true order of the minimum cosine sum for worst-case sets is **exactly √N** — neither better nor worse. The formalization states this as: for any ε > 0, there exists A with min cosine sum > −(1+ε)√|A|.",
+    "mathContext": "The optimality of \u221aN follows from **Sidon sets** (B\u2082 sets): sets B where all pairwise sums b\u2081 + b\u2082 are distinct. If B is a Sidon set of size m, then A = B \u2212 B = {b \u2212 b' : b, b' \u2208 B} has size |A| \u2248 m\u00b2 (since differences of Sidon elements are almost all distinct). The cosine sum of A satisfies: cosineSum(A, \u03b8) = |\u2211_{b \u2208 B} e^{ib\u03b8}|\u00b2 \u2212 |B|, because A = B \u2212 B makes the cosine sum the squared modulus minus a constant. By Parseval, \u222b|\u2211 e^{ib\u03b8}|\u00b2 = |B| = m, so the minimum of |\u2211 e^{ib\u03b8}|\u00b2 is close to 0, giving cosineSum \u2248 \u2212m \u2248 \u2212\u221a|A|. This construction shows that the true order of the minimum cosine sum for worst-case sets is **exactly \u221aN** \u2014 neither better nor worse. The formalization states this as: for any \u03b5 > 0, there exists A with min cosine sum > \u2212(1+\u03b5)\u221a|A|.",
     "relatedConcepts": [
-      "Sidon sets (B₂ sets)",
+      "Sidon sets (B\u2082 sets)",
       "difference sets",
       "Parseval's theorem",
       "squared modulus representation"
@@ -139,19 +139,19 @@
     "proofId": "erdos-510",
     "range": {
       "startLine": 68,
-      "endLine": 80
+      "endLine": 79
     },
     "type": "concept",
     "title": "Additive Combinatorics Connection and 2025 Progress",
-    "content": "The cosine problem connects deeply to **additive combinatorics**: sets with small negative cosine sums must have restricted additive structure (few representation as differences). The 2025 polynomial breakthroughs by Bedert and by Jin-Milojević-Tomon-Zhang represent the first qualitative improvement since Bourgain's 1986 work.",
+    "content": "The cosine problem connects deeply to **additive combinatorics**: sets with small negative cosine sums must have restricted additive structure (few representation as differences). The 2025 polynomial breakthroughs by Bedert and by Jin-Milojevi\u0107-Tomon-Zhang represent the first qualitative improvement since Bourgain's 1986 work.",
     "significance": "key",
-    "mathContext": "The link to additive combinatorics is through the identity cosineSum(A, θ) = Re(∑_{n ∈ A} e^{inθ}). If A has small additive energy E(A) = |{(a,b,c,d) ∈ A⁴ : a+b = c+d}|, then by the **Wiener-Khintchine theorem**, ∫|f_A|⁴ = E(A), which constrains how 'spread out' |f_A|² can be, forcing large negative values of Re(f_A). Conversely, sets with large additive energy (like arithmetic progressions) have f_A concentrated at a few angles, making it easier to achieve large negative cosine sums. The problem thus reduces to understanding the **extremal additive structure** of sets minimizing max|Re(f_A)|. This appears as **Problem 81** on Green's list and is related to **Problem #256** on Erdős's list. The 2025 polynomial breakthroughs confirm that the exponent must be positive — sub-polynomial bounds are not sharp.",
+    "mathContext": "The link to additive combinatorics is through the identity cosineSum(A, \u03b8) = Re(\u2211_{n \u2208 A} e^{in\u03b8}). If A has small additive energy E(A) = |{(a,b,c,d) \u2208 A\u2074 : a+b = c+d}|, then by the **Wiener-Khintchine theorem**, \u222b|f_A|\u2074 = E(A), which constrains how 'spread out' |f_A|\u00b2 can be, forcing large negative values of Re(f_A). Conversely, sets with large additive energy (like arithmetic progressions) have f_A concentrated at a few angles, making it easier to achieve large negative cosine sums. The problem thus reduces to understanding the **extremal additive structure** of sets minimizing max|Re(f_A)|. This appears as **Problem 81** on Green's list and is related to **Problem #256** on Erd\u0151s's list. The 2025 polynomial breakthroughs confirm that the exponent must be positive \u2014 sub-polynomial bounds are not sharp.",
     "relatedConcepts": [
       "additive energy E(A)",
       "Wiener-Khintchine theorem",
       "additive structure of extremal sets",
       "Green's Problem 81",
-      "Erdős Problem #256"
+      "Erd\u0151s Problem #256"
     ],
     "prerequisites": []
   }

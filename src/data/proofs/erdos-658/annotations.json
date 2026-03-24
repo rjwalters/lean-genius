@@ -8,8 +8,8 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #658: Squares in Dense Grid Subsets**\n\nThis problem asks: if you take a large enough subset of an N×N integer grid (at least δN² points for some fixed δ > 0), must you always find four points forming the vertices of a square?\n\nThe answer is YES. This was proved by Furstenberg and Katznelson (1991) using the density Hales-Jewett theorem, with quantitative bounds by Solymosi (2004).",
-    "mathContext": "The problem asks about A ⊆ {1,...,N}² with |A| ≥ δN². For axis-aligned squares, the four vertices are (x,y), (x+d,y), (x,y+d), (x+d,y+d) for some d > 0.",
+    "content": "**Erd\u0151s Problem #658: Squares in Dense Grid Subsets**\n\nThis problem asks: if you take a large enough subset of an N\u00d7N integer grid (at least \u03b4N\u00b2 points for some fixed \u03b4 > 0), must you always find four points forming the vertices of a square?\n\nThe answer is YES. This was proved by Furstenberg and Katznelson (1991) using the density Hales-Jewett theorem, with quantitative bounds by Solymosi (2004).",
+    "mathContext": "The problem asks about A \u2286 {1,...,N}\u00b2 with |A| \u2265 \u03b4N\u00b2. For axis-aligned squares, the four vertices are (x,y), (x+d,y), (x,y+d), (x+d,y+d) for some d > 0.",
     "significance": "key",
     "relatedConcepts": [
       "density",
@@ -26,8 +26,8 @@
     },
     "type": "context",
     "title": "Imports and Setup",
-    "content": "**Mathlib Dependencies**\n\nThe formalization uses:\n- `Finset.Basic`: Core finite set operations\n- `Finset.Card`: Cardinality for counting points\n- `Prod.Basic`: Product types for grid coordinates (ℕ × ℕ)\n- `Int.Basic`: Integers for tilted square coordinates",
-    "mathContext": "The grid is represented as Finset (ℕ × ℕ), allowing finite subsets of lattice points.",
+    "content": "**Mathlib Dependencies**\n\nThe formalization uses:\n- `Finset.Basic`: Core finite set operations\n- `Finset.Card`: Cardinality for counting points\n- `Prod.Basic`: Product types for grid coordinates (\u2115 \u00d7 \u2115)\n- `Int.Basic`: Integers for tilted square coordinates",
+    "mathContext": "The grid is represented as Finset (\u2115 \u00d7 \u2115), allowing finite subsets of lattice points.",
     "significance": "supporting",
     "relatedConcepts": [
       "finset",
@@ -43,9 +43,9 @@
       "endLine": 65
     },
     "type": "definition",
-    "title": "The N × N Grid",
-    "content": "**Grid Definition**\n\nThe grid {1,...,N}² is defined as the Cartesian product of {0,...,N-1} with itself. The cardinality is N² points.\n\nThis is the ambient space for the problem: we consider subsets A of this grid and ask about their geometric structure.",
-    "mathContext": "grid(N) = (Finset.range N) × (Finset.range N), so |grid(N)| = N².",
+    "title": "The N \u00d7 N Grid",
+    "content": "**Grid Definition**\n\nThe grid {1,...,N}\u00b2 is defined as the Cartesian product of {0,...,N-1} with itself. The cardinality is N\u00b2 points.\n\nThis is the ambient space for the problem: we consider subsets A of this grid and ask about their geometric structure.",
+    "mathContext": "grid(N) = (Finset.range N) \u00d7 (Finset.range N), so |grid(N)| = N\u00b2.",
     "significance": "key",
     "relatedConcepts": [
       "Cartesian-product",
@@ -80,8 +80,8 @@
     },
     "type": "definition",
     "title": "General (Tilted) Squares",
-    "content": "**Tilted Squares**\n\nA tilted square has vertices at:\n- p₁ = (x, y)\n- p₂ = (x+a, y+b)\n- p₃ = (x-b, y+a)\n- p₄ = (x+a-b, y+b+a)\n\nThe vector (a,b) defines the direction of one side; the perpendicular vector (-b,a) gives the other sides.\n\nErdős's formulation may have included tilted squares, though this is unclear.",
-    "mathContext": "Tilted squares require integer coordinates, so a²+b² must be the squared side length. For example, a=2, b=1 gives side length √5.",
+    "content": "**Tilted Squares**\n\nA tilted square has vertices at:\n- p\u2081 = (x, y)\n- p\u2082 = (x+a, y+b)\n- p\u2083 = (x-b, y+a)\n- p\u2084 = (x+a-b, y+b+a)\n\nThe vector (a,b) defines the direction of one side; the perpendicular vector (-b,a) gives the other sides.\n\nErd\u0151s's formulation may have included tilted squares, though this is unclear.",
+    "mathContext": "Tilted squares require integer coordinates, so a\u00b2+b\u00b2 must be the squared side length. For example, a=2, b=1 gives side length \u221a5.",
     "significance": "key",
     "relatedConcepts": [
       "rotation",
@@ -98,7 +98,7 @@
     },
     "type": "definition",
     "title": "Density Definition",
-    "content": "**What is Density?**\n\nThe density of A in the N×N grid is:\n\nδ(A) = |A| / N²\n\nA set is δ-dense if its density is at least δ. The problem asks: for fixed δ > 0, if N is large enough, must every δ-dense set contain a square?",
+    "content": "**What is Density?**\n\nThe density of A in the N\u00d7N grid is:\n\n\u03b4(A) = |A| / N\u00b2\n\nA set is \u03b4-dense if its density is at least \u03b4. The problem asks: for fixed \u03b4 > 0, if N is large enough, must every \u03b4-dense set contain a square?",
     "mathContext": "Density ranges from 0 to 1. Higher density means more points. The theorem says any positive density suffices for large N.",
     "significance": "key",
     "relatedConcepts": [
@@ -116,8 +116,8 @@
     },
     "type": "technique",
     "title": "Graham's Conjecture",
-    "content": "**The Main Conjecture (Now Theorem)**\n\nFor any δ > 0, there exists N₀(δ) such that for all N ≥ N₀:\nEvery subset A of the N×N grid with |A| ≥ δN² contains an axis-aligned square.\n\nThis is stated as `GrahamConjectureAxisAligned` and proved via the axiom `graham_axis_aligned_true`.",
-    "mathContext": "The quantifier structure is: ∀δ>0, ∃N₀, ∀N≥N₀, ∀A with |A|≥δN², A contains a square.",
+    "content": "**The Main Conjecture (Now Theorem)**\n\nFor any \u03b4 > 0, there exists N\u2080(\u03b4) such that for all N \u2265 N\u2080:\nEvery subset A of the N\u00d7N grid with |A| \u2265 \u03b4N\u00b2 contains an axis-aligned square.\n\nThis is stated as `GrahamConjectureAxisAligned` and proved via the axiom `graham_axis_aligned_true`.",
+    "mathContext": "The quantifier structure is: \u2200\u03b4>0, \u2203N\u2080, \u2200N\u2265N\u2080, \u2200A with |A|\u2265\u03b4N\u00b2, A contains a square.",
     "significance": "key",
     "relatedConcepts": [
       "density-theorem",
@@ -134,8 +134,8 @@
     },
     "type": "technique",
     "title": "Main Result",
-    "content": "**Erdős Problem #658: SOLVED**\n\nThe theorem `erdos_658` asserts Graham's conjecture is true. The proof relies on:\n1. The density Hales-Jewett theorem (deep result)\n2. Squares are special cases of combinatorial lines\n3. Dense sets must contain these structures",
-    "mathContext": "The proof is non-constructive in the sense that N₀(δ) is not explicitly computed. Solymosi's quantitative version gives tower-type bounds.",
+    "content": "**Erd\u0151s Problem #658: SOLVED**\n\nThe theorem `erdos_658` asserts Graham's conjecture is true. The proof relies on:\n1. The density Hales-Jewett theorem (deep result)\n2. Squares are special cases of combinatorial lines\n3. Dense sets must contain these structures",
+    "mathContext": "The proof is non-constructive in the sense that N\u2080(\u03b4) is not explicitly computed. Solymosi's quantitative version gives tower-type bounds.",
     "significance": "key",
     "relatedConcepts": [
       "main-theorem",
@@ -152,7 +152,7 @@
     },
     "type": "concept",
     "title": "Density Hales-Jewett Theorem",
-    "content": "**The Deep Result**\n\nThe density Hales-Jewett theorem (Furstenberg-Katznelson 1991) states: For any δ > 0 and alphabet size k, there exists dimension n such that every δ-dense subset of [k]ⁿ contains a combinatorial line.\n\nA combinatorial line is a set of k points where each coordinate either varies from 1 to k together, or stays fixed.\n\nSquares in the grid correspond to dimension-2 structures that Hales-Jewett guarantees.",
+    "content": "**The Deep Result**\n\nThe density Hales-Jewett theorem (Furstenberg-Katznelson 1991) states: For any \u03b4 > 0 and alphabet size k, there exists dimension n such that every \u03b4-dense subset of [k]\u207f contains a combinatorial line.\n\nA combinatorial line is a set of k points where each coordinate either varies from 1 to k together, or stays fixed.\n\nSquares in the grid correspond to dimension-2 structures that Hales-Jewett guarantees.",
     "mathContext": "The theorem is one of the deepest in combinatorics. The polymath project gave an elementary proof in 2009, but bounds remain tower-type.",
     "significance": "key",
     "relatedConcepts": [
@@ -170,8 +170,8 @@
     },
     "type": "concept",
     "title": "Solymosi's Bounds",
-    "content": "**Quantitative Version (2004)**\n\nSolymosi gave the first explicit bounds: N₀(δ) can be computed as a function of 1/δ. However, the bounds are tower-type:\n\nN₀(δ) ≈ tower(c/δ)\n\nwhere tower(n) = 2^2^2^...^2 (n times).\n\nThese bounds are typical for Hales-Jewett-based proofs and are believed to be far from optimal.",
-    "mathContext": "Tower-type growth means the bounds are impractically large. For δ = 0.01, N₀ might be astronomical. Improving these bounds is an open problem.",
+    "content": "**Quantitative Version (2004)**\n\nSolymosi gave the first explicit bounds: N\u2080(\u03b4) can be computed as a function of 1/\u03b4. However, the bounds are tower-type:\n\nN\u2080(\u03b4) \u2248 tower(c/\u03b4)\n\nwhere tower(n) = 2^2^2^...^2 (n times).\n\nThese bounds are typical for Hales-Jewett-based proofs and are believed to be far from optimal.",
+    "mathContext": "Tower-type growth means the bounds are impractically large. For \u03b4 = 0.01, N\u2080 might be astronomical. Improving these bounds is an open problem.",
     "significance": "key",
     "relatedConcepts": [
       "tower-function",
@@ -188,8 +188,8 @@
     },
     "type": "technique",
     "title": "Small Cases",
-    "content": "**Concrete Examples**\n\nFor small grids:\n- 2×2: Any 3 points contain a square (trivially)\n- 3×3: With 5 out of 9 points (density > 1/2), squares exist\n\nHowever, the \"sufficiently large\" condition is necessary: for small N, one can construct δ-dense sets without squares.",
-    "mathContext": "The theorem only applies for N ≥ N₀(δ). For smaller N, counterexamples exist.",
+    "content": "**Concrete Examples**\n\nFor small grids:\n- 2\u00d72: Any 3 points contain a square (trivially)\n- 3\u00d73: With 5 out of 9 points (density > 1/2), squares exist\n\nHowever, the \"sufficiently large\" condition is necessary: for small N, one can construct \u03b4-dense sets without squares.",
+    "mathContext": "The theorem only applies for N \u2265 N\u2080(\u03b4). For smaller N, counterexamples exist.",
     "significance": "supporting",
     "relatedConcepts": [
       "small-cases",
@@ -206,7 +206,7 @@
     },
     "type": "concept",
     "title": "Generalizations",
-    "content": "**Higher Dimensions and Other Shapes**\n\nThe result generalizes:\n1. **Higher dimensions:** Dense subsets of {1,...,N}ᵈ contain d-dimensional cubes\n2. **Tilted squares:** Also exist in dense sets, by different methods\n3. **Other patterns:** Many geometric configurations are forced by density\n\nThese follow from the same Hales-Jewett machinery.",
+    "content": "**Higher Dimensions and Other Shapes**\n\nThe result generalizes:\n1. **Higher dimensions:** Dense subsets of {1,...,N}\u1d48 contain d-dimensional cubes\n2. **Tilted squares:** Also exist in dense sets, by different methods\n3. **Other patterns:** Many geometric configurations are forced by density\n\nThese follow from the same Hales-Jewett machinery.",
     "mathContext": "The d-dimensional version asks about hypercubes with 2^d vertices. The proof structure is similar but more complex.",
     "significance": "key",
     "relatedConcepts": [
@@ -220,12 +220,12 @@
     "proofId": "erdos-658",
     "range": {
       "startLine": 295,
-      "endLine": 331
+      "endLine": 330
     },
     "type": "technique",
     "title": "Summary",
-    "content": "**Complete Answer to Erdős #658**\n\nQuestion: Do dense grid subsets contain squares?\nAnswer: YES\n\nKey results:\n- `erdos_658_summary`: Combines main theorem with existence of threshold\n- `erdos_658_answer`: Explicit statement that dense sets contain squares\n\nThe proof uses the density Hales-Jewett theorem, one of the deepest results in combinatorics.",
-    "mathContext": "The summary theorem states both the qualitative result (squares exist) and the quantitative aspect (threshold N₀ exists).",
+    "content": "**Complete Answer to Erd\u0151s #658**\n\nQuestion: Do dense grid subsets contain squares?\nAnswer: YES\n\nKey results:\n- `erdos_658_summary`: Combines main theorem with existence of threshold\n- `erdos_658_answer`: Explicit statement that dense sets contain squares\n\nThe proof uses the density Hales-Jewett theorem, one of the deepest results in combinatorics.",
+    "mathContext": "The summary theorem states both the qualitative result (squares exist) and the quantitative aspect (threshold N\u2080 exists).",
     "significance": "key",
     "relatedConcepts": [
       "main-result",

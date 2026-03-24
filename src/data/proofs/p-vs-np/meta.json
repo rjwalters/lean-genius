@@ -39,7 +39,7 @@
     ],
     "dateAdded": "2025-12-29",
     "millenniumProblem": "p-vs-np",
-    "lineCount": 6777
+    "lineCount": 6370
   },
   "leanFile": {
     "path": "Proofs/PNPBarriersUnified.lean",
@@ -123,14 +123,14 @@
     ]
   },
   "overview": {
-    "historicalContext": "The P vs NP problem is one of the most important unsolved problems in mathematics and computer science, designated a Clay Mathematics Institute Millennium Prize Problem in 2000 with a $1,000,000 reward.\n\nThe foundations were laid by Alan Turing (1936) with the formalization of computation, and by Juris Hartmanis and Richard Stearns (1965) who established computational complexity theory with the Time Hierarchy Theorem. Stephen Cook (1971) formulated the P vs NP question and proved the Cook-Levin theorem, showing that the Boolean satisfiability problem (SAT) is NP-complete — the first problem shown to have this property. Leonid Levin independently proved the same result in 1973 in the Soviet Union.\n\nRichard Karp (1972) demonstrated the practical significance by showing 21 natural combinatorial problems are NP-complete via reduction chains from SAT, including CLIQUE, VERTEX COVER, HAMILTONIAN PATH, and SUBSET SUM. Russell Ladner (1975) proved that if P ≠ NP, then NP-intermediate problems must exist — problems in NP that are neither in P nor NP-complete.\n\nDespite over 50 years of effort, the problem remains open. Three major 'barrier results' explain why traditional proof techniques have failed: relativization (Baker-Gill-Solovay, 1975), natural proofs (Razborov-Rudich, 1994), and algebrization (Aaronson-Wigderson, 2009). Any proof must circumvent all three barriers simultaneously.",
+    "historicalContext": "The P vs NP problem is one of the most important unsolved problems in mathematics and computer science, designated a Clay Mathematics Institute Millennium Prize Problem in 2000 with a $1,000,000 reward.\n\nThe foundations were laid by Alan Turing (1936) with the formalization of computation, and by Juris Hartmanis and Richard Stearns (1965) who established computational complexity theory with the Time Hierarchy Theorem. Stephen Cook (1971) formulated the P vs NP question and proved the Cook-Levin theorem, showing that the Boolean satisfiability problem (SAT) is NP-complete \u2014 the first problem shown to have this property. Leonid Levin independently proved the same result in 1973 in the Soviet Union.\n\nRichard Karp (1972) demonstrated the practical significance by showing 21 natural combinatorial problems are NP-complete via reduction chains from SAT, including CLIQUE, VERTEX COVER, HAMILTONIAN PATH, and SUBSET SUM. Russell Ladner (1975) proved that if P \u2260 NP, then NP-intermediate problems must exist \u2014 problems in NP that are neither in P nor NP-complete.\n\nDespite over 50 years of effort, the problem remains open. Three major 'barrier results' explain why traditional proof techniques have failed: relativization (Baker-Gill-Solovay, 1975), natural proofs (Razborov-Rudich, 1994), and algebrization (Aaronson-Wigderson, 2009). Any proof must circumvent all three barriers simultaneously.",
     "problemStatement": "**Question**: Does $P = NP$?\n\n- $P$: problems solvable in polynomial time by a deterministic Turing machine\n- $NP$: problems verifiable in polynomial time given a certificate/witness\n- We know $P \\subseteq NP$, but is the reverse true?\n\n**Equivalent formulation**: Is there a polynomial-time algorithm for SAT (or any NP-complete problem)?",
     "text": "One of the seven Millennium Prize Problems. Can every problem whose solution can be verified quickly also be solved quickly?",
     "proofStrategy": "This formalization builds computational complexity theory from abstract foundations in 16 parts:\n\n1. **Computation model** (Parts 1-2): Abstract Turing machines, polynomial time bounds, closure properties\n2. **Complexity classes** (Parts 3-5): Definitions of $P$, $NP$, and proof that $P \\subseteq NP$\n3. **Reductions** (Parts 6-7): Polynomial-time reductions with transitivity and P-preservation proofs\n4. **NP-completeness** (Parts 8-12): SAT definition, Cook-Levin theorem, gallery of NP-complete problems\n5. **Structural results** (Parts 13-16): coNP, complement closure, the central conjecture, Ladner's theorem\n\nKey technical achievement: all polynomial arithmetic bounds (composition of time/output polynomials) are fully proved without sorry, requiring ~400 lines of careful `calc` chains.",
     "keyInsights": [
-      "**P ⊆ NP is constructive**: The proof builds a verifier from a solver by ignoring the certificate — if you can solve a problem, you can certainly verify a solution.",
+      "**P \u2286 NP is constructive**: The proof builds a verifier from a solver by ignoring the certificate \u2014 if you can solve a problem, you can certainly verify a solution.",
       "**Reduction transitivity requires output size bounds**: Without bounding $|f(x)|$ polynomially in $|x|$, composing reductions could yield super-polynomial time. The `PolyReduction` structure includes explicit `outputSize` bounds to handle this.",
-      "**NPC-in-P collapses NP**: The theorem `NPC_in_P_implies_P_eq_NP` shows that solving **any single** NP-complete problem efficiently would solve all of NP — the entire question reduces to one problem's tractability.",
+      "**NPC-in-P collapses NP**: The theorem `NPC_in_P_implies_P_eq_NP` shows that solving **any single** NP-complete problem efficiently would solve all of NP \u2014 the entire question reduces to one problem's tractability.",
       "**P is closed under complement; NP probably is not**: The proof that $L \\in P \\Leftrightarrow \\bar{L} \\in P$ (by negating the solver's output) contrasts with the widely-believed conjecture $NP \\neq \\text{coNP}$.",
       "**Barrier results explain the difficulty**: Relativization (1975), natural proofs (1994), and algebrization (2009) each rule out broad classes of proof techniques, showing that any resolution must use fundamentally new methods.",
       "**Abstract placeholders simplify structure**: All NP-complete problems use `fun _ => false` as a placeholder, making reductions trivial (identity). This lets the formalization focus on the complexity-theoretic framework rather than encoding details."
@@ -145,7 +145,7 @@
     {
       "id": "computation-model",
       "title": "Abstract Computation Model",
-      "summary": "Defines `DecisionProblem` as $L : \\mathbb{N} \\to \\text{Bool}$, `inputSize` as $\\lfloor \\log_2 n \\rfloor + 1$, `Program` as abstract TM with `decide : Nat → Bool × Nat`, and predicates `solves` and `runsInTime`.",
+      "summary": "Defines `DecisionProblem` as $L : \\mathbb{N} \\to \\text{Bool}$, `inputSize` as $\\lfloor \\log_2 n \\rfloor + 1$, `Program` as abstract TM with `decide : Nat \u2192 Bool \u00d7 Nat`, and predicates `solves` and `runsInTime`.",
       "startLine": 53,
       "endLine": 88
     },
@@ -174,7 +174,7 @@
     },
     {
       "id": "p-subset-np",
-      "title": "P ⊆ NP",
+      "title": "P \u2286 NP",
       "summary": "**Proved**: $P \\subseteq NP$ by constructing a verifier from a solver (ignoring the certificate). Fully constructive proof with careful polynomial bound arithmetic (~50 lines).",
       "mathContext": "$P \\subseteq NP$: if $M$ decides $L$ in time $p(n)$, define $V(x, c) = M(x)$ (ignore certificate). Verified in polynomial time.",
       "startLine": 193,
@@ -245,22 +245,22 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory problems are frequently NP-hard — determining Ramsey numbers is an NP-hard problem related to the CLIQUE problem formalized here"
+      "description": "Ramsey theory problems are frequently NP-hard \u2014 determining Ramsey numbers is an NP-hard problem related to the CLIQUE problem formalized here"
     },
     {
       "targetId": "erdos-szekeres",
       "relationship": "related",
-      "description": "The Erdős-Szekeres theorem connects to combinatorial optimization problems whose decision versions are often NP-complete"
+      "description": "The Erd\u0151s-Szekeres theorem connects to combinatorial optimization problems whose decision versions are often NP-complete"
     }
   ],
   "conclusion": {
     "summary": "This formalization provides a comprehensive framework for the P vs NP problem: abstract Turing machines, complexity classes P and NP, polynomial-time reductions with full closure proofs, NP-completeness via the Cook-Levin theorem, and structural results including coNP closure and Ladner's theorem. The key theorem P_subset_NP and all polynomial arithmetic bounds are fully proved (0 sorries); only the Cook-Levin reduction, Time Hierarchy, and Ladner's theorem require axioms.",
-    "implications": "**Theoretical Significance**: Resolution of P vs NP would have transformative implications across mathematics and technology.\n\nIf P = NP: public-key cryptography (RSA, Diffie-Hellman) would be insecure, many optimization problems in logistics, scheduling, and protein folding would become tractable, and mathematical proof search could be automated. If P ≠ NP (widely believed): it would establish fundamental limits on efficient computation, validate cryptographic security assumptions, and prove that creativity in problem-solving cannot be fully mechanized.",
+    "implications": "**Theoretical Significance**: Resolution of P vs NP would have transformative implications across mathematics and technology.\n\nIf P = NP: public-key cryptography (RSA, Diffie-Hellman) would be insecure, many optimization problems in logistics, scheduling, and protein folding would become tractable, and mathematical proof search could be automated. If P \u2260 NP (widely believed): it would establish fundamental limits on efficient computation, validate cryptographic security assumptions, and prove that creativity in problem-solving cannot be fully mechanized.",
     "openQuestions": [
-      "Does P = NP? The central open question — neither direction has been proved despite 50+ years of effort.",
+      "Does P = NP? The central open question \u2014 neither direction has been proved despite 50+ years of effort.",
       "Can the three barrier results (relativization, natural proofs, algebrization) be simultaneously circumvented by a new proof technique?",
       "Is Graph Isomorphism NP-intermediate? Babai (2015) showed it's in quasi-polynomial time, but its exact complexity remains unknown.",
-      "Does NP = coNP? This is closely related to P vs NP — if P ≠ NP, most complexity theorists believe NP ≠ coNP as well."
+      "Does NP = coNP? This is closely related to P vs NP \u2014 if P \u2260 NP, most complexity theorists believe NP \u2260 coNP as well."
     ]
   },
   "relatedProofs": [
@@ -274,8 +274,8 @@
       "authors": "Cook, Stephen A.",
       "title": "The complexity of theorem-proving procedures",
       "year": "1971",
-      "venue": "Proceedings of the Third Annual ACM Symposium on Theory of Computing, 151–158",
-      "note": "Introduced the concept of NP-completeness and proved that SAT is NP-complete — the foundation of the P vs NP problem"
+      "venue": "Proceedings of the Third Annual ACM Symposium on Theory of Computing, 151\u2013158",
+      "note": "Introduced the concept of NP-completeness and proved that SAT is NP-complete \u2014 the foundation of the P vs NP problem"
     },
     {
       "authors": "Arora, Sanjeev; Barak, Boaz",

@@ -8,11 +8,11 @@
     },
     "type": "concept",
     "title": "Module Header and Problem Overview",
-    "content": "The module docstring introduces Erdős Problem #768: given the set $A$ of positive integers where every prime divisor $p$ has a witness divisor $d > 1$ with $d \\equiv 1 \\pmod{p}$, determine the exact asymptotic density. Erdős proved two-sided bounds involving $\\exp(-c\\sqrt{\\log N} \\cdot \\log \\log N)$ and noted that $A$ bounds the count of non-cyclic simple group orders.",
-    "mathContext": "$A = \\{n \\in \\mathbb{N} : \\forall p \\mid n,\\; p \\text{ prime} \\implies \\exists d > 1,\\; d \\mid n,\\; d \\equiv 1 \\pmod{p}\\}$. Erdős: $\\exp(-c_2 f(N)) \\leq |A \\cap [1,N]|/N \\leq \\exp(-c_1 f(N))$ where $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$.",
+    "content": "The module docstring introduces Erd\u0151s Problem #768: given the set $A$ of positive integers where every prime divisor $p$ has a witness divisor $d > 1$ with $d \\equiv 1 \\pmod{p}$, determine the exact asymptotic density. Erd\u0151s proved two-sided bounds involving $\\exp(-c\\sqrt{\\log N} \\cdot \\log \\log N)$ and noted that $A$ bounds the count of non-cyclic simple group orders.",
+    "mathContext": "$A = \\{n \\in \\mathbb{N} : \\forall p \\mid n,\\; p \\text{ prime} \\implies \\exists d > 1,\\; d \\mid n,\\; d \\equiv 1 \\pmod{p}\\}$. Erd\u0151s: $\\exp(-c_2 f(N)) \\leq |A \\cap [1,N]|/N \\leq \\exp(-c_1 f(N))$ where $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős problems",
+      "Erd\u0151s problems",
       "asymptotic density",
       "witness divisors",
       "simple group orders"
@@ -122,8 +122,8 @@
       "endLine": 127
     },
     "type": "concept",
-    "title": "Erdős's Two-Sided Bounds and Main Conjecture",
-    "content": "Three axioms encode Erdős's results and the open question:\n\n1. **erdos_768_lower_bound**: $\\exists c > 0,\\; \\forall N \\geq 10,\\; d(N) \\geq \\exp(-c \\cdot f(N))$\n2. **erdos_768_upper_bound**: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; d(N) \\leq \\exp(-(1-\\varepsilon)\\sqrt{\\log N \\cdot \\log \\log N})$\n3. **erdos_768_conjecture**: Either $-\\log(d(N))/f(N) \\to c$ for some $c > 0$ (the constant exists), or no such limit exists\n\nNote the subtle difference: the lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$ while the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$. These are asymptotically different!",
+    "title": "Erd\u0151s's Two-Sided Bounds and Main Conjecture",
+    "content": "Three axioms encode Erd\u0151s's results and the open question:\n\n1. **erdos_768_lower_bound**: $\\exists c > 0,\\; \\forall N \\geq 10,\\; d(N) \\geq \\exp(-c \\cdot f(N))$\n2. **erdos_768_upper_bound**: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; d(N) \\leq \\exp(-(1-\\varepsilon)\\sqrt{\\log N \\cdot \\log \\log N})$\n3. **erdos_768_conjecture**: Either $-\\log(d(N))/f(N) \\to c$ for some $c > 0$ (the constant exists), or no such limit exists\n\nNote the subtle difference: the lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$ while the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$. These are asymptotically different!",
     "mathContext": "Lower: $d(N) \\geq \\exp(-c \\sqrt{\\log N} \\cdot \\log \\log N)$. Upper: $d(N) \\leq \\exp(-(1-\\varepsilon)\\sqrt{\\log N \\cdot \\log \\log N})$. The ratio $\\sqrt{\\log N} \\cdot \\log \\log N / \\sqrt{\\log N \\cdot \\log \\log N} = \\sqrt{\\log \\log N} \\to \\infty$, so the gap is unbounded.",
     "significance": "key",
     "relatedConcepts": [
@@ -212,11 +212,11 @@
     "proofId": "erdos-768",
     "range": {
       "startLine": 207,
-      "endLine": 231
+      "endLine": 230
     },
     "type": "concept",
     "title": "Main Open Problem Statement",
-    "content": "The combined axiom `erdos_768_main` states: $\\exists c_1, c_2$ with $0 < c_1 \\leq c_2$ such that for all $N \\geq 10$:\n\n$$\\exp(-c_2 \\cdot f(N)) \\leq d(N) \\leq \\exp(-c_1 \\cdot f(N))$$\n\nwhere $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$. The docstring above provides a self-contained summary of the entire problem: the definition of $A$, Erdős's bounds, the connection to simple groups, and the open question about the exact constant.",
+    "content": "The combined axiom `erdos_768_main` states: $\\exists c_1, c_2$ with $0 < c_1 \\leq c_2$ such that for all $N \\geq 10$:\n\n$$\\exp(-c_2 \\cdot f(N)) \\leq d(N) \\leq \\exp(-c_1 \\cdot f(N))$$\n\nwhere $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$. The docstring above provides a self-contained summary of the entire problem: the definition of $A$, Erd\u0151s's bounds, the connection to simple groups, and the open question about the exact constant.",
     "mathContext": "The formal statement asks for constants sandwiching the density: $\\exp(-c_2 f(N)) \\leq |A \\cap [1,N]|/N \\leq \\exp(-c_1 f(N))$. The open question is whether $c_1 = c_2$ can be achieved (i.e., whether the limit $\\lim -\\log(d(N))/f(N)$ exists).",
     "significance": "key",
     "relatedConcepts": [

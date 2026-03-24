@@ -1,6 +1,6 @@
 {
   "id": "erdos-44",
-  "title": "Erdős Problem #44: Extending Sidon Sets",
+  "title": "Erd\u0151s Problem #44: Extending Sidon Sets",
   "slug": "erdos-44",
   "description": "Can any Sidon set be extended to achieve near-optimal density (1-eps)sqrt(M)? An OPEN conjecture with auxiliary results about Sidon set bounds proved.",
   "meta": {
@@ -46,9 +46,9 @@
       "Proof that isSidon_singleton holds"
     ],
     "axiomCount": 2,
-    "lineCount": 343,
+    "lineCount": 346,
     "prerequisites": [
-      "Sidon sets (B₂ sequences) and pairwise distinct sums",
+      "Sidon sets (B\u2082 sequences) and pairwise distinct sums",
       "Greedy algorithms in combinatorics",
       "Finite field constructions (for dense Sidon sets)",
       "Counting arguments and asymptotic analysis"
@@ -56,7 +56,7 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "A **Sidon set** (or B_2 sequence) is a set of integers where all pairwise sums are distinct. These sets, named after Simon Sidon who studied them in the 1930s, appear throughout additive combinatorics.\n\nErdős Problem #44 asks whether any Sidon set can be extended to achieve near-optimal density. The famous Erdős-Turán conjecture (Problem #28) posits that Sidon sets in [1,N] have at most (1+o(1))sqrt(N) elements, and this problem asks about the reverse: can we always extend a Sidon set to approach this bound?\n\nThis file proves auxiliary undergraduate-level results from the formal-conjectures repository while the main conjecture remains open.",
+    "historicalContext": "A **Sidon set** (or B_2 sequence) is a set of integers where all pairwise sums are distinct. These sets, named after Simon Sidon who studied them in the 1930s, appear throughout additive combinatorics.\n\nErd\u0151s Problem #44 asks whether any Sidon set can be extended to achieve near-optimal density. The famous Erd\u0151s-Tur\u00e1n conjecture (Problem #28) posits that Sidon sets in [1,N] have at most (1+o(1))sqrt(N) elements, and this problem asks about the reverse: can we always extend a Sidon set to approach this bound?\n\nThis file proves auxiliary undergraduate-level results from the formal-conjectures repository while the main conjecture remains open.",
     "problemStatement": "Let $N \\geq 1$ and $A \\subseteq \\{1,\\ldots,N\\}$ be a Sidon set. Is it true that, for any $\\varepsilon > 0$, there exist $M = M(\\varepsilon)$ and $B \\subseteq \\{N+1,\\ldots,M\\}$ such that $A \\cup B \\subseteq \\{1,\\ldots,M\\}$ is a Sidon set of size at least $(1-\\varepsilon)\\sqrt{M}$?\n\n**Status:** OPEN",
     "text": "Can any Sidon set be extended to achieve near-optimal density (1-eps)sqrt(M)? An OPEN conjecture with auxiliary results about Sidon set bounds proved.",
     "proofStrategy": "We prove three auxiliary results:\n\n1. **Concrete example**: Verify {1,2,4,8,13} is Sidon by checking all 15 pairwise sums are distinct.\n\n2. **Upper bound**: Any Sidon set in [1,N] has at most 2sqrt(N) elements. This follows from counting: the sums span [2,2N], and distinctness limits the set size.\n\n3. **Lower bound infrastructure**: Powers of 2 form a Sidon set (by binary uniqueness), providing a construction achieving log(N) elements.\n\nThe main conjecture is stated but marked OPEN.",
@@ -65,10 +65,10 @@
       "**Upper bound sqrt(N)**: With n elements, there are n(n+1)/2 sums in [2,2N], so n^2 << N",
       "**Powers of 2 are Sidon**: 2^a + 2^b = 2^c + 2^d implies {a,b} = {c,d} by binary uniqueness",
       "**Extension difficulty**: Adding elements while preserving the Sidon property is non-trivial",
-      "**Probabilistic method**: Erdős used his probabilistic method to prove $F(N) \\geq (1+o(1))\\sqrt{N}$, showing random constructions match the trivial upper bound — the gap between constructive and existential bounds is a central theme in additive combinatorics"
+      "**Probabilistic method**: Erd\u0151s used his probabilistic method to prove $F(N) \\geq (1+o(1))\\sqrt{N}$, showing random constructions match the trivial upper bound \u2014 the gap between constructive and existential bounds is a central theme in additive combinatorics"
     ],
     "prerequisites": [
-      "Sidon sets (B₂ sequences) and pairwise distinct sums",
+      "Sidon sets (B\u2082 sequences) and pairwise distinct sums",
       "Greedy algorithms in combinatorics",
       "Finite field constructions (for dense Sidon sets)",
       "Counting arguments and asymptotic analysis"
@@ -112,8 +112,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #44 remains OPEN. We prove three auxiliary results: {1,2,4,8,13} is Sidon, Sidon sets have at most 2sqrt(N) elements, and powers of 2 form Sidon sets. The main conjecture about extending arbitrary Sidon sets to near-optimal density awaits resolution.",
-    "implications": "Progress on this problem would illuminate the structure of Sidon sets and their density limitations. It connects to the famous Erdős-Turán conjecture about the maximum size of Sidon sets.",
+    "summary": "Erd\u0151s Problem #44 remains OPEN. We prove three auxiliary results: {1,2,4,8,13} is Sidon, Sidon sets have at most 2sqrt(N) elements, and powers of 2 form Sidon sets. The main conjecture about extending arbitrary Sidon sets to near-optimal density awaits resolution.",
+    "implications": "Progress on this problem would illuminate the structure of Sidon sets and their density limitations. It connects to the famous Erd\u0151s-Tur\u00e1n conjecture about the maximum size of Sidon sets.",
     "openQuestions": [
       "The main conjecture: can any Sidon set be extended to (1-eps)sqrt(M) density?",
       "What is the optimal extension strategy for a given Sidon set?",
@@ -131,7 +131,7 @@
       "Erdos340"
     ],
     "namespace": "Erdos44",
-    "lineCount": 331,
+    "lineCount": 346,
     "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 0
@@ -150,7 +150,7 @@
     {
       "targetId": "erdos-28",
       "relationship": "related",
-      "description": "Sidon sets (r ≤ 1) are the extremal case for the Erdős-Turán conjecture on additive bases. Understanding their extensibility (Problem #44) illuminates the boundary between thin and thick sumset structures"
+      "description": "Sidon sets (r \u2264 1) are the extremal case for the Erd\u0151s-Tur\u00e1n conjecture on additive bases. Understanding their extensibility (Problem #44) illuminates the boundary between thin and thick sumset structures"
     },
     {
       "targetId": "erdos-1",
@@ -160,24 +160,24 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Turán, Paul",
+      "authors": "Erd\u0151s, Paul; Tur\u00e1n, Paul",
       "title": "On a problem of Sidon in additive number theory, and on some related problems",
       "year": "1941",
-      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
-      "note": "Founded the systematic study of Sidon sets, proving the √N + O(N^{1/4}) upper bound"
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212\u2013215",
+      "note": "Founded the systematic study of Sidon sets, proving the \u221aN + O(N^{1/4}) upper bound"
     },
     {
-      "authors": "Cilleruelo, Javier; Kiss, Sándor Z.; Ruzsa, Imre Z.; Vinuesa, Carlos",
-      "title": "Generalization of a theorem of Erdős and Renyi on Sidon sequences",
+      "authors": "Cilleruelo, Javier; Kiss, S\u00e1ndor Z.; Ruzsa, Imre Z.; Vinuesa, Carlos",
+      "title": "Generalization of a theorem of Erd\u0151s and Renyi on Sidon sequences",
       "year": "2010",
-      "venue": "Random Structures & Algorithms, vol. 37, no. 4, pp. 455–464",
+      "venue": "Random Structures & Algorithms, vol. 37, no. 4, pp. 455\u2013464",
       "note": "Advanced the theory of extending Sidon sets using probabilistic and algebraic techniques"
     },
     {
-      "authors": "Kohayakawa, Yoshiharu; Lee, Sang June; Rödl, Vojtěch",
+      "authors": "Kohayakawa, Yoshiharu; Lee, Sang June; R\u00f6dl, Vojt\u011bch",
       "title": "The maximum size of a non-trivial intersecting uniform antichain",
       "year": "2014",
-      "venue": "Combinatorica, vol. 34, pp. 433–460",
+      "venue": "Combinatorica, vol. 34, pp. 433\u2013460",
       "note": "Related extremal results on extending combinatorial structures"
     }
   ],

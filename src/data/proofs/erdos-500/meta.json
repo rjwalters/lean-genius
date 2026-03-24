@@ -1,10 +1,10 @@
 {
   "id": "erdos-500",
-  "title": "Erdős Problem #500: Turán Density of K₄³",
+  "title": "Erd\u0151s Problem #500: Tur\u00e1n Density of K\u2084\u00b3",
   "slug": "erdos-500",
-  "description": "Determine ex₃(n, K₄³): the maximum number of 3-edges on n vertices avoiding K₄³. Turán (1941) conjectured π(K₄³) = 5/9. Best bounds: 5/9 ≤ π ≤ 0.5612 (Razborov 2010). Status: OPEN.",
+  "description": "Determine ex\u2083(n, K\u2084\u00b3): the maximum number of 3-edges on n vertices avoiding K\u2084\u00b3. Tur\u00e1n (1941) conjectured \u03c0(K\u2084\u00b3) = 5/9. Best bounds: 5/9 \u2264 \u03c0 \u2264 0.5612 (Razborov 2010). Status: OPEN.",
   "meta": {
-    "author": "Turán (1941, construction); de Caen (1994, upper bound); Razborov (2010, flag algebras); Erdős (problem formulation)",
+    "author": "Tur\u00e1n (1941, construction); de Caen (1994, upper bound); Razborov (2010, flag algebras); Erd\u0151s (problem formulation)",
     "sourceUrl": "https://erdosproblems.com/500",
     "date": "1941",
     "status": "axiomatized",
@@ -43,17 +43,17 @@
     "originalContributions": [
       "Hypergraph3: 3-uniform hypergraph type",
       "IsThreeUniform: 3-uniformity predicate",
-      "ContainsK4_3: K₄³ containment predicate",
-      "IsK4Free: K₄³-freeness predicate",
-      "ex3_K4: Turán number (axiomatized with achievability and optimality)",
-      "turanDensityK4_3: Turán density π(K₄³) (axiomatized)",
+      "ContainsK4_3: K\u2084\u00b3 containment predicate",
+      "IsK4Free: K\u2084\u00b3-freeness predicate",
+      "ex3_K4: Tur\u00e1n number (axiomatized with achievability and optimality)",
+      "turanDensityK4_3: Tur\u00e1n density \u03c0(K\u2084\u00b3) (axiomatized)",
       "turanDensity_exists: density limit exists (axiomatized)",
-      "turan_lower_bound: π ≥ 5/9 (axiomatized)",
+      "turan_lower_bound: \u03c0 \u2265 5/9 (axiomatized)",
       "turan_construction_bound: finite n bound (axiomatized)",
-      "razborov_upper_bound: π ≤ 0.5612 (axiomatized)",
-      "turan_conjecture: π = 5/9 (axiomatized, OPEN)",
-      "Exact values: ex₃(4)=3, ex₃(5)=7, ex₃(6)=13 (axiomatized)",
-      "gap_bounds: combined interval 5/9 ≤ π ≤ 0.5612 (axiomatized)"
+      "razborov_upper_bound: \u03c0 \u2264 0.5612 (axiomatized)",
+      "turan_conjecture: \u03c0 = 5/9 (axiomatized, OPEN)",
+      "Exact values: ex\u2083(4)=3, ex\u2083(5)=7, ex\u2083(6)=13 (axiomatized)",
+      "gap_bounds: combined interval 5/9 \u2264 \u03c0 \u2264 0.5612 (axiomatized)"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 13,
@@ -61,14 +61,14 @@
     "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Pál Turán posed this problem in 1941, making it one of the oldest open problems in extremal combinatorics. He constructed a $K_4^{(3)}$-free 3-uniform hypergraph with $(5/9+o(1))\\binom{n}{3}$ edges by partitioning vertices into 3 equal parts and taking all triples not contained in a single part. He conjectured this is optimal: $\\pi(K_4^{(3)}) = 5/9$. Erdős championed the problem from the 1960s onward (formulating it in 1961, 1971, 1974, 1981) and offered \\$500 for its resolution—hence its number as Problem #500. De Caen (1994) proved $\\pi \\leq 1/\\sqrt{2} \\approx 0.707$ using algebraic methods. Alexander Razborov's revolutionary flag algebra method (2007, applied to this problem in 2010) dramatically improved the upper bound to $\\pi \\leq 0.5611666\\ldots$, narrowing the gap to $\\approx 0.006$. The Katona–Nemetz–Simonovits theorem (1964) guarantees the Turán density exists. Despite 80+ years of effort, the problem remains wide open and is often called the most important unsolved problem in extremal combinatorics.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nDetermine $\\text{ex}_3(n, K_4^{(3)})$: the maximum number of 3-element subsets of an $n$-element set that can be chosen without containing all four 3-subsets of any 4-element set.\n\n**Turán density:** $\\pi(K_4^{(3)}) = \\lim_{n \\to \\infty} \\frac{\\text{ex}_3(n, K_4^{(3)})}{\\binom{n}{3}}$.\n\n**Turán's Conjecture (1941):** $\\pi(K_4^{(3)}) = 5/9 \\approx 0.5556$.\n\n**Best bounds:** $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$ (Razborov 2010).",
-    "text": "Determine ex₃(n, K₄³): the maximum number of 3-edges on n vertices avoiding K₄³. Turán (1941) conjectured π(K₄³) = 5/9. Best bounds: 5/9 ≤ π ≤ 0.5612 (Razborov 2010). Status: OPEN.",
-    "proofStrategy": "The formalization defines 3-uniform hypergraphs as $\\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, the $K_4^{(3)}$ containment predicate, and the Turán number as an axiomatized function with achievability and optimality guarantees. The Turán density, its existence (KNS theorem), Turán's lower bound, Razborov's upper bound, the conjecture, and exact small values are all axiomatized.",
+    "historicalContext": "P\u00e1l Tur\u00e1n posed this problem in 1941, making it one of the oldest open problems in extremal combinatorics. He constructed a $K_4^{(3)}$-free 3-uniform hypergraph with $(5/9+o(1))\\binom{n}{3}$ edges by partitioning vertices into 3 equal parts and taking all triples not contained in a single part. He conjectured this is optimal: $\\pi(K_4^{(3)}) = 5/9$. Erd\u0151s championed the problem from the 1960s onward (formulating it in 1961, 1971, 1974, 1981) and offered \\$500 for its resolution\u2014hence its number as Problem #500. De Caen (1994) proved $\\pi \\leq 1/\\sqrt{2} \\approx 0.707$ using algebraic methods. Alexander Razborov's revolutionary flag algebra method (2007, applied to this problem in 2010) dramatically improved the upper bound to $\\pi \\leq 0.5611666\\ldots$, narrowing the gap to $\\approx 0.006$. The Katona\u2013Nemetz\u2013Simonovits theorem (1964) guarantees the Tur\u00e1n density exists. Despite 80+ years of effort, the problem remains wide open and is often called the most important unsolved problem in extremal combinatorics.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nDetermine $\\text{ex}_3(n, K_4^{(3)})$: the maximum number of 3-element subsets of an $n$-element set that can be chosen without containing all four 3-subsets of any 4-element set.\n\n**Tur\u00e1n density:** $\\pi(K_4^{(3)}) = \\lim_{n \\to \\infty} \\frac{\\text{ex}_3(n, K_4^{(3)})}{\\binom{n}{3}}$.\n\n**Tur\u00e1n's Conjecture (1941):** $\\pi(K_4^{(3)}) = 5/9 \\approx 0.5556$.\n\n**Best bounds:** $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$ (Razborov 2010).",
+    "text": "Determine ex\u2083(n, K\u2084\u00b3): the maximum number of 3-edges on n vertices avoiding K\u2084\u00b3. Tur\u00e1n (1941) conjectured \u03c0(K\u2084\u00b3) = 5/9. Best bounds: 5/9 \u2264 \u03c0 \u2264 0.5612 (Razborov 2010). Status: OPEN.",
+    "proofStrategy": "The formalization defines 3-uniform hypergraphs as $\\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, the $K_4^{(3)}$ containment predicate, and the Tur\u00e1n number as an axiomatized function with achievability and optimality guarantees. The Tur\u00e1n density, its existence (KNS theorem), Tur\u00e1n's lower bound, Razborov's upper bound, the conjecture, and exact small values are all axiomatized.",
     "keyInsights": [
-      "**Turán's 3-partition (1941):** Partition $[n]$ into 3 equal parts, take all triples not within one part. This gives $\\binom{n}{3} - 3\\binom{n/3}{3} = (5/9+o(1))\\binom{n}{3}$ edges and is $K_4^{(3)}$-free",
+      "**Tur\u00e1n's 3-partition (1941):** Partition $[n]$ into 3 equal parts, take all triples not within one part. This gives $\\binom{n}{3} - 3\\binom{n/3}{3} = (5/9+o(1))\\binom{n}{3}$ edges and is $K_4^{(3)}$-free",
       "**Razborov's flag algebras (2010):** Reduced the upper bound from $1/\\sqrt{2} \\approx 0.707$ to $0.5612$, the most powerful computer-assisted technique in extremal combinatorics",
-      "**Graph vs. hypergraph Turán:** The graph Turán theorem ($r=2$) was solved by Turán (1941) and Erdős–Stone (1946), but the 3-uniform case resists all known methods",
+      "**Graph vs. hypergraph Tur\u00e1n:** The graph Tur\u00e1n theorem ($r=2$) was solved by Tur\u00e1n (1941) and Erd\u0151s\u2013Stone (1946), but the 3-uniform case resists all known methods",
       "**Tiny gap, huge difficulty:** The gap $0.5556 \\leq \\pi \\leq 0.5612$ is only $\\approx 0.006$ wide, yet closing it has defeated 80 years of effort",
       "**Small cases confirm conjecture:** $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$ all match the construction's predictions"
     ],
@@ -93,17 +93,17 @@
     },
     {
       "id": "turan-density",
-      "title": "Turán Density $\\pi(K_4^{(3)})$",
+      "title": "Tur\u00e1n Density $\\pi(K_4^{(3)})$",
       "startLine": 57,
       "endLine": 65,
-      "summary": "Axiomatizes $\\pi(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964)."
+      "summary": "Axiomatizes $\\pi(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona\u2013Nemetz\u2013Simonovits theorem (1964)."
     },
     {
       "id": "lower-bound",
-      "title": "Turán's Lower Bound (1941)",
+      "title": "Tur\u00e1n's Lower Bound (1941)",
       "startLine": 67,
       "endLine": 76,
-      "summary": "Turán's 3-partition construction: $\\pi(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$."
+      "summary": "Tur\u00e1n's 3-partition construction: $\\pi(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$."
     },
     {
       "id": "upper-bound",
@@ -114,17 +114,17 @@
     },
     {
       "id": "conjecture",
-      "title": "Turán's Conjecture",
+      "title": "Tur\u00e1n's Conjecture",
       "startLine": 84,
       "endLine": 89,
-      "summary": "The OPEN conjecture: $\\pi(K_4^{(3)}) = 5/9$. Turán's construction is conjectured optimal. Erdős offered \\$500 for resolution."
+      "summary": "The OPEN conjecture: $\\pi(K_4^{(3)}) = 5/9$. Tur\u00e1n's construction is conjectured optimal. Erd\u0151s offered \\$500 for resolution."
     },
     {
       "id": "small-cases",
       "title": "Exact Values for Small $n$",
       "startLine": 91,
       "endLine": 100,
-      "summary": "Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Turán's conjecture; ratios trend toward $5/9$."
+      "summary": "Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Tur\u00e1n's conjecture; ratios trend toward $5/9$."
     },
     {
       "id": "gap",
@@ -135,51 +135,51 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #500 (Turán's hypergraph problem) remains OPEN after 80+ years. The conjectured answer π(K₄³) = 5/9 is supported by Turán's 1941 construction and all known exact values. The best upper bound 0.5612 (Razborov 2010, flag algebras) leaves a gap of only ~0.006. The formalization axiomatizes all key results: Turán's construction, Razborov's bound, and the conjecture.",
-    "implications": "A resolution would be a landmark in extremal combinatorics, establishing whether partition-based constructions are optimal for hypergraph Turán problems. The flag algebra methodology developed for this problem has already revolutionized the field, proving numerous other extremal results.",
+    "summary": "Erd\u0151s Problem #500 (Tur\u00e1n's hypergraph problem) remains OPEN after 80+ years. The conjectured answer \u03c0(K\u2084\u00b3) = 5/9 is supported by Tur\u00e1n's 1941 construction and all known exact values. The best upper bound 0.5612 (Razborov 2010, flag algebras) leaves a gap of only ~0.006. The formalization axiomatizes all key results: Tur\u00e1n's construction, Razborov's bound, and the conjecture.",
+    "implications": "A resolution would be a landmark in extremal combinatorics, establishing whether partition-based constructions are optimal for hypergraph Tur\u00e1n problems. The flag algebra methodology developed for this problem has already revolutionized the field, proving numerous other extremal results.",
     "openQuestions": [
-      "Is Turán's 3-partition construction optimal? (π(K₄³) = 5/9?)",
+      "Is Tur\u00e1n's 3-partition construction optimal? (\u03c0(K\u2084\u00b3) = 5/9?)",
       "Can flag algebra bounds be improved below 0.56?",
       "Is the extremal hypergraph unique (for large n)?",
-      "What is ex₃(n, K₄³) for n = 7, 8, 9?",
-      "Does a stability result hold: are near-extremal hypergraphs close to Turán's construction?"
+      "What is ex\u2083(n, K\u2084\u00b3) for n = 7, 8, 9?",
+      "Does a stability result hold: are near-extremal hypergraphs close to Tur\u00e1n's construction?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Both are foundational results in extremal combinatorics: Ramsey theory guarantees monochromatic substructures, while the Turán problem maximizes edges avoiding substructures. Turán's graph theorem (1941) was motivated by Ramsey's theorem"
+      "description": "Both are foundational results in extremal combinatorics: Ramsey theory guarantees monochromatic substructures, while the Tur\u00e1n problem maximizes edges avoiding substructures. Tur\u00e1n's graph theorem (1941) was motivated by Ramsey's theorem"
     },
     {
       "targetId": "erdos-1009",
       "relationship": "related",
-      "description": "Erdős #1009 concerns edge-disjoint triangles beyond the Turán threshold — directly related to the extremal graph/hypergraph paradigm. Both problems study how substructure avoidance constrains edge density"
+      "description": "Erd\u0151s #1009 concerns edge-disjoint triangles beyond the Tur\u00e1n threshold \u2014 directly related to the extremal graph/hypergraph paradigm. Both problems study how substructure avoidance constrains edge density"
     },
     {
       "targetId": "erdos-1010",
       "relationship": "related",
-      "description": "Erdős #1010 on triangle supersaturation: once edge density exceeds the Turán threshold, how many copies of the forbidden subgraph must appear? The supersaturation phenomenon is the complement of Turán's question"
+      "description": "Erd\u0151s #1010 on triangle supersaturation: once edge density exceeds the Tur\u00e1n threshold, how many copies of the forbidden subgraph must appear? The supersaturation phenomenon is the complement of Tur\u00e1n's question"
     },
     {
       "targetId": "erdos-1008",
       "relationship": "related",
-      "description": "Erdős #1008 on C₄-free subgraphs — another extremal problem asking for maximum edge density avoiding a specific forbidden subgraph, paralleling the K₄³ avoidance in Problem #500"
+      "description": "Erd\u0151s #1008 on C\u2084-free subgraphs \u2014 another extremal problem asking for maximum edge density avoiding a specific forbidden subgraph, paralleling the K\u2084\u00b3 avoidance in Problem #500"
     },
     {
       "targetId": "szemeredi-regularity",
       "relationship": "related",
-      "description": "Szemerédi's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform), the hypergraph regularity lemma (Gowers, Rödl et al.) is a major tool for attacking hypergraph Turán problems like #500"
+      "description": "Szemer\u00e9di's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform), the hypergraph regularity lemma (Gowers, R\u00f6dl et al.) is a major tool for attacking hypergraph Tur\u00e1n problems like #500"
     },
     {
       "targetId": "erdos-1",
       "relationship": "related",
-      "description": "Erdős #1 (distinct subset sums) is another flagship Erdős problem in combinatorics. Both exemplify the characteristic Erdős style: simple to state, extraordinarily difficult to resolve"
+      "description": "Erd\u0151s #1 (distinct subset sums) is another flagship Erd\u0151s problem in combinatorics. Both exemplify the characteristic Erd\u0151s style: simple to state, extraordinarily difficult to resolve"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial coefficient C(n,3) normalizes the Turán density π(K₄³) = lim ex₃(n)/C(n,3). The combinatorial identity C(n,3) = n(n-1)(n-2)/6 counts the total number of possible 3-edges"
+      "description": "The binomial coefficient C(n,3) normalizes the Tur\u00e1n density \u03c0(K\u2084\u00b3) = lim ex\u2083(n)/C(n,3). The combinatorial identity C(n,3) = n(n-1)(n-2)/6 counts the total number of possible 3-edges"
     }
   ],
   "relatedProofs": [
@@ -193,46 +193,46 @@
   ],
   "references": [
     {
-      "authors": "Turán, Pál",
+      "authors": "Tur\u00e1n, P\u00e1l",
       "title": "Eine Extremalaufgabe aus der Graphentheorie",
       "year": "1941",
-      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
-      "note": "Introduced the graph Turán problem and proved the graph Turán theorem. Proposed the 3-partition construction for K₄³ and conjectured π(K₄³) = 5/9"
+      "venue": "Matematikai \u00e9s Fizikai Lapok, vol. 48, pp. 436\u2013452",
+      "note": "Introduced the graph Tur\u00e1n problem and proved the graph Tur\u00e1n theorem. Proposed the 3-partition construction for K\u2084\u00b3 and conjectured \u03c0(K\u2084\u00b3) = 5/9"
     },
     {
       "authors": "Razborov, Alexander",
       "title": "Flag algebras",
       "year": "2007",
-      "venue": "Journal of Symbolic Logic, vol. 72, no. 4, pp. 1239–1282",
-      "note": "Introduced the flag algebra method — a general framework for proving density inequalities in combinatorics via semidefinite programming"
+      "venue": "Journal of Symbolic Logic, vol. 72, no. 4, pp. 1239\u20131282",
+      "note": "Introduced the flag algebra method \u2014 a general framework for proving density inequalities in combinatorics via semidefinite programming"
     },
     {
       "authors": "Razborov, Alexander",
       "title": "On 3-hypergraphs with forbidden 4-vertex configurations",
       "year": "2010",
-      "venue": "SIAM Journal on Discrete Mathematics, vol. 24, no. 3, pp. 946–963",
-      "note": "Applied flag algebras to prove π(K₄³) ≤ 0.5611666..., dramatically improving earlier bounds"
+      "venue": "SIAM Journal on Discrete Mathematics, vol. 24, no. 3, pp. 946\u2013963",
+      "note": "Applied flag algebras to prove \u03c0(K\u2084\u00b3) \u2264 0.5611666..., dramatically improving earlier bounds"
     },
     {
       "authors": "de Caen, Dominique",
       "title": "Extension of a theorem of Moon and Moser on complete subgraphs",
       "year": "1994",
-      "venue": "Ars Combinatoria, vol. 16, pp. 5–10",
-      "note": "Proved π(K₄³) ≤ 1/√2 ≈ 0.707, the best upper bound before Razborov's flag algebra method"
+      "venue": "Ars Combinatoria, vol. 16, pp. 5\u201310",
+      "note": "Proved \u03c0(K\u2084\u00b3) \u2264 1/\u221a2 \u2248 0.707, the best upper bound before Razborov's flag algebra method"
     },
     {
-      "authors": "Katona, Gyula O.H.; Nemetz, Tibor; Simonovits, Miklós",
-      "title": "On a problem of Turán in the theory of graphs",
+      "authors": "Katona, Gyula O.H.; Nemetz, Tibor; Simonovits, Mikl\u00f3s",
+      "title": "On a problem of Tur\u00e1n in the theory of graphs",
       "year": "1964",
-      "venue": "Matematikai Lapok, vol. 15, pp. 228–238",
-      "note": "Proved that the Turán density π(F) = lim ex(n,F)/C(n,r) exists for every r-uniform hypergraph F — the foundational result that makes the Turán density well-defined"
+      "venue": "Matematikai Lapok, vol. 15, pp. 228\u2013238",
+      "note": "Proved that the Tur\u00e1n density \u03c0(F) = lim ex(n,F)/C(n,r) exists for every r-uniform hypergraph F \u2014 the foundational result that makes the Tur\u00e1n density well-defined"
     },
     {
       "authors": "Keevash, Peter",
-      "title": "Hypergraph Turán problems",
+      "title": "Hypergraph Tur\u00e1n problems",
       "year": "2011",
-      "venue": "Surveys in Combinatorics 2011, London Math. Soc. Lecture Notes 392, pp. 83–140",
-      "note": "Comprehensive survey of hypergraph Turán problems including detailed discussion of the K₄³ problem, known bounds, and open questions"
+      "venue": "Surveys in Combinatorics 2011, London Math. Soc. Lecture Notes 392, pp. 83\u2013140",
+      "note": "Comprehensive survey of hypergraph Tur\u00e1n problems including detailed discussion of the K\u2084\u00b3 problem, known bounds, and open questions"
     }
   ],
   "leanFile": {
@@ -244,7 +244,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 108,
+    "lineCount": 107,
     "axiomCount": 13,
     "theoremCount": 0,
     "definitionCount": 4

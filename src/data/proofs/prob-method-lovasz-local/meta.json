@@ -43,7 +43,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 229,
+    "lineCount": 364,
     "prerequisites": [
       "Probabilistic method and independence of events",
       "Dependency graphs and near-independence",
@@ -79,7 +79,7 @@
       "title": "Module Docstring and Imports",
       "startLine": 1,
       "endLine": 19,
-      "summary": "Overview of the Lovász Local Lemma formalization covering symmetric/general LLL, k-SAT application, Moser-Tardos constructive bounds, and symmetric case specialization.",
+      "summary": "Overview of the Lov\u00e1sz Local Lemma formalization covering symmetric/general LLL, k-SAT application, Moser-Tardos constructive bounds, and symmetric case specialization.",
       "mathContext": "If bad events are unlikely and mostly independent, they can all be simultaneously avoided."
     },
     {
@@ -87,7 +87,7 @@
       "title": "Part I: Symmetric LLL (Algebraic Core)",
       "startLine": 21,
       "endLine": 35,
-      "summary": "The symmetric LLL algebraic kernel: if p*(d+1) ≤ 1/3, then (1-p)^n > 0. Proved via pow_pos and nlinarith. This captures the algebraic core ensuring the avoidance probability is positive.",
+      "summary": "The symmetric LLL algebraic kernel: if p*(d+1) \u2264 1/3, then (1-p)^n > 0. Proved via pow_pos and nlinarith. This captures the algebraic core ensuring the avoidance probability is positive.",
       "mathContext": "$p(d+1) \\leq 1/3 \\implies (1-p)^n > 0$"
     },
     {
@@ -95,7 +95,7 @@
       "title": "Part II: General LLL Product Positivity",
       "startLine": 37,
       "endLine": 48,
-      "summary": "General LLL product positivity: if x_i ∈ [0,1) for all i, then ∏(1-x_i) > 0. Proved via Finset.prod_pos. The product gives a lower bound on P[∩ Āᵢ].",
+      "summary": "General LLL product positivity: if x_i \u2208 [0,1) for all i, then \u220f(1-x_i) > 0. Proved via Finset.prod_pos. The product gives a lower bound on P[\u2229 \u0100\u1d62].",
       "mathContext": "$x_i \\in [0,1) \\implies \\prod_i(1-x_i) > 0$"
     },
     {
@@ -103,7 +103,7 @@
       "title": "Part III: LLL Probability Bounds",
       "startLine": 50,
       "endLine": 76,
-      "summary": "The LLL condition implies prob_i ≤ x_i (since ∏(1-x_j) ≤ 1). Also proves each avoidance factor 1-x_i is strictly positive. All proved, no sorries.",
+      "summary": "The LLL condition implies prob_i \u2264 x_i (since \u220f(1-x_j) \u2264 1). Also proves each avoidance factor 1-x_i is strictly positive. All proved, no sorries.",
       "mathContext": "$\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j) \\leq x_i$"
     },
     {
@@ -111,7 +111,7 @@
       "title": "Part IV: k-SAT Application",
       "startLine": 78,
       "endLine": 115,
-      "summary": "k-SAT via LLL: proves 2^(-k)·(2^(k-2)+1) ≤ 1 for k ≥ 3, verifying the LLL condition for random k-SAT with bounded variable occurrence. Helper lemma pow2_plus_one_le proved via gcongr.",
+      "summary": "k-SAT via LLL: proves 2^(-k)\u00b7(2^(k-2)+1) \u2264 1 for k \u2265 3, verifying the LLL condition for random k-SAT with bounded variable occurrence. Helper lemma pow2_plus_one_le proved via gcongr.",
       "mathContext": "$2^{-k} \\cdot (2^{k-2} + 1) \\leq 1$ for $k \\geq 3$"
     },
     {
@@ -119,7 +119,7 @@
       "title": "Part V: Moser-Tardos Constructive LLL",
       "startLine": 117,
       "endLine": 130,
-      "summary": "Moser-Tardos resampling bound: the expected number of resampling steps Σ x_i/(1-x_i) is non-negative. Proved via Finset.sum_nonneg and div_nonneg.",
+      "summary": "Moser-Tardos resampling bound: the expected number of resampling steps \u03a3 x_i/(1-x_i) is non-negative. Proved via Finset.sum_nonneg and div_nonneg.",
       "mathContext": "$0 \\leq \\sum_i \\frac{x_i}{1-x_i}$"
     },
     {
@@ -157,10 +157,10 @@
     "summary": "The Lovasz Local Lemma formalizes the most powerful tool in the probabilistic method: when bad events are individually unlikely and their dependencies are sparse (captured by a dependency graph), all bad events can be simultaneously avoided. The symmetric form ep(d+1) <= 1 and the general asymmetric form with witness values are both formalized, along with a k-SAT satisfiability application.",
     "implications": "This formalization provides:\n\n**1. Crown Jewel of the Probabilistic Method**\nThe LLL is the most sophisticated tool in the probabilistic method toolkit, and this formalization makes its subtle conditions machine-checkable.\n\n**2. k-SAT Threshold Bounds**\nThe satisfiability threshold for random k-SAT is a central problem in computational complexity, and the LLL provides the best unconditional lower bounds.\n\n**3. Sparse Dependency Framework**\nThe dependency graph abstraction is reusable across many applications in combinatorics, coding theory, and algorithm design.\n\n**4. Path to Constructive LLL**\nThe formalization establishes the non-constructive LLL as a foundation for future formalization of the Moser-Tardos constructive proof.\n\n**5. Applications Across Combinatorics**\nHypergraph coloring, Latin transversals, Ramsey theory, and many Erdos problems rely on the LLL.",
     "openQuestions": [
-      "Formalize the full Moser-Tardos resampling algorithm with termination proof — currently only the expected step bound is stated",
+      "Formalize the full Moser-Tardos resampling algorithm with termination proof \u2014 currently only the expected step bound is stated",
       "Replace the simplified p(d+1) <= 1/3 criterion with the exact ep(d+1) <= 1, which requires formalizing e = lim (1+1/n)^n",
       "How does the lopsided LLL (where independence is replaced by negative correlation) extend the basic version?",
-      "Can the LLL be applied to Erdős problems in the gallery that involve sparse dependency structures?"
+      "Can the LLL be applied to Erd\u0151s problems in the gallery that involve sparse dependency structures?"
     ]
   },
   "relatedProofs": [
@@ -175,18 +175,18 @@
     ],
     "opens": [],
     "namespace": "ProbMethod.LovaszLocal",
-    "lineCount": 229,
+    "lineCount": 364,
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 2
   },
   "references": [
     {
-      "authors": "Lovász, László",
+      "authors": "Lov\u00e1sz, L\u00e1szl\u00f3",
       "title": "On the ratio of optimal integral and fractional covers",
       "year": "1975",
-      "venue": "Discrete Mathematics 13(4), 383–390",
-      "note": "Introduced the Lovász Local Lemma — a powerful tool for proving existence of combinatorial structures"
+      "venue": "Discrete Mathematics 13(4), 383\u2013390",
+      "note": "Introduced the Lov\u00e1sz Local Lemma \u2014 a powerful tool for proving existence of combinatorial structures"
     },
     {
       "authors": "Alon, Noga; Spencer, Joel H.",

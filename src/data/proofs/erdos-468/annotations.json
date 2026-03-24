@@ -31,7 +31,7 @@
     },
     "type": "definition",
     "title": "Core Definitions: $D_n$, Previous Sums, New Elements",
-    "content": "Four key definitions. **properDivisorsSorted**: sorts $\\{d \\mid n : d > 1\\}$ in increasing order as a `List ℕ`. **partialDivisorSums**: $D_n = \\{d_1, d_1+d_2, \\ldots, d_1+\\cdots+d_k\\}$ computed via `List.take` and `List.sum` on prefixes of the sorted divisors, then converted to `Finset`. **previousPartialSums**: $\\bigcup_{m < n} D_m$ as a `Set ℕ` using indexed union. **newElements**: $D_n \\setminus \\bigcup_{m < n} D_m$ — the genuinely new partial sums contributed by $n$. All are `noncomputable` due to classical set operations.",
+    "content": "Four key definitions. **properDivisorsSorted**: sorts $\\{d \\mid n : d > 1\\}$ in increasing order as a `List \u2115`. **partialDivisorSums**: $D_n = \\{d_1, d_1+d_2, \\ldots, d_1+\\cdots+d_k\\}$ computed via `List.take` and `List.sum` on prefixes of the sorted divisors, then converted to `Finset`. **previousPartialSums**: $\\bigcup_{m < n} D_m$ as a `Set \u2115` using indexed union. **newElements**: $D_n \\setminus \\bigcup_{m < n} D_m$ \u2014 the genuinely new partial sums contributed by $n$. All are `noncomputable` due to classical set operations.",
     "mathContext": "$D_n = \\{\\sum_{i=1}^{j} d_i : 1 \\leq j \\leq k\\}$ where $1 < d_1 < \\cdots < d_k$ are divisors of $n$. New elements: $D_n \\setminus \\bigcup_{m<n} D_m$.",
     "significance": "key",
     "relatedConcepts": [
@@ -56,7 +56,7 @@
     },
     "type": "technique",
     "title": "Question 1: New Elements Exist and Grow",
-    "content": "Two axioms for Question 1. **new_elements_exist** (lines 48–49): for $n \\geq 2$, the set $D_n \\setminus \\bigcup_{m<n} D_m$ is nonempty — every integer $\\geq 2$ contributes at least one new partial sum. **new_element_count_conjecture** (lines 53–55): $|D_n|$ grows without bound — for any $B$, eventually $|D_n| \\geq B$. This follows from the fact that $d(n)$ (number of divisors) is unbounded, so $|D_n| = d(n) - 1$ grows for highly composite $n$.",
+    "content": "Two axioms for Question 1. **new_elements_exist** (lines 48\u201349): for $n \\geq 2$, the set $D_n \\setminus \\bigcup_{m<n} D_m$ is nonempty \u2014 every integer $\\geq 2$ contributes at least one new partial sum. **new_element_count_conjecture** (lines 53\u201355): $|D_n|$ grows without bound \u2014 for any $B$, eventually $|D_n| \\geq B$. This follows from the fact that $d(n)$ (number of divisors) is unbounded, so $|D_n| = d(n) - 1$ grows for highly composite $n$.",
     "mathContext": "**Axiom 1:** $D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ for $n \\geq 2$. **Axiom 2:** $\\forall B,\\; \\exists N,\\; \\forall n \\geq N: |D_n| \\geq B$.",
     "significance": "key",
     "relatedConcepts": [
@@ -79,7 +79,7 @@
     },
     "type": "definition",
     "title": "First Appearance Function and Main Conjecture",
-    "content": "**firstAppearance** defines $f(N) = \\inf\\{n : N \\in D_n\\}$ using `sInf`. The **main conjecture** (lines 65–67) states $f(N) = o(N)$: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: f(N) \\leq \\varepsilon N$. This means every large $N$ first appears as a partial divisor sum of some $n$ much smaller than $N$. The intuition: highly composite numbers have many divisors, so their partial sums cover many values efficiently. For instance, $D_{12}$ already covers $\\{2, 5, 9, 15, 27\\}$ from just $n = 12$.",
+    "content": "**firstAppearance** defines $f(N) = \\inf\\{n : N \\in D_n\\}$ using `sInf`. The **main conjecture** (lines 65\u201367) states $f(N) = o(N)$: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: f(N) \\leq \\varepsilon N$. This means every large $N$ first appears as a partial divisor sum of some $n$ much smaller than $N$. The intuition: highly composite numbers have many divisors, so their partial sums cover many values efficiently. For instance, $D_{12}$ already covers $\\{2, 5, 9, 15, 27\\}$ from just $n = 12$.",
     "mathContext": "$f(N) = \\min\\{n : N \\in D_n\\}$. **Conjecture (OPEN):** $f(N) = o(N)$, i.e., $f(N)/N \\to 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -145,16 +145,16 @@
     "proofId": "erdos-468",
     "range": {
       "startLine": 85,
-      "endLine": 95
+      "endLine": 94
     },
     "type": "technique",
     "title": "Boundary Elements of $D_n$",
-    "content": "Two structural axioms. **Smallest element** (lines 87–88): $\\min(D_n) = \\text{minFac}(n)$, the smallest prime factor of $n$, since it is the first divisor $> 1$. **Largest element** (lines 91–92): $\\max(D_n) = \\sigma(n) - 1$, the sum of all divisors minus 1 (the total partial sum excludes the divisor 1). These anchor the set $D_n$ between $\\text{minFac}(n)$ and $\\sigma(n) - 1$. The connection to the OEIS sequences A167485, A387502, A387503 is noted in a comment.",
+    "content": "Two structural axioms. **Smallest element** (lines 87\u201388): $\\min(D_n) = \\text{minFac}(n)$, the smallest prime factor of $n$, since it is the first divisor $> 1$. **Largest element** (lines 91\u201392): $\\max(D_n) = \\sigma(n) - 1$, the sum of all divisors minus 1 (the total partial sum excludes the divisor 1). These anchor the set $D_n$ between $\\text{minFac}(n)$ and $\\sigma(n) - 1$. The connection to the OEIS sequences A167485, A387502, A387503 is noted in a comment.",
     "mathContext": "$\\min(D_n) = p_1(n)$ (smallest prime factor), $\\max(D_n) = \\sigma(n) - 1$ where $\\sigma(n) = \\sum_{d \\mid n} d$.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.minFac",
-      "sum of divisors σ(n)",
+      "sum of divisors \u03c3(n)",
       "OEIS A167485",
       "boundary elements"
     ],

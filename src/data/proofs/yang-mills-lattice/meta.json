@@ -19,7 +19,7 @@
     "sorries": 0,
     "axiomCount": 5,
     "assumptions": "Structure-encoded assumptions: WilsonLatticeAction requires coupling beta > 0 and character function. LinkVariable, LatticeGaugeTransform, and Plaquette encode lattice geometry. Wilson loop structures assume gauge-invariant trace. All lattice proofs (gauge invariance, bounds) are fully verified given these structures.",
-    "lineCount": 800,
+    "lineCount": 28001,
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_nonneg",
@@ -161,7 +161,7 @@
       "Matrix"
     ],
     "namespace": "YangMillsMassGap",
-    "lineCount": 28002,
+    "lineCount": 28001,
     "axiomCount": 0,
     "theoremCount": 1786,
     "lemmaCount": 0,

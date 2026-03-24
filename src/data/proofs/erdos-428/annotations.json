@@ -10,7 +10,7 @@
     "title": "Prime Counting Function $\\pi(n)$",
     "content": "**primeCounting n** counts the number of primes $\\leq n$, defined via `Finset.filter Nat.Prime (Finset.range (n + 1))`. This is the standard prime counting function $\\pi(n)$, which by the Prime Number Theorem satisfies $\\pi(n) \\sim n/\\ln n$. Examples: $\\pi(10) = 4$ (primes 2, 3, 5, 7), $\\pi(100) = 25$.",
     "significance": "key",
-    "mathContext": "$\\pi(n) = |\\{p \\leq n : p \\text{ prime}\\}|$. Defined via `Finset.filter Nat.Prime (Finset.range (n + 1)).card`. The notation $\\pi(x)$ dates to Legendre (1808); the asymptotic $\\pi(x) \\sim x/\\ln x$ was proved by Hadamard and de la Vallée Poussin (1896).",
+    "mathContext": "$\\pi(n) = |\\{p \\leq n : p \\text{ prime}\\}|$. Defined via `Finset.filter Nat.Prime (Finset.range (n + 1)).card`. The notation $\\pi(x)$ dates to Legendre (1808); the asymptotic $\\pi(x) \\sim x/\\ln x$ was proved by Hadamard and de la Vall\u00e9e Poussin (1896).",
     "relatedConcepts": [
       "prime counting function",
       "Prime Number Theorem",
@@ -75,10 +75,10 @@
       "startLine": 41,
       "endLine": 46
     },
-    "title": "Erdős Problem 428 (Main Conjecture)",
+    "title": "Erd\u0151s Problem 428 (Main Conjecture)",
     "content": "**ErdosProblem428**: Does there exist $A \\subseteq \\mathbb{N}$ with `Filter.liminf (primeDensityRatio A) atTop > 0` (positive prime density) such that $\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n$ (infinitely many prime-generating $n$)? The liminf condition is the essential difficulty: $A$ must maintain its density consistently, not just along a subsequence. This is strictly stronger than the limsup variant. OPEN.",
     "significance": "key",
-    "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, (\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n) \\wedge \\liminf_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{\\pi(n)} > 0$. Posed by Erdős-Graham (1980).",
+    "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, (\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n) \\wedge \\liminf_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{\\pi(n)} > 0$. Posed by Erd\u0151s-Graham (1980).",
     "relatedConcepts": [
       "open problem",
       "Filter.liminf",
@@ -101,13 +101,13 @@
       "endLine": 55
     },
     "title": "Limsup Variant",
-    "content": "**ErdosProblem428Limsup**: Same as Problem 428 but with `Filter.limsup` replacing `Filter.liminf`. This is strictly weaker: it only requires the density to be positive along some subsequence. Erdős and Graham showed this follows from the $k$-tuple conjecture. The theorem `liminf_implies_limsup` shows the main conjecture implies this variant.",
+    "content": "**ErdosProblem428Limsup**: Same as Problem 428 but with `Filter.limsup` replacing `Filter.liminf`. This is strictly weaker: it only requires the density to be positive along some subsequence. Erd\u0151s and Graham showed this follows from the $k$-tuple conjecture. The theorem `liminf_implies_limsup` shows the main conjecture implies this variant.",
     "significance": "key",
     "mathContext": "$\\exists A,\\, (\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n) \\wedge \\limsup_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{\\pi(n)} > 0$. Conditionally holds under the $k$-tuple conjecture.",
     "relatedConcepts": [
       "Filter.limsup",
       "conditional results",
-      "Erdős-Graham"
+      "Erd\u0151s-Graham"
     ],
     "prerequisites": [
       "ErdosProblem428",
@@ -123,7 +123,7 @@
       "endLine": 62
     },
     "title": "Liminf Implies Limsup",
-    "content": "**liminf_implies_limsup**: `ErdosProblem428 → ErdosProblem428Limsup`. The proof destructs the hypothesis into $\\langle A, h_{\\text{freq}}, h_{\\text{liminf}}\\rangle$ and uses the same $A$ with `lt_of_lt_of_le` and `Filter.liminf_le_limsup` to establish limsup > 0. This is the expected implication: consistent density (liminf > 0) implies subsequential density (limsup > 0).",
+    "content": "**liminf_implies_limsup**: `ErdosProblem428 \u2192 ErdosProblem428Limsup`. The proof destructs the hypothesis into $\\langle A, h_{\\text{freq}}, h_{\\text{liminf}}\\rangle$ and uses the same $A$ with `lt_of_lt_of_le` and `Filter.liminf_le_limsup` to establish limsup > 0. This is the expected implication: consistent density (liminf > 0) implies subsequential density (limsup > 0).",
     "significance": "key",
     "mathContext": "Proof: destructs existential, applies $\\liminf \\leq \\limsup$ via `Filter.liminf_le_limsup` with `lt_of_lt_of_le` for the strict inequality chain.",
     "relatedConcepts": [
@@ -170,12 +170,12 @@
       "startLine": 73,
       "endLine": 75
     },
-    "title": "Erdős-Graham: $k$-Tuple $\\Rightarrow$ Limsup Variant",
-    "content": "**erdos_graham_limsup** (axiom): `PrimeKTupleConjecture → ErdosProblem428Limsup`. This captures the result of Erdős and Graham (1980) that the $k$-tuple conjecture implies the existence of offset sets with positive limsup prime density. The proof strategy: given the $k$-tuple conjecture, one constructs a greedy sequence of admissible tuples that generate increasingly large offset sets.",
+    "title": "Erd\u0151s-Graham: $k$-Tuple $\\Rightarrow$ Limsup Variant",
+    "content": "**erdos_graham_limsup** (axiom): `PrimeKTupleConjecture \u2192 ErdosProblem428Limsup`. This captures the result of Erd\u0151s and Graham (1980) that the $k$-tuple conjecture implies the existence of offset sets with positive limsup prime density. The proof strategy: given the $k$-tuple conjecture, one constructs a greedy sequence of admissible tuples that generate increasingly large offset sets.",
     "significance": "key",
-    "mathContext": "Axiomatized because the proof requires the Erdős-Graham greedy construction on admissible tuples combined with the PNT. From Erdős-Graham (1980), L'Enseignement Math. Monograph No. 28.",
+    "mathContext": "Axiomatized because the proof requires the Erd\u0151s-Graham greedy construction on admissible tuples combined with the PNT. From Erd\u0151s-Graham (1980), L'Enseignement Math. Monograph No. 28.",
     "relatedConcepts": [
-      "Erdős-Graham result",
+      "Erd\u0151s-Graham result",
       "greedy admissible construction",
       "conditional results"
     ],
@@ -238,7 +238,7 @@
       "endLine": 99
     },
     "title": "Empty Set is Trivially AllOffsetsPrime",
-    "content": "**empty_trivial**: `AllOffsetsPrime ∅ n` holds vacuously for all $n$, since there are no elements to check. Proved by `Set.not_mem_empty`. Combined with `finite_set_zero_density`, this shows trivial solutions have zero density.",
+    "content": "**empty_trivial**: `AllOffsetsPrime \u2205 n` holds vacuously for all $n$, since there are no elements to check. Proved by `Set.not_mem_empty`. Combined with `finite_set_zero_density`, this shows trivial solutions have zero density.",
     "significance": "supporting",
     "mathContext": "Vacuous truth via `Set.not_mem_empty`; the universal quantifier over $\\emptyset$ is trivially satisfied.",
     "relatedConcepts": [
@@ -282,7 +282,7 @@
       "endLine": 114
     },
     "title": "Density Ratio is Nonneg",
-    "content": "**primeDensityRatio_nonneg**: `primeDensityRatio A n ≥ 0` for all $A, n$. Proved using `div_nonneg` and `Nat.cast_nonneg'` for both numerator and denominator. This ensures the liminf and limsup are meaningful as nonnegative real numbers.",
+    "content": "**primeDensityRatio_nonneg**: `primeDensityRatio A n \u2265 0` for all $A, n$. Proved using `div_nonneg` and `Nat.cast_nonneg'` for both numerator and denominator. This ensures the liminf and limsup are meaningful as nonnegative real numbers.",
     "significance": "supporting",
     "mathContext": "`div_nonneg` with `Nat.cast_nonneg'` for both $|A \\cap [1,n]|_{\\text{ncard}}$ and $\\pi(n)$.",
     "relatedConcepts": [
@@ -324,7 +324,7 @@
     "type": "technique",
     "range": {
       "startLine": 120,
-      "endLine": 131
+      "endLine": 130
     },
     "title": "Solutions Require Infinite Sets",
     "content": "**erdos428_requires_infinite**: Any solution to Problem 428 must use an infinite set $A$. Proved by contradiction: if $A$ were finite, `finite_set_zero_density` gives liminf $= 0$, contradicting liminf $> 0$ via `linarith`. This is the key structural insight: the density requirement forces infinite offset sets, ruling out all trivial constructions.",

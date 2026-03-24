@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Docstring and Problem Overview",
-    "content": "Introduces Erdős Problem #115: for a degree-$n$ polynomial $p(z)$ with connected lemniscate $L(p) = \\{z : |p(z)| \\leq 1\\}$, is $\\max_{z \\in L(p)} |p'(z)| \\leq (1/2 + o(1))n^2$? Status: **PROVED** by Eremenko and Lempert. Documents three levels of bounds: lower bound $n$ (monomial), Pommerenke's $(e/2)n^2$, and the sharp $(1/2 + o(1))n^2$. Chebyshev polynomials are the extremal family.",
+    "content": "Introduces Erd\u0151s Problem #115: for a degree-$n$ polynomial $p(z)$ with connected lemniscate $L(p) = \\{z : |p(z)| \\leq 1\\}$, is $\\max_{z \\in L(p)} |p'(z)| \\leq (1/2 + o(1))n^2$? Status: **PROVED** by Eremenko and Lempert. Documents three levels of bounds: lower bound $n$ (monomial), Pommerenke's $(e/2)n^2$, and the sharp $(1/2 + o(1))n^2$. Chebyshev polynomials are the extremal family.",
     "mathContext": "Lemniscate: $L(p) = \\{z \\in \\mathbb{C} : |p(z)| \\leq 1\\}$. Bounds: $n \\leq \\max_{L(p)} |p'| \\leq (1/2 + o(1))n^2$. Sharp: $T_n$ (Chebyshev) achieves $\\max |T_n'| \\sim n^2/2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -56,7 +56,7 @@
     },
     "type": "concept",
     "title": "Lower Bound and Monomial Witness",
-    "content": "Two axioms establishing the lower bound:\n\n1. **lemniscate_deriv_lower**: For $n \\geq 1$ and connected $L(p)$: $\\max |p'| \\geq n$. This is the trivial direction — the monomial already achieves this.\n2. **Monomial axioms**: `monomial_poly n` constructs $z^n$, `monomial_connected` asserts the unit disk (lemniscate of $z^n$) is connected, and `monomial_deriv_eq` states $\\max |p'| = n$.\n\nThe monomial $p(z) = z^n$ has $p'(z) = nz^{n-1}$ and $L(p) = \\{|z| \\leq 1\\}$, so $\\max_{|z| \\leq 1} |nz^{n-1}| = n$.",
+    "content": "Two axioms establishing the lower bound:\n\n1. **lemniscate_deriv_lower**: For $n \\geq 1$ and connected $L(p)$: $\\max |p'| \\geq n$. This is the trivial direction \u2014 the monomial already achieves this.\n2. **Monomial axioms**: `monomial_poly n` constructs $z^n$, `monomial_connected` asserts the unit disk (lemniscate of $z^n$) is connected, and `monomial_deriv_eq` states $\\max |p'| = n$.\n\nThe monomial $p(z) = z^n$ has $p'(z) = nz^{n-1}$ and $L(p) = \\{|z| \\leq 1\\}$, so $\\max_{|z| \\leq 1} |nz^{n-1}| = n$.",
     "mathContext": "$p(z) = z^n \\implies p'(z) = nz^{n-1} \\implies \\max_{|z| \\leq 1} |p'(z)| = n \\cdot 1^{n-1} = n$. The unit disk is connected, so the lower bound is achieved.",
     "significance": "key",
     "relatedConcepts": [
@@ -126,7 +126,7 @@
     },
     "type": "concept",
     "title": "Eremenko-Lempert Theorem (Main Result)",
-    "content": "The central axiom **ErdosProblem115_proved**: for all $\\varepsilon > 0$, there exists $N$ such that for all $n \\geq N$ and all degree-$n$ polynomials $p$ with connected lemniscate: $\\max |p'| \\leq (1/2 + \\varepsilon) n^2$.\n\nThis resolves Erdős Problem #115 affirmatively. The $\\varepsilon$-$N$ formulation captures the $o(1)$ term: the bound holds asymptotically with constant approaching $1/2$. The proof by Eremenko and Lempert uses conformal mapping of the complement of $L(p)$ to the complement of a disk, combined with the Schwarz-Pick lemma.",
+    "content": "The central axiom **ErdosProblem115_proved**: for all $\\varepsilon > 0$, there exists $N$ such that for all $n \\geq N$ and all degree-$n$ polynomials $p$ with connected lemniscate: $\\max |p'| \\leq (1/2 + \\varepsilon) n^2$.\n\nThis resolves Erd\u0151s Problem #115 affirmatively. The $\\varepsilon$-$N$ formulation captures the $o(1)$ term: the bound holds asymptotically with constant approaching $1/2$. The proof by Eremenko and Lempert uses conformal mapping of the complement of $L(p)$ to the complement of a disk, combined with the Schwarz-Pick lemma.",
     "mathContext": "$\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, \\forall p \\in \\text{ComplexPoly}(n)$: $\\text{IsLemniscateConnected}(p) \\implies \\max_{L(p)} |p'| \\leq (1/2 + \\varepsilon) n^2$. Equivalently: $\\limsup_{n \\to \\infty} \\sup_p \\max |p'| / n^2 \\leq 1/2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -146,7 +146,7 @@
     "proofId": "erdos-115",
     "range": {
       "startLine": 83,
-      "endLine": 92
+      "endLine": 91
     },
     "type": "technique",
     "title": "Sharpness via Chebyshev Polynomials (Proved)",

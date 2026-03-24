@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Imports: Real Analysis and Finite Sets",
-    "content": "Imports Mathlib modules for natural numbers, real numbers, finite sets, and tactics. These provide the foundation for defining ℝ² points, distance functions, and finite point configurations.",
+    "content": "Imports Mathlib modules for natural numbers, real numbers, finite sets, and tactics. These provide the foundation for defining \u211d\u00b2 points, distance functions, and finite point configurations.",
     "significance": "supporting",
     "mathContext": "The formalization uses $\\mathbb{R}$ from `Data.Real.Basic` and `Finset` from `Data.Finset.Basic` to model finite point sets in the plane.",
     "relatedConcepts": [
@@ -28,8 +28,8 @@
       "endLine": 28
     },
     "type": "definition",
-    "title": "Point in ℝ²",
-    "content": "Defines **Point2** as ℝ × ℝ, a point in the Euclidean plane. This is the ambient space for the distinct distances problem.",
+    "title": "Point in \u211d\u00b2",
+    "content": "Defines **Point2** as \u211d \u00d7 \u211d, a point in the Euclidean plane. This is the ambient space for the distinct distances problem.",
     "significance": "supporting",
     "mathContext": "A point $p \\in \\mathbb{R}^2$ is represented as a pair $(p_1, p_2) \\in \\mathbb{R} \\times \\mathbb{R}$.",
     "relatedConcepts": [
@@ -49,7 +49,7 @@
     },
     "type": "definition",
     "title": "Squared Euclidean Distance",
-    "content": "Defines **distSq(p, q)** = (p₁ - q₁)² + (p₂ - q₂)², the squared Euclidean distance. Using squared distance avoids irrational numbers while preserving the distinct distances count.",
+    "content": "Defines **distSq(p, q)** = (p\u2081 - q\u2081)\u00b2 + (p\u2082 - q\u2082)\u00b2, the squared Euclidean distance. Using squared distance avoids irrational numbers while preserving the distinct distances count.",
     "significance": "supporting",
     "mathContext": "The squared distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$ is a standard trick in discrete geometry: $d^2$ determines $d$ uniquely (for $d \\ge 0$), so counting distinct $d^2$ values equals counting distinct distances.",
     "relatedConcepts": [
@@ -71,7 +71,7 @@
     },
     "type": "definition",
     "title": "Bipartite Distance Set",
-    "content": "Defines **bipartiteDistSet(X, Y)** as the image of X ×ˢ Y under distSq. This is the set of all distinct squared distances between points in X and points in Y — the key object of study.",
+    "content": "Defines **bipartiteDistSet(X, Y)** as the image of X \u00d7\u02e2 Y under distSq. This is the set of all distinct squared distances between points in X and points in Y \u2014 the key object of study.",
     "significance": "key",
     "mathContext": "The bipartite distance set $\\Delta(X,Y) = \\{d^2(x,y) \\mid x \\in X, y \\in Y\\}$ restricts to cross-distances only. Its cardinality $|\\Delta(X,Y)|$ is the quantity $F(2n)$ minimizes over.",
     "relatedConcepts": [
@@ -93,7 +93,7 @@
     },
     "type": "definition",
     "title": "Extremal Function F(2n)",
-    "content": "Axiomatizes **minBipartiteDist** representing F(2n), the minimum number of distinct bipartite distances achievable between two n-point sets in ℝ². Currently set to 0 as a placeholder — the true value is unknown.",
+    "content": "Axiomatizes **minBipartiteDist** representing F(2n), the minimum number of distinct bipartite distances achievable between two n-point sets in \u211d\u00b2. Currently set to 0 as a placeholder \u2014 the true value is unknown.",
     "significance": "key",
     "mathContext": "$F(2n) = \\min_{|X|=|Y|=n} |\\Delta(X,Y)|$ where the minimum is over all $n$-element point sets $X, Y \\subset \\mathbb{R}^2$. The problem asks for the growth rate of $F(2n)$.",
     "relatedConcepts": [
@@ -115,13 +115,13 @@
     },
     "type": "definition",
     "title": "Extremal Function f(2n)",
-    "content": "Axiomatizes **minDistinct2n** representing f(2n), the minimum number of distinct distances among 2n general points in ℝ². Guth–Katz showed f(2n) = Θ(n/log n) up to a √(log n) factor.",
+    "content": "Axiomatizes **minDistinct2n** representing f(2n), the minimum number of distinct distances among 2n general points in \u211d\u00b2. Guth\u2013Katz showed f(2n) = \u0398(n/log n) up to a \u221a(log n) factor.",
     "significance": "key",
-    "mathContext": "$f(2n) = \\min_{|P|=2n} |\\{d(p,q) \\mid p,q \\in P, p \\ne q\\}|$ where $P \\subset \\mathbb{R}^2$. The Guth–Katz bound gives $\\Omega(n/\\log n) \\le f(2n) \\le O(n/\\sqrt{\\log n})$.",
+    "mathContext": "$f(2n) = \\min_{|P|=2n} |\\{d(p,q) \\mid p,q \\in P, p \\ne q\\}|$ where $P \\subset \\mathbb{R}^2$. The Guth\u2013Katz bound gives $\\Omega(n/\\log n) \\le f(2n) \\le O(n/\\sqrt{\\log n})$.",
     "relatedConcepts": [
       "distinct distances",
-      "Erdős Problem #89",
-      "Guth–Katz"
+      "Erd\u0151s Problem #89",
+      "Guth\u2013Katz"
     ],
     "prerequisites": [
       "Euclidean distance"
@@ -135,10 +135,10 @@
       "endLine": 54
     },
     "type": "technique",
-    "title": "Erdős Problem #661: Bipartite Advantage Conjecture",
-    "content": "**Main Conjecture**: For all ε > 0, there exists N₀ such that F(2n) ≤ ε · f(2n) for all n ≥ N₀. This is the formal statement that F(2n) = o(f(2n)) — the bipartite arrangement provides asymptotically fewer distinct distances.",
+    "title": "Erd\u0151s Problem #661: Bipartite Advantage Conjecture",
+    "content": "**Main Conjecture**: For all \u03b5 > 0, there exists N\u2080 such that F(2n) \u2264 \u03b5 \u00b7 f(2n) for all n \u2265 N\u2080. This is the formal statement that F(2n) = o(f(2n)) \u2014 the bipartite arrangement provides asymptotically fewer distinct distances.",
     "significance": "key",
-    "mathContext": "The axiom formalizes $F(2n) = o(f(2n))$ via the $\\varepsilon$-$N_0$ definition of little-$o$: $\\forall \\varepsilon > 0, \\exists N_0, \\forall n \\ge N_0: F(2n) \\le \\varepsilon \\cdot f(2n)$. This is **OPEN** — neither proved nor disproved.",
+    "mathContext": "The axiom formalizes $F(2n) = o(f(2n))$ via the $\\varepsilon$-$N_0$ definition of little-$o$: $\\forall \\varepsilon > 0, \\exists N_0, \\forall n \\ge N_0: F(2n) \\le \\varepsilon \\cdot f(2n)$. This is **OPEN** \u2014 neither proved nor disproved.",
     "relatedConcepts": [
       "little-o notation",
       "asymptotic analysis",
@@ -157,15 +157,15 @@
       "endLine": 63
     },
     "type": "technique",
-    "title": "Guth–Katz Lower Bound (2015)",
-    "content": "**Guth–Katz**: There exists C > 0 such that f(2n) ≥ C · n/log n for all n ≥ 2. This landmark result essentially resolved Erdős's original distinct distances problem (Problem #89) and establishes the baseline for the bipartite variant.",
+    "title": "Guth\u2013Katz Lower Bound (2015)",
+    "content": "**Guth\u2013Katz**: There exists C > 0 such that f(2n) \u2265 C \u00b7 n/log n for all n \u2265 2. This landmark result essentially resolved Erd\u0151s's original distinct distances problem (Problem #89) and establishes the baseline for the bipartite variant.",
     "significance": "key",
-    "mathContext": "Guth and Katz proved $f(n) = \\Omega(n/\\log n)$ using the Elekes–Sharir–Guth–Katz framework: (1) reduce to counting rich lines in $\\mathbb{R}^3$, (2) map to the Lie group $SE(2)$ of rigid motions, (3) apply algebraic geometry of ruled surfaces to bound the number of lines on degree-2 surfaces. This was a major breakthrough in combinatorial geometry.",
+    "mathContext": "Guth and Katz proved $f(n) = \\Omega(n/\\log n)$ using the Elekes\u2013Sharir\u2013Guth\u2013Katz framework: (1) reduce to counting rich lines in $\\mathbb{R}^3$, (2) map to the Lie group $SE(2)$ of rigid motions, (3) apply algebraic geometry of ruled surfaces to bound the number of lines on degree-2 surfaces. This was a major breakthrough in combinatorial geometry.",
     "relatedConcepts": [
       "polynomial method",
-      "Elekes–Sharir framework",
+      "Elekes\u2013Sharir framework",
       "ruled surfaces",
-      "Szemerédi–Trotter"
+      "Szemer\u00e9di\u2013Trotter"
     ],
     "prerequisites": [
       "minDistinct2n"
@@ -180,7 +180,7 @@
     },
     "type": "technique",
     "title": "Lattice Upper Bound",
-    "content": "**Integer Lattice Bound**: There exists C > 0 such that f(2n) ≤ C · n/√(log n) for all n ≥ 2. This is achieved by the grid {1,...,√n}² and follows from Landau's estimate on numbers representable as sums of two squares.",
+    "content": "**Integer Lattice Bound**: There exists C > 0 such that f(2n) \u2264 C \u00b7 n/\u221a(log n) for all n \u2265 2. This is achieved by the grid {1,...,\u221an}\u00b2 and follows from Landau's estimate on numbers representable as sums of two squares.",
     "significance": "key",
     "mathContext": "The $\\sqrt{n} \\times \\sqrt{n}$ integer lattice has $n$ points and $O(n/\\sqrt{\\log n})$ distinct distances, by Landau's theorem: the number of integers $\\le N$ that are sums of two squares is $\\Theta(N/\\sqrt{\\log N})$. This gives the best known upper bound on $f(2n)$.",
     "relatedConcepts": [
@@ -201,14 +201,14 @@
       "endLine": 77
     },
     "type": "insight",
-    "title": "Lenz Construction in ℝ⁴",
-    "content": "**Lenz's Construction**: In ℝ⁴, place n points on one unit circle and n points on a second unit circle in an orthogonal 2-plane. Then every bipartite distance equals √2, giving F(2n) = 1. This shows the problem is dimension-sensitive.",
+    "title": "Lenz Construction in \u211d\u2074",
+    "content": "**Lenz's Construction**: In \u211d\u2074, place n points on one unit circle and n points on a second unit circle in an orthogonal 2-plane. Then every bipartite distance equals \u221a2, giving F(2n) = 1. This shows the problem is dimension-sensitive.",
     "significance": "key",
-    "mathContext": "Let $C_1 \\subset \\mathbb{R}^4$ be the unit circle in the $(x_1,x_2)$-plane and $C_2$ the unit circle in the $(x_3,x_4)$-plane. For $p \\in C_1$ and $q \\in C_2$: $d^2(p,q) = |p|^2 + |q|^2 = 1 + 1 = 2$, so $d(p,q) = \\sqrt{2}$ for all pairs. This is impossible in $\\mathbb{R}^2$ by Elekes–Rónyai type results.",
+    "mathContext": "Let $C_1 \\subset \\mathbb{R}^4$ be the unit circle in the $(x_1,x_2)$-plane and $C_2$ the unit circle in the $(x_3,x_4)$-plane. For $p \\in C_1$ and $q \\in C_2$: $d^2(p,q) = |p|^2 + |q|^2 = 1 + 1 = 2$, so $d(p,q) = \\sqrt{2}$ for all pairs. This is impossible in $\\mathbb{R}^2$ by Elekes\u2013R\u00f3nyai type results.",
     "relatedConcepts": [
       "orthogonal circles",
       "dimension reduction",
-      "Elekes–Rónyai"
+      "Elekes\u2013R\u00f3nyai"
     ],
     "prerequisites": [
       "bipartiteDistSet",
@@ -223,14 +223,14 @@
       "endLine": 82
     },
     "type": "concept",
-    "title": "Connection to Erdős Problem #89",
-    "content": "Erdős Problem #89 is the general distinct distances problem: what is the minimum number of distinct distances among n points in ℝ²? Problem #661 is the bipartite variant. The general problem was essentially resolved by Guth–Katz; the bipartite version remains open.",
+    "title": "Connection to Erd\u0151s Problem #89",
+    "content": "Erd\u0151s Problem #89 is the general distinct distances problem: what is the minimum number of distinct distances among n points in \u211d\u00b2? Problem #661 is the bipartite variant. The general problem was essentially resolved by Guth\u2013Katz; the bipartite version remains open.",
     "significance": "key",
     "mathContext": "Problem #89 asks for $f(n)$; Problem #661 asks whether $F(2n) = o(f(2n))$. Since $F(2n) \\le f(2n)$ trivially (any bipartite configuration is a special case of a general one), the question is whether strict inequality holds asymptotically.",
     "relatedConcepts": [
-      "Erdős Problem #89",
+      "Erd\u0151s Problem #89",
       "distinct distances",
-      "Guth–Katz"
+      "Guth\u2013Katz"
     ],
     "prerequisites": [
       "minBipartiteDist",
@@ -242,15 +242,15 @@
     "proofId": "erdos-661",
     "range": {
       "startLine": 84,
-      "endLine": 85
+      "endLine": 84
     },
     "type": "concept",
     "title": "$50 Reward",
-    "content": "Erdős offered $50 for resolving whether F(2n) = o(f(2n)) in the plane. This moderate prize reflects the problem's difficulty but narrower scope compared to the $500 original distinct distances problem.",
+    "content": "Erd\u0151s offered $50 for resolving whether F(2n) = o(f(2n)) in the plane. This moderate prize reflects the problem's difficulty but narrower scope compared to the $500 original distinct distances problem.",
     "significance": "supporting",
-    "mathContext": "Erdős's prize system ranged from \\$25 (approachable) to \\$10,000 (the twin prime conjecture). A \\$50 prize indicates a problem Erdős considered tractable but non-trivial.",
+    "mathContext": "Erd\u0151s's prize system ranged from \\$25 (approachable) to \\$10,000 (the twin prime conjecture). A \\$50 prize indicates a problem Erd\u0151s considered tractable but non-trivial.",
     "relatedConcepts": [
-      "Erdős prizes",
+      "Erd\u0151s prizes",
       "open problems"
     ],
     "prerequisites": []

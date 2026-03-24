@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #919 asks about chromatic numbers of graphs on ordinal products. Specifically, can we build a graph on ω₂² (the square of the second uncountable ordinal) with chromatic number ℵ₂, where every smaller subgraph has countable chromatic number? This generalizes an Erdős-Hajnal construction at the ℵ₁ level.",
+    "content": "Erd\u0151s Problem #919 asks about chromatic numbers of graphs on ordinal products. Specifically, can we build a graph on \u03c9\u2082\u00b2 (the square of the second uncountable ordinal) with chromatic number \u2135\u2082, where every smaller subgraph has countable chromatic number? This generalizes an Erd\u0151s-Hajnal construction at the \u2135\u2081 level.",
     "mathContext": "The problem combines graph theory with set theory, using cardinal and ordinal arithmetic. It relates to how chromatic constraints propagate through infinite graph structures.",
     "significance": "key",
     "relatedConcepts": [
@@ -26,7 +26,7 @@
     },
     "type": "definition",
     "title": "Ordinal Products",
-    "content": "ω₁ is the first uncountable ordinal (the smallest ordinal larger than all countable ordinals). ω₂ is the second uncountable ordinal. The products ω₁² = ω₁ × ω₁ and ω₂² = ω₂ × ω₂ with lexicographic ordering serve as vertex sets for our graphs.",
+    "content": "\u03c9\u2081 is the first uncountable ordinal (the smallest ordinal larger than all countable ordinals). \u03c9\u2082 is the second uncountable ordinal. The products \u03c9\u2081\u00b2 = \u03c9\u2081 \u00d7 \u03c9\u2081 and \u03c9\u2082\u00b2 = \u03c9\u2082 \u00d7 \u03c9\u2082 with lexicographic ordering serve as vertex sets for our graphs.",
     "mathContext": "Ordinal products carry a natural well-ordering (lexicographic), which lets us talk about the 'order type' of subsets - a measure of how large they are ordinally.",
     "significance": "key",
     "relatedConcepts": [
@@ -62,8 +62,8 @@
     },
     "type": "definition",
     "title": "Chromatic Number",
-    "content": "The chromatic number χ(G) is the minimum cardinal k such that vertices can be colored with k colors without adjacent vertices having the same color. For finite graphs this is a natural number; for infinite graphs it can be any cardinal ℵ₀, ℵ₁, ℵ₂, etc.",
-    "mathContext": "We define chromatic number as an infimum over cardinals. A proper k-coloring is a function c: V → k.toType where c(x) ≠ c(y) whenever x ~ y.",
+    "content": "The chromatic number \u03c7(G) is the minimum cardinal k such that vertices can be colored with k colors without adjacent vertices having the same color. For finite graphs this is a natural number; for infinite graphs it can be any cardinal \u2135\u2080, \u2135\u2081, \u2135\u2082, etc.",
+    "mathContext": "We define chromatic number as an infimum over cardinals. A proper k-coloring is a function c: V \u2192 k.toType where c(x) \u2260 c(y) whenever x ~ y.",
     "significance": "key",
     "relatedConcepts": [
       "coloring",
@@ -81,7 +81,7 @@
     "type": "definition",
     "title": "Order Type and Induced Subgraphs",
     "content": "The order type of a subset S captures 'how large' S is ordinally. An induced subgraph G[S] keeps only vertices in S and edges between them. The key constraint is that subgraphs with smaller order type should have bounded chromatic number.",
-    "mathContext": "If S ⊂ ω₁² has order type less than ω₁ · ω₁, then S is 'strictly smaller' than the full product. This is the threshold for the chromatic constraint.",
+    "mathContext": "If S \u2282 \u03c9\u2081\u00b2 has order type less than \u03c9\u2081 \u00b7 \u03c9\u2081, then S is 'strictly smaller' than the full product. This is the threshold for the chromatic constraint.",
     "significance": "key",
     "relatedConcepts": [
       "order-type",
@@ -97,8 +97,8 @@
       "endLine": 107
     },
     "type": "concept",
-    "title": "Erdős-Hajnal Construction",
-    "content": "Erdős and Hajnal constructed a graph on ω₁² where vertices (x_α, y_β) and (x_γ, y_δ) are adjacent iff α < γ and β > δ (or vice versa). This graph has χ = ℵ₁, but every subgraph of smaller order type is countably colorable.",
+    "title": "Erd\u0151s-Hajnal Construction",
+    "content": "Erd\u0151s and Hajnal constructed a graph on \u03c9\u2081\u00b2 where vertices (x_\u03b1, y_\u03b2) and (x_\u03b3, y_\u03b4) are adjacent iff \u03b1 < \u03b3 and \u03b2 > \u03b4 (or vice versa). This graph has \u03c7 = \u2135\u2081, but every subgraph of smaller order type is countably colorable.",
     "mathContext": "The construction uses the comparability of coordinates in opposite directions. Think of it as: adjacent if one is 'northeast' and the other 'southwest' on the ordinal grid.",
     "significance": "key",
     "relatedConcepts": [
@@ -116,8 +116,8 @@
     },
     "type": "definition",
     "title": "The Two Main Questions",
-    "content": "Question 1: Can we do the E-H construction at the next level? Build a graph on ω₂² with χ = ℵ₂ and smaller subgraphs having χ ≤ ℵ₀. Question 2: What about χ = ℵ₁ on ω₂² with the same constraint? Both remain open.",
-    "mathContext": "The jump from ℵ₁ to ℵ₂ is non-trivial. The gap between ℵ₀ (countable) and ℵ₂ (two steps up) may be too large to bridge with similar techniques.",
+    "content": "Question 1: Can we do the E-H construction at the next level? Build a graph on \u03c9\u2082\u00b2 with \u03c7 = \u2135\u2082 and smaller subgraphs having \u03c7 \u2264 \u2135\u2080. Question 2: What about \u03c7 = \u2135\u2081 on \u03c9\u2082\u00b2 with the same constraint? Both remain open.",
+    "mathContext": "The jump from \u2135\u2081 to \u2135\u2082 is non-trivial. The gap between \u2135\u2080 (countable) and \u2135\u2082 (two steps up) may be too large to bridge with similar techniques.",
     "significance": "key",
     "relatedConcepts": [
       "question1",
@@ -134,8 +134,8 @@
     },
     "type": "concept",
     "title": "Partial Result",
-    "content": "There exists a graph on ω₂² with χ = ℵ₂ where smaller subgraphs have χ ≤ ℵ₁ (not ℵ₀). This is progress but doesn't answer Question 1 since we need the ℵ₀ bound, not ℵ₁.",
-    "mathContext": "The partial construction likely uses techniques similar to E-H but at one level higher. The gap from ℵ₁ to ℵ₀ remains the challenge.",
+    "content": "There exists a graph on \u03c9\u2082\u00b2 with \u03c7 = \u2135\u2082 where smaller subgraphs have \u03c7 \u2264 \u2135\u2081 (not \u2135\u2080). This is progress but doesn't answer Question 1 since we need the \u2135\u2080 bound, not \u2135\u2081.",
+    "mathContext": "The partial construction likely uses techniques similar to E-H but at one level higher. The gap from \u2135\u2081 to \u2135\u2080 remains the challenge.",
     "significance": "key",
     "relatedConcepts": [
       "partial-progress",
@@ -152,8 +152,8 @@
     },
     "type": "definition",
     "title": "General Framework",
-    "content": "The questions generalize to arbitrary cardinals: for cardinals κ, λ, μ, does a graph on κ² exist with χ = λ and smaller subgraphs having χ ≤ μ? The E-H result is the case (ℵ₁, ℵ₁, ℵ₀) which is true.",
-    "mathContext": "This parameterized view helps understand what makes Problem #919 hard: we're asking about (ℵ₂, ℵ₂, ℵ₀) or (ℵ₂, ℵ₁, ℵ₀), with a larger gap.",
+    "content": "The questions generalize to arbitrary cardinals: for cardinals \u03ba, \u03bb, \u03bc, does a graph on \u03ba\u00b2 exist with \u03c7 = \u03bb and smaller subgraphs having \u03c7 \u2264 \u03bc? The E-H result is the case (\u2135\u2081, \u2135\u2081, \u2135\u2080) which is true.",
+    "mathContext": "This parameterized view helps understand what makes Problem #919 hard: we're asking about (\u2135\u2082, \u2135\u2082, \u2135\u2080) or (\u2135\u2082, \u2135\u2081, \u2135\u2080), with a larger gap.",
     "significance": "key",
     "relatedConcepts": [
       "generalization",
@@ -170,7 +170,7 @@
     },
     "type": "concept",
     "title": "Babai's Theorem and Its Failure",
-    "content": "Babai proved results about chromatic propagation for graphs on countable ordinals. The E-H construction shows these results fail at ω₁: there we can have χ = ℵ₁ globally while all smaller subgraphs have χ ≤ ℵ₀.",
+    "content": "Babai proved results about chromatic propagation for graphs on countable ordinals. The E-H construction shows these results fail at \u03c9\u2081: there we can have \u03c7 = \u2135\u2081 globally while all smaller subgraphs have \u03c7 \u2264 \u2135\u2080.",
     "mathContext": "This is a 'phase transition' phenomenon: at countable cardinals chromatic constraints propagate, but at uncountable cardinals they can 'jump' from the subgraphs to the whole.",
     "significance": "key",
     "relatedConcepts": [
@@ -206,7 +206,7 @@
     },
     "type": "technique",
     "title": "Summary Theorem",
-    "content": "The summary theorem combines what we know: (1) E-H construction exists on ω₁², and (2) a partial construction exists on ω₂² with the weaker ℵ₁ bound. This formally captures the state of knowledge.",
+    "content": "The summary theorem combines what we know: (1) E-H construction exists on \u03c9\u2081\u00b2, and (2) a partial construction exists on \u03c9\u2082\u00b2 with the weaker \u2135\u2081 bound. This formally captures the state of knowledge.",
     "mathContext": "The proof uses the axiomatized results directly, showing they form a coherent picture of partial progress.",
     "significance": "key",
     "relatedConcepts": [
@@ -220,11 +220,11 @@
     "proofId": "erdos-919",
     "range": {
       "startLine": 230,
-      "endLine": 243
+      "endLine": 241
     },
     "type": "technique",
     "title": "Main Theorem",
-    "content": "The main theorem establishes that the questions are well-posed: if Question1 is true, we get a graph with χ = ℵ₂; if Question2 is true, we get χ = ℵ₁. The disjunction leaves open which (if any) holds.",
+    "content": "The main theorem establishes that the questions are well-posed: if Question1 is true, we get a graph with \u03c7 = \u2135\u2082; if Question2 is true, we get \u03c7 = \u2135\u2081. The disjunction leaves open which (if any) holds.",
     "mathContext": "This is the formal statement of Problem #919. The proof is straightforward from the definitions but captures the logical structure.",
     "significance": "key",
     "relatedConcepts": [

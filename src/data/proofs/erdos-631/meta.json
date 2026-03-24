@@ -77,7 +77,7 @@
       }
     ],
     "axiomCount": 17,
-    "lineCount": 277,
+    "lineCount": 269,
     "assumptions": "17 axiom(s) and 11 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -185,7 +185,7 @@
       "id": "main-status",
       "title": "Main Problem Status",
       "startLine": 245,
-      "endLine": 276,
+      "endLine": 269,
       "summary": "Theorem $\\texttt{erdos\\_631\\_status}$: $\\langle\\texttt{thomassen\\_five\\_list\\_theorem}, \\texttt{voigt\\_construction}\\rangle$ \u2014 both questions answered, bound is tight",
       "mathContext": "Problem #631 is SOLVED: $\\chi_L(G) \\leq 5$ for all planar $G$ (Thomassen 1994) and $\\exists$ planar $G$ with $\\chi_L(G) = 5$ (Voigt 1993). The formalization bundles both results as a conjunction, establishing the tight bound $\\max_G \\chi_L(G) = 5$ over all planar graphs $G$."
     }
@@ -212,7 +212,7 @@
       "Nat"
     ],
     "namespace": "Erdos631",
-    "lineCount": 277,
+    "lineCount": 269,
     "axiomCount": 17,
     "theoremCount": 7,
     "definitionCount": 9

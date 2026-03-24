@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #183 asks for the limiting behavior of the multicolor triangle Ramsey number R(3;k). This number measures how large a complete graph must be to guarantee a monochromatic triangle in any k-coloring of its edges. Erdős offered $250 for its solution, plus $100 for proving the limit is finite.",
+    "content": "Erd\u0151s Problem #183 asks for the limiting behavior of the multicolor triangle Ramsey number R(3;k). This number measures how large a complete graph must be to guarantee a monochromatic triangle in any k-coloring of its edges. Erd\u0151s offered $250 for its solution, plus $100 for proving the limit is finite.",
     "mathContext": "R(3;k) generalizes the classical Ramsey number R(3,3) = 6. The problem connects to Schur numbers, extremal graph theory, and asymptotic combinatorics.",
     "significance": "key",
     "relatedConcepts": [
@@ -98,8 +98,8 @@
     },
     "type": "concept",
     "title": "Inductive Upper Bound",
-    "content": "The key recurrence R(3;k) ≤ 2 + k(R(3;k-1) - 1) follows from a pigeonhole argument: in any k-coloring of a sufficiently large complete graph, some vertex has many edges of the same color, reducing to a (k-1)-coloring problem.",
-    "mathContext": "Pick any vertex v. By pigeonhole, at least ⌈(n-1)/k⌉ edges from v have the same color. If this subgraph is large enough, it either contains a monochromatic triangle or we can apply induction.",
+    "content": "The key recurrence R(3;k) \u2264 2 + k(R(3;k-1) - 1) follows from a pigeonhole argument: in any k-coloring of a sufficiently large complete graph, some vertex has many edges of the same color, reducing to a (k-1)-coloring problem.",
+    "mathContext": "Pick any vertex v. By pigeonhole, at least \u2308(n-1)/k\u2309 edges from v have the same color. If this subgraph is large enough, it either contains a monochromatic triangle or we can apply induction.",
     "significance": "key",
     "relatedConcepts": [
       "pigeonhole",
@@ -116,8 +116,8 @@
     },
     "type": "concept",
     "title": "Factorial Upper Bound",
-    "content": "Unfolding the recurrence gives R(3;k) ≤ e·k! + O(1). This is essentially the best known upper bound. The factor e arises from the limit of (1 + 1/n)^n and the accumulation of constants in the recurrence.",
-    "mathContext": "The exact form is R(3;k) ≤ ⌈e·k!⌉. This shows R(3;k) grows at most factorially, which is much faster than exponential but gives a concrete upper bound.",
+    "content": "Unfolding the recurrence gives R(3;k) \u2264 e\u00b7k! + O(1). This is essentially the best known upper bound. The factor e arises from the limit of (1 + 1/n)^n and the accumulation of constants in the recurrence.",
+    "mathContext": "The exact form is R(3;k) \u2264 \u2308e\u00b7k!\u2309. This shows R(3;k) grows at most factorially, which is much faster than exponential but gives a concrete upper bound.",
     "significance": "key",
     "relatedConcepts": [
       "factorial",
@@ -134,7 +134,7 @@
     },
     "type": "definition",
     "title": "Schur Numbers",
-    "content": "The Schur number S(k) is the largest n such that {1,...,n} can be k-colored without a monochromatic solution to x + y = z. The connection R(3;k) ≥ S(k) + 2 links edge-coloring problems to arithmetic combinatorics.",
+    "content": "The Schur number S(k) is the largest n such that {1,...,n} can be k-colored without a monochromatic solution to x + y = z. The connection R(3;k) \u2265 S(k) + 2 links edge-coloring problems to arithmetic combinatorics.",
     "mathContext": "If we have a sum-free k-coloring of {1,...,n}, we can use it to avoid monochromatic triangles in K_{n+1}. Color edge {i,j} by the color of |i-j|.",
     "significance": "key",
     "relatedConcepts": [
@@ -152,7 +152,7 @@
     },
     "type": "concept",
     "title": "Exponential Lower Bound",
-    "content": "The breakthrough 2021 result by Ageron et al. showed R(3;k) ≥ 380^{k/5} - O(1). This means the k-th root is at least 380^{1/5} ≈ 3.28, providing a strong lower bound on the limit.",
+    "content": "The breakthrough 2021 result by Ageron et al. showed R(3;k) \u2265 380^{k/5} - O(1). This means the k-th root is at least 380^{1/5} \u2248 3.28, providing a strong lower bound on the limit.",
     "mathContext": "The construction uses sophisticated techniques from additive combinatorics and computer-assisted verification. Previous bounds gave smaller constants.",
     "significance": "key",
     "relatedConcepts": [
@@ -171,7 +171,7 @@
     "type": "definition",
     "title": "k-th Root Function",
     "content": "The k-th root R(3;k)^{1/k} measures the 'average multiplicative rate' of growth. If R(3;k) grew like c^k, this would converge to c. The question asks whether this sequence converges and to what.",
-    "mathContext": "By Stirling, (k!)^{1/k} ~ k/e → ∞. So the upper bound grows without limit, but the lower bound 380^{1/5} ≈ 3.28 is fixed.",
+    "mathContext": "By Stirling, (k!)^{1/k} ~ k/e \u2192 \u221e. So the upper bound grows without limit, but the lower bound 380^{1/5} \u2248 3.28 is fixed.",
     "significance": "key",
     "relatedConcepts": [
       "root",
@@ -188,8 +188,8 @@
     },
     "type": "definition",
     "title": "The Main Question",
-    "content": "ErdosProblem183 asks: does the limit lim_{k→∞} R(3;k)^{1/k} exist? If so, what is it? The problem is open in both directions - we don't know if the limit exists, or if it's finite.",
-    "mathContext": "Using Filter.Tendsto, we express convergence to a finite limit L or divergence to infinity. The dichotomy LimitIsFinite ∨ LimitIsInfinite covers all cases.",
+    "content": "ErdosProblem183 asks: does the limit lim_{k\u2192\u221e} R(3;k)^{1/k} exist? If so, what is it? The problem is open in both directions - we don't know if the limit exists, or if it's finite.",
+    "mathContext": "Using Filter.Tendsto, we express convergence to a finite limit L or divergence to infinity. The dichotomy LimitIsFinite \u2228 LimitIsInfinite covers all cases.",
     "significance": "key",
     "relatedConcepts": [
       "tendsto",
@@ -206,7 +206,7 @@
     },
     "type": "concept",
     "title": "The Enormous Gap",
-    "content": "The gap between lower bound (3.28^k) and upper bound (k!) is astronomical. For k=10: lower ≈ 150,000 while upper ≈ 9.9 million. This gap indicates how little we understand about the true growth rate.",
+    "content": "The gap between lower bound (3.28^k) and upper bound (k!) is astronomical. For k=10: lower \u2248 150,000 while upper \u2248 9.9 million. This gap indicates how little we understand about the true growth rate.",
     "mathContext": "The ratio (upper/lower) grows like k!/c^k, which by Stirling is roughly (k/ce)^k - super-exponential in k.",
     "significance": "key",
     "relatedConcepts": [
@@ -224,7 +224,7 @@
     },
     "type": "technique",
     "title": "Bounds Summary Theorem",
-    "content": "The bounds_summary theorem formally states what we know: R(3;k) ≥ c^k for some c > 3, and R(3;k) ≤ C·k! for some constant C. The proof combines the exponential lower and factorial upper bounds.",
+    "content": "The bounds_summary theorem formally states what we know: R(3;k) \u2265 c^k for some c > 3, and R(3;k) \u2264 C\u00b7k! for some constant C. The proof combines the exponential lower and factorial upper bounds.",
     "mathContext": "The theorem uses calc mode to chain the inequalities. The lower bound constant comes from the Ageron et al. result.",
     "significance": "key",
     "relatedConcepts": [
@@ -242,7 +242,7 @@
     },
     "type": "concept",
     "title": "Related Problems",
-    "content": "Erdős Problem #483 is closely related, asking about other aspects of multicolor Ramsey numbers. The diagonal Ramsey connection shows R(3;k) relates to the sequence R(k+1,k+1) as well.",
+    "content": "Erd\u0151s Problem #483 is closely related, asking about other aspects of multicolor Ramsey numbers. The diagonal Ramsey connection shows R(3;k) relates to the sequence R(k+1,k+1) as well.",
     "mathContext": "The web of Ramsey-theoretic problems is interconnected. Progress on one often illuminates others.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -256,11 +256,11 @@
     "proofId": "erdos-183",
     "range": {
       "startLine": 228,
-      "endLine": 250
+      "endLine": 241
     },
     "type": "technique",
     "title": "Main Theorem",
-    "content": "The erdos_183_main theorem combines three statements: (1) R(3;k) ≥ 3 for all k ≥ 1, (2) the factorial upper bound, and (3) the dichotomy that either the limit exists finitely or diverges to infinity.",
+    "content": "The erdos_183_main theorem combines three statements: (1) R(3;k) \u2265 3 for all k \u2265 1, (2) the factorial upper bound, and (3) the dichotomy that either the limit exists finitely or diverges to infinity.",
     "mathContext": "This is the formal statement of Problem #183. The proof uses the axiomatized bounds and classical logic for the dichotomy.",
     "significance": "key",
     "relatedConcepts": [

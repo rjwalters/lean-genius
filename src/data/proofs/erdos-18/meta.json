@@ -1,10 +1,10 @@
 {
   "id": "erdos-18",
-  "title": "Erdős Problem #18: Practical Numbers",
+  "title": "Erd\u0151s Problem #18: Practical Numbers",
   "slug": "erdos-18",
   "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m. Prize: $250.",
   "meta": {
-    "author": "Srinivasan (1948), Stewart-Sierpiński (1954-55), Vose (1985)",
+    "author": "Srinivasan (1948), Stewart-Sierpi\u0144ski (1954-55), Vose (1985)",
     "sourceUrl": "https://erdosproblems.com/18",
     "date": "1948",
     "status": "axiomatized",
@@ -171,42 +171,42 @@
       "id": "density",
       "title": "Density of Practical Numbers",
       "summary": "practicalCount, density zero, asymptotic bound",
-      "startLine": 206,
+      "startLine": 177,
       "endLine": 187
     },
     {
       "id": "properties",
       "title": "Properties of Practical Numbers",
       "summary": "Closure, factorials, primorials practical",
-      "startLine": 231,
+      "startLine": 177,
       "endLine": 187
     },
     {
       "id": "goldbach",
       "title": "Goldbach-Type Results",
       "summary": "Practical Goldbach (proven!), practical twins (infinite!)",
-      "startLine": 244,
+      "startLine": 177,
       "endLine": 187
     },
     {
       "id": "egyptian",
       "title": "Connection to Egyptian Fractions",
       "summary": "Fibonacci's 1202 use of practical numbers",
-      "startLine": 264,
+      "startLine": 177,
       "endLine": 187
     },
     {
       "id": "oeis",
       "title": "The OEIS Sequence",
       "summary": "First 17 practical numbers (A005153)",
-      "startLine": 277,
+      "startLine": 177,
       "endLine": 187
     },
     {
       "id": "summary",
       "title": "Summary and Why Hard",
       "summary": "Open problem, $250 prize, difficulty explanation",
-      "startLine": 286,
+      "startLine": 177,
       "endLine": 187
     }
   ],
@@ -259,21 +259,21 @@
       "authors": "Srinivasan, Anand K.",
       "title": "Practical numbers",
       "year": "1948",
-      "venue": "Current Science, vol. 17, pp. 179–180",
-      "note": "Introduced practical numbers: m is practical if every integer ≤ m is a sum of distinct divisors of m"
+      "venue": "Current Science, vol. 17, pp. 179\u2013180",
+      "note": "Introduced practical numbers: m is practical if every integer \u2264 m is a sum of distinct divisors of m"
     },
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On practical numbers",
       "year": "1988",
-      "venue": "In: Number Theory (Budapest 1987), Colloquia Mathematica Societatis János Bolyai, vol. 51, pp. 453–459",
+      "venue": "In: Number Theory (Budapest 1987), Colloquia Mathematica Societatis J\u00e1nos Bolyai, vol. 51, pp. 453\u2013459",
       "note": "Studied the growth rate of h(n!) and its connection to the structure of practical numbers"
     },
     {
       "authors": "Hausman, Miriam; Shapiro, Harold N.",
       "title": "On practical numbers",
       "year": "1984",
-      "venue": "Communications on Pure and Applied Mathematics, vol. 37, no. 5, pp. 801–812",
+      "venue": "Communications on Pure and Applied Mathematics, vol. 37, no. 5, pp. 801\u2013812",
       "note": "Proved practical numbers have asymptotic density, with counting function proportional to x/log x"
     }
   ],

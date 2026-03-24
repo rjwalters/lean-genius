@@ -195,7 +195,7 @@
     "type": "insight",
     "range": {
       "startLine": 105,
-      "endLine": 114
+      "endLine": 113
     },
     "title": "Distinction from Wilson Primes",
     "content": "A Wilson prime satisfies the stronger congruence $p^2 \\mid (p-1)! + 1$ (i.e., $(p-1)! \\equiv -1 \\pmod{p^2}$). The only known Wilson primes are $5, 13, 563$, and no others have been found below $5 \\times 10^{17}$. Every Wilson prime is Wilson-maximal (proved as an axiom here: if $p^2 \\mid (p-1)!+1$, then certainly $p \\mid (p-1)!+1$, and the question is whether any earlier factorial works). But Wilson-maximality is much weaker than being a Wilson prime\u2014it only requires $p \\mid (p-1)!+1$ with no earlier hit, not $p^2 \\mid (p-1)!+1$.",

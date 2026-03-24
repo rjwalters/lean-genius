@@ -7,7 +7,7 @@
       "endLine": 82
     },
     "type": "context",
-    "title": "Hilbert's 17th Problem — Historical Introduction",
+    "title": "Hilbert's 17th Problem \u2014 Historical Introduction",
     "content": "The module docstring traces the full history of Hilbert's 17th Problem. In 1888, Hilbert proved non-constructively that non-negative polynomials need not be sums of squares of polynomials. In 1900, he posed Problem 17: are they at least sums of squares of rational functions? Artin answered affirmatively in 1927 using real closed field theory and model-theoretic transfer. Motzkin (1967) gave the first explicit non-SOS polynomial. The file also explains why rational functions are necessary: the degree structure of leading forms in certain PSD polynomials prevents polynomial SOS decomposition.",
     "mathContext": "The question is: if $f \\in \\mathbb{R}[X_1, \\ldots, X_n]$ and $f(x) \\geq 0$ for all $x \\in \\mathbb{R}^n$, does $f = \\sum_i g_i^2$ for some $g_i \\in \\mathbb{R}(X_1, \\ldots, X_n)$? Artin proved yes. The distinction between $\\mathbb{R}[X]$ (polynomials) and $\\mathbb{R}(X)$ (rational functions) is crucial.",
     "significance": "key",
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "SOS and PSD Definitions",
-    "content": "Defines three flavors of sum-of-squares: IsSumOfSquaresPolynomial for univariate polynomial SOS, IsSumOfSquaresMvPolynomial for multivariate polynomial SOS, and IsSumOfSquaresRatFunc for rational function SOS. Each uses existential quantification over a finite list (Fin m → ...) of squared terms. Also defines IsPositiveSemidefinite (univariate) and IsPositiveSemidefiniteMv (multivariate) as non-negativity for all real inputs.",
+    "content": "Defines three flavors of sum-of-squares: IsSumOfSquaresPolynomial for univariate polynomial SOS, IsSumOfSquaresMvPolynomial for multivariate polynomial SOS, and IsSumOfSquaresRatFunc for rational function SOS. Each uses existential quantification over a finite list (Fin m \u2192 ...) of squared terms. Also defines IsPositiveSemidefinite (univariate) and IsPositiveSemidefiniteMv (multivariate) as non-negativity for all real inputs.",
     "mathContext": "A polynomial $p$ is SOS if $p = \\sum_{i=1}^m q_i^2$. The key question: must $q_i \\in \\mathbb{R}[X]$ (polynomials) or can they be $q_i \\in \\mathbb{R}(X)$ (rational functions $g/h$)? PSD means $p(x) \\geq 0$ for all $x \\in \\mathbb{R}^n$. The chain of implications is: polynomial-SOS $\\Rightarrow$ rational-SOS $\\Rightarrow$ PSD, and Artin proves PSD $\\Rightarrow$ rational-SOS.",
     "significance": "key",
     "relatedConcepts": [
@@ -55,8 +55,8 @@
       "endLine": 183
     },
     "type": "concept",
-    "title": "Artin's Theorem — The Main Result",
-    "content": "The central theorem: every PSD multivariate polynomial over ℝ is a sum of squares of rational functions. The axiomatized statement uses algebraMap to embed the polynomial into the rational function field RatFunc. Artin's proof outline is documented: if p is not SOS in ℝ(X), an ordering of ℝ(X) making p negative exists; extending to the real closure gives a contradiction since p is non-negative at all real points. The univariate case is stated separately (artin_univariate) and is stronger: PSD univariate polynomials are actually polynomial-SOS.",
+    "title": "Artin's Theorem \u2014 The Main Result",
+    "content": "The central theorem: every PSD multivariate polynomial over \u211d is a sum of squares of rational functions. The axiomatized statement uses algebraMap to embed the polynomial into the rational function field RatFunc. Artin's proof outline is documented: if p is not SOS in \u211d(X), an ordering of \u211d(X) making p negative exists; extending to the real closure gives a contradiction since p is non-negative at all real points. The univariate case is stated separately (artin_univariate) and is stronger: PSD univariate polynomials are actually polynomial-SOS.",
     "mathContext": "Artin's theorem: $\\forall n, \\forall p \\in \\mathbb{R}[X_1,\\ldots,X_n]$, if $p(x) \\geq 0$ for all $x \\in \\mathbb{R}^n$, then $p = \\sum_{i=1}^m g_i^2$ where $g_i \\in \\mathbb{R}(X_1,\\ldots,X_n)$. The proof uses the Artin-Schreier theory of formally real fields: an element of a formally real field is a sum of squares iff it is positive in every ordering.",
     "significance": "key",
     "relatedConcepts": [
@@ -81,7 +81,7 @@
     },
     "type": "concept",
     "title": "Motzkin's Counterexample",
-    "content": "The Motzkin polynomial M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is defined as an MvPolynomial over Fin 2 and ℝ. Three key properties are established: (1) motzkin_nonneg proves M ≥ 0 everywhere via AM-GM (axiomatized), (2) motzkin_not_sos_polynomial proves M is not polynomial-SOS via degree analysis of the leading homogeneous form (axiomatized), and (3) motzkin_sos_ratfunc derives that M is rational-SOS by applying artin_hilbert17 — this is the only non-trivial deduction in the file, combining the non-negativity lemma with Artin's theorem.",
+    "content": "The Motzkin polynomial M(x,y) = x\u2074y\u00b2 + x\u00b2y\u2074 - 3x\u00b2y\u00b2 + 1 is defined as an MvPolynomial over Fin 2 and \u211d. Three key properties are established: (1) motzkin_nonneg proves M \u2265 0 everywhere via AM-GM (axiomatized), (2) motzkin_not_sos_polynomial proves M is not polynomial-SOS via degree analysis of the leading homogeneous form (axiomatized), and (3) motzkin_sos_ratfunc derives that M is rational-SOS by applying artin_hilbert17 \u2014 this is the only non-trivial deduction in the file, combining the non-negativity lemma with Artin's theorem.",
     "mathContext": "The AM-GM proof: $(x^4y^2 + x^2y^4 + 1)/3 \\geq \\sqrt[3]{x^4y^2 \\cdot x^2y^4 \\cdot 1} = x^2y^2$, so $M \\geq 0$. The non-SOS proof: $M$ has degree 6, so any SOS decomposition requires degree-3 polynomials, but the leading form $x^4y^2 + x^2y^4 = x^2y^2(x^2+y^2)$ cannot be a sum of squares of degree-3 homogeneous polynomials in 2 variables.",
     "significance": "key",
     "relatedConcepts": [
@@ -105,7 +105,7 @@
     },
     "type": "concept",
     "title": "Hilbert's 1888 Classification: When PSD = Polynomial-SOS",
-    "content": "Hilbert (1888) completely classified when PSD implies polynomial-SOS: it holds if and only if (1) n = 1 (univariate, any degree), (2) d = 2 (quadratic forms, any number of variables), or (3) n = 2 and d = 4 (bivariate quartics). Two cases are axiomatized: univariate_psd_is_sos (using complex factorization: real roots have even multiplicity, complex roots come in conjugate pairs) and quadratic_psd_is_sos (using the Gram matrix / Cholesky decomposition: Q(x) = x^T A x with A ≽ 0 implies A = B^T B).",
+    "content": "Hilbert (1888) completely classified when PSD implies polynomial-SOS: it holds if and only if (1) n = 1 (univariate, any degree), (2) d = 2 (quadratic forms, any number of variables), or (3) n = 2 and d = 4 (bivariate quartics). Two cases are axiomatized: univariate_psd_is_sos (using complex factorization: real roots have even multiplicity, complex roots come in conjugate pairs) and quadratic_psd_is_sos (using the Gram matrix / Cholesky decomposition: Q(x) = x^T A x with A \u227d 0 implies A = B^T B).",
     "mathContext": "Hilbert's classification: PSD = polynomial-SOS iff $(n, 2d) \\in \\{(n, 2) : n \\geq 1\\} \\cup \\{(1, 2d) : d \\geq 1\\} \\cup \\{(2, 4)\\}$. The univariate proof uses $p(x) = c \\prod (x - r_i)^{2e_i} \\prod ((x-a_j)^2 + b_j^2)$ with $c > 0$, giving $p = q_1^2 + q_2^2$. The quadratic case uses $Q(x) = x^T A x$ with $A = L^T L$ (Cholesky), so $Q = \\|Lx\\|^2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -129,7 +129,7 @@
     },
     "type": "concept",
     "title": "Pfister's Bound on Number of Squares",
-    "content": "Pfister (1967) proved that at most 2^n squares suffice to represent any n-variable PSD polynomial as a sum of squares of rational functions. The bound is optimal in general. The theorem is stated using Fin (2^n) to index the squares. Cassels' bound for the bivariate case (n = 2, so 4 squares) is stated separately. Both are axiomatized, with proofs requiring the theory of Pfister forms — multiplicative quadratic forms that arise from tensor products of binary forms.",
+    "content": "Pfister (1967) proved that at most 2^n squares suffice to represent any n-variable PSD polynomial as a sum of squares of rational functions. The bound is optimal in general. The theorem is stated using Fin (2^n) to index the squares. Cassels' bound for the bivariate case (n = 2, so 4 squares) is stated separately. Both are axiomatized, with proofs requiring the theory of Pfister forms \u2014 multiplicative quadratic forms that arise from tensor products of binary forms.",
     "mathContext": "Pfister's theorem: if $p \\in \\mathbb{R}[X_1,\\ldots,X_n]$ is PSD, then $p = \\sum_{i=1}^{2^n} g_i^2$ with $g_i \\in \\mathbb{R}(X_1,\\ldots,X_n)$. A Pfister form is a tensor product $\\langle 1, a_1 \\rangle \\otimes \\cdots \\otimes \\langle 1, a_n \\rangle$, a $2^n$-dimensional quadratic form that is multiplicative. Cassels showed the bound $2^n$ is tight for $n = 2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -153,7 +153,7 @@
     },
     "title": "Real Closed Fields and Transfer Principle",
     "type": "concept",
-    "content": "Explains the role of real closed fields in Artin's proof. A field R is real closed if it is formally real (−1 is not a sum of squares) and has no proper formally real algebraic extension. Equivalently: every positive element is a square, every odd-degree polynomial has a root, and the algebraic closure has degree 2. The transfer principle (real_closed_transfer) states that first-order statements about polynomial inequalities transfer between real closed fields. real_is_real_closed is a placeholder (True) for the fact that ℝ is real closed.",
+    "content": "Explains the role of real closed fields in Artin's proof. A field R is real closed if it is formally real (\u22121 is not a sum of squares) and has no proper formally real algebraic extension. Equivalently: every positive element is a square, every odd-degree polynomial has a root, and the algebraic closure has degree 2. The transfer principle (real_closed_transfer) states that first-order statements about polynomial inequalities transfer between real closed fields. real_is_real_closed is a placeholder (True) for the fact that \u211d is real closed.",
     "mathContext": "A real closed field $R$ satisfies: (1) $-1 \\notin \\Sigma R^2$, (2) $R$ has no proper formally real algebraic extension. The Tarski-Seidenberg transfer principle: if $\\varphi$ is a first-order sentence in the language of ordered fields, then $\\varphi$ holds in $\\mathbb{R}$ iff it holds in every real closed field. This is the model-theoretic core of Artin's proof.",
     "significance": "key",
     "relatedConcepts": [
@@ -200,7 +200,7 @@
     },
     "type": "concept",
     "title": "Additional Counterexamples: Robinson and Choi-Lam",
-    "content": "Two more PSD non-SOS polynomials are formalized. Robinson's polynomial R(x,y,z) = x⁶ + y⁶ + z⁶ - (symmetric cross terms) + 3x²y²z² is a 3-variable degree-6 example. Its non-negativity and non-SOS properties are axiomatized. The Choi-Lam polynomial CL(w,x,y,z) = w⁴ + x²y² + y²z² + z²w² - 4wxyz is a 4-variable degree-4 example (defined but properties not axiomatized). These show the phenomenon is pervasive beyond Motzkin's example.",
+    "content": "Two more PSD non-SOS polynomials are formalized. Robinson's polynomial R(x,y,z) = x\u2076 + y\u2076 + z\u2076 - (symmetric cross terms) + 3x\u00b2y\u00b2z\u00b2 is a 3-variable degree-6 example. Its non-negativity and non-SOS properties are axiomatized. The Choi-Lam polynomial CL(w,x,y,z) = w\u2074 + x\u00b2y\u00b2 + y\u00b2z\u00b2 + z\u00b2w\u00b2 - 4wxyz is a 4-variable degree-4 example (defined but properties not axiomatized). These show the phenomenon is pervasive beyond Motzkin's example.",
     "mathContext": "Robinson: $R(x,y,z) = \\sum x_i^6 - \\sum x_i^4 x_j^2 + 3x_1^2 x_2^2 x_3^2 \\geq 0$ by Schur's inequality. Choi-Lam: $CL = w^4 + x^2y^2 + y^2z^2 + z^2w^2 - 4wxyz \\geq 0$ by AM-GM. Both are PSD but not polynomial-SOS, demonstrated by analyzing homogeneous components.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -219,11 +219,11 @@
     "proofId": "hilbert-17",
     "range": {
       "startLine": 543,
-      "endLine": 577
+      "endLine": 572
     },
     "type": "context",
     "title": "Summary and Problem Status",
-    "content": "The summary section uses #check to verify the main theorems are well-formed, then provides a prose overview. The key results are: artin_hilbert17 (PSD → rational-SOS), motzkin_not_sos_polynomial (PSD ↛ polynomial-SOS), univariate_psd_is_sos (univariate PSD = polynomial-SOS), and pfister_bound (at most 2^n squares). The practical distinction matters: polynomial-SOS is computationally tractable via SDP, while rational-SOS always exists but is harder to compute.",
+    "content": "The summary section uses #check to verify the main theorems are well-formed, then provides a prose overview. The key results are: artin_hilbert17 (PSD \u2192 rational-SOS), motzkin_not_sos_polynomial (PSD \u219b polynomial-SOS), univariate_psd_is_sos (univariate PSD = polynomial-SOS), and pfister_bound (at most 2^n squares). The practical distinction matters: polynomial-SOS is computationally tractable via SDP, while rational-SOS always exists but is harder to compute.",
     "mathContext": "The complete picture: PSD $\\Rightarrow$ rational-SOS (Artin) but PSD $\\not\\Rightarrow$ polynomial-SOS (Motzkin). Special cases where PSD = polynomial-SOS: univariate (any degree), quadratic forms (any variables), bivariate quartics. Quantitatively: $\\leq 2^n$ squares suffice (Pfister).",
     "significance": "supporting",
     "relatedConcepts": [

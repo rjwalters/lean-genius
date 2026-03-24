@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #785: Exact Additive Complements**\n\nThis problem asks about the behavior of 'exact' additive complement pairs.\n\n**Setup:**\n- A, B ⊆ ℕ infinite with A + B covering all large integers\n- A(x) = |A ∩ [1,x]| is the counting function\n- 'Exact' means A(x)B(x) ~ x (minimal possible density)\n\n**Question:** Does A(x)B(x) - x → ∞?\n\n**Answer: YES** (Sárközy-Szemerédi 1994)\n\n**Key Results:**\n- Danzer (1964): Exact complements exist\n- Sárközy-Szemerédi (1994): Growth to ∞ is mandatory\n- Ruzsa (2017): Growth rate can be arbitrarily slow",
+    "content": "**Erd\u0151s Problem #785: Exact Additive Complements**\n\nThis problem asks about the behavior of 'exact' additive complement pairs.\n\n**Setup:**\n- A, B \u2286 \u2115 infinite with A + B covering all large integers\n- A(x) = |A \u2229 [1,x]| is the counting function\n- 'Exact' means A(x)B(x) ~ x (minimal possible density)\n\n**Question:** Does A(x)B(x) - x \u2192 \u221e?\n\n**Answer: YES** (S\u00e1rk\u00f6zy-Szemer\u00e9di 1994)\n\n**Key Results:**\n- Danzer (1964): Exact complements exist\n- S\u00e1rk\u00f6zy-Szemer\u00e9di (1994): Growth to \u221e is mandatory\n- Ruzsa (2017): Growth rate can be arbitrarily slow",
     "mathContext": "This problem sits in additive combinatorics, studying the minimal density needed for a pair of sets to cover all large integers as sums.",
     "significance": "key",
     "relatedConcepts": [
@@ -26,7 +26,7 @@
     },
     "type": "definition",
     "title": "Sumset Definition",
-    "content": "**sumset A B:**\n\nThe sumset A + B is the set of all pairwise sums:\n\nA + B = {a + b : a ∈ A, b ∈ B}\n\n**Definition:**\n```lean\ndef sumset (A B : Set ℕ) : Set ℕ :=\n  {n | ∃ a ∈ A, ∃ b ∈ B, n = a + b}\n```\n\n**Examples:**\n- {1,2} + {3,4} = {4,5,6}\n- Evens + {0,1} = ℕ",
+    "content": "**sumset A B:**\n\nThe sumset A + B is the set of all pairwise sums:\n\nA + B = {a + b : a \u2208 A, b \u2208 B}\n\n**Definition:**\n```lean\ndef sumset (A B : Set \u2115) : Set \u2115 :=\n  {n | \u2203 a \u2208 A, \u2203 b \u2208 B, n = a + b}\n```\n\n**Examples:**\n- {1,2} + {3,4} = {4,5,6}\n- Evens + {0,1} = \u2115",
     "mathContext": "The sumset is the fundamental operation in additive combinatorics. Understanding A + B is central to problems about additive bases and complements.",
     "significance": "key",
     "relatedConcepts": [
@@ -43,8 +43,8 @@
     },
     "type": "definition",
     "title": "Counting Function",
-    "content": "**countingFunction A x:**\n\nThe counting function A(x) measures the density of A:\n\nA(x) = |A ∩ [1, x]| = #{a ∈ A : 1 ≤ a ≤ x}\n\n**Definition:**\n```lean\nnoncomputable def countingFunction (A : Set ℕ) (x : ℕ) : ℕ :=\n  (A ∩ Set.Icc 1 x).ncard\n```\n\n**Examples:**\n- For A = evens: A(x) ~ x/2\n- For A = primes: A(x) ~ x/ln(x) (Prime Number Theorem)",
-    "mathContext": "Counting functions are the standard tool for measuring density of subsets of ℕ. They appear throughout analytic and additive number theory.",
+    "content": "**countingFunction A x:**\n\nThe counting function A(x) measures the density of A:\n\nA(x) = |A \u2229 [1, x]| = #{a \u2208 A : 1 \u2264 a \u2264 x}\n\n**Definition:**\n```lean\nnoncomputable def countingFunction (A : Set \u2115) (x : \u2115) : \u2115 :=\n  (A \u2229 Set.Icc 1 x).ncard\n```\n\n**Examples:**\n- For A = evens: A(x) ~ x/2\n- For A = primes: A(x) ~ x/ln(x) (Prime Number Theorem)",
+    "mathContext": "Counting functions are the standard tool for measuring density of subsets of \u2115. They appear throughout analytic and additive number theory.",
     "significance": "key",
     "relatedConcepts": [
       "Density",
@@ -61,7 +61,7 @@
     },
     "type": "definition",
     "title": "Covers Large Integers",
-    "content": "**CoversLargeIntegers A B:**\n\nA + B covers all large integers if there exists N₀ such that every n ≥ N₀ is in A + B.\n\n**Definition:**\n```lean\ndef CoversLargeIntegers (A B : Set ℕ) : Prop :=\n  ∃ N₀ : ℕ, ∀ n ≥ N₀, n ∈ sumset A B\n```\n\nThis is the defining property of additive complement pairs. We allow finitely many 'gaps' at the beginning.",
+    "content": "**CoversLargeIntegers A B:**\n\nA + B covers all large integers if there exists N\u2080 such that every n \u2265 N\u2080 is in A + B.\n\n**Definition:**\n```lean\ndef CoversLargeIntegers (A B : Set \u2115) : Prop :=\n  \u2203 N\u2080 : \u2115, \u2200 n \u2265 N\u2080, n \u2208 sumset A B\n```\n\nThis is the defining property of additive complement pairs. We allow finitely many 'gaps' at the beginning.",
     "mathContext": "This is a cofinite condition: A + B contains all but finitely many natural numbers.",
     "significance": "key",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
     },
     "type": "definition",
     "title": "Additive Complement Pair",
-    "content": "**IsAdditiveComplement A B:**\n\nA and B form an additive complement pair if:\n1. A + B covers all large integers\n2. Both A and B are infinite\n\n**Definition:**\n```lean\ndef IsAdditiveComplement (A B : Set ℕ) : Prop :=\n  CoversLargeIntegers A B ∧ A.Infinite ∧ B.Infinite\n```\n\nWe require infinite sets to avoid trivial cases like A = ℕ, B = {0}.",
+    "content": "**IsAdditiveComplement A B:**\n\nA and B form an additive complement pair if:\n1. A + B covers all large integers\n2. Both A and B are infinite\n\n**Definition:**\n```lean\ndef IsAdditiveComplement (A B : Set \u2115) : Prop :=\n  CoversLargeIntegers A B \u2227 A.Infinite \u2227 B.Infinite\n```\n\nWe require infinite sets to avoid trivial cases like A = \u2115, B = {0}.",
     "mathContext": "Additive complements are a natural dual to the concept of additive bases. While bases ask 'can A + A cover everything?', complements use two sets.",
     "significance": "key",
     "relatedConcepts": [
@@ -96,8 +96,8 @@
     },
     "type": "definition",
     "title": "Product Asymptotic to x",
-    "content": "**ProductAsymptoticToX A B:**\n\nThe product of counting functions is asymptotic to x:\n\nA(x)B(x) ~ x means A(x)B(x)/x → 1\n\n**Definition:**\n```lean\ndef ProductAsymptoticToX (A B : Set ℕ) : Prop :=\n  Filter.Tendsto (fun x => (countingFunction A x * countingFunction B x : ℝ) / x)\n    Filter.atTop (nhds 1)\n```\n\nThis is the sparsest possible condition for covering all large integers.",
-    "mathContext": "For any complement pair, A(x)B(x) ≥ x - O(1) by a counting argument. The condition A(x)B(x) ~ x achieves this lower bound asymptotically.",
+    "content": "**ProductAsymptoticToX A B:**\n\nThe product of counting functions is asymptotic to x:\n\nA(x)B(x) ~ x means A(x)B(x)/x \u2192 1\n\n**Definition:**\n```lean\ndef ProductAsymptoticToX (A B : Set \u2115) : Prop :=\n  Filter.Tendsto (fun x => (countingFunction A x * countingFunction B x : \u211d) / x)\n    Filter.atTop (nhds 1)\n```\n\nThis is the sparsest possible condition for covering all large integers.",
+    "mathContext": "For any complement pair, A(x)B(x) \u2265 x - O(1) by a counting argument. The condition A(x)B(x) ~ x achieves this lower bound asymptotically.",
     "significance": "key",
     "relatedConcepts": [
       "Asymptotic notation",
@@ -113,7 +113,7 @@
     },
     "type": "definition",
     "title": "Exact Additive Complement",
-    "content": "**IsExactAdditiveComplement A B:**\n\nAn exact additive complement pair satisfies:\n1. A + B covers all large integers\n2. Both A and B are infinite\n3. A(x)B(x) ~ x (minimal density)\n\n**Definition:**\n```lean\ndef IsExactAdditiveComplement (A B : Set ℕ) : Prop :=\n  IsAdditiveComplement A B ∧ ProductAsymptoticToX A B\n```\n\nThese are 'optimally sparse' complement pairs.",
+    "content": "**IsExactAdditiveComplement A B:**\n\nAn exact additive complement pair satisfies:\n1. A + B covers all large integers\n2. Both A and B are infinite\n3. A(x)B(x) ~ x (minimal density)\n\n**Definition:**\n```lean\ndef IsExactAdditiveComplement (A B : Set \u2115) : Prop :=\n  IsAdditiveComplement A B \u2227 ProductAsymptoticToX A B\n```\n\nThese are 'optimally sparse' complement pairs.",
     "mathContext": "The term 'exact' refers to the fact that A(x)B(x) equals x asymptotically - no slack in the density condition.",
     "significance": "key",
     "relatedConcepts": [
@@ -129,8 +129,8 @@
       "endLine": 112
     },
     "type": "definition",
-    "title": "The Erdős-Danzer Question",
-    "content": "**ErdosDanzerQuestion:**\n\nFor exact additive complements, does A(x)B(x) - x → ∞?\n\n**Formal Statement:**\n```lean\ndef ErdosDanzerQuestion : Prop :=\n  ∀ A B : Set ℕ, IsExactAdditiveComplement A B →\n    Filter.Tendsto (fun x => (countingFunction A x * countingFunction B x : ℤ) - x)\n      Filter.atTop Filter.atTop\n```\n\nWe know A(x)B(x)/x → 1, but does the difference A(x)B(x) - x tend to infinity?",
+    "title": "The Erd\u0151s-Danzer Question",
+    "content": "**ErdosDanzerQuestion:**\n\nFor exact additive complements, does A(x)B(x) - x \u2192 \u221e?\n\n**Formal Statement:**\n```lean\ndef ErdosDanzerQuestion : Prop :=\n  \u2200 A B : Set \u2115, IsExactAdditiveComplement A B \u2192\n    Filter.Tendsto (fun x => (countingFunction A x * countingFunction B x : \u2124) - x)\n      Filter.atTop Filter.atTop\n```\n\nWe know A(x)B(x)/x \u2192 1, but does the difference A(x)B(x) - x tend to infinity?",
     "mathContext": "This is a finer question than the asymptotic: we know the ratio is 1, but what about the error term?",
     "significance": "key",
     "relatedConcepts": [
@@ -147,8 +147,8 @@
     },
     "type": "concept",
     "title": "Danzer's Existence Theorem",
-    "content": "**Danzer (1964): Exact Additive Complements Exist**\n\nThis was surprising - Hanani had conjectured they don't exist!\n\n```lean\naxiom danzer_1964_existence :\n    ∃ A B : Set ℕ, IsExactAdditiveComplement A B\n```\n\n**Construction:** Danzer used a careful greedy algorithm or probabilistic method to construct sets that balance density perfectly.",
-    "mathContext": "Danzer's result showed that the 'obvious' lower bound A(x)B(x) ≥ x is asymptotically achievable.",
+    "content": "**Danzer (1964): Exact Additive Complements Exist**\n\nThis was surprising - Hanani had conjectured they don't exist!\n\n```lean\naxiom danzer_1964_existence :\n    \u2203 A B : Set \u2115, IsExactAdditiveComplement A B\n```\n\n**Construction:** Danzer used a careful greedy algorithm or probabilistic method to construct sets that balance density perfectly.",
+    "mathContext": "Danzer's result showed that the 'obvious' lower bound A(x)B(x) \u2265 x is asymptotically achievable.",
     "significance": "key",
     "relatedConcepts": [
       "Existence proofs",
@@ -164,8 +164,8 @@
       "endLine": 144
     },
     "type": "concept",
-    "title": "Sárközy-Szemerédi Theorem",
-    "content": "**Sárközy-Szemerédi (1994): Affirmative Answer**\n\nFor exact additive complements, A(x)B(x) - x → ∞.\n\n```lean\naxiom sarkozy_szemeredi_1994 :\n    ∀ A B : Set ℕ, IsExactAdditiveComplement A B →\n      Filter.Tendsto (fun x => (countingFunction A x * countingFunction B x : ℤ) - x)\n        Filter.atTop Filter.atTop\n```\n\n**Proof Technique:** Analysis of the representation function r(n) and variance estimates.",
+    "title": "S\u00e1rk\u00f6zy-Szemer\u00e9di Theorem",
+    "content": "**S\u00e1rk\u00f6zy-Szemer\u00e9di (1994): Affirmative Answer**\n\nFor exact additive complements, A(x)B(x) - x \u2192 \u221e.\n\n```lean\naxiom sarkozy_szemeredi_1994 :\n    \u2200 A B : Set \u2115, IsExactAdditiveComplement A B \u2192\n      Filter.Tendsto (fun x => (countingFunction A x * countingFunction B x : \u2124) - x)\n        Filter.atTop Filter.atTop\n```\n\n**Proof Technique:** Analysis of the representation function r(n) and variance estimates.",
     "mathContext": "The proof shows that if A(x)B(x) - x were bounded, the variance of the representation function would be too small, contradicting the asymptotic behavior.",
     "significance": "key",
     "relatedConcepts": [
@@ -182,7 +182,7 @@
     },
     "type": "technique",
     "title": "Main Theorem",
-    "content": "**erdos_danzer_solved:**\n\nThe Erdős-Danzer question has an affirmative answer.\n\n```lean\ntheorem erdos_danzer_solved : ErdosDanzerQuestion :=\n  sarkozy_szemeredi_1994\n```\n\nThis directly applies the Sárközy-Szemerédi result.",
+    "content": "**erdos_danzer_solved:**\n\nThe Erd\u0151s-Danzer question has an affirmative answer.\n\n```lean\ntheorem erdos_danzer_solved : ErdosDanzerQuestion :=\n  sarkozy_szemeredi_1994\n```\n\nThis directly applies the S\u00e1rk\u00f6zy-Szemer\u00e9di result.",
     "mathContext": "This theorem completes Problem #785 affirmatively.",
     "significance": "key",
     "relatedConcepts": [
@@ -199,8 +199,8 @@
     },
     "type": "concept",
     "title": "Ruzsa's Refinement",
-    "content": "**Ruzsa (2017): Tight Characterization**\n\nFor ANY function w(x) → ∞, there exist exact additive complements with A(x)B(x) - x < w(x) infinitely often.\n\n```lean\naxiom ruzsa_2017 :\n    ∀ w : ℕ → ℝ, (Filter.Tendsto w Filter.atTop Filter.atTop) →\n      ∃ A B : Set ℕ, IsExactAdditiveComplement A B ∧\n        ∃ᶠ x in Filter.atTop,\n          (countingFunction A x * countingFunction B x : ℝ) - x < w x\n```\n\n**Interpretation:** Growth to ∞ is mandatory but can be arbitrarily slow.",
-    "mathContext": "This shows the Sárközy-Szemerédi result is tight: you can't replace 'tends to ∞' with any specific growth rate.",
+    "content": "**Ruzsa (2017): Tight Characterization**\n\nFor ANY function w(x) \u2192 \u221e, there exist exact additive complements with A(x)B(x) - x < w(x) infinitely often.\n\n```lean\naxiom ruzsa_2017 :\n    \u2200 w : \u2115 \u2192 \u211d, (Filter.Tendsto w Filter.atTop Filter.atTop) \u2192\n      \u2203 A B : Set \u2115, IsExactAdditiveComplement A B \u2227\n        \u2203\u1da0 x in Filter.atTop,\n          (countingFunction A x * countingFunction B x : \u211d) - x < w x\n```\n\n**Interpretation:** Growth to \u221e is mandatory but can be arbitrarily slow.",
+    "mathContext": "This shows the S\u00e1rk\u00f6zy-Szemer\u00e9di result is tight: you can't replace 'tends to \u221e' with any specific growth rate.",
     "significance": "key",
     "relatedConcepts": [
       "Tight bounds",
@@ -216,7 +216,7 @@
     },
     "type": "definition",
     "title": "Representation Function",
-    "content": "**representationFunction A B n:**\n\nThe number of ways to write n as a + b with a ∈ A, b ∈ B:\n\nr(n) = |{(a,b) : a ∈ A, b ∈ B, a + b = n}|\n\n**Definition:**\n```lean\nnoncomputable def representationFunction (A B : Set ℕ) (n : ℕ) : ℕ :=\n  {(a, b) : ℕ × ℕ | a ∈ A ∧ b ∈ B ∧ a + b = n}.ncard\n```\n\nFor exact complements, the average r(n) is close to 1.",
+    "content": "**representationFunction A B n:**\n\nThe number of ways to write n as a + b with a \u2208 A, b \u2208 B:\n\nr(n) = |{(a,b) : a \u2208 A, b \u2208 B, a + b = n}|\n\n**Definition:**\n```lean\nnoncomputable def representationFunction (A B : Set \u2115) (n : \u2115) : \u2115 :=\n  {(a, b) : \u2115 \u00d7 \u2115 | a \u2208 A \u2227 b \u2208 B \u2227 a + b = n}.ncard\n```\n\nFor exact complements, the average r(n) is close to 1.",
     "mathContext": "The representation function is central to the variance argument in the proof. Its distribution determines the behavior of A(x)B(x).",
     "significance": "key",
     "relatedConcepts": [
@@ -233,7 +233,7 @@
     },
     "type": "concept",
     "title": "Average Representation",
-    "content": "**average_representation:**\n\nFor exact complements, the average of r(n) for n ≤ x is close to 1.\n\n```lean\naxiom average_representation :\n    ∀ A B : Set ℕ, IsExactAdditiveComplement A B →\n      Filter.Tendsto (fun x =>\n        (Finset.range (x + 1)).sum (fun n => representationFunction A B n : ℝ) / x)\n        Filter.atTop (nhds 1)\n```\n\nThis follows from A(x)B(x) ~ x since ∑r(n) = A(x)B(x).",
+    "content": "**average_representation:**\n\nFor exact complements, the average of r(n) for n \u2264 x is close to 1.\n\n```lean\naxiom average_representation :\n    \u2200 A B : Set \u2115, IsExactAdditiveComplement A B \u2192\n      Filter.Tendsto (fun x =>\n        (Finset.range (x + 1)).sum (fun n => representationFunction A B n : \u211d) / x)\n        Filter.atTop (nhds 1)\n```\n\nThis follows from A(x)B(x) ~ x since \u2211r(n) = A(x)B(x).",
     "mathContext": "The sum of r(n) equals the product A(x)B(x), connecting the representation function to counting functions.",
     "significance": "key",
     "relatedConcepts": [
@@ -245,12 +245,12 @@
     "id": "ann-785-examples",
     "proofId": "erdos-785",
     "range": {
-      "startLine": 215,
-      "endLine": 227
+      "startLine": 201,
+      "endLine": 211
     },
     "type": "concept",
     "title": "Examples",
-    "content": "**Non-Example: Squares**\n\nA = B = {n² : n ≥ 1} does NOT form an additive complement pair. Many integers (e.g., 3, 6, 7, ...) are not sums of two squares.\n\n**Simple Example:**\n\nA = {0} ∪ {2k : k ≥ 0}, B = {2k+1 : k ≥ 0}\n\nThis gives A + B = ℕ, but it's NOT 'exact' since A(x)B(x) ~ x²/4, which is much larger than x.",
+    "content": "**Non-Example: Squares**\n\nA = B = {n\u00b2 : n \u2265 1} does NOT form an additive complement pair. Many integers (e.g., 3, 6, 7, ...) are not sums of two squares.\n\n**Simple Example:**\n\nA = {0} \u222a {2k : k \u2265 0}, B = {2k+1 : k \u2265 0}\n\nThis gives A + B = \u2115, but it's NOT 'exact' since A(x)B(x) ~ x\u00b2/4, which is much larger than x.",
     "mathContext": "The examples illustrate that exact complements require careful construction - obvious pairs either fail to cover all integers or have too high density.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -262,12 +262,12 @@
     "id": "ann-785-summary",
     "proofId": "erdos-785",
     "range": {
-      "startLine": 233,
-      "endLine": 261
+      "startLine": 201,
+      "endLine": 211
     },
     "type": "technique",
     "title": "Summary Theorem",
-    "content": "**erdos_785_summary:**\n\nCombines all the main results:\n\n1. **Existence:** Exact additive complements exist (Danzer 1964)\n2. **Main Result:** A(x)B(x) - x → ∞ (Sárközy-Szemerédi 1994)\n3. **Tightness:** Growth can be arbitrarily slow (Ruzsa 2017)\n\n```lean\ntheorem erdos_785_summary :\n    (∃ A B : Set ℕ, IsExactAdditiveComplement A B) ∧\n    ErdosDanzerQuestion ∧\n    True\n```\n\n**STATUS: SOLVED**",
+    "content": "**erdos_785_summary:**\n\nCombines all the main results:\n\n1. **Existence:** Exact additive complements exist (Danzer 1964)\n2. **Main Result:** A(x)B(x) - x \u2192 \u221e (S\u00e1rk\u00f6zy-Szemer\u00e9di 1994)\n3. **Tightness:** Growth can be arbitrarily slow (Ruzsa 2017)\n\n```lean\ntheorem erdos_785_summary :\n    (\u2203 A B : Set \u2115, IsExactAdditiveComplement A B) \u2227\n    ErdosDanzerQuestion \u2227\n    True\n```\n\n**STATUS: SOLVED**",
     "mathContext": "This theorem collects the complete picture of exact additive complements: they exist, the difference tends to infinity, but arbitrarily slowly.",
     "significance": "key",
     "relatedConcepts": [
@@ -279,12 +279,12 @@
     "id": "ann-785-conclusion",
     "proofId": "erdos-785",
     "range": {
-      "startLine": 263,
-      "endLine": 267
+      "startLine": 201,
+      "endLine": 211
     },
     "type": "technique",
     "title": "Problem Solved",
-    "content": "**erdos_785:**\n\nErdős Problem #785 is SOLVED.\n\n```lean\ntheorem erdos_785 : True := trivial\n```\n\nThe answer is YES: for exact additive complements, A(x)B(x) - x → ∞.\n\nSolved by Sárközy and Szemerédi in 1994.",
+    "content": "**erdos_785:**\n\nErd\u0151s Problem #785 is SOLVED.\n\n```lean\ntheorem erdos_785 : True := trivial\n```\n\nThe answer is YES: for exact additive complements, A(x)B(x) - x \u2192 \u221e.\n\nSolved by S\u00e1rk\u00f6zy and Szemer\u00e9di in 1994.",
     "mathContext": "This marks the problem as completely resolved.",
     "significance": "key",
     "relatedConcepts": [

@@ -9,7 +9,7 @@
     },
     "title": "Library Imports and Namespace",
     "content": "Imports Mathlib for prime enumeration (`Nat.Nth`), finite sets, real analysis (`Log.Basic`, `ExpDeriv`), topology (`nhds`, `Filter.atTop`), and the Riemann Hypothesis axiom from `Proofs.RiemannHypothesis`. Opens `Nat`, `Filter`, `Real`, `Set` namespaces.",
-    "mathContext": "The formalization uses `Nat.nth Nat.Prime` to enumerate primes, `Real.log` and `Real.exp` for the normalized gap and Cramér prediction, `Filter.Tendsto` with `atTop` for limits $\\lim_{N \\to \\infty}$, and `nhds` for topological convergence. The `RiemannHypothesis` import provides the axiom needed for Gallagher's conditional result.",
+    "mathContext": "The formalization uses `Nat.nth Nat.Prime` to enumerate primes, `Real.log` and `Real.exp` for the normalized gap and Cram\u00e9r prediction, `Filter.Tendsto` with `atTop` for limits $\\lim_{N \\to \\infty}$, and `nhds` for topological convergence. The `RiemannHypothesis` import provides the axiom needed for Gallagher's conditional result.",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.nth",
@@ -79,14 +79,14 @@
       "startLine": 63,
       "endLine": 76
     },
-    "title": "Erdős Problem 234 — The Conjecture",
+    "title": "Erd\u0151s Problem 234 \u2014 The Conjecture",
     "content": "States `ErdosProblem234` as two conditions: (1) for every $c \\geq 0$, the limit $f(c) = \\lim_{N \\to \\infty} \\text{gapProportion}(N, c)$ exists, and (2) there exists a continuous function $f : \\mathbb{R} \\to \\mathbb{R}$ that equals this limit for all $c \\geq 0$. The conjecture is OPEN.",
     "mathContext": "ErdosProblem234: $(\\forall c \\geq 0, \\exists f_c: \\text{Tendsto}(\\text{gapProportion}(\\cdot, c), \\text{atTop}, \\text{nhds}(f_c))) \\wedge (\\exists f \\in C(\\mathbb{R}): \\forall c \\geq 0, \\text{Tendsto}(\\text{gapProportion}(\\cdot, c), \\text{atTop}, \\text{nhds}(f(c))))$. The second conjunct is strictly stronger: it requires the pointwise limits to assemble into a continuous function.",
     "significance": "key",
     "relatedConcepts": [
       "natural density",
       "continuous distribution function",
-      "Erdős 1935"
+      "Erd\u0151s 1935"
     ],
     "prerequisites": [
       "DensityExists",
@@ -128,12 +128,12 @@
       "startLine": 153,
       "endLine": 178
     },
-    "title": "Cramér's Exponential Model",
-    "content": "Defines `cramerPrediction` as $f(c) = 1 - e^{-c}$ for $c \\geq 0$ (and $0$ for $c < 0$), following **Cramér's 1936 probabilistic model** where each integer $n$ is independently prime with probability $1/\\log n$. Proves `cramer_continuous` (continuity of the piecewise function) and `cramer_in_unit_interval` ($0 \\leq f(c) \\leq 1$ for $c \\geq 0$).",
-    "mathContext": "cramerPrediction$(c) = \\begin{cases} 0 & c < 0 \\\\ 1 - e^{-c} & c \\geq 0 \\end{cases}$. Cramér's model treats primes as a Poisson process with rate $1/\\log n$, giving exponential gaps. The CDF of $\\text{Exp}(1)$ is $1 - e^{-c}$. The continuity proof uses `Continuous.if_lt` to join the two pieces at $c = 0$.",
+    "title": "Cram\u00e9r's Exponential Model",
+    "content": "Defines `cramerPrediction` as $f(c) = 1 - e^{-c}$ for $c \\geq 0$ (and $0$ for $c < 0$), following **Cram\u00e9r's 1936 probabilistic model** where each integer $n$ is independently prime with probability $1/\\log n$. Proves `cramer_continuous` (continuity of the piecewise function) and `cramer_in_unit_interval` ($0 \\leq f(c) \\leq 1$ for $c \\geq 0$).",
+    "mathContext": "cramerPrediction$(c) = \\begin{cases} 0 & c < 0 \\\\ 1 - e^{-c} & c \\geq 0 \\end{cases}$. Cram\u00e9r's model treats primes as a Poisson process with rate $1/\\log n$, giving exponential gaps. The CDF of $\\text{Exp}(1)$ is $1 - e^{-c}$. The continuity proof uses `Continuous.if_lt` to join the two pieces at $c = 0$.",
     "significance": "key",
     "relatedConcepts": [
-      "Cramér model",
+      "Cram\u00e9r model",
       "Poisson process",
       "exponential distribution",
       "CDF"
@@ -153,7 +153,7 @@
       "endLine": 202
     },
     "title": "Gallagher's Conditional Result (1976)",
-    "content": "Axiomatizes **Gallagher's theorem**: assuming the Riemann Hypothesis, $\\lim_{N \\to \\infty} \\text{gapProportion}(N, c) = 1 - e^{-c}$ for all $c \\geq 0$. Then proves `gallagher_implies_conjecture`: RH implies `ErdosProblem234`, since Cramér's prediction is continuous and matches the limit.",
+    "content": "Axiomatizes **Gallagher's theorem**: assuming the Riemann Hypothesis, $\\lim_{N \\to \\infty} \\text{gapProportion}(N, c) = 1 - e^{-c}$ for all $c \\geq 0$. Then proves `gallagher_implies_conjecture`: RH implies `ErdosProblem234`, since Cram\u00e9r's prediction is continuous and matches the limit.",
     "mathContext": "gallagher_conditional: RH $\\implies \\forall c \\geq 0, \\text{Tendsto}(\\text{gapProportion}(\\cdot, c), \\text{atTop}, \\text{nhds}(\\text{cramerPrediction}(c)))$. gallagher_implies_conjecture: RH $\\implies$ ErdosProblem234. Proof: the first conjunct uses `gallagher_conditional` to witness the limit; the second uses `cramerPrediction` as the continuous function (via `cramer_continuous`).",
     "significance": "key",
     "relatedConcepts": [
@@ -177,14 +177,14 @@
       "endLine": 220
     },
     "title": "Partial Results: Small Gaps, Large Gaps, Average",
-    "content": "Three axiomatized results: (1) `small_gaps_exist`: for any $\\varepsilon > 0$, infinitely many primes have $g_n < (1 + \\varepsilon) \\log p_n$ (Goldston–Pintz–Yıldırım, Maynard–Tao); (2) `large_gaps_exist`: normalized gaps are unbounded (Rankin 1938, improved by Ford–Green–Konyagin–Tao 2016, Maynard 2016); (3) `average_normalized_gap` tends to $1$ by PNT.",
-    "mathContext": "small_gaps_exist: $\\{n : g_n < (1+\\varepsilon)\\log p_n\\}$ is infinite. GPY (2009) showed $\\liminf g_n/\\log p_n = 0$; Maynard–Tao (2014) showed bounded gaps. large_gaps_exist: $\\forall M > 0, \\exists n: g_n/\\log n > M$. The best bound is $g_n \\gg \\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n / (\\log\\log\\log n)^2$ (FGKT). average_normalized_gap: $\\frac{1}{N}\\sum_{n<N} g_n/\\log n \\to 1$ by PNT.",
+    "content": "Three axiomatized results: (1) `small_gaps_exist`: for any $\\varepsilon > 0$, infinitely many primes have $g_n < (1 + \\varepsilon) \\log p_n$ (Goldston\u2013Pintz\u2013Y\u0131ld\u0131r\u0131m, Maynard\u2013Tao); (2) `large_gaps_exist`: normalized gaps are unbounded (Rankin 1938, improved by Ford\u2013Green\u2013Konyagin\u2013Tao 2016, Maynard 2016); (3) `average_normalized_gap` tends to $1$ by PNT.",
+    "mathContext": "small_gaps_exist: $\\{n : g_n < (1+\\varepsilon)\\log p_n\\}$ is infinite. GPY (2009) showed $\\liminf g_n/\\log p_n = 0$; Maynard\u2013Tao (2014) showed bounded gaps. large_gaps_exist: $\\forall M > 0, \\exists n: g_n/\\log n > M$. The best bound is $g_n \\gg \\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n / (\\log\\log\\log n)^2$ (FGKT). average_normalized_gap: $\\frac{1}{N}\\sum_{n<N} g_n/\\log n \\to 1$ by PNT.",
     "significance": "key",
     "relatedConcepts": [
       "GPY theorem",
-      "Maynard–Tao",
+      "Maynard\u2013Tao",
       "Rankin's theorem",
-      "Ford–Green–Konyagin–Tao",
+      "Ford\u2013Green\u2013Konyagin\u2013Tao",
       "PNT"
     ],
     "prerequisites": [
@@ -200,9 +200,9 @@
     "type": "technique",
     "range": {
       "startLine": 227,
-      "endLine": 248
+      "endLine": 247
     },
-    "title": "Additional Cramér Model Properties",
+    "title": "Additional Cram\u00e9r Model Properties",
     "content": "Proves `cramer_at_zero` ($f(0) = 0$, by `simp`), `cramer_nonneg` ($f(c) \\geq 0$), `cramer_le_one` ($f(c) \\leq 1$), and `cramer_monotone` ($c_1 \\leq c_2 \\implies f(c_1) \\leq f(c_2)$, using $e^{-c_2} \\leq e^{-c_1}$ from `exp_le_exp`).",
     "mathContext": "cramer_monotone uses the fact that $e^{-x}$ is decreasing: $c_1 \\leq c_2 \\implies -c_2 \\leq -c_1 \\implies e^{-c_2} \\leq e^{-c_1} \\implies 1 - e^{-c_1} \\leq 1 - e^{-c_2}$. All properties mirror the standard CDF axioms: $F(0) = 0$, $0 \\leq F \\leq 1$, $F$ non-decreasing.",
     "significance": "supporting",

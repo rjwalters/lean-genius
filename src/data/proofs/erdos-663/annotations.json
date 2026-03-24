@@ -53,7 +53,7 @@
       "endLine": 31
     },
     "title": "Axiomatized $q(n,k)$ Function",
-    "content": "Declares $q(n,k)$ (smallestMissingPrime) as an axiom — a function $\\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$ whose properties are specified separately. This axiomatization avoids the complexity of constructing the least prime not dividing a given number, which would require decidability of primality and divisibility search.",
+    "content": "Declares $q(n,k)$ (smallestMissingPrime) as an axiom \u2014 a function $\\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$ whose properties are specified separately. This axiomatization avoids the complexity of constructing the least prime not dividing a given number, which would require decidability of primality and divisibility search.",
     "mathContext": "$q(n,k) = \\min\\{p \\in \\mathbb{P} : p \\nmid (n+1)(n+2)\\cdots(n+k)\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -96,7 +96,7 @@
       "startLine": 48,
       "endLine": 54
     },
-    "title": "Erdős Problem 663 — Main Conjecture",
+    "title": "Erd\u0151s Problem 663 \u2014 Main Conjecture",
     "content": "The central conjecture: for each fixed $k \\geq 1$ and every $\\varepsilon > 0$, the bound $q(n,k) < (1+\\varepsilon)\\log n$ holds for all sufficiently large $n$. This is a precise formalization of $q(n,k) < (1+o(1))\\log n$, converting the asymptotic notation into a quantified statement.",
     "mathContext": "$\\forall k \\geq 1,\\, \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall n \\geq N_0: q(n,k) < (1+\\varepsilon)\\log n$",
     "significance": "key",
@@ -205,12 +205,12 @@
       "startLine": 94,
       "endLine": 98
     },
-    "title": "Connection to Erdős Problem #457",
-    "content": "States the connection to Erdős Problem #457: among $k$ consecutive integers starting from $n+1$, there is always a prime $p \\leq k+1$ dividing the product. This is a weaker but related structural property about small prime divisors of consecutive products, providing a floor for the prime coverage.",
+    "title": "Connection to Erd\u0151s Problem #457",
+    "content": "States the connection to Erd\u0151s Problem #457: among $k$ consecutive integers starting from $n+1$, there is always a prime $p \\leq k+1$ dividing the product. This is a weaker but related structural property about small prime divisors of consecutive products, providing a floor for the prime coverage.",
     "mathContext": "$\\forall k \\geq 1,\\, \\forall n,\\, \\exists p \\in \\mathbb{P},\\, p \\leq k+1 \\text{ and } p \\mid (n+1)\\cdots(n+k)$",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős Problem 457",
+      "Erd\u0151s Problem 457",
       "small prime divisors",
       "Bertrand's postulate"
     ],
@@ -292,7 +292,7 @@
     "type": "technique",
     "range": {
       "startLine": 118,
-      "endLine": 128
+      "endLine": 127
     },
     "title": "Main Conjecture Implies Weak Bound",
     "content": "Proves that the main conjecture (without $k$ factor) implies the weak bound (with $k$ factor). The proof extracts the $N_0$ from the main conjecture and uses the chain of inequalities $(1+\\varepsilon)\\log n \\leq (1+\\varepsilon)\\,k\\log n$ since $k \\geq 1$. Uses `mul_assoc`, `mul_le_mul_of_nonneg_left`, and `nlinarith` with the cast `Nat.cast_pos.mpr hk`.",

@@ -44,7 +44,7 @@
     },
     "type": "definition",
     "title": "Solution Set and Counting Function",
-    "content": "**solutionSet n k** contains all multisets of k primes whose k-th powers sum to n. **f k n** counts these solutions using extended naturals (ℕ∞).",
+    "content": "**solutionSet n k** contains all multisets of k primes whose k-th powers sum to n. **f k n** counts these solutions using extended naturals (\u2115\u221e).",
     "mathContext": "The definition uses Set comprehension: {P | P.card = k AND all elements prime AND sum of k-th powers = n}. Using Set.encard allows the count to be infinite.",
     "significance": "key",
     "relatedConcepts": [
@@ -202,7 +202,7 @@
     "proofId": "erdos-979",
     "range": {
       "startLine": 149,
-      "endLine": 167
+      "endLine": 166
     },
     "type": "technique",
     "title": "Summary Theorem",

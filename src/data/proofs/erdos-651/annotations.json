@@ -8,13 +8,13 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #651** asks whether the Ramsey-type function f_k(n) for convex polyhedra grows exponentially in all dimensions.\n\nThe function f_k(n) is the smallest integer N such that any N points in general position in ℝ^k contain n points forming a convex polyhedron.\n\nErdős conjectured exponential lower bounds: f_k(n) > (1 + c_k)^n for some c_k > 0. This was **disproved** by Pohoata and Zakharov (2022), who showed f_3(n) ≤ 2^{o(n)}.",
-    "mathContext": "This problem generalizes the Erdős-Klein-Szekeres 'happy ending problem' from the plane to higher dimensions. The jump from exponential (k=2) to subexponential (k≥3) is one of the most surprising results in discrete geometry.",
+    "content": "**Erd\u0151s Problem #651** asks whether the Ramsey-type function f_k(n) for convex polyhedra grows exponentially in all dimensions.\n\nThe function f_k(n) is the smallest integer N such that any N points in general position in \u211d^k contain n points forming a convex polyhedron.\n\nErd\u0151s conjectured exponential lower bounds: f_k(n) > (1 + c_k)^n for some c_k > 0. This was **disproved** by Pohoata and Zakharov (2022), who showed f_3(n) \u2264 2^{o(n)}.",
+    "mathContext": "This problem generalizes the Erd\u0151s-Klein-Szekeres 'happy ending problem' from the plane to higher dimensions. The jump from exponential (k=2) to subexponential (k\u22653) is one of the most surprising results in discrete geometry.",
     "significance": "key",
     "relatedConcepts": [
       "Convex geometry",
       "Ramsey theory",
-      "Erdős-Szekeres",
+      "Erd\u0151s-Szekeres",
       "General position"
     ]
   },
@@ -27,7 +27,7 @@
     },
     "type": "definition",
     "title": "General Position",
-    "content": "**InGeneralPosition** formalizes when a set of points in ℝ^k is in general position: no k+1 points lie on a (k-1)-dimensional hyperplane.\n\nIn ℝ²: no 3 points collinear. In ℝ³: no 4 points coplanar.\n\nThis is expressed via AffineIndependent from Mathlib, ensuring every (k+1)-element subset is affinely independent.",
+    "content": "**InGeneralPosition** formalizes when a set of points in \u211d^k is in general position: no k+1 points lie on a (k-1)-dimensional hyperplane.\n\nIn \u211d\u00b2: no 3 points collinear. In \u211d\u00b3: no 4 points coplanar.\n\nThis is expressed via AffineIndependent from Mathlib, ensuring every (k+1)-element subset is affinely independent.",
     "mathContext": "General position is the standard non-degeneracy condition in convex geometry. It ensures the points are 'spread out' enough that convex hull computations behave well.",
     "significance": "key",
     "relatedConcepts": [
@@ -46,7 +46,7 @@
     "type": "definition",
     "title": "Convex Polyhedron and Containment",
     "content": "**DeterminesConvexPolyhedron** says every point is a vertex of the convex hull: no point lies inside the hull of the others. This is the 'convex position' condition.\n\n**ContainsConvexPolyhedron S n** means S has an n-element subset in convex position. This is the property f_k(n) guarantees.",
-    "mathContext": "The vertex condition p ∉ convexHull(S \\ {p}) generalizes convex polygons to higher-dimensional polytopes. It ensures the points are extremal in their own hull.",
+    "mathContext": "The vertex condition p \u2209 convexHull(S \\ {p}) generalizes convex polygons to higher-dimensional polytopes. It ensures the points are extremal in their own hull.",
     "significance": "key",
     "relatedConcepts": [
       "Convex hull",
@@ -63,8 +63,8 @@
     },
     "type": "concept",
     "title": "The Function f_k(n)",
-    "content": "**f_k** is axiomatized as a function ℕ → ℕ → ℕ that achieves the Ramsey-type guarantee: any f_k(k,n) points in general position contain an n-vertex convex polyhedron.\n\n**f_k_achieves** states the upper bound property and **f_k_minimal** states the lower bound: there exist f_k(k,n)-1 points in general position with no n-vertex polyhedron.",
-    "mathContext": "The existence of f_k(n) for k=2 was shown by Erdős-Szekeres (1935). For k≥3, existence follows from Ramsey-theoretic arguments but with much weaker bounds.",
+    "content": "**f_k** is axiomatized as a function \u2115 \u2192 \u2115 \u2192 \u2115 that achieves the Ramsey-type guarantee: any f_k(k,n) points in general position contain an n-vertex convex polyhedron.\n\n**f_k_achieves** states the upper bound property and **f_k_minimal** states the lower bound: there exist f_k(k,n)-1 points in general position with no n-vertex polyhedron.",
+    "mathContext": "The existence of f_k(n) for k=2 was shown by Erd\u0151s-Szekeres (1935). For k\u22653, existence follows from Ramsey-theoretic arguments but with much weaker bounds.",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey numbers",
@@ -80,9 +80,9 @@
       "endLine": 132
     },
     "type": "concept",
-    "title": "Erdős-Klein-Szekeres and Suk's Theorem",
-    "content": "**erdos_klein_szekeres:** For k = 2, f_2(n) ≤ 2^{n-2} + 1. This is the famous 'happy ending problem' — named because George Szekeres and Esther Klein met through this problem and later married.\n\n**suk_2017:** Suk proved the exact value f_2(n) = 2^{n-2} + 1, confirming the Erdős-Szekeres conjecture 82 years after it was posed.",
-    "mathContext": "The k=2 case is exponential. The dramatic contrast with k≥3 (subexponential) is central to Problem #651.",
+    "title": "Erd\u0151s-Klein-Szekeres and Suk's Theorem",
+    "content": "**erdos_klein_szekeres:** For k = 2, f_2(n) \u2264 2^{n-2} + 1. This is the famous 'happy ending problem' \u2014 named because George Szekeres and Esther Klein met through this problem and later married.\n\n**suk_2017:** Suk proved the exact value f_2(n) = 2^{n-2} + 1, confirming the Erd\u0151s-Szekeres conjecture 82 years after it was posed.",
+    "mathContext": "The k=2 case is exponential. The dramatic contrast with k\u22653 (subexponential) is central to Problem #651.",
     "significance": "key",
     "relatedConcepts": [
       "Happy ending problem",
@@ -98,8 +98,8 @@
       "endLine": 159
     },
     "type": "definition",
-    "title": "The Erdős Conjecture",
-    "content": "**ErdosConjecture** formalizes: for each k ≥ 2, there exists c_k > 0 such that f_k(n) > (1 + c_k)^n.\n\nThis would mean exponential lower bounds in ALL dimensions. Since k=2 has exponential growth, Erdős conjectured the pattern continues.",
+    "title": "The Erd\u0151s Conjecture",
+    "content": "**ErdosConjecture** formalizes: for each k \u2265 2, there exists c_k > 0 such that f_k(n) > (1 + c_k)^n.\n\nThis would mean exponential lower bounds in ALL dimensions. Since k=2 has exponential growth, Erd\u0151s conjectured the pattern continues.",
     "mathContext": "The conjecture was natural given the k=2 case, but turned out to be false. The dimension jump from 2 to 3 fundamentally changes the problem.",
     "significance": "key",
     "relatedConcepts": [
@@ -117,7 +117,7 @@
     },
     "type": "concept",
     "title": "Pohoata-Zakharov Theorem (2022)",
-    "content": "**pohoata_zakharov_2022:** f_3(n) ≤ 2^{o(n)}. Formally: for any ε > 0, eventually f_3(n) ≤ 2^{εn}.\n\n**subexponential_bound:** For any c > 0, eventually f_3(n) < (1+c)^n. This is the key lemma that contradicts the exponential conjecture.\n\nThe proof uses a clever inductive construction exploiting the extra flexibility of three dimensions.",
+    "content": "**pohoata_zakharov_2022:** f_3(n) \u2264 2^{o(n)}. Formally: for any \u03b5 > 0, eventually f_3(n) \u2264 2^{\u03b5n}.\n\n**subexponential_bound:** For any c > 0, eventually f_3(n) < (1+c)^n. This is the key lemma that contradicts the exponential conjecture.\n\nThe proof uses a clever inductive construction exploiting the extra flexibility of three dimensions.",
     "mathContext": "Published as 'Convex polytopes from fewer points' (arXiv:2208.04878). The construction avoids the exponential blowup typical in Ramsey-type arguments by using projections and careful combinatorial analysis.",
     "significance": "key",
     "relatedConcepts": [
@@ -135,7 +135,7 @@
     },
     "type": "technique",
     "title": "The Disproof",
-    "content": "**conjecture_false_k3:** No c > 0 gives f_3(n) > (1+c)^n for all n ≥ 4. Proof: given any c, Pohoata-Zakharov provides N where f_3(n) < (1+c)^n for n ≥ N, yielding a contradiction via linarith.\n\n**erdos_651_disproved:** The full conjecture ¬ErdosConjecture follows by instantiating with k = 3.",
+    "content": "**conjecture_false_k3:** No c > 0 gives f_3(n) > (1+c)^n for all n \u2265 4. Proof: given any c, Pohoata-Zakharov provides N where f_3(n) < (1+c)^n for n \u2265 N, yielding a contradiction via linarith.\n\n**erdos_651_disproved:** The full conjecture \u00acErdosConjecture follows by instantiating with k = 3.",
     "mathContext": "This is a genuine Lean proof combining the Pohoata-Zakharov axiom with basic arithmetic. The proof strategy is a clean contradiction: assume exponential bound, get subexponential counterexample.",
     "significance": "key",
     "relatedConcepts": [
@@ -149,12 +149,12 @@
     "proofId": "erdos-651",
     "range": {
       "startLine": 220,
-      "endLine": 233
+      "endLine": 227
     },
     "type": "technique",
     "title": "Main Results and Summary",
-    "content": "**erdos_651:** ¬ErdosConjecture. The exponential lower bound conjecture is FALSE.\n\n**erdos_651_summary** combines three results:\n1. ¬ErdosConjecture (the disproof)\n2. The Pohoata-Zakharov subexponential bound for k=3\n3. Suk's exact value f_2(n) = 2^{n-2} + 1 for k=2\n\nThis summary captures the complete picture: exponential in dimension 2, subexponential from dimension 3 onwards.",
-    "mathContext": "The summary theorem uses exact ⟨erdos_651_disproved, pohoata_zakharov_2022, suk_2017⟩ to combine all main results into a single statement.",
+    "content": "**erdos_651:** \u00acErdosConjecture. The exponential lower bound conjecture is FALSE.\n\n**erdos_651_summary** combines three results:\n1. \u00acErdosConjecture (the disproof)\n2. The Pohoata-Zakharov subexponential bound for k=3\n3. Suk's exact value f_2(n) = 2^{n-2} + 1 for k=2\n\nThis summary captures the complete picture: exponential in dimension 2, subexponential from dimension 3 onwards.",
+    "mathContext": "The summary theorem uses exact \u27e8erdos_651_disproved, pohoata_zakharov_2022, suk_2017\u27e9 to combine all main results into a single statement.",
     "significance": "key",
     "relatedConcepts": [
       "Complete resolution",

@@ -47,7 +47,7 @@
       "Summary theorem combining R\u00f6dl's theorem with tower bound"
     ],
     "axiomCount": 5,
-    "lineCount": 264,
+    "lineCount": 244,
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
@@ -128,7 +128,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 228,
-      "endLine": 264,
+      "endLine": 244,
       "summary": "The summary theorem `erdos_923_summary` packages both R\u00f6dl's qualitative result (YES) and quantitative bound ($\\text{tower}(O(k))$) as a conjunction, proved by `\u27e8rodl_1977, rodl_bound\u27e9`."
     }
   ],
@@ -161,7 +161,7 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos923",
-    "lineCount": 264,
+    "lineCount": 244,
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 9

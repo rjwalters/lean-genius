@@ -48,10 +48,11 @@
     "dateAdded": "2025-12-27",
     "wiedijkNumber": 59,
     "axiomCount": 1,
-    "assumptions": "1 axiom: weak_law_of_large_numbers_axiom wraps the WLLN proof using Mathlib's Chebyshev inequality and variance properties. 2 stub theorems (monte_carlo_convergence, bernoulli_law) use placeholder proofs."
+    "assumptions": "1 axiom: weak_law_of_large_numbers_axiom wraps the WLLN proof using Mathlib's Chebyshev inequality and variance properties. 2 stub theorems (monte_carlo_convergence, bernoulli_law) use placeholder proofs.",
+    "lineCount": 396
   },
   "overview": {
-    "historicalContext": "The Laws of Large Numbers are among the oldest and most fundamental results in probability theory, with a history spanning over three centuries.\n\nJacob Bernoulli proved the first version in 1713 for Bernoulli trials, published posthumously in Part IV of his *Ars Conjectandi*. Bernoulli worked on the proof for over 20 years and considered it his most important result — he called it his 'golden theorem.' His proof used direct combinatorial estimates of binomial probabilities, predating the concept of variance by over a century. Abraham de Moivre strengthened Bernoulli's result in 1733 by proving what we now call the normal approximation to the binomial (a precursor to the Central Limit Theorem), giving the rate of convergence that Bernoulli's theorem lacks.\n\nThe term 'Law of Large Numbers' (*loi des grands nombres*) was coined by Siméon Denis Poisson in 1835 in his *Recherches sur la probabilité des jugements*. Pafnuty Chebyshev gave the first general proof (for arbitrary distributions with finite variance) in 1867, using the inequality that now bears his name — the same approach formalized here. His student Andrei Markov extended the result to dependent sequences in 1906 (Markov chains).\n\nThe Strong Law, which provides almost sure convergence rather than just convergence in probability, was first proved by Émile Borel in 1909 for the special case of Bernoulli trials, using the Borel-Cantelli lemma. Francesco Cantelli gave an independent proof in 1917. The general SLLN was established by Andrey Kolmogorov in 1930, building on his measure-theoretic axiomatization of probability (*Grundbegriffe der Wahrscheinlichkeitsrechnung*, 1933). Kolmogorov proved that finite first moment ($E[|X|] < \\infty$) is both necessary and sufficient for the SLLN — a remarkably sharp result. Nassim Etemadi simplified Kolmogorov's proof in 1981, requiring only pairwise independence rather than full mutual independence; Mathlib implements Etemadi's approach in `strong_law_ae`.\n\nThese theorems provide the mathematical foundation for statistical inference, explaining why sample means are reliable estimators of population means when samples are large enough. They underpin frequentist probability, Monte Carlo methods, insurance mathematics, and the empirical sciences.",
+    "historicalContext": "The Laws of Large Numbers are among the oldest and most fundamental results in probability theory, with a history spanning over three centuries.\n\nJacob Bernoulli proved the first version in 1713 for Bernoulli trials, published posthumously in Part IV of his *Ars Conjectandi*. Bernoulli worked on the proof for over 20 years and considered it his most important result \u2014 he called it his 'golden theorem.' His proof used direct combinatorial estimates of binomial probabilities, predating the concept of variance by over a century. Abraham de Moivre strengthened Bernoulli's result in 1733 by proving what we now call the normal approximation to the binomial (a precursor to the Central Limit Theorem), giving the rate of convergence that Bernoulli's theorem lacks.\n\nThe term 'Law of Large Numbers' (*loi des grands nombres*) was coined by Sim\u00e9on Denis Poisson in 1835 in his *Recherches sur la probabilit\u00e9 des jugements*. Pafnuty Chebyshev gave the first general proof (for arbitrary distributions with finite variance) in 1867, using the inequality that now bears his name \u2014 the same approach formalized here. His student Andrei Markov extended the result to dependent sequences in 1906 (Markov chains).\n\nThe Strong Law, which provides almost sure convergence rather than just convergence in probability, was first proved by \u00c9mile Borel in 1909 for the special case of Bernoulli trials, using the Borel-Cantelli lemma. Francesco Cantelli gave an independent proof in 1917. The general SLLN was established by Andrey Kolmogorov in 1930, building on his measure-theoretic axiomatization of probability (*Grundbegriffe der Wahrscheinlichkeitsrechnung*, 1933). Kolmogorov proved that finite first moment ($E[|X|] < \\infty$) is both necessary and sufficient for the SLLN \u2014 a remarkably sharp result. Nassim Etemadi simplified Kolmogorov's proof in 1981, requiring only pairwise independence rather than full mutual independence; Mathlib implements Etemadi's approach in `strong_law_ae`.\n\nThese theorems provide the mathematical foundation for statistical inference, explaining why sample means are reliable estimators of population means when samples are large enough. They underpin frequentist probability, Monte Carlo methods, insurance mathematics, and the empirical sciences.",
     "problemStatement": "**Weak Law of Large Numbers (WLLN)**: For i.i.d. random variables $X_1, X_2, \\ldots$ with mean $\\mu$ and finite variance $\\sigma^2$, the sample mean $\\bar{X}_n = \\frac{1}{n}\\sum_{i=1}^n X_i$ converges to $\\mu$ in probability:\n\n$$\\forall \\varepsilon > 0: \\lim_{n \\to \\infty} P(|\\bar{X}_n - \\mu| > \\varepsilon) = 0$$\n\n**Strong Law of Large Numbers (SLLN)**: Under the same conditions (with finite expectation), the sample mean converges almost surely:\n\n$$P\\left(\\lim_{n \\to \\infty} \\bar{X}_n = \\mu\\right) = 1$$\n\nThe Strong Law is strictly stronger: almost sure convergence implies convergence in probability, but not vice versa.",
     "text": "The Laws of Large Numbers describe how sample averages converge to expected values. The Weak Law shows convergence in probability, while the Strong Law shows almost sure convergence.",
     "proofStrategy": "**Weak Law via Chebyshev**:\n\n1. **Compute variance of sample mean**: For i.i.d. variables with variance $\\sigma^2$, we have $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$.\n\n2. **Apply Chebyshev's inequality**: $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(\\bar{X}_n)}{\\varepsilon^2} = \\frac{\\sigma^2}{n\\varepsilon^2}$.\n\n3. **Take the limit**: As $n \\to \\infty$, the bound $\\sigma^2/(n\\varepsilon^2) \\to 0$.\n\n**Strong Law (Mathlib)**:\n\nMathlib's proof uses Etemadi's method with truncation. The key steps are:\n1. Truncate variables at level $n$\n2. Show convergence along subsequences $c^n$\n3. Extend to all indices\n4. Control the error from truncation",
@@ -82,7 +83,7 @@
       "title": "Probability Space Setup and Sample Mean",
       "startLine": 64,
       "endLine": 89,
-      "summary": "Defines `sampleMean X n ω` as $(1/n) \\sum_{i \\in \\text{range}(n)} X_i(\\omega)$ in a probability space $(\\Omega, \\mu)$ with `IsProbabilityMeasure μ`. Proves the equivalence `sampleMean_pos` between multiplicative and division forms.",
+      "summary": "Defines `sampleMean X n \u03c9` as $(1/n) \\sum_{i \\in \\text{range}(n)} X_i(\\omega)$ in a probability space $(\\Omega, \\mu)$ with `IsProbabilityMeasure \u03bc`. Proves the equivalence `sampleMean_pos` between multiplicative and division forms.",
       "mathContext": "$\\bar{X}_n(\\omega) = \\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega)$"
     },
     {
@@ -171,12 +172,12 @@
     {
       "targetId": "prob-method-second-moment",
       "relationship": "related",
-      "description": "The second moment method uses variance bounds (Chebyshev's inequality) to prove existence — the same Chebyshev inequality that powers the WLLN proof. Both exploit the $\\text{Var}(X)/\\varepsilon^2$ tail bound, applied in different contexts: LLN for convergence of averages, the second moment method for concentration of random combinatorial structures"
+      "description": "The second moment method uses variance bounds (Chebyshev's inequality) to prove existence \u2014 the same Chebyshev inequality that powers the WLLN proof. Both exploit the $\\text{Var}(X)/\\varepsilon^2$ tail bound, applied in different contexts: LLN for convergence of averages, the second moment method for concentration of random combinatorial structures"
     },
     {
       "targetId": "randomized-maxcut",
       "relationship": "related",
-      "description": "The randomized MaxCut algorithm's expected performance guarantee ($E[\\text{cut}] \\geq |E|/2$) is meaningful precisely because the LLN ensures that the actual cut value concentrates near its expectation for large graphs — the practical reliability of randomized algorithms rests on laws of large numbers"
+      "description": "The randomized MaxCut algorithm's expected performance guarantee ($E[\\text{cut}] \\geq |E|/2$) is meaningful precisely because the LLN ensures that the actual cut value concentrates near its expectation for large graphs \u2014 the practical reliability of randomized algorithms rests on laws of large numbers"
     }
   ],
   "relatedProofs": [
@@ -192,34 +193,34 @@
       "title": "Ars Conjectandi",
       "year": "1713",
       "venue": "Basel: Thurneysen",
-      "note": "Contains the first proof of the weak law of large numbers (Part IV) — published posthumously 8 years after Bernoulli's death. Bernoulli worked on the proof for over 20 years and called it his 'golden theorem'"
+      "note": "Contains the first proof of the weak law of large numbers (Part IV) \u2014 published posthumously 8 years after Bernoulli's death. Bernoulli worked on the proof for over 20 years and called it his 'golden theorem'"
     },
     {
       "authors": "Kolmogorov, Andrey N.",
       "title": "Sur la loi forte des grands nombres",
       "year": "1930",
-      "venue": "Comptes Rendus de l'Académie des Sciences 191, 910–912",
-      "note": "Proved the strong law of large numbers for independent identically distributed random variables with finite first moment — establishing that E[|X|] < ∞ is both necessary and sufficient"
+      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences 191, 910\u2013912",
+      "note": "Proved the strong law of large numbers for independent identically distributed random variables with finite first moment \u2014 establishing that E[|X|] < \u221e is both necessary and sufficient"
     },
     {
       "authors": "Chebyshev, Pafnuty L.",
       "title": "Des valeurs moyennes",
       "year": "1867",
-      "venue": "Journal de Mathématiques Pures et Appliquées, 2e série, vol. 12, pp. 177–184",
-      "note": "First general proof of the WLLN for arbitrary distributions with finite variance, using the inequality P(|X - μ| ≥ ε) ≤ Var(X)/ε² — the approach formalized in this Lean file"
+      "venue": "Journal de Math\u00e9matiques Pures et Appliqu\u00e9es, 2e s\u00e9rie, vol. 12, pp. 177\u2013184",
+      "note": "First general proof of the WLLN for arbitrary distributions with finite variance, using the inequality P(|X - \u03bc| \u2265 \u03b5) \u2264 Var(X)/\u03b5\u00b2 \u2014 the approach formalized in this Lean file"
     },
     {
       "authors": "Etemadi, Nasrollah",
       "title": "An elementary proof of the strong law of large numbers",
       "year": "1981",
-      "venue": "Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete, vol. 55, pp. 119–122",
+      "venue": "Zeitschrift f\u00fcr Wahrscheinlichkeitstheorie und verwandte Gebiete, vol. 55, pp. 119\u2013122",
       "note": "Simplified proof of the SLLN requiring only pairwise independence (not full mutual independence). This is the proof implemented in Mathlib's strong_law_ae"
     },
     {
-      "authors": "Borel, Émile",
-      "title": "Les probabilités dénombrables et leurs applications arithmétiques",
+      "authors": "Borel, \u00c9mile",
+      "title": "Les probabilit\u00e9s d\u00e9nombrables et leurs applications arithm\u00e9tiques",
       "year": "1909",
-      "venue": "Rendiconti del Circolo Matematico di Palermo, vol. 27, pp. 247–271",
+      "venue": "Rendiconti del Circolo Matematico di Palermo, vol. 27, pp. 247\u2013271",
       "note": "First proof of the strong law of large numbers for the special case of Bernoulli trials, introducing the Borel-Cantelli lemma as a tool"
     },
     {
@@ -227,7 +228,7 @@
       "title": "Grundbegriffe der Wahrscheinlichkeitsrechnung",
       "year": "1933",
       "venue": "Springer, Berlin",
-      "note": "Foundational monograph establishing the measure-theoretic axiomatization of probability theory — the framework within which the Laws of Large Numbers are now stated and proved"
+      "note": "Foundational monograph establishing the measure-theoretic axiomatization of probability theory \u2014 the framework within which the Laws of Large Numbers are now stated and proved"
     },
     {
       "authors": "Feller, William",

@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #448: Divisors in Dyadic Intervals**\n\nThe problem asks whether divisors of most integers cluster into few dyadic intervals.\n\n**The Question:**\nIs τ⁺(n) < ε·τ(n) for almost all n?\n\n**Status:** DISPROVED (1981)\n\n**Key Results:**\n- Erdős-Tenenbaum (1981): Exceptions have density ≍ ε^(1-o(1))\n- Hall-Tenenbaum (1988): Density ≪ ε log(2/ε); distribution function exists\n- Ford (2008): Στ⁺(n) ≍ x(log x)^(1-α)/(log log x)^(3/2)",
+    "content": "**Erd\u0151s Problem #448: Divisors in Dyadic Intervals**\n\nThe problem asks whether divisors of most integers cluster into few dyadic intervals.\n\n**The Question:**\nIs \u03c4\u207a(n) < \u03b5\u00b7\u03c4(n) for almost all n?\n\n**Status:** DISPROVED (1981)\n\n**Key Results:**\n- Erd\u0151s-Tenenbaum (1981): Exceptions have density \u224d \u03b5^(1-o(1))\n- Hall-Tenenbaum (1988): Density \u226a \u03b5 log(2/\u03b5); distribution function exists\n- Ford (2008): \u03a3\u03c4\u207a(n) \u224d x(log x)^(1-\u03b1)/(log log x)^(3/2)",
     "mathContext": "Dyadic intervals are [2^k, 2^(k+1)) for k = 0, 1, 2, ... This partition is fundamental in harmonic analysis and number theory.",
     "significance": "key",
     "relatedConcepts": [
@@ -25,9 +25,9 @@
       "endLine": 54
     },
     "type": "definition",
-    "title": "The Divisor Function τ(n)",
-    "content": "**tau (τ):**\n\nThe standard divisor counting function - counts all positive divisors of n.\n\n```lean\ndef tau (n : ℕ) : ℕ := n.divisors.card\n```\n\n**Examples:**\n- τ(1) = 1\n- τ(6) = 4 (divisors: 1, 2, 3, 6)\n- τ(p) = 2 for prime p\n- τ(2^k) = k + 1",
-    "mathContext": "Also written d(n) or σ₀(n). This is one of the most fundamental arithmetic functions.",
+    "title": "The Divisor Function \u03c4(n)",
+    "content": "**tau (\u03c4):**\n\nThe standard divisor counting function - counts all positive divisors of n.\n\n```lean\ndef tau (n : \u2115) : \u2115 := n.divisors.card\n```\n\n**Examples:**\n- \u03c4(1) = 1\n- \u03c4(6) = 4 (divisors: 1, 2, 3, 6)\n- \u03c4(p) = 2 for prime p\n- \u03c4(2^k) = k + 1",
+    "mathContext": "Also written d(n) or \u03c3\u2080(n). This is one of the most fundamental arithmetic functions.",
     "significance": "key",
     "relatedConcepts": [
       "Divisors",
@@ -44,8 +44,8 @@
     },
     "type": "definition",
     "title": "Dyadic Intervals",
-    "content": "**inDyadicInterval:**\n\nA divisor d is in the k-th dyadic interval if 2^k ≤ d < 2^(k+1).\n\n```lean\ndef inDyadicInterval (d k : ℕ) : Prop :=\n  2 ^ k ≤ d ∧ d < 2 ^ (k + 1)\n```\n\n**Dyadic intervals:**\n- k=0: [1, 2) contains only 1\n- k=1: [2, 4) contains 2, 3\n- k=2: [4, 8) contains 4, 5, 6, 7\n- k=3: [8, 16) contains 8-15\n\nEach interval doubles in size.",
-    "mathContext": "Dyadic intervals form a partition of ℕ. They're useful because they have scale-invariant properties.",
+    "content": "**inDyadicInterval:**\n\nA divisor d is in the k-th dyadic interval if 2^k \u2264 d < 2^(k+1).\n\n```lean\ndef inDyadicInterval (d k : \u2115) : Prop :=\n  2 ^ k \u2264 d \u2227 d < 2 ^ (k + 1)\n```\n\n**Dyadic intervals:**\n- k=0: [1, 2) contains only 1\n- k=1: [2, 4) contains 2, 3\n- k=2: [4, 8) contains 4, 5, 6, 7\n- k=3: [8, 16) contains 8-15\n\nEach interval doubles in size.",
+    "mathContext": "Dyadic intervals form a partition of \u2115. They're useful because they have scale-invariant properties.",
     "significance": "key",
     "relatedConcepts": [
       "Dyadic decomposition",
@@ -60,8 +60,8 @@
       "endLine": 82
     },
     "type": "definition",
-    "title": "The Dyadic Spread Function τ⁺(n)",
-    "content": "**tauPlus (τ⁺):**\n\nCounts the number of dyadic intervals [2^k, 2^(k+1)) that contain at least one divisor of n.\n\n```lean\nnoncomputable def tauPlus (n : ℕ) : ℕ :=\n  (Finset.range (Nat.log 2 n + 1)).filter\n    (fun k => ∃ d ∈ n.divisors, inDyadicInterval d k) |>.card\n```\n\n**Interpretation:**\nτ⁺(n) measures how \"spread out\" the divisors of n are across the dyadic scale.\n\n**Bounds:**\n- τ⁺(n) ≤ τ(n) (each interval needs ≥1 divisor)\n- τ⁺(n) ≤ log₂(n) + 1 (limited intervals)",
+    "title": "The Dyadic Spread Function \u03c4\u207a(n)",
+    "content": "**tauPlus (\u03c4\u207a):**\n\nCounts the number of dyadic intervals [2^k, 2^(k+1)) that contain at least one divisor of n.\n\n```lean\nnoncomputable def tauPlus (n : \u2115) : \u2115 :=\n  (Finset.range (Nat.log 2 n + 1)).filter\n    (fun k => \u2203 d \u2208 n.divisors, inDyadicInterval d k) |>.card\n```\n\n**Interpretation:**\n\u03c4\u207a(n) measures how \"spread out\" the divisors of n are across the dyadic scale.\n\n**Bounds:**\n- \u03c4\u207a(n) \u2264 \u03c4(n) (each interval needs \u22651 divisor)\n- \u03c4\u207a(n) \u2264 log\u2082(n) + 1 (limited intervals)",
     "mathContext": "This is the key function in the problem - it measures divisor spread rather than divisor count.",
     "significance": "key",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
     },
     "type": "technique",
     "title": "Basic Properties",
-    "content": "**Key Properties:**\n\n1. **tau_one**: τ(1) = 1\n2. **tau_pos**: τ(n) ≥ 1 for n ≥ 1\n3. **tau_prime**: τ(p) = 2 for prime p\n4. **tauPlus_one**: τ⁺(1) = 1\n5. **tauPlus_le_tau**: τ⁺(n) ≤ τ(n)\n6. **tauPlus_le_log**: τ⁺(n) ≤ log₂(n) + 1\n\n**Intuition:**\n- τ⁺(n) ≤ τ(n) because each occupied interval needs a divisor\n- Multiple divisors can share one interval (like 2 and 3 both in [2,4))",
+    "content": "**Key Properties:**\n\n1. **tau_one**: \u03c4(1) = 1\n2. **tau_pos**: \u03c4(n) \u2265 1 for n \u2265 1\n3. **tau_prime**: \u03c4(p) = 2 for prime p\n4. **tauPlus_one**: \u03c4\u207a(1) = 1\n5. **tauPlus_le_tau**: \u03c4\u207a(n) \u2264 \u03c4(n)\n6. **tauPlus_le_log**: \u03c4\u207a(n) \u2264 log\u2082(n) + 1\n\n**Intuition:**\n- \u03c4\u207a(n) \u2264 \u03c4(n) because each occupied interval needs a divisor\n- Multiple divisors can share one interval (like 2 and 3 both in [2,4))",
     "significance": "key",
     "relatedConcepts": [
       "Function bounds",
@@ -95,8 +95,8 @@
     },
     "type": "definition",
     "title": "The Original Conjecture",
-    "content": "**erdos_448_original_conjecture:**\n\nErdős asked whether, for all ε > 0, we have τ⁺(n) < ε·τ(n) for almost all n.\n\n```lean\ndef erdos_448_original_conjecture : Prop :=\n  ∀ ε : ℝ, ε > 0 →\n    ∃ D : Set ℕ, (∀ n ∈ D, τ⁺(n) < ε * τ(n)) ∧\n    -- D has density 1\n```\n\n**In Words:**\nDo divisors of typical integers concentrate into relatively few dyadic intervals?\n\n**Expected:** YES (most divisors cluster together)\n**Actual:** NO (exceptions have positive density)",
-    "mathContext": "\"Almost all\" means the natural density of exceptions is 0, i.e., lim |{n≤N : exception}|/N = 0.",
+    "content": "**erdos_448_original_conjecture:**\n\nErd\u0151s asked whether, for all \u03b5 > 0, we have \u03c4\u207a(n) < \u03b5\u00b7\u03c4(n) for almost all n.\n\n```lean\ndef erdos_448_original_conjecture : Prop :=\n  \u2200 \u03b5 : \u211d, \u03b5 > 0 \u2192\n    \u2203 D : Set \u2115, (\u2200 n \u2208 D, \u03c4\u207a(n) < \u03b5 * \u03c4(n)) \u2227\n    -- D has density 1\n```\n\n**In Words:**\nDo divisors of typical integers concentrate into relatively few dyadic intervals?\n\n**Expected:** YES (most divisors cluster together)\n**Actual:** NO (exceptions have positive density)",
+    "mathContext": "\"Almost all\" means the natural density of exceptions is 0, i.e., lim |{n\u2264N : exception}|/N = 0.",
     "significance": "key",
     "relatedConcepts": [
       "Natural density",
@@ -111,9 +111,9 @@
       "endLine": 157
     },
     "type": "concept",
-    "title": "The Erdős-Tenenbaum Disproof",
-    "content": "**erdos_tenenbaum_disproof:**\n\nErdős and Tenenbaum (1981) showed the conjecture is FALSE.\n\n**Key Finding:**\nThe upper density of {n : τ⁺(n) ≥ ε·τ(n)} is ≍ ε^(1-o(1)).\n\nThis means:\n- For small ε, about ε^(1-δ) proportion of integers have spread ≥ ε×count\n- Exceptions are NOT negligible!\n\n**erdos_448 theorem:**\n```lean\ntheorem erdos_448 : ¬ erdos_448_original_conjecture\n```\n\nThe conjecture is definitively false.",
-    "mathContext": "The o(1) term in the exponent means the power approaches 1 as ε→0. So density ≈ ε for small ε.",
+    "title": "The Erd\u0151s-Tenenbaum Disproof",
+    "content": "**erdos_tenenbaum_disproof:**\n\nErd\u0151s and Tenenbaum (1981) showed the conjecture is FALSE.\n\n**Key Finding:**\nThe upper density of {n : \u03c4\u207a(n) \u2265 \u03b5\u00b7\u03c4(n)} is \u224d \u03b5^(1-o(1)).\n\nThis means:\n- For small \u03b5, about \u03b5^(1-\u03b4) proportion of integers have spread \u2265 \u03b5\u00d7count\n- Exceptions are NOT negligible!\n\n**erdos_448 theorem:**\n```lean\ntheorem erdos_448 : \u00ac erdos_448_original_conjecture\n```\n\nThe conjecture is definitively false.",
+    "mathContext": "The o(1) term in the exponent means the power approaches 1 as \u03b5\u21920. So density \u2248 \u03b5 for small \u03b5.",
     "significance": "key",
     "relatedConcepts": [
       "Disproof",
@@ -130,8 +130,8 @@
     },
     "type": "concept",
     "title": "Hall-Tenenbaum Refinements",
-    "content": "**hall_tenenbaum_upper_density:**\n\nHall and Tenenbaum (1988) improved the bounds:\n\nUpper density of {n : τ⁺(n) ≥ ε·τ(n)} is ≪ ε·log(2/ε).\n\n**tauPlus_ratio_has_distribution:**\n\nMoreover, τ⁺(n)/τ(n) has a distribution function F(x).\n\nThis means: for any x ∈ [0,1], the limit\n```\nlim_{N→∞} (1/N) · |{n ≤ N : τ⁺(n)/τ(n) ≤ x}|\n```\nexists and equals F(x).",
-    "mathContext": "The existence of a distribution function implies the ratio τ⁺/τ has well-defined statistical behavior.",
+    "content": "**hall_tenenbaum_upper_density:**\n\nHall and Tenenbaum (1988) improved the bounds:\n\nUpper density of {n : \u03c4\u207a(n) \u2265 \u03b5\u00b7\u03c4(n)} is \u226a \u03b5\u00b7log(2/\u03b5).\n\n**tauPlus_ratio_has_distribution:**\n\nMoreover, \u03c4\u207a(n)/\u03c4(n) has a distribution function F(x).\n\nThis means: for any x \u2208 [0,1], the limit\n```\nlim_{N\u2192\u221e} (1/N) \u00b7 |{n \u2264 N : \u03c4\u207a(n)/\u03c4(n) \u2264 x}|\n```\nexists and equals F(x).",
+    "mathContext": "The existence of a distribution function implies the ratio \u03c4\u207a/\u03c4 has well-defined statistical behavior.",
     "significance": "key",
     "relatedConcepts": [
       "Distribution functions",
@@ -147,7 +147,7 @@
     },
     "type": "definition",
     "title": "The Ford Constant",
-    "content": "**fordAlpha:**\n\nThe Ford constant appearing in the asymptotic for Στ⁺(n):\n\n```lean\nnoncomputable def fordAlpha : ℝ :=\n  1 - (1 + Real.log (Real.log 2)) / Real.log 2\n```\n\n**Numerical value:** α ≈ 0.08607\n\nThis constant has a natural derivation from the structure of divisors and dyadic intervals.",
+    "content": "**fordAlpha:**\n\nThe Ford constant appearing in the asymptotic for \u03a3\u03c4\u207a(n):\n\n```lean\nnoncomputable def fordAlpha : \u211d :=\n  1 - (1 + Real.log (Real.log 2)) / Real.log 2\n```\n\n**Numerical value:** \u03b1 \u2248 0.08607\n\nThis constant has a natural derivation from the structure of divisors and dyadic intervals.",
     "mathContext": "This is an example of a precisely computable constant arising from number-theoretic analysis.",
     "significance": "key",
     "relatedConcepts": [
@@ -164,8 +164,8 @@
     },
     "type": "concept",
     "title": "Ford's Asymptotic",
-    "content": "**ford_asymptotic:**\n\nFord (2008) proved:\n\n$$\\sum_{n \\leq x} \\tau^+(n) \\asymp x \\frac{(\\log x)^{1-\\alpha}}{(\\log\\log x)^{3/2}}$$\n\nwhere α ≈ 0.08607.\n\n**Comparison:**\n- Στ(n) ≈ x log x (much larger)\n- Στ⁺(n) ≈ x (log x)^0.914 / (log log x)^1.5\n\nThis answers Erdős and Graham's question about the sum.",
-    "mathContext": "The exponent 1-α ≈ 0.914 shows τ⁺ grows almost like x log x but with a small correction.",
+    "content": "**ford_asymptotic:**\n\nFord (2008) proved:\n\n$$\\sum_{n \\leq x} \\tau^+(n) \\asymp x \\frac{(\\log x)^{1-\\alpha}}{(\\log\\log x)^{3/2}}$$\n\nwhere \u03b1 \u2248 0.08607.\n\n**Comparison:**\n- \u03a3\u03c4(n) \u2248 x log x (much larger)\n- \u03a3\u03c4\u207a(n) \u2248 x (log x)^0.914 / (log log x)^1.5\n\nThis answers Erd\u0151s and Graham's question about the sum.",
+    "mathContext": "The exponent 1-\u03b1 \u2248 0.914 shows \u03c4\u207a grows almost like x log x but with a small correction.",
     "significance": "key",
     "relatedConcepts": [
       "Asymptotic formulas",
@@ -181,7 +181,7 @@
     },
     "type": "technique",
     "title": "Example: n = 6",
-    "content": "**example_six:**\n\nFor n = 6 = 2 · 3:\n- Divisors: 1, 2, 3, 6\n- τ(6) = 4\n\n**Dyadic distribution:**\n- [1, 2): contains 1\n- [2, 4): contains 2, 3\n- [4, 8): contains 6\n\nτ⁺(6) = 3 (three intervals occupied)\n\nRatio: τ⁺(6)/τ(6) = 3/4 = 0.75",
+    "content": "**example_six:**\n\nFor n = 6 = 2 \u00b7 3:\n- Divisors: 1, 2, 3, 6\n- \u03c4(6) = 4\n\n**Dyadic distribution:**\n- [1, 2): contains 1\n- [2, 4): contains 2, 3\n- [4, 8): contains 6\n\n\u03c4\u207a(6) = 3 (three intervals occupied)\n\nRatio: \u03c4\u207a(6)/\u03c4(6) = 3/4 = 0.75",
     "significance": "supporting",
     "relatedConcepts": [
       "Concrete examples",
@@ -198,7 +198,7 @@
     },
     "type": "technique",
     "title": "Example: n = 12",
-    "content": "**example_twelve:**\n\nFor n = 12 = 2² · 3:\n- Divisors: 1, 2, 3, 4, 6, 12\n- τ(12) = 6\n\n**Dyadic distribution:**\n- [1, 2): 1\n- [2, 4): 2, 3\n- [4, 8): 4, 6\n- [8, 16): 12\n\nτ⁺(12) = 4 (four intervals occupied)\n\nRatio: τ⁺(12)/τ(12) = 4/6 ≈ 0.67",
+    "content": "**example_twelve:**\n\nFor n = 12 = 2\u00b2 \u00b7 3:\n- Divisors: 1, 2, 3, 4, 6, 12\n- \u03c4(12) = 6\n\n**Dyadic distribution:**\n- [1, 2): 1\n- [2, 4): 2, 3\n- [4, 8): 4, 6\n- [8, 16): 12\n\n\u03c4\u207a(12) = 4 (four intervals occupied)\n\nRatio: \u03c4\u207a(12)/\u03c4(12) = 4/6 \u2248 0.67",
     "significance": "supporting",
     "relatedConcepts": [
       "Concrete examples"
@@ -214,7 +214,7 @@
     },
     "type": "technique",
     "title": "Powers of Two",
-    "content": "**tau_power_of_two:**\n\nFor n = 2^k:\n- Divisors: 1, 2, 4, 8, ..., 2^k (all powers of 2)\n- τ(2^k) = k + 1\n\nEach divisor 2^j is in its own interval [2^j, 2^(j+1))!\n\nSo τ⁺(2^k) = k + 1 as well.\n\n**Ratio:** τ⁺(2^k)/τ(2^k) = 1 (maximum possible)\n\nPowers of 2 have maximally spread divisors.",
+    "content": "**tau_power_of_two:**\n\nFor n = 2^k:\n- Divisors: 1, 2, 4, 8, ..., 2^k (all powers of 2)\n- \u03c4(2^k) = k + 1\n\nEach divisor 2^j is in its own interval [2^j, 2^(j+1))!\n\nSo \u03c4\u207a(2^k) = k + 1 as well.\n\n**Ratio:** \u03c4\u207a(2^k)/\u03c4(2^k) = 1 (maximum possible)\n\nPowers of 2 have maximally spread divisors.",
     "significance": "key",
     "relatedConcepts": [
       "Prime powers",
@@ -231,7 +231,7 @@
     },
     "type": "concept",
     "title": "Example: n = 210",
-    "content": "**example_210:**\n\nFor n = 210 = 2 · 3 · 5 · 7 (product of first 4 primes):\n- τ(210) = 2⁴ = 16 divisors\n- τ⁺(210) = 8 intervals occupied\n\nRatio: τ⁺(210)/τ(210) = 8/16 = 0.5\n\nMultiple divisors share intervals (e.g., 2 and 3 in [2,4), 5 and 6 and 7 in [4,8)).",
+    "content": "**example_210:**\n\nFor n = 210 = 2 \u00b7 3 \u00b7 5 \u00b7 7 (product of first 4 primes):\n- \u03c4(210) = 2\u2074 = 16 divisors\n- \u03c4\u207a(210) = 8 intervals occupied\n\nRatio: \u03c4\u207a(210)/\u03c4(210) = 8/16 = 0.5\n\nMultiple divisors share intervals (e.g., 2 and 3 in [2,4), 5 and 6 and 7 in [4,8)).",
     "significance": "supporting",
     "relatedConcepts": [
       "Primorials",
@@ -248,7 +248,7 @@
     },
     "type": "concept",
     "title": "Related Problems",
-    "content": "**Connections to Other Erdős Problems:**\n\n**Problem #446:**\nAsks about the maximum value of τ⁺(n)/τ(n).\nThe disproof of #448 shows this ratio doesn't go to 0.\n\n**Problem #449:**\nAsks about divisors in short intervals [y, 2y).\nThe dyadic case is a special case of this more general question.\n\n**Common Theme:**\nAll three problems study how divisors are distributed across intervals of various types.",
+    "content": "**Connections to Other Erd\u0151s Problems:**\n\n**Problem #446:**\nAsks about the maximum value of \u03c4\u207a(n)/\u03c4(n).\nThe disproof of #448 shows this ratio doesn't go to 0.\n\n**Problem #449:**\nAsks about divisors in short intervals [y, 2y).\nThe dyadic case is a special case of this more general question.\n\n**Common Theme:**\nAll three problems study how divisors are distributed across intervals of various types.",
     "significance": "supporting",
     "relatedConcepts": [
       "Problem #446",
@@ -266,7 +266,7 @@
     },
     "type": "technique",
     "title": "Summary",
-    "content": "**erdos_448_summary:**\n\n```lean\ntheorem erdos_448_summary :\n    (∃ ε, ε > 0 ∧ ...) ∧\n    (∀ n ≥ 1, τ⁺(n) ≤ τ(n)) ∧\n    (0.086 < fordAlpha ∧ fordAlpha < 0.087)\n```\n\n**Summary of Results:**\n\n1. **Conjecture FALSE**: Exceptions have positive density\n2. **Basic bound**: τ⁺(n) ≤ τ(n) always holds\n3. **Ford constant**: α ≈ 0.08607 governs growth\n\n**The Answer:** Divisors do NOT cluster into few dyadic intervals for almost all integers.",
+    "content": "**erdos_448_summary:**\n\n```lean\ntheorem erdos_448_summary :\n    (\u2203 \u03b5, \u03b5 > 0 \u2227 ...) \u2227\n    (\u2200 n \u2265 1, \u03c4\u207a(n) \u2264 \u03c4(n)) \u2227\n    (0.086 < fordAlpha \u2227 fordAlpha < 0.087)\n```\n\n**Summary of Results:**\n\n1. **Conjecture FALSE**: Exceptions have positive density\n2. **Basic bound**: \u03c4\u207a(n) \u2264 \u03c4(n) always holds\n3. **Ford constant**: \u03b1 \u2248 0.08607 governs growth\n\n**The Answer:** Divisors do NOT cluster into few dyadic intervals for almost all integers.",
     "significance": "key",
     "relatedConcepts": [
       "Summary theorems",
@@ -279,11 +279,11 @@
     "proofId": "erdos-448",
     "range": {
       "startLine": 319,
-      "endLine": 331
+      "endLine": 330
     },
     "type": "technique",
     "title": "The Final Answer",
-    "content": "**erdos_448_answer:**\n\n```lean\ntheorem erdos_448_answer : ∃ (counterexampleDensity : ℝ → ℝ),\n    ∀ ε, 0 < ε → ε < 1/2 →\n      counterexampleDensity ε > 0\n```\n\n**Conclusion:**\nFor any ε > 0, a positive proportion of integers n satisfy τ⁺(n) ≥ ε·τ(n).\n\nThe conjecture that divisors concentrate is definitively FALSE.",
+    "content": "**erdos_448_answer:**\n\n```lean\ntheorem erdos_448_answer : \u2203 (counterexampleDensity : \u211d \u2192 \u211d),\n    \u2200 \u03b5, 0 < \u03b5 \u2192 \u03b5 < 1/2 \u2192\n      counterexampleDensity \u03b5 > 0\n```\n\n**Conclusion:**\nFor any \u03b5 > 0, a positive proportion of integers n satisfy \u03c4\u207a(n) \u2265 \u03b5\u00b7\u03c4(n).\n\nThe conjecture that divisors concentrate is definitively FALSE.",
     "significance": "key",
     "relatedConcepts": [
       "Final answer",

@@ -162,7 +162,7 @@
     "type": "insight",
     "range": {
       "startLine": 165,
-      "endLine": 185
+      "endLine": 184
     },
     "title": "Mantel's Theorem and Trivial Upper Bound",
     "content": "**Mantel's theorem (1907)**: A triangle-free graph on n vertices has at most \u230an\u00b2/4\u230b edges (the r=2 case of Tur\u00e1n's theorem). Since the triangle removal process terminates with a triangle-free graph, this gives the trivial bound f(n) \u2264 n\u00b2/4 \u2014 much weaker than the true \u0398(n^{3/2}). Mantel's theorem is axiomatized; trivial_upper_bound has a sorry connecting real-valued f(n) to the integer Mantel bound.",

@@ -18,9 +18,9 @@
       "cap sets"
     ],
     "prerequisites": [
-      "Set ℝ",
+      "Set \u211d",
       "set membership",
-      "addition on ℝ"
+      "addition on \u211d"
     ]
   },
   {
@@ -31,19 +31,19 @@
       "startLine": 31,
       "endLine": 35
     },
-    "title": "Sidon Set in ℝ",
-    "content": "A set $S \\subseteq \\mathbb{R}$ is Sidon if all pairwise sums $a + b$ with $a \\leq b$ are distinct: $a + b = c + d$ with $a \\leq b, c \\leq d$ implies $(a, b) = (c, d)$. In finite sets, Sidon sets have size $O(\\sqrt{n})$ in $\\{1, \\ldots, n\\}$. In $\\mathbb{R}$, Sidon sets can be uncountable (e.g., algebraically independent sets over $\\mathbb{Q}$). Sidon sets are NOT necessarily sum-free—the file proves this with the counterexample $\\{1, 2, 4\\}$.",
+    "title": "Sidon Set in \u211d",
+    "content": "A set $S \\subseteq \\mathbb{R}$ is Sidon if all pairwise sums $a + b$ with $a \\leq b$ are distinct: $a + b = c + d$ with $a \\leq b, c \\leq d$ implies $(a, b) = (c, d)$. In finite sets, Sidon sets have size $O(\\sqrt{n})$ in $\\{1, \\ldots, n\\}$. In $\\mathbb{R}$, Sidon sets can be uncountable (e.g., algebraically independent sets over $\\mathbb{Q}$). Sidon sets are NOT necessarily sum-free\u2014the file proves this with the counterexample $\\{1, 2, 4\\}$.",
     "mathContext": "$\\text{IsSidonReal}(S) \\iff \\forall a \\leq b,\\; c \\leq d \\in S:\\; a + b = c + d \\implies (a,b) = (c,d)$",
     "significance": "key",
     "relatedConcepts": [
-      "B₂ sets",
+      "B\u2082 sets",
       "additive Sidon sets",
       "distinct sums",
       "algebraic independence"
     ],
     "prerequisites": [
-      "Set ℝ",
-      "linear order on ℝ",
+      "Set \u211d",
+      "linear order on \u211d",
       "addition"
     ]
   },
@@ -66,7 +66,7 @@
       "additive energy"
     ],
     "prerequisites": [
-      "Set ℝ",
+      "Set \u211d",
       "existential quantification",
       "addition"
     ]
@@ -79,8 +79,8 @@
       "startLine": 43,
       "endLine": 49
     },
-    "title": "Erdős Problem 949: Main Conjecture",
-    "content": "For every sum-free $S \\subseteq \\mathbb{R}$, there exists $A \\subseteq S^c$ with $|A| = \\mathfrak{c}$ (the cardinality of the continuum) and $A + A \\subseteq S^c$. This asks: does a sum-free set always leave enough additive room in its complement for a continuum-sized set whose sumset also stays in the complement? The continuum cardinality is essential—the question is trivial for countable $A$ since $S^c$ always has cardinality $\\mathfrak{c}$ (as $S$ is sum-free, hence cannot be all of $\\mathbb{R}$).",
+    "title": "Erd\u0151s Problem 949: Main Conjecture",
+    "content": "For every sum-free $S \\subseteq \\mathbb{R}$, there exists $A \\subseteq S^c$ with $|A| = \\mathfrak{c}$ (the cardinality of the continuum) and $A + A \\subseteq S^c$. This asks: does a sum-free set always leave enough additive room in its complement for a continuum-sized set whose sumset also stays in the complement? The continuum cardinality is essential\u2014the question is trivial for countable $A$ since $S^c$ always has cardinality $\\mathfrak{c}$ (as $S$ is sum-free, hence cannot be all of $\\mathbb{R}$).",
     "mathContext": "$\\forall S \\subseteq \\mathbb{R},\\; \\text{IsSumFreeSet}(S) \\implies \\exists A \\subseteq S^c:\\; |A| = \\mathfrak{c} \\wedge A + A \\subseteq S^c$",
     "significance": "key",
     "relatedConcepts": [
@@ -131,7 +131,7 @@
     },
     "title": "Sidon Does Not Imply Sum-Free (Proved)",
     "content": "The theorem `sidon_not_implies_sum_free` proves that $\\{1, 2, 4\\} \\subseteq \\mathbb{R}$ is Sidon (all 6 pairwise sums $2, 3, 5, 3, 5, 8$ with repetitions but distinct ordered sums) yet not sum-free since $1 + 1 = 2 \\in S$. This corrects a previous unsound axiom `sidon_is_sum_free`. The proof constructs the Sidon verification by case analysis on all element combinations (12 cases) and shows the sum-free property fails by exhibiting the witness $a = b = 1$.",
-    "mathContext": "$\\{1, 2, 4\\}$ is Sidon (B₂) but $1 + 1 = 2 \\in S$, so Sidon $\\not\\Rightarrow$ sum-free",
+    "mathContext": "$\\{1, 2, 4\\}$ is Sidon (B\u2082) but $1 + 1 = 2 \\in S$, so Sidon $\\not\\Rightarrow$ sum-free",
     "significance": "key",
     "relatedConcepts": [
       "counterexample",
@@ -177,7 +177,7 @@
     "type": "insight",
     "range": {
       "startLine": 119,
-      "endLine": 121
+      "endLine": 120
     },
     "title": "General Sum-Free Case Remains Open",
     "content": "The general Problem 949 for arbitrary sum-free sets remains open. The key difficulty: sum-free sets can be much denser than Sidon sets (sum-free subsets of $[n]$ can have $\\sim n/2$ elements, while Sidon subsets have $\\sim \\sqrt{n}$). The Sidon proof exploits the injectivity of the sum map ($a + b = c + d \\implies (a,b) = (c,d)$), which fails for general sum-free sets. The axiom `erdos_949_open` records the full conjecture.",

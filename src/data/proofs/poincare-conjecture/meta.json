@@ -1,6 +1,6 @@
 {
   "id": "poincare-conjecture",
-  "title": "The Poincaré Conjecture",
+  "title": "The Poincar\u00e9 Conjecture",
   "slug": "poincare-conjecture",
   "description": "Every simply connected, closed 3-manifold is homeomorphic to the 3-sphere. Solved by Grigori Perelman in 2002-2003 using Ricci flow with surgery.",
   "meta": {
@@ -17,7 +17,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 35,
-    "assumptions": "35 axiom declarations encoding: Perelman Ricci flow surgery (finite extinction, κ-solutions), Novikov compact leaf theorem (foliations), generalized Poincaré in dimensions 2/4/≥5, simply connected S³ (needs Seifert-van Kampen), S³ non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincaré homology sphere, Whitehead manifold), covering space theory (sc_covering_injective). RP³ locally Euclidean now PROVED via gnomonic projection on hemispheres.",
+    "assumptions": "35 axiom declarations encoding: Perelman Ricci flow surgery (finite extinction, \u03ba-solutions), Novikov compact leaf theorem (foliations), generalized Poincar\u00e9 in dimensions 2/4/\u22655, simply connected S\u00b3 (needs Seifert-van Kampen), S\u00b3 non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincar\u00e9 homology sphere, Whitehead manifold), covering space theory (sc_covering_injective). RP\u00b3 locally Euclidean now PROVED via gnomonic projection on hemispheres.",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
@@ -26,7 +26,7 @@
       },
       {
         "theorem": "FundamentalGroup",
-        "description": "Fundamental group π₁(X,x) as automorphisms in fundamental groupoid",
+        "description": "Fundamental group \u03c0\u2081(X,x) as automorphisms in fundamental groupoid",
         "module": "Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup"
       },
       {
@@ -41,7 +41,7 @@
       },
       {
         "theorem": "EuclideanSpace",
-        "description": "Finite-dimensional inner product space ℝⁿ",
+        "description": "Finite-dimensional inner product space \u211d\u207f",
         "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
       },
       {
@@ -51,20 +51,20 @@
       }
     ],
     "originalContributions": [
-      "Formal statement of the Poincaré Conjecture using Mathlib's SimplyConnectedSpace",
-      "S³ topological properties proved: nonempty, compact, connected, path-connected, locally Euclidean",
+      "Formal statement of the Poincar\u00e9 Conjecture using Mathlib's SimplyConnectedSpace",
+      "S\u00b3 topological properties proved: nonempty, compact, connected, path-connected, locally Euclidean",
       "General n-sphere S^n properties proved for all dimensions (compact, connected, locally Euclidean via stereographic projection)",
-      "Punctured sphere contractibility: S^n \\ {v} ≃ₜ (ℝ·v)ᗮ via stereographic projection → contractible → simply connected",
+      "Punctured sphere contractibility: S^n \\ {v} \u2243\u209c (\u211d\u00b7v)\u15ee via stereographic projection \u2192 contractible \u2192 simply connected",
       "Bridge between FundamentalGroup triviality and SimplyConnectedSpace",
-      "poincare_of_trivial_pi1: π₁(M,x) trivial ∀x ⟹ M ≅ S³",
-      "poincare_all_dimensions: unified theorem for all n ≥ 2",
-      "closed_3_manifold_classification: SC ⟺ homeomorphic to S³",
+      "poincare_of_trivial_pi1: \u03c0\u2081(M,x) trivial \u2200x \u27f9 M \u2245 S\u00b3",
+      "poincare_all_dimensions: unified theorem for all n \u2265 2",
+      "closed_3_manifold_classification: SC \u27fa homeomorphic to S\u00b3",
       "Thurston's 8 geometries enumerated with count proved via native_decide",
-      "Connected sum, prime decomposition, S³ primality, Milnor uniqueness (axiomatized)",
+      "Connected sum, prime decomposition, S\u00b3 primality, Milnor uniqueness (axiomatized)",
       "Axiomatization of Perelman's Ricci flow surgery approach with finite extinction",
-      "Hopf fibration S³ → S² constructed explicitly: π(a,b,c,d) = (a²+b²-c²-d², 2(ac+bd), 2(bc-ad))",
+      "Hopf fibration S\u00b3 \u2192 S\u00b2 constructed explicitly: \u03c0(a,b,c,d) = (a\u00b2+b\u00b2-c\u00b2-d\u00b2, 2(ac+bd), 2(bc-ad))",
       "Hopf map proved continuous and surjective (hopf_map_exists)",
-      "RP³ = S³/{x ~ -x} constructed as quotient with antipodal equivalence (reflexive, symmetric, transitive)",
+      "RP\u00b3 = S\u00b3/{x ~ -x} constructed as quotient with antipodal equivalence (reflexive, symmetric, transitive)",
       "Covering space theory: CoveringSpace structure, FiberBundle structure, deck transformations",
       "JSJ decomposition and Seifert fiber spaces axiomatized",
       "Papakyriakopoulos trilogy: Dehn's lemma, loop theorem, sphere theorem (axiomatized)",
@@ -84,21 +84,21 @@
       "structureCount": 229,
       "instanceCount": 21,
       "parts": 100,
-      "note": "Single file formalization. 100 parts covering: topology of S³ and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results, Heegaard Floer homology, L-space conjecture, contact structures, Virtual Haken conjecture, Gordon-Luecke theorem, Chern-Simons theory, h-cobordism, TQFT axioms, κ-solutions, surgery algorithm, Kneser-Milnor, finite extinction, proof architecture, generalized Poincaré, open problems, legacy."
+      "note": "Single file formalization. 100 parts covering: topology of S\u00b3 and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results, Heegaard Floer homology, L-space conjecture, contact structures, Virtual Haken conjecture, Gordon-Luecke theorem, Chern-Simons theory, h-cobordism, TQFT axioms, \u03ba-solutions, surgery algorithm, Kneser-Milnor, finite extinction, proof architecture, generalized Poincar\u00e9, open problems, legacy."
     },
     "dateAdded": "2025-12-29",
     "millenniumProblem": "poincare",
-    "lineCount": 17663
+    "lineCount": 17668
   },
   "overview": {
-    "historicalContext": "Henri Poincaré posed the conjecture in 1904 in his fifth complement to Analysis Situs, after discovering that homology alone does not characterize the 3-sphere (the Poincaré homology sphere $\\Sigma(2,3,5)$ has $H_*(M) \\cong H_*(S^3)$ but $|\\pi_1| = 120$). The problem resisted all attempts for nearly a century.\n\nRichard Hamilton introduced Ricci flow in his landmark 1982 paper in J. Differential Geometry, proving that closed 3-manifolds with positive Ricci curvature are diffeomorphic to $S^3$. Grigori Perelman extended this in three arXiv preprints (2002–2003): 'The entropy formula for the Ricci flow' (math/0211159), 'Ricci flow with surgery on three-manifolds' (math/0303109), and 'Finite extinction time for the solutions to the Ricci flow' (math/0307245). His proof also established Thurston's Geometrization Conjecture.\n\nPerelman was awarded the Fields Medal in 2006 (declined) and the Clay Millennium Prize of $1 million in 2010 (also declined), saying 'I'm not interested in money or fame.' The detailed verification was completed by Kleiner–Lott (2008), Morgan–Tian (2007), and Cao–Zhu (2006).",
+    "historicalContext": "Henri Poincar\u00e9 posed the conjecture in 1904 in his fifth complement to Analysis Situs, after discovering that homology alone does not characterize the 3-sphere (the Poincar\u00e9 homology sphere $\\Sigma(2,3,5)$ has $H_*(M) \\cong H_*(S^3)$ but $|\\pi_1| = 120$). The problem resisted all attempts for nearly a century.\n\nRichard Hamilton introduced Ricci flow in his landmark 1982 paper in J. Differential Geometry, proving that closed 3-manifolds with positive Ricci curvature are diffeomorphic to $S^3$. Grigori Perelman extended this in three arXiv preprints (2002\u20132003): 'The entropy formula for the Ricci flow' (math/0211159), 'Ricci flow with surgery on three-manifolds' (math/0303109), and 'Finite extinction time for the solutions to the Ricci flow' (math/0307245). His proof also established Thurston's Geometrization Conjecture.\n\nPerelman was awarded the Fields Medal in 2006 (declined) and the Clay Millennium Prize of $1 million in 2010 (also declined), saying 'I'm not interested in money or fame.' The detailed verification was completed by Kleiner\u2013Lott (2008), Morgan\u2013Tian (2007), and Cao\u2013Zhu (2006).",
     "problemStatement": "**Theorem (Perelman, 2003):** Every simply connected, closed 3-manifold is homeomorphic to the 3-sphere $S^3$.\n\nFormally: $\\forall M, \\; \\text{Closed3Manifold}(M) \\to \\text{SimplyConnectedSpace}(M) \\to M \\cong_t S^3$.\n\nThis was the first of the seven Millennium Prize Problems to be solved. The conjecture is equivalent to: $\\pi_1(M) = 1$ characterizes $S^3$ among closed 3-manifolds.",
-    "text": "Formalizes the Poincaré Conjecture: every simply connected, closed 3-manifold is homeomorphic to $S^3$. Defines $S^3 \\subset \\mathbb{R}^4$ and proves its topological properties via Mathlib. Axiomatizes Perelman's Ricci flow with surgery approach (finite extinction time from $\\pi_1 = 1$). Extends to generalized Poincaré for all $n \\geq 2$, Thurston geometrization (8 model geometries), connected sum decomposition, Hopf fibration, covering spaces, and the biconditional classification $\\pi_1(M) = 1 \\iff M \\cong S^3$.",
-    "proofStrategy": "The Lean formalization defines the 3-sphere $S^3 \\subset \\mathbb{R}^4$, proves its topological properties (compact, connected, path-connected, nonempty), and uses Mathlib's `SimplyConnectedSpace` and `FundamentalGroup` infrastructure. Perelman's Ricci flow with surgery approach is axiomatized: the surgery procedure preserves simple connectivity, and finite extinction time forces convergence to $S^3$. The main theorem is derived from these axioms. The file extends to Thurston's geometrization (8 model geometries), the generalized Poincaré Conjecture for all dimensions $\\geq 2$, connected sum / prime decomposition, and the biconditional classification theorem.",
+    "text": "Formalizes the Poincar\u00e9 Conjecture: every simply connected, closed 3-manifold is homeomorphic to $S^3$. Defines $S^3 \\subset \\mathbb{R}^4$ and proves its topological properties via Mathlib. Axiomatizes Perelman's Ricci flow with surgery approach (finite extinction time from $\\pi_1 = 1$). Extends to generalized Poincar\u00e9 for all $n \\geq 2$, Thurston geometrization (8 model geometries), connected sum decomposition, Hopf fibration, covering spaces, and the biconditional classification $\\pi_1(M) = 1 \\iff M \\cong S^3$.",
+    "proofStrategy": "The Lean formalization defines the 3-sphere $S^3 \\subset \\mathbb{R}^4$, proves its topological properties (compact, connected, path-connected, nonempty), and uses Mathlib's `SimplyConnectedSpace` and `FundamentalGroup` infrastructure. Perelman's Ricci flow with surgery approach is axiomatized: the surgery procedure preserves simple connectivity, and finite extinction time forces convergence to $S^3$. The main theorem is derived from these axioms. The file extends to Thurston's geometrization (8 model geometries), the generalized Poincar\u00e9 Conjecture for all dimensions $\\geq 2$, connected sum / prime decomposition, and the biconditional classification theorem.",
     "keyInsights": [
       "**Ricci flow as heat equation for geometry:** The PDE $\\partial g/\\partial t = -2\\operatorname{Ric}(g)$ smooths curvature irregularities, driving simply connected manifolds toward constant positive curvature (the round $S^3$ metric)",
       "**Surgery handles singularities:** When Ricci flow develops singularities (necks pinching off), Perelman's surgery cuts at the neck and caps with standard pieces, preserving $\\pi_1 = 1$",
-      "**Finite extinction from simple connectivity:** The key insight — $\\pi_1(M) = 1$ prevents incompressible tori that would allow infinite-time survival. The $W$-entropy monotonicity forces extinction in finite time",
+      "**Finite extinction from simple connectivity:** The key insight \u2014 $\\pi_1(M) = 1$ prevents incompressible tori that would allow infinite-time survival. The $W$-entropy monotonicity forces extinction in finite time",
       "**Dimensional paradox:** The conjecture was hardest in dimension 3, despite being solved earlier in all other dimensions: $n \\geq 5$ (Smale 1961), $n = 4$ (Freedman 1982), $n = 2$ (classical). The Whitney trick fails in low dimensions",
       "**Thurston's geometrization:** Every closed 3-manifold decomposes into pieces carrying one of exactly 8 model geometries. Simply connected manifolds can only carry spherical geometry, so they must be $S^3$"
     ],
@@ -137,11 +137,11 @@
       "title": "Homeomorphism",
       "startLine": 184,
       "endLine": 201,
-      "summary": "Defines `AreHomeomorphic X Y` and **proves** reflexivity, symmetry, transitivity — establishing homeomorphism as an equivalence relation."
+      "summary": "Defines `AreHomeomorphic X Y` and **proves** reflexivity, symmetry, transitivity \u2014 establishing homeomorphism as an equivalence relation."
     },
     {
       "id": "poincare-statement",
-      "title": "The Poincaré Conjecture (Statement)",
+      "title": "The Poincar\u00e9 Conjecture (Statement)",
       "startLine": 203,
       "endLine": 212,
       "summary": "States `PoincareConjectureStatement` : $\\forall M$, closed 3-manifold $\\wedge$ simply connected $\\implies M \\cong_t S^3$.",
@@ -165,11 +165,11 @@
     },
     {
       "id": "generalized-dims",
-      "title": "Generalized Poincaré (Per Dimension)",
+      "title": "Generalized Poincar\u00e9 (Per Dimension)",
       "startLine": 279,
       "endLine": 296,
       "summary": "Axiomatizes the generalized conjecture for $n = 2$ (uniformization), $n = 4$ (Freedman), $n \\geq 5$ (Smale).",
-      "mathContext": "Generalized Poincaré: $n = 2$ (classification of surfaces), $n = 4$ (Freedman 1982, topological), $n \\geq 5$ (Smale 1961, h-cobordism). Smooth $n = 4$ remains open."
+      "mathContext": "Generalized Poincar\u00e9: $n = 2$ (classification of surfaces), $n = 4$ (Freedman 1982, topological), $n \\geq 5$ (Smale 1961, h-cobordism). Smooth $n = 4$ remains open."
     },
     {
       "id": "consequences",
@@ -187,7 +187,7 @@
     },
     {
       "id": "all-dimensions",
-      "title": "Poincaré for All Dimensions $\\geq 2$",
+      "title": "Poincar\u00e9 for All Dimensions $\\geq 2$",
       "startLine": 378,
       "endLine": 417,
       "summary": "**Proves** `poincare_all_dimensions` by case analysis: Smale for $n \\geq 5$, then `interval_cases` dispatching $n \\in \\{2, 3, 4\\}$.",
@@ -220,7 +220,7 @@
       "title": "$S^3$ Type Class Instances",
       "startLine": 468,
       "endLine": 520,
-      "summary": "Lifts $S^3$ properties to type class instances. Axiomatizes locally Euclidean and simple connectivity (Seifert–van Kampen needed)."
+      "summary": "Lifts $S^3$ properties to type class instances. Axiomatizes locally Euclidean and simple connectivity (Seifert\u2013van Kampen needed)."
     },
     {
       "id": "classification",
@@ -255,39 +255,39 @@
     {
       "targetId": "hurwitz-theorem",
       "relationship": "thematic",
-      "description": "Both establish classification theorems: Hurwitz classifies normed division algebras ($n \\in \\{1,2,4,8\\}$), Poincaré classifies simply connected closed 3-manifolds (only $S^3$). Both use biconditional characterizations"
+      "description": "Both establish classification theorems: Hurwitz classifies normed division algebras ($n \\in \\{1,2,4,8\\}$), Poincar\u00e9 classifies simply connected closed 3-manifolds (only $S^3$). Both use biconditional characterizations"
     },
     {
       "targetId": "brouwer-fixed-point",
       "relationship": "foundational",
-      "description": "The Brouwer fixed point theorem is a cornerstone of algebraic topology — the same homotopy-theoretic machinery (fundamental group, simple connectivity) that underlies the Poincaré conjecture's statement"
+      "description": "The Brouwer fixed point theorem is a cornerstone of algebraic topology \u2014 the same homotopy-theoretic machinery (fundamental group, simple connectivity) that underlies the Poincar\u00e9 conjecture's statement"
     },
     {
       "targetId": "borsuk-ulam",
       "relationship": "foundational",
-      "description": "The Borsuk-Ulam theorem ($f: S^n \\to \\mathbb{R}^n$ has a point with $f(x) = f(-x)$) is another deep result about sphere topology — both rely on the topological properties of $S^n$ that the Poincaré conjecture characterizes"
+      "description": "The Borsuk-Ulam theorem ($f: S^n \\to \\mathbb{R}^n$ has a point with $f(x) = f(-x)$) is another deep result about sphere topology \u2014 both rely on the topological properties of $S^n$ that the Poincar\u00e9 conjecture characterizes"
     },
     {
       "targetId": "navier-stokes",
       "relationship": "thematic",
-      "description": "Both are Clay Millennium Prize Problems — the Poincaré conjecture (solved by Perelman, 2003) and Navier-Stokes existence/smoothness (open) represent the pinnacle of mathematical challenges in topology and PDE theory respectively"
+      "description": "Both are Clay Millennium Prize Problems \u2014 the Poincar\u00e9 conjecture (solved by Perelman, 2003) and Navier-Stokes existence/smoothness (open) represent the pinnacle of mathematical challenges in topology and PDE theory respectively"
     },
     {
       "targetId": "hodge-conjecture",
       "relationship": "thematic",
-      "description": "Another Clay Millennium Prize Problem — the Hodge conjecture concerns the algebraic topology of complex manifolds, complementing the Poincaré conjecture's classification of topological manifolds"
+      "description": "Another Clay Millennium Prize Problem \u2014 the Hodge conjecture concerns the algebraic topology of complex manifolds, complementing the Poincar\u00e9 conjecture's classification of topological manifolds"
     },
     {
       "targetId": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "Gödel's incompleteness theorems constrain what formal systems can prove — Perelman's proof of the Poincaré conjecture was verified in this formalization using axiomatized deep results (Ricci flow, surgery), raising questions about the boundary between verified and axiomatized mathematics"
+      "description": "G\u00f6del's incompleteness theorems constrain what formal systems can prove \u2014 Perelman's proof of the Poincar\u00e9 conjecture was verified in this formalization using axiomatized deep results (Ricci flow, surgery), raising questions about the boundary between verified and axiomatized mathematics"
     }
   ],
   "conclusion": {
-    "summary": "The Poincaré Conjecture is SOLVED (Perelman, 2002–2003): every simply connected, closed 3-manifold is homeomorphic to S³. The formalization provides 17302 lines covering 100 parts, with 922 theorems and 36 axioms. Coverage includes Ricci flow, surgery theory, κ-solutions, normal surfaces, taut foliations, Casson invariant, Heegaard Floer homology, the L-space conjecture, contact structures, and computational complexity.",
-    "implications": "Perelman's proof also established Thurston's Geometrization Conjecture, revolutionizing 3-manifold topology. The Ricci flow technique has since been applied to the differentiable sphere theorem (Brendle–Schoen 2009), classification of manifolds with positive isotropic curvature, and the study of Kähler–Ricci flow in complex geometry.",
+    "summary": "The Poincar\u00e9 Conjecture is SOLVED (Perelman, 2002\u20132003): every simply connected, closed 3-manifold is homeomorphic to S\u00b3. The formalization provides 17302 lines covering 100 parts, with 922 theorems and 36 axioms. Coverage includes Ricci flow, surgery theory, \u03ba-solutions, normal surfaces, taut foliations, Casson invariant, Heegaard Floer homology, the L-space conjecture, contact structures, and computational complexity.",
+    "implications": "Perelman's proof also established Thurston's Geometrization Conjecture, revolutionizing 3-manifold topology. The Ricci flow technique has since been applied to the differentiable sphere theorem (Brendle\u2013Schoen 2009), classification of manifolds with positive isotropic curvature, and the study of K\u00e4hler\u2013Ricci flow in complex geometry.",
     "openQuestions": [
-      "The smooth 4-dimensional Poincaré conjecture: is every smooth homotopy 4-sphere diffeomorphic to $S^4$?",
+      "The smooth 4-dimensional Poincar\u00e9 conjecture: is every smooth homotopy 4-sphere diffeomorphic to $S^4$?",
       "Can Perelman's surgery procedure be made effective/algorithmic for computational topology?",
       "What are the optimal constants in the no-local-collapsing theorem?",
       "Can Ricci flow techniques prove the Borel conjecture for aspherical manifolds?"
@@ -342,35 +342,35 @@
       "title": "The entropy formula for the Ricci flow and its geometric applications",
       "year": "2002",
       "venue": "arXiv:math/0211159",
-      "note": "First of three preprints proving the Poincaré conjecture via Ricci flow with surgery — declined the Fields Medal and Clay Prize"
+      "note": "First of three preprints proving the Poincar\u00e9 conjecture via Ricci flow with surgery \u2014 declined the Fields Medal and Clay Prize"
     },
     {
       "authors": "Morgan, John; Tian, Gang",
-      "title": "Ricci Flow and the Poincaré Conjecture",
+      "title": "Ricci Flow and the Poincar\u00e9 Conjecture",
       "year": "2007",
       "venue": "American Mathematical Society, Clay Mathematics Monographs 3",
-      "note": "Complete detailed verification of Perelman's proof of the Poincaré conjecture"
+      "note": "Complete detailed verification of Perelman's proof of the Poincar\u00e9 conjecture"
     },
     {
       "authors": "Hamilton, Richard S.",
       "title": "Three-manifolds with positive Ricci curvature",
       "year": "1982",
-      "venue": "Journal of Differential Geometry 17(2), 255–306",
-      "note": "Introduced the Ricci flow equation $\\partial g/\\partial t = -2\\text{Ric}(g)$ and proved convergence to constant curvature for positive Ricci 3-manifolds — the foundation for Perelman's approach"
+      "venue": "Journal of Differential Geometry 17(2), 255\u2013306",
+      "note": "Introduced the Ricci flow equation $\\partial g/\\partial t = -2\\text{Ric}(g)$ and proved convergence to constant curvature for positive Ricci 3-manifolds \u2014 the foundation for Perelman's approach"
     },
     {
       "authors": "Smale, Stephen",
-      "title": "Generalized Poincaré's conjecture in dimensions greater than four",
+      "title": "Generalized Poincar\u00e9's conjecture in dimensions greater than four",
       "year": "1961",
-      "venue": "Annals of Mathematics 74(2), 391–406",
-      "note": "Proved the generalized Poincaré conjecture for dimensions ≥ 5 using h-cobordism, earning the Fields Medal"
+      "venue": "Annals of Mathematics 74(2), 391\u2013406",
+      "note": "Proved the generalized Poincar\u00e9 conjecture for dimensions \u2265 5 using h-cobordism, earning the Fields Medal"
     },
     {
       "authors": "Freedman, Michael H.",
       "title": "The topology of four-dimensional manifolds",
       "year": "1982",
-      "venue": "Journal of Differential Geometry 17(3), 357–453",
-      "note": "Proved the topological Poincaré conjecture in dimension 4, earning the Fields Medal — the smooth case remains open"
+      "venue": "Journal of Differential Geometry 17(3), 357\u2013453",
+      "note": "Proved the topological Poincar\u00e9 conjecture in dimension 4, earning the Fields Medal \u2014 the smooth case remains open"
     }
   ]
 }

@@ -8,8 +8,8 @@
     },
     "type": "context",
     "title": "Open Question and Answer: Desargues over Any Commutative Ring",
-    "content": "The original Desargues formalization in this gallery used `Mathlib.LinearAlgebra.CrossProduct`, which was deprecated and removed in Mathlib v4.26.0. This file answers the open question: **YES**, the full algebraic proof can be completed without sorries, without the deprecated module — and moreover, the proof generalizes from ℝ to **any commutative ring K**.\n\nThe key insight: Desargues's theorem is fundamentally a polynomial identity. No field axioms, no topology, no continuity are required. The same proof that works over ℝ works over ℤ, ℚ, 𝔽_p, K[x], and any CommRing.",
-    "mathContext": "The forward direction holds over any CommRing K; the converse requires IntegralDomain K (to cancel the non-degeneracy factor det(A,B,C)·det(A',B',C') ≠ 0 without zero divisors).",
+    "content": "The original Desargues formalization in this gallery used `Mathlib.LinearAlgebra.CrossProduct`, which was deprecated and removed in Mathlib v4.26.0. This file answers the open question: **YES**, the full algebraic proof can be completed without sorries, without the deprecated module \u2014 and moreover, the proof generalizes from \u211d to **any commutative ring K**.\n\nThe key insight: Desargues's theorem is fundamentally a polynomial identity. No field axioms, no topology, no continuity are required. The same proof that works over \u211d works over \u2124, \u211a, \ud835\udd3d_p, K[x], and any CommRing.",
+    "mathContext": "The forward direction holds over any CommRing K; the converse requires IntegralDomain K (to cancel the non-degeneracy factor det(A,B,C)\u00b7det(A',B',C') \u2260 0 without zero divisors).",
     "significance": "key",
     "relatedConcepts": [
       "Desargues's theorem",
@@ -32,14 +32,14 @@
     },
     "type": "definition",
     "title": "Custom Cross Product Over Any CommRing K",
-    "content": "Since `Mathlib.LinearAlgebra.CrossProduct` was deprecated in v4.26.0, this file defines a custom 3D cross product `cross3` over any CommRing K:\n\n```lean\ndef cross3 (a b : Fin 3 → K) : Fin 3 → K := fun i =>\n  match i with\n  | 0 => a 1 * b 2 - a 2 * b 1\n  | 1 => a 2 * b 0 - a 0 * b 2\n  | 2 => a 0 * b 1 - a 1 * b 0\n```\n\nAnticommutativity `cross3 a b = -(cross3 b a)` is proved by `ring` over K. The component lemmas extract each coordinate explicitly for use in downstream proofs.",
+    "content": "Since `Mathlib.LinearAlgebra.CrossProduct` was deprecated in v4.26.0, this file defines a custom 3D cross product `cross3` over any CommRing K:\n\n```lean\ndef cross3 (a b : Fin 3 \u2192 K) : Fin 3 \u2192 K := fun i =>\n  match i with\n  | 0 => a 1 * b 2 - a 2 * b 1\n  | 1 => a 2 * b 0 - a 0 * b 2\n  | 2 => a 0 * b 1 - a 1 * b 0\n```\n\nAnticommutativity `cross3 a b = -(cross3 b a)` is proved by `ring` over K. The component lemmas extract each coordinate explicitly for use in downstream proofs.",
     "mathContext": "The cross product $a \\times b$ in $K^3$ has components $(a_1b_2-a_2b_1,\\ a_2b_0-a_0b_2,\\ a_0b_1-a_1b_0)$. This is well-defined over any CommRing (no division or ordering needed).",
     "significance": "key",
     "relatedConcepts": [
       "cross product",
       "CommRing",
       "anticommutativity",
-      "Fin 3 → K"
+      "Fin 3 \u2192 K"
     ],
     "prerequisites": [
       "Mathlib.LinearAlgebra.Matrix.Determinant",
@@ -55,8 +55,8 @@
     },
     "type": "definition",
     "title": "Three-Vector Matrix Determinant Over K",
-    "content": "The function `threeVecMat a b c` assembles a 3×3 matrix with rows `a`, `b`, `c` (as `Fin 3 → K` vectors) and computes its determinant:\n\n```lean\ndef threeVecMat (a b c : Fin 3 → K) : Matrix (Fin 3) (Fin 3) K :=\n  Matrix.of ![a, b, c]\n```\n\nThe lemma `threeVecMat_det_explicit` gives the explicit Sarrus expansion:\n```\ndet(a,b,c) = a0*(b1*c2-b2*c1) - a1*(b0*c2-b2*c0) + a2*(b0*c1-b1*c0)\n```\nThis equals `a · (b × c)` — the scalar triple product. The expansion is proved by `ring`.",
-    "mathContext": "The determinant of a 3×3 matrix $\\det(a,b,c) = 0$ iff the three vectors are linearly dependent, which we use to define collinearity and concurrence in the projective setting.",
+    "content": "The function `threeVecMat a b c` assembles a 3\u00d73 matrix with rows `a`, `b`, `c` (as `Fin 3 \u2192 K` vectors) and computes its determinant:\n\n```lean\ndef threeVecMat (a b c : Fin 3 \u2192 K) : Matrix (Fin 3) (Fin 3) K :=\n  Matrix.of ![a, b, c]\n```\n\nThe lemma `threeVecMat_det_explicit` gives the explicit Sarrus expansion:\n```\ndet(a,b,c) = a0*(b1*c2-b2*c1) - a1*(b0*c2-b2*c0) + a2*(b0*c1-b1*c0)\n```\nThis equals `a \u00b7 (b \u00d7 c)` \u2014 the scalar triple product. The expansion is proved by `ring`.",
+    "mathContext": "The determinant of a 3\u00d73 matrix $\\det(a,b,c) = 0$ iff the three vectors are linearly dependent, which we use to define collinearity and concurrence in the projective setting.",
     "significance": "key",
     "relatedConcepts": [
       "Matrix.det",
@@ -79,7 +79,7 @@
     },
     "type": "technique",
     "title": "Lagrange Cross Product Identity Over K",
-    "content": "The key algebraic bridge is the Lagrange vector quadruple product identity:\n\n```\n(a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d\n```\n\nThis is `lagrange_cross_K`, proved by `ring` over any CommRing K. Geometrically:\n- `(a×b)` is the line through points `a` and `b`\n- `(c×d)` is the line through points `c` and `d`\n- The cross product `(a×b)×(c×d)` is their intersection point\n- The right side expresses this intersection as a linear combination of `c` and `d`\n\nThis identity drives the proof: intersection points P, Q, R are expressed as:\n- `P = det(A,B,B')·A' − det(A,B,A')·B'`\n- `Q = det(B,C,C')·B' − det(B,C,B')·C'`\n- `R = det(C,A,A')·C' − det(C,A,C')·A'`",
+    "content": "The key algebraic bridge is the Lagrange vector quadruple product identity:\n\n```\n(a\u00d7b)\u00d7(c\u00d7d) = det(a,b,d)\u00b7c \u2212 det(a,b,c)\u00b7d\n```\n\nThis is `lagrange_cross_K`, proved by `ring` over any CommRing K. Geometrically:\n- `(a\u00d7b)` is the line through points `a` and `b`\n- `(c\u00d7d)` is the line through points `c` and `d`\n- The cross product `(a\u00d7b)\u00d7(c\u00d7d)` is their intersection point\n- The right side expresses this intersection as a linear combination of `c` and `d`\n\nThis identity drives the proof: intersection points P, Q, R are expressed as:\n- `P = det(A,B,B')\u00b7A' \u2212 det(A,B,A')\u00b7B'`\n- `Q = det(B,C,C')\u00b7B' \u2212 det(B,C,B')\u00b7C'`\n- `R = det(C,A,A')\u00b7C' \u2212 det(C,A,C')\u00b7A'`",
     "mathContext": "The identity $(a \\times b) \\times (c \\times d) = \\det(a,b,d)\\cdot c - \\det(a,b,c)\\cdot d$ is a degree-4 polynomial identity in 12 variables over any CommRing.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,7 +103,7 @@
     },
     "type": "definition",
     "title": "Collinearity and Concurrence Over K",
-    "content": "Working over K, collinearity and concurrence use the same determinant condition:\n\n```lean\ndef collinear_K (p q r : Fin 3 → K) : Prop :=\n  (threeVecMat p q r).det = 0\n\ndef concurrent_K (l m n : Fin 3 → K) : Prop :=\n  (threeVecMat l m n).det = 0\n```\n\n**Three triangles are perspective from a point** when lines AA', BB', CC' are concurrent. **They are perspective from a line** when intersection points P, Q, R are collinear.\n\nDuality: the same algebraic condition captures both — a manifestation of projective duality.",
+    "content": "Working over K, collinearity and concurrence use the same determinant condition:\n\n```lean\ndef collinear_K (p q r : Fin 3 \u2192 K) : Prop :=\n  (threeVecMat p q r).det = 0\n\ndef concurrent_K (l m n : Fin 3 \u2192 K) : Prop :=\n  (threeVecMat l m n).det = 0\n```\n\n**Three triangles are perspective from a point** when lines AA', BB', CC' are concurrent. **They are perspective from a line** when intersection points P, Q, R are collinear.\n\nDuality: the same algebraic condition captures both \u2014 a manifestation of projective duality.",
     "mathContext": "In homogeneous coordinates over K, three points $p,q,r \\in K^3$ are collinear iff $\\det(p,q,r)=0$ (they are linearly dependent). This is the correct generalization of collinearity to arbitrary CommRings.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -126,7 +126,7 @@
     },
     "type": "technique",
     "title": "The Desargues Master Identity",
-    "content": "The heart of the proof is the **Desargues master identity**:\n\n```\ndet(P,Q,R) = det(AA',BB',CC') · det(A,B,C) · det(A',B',C')\n```\n\nwhere P, Q, R are the intersection points. This is `desargues_identity_K`, proved in three algebraic steps:\n\n**Step 1 (Lagrange):** Express P, Q, R as linear combinations via the Lagrange identity. Let d₁=det(A,B,B'), d₂=det(A,B,A'), giving P = d₁A' − d₂B', and similarly for Q, R.\n\n**Step 2 (Multilinearity):** By multilinearity of det:\n```\ndet(d₁A'−d₂B', d₃B'−d₄C', d₅C'−d₆A') = (d₁d₃d₅ − d₂d₄d₆)·det(A',B',C')\n```\n\n**Step 3 (Core Identity):** The scalar factor satisfies a degree-9 polynomial identity in 18 variables, proved by `ring`:\n```\nd₁d₃d₅ − d₂d₄d₆ = det(A×A', B×B', C×C') · det(A,B,C)\n```",
+    "content": "The heart of the proof is the **Desargues master identity**:\n\n```\ndet(P,Q,R) = det(AA',BB',CC') \u00b7 det(A,B,C) \u00b7 det(A',B',C')\n```\n\nwhere P, Q, R are the intersection points. This is `desargues_identity_K`, proved in three algebraic steps:\n\n**Step 1 (Lagrange):** Express P, Q, R as linear combinations via the Lagrange identity. Let d\u2081=det(A,B,B'), d\u2082=det(A,B,A'), giving P = d\u2081A' \u2212 d\u2082B', and similarly for Q, R.\n\n**Step 2 (Multilinearity):** By multilinearity of det:\n```\ndet(d\u2081A'\u2212d\u2082B', d\u2083B'\u2212d\u2084C', d\u2085C'\u2212d\u2086A') = (d\u2081d\u2083d\u2085 \u2212 d\u2082d\u2084d\u2086)\u00b7det(A',B',C')\n```\n\n**Step 3 (Core Identity):** The scalar factor satisfies a degree-9 polynomial identity in 18 variables, proved by `ring`:\n```\nd\u2081d\u2083d\u2085 \u2212 d\u2082d\u2084d\u2086 = det(A\u00d7A', B\u00d7B', C\u00d7C') \u00b7 det(A,B,C)\n```",
     "mathContext": "The master identity shows $\\det(P,Q,R)$ factors through the perspectivity determinant. If the triangles are perspective from a point, $\\det(AA',BB',CC')=0$, so $\\det(P,Q,R)=0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -174,8 +174,8 @@
     },
     "type": "technique",
     "title": "Forward Direction (CommRing) and Converse (IntegralDomain)",
-    "content": "**Forward**: Over any CommRing K, if two triangles are perspective from a point then they are perspective from a line. The proof is immediate: the master identity gives `det(P,Q,R) = det(AA',BB',CC') · det(A,B,C) · det(A',B',C')`, so `det(AA',BB',CC') = 0` implies `det(P,Q,R) = 0`.\n\n**Converse**: Over any IntegralDomain K, under the non-degeneracy condition `det(A,B,C) · det(A',B',C') ≠ 0`, if P,Q,R are collinear then AA', BB', CC' are concurrent. The IntegralDomain condition allows cancelling the non-degenerate factor.\n\n**Biconditional** (`desargues_iff_K`): Over an IntegralDomain, the two conditions are equivalent under non-degeneracy.",
-    "mathContext": "The non-degeneracy condition is necessary: over ℤ/6ℤ (a ring with zero divisors), Desargues's converse can fail because $2 \\cdot 3 = 0$ allows the factored identity to hold without the perspectivity determinant vanishing.",
+    "content": "**Forward**: Over any CommRing K, if two triangles are perspective from a point then they are perspective from a line. The proof is immediate: the master identity gives `det(P,Q,R) = det(AA',BB',CC') \u00b7 det(A,B,C) \u00b7 det(A',B',C')`, so `det(AA',BB',CC') = 0` implies `det(P,Q,R) = 0`.\n\n**Converse**: Over any IntegralDomain K, under the non-degeneracy condition `det(A,B,C) \u00b7 det(A',B',C') \u2260 0`, if P,Q,R are collinear then AA', BB', CC' are concurrent. The IntegralDomain condition allows cancelling the non-degenerate factor.\n\n**Biconditional** (`desargues_iff_K`): Over an IntegralDomain, the two conditions are equivalent under non-degeneracy.",
+    "mathContext": "The non-degeneracy condition is necessary: over \u2124/6\u2124 (a ring with zero divisors), Desargues's converse can fail because $2 \\cdot 3 = 0$ allows the factored identity to hold without the perspectivity determinant vanishing.",
     "significance": "key",
     "relatedConcepts": [
       "perspective from a point",
@@ -187,7 +187,7 @@
     "prerequisites": [
       "desargues_identity_K",
       "IsDomain",
-      "mul_right_cancel₀"
+      "mul_right_cancel\u2080"
     ]
   },
   {
@@ -195,11 +195,11 @@
     "proofId": "desargues-theorem-oq-01",
     "range": {
       "startLine": 261,
-      "endLine": 286
+      "endLine": 285
     },
     "type": "technique",
-    "title": "Corollaries: ℚ, ℤ, 𝔽_p, and Polynomial Rings",
-    "content": "Specializations follow immediately by type instantiation:\n\n- **Over ℚ** (a field): both forward and converse hold\n- **Over ℤ** (an integral domain but not a field): both directions hold under non-degeneracy\n- **Over 𝔽_p = ZMod p** (prime p, a finite field): full Desargues biconditional\n- **Over K[x]** (polynomial ring): forward direction holds for any CommRing K\n\nAll corollaries have zero-line proofs — they follow by type instantiation from the general theorem. This demonstrates the power of working over an abstract CommRing rather than a specific field.",
+    "title": "Corollaries: \u211a, \u2124, \ud835\udd3d_p, and Polynomial Rings",
+    "content": "Specializations follow immediately by type instantiation:\n\n- **Over \u211a** (a field): both forward and converse hold\n- **Over \u2124** (an integral domain but not a field): both directions hold under non-degeneracy\n- **Over \ud835\udd3d_p = ZMod p** (prime p, a finite field): full Desargues biconditional\n- **Over K[x]** (polynomial ring): forward direction holds for any CommRing K\n\nAll corollaries have zero-line proofs \u2014 they follow by type instantiation from the general theorem. This demonstrates the power of working over an abstract CommRing rather than a specific field.",
     "mathContext": "The classical theorem that projective planes are Desarguesian iff they are coordinatizable by a division ring shows this is the 'right' level of generality. Our formalization works even over non-division rings, showing the forward direction is purely polynomial.",
     "significance": "supporting",
     "relatedConcepts": [

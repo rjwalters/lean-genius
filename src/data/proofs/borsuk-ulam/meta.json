@@ -35,7 +35,7 @@
       "No-odd-map lemma formalization"
     ],
     "dateAdded": "2025-12-22",
-    "lineCount": 266,
+    "lineCount": 265,
     "axiomCount": 1,
     "prerequisites": [
       "Algebraic topology: fundamental groups and covering spaces",
@@ -45,7 +45,7 @@
       "Basic topology: compactness and connectedness"
     ],
     "assumptions": [
-      "no_continuous_odd_nonzero_on_sphere: For n ≥ 1, there is no continuous odd function h: ℝ^(n+1) → ℝ^n that is nonzero on the n-sphere. This requires covering space theory and fundamental groups beyond Mathlib's current algebraic topology coverage."
+      "no_continuous_odd_nonzero_on_sphere: For n \u2265 1, there is no continuous odd function h: \u211d^(n+1) \u2192 \u211d^n that is nonzero on the n-sphere. This requires covering space theory and fundamental groups beyond Mathlib's current algebraic topology coverage."
     ],
     "relatedProblems": [
       {
@@ -59,7 +59,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanisław Ulam and proved by Karol Borsuk in 1933, published in *Fundamenta Mathematicae* — the journal founded in 1920 by the Lwów-Warsaw school of mathematicians (Kuratowski, Sierpiński, Mazurkiewicz) that became the world center of point-set and algebraic topology. The theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth that have exactly the same temperature AND atmospheric pressure.\n\nBorsuk's original proof used the degree theory of continuous maps: an antipodal-preserving map $S^n \\to S^n$ has odd degree, and the nonexistence of an odd map $S^n \\to S^{n-1}$ follows from comparing cohomology rings. Modern proofs use three main approaches: (1) covering spaces via the double cover $S^n \\to \\mathbb{RP}^n$ and $\\pi_1(\\mathbb{RP}^n) \\cong \\mathbb{Z}/2\\mathbb{Z}$; (2) $\\mathbb{Z}/2$-homology and the transfer; (3) the Tucker lemma (a combinatorial analog, proved by Ky Fan 1952).\n\nWhat makes Borsuk-Ulam remarkable is its extraordinary range of applications. In 1978, László Lovász used it to prove Kneser's conjecture — that the chromatic number of the Kneser graph $KG(n,k)$ is $n - 2k + 2$ — launching the field of **topological combinatorics**. It implies the ham sandwich theorem (any $n$ measurable sets in $\\mathbb{R}^n$ can be simultaneously bisected by a hyperplane) and has applications to fair division (envy-free cake cutting), discrete geometry, and even economics (equilibrium existence). Jiří Matoušek's *Using the Borsuk-Ulam Theorem* (2003) surveys dozens of applications across mathematics.",
+    "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanis\u0142aw Ulam and proved by Karol Borsuk in 1933, published in *Fundamenta Mathematicae* \u2014 the journal founded in 1920 by the Lw\u00f3w-Warsaw school of mathematicians (Kuratowski, Sierpi\u0144ski, Mazurkiewicz) that became the world center of point-set and algebraic topology. The theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth that have exactly the same temperature AND atmospheric pressure.\n\nBorsuk's original proof used the degree theory of continuous maps: an antipodal-preserving map $S^n \\to S^n$ has odd degree, and the nonexistence of an odd map $S^n \\to S^{n-1}$ follows from comparing cohomology rings. Modern proofs use three main approaches: (1) covering spaces via the double cover $S^n \\to \\mathbb{RP}^n$ and $\\pi_1(\\mathbb{RP}^n) \\cong \\mathbb{Z}/2\\mathbb{Z}$; (2) $\\mathbb{Z}/2$-homology and the transfer; (3) the Tucker lemma (a combinatorial analog, proved by Ky Fan 1952).\n\nWhat makes Borsuk-Ulam remarkable is its extraordinary range of applications. In 1978, L\u00e1szl\u00f3 Lov\u00e1sz used it to prove Kneser's conjecture \u2014 that the chromatic number of the Kneser graph $KG(n,k)$ is $n - 2k + 2$ \u2014 launching the field of **topological combinatorics**. It implies the ham sandwich theorem (any $n$ measurable sets in $\\mathbb{R}^n$ can be simultaneously bisected by a hyperplane) and has applications to fair division (envy-free cake cutting), discrete geometry, and even economics (equilibrium existence). Ji\u0159\u00ed Matou\u0161ek's *Using the Borsuk-Ulam Theorem* (2003) surveys dozens of applications across mathematics.",
     "problemStatement": "Borsuk-Ulam Theorem: For any continuous function $f: S^n \\to \\mathbb{R}^n$, there exists a point $x \\in S^n$ such that $f(x) = f(-x)$.\n\nEquivalently: there is no continuous antipode-preserving (odd) map from $S^n$ to $S^{n-1}$.\n\nThe intuitive statement: on any sphere, for any continuous measurement of n quantities, some pair of antipodal points gives identical readings.",
     "text": "The Lean formalization models the n-sphere as Metric.sphere 0 1 in EuclideanSpace and constructs the gadget function g(x) = f(x) - f(-x), proving it is continuous and odd. The proof proceeds by contradiction: assuming no antipodal pair exists, g is nonzero on the sphere, which would yield a continuous odd map from S^n to S^(n-1). The key topological obstruction -- that no such map can exist -- is axiomatized as no_continuous_odd_nonzero_on_sphere, since the covering space argument via fundamental groups of real projective spaces lies beyond current Mathlib. The formalization includes 9 theorems and 6 definitions across 266 lines, instantiating the general result for the n=1 (IVT-equivalent) and n=2 (weather theorem) cases.",
     "proofStrategy": "The proof proceeds by contradiction using covering space theory:\n\n1. Suppose $f: S^n \\to \\mathbb{R}^n$ has no antipodal pair, i.e., $f(x) \\neq f(-x)$ for all $x$.\n\n2. Define the 'gadget function' $g(x) = f(x) - f(-x)$. Since $f(x) \\neq f(-x)$, we have $g(x) \\neq 0$ for all $x$.\n\n3. Observe that $g(-x) = -g(x)$ (g is an odd function).\n\n4. Normalize: $h(x) = g(x)/|g(x)|$ gives a continuous map $h: S^n \\to S^{n-1}$ with $h(-x) = -h(x)$.\n\n5. The key lemma: No continuous antipode-preserving map $S^n \\to S^{n-1}$ can exist.\n\n6. This is proved using covering spaces: such a map would induce a map $\\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$ on projective spaces, leading to contradictions in fundamental groups.\n\n7. Contradiction! Therefore $f$ must have an antipodal pair.",
@@ -69,7 +69,7 @@
       "The fundamental group $\\pi_1(\\mathbb{R}P^n) \\cong \\mathbb{Z}/2\\mathbb{Z}$ detects the topological impossibility: an odd map $S^n \\to S^{n-1}$ would force an injective-yet-trivial homomorphism $\\mathbb{Z}/2\\mathbb{Z} \\to \\mathbb{Z}/2\\mathbb{Z}$, a contradiction.",
       "The $n = 1$ case reduces to the Intermediate Value Theorem: $g(\\theta) = f(\\theta) - f(\\theta + \\pi)$ satisfies $g(0) + g(\\pi) = 0$, so $g$ has a zero by IVT. Borsuk-Ulam is the higher-dimensional generalization of IVT.",
       "The proof is inherently non-constructive (proof by contradiction via `by_contra`): we know antipodal pairs exist but cannot compute where they are. Finding approximate antipodal pairs is a problem in computational topology.",
-      "Lovász's 1978 proof of Kneser's conjecture applied Borsuk-Ulam to graph coloring, founding the field of topological combinatorics and demonstrating that purely topological tools can solve discrete mathematical problems."
+      "Lov\u00e1sz's 1978 proof of Kneser's conjecture applied Borsuk-Ulam to graph coloring, founding the field of topological combinatorics and demonstrating that purely topological tools can solve discrete mathematical problems."
     ],
     "prerequisites": [
       "Algebraic topology: fundamental groups and covering spaces",
@@ -93,7 +93,7 @@
       "title": "Part 1: The n-Sphere and Antipodal Map",
       "startLine": 52,
       "endLine": 68,
-      "summary": "Defines the n-sphere as Metric.sphere 0 1 in R^(n+1), the antipodal map x ↦ -x, and proves that the antipode of a sphere point remains on the sphere.",
+      "summary": "Defines the n-sphere as Metric.sphere 0 1 in R^(n+1), the antipodal map x \u21a6 -x, and proves that the antipode of a sphere point remains on the sphere.",
       "mathContext": "$S^n := \\{x \\in \\mathbb{R}^{n+1} : \\|x\\| = 1\\}$. Antipodal map: $A(x) = -x$. Since $\\|-x\\| = \\|x\\| = 1$, $A$ preserves the sphere. $A$ is an involution ($A^2 = \\mathrm{id}$) with no fixed points."
     },
     {
@@ -101,7 +101,7 @@
       "title": "Part 2: Continuous Functions and Antipodal Pairs",
       "startLine": 69,
       "endLine": 81,
-      "summary": "Defines the SphereFun structure (a continuous function S^n → R^n) and the HasAntipodalPair predicate: there exists x ∈ S^n with f(x) = f(-x).",
+      "summary": "Defines the SphereFun structure (a continuous function S^n \u2192 R^n) and the HasAntipodalPair predicate: there exists x \u2208 S^n with f(x) = f(-x).",
       "mathContext": "`SphereFun n` bundles $f: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ with continuity. `HasAntipodalPair` asserts $\\exists x \\in S^n,\\; f(x) = f(-x)$."
     },
     {
@@ -117,7 +117,7 @@
       "title": "Part 4: No Odd Map Theorem",
       "startLine": 107,
       "endLine": 157,
-      "summary": "Defines the normalization function, proves it preserves oddness, then axiomatizes the key topological result: no continuous odd function S^n → R^n can be nonzero everywhere on S^n (for n ≥ 1). This is the covering space theory result that requires algebraic topology beyond current Mathlib.",
+      "summary": "Defines the normalization function, proves it preserves oddness, then axiomatizes the key topological result: no continuous odd function S^n \u2192 R^n can be nonzero everywhere on S^n (for n \u2265 1). This is the covering space theory result that requires algebraic topology beyond current Mathlib.",
       "mathContext": "The axiom `no_continuous_odd_nonzero_on_sphere` states: for $n \\geq 1$, $\\nexists h: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ continuous, odd ($h(-x) = -h(x)$), and nonzero on $S^n$. Classical proof: an odd map $S^n \\to S^{n-1}$ induces $\\bar{h}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$; the induced map $\\bar{h}_*: \\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$ is both injective (covering theory) and trivial (simple connectivity of $S^n$), a contradiction."
     },
     {
@@ -125,8 +125,8 @@
       "title": "Part 5: The Borsuk-Ulam Theorem",
       "startLine": 158,
       "endLine": 214,
-      "summary": "Proves the gadget function is continuous, that it's nonzero when no antipodal pair exists, then proves Borsuk-Ulam by contradiction: no antipodal pair → gadget is a continuous odd nonzero function on S^n → contradicts the no-odd-map axiom.",
-      "mathContext": "Proof: assume $\\neg \\text{HasAntipodalPair}(f)$. Then $g(x) = f(x) - f(-x) \\neq 0$ on $S^n$. But $g$ is continuous (as $f$ is), odd ($g(-x) = -g(x)$), and nonzero on $S^n$ — contradicting `no_continuous_odd_nonzero_on_sphere`. Therefore $\\exists x \\in S^n,\\; f(x) = f(-x)$."
+      "summary": "Proves the gadget function is continuous, that it's nonzero when no antipodal pair exists, then proves Borsuk-Ulam by contradiction: no antipodal pair \u2192 gadget is a continuous odd nonzero function on S^n \u2192 contradicts the no-odd-map axiom.",
+      "mathContext": "Proof: assume $\\neg \\text{HasAntipodalPair}(f)$. Then $g(x) = f(x) - f(-x) \\neq 0$ on $S^n$. But $g$ is continuous (as $f$ is), odd ($g(-x) = -g(x)$), and nonzero on $S^n$ \u2014 contradicting `no_continuous_odd_nonzero_on_sphere`. Therefore $\\exists x \\in S^n,\\; f(x) = f(-x)$."
     },
     {
       "id": "special-cases",
@@ -140,28 +140,28 @@
       "id": "applications",
       "title": "Part 7: Applications",
       "startLine": 238,
-      "endLine": 266,
-      "summary": "Comments describing three major applications: Ham Sandwich Theorem (n sets in R^n bisected by one hyperplane), Necklace Splitting (fair division with at most k cuts), and Kneser's Conjecture (graph chromatic number via Lovász's 1978 topological proof). Exports main theorems via #check.",
+      "endLine": 265,
+      "summary": "Comments describing three major applications: Ham Sandwich Theorem (n sets in R^n bisected by one hyperplane), Necklace Splitting (fair division with at most k cuts), and Kneser's Conjecture (graph chromatic number via Lov\u00e1sz's 1978 topological proof). Exports main theorems via #check.",
       "mathContext": "Ham Sandwich: $\\exists$ hyperplane bisecting $n$ sets in $\\mathbb{R}^n$. Kneser: $\\chi(K(n,k)) = n - 2k + 2$. Both follow from Borsuk-Ulam applied to suitably constructed continuous functions on spheres."
     }
   ],
   "references": [
     {
       "authors": "Borsuk, Karol",
-      "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
+      "title": "Drei S\u00e4tze \u00fcber die n-dimensionale euklidische Sph\u00e4re",
       "year": "1933",
       "venue": "Fundamenta Mathematicae 20, pp. 177-190",
       "note": "Original proof of the Borsuk-Ulam theorem using covering space theory and fundamental groups"
     },
     {
-      "authors": "Lovász, László",
+      "authors": "Lov\u00e1sz, L\u00e1szl\u00f3",
       "title": "Kneser's conjecture, chromatic number, and homotopy",
       "year": "1978",
       "venue": "Journal of Combinatorial Theory, Series A, 25, pp. 319-324",
       "note": "Used Borsuk-Ulam to prove Kneser's conjecture, founding the field of topological combinatorics"
     },
     {
-      "authors": "Matoušek, Jiří",
+      "authors": "Matou\u0161ek, Ji\u0159\u00ed",
       "title": "Using the Borsuk-Ulam Theorem",
       "year": "2003",
       "venue": "Springer Universitext",
@@ -171,15 +171,15 @@
       "authors": "Steinlein, Heinrich",
       "title": "Borsuk's antipodal theorem and its generalizations and applications: a survey",
       "year": "1985",
-      "venue": "Topological Methods in Nonlinear Analysis, Séminaire de Mathématiques Supérieures 95, 166–235",
+      "venue": "Topological Methods in Nonlinear Analysis, S\u00e9minaire de Math\u00e9matiques Sup\u00e9rieures 95, 166\u2013235",
       "note": "Comprehensive survey of generalizations: Borsuk-Ulam for maps between spheres of different dimensions, equivariant settings, and non-antipodal symmetries"
     },
     {
       "authors": "Munkres, James R.",
       "title": "Topology",
       "year": "2000",
-      "venue": "Prentice Hall, 2nd edition, §56–57",
-      "note": "Standard textbook proof via the fundamental group: the covering space argument that no continuous map f: S^n → S^{n-1} can be antipode-preserving"
+      "venue": "Prentice Hall, 2nd edition, \u00a756\u201357",
+      "note": "Standard textbook proof via the fundamental group: the covering space argument that no continuous map f: S^n \u2192 S^{n-1} can be antipode-preserving"
     }
   ],
   "crossReferences": [
@@ -191,27 +191,27 @@
     {
       "targetId": "intermediate-value-theorem",
       "relationship": "related",
-      "description": "The n=1 case of Borsuk-Ulam (every continuous f: S¹ → ℝ has f(x) = f(-x)) is equivalent to the intermediate value theorem applied to g(θ) = f(θ) - f(θ+π) on the circle — Borsuk-Ulam is the higher-dimensional generalization of IVT"
+      "description": "The n=1 case of Borsuk-Ulam (every continuous f: S\u00b9 \u2192 \u211d has f(x) = f(-x)) is equivalent to the intermediate value theorem applied to g(\u03b8) = f(\u03b8) - f(\u03b8+\u03c0) on the circle \u2014 Borsuk-Ulam is the higher-dimensional generalization of IVT"
     },
     {
       "targetId": "prob-method-lovasz-local",
       "relationship": "related",
-      "description": "Lovász's 1978 proof of Kneser's conjecture used Borsuk-Ulam as the key topological ingredient, connecting the chromatic number of Kneser graphs to sphere connectivity. This launched the field of topological combinatorics that bridges Lovász's probabilistic/algebraic methods with topological fixed-point theory."
+      "description": "Lov\u00e1sz's 1978 proof of Kneser's conjecture used Borsuk-Ulam as the key topological ingredient, connecting the chromatic number of Kneser graphs to sphere connectivity. This launched the field of topological combinatorics that bridges Lov\u00e1sz's probabilistic/algebraic methods with topological fixed-point theory."
     },
     {
       "targetId": "schauder-fixed-point",
       "relationship": "related",
-      "description": "Schauder's theorem generalizes Brouwer's fixed point theorem to infinite dimensions. Since Borsuk-Ulam implies Brouwer, the chain Borsuk-Ulam → Brouwer → Schauder traces the progression from finite-dimensional topology to functional analysis."
+      "description": "Schauder's theorem generalizes Brouwer's fixed point theorem to infinite dimensions. Since Borsuk-Ulam implies Brouwer, the chain Borsuk-Ulam \u2192 Brouwer \u2192 Schauder traces the progression from finite-dimensional topology to functional analysis."
     },
     {
       "targetId": "borsuk-ulam-oq-02",
       "relationship": "extended-by",
-      "description": "Explores equivariant extensions of Borsuk-Ulam to group actions beyond the $\\mathbb{Z}/2\\mathbb{Z}$ antipodal action — answering the open question about which group actions preserve the Borsuk-Ulam property"
+      "description": "Explores equivariant extensions of Borsuk-Ulam to group actions beyond the $\\mathbb{Z}/2\\mathbb{Z}$ antipodal action \u2014 answering the open question about which group actions preserve the Borsuk-Ulam property"
     },
     {
       "targetId": "borsuk-ulam-oq-03",
       "relationship": "extended-by",
-      "description": "Develops constructive versions of the Borsuk-Ulam theorem and equivalent formulations (Tucker's lemma, Lusternik-Schnirelman) — addressing the open question about intuitionistic proofs"
+      "description": "Develops constructive versions of the Borsuk-Ulam theorem and equivalent formulations (Tucker's lemma, Lusternik-Schnirelman) \u2014 addressing the open question about intuitionistic proofs"
     }
   ],
   "conclusion": {
@@ -246,7 +246,7 @@
       "Metric"
     ],
     "namespace": "BorsukUlam",
-    "lineCount": 266,
+    "lineCount": 265,
     "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 6

@@ -8,13 +8,13 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #426: Unique Subgraphs**\n\nH is a **unique subgraph** of G if there's exactly one way to embed H in G.\n\n**Question:** Can a graph have ≫ 2^(n choose 2)/n! unique subgraphs?\n\n**Answer:** NO (Bradač-Christoph 2024)\n\n**Historical progress:**\n- Entringer-Erdős (1972): First constructions\n- Brouwer (1975): 2^{(n choose 2) - O(n)}/n!\n- Bradač-Christoph (2024): Impossibility proof",
-    "mathContext": "The bound 2^(n choose 2)/n! is the number of non-isomorphic graphs (Pólya), so it's trivially best possible.",
+    "content": "**Erd\u0151s Problem #426: Unique Subgraphs**\n\nH is a **unique subgraph** of G if there's exactly one way to embed H in G.\n\n**Question:** Can a graph have \u226b 2^(n choose 2)/n! unique subgraphs?\n\n**Answer:** NO (Brada\u010d-Christoph 2024)\n\n**Historical progress:**\n- Entringer-Erd\u0151s (1972): First constructions\n- Brouwer (1975): 2^{(n choose 2) - O(n)}/n!\n- Brada\u010d-Christoph (2024): Impossibility proof",
+    "mathContext": "The bound 2^(n choose 2)/n! is the number of non-isomorphic graphs (P\u00f3lya), so it's trivially best possible.",
     "significance": "key",
     "relatedConcepts": [
       "Subgraph counting",
       "Graph enumeration",
-      "Pólya enumeration"
+      "P\u00f3lya enumeration"
     ]
   },
   {
@@ -26,7 +26,7 @@
     },
     "type": "definition",
     "title": "Subgraph Copy",
-    "content": "**SubgraphCopy G H f:**\n\nf : W → V is a subgraph copy of H in G if:\n1. f is injective\n2. f preserves edges: H.Adj x y → G.Adj (f x) (f y)\n\nThis defines how H 'appears' in G.",
+    "content": "**SubgraphCopy G H f:**\n\nf : W \u2192 V is a subgraph copy of H in G if:\n1. f is injective\n2. f preserves edges: H.Adj x y \u2192 G.Adj (f x) (f y)\n\nThis defines how H 'appears' in G.",
     "significance": "key",
     "relatedConcepts": [
       "Graph embedding",
@@ -77,11 +77,11 @@
     },
     "type": "definition",
     "title": "Non-Isomorphic Graphs Count",
-    "content": "**nonIsomorphicGraphs n:**\n\n~ 2^(n choose 2) / n! (Pólya's theorem)\n\nThis is the total number of 'different' graphs on n vertices.",
+    "content": "**nonIsomorphicGraphs n:**\n\n~ 2^(n choose 2) / n! (P\u00f3lya's theorem)\n\nThis is the total number of 'different' graphs on n vertices.",
     "mathContext": "The division by n! accounts for vertex labelings; 2^(n choose 2) counts labeled graphs.",
     "significance": "key",
     "relatedConcepts": [
-      "Pólya enumeration",
+      "P\u00f3lya enumeration",
       "Graph counting"
     ]
   },
@@ -94,7 +94,7 @@
     },
     "type": "definition",
     "title": "Maximum Unique Subgraphs",
-    "content": "**maxUniqueSubgraphs n:**\n\nf(n) = maximum number of unique subgraphs achievable by any graph on n vertices.\n\nThe question asks: Is f(n) = Ω(nonIsomorphicGraphs n)?",
+    "content": "**maxUniqueSubgraphs n:**\n\nf(n) = maximum number of unique subgraphs achievable by any graph on n vertices.\n\nThe question asks: Is f(n) = \u03a9(nonIsomorphicGraphs n)?",
     "significance": "key",
     "relatedConcepts": [
       "Extremal functions",
@@ -110,14 +110,14 @@
       "endLine": 121
     },
     "type": "concept",
-    "title": "Entringer-Erdős (1972)",
+    "title": "Entringer-Erd\u0151s (1972)",
     "content": "**entringer_erdos_1972:**\n\nFirst construction achieving 2^{(n choose 2) - O(n^{3/2+o(1)})} unique subgraphs.\n\nThis was the starting point for the problem.",
     "significance": "key",
     "relatedConcepts": [
       "Original construction",
       "Historical"
     ],
-    "mathContext": "See annotation content for formal details of entringer-erdős (1972)"
+    "mathContext": "See annotation content for formal details of entringer-erd\u0151s (1972)"
   },
   {
     "id": "ann-e426-brouwer",
@@ -129,7 +129,7 @@
     "type": "concept",
     "title": "Brouwer (1975)",
     "content": "**brouwer_1975:**\n\nImproved construction achieving ~ 2^{(n choose 2) - O(n)} / n! unique subgraphs.\n\nThis is a factor of 2^{O(n)} below the naive bound but was believed to be essentially optimal.",
-    "mathContext": "Erdős offered $25 to prove Brouwer's construction was optimal.",
+    "mathContext": "Erd\u0151s offered $25 to prove Brouwer's construction was optimal.",
     "significance": "key",
     "relatedConcepts": [
       "Improved bound",
@@ -145,7 +145,7 @@
     },
     "type": "definition",
     "title": "Original Question",
-    "content": "**OriginalQuestion:**\n\n∃ c > 0 such that f(n) ≥ c · 2^(n choose 2)/n! for all large n.\n\nEquivalently: Can we achieve a constant fraction of all non-isomorphic graphs as unique subgraphs?",
+    "content": "**OriginalQuestion:**\n\n\u2203 c > 0 such that f(n) \u2265 c \u00b7 2^(n choose 2)/n! for all large n.\n\nEquivalently: Can we achieve a constant fraction of all non-isomorphic graphs as unique subgraphs?",
     "significance": "key",
     "relatedConcepts": [
       "Main conjecture",
@@ -162,11 +162,11 @@
     },
     "type": "concept",
     "title": "Prize Structure",
-    "content": "**The Erdős Prizes:**\n\n- $100 for a construction achieving ≫ 2^(n choose 2)/n! (Spencer's belief)\n- $25 for proving no such construction exists (Erdős's belief)\n\nErdős believed Brouwer was optimal; Spencer disagreed.",
-    "mathContext": "This illustrates how Erdős used prizes to motivate research on open problems.",
+    "content": "**The Erd\u0151s Prizes:**\n\n- $100 for a construction achieving \u226b 2^(n choose 2)/n! (Spencer's belief)\n- $25 for proving no such construction exists (Erd\u0151s's belief)\n\nErd\u0151s believed Brouwer was optimal; Spencer disagreed.",
+    "mathContext": "This illustrates how Erd\u0151s used prizes to motivate research on open problems.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Erdős prizes",
+      "Erd\u0151s prizes",
       "Problem history"
     ]
   },
@@ -178,8 +178,8 @@
       "endLine": 172
     },
     "type": "concept",
-    "title": "Bradač-Christoph (2024)",
-    "content": "**bradac_christoph_2024:**\n\nThe answer is NO: f(n) = o(2^(n choose 2)/n!)\n\nFor any ε > 0, eventually f(n) < ε · nonIsomorphicGraphs(n).\n\nThis resolves Erdős Problem #426 negatively.",
+    "title": "Brada\u010d-Christoph (2024)",
+    "content": "**bradac_christoph_2024:**\n\nThe answer is NO: f(n) = o(2^(n choose 2)/n!)\n\nFor any \u03b5 > 0, eventually f(n) < \u03b5 \u00b7 nonIsomorphicGraphs(n).\n\nThis resolves Erd\u0151s Problem #426 negatively.",
     "mathContext": "From arXiv:2410.16233 'Unique subgraphs are rare'.",
     "significance": "key",
     "relatedConcepts": [
@@ -213,7 +213,7 @@
     },
     "type": "technique",
     "title": "Problem Resolved",
-    "content": "**original_question_false, erdos_426_resolved:**\n\n¬OriginalQuestion\n\nThe answer to Erdős's question is NO. Unique subgraphs are rare - they cannot approach the total count of non-isomorphic graphs.",
+    "content": "**original_question_false, erdos_426_resolved:**\n\n\u00acOriginalQuestion\n\nThe answer to Erd\u0151s's question is NO. Unique subgraphs are rare - they cannot approach the total count of non-isomorphic graphs.",
     "significance": "key",
     "relatedConcepts": [
       "Resolution",
@@ -247,7 +247,7 @@
     },
     "type": "definition",
     "title": "Automorphisms and Asymmetry",
-    "content": "**HasAutomorphism, IsAsymmetric:**\n\nAn automorphism is a bijection σ : V → V preserving adjacency.\n\nA graph is asymmetric if its only automorphism is the identity.\n\n**Key fact:** Almost all graphs are asymmetric (Erdős-Rényi), yet unique subgraphs are still rare - the obstacle is deeper than just symmetry.",
+    "content": "**HasAutomorphism, IsAsymmetric:**\n\nAn automorphism is a bijection \u03c3 : V \u2192 V preserving adjacency.\n\nA graph is asymmetric if its only automorphism is the identity.\n\n**Key fact:** Almost all graphs are asymmetric (Erd\u0151s-R\u00e9nyi), yet unique subgraphs are still rare - the obstacle is deeper than just symmetry.",
     "significance": "key",
     "relatedConcepts": [
       "Graph automorphisms",
@@ -260,11 +260,11 @@
     "proofId": "erdos-426",
     "range": {
       "startLine": 255,
-      "endLine": 281
+      "endLine": 270
     },
     "type": "technique",
     "title": "Problem Summary",
-    "content": "**erdos_426_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Can f(n) = Ω(2^(n choose 2)/n!)? |\n| Answer | NO (Bradač-Christoph 2024) |\n| Upper bound | f(n) = o(2^(n choose 2)/n!) |\n| Best construction | 2^{(n choose 2) - O(n)}/n! (Brouwer) |\n| Prize | $25 for impossibility proof |",
+    "content": "**erdos_426_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Can f(n) = \u03a9(2^(n choose 2)/n!)? |\n| Answer | NO (Brada\u010d-Christoph 2024) |\n| Upper bound | f(n) = o(2^(n choose 2)/n!) |\n| Best construction | 2^{(n choose 2) - O(n)}/n! (Brouwer) |\n| Prize | $25 for impossibility proof |",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

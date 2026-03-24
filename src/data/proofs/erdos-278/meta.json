@@ -1,10 +1,10 @@
 {
   "id": "erdos-278",
-  "title": "Erdős Problem #278: Maximum Covering Density of Congruence Systems",
+  "title": "Erd\u0151s Problem #278: Maximum Covering Density of Congruence Systems",
   "slug": "erdos-278",
-  "description": "Given moduli {n₁,...,nᵣ}, choose residues to maximize the density of covered integers. Simpson (1986) proved minimum is achieved with equal residues. Maximum density remains OPEN.",
+  "description": "Given moduli {n\u2081,...,n\u1d63}, choose residues to maximize the density of covered integers. Simpson (1986) proved minimum is achieved with equal residues. Maximum density remains OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/278",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos278Problem.lean",
@@ -25,19 +25,19 @@
       "erdos-273"
     ],
     "axiomCount": 2,
-    "assumptions": "2 axiom declarations: simpson_theorem (minimum with equal residues — deep 1986 result), max_density_coprime_case (CRT coprime maximum). Previously axiomatized equal_residues_minimize, single_modulus_density, and erdos_278_density_le_one are now fully proved.",
-    "lineCount": 334
+    "assumptions": "2 axiom declarations: simpson_theorem (minimum with equal residues \u2014 deep 1986 result), max_density_coprime_case (CRT coprime maximum). Previously axiomatized equal_residues_minimize, single_modulus_density, and erdos_278_density_le_one are now fully proved.",
+    "lineCount": 369
   },
   "overview": {
-    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.28), as part of their systematic study of covering systems — a topic Erdős championed from his groundbreaking 1950 paper showing that covering systems with distinct moduli greater than 1 exist. The problem asks: given fixed moduli, how should one choose residues to optimize coverage? R.J. Simpson resolved the minimum question in 1986 (Discrete Mathematics 59), proving by an elegant averaging argument that equal residues minimize coverage density. The maximum question remains open and connects to the broader structure theory of covering systems, which saw a major breakthrough when Bob Hough (2015, Annals of Mathematics) proved the minimum modulus conjecture — showing that any covering system with distinct moduli must include a modulus at most $10^{16}$. The interplay between coprime and non-coprime moduli connects to the Chinese Remainder Theorem and to sieve-theoretic methods in analytic number theory.",
+    "historicalContext": "Paul Erd\u0151s and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.28), as part of their systematic study of covering systems \u2014 a topic Erd\u0151s championed from his groundbreaking 1950 paper showing that covering systems with distinct moduli greater than 1 exist. The problem asks: given fixed moduli, how should one choose residues to optimize coverage? R.J. Simpson resolved the minimum question in 1986 (Discrete Mathematics 59), proving by an elegant averaging argument that equal residues minimize coverage density. The maximum question remains open and connects to the broader structure theory of covering systems, which saw a major breakthrough when Bob Hough (2015, Annals of Mathematics) proved the minimum modulus conjecture \u2014 showing that any covering system with distinct moduli must include a modulus at most $10^{16}$. The interplay between coprime and non-coprime moduli connects to the Chinese Remainder Theorem and to sieve-theoretic methods in analytic number theory.",
     "problemStatement": "Given moduli $A = \\{n_1, \\ldots, n_r\\}$ with $n_i > 0$, what is $\\delta_{\\max}(A) = \\sup_{a_1, \\ldots, a_r} |\\bigcup_{i=1}^r (a_i + n_i\\mathbb{Z}) \\cap [0, L)| / L$ where $L = \\mathrm{lcm}(n_1, \\ldots, n_r)$?",
-    "text": "Given moduli {n₁,...,nᵣ}, choose residues to maximize the density of covered integers. Simpson (1986) proved minimum is achieved with equal residues. Maximum density remains OPEN.",
+    "text": "Given moduli {n\u2081,...,n\u1d63}, choose residues to maximize the density of covered integers. Simpson (1986) proved minimum is achieved with equal residues. Maximum density remains OPEN.",
     "proofStrategy": "We formalize congruence systems as structures with moduli and residue functions, define coverage density over one LCM period, prove the basic bounds $0 \\leq \\delta \\leq 1$, axiomatize Simpson's theorem (minimum with equal residues), the coprime maximum (via CRT), and state the open question for general moduli.",
     "keyInsights": [
-      "**Simpson's averaging argument**: The minimum density is achieved by equal residues because $\\mathbb{E}_t[\\delta(\\{a_i + t \\pmod{n_i}\\})] = \\delta(\\{0 \\pmod{n_i}\\})$ — averaging over uniform shifts gives the equal-residue density, so the minimum is at most this",
-      "**CRT solves the coprime case**: When moduli are pairwise coprime, congruences are independent (by the Chinese Remainder Theorem), so residue choices cannot affect overlap structure — the maximum density is $1 - \\prod(1 - 1/n_i)$",
+      "**Simpson's averaging argument**: The minimum density is achieved by equal residues because $\\mathbb{E}_t[\\delta(\\{a_i + t \\pmod{n_i}\\})] = \\delta(\\{0 \\pmod{n_i}\\})$ \u2014 averaging over uniform shifts gives the equal-residue density, so the minimum is at most this",
+      "**CRT solves the coprime case**: When moduli are pairwise coprime, congruences are independent (by the Chinese Remainder Theorem), so residue choices cannot affect overlap structure \u2014 the maximum density is $1 - \\prod(1 - 1/n_i)$",
       "**Non-coprimality creates correlations**: When $\\gcd(n_i, n_j) > 1$, the events $m \\equiv a_i \\pmod{n_i}$ and $m \\equiv a_j \\pmod{n_j}$ become dependent, and clever residue choices can control overlap",
-      "**Periodicity reduces to finite computation**: Coverage density is periodic with period $L = \\mathrm{lcm}(n_1, \\ldots, n_r)$, so the problem reduces to optimizing over $\\prod n_i$ residue combinations — but this is exponentially large",
+      "**Periodicity reduces to finite computation**: Coverage density is periodic with period $L = \\mathrm{lcm}(n_1, \\ldots, n_r)$, so the problem reduces to optimizing over $\\prod n_i$ residue combinations \u2014 but this is exponentially large",
       "**Inclusion-exclusion gives the formula**: The equal-residue density is $\\sum_{\\emptyset \\neq S} (-1)^{|S|+1} / \\mathrm{lcm}_{i \\in S}(n_i)$, generalizing $\\sum 1/n_i$ (first order) with correction terms for overlaps"
     ],
     "prerequisites": [
@@ -114,8 +114,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full structure of Erdős Problem #278: congruence system coverage density, the optimization over residue choices, Simpson's theorem resolving the minimum (1986), the coprime case resolving the maximum via CRT, and the open question for non-coprime moduli. The three proved theorems (density bounds) demonstrate that the formalization is computationally meaningful beyond just axiomatized statements.",
-    "implications": "**Theoretical Significance**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors.\n\nThis connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erdős program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
+    "summary": "This formalization captures the full structure of Erd\u0151s Problem #278: congruence system coverage density, the optimization over residue choices, Simpson's theorem resolving the minimum (1986), the coprime case resolving the maximum via CRT, and the open question for non-coprime moduli. The three proved theorems (density bounds) demonstrate that the formalization is computationally meaningful beyond just axiomatized statements.",
+    "implications": "**Theoretical Significance**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors.\n\nThis connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erd\u0151s program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
     "openQuestions": [
       "What is the maximum coverage density $\\delta_{\\max}(A)$ for arbitrary (non-coprime) moduli?",
       "Is there a polynomial-time algorithm to compute $\\delta_{\\max}(A)$, or is the optimization NP-hard?",
@@ -133,7 +133,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 334,
+    "lineCount": 369,
     "axiomCount": 2,
     "theoremCount": 18,
     "definitionCount": 7
@@ -142,7 +142,7 @@
     {
       "targetId": "erdos-23",
       "relationship": "related",
-      "description": "Both concern covering systems: #23 studies the minimum modulus question, while #278 studies maximum coverage density. Both are part of Erdős's broader program on residue class coverings"
+      "description": "Both concern covering systems: #23 studies the minimum modulus question, while #278 studies maximum coverage density. Both are part of Erd\u0151s's broader program on residue class coverings"
     },
     {
       "targetId": "erdos-273",
@@ -156,31 +156,31 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva, p. 28",
+      "venue": "L'Enseignement Math\u00e9matique, Monograph no. 28, Geneva, p. 28",
       "note": "Original source for Problem #278"
     },
     {
       "authors": "Simpson, R. James",
       "title": "Regular coverings of the integers by arithmetic progressions",
       "year": "1986",
-      "venue": "Discrete Mathematics, vol. 59(1–2), pp. 45–63",
-      "note": "Proved that all-zero residues minimize coverage density — resolving the minimum density case of Problem #278"
+      "venue": "Discrete Mathematics, vol. 59(1\u20132), pp. 45\u201363",
+      "note": "Proved that all-zero residues minimize coverage density \u2014 resolving the minimum density case of Problem #278"
     },
     {
       "authors": "Hough, Bob",
       "title": "Solution of the minimum modulus problem for covering systems",
       "year": "2015",
-      "venue": "Annals of Mathematics, vol. 181(1), pp. 361–382",
-      "note": "Resolved Erdős's minimum modulus conjecture; constrains structural approaches to covering system problems"
+      "venue": "Annals of Mathematics, vol. 181(1), pp. 361\u2013382",
+      "note": "Resolved Erd\u0151s's minimum modulus conjecture; constrains structural approaches to covering system problems"
     },
     {
       "authors": "Crittenden, Richard B.; Vanden Eynden, Charles L.",
-      "title": "Any n arithmetic progressions covering the first 2ⁿ integers cover all integers",
+      "title": "Any n arithmetic progressions covering the first 2\u207f integers cover all integers",
       "year": "1970",
-      "venue": "Journal of Combinatorial Theory, Series A, vol. 8, pp. 29–30",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 8, pp. 29\u201330",
       "note": "Classical result on coverage thresholds for arithmetic progressions"
     }
   ]
