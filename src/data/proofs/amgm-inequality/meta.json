@@ -2,7 +2,7 @@
   "id": "amgm-inequality",
   "title": "Arithmetic Mean - Geometric Mean Inequality",
   "slug": "amgm-inequality",
-  "description": "The AM-GM Inequality: For non-negative real numbers, the arithmetic mean is always greater than or equal to the geometric mean, with equality if and only if all numbers are equal.",
+  "description": "The AM-GM inequality (Wiedijk #38): $(a+b)/2 \\geq \\sqrt{ab}$ with equality iff $a=b$. A dual-path formalization in Lean 4 — the elementary two-variable proof via $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0$ is an original construction, while the general weighted form $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ delegates to Mathlib's Jensen-based `geom_mean_le_arith_mean_weighted`. Includes equality characterization, product-sum corollary, QM-AM-GM chain, and three-variable specialization.",
   "meta": {
     "author": "Euclid / Cauchy (formalized via Mathlib)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/MeanInequalities.html",
@@ -49,7 +49,7 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 38,
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Wiedijk 100 theorem #38.",
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The elementary two-variable proof (`am_gm_two`) and equality characterization (`am_gm_two_eq_iff`) are original constructions using `sq_nonneg`, `Real.sq_sqrt`, and `linarith`. The general weighted form (`am_gm_weighted`) and three-variable case (`am_gm_three`) are pedagogical wrappers around Mathlib's `Real.geom_mean_le_arith_mean_weighted` and `Real.geom_mean_le_arith_mean3_weighted` respectively. Wiedijk 100 theorem #38.",
     "lineCount": 225,
     "relatedProblems": [
       {
