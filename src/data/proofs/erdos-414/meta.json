@@ -47,7 +47,7 @@
         "relation": "The Collatz conjecture: canonical example of orbit coalescence for an iterated function, but with non-monotone dynamics"
       }
     ],
-    "axiomCount": 3,
+    "axiomCount": 2,
     "assumptions": [
       "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)",
       "single_eventual_orbit: equivalent formulation — there exists a single sequence S that all orbits eventually follow",
@@ -202,7 +202,7 @@
   "leanFile": {
     "lineCount": 155,
     "structureCount": 0,
-    "axiomCount": 3,
+    "axiomCount": 2,
     "theoremCount": 13,
     "lemmaCount": 0,
     "defCount": 2,
