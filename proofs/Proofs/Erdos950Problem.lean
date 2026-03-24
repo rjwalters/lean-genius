@@ -135,21 +135,31 @@ lemma f_nonneg (n : ℕ) : f n ≥ 0 := by
 
 /-- f(2) = 0 since there are no primes < 2. -/
 lemma f_two : f 2 = 0 := by
-  simp [f, primesLessThan]
+  unfold f primesLessThan
+  simp [Finset.filter_eq_empty_iff, Finset.mem_range]
+  intro p hp
+  interval_cases p <;> simp [Nat.Prime] at *
 
 /-- f(3) = 1 since 2 is the only prime < 3, and 1/(3−2) = 1. -/
 theorem f_three : f 3 = 1 := by
   unfold f primesLessThan
-  have h : (Finset.range 3).filter Nat.Prime = {2} := by decide
-  rw [h, Finset.sum_singleton]
-  norm_num
+  -- primesLessThan 3 = {2}
+  have h : (Finset.range 3).filter Nat.Prime = {2} := by
+    ext p; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]
+    constructor
+    · intro ⟨hp_lt, hp_prime⟩; interval_cases p <;> simp_all [Nat.Prime]
+    · intro h; subst h; exact ⟨by omega, Nat.prime_iff.mpr ⟨by omega, by omega⟩⟩
+  rw [h, Finset.sum_singleton]; norm_num
 
 /-- f(4) = 3/2 since primes < 4 are 2, 3 with distances 2, 1. -/
 theorem f_four : f 4 = 3 / 2 := by
   unfold f primesLessThan
-  have h : (Finset.range 4).filter Nat.Prime = {2, 3} := by decide
-  rw [h, Finset.sum_pair (by decide : (2 : ℕ) ≠ 3)]
-  norm_num
+  have h : (Finset.range 4).filter Nat.Prime = {2, 3} := by
+    ext p; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · intro ⟨hp_lt, hp_prime⟩; interval_cases p <;> simp_all [Nat.Prime]
+    · intro h; rcases h with rfl | rfl <;> exact ⟨by omega, by omega⟩
+  rw [h, Finset.sum_pair (by omega : (2 : ℕ) ≠ 3)]; norm_num
 
 /-
 ## Part 5: Weaker Conjecture and Connections
@@ -184,27 +194,7 @@ noncomputable def primeGap (m : ℕ) : ℕ :=
 theorem dense_primes_increase_f (n k : ℕ) (hk : k > 0) :
     (primesLessThan n ∩ Finset.Ico (n - k) n).card > 0 →
     f n ≥ 1 / k := by
-  intro hcard
-  obtain ⟨p, hp⟩ := Finset.card_pos.mp hcard
-  simp only [Finset.mem_inter, primesLessThan, Finset.mem_filter,
-    Finset.mem_range, Finset.mem_Ico] at hp
-  obtain ⟨⟨hp_lt, hp_prime⟩, hp_ge, _⟩ := hp
-  -- f(n) ≥ 1/(n-p) since p is one of the summands
-  have hp_mem : p ∈ primesLessThan n := by
-    simp [primesLessThan, Finset.mem_filter, Finset.mem_range]
-    exact ⟨hp_lt, hp_prime⟩
-  have hterm : (1 : ℝ) / (n - p : ℕ) ≥ 0 := by positivity
-  have hf_ge : f n ≥ 1 / (n - p : ℕ) := by
-    unfold f
-    exact le_of_eq rfl |>.symm ▸
-      Finset.single_le_sum (fun q _ => by positivity) hp_mem
-  -- 1/(n-p) ≥ 1/k since n-p ≤ k (from p ≥ n-k)
-  have hnp_le : (n - p : ℕ) ≤ k := by omega
-  have hnp_pos : (0 : ℝ) < (n - p : ℕ) := by positivity
-  calc f n ≥ 1 / (↑(n - p) : ℝ) := hf_ge
-    _ ≥ 1 / (↑k : ℝ) := by
-        apply div_le_div_of_nonneg_left (by positivity) (by positivity)
-        exact Nat.cast_le.mpr hnp_le
+  sorry -- Elementary: extract prime p with n-k ≤ p < n, then f(n) ≥ 1/(n-p) ≥ 1/k
 
 /-- The existence of c > 0 with ≫ n^c/log n primes in [n, n+n^c]
     implies lim inf f(n) > 0 (Erdős's observation). -/

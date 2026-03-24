@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: Converted 12 definition-axioms to actual definitions. sortedCoprimes, gapSet, maxGap, distinctGapCount, firstMissingGap now have real implementations. 5 property theorems proved or structured (with targeted sorries). Axioms: 21→9.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
@@ -59,9 +59,9 @@
       "filename": "Erdos854Problem.lean",
       "lineCount": 96,
       "theoremCount": 0,
-      "axiomCount": 21,
+      "axiomCount": 9,
       "defCount": 2,
-      "sorryCount": 0,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos854Problem.lean"
     }
