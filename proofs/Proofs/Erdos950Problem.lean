@@ -194,7 +194,21 @@ noncomputable def primeGap (m : ℕ) : ℕ :=
 theorem dense_primes_increase_f (n k : ℕ) (hk : k > 0) :
     (primesLessThan n ∩ Finset.Ico (n - k) n).card > 0 →
     f n ≥ 1 / k := by
-  sorry -- Elementary: extract prime p with n-k ≤ p < n, then f(n) ≥ 1/(n-p) ≥ 1/k
+  intro hcard
+  rw [Finset.card_pos] at hcard
+  obtain ⟨p, hp⟩ := hcard
+  simp only [Finset.mem_inter, Finset.mem_Ico] at hp
+  obtain ⟨hp_primes, hnk_le_p, hp_lt_n⟩ := hp
+  -- p ∈ primesLessThan n, n - k ≤ p, p < n
+  have hnp_pos : (0 : ℝ) < ↑(n - p) := by exact_mod_cast Nat.sub_pos_of_lt hp_lt_n
+  have hnp_le_k : (n - p : ℕ) ≤ k := by omega
+  unfold f
+  calc (1 : ℝ) / ↑k
+      ≤ 1 / ↑(n - p) := by
+        apply one_div_le_one_div_of_le hnp_pos
+        exact_mod_cast hnp_le_k
+    _ ≤ ∑ q ∈ primesLessThan n, 1 / ↑(n - q) :=
+        Finset.single_le_sum (fun q _ => div_nonneg one_pos.le (Nat.cast_nonneg _)) hp_primes
 
 /-- The existence of c > 0 with ≫ n^c/log n primes in [n, n+n^c]
     implies lim inf f(n) > 0 (Erdős's observation). -/

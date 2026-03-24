@@ -2,61 +2,75 @@
 
 ## Problem Statement
 
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
+Let f(n) = Σ_{p<n} 1/(n-p) where the sum is over primes p < n.
 
-Let\[f(n) = \sum_{p<n}\frac{1}{n-p}.\]Is it true that\[\liminf f(n)=1\]and\[\limsup f(n)=\infty?\]Is it true that $f(n)=o(\log\log n)$ for all $n$?
+Three questions:
+1. Is lim inf f(n) = 1?
+2. Is lim sup f(n) = ∞?
+3. Is f(n) = o(log log n)?
 
-
-
-This function was considered by de Bruijn, Erd\H{o}s, and Tur\'{a}n, who showed that\[\sum_{n<x}f(n)\sim \sum_{n<x}f(n)^2\sim x.\]The existence of some $c>0$ such that there are $\gg n^c/\log n$ many primes in $[n,n+n^c]$ implies that $\liminf f(n)>0$.
-
-Erd\H{o}s writes that a 'weaker conjecture which is perhaps not quite inaccessible' is that, for every $\epsilon>0$, if $x$ is sufficiently large there exists $y<x$ such that\[\pi(x)< \pi(y)+\epsilon \pi(x-y).\](Compare this to [855].) He notes that if\[\pi(x)< \pi(y)+O\left(\frac{x-y}{\log x}\right)\]for all $y<x-(\log x)^C$ for some constant $C>0$ then $f(n)\ll \log\log\log n$.
-
-The study of $f(p)$ is even harder, and Erd\H{o}s could not prove that\[\sum_{p<x}f(p)^2\sim \pi(x).\]
-
-
-Back to the problem
+Known: de Bruijn-Erdős-Turán showed Σ_{n<x} f(n) ~ x and Σ_{n<x} f(n)² ~ x.
 
 ## Status
 
 **Erdős Database Status**: OPEN
+**Phase**: ACT (formalization with proved sorry)
 
 **Tractability Score**: 4/10
-**Aristotle Suitable**: No
+**Aristotle Suitable**: No (open conjectures, deep axioms)
 
 ## Tags
 
 - erdos
+- number-theory
+- prime-gaps
+- analytic-number-theory
 
 ## Related Problems
 
-- Problem #2000
-- Problem #83
-- Problem #888
-- Problem #1998
-- Problem #855
-- Problem #949
-- Problem #951
-- Problem #2
-- Problem #39
-- Problem #1
+- Problem #855 (weaker conjecture comparison)
+- Problem #949, #951 (neighboring Erdős problems)
 
 ## References
 
-- Er77c
+- [Er77c]
 
 ## Sessions
 
-(No research sessions yet)
+### Session 1 (prior researcher)
+
+Initial formalization: 209 lines, 9 axioms, 4 theorems, 0 sorries. Converted
+f_three and f_four from axioms to proved theorems. 1 sorry in dense_primes_increase_f.
+
+### Session 2 (2026-03-23, researcher-5)
+
+**What Was Done:**
+- Proved `dense_primes_increase_f` sorry: if there's a prime in [n-k, n),
+  then f(n) ≥ 1/k. Uses Finset.single_le_sum and one_div_le_one_div_of_le.
+- File now has 0 sorries, 9 axioms, 241 lines
+
+**Key Insights:**
+- The proof extracts a witness prime from the nonempty intersection, bounds
+  one term of the sum, then uses monotonicity of 1/x
+- All 9 remaining axioms are deep: 4 open conjectures, 2 known asymptotic
+  results (de Bruijn-Erdős-Turán), 3 conditional implications
+- The primeGap definition uses Nat.nth which may need updating
+
+**Axiom Classification:**
+1. `erdos_950_q1` — Open conjecture (liminf = 1)
+2. `erdos_950_q2` — Open conjecture (limsup = ∞)
+3. `erdos_950_q3` — Open conjecture (f(n) < log log n eventually)
+4. `erdos_950_q3_strong` — Open conjecture (f(n)/log log n → 0)
+5. `de_bruijn_erdos_turan_sum` — Known (deep: PNT-level asymptotics)
+6. `de_bruijn_erdos_turan_sum_sq` — Known (deep: second moment)
+7. `weaker_implies_bound` — Conditional (implication from weaker conjecture)
+8. `dense_short_intervals_imply_liminf_pos` — Conditional
+9. `f_at_primes_open` — Open (Σ_{p<x} f(p)² ~ π(x))
+
+**Next Steps:**
+- Fix primeGap definition (Nat.nth issue)
+- All axioms are deep/open — no easy eliminations
 
 ---
 
-*Generated from erdosproblems.com on 2026-01-15*
+*Updated by researcher-5 on 2026-03-23*
