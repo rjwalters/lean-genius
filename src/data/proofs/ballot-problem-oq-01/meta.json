@@ -47,7 +47,7 @@
   "overview": {
     "historicalContext": "The classical Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes ($p > q$), the probability that A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the **reflection principle** (1887), mapping unfavorable sequences to their reflections across the axis. W.A. Whitworth independently discovered the result using a direct combinatorial argument. In 1947, Aryeh Dvoretzky and Theodore Motzkin proved the **Cycle Lemma** in the *Proceedings of the National Academy of Sciences*, which gives a far more general and elegant proof: for any integer sequence with positive sum $S$ and length $n$, exactly $S$ of its $n$ cyclic rotations have all positive prefix sums. This immediately implies the ballot theorem and its $k$-fold generalization. The cycle lemma has since found applications in lattice path enumeration, queueing theory, and the analysis of random trees (Raney's theorem).",
     "problemStatement": "**Generalized Ballot Theorem**: In an election where candidate A receives $a$ votes and candidate B receives $b$ votes, with $a > kb$ for a positive integer $k$, the probability that A always has more than $k$ times as many votes as B throughout the counting is:\n\n$$P = \\frac{a - kb}{a + b}$$\n\nWhen $k = 1$, this reduces to the classical formula $P = (p-q)/(p+q)$.",
-    "text": "The generalized ballot problem: in an election where candidate A must maintain more than k times the votes of candidate B throughout counting, the probability is (a - kb)/(a + b). Formalized using lattice paths and cyclic rotations.",
+    "text": "A 710-line formalization of the generalized ballot problem for $k$-fold dominance, proving the Dvoretzky-Motzkin cycle lemma via a sandwich argument. The file models vote counting as a lattice path with $+1$ upsteps (A-votes) and $-k$ downsteps (B-votes), defines $\\text{kCountedSequence}(k,a,b)$ as the set of valid sequences, and characterizes them as permutations of $[1,\\ldots,1,-k,\\ldots,-k]$. The core infrastructure develops cyclic rotations $\\text{rotate}(l,i) = l[i:] \\| l[:i]$, proves the prefix sum relation $\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$, and defines $\\text{goodRotations}$ (rotations with all positive prefix sums). The cycle lemma $|\\text{goodRotations}| = a - kb$ is proved by injection ($i \\mapsto \\sigma(i) - \\min(\\sigma)$ into $\\{0,\\ldots,S-1\\}$) for the upper bound and by `levelPos` surjection (a discrete IVT exploiting $+1$ steps) for the lower bound. The rightmost minimum of the prefix sum provides the existence bootstrap. One sorry remains on the double-counting step `generalized_ballot_count`. Validates against Mathlib's Wiedijk #30 via $\\text{kCountedSequence}(1,a,b) = \\text{Ballot.countedSequence}(a,b)$.",
     "proofStrategy": "**Lattice Path Model + Cycle Lemma**:\n\n1. Model vote counting as a lattice path: each A-vote is a +1 step, each B-vote is a $-k$ step\n2. The condition 'A has > k times B's votes' equals the path staying strictly above the x-axis\n3. Use the Dvoretzky-Motzkin Cycle Lemma: for a sequence with positive sum $S$ and length $n$, exactly $S$ of the $n$ cyclic rotations have all positive prefix sums\n4. Apply to ballot sequences: $S = a - kb$, $n = a + b$, giving the fraction of good orderings",
     "keyInsights": [
       "The **Dvoretzky-Motzkin cycle lemma** unifies all ballot-type results: exactly $S$ of $n$ cyclic rotations have all positive prefix sums, immediately giving $P = S/n = (a - kb)/(a + b)$",
@@ -57,8 +57,11 @@
       "The **rightmost minimum** of the prefix sum sequence is always a good rotation, providing the existence base case that bootstraps the full counting argument"
     ],
     "prerequisites": [
-      "Combinatorics (counting, extremal problems)",
-      "Probability theory"
+      "List combinatorics (List.count, List.perm, List.take, List.drop)",
+      "Integer arithmetic and prefix sums",
+      "Finset theory (Finset.card, Finset.filter, injections/surjections for cardinality bounds)",
+      "Basic probability (counting favorable outcomes over total outcomes)",
+      "Cycle lemma / cyclic permutation arguments"
     ]
   },
   "sections": [
@@ -191,6 +194,50 @@
     "combinations-formula",
     "erdos-szekeres",
     "ballot-problem-oq-01-oq-01"
+  ],
+  "references": [
+    {
+      "authors": "Bertrand, Joseph",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, vol. 105, pp. 369",
+      "note": "Original statement of the classical ballot problem: if A receives p votes and B receives q votes (p > q), the probability that A leads throughout is (p-q)/(p+q)"
+    },
+    {
+      "authors": "André, Désiré",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, vol. 105, pp. 436–437",
+      "note": "First proof of Bertrand's ballot theorem using the reflection principle — mapping unfavorable sequences to their reflections across the axis"
+    },
+    {
+      "authors": "Dvoretzky, Aryeh; Motzkin, Theodore",
+      "title": "A problem of arrangements",
+      "year": "1947",
+      "venue": "Duke Mathematical Journal, vol. 14, no. 2, pp. 305–313",
+      "note": "Proved the Cycle Lemma: for any integer sequence with positive sum S and length n, exactly S of its n cyclic rotations have all positive prefix sums. This is the central result formalized in this file"
+    },
+    {
+      "authors": "Raney, George N.",
+      "title": "Functional composition patterns and power series reversion",
+      "year": "1960",
+      "venue": "Transactions of the American Mathematical Society, vol. 94, no. 3, pp. 441–451",
+      "note": "Extended the cycle lemma to count labeled plane trees, establishing the connection between ballot sequences and tree enumeration"
+    },
+    {
+      "authors": "Renault, Marc",
+      "title": "Four proofs of the ballot theorem",
+      "year": "2007",
+      "venue": "Mathematics Magazine, vol. 80, no. 5, pp. 345–352",
+      "note": "Survey of four distinct proof techniques for the ballot theorem: André's reflection principle, cyclic permutation (cycle lemma), induction, and the time-reversal argument"
+    },
+    {
+      "authors": "Flajolet, Philippe; Sedgewick, Robert",
+      "title": "Analytic Combinatorics",
+      "year": "2009",
+      "venue": "Cambridge University Press, Chapter II",
+      "note": "Modern treatment of lattice path combinatorics and generating functions, with the cycle lemma as a key tool for counting paths with constraints"
+    }
   ],
   "leanFile": {
     "imports": [
