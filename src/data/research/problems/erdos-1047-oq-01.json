@@ -29,17 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 axioms (17→14). Proved polynomial degree and monicity from Mathlib. Clean build.",
+    "progressSummary": "COMPLETED: Eliminated 2 more axioms (closedBall_isConvex, goodmanPolynomial_degree_pos). Total axioms: 17 → 12 across two sessions.",
     "builtItems": [
       "Proved pommerenkePolynomial_degree: deg(X^k(X-a)) = k+1",
       "Proved goodmanPolynomial_monic: (X²+1)(X-2)² is monic",
-      "Proved refereePolynomial_monic: X(X⁵-1) is monic"
+      "Proved refereePolynomial_monic: X(X⁵-1) is monic",
+      "closedBall_isConvex: proved from Mathlib (eliminated axiom)",
+      "goodmanPolynomial_degree_pos: proved by computation (eliminated axiom)"
     ],
     "insights": [
       "pommerenkePolynomial_degree provable via natDegree_mul + natDegree_pow",
       "Monic for product polynomials via Monic.mul and monic_X_pow_add_C/monic_X_sub_C",
       "monic_X_pow_sub_C needs the exponent ≠ 0 proof",
-      "goodmanPolynomial_degree_pos harder: Monic.natDegree_pos needs p ≠ 1 which requires eval-based contradiction"
+      "goodmanPolynomial_degree_pos harder: Monic.natDegree_pos needs p ≠ 1 which requires eval-based contradiction",
+      "closedBall_isConvex proved from Mathlib convex_closedBall",
+      "goodmanPolynomial_degree_pos proved by natDegree computation (degree 4)"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -64,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.903Z",
-  "lastUpdate": "2026-03-24T00:48:59.903Z",
+  "lastUpdate": "2026-03-24T17:15:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -73,7 +77,7 @@
       "filename": "Erdos1047Problem.lean",
       "lineCount": 279,
       "theoremCount": 4,
-      "axiomCount": 17,
+      "axiomCount": 12,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
