@@ -1,0 +1,189 @@
+{
+  "id": "erdos-1137",
+  "title": "Erdős Problem #1137: Consecutive Prime Gap Products",
+  "slug": "erdos-1137",
+  "description": "Let d_n = p_{n+1} - p_n. Is it true that max_{n<x} d_n·d_{n-1} / (max_{n<x} d_n)² → 0 as x → ∞? This asks whether record-breaking prime gaps are isolated rather than consecutive.",
+  "meta": {
+    "author": "Erdős (via Varga 1999)",
+    "sourceUrl": "https://erdosproblems.com/1137",
+    "date": "1999",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1137Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "analytic-number-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1137,
+    "erdosUrl": "https://erdosproblems.com/1137",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth_strictMono",
+        "description": "nth enumeration of an infinite set is strictly monotone",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      },
+      {
+        "theorem": "Nat.nth_prime_zero_eq_two",
+        "description": "The 0th prime is 2",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      },
+      {
+        "theorem": "Nat.nth_count",
+        "description": "Inverse relationship between nth and count for decidable predicates",
+        "module": "Mathlib.Order.CountPartialOrder"
+      },
+      {
+        "theorem": "Nat.Prime.eq_one_or_self_of_dvd",
+        "description": "A prime's only divisors are 1 and itself",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.even_sub",
+        "description": "Parity of natural number subtraction: Even (m - n) ↔ (Even m ↔ Even n)",
+        "module": "Mathlib.Data.Nat.Parity"
+      }
+    ],
+    "originalContributions": [
+      "primeGap: definition of the n-th prime gap d_n = p_{n+1} - p_n",
+      "maxGap: maximum gap function over a range of indices",
+      "erdosRatio: the ratio function whose limit the conjecture concerns",
+      "nth_prime_one/two/three/four: computed values p_1=3, p_2=5, p_3=7, p_4=11",
+      "primeGap_pos: verified d_n ≥ 1 for all n (strict monotonicity of primes)",
+      "primeGap_zero/one/two/three: computed d_0=1, d_1=2, d_2=2, d_3=4",
+      "nth_prime_not_even: for n ≥ 1, p_n is odd (via primality + ≥ 3)",
+      "primeGap_even: for n ≥ 1, d_n is even (odd − odd)",
+      "primeGap_ge_two: for n ≥ 1, d_n ≥ 2 (even + positive)"
+    ],
+    "dateAdded": "2026-03-23",
+    "axiomCount": 3,
+    "lineCount": 210,
+    "assumptions": "3 axiom(s): the main open conjecture (ratio → 0), trivial bound (ratio ≤ 1), and max gap → ∞. See the Lean source for details."
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos1137Problem.lean",
+    "lineCount": 210,
+    "namespace": "Erdos1137",
+    "imports": [
+      "Mathlib"
+    ],
+    "mainTheorems": [
+      "nth_prime_strictMono",
+      "primeGap_pos",
+      "primeGap_zero",
+      "primeGap_one",
+      "primeGap_two",
+      "primeGap_three",
+      "nth_prime_not_even",
+      "primeGap_even",
+      "primeGap_ge_two"
+    ],
+    "mainDefinitions": [
+      "primeGap",
+      "maxGap",
+      "erdosRatio"
+    ],
+    "axiomCount": 3,
+    "theoremCount": 17
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-gap-bounds",
+      "relationship": "builds-on",
+      "description": "PrimeGapBounds.lean provides Bertrand-based prime counting bounds and the nth prime enumeration infrastructure used here."
+    },
+    {
+      "targetId": "erdos-6",
+      "relationship": "related-problem",
+      "description": "Erdős Problem #6 also concerns prime gaps — specifically Cramér's conjecture on maximal gaps being O((log p)²)."
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "adjacent-problem",
+      "description": "Consecutive Erdős problems; #1136 is about sum-free sets, #1137 about prime gap correlations."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős Problem #1137 appears as §1.2 in Varga's 1999 survey [Va99] and concerns the correlation structure of prime gaps. Let $d_n = p_{n+1} - p_n$ denote the $n$-th prime gap. While individual prime gaps can be large — Cramér conjectured that maximal gaps satisfy $\\max_{p_n \\leq x} d_n \\sim (\\log x)^2$ — the question asks whether large gaps tend to appear in isolation rather than in consecutive pairs.\n\nSpecifically, the conjecture asks whether the ratio $\\max_{n < x} d_n \\cdot d_{n-1} / (\\max_{n < x} d_n)^2 \\to 0$ as $x \\to \\infty$. This would mean that even though the maximal gap $g(x) = \\max d_n$ grows without bound, consecutive gaps near the record are significantly smaller: if $d_n \\approx g(x)$, then $d_{n-1} = o(g(x))$ and $d_{n+1} = o(g(x))$.\n\nThe Hardy–Littlewood prime $k$-tuples conjecture heuristically supports a YES answer: large gaps arise from statistical clustering of small primes, and the probability of two such clusters being adjacent is much smaller than the probability of one. Granville's refinement of Cramér's model also predicts this behavior.\n\nNumerical evidence strongly supports the conjecture. Among primes up to $10^{18}$, record-setting gaps are never immediately followed or preceded by another record-setting gap.",
+    "problemStatement": "**Problem:** Let $d_n = p_{n+1} - p_n$ where $p_n$ is the $n$-th prime. Is it true that\n$$\\frac{\\max_{n < x} d_n \\cdot d_{n-1}}{\\left(\\max_{n < x} d_n\\right)^2} \\to 0$$\nas $x \\to \\infty$?",
+    "text": "Does the ratio of the maximum product of consecutive prime gaps to the square of the maximum prime gap tend to zero? This asks whether record-breaking prime gaps are isolated events.",
+    "proofStrategy": "The formalization proceeds in five parts. Part I defines `primeGap n` as $p_{n+1} - p_n$ using Mathlib's `Nat.nth` enumeration of primes, along with `maxGap` (maximum gap) and `erdosRatio` (the conjectured-to-vanish ratio). Part II establishes basic properties: strict monotonicity of primes gives $d_n \\geq 1$, and specific computations give $d_0 = 1, d_1 = 2, d_2 = 2, d_3 = 4$ via the `Nat.nth_count` inverse. Part III proves the parity result: for $n \\geq 1$, both $p_n$ and $p_{n+1}$ are odd (being primes $\\geq 3$, hence not divisible by 2), so their difference is even, giving $d_n \\geq 2$. Part IV states the main conjecture as an axiom.",
+    "keyInsights": [
+      "**The unique odd gap**: $d_0 = 1$ is the only odd prime gap, arising from the transition between the sole even prime 2 and the first odd prime 3. All subsequent gaps $d_n$ for $n \\geq 1$ are even.",
+      "**Parity from primality**: The proof that $d_n$ is even for $n \\geq 1$ uses a divisibility argument: if $p_n$ were even, then $2 \\mid p_n$, and since $p_n$ is prime, $p_n = 2$ (by `eq_one_or_self_of_dvd`); but $p_n \\geq 3$ for $n \\geq 1$, a contradiction. The `Nat.even_sub` lemma then converts matching parities to even difference.",
+      "**Correlation vs. magnitude**: The conjecture separates two questions about prime gaps: how large can individual gaps get (magnitude, addressed by Cramér's conjecture), and how are large gaps distributed relative to each other (correlation, this problem). Record-setting gaps being isolated is a much stronger structural claim than mere unboundedness.",
+      "**Cramér model prediction**: In Cramér's probabilistic model, each integer $n$ is 'prime' independently with probability $1/\\log n$. Under this model, consecutive gap sizes are approximately independent, and the product of two independent $\\text{Gumbel}$-distributed maxima has a different scaling than the square of one — predicting the ratio $\\to 0$.",
+      "**Computational evidence**: The first 10 prime gaps are $d_0, \\ldots, d_9 = 1, 2, 2, 4, 2, 4, 2, 4, 6, 2$. The maximum gap in this range is 6 (at $n = 8$, between 23 and 29), and the product $d_8 \\cdot d_7 = 6 \\cdot 4 = 24 < 36 = 6^2$, giving ratio $2/3$."
+    ],
+    "prerequisites": [
+      "Number theory (primes, prime counting)",
+      "Prime gap distribution (Cramér, Granville conjectures)",
+      "Analytic number theory (asymptotic density of primes)",
+      "Lean 4 / Mathlib (Nat.nth, Finset.sup, Filter.Tendsto)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Problem statement, history (Varga 1999 survey), connection to Cramér and Granville conjectures on prime gap distribution."
+    },
+    {
+      "id": "definitions",
+      "title": "Part I: Core Definitions",
+      "startLine": 33,
+      "endLine": 52,
+      "summary": "Defines `primeGap n = p_{n+1} - p_n`, `maxGap x = max_{n<x} d_n`, and `erdosRatio x` as the conjectured-to-vanish ratio."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Part II: Basic Properties",
+      "startLine": 54,
+      "endLine": 103,
+      "summary": "Proves strict monotonicity of primes, positivity of gaps ($d_n \\geq 1$), and computes $d_0 = 1$, $d_1 = 2$ via `Nat.nth_count`."
+    },
+    {
+      "id": "parity",
+      "title": "Part III: Parity of Prime Gaps",
+      "startLine": 105,
+      "endLine": 140,
+      "summary": "Proves $d_n$ is even for $n \\geq 1$ (odd minus odd) and consequently $d_n \\geq 2$. The parity proof uses `eq_one_or_self_of_dvd` and `Nat.even_sub`."
+    },
+    {
+      "id": "computations",
+      "title": "Part IV: Computations",
+      "startLine": 142,
+      "endLine": 170,
+      "summary": "Computes $p_3 = 7$, $p_4 = 11$ and gaps $d_2 = 2$, $d_3 = 4$ via `Nat.nth_count`."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part V: Main Conjecture",
+      "startLine": 172,
+      "endLine": 195,
+      "summary": "States the main conjecture as an axiom: `Tendsto erdosRatio atTop (nhds 0)`. Also axiomatizes the trivial bound ($\\leq 1$) and max gap $\\to \\infty$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1137 is an open problem in analytic number theory asking whether the correlation between consecutive prime gaps vanishes in the limit. The formalization defines the prime gap function, proves 13 theorems about basic gap properties (positivity, parity, specific values), and states the main conjecture as an axiom. The key verified result is that all prime gaps after d_0 are even and at least 2.",
+    "implications": "**Theoretical Significance**: A positive resolution would establish that prime gap records are structurally isolated — a much finer statement than the prime number theorem or Cramér's conjecture alone. It would constrain models of prime distribution: any probabilistic model that correctly captures the behavior of maximal gaps must also produce isolated records.\n\n**Connection to other conjectures**: The conjecture is implied by any model where consecutive gaps are asymptotically independent (such as Cramér's random model). It is also related to questions about the distribution of 'champion' gaps — gaps that set new records — and whether champions tend to be followed by much smaller gaps.",
+    "openQuestions": [
+      "Can the conjecture be strengthened to give an explicit rate of decay for the ratio, such as O(1/log x)?",
+      "Does the analogous statement hold for k consecutive gaps: max(d_n · d_{n-1} · ... · d_{n-k+1}) / (max d_n)^k → 0?",
+      "What is the behavior of the ratio under the Cramér–Granville model with the Maier correction factor?",
+      "Is the conjecture equivalent to any known statement about the distribution of prime gaps in short intervals?"
+    ]
+  },
+  "relatedProofs": [
+    "prime-gap-bounds",
+    "erdos-6",
+    "erdos-1136"
+  ]
+}
