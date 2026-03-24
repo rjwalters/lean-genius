@@ -200,5 +200,35 @@
     "ramseys-theorem",
     "erdos-782",
     "erdos-780"
+  ],
+  "references": [
+    {
+      "authors": "Brown, Tom C.; Erdős, Paul; Freedman, Allen R.",
+      "title": "Quasi-progressions and descending waves",
+      "year": "1990",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 53, pp. 81–95",
+      "note": "Introduced descending waves and conjectured f(k) = k² - k + 1 based on exact values for small k"
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "A note on descending waves",
+      "year": "1989",
+      "venue": "Journal of Combinatorial Theory, Series A (cited in Brown-Erdős-Freedman 1990)",
+      "note": "Disproved the f(k) = k² - k + 1 conjecture by showing f(k) ≫ k³ via probabilistic arguments"
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley, 4th edition",
+      "note": "Standard reference for probabilistic combinatorics including the probabilistic methods used to disprove the descending waves conjecture"
+    },
+    {
+      "authors": "Graham, Ronald L.; Rothschild, Bruce L.; Spencer, Joel H.",
+      "title": "Ramsey Theory",
+      "year": "1990",
+      "venue": "Wiley, 2nd edition",
+      "note": "Comprehensive reference for Ramsey-type problems including monochromatic subsequence problems related to descending waves"
+    }
   ]
 }

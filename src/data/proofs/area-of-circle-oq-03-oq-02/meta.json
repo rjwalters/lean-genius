@@ -175,6 +175,16 @@
       "targetId": "area-of-circle-oq-01",
       "relationship": "sibling",
       "description": "Derives the circumference formula $C = 2\\pi r$ from the area formula by differentiation — the computational counterpart to Archimedes' geometric bounds, showing how the same constant $\\pi$ governs both the circle's area and perimeter"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ provides another exact formula involving $\\pi$. Archimedes' bounds $223/71 < \\pi < 22/7$ give $\\pi^2/6 \\approx 1.6449$, which can be verified against partial sums of the Basel series — connecting geometric approximation of $\\pi$ to analytic number theory"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite proved $e$ is transcendental (1873), leading to Lindemann's proof that $\\pi$ is transcendental (1882). Archimedes' rational bounds $223/71 < \\pi < 22/7$ are the tightest rational approximations achievable with 96-gons — but no rational (or algebraic) number can equal $\\pi$ exactly"
     }
   ],
   "relatedProofs": [
@@ -182,7 +192,9 @@
     "area-of-circle",
     "pi-transcendental",
     "hermite-lindemann",
-    "area-of-circle-oq-01"
+    "area-of-circle-oq-01",
+    "basel-problem",
+    "e-transcendental"
   ],
   "leanFile": {
     "imports": [

@@ -80,7 +80,8 @@
       "The proof that $\\text{minpoly}(F,\\alpha) = p$ (up to associates) is the crux: mutual divisibility between two irreducible polynomials in the UFD $F[X]$ forces them to be associates with equal degrees",
       "Shifting from 'compute the Galois group order' to 'derive a divisibility contradiction' parallels the number-theoretic approach in OQ-01 and exemplifies a broader algebraic strategy: structural arguments replacing explicit computation",
       "The chain natDegree | |Gal| → natDegree | 2^n → natDegree = 2^k requires three separate mathematical ingredients: Galois theory (tower law), group theory (2-group characterization), and number theory (prime factorization of powers of 2)",
-      "This file is fully verified (0 axioms, 0 sorries) despite addressing constructibility — possible because it proves the structural implication (2-group Gal ⇒ degree is 2^k) without needing to assert any specific polynomial is irreducible"
+      "This file is fully verified (0 axioms, 0 sorries) despite addressing constructibility — possible because it proves the structural implication (2-group Gal ⇒ degree is 2^k) without needing to assert any specific polynomial is irreducible",
+      "**The quotient has a group-theoretic name:** The divisibility $\\deg(p) \\mid |\\text{Gal}(p)|$ is really $|\\text{Gal}(p)| = [\\text{SplittingField}:F(\\alpha)] \\cdot \\deg(p)$, where the quotient $[\\text{SplittingField}:F(\\alpha)]$ equals the index of the stabilizer $\\text{Stab}_{\\text{Gal}}(\\alpha)$ in $\\text{Gal}(p)$. The orbit-stabilizer theorem gives $|\\text{Gal}| = |\\text{Orbit}(\\alpha)| \\cdot |\\text{Stab}(\\alpha)|$ — and since $\\text{Gal}$ permutes the roots of $p$ transitively (for irreducible $p$), $|\\text{Orbit}(\\alpha)| = \\deg(p)$. So the tower law argument is secretly the orbit-stabilizer theorem applied to the Galois group's action on roots"
     ],
     "prerequisites": [
       "Galois theory and Galois groups of polynomials",

@@ -258,6 +258,31 @@
       "targetId": "inverse-galois",
       "relationship": "related",
       "description": "The cyclotomic Galois groups Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* are concrete realizations of finite abelian groups — the abelian case of the inverse Galois problem, resolved by Kronecker-Weber"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\varphi(n)$ is the central object: the Gauss-Wantzel theorem states that the regular $n$-gon is constructible $\\iff \\varphi(n) = 2^k$. The totient's multiplicativity ($\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$) and the formula $\\varphi(p^k) = p^{k-1}(p-1)$ are the arithmetic engine of the characterization"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. The Gauss-Wantzel proof uses: (1) the cyclotomic Galois group $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ has order $\\varphi(n)$, and (2) Gauss's construction of the 17-gon used the 2-group structure of $(\\mathbb{Z}/17\\mathbb{Z})^{\\times} \\cong \\mathbb{Z}/16\\mathbb{Z}$"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula expresses the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$ that generate cyclotomic extensions. The entire Gauss-Wantzel framework rests on $\\cos(2\\pi/n) = (\\zeta_n + \\zeta_n^{-1})/2$, connecting the geometric quantity (polygon vertex) to the algebraic quantity (cyclotomic field element)"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber theorem: every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field $\\mathbb{Q}(\\zeta_n)$. Since constructible numbers generate abelian extensions (2-groups are abelian), all constructible numbers lie in cyclotomic fields — the Gauss-Wantzel criterion determines exactly which cyclotomic fields contain the cosines needed for polygon construction"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law $[L:F] = [L:K] \\cdot [K:F]$ (a consequence of Lagrange's theorem) drives the key computation: $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = [\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] \\cdot [\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}]$, yielding $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$"
     }
   ],
   "conclusion": {
@@ -277,7 +302,12 @@
     "combinations-formula",
     "abel-ruffini",
     "quadratic-reciprocity",
-    "inverse-galois"
+    "inverse-galois",
+    "euler-totient",
+    "primitive-roots",
+    "de-moivre",
+    "kroneckers-jugendtraum",
+    "lagrange-theorem"
   ],
   "leanFile": {
     "imports": [

@@ -171,12 +171,24 @@
       "targetId": "mathematical-induction",
       "relationship": "foundational",
       "description": "Both the hockey stick identity and the closed formulas are proved by mathematical induction on n — the hockey stick inductive step uses the Pascal recurrence, while the closed forms use nlinarith to discharge the nonlinear arithmetic goals"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums $\\sum i^k$ and simplicial numbers $\\sum \\binom{i+k}{k}$ are dual descriptions of summing polynomial sequences. Faulhaber's formulas express $\\sum i^k$ as a polynomial in $n$, while the hockey stick identity does the same for simplicial numbers — both are polynomial summation formulas, related by the Stirling number transformation between the monomial basis $\\{i^k\\}$ and the falling factorial basis $\\{\\binom{i}{k}\\}$"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the simplicial number framework with additional results or applications"
     }
   ],
   "relatedProofs": [
     "arithmetic-series",
     "binomial-theorem",
     "combinations-formula",
+    "sum-of-kth-powers",
+    "arithmetic-series-oq-02-oq-02",
     "mathematical-induction"
   ],
   "leanFile": {
