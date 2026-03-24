@@ -23,9 +23,10 @@
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
-    "axiomCount": 9,
-    "lineCount": 158,
-    "assumptions": "9 axioms: lagrangeIntegral, lagrangeBasis_self, lagrangeBasis_other, and 6 more. See Lean source for complete statements.",
+    "axiomCount": 4,
+    "theoremCount": 5,
+    "lineCount": 213,
+    "assumptions": "4 axioms: lagrangeIntegral_lower_bound (Cauchy-Schwarz), lagrangeIntegral_upper_bound, chebyshev_integral_estimate, erdos_1131_conjecture (OPEN). 5 former axioms now proved: lagrangeIntegral replaced with interval integral def, lagrangeBasis_self/other proved from product definition, chebyshevNodes_in_range from cos bounds, chebyshevNodes_distinct from cos strict anti on [0,pi].",
     "mathlib_version": "4.26.0"
   },
   "overview": {
