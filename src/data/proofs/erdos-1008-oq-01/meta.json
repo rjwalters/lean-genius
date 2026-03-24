@@ -30,15 +30,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Conlon, Fox, and Sudakov (2014) proved that every graph with m edges has a C\u2084-free subgraph with \u03a9(m^{2/3}) edges. The exponent 2/3 is optimal by Folkman's counterexample K_{n,n\u00b2}. The open question is: what is the best constant c > 0 such that this holds with at least c\u00b7m^{2/3} edges?",
+    "historicalContext": "The question of optimal constants in C₄-free subgraph bounds traces back to Bollobás and Erdős at the 1966 Tihany colloquium, where they originally conjectured the exponent 3/4. Jon Folkman quickly disproved this using the complete bipartite graph $K_{n,n^2}$: it has $n^3$ edges but by the Kővári-Sós-Turán theorem (1954), any $C_4$-free subgraph has at most $O(n^2) = O(m^{2/3})$ edges, not $O(m^{3/4})$. Erdős revised the conjecture to exponent 2/3 in 1971, noting that Szemerédi had obtained this bound unpublished. The problem remained formally open for four decades until Conlon, Fox, and Sudakov proved it in 2014 using dependent random choice. Once the exponent was settled, the natural refinement became: what is the optimal multiplicative constant $c^*$? The upper bound $c^* \\leq 1$ comes from Folkman's $K_{n,n^2}$ (the ratio of $C_4$-free edges to $m^{2/3}$ tends to 1). The lower bound $c^* > 0$ is the CFS theorem itself. Whether $c^* = 1/2$ (matching the Kővári-Sós-Turán coefficient) or some other value remains open, making this a precise quantitative frontier in extremal graph theory.",
     "problemStatement": "Determine the optimal constant c* > 0 such that every graph with m edges has a C\u2084-free subgraph with at least c*\u00b7m^{2/3} edges.",
     "text": "What are the optimal constants in the \u03a9(m^{2/3}) bound for C\u2084-free subgraphs?",
     "proofStrategy": "We formalize: (1) the K_{2,2}=C\u2084 equivalence connecting to the Zarankiewicz problem, (2) the optimal constant framework via IsAdmissibleConstant, (3) Folkman's upper bound c* \u2264 1, (4) the CFS lower bound c* > 0, and (5) structural properties of C\u2084-free graphs including the common neighbor uniqueness theorem.",
     "keyInsights": [
-      "**K_{2,2} = C\u2084 Equivalence (Proved):** A graph contains a 4-cycle iff it contains K_{2,2}, linking C\u2084-freeness to the Zarankiewicz problem z(n; 2,2)",
-      "**Common Neighbor Uniqueness (Proved):** In a C\u2084-free graph, any two distinct vertices share at most one common neighbor -- the key structural constraint",
-      "**Folkman's Ratio:** (n\u00b3)^{2/3} = n\u00b2, showing the Folkman bound gives c* \u2264 1",
-      "**Hereditary C\u2084-freeness (Proved):** C\u2084-freeness passes to subgraphs, enabling the probabilistic approach"
+      "**K_{2,2} = C₄ Equivalence (Proved):** A graph contains a 4-cycle iff it contains $K_{2,2}$, linking $C_4$-freeness to the Zarankiewicz problem $z(n; 2,2)$ and the Kővári-Sós-Turán bound",
+      "**Common Neighbor Uniqueness (Proved):** In a $C_4$-free graph, any two distinct vertices share at most one common neighbor — this is the combinatorial heart of all $C_4$-free density bounds, as double-counting over common neighborhoods yields the KST inequality",
+      "**Folkman's Ratio:** $(n^3)^{2/3} = n^2$, so the Folkman construction $K_{n,n^2}$ gives $c^* \\leq 1$; the Lean proof uses `Real.rpow_mul` to verify this exponent arithmetic",
+      "**Hereditary $C_4$-freeness (Proved):** $C_4$-freeness passes to subgraphs, which is essential for the probabilistic method since randomly chosen subgraphs inherit the property",
+      "**Supremum Formulation:** The optimal constant is defined as $\\sup\\{c > 0 : c \\text{ is admissible}\\}$, cleanly separating the existence question (CFS) from the optimization question (open)"
     ],
     "prerequisites": [
       "Graph theory (simple graphs, adjacency, subgraphs)",
@@ -48,44 +49,65 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Background and References",
+      "summary": "Documentation of the open question, references to CFS14, KST54, and Erdős 1971",
+      "startLine": 1,
+      "endLine": 38
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "summary": "HasC4, IsC4Free, HasKst, edgeCount for simple graphs on finite vertex types",
+      "summary": "HasC4, IsC4Free, HasKst, edgeCount — the predicates for 4-cycles, K_{s,t} subgraphs, and edge counting on finite simple graphs",
       "startLine": 40,
-      "endLine": 70
+      "endLine": 66
     },
     {
       "id": "k22-c4",
-      "title": "K_{2,2} = C\u2084 Equivalence",
-      "summary": "Full proof of the K_{2,2} \u2194 C\u2084 equivalence with both directions and corollaries",
-      "startLine": 75,
-      "endLine": 140
+      "title": "K_{2,2} = C₄ Equivalence",
+      "summary": "Full proof of both directions (k22_implies_c4 and c4_implies_k22) and the iff-equivalences k22_iff_c4, c4free_iff_k22free",
+      "startLine": 68,
+      "endLine": 139
     },
     {
       "id": "constant-framework",
       "title": "Optimal Constant Framework",
-      "summary": "IsAdmissibleConstant definition, optimalConstant as supremum",
-      "startLine": 142,
-      "endLine": 165
+      "summary": "IsAdmissibleConstant definition (c > 0 with universal guarantee) and optimalConstant as sSup of admissible constants",
+      "startLine": 141,
+      "endLine": 162
+    },
+    {
+      "id": "hereditary",
+      "title": "Hereditary C₄-Freeness",
+      "summary": "empty_isC4Free (empty graph is C₄-free) and c4free_of_subgraph (C₄-freeness passes to subgraphs)",
+      "startLine": 164,
+      "endLine": 183
+    },
+    {
+      "id": "folkman-bound",
+      "title": "Folkman's Upper Bound",
+      "summary": "Edge count of K_{n,n²}, divisibility lemma, rpow ratio calculation, and the axiomatized bound c* ≤ 1",
+      "startLine": 185,
+      "endLine": 218
+    },
+    {
+      "id": "cfs-bound",
+      "title": "CFS Lower Bound and Open Question",
+      "summary": "Axiomatized CFS existence theorem, optimal_constant_pos (sorry), and the combined bounds 0 < c* ≤ 1",
+      "startLine": 220,
+      "endLine": 246
     },
     {
       "id": "structural",
       "title": "Structural Results",
-      "summary": "empty_isC4Free, c4free_of_subgraph, c4free_mono, c4free_common_neighbor_unique",
-      "startLine": 168,
-      "endLine": 280
-    },
-    {
-      "id": "bounds",
-      "title": "Bounds on the Optimal Constant",
-      "summary": "Folkman upper bound c* \u2264 1, CFS lower bound c* > 0",
-      "startLine": 190,
-      "endLine": 240
+      "summary": "c4free_mono (monotonicity via lattice order), c4free_of_few_edges (≤3 edges), and the key c4free_common_neighbor_unique theorem",
+      "startLine": 248,
+      "endLine": 296
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the open question about optimal constants in the C\u2084-free subgraph bound. Proves 15 theorems including the K_{2,2}=C\u2084 equivalence, common neighbor uniqueness, and the Folkman ratio. Establishes 0 < c* \u2264 1 with two axioms for the deep results (Folkman upper bound and CFS existence).",
-    "implications": "The common neighbor uniqueness theorem is the key structural constraint that drives all upper bounds on C\u2084-free graphs. The optimal constant framework provides a precise target for future work.",
+    "summary": "Formalizes the open question about optimal constants in the $C_4$-free subgraph bound. Of 17 theorems, 15 are fully proved including the $K_{2,2} = C_4$ equivalence, common neighbor uniqueness, hereditary $C_4$-freeness, and the Folkman ratio $(n^3)^{2/3} = n^2$. Two axioms encode the deep results: Folkman's upper bound $c^* \\leq 1$ (requiring full KST formalization) and the CFS existence theorem $c^* > 0$.",
+    "implications": "The common neighbor uniqueness theorem ($|N(a) \\cap N(b)| \\leq 1$ in $C_4$-free graphs) is the combinatorial engine behind all density bounds for $C_4$-free graphs, from the original Kővári-Sós-Turán proof to modern dependent random choice arguments. The optimal constant framework via `IsAdmissibleConstant` and `optimalConstant = sSup` provides a clean formalization target: resolving the value of $c^*$ would complete a quantitative picture of $C_4$-free subgraph extraction that has been open since the 1960s. The techniques here connect to graph sparsification in theoretical computer science and to the broader Zarankiewicz problem in combinatorics.",
     "openQuestions": [
       "Determine the exact value of the optimal constant c* in (0, 1]",
       "Is c* = 1/2 (matching the KST coefficient)?",
@@ -95,15 +117,35 @@
   "crossReferences": [
     {
       "relationship": "parent",
-      "description": "This is an open question from Erd\u0151s Problem #1008 about C\u2084-free subgraphs",
+      "description": "This is an open question from Erdős Problem #1008 about C₄-free subgraphs",
       "targetId": "erdos-1008"
+    },
+    {
+      "relationship": "related",
+      "description": "Ramsey's theorem provides the foundational existence results for monochromatic substructures; the C₄-free subgraph problem is a Zarankiewicz/Turán-type analogue",
+      "targetId": "ramseys-theorem"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1009 (edge-disjoint triangles) studies related extremal questions about structured subgraphs in dense graphs",
+      "targetId": "erdos-1009"
     }
   ],
   "relatedProofs": [
     {
       "id": "erdos-1008",
       "relationship": "parent",
-      "description": "Parent problem: C\u2084-free subgraphs with \u03a9(m^{2/3}) edges"
+      "description": "Parent problem: C₄-free subgraphs with Ω(m^{2/3}) edges"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Foundational combinatorial existence theorem; C₄-free extraction is a Zarankiewicz-type analogue of Ramsey extraction"
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "related",
+      "description": "Edge-disjoint triangles beyond Turán — a sibling extremal graph theory problem from the same Erdős collection"
     }
   ],
   "leanFile": {
