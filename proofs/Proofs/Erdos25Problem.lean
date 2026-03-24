@@ -16,8 +16,7 @@ m < nᵢ or m ≢ aᵢ (mod nᵢ). Must the logarithmic density of A exist?
 import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic
-import Mathlib.Data.Int.ModCast
-import Mathlib.Data.Int.Lemmas
+import Mathlib.Data.Int.ModEq
 import Mathlib.Tactic
 
 /-
@@ -89,13 +88,33 @@ axiom finite_sieve_density_exists (σ : CongruenceSieve) (N : ℕ)
 def erdos_486_implies_25 (h486 : ErdosProblem25) : ErdosProblem25 := h486
 
 /-
-## Section V: Density Bounds
+## Section V: Basic Membership and Density Bounds
 -/
 
-/-- The sieved set is nonempty: small integers pass all conditions
-since they are less than the first modulus. -/
-axiom sieved_set_nonempty (σ : CongruenceSieve) :
-  ∃ m : ℕ, m ∈ sievedSet σ ∧ m > 0
+/-- Zero is always in the sieved set: 0 < every modulus (from moduli_pos). -/
+theorem zero_in_sieved (σ : CongruenceSieve) : 0 ∈ sievedSet σ := by
+  intro i
+  left
+  exact_mod_cast σ.moduli_pos i
+
+/-- Any m less than the first modulus is in the sieved set, since
+    strict monotonicity gives m < seq_n 0 ≤ seq_n i for all i. -/
+theorem small_in_sieved (σ : CongruenceSieve) (m : ℕ) (hm : (m : ℤ) < σ.seq_n 0) :
+    m ∈ sievedSet σ := by
+  intro i
+  left
+  calc (m : ℤ) < σ.seq_n 0 := hm
+    _ ≤ σ.seq_n i := by exact_mod_cast σ.strictly_mono.monotone (Nat.zero_le i)
+
+/-- The sieved set contains a positive element when the first modulus is ≥ 2.
+    Note: if seq_n 0 = 1, the sieved set contains only 0 among non-negative integers,
+    since mod 1 every integer is congruent, so no m ≥ 1 can avoid the first sieve.
+    (Previously axiomatized without the seq_n 0 ≥ 2 hypothesis, which was unsound.) -/
+theorem sieved_set_nonempty (σ : CongruenceSieve) (h : σ.seq_n 0 ≥ 2) :
+    ∃ m : ℕ, m ∈ sievedSet σ ∧ m > 0 := by
+  refine ⟨1, small_in_sieved σ 1 ?_, Nat.one_pos⟩
+  have : (1 : ℕ) < σ.seq_n 0 := by omega
+  exact_mod_cast this
 
 /-- Each individual congruence class excludes at most a 1/nᵢ fraction.
 The sieved set has positive logarithmic density when it exists. -/

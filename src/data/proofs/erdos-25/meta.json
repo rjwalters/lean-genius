@@ -20,9 +20,9 @@
     "erdosNumber": 25,
     "erdosUrl": "https://erdosproblems.com/25",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "lineCount": 118,
-    "assumptions": "6 axioms: logDensity, logDensity_mem_unit, logDensity_unique, and 3 more. See Lean source for complete statements.",
+    "axiomCount": 5,
+    "lineCount": 137,
+    "assumptions": "5 axioms: logDensity (opaque predicate), logDensity_mem_unit, logDensity_unique, finite_sieve_density_exists, sieve_density_positive. Previously 6: sieved_set_nonempty eliminated (proved as theorem with corrected hypothesis).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
