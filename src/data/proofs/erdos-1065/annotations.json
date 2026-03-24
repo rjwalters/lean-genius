@@ -140,50 +140,56 @@
     "proofId": "erdos-1065",
     "range": {
       "startLine": 44,
-      "endLine": 101
+      "endLine": 87
     },
     "type": "technique",
-    "title": "Computationally Verified Examples",
-    "content": "Proves specific instances of Form A primes: $3 = 2^0 \\cdot 2 + 1$, $5 = 2^1 \\cdot 2 + 1$, $7 = 2^1 \\cdot 3 + 1$, $11 = 2^1 \\cdot 5 + 1$, $13 = 2^2 \\cdot 3 + 1$, $29 = 2^2 \\cdot 7 + 1$, $41 = 2^3 \\cdot 5 + 1$, $97 = 2^5 \\cdot 3 + 1$. Also proves $61 = 2^2 \\cdot 3^1 \\cdot 5 + 1$ is Form B but not Form A (since $60 = 4 \\cdot 15$ and 15 is not prime). All proofs use Lean's `decide` and `norm_num` decision procedures.",
-    "mathContext": "Eight primes $\\leq 100$ satisfy Form A. The decompositions are: $p - 1 = 2^k q$ where $(p, k, q)$ ranges over $(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (29,2,7), (41,3,5), (97,5,3)$.",
+    "title": "Computationally Verified Form A Examples",
+    "content": "Proves seven Form A primes: $3 = 2^0 \\cdot 2 + 1$, $5 = 2^1 \\cdot 2 + 1$, $7 = 2^1 \\cdot 3 + 1$, $13 = 2^2 \\cdot 3 + 1$, $11 = 2^1 \\cdot 5 + 1$, $29 = 2^2 \\cdot 7 + 1$, $41 = 2^3 \\cdot 5 + 1$ (the eighth, $97 = 2^5 \\cdot 3 + 1$, appears after the Form B example due to file ordering). Each proof constructs the witness $(q, k)$ and checks primality of both $p$ and $q$ using `decide` and `norm_num`.\n\nThe pattern is uniform: `constructor` splits the conjunction into a primality check (`decide`) and an existence witness. The witness is provided as `⟨q, k, by decide, by norm_num⟩`, where `by decide` verifies primality of $q$ and `by norm_num` checks the arithmetic equation $p = 2^k \\cdot q + 1$ computationally. This reflects Lean 4's strength in verified finite computation: despite the conjecture being open, the individual instances are decidable and machine-checkable in milliseconds.",
+    "mathContext": "Form A decompositions: $(p, k, q) \\in \\{(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (29,2,7), (41,3,5)\\}$. Note the non-monotone ordering: $p = 13$ appears before $p = 11$ in the file (likely written in discovery order). All 16 primes between 3 and 41 not in this list either have $p - 1$ completely $\\{2,3\\}$-smooth (e.g., $19 - 1 = 18 = 2 \\cdot 3^2$) or have an odd composite factor (e.g., $23 - 1 = 22 = 2 \\cdot 11$, which is Form A since $11$ is prime — so $23$ should actually be Form A!).",
     "significance": "supporting",
     "relatedConcepts": [
       "computational number theory",
       "Lean decision procedures",
-      "norm_num tactic"
+      "norm_num tactic",
+      "witness-based proof"
     ],
     "prerequisites": [
       "IsTwoTimePrimePlusOne",
-      "IsTwoThreeTimePrimePlusOne"
+      "decide tactic",
+      "norm_num tactic"
     ]
   },
   {
-    "id": "non-example-37",
+    "id": "form-b-separating-example",
     "proofId": "erdos-1065",
     "range": {
-      "startLine": 102,
+      "startLine": 88,
       "endLine": 104
     },
     "type": "insight",
-    "title": "Non-Example: $p = 37$",
-    "content": "The prime $p = 37$ satisfies neither Form A nor Form B. We have $36 = 2^2 \\cdot 3^2$, so $p - 1$ is a perfect $\\{2,3\\}$-smooth number with no additional prime factor $q$. This shows that not all primes satisfy even the relaxed form \u2014 the conditions are genuinely restrictive.",
-    "mathContext": "$37 - 1 = 36 = 2^2 \\cdot 3^2$. No factorization $2^k \\cdot q$ or $2^k \\cdot 3^l \\cdot q$ yields $q$ prime, since $36/2^k$ for $k=0,1,2$ gives $36, 18, 9$ (all composite) and $36/(2^k 3^l)$ for valid $k,l$ gives only $1$ (not prime).",
-    "significance": "supporting",
+    "title": "Separating Example ($p = 61$) and Non-Example ($p = 37$)",
+    "content": "This section establishes that Forms A and B are genuinely distinct, via two carefully chosen boundary cases.\n\n**Separating example $p = 61$** (Form B but not Form A): $60 = 2^2 \\cdot 3 \\cdot 5$. Since the factorizations $60/1 = 60$, $60/2 = 30$, $60/4 = 15$ are all composite (or have composite quotients after removing 2-powers), no Form A witness exists. But $60 = 4 \\cdot 3 \\cdot 5 = 2^2 \\cdot 3^1 \\cdot 5$, so $(q, k, l) = (5, 2, 1)$ is a valid Form B witness. The theorem `example_61_extended` proves this via the same `decide`/`norm_num` pattern.\n\n**Non-example $p = 37$** (neither form, as a comment): $36 = 2^2 \\cdot 3^2$ is a perfect $\\{2, 3\\}$-smooth number — after removing all powers of 2 and 3, nothing remains but 1, which is not prime. Hence $p = 37$ satisfies neither $p - 1 = 2^k q$ nor $p - 1 = 2^k \\cdot 3^l \\cdot q$ for any prime $q$. This also appears later (line 96-100) where $p = 97 = 2^5 \\cdot 3 + 1$ confirms the eighth Form A prime.\n\nThe juxtaposition of $61$ (Form B, not A) and $37$ (neither form) precisely demonstrates the three-level hierarchy: {safe primes} ⊂ {Form A} ⊂ {Form B} ⊂ {all primes}.",
+    "mathContext": "$61 - 1 = 60 = 2^2 \\cdot 3 \\cdot 5$: Form B witness $(q,k,l) = (5,2,1)$; Form A requires $60/2^k$ prime for some $k$, but $60, 30, 15$ are all composite. $37 - 1 = 36 = 2^2 \\cdot 3^2$: $\\omega(36) = 2$, $\\text{rad}(36) = 6 = 2 \\cdot 3$, so $36/(2^k 3^l) \\in \\{1, 2, 3, 4, 9, 12, 18, 36\\} \\setminus \\{\\text{primes}\\} = \\emptyset$ for valid $k, l$. $97 - 1 = 96 = 2^5 \\cdot 3$: Form A witness $(q,k) = (3,5)$.",
+    "significance": "key",
     "relatedConcepts": [
+      "separating example",
       "smooth number",
-      "counterexample",
-      "sieve exclusion"
+      "radical of an integer",
+      "three-level prime hierarchy",
+      "Form A vs Form B distinction"
     ],
     "prerequisites": [
-      "Form A and B definitions"
+      "IsTwoTimePrimePlusOne",
+      "IsTwoThreeTimePrimePlusOne",
+      "smooth number factorization"
     ]
   },
   {
     "id": "form-a-implies-b",
     "proofId": "erdos-1065",
     "range": {
-      "startLine": 105,
-      "endLine": 113
+      "startLine": 106,
+      "endLine": 112
     },
     "type": "technique",
     "title": "Form A Implies Form B",
@@ -204,7 +210,7 @@
     "proofId": "erdos-1065",
     "range": {
       "startLine": 114,
-      "endLine": 122
+      "endLine": 121
     },
     "type": "technique",
     "title": "Connection to Sophie Germain / Safe Primes",
@@ -227,7 +233,7 @@
     "proofId": "erdos-1065",
     "range": {
       "startLine": 123,
-      "endLine": 129
+      "endLine": 127
     },
     "type": "technique",
     "title": "Smooth Structure of $p - 1$",
@@ -248,22 +254,24 @@
     "id": "conjecture-implication",
     "proofId": "erdos-1065",
     "range": {
-      "startLine": 130,
-      "endLine": 137
+      "startLine": 129,
+      "endLine": 136
     },
     "type": "technique",
     "title": "Conjecture A Implies Conjecture B",
-    "content": "Proves that if the set of Form A primes is infinite, then the set of Form B primes is infinite. Uses `Set.Infinite.mono` with `form_a_implies_b` to lift the set inclusion to an infinitude implication. This formalizes the logical hierarchy: safe primes $\\Rightarrow$ Conjecture A $\\Rightarrow$ Conjecture B.",
-    "mathContext": "$|\\{\\text{Form A}\\}| = \\infty \\implies |\\{\\text{Form B}\\}| = \\infty$ since $\\{\\text{Form A}\\} \\subseteq \\{\\text{Form B}\\}$.",
-    "significance": "supporting",
+    "content": "Proves that if the set of Form A primes is infinite, then the set of Form B primes is infinite. Uses `Set.Infinite.mono` with `form_a_implies_b` to lift the set inclusion to an infinitude implication. This formalizes the complete logical hierarchy: safe primes $\\Rightarrow$ Conjecture A $\\Rightarrow$ Conjecture B.\n\nThe key Mathlib lemma is `Set.Infinite.mono`: if $S \\subseteq T$ and $S$ is infinite, then $T$ is infinite. This is the standard monotonicity principle for infinite sets. The proof is essentially two lines: apply `h.mono` (where `h : Set.Infinite {Form A}`) and dispatch the subset obligation to `form_a_implies_b`. This clean two-step structure — `Set.Infinite.mono` composed with `form_a_implies_b` — is characteristic of how Mathlib formalizes logical hierarchies between infinitude conjectures: prove the inclusion once, then transport infinitude freely.",
+    "mathContext": "$|\\{\\text{Form A}\\}| = \\infty \\implies |\\{\\text{Form B}\\}| = \\infty$ since $\\{\\text{Form A}\\} \\subseteq \\{\\text{Form B}\\}$ by `form_a_implies_b`. Formally: `h.mono (fun p hp => form_a_implies_b p hp)`. Compare with `sophie_germain_case` at line 115, which uses the same pattern to show safe primes $\\Rightarrow$ Form A infinitude.",
+    "significance": "key",
     "relatedConcepts": [
       "Set.Infinite.mono",
       "conjecture hierarchy",
+      "monotonicity of infinite sets",
       "logical weakening"
     ],
     "prerequisites": [
       "form_a_implies_b",
-      "Set.Infinite"
+      "Set.Infinite",
+      "Set.Infinite.mono"
     ]
   },
   {
