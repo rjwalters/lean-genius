@@ -236,5 +236,32 @@
       "citation": "Stillwell, J., Mathematics and Its History, 3rd ed., Springer Undergraduate Texts in Mathematics (2010), Chapters 6–7: cubic and quartic equations.",
       "type": "book"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "solution-of-cubic",
+      "title": "Solution of the Cubic",
+      "relationship": "parent — this is an open question derived from cubic equation theory"
+    },
+    {
+      "id": "abel-ruffini",
+      "title": "Abel-Ruffini Theorem",
+      "relationship": "related — both concern the solvability of polynomial equations by radicals"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "title": "Fundamental Theorem of Algebra",
+      "relationship": "foundation — guarantees existence of roots whose structure is studied here"
+    },
+    {
+      "id": "general-quartic",
+      "title": "General Quartic",
+      "relationship": "sibling — extends cubic solutions to quartic equations"
+    },
+    {
+      "id": "vietas-formulas",
+      "title": "Vieta's Formulas",
+      "relationship": "technique — connects coefficients to roots, essential for cubic analysis"
+    }
   ]
 }
