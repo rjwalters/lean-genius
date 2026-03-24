@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 11,
-    "focus": "Session 11: Proved density_increment_lemma sorry-free (1<N, M<N). Restructured roth_density_bound. Fixed multiple Mathlib API breakages.",
+    "iteration": 13,
+    "focus": "Session 13: Added density_bound_from_increment and apFree_density_lt_two_thirds lemmas. Fixed 4 linter warnings. Documented fix path for remaining sorry.",
     "blockers": [
       "Pre-existing Mathlib API breakages in fourier_large_coefficient (lines 583-800)",
       "Dirichlet approximation needed for N=1 iteration case (in density_increment_iter)"
     ],
-    "nextAction": "Fix remaining Mathlib API breakages in fourier_large_coefficient CASE 2",
+    "nextAction": "Integrate DirichletApproximation.lean to close last sorry",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 12 fixed all 6 pre-existing Mathlib API breakages in fourier_large_coefficient Case 2, proved N=1 easy case of density_increment_iter, updated meta.json. File now fully compiles with 0 axioms, 1 sorry (narrowed to N=1 hard case requiring Dirichlet approximation). 1442 lines.",
+    "progressSummary": "PROGRESS: Session 13 added density_bound_from_increment lemma (d+d²/100≤1 from density_increment_lemma+card_le_nat), apFree_density_lt_two_thirds lemma (δ≤2/3 for N≥3), fixed 4 linter warnings, improved sorry documentation with detailed fix path. File: 0 axioms, 1 sorry, 1476 lines.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -64,7 +64,10 @@
       "Fixed Complex.norm_real → Complex.norm_real + Real.norm_eq_abs pattern",
       "Fixed lt_div_iff → lt_div_iff₀ for new Mathlib naming",
       "Restructured hn_gt_B proof: use delta<1 from n<N instead of strict division",
-      "Split nlinarith timeout into intermediate lemma hcaseN + linarith"
+      "Split nlinarith timeout into intermediate lemma hcaseN + linarith",
+      "PROVED density_bound_from_increment: δ+δ²/100≤1 from density_increment_lemma+card_le_nat",
+      "PROVED apFree_density_lt_two_thirds: δ≤2/3 for APFree on ZMod N with N≥3",
+      "Fixed 4 linter warnings: unused simp args (true_and, Finset.mem_univ), unused vars (_hg, _hAP, _hdelta1, _hdelta)"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -108,13 +111,17 @@
       "fourier_large_coefficient Case 2 fully proved: fixed 6 Mathlib API breakages (Complex.norm_real→norm_real+norm_eq_abs, lt_div_iff→lt_div_iff₀, nlinarith hint needs, norm_pow congr pattern)",
       "density_increment_iter N=1 easy case proved: for delta+delta²/100≤1, take M=1 B=Finset.univ (APFree on ZMod 1 is vacuous since only one element)",
       "density_increment_iter N=1 hard case (delta∈(0.99,1]) is genuinely FALSE — conclusion requires |B|>(delta+delta²/100)*M>M but |B|≤M always. Needs Dirichlet approximation to prevent descent reaching N=1 with high density",
-      "Proof now has 0 axioms, 1 sorry, 1442 lines — all 6 Parts fully compilable"
+      "Proof now has 0 axioms, 1 sorry, 1442 lines — all 6 Parts fully compilable",
+      "density_bound_from_increment proves d+d²/100≤1 for ANY application of density_increment_lemma — this is the exact threshold L≈0.99 that the iteration cannot cross at M=1",
+      "apFree_card_le_two_thirds (3|A|≤2N for N≥3) gives δ≤2/3 directly — handles Roth for δ>2/3 without any iteration",
+      "The sorry is provably FALSE as stated (hypotheses consistent, conclusion unsatisfiable) — NOT a missing proof technique but a wrong theorem statement requiring Dirichlet",
+      "Without Dirichlet, density_increment_lemma can produce M=1 from ANY N≥2 (M=gcd(val(r),N)=1 for prime N), allowing descent to reach N=1 in one step"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize Dirichlet approximation theorem (~50-80 lines Lean) to close the last sorry",
-      "Alternative: prove density_increment_lemma_strong guaranteeing M≥√N (replaces current M≥1)",
-      "Alternative: restructure roth_density_bound to detect contradiction when density_increment_lemma produces M=1 with d+d²/4>1 (avoids Dirichlet entirely)"
+      "Integrate DirichletApproximation.lean into density_increment_lemma (~220 lines): use Dirichlet-based subprogression partition to guarantee M≥2",
+      "Alternative: restructure roth_density_bound to use apFree_card_le_two_thirds (δ≤2/3) as the contradiction target instead of card_le_nat (δ≤1) — would work if M≥2 can be guaranteed",
+      "Alternative: prove density_increment_lemma_dirichlet that uses approximate character constancy on Dirichlet subprogressions instead of exact constancy on cosets"
     ]
   },
   "tags": [
@@ -133,7 +140,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T21:00:00Z",
+  "lastUpdate": "2026-03-23T22:00:00Z",
   "significance": 9,
   "tractability": 6
 }
