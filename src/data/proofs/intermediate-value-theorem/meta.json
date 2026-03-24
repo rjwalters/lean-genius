@@ -16,7 +16,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/IntermediateValueTheorem.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -45,8 +45,7 @@
     "wiedijkNumber": 79,
     "axiomCount": 0,
     "lineCount": 221,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "assumptions": "0 axioms, 0 sorries. Core IVT (intermediate_value_Icc) from Mathlib; original work is pedagogical infrastructure and corollaries."
   },
   "overview": {
     "historicalContext": "The Intermediate Value Theorem (IVT) is one of the foundational results in real analysis, first rigorously stated by Bernard Bolzano in 1817. Bolzano's work was largely ignored in his time, and Augustin-Louis Cauchy independently presented a more complete treatment in 1821.\n\nHowever, both Bolzano's and Cauchy's proofs relied on properties of real numbers that weren't rigorously established until later. The theorem essentially requires the completeness of the real numbers - the property that every bounded set has a supremum. This was finally formalized by Richard Dedekind and Georg Cantor in the 1870s through their constructions of the real numbers from the rationals.\n\nThe IVT is intimately connected to the topological notion of connectedness: it expresses the fact that continuous images of connected sets are connected, and connected subsets of ℝ are intervals.",
@@ -70,42 +69,42 @@
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 44,
+      "endLine": 43,
       "summary": "Introduces the historical context, imports Mathlib's topology and intermediate value libraries, and opens the namespace."
     },
     {
       "id": "classical-statement",
       "title": "The Classical Statement",
       "startLine": 45,
-      "endLine": 73,
+      "endLine": 72,
       "summary": "Presents the main IVT theorem: continuous functions on closed intervals hit all intermediate values."
     },
     {
       "id": "existence-form",
       "title": "Explicit Existence Form",
       "startLine": 74,
-      "endLine": 108,
+      "endLine": 107,
       "summary": "Reformulates IVT as an explicit existence statement: given c between f(a) and f(b), there exists x with f(x) = c."
     },
     {
       "id": "bolzano",
       "title": "Root-Finding Corollary (Bolzano's Theorem)",
       "startLine": 109,
-      "endLine": 168,
+      "endLine": 167,
       "summary": "Proves that if f(a) and f(b) have opposite signs, f has a root in (a, b). Also proves the general sign-change criterion."
     },
     {
       "id": "connected-sets",
       "title": "Continuous Functions on Connected Sets",
       "startLine": 169,
-      "endLine": 184,
+      "endLine": 183,
       "summary": "Shows IVT as a consequence of the general principle that continuous images of connected sets are connected."
     },
     {
       "id": "applications",
       "title": "Applications and Corollaries",
       "startLine": 185,
-      "endLine": 214,
+      "endLine": 213,
       "summary": "Proves that odd-degree polynomials have roots and the fixed point theorem for continuous self-maps on intervals."
     },
     {

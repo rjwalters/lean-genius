@@ -54,8 +54,7 @@
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
     "lineCount": 279,
-    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
-    "mathlib_version": "4.26.0"
+    "assumptions": "0 axioms, 0 sorries in this file. Depends on DissectionOfCubes.dissection_of_cubes (Wiedijk #82) which uses 2 axioms for 3D geometric properties."
   },
   "overview": {
     "historicalContext": "Littlewood's 1953 proof (Wiedijk #82) established that NO cube dissection can have all different sizes: in any finite partition of a cube into smaller cubes, at least two must share the same side length. The infinite descent argument — the smallest cube on any floor forces an ever-smaller cube above it — implies repeated sizes are unavoidable.\n\nThis raises a natural quantitative follow-up: exactly how many cubes must participate in size repetitions? The binary existence statement 'at least one collision pair' is equivalent to saying 'at least 2 cubes collide.' But in all known cube dissections, many more cubes share sizes. The question of whether exactly 2 is achievable remains open.\n\nBy contrast, the 2D analog (squaring the square) allows ALL different sizes. The smallest simple perfect squared square, found by Brooks–Smith–Stone–Tutte (1940), uses 21 squares with all different sizes. This dimensional gap makes the 3D minimum collision number especially intriguing.",
@@ -79,28 +78,28 @@
       "id": "collision-pairs",
       "title": "Collision Pairs and Lower Bound",
       "startLine": 46,
-      "endLine": 72,
+      "endLine": 71,
       "summary": "Defining collision pairs and proving every nonempty dissection has at least one."
     },
     {
       "id": "size-classes",
       "title": "Size Classes and Collision Count",
       "startLine": 73,
-      "endLine": 110,
+      "endLine": 109,
       "summary": "The sizeClass Finset and its cardinality lower bound for colliding cubes."
     },
     {
       "id": "quantitative-bound",
       "title": "Quantitative Lower Bound: ≥ 2 Colliding Cubes",
       "startLine": 111,
-      "endLine": 152,
+      "endLine": 151,
       "summary": "The collidingCubes Finset and proof that card ≥ 2 via cardinality of a pair."
     },
     {
       "id": "open-question",
       "title": "The Open Question: HasMinimalCollision",
       "startLine": 153,
-      "endLine": 193,
+      "endLine": 192,
       "summary": "Formal statement of the open question: can collidingCubes.card = 2?"
     },
     {
@@ -114,7 +113,7 @@
       "id": "squared-square",
       "title": "Comparison with 2D (Squared Squares)",
       "startLine": 221,
-      "endLine": 279,
+      "endLine": 274,
       "summary": "Dimensional contrast: all-different sizes are achievable in 2D but not 3D."
     }
   ],
