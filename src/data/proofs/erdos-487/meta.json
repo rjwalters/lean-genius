@@ -2,7 +2,7 @@
   "id": "erdos-487",
   "title": "LCM Triples in Dense Sets",
   "slug": "erdos-487",
-  "description": "Let A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A such that lcm(a,b) = c? YES - follows from Kleitman's 1971 theorem on union-free collections.",
+  "description": "Let A \u2286 \u2115 have positive density. Must there exist distinct a, b, c \u2208 A such that lcm(a,b) = c? YES - follows from Kleitman's 1971 theorem on union-free collections.",
   "meta": {
     "author": "Kleitman",
     "sourceUrl": "https://erdosproblems.com/487",
@@ -28,22 +28,22 @@
       "Prime factorization and fundamental theorem of arithmetic",
       "Extremal combinatorics (union-free collections)",
       "Kleitman's theorem on union-free families",
-      "Davenport-Erdős theorem on divisibility chains",
+      "Davenport-Erd\u0151s theorem on divisibility chains",
       "Asymptotic notation (little-o)"
     ],
     "lineCount": 368,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem sits at the intersection of multiplicative number theory and extremal combinatorics. The foundational insight, recognized by Erdős, is that prime factorization creates a bijection between positive integers and finite subsets of primes (with multiplicities), under which lcm corresponds to set union. Harold Davenport and Erdős proved in 1936 that any set of integers with positive upper density contains arbitrarily long divisibility chains a₁ | a₂ | ··· | aₖ, establishing that dense sets carry rich multiplicative structure. The LCM triple question asks whether this extends to the weaker relation lcm(a,b) = c. Daniel Kleitman resolved it affirmatively in 1971 via a purely combinatorial argument: he proved that union-free families of subsets of an n-element set have size at most (1+o(1))·C(n, ⌊n/2⌋), which is exponentially smaller than 2^n. Under the prime factorization correspondence, an LCM-free set of integers maps to a union-free collection, and Kleitman's bound forces such sets to have density zero. The proof is elegant in its use of the bijection to transfer a number-theoretic question to an extremal set system result.",
-    "problemStatement": "Let A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A such that [a,b] = c (where [a,b] is the least common multiple of a and b)?",
-    "text": "Let A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A such that lcm(a,b) = c? YES - follows from Kleitman's 1971 theorem on union-free collections.",
-    "proofStrategy": "The proof works by contradiction using the prime factorization bijection. If A has positive density δ > 0 but no LCM triples, then the image of A under the prime factorization map is a union-free collection of sets. By Kleitman's theorem, such collections have size o(2^n), which translates to o(N) elements up to N. But positive density requires at least δN elements, a contradiction for large N.",
+    "historicalContext": "This problem sits at the intersection of multiplicative number theory and extremal combinatorics. The foundational insight, recognized by Erd\u0151s, is that prime factorization creates a bijection between positive integers and finite subsets of primes (with multiplicities), under which lcm corresponds to set union. Harold Davenport and Erd\u0151s proved in 1936 that any set of integers with positive upper density contains arbitrarily long divisibility chains a\u2081 | a\u2082 | \u00b7\u00b7\u00b7 | a\u2096, establishing that dense sets carry rich multiplicative structure. The LCM triple question asks whether this extends to the weaker relation lcm(a,b) = c. Daniel Kleitman resolved it affirmatively in 1971 via a purely combinatorial argument: he proved that union-free families of subsets of an n-element set have size at most (1+o(1))\u00b7C(n, \u230an/2\u230b), which is exponentially smaller than 2^n. Under the prime factorization correspondence, an LCM-free set of integers maps to a union-free collection, and Kleitman's bound forces such sets to have density zero. The proof is elegant in its use of the bijection to transfer a number-theoretic question to an extremal set system result.",
+    "problemStatement": "Let A \u2286 \u2115 have positive density. Must there exist distinct a, b, c \u2208 A such that [a,b] = c (where [a,b] is the least common multiple of a and b)?",
+    "text": "Let A \u2286 \u2115 have positive density. Must there exist distinct a, b, c \u2208 A such that lcm(a,b) = c? YES - follows from Kleitman's 1971 theorem on union-free collections.",
+    "proofStrategy": "The proof works by contradiction using the prime factorization bijection. If A has positive density \u03b4 > 0 but no LCM triples, then the image of A under the prime factorization map is a union-free collection of sets. By Kleitman's theorem, such collections have size o(2^n), which translates to o(N) elements up to N. But positive density requires at least \u03b4N elements, a contradiction for large N.",
     "keyInsights": [
       "Prime factorization creates a bijection where lcm(a,b) = c corresponds to union of factorization sets",
       "LCM-free sets correspond to union-free collections under this bijection",
-      "Kleitman's bound on union-free collections is (1+o(1))·C(n, ⌊n/2⌋) = o(2^n)",
-      "Positive density sets have ~δN elements up to N, but union-free collections have o(N) elements",
+      "Kleitman's bound on union-free collections is (1+o(1))\u00b7C(n, \u230an/2\u230b) = o(2^n)",
+      "Positive density sets have ~\u03b4N elements up to N, but union-free collections have o(N) elements",
       "The contradiction proves LCM triples must exist in any dense set"
     ],
     "prerequisites": [
@@ -52,7 +52,7 @@
       "Prime factorization and fundamental theorem of arithmetic",
       "Extremal combinatorics (union-free collections)",
       "Kleitman's theorem on union-free families",
-      "Davenport-Erdős theorem on divisibility chains",
+      "Davenport-Erd\u0151s theorem on divisibility chains",
       "Asymptotic notation (little-o)"
     ]
   },
@@ -75,8 +75,8 @@
       "id": "davenport-erdos",
       "startLine": 110,
       "endLine": 156,
-      "summary": "The 1936 Davenport-Erdős result and the coprime multipliers LCM triple construction.",
-      "title": "Davenport-Erdős Theorem"
+      "summary": "The 1936 Davenport-Erd\u0151s result and the coprime multipliers LCM triple construction.",
+      "title": "Davenport-Erd\u0151s Theorem"
     },
     {
       "id": "kleitman",
@@ -108,11 +108,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #487 is SOLVED. Sets with positive density must contain distinct elements a, b, c with lcm(a,b) = c. This follows from Kleitman's 1971 bound on union-free collections, using the prime factorization bijection between LCM triples and set unions.",
-    "implications": "The result establishes a fundamental constraint on dense subsets of ℕ: they cannot avoid LCM relationships. This connects number-theoretic density to extremal combinatorics of set systems.",
+    "summary": "Erd\u0151s Problem #487 is SOLVED. Sets with positive density must contain distinct elements a, b, c with lcm(a,b) = c. This follows from Kleitman's 1971 bound on union-free collections, using the prime factorization bijection between LCM triples and set unions.",
+    "implications": "The result establishes a fundamental constraint on dense subsets of \u2115: they cannot avoid LCM relationships. This connects number-theoretic density to extremal combinatorics of set systems.",
     "openQuestions": [
       "What is the minimum density required to guarantee an LCM triple?",
-      "For density δ, how many distinct LCM triples exist up to N?",
+      "For density \u03b4, how many distinct LCM triples exist up to N?",
       "Can the quantitative bounds from Kleitman's theorem be improved?"
     ]
   },
@@ -125,10 +125,10 @@
       "note": "Proved the bound on union-free families that implies the LCM triple result"
     },
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "Where Problem 487 appears"
     }
   ],
@@ -136,7 +136,7 @@
     {
       "targetId": "erdos-483",
       "relationship": "related",
-      "description": "Both are Erdős problems about additive/multiplicative structure forced by density: #483 studies Schur numbers (avoiding a+b=c), #487 studies LCM triples in dense sets"
+      "description": "Both are Erd\u0151s problems about additive/multiplicative structure forced by density: #483 studies Schur numbers (avoiding a+b=c), #487 studies LCM triples in dense sets"
     }
   ],
   "relatedProofs": [
@@ -158,6 +158,7 @@
     "lineCount": 368,
     "axiomCount": 6,
     "theoremCount": 6,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   }
 }

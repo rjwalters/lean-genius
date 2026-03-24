@@ -2,7 +2,7 @@
   "id": "inclusion-exclusion",
   "title": "Principle of Inclusion/Exclusion",
   "slug": "inclusion-exclusion",
-  "description": "The fundamental counting principle for unions of finite sets: |A ∪ B| = |A| + |B| - |A ∩ B|, and its generalization to three or more sets.",
+  "description": "The fundamental counting principle for unions of finite sets: |A \u222a B| = |A| + |B| - |A \u2229 B|, and its generalization to three or more sets.",
   "meta": {
     "author": "Abraham de Moivre (1718), formalized via Mathlib",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Finset/Card.html",
@@ -21,17 +21,17 @@
     "mathlibDependencies": [
       {
         "theorem": "Finset.card_union_add_card_inter",
-        "description": "|A ∪ B| + |A ∩ B| = |A| + |B|",
+        "description": "|A \u222a B| + |A \u2229 B| = |A| + |B|",
         "module": "Mathlib.Data.Finset.Card"
       },
       {
         "theorem": "Finset.card_union_of_disjoint",
-        "description": "For disjoint sets, |A ∪ B| = |A| + |B|",
+        "description": "For disjoint sets, |A \u222a B| = |A| + |B|",
         "module": "Mathlib.Data.Finset.Card"
       }
     ],
     "originalContributions": [
-      "Classical two-set form: |A ∪ B| = |A| + |B| - |A ∩ B|",
+      "Classical two-set form: |A \u222a B| = |A| + |B| - |A \u2229 B|",
       "Three-set generalization with all pairwise and triple intersections",
       "Upper and lower bounds for union cardinality",
       "Symmetric difference cardinality formula",
@@ -52,8 +52,8 @@
   "overview": {
     "historicalContext": "The inclusion-exclusion principle was first formulated by Abraham de Moivre in 1718 for computing probabilities. It was later generalized by Daniel da Silva (1854) and Joseph Sylvester. The principle is fundamental in combinatorics, probability theory, and number theory (e.g., Euler's totient function uses inclusion-exclusion).\n\nThe basic idea addresses a common counting problem: when we add the sizes of two sets, elements in their intersection get counted twice. The principle systematically corrects for this overcounting.",
     "problemStatement": "**Two-Set Formula**: For finite sets A and B:\n\n$$|A \\cup B| = |A| + |B| - |A \\cap B|$$\n\n**Three-Set Formula**: For finite sets A, B, and C:\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\nThis is Wiedijk's 100 Theorems #96.",
-    "text": "The fundamental counting principle for unions of finite sets: |A ∪ B| = |A| + |B| - |A ∩ B|, and its generalization to three or more sets.",
-    "proofStrategy": "**The Venn Diagram Intuition:**\n\nWhen counting |A ∪ B| by adding |A| and |B|:\n- Elements only in A are counted once (correct)\n- Elements only in B are counted once (correct)\n- Elements in A ∩ B are counted twice (overcounted!)\n\nSo we subtract |A ∩ B| to correct. For three sets, we:\n1. Add individual sets (overcount pairwise intersections)\n2. Subtract pairwise intersections (oversubtract triple intersection)\n3. Add back the triple intersection\n\nThe formalization uses Mathlib's `card_union_add_card_inter` identity and derives the classical subtraction form.",
+    "text": "The fundamental counting principle for unions of finite sets: |A \u222a B| = |A| + |B| - |A \u2229 B|, and its generalization to three or more sets.",
+    "proofStrategy": "**The Venn Diagram Intuition:**\n\nWhen counting |A \u222a B| by adding |A| and |B|:\n- Elements only in A are counted once (correct)\n- Elements only in B are counted once (correct)\n- Elements in A \u2229 B are counted twice (overcounted!)\n\nSo we subtract |A \u2229 B| to correct. For three sets, we:\n1. Add individual sets (overcount pairwise intersections)\n2. Subtract pairwise intersections (oversubtract triple intersection)\n3. Add back the triple intersection\n\nThe formalization uses Mathlib's `card_union_add_card_inter` identity and derives the classical subtraction form.",
     "keyInsights": [
       "**Additive form first**: The identity $|A \\cup B| + |A \\cap B| = |A| + |B|$ (Mathlib's `card_union_add_card_inter`) avoids natural number subtraction pitfalls. The classical $|A \\cup B| = |A| + |B| - |A \\cap B|$ is derived from it via `omega`.",
       "**Exact counting by alternation**: Each element is counted exactly once in the alternating sum. An element in $k$ of the $n$ sets contributes $\\binom{k}{1} - \\binom{k}{2} + \\cdots + (-1)^{k+1}\\binom{k}{k} = 1$ by the binomial theorem.",
@@ -120,37 +120,37 @@
   ],
   "conclusion": {
     "summary": "The inclusion-exclusion principle provides a systematic way to count elements in unions of sets by correcting for overcounting. The formalization uses Mathlib's additive identity and derives the classical subtraction form through careful handling of natural number arithmetic.",
-    "implications": "**Theoretical Significance:**\n\n**1. Counting Theory**\nFoundation for counting problems involving overlapping sets.\n\n**2. Probability**\nExtends directly to probability measures on finite sample spaces.\n\n**3. Number Theory**\nEuler's totient function φ(n) uses inclusion-exclusion to count integers coprime to n.\n\n**Applications:**\n\n- Counting permutations with forbidden positions (derangements)\n- Computing probabilities of compound events\n- Combinatorial identities like Stirling numbers",
+    "implications": "**Theoretical Significance:**\n\n**1. Counting Theory**\nFoundation for counting problems involving overlapping sets.\n\n**2. Probability**\nExtends directly to probability measures on finite sample spaces.\n\n**3. Number Theory**\nEuler's totient function \u03c6(n) uses inclusion-exclusion to count integers coprime to n.\n\n**Applications:**\n\n- Counting permutations with forbidden positions (derangements)\n- Computing probabilities of compound events\n- Combinatorial identities like Stirling numbers",
     "openQuestions": [
       "What is the general n-set formula with formal induction?",
-      "How does this connect to Möbius inversion on posets?",
+      "How does this connect to M\u00f6bius inversion on posets?",
       "What are efficient algorithms for computing inclusion-exclusion sums?"
     ]
   },
   "references": [
     {
       "authors": "Rota, Gian-Carlo",
-      "title": "On the Foundations of Combinatorial Theory I: Theory of Möbius Functions",
+      "title": "On the Foundations of Combinatorial Theory I: Theory of M\u00f6bius Functions",
       "year": "1964",
-      "venue": "Zeitschrift für Wahrscheinlichkeitstheorie, 2, pp. 340-368",
-      "note": "Generalized inclusion-exclusion to Möbius inversion on partially ordered sets, unifying combinatorial counting principles"
+      "venue": "Zeitschrift f\u00fcr Wahrscheinlichkeitstheorie, 2, pp. 340-368",
+      "note": "Generalized inclusion-exclusion to M\u00f6bius inversion on partially ordered sets, unifying combinatorial counting principles"
     }
   ],
   "crossReferences": [
     {
       "targetId": "derangements",
       "relationship": "applies",
-      "description": "The derangement formula D(n) = n!·Σ(-1)^k/k! is a direct application of inclusion-exclusion to count permutations with no fixed points"
+      "description": "The derangement formula D(n) = n!\u00b7\u03a3(-1)^k/k! is a direct application of inclusion-exclusion to count permutations with no fixed points"
     },
     {
       "targetId": "euler-totient",
       "relationship": "applies",
-      "description": "Euler's totient φ(n) = n·Π(1-1/p) uses inclusion-exclusion to count integers coprime to n"
+      "description": "Euler's totient \u03c6(n) = n\u00b7\u03a0(1-1/p) uses inclusion-exclusion to count integers coprime to n"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem explains why the alternating sum counts each element exactly once: Σ(-1)^(k+1)C(k,j) = 1 for k ≥ 1"
+      "description": "The binomial theorem explains why the alternating sum counts each element exactly once: \u03a3(-1)^(k+1)C(k,j) = 1 for k \u2265 1"
     },
     {
       "targetId": "combinations-formula",
@@ -170,12 +170,12 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "related",
-      "description": "The sieve of Eratosthenes is an inclusion-exclusion argument: count integers not divisible by any prime up to √n by alternately subtracting and adding multiples of prime products"
+      "description": "The sieve of Eratosthenes is an inclusion-exclusion argument: count integers not divisible by any prime up to \u221an by alternately subtracting and adding multiples of prime products"
     },
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization enables inclusion-exclusion over prime divisors: φ(n) = n·∏(1-1/p) uses I-E with sets A_p = {k ≤ n : p | k} for each prime p | n"
+      "description": "Unique prime factorization enables inclusion-exclusion over prime divisors: \u03c6(n) = n\u00b7\u220f(1-1/p) uses I-E with sets A_p = {k \u2264 n : p | k} for each prime p | n"
     }
   ],
   "relatedProofs": [
@@ -201,6 +201,7 @@
     "lineCount": 218,
     "axiomCount": 0,
     "theoremCount": 7,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

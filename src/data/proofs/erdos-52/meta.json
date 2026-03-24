@@ -1,10 +1,10 @@
 {
   "id": "erdos-52",
-  "title": "Erdős Problem #52: The Sum-Product Conjecture",
+  "title": "Erd\u0151s Problem #52: The Sum-Product Conjecture",
   "slug": "erdos-52",
-  "description": "For a finite set A of integers, is max(|A+A|, |A·A|) ≫ |A|^{2-ε} for every ε > 0? Erdős–Szemerédi proved a super-linear bound; Bloom (2025) achieved |A|^{1.335}. OPEN ($250 prize).",
+  "description": "For a finite set A of integers, is max(|A+A|, |A\u00b7A|) \u226b |A|^{2-\u03b5} for every \u03b5 > 0? Erd\u0151s\u2013Szemer\u00e9di proved a super-linear bound; Bloom (2025) achieved |A|^{1.335}. OPEN ($250 prize).",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/52",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos52Problem.lean",
@@ -24,27 +24,27 @@
     "prerequisites": [
       "Sumsets and product sets of finite sets",
       "Additive combinatorics",
-      "Incidence geometry (Szemerédi-Trotter)",
+      "Incidence geometry (Szemer\u00e9di-Trotter)",
       "Real analysis and arithmetic structure"
     ],
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The sum-product conjecture originated in a landmark 1983 paper by Paul Erdős and Endre Szemerédi, \"A combinatorial theorem in group theory,\" where they proved the first super-linear bound $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ with $c = 1/31$ using the Szemerédi–Trotter incidence theorem. The conjecture itself — that the exponent should be $2-\\varepsilon$ for any $\\varepsilon > 0$ — reflects a deep philosophical insight: addition and multiplication are fundamentally incompatible operations on finite sets. An arithmetic progression $\\{1,2,\\ldots,n\\}$ has small sumset ($|A+A| = 2n-1$) but large product set, while a geometric progression $\\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has small product set but large sumset. The conjecture says these are essentially the only ways to have a small sum-product quantity. The exponent has been improved through a remarkable sequence of breakthroughs: Nathanson–Ford ($c = 1/15$), Elekes (1997, exponent $5/4$ via an elegant geometric argument), Solymosi (2009, exponent $4/3$ using multiplicative energy), Konyagin–Shkredov (2016), Rudnev–Stevens (2022), and Bloom (2025, exponent $1270/951 \\approx 1.335$). Erdős offered a $250 prize for its resolution. The conjecture has deep connections to the Kakeya problem, the discretized ring conjecture of Bourgain, and the finite field analog proved by Bourgain–Katz–Tao (2004). Related gallery entries: erdos-53, erdos-808, erdos-818.",
+    "historicalContext": "The sum-product conjecture originated in a landmark 1983 paper by Paul Erd\u0151s and Endre Szemer\u00e9di, \"A combinatorial theorem in group theory,\" where they proved the first super-linear bound $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ with $c = 1/31$ using the Szemer\u00e9di\u2013Trotter incidence theorem. The conjecture itself \u2014 that the exponent should be $2-\\varepsilon$ for any $\\varepsilon > 0$ \u2014 reflects a deep philosophical insight: addition and multiplication are fundamentally incompatible operations on finite sets. An arithmetic progression $\\{1,2,\\ldots,n\\}$ has small sumset ($|A+A| = 2n-1$) but large product set, while a geometric progression $\\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has small product set but large sumset. The conjecture says these are essentially the only ways to have a small sum-product quantity. The exponent has been improved through a remarkable sequence of breakthroughs: Nathanson\u2013Ford ($c = 1/15$), Elekes (1997, exponent $5/4$ via an elegant geometric argument), Solymosi (2009, exponent $4/3$ using multiplicative energy), Konyagin\u2013Shkredov (2016), Rudnev\u2013Stevens (2022), and Bloom (2025, exponent $1270/951 \\approx 1.335$). Erd\u0151s offered a $250 prize for its resolution. The conjecture has deep connections to the Kakeya problem, the discretized ring conjecture of Bourgain, and the finite field analog proved by Bourgain\u2013Katz\u2013Tao (2004). Related gallery entries: erdos-53, erdos-808, erdos-818.",
     "problemStatement": "For every $\\varepsilon > 0$, does there exist $C > 0$ such that for every finite set $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$, $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$?",
-    "text": "For a finite set A of integers, is max(|A+A|, |A·A|) ≫ |A|^{2-ε} for every ε > 0? Erdős–Szemerédi proved a super-linear bound; Bloom (2025) achieved |A|^{1.335}. OPEN ($250 prize).",
-    "proofStrategy": "The formalization defines the core objects — sumset $A+A$, product set $A \\cdot A$, and $\\text{sumProductMax}(A) = \\max(|A+A|, |A \\cdot A|)$ — as computable functions on `Finset ℤ`. The main conjecture `ErdosProblem52` is stated as a `def` producing a `Prop` (since it is open). Known partial results are axiomatized: the Erdős–Szemerédi theorem (super-linear bound) and Bloom's current best bound (exponent $1270/951$). Trivial lower and upper bounds bracket the sum-product quantity between $|A|$ and $|A|^2$. The formalization extends to $m$-fold generalizations via recursive definitions `mfoldSumset` and `mfoldProductset`, and connects to Erdős Problem 53 via an axiomatized implication.",
+    "text": "For a finite set A of integers, is max(|A+A|, |A\u00b7A|) \u226b |A|^{2-\u03b5} for every \u03b5 > 0? Erd\u0151s\u2013Szemer\u00e9di proved a super-linear bound; Bloom (2025) achieved |A|^{1.335}. OPEN ($250 prize).",
+    "proofStrategy": "The formalization defines the core objects \u2014 sumset $A+A$, product set $A \\cdot A$, and $\\text{sumProductMax}(A) = \\max(|A+A|, |A \\cdot A|)$ \u2014 as computable functions on `Finset \u2124`. The main conjecture `ErdosProblem52` is stated as a `def` producing a `Prop` (since it is open). Known partial results are axiomatized: the Erd\u0151s\u2013Szemer\u00e9di theorem (super-linear bound) and Bloom's current best bound (exponent $1270/951$). Trivial lower and upper bounds bracket the sum-product quantity between $|A|$ and $|A|^2$. The formalization extends to $m$-fold generalizations via recursive definitions `mfoldSumset` and `mfoldProductset`, and connects to Erd\u0151s Problem 53 via an axiomatized implication.",
     "keyInsights": [
-      "**Additive-multiplicative dichotomy**: A finite set $A$ cannot simultaneously have both small sumset and small product set — this is the core philosophical content of the conjecture, reflecting the incompatibility of addition and multiplication on $\\mathbb{Z}$",
+      "**Additive-multiplicative dichotomy**: A finite set $A$ cannot simultaneously have both small sumset and small product set \u2014 this is the core philosophical content of the conjecture, reflecting the incompatibility of addition and multiplication on $\\mathbb{Z}$",
       "**Extremal sets are structured**: Arithmetic progressions minimize $|A+A|$ (giving $2|A|-1$) while geometric progressions minimize $|A \\cdot A|$, but no set can approximate both simultaneously, which is why $\\max(|A+A|, |A \\cdot A|)$ must grow near-quadratically",
-      "**Incidence geometry bridge**: Elekes' 1997 breakthrough reduced the sum-product problem to counting point-line incidences in the plane via the observation that $|A+A| \\cdot |A \\cdot A| \\geq |\\{(a+b, a \\cdot b) : a,b \\in A\\}|$, then applied the Szemerédi–Trotter theorem to get exponent $5/4$",
-      "**Multiplicative energy method**: Solymosi's 2009 improvement to exponent $4/3$ introduced the multiplicative energy $E_\\times(A) = |\\{(a,b,c,d) \\in A^4 : ab = cd\\}|$ as a key parameter, avoiding incidence geometry entirely and using only the Cauchy–Schwarz inequality",
-      "**Finite field analog resolved**: Bourgain, Katz, and Tao (2004) proved that for $A \\subset \\mathbb{F}_p$ with $|A| < p^{1-\\delta}$, one has $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+\\varepsilon}$ — a qualitative resolution over finite fields that does not hold with the full exponent $2-\\varepsilon$"
+      "**Incidence geometry bridge**: Elekes' 1997 breakthrough reduced the sum-product problem to counting point-line incidences in the plane via the observation that $|A+A| \\cdot |A \\cdot A| \\geq |\\{(a+b, a \\cdot b) : a,b \\in A\\}|$, then applied the Szemer\u00e9di\u2013Trotter theorem to get exponent $5/4$",
+      "**Multiplicative energy method**: Solymosi's 2009 improvement to exponent $4/3$ introduced the multiplicative energy $E_\\times(A) = |\\{(a,b,c,d) \\in A^4 : ab = cd\\}|$ as a key parameter, avoiding incidence geometry entirely and using only the Cauchy\u2013Schwarz inequality",
+      "**Finite field analog resolved**: Bourgain, Katz, and Tao (2004) proved that for $A \\subset \\mathbb{F}_p$ with $|A| < p^{1-\\delta}$, one has $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+\\varepsilon}$ \u2014 a qualitative resolution over finite fields that does not hold with the full exponent $2-\\varepsilon$"
     ],
     "prerequisites": [
       "Sumsets and product sets of finite sets",
       "Additive combinatorics",
-      "Incidence geometry (Szemerédi-Trotter)",
+      "Incidence geometry (Szemer\u00e9di-Trotter)",
       "Real analysis and arithmetic structure"
     ]
   },
@@ -54,7 +54,7 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 20,
-      "summary": "File documentation describing the open status and $250 prize for Erdős Problem 52, followed by Mathlib imports for `Finset`, `ℤ`, `ℝ`, and core tactics needed for the formalization."
+      "summary": "File documentation describing the open status and $250 prize for Erd\u0151s Problem 52, followed by Mathlib imports for `Finset`, `\u2124`, `\u211d`, and core tactics needed for the formalization."
     },
     {
       "id": "sumset-productset",
@@ -72,7 +72,7 @@
     },
     {
       "id": "erdos-szemeredi",
-      "title": "The Erdős–Szemerédi Theorem",
+      "title": "The Erd\u0151s\u2013Szemer\u00e9di Theorem",
       "startLine": 54,
       "endLine": 64,
       "summary": "Axiomatizes the 1983 foundational result: $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all $A$ with $|A| \\geq 2$. This was the first super-linear bound, originally with $c = 1/31$."
@@ -107,18 +107,18 @@
     },
     {
       "id": "connection-p53",
-      "title": "Connection to Erdős Problem 53",
+      "title": "Connection to Erd\u0151s Problem 53",
       "startLine": 124,
       "endLine": 134,
-      "summary": "Links to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the weak bound $(|A+A| + |A \\cdot A|) \\geq |A|$."
+      "summary": "Links to Problem 53 (resolved by Chang 2003 via the Balog\u2013Szemer\u00e9di\u2013Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the weak bound $(|A+A| + |A \\cdot A|) \\geq |A|$."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full landscape of the Erdős–Szemerédi sum-product conjecture: the precise open problem statement, the foundational 1983 super-linear bound, the current state-of-the-art (Bloom 2025, exponent $\\approx 1.335$), trivial bounds establishing the $[|A|, |A|^2]$ range, higher-fold generalizations, and the connection to the resolved Problem 53. The conjecture remains one of the most important open problems in combinatorial number theory, with a $250 Erdős prize.",
-    "implications": "**Theoretical Significance**: A resolution of Problem 52 would have transformative consequences across mathematics. In additive combinatorics, it would complete the sum-product paradigm and likely resolve many downstream results.\n\nIn incidence geometry, the known reductions (via Elekes' method) connect it to optimal bounds on point-line incidences. In number theory, it relates to the distribution of exponential sums and the structure of multiplicative subgroups. The finite field analog (Bourgain–Katz–Tao 2004) has already proved essential in analytic number theory, and the integer case would be even more powerful.",
+    "summary": "This formalization captures the full landscape of the Erd\u0151s\u2013Szemer\u00e9di sum-product conjecture: the precise open problem statement, the foundational 1983 super-linear bound, the current state-of-the-art (Bloom 2025, exponent $\\approx 1.335$), trivial bounds establishing the $[|A|, |A|^2]$ range, higher-fold generalizations, and the connection to the resolved Problem 53. The conjecture remains one of the most important open problems in combinatorial number theory, with a $250 Erd\u0151s prize.",
+    "implications": "**Theoretical Significance**: A resolution of Problem 52 would have transformative consequences across mathematics. In additive combinatorics, it would complete the sum-product paradigm and likely resolve many downstream results.\n\nIn incidence geometry, the known reductions (via Elekes' method) connect it to optimal bounds on point-line incidences. In number theory, it relates to the distribution of exponential sums and the structure of multiplicative subgroups. The finite field analog (Bourgain\u2013Katz\u2013Tao 2004) has already proved essential in analytic number theory, and the integer case would be even more powerful.",
     "openQuestions": [
       "Can the exponent be improved beyond $1270/951 \\approx 1.335$? The gap to the conjectured $2-\\varepsilon$ remains enormous, and each improvement has required fundamentally new techniques.",
-      "Does a polynomial sum-product bound hold in all commutative rings, or is it special to $\\mathbb{Z}$? The answer over $\\mathbb{F}_p$ is qualitatively yes (Bourgain–Katz–Tao) but the quantitative bounds differ. Over $\\mathbb{Z}/n\\mathbb{Z}$ for composite $n$, counterexamples exist.",
+      "Does a polynomial sum-product bound hold in all commutative rings, or is it special to $\\mathbb{Z}$? The answer over $\\mathbb{F}_p$ is qualitatively yes (Bourgain\u2013Katz\u2013Tao) but the quantitative bounds differ. Over $\\mathbb{Z}/n\\mathbb{Z}$ for composite $n$, counterexamples exist.",
       "What is the correct higher-fold conjecture? The generalized form $\\max(|mA|, |A^m|) \\geq |A|^{m-\\varepsilon}$ is plausible for fixed $m$, but the dependence of constants on $m$ is poorly understood.",
       "Is there a sum-product bound that simultaneously controls both $|A+A|$ and $|A \\cdot A|$, i.e., $|A+A| + |A \\cdot A| \\geq |A|^{2-\\varepsilon}$, or is the max formulation optimal?"
     ]
@@ -138,7 +138,8 @@
     "lineCount": 134,
     "axiomCount": 7,
     "theoremCount": 0,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -149,29 +150,29 @@
     {
       "targetId": "erdos-101",
       "relationship": "related",
-      "description": "Problem #101 on incidence geometry shares techniques with the sum-product conjecture: the Szemerédi-Trotter incidence theorem is a key tool for both"
+      "description": "Problem #101 on incidence geometry shares techniques with the sum-product conjecture: the Szemer\u00e9di-Trotter incidence theorem is a key tool for both"
     }
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Szemerédi, Endre",
+      "authors": "Erd\u0151s, Paul; Szemer\u00e9di, Endre",
       "title": "On sums and products of integers",
       "year": "1983",
-      "venue": "In: Studies in Pure Mathematics, Birkhäuser, pp. 213–218",
-      "note": "Original formulation of the sum-product conjecture: max(|A+A|, |A·A|) ≥ c|A|^{1+ε}"
+      "venue": "In: Studies in Pure Mathematics, Birkh\u00e4user, pp. 213\u2013218",
+      "note": "Original formulation of the sum-product conjecture: max(|A+A|, |A\u00b7A|) \u2265 c|A|^{1+\u03b5}"
     },
     {
-      "authors": "Solymosi, József",
+      "authors": "Solymosi, J\u00f3zsef",
       "title": "Bounding multiplicative energy by the sumset",
       "year": "2009",
-      "venue": "Advances in Mathematics, vol. 222, no. 2, pp. 402–408",
-      "note": "Elegant proof giving the best known bound |A+A||A·A| ≥ |A|^{8/3}/2 via multiplicative energy"
+      "venue": "Advances in Mathematics, vol. 222, no. 2, pp. 402\u2013408",
+      "note": "Elegant proof giving the best known bound |A+A||A\u00b7A| \u2265 |A|^{8/3}/2 via multiplicative energy"
     },
     {
       "authors": "Guth, Larry; Katz, Nets Hawk",
-      "title": "On the Erdős distinct distances problem in the plane",
+      "title": "On the Erd\u0151s distinct distances problem in the plane",
       "year": "2015",
-      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 155–190",
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 155\u2013190",
       "note": "Revolutionary polynomial method with deep connections to sum-product theory"
     }
   ],

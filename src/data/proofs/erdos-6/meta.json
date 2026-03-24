@@ -1,6 +1,6 @@
 {
   "id": "erdos-6",
-  "title": "Erdős Problem #6: Monotone Prime Gap Sequences",
+  "title": "Erd\u0151s Problem #6: Monotone Prime Gap Sequences",
   "slug": "erdos-6",
   "description": "Are there infinitely many n with d_n < d_{n+1} < d_{n+2}? Proved affirmatively by Banks-Freiberg-Turnage-Butterbaugh (2015) using Maynard-Tao machinery.",
   "meta": {
@@ -50,12 +50,12 @@
       "Prime gaps and the distribution of primes",
       "Sequences and monotonicity",
       "Prime number theorem (for context)",
-      "Erdős's work on prime gap problems"
+      "Erd\u0151s's work on prime gap problems"
     ],
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Turán in 1948. Erdős was confident it was true, famously offering substantial money only for a *disproof*. The problem remained open for over 60 years until the revolutionary work on bounded gaps between primes.\n\nThe breakthrough came from Zhang's 2013 proof of bounded gaps (infinitely many prime pairs differ by at most 70 million), followed by Maynard and Tao's improvements. Banks, Freiberg, and Turnage-Butterbaugh applied this machinery to solve Erdős Problem 6 in 2015.",
+    "historicalContext": "This problem was posed by Erd\u0151s and Tur\u00e1n in 1948. Erd\u0151s was confident it was true, famously offering substantial money only for a *disproof*. The problem remained open for over 60 years until the revolutionary work on bounded gaps between primes.\n\nThe breakthrough came from Zhang's 2013 proof of bounded gaps (infinitely many prime pairs differ by at most 70 million), followed by Maynard and Tao's improvements. Banks, Freiberg, and Turnage-Butterbaugh applied this machinery to solve Erd\u0151s Problem 6 in 2015.",
     "problemStatement": "**Question**: Let $d_n = p_{n+1} - p_n$ be the gap between consecutive primes. Are there infinitely many $n$ such that $d_n < d_{n+1} < d_{n+2}$?\n\n**Answer**: YES. In fact, for any $m \\geq 1$:\n- Infinitely many $n$ with $d_n < d_{n+1} < \\cdots < d_{n+m}$\n- Infinitely many $n$ with $d_n > d_{n+1} > \\cdots > d_{n+m}$",
     "text": "Are there infinitely many n with d_n < d_{n+1} < d_{n+2}? Proved affirmatively by Banks-Freiberg-Turnage-Butterbaugh (2015) using Maynard-Tao machinery.",
     "proofStrategy": "The formalization defines the prime gap function $d_n$ using Mathlib's `Nat.Prime.nth`. Predicates `HasIncreasingGaps` and `HasDecreasingGaps` capture monotone sequences of gaps. The main theorem by Banks-Freiberg-Turnage-Butterbaugh is axiomatized since its proof requires:\n\n1. **Maynard-Tao sieve methods**: Finding many primes in short intervals\n2. **Zhang's bounded gaps**: The foundational breakthrough\n3. **Careful distribution analysis**: Controlling gap patterns\n\nThe resolution `erdos_6_solved` follows directly as the case $m=2$.",
@@ -70,7 +70,7 @@
       "Prime gaps and the distribution of primes",
       "Sequences and monotonicity",
       "Prime number theorem (for context)",
-      "Erdős's work on prime gap problems"
+      "Erd\u0151s's work on prime gap problems"
     ]
   },
   "sections": [
@@ -91,7 +91,7 @@
     {
       "id": "conjecture",
       "title": "Original Conjecture",
-      "summary": "Erdős Problem 6 as InfinitelyManyIncreasing 2",
+      "summary": "Erd\u0151s Problem 6 as InfinitelyManyIncreasing 2",
       "startLine": 75,
       "endLine": 84
     },
@@ -118,7 +118,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #6 is SOLVED in the affirmative. Banks, Freiberg, and Turnage-Butterbaugh (2015) proved that there are infinitely many n with d_n < d_{n+1} < d_{n+2}, and more generally, arbitrarily long monotone sequences of prime gaps exist in both directions.",
+    "summary": "Erd\u0151s Problem #6 is SOLVED in the affirmative. Banks, Freiberg, and Turnage-Butterbaugh (2015) proved that there are infinitely many n with d_n < d_{n+1} < d_{n+2}, and more generally, arbitrarily long monotone sequences of prime gaps exist in both directions.",
     "implications": "**Theoretical Significance**: **Historical Significance:**\n\nThis problem demonstrates how breakthroughs in one area (bounded gaps) can unlock progress in related questions. The Maynard-Tao machinery, developed for the twin prime conjecture, proved versatile enough to settle this 67-year-old problem.\n\n**Mathematical Impact:**\n\n1.\n\nPrime gaps are highly irregular - they oscillate forever\n2. No eventual monotonicity in either direction\n3. The distribution of primes is rich enough to produce arbitrarily complex local patterns.",
     "openQuestions": [
       "What is the density of n with d_n < d_{n+1} < d_{n+2}?",
@@ -139,7 +139,8 @@
     "lineCount": 204,
     "axiomCount": 5,
     "theoremCount": 10,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -160,24 +161,24 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "The difference of consecutive primes",
       "year": "1940",
-      "venue": "Duke Mathematical Journal, vol. 6, pp. 438–441",
+      "venue": "Duke Mathematical Journal, vol. 6, pp. 438\u2013441",
       "note": "Foundational study of prime gaps using sieve methods"
     },
     {
       "authors": "Maynard, James",
       "title": "Small gaps between primes",
       "year": "2015",
-      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 383–413",
-      "note": "Breakthrough on bounded prime gaps, establishing that lim inf (p_{n+1} - p_n) ≤ 246"
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 383\u2013413",
+      "note": "Breakthrough on bounded prime gaps, establishing that lim inf (p_{n+1} - p_n) \u2264 246"
     },
     {
       "authors": "Zhang, Yitang",
       "title": "Bounded gaps between primes",
       "year": "2014",
-      "venue": "Annals of Mathematics, vol. 179, no. 3, pp. 1121–1174",
+      "venue": "Annals of Mathematics, vol. 179, no. 3, pp. 1121\u20131174",
       "note": "First proof of bounded gaps between primes, showing infinitely many pairs of primes differ by at most 70 million"
     }
   ],

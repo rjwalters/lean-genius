@@ -2,9 +2,9 @@
   "id": "amgm-inequality-oq-03",
   "title": "Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?",
   "slug": "amgm-inequality-oq-03",
-  "description": "The weighted power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) forms a continuous monotone family as r varies: HM = M_{-1} ≤ GM = lim_{r→0} M_r ≤ AM = M_1 ≤ M_2 ≤ ... This formalization proves HM ≤ GM directly via AM-GM on inverse values, M_r ≤ M_s for 0 < r ≤ s via Jensen's inequality, and M_r ≤ M_s for r ≤ s < 0 via the duality identity M_r(z) = M_{-r}(z⁻¹)⁻¹. Fully verified with 0 sorries and 0 axioms.",
+  "description": "The weighted power mean M_r(z,w) = (\u2211 w\u1d62z\u1d62^r)^(1/r) forms a continuous monotone family as r varies: HM = M_{-1} \u2264 GM = lim_{r\u21920} M_r \u2264 AM = M_1 \u2264 M_2 \u2264 ... This formalization proves HM \u2264 GM directly via AM-GM on inverse values, M_r \u2264 M_s for 0 < r \u2264 s via Jensen's inequality, and M_r \u2264 M_s for r \u2264 s < 0 via the duality identity M_r(z) = M_{-r}(z\u207b\u00b9)\u207b\u00b9. Fully verified with 0 sorries and 0 axioms.",
   "meta": {
-    "author": "Hardy, Littlewood, Pólya (1934); formalized here",
+    "author": "Hardy, Littlewood, P\u00f3lya (1934); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Power_mean",
     "date": "1934",
     "status": "verified",
@@ -22,31 +22,31 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.geom_mean_le_arith_mean_weighted",
-        "description": "Weighted AM-GM: ∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ",
+        "description": "Weighted AM-GM: \u220f z\u1d62^w\u1d62 \u2264 \u2211 w\u1d62z\u1d62",
         "module": "Mathlib.Analysis.MeanInequalities"
       },
       {
         "theorem": "Real.arith_mean_le_rpow_mean",
-        "description": "AM ≤ M_p for p ≥ 1: ∑ wᵢzᵢ ≤ (∑ wᵢzᵢ^p)^(1/p)",
+        "description": "AM \u2264 M_p for p \u2265 1: \u2211 w\u1d62z\u1d62 \u2264 (\u2211 w\u1d62z\u1d62^p)^(1/p)",
         "module": "Mathlib.Analysis.MeanInequalitiesPow"
       },
       {
         "theorem": "Real.rpow_arith_mean_le_arith_mean_rpow",
-        "description": "Jensen for power functions: (∑ wᵢzᵢ)^p ≤ ∑ wᵢzᵢ^p for p ≥ 1",
+        "description": "Jensen for power functions: (\u2211 w\u1d62z\u1d62)^p \u2264 \u2211 w\u1d62z\u1d62^p for p \u2265 1",
         "module": "Mathlib.Analysis.MeanInequalitiesPow"
       },
       {
         "theorem": "Real.mul_rpow",
-        "description": "Multiplicativity of real power: (a·b)^r = a^r · b^r for a,b ≥ 0",
+        "description": "Multiplicativity of real power: (a\u00b7b)^r = a^r \u00b7 b^r for a,b \u2265 0",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
     "originalContributions": [
-      "harmonic_mean_le_geom_mean_direct: HM ≤ GM proved directly via GM(z⁻¹)·GM(z) = 1 and AM-GM on z⁻¹",
-      "power_mean_monotone_pos: M_r ≤ M_s for 0 < r ≤ s proved via Jensen applied to t ↦ t^(s/r)",
-      "power_mean_monotone_neg: M_r ≤ M_s for r ≤ s < 0 proved via duality M_r(z) = M_{-r}(z⁻¹)⁻¹",
-      "power_mean_neg_inv: Algebraic identity M_r(z) = M_{-r}(z⁻¹)⁻¹ via inv_rpow + rpow_neg",
-      "Key algebraic trick: GM(z⁻¹) = GM(z)⁻¹ proved using Real.mul_rpow + Finset.prod_mul_distrib",
+      "harmonic_mean_le_geom_mean_direct: HM \u2264 GM proved directly via GM(z\u207b\u00b9)\u00b7GM(z) = 1 and AM-GM on z\u207b\u00b9",
+      "power_mean_monotone_pos: M_r \u2264 M_s for 0 < r \u2264 s proved via Jensen applied to t \u21a6 t^(s/r)",
+      "power_mean_monotone_neg: M_r \u2264 M_s for r \u2264 s < 0 proved via duality M_r(z) = M_{-r}(z\u207b\u00b9)\u207b\u00b9",
+      "power_mean_neg_inv: Algebraic identity M_r(z) = M_{-r}(z\u207b\u00b9)\u207b\u00b9 via inv_rpow + rpow_neg",
+      "Key algebraic trick: GM(z\u207b\u00b9) = GM(z)\u207b\u00b9 proved using Real.mul_rpow + Finset.prod_mul_distrib",
       "Avoids div_le_iff/le_div_iff (unavailable in Lean4) via explicit multiplicative calc proofs"
     ],
     "dateAdded": "2026-02-23",
@@ -64,66 +64,66 @@
     {
       "targetId": "amgm-inequality",
       "relationship": "extends",
-      "description": "Base AM-GM inequality — this file generalizes it by placing AM-GM within the continuous power mean family M_r, proving monotonicity for same-sign exponents"
+      "description": "Base AM-GM inequality \u2014 this file generalizes it by placing AM-GM within the continuous power mean family M_r, proving monotonicity for same-sign exponents"
     },
     {
       "targetId": "amgm-inequality-oq-02",
       "relationship": "related",
-      "description": "Maclaurin's inequalities refine AM-GM via elementary symmetric polynomials; power means refine it via exponent interpolation — two complementary generalizations"
+      "description": "Maclaurin's inequalities refine AM-GM via elementary symmetric polynomials; power means refine it via exponent interpolation \u2014 two complementary generalizations"
     },
     {
       "targetId": "cauchy-schwarz",
       "relationship": "related",
-      "description": "Cauchy-Schwarz is the M₂ case of power mean monotonicity: M₁ ≤ M₂ is equivalent to (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ² for equal weights"
+      "description": "Cauchy-Schwarz is the M\u2082 case of power mean monotonicity: M\u2081 \u2264 M\u2082 is equivalent to (\u2211w\u1d62z\u1d62)\u00b2 \u2264 \u2211w\u1d62z\u1d62\u00b2 for equal weights"
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-02",
       "relationship": "extended-by",
-      "description": "Proves lim_{r→0} M_r = GM — the missing r=0 case that would bridge the positive and negative exponent monotonicity results"
+      "description": "Proves lim_{r\u21920} M_r = GM \u2014 the missing r=0 case that would bridge the positive and negative exponent monotonicity results"
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-01",
       "relationship": "extended-by",
-      "description": "Dedicated formalization of M_r ≤ M_s for r ≤ s < 0 — the negative exponent case proved here via duality, isolated as a standalone entry"
+      "description": "Dedicated formalization of M_r \u2264 M_s for r \u2264 s < 0 \u2014 the negative exponent case proved here via duality, isolated as a standalone entry"
     },
     {
       "targetId": "cauchy-schwarz-integral",
       "relationship": "related",
-      "description": "The Bunyakovsky-Schwarz integral inequality is the continuous analog of the M₁ ≤ M₂ case: for equal weights, (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ² is Cauchy-Schwarz, and the integral version extends this to L² spaces"
+      "description": "The Bunyakovsky-Schwarz integral inequality is the continuous analog of the M\u2081 \u2264 M\u2082 case: for equal weights, (\u2211w\u1d62z\u1d62)\u00b2 \u2264 \u2211w\u1d62z\u1d62\u00b2 is Cauchy-Schwarz, and the integral version extends this to L\u00b2 spaces"
     },
     {
       "targetId": "mean-value-theorem",
       "relationship": "related",
-      "description": "MVT is foundational for proving the r=0 limit case: lim_{r→0} M_r = GM requires L'Hôpital's rule, which itself depends on the mean value theorem"
+      "description": "MVT is foundational for proving the r=0 limit case: lim_{r\u21920} M_r = GM requires L'H\u00f4pital's rule, which itself depends on the mean value theorem"
     },
     {
       "targetId": "triangle-inequality",
       "relationship": "related",
-      "description": "For p ≥ 1, the power mean inequality M₁ ≤ M_p implies (via Minkowski) the L^p triangle inequality — connecting discrete power means to the geometry of normed spaces"
+      "description": "For p \u2265 1, the power mean inequality M\u2081 \u2264 M_p implies (via Minkowski) the L^p triangle inequality \u2014 connecting discrete power means to the geometry of normed spaces"
     },
     {
       "targetId": "shannon-entropy",
       "relationship": "related",
-      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α, which is essentially log M_{α-1} of the distribution. Power mean monotonicity M_r ≤ M_s (r ≤ s) implies Rényi entropy monotonicity H_β ≤ H_α (α ≤ β) — formalizing this connection would bridge the inequality and information theory libraries"
+      "description": "Shannon entropy H(X) = -\u2211 p\u1d62 log p\u1d62 is the \u03b1\u21921 limit of R\u00e9nyi entropy H_\u03b1 = (1/(1-\u03b1))\u00b7log \u2211 p\u1d62^\u03b1, which is essentially log M_{\u03b1-1} of the distribution. Power mean monotonicity M_r \u2264 M_s (r \u2264 s) implies R\u00e9nyi entropy monotonicity H_\u03b2 \u2264 H_\u03b1 (\u03b1 \u2264 \u03b2) \u2014 formalizing this connection would bridge the inequality and information theory libraries"
     },
     {
       "targetId": "sum-of-kth-powers",
       "relationship": "related",
-      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (∑ wᵢzᵢ^k)^(1/k) = (p_k/n)^(1/k) for equal weights. Power sum identities (Newton-Girard) relate p_k to elementary symmetric polynomials, connecting this power mean formalization to the Maclaurin chain in amgm-inequality-oq-02"
+      "description": "Power sums p_k = \u2211 x\u1d62^k are the unnormalized building blocks of power means: M_k = (\u2211 w\u1d62z\u1d62^k)^(1/k) = (p_k/n)^(1/k) for equal weights. Power sum identities (Newton-Girard) relate p_k to elementary symmetric polynomials, connecting this power mean formalization to the Maclaurin chain in amgm-inequality-oq-02"
     }
   ],
   "overview": {
-    "historicalContext": "The AM-GM inequality (∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ) is one of the most classical results in mathematics, known since antiquity. The power mean family emerged gradually: the harmonic-geometric-arithmetic chain HM ≤ GM ≤ AM was known to the ancient Greeks, and specific power means appear in the work of Augustin-Louis Cauchy (1821). Otto Hölder (1889) proved the inequality $\\|fg\\|_1 \\leq \\|f\\|_p \\|g\\|_q$ for conjugate exponents, which implicitly contains the $M_1 \\leq M_p$ case for $p \\geq 1$. Frigyes Riesz (1927) gave a unified convexity proof, and Hardy, Littlewood, and Pólya's *Inequalities* (1934, Chapter II) systematized the full theory, defining $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ and proving monotonicity.\n\nThe Power Mean Inequality states that $M_r \\leq M_s$ for $r \\leq s$ — this single monotonicity theorem captures HM ≤ GM ≤ AM as special cases ($r=-1,0,1$). The extreme cases $\\lim_{r \\to -\\infty} M_r = \\min(z)$ and $\\lim_{r \\to +\\infty} M_r = \\max(z)$ complete the interpolation from minimum to maximum. The $r \\to 0$ limit requires L'Hôpital analysis to show $\\lim_{r\\to 0} M_r = \\text{GM}$.\n\nThe power mean family connects to several other domains: $M_2$ is the root-mean-square (RMS) fundamental in signal processing, the $L^p$ norms $\\|x\\|_p = n^{1/p} M_p(|x|)$ inherit monotonicity from power means, and the Rényi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ (1961) is essentially $\\log M_{\\alpha-1}$ of the probability distribution — making power mean monotonicity equivalent to the monotonicity of Rényi entropy in its order parameter.\n\nAs of Mathlib 4.26.0, the general monotonicity $M_r \\leq M_s$ is not fully formalized — Mathlib has a TODO comment noting 'generalized mean inequality with any p ≤ q, including negative numbers'. This formalization proves what is currently provable: the same-sign cases via Jensen and duality.",
-    "problemStatement": "**Open Question (amgm-inequality-oq-03)**: Fully formalize the Power Mean Inequality M_r ≤ M_s for all r ≤ s (including negative r, mixed signs, and the r=0 geometric mean as a limit).\n\n**Definitions**:\n- M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r)  for r ≠ 0, with wᵢ ≥ 0 and ∑ wᵢ = 1\n- M_0(z,w) = ∏ zᵢ^wᵢ  (geometric mean, as the limit lim_{r→0} M_r)\n\n**Known chain**: HM = M_{-1} ≤ M_0 = GM ≤ M_1 = AM ≤ M_2 ≤ ... ≤ max(z)\n\n**Mathlib status**: `Mathlib.Analysis.MeanInequalities` contains a TODO for the general case.",
+    "historicalContext": "The AM-GM inequality (\u220f z\u1d62^w\u1d62 \u2264 \u2211 w\u1d62z\u1d62) is one of the most classical results in mathematics, known since antiquity. The power mean family emerged gradually: the harmonic-geometric-arithmetic chain HM \u2264 GM \u2264 AM was known to the ancient Greeks, and specific power means appear in the work of Augustin-Louis Cauchy (1821). Otto H\u00f6lder (1889) proved the inequality $\\|fg\\|_1 \\leq \\|f\\|_p \\|g\\|_q$ for conjugate exponents, which implicitly contains the $M_1 \\leq M_p$ case for $p \\geq 1$. Frigyes Riesz (1927) gave a unified convexity proof, and Hardy, Littlewood, and P\u00f3lya's *Inequalities* (1934, Chapter II) systematized the full theory, defining $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ and proving monotonicity.\n\nThe Power Mean Inequality states that $M_r \\leq M_s$ for $r \\leq s$ \u2014 this single monotonicity theorem captures HM \u2264 GM \u2264 AM as special cases ($r=-1,0,1$). The extreme cases $\\lim_{r \\to -\\infty} M_r = \\min(z)$ and $\\lim_{r \\to +\\infty} M_r = \\max(z)$ complete the interpolation from minimum to maximum. The $r \\to 0$ limit requires L'H\u00f4pital analysis to show $\\lim_{r\\to 0} M_r = \\text{GM}$.\n\nThe power mean family connects to several other domains: $M_2$ is the root-mean-square (RMS) fundamental in signal processing, the $L^p$ norms $\\|x\\|_p = n^{1/p} M_p(|x|)$ inherit monotonicity from power means, and the R\u00e9nyi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ (1961) is essentially $\\log M_{\\alpha-1}$ of the probability distribution \u2014 making power mean monotonicity equivalent to the monotonicity of R\u00e9nyi entropy in its order parameter.\n\nAs of Mathlib 4.26.0, the general monotonicity $M_r \\leq M_s$ is not fully formalized \u2014 Mathlib has a TODO comment noting 'generalized mean inequality with any p \u2264 q, including negative numbers'. This formalization proves what is currently provable: the same-sign cases via Jensen and duality.",
+    "problemStatement": "**Open Question (amgm-inequality-oq-03)**: Fully formalize the Power Mean Inequality M_r \u2264 M_s for all r \u2264 s (including negative r, mixed signs, and the r=0 geometric mean as a limit).\n\n**Definitions**:\n- M_r(z,w) = (\u2211 w\u1d62z\u1d62^r)^(1/r)  for r \u2260 0, with w\u1d62 \u2265 0 and \u2211 w\u1d62 = 1\n- M_0(z,w) = \u220f z\u1d62^w\u1d62  (geometric mean, as the limit lim_{r\u21920} M_r)\n\n**Known chain**: HM = M_{-1} \u2264 M_0 = GM \u2264 M_1 = AM \u2264 M_2 \u2264 ... \u2264 max(z)\n\n**Mathlib status**: `Mathlib.Analysis.MeanInequalities` contains a TODO for the general case.",
     "text": "A 372-line Lean 4 formalization of power mean monotonicity with 16 declarations, 0 sorries, 0 axioms. Defines `powerMean r w z` as $(\\sum w_i z_i^r)^{1/r}$ via `Real.rpow`, then proves: `power_mean_one_eq_arith_mean` ($M_1$ = AM), `harmonic_mean_le_geom_mean_direct` (HM $\\leq$ GM via AM-GM on inverses $y_i = z_i^{-1}$ using `Real.mul_rpow` and `Finset.prod_mul_distrib`), `arith_mean_le_power_mean` (AM $\\leq M_p$ for $p \\geq 1$ from Mathlib's Jensen), and `power_mean_monotone_pos` ($M_r \\leq M_s$ for $0 < r \\leq s$ via convexity of $t \\mapsto t^{s/r}$). The negative-exponent case uses duality $M_r(z) = M_{-r}(z^{-1})^{-1}$. Connects to Mathlib's `geom_mean_le_arith_mean_weighted` infrastructure.",
-    "proofStrategy": "We prove the key special cases that ARE provable in Lean 4:\n\n**HM ≤ GM** (`harmonic_mean_le_geom_mean_direct`):\n1. Show GM(z⁻¹) · GM(z) = 1 using `Real.mul_rpow` and `Finset.prod_mul_distrib`\n2. Apply AM-GM to inverse values z⁻¹: GM(z⁻¹) ≤ ∑ wᵢ/zᵢ = 1/HM\n3. Since GM(z⁻¹) = 1/GM(z), we get 1/GM ≤ 1/HM, hence HM ≤ GM\n4. Algebraic inversion: multiply key inequality 1 ≤ GM·Σ by Σ⁻¹ > 0\n\n**M_r ≤ M_s for 0 < r ≤ s** (`power_mean_monotone_pos`):\n1. Let q = s/r ≥ 1; apply Jensen to aᵢ = zᵢ^r with exponent q\n2. Jensen: (∑ wᵢzᵢ^r)^(s/r) ≤ ∑ wᵢ(zᵢ^r)^(s/r) = ∑ wᵢzᵢ^s\n3. Raise both sides to 1/s > 0: (∑ wᵢzᵢ^r)^(1/r) ≤ (∑ wᵢzᵢ^s)^(1/s)",
+    "proofStrategy": "We prove the key special cases that ARE provable in Lean 4:\n\n**HM \u2264 GM** (`harmonic_mean_le_geom_mean_direct`):\n1. Show GM(z\u207b\u00b9) \u00b7 GM(z) = 1 using `Real.mul_rpow` and `Finset.prod_mul_distrib`\n2. Apply AM-GM to inverse values z\u207b\u00b9: GM(z\u207b\u00b9) \u2264 \u2211 w\u1d62/z\u1d62 = 1/HM\n3. Since GM(z\u207b\u00b9) = 1/GM(z), we get 1/GM \u2264 1/HM, hence HM \u2264 GM\n4. Algebraic inversion: multiply key inequality 1 \u2264 GM\u00b7\u03a3 by \u03a3\u207b\u00b9 > 0\n\n**M_r \u2264 M_s for 0 < r \u2264 s** (`power_mean_monotone_pos`):\n1. Let q = s/r \u2265 1; apply Jensen to a\u1d62 = z\u1d62^r with exponent q\n2. Jensen: (\u2211 w\u1d62z\u1d62^r)^(s/r) \u2264 \u2211 w\u1d62(z\u1d62^r)^(s/r) = \u2211 w\u1d62z\u1d62^s\n3. Raise both sides to 1/s > 0: (\u2211 w\u1d62z\u1d62^r)^(1/r) \u2264 (\u2211 w\u1d62z\u1d62^s)^(1/s)",
     "keyInsights": [
-      "GM(z⁻¹) · GM(z) = 1 is proved term-by-term: each zᵢ⁻¹^wᵢ · zᵢ^wᵢ = (zᵢ⁻¹·zᵢ)^wᵢ = 1^wᵢ = 1",
-      "The inversion step HM ≤ GM from GM⁻¹ ≤ 1/HM avoids div_le_iff by using explicit multiplicative algebra",
-      "For 0 < r ≤ s: Jensen applies to convex function t ↦ t^(s/r) with exponent s/r ≥ 1",
-      "The r=0 case (geometric mean as a limit) requires L'Hôpital and is the main Mathlib gap",
-      "General monotonicity for negative r (HM ≤ GM is the r=-1 to r=0 case) remains open in Mathlib4",
-      "Lean 4 parsing: ∑ i ∈ s, BODY is greedy — always parenthesize: (∑ i ∈ s, BODY) * c, not ∑ i ∈ s, BODY * c",
+      "GM(z\u207b\u00b9) \u00b7 GM(z) = 1 is proved term-by-term: each z\u1d62\u207b\u00b9^w\u1d62 \u00b7 z\u1d62^w\u1d62 = (z\u1d62\u207b\u00b9\u00b7z\u1d62)^w\u1d62 = 1^w\u1d62 = 1",
+      "The inversion step HM \u2264 GM from GM\u207b\u00b9 \u2264 1/HM avoids div_le_iff by using explicit multiplicative algebra",
+      "For 0 < r \u2264 s: Jensen applies to convex function t \u21a6 t^(s/r) with exponent s/r \u2265 1",
+      "The r=0 case (geometric mean as a limit) requires L'H\u00f4pital and is the main Mathlib gap",
+      "General monotonicity for negative r (HM \u2264 GM is the r=-1 to r=0 case) remains open in Mathlib4",
+      "Lean 4 parsing: \u2211 i \u2208 s, BODY is greedy \u2014 always parenthesize: (\u2211 i \u2208 s, BODY) * c, not \u2211 i \u2208 s, BODY * c",
       "Power means are the $L^p$ norms in disguise: $M_p(z,w) = \\|z\\|_{p,w}$ where $\\|z\\|_{p,w} = (\\sum w_i |z_i|^p)^{1/p}$ is the weighted $L^p$ norm. The Minkowski inequality $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$ follows from power mean monotonicity via homogeneity, making power means the discrete foundation of $L^p$ space geometry"
     ],
     "prerequisites": [
@@ -147,7 +147,7 @@
       "title": "Definitions: Power Mean, Geometric Mean, Arithmetic Mean",
       "startLine": 57,
       "endLine": 71,
-      "summary": "weightedPowerMean M_p = (∑ wᵢzᵢ^p)^(1/p), weightedGeomMean = ∏ zᵢ^wᵢ, weightedArithMean = ∑ wᵢzᵢ.",
+      "summary": "weightedPowerMean M_p = (\u2211 w\u1d62z\u1d62^p)^(1/p), weightedGeomMean = \u220f z\u1d62^w\u1d62, weightedArithMean = \u2211 w\u1d62z\u1d62.",
       "mathContext": "$M_p = (\\sum w_i z_i^p)^{1/p}$, $\\text{GM} = \\prod z_i^{w_i}$, $\\text{AM} = \\sum w_i z_i$. All noncomputable (involve `Real.rpow`)."
     },
     {
@@ -155,23 +155,23 @@
       "title": "Known Results (from Mathlib)",
       "startLine": 72,
       "endLine": 118,
-      "summary": "M₁ = AM (power_mean_one_eq_arith_mean), AM ≤ M_p for p ≥ 1 (arith_mean_le_power_mean), GM ≤ AM (geom_mean_le_arith_mean), Jensen (jensen_pow_ineq). All proved directly from Mathlib.",
+      "summary": "M\u2081 = AM (power_mean_one_eq_arith_mean), AM \u2264 M_p for p \u2265 1 (arith_mean_le_power_mean), GM \u2264 AM (geom_mean_le_arith_mean), Jensen (jensen_pow_ineq). All proved directly from Mathlib.",
       "mathContext": "Jensen: $(\\sum w_i z_i)^p \\leq \\sum w_i z_i^p$ for $p \\geq 1$. Equivalently $\\text{AM} \\leq M_p$. GM $\\leq$ AM is `Real.geom_mean_le_arith_mean_weighted`."
     },
     {
       "id": "hm-le-gm",
-      "title": "HM ≤ GM (New Proof)",
+      "title": "HM \u2264 GM (New Proof)",
       "startLine": 120,
       "endLine": 167,
-      "summary": "harmonic_mean_le_geom_mean_direct: direct proof via AM-GM on inverse values. Key steps: GM(z⁻¹)·GM(z)=1, GM(z⁻¹) ≤ ∑ wᵢ/zᵢ (AM-GM on z⁻¹), then algebraic inversion.",
+      "summary": "harmonic_mean_le_geom_mean_direct: direct proof via AM-GM on inverse values. Key steps: GM(z\u207b\u00b9)\u00b7GM(z)=1, GM(z\u207b\u00b9) \u2264 \u2211 w\u1d62/z\u1d62 (AM-GM on z\u207b\u00b9), then algebraic inversion.",
       "mathContext": "$\\text{GM}(z^{-1}) \\cdot \\text{GM}(z) = 1$ (term-by-term: $z_i^{-w_i} \\cdot z_i^{w_i} = 1$). Then $\\text{GM}(z)^{-1} \\leq \\sum w_i z_i^{-1}$, so $\\text{HM} \\leq \\text{GM}$."
     },
     {
       "id": "power-mean-mono-pos",
-      "title": "Power Mean Monotonicity for 0 < r ≤ s (New Proof)",
+      "title": "Power Mean Monotonicity for 0 < r \u2264 s (New Proof)",
       "startLine": 169,
       "endLine": 218,
-      "summary": "power_mean_monotone_pos: M_r ≤ M_s for 0 < r ≤ s. Uses Jensen with exponent s/r ≥ 1, then raises to 1/s.",
+      "summary": "power_mean_monotone_pos: M_r \u2264 M_s for 0 < r \u2264 s. Uses Jensen with exponent s/r \u2265 1, then raises to 1/s.",
       "mathContext": "Jensen with $q = s/r \\geq 1$: $(\\sum w_i z_i^r)^{s/r} \\leq \\sum w_i z_i^s$. Raise to $1/s$: $M_r = (\\sum w_i z_i^r)^{1/r} \\leq (\\sum w_i z_i^s)^{1/s} = M_s$."
     },
     {
@@ -179,7 +179,7 @@
       "title": "Duality Identity and Negative Power Mean Monotonicity",
       "startLine": 220,
       "endLine": 343,
-      "summary": "power_mean_neg_inv: M_r(z) = M_{-r}(z⁻¹)⁻¹. power_mean_monotone_neg: M_r ≤ M_s for r ≤ s < 0 via dual argument. Helper lemmas for positivity.",
+      "summary": "power_mean_neg_inv: M_r(z) = M_{-r}(z\u207b\u00b9)\u207b\u00b9. power_mean_monotone_neg: M_r \u2264 M_s for r \u2264 s < 0 via dual argument. Helper lemmas for positivity.",
       "mathContext": "Duality: $M_r(z) = M_{-r}(z^{-1})^{-1}$ via $(z_i^{-1})^{-r} = z_i^r$. For $r \\leq s < 0$: negate to $0 < -s \\leq -r$, apply `power_mean_monotone_pos` to $z^{-1}$, then invert."
     },
     {
@@ -192,13 +192,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves three key cases of the Power Mean Inequality with 0 axioms and 0 sorries: HM ≤ GM (harmonic_mean_le_geom_mean_direct), M_r ≤ M_s for 0 < r ≤ s (power_mean_monotone_pos via Jensen), and M_r ≤ M_s for r ≤ s < 0 (power_mean_monotone_neg via duality). The proofs avoid lemma names unavailable in Lean4/Mathlib (div_le_iff, le_div_iff, inv_le_inv_of_le) by using explicit multiplicative algebra.",
-    "implications": "**For the power mean chain**: This file proves monotonicity for both positive and negative exponents. Combined with the r=0 limit (proved in PowerMeanLimitOQ.lean), only the mixed-sign case (r < 0 < s) remains.\n\n**For Mathlib**: This fills part of the known TODO in Mathlib.Analysis.MeanInequalitiesPow for negative exponents.\n\n**For Lean**: The duality technique M_r(z) = M_{-r}(z⁻¹)⁻¹ is reusable for other mean inequality problems.",
+    "summary": "This formalization proves three key cases of the Power Mean Inequality with 0 axioms and 0 sorries: HM \u2264 GM (harmonic_mean_le_geom_mean_direct), M_r \u2264 M_s for 0 < r \u2264 s (power_mean_monotone_pos via Jensen), and M_r \u2264 M_s for r \u2264 s < 0 (power_mean_monotone_neg via duality). The proofs avoid lemma names unavailable in Lean4/Mathlib (div_le_iff, le_div_iff, inv_le_inv_of_le) by using explicit multiplicative algebra.",
+    "implications": "**For the power mean chain**: This file proves monotonicity for both positive and negative exponents. Combined with the r=0 limit (proved in PowerMeanLimitOQ.lean), only the mixed-sign case (r < 0 < s) remains.\n\n**For Mathlib**: This fills part of the known TODO in Mathlib.Analysis.MeanInequalitiesPow for negative exponents.\n\n**For Lean**: The duality technique M_r(z) = M_{-r}(z\u207b\u00b9)\u207b\u00b9 is reusable for other mean inequality problems.",
     "openQuestions": [
-      "Prove M_r ≤ M_s for r < 0 < s (crossing zero) — the most subtle case, requires combining with the r=0 limit",
+      "Prove M_r \u2264 M_s for r < 0 < s (crossing zero) \u2014 the most subtle case, requires combining with the r=0 limit",
       "Add this to Mathlib as a proper contribution filling the existing TODO",
-      "Formalize the extreme cases: $\\lim_{r \\to +\\infty} M_r = \\max(z)$ and $\\lim_{r \\to -\\infty} M_r = \\min(z)$ — these complete the power mean chain from $\\min$ to $\\max$ and require dominated convergence or direct epsilon-delta arguments",
-      "Formalize the equivalence between power mean monotonicity and the monotonicity of Rényi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ in its order $\\alpha$ — this would connect this formalization to Mathlib's information theory library and show that $M_r \\leq M_s$ for probability distributions is exactly $H_\\beta \\leq H_\\alpha$ for $\\alpha \\leq \\beta$ (Rényi 1961)"
+      "Formalize the extreme cases: $\\lim_{r \\to +\\infty} M_r = \\max(z)$ and $\\lim_{r \\to -\\infty} M_r = \\min(z)$ \u2014 these complete the power mean chain from $\\min$ to $\\max$ and require dominated convergence or direct epsilon-delta arguments",
+      "Formalize the equivalence between power mean monotonicity and the monotonicity of R\u00e9nyi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ in its order $\\alpha$ \u2014 this would connect this formalization to Mathlib's information theory library and show that $M_r \\leq M_s$ for probability distributions is exactly $H_\\beta \\leq H_\\alpha$ for $\\alpha \\leq \\beta$ (R\u00e9nyi 1961)"
     ]
   },
   "leanFile": {
@@ -212,8 +212,9 @@
     "namespace": null,
     "lineCount": 372,
     "axiomCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 3
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "lemmaCount": 1
   },
   "relatedProofs": [
     "amgm-inequality",
@@ -230,7 +231,7 @@
   "references": [
     {
       "key": "HLP34",
-      "citation": "Hardy, G.H., Littlewood, J.E., and Pólya, G., Inequalities, Cambridge University Press (1934), Chapter II.",
+      "citation": "Hardy, G.H., Littlewood, J.E., and P\u00f3lya, G., Inequalities, Cambridge University Press (1934), Chapter II.",
       "type": "book"
     },
     {
@@ -250,7 +251,7 @@
     },
     {
       "key": "Re61",
-      "citation": "Rényi, A., On measures of entropy and information, Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability 1 (1961), 547–561.",
+      "citation": "R\u00e9nyi, A., On measures of entropy and information, Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability 1 (1961), 547\u2013561.",
       "type": "paper"
     }
   ]

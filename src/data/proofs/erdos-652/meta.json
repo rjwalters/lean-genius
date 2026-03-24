@@ -1,10 +1,10 @@
 {
   "id": "erdos-652",
-  "title": "Erdős Problem #652: Distance Multiplicity Spectrum in Point Sets",
+  "title": "Erd\u0151s Problem #652: Distance Multiplicity Spectrum in Point Sets",
   "slug": "erdos-652",
-  "description": "Does αₖ → ∞ as k → ∞, where αₖ is the minimal constant such that R(xₖ) < αₖ√n is achievable? Answer: YES (Mathialagan 2021).",
+  "description": "Does \u03b1\u2096 \u2192 \u221e as k \u2192 \u221e, where \u03b1\u2096 is the minimal constant such that R(x\u2096) < \u03b1\u2096\u221an is achievable? Answer: YES (Mathialagan 2021).",
   "meta": {
-    "author": "Erdős, Elekes, Mathialagan",
+    "author": "Erd\u0151s, Elekes, Mathialagan",
     "sourceUrl": "https://erdosproblems.com/652",
     "date": "2021",
     "status": "axiomatized",
@@ -39,25 +39,25 @@
       "Formal definitions of Point, PointSet, and distinctDistances in Lean 4",
       "Definition of R function counting distinct distances per point",
       "R_k function for k-th order statistic of R values via sorting",
-      "Formalization of αₖ constants as asymptotic thresholds",
-      "Axiomatization of Elekes' disproof (αₖ finite for all k)",
-      "Axiomatization of Mathialagan's theorem (R(xₖ) ≫ √(kn), hence αₖ ≥ C√k)",
-      "Product lower bound R(x₁)·R(x₂) ≫ n",
-      "Connection to Erdős distinct distances problem (Guth-Katz 2015)",
-      "Concrete examples: regular polygon (R = 1) and integer grid (R ≈ √n)"
+      "Formalization of \u03b1\u2096 constants as asymptotic thresholds",
+      "Axiomatization of Elekes' disproof (\u03b1\u2096 finite for all k)",
+      "Axiomatization of Mathialagan's theorem (R(x\u2096) \u226b \u221a(kn), hence \u03b1\u2096 \u2265 C\u221ak)",
+      "Product lower bound R(x\u2081)\u00b7R(x\u2082) \u226b n",
+      "Connection to Erd\u0151s distinct distances problem (Guth-Katz 2015)",
+      "Concrete examples: regular polygon (R = 1) and integer grid (R \u2248 \u221an)"
     ],
     "relatedProblems": [
       {
         "id": "erdos-653",
-        "relationship": "Erdős #653 studies the number of distinct R-values g(n) in an n-point set, a complementary question about the distance multiplicity spectrum"
+        "relationship": "Erd\u0151s #653 studies the number of distinct R-values g(n) in an n-point set, a complementary question about the distance multiplicity spectrum"
       },
       {
         "id": "erdos-98",
-        "relationship": "Erdős #98 addresses distinct distances under general position constraints (no 3 collinear, no 4 concyclic), a structural variant of the same distance counting framework"
+        "relationship": "Erd\u0151s #98 addresses distinct distances under general position constraints (no 3 collinear, no 4 concyclic), a structural variant of the same distance counting framework"
       },
       {
         "id": "erdos-651",
-        "relationship": "Erdős #651 studies convex configurations in point sets, sharing the theme of extremal properties of finite point configurations in the plane"
+        "relationship": "Erd\u0151s #651 studies convex configurations in point sets, sharing the theme of extremal properties of finite point configurations in the plane"
       }
     ],
     "erdosNumber": 652,
@@ -68,15 +68,15 @@
     "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**From Erdős's 1946 Problem to Mathialagan's 2021 Resolution**\n\nThe distinct distances problem has its roots in Erdős's 1946 paper, where he asked: what is the minimum number of distinct distances determined by $n$ points in the plane? He proved the lower bound $\\Omega(\\sqrt{n})$ and conjectured the truth is $\\Omega(n/\\sqrt{\\log n})$, achieved by the integer lattice.\n\nThis problem inspired decades of work in combinatorial geometry. The breakthrough came in 2010 when Larry Guth and Nets Hawk Katz proved Erdős's conjecture up to constants using a revolutionary technique called **polynomial partitioning** — decomposing the plane into cells using an algebraic surface to control incidences.\n\nErdős Problem #652 refines the question: instead of the total number of distinct distances, it examines the **per-point distance counts** $R(x_i) = |\\{d(x_i, x_j) : j \\neq i\\}|$, ordered as $R(x_1) \\leq \\cdots \\leq R(x_n)$. The constants $\\alpha_k$ capture how small $R(x_k)$ can be relative to $\\sqrt{n}$.\n\nErdős originally conjectured the stronger statement that $R(x_3)/\\sqrt{n} \\to \\infty$, i.e., that $\\alpha_3 = \\infty$. György Elekes dramatically disproved this around 2000 using algebraic curve constructions: for **any** fixed $k$, he built point sets where $k$ points each see only $O(\\sqrt{n})$ distinct distances. Thus $\\alpha_k$ is finite for every $k$.\n\nThe modified question — does $\\alpha_k \\to \\infty$ as $k \\to \\infty$? — remained open until 2021, when Sahana Mathialagan proved the affirmative answer with the quantitative bound $\\alpha_k \\geq C\\sqrt{k}$. Her proof extends the Guth-Katz polynomial partitioning framework to the multi-point setting, showing that while any fixed number of points can have few distinct distances, the threshold must grow with $k$.",
+    "historicalContext": "**From Erd\u0151s's 1946 Problem to Mathialagan's 2021 Resolution**\n\nThe distinct distances problem has its roots in Erd\u0151s's 1946 paper, where he asked: what is the minimum number of distinct distances determined by $n$ points in the plane? He proved the lower bound $\\Omega(\\sqrt{n})$ and conjectured the truth is $\\Omega(n/\\sqrt{\\log n})$, achieved by the integer lattice.\n\nThis problem inspired decades of work in combinatorial geometry. The breakthrough came in 2010 when Larry Guth and Nets Hawk Katz proved Erd\u0151s's conjecture up to constants using a revolutionary technique called **polynomial partitioning** \u2014 decomposing the plane into cells using an algebraic surface to control incidences.\n\nErd\u0151s Problem #652 refines the question: instead of the total number of distinct distances, it examines the **per-point distance counts** $R(x_i) = |\\{d(x_i, x_j) : j \\neq i\\}|$, ordered as $R(x_1) \\leq \\cdots \\leq R(x_n)$. The constants $\\alpha_k$ capture how small $R(x_k)$ can be relative to $\\sqrt{n}$.\n\nErd\u0151s originally conjectured the stronger statement that $R(x_3)/\\sqrt{n} \\to \\infty$, i.e., that $\\alpha_3 = \\infty$. Gy\u00f6rgy Elekes dramatically disproved this around 2000 using algebraic curve constructions: for **any** fixed $k$, he built point sets where $k$ points each see only $O(\\sqrt{n})$ distinct distances. Thus $\\alpha_k$ is finite for every $k$.\n\nThe modified question \u2014 does $\\alpha_k \\to \\infty$ as $k \\to \\infty$? \u2014 remained open until 2021, when Sahana Mathialagan proved the affirmative answer with the quantitative bound $\\alpha_k \\geq C\\sqrt{k}$. Her proof extends the Guth-Katz polynomial partitioning framework to the multi-point setting, showing that while any fixed number of points can have few distinct distances, the threshold must grow with $k$.",
     "problemStatement": "Let $x_1, \\ldots, x_n \\in \\mathbb{R}^2$ and define $R(x_i) = |\\{\\|x_j - x_i\\| : j \\neq i\\}|$. Order points so $R(x_1) \\leq \\cdots \\leq R(x_n)$. Define $\\alpha_k$ as the minimal constant such that $R(x_k) < \\alpha_k \\sqrt{n}$ is achievable for arbitrarily large $n$.\n\n**Question**: Is $\\alpha_k \\to \\infty$ as $k \\to \\infty$?\n\n**Answer**: YES (Mathialagan 2021). Moreover, $\\alpha_k \\geq C\\sqrt{k}$ for an absolute constant $C > 0$.\n\n**Key facts**:\n- $\\alpha_1 = 0$ (place all points equidistant from $x_1$)\n- $\\alpha_k$ is finite for each fixed $k$ (Elekes)\n- $\\alpha_k \\to \\infty$ as $k \\to \\infty$ (Mathialagan)",
-    "text": "Does αₖ → ∞ as k → ∞, where αₖ is the minimal constant such that R(xₖ) < αₖ√n is achievable? Answer: YES (Mathialagan 2021).",
-    "proofStrategy": "**Formalization Architecture**\n\nThe Lean formalization builds up the framework in 10 parts:\n\n1. **Basic Definitions** (Lines 41–64): Point as $\\mathbb{R} \\times \\mathbb{R}$, Euclidean distance, PointSet as `Fin n → Point`, distinctDistances via `Finset.image`, and the $R$ function as cardinality\n2. **Ordering** (Lines 66–76): R_k function computing the $k$-th smallest $R$ value via `Finset.sort`\n3. **αₖ Constants** (Lines 78–95): Existence predicate and axiomatized constants with positivity and achievability\n4. **Basic Properties** (Lines 97–115): $\\alpha_1 = 0$, product bound $R(x_1) \\cdot R(x_2) \\gg n$, minimum $R = 1$ achievable\n5. **Elekes' Disproof** (Lines 117–131): For any $k$, point sets with $R_k < C\\sqrt{n}$ exist; hence $\\alpha_k < \\infty$\n6. **Mathialagan's Theorem** (Lines 134–152): $R(x_k) \\gg \\sqrt{kn}$ for $2 \\leq k \\leq n^{1/3}$; hence $\\alpha_k \\geq C\\sqrt{k}$ and $\\alpha_k \\to \\infty$\n7. **Main Result** (Lines 155–166): Combined theorem: $\\alpha_k \\to \\infty$ AND $\\alpha_k < \\infty$ for each $k$\n8. **Examples** (Lines 168–181): Regular polygon ($R = 1$) and square grid ($R \\approx \\sqrt{n}$)\n9. **Connections** (Lines 183–199): Guth-Katz distinct distances bound and $R$-sum bound\n10. **Summary** (Lines 201–224): Clean one-line final theorem\n\nThe deep results (Elekes' algebraic constructions, Mathialagan's polynomial partitioning proof) are appropriately axiomatized.",
+    "text": "Does \u03b1\u2096 \u2192 \u221e as k \u2192 \u221e, where \u03b1\u2096 is the minimal constant such that R(x\u2096) < \u03b1\u2096\u221an is achievable? Answer: YES (Mathialagan 2021).",
+    "proofStrategy": "**Formalization Architecture**\n\nThe Lean formalization builds up the framework in 10 parts:\n\n1. **Basic Definitions** (Lines 41\u201364): Point as $\\mathbb{R} \\times \\mathbb{R}$, Euclidean distance, PointSet as `Fin n \u2192 Point`, distinctDistances via `Finset.image`, and the $R$ function as cardinality\n2. **Ordering** (Lines 66\u201376): R_k function computing the $k$-th smallest $R$ value via `Finset.sort`\n3. **\u03b1\u2096 Constants** (Lines 78\u201395): Existence predicate and axiomatized constants with positivity and achievability\n4. **Basic Properties** (Lines 97\u2013115): $\\alpha_1 = 0$, product bound $R(x_1) \\cdot R(x_2) \\gg n$, minimum $R = 1$ achievable\n5. **Elekes' Disproof** (Lines 117\u2013131): For any $k$, point sets with $R_k < C\\sqrt{n}$ exist; hence $\\alpha_k < \\infty$\n6. **Mathialagan's Theorem** (Lines 134\u2013152): $R(x_k) \\gg \\sqrt{kn}$ for $2 \\leq k \\leq n^{1/3}$; hence $\\alpha_k \\geq C\\sqrt{k}$ and $\\alpha_k \\to \\infty$\n7. **Main Result** (Lines 155\u2013166): Combined theorem: $\\alpha_k \\to \\infty$ AND $\\alpha_k < \\infty$ for each $k$\n8. **Examples** (Lines 168\u2013181): Regular polygon ($R = 1$) and square grid ($R \\approx \\sqrt{n}$)\n9. **Connections** (Lines 183\u2013199): Guth-Katz distinct distances bound and $R$-sum bound\n10. **Summary** (Lines 201\u2013224): Clean one-line final theorem\n\nThe deep results (Elekes' algebraic constructions, Mathialagan's polynomial partitioning proof) are appropriately axiomatized.",
     "keyInsights": [
       "**Threshold phenomenon**: Each $\\alpha_k$ is finite (Elekes: any fixed number of points can have $O(\\sqrt{n})$ distances), but $\\alpha_k \\to \\infty$ (Mathialagan: the number of such \"low-distance\" points is bounded). This is a **phase transition** in the distance spectrum.",
-      "**Product bound reveals structure**: The inequality $R(x_1) \\cdot R(x_2) \\geq Cn$ shows the two smallest $R$ values are **complementary** — if one is small, the other must be large. This basic observation already implies $\\alpha_2 > 0$.",
+      "**Product bound reveals structure**: The inequality $R(x_1) \\cdot R(x_2) \\geq Cn$ shows the two smallest $R$ values are **complementary** \u2014 if one is small, the other must be large. This basic observation already implies $\\alpha_2 > 0$.",
       "**Polynomial partitioning extends**: Mathialagan's proof adapts the Guth-Katz (2015) polynomial partitioning technique from counting total distinct distances to bounding per-point counts, showing this revolutionary method has broader applications than its original setting",
-      "**Algebraic curves create extremal configurations**: Elekes' constructions placing points on carefully chosen algebraic curves show that algebraic geometry directly constrains combinatorial geometry — the algebraic degree controls the distance structure",
+      "**Algebraic curves create extremal configurations**: Elekes' constructions placing points on carefully chosen algebraic curves show that algebraic geometry directly constrains combinatorial geometry \u2014 the algebraic degree controls the distance structure",
       "**Quantitative bound $\\alpha_k \\geq C\\sqrt{k}$**: The specific growth rate $\\sqrt{k}$ comes from the polynomial partitioning degree: a polynomial of degree $d$ partitions the plane into $O(d^2)$ cells, and setting $d \\sim \\sqrt{k}$ optimizes the pigeonhole argument"
     ],
     "prerequisites": [
@@ -87,7 +87,7 @@
     {
       "id": "header-comments",
       "title": "Problem Documentation",
-      "summary": "File header documenting Erdős Problem #652: the distance multiplicity spectrum, $\\alpha_k$ constants, Elekes' disproof of the stronger conjecture, and Mathialagan's 2021 resolution with $\\alpha_k \\geq C\\sqrt{k}$.",
+      "summary": "File header documenting Erd\u0151s Problem #652: the distance multiplicity spectrum, $\\alpha_k$ constants, Elekes' disproof of the stronger conjecture, and Mathialagan's 2021 resolution with $\\alpha_k \\geq C\\sqrt{k}$.",
       "startLine": 1,
       "endLine": 39,
       "mathContext": "$R(x_i) = |\\{\\|x_j - x_i\\| : j \\neq i\\}|$. $\\alpha_k := \\inf\\{\\alpha : R(x_k) < \\alpha\\sqrt{n}\\}$. Answer: $\\alpha_k \\to \\infty$ with $\\alpha_k \\geq C\\sqrt{k}$."
@@ -95,7 +95,7 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Foundational types: `Point` as $\\mathbb{R} \\times \\mathbb{R}$, `dist` for Euclidean distance $\\sqrt{(x_1-x_2)^2 + (y_1-y_2)^2}$, `PointSet n` as `Fin n → Point`, `distinctDistances` via `Finset.image`, and `R` as the cardinality of distinct distances from a point.",
+      "summary": "Foundational types: `Point` as $\\mathbb{R} \\times \\mathbb{R}$, `dist` for Euclidean distance $\\sqrt{(x_1-x_2)^2 + (y_1-y_2)^2}$, `PointSet n` as `Fin n \u2192 Point`, `distinctDistances` via `Finset.image`, and `R` as the cardinality of distinct distances from a point.",
       "startLine": 41,
       "endLine": 64,
       "mathContext": "Point $= \\mathbb{R}^2$, $d(p,q) = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$, $R(P,i) = |\\{d(P_i, P_j) : j \\neq i\\}|$."
@@ -110,7 +110,7 @@
     },
     {
       "id": "alpha-k",
-      "title": "The αₖ Constants",
+      "title": "The \u03b1\u2096 Constants",
       "summary": "Definition of $\\alpha_k = \\inf\\{\\alpha : R_k(P) < \\alpha\\sqrt{n} \\text{ is achievable}\\}$ as a Prop and axiomatized constant with positivity and achievability properties.",
       "startLine": 78,
       "endLine": 95,
@@ -127,7 +127,7 @@
     {
       "id": "elekes",
       "title": "Elekes' Disproof",
-      "summary": "Elekes' theorem via algebraic curves: for any $k \\geq 1$, there exist $n$-point sets with $R_k < C\\sqrt{n}$. Consequence: $\\alpha_k < \\infty$ for all $k$, disproving Erdős's stronger conjecture.",
+      "summary": "Elekes' theorem via algebraic curves: for any $k \\geq 1$, there exist $n$-point sets with $R_k < C\\sqrt{n}$. Consequence: $\\alpha_k < \\infty$ for all $k$, disproving Erd\u0151s's stronger conjecture.",
       "startLine": 117,
       "endLine": 132,
       "mathContext": "Elekes: $\\forall k \\geq 1,\\ \\forall^\\infty n,\\ \\exists P,\\ R_k(P) < C_k\\sqrt{n}$. Hence $\\alpha_k < \\infty$ for all $k$."
@@ -135,7 +135,7 @@
     {
       "id": "mathialagan",
       "title": "Mathialagan's Breakthrough (2021)",
-      "summary": "The main positive results: $R(x_k) \\gg \\sqrt{kn}$ for $2 \\leq k \\leq n^{1/3}$ (polynomial partitioning), $\\alpha_k \\geq C\\sqrt{k}$ (quantitative lower bound), and $\\alpha_k \\to \\infty$ (divergence) — resolving Erdős #652 affirmatively.",
+      "summary": "The main positive results: $R(x_k) \\gg \\sqrt{kn}$ for $2 \\leq k \\leq n^{1/3}$ (polynomial partitioning), $\\alpha_k \\geq C\\sqrt{k}$ (quantitative lower bound), and $\\alpha_k \\to \\infty$ (divergence) \u2014 resolving Erd\u0151s #652 affirmatively.",
       "startLine": 134,
       "endLine": 153,
       "mathContext": "Mathialagan (2021): $R(x_k) \\geq C\\sqrt{kn}$ for $2 \\leq k \\leq n^{1/3}$. Hence $\\alpha_k \\geq C\\sqrt{k} \\to \\infty$."
@@ -159,7 +159,7 @@
     {
       "id": "connections",
       "title": "Related Problems",
-      "summary": "Connection to the Erdős distinct distances problem: total distinct distances $\\Omega(n/\\sqrt{\\log n})$ (Guth-Katz 2015), and the sum bound $\\sum R(x_i) \\leq n^2$. Polynomial partitioning links both results.",
+      "summary": "Connection to the Erd\u0151s distinct distances problem: total distinct distances $\\Omega(n/\\sqrt{\\log n})$ (Guth-Katz 2015), and the sum bound $\\sum R(x_i) \\leq n^2$. Polynomial partitioning links both results.",
       "startLine": 183,
       "endLine": 199,
       "mathContext": "Guth-Katz: distinct distances $\\geq cn/\\sqrt{\\log n}$. Sum bound: $\\sum_i R(x_i) \\leq n(n-1)$ (each distance counted from both endpoints)."
@@ -167,27 +167,27 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Final theorem `erdos_652_summary : \\alpha_k \\to \\infty` — clean one-line resolution referencing `alpha_k_unbounded`. Documents key results, techniques (Elekes: algebraic curves; Mathialagan: polynomial partitioning), and closes the `Erdos652` namespace.",
+      "summary": "Final theorem `erdos_652_summary : \\alpha_k \\to \\infty` \u2014 clean one-line resolution referencing `alpha_k_unbounded`. Documents key results, techniques (Elekes: algebraic curves; Mathialagan: polynomial partitioning), and closes the `Erdos652` namespace.",
       "startLine": 201,
       "endLine": 226,
       "mathContext": "Final: `erdos_652_summary` $\\equiv \\alpha_k \\to \\infty$. SOLVED affirmatively (Mathialagan 2021)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #652 asks whether the threshold constants αₖ — measuring how small the k-th smallest per-point distinct distance count R(xₖ) can be relative to √n — diverge as k → ∞. Elekes showed each αₖ is finite using algebraic curve constructions (disproving Erdős's stronger conjecture). Mathialagan (2021) proved the affirmative answer αₖ → ∞ with the quantitative bound αₖ ≥ C√k, using polynomial partitioning from the Guth-Katz framework.",
-    "implications": "1. **Distance Spectrum Structure**: The result reveals a **phase transition** in point configurations: while any fixed number of points can have few distinct distances (O(√n)), the number of such \"economical\" points is bounded and grows with n. The distance spectrum is not uniformly compressible.\n\n**2. Polynomial Partitioning Versatility**: Mathialagan's proof demonstrates that the Guth-Katz polynomial partitioning technique extends beyond total distance counting to per-point statistics, suggesting broader applications in discrete geometry.\n\n3. **Algebraic-Combinatorial Interface**: The interplay between Elekes' algebraic constructions (upper bounds via curves) and Mathialagan's partitioning arguments (lower bounds via cell decomposition) illustrates how algebraic geometry and combinatorics constrain each other in distance problems.\n\n4. **Extremal Point Configurations**: The result contributes to the broader program of understanding extremal properties of finite point sets, connecting to the Szemerédi-Trotter theorem, unit distance conjecture, and sum-product estimates.",
+    "summary": "Erd\u0151s Problem #652 asks whether the threshold constants \u03b1\u2096 \u2014 measuring how small the k-th smallest per-point distinct distance count R(x\u2096) can be relative to \u221an \u2014 diverge as k \u2192 \u221e. Elekes showed each \u03b1\u2096 is finite using algebraic curve constructions (disproving Erd\u0151s's stronger conjecture). Mathialagan (2021) proved the affirmative answer \u03b1\u2096 \u2192 \u221e with the quantitative bound \u03b1\u2096 \u2265 C\u221ak, using polynomial partitioning from the Guth-Katz framework.",
+    "implications": "1. **Distance Spectrum Structure**: The result reveals a **phase transition** in point configurations: while any fixed number of points can have few distinct distances (O(\u221an)), the number of such \"economical\" points is bounded and grows with n. The distance spectrum is not uniformly compressible.\n\n**2. Polynomial Partitioning Versatility**: Mathialagan's proof demonstrates that the Guth-Katz polynomial partitioning technique extends beyond total distance counting to per-point statistics, suggesting broader applications in discrete geometry.\n\n3. **Algebraic-Combinatorial Interface**: The interplay between Elekes' algebraic constructions (upper bounds via curves) and Mathialagan's partitioning arguments (lower bounds via cell decomposition) illustrates how algebraic geometry and combinatorics constrain each other in distance problems.\n\n4. **Extremal Point Configurations**: The result contributes to the broader program of understanding extremal properties of finite point sets, connecting to the Szemer\u00e9di-Trotter theorem, unit distance conjecture, and sum-product estimates.",
     "openQuestions": [
-      "Is the bound αₖ ≥ C√k tight? Specifically, is αₖ = Θ(√k), or does αₖ grow faster than √k?",
-      "Can the range k ≤ n^{1/3} in Mathialagan's theorem be extended to k ≤ n^{1/2} or beyond?",
-      "What are the exact values of α₂ and α₃? Are they computable from known algebraic constructions?",
-      "Does an analogous threshold phenomenon hold in higher dimensions (points in ℝ^d for d ≥ 3)?"
+      "Is the bound \u03b1\u2096 \u2265 C\u221ak tight? Specifically, is \u03b1\u2096 = \u0398(\u221ak), or does \u03b1\u2096 grow faster than \u221ak?",
+      "Can the range k \u2264 n^{1/3} in Mathialagan's theorem be extended to k \u2264 n^{1/2} or beyond?",
+      "What are the exact values of \u03b1\u2082 and \u03b1\u2083? Are they computable from known algebraic constructions?",
+      "Does an analogous threshold phenomenon hold in higher dimensions (points in \u211d^d for d \u2265 3)?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-89",
       "relationship": "foundational",
-      "description": "Problem #89 is the Erdős distinct distances problem (1946): what is the minimum number of distinct distances among n points? Guth-Katz (2015) proved Ω(n/√log n). Problem #652 refines this by studying the per-point distance counts R(xᵢ) rather than the total"
+      "description": "Problem #89 is the Erd\u0151s distinct distances problem (1946): what is the minimum number of distinct distances among n points? Guth-Katz (2015) proved \u03a9(n/\u221alog n). Problem #652 refines this by studying the per-point distance counts R(x\u1d62) rather than the total"
     },
     {
       "targetId": "erdos-90",
@@ -197,7 +197,7 @@
     {
       "targetId": "erdos-653",
       "relationship": "extends",
-      "description": "Problem #653 studies the number of distinct R-values g(n) in an n-point set — a complementary question about the distance multiplicity spectrum that builds on the αₖ framework of #652"
+      "description": "Problem #653 studies the number of distinct R-values g(n) in an n-point set \u2014 a complementary question about the distance multiplicity spectrum that builds on the \u03b1\u2096 framework of #652"
     },
     {
       "targetId": "erdos-98",
@@ -232,7 +232,8 @@
     "lineCount": 226,
     "axiomCount": 14,
     "theoremCount": 3,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -242,7 +243,7 @@
     },
     {
       "key": "GuthKatz2015",
-      "citation": "Guth, L. and Katz, N. H. (2015). On the Erdős distinct distances problem in the plane. Annals of Mathematics 181(1), 155-190.",
+      "citation": "Guth, L. and Katz, N. H. (2015). On the Erd\u0151s distinct distances problem in the plane. Annals of Mathematics 181(1), 155-190.",
       "type": "paper"
     },
     {
@@ -252,7 +253,7 @@
     },
     {
       "key": "Erdos1946",
-      "citation": "Erdős, P. (1946). On sets of distances of n points. American Mathematical Monthly 53(5), 248-250.",
+      "citation": "Erd\u0151s, P. (1946). On sets of distances of n points. American Mathematical Monthly 53(5), 248-250.",
       "type": "paper"
     }
   ]

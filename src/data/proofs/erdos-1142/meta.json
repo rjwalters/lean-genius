@@ -1,10 +1,10 @@
 {
   "id": "erdos-1142",
-  "title": "Erdős Problem #1142: Primes of the form n − 2^k",
+  "title": "Erd\u0151s Problem #1142: Primes of the form n \u2212 2^k",
   "slug": "erdos-1142",
-  "description": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
+  "description": "Are there infinitely many n (or any n > 105) such that n \u2212 2^k is prime for all 1 < 2^k < n?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1142",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1142Problem.lean",
@@ -14,7 +14,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 0,
     "erdosNumber": 1142,
     "erdosUrl": "https://erdosproblems.com/1142",
     "erdosProblemStatus": "open",
@@ -53,13 +53,13 @@
     "assumptions": "No axioms. 6 sorry(s) remain in the formalization."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1142 asks whether there are infinitely many integers $n$ such that $n - 2^k$ is prime for every power of two $2^k$ with $1 < 2^k < n$. The known values satisfying this property are $n \\in \\{4, 7, 15, 21, 45, 75, 105\\}$, catalogued as OEIS sequence A039669.\n\nMientka and Weitzenkamp (1969) performed an exhaustive search verifying that no other values exist up to $2^{44} \\approx 1.76 \\times 10^{13}$. Vaughan (1973) proved that the count of such $n$ up to $N$ is extremely sparse, establishing upper bounds on their density.\n\nErdős formulated a stronger conjecture: the number of $k$ with $1 \\leq k$ and $2^k < n$ for which $n - 2^k$ is prime is $o(\\log n)$. If true, this would imply that for large $n$, not all $\\lfloor \\log_2 n \\rfloor$ differences can simultaneously be prime, suggesting the set is finite. This connects to Erdős Problem #236 on the density of prime differences from powers of two.\n\nThe problem sits at the intersection of additive number theory and the distribution of primes, related to covering congruences and the Goldbach-type question of representing integers as sums/differences of primes and powers of two.",
-    "problemStatement": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
-    "text": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
+    "historicalContext": "Erd\u0151s Problem #1142 asks whether there are infinitely many integers $n$ such that $n - 2^k$ is prime for every power of two $2^k$ with $1 < 2^k < n$. The known values satisfying this property are $n \\in \\{4, 7, 15, 21, 45, 75, 105\\}$, catalogued as OEIS sequence A039669.\n\nMientka and Weitzenkamp (1969) performed an exhaustive search verifying that no other values exist up to $2^{44} \\approx 1.76 \\times 10^{13}$. Vaughan (1973) proved that the count of such $n$ up to $N$ is extremely sparse, establishing upper bounds on their density.\n\nErd\u0151s formulated a stronger conjecture: the number of $k$ with $1 \\leq k$ and $2^k < n$ for which $n - 2^k$ is prime is $o(\\log n)$. If true, this would imply that for large $n$, not all $\\lfloor \\log_2 n \\rfloor$ differences can simultaneously be prime, suggesting the set is finite. This connects to Erd\u0151s Problem #236 on the density of prime differences from powers of two.\n\nThe problem sits at the intersection of additive number theory and the distribution of primes, related to covering congruences and the Goldbach-type question of representing integers as sums/differences of primes and powers of two.",
+    "problemStatement": "Are there infinitely many n (or any n > 105) such that n \u2212 2^k is prime for all 1 < 2^k < n?",
+    "text": "Are there infinitely many n (or any n > 105) such that n \u2212 2^k is prime for all 1 < 2^k < n?",
     "proofStrategy": "The formalization defines the property $\\text{SatisfiesErdos1142}(n)$ requiring $n - 2^k$ to be prime for every power of two in the range $(1, n)$. It verifies all seven known values ($n = 4, 7, 15, 21, 45, 75, 105$) using `native_decide`, confirms non-examples ($n = 6, 9, 10$), and proves structural results: solutions must be odd (except $n = 4$), must satisfy $n \\geq 4$, and $n - 2$ must be prime. The completeness theorem `erdos1142_complete_le_105` verifies exhaustively that these are the only solutions up to 105. The stronger $o(\\log n)$ conjecture is formalized and shown to imply eventual non-existence of solutions.",
     "keyInsights": [
       "**Logarithmic constraint growth**: The number of primality conditions grows as $\\lfloor \\log_2 n \\rfloor$, making it increasingly unlikely that all $n - 2^k$ are simultaneously prime for large $n$.",
-      "**Parity obstruction**: If $n > 4$ satisfies the property, then $n$ must be odd — otherwise $n - 2$ is even and greater than 2, hence composite. This is formalized as `erdos1142_odd_or_4`.",
+      "**Parity obstruction**: If $n > 4$ satisfies the property, then $n$ must be odd \u2014 otherwise $n - 2$ is even and greater than 2, hence composite. This is formalized as `erdos1142_odd_or_4`.",
       "**Decidable verification via `native_decide`**: Both positive examples and non-examples are verified computationally using Lean's `native_decide` tactic, giving kernel-level certainty.",
       "**Stronger $o(\\log n)$ conjecture implies finiteness**: If the fraction of prime differences tends to zero, then eventually no $n$ can have ALL differences prime, yielding `stronger_implies_eventually_not_all_prime`.",
       "**Connection to covering congruences**: The problem relates to whether a system of congruences can cover all residues modulo small primes, preventing all differences from being prime simultaneously."
@@ -142,11 +142,11 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1142 in Lean 4 with full computational verification of all seven known solutions and three non-examples. It establishes structural constraints (oddness, lower bound, modular arithmetic) and formalizes both the infinitude conjecture and the stronger o(log n) conjecture.",
+    "summary": "This formalization captures Erd\u0151s Problem #1142 in Lean 4 with full computational verification of all seven known solutions and three non-examples. It establishes structural constraints (oddness, lower bound, modular arithmetic) and formalizes both the infinitude conjecture and the stronger o(log n) conjecture.",
     "implications": "The formalization demonstrates how `native_decide` can provide kernel-verified exhaustive search over finite ranges, bridging computational number theory with formal verification. The logical relationship between the stronger conjecture and finiteness illustrates how asymptotic density arguments can be made precise in type theory.",
     "openQuestions": [
-      "Prove the structural sorry placeholders (oddness, lower bound, n − 2 prime) using Finset membership reasoning",
-      "Extend the exhaustive verification beyond 105 to match the Mientka–Weitzenkamp bound of 2^44",
+      "Prove the structural sorry placeholders (oddness, lower bound, n \u2212 2 prime) using Finset membership reasoning",
+      "Extend the exhaustive verification beyond 105 to match the Mientka\u2013Weitzenkamp bound of 2^44",
       "Formalize Vaughan's (1973) upper bound on the density of solutions",
       "Connect to covering congruence methods that could establish finiteness"
     ]
@@ -155,7 +155,7 @@
     {
       "targetId": "erdos-236",
       "relationship": "strengthens",
-      "description": "Problem #236 asks whether the count of prime n − 2^k is o(log n), which is the stronger conjecture formalized here"
+      "description": "Problem #236 asks whether the count of prime n \u2212 2^k is o(log n), which is the stronger conjecture formalized here"
     }
   ],
   "relatedProofs": [
@@ -172,7 +172,8 @@
     "namespace": null,
     "lineCount": 192,
     "axiomCount": 0,
-    "theoremCount": 16,
-    "definitionCount": 4
+    "theoremCount": 15,
+    "definitionCount": 4,
+    "lemmaCount": 0
   }
 }

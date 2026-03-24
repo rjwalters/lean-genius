@@ -24,16 +24,16 @@
       "minAdmissibleDiameter: opaque function D(k) for minimum admissible k-tuple diameter",
       "MaynardTaoBound: structure capturing the sieve framework parameters",
       "Small tuple verification: {0,2}, {0,2,6}, {0,2,6,8} via native_decide",
-      "polymath8b_bound: formal statement k=50 gives gap ≤ 246",
+      "polymath8b_bound: formal statement k=50 gives gap \u2264 246",
       "barrier_246: the 246 barrier cannot be broken by k-tuple methods alone"
     ],
     "dateAdded": "2026-03-21",
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 162,
     "assumptions": "5 axiom(s) and 2 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "The bounded gaps between primes saga is one of the great stories of 21st-century mathematics. In May 2013, Yitang Zhang stunned the mathematical world by proving that there are infinitely many pairs of primes differing by at most 70 million — the first finite bound ever established. Within months, James Maynard (then a postdoc at Montreal) and, independently, Terence Tao developed a radically simpler sieve-theoretic approach based on multidimensional Selberg sieve weights, reducing the bound below 600. The Polymath 8b collaborative project, coordinated online, then optimized every parameter: sieve weights, level of distribution, and crucially the admissible k-tuple used. Thomas Engelsma's exhaustive 2013 computation showed that the narrowest admissible 50-tuple has diameter exactly 246, and the Polymath team proved this suffices — yielding the current record of 246 for consecutive prime gaps. This file formalizes why 246 is a hard barrier for these methods.",
+    "historicalContext": "The bounded gaps between primes saga is one of the great stories of 21st-century mathematics. In May 2013, Yitang Zhang stunned the mathematical world by proving that there are infinitely many pairs of primes differing by at most 70 million \u2014 the first finite bound ever established. Within months, James Maynard (then a postdoc at Montreal) and, independently, Terence Tao developed a radically simpler sieve-theoretic approach based on multidimensional Selberg sieve weights, reducing the bound below 600. The Polymath 8b collaborative project, coordinated online, then optimized every parameter: sieve weights, level of distribution, and crucially the admissible k-tuple used. Thomas Engelsma's exhaustive 2013 computation showed that the narrowest admissible 50-tuple has diameter exactly 246, and the Polymath team proved this suffices \u2014 yielding the current record of 246 for consecutive prime gaps. This file formalizes why 246 is a hard barrier for these methods.",
     "problemStatement": "Formalize the function $D(k) = \\min\\{\\text{diam}(\\mathcal{H}) : \\mathcal{H} \\text{ admissible}, |\\mathcal{H}| = k\\}$ relating admissible $k$-tuple size to gap bounds, verify small cases, state the Polymath 8b bound $D(50) = 246$, and analyze why improving below 246 requires fundamentally new ideas beyond the Maynard-Tao sieve.",
     "text": "Formalizes the relationship between admissible k-tuple size and prime gap bounds in the Maynard-Tao framework. Defines the minimum diameter function D(k) for admissible k-tuples, verifies specific tuples ({0,2}, {0,2,6}, {0,2,6,8}) with native_decide, axiomatizes computed values D(2)=2, D(3)=6, D(50)=246, proves the Polymath 8b bound of 246 using the Maynard-Tao structure, and analyzes the barrier: improving below 246 requires going beyond k-tuple methods.",
     "proofStrategy": "The formalization proceeds in five parts: (1) define D(k) as an opaque function with axiomatized values from Engelsma's computation; (2) construct small admissible tuples {0,2}, {0,2,6}, {0,2,6,8} as concrete Finsets and verify properties via native_decide; (3) state asymptotic bounds on D(k) growth; (4) encode the Maynard-Tao framework as a Lean structure and instantiate for k=2 and k=50; (5) formalize the 246 barrier and the conditional improvement under Elliott-Halberstam.",
@@ -42,7 +42,7 @@
       "The Elliott-Halberstam conjecture would dramatically improve the situation: it strengthens the distribution of primes in arithmetic progressions beyond Bombieri-Vinogradov, allowing the sieve to work with smaller k and reducing the bound from 246 to 12",
       "Small admissible tuples exhibit beautiful combinatorial structure: {0,2,4} fails because it covers all residues mod 3, while {0,2,6} succeeds by leaving residue class 1 mod 3 unoccupied",
       "The opaque/axiom approach cleanly separates computational results (D(50) = 246 by exhaustive search) from the mathematical framework (Maynard-Tao sieve theory), reflecting the actual structure of the proof in the literature",
-      "The twin prime conjecture is the k=2 case of this framework: it asks whether D(2) = 2 is 'achievable' — whether the gap 2 occurs infinitely often, not just whether an admissible pair of diameter 2 exists"
+      "The twin prime conjecture is the k=2 case of this framework: it asks whether D(2) = 2 is 'achievable' \u2014 whether the gap 2 occurs infinitely often, not just whether an admissible pair of diameter 2 exists"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)"
@@ -143,6 +143,7 @@
     "lineCount": 162,
     "axiomCount": 4,
     "theoremCount": 13,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   }
 }

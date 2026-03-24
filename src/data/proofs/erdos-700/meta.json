@@ -1,8 +1,8 @@
 {
   "id": "erdos-700",
-  "title": "Erdős Problem #700: GCD of n with Binomial Coefficients",
+  "title": "Erd\u0151s Problem #700: GCD of n with Binomial Coefficients",
   "slug": "erdos-700",
-  "description": "Study f(n) = min_{1<k≤n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there ∞ many n with f(n) > √n? Is f(n) ≪ n/(log n)^A? Known: f(pq) = p, f(p²) ≥ p. Open.",
+  "description": "Study f(n) = min_{1<k\u2264n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there \u221e many n with f(n) > \u221an? Is f(n) \u226a n/(log n)^A? Known: f(pq) = p, f(p\u00b2) \u2265 p. Open.",
   "meta": {
     "erdosNumber": 700,
     "status": "axiomatized",
@@ -68,9 +68,9 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Szekeres studied the arithmetic of binomial coefficients throughout the mid-20th century, producing many results on divisibility patterns in Pascal's triangle. Problem 700 investigates $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$, which measures the minimum common divisor between $n$ and its non-trivial binomial coefficients. The function is closely tied to Kummer's theorem (1852), which determines $v_p(\\binom{n}{k})$ by counting carries in base-$p$ addition of $k$ and $n-k$. For semiprimes $n = pq$, one can show $f(pq) = p$ using the fact that $\\binom{pq}{p}$ is divisible by $q$ but $\\gcd(pq, \\binom{pq}{p}) = p$. The identity $f(30) = 6$ shows the characterization extends beyond semiprimes. The three open questions probe the boundary between exact characterization, extreme behavior, and typical asymptotics, connecting to the distribution of prime factors and the anatomy of integers.",
+    "historicalContext": "Erd\u0151s and Szekeres studied the arithmetic of binomial coefficients throughout the mid-20th century, producing many results on divisibility patterns in Pascal's triangle. Problem 700 investigates $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$, which measures the minimum common divisor between $n$ and its non-trivial binomial coefficients. The function is closely tied to Kummer's theorem (1852), which determines $v_p(\\binom{n}{k})$ by counting carries in base-$p$ addition of $k$ and $n-k$. For semiprimes $n = pq$, one can show $f(pq) = p$ using the fact that $\\binom{pq}{p}$ is divisible by $q$ but $\\gcd(pq, \\binom{pq}{p}) = p$. The identity $f(30) = 6$ shows the characterization extends beyond semiprimes. The three open questions probe the boundary between exact characterization, extreme behavior, and typical asymptotics, connecting to the distribution of prime factors and the anatomy of integers.",
     "problemStatement": "For composite $n$, define $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$. Three questions: (1) Which composite $n$ satisfy $f(n) = n/P(n)$? (2) Do infinitely many composite $n$ have $f(n) > \\sqrt{n}$? (3) Is $f(n) \\ll_A n/(\\log n)^A$ for all $A > 0$?",
-    "text": "Study f(n) = min_{1<k≤n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there ∞ many n with f(n) > √n? Is f(n) ≪ n/(log n)^A? Known: f(pq) = p, f(p²) ≥ p. Open.",
+    "text": "Study f(n) = min_{1<k\u2264n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there \u221e many n with f(n) > \u221an? Is f(n) \u226a n/(log n)^A? Known: f(pq) = p, f(p\u00b2) \u2265 p. Open.",
     "proofStrategy": "The formalization axiomatizes $f(n)$ (avoiding the subtlety of proving the minimization range is nonempty for $n \\geq 4$), states the sandwich bound $p(n) \\leq f(n) \\leq n/P(n)$, records exact values for semiprimes and $n = 30$, and formalizes all three open questions. The prime square result $f(p^2) \\geq p$ provides evidence for Question 2. Question 3 is stated with an explicit constant $C$ depending on $A$.",
     "keyInsights": [
       "$f(pq) = p = n/P(n)$ for semiprimes provides the simplest exact computation, following from Kummer's theorem since the base-$p$ and base-$q$ carries in $\\binom{pq}{k}$ are controlled by the single-digit structure",
@@ -87,13 +87,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem 700 poses three interrelated questions about $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$. The formalization captures the sandwich bounds, exact values for semiprimes and $n=30$, the prime square lower bound, and all three open questions. The function connects the divisibility structure of binomial coefficients to prime factorization, with all questions remaining open.",
+    "summary": "Erd\u0151s Problem 700 poses three interrelated questions about $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$. The formalization captures the sandwich bounds, exact values for semiprimes and $n=30$, the prime square lower bound, and all three open questions. The function connects the divisibility structure of binomial coefficients to prime factorization, with all questions remaining open.",
     "implications": "**Theoretical Significance**: Resolution would deepen understanding of how prime factorizations interact with binomial coefficient divisibility.\n\nQuestion 3 connects to the Hardy-Ramanujan theorem on the typical number of prime factors ($\\omega(n) \\sim \\log \\log n$) and to Kummer's theorem on $p$-adic valuations of binomial coefficients. A characterization for Question 1 would reveal structural conditions on $n$ ensuring maximal divisibility, potentially involving the digit structure of $n$ in all prime bases.",
     "openQuestions": [
       "Which composite $n$ beyond semiprimes and $n = 30$ satisfy $f(n) = n/P(n)$? Is there a characterization in terms of the prime factorization of $n$?",
       "Are there composite $n$ that are not prime squares with $f(n) > \\sqrt{n}$? What is the density of such $n$?",
       "Is $f(n) \\ll_A n/(\\log n)^A$ for every fixed $A > 0$? Can this be approached via estimates for $v_p(\\binom{n}{k})$ using Kummer's theorem?",
-      "What is the average order of $f(n)$ over composite $n \\leq x$? Does it connect to the Erdős-Kac theorem on $\\omega(n)$?"
+      "What is the average order of $f(n)$ over composite $n \\leq x$? Does it connect to the Erd\u0151s-Kac theorem on $\\omega(n)$?"
     ]
   },
   "crossReferences": [
@@ -131,10 +131,11 @@
     "lineCount": 85,
     "axiomCount": 9,
     "theoremCount": 0,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   },
   "references": [
-    "Erdős–Szekeres: original problem",
+    "Erd\u0151s\u2013Szekeres: original problem",
     "f(pq) = p for semiprimes",
     "f(30) = 6",
     "https://erdosproblems.com/700"

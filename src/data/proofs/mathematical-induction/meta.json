@@ -143,7 +143,8 @@
     "lineCount": 249,
     "axiomCount": 0,
     "theoremCount": 11,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -190,7 +191,7 @@
     {
       "targetId": "godel-incompleteness",
       "relationship": "related",
-      "description": "Godel's incompleteness theorems concern the limits of Peano arithmetic, whose induction axiom schema is precisely the principle formalized here. The first incompleteness theorem shows that no consistent extension of PA can prove all true arithmetic statements, while the second shows PA cannot prove its own consistency — both results critically depend on the strength (and limitations) of the induction schema"
+      "description": "Godel's incompleteness theorems concern the limits of Peano arithmetic, whose induction axiom schema is precisely the principle formalized here. The first incompleteness theorem shows that no consistent extension of PA can prove all true arithmetic statements, while the second shows PA cannot prove its own consistency \u2014 both results critically depend on the strength (and limitations) of the induction schema"
     },
     {
       "targetId": "lagrange-theorem",
@@ -200,7 +201,7 @@
     {
       "targetId": "gcd-algorithm",
       "relationship": "related",
-      "description": "The Euclidean algorithm's correctness and termination are proved by strong induction on the pair (a, b) ordered by the second component. Each step reduces gcd(a, b) to gcd(b, a mod b) with strictly smaller second argument — a canonical example of well-founded induction, equivalent to the strong induction principle formalized here"
+      "description": "The Euclidean algorithm's correctness and termination are proved by strong induction on the pair (a, b) ordered by the second component. Each step reduces gcd(a, b) to gcd(b, a mod b) with strictly smaller second argument \u2014 a canonical example of well-founded induction, equivalent to the strong induction principle formalized here"
     },
     {
       "targetId": "factor-remainder-theorem",
@@ -220,7 +221,7 @@
     {
       "targetId": "schroeder-bernstein",
       "relationship": "related",
-      "description": "The Schroeder-Bernstein theorem uses a chain of iterated function applications that terminates by well-ordering — the same principle shown equivalent to induction in this formalization. Both are Wiedijk 100 theorems formalized in Lean 4 via Mathlib"
+      "description": "The Schroeder-Bernstein theorem uses a chain of iterated function applications that terminates by well-ordering \u2014 the same principle shown equivalent to induction in this formalization. Both are Wiedijk 100 theorems formalized in Lean 4 via Mathlib"
     }
   ],
   "relatedProofs": [

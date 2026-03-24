@@ -1,10 +1,10 @@
 {
   "id": "erdos-905",
-  "title": "Edge-Triangle Multiplicity Above Turán",
+  "title": "Edge-Triangle Multiplicity Above Tur\u00e1n",
   "slug": "erdos-905",
-  "description": "Every graph with n vertices and > n²/4 edges contains an edge which is in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
+  "description": "Every graph with n vertices and > n\u00b2/4 edges contains an edge which is in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
   "meta": {
-    "author": "Bollobás, Erdős; solved by Edwards, Hadziivanov-Nikiforov",
+    "author": "Bollob\u00e1s, Erd\u0151s; solved by Edwards, Hadziivanov-Nikiforov",
     "sourceUrl": "https://erdosproblems.com/905",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos905Problem.lean",
@@ -23,7 +23,7 @@
     "axiomCount": 7,
     "prerequisites": [
       "Graph theory fundamentals",
-      "Turán's theorem",
+      "Tur\u00e1n's theorem",
       "Extremal graph theory",
       "Triangle counting in graphs",
       "Complete bipartite graphs"
@@ -32,20 +32,20 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Bollobás and Erdős conjectured this result about edge-triangle multiplicity. It was independently proved by Edwards (unpublished) and Hadziivanov-Nikiforov in 1979. The problem connects to Turán's classical theorem on triangle-free graphs. Turán's theorem (1941) established that the complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph on n vertices maximizing the number of edges, at exactly ⌊n²/4⌋. The question posed by Bollobás and Erdős pushed beyond mere existence of triangles to ask about their concentration: once the Turán bound is exceeded, must some edge bear a disproportionate share of the triangle count? The answer n/6 is tight, achieved by graphs close to the balanced complete bipartite graph with a small clique added. Nikiforov subsequently extended these ideas into a broader program on the distribution of cliques above Turán thresholds.",
-    "problemStatement": "Every graph with n vertices and more than n²/4 edges contains an edge which is in at least n/6 triangles.",
-    "text": "Every graph with n vertices and > n²/4 edges contains an edge which is in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
-    "proofStrategy": "The formalization defines a custom Graph structure with symmetric, irreflexive edge sets. It introduces IsTriangle, triangleCountEdge, and maxTriangleMultiplicity. The Turán threshold n²/4 is defined, and the main Bollobás-Erdős conjecture is axiomatized as proved. Tightness of the constant n/6 and connections to Turán theory are included.",
+    "historicalContext": "Bollob\u00e1s and Erd\u0151s conjectured this result about edge-triangle multiplicity. It was independently proved by Edwards (unpublished) and Hadziivanov-Nikiforov in 1979. The problem connects to Tur\u00e1n's classical theorem on triangle-free graphs. Tur\u00e1n's theorem (1941) established that the complete bipartite graph K_{\u230an/2\u230b,\u2308n/2\u2309} is the unique triangle-free graph on n vertices maximizing the number of edges, at exactly \u230an\u00b2/4\u230b. The question posed by Bollob\u00e1s and Erd\u0151s pushed beyond mere existence of triangles to ask about their concentration: once the Tur\u00e1n bound is exceeded, must some edge bear a disproportionate share of the triangle count? The answer n/6 is tight, achieved by graphs close to the balanced complete bipartite graph with a small clique added. Nikiforov subsequently extended these ideas into a broader program on the distribution of cliques above Tur\u00e1n thresholds.",
+    "problemStatement": "Every graph with n vertices and more than n\u00b2/4 edges contains an edge which is in at least n/6 triangles.",
+    "text": "Every graph with n vertices and > n\u00b2/4 edges contains an edge which is in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
+    "proofStrategy": "The formalization defines a custom Graph structure with symmetric, irreflexive edge sets. It introduces IsTriangle, triangleCountEdge, and maxTriangleMultiplicity. The Tur\u00e1n threshold n\u00b2/4 is defined, and the main Bollob\u00e1s-Erd\u0151s conjecture is axiomatized as proved. Tightness of the constant n/6 and connections to Tur\u00e1n theory are included.",
     "keyInsights": [
-      "n²/4 is the Turán threshold for triangle-free graphs",
+      "n\u00b2/4 is the Tur\u00e1n threshold for triangle-free graphs",
       "Exceeding this threshold forces high triangle multiplicity on some edge",
-      "The constant n/6 is tight — cannot be improved",
-      "The Turán graph T(n,2) achieves the threshold with no triangles",
+      "The constant n/6 is tight \u2014 cannot be improved",
+      "The Tur\u00e1n graph T(n,2) achieves the threshold with no triangles",
       "Connects to Problem #80 (general case) and #1034 (stronger version)"
     ],
     "prerequisites": [
       "Graph theory fundamentals",
-      "Turán's theorem",
+      "Tur\u00e1n's theorem",
       "Extremal graph theory",
       "Triangle counting in graphs",
       "Complete bipartite graphs"
@@ -68,10 +68,10 @@
     },
     {
       "id": "turan-threshold",
-      "title": "Part III: Turán's Threshold",
+      "title": "Part III: Tur\u00e1n's Threshold",
       "startLine": 95,
       "endLine": 117,
-      "summary": "Defines turanNumber n = n²/4 and AboveTuran predicate. Axiomatizes Turán's theorem."
+      "summary": "Defines turanNumber n = n\u00b2/4 and AboveTuran predicate. Axiomatizes Tur\u00e1n's theorem."
     },
     {
       "id": "main-theorem",
@@ -82,7 +82,7 @@
     },
     {
       "id": "tightness-turan",
-      "title": "Part V: Tightness and Turán Theory",
+      "title": "Part V: Tightness and Tur\u00e1n Theory",
       "startLine": 146,
       "endLine": 186,
       "summary": "Axiomatizes tightness of n/6 constant. Defines IsTuranGraph and axiomatizes triangle-free property and that adding any edge creates triangles."
@@ -92,7 +92,7 @@
       "title": "Part VI: Key Lemma",
       "startLine": 188,
       "endLine": 201,
-      "summary": "Triangle count lower bound: T(G) ≥ (e(G) - n²/4) · n/6."
+      "summary": "Triangle count lower bound: T(G) \u2265 (e(G) - n\u00b2/4) \u00b7 n/6."
     },
     {
       "id": "summary",
@@ -103,20 +103,20 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #905 is SOLVED. Every graph exceeding the Turán threshold n²/4 edges has some edge in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
-    "implications": "The result shows that exceeding Turán's triangle-free threshold forces not just the existence of triangles, but high edge-triangle multiplicity. This is fundamental to extremal graph theory.",
+    "summary": "Erd\u0151s Problem #905 is SOLVED. Every graph exceeding the Tur\u00e1n threshold n\u00b2/4 edges has some edge in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
+    "implications": "The result shows that exceeding Tur\u00e1n's triangle-free threshold forces not just the existence of triangles, but high edge-triangle multiplicity. This is fundamental to extremal graph theory.",
     "openQuestions": [
       "What are the exact extremal graphs for this problem?",
-      "How does multiplicity grow as edges exceed n²/4?",
+      "How does multiplicity grow as edges exceed n\u00b2/4?",
       "What is the answer to the stronger version (Problem #1034)?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80]"
     }
   ],
@@ -124,7 +124,7 @@
     {
       "targetId": "erdos-904",
       "relationship": "related",
-      "description": "Nearby Erdős problem in the combinatorial number theory collection"
+      "description": "Nearby Erd\u0151s problem in the combinatorial number theory collection"
     }
   ],
   "relatedProofs": [
@@ -146,6 +146,7 @@
     "lineCount": 215,
     "axiomCount": 7,
     "theoremCount": 1,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "lemmaCount": 0
   }
 }

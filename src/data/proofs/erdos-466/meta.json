@@ -1,10 +1,10 @@
 {
   "id": "erdos-466",
-  "title": "Erdős #466: Points in a Circle with Fractional Distance Separation",
+  "title": "Erd\u0151s #466: Points in a Circle with Fractional Distance Separation",
   "slug": "erdos-466",
-  "description": "Is there δ > 0 such that arbitrarily many points fit in a large disk with all pairwise distances bounded away from integers by ≥ δ? PROVED: Graham showed N(X,1/10) ≥ (log X)/10; Sárközy (1976) proved N(X,δ) > X^{1/2−δ^{1/7}}, nearly matching Konyagin's upper bound X^{1/2}.",
+  "description": "Is there \u03b4 > 0 such that arbitrarily many points fit in a large disk with all pairwise distances bounded away from integers by \u2265 \u03b4? PROVED: Graham showed N(X,1/10) \u2265 (log X)/10; S\u00e1rk\u00f6zy (1976) proved N(X,\u03b4) > X^{1/2\u2212\u03b4^{1/7}}, nearly matching Konyagin's upper bound X^{1/2}.",
   "meta": {
-    "author": "Erdős, Ronald Graham, András Sárközy",
+    "author": "Erd\u0151s, Ronald Graham, Andr\u00e1s S\u00e1rk\u00f6zy",
     "erdosNumber": 466,
     "status": "axiomatized",
     "tags": [
@@ -42,7 +42,7 @@
       "title": "Core Definitions",
       "startLine": 35,
       "endLine": 53,
-      "summary": "Defines **fracDist x** = |x − round(x)| (distance to nearest integer), **SeparatedConfig X δ** (n points in disk of radius X with pairwise fractional separation ≥ δ), and **maxSeparatedPoints X δ** = N(X, δ) via sSup. These encode the geometric-arithmetic constraint central to the problem.",
+      "summary": "Defines **fracDist x** = |x \u2212 round(x)| (distance to nearest integer), **SeparatedConfig X \u03b4** (n points in disk of radius X with pairwise fractional separation \u2265 \u03b4), and **maxSeparatedPoints X \u03b4** = N(X, \u03b4) via sSup. These encode the geometric-arithmetic constraint central to the problem.",
       "mathContext": "$\\|x\\| = |x - \\lfloor x + 1/2 \\rfloor|$ (distance to nearest integer). $N(X, \\delta)$ = max points in disk of radius $X$ with $\\||P_i - P_j|| \\geq \\delta$ for all $i \\neq j$."
     },
     {
@@ -50,45 +50,45 @@
       "title": "Main Result (Proved)",
       "startLine": 55,
       "endLine": 60,
-      "summary": "**erdos_466**: ∃ δ > 0, N(X, δ) → ∞ as X → ∞. Axiomatized as proved by Graham. Uses `Filter.Tendsto` with `Filter.atTop` to express the limit statement in Lean 4.",
-      "mathContext": "Main result (SOLVED): $\\exists \\delta > 0: N(X, \\delta) \\to \\infty$ as $X \\to \\infty$. Proved by Sárközy (1978) via exponential sum methods."
+      "summary": "**erdos_466**: \u2203 \u03b4 > 0, N(X, \u03b4) \u2192 \u221e as X \u2192 \u221e. Axiomatized as proved by Graham. Uses `Filter.Tendsto` with `Filter.atTop` to express the limit statement in Lean 4.",
+      "mathContext": "Main result (SOLVED): $\\exists \\delta > 0: N(X, \\delta) \\to \\infty$ as $X \\to \\infty$. Proved by S\u00e1rk\u00f6zy (1978) via exponential sum methods."
     },
     {
       "id": "graham",
       "title": "Graham's Logarithmic Bound",
       "startLine": 62,
       "endLine": 68,
-      "summary": "**graham_logarithmic_bound**: N(X, 1/10) ≥ (log X)/10 for large X. The first quantitative answer, establishing logarithmic growth with the explicit choice δ = 1/10. Axiomatized using `∀ᶠ` (Filter.Eventually).",
+      "summary": "**graham_logarithmic_bound**: N(X, 1/10) \u2265 (log X)/10 for large X. The first quantitative answer, establishing logarithmic growth with the explicit choice \u03b4 = 1/10. Axiomatized using `\u2200\u1da0` (Filter.Eventually).",
       "mathContext": "Graham (1974): $N(X, 1/10) \\geq (\\log X)/10$ for large $X$. A logarithmic lower bound obtained via greedy construction."
     },
     {
       "id": "sarkozy",
-      "title": "Sárközy's Polynomial Improvement (1976)",
+      "title": "S\u00e1rk\u00f6zy's Polynomial Improvement (1976)",
       "startLine": 70,
       "endLine": 79,
-      "summary": "**sarkozy_polynomial_bound**: For small δ > 0 and large X, N(X, δ) > X^{1/2 − δ^{1/7}}. An exponential leap from Graham's logarithmic bound to nearly √X points, using analytic number theory. The nested quantifier structure ∃ δ₀, ∀ δ < δ₀, ∀ᶠ X captures the statement precisely.",
-      "mathContext": "Sárközy (1978): for small $\\delta > 0$ and large $X$, $N(X, \\delta) > X^{1/3}$. A polynomial bound via Weyl sum estimates."
+      "summary": "**sarkozy_polynomial_bound**: For small \u03b4 > 0 and large X, N(X, \u03b4) > X^{1/2 \u2212 \u03b4^{1/7}}. An exponential leap from Graham's logarithmic bound to nearly \u221aX points, using analytic number theory. The nested quantifier structure \u2203 \u03b4\u2080, \u2200 \u03b4 < \u03b4\u2080, \u2200\u1da0 X captures the statement precisely.",
+      "mathContext": "S\u00e1rk\u00f6zy (1978): for small $\\delta > 0$ and large $X$, $N(X, \\delta) > X^{1/3}$. A polynomial bound via Weyl sum estimates."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 81,
       "endLine": 95,
-      "summary": "**fracDist_bound**: ‖x‖ ≤ 1/2 always (so δ > 1/2 is trivially impossible). **maxSeparatedPoints_mono**: N non-decreasing in X (larger disks accommodate more points). **maxSeparatedPoints_anti**: N non-increasing in δ (stricter separation reduces count). These establish the monotone structure of the extremal function.",
+      "summary": "**fracDist_bound**: \u2016x\u2016 \u2264 1/2 always (so \u03b4 > 1/2 is trivially impossible). **maxSeparatedPoints_mono**: N non-decreasing in X (larger disks accommodate more points). **maxSeparatedPoints_anti**: N non-increasing in \u03b4 (stricter separation reduces count). These establish the monotone structure of the extremal function.",
       "mathContext": "$\\|x\\| \\leq 1/2$ always, so $\\delta > 1/2$ forces $N(X, \\delta) = 1$ trivially. The interesting regime is $0 < \\delta \\ll 1$."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős posed Problem #466 in the 1970s, asking whether the fractional parts of pairwise distances in a point set can all be bounded away from 0 for arbitrarily large configurations. This connects two major areas: **discrete geometry** (how many points can satisfy a given distance constraint?) and **Diophantine approximation** (how well can real numbers avoid integers?). **Ronald Graham** gave the first affirmative answer, proving the logarithmic bound N(X, 1/10) ≥ (log X)/10. **András Sárközy (1976)** dramatically improved this to the polynomial bound N(X, δ) > X^{1/2 − δ^{1/7}} for small δ, showing nearly √X points can be placed. This nearly matches the upper bound N(X, δ) ≪ X^{1/2} proved by **Konyagin (2001)** for the complementary Problem #465, pinning down the growth rate at Θ(X^{1/2}) up to δ-dependent factors. The measure-theoretic variant is Problem #953.",
-    "problemStatement": "Let N(X, δ) be the maximum number of points P₁, ..., Pₙ in a disk of radius X such that ‖|Pᵢ − Pⱼ|‖ ≥ δ for all i ≠ j, where ‖x‖ = |x − round(x)| is the distance to the nearest integer. Is there δ > 0 such that N(X, δ) → ∞ as X → ∞?",
-    "text": "Is there δ > 0 such that arbitrarily many points fit in a large disk with all pairwise distances bounded away from integers by ≥ δ? PROVED: Graham showed N(X,1/10) ≥ (log X)/10; Sárközy (1976) proved N(X,δ) > X^{1/2−δ^{1/7}}, nearly matching Konyagin's upper bound X^{1/2}.",
-    "proofStrategy": "The formalization defines fracDist via `|x - round x|`, encodes separated configurations as a Lean structure with disk containment and pairwise separation, and defines N(X, δ) via sSup. The main result, Graham's bound, and Sárközy's improvement are axiomatized. Structural properties (fracDist ≤ 1/2, monotonicity in X and δ) are also axiomatized. The file has 0 sorries — all deep results are correctly stated as axioms.",
+    "historicalContext": "Erd\u0151s posed Problem #466 in the 1970s, asking whether the fractional parts of pairwise distances in a point set can all be bounded away from 0 for arbitrarily large configurations. This connects two major areas: **discrete geometry** (how many points can satisfy a given distance constraint?) and **Diophantine approximation** (how well can real numbers avoid integers?). **Ronald Graham** gave the first affirmative answer, proving the logarithmic bound N(X, 1/10) \u2265 (log X)/10. **Andr\u00e1s S\u00e1rk\u00f6zy (1976)** dramatically improved this to the polynomial bound N(X, \u03b4) > X^{1/2 \u2212 \u03b4^{1/7}} for small \u03b4, showing nearly \u221aX points can be placed. This nearly matches the upper bound N(X, \u03b4) \u226a X^{1/2} proved by **Konyagin (2001)** for the complementary Problem #465, pinning down the growth rate at \u0398(X^{1/2}) up to \u03b4-dependent factors. The measure-theoretic variant is Problem #953.",
+    "problemStatement": "Let N(X, \u03b4) be the maximum number of points P\u2081, ..., P\u2099 in a disk of radius X such that \u2016|P\u1d62 \u2212 P\u2c7c|\u2016 \u2265 \u03b4 for all i \u2260 j, where \u2016x\u2016 = |x \u2212 round(x)| is the distance to the nearest integer. Is there \u03b4 > 0 such that N(X, \u03b4) \u2192 \u221e as X \u2192 \u221e?",
+    "text": "Is there \u03b4 > 0 such that arbitrarily many points fit in a large disk with all pairwise distances bounded away from integers by \u2265 \u03b4? PROVED: Graham showed N(X,1/10) \u2265 (log X)/10; S\u00e1rk\u00f6zy (1976) proved N(X,\u03b4) > X^{1/2\u2212\u03b4^{1/7}}, nearly matching Konyagin's upper bound X^{1/2}.",
+    "proofStrategy": "The formalization defines fracDist via `|x - round x|`, encodes separated configurations as a Lean structure with disk containment and pairwise separation, and defines N(X, \u03b4) via sSup. The main result, Graham's bound, and S\u00e1rk\u00f6zy's improvement are axiomatized. Structural properties (fracDist \u2264 1/2, monotonicity in X and \u03b4) are also axiomatized. The file has 0 sorries \u2014 all deep results are correctly stated as axioms.",
     "keyInsights": [
-      "**Geometry meets number theory**: the constraint is geometric (points in a disk) but the condition is number-theoretic (fractional distance ≥ δ) — this intersection is what makes the problem deep",
-      "**Graham's breakthrough**: even the weak logarithmic bound N ≥ (log X)/10 was a conceptual milestone, showing integer distance avoidance is not an obstruction to growing configurations",
-      "**Sárközy's polynomial leap**: the improvement from O(log X) to X^{1/2−ε} shows the problem has algebraic, not logarithmic, character — carefully chosen point sets can exploit arithmetic structure",
-      "**The 465-466 duality**: matching upper (Konyagin) and lower (Sárközy) bounds at X^{1/2} reveal the natural scale, with the remaining gap only in the δ-dependence",
-      "**Threshold exponent 1/2**: heuristically, area πX² of the disk gives √(area) ≈ X independent distance classes modulo integers, suggesting X^{1/2} as the natural extremal count"
+      "**Geometry meets number theory**: the constraint is geometric (points in a disk) but the condition is number-theoretic (fractional distance \u2265 \u03b4) \u2014 this intersection is what makes the problem deep",
+      "**Graham's breakthrough**: even the weak logarithmic bound N \u2265 (log X)/10 was a conceptual milestone, showing integer distance avoidance is not an obstruction to growing configurations",
+      "**S\u00e1rk\u00f6zy's polynomial leap**: the improvement from O(log X) to X^{1/2\u2212\u03b5} shows the problem has algebraic, not logarithmic, character \u2014 carefully chosen point sets can exploit arithmetic structure",
+      "**The 465-466 duality**: matching upper (Konyagin) and lower (S\u00e1rk\u00f6zy) bounds at X^{1/2} reveal the natural scale, with the remaining gap only in the \u03b4-dependence",
+      "**Threshold exponent 1/2**: heuristically, area \u03c0X\u00b2 of the disk gives \u221a(area) \u2248 X independent distance classes modulo integers, suggesting X^{1/2} as the natural extremal count"
     ],
     "prerequisites": [
       "Diophantine approximation: fractional parts and distance to integers",
@@ -99,20 +99,20 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #466 is SOLVED: there exists δ > 0 such that N(X, δ) → ∞. Graham proved the logarithmic bound N(X, 1/10) ≥ (log X)/10, and Sárközy (1976) proved the polynomial bound N(X, δ) > X^{1/2 − δ^{1/7}} for small δ, nearly matching Konyagin's upper bound X^{1/2} from Problem #465.",
-    "implications": "**Theoretical Significance**: The result reveals a deep connection between Euclidean distance geometry and Diophantine approximation.\n\nThe growth rate Θ(X^{1/2}) shows that the integer-avoidance constraint is significant but not prohibitive: it reduces the maximum from O(X²) (no constraint) to O(X^{1/2}) (integer-avoidance). The techniques connect analytic number theory (exponential sums, circle method) with combinatorial geometry (packing, configuration counting).",
+    "summary": "Erd\u0151s Problem #466 is SOLVED: there exists \u03b4 > 0 such that N(X, \u03b4) \u2192 \u221e. Graham proved the logarithmic bound N(X, 1/10) \u2265 (log X)/10, and S\u00e1rk\u00f6zy (1976) proved the polynomial bound N(X, \u03b4) > X^{1/2 \u2212 \u03b4^{1/7}} for small \u03b4, nearly matching Konyagin's upper bound X^{1/2} from Problem #465.",
+    "implications": "**Theoretical Significance**: The result reveals a deep connection between Euclidean distance geometry and Diophantine approximation.\n\nThe growth rate \u0398(X^{1/2}) shows that the integer-avoidance constraint is significant but not prohibitive: it reduces the maximum from O(X\u00b2) (no constraint) to O(X^{1/2}) (integer-avoidance). The techniques connect analytic number theory (exponential sums, circle method) with combinatorial geometry (packing, configuration counting).",
     "openQuestions": [
-      "What is the exact δ-dependence: is N(X, δ) = Θ(X^{1/2}) with a constant depending on δ, or does the exponent itself depend on δ?",
-      "Can the gap between Sárközy's exponent 1/2 − δ^{1/7} and Konyagin's 1/2 be closed?",
-      "What is the optimal construction achieving the maximum N(X, δ) — lattice points, algebraic curves, or something else?",
-      "Does the analogous problem in ℝ^d have growth rate Θ(X^{d/2})?"
+      "What is the exact \u03b4-dependence: is N(X, \u03b4) = \u0398(X^{1/2}) with a constant depending on \u03b4, or does the exponent itself depend on \u03b4?",
+      "Can the gap between S\u00e1rk\u00f6zy's exponent 1/2 \u2212 \u03b4^{1/7} and Konyagin's 1/2 be closed?",
+      "What is the optimal construction achieving the maximum N(X, \u03b4) \u2014 lattice points, algebraic curves, or something else?",
+      "Does the analogous problem in \u211d^d have growth rate \u0398(X^{d/2})?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-465",
       "relationship": "complement",
-      "description": "Direct complement: #465 provides the upper bound N(X,δ) ≪ X^{1/2} matching the lower bounds here"
+      "description": "Direct complement: #465 provides the upper bound N(X,\u03b4) \u226a X^{1/2} matching the lower bounds here"
     },
     {
       "targetId": "erdos-1089",
@@ -138,29 +138,30 @@
     "lineCount": 95,
     "axiomCount": 6,
     "theoremCount": 0,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and new problems and results in combinatorial number theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "Original problem statement about fractional distance separation in disk configurations"
     },
     {
-      "authors": "Sárközy, András",
+      "authors": "S\u00e1rk\u00f6zy, Andr\u00e1s",
       "title": "On differences of the fractional parts of pairwise distances",
       "year": "1976",
       "venue": "Number Theory Conference Proceedings",
-      "note": "Proved polynomial bound N(X,δ) > X^{1/2−δ^{1/7}}, nearly matching Konyagin's upper bound"
+      "note": "Proved polynomial bound N(X,\u03b4) > X^{1/2\u2212\u03b4^{1/7}}, nearly matching Konyagin's upper bound"
     },
     {
       "authors": "Konyagin, Sergei V.",
       "title": "Upper bounds for integer point configurations avoiding near-integer distances",
       "year": "2001",
       "venue": "Mathematika",
-      "note": "Proved N(X,δ) ≪ X^{1/2}, matching Sárközy's lower bound up to the δ-dependent correction"
+      "note": "Proved N(X,\u03b4) \u226a X^{1/2}, matching S\u00e1rk\u00f6zy's lower bound up to the \u03b4-dependent correction"
     }
   ]
 }

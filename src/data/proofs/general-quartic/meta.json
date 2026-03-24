@@ -130,7 +130,7 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "complementary",
-      "description": "The quartic is the last degree solvable by radicals. Abel-Ruffini (Wiedijk #16) proves no general formula exists for degree 5+, because S₅ is not solvable while S₄ is."
+      "description": "The quartic is the last degree solvable by radicals. Abel-Ruffini (Wiedijk #16) proves no general formula exists for degree 5+, because S\u2085 is not solvable while S\u2084 is."
     },
     {
       "targetId": "fundamental-theorem-algebra",
@@ -140,22 +140,22 @@
     {
       "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "Both connect to constructibility: quartic roots with degree 4 = 2² ARE constructible (4 divides 2²), while the cubic case (degree 3) is the obstruction for trisection"
+      "description": "Both connect to constructibility: quartic roots with degree 4 = 2\u00b2 ARE constructible (4 divides 2\u00b2), while the cubic case (degree 3) is the obstruction for trisection"
     },
     {
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "Lagrange's theorem underpins the Galois-theoretic explanation: S₄ has order 24 and its solvable derived series S₄ ▷ A₄ ▷ V₄ ▷ {e} enables radical solutions"
+      "description": "Lagrange's theorem underpins the Galois-theoretic explanation: S\u2084 has order 24 and its solvable derived series S\u2084 \u25b7 A\u2084 \u25b7 V\u2084 \u25b7 {e} enables radical solutions"
     },
     {
       "targetId": "sylow-theorems",
       "relationship": "related",
-      "description": "Sylow theory reveals the subgroup structure of S₄ (Sylow 2-subgroups of order 8, Sylow 3-subgroups of order 3) that enables the composition series making S₄ solvable"
+      "description": "Sylow theory reveals the subgroup structure of S\u2084 (Sylow 2-subgroups of order 8, Sylow 3-subgroups of order 3) that enables the composition series making S\u2084 solvable"
     },
     {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "complementary",
-      "description": "The A₅ simplicity proof chain exposes each step from A₅ simple to 'no quintic formula' — this quartic file is the complementary 'last solvable case' showing S₄ solvable (derived series S₄ ▷ A₄ ▷ V₄ ▷ {e}) while S₅ is not"
+      "description": "The A\u2085 simplicity proof chain exposes each step from A\u2085 simple to 'no quintic formula' \u2014 this quartic file is the complementary 'last solvable case' showing S\u2084 solvable (derived series S\u2084 \u25b7 A\u2084 \u25b7 V\u2084 \u25b7 {e}) while S\u2085 is not"
     }
   ],
   "relatedProofs": [
@@ -172,7 +172,7 @@
       "authors": "Ferrari, Lodovico (via Cardano)",
       "title": "Ars Magna",
       "year": "1545",
-      "venue": "Nürnberg: Petreius",
+      "venue": "N\u00fcrnberg: Petreius",
       "note": "First publication of the quartic formula, discovered by Ferrari (Cardano's student) and published in Cardano's treatise"
     },
     {
@@ -200,6 +200,7 @@
     "lineCount": 344,
     "axiomCount": 9,
     "theoremCount": 6,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   }
 }

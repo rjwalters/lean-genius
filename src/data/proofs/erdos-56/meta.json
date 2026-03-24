@@ -1,6 +1,6 @@
 {
   "id": "erdos-56",
-  "title": "Erdős Problem #56: Weakly Divisible Sets",
+  "title": "Erd\u0151s Problem #56: Weakly Divisible Sets",
   "slug": "erdos-56",
   "description": "Is the set of multiples of the first k primes the largest subset of {1,...,N} with no k+1 pairwise coprime elements?",
   "meta": {
@@ -62,16 +62,16 @@
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #56 addresses a fundamental question in combinatorial number theory: how large can a subset of {1,...,N} be if we forbid too many pairwise coprime elements?\n\nThe conjecture seemed natural: take all multiples of the first k primes (2, 3, 5, ..., p_k). Any k+1 numbers from this set must include two that share a prime factor, so they can't all be pairwise coprime. Erdős conjectured this construction was optimal.\n\nSurprisingly, Ahlswede and Khachatrian disproved this in 1994, finding a counterexample at k=212. However, they later proved (1995) that Erdős's conjecture IS true when N is sufficiently large relative to k. This reveals a subtle phase transition in the problem's behavior.",
+    "historicalContext": "Erd\u0151s Problem #56 addresses a fundamental question in combinatorial number theory: how large can a subset of {1,...,N} be if we forbid too many pairwise coprime elements?\n\nThe conjecture seemed natural: take all multiples of the first k primes (2, 3, 5, ..., p_k). Any k+1 numbers from this set must include two that share a prime factor, so they can't all be pairwise coprime. Erd\u0151s conjectured this construction was optimal.\n\nSurprisingly, Ahlswede and Khachatrian disproved this in 1994, finding a counterexample at k=212. However, they later proved (1995) that Erd\u0151s's conjecture IS true when N is sufficiently large relative to k. This reveals a subtle phase transition in the problem's behavior.",
     "problemStatement": "Let $N \\geq p_k$ where $p_k$ is the $k$-th prime. Define a set $A \\subseteq \\{1,\\ldots,N\\}$ to be **$k$-weakly divisible** if no $k+1$ elements of $A$ are pairwise coprime.\n\nThe natural example is $M_k(N)$ = multiples of the first $k$ primes in $\\{1,\\ldots,N\\}$.\n\n**Conjecture**: $M_k(N)$ has maximum cardinality among all $k$-weakly divisible subsets.\n\n**Answer**: FALSE in general (disproved for $k=212$), but TRUE for $N$ sufficiently large.",
     "text": "Is the set of multiples of the first k primes the largest subset of {1,...,N} with no k+1 pairwise coprime elements?",
-    "proofStrategy": "We formalize the definitions and state the main result as an axiom. The key components are:\n\n1. **WeaklyDivisible k A**: For every (k+1)-subset of A, at least two elements share a common factor\n\n2. **MaxWeaklyDivisible N k**: The supremum of cardinalities over all valid subsets\n\n3. **FirstPrimesMultiples N k**: The conjectured optimal set\n\nThe axiom states Erdős's conjecture is false. The counterexample construction by Ahlswede-Khachatrian involves careful analysis of which numbers in {1,...,N} can be added beyond the prime multiples while maintaining the coprimality constraint.",
+    "proofStrategy": "We formalize the definitions and state the main result as an axiom. The key components are:\n\n1. **WeaklyDivisible k A**: For every (k+1)-subset of A, at least two elements share a common factor\n\n2. **MaxWeaklyDivisible N k**: The supremum of cardinalities over all valid subsets\n\n3. **FirstPrimesMultiples N k**: The conjectured optimal set\n\nThe axiom states Erd\u0151s's conjecture is false. The counterexample construction by Ahlswede-Khachatrian involves careful analysis of which numbers in {1,...,N} can be added beyond the prime multiples while maintaining the coprimality constraint.",
     "keyInsights": [
       "**Weakly divisible sets**: A set where any k+1 elements must include two with a common factor. This generalizes the idea that multiples of a prime can't be mutually coprime.",
       "**The prime multiples construction**: Taking all multiples of p_1, p_2, ..., p_k gives a k-weakly divisible set, since any k+1 numbers must hit some prime twice by pigeonhole.",
       "**Why the conjecture fails**: For certain k and N near the boundary (N close to p_k), one can carefully add numbers coprime to all first k primes without creating k+1 pairwise coprimes.",
       "**The large-N regime**: When N >> p_k^2, there are so many multiples of each prime that the boundary effects disappear, and the conjecture holds.",
-      "**Connection to extremal combinatorics**: This is a Turán-type problem asking for the maximum size of a set avoiding a forbidden configuration (k+1 pairwise coprimes)."
+      "**Connection to extremal combinatorics**: This is a Tur\u00e1n-type problem asking for the maximum size of a set avoiding a forbidden configuration (k+1 pairwise coprimes)."
     ],
     "prerequisites": [
       "Divisibility and the divisor function",
@@ -93,21 +93,21 @@
       "title": "WeaklyDivisible and Basic Properties",
       "startLine": 27,
       "endLine": 57,
-      "summary": "Defines WeaklyDivisible k A: no k+1 pairwise coprime elements exist in A. Proves three basic lemmas: empty set is vacuously k-weakly divisible, singletons are k-weakly divisible for k ≥ 1, and no nonempty set is 0-weakly divisible."
+      "summary": "Defines WeaklyDivisible k A: no k+1 pairwise coprime elements exist in A. Proves three basic lemmas: empty set is vacuously k-weakly divisible, singletons are k-weakly divisible for k \u2265 1, and no nonempty set is 0-weakly divisible."
     },
     {
       "id": "optimization-defs",
       "title": "Optimization Definitions",
       "startLine": 59,
       "endLine": 75,
-      "summary": "MaxWeaklyDivisible(N,k): maximum cardinality of a k-weakly divisible subset of {1,...,N} (the quantity Erdős asked about). FirstPrimesMultiples(N,k): multiples of the first k primes in {1,...,N} (Erdős's conjectured optimal construction)."
+      "summary": "MaxWeaklyDivisible(N,k): maximum cardinality of a k-weakly divisible subset of {1,...,N} (the quantity Erd\u0151s asked about). FirstPrimesMultiples(N,k): multiples of the first k primes in {1,...,N} (Erd\u0151s's conjectured optimal construction)."
     },
     {
       "id": "main-theorem",
       "title": "Main Result (Disproved)",
       "startLine": 77,
       "endLine": 103,
-      "summary": "States Erdős's conjecture and its negation as an axiom, with justification."
+      "summary": "States Erd\u0151s's conjecture and its negation as an axiom, with justification."
     },
     {
       "id": "examples",
@@ -118,8 +118,8 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #56, which asks whether the set of multiples of the first k primes is the largest k-weakly divisible subset of {1,...,N}. The answer is NO in general—Ahlswede and Khachatrian found counterexamples—but YES when N is sufficiently large. We state the disproof as an axiom and verify basic properties of the definitions.",
-    "implications": "**Theoretical Significance**: This result illustrates how combinatorial extremal problems can have surprising phase transitions.\n\nThe 'obvious' construction isn't always optimal, especially near boundaries. The techniques developed by Ahlswede and Khachatrian connect to intersection theorems in combinatorics (Erdős-Ko-Rado type results).",
+    "summary": "We formalize Erd\u0151s Problem #56, which asks whether the set of multiples of the first k primes is the largest k-weakly divisible subset of {1,...,N}. The answer is NO in general\u2014Ahlswede and Khachatrian found counterexamples\u2014but YES when N is sufficiently large. We state the disproof as an axiom and verify basic properties of the definitions.",
+    "implications": "**Theoretical Significance**: This result illustrates how combinatorial extremal problems can have surprising phase transitions.\n\nThe 'obvious' construction isn't always optimal, especially near boundaries. The techniques developed by Ahlswede and Khachatrian connect to intersection theorems in combinatorics (Erd\u0151s-Ko-Rado type results).",
     "openQuestions": [
       "What is the smallest k for which the conjecture fails?",
       "Can we characterize exactly when M_k(N) is optimal?",
@@ -140,14 +140,15 @@
     "namespace": "Erdos56",
     "lineCount": 134,
     "axiomCount": 1,
-    "theoremCount": 7,
-    "definitionCount": 3
+    "theoremCount": 4,
+    "definitionCount": 3,
+    "lemmaCount": 3
   },
   "crossReferences": [
     {
       "targetId": "erdos-12",
       "relationship": "related",
-      "description": "Problem #12 on divisibility-free sets and Problem #56 on weakly divisible sets both study divisibility constraints on sets of integers — from opposite directions"
+      "description": "Problem #12 on divisibility-free sets and Problem #56 on weakly divisible sets both study divisibility constraints on sets of integers \u2014 from opposite directions"
     },
     {
       "targetId": "erdos-13",
@@ -157,17 +158,17 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Sárközy, András",
+      "authors": "Erd\u0151s, Paul; S\u00e1rk\u00f6zy, Andr\u00e1s",
       "title": "On divisibility properties of sequences of integers",
       "year": "1975",
-      "venue": "In: Number Theory, Colloquia Mathematica Societatis János Bolyai, vol. 13, pp. 35–44",
+      "venue": "In: Number Theory, Colloquia Mathematica Societatis J\u00e1nos Bolyai, vol. 13, pp. 35\u201344",
       "note": "Studied divisibility properties of integer sequences including weak divisibility"
     },
     {
       "authors": "Saias, Eric",
-      "title": "Applications des entiers à diviseurs denses",
+      "title": "Applications des entiers \u00e0 diviseurs denses",
       "year": "1997",
-      "venue": "Acta Arithmetica, vol. 83, no. 3, pp. 225–240",
+      "venue": "Acta Arithmetica, vol. 83, no. 3, pp. 225\u2013240",
       "note": "Results on integers with dense divisors related to weak divisibility"
     }
   ],

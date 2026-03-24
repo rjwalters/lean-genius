@@ -1,8 +1,8 @@
 {
   "id": "erdos-302",
-  "title": "Erdős Problem #302: Unit Fraction Sum-Free Sets",
+  "title": "Erd\u0151s Problem #302: Unit Fraction Sum-Free Sets",
   "slug": "erdos-302",
-  "description": "Let f(N) be the largest subset of {1,...,N} with no solution to 1/a = 1/b + 1/c. Is f(N) = (1/2+o(1))N? Answer: NO. Known: 5/8 ≤ lim f(N)/N ≤ 9/10. Status: OPEN.",
+  "description": "Let f(N) be the largest subset of {1,...,N} with no solution to 1/a = 1/b + 1/c. Is f(N) = (1/2+o(1))N? Answer: NO. Known: 5/8 \u2264 lim f(N)/N \u2264 9/10. Status: OPEN.",
   "meta": {
     "author": "Stijn Cambie, Wouter van Doorn",
     "sourceUrl": "https://erdosproblems.com/302",
@@ -55,10 +55,10 @@
       "odd_integers_sum_free theorem: odd integers avoid solutions",
       "upperHalf definition: integers in [N/2, N]",
       "upper_half_sum_free theorem: upper half avoids solutions",
-      "basic_lower_bound axiom: f(N) ≥ (1/2+o(1))N",
+      "basic_lower_bound axiom: f(N) \u2265 (1/2+o(1))N",
       "cambie_set definition: Cambie's construction",
-      "cambie_lower_bound axiom: f(N) ≥ (5/8+o(1))N",
-      "van_doorn_upper_bound axiom: f(N) ≤ (9/10+o(1))N",
+      "cambie_lower_bound axiom: f(N) \u2265 (5/8+o(1))N",
+      "van_doorn_upper_bound axiom: f(N) \u2264 (9/10+o(1))N",
       "original_question definition: is f(N) = (1/2+o(1))N?",
       "original_question_false theorem: the answer is NO",
       "HasDoubling definition: contains n and 2n",
@@ -80,18 +80,18 @@
     "assumptions": "6 axiom(s) and 9 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Unit Fraction Sum-Free Sets**\n\nErdős Problem #302 concerns the equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$, which sits at the intersection of unit fraction theory and extremal combinatorics. The study of unit fraction decompositions traces back to ancient Egypt: the Rhind papyrus (c. 1650 BCE) represents fractions exclusively as sums of distinct unit fractions, and understanding which unit fraction equations have solutions has been a theme in number theory ever since.\n\nThe problem was posed by Erdős and Graham in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (Monographies de L'Enseignement Mathématique 28). They asked: if $f(N)$ denotes the size of the largest subset $A \\subseteq \\{1, \\ldots, N\\}$ containing no solution to $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ with distinct $a, b, c \\in A$, is it true that $f(N) = (\\frac{1}{2} + o(1))N$?\n\n**Historical Development:**\n- **1980 (Erdős-Graham):** Problem posed with the conjecture $f(N) = (\\frac{1}{2}+o(1))N$, motivated by two natural constructions (odd integers and the upper half $[N/2, N]$) both giving density $\\frac{1}{2}$.\n- **1991 (Brown-Rödl):** Solved the related coloring version (Problem #303): $\\{1, \\ldots, N\\}$ can always be 2-colored with no monochromatic solution.\n- **2023 (Cambie):** Disproved the original conjecture by combining odd integers $\\leq N/4$ with the interval $[N/2, N]$, yielding $f(N) \\geq (\\frac{5}{8}+o(1))N$.\n- **2023 (van Doorn):** Established the first non-trivial upper bound $f(N) \\leq (\\frac{9}{10}+o(1))N$ using structural analysis of solution-rich regions.\n\nThe problem remains open: the asymptotic density of $f(N)/N$ is known to lie in $[\\frac{5}{8}, \\frac{9}{10}] = [0.625, 0.9]$, but the exact value is unknown. This wide gap highlights the difficulty of extremal problems for multiplicative equations.",
+    "historicalContext": "**Unit Fraction Sum-Free Sets**\n\nErd\u0151s Problem #302 concerns the equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$, which sits at the intersection of unit fraction theory and extremal combinatorics. The study of unit fraction decompositions traces back to ancient Egypt: the Rhind papyrus (c. 1650 BCE) represents fractions exclusively as sums of distinct unit fractions, and understanding which unit fraction equations have solutions has been a theme in number theory ever since.\n\nThe problem was posed by Erd\u0151s and Graham in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (Monographies de L'Enseignement Math\u00e9matique 28). They asked: if $f(N)$ denotes the size of the largest subset $A \\subseteq \\{1, \\ldots, N\\}$ containing no solution to $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ with distinct $a, b, c \\in A$, is it true that $f(N) = (\\frac{1}{2} + o(1))N$?\n\n**Historical Development:**\n- **1980 (Erd\u0151s-Graham):** Problem posed with the conjecture $f(N) = (\\frac{1}{2}+o(1))N$, motivated by two natural constructions (odd integers and the upper half $[N/2, N]$) both giving density $\\frac{1}{2}$.\n- **1991 (Brown-R\u00f6dl):** Solved the related coloring version (Problem #303): $\\{1, \\ldots, N\\}$ can always be 2-colored with no monochromatic solution.\n- **2023 (Cambie):** Disproved the original conjecture by combining odd integers $\\leq N/4$ with the interval $[N/2, N]$, yielding $f(N) \\geq (\\frac{5}{8}+o(1))N$.\n- **2023 (van Doorn):** Established the first non-trivial upper bound $f(N) \\leq (\\frac{9}{10}+o(1))N$ using structural analysis of solution-rich regions.\n\nThe problem remains open: the asymptotic density of $f(N)/N$ is known to lie in $[\\frac{5}{8}, \\frac{9}{10}] = [0.625, 0.9]$, but the exact value is unknown. This wide gap highlights the difficulty of extremal problems for multiplicative equations.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $f(N)$ be the size of the largest $A \\subseteq \\{1,\\ldots,N\\}$ such that there are no solutions to\n$$\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$$\nwith distinct $a, b, c \\in A$.\n\nEstimate $f(N)$. In particular, is $f(N) = (\\tfrac{1}{2}+o(1))N$?\n\n**Answer:** NO, the original conjecture is false.\n\n**Known bounds:** $\\frac{5}{8} \\leq \\liminf \\frac{f(N)}{N} \\leq \\limsup \\frac{f(N)}{N} \\leq \\frac{9}{10}$",
-    "text": "Let f(N) be the largest subset of {1,...,N} with no solution to 1/a = 1/b + 1/c. Is f(N) = (1/2+o(1))N? Answer: NO. Known: 5/8 ≤ lim f(N)/N ≤ 9/10. Status: OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Equation Definition:** Define UnitFractionSum for 1/a = 1/b + 1/c\n\n2. **Sum-Free Property:** Define IsUnitFractionSumFree for sets avoiding solutions\n\n3. **Function f(N):** Maximum size of sum-free subset of {1,...,N}\n\n4. **Lower Bounds:** Axiomatize constructions (odd integers, Cambie's set)\n\n5. **Upper Bound:** Axiomatize van Doorn's result\n\n6. **Original Question:** State and refute f(N) = (1/2+o(1))N\n\n7. **Related Results:** Coloring version (Brown-Rödl), doubling observation",
+    "text": "Let f(N) be the largest subset of {1,...,N} with no solution to 1/a = 1/b + 1/c. Is f(N) = (1/2+o(1))N? Answer: NO. Known: 5/8 \u2264 lim f(N)/N \u2264 9/10. Status: OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Equation Definition:** Define UnitFractionSum for 1/a = 1/b + 1/c\n\n2. **Sum-Free Property:** Define IsUnitFractionSumFree for sets avoiding solutions\n\n3. **Function f(N):** Maximum size of sum-free subset of {1,...,N}\n\n4. **Lower Bounds:** Axiomatize constructions (odd integers, Cambie's set)\n\n5. **Upper Bound:** Axiomatize van Doorn's result\n\n6. **Original Question:** State and refute f(N) = (1/2+o(1))N\n\n7. **Related Results:** Coloring version (Brown-R\u00f6dl), doubling observation",
     "keyInsights": [
-      "**Original conjecture is false:** f(N) > (1/2+o(1))N since f(N) ≥ (5/8+o(1))N",
+      "**Original conjecture is false:** f(N) > (1/2+o(1))N since f(N) \u2265 (5/8+o(1))N",
       "**Odd integers work:** If a, b, c odd and 1/a = 1/b + 1/c, then bc = a(b+c), but bc is odd while a(b+c) is even",
-      "**Upper half works:** Elements in [N/2, N] have 1/a ≤ 2/N, so 1/b + 1/c ≥ 4/N cannot equal 1/a",
-      "**Cambie's combination:** Odd integers ≤ N/4 plus [N/2, N] gives 5N/8 elements",
+      "**Upper half works:** Elements in [N/2, N] have 1/a \u2264 2/N, so 1/b + 1/c \u2265 4/N cannot equal 1/a",
+      "**Cambie's combination:** Odd integers \u2264 N/4 plus [N/2, N] gives 5N/8 elements",
       "**Standard pattern:** 1/n = 1/(n+1) + 1/(n(n+1)) gives many solutions",
-      "**Coloring version solved:** Brown-Rödl showed 2-coloring always works",
-      "**Algebraic constraint $c \\leq 2a$:** For any solution with $a < b < c$, we have $c \\leq 2a$, so each element only interacts with elements in a bounded range — yet this local structure still permits enough solutions to make the global problem hard",
+      "**Coloring version solved:** Brown-R\u00f6dl showed 2-coloring always works",
+      "**Algebraic constraint $c \\leq 2a$:** For any solution with $a < b < c$, we have $c \\leq 2a$, so each element only interacts with elements in a bounded range \u2014 yet this local structure still permits enough solutions to make the global problem hard",
       "**Egyptian fraction connection:** The equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ is the simplest unit fraction decomposition, linking this problem to a tradition stretching back to the Rhind papyrus"
     ],
     "prerequisites": [
@@ -116,7 +116,7 @@
       "title": "Part 2: The Function f(N)",
       "startLine": 54,
       "endLine": 65,
-      "summary": "Defines f(N) as max |A| over sum-free A ⊆ {1,...,N} using Finset.sup. Trivial upper bound f(N) ≤ N.",
+      "summary": "Defines f(N) as max |A| over sum-free A \u2286 {1,...,N} using Finset.sup. Trivial upper bound f(N) \u2264 N.",
       "mathContext": "$f(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ is unit-fraction-sum-free}\\}$. The trivial bound $f(N) \\leq N$ holds since $A \\subseteq \\{1,\\ldots,N\\}$."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Part 3: Lower Bound Constructions",
       "startLine": 67,
       "endLine": 109,
-      "summary": "Three constructions: oddIntegers (~N/2), upperHalf (~N/2), and Cambie's combined set (~5N/8). Axiom cambie_lower_bound: f(N) ≥ (5/8+o(1))N.",
+      "summary": "Three constructions: oddIntegers (~N/2), upperHalf (~N/2), and Cambie's combined set (~5N/8). Axiom cambie_lower_bound: f(N) \u2265 (5/8+o(1))N.",
       "mathContext": "Three sum-free constructions of increasing density: (1) odd integers in $[1,N]$ give $\\sim N/2$ elements; (2) the interval $[N/2, N]$ also gives $\\sim N/2$; (3) Cambie's set $\\{n \\leq N/4 : n \\text{ odd}\\} \\cup [N/2, N]$ achieves $\\sim \\frac{5N}{8}$ elements."
     },
     {
@@ -132,7 +132,7 @@
       "title": "Part 4: Upper Bound (van Doorn)",
       "startLine": 111,
       "endLine": 120,
-      "summary": "Axiom van_doorn_upper_bound: f(N) ≤ (9/10+o(1))N. Verified theorem known_bounds_gap: 5/8 < 9/10.",
+      "summary": "Axiom van_doorn_upper_bound: f(N) \u2264 (9/10+o(1))N. Verified theorem known_bounds_gap: 5/8 < 9/10.",
       "mathContext": "$f(N) \\leq (\\frac{9}{10} + o(1))N$, so no sum-free subset can contain more than 90% of $\\{1,\\ldots,N\\}$. The verified inequality $\\frac{5}{8} < \\frac{9}{10}$ confirms the bounds are consistent."
     },
     {
@@ -140,7 +140,7 @@
       "title": "Part 5: The Main Question",
       "startLine": 122,
       "endLine": 144,
-      "summary": "Original question f(N) = (1/2+o(1))N is FALSE (sorry, uses cambie_lower_bound). Refined density_question: ∃ c ∈ [5/8, 9/10] with f(N)/N → c.",
+      "summary": "Original question f(N) = (1/2+o(1))N is FALSE (sorry, uses cambie_lower_bound). Refined density_question: \u2203 c \u2208 [5/8, 9/10] with f(N)/N \u2192 c.",
       "mathContext": "The original conjecture $f(N) = (\\frac{1}{2}+o(1))N$ is false since $\\frac{5}{8} > \\frac{1}{2}$. The refined question asks whether $\\lim_{N\\to\\infty} f(N)/N$ exists and equals some $c \\in [\\frac{5}{8}, \\frac{9}{10}]$."
     },
     {
@@ -157,14 +157,14 @@
       "startLine": 167,
       "endLine": 181,
       "summary": "Defines coloring_version (2-color avoiding monochromatic solutions). Axiom brown_rodl_coloring: always possible. Completely solved.",
-      "mathContext": "The Ramsey-type variant: does there exist a 2-coloring $\\chi: \\{1,\\ldots,N\\} \\to \\{0,1\\}$ such that no monochromatic triple $(a,b,c)$ satisfies $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$? Brown-Rödl (1991) proved the answer is yes for all $N$."
+      "mathContext": "The Ramsey-type variant: does there exist a 2-coloring $\\chi: \\{1,\\ldots,N\\} \\to \\{0,1\\}$ such that no monochromatic triple $(a,b,c)$ satisfies $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$? Brown-R\u00f6dl (1991) proved the answer is yes for all $N$."
     },
     {
       "id": "algebra",
       "title": "Part 8: Algebraic Structure",
       "startLine": 183,
       "endLine": 200,
-      "summary": "algebraic_form: UnitFractionSum ↔ bc = ab + ac. solution_constraints: if a < b < c, then c ≤ 2a.",
+      "summary": "algebraic_form: UnitFractionSum \u2194 bc = ab + ac. solution_constraints: if a < b < c, then c \u2264 2a.",
       "mathContext": "The polynomial form $bc = ab + ac$ reveals that solutions lie on a quadric surface. The constraint $c \\leq 2a$ (for $a < b < c$) follows from $\\frac{1}{c} = \\frac{1}{a} - \\frac{1}{b} \\geq \\frac{1}{a} - \\frac{1}{a+1} > \\frac{1}{2a}$, bounding the range of interaction."
     },
     {
@@ -180,8 +180,8 @@
       "title": "Part 10: Why the Problem is Hard",
       "startLine": 223,
       "endLine": 235,
-      "summary": "Each element forbids many pairs. Proved coloring_always_possible from Brown-Rödl. Verified lower_bound_improvement: 5/8 > 1/2.",
-      "mathContext": "Each element $a$ forbids all pairs $(b,c)$ with $bc = a(b+c)$. The number of forbidden pairs grows with $a$, creating a complex dependency structure. The Brown-Rödl coloring result shows this structure is not rigid enough to prevent partition regularity."
+      "summary": "Each element forbids many pairs. Proved coloring_always_possible from Brown-R\u00f6dl. Verified lower_bound_improvement: 5/8 > 1/2.",
+      "mathContext": "Each element $a$ forbids all pairs $(b,c)$ with $bc = a(b+c)$. The number of forbidden pairs grows with $a$, creating a complex dependency structure. The Brown-R\u00f6dl coloring result shows this structure is not rigid enough to prevent partition regularity."
     },
     {
       "id": "summary",
@@ -193,8 +193,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #302 asks to estimate f(N), the maximum size of A ⊆ {1,...,N} with no solution to 1/a = 1/b + 1/c. The original conjecture f(N) = (1/2+o(1))N is FALSE. Current bounds: 5/8 ≤ lim f(N)/N ≤ 9/10. The exact value remains OPEN.",
-    "implications": "**Theoretical Significance**: **Connections to Number Theory and Combinatorics**\n\n1. **Egyptian fractions:** The equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ is the simplest case of Egyptian fraction decomposition, connecting to questions about representations of rationals as sums of unit fractions that date to the Rhind papyrus.\n\n2. **Additive combinatorics:** The problem is a multiplicative analogue of classical sum-free set theory.\n\nWhile sum-free subsets of $\\{1,\\ldots,N\\}$ (avoiding $a + b = c$) have density exactly $\\frac{1}{2}$, the unit fraction variant exhibits richer structure.\n\n3. **Density Ramsey theory:** The interplay between the density result ($f(N)/N \\in [5/8, 9/10]$) and the coloring result (Brown-Rödl) illustrates a recurring theme: partition regularity and density thresholds can behave very differently for the same equation.\n\n4. **Forbidden configuration theory:** The constraint $c \\leq 2a$ for solutions means the forbidden triples have bounded ratio, placing the problem in a regime between sparse and dense forbidden patterns.\n\n5. **Algorithmic aspects:** Computing $f(N)$ exactly for moderate $N$ could help narrow the asymptotic gap, but the exponential search space makes this computationally challenging.",
+    "summary": "Erd\u0151s Problem #302 asks to estimate f(N), the maximum size of A \u2286 {1,...,N} with no solution to 1/a = 1/b + 1/c. The original conjecture f(N) = (1/2+o(1))N is FALSE. Current bounds: 5/8 \u2264 lim f(N)/N \u2264 9/10. The exact value remains OPEN.",
+    "implications": "**Theoretical Significance**: **Connections to Number Theory and Combinatorics**\n\n1. **Egyptian fractions:** The equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ is the simplest case of Egyptian fraction decomposition, connecting to questions about representations of rationals as sums of unit fractions that date to the Rhind papyrus.\n\n2. **Additive combinatorics:** The problem is a multiplicative analogue of classical sum-free set theory.\n\nWhile sum-free subsets of $\\{1,\\ldots,N\\}$ (avoiding $a + b = c$) have density exactly $\\frac{1}{2}$, the unit fraction variant exhibits richer structure.\n\n3. **Density Ramsey theory:** The interplay between the density result ($f(N)/N \\in [5/8, 9/10]$) and the coloring result (Brown-R\u00f6dl) illustrates a recurring theme: partition regularity and density thresholds can behave very differently for the same equation.\n\n4. **Forbidden configuration theory:** The constraint $c \\leq 2a$ for solutions means the forbidden triples have bounded ratio, placing the problem in a regime between sparse and dense forbidden patterns.\n\n5. **Algorithmic aspects:** Computing $f(N)$ exactly for moderate $N$ could help narrow the asymptotic gap, but the exponential search space makes this computationally challenging.",
     "openQuestions": [
       "What is the exact value of lim f(N)/N?",
       "Is the limit closer to 5/8 or 9/10?",
@@ -207,7 +207,7 @@
     {
       "targetId": "erdos-23",
       "relationship": "related",
-      "description": "Both are Erdős extremal combinatorics problems about maximum/minimum sizes of sets satisfying structural constraints"
+      "description": "Both are Erd\u0151s extremal combinatorics problems about maximum/minimum sizes of sets satisfying structural constraints"
     },
     {
       "targetId": "erdos-285",
@@ -222,7 +222,7 @@
     {
       "targetId": "erdos-303",
       "relationship": "related",
-      "description": "The coloring version of #302: can {1,...,N} be 2-colored with no monochromatic solution to 1/a = 1/b + 1/c? Solved by Brown-Rödl (1991)"
+      "description": "The coloring version of #302: can {1,...,N} be 2-colored with no monochromatic solution to 1/a = 1/b + 1/c? Solved by Brown-R\u00f6dl (1991)"
     }
   ],
   "relatedProofs": [
@@ -243,14 +243,15 @@
     "lineCount": 261,
     "axiomCount": 6,
     "theoremCount": 15,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80] where Problem 302 appears"
     },
     {
@@ -258,14 +259,14 @@
       "title": "On unit fraction sum-free sets",
       "year": "2023",
       "venue": "arXiv preprint",
-      "note": "Proved lower bound f(N) ≥ (5/8+o(1))N, disproving original conjecture"
+      "note": "Proved lower bound f(N) \u2265 (5/8+o(1))N, disproving original conjecture"
     },
     {
       "authors": "van Doorn, Wouter",
       "title": "Upper bounds for unit fraction sum-free sets",
       "year": "2023",
       "venue": "arXiv preprint",
-      "note": "Proved upper bound f(N) ≤ (9/10+o(1))N"
+      "note": "Proved upper bound f(N) \u2264 (9/10+o(1))N"
     }
   ]
 }

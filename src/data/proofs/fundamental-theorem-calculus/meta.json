@@ -42,14 +42,14 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Fundamental Theorem of Calculus (FTC) represents one of mathematics' greatest unifications. Its origins predate Newton and Leibniz: Isaac Barrow, Newton's teacher at Cambridge, proved a geometric version in his *Lectiones Geometricae* (1670), showing that the tangent to an area curve gives the height of the original curve — essentially FTC Part 1 in geometric language. But Barrow did not recognize the full computational significance.\n\nIsaac Newton developed his 'method of fluxions' while avoiding the plague at Woolsthorpe Manor (1665-1666), making FTC the centerpiece: he systematically used antidifferentiation to compute areas, volumes, and arc lengths. Leibniz independently created his differential calculus in the 1670s, with superior notation (dx, dy, ∫) that we still use today. Their bitter priority dispute dominated European mathematics for decades.\n\nWhile Newton and Leibniz grasped the theorem intuitively, rigorous proof required the epsilon-delta foundations developed by Cauchy in his *Résumé des leçons* (1823) and perfected by Weierstrass (1860s). Bernhard Riemann's 1854 Habilitationsschrift gave the first rigorous definition of the integral, making FTC a theorem rather than a heuristic. The modern Lebesgue integral (1902) and its generalization by Henstock-Kurzweil further extended FTC to broader classes of functions.",
+    "historicalContext": "The Fundamental Theorem of Calculus (FTC) represents one of mathematics' greatest unifications. Its origins predate Newton and Leibniz: Isaac Barrow, Newton's teacher at Cambridge, proved a geometric version in his *Lectiones Geometricae* (1670), showing that the tangent to an area curve gives the height of the original curve \u2014 essentially FTC Part 1 in geometric language. But Barrow did not recognize the full computational significance.\n\nIsaac Newton developed his 'method of fluxions' while avoiding the plague at Woolsthorpe Manor (1665-1666), making FTC the centerpiece: he systematically used antidifferentiation to compute areas, volumes, and arc lengths. Leibniz independently created his differential calculus in the 1670s, with superior notation (dx, dy, \u222b) that we still use today. Their bitter priority dispute dominated European mathematics for decades.\n\nWhile Newton and Leibniz grasped the theorem intuitively, rigorous proof required the epsilon-delta foundations developed by Cauchy in his *R\u00e9sum\u00e9 des le\u00e7ons* (1823) and perfected by Weierstrass (1860s). Bernhard Riemann's 1854 Habilitationsschrift gave the first rigorous definition of the integral, making FTC a theorem rather than a heuristic. The modern Lebesgue integral (1902) and its generalization by Henstock-Kurzweil further extended FTC to broader classes of functions.",
     "problemStatement": "The Fundamental Theorem of Calculus has two parts:\n\nPart 1 (Differentiation of Integrals):\nIf $f$ is continuous on $[a, b]$ and we define\n$$F(x) = \\int_a^x f(t)\\,dt$$\nthen $F$ is differentiable and $F'(x) = f(x)$.\n\nPart 2 (Evaluation of Integrals):\nIf $F$ is an antiderivative of $f$ on $[a, b]$ (meaning $F' = f$), then\n$$\\int_a^b f(x)\\,dx = F(b) - F(a)$$\n\nTogether, these say that differentiation and integration are inverse operations.",
     "text": "A 165-line formalization of the Fundamental Theorem of Calculus (Wiedijk #46) with 16 declarations, 0 sorries, 0 axioms. Part 1 (`ftc_part1`): delegates to Mathlib's `intervalIntegral.integral_hasStrictDerivAt` showing $F(x) = \\int_a^x f(t)\\,dt$ has $F'(x) = f(x)$ for continuous $f$. Part 2 (`ftc_part2`): delegates to `intervalIntegral.integral_eq_sub_of_hasDerivAt`, giving $\\int_a^b f = F(b) - F(a)$. Includes `integration_by_parts` via `intervalIntegral.integral_mul_deriv_of_le`, concrete examples ($\\int_0^1 2x\\,dx = 1$ via `norm_num`), and corollaries like the mean value theorem for integrals (`mvt_for_integrals`) and the `integral_nonneg` positivity lemma.",
     "proofStrategy": "Part 1 Strategy:\n\n1. Consider the difference quotient of $F$:\n   $$\\frac{F(x+h) - F(x)}{h} = \\frac{1}{h}\\int_x^{x+h} f(t)\\,dt$$\n\n2. By the Mean Value Theorem for integrals, this equals $f(c)$ for some $c$ between $x$ and $x+h$\n\n3. As $h \\to 0$, we have $c \\to x$, and by continuity of $f$, $f(c) \\to f(x)$\n\n4. Therefore $F'(x) = \\lim_{h \\to 0} \\frac{F(x+h) - F(x)}{h} = f(x)$\n\nPart 2 Strategy:\n\n1. Define $G(x) = \\int_a^x f(t)\\,dt$\n\n2. By Part 1, $G'(x) = f(x) = F'(x)$\n\n3. Since $G' = F'$, we have $(F - G)' = 0$, so $F - G = C$ (constant)\n\n4. At $x = a$: $G(a) = 0$, so $C = F(a)$, meaning $G(x) = F(x) - F(a)$\n\n5. At $x = b$: $\\int_a^b f = G(b) = F(b) - F(a)$",
     "keyInsights": [
       "**Inverse Operations:** Differentiation and integration are inverse: $\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$ (Part 1) and $\\int_a^b F'(x)\\,dx = F(b) - F(a)$ (Part 2). This duality is the central insight of calculus.",
       "**Integration Builds Antiderivatives:** Part 1 says $F(x) = \\int_a^x f(t)\\,dt$ is differentiable with $F'(x) = f(x)$. The integral 'accumulates' $f$ continuously, and the instantaneous rate of accumulation at $x$ is precisely $f(x)$.",
-      "**Evaluation Formula:** Part 2 converts integration into evaluation: $\\int_a^b f = F(b) - F(a)$. This is why finding antiderivatives is useful — it reduces a limit of Riemann sums to subtraction of two numbers.",
+      "**Evaluation Formula:** Part 2 converts integration into evaluation: $\\int_a^b f = F(b) - F(a)$. This is why finding antiderivatives is useful \u2014 it reduces a limit of Riemann sums to subtraction of two numbers.",
       "**Uniqueness up to Constants:** If $F' = G' = f$, then $(F - G)' = 0$, so $F - G = C$ (a constant). This is why indefinite integrals have '$+ C$': the derivative operator has kernel = constants, so its preimage of $f$ is an affine subspace.",
       "**Continuity is Essential:** FTC Part 1 requires $f$ continuous. For discontinuous functions, the Lebesgue integral and absolute continuity of $F$ replace Riemann integrability and pointwise differentiability."
     ],
@@ -65,14 +65,14 @@
       "startLine": 1,
       "endLine": 29,
       "summary": "Introduces the historical context, imports Mathlib's calculus and integration libraries, and opens the namespace.",
-      "mathContext": "Imports: `FDeriv` (Fréchet derivative), `Deriv` (real derivative), `IntervalIntegral` ($\\int_a^b$), `FundThmCalculus` (Mathlib's FTC infrastructure), `MeanValue` (MVT), `Topology`."
+      "mathContext": "Imports: `FDeriv` (Fr\u00e9chet derivative), `Deriv` (real derivative), `IntervalIntegral` ($\\int_a^b$), `FundThmCalculus` (Mathlib's FTC infrastructure), `MeanValue` (MVT), `Topology`."
     },
     {
       "id": "integral-function",
       "title": "The Integral Function",
       "startLine": 31,
       "endLine": 42,
-      "summary": "Defines F(x) = ∫ₐˣ f(t)dt, the cumulative integral that measures accumulated area.",
+      "summary": "Defines F(x) = \u222b\u2090\u02e3 f(t)dt, the cumulative integral that measures accumulated area.",
       "mathContext": "$F(x) = \\int_a^x f(t)\\,dt$ defines a function $F : \\mathbb{R} \\to \\mathbb{R}$ that 'accumulates' the values of $f$ from the basepoint $a$."
     },
     {
@@ -88,7 +88,7 @@
       "title": "FTC Part 2: Evaluation of Integrals",
       "startLine": 61,
       "endLine": 86,
-      "summary": "Proves that the integral of a derivative equals the net change: ∫ₐᵇ F' = F(b) - F(a).",
+      "summary": "Proves that the integral of a derivative equals the net change: \u222b\u2090\u1d47 F' = F(b) - F(a).",
       "mathContext": "$\\int_a^b F'(x)\\,dx = F(b) - F(a)$ for $F$ continuous on $[a,b]$, differentiable on $(a,b)$."
     },
     {
@@ -109,10 +109,10 @@
     }
   ],
   "conclusion": {
-    "summary": "The Fundamental Theorem of Calculus is the cornerstone of mathematical analysis. It reveals that the two main operations of calculus - finding slopes (differentiation) and finding areas (integration) - are not merely related but are precise inverses of each other.\n\nThis insight transforms integration from an intractable geometric problem into a mechanical process: to find ∫ₐᵇ f, simply find any function F with F' = f, then compute F(b) - F(a). Every integration technique (substitution, parts, partial fractions) is just a method for finding antiderivatives.\n\nThe formalization demonstrates how naturally these classical results translate to modern type theory. Lean's dependent types capture the subtle conditions (continuity, integrability) that make FTC valid.",
+    "summary": "The Fundamental Theorem of Calculus is the cornerstone of mathematical analysis. It reveals that the two main operations of calculus - finding slopes (differentiation) and finding areas (integration) - are not merely related but are precise inverses of each other.\n\nThis insight transforms integration from an intractable geometric problem into a mechanical process: to find \u222b\u2090\u1d47 f, simply find any function F with F' = f, then compute F(b) - F(a). Every integration technique (substitution, parts, partial fractions) is just a method for finding antiderivatives.\n\nThe formalization demonstrates how naturally these classical results translate to modern type theory. Lean's dependent types capture the subtle conditions (continuity, integrability) that make FTC valid.",
     "implications": "**Theoretical Significance**: The FTC has profound implications across mathematics and physics:\n\n1. Computational Power - Reduces integration (infinitely many additions) to evaluation (one subtraction)\n\n2. Physics - Connects instantaneous rate (velocity) to accumulated quantity (distance); relates force to work done\n\n3.\n\nThe '+C' Mystery Resolved - Antiderivatives are unique only up to constants; FTC Part 2 uses the difference F(b) - F(a), canceling any constant\n\n4. Existence of Antiderivatives - Every continuous function has an antiderivative (the integral function), even if we can't write it in closed form\n\n5. Foundation for Differential Equations - Solving y' = f is equivalent to finding antiderivatives; FTC provides existence guarantees\n\n6. Generalization - Leads to Stokes' theorem, the divergence theorem, and the entire theory of differential forms.",
     "openQuestions": [
-      "Formalize FTC for the Lebesgue integral: if $F$ is absolutely continuous on $[a,b]$, then $F'$ exists a.e., is Lebesgue integrable, and $\\int_a^b F' = F(b) - F(a)$ — the Lebesgue-Vitali theorem that extends FTC beyond continuous integrands",
+      "Formalize FTC for the Lebesgue integral: if $F$ is absolutely continuous on $[a,b]$, then $F'$ exists a.e., is Lebesgue integrable, and $\\int_a^b F' = F(b) - F(a)$ \u2014 the Lebesgue-Vitali theorem that extends FTC beyond continuous integrands",
       "Formalize the generalized Stokes theorem $\\int_M d\\omega = \\int_{\\partial M} \\omega$ for manifolds with boundary, showing FTC as the $n=1$ case where $M = [a,b]$, $\\omega = F$, and $d\\omega = F'\\,dx$",
       "Prove the Henstock-Kurzweil integral version: every derivative is HK-integrable (solving the antiderivative problem completely), unlike the Riemann and Lebesgue integrals where derivatives like $x^2\\sin(1/x^2)$ require special treatment",
       "Formalize the second FTC for vector-valued functions: $\\int_a^b \\mathbf{F}'(t)\\,dt = \\mathbf{F}(b) - \\mathbf{F}(a)$ in Banach spaces, connecting to the Bochner integral already used in Mathlib"
@@ -122,22 +122,22 @@
     {
       "targetId": "area-of-circle",
       "relationship": "foundational",
-      "description": "The area of a circle A = πr² can be derived via FTC by integrating the circumference function 2πr from 0 to R. FTC provides the rigorous foundation for computing areas via integration"
+      "description": "The area of a circle A = \u03c0r\u00b2 can be derived via FTC by integrating the circumference function 2\u03c0r from 0 to R. FTC provides the rigorous foundation for computing areas via integration"
     },
     {
       "targetId": "basel-problem",
       "relationship": "related",
-      "description": "The Basel identity ∑1/n² = π²/6 is proved via Fourier analysis which relies on integration theory built on FTC. Parseval's identity uses integrals that FTC makes computable"
+      "description": "The Basel identity \u22111/n\u00b2 = \u03c0\u00b2/6 is proved via Fourier analysis which relies on integration theory built on FTC. Parseval's identity uses integrals that FTC makes computable"
     },
     {
       "targetId": "euler-identity",
       "relationship": "related",
-      "description": "Euler's formula e^(ix) = cos(x) + i·sin(x) is proved via Taylor series of exp, which are defined using the derivatives that FTC relates to integrals"
+      "description": "Euler's formula e^(ix) = cos(x) + i\u00b7sin(x) is proved via Taylor series of exp, which are defined using the derivatives that FTC relates to integrals"
     },
     {
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
-      "description": "IVT is used in the proof of FTC Part I: the antiderivative $F(x) = \\int_a^x f(t)\\,dt$ is continuous by construction, and IVT guarantees that continuous functions on intervals attain intermediate values — a key property used in the proof that $F'(x) = f(x)$ for continuous $f$"
+      "description": "IVT is used in the proof of FTC Part I: the antiderivative $F(x) = \\int_a^x f(t)\\,dt$ is continuous by construction, and IVT guarantees that continuous functions on intervals attain intermediate values \u2014 a key property used in the proof that $F'(x) = f(x)$ for continuous $f$"
     },
     {
       "targetId": "mean-value-theorem",
@@ -177,7 +177,7 @@
     {
       "targetId": "stirling-formula",
       "relationship": "related",
-      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ is derived using FTC applied to $\\ln(n!) = \\sum \\ln k \\approx \\int_1^n \\ln x\\,dx = n\\ln n - n + 1$. FTC converts the discrete sum to an integral, and the correction terms (including the $\\sqrt{2\\pi n}$ factor from the Euler-Maclaurin formula) require repeated application of integration by parts — itself a consequence of FTC"
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ is derived using FTC applied to $\\ln(n!) = \\sum \\ln k \\approx \\int_1^n \\ln x\\,dx = n\\ln n - n + 1$. FTC converts the discrete sum to an integral, and the correction terms (including the $\\sqrt{2\\pi n}$ factor from the Euler-Maclaurin formula) require repeated application of integration by parts \u2014 itself a consequence of FTC"
     }
   ],
   "relatedProofs": [
@@ -211,7 +211,7 @@
     },
     {
       "authors": "Cauchy, Augustin-Louis",
-      "title": "Résumé des leçons données à l'École royale polytechnique sur le calcul infinitésimal",
+      "title": "R\u00e9sum\u00e9 des le\u00e7ons donn\u00e9es \u00e0 l'\u00c9cole royale polytechnique sur le calcul infinit\u00e9simal",
       "year": "1823",
       "venue": "Paris",
       "note": "First rigorous proof of FTC using the epsilon-delta definition of limits and continuity"
@@ -251,6 +251,7 @@
     "lineCount": 165,
     "axiomCount": 0,
     "theoremCount": 7,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   }
 }

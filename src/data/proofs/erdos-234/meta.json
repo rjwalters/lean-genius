@@ -1,10 +1,10 @@
 {
   "id": "erdos-234",
-  "title": "Erdős Problem #234: Density of Normalized Prime Gaps",
+  "title": "Erd\u0151s Problem #234: Density of Normalized Prime Gaps",
   "slug": "erdos-234",
-  "description": "For every c ≥ 0, the density f(c) of integers n for which (p_{n+1} - p_n)/log n < c exists and is a continuous function of c. Gallagher showed this holds under RH with exponential distribution. OPEN.",
+  "description": "For every c \u2265 0, the density f(c) of integers n for which (p_{n+1} - p_n)/log n < c exists and is a continuous function of c. Gallagher showed this holds under RH with exponential distribution. OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/234",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos234Problem.lean",
@@ -25,16 +25,16 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**From Cramér's Model to the Distribution of Prime Gaps**\n\n**Harald Cramér** introduced his groundbreaking probabilistic model in 1936, treating each integer $n$ as independently prime with probability $1/\\log n$. Under this model, normalized prime gaps $g_n / \\log p_n$ follow an **exponential distribution** with CDF $f(c) = 1 - e^{-c}$. Cramér's model has been remarkably successful at predicting prime gap statistics, though it is known to fail for some finer questions (Maier's theorem, 1985).\n\n**Erdős** asked in the 1930s–1940s whether the **natural density** $f(c) = \\lim_{N \\to \\infty} \\#\\{n \\leq N : g_n/\\log n < c\\}/N$ exists for all $c \\geq 0$ and defines a continuous function. This combines an existence question (does the proportion converge?) with a regularity question (is the limit continuous in $c$?).\n\n**Patrick Gallagher** (1976) proved the exponential distribution conjecture conditional on the **Riemann Hypothesis**, using the Hardy–Littlewood prime $k$-tuples conjecture structure. His result shows that if RH holds, then $f(c) = 1 - e^{-c}$ exactly.\n\nPartial unconditional progress includes: **Goldston–Pintz–Yıldırım** (2009) proved $\\liminf g_n/\\log p_n = 0$; **Maynard** and **Tao** (2014) proved bounded gaps $\\liminf g_n \\leq 246$; **Ford–Green–Konyagin–Tao** (2016) and **Maynard** (2016) improved Rankin's large gap bound. Related problems include Erdős #233 (sum of squared gaps) and #5 (large prime gaps).",
-    "problemStatement": "**Erdős Problem 234**\n\nFor every $c \\geq 0$, does the density\n$$f(c) = \\lim_{N \\to \\infty} \\frac{\\#\\{n \\leq N : (p_{n+1} - p_n)/\\log n < c\\}}{N}$$\nexist, and is $f$ a continuous function of $c$?\n\nCramér's model predicts $f(c) = 1 - e^{-c}$, the CDF of the standard exponential distribution.",
-    "text": "For every c ≥ 0, the density f(c) of integers n for which (p_{n+1} - p_n)/log n < c exists and is a continuous function of c. Gallagher showed this holds under RH with exponential distribution. OPEN.",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **Prime gap infrastructure:** Define `nthPrime` via `Nat.nth`, `primeGap`, and `normalizedGap` with $\\log n$ normalization.\n2. **Counting functions:** Define `countSmallNormGaps` and `gapProportion` as the finite approximations to $f(c)$.\n3. **Conjecture statement:** `ErdosProblem234` asserts both existence of the limit and continuity of the resulting function, using `Filter.Tendsto` and `Continuous`.\n4. **Basic properties:** Prove $f(0) = 0$, monotonicity, non-negativity, and boundedness by $1$ — all in Lean.\n5. **Cramér model:** Define $1 - e^{-c}$ piecewise, prove continuity via `Continuous.if_lt`, and verify CDF axioms.\n6. **Gallagher's theorem:** Axiomatize the conditional result and prove it implies the full conjecture.\n7. **Partial results:** Axiomatize small gaps (GPY/Maynard–Tao), large gaps (FGKT/Maynard), and average gap (PNT).",
+    "historicalContext": "**From Cram\u00e9r's Model to the Distribution of Prime Gaps**\n\n**Harald Cram\u00e9r** introduced his groundbreaking probabilistic model in 1936, treating each integer $n$ as independently prime with probability $1/\\log n$. Under this model, normalized prime gaps $g_n / \\log p_n$ follow an **exponential distribution** with CDF $f(c) = 1 - e^{-c}$. Cram\u00e9r's model has been remarkably successful at predicting prime gap statistics, though it is known to fail for some finer questions (Maier's theorem, 1985).\n\n**Erd\u0151s** asked in the 1930s\u20131940s whether the **natural density** $f(c) = \\lim_{N \\to \\infty} \\#\\{n \\leq N : g_n/\\log n < c\\}/N$ exists for all $c \\geq 0$ and defines a continuous function. This combines an existence question (does the proportion converge?) with a regularity question (is the limit continuous in $c$?).\n\n**Patrick Gallagher** (1976) proved the exponential distribution conjecture conditional on the **Riemann Hypothesis**, using the Hardy\u2013Littlewood prime $k$-tuples conjecture structure. His result shows that if RH holds, then $f(c) = 1 - e^{-c}$ exactly.\n\nPartial unconditional progress includes: **Goldston\u2013Pintz\u2013Y\u0131ld\u0131r\u0131m** (2009) proved $\\liminf g_n/\\log p_n = 0$; **Maynard** and **Tao** (2014) proved bounded gaps $\\liminf g_n \\leq 246$; **Ford\u2013Green\u2013Konyagin\u2013Tao** (2016) and **Maynard** (2016) improved Rankin's large gap bound. Related problems include Erd\u0151s #233 (sum of squared gaps) and #5 (large prime gaps).",
+    "problemStatement": "**Erd\u0151s Problem 234**\n\nFor every $c \\geq 0$, does the density\n$$f(c) = \\lim_{N \\to \\infty} \\frac{\\#\\{n \\leq N : (p_{n+1} - p_n)/\\log n < c\\}}{N}$$\nexist, and is $f$ a continuous function of $c$?\n\nCram\u00e9r's model predicts $f(c) = 1 - e^{-c}$, the CDF of the standard exponential distribution.",
+    "text": "For every c \u2265 0, the density f(c) of integers n for which (p_{n+1} - p_n)/log n < c exists and is a continuous function of c. Gallagher showed this holds under RH with exponential distribution. OPEN.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Prime gap infrastructure:** Define `nthPrime` via `Nat.nth`, `primeGap`, and `normalizedGap` with $\\log n$ normalization.\n2. **Counting functions:** Define `countSmallNormGaps` and `gapProportion` as the finite approximations to $f(c)$.\n3. **Conjecture statement:** `ErdosProblem234` asserts both existence of the limit and continuity of the resulting function, using `Filter.Tendsto` and `Continuous`.\n4. **Basic properties:** Prove $f(0) = 0$, monotonicity, non-negativity, and boundedness by $1$ \u2014 all in Lean.\n5. **Cram\u00e9r model:** Define $1 - e^{-c}$ piecewise, prove continuity via `Continuous.if_lt`, and verify CDF axioms.\n6. **Gallagher's theorem:** Axiomatize the conditional result and prove it implies the full conjecture.\n7. **Partial results:** Axiomatize small gaps (GPY/Maynard\u2013Tao), large gaps (FGKT/Maynard), and average gap (PNT).",
     "keyInsights": [
-      "**Cramér's Exponential Model:** The probabilistic model treats primes as a Poisson process with rate $1/\\log n$, predicting normalized gaps follow $\\text{Exp}(1)$ with CDF $f(c) = 1 - e^{-c}$.",
-      "**Two-Part Conjecture:** The problem separates into (i) existence of the density $f(c)$ for each $c$ and (ii) continuity of $f$ as a function of $c$ — the second is strictly stronger than the first.",
+      "**Cram\u00e9r's Exponential Model:** The probabilistic model treats primes as a Poisson process with rate $1/\\log n$, predicting normalized gaps follow $\\text{Exp}(1)$ with CDF $f(c) = 1 - e^{-c}$.",
+      "**Two-Part Conjecture:** The problem separates into (i) existence of the density $f(c)$ for each $c$ and (ii) continuity of $f$ as a function of $c$ \u2014 the second is strictly stronger than the first.",
       "**Gallagher's Conditional Bridge:** Under RH, Gallagher proves $f(c) = 1 - e^{-c}$ exactly, resolving both parts simultaneously. The Lean proof of RH $\\implies$ ErdosProblem234 is just 8 lines.",
-      "**Rich Lean Proofs:** Many properties (monotonicity, boundedness, $f(0) = 0$, Cramér continuity and monotonicity) are fully proved in Lean, not axiomatized — demonstrating real formal reasoning about prime gap distributions.",
-      "**Small and Large Gap Extremes:** The axiomatized partial results capture the state of the art: GPY/Maynard–Tao for small gaps ($\\liminf g_n/\\log p_n = 0$) and FGKT/Maynard for large gaps ($\\limsup g_n/\\log n = \\infty$), bounding the distribution from both sides."
+      "**Rich Lean Proofs:** Many properties (monotonicity, boundedness, $f(0) = 0$, Cram\u00e9r continuity and monotonicity) are fully proved in Lean, not axiomatized \u2014 demonstrating real formal reasoning about prime gap distributions.",
+      "**Small and Large Gap Extremes:** The axiomatized partial results capture the state of the art: GPY/Maynard\u2013Tao for small gaps ($\\liminf g_n/\\log p_n = 0$) and FGKT/Maynard for large gaps ($\\limsup g_n/\\log n = \\infty$), bounding the distribution from both sides."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -79,7 +79,7 @@
     },
     {
       "id": "cramer-model",
-      "title": "Cramér's Exponential Model",
+      "title": "Cram\u00e9r's Exponential Model",
       "startLine": 153,
       "endLine": 178,
       "summary": "Defines cramerPrediction$(c) = 1 - e^{-c}$ for $c \\geq 0$. Proves continuity via `Continuous.if_lt` and validates CDF bounds $0 \\leq f(c) \\leq 1$."
@@ -96,11 +96,11 @@
       "title": "Partial Results on Gap Distribution",
       "startLine": 210,
       "endLine": 220,
-      "summary": "Axiomatizes: (1) small_gaps_exist (GPY/Maynard–Tao: infinitely many $g_n < (1+\\varepsilon)\\log p_n$), (2) large_gaps_exist (FGKT: unbounded $g_n/\\log n$), (3) average $g_n/\\log n \\to 1$ by PNT."
+      "summary": "Axiomatizes: (1) small_gaps_exist (GPY/Maynard\u2013Tao: infinitely many $g_n < (1+\\varepsilon)\\log p_n$), (2) large_gaps_exist (FGKT: unbounded $g_n/\\log n$), (3) average $g_n/\\log n \\to 1$ by PNT."
     },
     {
       "id": "cramer-properties",
-      "title": "Cramér Model Properties",
+      "title": "Cram\u00e9r Model Properties",
       "startLine": 227,
       "endLine": 247,
       "summary": "Proves $f(0) = 0$, $f(c) \\geq 0$, $f(c) \\leq 1$, and monotonicity $c_1 \\leq c_2 \\implies f(c_1) \\leq f(c_2)$ using $e^{-c_2} \\leq e^{-c_1}$."
@@ -124,11 +124,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization of Erdős Problem 234 captures the open question of whether normalized prime gaps $g_n/\\log n$ have a well-defined continuous density function. Cramér's exponential model $f(c) = 1 - e^{-c}$ is defined with full continuity and CDF properties proved in Lean. Gallagher's conditional result (RH $\\implies$ ErdosProblem234) is proved in 8 lines from the axiomatized conditional. Basic properties — $f(0) = 0$, monotonicity, boundedness — are all formally verified, with partial results from GPY, Maynard–Tao, and Ford–Green–Konyagin–Tao axiomatized.",
-    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Prime Number Distribution:** Resolution would establish the precise statistical law governing consecutive prime spacings, settling a fundamental question about the fine structure of the primes.\n\n2. **Cramér's Conjecture:** If $f(c) = 1 - e^{-c}$, this strongly supports Cramér's broader conjecture that $\\max_{p_n \\leq x} g_n = O((\\log x)^2)$, though Granville's refinement suggests $\\limsup g_n/(\\log p_n)^2 \\geq 2e^{-\\gamma}$.\n\n**3. Riemann Hypothesis Connection:** Gallagher's result creates a bridge: proving the density exists and is exponential would provide evidence for (or against) RH, since RH implies the exponential law.\n\n4. **Sieve Methods and $k$-Tuples:** The proof techniques connect to the Hardy–Littlewood prime $k$-tuples conjecture, as Gallagher's approach uses moment calculations from prime $k$-tuple counts.\n\n5. **Computational Evidence:** Numerical data strongly supports $f(c) = 1 - e^{-c}$ for the first $10^{18}$ primes, but unconditional analytic proof remains elusive.",
+    "summary": "The formalization of Erd\u0151s Problem 234 captures the open question of whether normalized prime gaps $g_n/\\log n$ have a well-defined continuous density function. Cram\u00e9r's exponential model $f(c) = 1 - e^{-c}$ is defined with full continuity and CDF properties proved in Lean. Gallagher's conditional result (RH $\\implies$ ErdosProblem234) is proved in 8 lines from the axiomatized conditional. Basic properties \u2014 $f(0) = 0$, monotonicity, boundedness \u2014 are all formally verified, with partial results from GPY, Maynard\u2013Tao, and Ford\u2013Green\u2013Konyagin\u2013Tao axiomatized.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Prime Number Distribution:** Resolution would establish the precise statistical law governing consecutive prime spacings, settling a fundamental question about the fine structure of the primes.\n\n2. **Cram\u00e9r's Conjecture:** If $f(c) = 1 - e^{-c}$, this strongly supports Cram\u00e9r's broader conjecture that $\\max_{p_n \\leq x} g_n = O((\\log x)^2)$, though Granville's refinement suggests $\\limsup g_n/(\\log p_n)^2 \\geq 2e^{-\\gamma}$.\n\n**3. Riemann Hypothesis Connection:** Gallagher's result creates a bridge: proving the density exists and is exponential would provide evidence for (or against) RH, since RH implies the exponential law.\n\n4. **Sieve Methods and $k$-Tuples:** The proof techniques connect to the Hardy\u2013Littlewood prime $k$-tuples conjecture, as Gallagher's approach uses moment calculations from prime $k$-tuple counts.\n\n5. **Computational Evidence:** Numerical data strongly supports $f(c) = 1 - e^{-c}$ for the first $10^{18}$ primes, but unconditional analytic proof remains elusive.",
     "openQuestions": [
       "Does the density $f(c)$ exist unconditionally for all $c \\geq 0$, without assuming RH?",
-      "Is $f(c) = 1 - e^{-c}$ the true density, or could the Cramér model fail (as Maier's theorem suggests for short intervals)?",
+      "Is $f(c) = 1 - e^{-c}$ the true density, or could the Cram\u00e9r model fail (as Maier's theorem suggests for short intervals)?",
       "Can Gallagher's conditional result be strengthened to require weaker assumptions than full RH (e.g., density hypothesis or quasi-RH)?",
       "What is the rate of convergence: how fast does $\\text{gapProportion}(N, c)$ approach $f(c)$, and does this depend on $c$?"
     ]
@@ -164,7 +164,8 @@
     "namespace": null,
     "lineCount": 247,
     "axiomCount": 5,
-    "theoremCount": 16,
-    "definitionCount": 8
+    "theoremCount": 9,
+    "definitionCount": 8,
+    "lemmaCount": 7
   }
 }

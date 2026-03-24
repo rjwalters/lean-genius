@@ -1,8 +1,8 @@
 {
   "id": "erdos-1126",
-  "title": "Erdős Problem #1126: Almost Additive Functions",
+  "title": "Erd\u0151s Problem #1126: Almost Additive Functions",
   "slug": "erdos-1126",
-  "description": "If f(x+y) = f(x) + f(y) for almost all x,y ∈ ℝ, then there exists g with g(x+y) = g(x) + g(y) for ALL x,y and f = g a.e. Proved by de Bruijn (1966) and Jurkat (1965).",
+  "description": "If f(x+y) = f(x) + f(y) for almost all x,y \u2208 \u211d, then there exists g with g(x+y) = g(x) + g(y) for ALL x,y and f = g a.e. Proved by de Bruijn (1966) and Jurkat (1965).",
   "meta": {
     "author": "de Bruijn (1966), Jurkat (1965)",
     "sourceUrl": "https://erdosproblems.com/1126",
@@ -63,9 +63,9 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1126: Almost Additive Functions**\n\n**Cauchy's Equation (1821):**\nAugustin-Louis Cauchy (1789-1857) studied $f(x+y) = f(x) + f(y)$ and proved that if $f$ is also continuous, then $f(x) = cx$ for some constant $c$. This was one of the first results in the theory of functional equations.\n\n**Hamel's Discovery (1905):**\nGeorg Hamel (1877-1954) used the Axiom of Choice to construct a basis for $\\mathbb{R}$ over $\\mathbb{Q}$ (now called a *Hamel basis*). Using this basis, one can define $\\mathbb{Q}$-linear functions $f: \\mathbb{R} \\to \\mathbb{R}$ that are additive but discontinuous everywhere, unbounded on every interval, and non-measurable. These 'wild' additive functions showed that Cauchy's continuity hypothesis cannot be dropped.\n\n**Erdős's Question (c. 1960):**\nErdős asked: what if $f(x+y) = f(x) + f(y)$ holds not for all $(x,y)$ but for almost all $(x,y)$ in the measure-theoretic sense (i.e., the exceptional set has Lebesgue measure zero in $\\mathbb{R}^2$)? Can $f$ be 'repaired' to a truly additive function?\n\n**The Solution:**\n- **W.B. Jurkat** (1965) proved the answer is YES in 'On Cauchy's functional equation'.\n- **N.G. de Bruijn** (1918-2012) independently proved it in 1966. De Bruijn was a prolific Dutch mathematician known for asymptotic analysis, the de Bruijn-Newman constant (related to the Riemann hypothesis), and de Bruijn sequences.\n\n**Significance:**\nThis is a *stability theorem* for Cauchy's equation: approximate solutions (in the measure-theoretic sense) are close to exact solutions. It fits into the broader Hyers-Ulam stability theory initiated by Hyers (1941) answering a question of Ulam (1940).",
+    "historicalContext": "**Erd\u0151s Problem #1126: Almost Additive Functions**\n\n**Cauchy's Equation (1821):**\nAugustin-Louis Cauchy (1789-1857) studied $f(x+y) = f(x) + f(y)$ and proved that if $f$ is also continuous, then $f(x) = cx$ for some constant $c$. This was one of the first results in the theory of functional equations.\n\n**Hamel's Discovery (1905):**\nGeorg Hamel (1877-1954) used the Axiom of Choice to construct a basis for $\\mathbb{R}$ over $\\mathbb{Q}$ (now called a *Hamel basis*). Using this basis, one can define $\\mathbb{Q}$-linear functions $f: \\mathbb{R} \\to \\mathbb{R}$ that are additive but discontinuous everywhere, unbounded on every interval, and non-measurable. These 'wild' additive functions showed that Cauchy's continuity hypothesis cannot be dropped.\n\n**Erd\u0151s's Question (c. 1960):**\nErd\u0151s asked: what if $f(x+y) = f(x) + f(y)$ holds not for all $(x,y)$ but for almost all $(x,y)$ in the measure-theoretic sense (i.e., the exceptional set has Lebesgue measure zero in $\\mathbb{R}^2$)? Can $f$ be 'repaired' to a truly additive function?\n\n**The Solution:**\n- **W.B. Jurkat** (1965) proved the answer is YES in 'On Cauchy's functional equation'.\n- **N.G. de Bruijn** (1918-2012) independently proved it in 1966. De Bruijn was a prolific Dutch mathematician known for asymptotic analysis, the de Bruijn-Newman constant (related to the Riemann hypothesis), and de Bruijn sequences.\n\n**Significance:**\nThis is a *stability theorem* for Cauchy's equation: approximate solutions (in the measure-theoretic sense) are close to exact solutions. It fits into the broader Hyers-Ulam stability theory initiated by Hyers (1941) answering a question of Ulam (1940).",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nIf $f(x+y) = f(x) + f(y)$ for almost all $(x,y) \\in \\mathbb{R}^2$ (i.e., except on a set of Lebesgue measure zero in $\\mathbb{R}^2$), then there exists a function $g: \\mathbb{R} \\to \\mathbb{R}$ such that:\n1. $g(x+y) = g(x) + g(y)$ for ALL $x,y \\in \\mathbb{R}$\n2. $f(x) = g(x)$ for almost all $x \\in \\mathbb{R}$\n\nMoreover, the correction $g$ is unique among additive functions.",
-    "text": "If f(x+y) = f(x) + f(y) for almost all x,y ∈ ℝ, then there exists g with g(x+y) = g(x) + g(y) for ALL x,y and f = g a.e. Proved by de Bruijn (1966) and Jurkat (1965).",
+    "text": "If f(x+y) = f(x) + f(y) for almost all x,y \u2208 \u211d, then there exists g with g(x+y) = g(x) + g(y) for ALL x,y and f = g a.e. Proved by de Bruijn (1966) and Jurkat (1965).",
     "proofStrategy": "**Formalization Strategy**\n\nThe 143-line Lean file builds from definitions to the main theorem:\n\n1. **Cauchy's Equation** (lines 37-57): Defines `IsAdditive f` as $\\forall x\\, y,\\, f(x+y) = f(x) + f(y)$. Proves `id_is_additive` and `scalar_is_additive` as examples. Axiomatizes the classical result `continuous_additive_is_linear`.\n\n2. **Almost-Everywhere Machinery** (lines 61-77): Custom definitions `ae_holds`, `ae_pairs`, `IsAlmostAdditive`, and `ae_eq` using explicit null sets rather than Mathlib's `Filter.Eventually` API. This is pedagogically clearer for the problem statement.\n\n3. **Main Theorem** (lines 81-96): `de_bruijn_jurkat_theorem` is axiomatized (the proof requires delicate measure-theoretic arguments). Wrapped as `erdos_1126_main`.\n\n4. **Uniqueness** (lines 100-108): Two axioms: `additive_ae_unique` (additive + a.e. equal $\\Rightarrow$ equal) and `additive_zero_ae` (additive + zero a.e. $\\Rightarrow$ zero).\n\n5. **Context** (lines 112-123): `wild_additive_exist` (AC gives non-continuous additive functions) and `measurable_additive_is_linear` (measurability suffices for linearity).\n\n6. **Summary** (lines 127-141): `erdos_1126_summary` combines main theorem and uniqueness into one statement, proved from the axioms.",
     "keyInsights": [
       "**Repair Theorem:** Almost-additivity ($f(x+y) = f(x) + f(y)$ for a.e. $(x,y) \\in \\mathbb{R}^2$) can always be repaired: there exists truly additive $g$ with $f = g$ a.e.",
@@ -86,7 +86,7 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Problem statement, references (Jurkat 1965, de Bruijn 1966, Erdős 1960), and imports from `Mathlib.Data.Real.Basic`, `Mathlib.MeasureTheory.Measure.Lebesgue.Basic`, `Mathlib.Topology.Basic`"
+      "summary": "Problem statement, references (Jurkat 1965, de Bruijn 1966, Erd\u0151s 1960), and imports from `Mathlib.Data.Real.Basic`, `Mathlib.MeasureTheory.Measure.Lebesgue.Basic`, `Mathlib.Topology.Basic`"
     },
     {
       "id": "cauchy",
@@ -135,16 +135,16 @@
     {
       "targetId": "erdos-1166",
       "relationship": "related-problem",
-      "description": "Erdős #1166 also concerns functional equations and measure-theoretic regularity conditions"
+      "description": "Erd\u0151s #1166 also concerns functional equations and measure-theoretic regularity conditions"
     },
     {
       "targetId": "erdos-994",
       "relationship": "thematic",
-      "description": "Erdős #994 (equidistribution) also explores the tension between 'for all' and 'for almost all' quantifiers, with a negative outcome (Marstrand disproof)"
+      "description": "Erd\u0151s #994 (equidistribution) also explores the tension between 'for all' and 'for almost all' quantifiers, with a negative outcome (Marstrand disproof)"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1126 is SOLVED. De Bruijn (1966) and Jurkat (1965) independently proved that almost additive functions can be corrected to truly additive functions agreeing a.e. The correction is unique among additive functions. This is a foundational stability result for Cauchy's functional equation, fitting into the broader Hyers-Ulam stability theory.",
+    "summary": "Erd\u0151s Problem #1126 is SOLVED. De Bruijn (1966) and Jurkat (1965) independently proved that almost additive functions can be corrected to truly additive functions agreeing a.e. The correction is unique among additive functions. This is a foundational stability result for Cauchy's functional equation, fitting into the broader Hyers-Ulam stability theory.",
     "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Hyers-Ulam Stability:** This result is a measure-theoretic analogue of Hyers' 1941 theorem (if $|f(x+y) - f(x) - f(y)| \\leq \\varepsilon$ for all $x,y$, then $f$ is near-additive). The measure-theoretic version replaces uniform $\\varepsilon$-bounds with null-set exceptions.\n\n2. **Automatic Regularity:** The theorem exhibits 'automatic regularity': an a.e. structural property upgrades to an everywhere property (after a.e. correction). Similar phenomena occur in the theory of measurable homomorphisms.\n\n**3. Hamel Basis Theory:** Wild additive functions are $\\mathbb{Q}$-linear on a Hamel basis but not $\\mathbb{R}$-linear. Their existence depends on AC; in Solovay's model (all sets measurable), every additive function is linear.\n\n4. **Functional Equation Theory:** The paradigm extends to other functional equations (Jensen, multiplicativity, derivations). When does a.e. satisfaction imply a.e. agreement with an exact solution?\n\n5. **Harmonic Analysis:** Additive functions on locally compact groups generalize to characters; stability of characters is studied in abstract harmonic analysis.",
     "openQuestions": [
       "Can the de Bruijn-Jurkat theorem be extended to other functional equations, such as $f(xy) = f(x)f(y)$ or Jensen's equation $f((x+y)/2) = (f(x)+f(y))/2$?",
@@ -171,6 +171,7 @@
     "lineCount": 143,
     "axiomCount": 6,
     "theoremCount": 4,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   }
 }

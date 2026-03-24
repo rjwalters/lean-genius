@@ -1,10 +1,10 @@
 {
   "id": "erdos-499",
-  "title": "Erdős Problem #499: Diagonals of Doubly Stochastic Matrices",
+  "title": "Erd\u0151s Problem #499: Diagonals of Doubly Stochastic Matrices",
   "slug": "erdos-499",
-  "description": "Does every n×n doubly stochastic matrix have a diagonal with product ≥ n^{-n}? YES, proved by Marcus-Minc (1962).",
+  "description": "Does every n\u00d7n doubly stochastic matrix have a diagonal with product \u2265 n^{-n}? YES, proved by Marcus-Minc (1962).",
   "meta": {
-    "author": "Marcus-Minc (1962 proof), Erdős (problem)",
+    "author": "Marcus-Minc (1962 proof), Erd\u0151s (problem)",
     "sourceUrl": "https://erdosproblems.com/499",
     "date": "1962",
     "status": "formalized",
@@ -66,16 +66,16 @@
     "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #499**\n\nThis problem asks about finding large diagonal products in doubly stochastic matrices, connecting to the famous van der Waerden conjecture.\n\n**Key History:**\n- Marcus & Ree (1959): Proved weaker version (sum of diagonal ≥ 1)\n- Marcus & Minc (1962): Proved this problem (product ≥ n^{-n})\n- Gyires (1980), Egorychev (1981), Falikman (1981): Proved van der Waerden conjecture (permanent ≥ n^{-n} · n!)\n\n**Mathematical Setting:**\nA doubly stochastic matrix has non-negative entries with each row and column summing to 1. The Birkhoff-von Neumann theorem shows these are exactly the convex combinations of permutation matrices. The question is whether every such matrix has a \"good\" diagonal.",
+    "historicalContext": "**Erd\u0151s Problem #499**\n\nThis problem asks about finding large diagonal products in doubly stochastic matrices, connecting to the famous van der Waerden conjecture.\n\n**Key History:**\n- Marcus & Ree (1959): Proved weaker version (sum of diagonal \u2265 1)\n- Marcus & Minc (1962): Proved this problem (product \u2265 n^{-n})\n- Gyires (1980), Egorychev (1981), Falikman (1981): Proved van der Waerden conjecture (permanent \u2265 n^{-n} \u00b7 n!)\n\n**Mathematical Setting:**\nA doubly stochastic matrix has non-negative entries with each row and column summing to 1. The Birkhoff-von Neumann theorem shows these are exactly the convex combinations of permutation matrices. The question is whether every such matrix has a \"good\" diagonal.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $M$ be an $n \\times n$ doubly stochastic matrix. Does there exist a permutation $\\sigma \\in S_n$ such that\n$$\\prod_{i=1}^{n} M_{i,\\sigma(i)} \\geq n^{-n}?$$\n\n**Answer: YES**\n\nMarcus and Minc proved this in 1962. The bound n^{-n} is tight: the uniform matrix (all entries 1/n) achieves exactly this bound for every diagonal.",
-    "text": "Does every n×n doubly stochastic matrix have a diagonal with product ≥ n^{-n}? YES, proved by Marcus-Minc (1962).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Doubly Stochastic Matrices:**\n   - Define IsDoublyStochastic predicate\n   - Define the uniform matrix as the extremal example\n\n2. **Diagonal Products:**\n   - For each permutation σ, compute ∏ᵢ M_{i,σ(i)}\n   - The problem asks for at least one permutation achieving ≥ n^{-n}\n\n3. **The Permanent:**\n   - perm(M) = ∑_σ ∏ᵢ M_{i,σ(i)}\n   - Van der Waerden: perm(M) ≥ n^{-n} · n!\n   - By averaging, some diagonal must be ≥ n^{-n}\n\n4. **Structural Results:**\n   - Birkhoff-von Neumann theorem\n   - 2×2 case verification",
+    "text": "Does every n\u00d7n doubly stochastic matrix have a diagonal with product \u2265 n^{-n}? YES, proved by Marcus-Minc (1962).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Doubly Stochastic Matrices:**\n   - Define IsDoublyStochastic predicate\n   - Define the uniform matrix as the extremal example\n\n2. **Diagonal Products:**\n   - For each permutation \u03c3, compute \u220f\u1d62 M_{i,\u03c3(i)}\n   - The problem asks for at least one permutation achieving \u2265 n^{-n}\n\n3. **The Permanent:**\n   - perm(M) = \u2211_\u03c3 \u220f\u1d62 M_{i,\u03c3(i)}\n   - Van der Waerden: perm(M) \u2265 n^{-n} \u00b7 n!\n   - By averaging, some diagonal must be \u2265 n^{-n}\n\n4. **Structural Results:**\n   - Birkhoff-von Neumann theorem\n   - 2\u00d72 case verification",
     "keyInsights": [
       "**Doubly Stochastic Matrices:** Non-negative entries, rows and columns sum to 1. They model probability transitions and averaging operations",
-      "**The Uniform Matrix:** With all entries 1/n, every diagonal product is exactly n^{-n}. This is the \"worst case\" for Erdős #499",
-      "**Van der Waerden Conjecture:** The permanent (sum of all diagonal products) is minimized by the uniform matrix at n^{-n} · n!",
+      "**The Uniform Matrix:** With all entries 1/n, every diagonal product is exactly n^{-n}. This is the \"worst case\" for Erd\u0151s #499",
+      "**Van der Waerden Conjecture:** The permanent (sum of all diagonal products) is minimized by the uniform matrix at n^{-n} \u00b7 n!",
       "**Birkhoff Polytope:** The set of doubly stochastic matrices forms a convex polytope whose vertices are permutation matrices",
-      "**Pigeonhole Argument:** If the sum of n! diagonal products is ≥ n^{-n} · n!, then at least one product is ≥ n^{-n}",
+      "**Pigeonhole Argument:** If the sum of n! diagonal products is \u2265 n^{-n} \u00b7 n!, then at least one product is \u2265 n^{-n}",
       "**Historical Significance:** The van der Waerden conjecture was open for over 50 years before being proved in 1981"
     ],
     "prerequisites": [
@@ -109,27 +109,27 @@
     {
       "id": "marcus-ree",
       "title": "Marcus-Ree Theorem (1959)",
-      "summary": "Weaker result: sum of diagonal ≥ 1",
+      "summary": "Weaker result: sum of diagonal \u2265 1",
       "startLine": 136,
       "endLine": 151
     },
     {
       "id": "marcus-minc",
       "title": "Marcus-Minc Theorem (1962)",
-      "summary": "Main result: product ≥ n^{-n} = Erdős #499",
+      "summary": "Main result: product \u2265 n^{-n} = Erd\u0151s #499",
       "startLine": 153,
       "endLine": 177
     },
     {
       "id": "van-der-waerden",
       "title": "Van der Waerden Conjecture",
-      "summary": "Stronger result: permanent ≥ n^{-n} · n!",
+      "summary": "Stronger result: permanent \u2265 n^{-n} \u00b7 n!",
       "startLine": 179,
       "endLine": 214
     },
     {
       "id": "two-by-two",
-      "title": "The 2×2 Case",
+      "title": "The 2\u00d72 Case",
       "summary": "Concrete verification for small matrices",
       "startLine": 216,
       "endLine": 237
@@ -150,7 +150,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #499 asks if every doubly stochastic matrix has a diagonal with product at least n^{-n}. This was proved by Marcus and Minc in 1962. The problem is related to the van der Waerden conjecture on permanents, which provides an even stronger bound and was proved in 1981 by Egorychev and Falikman.",
+    "summary": "Erd\u0151s Problem #499 asks if every doubly stochastic matrix has a diagonal with product at least n^{-n}. This was proved by Marcus and Minc in 1962. The problem is related to the van der Waerden conjecture on permanents, which provides an even stronger bound and was proved in 1981 by Egorychev and Falikman.",
     "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Optimization:** Finding optimal assignments in weighted bipartite matching problems\n\n2. **Probability Theory:** Doubly stochastic matrices model transition probabilities with conservation laws\n\n**3. Birkhoff Polytope:** Understanding the geometry of convex polytopes\n\n4. **Permanent Computation:** While computing the permanent is #P-complete, bounds like van der Waerden's have algorithmic applications\n\n5. **Algebraic Combinatorics:** Connections to symmetric functions and representation theory.",
     "openQuestions": [
       "Efficient algorithms for finding the best diagonal in a doubly stochastic matrix",
@@ -177,7 +177,8 @@
     "lineCount": 288,
     "axiomCount": 8,
     "theoremCount": 5,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {

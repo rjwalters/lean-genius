@@ -1,8 +1,8 @@
 {
   "id": "cantor-diagonalization-oq-02-oq-01",
-  "title": "ω₁ Properties: Aleph Hierarchy, Regularity, and Cofinality",
+  "title": "\u03c9\u2081 Properties: Aleph Hierarchy, Regularity, and Cofinality",
   "slug": "cantor-diagonalization-oq-02-oq-01",
-  "description": "Structural properties of ω₁ = (ℵ₁).ord: aleph hierarchy ℵ_α < ℵ_(α+1), regularity of ℵ₁, uncountable cofinality, and ordinal characterizations.",
+  "description": "Structural properties of \u03c9\u2081 = (\u2135\u2081).ord: aleph hierarchy \u2135_\u03b1 < \u2135_(\u03b1+1), regularity of \u2135\u2081, uncountable cofinality, and ordinal characterizations.",
   "meta": {
     "author": "Cantor (1895), Hausdorff (1908), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/First_uncountable_ordinal",
@@ -21,17 +21,17 @@
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.aleph_lt_aleph",
-        "description": "ℵ_α < ℵ_β ↔ α < β",
+        "description": "\u2135_\u03b1 < \u2135_\u03b2 \u2194 \u03b1 < \u03b2",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       },
       {
         "theorem": "Cardinal.aleph_succ",
-        "description": "ℵ_(succ α) = succ(ℵ_α)",
+        "description": "\u2135_(succ \u03b1) = succ(\u2135_\u03b1)",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       },
       {
         "theorem": "Cardinal.isRegular_aleph_one",
-        "description": "ℵ₁ is regular",
+        "description": "\u2135\u2081 is regular",
         "module": "Mathlib.SetTheory.Cardinal.Cofinality"
       },
       {
@@ -41,17 +41,17 @@
       },
       {
         "theorem": "Cardinal.lt_ord",
-        "description": "α < c.ord ↔ card(α) < c",
+        "description": "\u03b1 < c.ord \u2194 card(\u03b1) < c",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       }
     ],
     "originalContributions": [
-      "Aleph hierarchy: ℵ_α < ℵ_(α+1) for all ordinals α",
+      "Aleph hierarchy: \u2135_\u03b1 < \u2135_(\u03b1+1) for all ordinals \u03b1",
       "Aleph strict monotonicity and injectivity",
-      "ℵ₁ regularity and cofinality = ℵ₁ (uncountable cofinality)",
-      "Countable cardinal characterization: κ < ℵ₁ ↔ κ ≤ ℵ₀",
-      "Ordinal characterization: α < (ℵ₁).ord ↔ card(α) ≤ ℵ₀",
-      "ω₁ is not countable: ¬(card((ℵ₁).ord) ≤ ℵ₀)"
+      "\u2135\u2081 regularity and cofinality = \u2135\u2081 (uncountable cofinality)",
+      "Countable cardinal characterization: \u03ba < \u2135\u2081 \u2194 \u03ba \u2264 \u2135\u2080",
+      "Ordinal characterization: \u03b1 < (\u2135\u2081).ord \u2194 card(\u03b1) \u2264 \u2135\u2080",
+      "\u03c9\u2081 is not countable: \u00ac(card((\u2135\u2081).ord) \u2264 \u2135\u2080)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -59,13 +59,13 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The ordinal $\\omega_1$ — the first uncountable ordinal — was introduced implicitly by Georg Cantor in his 1895 'Beiträge zur Begründung der transfiniten Mengenlehre'. Cantor established the existence of uncountable sets (1891) and the well-ordering of cardinals, but the systematic study of $\\omega_1$ and the aleph hierarchy ($\\aleph_0 < \\aleph_1 < \\aleph_2 < \\cdots$) was refined by Felix Hausdorff (1908) and later placed on rigorous axiomatic footing by von Neumann's ordinal construction. The concept of cofinality — how a limit ordinal is 'approached' by smaller ordinals — was developed by Hausdorff and became central to Easton's theorem and pcf theory. The regularity of $\\aleph_1$ (meaning $\\omega_1$ cannot be expressed as a supremum of countably many smaller ordinals) is a fundamental structural fact that distinguishes $\\aleph_1$ from singular cardinals like $\\aleph_\\omega$.",
+    "historicalContext": "The ordinal $\\omega_1$ \u2014 the first uncountable ordinal \u2014 was introduced implicitly by Georg Cantor in his 1895 'Beitr\u00e4ge zur Begr\u00fcndung der transfiniten Mengenlehre'. Cantor established the existence of uncountable sets (1891) and the well-ordering of cardinals, but the systematic study of $\\omega_1$ and the aleph hierarchy ($\\aleph_0 < \\aleph_1 < \\aleph_2 < \\cdots$) was refined by Felix Hausdorff (1908) and later placed on rigorous axiomatic footing by von Neumann's ordinal construction. The concept of cofinality \u2014 how a limit ordinal is 'approached' by smaller ordinals \u2014 was developed by Hausdorff and became central to Easton's theorem and pcf theory. The regularity of $\\aleph_1$ (meaning $\\omega_1$ cannot be expressed as a supremum of countably many smaller ordinals) is a fundamental structural fact that distinguishes $\\aleph_1$ from singular cardinals like $\\aleph_\\omega$.",
     "problemStatement": "Establish the fundamental structural properties of $\\omega_1 = (\\aleph_1).\\text{ord}$: the strict monotonicity and injectivity of the aleph function, the regularity of $\\aleph_1$, the characterization of countable cardinals as those below $\\aleph_1$, and the ordinal characterization $\\alpha < \\omega_1 \\iff |\\alpha| \\leq \\aleph_0$.",
-    "text": "Structural properties of ω₁ = (ℵ₁).ord: aleph hierarchy ℵ_α < ℵ_(α+1), regularity of ℵ₁, uncountable cofinality, and ordinal characterizations.",
+    "text": "Structural properties of \u03c9\u2081 = (\u2135\u2081).ord: aleph hierarchy \u2135_\u03b1 < \u2135_(\u03b1+1), regularity of \u2135\u2081, uncountable cofinality, and ordinal characterizations.",
     "proofStrategy": "The formalization leverages Mathlib's cardinal and ordinal arithmetic library extensively. Part I establishes the aleph hierarchy by reducing `aleph_strictMono` to `Cardinal.aleph_lt_aleph`. Part II derives regularity and cofinality from `Cardinal.isRegular_aleph_one`. Part III characterizes $\\aleph_1$ as `Order.succ(\\aleph_0)` via `Cardinal.aleph_succ`, then obtains the countable-cardinal equivalence. Part IV connects cardinal and ordinal worlds using `Cardinal.lt_ord` and `Cardinal.card_ord`. All 14 theorems are fully proved with 0 sorries.",
     "keyInsights": [
-      "The aleph function's strict monotonicity follows immediately from Mathlib's `aleph_lt_aleph` — the formalization shows this is a one-line proof",
-      "Regularity of $\\aleph_1$ is a deep fact (not all alephs are regular — $\\aleph_\\omega$ is singular) but is available as a single Mathlib lemma",
+      "The aleph function's strict monotonicity follows immediately from Mathlib's `aleph_lt_aleph` \u2014 the formalization shows this is a one-line proof",
+      "Regularity of $\\aleph_1$ is a deep fact (not all alephs are regular \u2014 $\\aleph_\\omega$ is singular) but is available as a single Mathlib lemma",
       "The key characterization $\\kappa < \\aleph_1 \\iff \\kappa \\leq \\aleph_0$ reduces to the successor-cardinal property $\\aleph_1 = \\text{succ}(\\aleph_0)$ plus `Order.lt_succ_iff`",
       "The ordinal characterization $\\alpha < \\omega_1 \\iff |\\alpha| \\leq \\aleph_0$ bridges the cardinal-ordinal divide using `Cardinal.lt_ord`",
       "The summary theorem bundles four independent properties into a single conjunction, demonstrating the completeness of the characterization"
@@ -139,8 +139,8 @@
     "summary": "14 theorems proved with 0 sorries and 0 axioms, providing a complete structural characterization of $\\omega_1$: the aleph hierarchy, regularity of $\\aleph_1$, the countable-cardinal equivalence, and the ordinal characterization of countability below $\\omega_1$.",
     "implications": "**Theoretical Significance**: These results form the formal foundation for further set-theoretic work in Lean 4: cardinal arithmetic with uncountable cardinals, the study of singular vs.\n\nregular cardinals, and constructions that depend on $\\omega_1$'s properties (e.g., the long line, Aronszajn trees, club filters). The regularity result in particular is essential for arguments using Fodor's pressing-down lemma and stationary set combinatorics.",
     "openQuestions": [
-      "Can the generalized Hartogs theorem (for any infinite cardinal κ, the set of ordinals of cardinality < κ has cardinality κ) be formalized?",
-      "Can König's theorem ($\\text{cof}(\\aleph_\\omega) > \\aleph_0$) be proved for singular cardinals?",
+      "Can the generalized Hartogs theorem (for any infinite cardinal \u03ba, the set of ordinals of cardinality < \u03ba has cardinality \u03ba) be formalized?",
+      "Can K\u00f6nig's theorem ($\\text{cof}(\\aleph_\\omega) > \\aleph_0$) be proved for singular cardinals?",
       "Can Aronszajn's theorem (there exists an $\\aleph_1$-tree with no uncountable branch) be formalized using these $\\omega_1$ properties?"
     ]
   },
@@ -164,17 +164,18 @@
     "lineCount": 130,
     "axiomCount": 0,
     "theoremCount": 15,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "G. Cantor",
-      "title": "Beiträge zur Begründung der transfiniten Mengenlehre",
+      "title": "Beitr\u00e4ge zur Begr\u00fcndung der transfiniten Mengenlehre",
       "year": "1895"
     },
     {
       "authors": "F. Hausdorff",
-      "title": "Grundzüge einer Theorie der geordneten Mengen",
+      "title": "Grundz\u00fcge einer Theorie der geordneten Mengen",
       "year": "1908"
     }
   ]

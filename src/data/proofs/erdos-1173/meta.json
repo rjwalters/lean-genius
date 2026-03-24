@@ -1,10 +1,10 @@
 {
   "id": "erdos-1173",
-  "title": "Erdős Problem #1173: Free Sets for Set Mappings under GCH",
+  "title": "Erd\u0151s Problem #1173: Free Sets for Set Mappings under GCH",
   "slug": "erdos-1173",
-  "description": "Does there exist a free set of cardinality ℵ_{ω+1}?",
+  "description": "Does there exist a free set of cardinality \u2135_{\u03c9+1}?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1173",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1173Problem.lean",
@@ -59,16 +59,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1173, posed by Erdős and Hajnal, is a fundamental open problem in infinitary combinatorics and set theory. It asks whether the Hajnal free set theorem can be extended from regular cardinals to the singular cardinal $\\aleph_\\omega$. The Hajnal free set theorem (1961) states that for a regular cardinal $\\kappa$ and a set mapping $f : \\kappa^+ \\to [\\kappa^+]^{<\\kappa}$, there exists a free set of cardinality $\\kappa^+$. For singular cardinals, the situation is fundamentally different: $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, so the cofinality is countable, and pcf (possible cofinalities) theory — developed by Saharon Shelah in the 1990s — shows that cardinal arithmetic at singular cardinals exhibits unexpected rigidity. Problem #1173 replaces the pointwise size bound $|f(\\alpha)| < \\kappa$ with the weaker almost-disjoint intersection condition $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ for distinct $\\alpha, \\beta$. Under GCH, the question becomes whether this weaker condition still guarantees a free set of full cardinality $\\aleph_{\\omega+1}$. The problem appears in Komjáth and Totik [Ko25b, Problem 35] and Vaughan [Va99, 7.88].",
+    "historicalContext": "Erd\u0151s Problem #1173, posed by Erd\u0151s and Hajnal, is a fundamental open problem in infinitary combinatorics and set theory. It asks whether the Hajnal free set theorem can be extended from regular cardinals to the singular cardinal $\\aleph_\\omega$. The Hajnal free set theorem (1961) states that for a regular cardinal $\\kappa$ and a set mapping $f : \\kappa^+ \\to [\\kappa^+]^{<\\kappa}$, there exists a free set of cardinality $\\kappa^+$. For singular cardinals, the situation is fundamentally different: $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, so the cofinality is countable, and pcf (possible cofinalities) theory \u2014 developed by Saharon Shelah in the 1990s \u2014 shows that cardinal arithmetic at singular cardinals exhibits unexpected rigidity. Problem #1173 replaces the pointwise size bound $|f(\\alpha)| < \\kappa$ with the weaker almost-disjoint intersection condition $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ for distinct $\\alpha, \\beta$. Under GCH, the question becomes whether this weaker condition still guarantees a free set of full cardinality $\\aleph_{\\omega+1}$. The problem appears in Komj\u00e1th and Totik [Ko25b, Problem 35] and Vaughan [Va99, 7.88].",
     "problemStatement": "Assuming GCH, let $f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\leq \\aleph_\\omega}$ be a set mapping with $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ for all $\\alpha \\neq \\beta$. Does there exist a free set of cardinality $\\aleph_{\\omega+1}$?",
-    "text": "Does there exist a free set of cardinality ℵ_{ω+1}?",
-    "proofStrategy": "The formalization defines cardinal constants $\\aleph_\\omega$ and $\\aleph_{\\omega+1}$ using Mathlib's `Cardinal.aleph`, then introduces `SetMapping`, `BoundedImageSize`, `AlmostDisjoint`, `IsFreeSet`, and `HasFreeSetOfCard` as the core vocabulary. The main conjecture `erdos_1173` is a proposition combining GCH, bounded image size, and almost-disjointness. The Hajnal free set theorem for regular $\\kappa$ is axiomatized as context. Two observations under GCH are axiomatized: that $\\aleph_\\omega$ is a strong limit, and that almost-disjoint overlaps are bounded by some $\\aleph_n$. The Erdős–Hajnal theorem for $\\aleph_1$ and a weak form of the conjecture (free set of size $\\aleph_\\omega$ rather than $\\aleph_{\\omega+1}$) are also formalized.",
+    "text": "Does there exist a free set of cardinality \u2135_{\u03c9+1}?",
+    "proofStrategy": "The formalization defines cardinal constants $\\aleph_\\omega$ and $\\aleph_{\\omega+1}$ using Mathlib's `Cardinal.aleph`, then introduces `SetMapping`, `BoundedImageSize`, `AlmostDisjoint`, `IsFreeSet`, and `HasFreeSetOfCard` as the core vocabulary. The main conjecture `erdos_1173` is a proposition combining GCH, bounded image size, and almost-disjointness. The Hajnal free set theorem for regular $\\kappa$ is axiomatized as context. Two observations under GCH are axiomatized: that $\\aleph_\\omega$ is a strong limit, and that almost-disjoint overlaps are bounded by some $\\aleph_n$. The Erd\u0151s\u2013Hajnal theorem for $\\aleph_1$ and a weak form of the conjecture (free set of size $\\aleph_\\omega$ rather than $\\aleph_{\\omega+1}$) are also formalized.",
     "keyInsights": [
       "**Singular vs. regular distinction**: The Hajnal free set theorem works for regular $\\kappa$, but $\\aleph_\\omega$ is singular with $\\mathrm{cf}(\\aleph_\\omega) = \\omega$. The almost-disjoint condition is a natural weakening that accounts for the singular cofinality",
       "**GCH makes $\\aleph_\\omega$ a strong limit**: Under GCH, $2^{\\aleph_n} = \\aleph_{n+1} < \\aleph_\\omega$ for all $n$, so $\\aleph_\\omega$ is a strong limit cardinal. This is crucial because it constrains the combinatorial structure of subsets of $\\omega_{\\omega+1}$",
       "**Overlap bounded by $\\aleph_n$**: Since $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, the condition $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ implies the overlap is bounded by some $\\aleph_n$ for $n < \\omega$. This cofinality argument is formalized as an axiom",
       "**Weak form as stepping stone**: The weak conjecture asks only for a free set of size $\\aleph_\\omega$ (rather than $\\aleph_{\\omega+1}$), providing a natural intermediate target",
-      "**The $\\aleph_1$ case is known**: The Erdős–Hajnal theorem guarantees free sets of size $\\aleph_1$ for set mappings on $\\omega_1$ with countably bounded images, serving as the motivating base case for Problem #1173"
+      "**The $\\aleph_1$ case is known**: The Erd\u0151s\u2013Hajnal theorem guarantees free sets of size $\\aleph_1$ for set mappings on $\\omega_1$ with countably bounded images, serving as the motivating base case for Problem #1173"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -124,11 +124,11 @@
       "title": "Related Results and Weak Form",
       "startLine": 145,
       "endLine": 167,
-      "summary": "Axiomatizes the Erdős–Hajnal theorem for $\\aleph_1$ (free sets of size $\\aleph_1$ for countably bounded mappings on $\\omega_1$). Defines `erdos_1173_weak`: the weak conjecture asking for a free set of size $\\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$."
+      "summary": "Axiomatizes the Erd\u0151s\u2013Hajnal theorem for $\\aleph_1$ (free sets of size $\\aleph_1$ for countably bounded mappings on $\\omega_1$). Defines `erdos_1173_weak`: the weak conjecture asking for a free set of size $\\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full structure of Erdős Problem #1173: the set mapping vocabulary, the main conjecture under GCH, the Hajnal free set theorem for regular cardinals, GCH-derived properties of $\\aleph_\\omega$, the motivating $\\aleph_1$ case, and a natural weak form of the conjecture.",
+    "summary": "This formalization captures the full structure of Erd\u0151s Problem #1173: the set mapping vocabulary, the main conjecture under GCH, the Hajnal free set theorem for regular cardinals, GCH-derived properties of $\\aleph_\\omega$, the motivating $\\aleph_1$ case, and a natural weak form of the conjecture.",
     "implications": "Resolution would clarify the boundary between regular and singular cardinal combinatorics for free set theorems. A positive answer would extend Hajnal's theorem to the first singular aleph under GCH, while a negative answer would reveal fundamental obstacles arising from singular cofinality that pcf theory might explain.",
     "openQuestions": [
       "Can pcf theory (Shelah's possible cofinalities framework) be used to analyze the structure of almost-disjoint set mappings at $\\aleph_\\omega$?",
@@ -146,7 +146,7 @@
     {
       "targetId": "erdos-112",
       "relationship": "related",
-      "description": "Erdős Problem #112 concerns directed Ramsey theory, which shares the combinatorial theme of finding large structured subsets under constraints"
+      "description": "Erd\u0151s Problem #112 concerns directed Ramsey theory, which shares the combinatorial theme of finding large structured subsets under constraints"
     }
   ],
   "relatedProofs": [
@@ -167,6 +167,7 @@
     "lineCount": 167,
     "axiomCount": 4,
     "theoremCount": 0,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "lemmaCount": 0
   }
 }

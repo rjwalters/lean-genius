@@ -16,7 +16,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 126,
+    "axiomCount": 121,
     "assumptions": "126 axiom declarations across ComplexityCore.lean (5 core model axioms) and PNPBarriersUnified.lean (121 landscape axioms): core model (Phi_countably_many, Phi_pair_project_first, Phi_negate, poly_time_compose, reduction_preserves_P), barrier axioms (Baker-Gill-Solovay eq/sep, razborov_rudich, Aaronson-Wigderson eq/neq, algebrization_subsumes_relativization), containments (P subset NP subset PSPACE subset EXP), Cook-Levin theorem, Ladner's theorem, polynomial hierarchy, space complexity (Savitch, Immerman-Szelepcsenyi), probabilistic classes (BPP, Sipser-Lautemann), interactive proofs (IP=PSPACE, AM, MIP*=RE), PCP theorem, fine-grained complexity (ETH, SETH), meta-complexity (MCSP, Kolmogorov), circuit complexity (AC0, TC0, NC), derandomization (Nisan-Wigderson, Impagliazzo-Wigderson), TFNP subclasses (PPAD, PLS, PPP, CLS), descriptive complexity (Fagin, Immerman-Vardi), counting complexity (#P, Toda's theorem), quantum complexity (QMA, QIP=PSPACE), zero-knowledge proofs, Reingold's USTCON in L, Unique Games Conjecture, Barrington's theorem, and more. The P vs NP question itself remains open.",
     "mathlibDependencies": [
       {
@@ -120,7 +120,10 @@
       "coNP",
       "P_ne_NP_Conjecture",
       "EXPTIME"
-    ]
+    ],
+    "axiomCount": 121,
+    "theoremCount": 302,
+    "lemmaCount": 0
   },
   "overview": {
     "historicalContext": "The P vs NP problem is one of the most important unsolved problems in mathematics and computer science, designated a Clay Mathematics Institute Millennium Prize Problem in 2000 with a $1,000,000 reward.\n\nThe foundations were laid by Alan Turing (1936) with the formalization of computation, and by Juris Hartmanis and Richard Stearns (1965) who established computational complexity theory with the Time Hierarchy Theorem. Stephen Cook (1971) formulated the P vs NP question and proved the Cook-Levin theorem, showing that the Boolean satisfiability problem (SAT) is NP-complete \u2014 the first problem shown to have this property. Leonid Levin independently proved the same result in 1973 in the Soviet Union.\n\nRichard Karp (1972) demonstrated the practical significance by showing 21 natural combinatorial problems are NP-complete via reduction chains from SAT, including CLIQUE, VERTEX COVER, HAMILTONIAN PATH, and SUBSET SUM. Russell Ladner (1975) proved that if P \u2260 NP, then NP-intermediate problems must exist \u2014 problems in NP that are neither in P nor NP-complete.\n\nDespite over 50 years of effort, the problem remains open. Three major 'barrier results' explain why traditional proof techniques have failed: relativization (Baker-Gill-Solovay, 1975), natural proofs (Razborov-Rudich, 1994), and algebrization (Aaronson-Wigderson, 2009). Any proof must circumvent all three barriers simultaneously.",

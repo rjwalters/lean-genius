@@ -2,7 +2,7 @@
   "id": "greens-theorem-oq-03",
   "title": "Green's Theorem for Type I Regions: Concrete Simply-Connected Domains",
   "slug": "greens-theorem-oq-03",
-  "description": "Replaces the abstract GreenRegion placeholder with concrete TypeI and TypeII region structures. Proves the Inner FTC for both region types — the P contribution (∬∂P/∂y = ∫[P(x,g(x))-P(x,f(x))]dx) and Q contribution (∬∂Q/∂x = ∫[Q(k(y),y)-Q(h(y),y)]dy) — which are the two halves of Green's theorem. Includes disk and semicircle as concrete TypeI examples with membership characterization via x²+y²≤r².",
+  "description": "Replaces the abstract GreenRegion placeholder with concrete TypeI and TypeII region structures. Proves the Inner FTC for both region types \u2014 the P contribution (\u222c\u2202P/\u2202y = \u222b[P(x,g(x))-P(x,f(x))]dx) and Q contribution (\u222c\u2202Q/\u2202x = \u222b[Q(k(y),y)-Q(h(y),y)]dy) \u2014 which are the two halves of Green's theorem. Includes disk and semicircle as concrete TypeI examples with membership characterization via x\u00b2+y\u00b2\u2264r\u00b2.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem",
@@ -14,17 +14,17 @@
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_nonneg",
-        "description": "∫_a^b f ≥ 0 when f ≥ 0 and a ≤ b",
+        "description": "\u222b_a^b f \u2265 0 when f \u2265 0 and a \u2264 b",
         "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
       },
       {
         "theorem": "intervalIntegral.integral_const",
-        "description": "∫_a^b c = c * (b - a) for constant c",
+        "description": "\u222b_a^b c = c * (b - a) for constant c",
         "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
       },
       {
         "theorem": "Set.left_mem_Icc",
-        "description": "a ∈ [a,b] when a ≤ b",
+        "description": "a \u2208 [a,b] when a \u2264 b",
         "module": "Mathlib.Order.LocallyFiniteOrder"
       },
       {
@@ -34,35 +34,35 @@
       }
     ],
     "originalContributions": [
-      "TypeIRegion: concrete structure for vertically simple regions D = {(x,y) | a≤x≤b, f(x)≤y≤g(x)}, replacing GreenRegion dummy : Unit",
+      "TypeIRegion: concrete structure for vertically simple regions D = {(x,y) | a\u2264x\u2264b, f(x)\u2264y\u2264g(x)}, replacing GreenRegion dummy : Unit",
       "typeI_mem_iff: explicit iff characterization of set membership in a TypeI region",
       "typeI_lower_mem / typeI_upper_mem: boundary curves lie in the region",
       "typeI_nonempty: every TypeI region contains the point (a, f(a))",
-      "rectToTypeI: rectangle [a,b]×[c,d] as a TypeI region with constant boundary curves",
-      "rectTypeI_set_eq: rectangle TypeI set equals product Set.Icc a b ×ˢ Set.Icc c d",
-      "TypeIRegion.area: Area(D) = ∫_a^b (g(x)-f(x)) dx defined via concrete intervalIntegral",
-      "typeI_area_nonneg: area is nonneg since g(x) ≥ f(x) on the base interval",
+      "rectToTypeI: rectangle [a,b]\u00d7[c,d] as a TypeI region with constant boundary curves",
+      "rectTypeI_set_eq: rectangle TypeI set equals product Set.Icc a b \u00d7\u02e2 Set.Icc c d",
+      "TypeIRegion.area: Area(D) = \u222b_a^b (g(x)-f(x)) dx defined via concrete intervalIntegral",
+      "typeI_area_nonneg: area is nonneg since g(x) \u2265 f(x) on the base interval",
       "typeI_rect_area: area of rectangle TypeI region = (b-a)*(d-c)",
-      "TypeIRegion.iteratedIntegral: ∬_D F dA = ∫_a^b ∫_{f(x)}^{g(x)} F(x,y) dy dx",
+      "TypeIRegion.iteratedIntegral: \u222c_D F dA = \u222b_a^b \u222b_{f(x)}^{g(x)} F(x,y) dy dx",
       "typeI_area_is_iterated_one: Area = iterated integral of constant 1",
       "greens_theorem_typeI: axiom stating Green's theorem for TypeI regions with concrete boundary decomposition",
-      "typeI_inner_ftc_P: PROVED — inner FTC for TypeI: ∬∂P/∂y dA = ∫[P(x,g(x))-P(x,f(x))]dx via integral_congr + integral_eq_sub_of_hasDerivAt",
-      "typeI_P_boundary: PROVED — P boundary contribution = -∬∂P/∂y dA (sign from orientation)",
-      "typeI_rect_inner_ftc_P: PROVED — inner FTC specialization for rectangle TypeI regions",
-      "TypeIIRegion: horizontally simple region D = {(x,y) | c≤y≤d, h(y)≤x≤k(y)} — dual of TypeI",
+      "typeI_inner_ftc_P: PROVED \u2014 inner FTC for TypeI: \u222c\u2202P/\u2202y dA = \u222b[P(x,g(x))-P(x,f(x))]dx via integral_congr + integral_eq_sub_of_hasDerivAt",
+      "typeI_P_boundary: PROVED \u2014 P boundary contribution = -\u222c\u2202P/\u2202y dA (sign from orientation)",
+      "typeI_rect_inner_ftc_P: PROVED \u2014 inner FTC specialization for rectangle TypeI regions",
+      "TypeIIRegion: horizontally simple region D = {(x,y) | c\u2264y\u2264d, h(y)\u2264x\u2264k(y)} \u2014 dual of TypeI",
       "typeII_mem_iff, typeII_nonempty, TypeIIRegion.area, typeII_area_nonneg: basic TypeII properties",
-      "typeII_inner_ftc_Q: PROVED — inner FTC for TypeII: ∬∂Q/∂x dA = ∫[Q(k(y),y)-Q(h(y),y)]dy",
-      "typeII_Q_boundary: PROVED — Q boundary contribution = ∬∂Q/∂x dA",
-      "diskTypeI: closed disk as TypeI region with lower=-√(r²-x²), upper=√(r²-x²)",
-      "disk_mem_iff: PROVED — (x,y) ∈ disk ↔ x²+y²≤r² via abs_le + sqrt_le_sqrt + sq_le_sq'",
+      "typeII_inner_ftc_Q: PROVED \u2014 inner FTC for TypeII: \u222c\u2202Q/\u2202x dA = \u222b[Q(k(y),y)-Q(h(y),y)]dy",
+      "typeII_Q_boundary: PROVED \u2014 Q boundary contribution = \u222c\u2202Q/\u2202x dA",
+      "diskTypeI: closed disk as TypeI region with lower=-\u221a(r\u00b2-x\u00b2), upper=\u221a(r\u00b2-x\u00b2)",
+      "disk_mem_iff: PROVED \u2014 (x,y) \u2208 disk \u2194 x\u00b2+y\u00b2\u2264r\u00b2 via abs_le + sqrt_le_sqrt + sq_le_sq'",
       "diskTypeII: closed disk as TypeII region (dual decomposition)",
-      "upperSemicircleTypeI: upper half-disk as TypeI region with lower=0, upper=√(r²-x²)",
-      "disk_area_eq_twice_semicircle: PROVED — disk area = 2 × semicircle area via integral_smul",
-      "upper_semicircle_area: PROVED from disk_area_eq_pi — semicircle area = πr²/2",
-      "rectTypeII_set_eq: PROVED — rectangle TypeII set = Icc a b ×ˢ Icc c d",
-      "rectTypeI_set_eq_rectTypeII_set: PROVED — rectangle as both TypeI and TypeII have same set",
-      "typeII_rect_area: PROVED — rectangle TypeII area = (b-a)*(d-c)",
-      "rect_P_contribution, rect_Q_contribution: PROVED — FTC specializations for rectangles via TypeI and TypeII"
+      "upperSemicircleTypeI: upper half-disk as TypeI region with lower=0, upper=\u221a(r\u00b2-x\u00b2)",
+      "disk_area_eq_twice_semicircle: PROVED \u2014 disk area = 2 \u00d7 semicircle area via integral_smul",
+      "upper_semicircle_area: PROVED from disk_area_eq_pi \u2014 semicircle area = \u03c0r\u00b2/2",
+      "rectTypeII_set_eq: PROVED \u2014 rectangle TypeII set = Icc a b \u00d7\u02e2 Icc c d",
+      "rectTypeI_set_eq_rectTypeII_set: PROVED \u2014 rectangle as both TypeI and TypeII have same set",
+      "typeII_rect_area: PROVED \u2014 rectangle TypeII area = (b-a)*(d-c)",
+      "rect_P_contribution, rect_Q_contribution: PROVED \u2014 FTC specializations for rectangles via TypeI and TypeII"
     ],
     "dateAdded": "2026-02-26",
     "tags": [
@@ -126,20 +126,20 @@
     }
   ],
   "overview": {
-    "historicalContext": "Green's theorem (George Green, 1828) relates a line integral around a closed curve to a double integral over the enclosed region. The standard approach in analysis textbooks (Apostol, Rudin, Spivak) is to first prove it for 'Type I regions' — vertically simple domains where the boundary is described by two functions f(x) ≤ g(x) — then extend by decomposition. The Lean Genius base file GreensTheorem.lean had only an abstract placeholder: `structure GreenRegion where dummy : Unit` and `axiom greens_theorem_general : True`. OQ-03 asked whether we can replace this with a concrete mathematical structure.",
+    "historicalContext": "Green's theorem (George Green, 1828) relates a line integral around a closed curve to a double integral over the enclosed region. The standard approach in analysis textbooks (Apostol, Rudin, Spivak) is to first prove it for 'Type I regions' \u2014 vertically simple domains where the boundary is described by two functions f(x) \u2264 g(x) \u2014 then extend by decomposition. The Lean Genius base file GreensTheorem.lean had only an abstract placeholder: `structure GreenRegion where dummy : Unit` and `axiom greens_theorem_general : True`. OQ-03 asked whether we can replace this with a concrete mathematical structure.",
     "problemStatement": "**Open Question OQ-03**: Can we replace the abstract `GreenRegion where dummy : Unit` with a concrete structure for a simply-connected planar region, and state a *meaningful* (non-trivial) Green's theorem?\n\n**Answer: YES**, using **Type I (vertically simple) regions**:\n$$D = \\{(x,y) \\mid a \\leq x \\leq b, \\; f(x) \\leq y \\leq g(x)\\}$$\nwhere $f, g : \\mathbb{R} \\to \\mathbb{R}$ with $f(x) \\leq g(x)$ on $[a,b]$.",
-    "text": "Replaces the abstract GreenRegion placeholder with concrete TypeI and TypeII region structures. Proves the Inner FTC for both region types — the P contribution (∬∂P/∂y = ∫[P(x,g(x))-P(x,f(x))]dx) and Q contribution (∬∂Q/∂x = ∫[Q(k(y),y)-Q(h(y),y)]dy) — which are the two halves of Green's theorem. Includes disk and semicircle as concrete TypeI examples with membership characterization via x²+y²≤r².",
-    "proofStrategy": "The **Type I approach** follows Apostol §17.4:\n1. Define `TypeIRegion` with fields `a, b, f, g, hab, hfg` — real geometric data\n2. Prove membership, boundary curves, nonemptiness directly from the structure\n3. Define `Area(D) = ∫_a^b (g(x) - f(x)) dx` via Mathlib's `intervalIntegral`\n4. Define `iteratedIntegral F = ∫_a^b ∫_{f(x)}^{g(x)} F(x,y) dy dx`\n5. State Green's theorem as an axiom with the concrete boundary integral formula using `deriv f` and `deriv g`\n\nThe **area formula is proved** (13 theorems, 0 sorries). Green's theorem itself is axiomatized — a full proof would require establishing the boundary parametrization and the FTC for variable integration limits via the chain rule (~200 lines).",
+    "text": "Replaces the abstract GreenRegion placeholder with concrete TypeI and TypeII region structures. Proves the Inner FTC for both region types \u2014 the P contribution (\u222c\u2202P/\u2202y = \u222b[P(x,g(x))-P(x,f(x))]dx) and Q contribution (\u222c\u2202Q/\u2202x = \u222b[Q(k(y),y)-Q(h(y),y)]dy) \u2014 which are the two halves of Green's theorem. Includes disk and semicircle as concrete TypeI examples with membership characterization via x\u00b2+y\u00b2\u2264r\u00b2.",
+    "proofStrategy": "The **Type I approach** follows Apostol \u00a717.4:\n1. Define `TypeIRegion` with fields `a, b, f, g, hab, hfg` \u2014 real geometric data\n2. Prove membership, boundary curves, nonemptiness directly from the structure\n3. Define `Area(D) = \u222b_a^b (g(x) - f(x)) dx` via Mathlib's `intervalIntegral`\n4. Define `iteratedIntegral F = \u222b_a^b \u222b_{f(x)}^{g(x)} F(x,y) dy dx`\n5. State Green's theorem as an axiom with the concrete boundary integral formula using `deriv f` and `deriv g`\n\nThe **area formula is proved** (13 theorems, 0 sorries). Green's theorem itself is axiomatized \u2014 a full proof would require establishing the boundary parametrization and the FTC for variable integration limits via the chain rule (~200 lines).",
     "keyInsights": [
       "**Type I structure** replaces `dummy : Unit` with 4 real-valued fields: bounds `a < b`, curves `f, g`, and ordering `hfg`",
       "**ContinuousOn NOT in structure**: removing continuity from struct fields avoids a typeclass resolution loop; pass as theorem parameters when needed",
       "**Area = noncomputable def** via `intervalIntegral.integral_const` and `smul_eq_mul`; nonnegativity follows from `integral_nonneg + hfg`",
-      "**Green's theorem statement** uses `deriv R.g x` and `deriv R.f x` for boundary chain rule terms — the correct formulation for curved boundaries",
-      "**Rectangles** are the special case f = const c, g = const d — the OQ01 setting — now recognized as a special TypeI region",
-      "**Inner FTC** is the computational heart: typeI_inner_ftc_P proves ∬∂P/∂y = ∫[P(x,g(x))-P(x,f(x))]dx via integral_congr + integral_eq_sub_of_hasDerivAt",
-      "**TypeII regions** (horizontally simple) are the dual of TypeI: D = {(x,y) | c≤y≤d, h(y)≤x≤k(y)} — enables the Q contribution via symmetric FTC",
-      "**Disk membership** (x,y)∈disk ↔ x²+y²≤r²: proved via abs_le + sqrt_le_sqrt + sq_le_sq' for both directions",
-      "**Semicircle area from disk**: disk integrand 2√(r²-x²) = 2 × semicircle integrand √(r²-x²), so semicircle_area = disk_area/2 = πr²/2"
+      "**Green's theorem statement** uses `deriv R.g x` and `deriv R.f x` for boundary chain rule terms \u2014 the correct formulation for curved boundaries",
+      "**Rectangles** are the special case f = const c, g = const d \u2014 the OQ01 setting \u2014 now recognized as a special TypeI region",
+      "**Inner FTC** is the computational heart: typeI_inner_ftc_P proves \u222c\u2202P/\u2202y = \u222b[P(x,g(x))-P(x,f(x))]dx via integral_congr + integral_eq_sub_of_hasDerivAt",
+      "**TypeII regions** (horizontally simple) are the dual of TypeI: D = {(x,y) | c\u2264y\u2264d, h(y)\u2264x\u2264k(y)} \u2014 enables the Q contribution via symmetric FTC",
+      "**Disk membership** (x,y)\u2208disk \u2194 x\u00b2+y\u00b2\u2264r\u00b2: proved via abs_le + sqrt_le_sqrt + sq_le_sq' for both directions",
+      "**Semicircle area from disk**: disk integrand 2\u221a(r\u00b2-x\u00b2) = 2 \u00d7 semicircle integrand \u221a(r\u00b2-x\u00b2), so semicircle_area = disk_area/2 = \u03c0r\u00b2/2"
     ],
     "prerequisites": [
       "Green's theorem: line integral to double integral",
@@ -150,12 +150,12 @@
     ]
   },
   "conclusion": {
-    "summary": "OQ-03 is answered YES with substantial proof content: 31 theorems, 3 axioms, 0 sorries. The abstract GreenRegion is replaced by both TypeI and TypeII concrete region structures. The Inner FTC is proved for both region types — the P contribution (TypeI) and Q contribution (TypeII) — which are the two halves of the standard Green's theorem proof. Disk and semicircle are concrete examples with full membership characterization.",
+    "summary": "OQ-03 is answered YES with substantial proof content: 31 theorems, 3 axioms, 0 sorries. The abstract GreenRegion is replaced by both TypeI and TypeII concrete region structures. The Inner FTC is proved for both region types \u2014 the P contribution (TypeI) and Q contribution (TypeII) \u2014 which are the two halves of the standard Green's theorem proof. Disk and semicircle are concrete examples with full membership characterization.",
     "significance": "Proves the two FTC halves of Green's theorem (the P and Q contributions) completely, with zero axioms. The remaining axiom is only for combining them (requires Fubini for variable limits). Demonstrates Lean 4 can model the Apostol/Rudin textbook proof structure.",
     "implications": "**Theoretical Significance**: Enables formalization of vector calculus on curved-boundary domains.\n\nTypeI+TypeII framework covers rectangles, disks, and convex regions. The inner FTC results are reusable infrastructure for any Green's theorem application.",
     "openQuestions": [
       "Prove the remaining axiom: full Green's theorem for TypeI regions (combining P+Q contributions requires Fubini for variable limits)",
-      "Prove disk_area_eq_pi: ∫_{-r}^{r} 2√(r²-x²) dx = πr² (requires antiderivative x√(r²-x²)/2 + r²arcsin(x/r)/2)",
+      "Prove disk_area_eq_pi: \u222b_{-r}^{r} 2\u221a(r\u00b2-x\u00b2) dx = \u03c0r\u00b2 (requires antiderivative x\u221a(r\u00b2-x\u00b2)/2 + r\u00b2arcsin(x/r)/2)",
       "Decomposition theorem: any simply-connected region = union of TypeI and TypeII regions",
       "Stokes' theorem as generalization using differential forms in Mathlib"
     ]
@@ -196,6 +196,7 @@
     "lineCount": 557,
     "axiomCount": 3,
     "theoremCount": 31,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "lemmaCount": 0
   }
 }

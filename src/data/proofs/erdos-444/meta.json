@@ -1,10 +1,10 @@
 {
   "id": "erdos-444",
-  "title": "Erdős Problem #444: Generalized Divisor Functions",
+  "title": "Erd\u0151s Problem #444: Generalized Divisor Functions",
   "slug": "erdos-444",
-  "description": "Let A ⊆ ℕ be infinite and d_A(n) count divisors of n in A. Is limsup max d_A(n) / (Σ 1/a)^k = ∞ for all k? SOLVED: YES by Erdős-Sárközy (1980) — the maximum grows faster than any power of the harmonic sum.",
+  "description": "Let A \u2286 \u2115 be infinite and d_A(n) count divisors of n in A. Is limsup max d_A(n) / (\u03a3 1/a)^k = \u221e for all k? SOLVED: YES by Erd\u0151s-S\u00e1rk\u00f6zy (1980) \u2014 the maximum grows faster than any power of the harmonic sum.",
   "meta": {
-    "author": "Erdős and Sárközy",
+    "author": "Erd\u0151s and S\u00e1rk\u00f6zy",
     "erdosNumber": 444,
     "status": "axiomatized",
     "tags": [
@@ -51,15 +51,15 @@
     "originalContributions": [
       "Defined d_A(n) as generalized divisor function via Finset.filter on divisors in A",
       "Defined H_A(x) as partial harmonic sum and M_A(x) as maximum A-divisor count",
-      "Stated erdos_graham_conjecture using Filter.atTop and ∃ᶠ quantifier",
-      "Axiomatized Erdős-Sárközy proof, A=ℕ and A=primes specializations",
+      "Stated erdos_graham_conjecture using Filter.atTop and \u2203\u1da0 quantifier",
+      "Axiomatized Erd\u0151s-S\u00e1rk\u00f6zy proof, A=\u2115 and A=primes specializations",
       "Stated exponential_lower_bound and no_uniform_bound structural properties",
       "Proved erdos_444_summary and limsup_infinite from axiomatized result"
     ],
     "crossReferences": [
       {
         "id": "erdos-414",
-        "relationship": "Studies h(n) = n + τ(n); the divisor function τ is the case A = ℕ of the generalized divisor function d_A."
+        "relationship": "Studies h(n) = n + \u03c4(n); the divisor function \u03c4 is the case A = \u2115 of the generalized divisor function d_A."
       },
       {
         "id": "erdos-381",
@@ -76,7 +76,7 @@
     "relatedProblems": [
       {
         "id": "erdos-414",
-        "relationship": "Both concern dynamics of divisor-related functions: #414 studies orbits of n + τ(n), #444 studies extremal behavior of generalized divisor functions"
+        "relationship": "Both concern dynamics of divisor-related functions: #414 studies orbits of n + \u03c4(n), #444 studies extremal behavior of generalized divisor functions"
       },
       {
         "id": "erdos-1057",
@@ -90,7 +90,7 @@
       "title": "Basic Definitions",
       "startLine": 31,
       "endLine": 61,
-      "summary": "Defines **InfiniteSubset**, **d_A(n)** = |{a ∈ A : a | n}| (generalized divisor function), **H_A(x)** = Σ_{a∈A, a<x} 1/a (partial harmonic sum), and **M_A(x)** = max_{n<x} d_A(n) (maximum A-divisor count). These are the three quantities whose relationship the problem studies.",
+      "summary": "Defines **InfiniteSubset**, **d_A(n)** = |{a \u2208 A : a | n}| (generalized divisor function), **H_A(x)** = \u03a3_{a\u2208A, a<x} 1/a (partial harmonic sum), and **M_A(x)** = max_{n<x} d_A(n) (maximum A-divisor count). These are the three quantities whose relationship the problem studies.",
       "mathContext": "$d_A(n) = |\\{a \\in A : a \\mid n\\}|$ generalizes $\\tau(n) = d_{\\mathbb{N}}(n)$. $H_A(x) = \\sum_{a \\in A, a \\leq x} 1/a$ (harmonic partial sum over $A$)."
     },
     {
@@ -98,7 +98,7 @@
       "title": "The Main Conjecture (PROVED)",
       "startLine": 63,
       "endLine": 85,
-      "summary": "**erdos_graham_conjecture**: ∀ infinite A, ∀ k ≥ 1, lim sup M_A(x)/H_A(x)^k = ∞. Formalized using `Filter.atTop` and `∃ᶠ`. **erdos_graham_conjecture_true**: axiomatized as proved by Erdős-Sárközy (1980) via extremal product constructions.",
+      "summary": "**erdos_graham_conjecture**: \u2200 infinite A, \u2200 k \u2265 1, lim sup M_A(x)/H_A(x)^k = \u221e. Formalized using `Filter.atTop` and `\u2203\u1da0`. **erdos_graham_conjecture_true**: axiomatized as proved by Erd\u0151s-S\u00e1rk\u00f6zy (1980) via extremal product constructions.",
       "mathContext": "Conjecture: $\\limsup_{x \\to \\infty} M_A(x) / (H_A(x))^k \\to \\infty$ where $M_A(x) = \\max_{n \\leq x} d_A(n)$."
     },
     {
@@ -106,7 +106,7 @@
       "title": "Special Cases",
       "startLine": 87,
       "endLine": 107,
-      "summary": "**A = ℕ**: d_A = τ, H_A ∼ log x, M_A ∼ exp(log 2 · log x / log log x) (highly composite numbers). **A = primes**: d_A = ω, H_A ∼ log log x (Mertens), M_A ∼ log x / log log x (primorials). Both cases confirm the general theorem.",
+      "summary": "**A = \u2115**: d_A = \u03c4, H_A \u223c log x, M_A \u223c exp(log 2 \u00b7 log x / log log x) (highly composite numbers). **A = primes**: d_A = \u03c9, H_A \u223c log log x (Mertens), M_A \u223c log x / log log x (primorials). Both cases confirm the general theorem.",
       "mathContext": "Classical case $A = \\mathbb{N}$: $d_A = \\tau$, $H_A(x) \\sim \\log x$, $M_A(x) \\sim \\exp(\\log 2 \\cdot \\log x / \\log\\log x)$ (Ramanujan 1915)."
     },
     {
@@ -114,7 +114,7 @@
       "title": "Structural Properties",
       "startLine": 109,
       "endLine": 130,
-      "summary": "**highly_composite_relative**: A-highly composite numbers exist for any A. **exponential_lower_bound**: M_A(x) ≥ exp(c · H_A(x)) frequently. **no_uniform_bound**: no function f bounds M_A(x) in terms of H_A(x) universally — the strongest form of the result.",
+      "summary": "**highly_composite_relative**: A-highly composite numbers exist for any A. **exponential_lower_bound**: M_A(x) \u2265 exp(c \u00b7 H_A(x)) frequently. **no_uniform_bound**: no function f bounds M_A(x) in terms of H_A(x) universally \u2014 the strongest form of the result.",
       "mathContext": "An $A$-highly composite number $n$ maximizes $d_A(n)$ up to $n$. These exist for any infinite $A$ (analogous to highly composite numbers for $\\tau$)."
     },
     {
@@ -127,16 +127,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "Problem #444 appears in Erdős and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p. 88) and was resolved in the same year by Erdős and Sárközy in the fourth installment of their series 'Some asymptotic formulas on generalized divisor functions' (Studia Sci. Math. Hungar., 1980). The problem generalizes classical questions about the maximal order of the divisor function τ(n) — studied by Ramanujan (1915) via highly composite numbers and by Wigert (1907) who proved $\\max_{n \\leq x} \\tau(n) = 2^{(1+o(1))\\log x / \\log\\log x}$ — to arbitrary infinite subsets A of ℕ.\n\nThe result shows that the extremal phenomenon (divisor counts growing super-polynomially relative to the natural density measure) is **universal**: it holds for every infinite A, regardless of how thin or irregular. This universality was surprising because sparse sets A might seem to limit how divisible numbers can be, yet the multiplicative structure of ℕ always allows concentrating many A-divisors. The proof uses a greedy construction: choose elements $a_1, a_2, \\ldots$ from A and build $n = \\prod a_i^{e_i}$ to maximize $d_A(n) = \\prod (e_i + 1)$ subject to $n \\leq x$, analogous to Ramanujan's construction of highly composite numbers.\n\nThe problem connects to several classical threads: (1) Hardy and Ramanujan's 1917 result on the normal order of $\\omega(n) \\sim \\log\\log n$, which becomes the A = primes specialization; (2) Hooley's (1979) work on the distribution of $d(n)$ in short intervals; (3) the general theory of multiplicative functions and their extremal behavior, as surveyed by Hall and Tenenbaum (1988). The Erdős-Sárközy resolution demonstrates that multiplicative number theory tools (in particular, the Selberg-Delange method for analyzing generating Dirichlet series) extend naturally to generalized divisor functions indexed by arbitrary sets.",
-    "problemStatement": "Let A ⊆ ℕ be infinite and d_A(n) = |{a ∈ A : a | n}|. Is it true that for every k ≥ 1, lim sup_{x→∞} max_{n<x} d_A(n) / (Σ_{a∈A, a<x} 1/a)^k = ∞?",
-    "text": "For an infinite set $A \\subseteq \\mathbb{N}$, define $d_A(n) = |\\{a \\in A : a \\mid n\\}|$ — the number of divisors of $n$ that belong to $A$. The harmonic density $H_A(x) = \\sum_{a \\in A, a \\leq x} 1/a$ measures how 'thick' $A$ is. Erdős Problem #444 asks: does $\\max_{n \\leq x} d_A(n)$ grow faster than any power $H_A(x)^k$? Erdős and Sárközy (1980) proved YES — in fact, $\\max_{n \\leq x} d_A(n) \\geq \\exp(c \\cdot H_A(x))$ frequently, an *exponential* lower bound in the density measure. The proof constructs 'A-highly composite numbers' by the greedy algorithm: choose elements $a_1, a_2, \\ldots$ from $A$ and build $n = \\prod a_i^{e_i}$ to maximize $d_A(n) = \\prod(e_i + 1)$ subject to $n \\leq x$, extending Ramanujan's (1915) theory of highly composite numbers. The result is universal: it holds for *every* infinite $A$, even extremely sparse sets. When $A = \\mathbb{N}$ it recovers Wigert's $\\max d(n) = 2^{(1+o(1))\\log x/\\log\\log x}$; when $A =$ primes it recovers Hardy-Ramanujan's $\\max \\omega(n) \\sim \\log\\log n$.",
-    "proofStrategy": "The formalization builds the generalized divisor function framework with all deep results axiomatized.\n\n1. **Core functions**: `d_A n` counts divisors of $n$ in $A$ via `Finset.filter` on `Nat.divisors`; `H_A x` computes $\\sum_{a \\in A, a \\leq x} 1/a$ via `Finset.sum`; `M_A x` takes $\\max_{n \\leq x} d_A(n)$ via `Finset.sup`.\n\n2. **Main theorem**: `erdos_444_solved` states $\\forall k \\geq 1, \\exists^\\infty x, M_A(x) > H_A(x)^k$ using `Filter.Frequently` and `Filter.atTop`.\n\n3. **Exponential refinement**: `erdos_sarkozy_exponential` axiomatizes $M_A(x) \\geq \\exp(c \\cdot H_A(x))$ — the stronger exponential form.\n\n4. **Classical specializations**: $A = \\mathbb{N}$ gives standard $\\tau(n)$ with Wigert's bound; $A =$ primes gives $\\omega(n)$ with Hardy-Ramanujan. Both axiomatized.\n\n5. **Structural context**: A-highly composite numbers, non-existence of universal bounds, and the greedy construction principle are axiomatized to provide mathematical depth.",
+    "historicalContext": "Problem #444 appears in Erd\u0151s and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p. 88) and was resolved in the same year by Erd\u0151s and S\u00e1rk\u00f6zy in the fourth installment of their series 'Some asymptotic formulas on generalized divisor functions' (Studia Sci. Math. Hungar., 1980). The problem generalizes classical questions about the maximal order of the divisor function \u03c4(n) \u2014 studied by Ramanujan (1915) via highly composite numbers and by Wigert (1907) who proved $\\max_{n \\leq x} \\tau(n) = 2^{(1+o(1))\\log x / \\log\\log x}$ \u2014 to arbitrary infinite subsets A of \u2115.\n\nThe result shows that the extremal phenomenon (divisor counts growing super-polynomially relative to the natural density measure) is **universal**: it holds for every infinite A, regardless of how thin or irregular. This universality was surprising because sparse sets A might seem to limit how divisible numbers can be, yet the multiplicative structure of \u2115 always allows concentrating many A-divisors. The proof uses a greedy construction: choose elements $a_1, a_2, \\ldots$ from A and build $n = \\prod a_i^{e_i}$ to maximize $d_A(n) = \\prod (e_i + 1)$ subject to $n \\leq x$, analogous to Ramanujan's construction of highly composite numbers.\n\nThe problem connects to several classical threads: (1) Hardy and Ramanujan's 1917 result on the normal order of $\\omega(n) \\sim \\log\\log n$, which becomes the A = primes specialization; (2) Hooley's (1979) work on the distribution of $d(n)$ in short intervals; (3) the general theory of multiplicative functions and their extremal behavior, as surveyed by Hall and Tenenbaum (1988). The Erd\u0151s-S\u00e1rk\u00f6zy resolution demonstrates that multiplicative number theory tools (in particular, the Selberg-Delange method for analyzing generating Dirichlet series) extend naturally to generalized divisor functions indexed by arbitrary sets.",
+    "problemStatement": "Let A \u2286 \u2115 be infinite and d_A(n) = |{a \u2208 A : a | n}|. Is it true that for every k \u2265 1, lim sup_{x\u2192\u221e} max_{n<x} d_A(n) / (\u03a3_{a\u2208A, a<x} 1/a)^k = \u221e?",
+    "text": "For an infinite set $A \\subseteq \\mathbb{N}$, define $d_A(n) = |\\{a \\in A : a \\mid n\\}|$ \u2014 the number of divisors of $n$ that belong to $A$. The harmonic density $H_A(x) = \\sum_{a \\in A, a \\leq x} 1/a$ measures how 'thick' $A$ is. Erd\u0151s Problem #444 asks: does $\\max_{n \\leq x} d_A(n)$ grow faster than any power $H_A(x)^k$? Erd\u0151s and S\u00e1rk\u00f6zy (1980) proved YES \u2014 in fact, $\\max_{n \\leq x} d_A(n) \\geq \\exp(c \\cdot H_A(x))$ frequently, an *exponential* lower bound in the density measure. The proof constructs 'A-highly composite numbers' by the greedy algorithm: choose elements $a_1, a_2, \\ldots$ from $A$ and build $n = \\prod a_i^{e_i}$ to maximize $d_A(n) = \\prod(e_i + 1)$ subject to $n \\leq x$, extending Ramanujan's (1915) theory of highly composite numbers. The result is universal: it holds for *every* infinite $A$, even extremely sparse sets. When $A = \\mathbb{N}$ it recovers Wigert's $\\max d(n) = 2^{(1+o(1))\\log x/\\log\\log x}$; when $A =$ primes it recovers Hardy-Ramanujan's $\\max \\omega(n) \\sim \\log\\log n$.",
+    "proofStrategy": "The formalization builds the generalized divisor function framework with all deep results axiomatized.\n\n1. **Core functions**: `d_A n` counts divisors of $n$ in $A$ via `Finset.filter` on `Nat.divisors`; `H_A x` computes $\\sum_{a \\in A, a \\leq x} 1/a$ via `Finset.sum`; `M_A x` takes $\\max_{n \\leq x} d_A(n)$ via `Finset.sup`.\n\n2. **Main theorem**: `erdos_444_solved` states $\\forall k \\geq 1, \\exists^\\infty x, M_A(x) > H_A(x)^k$ using `Filter.Frequently` and `Filter.atTop`.\n\n3. **Exponential refinement**: `erdos_sarkozy_exponential` axiomatizes $M_A(x) \\geq \\exp(c \\cdot H_A(x))$ \u2014 the stronger exponential form.\n\n4. **Classical specializations**: $A = \\mathbb{N}$ gives standard $\\tau(n)$ with Wigert's bound; $A =$ primes gives $\\omega(n)$ with Hardy-Ramanujan. Both axiomatized.\n\n5. **Structural context**: A-highly composite numbers, non-existence of universal bounds, and the greedy construction principle are axiomatized to provide mathematical depth.",
     "keyInsights": [
-      "**Universality**: the result holds for ALL infinite A ⊆ ℕ — even extremely sparse sets allow extremal divisor concentrations",
-      "**Extremal product construction**: build n = a₁^{e₁} · ... · aₘ^{eₘ} to maximize d_A(n) = Π(eᵢ+1) subject to n ≤ x, analogous to Ramanujan's highly composite number construction",
-      "**Exponential growth**: M_A(x) ≥ exp(c · H_A(x)) frequently — super-polynomial in the density measure, not merely 'faster than polynomial'",
-      "**Two classical specializations**: A = ℕ recovers Wigert/Ramanujan (maximal order of d(n)); A = primes recovers Hardy-Ramanujan (maximal ω(n))",
-      "**No universal bound**: for any function f, some A satisfies M_A(x) > f(H_A(x)) — the extremal behavior cannot be captured by any single function of the density"
+      "**Universality**: the result holds for ALL infinite A \u2286 \u2115 \u2014 even extremely sparse sets allow extremal divisor concentrations",
+      "**Extremal product construction**: build n = a\u2081^{e\u2081} \u00b7 ... \u00b7 a\u2098^{e\u2098} to maximize d_A(n) = \u03a0(e\u1d62+1) subject to n \u2264 x, analogous to Ramanujan's highly composite number construction",
+      "**Exponential growth**: M_A(x) \u2265 exp(c \u00b7 H_A(x)) frequently \u2014 super-polynomial in the density measure, not merely 'faster than polynomial'",
+      "**Two classical specializations**: A = \u2115 recovers Wigert/Ramanujan (maximal order of d(n)); A = primes recovers Hardy-Ramanujan (maximal \u03c9(n))",
+      "**No universal bound**: for any function f, some A satisfies M_A(x) > f(H_A(x)) \u2014 the extremal behavior cannot be captured by any single function of the density"
     ],
     "prerequisites": [
       "Multiplicative number theory: divisor functions $\\tau(n)$, $\\omega(n)$, and their maximal orders",
@@ -146,21 +146,21 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #444 is SOLVED: for any infinite A ⊆ ℕ and any k ≥ 1, the maximum restricted divisor count M_A(x) grows faster than H_A(x)^k. Proved by Erdős and Sárközy in 1980, this reveals a universal extremal property of divisor functions: the harmonic sum measures 'average' divisibility potential, but 'extremal' divisibility always vastly exceeds it.",
-    "implications": "**Theoretical Significance**: The result belongs to the broader program of understanding extremal behavior in multiplicative number theory.\n\nIt shows that the harmonic sum Σ 1/a — while a natural measure of a set's 'density' — fundamentally underestimates the extremal divisor counts achievable by products of elements from A. The techniques connect to optimization theory (Lagrange multipliers for exponent selection), analytic number theory (harmonic sum asymptotics), and combinatorics (product maximization under constraints).",
+    "summary": "Erd\u0151s Problem #444 is SOLVED: for any infinite A \u2286 \u2115 and any k \u2265 1, the maximum restricted divisor count M_A(x) grows faster than H_A(x)^k. Proved by Erd\u0151s and S\u00e1rk\u00f6zy in 1980, this reveals a universal extremal property of divisor functions: the harmonic sum measures 'average' divisibility potential, but 'extremal' divisibility always vastly exceeds it.",
+    "implications": "**Theoretical Significance**: The result belongs to the broader program of understanding extremal behavior in multiplicative number theory.\n\nIt shows that the harmonic sum \u03a3 1/a \u2014 while a natural measure of a set's 'density' \u2014 fundamentally underestimates the extremal divisor counts achievable by products of elements from A. The techniques connect to optimization theory (Lagrange multipliers for exponent selection), analytic number theory (harmonic sum asymptotics), and combinatorics (product maximization under constraints).",
     "openQuestions": [
-      "What is the precise growth rate of M_A(x) in terms of H_A(x) for specific structured sets A (e.g., A = {n²}, A = k-smooth numbers)?",
-      "How does the extremal constant c in M_A(x) ≥ exp(c · H_A(x)) depend on the structure of A?",
+      "What is the precise growth rate of M_A(x) in terms of H_A(x) for specific structured sets A (e.g., A = {n\u00b2}, A = k-smooth numbers)?",
+      "How does the extremal constant c in M_A(x) \u2265 exp(c \u00b7 H_A(x)) depend on the structure of A?",
       "Are there effective versions with explicit, computable constants for specific A?",
       "What is the second-order behavior: after removing the exponential term, what is the next correction?",
-      "Can the construction be made algorithmic — given A, efficiently find n with near-maximal d_A(n)?"
+      "Can the construction be made algorithmic \u2014 given A, efficiently find n with near-maximal d_A(n)?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-414",
       "relationship": "related",
-      "description": "Both study the divisor function in dynamical/iterative contexts; #414 iterates n + τ(n) while #444 generalizes τ to restricted divisor functions d_A"
+      "description": "Both study the divisor function in dynamical/iterative contexts; #414 iterates n + \u03c4(n) while #444 generalizes \u03c4 to restricted divisor functions d_A"
     },
     {
       "targetId": "euler-totient",
@@ -195,7 +195,7 @@
     {
       "targetId": "erdos-413",
       "relationship": "related",
-      "description": "Erdős #413 studies barriers for $\\omega(n)$ (distinct prime factor count). The generalized divisor function $\\tau_A(n)$ depends on the prime factorization restricted to primes in $A$, so the distribution of $\\omega(n)$ for primes in $A$ directly influences the extremal behavior studied in #444"
+      "description": "Erd\u0151s #413 studies barriers for $\\omega(n)$ (distinct prime factor count). The generalized divisor function $\\tau_A(n)$ depends on the prime factorization restricted to primes in $A$, so the distribution of $\\omega(n)$ for primes in $A$ directly influences the extremal behavior studied in #444"
     }
   ],
   "relatedProofs": [
@@ -219,16 +219,17 @@
     "lineCount": 160,
     "axiomCount": 6,
     "theoremCount": 2,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   },
   "references": [
-    "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, p. 88",
-    "Erdős, P. and Sárközy, A. (1980): 'Some asymptotic formulas on generalized divisor functions IV'",
-    "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
-    "Wigert, S. (1907): 'Sur l'ordre de grandeur du nombre des diviseurs d'un entier', Arkiv för Matematik 3(18), 1–9",
-    "Hardy, G.H. and Ramanujan, S. (1917): 'The normal number of prime factors of a number n', Quart. J. Math. 48, 76–92",
-    "Mertens, F. (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, 46–62",
-    "Erdős, P. and Kac, M. (1940): 'The Gaussian law of errors in the theory of additive number theoretic functions', Amer. J. Math. 62, 738–742",
+    "Erd\u0151s, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Math\u00e9matique 28, p. 88",
+    "Erd\u0151s, P. and S\u00e1rk\u00f6zy, A. (1980): 'Some asymptotic formulas on generalized divisor functions IV'",
+    "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347\u2013409",
+    "Wigert, S. (1907): 'Sur l'ordre de grandeur du nombre des diviseurs d'un entier', Arkiv f\u00f6r Matematik 3(18), 1\u20139",
+    "Hardy, G.H. and Ramanujan, S. (1917): 'The normal number of prime factors of a number n', Quart. J. Math. 48, 76\u201392",
+    "Mertens, F. (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, 46\u201362",
+    "Erd\u0151s, P. and Kac, M. (1940): 'The Gaussian law of errors in the theory of additive number theoretic functions', Amer. J. Math. 62, 738\u2013742",
     "https://erdosproblems.com/444"
   ]
 }

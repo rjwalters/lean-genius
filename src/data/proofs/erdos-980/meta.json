@@ -1,10 +1,10 @@
 {
   "id": "erdos-980",
-  "title": "Erdős Problem #980: Sum of Least k-th Power Nonresidues",
+  "title": "Erd\u0151s Problem #980: Sum of Least k-th Power Nonresidues",
   "slug": "erdos-980",
-  "description": "For k ≥ 2, let n_k(p) denote the least k-th power nonresidue modulo prime p. Is it true that Σ_{p<x} n_k(p) ~ c_k · x/log x for some constant c_k > 0? SOLVED: Yes, proved by Erdős (1961) for k=2 and Elliott (1967) for all k ≥ 2.",
+  "description": "For k \u2265 2, let n_k(p) denote the least k-th power nonresidue modulo prime p. Is it true that \u03a3_{p<x} n_k(p) ~ c_k \u00b7 x/log x for some constant c_k > 0? SOLVED: Yes, proved by Erd\u0151s (1961) for k=2 and Elliott (1967) for all k \u2265 2.",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/980",
     "date": "1961",
     "status": "formalized",
@@ -17,7 +17,7 @@
       "asymptotic-analysis"
     ],
     "badge": "mathlib",
-    "sorries": 4,
+    "sorries": 0,
     "erdosNumber": 980,
     "erdosUrl": "https://erdosproblems.com/980",
     "erdosProblemStatus": "solved",
@@ -26,16 +26,16 @@
     "assumptions": "15 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem concerns the distribution of k-th power nonresidues among primes. Erdős posed the question in 1961 and proved the quadratic case (k=2) himself, establishing that the sum of least quadratic nonresidues grows like c₂ · x/log x where c₂ = Σ p_j/2^j ≈ 3.67. The general case for all k ≥ 2 was resolved by P.D.T.A. Elliott in 1967. Power residues have been studied since Legendre introduced the Legendre symbol in 1798 to formulate quadratic reciprocity; the distribution of least nonresidues mod primes connects to character sum estimates via the Polya-Vinogradov inequality. Under the Generalized Riemann Hypothesis, the least k-th power nonresidue mod p is O(p^{1/(2k) + ε}), but Elliott established the unconditional asymptotic for the sum over primes.",
-    "problemStatement": "Let k ≥ 2 and n_k(p) denote the least k-th power nonresidue of prime p. Is it true that Σ_{p<x} n_k(p) ~ c_k · x/log x for some constant c_k > 0?",
-    "text": "For k ≥ 2, let n_k(p) denote the least k-th power nonresidue modulo prime p. Is it true that Σ_{p<x} n_k(p) ~ c_k · x/log x for some constant c_k > 0? SOLVED: Yes, proved by Erdős (1961) for k=2 and Elliott (1967) for all k ≥ 2.",
-    "proofStrategy": "The formalization defines k-th power residues and nonresidues, the least nonresidue function n_k(p), and the sum S_k(x) = Σ_{p<x} n_k(p). Erdős's 1961 result for k=2 and Elliott's 1967 generalization are stated as axioms, with the main theorem showing existence of the positive constant c_k for all k ≥ 2.",
+    "historicalContext": "This problem concerns the distribution of k-th power nonresidues among primes. Erd\u0151s posed the question in 1961 and proved the quadratic case (k=2) himself, establishing that the sum of least quadratic nonresidues grows like c\u2082 \u00b7 x/log x where c\u2082 = \u03a3 p_j/2^j \u2248 3.67. The general case for all k \u2265 2 was resolved by P.D.T.A. Elliott in 1967. Power residues have been studied since Legendre introduced the Legendre symbol in 1798 to formulate quadratic reciprocity; the distribution of least nonresidues mod primes connects to character sum estimates via the Polya-Vinogradov inequality. Under the Generalized Riemann Hypothesis, the least k-th power nonresidue mod p is O(p^{1/(2k) + \u03b5}), but Elliott established the unconditional asymptotic for the sum over primes.",
+    "problemStatement": "Let k \u2265 2 and n_k(p) denote the least k-th power nonresidue of prime p. Is it true that \u03a3_{p<x} n_k(p) ~ c_k \u00b7 x/log x for some constant c_k > 0?",
+    "text": "For k \u2265 2, let n_k(p) denote the least k-th power nonresidue modulo prime p. Is it true that \u03a3_{p<x} n_k(p) ~ c_k \u00b7 x/log x for some constant c_k > 0? SOLVED: Yes, proved by Erd\u0151s (1961) for k=2 and Elliott (1967) for all k \u2265 2.",
+    "proofStrategy": "The formalization defines k-th power residues and nonresidues, the least nonresidue function n_k(p), and the sum S_k(x) = \u03a3_{p<x} n_k(p). Erd\u0151s's 1961 result for k=2 and Elliott's 1967 generalization are stated as axioms, with the main theorem showing existence of the positive constant c_k for all k \u2265 2.",
     "keyInsights": [
       "The least k-th power nonresidue n_k(p) is well-defined for primes p > k",
-      "The constant c₂ = Σ_{j≥1} p_j/2^j where p_j is the j-th prime, converging to approximately 3.67",
-      "The average value of n_k(p) over primes p < x is roughly c_k · log x",
-      "Vinogradov's bound shows n(p) = O(p^{1/(4√e)+ε}) unconditionally",
-      "Under GRH, the least quadratic nonresidue satisfies n(p) = O((log p)²)"
+      "The constant c\u2082 = \u03a3_{j\u22651} p_j/2^j where p_j is the j-th prime, converging to approximately 3.67",
+      "The average value of n_k(p) over primes p < x is roughly c_k \u00b7 log x",
+      "Vinogradov's bound shows n(p) = O(p^{1/(4\u221ae)+\u03b5}) unconditionally",
+      "Under GRH, the least quadratic nonresidue satisfies n(p) = O((log p)\u00b2)"
     ],
     "prerequisites": [
       "Analytic number theory: the prime number theorem, prime counting function, and summation over primes",
@@ -50,43 +50,43 @@
       "title": "Power Residues and Nonresidues",
       "startLine": 42,
       "endLine": 103,
-      "summary": "Defines IsPowerResidue, IsPowerNonresidue, and leastPowerNonresidue (using Nat.find). States Vinogradov's bound n(p) = O(p^{1/(4√e)+ε}) and the GRH conditional bound n(p) = O((log p)²)."
+      "summary": "Defines IsPowerResidue, IsPowerNonresidue, and leastPowerNonresidue (using Nat.find). States Vinogradov's bound n(p) = O(p^{1/(4\u221ae)+\u03b5}) and the GRH conditional bound n(p) = O((log p)\u00b2)."
     },
     {
       "id": "sum-function",
       "title": "The Sum Function S_k(x)",
       "startLine": 105,
       "endLine": 121,
-      "summary": "Defines sumLeastNonresidues S_k(x) = Σ_{p<x} n_k(p) using Finset.range with primality filter. Axiomatizes nonnegativity."
+      "summary": "Defines sumLeastNonresidues S_k(x) = \u03a3_{p<x} n_k(p) using Finset.range with primality filter. Axiomatizes nonnegativity."
     },
     {
       "id": "constants",
       "title": "The Constants c_k",
       "startLine": 123,
       "endLine": 158,
-      "summary": "Defines c_2 = Σ p_j/2^j (≈ 3.67) as a tprime series, axiomatizes c_2_positive and c_2_approx (3.5 < c₂ < 4). Defines general c_k with positivity axiom for k ≥ 2."
+      "summary": "Defines c_2 = \u03a3 p_j/2^j (\u2248 3.67) as a tprime series, axiomatizes c_2_positive and c_2_approx (3.5 < c\u2082 < 4). Defines general c_k with positivity axiom for k \u2265 2."
     },
     {
       "id": "erdos-1961",
-      "title": "Erdős's Result (1961)",
+      "title": "Erd\u0151s's Result (1961)",
       "startLine": 160,
       "endLine": 182,
-      "summary": "Axiomatizes Erdős's 1961 result: Σ_{p<x} n_2(p) ~ c₂ · x/log x in both absolute error and ratio convergence forms."
+      "summary": "Axiomatizes Erd\u0151s's 1961 result: \u03a3_{p<x} n_2(p) ~ c\u2082 \u00b7 x/log x in both absolute error and ratio convergence forms."
     },
     {
       "id": "elliott-1967",
       "title": "Elliott's Generalization (1967)",
       "startLine": 184,
       "endLine": 214,
-      "summary": "Axiomatizes Elliott's 1967 generalization to all k ≥ 2. States erdos_980_solution (the main theorem), average interpretation, special cases (n₂(p) = 2 for p ≡ ±3 mod 8), Pólya-Vinogradov connection, and the summary theorem."
+      "summary": "Axiomatizes Elliott's 1967 generalization to all k \u2265 2. States erdos_980_solution (the main theorem), average interpretation, special cases (n\u2082(p) = 2 for p \u2261 \u00b13 mod 8), P\u00f3lya-Vinogradov connection, and the summary theorem."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #980 is SOLVED. The conjecture is true: for all k ≥ 2, the sum Σ_{p<x} n_k(p) ~ c_k · x/log x with c_k > 0. Erdős proved the k=2 case in 1961 with the explicit constant c₂ = Σ p_j/2^j. Elliott completed the solution in 1967 by proving the general case for all k ≥ 2.",
-    "implications": "The result shows that on average, the least k-th power nonresidue among primes p < x grows like c_k · log x. This connects to character sum estimates and the distribution of power residue symbols.",
+    "summary": "Erd\u0151s Problem #980 is SOLVED. The conjecture is true: for all k \u2265 2, the sum \u03a3_{p<x} n_k(p) ~ c_k \u00b7 x/log x with c_k > 0. Erd\u0151s proved the k=2 case in 1961 with the explicit constant c\u2082 = \u03a3 p_j/2^j. Elliott completed the solution in 1967 by proving the general case for all k \u2265 2.",
+    "implications": "The result shows that on average, the least k-th power nonresidue among primes p < x grows like c_k \u00b7 log x. This connects to character sum estimates and the distribution of power residue symbols.",
     "openQuestions": [
-      "What are the exact values of c_k for k > 2? Can they be expressed as explicit prime-weighted series like c₂?",
-      "Can the error term in the asymptotic Σ n_k(p) = c_k · x/log x + E(x) be improved? What is the best possible bound on E(x)?",
+      "What are the exact values of c_k for k > 2? Can they be expressed as explicit prime-weighted series like c\u2082?",
+      "Can the error term in the asymptotic \u03a3 n_k(p) = c_k \u00b7 x/log x + E(x) be improved? What is the best possible bound on E(x)?",
       "How does the distribution of individual n_k(p) values compare to the average? What fraction of primes have n_k(p) = 2?",
       "Is there an analog for composite moduli, or does the result fundamentally require primality?"
     ]
@@ -95,7 +95,7 @@
     {
       "targetId": "prime-number-theorem",
       "relationship": "uses",
-      "description": "The prime number theorem π(x) ~ x/log x is foundational to interpreting the asymptotic Σ n_k(p) ~ c_k · x/log x."
+      "description": "The prime number theorem \u03c0(x) ~ x/log x is foundational to interpreting the asymptotic \u03a3 n_k(p) ~ c_k \u00b7 x/log x."
     }
   ],
   "relatedProofs": [
@@ -117,6 +117,7 @@
     "lineCount": 309,
     "axiomCount": 15,
     "theoremCount": 3,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   }
 }

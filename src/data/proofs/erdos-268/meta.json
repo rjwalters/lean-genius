@@ -1,10 +1,10 @@
 {
   "id": "erdos-268",
-  "title": "Erdős #268: Interior of Harmonic Subseries Points",
+  "title": "Erd\u0151s #268: Interior of Harmonic Subseries Points",
   "slug": "erdos-268",
-  "description": "For X ⊆ ℝ^d of points (Σ 1/n, Σ 1/(n+1), ...) as A ranges over infinite sets with convergent harmonic sum, does X have nonempty interior? YES for all d ≥ 1 (Kovač 2024, Kovač-Tao 2024).",
+  "description": "For X \u2286 \u211d^d of points (\u03a3 1/n, \u03a3 1/(n+1), ...) as A ranges over infinite sets with convergent harmonic sum, does X have nonempty interior? YES for all d \u2265 1 (Kova\u010d 2024, Kova\u010d-Tao 2024).",
   "meta": {
-    "author": "Paul Erdős, Vjekoslav Kovač, Terence Tao",
+    "author": "Paul Erd\u0151s, Vjekoslav Kova\u010d, Terence Tao",
     "sourceUrl": "https://erdosproblems.com/268",
     "date": "1950s-2024",
     "status": "formalized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Topology.Instances.Real",
-        "description": "Topology on ℝ and ℝⁿ",
+        "description": "Topology on \u211d and \u211d\u207f",
         "module": "Mathlib.Topology.Instances.Real"
       },
       {
@@ -49,9 +49,9 @@
     "originalContributions": [
       "HasConvergentHarmonicSubseries definition using Summable on subtypes",
       "shiftedHarmonicSum and harmonicPoint constructions for arbitrary dimension",
-      "harmonicPointSet as the central object X ⊆ ℝᵈ with equivalence proof",
+      "harmonicPointSet as the central object X \u2286 \u211d\u1d48 with equivalence proof",
       "contains_open_ball: genuine derivation of metric ball from interior axiom",
-      "Erdős-Straus (d=2), Kovač (d=3), Kovač-Tao (general) as layered axioms",
+      "Erd\u0151s-Straus (d=2), Kova\u010d (d=3), Kova\u010d-Tao (general) as layered axioms",
       "Coordinate monotonicity and positivity theorems",
       "Dimension monotonicity via projection maps",
       "Concrete examples: squares (Basel problem) and powers of 2 (geometric series)"
@@ -61,16 +61,16 @@
     "assumptions": "4 axiom(s) and 12 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #268: Interior of Harmonic Subseries Points**\n\nThis problem lies at the intersection of harmonic analysis, number theory, and point-set topology. It originates from a classical question about which real numbers can be represented as sums of distinct unit fractions — a topic with roots in ancient Egyptian mathematics (the Rhind Papyrus, c. 1650 BCE, contains tables of such decompositions, now called Ahmes series or Egyptian fractions).\n\nThe modern formulation involves the set of all infinite subsets A ⊆ ℕ with convergent harmonic subseries Σ_{n∈A} 1/n < ∞. Such sets must be very 'thin' — the harmonic series diverges (proved by Nicole Oresme c. 1350), so A cannot contain too many elements. Examples include {n²} (with sum π²/6, the Basel problem solved by Euler in 1734) and {2ᵏ} (with sum 2, a geometric series).\n\nThe twist in Problem #268 is the passage to higher dimensions: for each qualifying set A, form the d-dimensional point (Σ 1/n, Σ 1/(n+1), ..., Σ 1/(n+d-1)). The set X of all such points is the object of study. Erdős asked: does X have nonempty interior?\n\n**Timeline:**\n- 1950s–60s: Erdős poses the problem, motivated by his work on thin sets and additive number theory\n- Erdős-Straus: Prove the d=2 case using properties of the digamma function ψ(x) and telescoping sum representations\n- Decades of partial results on the 1-dimensional structure of achievable harmonic subseries sums\n- 2024: Kovač proves d=3 with an explicit construction of an open ball inside X₃, giving quantitative geometric information\n- 2024: Kovač and Tao prove the full result for all d ≥ 1, connecting the problem to the theory of Ahmes series and showing that the richness of Egyptian fraction representations guarantees interior in every dimension\n\nThe result is surprising: despite the severe sparsity constraint on A, the resulting points fill out an open region in ℝᵈ. This reflects a deep phenomenon — the space of 'thin' infinite subsets of ℕ is itself rich enough to parameterize open sets in arbitrary dimension.",
-    "problemStatement": "Let $X_d \\subseteq \\mathbb{R}^d$ be the set of all points\n$$\\left(\\sum_{n \\in A} \\frac{1}{n},\\; \\sum_{n \\in A} \\frac{1}{n+1},\\; \\ldots,\\; \\sum_{n \\in A} \\frac{1}{n+d-1}\\right)$$\nas $A$ ranges over infinite subsets of $\\mathbb{N}$ with $\\sum_{n \\in A} 1/n < \\infty$.\n\n**Question**: Does $X_d$ have nonempty interior?\n\n**Answer**: YES for all $d \\ge 1$.\n\n- **Erdős-Straus**: $\\operatorname{int}(X_2) \\neq \\emptyset$\n- **Kovač (2024)**: $\\operatorname{int}(X_3) \\neq \\emptyset$ with explicit ball construction\n- **Kovač-Tao (2024)**: $\\operatorname{int}(X_d) \\neq \\emptyset$ for all $d \\ge 1$\n\n**Status**: SOLVED",
-    "text": "For X ⊆ ℝ^d of points (Σ 1/n, Σ 1/(n+1), ...) as A ranges over infinite sets with convergent harmonic sum, does X have nonempty interior? YES for all d ≥ 1 (Kovač 2024, Kovač-Tao 2024).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Harmonic Subseries:** Define HasConvergentHarmonicSubseries via Mathlib's Summable on the subtype A, and shiftedHarmonicSum for the k-shifted variant Σ 1/(n+k). Prove shifted convergence follows from the comparison test\n\n2. **Point Construction:** harmonicPoint maps (d, A) to Fin d → ℝ using shifted sums for each coordinate. harmonicPointSet collects all such points over infinite A with convergent sum\n\n3. **Main Axiom:** erdos_268_solved axiomatizes (interior X_d).Nonempty for all d, since the Kovač-Tao proof involves sophisticated Ahmes series analysis beyond Mathlib\n\n4. **Genuine Derivation:** contains_open_ball is fully proved — it derives the existence of a metric ball B(c,r) ⊆ X from the interior axiom using mem_interior and Metric.isOpen_iff\n\n5. **Historical Cases:** Separate axioms for Erdős-Straus (d=2) and Kovač (d=3) with placeholder explicit ball values, preserving the historical layering\n\n6. **Properties:** Path-connectedness, coordinate monotonicity, positivity, and dimension monotonicity via projection maps capture the geometric structure of X\n\n7. **Examples:** Concrete instances using squares and powers of 2 demonstrate the definitions are satisfiable",
+    "historicalContext": "**Erd\u0151s Problem #268: Interior of Harmonic Subseries Points**\n\nThis problem lies at the intersection of harmonic analysis, number theory, and point-set topology. It originates from a classical question about which real numbers can be represented as sums of distinct unit fractions \u2014 a topic with roots in ancient Egyptian mathematics (the Rhind Papyrus, c. 1650 BCE, contains tables of such decompositions, now called Ahmes series or Egyptian fractions).\n\nThe modern formulation involves the set of all infinite subsets A \u2286 \u2115 with convergent harmonic subseries \u03a3_{n\u2208A} 1/n < \u221e. Such sets must be very 'thin' \u2014 the harmonic series diverges (proved by Nicole Oresme c. 1350), so A cannot contain too many elements. Examples include {n\u00b2} (with sum \u03c0\u00b2/6, the Basel problem solved by Euler in 1734) and {2\u1d4f} (with sum 2, a geometric series).\n\nThe twist in Problem #268 is the passage to higher dimensions: for each qualifying set A, form the d-dimensional point (\u03a3 1/n, \u03a3 1/(n+1), ..., \u03a3 1/(n+d-1)). The set X of all such points is the object of study. Erd\u0151s asked: does X have nonempty interior?\n\n**Timeline:**\n- 1950s\u201360s: Erd\u0151s poses the problem, motivated by his work on thin sets and additive number theory\n- Erd\u0151s-Straus: Prove the d=2 case using properties of the digamma function \u03c8(x) and telescoping sum representations\n- Decades of partial results on the 1-dimensional structure of achievable harmonic subseries sums\n- 2024: Kova\u010d proves d=3 with an explicit construction of an open ball inside X\u2083, giving quantitative geometric information\n- 2024: Kova\u010d and Tao prove the full result for all d \u2265 1, connecting the problem to the theory of Ahmes series and showing that the richness of Egyptian fraction representations guarantees interior in every dimension\n\nThe result is surprising: despite the severe sparsity constraint on A, the resulting points fill out an open region in \u211d\u1d48. This reflects a deep phenomenon \u2014 the space of 'thin' infinite subsets of \u2115 is itself rich enough to parameterize open sets in arbitrary dimension.",
+    "problemStatement": "Let $X_d \\subseteq \\mathbb{R}^d$ be the set of all points\n$$\\left(\\sum_{n \\in A} \\frac{1}{n},\\; \\sum_{n \\in A} \\frac{1}{n+1},\\; \\ldots,\\; \\sum_{n \\in A} \\frac{1}{n+d-1}\\right)$$\nas $A$ ranges over infinite subsets of $\\mathbb{N}$ with $\\sum_{n \\in A} 1/n < \\infty$.\n\n**Question**: Does $X_d$ have nonempty interior?\n\n**Answer**: YES for all $d \\ge 1$.\n\n- **Erd\u0151s-Straus**: $\\operatorname{int}(X_2) \\neq \\emptyset$\n- **Kova\u010d (2024)**: $\\operatorname{int}(X_3) \\neq \\emptyset$ with explicit ball construction\n- **Kova\u010d-Tao (2024)**: $\\operatorname{int}(X_d) \\neq \\emptyset$ for all $d \\ge 1$\n\n**Status**: SOLVED",
+    "text": "For X \u2286 \u211d^d of points (\u03a3 1/n, \u03a3 1/(n+1), ...) as A ranges over infinite sets with convergent harmonic sum, does X have nonempty interior? YES for all d \u2265 1 (Kova\u010d 2024, Kova\u010d-Tao 2024).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Harmonic Subseries:** Define HasConvergentHarmonicSubseries via Mathlib's Summable on the subtype A, and shiftedHarmonicSum for the k-shifted variant \u03a3 1/(n+k). Prove shifted convergence follows from the comparison test\n\n2. **Point Construction:** harmonicPoint maps (d, A) to Fin d \u2192 \u211d using shifted sums for each coordinate. harmonicPointSet collects all such points over infinite A with convergent sum\n\n3. **Main Axiom:** erdos_268_solved axiomatizes (interior X_d).Nonempty for all d, since the Kova\u010d-Tao proof involves sophisticated Ahmes series analysis beyond Mathlib\n\n4. **Genuine Derivation:** contains_open_ball is fully proved \u2014 it derives the existence of a metric ball B(c,r) \u2286 X from the interior axiom using mem_interior and Metric.isOpen_iff\n\n5. **Historical Cases:** Separate axioms for Erd\u0151s-Straus (d=2) and Kova\u010d (d=3) with placeholder explicit ball values, preserving the historical layering\n\n6. **Properties:** Path-connectedness, coordinate monotonicity, positivity, and dimension monotonicity via projection maps capture the geometric structure of X\n\n7. **Examples:** Concrete instances using squares and powers of 2 demonstrate the definitions are satisfiable",
     "keyInsights": [
-      "**Thin Sets Fill Open Regions:** The central paradox of Problem #268 is that sets A with Σ 1/n < ∞ must have natural density 0 (and even counting function A(x) = o(x/log x)), yet the harmonic points they generate contain an open ball. The 'degrees of freedom' in choosing which thin set A to use provide enough richness to cover a neighborhood",
-      "**Egyptian Fraction Connection:** The Kovač-Tao proof exploits the fact that harmonic subseries sums are exactly Egyptian fraction representations (sums of distinct unit fractions 1/n). The classical theory of Egyptian fractions, dating to the Rhind Papyrus (c. 1650 BCE), implies density results about achievable sums that translate to topological interior in the d-dimensional setting",
-      "**Coordinate Coupling via Shifts:** The shifted sums Σ 1/(n+k) for k = 0, ..., d-1 create a non-trivial coupling between coordinates. Two sets A, B with identical first coordinates can differ in higher coordinates because shifting by k changes the relative weights of small vs large elements. This coupling is what makes the higher-dimensional problem fundamentally harder than the 1D case",
-      "**Constructive vs Existential:** Kovač's d=3 proof is constructive — he computes an explicit ball center and radius. The Kovač-Tao general proof is existential, using compactness and density arguments from Ahmes series theory. The contrast highlights that quantitative bounds on the interior become harder as dimension increases",
-      "**Geometric Constraints on X:** Despite having interior, X is geometrically constrained: all coordinates are positive, strictly decreasing (x₀ > x₁ > ··· > x_{d-1} > 0), and projecting to fewer coordinates preserves the set. X lives in a narrow cone, yet still contains balls"
+      "**Thin Sets Fill Open Regions:** The central paradox of Problem #268 is that sets A with \u03a3 1/n < \u221e must have natural density 0 (and even counting function A(x) = o(x/log x)), yet the harmonic points they generate contain an open ball. The 'degrees of freedom' in choosing which thin set A to use provide enough richness to cover a neighborhood",
+      "**Egyptian Fraction Connection:** The Kova\u010d-Tao proof exploits the fact that harmonic subseries sums are exactly Egyptian fraction representations (sums of distinct unit fractions 1/n). The classical theory of Egyptian fractions, dating to the Rhind Papyrus (c. 1650 BCE), implies density results about achievable sums that translate to topological interior in the d-dimensional setting",
+      "**Coordinate Coupling via Shifts:** The shifted sums \u03a3 1/(n+k) for k = 0, ..., d-1 create a non-trivial coupling between coordinates. Two sets A, B with identical first coordinates can differ in higher coordinates because shifting by k changes the relative weights of small vs large elements. This coupling is what makes the higher-dimensional problem fundamentally harder than the 1D case",
+      "**Constructive vs Existential:** Kova\u010d's d=3 proof is constructive \u2014 he computes an explicit ball center and radius. The Kova\u010d-Tao general proof is existential, using compactness and density arguments from Ahmes series theory. The contrast highlights that quantitative bounds on the interior become harder as dimension increases",
+      "**Geometric Constraints on X:** Despite having interior, X is geometrically constrained: all coordinates are positive, strictly decreasing (x\u2080 > x\u2081 > \u00b7\u00b7\u00b7 > x_{d-1} > 0), and projecting to fewer coordinates preserves the set. X lives in a narrow cone, yet still contains balls"
     ],
     "prerequisites": [
       "Real analysis: convergence of series, harmonic subseries $\\sum_{n \\in A} 1/n$, summability theory",
@@ -90,7 +90,7 @@
     {
       "id": "point-set",
       "title": "The Point Set X",
-      "summary": "Defines harmonicPoint as Fin d → ℝ with each coordinate being a shifted sum, and harmonicPointSet as the image over infinite A with convergent sum. Provides an alternative definition harmonicPointSet' for formal-conjectures compatibility and proves extensional equality via ext/simp (fully proved, no sorry).",
+      "summary": "Defines harmonicPoint as Fin d \u2192 \u211d with each coordinate being a shifted sum, and harmonicPointSet as the image over infinite A with convergent sum. Provides an alternative definition harmonicPointSet' for formal-conjectures compatibility and proves extensional equality via ext/simp (fully proved, no sorry).",
       "startLine": 63,
       "endLine": 87
     },
@@ -103,63 +103,63 @@
     },
     {
       "id": "dim-2",
-      "title": "2-Dimensional Case (Erdős-Straus)",
-      "summary": "Axiomatizes the Erdős-Straus result that (interior (harmonicPointSet 2)).Nonempty. States dim2_point_form showing the concrete 2D point is (harmonicSubseriesSum A, shiftedHarmonicSum A 1) using matrix notation (sorry for the definitional unfolding).",
+      "title": "2-Dimensional Case (Erd\u0151s-Straus)",
+      "summary": "Axiomatizes the Erd\u0151s-Straus result that (interior (harmonicPointSet 2)).Nonempty. States dim2_point_form showing the concrete 2D point is (harmonicSubseriesSum A, shiftedHarmonicSum A 1) using matrix notation (sorry for the definitional unfolding).",
       "startLine": 109,
       "endLine": 122
     },
     {
       "id": "dim-3",
-      "title": "3-Dimensional Case (Kovač 2024)",
-      "summary": "Axiomatizes kovac_3d for the d=3 interior result. Defines placeholder kovacBallCenter and kovacBallRadius for Kovač's explicit construction. Axiomatizes kovac_explicit_ball: the ball lies inside harmonicPointSet 3.",
+      "title": "3-Dimensional Case (Kova\u010d 2024)",
+      "summary": "Axiomatizes kovac_3d for the d=3 interior result. Defines placeholder kovacBallCenter and kovacBallRadius for Kova\u010d's explicit construction. Axiomatizes kovac_explicit_ball: the ball lies inside harmonicPointSet 3.",
       "startLine": 124,
       "endLine": 140
     },
     {
       "id": "general",
-      "title": "General Dimension (Kovač-Tao 2024)",
-      "summary": "The theorem kovac_tao_general for d ≥ 1 is a direct application of erdos_268_solved. Defines AhmesSeries as a synonym for harmonicSubseriesSum, recording the Egyptian fraction connection that powered the Kovač-Tao proof.",
+      "title": "General Dimension (Kova\u010d-Tao 2024)",
+      "summary": "The theorem kovac_tao_general for d \u2265 1 is a direct application of erdos_268_solved. Defines AhmesSeries as a synonym for harmonicSubseriesSum, recording the Egyptian fraction connection that powered the Kova\u010d-Tao proof.",
       "startLine": 142,
       "endLine": 154
     },
     {
       "id": "properties",
       "title": "Properties of X",
-      "summary": "States harmonicPointSet_nonempty (sorry — would use squares example), harmonicPointSet_path_connected (sorry — involves continuous interpolation of sets), and harmonicPointSet_dense_somewhere (partially proved from the main axiom using isOpen_interior, with one remaining sorry).",
+      "summary": "States harmonicPointSet_nonempty (sorry \u2014 would use squares example), harmonicPointSet_path_connected (sorry \u2014 involves continuous interpolation of sets), and harmonicPointSet_dense_somewhere (partially proved from the main axiom using isOpen_interior, with one remaining sorry).",
       "startLine": 156,
       "endLine": 183
     },
     {
       "id": "coordinates",
       "title": "Coordinate Properties",
-      "summary": "States coordinate_decreasing: shifted sums decrease with shift index (sorry — needs tsum_lt_tsum for infinite A). States first_coordinate_largest as a corollary. States all_coordinates_positive for nonempty A (sorry — needs tsum_pos). Together these show X lies in the cone {x₀ > x₁ > ··· > x_{d-1} > 0}.",
+      "summary": "States coordinate_decreasing: shifted sums decrease with shift index (sorry \u2014 needs tsum_lt_tsum for infinite A). States first_coordinate_largest as a corollary. States all_coordinates_positive for nonempty A (sorry \u2014 needs tsum_pos). Together these show X lies in the cone {x\u2080 > x\u2081 > \u00b7\u00b7\u00b7 > x_{d-1} > 0}.",
       "startLine": 185,
       "endLine": 205
     },
     {
       "id": "monotonicity",
       "title": "Dimension Monotonicity",
-      "summary": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. States projection_preserves: the image of X_{d₂} under projection lies in X_{d₁} (sorry — requires showing the same set A generates both points).",
+      "summary": "Defines projectionMap from \u211d\u1d48\u00b2 to \u211d\u1d48\u00b9 for d\u2081 \u2264 d\u2082 via coordinate restriction. States projection_preserves: the image of X_{d\u2082} under projection lies in X_{d\u2081} (sorry \u2014 requires showing the same set A generates both points).",
       "startLine": 207,
       "endLine": 216
     },
     {
       "id": "examples",
       "title": "Specific Examples",
-      "summary": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. States convergence for both (sorry). Defines squaresPoint and powers2Point as concrete elements of X. The squares example connects to the Basel problem (Σ 1/n² = π²/6); the powers-of-2 example is a geometric series (Σ 1/2ᵏ = 2).",
+      "summary": "Defines squaresSet = {n\u00b2 : n \u2265 1} and powersOf2Set = {2\u1d4f}. States convergence for both (sorry). Defines squaresPoint and powers2Point as concrete elements of X. The squares example connects to the Basel problem (\u03a3 1/n\u00b2 = \u03c0\u00b2/6); the powers-of-2 example is a geometric series (\u03a3 1/2\u1d4f = 2).",
       "startLine": 218,
       "endLine": 241
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #268 asks whether the set of harmonic subseries points X_d ⊆ ℝᵈ has nonempty interior. The answer is YES for all d ≥ 1, proved in stages: Erdős-Straus for d=2, Kovač (2024) for d=3 with an explicit ball, and Kovač-Tao (2024) for all d using Ahmes series techniques. The formalization captures this in 242 lines of Lean 4 with 4 axioms (the deep analytical results) and 12 sorries (Mathlib-level technical lemmas). The key genuine proof is contains_open_ball, which derives the metric-ball formulation from the interior axiom. The sorry lemmas are good candidates for Aristotle proof search, as most involve standard Mathlib reasoning about summability and comparison.",
-    "implications": "**Theoretical Significance**: **Connections Across Mathematics**\n\n1. **Ahmes Series and Egyptian Fractions:** The Kovač-Tao proof bridges ancient number theory (Egyptian fraction decompositions from the Rhind Papyrus) with modern topology. The set of numbers representable as Ahmes series has surprising density properties that directly imply the nonempty interior result\n\n2. **Thin Sets in Additive Combinatorics:** Problem #268 is a topological counterpart to questions about sumsets of thin sets. In additive combinatorics, Freiman-Ruzsa theory studies when thin sets have large sumsets; here, the 'sumset' is the image of the harmonic point map, and 'large' means having interior\n\n**3. Harmonic Analysis on ℕ:** The shifted sums Σ 1/(n+k) are related to the digamma function ψ(x) and its derivatives (polygamma functions). The coordinate coupling in X_d reflects analytic properties of these special functions\n\n4. **Measure-Theoretic Questions:** Beyond interior, one can ask about the Lebesgue measure, Hausdorff dimension, and boundary regularity of X_d. The nonempty interior result implies positive Lebesgue measure, but sharp bounds on measure as a function of d remain open\n\n5. **Infinite-Dimensional Limit:** As d → ∞, the constraints become more restrictive (more coordinates must be simultaneously realized). Whether X_∞ = lim X_d retains any interior in the infinite-dimensional limit is a natural extension that connects to functional analysis.",
+    "summary": "Erd\u0151s Problem #268 asks whether the set of harmonic subseries points X_d \u2286 \u211d\u1d48 has nonempty interior. The answer is YES for all d \u2265 1, proved in stages: Erd\u0151s-Straus for d=2, Kova\u010d (2024) for d=3 with an explicit ball, and Kova\u010d-Tao (2024) for all d using Ahmes series techniques. The formalization captures this in 242 lines of Lean 4 with 4 axioms (the deep analytical results) and 12 sorries (Mathlib-level technical lemmas). The key genuine proof is contains_open_ball, which derives the metric-ball formulation from the interior axiom. The sorry lemmas are good candidates for Aristotle proof search, as most involve standard Mathlib reasoning about summability and comparison.",
+    "implications": "**Theoretical Significance**: **Connections Across Mathematics**\n\n1. **Ahmes Series and Egyptian Fractions:** The Kova\u010d-Tao proof bridges ancient number theory (Egyptian fraction decompositions from the Rhind Papyrus) with modern topology. The set of numbers representable as Ahmes series has surprising density properties that directly imply the nonempty interior result\n\n2. **Thin Sets in Additive Combinatorics:** Problem #268 is a topological counterpart to questions about sumsets of thin sets. In additive combinatorics, Freiman-Ruzsa theory studies when thin sets have large sumsets; here, the 'sumset' is the image of the harmonic point map, and 'large' means having interior\n\n**3. Harmonic Analysis on \u2115:** The shifted sums \u03a3 1/(n+k) are related to the digamma function \u03c8(x) and its derivatives (polygamma functions). The coordinate coupling in X_d reflects analytic properties of these special functions\n\n4. **Measure-Theoretic Questions:** Beyond interior, one can ask about the Lebesgue measure, Hausdorff dimension, and boundary regularity of X_d. The nonempty interior result implies positive Lebesgue measure, but sharp bounds on measure as a function of d remain open\n\n5. **Infinite-Dimensional Limit:** As d \u2192 \u221e, the constraints become more restrictive (more coordinates must be simultaneously realized). Whether X_\u221e = lim X_d retains any interior in the infinite-dimensional limit is a natural extension that connects to functional analysis.",
     "openQuestions": [
       "What is the largest open ball contained in X_d for each dimension d? How does the optimal radius decay with d?",
-      "Can Kovač's explicit ball construction for d=3 be extended to d=4, 5, ... with computable centers and radii?",
-      "What is the boundary structure of X_d? Is ∂X_d a smooth manifold, or does it have fractal-like features?",
-      "How does the Lebesgue measure of X_d ∩ B(0, R) scale with d for fixed R?",
-      "Is there an effective version of the Kovač-Tao result that gives explicit bounds on the ball radius as a function of d?"
+      "Can Kova\u010d's explicit ball construction for d=3 be extended to d=4, 5, ... with computable centers and radii?",
+      "What is the boundary structure of X_d? Is \u2202X_d a smooth manifold, or does it have fractal-like features?",
+      "How does the Lebesgue measure of X_d \u2229 B(0, R) scale with d for fixed R?",
+      "Is there an effective version of the Kova\u010d-Tao result that gives explicit bounds on the ball radius as a function of d?"
     ]
   },
   "crossReferences": [
@@ -189,6 +189,7 @@
     "lineCount": 278,
     "axiomCount": 4,
     "theoremCount": 15,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "lemmaCount": 0
   }
 }

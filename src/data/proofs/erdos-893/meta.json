@@ -1,10 +1,10 @@
 {
   "id": "erdos-893",
-  "title": "Erdős Problem #893: Divisor Sum of Mersenne Numbers",
+  "title": "Erd\u0151s Problem #893: Divisor Sum of Mersenne Numbers",
   "slug": "erdos-893",
   "description": "Define $f(n) = \\sum_{k=1}^n \\tau(2^k - 1)$. Does $f(2n)/f(n) \\to \\infty$? Kovac-Luca (2025) proved $\\limsup = \\infty$. Full divergence remains open.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/893",
     "date": "1998",
     "status": "axiomatized",
@@ -183,6 +183,7 @@
     "lineCount": 187,
     "axiomCount": 1,
     "theoremCount": 24,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "lemmaCount": 0
   }
 }

@@ -27,7 +27,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "assumptions": "4 axiom declarations: borsuk_ulam_general (n>=1, INDEPENDENT), no_retraction (n>=1, REDUNDANT - proved from BU via hemisphere folding), brouwer_fixed_point (nD, REDUNDANT - proved from no_retraction via ray-sphere retraction), lusternik_schnirelmann (n>=1, REDUNDANT - proved from BU via infDist). Only 1 independent axiom: borsuk_ulam_general. Two former axioms (ham_sandwich_general, odd_map_odd_degree) converted to theorems. The 1D cases are all proved directly from IVT with 0 axioms.",
     "mathlibDependencies": [
       {
@@ -207,8 +207,9 @@
     "namespace": "BorsukUlamOQ03",
     "lineCount": 5169,
     "axiomCount": 2,
-    "theoremCount": 233,
-    "definitionCount": 35
+    "theoremCount": 227,
+    "definitionCount": 35,
+    "lemmaCount": 0
   },
   "references": [
     {

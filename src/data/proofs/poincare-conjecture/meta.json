@@ -15,8 +15,8 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
-    "axiomCount": 35,
+    "sorries": 1,
+    "axiomCount": 32,
     "assumptions": "35 axiom declarations encoding: Perelman Ricci flow surgery (finite extinction, \u03ba-solutions), Novikov compact leaf theorem (foliations), generalized Poincar\u00e9 in dimensions 2/4/\u22655, simply connected S\u00b3 (needs Seifert-van Kampen), S\u00b3 non-contractible (needs homology), topological constructions (connected sum type, Dehn surgery type), classification results (JSJ decomposition/uniqueness, h/s-cobordism), 3-manifold topology (Heegaard splitting, Waldhausen genus-0, Property P, prime decomposition, irreducibility), counterexample structures (Poincar\u00e9 homology sphere, Whitehead manifold), covering space theory (sc_covering_injective). RP\u00b3 locally Euclidean now PROVED via gnomonic projection on hemispheres.",
     "mathlibDependencies": [
       {
@@ -325,8 +325,9 @@
     "namespace": "PoincareConjecture",
     "lineCount": 17668,
     "axiomCount": 32,
-    "theoremCount": 941,
-    "definitionCount": 369
+    "theoremCount": 897,
+    "definitionCount": 369,
+    "lemmaCount": 0
   },
   "relatedProofs": [
     "hurwitz-theorem",

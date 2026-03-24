@@ -61,7 +61,7 @@
       "Deleting defects is often cheaper than avoiding them: if expected defects are few, the altered structure retains most of the random construction's value",
       "The independent set bound n^2/(2m+n) is tight for regular graphs and was the best known for general sparse graphs for decades",
       "Property B results demonstrate that the alteration method applies beyond graph theory to hypergraph coloring",
-      "The alteration method can be derandomized via the method of conditional expectations, converting the existence proof into an efficient deterministic algorithm — this is the algorithmic significance of keeping the alteration step simple"
+      "The alteration method can be derandomized via the method of conditional expectations, converting the existence proof into an efficient deterministic algorithm \u2014 this is the algorithmic significance of keeping the alteration step simple"
     ],
     "prerequisites": [
       "Probabilistic method and first moment principle",
@@ -137,16 +137,16 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey-type problems are a primary motivation for the alteration method — the probabilistic lower bound on Ramsey numbers uses an alteration argument to handle edge colorings"
+      "description": "Ramsey-type problems are a primary motivation for the alteration method \u2014 the probabilistic lower bound on Ramsey numbers uses an alteration argument to handle edge colorings"
     }
   ],
   "conclusion": {
     "summary": "The alteration method extends the probabilistic method by introducing a deterministic correction phase after random construction. This two-step approach yields the classical independent set bound alpha(G) >= n^2/(2m+n) and Property B results for hypergraphs, demonstrating that approximate random solutions can be efficiently repaired.",
     "implications": "This formalization provides:\n\n**1. Independent Set Bounds**\nThe bound alpha(G) >= n^2/(2m+n) is foundational in graph theory and algorithmic applications.\n\n**2. Hypergraph Coloring**\nProperty B results connect to set system colorability, a central topic in combinatorial set theory.\n\n**3. Algorithmic Paradigm**\nThe alteration method directly inspires randomized algorithms: generate a random solution, then greedily fix violations.\n\n**4. Bridge to Erdos Problems**\nMany Erdos problems on graph coloring and Ramsey multiplicity use alteration arguments that this library formalizes.",
     "openQuestions": [
-      "How does the alteration method compare to the Lovász Local Lemma for sparse dependency structures? The LLL avoids alteration entirely by showing that a good object exists with positive probability, but requires a more delicate dependency analysis.",
+      "How does the alteration method compare to the Lov\u00e1sz Local Lemma for sparse dependency structures? The LLL avoids alteration entirely by showing that a good object exists with positive probability, but requires a more delicate dependency analysis.",
       "Can the independent set bound $\\alpha(G) \\geq n^2/(2m+n)$ be improved for triangle-free graphs? Shearer (1983) showed $\\alpha(G) \\geq \\Omega(n \\sqrt{\\log d}/d)$ for triangle-free $d$-regular graphs, but the optimal constant remains open.",
-      "What is the minimum number of edges in a $k$-uniform hypergraph without Property B? Erdős conjectured the threshold is $\\Theta(k^2 \\cdot 2^k)$, which was resolved by Radhakrishnan and Srinivasan (2000) up to logarithmic factors, but the exact constant is still unknown."
+      "What is the minimum number of edges in a $k$-uniform hypergraph without Property B? Erd\u0151s conjectured the threshold is $\\Theta(k^2 \\cdot 2^k)$, which was resolved by Radhakrishnan and Srinivasan (2000) up to logarithmic factors, but the exact constant is still unknown."
     ]
   },
   "relatedProofs": [
@@ -168,14 +168,15 @@
     "lineCount": 61,
     "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Some remarks on the theory of graphs",
       "year": "1947",
-      "venue": "Bulletin of the American Mathematical Society 53(4), 292–294",
+      "venue": "Bulletin of the American Mathematical Society 53(4), 292\u2013294",
       "note": "Introduced the probabilistic method by proving the existence of graphs with high girth and high chromatic number"
     },
     {

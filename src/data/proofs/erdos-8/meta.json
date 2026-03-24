@@ -1,6 +1,6 @@
 {
   "id": "erdos-8",
-  "title": "Erdős Problem #8: Monochromatic Covering Systems",
+  "title": "Erd\u0151s Problem #8: Monochromatic Covering Systems",
   "slug": "erdos-8",
   "description": "For any finite coloring of integers, must there exist a covering system with monochromatic moduli? DISPROVED by Hough (2015) using the minimum modulus bound.",
   "meta": {
@@ -36,8 +36,8 @@
     "originalContributions": [
       "CoveringSystem structure with covering property formalized",
       "Coloring type and IsMonochromatic predicate defined",
-      "Erdős-Graham conjecture precisely stated",
-      "Hough's minimum modulus bound axiomatized (≤ 616,000)",
+      "Erd\u0151s-Graham conjecture precisely stated",
+      "Hough's minimum modulus bound axiomatized (\u2264 616,000)",
       "Counterexample coloring construction outlined",
       "erdos_8_false theorem derived from resolution axiom",
       "Density version with HasLogDensityTail formalized",
@@ -55,10 +55,10 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Graham in their 1980 book on combinatorial number theory. They conjectured that any finite coloring of the integers must admit a covering system whose moduli are all the same color.\n\nThe conjecture remained open until 2015, when Bob Hough's breakthrough on the minimum modulus problem for covering systems provided the key insight. Hough showed that the minimum modulus is bounded by 616,000, which creates a structural bottleneck exploitable to construct counterexamples.",
+    "historicalContext": "This problem was posed by Erd\u0151s and Graham in their 1980 book on combinatorial number theory. They conjectured that any finite coloring of the integers must admit a covering system whose moduli are all the same color.\n\nThe conjecture remained open until 2015, when Bob Hough's breakthrough on the minimum modulus problem for covering systems provided the key insight. Hough showed that the minimum modulus is bounded by 616,000, which creates a structural bottleneck exploitable to construct counterexamples.",
     "problemStatement": "**Coloring Version**: For any finite coloring of the positive integers, does there exist a covering system all of whose moduli are monochromatic?\n\n**Density Version**: If $A \\subseteq \\mathbb{N}$ satisfies $\\sum_{a \\in A, a > N} \\frac{1}{a} \\gg \\log N$, must $A$ contain the moduli of some covering system?\n\n**Answer**: NO to both. Hough (2015) disproved both versions.",
     "text": "For any finite coloring of integers, must there exist a covering system with monochromatic moduli? DISPROVED by Hough (2015) using the minimum modulus bound.",
-    "proofStrategy": "The key insight is Hough's **minimum modulus bound**: every covering system with distinct moduli has minimum modulus at most 616,000.\n\nThis creates a bottleneck:\n1. Any covering system must include a \"small\" modulus (≤ 616,000)\n2. Color all integers < 10^18 with distinct colors\n3. Any covering system's moduli cannot all share a color\n4. The sparse structure at the low end prevents monochromatic moduli sets\n\nThe formalization axiomatizes the minimum modulus bound and the resolution, then derives the falsity of the original conjecture.",
+    "proofStrategy": "The key insight is Hough's **minimum modulus bound**: every covering system with distinct moduli has minimum modulus at most 616,000.\n\nThis creates a bottleneck:\n1. Any covering system must include a \"small\" modulus (\u2264 616,000)\n2. Color all integers < 10^18 with distinct colors\n3. Any covering system's moduli cannot all share a color\n4. The sparse structure at the low end prevents monochromatic moduli sets\n\nThe formalization axiomatizes the minimum modulus bound and the resolution, then derives the falsity of the original conjecture.",
     "keyInsights": [
       "Disproved using Hough's minimum modulus bound (2015)",
       "Color small integers distinctly, large integers uniformly",
@@ -91,14 +91,14 @@
     {
       "id": "conjecture",
       "title": "Original Conjecture",
-      "summary": "Erdős-Graham conjecture and its negation",
+      "summary": "Erd\u0151s-Graham conjecture and its negation",
       "startLine": 79,
       "endLine": 95
     },
     {
       "id": "hough",
       "title": "Hough's Minimum Modulus",
-      "summary": "The key theorem: minimum modulus ≤ 616,000",
+      "summary": "The key theorem: minimum modulus \u2264 616,000",
       "startLine": 97,
       "endLine": 122
     },
@@ -132,7 +132,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #8 is DISPROVED. Hough (2015) showed that not every finite coloring of integers admits a covering system with monochromatic moduli. The key is the minimum modulus bound: by coloring small integers distinctly, we can avoid monochromatic covering moduli.",
+    "summary": "Erd\u0151s Problem #8 is DISPROVED. Hough (2015) showed that not every finite coloring of integers admits a covering system with monochromatic moduli. The key is the minimum modulus bound: by coloring small integers distinctly, we can avoid monochromatic covering moduli.",
     "implications": "**Theoretical Significance**: **Mathematical Impact:**\n\n1. **Structural Rigidity**: Covering systems have inherent low-end structure that constrains their moduli sets\n\n**2. Ramsey Connection**: Links covering systems to combinatorial coloring theory - some Ramsey-type properties fail\n\n3. **Multiple Resolutions**: Hough's paper simultaneously resolved Problems #2 and #8 using the same techniques\n\n4. **Density Insufficient**: Logarithmic tail density alone doesn't guarantee covering moduli.",
     "openQuestions": [
       "What is the optimal minimum modulus bound?",
@@ -154,7 +154,8 @@
     "lineCount": 237,
     "axiomCount": 5,
     "theoremCount": 2,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -175,17 +176,17 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On integers of the form 2^k + p and some related problems",
       "year": "1950",
-      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113–123",
+      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113\u2013123",
       "note": "Introduced covering systems; Problem #8 extends these ideas to colored coverings"
     },
     {
-      "authors": "Balister, Paul; Bollobás, Béla; Morris, Robert; Sahasrabudhe, Julian; Tiba, Marius",
+      "authors": "Balister, Paul; Bollob\u00e1s, B\u00e9la; Morris, Robert; Sahasrabudhe, Julian; Tiba, Marius",
       "title": "Covering systems with restricted divisibility",
       "year": "2022",
-      "venue": "Annals of Mathematics, vol. 196, no. 2, pp. 513–560",
+      "venue": "Annals of Mathematics, vol. 196, no. 2, pp. 513\u2013560",
       "note": "Major advances in covering system theory relevant to structural variants like Problem #8"
     }
   ],

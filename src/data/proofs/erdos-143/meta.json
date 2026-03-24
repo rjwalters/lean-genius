@@ -1,8 +1,8 @@
 {
   "id": "erdos-143",
-  "title": "Erdős Problem #143: Sparseness of Dilation-Avoiding Sets",
+  "title": "Erd\u0151s Problem #143: Sparseness of Dilation-Avoiding Sets",
   "slug": "erdos-143",
-  "description": "If A ⊂ (1,∞) satisfies |kx - y| ≥ 1 for all distinct x,y ∈ A and k ≥ 1, must A be sparse?",
+  "description": "If A \u2282 (1,\u221e) satisfies |kx - y| \u2265 1 for all distinct x,y \u2208 A and k \u2265 1, must A be sparse?",
   "meta": {
     "author": "Koukoulopoulos-Lamzouri-Lichtman (2025)",
     "sourceUrl": "https://erdosproblems.com/143",
@@ -50,16 +50,16 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem asks about the sparseness of sets A ⊂ (1,∞) with the property that |kx - y| ≥ 1 for all distinct x, y ∈ A and all positive integers k. Such sets are called \"well-separated under integer dilation\" - no element can be close to an integer multiple of another.\n\nFor integer sets, this condition implies the set is \"primitive\" (no element divides another). Erdős proved in 1935 that primitive integer sets have convergent reciprocal-log series ∑ 1/(n log n). Behrend showed in 1935 that their partial sums satisfy ∑_{n<x} 1/n ≪ log x / √(log log x).\n\nThe generalization to real sets remained open for decades. In 2025, Koukoulopoulos, Lamzouri, and Lichtman made a breakthrough, proving that ∑_{x<n, x∈A} 1/x = o(log n). The stronger conjectures about liminf of density and convergence of ∑ 1/(x log x) remain open.",
+    "historicalContext": "This problem asks about the sparseness of sets A \u2282 (1,\u221e) with the property that |kx - y| \u2265 1 for all distinct x, y \u2208 A and all positive integers k. Such sets are called \"well-separated under integer dilation\" - no element can be close to an integer multiple of another.\n\nFor integer sets, this condition implies the set is \"primitive\" (no element divides another). Erd\u0151s proved in 1935 that primitive integer sets have convergent reciprocal-log series \u2211 1/(n log n). Behrend showed in 1935 that their partial sums satisfy \u2211_{n<x} 1/n \u226a log x / \u221a(log log x).\n\nThe generalization to real sets remained open for decades. In 2025, Koukoulopoulos, Lamzouri, and Lichtman made a breakthrough, proving that \u2211_{x<n, x\u2208A} 1/x = o(log n). The stronger conjectures about liminf of density and convergence of \u2211 1/(x log x) remain open.",
     "problemStatement": "Let $A \\subset (1, \\infty)$ be a countably infinite set such that for all $x \\neq y \\in A$ and integers $k \\geq 1$ we have $|kx - y| \\geq 1$. Must $A$ be sparse?\n\n**Partially Solved (2025)**: Koukoulopoulos-Lamzouri-Lichtman proved that $\\sum_{x < n, x \\in A} \\frac{1}{x} = o(\\log n)$.\n\n**Still Open**: (i) $\\liminf |A \\cap [1,x]|/x = 0$? (ii) $\\sum_{x \\in A} \\frac{1}{x \\log x} < \\infty$?",
-    "text": "If A ⊂ (1,∞) satisfies |kx - y| ≥ 1 for all distinct x,y ∈ A and k ≥ 1, must A be sparse?",
+    "text": "If A \u2282 (1,\u221e) satisfies |kx - y| \u2265 1 for all distinct x,y \u2208 A and k \u2265 1, must A be sparse?",
     "proofStrategy": "We formalize the definitions and axiomatize the main results:\n\n1. **WellSeparatedSet**: Captures the dilation-avoidance condition\n2. **Conjecture variants**: Three different sparseness conditions (i), (ii), (iii)\n3. **KLL Theorem**: The 2025 partial resolution as an axiom\n4. **Primitive sets**: Connection to the integer case\n\nThe KLL theorem is axiomatized because its proof requires GCD graph arguments and multiplicative number theory bounds not yet in Mathlib.",
     "keyInsights": [
-      "**Dilation avoidance**: The condition |kx - y| ≥ 1 prevents clustering around integer multiples",
+      "**Dilation avoidance**: The condition |kx - y| \u2265 1 prevents clustering around integer multiples",
       "**Primitive connection**: For integers, this implies no element divides another",
       "**Density questions**: Three levels of sparseness - lower density zero, series convergence, partial sum bounds",
       "**2025 breakthrough**: KLL proved the weakest form, opening the door to the stronger conjectures",
-      "**Hierarchy of sparseness**: The three conjectures form a strict hierarchy: $\\sum 1/(x\\log x) < \\infty$ implies $\\liminf |A \\cap [1,x]|/x = 0$ implies $\\sum_{x<n} 1/x = o(\\log n)$ — the KLL result resolves the weakest, leaving the two stronger forms as future targets"
+      "**Hierarchy of sparseness**: The three conjectures form a strict hierarchy: $\\sum 1/(x\\log x) < \\infty$ implies $\\liminf |A \\cap [1,x]|/x = 0$ implies $\\sum_{x<n} 1/x = o(\\log n)$ \u2014 the KLL result resolves the weakest, leaving the two stronger forms as future targets"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -91,7 +91,7 @@
       "startLine": 61,
       "endLine": 84,
       "summary": "The KLL theorem and its application",
-      "mathContext": "KLL theorem (Klurman-Lunnon-Lewko): if $A$ is well-separated, then $A(x) = o(x/\\sqrt{\\log x})$ — a density bound slightly better than trivial."
+      "mathContext": "KLL theorem (Klurman-Lunnon-Lewko): if $A$ is well-separated, then $A(x) = o(x/\\sqrt{\\log x})$ \u2014 a density bound slightly better than trivial."
     },
     {
       "id": "primitive-sets",
@@ -106,17 +106,17 @@
       "title": "Historical Results",
       "startLine": 98,
       "endLine": 102,
-      "summary": "Erdős 1935 theorem on primitive sets",
-      "mathContext": "Erdős (1935): primitive sets satisfy $\\sum_{a \\in A} 1/(a \\log a) < \\infty$. But this doesn't resolve $\\sum 1/a$ convergence for dilation-avoiding sets."
+      "summary": "Erd\u0151s 1935 theorem on primitive sets",
+      "mathContext": "Erd\u0151s (1935): primitive sets satisfy $\\sum_{a \\in A} 1/(a \\log a) < \\infty$. But this doesn't resolve $\\sum 1/a$ convergence for dilation-avoiding sets."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #143 on the sparseness of dilation-avoiding sets. The main theorem (KLL 2025) proves that partial reciprocal sums are o(log n), resolving one of Erdős's three conjectures. The stronger questions about lower density zero and series convergence remain open.",
+    "summary": "We formalize Erd\u0151s Problem #143 on the sparseness of dilation-avoiding sets. The main theorem (KLL 2025) proves that partial reciprocal sums are o(log n), resolving one of Erd\u0151s's three conjectures. The stronger questions about lower density zero and series convergence remain open.",
     "implications": "This partial resolution demonstrates that dilation-avoidance does force some degree of sparseness. The techniques from GCD graphs may lead to further progress on the remaining conjectures.",
     "openQuestions": [
-      "Does liminf |A ∩ [1,x]|/x = 0 for all well-separated A?",
-      "Does ∑ 1/(x log x) converge for all well-separated A?",
-      "Can the o(log n) bound be strengthened to O(log n / √(log log n))?"
+      "Does liminf |A \u2229 [1,x]|/x = 0 for all well-separated A?",
+      "Does \u2211 1/(x log x) converge for all well-separated A?",
+      "Can the o(log n) bound be strengthened to O(log n / \u221a(log log n))?"
     ]
   },
   "crossReferences": [
@@ -142,6 +142,7 @@
     "lineCount": 120,
     "axiomCount": 3,
     "theoremCount": 1,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   }
 }

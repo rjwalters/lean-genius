@@ -2,7 +2,7 @@
   "id": "ptolemys-theorem",
   "title": "Ptolemy's Theorem",
   "slug": "ptolemys-theorem",
-  "description": "For a cyclic quadrilateral, the product of diagonals equals the sum of products of opposite sides: AC·BD = AB·CD + BC·DA",
+  "description": "For a cyclic quadrilateral, the product of diagonals equals the sum of products of opposite sides: AC\u00b7BD = AB\u00b7CD + BC\u00b7DA",
   "meta": {
     "author": "Ptolemy of Alexandria (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem",
@@ -41,12 +41,12 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Claudius Ptolemy of Alexandria (c. 100-170 AD) proved this theorem in Book I, Chapter 10 of his astronomical treatise *Almagest* (c. 150 AD), where it was the key tool for computing a table of chords — the ancient equivalent of trigonometric tables. The chord table allowed Ptolemy to compute $\\text{chord}(\\alpha + \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$, which is equivalent to the modern addition formula $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$. The theorem was fundamental to astronomy and navigation for over 1500 years. The elegant complex-number proof — $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$ — was discovered much later and reveals the deep algebraic structure behind the geometric identity. The converse is also true: Ptolemy's equality characterizes cyclic quadrilaterals. The inequality version $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff the points are concyclic.",
+    "historicalContext": "Claudius Ptolemy of Alexandria (c. 100-170 AD) proved this theorem in Book I, Chapter 10 of his astronomical treatise *Almagest* (c. 150 AD), where it was the key tool for computing a table of chords \u2014 the ancient equivalent of trigonometric tables. The chord table allowed Ptolemy to compute $\\text{chord}(\\alpha + \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$, which is equivalent to the modern addition formula $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$. The theorem was fundamental to astronomy and navigation for over 1500 years. The elegant complex-number proof \u2014 $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$ \u2014 was discovered much later and reveals the deep algebraic structure behind the geometric identity. The converse is also true: Ptolemy's equality characterizes cyclic quadrilaterals. The inequality version $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff the points are concyclic.",
     "problemStatement": "**Ptolemy's Theorem**:\n\nFor a cyclic quadrilateral $ABCD$ (inscribed in a circle):\n\n$$AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$$\n\nThe product of the diagonals equals the sum of the products of opposite sides.",
-    "text": "For a cyclic quadrilateral, the product of diagonals equals the sum of products of opposite sides: AC·BD = AB·CD + BC·DA",
+    "text": "For a cyclic quadrilateral, the product of diagonals equals the sum of products of opposite sides: AC\u00b7BD = AB\u00b7CD + BC\u00b7DA",
     "proofStrategy": "The formalization uses Mathlib's `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical` from the `Geometry.Euclidean.Sphere.Ptolemy` module. The Mathlib formulation uses `Cospherical` (points on a common sphere/circle) and angle conditions $\\angle APC = \\pi$ and $\\angle BPD = \\pi$ to express that $P$ lies on both diagonals. Alternative formulations (symmetric, rearranged) are derived by commutativity. Numerical examples verify the theorem for a rectangle (recovering the Pythagorean theorem), a square, and an isosceles trapezoid.",
     "keyInsights": [
-      "When the cyclic quadrilateral is a rectangle (sides $a$, $b$, diagonal $d = \\sqrt{a^2+b^2}$), Ptolemy reduces to $a^2 + b^2 = d^2$ — the Pythagorean theorem. So Ptolemy genuinely generalizes Pythagoras to non-rectangular cyclic quadrilaterals.",
+      "When the cyclic quadrilateral is a rectangle (sides $a$, $b$, diagonal $d = \\sqrt{a^2+b^2}$), Ptolemy reduces to $a^2 + b^2 = d^2$ \u2014 the Pythagorean theorem. So Ptolemy genuinely generalizes Pythagoras to non-rectangular cyclic quadrilaterals.",
       "Ptolemy's theorem is the geometric incarnation of the algebraic identity $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$ for complex numbers on a circle. Taking absolute values gives the theorem. This reveals that Ptolemy is really about the multiplicative structure of $\\mathbb{C}$.",
       "The Mathlib formalization uses `Cospherical` (points on a common sphere) rather than 'inscribed in a circle', making the theorem valid in any dimension. Four points on a sphere in $\\mathbb{R}^n$ satisfy Ptolemy's equality at the diagonal intersection point.",
       "The converse characterizes cyclic quadrilaterals: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ holds if and only if the four points are concyclic. The inequality $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations (Ptolemy's inequality).",
@@ -142,8 +142,8 @@
     "summary": "This formalization verifies Ptolemy's Theorem (Wiedijk #95) using Mathlib's cospherical geometry framework. It provides the main theorem, three alternative formulations, a diagonal-product corollary, three numerical examples (including the Pythagorean theorem as a special case), and discusses the converse characterization and Ptolemy's inequality.",
     "implications": "**Theoretical Significance**: Ptolemy's theorem bridges ancient and modern mathematics. It yields the trigonometric addition formulas (the foundation of trigonometry), generalizes the Pythagorean theorem, and characterizes cyclic quadrilaterals.\n\nThe complex-number proof reveals connections to conformal mappings and inversive geometry. Ptolemy's inequality generalizes to higher dimensions and is related to the positive semidefiniteness of the Cayley-Menger determinant.",
     "openQuestions": [
-      "Can Ptolemy's inequality (AC·BD ≤ AB·CD + AD·BC for arbitrary four points) be formalized, with equality characterized by concyclicity?",
-      "Can the complex-number proof be formalized, showing that Ptolemy's theorem follows from the algebraic identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₁-z₄)(z₂-z₃) applied to points on a circle?",
+      "Can Ptolemy's inequality (AC\u00b7BD \u2264 AB\u00b7CD + AD\u00b7BC for arbitrary four points) be formalized, with equality characterized by concyclicity?",
+      "Can the complex-number proof be formalized, showing that Ptolemy's theorem follows from the algebraic identity (z\u2081-z\u2083)(z\u2082-z\u2084) = (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2081-z\u2084)(z\u2082-z\u2083) applied to points on a circle?",
       "Can the derivation of the sine addition formula from Ptolemy's theorem be formalized, showing the historical connection between chord tables and modern trigonometry?"
     ]
   },
@@ -171,12 +171,13 @@
     "lineCount": 267,
     "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "Claudius Ptolemy",
-      "title": "Almagest (Μαθηματικὴ Σύνταξις)",
+      "title": "Almagest (\u039c\u03b1\u03b8\u03b7\u03bc\u03b1\u03c4\u03b9\u03ba\u1f74 \u03a3\u03cd\u03bd\u03c4\u03b1\u03be\u03b9\u03c2)",
       "year": "c. 150 AD",
       "note": "Book I, Ch. 10: original statement and proof of Ptolemy's theorem for chord computation"
     },

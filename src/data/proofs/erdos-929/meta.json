@@ -2,9 +2,9 @@
   "id": "erdos-929",
   "title": "Smooth Numbers in Short Intervals",
   "slug": "erdos-929",
-  "description": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
+  "description": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) \u2265 k^{1\u2212o(1)}? Known: k^{1/2\u2212o(1)} \u2264 S(k) \u2264 k\u00b7(log\u00b3 k)/(log\u00b2 k \u00b7 log\u2074 k) by Ford\u2013Green\u2013Konyagin\u2013Maynard\u2013Tao.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/929",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos929Problem.lean",
@@ -25,15 +25,15 @@
     "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1976, motivated by his longstanding interest in the distribution of smooth (or friable) numbers — integers whose prime factors are all bounded. The study of smooth numbers dates back to Ramanujan (1917) who first investigated their counting function, later made precise by Dickman (1930) through his function $\\rho(u)$ estimating $\\Psi(x, x^{1/u})/x$. The connection to consecutive integers goes deeper: Størmer (1897) had already studied consecutive smooth numbers, and Erdős and others explored how many consecutive integers can share the property of having only small prime factors. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large gaps between primes — settling a conjecture of Erdős on prime gap sizes — unexpectedly provided the best known upper bound on $S(k)$, connecting this problem to one of the central achievements in 21st-century analytic number theory.",
+    "historicalContext": "Erd\u0151s posed this problem in 1976, motivated by his longstanding interest in the distribution of smooth (or friable) numbers \u2014 integers whose prime factors are all bounded. The study of smooth numbers dates back to Ramanujan (1917) who first investigated their counting function, later made precise by Dickman (1930) through his function $\\rho(u)$ estimating $\\Psi(x, x^{1/u})/x$. The connection to consecutive integers goes deeper: St\u00f8rmer (1897) had already studied consecutive smooth numbers, and Erd\u0151s and others explored how many consecutive integers can share the property of having only small prime factors. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large gaps between primes \u2014 settling a conjecture of Erd\u0151s on prime gap sizes \u2014 unexpectedly provided the best known upper bound on $S(k)$, connecting this problem to one of the central achievements in 21st-century analytic number theory.",
     "problemStatement": "Let $S(k)$ be the minimal $x$ such that the set $\\{n \\in \\mathbb{N} : n+1, \\ldots, n+k \\text{ are all } x\\text{-smooth}\\}$ has positive upper density. Is $S(k) \\geq k^{1-o(1)}$?",
-    "text": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
-    "proofStrategy": "We formalize the core definitions — $x$-smoothness, smooth blocks, upper density, and the threshold function $S(k)$ — then state the main conjecture and known bounds as axioms. The definition of $S(k)$ uses `Nat.find` with the trivial upper bound $S(k) \\leq k+1$ as existence witness. The known bounds are formalized using Lean's filter-based `∀ᶠ ... in atTop` for eventual inequalities, and the FGKMT result is stated with explicit iterated logarithmic factors.",
+    "text": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) \u2265 k^{1\u2212o(1)}? Known: k^{1/2\u2212o(1)} \u2264 S(k) \u2264 k\u00b7(log\u00b3 k)/(log\u00b2 k \u00b7 log\u2074 k) by Ford\u2013Green\u2013Konyagin\u2013Maynard\u2013Tao.",
+    "proofStrategy": "We formalize the core definitions \u2014 $x$-smoothness, smooth blocks, upper density, and the threshold function $S(k)$ \u2014 then state the main conjecture and known bounds as axioms. The definition of $S(k)$ uses `Nat.find` with the trivial upper bound $S(k) \\leq k+1$ as existence witness. The known bounds are formalized using Lean's filter-based `\u2200\u1da0 ... in atTop` for eventual inequalities, and the FGKMT result is stated with explicit iterated logarithmic factors.",
     "keyInsights": [
       "The trivial bound $S(k) \\leq k+1$ uses the elegant observation that $n \\equiv -1 \\pmod{(k+1)!}$ forces each $n+i$ to be divisible by $i$, making all block elements $(k+1)$-smooth",
-      "Rosser's sieve gives $S(k) > k^{1/2-o(1)}$ — the current gap between this and the conjectured $k^{1-o(1)}$ is enormous and represents a fundamental open problem in multiplicative number theory",
+      "Rosser's sieve gives $S(k) > k^{1/2-o(1)}$ \u2014 the current gap between this and the conjectured $k^{1-o(1)}$ is enormous and represents a fundamental open problem in multiplicative number theory",
       "The FGKMT upper bound $S(k) \\ll k \\cdot (\\log\\log\\log k)/(\\log\\log k \\cdot \\log\\log\\log\\log k)$ connects smooth numbers to prime gaps via the surprising fact that long prime-free intervals are rich in smooth numbers",
-      "The formalization uses Lean's filter theory to express asymptotic bounds cleanly — `∀ᶠ (k : ℕ) in atTop` captures \"for all sufficiently large $k$\" without specifying explicit constants",
+      "The formalization uses Lean's filter theory to express asymptotic bounds cleanly \u2014 `\u2200\u1da0 (k : \u2115) in atTop` captures \"for all sufficiently large $k$\" without specifying explicit constants",
       "The monotonicity $S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$ follows from set inclusion of smooth block sets, a structural observation that constrains the growth of $S(k)$"
     ],
     "prerequisites": [
@@ -67,14 +67,14 @@
       "title": "Main Conjecture",
       "startLine": 58,
       "endLine": 65,
-      "summary": "States the Erdős conjecture: S(k) ≥ k^{1−ε} for all ε > 0 and sufficiently large k, formalized using the eventually quantifier on the atTop filter."
+      "summary": "States the Erd\u0151s conjecture: S(k) \u2265 k^{1\u2212\u03b5} for all \u03b5 > 0 and sufficiently large k, formalized using the eventually quantifier on the atTop filter."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "startLine": 67,
       "endLine": 88,
-      "summary": "Three axiomatized bounds: the trivial upper bound S(k) ≤ k+1 from factorial arithmetic progressions, Rosser's sieve lower bound k^{1/2−o(1)}, and the FGKMT upper bound with iterated logarithmic factors from their prime gap breakthrough."
+      "summary": "Three axiomatized bounds: the trivial upper bound S(k) \u2264 k+1 from factorial arithmetic progressions, Rosser's sieve lower bound k^{1/2\u2212o(1)}, and the FGKMT upper bound with iterated logarithmic factors from their prime gap breakthrough."
     },
     {
       "id": "structural",
@@ -85,11 +85,11 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #929 on the smoothness threshold for consecutive integers. It builds a clean definitional framework (smooth numbers, smooth blocks, upper density, threshold function) and states the main conjecture alongside three tiers of bounds: the elementary trivial bound, the sieve-theoretic Rosser bound, and the deep FGKMT bound from prime gap theory.",
-    "implications": "**Theoretical Significance**: The problem sits at the intersection of multiplicative number theory (smooth number distribution), sieve theory (Rosser–Iwaniec bounds), and the recent revolution in prime gap research (Maynard–Tao methods).\n\nClosing the gap between the known lower bound $k^{1/2-o(1)}$ and the conjectured $k^{1-o(1)}$ would likely require fundamentally new ideas about how smooth numbers cluster in short intervals. Progress on this problem could also impact computational number theory, where smooth number distribution is central to the complexity of integer factorization algorithms.",
+    "summary": "This formalization captures Erd\u0151s Problem #929 on the smoothness threshold for consecutive integers. It builds a clean definitional framework (smooth numbers, smooth blocks, upper density, threshold function) and states the main conjecture alongside three tiers of bounds: the elementary trivial bound, the sieve-theoretic Rosser bound, and the deep FGKMT bound from prime gap theory.",
+    "implications": "**Theoretical Significance**: The problem sits at the intersection of multiplicative number theory (smooth number distribution), sieve theory (Rosser\u2013Iwaniec bounds), and the recent revolution in prime gap research (Maynard\u2013Tao methods).\n\nClosing the gap between the known lower bound $k^{1/2-o(1)}$ and the conjectured $k^{1-o(1)}$ would likely require fundamentally new ideas about how smooth numbers cluster in short intervals. Progress on this problem could also impact computational number theory, where smooth number distribution is central to the complexity of integer factorization algorithms.",
     "openQuestions": [
-      "Is the true order of $S(k)$ closer to $k$ (as Erdős conjectured) or to $k^{1/2}$ (the current lower bound)?",
-      "Can the Rosser sieve lower bound $k^{1/2-o(1)}$ be improved, perhaps using the Maynard–Tao sieve or other modern techniques?",
+      "Is the true order of $S(k)$ closer to $k$ (as Erd\u0151s conjectured) or to $k^{1/2}$ (the current lower bound)?",
+      "Can the Rosser sieve lower bound $k^{1/2-o(1)}$ be improved, perhaps using the Maynard\u2013Tao sieve or other modern techniques?",
       "What is the exact value of $S(k)$ for small values of $k$ (e.g., $k = 3, 4, 5$)?",
       "Does the problem become easier or harder if upper density is replaced by lower density or logarithmic density?"
     ]
@@ -98,27 +98,27 @@
     {
       "targetId": "erdos-240",
       "relationship": "related",
-      "description": "Erdős #240 studies gaps between P-smooth numbers, the complementary question to smooth number density in intervals"
+      "description": "Erd\u0151s #240 studies gaps between P-smooth numbers, the complementary question to smooth number density in intervals"
     },
     {
       "targetId": "erdos-369",
       "relationship": "related",
-      "description": "Erdős #369 on consecutive smooth numbers directly parallels this problem's focus on smooth blocks"
+      "description": "Erd\u0151s #369 on consecutive smooth numbers directly parallels this problem's focus on smooth blocks"
     },
     {
       "targetId": "erdos-1055",
       "relationship": "related",
-      "description": "Erdős #1055 classifies primes by smoothness of p+1, connecting smooth numbers to prime structure"
+      "description": "Erd\u0151s #1055 classifies primes by smoothness of p+1, connecting smooth numbers to prime structure"
     },
     {
       "targetId": "erdos-218",
       "relationship": "related",
-      "description": "Erdős #218 on prime gap densities — the FGKMT result used here originated from prime gap research"
+      "description": "Erd\u0151s #218 on prime gap densities \u2014 the FGKMT result used here originated from prime gap research"
     },
     {
       "targetId": "erdos-334",
       "relationship": "related",
-      "description": "Erdős #334 on smooth number representation explores additive properties of smooth numbers"
+      "description": "Erd\u0151s #334 on smooth number representation explores additive properties of smooth numbers"
     }
   ],
   "relatedProofs": [
@@ -141,6 +141,7 @@
     "lineCount": 99,
     "axiomCount": 6,
     "theoremCount": 0,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   }
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-104",
-  "title": "Erdős Problem #104: Unit Circles Through Three Points",
+  "title": "Erd\u0151s Problem #104: Unit Circles Through Three Points",
   "slug": "erdos-104",
-  "description": "Given n points in ℝ², how many unit circles contain at least 3 points? Known: Ω(n^{3/2}) ≤ answer ≤ O(n²). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
+  "description": "Given n points in \u211d\u00b2, how many unit circles contain at least 3 points? Known: \u03a9(n^{3/2}) \u2264 answer \u2264 O(n\u00b2). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
   "meta": {
-    "author": "Erdős (1975)",
+    "author": "Erd\u0151s (1975)",
     "sourceUrl": "https://erdosproblems.com/104",
     "date": "1975",
     "status": "formalized",
@@ -27,17 +27,17 @@
     "assumptions": "12 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős in 1975 as part of his extensive program on combinatorial and discrete geometry, and carries a $100 prize. It sits in the family of unit distance and incidence problems that have driven much of modern computational geometry. The fundamental observation is that any two points at distance at most 2 determine at most 2 unit circles through both (the centers lie on the perpendicular bisector), giving a trivial O(n²) upper bound on the number of unit circles with 3+ points from an n-point set. Harborth and Mengersen (1986) refined this to n(n-1)/3 using the fact that each 3-rich circle contributes at least 3 pairs. Elekes (1984) proved the matching lower bound Ω(n^{3/2}) by constructing point sets on a grid-like structure that create many triple incidences with unit circles. This established the conjectured growth rate as Θ(n^{3/2}), but proving the O(n^{3/2}) upper bound has remained stubbornly open. The problem is closely related to the Szemerédi-Trotter incidence theorem (1983), which bounds point-line incidences as O(n^{2/3}m^{2/3} + n + m). Analogous bounds hold for algebraic curves (Pach-Sharir), but naively applying them to unit circles only recovers the O(n²) trivial bound. The difficulty is that unit circles form a special 2-parameter family (parameterized by center position), and exploiting this algebraic structure has resisted all known techniques including polynomial partitioning (Guth-Katz 2015).",
-    "problemStatement": "Given n points in ℝ², prove that the number of distinct unit circles containing at least three points is O(n^{3/2}), or at least o(n²). The trivial upper bound is n(n-1)/3 from double counting. Elekes (1984) showed the lower bound Ω(n^{3/2}) is achievable. Even proving any improvement over the trivial O(n²) bound remains open.",
-    "text": "Given n points in ℝ², how many unit circles contain at least 3 points? Known: Ω(n^{3/2}) ≤ answer ≤ O(n²). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
-    "proofStrategy": "The formalization defines the geometric setup (Point as EuclideanSpace ℝ (Fin 2), UnitCircle, OnCircle incidence), the counting function (countUnitCircles3), and the key results: circle determination by pairs (0, 1, or 2 circles depending on distance), the trivial bound n(n-1) and Harborth-Mengersen refinement n(n-1)/3, Elekes's Ω(n^{3/2}) lower bound, the O(n^{3/2}) conjecture and its weaker o(n²) variant, the Szemerédi-Trotter type incidence bound for circles, and exact values for small n from OEIS A003829.",
+    "historicalContext": "This problem was posed by Erd\u0151s in 1975 as part of his extensive program on combinatorial and discrete geometry, and carries a $100 prize. It sits in the family of unit distance and incidence problems that have driven much of modern computational geometry. The fundamental observation is that any two points at distance at most 2 determine at most 2 unit circles through both (the centers lie on the perpendicular bisector), giving a trivial O(n\u00b2) upper bound on the number of unit circles with 3+ points from an n-point set. Harborth and Mengersen (1986) refined this to n(n-1)/3 using the fact that each 3-rich circle contributes at least 3 pairs. Elekes (1984) proved the matching lower bound \u03a9(n^{3/2}) by constructing point sets on a grid-like structure that create many triple incidences with unit circles. This established the conjectured growth rate as \u0398(n^{3/2}), but proving the O(n^{3/2}) upper bound has remained stubbornly open. The problem is closely related to the Szemer\u00e9di-Trotter incidence theorem (1983), which bounds point-line incidences as O(n^{2/3}m^{2/3} + n + m). Analogous bounds hold for algebraic curves (Pach-Sharir), but naively applying them to unit circles only recovers the O(n\u00b2) trivial bound. The difficulty is that unit circles form a special 2-parameter family (parameterized by center position), and exploiting this algebraic structure has resisted all known techniques including polynomial partitioning (Guth-Katz 2015).",
+    "problemStatement": "Given n points in \u211d\u00b2, prove that the number of distinct unit circles containing at least three points is O(n^{3/2}), or at least o(n\u00b2). The trivial upper bound is n(n-1)/3 from double counting. Elekes (1984) showed the lower bound \u03a9(n^{3/2}) is achievable. Even proving any improvement over the trivial O(n\u00b2) bound remains open.",
+    "text": "Given n points in \u211d\u00b2, how many unit circles contain at least 3 points? Known: \u03a9(n^{3/2}) \u2264 answer \u2264 O(n\u00b2). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
+    "proofStrategy": "The formalization defines the geometric setup (Point as EuclideanSpace \u211d (Fin 2), UnitCircle, OnCircle incidence), the counting function (countUnitCircles3), and the key results: circle determination by pairs (0, 1, or 2 circles depending on distance), the trivial bound n(n-1) and Harborth-Mengersen refinement n(n-1)/3, Elekes's \u03a9(n^{3/2}) lower bound, the O(n^{3/2}) conjecture and its weaker o(n\u00b2) variant, the Szemer\u00e9di-Trotter type incidence bound for circles, and exact values for small n from OEIS A003829.",
     "keyInsights": [
-      "**Circle Determination Trichotomy:** Two points determine 2 unit circles (distance < 2), 1 circle (distance = 2), or 0 circles (distance > 2). The centers lie at distance √(1 - d²/4) from the perpendicular bisector, giving the geometric foundation for all counting arguments",
-      "**Double Counting Gives O(n²):** Each 3-rich circle contains ≥ 3 pairs, each pair lies on ≤ 2 circles, giving f₃(P) ≤ 2C(n,2)/3 = n(n-1)/3. This is the Harborth-Mengersen bound, the best known upper bound despite decades of effort",
-      "**Elekes Construction Matches Conjecture:** The Ω(n^{3/2}) lower bound uses grid-like point configurations to create many triple incidences with unit circles, establishing the conjectured growth rate as Θ(n^{3/2})",
-      "**Szemerédi-Trotter Does Not Suffice:** The ST incidence bound for circles I(P,C) ≤ O(n^{2/3}|C|^{2/3} + n + |C|) with the 3-rich condition I ≥ 3|C| only yields |C| = O(n²), matching the trivial bound. New structural ideas are needed",
-      "**Even o(n²) Is Open:** No one has proved any subquadratic upper bound. The gap between the n^{3/2} lower bound and n² upper bound is the largest known gap for any Erdős incidence problem",
-      "**$100 Prize Problem:** One of Erdős's monetary prizes, reflecting the difficulty. Related open problems include unit distances (Erdős #102) and line avoidance (Erdős #105)"
+      "**Circle Determination Trichotomy:** Two points determine 2 unit circles (distance < 2), 1 circle (distance = 2), or 0 circles (distance > 2). The centers lie at distance \u221a(1 - d\u00b2/4) from the perpendicular bisector, giving the geometric foundation for all counting arguments",
+      "**Double Counting Gives O(n\u00b2):** Each 3-rich circle contains \u2265 3 pairs, each pair lies on \u2264 2 circles, giving f\u2083(P) \u2264 2C(n,2)/3 = n(n-1)/3. This is the Harborth-Mengersen bound, the best known upper bound despite decades of effort",
+      "**Elekes Construction Matches Conjecture:** The \u03a9(n^{3/2}) lower bound uses grid-like point configurations to create many triple incidences with unit circles, establishing the conjectured growth rate as \u0398(n^{3/2})",
+      "**Szemer\u00e9di-Trotter Does Not Suffice:** The ST incidence bound for circles I(P,C) \u2264 O(n^{2/3}|C|^{2/3} + n + |C|) with the 3-rich condition I \u2265 3|C| only yields |C| = O(n\u00b2), matching the trivial bound. New structural ideas are needed",
+      "**Even o(n\u00b2) Is Open:** No one has proved any subquadratic upper bound. The gap between the n^{3/2} lower bound and n\u00b2 upper bound is the largest known gap for any Erd\u0151s incidence problem",
+      "**$100 Prize Problem:** One of Erd\u0151s's monetary prizes, reflecting the difficulty. Related open problems include unit distances (Erd\u0151s #102) and line avoidance (Erd\u0151s #105)"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -47,14 +47,14 @@
     {
       "id": "imports",
       "title": "Imports and Problem Overview",
-      "summary": "Module documentation on Problem #104 (unit circles through 3 points), references to Erdős 1981, Elekes 1984, Harborth-Mengersen 1986, and imports for EuclideanSpace, Finset, Set",
+      "summary": "Module documentation on Problem #104 (unit circles through 3 points), references to Erd\u0151s 1981, Elekes 1984, Harborth-Mengersen 1986, and imports for EuclideanSpace, Finset, Set",
       "startLine": 1,
       "endLine": 34
     },
     {
       "id": "geometry",
       "title": "Points and Unit Circles",
-      "summary": "Point type (EuclideanSpace ℝ (Fin 2)), dist (Euclidean distance), UnitCircle structure (center), and OnCircle incidence relation",
+      "summary": "Point type (EuclideanSpace \u211d (Fin 2)), dist (Euclidean distance), UnitCircle structure (center), and OnCircle incidence relation",
       "startLine": 36,
       "endLine": 55
     },
@@ -75,21 +75,21 @@
     {
       "id": "lower-bound",
       "title": "Lower Bound Constructions",
-      "summary": "elekes_lower_bound (Ω(n^{3/2}) via grid construction) and linear_lower_bound (Ω(n) via points on a circle)",
+      "summary": "elekes_lower_bound (\u03a9(n^{3/2}) via grid construction) and linear_lower_bound (\u03a9(n) via points on a circle)",
       "startLine": 109,
       "endLine": 125
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "summary": "erdos104Conjecture (O(n^{3/2})), erdos104WeakConjecture (o(n²)), and strong_implies_weak theorem",
+      "summary": "erdos104Conjecture (O(n^{3/2})), erdos104WeakConjecture (o(n\u00b2)), and strong_implies_weak theorem",
       "startLine": 127,
       "endLine": 151
     },
     {
       "id": "incidences",
       "title": "Incidence Geometry",
-      "summary": "incidenceCount definition and circle_incidence_bound (Szemerédi-Trotter for circles: I ≤ O(n^{2/3}|C|^{2/3} + n + |C|))",
+      "summary": "incidenceCount definition and circle_incidence_bound (Szemer\u00e9di-Trotter for circles: I \u2264 O(n^{2/3}|C|^{2/3} + n + |C|))",
       "startLine": 153,
       "endLine": 166
     },
@@ -102,11 +102,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #104 asks whether the number of unit circles containing 3+ points from an n-point set in the plane is O(n^{3/2}). Elekes's Ω(n^{3/2}) construction shows this would be tight. The Harborth-Mengersen bound n(n-1)/3 is the best known upper bound, and even proving o(n²) remains open. The formalization captures the full problem: geometric setup, circle determination, double counting, lower bounds, the conjecture and its weak variant, Szemerédi-Trotter connections, and exact values for small n.",
-    "implications": "**Theoretical Significance**: This problem lies at the heart of combinatorial incidence geometry, connecting to the unit distance problem (how many pairs at unit distance?), the Szemerédi-Trotter theorem and its generalizations to algebraic curves, and modern techniques like polynomial partitioning.\n\nA resolution would likely require new ideas beyond existing incidence bounds. The problem also connects to computational geometry (efficient circle detection algorithms) and number theory (lattice point counts on circles).",
+    "summary": "Erd\u0151s Problem #104 asks whether the number of unit circles containing 3+ points from an n-point set in the plane is O(n^{3/2}). Elekes's \u03a9(n^{3/2}) construction shows this would be tight. The Harborth-Mengersen bound n(n-1)/3 is the best known upper bound, and even proving o(n\u00b2) remains open. The formalization captures the full problem: geometric setup, circle determination, double counting, lower bounds, the conjecture and its weak variant, Szemer\u00e9di-Trotter connections, and exact values for small n.",
+    "implications": "**Theoretical Significance**: This problem lies at the heart of combinatorial incidence geometry, connecting to the unit distance problem (how many pairs at unit distance?), the Szemer\u00e9di-Trotter theorem and its generalizations to algebraic curves, and modern techniques like polynomial partitioning.\n\nA resolution would likely require new ideas beyond existing incidence bounds. The problem also connects to computational geometry (efficient circle detection algorithms) and number theory (lattice point counts on circles).",
     "openQuestions": [
-      "Is the count O(n^{3/2})? This is the main conjecture with a $100 Erdős prize.",
-      "Can we prove even o(n²) — any improvement over the trivial quadratic bound?",
+      "Is the count O(n^{3/2})? This is the main conjecture with a $100 Erd\u0151s prize.",
+      "Can we prove even o(n\u00b2) \u2014 any improvement over the trivial quadratic bound?",
       "Can polynomial partitioning methods (Guth-Katz style) be adapted to unit circles specifically?",
       "What is the answer for circles of arbitrary (not unit) radius? The problem is easier when radii vary freely.",
       "What are the exact values of f(n) for n = 7, 8, ...? Current computational bounds are limited."
@@ -116,12 +116,12 @@
     {
       "targetId": "erdos-102",
       "relationship": "related",
-      "description": "Erdős #102 (maximum collinear points forced by many rich lines) studies incidence geometry for lines, the prototypical setting for Szemerédi-Trotter bounds that inspire the approach to Problem 104."
+      "description": "Erd\u0151s #102 (maximum collinear points forced by many rich lines) studies incidence geometry for lines, the prototypical setting for Szemer\u00e9di-Trotter bounds that inspire the approach to Problem 104."
     },
     {
       "targetId": "erdos-105",
       "relationship": "related",
-      "description": "Erdős #105 (lines avoiding a point set) studies related point-line incidence questions in discrete geometry, complementing the point-circle incidence focus of Problem 104."
+      "description": "Erd\u0151s #105 (lines avoiding a point set) studies related point-line incidence questions in discrete geometry, complementing the point-circle incidence focus of Problem 104."
     }
   ],
   "relatedProofs": [
@@ -140,6 +140,7 @@
     "lineCount": 202,
     "axiomCount": 12,
     "theoremCount": 1,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "lemmaCount": 0
   }
 }

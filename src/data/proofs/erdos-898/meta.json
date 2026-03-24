@@ -1,10 +1,10 @@
 {
   "id": "erdos-898",
-  "title": "Erdős Problem #898: The Erdős-Mordell Inequality",
+  "title": "Erd\u0151s Problem #898: The Erd\u0151s-Mordell Inequality",
   "slug": "erdos-898",
   "description": "For an interior point $P$ of triangle $ABC$, if $X, Y, Z$ are the feet of perpendiculars from $P$ to the sides, then $PA + PB + PC \\ge 2(PX + PY + PZ)$. Equality iff equilateral with $P$ at center.",
   "meta": {
-    "author": "Erdős (1935), Mordell (1937)",
+    "author": "Erd\u0151s (1935), Mordell (1937)",
     "sourceUrl": "https://erdosproblems.com/898",
     "date": "1935",
     "status": "formalized",
@@ -24,7 +24,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝⁿ with inner product and norm",
+        "description": "Euclidean space \u211d\u207f with inner product and norm",
         "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
       },
       {
@@ -39,11 +39,11 @@
       }
     ],
     "originalContributions": [
-      "Defined Point as EuclideanSpace ℝ (Fin 2) and IsTriangle via non-collinearity",
+      "Defined Point as EuclideanSpace \u211d (Fin 2) and IsTriangle via non-collinearity",
       "Defined perpendicularFoot (orthogonal projection) and PerpendicularFeet structure (pedal triangle)",
       "Stated ErdosMordellInequality and axiomatized the theorem with equality condition",
       "Axiomatized four independent proofs (Mordell, Barrow, Kazarinoff, Bankoff)",
-      "Stated weighted Erdős-Mordell inequality with side-length weights",
+      "Stated weighted Erd\u0151s-Mordell inequality with side-length weights",
       "Formalized generalizations to tetrahedra and regular n-gons",
       "Axiomatized Viviani's theorem and Weitzenbock inequality as related results"
     ],
@@ -82,7 +82,7 @@
       "title": "Points and Triangles in $\\mathbb{R}^2$",
       "startLine": 30,
       "endLine": 48,
-      "summary": "Defines `Point` as `EuclideanSpace ℝ (Fin 2)`, `dist` as Euclidean norm, `IsTriangle` via non-collinearity, and `IsInteriorPoint` (sorry) for convex hull interior."
+      "summary": "Defines `Point` as `EuclideanSpace \u211d (Fin 2)`, `dist` as Euclidean norm, `IsTriangle` via non-collinearity, and `IsInteriorPoint` (sorry) for convex hull interior."
     },
     {
       "id": "sec-898-perp",
@@ -182,6 +182,7 @@
     "lineCount": 251,
     "axiomCount": 11,
     "theoremCount": 2,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "lemmaCount": 0
   }
 }

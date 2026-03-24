@@ -1,10 +1,10 @@
 {
   "id": "erdos-410",
-  "title": "Erdős Problem #410: Iterated Sum of Divisors Growth",
+  "title": "Erd\u0151s Problem #410: Iterated Sum of Divisors Growth",
   "slug": "erdos-410",
-  "description": "Does lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2, where σₖ is the k-th iterate of the sum of divisors function?",
+  "description": "Does lim_{k \u2192 \u221e} \u03c3\u2096(n)^{1/k} = \u221e for all n \u2265 2, where \u03c3\u2096 is the k-th iterate of the sum of divisors function?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/410",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos410Problem.lean",
@@ -40,17 +40,17 @@
       }
     ],
     "originalContributions": [
-      "sigmaIterate definition: k-th iterate of σ",
-      "sigma_iterate_zero theorem: σ₀(n) = n",
-      "sigma_iterate_succ theorem: σₖ₊₁(n) = σ(σₖ(n))",
+      "sigmaIterate definition: k-th iterate of \u03c3",
+      "sigma_iterate_zero theorem: \u03c3\u2080(n) = n",
+      "sigma_iterate_succ theorem: \u03c3\u2096\u208a\u2081(n) = \u03c3(\u03c3\u2096(n))",
       "sigma_iterate_increasing theorem: iterates increasing",
       "sigma_iterate_tendsto_infty theorem: iterates unbounded",
-      "growthRate definition: σₖ(n)^{1/k}",
-      "ErdosConjecture410 definition: growth rate → ∞",
+      "growthRate definition: \u03c3\u2096(n)^{1/k}",
+      "ErdosConjecture410 definition: growth rate \u2192 \u221e",
       "conjecture_equiv theorem: super-exponential growth",
-      "sigma_lower_bound theorem: σ(n) ≥ n + 1",
+      "sigma_lower_bound theorem: \u03c3(n) \u2265 n + 1",
       "sigma_upper_bound axiom: Robin's bound",
-      "average_sigma axiom: average ≈ π²/6",
+      "average_sigma axiom: average \u2248 \u03c0\u00b2/6",
       "IsPerfect, IsAbundant, IsDeficient definitions",
       "aliquot definition: proper divisor sum",
       "CatalanDicksonConjecture definition",
@@ -62,15 +62,15 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem appears in [ErGr80] (Erdős-Graham 1980) and is discussed in Guy's 'Unsolved Problems in Number Theory' as Problem B9. It was also studied in 'On the normal behavior of the iterates of some arithmetical functions' by Erdős, Granville, Pomerance, and Spiro (1990).\n\nThe sum of divisors function σ(n) is fundamental in number theory. The question asks whether the iterated application σₖ(n) grows faster than any exponential c^k.\n\nRelated to perfect numbers (σ(n) = 2n), aliquot sequences (s(n) = σ(n) - n), and the Catalan-Dickson conjecture on aliquot sequence termination.\n\nOEIS sequence A007497 records related data.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet σ₁(n) = σ(n) be the sum of divisors function, and σₖ(n) = σ(σₖ₋₁(n)).\n\nIs it true that lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2?\n\n**Equivalent Formulation:** For all n ≥ 2 and all c > 0, we have σₖ(n) > c^k for sufficiently large k.\n\n**Background:**\n- σ(n) > n for all n > 1 (so iterates grow)\n- The question is whether growth is 'super-exponential'",
-    "text": "Does lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2, where σₖ is the k-th iterate of the sum of divisors function?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Sum of Divisors:** Use Mathlib's ArithmeticFunction.sigma\n\n2. **Iteration:** Define sigmaIterate using Function.iterate\n\n3. **Growth Rate:** Define growthRate as σₖ(n)^{1/k}\n\n4. **Conjecture:** ErdosConjecture410 states growthRate → ∞\n\n5. **Related Concepts:** Perfect/abundant/deficient numbers, aliquot sequences\n\n6. **Multiplicativity:** σ is multiplicative with explicit prime power formula",
+    "historicalContext": "This problem appears in [ErGr80] (Erd\u0151s-Graham 1980) and is discussed in Guy's 'Unsolved Problems in Number Theory' as Problem B9. It was also studied in 'On the normal behavior of the iterates of some arithmetical functions' by Erd\u0151s, Granville, Pomerance, and Spiro (1990).\n\nThe sum of divisors function \u03c3(n) is fundamental in number theory. The question asks whether the iterated application \u03c3\u2096(n) grows faster than any exponential c^k.\n\nRelated to perfect numbers (\u03c3(n) = 2n), aliquot sequences (s(n) = \u03c3(n) - n), and the Catalan-Dickson conjecture on aliquot sequence termination.\n\nOEIS sequence A007497 records related data.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet \u03c3\u2081(n) = \u03c3(n) be the sum of divisors function, and \u03c3\u2096(n) = \u03c3(\u03c3\u2096\u208b\u2081(n)).\n\nIs it true that lim_{k \u2192 \u221e} \u03c3\u2096(n)^{1/k} = \u221e for all n \u2265 2?\n\n**Equivalent Formulation:** For all n \u2265 2 and all c > 0, we have \u03c3\u2096(n) > c^k for sufficiently large k.\n\n**Background:**\n- \u03c3(n) > n for all n > 1 (so iterates grow)\n- The question is whether growth is 'super-exponential'",
+    "text": "Does lim_{k \u2192 \u221e} \u03c3\u2096(n)^{1/k} = \u221e for all n \u2265 2, where \u03c3\u2096 is the k-th iterate of the sum of divisors function?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sum of Divisors:** Use Mathlib's ArithmeticFunction.sigma\n\n2. **Iteration:** Define sigmaIterate using Function.iterate\n\n3. **Growth Rate:** Define growthRate as \u03c3\u2096(n)^{1/k}\n\n4. **Conjecture:** ErdosConjecture410 states growthRate \u2192 \u221e\n\n5. **Related Concepts:** Perfect/abundant/deficient numbers, aliquot sequences\n\n6. **Multiplicativity:** \u03c3 is multiplicative with explicit prime power formula",
     "keyInsights": [
-      "**Iterates Grow:** σₖ(n) → ∞ as k → ∞ since σ(m) > m for m > 1",
-      "**Super-Exponential?:** The question is whether σₖ(n) > c^k for any c",
-      "**Multiplicative:** σ(mn) = σ(m)σ(n) for gcd(m,n) = 1",
-      "**Prime Powers:** σ(p^k) = (p^{k+1} - 1)/(p - 1)",
+      "**Iterates Grow:** \u03c3\u2096(n) \u2192 \u221e as k \u2192 \u221e since \u03c3(m) > m for m > 1",
+      "**Super-Exponential?:** The question is whether \u03c3\u2096(n) > c^k for any c",
+      "**Multiplicative:** \u03c3(mn) = \u03c3(m)\u03c3(n) for gcd(m,n) = 1",
+      "**Prime Powers:** \u03c3(p^k) = (p^{k+1} - 1)/(p - 1)",
       "**Related Problems:** Aliquot sequences, Catalan-Dickson conjecture"
     ],
     "prerequisites": [
@@ -115,7 +115,7 @@
     },
     {
       "id": "bounds",
-      "title": "Bounds on σ",
+      "title": "Bounds on \u03c3",
       "summary": "sigma_lower_bound, sigma_upper_bound, average_sigma",
       "startLine": 118,
       "endLine": 136,
@@ -161,14 +161,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #410 asks whether the k-th root of the k-th iterate of σ tends to infinity. While we know σₖ(n) → ∞, the question of super-exponential growth remains OPEN.",
-    "implications": "A positive answer would establish a fundamental growth property of the sum of divisors function under iteration. A negative answer would mean σₖ(n) is eventually bounded by some exponential c^k.",
+    "summary": "Erd\u0151s Problem #410 asks whether the k-th root of the k-th iterate of \u03c3 tends to infinity. While we know \u03c3\u2096(n) \u2192 \u221e, the question of super-exponential growth remains OPEN.",
+    "implications": "A positive answer would establish a fundamental growth property of the sum of divisors function under iteration. A negative answer would mean \u03c3\u2096(n) is eventually bounded by some exponential c^k.",
     "openQuestions": [
-      "Does lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2?",
-      "What is the actual growth rate of σₖ(n)?",
+      "Does lim_{k \u2192 \u221e} \u03c3\u2096(n)^{1/k} = \u221e for all n \u2265 2?",
+      "What is the actual growth rate of \u03c3\u2096(n)?",
       "Are there special values of n with known answers?",
       "What is the connection to the Catalan-Dickson conjecture?",
-      "How does the multiplicativity of σ affect the iterates?"
+      "How does the multiplicativity of \u03c3 affect the iterates?"
     ]
   },
   "leanFile": {
@@ -184,54 +184,55 @@
     "lineCount": 320,
     "axiomCount": 3,
     "theoremCount": 40,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "perfect-numbers",
       "relationship": "related",
-      "description": "Perfect numbers satisfy σ(n) = 2n, the fixed-point equation for the 'excess' σ(n)/n. This file studies iterates σ_k(n); for perfect n, σ(n) = 2n so σ₂(n) = σ(2n), connecting iterates to the structure of perfect numbers"
+      "description": "Perfect numbers satisfy \u03c3(n) = 2n, the fixed-point equation for the 'excess' \u03c3(n)/n. This file studies iterates \u03c3_k(n); for perfect n, \u03c3(n) = 2n so \u03c3\u2082(n) = \u03c3(2n), connecting iterates to the structure of perfect numbers"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes ensures that σ(n) has non-trivial behavior for all n ≥ 2: σ(p) = p + 1 for primes, and the multiplicativity σ(mn) = σ(m)σ(n) for coprime m,n reduces computation to prime powers"
+      "description": "The infinitude of primes ensures that \u03c3(n) has non-trivial behavior for all n \u2265 2: \u03c3(p) = p + 1 for primes, and the multiplicativity \u03c3(mn) = \u03c3(m)\u03c3(n) for coprime m,n reduces computation to prime powers"
     },
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization is essential: σ is multiplicative, so σ(n) = ∏ σ(p^a) where n = ∏ p^a. The formula σ(p^a) = (p^{a+1} - 1)/(p - 1) makes the function computable from the factorization"
+      "description": "Unique prime factorization is essential: \u03c3 is multiplicative, so \u03c3(n) = \u220f \u03c3(p^a) where n = \u220f p^a. The formula \u03c3(p^a) = (p^{a+1} - 1)/(p - 1) makes the function computable from the factorization"
     },
     {
       "targetId": "geometric-series",
       "relationship": "foundational",
-      "description": "The formula σ(p^k) = 1 + p + p² + ··· + p^k = (p^{k+1} - 1)/(p - 1) is a geometric series. This explicit formula for σ at prime powers, combined with multiplicativity, determines σ completely"
+      "description": "The formula \u03c3(p^k) = 1 + p + p\u00b2 + \u00b7\u00b7\u00b7 + p^k = (p^{k+1} - 1)/(p - 1) is a geometric series. This explicit formula for \u03c3 at prime powers, combined with multiplicativity, determines \u03c3 completely"
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient φ(n) and the sum of divisors σ(n) are both multiplicative arithmetic functions. They satisfy the identity Σ_{d|n} φ(d) = n, and Robin's inequality σ(n) < e^γ n ln ln n (for n > 5040, equivalent to RH) parallels Ramanujan's work on highly composite numbers"
+      "description": "Euler's totient \u03c6(n) and the sum of divisors \u03c3(n) are both multiplicative arithmetic functions. They satisfy the identity \u03a3_{d|n} \u03c6(d) = n, and Robin's inequality \u03c3(n) < e^\u03b3 n ln ln n (for n > 5040, equivalent to RH) parallels Ramanujan's work on highly composite numbers"
     }
   ],
   "references": [
     {
       "key": "ErGr80",
-      "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Mathématique, Monographie 28 (1980).",
+      "citation": "Erd\u0151s, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Math\u00e9matique, Monographie 28 (1980).",
       "type": "book"
     },
     {
       "key": "Gu04",
-      "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Problem B9: Iterates of σ.",
+      "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Problem B9: Iterates of \u03c3.",
       "type": "book"
     },
     {
       "key": "EGPS90",
-      "citation": "Erdős, P., Granville, A., Pomerance, C., and Spiro, C., On the normal behavior of the iterates of some arithmetical functions, Analytic Number Theory, Birkhäuser (1990), 165–204.",
+      "citation": "Erd\u0151s, P., Granville, A., Pomerance, C., and Spiro, C., On the normal behavior of the iterates of some arithmetical functions, Analytic Number Theory, Birkh\u00e4user (1990), 165\u2013204.",
       "type": "paper"
     },
     {
       "key": "Ro84",
-      "citation": "Robin, G., Grandes valeurs de la fonction somme des diviseurs et hypothèse de Riemann, Journal de Mathématiques Pures et Appliquées 63 (1984), 187–213.",
+      "citation": "Robin, G., Grandes valeurs de la fonction somme des diviseurs et hypoth\u00e8se de Riemann, Journal de Math\u00e9matiques Pures et Appliqu\u00e9es 63 (1984), 187\u2013213.",
       "type": "paper"
     },
     {

@@ -1,10 +1,10 @@
 {
   "id": "erdos-911",
-  "title": "Erdős Problem #911: Size Ramsey Numbers of Dense Graphs",
+  "title": "Erd\u0151s Problem #911: Size Ramsey Numbers of Dense Graphs",
   "slug": "erdos-911",
-  "description": "Does there exist a function f(x) with f(x)/x → ∞ such that for all sufficiently large C, if G has n vertices and at least Cn edges, then R̂(G) > f(C) · e(G)?",
+  "description": "Does there exist a function f(x) with f(x)/x \u2192 \u221e such that for all sufficiently large C, if G has n vertices and at least Cn edges, then R\u0302(G) > f(C) \u00b7 e(G)?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/911",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos911Problem.lean",
@@ -37,17 +37,17 @@
     "originalContributions": [
       "SimpleGraph' structure: custom graph representation",
       "edgeCount definition: number of edges in a graph",
-      "isDense definition: C-dense graphs with e ≥ Cn",
+      "isDense definition: C-dense graphs with e \u2265 Cn",
       "EdgeColoring definition: 2-coloring of edges",
       "isMonochromatic definition: subgraph with uniform color",
       "isRamseyFor definition: H Ramsey for G",
-      "sizeRamseyNumber axiom: R̂(G) minimum edges for Ramsey",
-      "superlinearGrowth definition: f(x)/x → ∞",
+      "sizeRamseyNumber axiom: R\u0302(G) minimum edges for Ramsey",
+      "superlinearGrowth definition: f(x)/x \u2192 \u221e",
       "ErdosConjecture911 definition: the main conjecture",
       "beck_path_linear axiom: paths have linear size Ramsey",
-      "rodl_szemeredi_complete axiom: complete graphs Θ(n²)",
+      "rodl_szemeredi_complete axiom: complete graphs \u0398(n\u00b2)",
       "bounded_degree_linear axiom: KRSS theorem",
-      "size_ramsey_lower_bound axiom: R̂(G) ≥ e(G)",
+      "size_ramsey_lower_bound axiom: R\u0302(G) \u2265 e(G)",
       "graphRamseyNumber axiom: vertex Ramsey number",
       "erdos_911_statement theorem: equivalence"
     ],
@@ -56,16 +56,16 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1982 [Er82e, p.78]. Size Ramsey numbers, introduced by Erdős, Faudree, Rousseau, and Schelp in 1978, measure the minimum edge complexity of Ramsey graphs.\n\nMajor results include:\n- Beck (1983): Paths have linear size Ramsey numbers R̂(Pₙ) = O(n)\n- Rödl-Szemerédi (2000): Complete graphs have R̂(Kₙ) = Θ(n²)\n- Kohayakawa-Rödl-Schacht-Szemerédi (2011): Bounded degree graphs have linear R̂\n\nThe question asks whether edge density forces additional Ramsey complexity. The motivation is that complete graphs K_n have Θ(n²) edges and R̂(K_n) = Θ(n²), giving R̂(G)/e(G) bounded — so no superlinear factor emerges even for the densest graphs. Erdős asked whether some dense family must exhibit superlinear R̂/e(G) growth, distinguishing density-driven complexity from degree-driven complexity established by the KRSS theorem.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nDoes there exist a function f(x) with f(x)/x → ∞ as x → ∞ such that:\n\nFor all sufficiently large constants C, if G is a graph with n vertices and at least Cn edges, then the size Ramsey number satisfies:\n$$\\hat{R}(G) > f(C) \\cdot e(G)$$\n\nwhere e(G) is the number of edges in G.\n\n**Background:**\nThe size Ramsey number R̂(G) is the minimum number of edges m in a graph H such that any 2-coloring of H's edges contains a monochromatic copy of G.",
-    "text": "Does there exist a function f(x) with f(x)/x → ∞ such that for all sufficiently large C, if G has n vertices and at least Cn edges, then R̂(G) > f(C) · e(G)?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Custom SimpleGraph' structure with adjacency, symmetry, and no loops\n\n2. **Size Ramsey:** Axiomatize sizeRamseyNumber as minimum edges for Ramsey property\n\n3. **Density Condition:** isDense(G, C) := e(G) ≥ C·n\n\n4. **The Conjecture:** ErdosConjecture911 formalizes the existence of superlinear f\n\n5. **Known Results:** Axiomatize Beck, Rödl-Szemerédi, and KRSS theorems",
+    "historicalContext": "Erd\u0151s posed this problem in 1982 [Er82e, p.78]. Size Ramsey numbers, introduced by Erd\u0151s, Faudree, Rousseau, and Schelp in 1978, measure the minimum edge complexity of Ramsey graphs.\n\nMajor results include:\n- Beck (1983): Paths have linear size Ramsey numbers R\u0302(P\u2099) = O(n)\n- R\u00f6dl-Szemer\u00e9di (2000): Complete graphs have R\u0302(K\u2099) = \u0398(n\u00b2)\n- Kohayakawa-R\u00f6dl-Schacht-Szemer\u00e9di (2011): Bounded degree graphs have linear R\u0302\n\nThe question asks whether edge density forces additional Ramsey complexity. The motivation is that complete graphs K_n have \u0398(n\u00b2) edges and R\u0302(K_n) = \u0398(n\u00b2), giving R\u0302(G)/e(G) bounded \u2014 so no superlinear factor emerges even for the densest graphs. Erd\u0151s asked whether some dense family must exhibit superlinear R\u0302/e(G) growth, distinguishing density-driven complexity from degree-driven complexity established by the KRSS theorem.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nDoes there exist a function f(x) with f(x)/x \u2192 \u221e as x \u2192 \u221e such that:\n\nFor all sufficiently large constants C, if G is a graph with n vertices and at least Cn edges, then the size Ramsey number satisfies:\n$$\\hat{R}(G) > f(C) \\cdot e(G)$$\n\nwhere e(G) is the number of edges in G.\n\n**Background:**\nThe size Ramsey number R\u0302(G) is the minimum number of edges m in a graph H such that any 2-coloring of H's edges contains a monochromatic copy of G.",
+    "text": "Does there exist a function f(x) with f(x)/x \u2192 \u221e such that for all sufficiently large C, if G has n vertices and at least Cn edges, then R\u0302(G) > f(C) \u00b7 e(G)?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Custom SimpleGraph' structure with adjacency, symmetry, and no loops\n\n2. **Size Ramsey:** Axiomatize sizeRamseyNumber as minimum edges for Ramsey property\n\n3. **Density Condition:** isDense(G, C) := e(G) \u2265 C\u00b7n\n\n4. **The Conjecture:** ErdosConjecture911 formalizes the existence of superlinear f\n\n5. **Known Results:** Axiomatize Beck, R\u00f6dl-Szemer\u00e9di, and KRSS theorems",
     "keyInsights": [
-      "**Trivial Bound:** R̂(G) ≥ e(G) always - the Ramsey graph must contain G",
-      "**Paths are Easy:** R̂(Pₙ) = O(n) - Beck's theorem shows paths need few edges",
-      "**Complete Graphs:** R̂(Kₙ) = Θ(n²) - linear in edge count, not superlinear",
-      "**Bounded Degree:** KRSS theorem: bounded max degree implies linear R̂",
-      "**The Question:** Does density alone (not structure) force superlinear R̂?"
+      "**Trivial Bound:** R\u0302(G) \u2265 e(G) always - the Ramsey graph must contain G",
+      "**Paths are Easy:** R\u0302(P\u2099) = O(n) - Beck's theorem shows paths need few edges",
+      "**Complete Graphs:** R\u0302(K\u2099) = \u0398(n\u00b2) - linear in edge count, not superlinear",
+      "**Bounded Degree:** KRSS theorem: bounded max degree implies linear R\u0302",
+      "**The Question:** Does density alone (not structure) force superlinear R\u0302?"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -90,7 +90,7 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture",
+      "title": "The Erd\u0151s Conjecture",
       "summary": "superlinearGrowth, ErdosConjecture911, polynomialSuperlinear",
       "startLine": 79,
       "endLine": 101
@@ -132,22 +132,22 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #911 asks whether dense graphs (e ≥ Cn) necessarily have size Ramsey numbers R̂(G) that are superlinear in the edge count e(G). The problem is OPEN.",
-    "implications": "A positive answer would show that edge density alone forces additional Ramsey complexity beyond the trivial R̂(G) ≥ e(G) bound. This would reveal deep connections between graph density and Ramsey properties.",
+    "summary": "Erd\u0151s Problem #911 asks whether dense graphs (e \u2265 Cn) necessarily have size Ramsey numbers R\u0302(G) that are superlinear in the edge count e(G). The problem is OPEN.",
+    "implications": "A positive answer would show that edge density alone forces additional Ramsey complexity beyond the trivial R\u0302(G) \u2265 e(G) bound. This would reveal deep connections between graph density and Ramsey properties.",
     "openQuestions": [
-      "Does density alone (without structural constraints) force superlinear R̂?",
+      "Does density alone (without structural constraints) force superlinear R\u0302?",
       "What is the optimal growth rate f(C) if the conjecture is true?",
-      "Is there a counterexample: a family of C-dense graphs with R̂(G) = O(e(G))?",
-      "How does the Turán density of G affect R̂(G)?",
+      "Is there a counterexample: a family of C-dense graphs with R\u0302(G) = O(e(G))?",
+      "How does the Tur\u00e1n density of G affect R\u0302(G)?",
       "What happens for specific graph families like bipartite dense graphs?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80]"
     }
   ],
@@ -155,7 +155,7 @@
     {
       "targetId": "erdos-912",
       "relationship": "related",
-      "description": "Nearby Erdős problem in the combinatorial number theory collection"
+      "description": "Nearby Erd\u0151s problem in the combinatorial number theory collection"
     }
   ],
   "relatedProofs": [
@@ -179,6 +179,7 @@
     "lineCount": 251,
     "axiomCount": 9,
     "theoremCount": 9,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   }
 }

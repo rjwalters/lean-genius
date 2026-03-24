@@ -43,7 +43,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The fact that a set with n elements has 2^n subsets is one of the most fundamental results in combinatorics. The power set P(S) has cardinality 2^|S|, with applications in set theory, probability, computer science (n bits represent 2^n states), and algebra (Boolean algebras). The bijection between subsets and binary strings of length n is used throughout discrete mathematics. Cantor's theorem (1891) generalizes this: |P(S)| > |S| for any set S, even infinite ones, establishing that 2^{aleph_0} > aleph_0 and launching modern set theory. The sum of binomial coefficients ∑_{k=0}^{n} C(n,k) = 2^n, which follows by setting x=1 in the binomial theorem, unifies the subset-count result with polynomial identities.",
+    "historicalContext": "The fact that a set with n elements has 2^n subsets is one of the most fundamental results in combinatorics. The power set P(S) has cardinality 2^|S|, with applications in set theory, probability, computer science (n bits represent 2^n states), and algebra (Boolean algebras). The bijection between subsets and binary strings of length n is used throughout discrete mathematics. Cantor's theorem (1891) generalizes this: |P(S)| > |S| for any set S, even infinite ones, establishing that 2^{aleph_0} > aleph_0 and launching modern set theory. The sum of binomial coefficients \u2211_{k=0}^{n} C(n,k) = 2^n, which follows by setting x=1 in the binomial theorem, unifies the subset-count result with polynomial identities.",
     "problemStatement": "**The Number of Subsets Theorem** (Wiedijk #52):\n\nFor any finite set $S$ with $n$ elements:\n$$|\\mathcal{P}(S)| = 2^n$$\n\nwhere $\\mathcal{P}(S)$ denotes the power set (set of all subsets) of $S$.\n\nEquivalently, the number of ways to choose a subset of an n-element set is $2^n$.",
     "text": "A finite set with n elements has exactly 2^n subsets. This fundamental result connects set theory to binary counting.",
     "proofStrategy": "The proof uses a **bijection with binary strings**:\n\n1. **Characteristic function**: Each subset $T \\subseteq S$ corresponds to a function $\\chi_T : S \\to \\{0, 1\\}$ where:\n   - $\\chi_T(x) = 1$ if $x \\in T$\n   - $\\chi_T(x) = 0$ if $x \\notin T$\n\n2. **Binary counting**: With $n$ elements, each making an independent binary choice (in or out), we get:\n   $$2 \\times 2 \\times \\cdots \\times 2 = 2^n$$\n\n3. **Mathlib formalization**: The theorem `Finset.card_powerset` directly provides this result for finite sets represented as `Finset`.",
@@ -124,13 +124,14 @@
     "lineCount": 178,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial theorem $(1+1)^n = \\sum_{k=0}^n \\binom{n}{k}$ is the algebraic identity underlying $|\\mathcal{P}(S)| = 2^n$ — the number of subsets equals the sum of binomial coefficients"
+      "description": "The binomial theorem $(1+1)^n = \\sum_{k=0}^n \\binom{n}{k}$ is the algebraic identity underlying $|\\mathcal{P}(S)| = 2^n$ \u2014 the number of subsets equals the sum of binomial coefficients"
     },
     {
       "targetId": "cantors-theorem",
@@ -140,7 +141,7 @@
     {
       "targetId": "cantor-diagonalization",
       "relationship": "related",
-      "description": "Cantor's diagonalization establishes the uncountability of $\\mathcal{P}(\\mathbb{N})$ — while this entry counts finite subsets ($2^n$), the diagonal argument shows the infinite case is qualitatively different"
+      "description": "Cantor's diagonalization establishes the uncountability of $\\mathcal{P}(\\mathbb{N})$ \u2014 while this entry counts finite subsets ($2^n$), the diagonal argument shows the infinite case is qualitatively different"
     },
     {
       "targetId": "mathematical-induction",
@@ -150,7 +151,7 @@
     {
       "targetId": "birthday-problem",
       "relationship": "thematic",
-      "description": "The birthday problem uses combinatorial counting over subsets — the same power-set enumeration framework, applied to probability"
+      "description": "The birthday problem uses combinatorial counting over subsets \u2014 the same power-set enumeration framework, applied to probability"
     }
   ],
   "relatedProofs": [

@@ -1,8 +1,8 @@
 {
   "id": "konigsberg",
-  "title": "Königsberg Bridges Problem",
+  "title": "K\u00f6nigsberg Bridges Problem",
   "slug": "konigsberg",
-  "description": "Euler's 1736 proof that it's impossible to walk through Königsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
+  "description": "Euler's 1736 proof that it's impossible to walk through K\u00f6nigsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
   "meta": {
     "author": "Leonhard Euler (formalized in Lean 4 by Kyle Miller)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg",
@@ -46,10 +46,10 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "In 1736, Leonhard Euler solved the Königsberg bridge problem, asking whether one could walk through the city crossing each of its seven bridges exactly once. Königsberg (now Kaliningrad, Russia) was built on both sides of the Pregel River with two islands in the middle, connected by seven bridges.\n\nEuler's key insight was to abstract away the geographical details and focus only on the connection structure. He represented each landmass as a point and each bridge as a line connecting two points. This abstraction created what we now call a graph.\n\nEuler observed that in any successful walk, each intermediate landmass must be entered and exited the same number of times, requiring an even number of bridges. Only the start and end points can have odd numbers of bridges. Since all four Königsberg landmasses had odd numbers of bridges, no such walk exists.\n\nThis paper, 'Solutio problematis ad geometriam situs pertinentis' (Solution of a problem relating to the geometry of position), is considered the first paper in graph theory and an early work in topology.",
-    "problemStatement": "**The Königsberg Bridge Problem:**\n\nGiven a graph $G = (V, E)$ representing the city of Königsberg:\n- 4 vertices representing landmasses (north bank, south bank, and two islands)\n- 7 edges representing bridges\n\nProve that there is no **Eulerian path** - a path that traverses each edge exactly once.\n\n**Euler's Theorem:** A connected graph has an Eulerian path if and only if it has exactly 0 or 2 vertices of odd degree.",
-    "text": "Euler's 1736 proof that it's impossible to walk through Königsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
-    "proofStrategy": "Our proof proceeds in three steps:\n\n1. **Model the graph**: Define the Königsberg graph with 11 vertices (4 landmasses + 7 bridges) to create a simple graph without multi-edges.\n\n2. **Calculate degrees**: Show that the four landmass vertices have degrees 5, 3, 3, and 3 - all odd. Bridge vertices have degree 2 (even).\n\n3. **Apply Euler's theorem**: Use Mathlib's `IsEulerian.card_odd_degree` which states that an Eulerian path implies 0 or 2 odd-degree vertices. Since we have 4, no Eulerian path exists.",
+    "historicalContext": "In 1736, Leonhard Euler solved the K\u00f6nigsberg bridge problem, asking whether one could walk through the city crossing each of its seven bridges exactly once. K\u00f6nigsberg (now Kaliningrad, Russia) was built on both sides of the Pregel River with two islands in the middle, connected by seven bridges.\n\nEuler's key insight was to abstract away the geographical details and focus only on the connection structure. He represented each landmass as a point and each bridge as a line connecting two points. This abstraction created what we now call a graph.\n\nEuler observed that in any successful walk, each intermediate landmass must be entered and exited the same number of times, requiring an even number of bridges. Only the start and end points can have odd numbers of bridges. Since all four K\u00f6nigsberg landmasses had odd numbers of bridges, no such walk exists.\n\nThis paper, 'Solutio problematis ad geometriam situs pertinentis' (Solution of a problem relating to the geometry of position), is considered the first paper in graph theory and an early work in topology.",
+    "problemStatement": "**The K\u00f6nigsberg Bridge Problem:**\n\nGiven a graph $G = (V, E)$ representing the city of K\u00f6nigsberg:\n- 4 vertices representing landmasses (north bank, south bank, and two islands)\n- 7 edges representing bridges\n\nProve that there is no **Eulerian path** - a path that traverses each edge exactly once.\n\n**Euler's Theorem:** A connected graph has an Eulerian path if and only if it has exactly 0 or 2 vertices of odd degree.",
+    "text": "Euler's 1736 proof that it's impossible to walk through K\u00f6nigsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
+    "proofStrategy": "Our proof proceeds in three steps:\n\n1. **Model the graph**: Define the K\u00f6nigsberg graph with 11 vertices (4 landmasses + 7 bridges) to create a simple graph without multi-edges.\n\n2. **Calculate degrees**: Show that the four landmass vertices have degrees 5, 3, 3, and 3 - all odd. Bridge vertices have degree 2 (even).\n\n3. **Apply Euler's theorem**: Use Mathlib's `IsEulerian.card_odd_degree` which states that an Eulerian path implies 0 or 2 odd-degree vertices. Since we have 4, no Eulerian path exists.",
     "keyInsights": [
       "The problem's solution depends only on the graph structure, not the physical layout - this is the birth of graph theory",
       "Vertices of odd degree must be endpoints of an Eulerian path (if one exists)",
@@ -121,7 +121,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization demonstrates how graph theory reduces a seemingly geographical puzzle to a simple counting argument. The Königsberg graph has 4 vertices of odd degree, but an Eulerian path requires exactly 0 or 2. This contradiction proves no solution exists.",
+    "summary": "This formalization demonstrates how graph theory reduces a seemingly geographical puzzle to a simple counting argument. The K\u00f6nigsberg graph has 4 vertices of odd degree, but an Eulerian path requires exactly 0 or 2. This contradiction proves no solution exists.",
     "implications": "Euler's insight - abstracting away physical details to focus on structural relationships - became the foundation of graph theory and topology. Today, Eulerian path algorithms are used in DNA sequencing, circuit design, network routing, and many other applications.",
     "openQuestions": [
       "How can we efficiently find Eulerian paths when they exist? (Hierholzer's algorithm solves this in linear time)",
@@ -143,20 +143,21 @@
     "namespace": "Konigsberg",
     "lineCount": 220,
     "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 4
+    "theoremCount": 1,
+    "definitionCount": 4,
+    "lemmaCount": 3
   },
   "references": [
     {
       "authors": "Euler, Leonhard",
       "title": "Solutio problematis ad geometriam situs pertinentis",
       "year": "1736",
-      "venue": "Commentarii Academiae Scientiarum Petropolitanae 8, 128–140",
-      "note": "The founding paper of graph theory — proved the impossibility of traversing all seven bridges of Königsberg exactly once"
+      "venue": "Commentarii Academiae Scientiarum Petropolitanae 8, 128\u2013140",
+      "note": "The founding paper of graph theory \u2014 proved the impossibility of traversing all seven bridges of K\u00f6nigsberg exactly once"
     },
     {
       "authors": "Biggs, Norman L.; Lloyd, E. Keith; Wilson, Robin J.",
-      "title": "Graph Theory 1736–1936",
+      "title": "Graph Theory 1736\u20131936",
       "year": "1976",
       "venue": "Oxford University Press",
       "note": "Historical account of graph theory from Euler's bridge problem to modern developments"
@@ -166,17 +167,17 @@
     {
       "targetId": "four-color-theorem",
       "relationship": "related",
-      "description": "Both are foundational results in graph theory: the Konigsberg bridges problem (1736) established graph theory as a discipline, while the four-color theorem (1976) is its most famous result — both concern structural properties of graphs embedded in surfaces"
+      "description": "Both are foundational results in graph theory: the Konigsberg bridges problem (1736) established graph theory as a discipline, while the four-color theorem (1976) is its most famous result \u2014 both concern structural properties of graphs embedded in surfaces"
     },
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "related",
-      "description": "Both are due to Euler and concern topological invariants: the polyhedral formula V-E+F=2 and the Konigsberg bridges criterion (all vertices must have even degree for an Eulerian circuit) — both revealed the importance of combinatorial topology"
+      "description": "Both are due to Euler and concern topological invariants: the polyhedral formula V-E+F=2 and the Konigsberg bridges criterion (all vertices must have even degree for an Eulerian circuit) \u2014 both revealed the importance of combinatorial topology"
     },
     {
       "targetId": "euler-totient",
       "relationship": "thematic",
-      "description": "Both are named after Euler: the totient function concerns number-theoretic structure, while the Konigsberg problem concerns graph structure — together they illustrate the breadth of Euler's contributions across mathematics"
+      "description": "Both are named after Euler: the totient function concerns number-theoretic structure, while the Konigsberg problem concerns graph structure \u2014 together they illustrate the breadth of Euler's contributions across mathematics"
     },
     {
       "targetId": "infinitude-primes",
@@ -186,7 +187,7 @@
     {
       "targetId": "pascals-hexagon",
       "relationship": "thematic",
-      "description": "Both concern geometric configurations analyzed via combinatorial structure: Pascal's hexagon theorem uses projective geometry, while the Konigsberg problem abstracts geography into graph theory — both pioneered the use of structural abstraction in geometry"
+      "description": "Both concern geometric configurations analyzed via combinatorial structure: Pascal's hexagon theorem uses projective geometry, while the Konigsberg problem abstracts geography into graph theory \u2014 both pioneered the use of structural abstraction in geometry"
     }
   ],
   "relatedProofs": [

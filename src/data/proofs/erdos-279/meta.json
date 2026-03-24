@@ -1,10 +1,10 @@
 {
   "id": "erdos-279",
-  "title": "Erdős Problem #279: Covering with Shifted Prime Progressions",
+  "title": "Erd\u0151s Problem #279: Covering with Shifted Prime Progressions",
   "slug": "erdos-279",
-  "description": "For k ≥ 3, can residue classes aₚ (mod p) be chosen for all primes p so that every large integer is aₚ + tp for some prime p and t ≥ k? Even k = 3 is open.",
+  "description": "For k \u2265 3, can residue classes a\u209a (mod p) be chosen for all primes p so that every large integer is a\u209a + tp for some prime p and t \u2265 k? Even k = 3 is open.",
   "meta": {
-    "author": "Erdős, Graham",
+    "author": "Erd\u0151s, Graham",
     "sourceUrl": "https://erdosproblems.com/279",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos279Problem.lean",
@@ -32,16 +32,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question asks whether arithmetic progressions with prime moduli can cover all large integers when the starting index is shifted by at least k steps. For k = 1 or k = 2, classical results on divergence of the harmonic sum over primes (Σ 1/p = ∞, proved by Euler in 1737) suffice to show covering. The case k ≥ 3 introduces a qualitatively different obstacle: the constraint t ≥ k means each prime p can only cover integers n ≡ aₚ (mod p) that are at least kp above the base residue, creating a 'gap' of size kp near the beginning of each progression. Erdős noted that even k = 3 seems difficult. The generalization to arbitrary dense sets (with prime-like counting function and log-log reciprocal divergence) was proposed to isolate the essential density condition from the specific arithmetic properties of primes.",
-    "problemStatement": "For k ≥ 3, can one choose residue classes aₚ (mod p) for every prime p such that all sufficiently large integers n can be written as n = aₚ + tp for some prime p and t ≥ k?",
-    "text": "For k ≥ 3, can residue classes aₚ (mod p) be chosen for all primes p so that every large integer is aₚ + tp for some prime p and t ≥ k? Even k = 3 is open.",
-    "proofStrategy": "The formalization defines ResidueChoice as a function from primes to residues, IsCoveredBy as the covering predicate for a single integer, and CoversEventually for the 'all sufficiently large' quantifier. The generalization introduces HasPrimeLikeDensity (|A ∩ [1,N]| ≫ N/log N) and HasLogLogDivergence (Σ_{n∈A,n≤N} 1/n − log log N → ∞) as density conditions. The main conjecture and its generalization are axiomatized, along with the k ≤ 2 base case.",
+    "historicalContext": "Paul Erd\u0151s and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question asks whether arithmetic progressions with prime moduli can cover all large integers when the starting index is shifted by at least k steps. For k = 1 or k = 2, classical results on divergence of the harmonic sum over primes (\u03a3 1/p = \u221e, proved by Euler in 1737) suffice to show covering. The case k \u2265 3 introduces a qualitatively different obstacle: the constraint t \u2265 k means each prime p can only cover integers n \u2261 a\u209a (mod p) that are at least kp above the base residue, creating a 'gap' of size kp near the beginning of each progression. Erd\u0151s noted that even k = 3 seems difficult. The generalization to arbitrary dense sets (with prime-like counting function and log-log reciprocal divergence) was proposed to isolate the essential density condition from the specific arithmetic properties of primes.",
+    "problemStatement": "For k \u2265 3, can one choose residue classes a\u209a (mod p) for every prime p such that all sufficiently large integers n can be written as n = a\u209a + tp for some prime p and t \u2265 k?",
+    "text": "For k \u2265 3, can residue classes a\u209a (mod p) be chosen for all primes p so that every large integer is a\u209a + tp for some prime p and t \u2265 k? Even k = 3 is open.",
+    "proofStrategy": "The formalization defines ResidueChoice as a function from primes to residues, IsCoveredBy as the covering predicate for a single integer, and CoversEventually for the 'all sufficiently large' quantifier. The generalization introduces HasPrimeLikeDensity (|A \u2229 [1,N]| \u226b N/log N) and HasLogLogDivergence (\u03a3_{n\u2208A,n\u2264N} 1/n \u2212 log log N \u2192 \u221e) as density conditions. The main conjecture and its generalization are axiomatized, along with the k \u2264 2 base case.",
     "keyInsights": [
-      "For k ≤ 2, the divergence Σ 1/p = ∞ provides enough 'coverage bandwidth' — each prime p covers a 1/p fraction of integers, and their combined coverage exhausts ℤ. For k ≥ 3, each progression starts k steps late, losing the smallest residues and creating coverage gaps that grow with p",
-      "The residue choice aₚ is the key degree of freedom: for each prime p, we pick WHERE in {0,...,p−1} to anchor the progression. The question is whether there exists a GLOBAL choice (simultaneously for all primes) that covers everything",
-      "The generalization to dense sets suggests that the prime number theorem's density guarantee π(N) ~ N/log N, combined with the logarithmic reciprocal sum divergence, is the essential input — not any special multiplicative structure of primes",
-      "The k = 3 barrier is fundamental: the constraint t ≥ 3 means each prime p can cover at most ⌊(n − aₚ)/(3p)⌋ + 1 values near n, drastically reducing overlap compared to t ≥ 1",
-      "The problem connects to covering systems (Erdős 1950), Chinese Remainder Theorem constructions, and sieve methods — but none of these tools have been sufficient to resolve even k = 3"
+      "For k \u2264 2, the divergence \u03a3 1/p = \u221e provides enough 'coverage bandwidth' \u2014 each prime p covers a 1/p fraction of integers, and their combined coverage exhausts \u2124. For k \u2265 3, each progression starts k steps late, losing the smallest residues and creating coverage gaps that grow with p",
+      "The residue choice a\u209a is the key degree of freedom: for each prime p, we pick WHERE in {0,...,p\u22121} to anchor the progression. The question is whether there exists a GLOBAL choice (simultaneously for all primes) that covers everything",
+      "The generalization to dense sets suggests that the prime number theorem's density guarantee \u03c0(N) ~ N/log N, combined with the logarithmic reciprocal sum divergence, is the essential input \u2014 not any special multiplicative structure of primes",
+      "The k = 3 barrier is fundamental: the constraint t \u2265 3 means each prime p can cover at most \u230a(n \u2212 a\u209a)/(3p)\u230b + 1 values near n, drastically reducing overlap compared to t \u2265 1",
+      "The problem connects to covering systems (Erd\u0151s 1950), Chinese Remainder Theorem constructions, and sieve methods \u2014 but none of these tools have been sufficient to resolve even k = 3"
     ],
     "prerequisites": [
       "Residue classes: $a_p \\pmod{p}$ for primes $p$",
@@ -56,42 +56,42 @@
       "title": "Module Header and Problem Context",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Documents Erdős Problem #279 on covering integers with shifted prime arithmetic progressions {aₚ + kp, aₚ + (k+1)p, ...} for all primes p. Even the k=3 case is open. Connection to Goldbach-type problems and Linnik's theorem on primes in progressions. Imports Mathlib."
+      "summary": "Documents Erd\u0151s Problem #279 on covering integers with shifted prime arithmetic progressions {a\u209a + kp, a\u209a + (k+1)p, ...} for all primes p. Even the k=3 case is open. Connection to Goldbach-type problems and Linnik's theorem on primes in progressions. Imports Mathlib."
     },
     {
       "id": "covering-setup",
       "title": "Covering by Shifted Progressions",
       "startLine": 24,
       "endLine": 37,
-      "summary": "Defines ResidueChoice as a dependent function from primes to ℕ (residue classes), IsCoveredBy checking that n = aₚ + t·p for some prime p with t ≥ k via existential quantification over p, its primality proof, and t, and CoversEventually requiring coverage for all n ≥ N for some threshold N."
+      "summary": "Defines ResidueChoice as a dependent function from primes to \u2115 (residue classes), IsCoveredBy checking that n = a\u209a + t\u00b7p for some prime p with t \u2265 k via existential quantification over p, its primality proof, and t, and CoversEventually requiring coverage for all n \u2265 N for some threshold N."
     },
     {
       "id": "small-k",
       "title": "Known Results for Small k",
       "startLine": 39,
       "endLine": 46,
-      "summary": "Records the classical result: for k ≤ 2, any set with divergent reciprocal sum (including primes, since Σ 1/p = ∞) can cover all sufficiently large integers. Currently axiomatized with a placeholder body — the proof would require formalizing the greedy covering argument."
+      "summary": "Records the classical result: for k \u2264 2, any set with divergent reciprocal sum (including primes, since \u03a3 1/p = \u221e) can cover all sufficiently large integers. Currently axiomatized with a placeholder body \u2014 the proof would require formalizing the greedy covering argument."
     },
     {
       "id": "density-conditions",
       "title": "Density Conditions for Generalization",
       "startLine": 48,
       "endLine": 59,
-      "summary": "Defines two density conditions for the generalized conjecture: HasPrimeLikeDensity requiring |A ∩ [1,N]| ≥ c·N/log N for some c > 0 (matching the prime counting function up to a constant), and HasLogLogDivergence requiring that Σ_{n∈A,n≤N} 1/n exceeds log log N by an unbounded amount. Both are currently placeholder definitions."
+      "summary": "Defines two density conditions for the generalized conjecture: HasPrimeLikeDensity requiring |A \u2229 [1,N]| \u2265 c\u00b7N/log N for some c > 0 (matching the prime counting function up to a constant), and HasLogLogDivergence requiring that \u03a3_{n\u2208A,n\u2264N} 1/n exceeds log log N by an unbounded amount. Both are currently placeholder definitions."
     },
     {
       "id": "conjectures",
-      "title": "The Erdős Problem and Generalization",
+      "title": "The Erd\u0151s Problem and Generalization",
       "startLine": 61,
       "endLine": 86,
-      "summary": "States ErdosProblem279 for general k ≥ 3 (existence of a covering residue choice), ErdosProblem279_k3 for the specific k = 3 case, the GeneralizedCovering definition using a choice function on an arbitrary set A, and ErdosProblem279_generalized asserting that any set with prime-like density and log-log divergence admits a covering."
+      "summary": "States ErdosProblem279 for general k \u2265 3 (existence of a covering residue choice), ErdosProblem279_k3 for the specific k = 3 case, the GeneralizedCovering definition using a choice function on an arbitrary set A, and ErdosProblem279_generalized asserting that any set with prime-like density and log-log divergence admits a covering."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 279 on covering integers with shifted prime progressions, including the resolved k ≤ 2 case, the open k ≥ 3 conjecture (especially k = 3), and the natural generalization to sets with prime-like density. The 0-sorry count reflects clean axiomatization, though the density conditions use placeholder definitions that await full formalization of asymptotic counting and logarithmic divergence.",
-    "implications": "Resolution would clarify the threshold at which arithmetic progressions with prime moduli lose their covering power, connecting to the theory of covering systems initiated by Erdős (1950), sieve methods for detecting uncovered residue classes, and the general question of when density alone suffices for combinatorial covering properties.",
+    "summary": "The formalization captures Erd\u0151s Problem 279 on covering integers with shifted prime progressions, including the resolved k \u2264 2 case, the open k \u2265 3 conjecture (especially k = 3), and the natural generalization to sets with prime-like density. The 0-sorry count reflects clean axiomatization, though the density conditions use placeholder definitions that await full formalization of asymptotic counting and logarithmic divergence.",
+    "implications": "Resolution would clarify the threshold at which arithmetic progressions with prime moduli lose their covering power, connecting to the theory of covering systems initiated by Erd\u0151s (1950), sieve methods for detecting uncovered residue classes, and the general question of when density alone suffices for combinatorial covering properties.",
     "openQuestions": [
-      "Can shifted prime progressions with t ≥ 3 cover all sufficiently large integers?",
+      "Can shifted prime progressions with t \u2265 3 cover all sufficiently large integers?",
       "Does the generalization hold for all sets with prime-like density and log-log divergence?",
       "What is the minimal density growth rate needed for covering with parameter k?",
       "Can the placeholder density definitions be formalized using Mathlib's asymptotic analysis?"
@@ -109,7 +109,8 @@
     "lineCount": 86,
     "axiomCount": 4,
     "theoremCount": 0,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -130,13 +131,13 @@
     {
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Quadratic reciprocity and its generalizations constrain which residue classes are achievable modulo different primes. The structure of (ℤ/pℤ)* and quadratic residues affects the design of covering systems"
+      "description": "Quadratic reciprocity and its generalizations constrain which residue classes are achievable modulo different primes. The structure of (\u2124/p\u2124)* and quadratic residues affects the design of covering systems"
     }
   ],
   "references": [
     {
       "key": "Er50",
-      "citation": "Erdős, P., On integers of the form 2^k + p and some related problems, Summa Brasiliensis Mathematicae 2 (1950), 113–123.",
+      "citation": "Erd\u0151s, P., On integers of the form 2^k + p and some related problems, Summa Brasiliensis Mathematicae 2 (1950), 113\u2013123.",
       "type": "paper"
     },
     {
@@ -146,7 +147,7 @@
     },
     {
       "key": "CH07",
-      "citation": "Croot, E. and Helfgott, H.A., On Erdős and Sárközy's problem regarding products of prime powers, preprint (2007).",
+      "citation": "Croot, E. and Helfgott, H.A., On Erd\u0151s and S\u00e1rk\u00f6zy's problem regarding products of prime powers, preprint (2007).",
       "type": "paper"
     },
     {

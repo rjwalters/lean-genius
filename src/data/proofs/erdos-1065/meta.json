@@ -1,10 +1,10 @@
 {
   "id": "erdos-1065",
-  "title": "Erdős Problem #1065: Primes of the Form 2^k · q + 1",
+  "title": "Erd\u0151s Problem #1065: Primes of the Form 2^k \u00b7 q + 1",
   "slug": "erdos-1065",
-  "description": "Are there infinitely many primes p = 2^k · q + 1 (q prime, k ≥ 0)? More generally, p = 2^k · 3^l · q + 1? Connected to safe primes and smooth-minus-one primes. OEIS A074781, A339465.",
+  "description": "Are there infinitely many primes p = 2^k \u00b7 q + 1 (q prime, k \u2265 0)? More generally, p = 2^k \u00b7 3^l \u00b7 q + 1? Connected to safe primes and smooth-minus-one primes. OEIS A074781, A339465.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "erdosNumber": 1065,
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1065Problem.lean",
@@ -38,10 +38,10 @@
     ],
     "originalContributions": [
       "IsTwoTimePrimePlusOne and IsTwoThreeTimePrimePlusOne predicates capturing the two-form hierarchy",
-      "8 computationally verified Form A primes ≤ 100 and 1 Form B-only example (p = 61)",
+      "8 computationally verified Form A primes \u2264 100 and 1 Form B-only example (p = 61)",
       "Non-example p = 37 showing conditions are genuinely restrictive",
-      "Form A ⊆ Form B inclusion and Conjecture A ⇒ Conjecture B implication",
-      "Safe primes ⊆ Form A embedding via k = 1 specialization",
+      "Form A \u2286 Form B inclusion and Conjecture A \u21d2 Conjecture B implication",
+      "Safe primes \u2286 Form A embedding via k = 1 specialization",
       "Decidable check function for computational exploration"
     ],
     "erdosProblemStatus": "open",
@@ -53,12 +53,12 @@
       "Asymptotic density of primes"
     ],
     "axiomCount": 2,
-    "assumptions": "2 axiom declarations: erdos_1065a (Set.Infinite for primes of the form 2^k·q + 1), erdos_1065b (Set.Infinite for primes of the form 2^k·3^l·q + 1). Both encode the open conjectures themselves.",
+    "assumptions": "2 axiom declarations: erdos_1065a (Set.Infinite for primes of the form 2^k\u00b7q + 1), erdos_1065b (Set.Infinite for primes of the form 2^k\u00b73^l\u00b7q + 1). Both encode the open conjectures themselves.",
     "lineCount": 162,
     "relatedProblems": [
       {
         "id": "erdos-1057",
-        "relationship": "Nearby Erdős problem about prime counting; both concern infinitude of special prime sets"
+        "relationship": "Nearby Erd\u0151s problem about prime counting; both concern infinitude of special prime sets"
       },
       {
         "id": "erdos-1059",
@@ -88,7 +88,7 @@
       "title": "Form Definitions",
       "startLine": 24,
       "endLine": 32,
-      "summary": "Defines IsTwoTimePrimePlusOne (p = 2^k · q + 1) and IsTwoThreeTimePrimePlusOne (p = 2^k · 3^l · q + 1) predicates.",
+      "summary": "Defines IsTwoTimePrimePlusOne (p = 2^k \u00b7 q + 1) and IsTwoThreeTimePrimePlusOne (p = 2^k \u00b7 3^l \u00b7 q + 1) predicates.",
       "mathContext": "$\\text{Form A}: p \\text{ prime} \\wedge \\exists q \\in \\mathbb{P}, k \\in \\mathbb{N}: p = 2^k q + 1$. $\\text{Form B}: p \\text{ prime} \\wedge \\exists q \\in \\mathbb{P}, k, l \\in \\mathbb{N}: p = 2^k \\cdot 3^l \\cdot q + 1$."
     },
     {
@@ -104,7 +104,7 @@
       "title": "Verified Examples and Non-Example",
       "startLine": 44,
       "endLine": 104,
-      "summary": "Computationally verified: 8 Form A primes ≤ 100 (3, 5, 7, 11, 13, 29, 41, 97), one Form B-only example (61), and a non-example (37).",
+      "summary": "Computationally verified: 8 Form A primes \u2264 100 (3, 5, 7, 11, 13, 29, 41, 97), one Form B-only example (61), and a non-example (37).",
       "mathContext": "$(p, k, q)$: $(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (29,2,7), (41,3,5), (97,5,3)$. Separating example: $61 = 2^2 \\cdot 3 \\cdot 5 + 1$ (Form B only). Non-example: $37 - 1 = 36 = 2^2 \\cdot 3^2$ ($\\{2,3\\}$-smooth, no extra prime factor)."
     },
     {
@@ -112,7 +112,7 @@
       "title": "Structural Theorems and Implications",
       "startLine": 106,
       "endLine": 136,
-      "summary": "Proves Form A ⊆ Form B, safe primes ⊆ Form A, smooth structure of p−1, and Conjecture A ⇒ Conjecture B.",
+      "summary": "Proves Form A \u2286 Form B, safe primes \u2286 Form A, smooth structure of p\u22121, and Conjecture A \u21d2 Conjecture B.",
       "mathContext": "$\\{\\text{safe primes}\\} \\subseteq \\{\\text{Form A}\\} \\subseteq \\{\\text{Form B}\\}$ via $k=1$ and $l=0$ specializations. Form A implies $\\omega(p-1) \\leq 2$. Uses `Set.Infinite.mono` for infinitude lifting."
     },
     {
@@ -125,16 +125,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "This problem (Guy's B46) concerns the factorization structure of $p - 1$ for primes $p$. The study of $p - 1$ factorizations has deep roots: Artin's 1927 primitive root conjecture requires $p - 1$ to have large prime factors for a given integer to be a primitive root mod $p$. Conversely, Erdős asks about primes where $p - 1$ has very *few* prime factors — just a power of 2 and one other prime.\n\nThe $k = 1$ case ($p = 2q + 1$) gives the **safe primes**, named for their use in cryptography: if $p = 2q + 1$ with $q$ also prime, then $(\\mathbb{Z}/p\\mathbb{Z})^*$ has a subgroup of prime order $q$ where the discrete logarithm problem is believed hard — the security foundation of Diffie-Hellman key exchange. The first few safe primes are 5, 7, 11, 23, 47, 59, 83, 107.\n\nHardy and Littlewood's Conjecture F (1923) predicts approximately $2C_2 x/(\\log x)^2$ safe primes up to $x$, where $C_2 = \\prod_{p \\geq 3}(1 - 1/(p-1)^2) \\approx 0.6602$ is the twin primes constant. The generalization to $p = 2^k q + 1$ connects to Bunyakovsky's conjecture (1857) and Schinzel's Hypothesis H (1958): proving infinitely many such primes requires both $q$ and $2^k q + 1$ to be simultaneously prime. Pomerance's work on popular values of Euler's totient $\\phi(n)$ further illuminated the structure of smooth-shifted primes.",
+    "historicalContext": "This problem (Guy's B46) concerns the factorization structure of $p - 1$ for primes $p$. The study of $p - 1$ factorizations has deep roots: Artin's 1927 primitive root conjecture requires $p - 1$ to have large prime factors for a given integer to be a primitive root mod $p$. Conversely, Erd\u0151s asks about primes where $p - 1$ has very *few* prime factors \u2014 just a power of 2 and one other prime.\n\nThe $k = 1$ case ($p = 2q + 1$) gives the **safe primes**, named for their use in cryptography: if $p = 2q + 1$ with $q$ also prime, then $(\\mathbb{Z}/p\\mathbb{Z})^*$ has a subgroup of prime order $q$ where the discrete logarithm problem is believed hard \u2014 the security foundation of Diffie-Hellman key exchange. The first few safe primes are 5, 7, 11, 23, 47, 59, 83, 107.\n\nHardy and Littlewood's Conjecture F (1923) predicts approximately $2C_2 x/(\\log x)^2$ safe primes up to $x$, where $C_2 = \\prod_{p \\geq 3}(1 - 1/(p-1)^2) \\approx 0.6602$ is the twin primes constant. The generalization to $p = 2^k q + 1$ connects to Bunyakovsky's conjecture (1857) and Schinzel's Hypothesis H (1958): proving infinitely many such primes requires both $q$ and $2^k q + 1$ to be simultaneously prime. Pomerance's work on popular values of Euler's totient $\\phi(n)$ further illuminated the structure of smooth-shifted primes.",
     "problemStatement": "Are there infinitely many primes $p$ such that $p = 2^k \\cdot q + 1$ for some prime $q$ and $k \\geq 0$? More generally, are there infinitely many primes $p = 2^k \\cdot 3^l \\cdot q + 1$?",
     "text": "Are there infinitely many primes of the form 2^k * q + 1 where q is prime? Connected to safe primes and Cunningham chains. The formalization establishes a logical hierarchy from safe primes through both conjecture variants. Status: OPEN.",
-    "proofStrategy": "The formalization defines both forms, states both infinitude conjectures as axioms, provides 8 computationally verified Form A examples and 1 Form B-only example, proves the logical hierarchy (safe primes ⇒ Conjecture A ⇒ Conjecture B), establishes the smooth structure of $p - 1$, and implements a decidable check function for computational exploration.",
+    "proofStrategy": "The formalization defines both forms, states both infinitude conjectures as axioms, provides 8 computationally verified Form A examples and 1 Form B-only example, proves the logical hierarchy (safe primes \u21d2 Conjecture A \u21d2 Conjecture B), establishes the smooth structure of $p - 1$, and implements a decidable check function for computational exploration.",
     "keyInsights": [
       "**Safe primes specialization:** The $k = 1$ case is precisely the safe primes conjecture ($p = 2q + 1$), itself a major open problem connected to Diffie-Hellman cryptographic security",
       "**Prime factor count:** Form A restricts $p - 1$ to have $\\omega(p-1) \\leq 2$ distinct prime factors; Form B allows $\\omega(p-1) \\leq 3$, with the logical hierarchy safe primes $\\Rightarrow$ Conjecture A $\\Rightarrow$ Conjecture B",
-      "**Separating example $p = 61$:** $60 = 2^2 \\cdot 3 \\cdot 5$ has three distinct prime factors, so 61 is Form B but not Form A — showing the two forms are genuinely distinct",
+      "**Separating example $p = 61$:** $60 = 2^2 \\cdot 3 \\cdot 5$ has three distinct prime factors, so 61 is Form B but not Form A \u2014 showing the two forms are genuinely distinct",
       "**Non-example $p = 37$:** $36 = 2^2 \\cdot 3^2$ is $\\{2,3\\}$-smooth with no additional prime factor, showing that not all primes satisfy even the relaxed Form B condition",
-      "**Artin connection:** Both problems concern the multiplicative structure of $p - 1$; Artin's primitive root conjecture requires large prime factors of $p - 1$, while Erdős asks about the opposite extreme",
+      "**Artin connection:** Both problems concern the multiplicative structure of $p - 1$; Artin's primitive root conjecture requires large prime factors of $p - 1$, while Erd\u0151s asks about the opposite extreme",
       "**Cryptographic significance:** Safe primes ($k=1$) are essential for Diffie-Hellman key exchange: when $p = 2q + 1$, the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ has a subgroup of prime order $q$ where the discrete logarithm problem is believed hard. The infinitude of safe primes is an implicit assumption in modern cryptographic protocols, yet remains unproven"
     ],
     "prerequisites": [
@@ -145,7 +145,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures both variants of Erdős Problem #1065, establishes their logical hierarchy, and provides extensive computational evidence. The $k = 1$ case connects to the safe primes conjecture, a cornerstone of modern cryptography. All structural theorems (Form A ⊆ Form B, smooth factorization, implication chain) are fully proved in Lean 4.",
+    "summary": "This formalization captures both variants of Erd\u0151s Problem #1065, establishes their logical hierarchy, and provides extensive computational evidence. The $k = 1$ case connects to the safe primes conjecture, a cornerstone of modern cryptography. All structural theorems (Form A \u2286 Form B, smooth factorization, implication chain) are fully proved in Lean 4.",
     "implications": "**Theoretical Significance**: A resolution would illuminate the factorization structure of $p - 1$ for primes $p$, connecting to Artin's primitive root conjecture, the distribution of smooth numbers, and the security assumptions underlying Diffie-Hellman cryptography.\n\nUnderstanding when $p - 1$ can be nearly a prime power is fundamental to both analytic and computational number theory. The problem is a special case of Schinzel's Hypothesis H (1958): if $f_1(n), \\ldots, f_s(n)$ are irreducible polynomials with no fixed prime divisor, then they are simultaneously prime infinitely often. For Conjecture A, taking $f_1(q) = q$ and $f_2(q) = 2^k q + 1$ (with fixed $k$) yields a Hypothesis H instance. The Bateman-Horn conjecture gives a quantitative prediction for the count.\n\n**Cryptographic Impact**: The safe primes conjecture ($k = 1$) is foundational to modern cryptography. Without a proof, the security of Diffie-Hellman key exchange rests on an unproven number-theoretic assumption about prime distribution. The broader Conjecture A (arbitrary $k$) would provide a richer supply of cryptographically useful primes with structured group orders.",
     "openQuestions": [
       "Are there infinitely many primes $p = 2^k \\cdot q + 1$ (Conjecture A)?",
@@ -163,17 +163,17 @@
     {
       "targetId": "primitive-roots",
       "relationship": "related",
-      "description": "Artin's primitive root conjecture depends on the factorization of p-1 — exactly the structure constrained by Form A"
+      "description": "Artin's primitive root conjecture depends on the factorization of p-1 \u2014 exactly the structure constrained by Form A"
     },
     {
       "targetId": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions is the prototype for prime distribution in structured sets; Erdős asks about a more restrictive structured set"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is the prototype for prime distribution in structured sets; Erd\u0151s asks about a more restrictive structured set"
     },
     {
       "targetId": "erdos-1057",
       "relationship": "related",
-      "description": "Sister Erdős problem about special prime sets; both use Set.Infinite for open conjectures about primes with constrained factorization structure in p-1"
+      "description": "Sister Erd\u0151s problem about special prime sets; both use Set.Infinite for open conjectures about primes with constrained factorization structure in p-1"
     },
     {
       "targetId": "wilsons-theorem",
@@ -183,12 +183,12 @@
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient $\\varphi(p) = p - 1$ connects directly: Form A primes have $\\varphi(p) = 2^k q$ with $\\omega(\\varphi(p)) \\leq 2$. Pomerance's work on popular totient values studies exactly this structure — how often $\\varphi(n)$ has restricted factorization"
+      "description": "Euler's totient $\\varphi(p) = p - 1$ connects directly: Form A primes have $\\varphi(p) = 2^k q$ with $\\omega(\\varphi(p)) \\leq 2$. Pomerance's work on popular totient values studies exactly this structure \u2014 how often $\\varphi(n)$ has restricted factorization"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "Euclid's theorem guarantees infinitely many primes; this problem asks whether the subset with restricted $p-1$ factorization is also infinite — a natural refinement of the basic infinitude result"
+      "description": "Euclid's theorem guarantees infinitely many primes; this problem asks whether the subset with restricted $p-1$ factorization is also infinite \u2014 a natural refinement of the basic infinitude result"
     },
     {
       "targetId": "bertrands-postulate",
@@ -213,12 +213,12 @@
     {
       "targetId": "dirichlets-theorem-oq-01",
       "relationship": "related",
-      "description": "Siegel zeros (exceptionally small values of $L(1, \\chi)$) are the main obstruction to proving strong results about primes in arithmetic progressions. Primes of the form $2^k q + 1$ lie in specific residue classes, and Dirichlet's theorem guarantees their infinitude in each class, but the quantitative distribution — how many such primes up to $x$ — depends on whether Siegel zeros exist. A resolution of the Siegel zero conjecture would sharpen the density predictions for Erdős #1065"
+      "description": "Siegel zeros (exceptionally small values of $L(1, \\chi)$) are the main obstruction to proving strong results about primes in arithmetic progressions. Primes of the form $2^k q + 1$ lie in specific residue classes, and Dirichlet's theorem guarantees their infinitude in each class, but the quantitative distribution \u2014 how many such primes up to $x$ \u2014 depends on whether Siegel zeros exist. A resolution of the Siegel zero conjecture would sharpen the density predictions for Erd\u0151s #1065"
     },
     {
       "targetId": "fermat-two-squares",
       "relationship": "related",
-      "description": "Fermat's two-squares theorem ($p = a^2 + b^2 \\iff p \\equiv 1 \\pmod{4}$) characterizes primes by a condition on $p - 1$: requiring $4 | (p-1)$. Erdős #1065 imposes a stronger structural condition on $p - 1 = 2^k q$ (exactly one odd prime factor). Both problems connect the arithmetic structure of $p - 1$ to properties of the prime $p$ itself, using the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ of order $p - 1$"
+      "description": "Fermat's two-squares theorem ($p = a^2 + b^2 \\iff p \\equiv 1 \\pmod{4}$) characterizes primes by a condition on $p - 1$: requiring $4 | (p-1)$. Erd\u0151s #1065 imposes a stronger structural condition on $p - 1 = 2^k q$ (exactly one odd prime factor). Both problems connect the arithmetic structure of $p - 1$ to properties of the prime $p$ itself, using the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ of order $p - 1$"
     }
   ],
   "relatedProofs": [
@@ -248,7 +248,8 @@
     "lineCount": 162,
     "axiomCount": 2,
     "theoremCount": 14,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -256,21 +257,21 @@
       "title": "Unsolved Problems in Number Theory",
       "year": "2004",
       "venue": "Springer, 3rd edition",
-      "note": "Problem B46: primes of the form 2^k·q + 1"
+      "note": "Problem B46: primes of the form 2^k\u00b7q + 1"
     },
     {
       "authors": "Hardy, G.H.; Littlewood, J.E.",
       "title": "Some problems of 'Partitio numerorum'; III: On the expression of a number as a sum of primes",
       "year": "1923",
       "venue": "Acta Mathematica 44, 1-70",
-      "note": "Conjecture F predicts the density of safe primes as ~2C₂·x/(log x)²"
+      "note": "Conjecture F predicts the density of safe primes as ~2C\u2082\u00b7x/(log x)\u00b2"
     },
     {
       "authors": "Artin, Emil",
-      "title": "Beweis des allgemeinen Reziprozitätsgesetzes",
+      "title": "Beweis des allgemeinen Reziprozit\u00e4tsgesetzes",
       "year": "1927",
-      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 5, 353-363",
-      "note": "Primitive root conjecture — connected via the factorization structure of p-1"
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universit\u00e4t Hamburg 5, 353-363",
+      "note": "Primitive root conjecture \u2014 connected via the factorization structure of p-1"
     },
     {
       "authors": "Pomerance, Carl",
@@ -280,11 +281,11 @@
       "note": "Smooth-shifted primes and the distribution of Euler's totient values"
     },
     {
-      "authors": "Schinzel, Andrzej; Sierpiński, Wacław",
-      "title": "Sur certaines hypothèses concernant les nombres premiers",
+      "authors": "Schinzel, Andrzej; Sierpi\u0144ski, Wac\u0142aw",
+      "title": "Sur certaines hypoth\u00e8ses concernant les nombres premiers",
       "year": "1958",
       "venue": "Acta Arithmetica 4, 185-208",
-      "note": "Hypothesis H: if polynomials f₁,...,fₛ with positive leading coefficients are irreducible and have no fixed prime divisor, then they represent primes simultaneously infinitely often. Erdős #1065 (for fixed k) is a Hypothesis H instance with f₁(q) = q and f₂(q) = 2^k·q + 1"
+      "note": "Hypothesis H: if polynomials f\u2081,...,f\u209b with positive leading coefficients are irreducible and have no fixed prime divisor, then they represent primes simultaneously infinitely often. Erd\u0151s #1065 (for fixed k) is a Hypothesis H instance with f\u2081(q) = q and f\u2082(q) = 2^k\u00b7q + 1"
     },
     {
       "authors": "OEIS Foundation",

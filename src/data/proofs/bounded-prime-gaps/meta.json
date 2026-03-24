@@ -2,7 +2,7 @@
   "id": "bounded-prime-gaps",
   "title": "Bounded Prime Gaps (Zhang/Maynard-Tao/Polymath 8b)",
   "slug": "bounded-prime-gaps",
-  "description": "A formal development of the bounded prime gaps theorem and its surrounding infrastructure in Lean 4. Formalizes admissible k-tuples, the Polymath 8b bound of 246, Zhang's 70M bound, and consequences including liminf of prime gaps ≤ 246. Deep sieve theory axioms are stated formally with verified consequences derived from them.",
+  "description": "A formal development of the bounded prime gaps theorem and its surrounding infrastructure in Lean 4. Formalizes admissible k-tuples, the Polymath 8b bound of 246, Zhang's 70M bound, and consequences including liminf of prime gaps \u2264 246. Deep sieve theory axioms are stated formally with verified consequences derived from them.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Prime_gap#Proven_bounds",
@@ -48,23 +48,23 @@
       "IsAdmissible: formal definition of admissible k-tuples as Finsets where no prime p covers all residues",
       "Admissibility of specific tuples: {0,2} (twin primes), {0,2,6}, {0,4,6}, {0,2,6,8}, {0,2,6,8,12}, {0,4,6,10,12}, {0,2,6,8,12,18}, {0,4,6,10,12,16}",
       "Non-admissibility: {0,1}, {0,1,2}, {0,1,2,3,4}, and general range criterion",
-      "exists_admissible_50_tuple_246: constructive existence of a 50-element admissible tuple with diameter ≤ 246",
+      "exists_admissible_50_tuple_246: constructive existence of a 50-element admissible tuple with diameter \u2264 246",
       "zhang_bounded_gaps_70M: derives Zhang's 70M bound from Polymath 8b axiom",
       "eh_implies_polymath: derives 246 bound from Elliott-Halberstam conditional bound axiom",
-      "Prime gap infrastructure: primeGap, nthPrime properties, gap positivity, gap ≥ 2 for n ≥ 1, evenness",
+      "Prime gap infrastructure: primeGap, nthPrime properties, gap positivity, gap \u2265 2 for n \u2265 1, evenness",
       "DicksonConjecture formalization: primes in admissible tuples implies twin primes and prime triples",
-      "prime_gaps_unbounded: ∀ N, ∃ n, primeGap n ≥ N (proved via factorial construction)",
+      "prime_gaps_unbounded: \u2200 N, \u2203 n, primeGap n \u2265 N (proved via factorial construction)",
       "prime_gaps_oscillate: combining bounded + unbounded results"
     ],
     "dateAdded": "2026-02-23",
     "relatedProblems": [
       {
         "id": "twin-primes-special",
-        "relationship": "Twin prime conjecture: Dickson conjecture for {0,2} implies infinitely many twin primes; Zhang/Polymath proves gap ≤ 246 unconditionally"
+        "relationship": "Twin prime conjecture: Dickson conjecture for {0,2} implies infinitely many twin primes; Zhang/Polymath proves gap \u2264 246 unconditionally"
       },
       {
         "id": "bertrands-postulate-oq-03",
-        "relationship": "Bertrand's postulate: prime gaps ≤ n; bounded prime gaps is a stronger result about infinitely many small gaps"
+        "relationship": "Bertrand's postulate: prime gaps \u2264 n; bounded prime gaps is a stronger result about infinitely many small gaps"
       }
     ],
     "axiomCount": 3,
@@ -75,25 +75,25 @@
       "Elementary number theory: divisibility, factorial, ZMod"
     ],
     "assumptions": [
-      "maynard_tao_m_tuples: For any m ≥ 2, there are infinitely many bounded intervals containing m primes (Maynard-Tao 2015)",
-      "maynard_tao_sieve: The Maynard-Tao sieve reduction — any admissible 50-tuple of diameter D gives infinitely many prime gaps ≤ D",
-      "maynard_tao_sieve_eh: The EH-conditional sieve — under Elliott-Halberstam, any admissible 5-tuple of diameter D gives infinitely many prime gaps ≤ D",
+      "maynard_tao_m_tuples: For any m \u2265 2, there are infinitely many bounded intervals containing m primes (Maynard-Tao 2015)",
+      "maynard_tao_sieve: The Maynard-Tao sieve reduction \u2014 any admissible 50-tuple of diameter D gives infinitely many prime gaps \u2264 D",
+      "maynard_tao_sieve_eh: The EH-conditional sieve \u2014 under Elliott-Halberstam, any admissible 5-tuple of diameter D gives infinitely many prime gaps \u2264 D",
       "engelsma_lower_bound: No admissible 50-tuple has diameter < 246 (Engelsma 2013 computer search)"
     ],
     "lineCount": 2017
   },
   "overview": {
-    "historicalContext": "**Bounded Prime Gaps: A Landmark in Analytic Number Theory**\n\nThe twin prime conjecture (infinitely many primes differing by 2) remained open for centuries. In 2013, Yitang Zhang made the first unconditional breakthrough: there are infinitely many prime pairs differing by at most 70,000,000. This was stunning because it proved *some* bounded gap exists, even if not 2.\n\nThe Polymath 8 project (organized by Terence Tao) rapidly optimized Zhang's work:\n- **Polymath 8a** (2013): Reduced Zhang's bound to 4,680\n- **Polymath 8b** (2014): Using Maynard's new GPY sieve method, reached **246**\n- **Maynard-Tao (2015)**: Independently showed gap ≤ 600, and generalized to m-tuples\n- **Assuming Elliott-Halberstam conjecture**: Bound improves to **12** (two apart from twin prime conjecture)\n\nThe central combinatorial object is an *admissible k-tuple*: a set $H = \\{h_1, \\ldots, h_k\\}$ of integers such that for every prime $p$, the set $H$ does not cover all residue classes mod $p$. The Dickson conjecture predicts that admissible tuples have infinitely many prime translates; the bounded gaps theorem proves that sufficiently large admissible tuples have infinitely many *partially* realized translates.",
+    "historicalContext": "**Bounded Prime Gaps: A Landmark in Analytic Number Theory**\n\nThe twin prime conjecture (infinitely many primes differing by 2) remained open for centuries. In 2013, Yitang Zhang made the first unconditional breakthrough: there are infinitely many prime pairs differing by at most 70,000,000. This was stunning because it proved *some* bounded gap exists, even if not 2.\n\nThe Polymath 8 project (organized by Terence Tao) rapidly optimized Zhang's work:\n- **Polymath 8a** (2013): Reduced Zhang's bound to 4,680\n- **Polymath 8b** (2014): Using Maynard's new GPY sieve method, reached **246**\n- **Maynard-Tao (2015)**: Independently showed gap \u2264 600, and generalized to m-tuples\n- **Assuming Elliott-Halberstam conjecture**: Bound improves to **12** (two apart from twin prime conjecture)\n\nThe central combinatorial object is an *admissible k-tuple*: a set $H = \\{h_1, \\ldots, h_k\\}$ of integers such that for every prime $p$, the set $H$ does not cover all residue classes mod $p$. The Dickson conjecture predicts that admissible tuples have infinitely many prime translates; the bounded gaps theorem proves that sufficiently large admissible tuples have infinitely many *partially* realized translates.",
     "problemStatement": "**Theorem (Polymath 8b, 2014)**: There exist infinitely many pairs of consecutive primes $(p_n, p_{n+1})$ with $p_{n+1} - p_n \\leq 246$.\n\n**Equivalently**: $\\liminf_{n \\to \\infty} (p_{n+1} - p_n) \\leq 246$.\n\n**Zhang (2013)**: Same with 246 replaced by 70,000,000.\n\n**Maynard-Tao (2015)**: For every $m \\geq 2$, there are infinitely many intervals of bounded length containing $m$ primes.\n\n**Conditional (Elliott-Halberstam)**: The bound improves to 12.",
-    "text": "A formal development of the bounded prime gaps theorem and its surrounding infrastructure in Lean 4. Formalizes admissible k-tuples, the Polymath 8b bound of 246, Zhang's 70M bound, and consequences including liminf of prime gaps ≤ 246. Deep sieve theory axioms are stated formally with verified consequences derived from them.",
-    "proofStrategy": "The formalization uses a **sieve reduction approach**: two structural sieve axioms encode the Maynard-Tao mechanism, and all specific bounded gap results are DERIVED from these axioms applied to specific admissible tuples.\n\n**Sieve reduction**: The key axiom `maynard_tao_sieve` states: for any admissible k-tuple H with k ≥ 50 and diameter D, there are infinitely many prime gaps ≤ D. This single principle DERIVES:\n- Polymath 246 bound (apply to Engelsma 50-tuple of diameter 246)\n- Zhang 70M bound (follows from Polymath)\n- EH conditional 12 bound (apply EH variant to {0,2,6,8,12})\n\n**Admissible tuples**: The key combinatorial object is defined, and specific admissible tuples ({0,2} through 50-tuples) are verified using `decide` and `native_decide`.\n\n**Elementary components**: Prime gap positivity, evenness (gaps between odd primes are even), and unboundedness (factorial construction gives arbitrarily large gaps) are proved from Mathlib primitives without sieve theory.",
+    "text": "A formal development of the bounded prime gaps theorem and its surrounding infrastructure in Lean 4. Formalizes admissible k-tuples, the Polymath 8b bound of 246, Zhang's 70M bound, and consequences including liminf of prime gaps \u2264 246. Deep sieve theory axioms are stated formally with verified consequences derived from them.",
+    "proofStrategy": "The formalization uses a **sieve reduction approach**: two structural sieve axioms encode the Maynard-Tao mechanism, and all specific bounded gap results are DERIVED from these axioms applied to specific admissible tuples.\n\n**Sieve reduction**: The key axiom `maynard_tao_sieve` states: for any admissible k-tuple H with k \u2265 50 and diameter D, there are infinitely many prime gaps \u2264 D. This single principle DERIVES:\n- Polymath 246 bound (apply to Engelsma 50-tuple of diameter 246)\n- Zhang 70M bound (follows from Polymath)\n- EH conditional 12 bound (apply EH variant to {0,2,6,8,12})\n\n**Admissible tuples**: The key combinatorial object is defined, and specific admissible tuples ({0,2} through 50-tuples) are verified using `decide` and `native_decide`.\n\n**Elementary components**: Prime gap positivity, evenness (gaps between odd primes are even), and unboundedness (factorial construction gives arbitrarily large gaps) are proved from Mathlib primitives without sieve theory.",
     "keyInsights": [
-      "**Admissibility Criterion:** `IsAdmissible H` $\\iff \\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. This ensures $H$ doesn't cover all residue classes mod any prime — the combinatorial condition that allows infinitely many prime translates.",
-      "**Computational Verification:** The Polymath 50-tuple has diameter 246. The formalization verifies admissibility using `native_decide` for primality up to 47, then `interval_cases + decide` for composite moduli — pure computation, no trust assumptions.",
+      "**Admissibility Criterion:** `IsAdmissible H` $\\iff \\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. This ensures $H$ doesn't cover all residue classes mod any prime \u2014 the combinatorial condition that allows infinitely many prime translates.",
+      "**Computational Verification:** The Polymath 50-tuple has diameter 246. The formalization verifies admissibility using `native_decide` for primality up to 47, then `interval_cases + decide` for composite moduli \u2014 pure computation, no trust assumptions.",
       "**Zhang $\\to$ Polymath:** Zhang's bound $7 \\times 10^7$ and the Polymath bound 246 both follow from the Maynard-Tao sieve axiom parameterized by the admissible tuple. Larger tuples give weaker bounds; smaller tuples need deeper sieve theory.",
       "**Even Gaps:** For $n \\geq 1$, $p_{n+1} - p_n$ is even because both $p_n, p_{n+1} \\geq 3$ are odd. The twin prime conjecture asks whether $p_{n+1} - p_n = 2$ infinitely often.",
       "**Unbounded Gaps (Elementary):** $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving arbitrarily long gaps: $\\limsup_{n \\to \\infty}(p_{n+1} - p_n) = \\infty$.",
-      "**Oscillation:** $\\liminf \\leq 246$ (Polymath) and $\\limsup = \\infty$ (factorial) together imply prime gaps oscillate non-monotonically — they are bounded below infinitely often yet unbounded above."
+      "**Oscillation:** $\\liminf \\leq 246$ (Polymath) and $\\limsup = \\infty$ (factorial) together imply prime gaps oscillate non-monotonically \u2014 they are bounded below infinitely often yet unbounded above."
     ],
     "prerequisites": [
       "Analytic number theory: sieve methods and the Maynard-Tao GPY sieve",
@@ -116,8 +116,8 @@
       "title": "Admissible Tuples: Definition and Basic Properties",
       "startLine": 57,
       "endLine": 105,
-      "summary": "Defines IsAdmissible: a Finset ℕ is admissible if for every prime p, its image mod p has fewer than p elements. Proves basic properties: empty set, singletons, subsets, and sets with card < 2 are all admissible.",
-      "mathContext": "`IsAdmissible H` $\\iff \\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. This ensures $H$ doesn't cover all residue classes mod any prime — the combinatorial condition guaranteeing that no single prime can obstruct all translates $n + H$ from containing primes. Example: $\\{0, 2\\}$ is admissible because $\\{0, 2\\} \\bmod 2 = \\{0\\}$ has size 1 < 2, and for $p > 2$, $|\\{0, 2\\}| = 2 < p$."
+      "summary": "Defines IsAdmissible: a Finset \u2115 is admissible if for every prime p, its image mod p has fewer than p elements. Proves basic properties: empty set, singletons, subsets, and sets with card < 2 are all admissible.",
+      "mathContext": "`IsAdmissible H` $\\iff \\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. This ensures $H$ doesn't cover all residue classes mod any prime \u2014 the combinatorial condition guaranteeing that no single prime can obstruct all translates $n + H$ from containing primes. Example: $\\{0, 2\\}$ is admissible because $\\{0, 2\\} \\bmod 2 = \\{0\\}$ has size 1 < 2, and for $p > 2$, $|\\{0, 2\\}| = 2 < p$."
     },
     {
       "id": "specific-admissible-tuples",
@@ -132,7 +132,7 @@
       "title": "Main Theorems and Axioms",
       "startLine": 216,
       "endLine": 265,
-      "summary": "Three axioms state the deep sieve-theoretic results: maynard_tao_m_tuples (m-tuple generalization), maynard_tao_sieve (k≥50 admissible tuple → bounded gaps ≤ diameter), maynard_tao_sieve_eh (EH-conditional variant). Derives zhang_bounded_gaps_70M, infinitely_many_small_gaps, liminf_prime_gaps_finite.",
+      "summary": "Three axioms state the deep sieve-theoretic results: maynard_tao_m_tuples (m-tuple generalization), maynard_tao_sieve (k\u226550 admissible tuple \u2192 bounded gaps \u2264 diameter), maynard_tao_sieve_eh (EH-conditional variant). Derives zhang_bounded_gaps_70M, infinitely_many_small_gaps, liminf_prime_gaps_finite.",
       "mathContext": "Axiom 1 (`maynard_tao_m_tuples`): $\\forall m \\geq 2$, $\\exists C_m$, infinitely many intervals of length $C_m$ contain $m$ primes. Axiom 2 (`maynard_tao_sieve`): admissible $H$ with $|H| \\geq 50$ and diameter $D$ $\\Rightarrow \\liminf(p_{n+1} - p_n) \\leq D$. Axiom 3 (`maynard_tao_sieve_eh`): same under Elliott-Halberstam with $|H| \\geq 6$. Key derivation: apply axiom 2 to the Engelsma 50-tuple of diameter 246."
     },
     {
@@ -140,7 +140,7 @@
       "title": "Dickson Conjecture and Consequences",
       "startLine": 263,
       "endLine": 380,
-      "summary": "Formalizes DicksonConjecture (admissible tuples have infinitely many prime translates). Derives: twin primes (from {0,2} admissibility), prime triples (from {0,2,6}), and maynard_tao_consecutive_gaps. Constructs a 50-element admissible tuple with diameter ≤ 246 (exists_admissible_50_tuple_246).",
+      "summary": "Formalizes DicksonConjecture (admissible tuples have infinitely many prime translates). Derives: twin primes (from {0,2} admissibility), prime triples (from {0,2,6}), and maynard_tao_consecutive_gaps. Constructs a 50-element admissible tuple with diameter \u2264 246 (exists_admissible_50_tuple_246).",
       "mathContext": "Dickson's conjecture: for admissible $H = \\{h_1,\\ldots,h_k\\}$, $\\exists^\\infty n$, all $n + h_i$ are prime. Twin prime conjecture = Dickson for $\\{0, 2\\}$. The 50-tuple $\\{0, 2, 8, 14, 18, 20, \\ldots, 246\\}$ (Engelsma's optimized set) has `card = 50` and `diameter = 246`, proved by `native_decide`. Applying `maynard_tao_sieve` to this tuple gives $\\liminf(p_{n+1} - p_n) \\leq 246$."
     },
     {
@@ -148,7 +148,7 @@
       "title": "Prime Gap Infrastructure",
       "startLine": 379,
       "endLine": 640,
-      "summary": "Establishes: nthPrime properties (primality, strict monotonicity, positivity, p₀=2, p₁=3), primeGap properties (positivity, evenness for n≥1, gap ≥ 2), admissibility criteria (not_admissible_range, admissible_card_lt_of_prime), eh_implies_polymath, and maynard_tao_consecutive_gaps.",
+      "summary": "Establishes: nthPrime properties (primality, strict monotonicity, positivity, p\u2080=2, p\u2081=3), primeGap properties (positivity, evenness for n\u22651, gap \u2265 2), admissibility criteria (not_admissible_range, admissible_card_lt_of_prime), eh_implies_polymath, and maynard_tao_consecutive_gaps.",
       "mathContext": "$p_n$ = `Nat.nth Nat.Prime n` (the $n$-th prime). $g_n = p_{n+1} - p_n$ (prime gap). Properties: $g_n \\geq 1$ (primes are distinct), $g_n$ is even for $n \\geq 1$ (both primes are odd), $g_n \\geq 2$ for $n \\geq 1$. Non-admissibility: $\\{0,1,\\ldots,p-1\\}$ is not admissible for any prime $p$ (covers all residues). EH implication: `maynard_tao_sieve_eh` on $\\{0,2,6,8,12\\}$ (admissible 5-tuple of diameter 12) gives $\\liminf g_n \\leq 12$."
     },
     {
@@ -156,13 +156,13 @@
       "title": "Gap Oscillation and Additional Admissible Tuples",
       "startLine": 641,
       "endLine": 1462,
-      "summary": "Proves prime_gaps_unbounded via factorial construction (N!+k is composite for 2≤k≤N), prime_gaps_oscillate (bounded liminf but infinite gaps exist). Additional admissible sextuples: {0,2,6,8,12,18}, {0,4,6,10,12,16}. Further admissibility/non-admissibility results.",
-      "mathContext": "Unbounded gaps: $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving a gap of $\\geq N - 1$ after $p = $ the largest prime $\\leq N!+1$. Therefore $\\limsup_{n \\to \\infty} g_n = \\infty$. Combined with $\\liminf g_n \\leq 246$: prime gaps oscillate — they are infinitely often $\\leq 246$ yet infinitely often arbitrarily large."
+      "summary": "Proves prime_gaps_unbounded via factorial construction (N!+k is composite for 2\u2264k\u2264N), prime_gaps_oscillate (bounded liminf but infinite gaps exist). Additional admissible sextuples: {0,2,6,8,12,18}, {0,4,6,10,12,16}. Further admissibility/non-admissibility results.",
+      "mathContext": "Unbounded gaps: $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving a gap of $\\geq N - 1$ after $p = $ the largest prime $\\leq N!+1$. Therefore $\\limsup_{n \\to \\infty} g_n = \\infty$. Combined with $\\liminf g_n \\leq 246$: prime gaps oscillate \u2014 they are infinitely often $\\leq 246$ yet infinitely often arbitrarily large."
     }
   ],
   "conclusion": {
     "summary": "This formalization covers the bounded prime gaps theorem and its surrounding infrastructure. Three sieve-theoretic results are axiomatized (Polymath 8b bound 246, Maynard-Tao m-tuples, Elliott-Halberstam conditional bound 12). All combinatorial infrastructure and elementary consequences are fully proved. Admissible tuples through 50-tuples are verified constructively.",
-    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Zhang's Breakthrough (2013)**: After centuries of failed attempts, Zhang proved the first unconditional bound on prime gaps. The formalization captures why this matters: the admissible tuple framework converts the problem into a combinatorial question (can we find a 50-tuple with small diameter?) and a sieve theory question (does sieve theory find primes in such tuples?).\n\n2. **Polymath Collaboration**: The Polymath 8b optimization from 70M to 246 represents one of the most successful mathematical crowdsourcing efforts. The 246 bound comes from the largest admissible 50-tuple that fits in a diameter of 246.\n\n**3. Admissible Tuples as Abstraction**: The formal definition `IsAdmissible H ↔ ∀ p prime, (H.image (· % p)).card < p` is verifiable by computation for any specific set. This makes admissibility a Decidable property for finite sets.\n\n4. **Elementary vs. Sieve Theory**: The formalization cleanly separates what requires deep sieve theory (the three axioms) from what is elementary (gap bounds from axioms, gap oscillation, specific tuple admissibility). This clarifies the logical structure of the theorem.\n\n5. **Twin Prime Conjecture Landscape**: The Dickson conjecture formalization shows the precise logical gap between 'bounded gaps exist' (proved) and 'infinitely many twin primes' (still open): Dickson for {0,2} implies twin primes, but we don't have Dickson, just the existence of some bounded gap.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Zhang's Breakthrough (2013)**: After centuries of failed attempts, Zhang proved the first unconditional bound on prime gaps. The formalization captures why this matters: the admissible tuple framework converts the problem into a combinatorial question (can we find a 50-tuple with small diameter?) and a sieve theory question (does sieve theory find primes in such tuples?).\n\n2. **Polymath Collaboration**: The Polymath 8b optimization from 70M to 246 represents one of the most successful mathematical crowdsourcing efforts. The 246 bound comes from the largest admissible 50-tuple that fits in a diameter of 246.\n\n**3. Admissible Tuples as Abstraction**: The formal definition `IsAdmissible H \u2194 \u2200 p prime, (H.image (\u00b7 % p)).card < p` is verifiable by computation for any specific set. This makes admissibility a Decidable property for finite sets.\n\n4. **Elementary vs. Sieve Theory**: The formalization cleanly separates what requires deep sieve theory (the three axioms) from what is elementary (gap bounds from axioms, gap oscillation, specific tuple admissibility). This clarifies the logical structure of the theorem.\n\n5. **Twin Prime Conjecture Landscape**: The Dickson conjecture formalization shows the precise logical gap between 'bounded gaps exist' (proved) and 'infinitely many twin primes' (still open): Dickson for {0,2} implies twin primes, but we don't have Dickson, just the existence of some bounded gap.",
     "openQuestions": [
       "Can the Polymath 8b axiom be reduced to a statement provable from Mathlib's sieve theory infrastructure?",
       "Can the Elliott-Halberstam conjecture be formalized as an axiom-free statement (as it's a conjecture, not a theorem)?",
@@ -173,27 +173,27 @@
     {
       "targetId": "bertrands-postulate",
       "relationship": "foundational",
-      "description": "Bertrand's postulate (always a prime between n and 2n) was the first result on bounded prime gaps in a weak sense. Bounded prime gaps strengthens this dramatically: not just one prime in (n,2n], but infinitely many consecutive prime pairs with gap ≤ 246"
+      "description": "Bertrand's postulate (always a prime between n and 2n) was the first result on bounded prime gaps in a weak sense. Bounded prime gaps strengthens this dramatically: not just one prime in (n,2n], but infinitely many consecutive prime pairs with gap \u2264 246"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "extends",
-      "description": "Infinitude of primes is the coarsest gap result (primes don't stop). Bounded prime gaps refines this to say consecutive primes cluster: lim inf (p_{n+1} - p_n) ≤ 246"
+      "description": "Infinitude of primes is the coarsest gap result (primes don't stop). Bounded prime gaps refines this to say consecutive primes cluster: lim inf (p_{n+1} - p_n) \u2264 246"
     },
     {
       "targetId": "prime-number-theorem",
       "relationship": "related",
-      "description": "PNT gives the average prime gap as log p, but bounded prime gaps shows the minimum gap is finite — primes are much more clustered than PNT's average density suggests"
+      "description": "PNT gives the average prime gap as log p, but bounded prime gaps shows the minimum gap is finite \u2014 primes are much more clustered than PNT's average density suggests"
     },
     {
       "targetId": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "The divergence of ∑1/p (proved by Euler) shows primes have positive density in a logarithmic sense — bounded prime gaps shows they cluster in an even stronger pointwise sense"
+      "description": "The divergence of \u22111/p (proved by Euler) shows primes have positive density in a logarithmic sense \u2014 bounded prime gaps shows they cluster in an even stronger pointwise sense"
     },
     {
       "targetId": "riemann-hypothesis",
       "relationship": "related",
-      "description": "RH implies much stronger prime gap bounds (Cramér's conjecture: gaps O(log²p)) but remains unproved. Zhang's result is unconditional and does not depend on RH — one of its most remarkable features"
+      "description": "RH implies much stronger prime gap bounds (Cram\u00e9r's conjecture: gaps O(log\u00b2p)) but remains unproved. Zhang's result is unconditional and does not depend on RH \u2014 one of its most remarkable features"
     },
     {
       "targetId": "twin-primes-special",
@@ -257,22 +257,23 @@
     "namespace": "BoundedPrimeGaps",
     "lineCount": 2017,
     "axiomCount": 3,
-    "theoremCount": 128,
-    "definitionCount": 17
+    "theoremCount": 120,
+    "definitionCount": 17,
+    "lemmaCount": 5
   },
   "references": [
     {
       "authors": "Zhang, Yitang",
       "title": "Bounded gaps between primes",
       "year": "2014",
-      "venue": "Annals of Mathematics 179(3), 1121–1174",
+      "venue": "Annals of Mathematics 179(3), 1121\u20131174",
       "note": "Breakthrough proof that there are infinitely many pairs of primes differing by at most 70 million"
     },
     {
       "authors": "Maynard, James",
       "title": "Small gaps between primes",
       "year": "2015",
-      "venue": "Annals of Mathematics 181(1), 383–413",
+      "venue": "Annals of Mathematics 181(1), 383\u2013413",
       "note": "Improved Zhang's bound to 600 and proved bounded gaps for arbitrarily many primes simultaneously"
     },
     {
@@ -280,14 +281,14 @@
       "title": "Variants of the Selberg sieve, and bounded intervals containing many primes",
       "year": "2014",
       "venue": "Research in the Mathematical Sciences 1:12",
-      "note": "Collaborative project reducing the bounded gap to 246 — the current best result"
+      "note": "Collaborative project reducing the bounded gap to 246 \u2014 the current best result"
     },
     {
-      "authors": "Goldston, Daniel A.; Pintz, János; Yıldırım, Cem Y.",
+      "authors": "Goldston, Daniel A.; Pintz, J\u00e1nos; Y\u0131ld\u0131r\u0131m, Cem Y.",
       "title": "Primes in tuples I",
       "year": "2009",
-      "venue": "Annals of Mathematics 170(2), 819–862",
-      "note": "GPY theorem: proved lim inf (p_{n+1} - p_n) / log p_n = 0, establishing that prime gaps are infinitely often much smaller than average — the crucial predecessor that Zhang built upon"
+      "venue": "Annals of Mathematics 170(2), 819\u2013862",
+      "note": "GPY theorem: proved lim inf (p_{n+1} - p_n) / log p_n = 0, establishing that prime gaps are infinitely often much smaller than average \u2014 the crucial predecessor that Zhang built upon"
     },
     {
       "authors": "Tao, Terence (blog post)",

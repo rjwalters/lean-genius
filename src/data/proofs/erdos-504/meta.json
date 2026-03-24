@@ -1,8 +1,8 @@
 {
   "id": "erdos-504",
-  "title": "Erdős Problem #504: Maximum Angle in Point Sets",
+  "title": "Erd\u0151s Problem #504: Maximum Angle in Point Sets",
   "slug": "erdos-504",
-  "description": "Determine α_n, the supremum of angles α such that every n-point set in the plane contains three points forming an angle at least α.",
+  "description": "Determine \u03b1_n, the supremum of angles \u03b1 such that every n-point set in the plane contains three points forming an angle at least \u03b1.",
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
@@ -18,10 +18,11 @@
     "lineCount": 255,
     "axiomCount": 15,
     "theoremCount": 1,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   },
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/504",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos504Problem.lean",
@@ -42,15 +43,15 @@
     "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem, also known as **Blumenthal's Problem**, asks for the largest angle $\\alpha$ guaranteed to appear among three points in any $n$-point planar set. The question originates from Leonard Blumenthal's work on metric geometry in the 1930s and was popularized by Erdős.\n\nThe first significant progress came from George Szekeres in 1941, who established initial bounds on $\\alpha_n$. In their influential 1960 paper, Erdős and Szekeres proved the elegant formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2, showing that regular $2^n$-gons are optimal. They conjectured that this formula $\\alpha_N = \\pi(1 - 1/n)$ held for all $N$ with $2^{n-1} < N \\le 2^n$.\n\nBlagovest Sendov dramatically disproved this conjecture in 1992, showing that for $N$ in the lower part of each range $(2^{n-1}, 2^{n-1} + 2^{n-3}]$, the correct formula is $\\alpha_N = \\pi(1 - 1/(2n-1))$. Sendov completed the full determination of $\\alpha_N$ for all $N$ in his 1993 paper \"On the theorem of Erdős–Szekeres\" (Rendiconti del Circolo Matematico di Palermo), revealing a remarkable dependence on the binary representation of $N$: the formula changes at the threshold $5 \\cdot 2^{n-3}$, connecting discrete geometry to number-theoretic structure.",
+    "historicalContext": "This problem, also known as **Blumenthal's Problem**, asks for the largest angle $\\alpha$ guaranteed to appear among three points in any $n$-point planar set. The question originates from Leonard Blumenthal's work on metric geometry in the 1930s and was popularized by Erd\u0151s.\n\nThe first significant progress came from George Szekeres in 1941, who established initial bounds on $\\alpha_n$. In their influential 1960 paper, Erd\u0151s and Szekeres proved the elegant formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2, showing that regular $2^n$-gons are optimal. They conjectured that this formula $\\alpha_N = \\pi(1 - 1/n)$ held for all $N$ with $2^{n-1} < N \\le 2^n$.\n\nBlagovest Sendov dramatically disproved this conjecture in 1992, showing that for $N$ in the lower part of each range $(2^{n-1}, 2^{n-1} + 2^{n-3}]$, the correct formula is $\\alpha_N = \\pi(1 - 1/(2n-1))$. Sendov completed the full determination of $\\alpha_N$ for all $N$ in his 1993 paper \"On the theorem of Erd\u0151s\u2013Szekeres\" (Rendiconti del Circolo Matematico di Palermo), revealing a remarkable dependence on the binary representation of $N$: the formula changes at the threshold $5 \\cdot 2^{n-3}$, connecting discrete geometry to number-theoretic structure.",
     "problemStatement": "Let $\\alpha_n$ be the supremum of all $0 \\le \\alpha \\le \\pi$ such that in every set $A \\subset \\mathbb{R}^2$ of $n$ points there exist three distinct points $x, y, z \\in A$ such that the angle $\\angle xyz$ is at least $\\alpha$. Determine $\\alpha_n$.",
-    "text": "Determine α_n, the supremum of angles α such that every n-point set in the plane contains three points forming an angle at least α.",
-    "proofStrategy": "The formalization defines angles between points via the standard dot product formula $\\angle(x,y,z) = \\arccos\\bigl(\\frac{(x-y) \\cdot (z-y)}{\\|x-y\\|\\|z-y\\|}\\bigr)$, then constructs the $\\alpha_n$ function as an infimum over all $n$-point configurations. Sendov's complete solution is axiomatized in two cases: the **upper range** formula $\\alpha_N = \\pi(1-1/n)$ for $2^{n-1} + 2^{n-3} < N \\le 2^n$, and the **lower range** formula $\\alpha_N = \\pi(1-1/(2n-1))$ for $2^{n-1} < N \\le 2^{n-1} + 2^{n-3}$. A summary theorem combines both formulas with the Erdős–Szekeres counterexample.",
+    "text": "Determine \u03b1_n, the supremum of angles \u03b1 such that every n-point set in the plane contains three points forming an angle at least \u03b1.",
+    "proofStrategy": "The formalization defines angles between points via the standard dot product formula $\\angle(x,y,z) = \\arccos\\bigl(\\frac{(x-y) \\cdot (z-y)}{\\|x-y\\|\\|z-y\\|}\\bigr)$, then constructs the $\\alpha_n$ function as an infimum over all $n$-point configurations. Sendov's complete solution is axiomatized in two cases: the **upper range** formula $\\alpha_N = \\pi(1-1/n)$ for $2^{n-1} + 2^{n-3} < N \\le 2^n$, and the **lower range** formula $\\alpha_N = \\pi(1-1/(2n-1))$ for $2^{n-1} < N \\le 2^{n-1} + 2^{n-3}$. A summary theorem combines both formulas with the Erd\u0151s\u2013Szekeres counterexample.",
     "keyInsights": [
       "**Regular polygon optimality**: For $N = 2^k$, the vertices of a regular $2^k$-gon achieve the minimum possible maximum angle, with the inscribed angle theorem providing the geometric mechanism",
-      "**Monotonicity of $\\alpha_n$**: Since any $(n+1)$-point set contains $n$-point subsets, $\\alpha_n$ is non-increasing — more points means the guaranteed maximum angle can only decrease",
+      "**Monotonicity of $\\alpha_n$**: Since any $(n+1)$-point set contains $n$-point subsets, $\\alpha_n$ is non-increasing \u2014 more points means the guaranteed maximum angle can only decrease",
       "**Binary threshold phenomenon**: The formula changes at $N = 5 \\cdot 2^{n-3}$, splitting each dyadic interval $(2^{n-1}, 2^n]$ into upper and lower ranges with different optimal configurations",
-      "**Failure of naive generalization**: Sendov's 1992 counterexample showed that extending $\\alpha_{2^n} = \\pi(1-1/n)$ to all $N$ in $(2^{n-1}, 2^n]$ fails — the lower range demands a different formula $\\pi(1-1/(2n-1))$",
+      "**Failure of naive generalization**: Sendov's 1992 counterexample showed that extending $\\alpha_{2^n} = \\pi(1-1/n)$ to all $N$ in $(2^{n-1}, 2^n]$ fails \u2014 the lower range demands a different formula $\\pi(1-1/(2n-1))$",
       "**Convexity of optimal configurations**: Optimal point sets achieving $\\alpha_N$ always lie in convex position (all points on the convex hull), since interior points create larger angles via the inscribed angle theorem"
     ],
     "originalContributions": [
@@ -67,22 +68,22 @@
     {
       "targetId": "erdos-507",
       "relationship": "related",
-      "description": "Heilbronn's triangle problem — another extremal problem on point configurations in the plane, asking for the smallest triangle area rather than largest angle"
+      "description": "Heilbronn's triangle problem \u2014 another extremal problem on point configurations in the plane, asking for the smallest triangle area rather than largest angle"
     },
     {
       "targetId": "erdos-506",
       "relationship": "related",
-      "description": "Minimum circles from n points — a sibling discrete geometry problem on point set configurations and incidence geometry"
+      "description": "Minimum circles from n points \u2014 a sibling discrete geometry problem on point set configurations and incidence geometry"
     },
     {
       "targetId": "erdos-1026",
       "relationship": "related",
-      "description": "Monotonic subsequence optimization — uses the classical Erdős–Szekeres theorem (1935), which shares foundational roots with the point-set geometry studied here"
+      "description": "Monotonic subsequence optimization \u2014 uses the classical Erd\u0151s\u2013Szekeres theorem (1935), which shares foundational roots with the point-set geometry studied here"
     },
     {
       "targetId": "erdos-500",
       "relationship": "related",
-      "description": "Another Erdős discrete geometry problem in the 500-series — part of the same cluster of extremal point-set problems that Erdős systematically studied from the 1930s onward"
+      "description": "Another Erd\u0151s discrete geometry problem in the 500-series \u2014 part of the same cluster of extremal point-set problems that Erd\u0151s systematically studied from the 1930s onward"
     },
     {
       "targetId": "law-of-cosines",
@@ -97,7 +98,7 @@
     {
       "targetId": "area-of-circle",
       "relationship": "thematic",
-      "description": "The inscribed angle theorem — central to proving regular polygon optimality for $\\alpha_{2^n}$ — is intimately connected to the circle geometry formalized in the area-of-circle entry"
+      "description": "The inscribed angle theorem \u2014 central to proving regular polygon optimality for $\\alpha_{2^n}$ \u2014 is intimately connected to the circle geometry formalized in the area-of-circle entry"
     }
   ],
   "sections": [
@@ -119,7 +120,7 @@
     },
     {
       "id": "alpha-n",
-      "title": "The α_n Function and Small Cases",
+      "title": "The \u03b1_n Function and Small Cases",
       "startLine": 85,
       "endLine": 111,
       "content": "Defines $\\alpha_n = \\inf\\{\\operatorname{maxAngle}(A) : |A| = n\\}$ as the infimum over all $n$-point configurations. Includes well-definedness ($0 < \\alpha_n \\le \\pi$ for $n \\ge 3$), monotonicity ($\\alpha_n \\le \\alpha_m$ for $m \\le n$), and small cases $\\alpha_3 = \\alpha_4 = \\pi$.",
@@ -127,10 +128,10 @@
     },
     {
       "id": "erdos-szekeres",
-      "title": "Erdős-Szekeres Results (1960)",
+      "title": "Erd\u0151s-Szekeres Results (1960)",
       "startLine": 113,
       "endLine": 127,
-      "content": "The Erdős–Szekeres formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2 ($n \\ge 2$), where the regular $2^n$-gon achieves the minimum maximum angle.",
+      "content": "The Erd\u0151s\u2013Szekeres formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2 ($n \\ge 2$), where the regular $2^n$-gon achieves the minimum maximum angle.",
       "proofMethod": "Axiomatized formula erdosSzekeresFormula with the main theorem axiom erdos_szekeres."
     },
     {
@@ -143,7 +144,7 @@
     },
     {
       "id": "counterexample",
-      "title": "Counterexample to Erdős-Szekeres Conjecture",
+      "title": "Counterexample to Erd\u0151s-Szekeres Conjecture",
       "startLine": 169,
       "endLine": 182,
       "content": "Sendov's 1992 disproof: $\\exists\\, n, N$ with $2^{n-1} < N \\le 2^n$ such that $\\alpha_N \\ne \\pi(1-1/n)$. The smallest instance is $N = 5$ with $n = 3$.",
@@ -162,16 +163,16 @@
       "title": "Summary Theorem",
       "startLine": 221,
       "endLine": 255,
-      "content": "The `erdos_504_summary` theorem combining Sendov's upper and lower range formulas with the Erdős–Szekeres counterexample into a single conjunction, proved by direct application of the axioms.",
+      "content": "The `erdos_504_summary` theorem combining Sendov's upper and lower range formulas with the Erd\u0151s\u2013Szekeres counterexample into a single conjunction, proved by direct application of the axioms.",
       "proofMethod": "Conjunction introduction from sendov_upper, sendov_lower, and erdos_szekeres_conjecture_false."
     }
   ],
   "conclusion": {
     "summary": "The maximum angle problem was completely solved by Blagovest Sendov in 1993 after over fifty years of partial results. The solution reveals a surprising dependence on binary representation: the formula for $\\alpha_N$ changes at the threshold $N = 5 \\cdot 2^{n-3}$ within each dyadic interval $(2^{n-1}, 2^n]$, with two distinct optimal configurations for the upper and lower ranges.",
-    "implications": "**Theoretical Significance**: Sendov's solution connects discrete geometry to number theory through the binary structure of $N$.\n\nIt demonstrates that natural-looking generalizations (like the Erdős–Szekeres conjecture extending $\\alpha_{2^n} = \\pi(1-1/n)$ to all $N$) can fail even when every special case works perfectly. The role of convex position in optimal configurations links to the broader Erdős–Szekeres Happy Ending theorem on convex subsets of point sets.",
+    "implications": "**Theoretical Significance**: Sendov's solution connects discrete geometry to number theory through the binary structure of $N$.\n\nIt demonstrates that natural-looking generalizations (like the Erd\u0151s\u2013Szekeres conjecture extending $\\alpha_{2^n} = \\pi(1-1/n)$ to all $N$) can fail even when every special case works perfectly. The role of convex position in optimal configurations links to the broader Erd\u0151s\u2013Szekeres Happy Ending theorem on convex subsets of point sets.",
     "openQuestions": [
       "What is the higher-dimensional analogue: given n points in $\\mathbb{R}^d$ for $d \\ge 3$, what is the maximum solid angle guaranteed among any d+1 points?",
-      "Can the binary threshold phenomenon be understood via a deeper structural principle, perhaps related to Turán-type extremal theory?",
+      "Can the binary threshold phenomenon be understood via a deeper structural principle, perhaps related to Tur\u00e1n-type extremal theory?",
       "For which values of N are the optimal configurations achieving $\\alpha_N$ unique up to similarity?"
     ]
   },
@@ -186,32 +187,32 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Szekeres, George",
+      "authors": "Erd\u0151s, Paul; Szekeres, George",
       "title": "On some extremum problems in elementary geometry",
       "year": "1960",
-      "venue": "Annales Universitatis Scientiarum Budapestinensis de Rolando Eötvös Nominatae, Sectio Mathematica 3–4, 53–62",
-      "note": "Proved the formula α_{2^n} = π(1 − 1/n) for powers of 2, showing regular 2^n-gons are optimal, and conjectured this extends to all N in the dyadic range"
+      "venue": "Annales Universitatis Scientiarum Budapestinensis de Rolando E\u00f6tv\u00f6s Nominatae, Sectio Mathematica 3\u20134, 53\u201362",
+      "note": "Proved the formula \u03b1_{2^n} = \u03c0(1 \u2212 1/n) for powers of 2, showing regular 2^n-gons are optimal, and conjectured this extends to all N in the dyadic range"
     },
     {
       "authors": "Sendov, Blagovest",
-      "title": "On the theorem of Erdős–Szekeres",
+      "title": "On the theorem of Erd\u0151s\u2013Szekeres",
       "year": "1993",
-      "venue": "Rendiconti del Circolo Matematico di Palermo, Series II, 42(2), 244–248",
-      "note": "Complete determination of α_N for all N, revealing the binary threshold phenomenon at N = 5·2^{n-3} and disproving the Erdős–Szekeres conjecture"
+      "venue": "Rendiconti del Circolo Matematico di Palermo, Series II, 42(2), 244\u2013248",
+      "note": "Complete determination of \u03b1_N for all N, revealing the binary threshold phenomenon at N = 5\u00b72^{n-3} and disproving the Erd\u0151s\u2013Szekeres conjecture"
     },
     {
       "authors": "Szekeres, George",
       "title": "On an extremum problem in the plane",
       "year": "1941",
-      "venue": "American Journal of Mathematics 63(1), 208–210",
-      "note": "First systematic bounds on α_n, establishing the framework for the maximum angle problem"
+      "venue": "American Journal of Mathematics 63(1), 208\u2013210",
+      "note": "First systematic bounds on \u03b1_n, establishing the framework for the maximum angle problem"
     },
     {
-      "authors": "Pach, János; Agarwal, Pankaj K.",
+      "authors": "Pach, J\u00e1nos; Agarwal, Pankaj K.",
       "title": "Combinatorial Geometry",
       "year": "1995",
       "venue": "Wiley-Interscience",
-      "note": "Standard reference for discrete geometry including extremal problems on point configurations, the Erdős–Szekeres theorem, and Heilbronn-type problems"
+      "note": "Standard reference for discrete geometry including extremal problems on point configurations, the Erd\u0151s\u2013Szekeres theorem, and Heilbronn-type problems"
     }
   ]
 }

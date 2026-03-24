@@ -1,10 +1,10 @@
 {
   "id": "erdos-333",
-  "title": "Erdős Problem #333: Sparse Sumset Bases",
+  "title": "Erd\u0151s Problem #333: Sparse Sumset Bases",
   "slug": "erdos-333",
-  "description": "For any zero-density A ⊆ ℕ, does there exist B with A ⊆ B+B and |B ∩ [1,N]| = o(√N)? NO - Erdős-Newman (1977) Theorem 2 implies counterexamples exist, though this was overlooked.",
+  "description": "For any zero-density A \u2286 \u2115, does there exist B with A \u2286 B+B and |B \u2229 [1,N]| = o(\u221aN)? NO - Erd\u0151s-Newman (1977) Theorem 2 implies counterexamples exist, though this was overlooked.",
   "meta": {
-    "author": "Erdős, Newman (1977)",
+    "author": "Erd\u0151s, Newman (1977)",
     "sourceUrl": "https://erdosproblems.com/333",
     "date": "1977",
     "status": "axiomatized",
@@ -44,8 +44,8 @@
       "countingFunction definition for A(N)",
       "hasNaturalDensity and hasZeroDensity definitions",
       "sumset definition B + B",
-      "isCoveredBySumset definition A ⊆ B + B",
-      "hasSubsqrtGrowth condition o(√N)",
+      "isCoveredBySumset definition A \u2286 B + B",
+      "hasSubsqrtGrowth condition o(\u221aN)",
       "ErdosConjecture333 main statement",
       "erdos_333_false theorem: DISPROVED",
       "squares definition and erdos_newman_squares axiom",
@@ -65,16 +65,16 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem belongs to the broader study of additive bases in combinatorial number theory, going back to Waring's problem (1770) and Schnirelmann's theorem (1933) on sumset density. Erdős and Newman (1977) studied the fundamental question: given a set $A \\subseteq \\mathbb{N}$, how sparse can $B$ be while still ensuring $A \\subseteq B + B$?\n\nThey proved two key results: (1) perfect squares can be represented as $B + B$ with $|B \\cap [1,N]| = o(\\sqrt{N})$, and (2) there exist zero-density sets $A$ where any covering $B$ must satisfy $|B \\cap [1,N]| \\geq c\\sqrt{N}$ infinitely often. Theorem 2 actually implies a negative answer to Problem #333, but this connection was apparently overlooked when Erdős and Graham stated the problem in [ErGr80]. The problem is related to Sidon sets ($B_2$ sequences), where $|B \\cap [1,N]| \\sim \\sqrt{N}$ is optimal.",
-    "problemStatement": "**Question:** Let A ⊆ ℕ have density zero. Does there exist B such that A ⊆ B+B and |B ∩ {1,...,N}| = o(N^{1/2})?\n\n**Answer: NO** (Erdős-Newman 1977, Theorem 2)\n\nSome zero-density sets require any covering B to have |B| ≈ √N.",
-    "text": "For any zero-density A ⊆ ℕ, does there exist B with A ⊆ B+B and |B ∩ [1,N]| = o(√N)? NO - Erdős-Newman (1977) Theorem 2 implies counterexamples exist, though this was overlooked.",
-    "proofStrategy": "We formalize:\n\n1. **Counting functions and density:** countingFunction, hasZeroDensity\n2. **Sumsets:** sumset B + B, isCoveredBySumset\n3. **Sparsity conditions:** hasSubsqrtGrowth for o(√N) growth\n4. **The conjecture:** ErdosConjecture333\n5. **Positive case:** Squares (erdos_newman_squares)\n6. **Negative case:** existence_of_counterexample, erdos_333_false",
+    "historicalContext": "This problem belongs to the broader study of additive bases in combinatorial number theory, going back to Waring's problem (1770) and Schnirelmann's theorem (1933) on sumset density. Erd\u0151s and Newman (1977) studied the fundamental question: given a set $A \\subseteq \\mathbb{N}$, how sparse can $B$ be while still ensuring $A \\subseteq B + B$?\n\nThey proved two key results: (1) perfect squares can be represented as $B + B$ with $|B \\cap [1,N]| = o(\\sqrt{N})$, and (2) there exist zero-density sets $A$ where any covering $B$ must satisfy $|B \\cap [1,N]| \\geq c\\sqrt{N}$ infinitely often. Theorem 2 actually implies a negative answer to Problem #333, but this connection was apparently overlooked when Erd\u0151s and Graham stated the problem in [ErGr80]. The problem is related to Sidon sets ($B_2$ sequences), where $|B \\cap [1,N]| \\sim \\sqrt{N}$ is optimal.",
+    "problemStatement": "**Question:** Let A \u2286 \u2115 have density zero. Does there exist B such that A \u2286 B+B and |B \u2229 {1,...,N}| = o(N^{1/2})?\n\n**Answer: NO** (Erd\u0151s-Newman 1977, Theorem 2)\n\nSome zero-density sets require any covering B to have |B| \u2248 \u221aN.",
+    "text": "For any zero-density A \u2286 \u2115, does there exist B with A \u2286 B+B and |B \u2229 [1,N]| = o(\u221aN)? NO - Erd\u0151s-Newman (1977) Theorem 2 implies counterexamples exist, though this was overlooked.",
+    "proofStrategy": "We formalize:\n\n1. **Counting functions and density:** countingFunction, hasZeroDensity\n2. **Sumsets:** sumset B + B, isCoveredBySumset\n3. **Sparsity conditions:** hasSubsqrtGrowth for o(\u221aN) growth\n4. **The conjecture:** ErdosConjecture333\n5. **Positive case:** Squares (erdos_newman_squares)\n6. **Negative case:** existence_of_counterexample, erdos_333_false",
     "keyInsights": [
-      "**Sumset covering:** A ⊆ B+B means every element of A is a sum of two elements from B",
-      "**The √N threshold:** |B| = o(√N) is exceptionally sparse",
-      "**Squares work:** Erdős-Newman showed squares admit sparse sumset bases",
+      "**Sumset covering:** A \u2286 B+B means every element of A is a sum of two elements from B",
+      "**The \u221aN threshold:** |B| = o(\u221aN) is exceptionally sparse",
+      "**Squares work:** Erd\u0151s-Newman showed squares admit sparse sumset bases",
       "**Not universal:** Some zero-density sets are 'too dense' for sparse covering",
-      "**Overlooked implication:** The negative answer was implicit in Erdős-Newman 1977"
+      "**Overlooked implication:** The negative answer was implicit in Erd\u0151s-Newman 1977"
     ],
     "prerequisites": [
       "Natural density and asymptotic density of subsets of the natural numbers",
@@ -136,7 +136,7 @@
     },
     {
       "id": "erdos-newman",
-      "title": "The Erdős-Newman Paper",
+      "title": "The Erd\u0151s-Newman Paper",
       "summary": "Theorem 2, overlooked implications",
       "startLine": 249,
       "endLine": 272
@@ -150,8 +150,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #333 asked whether all zero-density sets admit exceptionally sparse sumset bases. The answer is NO - while squares and sets with polynomial gaps do admit sparse bases (Erdős-Newman 1977), general zero-density sets may require |B| ≈ √N. This negative answer was implicit in Erdős-Newman Theorem 2 but was overlooked.",
-    "implications": "**Theoretical Significance**: **Sumset Theory Connections:**\n\n1. **Covering complexity:** Not all sparse sets can be covered by sparse sumsets.\n\n**2. Sidon sets:** B₂ sequences have exactly √N growth - they're on the boundary.\n\n3. **Density hierarchies:** Being zero-density doesn't constrain sumset covering enough.\n\n4. **Additive structure:** The counterexamples reveal subtle additive structure in 'barely sparse' sets.",
+    "summary": "Erd\u0151s Problem #333 asked whether all zero-density sets admit exceptionally sparse sumset bases. The answer is NO - while squares and sets with polynomial gaps do admit sparse bases (Erd\u0151s-Newman 1977), general zero-density sets may require |B| \u2248 \u221aN. This negative answer was implicit in Erd\u0151s-Newman Theorem 2 but was overlooked.",
+    "implications": "**Theoretical Significance**: **Sumset Theory Connections:**\n\n1. **Covering complexity:** Not all sparse sets can be covered by sparse sumsets.\n\n**2. Sidon sets:** B\u2082 sequences have exactly \u221aN growth - they're on the boundary.\n\n3. **Density hierarchies:** Being zero-density doesn't constrain sumset covering enough.\n\n4. **Additive structure:** The counterexamples reveal subtle additive structure in 'barely sparse' sets.",
     "openQuestions": [
       "Characterize which zero-density sets admit sparse sumset bases",
       "What is the optimal exponent for general zero-density sets?",
@@ -163,12 +163,12 @@
     {
       "targetId": "erdos-302",
       "relationship": "related",
-      "description": "Both are Erdős combinatorial density problems about extremal sizes of structured subsets of integers"
+      "description": "Both are Erd\u0151s combinatorial density problems about extremal sizes of structured subsets of integers"
     },
     {
       "targetId": "erdos-806",
       "relationship": "related",
-      "description": "Directly related: #806 asks about small bases for sumsets (B+B covering). Both explore the minimum size of B needed so that A ⊆ B+B"
+      "description": "Directly related: #806 asks about small bases for sumsets (B+B covering). Both explore the minimum size of B needed so that A \u2286 B+B"
     }
   ],
   "relatedProofs": [
@@ -193,22 +193,23 @@
     "lineCount": 315,
     "axiomCount": 11,
     "theoremCount": 3,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Newman, Donald J.",
+      "authors": "Erd\u0151s, Paul; Newman, Donald J.",
       "title": "Bases for sets of integers",
       "year": "1977",
       "venue": "Journal of Number Theory 9(3), pp. 420-425",
       "note": "Theorem 2 implies counterexamples to Problem 333 exist; also showed squares admit sparse bases"
     },
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
-      "note": "[ErGr80] where Problem 333 appears, apparently overlooking the implicit negative answer in Erdős-Newman 1977"
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
+      "note": "[ErGr80] where Problem 333 appears, apparently overlooking the implicit negative answer in Erd\u0151s-Newman 1977"
     }
   ]
 }

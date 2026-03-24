@@ -2,7 +2,7 @@
   "id": "pythagorean-theorem",
   "title": "Pythagorean Theorem",
   "slug": "pythagorean-theorem",
-  "description": "The most famous theorem in mathematics: in a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides. a² + b² = c²",
+  "description": "The most famous theorem in mathematics: in a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides. a\u00b2 + b\u00b2 = c\u00b2",
   "meta": {
     "author": "Pythagoras of Samos (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_theorem",
@@ -45,20 +45,20 @@
       },
       {
         "id": "pythagorean-triples",
-        "relationship": "Companion entry on Pythagorean triples: the integer solutions a² + b² = c²"
+        "relationship": "Companion entry on Pythagorean triples: the integer solutions a\u00b2 + b\u00b2 = c\u00b2"
       }
     ],
     "lineCount": 214,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Pythagorean theorem is arguably the most recognized result in all of mathematics. While named after the Greek mathematician Pythagoras (c. 570-495 BCE), evidence suggests the theorem was known to Babylonian mathematicians over 1000 years earlier—clay tablet Plimpton 322 (c. 1800 BCE) contains a list of Pythagorean triples.\n\nPythagoras, or more likely his school, is credited with providing the first general proof. The theorem appears as Proposition 47 in Book I of Euclid's Elements (c. 300 BCE), where it's proved using areas of squares constructed on the triangle's sides.\n\nBy 1940, mathematician Elisha Loomis had catalogued 367 distinct proofs, and new proofs continue to be discovered. James Garfield, before becoming the 20th US President, published an original proof in 1876.",
+    "historicalContext": "The Pythagorean theorem is arguably the most recognized result in all of mathematics. While named after the Greek mathematician Pythagoras (c. 570-495 BCE), evidence suggests the theorem was known to Babylonian mathematicians over 1000 years earlier\u2014clay tablet Plimpton 322 (c. 1800 BCE) contains a list of Pythagorean triples.\n\nPythagoras, or more likely his school, is credited with providing the first general proof. The theorem appears as Proposition 47 in Book I of Euclid's Elements (c. 300 BCE), where it's proved using areas of squares constructed on the triangle's sides.\n\nBy 1940, mathematician Elisha Loomis had catalogued 367 distinct proofs, and new proofs continue to be discovered. James Garfield, before becoming the 20th US President, published an original proof in 1876.",
     "problemStatement": "Theorem (Pythagorean): In a right triangle with legs of lengths $a$ and $b$ and hypotenuse of length $c$:\n\n$$a^2 + b^2 = c^2$$\n\nEquivalently, using vectors: if $\\vec{v}$ and $\\vec{w}$ are perpendicular ($\\vec{v} \\perp \\vec{w}$), then:\n\n$$\\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$$",
     "text": "A 214-line formalization of the Pythagorean Theorem (Wiedijk #4) with 19 declarations, 0 sorries, 0 axioms. Uses Mathlib's inner product space framework: the core `pythagorean_theorem` proves $\\|v + w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ for orthogonal vectors via `inner_add_left`, `inner_add_right`, and the orthogonality hypothesis $\\langle v, w \\rangle = 0$ that zeroes the cross terms. Specializes to $\\mathbb{R}^2$ via `EuclideanSpace \\mathbb{R} (Fin 2)` with `pythagorean_R2`, and to concrete coordinates with `pythagorean_345` (the $(3,4,5)$ triple via `norm_num`). Includes the converse (`pythagorean_converse`: if $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ then $v \\perp w$) and applications to distance formulas and the law of cosines as commentary.",
     "proofStrategy": "Our proof uses the language of inner product spaces, which provides an elegant algebraic formulation. The key insight is that perpendicularity means the inner product is zero: $\\langle \\vec{v}, \\vec{w} \\rangle = 0$.\n\nThe proof unfolds as:\n1. Expand $\\|\\vec{v} + \\vec{w}\\|^2 = \\langle \\vec{v} + \\vec{w}, \\vec{v} + \\vec{w} \\rangle$\n2. Use bilinearity to distribute: $= \\langle \\vec{v}, \\vec{v} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle + \\langle \\vec{w}, \\vec{v} \\rangle + \\langle \\vec{w}, \\vec{w} \\rangle$\n3. Apply perpendicularity: the cross terms vanish\n4. Conclude: $= \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$\n\nThis approach reveals the theorem as a natural consequence of the geometry encoded in inner products.",
     "keyInsights": [
       "**Inner Product Formulation:** $\\langle u, v \\rangle = 0$ (perpendicularity) $\\Rightarrow \\|u + v\\|^2 = \\|u\\|^2 + \\|v\\|^2$. The proof is one line: expand $\\langle u+v, u+v \\rangle = \\langle u,u \\rangle + 2\\langle u,v \\rangle + \\langle v,v \\rangle$ and use $\\langle u,v \\rangle = 0$.",
-      "**Bilinearity Suffices:** No geometric constructions needed — the theorem follows purely from bilinearity and symmetry of the inner product. This is why it generalizes to infinite-dimensional Hilbert spaces, not just $\\mathbb{R}^n$.",
+      "**Bilinearity Suffices:** No geometric constructions needed \u2014 the theorem follows purely from bilinearity and symmetry of the inner product. This is why it generalizes to infinite-dimensional Hilbert spaces, not just $\\mathbb{R}^n$.",
       "**Pythagorean Triples:** All primitive solutions to $a^2 + b^2 = c^2$ with $\\gcd(a,b) = 1$ are $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ for coprime $m > n > 0$ of opposite parity. There are infinitely many: $(3,4,5), (5,12,13), (8,15,17), \\ldots$",
       "**Converse (Characterization of Right Angles):** $a^2 + b^2 = c^2$ $\\iff$ the triangle has a right angle opposite side $c$. The Pythagorean theorem IS the definition of perpendicularity in metric geometry.",
       "**Non-Euclidean Failure:** In hyperbolic geometry, $\\cosh c = \\cosh a \\cdot \\cosh b$ replaces $c^2 = a^2 + b^2$. In spherical geometry, $\\cos c = \\cos a \\cdot \\cos b$. The Pythagorean theorem characterizes Euclidean (flat) geometry."
@@ -84,7 +84,7 @@
       "title": "Vector Space and Inner Product",
       "startLine": 46,
       "endLine": 65,
-      "summary": "Parts 1–2: defines `Vec2 := EuclideanSpace ℝ (Fin 2)`, checks inner product type, and proves `norm_sq_eq_inner`: $\\|v\\|^2 = \\langle v, v \\rangle$.",
+      "summary": "Parts 1\u20132: defines `Vec2 := EuclideanSpace \u211d (Fin 2)`, checks inner product type, and proves `norm_sq_eq_inner`: $\\|v\\|^2 = \\langle v, v \\rangle$.",
       "mathContext": "$\\text{Vec2} = \\mathbb{R}^2$ via `EuclideanSpace`. The norm-inner product relation $\\|v\\|^2 = \\langle v, v \\rangle$ is proved from `real_inner_self_eq_norm_mul_norm`."
     },
     {
@@ -92,7 +92,7 @@
       "title": "Perpendicularity",
       "startLine": 67,
       "endLine": 80,
-      "summary": "Part 3: defines `perpendicular v w := inner v w = 0`, notation `v ⊥ w`, and proves symmetry `perp_symm` via `real_inner_comm`.",
+      "summary": "Part 3: defines `perpendicular v w := inner v w = 0`, notation `v \u22a5 w`, and proves symmetry `perp_symm` via `real_inner_comm`.",
       "mathContext": "$v \\perp w \\iff \\langle v, w \\rangle = 0$. Symmetry: $\\langle v, w \\rangle = \\langle w, v \\rangle$ (real inner products are symmetric)."
     },
     {
@@ -100,7 +100,7 @@
       "title": "The Pythagorean Theorem",
       "startLine": 82,
       "endLine": 107,
-      "summary": "Part 4: `pythagorean_theorem` — if $v \\perp w$ then $\\|v + w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. Proof: expand $\\langle v+w, v+w \\rangle$ by `inner_add_left/right`, use perpendicularity to zero cross terms, finish with `ring`.",
+      "summary": "Part 4: `pythagorean_theorem` \u2014 if $v \\perp w$ then $\\|v + w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. Proof: expand $\\langle v+w, v+w \\rangle$ by `inner_add_left/right`, use perpendicularity to zero cross terms, finish with `ring`.",
       "mathContext": "$\\|v + w\\|^2 = \\langle v+w, v+w \\rangle = \\langle v,v \\rangle + \\langle v,w \\rangle + \\langle w,v \\rangle + \\langle w,w \\rangle = \\|v\\|^2 + 0 + 0 + \\|w\\|^2$"
     },
     {
@@ -116,7 +116,7 @@
       "title": "The Converse",
       "startLine": 134,
       "endLine": 152,
-      "summary": "Part 6: `pythagorean_converse` — if $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ then $v \\perp w$. Proof: expand, cancel the self-inner products, deduce $2\\langle v,w \\rangle = 0$ by `linarith`.",
+      "summary": "Part 6: `pythagorean_converse` \u2014 if $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ then $v \\perp w$. Proof: expand, cancel the self-inner products, deduce $2\\langle v,w \\rangle = 0$ by `linarith`.",
       "mathContext": "Euclid's Proposition I.48: $a^2 + b^2 = c^2 \\Rightarrow$ right angle. The converse: expanding gives $\\langle v,v \\rangle + 2\\langle v,w \\rangle + \\langle w,w \\rangle = \\langle v,v \\rangle + \\langle w,w \\rangle$, so $\\langle v,w \\rangle = 0$."
     },
     {
@@ -124,19 +124,19 @@
       "title": "Generalized Pythagorean Theorem",
       "startLine": 154,
       "endLine": 214,
-      "summary": "Part 7: `pythagorean_sum` — for mutually perpendicular vectors $\\{v_i\\}$, $\\|\\sum v_i\\|^2 = \\sum \\|v_i\\|^2$. Proved by `Finset.induction_on` with the key step showing $\\langle v_a, \\sum_{s'} v_i \\rangle = 0$ via `inner_sum`.",
+      "summary": "Part 7: `pythagorean_sum` \u2014 for mutually perpendicular vectors $\\{v_i\\}$, $\\|\\sum v_i\\|^2 = \\sum \\|v_i\\|^2$. Proved by `Finset.induction_on` with the key step showing $\\langle v_a, \\sum_{s'} v_i \\rangle = 0$ via `inner_sum`.",
       "mathContext": "The $n$-dimensional Pythagorean theorem: $\\|\\sum_{i=1}^k v_i\\|^2 = \\sum_{i=1}^k \\|v_i\\|^2$ when $\\langle v_i, v_j \\rangle = 0$ for $i \\neq j$. This is the foundation of Parseval's identity in Hilbert spaces."
     }
   ],
   "conclusion": {
     "summary": "This formalization demonstrates how inner product spaces provide an elegant algebraic framework for geometric theorems. The Pythagorean theorem emerges naturally from the definition of perpendicularity as zero inner product, combined with the bilinearity property.",
-    "implications": "**Theoretical Significance**: The inner product formulation reveals the Pythagorean theorem as a universal principle of orthogonal decomposition:\n\n1. **Linear Algebra**: Gram-Schmidt orthogonalization, QR decomposition, and the spectral theorem all rely on the Pythagorean theorem for orthogonal projections: $\\|v\\|^2 = \\|\\text{proj}_W v\\|^2 + \\|v - \\text{proj}_W v\\|^2$.\n\n2. **Fourier Analysis**: Parseval's identity $\\|f\\|^2 = \\sum |\\hat{f}(n)|^2$ is the infinite-dimensional Pythagorean theorem for Fourier coefficients — the energy of a signal equals the sum of energies of its frequency components.\n\n**3. Quantum Mechanics**: Born's rule ($P = |\\langle \\phi | \\psi \\rangle|^2$) and the normalization condition ($\\sum_i |c_i|^2 = 1$) are manifestations of the Pythagorean theorem in Hilbert space — probabilities sum to 1 because the state vector has unit norm.\n\n4. **Statistics**: The Pythagorean theorem for variances — $\\text{Var}(X+Y) = \\text{Var}(X) + \\text{Var}(Y)$ when $X, Y$ are uncorrelated — is the statistical analog of orthogonal decomposition.\n\n5. **Metric Geometry**: The Pythagorean theorem characterizes Euclidean spaces among all metric spaces. Schoenberg (1938) showed that a metric space embeds isometrically in Hilbert space iff it satisfies a generalized parallelogram law.",
+    "implications": "**Theoretical Significance**: The inner product formulation reveals the Pythagorean theorem as a universal principle of orthogonal decomposition:\n\n1. **Linear Algebra**: Gram-Schmidt orthogonalization, QR decomposition, and the spectral theorem all rely on the Pythagorean theorem for orthogonal projections: $\\|v\\|^2 = \\|\\text{proj}_W v\\|^2 + \\|v - \\text{proj}_W v\\|^2$.\n\n2. **Fourier Analysis**: Parseval's identity $\\|f\\|^2 = \\sum |\\hat{f}(n)|^2$ is the infinite-dimensional Pythagorean theorem for Fourier coefficients \u2014 the energy of a signal equals the sum of energies of its frequency components.\n\n**3. Quantum Mechanics**: Born's rule ($P = |\\langle \\phi | \\psi \\rangle|^2$) and the normalization condition ($\\sum_i |c_i|^2 = 1$) are manifestations of the Pythagorean theorem in Hilbert space \u2014 probabilities sum to 1 because the state vector has unit norm.\n\n4. **Statistics**: The Pythagorean theorem for variances \u2014 $\\text{Var}(X+Y) = \\text{Var}(X) + \\text{Var}(Y)$ when $X, Y$ are uncorrelated \u2014 is the statistical analog of orthogonal decomposition.\n\n5. **Metric Geometry**: The Pythagorean theorem characterizes Euclidean spaces among all metric spaces. Schoenberg (1938) showed that a metric space embeds isometrically in Hilbert space iff it satisfies a generalized parallelogram law.",
     "openQuestions": [
-      "In 2023, Ne'Kiya Jackson and Calcea Johnson (high school students) presented a trigonometric proof of the Pythagorean theorem without circular reasoning — historically thought impossible since trigonometric identities presuppose $a^2 + b^2 = c^2$. Can their approach (using the law of sines and infinite geometric series) be formalized in Lean?",
-      "The formalization uses `EuclideanSpace ℝ (Fin 2)` which is coordinatized $\\mathbb{R}^2$. Can we formalize a synthetic proof using Tarski's axioms for geometry (points, betweenness, congruence) without coordinates, matching Euclid's original geometric argument more closely?",
-      "The generalized Pythagorean theorem (`pythagorean_sum`) holds for finitely many mutually orthogonal vectors. Can we formalize Parseval's identity — the infinite-dimensional analog $\\|f\\|^2 = \\sum_{n=0}^{\\infty} |\\langle f, e_n \\rangle|^2$ for orthonormal bases in separable Hilbert spaces?",
+      "In 2023, Ne'Kiya Jackson and Calcea Johnson (high school students) presented a trigonometric proof of the Pythagorean theorem without circular reasoning \u2014 historically thought impossible since trigonometric identities presuppose $a^2 + b^2 = c^2$. Can their approach (using the law of sines and infinite geometric series) be formalized in Lean?",
+      "The formalization uses `EuclideanSpace \u211d (Fin 2)` which is coordinatized $\\mathbb{R}^2$. Can we formalize a synthetic proof using Tarski's axioms for geometry (points, betweenness, congruence) without coordinates, matching Euclid's original geometric argument more closely?",
+      "The generalized Pythagorean theorem (`pythagorean_sum`) holds for finitely many mutually orthogonal vectors. Can we formalize Parseval's identity \u2014 the infinite-dimensional analog $\\|f\\|^2 = \\sum_{n=0}^{\\infty} |\\langle f, e_n \\rangle|^2$ for orthonormal bases in separable Hilbert spaces?",
       "Pythagorean triples $(a,b,c)$ with $a^2 + b^2 = c^2$ are parameterized by $a = m^2-n^2$, $b = 2mn$, $c = m^2+n^2$. Can we formalize that this parameterization is complete (every primitive triple has this form) and connect it to the norm form $N(m+ni) = m^2+n^2$ in the Gaussian integers $\\mathbb{Z}[i]$?",
-      "The Pythagorean theorem fails in non-Euclidean geometries: $\\cosh c = \\cosh a \\cosh b$ (hyperbolic) and $\\cos c = \\cos a \\cos b$ (spherical). Can we formalize these analogs and show they reduce to $c^2 = a^2 + b^2$ in the flat limit (curvature → 0)?"
+      "The Pythagorean theorem fails in non-Euclidean geometries: $\\cosh c = \\cosh a \\cosh b$ (hyperbolic) and $\\cos c = \\cos a \\cos b$ (spherical). Can we formalize these analogs and show they reduce to $c^2 = a^2 + b^2$ in the flat limit (curvature \u2192 0)?"
     ]
   },
   "references": [
@@ -159,14 +159,14 @@
       "title": "Mathematical Cuneiform Texts",
       "year": "1945",
       "venue": "American Oriental Society",
-      "note": "Analysis of Plimpton 322 (c. 1800 BCE), a Babylonian clay tablet containing a table of Pythagorean triples — evidence that the theorem was known over 1000 years before Pythagoras"
+      "note": "Analysis of Plimpton 322 (c. 1800 BCE), a Babylonian clay tablet containing a table of Pythagorean triples \u2014 evidence that the theorem was known over 1000 years before Pythagoras"
     },
     {
       "authors": "Garfield, James A.",
       "title": "Pons Asinorum",
       "year": "1876",
       "venue": "New-England Journal of Education 3(14), p. 161",
-      "note": "An original trapezoid-based proof of the Pythagorean theorem by the future 20th US President — one of the most elegant proofs using area decomposition"
+      "note": "An original trapezoid-based proof of the Pythagorean theorem by the future 20th US President \u2014 one of the most elegant proofs using area decomposition"
     },
     {
       "authors": "Maor, Eli",
@@ -180,22 +180,22 @@
     {
       "targetId": "area-of-circle",
       "relationship": "related",
-      "description": "Both are fundamental results in Euclidean geometry. The Pythagorean theorem relates side lengths; the area formula uses πr² which depends on the same metric structure"
+      "description": "Both are fundamental results in Euclidean geometry. The Pythagorean theorem relates side lengths; the area formula uses \u03c0r\u00b2 which depends on the same metric structure"
     },
     {
       "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "The Pythagorean theorem underpins compass-and-straightedge constructions — every constructible length arises from iterated application of the theorem via circle-line intersections"
+      "description": "The Pythagorean theorem underpins compass-and-straightedge constructions \u2014 every constructible length arises from iterated application of the theorem via circle-line intersections"
     },
     {
       "targetId": "fermats-last-theorem",
       "relationship": "foundational",
-      "description": "FLT generalizes the Pythagorean equation: while a²+b²=c² has infinitely many integer solutions, aⁿ+bⁿ=cⁿ has none for n≥3"
+      "description": "FLT generalizes the Pythagorean equation: while a\u00b2+b\u00b2=c\u00b2 has infinitely many integer solutions, a\u207f+b\u207f=c\u207f has none for n\u22653"
     },
     {
       "targetId": "cauchy-schwarz",
       "relationship": "related",
-      "description": "Both are consequences of inner product space structure: Pythagorean theorem uses orthogonality (⟨v,w⟩=0), Cauchy-Schwarz bounds the general case (|⟨v,w⟩| ≤ ‖v‖‖w‖)"
+      "description": "Both are consequences of inner product space structure: Pythagorean theorem uses orthogonality (\u27e8v,w\u27e9=0), Cauchy-Schwarz bounds the general case (|\u27e8v,w\u27e9| \u2264 \u2016v\u2016\u2016w\u2016)"
     },
     {
       "targetId": "sqrt2-irrational",
@@ -205,17 +205,17 @@
     {
       "targetId": "law-of-cosines",
       "relationship": "extended-by",
-      "description": "The law of cosines generalizes the Pythagorean theorem: $c^2 = a^2 + b^2 - 2ab\\cos(C)$. When $C = 90°$, $\\cos(C) = 0$ and this reduces to $c^2 = a^2 + b^2$. In inner product form: $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u,v \\rangle$"
+      "description": "The law of cosines generalizes the Pythagorean theorem: $c^2 = a^2 + b^2 - 2ab\\cos(C)$. When $C = 90\u00b0$, $\\cos(C) = 0$ and this reduces to $c^2 = a^2 + b^2$. In inner product form: $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u,v \\rangle$"
     },
     {
       "targetId": "euler-identity",
       "relationship": "related",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects to the Pythagorean theorem via $|e^{i\\theta}|^2 = \\cos^2\\theta + \\sin^2\\theta = 1$ — the Pythagorean identity on the unit circle. The modulus of complex numbers is defined via $|z|^2 = (\\text{Re}\\,z)^2 + (\\text{Im}\\,z)^2$, which is the Pythagorean theorem applied to the Argand plane"
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects to the Pythagorean theorem via $|e^{i\\theta}|^2 = \\cos^2\\theta + \\sin^2\\theta = 1$ \u2014 the Pythagorean identity on the unit circle. The modulus of complex numbers is defined via $|z|^2 = (\\text{Re}\\,z)^2 + (\\text{Im}\\,z)^2$, which is the Pythagorean theorem applied to the Argand plane"
     },
     {
       "targetId": "cauchy-schwarz-integral",
       "relationship": "related",
-      "description": "The integral Cauchy-Schwarz inequality $|\\int fg|^2 \\leq \\int f^2 \\cdot \\int g^2$ is the infinite-dimensional generalization of the same inner product framework. The Pythagorean theorem for $L^2$ functions — $\\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2$ when $\\int fg = 0$ — is Parseval's identity in Fourier analysis"
+      "description": "The integral Cauchy-Schwarz inequality $|\\int fg|^2 \\leq \\int f^2 \\cdot \\int g^2$ is the infinite-dimensional generalization of the same inner product framework. The Pythagorean theorem for $L^2$ functions \u2014 $\\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2$ when $\\int fg = 0$ \u2014 is Parseval's identity in Fourier analysis"
     },
     {
       "targetId": "triangle-inequality",
@@ -230,7 +230,7 @@
     {
       "targetId": "mathematical-induction",
       "relationship": "foundational",
-      "description": "The generalized Pythagorean theorem (`pythagorean_sum`) for $n$ mutually orthogonal vectors is proved by induction on the number of vectors using `Finset.induction_on` — a direct application of mathematical induction in the formalization"
+      "description": "The generalized Pythagorean theorem (`pythagorean_sum`) for $n$ mutually orthogonal vectors is proved by induction on the number of vectors using `Finset.induction_on` \u2014 a direct application of mathematical induction in the formalization"
     },
     {
       "targetId": "fundamental-theorem-calculus",
@@ -273,7 +273,8 @@
     "namespace": "PythagoreanTheorem",
     "lineCount": 214,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 2
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "lemmaCount": 0
   }
 }

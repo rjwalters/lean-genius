@@ -74,7 +74,7 @@
       "Theorem siegel_zero_implies_small_L_one (MVT step proved using differentiable_LFunction + HasDerivAt.comp_ofReal + norm_image_sub_le_of_norm_deriv_le_segment'"
     ],
     "dateAdded": "2026-02-23",
-    "axiomCount": 7,
+    "axiomCount": 5,
     "lineCount": 705,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -175,7 +175,8 @@
     "lineCount": 705,
     "axiomCount": 5,
     "theoremCount": 31,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {

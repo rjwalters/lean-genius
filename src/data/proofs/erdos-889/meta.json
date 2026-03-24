@@ -1,10 +1,10 @@
 {
   "id": "erdos-889",
-  "title": "Erdős Problem #889: New Prime Factors in Consecutive Integers",
+  "title": "Erd\u0151s Problem #889: New Prime Factors in Consecutive Integers",
   "slug": "erdos-889",
   "description": "Let $v(n,k)$ count prime factors of $n+k$ not dividing $n+i$ for $i < k$. Does $v_0(n) = \\max_k v(n,k) \\to \\infty$ as $n \\to \\infty$? Known: $v_0(n) \\ge 2$ for $n \\ge 17$. OPEN.",
   "meta": {
-    "author": "Erdős, Selfridge",
+    "author": "Erd\u0151s, Selfridge",
     "sourceUrl": "https://erdosproblems.com/889",
     "date": "1967",
     "status": "axiomatized",
@@ -51,24 +51,24 @@
     ],
     "originalContributions": [
       "Defined newPrimeFactorCount v(n,k) via Finset.filter on primeFactors with universal non-divisibility check",
-      "Defined v₀(n) as iSup of v(n,k) over Finset.range, capturing the extremal new prime count",
-      "Formalized the main conjecture ErdosProblem889 as divergence in ε-N form",
-      "Axiomatized the Erdős–Selfridge bound v₀(n) ≥ 2 for n ≥ 17 and the complete exception set",
+      "Defined v\u2080(n) as iSup of v(n,k) over Finset.range, capturing the extremal new prime count",
+      "Formalized the main conjecture ErdosProblem889 as divergence in \u03b5-N form",
+      "Axiomatized the Erd\u0151s\u2013Selfridge bound v\u2080(n) \u2265 2 for n \u2265 17 and the complete exception set",
       "Defined the generalized vShifted (v_l) and the exact power variant exactPowerNewCount (V(n,k))",
-      "Established the comparison V(n,k) ≥ v(n,k) relating the exact power variant to the base version"
+      "Established the comparison V(n,k) \u2265 v(n,k) relating the exact power variant to the base version"
     ],
     "axiomCount": 6,
     "lineCount": 116,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Selfridge introduced $v(n,k)$ in their 1967 paper 'Some problems on the prime factors of consecutive integers' (Illinois J. Math. 11, pp. 428–430). They proved $v_0(n) \\ge 2$ for all $n \\ge 17$ by analyzing how prime factors distribute across consecutive integers, and determined the complete exception list $\\{0, 1, 2, 3, 4, 7, 8, 16\\}$ by explicit computation. However, they could not establish divergence of $v_0(n)$, nor even prove $v_1(n) \\ge 2$ for all large $n$. The problem also appears as B27 in Guy's 'Unsolved Problems in Number Theory' (3rd ed., 2004). The question is connected to the broader study of how prime factors distribute across arithmetic progressions and consecutive integers, touching on the Erdős–Kac theorem, Selberg's sieve, and the distribution of smooth numbers.",
+    "historicalContext": "Erd\u0151s and Selfridge introduced $v(n,k)$ in their 1967 paper 'Some problems on the prime factors of consecutive integers' (Illinois J. Math. 11, pp. 428\u2013430). They proved $v_0(n) \\ge 2$ for all $n \\ge 17$ by analyzing how prime factors distribute across consecutive integers, and determined the complete exception list $\\{0, 1, 2, 3, 4, 7, 8, 16\\}$ by explicit computation. However, they could not establish divergence of $v_0(n)$, nor even prove $v_1(n) \\ge 2$ for all large $n$. The problem also appears as B27 in Guy's 'Unsolved Problems in Number Theory' (3rd ed., 2004). The question is connected to the broader study of how prime factors distribute across arithmetic progressions and consecutive integers, touching on the Erd\u0151s\u2013Kac theorem, Selberg's sieve, and the distribution of smooth numbers.",
     "problemStatement": "Let $v(n,k)$ count the prime factors of $n+k$ that do not divide $n+i$ for $0 \\le i < k$. Let $v_0(n) = \\max_{k \\ge 0} v(n,k)$. **Does $v_0(n) \\to \\infty$ as $n \\to \\infty$?**",
     "text": "Let $v(n,k)$ count prime factors of $n+k$ not dividing $n+i$ for $i < k$. Does $v_0(n) = \\max_k v(n,k) \\to \\infty$ as $n \\to \\infty$? Known: $v_0(n) \\ge 2$ for $n \\ge 17$. OPEN.",
-    "proofStrategy": "The formalization defines `newPrimeFactorCount` via `Finset.filter` on `primeFactors`, checking non-divisibility at all earlier positions. The extremal function `v₀` uses `iSup` over `Finset.range`. The main conjecture is stated as a `def` (proposition definition), while the Erdős–Selfridge results ($v_0 \\ge 2$ for $n \\ge 17$, exception list) are axiomatized. The file also formalizes the generalized version $v_l$ (restricting shifts to $k \\ge l$), the exact power variant $V(n,k)$ (using $p$-adic valuation instead of bare divisibility), and the comparison $V \\ge v$.",
+    "proofStrategy": "The formalization defines `newPrimeFactorCount` via `Finset.filter` on `primeFactors`, checking non-divisibility at all earlier positions. The extremal function `v\u2080` uses `iSup` over `Finset.range`. The main conjecture is stated as a `def` (proposition definition), while the Erd\u0151s\u2013Selfridge results ($v_0 \\ge 2$ for $n \\ge 17$, exception list) are axiomatized. The file also formalizes the generalized version $v_l$ (restricting shifts to $k \\ge l$), the exact power variant $V(n,k)$ (using $p$-adic valuation instead of bare divisibility), and the comparison $V \\ge v$.",
     "keyInsights": [
       "$v(n,k)$ captures genuinely new prime factors at position $k$: primes that divide $n+k$ but none of $n, n+1, \\ldots, n+k-1$, measuring the 'novelty' of each term's factorization",
-      "Erdős–Selfridge (1967) proved $v_0(n) \\ge 2$ for $n \\ge 17$ with exactly 8 exceptions, but the gap between this constant lower bound and the conjectured divergence remains completely open",
+      "Erd\u0151s\u2013Selfridge (1967) proved $v_0(n) \\ge 2$ for $n \\ge 17$ with exactly 8 exceptions, but the gap between this constant lower bound and the conjectured divergence remains completely open",
       "The generalized version $v_l(n) = \\max_{k \\ge l} v(n,k)$ asks whether divergence persists even when small shifts are excluded, testing whether the phenomenon is robust or an artifact of initial terms",
       "The exact power variant $V(n,k)$ uses $p$-adic valuation ($p^{v_p(n+k)} \\nmid n+i$) instead of bare divisibility ($p \\nmid n+i$), giving $V \\ge v$ and potentially being more tractable",
       "The problem connects to the distribution of smooth numbers: if $n+k$ has many large prime factors, most will be 'new' since large primes are unlikely to divide nearby integers"
@@ -84,7 +84,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 22,
-      "summary": "File header documenting the problem, references (Erdős–Selfridge 1967, Guy B27), status (OPEN). Imports `Nat.Basic`, `Nat.Prime.Basic`, `Nat.Factorization.Basic`, `Finset.Basic`, `ConditionallyCompleteLattice.Basic`, and `Tactic`."
+      "summary": "File header documenting the problem, references (Erd\u0151s\u2013Selfridge 1967, Guy B27), status (OPEN). Imports `Nat.Basic`, `Nat.Prime.Basic`, `Nat.Factorization.Basic`, `Finset.Basic`, `ConditionallyCompleteLattice.Basic`, and `Tactic`."
     },
     {
       "id": "sec-889-vnk",
@@ -98,7 +98,7 @@
       "title": "The Maximum $v_0(n)$",
       "startLine": 34,
       "endLine": 41,
-      "summary": "Defines `v₀ n` as $\\sup_{0 \\le k \\le n} v(n,k)$ using `iSup` over `Finset.range (n+1)`, the maximum new prime factor count over all shifts."
+      "summary": "Defines `v\u2080 n` as $\\sup_{0 \\le k \\le n} v(n,k)$ using `iSup` over `Finset.range (n+1)`, the maximum new prime factor count over all shifts."
     },
     {
       "id": "sec-889-conjecture",
@@ -112,7 +112,7 @@
       "title": "Known Results: $v_0(n) \\ge 2$",
       "startLine": 54,
       "endLine": 66,
-      "summary": "Axiomatizes the Erdős–Selfridge (1967) bound $v_0(n) \\ge 2$ for $n \\ge 17$ and the complete exception list $\\{0, 1, 2, 3, 4, 7, 8, 16\\}$ as a biconditional."
+      "summary": "Axiomatizes the Erd\u0151s\u2013Selfridge (1967) bound $v_0(n) \\ge 2$ for $n \\ge 17$ and the complete exception list $\\{0, 1, 2, 3, 4, 7, 8, 16\\}$ as a biconditional."
     },
     {
       "id": "sec-889-generalized",
@@ -126,7 +126,7 @@
       "title": "Finiteness of $v_1(n) = 1$",
       "startLine": 84,
       "endLine": 91,
-      "summary": "Axiomatizes the weaker subproblem: does $v_1(n) > 1$ hold for all sufficiently large $n$? Even this was beyond Erdős–Selfridge's methods."
+      "summary": "Axiomatizes the weaker subproblem: does $v_1(n) > 1$ hold for all sufficiently large $n$? Even this was beyond Erd\u0151s\u2013Selfridge's methods."
     },
     {
       "id": "sec-889-exact",
@@ -137,13 +137,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #889 asks whether the maximum count of new prime factors in consecutive integers diverges. Erdős and Selfridge (1967) proved $v_0(n) \\ge 2$ for $n \\ge 17$ with 8 explicit exceptions, but divergence remains open after nearly 60 years. The formalization captures the core definitions, the known lower bound, the generalized $v_l$ conjecture, and the exact power variant $V(n,k)$ with 0 sorries.",
+    "summary": "Erd\u0151s Problem #889 asks whether the maximum count of new prime factors in consecutive integers diverges. Erd\u0151s and Selfridge (1967) proved $v_0(n) \\ge 2$ for $n \\ge 17$ with 8 explicit exceptions, but divergence remains open after nearly 60 years. The formalization captures the core definitions, the known lower bound, the generalized $v_l$ conjecture, and the exact power variant $V(n,k)$ with 0 sorries.",
     "implications": "Resolution would reveal fundamental growth properties of prime factor distributions in consecutive integer sequences. A proof of divergence would show that arbitrarily long runs of consecutive integers must eventually contain terms with many 'genuinely new' prime factors, connecting to sieve theory and the distribution of smooth numbers.",
     "openQuestions": [
       "Does $v_0(n) \\to \\infty$ as $n \\to \\infty$? Even a bound $v_0(n) \\ge 3$ for large $n$ would be new",
       "Does $v_l(n) \\to \\infty$ for every fixed $l$? This generalization tests robustness against excluding small shifts",
-      "Does $v_1(n) = 1$ have only finitely many solutions? This weaker subproblem was already beyond Erdős–Selfridge's methods",
-      "Is the exact power variant $V_1(n) > 1$ for all large $n$ more tractable, as Erdős and Selfridge suggested?"
+      "Does $v_1(n) = 1$ have only finitely many solutions? This weaker subproblem was already beyond Erd\u0151s\u2013Selfridge's methods",
+      "Is the exact power variant $V_1(n) > 1$ for all large $n$ more tractable, as Erd\u0151s and Selfridge suggested?"
     ]
   },
   "crossReferences": [
@@ -155,12 +155,12 @@
     {
       "targetId": "erdos-795",
       "relationship": "related",
-      "description": "Erdős #795 (distinct subset products) also studies the multiplicative structure of integers through prime factorization, sharing the theme of how primes distribute across structured sets"
+      "description": "Erd\u0151s #795 (distinct subset products) also studies the multiplicative structure of integers through prime factorization, sharing the theme of how primes distribute across structured sets"
     },
     {
       "targetId": "erdos-892",
       "relationship": "related",
-      "description": "Erdős #892 (primitive sequence domination) studies antichains in the divisibility order, directly relevant to understanding divisibility constraints between consecutive integers"
+      "description": "Erd\u0151s #892 (primitive sequence domination) studies antichains in the divisibility order, directly relevant to understanding divisibility constraints between consecutive integers"
     }
   ],
   "relatedProofs": [
@@ -182,6 +182,7 @@
     "lineCount": 116,
     "axiomCount": 6,
     "theoremCount": 0,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   }
 }

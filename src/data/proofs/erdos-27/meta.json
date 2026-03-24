@@ -1,10 +1,10 @@
 {
   "id": "erdos-27",
-  "title": "Erdős #27: Almost Covering Systems",
+  "title": "Erd\u0151s #27: Almost Covering Systems",
   "slug": "erdos-27",
-  "description": "Does there exist C > 1 such that ε-almost covering systems exist with moduli in [N, CN] for all ε, N? Answer: NO (disproved by FFKPY).",
+  "description": "Does there exist C > 1 such that \u03b5-almost covering systems exist with moduli in [N, CN] for all \u03b5, N? Answer: NO (disproved by FFKPY).",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/27",
     "erdosUrl": "https://erdosproblems.com/27",
     "date": "1950s",
@@ -54,7 +54,7 @@
       "HasModuliInRange and HasModuliInCRange constraints",
       "naturalDensity product formula",
       "ErdosConjecture and ErdosConjectureNegation",
-      "criticalExponent function α(N)",
+      "criticalExponent function \u03b1(N)",
       "ffkpy_main_theorem and erdos_27_disproved",
       "growing_C_works and sufficientC",
       "bbmst_bound connection to perfect coverings"
@@ -62,23 +62,23 @@
     "crossReferences": [
       {
         "proofId": "erdos-2",
-        "relationship": "Minimum modulus problem for covering systems — the foundational question in this area, resolved by Hough (2015)"
+        "relationship": "Minimum modulus problem for covering systems \u2014 the foundational question in this area, resolved by Hough (2015)"
       },
       {
         "proofId": "erdos-7",
-        "relationship": "Odd covering systems — structural constraints on covering moduli"
+        "relationship": "Odd covering systems \u2014 structural constraints on covering moduli"
       },
       {
         "proofId": "erdos-275",
-        "relationship": "Covering congruence 2^r bound — quantitative results on covering system density"
+        "relationship": "Covering congruence 2^r bound \u2014 quantitative results on covering system density"
       },
       {
         "proofId": "erdos-276",
-        "relationship": "Primefree Lucas sequences via covering congruences — another application of covering system theory"
+        "relationship": "Primefree Lucas sequences via covering congruences \u2014 another application of covering system theory"
       },
       {
         "proofId": "erdos-277",
-        "relationship": "Covering systems and abundancy — adjacent problem in Erdős's covering systems program"
+        "relationship": "Covering systems and abundancy \u2014 adjacent problem in Erd\u0151s's covering systems program"
       }
     ],
     "axiomCount": 0,
@@ -92,10 +92,10 @@
     "assumptions": "No axioms. 12 sorry(s) remain in the formalization."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #27: Almost Covering Systems**\n\nThis $\\$100$ Erdős prize problem sits at the heart of the theory of covering systems — one of Erdős's most sustained research interests.\n\n**Background: Covering Systems**\nA covering system is a finite collection of congruence classes $a_i \\pmod{n_i}$ with distinct moduli $n_1 < \\ldots < n_k$ such that every integer belongs to at least one class. Erdős initiated the systematic study of these objects in 1950 and posed dozens of problems about them over the next five decades.\n\n**The Almost-Covering Question:**\nErdős asked a natural relaxation: instead of covering *every* integer, what if we only need to cover all but a small fraction? An $\\varepsilon$-almost covering leaves at most density $\\varepsilon$ of integers uncovered. The specific question was whether a fixed constant $C > 1$ suffices to achieve $\\varepsilon$-almost covering with all moduli in the bounded range $[N, CN]$, for *all* $\\varepsilon > 0$ and $N \\geq 1$.\n\n**The FFKPY Disproof:**\nFilaseta, Ford, Konyagin, Pomerance, and Yu resolved this negatively. Their key insight: for moduli in $[N, CN]$ with fixed $C$, the total 'coverage capacity' is $\\sum_{n=N}^{CN} 1/n \\approx \\ln C$, which is bounded. Using a critical exponent $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$, they showed that for $C \\leq N^{\\alpha(N)}$ (which includes all constants), the uncovered density is bounded below by approximately $1/(2C)$. No fixed $C$ can make this arbitrarily small.\n\n**What Does Work:**\nIf $C$ is allowed to grow with $N$ (e.g., $C(N) = N^{1/\\log\\log N}$), then $\\varepsilon$-almost coverings exist for any fixed $\\varepsilon$. The boundary between success and failure lies at the growth rate of the critical exponent.\n\n**Connection to Perfect Coverings:**\nThe related question for perfect coverings (covering *every* integer) was resolved by Hough (2015): covering systems cannot have all moduli exceeding some absolute bound. Bloom, Briggs, Maynard, Smith, and Tao (2024) improved the bound to $616{,}000$.",
+    "historicalContext": "**Erd\u0151s Problem #27: Almost Covering Systems**\n\nThis $\\$100$ Erd\u0151s prize problem sits at the heart of the theory of covering systems \u2014 one of Erd\u0151s's most sustained research interests.\n\n**Background: Covering Systems**\nA covering system is a finite collection of congruence classes $a_i \\pmod{n_i}$ with distinct moduli $n_1 < \\ldots < n_k$ such that every integer belongs to at least one class. Erd\u0151s initiated the systematic study of these objects in 1950 and posed dozens of problems about them over the next five decades.\n\n**The Almost-Covering Question:**\nErd\u0151s asked a natural relaxation: instead of covering *every* integer, what if we only need to cover all but a small fraction? An $\\varepsilon$-almost covering leaves at most density $\\varepsilon$ of integers uncovered. The specific question was whether a fixed constant $C > 1$ suffices to achieve $\\varepsilon$-almost covering with all moduli in the bounded range $[N, CN]$, for *all* $\\varepsilon > 0$ and $N \\geq 1$.\n\n**The FFKPY Disproof:**\nFilaseta, Ford, Konyagin, Pomerance, and Yu resolved this negatively. Their key insight: for moduli in $[N, CN]$ with fixed $C$, the total 'coverage capacity' is $\\sum_{n=N}^{CN} 1/n \\approx \\ln C$, which is bounded. Using a critical exponent $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$, they showed that for $C \\leq N^{\\alpha(N)}$ (which includes all constants), the uncovered density is bounded below by approximately $1/(2C)$. No fixed $C$ can make this arbitrarily small.\n\n**What Does Work:**\nIf $C$ is allowed to grow with $N$ (e.g., $C(N) = N^{1/\\log\\log N}$), then $\\varepsilon$-almost coverings exist for any fixed $\\varepsilon$. The boundary between success and failure lies at the growth rate of the critical exponent.\n\n**Connection to Perfect Coverings:**\nThe related question for perfect coverings (covering *every* integer) was resolved by Hough (2015): covering systems cannot have all moduli exceeding some absolute bound. Bloom, Briggs, Maynard, Smith, and Tao (2024) improved the bound to $616{,}000$.",
     "problemStatement": "An $\\varepsilon$-almost covering system is a set of congruences $a_i \\pmod{n_i}$ with distinct moduli such that the density of uncovered integers is at most $\\varepsilon$.\n\n**Question:** Does there exist $C > 1$ such that for all $\\varepsilon > 0$ and $N \\geq 1$, an $\\varepsilon$-almost covering exists with moduli in $[N, CN]$?\n\n**Answer:** NO (Filaseta-Ford-Konyagin-Pomerance-Yu). For any fixed $C > 1$, the uncovered density is bounded below by $\\approx 1/(2C)$ for sufficiently large $N$.",
-    "text": "Does there exist C > 1 such that ε-almost covering systems exist with moduli in [N, CN] for all ε, N? Answer: NO (disproved by FFKPY).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Congruence Systems:** Define `Congruence` (residue/modulus pair) and `CongruenceSystem` (finite set with distinct moduli), with `covers`/`uncovered` predicates.\n\n2. **Density Computation:** Define `uncoveredDensity` (finite count ratio) and `asymptoticUncoveredDensity` (liminf as $M \\to \\infty$).\n\n3. **Almost/Perfect Covering:** `IsAlmostCovering S ε` asserts $\\delta(S) \\leq \\varepsilon$; `IsPerfectCovering S` asserts full coverage.\n\n4. **Bounded Moduli:** `HasModuliInRange` and `HasModuliInCRange` constrain moduli to $[N, CN]$.\n\n5. **Natural Density Product:** `naturalDensity m₁ m₂ = ∏(1-1/n)` gives the averaging lower bound on uncovered density.\n\n6. **Conjecture and Negation:** `ErdosConjecture` (constant $C$ exists) vs `ErdosConjectureNegation` (no constant works).\n\n7. **FFKPY Disproof:** The critical exponent $\\alpha(N)$, the main density lower bound, and the disproof theorem.\n\n8. **Positive Results:** Growing $C$ works; $C = N^{1/\\log\\log N}$ is sufficient.\n\n9. **BBMST Connection:** Minimum modulus bound $< 616{,}000$ for perfect coverings.",
+    "text": "Does there exist C > 1 such that \u03b5-almost covering systems exist with moduli in [N, CN] for all \u03b5, N? Answer: NO (disproved by FFKPY).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Congruence Systems:** Define `Congruence` (residue/modulus pair) and `CongruenceSystem` (finite set with distinct moduli), with `covers`/`uncovered` predicates.\n\n2. **Density Computation:** Define `uncoveredDensity` (finite count ratio) and `asymptoticUncoveredDensity` (liminf as $M \\to \\infty$).\n\n3. **Almost/Perfect Covering:** `IsAlmostCovering S \u03b5` asserts $\\delta(S) \\leq \\varepsilon$; `IsPerfectCovering S` asserts full coverage.\n\n4. **Bounded Moduli:** `HasModuliInRange` and `HasModuliInCRange` constrain moduli to $[N, CN]$.\n\n5. **Natural Density Product:** `naturalDensity m\u2081 m\u2082 = \u220f(1-1/n)` gives the averaging lower bound on uncovered density.\n\n6. **Conjecture and Negation:** `ErdosConjecture` (constant $C$ exists) vs `ErdosConjectureNegation` (no constant works).\n\n7. **FFKPY Disproof:** The critical exponent $\\alpha(N)$, the main density lower bound, and the disproof theorem.\n\n8. **Positive Results:** Growing $C$ works; $C = N^{1/\\log\\log N}$ is sufficient.\n\n9. **BBMST Connection:** Minimum modulus bound $< 616{,}000$ for perfect coverings.",
     "keyInsights": [
       "**Bounded Coverage Capacity:** For moduli in $[N, CN]$ with fixed $C$, the total coverage is $\\sum_{n=N}^{CN} 1/n \\approx \\ln C$. This fundamentally limits how much of $\\mathbb{Z}$ can be covered, regardless of the choice of residues.",
       "**Critical Exponent Threshold:** The function $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$ separates success from failure. For $C \\leq N^{\\alpha(N)}$ (which includes all constants for large $N$), almost-covering fails. For $C \\geq N^{1/\\log\\log N}$, it succeeds.",
@@ -176,8 +176,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #27, a $\\$100$ prize problem, was **disproved** by Filaseta, Ford, Konyagin, Pomerance, and Yu. No constant $C > 1$ allows $\\varepsilon$-almost coverings with moduli in $[N, CN]$ for all $\\varepsilon$ and $N$. The formalization captures the full structure: congruence systems, density definitions, the conjecture and its negation, the FFKPY disproof via the critical exponent $\\alpha(N)$, the positive result that growing $C$ works, and the BBMST bound on perfect coverings. The 204-line Lean file has 12 sorries, with the main theorems (ffkpy_main_theorem, erdos_27_disproved, bbmst_bound) as the most significant.",
-    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Covering Systems Program:** This result is a cornerstone of Erdős's decades-long investigation of covering systems (Problems #2, #7, #27, #275–281). It reveals a fundamental limitation: bounded moduli ranges cannot achieve arbitrarily good coverings.\n\n2. **Harmonic Sum Obstruction:** The proof ultimately rests on the harmonic sum $\\sum_{n=N}^{CN} 1/n \\approx \\ln C$ being bounded for fixed $C$. This connects to the broader theme that harmonic sums control many extremal problems in number theory.\n\n**3. Phase Transition:** There is a sharp phase transition between constant $C$ (fails) and super-constant $C$ (succeeds). The critical growth rate involves iterated logarithms, placing this problem in the company of other results with ultra-fine thresholds.\n\n4. **BBMST Connection:** The resolution of the minimum modulus conjecture by BBMST (bound $< 616{,}000$) shows that even perfect coverings are constrained. The almost-covering problem quantifies how constraints on moduli limit coverage quality.\n\n5. **Sieve Theory Interface:** The averaging argument and density bounds connect to sieve methods in analytic number theory, where similar product formulas arise in estimating the density of integers avoiding certain residue classes.",
+    "summary": "Erd\u0151s Problem #27, a $\\$100$ prize problem, was **disproved** by Filaseta, Ford, Konyagin, Pomerance, and Yu. No constant $C > 1$ allows $\\varepsilon$-almost coverings with moduli in $[N, CN]$ for all $\\varepsilon$ and $N$. The formalization captures the full structure: congruence systems, density definitions, the conjecture and its negation, the FFKPY disproof via the critical exponent $\\alpha(N)$, the positive result that growing $C$ works, and the BBMST bound on perfect coverings. The 204-line Lean file has 12 sorries, with the main theorems (ffkpy_main_theorem, erdos_27_disproved, bbmst_bound) as the most significant.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Covering Systems Program:** This result is a cornerstone of Erd\u0151s's decades-long investigation of covering systems (Problems #2, #7, #27, #275\u2013281). It reveals a fundamental limitation: bounded moduli ranges cannot achieve arbitrarily good coverings.\n\n2. **Harmonic Sum Obstruction:** The proof ultimately rests on the harmonic sum $\\sum_{n=N}^{CN} 1/n \\approx \\ln C$ being bounded for fixed $C$. This connects to the broader theme that harmonic sums control many extremal problems in number theory.\n\n**3. Phase Transition:** There is a sharp phase transition between constant $C$ (fails) and super-constant $C$ (succeeds). The critical growth rate involves iterated logarithms, placing this problem in the company of other results with ultra-fine thresholds.\n\n4. **BBMST Connection:** The resolution of the minimum modulus conjecture by BBMST (bound $< 616{,}000$) shows that even perfect coverings are constrained. The almost-covering problem quantifies how constraints on moduli limit coverage quality.\n\n5. **Sieve Theory Interface:** The averaging argument and density bounds connect to sieve methods in analytic number theory, where similar product formulas arise in estimating the density of integers avoiding certain residue classes.",
     "openQuestions": [
       "**Optimal Growth Rate:** What is the precise threshold function $f(N)$ such that $\\varepsilon$-almost coverings exist with moduli in $[N, f(N) \\cdot N]$ if and only if $f(N)$ grows faster than the threshold?",
       "**Improving the Critical Exponent:** Can $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$ be improved? Is there a sharp threshold separating success from failure?",
@@ -205,7 +205,8 @@
     "lineCount": 242,
     "axiomCount": 0,
     "theoremCount": 12,
-    "definitionCount": 16
+    "definitionCount": 16,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -226,23 +227,23 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Problems and results on combinatorial number theory III",
       "year": "1977",
-      "venue": "In: Number Theory Day, Lecture Notes in Mathematics vol. 626, Springer, pp. 43–72",
+      "venue": "In: Number Theory Day, Lecture Notes in Mathematics vol. 626, Springer, pp. 43\u201372",
       "note": "Includes the formulation of almost covering systems among many combinatorial number theory problems"
     },
     {
       "authors": "Filaseta, Michael; Ford, Kevin; Konyagin, Sergei; Pomerance, Carl; Yu, Gang",
       "title": "Sieving by large integers and covering systems of congruences",
       "year": "2007",
-      "venue": "Journal of the American Mathematical Society, vol. 20, no. 2, pp. 495–517",
+      "venue": "Journal of the American Mathematical Society, vol. 20, no. 2, pp. 495\u2013517",
       "note": "Structural results on covering systems applicable to near-covering variants"
     },
     "Filaseta, Ford, Konyagin, Pomerance, Yu: 'Covering systems, their analogues, and applications', Annals of Mathematics (2007)",
-    "Hough (2015): 'Solution of the minimum modulus problem for covering systems', Annals of Mathematics 181(1), 361–382",
+    "Hough (2015): 'Solution of the minimum modulus problem for covering systems', Annals of Mathematics 181(1), 361\u2013382",
     "Bloom, Briggs, Maynard, Smith, Tao (2024): Improved bound on minimum modulus of covering systems",
-    "Erdős (1950): 'Quelques problèmes de théorie des nombres', in Monographies de l'Enseignement Mathématique",
+    "Erd\u0151s (1950): 'Quelques probl\u00e8mes de th\u00e9orie des nombres', in Monographies de l'Enseignement Math\u00e9matique",
     "https://erdosproblems.com/27"
   ],
   "relatedProofs": [

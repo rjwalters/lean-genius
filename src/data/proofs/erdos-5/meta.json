@@ -1,10 +1,10 @@
 {
   "id": "erdos-5",
-  "title": "Erdős Problem #5: Limit Points of Normalized Prime Gaps",
+  "title": "Erd\u0151s Problem #5: Limit Points of Normalized Prime Gaps",
   "slug": "erdos-5",
-  "description": "Is the set S of limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, ∞)? Known: 0 ∈ S (GPY), ∞ ∈ S (Westzynthius), S has positive measure (Erdős–Ricci), at least 1/3 coverage (Merikoski). Open.",
+  "description": "Is the set S of limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, \u221e)? Known: 0 \u2208 S (GPY), \u221e \u2208 S (Westzynthius), S has positive measure (Erd\u0151s\u2013Ricci), at least 1/3 coverage (Merikoski). Open.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/5",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos5Problem.lean",
@@ -25,16 +25,16 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős studied the distribution of prime gaps normalized by log(p_n) throughout his career, building on the prime number theorem's prediction that the average gap is ~log(p_n). The question of which values arise as limit points of g(n) = (p_{n+1} − p_n)/log(p_n) captures the full range of prime gap fluctuations. Westzynthius (1931) first showed the gaps can be arbitrarily large (∞ ∈ S). The landmark GPY theorem (2009) proved lim inf g(n) = 0, establishing 0 ∈ S and initiating the chain of breakthroughs: Zhang (2013, first finite bound on gap), Maynard-Tao (2013, gap ≤ 600), Polymath 8 (gap ≤ 246). For the interior of S, Erdős and Ricci showed S has positive Lebesgue measure, Banks-Freiberg-Maynard improved this to ≥ 12.5%, and Merikoski (2020) reached ≥ 1/3 of [0, ∞). The conjecture S = [0, ∞) remains one of the most fundamental open problems about prime distribution, closely related to the Hardy-Littlewood prime k-tuples conjecture and Cramér's probabilistic model of primes.",
-    "problemStatement": "Is the set S of all limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, ∞)? Equivalently, for every C ≥ 0, does there exist an infinite sequence of indices n_i with g(n_i) → C?",
-    "text": "Is the set S of limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, ∞)? Known: 0 ∈ S (GPY), ∞ ∈ S (Westzynthius), S has positive measure (Erdős–Ricci), at least 1/3 coverage (Merikoski). Open.",
-    "proofStrategy": "The formalization axiomatizes nthPrime with strict monotonicity and primality, defines normalizedGap as the real-valued ratio, and specifies IsLimitPointOfGaps via the standard ε-N formulation. Known partial results are recorded as axioms: GPY for 0 ∈ S, Westzynthius for ∞ ∈ S, Hildebrand-Maier for large finite limit points, and Merikoski's 1/3 density bound (approximated via Finset). The full conjecture is stated as a universal quantification over all C ≥ 0.",
+    "historicalContext": "Erd\u0151s studied the distribution of prime gaps normalized by log(p_n) throughout his career, building on the prime number theorem's prediction that the average gap is ~log(p_n). The question of which values arise as limit points of g(n) = (p_{n+1} \u2212 p_n)/log(p_n) captures the full range of prime gap fluctuations. Westzynthius (1931) first showed the gaps can be arbitrarily large (\u221e \u2208 S). The landmark GPY theorem (2009) proved lim inf g(n) = 0, establishing 0 \u2208 S and initiating the chain of breakthroughs: Zhang (2013, first finite bound on gap), Maynard-Tao (2013, gap \u2264 600), Polymath 8 (gap \u2264 246). For the interior of S, Erd\u0151s and Ricci showed S has positive Lebesgue measure, Banks-Freiberg-Maynard improved this to \u2265 12.5%, and Merikoski (2020) reached \u2265 1/3 of [0, \u221e). The conjecture S = [0, \u221e) remains one of the most fundamental open problems about prime distribution, closely related to the Hardy-Littlewood prime k-tuples conjecture and Cram\u00e9r's probabilistic model of primes.",
+    "problemStatement": "Is the set S of all limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, \u221e)? Equivalently, for every C \u2265 0, does there exist an infinite sequence of indices n_i with g(n_i) \u2192 C?",
+    "text": "Is the set S of limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, \u221e)? Known: 0 \u2208 S (GPY), \u221e \u2208 S (Westzynthius), S has positive measure (Erd\u0151s\u2013Ricci), at least 1/3 coverage (Merikoski). Open.",
+    "proofStrategy": "The formalization axiomatizes nthPrime with strict monotonicity and primality, defines normalizedGap as the real-valued ratio, and specifies IsLimitPointOfGaps via the standard \u03b5-N formulation. Known partial results are recorded as axioms: GPY for 0 \u2208 S, Westzynthius for \u221e \u2208 S, Hildebrand-Maier for large finite limit points, and Merikoski's 1/3 density bound (approximated via Finset). The full conjecture is stated as a universal quantification over all C \u2265 0.",
     "keyInsights": [
       "**PNT normalization**: Dividing by log(p_n) gives average value 1 by the prime number theorem, so the question is about the full fluctuation spectrum",
-      "**GPY breakthrough**: The proof that 0 ∈ S (2009) used a novel combination of Bombieri-Vinogradov and Selberg sieve, later leading to bounded gaps proofs",
-      "**Asymmetric progress**: The extremes 0 and ∞ are well-understood, but filling in the interior of S is much harder—requiring simultaneous control of both small and large gaps",
-      "**Density approach**: The improving density bounds (positive measure → 12.5% → 1/3) suggest S might be dense, but the jump from 1/3 to full coverage requires fundamentally new ideas",
-      "**Cramér's model predicts S = [0, ∞)**: Under the probabilistic model where primes behave like random integers with density 1/ln(x), all gap ratios would occur as limit points"
+      "**GPY breakthrough**: The proof that 0 \u2208 S (2009) used a novel combination of Bombieri-Vinogradov and Selberg sieve, later leading to bounded gaps proofs",
+      "**Asymmetric progress**: The extremes 0 and \u221e are well-understood, but filling in the interior of S is much harder\u2014requiring simultaneous control of both small and large gaps",
+      "**Density approach**: The improving density bounds (positive measure \u2192 12.5% \u2192 1/3) suggest S might be dense, but the jump from 1/3 to full coverage requires fundamentally new ideas",
+      "**Cram\u00e9r's model predicts S = [0, \u221e)**: Under the probabilistic model where primes behave like random integers with density 1/ln(x), all gap ratios would occur as limit points"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -54,28 +54,28 @@
       "title": "Prime Enumeration Axioms",
       "startLine": 28,
       "endLine": 38,
-      "summary": "Axiomatizes nthPrime with primality for n ≥ 1 and strict monotonicity."
+      "summary": "Axiomatizes nthPrime with primality for n \u2265 1 and strict monotonicity."
     },
     {
       "id": "gap-definitions",
       "title": "Gap and Limit Point Definitions",
       "startLine": 40,
       "endLine": 48,
-      "summary": "Defines normalizedGap g(n) = (p_{n+1} − p_n)/log(p_n) and IsLimitPointOfGaps via ε-N formulation."
+      "summary": "Defines normalizedGap g(n) = (p_{n+1} \u2212 p_n)/log(p_n) and IsLimitPointOfGaps via \u03b5-N formulation."
     },
     {
       "id": "GPY-result",
-      "title": "GPY: 0 ∈ S",
+      "title": "GPY: 0 \u2208 S",
       "startLine": 50,
       "endLine": 54,
-      "summary": "Records Goldston-Pintz-Yıldırım's 2009 proof that 0 is a limit point."
+      "summary": "Records Goldston-Pintz-Y\u0131ld\u0131r\u0131m's 2009 proof that 0 is a limit point."
     },
     {
       "id": "large-gaps",
       "title": "Large Gaps and Unboundedness",
       "startLine": 56,
       "endLine": 65,
-      "summary": "Records Westzynthius (∞ ∈ S) and Hildebrand-Maier (arbitrarily large finite limit points)."
+      "summary": "Records Westzynthius (\u221e \u2208 S) and Hildebrand-Maier (arbitrarily large finite limit points)."
     },
     {
       "id": "density-bound",
@@ -89,18 +89,18 @@
       "title": "The Full Conjecture",
       "startLine": 74,
       "endLine": 80,
-      "summary": "States Erdős Problem 5: S = [0, ∞), i.e., every C ≥ 0 is a limit point of g(n)."
+      "summary": "States Erd\u0151s Problem 5: S = [0, \u221e), i.e., every C \u2265 0 is a limit point of g(n)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #5 asks whether every non-negative real number is a limit point of normalized prime gaps. The extremes are settled: 0 ∈ S (GPY) and ∞ ∈ S (Westzynthius). The interior has seen steady progress from positive measure (Erdős-Ricci) through 12.5% (Banks-Freiberg-Maynard) to 1/3 (Merikoski 2020), but the full conjecture S = [0, ∞) remains wide open.",
-    "implications": "Resolution would provide a complete understanding of prime gap fluctuations at the logarithmic scale, confirming the prediction of Cramér's probabilistic model. It connects to the Hardy-Littlewood prime k-tuples conjecture (which would imply S = [0, ∞)), sieve methods (the GPY-Maynard-Tao framework), and the distribution of primes in short intervals.",
+    "summary": "Erd\u0151s Problem #5 asks whether every non-negative real number is a limit point of normalized prime gaps. The extremes are settled: 0 \u2208 S (GPY) and \u221e \u2208 S (Westzynthius). The interior has seen steady progress from positive measure (Erd\u0151s-Ricci) through 12.5% (Banks-Freiberg-Maynard) to 1/3 (Merikoski 2020), but the full conjecture S = [0, \u221e) remains wide open.",
+    "implications": "Resolution would provide a complete understanding of prime gap fluctuations at the logarithmic scale, confirming the prediction of Cram\u00e9r's probabilistic model. It connects to the Hardy-Littlewood prime k-tuples conjecture (which would imply S = [0, \u221e)), sieve methods (the GPY-Maynard-Tao framework), and the distribution of primes in short intervals.",
     "openQuestions": [
-      "Is every C ≥ 0 a limit point of (p_{n+1} - p_n)/log(p_n)?",
+      "Is every C \u2265 0 a limit point of (p_{n+1} - p_n)/log(p_n)?",
       "Is the set S connected (i.e., is S an interval)?",
       "Can the Merikoski 1/3 density bound be improved toward full coverage?",
-      "What is the Hausdorff dimension of the complement [0,∞) \\ S?",
-      "Does the Elliott-Halberstam conjecture imply S = [0, ∞)?"
+      "What is the Hausdorff dimension of the complement [0,\u221e) \\ S?",
+      "Does the Elliott-Halberstam conjecture imply S = [0, \u221e)?"
     ]
   },
   "crossReferences": [
@@ -149,16 +149,17 @@
     "lineCount": 80,
     "axiomCount": 8,
     "theoremCount": 0,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   },
   "references": [
-    "Goldston–Pintz–Yıldırım: 0 ∈ S (2009)",
-    "Westzynthius: ∞ ∈ S (1931)",
-    "Erdős–Ricci: S has positive Lebesgue measure",
-    "Hildebrand–Maier: arbitrarily large finite limit points",
-    "Merikoski: at least 1/3 of [0,∞) in S (2020)",
-    "Ford–Green–Konyagin–Maynard–Tao: improved large gap bounds (2018)",
+    "Goldston\u2013Pintz\u2013Y\u0131ld\u0131r\u0131m: 0 \u2208 S (2009)",
+    "Westzynthius: \u221e \u2208 S (1931)",
+    "Erd\u0151s\u2013Ricci: S has positive Lebesgue measure",
+    "Hildebrand\u2013Maier: arbitrarily large finite limit points",
+    "Merikoski: at least 1/3 of [0,\u221e) in S (2020)",
+    "Ford\u2013Green\u2013Konyagin\u2013Maynard\u2013Tao: improved large gap bounds (2018)",
     "Zhang: bounded gaps between primes (2013)",
-    "Maynard–Tao: multiple bounded gaps (2013)"
+    "Maynard\u2013Tao: multiple bounded gaps (2013)"
   ]
 }

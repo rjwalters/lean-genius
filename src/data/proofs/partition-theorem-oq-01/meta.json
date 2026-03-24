@@ -2,7 +2,7 @@
   "id": "partition-theorem-oq-01",
   "title": "Rogers-Ramanujan and Schur Partition Identities",
   "slug": "partition-theorem-oq-01",
-  "description": "Formalizes the Rogers-Ramanujan and Schur partition identities in Lean 4. Defines partition sets via gap conditions and modular arithmetic, states the identities as axioms (verified computationally), and proves structural properties including that gap ≥ 2 partitions are necessarily distinct.",
+  "description": "Formalizes the Rogers-Ramanujan and Schur partition identities in Lean 4. Defines partition sets via gap conditions and modular arithmetic, states the identities as axioms (verified computationally), and proves structural properties including that gap \u2265 2 partitions are necessarily distinct.",
   "meta": {
     "author": "Rogers (1894), Ramanujan (1913), Schur (1926), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Rogers%E2%80%93Ramanujan_identities",
@@ -37,19 +37,19 @@
       }
     ],
     "originalContributions": [
-      "Gap monotonicity: proved hasMinGap_mono (d' ≤ d → gap d → gap d'), enabling systematic containment proofs",
-      "Generalized Nodup from gap: proved hasMinGap_ge_one_pairwise_gt and hasMinGap_ge_one_nodup (any gap ≥ 1 forces strictly decreasing, hence distinct)",
-      "Schur gap ⊆ RR1 gap: proved schur_gap_subset_rr1_gap via gap monotonicity (3 ≥ 2)",
+      "Gap monotonicity: proved hasMinGap_mono (d' \u2264 d \u2192 gap d \u2192 gap d'), enabling systematic containment proofs",
+      "Generalized Nodup from gap: proved hasMinGap_ge_one_pairwise_gt and hasMinGap_ge_one_nodup (any gap \u2265 1 forces strictly decreasing, hence distinct)",
+      "Schur gap \u2286 RR1 gap: proved schur_gap_subset_rr1_gap via gap monotonicity (3 \u2265 2)",
       "Schur Nodup redundancy: proved schur_nodup_redundant showing hasMinGap 3 already implies Nodup",
-      "Gap ≥ 2 implies distinct: proved that any partition with minimum gap 2 between consecutive parts has all distinct parts, via Pairwise strict inequality on the sorted parts list",
-      "RR2 ⊆ RR1: proved the containment of second Rogers-Ramanujan gap partitions in the first",
-      "Identified and removed false theorem: rr1Mod5Partitions ⊆ distincts is false (counterexample: 1+1+1 = 3)",
+      "Gap \u2265 2 implies distinct: proved that any partition with minimum gap 2 between consecutive parts has all distinct parts, via Pairwise strict inequality on the sorted parts list",
+      "RR2 \u2286 RR1: proved the containment of second Rogers-Ramanujan gap partitions in the first",
+      "Identified and removed false theorem: rr1Mod5Partitions \u2286 distincts is false (counterexample: 1+1+1 = 3)",
       "Decidable partition predicates: defined computable versions of all 6 partition sets using pairwise separation (avoiding noncomputable Multiset.sort), enabling native_decide verification",
       "Computational verification: verified Rogers-Ramanujan I, Rogers-Ramanujan II, and Schur identities for n=0..7 (24 native_decide examples)",
       "Containment hierarchy theorems: proved rr1_gap_card_le_distinct, rr2_gap_card_le_rr1, schur_gap_card_le_rr1 with decidable predicates",
-      "Complete bridge theorems: proved all 6 decidable↔noncomputable equivalences (rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGapFull, schurMod) and derived 3 decidable identities from axioms",
-      "Part count bounds: proved rr1_parts_sq_le (k²≤n), rr2_parts_bound (k(k+1)≤n), schur_parts_bound (k(3k-1)/2≤n) via generalized pairwise gap sum bounds",
-      "SchurMod/SchurGapFull characterization: proved schurMod_no_zero_mod3 (no parts divisible by 3 in SchurMod), schurGapFull_div3_gap4 (parts divisible by 3 require gap ≥ 4), schurGapFull_with_div3_not_in_schurMod (gap partitions with div-3 parts are disjoint from mod partitions)",
+      "Complete bridge theorems: proved all 6 decidable\u2194noncomputable equivalences (rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGapFull, schurMod) and derived 3 decidable identities from axioms",
+      "Part count bounds: proved rr1_parts_sq_le (k\u00b2\u2264n), rr2_parts_bound (k(k+1)\u2264n), schur_parts_bound (k(3k-1)/2\u2264n) via generalized pairwise gap sum bounds",
+      "SchurMod/SchurGapFull characterization: proved schurMod_no_zero_mod3 (no parts divisible by 3 in SchurMod), schurGapFull_div3_gap4 (parts divisible by 3 require gap \u2265 4), schurGapFull_with_div3_not_in_schurMod (gap partitions with div-3 parts are disjoint from mod partitions)",
       "Extended computational verification: all three identities verified for n=0..12 (60+ native_decide examples)"
     ],
     "dateAdded": "2026-03-11",
@@ -62,14 +62,14 @@
   "overview": {
     "historicalContext": "The Rogers-Ramanujan identities are among the most remarkable results in partition theory. Rogers discovered them in 1894 in a paper on continued fractions that went largely unnoticed. Ramanujan independently rediscovered them around 1913 in his notebooks, and communicated them to Hardy, who recognized their depth but could not prove them; Hardy later found Rogers' forgotten proof. MacMahon (1916) verified the first identity computationally for $n \\leq 89$ in his treatise on combinatory analysis. Schur (1926) proved a related identity for partitions with gap $\\geq 3$ and parts $\\equiv \\pm 1 \\pmod{3}$. The identities found unexpected applications in statistical mechanics when Baxter (1981) showed the Rogers-Ramanujan identities give the exact solution of the hard hexagon model in lattice gas theory. Lepowsky and Wilson (1984) connected them to representations of affine Lie algebras and vertex operator algebras, revealing deep algebraic structure behind the combinatorial identities. Andrews' monograph (1976) systematized the theory and developed the general framework of partition identities via q-difference equations.",
     "problemStatement": "Can we formalize the Rogers-Ramanujan and Schur partition identities and prove structural relationships between the partition sets?",
-    "text": "Formalizes the Rogers-Ramanujan and Schur partition identities in Lean 4. Defines partition sets via gap conditions and modular arithmetic, states the identities as axioms (verified computationally), and proves structural properties including that gap ≥ 2 partitions are necessarily distinct.",
-    "proofStrategy": "We define partition sets using decidable predicates on Nat.Partition, state the main identities as axioms (they require q-series machinery not yet in Mathlib), and prove structural theorems about containment relationships between partition classes. The key proof shows that gap ≥ 2 implies distinctness by establishing a Pairwise (· > ·) relation on the sorted parts list.",
+    "text": "Formalizes the Rogers-Ramanujan and Schur partition identities in Lean 4. Defines partition sets via gap conditions and modular arithmetic, states the identities as axioms (verified computationally), and proves structural properties including that gap \u2265 2 partitions are necessarily distinct.",
+    "proofStrategy": "We define partition sets using decidable predicates on Nat.Partition, state the main identities as axioms (they require q-series machinery not yet in Mathlib), and prove structural theorems about containment relationships between partition classes. The key proof shows that gap \u2265 2 implies distinctness by establishing a Pairwise (\u00b7 > \u00b7) relation on the sorted parts list.",
     "keyInsights": [
-      "**Gap $\\geq 2$ implies distinct**: a minimum gap of 2 between consecutive sorted parts forces all parts to be strictly decreasing, hence distinct — proved via `List.Pairwise` transitivity and `omega`",
+      "**Gap $\\geq 2$ implies distinct**: a minimum gap of 2 between consecutive sorted parts forces all parts to be strictly decreasing, hence distinct \u2014 proved via `List.Pairwise` transitivity and `omega`",
       "**Mod-5 partition sets are NOT subsets of distinct partitions**: the partition $3 = 1+1+1$ has all parts $\\equiv 1 \\pmod{5}$ but is not distinct, revealing a fundamental asymmetry between gap and congruence conditions",
-      "**Containment hierarchy**: $\\text{RR2\\_gap} \\subseteq \\text{RR1\\_gap} \\subseteq \\mathcal{D} \\subseteq \\mathcal{P}$ — each inclusion is strict and the gap side is naturally ordered by strength of conditions",
+      "**Containment hierarchy**: $\\text{RR2\\_gap} \\subseteq \\text{RR1\\_gap} \\subseteq \\mathcal{D} \\subseteq \\mathcal{P}$ \u2014 each inclusion is strict and the gap side is naturally ordered by strength of conditions",
       "**Axiom-based approach**: the Rogers-Ramanujan identities require either $q$-series manipulation (Jacobi triple product, $(q;q)_k$ calculus) or bijective proofs (Garsia-Milne involution, ~500+ lines each), justifying axiomatization while the structural theory is developed independently",
-      "**Noncomputable predicates**: lifting list-level gap conditions to `Nat.Partition` requires `Multiset.sort`, which is noncomputable in Lean 4 since the sort of a multiset is not computationally canonical — a design tension between decidability and abstraction"
+      "**Noncomputable predicates**: lifting list-level gap conditions to `Nat.Partition` requires `Multiset.sort`, which is noncomputable in Lean 4 since the sort of a multiset is not computationally canonical \u2014 a design tension between decidability and abstraction"
     ],
     "prerequisites": [
       "Combinatorics (counting, extremal problems)",
@@ -156,7 +156,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Comprehensive formalization of the Rogers-Ramanujan and Schur partition identity framework. Defines 16 partition sets (noncomputable sort-based + decidable pairwise-based), states 3 deep identities as axioms, and proves 47 structural theorems with 0 sorries. Complete bridge theorems connect all decidable and noncomputable formulations. Computational verification covers all 3 identities for n=0..12 (60+ native_decide examples). Key contributions: (1) gap ≥ 2 implies distinctness, (2) full containment hierarchy, (3) complete decidable↔noncomputable bridges, (4) part count bounds (k²≤n for RR1, k(k+1)≤n for RR2, k(3k-1)/2≤n for Schur), and (5) detailed analysis of proof approaches for the axiomatized identities.",
+    "summary": "Comprehensive formalization of the Rogers-Ramanujan and Schur partition identity framework. Defines 16 partition sets (noncomputable sort-based + decidable pairwise-based), states 3 deep identities as axioms, and proves 47 structural theorems with 0 sorries. Complete bridge theorems connect all decidable and noncomputable formulations. Computational verification covers all 3 identities for n=0..12 (60+ native_decide examples). Key contributions: (1) gap \u2265 2 implies distinctness, (2) full containment hierarchy, (3) complete decidable\u2194noncomputable bridges, (4) part count bounds (k\u00b2\u2264n for RR1, k(k+1)\u2264n for RR2, k(3k-1)/2\u2264n for Schur), and (5) detailed analysis of proof approaches for the axiomatized identities.",
     "implications": "**Theoretical Significance**: The Rogers-Ramanujan identities connect partition theory to $q$-series, statistical mechanics (Baxter's hard hexagon model), and representation theory (Lepowsky-Wilson vertex operator algebras).\n\nThe most tractable path to proving the axioms is via generating functions adapting Mathlib's PowerSeries and the Wiedijk 100 partition theorem proof pattern. A naive bijective approach (merge close pairs) fails because the merging is not canonical; the known bijections (Bressoud, Alladi-Gordon) require ~500-800 lines of intricate combinatorial construction.",
     "openQuestions": [
       "Can the Rogers-Ramanujan identities be proved via q-series in Lean using PowerSeries from Mathlib?",
@@ -167,7 +167,7 @@
   "relatedProblems": [
     {
       "id": "partition-theorem",
-      "relationship": "Parent formalization of Euler's partition theorem (distinct ↔ odd)."
+      "relationship": "Parent formalization of Euler's partition theorem (distinct \u2194 odd)."
     }
   ],
   "leanFile": {
@@ -238,8 +238,9 @@
     "namespace": "RogersRamanujan",
     "lineCount": 3552,
     "axiomCount": 3,
-    "theoremCount": 143,
-    "definitionCount": 40
+    "theoremCount": 129,
+    "definitionCount": 40,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -272,7 +273,7 @@
     },
     {
       "authors": "I. Schur",
-      "title": "Ein Beitrag zur additiven Zahlentheorie und zur Theorie der Kettenbrüche",
+      "title": "Ein Beitrag zur additiven Zahlentheorie und zur Theorie der Kettenbr\u00fcche",
       "year": "1926",
       "venue": "S.-B. Preuss. Akad. Wiss. Phys.-Math. Kl."
     },

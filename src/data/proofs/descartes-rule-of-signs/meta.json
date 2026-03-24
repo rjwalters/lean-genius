@@ -57,7 +57,7 @@
   "overview": {
     "historicalContext": "Rene Descartes published this rule in his groundbreaking work \"La Geometrie\" (1637), which was an appendix to his philosophical treatise \"Discours de la methode.\" This was one of the first systematic methods for determining properties of polynomial roots without explicitly solving the equation.\n\nThe rule was later refined by Carl Friedrich Gauss, who provided a rigorous proof and characterized exactly when the bound is achieved. Jean-Baptiste Fourier and Jacques Charles Francois Sturm extended these ideas to develop complete algorithms for real root isolation.",
     "problemStatement": "**Descartes' Rule of Signs**: For a polynomial $p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_1 x + a_0$ with real coefficients:\n\n1. Count the **sign changes** in the sequence $(a_n, a_{n-1}, \\ldots, a_1, a_0)$, ignoring zero coefficients.\n\n2. The number of **positive real roots** (counted with multiplicity) is either equal to this count, or less than it by an even positive integer.\n\n**Corollary for Negative Roots**: Apply the rule to $p(-x)$ to bound negative roots.\n\nThis is Wiedijk's 100 Theorems #100.",
-    "text": "This formalization proves Descartes' rule of signs: the number of positive real roots of a polynomial (counted with multiplicity) equals the number of sign changes in its coefficient sequence, or is less by an even positive integer. The proof uses induction on degree with Rolle's theorem providing the key step: between consecutive roots of f, there exists a root of f', connecting the sign changes of f to those of f' via the derivative.\n\nThe file establishes the rule for both positive roots (via direct coefficients) and negative roots (via the substitution x → -x), the special case for polynomials with all positive coefficients (no positive roots), and concrete verified examples. Commentary connects to Budan's theorem (counting roots in intervals), Sturm's theorem (exact root counting via Sturm chains), and the limitations of Descartes' rule (it gives bounds, not exact counts).",
+    "text": "This formalization proves Descartes' rule of signs: the number of positive real roots of a polynomial (counted with multiplicity) equals the number of sign changes in its coefficient sequence, or is less by an even positive integer. The proof uses induction on degree with Rolle's theorem providing the key step: between consecutive roots of f, there exists a root of f', connecting the sign changes of f to those of f' via the derivative.\n\nThe file establishes the rule for both positive roots (via direct coefficients) and negative roots (via the substitution x \u2192 -x), the special case for polynomials with all positive coefficients (no positive roots), and concrete verified examples. Commentary connects to Budan's theorem (counting roots in intervals), Sturm's theorem (exact root counting via Sturm chains), and the limitations of Descartes' rule (it gives bounds, not exact counts).",
     "proofStrategy": "**The Classical Proof via Rolle's Theorem:**\n\n**Step 1: Induction on Degree**\nFor degree 0, there are no positive roots and no sign changes. Assume true for degree < n.\n\n**Step 2: Relate p to p'**\nBy Rolle's theorem, between any two positive roots of p, there is a positive root of p'.\n\n**Step 3: Sign Change Analysis**\nWhen passing from p to p', the number of sign changes decreases by at least one for each root \"lost\". More precisely:\n- If p has k positive roots, p' has at least k-1 positive roots between them\n- The sign changes in p' relate to those in p in a controlled way\n\n**Step 4: Parity Preservation**\nComplex roots come in conjugate pairs, so the count of real roots has the same parity as the degree. Combined with the sign change analysis, the difference must be even.",
     "keyInsights": [
       "Sign changes provide an algebraic proxy for analytic root behavior",
@@ -140,7 +140,7 @@
     "summary": "Descartes' Rule of Signs provides an elegant and computationally simple method to bound the number of positive and negative real roots of a polynomial. The formalization introduces sign change counting for coefficient sequences, states the main bound and parity results, and extends to negative roots via substitution.",
     "implications": "**Theoretical Significance:**\n\n**1. Historical Importance**\nOne of the earliest general results about polynomial roots, published in 1637 before the Fundamental Theorem of Algebra was proven.\n\n**2. Algorithmic Applications**\nForms the basis for real root isolation algorithms like Sturm's theorem, Vincent's theorem, and the Continued Fraction method used in computer algebra systems.\n\n**3. Educational Value**\nDemonstrates the deep connection between algebraic properties (coefficient signs) and analytic properties (root locations).\n\n**4. Practical Use**\nQuickly determines existence or non-existence of positive/negative roots without solving.",
     "openQuestions": [
-      "Can the full proof via Rolle's theorem be completed in Lean? The file imports `Mathlib.Analysis.Calculus.LocalExtr.Rolle` but the main theorem currently uses axioms — completing the proof would require formalizing the induction on degree with Rolle's theorem supplying intermediate roots of the derivative.",
+      "Can the full proof via Rolle's theorem be completed in Lean? The file imports `Mathlib.Analysis.Calculus.LocalExtr.Rolle` but the main theorem currently uses axioms \u2014 completing the proof would require formalizing the induction on degree with Rolle's theorem supplying intermediate roots of the derivative.",
       "Budan's theorem (1807) generalizes Descartes's rule: the number of roots in an interval $(a,b)$ is bounded by $V(a) - V(b)$ where $V$ counts sign variations in the Taylor expansion. Can this be formalized as a strict generalization of Descartes's rule?",
       "Sturm's theorem (1829) gives the *exact* number of real roots in an interval, not just an upper bound. Can the Sturm chain construction be formalized in Lean, showing it refines Descartes's estimate to equality?",
       "Can the algebraic proof (without Rolle's theorem, using only polynomial division and induction) be formalized alongside the analytic proof, demonstrating two independent proof paths for the same result?"
@@ -150,7 +150,7 @@
     {
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
-      "description": "The intermediate value theorem guarantees that sign changes in polynomial values correspond to real roots — a prerequisite for Descartes's rule, which refines this by counting sign changes in *coefficients* rather than values"
+      "description": "The intermediate value theorem guarantees that sign changes in polynomial values correspond to real roots \u2014 a prerequisite for Descartes's rule, which refines this by counting sign changes in *coefficients* rather than values"
     },
     {
       "targetId": "mean-value-theorem",
@@ -170,7 +170,7 @@
     {
       "targetId": "sum-of-kth-powers",
       "relationship": "related",
-      "description": "Both are Wiedijk-100 results about polynomial structure: Faulhaber's formulas concern polynomial evaluation (power sums as polynomials in $n$), while Descartes's rule concerns polynomial root counting — complementary perspectives on polynomial analysis"
+      "description": "Both are Wiedijk-100 results about polynomial structure: Faulhaber's formulas concern polynomial evaluation (power sums as polynomials in $n$), while Descartes's rule concerns polynomial root counting \u2014 complementary perspectives on polynomial analysis"
     }
   ],
   "relatedProofs": [
@@ -199,42 +199,43 @@
     "lineCount": 576,
     "axiomCount": 8,
     "theoremCount": 35,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "Descartes, René",
-      "title": "La Géométrie",
+      "authors": "Descartes, Ren\u00e9",
+      "title": "La G\u00e9om\u00e9trie",
       "year": "1637",
-      "venue": "Leiden (appendix to Discours de la méthode)",
+      "venue": "Leiden (appendix to Discours de la m\u00e9thode)",
       "note": "Original statement of the rule relating sign changes in polynomial coefficients to the number of positive real roots"
     },
     {
       "authors": "Curtiss, David R.",
       "title": "Recent extensions of Descartes' rule of signs",
       "year": "1918",
-      "venue": "Annals of Mathematics 19(4), 251–278",
+      "venue": "Annals of Mathematics 19(4), 251\u2013278",
       "note": "Historical survey and extensions to more general settings"
     },
     {
       "authors": "Gauss, Carl Friedrich",
       "title": "Beweis eines algebraischen Lehrsatzes",
       "year": "1828",
-      "venue": "Journal für die reine und angewandte Mathematik 3, 1–4",
-      "note": "Provided the first rigorous proof of Descartes's rule and characterized exactly when the bound is tight — the number of positive roots equals the sign change count minus an even number"
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik 3, 1\u20134",
+      "note": "Provided the first rigorous proof of Descartes's rule and characterized exactly when the bound is tight \u2014 the number of positive roots equals the sign change count minus an even number"
     },
     {
-      "authors": "Sturm, Jacques Charles François",
-      "title": "Mémoire sur la résolution des équations numériques",
+      "authors": "Sturm, Jacques Charles Fran\u00e7ois",
+      "title": "M\u00e9moire sur la r\u00e9solution des \u00e9quations num\u00e9riques",
       "year": "1835",
-      "venue": "Mémoires présentés par divers savants à l'Académie royale des Sciences 6, 271–318",
-      "note": "Extended Descartes's approach to give the exact number of real roots in any interval via Sturm chains — the first complete real root isolation algorithm"
+      "venue": "M\u00e9moires pr\u00e9sent\u00e9s par divers savants \u00e0 l'Acad\u00e9mie royale des Sciences 6, 271\u2013318",
+      "note": "Extended Descartes's approach to give the exact number of real roots in any interval via Sturm chains \u2014 the first complete real root isolation algorithm"
     },
     {
       "authors": "Grabiner, Sandy",
       "title": "Descartes' Rule of Signs: Another Construction",
       "year": "1999",
-      "venue": "American Mathematical Monthly 106(9), 854–856",
+      "venue": "American Mathematical Monthly 106(9), 854\u2013856",
       "note": "Elementary proof of Descartes's rule using only polynomial division and induction, avoiding Rolle's theorem"
     }
   ]

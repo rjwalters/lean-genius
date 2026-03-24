@@ -70,7 +70,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Joseph Bertrand conjectured in 1845 that for every $n \\geq 1$, there exists a prime between $n$ and $2n$, after verifying it computationally for $n < 6{,}000{,}000$. Pafnuty Chebyshev gave the first proof in 1852, using bounds on the Chebyshev function $\\theta(x) = \\sum_{p \\leq x} \\ln p$. Ramanujan found a shorter proof in 1919 using properties of the Gamma function, and in 1932, Paul Erdős — then only 19 years old — gave a celebrated elementary proof using only properties of the central binomial coefficient $\\binom{2n}{n}$. It is Erdős's approach that underpins most modern formalizations, including Mathlib's.\n\nWhile the Prime Number Theorem (proved independently by Hadamard and de la Vallée Poussin in 1896) gives the asymptotic $\\pi(n) \\sim n / \\ln n$ and $p_n \\sim n \\ln n$, Bertrand's postulate provides explicit, non-asymptotic bounds requiring no analytic machinery. This module derives the exponential bound $p_n \\leq 2^{n+1}$ by elementary induction from Bertrand, along with quantitative doubling bounds on $\\pi(n)$. The exponential bound is weaker than the PNT estimate but has the virtue of being fully elementary and is imported by the Bounded Prime Gaps formalization for its prime gap infrastructure.",
+    "historicalContext": "Joseph Bertrand conjectured in 1845 that for every $n \\geq 1$, there exists a prime between $n$ and $2n$, after verifying it computationally for $n < 6{,}000{,}000$. Pafnuty Chebyshev gave the first proof in 1852, using bounds on the Chebyshev function $\\theta(x) = \\sum_{p \\leq x} \\ln p$. Ramanujan found a shorter proof in 1919 using properties of the Gamma function, and in 1932, Paul Erd\u0151s \u2014 then only 19 years old \u2014 gave a celebrated elementary proof using only properties of the central binomial coefficient $\\binom{2n}{n}$. It is Erd\u0151s's approach that underpins most modern formalizations, including Mathlib's.\n\nWhile the Prime Number Theorem (proved independently by Hadamard and de la Vall\u00e9e Poussin in 1896) gives the asymptotic $\\pi(n) \\sim n / \\ln n$ and $p_n \\sim n \\ln n$, Bertrand's postulate provides explicit, non-asymptotic bounds requiring no analytic machinery. This module derives the exponential bound $p_n \\leq 2^{n+1}$ by elementary induction from Bertrand, along with quantitative doubling bounds on $\\pi(n)$. The exponential bound is weaker than the PNT estimate but has the virtue of being fully elementary and is imported by the Bounded Prime Gaps formalization for its prime gap infrastructure.",
     "problemStatement": "Derive explicit bounds from Bertrand's postulate:\n\n1. **Prime counting under doubling**: pi(2n) > pi(n) for n >= 1\n2. **Iterated doubling**: pi(2^k * n) >= pi(n) + k\n3. **Small values**: Verify pi(10) = 4, pi(20) = 8, pi(30) = 10, pi(50) = 15\n4. **Exponential bound on p_n**: The n-th prime satisfies p_n <= 2^(n+1)\n5. **Order property**: If q is prime and q > p_n, then p_{n+1} <= q",
     "text": "Derives explicit bounds on prime gaps and the n-th prime from Bertrand's postulate: pi(2n) > pi(n) for n >= 1, iterated doubling bounds pi(2^k * n) >= pi(n) + k, small value computations of pi, and the exponential bound p_n <= 2^(n+1) by induction. Imported by BoundedPrimeGaps and BertrandsPostulateOQ03.",
     "proofStrategy": "The proofs build systematically from Bertrand's postulate:\n\n1. **primeCounting_double_gt**: By Bertrand, there exists prime p with n < p <= 2n. Since p contributes to pi(2n) but not pi(n), we get pi(2n) > pi(n). Uses count_monotone and count_strict_mono.\n\n2. **primeCounting_pow_two_mul**: Induction on k, applying the doubling result at each step. The base case is trivial; the inductive step uses 2^(j+1) * n = 2 * (2^j * n).\n\n3. **Small values**: Verified by decide (kernel computation).\n\n4. **nth_prime_le_two_pow_succ**: Induction on n. Base: p_0 = 2 <= 2^1. Step: By Bertrand, there exists prime q with p_k < q <= 2*p_k. Since p_{k+1} is the smallest prime > p_k, we get p_{k+1} <= q <= 2*p_k <= 2*2^(k+1) = 2^(k+2).\n\n5. **nth_prime_succ_le_of_prime_gt**: Key lemma for the inductive step. If q is prime and q > p_n, then p_{n+1} <= q. Proved by contradiction using count_nth and the order-preserving nature of nth.",
@@ -183,7 +183,8 @@
     "lineCount": 202,
     "axiomCount": 0,
     "theoremCount": 11,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 2
   },
   "references": [
     {
@@ -198,7 +199,7 @@
     },
     {
       "key": "Er32",
-      "citation": "Erdős, P. (1932). Beweis eines Satzes von Tschebyschef. Acta Scientiarum Mathematicarum (Szeged), 5, 194-198.",
+      "citation": "Erd\u0151s, P. (1932). Beweis eines Satzes von Tschebyschef. Acta Scientiarum Mathematicarum (Szeged), 5, 194-198.",
       "type": "paper"
     }
   ],

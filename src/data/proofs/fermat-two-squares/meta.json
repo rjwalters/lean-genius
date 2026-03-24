@@ -42,7 +42,7 @@
     "prerequisites": [
       "Modular arithmetic and ZMod from Mathlib",
       "Nat.Prime and prime characterizations",
-      "Gaussian integers ℤ[i]",
+      "Gaussian integers \u2124[i]",
       "Sum of two squares representation"
     ],
     "axiomCount": 0,
@@ -65,12 +65,12 @@
       "Therefore $a^2 + b^2 \\mod 4$ can only be 0, 1, or 2 - never 3",
       "Zagier's proof uses the pigeonhole principle via involutions on a finite set of odd cardinality",
       "The connection to Gaussian integers: $p = a^2 + b^2$ iff $p$ splits in $\\mathbb{Z}[i]$",
-      "The representation $p = a^2 + b^2$ is essentially unique for primes $p \\equiv 1 \\pmod{4}$ (unique up to order and signs of $a, b$), a fact that follows from unique factorization in $\\mathbb{Z}[i]$ — this connects the theorem to the structure theory of Euclidean domains"
+      "The representation $p = a^2 + b^2$ is essentially unique for primes $p \\equiv 1 \\pmod{4}$ (unique up to order and signs of $a, b$), a fact that follows from unique factorization in $\\mathbb{Z}[i]$ \u2014 this connects the theorem to the structure theory of Euclidean domains"
     ],
     "prerequisites": [
       "Modular arithmetic and ZMod from Mathlib",
       "Nat.Prime and prime characterizations",
-      "Gaussian integers ℤ[i]",
+      "Gaussian integers \u2124[i]",
       "Sum of two squares representation"
     ]
   },
@@ -97,7 +97,7 @@
       "startLine": 95,
       "endLine": 113,
       "summary": "Verification of small cases: 5 = 1^2 + 2^2, 13 = 2^2 + 3^2, 17 = 1^2 + 4^2, etc.",
-      "mathContext": "Concrete verifications serve as executable witnesses: $5 = 1^2+2^2$, $13 = 2^2+3^2$, $17 = 1^2+4^2$, $29 = 2^2+5^2$, $37 = 1^2+6^2$, $41 = 4^2+5^2$. Each is proved by `norm_num` or `decide`, which reduces the goal to arithmetic. These examples also illustrate uniqueness: primes $\\equiv 1 \\pmod{4}$ have essentially unique representations (up to order and signs), a consequence of unique factorization in $\\mathbb{Z}[i]$ — though uniqueness is not formally proved here."
+      "mathContext": "Concrete verifications serve as executable witnesses: $5 = 1^2+2^2$, $13 = 2^2+3^2$, $17 = 1^2+4^2$, $29 = 2^2+5^2$, $37 = 1^2+6^2$, $41 = 4^2+5^2$. Each is proved by `norm_num` or `decide`, which reduces the goal to arithmetic. These examples also illustrate uniqueness: primes $\\equiv 1 \\pmod{4}$ have essentially unique representations (up to order and signs), a consequence of unique factorization in $\\mathbb{Z}[i]$ \u2014 though uniqueness is not formally proved here."
     },
     {
       "id": "classification",
@@ -105,22 +105,22 @@
       "startLine": 115,
       "endLine": 160,
       "summary": "Complete classification of all primes into three categories based on their residue mod 4.",
-      "mathContext": "Every prime $p$ has residue mod 4 in $\\{0,1,2,3\\}$, but primes $\\geq 3$ cannot be $\\equiv 0 \\pmod{4}$ (divisible by 4) or $\\equiv 2 \\pmod{4}$ (even, unless $p = 2$). So odd primes $\\geq 3$ fall into exactly two classes: $p \\equiv 1 \\pmod{4}$ (sum of two squares, infinitely many by Dirichlet's theorem) and $p \\equiv 3 \\pmod{4}$ (not a sum of two squares, also infinitely many). This trichotomy — $p=2$, $p \\equiv 1$, $p \\equiv 3$ — exhausts all primes and is proved by case analysis on `p % 4`."
+      "mathContext": "Every prime $p$ has residue mod 4 in $\\{0,1,2,3\\}$, but primes $\\geq 3$ cannot be $\\equiv 0 \\pmod{4}$ (divisible by 4) or $\\equiv 2 \\pmod{4}$ (even, unless $p = 2$). So odd primes $\\geq 3$ fall into exactly two classes: $p \\equiv 1 \\pmod{4}$ (sum of two squares, infinitely many by Dirichlet's theorem) and $p \\equiv 3 \\pmod{4}$ (not a sum of two squares, also infinitely many). This trichotomy \u2014 $p=2$, $p \\equiv 1$, $p \\equiv 3$ \u2014 exhausts all primes and is proved by case analysis on `p % 4`."
     },
     {
       "id": "classification-corollary",
       "title": "Classification Corollary",
       "startLine": 156,
       "endLine": 195,
-      "summary": "Restates the main theorem in the natural form: p = a² + b² iff p = 2 or p ≡ 1 (mod 4). Combines all three cases into a single equivalence.",
-      "mathContext": "This corollary presents the theorem in its most natural formulation: $p = a^2+b^2 \\iff p = 2 \\lor p \\equiv 1 \\pmod{4}$. The forward direction (representable implies $p=2$ or $p \\equiv 1$) uses the mod-4 obstruction: if $p \\equiv 3 \\pmod{4}$ then $a^2+b^2 \\equiv 0,1,2 \\pmod{4}$, never 3. The backward direction uses the existence proof from `Nat.Prime.sq_add_sq`. Combining both directions into a clean `↔` statement makes this the most useful form for downstream applications."
+      "summary": "Restates the main theorem in the natural form: p = a\u00b2 + b\u00b2 iff p = 2 or p \u2261 1 (mod 4). Combines all three cases into a single equivalence.",
+      "mathContext": "This corollary presents the theorem in its most natural formulation: $p = a^2+b^2 \\iff p = 2 \\lor p \\equiv 1 \\pmod{4}$. The forward direction (representable implies $p=2$ or $p \\equiv 1$) uses the mod-4 obstruction: if $p \\equiv 3 \\pmod{4}$ then $a^2+b^2 \\equiv 0,1,2 \\pmod{4}$, never 3. The backward direction uses the existence proof from `Nat.Prime.sq_add_sq`. Combining both directions into a clean `\u2194` statement makes this the most useful form for downstream applications."
     }
   ],
   "conclusion": {
     "summary": "This formalization captures one of number theory's most elegant theorems. The proof demonstrates the deep connection between modular arithmetic and the representability of primes as sums of squares.\n\nZagier's one-sentence proof is particularly remarkable - it uses only elementary concepts (finite sets, involutions, parity) to prove a result that stumped mathematicians for over a century. The key insight is that counting arguments on carefully constructed sets can reveal arithmetic structure.\n\nMathlib's implementation provides both Zagier's proof (in the Archive) and the Gaussian integer approach, giving us confidence in the result through independent verification.",
     "implications": "Fermat's theorem is a cornerstone of algebraic number theory:\n\n**1. Gaussian Integers**\nThe theorem is equivalent to characterizing which primes split in Z[i]. A prime p splits as p = (a+bi)(a-bi) iff p = 2 or p is 1 mod 4.\n\n**2. Quadratic Reciprocity**\nThis result is closely related to quadratic reciprocity and the question of when -1 is a quadratic residue mod p.\n\n**3. Lagrange's Four Squares**\nThe natural generalization asks which integers are sums of k squares. Lagrange proved every positive integer is a sum of four squares.\n\n**4. Class Field Theory**\nThese questions about representability lead to the deep waters of class field theory and the Langlands program.",
     "openQuestions": [
-      "Can we formalize the **uniqueness** of the two-square representation for primes $p \\equiv 1 \\pmod{4}$? Uniqueness (up to order and signs) follows from unique factorization in $\\mathbb{Z}[i]$ — the Gaussian integers form a Euclidean domain. Formalizing the norm on $\\mathbb{Z}[i]$ and its multiplicativity would give this as a corollary.",
+      "Can we formalize the **uniqueness** of the two-square representation for primes $p \\equiv 1 \\pmod{4}$? Uniqueness (up to order and signs) follows from unique factorization in $\\mathbb{Z}[i]$ \u2014 the Gaussian integers form a Euclidean domain. Formalizing the norm on $\\mathbb{Z}[i]$ and its multiplicativity would give this as a corollary.",
       "Can we formalize the **full characterization for composite numbers**: $n = a^2 + b^2$ iff every prime factor $p \\equiv 3 \\pmod{4}$ appears with even exponent? This requires Brahmagupta's identity $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$ and the multiplicativity of the norm in $\\mathbb{Z}[i]$.",
       "Can Zagier's one-sentence proof be formalized **constructively** in Lean, extracting an explicit algorithm that computes $a$ and $b$ from $p$? The involution-based proof is non-constructive (it shows existence via a parity argument). Cornacchia's algorithm (1908) gives a constructive procedure: compute $r = \\sqrt{-1} \\pmod{p}$ via Euler's criterion, then apply the Euclidean algorithm to $(p, r)$ stopping when the remainder is $< \\sqrt{p}$.",
       "The Jacobi two-square theorem counts the number of representations: $r_2(n) = 4 \\sum_{d \\mid n} \\chi(d)$ where $\\chi$ is the non-principal character mod 4. Can this quantitative refinement be formalized, connecting to $L$-functions and Dirichlet series?"
@@ -129,10 +129,10 @@
   "references": [
     {
       "authors": "Zagier, Don",
-      "title": "A One-Sentence Proof That Every Prime p ≡ 1 (mod 4) Is a Sum of Two Squares",
+      "title": "A One-Sentence Proof That Every Prime p \u2261 1 (mod 4) Is a Sum of Two Squares",
       "year": "1990",
       "venue": "The American Mathematical Monthly, 97(2), p. 144",
-      "note": "The famous one-sentence proof using an involution on the set S = {(x,y,z) : x²+4yz = p}; the unique fixed point of the involution gives the representation"
+      "note": "The famous one-sentence proof using an involution on the set S = {(x,y,z) : x\u00b2+4yz = p}; the unique fixed point of the involution gives the representation"
     },
     {
       "authors": "Hardy, G. H.; Wright, E. M.",
@@ -145,7 +145,7 @@
       "authors": "Euler, Leonhard",
       "title": "De numeris qui sunt aggregata duorum quadratorum",
       "year": "1749",
-      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 4, 3–40",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 4, 3\u201340",
       "note": "First complete proof of Fermat's two-squares theorem, published 1749 (read 1747). Euler proved both directions: the mod-4 obstruction and the existence of representations via descent"
     },
     {
@@ -157,10 +157,10 @@
     },
     {
       "authors": "Cox, David A.",
-      "title": "Primes of the Form x² + ny²",
+      "title": "Primes of the Form x\u00b2 + ny\u00b2",
       "year": "2013",
       "venue": "John Wiley & Sons, 2nd edition",
-      "note": "Comprehensive treatment of which primes are represented by binary quadratic forms, generalizing Fermat's theorem to x² + ny² via class field theory and the theory of complex multiplication"
+      "note": "Comprehensive treatment of which primes are represented by binary quadratic forms, generalizing Fermat's theorem to x\u00b2 + ny\u00b2 via class field theory and the theory of complex multiplication"
     }
   ],
   "crossReferences": [
@@ -202,12 +202,12 @@
     {
       "targetId": "pythagorean-theorem",
       "relationship": "related",
-      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2 = c^2$ are intimately connected to the two-squares theorem: a prime $p$ divides some $a^2+b^2$ with $\\gcd(a,b)=1$ iff $p = 2$ or $p \\equiv 1 \\pmod{4}$ — exactly the representable primes"
+      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2 = c^2$ are intimately connected to the two-squares theorem: a prime $p$ divides some $a^2+b^2$ with $\\gcd(a,b)=1$ iff $p = 2$ or $p \\equiv 1 \\pmod{4}$ \u2014 exactly the representable primes"
     },
     {
       "targetId": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both theorems concern the arithmetic of algebraic number rings: Fermat's theorem uses $\\mathbb{Z}[i]$ (norm $a^2+b^2$), while Abel-Ruffini uses Galois groups of field extensions. The splitting behavior of primes in number rings — $p$ splits in $\\mathbb{Z}[i]$ iff $p \\equiv 1 \\pmod{4}$ — is a prototype for the Langlands program"
+      "description": "Both theorems concern the arithmetic of algebraic number rings: Fermat's theorem uses $\\mathbb{Z}[i]$ (norm $a^2+b^2$), while Abel-Ruffini uses Galois groups of field extensions. The splitting behavior of primes in number rings \u2014 $p$ splits in $\\mathbb{Z}[i]$ iff $p \\equiv 1 \\pmod{4}$ \u2014 is a prototype for the Langlands program"
     },
     {
       "targetId": "elementary-quadratic-reciprocity",
@@ -237,6 +237,7 @@
     "lineCount": 201,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

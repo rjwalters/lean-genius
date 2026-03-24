@@ -35,7 +35,7 @@
       },
       {
         "theorem": "UniqueFactorizationMonoid",
-        "description": "ℕ is a unique factorization monoid",
+        "description": "\u2115 is a unique factorization monoid",
         "module": "Mathlib.RingTheory.UniqueFactorizationDomain.Basic"
       }
     ],
@@ -50,16 +50,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Fundamental Theorem of Arithmetic has roots in Euclid's *Elements* (c. 300 BCE): Book VII, Proposition 31 proves every composite number has a prime factor (existence), while Propositions 32 and Book IX, Proposition 14 establish key steps toward uniqueness. However, Euclid never stated the theorem explicitly. Carl Friedrich Gauss gave the first rigorous proof in §16 of his *Disquisitiones Arithmeticae* (1801), recognizing that uniqueness requires Euclid's Lemma ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) as a non-trivial ingredient. Ernst Zermelo (1934) gave an elegant proof using the well-ordering principle. The theorem fails in certain algebraic number rings — for example, in $\\mathbb{Z}[\\sqrt{-5}]$, $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ has two distinct factorizations into irreducibles. Kummer's introduction of 'ideal numbers' (1847) to restore unique factorization led to Dedekind's theory of ideals and ultimately to the algebraic concept of a **Unique Factorization Domain** (UFD). This is #80 on Freek Wiedijk's list of 100 theorems formalized in proof assistants.",
+    "historicalContext": "The Fundamental Theorem of Arithmetic has roots in Euclid's *Elements* (c. 300 BCE): Book VII, Proposition 31 proves every composite number has a prime factor (existence), while Propositions 32 and Book IX, Proposition 14 establish key steps toward uniqueness. However, Euclid never stated the theorem explicitly. Carl Friedrich Gauss gave the first rigorous proof in \u00a716 of his *Disquisitiones Arithmeticae* (1801), recognizing that uniqueness requires Euclid's Lemma ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) as a non-trivial ingredient. Ernst Zermelo (1934) gave an elegant proof using the well-ordering principle. The theorem fails in certain algebraic number rings \u2014 for example, in $\\mathbb{Z}[\\sqrt{-5}]$, $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ has two distinct factorizations into irreducibles. Kummer's introduction of 'ideal numbers' (1847) to restore unique factorization led to Dedekind's theory of ideals and ultimately to the algebraic concept of a **Unique Factorization Domain** (UFD). This is #80 on Freek Wiedijk's list of 100 theorems formalized in proof assistants.",
     "problemStatement": "**Fundamental Theorem of Arithmetic**:\n\nEvery integer $n > 1$ has a unique prime factorization:\n$$n = p_1^{a_1} \\cdot p_2^{a_2} \\cdots p_k^{a_k}$$\nwhere $p_1 < p_2 < \\cdots < p_k$ are primes and $a_i \\ge 1$.",
     "text": "Every integer > 1 is uniquely representable as a product of primes. The cornerstone of number theory.",
     "proofStrategy": "Existence by strong induction on $n$: if $n$ is prime, done; otherwise $n = ab$ with $1 < a, b < n$, and induction gives factorizations of $a$ and $b$ which concatenate. Uniqueness follows from Euclid's Lemma (`Nat.Prime.dvd_mul`): two prime lists with the same product must be permutations. The formalization uses Mathlib's `Nat.primeFactorsList` for the canonical sorted factor list.",
     "keyInsights": [
       "**Euclid's Lemma** is the heart of uniqueness: $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ ensures that each prime in one factorization must appear in any other factorization of the same number",
-      "The **algebraic generalization** — $\\mathbb{N}$ is a `UniqueFactorizationMonoid` — connects elementary number theory to abstract algebra, where UFDs include polynomial rings $K[x]$ and Gaussian integers $\\mathbb{Z}[i]$",
+      "The **algebraic generalization** \u2014 $\\mathbb{N}$ is a `UniqueFactorizationMonoid` \u2014 connects elementary number theory to abstract algebra, where UFDs include polynomial rings $K[x]$ and Gaussian integers $\\mathbb{Z}[i]$",
       "**Sorted canonical form**: requiring $p_1 \\le p_2 \\le \\cdots$ makes the factorization absolutely unique (not just up to permutation), which Mathlib's `primeFactorsList` provides automatically",
       "The **coprime disjoint factors** theorem ($\\gcd(m,n) = 1 \\Rightarrow$ factor lists are disjoint) demonstrates that coprimality has a clean characterization in terms of prime factorizations",
-      "The **Finsupp representation** `Nat.factorization` maps each prime to its exponent, giving $n \\mapsto (p \\mapsto v_p(n))$ — this is often more convenient than the list representation for multiplicative arithmetic"
+      "The **Finsupp representation** `Nat.factorization` maps each prime to its exponent, giving $n \\mapsto (p \\mapsto v_p(n))$ \u2014 this is often more convenient than the list representation for multiplicative arithmetic"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)"
@@ -106,7 +106,7 @@
       "title": "Euclid's Lemma",
       "startLine": 142,
       "endLine": 150,
-      "summary": "Proves $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ for prime $p$ via `Nat.Prime.dvd_mul` — the key lemma for uniqueness."
+      "summary": "Proves $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ for prime $p$ via `Nat.Prime.dvd_mul` \u2014 the key lemma for uniqueness."
     },
     {
       "id": "examples",
@@ -135,7 +135,7 @@
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
       "venue": "Leipzig",
-      "note": "First explicit statement and proof of the Fundamental Theorem of Arithmetic (§16)"
+      "note": "First explicit statement and proof of the Fundamental Theorem of Arithmetic (\u00a716)"
     },
     {
       "authors": "G. H. Hardy, E. M. Wright",
@@ -148,7 +148,7 @@
       "authors": "E. Zermelo",
       "title": "Elementare Betrachtungen zur Theorie der Primzahlen",
       "year": "1934",
-      "venue": "Nachrichten der Gesellschaft der Wissenschaften zu Göttingen",
+      "venue": "Nachrichten der Gesellschaft der Wissenschaften zu G\u00f6ttingen",
       "note": "Simplified proof of unique factorization using well-ordering"
     }
   ],
@@ -176,11 +176,11 @@
   ],
   "conclusion": {
     "summary": "The formalization presents the Fundamental Theorem of Arithmetic with existence (via `Nat.prod_primeFactorsList`), uniqueness (via `primeFactorsList_unique` and Euclid's Lemma), the algebraic UFD characterization, and practical corollaries including coprime disjoint factors and the Finsupp factorization representation. All proofs are complete with zero sorries.",
-    "implications": "The FTA underpins all of multiplicative number theory: the Möbius function, Euler's totient, the Riemann zeta function, and RSA cryptography all depend on unique factorization. The UFD characterization connects to algebraic number theory, where failure of unique factorization in number rings motivated Dedekind's theory of ideals.",
+    "implications": "The FTA underpins all of multiplicative number theory: the M\u00f6bius function, Euler's totient, the Riemann zeta function, and RSA cryptography all depend on unique factorization. The UFD characterization connects to algebraic number theory, where failure of unique factorization in number rings motivated Dedekind's theory of ideals.",
     "openQuestions": [
       "Can the formalization be extended to prove the multiplicative property of the factorization function: factorization(mn) = factorization(m) + factorization(n) for coprime m, n?",
-      "Can the failure of unique factorization in Z[√-5] be formalized as a counterexample showing it is not a UFD?",
-      "Can the connection to the Riemann zeta function Euler product ζ(s) = Π(1-p^{-s})^{-1} be formalized as a consequence of the FTA?"
+      "Can the failure of unique factorization in Z[\u221a-5] be formalized as a counterexample showing it is not a UFD?",
+      "Can the connection to the Riemann zeta function Euler product \u03b6(s) = \u03a0(1-p^{-s})^{-1} be formalized as a consequence of the FTA?"
     ]
   },
   "relatedProofs": [
@@ -201,6 +201,7 @@
     "lineCount": 224,
     "axiomCount": 0,
     "theoremCount": 11,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

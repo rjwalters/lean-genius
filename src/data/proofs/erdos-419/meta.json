@@ -1,10 +1,10 @@
 {
   "id": "erdos-419",
-  "title": "Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)",
+  "title": "Erd\u0151s Problem #419: Limit Points of \u03c4((n+1)!)/\u03c4(n!)",
   "slug": "erdos-419",
-  "description": "What is the set of limit points of τ((n+1)!)/τ(n!)? SOLVED: The limit points are exactly {1} ∪ {1 + 1/k : k ≥ 1} = {1, 2, 3/2, 4/3, 5/4, ...}.",
+  "description": "What is the set of limit points of \u03c4((n+1)!)/\u03c4(n!)? SOLVED: The limit points are exactly {1} \u222a {1 + 1/k : k \u2265 1} = {1, 2, 3/2, 4/3, 5/4, ...}.",
   "meta": {
-    "author": "Erdős-Graham-Ivić-Pomerance (1996), Sawhney (rediscovery)",
+    "author": "Erd\u0151s-Graham-Ivi\u0107-Pomerance (1996), Sawhney (rediscovery)",
     "sourceUrl": "https://erdosproblems.com/419",
     "date": "1996",
     "status": "axiomatized",
@@ -35,7 +35,7 @@
       },
       {
         "theorem": "ArithmeticFunction",
-        "description": "Arithmetic functions including τ",
+        "description": "Arithmetic functions including \u03c4",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
@@ -63,7 +63,7 @@
       "tau definition as divisor count",
       "factorialDivisorRatio definition",
       "padicValFactorial for Legendre's formula",
-      "limitPointSet definition: {1} ∪ {1 + 1/k : k ≥ 1}",
+      "limitPointSet definition: {1} \u222a {1 + 1/k : k \u2265 1}",
       "ratio_product_formula axiom",
       "small_primes_contribution and large_prime_valuation analysis",
       "sawhney_characterization proved theorem (iff characterization)",
@@ -75,17 +75,17 @@
     "assumptions": "21 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #419 asks about the limit points of the ratio τ((n+1)!)/τ(n!), where τ(n) counts the positive divisors of n. The factorial n! has a very regular prime factorization given by Legendre's formula (Adrien-Marie Legendre, 1808), so the ratio is controlled by the prime factorization of n+1.\n\nErdős and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (L'Enseignement Mathématique, Geneva). They conjectured that the values 1 + 1/k for k ≥ 1 should be limit points.\n\nIn 1996, Erdős, Graham, Aleksandar Ivić, and Carl Pomerance proved the complete characterization in their paper 'On the number of divisors of n!' (Analytic Number Theory: Proceedings of a Conference in Honor of Heini Halberstam). Ivić, a Serbian mathematician known for his work on the Riemann zeta function and exponential sums, brought analytic techniques. Pomerance, one of the foremost algorithmic number theorists, contributed expertise in smooth number distribution. Together they showed the limit points are exactly {1} ∪ {1 + 1/k : k ≥ 1}.\n\nThe key insight is a small/large prime dichotomy: decompose the primes dividing n+1 into 'small' (p ≤ n^(2/3)) and 'large' (p > n^(2/3)). Small primes contribute negligibly to the ratio (their factorial valuations are enormous by Legendre's formula). At most one large prime can exist, and it determines the dominant term. When n+1 = pk for large prime p, the ratio approaches 1 + 1/k. When n+1 has only small prime factors (a 'smooth' or 'friable' number), the ratio approaches 1. The existence of infinitely many n for each case relies on Dirichlet's theorem on primes in arithmetic progressions (1837).\n\nMehtaab Sawhney later independently rediscovered the argument, presenting an elegant version of the proof that clarifies the small/large prime decomposition.\n\nThe result is notable for its topological elegance: the limit set {1} ∪ {1 + 1/k : k ≥ 1} is a countable closed subset of $\\mathbb{R}$ with a unique accumulation point at 1. It is homeomorphic to the ordinal $\\omega + 1$ with the order topology, providing a natural example of a compact countable metric space arising from number theory.",
-    "problemStatement": "If τ(n) counts the number of divisors of n, what is the set of limit points of τ((n+1)!)/τ(n!)? Answer: The limit points are exactly {1} ∪ {1 + 1/k : k ≥ 1} = {1, 2, 3/2, 4/3, 5/4, ...}.",
-    "text": "What is the set of limit points of τ((n+1)!)/τ(n!)? SOLVED: The limit points are exactly {1} ∪ {1 + 1/k : k ≥ 1} = {1, 2, 3/2, 4/3, 5/4, ...}.",
-    "proofStrategy": "The proof uses the multiplicative formula τ(n) = ∏ₚ (vₚ(n) + 1) to express the ratio as:\n\nτ((n+1)!)/τ(n!) = ∏_{p|n+1} (1 + vₚ(n+1)/(vₚ(n!) + 1))\n\n**Small primes** (p ≤ n^(2/3)): By Legendre's formula, vₚ(n!) ≥ n/p ≥ n^(1/3), while vₚ(n+1) ≤ log₂(n). So each factor is 1 + O(log n / n^(1/3)), and the product over ≤ log₂(n) small primes gives 1 + o(1).\n\n**Large primes** (p > n^(2/3)): At most one such p divides n+1. If n+1 = pk, then vₚ(n!) = k - 1, giving factor (k+1)/k = 1 + 1/k.\n\nCombining: ratio ≈ 1 · (1 + 1/k) when there's a large prime, or ≈ 1 when n+1 is smooth. By Dirichlet's theorem, each case occurs infinitely often.",
+    "historicalContext": "Erd\u0151s Problem #419 asks about the limit points of the ratio \u03c4((n+1)!)/\u03c4(n!), where \u03c4(n) counts the positive divisors of n. The factorial n! has a very regular prime factorization given by Legendre's formula (Adrien-Marie Legendre, 1808), so the ratio is controlled by the prime factorization of n+1.\n\nErd\u0151s and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (L'Enseignement Math\u00e9matique, Geneva). They conjectured that the values 1 + 1/k for k \u2265 1 should be limit points.\n\nIn 1996, Erd\u0151s, Graham, Aleksandar Ivi\u0107, and Carl Pomerance proved the complete characterization in their paper 'On the number of divisors of n!' (Analytic Number Theory: Proceedings of a Conference in Honor of Heini Halberstam). Ivi\u0107, a Serbian mathematician known for his work on the Riemann zeta function and exponential sums, brought analytic techniques. Pomerance, one of the foremost algorithmic number theorists, contributed expertise in smooth number distribution. Together they showed the limit points are exactly {1} \u222a {1 + 1/k : k \u2265 1}.\n\nThe key insight is a small/large prime dichotomy: decompose the primes dividing n+1 into 'small' (p \u2264 n^(2/3)) and 'large' (p > n^(2/3)). Small primes contribute negligibly to the ratio (their factorial valuations are enormous by Legendre's formula). At most one large prime can exist, and it determines the dominant term. When n+1 = pk for large prime p, the ratio approaches 1 + 1/k. When n+1 has only small prime factors (a 'smooth' or 'friable' number), the ratio approaches 1. The existence of infinitely many n for each case relies on Dirichlet's theorem on primes in arithmetic progressions (1837).\n\nMehtaab Sawhney later independently rediscovered the argument, presenting an elegant version of the proof that clarifies the small/large prime decomposition.\n\nThe result is notable for its topological elegance: the limit set {1} \u222a {1 + 1/k : k \u2265 1} is a countable closed subset of $\\mathbb{R}$ with a unique accumulation point at 1. It is homeomorphic to the ordinal $\\omega + 1$ with the order topology, providing a natural example of a compact countable metric space arising from number theory.",
+    "problemStatement": "If \u03c4(n) counts the number of divisors of n, what is the set of limit points of \u03c4((n+1)!)/\u03c4(n!)? Answer: The limit points are exactly {1} \u222a {1 + 1/k : k \u2265 1} = {1, 2, 3/2, 4/3, 5/4, ...}.",
+    "text": "What is the set of limit points of \u03c4((n+1)!)/\u03c4(n!)? SOLVED: The limit points are exactly {1} \u222a {1 + 1/k : k \u2265 1} = {1, 2, 3/2, 4/3, 5/4, ...}.",
+    "proofStrategy": "The proof uses the multiplicative formula \u03c4(n) = \u220f\u209a (v\u209a(n) + 1) to express the ratio as:\n\n\u03c4((n+1)!)/\u03c4(n!) = \u220f_{p|n+1} (1 + v\u209a(n+1)/(v\u209a(n!) + 1))\n\n**Small primes** (p \u2264 n^(2/3)): By Legendre's formula, v\u209a(n!) \u2265 n/p \u2265 n^(1/3), while v\u209a(n+1) \u2264 log\u2082(n). So each factor is 1 + O(log n / n^(1/3)), and the product over \u2264 log\u2082(n) small primes gives 1 + o(1).\n\n**Large primes** (p > n^(2/3)): At most one such p divides n+1. If n+1 = pk, then v\u209a(n!) = k - 1, giving factor (k+1)/k = 1 + 1/k.\n\nCombining: ratio \u2248 1 \u00b7 (1 + 1/k) when there's a large prime, or \u2248 1 when n+1 is smooth. By Dirichlet's theorem, each case occurs infinitely often.",
     "keyInsights": [
-      "**Multiplicative decomposition:** τ(n) = ∏ₚ (vₚ(n) + 1) transforms the ratio into a product over primes dividing n+1, enabling separate analysis of each prime's contribution",
-      "**Legendre's formula is the engine:** vₚ(n!) = Σ⌊n/pⁱ⌋ ≈ n/(p-1), making small prime contributions negligible since their factorial valuations dwarf their contributions from n+1",
-      "**At most one large prime:** If p > n^(2/3) divides n+1, then p² > n+1, so vₚ(n+1) = 1. Moreover n+1/p < n^(1/3), ruling out a second large prime",
+      "**Multiplicative decomposition:** \u03c4(n) = \u220f\u209a (v\u209a(n) + 1) transforms the ratio into a product over primes dividing n+1, enabling separate analysis of each prime's contribution",
+      "**Legendre's formula is the engine:** v\u209a(n!) = \u03a3\u230an/p\u2071\u230b \u2248 n/(p-1), making small prime contributions negligible since their factorial valuations dwarf their contributions from n+1",
+      "**At most one large prime:** If p > n^(2/3) divides n+1, then p\u00b2 > n+1, so v\u209a(n+1) = 1. Moreover n+1/p < n^(1/3), ruling out a second large prime",
       "**When n+1 = pk for large prime p:** The ratio is approximately 1 + 1/k, giving limit points 2, 3/2, 4/3, 5/4, ...",
-      "**Smooth numbers give limit point 1:** When n+1 has only small prime factors, all factors in the product are near 1, so the ratio → 1",
-      "**Topological structure of the limit set:** {1} ∪ {1 + 1/k : k ≥ 1} is homeomorphic to $\\omega + 1$, a compact countable metric space with 1 as its unique accumulation point — a natural example from the Cantor–Bendixson classification"
+      "**Smooth numbers give limit point 1:** When n+1 has only small prime factors, all factors in the product are near 1, so the ratio \u2192 1",
+      "**Topological structure of the limit set:** {1} \u222a {1 + 1/k : k \u2265 1} is homeomorphic to $\\omega + 1$, a compact countable metric space with 1 as its unique accumulation point \u2014 a natural example from the Cantor\u2013Bendixson classification"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -120,18 +120,19 @@
     ],
     "axiomCount": 21,
     "theoremCount": 3,
-    "sorryCount": 0
+    "sorryCount": 0,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-415",
       "relationship": "related-problem",
-      "description": "Also studies consecutive arithmetic function values. Erdős #415 examines ordering patterns of τ(n), τ(n+1), τ(n+2), while #419 studies the ratio of consecutive factorial divisor counts."
+      "description": "Also studies consecutive arithmetic function values. Erd\u0151s #415 examines ordering patterns of \u03c4(n), \u03c4(n+1), \u03c4(n+2), while #419 studies the ratio of consecutive factorial divisor counts."
     },
     {
       "targetId": "erdos-414",
       "relationship": "related-problem",
-      "description": "Uses the same divisor function τ in the dynamical system h(n) = n + τ(n). Both problems explore how τ interacts with sequential structure."
+      "description": "Uses the same divisor function \u03c4 in the dynamical system h(n) = n + \u03c4(n). Both problems explore how \u03c4 interacts with sequential structure."
     },
     {
       "targetId": "kummer-theorem",
@@ -146,7 +147,7 @@
     {
       "targetId": "stirling-formula",
       "relationship": "related-problem",
-      "description": "Stirling gives log(n!) ~ n log n; the asymptotics log τ(n!) ~ n log n / log log n involve an extra log log n factor from the prime structure of n!."
+      "description": "Stirling gives log(n!) ~ n log n; the asymptotics log \u03c4(n!) ~ n log n / log log n involve an extra log log n factor from the prime structure of n!."
     },
     {
       "targetId": "erdos-400",
@@ -161,7 +162,7 @@
     {
       "targetId": "prime-number-theorem",
       "relationship": "related-problem",
-      "description": "The prime number theorem underlies the density estimates for primes p with n+1 = pk, and Mertens' theorem (a consequence) explains the log log n factor in the τ(n!) asymptotics."
+      "description": "The prime number theorem underlies the density estimates for primes p with n+1 = pk, and Mertens' theorem (a consequence) explains the log log n factor in the \u03c4(n!) asymptotics."
     }
   ],
   "sections": [
@@ -244,11 +245,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #419 asks for the limit points of τ((n+1)!)/τ(n!). The answer, proved by Erdős-Graham-Ivić-Pomerance (1996), is that the limit points are exactly {1} ∪ {1 + 1/k : k ≥ 1}. This follows from the small/large prime dichotomy: the ratio decomposes into a negligible small-prime product and a dominant large-prime factor that determines the limit point.",
-    "implications": "**Theoretical Significance**: The result reveals that τ(n!) does not grow smoothly — its growth is punctuated by jumps when n+1 has a large prime factor. This connects to:\n\n1. **Smooth number theory:** The density of smooth numbers (all prime factors small) determines how often the ratio approaches 1\n**2. Sieve methods:** The classification of integers by their largest prime factor is central to analytic number theory\n3. **Factorial combinatorics:** Understanding how divisor counts of factorials change incrementally\n4. **Topological structure:** The limit set {1} ∪ {1+1/k} is a natural example of a countable closed set with a unique accumulation point.",
+    "summary": "Erd\u0151s Problem #419 asks for the limit points of \u03c4((n+1)!)/\u03c4(n!). The answer, proved by Erd\u0151s-Graham-Ivi\u0107-Pomerance (1996), is that the limit points are exactly {1} \u222a {1 + 1/k : k \u2265 1}. This follows from the small/large prime dichotomy: the ratio decomposes into a negligible small-prime product and a dominant large-prime factor that determines the limit point.",
+    "implications": "**Theoretical Significance**: The result reveals that \u03c4(n!) does not grow smoothly \u2014 its growth is punctuated by jumps when n+1 has a large prime factor. This connects to:\n\n1. **Smooth number theory:** The density of smooth numbers (all prime factors small) determines how often the ratio approaches 1\n**2. Sieve methods:** The classification of integers by their largest prime factor is central to analytic number theory\n3. **Factorial combinatorics:** Understanding how divisor counts of factorials change incrementally\n4. **Topological structure:** The limit set {1} \u222a {1+1/k} is a natural example of a countable closed set with a unique accumulation point.",
     "openQuestions": [
-      "What are the limit points of τ((n+k)!)/τ(n!) for fixed k > 1?",
-      "What about σ((n+1)!)/σ(n!) for the sum-of-divisors function?",
+      "What are the limit points of \u03c4((n+k)!)/\u03c4(n!) for fixed k > 1?",
+      "What about \u03c3((n+1)!)/\u03c3(n!) for the sum-of-divisors function?",
       "How do the limit points change for other multiplicative functions?",
       "What is the distribution of ratios among the possible limit points?",
       "How quickly does the ratio approach each limit point along the relevant subsequences?"
@@ -266,24 +267,24 @@
   ],
   "references": [
     {
-      "authors": "P. Erdős, R. L. Graham, A. Ivić, C. Pomerance",
+      "authors": "P. Erd\u0151s, R. L. Graham, A. Ivi\u0107, C. Pomerance",
       "title": "On the number of divisors of n!",
       "year": "1996",
       "venue": "Analytic Number Theory: Proceedings of a Conference in Honor of Heini Halberstam",
-      "note": "Complete solution proving the limit points are {1} ∪ {1 + 1/k}"
+      "note": "Complete solution proving the limit points are {1} \u222a {1 + 1/k}"
     },
     {
-      "authors": "P. Erdős, R. L. Graham",
+      "authors": "P. Erd\u0151s, R. L. Graham",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique",
       "note": "Original problem statement"
     },
     {
       "authors": "A.-M. Legendre",
-      "title": "Essai sur la théorie des nombres",
+      "title": "Essai sur la th\u00e9orie des nombres",
       "year": "1808",
-      "note": "Legendre's formula for p-adic valuation of factorials: vₚ(n!) = Σ⌊n/pⁱ⌋"
+      "note": "Legendre's formula for p-adic valuation of factorials: v\u209a(n!) = \u03a3\u230an/p\u2071\u230b"
     },
     {
       "authors": "M. Sawhney",

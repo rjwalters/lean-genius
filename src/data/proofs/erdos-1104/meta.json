@@ -1,10 +1,10 @@
 {
   "id": "erdos-1104",
-  "title": "Erdős Problem #1104: Maximum Chromatic Number of Triangle-Free Graphs",
+  "title": "Erd\u0151s Problem #1104: Maximum Chromatic Number of Triangle-Free Graphs",
   "slug": "erdos-1104",
-  "description": "Let f(n) = max χ(G) over triangle-free graphs on n vertices. Estimate f(n). Known: f(n) = Θ(√(n/log n)). Exact constant open. Lower: Hefty–Horn–King–Pfender (2025). Upper: Davies–Illingworth (2022).",
+  "description": "Let f(n) = max \u03c7(G) over triangle-free graphs on n vertices. Estimate f(n). Known: f(n) = \u0398(\u221a(n/log n)). Exact constant open. Lower: Hefty\u2013Horn\u2013King\u2013Pfender (2025). Upper: Davies\u2013Illingworth (2022).",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1104",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1104Problem.lean",
@@ -37,60 +37,60 @@
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 38,
-      "summary": "IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{χ(G)} via sSup."
+      "summary": "IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{\u03c7(G)} via sSup."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 40,
       "endLine": 107,
-      "summary": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1 (one sorry in empty graph chromatic number)."
+      "summary": "f(n) \u2264 n for all n (identity coloring), f(0) = 0, f(1) \u2264 1, f(n) \u2265 1 for n \u2265 1 (one sorry in empty graph chromatic number)."
     },
     {
       "id": "ramsey-duality",
       "title": "Ramsey Duality",
       "startLine": 109,
       "endLine": 125,
-      "summary": "f(n) ≥ k iff R(3,k) ≤ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂."
+      "summary": "f(n) \u2265 k iff R(3,k) \u2264 n. Kim's R(3,k) = \u0398(k\u00b2/log k) axiomatized with constants c\u2081, c\u2082."
     },
     {
       "id": "asymptotic-bounds",
       "title": "Main Asymptotic Bounds",
       "startLine": 127,
       "endLine": 150,
-      "summary": "Lower bound (HHKP 2025): f(n) ≥ (1−o(1))√(n/log n). Upper bound (DI 2022): f(n) ≤ (2+o(1))√(n/log n). Exact constant open."
+      "summary": "Lower bound (HHKP 2025): f(n) \u2265 (1\u2212o(1))\u221a(n/log n). Upper bound (DI 2022): f(n) \u2264 (2+o(1))\u221a(n/log n). Exact constant open."
     },
     {
       "id": "edge-variant",
       "title": "Edge Variant",
       "startLine": 152,
       "endLine": 174,
-      "summary": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant 3^{5/3}."
+      "summary": "g(m) = max \u03c7 over triangle-free graphs with m edges. \u0398((m/(log m)\u00b2)^{1/3}) with upper constant 3^{5/3}."
     },
     {
       "id": "mycielski",
       "title": "Mycielski Construction",
       "startLine": 176,
       "endLine": 201,
-      "summary": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·2^{k−2} − 1 vertices. Gives weak f(n) ≥ Ω(log n) bound."
+      "summary": "Classical triangle-free graphs M_k with \u03c7(M_k) = k on 3\u00b72^{k\u22122} \u2212 1 vertices. Gives weak f(n) \u2265 \u03a9(log n) bound."
     },
     {
       "id": "summary",
       "title": "Bounds Summary",
       "startLine": 203,
       "endLine": 212,
-      "summary": "Combined bounds_summary theorem: (1−ε)√(n/log n) ≤ f(n) ≤ (2+ε)√(n/log n) for large n."
+      "summary": "Combined bounds_summary theorem: (1\u2212\u03b5)\u221a(n/log n) \u2264 f(n) \u2264 (2+\u03b5)\u221a(n/log n) for large n."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1967 as a quantitative refinement of the observation (due to Mycielski, 1955, and Zykov, 1949) that triangle-free graphs can have arbitrarily large chromatic number. The problem is intimately connected to the Ramsey number $R(3,k)$: since $f(n) \\geq k$ iff $R(3,k) \\leq n$, estimating $f(n)$ is equivalent to estimating $R(3,k)$. The breakthrough came from Jeong Han Kim (1995), who proved $R(3,k) = \\Theta(k^2/\\log k)$ using a brilliant semi-random method (the 'triangle-free process'), yielding $f(n) = \\Theta(\\sqrt{n/\\log n})$. The upper bound was sharpened by Davies and Illingworth (2022), who proved $f(n) \\leq (2+o(1))\\sqrt{n/\\log n}$ using fractional chromatic number techniques. The matching lower bound $f(n) \\geq (1-o(1))\\sqrt{n/\\log n}$ was achieved by Hefty, Horn, King, and Pfender (2025), completing the asymptotic picture up to the leading constant. The exact constant $c^*$ where $f(n) \\sim c^*\\sqrt{n/\\log n}$ remains the central open question.",
+    "historicalContext": "Erd\u0151s posed this problem in 1967 as a quantitative refinement of the observation (due to Mycielski, 1955, and Zykov, 1949) that triangle-free graphs can have arbitrarily large chromatic number. The problem is intimately connected to the Ramsey number $R(3,k)$: since $f(n) \\geq k$ iff $R(3,k) \\leq n$, estimating $f(n)$ is equivalent to estimating $R(3,k)$. The breakthrough came from Jeong Han Kim (1995), who proved $R(3,k) = \\Theta(k^2/\\log k)$ using a brilliant semi-random method (the 'triangle-free process'), yielding $f(n) = \\Theta(\\sqrt{n/\\log n})$. The upper bound was sharpened by Davies and Illingworth (2022), who proved $f(n) \\leq (2+o(1))\\sqrt{n/\\log n}$ using fractional chromatic number techniques. The matching lower bound $f(n) \\geq (1-o(1))\\sqrt{n/\\log n}$ was achieved by Hefty, Horn, King, and Pfender (2025), completing the asymptotic picture up to the leading constant. The exact constant $c^*$ where $f(n) \\sim c^*\\sqrt{n/\\log n}$ remains the central open question.",
     "problemStatement": "Let $f(n)$ be the maximum chromatic number of a triangle-free graph on $n$ vertices. Estimate $f(n)$.",
-    "text": "Let f(n) = max χ(G) over triangle-free graphs on n vertices. Estimate f(n). Known: f(n) = Θ(√(n/log n)). Exact constant open. Lower: Hefty–Horn–King–Pfender (2025). Upper: Davies–Illingworth (2022).",
-    "proofStrategy": "The formalization defines $f(n)$ as the supremum of chromatic numbers over all triangle-free graphs on $\\operatorname{Fin}(n)$. Basic properties ($f(0)=0$, $f(n) \\leq n$) are proved directly. The Ramsey duality $f(n) \\geq k \\iff R(3,k) \\leq n$ is established with Kim's bound axiomatized. The main asymptotic bounds are axiomatized as ε-N₀ statements. The Mycielski construction is axiomatized to give a concrete lower bound $f(3 \\cdot 2^{k-2} - 1) \\geq k$. An edge variant $g(m) = \\Theta((m/(\\log m)^2)^{1/3})$ extends the theory.",
+    "text": "Let f(n) = max \u03c7(G) over triangle-free graphs on n vertices. Estimate f(n). Known: f(n) = \u0398(\u221a(n/log n)). Exact constant open. Lower: Hefty\u2013Horn\u2013King\u2013Pfender (2025). Upper: Davies\u2013Illingworth (2022).",
+    "proofStrategy": "The formalization defines $f(n)$ as the supremum of chromatic numbers over all triangle-free graphs on $\\operatorname{Fin}(n)$. Basic properties ($f(0)=0$, $f(n) \\leq n$) are proved directly. The Ramsey duality $f(n) \\geq k \\iff R(3,k) \\leq n$ is established with Kim's bound axiomatized. The main asymptotic bounds are axiomatized as \u03b5-N\u2080 statements. The Mycielski construction is axiomatized to give a concrete lower bound $f(3 \\cdot 2^{k-2} - 1) \\geq k$. An edge variant $g(m) = \\Theta((m/(\\log m)^2)^{1/3})$ extends the theory.",
     "keyInsights": [
       "The Ramsey duality $f(n) \\geq k \\iff R(3,k) \\leq n$ reduces estimating $f(n)$ to the classical problem of bounding $R(3,k)$, connecting chromatic extremality to Ramsey theory",
       "Kim's semi-random method (1995) was a paradigm shift: instead of constructing graphs deterministically, the triangle-free process builds a random graph that avoids triangles and achieves high independence number",
-      "The Mycielski construction gives $f(n) \\geq \\Omega(\\log n)$—exponentially weaker than the true $\\Theta(\\sqrt{n/\\log n})$—highlighting the power of probabilistic over deterministic constructions",
+      "The Mycielski construction gives $f(n) \\geq \\Omega(\\log n)$\u2014exponentially weaker than the true $\\Theta(\\sqrt{n/\\log n})$\u2014highlighting the power of probabilistic over deterministic constructions",
       "Davies-Illingworth's upper bound uses fractional chromatic number analysis: since $\\chi_f(G) \\leq \\chi(G)$ and fractional chromatic number is more tractable, they bound $\\chi_f$ and transfer the result",
       "The gap between constants 1 and 2 reflects our incomplete understanding of the triangle-free process: the lower bound comes from constructive methods while the upper bound uses counting arguments, and the true constant likely requires understanding the process's final state"
     ],
@@ -100,7 +100,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures the complete state of knowledge for Erdős Problem 1104: the order of magnitude $f(n) = \\Theta(\\sqrt{n/\\log n})$ is established with constants 1 (lower) and 2 (upper), the Ramsey duality is formalized, the Mycielski construction provides a concrete lower bound, and the edge variant extends the theory. One sorry remains in establishing $f(n) \\geq 1$ for $n \\geq 1$.",
+    "summary": "This formalization captures the complete state of knowledge for Erd\u0151s Problem 1104: the order of magnitude $f(n) = \\Theta(\\sqrt{n/\\log n})$ is established with constants 1 (lower) and 2 (upper), the Ramsey duality is formalized, the Mycielski construction provides a concrete lower bound, and the edge variant extends the theory. One sorry remains in establishing $f(n) \\geq 1$ for $n \\geq 1$.",
     "implications": "**Theoretical Significance**: Determining the exact constant $c^*$ would resolve one of the most fundamental questions in extremal graph theory and probabilistic combinatorics.\n\nIt would also pin down the Ramsey number $R(3,k)$ up to a constant, with implications for random graph theory, the probabilistic method, and the behavior of the triangle-free process. The technique of using fractional relaxation (Davies-Illingworth) versus probabilistic construction (Hefty et al.) exemplifies a broader duality in combinatorial optimization.",
     "openQuestions": [
       "What is the exact leading constant $c^*$ in $f(n) \\sim c^*\\sqrt{n/\\log n}$? Is it 1, 2, $\\sqrt{2}$, or something else?",
@@ -113,12 +113,12 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "foundation",
-      "description": "Ramsey's theorem is the foundational result; the duality f(n) ≥ k iff R(3,k) ≤ n makes R(3,k) bounds central to this problem"
+      "description": "Ramsey's theorem is the foundational result; the duality f(n) \u2265 k iff R(3,k) \u2264 n makes R(3,k) bounds central to this problem"
     },
     {
       "targetId": "erdos-58",
       "relationship": "related",
-      "description": "Problem 58 bounds chromatic number via odd cycle structure; both study how triangle-freeness constrains χ(G)"
+      "description": "Problem 58 bounds chromatic number via odd cycle structure; both study how triangle-freeness constrains \u03c7(G)"
     },
     {
       "targetId": "four-color-theorem",
@@ -157,6 +157,7 @@
     "lineCount": 212,
     "axiomCount": 6,
     "theoremCount": 10,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   }
 }

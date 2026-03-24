@@ -2,7 +2,7 @@
   "id": "vietas-formulas-oq-03",
   "title": "Newton's Identities: Power Sums and Elementary Symmetric Polynomials",
   "slug": "vietas-formulas-oq-03",
-  "description": "Newton's identities express power sums pₖ = Σxᵢᵏ in terms of elementary symmetric polynomials eⱼ. Proved for 2, 3, and 4 variables: the recursive form pₖ = Σ(-1)^{i-1} eᵢ pₖ₋ᵢ + (-1)^{k-1} k eₖ, plus the inversion formulas recovering eₖ from power sums. Applications to discriminants, matrix traces, and the sum-of-cubes factorization.",
+  "description": "Newton's identities express power sums p\u2096 = \u03a3x\u1d62\u1d4f in terms of elementary symmetric polynomials e\u2c7c. Proved for 2, 3, and 4 variables: the recursive form p\u2096 = \u03a3(-1)^{i-1} e\u1d62 p\u2096\u208b\u1d62 + (-1)^{k-1} k e\u2096, plus the inversion formulas recovering e\u2096 from power sums. Applications to discriminants, matrix traces, and the sum-of-cubes factorization.",
   "meta": {
     "author": "Isaac Newton (1707); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_identities",
@@ -36,14 +36,14 @@
       }
     ],
     "originalContributions": [
-      "Newton's identities for 2 variables: p₁ through p₆ via recurrence pₖ = e₁·pₖ₋₁ − e₂·pₖ₋₂",
-      "Newton's identities for 3 variables: p₁ through p₅ via recurrence pₖ = e₁·pₖ₋₁ − e₂·pₖ₋₂ + e₃·pₖ₋₃",
-      "Newton's identities for 4 variables: p₂, p₃, p₄ via the full 4-variable recurrence",
-      "Pure expressions: pₖ in terms of elementary symmetric polynomials only (eliminating intermediate power sums)",
-      "Inversion formulas: recover e₂ and e₃ from power sums p₁, p₂, p₃ over a field",
+      "Newton's identities for 2 variables: p\u2081 through p\u2086 via recurrence p\u2096 = e\u2081\u00b7p\u2096\u208b\u2081 \u2212 e\u2082\u00b7p\u2096\u208b\u2082",
+      "Newton's identities for 3 variables: p\u2081 through p\u2085 via recurrence p\u2096 = e\u2081\u00b7p\u2096\u208b\u2081 \u2212 e\u2082\u00b7p\u2096\u208b\u2082 + e\u2083\u00b7p\u2096\u208b\u2083",
+      "Newton's identities for 4 variables: p\u2082, p\u2083, p\u2084 via the full 4-variable recurrence",
+      "Pure expressions: p\u2096 in terms of elementary symmetric polynomials only (eliminating intermediate power sums)",
+      "Inversion formulas: recover e\u2082 and e\u2083 from power sums p\u2081, p\u2082, p\u2083 over a field",
       "Discriminant formulas: quadratic and cubic discriminants via elementary symmetric polynomials",
       "Matrix trace connection: characteristic polynomial coefficients from traces via Newton's identities",
-      "Sum-of-cubes factorization: x³ + y³ + z³ − 3xyz = (x+y+z)(x²+y²+z² − xy − xz − yz)"
+      "Sum-of-cubes factorization: x\u00b3 + y\u00b3 + z\u00b3 \u2212 3xyz = (x+y+z)(x\u00b2+y\u00b2+z\u00b2 \u2212 xy \u2212 xz \u2212 yz)"
     ],
     "dateAdded": "2025-12-21",
     "prerequisites": [
@@ -55,13 +55,13 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Newton's identities were first published by Isaac Newton in *Arithmetica Universalis* (1707), though Albert Girard had stated equivalent results without proof in *Invention nouvelle en l'algèbre* (1629). The identities provide an algorithmic bridge between two fundamental bases of symmetric function theory: the elementary symmetric polynomials $e_k$ (which appear as polynomial coefficients via Vieta's formulas) and the power sums $p_k$ (which appear as matrix traces and moment-generating invariants).\n\nThe historical significance extends far beyond polynomial manipulation. In the 18th century, Edward Waring used Newton's identities to study symmetric functions systematically, leading to the 'Waring problem' of representing integers as sums of powers. In the 19th century, the connection between Newton's identities and matrix theory became central through Cayley and Sylvester's invariant theory. The Faddeev-LeVerrier algorithm (1840, 1853) directly applies Newton's identities to compute characteristic polynomials from matrix traces, a method still used in numerical linear algebra.\n\nIn modern mathematics, Newton's identities are a special case of the theory of symmetric functions developed by Schur, Littlewood, and Macdonald. The ring of symmetric functions $\\Lambda$ has multiple bases (monomial, elementary, power sum, Schur), and Newton's identities describe the change-of-basis between $e_k$ and $p_k$. This perspective connects to representation theory via the Frobenius characteristic map, which sends characters of symmetric groups to symmetric functions.",
+    "historicalContext": "Newton's identities were first published by Isaac Newton in *Arithmetica Universalis* (1707), though Albert Girard had stated equivalent results without proof in *Invention nouvelle en l'alg\u00e8bre* (1629). The identities provide an algorithmic bridge between two fundamental bases of symmetric function theory: the elementary symmetric polynomials $e_k$ (which appear as polynomial coefficients via Vieta's formulas) and the power sums $p_k$ (which appear as matrix traces and moment-generating invariants).\n\nThe historical significance extends far beyond polynomial manipulation. In the 18th century, Edward Waring used Newton's identities to study symmetric functions systematically, leading to the 'Waring problem' of representing integers as sums of powers. In the 19th century, the connection between Newton's identities and matrix theory became central through Cayley and Sylvester's invariant theory. The Faddeev-LeVerrier algorithm (1840, 1853) directly applies Newton's identities to compute characteristic polynomials from matrix traces, a method still used in numerical linear algebra.\n\nIn modern mathematics, Newton's identities are a special case of the theory of symmetric functions developed by Schur, Littlewood, and Macdonald. The ring of symmetric functions $\\Lambda$ has multiple bases (monomial, elementary, power sum, Schur), and Newton's identities describe the change-of-basis between $e_k$ and $p_k$. This perspective connects to representation theory via the Frobenius characteristic map, which sends characters of symmetric groups to symmetric functions.",
     "problemStatement": "Newton's identities: Express the power sums $p_k = \\sum_{i=1}^n x_i^k$ in terms of the elementary symmetric polynomials $e_j = \\sum_{1 \\leq i_1 < \\cdots < i_j \\leq n} x_{i_1} \\cdots x_{i_j}$, and conversely.\n\nThe recursive form:\n$$p_k = \\sum_{i=1}^{\\min(k,n)} (-1)^{i-1} e_i \\cdot p_{k-i} + (-1)^{k-1} k \\cdot e_k \\quad (k \\leq n)$$\n$$p_k = \\sum_{i=1}^{n} (-1)^{i-1} e_i \\cdot p_{k-i} \\quad (k > n)$$\n\nThis formalization verifies these identities for $n = 2, 3, 4$ variables in both recursive and pure (closed-form) expressions.",
-    "text": "Newton's identities express power sums pₖ = Σxᵢᵏ in terms of elementary symmetric polynomials eⱼ. Proved for 2, 3, and 4 variables: the recursive form pₖ = Σ(-1)^{i-1} eᵢ pₖ₋ᵢ + (-1)^{k-1} k eₖ, plus the inversion formulas recovering eₖ from power sums. Applications to discriminants, matrix traces, and the sum-of-cubes factorization.",
+    "text": "Newton's identities express power sums p\u2096 = \u03a3x\u1d62\u1d4f in terms of elementary symmetric polynomials e\u2c7c. Proved for 2, 3, and 4 variables: the recursive form p\u2096 = \u03a3(-1)^{i-1} e\u1d62 p\u2096\u208b\u1d62 + (-1)^{k-1} k e\u2096, plus the inversion formulas recovering e\u2096 from power sums. Applications to discriminants, matrix traces, and the sum-of-cubes factorization.",
     "proofStrategy": "Each Newton identity is a polynomial identity: both sides are equal as elements of the polynomial ring $\\mathbb{Z}[x_1, \\ldots, x_n]$. The Lean `ring` tactic decides such equalities by normalizing both sides to a canonical form and checking syntactic equality. This makes each proof a one-liner.\n\nThe formalization is organized in increasing complexity:\n1. **Two variables** ($n = 2$): The recurrence $p_k = e_1 p_{k-1} - e_2 p_{k-2}$ is a second-order linear recurrence. Proved for $k = 1$ through $6$, in both recursive and pure forms.\n2. **Three variables** ($n = 3$): The third elementary symmetric polynomial $e_3 = xyz$ introduces a new term. The key identity $p_3 = e_1^3 - 3e_1 e_2 + 3e_3$ is proved.\n3. **Four variables** ($n = 4$): Full fourth identity $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$ verified.\n4. **Inversion**: Uses `field_simp` + `ring` over fields of characteristic zero to recover $e_k$ from $p_k$.\n5. **Applications**: Discriminants, matrix traces, Cayley-Hamilton, and the sum-of-cubes factorization.",
     "keyInsights": [
-      "**Universal polynomial identity**: Newton's identities hold over any commutative ring — no field, characteristic, or algebraicity assumptions needed. The `ring` tactic verifies this by treating both sides as formal polynomial expressions.",
-      "**Recurrence structure**: For $n$ variables, the power sums satisfy an $n$th-order linear recurrence $p_k = \\sum_{i=1}^n (-1)^{i-1} e_i p_{k-i}$ whose characteristic polynomial is $\\prod (t - x_i)$ — the same polynomial whose roots are the variables. This is a manifestation of Cayley-Hamilton at the level of symmetric functions.",
+      "**Universal polynomial identity**: Newton's identities hold over any commutative ring \u2014 no field, characteristic, or algebraicity assumptions needed. The `ring` tactic verifies this by treating both sides as formal polynomial expressions.",
+      "**Recurrence structure**: For $n$ variables, the power sums satisfy an $n$th-order linear recurrence $p_k = \\sum_{i=1}^n (-1)^{i-1} e_i p_{k-i}$ whose characteristic polynomial is $\\prod (t - x_i)$ \u2014 the same polynomial whose roots are the variables. This is a manifestation of Cayley-Hamilton at the level of symmetric functions.",
       "**Basis change in $\\Lambda$**: Newton's identities describe the change of basis between $\\{e_k\\}$ and $\\{p_k\\}$ in the ring of symmetric functions $\\Lambda$. The transition matrix involves binomial-like coefficients, and the generating function relation $\\sum p_k t^{k-1} = -\\frac{d}{dt} \\log E(-t)$ (where $E(t) = \\sum e_k t^k$) encodes all identities simultaneously.",
       "**Inversion requires characteristic zero**: Recovering $e_k$ from $p_k$ introduces denominators $k!$, failing in characteristic $p \\leq k$. This reflects a deep algebraic fact: the power sum basis of $\\Lambda \\otimes \\mathbb{Q}$ does not extend to $\\Lambda \\otimes \\mathbb{F}_p$.",
       "**Discriminant connection**: The cubic discriminant formula $\\Delta = e_1^2 e_2^2 - 4e_2^3 - 4e_1^3 e_3 + 18e_1 e_2 e_3 - 27e_3^2$ is directly derived from Newton's identities. In Galois theory, whether $\\Delta$ is a perfect square determines if the Galois group lies in $A_n$.",
@@ -150,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "All 31 theorems proved with 0 sorries and 0 axioms across 383 lines. Newton's identities verified for 2, 3, and 4 variables in both recursive and pure forms, with applications to polynomial discriminants, matrix traces, the Cayley-Hamilton theorem, and the classical sum-of-cubes factorization. Every proof is closed automatically by `ring` or `field_simp` + `ring`, demonstrating that Newton's identities are decidable polynomial equalities.",
-    "implications": "**Theoretical Significance**: Newton's identities have applications across mathematics:\n\n1. SPECTRAL THEORY: The Faddeev-LeVerrier algorithm computes characteristic polynomials from matrix traces using exactly these identities, in O(n⁴) operations.\n\n2. GALOIS THEORY: The discriminant formulas connect to the Abel-Ruffini theorem — whether Δ is a perfect square determines if Gal(f) ⊆ Aₙ, the key criterion for radical solvability.\n\n3. REPRESENTATION THEORY: The Frobenius characteristic map sends characters of Sₙ to symmetric functions in Λ.\n\nNewton's identities describe the change of basis between the power sum and elementary bases, which correspond to different representation-theoretic constructions.\n\n4. NUMBER THEORY: Waring's problem (expressing integers as sums of k-th powers) was inspired by studying power sums and their relation to symmetric functions.\n\n5. COMBINATORICS: The cycle index of Sₙ expresses the generating function for conjugacy classes in terms of power sums, and Newton's identities convert this to elementary symmetric polynomials.\n\n6. NUMERICAL LINEAR ALGEBRA: Computing eigenvalues from traces (inverse eigenvalue problem) relies on Newton's inversion formulas, with characteristic zero being essential for the division steps.",
+    "implications": "**Theoretical Significance**: Newton's identities have applications across mathematics:\n\n1. SPECTRAL THEORY: The Faddeev-LeVerrier algorithm computes characteristic polynomials from matrix traces using exactly these identities, in O(n\u2074) operations.\n\n2. GALOIS THEORY: The discriminant formulas connect to the Abel-Ruffini theorem \u2014 whether \u0394 is a perfect square determines if Gal(f) \u2286 A\u2099, the key criterion for radical solvability.\n\n3. REPRESENTATION THEORY: The Frobenius characteristic map sends characters of S\u2099 to symmetric functions in \u039b.\n\nNewton's identities describe the change of basis between the power sum and elementary bases, which correspond to different representation-theoretic constructions.\n\n4. NUMBER THEORY: Waring's problem (expressing integers as sums of k-th powers) was inspired by studying power sums and their relation to symmetric functions.\n\n5. COMBINATORICS: The cycle index of S\u2099 expresses the generating function for conjugacy classes in terms of power sums, and Newton's identities convert this to elementary symmetric polynomials.\n\n6. NUMERICAL LINEAR ALGEBRA: Computing eigenvalues from traces (inverse eigenvalue problem) relies on Newton's inversion formulas, with characteristic zero being essential for the division steps.",
     "openQuestions": [
       "Generalize to $n$ variables using `MvPolynomial.esymm` and `Finset.powersum` from Mathlib, proving Newton's identities as a single theorem for arbitrary $n$ rather than case-by-case.",
       "Prove the general Newton identity via the formal derivative of the generating function $E(t) = \\prod (1 + x_i t)$: differentiating $\\log E(t) = \\sum \\log(1 + x_i t)$ and comparing coefficients yields all identities simultaneously.",
@@ -163,12 +163,12 @@
     {
       "targetId": "vietas-formulas",
       "relationship": "extends",
-      "description": "Parent formalization of Vieta's formulas (coefficients ↔ roots). Newton's identities extend Vieta by expressing all power sums pₖ = Σxᵢᵏ in terms of the elementary symmetric polynomials that Vieta relates to coefficients — providing the full bridge from polynomial coefficients to trace-like invariants"
+      "description": "Parent formalization of Vieta's formulas (coefficients \u2194 roots). Newton's identities extend Vieta by expressing all power sums p\u2096 = \u03a3x\u1d62\u1d4f in terms of the elementary symmetric polynomials that Vieta relates to coefficients \u2014 providing the full bridge from polynomial coefficients to trace-like invariants"
     },
     {
       "targetId": "cayley-hamilton",
       "relationship": "related",
-      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is intimately connected: Newton's second identity p₂ − e₁p₁ + 2e₂ = 0 is precisely Cayley-Hamilton at the trace level for 2×2 matrices. The formalization's matrix trace section makes this connection explicit"
+      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is intimately connected: Newton's second identity p\u2082 \u2212 e\u2081p\u2081 + 2e\u2082 = 0 is precisely Cayley-Hamilton at the trace level for 2\u00d72 matrices. The formalization's matrix trace section makes this connection explicit"
     },
     {
       "targetId": "cayley-hamilton-minpoly",
@@ -178,12 +178,12 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "related",
-      "description": "The discriminant formulas proved here (quadratic and cubic Δ via elementary symmetric polynomials) are essential tools in Galois theory: whether Δ is a perfect square determines if Gal(f) ⊆ Aₙ, the key criterion used in Abel-Ruffini's impossibility proof to determine radical solvability"
+      "description": "The discriminant formulas proved here (quadratic and cubic \u0394 via elementary symmetric polynomials) are essential tools in Galois theory: whether \u0394 is a perfect square determines if Gal(f) \u2286 A\u2099, the key criterion used in Abel-Ruffini's impossibility proof to determine radical solvability"
     },
     {
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
-      "description": "Cardano's cubic formula explicitly uses Newton's identity p₃ = e₁³ − 3e₁e₂ + 3e₃ via the sum-of-cubes factorization: the resolvent cubic in Cardano's method involves expressing root combinations as symmetric functions, exactly the bridge Newton's identities provide"
+      "description": "Cardano's cubic formula explicitly uses Newton's identity p\u2083 = e\u2081\u00b3 \u2212 3e\u2081e\u2082 + 3e\u2083 via the sum-of-cubes factorization: the resolvent cubic in Cardano's method involves expressing root combinations as symmetric functions, exactly the bridge Newton's identities provide"
     },
     {
       "targetId": "general-quartic",
@@ -193,12 +193,12 @@
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization in Z[x₁,...,xₙ] guarantees that the polynomial identities proved by `ring` are valid — the ring tactic works by reducing to a normal form in the polynomial ring, and uniqueness of this form depends on the UFD property"
+      "description": "Unique prime factorization in Z[x\u2081,...,x\u2099] guarantees that the polynomial identities proved by `ring` are valid \u2014 the ring tactic works by reducing to a normal form in the polynomial ring, and uniqueness of this form depends on the UFD property"
     },
     {
       "targetId": "lagrange-four-squares",
       "relationship": "thematic",
-      "description": "Lagrange's four-squares theorem (every positive integer is a sum of four squares) is historically connected to Waring's problem, which was inspired by studying power sums and their relation to symmetric functions — the same objects Newton's identities describe"
+      "description": "Lagrange's four-squares theorem (every positive integer is a sum of four squares) is historically connected to Waring's problem, which was inspired by studying power sums and their relation to symmetric functions \u2014 the same objects Newton's identities describe"
     }
   ],
   "relatedProofs": [
@@ -221,17 +221,17 @@
     },
     {
       "authors": "Girard, Albert",
-      "title": "Invention nouvelle en l'algèbre",
+      "title": "Invention nouvelle en l'alg\u00e8bre",
       "year": "1629",
       "venue": "Amsterdam",
-      "note": "First statement of the relations between power sums and elementary symmetric polynomials, predating Newton by nearly 80 years — Girard stated them without proof for the cases n = 2, 3, 4"
+      "note": "First statement of the relations between power sums and elementary symmetric polynomials, predating Newton by nearly 80 years \u2014 Girard stated them without proof for the cases n = 2, 3, 4"
     },
     {
       "authors": "Macdonald, Ian G.",
       "title": "Symmetric Functions and Hall Polynomials",
       "year": "1995",
       "venue": "Oxford University Press, 2nd edition",
-      "note": "The definitive reference on the ring of symmetric functions Λ, including Newton's identities as the change-of-basis between the elementary and power sum bases, and connections to representation theory via the Frobenius characteristic map"
+      "note": "The definitive reference on the ring of symmetric functions \u039b, including Newton's identities as the change-of-basis between the elementary and power sum bases, and connections to representation theory via the Frobenius characteristic map"
     },
     {
       "authors": "Stanley, Richard P.",
@@ -245,7 +245,7 @@
       "title": "Problems in Higher Algebra",
       "year": "1965",
       "venue": "W. H. Freeman",
-      "note": "Contains the Faddeev-LeVerrier algorithm for computing characteristic polynomials from matrix traces using Newton's identities — the practical algorithm that motivates the inversion formulas in this formalization"
+      "note": "Contains the Faddeev-LeVerrier algorithm for computing characteristic polynomials from matrix traces using Newton's identities \u2014 the practical algorithm that motivates the inversion formulas in this formalization"
     }
   ],
   "leanFile": {
@@ -257,6 +257,7 @@
     "lineCount": 383,
     "axiomCount": 0,
     "theoremCount": 31,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "lemmaCount": 0
   }
 }

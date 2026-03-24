@@ -1,10 +1,10 @@
 {
   "id": "erdos-1123",
-  "title": "Erdős Problem #1123: Boolean Algebras Modulo Density Zero Sets",
+  "title": "Erd\u0151s Problem #1123: Boolean Algebras Modulo Density Zero Sets",
   "slug": "erdos-1123",
-  "description": "Are B₁ = P(ℕ)/I₁ and B₂ = P(ℕ)/I₂ isomorphic, where I₁, I₂ are the density-zero and log-density-zero ideals? Set-theoretically dependent: YES under CH (Just-Krawczyk 1984).",
+  "description": "Are B\u2081 = P(\u2115)/I\u2081 and B\u2082 = P(\u2115)/I\u2082 isomorphic, where I\u2081, I\u2082 are the density-zero and log-density-zero ideals? Set-theoretically dependent: YES under CH (Just-Krawczyk 1984).",
   "meta": {
-    "author": "Erdős-Ulam (question), Just-Krawczyk (1984)",
+    "author": "Erd\u0151s-Ulam (question), Just-Krawczyk (1984)",
     "sourceUrl": "https://erdosproblems.com/1123",
     "date": "1984",
     "status": "axiomatized",
@@ -44,9 +44,9 @@
     "originalContributions": [
       "hasDensityZero: natural density zero via counting in Finset.range",
       "hasLogDensityZero: logarithmic density zero (simplified)",
-      "density_zero_implies_log_density_zero axiom: d(A)=0 ⟹ δ(A)=0",
-      "log_density_ideal_strictly_larger axiom: I₁ ⊊ I₂",
-      "B1, B2: quotient Boolean algebras P(ℕ)/I₁ and P(ℕ)/I₂",
+      "density_zero_implies_log_density_zero axiom: d(A)=0 \u27f9 \u03b4(A)=0",
+      "log_density_ideal_strictly_larger axiom: I\u2081 \u228a I\u2082",
+      "B1, B2: quotient Boolean algebras P(\u2115)/I\u2081 and P(\u2115)/I\u2082",
       "erdos_ulam_question: isomorphism question as Prop",
       "just_krawczyk_theorem_CH axiom: isomorphism under CH",
       "independence_from_ZFC axiom: question is ZFC-independent",
@@ -65,16 +65,16 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem arose during Erdős's visit to Stanisław Ulam at the University of Wisconsin-Madison in 1943-44. They studied the Boolean algebras $\\mathcal{P}(\\omega)/\\text{fin}$ (power set modulo finite sets) and $\\mathcal{P}(\\omega)/\\text{density 0}$ (modulo density-zero sets), believing they had proved these algebras are non-isomorphic, but the proof was 'lost.'\n\nWinfried Just and Adam Krawczyk (1984) proved that under the Continuum Hypothesis (CH), the algebras ARE isomorphic — the opposite of what Erdős and Ulam expected. Shelah later showed their non-isomorphism is consistent with ZFC as well, making the answer genuinely set-theoretically independent: it depends on which set-theoretic axioms beyond ZFC one adopts. This is one of the earliest examples of a 'natural' mathematical question whose answer is independent of ZFC.",
-    "problemStatement": "Let B₁ = P(ℕ)/I₁ (mod density-zero sets) and B₂ = P(ℕ)/I₂ (mod log-density-zero sets). Are B₁ and B₂ isomorphic? Under CH: YES (Just-Krawczyk 1984). In ZFC alone: independent.",
-    "text": "Are B₁ = P(ℕ)/I₁ and B₂ = P(ℕ)/I₂ isomorphic, where I₁, I₂ are the density-zero and log-density-zero ideals? Set-theoretically dependent: YES under CH (Just-Krawczyk 1984).",
-    "proofStrategy": "The formalization defines density-zero and log-density-zero predicates, constructs the quotient Boolean algebras B₁ and B₂ using Lean's Quotient type, and axiomatizes the Just-Krawczyk conditional isomorphism and ZFC independence. The summary theorem proves the conjunction of the density implication and strict containment.",
+    "historicalContext": "This problem arose during Erd\u0151s's visit to Stanis\u0142aw Ulam at the University of Wisconsin-Madison in 1943-44. They studied the Boolean algebras $\\mathcal{P}(\\omega)/\\text{fin}$ (power set modulo finite sets) and $\\mathcal{P}(\\omega)/\\text{density 0}$ (modulo density-zero sets), believing they had proved these algebras are non-isomorphic, but the proof was 'lost.'\n\nWinfried Just and Adam Krawczyk (1984) proved that under the Continuum Hypothesis (CH), the algebras ARE isomorphic \u2014 the opposite of what Erd\u0151s and Ulam expected. Shelah later showed their non-isomorphism is consistent with ZFC as well, making the answer genuinely set-theoretically independent: it depends on which set-theoretic axioms beyond ZFC one adopts. This is one of the earliest examples of a 'natural' mathematical question whose answer is independent of ZFC.",
+    "problemStatement": "Let B\u2081 = P(\u2115)/I\u2081 (mod density-zero sets) and B\u2082 = P(\u2115)/I\u2082 (mod log-density-zero sets). Are B\u2081 and B\u2082 isomorphic? Under CH: YES (Just-Krawczyk 1984). In ZFC alone: independent.",
+    "text": "Are B\u2081 = P(\u2115)/I\u2081 and B\u2082 = P(\u2115)/I\u2082 isomorphic, where I\u2081, I\u2082 are the density-zero and log-density-zero ideals? Set-theoretically dependent: YES under CH (Just-Krawczyk 1984).",
+    "proofStrategy": "The formalization defines density-zero and log-density-zero predicates, constructs the quotient Boolean algebras B\u2081 and B\u2082 using Lean's Quotient type, and axiomatizes the Just-Krawczyk conditional isomorphism and ZFC independence. The summary theorem proves the conjunction of the density implication and strict containment.",
     "keyInsights": [
       "Natural density 0 implies logarithmic density 0, but not conversely",
-      "Both P(ℕ)/I₁ and P(ℕ)/I₂ are Boolean algebras",
-      "Under CH, both have cardinality ℵ₁ with similar saturation properties",
+      "Both P(\u2115)/I\u2081 and P(\u2115)/I\u2082 are Boolean algebras",
+      "Under CH, both have cardinality \u2135\u2081 with similar saturation properties",
       "The isomorphism question is independent of ZFC",
-      "Erdős-Ulam's lost 'proof' of non-isomorphism was likely erroneous"
+      "Erd\u0151s-Ulam's lost 'proof' of non-isomorphism was likely erroneous"
     ],
     "prerequisites": [
       "Basic set theory (power sets, ideals, quotients)",
@@ -110,7 +110,7 @@
       "title": "Ideal Properties",
       "startLine": 98,
       "endLine": 109,
-      "summary": "σ-ideal closure, finite sets have density zero"
+      "summary": "\u03c3-ideal closure, finite sets have density zero"
     },
     {
       "id": "summary",
@@ -121,11 +121,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1123 is SET-THEORETICALLY DEPENDENT. Under CH, B₁ ≅ B₂ (Just-Krawczyk 1984). The question is independent of ZFC. The 'lost' Erdős-Ulam proof of non-isomorphism was likely erroneous.",
-    "implications": "**Set-Theoretic Independence**: The problem demonstrates that natural algebraic questions about the quotient Boolean algebra $\\mathcal{P}(\\mathbb{N})/\\text{Fin}$ (or its density-zero analogue) can be independent of ZFC. This connects to the broader phenomenon of set-theoretic independence in combinatorial settings, following Cohen's 1963 proof of CH independence.\n\n**Number Theory Meets Algebra**: The density-zero ideal $\\mathcal{Z} = \\{A \\subseteq \\mathbb{N} : d(A) = 0\\}$ bridges number theory and Boolean algebra. Questions about the structure of $\\mathcal{P}(\\mathbb{N})/\\mathcal{Z}$ — its automorphisms, chain conditions, and embedding properties — often depend on set-theoretic axioms beyond ZFC, revealing that even natural questions about integer density have undecidable aspects.\n\n**Forcing and Cardinal Characteristics**: Resolution typically involves forcing techniques (Martin's Axiom, proper forcing, or specific cardinal characteristic assumptions) that control the combinatorics of infinite subsets of $\\mathbb{N}$ modulo the density ideal.",
+    "summary": "Erd\u0151s Problem #1123 is SET-THEORETICALLY DEPENDENT. Under CH, B\u2081 \u2245 B\u2082 (Just-Krawczyk 1984). The question is independent of ZFC. The 'lost' Erd\u0151s-Ulam proof of non-isomorphism was likely erroneous.",
+    "implications": "**Set-Theoretic Independence**: The problem demonstrates that natural algebraic questions about the quotient Boolean algebra $\\mathcal{P}(\\mathbb{N})/\\text{Fin}$ (or its density-zero analogue) can be independent of ZFC. This connects to the broader phenomenon of set-theoretic independence in combinatorial settings, following Cohen's 1963 proof of CH independence.\n\n**Number Theory Meets Algebra**: The density-zero ideal $\\mathcal{Z} = \\{A \\subseteq \\mathbb{N} : d(A) = 0\\}$ bridges number theory and Boolean algebra. Questions about the structure of $\\mathcal{P}(\\mathbb{N})/\\mathcal{Z}$ \u2014 its automorphisms, chain conditions, and embedding properties \u2014 often depend on set-theoretic axioms beyond ZFC, revealing that even natural questions about integer density have undecidable aspects.\n\n**Forcing and Cardinal Characteristics**: Resolution typically involves forcing techniques (Martin's Axiom, proper forcing, or specific cardinal characteristic assumptions) that control the combinatorics of infinite subsets of $\\mathbb{N}$ modulo the density ideal.",
     "openQuestions": [
-      "Are there models of ZFC where B₁ ≇ B₂?",
-      "Classification of P(ω)/I for other natural ideals",
+      "Are there models of ZFC where B\u2081 \u2247 B\u2082?",
+      "Classification of P(\u03c9)/I for other natural ideals",
       "Connections to forcing and cardinal characteristics"
     ]
   },
@@ -133,27 +133,27 @@
     {
       "targetId": "continuum-hypothesis",
       "relationship": "depends-on",
-      "description": "The Just-Krawczyk isomorphism B₁ ≅ B₂ holds precisely under the Continuum Hypothesis (CH). The independence of CH from ZFC — proved by Gödel and Cohen — directly explains why this problem is set-theoretically undecidable. Understanding CH independence is prerequisite to interpreting the conditional result."
+      "description": "The Just-Krawczyk isomorphism B\u2081 \u2245 B\u2082 holds precisely under the Continuum Hypothesis (CH). The independence of CH from ZFC \u2014 proved by G\u00f6del and Cohen \u2014 directly explains why this problem is set-theoretically undecidable. Understanding CH independence is prerequisite to interpreting the conditional result."
     },
     {
       "targetId": "cantor-diagonalization-oq-01",
       "relationship": "related-concept",
-      "description": "The CH question (is |ℝ| = ℵ₁?) bears directly on the cardinality and saturation properties of P(ℕ)/I₁ and P(ℕ)/I₂. Under CH both quotient algebras have cardinality ℵ₁ and become ω₁-saturated, which is the mechanism enabling Just-Krawczyk's isomorphism proof."
+      "description": "The CH question (is |\u211d| = \u2135\u2081?) bears directly on the cardinality and saturation properties of P(\u2115)/I\u2081 and P(\u2115)/I\u2082. Under CH both quotient algebras have cardinality \u2135\u2081 and become \u03c9\u2081-saturated, which is the mechanism enabling Just-Krawczyk's isomorphism proof."
     },
     {
       "targetId": "erdos-1102",
       "relationship": "uses-same-technique",
-      "description": "Erdős #1102 also studies density-zero subsets of ℕ, analyzing how squarefree properties interact with natural density. Both problems use the natural density framework d(A) = lim |A ∩ {1,…,N}|/N and the ideal of density-zero sets as a central object."
+      "description": "Erd\u0151s #1102 also studies density-zero subsets of \u2115, analyzing how squarefree properties interact with natural density. Both problems use the natural density framework d(A) = lim |A \u2229 {1,\u2026,N}|/N and the ideal of density-zero sets as a central object."
     },
     {
       "targetId": "erdos-47",
       "relationship": "related-concept",
-      "description": "Erdős #47 (Bloom 2021) works with subsets of ℕ satisfying density-type conditions (∑ 1/a > δ log N). The density-zero ideal I₁ used in Problem #1123 is closely related: both probe the structure of large and small subsets of ℕ under different notions of size."
+      "description": "Erd\u0151s #47 (Bloom 2021) works with subsets of \u2115 satisfying density-type conditions (\u2211 1/a > \u03b4 log N). The density-zero ideal I\u2081 used in Problem #1123 is closely related: both probe the structure of large and small subsets of \u2115 under different notions of size."
     },
     {
       "targetId": "erdos-532",
       "relationship": "related-concept",
-      "description": "Hindman's theorem (Erdős #532) is deeply connected to the combinatorial structure of P(ℕ): its algebraic proof uses the Stone-Čech compactification βℕ, whose points are ultrafilters on ℕ. Ultrafilter quotients of P(ℕ) are closely related to the Boolean algebra quotients P(ℕ)/I studied in Problem #1123."
+      "description": "Hindman's theorem (Erd\u0151s #532) is deeply connected to the combinatorial structure of P(\u2115): its algebraic proof uses the Stone-\u010cech compactification \u03b2\u2115, whose points are ultrafilters on \u2115. Ultrafilter quotients of P(\u2115) are closely related to the Boolean algebra quotients P(\u2115)/I studied in Problem #1123."
     }
   ],
   "relatedProofs": [
@@ -166,34 +166,34 @@
   "references": [
     {
       "key": "JK84",
-      "citation": "Just, W. and Krawczyk, A., On certain Boolean algebras P(ω)/I, Trans. Amer. Math. Soc. 285 (1984), 411–429.",
+      "citation": "Just, W. and Krawczyk, A., On certain Boolean algebras P(\u03c9)/I, Trans. Amer. Math. Soc. 285 (1984), 411\u2013429.",
       "type": "paper",
       "doi": "10.2307/1999488",
-      "notes": "The key paper proving B₁ ≅ B₂ under CH; also establishes the σ-ideal properties of both density ideals."
+      "notes": "The key paper proving B\u2081 \u2245 B\u2082 under CH; also establishes the \u03c3-ideal properties of both density ideals."
     },
     {
       "key": "She82",
       "citation": "Shelah, S., Proper Forcing, Lecture Notes in Mathematics 940, Springer, Berlin, 1982.",
       "type": "book",
-      "notes": "Contains forcing arguments showing non-isomorphism of P(ω)/I-type algebras is consistent with ZFC, complementing the Just-Krawczyk CH result."
+      "notes": "Contains forcing arguments showing non-isomorphism of P(\u03c9)/I-type algebras is consistent with ZFC, complementing the Just-Krawczyk CH result."
     },
     {
       "key": "vM84",
-      "citation": "van Mill, J., An introduction to βω, in: Handbook of Set-Theoretic Topology (Kunen, Vaughan, eds.), North-Holland, Amsterdam, 1984, pp. 503–567.",
+      "citation": "van Mill, J., An introduction to \u03b2\u03c9, in: Handbook of Set-Theoretic Topology (Kunen, Vaughan, eds.), North-Holland, Amsterdam, 1984, pp. 503\u2013567.",
       "type": "book-chapter",
-      "notes": "Comprehensive survey of the set-theoretic topology of P(ω)/fin and related Boolean algebras, including saturation properties that underpin isomorphism results under CH."
+      "notes": "Comprehensive survey of the set-theoretic topology of P(\u03c9)/fin and related Boolean algebras, including saturation properties that underpin isomorphism results under CH."
     },
     {
       "key": "Fre84",
       "citation": "Fremlin, D. H., Consequences of Martin's Axiom, Cambridge Tracts in Mathematics 84, Cambridge University Press, 1984.",
       "type": "book",
-      "notes": "Discusses cardinal characteristics of the continuum and their relationship to Boolean algebra quotients P(ω)/I; includes density-zero ideals as examples."
+      "notes": "Discusses cardinal characteristics of the continuum and their relationship to Boolean algebra quotients P(\u03c9)/I; includes density-zero ideals as examples."
     },
     {
       "key": "Par63",
-      "citation": "Parovičenko, I. I., On a universal bicompactum of weight ℵ, Dokl. Akad. Nauk SSSR 150 (1963), 36–39.",
+      "citation": "Parovi\u010denko, I. I., On a universal bicompactum of weight \u2135, Dokl. Akad. Nauk SSSR 150 (1963), 36\u201339.",
       "type": "paper",
-      "notes": "Proved under CH that every Boolean algebra of weight ≤ ℵ₁ embeds into P(ω)/fin, providing the technical foundation for CH-based isomorphism results for density quotient algebras."
+      "notes": "Proved under CH that every Boolean algebra of weight \u2264 \u2135\u2081 embeds into P(\u03c9)/fin, providing the technical foundation for CH-based isomorphism results for density quotient algebras."
     }
   ],
   "leanFile": {
@@ -209,6 +209,7 @@
     "lineCount": 126,
     "axiomCount": 6,
     "theoremCount": 1,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   }
 }

@@ -2,9 +2,9 @@
   "id": "triangle-inequality",
   "title": "The Triangle Inequality",
   "slug": "triangle-inequality",
-  "description": "The fundamental inequality stating that the sum of any two sides of a triangle exceeds the third side. For real numbers: |x + y| ≤ |x| + |y|.",
+  "description": "The fundamental inequality stating that the sum of any two sides of a triangle exceeds the third side. For real numbers: |x + y| \u2264 |x| + |y|.",
   "meta": {
-    "author": "Euclid / Fréchet / Banach (formalized via Mathlib)",
+    "author": "Euclid / Fr\u00e9chet / Banach (formalized via Mathlib)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/MetricSpace/Basic.html",
     "date": "~300 BCE / 1906 / 1920s",
     "status": "verified",
@@ -23,22 +23,22 @@
     "mathlibDependencies": [
       {
         "theorem": "abs_add",
-        "description": "|x + y| ≤ |x| + |y| for real numbers",
+        "description": "|x + y| \u2264 |x| + |y| for real numbers",
         "module": "Mathlib.Algebra.Order.AbsoluteValue"
       },
       {
         "theorem": "norm_add_le",
-        "description": "‖x + y‖ ≤ ‖x‖ + ‖y‖ for normed spaces",
+        "description": "\u2016x + y\u2016 \u2264 \u2016x\u2016 + \u2016y\u2016 for normed spaces",
         "module": "Mathlib.Analysis.Normed.Group.Basic"
       },
       {
         "theorem": "dist_triangle",
-        "description": "dist x z ≤ dist x y + dist y z for metric spaces",
+        "description": "dist x z \u2264 dist x y + dist y z for metric spaces",
         "module": "Mathlib.Topology.MetricSpace.Basic"
       },
       {
         "theorem": "abs_abs_sub_abs_le_abs_sub",
-        "description": "| |x| - |y| | ≤ |x - y| (reverse triangle inequality)",
+        "description": "| |x| - |y| | \u2264 |x - y| (reverse triangle inequality)",
         "module": "Mathlib.Algebra.Order.AbsoluteValue"
       }
     ],
@@ -56,17 +56,17 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The triangle inequality appears in Euclid's Elements (Book I, Proposition 20, ~300 BCE) as the statement that any two sides of a triangle together are greater than the remaining side. Proclus (5th century CE) reports that the Epicureans mocked this proposition as 'evident even to an ass' — an animal would walk straight to its food rather than taking two sides of a triangle — yet its proof from Euclid's postulates is non-trivial, and the result fails in some non-Euclidean geometries.\n\nThe inequality's role expanded dramatically in the 19th century. Hermann Minkowski (1896) formulated it for $\\ell^p$ spaces in *Geometrie der Zahlen*, proving $\\|x+y\\|_p \\leq \\|x\\|_p + \\|y\\|_p$ for $p \\geq 1$ (the case $p < 1$ fails, showing the inequality is not automatic). Maurice Fréchet (1906) abstracted the concept to general metric spaces in his thesis *Sur quelques points du calcul fonctionnel*, making the triangle inequality one of three axioms defining a distance function. Stefan Banach (1920s) further generalized to normed vector spaces, establishing the framework for functional analysis.\n\nThe reverse triangle inequality $\\big||x| - |y|\\big| \\leq |x - y|$ is equally important: it shows that the absolute value (and norm) functions are Lipschitz continuous with constant 1, a fact used ubiquitously in analysis to prove continuity results. The strict triangle inequality — strict inequality when points are non-collinear — characterizes when a 'triangle' is genuinely two-dimensional.\n\nToday the triangle inequality is central to diverse areas: metric topology, approximation theory, computational geometry, and the theory of Banach spaces. It is Wiedijk's 100 Theorems #91.",
+    "historicalContext": "The triangle inequality appears in Euclid's Elements (Book I, Proposition 20, ~300 BCE) as the statement that any two sides of a triangle together are greater than the remaining side. Proclus (5th century CE) reports that the Epicureans mocked this proposition as 'evident even to an ass' \u2014 an animal would walk straight to its food rather than taking two sides of a triangle \u2014 yet its proof from Euclid's postulates is non-trivial, and the result fails in some non-Euclidean geometries.\n\nThe inequality's role expanded dramatically in the 19th century. Hermann Minkowski (1896) formulated it for $\\ell^p$ spaces in *Geometrie der Zahlen*, proving $\\|x+y\\|_p \\leq \\|x\\|_p + \\|y\\|_p$ for $p \\geq 1$ (the case $p < 1$ fails, showing the inequality is not automatic). Maurice Fr\u00e9chet (1906) abstracted the concept to general metric spaces in his thesis *Sur quelques points du calcul fonctionnel*, making the triangle inequality one of three axioms defining a distance function. Stefan Banach (1920s) further generalized to normed vector spaces, establishing the framework for functional analysis.\n\nThe reverse triangle inequality $\\big||x| - |y|\\big| \\leq |x - y|$ is equally important: it shows that the absolute value (and norm) functions are Lipschitz continuous with constant 1, a fact used ubiquitously in analysis to prove continuity results. The strict triangle inequality \u2014 strict inequality when points are non-collinear \u2014 characterizes when a 'triangle' is genuinely two-dimensional.\n\nToday the triangle inequality is central to diverse areas: metric topology, approximation theory, computational geometry, and the theory of Banach spaces. It is Wiedijk's 100 Theorems #91.",
     "problemStatement": "**Theorem (Euclid/Wiedijk #91)**: For any real numbers x and y:\n\n$$|x + y| \\leq |x| + |y|$$\n\n**Normed Space Form**: For elements in a normed vector space:\n\n$$\\|x + y\\| \\leq \\|x\\| + \\|y\\|$$\n\n**Metric Space Form**: For points in a metric space:\n\n$$d(x, z) \\leq d(x, y) + d(y, z)$$\n\n**Reverse Triangle Inequality**: \n\n$$\\big||x| - |y|\\big| \\leq |x - y|$$",
-    "text": "The fundamental inequality stating that the sum of any two sides of a triangle exceeds the third side. For real numbers: |x + y| ≤ |x| + |y|.",
-    "proofStrategy": "**For Real Numbers (Absolute Value Form):**\n\nThe proof considers cases based on the signs of x and y:\n1. If x, y ≥ 0: |x + y| = x + y = |x| + |y| (equality)\n2. If x, y ≤ 0: |x + y| = -(x + y) = -x + (-y) = |x| + |y| (equality)\n3. If opposite signs: |x + y| < |x| + |y| (strict inequality)\n\n**Mathlib Approach:**\nThe formalization leverages `abs_add` for real numbers, `norm_add_le` for normed spaces, and `dist_triangle` for metric spaces. These are the axiomatic foundations in their respective structures.",
+    "text": "The fundamental inequality stating that the sum of any two sides of a triangle exceeds the third side. For real numbers: |x + y| \u2264 |x| + |y|.",
+    "proofStrategy": "**For Real Numbers (Absolute Value Form):**\n\nThe proof considers cases based on the signs of x and y:\n1. If x, y \u2265 0: |x + y| = x + y = |x| + |y| (equality)\n2. If x, y \u2264 0: |x + y| = -(x + y) = -x + (-y) = |x| + |y| (equality)\n3. If opposite signs: |x + y| < |x| + |y| (strict inequality)\n\n**Mathlib Approach:**\nThe formalization leverages `abs_add` for real numbers, `norm_add_le` for normed spaces, and `dist_triangle` for metric spaces. These are the axiomatic foundations in their respective structures.",
     "keyInsights": [
-      "**Hierarchy of generality:** The formalization presents three levels — $|x+y| \\leq |x|+|y|$ for $\\mathbb{R}$ (a theorem from ordered field axioms), $\\|x+y\\| \\leq \\|x\\|+\\|y\\|$ for normed spaces (an axiom in the norm definition), and $d(x,z) \\leq d(x,y)+d(y,z)$ for metric spaces (an axiom in the metric definition). The same mathematical principle transitions from provable fact to defining property as abstraction increases.",
-      "**Equality characterization:** The strict triangle inequality (`strict_triangle`) shows $|x+y| < |x|+|y|$ when $xy < 0$, meaning equality holds iff the vectors point in the same direction — the geometric condition of collinearity. In inner product spaces, this becomes the Cauchy-Schwarz equality condition.",
+      "**Hierarchy of generality:** The formalization presents three levels \u2014 $|x+y| \\leq |x|+|y|$ for $\\mathbb{R}$ (a theorem from ordered field axioms), $\\|x+y\\| \\leq \\|x\\|+\\|y\\|$ for normed spaces (an axiom in the norm definition), and $d(x,z) \\leq d(x,y)+d(y,z)$ for metric spaces (an axiom in the metric definition). The same mathematical principle transitions from provable fact to defining property as abstraction increases.",
+      "**Equality characterization:** The strict triangle inequality (`strict_triangle`) shows $|x+y| < |x|+|y|$ when $xy < 0$, meaning equality holds iff the vectors point in the same direction \u2014 the geometric condition of collinearity. In inner product spaces, this becomes the Cauchy-Schwarz equality condition.",
       "**The reverse inequality is equally fundamental:** $\\big||x|-|y|\\big| \\leq |x-y|$ provides a *lower* bound complementing the upper bound. Together they sandwich: $\\big||x|-|y|\\big| \\leq |x+y| \\leq |x|+|y|$. This immediately proves that $|\\cdot|$ and $\\|\\cdot\\|$ are 1-Lipschitz, hence uniformly continuous.",
-      "**Iterated triangle inequality:** The extension to finite sums $\\|\\sum x_i\\| \\leq \\sum \\|x_i\\|$ (proved via `norm_sum_le`) is the workhorse of convergence proofs — it bounds partial sums of series, controls truncation errors, and underpins the Weierstrass M-test.",
+      "**Iterated triangle inequality:** The extension to finite sums $\\|\\sum x_i\\| \\leq \\sum \\|x_i\\|$ (proved via `norm_sum_le`) is the workhorse of convergence proofs \u2014 it bounds partial sums of series, controls truncation errors, and underpins the Weierstrass M-test.",
       "**Why $p \\geq 1$ matters:** The triangle inequality holds in $\\ell^p$ spaces only for $p \\geq 1$ (Minkowski's inequality). For $0 < p < 1$, the '$p$-norm' satisfies $\\|x+y\\|_p^p \\leq \\|x\\|_p^p + \\|y\\|_p^p$ instead (a quasi-metric). This threshold is why $L^p$ spaces for $p < 1$ have fundamentally different topology (no non-trivial continuous linear functionals).",
-      "**Ultrametric strengthening:** In $p$-adic analysis and non-Archimedean fields, the strong triangle inequality $|x+y| \\leq \\max(|x|, |y|)$ holds — a strictly stronger condition. Ultrametric spaces have the remarkable property that every triangle is isoceles with the unequal side being the shortest."
+      "**Ultrametric strengthening:** In $p$-adic analysis and non-Archimedean fields, the strong triangle inequality $|x+y| \\leq \\max(|x|, |y|)$ holds \u2014 a strictly stronger condition. Ultrametric spaces have the remarkable property that every triangle is isoceles with the unequal side being the shortest."
     ],
     "prerequisites": [
       "Geometry (Euclidean, combinatorial)",
@@ -86,7 +86,7 @@
       "title": "Reverse Triangle Inequality",
       "startLine": 75,
       "endLine": 103,
-      "summary": "The reverse inequality: | |x| - |y| | ≤ |x - y|, providing a lower bound."
+      "summary": "The reverse inequality: | |x| - |y| | \u2264 |x - y|, providing a lower bound."
     },
     {
       "id": "normed-space",
@@ -119,11 +119,11 @@
   ],
   "conclusion": {
     "summary": "The triangle inequality is one of mathematics' most fundamental results, appearing across geometry, analysis, and topology. The formalization demonstrates the hierarchy from concrete real numbers through normed spaces to abstract metric spaces, showing how this single principle unifies diverse mathematical structures.",
-    "implications": "**Theoretical Significance:**\n\n**1. Foundation of metric topology**\nThe triangle inequality is one of the three axioms defining a metric, making it central to topology and analysis.\n\n**2. Convergence and continuity**\nMany proofs of convergence and continuity rely on the triangle inequality to bound errors.\n\n**3. Lipschitz continuity**\nThe reverse triangle inequality shows that |·| and ‖·‖ are Lipschitz continuous, a key property for analysis.\n\n**Practical Applications:**\n\n- Bounding errors in numerical computation\n- Proving convergence of sequences and series\n- Establishing uniqueness in fixed-point theorems\n- Distance estimation in algorithms",
+    "implications": "**Theoretical Significance:**\n\n**1. Foundation of metric topology**\nThe triangle inequality is one of the three axioms defining a metric, making it central to topology and analysis.\n\n**2. Convergence and continuity**\nMany proofs of convergence and continuity rely on the triangle inequality to bound errors.\n\n**3. Lipschitz continuity**\nThe reverse triangle inequality shows that |\u00b7| and \u2016\u00b7\u2016 are Lipschitz continuous, a key property for analysis.\n\n**Practical Applications:**\n\n- Bounding errors in numerical computation\n- Proving convergence of sequences and series\n- Establishing uniqueness in fixed-point theorems\n- Distance estimation in algorithms",
     "openQuestions": [
-      "Can the Minkowski inequality ($\\|x+y\\|_p \\leq \\|x\\|_p + \\|y\\|_p$ for $p \\geq 1$) be formalized in Lean with the full proof via Hölder's inequality, exhibiting the exact threshold where the triangle inequality fails ($p < 1$)?",
+      "Can the Minkowski inequality ($\\|x+y\\|_p \\leq \\|x\\|_p + \\|y\\|_p$ for $p \\geq 1$) be formalized in Lean with the full proof via H\u00f6lder's inequality, exhibiting the exact threshold where the triangle inequality fails ($p < 1$)?",
       "The ultrametric (strong) triangle inequality $|x+y| \\leq \\max(|x|, |y|)$ holds in $p$-adic analysis. Can this be formalized in Lean, along with the striking corollary that every point of a $p$-adic open ball is its center?",
-      "Can the equality case in normed spaces be formalized — showing $\\|x+y\\| = \\|x\\| + \\|y\\|$ iff $x = ty$ for some $t \\geq 0$ in strictly convex spaces, connecting to the Cauchy-Schwarz equality condition?",
+      "Can the equality case in normed spaces be formalized \u2014 showing $\\|x+y\\| = \\|x\\| + \\|y\\|$ iff $x = ty$ for some $t \\geq 0$ in strictly convex spaces, connecting to the Cauchy-Schwarz equality condition?",
       "The triangle inequality for geodesic distances on Riemannian manifolds involves curvature corrections (Toponogov's comparison theorem). Can the curvature-dependent version $d(x,z) \\leq d(x,y) + d(y,z)$ with equality iff the geodesic triangle degenerates be formalized?"
     ]
   },
@@ -204,7 +204,8 @@
     "lineCount": 244,
     "axiomCount": 0,
     "theoremCount": 17,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -212,35 +213,35 @@
       "title": "Elements, Book I, Proposition 20",
       "year": "~300 BCE",
       "venue": "Alexandria",
-      "note": "The sum of any two sides of a triangle exceeds the third side — foundational for metric space theory"
+      "note": "The sum of any two sides of a triangle exceeds the third side \u2014 foundational for metric space theory"
     },
     {
-      "authors": "Fréchet, Maurice",
+      "authors": "Fr\u00e9chet, Maurice",
       "title": "Sur quelques points du calcul fonctionnel",
       "year": "1906",
-      "venue": "Rendiconti del Circolo Matematico di Palermo, vol. 22, pp. 1–74",
+      "venue": "Rendiconti del Circolo Matematico di Palermo, vol. 22, pp. 1\u201374",
       "note": "Introduced the abstract concept of metric space with the triangle inequality as one of three defining axioms, generalizing distance from Euclidean geometry to arbitrary sets"
     },
     {
       "authors": "Banach, Stefan",
-      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
+      "title": "Sur les op\u00e9rations dans les ensembles abstraits et leur application aux \u00e9quations int\u00e9grales",
       "year": "1922",
-      "venue": "Fundamenta Mathematicae, vol. 3, pp. 133–181",
-      "note": "Banach's thesis establishing the theory of normed vector spaces (Banach spaces), where the triangle inequality ‖x+y‖ ≤ ‖x‖+‖y‖ is a norm axiom"
+      "venue": "Fundamenta Mathematicae, vol. 3, pp. 133\u2013181",
+      "note": "Banach's thesis establishing the theory of normed vector spaces (Banach spaces), where the triangle inequality \u2016x+y\u2016 \u2264 \u2016x\u2016+\u2016y\u2016 is a norm axiom"
     },
     {
       "authors": "Minkowski, Hermann",
       "title": "Geometrie der Zahlen",
       "year": "1896",
       "venue": "Teubner, Leipzig",
-      "note": "Proved the triangle inequality for ℓ^p norms (p ≥ 1) as part of the geometry of numbers, establishing what is now called Minkowski's inequality"
+      "note": "Proved the triangle inequality for \u2113^p norms (p \u2265 1) as part of the geometry of numbers, establishing what is now called Minkowski's inequality"
     },
     {
       "authors": "Proclus",
       "title": "Commentary on the First Book of Euclid's Elements",
       "year": "~450 CE",
       "venue": "Athens",
-      "note": "Reports the Epicurean objection that Proposition 20 is 'evident even to an ass' — yet its proof from Euclid's axioms is non-trivial and the result fails in some geometries"
+      "note": "Reports the Epicurean objection that Proposition 20 is 'evident even to an ass' \u2014 yet its proof from Euclid's axioms is non-trivial and the result fails in some geometries"
     }
   ]
 }

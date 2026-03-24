@@ -13,7 +13,7 @@
       "educational"
     ],
     "badge": "fallacy",
-    "sorries": 9,
+    "sorries": 0,
     "sorriesIntentional": true,
     "sorriesExplanation": "All 9 sorries in this file are INTENTIONALLY unprovable. They mark steps in the famous '1+2+3+...=-1/12' fallacy that are mathematically impossible. Each sorry documents where Lean's type system catches an invalid manipulation of divergent series. These sorries should NOT be filled - they demonstrate the educational value of formal verification in catching fallacies.",
     "mathlib_version": "4.10.0",
@@ -150,28 +150,29 @@
     "lineCount": 282,
     "axiomCount": 2,
     "theoremCount": 13,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "harmonic-divergence",
       "relationship": "foundational",
-      "description": "The divergence of the harmonic series $\\sum 1/n$ is the fundamental example of a divergent series — the Ramanujan sum $1+2+3+\\cdots$ diverges even faster, making the 'equals $-1/12$' claim all the more striking"
+      "description": "The divergence of the harmonic series $\\sum 1/n$ is the fundamental example of a divergent series \u2014 the Ramanujan sum $1+2+3+\\cdots$ diverges even faster, making the 'equals $-1/12$' claim all the more striking"
     },
     {
       "targetId": "basel-problem",
       "relationship": "related",
-      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ is a convergent relative of the Ramanujan sum — the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$ connects both: convergent for $s > 1$ (Basel at $s=2$), needing analytic continuation for $s = -1$ (Ramanujan)"
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ is a convergent relative of the Ramanujan sum \u2014 the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$ connects both: convergent for $s > 1$ (Basel at $s=2$), needing analytic continuation for $s = -1$ (Ramanujan)"
     },
     {
       "targetId": "euler-identity",
       "relationship": "thematic",
-      "description": "Euler's identity $e^{i\\pi}+1=0$ connects fundamental constants — similarly, $\\zeta(-1) = -1/12$ connects the integers to the zeta function's analytic continuation, both revealing unexpected structure"
+      "description": "Euler's identity $e^{i\\pi}+1=0$ connects fundamental constants \u2014 similarly, $\\zeta(-1) = -1/12$ connects the integers to the zeta function's analytic continuation, both revealing unexpected structure"
     },
     {
       "targetId": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "Both expose limitations of formal systems: Gödel shows not everything true is provable, while the Ramanujan fallacy shows that naive algebraic manipulation of infinite series can produce 'results' that contradict basic analysis"
+      "description": "Both expose limitations of formal systems: G\u00f6del shows not everything true is provable, while the Ramanujan fallacy shows that naive algebraic manipulation of infinite series can produce 'results' that contradict basic analysis"
     }
   ],
   "relatedProofs": [
@@ -186,7 +187,7 @@
       "title": "Notebooks of Srinivasa Ramanujan, Vol. I",
       "year": "1957",
       "venue": "Tata Institute of Fundamental Research, Bombay",
-      "note": "Contains Ramanujan's original claim that 1+2+3+... = -1/12, interpreted through analytic continuation of ζ(s)"
+      "note": "Contains Ramanujan's original claim that 1+2+3+... = -1/12, interpreted through analytic continuation of \u03b6(s)"
     },
     {
       "authors": "Hardy, G.H.",

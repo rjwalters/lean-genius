@@ -1,10 +1,10 @@
 {
   "id": "erdos-760",
-  "title": "Erdős Problem #760: Cochromatic Number of Subgraphs",
+  "title": "Erd\u0151s Problem #760: Cochromatic Number of Subgraphs",
   "slug": "erdos-760",
-  "description": "If G is a graph with chromatic number χ(G) = m, must G contain a subgraph H with cochromatic number ζ(H) ≫ m / log m? YES, proved by Alon-Krivelevich-Sudakov (1997).",
+  "description": "If G is a graph with chromatic number \u03c7(G) = m, must G contain a subgraph H with cochromatic number \u03b6(H) \u226b m / log m? YES, proved by Alon-Krivelevich-Sudakov (1997).",
   "meta": {
-    "author": "Erdős & Gimbel (problem), Alon-Krivelevich-Sudakov (solution)",
+    "author": "Erd\u0151s & Gimbel (problem), Alon-Krivelevich-Sudakov (solution)",
     "sourceUrl": "https://erdosproblems.com/760",
     "date": "1997",
     "status": "axiomatized",
@@ -51,15 +51,15 @@
       "IsCochromaticColoring definition",
       "cochromaticNumber axiom with cochromatic_le_chromatic",
       "complete_graph_cochromatic and complete_graph_tight_bound axioms",
-      "erdos_gimbel_theorem axiom: ζ(H) ≥ c√(m/log m)",
-      "aks_theorem axiom: ζ(H) ≥ cm/log m (full solution)",
+      "erdos_gimbel_theorem axiom: \u03b6(H) \u2265 c\u221a(m/log m)",
+      "aks_theorem axiom: \u03b6(H) \u2265 cm/log m (full solution)",
       "ramsey_for_cochromatic and ramsey_number_bound axioms",
       "erdos_760 summary theorem combining results"
     ],
     "relatedProblems": [
       {
         "id": "erdos-789",
-        "relationship": "Related Erdős problem in combinatorics/graph theory"
+        "relationship": "Related Erd\u0151s problem in combinatorics/graph theory"
       }
     ],
     "axiomCount": 9,
@@ -74,16 +74,16 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The cochromatic number ζ(G) is the minimum number of colors needed to color vertices so each color class is either a clique or an independent set (a 'homogeneous' set). Erdős and Gimbel posed this problem in 1993, asking whether graphs with high chromatic number must contain subgraphs with high cochromatic number. They proved a weaker bound √(m / log m). The full bound m / log m was proved by Alon, Krivelevich, and Sudakov in 1997 using Ramsey-theoretic techniques. Their proof exploits the fact that any graph on n vertices contains a homogeneous set (clique or independent set) of size Ω(log n) by Ramsey's theorem; iterating this extraction yields a cochromatic coloring of size O(n / log n), and applying this to subgraphs of a graph with chromatic number m gives a subgraph with cochromatic number Ω(m / log m). The tightness comes from the complete graph K_m, which has ζ(K_m) = 1 but requires m colors for a proper coloring.",
-    "problemStatement": "If G is a graph with chromatic number χ(G) = m, must G contain a subgraph H with ζ(H) ≫ m / log m?\n\n**Answer:** YES (Alon-Krivelevich-Sudakov 1997)\n\nThe bound m / log m is optimal - complete graphs achieve it.",
-    "text": "If G is a graph with chromatic number χ(G) = m, must G contain a subgraph H with cochromatic number ζ(H) ≫ m / log m? YES, proved by Alon-Krivelevich-Sudakov (1997).",
-    "proofStrategy": "The solution uses Ramsey-theoretic methods:\n\n1. **Homogeneous sets from Ramsey theory:** Any graph on n vertices has a homogeneous set (clique or independent set) of size ~ log n.\n\n2. **Recursive decomposition:** Find a large homogeneous set, remove it, and recurse.\n\n3. **The key bound:** The cochromatic number of the subgraph built this way is ≥ cm / log m.\n\n4. **Tightness:** Complete graphs show the bound is best possible.",
+    "historicalContext": "The cochromatic number \u03b6(G) is the minimum number of colors needed to color vertices so each color class is either a clique or an independent set (a 'homogeneous' set). Erd\u0151s and Gimbel posed this problem in 1993, asking whether graphs with high chromatic number must contain subgraphs with high cochromatic number. They proved a weaker bound \u221a(m / log m). The full bound m / log m was proved by Alon, Krivelevich, and Sudakov in 1997 using Ramsey-theoretic techniques. Their proof exploits the fact that any graph on n vertices contains a homogeneous set (clique or independent set) of size \u03a9(log n) by Ramsey's theorem; iterating this extraction yields a cochromatic coloring of size O(n / log n), and applying this to subgraphs of a graph with chromatic number m gives a subgraph with cochromatic number \u03a9(m / log m). The tightness comes from the complete graph K_m, which has \u03b6(K_m) = 1 but requires m colors for a proper coloring.",
+    "problemStatement": "If G is a graph with chromatic number \u03c7(G) = m, must G contain a subgraph H with \u03b6(H) \u226b m / log m?\n\n**Answer:** YES (Alon-Krivelevich-Sudakov 1997)\n\nThe bound m / log m is optimal - complete graphs achieve it.",
+    "text": "If G is a graph with chromatic number \u03c7(G) = m, must G contain a subgraph H with cochromatic number \u03b6(H) \u226b m / log m? YES, proved by Alon-Krivelevich-Sudakov (1997).",
+    "proofStrategy": "The solution uses Ramsey-theoretic methods:\n\n1. **Homogeneous sets from Ramsey theory:** Any graph on n vertices has a homogeneous set (clique or independent set) of size ~ log n.\n\n2. **Recursive decomposition:** Find a large homogeneous set, remove it, and recurse.\n\n3. **The key bound:** The cochromatic number of the subgraph built this way is \u2265 cm / log m.\n\n4. **Tightness:** Complete graphs show the bound is best possible.",
     "keyInsights": [
       "Cochromatic number allows cliques OR independent sets as color classes",
-      "ζ(G) ≤ χ(G) always holds (proper colorings are cochromatic)",
+      "\u03b6(G) \u2264 \u03c7(G) always holds (proper colorings are cochromatic)",
       "Ramsey theory gives logarithmic-sized homogeneous sets",
       "The bound m / log m is tight - achieved by complete graphs",
-      "Improvement from √(m/log m) to m/log m required new recursive techniques"
+      "Improvement from \u221a(m/log m) to m/log m required new recursive techniques"
     ],
     "prerequisites": [
       "Graph theory fundamentals (vertices, edges, adjacency)",
@@ -110,7 +110,7 @@
     },
     {
       "id": "erdos-gimbel",
-      "title": "Erdős-Gimbel Partial Result",
+      "title": "Erd\u0151s-Gimbel Partial Result",
       "summary": "erdos_gimbel_theorem, erdos_gimbel_weaker",
       "startLine": 139,
       "endLine": 163
@@ -145,20 +145,20 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #760 is SOLVED. Every graph with chromatic number m contains a subgraph with cochromatic number at least cm / log m for some constant c > 0. This was proved by Alon, Krivelevich, and Sudakov (1997), improving Erdős-Gimbel's earlier √(m / log m) bound.",
+    "summary": "Erd\u0151s Problem #760 is SOLVED. Every graph with chromatic number m contains a subgraph with cochromatic number at least cm / log m for some constant c > 0. This was proved by Alon, Krivelevich, and Sudakov (1997), improving Erd\u0151s-Gimbel's earlier \u221a(m / log m) bound.",
     "implications": "The result shows a fundamental relationship between chromatic and cochromatic numbers: high chromatic number forces high cochromatic number in some subgraph. The logarithmic loss is unavoidable due to Ramsey-theoretic limitations.",
     "openQuestions": [
-      "What is the optimal constant c in ζ(H) ≥ cm / log m?",
+      "What is the optimal constant c in \u03b6(H) \u2265 cm / log m?",
       "Can the result be strengthened for special graph classes?",
       "What is the computational complexity of finding the optimal subgraph H?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80] original formulation"
     }
   ],
@@ -166,7 +166,7 @@
     {
       "targetId": "erdos-759",
       "relationship": "related",
-      "description": "Consecutive Erdős problems in the same family of number-theoretic questions"
+      "description": "Consecutive Erd\u0151s problems in the same family of number-theoretic questions"
     }
   ],
   "relatedProofs": [
@@ -187,6 +187,7 @@
     "lineCount": 270,
     "axiomCount": 9,
     "theoremCount": 2,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   }
 }

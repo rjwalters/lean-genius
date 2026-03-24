@@ -2,9 +2,9 @@
   "id": "erdos-1098",
   "title": "Non-Commuting Graphs of Groups",
   "slug": "erdos-1098",
-  "description": "If the non-commuting graph Γ(G) has no infinite clique, is there a finite bound on clique sizes? YES (Neumann 1976). Equivalent to Z(G) having finite index.",
+  "description": "If the non-commuting graph \u0393(G) has no infinite clique, is there a finite bound on clique sizes? YES (Neumann 1976). Equivalent to Z(G) having finite index.",
   "meta": {
-    "author": "Erdős (1975, problem), Neumann (1976, solution)",
+    "author": "Erd\u0151s (1975, problem), Neumann (1976, solution)",
     "sourceUrl": "https://erdosproblems.com/1098",
     "date": "1976",
     "status": "axiomatized",
@@ -52,10 +52,10 @@
     "originalContributions": [
       "nonCommuting and commuting relations with symmetry proof",
       "NonCommGraph structure with adj, symm, irrefl fields",
-      "isClique, cliqueNumber (via ⨆), hasFiniteCliqueNumber, noInfiniteClique",
-      "centerHasFiniteIndex via Subgroup.index ≠ ⊤",
-      "neumann_theorem axiom: no infinite clique ↔ finite index center",
-      "neumann_bound axiom: clique size ≤ [G : Z(G)]",
+      "isClique, cliqueNumber (via \u2a06), hasFiniteCliqueNumber, noInfiniteClique",
+      "centerHasFiniteIndex via Subgroup.index \u2260 \u22a4",
+      "neumann_theorem axiom: no infinite clique \u2194 finite index center",
+      "neumann_bound axiom: clique size \u2264 [G : Z(G)]",
       "erdos_question_answered: main theorem via rewrite with neumann_theorem",
       "same_coset_commute and clique_different_cosets (coset argument, sorry)",
       "abelian_no_edges: proved using Subgroup.mem_center_iff",
@@ -76,15 +76,15 @@
     "assumptions": "8 axiom(s) and 5 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem at the 15th Summer Research Institute of the Australian Mathematical Society in 1975, asking about the structure of the non-commuting graph $\\Gamma(G)$ of a group $G$, where vertices are non-central elements and edges connect pairs $a, b$ with $ab \\neq ba$. B.H. Neumann solved it in 1976, proving the elegant equivalence: $\\Gamma(G)$ has no infinite complete subgraph if and only if the center $Z(G)$ has finite index in $G$. Moreover, the maximum clique size equals $[G : Z(G)]$.\n\nThis result connects two fundamental mathematical structures: the group-theoretic invariant $[G : Z(G)]$ (measuring 'how non-abelian' the group is) and the graph-theoretic clique number $\\omega(\\Gamma(G))$. The proof uses the pigeonhole principle on cosets of the center. The problem inaugurated the study of non-commuting graphs, now an active area connecting group theory, graph theory, and combinatorics.",
-    "problemStatement": "Let G be a group and Γ = Γ(G) be the non-commuting graph (vertices: elements of G, edges: between g and h when gh ≠ hg). If Γ contains no infinite complete subgraph, is there a finite bound on the size of complete subgraphs of Γ?\n\n**Answer: YES** (Neumann 1976). The bound is [G : Z(G)].",
-    "text": "If the non-commuting graph Γ(G) has no infinite clique, is there a finite bound on clique sizes? YES (Neumann 1976). Equivalent to Z(G) having finite index.",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a comprehensive framework in 319 lines:\n\n1. **Basic Definitions (lines 40-78):** Define `nonCommuting g h` as `g * h ≠ h * g`, prove `nonCommuting_symm` via simp, define `centerDef` using `Subgroup.center G`, and prove `mem_center_iff` characterization.\n\n2. **Non-Commuting Graph (lines 80-120):** Define `NonCommGraph G` structure with adj/symm/irrefl, `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆`, `hasFiniteCliqueNumber` (bounded sizes), `noInfiniteClique` (all cliques finite).\n\n3. **Finite Index Center (lines 121-137):** Define `centerHasFiniteIndex` via `Subgroup.index ≠ ⊤` and `centerIndex` as the actual `ℕ∞` value.\n\n4. **Neumann's Theorem (lines 138-171):** Axiomatize the equivalence `noInfiniteClique G ↔ centerHasFiniteIndex G` and the bound `S.ncard ≤ n` for index n. Prove `erdos_question_answered` by rewriting with the equivalence.\n\n5. **Coset Structure (lines 172-200):** State `same_coset_commute` (sorry), `clique_different_cosets` (sorry), and `clique_size_bound` (sorry) — the heart of the proof that clique members must lie in distinct cosets.\n\n6. **Infinite Groups (lines 201-222):** Prove `abelian_no_edges` using `Subgroup.mem_center_iff`. Axiomatize `infinite_clique_example` for non-abelian groups.\n\n7. **Examples (lines 223-250):** Axiomatize symmetric group (clique ≤ n!) and dihedral group center index. Prove `finite_group_finite_index` (sorry).\n\n8. **Generalizations (lines 251-280):** Define commuting probability, BFC groups, and their connections.\n\n9. **Summary (lines 281-319):** `erdos_1098`, `erdos_1098_summary`, `erdos_1098_status`.",
+    "historicalContext": "Erd\u0151s posed this problem at the 15th Summer Research Institute of the Australian Mathematical Society in 1975, asking about the structure of the non-commuting graph $\\Gamma(G)$ of a group $G$, where vertices are non-central elements and edges connect pairs $a, b$ with $ab \\neq ba$. B.H. Neumann solved it in 1976, proving the elegant equivalence: $\\Gamma(G)$ has no infinite complete subgraph if and only if the center $Z(G)$ has finite index in $G$. Moreover, the maximum clique size equals $[G : Z(G)]$.\n\nThis result connects two fundamental mathematical structures: the group-theoretic invariant $[G : Z(G)]$ (measuring 'how non-abelian' the group is) and the graph-theoretic clique number $\\omega(\\Gamma(G))$. The proof uses the pigeonhole principle on cosets of the center. The problem inaugurated the study of non-commuting graphs, now an active area connecting group theory, graph theory, and combinatorics.",
+    "problemStatement": "Let G be a group and \u0393 = \u0393(G) be the non-commuting graph (vertices: elements of G, edges: between g and h when gh \u2260 hg). If \u0393 contains no infinite complete subgraph, is there a finite bound on the size of complete subgraphs of \u0393?\n\n**Answer: YES** (Neumann 1976). The bound is [G : Z(G)].",
+    "text": "If the non-commuting graph \u0393(G) has no infinite clique, is there a finite bound on clique sizes? YES (Neumann 1976). Equivalent to Z(G) having finite index.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a comprehensive framework in 319 lines:\n\n1. **Basic Definitions (lines 40-78):** Define `nonCommuting g h` as `g * h \u2260 h * g`, prove `nonCommuting_symm` via simp, define `centerDef` using `Subgroup.center G`, and prove `mem_center_iff` characterization.\n\n2. **Non-Commuting Graph (lines 80-120):** Define `NonCommGraph G` structure with adj/symm/irrefl, `isClique S` (pairwise non-commuting), `cliqueNumber` via `\u2a06`, `hasFiniteCliqueNumber` (bounded sizes), `noInfiniteClique` (all cliques finite).\n\n3. **Finite Index Center (lines 121-137):** Define `centerHasFiniteIndex` via `Subgroup.index \u2260 \u22a4` and `centerIndex` as the actual `\u2115\u221e` value.\n\n4. **Neumann's Theorem (lines 138-171):** Axiomatize the equivalence `noInfiniteClique G \u2194 centerHasFiniteIndex G` and the bound `S.ncard \u2264 n` for index n. Prove `erdos_question_answered` by rewriting with the equivalence.\n\n5. **Coset Structure (lines 172-200):** State `same_coset_commute` (sorry), `clique_different_cosets` (sorry), and `clique_size_bound` (sorry) \u2014 the heart of the proof that clique members must lie in distinct cosets.\n\n6. **Infinite Groups (lines 201-222):** Prove `abelian_no_edges` using `Subgroup.mem_center_iff`. Axiomatize `infinite_clique_example` for non-abelian groups.\n\n7. **Examples (lines 223-250):** Axiomatize symmetric group (clique \u2264 n!) and dihedral group center index. Prove `finite_group_finite_index` (sorry).\n\n8. **Generalizations (lines 251-280):** Define commuting probability, BFC groups, and their connections.\n\n9. **Summary (lines 281-319):** `erdos_1098`, `erdos_1098_summary`, `erdos_1098_status`.",
     "keyInsights": [
-      "**Coset Argument:** If g, h are in the same coset of Z(G), then g⁻¹h ∈ Z(G), so g⁻¹h commutes with everything, forcing gh = hg. Thus clique members must lie in distinct cosets, giving clique size ≤ [G : Z(G)].",
-      "**Neumann's Equivalence:** The beautiful iff — no infinite clique ↔ finite index center — completely characterizes when the non-commuting graph has bounded clique number.",
-      "**Abelian Case:** When G is abelian, Z(G) = G (index 1), so Γ(G) has no edges at all. The `abelian_no_edges` theorem demonstrates this via `Subgroup.mem_center_iff`.",
-      "**BFC Connection:** Groups with bounded finite conjugacy classes (BFC groups) are related — finite index center implies the BFC property, connecting to Schur's theorem.",
+      "**Coset Argument:** If g, h are in the same coset of Z(G), then g\u207b\u00b9h \u2208 Z(G), so g\u207b\u00b9h commutes with everything, forcing gh = hg. Thus clique members must lie in distinct cosets, giving clique size \u2264 [G : Z(G)].",
+      "**Neumann's Equivalence:** The beautiful iff \u2014 no infinite clique \u2194 finite index center \u2014 completely characterizes when the non-commuting graph has bounded clique number.",
+      "**Abelian Case:** When G is abelian, Z(G) = G (index 1), so \u0393(G) has no edges at all. The `abelian_no_edges` theorem demonstrates this via `Subgroup.mem_center_iff`.",
+      "**BFC Connection:** Groups with bounded finite conjugacy classes (BFC groups) are related \u2014 finite index center implies the BFC property, connecting to Schur's theorem.",
       "**Graph Theory Bridge:** The non-commuting graph translates algebraic structure (commutativity, center) into graph properties (adjacency, cliques), enabling combinatorial reasoning about groups."
     ],
     "prerequisites": [
@@ -108,13 +108,14 @@
     "lineCount": 319,
     "axiomCount": 8,
     "theoremCount": 12,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-22",
       "relationship": "uses-same-technique",
-      "description": "Both problems involve Ramsey-theoretic arguments about clique sizes. Erdős #22 bounds clique/independence numbers in Ramsey-Turán graphs; #1098 bounds cliques in non-commuting graphs."
+      "description": "Both problems involve Ramsey-theoretic arguments about clique sizes. Erd\u0151s #22 bounds clique/independence numbers in Ramsey-Tur\u00e1n graphs; #1098 bounds cliques in non-commuting graphs."
     },
     {
       "targetId": "erdos-134",
@@ -128,28 +129,28 @@
       "title": "Basic Definitions",
       "startLine": 40,
       "endLine": 78,
-      "summary": "Defines `nonCommuting g h` as `g * h ≠ h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_iff` characterizing center membership via `commuting`."
+      "summary": "Defines `nonCommuting g h` as `g * h \u2260 h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_iff` characterizing center membership via `commuting`."
     },
     {
       "id": "non-commuting-graph",
       "title": "Non-Commuting Graph",
       "startLine": 80,
       "endLine": 120,
-      "summary": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFiniteCliqueNumber` (∃ n bounding all cliques), `noInfiniteClique` (all cliques finite)."
+      "summary": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `\u2a06` over finite cliques, `hasFiniteCliqueNumber` (\u2203 n bounding all cliques), `noInfiniteClique` (all cliques finite)."
     },
     {
       "id": "finite-index",
       "title": "Finite Index Center",
       "startLine": 121,
       "endLine": 137,
-      "summary": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index ≠ ⊤` and `centerIndex G` as the `ℕ∞`-valued index."
+      "summary": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index \u2260 \u22a4` and `centerIndex G` as the `\u2115\u221e`-valued index."
     },
     {
       "id": "neumann-theorem",
       "title": "Neumann's Theorem",
       "startLine": 138,
       "endLine": 171,
-      "summary": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered` by rewriting with `neumann_theorem`."
+      "summary": "Axiomatizes `neumann_theorem : noInfiniteClique G \u2194 centerHasFiniteIndex G` and `neumann_bound` (clique size \u2264 index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered` by rewriting with `neumann_theorem`."
     },
     {
       "id": "coset-structure",
@@ -163,7 +164,7 @@
       "title": "Infinite Groups and Examples",
       "startLine": 201,
       "endLine": 250,
-      "summary": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry)."
+      "summary": "Proves `abelian_no_edges` (Z(G) = \u22a4 implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (\u2264 n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry)."
     },
     {
       "id": "generalizations",
@@ -177,14 +178,14 @@
       "title": "Summary",
       "startLine": 281,
       "endLine": 319,
-      "summary": "Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`."
+      "summary": "Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence \u2227 finite clique implication), and `erdos_1098_status := neumann_theorem`."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1098 is SOLVED. The formalization captures Neumann's 1976 result with 8 axioms, 12 theorems (5 with sorry), and 11 definitions across 319 lines. The key theorem `erdos_question_answered` uses the Neumann equivalence to answer YES: if Γ(G) has no infinite clique, clique sizes are uniformly bounded by [G : Z(G)]. The `abelian_no_edges` theorem is fully proved.",
+    "summary": "Erd\u0151s Problem #1098 is SOLVED. The formalization captures Neumann's 1976 result with 8 axioms, 12 theorems (5 with sorry), and 11 definitions across 319 lines. The key theorem `erdos_question_answered` uses the Neumann equivalence to answer YES: if \u0393(G) has no infinite clique, clique sizes are uniformly bounded by [G : Z(G)]. The `abelian_no_edges` theorem is fully proved.",
     "implications": "**Theoretical Significance**: This problem beautifully connects group theory (center, index, cosets) with graph theory (clique number).\n\nThe coset structure of Z(G) completely determines the clique behavior of the non-commuting graph. Related concepts include commuting probability, BFC groups, and Schur's theorem connecting finite index centers to derived subgroup finiteness.",
     "openQuestions": [
-      "Characterize groups with small clique number in Γ(G)",
+      "Characterize groups with small clique number in \u0393(G)",
       "Relationship between commuting probability and clique number",
       "Extensions to other algebraic structures (rings, semigroups)",
       "Tight bounds for specific group families (nilpotent, solvable)"

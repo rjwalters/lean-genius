@@ -1,8 +1,8 @@
 {
   "id": "bezout-identity-oq-03-oq-01-oq-01",
-  "title": "k-fold Chinese Remainder Theorem: ℤ/(n₁···nₖ)ℤ ≅ ∏ᵢ ℤ/nᵢℤ",
+  "title": "k-fold Chinese Remainder Theorem: \u2124/(n\u2081\u00b7\u00b7\u00b7n\u2096)\u2124 \u2245 \u220f\u1d62 \u2124/n\u1d62\u2124",
   "slug": "bezout-identity-oq-03-oq-01-oq-01",
-  "description": "The Chinese Remainder Theorem extends from two coprime moduli to any finite list of pairwise coprime moduli. For pairwise coprime n₁, ..., nₖ, the ring ℤ/(n₁···nₖ)ℤ is isomorphic to the product ∏ᵢ ℤ/nᵢℤ. This formalization constructs the k-fold isomorphism by induction using Mathlib's 2-fold ZMod.chineseRemainder, with the key lemma that pairwise coprimality implies coprimality with the product of remaining moduli. Includes explicit 3-fold and 4-fold specializations and k-fold Euler totient multiplicativity.",
+  "description": "The Chinese Remainder Theorem extends from two coprime moduli to any finite list of pairwise coprime moduli. For pairwise coprime n\u2081, ..., n\u2096, the ring \u2124/(n\u2081\u00b7\u00b7\u00b7n\u2096)\u2124 is isomorphic to the product \u220f\u1d62 \u2124/n\u1d62\u2124. This formalization constructs the k-fold isomorphism by induction using Mathlib's 2-fold ZMod.chineseRemainder, with the key lemma that pairwise coprimality implies coprimality with the product of remaining moduli. Includes explicit 3-fold and 4-fold specializations and k-fold Euler totient multiplicativity.",
   "meta": {
     "author": "Euler, Gauss; formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem",
@@ -21,32 +21,32 @@
     "mathlibDependencies": [
       {
         "theorem": "ZMod.chineseRemainder",
-        "description": "ZMod (m * n) ≃+* ZMod m × ZMod n for coprime m, n — the 2-fold CRT base case",
+        "description": "ZMod (m * n) \u2243+* ZMod m \u00d7 ZMod n for coprime m, n \u2014 the 2-fold CRT base case",
         "module": "Mathlib.Data.ZMod.Basic"
       },
       {
         "theorem": "RingEquiv.prodCongr",
-        "description": "If R₁ ≅ S₁ and R₂ ≅ S₂ then R₁ × R₂ ≅ S₁ × S₂ — used to lift IH into product",
+        "description": "If R\u2081 \u2245 S\u2081 and R\u2082 \u2245 S\u2082 then R\u2081 \u00d7 R\u2082 \u2245 S\u2081 \u00d7 S\u2082 \u2014 used to lift IH into product",
         "module": "Mathlib.RingTheory.Coprime.Basic"
       },
       {
         "theorem": "Nat.Coprime.mul_right",
-        "description": "If gcd(a,b)=1 and gcd(a,c)=1 then gcd(a,bc)=1 — key for inductive coprimality",
+        "description": "If gcd(a,b)=1 and gcd(a,c)=1 then gcd(a,bc)=1 \u2014 key for inductive coprimality",
         "module": "Mathlib.Data.Nat.GCD.Basic"
       },
       {
         "theorem": "Nat.totient_mul",
-        "description": "φ(mn) = φ(m)·φ(n) for coprime m,n — used in k-fold totient theorem",
+        "description": "\u03c6(mn) = \u03c6(m)\u00b7\u03c6(n) for coprime m,n \u2014 used in k-fold totient theorem",
         "module": "Mathlib.Data.Nat.Totient"
       }
     ],
     "originalContributions": [
-      "crtKFold: General k-fold CRT ring isomorphism ZMod (∏ nᵢ) ≃+* CRTProd ns by induction on list",
-      "CRTProd: Right-associated product type CRTProd (n :: ns) = ZMod n × CRTProd ns",
-      "coprime_prod_of_coprime_all: n coprime to each nᵢ implies n coprime to ∏ nᵢ",
+      "crtKFold: General k-fold CRT ring isomorphism ZMod (\u220f n\u1d62) \u2243+* CRTProd ns by induction on list",
+      "CRTProd: Right-associated product type CRTProd (n :: ns) = ZMod n \u00d7 CRTProd ns",
+      "coprime_prod_of_coprime_all: n coprime to each n\u1d62 implies n coprime to \u220f n\u1d62",
       "crt3, crt4: Explicit 3-fold and 4-fold CRT specializations",
       "totient_prod_pairwise_coprime: k-fold Euler totient multiplicativity",
-      "zmod_one_equiv_punit: ZMod 1 ≅ PUnit as the base case ring isomorphism"
+      "zmod_one_equiv_punit: ZMod 1 \u2245 PUnit as the base case ring isomorphism"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -55,16 +55,16 @@
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem originates in Sunzi Suanjing (~3rd century CE), which posed: 'find a number giving remainders 2, 3, 2 when divided by 3, 5, 7.' The first general algorithm for arbitrary moduli was given by Qin Jiushao in his 1247 Shushu Jiuzhang (Mathematical Treatise in Nine Sections), predating European treatments by centuries. Euler stated the k-fold version for pairwise coprime moduli, and Gauss gave it systematic treatment in Disquisitiones Arithmeticae (1801, Articles 32-36). The modern ring-theoretic formulation as an isomorphism $\\mathbb{Z}/(\\prod n_i)\\mathbb{Z} \\cong \\prod_i \\mathbb{Z}/n_i\\mathbb{Z}$ captures both existence and uniqueness of solutions plus the full multiplicative structure. This k-fold generalization is foundational in modern cryptography: RSA key generation relies on the CRT decomposition $\\mathbb{Z}/pq\\mathbb{Z} \\cong \\mathbb{Z}/p\\mathbb{Z} \\times \\mathbb{Z}/q\\mathbb{Z}$ for efficient decryption, and multi-prime RSA uses the k-fold version directly.",
-    "problemStatement": "**Theorem (crtKFold)**: For a list ns of pairwise coprime natural numbers,\n  ZMod ns.prod ≃+* CRTProd ns\nwhere CRTProd ns is the right-associated product ∏ᵢ ZMod (ns.get i).\n\n**Key lemma (coprime_prod_of_coprime_all)**: If n is coprime to every element of ns, then n is coprime to ns.prod.",
-    "text": "The Chinese Remainder Theorem extends from two coprime moduli to any finite list of pairwise coprime moduli. For pairwise coprime n₁, ..., nₖ, the ring ℤ/(n₁···nₖ)ℤ is isomorphic to the product ∏ᵢ ℤ/nᵢℤ. This formalization constructs the k-fold isomorphism by induction using Mathlib's 2-fold ZMod.chineseRemainder, with the key lemma that pairwise coprimality implies coprimality with the product of remaining moduli. Includes explicit 3-fold and 4-fold specializations and k-fold Euler totient multiplicativity.",
-    "proofStrategy": "**Induction on the list of moduli**:\n\n**Base**: Empty list — ZMod 1 ≅ PUnit (the trivial ring).\n\n**Step**: Given n :: ns with pairwise coprimality:\n1. By coprime_prod_of_coprime_all, n is coprime to ns.prod\n2. Apply ZMod.chineseRemainder: ZMod (n * ns.prod) ≅ ZMod n × ZMod ns.prod\n3. Apply IH: ZMod ns.prod ≅ CRTProd ns\n4. Compose via RingEquiv.prodCongr\n\n**Explicit specializations**: crt3 and crt4 construct 3-fold and 4-fold CRTs directly using associativity and mul_right, avoiding the CRTProd type.",
+    "problemStatement": "**Theorem (crtKFold)**: For a list ns of pairwise coprime natural numbers,\n  ZMod ns.prod \u2243+* CRTProd ns\nwhere CRTProd ns is the right-associated product \u220f\u1d62 ZMod (ns.get i).\n\n**Key lemma (coprime_prod_of_coprime_all)**: If n is coprime to every element of ns, then n is coprime to ns.prod.",
+    "text": "The Chinese Remainder Theorem extends from two coprime moduli to any finite list of pairwise coprime moduli. For pairwise coprime n\u2081, ..., n\u2096, the ring \u2124/(n\u2081\u00b7\u00b7\u00b7n\u2096)\u2124 is isomorphic to the product \u220f\u1d62 \u2124/n\u1d62\u2124. This formalization constructs the k-fold isomorphism by induction using Mathlib's 2-fold ZMod.chineseRemainder, with the key lemma that pairwise coprimality implies coprimality with the product of remaining moduli. Includes explicit 3-fold and 4-fold specializations and k-fold Euler totient multiplicativity.",
+    "proofStrategy": "**Induction on the list of moduli**:\n\n**Base**: Empty list \u2014 ZMod 1 \u2245 PUnit (the trivial ring).\n\n**Step**: Given n :: ns with pairwise coprimality:\n1. By coprime_prod_of_coprime_all, n is coprime to ns.prod\n2. Apply ZMod.chineseRemainder: ZMod (n * ns.prod) \u2245 ZMod n \u00d7 ZMod ns.prod\n3. Apply IH: ZMod ns.prod \u2245 CRTProd ns\n4. Compose via RingEquiv.prodCongr\n\n**Explicit specializations**: crt3 and crt4 construct 3-fold and 4-fold CRTs directly using associativity and mul_right, avoiding the CRTProd type.",
     "keyInsights": [
       "The key enabling lemma is coprime_prod_of_coprime_all: pairwise coprimality propagates to products",
-      "CRTProd as a recursive type avoids the ZMod (n*1) ≠ ZMod n definitional equality issue",
-      "The base case ZMod 1 ≅ PUnit uses Subsingleton since ZMod 1 has exactly one element",
-      "Explicit crt3/crt4 use ring to prove associativity a*b*c = a*(b*c) at the ℕ level",
+      "CRTProd as a recursive type avoids the ZMod (n*1) \u2260 ZMod n definitional equality issue",
+      "The base case ZMod 1 \u2245 PUnit uses Subsingleton since ZMod 1 has exactly one element",
+      "Explicit crt3/crt4 use ring to prove associativity a*b*c = a*(b*c) at the \u2115 level",
       "All coprimality conditions are decidable, so examples use `by decide`",
-      "The k-fold totient multiplicativity φ(∏nᵢ) = ∏φ(nᵢ) is a 'free' corollary: the CRT isomorphism preserves units, so |(ℤ/∏nᵢℤ)*| = ∏|(ℤ/nᵢℤ)*| — the algebraic proof is more natural than the number-theoretic one"
+      "The k-fold totient multiplicativity \u03c6(\u220fn\u1d62) = \u220f\u03c6(n\u1d62) is a 'free' corollary: the CRT isomorphism preserves units, so |(\u2124/\u220fn\u1d62\u2124)*| = \u220f|(\u2124/n\u1d62\u2124)*| \u2014 the algebraic proof is more natural than the number-theoretic one"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)",
@@ -84,7 +84,7 @@
       "title": "Explicit 3-fold and 4-fold CRT",
       "startLine": 61,
       "endLine": 99,
-      "summary": "crt3 and crt4: direct constructions of ℤ/(abc)ℤ ≅ ℤ/aℤ × (ℤ/bℤ × ℤ/cℤ) and 4-fold analog. Uses ring for ℕ associativity, Nat.Coprime.mul_right for coprimality propagation, and RingEquiv.prodCongr for lifting isomorphisms into products."
+      "summary": "crt3 and crt4: direct constructions of \u2124/(abc)\u2124 \u2245 \u2124/a\u2124 \u00d7 (\u2124/b\u2124 \u00d7 \u2124/c\u2124) and 4-fold analog. Uses ring for \u2115 associativity, Nat.Coprime.mul_right for coprimality propagation, and RingEquiv.prodCongr for lifting isomorphisms into products."
     },
     {
       "id": "general-kfold",
@@ -105,14 +105,14 @@
       "title": "Euler Totient Multiplicativity",
       "startLine": 184,
       "endLine": 200,
-      "summary": "totient_prod_pairwise_coprime: φ(∏ nᵢ) = ∏ φ(nᵢ) for pairwise coprime lists. Proved by induction using Nat.totient_mul at each step, mirroring the CRT induction structure."
+      "summary": "totient_prod_pairwise_coprime: \u03c6(\u220f n\u1d62) = \u220f \u03c6(n\u1d62) for pairwise coprime lists. Proved by induction using Nat.totient_mul at each step, mirroring the CRT induction structure."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 202,
       "endLine": 225,
-      "summary": "Concrete instances: ℤ/30ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ (both via k-fold and explicit crt3), ℤ/210ℤ ≅ ℤ/2ℤ × ℤ/3ℤ × ℤ/5ℤ × ℤ/7ℤ (explicit crt4). Totient example: φ(30) = φ(2)·φ(3)·φ(5) = 8."
+      "summary": "Concrete instances: \u2124/30\u2124 \u2245 \u2124/2\u2124 \u00d7 \u2124/3\u2124 \u00d7 \u2124/5\u2124 (both via k-fold and explicit crt3), \u2124/210\u2124 \u2245 \u2124/2\u2124 \u00d7 \u2124/3\u2124 \u00d7 \u2124/5\u2124 \u00d7 \u2124/7\u2124 (explicit crt4). Totient example: \u03c6(30) = \u03c6(2)\u00b7\u03c6(3)\u00b7\u03c6(5) = 8."
     },
     {
       "id": "verification",
@@ -126,7 +126,7 @@
     {
       "targetId": "bezout-identity",
       "relationship": "extends",
-      "description": "The root formalization: Bézout's identity ($\\gcd(a,b) = ax + by$). The CRT builds on coprimality ($\\gcd = 1$), which is the Bézout case yielding $1 = ax + by$."
+      "description": "The root formalization: B\u00e9zout's identity ($\\gcd(a,b) = ax + by$). The CRT builds on coprimality ($\\gcd = 1$), which is the B\u00e9zout case yielding $1 = ax + by$."
     },
     {
       "targetId": "bezout-identity-oq-03",
@@ -155,12 +155,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the k-fold Chinese Remainder Theorem with 0 axioms and 0 sorries: ZMod (∏ nᵢ) ≅ ∏ᵢ ZMod nᵢ for pairwise coprime nᵢ. The proof constructs the isomorphism by induction using Mathlib's 2-fold chineseRemainder, with explicit specializations for 3 and 4 moduli. The k-fold Euler totient multiplicativity follows as a corollary.",
+    "summary": "This formalization proves the k-fold Chinese Remainder Theorem with 0 axioms and 0 sorries: ZMod (\u220f n\u1d62) \u2245 \u220f\u1d62 ZMod n\u1d62 for pairwise coprime n\u1d62. The proof constructs the isomorphism by induction using Mathlib's 2-fold chineseRemainder, with explicit specializations for 3 and 4 moduli. The k-fold Euler totient multiplicativity follows as a corollary.",
     "implications": "**For number theory**: The k-fold CRT provides the foundation for prime factorization-based decompositions, Hensel lifting, and number-theoretic algorithms.\n\n**For algebra**: Demonstrates the pattern of building k-ary constructions from binary ones using induction on lists.\n\n**For Mathlib**: Could be contributed as a generalization of the existing ZMod.chineseRemainder.",
     "openQuestions": [
-      "Generalize to the ideal-theoretic CRT: R/∏Iᵢ ≅ ∏ R/Iᵢ for pairwise coprime ideals",
-      "Prove cardinality preservation: |ZMod (∏nᵢ)| = ∏|ZMod nᵢ| = ∏nᵢ for the k-fold case",
-      "Connect to the Pi-type formulation: ZMod (∏ nᵢ) ≅ (i : Fin k) → ZMod (ns i)"
+      "Generalize to the ideal-theoretic CRT: R/\u220fI\u1d62 \u2245 \u220f R/I\u1d62 for pairwise coprime ideals",
+      "Prove cardinality preservation: |ZMod (\u220fn\u1d62)| = \u220f|ZMod n\u1d62| = \u220fn\u1d62 for the k-fold case",
+      "Connect to the Pi-type formulation: ZMod (\u220f n\u1d62) \u2245 (i : Fin k) \u2192 ZMod (ns i)"
     ]
   },
   "relatedProofs": [
@@ -184,8 +184,9 @@
     "namespace": "BezoutCRTKFold",
     "lineCount": 249,
     "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 8
+    "theoremCount": 12,
+    "definitionCount": 8,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -197,7 +198,7 @@
     },
     {
       "authors": "Sunzi",
-      "title": "Sunzi Suanjing (孫子算經)",
+      "title": "Sunzi Suanjing (\u5b6b\u5b50\u7b97\u7d93)",
       "year": "c. 3rd century",
       "venue": "China",
       "note": "Earliest known statement of the CRT: 'There is an unknown number which gives remainders 2, 3, 2 when divided by 3, 5, 7 respectively. Find the number.'"

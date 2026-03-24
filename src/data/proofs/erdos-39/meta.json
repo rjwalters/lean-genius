@@ -1,6 +1,6 @@
 {
   "id": "erdos-39",
-  "title": "Erdős Problem #39: Infinite Sidon Set Growth",
+  "title": "Erd\u0151s Problem #39: Infinite Sidon Set Growth",
   "slug": "erdos-39",
   "description": "Does there exist an infinite Sidon set with counting function approaching N^{1/2}?",
   "meta": {
@@ -43,14 +43,14 @@
     ],
     "originalContributions": [
       "Formal statement of the open conjecture in Lean 4",
-      "Axiomatization of known upper bound (Erdős's liminf theorem)",
+      "Axiomatization of known upper bound (Erd\u0151s's liminf theorem)",
       "Axiomatization of Ruzsa's construction achieving N^{sqrt(2)-1}",
       "Verified computational facts about square roots establishing the gap"
     ],
     "axiomCount": 5,
     "lineCount": 194,
     "prerequisites": [
-      "Sidon sets (B₂ sequences) and pairwise distinct sums",
+      "Sidon sets (B\u2082 sequences) and pairwise distinct sums",
       "Counting functions and asymptotic growth rates",
       "Probabilistic method in combinatorics",
       "Basic analytic number theory (square root barriers)"
@@ -58,19 +58,19 @@
     "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #39 asks one of the central questions in additive combinatorics: how dense can an infinite Sidon set be? A Sidon set (also called a B₂ sequence) is a set where all pairwise sums are distinct. For finite Sidon sets in {1,...,N}, the maximum size is approximately √N (see Problem #30). But for infinite Sidon sets, the situation is more subtle.\n\nErdős proved a fundamental upper bound: for any infinite Sidon set A, the limit inferior of A(N)/√N equals zero. This means no infinite Sidon set can have counting function consistently above c√N. The natural question is whether we can achieve A(N) >> N^{1/2-ε} for all ε > 0.\n\nProgress has been slow but steady. The trivial greedy algorithm gives N^{1/3}. Ajtai, Komlós, and Szemerédi (1981) achieved (N log N)^{1/3}, earning $25 from Erdős. Ruzsa (1998) broke the 1/3 barrier with N^{√2-1} ≈ N^{0.414}, earning $100. The gap to N^{1/2-ε} remains open, with a $500 prize.",
-    "problemStatement": "**Question**: Does there exist an infinite Sidon set $A \\subset \\mathbb{N}$ such that\n$$|A \\cap \\{1,\\ldots,N\\}| \\gg_\\varepsilon N^{1/2-\\varepsilon}$$\nfor all $\\varepsilon > 0$?\n\n**Status**: OPEN ($500 prize)\n\n**Best known**: Ruzsa's construction achieves $N^{\\sqrt{2}-1-o(1)} \\approx N^{0.414}$\n\n**Upper limit**: Erdős proved $\\liminf A(N)/\\sqrt{N} = 0$ for any infinite Sidon set",
+    "historicalContext": "Erd\u0151s Problem #39 asks one of the central questions in additive combinatorics: how dense can an infinite Sidon set be? A Sidon set (also called a B\u2082 sequence) is a set where all pairwise sums are distinct. For finite Sidon sets in {1,...,N}, the maximum size is approximately \u221aN (see Problem #30). But for infinite Sidon sets, the situation is more subtle.\n\nErd\u0151s proved a fundamental upper bound: for any infinite Sidon set A, the limit inferior of A(N)/\u221aN equals zero. This means no infinite Sidon set can have counting function consistently above c\u221aN. The natural question is whether we can achieve A(N) >> N^{1/2-\u03b5} for all \u03b5 > 0.\n\nProgress has been slow but steady. The trivial greedy algorithm gives N^{1/3}. Ajtai, Koml\u00f3s, and Szemer\u00e9di (1981) achieved (N log N)^{1/3}, earning $25 from Erd\u0151s. Ruzsa (1998) broke the 1/3 barrier with N^{\u221a2-1} \u2248 N^{0.414}, earning $100. The gap to N^{1/2-\u03b5} remains open, with a $500 prize.",
+    "problemStatement": "**Question**: Does there exist an infinite Sidon set $A \\subset \\mathbb{N}$ such that\n$$|A \\cap \\{1,\\ldots,N\\}| \\gg_\\varepsilon N^{1/2-\\varepsilon}$$\nfor all $\\varepsilon > 0$?\n\n**Status**: OPEN ($500 prize)\n\n**Best known**: Ruzsa's construction achieves $N^{\\sqrt{2}-1-o(1)} \\approx N^{0.414}$\n\n**Upper limit**: Erd\u0151s proved $\\liminf A(N)/\\sqrt{N} = 0$ for any infinite Sidon set",
     "text": "Does there exist an infinite Sidon set with counting function approaching N^{1/2}?",
-    "proofStrategy": "Since this is an open problem, we cannot prove the conjecture. Instead, we formalize:\n\n1. **The conjecture statement** as a precise proposition in Lean\n2. **Erdős's upper bound** as an axiom: liminf A(N)/√N = 0\n3. **Known constructions** as axioms: greedy (N^{1/3}), AKS ((N log N)^{1/3}), Ruzsa (N^{√2-1})\n4. **The gap** as a verified theorem: √2 - 1 < 1/2\n\nThe Erdős-Rényi construction shows that N^{1/2-ε} is achievable if we allow bounded (not zero) collision count, highlighting that the Sidon condition r(n) ≤ 1 is the essential difficulty.",
+    "proofStrategy": "Since this is an open problem, we cannot prove the conjecture. Instead, we formalize:\n\n1. **The conjecture statement** as a precise proposition in Lean\n2. **Erd\u0151s's upper bound** as an axiom: liminf A(N)/\u221aN = 0\n3. **Known constructions** as axioms: greedy (N^{1/3}), AKS ((N log N)^{1/3}), Ruzsa (N^{\u221a2-1})\n4. **The gap** as a verified theorem: \u221a2 - 1 < 1/2\n\nThe Erd\u0151s-R\u00e9nyi construction shows that N^{1/2-\u03b5} is achievable if we allow bounded (not zero) collision count, highlighting that the Sidon condition r(n) \u2264 1 is the essential difficulty.",
     "keyInsights": [
-      "**Sidon set**: A set A where all pairwise sums a + b (a ≤ b, a,b ∈ A) are distinct. Named after Simon Sidon.",
-      "**Counting function**: A(N) = |A ∩ {1,...,N}| measures how dense the set is up to N.",
-      "**The √N barrier**: For finite Sidon sets, max size ≈ √N. For infinite sets, achieving √N growth uniformly is impossible.",
-      "**Ruzsa's breakthrough**: His algebraic construction using finite fields gives growth rate N^{√2-1} ≈ N^{0.414}, the current record.",
-      "**The gap**: Between Ruzsa's 0.414 and the target 0.5-ε lies the $500 question. No construction has improved the exponent since 1998."
+      "**Sidon set**: A set A where all pairwise sums a + b (a \u2264 b, a,b \u2208 A) are distinct. Named after Simon Sidon.",
+      "**Counting function**: A(N) = |A \u2229 {1,...,N}| measures how dense the set is up to N.",
+      "**The \u221aN barrier**: For finite Sidon sets, max size \u2248 \u221aN. For infinite sets, achieving \u221aN growth uniformly is impossible.",
+      "**Ruzsa's breakthrough**: His algebraic construction using finite fields gives growth rate N^{\u221a2-1} \u2248 N^{0.414}, the current record.",
+      "**The gap**: Between Ruzsa's 0.414 and the target 0.5-\u03b5 lies the $500 question. No construction has improved the exponent since 1998."
     ],
     "prerequisites": [
-      "Sidon sets (B₂ sequences) and pairwise distinct sums",
+      "Sidon sets (B\u2082 sequences) and pairwise distinct sums",
       "Counting functions and asymptotic growth rates",
       "Probabilistic method in combinatorics",
       "Basic analytic number theory (square root barriers)"
@@ -93,38 +93,38 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture",
+      "title": "The Erd\u0151s Conjecture",
       "startLine": 44,
       "endLine": 55,
-      "summary": "Formal statement of Erdős Problem #39 as a Lean proposition."
+      "summary": "Formal statement of Erd\u0151s Problem #39 as a Lean proposition."
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 57,
       "endLine": 72,
-      "summary": "Erdős's theorem that liminf A(N)/√N = 0 for any infinite Sidon set."
+      "summary": "Erd\u0151s's theorem that liminf A(N)/\u221aN = 0 for any infinite Sidon set."
     },
     {
       "id": "constructions",
       "title": "Known Constructions",
       "startLine": 74,
       "endLine": 109,
-      "summary": "Axioms encoding greedy (N^{1/3}), AKS ((N log N)^{1/3}), and Ruzsa (N^{√2-1}) constructions."
+      "summary": "Axioms encoding greedy (N^{1/3}), AKS ((N log N)^{1/3}), and Ruzsa (N^{\u221a2-1}) constructions."
     },
     {
       "id": "gap",
       "title": "The Gap Analysis",
       "startLine": 111,
       "endLine": 132,
-      "summary": "Verified theorem showing √2 - 1 < 1/2, quantifying the remaining gap."
+      "summary": "Verified theorem showing \u221a2 - 1 < 1/2, quantifying the remaining gap."
     },
     {
       "id": "related",
       "title": "Related Results",
       "startLine": 134,
       "endLine": 149,
-      "summary": "Erdős-Rényi construction achieving N^{1/2-ε} with bounded representation numbers."
+      "summary": "Erd\u0151s-R\u00e9nyi construction achieving N^{1/2-\u03b5} with bounded representation numbers."
     },
     {
       "id": "examples",
@@ -135,12 +135,12 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #39, which asks whether an infinite Sidon set can achieve counting function N^{1/2-ε}. The problem remains open with a $500 prize. We axiomatize the known upper bound (Erdős's liminf theorem) and the best construction (Ruzsa's N^{√2-1}), and verify the gap between current knowledge and the target.",
+    "summary": "We formalize Erd\u0151s Problem #39, which asks whether an infinite Sidon set can achieve counting function N^{1/2-\u03b5}. The problem remains open with a $500 prize. We axiomatize the known upper bound (Erd\u0151s's liminf theorem) and the best construction (Ruzsa's N^{\u221a2-1}), and verify the gap between current knowledge and the target.",
     "implications": "This problem sits at the heart of additive combinatorics, connecting to questions about sum-free sets, perfect difference sets, and the structure of integers under addition. Progress would likely require new algebraic or probabilistic techniques beyond current methods.",
     "openQuestions": [
       "Can any construction improve on Ruzsa's N^{0.414} exponent?",
       "Is there a barrier at some exponent less than 1/2?",
-      "Can the Erdős-Rényi probabilistic method be derandomized to give Sidon sets?",
+      "Can the Erd\u0151s-R\u00e9nyi probabilistic method be derandomized to give Sidon sets?",
       "What role do perfect difference sets play in optimal constructions?"
     ]
   },
@@ -148,7 +148,7 @@
     {
       "targetId": "erdos-28",
       "relationship": "related",
-      "description": "The Erdős-Turán conjecture on additive bases (Problem #28) asks whether bases must have unbounded representation. Sidon sets have minimal representation ($r \\leq 1$) and are too sparse to be bases — Problem #39 asks exactly how sparse they must be"
+      "description": "The Erd\u0151s-Tur\u00e1n conjecture on additive bases (Problem #28) asks whether bases must have unbounded representation. Sidon sets have minimal representation ($r \\leq 1$) and are too sparse to be bases \u2014 Problem #39 asks exactly how sparse they must be"
     },
     {
       "targetId": "erdos-1",
@@ -173,31 +173,31 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Turán, Paul",
+      "authors": "Erd\u0151s, Paul; Tur\u00e1n, Paul",
       "title": "On a problem of Sidon in additive number theory, and on some related problems",
       "year": "1941",
-      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
-      "note": "Initiated the systematic study of Sidon sets and their density, proving the finite upper bound √N + O(N^{1/4})"
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212\u2013215",
+      "note": "Initiated the systematic study of Sidon sets and their density, proving the finite upper bound \u221aN + O(N^{1/4})"
     },
     {
       "authors": "Ruzsa, Imre Z.",
       "title": "An infinite Sidon sequence",
       "year": "1998",
-      "venue": "Journal of Number Theory, vol. 68, no. 1, pp. 63–71",
-      "note": "Constructed an infinite Sidon set with counting function N^{√2-1-o(1)} ≈ N^{0.414}, breaking the 1/3 barrier"
+      "venue": "Journal of Number Theory, vol. 68, no. 1, pp. 63\u201371",
+      "note": "Constructed an infinite Sidon set with counting function N^{\u221a2-1-o(1)} \u2248 N^{0.414}, breaking the 1/3 barrier"
     },
     {
-      "authors": "Ajtai, Miklós; Komlós, János; Szemerédi, Endre",
+      "authors": "Ajtai, Mikl\u00f3s; Koml\u00f3s, J\u00e1nos; Szemer\u00e9di, Endre",
       "title": "A dense infinite Sidon sequence",
       "year": "1981",
-      "venue": "European Journal of Combinatorics, vol. 2, no. 1, pp. 1–11",
+      "venue": "European Journal of Combinatorics, vol. 2, no. 1, pp. 1\u201311",
       "note": "Achieved counting function (N log N)^{1/3}, the first improvement over the greedy N^{1/3}"
     },
     {
       "authors": "Cilleruelo, Javier",
       "title": "Infinite Sidon sets",
       "year": "2010",
-      "venue": "Advances in Mathematics, vol. 225, no. 5, pp. 2786–2802",
+      "venue": "Advances in Mathematics, vol. 225, no. 5, pp. 2786\u20132802",
       "note": "Simplified and extended Ruzsa's construction, establishing the algebraic framework used in modern approaches"
     }
   ],
@@ -223,6 +223,7 @@
     "lineCount": 194,
     "axiomCount": 5,
     "theoremCount": 6,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   }
 }

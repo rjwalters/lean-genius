@@ -2,7 +2,7 @@
   "id": "binomial-theorem-oq-01-oq-01",
   "title": "Newton's Generalized Binomial Theorem via Analytic Function Theory",
   "slug": "binomial-theorem-oq-01-oq-01",
-  "description": "The analytic function theory perspective on Newton's generalized binomial series: ODE characterization (1+x)f'=αf uniquely determines (1+x)^α, coefficient recurrence, power series analyticity via Mathlib, functional equation, absorption identity, and explicit half-integer coefficients for the square root series.",
+  "description": "The analytic function theory perspective on Newton's generalized binomial series: ODE characterization (1+x)f'=\u03b1f uniquely determines (1+x)^\u03b1, coefficient recurrence, power series analyticity via Mathlib, functional equation, absorption identity, and explicit half-integer coefficients for the square root series.",
   "meta": {
     "author": "Isaac Newton (1665)",
     "sourceUrl": "",
@@ -27,7 +27,7 @@
       },
       {
         "theorem": "rpow_add",
-        "description": "Real power addition: (1+x)^(α+β) = (1+x)^α · (1+x)^β",
+        "description": "Real power addition: (1+x)^(\u03b1+\u03b2) = (1+x)^\u03b1 \u00b7 (1+x)^\u03b2",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
@@ -37,11 +37,11 @@
       }
     ],
     "originalContributions": [
-      "ode_recurrence: (k+1)·C(α,k+1) = (α-k)·C(α,k) from the falling factorial definition",
-      "genBinom_unique_from_ode: ODE coefficient recurrence uniquely determines C(α,k) from C(α,0)=1",
-      "absorption: α·C(α-1,k) = (k+1)·C(α,k+1) — the derivative formula d/dx[(1+x)^α] = α(1+x)^(α-1) at the coefficient level",
+      "ode_recurrence: (k+1)\u00b7C(\u03b1,k+1) = (\u03b1-k)\u00b7C(\u03b1,k) from the falling factorial definition",
+      "genBinom_unique_from_ode: ODE coefficient recurrence uniquely determines C(\u03b1,k) from C(\u03b1,0)=1",
+      "absorption: \u03b1\u00b7C(\u03b1-1,k) = (k+1)\u00b7C(\u03b1,k+1) \u2014 the derivative formula d/dx[(1+x)^\u03b1] = \u03b1(1+x)^(\u03b1-1) at the coefficient level",
       "genBinom_half_two = -1/8, genBinom_half_three = 1/16: explicit square root series coefficients",
-      "genBinom_half_ne_zero: C(1/2,k) ≠ 0 for all k (1/2 is never a natural number)"
+      "genBinom_half_ne_zero: C(1/2,k) \u2260 0 for all k (1/2 is never a natural number)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -56,13 +56,13 @@
   "overview": {
     "historicalContext": "Newton discovered the generalized binomial theorem around 1665, extending the finite binomial sum $(1+x)^n = \\sum \\binom{n}{k} x^k$ to arbitrary real exponents via the infinite series $(1+x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ for $|x| < 1$. The analytic function theory perspective emerged from Euler and Cauchy's work on ODEs: the function $f(x) = (1+x)^\\alpha$ is the unique solution to the initial value problem $(1+x)f'(x) = \\alpha f(x)$, $f(0) = 1$. This ODE approach is elegant because it determines the power series coefficients via a single recurrence relation, from which all properties (convergence, functional equation, special values) follow.",
     "problemStatement": "**Analytic Function Theory Perspective**: The generalized binomial series $\\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ is characterized as the unique power series satisfying the ODE $(1+x)f'(x) = \\alpha f(x)$ with $f(0) = 1$.\n\nThis yields:\n- **Coefficient recurrence**: $(k+1)\\binom{\\alpha}{k+1} = (\\alpha - k)\\binom{\\alpha}{k}$\n- **Absorption identity**: $\\alpha \\cdot \\binom{\\alpha-1}{k} = (k+1) \\cdot \\binom{\\alpha}{k+1}$ (derivative correspondence)\n- **Functional equation**: $(1+x)^\\alpha \\cdot (1+x)^\\beta = (1+x)^{\\alpha+\\beta}$\n- **Square root series**: $\\sqrt{1+x} = 1 + \\frac{x}{2} - \\frac{x^2}{8} + \\frac{x^3}{16} - \\cdots$",
-    "text": "The analytic function theory perspective on Newton's generalized binomial series: ODE characterization (1+x)f'=αf uniquely determines (1+x)^α, coefficient recurrence, power series analyticity via Mathlib, functional equation, absorption identity, and explicit half-integer coefficients for the square root series.",
-    "proofStrategy": "**ODE Uniqueness Approach**: The key insight is that the recurrence $(k+1)C(\\alpha, k+1) = (\\alpha - k)C(\\alpha, k)$ with $C(\\alpha, 0) = 1$ uniquely determines all coefficients. This is proved by induction using `mul_left_cancel₀` on the positive factor $(k+1)$.\n\nThe absorption identity $\\alpha \\cdot C(\\alpha-1, k) = (k+1) \\cdot C(\\alpha, k+1)$ is proved by induction on $k$, using the ODE recurrence for both $\\alpha$ and $\\alpha-1$ in the inductive step. This identity connects to differentiation: it is exactly the coefficient-level statement of $\\frac{d}{dx}(1+x)^\\alpha = \\alpha(1+x)^{\\alpha-1}$.\n\nAnalyticity is established directly from Mathlib's `Real.one_add_rpow_hasFPowerSeriesOnBall_zero`.",
+    "text": "The analytic function theory perspective on Newton's generalized binomial series: ODE characterization (1+x)f'=\u03b1f uniquely determines (1+x)^\u03b1, coefficient recurrence, power series analyticity via Mathlib, functional equation, absorption identity, and explicit half-integer coefficients for the square root series.",
+    "proofStrategy": "**ODE Uniqueness Approach**: The key insight is that the recurrence $(k+1)C(\\alpha, k+1) = (\\alpha - k)C(\\alpha, k)$ with $C(\\alpha, 0) = 1$ uniquely determines all coefficients. This is proved by induction using `mul_left_cancel\u2080` on the positive factor $(k+1)$.\n\nThe absorption identity $\\alpha \\cdot C(\\alpha-1, k) = (k+1) \\cdot C(\\alpha, k+1)$ is proved by induction on $k$, using the ODE recurrence for both $\\alpha$ and $\\alpha-1$ in the inductive step. This identity connects to differentiation: it is exactly the coefficient-level statement of $\\frac{d}{dx}(1+x)^\\alpha = \\alpha(1+x)^{\\alpha-1}$.\n\nAnalyticity is established directly from Mathlib's `Real.one_add_rpow_hasFPowerSeriesOnBall_zero`.",
     "keyInsights": [
-      "The ODE (1+x)f' = αf with f(0) = 1 uniquely determines (1+x)^α via coefficient matching",
-      "The absorption identity α·C(α-1,k) = (k+1)·C(α,k+1) is the derivative formula in coefficient form",
-      "C(1/2, k) gives the Taylor coefficients of √(1+x): 1, 1/2, -1/8, 1/16, ...",
-      "C(1/2, k) ≠ 0 for all k because 1/2 is never a natural number (no factor vanishes)",
+      "The ODE (1+x)f' = \u03b1f with f(0) = 1 uniquely determines (1+x)^\u03b1 via coefficient matching",
+      "The absorption identity \u03b1\u00b7C(\u03b1-1,k) = (k+1)\u00b7C(\u03b1,k+1) is the derivative formula in coefficient form",
+      "C(1/2, k) gives the Taylor coefficients of \u221a(1+x): 1, 1/2, -1/8, 1/16, ...",
+      "C(1/2, k) \u2260 0 for all k because 1/2 is never a natural number (no factor vanishes)",
       "Mathlib's HasFPowerSeriesOnBall provides the analytic framework without axioms"
     ],
     "prerequisites": [
@@ -77,14 +77,14 @@
       "title": "Generalized Binomial Coefficient",
       "startLine": 18,
       "endLine": 27,
-      "summary": "Definition genBinom α k = ∏_{j∈range k} (α-j) / k! and basic properties: genBinom_zero (C(α,0)=1) and genBinom_one (C(α,1)=α)."
+      "summary": "Definition genBinom \u03b1 k = \u220f_{j\u2208range k} (\u03b1-j) / k! and basic properties: genBinom_zero (C(\u03b1,0)=1) and genBinom_one (C(\u03b1,1)=\u03b1)."
     },
     {
       "id": "ode-recurrence",
       "title": "ODE Recurrence and Coefficient Uniqueness",
       "startLine": 29,
       "endLine": 50,
-      "summary": "Part I: ode_recurrence proves (k+1)·C(α,k+1) = (α-k)·C(α,k) from the falling factorial definition. genBinom_unique_from_ode shows this recurrence with C(α,0)=1 uniquely determines all coefficients, using mul_left_cancel₀ on the nonzero factor (k+1)."
+      "summary": "Part I: ode_recurrence proves (k+1)\u00b7C(\u03b1,k+1) = (\u03b1-k)\u00b7C(\u03b1,k) from the falling factorial definition. genBinom_unique_from_ode shows this recurrence with C(\u03b1,0)=1 uniquely determines all coefficients, using mul_left_cancel\u2080 on the nonzero factor (k+1)."
     },
     {
       "id": "analytic-properties",
@@ -98,28 +98,28 @@
       "title": "Functional Equation",
       "startLine": 62,
       "endLine": 73,
-      "summary": "Part III: rpow_add_exponents proves (1+x)^α·(1+x)^β = (1+x)^(α+β) for x > -1, with special cases rpow_zero_one and rpow_one_id."
+      "summary": "Part III: rpow_add_exponents proves (1+x)^\u03b1\u00b7(1+x)^\u03b2 = (1+x)^(\u03b1+\u03b2) for x > -1, with special cases rpow_zero_one and rpow_one_id."
     },
     {
       "id": "coefficient-ratio",
       "title": "Coefficient Ratio",
       "startLine": 75,
       "endLine": 83,
-      "summary": "Part IV: genBinom_ratio shows C(α,k+1)/C(α,k) = (α-k)/(k+1) when C(α,k) ≠ 0. This ratio test implies convergence radius 1."
+      "summary": "Part IV: genBinom_ratio shows C(\u03b1,k+1)/C(\u03b1,k) = (\u03b1-k)/(k+1) when C(\u03b1,k) \u2260 0. This ratio test implies convergence radius 1."
     },
     {
       "id": "negation",
       "title": "Negation and Special Values",
       "startLine": 85,
       "endLine": 104,
-      "summary": "Part V: genBinom_zero_succ (C(0,k)=0 for k≥1) and genBinom_neg_one (C(-1,k)=(-1)^k), connecting to the geometric series."
+      "summary": "Part V: genBinom_zero_succ (C(0,k)=0 for k\u22651) and genBinom_neg_one (C(-1,k)=(-1)^k), connecting to the geometric series."
     },
     {
       "id": "absorption",
       "title": "Absorption Identity (Derivative Correspondence)",
       "startLine": 106,
       "endLine": 143,
-      "summary": "Part VI: The absorption identity α·C(α-1,k) = (k+1)·C(α,k+1), which is the coefficient-level statement of d/dx[(1+x)^α] = α(1+x)^(α-1). Proved by induction using the ODE recurrence for both α and α-1."
+      "summary": "Part VI: The absorption identity \u03b1\u00b7C(\u03b1-1,k) = (k+1)\u00b7C(\u03b1,k+1), which is the coefficient-level statement of d/dx[(1+x)^\u03b1] = \u03b1(1+x)^(\u03b1-1). Proved by induction using the ODE recurrence for both \u03b1 and \u03b1-1."
     },
     {
       "id": "half-integer",
@@ -130,12 +130,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves 17 theorems with 0 sorries and 0 axioms, developing Newton's generalized binomial series from the analytic function theory viewpoint. The ODE characterization (1+x)f'=αf provides a unified framework from which the coefficient recurrence, absorption identity, and convergence all follow naturally.",
-    "implications": "**Theoretical Significance**: **Applications:**\n1. **ODE Theory**: The coefficient recurrence is a discrete analogue of Picard-Lindelöf uniqueness\n**2. Differentiation**: The absorption identity formalizes term-by-term differentiation of power series\n3. **Square Root Series**: Explicit coefficients for √(1+x) with proven nonvanishing\n4. **Analytic Continuation**: HasFPowerSeriesOnBall provides the analytic framework.",
+    "summary": "This formalization proves 17 theorems with 0 sorries and 0 axioms, developing Newton's generalized binomial series from the analytic function theory viewpoint. The ODE characterization (1+x)f'=\u03b1f provides a unified framework from which the coefficient recurrence, absorption identity, and convergence all follow naturally.",
+    "implications": "**Theoretical Significance**: **Applications:**\n1. **ODE Theory**: The coefficient recurrence is a discrete analogue of Picard-Lindel\u00f6f uniqueness\n**2. Differentiation**: The absorption identity formalizes term-by-term differentiation of power series\n3. **Square Root Series**: Explicit coefficients for \u221a(1+x) with proven nonvanishing\n4. **Analytic Continuation**: HasFPowerSeriesOnBall provides the analytic framework.",
     "openQuestions": [
-      "Prove the generalized Vandermonde-Chu identity C(α+β,n) = Σ C(α,k)·C(β,n-k) via power series multiplication and coefficient uniqueness",
+      "Prove the generalized Vandermonde-Chu identity C(\u03b1+\u03b2,n) = \u03a3 C(\u03b1,k)\u00b7C(\u03b2,n-k) via power series multiplication and coefficient uniqueness",
       "Formalize the connection between the absorption identity and term-by-term differentiation of HasFPowerSeriesOnBall",
-      "Compute C(-1/2, k) = (-1)^k · C(2k,k) / 4^k connecting to central binomial coefficients and Catalan numbers"
+      "Compute C(-1/2, k) = (-1)^k \u00b7 C(2k,k) / 4^k connecting to central binomial coefficients and Catalan numbers"
     ]
   },
   "crossReferences": [
@@ -166,6 +166,7 @@
     "lineCount": 220,
     "axiomCount": 0,
     "theoremCount": 17,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "lemmaCount": 0
   }
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-238",
-  "title": "Erdős Problem #238: Consecutive Primes with Large Gaps",
+  "title": "Erd\u0151s Problem #238: Consecutive Primes with Large Gaps",
   "slug": "erdos-238",
-  "description": "For c₁, c₂ > 0, can we find > c₁·log(x) consecutive primes ≤ x with all gaps > c₂? Proved for small c₁ (Erdős); general case OPEN.",
+  "description": "For c\u2081, c\u2082 > 0, can we find > c\u2081\u00b7log(x) consecutive primes \u2264 x with all gaps > c\u2082? Proved for small c\u2081 (Erd\u0151s); general case OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/238",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos238Problem.lean",
@@ -32,16 +32,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem from Erdős [Er55c, p.7; Er49c] concerns long runs of consecutive primes with uniformly large gaps. It originates from Erdős's 1949 and 1955 papers on prime gap distribution, building on the classical question of how primes cluster or spread apart.\n\nThe Prime Number Theorem (proved independently by Hadamard and de la Vallée-Poussin in 1896) ensures that the average gap between consecutive primes near $x$ grows as $\\log x$, so most gaps exceed any fixed constant for large $x$. The challenge is finding LONG runs (of length $\\sim c_1 \\log x$) where ALL gaps simultaneously exceed a threshold $c_2$.\n\nErdős proved the conjecture holds when $c_1$ is sufficiently small (depending on $c_2$) using a second-moment argument: showing the expected number of qualifying runs in $[1, x]$ tends to infinity. The general case — arbitrary $c_1, c_2 > 0$ — remains open and is closely related to understanding the joint distribution of consecutive prime gaps.\n\nThe problem sits at the intersection of several major themes in analytic number theory: Cramér's 1936 random model for primes (which predicts maximal gaps of size $(\\log x)^2$), the Maier matrix method (1985) which showed deviations from the Cramér model in short intervals, and the Goldston-Pintz-Yıldırım (2009) and Maynard-Tao (2014) breakthroughs on small gaps between primes.",
-    "problemStatement": "Let c₁, c₂ > 0. Is it true that for any sufficiently large x, there exist more than c₁·log(x) consecutive primes ≤ x such that the difference between any two adjacent primes is > c₂?",
-    "text": "For c₁, c₂ > 0, can we find > c₁·log(x) consecutive primes ≤ x with all gaps > c₂? Proved for small c₁ (Erdős); general case OPEN.",
-    "proofStrategy": "The formalization defines nthPrime, primeGap, consecutivePrimes, and predicates allPrimesLeX and allGapsLarge. The main conjecture uses Filter.Eventually (∀ᶠ in atTop). Erdős's partial result is an axiom. PNT context, run length analysis, and Cramér's conjecture are included. A summary theorem combines the known results.",
+    "historicalContext": "This problem from Erd\u0151s [Er55c, p.7; Er49c] concerns long runs of consecutive primes with uniformly large gaps. It originates from Erd\u0151s's 1949 and 1955 papers on prime gap distribution, building on the classical question of how primes cluster or spread apart.\n\nThe Prime Number Theorem (proved independently by Hadamard and de la Vall\u00e9e-Poussin in 1896) ensures that the average gap between consecutive primes near $x$ grows as $\\log x$, so most gaps exceed any fixed constant for large $x$. The challenge is finding LONG runs (of length $\\sim c_1 \\log x$) where ALL gaps simultaneously exceed a threshold $c_2$.\n\nErd\u0151s proved the conjecture holds when $c_1$ is sufficiently small (depending on $c_2$) using a second-moment argument: showing the expected number of qualifying runs in $[1, x]$ tends to infinity. The general case \u2014 arbitrary $c_1, c_2 > 0$ \u2014 remains open and is closely related to understanding the joint distribution of consecutive prime gaps.\n\nThe problem sits at the intersection of several major themes in analytic number theory: Cram\u00e9r's 1936 random model for primes (which predicts maximal gaps of size $(\\log x)^2$), the Maier matrix method (1985) which showed deviations from the Cram\u00e9r model in short intervals, and the Goldston-Pintz-Y\u0131ld\u0131r\u0131m (2009) and Maynard-Tao (2014) breakthroughs on small gaps between primes.",
+    "problemStatement": "Let c\u2081, c\u2082 > 0. Is it true that for any sufficiently large x, there exist more than c\u2081\u00b7log(x) consecutive primes \u2264 x such that the difference between any two adjacent primes is > c\u2082?",
+    "text": "For c\u2081, c\u2082 > 0, can we find > c\u2081\u00b7log(x) consecutive primes \u2264 x with all gaps > c\u2082? Proved for small c\u2081 (Erd\u0151s); general case OPEN.",
+    "proofStrategy": "The formalization defines nthPrime, primeGap, consecutivePrimes, and predicates allPrimesLeX and allGapsLarge. The main conjecture uses Filter.Eventually (\u2200\u1da0 in atTop). Erd\u0151s's partial result is an axiom. PNT context, run length analysis, and Cram\u00e9r's conjecture are included. A summary theorem combines the known results.",
     "keyInsights": [
-      "Average prime gap near x is ~log(x) by PNT, so most gaps exceed any fixed c₂",
-      "The challenge is finding LONG runs (length c₁·log x) where ALL gaps are large",
-      "Erdős proved the result for sufficiently small c₁ (depending on c₂)",
-      "The general case (arbitrary c₁ > 0) remains open",
-      "Cramér's conjecture on maximal gaps provides supporting context"
+      "Average prime gap near x is ~log(x) by PNT, so most gaps exceed any fixed c\u2082",
+      "The challenge is finding LONG runs (length c\u2081\u00b7log x) where ALL gaps are large",
+      "Erd\u0151s proved the result for sufficiently small c\u2081 (depending on c\u2082)",
+      "The general case (arbitrary c\u2081 > 0) remains open",
+      "Cram\u00e9r's conjecture on maximal gaps provides supporting context"
     ],
     "prerequisites": [
       "Prime Number Theorem",
@@ -64,35 +64,35 @@
       "title": "Part 2: Consecutive Prime Sequences",
       "startLine": 51,
       "endLine": 75,
-      "summary": "Defines consecutivePrimes (k primes starting from p_m), allPrimesLeX (all primes bounded by x), and allGapsLarge (all k-1 gaps exceed c₂). Uses Fin k for type-safe indexing."
+      "summary": "Defines consecutivePrimes (k primes starting from p_m), allPrimesLeX (all primes bounded by x), and allGapsLarge (all k-1 gaps exceed c\u2082). Uses Fin k for type-safe indexing."
     },
     {
       "id": "main-conjecture",
       "title": "Part 3: The Main Conjecture",
       "startLine": 77,
       "endLine": 89,
-      "summary": "mainConjecture: ∀ c₁,c₂ > 0, eventually (via Filter.atTop) ∃ run of k > c₁·log(x) consecutive primes ≤ x with all gaps > c₂."
+      "summary": "mainConjecture: \u2200 c\u2081,c\u2082 > 0, eventually (via Filter.atTop) \u2203 run of k > c\u2081\u00b7log(x) consecutive primes \u2264 x with all gaps > c\u2082."
     },
     {
       "id": "negation",
       "title": "Part 4: The Negation",
       "startLine": 91,
       "endLine": 102,
-      "summary": "Explicit negation: ∃ c₁,c₂ > 0 such that for arbitrarily large x, no qualifying run exists. Enables the structural proof conjecture_vs_negation."
+      "summary": "Explicit negation: \u2203 c\u2081,c\u2082 > 0 such that for arbitrarily large x, no qualifying run exists. Enables the structural proof conjecture_vs_negation."
     },
     {
       "id": "partial-result",
-      "title": "Part 5: Erdős's Partial Result",
+      "title": "Part 5: Erd\u0151s's Partial Result",
       "startLine": 104,
       "endLine": 117,
-      "summary": "Axiom encoding Erdős's theorem: ∀ c₂ > 0, ∃ c₁ > 0 (small, depending on c₂) making the conjecture hold. The quantifier swap (∃c₁ vs ∀c₁) is the gap between known and open."
+      "summary": "Axiom encoding Erd\u0151s's theorem: \u2200 c\u2082 > 0, \u2203 c\u2081 > 0 (small, depending on c\u2082) making the conjecture hold. The quantifier swap (\u2203c\u2081 vs \u2200c\u2081) is the gap between known and open."
     },
     {
       "id": "pnt-context",
       "title": "Part 6: PNT Context",
       "startLine": 119,
       "endLine": 141,
-      "summary": "Two axioms: average_gap_grows (eventually ∃ gap > c₂ among primes ≤ x) and prime_number_theorem_asymptotic (π(x) ~ x/log(x) formalized via ε-approximation)."
+      "summary": "Two axioms: average_gap_grows (eventually \u2203 gap > c\u2082 among primes \u2264 x) and prime_number_theorem_asymptotic (\u03c0(x) ~ x/log(x) formalized via \u03b5-approximation)."
     },
     {
       "id": "run-length",
@@ -106,39 +106,39 @@
       "title": "Part 8: Heuristic Analysis",
       "startLine": 166,
       "endLine": 181,
-      "summary": "Proved theorem large_gaps_eventually_dominate: for any fixed c₂, large gaps become common for large x. Direct consequence of average_gap_grows axiom."
+      "summary": "Proved theorem large_gaps_eventually_dominate: for any fixed c\u2082, large gaps become common for large x. Direct consequence of average_gap_grows axiom."
     },
     {
       "id": "cramer",
-      "title": "Part 9: Cramér's Conjecture",
+      "title": "Part 9: Cram\u00e9r's Conjecture",
       "startLine": 183,
       "endLine": 196,
-      "summary": "Defines cramersConjecture as a Prop: ∃ C > 0 s.t. all gaps ≤ C·(log x)² eventually. Provides supporting context but is itself open."
+      "summary": "Defines cramersConjecture as a Prop: \u2203 C > 0 s.t. all gaps \u2264 C\u00b7(log x)\u00b2 eventually. Provides supporting context but is itself open."
     },
     {
       "id": "structural-theorems",
       "title": "Part 10: Structural Theorems and Summary",
       "startLine": 198,
       "endLine": 234,
-      "summary": "Three verified results: partial_weaker_than_full (full conjecture ⟹ partial), conjecture_vs_negation (12-line proof using Filter.mem_atTop_sets), and erdos_238_summary packaging known results."
+      "summary": "Three verified results: partial_weaker_than_full (full conjecture \u27f9 partial), conjecture_vs_negation (12-line proof using Filter.mem_atTop_sets), and erdos_238_summary packaging known results."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #238 asks whether long runs of consecutive primes with all gaps > c₂ can always be found. Erdős proved this for small c₁ via a second-moment argument; the general case remains open and requires understanding the joint distribution of consecutive gaps.",
-    "implications": "**Theoretical Significance**: Resolution would illuminate prime gap distribution and whether gaps exhibit sufficient uniformity to support long runs of large values.\n\nA positive answer would confirm that the Cramér random model captures the large-gap structure of primes at the level of consecutive sequences, not just individual gaps. A negative answer would reveal unexpected correlations between consecutive prime gaps.",
+    "summary": "Erd\u0151s Problem #238 asks whether long runs of consecutive primes with all gaps > c\u2082 can always be found. Erd\u0151s proved this for small c\u2081 via a second-moment argument; the general case remains open and requires understanding the joint distribution of consecutive gaps.",
+    "implications": "**Theoretical Significance**: Resolution would illuminate prime gap distribution and whether gaps exhibit sufficient uniformity to support long runs of large values.\n\nA positive answer would confirm that the Cram\u00e9r random model captures the large-gap structure of primes at the level of consecutive sequences, not just individual gaps. A negative answer would reveal unexpected correlations between consecutive prime gaps.",
     "openQuestions": [
-      "Does the conjecture hold for all c₁, c₂ > 0?",
-      "What is the optimal dependence of c₁ on c₂ in Erdős's partial result?",
-      "How does the answer relate to Cramér's conjecture and the Maier matrix method?",
-      "Can probabilistic models (e.g., the Cramér-Granville model) be made rigorous for this problem?",
-      "Does the Goldston-Pintz-Yıldırım method for small gaps shed light on the large-gap structure?"
+      "Does the conjecture hold for all c\u2081, c\u2082 > 0?",
+      "What is the optimal dependence of c\u2081 on c\u2082 in Erd\u0151s's partial result?",
+      "How does the answer relate to Cram\u00e9r's conjecture and the Maier matrix method?",
+      "Can probabilistic models (e.g., the Cram\u00e9r-Granville model) be made rigorous for this problem?",
+      "Does the Goldston-Pintz-Y\u0131ld\u0131r\u0131m method for small gaps shed light on the large-gap structure?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-218",
       "relationship": "related",
-      "description": "Both concern prime gap distribution: #218 asks about the density of d_{n+1} ≥ d_n vs d_{n+1} ≤ d_n, while #238 asks about long runs where all gaps exceed a threshold"
+      "description": "Both concern prime gap distribution: #218 asks about the density of d_{n+1} \u2265 d_n vs d_{n+1} \u2264 d_n, while #238 asks about long runs where all gaps exceed a threshold"
     },
     {
       "targetId": "bounded-prime-gaps",
@@ -154,15 +154,15 @@
   "references": [
     {
       "key": "Er49c",
-      "citation": "P. Erdős, 'On the converse of Fermat's theorem', Amer. Math. Monthly, 56 (1949), 623-624"
+      "citation": "P. Erd\u0151s, 'On the converse of Fermat's theorem', Amer. Math. Monthly, 56 (1949), 623-624"
     },
     {
       "key": "Er55c",
-      "citation": "P. Erdős, 'Some problems on the distribution of prime numbers', Teoria dei numeri, Math. Congr. Varenna, 1954, pp. 8, 1955"
+      "citation": "P. Erd\u0151s, 'Some problems on the distribution of prime numbers', Teoria dei numeri, Math. Congr. Varenna, 1954, pp. 8, 1955"
     },
     {
       "key": "Cramer1936",
-      "citation": "H. Cramér, 'On the order of magnitude of the difference between consecutive prime numbers', Acta Arith. 2 (1936), 23-46"
+      "citation": "H. Cram\u00e9r, 'On the order of magnitude of the difference between consecutive prime numbers', Acta Arith. 2 (1936), 23-46"
     },
     {
       "key": "Maier1985",
@@ -197,6 +197,7 @@
     "lineCount": 234,
     "axiomCount": 4,
     "theoremCount": 4,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "lemmaCount": 0
   }
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-953",
-  "title": "Erdős Problem #953: Avoiding Integer Distances in the Plane",
+  "title": "Erd\u0151s Problem #953: Avoiding Integer Distances in the Plane",
   "slug": "erdos-953",
-  "description": "What is the maximum measure of a set A ⊆ B(0,r) that avoids integer distances between its points?",
+  "description": "What is the maximum measure of a set A \u2286 B(0,r) that avoids integer distances between its points?",
   "meta": {
-    "author": "Erdős and Sárközi (problem), Kovač (lower bound)",
+    "author": "Erd\u0151s and S\u00e1rk\u00f6zi (problem), Kova\u010d (lower bound)",
     "sourceUrl": "https://erdosproblems.com/953",
     "date": "c. 1980",
     "status": "axiomatized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.Measure.Lebesgue",
-        "description": "Lebesgue measure on ℝ²",
+        "description": "Lebesgue measure on \u211d\u00b2",
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
       },
       {
@@ -37,7 +37,7 @@
       },
       {
         "theorem": "InnerProductSpace",
-        "description": "Euclidean geometry in ℝ²",
+        "description": "Euclidean geometry in \u211d\u00b2",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
@@ -52,10 +52,10 @@
       "openDisk definition: {x : |x| < r}",
       "maxMeasure function: supremum over valid sets",
       "trivial_upper_bound axiom: maxMeasure(r) = O(r)",
-      "kovac_lower_bound axiom: maxMeasure(r) ≥ r^{0.26}",
+      "kovac_lower_bound axiom: maxMeasure(r) \u2265 r^{0.26}",
       "annulus definition and thin annulus construction",
       "AvoidsForbiddenDistances general predicate",
-      "Connection to Erdős #465 and #466",
+      "Connection to Erd\u0151s #465 and #466",
       "circle_separation lemma: radii differing by 1",
       "singleton_avoids and pair_half_avoids verified examples"
     ],
@@ -64,16 +64,16 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #953** is a joint problem of Paul Erdős and András Sárközi from around 1980, addressing a natural geometric-measure-theoretic question: how large (in Lebesgue measure) can a subset of a disk be if no two of its points are at integer distance? Erdős himself remarked that 'Sárközi has the sharpest results, but nothing has been published yet,' highlighting how this problem circulated informally among Hungarian combinatorialists before appearing in print.\n\n**Origins and Context:**\nThe problem sits at the intersection of combinatorial geometry and measure theory, extending classical Erdős distance problems to a continuous setting. While Erdős's famous 1946 distinct distances problem (with Gallai) concerns finite point sets, Problem #953 shifts the focus to measurable sets in the plane, asking how metric constraints on pairwise distances limit the 'size' of a set in the Lebesgue sense.\n\n**Key Contributors:**\n- **András Sárközi** (1936–2024): Hungarian mathematician known for foundational results in additive combinatorics, including the Szemerédi–Sárközi theorem on difference sets containing perfect squares. His unpublished methods on this problem informed later work.\n- **Vjekoslav Kovač**: Croatian mathematician who adapted Sárközy's methods from Erdős Problem #466 to obtain the current best lower bound of $r^{0.26}$ for the maximum measure.\n- The problem is closely related to Erdős Problems #465 and #466, which treat the unit distance case and represent the 'one forbidden distance' variant of this 'all integer distances forbidden' problem.\n\n**Mathematical Landscape:**\nThe $O(r)$ upper bound follows from a geometric slicing argument: a set avoiding integer distances cannot intersect too many concentric circles whose radii differ by integers. The lower bound $r^{0.26}$ uses deep ideas from additive combinatorics—specifically, constructions related to sum-free sets and difference sets that avoid prescribed residues. The enormous gap between these bounds reveals how poorly understood the geometry of integer-distance-avoiding sets remains.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet $A \\subset \\{x \\in \\mathbb{R}^2 : |x| < r\\}$ be a measurable set with no integer distances—that is, $|a - b| \\notin \\mathbb{Z}$ for any distinct $a, b \\in A$.\n\n**Question:** What is the maximum possible Lebesgue measure of $A$?\n\nDefine $M(r) = \\sup\\{\\mu(A) : A \\subseteq B(0,r),\\; A \\text{ avoids integer distances}\\}$. What is the asymptotic behavior of $M(r)$ as $r \\to \\infty$?\n\n**Known Bounds:** $C_1 r^{0.26} \\leq M(r) \\leq C_2 r$ for constants $C_1, C_2 > 0$ and all $r \\geq 1$.",
-    "text": "What is the maximum measure of a set A ⊆ B(0,r) that avoids integer distances between its points?",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization builds up the problem through a series of layers:\n\n1. **Distance Predicates** (lines 50–71):\n   - `IsIntegerDistance a b`: formalizes $\\exists n \\in \\mathbb{Z},\\; d(a,b) = n$\n   - `AvoidsIntegerDistances A`: the universal avoidance property, with an equivalence theorem expanding to explicit integer quantification\n\n2. **Geometric Setup** (lines 83–98):\n   - `openDisk r`: the open ball $B(0,r)$ in $\\mathbb{R}^2$\n   - `maxMeasure r`: defined as $\\sup_{A}\\{\\mu(A)\\}$ over all measurable $A \\subseteq B(0,r)$ avoiding integer distances, using Lean's `⨆` (supremum)\n\n3. **Verified Examples** (lines 107–139):\n   - `singleton_avoids`: fully proved—singletons trivially avoid integer distances\n   - `pair_half_avoids`: fully proved—two points at distance $0.5$ avoid integer distances, with a careful omega argument showing $0.5 \\notin \\mathbb{Z}$\n\n4. **Bounds as Axioms** (lines 154–193):\n   - Upper bound $O(r)$ and circle separation argument axiomatized\n   - Kovač's lower bound $r^{0.26}$ and Sárközy exponent axiomatized\n\n5. **Generalizations** (lines 226–255):\n   - `AvoidsForbiddenDistances`: general framework for arbitrary forbidden distance sets $D \\subseteq \\mathbb{R}$\n   - Cross-references to Erdős #465 (upper bounds) and #466 (lower bounds) for the unit distance special case\n\n6. **Summary Theorem** (lines 292–296):\n   - `erdos_953_summary` combines the upper and lower bounds into a single statement, proved from the axioms",
+    "historicalContext": "**Erd\u0151s Problem #953** is a joint problem of Paul Erd\u0151s and Andr\u00e1s S\u00e1rk\u00f6zi from around 1980, addressing a natural geometric-measure-theoretic question: how large (in Lebesgue measure) can a subset of a disk be if no two of its points are at integer distance? Erd\u0151s himself remarked that 'S\u00e1rk\u00f6zi has the sharpest results, but nothing has been published yet,' highlighting how this problem circulated informally among Hungarian combinatorialists before appearing in print.\n\n**Origins and Context:**\nThe problem sits at the intersection of combinatorial geometry and measure theory, extending classical Erd\u0151s distance problems to a continuous setting. While Erd\u0151s's famous 1946 distinct distances problem (with Gallai) concerns finite point sets, Problem #953 shifts the focus to measurable sets in the plane, asking how metric constraints on pairwise distances limit the 'size' of a set in the Lebesgue sense.\n\n**Key Contributors:**\n- **Andr\u00e1s S\u00e1rk\u00f6zi** (1936\u20132024): Hungarian mathematician known for foundational results in additive combinatorics, including the Szemer\u00e9di\u2013S\u00e1rk\u00f6zi theorem on difference sets containing perfect squares. His unpublished methods on this problem informed later work.\n- **Vjekoslav Kova\u010d**: Croatian mathematician who adapted S\u00e1rk\u00f6zy's methods from Erd\u0151s Problem #466 to obtain the current best lower bound of $r^{0.26}$ for the maximum measure.\n- The problem is closely related to Erd\u0151s Problems #465 and #466, which treat the unit distance case and represent the 'one forbidden distance' variant of this 'all integer distances forbidden' problem.\n\n**Mathematical Landscape:**\nThe $O(r)$ upper bound follows from a geometric slicing argument: a set avoiding integer distances cannot intersect too many concentric circles whose radii differ by integers. The lower bound $r^{0.26}$ uses deep ideas from additive combinatorics\u2014specifically, constructions related to sum-free sets and difference sets that avoid prescribed residues. The enormous gap between these bounds reveals how poorly understood the geometry of integer-distance-avoiding sets remains.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $A \\subset \\{x \\in \\mathbb{R}^2 : |x| < r\\}$ be a measurable set with no integer distances\u2014that is, $|a - b| \\notin \\mathbb{Z}$ for any distinct $a, b \\in A$.\n\n**Question:** What is the maximum possible Lebesgue measure of $A$?\n\nDefine $M(r) = \\sup\\{\\mu(A) : A \\subseteq B(0,r),\\; A \\text{ avoids integer distances}\\}$. What is the asymptotic behavior of $M(r)$ as $r \\to \\infty$?\n\n**Known Bounds:** $C_1 r^{0.26} \\leq M(r) \\leq C_2 r$ for constants $C_1, C_2 > 0$ and all $r \\geq 1$.",
+    "text": "What is the maximum measure of a set A \u2286 B(0,r) that avoids integer distances between its points?",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization builds up the problem through a series of layers:\n\n1. **Distance Predicates** (lines 50\u201371):\n   - `IsIntegerDistance a b`: formalizes $\\exists n \\in \\mathbb{Z},\\; d(a,b) = n$\n   - `AvoidsIntegerDistances A`: the universal avoidance property, with an equivalence theorem expanding to explicit integer quantification\n\n2. **Geometric Setup** (lines 83\u201398):\n   - `openDisk r`: the open ball $B(0,r)$ in $\\mathbb{R}^2$\n   - `maxMeasure r`: defined as $\\sup_{A}\\{\\mu(A)\\}$ over all measurable $A \\subseteq B(0,r)$ avoiding integer distances, using Lean's `\u2a06` (supremum)\n\n3. **Verified Examples** (lines 107\u2013139):\n   - `singleton_avoids`: fully proved\u2014singletons trivially avoid integer distances\n   - `pair_half_avoids`: fully proved\u2014two points at distance $0.5$ avoid integer distances, with a careful omega argument showing $0.5 \\notin \\mathbb{Z}$\n\n4. **Bounds as Axioms** (lines 154\u2013193):\n   - Upper bound $O(r)$ and circle separation argument axiomatized\n   - Kova\u010d's lower bound $r^{0.26}$ and S\u00e1rk\u00f6zy exponent axiomatized\n\n5. **Generalizations** (lines 226\u2013255):\n   - `AvoidsForbiddenDistances`: general framework for arbitrary forbidden distance sets $D \\subseteq \\mathbb{R}$\n   - Cross-references to Erd\u0151s #465 (upper bounds) and #466 (lower bounds) for the unit distance special case\n\n6. **Summary Theorem** (lines 292\u2013296):\n   - `erdos_953_summary` combines the upper and lower bounds into a single statement, proved from the axioms",
     "keyInsights": [
-      "**From Counting to Measuring:** Unlike classical Erdős distance problems that count distances in finite point sets, Problem #953 asks for the Lebesgue measure of infinite sets, requiring fundamentally different techniques from measure theory and harmonic analysis",
-      "**The Enormous Gap:** The current bounds $r^{0.26} \\leq M(r) \\leq O(r)$ differ by a polynomial factor of $r^{0.74}$—determining the correct exponent is the central open question, and closing this gap likely requires new geometric ideas",
+      "**From Counting to Measuring:** Unlike classical Erd\u0151s distance problems that count distances in finite point sets, Problem #953 asks for the Lebesgue measure of infinite sets, requiring fundamentally different techniques from measure theory and harmonic analysis",
+      "**The Enormous Gap:** The current bounds $r^{0.26} \\leq M(r) \\leq O(r)$ differ by a polynomial factor of $r^{0.74}$\u2014determining the correct exponent is the central open question, and closing this gap likely requires new geometric ideas",
       "**Circle Separation Principle:** The formalized `circle_separation` axiom captures a key geometric insight: points on concentric circles with radii differing by exactly 1 are automatically at distance 1, so an integer-distance-avoiding set can only intersect a 'thin' family of such circles",
-      "**Sárközy's Additive Methods:** The lower bound exponent $\\alpha \\approx 0.26$ arises from techniques in additive combinatorics, specifically constructions of sets whose difference sets avoid prescribed residue classes—showing a deep connection between discrete number theory and continuous geometry",
-      "**Thin Annulus Strategy:** The formalization shows that restricting to annuli of thickness $\\delta < 1$ eliminates all integer distances $> 1$ automatically, reducing the problem to avoiding a single distance—this 'localization' technique is central to constructive lower bounds",
+      "**S\u00e1rk\u00f6zy's Additive Methods:** The lower bound exponent $\\alpha \\approx 0.26$ arises from techniques in additive combinatorics, specifically constructions of sets whose difference sets avoid prescribed residue classes\u2014showing a deep connection between discrete number theory and continuous geometry",
+      "**Thin Annulus Strategy:** The formalization shows that restricting to annuli of thickness $\\delta < 1$ eliminates all integer distances $> 1$ automatically, reducing the problem to avoiding a single distance\u2014this 'localization' technique is central to constructive lower bounds",
       "**The General Framework:** The `AvoidsForbiddenDistances` predicate unifies integer avoidance ($D = \\mathbb{Z}$) with unit avoidance ($D = \\{1\\}$) and other variants, revealing the problem's place in a hierarchy of forbidden distance problems with varying difficulty"
     ],
     "prerequisites": [
@@ -99,7 +99,7 @@
     {
       "id": "disk-measure",
       "title": "The Disk and Measure",
-      "summary": "Defines `openDisk r = \\{x \\in \\mathbb{R}^2 : d(x,0) < r\\}` and proves it is nonempty for $r > 0$. Introduces `maxMeasure r = \\sup\\{\\mu(A)\\}$ over measurable subsets avoiding integer distances—the central quantity of Problem #953.",
+      "summary": "Defines `openDisk r = \\{x \\in \\mathbb{R}^2 : d(x,0) < r\\}` and proves it is nonempty for $r > 0$. Introduces `maxMeasure r = \\sup\\{\\mu(A)\\}$ over measurable subsets avoiding integer distances\u2014the central quantity of Problem #953.",
       "startLine": 73,
       "endLine": 98
     },
@@ -119,22 +119,22 @@
     },
     {
       "id": "lower-bounds",
-      "title": "Lower Bounds and Sárközy Exponent",
-      "summary": "Axiomatizes Kovač's lower bound $M(r) \\geq C \\cdot r^{\\alpha}$ with $\\alpha \\approx 0.26$. Introduces the Sárközy exponent as an axiom with bounds $0.25 \\leq \\alpha \\leq 0.27$.",
+      "title": "Lower Bounds and S\u00e1rk\u00f6zy Exponent",
+      "summary": "Axiomatizes Kova\u010d's lower bound $M(r) \\geq C \\cdot r^{\\alpha}$ with $\\alpha \\approx 0.26$. Introduces the S\u00e1rk\u00f6zy exponent as an axiom with bounds $0.25 \\leq \\alpha \\leq 0.27$.",
       "startLine": 168,
       "endLine": 192
     },
     {
       "id": "annulus-construction",
       "title": "The Annulus Construction",
-      "summary": "Defines `annulus r₁ r₂ = \\{x : r_1 \\leq d(x,0) < r_2\\}$ and axiomatizes the thin annulus property: for $\\delta < 1$, there exists a positive-measure subset of the annulus $[r, r+\\delta)$ that avoids integer distances.",
+      "summary": "Defines `annulus r\u2081 r\u2082 = \\{x : r_1 \\leq d(x,0) < r_2\\}$ and axiomatizes the thin annulus property: for $\\delta < 1$, there exists a positive-measure subset of the annulus $[r, r+\\delta)$ that avoids integer distances.",
       "startLine": 194,
       "endLine": 214
     },
     {
       "id": "related-problems",
       "title": "Related Distance Problems",
-      "summary": "Introduces `AvoidsForbiddenDistances A D` for general forbidden distance sets. Proves that integer avoidance equals $D = \\mathbb{Z}$ avoidance. Axiomatizes Erdős #465 (unit distance upper bounds) and #466 (unit distance lower bounds).",
+      "summary": "Introduces `AvoidsForbiddenDistances A D` for general forbidden distance sets. Proves that integer avoidance equals $D = \\mathbb{Z}$ avoidance. Axiomatizes Erd\u0151s #465 (unit distance upper bounds) and #466 (unit distance lower bounds).",
       "startLine": 216,
       "endLine": 255
     },
@@ -154,8 +154,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #953 as a well-structured Lean 4 development. The core definitions (`IsIntegerDistance`, `AvoidsIntegerDistances`, `maxMeasure`) are fully formalized with verified basic examples (`singleton_avoids`, `pair_half_avoids`). The deep results—the $O(r)$ upper bound, Kovač's $r^{0.26}$ lower bound, and the conjectured asymptotic—are axiomatized, reflecting the open status of the problem. The formalization also introduces a general `AvoidsForbiddenDistances` framework linking to Erdős Problems #465 and #466.",
-    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Combinatorial Geometry:** This problem exemplifies how metric constraints on pairwise distances limit the size of sets, connecting to the broader theory of forbidden distance graphs and chromatic numbers of distance graphs in $\\mathbb{R}^d$\n\n2. **Additive Combinatorics Bridge:** The lower bound techniques originate from Sárközy's work on difference sets avoiding prescribed residue classes, revealing a deep connection between discrete additive structures and continuous geometric problems\n\n**3. Measure vs. Counting:** The shift from counting (classical Erdős distance problems) to measuring (this problem) introduces fundamentally new difficulties, as the continuum structure of $\\mathbb{R}^2$ allows for more subtle constructions than finite point sets\n\n4. **Harmonic Analysis Potential:** Closing the gap between the bounds may require Fourier-analytic techniques, as similar problems (e.g., the Falconer distance problem) have been advanced using such methods\n\n5. **Higher-Dimensional Extensions:** The problem naturally generalizes to $\\mathbb{R}^d$, where the geometry of concentric spheres replaces circles, potentially changing the extremal exponents.",
+    "summary": "This formalization captures Erd\u0151s Problem #953 as a well-structured Lean 4 development. The core definitions (`IsIntegerDistance`, `AvoidsIntegerDistances`, `maxMeasure`) are fully formalized with verified basic examples (`singleton_avoids`, `pair_half_avoids`). The deep results\u2014the $O(r)$ upper bound, Kova\u010d's $r^{0.26}$ lower bound, and the conjectured asymptotic\u2014are axiomatized, reflecting the open status of the problem. The formalization also introduces a general `AvoidsForbiddenDistances` framework linking to Erd\u0151s Problems #465 and #466.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Combinatorial Geometry:** This problem exemplifies how metric constraints on pairwise distances limit the size of sets, connecting to the broader theory of forbidden distance graphs and chromatic numbers of distance graphs in $\\mathbb{R}^d$\n\n2. **Additive Combinatorics Bridge:** The lower bound techniques originate from S\u00e1rk\u00f6zy's work on difference sets avoiding prescribed residue classes, revealing a deep connection between discrete additive structures and continuous geometric problems\n\n**3. Measure vs. Counting:** The shift from counting (classical Erd\u0151s distance problems) to measuring (this problem) introduces fundamentally new difficulties, as the continuum structure of $\\mathbb{R}^2$ allows for more subtle constructions than finite point sets\n\n4. **Harmonic Analysis Potential:** Closing the gap between the bounds may require Fourier-analytic techniques, as similar problems (e.g., the Falconer distance problem) have been advanced using such methods\n\n5. **Higher-Dimensional Extensions:** The problem naturally generalizes to $\\mathbb{R}^d$, where the geometry of concentric spheres replaces circles, potentially changing the extremal exponents.",
     "openQuestions": [
       "What is the true asymptotic exponent $\\alpha$ in $M(r) = \\Theta(r^{\\alpha})$? The current bounds give $0.26 \\leq \\alpha \\leq 1$, an enormous uncertainty",
       "Can Fourier-analytic methods (as in the Falconer distance conjecture) improve the upper bound below $O(r)$?",
@@ -168,12 +168,12 @@
     {
       "targetId": "erdos-465",
       "relationship": "related",
-      "description": "Erdős #465 provides upper bounds for sets avoiding the unit distance, the single-distance case of Problem #953's integer-distance avoidance"
+      "description": "Erd\u0151s #465 provides upper bounds for sets avoiding the unit distance, the single-distance case of Problem #953's integer-distance avoidance"
     },
     {
       "targetId": "erdos-466",
       "relationship": "related",
-      "description": "Erdős #466 provides lower bounds for unit-distance-avoiding sets; Kovač adapted Sárközy's methods from this problem to obtain the $r^{0.26}$ lower bound for #953"
+      "description": "Erd\u0151s #466 provides lower bounds for unit-distance-avoiding sets; Kova\u010d adapted S\u00e1rk\u00f6zy's methods from this problem to obtain the $r^{0.26}$ lower bound for #953"
     }
   ],
   "relatedProofs": [
@@ -197,6 +197,7 @@
     "lineCount": 306,
     "axiomCount": 11,
     "theoremCount": 6,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   }
 }

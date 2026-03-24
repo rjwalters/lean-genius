@@ -53,7 +53,7 @@
       "Ramsey theory and Ramsey number bounds",
       "Graph coloring and chromatic number",
       "Independent sets and cliques in random graphs",
-      "Lovász Local Lemma and property B"
+      "Lov\u00e1sz Local Lemma and property B"
     ],
     "axiomCount": 0,
     "relatedProblems": [
@@ -71,7 +71,7 @@
       },
       {
         "id": "prob-method-lovasz-local",
-        "relationship": "Uses the Lovász Local Lemma library for chromatic number bounds"
+        "relationship": "Uses the Lov\u00e1sz Local Lemma library for chromatic number bounds"
       }
     ],
     "lineCount": 51,
@@ -94,7 +94,7 @@
       "Ramsey theory and Ramsey number bounds",
       "Graph coloring and chromatic number",
       "Independent sets and cliques in random graphs",
-      "Lovász Local Lemma and property B"
+      "Lov\u00e1sz Local Lemma and property B"
     ]
   },
   "sections": [
@@ -111,7 +111,7 @@
       "title": "Ramsey Lower Bound",
       "startLine": 16,
       "endLine": 18,
-      "summary": "R(k,k) >= 2^((k-1)/2) for k >= 3. Simplified existential form. Sorry'd — the full proof requires the first moment method on random 2-colorings of K_n.",
+      "summary": "R(k,k) >= 2^((k-1)/2) for k >= 3. Simplified existential form. Sorry'd \u2014 the full proof requires the first moment method on random 2-colorings of K_n.",
       "mathContext": "$R(k,k) \\geq 2^{(k-1)/2}$"
     },
     {
@@ -119,7 +119,7 @@
       "title": "High Girth + High Chromatic Number",
       "startLine": 20,
       "endLine": 24,
-      "summary": "Erdős (1959): graphs exist with arbitrarily high girth and chromatic number. Proves True (placeholder) — requires graph type for full formalization.",
+      "summary": "Erd\u0151s (1959): graphs exist with arbitrarily high girth and chromatic number. Proves True (placeholder) \u2014 requires graph type for full formalization.",
       "mathContext": "$\\forall g, c \\geq 3$, $\\exists G$ with $\\text{girth}(G) \\geq g$ and $\\chi(G) \\geq c$"
     },
     {
@@ -127,7 +127,7 @@
       "title": "Tournament Domination",
       "startLine": 26,
       "endLine": 28,
-      "summary": "Every tournament on n vertices has a dominating set of size <= log₂(n) + 1. Sorry'd — proof via random sampling with union bound.",
+      "summary": "Every tournament on n vertices has a dominating set of size <= log\u2082(n) + 1. Sorry'd \u2014 proof via random sampling with union bound.",
       "mathContext": "Domination number $\\gamma(T) \\leq \\lceil \\log_2 n \\rceil + 1$"
     },
     {
@@ -135,7 +135,7 @@
       "title": "Crossing Number Inequality",
       "startLine": 30,
       "endLine": 33,
-      "summary": "Ajtai-Chvátal-Newborn-Szemerédi (1982): cr(G) >= e³/(64n²) when e >= 4n. Currently only states positivity of this expression. Sorry'd.",
+      "summary": "Ajtai-Chv\u00e1tal-Newborn-Szemer\u00e9di (1982): cr(G) >= e\u00b3/(64n\u00b2) when e >= 4n. Currently only states positivity of this expression. Sorry'd.",
       "mathContext": "$\\text{cr}(G) \\geq \\frac{e^3}{64n^2}$ for $e \\geq 4n$"
     },
     {
@@ -143,7 +143,7 @@
       "title": "Unbalancing Lights and Property B",
       "startLine": 35,
       "endLine": 43,
-      "summary": "Two results: (1) for any ±1 matrix, some row/column sums are >= sqrt(n)/2; (2) every 2-colorable k-uniform hypergraph has >= 2^(k-1) edges. Both sorry'd with simplified statements.",
+      "summary": "Two results: (1) for any \u00b11 matrix, some row/column sums are >= sqrt(n)/2; (2) every 2-colorable k-uniform hypergraph has >= 2^(k-1) edges. Both sorry'd with simplified statements.",
       "mathContext": "Unbalancing: $\\exists$ row/column sum $\\geq \\sqrt{n}/2$. Property B lower: $m \\geq 2^{k-1}$."
     }
   ],
@@ -173,9 +173,9 @@
     "summary": "This applications module demonstrates the four core probabilistic method techniques on classical problems in combinatorics. The Ramsey bounds, chromatic number estimates, Property B results, and independent set lower bounds showcase how a unified probabilistic toolkit yields the strongest known results across diverse domains.",
     "implications": "This formalization provides:\n\n**1. Ramsey Theory**\nMachine-checked proofs of the fundamental lower bounds on Ramsey numbers that launched probabilistic combinatorics.\n\n**2. Graph Coloring**\nFormal verification of the triangle-free chromatic number bound, connecting the LLL to structural graph theory.\n\n**3. Hypergraph Theory**\nProperty B results formalized for the first time in a proof assistant, connecting to discrepancy and coloring theory.\n\n**4. Erdos Problem Library**\nMany Erdos problems in the gallery involve probabilistic method arguments, and this applications module provides direct formalization targets.\n\n**5. Unified Demonstration**\nShowing all four techniques applied side-by-side highlights their complementary strengths and guides selection of the right tool for new problems.",
     "openQuestions": [
-      "What Erdős problems in the gallery can be directly attacked with this library?",
-      "Can the crossing number inequality be strengthened to the Szemerédi-Trotter form cr(G) >= e³/(29n²)?",
-      "Formalize the full high-girth-high-chromatic result (Erdős 1959) using Mathlib's SimpleGraph API"
+      "What Erd\u0151s problems in the gallery can be directly attacked with this library?",
+      "Can the crossing number inequality be strengthened to the Szemer\u00e9di-Trotter form cr(G) >= e\u00b3/(29n\u00b2)?",
+      "Formalize the full high-girth-high-chromatic result (Erd\u0151s 1959) using Mathlib's SimpleGraph API"
     ]
   },
   "relatedProofs": [
@@ -193,7 +193,8 @@
     "lineCount": 51,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {

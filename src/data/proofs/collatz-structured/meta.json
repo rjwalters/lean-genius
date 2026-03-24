@@ -44,7 +44,7 @@
       "The closure property means we only need to verify odd numbers",
       "27 is famous for its long trajectory (111 steps) despite being small",
       "The conjecture is equivalent to: no cycles exist other than 4 -> 2 -> 1",
-      "The `native_decide` tactic enables verification of specific Collatz trajectories (like 27's 111-step path) by compiling the recursive computation to native code — turning the proof assistant into an efficient trajectory checker"
+      "The `native_decide` tactic enables verification of specific Collatz trajectories (like 27's 111-step path) by compiling the recursive computation to native code \u2014 turning the proof assistant into an efficient trajectory checker"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)"
@@ -64,7 +64,7 @@
       "title": "Reaching 1",
       "startLine": 57,
       "endLine": 76,
-      "summary": "Defines `collatzIter k n := f^k(n)` via `Function.iterate` and `ReachesOne n := ∃ k, collatzIter k n = 1`. Proves the iteration unfold lemma `collatzIter_succ`.",
+      "summary": "Defines `collatzIter k n := f^k(n)` via `Function.iterate` and `ReachesOne n := \u2203 k, collatzIter k n = 1`. Proves the iteration unfold lemma `collatzIter_succ`.",
       "mathContext": "`ReachesOne n` asserts $\\exists k \\in \\mathbb{N},\\, f^{(k)}(n) = 1$ where $f^{(k)}$ denotes $k$-fold iteration. The Collatz conjecture is: $\\forall n \\geq 1,\\, \\text{ReachesOne}(n)$."
     },
     {
@@ -73,7 +73,7 @@
       "startLine": 78,
       "endLine": 109,
       "summary": "Proves `collatz_pow_two`: for $k \\geq 1$, $f^{(k)}(2^k) = 1$, by induction on $k$. Base: $f(2) = 1$. Step: $f(2^{k+1}) = 2^k$ since $2^{k+1}$ is even, then apply the induction hypothesis.",
-      "mathContext": "$f^{(k)}(2^k) = 1$ for $k \\geq 1$. The trajectory is purely halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$. This is the simplest infinite family for which the conjecture holds — every Collatz trajectory that reaches a power of 2 will then descend to 1."
+      "mathContext": "$f^{(k)}(2^k) = 1$ for $k \\geq 1$. The trajectory is purely halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$. This is the simplest infinite family for which the conjecture holds \u2014 every Collatz trajectory that reaches a power of 2 will then descend to 1."
     },
     {
       "id": "closure",
@@ -81,7 +81,7 @@
       "startLine": 111,
       "endLine": 133,
       "summary": "Proves `reaches_one_double` (if ReachesOne n then ReachesOne (2*n)) and `reaches_one_pow_two_mul` (if ReachesOne n then ReachesOne (2^m * n)). The key insight: $f(2n) = n$, so doubling adds exactly one step.",
-      "mathContext": "If $f^{(k)}(n) = 1$, then $f^{(k+m)}(2^m \\cdot n) = 1$, because $f(2^m \\cdot n) = 2^{m-1} \\cdot n$, $f^{(2)}(2^m \\cdot n) = 2^{m-2} \\cdot n$, etc. This means verifying ReachesOne for odd numbers suffices — all their even multiples are automatically covered."
+      "mathContext": "If $f^{(k)}(n) = 1$, then $f^{(k+m)}(2^m \\cdot n) = 1$, because $f(2^m \\cdot n) = 2^{m-1} \\cdot n$, $f^{(2)}(2^m \\cdot n) = 2^{m-2} \\cdot n$, etc. This means verifying ReachesOne for odd numbers suffices \u2014 all their even multiples are automatically covered."
     },
     {
       "id": "verified-cases",
@@ -89,11 +89,11 @@
       "startLine": 135,
       "endLine": 181,
       "summary": "Computational verification via `native_decide` for specific values: 3 (7 steps), 5 (5 steps), 6 (8 steps), 7 (16 steps), 9 (19 steps), 27 (111 steps, reaching max value 9232).",
-      "mathContext": "The trajectory of 27: $27 \\to 82 \\to 41 \\to 124 \\to \\cdots \\to 9232 \\to \\cdots \\to 1$ takes 111 steps and reaches a maximum of 9232 — over 340 times the starting value. The `native_decide` tactic compiles the iteration to native code, efficiently verifying all 111 steps."
+      "mathContext": "The trajectory of 27: $27 \\to 82 \\to 41 \\to 124 \\to \\cdots \\to 9232 \\to \\cdots \\to 1$ takes 111 steps and reaches a maximum of 9232 \u2014 over 340 times the starting value. The `native_decide` tactic compiles the iteration to native code, efficiently verifying all 111 steps."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the Collatz conjecture for an important infinite family: all numbers of the form 2^m * n where we've verified n reaches 1. The closure property is key—once we verify any odd number, all its multiples by powers of 2 are covered.\n\nThe proof for powers of 2 is clean and illustrative: each application of the Collatz function halves the value until we reach 1. The specific verifications (especially 27's 111 steps) demonstrate how Lean's native_decide can handle substantial computations.",
+    "summary": "This formalization proves the Collatz conjecture for an important infinite family: all numbers of the form 2^m * n where we've verified n reaches 1. The closure property is key\u2014once we verify any odd number, all its multiples by powers of 2 are covered.\n\nThe proof for powers of 2 is clean and illustrative: each application of the Collatz function halves the value until we reach 1. The specific verifications (especially 27's 111 steps) demonstrate how Lean's native_decide can handle substantial computations.",
     "implications": "**Theoretical Significance**: **Computational Verification**\n\nThis approach scales well: once we verify one odd number reaches 1, infinitely many even numbers are covered.\n\nThe hard cases are odd numbers that grow before eventually descending.\n\n**The 27 Example**\n\n27 is famous because it takes 111 steps despite being small:\n27 -> 82 -> 41 -> 124 -> 62 -> 31 -> 94 -> 47 -> 142 -> 71 -> 214 -> 107 -> 322 -> ... -> 1\n\nThe maximum value in the trajectory is 9232, showing how even small starting values can have dramatic orbits.",
     "openQuestions": [
       "Does every positive integer reach 1? (The full Collatz conjecture)",
@@ -106,22 +106,22 @@
     {
       "targetId": "erdos-410",
       "relationship": "related",
-      "description": "Erdos problem #410 concerns iterated sum-of-divisors and iterated arithmetic functions — the same iterative dynamics paradigm as Collatz, where repeated application of a simple arithmetic function produces complex, unpredictable orbits"
+      "description": "Erdos problem #410 concerns iterated sum-of-divisors and iterated arithmetic functions \u2014 the same iterative dynamics paradigm as Collatz, where repeated application of a simple arithmetic function produces complex, unpredictable orbits"
     },
     {
       "targetId": "halting-problem",
       "relationship": "thematic",
-      "description": "The Collatz conjecture's difficulty may be fundamental: Conway proved that generalizations of the 3n+1 problem are algorithmically undecidable, suggesting the full conjecture may be independent of standard axioms — paralleling the halting problem's undecidability"
+      "description": "The Collatz conjecture's difficulty may be fundamental: Conway proved that generalizations of the 3n+1 problem are algorithmically undecidable, suggesting the full conjecture may be independent of standard axioms \u2014 paralleling the halting problem's undecidability"
     },
     {
       "targetId": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "The Collatz conjecture is a candidate for a natural number-theoretic statement that might be independent of Peano Arithmetic or even ZFC — if true but unprovable, it would be a concrete instance of Godelian incompleteness in elementary number theory"
+      "description": "The Collatz conjecture is a candidate for a natural number-theoretic statement that might be independent of Peano Arithmetic or even ZFC \u2014 if true but unprovable, it would be a concrete instance of Godelian incompleteness in elementary number theory"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "thematic",
-      "description": "Both concern the structure of natural numbers under simple operations: Euclid proves the inexhaustibility of primes, while Collatz asks whether a simple iterative map always terminates — both are easy to state but reveal deep structure"
+      "description": "Both concern the structure of natural numbers under simple operations: Euclid proves the inexhaustibility of primes, while Collatz asks whether a simple iterative map always terminates \u2014 both are easy to state but reveal deep structure"
     }
   ],
   "relatedProofs": [
@@ -139,14 +139,15 @@
     "lineCount": 207,
     "axiomCount": 1,
     "theoremCount": 16,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "Lagarias, Jeffrey C.",
       "title": "The 3x + 1 Problem and its Generalizations",
       "year": "1985",
-      "venue": "The American Mathematical Monthly 92(1), 3–23",
+      "venue": "The American Mathematical Monthly 92(1), 3\u201323",
       "note": "Comprehensive survey of the Collatz problem covering iteration statistics, density results, and connections to ergodic theory"
     },
     {
@@ -154,7 +155,7 @@
       "title": "Almost all orbits of the Collatz map attain almost bounded values",
       "year": "2022",
       "venue": "Forum of Mathematics, Pi 10, e12",
-      "note": "Proved that almost all positive integers eventually reach a value close to 1 under the Collatz map — the strongest known result toward the conjecture"
+      "note": "Proved that almost all positive integers eventually reach a value close to 1 under the Collatz map \u2014 the strongest known result toward the conjecture"
     }
   ]
 }

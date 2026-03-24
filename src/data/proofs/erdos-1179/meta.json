@@ -1,10 +1,10 @@
 {
   "id": "erdos-1179",
-  "title": "Erdős Problem #1179: Uniform Subset Sum Representations in Abelian Groups",
+  "title": "Erd\u0151s Problem #1179: Uniform Subset Sum Representations in Abelian Groups",
   "slug": "erdos-1179",
-  "description": "Question: Estimate g_ε(N). In particular, is g_ε(N) = (1 + o_ε(1)) log₂ N?",
+  "description": "Question: Estimate g_\u03b5(N). In particular, is g_\u03b5(N) = (1 + o_\u03b5(1)) log\u2082 N?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1179",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1179Problem.lean",
@@ -36,7 +36,7 @@
       },
       {
         "theorem": "Real.logb",
-        "description": "Logarithm base b for log₂ N bounds",
+        "description": "Logarithm base b for log\u2082 N bounds",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
@@ -46,31 +46,31 @@
       }
     ],
     "originalContributions": [
-      "reprCount: representation function F_A(g) = #{S ⊆ A : ∑ x = g}",
+      "reprCount: representation function F_A(g) = #{S \u2286 A : \u2211 x = g}",
       "expectedReprCount: expected count 2^k/N",
-      "IsEpsUniform: ε-uniformity of representation counts",
-      "total_reprCount: ∑_g F_A(g) = 2^|A|",
-      "gEps: the function g_ε(N)",
-      "trivial_lower_bound: g_ε(N) ≥ log₂ N",
-      "erdos_renyi_upper: g_ε(N) ≤ (2+o(1)) log₂ N",
-      "erdos_hall_upper: g_ε(N) ≤ (1+o(1)) log₂ N",
-      "main_asymptotic: g_ε(N) ~ log₂ N",
-      "uniform_implies_spanning: ε-uniform ⟹ spanning",
-      "gEps_mono: monotonicity in ε"
+      "IsEpsUniform: \u03b5-uniformity of representation counts",
+      "total_reprCount: \u2211_g F_A(g) = 2^|A|",
+      "gEps: the function g_\u03b5(N)",
+      "trivial_lower_bound: g_\u03b5(N) \u2265 log\u2082 N",
+      "erdos_renyi_upper: g_\u03b5(N) \u2264 (2+o(1)) log\u2082 N",
+      "erdos_hall_upper: g_\u03b5(N) \u2264 (1+o(1)) log\u2082 N",
+      "main_asymptotic: g_\u03b5(N) ~ log\u2082 N",
+      "uniform_implies_spanning: \u03b5-uniform \u27f9 spanning",
+      "gEps_mono: monotonicity in \u03b5"
     ],
     "axiomCount": 11,
     "lineCount": 178,
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1179: Uniform Subset Sum Representations**\n\n**Background: Additive Combinatorics in Groups**\nThis problem lies at the intersection of additive combinatorics and probabilistic number theory. It concerns how well a random subset of a finite abelian group can 'represent' all group elements via subset sums.\n\n**The Representation Function:**\nFor a subset $A$ of a finite abelian group $G$ with $|G| = N$, define $F_A(g) = |\\{S \\subseteq A : \\sum_{x \\in S} x = g\\}|$ for each $g \\in G$. If $|A| = k$, there are $2^k$ subsets total, so the 'expected' count is $2^k/N$ per element.\n\n**Erdős-Rényi (1965):**\nPaul Erdős and Alfréd Rényi studied random subsets of abelian groups in their foundational paper on probabilistic group theory. They showed that a random set of size $k \\approx 2\\log_2 N$ gives approximately uniform representations, establishing $g_\\varepsilon(N) \\leq (2 + o(1))\\log_2 N$. Their proof uses the second moment method.\n\n**Erdős-Hall (1976):**\nErdős and Richard R. Hall improved the bound to $g_\\varepsilon(N) \\leq (1 + o(1))\\log_2 N$ using character sum estimates (discrete Fourier analysis on $G$) and large deviation bounds. This reduced the leading coefficient from 2 to $1 + o(1)$.\n\n**Main Result:**\nCombined with the trivial lower bound $g_\\varepsilon(N) \\geq \\log_2 N$ (counting argument), this gives $g_\\varepsilon(N) \\sim \\log_2 N$: the answer to Erdős's question is YES.\n\n**Connection to Problem #543:**\nProblem #543 asks about *spanning* (every element represented at least once), while #1179 asks for *uniform* representations. Uniformity is stronger but, remarkably, requires the same leading term $\\log_2 N$.",
-    "problemStatement": "**Problem Statement (PROVED)**\n\nFor $0 < \\varepsilon < 1$, let $g_\\varepsilon(N)$ be the minimal $k$ such that: if $G$ is an abelian group of order $N$ and $A \\subseteq G$ is a uniformly random subset of size $k$, then with probability $\\to 1$ as $N \\to \\infty$, the representation function\n$$F_A(g) = |\\{S \\subseteq A : \\textstyle\\sum_{x \\in S} x = g\\}|$$\nsatisfies $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$.\n\n**Question:** Is $g_\\varepsilon(N) = (1 + o_\\varepsilon(1))\\log_2 N$?\n\n**Answer: YES.** The trivial lower bound $\\log_2 N$ and the Erdős-Hall upper bound $(1+o(1))\\log_2 N$ combine to give $g_\\varepsilon(N) \\sim \\log_2 N$.",
-    "text": "Question: Estimate g_ε(N). In particular, is g_ε(N) = (1 + o_ε(1)) log₂ N?",
-    "proofStrategy": "**Formalization Strategy**\n\nThe 179-line Lean 4 file formalizes the problem structure and key results:\n\n1. **Representation Counts** (lines 47-57): Defines `reprCount A g` as the number of subsets of $A$ summing to $g$ (via `Finset.powerset.filter`), and `expectedReprCount k N = 2^k/N`.\n\n2. **Uniformity** (lines 59-66): `IsEpsUniform A ε` requires $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$.\n\n3. **Elementary Properties** (lines 68-81): `total_reprCount` ($\\sum_g F_A(g) = 2^{|A|}$), and empty-set base cases.\n\n4. **The Function $g_\\varepsilon(N)$** (lines 83-93): Axiomatized since it involves quantification over all groups and probabilistic convergence.\n\n5. **Lower Bound** (lines 95-105): `trivial_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$ from the counting argument $2^k \\geq N$.\n\n6. **Upper Bounds** (lines 107-127): `erdos_renyi_upper` (Erdős-Rényi 1965, coefficient 2) and `erdos_hall_upper` (Erdős-Hall 1976, coefficient $1 + o(1)$).\n\n7. **Main Asymptotic** (lines 129-137): $g_\\varepsilon(N)/\\log_2 N \\to 1$.\n\n8. **Comparison with #543** (lines 139-151): `uniform_implies_spanning` shows uniformity implies spanning.\n\n9. **Summary** (lines 160-176): Combines lower bound and main asymptotic into `erdos_1179_summary`.",
+    "historicalContext": "**Erd\u0151s Problem #1179: Uniform Subset Sum Representations**\n\n**Background: Additive Combinatorics in Groups**\nThis problem lies at the intersection of additive combinatorics and probabilistic number theory. It concerns how well a random subset of a finite abelian group can 'represent' all group elements via subset sums.\n\n**The Representation Function:**\nFor a subset $A$ of a finite abelian group $G$ with $|G| = N$, define $F_A(g) = |\\{S \\subseteq A : \\sum_{x \\in S} x = g\\}|$ for each $g \\in G$. If $|A| = k$, there are $2^k$ subsets total, so the 'expected' count is $2^k/N$ per element.\n\n**Erd\u0151s-R\u00e9nyi (1965):**\nPaul Erd\u0151s and Alfr\u00e9d R\u00e9nyi studied random subsets of abelian groups in their foundational paper on probabilistic group theory. They showed that a random set of size $k \\approx 2\\log_2 N$ gives approximately uniform representations, establishing $g_\\varepsilon(N) \\leq (2 + o(1))\\log_2 N$. Their proof uses the second moment method.\n\n**Erd\u0151s-Hall (1976):**\nErd\u0151s and Richard R. Hall improved the bound to $g_\\varepsilon(N) \\leq (1 + o(1))\\log_2 N$ using character sum estimates (discrete Fourier analysis on $G$) and large deviation bounds. This reduced the leading coefficient from 2 to $1 + o(1)$.\n\n**Main Result:**\nCombined with the trivial lower bound $g_\\varepsilon(N) \\geq \\log_2 N$ (counting argument), this gives $g_\\varepsilon(N) \\sim \\log_2 N$: the answer to Erd\u0151s's question is YES.\n\n**Connection to Problem #543:**\nProblem #543 asks about *spanning* (every element represented at least once), while #1179 asks for *uniform* representations. Uniformity is stronger but, remarkably, requires the same leading term $\\log_2 N$.",
+    "problemStatement": "**Problem Statement (PROVED)**\n\nFor $0 < \\varepsilon < 1$, let $g_\\varepsilon(N)$ be the minimal $k$ such that: if $G$ is an abelian group of order $N$ and $A \\subseteq G$ is a uniformly random subset of size $k$, then with probability $\\to 1$ as $N \\to \\infty$, the representation function\n$$F_A(g) = |\\{S \\subseteq A : \\textstyle\\sum_{x \\in S} x = g\\}|$$\nsatisfies $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$.\n\n**Question:** Is $g_\\varepsilon(N) = (1 + o_\\varepsilon(1))\\log_2 N$?\n\n**Answer: YES.** The trivial lower bound $\\log_2 N$ and the Erd\u0151s-Hall upper bound $(1+o(1))\\log_2 N$ combine to give $g_\\varepsilon(N) \\sim \\log_2 N$.",
+    "text": "Question: Estimate g_\u03b5(N). In particular, is g_\u03b5(N) = (1 + o_\u03b5(1)) log\u2082 N?",
+    "proofStrategy": "**Formalization Strategy**\n\nThe 179-line Lean 4 file formalizes the problem structure and key results:\n\n1. **Representation Counts** (lines 47-57): Defines `reprCount A g` as the number of subsets of $A$ summing to $g$ (via `Finset.powerset.filter`), and `expectedReprCount k N = 2^k/N`.\n\n2. **Uniformity** (lines 59-66): `IsEpsUniform A \u03b5` requires $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$.\n\n3. **Elementary Properties** (lines 68-81): `total_reprCount` ($\\sum_g F_A(g) = 2^{|A|}$), and empty-set base cases.\n\n4. **The Function $g_\\varepsilon(N)$** (lines 83-93): Axiomatized since it involves quantification over all groups and probabilistic convergence.\n\n5. **Lower Bound** (lines 95-105): `trivial_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$ from the counting argument $2^k \\geq N$.\n\n6. **Upper Bounds** (lines 107-127): `erdos_renyi_upper` (Erd\u0151s-R\u00e9nyi 1965, coefficient 2) and `erdos_hall_upper` (Erd\u0151s-Hall 1976, coefficient $1 + o(1)$).\n\n7. **Main Asymptotic** (lines 129-137): $g_\\varepsilon(N)/\\log_2 N \\to 1$.\n\n8. **Comparison with #543** (lines 139-151): `uniform_implies_spanning` shows uniformity implies spanning.\n\n9. **Summary** (lines 160-176): Combines lower bound and main asymptotic into `erdos_1179_summary`.",
     "keyInsights": [
       "**Counting Argument:** $g_\\varepsilon(N) \\geq \\log_2 N$ because $|A| = k$ gives only $2^k$ subsets; for uniformity at level $\\approx 2^k/N \\geq 1$, we need $k \\geq \\log_2 N$",
-      "**Second Moment Method:** Erdős-Rényi (1965) proved $g_\\varepsilon(N) \\leq 2\\log_2 N + O(1)$ by showing variance of $F_A(g)$ is small when $k \\approx 2\\log_2 N$",
-      "**Character Sum Estimates:** Erdős-Hall (1976) improved to $(1+o(1))\\log_2 N$ using Fourier analysis on $G$: $\\hat{1}_A(\\chi) = \\sum_{a \\in A} \\chi(a)$ controls $F_A(g)$ via inversion",
+      "**Second Moment Method:** Erd\u0151s-R\u00e9nyi (1965) proved $g_\\varepsilon(N) \\leq 2\\log_2 N + O(1)$ by showing variance of $F_A(g)$ is small when $k \\approx 2\\log_2 N$",
+      "**Character Sum Estimates:** Erd\u0151s-Hall (1976) improved to $(1+o(1))\\log_2 N$ using Fourier analysis on $G$: $\\hat{1}_A(\\chi) = \\sum_{a \\in A} \\chi(a)$ controls $F_A(g)$ via inversion",
       "**Spanning vs. Uniformity:** Problem #543 (spanning) needs $\\log_2 N + \\Theta(\\log\\log N)$; problem #1179 (uniformity) needs only $(1+o(1))\\log_2 N$. Extra $\\log\\log N$ is for *minimum* coverage, not uniformity",
       "**Monotonicity:** Tighter tolerance $\\varepsilon_1 < \\varepsilon_2$ requires more elements: $g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$",
       "**Universality:** The result holds for ALL abelian groups of order $N$, not just $\\mathbb{Z}/N\\mathbb{Z}$. The Fourier analysis works on any finite abelian group via its character group"
@@ -89,7 +89,7 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 45,
-      "summary": "Problem statement, known results (Erdős-Rényi 1965, Erdős-Hall 1976), comparison with #543, references, and imports from Mathlib (`Finset`, `Real.logb`, `Fintype`)"
+      "summary": "Problem statement, known results (Erd\u0151s-R\u00e9nyi 1965, Erd\u0151s-Hall 1976), comparison with #543, references, and imports from Mathlib (`Finset`, `Real.logb`, `Fintype`)"
     },
     {
       "id": "representation-counts",
@@ -103,7 +103,7 @@
       "title": "Uniformity of Representations",
       "startLine": 59,
       "endLine": 66,
-      "summary": "Defines `IsEpsUniform A ε`: $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$. This is the central notion of 'approximately equal representation counts'"
+      "summary": "Defines `IsEpsUniform A \u03b5`: $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$. This is the central notion of 'approximately equal representation counts'"
     },
     {
       "id": "elementary",
@@ -117,7 +117,7 @@
       "title": "The Function $g_\\varepsilon(N)$",
       "startLine": 83,
       "endLine": 93,
-      "summary": "Axiomatizes `gEps ε N` (minimal $k$ for high-probability $\\varepsilon$-uniformity) and `gEps_pos` ($g_\\varepsilon(N) \\geq 1$ for valid parameters)"
+      "summary": "Axiomatizes `gEps \u03b5 N` (minimal $k$ for high-probability $\\varepsilon$-uniformity) and `gEps_pos` ($g_\\varepsilon(N) \\geq 1$ for valid parameters)"
     },
     {
       "id": "lower-bound",
@@ -166,18 +166,18 @@
     {
       "targetId": "erdos-543",
       "relationship": "related-problem",
-      "description": "Problem #543 asks about spanning (f(N) = min k for random k-subset to represent every element). Problem #1179 is the stronger uniformity version; uniform_implies_spanning shows #1179 ⟹ #543"
+      "description": "Problem #543 asks about spanning (f(N) = min k for random k-subset to represent every element). Problem #1179 is the stronger uniformity version; uniform_implies_spanning shows #1179 \u27f9 #543"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1179 is PROVED: g_ε(N) = (1 + o_ε(1)) log₂ N. The trivial lower bound log₂ N from counting and the Erdős-Hall (1976) upper bound (1 + o(1)) log₂ N combine to determine the asymptotic. The formalization captures the key definitions (representation counts, ε-uniformity), bounds (Erdős-Rényi, Erdős-Hall), and the connection to Problem #543 (spanning).",
-    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Probabilistic Combinatorics:** The second moment method (Erdős-Rényi) and character sum technique (Erdős-Hall) are paradigmatic tools in probabilistic additive combinatorics\n\n2. **Fourier Analysis on Groups:** The Erdős-Hall improvement uses the discrete Fourier transform $\\hat{f}(\\chi) = \\sum_{g} f(g)\\chi(g)$ on finite abelian groups.\n\nCharacter sums control the deviation from uniformity\n\n3. **Additive Number Theory:** The problem generalizes to arbitrary abelian groups, connecting to the theory of sumsets and Freiman-Ruzsa theory\n\n4. **Comparison with Spanning:** The extra $\\Theta(\\log\\log N)$ gap between spanning (#543, needs $\\log_2 N + \\Theta(\\log\\log N)$) and uniformity (#1179, needs $(1+o(1))\\log_2 N$) reveals that achieving minimum coverage is harder than average uniformity\n\n5. **Coding Theory:** Uniform subset sums relate to balanced codes and universal hashing, with applications in cryptography.",
+    "summary": "Erd\u0151s Problem #1179 is PROVED: g_\u03b5(N) = (1 + o_\u03b5(1)) log\u2082 N. The trivial lower bound log\u2082 N from counting and the Erd\u0151s-Hall (1976) upper bound (1 + o(1)) log\u2082 N combine to determine the asymptotic. The formalization captures the key definitions (representation counts, \u03b5-uniformity), bounds (Erd\u0151s-R\u00e9nyi, Erd\u0151s-Hall), and the connection to Problem #543 (spanning).",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Probabilistic Combinatorics:** The second moment method (Erd\u0151s-R\u00e9nyi) and character sum technique (Erd\u0151s-Hall) are paradigmatic tools in probabilistic additive combinatorics\n\n2. **Fourier Analysis on Groups:** The Erd\u0151s-Hall improvement uses the discrete Fourier transform $\\hat{f}(\\chi) = \\sum_{g} f(g)\\chi(g)$ on finite abelian groups.\n\nCharacter sums control the deviation from uniformity\n\n3. **Additive Number Theory:** The problem generalizes to arbitrary abelian groups, connecting to the theory of sumsets and Freiman-Ruzsa theory\n\n4. **Comparison with Spanning:** The extra $\\Theta(\\log\\log N)$ gap between spanning (#543, needs $\\log_2 N + \\Theta(\\log\\log N)$) and uniformity (#1179, needs $(1+o(1))\\log_2 N$) reveals that achieving minimum coverage is harder than average uniformity\n\n5. **Coding Theory:** Uniform subset sums relate to balanced codes and universal hashing, with applications in cryptography.",
     "openQuestions": [
-      "What is the precise second-order term in g_ε(N)? Is it g_ε(N) = log₂ N + c_ε log log N + o(log log N) for some explicit c_ε?",
-      "Can the Erdős-Hall bound be improved to g_ε(N) ≤ log₂ N + O_ε(1) (bounded additive constant)?",
+      "What is the precise second-order term in g_\u03b5(N)? Is it g_\u03b5(N) = log\u2082 N + c_\u03b5 log log N + o(log log N) for some explicit c_\u03b5?",
+      "Can the Erd\u0151s-Hall bound be improved to g_\u03b5(N) \u2264 log\u2082 N + O_\u03b5(1) (bounded additive constant)?",
       "What happens for non-abelian groups? Does uniformity still hold at the same threshold?",
-      "What is the optimal dependence on ε? How does g_ε(N) behave as ε → 0?",
-      "Can the probabilistic argument be derandomized to give an explicit construction of ε-uniform sets of size (1+o(1)) log₂ N?"
+      "What is the optimal dependence on \u03b5? How does g_\u03b5(N) behave as \u03b5 \u2192 0?",
+      "Can the probabilistic argument be derandomized to give an explicit construction of \u03b5-uniform sets of size (1+o(1)) log\u2082 N?"
     ]
   },
   "relatedProofs": [
@@ -201,6 +201,7 @@
     "lineCount": 178,
     "axiomCount": 11,
     "theoremCount": 1,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   }
 }

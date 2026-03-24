@@ -2,7 +2,7 @@
   "id": "solution-of-cubic",
   "title": "Solution of the Cubic Equation",
   "slug": "solution-of-cubic",
-  "description": "Cardano's formula provides explicit radical solutions to cubic equations x³ + px + q = 0 via cube roots of the discriminant. Wiedijk #37. Fully proved in Lean 4 with all three roots via cube roots of unity.",
+  "description": "Cardano's formula provides explicit radical solutions to cubic equations x\u00b3 + px + q = 0 via cube roots of the discriminant. Wiedijk #37. Fully proved in Lean 4 with all three roots via cube roots of unity.",
   "meta": {
     "wiedijkNumber": 37,
     "author": "Cardano, Tartaglia, del Ferro (16th century)",
@@ -46,19 +46,19 @@
       },
       {
         "theorem": "exp_two_pi_mul_I",
-        "description": "e^(2πi) = 1 for roots of unity proofs",
+        "description": "e^(2\u03c0i) = 1 for roots of unity proofs",
         "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
       }
     ],
     "originalContributions": [
-      "depressedCubic polynomial definition using ℂ[X] API",
-      "discriminant definition: q²/4 + p³/27",
+      "depressedCubic polynomial definition using \u2102[X] API",
+      "discriminant definition: q\u00b2/4 + p\u00b3/27",
       "cubeRoot via Complex.cpow",
       "cube_of_sum identity proved by ring",
       "cardano_verification_core: the key lemma reducing cubic solving to sum/product conditions",
-      "cardano_formula: main theorem (Wiedijk #37) — fully proved",
-      "omega definition as e^(2πi/3) and three properties (cubed, ne_one, sum)",
-      "second_root: all three roots via omega multiplication — fully proved",
+      "cardano_formula: main theorem (Wiedijk #37) \u2014 fully proved",
+      "omega definition as e^(2\u03c0i/3) and three properties (cubed, ne_one, sum)",
+      "second_root: all three roots via omega multiplication \u2014 fully proved",
       "Four verified numerical examples"
     ],
     "axiomCount": 0,
@@ -66,17 +66,17 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Cardano's Formula: The Birth of Modern Algebra**\n\nThe solution of the cubic equation is one of the great dramas of mathematical history. Around 1515, Scipione del Ferro of Bologna discovered how to solve the depressed cubic $x^3 + px + q = 0$ by radicals, but kept it secret (as was common in Renaissance Italian mathematics, where mathematical competitions were lucrative). On his deathbed, he revealed the method to his student Antonio Fior.\n\nIn 1535, Niccolò Tartaglia independently rediscovered the solution and defeated Fior in a public mathematical duel. Girolamo Cardano, after much persuasion, extracted the secret from Tartaglia under a vow of secrecy. When Cardano later learned of del Ferro's prior discovery (which voided the oath in his eyes), he published the formula in his landmark *Ars Magna* (1545) — the first major advance in algebra since the ancient Greeks.\n\nThe formula's most profound consequence was the *casus irreducibilis*: when a cubic has three distinct real roots, the discriminant $\\Delta = q^2/4 + p^3/27 < 0$, so $\\sqrt{\\Delta}$ is imaginary. The cube roots of complex conjugates somehow combine to give real numbers. This paradox forced Rafael Bombelli (1572) to develop rules for complex arithmetic, leading eventually to the full theory of complex numbers.\n\nThe cubic formula also opened the path to Ferrari's quartic solution (1540s), and the natural question 'Can we solve the quintic?' drove two centuries of effort until Abel (1824) and Galois (1832) proved the impossibility. Galois's work, connecting polynomial solvability to group theory, is arguably the most profound development in 19th-century algebra.\n\nThe theorem is #37 on Wiedijk's list of the 100 Greatest Theorems. Our formalization works entirely over $\\mathbb{C}$, which handles all discriminant cases uniformly, and proves all results without axioms — the entire file is fully verified from Mathlib.",
+    "historicalContext": "**Cardano's Formula: The Birth of Modern Algebra**\n\nThe solution of the cubic equation is one of the great dramas of mathematical history. Around 1515, Scipione del Ferro of Bologna discovered how to solve the depressed cubic $x^3 + px + q = 0$ by radicals, but kept it secret (as was common in Renaissance Italian mathematics, where mathematical competitions were lucrative). On his deathbed, he revealed the method to his student Antonio Fior.\n\nIn 1535, Niccol\u00f2 Tartaglia independently rediscovered the solution and defeated Fior in a public mathematical duel. Girolamo Cardano, after much persuasion, extracted the secret from Tartaglia under a vow of secrecy. When Cardano later learned of del Ferro's prior discovery (which voided the oath in his eyes), he published the formula in his landmark *Ars Magna* (1545) \u2014 the first major advance in algebra since the ancient Greeks.\n\nThe formula's most profound consequence was the *casus irreducibilis*: when a cubic has three distinct real roots, the discriminant $\\Delta = q^2/4 + p^3/27 < 0$, so $\\sqrt{\\Delta}$ is imaginary. The cube roots of complex conjugates somehow combine to give real numbers. This paradox forced Rafael Bombelli (1572) to develop rules for complex arithmetic, leading eventually to the full theory of complex numbers.\n\nThe cubic formula also opened the path to Ferrari's quartic solution (1540s), and the natural question 'Can we solve the quintic?' drove two centuries of effort until Abel (1824) and Galois (1832) proved the impossibility. Galois's work, connecting polynomial solvability to group theory, is arguably the most profound development in 19th-century algebra.\n\nThe theorem is #37 on Wiedijk's list of the 100 Greatest Theorems. Our formalization works entirely over $\\mathbb{C}$, which handles all discriminant cases uniformly, and proves all results without axioms \u2014 the entire file is fully verified from Mathlib.",
     "problemStatement": "**Cardano's Formula (Wiedijk #37)**\n\nEvery depressed cubic equation $x^3 + px + q = 0$ has roots given by:\n\n$$x_k = \\omega^k u + \\omega^{-k} v, \\quad k = 0, 1, 2$$\n\nwhere $\\omega = e^{2\\pi i/3}$ is a primitive cube root of unity, and\n\n$$u = \\sqrt[3]{-\\frac{q}{2} + \\sqrt{\\Delta}}, \\quad v = \\sqrt[3]{-\\frac{q}{2} - \\sqrt{\\Delta}}, \\quad \\Delta = \\frac{q^2}{4} + \\frac{p^3}{27}$$\n\nwith the constraint $uv = -p/3$ (selecting compatible cube root branches).\n\n**Reduction**: Any cubic $ax^3 + bx^2 + cx + d = 0$ reduces to depressed form via $x = y - b/(3a)$.",
-    "text": "Cardano's formula provides explicit radical solutions to cubic equations x³ + px + q = 0 via cube roots of the discriminant. Wiedijk #37. Fully proved in Lean 4 with all three roots via cube roots of unity.",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a complete proof of Cardano's formula in 298 lines, with 0 axioms:\n\n1. **Depressed Cubic (lines 49-61):** Define `depressedCubic (p q : ℂ) : ℂ[X]` as `X^3 + C p * X + C q` and `discriminant` as `q²/4 + p³/27`. Also define `cubeRoot` via `Complex.cpow`.\n\n2. **Key Identities (lines 70-93):** Prove `cube_of_sum : (u+v)³ = u³+v³+3uv(u+v)` by `ring`. Prove `cardano_verification_core`: if $u³+v³=-q$ and $3uv=-p$, then $(u+v)³+p(u+v)+q=0$ via a `calc` chain.\n\n3. **Cardano Properties (lines 95-117):** Three lemmas verifying that $u³+v³=-q$ and $u³v³=-p³/27$ follow from the construction, using `ring` and the discriminant definition.\n\n4. **Main Theorem (lines 119-144):** `cardano_formula` proves `(depressedCubic p q).eval (u+v) = 0` by converting `uv = -p/3` to `3uv = -p` and applying `cardano_verification_core`.\n\n5. **Examples (lines 146-164):** Four concrete cubics verified by `norm_num`.\n\n6. **Cube Roots of Unity (lines 166-227):** Define `omega := exp(2πi/3)` and prove three properties: `omega_cubed` (via `exp_two_pi_mul_I`), `omega_ne_one` (via imaginary part extraction and `sin(2π/3) = √3/2 ≠ 0`), `omega_sum : 1+ω+ω² = 0` (via factorization and `omega_ne_one`).\n\n7. **Second Root (lines 228-267):** `second_root` proves $\\omega u + \\omega² v$ is a root by showing $(\\omega u)³ = u³$ and product condition preserved (since $\\omega³ = 1$), then applying `cardano_verification_core`.\n\n8. **Historical Context (lines 269-298):** Commentary on significance and connections. Export six key results via `#check`.",
+    "text": "Cardano's formula provides explicit radical solutions to cubic equations x\u00b3 + px + q = 0 via cube roots of the discriminant. Wiedijk #37. Fully proved in Lean 4 with all three roots via cube roots of unity.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a complete proof of Cardano's formula in 298 lines, with 0 axioms:\n\n1. **Depressed Cubic (lines 49-61):** Define `depressedCubic (p q : \u2102) : \u2102[X]` as `X^3 + C p * X + C q` and `discriminant` as `q\u00b2/4 + p\u00b3/27`. Also define `cubeRoot` via `Complex.cpow`.\n\n2. **Key Identities (lines 70-93):** Prove `cube_of_sum : (u+v)\u00b3 = u\u00b3+v\u00b3+3uv(u+v)` by `ring`. Prove `cardano_verification_core`: if $u\u00b3+v\u00b3=-q$ and $3uv=-p$, then $(u+v)\u00b3+p(u+v)+q=0$ via a `calc` chain.\n\n3. **Cardano Properties (lines 95-117):** Three lemmas verifying that $u\u00b3+v\u00b3=-q$ and $u\u00b3v\u00b3=-p\u00b3/27$ follow from the construction, using `ring` and the discriminant definition.\n\n4. **Main Theorem (lines 119-144):** `cardano_formula` proves `(depressedCubic p q).eval (u+v) = 0` by converting `uv = -p/3` to `3uv = -p` and applying `cardano_verification_core`.\n\n5. **Examples (lines 146-164):** Four concrete cubics verified by `norm_num`.\n\n6. **Cube Roots of Unity (lines 166-227):** Define `omega := exp(2\u03c0i/3)` and prove three properties: `omega_cubed` (via `exp_two_pi_mul_I`), `omega_ne_one` (via imaginary part extraction and `sin(2\u03c0/3) = \u221a3/2 \u2260 0`), `omega_sum : 1+\u03c9+\u03c9\u00b2 = 0` (via factorization and `omega_ne_one`).\n\n7. **Second Root (lines 228-267):** `second_root` proves $\\omega u + \\omega\u00b2 v$ is a root by showing $(\\omega u)\u00b3 = u\u00b3$ and product condition preserved (since $\\omega\u00b3 = 1$), then applying `cardano_verification_core`.\n\n8. **Historical Context (lines 269-298):** Commentary on significance and connections. Export six key results via `#check`.",
     "keyInsights": [
-      "**Zero Axioms**: The entire file is fully proved from Mathlib — no axioms needed. This is notable because the formula is constructive: given p, q, we explicitly construct a root.",
-      "**The u+v Substitution**: The key insight is writing x = u + v where u³ + v³ = -q and 3uv = -p. The cube-of-sum identity then guarantees x satisfies the cubic. This reduces a cubic equation to a quadratic in u³.",
-      "**Omega Gives All Roots**: Since ω³ = 1, replacing (u, v) by (ωu, ω²v) preserves both the sum-of-cubes and product conditions. This generates all three roots systematically.",
-      "**Casus Irreducibilis**: When Δ < 0 (three distinct real roots), the formula requires complex intermediate values — you must pass through ℂ to reach real answers. Working over ℂ from the start avoids this issue entirely.",
+      "**Zero Axioms**: The entire file is fully proved from Mathlib \u2014 no axioms needed. This is notable because the formula is constructive: given p, q, we explicitly construct a root.",
+      "**The u+v Substitution**: The key insight is writing x = u + v where u\u00b3 + v\u00b3 = -q and 3uv = -p. The cube-of-sum identity then guarantees x satisfies the cubic. This reduces a cubic equation to a quadratic in u\u00b3.",
+      "**Omega Gives All Roots**: Since \u03c9\u00b3 = 1, replacing (u, v) by (\u03c9u, \u03c9\u00b2v) preserves both the sum-of-cubes and product conditions. This generates all three roots systematically.",
+      "**Casus Irreducibilis**: When \u0394 < 0 (three distinct real roots), the formula requires complex intermediate values \u2014 you must pass through \u2102 to reach real answers. Working over \u2102 from the start avoids this issue entirely.",
       "**calc Chains**: The proofs use Lean 4's `calc` blocks extensively for clear algebraic reasoning: rewrite with identities, substitute hypotheses, simplify with `ring`. This mirrors the classical hand-computation approach.",
-      "**Omega Primitivity**: Proving ω ≠ 1 requires extracting sin(2π/3) = √3/2 from the complex exponential — the most technically demanding proof in the file, using `exp_mul_I` and `positivity`."
+      "**Omega Primitivity**: Proving \u03c9 \u2260 1 requires extracting sin(2\u03c0/3) = \u221a3/2 from the complex exponential \u2014 the most technically demanding proof in the file, using `exp_mul_I` and `positivity`."
     ],
     "prerequisites": [
       "Abstract algebra"
@@ -97,60 +97,61 @@
     "namespace": "SolutionOfCubic",
     "lineCount": 297,
     "axiomCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 5
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "general-quartic",
       "relationship": "generalizes",
-      "description": "Ferrari's quartic solution (Wiedijk #46) uses a cubic resolvent — the quartic reduces to a cubic, making Cardano's formula a prerequisite for solving degree 4."
+      "description": "Ferrari's quartic solution (Wiedijk #46) uses a cubic resolvent \u2014 the quartic reduces to a cubic, making Cardano's formula a prerequisite for solving degree 4."
     },
     {
       "targetId": "abel-ruffini",
       "relationship": "related-problem",
-      "description": "The Abel-Ruffini theorem (Wiedijk #16) proves no general radical formula exists for degree ≥ 5. The cubic and quartic formulas are the last cases where radicals suffice."
+      "description": "The Abel-Ruffini theorem (Wiedijk #16) proves no general radical formula exists for degree \u2265 5. The cubic and quartic formulas are the last cases where radicals suffice."
     },
     {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "foundation",
-      "description": "The Fundamental Theorem of Algebra (Wiedijk #80) guarantees cubic roots exist in ℂ. Cardano's formula constructs them explicitly."
+      "description": "The Fundamental Theorem of Algebra (Wiedijk #80) guarantees cubic roots exist in \u2102. Cardano's formula constructs them explicitly."
     },
     {
       "targetId": "de-moivre",
       "relationship": "uses-same-technique",
-      "description": "De Moivre's theorem connects complex exponentials to trigonometry. The cube roots of unity ω = e^(2πi/3) central to expressing all three cubic roots are a direct application."
+      "description": "De Moivre's theorem connects complex exponentials to trigonometry. The cube roots of unity \u03c9 = e^(2\u03c0i/3) central to expressing all three cubic roots are a direct application."
     },
     {
       "targetId": "angle-trisection",
       "relationship": "related-problem",
-      "description": "The impossibility of angle trisection reduces to showing cos(20°) satisfies an irreducible cubic — the same cubic equation theory, applied to a geometric impossibility proof."
+      "description": "The impossibility of angle trisection reduces to showing cos(20\u00b0) satisfies an irreducible cubic \u2014 the same cubic equation theory, applied to a geometric impossibility proof."
     },
     {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "complementary",
-      "description": "The A₅ simplicity proof chain shows exactly why no radical formula exists for degree ≥ 5: S₄ is solvable (so cubics and quartics yield to radical formulas) but S₅ is not — making the cubic formula one of the last explicit radical solutions"
+      "description": "The A\u2085 simplicity proof chain shows exactly why no radical formula exists for degree \u2265 5: S\u2084 is solvable (so cubics and quartics yield to radical formulas) but S\u2085 is not \u2014 making the cubic formula one of the last explicit radical solutions"
     }
   ],
   "sections": [
     {
       "id": "depressed-cubic",
       "title": "The Depressed Cubic",
-      "summary": "Defines depressedCubic (p q : ℂ) : ℂ[X] as X³ + C p * X + C q, discriminant as q²/4 + p³/27, and cubeRoot via Complex.cpow. All noncomputable.",
+      "summary": "Defines depressedCubic (p q : \u2102) : \u2102[X] as X\u00b3 + C p * X + C q, discriminant as q\u00b2/4 + p\u00b3/27, and cubeRoot via Complex.cpow. All noncomputable.",
       "startLine": 49,
       "endLine": 68
     },
     {
       "id": "algebraic-identities",
       "title": "Key Algebraic Identities",
-      "summary": "Proves cube_of_sum by ring and cardano_verification_core via calc chain: the heart of the proof showing if u³+v³=-q and 3uv=-p then (u+v)³+p(u+v)+q=0.",
+      "summary": "Proves cube_of_sum by ring and cardano_verification_core via calc chain: the heart of the proof showing if u\u00b3+v\u00b3=-q and 3uv=-p then (u+v)\u00b3+p(u+v)+q=0.",
       "startLine": 70,
       "endLine": 93
     },
     {
       "id": "cardano-properties",
       "title": "Properties of Cardano's Components",
-      "summary": "Three lemmas: cardano_sum_property (conjugate cube roots sum to -q), cardano_product_under_roots (difference of squares), cardano_product_simplified (product equals -p³/27). All by ring.",
+      "summary": "Three lemmas: cardano_sum_property (conjugate cube roots sum to -q), cardano_product_under_roots (difference of squares), cardano_product_simplified (product equals -p\u00b3/27). All by ring.",
       "startLine": 95,
       "endLine": 117
     },
@@ -164,21 +165,21 @@
     {
       "id": "special-cases",
       "title": "Verified Examples",
-      "summary": "Four concrete examples verified by norm_num: x³-6x-40=0 (root 4), x³+6x-20=0 (root 2), x³-1=0 (root 1), and discriminant vanishes when p=0.",
+      "summary": "Four concrete examples verified by norm_num: x\u00b3-6x-40=0 (root 4), x\u00b3+6x-20=0 (root 2), x\u00b3-1=0 (root 1), and discriminant vanishes when p=0.",
       "startLine": 146,
       "endLine": 164
     },
     {
       "id": "cube-roots-unity",
       "title": "Cube Roots of Unity",
-      "summary": "Defines omega := exp(2πi/3). Proves omega_cubed (via exp_two_pi_mul_I), omega_ne_one (via sin(2π/3) = √3/2 ≠ 0, the hardest proof in file), and omega_sum : 1+ω+ω²=0 (via factorization x³-1 = (x-1)(x²+x+1)).",
+      "summary": "Defines omega := exp(2\u03c0i/3). Proves omega_cubed (via exp_two_pi_mul_I), omega_ne_one (via sin(2\u03c0/3) = \u221a3/2 \u2260 0, the hardest proof in file), and omega_sum : 1+\u03c9+\u03c9\u00b2=0 (via factorization x\u00b3-1 = (x-1)(x\u00b2+x+1)).",
       "startLine": 166,
       "endLine": 227
     },
     {
       "id": "other-roots",
       "title": "The Second Root via Omega",
-      "summary": "Proves omega_root_product (product condition preserved under ω-twist since ω³=1) and second_root (ωu+ω²v is a root by the same verification lemma). The third root ω²u+ωv follows by symmetry.",
+      "summary": "Proves omega_root_product (product condition preserved under \u03c9-twist since \u03c9\u00b3=1) and second_root (\u03c9u+\u03c9\u00b2v is a root by the same verification lemma). The third root \u03c9\u00b2u+\u03c9v follows by symmetry.",
       "startLine": 228,
       "endLine": 267
     },
@@ -191,11 +192,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Cardano's formula is fully proved in Lean 4 with 0 axioms and 13 proved theorems. The formalization verifies the main formula (Wiedijk #37), proves all three roots exist via cube roots of unity, and includes four concrete verified examples. The proof works entirely over ℂ, which handles all discriminant cases uniformly including the casus irreducibilis.",
-    "implications": "**Theoretical Significance**: **Significance for Mathematics and History**\n\n1. **Birth of Modern Algebra**: Cardano's *Ars Magna* (1545) marks the beginning of modern algebra. The cubic formula was the first algebraic solution beyond the quadratic, demonstrating that systematic methods could crack higher-degree equations.\n\n2. **Discovery of Complex Numbers**: The *casus irreducibilis* — where three real roots require complex intermediaries — forced the invention of complex arithmetic.\n\nBombelli (1572) developed rules for $\\sqrt{-1}$, and the full theory of $\\mathbb{C}$ followed.\n\n3. **Path to Galois Theory**: The cubic (solvable) → quartic (solvable via cubic resolvent) → quintic (unsolvable by Abel-Ruffini) progression drove two centuries of investigation, culminating in Galois's theory connecting polynomial solvability to group structure.\n\n4. **Roots of Unity Framework**: The three roots $u+v$, $\\omega u + \\omega^2 v$, $\\omega^2 u + \\omega v$ demonstrate how cyclotomic structure organizes polynomial roots — a pattern that generalizes to all solvable polynomials via radical towers.\n\n5. **Fully Constructive**: Unlike existence results (FTA), Cardano's formula explicitly constructs the roots. Our 0-axiom Lean proof verifies this construction is correct, making it one of the most complete formalizations in the gallery.",
+    "summary": "Cardano's formula is fully proved in Lean 4 with 0 axioms and 13 proved theorems. The formalization verifies the main formula (Wiedijk #37), proves all three roots exist via cube roots of unity, and includes four concrete verified examples. The proof works entirely over \u2102, which handles all discriminant cases uniformly including the casus irreducibilis.",
+    "implications": "**Theoretical Significance**: **Significance for Mathematics and History**\n\n1. **Birth of Modern Algebra**: Cardano's *Ars Magna* (1545) marks the beginning of modern algebra. The cubic formula was the first algebraic solution beyond the quadratic, demonstrating that systematic methods could crack higher-degree equations.\n\n2. **Discovery of Complex Numbers**: The *casus irreducibilis* \u2014 where three real roots require complex intermediaries \u2014 forced the invention of complex arithmetic.\n\nBombelli (1572) developed rules for $\\sqrt{-1}$, and the full theory of $\\mathbb{C}$ followed.\n\n3. **Path to Galois Theory**: The cubic (solvable) \u2192 quartic (solvable via cubic resolvent) \u2192 quintic (unsolvable by Abel-Ruffini) progression drove two centuries of investigation, culminating in Galois's theory connecting polynomial solvability to group structure.\n\n4. **Roots of Unity Framework**: The three roots $u+v$, $\\omega u + \\omega^2 v$, $\\omega^2 u + \\omega v$ demonstrate how cyclotomic structure organizes polynomial roots \u2014 a pattern that generalizes to all solvable polynomials via radical towers.\n\n5. **Fully Constructive**: Unlike existence results (FTA), Cardano's formula explicitly constructs the roots. Our 0-axiom Lean proof verifies this construction is correct, making it one of the most complete formalizations in the gallery.",
     "openQuestions": [
-      "Can the reduction from general cubic ax³+bx²+cx+d=0 to depressed form be formalized and composed with cardano_formula?",
-      "Can the casus irreducibilis be formalized: when Δ < 0, the three real roots cannot be expressed using only real radicals?",
+      "Can the reduction from general cubic ax\u00b3+bx\u00b2+cx+d=0 to depressed form be formalized and composed with cardano_formula?",
+      "Can the casus irreducibilis be formalized: when \u0394 < 0, the three real roots cannot be expressed using only real radicals?",
       "Can Vieta's formulas for the cubic be proved and shown consistent with Cardano's three roots?",
       "What is the computational complexity of evaluating Cardano's formula versus numerical root-finding methods?",
       "Can the connection to the quartic solution (via cubic resolvent) be formalized to chain Wiedijk #37 and #46?"
@@ -214,8 +215,8 @@
       "authors": "Cardano, Gerolamo",
       "title": "Artis Magnae, Sive de Regulis Algebraicis Liber Unus (Ars Magna)",
       "year": "1545",
-      "venue": "Nürnberg: Petreius",
-      "note": "First publication of the cubic formula — discovered by Scipione del Ferro (~1515) and Niccolò Tartaglia (1535), published by Cardano"
+      "venue": "N\u00fcrnberg: Petreius",
+      "note": "First publication of the cubic formula \u2014 discovered by Scipione del Ferro (~1515) and Niccol\u00f2 Tartaglia (1535), published by Cardano"
     },
     {
       "authors": "van der Waerden, B.L.",

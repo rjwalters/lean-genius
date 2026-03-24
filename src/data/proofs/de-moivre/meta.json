@@ -2,7 +2,7 @@
   "id": "de-moivre",
   "title": "De Moivre's Theorem",
   "slug": "de-moivre",
-  "description": "(cos θ + i sin θ)^n = cos(nθ) + i sin(nθ). Connects powers of complex numbers to multiple angle formulas.",
+  "description": "(cos \u03b8 + i sin \u03b8)^n = cos(n\u03b8) + i sin(n\u03b8). Connects powers of complex numbers to multiple angle formulas.",
   "meta": {
     "author": "De Moivre, Euler (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/De_Moivre%27s_formula",
@@ -21,29 +21,29 @@
     "mathlibDependencies": [
       {
         "theorem": "Complex.exp_mul_I",
-        "description": "exp(θ·I) = cos θ + sin θ·I (Euler's formula)",
+        "description": "exp(\u03b8\u00b7I) = cos \u03b8 + sin \u03b8\u00b7I (Euler's formula)",
         "module": "Mathlib.Data.Complex.Exponential"
       },
       {
         "theorem": "Complex.exp_nat_mul",
-        "description": "exp(n·x) = (exp x)^n",
+        "description": "exp(n\u00b7x) = (exp x)^n",
         "module": "Mathlib.Data.Complex.Exponential"
       },
       {
         "theorem": "Complex.exp_int_mul",
-        "description": "exp(n·x) = (exp x)^n for integers",
+        "description": "exp(n\u00b7x) = (exp x)^n for integers",
         "module": "Mathlib.Data.Complex.Exponential"
       },
       {
         "theorem": "Complex.exp_two_pi_mul_I",
-        "description": "exp(2πi) = 1",
+        "description": "exp(2\u03c0i) = 1",
         "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
       }
     ],
     "originalContributions": [
       "Extension to integer exponents",
       "Double and triple angle formula derivations",
-      "Roots of unity connection via exp(2πik/n)"
+      "Roots of unity connection via exp(2\u03c0ik/n)"
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 17,
@@ -52,10 +52,10 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Abraham de Moivre (1667-1754), a French Huguenot mathematician exiled to England, discovered this formula around 1707 while working on trigonometric series. De Moivre communicated results to the Royal Society but never published a clean statement — the formula was implicit in his work on recurrence relations and probability. Euler (1748) gave the modern formulation in the *Introductio in analysin infinitorum*, connecting it to e^{iθ} = cos θ + i sin θ. Roger Cotes (1714) independently found related results. The theorem became foundational for complex analysis: it unifies trigonometric addition formulas, provides nth roots of unity, and underlies the Fourier transform. This is Wiedijk's 100 Theorems #17.",
-    "problemStatement": "**De Moivre's Theorem**:\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$$\n\nfor any real θ and natural number n.",
-    "text": "This formalization proves de Moivre's theorem (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) via Euler's formula: e^(iθ) = cos θ + i sin θ, so (cos θ + i sin θ)^n = e^(inθ) = cos(nθ) + i sin(nθ). The Lean proof applies `Complex.exp_nat_mul_I` from Mathlib.\n\nThe file derives multiple angle formulas (cos(nθ) and sin(nθ) as polynomials in cos θ, sin θ), the nth roots of unity, and the geometric interpretation of complex multiplication as rotation. Commentary connects to Chebyshev polynomials and the discrete Fourier transform.",
-    "proofStrategy": "Using Euler's formula e^(iθ) = cos θ + i sin θ, raising both sides to the n-th power gives e^(inθ) = cos(nθ) + i sin(nθ). The key Mathlib lemmas are Complex.exp_mul_I (Euler's formula) and Complex.exp_nat_mul (power rule for exp).",
+    "historicalContext": "Abraham de Moivre (1667-1754), a French Huguenot mathematician exiled to England, discovered this formula around 1707 while working on trigonometric series. De Moivre communicated results to the Royal Society but never published a clean statement \u2014 the formula was implicit in his work on recurrence relations and probability. Euler (1748) gave the modern formulation in the *Introductio in analysin infinitorum*, connecting it to e^{i\u03b8} = cos \u03b8 + i sin \u03b8. Roger Cotes (1714) independently found related results. The theorem became foundational for complex analysis: it unifies trigonometric addition formulas, provides nth roots of unity, and underlies the Fourier transform. This is Wiedijk's 100 Theorems #17.",
+    "problemStatement": "**De Moivre's Theorem**:\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$$\n\nfor any real \u03b8 and natural number n.",
+    "text": "This formalization proves de Moivre's theorem (cos \u03b8 + i sin \u03b8)^n = cos(n\u03b8) + i sin(n\u03b8) via Euler's formula: e^(i\u03b8) = cos \u03b8 + i sin \u03b8, so (cos \u03b8 + i sin \u03b8)^n = e^(in\u03b8) = cos(n\u03b8) + i sin(n\u03b8). The Lean proof applies `Complex.exp_nat_mul_I` from Mathlib.\n\nThe file derives multiple angle formulas (cos(n\u03b8) and sin(n\u03b8) as polynomials in cos \u03b8, sin \u03b8), the nth roots of unity, and the geometric interpretation of complex multiplication as rotation. Commentary connects to Chebyshev polynomials and the discrete Fourier transform.",
+    "proofStrategy": "Using Euler's formula e^(i\u03b8) = cos \u03b8 + i sin \u03b8, raising both sides to the n-th power gives e^(in\u03b8) = cos(n\u03b8) + i sin(n\u03b8). The key Mathlib lemmas are Complex.exp_mul_I (Euler's formula) and Complex.exp_nat_mul (power rule for exp).",
     "keyInsights": [
       "**Exponential Triviality:** Via Euler's formula, $(e^{i\\theta})^n = e^{in\\theta}$ is just the power rule for $\\exp$. The 'deep' trigonometric identity becomes trivial algebra in the exponential form.",
       "**Integer Extension:** `Complex.exp_int_mul` extends to negative powers: $(\\cos\\theta + i\\sin\\theta)^{-1} = \\cos\\theta - i\\sin\\theta$ (complex conjugation on the unit circle). This gives $e^{-i\\theta} = \\overline{e^{i\\theta}}$.",
@@ -81,48 +81,48 @@
       "title": "Main Theorem: Trigonometric Form",
       "startLine": 45,
       "endLine": 77,
-      "summary": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp.",
-      "mathContext": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp."
+      "summary": "Proves (cos \u03b8 + i sin \u03b8)^n = cos(n\u03b8) + i sin(n\u03b8) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp.",
+      "mathContext": "Proves (cos \u03b8 + i sin \u03b8)^n = cos(n\u03b8) + i sin(n\u03b8) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp."
     },
     {
       "id": "exp-form",
       "title": "Exponential Form",
       "startLine": 78,
       "endLine": 96,
-      "summary": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring.",
-      "mathContext": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring."
+      "summary": "Two equivalent exponential formulations: (exp(\u03b8I))^n = exp(n\u03b8I) and (exp(I\u03b8))^n = exp(I\u00b7n\u03b8). Both proved by exp_nat_mul plus ring.",
+      "mathContext": "Two equivalent exponential formulations: (exp(\u03b8I))^n = exp(n\u03b8I) and (exp(I\u03b8))^n = exp(I\u00b7n\u03b8). Both proved by exp_nat_mul plus ring."
     },
     {
       "id": "integer-ext",
       "title": "Integer Exponent Extension",
       "startLine": 97,
       "endLine": 127,
-      "summary": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle).",
-      "mathContext": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle)."
+      "summary": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for \u2124-valued n, covering negative powers (reciprocals of complex numbers on the unit circle).",
+      "mathContext": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for \u2124-valued n, covering negative powers (reciprocals of complex numbers on the unit circle)."
     },
     {
       "id": "double-angle",
       "title": "Double Angle Formulas (n = 2)",
       "startLine": 128,
       "endLine": 147,
-      "summary": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem.",
-      "mathContext": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem."
+      "summary": "Derives double angle formula cos(2\u03b8) + i sin(2\u03b8) = (cos \u03b8 + i sin \u03b8)\u00b2 as the special case n = 2 of the main theorem.",
+      "mathContext": "Derives double angle formula cos(2\u03b8) + i sin(2\u03b8) = (cos \u03b8 + i sin \u03b8)\u00b2 as the special case n = 2 of the main theorem."
     },
     {
       "id": "triple-angle",
       "title": "Triple Angle Formulas (n = 3)",
       "startLine": 148,
       "endLine": 163,
-      "summary": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3.",
-      "mathContext": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3."
+      "summary": "Derives triple angle formula cos(3\u03b8) + i sin(3\u03b8) = (cos \u03b8 + i sin \u03b8)\u00b3 as the special case n = 3.",
+      "mathContext": "Derives triple angle formula cos(3\u03b8) + i sin(3\u03b8) = (cos \u03b8 + i sin \u03b8)\u00b3 as the special case n = 3."
     },
     {
       "id": "roots-of-unity",
       "title": "Roots of Unity Connection",
       "startLine": 164,
       "endLine": 190,
-      "summary": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I.",
-      "mathContext": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I."
+      "summary": "Proves exp(2\u03c0ik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k \u00b7 2\u03c0i) = (exp(2\u03c0i))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I.",
+      "mathContext": "Proves exp(2\u03c0ik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k \u00b7 2\u03c0i) = (exp(2\u03c0i))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I."
     },
     {
       "id": "special-cases",
@@ -137,25 +137,25 @@
     {
       "targetId": "euler-identity",
       "relationship": "related",
-      "description": "De Moivre's theorem is equivalent to Euler's formula e^{iθ} = cos θ + i sin θ raised to the nth power. Euler's identity e^{iπ} + 1 = 0 is the special case θ = π, n = 1."
+      "description": "De Moivre's theorem is equivalent to Euler's formula e^{i\u03b8} = cos \u03b8 + i sin \u03b8 raised to the nth power. Euler's identity e^{i\u03c0} + 1 = 0 is the special case \u03b8 = \u03c0, n = 1."
     },
     {
       "targetId": "law-of-cosines",
       "relationship": "related",
-      "description": "De Moivre's theorem generates multiple-angle formulas (cos 2θ, cos 3θ, etc.) which connect to the law of cosines through Chebyshev polynomials."
+      "description": "De Moivre's theorem generates multiple-angle formulas (cos 2\u03b8, cos 3\u03b8, etc.) which connect to the law of cosines through Chebyshev polynomials."
     },
     {
       "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "De Moivre's theorem shows cos(θ/3) satisfies a cubic equation, providing the algebraic framework for proving the impossibility of angle trisection by ruler and compass."
+      "description": "De Moivre's theorem shows cos(\u03b8/3) satisfies a cubic equation, providing the algebraic framework for proving the impossibility of angle trisection by ruler and compass."
     }
   ],
   "conclusion": {
     "summary": "De Moivre's theorem is proved via Euler's formula and the exponential power rule, with extensions to integer exponents, multiple-angle corollaries, and a roots-of-unity connection. The proof demonstrates how the exponential representation of complex numbers reduces trigonometric identities to elementary algebraic manipulations.",
     "implications": "De Moivre's theorem is the algebraic engine behind the discrete Fourier transform (DFT/FFT), AC circuit phasor analysis, and cyclotomic field theory. The integer extension gives a complete description of the unit circle group structure, while the multiple-angle corollaries generate all Chebyshev polynomials.",
     "openQuestions": [
-      "Formalize the explicit extraction of cos(nθ) and sin(nθ) formulas by comparing real and imaginary parts of the binomial expansion",
-      "Prove the connection to Chebyshev polynomials: T_n(cos θ) = cos(nθ) via De Moivre",
+      "Formalize the explicit extraction of cos(n\u03b8) and sin(n\u03b8) formulas by comparing real and imaginary parts of the binomial expansion",
+      "Prove the connection to Chebyshev polynomials: T_n(cos \u03b8) = cos(n\u03b8) via De Moivre",
       "Extend to fractional exponents and the multi-valued nature of z^{p/q} for complex z"
     ]
   },
@@ -178,7 +178,8 @@
     "lineCount": 239,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -193,7 +194,7 @@
       "title": "Introductio in analysin infinitorum",
       "year": "1748",
       "venue": "Lausanne",
-      "note": "Modern formulation connecting e^{iθ} = cos θ + i sin θ to de Moivre's theorem"
+      "note": "Modern formulation connecting e^{i\u03b8} = cos \u03b8 + i sin \u03b8 to de Moivre's theorem"
     },
     {
       "authors": "T. Needham",

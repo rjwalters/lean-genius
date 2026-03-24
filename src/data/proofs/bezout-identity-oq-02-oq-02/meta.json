@@ -1,8 +1,8 @@
 {
   "id": "bezout-identity-oq-02-oq-02",
-  "title": "Euclid's Lemma in Bézout Domains and PIDs",
+  "title": "Euclid's Lemma in B\u00e9zout Domains and PIDs",
   "slug": "bezout-identity-oq-02-oq-02",
-  "description": "Euclid's lemma generalized from ℤ to any commutative ring via IsCoprime, with the IsBezout connection: IsRelPrime ↔ IsCoprime in Bézout rings. A single proof covers ℤ, ℚ[X], ℤ[i], and all Euclidean domains.",
+  "description": "Euclid's lemma generalized from \u2124 to any commutative ring via IsCoprime, with the IsBezout connection: IsRelPrime \u2194 IsCoprime in B\u00e9zout rings. A single proof covers \u2124, \u211a[X], \u2124[i], and all Euclidean domains.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity",
@@ -32,7 +32,7 @@
       },
       {
         "theorem": "irreducible_iff_prime",
-        "description": "In CancelCommMonoidWithZero + DecompositionMonoid, irreducible ↔ prime",
+        "description": "In CancelCommMonoidWithZero + DecompositionMonoid, irreducible \u2194 prime",
         "module": "Mathlib.Algebra.Prime.Basic"
       },
       {
@@ -48,11 +48,11 @@
     ],
     "originalContributions": [
       "euclids_lemma_ring: Euclid's lemma in ANY CommRing via IsCoprime, with one-line proof by linear_combination",
-      "isBezout_relPrime_to_isCoprime: In IsBezout CommRing, IsRelPrime a b → IsCoprime a b via IsBezout.span_pair_isPrincipal",
-      "isCoprime_to_relPrime: IsCoprime → IsRelPrime in ANY CommRing (every common divisor divides 1)",
-      "isBezout_coprime_iff: Complete characterization IsCoprime ↔ IsRelPrime in IsBezout rings",
-      "euclids_lemma_irreducible: Irreducible p, p|a*b → p|a or p|b in any DecompositionMonoid",
-      "Uniform instances for ℤ, ℚ[X], ℤ[i] all reduce to the same one-line proof"
+      "isBezout_relPrime_to_isCoprime: In IsBezout CommRing, IsRelPrime a b \u2192 IsCoprime a b via IsBezout.span_pair_isPrincipal",
+      "isCoprime_to_relPrime: IsCoprime \u2192 IsRelPrime in ANY CommRing (every common divisor divides 1)",
+      "isBezout_coprime_iff: Complete characterization IsCoprime \u2194 IsRelPrime in IsBezout rings",
+      "euclids_lemma_irreducible: Irreducible p, p|a*b \u2192 p|a or p|b in any DecompositionMonoid",
+      "Uniform instances for \u2124, \u211a[X], \u2124[i] all reduce to the same one-line proof"
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
@@ -60,16 +60,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Euclid's Lemma** originated in Euclid's *Elements* (~300 BCE) for the integers. The **abstract algebraic generalization** — that the same result holds in any ring where the Bézout identity can be established — was developed in the 19th and 20th centuries alongside abstract algebra.\n\n**Bézout domains** were formalized as rings where every finitely generated ideal is principal (equivalently, gcd exists and is a linear combination). **Richard Dedekind** and **Emmy Noether** laid the groundwork for understanding divisibility in abstract rings. The modern formulation in terms of `IsCoprime` — the existence of Bézout coefficients equaling 1 — appears in Bourbaki and is now standard in computer algebra systems.\n\nIn **Lean 4 with Mathlib**, the typeclass hierarchy reflects this algebra:\n- `EuclideanDomain` (ℤ, ℚ[X], ℤ[i]) → `PrincipalIdealRing` → `IsBezout` → `Ring`\n\nThe key insight in this formalization: `IsCoprime a b` in Lean is *defined* as `∃ u v, u*a + v*b = 1`, which is **exactly** the Bézout algebraic condition. This makes Euclid's lemma work in **any** commutative ring — no additional structure needed.",
-    "problemStatement": "**Open Question (bezout-identity-oq-02-oq-02)**: Can `euclids_lemma_int` (from BezoutIdentityOQ02) be generalized to arbitrary Bézout domains or PIDs using Mathlib's `IsBezout` typeclass, giving a single proof covering ℤ, k[X], and other rings?\n\n**Answer**: YES — and the generalization is **more powerful** than expected:\n\n1. **CommRing level**: `euclids_lemma_ring` holds in ANY `CommRing` using only `IsCoprime`\n2. **IsBezout level**: `IsRelPrime a b ↔ IsCoprime a b` in IsBezout rings  \n3. **DecompositionMonoid level**: `Irreducible ↔ Prime` (abstract Euclid's lemma)\n4. **Instances**: ℤ, ℚ[X], ℤ[i] all reduce to the same proof",
-    "text": "Euclid's lemma generalized from ℤ to any commutative ring via IsCoprime, with the IsBezout connection: IsRelPrime ↔ IsCoprime in Bézout rings. A single proof covers ℤ, ℚ[X], ℤ[i], and all Euclidean domains.",
-    "proofStrategy": "The proof strategy has three levels:\n\n**Level 1 — Universal (CommRing)**:\nGiven `IsCoprime a b` (∃ u, v with u*a + v*b = 1) and `a ∣ b*c` (∃ k with b*c = a*k):\n- Witness: `u*c + v*k`\n- Identity: `c = (u*a + v*b)*c = a*(u*c) + (b*c)*v = a*(u*c + v*k)`\n- Tactic: `linear_combination v * hk - c * huv`\n\n**Level 2 — IsBezout connection**:\n- Forward (`IsCoprime → IsRelPrime`): if d divides a and b, then d divides u*a + v*b = 1, so d is a unit\n- Backward (`IsRelPrime → IsCoprime`): use `IsBezout.span_pair_isPrincipal` to make the ideal principal, then `IsRelPrime.isCoprime`\n\n**Level 3 — Irreducible elements**:\nIn a `DecompositionMonoid` (which ℤ, k[X], ℤ[i] are), `irreducible_iff_prime` gives the classical form.",
+    "historicalContext": "**Euclid's Lemma** originated in Euclid's *Elements* (~300 BCE) for the integers. The **abstract algebraic generalization** \u2014 that the same result holds in any ring where the B\u00e9zout identity can be established \u2014 was developed in the 19th and 20th centuries alongside abstract algebra.\n\n**B\u00e9zout domains** were formalized as rings where every finitely generated ideal is principal (equivalently, gcd exists and is a linear combination). **Richard Dedekind** and **Emmy Noether** laid the groundwork for understanding divisibility in abstract rings. The modern formulation in terms of `IsCoprime` \u2014 the existence of B\u00e9zout coefficients equaling 1 \u2014 appears in Bourbaki and is now standard in computer algebra systems.\n\nIn **Lean 4 with Mathlib**, the typeclass hierarchy reflects this algebra:\n- `EuclideanDomain` (\u2124, \u211a[X], \u2124[i]) \u2192 `PrincipalIdealRing` \u2192 `IsBezout` \u2192 `Ring`\n\nThe key insight in this formalization: `IsCoprime a b` in Lean is *defined* as `\u2203 u v, u*a + v*b = 1`, which is **exactly** the B\u00e9zout algebraic condition. This makes Euclid's lemma work in **any** commutative ring \u2014 no additional structure needed.",
+    "problemStatement": "**Open Question (bezout-identity-oq-02-oq-02)**: Can `euclids_lemma_int` (from BezoutIdentityOQ02) be generalized to arbitrary B\u00e9zout domains or PIDs using Mathlib's `IsBezout` typeclass, giving a single proof covering \u2124, k[X], and other rings?\n\n**Answer**: YES \u2014 and the generalization is **more powerful** than expected:\n\n1. **CommRing level**: `euclids_lemma_ring` holds in ANY `CommRing` using only `IsCoprime`\n2. **IsBezout level**: `IsRelPrime a b \u2194 IsCoprime a b` in IsBezout rings  \n3. **DecompositionMonoid level**: `Irreducible \u2194 Prime` (abstract Euclid's lemma)\n4. **Instances**: \u2124, \u211a[X], \u2124[i] all reduce to the same proof",
+    "text": "Euclid's lemma generalized from \u2124 to any commutative ring via IsCoprime, with the IsBezout connection: IsRelPrime \u2194 IsCoprime in B\u00e9zout rings. A single proof covers \u2124, \u211a[X], \u2124[i], and all Euclidean domains.",
+    "proofStrategy": "The proof strategy has three levels:\n\n**Level 1 \u2014 Universal (CommRing)**:\nGiven `IsCoprime a b` (\u2203 u, v with u*a + v*b = 1) and `a \u2223 b*c` (\u2203 k with b*c = a*k):\n- Witness: `u*c + v*k`\n- Identity: `c = (u*a + v*b)*c = a*(u*c) + (b*c)*v = a*(u*c + v*k)`\n- Tactic: `linear_combination v * hk - c * huv`\n\n**Level 2 \u2014 IsBezout connection**:\n- Forward (`IsCoprime \u2192 IsRelPrime`): if d divides a and b, then d divides u*a + v*b = 1, so d is a unit\n- Backward (`IsRelPrime \u2192 IsCoprime`): use `IsBezout.span_pair_isPrincipal` to make the ideal principal, then `IsRelPrime.isCoprime`\n\n**Level 3 \u2014 Irreducible elements**:\nIn a `DecompositionMonoid` (which \u2124, k[X], \u2124[i] are), `irreducible_iff_prime` gives the classical form.",
     "keyInsights": [
-      "**IsCoprime IS the abstract Bézout condition**: Defined as `∃ u v, u*a + v*b = 1` in any ring. No special structure needed.",
-      "**The proof is ring-axiomatic**: `linear_combination v * hk - c * huv` is pure ring arithmetic — works in ℤ, ℚ[X], ℤ[i] identically.",
-      "**IsBezout connects arithmetic and algebra**: `IsRelPrime` (every common divisor is a unit) ↔ `IsCoprime` (Bézout coefficients exist) in IsBezout rings.",
-      "**DecompositionMonoid unifies irreducible and prime**: In ℤ, k[X], ℤ[i], `irreducible_iff_prime` holds — this is the abstract FTA seed.",
-      "**One proof, many instances**: `euclids_lemma_ring hcop hdvd` is the same line of code for ℤ, ℚ[X], and ℤ[i]."
+      "**IsCoprime IS the abstract B\u00e9zout condition**: Defined as `\u2203 u v, u*a + v*b = 1` in any ring. No special structure needed.",
+      "**The proof is ring-axiomatic**: `linear_combination v * hk - c * huv` is pure ring arithmetic \u2014 works in \u2124, \u211a[X], \u2124[i] identically.",
+      "**IsBezout connects arithmetic and algebra**: `IsRelPrime` (every common divisor is a unit) \u2194 `IsCoprime` (B\u00e9zout coefficients exist) in IsBezout rings.",
+      "**DecompositionMonoid unifies irreducible and prime**: In \u2124, k[X], \u2124[i], `irreducible_iff_prime` holds \u2014 this is the abstract FTA seed.",
+      "**One proof, many instances**: `euclids_lemma_ring hcop hdvd` is the same line of code for \u2124, \u211a[X], and \u2124[i]."
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)"
@@ -81,14 +81,14 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Single `import Mathlib` — the proof uses IsBezout, IsRelPrime, GaussianInt, Polynomial, and DecompositionMonoid from across Mathlib."
+      "summary": "Single `import Mathlib` \u2014 the proof uses IsBezout, IsRelPrime, GaussianInt, Polynomial, and DecompositionMonoid from across Mathlib."
     },
     {
       "id": "module-doc",
       "title": "Module Documentation",
       "startLine": 3,
       "endLine": 52,
-      "summary": "Documents the open question (can euclids_lemma_int generalize to IsBezout domains?), the answer (yes — to all CommRings!), the proof hierarchy, and the key Mathlib API discovered: IsRelPrime.isCoprime, IsBezout.span_pair_isPrincipal, irreducible_iff_prime."
+      "summary": "Documents the open question (can euclids_lemma_int generalize to IsBezout domains?), the answer (yes \u2014 to all CommRings!), the proof hierarchy, and the key Mathlib API discovered: IsRelPrime.isCoprime, IsBezout.span_pair_isPrincipal, irreducible_iff_prime."
     },
     {
       "id": "euclids-ring",
@@ -109,21 +109,21 @@
       "title": "Part III: EuclideanDomain Version",
       "startLine": 137,
       "endLine": 155,
-      "summary": "euclids_lemma_euclidean: EuclideanDomain implies IsBezout, so IsRelPrime → IsCoprime → Euclid's lemma applies directly."
+      "summary": "euclids_lemma_euclidean: EuclideanDomain implies IsBezout, so IsRelPrime \u2192 IsCoprime \u2192 Euclid's lemma applies directly."
     },
     {
       "id": "irreducible-prime",
       "title": "Part IV: Irreducible = Prime in DecompositionMonoids",
       "startLine": 157,
       "endLine": 180,
-      "summary": "irred_iff_prime_decomp and euclids_lemma_irreducible: in CancelCommMonoidWithZero + DecompositionMonoid (ℤ, k[X], ℤ[i]), irreducible_iff_prime gives the classical prime version."
+      "summary": "irred_iff_prime_decomp and euclids_lemma_irreducible: in CancelCommMonoidWithZero + DecompositionMonoid (\u2124, k[X], \u2124[i]), irreducible_iff_prime gives the classical prime version."
     },
     {
       "id": "instances",
       "title": "Part V: Concrete Instances",
       "startLine": 182,
       "endLine": 250,
-      "summary": "euclids_lemma_int, euclids_lemma_poly, euclids_lemma_gaussian — all one-liners calling euclids_lemma_ring. Confirms IsBezout and DecompositionMonoid instances for ℤ, Polynomial ℚ, GaussianInt."
+      "summary": "euclids_lemma_int, euclids_lemma_poly, euclids_lemma_gaussian \u2014 all one-liners calling euclids_lemma_ring. Confirms IsBezout and DecompositionMonoid instances for \u2124, Polynomial \u211a, GaussianInt."
     },
     {
       "id": "uniform-principle",
@@ -134,24 +134,24 @@
     }
   ],
   "conclusion": {
-    "summary": "The answer to bezout-identity-oq-02-oq-02 is definitively YES: `euclids_lemma_int` generalizes completely to any commutative ring, not just Bézout domains. The proof `linear_combination v * hk - c * huv` is a pure ring identity that works universally. Zero sorries.",
-    "implications": "**Theoretical Significance**: This completes the BezoutIdentity open question family. The hierarchy is now clear: (1) In ANY CommRing, IsCoprime → Euclid's lemma by ring axioms alone.\n\n(2) In IsBezout rings, IsRelPrime ↔ IsCoprime connects arithmetic and algebraic coprimality. (3) In DecompositionMonoids, irreducible = prime gives the classical Euclid's lemma. This framework covers ℤ, any k[X], ℤ[i], and more.",
+    "summary": "The answer to bezout-identity-oq-02-oq-02 is definitively YES: `euclids_lemma_int` generalizes completely to any commutative ring, not just B\u00e9zout domains. The proof `linear_combination v * hk - c * huv` is a pure ring identity that works universally. Zero sorries.",
+    "implications": "**Theoretical Significance**: This completes the BezoutIdentity open question family. The hierarchy is now clear: (1) In ANY CommRing, IsCoprime \u2192 Euclid's lemma by ring axioms alone.\n\n(2) In IsBezout rings, IsRelPrime \u2194 IsCoprime connects arithmetic and algebraic coprimality. (3) In DecompositionMonoids, irreducible = prime gives the classical Euclid's lemma. This framework covers \u2124, any k[X], \u2124[i], and more.",
     "openQuestions": [
-      "Can the Bézout coefficients from `BezoutIdentityOQ01.extGcd` be combined with `euclids_lemma_ring` to give a constructive, computable divisibility algorithm — producing explicit quotient witnesses?",
-      "Does the `linear_combination` tactic approach scale to Gauss's lemma (the analog for polynomial rings: if f is primitive and f | g·h over ℤ[x], then f | g or f | h)?",
-      "Can `isBezout_coprime_iff` be used to prove the Nullstellensatz (algebraic geometry) via Bézout-style reasoning in polynomial rings over algebraically closed fields?"
+      "Can the B\u00e9zout coefficients from `BezoutIdentityOQ01.extGcd` be combined with `euclids_lemma_ring` to give a constructive, computable divisibility algorithm \u2014 producing explicit quotient witnesses?",
+      "Does the `linear_combination` tactic approach scale to Gauss's lemma (the analog for polynomial rings: if f is primitive and f | g\u00b7h over \u2124[x], then f | g or f | h)?",
+      "Can `isBezout_coprime_iff` be used to prove the Nullstellensatz (algebraic geometry) via B\u00e9zout-style reasoning in polynomial rings over algebraically closed fields?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "bezout-identity-oq-02",
       "relationship": "extends",
-      "description": "Parent entry proving Euclid's lemma for ℤ — this file generalizes to arbitrary commutative rings, showing the proof is a pure ring identity"
+      "description": "Parent entry proving Euclid's lemma for \u2124 \u2014 this file generalizes to arbitrary commutative rings, showing the proof is a pure ring identity"
     },
     {
       "targetId": "bezout-identity",
       "relationship": "ancestor",
-      "description": "The original Bézout identity — the generalization shows IsCoprime (∃u,v: ua+vb=1) suffices for Euclid's lemma in any ring"
+      "description": "The original B\u00e9zout identity \u2014 the generalization shows IsCoprime (\u2203u,v: ua+vb=1) suffices for Euclid's lemma in any ring"
     },
     {
       "targetId": "fundamental-arithmetic",
@@ -174,6 +174,7 @@
     "lineCount": 285,
     "axiomCount": 0,
     "theoremCount": 14,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

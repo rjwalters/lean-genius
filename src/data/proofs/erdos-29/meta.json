@@ -1,10 +1,10 @@
 {
   "id": "erdos-29",
-  "title": "Erdős Problem #29: Explicit Economical Additive Basis",
+  "title": "Erd\u0151s Problem #29: Explicit Economical Additive Basis",
   "slug": "erdos-29",
-  "description": "Is there an explicit construction of A ⊆ ℕ such that A + A = ℕ but r_A(n) = o(n^ε) for every ε > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
+  "description": "Is there an explicit construction of A \u2286 \u2115 such that A + A = \u2115 but r_A(n) = o(n^\u03b5) for every \u03b5 > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
   "meta": {
-    "author": "Sidon, Erdős",
+    "author": "Sidon, Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/29",
     "date": "1932",
     "status": "formalized",
@@ -32,17 +32,17 @@
     "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "In 1932, the Hungarian mathematician Simon Sidon posed a question to Paul Erdős: can one explicitly construct a set $A \\subseteq \\mathbb{N}$ that is simultaneously an additive basis of order 2 ($A + A = \\mathbb{N}$) and 'economical' (the representation function $r_A(n)$ grows slower than any polynomial)?\n\nErdős, one of the most prolific mathematicians of the 20th century, proved that such sets **exist** using the probabilistic method: include $n \\in A$ with probability $p_n \\approx n^{-1/2+o(1)}$. A second-moment calculation shows that with positive probability, the random set satisfies both properties simultaneously. However, this argument is **non-constructive** — it guarantees existence without providing an algorithm to compute $A$.\n\nFor 90+ years, no explicit construction was known. The problem appeared on Erdős's list of $100 prize problems. The difficulty is that the two requirements — coverage (basis) and sparsity (economical) — pull in opposite directions: making $A$ denser helps coverage but hurts the representation count.\n\nIn 2024, Siddharth Jain, Huy Tuan Pham, Mehtaab Sawhney, and Dmitriy Zakharov (JPSZ) solved the problem with a breakthrough construction (arXiv:2405.08650). Their approach derandomizes Erdős's probabilistic argument using a carefully designed hash function, yielding a computable set with $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$ — far stronger than the required $o(n^\\varepsilon)$ for all $\\varepsilon > 0$. This resolved a 90+ year open problem and claimed Erdős's $100 prize.",
-    "problemStatement": "Is there an explicit construction of a set A ⊆ ℕ such that A + A = ℕ (additive basis) but r_A(n) = o(n^ε) for every ε > 0 (economical)?",
-    "text": "Is there an explicit construction of A ⊆ ℕ such that A + A = ℕ but r_A(n) = o(n^ε) for every ε > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
-    "proofStrategy": "The formalization defines sumsets, representation functions, and the economical condition. Key comparisons: ℕ is a basis but not economical (r(n) = n+1), Sidon sets are economical but not bases. The JPSZ construction achieves both properties with r_A(n) ≤ exp(C√(log n)).",
+    "historicalContext": "In 1932, the Hungarian mathematician Simon Sidon posed a question to Paul Erd\u0151s: can one explicitly construct a set $A \\subseteq \\mathbb{N}$ that is simultaneously an additive basis of order 2 ($A + A = \\mathbb{N}$) and 'economical' (the representation function $r_A(n)$ grows slower than any polynomial)?\n\nErd\u0151s, one of the most prolific mathematicians of the 20th century, proved that such sets **exist** using the probabilistic method: include $n \\in A$ with probability $p_n \\approx n^{-1/2+o(1)}$. A second-moment calculation shows that with positive probability, the random set satisfies both properties simultaneously. However, this argument is **non-constructive** \u2014 it guarantees existence without providing an algorithm to compute $A$.\n\nFor 90+ years, no explicit construction was known. The problem appeared on Erd\u0151s's list of $100 prize problems. The difficulty is that the two requirements \u2014 coverage (basis) and sparsity (economical) \u2014 pull in opposite directions: making $A$ denser helps coverage but hurts the representation count.\n\nIn 2024, Siddharth Jain, Huy Tuan Pham, Mehtaab Sawhney, and Dmitriy Zakharov (JPSZ) solved the problem with a breakthrough construction (arXiv:2405.08650). Their approach derandomizes Erd\u0151s's probabilistic argument using a carefully designed hash function, yielding a computable set with $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$ \u2014 far stronger than the required $o(n^\\varepsilon)$ for all $\\varepsilon > 0$. This resolved a 90+ year open problem and claimed Erd\u0151s's $100 prize.",
+    "problemStatement": "Is there an explicit construction of a set A \u2286 \u2115 such that A + A = \u2115 (additive basis) but r_A(n) = o(n^\u03b5) for every \u03b5 > 0 (economical)?",
+    "text": "Is there an explicit construction of A \u2286 \u2115 such that A + A = \u2115 but r_A(n) = o(n^\u03b5) for every \u03b5 > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
+    "proofStrategy": "The formalization defines sumsets, representation functions, and the economical condition. Key comparisons: \u2115 is a basis but not economical (r(n) = n+1), Sidon sets are economical but not bases. The JPSZ construction achieves both properties with r_A(n) \u2264 exp(C\u221a(log n)).",
     "keyInsights": [
-      "**The Goldilocks Problem:** Two constraints pull in opposite directions — thick enough to be a basis ($A+A=\\mathbb{N}$) vs. thin enough to be economical ($r_A(n) = o(n^\\varepsilon)$). ℕ fails economical ($r_\\mathbb{N}(n) = n+1$); Sidon sets fail basis ($|A \\cap [1,N]| = O(\\sqrt{N})$ is too sparse). JPSZ threads the needle.",
-      "**Representation Bound:** JPSZ achieves $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, which is $o(n^\\varepsilon)$ for all $\\varepsilon > 0$ since $C\\sqrt{\\log n} < \\varepsilon \\log n$ eventually. This quantitative bound is much stronger than merely $o(n^\\varepsilon)$ — it implies, for example, $r_A(n) = O(\\log^k n)$ for any fixed $k$.",
+      "**The Goldilocks Problem:** Two constraints pull in opposite directions \u2014 thick enough to be a basis ($A+A=\\mathbb{N}$) vs. thin enough to be economical ($r_A(n) = o(n^\\varepsilon)$). \u2115 fails economical ($r_\\mathbb{N}(n) = n+1$); Sidon sets fail basis ($|A \\cap [1,N]| = O(\\sqrt{N})$ is too sparse). JPSZ threads the needle.",
+      "**Representation Bound:** JPSZ achieves $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, which is $o(n^\\varepsilon)$ for all $\\varepsilon > 0$ since $C\\sqrt{\\log n} < \\varepsilon \\log n$ eventually. This quantitative bound is much stronger than merely $o(n^\\varepsilon)$ \u2014 it implies, for example, $r_A(n) = O(\\log^k n)$ for any fixed $k$.",
       "**Sidon Sets Cannot Be Bases:** The proof (76 lines!) derives that if A is Sidon AND a basis, then $0,1,3,5 \\in A$, $2,4,6 \\notin A$, but then $6 = 1+5 = 3+3$ gives two representations, contradicting the Sidon property. This is proved in full Lean by Aristotle.",
       "**Aristotle Disproves a Theorem:** The claimed lower bound $|A \\cap [1,N]| \\geq \\sqrt{N}$ for any basis $A$ is **FALSE**. Aristotle constructed the counterexample $A = \\{0,1\\} \\cup \\{n \\geq 3\\}$ which is a basis but has $|A \\cap [1,2]| = 1 < \\sqrt{2}$ for $N=2$. The theorem remains in the file as `sorry`, illustrating how automated verification catches errors.",
-      "**Derandomization:** JPSZ's breakthrough converts Erdős's probabilistic argument into a deterministic algorithm. The key technique is finding a hash function $h : \\mathbb{N} \\to [0,1]$ such that $n \\in A \\iff h(n) \\leq p_n$ has the same coverage and sparsity properties as the random set. `ExplicitSet` in Lean formalizes this: `DecidablePred (· ∈ A)` ensures membership is algorithmically checkable.",
-      "**90 Years, $100:** From Sidon's question (1932) to JPSZ's answer (2024) — 92 years. The formalization covers the full mathematical landscape: Erdős's non-constructive proof (`erdos_probabilistic_existence`), the 2024 explicit construction (`JPSZ_set`, `JPSZ_is_basis`, `JPSZ_is_economical`), and four Lean-verified supporting theorems (`economical_equiv`, `univ_not_economical`, `squares_not_basis`, `sidon_not_basis`)."
+      "**Derandomization:** JPSZ's breakthrough converts Erd\u0151s's probabilistic argument into a deterministic algorithm. The key technique is finding a hash function $h : \\mathbb{N} \\to [0,1]$ such that $n \\in A \\iff h(n) \\leq p_n$ has the same coverage and sparsity properties as the random set. `ExplicitSet` in Lean formalizes this: `DecidablePred (\u00b7 \u2208 A)` ensures membership is algorithmically checkable.",
+      "**90 Years, $100:** From Sidon's question (1932) to JPSZ's answer (2024) \u2014 92 years. The formalization covers the full mathematical landscape: Erd\u0151s's non-constructive proof (`erdos_probabilistic_existence`), the 2024 explicit construction (`JPSZ_set`, `JPSZ_is_basis`, `JPSZ_is_economical`), and four Lean-verified supporting theorems (`economical_equiv`, `univ_not_economical`, `squares_not_basis`, `sidon_not_basis`)."
     ],
     "prerequisites": [
       "Additive bases and Waring's problem",
@@ -55,14 +55,14 @@
     {
       "id": "header",
       "title": "Problem Statement",
-      "summary": "Sidon's 1932 question to Erdős: is there an explicit $A \\subseteq \\mathbb{N}$ with $A+A=\\mathbb{N}$ and $r_A(n) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$? JPSZ (2024) answered YES with explicit construction. The Aristotle header records 4 proved theorems and 1 negated theorem (`basis_size_lower_bound` is FALSE).",
+      "summary": "Sidon's 1932 question to Erd\u0151s: is there an explicit $A \\subseteq \\mathbb{N}$ with $A+A=\\mathbb{N}$ and $r_A(n) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$? JPSZ (2024) answered YES with explicit construction. The Aristotle header records 4 proved theorems and 1 negated theorem (`basis_size_lower_bound` is FALSE).",
       "startLine": 1,
       "endLine": 79
     },
     {
       "id": "basic-definitions",
       "title": "Sumsets and Representation",
-      "summary": "Core definitions: `Sumset A B = {a+b : a ∈ A, b ∈ B}` with notation `+ₛ`; `Doubling A = A +ₛ A`; `representationCount A n = |{(a,b) : a+b=n}|`; `orderedRepCount A n = |{(a,b) : a ≤ b, a+b=n}|`. All `noncomputable` (use `Set.ncard`).",
+      "summary": "Core definitions: `Sumset A B = {a+b : a \u2208 A, b \u2208 B}` with notation `+\u209b`; `Doubling A = A +\u209b A`; `representationCount A n = |{(a,b) : a+b=n}|`; `orderedRepCount A n = |{(a,b) : a \u2264 b, a+b=n}|`. All `noncomputable` (use `Set.ncard`).",
       "startLine": 81,
       "endLine": 97
     },
@@ -76,21 +76,21 @@
     {
       "id": "economical-condition",
       "title": "The Economical Condition",
-      "summary": "`IsEconomical A`: $\\forall \\varepsilon > 0$, `Tendsto (r_A(n)/n^ε) atTop (nhds 0)`; `IsEconomical'`: $\\forall \\varepsilon, C > 0, \\exists N_0 : r_A(n) < C \\cdot n^\\varepsilon$ for $n \\geq N_0$. `economical_equiv : IsEconomical ↔ IsEconomical'` (Aristotle-proved via filter limit theory).",
+      "summary": "`IsEconomical A`: $\\forall \\varepsilon > 0$, `Tendsto (r_A(n)/n^\u03b5) atTop (nhds 0)`; `IsEconomical'`: $\\forall \\varepsilon, C > 0, \\exists N_0 : r_A(n) < C \\cdot n^\\varepsilon$ for $n \\geq N_0$. `economical_equiv : IsEconomical \u2194 IsEconomical'` (Aristotle-proved via filter limit theory).",
       "startLine": 118,
       "endLine": 149
     },
     {
       "id": "probabilistic-existence",
-      "title": "Erdős's Probabilistic Existence",
-      "summary": "`Erdos29Statement`: $\\exists A$, basis and economical. `axiom erdos_probabilistic_existence`: proved by Erdős's probabilistic method (include $n \\in A$ with prob $n^{-1/2+o(1)}$). Axiom because Aristotle failed to load it.",
+      "title": "Erd\u0151s's Probabilistic Existence",
+      "summary": "`Erdos29Statement`: $\\exists A$, basis and economical. `axiom erdos_probabilistic_existence`: proved by Erd\u0151s's probabilistic method (include $n \\in A$ with prob $n^{-1/2+o(1)}$). Axiom because Aristotle failed to load it.",
       "startLine": 151,
       "endLine": 158
     },
     {
       "id": "jpsz-construction",
       "title": "JPSZ Explicit Construction (2024)",
-      "summary": "`axiom JPSZ_set : Set ℕ` (computable), `JPSZ_is_basis`, `JPSZ_is_economical`; `erdos_29_solved : Erdos29Statement` (Lean-proved as `⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩`). Properties: density 0, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$.",
+      "summary": "`axiom JPSZ_set : Set \u2115` (computable), `JPSZ_is_basis`, `JPSZ_is_economical`; `erdos_29_solved : Erdos29Statement` (Lean-proved as `\u27e8JPSZ_set, JPSZ_is_basis, JPSZ_is_economical\u27e9`). Properties: density 0, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$.",
       "startLine": 160,
       "endLine": 204
     },
@@ -104,35 +104,35 @@
     {
       "id": "sidon-sets",
       "title": "Sidon Sets Cannot Be Bases",
-      "summary": "`IsSidon A`: `orderedRepCount A n ≤ 1`. `sidon_not_basis`: 76-line Lean proof that $0,1,3,5 \\in A$ and $2,4,6 \\notin A$ must hold, but $6 = 1+5 = 3+3$ gives `orderedRepCount A 6 ≥ 2` — contradiction. Aristotle-verified. Sidon sets have $|A \\cap [1,N]| = O(\\sqrt{N})$, too sparse for a basis.",
+      "summary": "`IsSidon A`: `orderedRepCount A n \u2264 1`. `sidon_not_basis`: 76-line Lean proof that $0,1,3,5 \\in A$ and $2,4,6 \\notin A$ must hold, but $6 = 1+5 = 3+3$ gives `orderedRepCount A 6 \u2265 2` \u2014 contradiction. Aristotle-verified. Sidon sets have $|A \\cap [1,N]| = O(\\sqrt{N})$, too sparse for a basis.",
       "startLine": 246,
       "endLine": 323
     },
     {
       "id": "explicit-class",
       "title": "Explicit vs Probabilistic",
-      "summary": "`class ExplicitSet (A : Set ℕ)` with `membership_decidable : DecidablePred (· ∈ A)`. `JPSZ_explicit : ExplicitSet JPSZ_set`. Erdős's proof: $\\exists A$ (no algorithm). JPSZ: here is $A$ with computable membership — key distinction formalizing 'constructive'.",
+      "summary": "`class ExplicitSet (A : Set \u2115)` with `membership_decidable : DecidablePred (\u00b7 \u2208 A)`. `JPSZ_explicit : ExplicitSet JPSZ_set`. Erd\u0151s's proof: $\\exists A$ (no algorithm). JPSZ: here is $A$ with computable membership \u2014 key distinction formalizing 'constructive'.",
       "startLine": 329,
       "endLine": 356
     },
     {
       "id": "lower-bounds",
       "title": "Size Lower Bounds",
-      "summary": "`basis_size_lower_bound` (claimed: $|A \\cap [1,N]| \\geq \\sqrt{N}$) is **FALSE** — Aristotle built counterexample `CounterexampleA = {0,1} ∪ {n ≥ 3}`, a basis with $|A \\cap [1,2]| = 1 < \\sqrt{2}$ for $N=2$. Theorem remains as `sorry`. `JPSZ_size_optimal`: $|\\text{JPSZ} \\cap [1,N]| \\leq C\\sqrt{N \\log N}$.",
+      "summary": "`basis_size_lower_bound` (claimed: $|A \\cap [1,N]| \\geq \\sqrt{N}$) is **FALSE** \u2014 Aristotle built counterexample `CounterexampleA = {0,1} \u222a {n \u2265 3}`, a basis with $|A \\cap [1,2]| = 1 < \\sqrt{2}$ for $N=2$. Theorem remains as `sorry`. `JPSZ_size_optimal`: $|\\text{JPSZ} \\cap [1,N]| \\leq C\\sqrt{N \\log N}$.",
       "startLine": 358,
       "endLine": 421
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "1932: Sidon asks; ~1950s: Erdős proves existence; 2024: JPSZ explicit construction. JPSZ properties: `ExplicitSet`, $A+A=\\mathbb{N}$, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, $|A \\cap [1,N]| \\leq C\\sqrt{N \\log N}$. Verified theorems: 4 Aristotle-proved, 1 Aristotle-negated (false lower bound).",
+      "summary": "1932: Sidon asks; ~1950s: Erd\u0151s proves existence; 2024: JPSZ explicit construction. JPSZ properties: `ExplicitSet`, $A+A=\\mathbb{N}$, $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, $|A \\cap [1,N]| \\leq C\\sqrt{N \\log N}$. Verified theorems: 4 Aristotle-proved, 1 Aristotle-negated (false lower bound).",
       "startLine": 423,
       "endLine": 452
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #29 is SOLVED. Jain-Pham-Sawhney-Zakharov (2024) gave the first explicit economical additive basis after 90+ years. The formalization includes verified proofs that ℕ is not economical, squares are not a basis, and Sidon sets cannot be bases.",
-    "implications": "Transforms Erdős's probabilistic existence proof into a constructive algorithm. Demonstrates the power of modern combinatorics to resolve long-standing problems explicitly.",
+    "summary": "Erd\u0151s Problem #29 is SOLVED. Jain-Pham-Sawhney-Zakharov (2024) gave the first explicit economical additive basis after 90+ years. The formalization includes verified proofs that \u2115 is not economical, squares are not a basis, and Sidon sets cannot be bases.",
+    "implications": "Transforms Erd\u0151s's probabilistic existence proof into a constructive algorithm. Demonstrates the power of modern combinatorics to resolve long-standing problems explicitly.",
     "openQuestions": [
       "The JPSZ axioms (`JPSZ_set`, `JPSZ_is_basis`, `JPSZ_is_economical`) fail to load in Aristotle due to `harmonicSorry` axioms. Can the JPSZ construction be formalized in Lean WITHOUT axioms, using Mathlib's existing library for hash functions, pseudorandomness, or derandomization?",
       "The `basis_size_lower_bound` theorem is FALSE as stated (Aristotle found the counterexample $A = \\{0,1\\} \\cup \\{n \\geq 3\\}$). The correct statement involves asymptotics: $|A \\cap [1,N]| \\geq (\\frac{1}{2} - o(1))\\sqrt{N}$ for large N. Can this corrected version be proved in Lean using the `Filter.Tendsto` machinery already used for `IsEconomical`?",
@@ -162,13 +162,14 @@
     "lineCount": 454,
     "axiomCount": 8,
     "theoremCount": 10,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-28",
       "relationship": "related",
-      "description": "Problem #28 asks about representation functions of bases. Problem #29 asks for explicit economical bases — both concern the fundamental structure of additive bases of order 2"
+      "description": "Problem #28 asks about representation functions of bases. Problem #29 asks for explicit economical bases \u2014 both concern the fundamental structure of additive bases of order 2"
     },
     {
       "targetId": "erdos-35",
@@ -179,9 +180,9 @@
   "references": [
     {
       "authors": "Schnirelmann, Lev G.",
-      "title": "Über additive Eigenschaften von Zahlen",
+      "title": "\u00dcber additive Eigenschaften von Zahlen",
       "year": "1933",
-      "venue": "Mathematische Annalen, vol. 107, pp. 649–690",
+      "venue": "Mathematische Annalen, vol. 107, pp. 649\u2013690",
       "note": "Proved every set with positive Schnirelmann density is an additive basis, motivating the search for explicit thin bases"
     },
     {

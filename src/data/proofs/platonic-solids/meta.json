@@ -46,12 +46,12 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Platonic solids were known to the ancient Greeks and studied extensively by Plato (hence the name). Euclid proved in Elements Book XIII that these are the only five regular convex polyhedra. The classification relies on Euler's polyhedral formula V - E + F = 2 combined with regularity constraints: all faces are congruent regular p-gons and q faces meet at each vertex. The five solids correspond to the finite subgroups of SO(3) acting on the sphere, a connection fully developed by Klein (1884). Schläfli (1852) classified regular polytopes in higher dimensions, finding six in dimension 4 and only three (the simplex, hypercube, and cross-polytope) in each dimension 5 and above.",
+    "historicalContext": "The Platonic solids were known to the ancient Greeks and studied extensively by Plato (hence the name). Euclid proved in Elements Book XIII that these are the only five regular convex polyhedra. The classification relies on Euler's polyhedral formula V - E + F = 2 combined with regularity constraints: all faces are congruent regular p-gons and q faces meet at each vertex. The five solids correspond to the finite subgroups of SO(3) acting on the sphere, a connection fully developed by Klein (1884). Schl\u00e4fli (1852) classified regular polytopes in higher dimensions, finding six in dimension 4 and only three (the simplex, hypercube, and cross-polytope) in each dimension 5 and above.",
     "problemStatement": "**Theorem (Euclid, c. 300 BCE)**: There are exactly **five** Platonic solids (convex regular polyhedra):\n\n1. **Tetrahedron**: 4 triangular faces, {3, 3}\n2. **Cube**: 6 square faces, {4, 3}\n3. **Octahedron**: 8 triangular faces, {3, 4}\n4. **Dodecahedron**: 12 pentagonal faces, {5, 3}\n5. **Icosahedron**: 20 triangular faces, {3, 5}\n\nThis is Wiedijk's 100 Theorems #50.",
     "text": "There are exactly five Platonic solids (regular convex polyhedra): the tetrahedron, cube, octahedron, dodecahedron, and icosahedron.",
     "proofStrategy": "**Proof via Schlafli Symbols**:\n\nA Platonic solid is characterized by {p, q} where p = sides per face and q = faces per vertex.\n\n1. Using Euler's formula V - E + F = 2 and regularity conditions:\n   - pF = 2E (each edge shared by 2 faces)\n   - qV = 2E (each edge connects 2 vertices)\n\n2. Derive the constraint: **1/p + 1/q > 1/2**, equivalently **(p-2)(q-2) < 4**\n\n3. Enumerate all integer solutions with p, q >= 3:\n   - (3,3), (3,4), (3,5), (4,3), (5,3)\n\n4. Verify each corresponds to a valid polyhedron",
     "keyInsights": [
-      "The constraint $(p-2)(q-2) < 4$ limits valid Schläfli pairs to exactly five — a finite enumeration from an inequality",
+      "The constraint $(p-2)(q-2) < 4$ limits valid Schl\u00e4fli pairs to exactly five \u2014 a finite enumeration from an inequality",
       "Platonic solids come in dual pairs: cube $\\{4,3\\} \\leftrightarrow \\{3,4\\}$ octahedron, dodecahedron $\\{5,3\\} \\leftrightarrow \\{3,5\\}$ icosahedron",
       "The tetrahedron $\\{3,3\\}$ is self-dual: swapping $p$ and $q$ yields the same solid",
       "All five solids satisfy Euler's formula $V - E + F = 2$, verified computationally in Lean",
@@ -72,7 +72,7 @@
       "startLine": 65,
       "endLine": 99,
       "summary": "Definition of Schlafli pairs {p, q} and the regularity constraint.",
-      "mathContext": "A Schläfli pair $\\{p, q\\}$ encodes a regular polyhedron with $p$-gonal faces and $q$ faces meeting at each vertex ($p, q \\geq 3$). Euler's formula $V - E + F = 2$ combined with the double-counting relations $pF = 2E$ and $qV = 2E$ yields the constraint $\\frac{1}{p} + \\frac{1}{q} > \\frac{1}{2}$, equivalently $(p-2)(q-2) < 4$."
+      "mathContext": "A Schl\u00e4fli pair $\\{p, q\\}$ encodes a regular polyhedron with $p$-gonal faces and $q$ faces meeting at each vertex ($p, q \\geq 3$). Euler's formula $V - E + F = 2$ combined with the double-counting relations $pF = 2E$ and $qV = 2E$ yields the constraint $\\frac{1}{p} + \\frac{1}{q} > \\frac{1}{2}$, equivalently $(p-2)(q-2) < 4$."
     },
     {
       "id": "five-solids",
@@ -80,7 +80,7 @@
       "startLine": 100,
       "endLine": 161,
       "summary": "Definitions of the five Platonic solids and verification they satisfy the constraint.",
-      "mathContext": "The five valid Schläfli pairs are $\\{3,3\\}$ (tetrahedron), $\\{4,3\\}$ (cube), $\\{3,4\\}$ (octahedron), $\\{5,3\\}$ (dodecahedron), $\\{3,5\\}$ (icosahedron). Each satisfies $(p-2)(q-2) < 4$: the products are 1, 2, 2, 3, 3 respectively."
+      "mathContext": "The five valid Schl\u00e4fli pairs are $\\{3,3\\}$ (tetrahedron), $\\{4,3\\}$ (cube), $\\{3,4\\}$ (octahedron), $\\{5,3\\}$ (dodecahedron), $\\{3,5\\}$ (icosahedron). Each satisfies $(p-2)(q-2) < 4$: the products are 1, 2, 2, 3, 3 respectively."
     },
     {
       "id": "completeness",
@@ -133,8 +133,9 @@
     "namespace": "PlatonicSolids",
     "lineCount": 419,
     "axiomCount": 0,
-    "theoremCount": 24,
-    "definitionCount": 10
+    "theoremCount": 20,
+    "definitionCount": 10,
+    "lemmaCount": 4
   },
   "references": [
     {
@@ -166,12 +167,12 @@
     {
       "targetId": "four-color-theorem",
       "relationship": "thematic",
-      "description": "Both concern fundamental properties of embedded geometric structures: the four-color theorem concerns graph coloring on the sphere, while Platonic solids classify regular polyhedra — both constrain what geometric configurations are possible"
+      "description": "Both concern fundamental properties of embedded geometric structures: the four-color theorem concerns graph coloring on the sphere, while Platonic solids classify regular polyhedra \u2014 both constrain what geometric configurations are possible"
     },
     {
       "targetId": "isoperimetric-theorem",
       "relationship": "related",
-      "description": "Among all polyhedra with n faces, the Platonic solids are the most symmetric. The isoperimetric theorem (sphere maximizes volume for given surface area) is the continuous analog — both concern optimal geometric shapes"
+      "description": "Among all polyhedra with n faces, the Platonic solids are the most symmetric. The isoperimetric theorem (sphere maximizes volume for given surface area) is the continuous analog \u2014 both concern optimal geometric shapes"
     },
     {
       "targetId": "triangle-angle-sum",

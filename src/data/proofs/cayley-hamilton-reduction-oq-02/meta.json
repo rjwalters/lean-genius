@@ -48,7 +48,7 @@
     ],
     "originalContributions": [
       "Divisibility chain: minpoly | charpoly via Cayley-Hamilton + minimality",
-      "Degree comparison: deg(minpoly) ≤ deg(charpoly) = n",
+      "Degree comparison: deg(minpoly) \u2264 deg(charpoly) = n",
       "Reduction degree bound for minpoly remainder",
       "Evaluation equivalence: aeval M (p % minpoly) = aeval M p",
       "Definition of non-derogatory matrices via degree equality",
@@ -60,16 +60,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The minimal polynomial of a linear operator was introduced by Frobenius in the 1870s as the monic polynomial of smallest degree annihilating the operator. Its relationship to the characteristic polynomial is one of the central structural results in linear algebra. The Cayley–Hamilton theorem (1858) shows the characteristic polynomial annihilates the matrix; by the defining property of the minimal polynomial, this immediately yields the divisibility relation $\\mu_M \\mid \\chi_M$.\n\nThe concept of non-derogatory matrices — those where $\\deg(\\mu_M) = \\deg(\\chi_M)$ — is important in rational canonical form theory. A matrix is non-derogatory if and only if its rational canonical form has a single companion block, equivalently if its centralizer consists only of polynomials in $M$. Companion matrices, introduced by Frobenius, are the canonical examples: the companion matrix of a monic polynomial $p$ has $p$ as both its minimal and characteristic polynomial.\n\nThe computational perspective on polynomial reduction modulo $\\mu_M$ vs $\\chi_M$ connects to efficient matrix function evaluation. When a matrix is derogatory ($\\deg(\\mu_M) < n$), reducing modulo the minimal polynomial gives shorter polynomial representations, which matters for numerical computation and symbolic algebra.",
+    "historicalContext": "The minimal polynomial of a linear operator was introduced by Frobenius in the 1870s as the monic polynomial of smallest degree annihilating the operator. Its relationship to the characteristic polynomial is one of the central structural results in linear algebra. The Cayley\u2013Hamilton theorem (1858) shows the characteristic polynomial annihilates the matrix; by the defining property of the minimal polynomial, this immediately yields the divisibility relation $\\mu_M \\mid \\chi_M$.\n\nThe concept of non-derogatory matrices \u2014 those where $\\deg(\\mu_M) = \\deg(\\chi_M)$ \u2014 is important in rational canonical form theory. A matrix is non-derogatory if and only if its rational canonical form has a single companion block, equivalently if its centralizer consists only of polynomials in $M$. Companion matrices, introduced by Frobenius, are the canonical examples: the companion matrix of a monic polynomial $p$ has $p$ as both its minimal and characteristic polynomial.\n\nThe computational perspective on polynomial reduction modulo $\\mu_M$ vs $\\chi_M$ connects to efficient matrix function evaluation. When a matrix is derogatory ($\\deg(\\mu_M) < n$), reducing modulo the minimal polynomial gives shorter polynomial representations, which matters for numerical computation and symbolic algebra.",
     "problemStatement": "**Open Question**: What is the relationship between reducing by the minimal polynomial vs the characteristic polynomial, and when does minpoly provide a more efficient reduction?\n\n**Answer**: The minimal polynomial always divides the characteristic polynomial:\n$$\\mu_M \\mid \\chi_M$$\n\nConsequently $\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. Both polynomials annihilate $M$, so for any polynomial $p$:\n$$p(M) = (p \\bmod \\mu_M)(M) = (p \\bmod \\chi_M)(M)$$\n\nbut $\\deg(p \\bmod \\mu_M) < \\deg(\\mu_M) \\leq \\deg(\\chi_M) > \\deg(p \\bmod \\chi_M)$.\n\nWhen $\\deg(\\mu_M) < n$ (derogatory case), minpoly reduction produces strictly lower-degree results. Equality holds precisely for non-derogatory matrices.",
     "text": "Formalizes the relationship between reducing polynomials mod the minimal vs characteristic polynomial of a matrix, proving minpoly divides charpoly, degree comparisons, and introducing non-derogatory matrices.",
-    "proofStrategy": "The proof proceeds in three parts:\n\n**Part I — Divisibility**: Apply Cayley–Hamilton (`Matrix.aeval_self_charpoly`) to show $\\chi_M$ annihilates $M$, then invoke `minpoly.dvd` which says the minimal polynomial divides any monic annihilating polynomial. The degree comparison follows immediately from `Polynomial.natDegree_le_of_dvd`.\n\n**Part II — Reduction Efficiency**: Prove the degree bound for minpoly reduction using `Polynomial.natDegree_modByMonic_lt` (remainder modulo a monic polynomial has strictly smaller degree). Show evaluation equivalence: $p(M) = (p \\bmod \\mu_M)(M)$ by decomposing $p = q \\cdot \\mu_M + r$ and using `minpoly.aeval` (which says $\\mu_M(M) = 0$).\n\n**Part III — Non-Derogatory Matrices**: Define non-derogatory as $\\deg(\\mu_M) = \\deg(\\chi_M)$ and prove that for such matrices, both reductions are equally efficient. State the existence of non-derogatory companion matrices.",
+    "proofStrategy": "The proof proceeds in three parts:\n\n**Part I \u2014 Divisibility**: Apply Cayley\u2013Hamilton (`Matrix.aeval_self_charpoly`) to show $\\chi_M$ annihilates $M$, then invoke `minpoly.dvd` which says the minimal polynomial divides any monic annihilating polynomial. The degree comparison follows immediately from `Polynomial.natDegree_le_of_dvd`.\n\n**Part II \u2014 Reduction Efficiency**: Prove the degree bound for minpoly reduction using `Polynomial.natDegree_modByMonic_lt` (remainder modulo a monic polynomial has strictly smaller degree). Show evaluation equivalence: $p(M) = (p \\bmod \\mu_M)(M)$ by decomposing $p = q \\cdot \\mu_M + r$ and using `minpoly.aeval` (which says $\\mu_M(M) = 0$).\n\n**Part III \u2014 Non-Derogatory Matrices**: Define non-derogatory as $\\deg(\\mu_M) = \\deg(\\chi_M)$ and prove that for such matrices, both reductions are equally efficient. State the existence of non-derogatory companion matrices.",
     "keyInsights": [
-      "The divisibility μ_M | χ_M is a two-line proof combining Cayley-Hamilton (χ_M annihilates M) with the universal property of the minimal polynomial (μ_M divides any annihilating polynomial)",
-      "Reduction mod μ_M and mod χ_M give the same matrix value — both annihilate M — but the former produces lower-degree polynomials when μ_M has smaller degree, making computation more efficient",
-      "The evaluation equivalence proof uses the division algorithm decomposition p = q·μ_M + r and the fact that μ_M(M) = 0, so p(M) = r(M) where r = p mod μ_M",
-      "Non-derogatory matrices form an open dense subset of n×n matrices: 'most' matrices have minpoly = charpoly, making the derogatory case (where minpoly reduction gains efficiency) the exception rather than the rule",
-      "Companion matrices are the constructive witnesses for non-derogatory matrices — the companion matrix of any monic polynomial p has p as both its minimal and characteristic polynomial"
+      "The divisibility \u03bc_M | \u03c7_M is a two-line proof combining Cayley-Hamilton (\u03c7_M annihilates M) with the universal property of the minimal polynomial (\u03bc_M divides any annihilating polynomial)",
+      "Reduction mod \u03bc_M and mod \u03c7_M give the same matrix value \u2014 both annihilate M \u2014 but the former produces lower-degree polynomials when \u03bc_M has smaller degree, making computation more efficient",
+      "The evaluation equivalence proof uses the division algorithm decomposition p = q\u00b7\u03bc_M + r and the fact that \u03bc_M(M) = 0, so p(M) = r(M) where r = p mod \u03bc_M",
+      "Non-derogatory matrices form an open dense subset of n\u00d7n matrices: 'most' matrices have minpoly = charpoly, making the derogatory case (where minpoly reduction gains efficiency) the exception rather than the rule",
+      "Companion matrices are the constructive witnesses for non-derogatory matrices \u2014 the companion matrix of any monic polynomial p has p as both its minimal and characteristic polynomial"
     ],
     "prerequisites": [
       "Linear algebra"
@@ -88,7 +88,7 @@
       "title": "Part I: Minpoly Divides Charpoly",
       "startLine": 34,
       "endLine": 51,
-      "summary": "Two fully proved theorems: minpoly divides charpoly (via Cayley-Hamilton + minimality) and the degree comparison deg(minpoly) ≤ deg(charpoly)."
+      "summary": "Two fully proved theorems: minpoly divides charpoly (via Cayley-Hamilton + minimality) and the degree comparison deg(minpoly) \u2264 deg(charpoly)."
     },
     {
       "id": "reduction-efficiency",
@@ -113,11 +113,11 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the fundamental relationship between the minimal and characteristic polynomials of a matrix. Four of six theorems are fully proved: the divisibility μ_M | χ_M, the degree comparison, the reduction degree bound, and the evaluation equivalence. The two remaining sorries concern non-derogatory matrices: proving that minpoly and charpoly reductions have equal degree for non-derogatory matrices, and constructing non-derogatory companion matrices.",
-    "implications": "**Theoretical Significance**: 1. **Efficient matrix computation**: When computing f(M) for large matrices, reducing f modulo μ_M rather than χ_M can significantly reduce the degree of the polynomial to evaluate, especially for derogatory matrices where deg(μ_M) ≪ n.\n**2. Rational canonical form**: The non-derogatory characterization connects to the rational canonical form — a matrix is non-derogatory iff its RCF has a single companion block, which determines the structure of its centralizer.\n3. **Matrix function theory**: The evaluation equivalence theorem is foundational for matrix function computation via polynomial interpolation: one can work modulo μ_M rather than χ_M without changing the result.\n4. **Connection to Cayley-Hamilton**: Builds directly on the parent formalization, showing that Cayley-Hamilton is not just a theoretical result but has immediate computational consequences.",
+    "summary": "This formalization establishes the fundamental relationship between the minimal and characteristic polynomials of a matrix. Four of six theorems are fully proved: the divisibility \u03bc_M | \u03c7_M, the degree comparison, the reduction degree bound, and the evaluation equivalence. The two remaining sorries concern non-derogatory matrices: proving that minpoly and charpoly reductions have equal degree for non-derogatory matrices, and constructing non-derogatory companion matrices.",
+    "implications": "**Theoretical Significance**: 1. **Efficient matrix computation**: When computing f(M) for large matrices, reducing f modulo \u03bc_M rather than \u03c7_M can significantly reduce the degree of the polynomial to evaluate, especially for derogatory matrices where deg(\u03bc_M) \u226a n.\n**2. Rational canonical form**: The non-derogatory characterization connects to the rational canonical form \u2014 a matrix is non-derogatory iff its RCF has a single companion block, which determines the structure of its centralizer.\n3. **Matrix function theory**: The evaluation equivalence theorem is foundational for matrix function computation via polynomial interpolation: one can work modulo \u03bc_M rather than \u03c7_M without changing the result.\n4. **Connection to Cayley-Hamilton**: Builds directly on the parent formalization, showing that Cayley-Hamilton is not just a theoretical result but has immediate computational consequences.",
     "openQuestions": [
       "Can the rational canonical form (Frobenius normal form) be fully formalized in Lean 4, decomposing any matrix into companion blocks corresponding to the invariant factors?",
-      "Can the genericity of non-derogatory matrices be formalized — i.e., that derogatory matrices form a closed subset of measure zero in the space of n×n matrices?",
+      "Can the genericity of non-derogatory matrices be formalized \u2014 i.e., that derogatory matrices form a closed subset of measure zero in the space of n\u00d7n matrices?",
       "Can the connection between non-derogatory matrices and cyclic subspaces be formalized, showing that M is non-derogatory iff there exists a cyclic vector v with {v, Mv, ..., M^{n-1}v} spanning the whole space?"
     ]
   },
@@ -125,7 +125,7 @@
     {
       "targetId": "cayley-hamilton",
       "relationship": "foundational",
-      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is the key ingredient: χ_M(M) = 0 is what enables minpoly.dvd to establish the divisibility μ_M | χ_M"
+      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is the key ingredient: \u03c7_M(M) = 0 is what enables minpoly.dvd to establish the divisibility \u03bc_M | \u03c7_M"
     },
     {
       "targetId": "cayley-hamilton-reduction",
@@ -158,10 +158,10 @@
   "references": [
     {
       "authors": "Frobenius, Ferdinand Georg",
-      "title": "Über lineare Substitutionen und bilineare Formen",
+      "title": "\u00dcber lineare Substitutionen und bilineare Formen",
       "year": "1878",
-      "venue": "Journal für die reine und angewandte Mathematik, vol. 84, pp. 1–63",
-      "note": "Introduced the rational canonical form (Frobenius normal form) and the concept of minimal polynomial of a linear transformation, establishing the divisibility μ_M | χ_M"
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, vol. 84, pp. 1\u201363",
+      "note": "Introduced the rational canonical form (Frobenius normal form) and the concept of minimal polynomial of a linear transformation, establishing the divisibility \u03bc_M | \u03c7_M"
     },
     {
       "authors": "Horn, Roger A.; Johnson, Charles R.",
@@ -199,6 +199,7 @@
     "lineCount": 160,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

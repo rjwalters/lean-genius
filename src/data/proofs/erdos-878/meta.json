@@ -1,10 +1,10 @@
 {
   "id": "erdos-878",
-  "title": "Erdős Problem #878: Unconventional Number Theoretic Functions",
+  "title": "Erd\u0151s Problem #878: Unconventional Number Theoretic Functions",
   "slug": "erdos-878",
-  "description": "Study of f(n) = ∑ pᵢ^ℓᵢ and F(n) = max ∑ aᵢ over coprime decompositions. Questions about their growth, asymptotics, and the unusual behavior of H(x) = ∑ f(n)/n. Open problem.",
+  "description": "Study of f(n) = \u2211 p\u1d62^\u2113\u1d62 and F(n) = max \u2211 a\u1d62 over coprime decompositions. Questions about their growth, asymptotics, and the unusual behavior of H(x) = \u2211 f(n)/n. Open problem.",
   "meta": {
-    "author": "Erdős (1984)",
+    "author": "Erd\u0151s (1984)",
     "sourceUrl": "https://erdosproblems.com/878",
     "date": "1984",
     "status": "axiomatized",
@@ -46,7 +46,7 @@
     ],
     "originalContributions": [
       "Formalized the 'unconventional' functions f(n) and F(n)",
-      "Stated Erdős's bounds on H(x) = ∑ f(n)/n",
+      "Stated Erd\u0151s's bounds on H(x) = \u2211 f(n)/n",
       "Formalized the unusual property that f(n)/n lacks a mean value",
       "Connected the four main open questions"
     ],
@@ -55,15 +55,15 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős introduced these 'unconventional number theoretic functions' in 1984. Unlike typical additive functions, f(n) is defined by summing prime powers p^ℓ where ℓ depends on n (not just on the prime power dividing n). This creates unusual asymptotic behavior.\n\nThe function f(n)/n 'almost behaves as a conventional additive function' but exhibits the remarkable property of having no mean value: the limsup of (1/x)∑_{n<x} f(n)/n is infinite while the liminf is finite. This is very unusual in analytic number theory.\n\nErdős proved partial results: max_{n≤x} f(n) ~ x log x / log log x holds along some sequence of x → ∞, and established bounds x log⁴ x ≪ H(x) ≪ x log³ x (where log^k denotes k-fold iterated logarithm). The full asymptotic for all x remains open.",
+    "historicalContext": "Erd\u0151s introduced these 'unconventional number theoretic functions' in 1984. Unlike typical additive functions, f(n) is defined by summing prime powers p^\u2113 where \u2113 depends on n (not just on the prime power dividing n). This creates unusual asymptotic behavior.\n\nThe function f(n)/n 'almost behaves as a conventional additive function' but exhibits the remarkable property of having no mean value: the limsup of (1/x)\u2211_{n<x} f(n)/n is infinite while the liminf is finite. This is very unusual in analytic number theory.\n\nErd\u0151s proved partial results: max_{n\u2264x} f(n) ~ x log x / log log x holds along some sequence of x \u2192 \u221e, and established bounds x log\u2074 x \u226a H(x) \u226a x log\u00b3 x (where log^k denotes k-fold iterated logarithm). The full asymptotic for all x remains open.",
     "problemStatement": "For $n = \\prod p_i^{k_i}$ (prime factorization), define:\n- $f(n) = \\sum p_i^{\\ell_i}$ where $\\ell_i$ satisfies $n \\in [p_i^{\\ell_i}, p_i^{\\ell_i+1})$\n- $F(n) = \\max \\sum a_i$ over pairwise coprime $a_i \\leq n$ with prime factors dividing $n$\n\n**Main Questions**:\n1. Is $f(n) = o(n \\log\\log n)$ for almost all $n$, while $F(n) \\gg n \\log\\log n$?\n2. Is $\\max_{n \\leq x} f(n) \\sim \\frac{x \\log x}{\\log\\log x}$?\n3. Do $\\max_{n \\leq x} f(n)$ and $\\max_{n \\leq x} F(n)$ coincide?\n4. Find asymptotics for $H(x) = \\sum_{n<x} f(n)/n$.\n\n**Status**: OPEN",
-    "text": "Study of f(n) = ∑ pᵢ^ℓᵢ and F(n) = max ∑ aᵢ over coprime decompositions. Questions about their growth, asymptotics, and the unusual behavior of H(x) = ∑ f(n)/n. Open problem.",
-    "proofStrategy": "The formalization defines f(n) using Nat.primeFactors and Nat.log, and F(n) via ValidDecomposition structures. The 'almost all' concept is formalized using density zero. Erdős's known results (bounds on H(x), partial asymptotic for max f) are stated as axioms. The unusual property that f(n)/n has no mean value is captured via limsup = ∞ and finite liminf.",
+    "text": "Study of f(n) = \u2211 p\u1d62^\u2113\u1d62 and F(n) = max \u2211 a\u1d62 over coprime decompositions. Questions about their growth, asymptotics, and the unusual behavior of H(x) = \u2211 f(n)/n. Open problem.",
+    "proofStrategy": "The formalization defines f(n) using Nat.primeFactors and Nat.log, and F(n) via ValidDecomposition structures. The 'almost all' concept is formalized using density zero. Erd\u0151s's known results (bounds on H(x), partial asymptotic for max f) are stated as axioms. The unusual property that f(n)/n has no mean value is captured via limsup = \u221e and finite liminf.",
     "keyInsights": [
-      "**Unconventional definition**: Unlike standard additive functions where f(p^k) depends only on p and k, here the summand p^ℓ depends on the whole number n through ℓ = ⌊log_p n⌋.",
-      "**No mean value**: The function f(n)/n has limsup = ∞ but finite liminf when averaged—a very unusual phenomenon in number theory.",
-      "**Gap between f and F**: While f(n) ≤ F(n) always, the typical behavior differs: f(n) = o(n log log n) vs F(n) ~ (1/2)n log log n conjecturally.",
-      "**Partial asymptotic**: Erdős showed max_{n≤x} f(n) ~ x log x / log log x, but only along a subsequence—the full result remains open.",
+      "**Unconventional definition**: Unlike standard additive functions where f(p^k) depends only on p and k, here the summand p^\u2113 depends on the whole number n through \u2113 = \u230alog_p n\u230b.",
+      "**No mean value**: The function f(n)/n has limsup = \u221e but finite liminf when averaged\u2014a very unusual phenomenon in number theory.",
+      "**Gap between f and F**: While f(n) \u2264 F(n) always, the typical behavior differs: f(n) = o(n log log n) vs F(n) ~ (1/2)n log log n conjecturally.",
+      "**Partial asymptotic**: Erd\u0151s showed max_{n\u2264x} f(n) ~ x log x / log log x, but only along a subsequence\u2014the full result remains open.",
       "**Iterated logarithms**: The bounds on H(x) involve four-fold and three-fold iterated logarithms, showing extremely slow growth."
     ],
     "prerequisites": [
@@ -102,7 +102,7 @@
     },
     {
       "id": "erdos-1984",
-      "title": "Erdős's 1984 Result",
+      "title": "Erd\u0151s's 1984 Result",
       "summary": "erdos_1984 partial asymptotic",
       "startLine": 156,
       "endLine": 170
@@ -123,10 +123,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #878 introduces 'unconventional' number theoretic functions f(n) and F(n) with unusual asymptotic properties. The main questions about their growth rates, maxima, and the behavior of H(x) = ∑ f(n)/n remain open. The remarkable property that f(n)/n has no mean value distinguishes these functions from typical additive functions.",
+    "summary": "Erd\u0151s Problem #878 introduces 'unconventional' number theoretic functions f(n) and F(n) with unusual asymptotic properties. The main questions about their growth rates, maxima, and the behavior of H(x) = \u2211 f(n)/n remain open. The remarkable property that f(n)/n has no mean value distinguishes these functions from typical additive functions.",
     "implications": "Understanding these functions would shed light on the boundary between 'conventional' and 'unconventional' additive number theory. The techniques required to resolve these questions may have broader applications to understanding functions with non-standard dependencies on prime factorization.",
     "openQuestions": [
-      "Is max_{n≤x} f(n) ~ x log x / log log x for all x (not just a subsequence)?",
+      "Is max_{n\u2264x} f(n) ~ x log x / log log x for all x (not just a subsequence)?",
       "What is the true asymptotic for H(x)?",
       "Is F(n) ~ (1/2)n log log n for almost all n?",
       "Do max f and max F coincide for large x?"
@@ -136,7 +136,7 @@
     {
       "targetId": "erdos-679",
       "relationship": "related",
-      "description": "Both study prime factorization functions (ω and f/F) with unusual asymptotic behavior; #679 concerns the distribution of ω(n-k) while #878 studies unconventional additive functions of prime factorizations"
+      "description": "Both study prime factorization functions (\u03c9 and f/F) with unusual asymptotic behavior; #679 concerns the distribution of \u03c9(n-k) while #878 studies unconventional additive functions of prime factorizations"
     },
     {
       "targetId": "erdos-690",
@@ -152,7 +152,7 @@
   "references": [
     {
       "title": "On some unconventional problems on the divisors of integers",
-      "author": "Erdős, P.",
+      "author": "Erd\u0151s, P.",
       "year": 1984,
       "description": "Original paper introducing the functions f(n) and F(n) and their unusual asymptotic properties"
     },
@@ -166,7 +166,7 @@
       "title": "The normal number of prime factors of a number n",
       "author": "Hardy, G. H. and Ramanujan, S.",
       "year": 1917,
-      "description": "Foundational paper on the normal order of ω(n), providing the baseline for comparing unconventional functions"
+      "description": "Foundational paper on the normal order of \u03c9(n), providing the baseline for comparing unconventional functions"
     }
   ],
   "leanFile": {
@@ -186,7 +186,8 @@
     "lineCount": 230,
     "axiomCount": 7,
     "theoremCount": 4,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "lemmaCount": 0
   },
   "relatedProofs": [
     "erdos-679",

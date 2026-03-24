@@ -1,10 +1,10 @@
 {
   "id": "erdos-544",
-  "title": "Erdős Problem #544: Consecutive Ramsey Number Differences",
+  "title": "Erd\u0151s Problem #544: Consecutive Ramsey Number Differences",
   "slug": "erdos-544",
-  "description": "Show that R(3, k+1) − R(3, k) → ∞. Prove or disprove that R(3, k+1) − R(3, k) = o(k).",
+  "description": "Show that R(3, k+1) \u2212 R(3, k) \u2192 \u221e. Prove or disprove that R(3, k+1) \u2212 R(3, k) = o(k).",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/544",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos544Problem.lean",
@@ -24,16 +24,16 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Sós asked whether the consecutive differences $R(3,k+1) - R(3,k)$ tend to infinity, and whether the growth is sublinear in $k$. The asymptotic behaviour of $R(3,k)$ has a rich history: **Erdős** established early bounds using the probabilistic method; **Shearer** (1983) proved $R(3,k) \\leq Ck^2/\\log k$; **Kim** (1995) proved the matching lower bound $R(3,k) \\geq ck^2/\\log k$ via the triangle-free process, a landmark in probabilistic combinatorics. Most recently, **Campos–Griffiths–Morris–Sahasrabudhe** (2023, *Ann. Math.*) sharpened the upper bound constant to within a factor of 4. The average consecutive difference is thus $\\Theta(k/\\log k)$, but the pointwise behaviour of individual differences remains an open problem.",
-    "problemStatement": "Show that R(3, k+1) − R(3, k) → ∞ as k → ∞. Similarly, prove or disprove that R(3, k+1) − R(3, k) = o(k).",
-    "text": "Show that R(3, k+1) − R(3, k) → ∞. Prove or disprove that R(3, k+1) − R(3, k) = o(k).",
+    "historicalContext": "Erd\u0151s and S\u00f3s asked whether the consecutive differences $R(3,k+1) - R(3,k)$ tend to infinity, and whether the growth is sublinear in $k$. The asymptotic behaviour of $R(3,k)$ has a rich history: **Erd\u0151s** established early bounds using the probabilistic method; **Shearer** (1983) proved $R(3,k) \\leq Ck^2/\\log k$; **Kim** (1995) proved the matching lower bound $R(3,k) \\geq ck^2/\\log k$ via the triangle-free process, a landmark in probabilistic combinatorics. Most recently, **Campos\u2013Griffiths\u2013Morris\u2013Sahasrabudhe** (2023, *Ann. Math.*) sharpened the upper bound constant to within a factor of 4. The average consecutive difference is thus $\\Theta(k/\\log k)$, but the pointwise behaviour of individual differences remains an open problem.",
+    "problemStatement": "Show that R(3, k+1) \u2212 R(3, k) \u2192 \u221e as k \u2192 \u221e. Similarly, prove or disprove that R(3, k+1) \u2212 R(3, k) = o(k).",
+    "text": "Show that R(3, k+1) \u2212 R(3, k) \u2192 \u221e. Prove or disprove that R(3, k+1) \u2212 R(3, k) = o(k).",
     "proofStrategy": "The formalization axiomatises R(3, k) with known values (k = 3 through 9), monotonicity, and the Kim / Shearer asymptotic bounds. The consecutive difference function and both parts of the conjecture (divergence and sublinearity) are stated.",
     "keyInsights": [
-      "R(3, k) = Θ(k²/log k) implies the average difference grows like k/log k",
+      "R(3, k) = \u0398(k\u00b2/log k) implies the average difference grows like k/log k",
       "Known values: R(3,3)=6, R(3,4)=9, ..., R(3,9)=36 show irregular gaps",
       "Divergence of differences is expected from the quadratic growth",
       "Sublinearity (o(k)) is the harder open question",
-      "CGMS (2023) determined R(3,k)/k² up to a constant factor, the sharpest known result"
+      "CGMS (2023) determined R(3,k)/k\u00b2 up to a constant factor, the sharpest known result"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -61,7 +61,7 @@
       "title": "Asymptotic Bounds",
       "startLine": 59,
       "endLine": 69,
-      "summary": "Kim lower bound and Shearer/CGMS upper bound: R(3,k) = Θ(k²/log k).",
+      "summary": "Kim lower bound and Shearer/CGMS upper bound: R(3,k) = \u0398(k\u00b2/log k).",
       "mathContext": "Kim (1995): $R(3,k) \\geq c_1 k^2/\\log k$. Shearer (1983): $R(3,k) \\leq c_2 k^2/\\log k$. Together: $R(3,k) = \\Theta(k^2/\\log k)$."
     },
     {
@@ -77,16 +77,16 @@
       "title": "Full Conjecture",
       "startLine": 93,
       "endLine": 93,
-      "summary": "ErdosProblem544 combines divergence and sublinearity as a conjunction capturing the complete Erdős–Sós question.",
+      "summary": "ErdosProblem544 combines divergence and sublinearity as a conjunction capturing the complete Erd\u0151s\u2013S\u00f3s question.",
       "mathContext": "Full conjecture: Parts 1 and 2 together: $R(3,k+1) - R(3,k) \\to \\infty$ AND $R(3,k+1) - R(3,k) = o(k)$."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures both parts of Erdős Problem 544: the divergence of R(3,k+1) − R(3,k) and the question of whether the growth is sublinear in k.",
-    "implications": "Understanding consecutive Ramsey differences would refine our knowledge of the fine structure of the R(3,k) sequence beyond its asymptotic order Θ(k²/log k).",
+    "summary": "The formalization captures both parts of Erd\u0151s Problem 544: the divergence of R(3,k+1) \u2212 R(3,k) and the question of whether the growth is sublinear in k.",
+    "implications": "Understanding consecutive Ramsey differences would refine our knowledge of the fine structure of the R(3,k) sequence beyond its asymptotic order \u0398(k\u00b2/log k).",
     "openQuestions": [
-      "Does R(3, k+1) − R(3, k) → ∞?",
-      "Is R(3, k+1) − R(3, k) = o(k)?",
+      "Does R(3, k+1) \u2212 R(3, k) \u2192 \u221e?",
+      "Is R(3, k+1) \u2212 R(3, k) = o(k)?",
       "What is the exact order of growth of consecutive differences?"
     ]
   },
@@ -112,6 +112,7 @@
     "lineCount": 93,
     "axiomCount": 12,
     "theoremCount": 0,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "lemmaCount": 0
   }
 }

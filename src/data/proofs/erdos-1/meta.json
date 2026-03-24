@@ -1,10 +1,10 @@
 {
   "id": "erdos-1",
-  "title": "Erdős Problem #1: Distinct Subset Sums",
+  "title": "Erd\u0151s Problem #1: Distinct Subset Sums",
   "slug": "erdos-1",
-  "description": "If A is a subset of {1,...,N} with n elements and all 2^n subset sums are distinct, then N >> 2^n. Erdős's 'first serious problem' (1931). OPEN with $500 prize.",
+  "description": "If A is a subset of {1,...,N} with n elements and all 2^n subset sums are distinct, then N >> 2^n. Erd\u0151s's 'first serious problem' (1931). OPEN with $500 prize.",
   "meta": {
-    "author": "Erdős (1931)",
+    "author": "Erd\u0151s (1931)",
     "sourceUrl": "https://erdosproblems.com/1",
     "date": "1931",
     "status": "verified",
@@ -55,9 +55,9 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős called this 'perhaps my first serious problem,' posing it in 1931 at age 18. A set $A \\subseteq \\{1, \\ldots, N\\}$ has distinct subset sums if the map $S \\mapsto \\sum_{a \\in S} a$ is injective on subsets of $A$. The powers of 2, $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$, trivially satisfy this with $N = 2^{n-1}$, and Erdős conjectured this is essentially optimal: $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$. He offered \\$500 for a proof or disproof. The basic lower bound $N \\geq 2^{n-1}$ was known early via a counting/pigeonhole argument. Conway and Guy (1968) constructed sets with $N < 0.22002 \\cdot 2^n$, showing the constant $c$ (if it exists) is at most $0.22$. Lunnon (1988) computed optimal sets for small $n$. The best lower bound is due to Dubroff, Fox, and Xu (2021): $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$, which still has a $1/\\sqrt{n}$ gap from the conjectured $c \\cdot 2^n$. The problem connects to Sidon sets ($B_2$ sequences), uniquely decodable codes in information theory, and the knapsack problem in computational complexity.",
+    "historicalContext": "Erd\u0151s called this 'perhaps my first serious problem,' posing it in 1931 at age 18. A set $A \\subseteq \\{1, \\ldots, N\\}$ has distinct subset sums if the map $S \\mapsto \\sum_{a \\in S} a$ is injective on subsets of $A$. The powers of 2, $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$, trivially satisfy this with $N = 2^{n-1}$, and Erd\u0151s conjectured this is essentially optimal: $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$. He offered \\$500 for a proof or disproof. The basic lower bound $N \\geq 2^{n-1}$ was known early via a counting/pigeonhole argument. Conway and Guy (1968) constructed sets with $N < 0.22002 \\cdot 2^n$, showing the constant $c$ (if it exists) is at most $0.22$. Lunnon (1988) computed optimal sets for small $n$. The best lower bound is due to Dubroff, Fox, and Xu (2021): $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$, which still has a $1/\\sqrt{n}$ gap from the conjectured $c \\cdot 2^n$. The problem connects to Sidon sets ($B_2$ sequences), uniquely decodable codes in information theory, and the knapsack problem in computational complexity.",
     "problemStatement": "Let $A \\subseteq \\{1, 2, \\ldots, N\\}$ with $|A| = n$. If all $2^n$ subset sums $\\{\\sum_{a \\in S} a : S \\subseteq A\\}$ are distinct, must $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$? The basic bound $N \\geq 2^{n-1}$ is proved here; the full conjecture remains open with a \\$500 prize.",
-    "text": "If A is a subset of {1,...,N} with n elements and all 2^n subset sums are distinct, then N >> 2^n. Erdős's 'first serious problem' (1931). OPEN with $500 prize.",
+    "text": "If A is a subset of {1,...,N} with n elements and all 2^n subset sums are distinct, then N >> 2^n. Erd\u0151s's 'first serious problem' (1931). OPEN with $500 prize.",
     "proofStrategy": "The formalization defines `hasDistinctSubsetSums A` as injectivity of the function $S \\mapsto (S \\cap A).\\text{sum}\\,\\text{id}$ on `Finset N`. Three theorems are proved by Aristotle: (1) `erdos_1_lower_bound`: $2^{|A|-1} \\leq N$ via a powerset cardinality argument; (2) `max_element_bound`: $2^{|A|-1} \\leq \\max(A)$ by reducing to the lower bound with $N = \\max(A)$; (3) `subset_sums_spacing`: distinct subsets $S \\neq T$ of $A$ have $\\sum S \\neq \\sum T$, extracted from the injectivity definition.",
     "keyInsights": [
       "**Powers of 2 are extremal**: $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$ has distinct subset sums with $N = 2^{n-1}$. Each subset sum is a distinct binary representation, so the $2^n$ sums are $0, 1, 2, \\ldots, 2^n - 1$.",
@@ -104,7 +104,7 @@
       "startLine": 67,
       "endLine": 75,
       "summary": "Proves `max_element_bound`: $2^{|A|-1} \\leq \\max(A)$ for nonempty $A$ with distinct subset sums. Reduces to `erdos_1_lower_bound` via `convert` with $N = A.\\text{max'}$, using `Finset.le_max'` for the containment hypothesis.",
-      "mathContext": "$2^{|A|-1} \\leq \\max(A)$ — the maximum element alone must be at least $2^{n-1}$."
+      "mathContext": "$2^{|A|-1} \\leq \\max(A)$ \u2014 the maximum element alone must be at least $2^{n-1}$."
     },
     {
       "id": "spacing",
@@ -112,11 +112,11 @@
       "startLine": 77,
       "endLine": 83,
       "summary": "Proves `subset_sums_spacing`: for $S, T \\subseteq A$ with $S \\neq T$, $\\sum S \\neq \\sum T$. Unfolds `hasDistinctSubsetSums`, applies `simp_all` and `Finset.sum_filter_of_ne` to reduce to the injectivity hypothesis.",
-      "mathContext": "For $S, T \\subseteq A$ with $S \\neq T$: $\\sum_{a \\in S} a \\neq \\sum_{a \\in T} a$ — the Sidon-like spacing property."
+      "mathContext": "For $S, T \\subseteq A$ with $S \\neq T$: $\\sum_{a \\in S} a \\neq \\sum_{a \\in T} a$ \u2014 the Sidon-like spacing property."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1 formalizes the basic theory of distinct subset sums. All three theorems are fully proved by Aristotle (no axioms or sorries): the lower bound $2^{n-1} \\leq N$ via a powerset counting argument, the maximum element bound $2^{n-1} \\leq \\max(A)$ by reduction, and the Sidon-like spacing property. The full conjecture $N \\geq c \\cdot 2^n$ remains open with a \\$500 Erdős prize.",
+    "summary": "Erd\u0151s Problem #1 formalizes the basic theory of distinct subset sums. All three theorems are fully proved by Aristotle (no axioms or sorries): the lower bound $2^{n-1} \\leq N$ via a powerset counting argument, the maximum element bound $2^{n-1} \\leq \\max(A)$ by reduction, and the Sidon-like spacing property. The full conjecture $N \\geq c \\cdot 2^n$ remains open with a \\$500 Erd\u0151s prize.",
     "implications": "This problem is foundational in additive combinatorics and connects to Sidon sets ($B_2$ sequences where all pairwise sums are distinct), uniquely decodable codes in information theory, and the knapsack problem in computational complexity. The gap between the best lower bound $\\Omega(2^n / \\sqrt{n})$ and the Conway-Guy upper bound $O(0.22 \\cdot 2^n)$ suggests deep structural constraints on extremal sets.",
     "openQuestions": [
       "Prove or disprove $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$ (the \\$500 problem).",
@@ -129,7 +129,7 @@
     {
       "targetId": "erdos-28",
       "relationship": "related",
-      "description": "The Erdős-Turán conjecture on additive bases asks whether every basis of order 2 has unbounded representation function. Both problems concern the structure of sumsets: Problem #1 asks when sums are distinct, Problem #28 asks when every integer has a representation. They bookend the extremes of additive combinatorics — unique representation vs. guaranteed representation"
+      "description": "The Erd\u0151s-Tur\u00e1n conjecture on additive bases asks whether every basis of order 2 has unbounded representation function. Both problems concern the structure of sumsets: Problem #1 asks when sums are distinct, Problem #28 asks when every integer has a representation. They bookend the extremes of additive combinatorics \u2014 unique representation vs. guaranteed representation"
     },
     {
       "targetId": "erdos-867",
@@ -149,7 +149,7 @@
     {
       "targetId": "erdos-1179",
       "relationship": "extends",
-      "description": "Uniform subset sum representations in abelian groups generalizes the distinct subset sums problem from $\\mathbb{Z}$ to arbitrary abelian groups. The fundamental question — when can subsets be distinguished by their sums — extends naturally from Erdős's original question about subsets of $\\{1, \\ldots, N\\}$"
+      "description": "Uniform subset sum representations in abelian groups generalizes the distinct subset sums problem from $\\mathbb{Z}$ to arbitrary abelian groups. The fundamental question \u2014 when can subsets be distinguished by their sums \u2014 extends naturally from Erd\u0151s's original question about subsets of $\\{1, \\ldots, N\\}$"
     },
     {
       "targetId": "erdos-123",
@@ -169,10 +169,10 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Problems and results in additive number theory",
       "year": "1955",
-      "venue": "Colloque sur la Théorie des Nombres, Bruxelles, pp. 127–137",
+      "venue": "Colloque sur la Th\u00e9orie des Nombres, Bruxelles, pp. 127\u2013137",
       "note": "Early formulation of the distinct subset sums problem among many additive number theory questions"
     },
     {
@@ -180,34 +180,34 @@
       "title": "Sets of natural numbers with no subset having a given sum",
       "year": "1968",
       "venue": "Notices of the American Mathematical Society, vol. 15, p. 345",
-      "note": "Constructed sets with distinct subset sums achieving N < 0.22009 · 2^n, providing the best known upper bound for the constant c"
+      "note": "Constructed sets with distinct subset sums achieving N < 0.22009 \u00b7 2^n, providing the best known upper bound for the constant c"
     },
     {
       "authors": "Lunnon, W. F.",
       "title": "Integer sets with distinct subset-sums",
       "year": "1988",
-      "venue": "Mathematics of Computation, vol. 50, no. 181, pp. 297–320",
+      "venue": "Mathematics of Computation, vol. 50, no. 181, pp. 297\u2013320",
       "note": "Computed optimal distinct-subset-sum sets for small n by exhaustive search, confirming the Conway-Guy construction is optimal up to n = 12"
     },
     {
       "authors": "Dubroff, Quentin; Fox, Jacob; Xu, Max Wenqiang",
-      "title": "A note on the Erdős distinct subset sums problem",
+      "title": "A note on the Erd\u0151s distinct subset sums problem",
       "year": "2021",
-      "venue": "SIAM Journal on Discrete Mathematics, vol. 35, no. 1, pp. 322–324",
-      "note": "Proved the best known lower bound N ≥ √(2/π) · 2^n / √n using probabilistic and Fourier-analytic methods"
+      "venue": "SIAM Journal on Discrete Mathematics, vol. 35, no. 1, pp. 322\u2013324",
+      "note": "Proved the best known lower bound N \u2265 \u221a(2/\u03c0) \u00b7 2^n / \u221an using probabilistic and Fourier-analytic methods"
     },
     {
       "authors": "Elkies, Noam D.",
       "title": "An improved lower bound on the greatest element of a sum-distinct set of fixed order",
       "year": "1986",
-      "venue": "Journal of Combinatorial Theory, Series A, vol. 41, no. 1, pp. 89–94",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 41, no. 1, pp. 89\u201394",
       "note": "Early improvement on lower bounds for the distinct subset sums problem using spectral methods"
     },
     {
       "authors": "Guy, Richard K.",
       "title": "Sets of integers whose subsets have distinct sums",
       "year": "1982",
-      "venue": "Annals of Discrete Mathematics, vol. 12, pp. 141–154",
+      "venue": "Annals of Discrete Mathematics, vol. 12, pp. 141\u2013154",
       "note": "Survey of the distinct subset sums problem including the Conway-Guy conjecture that their construction is optimal"
     }
   ],
@@ -234,6 +234,7 @@
     "lineCount": 83,
     "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "lemmaCount": 0
   }
 }

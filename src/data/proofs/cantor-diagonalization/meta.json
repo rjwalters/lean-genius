@@ -54,7 +54,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Georg Cantor published the diagonal argument in 1891 in *Über eine elementare Frage der Mannigfaltigkeitslehre*, though he had already proven the uncountability of the reals in 1874 using a nested-intervals argument. The 1891 proof was revolutionary in its simplicity and generality: it works not just for $\\mathbb{R}$ but for any set $S$ versus $S \\to \\{0,1\\}$ (the power set), immediately giving $|S| < |2^S|$ for all sets $S$.\n\nCantor's work was the most controversial mathematics of its era. Leopold Kronecker called him a 'corrupter of youth'; Henri Poincaré considered set theory a 'disease' from which mathematics would eventually recover. But David Hilbert declared: 'No one shall expel us from the paradise that Cantor has created.' Cantor suffered repeated nervous breakdowns, possibly exacerbated by the opposition, and spent his final years in a sanatorium (died 1918).\n\nThe diagonal argument's influence is incalculable. Richard's paradox (1905) and Berry's paradox use diagonal-like constructions. Kurt Gödel used a self-referential diagonal construction in his incompleteness theorems (1931): the sentence 'this sentence is unprovable' diagonalizes over all proofs. Alan Turing (1936) used a diagonal argument to prove the undecidability of the halting problem: the machine that asks 'does this machine halt on itself?' diagonalizes over all Turing machines. Paul Cohen's forcing (1963), which proved the independence of the continuum hypothesis, also relies on diagonal arguments. The technique is arguably the single most important proof method in mathematical logic.",
+    "historicalContext": "Georg Cantor published the diagonal argument in 1891 in *\u00dcber eine elementare Frage der Mannigfaltigkeitslehre*, though he had already proven the uncountability of the reals in 1874 using a nested-intervals argument. The 1891 proof was revolutionary in its simplicity and generality: it works not just for $\\mathbb{R}$ but for any set $S$ versus $S \\to \\{0,1\\}$ (the power set), immediately giving $|S| < |2^S|$ for all sets $S$.\n\nCantor's work was the most controversial mathematics of its era. Leopold Kronecker called him a 'corrupter of youth'; Henri Poincar\u00e9 considered set theory a 'disease' from which mathematics would eventually recover. But David Hilbert declared: 'No one shall expel us from the paradise that Cantor has created.' Cantor suffered repeated nervous breakdowns, possibly exacerbated by the opposition, and spent his final years in a sanatorium (died 1918).\n\nThe diagonal argument's influence is incalculable. Richard's paradox (1905) and Berry's paradox use diagonal-like constructions. Kurt G\u00f6del used a self-referential diagonal construction in his incompleteness theorems (1931): the sentence 'this sentence is unprovable' diagonalizes over all proofs. Alan Turing (1936) used a diagonal argument to prove the undecidability of the halting problem: the machine that asks 'does this machine halt on itself?' diagonalizes over all Turing machines. Paul Cohen's forcing (1963), which proved the independence of the continuum hypothesis, also relies on diagonal arguments. The technique is arguably the single most important proof method in mathematical logic.",
     "problemStatement": "Theorem (Cantor, 1891): The set of real numbers is uncountable.\n\nMore precisely: there is no bijection between the natural numbers $\\mathbb{N}$ and the real numbers $\\mathbb{R}$. The 'infinity' of reals is strictly larger than the 'infinity' of naturals:\n\n$$|\\mathbb{N}| < |\\mathbb{R}|$$\n\nWe prove this using infinite binary sequences, which correspond to real numbers in $[0, 1]$ via binary expansion.",
     "text": "A 175-line formalization of Cantor's diagonal argument (Wiedijk #22) with 14 declarations, 0 sorries, 0 axioms. The core `cantor_diagonal` proves $\\neg \\exists f : \\mathbb{N} \\to (\\mathbb{N} \\to \\text{Bool}),\\, \\text{Surjective}\\,f$ by constructing the anti-diagonal $d(n) = \\neg f(n)(n)$ and deriving a contradiction at $d$'s preimage. Generalizes to `cantor_theorem` ($|S| < |S \\to \\text{Bool}| = |\\mathcal{P}(S)|$) via `Function.cantor_surjective`. Includes `reals_uncountable` (the $\\mathbb{R}$ version via binary representation), `rationals_countable` (contrast: $\\mathbb{Q}$ is countable), and `power_set_strictly_larger` ($|\\mathcal{P}(S)| > |S|$ for all sets). Commentary connects to Godel's incompleteness and Turing's halting problem as diagonal-argument descendants.",
     "proofStrategy": "Cantor's diagonal argument is a proof by contradiction:\n\n1. Assume we have an enumeration $f : \\mathbb{N} \\to \\{0,1\\}^{\\mathbb{N}}$ of all binary sequences\n2. Construct a new sequence $d$ by 'flipping' the diagonal:\n   - $d(n) = \\neg f(n)(n)$ (the opposite of the $n$-th bit of the $n$-th sequence)\n3. Observe that $d$ differs from every sequence in our list:\n   - $d \\neq f(0)$ because they differ at position 0\n   - $d \\neq f(1)$ because they differ at position 1\n   - In general, $d \\neq f(n)$ because they differ at position $n$\n4. Contradiction: $d$ is a binary sequence not in our 'complete' enumeration\n\nTherefore, no such enumeration exists. The reals are uncountable.\n\nThe genius is in step 2: by looking at the diagonal, we ensure our new sequence differs from every listed sequence in at least one position.",
@@ -63,7 +63,7 @@
       "Binary sequences correspond to real numbers via $0.b_0b_1b_2\\ldots$ in binary",
       "The same argument proves $|P(S)| > |S|$ for any set $S$ (the power set is always strictly larger)",
       "This technique reappears in the halting problem, Godel's incompleteness, and Rice's theorem",
-      "In Lean 4, the proof is remarkably concise: `funext` reduces function inequality to pointwise disagreement, and `Bool.eq_not_iff` handles the bit-flip contradiction — showing how type theory naturally captures the diagonal argument"
+      "In Lean 4, the proof is remarkably concise: `funext` reduces function inequality to pointwise disagreement, and `Bool.eq_not_iff` handles the bit-flip contradiction \u2014 showing how type theory naturally captures the diagonal argument"
     ],
     "prerequisites": [
       "Functions and surjectivity (Function.Surjective)",
@@ -102,7 +102,7 @@
       "title": "Power Set Generalization",
       "startLine": 109,
       "endLine": 133,
-      "summary": "Proves `cantor_powerset`: for any type $S$, no surjection $S \\to \\text{Set}\\,S$ exists. Uses the diagonal set $D = \\{x : x \\notin f(x)\\}$ and `by_cases` to derive $a \\in D \\iff a \\notin D$ — a contradiction.",
+      "summary": "Proves `cantor_powerset`: for any type $S$, no surjection $S \\to \\text{Set}\\,S$ exists. Uses the diagonal set $D = \\{x : x \\notin f(x)\\}$ and `by_cases` to derive $a \\in D \\iff a \\notin D$ \u2014 a contradiction.",
       "mathContext": "$\\nexists f: S \\twoheadrightarrow \\mathcal{P}(S)$ for any set $S$. The diagonal set $D = \\{x \\in S : x \\notin f(x)\\}$ witnesses this: $D = f(a) \\Rightarrow (a \\in D \\iff a \\notin D)$."
     },
     {
@@ -123,13 +123,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Cantor's diagonal argument is one of the most elegant proofs in mathematics. In just a few lines, it establishes that infinity comes in different sizes, a counterintuitive result that revolutionized our understanding of the infinite.\n\nThe proof's power lies in its self-referential construction: by looking at the diagonal, we create a witness that must differ from every sequence in the list. This technique is now a standard tool in mathematical logic.\n\nThe formalization shows how naturally this argument translates to type theory. Binary sequences are simply functions Nat → Bool, and the diagonal is constructed by function application and negation.",
+    "summary": "Cantor's diagonal argument is one of the most elegant proofs in mathematics. In just a few lines, it establishes that infinity comes in different sizes, a counterintuitive result that revolutionized our understanding of the infinite.\n\nThe proof's power lies in its self-referential construction: by looking at the diagonal, we create a witness that must differ from every sequence in the list. This technique is now a standard tool in mathematical logic.\n\nThe formalization shows how naturally this argument translates to type theory. Binary sequences are simply functions Nat \u2192 Bool, and the diagonal is constructed by function application and negation.",
     "implications": "**Theoretical Significance**: Cantor's theorem has profound implications across mathematics and computer science:\n\n1. Hierarchy of Infinities - There are infinitely many distinct infinite cardinalities: $|\\mathbb{N}| < |\\mathbb{R}| < |P(\\mathbb{R})| < \\ldots$\n\n2. Computability Limits - The uncountability of reals implies most real numbers are not computable (only countably many programs exist)\n\n3.\n\n**Broader Connections**: The Continuum Hypothesis - Cantor conjectured that no cardinality lies strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. This was proven independent of ZFC by Godel (1940) and Cohen (1963)\n\n4. Diagonalization Everywhere - The technique proves:\n   - Halting problem undecidability (Turing, 1936)\n   - Godel's incompleteness theorems (1931)\n   - Russell's paradox (naive set theory is inconsistent)\n   - Rice's theorem (semantic properties of programs are undecidable).",
     "openQuestions": [
       "Formalize in Lean that the diagonal argument implies $|S| < |\\mathcal{P}(S)|$ as a strict cardinal inequality (not just non-surjectivity), using Mathlib's cardinal arithmetic to establish $\\aleph_0 < \\mathfrak{c}$",
       "Formalize Cantor's 1874 nested-intervals proof of uncountability (the original proof, not the 1891 diagonal argument) and show the two proofs yield the same theorem via different methods",
-      "Formalize the Continuum Hypothesis as a Lean proposition $\\neg\\exists \\kappa, \\aleph_0 < \\kappa < \\mathfrak{c}$ and demonstrate its independence from ZFC by showing it is consistent (Gödel 1940) and its negation is consistent (Cohen 1963) — a rare formalization of independence results",
-      "Prove the Lawvere fixed-point theorem as a categorical generalization of Cantor's diagonal argument: in any cartesian closed category, if $Y^Y$ retracts onto $Y$ then every endomorphism of $Y$ has a fixed point — unifying Cantor, Russell, Gödel, and Turing as instances"
+      "Formalize the Continuum Hypothesis as a Lean proposition $\\neg\\exists \\kappa, \\aleph_0 < \\kappa < \\mathfrak{c}$ and demonstrate its independence from ZFC by showing it is consistent (G\u00f6del 1940) and its negation is consistent (Cohen 1963) \u2014 a rare formalization of independence results",
+      "Prove the Lawvere fixed-point theorem as a categorical generalization of Cantor's diagonal argument: in any cartesian closed category, if $Y^Y$ retracts onto $Y$ then every endomorphism of $Y$ has a fixed point \u2014 unifying Cantor, Russell, G\u00f6del, and Turing as instances"
     ]
   },
   "references": [
@@ -144,7 +144,7 @@
       "authors": "Cantor, Georg",
       "title": "Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
       "year": "1874",
-      "venue": "Journal für die reine und angewandte Mathematik, 77, pp. 258-262",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, 77, pp. 258-262",
       "note": "Cantor's first proof of uncountability of the reals, using a nested interval argument rather than diagonalization"
     },
     {
@@ -159,51 +159,51 @@
       "title": "The Independence of the Continuum Hypothesis",
       "year": "1963",
       "venue": "Proceedings of the National Academy of Sciences, 50(6), pp. 1143-1148",
-      "note": "Proved the Continuum Hypothesis is independent of ZFC using forcing, complementing Gödel's 1940 consistency result. Together they show that Cantor's question — what lies between |ℕ| and |ℝ| — cannot be answered by standard axioms"
+      "note": "Proved the Continuum Hypothesis is independent of ZFC using forcing, complementing G\u00f6del's 1940 consistency result. Together they show that Cantor's question \u2014 what lies between |\u2115| and |\u211d| \u2014 cannot be answered by standard axioms"
     },
     {
       "authors": "Stillwell, John",
       "title": "Roads to Infinity: The Mathematics of Truth and Proof",
       "year": "2010",
       "venue": "A K Peters/CRC Press",
-      "note": "Traces the diagonal argument from Cantor through Gödel, Turing, and Cohen, showing how diagonalization underpins incompleteness, undecidability, and independence results"
+      "note": "Traces the diagonal argument from Cantor through G\u00f6del, Turing, and Cohen, showing how diagonalization underpins incompleteness, undecidability, and independence results"
     }
   ],
   "crossReferences": [
     {
       "targetId": "cantors-theorem",
       "relationship": "generalizes",
-      "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbitrary sets. The diagonal argument is the special case S = ℕ."
+      "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbitrary sets. The diagonal argument is the special case S = \u2115."
     },
     {
       "targetId": "continuum-hypothesis",
       "relationship": "motivates",
-      "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (independent of ZFC) addresses exactly this gap."
+      "description": "Diagonalization proves |\u2115| < |\u211d|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (independent of ZFC) addresses exactly this gap."
     },
     {
       "targetId": "halting-problem",
       "relationship": "technique",
-      "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, then build a program D that does the opposite of what H predicts for D — a direct analogue of flipping the diagonal bit."
+      "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, then build a program D that does the opposite of what H predicts for D \u2014 a direct analogue of flipping the diagonal bit."
     },
     {
       "targetId": "godel-incompleteness",
       "relationship": "technique",
-      "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
+      "description": "G\u00f6del's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
     },
     {
       "targetId": "schroeder-bernstein",
       "relationship": "complementary",
-      "description": "The Schröder-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishing cardinality equalities, while Cantor's diagonal argument provides the negative tool for establishing strict inequalities. Together they form the complete toolkit for comparing infinite cardinalities."
+      "description": "The Schr\u00f6der-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishing cardinality equalities, while Cantor's diagonal argument provides the negative tool for establishing strict inequalities. Together they form the complete toolkit for comparing infinite cardinalities."
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "thematic",
-      "description": "Both are existence proofs via contradiction: Euclid shows no finite list contains all primes (construct p₁···pₙ + 1), Cantor shows no countable list contains all reals (construct the diagonal). The diagonal argument is the cardinality-theoretic analogue of Euclid's prime construction."
+      "description": "Both are existence proofs via contradiction: Euclid shows no finite list contains all primes (construct p\u2081\u00b7\u00b7\u00b7p\u2099 + 1), Cantor shows no countable list contains all reals (construct the diagonal). The diagonal argument is the cardinality-theoretic analogue of Euclid's prime construction."
     },
     {
       "targetId": "cantor-diagonalization-oq-01",
       "relationship": "extended-by",
-      "description": "Explores the Continuum Hypothesis — whether there exists a cardinality strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Cantor's diagonalization proves $|\\mathbb{N}| < |\\mathbb{R}|$ but leaves the gap open; CH's independence from ZFC (Gödel 1938, Cohen 1963) shows this question cannot be settled by the standard axioms"
+      "description": "Explores the Continuum Hypothesis \u2014 whether there exists a cardinality strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Cantor's diagonalization proves $|\\mathbb{N}| < |\\mathbb{R}|$ but leaves the gap open; CH's independence from ZFC (G\u00f6del 1938, Cohen 1963) shows this question cannot be settled by the standard axioms"
     },
     {
       "targetId": "cantor-diagonalization-oq-02",
@@ -213,7 +213,7 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both belong to the impossibility proof tradition: Cantor proves no enumeration captures all reals (1891), Abel-Ruffini proves no radical formula captures all quintic roots (1824). Both show that natural-seeming operations (enumeration, radical extraction) have provable limitations — the targets 'outnumber' the tools"
+      "description": "Both belong to the impossibility proof tradition: Cantor proves no enumeration captures all reals (1891), Abel-Ruffini proves no radical formula captures all quintic roots (1824). Both show that natural-seeming operations (enumeration, radical extraction) have provable limitations \u2014 the targets 'outnumber' the tools"
     },
     {
       "targetId": "sqrt2-irrational",
@@ -223,7 +223,7 @@
     {
       "targetId": "hilbert-10",
       "relationship": "related",
-      "description": "Matiyasevich's theorem uses the diagonal argument's undecidability legacy: the halting problem (proved undecidable via diagonalization) reduces to Diophantine solvability, making Hilbert's 10th problem undecidable. The chain runs: Cantor's diagonal → Turing's halting problem → Hilbert's 10th"
+      "description": "Matiyasevich's theorem uses the diagonal argument's undecidability legacy: the halting problem (proved undecidable via diagonalization) reduces to Diophantine solvability, making Hilbert's 10th problem undecidable. The chain runs: Cantor's diagonal \u2192 Turing's halting problem \u2192 Hilbert's 10th"
     },
     {
       "targetId": "russell-1-plus-1",
@@ -248,10 +248,10 @@
   "alternativeInterpretation": {
     "title": "The Constructivist View: Why the Reals Don't Exist",
     "summary": "The same formal proof supports a radically different conclusion depending on foundational assumptions. Where classical mathematicians see proof of uncountability, constructivists see proof that 'the set of all real numbers' is an incoherent concept.",
-    "perspective": "**The Classical View** (presented above): 'The set of real numbers is uncountable—there are strictly more reals than naturals.'\n\n**The Constructivist View**: 'The diagonal argument shows that the real numbers do not form a legitimate mathematical object.'\n\nThe formal steps are identical; the interpretation differs:\n\n1. Assume a complete enumeration of reals exists\n2. The diagonalization constructs a 'new' real\n3. But this construction never terminates—it requires infinitely many decisions\n4. **Conclusion**: The concept of 'all reals' is incoherent; $\\mathbb{R}$ doesn't exist as a completed totality\n\nFor constructivists, the diagonal argument isn't proving there are 'too many' reals—it's proving that the reals form an **ill-defined collection**. The proof is not a triumph showing infinite hierarchies; it's a warning sign that we've asked an invalid question.",
-    "computationalView": "From a programming perspective, the diagonal construction is an invalid program:\n\n```haskell\ndiagonal :: (Nat -> Real) -> Real\ndiagonal f = Real [ flipDigit (f n !! n) | n <- [0..] ]\n-- This comprehension NEVER completes!\n```\n\nThe function `diagonal` has a well-typed signature but will never return a value. It's a non-terminating computation masquerading as a definition.\n\nIn the constructivist reading, Cantor's proof demonstrates that:\n- The enumeration `f : Nat -> Real` is a valid concept\n- But `diagonal f` is not a real number—it's an infinite process\n- Claiming `diagonal f` exists as a completed object is the error\n\nThis connects to the halting problem: just as we can't decide if arbitrary programs halt, we can't complete the diagonal construction. Both are instances of the same phenomenon—self-referential constructions that don't terminate.",
-    "historicalContext": "This interpretation has a distinguished lineage:\n\n**L.E.J. Brouwer** (1881-1966) founded intuitionism, rejecting completed infinities and the law of excluded middle. He viewed Cantor's diagonal as evidence against classical set theory, not for it.\n\n**Errett Bishop** (1928-1983) developed constructive analysis, showing much of mathematics can be done without completed infinities.\n\n**Per Martin-Löf** (born 1942) created intuitionistic type theory, which underlies proof assistants like Agda and influences Lean's type system.\n\nThe debate continues today. Most working mathematicians accept classical logic, but constructive mathematics has found new relevance in computer science, where all proofs must correspond to terminating computations.",
-    "leanFoundations": "Interestingly, Lean's type theory is foundationally closer to constructive mathematics than to classical set theory. The Calculus of Inductive Constructions (CIC) that underlies Lean is constructive by default.\n\nHowever, Lean's `Mathlib` library adds classical axioms:\n- `Classical.choice` (axiom of choice)\n- `propext` (propositional extensionality)\n- These together imply the law of excluded middle\n\nSo when Lean proves Cantor's theorem, it's using classical axioms that a strict constructivist would reject. The proof is valid within Lean's classical framework, but the interpretation of what it *means* remains a philosophical choice.\n\nThe formal proof is neutral on ontology—it shows that a certain logical statement is derivable. What that statement tells us about mathematical reality depends on your foundational commitments."
+    "perspective": "**The Classical View** (presented above): 'The set of real numbers is uncountable\u2014there are strictly more reals than naturals.'\n\n**The Constructivist View**: 'The diagonal argument shows that the real numbers do not form a legitimate mathematical object.'\n\nThe formal steps are identical; the interpretation differs:\n\n1. Assume a complete enumeration of reals exists\n2. The diagonalization constructs a 'new' real\n3. But this construction never terminates\u2014it requires infinitely many decisions\n4. **Conclusion**: The concept of 'all reals' is incoherent; $\\mathbb{R}$ doesn't exist as a completed totality\n\nFor constructivists, the diagonal argument isn't proving there are 'too many' reals\u2014it's proving that the reals form an **ill-defined collection**. The proof is not a triumph showing infinite hierarchies; it's a warning sign that we've asked an invalid question.",
+    "computationalView": "From a programming perspective, the diagonal construction is an invalid program:\n\n```haskell\ndiagonal :: (Nat -> Real) -> Real\ndiagonal f = Real [ flipDigit (f n !! n) | n <- [0..] ]\n-- This comprehension NEVER completes!\n```\n\nThe function `diagonal` has a well-typed signature but will never return a value. It's a non-terminating computation masquerading as a definition.\n\nIn the constructivist reading, Cantor's proof demonstrates that:\n- The enumeration `f : Nat -> Real` is a valid concept\n- But `diagonal f` is not a real number\u2014it's an infinite process\n- Claiming `diagonal f` exists as a completed object is the error\n\nThis connects to the halting problem: just as we can't decide if arbitrary programs halt, we can't complete the diagonal construction. Both are instances of the same phenomenon\u2014self-referential constructions that don't terminate.",
+    "historicalContext": "This interpretation has a distinguished lineage:\n\n**L.E.J. Brouwer** (1881-1966) founded intuitionism, rejecting completed infinities and the law of excluded middle. He viewed Cantor's diagonal as evidence against classical set theory, not for it.\n\n**Errett Bishop** (1928-1983) developed constructive analysis, showing much of mathematics can be done without completed infinities.\n\n**Per Martin-L\u00f6f** (born 1942) created intuitionistic type theory, which underlies proof assistants like Agda and influences Lean's type system.\n\nThe debate continues today. Most working mathematicians accept classical logic, but constructive mathematics has found new relevance in computer science, where all proofs must correspond to terminating computations.",
+    "leanFoundations": "Interestingly, Lean's type theory is foundationally closer to constructive mathematics than to classical set theory. The Calculus of Inductive Constructions (CIC) that underlies Lean is constructive by default.\n\nHowever, Lean's `Mathlib` library adds classical axioms:\n- `Classical.choice` (axiom of choice)\n- `propext` (propositional extensionality)\n- These together imply the law of excluded middle\n\nSo when Lean proves Cantor's theorem, it's using classical axioms that a strict constructivist would reject. The proof is valid within Lean's classical framework, but the interpretation of what it *means* remains a philosophical choice.\n\nThe formal proof is neutral on ontology\u2014it shows that a certain logical statement is derivable. What that statement tells us about mathematical reality depends on your foundational commitments."
   },
   "leanFile": {
     "imports": [
@@ -263,7 +263,8 @@
     "namespace": "CantorDiagonalization",
     "lineCount": 175,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 0
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

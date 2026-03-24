@@ -1,10 +1,10 @@
 {
   "id": "erdos-774",
-  "title": "Erdős Problem #774: Dissociated and Proportionately Dissociated Sets",
+  "title": "Erd\u0151s Problem #774: Dissociated and Proportionately Dissociated Sets",
   "slug": "erdos-774",
-  "description": "A set A ⊂ ℕ is dissociated if distinct finite subsets have different sums. It is proportionately dissociated if every finite subset contains a proportional-size dissociated subset. Is every proportionately dissociated set a finite union of dissociated sets? OPEN (conjectured NO).",
+  "description": "A set A \u2282 \u2115 is dissociated if distinct finite subsets have different sums. It is proportionately dissociated if every finite subset contains a proportional-size dissociated subset. Is every proportionately dissociated set a finite union of dissociated sets? OPEN (conjectured NO).",
   "meta": {
-    "author": "Alon-Erdős (1985), Pisier (1983)",
+    "author": "Alon-Erd\u0151s (1985), Pisier (1983)",
     "sourceUrl": "https://erdosproblems.com/774",
     "date": "1985",
     "status": "axiomatized",
@@ -60,15 +60,15 @@
     "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Dissociated Sets and Harmonic Analysis**\n\nThe study of dissociated sets originated in harmonic analysis. A set A ⊂ ℕ is dissociated if distinct finite subsets have different sums—equivalently, the characteristic functions of subsets are linearly independent under convolution.\n\n**Pisier's Breakthrough (1983)**\n\nGilles Pisier established a fundamental connection: a set is proportionately dissociated if and only if it is a Sidon set in the sense of harmonic analysis. This means for any function f supported on A, there exists θ such that ||f||₁ ≪ |∑f(n)e(nθ)|. This equivalence bridged additive combinatorics and Fourier analysis.\n\n**Alon-Erdős Contribution (1985)**\n\nNoga Alon and Paul Erdős introduced Problem #774 in their paper 'An application of graph theory to additive number theory.' They observed that Pisier's converse—every finite union of dissociated sets is proportionately dissociated—holds trivially. They asked if the implication reverses, expressing skepticism: 'it seems unlikely that [this] is also sufficient.'\n\n**The Sidon Analogue (2024)**\n\nNešetřil, Rödl, and Sales resolved the analogous question for Sidon sets (additive combinatorics sense) in the NEGATIVE. They constructed a proportionately Sidon set that cannot be written as a finite union of Sidon sets. This strongly suggests Erdős #774 also has a negative answer.",
-    "problemStatement": "**Problem Statement (Open)**\n\n**Definitions:**\n- A set A ⊂ ℕ is *dissociated* if ∑_{n∈X} n ≠ ∑_{m∈Y} m for all distinct finite X, Y ⊂ A.\n- A is *proportionately dissociated* if every finite B ⊂ A contains a dissociated subset of size ≫ |B|.\n\n**Question:** Is every proportionately dissociated set a finite union of dissociated sets?\n\n**Status: OPEN** (conjectured NO by Alon-Erdős)",
-    "text": "A set A ⊂ ℕ is dissociated if distinct finite subsets have different sums. It is proportionately dissociated if every finite subset contains a proportional-size dissociated subset. Is every proportionately dissociated set a finite union of dissociated sets? OPEN (conjectured NO).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Dissociated Sets:** IsDissociated, IsDissociatedSet with unique subset sum characterization\n\n2. **Examples:** Powers of 2, powers of any base, lacunary sequences\n\n3. **Proportionately Dissociated:** Definition with proportionality constant\n\n4. **Pisier's Theorem:** Equivalence with harmonic Sidon sets\n\n5. **Additive Sidon Sets:** IsSidonAdditive and relationship to dissociated\n\n6. **Main Conjecture:** ErdosConjecture774 formal statement\n\n7. **Sidon Analogue:** SidonAnalogue and NRS counterexample (2024)\n\n8. **Bounds:** Maximum dissociated subset size is Θ(log n)",
+    "historicalContext": "**Dissociated Sets and Harmonic Analysis**\n\nThe study of dissociated sets originated in harmonic analysis. A set A \u2282 \u2115 is dissociated if distinct finite subsets have different sums\u2014equivalently, the characteristic functions of subsets are linearly independent under convolution.\n\n**Pisier's Breakthrough (1983)**\n\nGilles Pisier established a fundamental connection: a set is proportionately dissociated if and only if it is a Sidon set in the sense of harmonic analysis. This means for any function f supported on A, there exists \u03b8 such that ||f||\u2081 \u226a |\u2211f(n)e(n\u03b8)|. This equivalence bridged additive combinatorics and Fourier analysis.\n\n**Alon-Erd\u0151s Contribution (1985)**\n\nNoga Alon and Paul Erd\u0151s introduced Problem #774 in their paper 'An application of graph theory to additive number theory.' They observed that Pisier's converse\u2014every finite union of dissociated sets is proportionately dissociated\u2014holds trivially. They asked if the implication reverses, expressing skepticism: 'it seems unlikely that [this] is also sufficient.'\n\n**The Sidon Analogue (2024)**\n\nNe\u0161et\u0159il, R\u00f6dl, and Sales resolved the analogous question for Sidon sets (additive combinatorics sense) in the NEGATIVE. They constructed a proportionately Sidon set that cannot be written as a finite union of Sidon sets. This strongly suggests Erd\u0151s #774 also has a negative answer.",
+    "problemStatement": "**Problem Statement (Open)**\n\n**Definitions:**\n- A set A \u2282 \u2115 is *dissociated* if \u2211_{n\u2208X} n \u2260 \u2211_{m\u2208Y} m for all distinct finite X, Y \u2282 A.\n- A is *proportionately dissociated* if every finite B \u2282 A contains a dissociated subset of size \u226b |B|.\n\n**Question:** Is every proportionately dissociated set a finite union of dissociated sets?\n\n**Status: OPEN** (conjectured NO by Alon-Erd\u0151s)",
+    "text": "A set A \u2282 \u2115 is dissociated if distinct finite subsets have different sums. It is proportionately dissociated if every finite subset contains a proportional-size dissociated subset. Is every proportionately dissociated set a finite union of dissociated sets? OPEN (conjectured NO).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Dissociated Sets:** IsDissociated, IsDissociatedSet with unique subset sum characterization\n\n2. **Examples:** Powers of 2, powers of any base, lacunary sequences\n\n3. **Proportionately Dissociated:** Definition with proportionality constant\n\n4. **Pisier's Theorem:** Equivalence with harmonic Sidon sets\n\n5. **Additive Sidon Sets:** IsSidonAdditive and relationship to dissociated\n\n6. **Main Conjecture:** ErdosConjecture774 formal statement\n\n7. **Sidon Analogue:** SidonAnalogue and NRS counterexample (2024)\n\n8. **Bounds:** Maximum dissociated subset size is \u0398(log n)",
     "keyInsights": [
-      "**Dissociated ⟺ Unique Subset Sums:** Two equivalent characterizations",
+      "**Dissociated \u27fa Unique Subset Sums:** Two equivalent characterizations",
       "**Pisier's Equivalence:** Proportionately dissociated = Sidon (harmonic)",
       "**Powers of 2:** The canonical example, each number has unique binary representation",
-      "**Lacunary Growth:** a_{n+1} > 2·∑aᵢ guarantees dissociated",
+      "**Lacunary Growth:** a_{n+1} > 2\u00b7\u2211a\u1d62 guarantees dissociated",
       "**NRS 2024:** The Sidon analogue is FALSE, suggesting #774 is also false"
     ],
     "prerequisites": [
@@ -122,14 +122,14 @@
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "ErdosConjecture774 formal statement, Alon-Erdős conjecture",
+      "summary": "ErdosConjecture774 formal statement, Alon-Erd\u0151s conjecture",
       "startLine": 173,
       "endLine": 184
     },
     {
       "id": "sidon-analogue",
       "title": "The Sidon Analogue",
-      "summary": "IsProportionatelySidon, SidonAnalogue, Nešetřil-Rödl-Sales theorem, NRS construction",
+      "summary": "IsProportionatelySidon, SidonAnalogue, Ne\u0161et\u0159il-R\u00f6dl-Sales theorem, NRS construction",
       "startLine": 186,
       "endLine": 217
     },
@@ -143,7 +143,7 @@
     {
       "id": "bounds",
       "title": "Bounds on Dissociated Subsets",
-      "summary": "maxDissociatedSize, Θ(log n) bound",
+      "summary": "maxDissociatedSize, \u0398(log n) bound",
       "startLine": 232,
       "endLine": 245
     },
@@ -156,10 +156,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #774 asks whether every proportionately dissociated set is a finite union of dissociated sets. Pisier (1983) showed proportionately dissociated equals Sidon in harmonic analysis. Alon-Erdős (1985) conjectured the answer is NO. The Nešetřil-Rödl-Sales theorem (2024) resolving the Sidon analogue negatively provides strong evidence that #774 also has a negative answer. The problem remains OPEN.",
-    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Harmonic Analysis:** Sidon sets and Fourier analysis on ℤ\n\n**2. Additive Combinatorics:** Subset sum problems and sumsets\n\n3. **Graph Theory:** Hypergraph independent sets\n\n4. **Probabilistic Method:** NRS construction uses random methods.",
+    "summary": "Erd\u0151s Problem #774 asks whether every proportionately dissociated set is a finite union of dissociated sets. Pisier (1983) showed proportionately dissociated equals Sidon in harmonic analysis. Alon-Erd\u0151s (1985) conjectured the answer is NO. The Ne\u0161et\u0159il-R\u00f6dl-Sales theorem (2024) resolving the Sidon analogue negatively provides strong evidence that #774 also has a negative answer. The problem remains OPEN.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Harmonic Analysis:** Sidon sets and Fourier analysis on \u2124\n\n**2. Additive Combinatorics:** Subset sum problems and sumsets\n\n3. **Graph Theory:** Hypergraph independent sets\n\n4. **Probabilistic Method:** NRS construction uses random methods.",
     "openQuestions": [
-      "Is ErdosConjecture774 false as Alon-Erdős suspected?",
+      "Is ErdosConjecture774 false as Alon-Erd\u0151s suspected?",
       "Can the NRS construction be adapted to dissociated sets?",
       "What is the structure of proportionately dissociated non-decomposable sets?",
       "Is there a finite characterization of proportionate dissociation?"
@@ -185,19 +185,19 @@
   "references": [
     {
       "title": "An application of graph theory to additive number theory",
-      "author": "Alon, N. and Erdős, P.",
+      "author": "Alon, N. and Erd\u0151s, P.",
       "year": 1985,
       "description": "Original statement of Problem #774 on proportionately dissociated sets and finite union decomposition"
     },
     {
-      "title": "Conditions de Sidon dans le dual d'un groupe abélien compact",
+      "title": "Conditions de Sidon dans le dual d'un groupe ab\u00e9lien compact",
       "author": "Pisier, G.",
       "year": 1983,
       "description": "Breakthrough equivalence: proportionately dissociated equals Sidon in harmonic analysis"
     },
     {
-      "title": "A negative answer to a question of Erdős and Nešetřil",
-      "author": "Nešetřil, J., Rödl, V., and Sales, M.",
+      "title": "A negative answer to a question of Erd\u0151s and Ne\u0161et\u0159il",
+      "author": "Ne\u0161et\u0159il, J., R\u00f6dl, V., and Sales, M.",
       "year": 2024,
       "description": "Resolved the Sidon analogue negatively, providing strong evidence that #774 also has a negative answer"
     }
@@ -219,7 +219,8 @@
     "lineCount": 260,
     "axiomCount": 13,
     "theoremCount": 3,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "lemmaCount": 0
   },
   "relatedProofs": [
     "erdos-847",

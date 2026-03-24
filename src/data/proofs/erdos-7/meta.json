@@ -1,8 +1,8 @@
 {
   "id": "erdos-7",
-  "title": "Erdős Problem #7: Odd Covering Systems",
+  "title": "Erd\u0151s Problem #7: Odd Covering Systems",
   "slug": "erdos-7",
-  "description": "Is there a covering system all of whose moduli are odd? Also known as the Erdős-Selfridge Conjecture. OPEN with significant partial results.",
+  "description": "Is there a covering system all of whose moduli are odd? Also known as the Erd\u0151s-Selfridge Conjecture. OPEN with significant partial results.",
   "meta": {
     "author": "Hough-Nielsen, Balister et al.",
     "sourceUrl": "https://erdosproblems.com/7",
@@ -21,7 +21,7 @@
     "erdosNumber": 7,
     "erdosUrl": "https://erdosproblems.com/7",
     "erdosProblemStatus": "open",
-    "erdosPrizeValue": "$25 (Erdős) + $2000 (Selfridge)",
+    "erdosPrizeValue": "$25 (Erd\u0151s) + $2000 (Selfridge)",
     "mathlibDependencies": [
       {
         "theorem": "Int.ModEq",
@@ -67,16 +67,16 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #7, also known as the Erdős-Selfridge Conjecture, asks whether there exists a covering system whose moduli are all odd. A covering system is a finite collection of congruence classes {aᵢ mod mᵢ} such that every integer belongs to at least one class. The simplest covering system uses moduli {2, 3, 4, 6, 12}, and all known constructions require at least one even modulus.\n\nSignificant partial results have been obtained. Hough and Nielsen (2019) proved that every covering system must contain at least one modulus divisible by 2 or 3, meaning an odd covering would necessarily include moduli divisible by 3. Balister, Bollobas, Morris, Sahasrabudhe, and Tiba (2022) proved the stronger result that no covering system exists with all moduli both odd and squarefree, ruling out a natural class of potential counterexamples.\n\nThe problem carries prizes from both Erdős ($25 for proving no odd covering exists) and Selfridge ($2000 specifically for an explicit construction). The LCM of any hypothetical odd covering must be divisible by 9 or 15, further constraining what such a system could look like. Despite these restrictions, the general conjecture remains open.",
+    "historicalContext": "Erd\u0151s Problem #7, also known as the Erd\u0151s-Selfridge Conjecture, asks whether there exists a covering system whose moduli are all odd. A covering system is a finite collection of congruence classes {a\u1d62 mod m\u1d62} such that every integer belongs to at least one class. The simplest covering system uses moduli {2, 3, 4, 6, 12}, and all known constructions require at least one even modulus.\n\nSignificant partial results have been obtained. Hough and Nielsen (2019) proved that every covering system must contain at least one modulus divisible by 2 or 3, meaning an odd covering would necessarily include moduli divisible by 3. Balister, Bollobas, Morris, Sahasrabudhe, and Tiba (2022) proved the stronger result that no covering system exists with all moduli both odd and squarefree, ruling out a natural class of potential counterexamples.\n\nThe problem carries prizes from both Erd\u0151s ($25 for proving no odd covering exists) and Selfridge ($2000 specifically for an explicit construction). The LCM of any hypothetical odd covering must be divisible by 9 or 15, further constraining what such a system could look like. Despite these restrictions, the general conjecture remains open.",
     "problemStatement": "Is there a covering system all of whose moduli are odd? Equivalently, must every covering system have at least one even modulus?",
-    "text": "Is there a covering system all of whose moduli are odd? Also known as the Erdős-Selfridge Conjecture. OPEN with significant partial results.",
-    "proofStrategy": "The formalization defines covering systems via CongruenceClass and CoveringSystem structures, with toSet mapping classes to sets of integers via modular arithmetic. The Erdős-Selfridge conjecture is stated in two equivalent forms. Key partial results are axiomatized: Hough-Nielsen (divisibility by 2 or 3), Balister et al. (no odd squarefree coverings), and LCM constraints.",
+    "text": "Is there a covering system all of whose moduli are odd? Also known as the Erd\u0151s-Selfridge Conjecture. OPEN with significant partial results.",
+    "proofStrategy": "The formalization defines covering systems via CongruenceClass and CoveringSystem structures, with toSet mapping classes to sets of integers via modular arithmetic. The Erd\u0151s-Selfridge conjecture is stated in two equivalent forms. Key partial results are axiomatized: Hough-Nielsen (divisibility by 2 or 3), Balister et al. (no odd squarefree coverings), and LCM constraints.",
     "keyInsights": [
       "Conjecture: NO odd covering system exists",
       "Hough-Nielsen (2019): At least one modulus must be divisible by 2 or 3",
       "Balister et al. (2022): No covering exists with all moduli odd AND squarefree",
       "LCM constraint: If an odd covering exists, its LCM must be divisible by 9 or 15",
-      "Selfridge offered $2000 for an explicit construction (separate from Erdős's $25)"
+      "Selfridge offered $2000 for an explicit construction (separate from Erd\u0151s's $25)"
     ],
     "prerequisites": [
       "Modular arithmetic and congruence classes",
@@ -102,7 +102,7 @@
     },
     {
       "id": "erdos-selfridge",
-      "title": "The Erdős-Selfridge Conjecture",
+      "title": "The Erd\u0151s-Selfridge Conjecture",
       "summary": "Main conjecture in two equivalent forms",
       "startLine": 71,
       "endLine": 100
@@ -172,7 +172,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #7 (Erdős-Selfridge Conjecture), an OPEN problem asking whether there exists a covering system with all moduli odd. The conjecture predicts NO such system exists. Significant partial results are formalized: Hough-Nielsen (2019) proved some modulus must be divisible by 2 or 3, and Balister et al. (2022) ruled out odd squarefree coverings.",
+    "summary": "We formalize Erd\u0151s Problem #7 (Erd\u0151s-Selfridge Conjecture), an OPEN problem asking whether there exists a covering system with all moduli odd. The conjecture predicts NO such system exists. Significant partial results are formalized: Hough-Nielsen (2019) proved some modulus must be divisible by 2 or 3, and Balister et al. (2022) ruled out odd squarefree coverings.",
     "implications": "**Theoretical Significance**: This problem constrains the structure of covering systems.\n\nIf proven, it would show that the prime 2 plays a special role in coverings. The partial results already severely limit what an odd covering could look like: it must have non-squarefree moduli, the LCM must be divisible by 9 or 15, and some modulus must be divisible by 3.",
     "openQuestions": [
       "Does an odd covering system exist? (The main question)",
@@ -208,21 +208,21 @@
       "authors": "Hough, Bob; Nielsen, Pace P.",
       "title": "Covering systems with restricted divisibility",
       "year": "2019",
-      "venue": "Duke Mathematical Journal, vol. 168, no. 17, pp. 3261–3295",
+      "venue": "Duke Mathematical Journal, vol. 168, no. 17, pp. 3261\u20133295",
       "note": "Proved that every covering system must contain a modulus divisible by 2 or 3"
     },
     {
-      "authors": "Balister, Paul; Bollobás, Béla; Morris, Robert; Sahasrabudhe, Julian; Tiba, Marius",
+      "authors": "Balister, Paul; Bollob\u00e1s, B\u00e9la; Morris, Robert; Sahasrabudhe, Julian; Tiba, Marius",
       "title": "Covering systems with restricted divisibility",
       "year": "2022",
-      "venue": "Annals of Mathematics, vol. 196, no. 2, pp. 513–560",
+      "venue": "Annals of Mathematics, vol. 196, no. 2, pp. 513\u2013560",
       "note": "Proved no covering system exists with all moduli odd and squarefree"
     },
     {
       "authors": "Selfridge, John L.",
       "title": "On covering systems (unpublished conjecture)",
       "year": "1960s",
-      "venue": "Personal communication with Erdős",
+      "venue": "Personal communication with Erd\u0151s",
       "note": "Offered $2000 for an explicit construction of an odd covering system"
     }
   ],
@@ -244,6 +244,7 @@
     "lineCount": 274,
     "axiomCount": 3,
     "theoremCount": 6,
-    "definitionCount": 18
+    "definitionCount": 18,
+    "lemmaCount": 0
   }
 }

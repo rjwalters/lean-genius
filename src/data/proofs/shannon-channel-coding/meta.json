@@ -17,7 +17,7 @@
       "advanced"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Analysis.SpecialFunctions.Log.Basic",
@@ -40,7 +40,7 @@
       "Theorem statements for Fano inequality, achievability, converse, and BSC capacity (all placeholder stubs proving True)"
     ],
     "assumptions": [
-      "All four theorems and the capacity definition are placeholder stubs — no actual proofs exist yet"
+      "All four theorems and the capacity definition are placeholder stubs \u2014 no actual proofs exist yet"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -87,7 +87,7 @@
       "title": "Channel Capacity Definition",
       "startLine": 15,
       "endLine": 19,
-      "summary": "Defines channel capacity as a noncomputable real number. The definition takes a channel transition matrix W : α → β → ℝ and should return the maximum mutual information over input distributions. Currently sorry'd because formalizing the optimization over the probability simplex requires measure theory.",
+      "summary": "Defines channel capacity as a noncomputable real number. The definition takes a channel transition matrix W : \u03b1 \u2192 \u03b2 \u2192 \u211d and should return the maximum mutual information over input distributions. Currently sorry'd because formalizing the optimization over the probability simplex requires measure theory.",
       "mathContext": "$C = \\max_{p(x)} I(X;Y) = \\max_{p(x)} [H(Y) - H(Y|X)]$"
     },
     {
@@ -145,7 +145,7 @@
     "implications": "This formalization provides:\n\n**1. The Central Result of Information Theory**\nChannel capacity as the fundamental limit of reliable communication, with both achievability and converse proofs machine-checked.\n\n**2. Random Coding as Probabilistic Method**\nThe random coding proof is historically one of the first and most influential uses of the probabilistic method, predating even Erdos's 1947 Ramsey bound.\n\n**3. Fano's Inequality**\nA reusable converse tool that converts entropy bounds into error probability bounds, applicable far beyond channel coding.\n\n**4. Foundation for Modern Coding Theory**\nThe gap between Shannon's existential proof and practical capacity-achieving codes (turbo codes, LDPC, polar codes) drove decades of engineering and mathematical research.\n\n**5. Connection to Computational Complexity**\nChannel coding has deep connections to computational complexity via list decoding and pseudorandomness.",
     "openQuestions": [
       "Can specific channel capacities (BSC, BEC, AWGN) be computed formally beyond the placeholder True statements?",
-      "Formalize the random coding argument using Mathlib's probability theory — requires joint typicality and the AEP",
+      "Formalize the random coding argument using Mathlib's probability theory \u2014 requires joint typicality and the AEP",
       "Can Fano's inequality be stated with the full H(X|Y) <= h(P_e) + P_e*log(|X|-1) rather than as True?",
       "Formalize the binary entropy function h(p) = -p*log(p) - (1-p)*log(1-p) and its properties"
     ]
@@ -164,15 +164,16 @@
     "lineCount": 53,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "Shannon, Claude E.",
       "title": "A Mathematical Theory of Communication",
       "year": "1948",
-      "venue": "Bell System Technical Journal 27(3), 379–423 and 27(4), 623–656",
-      "note": "The founding paper of information theory — introduced entropy, channel capacity, and the source/channel coding theorems"
+      "venue": "Bell System Technical Journal 27(3), 379\u2013423 and 27(4), 623\u2013656",
+      "note": "The founding paper of information theory \u2014 introduced entropy, channel capacity, and the source/channel coding theorems"
     },
     {
       "authors": "Cover, Thomas M.; Thomas, Joy A.",

@@ -1,6 +1,6 @@
 {
   "id": "erdos-334",
-  "title": "Erdős Problem #334: Smooth Number Representation",
+  "title": "Erd\u0151s Problem #334: Smooth Number Representation",
   "slug": "erdos-334",
   "description": "Find the best function f(n) such that every n can be written as n = a + b where both a and b are f(n)-smooth (not divisible by any prime p > f(n)).",
   "meta": {
@@ -29,19 +29,19 @@
       },
       {
         "theorem": "Real.rpow",
-        "description": "Real power function (used for n^α bounds)",
+        "description": "Real power function (used for n^\u03b1 bounds)",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
     "originalContributions": [
       "isSmooth and hasSmootPairRepr definitions",
       "smooth_mul: product of smooth numbers is smooth (proved)",
-      "small_has_repr: n ≤ 3 has smooth pair representation (proved)",
+      "small_has_repr: n \u2264 3 has smooth pair representation (proved)",
       "minSmoothness function definition",
-      "balogExponent = 4/(9·√e) ≈ 0.2695 definition",
+      "balogExponent = 4/(9\u00b7\u221ae) \u2248 0.2695 definition",
       "Conjectured bounds formalized: weakConjecture and strongConjecture",
       "Concrete examples: example_10, example_100",
-      "smoothCount (ψ function) and Goldbach connection"
+      "smoothCount (\u03c8 function) and Goldbach connection"
     ],
     "axiomCount": 5,
     "prerequisites": [
@@ -56,15 +56,15 @@
     "assumptions": "5 axiom(s) and 3 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "The concept of smooth numbers — integers whose prime factors are all bounded — goes back to Ramanujan and was systematically studied by de Bruijn (1951), who introduced the Dickman function $\\rho(u)$ governing the density of $y$-smooth numbers up to $x$ (where $u = \\log x / \\log y$). This function satisfies the delay differential equation $u\\rho'(u) = -\\rho(u-1)$.\n\nErdős originally asked (circa 1980, [ErGr80]) whether $f(n) \\leq n^{1/3}$ holds, where $f(n)$ is the minimal smoothness bound needed to write $n = a + b$ with both summands $f(n)$-smooth. This was answered positively, and Balog (1989) obtained the current best bound $f(n) \\ll n^{4/(9\\sqrt{e})+\\varepsilon} \\approx n^{0.2695}$ using the Selberg-Delange method from analytic number theory.\n\nThe problem connects to Goldbach-type questions about additive representations and to cryptographic applications where smooth numbers play a crucial role (e.g., the number field sieve and Lenstra's ECM factoring algorithm).",
+    "historicalContext": "The concept of smooth numbers \u2014 integers whose prime factors are all bounded \u2014 goes back to Ramanujan and was systematically studied by de Bruijn (1951), who introduced the Dickman function $\\rho(u)$ governing the density of $y$-smooth numbers up to $x$ (where $u = \\log x / \\log y$). This function satisfies the delay differential equation $u\\rho'(u) = -\\rho(u-1)$.\n\nErd\u0151s originally asked (circa 1980, [ErGr80]) whether $f(n) \\leq n^{1/3}$ holds, where $f(n)$ is the minimal smoothness bound needed to write $n = a + b$ with both summands $f(n)$-smooth. This was answered positively, and Balog (1989) obtained the current best bound $f(n) \\ll n^{4/(9\\sqrt{e})+\\varepsilon} \\approx n^{0.2695}$ using the Selberg-Delange method from analytic number theory.\n\nThe problem connects to Goldbach-type questions about additive representations and to cryptographic applications where smooth numbers play a crucial role (e.g., the number field sieve and Lenstra's ECM factoring algorithm).",
     "problemStatement": "Find the best function f(n) such that every n can be written as n = a + b where both a and b are f(n)-smooth (that is, are not divisible by any prime p > f(n)).",
     "text": "Find the best function f(n) such that every n can be written as n = a + b where both a and b are f(n)-smooth (not divisible by any prime p > f(n)).",
-    "proofStrategy": "We formalize smooth numbers and smooth pair representations, state Balog's 1989 bound as the current best result, and express the conjectured bounds f(n) ≤ n^{o(1)} and f(n) ≤ e^{O(√log n)} as open problems. Concrete examples for small numbers demonstrate the definitions.",
+    "proofStrategy": "We formalize smooth numbers and smooth pair representations, state Balog's 1989 bound as the current best result, and express the conjectured bounds f(n) \u2264 n^{o(1)} and f(n) \u2264 e^{O(\u221alog n)} as open problems. Concrete examples for small numbers demonstrate the definitions.",
     "keyInsights": [
       "A number is y-smooth if all its prime factors are at most y",
       "The key question is: how small can y be while still guaranteeing n = a + b with a, b both y-smooth?",
-      "Balog's exponent 4/(9√e) ≈ 0.2695 improved Erdős's original n^{1/3} bound",
-      "The Dickman function ρ(u) governs the density of smooth numbers",
+      "Balog's exponent 4/(9\u221ae) \u2248 0.2695 improved Erd\u0151s's original n^{1/3} bound",
+      "The Dickman function \u03c1(u) governs the density of smooth numbers",
       "The problem connects to Goldbach-type questions about additive representations"
     ],
     "prerequisites": [
@@ -87,7 +87,7 @@
     {
       "id": "additive-representation",
       "title": "Part II: Additive Representation by Smooth Numbers",
-      "summary": "hasSmootPairRepr definition, small_has_repr for n ≤ 3",
+      "summary": "hasSmootPairRepr definition, small_has_repr for n \u2264 3",
       "startLine": 75,
       "endLine": 91
     },
@@ -108,7 +108,7 @@
     {
       "id": "conjectures",
       "title": "Part V: Conjectured Bounds",
-      "summary": "weakConjecture f(n) ≤ n^{o(1)}, strongConjecture f(n) ≤ e^{O(√log n)}",
+      "summary": "weakConjecture f(n) \u2264 n^{o(1)}, strongConjecture f(n) \u2264 e^{O(\u221alog n)}",
       "startLine": 142,
       "endLine": 166
     },
@@ -122,7 +122,7 @@
     {
       "id": "connections",
       "title": "Part VII: Connection to Other Problems",
-      "summary": "smoothCount ψ(x,y), de_bruijn_asymptotic, Goldbach connection",
+      "summary": "smoothCount \u03c8(x,y), de_bruijn_asymptotic, Goldbach connection",
       "startLine": 223,
       "endLine": 251
     },
@@ -135,13 +135,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #334 asks for the optimal growth rate of f(n), the minimal smoothness bound for representing any n as a sum of two smooth numbers. While Erdős's original n^{1/3} question is resolved, and Balog achieved n^{0.2695}, the conjectured bounds f(n) ≤ n^{o(1)} or f(n) ≤ e^{O(√log n)} remain open.",
+    "summary": "Erd\u0151s Problem #334 asks for the optimal growth rate of f(n), the minimal smoothness bound for representing any n as a sum of two smooth numbers. While Erd\u0151s's original n^{1/3} question is resolved, and Balog achieved n^{0.2695}, the conjectured bounds f(n) \u2264 n^{o(1)} or f(n) \u2264 e^{O(\u221alog n)} remain open.",
     "implications": "Understanding smooth number representations connects to fundamental questions about the distribution of smooth numbers (via the Dickman function) and has implications for cryptographic algorithms that rely on smooth number properties.",
     "openQuestions": [
-      "Is f(n) ≤ n^{o(1)} true? (Weak conjecture)",
-      "Is f(n) ≤ e^{O(√log n)} true? (Strong conjecture)",
+      "Is f(n) \u2264 n^{o(1)} true? (Weak conjecture)",
+      "Is f(n) \u2264 e^{O(\u221alog n)} true? (Strong conjecture)",
       "What is the true growth rate of f(n)?",
-      "Can the exponent 4/(9√e) ≈ 0.2695 be improved?"
+      "Can the exponent 4/(9\u221ae) \u2248 0.2695 be improved?"
     ]
   },
   "crossReferences": [
@@ -158,7 +158,7 @@
     {
       "targetId": "erdos-333",
       "relationship": "related",
-      "description": "Both concern additive representations of integers: #333 asks about sumset covering A ⊆ B+B, #334 asks about representing n = a + b with smooth summands"
+      "description": "Both concern additive representations of integers: #333 asks about sumset covering A \u2286 B+B, #334 asks about representing n = a + b with smooth summands"
     }
   ],
   "relatedProofs": [
@@ -182,29 +182,30 @@
     "lineCount": 300,
     "axiomCount": 5,
     "theoremCount": 9,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
-      "note": "Original formulation asking whether f(n) ≤ n^{1/3}"
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
+      "note": "Original formulation asking whether f(n) \u2264 n^{1/3}"
     },
     {
       "authors": "Balog, Antal",
       "title": "On the representation of integers as sums of smooth numbers",
       "year": "1989",
       "venue": "Mathematika 36(1), pp. 67-70",
-      "note": "Current best bound: f(n) ≤ n^{4/(9√e)+ε} ≈ n^{0.2695}"
+      "note": "Current best bound: f(n) \u2264 n^{4/(9\u221ae)+\u03b5} \u2248 n^{0.2695}"
     },
     {
       "authors": "de Bruijn, N. G.",
-      "title": "On the number of positive integers ≤ x and free of prime factors > y",
+      "title": "On the number of positive integers \u2264 x and free of prime factors > y",
       "year": "1951",
       "venue": "Indag. Math. 13, pp. 50-60",
-      "note": "Foundational work on the Dickman function ρ(u) governing smooth number density"
+      "note": "Foundational work on the Dickman function \u03c1(u) governing smooth number density"
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-11",
-  "title": "Erdős Problem #11: Squarefree + Power of 2",
+  "title": "Erd\u0151s Problem #11: Squarefree + Power of 2",
   "slug": "erdos-11",
   "description": "Is every odd n > 1 the sum of a squarefree number and a power of 2? OPEN problem with deep connections to Wieferich primes. Verified up to 2^50.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/11",
     "date": "",
     "status": "axiomatized",
@@ -50,16 +50,16 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in his work on additive representations of integers. The density of squarefree numbers is $6/\\pi^2 \\approx 0.608$, so heuristically most odd $n - 2^k$ should be squarefree for some $k$. Erdős proved the conjecture holds for almost all odd integers (density 1). The surprise came in 1998 when Andrew Granville and Kannan Soundararajan showed in their paper \"A binary additive problem of Erdős and the order of $2 \\bmod p^2$\" that the conjecture implies infinitely many primes are non-Wieferich — a deep open problem in its own right. Wieferich primes $p$ satisfy $2^{p-1} \\equiv 1 \\pmod{p^2}$; only 1093 (Meissner, 1913) and 3511 (Beeger, 1922) are known despite searches up to $6.7 \\times 10^{15}$. Computational verification has progressed from Odlyzko's $10^7$ bound to Hercher's 2024 verification up to $2^{50} \\approx 1.12 \\times 10^{15}$ using GPU parallelization, finding no counterexample.",
-    "problemStatement": "**Conjecture (Erdős):** Every odd integer $n > 1$ can be written as $n = s + 2^k$ where $s$ is squarefree and $k \\geq 0$.\n\n$$\\forall n \\in \\mathbb{N},\\, n \\text{ odd},\\, n > 1 \\implies \\exists s, k \\geq 0: \\text{Squarefree}(s) \\wedge n = s + 2^k$$\n\nExamples: $3 = 1 + 2$, $5 = 1 + 4$, $7 = 5 + 2$, $9 = 1 + 8$.\n\n**Status:** OPEN. Verified computationally up to $2^{50} \\approx 10^{15}$ by Hercher (2024).",
+    "historicalContext": "Erd\u0151s posed this problem in his work on additive representations of integers. The density of squarefree numbers is $6/\\pi^2 \\approx 0.608$, so heuristically most odd $n - 2^k$ should be squarefree for some $k$. Erd\u0151s proved the conjecture holds for almost all odd integers (density 1). The surprise came in 1998 when Andrew Granville and Kannan Soundararajan showed in their paper \"A binary additive problem of Erd\u0151s and the order of $2 \\bmod p^2$\" that the conjecture implies infinitely many primes are non-Wieferich \u2014 a deep open problem in its own right. Wieferich primes $p$ satisfy $2^{p-1} \\equiv 1 \\pmod{p^2}$; only 1093 (Meissner, 1913) and 3511 (Beeger, 1922) are known despite searches up to $6.7 \\times 10^{15}$. Computational verification has progressed from Odlyzko's $10^7$ bound to Hercher's 2024 verification up to $2^{50} \\approx 1.12 \\times 10^{15}$ using GPU parallelization, finding no counterexample.",
+    "problemStatement": "**Conjecture (Erd\u0151s):** Every odd integer $n > 1$ can be written as $n = s + 2^k$ where $s$ is squarefree and $k \\geq 0$.\n\n$$\\forall n \\in \\mathbb{N},\\, n \\text{ odd},\\, n > 1 \\implies \\exists s, k \\geq 0: \\text{Squarefree}(s) \\wedge n = s + 2^k$$\n\nExamples: $3 = 1 + 2$, $5 = 1 + 4$, $7 = 5 + 2$, $9 = 1 + 8$.\n\n**Status:** OPEN. Verified computationally up to $2^{50} \\approx 10^{15}$ by Hercher (2024).",
     "text": "Is every odd n > 1 the sum of a squarefree number and a power of 2? OPEN problem with deep connections to Wieferich primes. Verified up to 2^50.",
-    "proofStrategy": "The formalization builds up from definitions to the conjecture statement and its connections:\n\n1. **Definitions**: `IsSquarefree n` (via Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{PowerOfTwo}(p) \\wedge n = s + p$)\n2. **Proved examples**: Representations for $n = 3, 5, 7, 9$ using `decide`, `rfl`, and named lemmas\n3. **Wieferich primes**: `IsWieferichPrime p` defined as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$; 1093 and 3511 axiomatized\n4. **Conjecture variants**: Main (`Erdos11Conjecture`), weak (not divisible by 4), and two-powers-of-2 version\n5. **Axiomatized results**: Granville-Soundararajan connection, Hercher/Odlyzko verification bounds, Erdős density result",
+    "proofStrategy": "The formalization builds up from definitions to the conjecture statement and its connections:\n\n1. **Definitions**: `IsSquarefree n` (via Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{PowerOfTwo}(p) \\wedge n = s + p$)\n2. **Proved examples**: Representations for $n = 3, 5, 7, 9$ using `decide`, `rfl`, and named lemmas\n3. **Wieferich primes**: `IsWieferichPrime p` defined as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$; 1093 and 3511 axiomatized\n4. **Conjecture variants**: Main (`Erdos11Conjecture`), weak (not divisible by 4), and two-powers-of-2 version\n5. **Axiomatized results**: Granville-Soundararajan connection, Hercher/Odlyzko verification bounds, Erd\u0151s density result",
     "keyInsights": [
       "**Wieferich connection:** Granville-Soundararajan (1998) proved that if the conjecture holds, infinitely many primes are non-Wieferich.",
       "**Only two Wieferich primes known:** 1093 and 3511. No others found up to 2^64 despite massive computation.",
-      "**Computational verification:** Hercher (2024) verified all odd n up to 2^50 ≈ 1.12 × 10^15.",
-      "**Almost all n work:** Erdős proved the conjecture holds for density-1 of odd integers.",
-      "**Weaker version:** Erdős also asked about n not divisible by 4 (allows some even numbers)."
+      "**Computational verification:** Hercher (2024) verified all odd n up to 2^50 \u2248 1.12 \u00d7 10^15.",
+      "**Almost all n work:** Erd\u0151s proved the conjecture holds for density-1 of odd integers.",
+      "**Weaker version:** Erd\u0151s also asked about n not divisible by 4 (allows some even numbers)."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -71,7 +71,7 @@
     {
       "id": "header-imports",
       "title": "Problem Description and Imports",
-      "summary": "Documents Erdős Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$. Imports Mathlib.",
+      "summary": "Documents Erd\u0151s Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$. Imports Mathlib.",
       "startLine": 1,
       "endLine": 19
     },
@@ -113,7 +113,7 @@
     {
       "id": "connection",
       "title": "Granville-Soundararajan Connection",
-      "summary": "Axiomatizes the 1998 result: `Erdos11Conjecture → InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients.",
+      "summary": "Axiomatizes the 1998 result: `Erdos11Conjecture \u2192 InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients.",
       "startLine": 94,
       "endLine": 98
     },
@@ -127,19 +127,19 @@
     {
       "id": "density",
       "title": "Density Result",
-      "summary": "Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density.",
+      "summary": "Axiomatizes Erd\u0151s's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density.",
       "startLine": 110,
       "endLine": 117
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #11, an OPEN conjecture asking whether every odd $n > 1$ can be written as $s + 2^k$ with $s$ squarefree. The Lean file defines all key concepts, proves small examples ($n = 3, 5, 7, 9$), defines Wieferich primes, and axiomatizes the Granville-Soundararajan connection, computational verification bounds (up to $2^{50}$), and Erdős's density-1 result.",
-    "implications": "**Theoretical Significance**: This problem sits at a remarkable intersection of additive and multiplicative number theory.\n\nThe Granville-Soundararajan connection means resolving Problem #11 would also resolve whether infinitely many primes are non-Wieferich — a question related to Fermat's Last Theorem (Wieferich's criterion shows $x^p + y^p = z^p$ with $p \\nmid xyz$ requires $p$ to be Wieferich). The squarefree density of $6/\\pi^2$ provides the heuristic expectation, while the computational verification up to $2^{50}$ with no counterexamples strongly supports the conjecture.",
+    "summary": "This formalization captures Erd\u0151s Problem #11, an OPEN conjecture asking whether every odd $n > 1$ can be written as $s + 2^k$ with $s$ squarefree. The Lean file defines all key concepts, proves small examples ($n = 3, 5, 7, 9$), defines Wieferich primes, and axiomatizes the Granville-Soundararajan connection, computational verification bounds (up to $2^{50}$), and Erd\u0151s's density-1 result.",
+    "implications": "**Theoretical Significance**: This problem sits at a remarkable intersection of additive and multiplicative number theory.\n\nThe Granville-Soundararajan connection means resolving Problem #11 would also resolve whether infinitely many primes are non-Wieferich \u2014 a question related to Fermat's Last Theorem (Wieferich's criterion shows $x^p + y^p = z^p$ with $p \\nmid xyz$ requires $p$ to be Wieferich). The squarefree density of $6/\\pi^2$ provides the heuristic expectation, while the computational verification up to $2^{50}$ with no counterexamples strongly supports the conjecture.",
     "openQuestions": [
-      "Prove the conjecture for all odd $n > 1$ — the main open problem. No theoretical approach has succeeded despite the density-1 result",
-      "Are there infinitely many Wieferich primes? Only 1093 and 3511 are known; if the answer is no, Erdős #11 follows from the Granville-Soundararajan connection",
+      "Prove the conjecture for all odd $n > 1$ \u2014 the main open problem. No theoretical approach has succeeded despite the density-1 result",
+      "Are there infinitely many Wieferich primes? Only 1093 and 3511 are known; if the answer is no, Erd\u0151s #11 follows from the Granville-Soundararajan connection",
       "What is the distribution of the smallest $k$ such that $n - 2^k$ is squarefree? Heuristics suggest $k = O(\\log \\log n)$ suffices for most $n$",
-      "Prove the weaker variant: every $n > 1$ not divisible by 4 is $s + 2^j + 2^k$ with $s$ squarefree. Erdős thought this might be more tractable"
+      "Prove the weaker variant: every $n > 1$ not divisible by 4 is $s + 2^j + 2^k$ with $s$ squarefree. Erd\u0151s thought this might be more tractable"
     ]
   },
   "crossReferences": [
@@ -155,12 +155,12 @@
     },
     {
       "relationship": "related",
-      "description": "Bertrand's postulate ensures primes in $(n, 2n]$; Erdős gave elementary proofs of both this and the density result for Problem #11",
+      "description": "Bertrand's postulate ensures primes in $(n, 2n]$; Erd\u0151s gave elementary proofs of both this and the density result for Problem #11",
       "targetId": "bertrands-postulate"
     },
     {
       "relationship": "sibling",
-      "description": "Another Erdős problem formalization; Problem #1 concerns infinite Sidon sets, also connecting combinatorics with number theory",
+      "description": "Another Erd\u0151s problem formalization; Problem #1 concerns infinite Sidon sets, also connecting combinatorics with number theory",
       "targetId": "erdos-1"
     }
   ],
@@ -176,13 +176,10 @@
     "lineCount": 117,
     "axiomCount": 6,
     "theoremCount": 8,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "lemmaCount": 0
   },
   "relatedProofs": [
-    "",
-    "",
-    "",
-    "",
     "infinitude-primes",
     "prime-reciprocal-divergence",
     "bertrands-postulate",

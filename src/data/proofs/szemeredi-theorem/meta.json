@@ -70,7 +70,7 @@
       "startLine": 1,
       "endLine": 39,
       "summary": "Module docstring with proof status: k=1,2 trivial, k=3 proved via Mathlib corner theorem chain, k$\\geq$4 axiomatized. Lists what Mathlib provides and what's missing. Imports `Nat.Prime.Basic`, `AP.Three.Defs`, `Corner.Roth`, `Tactic`.",
-      "mathContext": "Szemerédi: $\\forall k, \\delta > 0, \\exists N_0: N \\geq N_0, |S \\cap [N]| \\geq \\delta N \\Rightarrow S$ contains a $k$-AP. Status: proved for $k \\leq 3$, axiomatized for $k \\geq 4$."
+      "mathContext": "Szemer\u00e9di: $\\forall k, \\delta > 0, \\exists N_0: N \\geq N_0, |S \\cap [N]| \\geq \\delta N \\Rightarrow S$ contains a $k$-AP. Status: proved for $k \\leq 3$, axiomatized for $k \\geq 4$."
     },
     {
       "id": "definitions",
@@ -78,7 +78,7 @@
       "startLine": 40,
       "endLine": 71,
       "summary": "Defines `HasAPOfLength S k` (set contains $k$-term AP with positive common difference), `IsAPFree S k` (no $k$-AP in $S$), `hasAPOfLengthFinset`, and the formal `SzemerediTheorem` statement.",
-      "mathContext": "$S$ has a $k$-AP: $\\exists a, d > 0, \\{a, a+d, \\ldots, a+(k-1)d\\} \\subseteq S$. Szemerédi: $\\forall k, \\delta > 0, \\exists N_0$: dense subsets of $[N]$ contain a $k$-AP."
+      "mathContext": "$S$ has a $k$-AP: $\\exists a, d > 0, \\{a, a+d, \\ldots, a+(k-1)d\\} \\subseteq S$. Szemer\u00e9di: $\\forall k, \\delta > 0, \\exists N_0$: dense subsets of $[N]$ contain a $k$-AP."
     },
     {
       "id": "trivial",
@@ -90,10 +90,10 @@
     },
     {
       "id": "axiom-k4",
-      "title": "Axiom Reduction (k≥4)",
+      "title": "Axiom Reduction (k\u22654)",
       "startLine": 109,
       "endLine": 126,
-      "summary": "Axiomatizes `szemeredi_k_ge_4`: Szemerédi's theorem for $k \\geq 4$, which requires hypergraph regularity not yet in Mathlib. This is the only axiom in the file.",
+      "summary": "Axiomatizes `szemeredi_k_ge_4`: Szemer\u00e9di's theorem for $k \\geq 4$, which requires hypergraph regularity not yet in Mathlib. This is the only axiom in the file.",
       "mathContext": "Axiom: $\\forall k \\geq 4, \\delta > 0, \\exists N_0: N \\geq N_0, |S| \\geq \\delta N \\Rightarrow S$ has a $k$-AP. Proof requires hypergraph regularity or Furstenberg's ergodic approach."
     },
     {
@@ -130,7 +130,7 @@
     {
       "targetId": "szemeredi-regularity",
       "relationship": "related",
-      "description": "The Szemerédi Regularity Lemma is the key tool in the original proof for k≥4 and is a major target for Mathlib formalization"
+      "description": "The Szemer\u00e9di Regularity Lemma is the key tool in the original proof for k\u22654 and is a major target for Mathlib formalization"
     },
     {
       "targetId": "szemeredi-counting",
@@ -140,7 +140,7 @@
     {
       "targetId": "erdos-817",
       "relationship": "applied-in",
-      "description": "Szemerédi's theorem is axiomatized in erdos-817 to provide density bounds forcing exponential growth of g_k(n)"
+      "description": "Szemer\u00e9di's theorem is axiomatized in erdos-817 to provide density bounds forcing exponential growth of g_k(n)"
     }
   ],
   "conclusion": {
@@ -164,7 +164,8 @@
     "lineCount": 335,
     "axiomCount": 1,
     "theoremCount": 12,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   },
   "relatedProofs": [
     "roth-theorem-k3",
@@ -174,18 +175,18 @@
   ],
   "references": [
     {
-      "authors": "Szemerédi, Endre",
+      "authors": "Szemer\u00e9di, Endre",
       "title": "On sets of integers containing no k elements in arithmetic progression",
       "year": "1975",
-      "venue": "Acta Arithmetica 27, 199–245",
-      "note": "Proved that any set of integers with positive upper density contains arbitrarily long arithmetic progressions — won the Abel Prize in 2012"
+      "venue": "Acta Arithmetica 27, 199\u2013245",
+      "note": "Proved that any set of integers with positive upper density contains arbitrarily long arithmetic progressions \u2014 won the Abel Prize in 2012"
     },
     {
       "authors": "Tao, Terence",
-      "title": "Szemerédi's regularity lemma revisited",
+      "title": "Szemer\u00e9di's regularity lemma revisited",
       "year": "2006",
-      "venue": "Contributions to Discrete Mathematics 1(1), 8–28",
-      "note": "Modern exposition of Szemerédi's regularity lemma and its applications"
+      "venue": "Contributions to Discrete Mathematics 1(1), 8\u201328",
+      "note": "Modern exposition of Szemer\u00e9di's regularity lemma and its applications"
     }
   ]
 }

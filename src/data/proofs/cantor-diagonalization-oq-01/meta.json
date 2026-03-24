@@ -2,9 +2,9 @@
   "id": "cantor-diagonalization-oq-01",
   "title": "The Continuum Hypothesis: Is There a Cardinality Between Countable and Continuum?",
   "slug": "cantor-diagonalization-oq-01",
-  "description": "Cantor's diagonal argument proves aleph_0 < 2^aleph_0, but can it tell us whether any cardinal lies between them? This extension explores the beth number hierarchy, König's constraint, and why CH is independent of the diagonal argument.",
+  "description": "Cantor's diagonal argument proves aleph_0 < 2^aleph_0, but can it tell us whether any cardinal lies between them? This extension explores the beth number hierarchy, K\u00f6nig's constraint, and why CH is independent of the diagonal argument.",
   "meta": {
-    "author": "Cantor (1891), Gödel (1940), Cohen (1963)",
+    "author": "Cantor (1891), G\u00f6del (1940), Cohen (1963)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Continuum_hypothesis",
     "date": "1891",
     "status": "axiomatized",
@@ -20,28 +20,28 @@
       "infinity"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.cantor",
-        "description": "Cantor's theorem: κ < 2^κ for any cardinal",
+        "description": "Cantor's theorem: \u03ba < 2^\u03ba for any cardinal",
         "module": "Mathlib.SetTheory.Cardinal.Basic"
       },
       {
         "theorem": "Cardinal.aleph_succ",
-        "description": "aleph successor: aleph(α+1) = succ(aleph α)",
+        "description": "aleph successor: aleph(\u03b1+1) = succ(aleph \u03b1)",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       },
       {
         "theorem": "Order.succ_le_of_lt",
-        "description": "a < b implies succ a ≤ b",
+        "description": "a < b implies succ a \u2264 b",
         "module": "Mathlib.Order.SuccPred.Basic"
       }
     ],
     "originalContributions": [
       "Beth number hierarchy definition and strict monotonicity proof",
-      "CH ↔ no intermediate cardinal equivalence",
-      "König's cofinality constraint axiomatized",
+      "CH \u2194 no intermediate cardinal equivalence",
+      "K\u00f6nig's cofinality constraint axiomatized",
       "Formal connection between diagonalization and CH"
     ],
     "dateAdded": "2026-02-22",
@@ -50,16 +50,16 @@
     "assumptions": "2 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "Cantor's 1891 diagonal argument proved the reals are uncountable, establishing the gap ℵ₀ < 2^ℵ₀. Cantor had conjectured in 1878 that no cardinality exists between countable and the continuum — the Continuum Hypothesis (CH). After 62 years, Gödel (1940) proved CH is consistent with ZFC using the constructible universe L, and Cohen (1963) proved ¬CH is also consistent using forcing. Together they showed CH is *independent* of ZFC — the diagonal argument cannot determine whether the jump from ℵ₀ to 2^ℵ₀ is minimal.",
-    "problemStatement": "**Open Question**: Does Cantor's diagonalization argument tell us whether any cardinality lies between ℵ₀ and 2^ℵ₀?\n\n**Answer**: The diagonal proves ℵ₀ < 2^ℵ₀ and generates the beth number tower ℵ₀ < 2^ℵ₀ < 2^(2^ℵ₀) < ⋯, but cannot determine whether intermediate cardinals exist. CH (no intermediate) and ¬CH (intermediate exists) are both consistent with ZFC.",
-    "text": "Cantor's diagonal argument proves aleph_0 < 2^aleph_0, but can it tell us whether any cardinal lies between them? This extension explores the beth number hierarchy, König's constraint, and why CH is independent of the diagonal argument.",
-    "proofStrategy": "Formally establish what the diagonal argument CAN prove: the beth number hierarchy (strict monotonicity via Cardinal.cantor applied iteratively), the bound ℵ₁ ≤ 2^ℵ₀, and the equivalence CH ↔ no intermediate cardinal. Then use König's theorem and ZFC independence to show the diagonal cannot determine the exact size of the jump.",
+    "historicalContext": "Cantor's 1891 diagonal argument proved the reals are uncountable, establishing the gap \u2135\u2080 < 2^\u2135\u2080. Cantor had conjectured in 1878 that no cardinality exists between countable and the continuum \u2014 the Continuum Hypothesis (CH). After 62 years, G\u00f6del (1940) proved CH is consistent with ZFC using the constructible universe L, and Cohen (1963) proved \u00acCH is also consistent using forcing. Together they showed CH is *independent* of ZFC \u2014 the diagonal argument cannot determine whether the jump from \u2135\u2080 to 2^\u2135\u2080 is minimal.",
+    "problemStatement": "**Open Question**: Does Cantor's diagonalization argument tell us whether any cardinality lies between \u2135\u2080 and 2^\u2135\u2080?\n\n**Answer**: The diagonal proves \u2135\u2080 < 2^\u2135\u2080 and generates the beth number tower \u2135\u2080 < 2^\u2135\u2080 < 2^(2^\u2135\u2080) < \u22ef, but cannot determine whether intermediate cardinals exist. CH (no intermediate) and \u00acCH (intermediate exists) are both consistent with ZFC.",
+    "text": "Cantor's diagonal argument proves aleph_0 < 2^aleph_0, but can it tell us whether any cardinal lies between them? This extension explores the beth number hierarchy, K\u00f6nig's constraint, and why CH is independent of the diagonal argument.",
+    "proofStrategy": "Formally establish what the diagonal argument CAN prove: the beth number hierarchy (strict monotonicity via Cardinal.cantor applied iteratively), the bound \u2135\u2081 \u2264 2^\u2135\u2080, and the equivalence CH \u2194 no intermediate cardinal. Then use K\u00f6nig's theorem and ZFC independence to show the diagonal cannot determine the exact size of the jump.",
     "keyInsights": [
-      "The diagonal proves ℵ₀ < 2^ℵ₀ but cannot determine whether this jump is minimal",
+      "The diagonal proves \u2135\u2080 < 2^\u2135\u2080 but cannot determine whether this jump is minimal",
       "The beth number hierarchy shows the diagonal generates infinitely many distinct cardinals via iteration",
-      "CH is equivalent to: the diagonal jump from ℵ₀ to 2^ℵ₀ has no intermediate cardinal",
-      "König's theorem gives ZFC-provable constraints: cf(2^ℵ₀) > ℵ₀, ruling out singular alephs like ℵ_ω",
-      "Under ¬CH, ℵ₁ itself is an intermediate cardinal between ℵ₀ and 2^ℵ₀"
+      "CH is equivalent to: the diagonal jump from \u2135\u2080 to 2^\u2135\u2080 has no intermediate cardinal",
+      "K\u00f6nig's theorem gives ZFC-provable constraints: cf(2^\u2135\u2080) > \u2135\u2080, ruling out singular alephs like \u2135_\u03c9",
+      "Under \u00acCH, \u2135\u2081 itself is an intermediate cardinal between \u2135\u2080 and 2^\u2135\u2080"
     ],
     "prerequisites": [
       "Set theory and cardinality"
@@ -78,35 +78,35 @@
       "title": "The Diagonal Gap",
       "startLine": 58,
       "endLine": 107,
-      "summary": "The fundamental diagonal gap ℵ₀ < 2^ℵ₀ and the power set inequality |A| < |P(A)| for any set A."
+      "summary": "The fundamental diagonal gap \u2135\u2080 < 2^\u2135\u2080 and the power set inequality |A| < |P(A)| for any set A."
     },
     {
       "id": "aleph-one-bound",
-      "title": "ℵ₁ ≤ 2^ℵ₀ — The Minimal Uncountable Bound",
+      "title": "\u2135\u2081 \u2264 2^\u2135\u2080 \u2014 The Minimal Uncountable Bound",
       "startLine": 109,
       "endLine": 155,
-      "summary": "ℵ₁ is the smallest uncountable cardinal, so ℵ₁ ≤ 2^ℵ₀ from the diagonal gap and successor structure."
+      "summary": "\u2135\u2081 is the smallest uncountable cardinal, so \u2135\u2081 \u2264 2^\u2135\u2080 from the diagonal gap and successor structure."
     },
     {
       "id": "beth-tower",
       "title": "The Beth Number Tower",
       "startLine": 157,
       "endLine": 229,
-      "summary": "The iterated diagonal hierarchy: beth_n < beth_{n+1} = 2^(beth_n) for all n, with beth_0 = ℵ₀."
+      "summary": "The iterated diagonal hierarchy: beth_n < beth_{n+1} = 2^(beth_n) for all n, with beth_0 = \u2135\u2080."
     },
     {
       "id": "ch-analysis",
-      "title": "CH — Minimal Jump or Gap?",
+      "title": "CH \u2014 Minimal Jump or Gap?",
       "startLine": 231,
       "endLine": 323,
-      "summary": "CH is equivalent to no intermediate cardinal. Under ¬CH, ℵ₁ is explicitly intermediate. Key equivalence proved."
+      "summary": "CH is equivalent to no intermediate cardinal. Under \u00acCH, \u2135\u2081 is explicitly intermediate. Key equivalence proved."
     },
     {
       "id": "konig-constraint",
-      "title": "König's Constraint on 2^ℵ₀",
+      "title": "K\u00f6nig's Constraint on 2^\u2135\u2080",
       "startLine": 325,
       "endLine": 383,
-      "summary": "König's theorem: cf(2^ℵ₀) > ℵ₀, ruling out singular alephs like ℵ_ω as the continuum."
+      "summary": "K\u00f6nig's theorem: cf(2^\u2135\u2080) > \u2135\u2080, ruling out singular alephs like \u2135_\u03c9 as the continuum."
     },
     {
       "id": "diagonal-limit",
@@ -117,10 +117,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Cantor's diagonal argument is powerful enough to generate the entire beth number tower ℵ₀ < 2^ℵ₀ < 2^(2^ℵ₀) < ⋯ and to establish the fundamental bounds ℵ₀ < ℵ₁ ≤ 2^ℵ₀.",
-    "implications": "But it reaches its fundamental limit when asked whether any cardinality lies *between* ℵ₀ and 2^ℵ₀. The Continuum Hypothesis — that no such intermediate cardinal exists — is provably independent of ZFC (Gödel-Cohen), meaning the diagonal argument, however iterated, cannot resolve this question.",
+    "summary": "Cantor's diagonal argument is powerful enough to generate the entire beth number tower \u2135\u2080 < 2^\u2135\u2080 < 2^(2^\u2135\u2080) < \u22ef and to establish the fundamental bounds \u2135\u2080 < \u2135\u2081 \u2264 2^\u2135\u2080.",
+    "implications": "But it reaches its fundamental limit when asked whether any cardinality lies *between* \u2135\u2080 and 2^\u2135\u2080. The Continuum Hypothesis \u2014 that no such intermediate cardinal exists \u2014 is provably independent of ZFC (G\u00f6del-Cohen), meaning the diagonal argument, however iterated, cannot resolve this question.",
     "openQuestions": [
-      "Does there exist a cardinal κ with ℵ₀ < κ < 2^ℵ₀? (The Continuum Hypothesis — independent of ZFC)",
+      "Does there exist a cardinal \u03ba with \u2135\u2080 < \u03ba < 2^\u2135\u2080? (The Continuum Hypothesis \u2014 independent of ZFC)",
       "Is the Continuum Hypothesis decided by large cardinal axioms?",
       "Does Woodin's Ultimate-L program eventually settle CH?"
     ]
@@ -129,27 +129,27 @@
     {
       "targetId": "cantor-diagonalization",
       "relationship": "extends",
-      "description": "Parent proof: Cantor's diagonal argument showing |S| < |P(S)| — this file extends to the continuum hypothesis and beth numbers"
+      "description": "Parent proof: Cantor's diagonal argument showing |S| < |P(S)| \u2014 this file extends to the continuum hypothesis and beth numbers"
     },
     {
       "targetId": "cantors-theorem",
       "relationship": "foundational",
-      "description": "Cantor's theorem |S| < |P(S)| is the starting point: the continuum hypothesis asks whether 2^ℵ₀ = ℵ₁, i.e., whether there is a cardinality strictly between ℕ and P(ℕ)"
+      "description": "Cantor's theorem |S| < |P(S)| is the starting point: the continuum hypothesis asks whether 2^\u2135\u2080 = \u2135\u2081, i.e., whether there is a cardinality strictly between \u2115 and P(\u2115)"
     },
     {
       "targetId": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "Gödel proved CH is consistent with ZFC (1940); Cohen proved ¬CH is also consistent (1963). This independence parallels Gödel's incompleteness: certain natural questions are undecidable within the standard axiom system"
+      "description": "G\u00f6del proved CH is consistent with ZFC (1940); Cohen proved \u00acCH is also consistent (1963). This independence parallels G\u00f6del's incompleteness: certain natural questions are undecidable within the standard axiom system"
     },
     {
       "targetId": "halting-problem",
       "relationship": "thematic",
-      "description": "Both establish fundamental undecidability: the halting problem shows no algorithm decides all halting questions, while CH shows ZFC cannot decide the cardinality question — both reveal limits of formal systems"
+      "description": "Both establish fundamental undecidability: the halting problem shows no algorithm decides all halting questions, while CH shows ZFC cannot decide the cardinality question \u2014 both reveal limits of formal systems"
     },
     {
       "targetId": "schroeder-bernstein",
       "relationship": "foundational",
-      "description": "The Schröder-Bernstein theorem (injections both ways ↔ bijection) provides the cardinal arithmetic framework in which CH is formulated: ℵ₀ < 2^ℵ₀ uses the strict ordering of cardinals"
+      "description": "The Schr\u00f6der-Bernstein theorem (injections both ways \u2194 bijection) provides the cardinal arithmetic framework in which CH is formulated: \u2135\u2080 < 2^\u2135\u2080 uses the strict ordering of cardinals"
     }
   ],
   "relatedProofs": [
@@ -178,6 +178,7 @@
     "lineCount": 442,
     "axiomCount": 2,
     "theoremCount": 27,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   }
 }

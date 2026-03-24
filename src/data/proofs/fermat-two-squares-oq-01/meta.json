@@ -46,15 +46,15 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The four-squares problem has ancient roots. Diophantus of Alexandria (c. 250 CE) observed that certain integers require four squares, and Bachet de Meziriac conjectured in 1621 that four squares always suffice. Fermat claimed a proof around 1636 but never published one. Euler worked on the problem for over 40 years, proving the crucial four-square identity in 1748 (which shows sums of four squares are closed under multiplication) but could not complete the descent argument for primes.\n\nIt was Joseph-Louis Lagrange who finally proved the theorem in 1770, combining Euler's identity with a clever descent: for each prime $p$, one first finds $m$ with $0 < m < p$ and $mp$ a sum of four squares (using quadratic residues), then descends on $m$ until $m = 1$. This argument was simplified by Euler himself in 1773.\n\nThe deeper algebraic structure was not understood until Hamilton's discovery of quaternions in 1843. Euler's identity is precisely the statement $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ for quaternion integers. Hurwitz (1896) later showed that the Hurwitz quaternions (allowing half-integer components) form a Euclidean domain, giving a cleaner proof. The Frobenius theorem (1877) — that the only finite-dimensional associative division algebras over $\\mathbb{R}$ are $\\mathbb{R}$, $\\mathbb{C}$, and $\\mathbb{H}$ — explains why product identities exist for 1, 2, and 4 squares but not 3.",
-    "problemStatement": "**Extension (fermat-two-squares-oq-01)**: Prove Lagrange's four-squares theorem — every natural number $n$ can be written as $n = a^2 + b^2 + c^2 + d^2$ — and formalize the algebraic connection to Euler's identity and quaternion norm multiplicativity.\n\n**Result**: Complete formalization with 0 sorries, 0 axioms. The proof includes:\n- Lagrange's theorem via Mathlib\n- Euler's four-square identity over arbitrary commutative rings\n- Lipschitz quaternion integers with Hamilton product\n- Quaternion norm multiplicativity\n- Brahmagupta-Fibonacci two-square multiplicativity\n- Concrete proof that 3 is not a sum of two squares but is a sum of four",
+    "historicalContext": "The four-squares problem has ancient roots. Diophantus of Alexandria (c. 250 CE) observed that certain integers require four squares, and Bachet de Meziriac conjectured in 1621 that four squares always suffice. Fermat claimed a proof around 1636 but never published one. Euler worked on the problem for over 40 years, proving the crucial four-square identity in 1748 (which shows sums of four squares are closed under multiplication) but could not complete the descent argument for primes.\n\nIt was Joseph-Louis Lagrange who finally proved the theorem in 1770, combining Euler's identity with a clever descent: for each prime $p$, one first finds $m$ with $0 < m < p$ and $mp$ a sum of four squares (using quadratic residues), then descends on $m$ until $m = 1$. This argument was simplified by Euler himself in 1773.\n\nThe deeper algebraic structure was not understood until Hamilton's discovery of quaternions in 1843. Euler's identity is precisely the statement $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ for quaternion integers. Hurwitz (1896) later showed that the Hurwitz quaternions (allowing half-integer components) form a Euclidean domain, giving a cleaner proof. The Frobenius theorem (1877) \u2014 that the only finite-dimensional associative division algebras over $\\mathbb{R}$ are $\\mathbb{R}$, $\\mathbb{C}$, and $\\mathbb{H}$ \u2014 explains why product identities exist for 1, 2, and 4 squares but not 3.",
+    "problemStatement": "**Extension (fermat-two-squares-oq-01)**: Prove Lagrange's four-squares theorem \u2014 every natural number $n$ can be written as $n = a^2 + b^2 + c^2 + d^2$ \u2014 and formalize the algebraic connection to Euler's identity and quaternion norm multiplicativity.\n\n**Result**: Complete formalization with 0 sorries, 0 axioms. The proof includes:\n- Lagrange's theorem via Mathlib\n- Euler's four-square identity over arbitrary commutative rings\n- Lipschitz quaternion integers with Hamilton product\n- Quaternion norm multiplicativity\n- Brahmagupta-Fibonacci two-square multiplicativity\n- Concrete proof that 3 is not a sum of two squares but is a sum of four",
     "text": "Every natural number is the sum of four integer squares. Extends Fermat's two-squares characterization to the universal four-squares case, with Euler's identity proved as quaternion norm multiplicativity.",
-    "proofStrategy": "**Proof Strategy:**\n\n1. **Euler's Identity**: Prove $(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = A^2+B^2+C^2+D^2$ where $A,B,C,D$ are explicit bilinear forms. This is verified by the `ring` tactic.\n\n2. **Quaternion Formulation**: Define Lipschitz quaternion integers with Hamilton product and prove normSq(q₁·q₂) = normSq(q₁)·normSq(q₂). This is Euler's identity repackaged.\n\n3. **Main Theorem**: Apply Mathlib's `Nat.sum_four_squares` which uses Euler's identity to reduce to primes, then a descent argument.\n\n4. **Two-Squares Connection**: Prove the Brahmagupta-Fibonacci identity for two squares and show the contrast: Fermat's theorem is conditional (p ≡ 1 mod 4) while Lagrange's is universal.\n\n5. **Obstruction**: Prove directly that 3 cannot be a sum of two squares (exhaustive case analysis), demonstrating why four squares are needed.",
+    "proofStrategy": "**Proof Strategy:**\n\n1. **Euler's Identity**: Prove $(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = A^2+B^2+C^2+D^2$ where $A,B,C,D$ are explicit bilinear forms. This is verified by the `ring` tactic.\n\n2. **Quaternion Formulation**: Define Lipschitz quaternion integers with Hamilton product and prove normSq(q\u2081\u00b7q\u2082) = normSq(q\u2081)\u00b7normSq(q\u2082). This is Euler's identity repackaged.\n\n3. **Main Theorem**: Apply Mathlib's `Nat.sum_four_squares` which uses Euler's identity to reduce to primes, then a descent argument.\n\n4. **Two-Squares Connection**: Prove the Brahmagupta-Fibonacci identity for two squares and show the contrast: Fermat's theorem is conditional (p \u2261 1 mod 4) while Lagrange's is universal.\n\n5. **Obstruction**: Prove directly that 3 cannot be a sum of two squares (exhaustive case analysis), demonstrating why four squares are needed.",
     "keyInsights": [
-      "**Euler's identity IS quaternion multiplication**: The 8-variable polynomial identity $(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = A^2+B^2+C^2+D^2$ is precisely $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ for quaternions. Euler discovered the algebra of quaternions in 1748 without knowing it — Hamilton's 1843 invention was a rediscovery of structure Euler had already used.",
+      "**Euler's identity IS quaternion multiplication**: The 8-variable polynomial identity $(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = A^2+B^2+C^2+D^2$ is precisely $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ for quaternions. Euler discovered the algebra of quaternions in 1748 without knowing it \u2014 Hamilton's 1843 invention was a rediscovery of structure Euler had already used.",
       "**Reduction to primes via multiplicative closure**: Since sums-of-four-squares form a multiplicatively closed set (by Euler's identity) and $0 = 0^2+0^2+0^2+0^2$, $1 = 1^2+0^2+0^2+0^2$, it suffices to prove every prime is a sum of four squares. This is the same strategy that works for two squares via the Brahmagupta-Fibonacci identity.",
       "**The division algebra hierarchy**: Two squares $\\leftrightarrow$ $\\mathbb{C}$ (dim 2), four squares $\\leftrightarrow$ $\\mathbb{H}$ (dim 4), eight squares $\\leftrightarrow$ $\\mathbb{O}$ (dim 8). Frobenius's theorem (1877) shows these are the only dimensions admitting normed division algebras, explaining why 1, 2, 4, 8 square identities exist but no others.",
-      "**Three-square obstruction is arithmetic, not algebraic**: Legendre proved (1798) that $n$ is a sum of three squares iff $n \\neq 4^a(8b+7)$. This is a condition on quadratic residues mod 8, not on the existence of a composition identity. There is no 3-dimensional normed division algebra, so three squares have no product formula — but the obstruction is finer than that.",
+      "**Three-square obstruction is arithmetic, not algebraic**: Legendre proved (1798) that $n$ is a sum of three squares iff $n \\neq 4^a(8b+7)$. This is a condition on quadratic residues mod 8, not on the existence of a composition identity. There is no 3-dimensional normed division algebra, so three squares have no product formula \u2014 but the obstruction is finer than that.",
       "**Conjugation as norm recovery**: The identity $q\\bar{q} = N(q)$ (with zero imaginary part) shows the norm is intrinsic to the quaternion algebra. This parallels $z\\bar{z} = |z|^2$ for complex numbers and is the foundation of the theory of composition algebras (Hurwitz, 1898)."
     ],
     "prerequisites": [
@@ -67,7 +67,7 @@
       "title": "Euler's Four-Square Identity",
       "startLine": 28,
       "endLine": 42,
-      "summary": "Proves the identity (a²+b²+c²+d²)(x²+y²+z²+w²) = A²+B²+C²+D² over an arbitrary CommRing, where A,B,C,D encode quaternion multiplication."
+      "summary": "Proves the identity (a\u00b2+b\u00b2+c\u00b2+d\u00b2)(x\u00b2+y\u00b2+z\u00b2+w\u00b2) = A\u00b2+B\u00b2+C\u00b2+D\u00b2 over an arbitrary CommRing, where A,B,C,D encode quaternion multiplication."
     },
     {
       "id": "quaternions",
@@ -81,7 +81,7 @@
       "title": "Lagrange's Four Squares Theorem",
       "startLine": 98,
       "endLine": 118,
-      "summary": "States and proves the main theorem for ℕ and ℤ using Mathlib, plus the quaternion norm interpretation."
+      "summary": "States and proves the main theorem for \u2115 and \u2124 using Mathlib, plus the quaternion norm interpretation."
     },
     {
       "id": "multiplicativity",
@@ -102,14 +102,14 @@
       "title": "Two Squares vs Four: The Fermat Connection",
       "startLine": 184,
       "endLine": 220,
-      "summary": "Reproves Fermat's characterization (p is sum of two squares iff p % 4 ≠ 3), contrasts with universal four-squares, proves 3 is not a sum of two squares but is a sum of four."
+      "summary": "Reproves Fermat's characterization (p is sum of two squares iff p % 4 \u2260 3), contrasts with universal four-squares, proves 3 is not a sum of two squares but is a sum of four."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 225,
       "endLine": 236,
-      "summary": "Concrete decompositions: 5 = 1² + 2², 13 = 2² + 3², 100 = 6² + 8², 42 = 1² + 1² + 2² + 6²."
+      "summary": "Concrete decompositions: 5 = 1\u00b2 + 2\u00b2, 13 = 2\u00b2 + 3\u00b2, 100 = 6\u00b2 + 8\u00b2, 42 = 1\u00b2 + 1\u00b2 + 2\u00b2 + 6\u00b2."
     }
   ],
   "crossReferences": [
@@ -149,14 +149,15 @@
     "lineCount": 254,
     "axiomCount": 0,
     "theoremCount": 13,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "J.-L. Lagrange",
-      "title": "Démonstration d'un théorème d'arithmétique",
+      "title": "D\u00e9monstration d'un th\u00e9or\u00e8me d'arithm\u00e9tique",
       "year": "1770",
-      "venue": "Nouveaux Mémoires de l'Académie Royale",
+      "venue": "Nouveaux M\u00e9moires de l'Acad\u00e9mie Royale",
       "note": "Original proof of the four-squares theorem"
     },
     {

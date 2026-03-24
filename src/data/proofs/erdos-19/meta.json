@@ -1,10 +1,10 @@
 {
   "id": "erdos-19",
-  "title": "Erdős Problem #19: Erdős-Faber-Lovász Conjecture",
+  "title": "Erd\u0151s Problem #19: Erd\u0151s-Faber-Lov\u00e1sz Conjecture",
   "slug": "erdos-19",
-  "description": "If G is an edge-disjoint union of n copies of K_n, then χ(G) = n.",
+  "description": "If G is an edge-disjoint union of n copies of K_n, then \u03c7(G) = n.",
   "meta": {
-    "author": "Erdős, Faber, Lovász",
+    "author": "Erd\u0151s, Faber, Lov\u00e1sz",
     "sourceUrl": "https://erdosproblems.com/19",
     "date": "1972",
     "status": "axiomatized",
@@ -46,11 +46,11 @@
       "EdgeDisjoint predicate: no common edges",
       "IsProperColoring/IsKColorable: proper vertex colorings",
       "chromaticNumber axiom: minimum coloring number",
-      "EFLFamily structure: n cliques of size n, pairwise ≤1 vertex overlap",
+      "EFLFamily structure: n cliques of size n, pairwise \u22641 vertex overlap",
       "eflUnionGraph: union graph construction",
-      "efl_chromatic_lower_bound axiom: χ(G) ≥ n",
+      "efl_chromatic_lower_bound axiom: \u03c7(G) \u2265 n",
       "hindman_small_cases axiom: n < 10 cases",
-      "kahn_asymptotic/kahn_explicit_bound: χ(G) ≤ n + o(n)",
+      "kahn_asymptotic/kahn_explicit_bound: \u03c7(G) \u2264 n + o(n)",
       "kang_kelly_kuhn_methuku_osthus axiom: main 2021 result",
       "EFLConjecture/efl_conjecture_resolved: full statement",
       "LinearHypergraph structure: equivalent formulation",
@@ -68,14 +68,14 @@
     "assumptions": "16 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The Erdős-Faber-Lovász Conjecture arose from a conversation at a party in Boulder, Colorado in September 1972. Three prominent mathematicians — Paul Erdős, Vance Faber, and László Lovász — conjectured that any edge-disjoint union of n copies of the complete graph K_n can be properly colored with just n colors. Erdős offered a $500 prize for a proof or disproof.\n\nThe conjecture resisted proof for decades despite its simple statement. Hindman verified it for n < 10 by exhaustive analysis. The first major breakthrough came in 1992, when Jeff Kahn proved χ(G) ≤ (1 + o(1))n — the chromatic number is asymptotically n. Kahn won Erdős's $100 consolation prize for this result, and his explicit bound was χ(G) ≤ n + n^{1-1/51}.\n\nThe full resolution came in 2021 when Kang, Kelly, Kühn, Methuku, and Osthus proved the conjecture for all sufficiently large n using the absorbing method. This powerful technique — also used to resolve the Ringel conjecture around the same time — works by finding a small absorbing structure, greedily coloring most vertices, then using absorption to handle the remainder. Combined with Hindman's small cases, the conjecture is now fully resolved.",
+    "historicalContext": "The Erd\u0151s-Faber-Lov\u00e1sz Conjecture arose from a conversation at a party in Boulder, Colorado in September 1972. Three prominent mathematicians \u2014 Paul Erd\u0151s, Vance Faber, and L\u00e1szl\u00f3 Lov\u00e1sz \u2014 conjectured that any edge-disjoint union of n copies of the complete graph K_n can be properly colored with just n colors. Erd\u0151s offered a $500 prize for a proof or disproof.\n\nThe conjecture resisted proof for decades despite its simple statement. Hindman verified it for n < 10 by exhaustive analysis. The first major breakthrough came in 1992, when Jeff Kahn proved \u03c7(G) \u2264 (1 + o(1))n \u2014 the chromatic number is asymptotically n. Kahn won Erd\u0151s's $100 consolation prize for this result, and his explicit bound was \u03c7(G) \u2264 n + n^{1-1/51}.\n\nThe full resolution came in 2021 when Kang, Kelly, K\u00fchn, Methuku, and Osthus proved the conjecture for all sufficiently large n using the absorbing method. This powerful technique \u2014 also used to resolve the Ringel conjecture around the same time \u2014 works by finding a small absorbing structure, greedily coloring most vertices, then using absorption to handle the remainder. Combined with Hindman's small cases, the conjecture is now fully resolved.",
     "problemStatement": "If $G$ is an edge-disjoint union of $n$ copies of $K_n$ (the complete graph on $n$ vertices), then $\\chi(G) = n$.",
-    "text": "If G is an edge-disjoint union of n copies of K_n, then χ(G) = n.",
-    "proofStrategy": "The 2021 proof uses the absorbing method: (1) construct a small absorbing structure that can incorporate leftover vertices, (2) greedily color most vertices, (3) use absorption to handle the remainder. Kahn's earlier asymptotic result χ(G) ≤ (1+o(1))n earned the $100 consolation prize.",
+    "text": "If G is an edge-disjoint union of n copies of K_n, then \u03c7(G) = n.",
+    "proofStrategy": "The 2021 proof uses the absorbing method: (1) construct a small absorbing structure that can incorporate leftover vertices, (2) greedily color most vertices, (3) use absorption to handle the remainder. Kahn's earlier asymptotic result \u03c7(G) \u2264 (1+o(1))n earned the $100 consolation prize.",
     "keyInsights": [
-      "Lower bound χ(G) ≥ n is easy: each K_n clique requires n colors",
-      "Upper bound χ(G) ≤ n is the hard part requiring global coordination",
-      "Equivalent to: linear hypergraphs have chromatic index ≤ n",
+      "Lower bound \u03c7(G) \u2265 n is easy: each K_n clique requires n colors",
+      "Upper bound \u03c7(G) \u2264 n is the hard part requiring global coordination",
+      "Equivalent to: linear hypergraphs have chromatic index \u2264 n",
       "Equivalent to: nearly disjoint sets admit rainbow partitions",
       "The absorbing method handles irregular configurations"
     ],
@@ -118,7 +118,7 @@
     {
       "id": "lower-bound",
       "title": "Lower Bound",
-      "summary": "efl_chromatic_lower_bound: χ(G) ≥ n",
+      "summary": "efl_chromatic_lower_bound: \u03c7(G) \u2265 n",
       "startLine": 129,
       "endLine": 137
     },
@@ -132,7 +132,7 @@
     {
       "id": "kahn-1992",
       "title": "Kahn's Result (1992)",
-      "summary": "kahn_asymptotic, kahn_explicit_bound: χ(G) ≤ (1+o(1))n",
+      "summary": "kahn_asymptotic, kahn_explicit_bound: \u03c7(G) \u2264 (1+o(1))n",
       "startLine": 149,
       "endLine": 162
     },
@@ -173,11 +173,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The Erdős-Faber-Lovász Conjecture, posed in 1972, was resolved for all sufficiently large n in 2021 using the absorbing method. Combined with Hindman's verification of small cases, the conjecture is now fully proven: every edge-disjoint union of n copies of K_n is n-colorable.",
+    "summary": "The Erd\u0151s-Faber-Lov\u00e1sz Conjecture, posed in 1972, was resolved for all sufficiently large n in 2021 using the absorbing method. Combined with Hindman's verification of small cases, the conjecture is now fully proven: every edge-disjoint union of n copies of K_n is n-colorable.",
     "implications": "The resolution demonstrates the power of the absorbing method in extremal combinatorics and settles a 50-year-old question about graph coloring and hypergraph chromatic indices.",
     "openQuestions": [
       "Explicit bounds on the threshold N where the asymptotic proof takes over",
-      "Extensions to k-wise intersections (Erdős-Füredi generalization)",
+      "Extensions to k-wise intersections (Erd\u0151s-F\u00fcredi generalization)",
       "Algorithmic aspects: finding optimal colorings efficiently"
     ]
   },
@@ -185,12 +185,12 @@
     {
       "targetId": "erdos-21",
       "relationship": "related",
-      "description": "Problem #21 on covering intersecting families is another Erdős problem in extremal set theory. Both concern colorings of structured hypergraphs: EFL asks about edge-disjoint clique unions, while Problem #21 asks about covering intersecting set families"
+      "description": "Problem #21 on covering intersecting families is another Erd\u0151s problem in extremal set theory. Both concern colorings of structured hypergraphs: EFL asks about edge-disjoint clique unions, while Problem #21 asks about covering intersecting set families"
     },
     {
       "targetId": "erdos-22",
       "relationship": "related",
-      "description": "Problem #22 on Ramsey-Turán numbers for $K_4$ concerns extremal graph theory with Ramsey-type constraints. Both problems involve graph coloring and the interplay between local structure (cliques) and global properties (chromatic number)"
+      "description": "Problem #22 on Ramsey-Tur\u00e1n numbers for $K_4$ concerns extremal graph theory with Ramsey-type constraints. Both problems involve graph coloring and the interplay between local structure (cliques) and global properties (chromatic number)"
     },
     {
       "targetId": "erdos-24",
@@ -205,31 +205,31 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Problems and results in graph theory and combinatorial analysis",
       "year": "1972",
-      "venue": "Proceedings of the Fifth British Combinatorial Conference, Aberdeen, pp. 169–192",
-      "note": "First published statement of the EFL conjecture, arising from a 1972 party conversation with Faber and Lovász"
+      "venue": "Proceedings of the Fifth British Combinatorial Conference, Aberdeen, pp. 169\u2013192",
+      "note": "First published statement of the EFL conjecture, arising from a 1972 party conversation with Faber and Lov\u00e1sz"
     },
     {
       "authors": "Kahn, Jeff",
       "title": "Coloring nearly-disjoint hypergraphs with n+o(n) colors",
       "year": "1992",
-      "venue": "Journal of Combinatorial Theory, Series A, vol. 59, no. 1, pp. 31–39",
-      "note": "Proved χ(G) ≤ (1+o(1))n asymptotically, earning Erdős's $100 consolation prize"
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 59, no. 1, pp. 31\u201339",
+      "note": "Proved \u03c7(G) \u2264 (1+o(1))n asymptotically, earning Erd\u0151s's $100 consolation prize"
     },
     {
-      "authors": "Kang, Dong Yeap; Kelly, Tom; Kühn, Daniela; Methuku, Abhishek; Osthus, Deryk",
-      "title": "A proof of the Erdős-Faber-Lovász conjecture",
+      "authors": "Kang, Dong Yeap; Kelly, Tom; K\u00fchn, Daniela; Methuku, Abhishek; Osthus, Deryk",
+      "title": "A proof of the Erd\u0151s-Faber-Lov\u00e1sz conjecture",
       "year": "2023",
-      "venue": "Annals of Mathematics, vol. 198, no. 2, pp. 537–618",
+      "venue": "Annals of Mathematics, vol. 198, no. 2, pp. 537\u2013618",
       "note": "Full resolution of the conjecture for all sufficiently large n using the absorbing method"
     },
     {
       "authors": "Hindman, Neil",
-      "title": "On a conjecture of Erdős, Faber, and Lovász about n-colorings",
+      "title": "On a conjecture of Erd\u0151s, Faber, and Lov\u00e1sz about n-colorings",
       "year": "1981",
-      "venue": "Canadian Journal of Mathematics, vol. 33, no. 3, pp. 563–570",
+      "venue": "Canadian Journal of Mathematics, vol. 33, no. 3, pp. 563\u2013570",
       "note": "Verified the conjecture for n < 10 by exhaustive case analysis"
     }
   ],
@@ -253,6 +253,7 @@
     "lineCount": 301,
     "axiomCount": 16,
     "theoremCount": 2,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   }
 }

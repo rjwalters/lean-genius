@@ -1,10 +1,10 @@
 {
   "id": "erdos-szekeres",
-  "title": "Erdős–Szekeres Theorem",
+  "title": "Erd\u0151s\u2013Szekeres Theorem",
   "slug": "erdos-szekeres",
   "description": "Any sequence of at least (r-1)(s-1) + 1 distinct numbers contains either an increasing subsequence of length r, or a decreasing subsequence of length s.",
   "meta": {
-    "author": "Paul Erdős and George Szekeres (1935)",
+    "author": "Paul Erd\u0151s and George Szekeres (1935)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Szekeres_theorem",
     "date": "1935",
     "status": "axiomatized",
@@ -35,9 +35,9 @@
       "Formalization of increasing/decreasing subsequences",
       "Structure definitions for subsequences with positions",
       "Main theorem statement with pigeonhole approach",
-      "Classic n²+1 corollary",
+      "Classic n\u00b2+1 corollary",
       "Tightness bound construction",
-      "Erdős–Szekeres number function and properties"
+      "Erd\u0151s\u2013Szekeres number function and properties"
     ],
     "dateAdded": "2024-12-27",
     "wiedijkNumber": 73,
@@ -46,8 +46,8 @@
     "lineCount": 280
   },
   "overview": {
-    "historicalContext": "Paul Erdős and George Szekeres proved this theorem in 1935 in their paper \"A combinatorial problem in geometry.\" It was one of Erdős's first major results, published when he was just 22 years old. The theorem arose from the Happy Ending Problem about convex polygons and has since become a cornerstone of combinatorics and Ramsey theory. The elegant pigeonhole proof gives an exact tight bound. Dilworth's theorem (1950) generalized it: in any finite partially ordered set, the minimum number of chains covering it equals the maximum antichain size; the Erdős-Szekeres theorem is the linear order special case. The result is also a foundational instance of the general Ramsey principle that any large enough structure must contain order.",
-    "problemStatement": "**Erdős–Szekeres Theorem**: Any sequence of at least $(r-1)(s-1) + 1$ distinct real numbers contains either:\n- An increasing subsequence of length $r$, OR\n- A decreasing subsequence of length $s$\n\n**Corollary (Classic Form)**: Any sequence of $n^2 + 1$ distinct numbers contains a monotonic subsequence of length $n + 1$.\n\nThis is Wiedijk's 100 Theorems #73.",
+    "historicalContext": "Paul Erd\u0151s and George Szekeres proved this theorem in 1935 in their paper \"A combinatorial problem in geometry.\" It was one of Erd\u0151s's first major results, published when he was just 22 years old. The theorem arose from the Happy Ending Problem about convex polygons and has since become a cornerstone of combinatorics and Ramsey theory. The elegant pigeonhole proof gives an exact tight bound. Dilworth's theorem (1950) generalized it: in any finite partially ordered set, the minimum number of chains covering it equals the maximum antichain size; the Erd\u0151s-Szekeres theorem is the linear order special case. The result is also a foundational instance of the general Ramsey principle that any large enough structure must contain order.",
+    "problemStatement": "**Erd\u0151s\u2013Szekeres Theorem**: Any sequence of at least $(r-1)(s-1) + 1$ distinct real numbers contains either:\n- An increasing subsequence of length $r$, OR\n- A decreasing subsequence of length $s$\n\n**Corollary (Classic Form)**: Any sequence of $n^2 + 1$ distinct numbers contains a monotonic subsequence of length $n + 1$.\n\nThis is Wiedijk's 100 Theorems #73.",
     "text": "Any sequence of at least (r-1)(s-1) + 1 distinct numbers contains either an increasing subsequence of length r, or a decreasing subsequence of length s.",
     "proofStrategy": "**The Pigeonhole Argument:**\n\nFor each position $i$ in the sequence, assign a pair $(a_i, b_i)$ where:\n- $a_i$ = length of longest increasing subsequence ending at position $i$\n- $b_i$ = length of longest decreasing subsequence ending at position $i$\n\n**Key insight**: All pairs $(a_i, b_i)$ are distinct!\n\nIf $i < j$ and $(a_i, b_i) = (a_j, b_j)$:\n- If $f(i) < f(j)$: the increasing subsequence ending at $i$ extends to $j$, so $a_j > a_i$\n- If $f(i) > f(j)$: the decreasing subsequence ending at $i$ extends to $j$, so $b_j > b_i$\n\nThis contradicts $(a_i, b_i) = (a_j, b_j)$. Since all pairs are distinct and bounded by $(r-1, s-1)$, we can have at most $(r-1)(s-1)$ elements. But we have $(r-1)(s-1) + 1$, contradiction!",
     "keyInsights": [
@@ -77,7 +77,7 @@
       "title": "The Main Theorem",
       "startLine": 111,
       "endLine": 153,
-      "summary": "Statement and proof of the Erdős–Szekeres theorem in existence form.",
+      "summary": "Statement and proof of the Erd\u0151s\u2013Szekeres theorem in existence form.",
       "mathContext": "$n \\ge (r-1)(s-1) + 1 \\implies$ any injective $f : \\text{Fin}\\, n \\to \\alpha$ has an increasing subsequence of length $r$ or decreasing of length $s$. Proved via pigeonhole on $(a_i, b_i)$ pairs."
     },
     {
@@ -85,7 +85,7 @@
       "title": "Classic Form",
       "startLine": 142,
       "endLine": 153,
-      "summary": "The n²+1 corollary: any sequence of n²+1 elements has a monotonic subsequence of length n+1.",
+      "summary": "The n\u00b2+1 corollary: any sequence of n\u00b2+1 elements has a monotonic subsequence of length n+1.",
       "mathContext": "$n = m^2 + 1 \\implies$ any injective sequence of length $n$ has a monotonic subsequence of length $m + 1$. Special case $r = s = m + 1$: $(m+1-1)(m+1-1) + 1 = m^2 + 1$."
     },
     {
@@ -109,7 +109,7 @@
       "title": "Ramsey-Theoretic Perspective",
       "startLine": 231,
       "endLine": 274,
-      "summary": "The Erdős–Szekeres number and its connection to Ramsey theory.",
+      "summary": "The Erd\u0151s\u2013Szekeres number and its connection to Ramsey theory.",
       "mathContext": "$ES(r,s) = (r-1)(s-1) + 1$. 2-color pairs $(i,j)$ by comparing $f(i)$ vs $f(j)$. The theorem guarantees a red $r$-clique (increasing) or blue $s$-clique (decreasing). $ES(r,s) = ES(s,r)$ by symmetry."
     }
   ],
@@ -117,11 +117,11 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "generalization",
-      "description": "Ramsey's theorem generalizes the Erdős–Szekeres result: the ES theorem is a special case for ordered 2-colorings of pairs"
+      "description": "Ramsey's theorem generalizes the Erd\u0151s\u2013Szekeres result: the ES theorem is a special case for ordered 2-colorings of pairs"
     }
   ],
   "conclusion": {
-    "summary": "The Erdős–Szekeres theorem provides an elegant and exact bound for the existence of monotonic subsequences. The formalization introduces formal definitions of increasing and decreasing subsequences, states the main theorem using the pigeonhole principle, and proves the classic n²+1 corollary.",
+    "summary": "The Erd\u0151s\u2013Szekeres theorem provides an elegant and exact bound for the existence of monotonic subsequences. The formalization introduces formal definitions of increasing and decreasing subsequences, states the main theorem using the pigeonhole principle, and proves the classic n\u00b2+1 corollary.",
     "implications": "**Theoretical Significance:**\n\n**1. Ramsey Theory**\nThe theorem is a foundational result in Ramsey theory, showing that order (monotonicity) emerges from sufficiently long sequences.\n\n**2. Combinatorics**\nUsed extensively in combinatorics for proving existence of structured subsequences.\n\n**3. Computer Science**\nConnects to longest increasing subsequence algorithms (O(n log n) via patience sorting).\n\n**4. The Happy Ending Problem**\nThe original application: any 5 points in general position contain a convex quadrilateral.",
     "openQuestions": [
       "How can the pigeonhole argument be fully formalized with explicit pair tracking?",
@@ -148,6 +148,7 @@
     "lineCount": 280,
     "axiomCount": 2,
     "theoremCount": 8,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   }
 }

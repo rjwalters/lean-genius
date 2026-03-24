@@ -35,8 +35,8 @@
       }
     ],
     "originalContributions": [
-      "parallel_vandermonde: Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1, a+b+1) — proved by nested induction",
-      "hockey_stick_2d: Σ_{i+j≤n} C(i+a,a)·C(j+b,b) = C(n+a+b+2, a+b+2) — composed from 1D hockey stick + parallel Vandermonde"
+      "parallel_vandermonde: \u03a3_{i+j=n} C(i+a,a)\u00b7C(j+b,b) = C(n+a+b+1, a+b+1) \u2014 proved by nested induction",
+      "hockey_stick_2d: \u03a3_{i+j\u2264n} C(i+a,a)\u00b7C(j+b,b) = C(n+a+b+2, a+b+2) \u2014 composed from 1D hockey stick + parallel Vandermonde"
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
@@ -62,7 +62,7 @@
         "proofId": "combinations-formula",
         "title": "Formula for the Number of Combinations",
         "relationship": "uses",
-        "note": "The foundation — C(n,k) = n!/(k!(n-k)!) — upon which simplicial numbers are built"
+        "note": "The foundation \u2014 C(n,k) = n!/(k!(n-k)!) \u2014 upon which simplicial numbers are built"
       },
       {
         "proofId": "pascals-hexagon",
@@ -75,14 +75,14 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The hockey stick identity (also called the Christmas stocking identity) has been known since at least the 17th century as a pattern in Pascal's triangle: summing entries along a diagonal yields the entry one step further on the next diagonal. The Vandermonde convolution identity $\\sum \\binom{m}{j}\\binom{s}{r-j} = \\binom{m+s}{r}$, first published by Alexandre-Théophile Vandermonde in 1772, is one of the most fundamental identities in combinatorics. The 'parallel' variant used here — summing products $\\binom{i+a}{a}\\binom{j+b}{b}$ over pairs with $i+j=n$ — is equivalent to the convolution of two negative binomial (simplicial) sequences and arises naturally in lattice path enumeration: the number of paths from $(0,0)$ to $(n,a+b+1)$ that must pass through a specific column decomposes as exactly this sum. The 2D hockey stick generalizes to triangular-region sums, counting lattice points in higher-dimensional simplicial polytopes.",
+    "historicalContext": "The hockey stick identity (also called the Christmas stocking identity) has been known since at least the 17th century as a pattern in Pascal's triangle: summing entries along a diagonal yields the entry one step further on the next diagonal. The Vandermonde convolution identity $\\sum \\binom{m}{j}\\binom{s}{r-j} = \\binom{m+s}{r}$, first published by Alexandre-Th\u00e9ophile Vandermonde in 1772, is one of the most fundamental identities in combinatorics. The 'parallel' variant used here \u2014 summing products $\\binom{i+a}{a}\\binom{j+b}{b}$ over pairs with $i+j=n$ \u2014 is equivalent to the convolution of two negative binomial (simplicial) sequences and arises naturally in lattice path enumeration: the number of paths from $(0,0)$ to $(n,a+b+1)$ that must pass through a specific column decomposes as exactly this sum. The 2D hockey stick generalizes to triangular-region sums, counting lattice points in higher-dimensional simplicial polytopes.",
     "problemStatement": "**2D Hockey Stick Identity**: For all natural numbers $a$, $b$, $n$:\n\n$$\\sum_{i+j \\leq n} \\binom{i+a}{a} \\cdot \\binom{j+b}{b} = \\binom{n+a+b+2}{a+b+2}$$\n\nThe proof reduces to the **parallel Vandermonde identity**:\n$$\\sum_{i+j=n} \\binom{i+a}{a} \\cdot \\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$$\n\nvia the 1D hockey stick applied to the inner sum.",
     "text": "The 2D hockey stick identity: summing products of simplicial numbers over a triangular region gives higher-dimensional simplicial numbers. Proved via the parallel Vandermonde convolution identity using nested induction with Pascal's recurrence.",
     "proofStrategy": "**Nested induction** on $b$ then $n$.\n\nBase ($b=0$): reduces to the 1D hockey stick identity.\n\nStep ($b+1$, $n+1$): Pascal's identity decomposes $S_{b+1}(n+1-i)$ into $S_{b+1}(n-i) + S_b(n+1-i)$, splitting the sum into two parts resolved by the inner and outer induction hypotheses. These combine via the simplicial recurrence to close the proof.",
     "keyInsights": [
-      "The parallel Vandermonde satisfies the same recurrence as simplicial numbers — its proof is essentially showing that two sequences obeying the same recurrence with the same base cases must be equal.",
-      "Pascal's identity on the second factor decomposes each term $S_a(i) \\cdot S_{b+1}(n+1-i)$ into two parts, each resolvable by a different induction hypothesis — the inner IH (on $n$) and the outer IH (on $b$).",
-      "The 2D hockey stick is the functional composition hockey_stick $\\circ$ parallel_vandermonde — a two-line proof demonstrating the power of modular theorem composition.",
+      "The parallel Vandermonde satisfies the same recurrence as simplicial numbers \u2014 its proof is essentially showing that two sequences obeying the same recurrence with the same base cases must be equal.",
+      "Pascal's identity on the second factor decomposes each term $S_a(i) \\cdot S_{b+1}(n+1-i)$ into two parts, each resolvable by a different induction hypothesis \u2014 the inner IH (on $n$) and the outer IH (on $b$).",
+      "The 2D hockey stick is the functional composition hockey_stick $\\circ$ parallel_vandermonde \u2014 a two-line proof demonstrating the power of modular theorem composition.",
       "The proof carefully avoids natural number subtraction pitfalls: $n + 1 - i = (n - i) + 1$ is verified by `omega` rather than assumed, since $\\mathbb{N}$ subtraction is truncated.",
       "The identity has a generating function interpretation: $(1-x)^{-(a+1)} \\cdot (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)}$, which encodes the convolution as a product of formal power series."
     ],
@@ -112,14 +112,14 @@
       "title": "Parallel Vandermonde Identity",
       "startLine": 49,
       "endLine": 98,
-      "summary": "The main result: Σ_{i+j=n} S_a(i)·S_b(j) = S_{a+b+1}(n). Proved by nested induction on (b, n) with Pascal decomposition of S_{b+1}(n+1-i) into two terms, each resolved by a different induction hypothesis."
+      "summary": "The main result: \u03a3_{i+j=n} S_a(i)\u00b7S_b(j) = S_{a+b+1}(n). Proved by nested induction on (b, n) with Pascal decomposition of S_{b+1}(n+1-i) into two terms, each resolved by a different induction hypothesis."
     },
     {
       "id": "2d-hockey-stick",
       "title": "2D Hockey Stick Identity",
       "startLine": 100,
       "endLine": 113,
-      "summary": "hockey_stick_2d: Σ_{i+j≤n} S_a(i)·S_b(j) = S_{a+b+2}(n). Elegant two-line proof composing parallel_vandermonde with hockey_stick via simp_rw."
+      "summary": "hockey_stick_2d: \u03a3_{i+j\u2264n} S_a(i)\u00b7S_b(j) = S_{a+b+2}(n). Elegant two-line proof composing parallel_vandermonde with hockey_stick via simp_rw."
     },
     {
       "id": "special-cases",
@@ -137,12 +137,12 @@
     }
   ],
   "conclusion": {
-    "summary": "12 theorems with 0 sorries and 0 axioms. The parallel Vandermonde convolution identity is the key new result, established by nested induction on b then n using Pascal's recurrence. The 2D hockey stick follows as a two-line composition of parallel Vandermonde with the 1D hockey stick — a clean demonstration of modular proof architecture.",
-    "implications": "**Lattice path counting**: The parallel Vandermonde counts monotone lattice paths decomposed by which column they cross a threshold — a technique used in ballot problems and Catalan number theory. **Probability**: The convolution of negative binomial distributions NB(a+1, p) * NB(b+1, p) = NB(a+b+2, p) follows directly from the parallel Vandermonde as a combinatorial identity on probability generating functions. **Combinatorial identities**: Provides a unified framework for deriving hockey stick generalizations to arbitrary dimension, reducing k-dimensional sums to (k-1)-dimensional ones via Vandermonde convolution. **Formal methods**: The nested induction pattern (outer on a parameter, inner on the summation bound) is a reusable template for similar convolution identities in Lean, demonstrating how modular proof composition (2D hockey stick = Vandermonde + 1D hockey stick) keeps proofs short and maintainable.",
+    "summary": "12 theorems with 0 sorries and 0 axioms. The parallel Vandermonde convolution identity is the key new result, established by nested induction on b then n using Pascal's recurrence. The 2D hockey stick follows as a two-line composition of parallel Vandermonde with the 1D hockey stick \u2014 a clean demonstration of modular proof architecture.",
+    "implications": "**Lattice path counting**: The parallel Vandermonde counts monotone lattice paths decomposed by which column they cross a threshold \u2014 a technique used in ballot problems and Catalan number theory. **Probability**: The convolution of negative binomial distributions NB(a+1, p) * NB(b+1, p) = NB(a+b+2, p) follows directly from the parallel Vandermonde as a combinatorial identity on probability generating functions. **Combinatorial identities**: Provides a unified framework for deriving hockey stick generalizations to arbitrary dimension, reducing k-dimensional sums to (k-1)-dimensional ones via Vandermonde convolution. **Formal methods**: The nested induction pattern (outer on a parameter, inner on the summation bound) is a reusable template for similar convolution identities in Lean, demonstrating how modular proof composition (2D hockey stick = Vandermonde + 1D hockey stick) keeps proofs short and maintainable.",
     "openQuestions": [
       "Prove the k-dimensional hockey stick identity by induction on dimension, using the 2D case as the inductive step.",
-      "Connect to the standard Vandermonde identity Σ C(m,j)·C(s,r-j) = C(m+s,r) via generating functions or a direct combinatorial bijection.",
-      "Formalize the generating function proof: (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} encodes the parallel Vandermonde as coefficient extraction.",
+      "Connect to the standard Vandermonde identity \u03a3 C(m,j)\u00b7C(s,r-j) = C(m+s,r) via generating functions or a direct combinatorial bijection.",
+      "Formalize the generating function proof: (1-x)^{-(a+1)} \u00b7 (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} encodes the parallel Vandermonde as coefficient extraction.",
       "Can the identity be proved purely by a combinatorial bijection (counting lattice paths two ways) without induction?"
     ]
   },
@@ -150,22 +150,22 @@
     {
       "targetId": "arithmetic-series-oq-02",
       "relationship": "extends",
-      "description": "Parent entry proving the 1D hockey stick identity ∑C(i+k,k) = C(n+k+1,k+1) — this file generalizes to 2D via the parallel Vandermonde convolution"
+      "description": "Parent entry proving the 1D hockey stick identity \u2211C(i+k,k) = C(n+k+1,k+1) \u2014 this file generalizes to 2D via the parallel Vandermonde convolution"
     },
     {
       "targetId": "arithmetic-series",
       "relationship": "ancestor",
-      "description": "The original arithmetic series ∑k = n(n+1)/2 — this file shows it's the simplest special case (a=0, b=0) of the 2D hockey stick"
+      "description": "The original arithmetic series \u2211k = n(n+1)/2 \u2014 this file shows it's the simplest special case (a=0, b=0) of the 2D hockey stick"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "related",
-      "description": "The Vandermonde convolution ∑C(m,j)C(s,r-j) = C(m+s,r) is a fundamental identity in binomial coefficient theory, and the parallel variant proved here is its shifted analogue"
+      "description": "The Vandermonde convolution \u2211C(m,j)C(s,r-j) = C(m+s,r) is a fundamental identity in binomial coefficient theory, and the parallel variant proved here is its shifted analogue"
     },
     {
       "targetId": "combinations-formula",
       "relationship": "foundational",
-      "description": "Pascal's recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) drives the nested induction — the same identity underlying Pascal's triangle"
+      "description": "Pascal's recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) drives the nested induction \u2014 the same identity underlying Pascal's triangle"
     }
   ],
   "relatedProofs": [
@@ -186,15 +186,16 @@
     "lineCount": 154,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "Vandermonde, Alexandre-Théophile",
-      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "authors": "Vandermonde, Alexandre-Th\u00e9ophile",
+      "title": "M\u00e9moire sur des irrationnelles de diff\u00e9rens ordres avec une application au cercle",
       "year": "1772",
-      "venue": "Mémoires de l'Académie Royale des Sciences de Paris",
-      "note": "Original Vandermonde convolution identity Σ C(m,j)·C(s,r-j) = C(m+s,r)"
+      "venue": "M\u00e9moires de l'Acad\u00e9mie Royale des Sciences de Paris",
+      "note": "Original Vandermonde convolution identity \u03a3 C(m,j)\u00b7C(s,r-j) = C(m+s,r)"
     },
     {
       "authors": "Gould, Henry W.",

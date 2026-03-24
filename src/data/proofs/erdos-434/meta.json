@@ -1,6 +1,6 @@
 {
   "id": "erdos-434",
-  "title": "Erdős #434: Extremal Frobenius Problem",
+  "title": "Erd\u0151s #434: Extremal Frobenius Problem",
   "slug": "erdos-434",
   "description": "Which k-subset of {1,...,n} maximizes non-representable integers? Answer: {n-k+1,...,n} (Kiss 2002).",
   "meta": {
@@ -73,17 +73,17 @@
     "assumptions": "4 axiom(s) and 8 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #434 is closely related to the classical Frobenius problem (also called the coin problem or money changing problem). Given a set of positive integers with gcd = 1, only finitely many integers are non-representable as sums of elements from the set.\n\nThe Frobenius number is the largest such non-representable integer. For two coprime integers a and b, Sylvester proved in 1884 that this equals ab - a - b, and the count of non-representables is (a-1)(b-1)/2.\n\nProblem #434 asks a different question: not what is the largest non-representable integer, but which k-element subset of {1, ..., n} maximizes the COUNT of non-representable integers. Kiss (2002) proved that the answer is the 'top k' set: {n-k+1, ..., n}. Intuitively, using larger numbers creates more gaps in what's representable.\n\nThe problem connects to numerical semigroup theory, where the 'genus' of a semigroup (number of gaps) is a central invariant. Problem #434 asks which generators maximize the genus. The result is also remarkable from an optimization perspective: the greedy algorithm (always pick the largest available number) produces the provably optimal solution — a rare case in combinatorial optimization where greedy is exactly optimal.\n\nRamírez-Alfonsín (2005) showed that computing the Frobenius number for sets of 3 or more elements is NP-hard, making the clean explicit solution to the extremal problem all the more surprising.",
-    "problemStatement": "Let k ≤ n. What choice of A ⊆ {1, ..., n} of size |A| = k maximizes the number of integers not representable as the sum of finitely many elements from A (with repetitions allowed)?\n\n**Answer**: YES, it is A = {n-k+1, ..., n}\n\nThis was proved by Kiss (2002).",
+    "historicalContext": "Erd\u0151s Problem #434 is closely related to the classical Frobenius problem (also called the coin problem or money changing problem). Given a set of positive integers with gcd = 1, only finitely many integers are non-representable as sums of elements from the set.\n\nThe Frobenius number is the largest such non-representable integer. For two coprime integers a and b, Sylvester proved in 1884 that this equals ab - a - b, and the count of non-representables is (a-1)(b-1)/2.\n\nProblem #434 asks a different question: not what is the largest non-representable integer, but which k-element subset of {1, ..., n} maximizes the COUNT of non-representable integers. Kiss (2002) proved that the answer is the 'top k' set: {n-k+1, ..., n}. Intuitively, using larger numbers creates more gaps in what's representable.\n\nThe problem connects to numerical semigroup theory, where the 'genus' of a semigroup (number of gaps) is a central invariant. Problem #434 asks which generators maximize the genus. The result is also remarkable from an optimization perspective: the greedy algorithm (always pick the largest available number) produces the provably optimal solution \u2014 a rare case in combinatorial optimization where greedy is exactly optimal.\n\nRam\u00edrez-Alfons\u00edn (2005) showed that computing the Frobenius number for sets of 3 or more elements is NP-hard, making the clean explicit solution to the extremal problem all the more surprising.",
+    "problemStatement": "Let k \u2264 n. What choice of A \u2286 {1, ..., n} of size |A| = k maximizes the number of integers not representable as the sum of finitely many elements from A (with repetitions allowed)?\n\n**Answer**: YES, it is A = {n-k+1, ..., n}\n\nThis was proved by Kiss (2002).",
     "text": "Which k-subset of {1,...,n} maximizes non-representable integers? Answer: {n-k+1,...,n} (Kiss 2002).",
-    "proofStrategy": "The formalization builds up representability theory from multisets: IsRepresentableAs uses existential over Multiset ℕ with membership and sum constraints. Three basic lemmas (zero_representable, mem_representable, add_representable) show the representable set is a submonoid of (ℕ, +). The NonRepresentable set and its counts (ncard/encard) are defined, along with the Frobenius number via sSup. The topK set {n-k+1,...,n} is defined as Set.Icc, and Kiss's theorem (axiom) states it maximizes nCardNonRepresentable. Supporting results include the Sylvester-Frobenius formula (axiom), small examples ({2,3}, {3,5}, topK(5,2)=proved), the greedy construction (definitionally equal to topK), finiteness when gcd=1, and connections to Problem #433.",
+    "proofStrategy": "The formalization builds up representability theory from multisets: IsRepresentableAs uses existential over Multiset \u2115 with membership and sum constraints. Three basic lemmas (zero_representable, mem_representable, add_representable) show the representable set is a submonoid of (\u2115, +). The NonRepresentable set and its counts (ncard/encard) are defined, along with the Frobenius number via sSup. The topK set {n-k+1,...,n} is defined as Set.Icc, and Kiss's theorem (axiom) states it maximizes nCardNonRepresentable. Supporting results include the Sylvester-Frobenius formula (axiom), small examples ({2,3}, {3,5}, topK(5,2)=proved), the greedy construction (definitionally equal to topK), finiteness when gcd=1, and connections to Problem #433.",
     "keyInsights": [
-      "**Representability via Multisets**: A number n is representable by A if n = Σaᵢ for some multiset with all aᵢ ∈ A. The representable set forms a numerical semigroup (closed under +, contains 0).",
+      "**Representability via Multisets**: A number n is representable by A if n = \u03a3a\u1d62 for some multiset with all a\u1d62 \u2208 A. The representable set forms a numerical semigroup (closed under +, contains 0).",
       "**Frobenius number vs Count**: Problem #434 maximizes the COUNT of non-representables (the 'genus'), not the largest non-representable (the Frobenius number). Problem #433 does the latter.",
       "**topK is Optimal (Kiss 2002)**: {n-k+1, ..., n} maximizes non-representables. Large numbers create more gaps because their multiples are widely spaced.",
       "**Sylvester Formula**: For coprime a, b: Frobenius number = ab-a-b, count = (a-1)(b-1)/2. For consecutive n-1, n: count = (n-2)(n-1)/2, growing quadratically.",
-      "**Greedy is Optimal**: The greedy approach (always pick the largest number) produces topK and is provably optimal — a rare case in combinatorial optimization.",
-      "**NP-hardness contrast**: Computing the Frobenius number for ≥ 3 elements is NP-hard (Ramírez-Alfonsín 2005), yet the extremal problem has an elegant explicit solution."
+      "**Greedy is Optimal**: The greedy approach (always pick the largest number) produces topK and is provably optimal \u2014 a rare case in combinatorial optimization.",
+      "**NP-hardness contrast**: Computing the Frobenius number for \u2265 3 elements is NP-hard (Ram\u00edrez-Alfons\u00edn 2005), yet the extremal problem has an elegant explicit solution."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -104,13 +104,14 @@
     "lineCount": 310,
     "axiomCount": 4,
     "theoremCount": 15,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-433",
       "relationship": "related-problem",
-      "description": "Companion problem: #433 maximizes the Frobenius NUMBER g(k,n) ~ n²/(k-1), while #434 maximizes the COUNT of non-representables. Both posed by Erdős-Graham in their 1980 monograph."
+      "description": "Companion problem: #433 maximizes the Frobenius NUMBER g(k,n) ~ n\u00b2/(k-1), while #434 maximizes the COUNT of non-representables. Both posed by Erd\u0151s-Graham in their 1980 monograph."
     }
   ],
   "sections": [
@@ -119,14 +120,14 @@
       "title": "Representability",
       "startLine": 39,
       "endLine": 76,
-      "summary": "Defines IsRepresentableAs via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). The representable set forms a submonoid of (ℕ, +)."
+      "summary": "Defines IsRepresentableAs via existential over Multiset \u2115 with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). The representable set forms a submonoid of (\u2115, +)."
     },
     {
       "id": "non-representable",
       "title": "Non-Representable Integers",
       "startLine": 78,
       "endLine": 90,
-      "summary": "Defines NonRepresentable A = {n | ¬IsRepresentableAs n A}. Two counting functions: countNonRepresentable (ℕ∞ via encard, handles infinite gcd > 1 case) and nCardNonRepresentable (ℕ via ncard, used in Kiss's theorem)."
+      "summary": "Defines NonRepresentable A = {n | \u00acIsRepresentableAs n A}. Two counting functions: countNonRepresentable (\u2115\u221e via encard, handles infinite gcd > 1 case) and nCardNonRepresentable (\u2115 via ncard, used in Kiss's theorem)."
     },
     {
       "id": "frobenius",
@@ -140,7 +141,7 @@
       "title": "The Extremal Problem",
       "startLine": 106,
       "endLine": 120,
-      "summary": "topK n k = Set.Icc (n-k+1) n. topK_card (sorry): |topK| = k. ExtremalFrobeniusQuestion: ∀ A valid, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k)."
+      "summary": "topK n k = Set.Icc (n-k+1) n. topK_card (sorry): |topK| = k. ExtremalFrobeniusQuestion: \u2200 A valid, nCardNonRepresentable(A) \u2264 nCardNonRepresentable(topK n k)."
     },
     {
       "id": "examples",
@@ -154,14 +155,14 @@
       "title": "Kiss's Theorem",
       "startLine": 158,
       "endLine": 175,
-      "summary": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 ≤ k ≤ n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002."
+      "summary": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 \u2264 k \u2264 n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002."
     },
     {
       "id": "intuition",
       "title": "Why topK is Optimal",
       "startLine": 177,
       "endLine": 191,
-      "summary": "larger_numbers_fewer_reps (sorry): nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n ≥ 2. Illustrates that larger numbers create more gaps in representability."
+      "summary": "larger_numbers_fewer_reps (sorry): nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n \u2265 2. Illustrates that larger numbers create more gaps in representability."
     },
     {
       "id": "sylvester",
@@ -182,7 +183,7 @@
       "title": "Bounds on Non-Representables",
       "startLine": 224,
       "endLine": 237,
-      "summary": "nonrep_finite (sorry): coprime elements imply finite NonRepresentable. topK_finite (sorry): NonRepresentable(topK n k) is finite for k ≥ 2."
+      "summary": "nonrep_finite (sorry): coprime elements imply finite NonRepresentable. topK_finite (sorry): NonRepresentable(topK n k) is finite for k \u2265 2."
     },
     {
       "id": "problem433",
@@ -200,8 +201,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #434 on the extremal Frobenius problem. Kiss (2002) proved that the 'top k' set {n-k+1, ..., n} maximizes the count of non-representable integers among all k-element subsets of {1, ..., n}. The 311-line proof has 8 sorries (examples, cardinality, finiteness, comparison) and 4 axioms (Kiss's theorem, Sylvester-Frobenius formula and count, consecutive Frobenius). Core representability theory (3 closure lemmas) and topK_5_2 are fully proved.",
-    "implications": "**Theoretical Significance**: The problem connects the classical Frobenius (coin) problem with extremal combinatorics and numerical semigroup theory.\n\nThe greedy approach of selecting largest elements is optimal, contrasting with many optimization problems where greedy fails. The result also connects to computational complexity: while the Frobenius problem for ≥ 3 elements is NP-hard, the extremal problem has a clean, explicit optimal solution.",
+    "summary": "This formalization captures Erd\u0151s Problem #434 on the extremal Frobenius problem. Kiss (2002) proved that the 'top k' set {n-k+1, ..., n} maximizes the count of non-representable integers among all k-element subsets of {1, ..., n}. The 311-line proof has 8 sorries (examples, cardinality, finiteness, comparison) and 4 axioms (Kiss's theorem, Sylvester-Frobenius formula and count, consecutive Frobenius). Core representability theory (3 closure lemmas) and topK_5_2 are fully proved.",
+    "implications": "**Theoretical Significance**: The problem connects the classical Frobenius (coin) problem with extremal combinatorics and numerical semigroup theory.\n\nThe greedy approach of selecting largest elements is optimal, contrasting with many optimization problems where greedy fails. The result also connects to computational complexity: while the Frobenius problem for \u2265 3 elements is NP-hard, the extremal problem has a clean, explicit optimal solution.",
     "openQuestions": [
       "Exact formula for the maximum count of non-representables as a function of n and k?",
       "Characterization of which sets achieve close-to-optimal counts?",
@@ -220,17 +221,17 @@
         "G. Kiss"
       ],
       "year": 2002,
-      "venue": "Ann. Univ. Sci. Budapest. Eötvös Sect. Math.",
+      "venue": "Ann. Univ. Sci. Budapest. E\u00f6tv\u00f6s Sect. Math.",
       "relevance": "Proved that {n-k+1,...,n} maximizes the count of non-representable integers (the main result)"
     },
     {
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "R.L. Graham"
       ],
       "year": 1980,
-      "venue": "L'Enseignement Mathématique, Monograph No. 28",
+      "venue": "L'Enseignement Math\u00e9matique, Monograph No. 28",
       "relevance": "Original source of Problems #433 and #434 on extremal Frobenius problems"
     },
     {
@@ -245,11 +246,11 @@
     {
       "title": "The Diophantine Frobenius Problem",
       "authors": [
-        "J.L. Ramírez-Alfonsín"
+        "J.L. Ram\u00edrez-Alfons\u00edn"
       ],
       "year": 2005,
       "venue": "Oxford University Press",
-      "relevance": "Comprehensive survey proving NP-hardness for ≥ 3 elements and collecting known results"
+      "relevance": "Comprehensive survey proving NP-hardness for \u2265 3 elements and collecting known results"
     }
   ]
 }

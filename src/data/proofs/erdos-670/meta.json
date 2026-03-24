@@ -1,10 +1,10 @@
 {
   "id": "erdos-670",
-  "title": "Erdős Problem #670: Diameter of Sets with Distinct Distances",
+  "title": "Erd\u0151s Problem #670: Diameter of Sets with Distinct Distances",
   "slug": "erdos-670",
-  "description": "Let A ⊆ ℝ^d be n points with all pairwise distances differing by at least 1. Is diameter(A) ≥ (1+o(1))n²? Proved for d=1 by Erdős (1997). Higher dimensions remain OPEN.",
+  "description": "Let A \u2286 \u211d^d be n points with all pairwise distances differing by at least 1. Is diameter(A) \u2265 (1+o(1))n\u00b2? Proved for d=1 by Erd\u0151s (1997). Higher dimensions remain OPEN.",
   "meta": {
-    "author": "Erdős [Er97f]",
+    "author": "Erd\u0151s [Er97f]",
     "sourceUrl": "https://erdosproblems.com/670",
     "date": "1997",
     "status": "axiomatized",
@@ -41,50 +41,50 @@
       }
     ],
     "originalContributions": [
-      "PointSet: Finset (Fin d → ℝ) for configurations in ℝ^d",
-      "dist': Euclidean distance via √(∑(pᵢ-qᵢ)²)",
-      "DistinctDistances: all pairwise distance differences ≥ δ",
+      "PointSet: Finset (Fin d \u2192 \u211d) for configurations in \u211d^d",
+      "dist': Euclidean distance via \u221a(\u2211(p\u1d62-q\u1d62)\u00b2)",
+      "DistinctDistances: all pairwise distance differences \u2265 \u03b4",
       "diameter: max pairwise distance via Finset.sup'",
-      "trivial_lower_bound axiom: diameter ≥ C(n,2)",
-      "MainConjecture: diameter ≥ (1-ε)n² for large n (OPEN)",
-      "WeakConjecture: diameter ≥ cn² for some c > 0",
+      "trivial_lower_bound axiom: diameter \u2265 C(n,2)",
+      "MainConjecture: diameter \u2265 (1-\u03b5)n\u00b2 for large n (OPEN)",
+      "WeakConjecture: diameter \u2265 cn\u00b2 for some c > 0",
       "trivial_gives_half axiom: WeakConjecture with c = 1/2",
       "RealPointSet, RealDistinctDistances, realDiameter for d=1",
       "erdos_1997_d1 axiom: MainConjecture for d=1",
       "arithmeticProgression construction showing tightness",
-      "SuperlinearConjecture: diameter ≥ n(n-1)/2",
-      "differ_implies_distinct axiom: gap ≥ 1 implies distinct",
-      "pigeonhole_approach axiom: diameter ≥ C(n,2) - 1",
+      "SuperlinearConjecture: diameter \u2265 n(n-1)/2",
+      "differ_implies_distinct axiom: gap \u2265 1 implies distinct",
+      "pigeonhole_approach axiom: diameter \u2265 C(n,2) - 1",
       "erdos_670_summary: proved conjunction of d=1 result and WeakConjecture"
     ],
     "axiomCount": 9,
     "prerequisites": [
-      "Euclidean distance and metric spaces in ℝ^d",
+      "Euclidean distance and metric spaces in \u211d^d",
       "Finset operations and combinatorics (binomial coefficients)",
       "Asymptotic notation (little-o, big-O)",
-      "Basic real analysis (supremum, ordering on ℝ)",
+      "Basic real analysis (supremum, ordering on \u211d)",
       "Pigeonhole principle"
     ],
     "lineCount": 186,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #670 asks whether n points in ℝ^d with all pairwise distances differing by at least 1 must have diameter (1+o(1))n². The trivial bound gives diameter ≥ n(n-1)/2 from C(n,2) distances spread ≥ 1 apart. Erdős proved the conjecture for d = 1 in 1997 using the ordering of the real line. Higher dimensions remain open. The problem is closely related to the broader Erdős program on distinct distances, initiated in his 1946 paper where he first asked how few distinct distances an n-point set must determine. The condition that distances differ by at least 1 is a quantitative strengthening of the distinct distances condition, and the arithmetic progression {0, n, 2n, ..., (n-1)n} in ℝ shows the (1+o(1))n² diameter bound is tight when it holds.",
-    "problemStatement": "Let A ⊆ ℝ^d be n points with |d(p,q) - d(p',q')| ≥ 1 for all distinct unordered pairs. Is diam(A) ≥ (1+o(1))n²? Proved for d=1, OPEN for d ≥ 2.",
-    "text": "Let A ⊆ ℝ^d be n points with all pairwise distances differing by at least 1. Is diameter(A) ≥ (1+o(1))n²? Proved for d=1 by Erdős (1997). Higher dimensions remain OPEN.",
-    "proofStrategy": "The formalization defines PointSet, DistinctDistances, and diameter in ℝ^d, then specializes to ℝ for the solved d=1 case. The trivial bound, main conjecture, and weak conjecture are formalized. Erdős's 1997 result is axiomatized. Arithmetic progressions demonstrate tightness. The summary theorem proves the conjunction of the d=1 result and the universal WeakConjecture.",
+    "historicalContext": "Erd\u0151s Problem #670 asks whether n points in \u211d^d with all pairwise distances differing by at least 1 must have diameter (1+o(1))n\u00b2. The trivial bound gives diameter \u2265 n(n-1)/2 from C(n,2) distances spread \u2265 1 apart. Erd\u0151s proved the conjecture for d = 1 in 1997 using the ordering of the real line. Higher dimensions remain open. The problem is closely related to the broader Erd\u0151s program on distinct distances, initiated in his 1946 paper where he first asked how few distinct distances an n-point set must determine. The condition that distances differ by at least 1 is a quantitative strengthening of the distinct distances condition, and the arithmetic progression {0, n, 2n, ..., (n-1)n} in \u211d shows the (1+o(1))n\u00b2 diameter bound is tight when it holds.",
+    "problemStatement": "Let A \u2286 \u211d^d be n points with |d(p,q) - d(p',q')| \u2265 1 for all distinct unordered pairs. Is diam(A) \u2265 (1+o(1))n\u00b2? Proved for d=1, OPEN for d \u2265 2.",
+    "text": "Let A \u2286 \u211d^d be n points with all pairwise distances differing by at least 1. Is diameter(A) \u2265 (1+o(1))n\u00b2? Proved for d=1 by Erd\u0151s (1997). Higher dimensions remain OPEN.",
+    "proofStrategy": "The formalization defines PointSet, DistinctDistances, and diameter in \u211d^d, then specializes to \u211d for the solved d=1 case. The trivial bound, main conjecture, and weak conjecture are formalized. Erd\u0151s's 1997 result is axiomatized. Arithmetic progressions demonstrate tightness. The summary theorem proves the conjunction of the d=1 result and the universal WeakConjecture.",
     "keyInsights": [
-      "The trivial bound gives diameter ≥ C(n,2) = n(n-1)/2 from spreading C(n,2) distances ≥ 1 apart",
-      "On the real line, ordering points yields a clean proof — higher dimensions lack this structure",
-      "Arithmetic progressions {0, n, 2n, ..., (n-1)n} show the n² bound is tight",
+      "The trivial bound gives diameter \u2265 C(n,2) = n(n-1)/2 from spreading C(n,2) distances \u2265 1 apart",
+      "On the real line, ordering points yields a clean proof \u2014 higher dimensions lack this structure",
+      "Arithmetic progressions {0, n, 2n, ..., (n-1)n} show the n\u00b2 bound is tight",
       "Higher dimensions may allow tighter packing, potentially weakening the bound",
-      "Gap ≥ 1 implies all distances are distinct, connecting to Erdős's 1946 distinct distances problem"
+      "Gap \u2265 1 implies all distances are distinct, connecting to Erd\u0151s's 1946 distinct distances problem"
     ],
     "prerequisites": [
-      "Euclidean distance and metric spaces in ℝ^d",
+      "Euclidean distance and metric spaces in \u211d^d",
       "Finset operations and combinatorics (binomial coefficients)",
       "Asymptotic notation (little-o, big-O)",
-      "Basic real analysis (supremum, ordering on ℝ)",
+      "Basic real analysis (supremum, ordering on \u211d)",
       "Pigeonhole principle"
     ]
   },
@@ -94,14 +94,14 @@
       "title": "Basic Definitions",
       "startLine": 33,
       "endLine": 57,
-      "summary": "PointSet in ℝ^d, Euclidean distance, DistinctDistances, diameter, numPairs"
+      "summary": "PointSet in \u211d^d, Euclidean distance, DistinctDistances, diameter, numPairs"
     },
     {
       "id": "trivial-bound",
       "title": "The Trivial Lower Bound",
       "startLine": 59,
       "endLine": 65,
-      "summary": "diameter ≥ C(n,2) when distances differ by ≥ 1"
+      "summary": "diameter \u2265 C(n,2) when distances differ by \u2265 1"
     },
     {
       "id": "main-conjecture",
@@ -122,7 +122,7 @@
       "title": "Constructions",
       "startLine": 117,
       "endLine": 139,
-      "summary": "Arithmetic progressions showing tightness of n² bound"
+      "summary": "Arithmetic progressions showing tightness of n\u00b2 bound"
     },
     {
       "id": "higher-dimensions",
@@ -147,8 +147,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #670 asks whether n points in ℝ^d with pairwise distances differing by ≥ 1 must have diameter (1+o(1))n². Proved for d=1 by Erdős (1997), open for d ≥ 2. Arithmetic progressions show the bound is tight.",
-    "implications": "Resolution would establish a quantitative link between distance separation and geometric spread in higher dimensions, connecting to the Erdős distinct distances program and packing problems.",
+    "summary": "Erd\u0151s Problem #670 asks whether n points in \u211d^d with pairwise distances differing by \u2265 1 must have diameter (1+o(1))n\u00b2. Proved for d=1 by Erd\u0151s (1997), open for d \u2265 2. Arithmetic progressions show the bound is tight.",
+    "implications": "Resolution would establish a quantitative link between distance separation and geometric spread in higher dimensions, connecting to the Erd\u0151s distinct distances program and packing problems.",
     "openQuestions": [
       "Does the conjecture hold for d = 2?",
       "Can higher dimensions allow smaller diameter (tighter packing)?",
@@ -158,7 +158,7 @@
   },
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On sets of distances of n points",
       "year": "1946",
       "venue": "Amer. Math. Monthly 53(5), pp. 248-250",
@@ -192,6 +192,7 @@
     "lineCount": 186,
     "axiomCount": 9,
     "theoremCount": 1,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "lemmaCount": 0
   }
 }

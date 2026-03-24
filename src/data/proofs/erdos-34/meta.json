@@ -16,7 +16,7 @@
       "disproved"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 34,
     "erdosUrl": "https://erdosproblems.com/34",
     "erdosProblemStatus": "disproved",
@@ -59,7 +59,7 @@
     "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "For a permutation π of {1,...,n}, the consecutive sums ∑_{i=u}^{v} π(i) range over O(n²) possible values (there are n(n+1)/2 intervals [u,v]). The quantity S(π) — the number of distinct values among these sums — measures how 'spread out' the sums are.\n\nErdős observed that the identity permutation has S(id) = o(n²) because its consecutive sums form arithmetic progressions with many coincidences. He conjectured this holds for ALL permutations — one of his rare spectacularly wrong conjectures.\n\nHegyvári (1986) gave the first counterexample, constructing a permutation with S(π) ≥ n²/18. Konieczny (2015) showed the conjecture is 'extremely false': there exist permutations achieving S(π) ≥ n²/4, which is asymptotically optimal since S(π) ≤ n²/2 trivially. The maximum f(n) = max_π S(π) satisfies 0.286n² ≤ f(n) ≤ 0.446n², with the lower bound coming from random permutations: for a random π, S(π) ∼ (1 + e⁻²)/4 · n² ≈ 0.284n². The connection to random permutations suggests that most permutations are far from Erdős's conjecture.",
+    "historicalContext": "For a permutation \u03c0 of {1,...,n}, the consecutive sums \u2211_{i=u}^{v} \u03c0(i) range over O(n\u00b2) possible values (there are n(n+1)/2 intervals [u,v]). The quantity S(\u03c0) \u2014 the number of distinct values among these sums \u2014 measures how 'spread out' the sums are.\n\nErd\u0151s observed that the identity permutation has S(id) = o(n\u00b2) because its consecutive sums form arithmetic progressions with many coincidences. He conjectured this holds for ALL permutations \u2014 one of his rare spectacularly wrong conjectures.\n\nHegyv\u00e1ri (1986) gave the first counterexample, constructing a permutation with S(\u03c0) \u2265 n\u00b2/18. Konieczny (2015) showed the conjecture is 'extremely false': there exist permutations achieving S(\u03c0) \u2265 n\u00b2/4, which is asymptotically optimal since S(\u03c0) \u2264 n\u00b2/2 trivially. The maximum f(n) = max_\u03c0 S(\u03c0) satisfies 0.286n\u00b2 \u2264 f(n) \u2264 0.446n\u00b2, with the lower bound coming from random permutations: for a random \u03c0, S(\u03c0) \u223c (1 + e\u207b\u00b2)/4 \u00b7 n\u00b2 \u2248 0.284n\u00b2. The connection to random permutations suggests that most permutations are far from Erd\u0151s's conjecture.",
     "problemStatement": "**Erdos Problem #34 (DISPROVED)**\n\nFor a permutation $\\pi \\in S_n$, let $S(\\pi)$ count distinct consecutive sums $\\sum_{i=u}^v \\pi(i)$.\n\n**Erdos's Conjecture**: $S(\\pi) = o(n^2)$ for all $\\pi$.\n\n**Disproof**:\n- Hegyvari (1986): $S(\\pi) \\geq \\frac{1}{18}n^2$ exists\n- Konieczny (2015): $S(\\pi) \\geq \\frac{n^2}{4}$ exists\n\n**Bounds**: $0.286n^2 \\leq f(n) \\leq 0.446n^2$ where $f(n) = \\max_\\pi S(\\pi)$",
     "text": "Is S(pi) = o(n^2) for all permutations? DISPROVED - there exist permutations with S(pi) >= n^2/4.",
     "proofStrategy": "We formalize:\n\n1. **consecutiveSum**: Sum from position u to v\n2. **S(pi)**: Count of distinct consecutive sums\n3. **ErdosConjecture**: The (false) statement S(pi) = o(n^2) for all pi\n4. **erdos_34_disproved**: Axiom stating the conjecture is false\n5. **Bounds**: Hegyvari, Konieczny, and random permutation results",
@@ -144,7 +144,8 @@
     "lineCount": 222,
     "axiomCount": 8,
     "theoremCount": 2,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -160,11 +161,11 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Ginzburg, Abraham; Ziv, Abraham",
+      "authors": "Erd\u0151s, Paul; Ginzburg, Abraham; Ziv, Abraham",
       "title": "A theorem in additive number theory",
       "year": "1961",
-      "venue": "Bulletin of the Research Council of Israel, Section F, vol. 10F, pp. 41–43",
-      "note": "The Erdős-Ginzburg-Ziv theorem on zero-sum subsequences, related to consecutive sum properties in permutations"
+      "venue": "Bulletin of the Research Council of Israel, Section F, vol. 10F, pp. 41\u201343",
+      "note": "The Erd\u0151s-Ginzburg-Ziv theorem on zero-sum subsequences, related to consecutive sum properties in permutations"
     }
   ],
   "relatedProofs": [

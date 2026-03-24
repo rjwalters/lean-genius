@@ -1,10 +1,10 @@
 {
   "id": "erdos-102",
-  "title": "Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines",
+  "title": "Erd\u0151s Problem #102: Maximum Collinear Points Forced by Many Rich Lines",
   "slug": "erdos-102",
-  "description": "Given n points with cn² lines containing ≥ 4 points, estimate h_c(n) = max collinear. Known: ≤ C√n. Erdős's √n lower conjecture disproved by Hunter. Open.",
+  "description": "Given n points with cn\u00b2 lines containing \u2265 4 points, estimate h_c(n) = max collinear. Known: \u2264 C\u221an. Erd\u0151s's \u221an lower conjecture disproved by Hunter. Open.",
   "meta": {
-    "author": "Erdős–Purdy",
+    "author": "Erd\u0151s\u2013Purdy",
     "sourceUrl": "https://erdosproblems.com/102",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos102Problem.lean",
@@ -13,7 +13,7 @@
       "combinatorial-geometry",
       "incidence-geometry",
       "collinearity",
-      "Szemerédi-Trotter"
+      "Szemer\u00e9di-Trotter"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -36,31 +36,31 @@
     ],
     "originalContributions": [
       "Defined PointConfig structure for planar point configurations",
-      "Defined collinear₃ via cross-product criterion",
-      "Defined richLineCount counting lines with ≥ 4 collinear points",
+      "Defined collinear\u2083 via cross-product criterion",
+      "Defined richLineCount counting lines with \u2265 4 collinear points",
       "Defined maxCollinear as the supremum of collinear subset sizes",
-      "Stated erdos_102_divergence: h_c(n) → ∞ as the main open problem",
-      "Stated upper bound h_c(n) ≤ C√n",
-      "Axiomatized Hunter's counterexample to √n lower bound",
+      "Stated erdos_102_divergence: h_c(n) \u2192 \u221e as the main open problem",
+      "Stated upper bound h_c(n) \u2264 C\u221an",
+      "Axiomatized Hunter's counterexample to \u221an lower bound",
       "Stated connection to Problem #101 via 5-collinear implication",
-      "Axiomatized Szemerédi–Trotter incidence bound context",
-      "Stated Erdős–Purdy origin connection"
+      "Axiomatized Szemer\u00e9di\u2013Trotter incidence bound context",
+      "Stated Erd\u0151s\u2013Purdy origin connection"
     ],
     "axiomCount": 6,
     "lineCount": 103,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Purdy posed this problem in their foundational surveys of combinatorial geometry in the 1970s–1980s, building on the Sylvester–Gallai tradition of studying collinearity in finite point sets. The question asks: if a planar point set of size $n$ has 'many' rich lines (at least $cn^2$ lines each containing $\\ge 4$ points), how large must the maximum collinear subset be?\n\nErdős conjectured that $h_c(n) \\gg \\sqrt{n}$, meaning that many rich lines force a large collinear subset of roughly square-root size. This was disproved by Zach Hunter, who constructed lattice-point configurations in $\\{1,\\ldots,m\\}^d$ showing $h_c(n) \\ll n^{1/\\log(1/c)}$ — much slower growth than $\\sqrt{n}$ for small $c$. Hunter's construction exploits the arithmetic structure of integer lattice points and the abundance of collinear quadruples in high-dimensional lattices projected to the plane.\n\nThe upper bound $h_c(n) \\le C\\sqrt{n}$ follows from the Szemerédi–Trotter incidence theorem (1983), the landmark result of Endre Szemerédi and William T. Trotter bounding point-line incidences by $O(n^{2/3}m^{2/3} + n + m)$. This was later reproved by László Székely (1997) using the crossing number inequality, and is now one of the central tools in discrete geometry. The fundamental question — whether $h_c(n) \\to \\infty$ at all for fixed $c$ — remains open and is closely connected to Problem #101 about the count of 4-point lines, to Problem #588 on $k$-rich lines, and to the Orchard Problem (#669).",
+    "historicalContext": "Erd\u0151s and Purdy posed this problem in their foundational surveys of combinatorial geometry in the 1970s\u20131980s, building on the Sylvester\u2013Gallai tradition of studying collinearity in finite point sets. The question asks: if a planar point set of size $n$ has 'many' rich lines (at least $cn^2$ lines each containing $\\ge 4$ points), how large must the maximum collinear subset be?\n\nErd\u0151s conjectured that $h_c(n) \\gg \\sqrt{n}$, meaning that many rich lines force a large collinear subset of roughly square-root size. This was disproved by Zach Hunter, who constructed lattice-point configurations in $\\{1,\\ldots,m\\}^d$ showing $h_c(n) \\ll n^{1/\\log(1/c)}$ \u2014 much slower growth than $\\sqrt{n}$ for small $c$. Hunter's construction exploits the arithmetic structure of integer lattice points and the abundance of collinear quadruples in high-dimensional lattices projected to the plane.\n\nThe upper bound $h_c(n) \\le C\\sqrt{n}$ follows from the Szemer\u00e9di\u2013Trotter incidence theorem (1983), the landmark result of Endre Szemer\u00e9di and William T. Trotter bounding point-line incidences by $O(n^{2/3}m^{2/3} + n + m)$. This was later reproved by L\u00e1szl\u00f3 Sz\u00e9kely (1997) using the crossing number inequality, and is now one of the central tools in discrete geometry. The fundamental question \u2014 whether $h_c(n) \\to \\infty$ at all for fixed $c$ \u2014 remains open and is closely connected to Problem #101 about the count of 4-point lines, to Problem #588 on $k$-rich lines, and to the Orchard Problem (#669).",
     "problemStatement": "Given $n$ points in $\\mathbb{R}^2$ with at least $cn^2$ lines containing $\\ge 4$ points, estimate $h_c(n)$, the maximum number of collinear points. Is $h_c(n) \\to \\infty$?",
-    "text": "Given n points with cn² lines containing ≥ 4 points, estimate h_c(n) = max collinear. Known: ≤ C√n. Erdős's √n lower conjecture disproved by Hunter. Open.",
-    "proofStrategy": "The formalization introduces `PointConfig` for planar point sets, `collinear₃` via the cross-product determinant criterion, `richLineCount` counting 4-rich lines, and `maxCollinear` as the supremum of collinear subset sizes. The divergence question, the $O(\\sqrt{n})$ upper bound, Hunter's counterexample, the implication to Problem #101, the Szemerédi–Trotter context, and the Erdős–Purdy connection are all axiomatized as separate statements.",
+    "text": "Given n points with cn\u00b2 lines containing \u2265 4 points, estimate h_c(n) = max collinear. Known: \u2264 C\u221an. Erd\u0151s's \u221an lower conjecture disproved by Hunter. Open.",
+    "proofStrategy": "The formalization introduces `PointConfig` for planar point sets, `collinear\u2083` via the cross-product determinant criterion, `richLineCount` counting 4-rich lines, and `maxCollinear` as the supremum of collinear subset sizes. The divergence question, the $O(\\sqrt{n})$ upper bound, Hunter's counterexample, the implication to Problem #101, the Szemer\u00e9di\u2013Trotter context, and the Erd\u0151s\u2013Purdy connection are all axiomatized as separate statements.",
     "keyInsights": [
-      "**Szemerédi–Trotter upper bound**: $h_c(n) \\le C\\sqrt{n}$ follows because $cn^2$ rich lines produce $\\ge 4cn^2$ incidences, and the ST bound $I(P,L) \\le C(n^{2/3}m^{2/3} + n + m)$ forces the richest line to carry $\\ge C'\\sqrt{n}$ points only if the line count is $\\Omega(n^2)$",
-      "**Hunter's lattice counterexample**: Disproved $h_c(n) \\gg \\sqrt{n}$ by projecting high-dimensional integer lattice points to $\\mathbb{R}^2$, creating $cn^2$ four-point lines with maximum collinear count only $n^{1/\\log(1/c)}$ — showing the truth lies far below $\\sqrt{n}$ for small $c$",
-      "**The #101 ↔ #102 bridge**: If $h_c(n) \\to \\infty$, then for large $n$ some line carries $\\ge 5$ points whenever there are $cn^2$ four-point lines, contradicting a no-five-collinear hypothesis — thus the four-point line count must be $o(n^2)$, settling Problem #101",
-      "**Cross-product collinearity**: The formalization uses $(q_1 - p_1)(r_2 - p_2) = (r_1 - p_1)(q_2 - p_2)$ as the collinearity test, equivalent to vanishing of the $2 \\times 2$ determinant formed by displacement vectors — numerically exact over $\\mathbb{R}$",
-      "**Open divergence question**: Neither divergence ($h_c(n) \\to \\infty$) nor the existence of bounded counterexamples ($h_c(n) = O(1)$) has been established — the problem sits at the boundary between what Szemerédi–Trotter can and cannot resolve"
+      "**Szemer\u00e9di\u2013Trotter upper bound**: $h_c(n) \\le C\\sqrt{n}$ follows because $cn^2$ rich lines produce $\\ge 4cn^2$ incidences, and the ST bound $I(P,L) \\le C(n^{2/3}m^{2/3} + n + m)$ forces the richest line to carry $\\ge C'\\sqrt{n}$ points only if the line count is $\\Omega(n^2)$",
+      "**Hunter's lattice counterexample**: Disproved $h_c(n) \\gg \\sqrt{n}$ by projecting high-dimensional integer lattice points to $\\mathbb{R}^2$, creating $cn^2$ four-point lines with maximum collinear count only $n^{1/\\log(1/c)}$ \u2014 showing the truth lies far below $\\sqrt{n}$ for small $c$",
+      "**The #101 \u2194 #102 bridge**: If $h_c(n) \\to \\infty$, then for large $n$ some line carries $\\ge 5$ points whenever there are $cn^2$ four-point lines, contradicting a no-five-collinear hypothesis \u2014 thus the four-point line count must be $o(n^2)$, settling Problem #101",
+      "**Cross-product collinearity**: The formalization uses $(q_1 - p_1)(r_2 - p_2) = (r_1 - p_1)(q_2 - p_2)$ as the collinearity test, equivalent to vanishing of the $2 \\times 2$ determinant formed by displacement vectors \u2014 numerically exact over $\\mathbb{R}$",
+      "**Open divergence question**: Neither divergence ($h_c(n) \\to \\infty$) nor the existence of bounded counterexamples ($h_c(n) = O(1)$) has been established \u2014 the problem sits at the boundary between what Szemer\u00e9di\u2013Trotter can and cannot resolve"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -79,7 +79,7 @@
       "title": "Core Definitions",
       "startLine": 23,
       "endLine": 44,
-      "summary": "Defines `PointConfig` (a finset of $\\mathbb{R}^2$ points with positive cardinality), `collinear₃` via the cross-product determinant, `richLineCount` counting 4-element collinear subsets, and `maxCollinear` as the supremum of collinear subset sizes."
+      "summary": "Defines `PointConfig` (a finset of $\\mathbb{R}^2$ points with positive cardinality), `collinear\u2083` via the cross-product determinant, `richLineCount` counting 4-element collinear subsets, and `maxCollinear` as the supremum of collinear subset sizes."
     },
     {
       "id": "main-problem",
@@ -93,14 +93,14 @@
       "title": "Upper Bound: $h_c(n) \\le C\\sqrt{n}$",
       "startLine": 56,
       "endLine": 63,
-      "summary": "Axiomatizes the $O(\\sqrt{n})$ upper bound on maximum collinear count, derived from the Szemerédi–Trotter incidence theorem."
+      "summary": "Axiomatizes the $O(\\sqrt{n})$ upper bound on maximum collinear count, derived from the Szemer\u00e9di\u2013Trotter incidence theorem."
     },
     {
       "id": "hunter",
       "title": "Hunter's Counterexample",
       "startLine": 65,
       "endLine": 73,
-      "summary": "Axiomatizes Hunter's construction disproving Erdős's $\\sqrt{n}$ lower conjecture: lattice-point configurations achieve $h_c(n) \\ll n^{1/\\log(1/c)}$."
+      "summary": "Axiomatizes Hunter's construction disproving Erd\u0151s's $\\sqrt{n}$ lower conjecture: lattice-point configurations achieve $h_c(n) \\ll n^{1/\\log(1/c)}$."
     },
     {
       "id": "connection-101",
@@ -111,26 +111,26 @@
     },
     {
       "id": "szemeredi-trotter",
-      "title": "Szemerédi–Trotter Context",
+      "title": "Szemer\u00e9di\u2013Trotter Context",
       "startLine": 88,
       "endLine": 95,
-      "summary": "Axiomatizes the Szemerédi–Trotter incidence bound $I(P,L) \\le C(n^{2/3}m^{2/3} + n + m)$, the foundational tool constraining rich-line configurations."
+      "summary": "Axiomatizes the Szemer\u00e9di\u2013Trotter incidence bound $I(P,L) \\le C(n^{2/3}m^{2/3} + n + m)$, the foundational tool constraining rich-line configurations."
     },
     {
       "id": "erdos-purdy",
-      "title": "Erdős–Purdy Origin",
+      "title": "Erd\u0151s\u2013Purdy Origin",
       "startLine": 97,
       "endLine": 103,
-      "summary": "Axiomatizes the elementary observation that $cn^2$ four-point lines force $\\max$-collinear $\\ge 4$, connecting to the Erdős–Purdy survey origin."
+      "summary": "Axiomatizes the elementary observation that $cn^2$ four-point lines force $\\max$-collinear $\\ge 4$, connecting to the Erd\u0151s\u2013Purdy survey origin."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the complete landscape of Erdős Problem #102: the definitions for planar point configurations and collinearity, the central divergence question $h_c(n) \\to \\infty$, the Szemerédi–Trotter-derived upper bound $O(\\sqrt{n})$, Hunter's counterexample to the conjectured $\\sqrt{n}$ lower bound, and the logical bridge to Problem #101.",
-    "implications": "A resolution would determine whether rich lines in combinatorial geometry necessarily concentrate on long collinear subsets, complementing Problem #101 on four-point line counts and advancing the broader Szemerédi–Trotter theory. The answer would have consequences for algebraic incidence geometry and the polynomial method program.",
+    "summary": "This formalization captures the complete landscape of Erd\u0151s Problem #102: the definitions for planar point configurations and collinearity, the central divergence question $h_c(n) \\to \\infty$, the Szemer\u00e9di\u2013Trotter-derived upper bound $O(\\sqrt{n})$, Hunter's counterexample to the conjectured $\\sqrt{n}$ lower bound, and the logical bridge to Problem #101.",
+    "implications": "A resolution would determine whether rich lines in combinatorial geometry necessarily concentrate on long collinear subsets, complementing Problem #101 on four-point line counts and advancing the broader Szemer\u00e9di\u2013Trotter theory. The answer would have consequences for algebraic incidence geometry and the polynomial method program.",
     "openQuestions": [
       "Does $h_c(n) \\to \\infty$ for fixed $c > 0$? Neither divergence nor $O(1)$ counterexamples are known.",
       "What is the true growth rate of $h_c(n)$ in the gap between Hunter's bound $n^{1/\\log(1/c)}$ and the upper bound $\\sqrt{n}$?",
-      "Can the polynomial method (Guth–Katz, Solymosi–de Zeeuw) resolve the divergence question?",
+      "Can the polynomial method (Guth\u2013Katz, Solymosi\u2013de Zeeuw) resolve the divergence question?",
       "Does the answer depend on the constant $c$? Is there a critical threshold $c_0$ where behavior changes?",
       "Can Hunter's lattice construction be extended to give $h_c(n) = O(1)$ for some $c > 0$, fully disproving divergence?"
     ]
@@ -139,17 +139,17 @@
     {
       "targetId": "erdos-101",
       "relationship": "companion",
-      "description": "Problem #101 asks whether a planar point set with no 5 collinear points can have cn² four-point lines. The bridge theorem in this file shows that if h_c(n) → ∞ (Problem #102), then the four-point line count must be o(n²), directly resolving Problem #101 for the no-five-collinear case."
+      "description": "Problem #101 asks whether a planar point set with no 5 collinear points can have cn\u00b2 four-point lines. The bridge theorem in this file shows that if h_c(n) \u2192 \u221e (Problem #102), then the four-point line count must be o(n\u00b2), directly resolving Problem #101 for the no-five-collinear case."
     },
     {
       "targetId": "erdos-588",
       "relationship": "generalizes",
-      "description": "Problem #588 studies k-rich lines (lines containing ≥ k points) in general position. Erdős #102 is the specialization to k = 4 with the density condition cn² lines, while #588 treats the general k and asks about the extremal configurations."
+      "description": "Problem #588 studies k-rich lines (lines containing \u2265 k points) in general position. Erd\u0151s #102 is the specialization to k = 4 with the density condition cn\u00b2 lines, while #588 treats the general k and asks about the extremal configurations."
     },
     {
       "targetId": "erdos-669",
       "relationship": "related",
-      "description": "The Orchard Problem (#669) asks for the maximum number of 3-point lines among n points — the k = 3 analogue. The Szemerédi–Trotter bound appears in both problems, and the lattice constructions used in Hunter's counterexample to #102 are variants of orchard-optimal configurations."
+      "description": "The Orchard Problem (#669) asks for the maximum number of 3-point lines among n points \u2014 the k = 3 analogue. The Szemer\u00e9di\u2013Trotter bound appears in both problems, and the lattice constructions used in Hunter's counterexample to #102 are variants of orchard-optimal configurations."
     },
     {
       "targetId": "desargues-theorem",
@@ -159,12 +159,12 @@
     {
       "targetId": "szemeredi-theorem",
       "relationship": "thematic",
-      "description": "Szemerédi's theorem (on arithmetic progressions) and the Szemerédi–Trotter incidence theorem are distinct results by the same author. The incidence theorem is the key upper bound tool for Problem #102; the regularity lemma underlying both results connects discrete geometry to combinatorics."
+      "description": "Szemer\u00e9di's theorem (on arithmetic progressions) and the Szemer\u00e9di\u2013Trotter incidence theorem are distinct results by the same author. The incidence theorem is the key upper bound tool for Problem #102; the regularity lemma underlying both results connects discrete geometry to combinatorics."
     },
     {
       "targetId": "erdos-100",
       "relationship": "related",
-      "description": "Problem #100 on point sets with restricted distances and Problem #102 on rich lines both belong to Erdős's combinatorial geometry program of the 1970s–80s. Both ask how density conditions on geometric incidences constrain extremal substructures."
+      "description": "Problem #100 on point sets with restricted distances and Problem #102 on rich lines both belong to Erd\u0151s's combinatorial geometry program of the 1970s\u201380s. Both ask how density conditions on geometric incidences constrain extremal substructures."
     }
   ],
   "relatedProofs": [
@@ -178,27 +178,27 @@
   "references": [
     {
       "key": "ST83",
-      "citation": "Szemerédi, E. and Trotter, W.T., Extremal problems in discrete geometry, Combinatorica 3(3–4) (1983), 381–392.",
+      "citation": "Szemer\u00e9di, E. and Trotter, W.T., Extremal problems in discrete geometry, Combinatorica 3(3\u20134) (1983), 381\u2013392.",
       "type": "paper"
     },
     {
       "key": "EP78",
-      "citation": "Erdős, P. and Purdy, G., Some extremal problems in geometry, Journal of Combinatorial Theory, Series A 25(2) (1978), 167–175.",
+      "citation": "Erd\u0151s, P. and Purdy, G., Some extremal problems in geometry, Journal of Combinatorial Theory, Series A 25(2) (1978), 167\u2013175.",
       "type": "paper"
     },
     {
       "key": "Sz97",
-      "citation": "Székely, L.A., Crossing numbers and hard Erdős problems in discrete geometry, Combinatorics, Probability and Computing 6(3) (1997), 353–358.",
+      "citation": "Sz\u00e9kely, L.A., Crossing numbers and hard Erd\u0151s problems in discrete geometry, Combinatorics, Probability and Computing 6(3) (1997), 353\u2013358.",
       "type": "paper"
     },
     {
       "key": "Hu22",
-      "citation": "Hunter, Z., Improved bounds for the sunflower lemma and related problems, arXiv:2210.05412 (2022). Contains the lattice construction disproving Erdős's √n lower bound for h_c(n).",
+      "citation": "Hunter, Z., Improved bounds for the sunflower lemma and related problems, arXiv:2210.05412 (2022). Contains the lattice construction disproving Erd\u0151s's \u221an lower bound for h_c(n).",
       "type": "paper"
     },
     {
       "key": "PS98",
-      "citation": "Pach, J. and Sharir, M., On the number of incidences between points and curves, Combinatorics, Probability and Computing 7(1) (1998), 121–127.",
+      "citation": "Pach, J. and Sharir, M., On the number of incidences between points and curves, Combinatorics, Probability and Computing 7(1) (1998), 121\u2013127.",
       "type": "paper"
     }
   ],
@@ -213,6 +213,7 @@
     "lineCount": 103,
     "axiomCount": 6,
     "theoremCount": 0,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   }
 }

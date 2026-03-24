@@ -1,8 +1,8 @@
 {
   "id": "buffons-needle-oq-01",
-  "title": "Buffon-Barbier for C¹ Curves: Smooth Noodle Theorem (Complete)",
+  "title": "Buffon-Barbier for C\u00b9 Curves: Smooth Noodle Theorem (Complete)",
   "slug": "buffons-needle-oq-01",
-  "description": "Proves the Buffon-Barbier theorem for C¹ smooth planar curves: any curve γ : ℝ → ℝ × ℝ of arc length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(πd). This file fills the gap from BuffonsNeedleOQ01OQ01.lean by proving that C¹ smoothness automatically gives the required integrability, requiring no additional hypotheses beyond `ContDiff ℝ 1 γ`.",
+  "description": "Proves the Buffon-Barbier theorem for C\u00b9 smooth planar curves: any curve \u03b3 : \u211d \u2192 \u211d \u00d7 \u211d of arc length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(\u03c0d). This file fills the gap from BuffonsNeedleOQ01OQ01.lean by proving that C\u00b9 smoothness automatically gives the required integrability, requiring no additional hypotheses beyond `ContDiff \u211d 1 \u03b3`.",
   "meta": {
     "author": "Barbier (1860); Lean formalization 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "ContDiff.continuous_fderiv",
-        "description": "C¹ smoothness implies continuous Fréchet derivative",
+        "description": "C\u00b9 smoothness implies continuous Fr\u00e9chet derivative",
         "module": "Mathlib.Analysis.Calculus.ContDiff.Basic"
       },
       {
@@ -51,17 +51,17 @@
       }
     ],
     "originalContributions": [
-      "contDiff_one_continuous_deriv: C¹ implies Continuous (deriv f) for any Banach-space-valued f",
-      "deriv_fst_continuous, deriv_snd_continuous: component derivative continuity for C¹ curves",
-      "inner_integral_eq: angular average applies pointwise, giving 2√(dx²+dy²)",
+      "contDiff_one_continuous_deriv: C\u00b9 implies Continuous (deriv f) for any Banach-space-valued f",
+      "deriv_fst_continuous, deriv_snd_continuous: component derivative continuity for C\u00b9 curves",
+      "inner_integral_eq: angular average applies pointwise, giving 2\u221a(dx\u00b2+dy\u00b2)",
       "inner_integral_continuous: the inner integral is a continuous function of t",
-      "inner_integral_integrable: IntervalIntegrable follows from C¹ alone (no extra hypotheses)",
-      "buffon_smooth_of_contDiff: complete Buffon-Barbier for C¹ curves with ONLY ContDiff ℝ 1 γ",
-      "smooth_shape_independence: two C¹ curves with same arc length have same expected crossings",
+      "inner_integral_integrable: IntervalIntegrable follows from C\u00b9 alone (no extra hypotheses)",
+      "buffon_smooth_of_contDiff: complete Buffon-Barbier for C\u00b9 curves with ONLY ContDiff \u211d 1 \u03b3",
+      "smooth_shape_independence: two C\u00b9 curves with same arc length have same expected crossings",
       "straight_line_arclength: horizontal needle arc length = b - a",
       "straight_line_crossings: consistency with classical Buffon needle (Wiedijk #99)",
       "smooth_crossings_mono: longer curves have more expected crossings",
-      "crossings_tendsto_zero: E[crossings] → 0 as line spacing d → ∞"
+      "crossings_tendsto_zero: E[crossings] \u2192 0 as line spacing d \u2192 \u221e"
     ],
     "dateAdded": "2026-02-25",
     "axiomCount": 0,
@@ -69,16 +69,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "In 1860, Joseph-Émile Barbier proved that Buffon's needle formula generalizes to arbitrary rectifiable curves: any curve of length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(πd), regardless of shape. This is Buffon's Noodle Theorem.\n\nThe formal Lean proof of this theorem for smooth curves requires bridging C¹ analysis (derivative continuity) with integration theory (interval integrability) and the geometric formula (angular average identity). This file provides the complete formal proof for C¹ curves — the most natural smoothness class for curves in geometric probability.",
-    "problemStatement": "**Theorem (Buffon-Barbier, complete for C¹ curves)**: For any C¹ planar curve γ : ℝ → ℝ × ℝ on [a, b] with line spacing d > 0:\n\n$$E[\\text{crossings}] = \\frac{2 \\cdot \\text{arcLength}(\\gamma, a, b)}{\\pi d}$$\n\nThis depends only on total arc length, not on shape. The proof uses ONLY `ContDiff ℝ 1 γ` — no explicit integrability or measurability conditions needed.\n\n**Resolution of the open question**: The previous formalization axiomatized the smooth case. This file eliminates all axioms by proving that C¹ smoothness implies the required integrability.",
-    "text": "Proves the Buffon-Barbier theorem for C¹ smooth planar curves: any curve γ : ℝ → ℝ × ℝ of arc length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(πd). This file fills the gap from BuffonsNeedleOQ01OQ01.lean by proving that C¹ smoothness automatically gives the required integrability, requiring no additional hypotheses beyond `ContDiff ℝ 1 γ`.",
-    "proofStrategy": "**The Gap Being Filled**: `BuffonsNeedleOQ01OQ01.lean` proved `buffon_smooth_full` requiring an explicit `hInnerInt : IntervalIntegrable (inner integral) vol a b` hypothesis. This file proves that hypothesis is automatic from `ContDiff ℝ 1 γ`.\n\n**Proof Chain for the Missing Piece**:\n\n1. **C¹ → Continuous derivative**: `ContDiff ℝ 1 γ` → `Continuous (fderiv ℝ γ)` via `ContDiff.continuous_fderiv`. Since `deriv f t = fderiv ℝ f t 1`, evaluation at 1 is continuous by `Continuous.clm_apply`, giving `Continuous (deriv f)` for any C¹ function f : ℝ → F.\n\n2. **Angular average simplification**: The `angular_average` identity from OQ01OQ01 says:\n   ```\n   ∫_0^π |dx·sin θ + dy·cos θ| dθ = 2√(dx² + dy²)\n   ```\n   Applied pointwise, the inner integral function equals `fun t => 2 * √(dx(t)² + dy(t)²)`.\n\n3. **Continuity → Integrability**: The function `fun t => 2 * √(dx(t)² + dy(t)²)` is continuous (composition of continuous functions). Continuous functions are interval integrable.\n\n4. **Apply buffon_smooth_full**: With all hypotheses derived from ContDiff, the main theorem follows directly.",
+    "historicalContext": "In 1860, Joseph-\u00c9mile Barbier proved that Buffon's needle formula generalizes to arbitrary rectifiable curves: any curve of length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(\u03c0d), regardless of shape. This is Buffon's Noodle Theorem.\n\nThe formal Lean proof of this theorem for smooth curves requires bridging C\u00b9 analysis (derivative continuity) with integration theory (interval integrability) and the geometric formula (angular average identity). This file provides the complete formal proof for C\u00b9 curves \u2014 the most natural smoothness class for curves in geometric probability.",
+    "problemStatement": "**Theorem (Buffon-Barbier, complete for C\u00b9 curves)**: For any C\u00b9 planar curve \u03b3 : \u211d \u2192 \u211d \u00d7 \u211d on [a, b] with line spacing d > 0:\n\n$$E[\\text{crossings}] = \\frac{2 \\cdot \\text{arcLength}(\\gamma, a, b)}{\\pi d}$$\n\nThis depends only on total arc length, not on shape. The proof uses ONLY `ContDiff \u211d 1 \u03b3` \u2014 no explicit integrability or measurability conditions needed.\n\n**Resolution of the open question**: The previous formalization axiomatized the smooth case. This file eliminates all axioms by proving that C\u00b9 smoothness implies the required integrability.",
+    "text": "Proves the Buffon-Barbier theorem for C\u00b9 smooth planar curves: any curve \u03b3 : \u211d \u2192 \u211d \u00d7 \u211d of arc length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(\u03c0d). This file fills the gap from BuffonsNeedleOQ01OQ01.lean by proving that C\u00b9 smoothness automatically gives the required integrability, requiring no additional hypotheses beyond `ContDiff \u211d 1 \u03b3`.",
+    "proofStrategy": "**The Gap Being Filled**: `BuffonsNeedleOQ01OQ01.lean` proved `buffon_smooth_full` requiring an explicit `hInnerInt : IntervalIntegrable (inner integral) vol a b` hypothesis. This file proves that hypothesis is automatic from `ContDiff \u211d 1 \u03b3`.\n\n**Proof Chain for the Missing Piece**:\n\n1. **C\u00b9 \u2192 Continuous derivative**: `ContDiff \u211d 1 \u03b3` \u2192 `Continuous (fderiv \u211d \u03b3)` via `ContDiff.continuous_fderiv`. Since `deriv f t = fderiv \u211d f t 1`, evaluation at 1 is continuous by `Continuous.clm_apply`, giving `Continuous (deriv f)` for any C\u00b9 function f : \u211d \u2192 F.\n\n2. **Angular average simplification**: The `angular_average` identity from OQ01OQ01 says:\n   ```\n   \u222b_0^\u03c0 |dx\u00b7sin \u03b8 + dy\u00b7cos \u03b8| d\u03b8 = 2\u221a(dx\u00b2 + dy\u00b2)\n   ```\n   Applied pointwise, the inner integral function equals `fun t => 2 * \u221a(dx(t)\u00b2 + dy(t)\u00b2)`.\n\n3. **Continuity \u2192 Integrability**: The function `fun t => 2 * \u221a(dx(t)\u00b2 + dy(t)\u00b2)` is continuous (composition of continuous functions). Continuous functions are interval integrable.\n\n4. **Apply buffon_smooth_full**: With all hypotheses derived from ContDiff, the main theorem follows directly.",
     "keyInsights": [
-      "The entire proof chain reduces to one key lemma: ContDiff ℝ 1 f → Continuous (deriv f)",
+      "The entire proof chain reduces to one key lemma: ContDiff \u211d 1 f \u2192 Continuous (deriv f)",
       "The angular_average identity is the mathematical heart: it reduces the inner integral to a simple continuous function",
-      "Continuity of the integrand is the bridge from C¹ smoothness to Fubini integrability",
+      "Continuity of the integrand is the bridge from C\u00b9 smoothness to Fubini integrability",
       "Shape independence is an immediate corollary of the formula being linear in arc length",
-      "The crossings → 0 limit as d → ∞ is purely analytic: constant/d → 0"
+      "The crossings \u2192 0 limit as d \u2192 \u221e is purely analytic: constant/d \u2192 0"
     ],
     "prerequisites": [
       "Probability theory"
@@ -90,44 +90,44 @@
       "title": "Proof Strategy and Connection to Prior Work",
       "startLine": 1,
       "endLine": 43,
-      "summary": "Documents the gap being filled: ContDiff ℝ 1 γ → IntervalIntegrable. Explains the proof chain and connection to BuffonsNeedle.lean, BuffonsNoodle.lean, and BuffonsNeedleOQ01OQ01.lean."
+      "summary": "Documents the gap being filled: ContDiff \u211d 1 \u03b3 \u2192 IntervalIntegrable. Explains the proof chain and connection to BuffonsNeedle.lean, BuffonsNoodle.lean, and BuffonsNeedleOQ01OQ01.lean."
     },
     {
       "id": "part-i-deriv-continuity",
-      "title": "Part I: Derivative Continuity from C¹ Smoothness",
+      "title": "Part I: Derivative Continuity from C\u00b9 Smoothness",
       "startLine": 44,
       "endLine": 82,
-      "summary": "contDiff_one_continuous_deriv (key helper), deriv_fst_continuous, deriv_snd_continuous: C¹ implies continuous scalar derivative via ContDiff.continuous_fderiv + clm_apply."
+      "summary": "contDiff_one_continuous_deriv (key helper), deriv_fst_continuous, deriv_snd_continuous: C\u00b9 implies continuous scalar derivative via ContDiff.continuous_fderiv + clm_apply."
     },
     {
       "id": "part-ii-integrability",
-      "title": "Part II: Inner Integral is Integrable for C¹ Curves",
+      "title": "Part II: Inner Integral is Integrable for C\u00b9 Curves",
       "startLine": 83,
       "endLine": 122,
-      "summary": "inner_integral_eq (angular_average applied pointwise), inner_integral_continuous (2√(dx²+dy²) is continuous), inner_integral_integrable (continuous → interval integrable)."
+      "summary": "inner_integral_eq (angular_average applied pointwise), inner_integral_continuous (2\u221a(dx\u00b2+dy\u00b2) is continuous), inner_integral_integrable (continuous \u2192 interval integrable)."
     },
     {
       "id": "part-iii-main-theorem",
       "title": "Part III: The Complete Buffon-Barbier Theorem",
       "startLine": 123,
       "endLine": 155,
-      "summary": "buffon_smooth_of_contDiff: E[crossings] = 2·arcLength/(π·d) requiring only ContDiff ℝ 1 γ. All hypotheses derived automatically."
+      "summary": "buffon_smooth_of_contDiff: E[crossings] = 2\u00b7arcLength/(\u03c0\u00b7d) requiring only ContDiff \u211d 1 \u03b3. All hypotheses derived automatically."
     },
     {
       "id": "part-iv-corollaries",
       "title": "Part IV: Shape Independence and Corollaries",
       "startLine": 156,
       "endLine": 249,
-      "summary": "smooth_shape_independence, straight_line_arclength, straight_line_crossings (consistency with Wiedijk #99), smooth_crossings_mono, crossings_tendsto_zero (limit as d → ∞)."
+      "summary": "smooth_shape_independence, straight_line_arclength, straight_line_crossings (consistency with Wiedijk #99), smooth_crossings_mono, crossings_tendsto_zero (limit as d \u2192 \u221e)."
     }
   ],
   "conclusion": {
-    "summary": "The Buffon-Barbier theorem for C¹ curves is now fully proved with 0 sorries and 0 axioms. The proof reduces to one key insight: C¹ smoothness implies continuous derivative, which via the angular average identity gives a continuous inner integral, which is therefore integrable. The main result `buffon_smooth_of_contDiff` requires only `ContDiff ℝ 1 γ` — the minimal smoothness needed for the formula to make sense.",
-    "implications": "**Mathematical Significance**:\n\n**1. Complete Formalization of Buffon-Barbier**\nThe smooth curve Buffon-Barbier theorem is now completely formalized in Lean 4. The proof chain from C¹ smoothness through derivative continuity, angular average, and integrability to the final formula is all verified.\n\n**2. Key Lemma for Geometric Probability**\n`contDiff_one_continuous_deriv` (C¹ → Continuous deriv) is a useful building block for other geometric probability results involving smooth curves.\n\n**3. Shape Independence Formalized**\n`smooth_shape_independence` gives a purely formal proof that the shape of a C¹ curve is irrelevant — only total arc length determines expected crossings. This is the geometric heart of the Cauchy-Crofton formula.\n\n**4. Consistency with Classical Result**\n`straight_line_crossings` verifies that the smooth formula reduces to the original Buffon's Needle formula (Wiedijk's 100 Theorems #99) for the simplest case.",
+    "summary": "The Buffon-Barbier theorem for C\u00b9 curves is now fully proved with 0 sorries and 0 axioms. The proof reduces to one key insight: C\u00b9 smoothness implies continuous derivative, which via the angular average identity gives a continuous inner integral, which is therefore integrable. The main result `buffon_smooth_of_contDiff` requires only `ContDiff \u211d 1 \u03b3` \u2014 the minimal smoothness needed for the formula to make sense.",
+    "implications": "**Mathematical Significance**:\n\n**1. Complete Formalization of Buffon-Barbier**\nThe smooth curve Buffon-Barbier theorem is now completely formalized in Lean 4. The proof chain from C\u00b9 smoothness through derivative continuity, angular average, and integrability to the final formula is all verified.\n\n**2. Key Lemma for Geometric Probability**\n`contDiff_one_continuous_deriv` (C\u00b9 \u2192 Continuous deriv) is a useful building block for other geometric probability results involving smooth curves.\n\n**3. Shape Independence Formalized**\n`smooth_shape_independence` gives a purely formal proof that the shape of a C\u00b9 curve is irrelevant \u2014 only total arc length determines expected crossings. This is the geometric heart of the Cauchy-Crofton formula.\n\n**4. Consistency with Classical Result**\n`straight_line_crossings` verifies that the smooth formula reduces to the original Buffon's Needle formula (Wiedijk's 100 Theorems #99) for the simplest case.",
     "openQuestions": [
-      "Full Cauchy-Crofton formula for arbitrary measures on lines in ℝ²",
-      "Higher-dimensional versions: hyperplane arrangements in ℝⁿ",
-      "Extension to Lipschitz curves (weaker than C¹)",
+      "Full Cauchy-Crofton formula for arbitrary measures on lines in \u211d\u00b2",
+      "Higher-dimensional versions: hyperplane arrangements in \u211d\u207f",
+      "Extension to Lipschitz curves (weaker than C\u00b9)",
       "Connection to Buffon's coin (2D object) and generalizations"
     ]
   },
@@ -135,7 +135,7 @@
     {
       "targetId": "buffons-needle",
       "relationship": "extends",
-      "description": "Base Buffon's Needle formalization (Wiedijk #99) — this file extends it to arbitrary C¹ smooth curves via the Buffon-Barbier theorem, proving shape independence"
+      "description": "Base Buffon's Needle formalization (Wiedijk #99) \u2014 this file extends it to arbitrary C\u00b9 smooth curves via the Buffon-Barbier theorem, proving shape independence"
     },
     {
       "targetId": "buffons-needle-oq-01-oq-01",
@@ -145,12 +145,12 @@
     {
       "targetId": "buffons-needle-oq-02",
       "relationship": "related",
-      "description": "Another extension of Buffon's needle exploring different generalizations — both derive from the same base formalization"
+      "description": "Another extension of Buffon's needle exploring different generalizations \u2014 both derive from the same base formalization"
     },
     {
       "targetId": "area-of-circle",
       "relationship": "related",
-      "description": "The π in the Buffon-Barbier formula 2L/(πd) connects to the area of a circle: both are consequences of the rotational symmetry of the plane, and historically Buffon's needle was used to experimentally estimate π"
+      "description": "The \u03c0 in the Buffon-Barbier formula 2L/(\u03c0d) connects to the area of a circle: both are consequences of the rotational symmetry of the plane, and historically Buffon's needle was used to experimentally estimate \u03c0"
     },
     {
       "targetId": "cauchy-schwarz-integral",
@@ -179,7 +179,8 @@
     "namespace": "BuffonsNeedleOQ01",
     "lineCount": 250,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 0
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "lemmaCount": 5
   }
 }

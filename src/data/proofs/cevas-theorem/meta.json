@@ -53,7 +53,7 @@
       "Euclidean triangle geometry (vertices, sides, cevians)",
       "Affine combinations and barycentric coordinates ($P = (1-t)A + tB$)",
       "Real number field arithmetic (division, sign conventions)",
-      "Projective duality (concurrent lines vs collinear points — Ceva vs Menelaus)"
+      "Projective duality (concurrent lines vs collinear points \u2014 Ceva vs Menelaus)"
     ]
   },
   "sections": [
@@ -103,7 +103,7 @@
       "startLine": 131,
       "endLine": 199,
       "summary": "Verification for medians (d = e = f = 1/2) and characterization of equal-parameter solutions.",
-      "mathContext": "For medians: $d = e = f = 1/2$ gives $(1/2)^3 = (1/2)^3$ — trivially true. The uniqueness theorem shows $t^3 = (1-t)^3 \\implies t = 1/2$: since $x^3$ is strictly monotone, $t^3 = (1-t)^3 \\iff t = 1-t \\iff t = 1/2$. Thus medians are the only equal-parameter cevians satisfying Ceva's condition."
+      "mathContext": "For medians: $d = e = f = 1/2$ gives $(1/2)^3 = (1/2)^3$ \u2014 trivially true. The uniqueness theorem shows $t^3 = (1-t)^3 \\implies t = 1/2$: since $x^3$ is strictly monotone, $t^3 = (1-t)^3 \\iff t = 1-t \\iff t = 1/2$. Thus medians are the only equal-parameter cevians satisfying Ceva's condition."
     },
     {
       "id": "converse",
@@ -142,7 +142,8 @@
     "lineCount": 269,
     "axiomCount": 0,
     "theoremCount": 8,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -164,32 +165,32 @@
     {
       "targetId": "herons-formula",
       "relationship": "related",
-      "description": "Both concern triangle geometry: Heron's formula computes area from side lengths, while Ceva's theorem characterizes when three cevians (lines through vertices) are concurrent — both use ratios and products involving triangle side lengths"
+      "description": "Both concern triangle geometry: Heron's formula computes area from side lengths, while Ceva's theorem characterizes when three cevians (lines through vertices) are concurrent \u2014 both use ratios and products involving triangle side lengths"
     },
     {
       "targetId": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "The Pythagorean theorem provides the metric foundation for triangle geometry, while Ceva's theorem adds the affine-projective layer — together they span from metric to projective properties of triangles"
+      "description": "The Pythagorean theorem provides the metric foundation for triangle geometry, while Ceva's theorem adds the affine-projective layer \u2014 together they span from metric to projective properties of triangles"
     },
     {
       "targetId": "law-of-cosines",
       "relationship": "related",
-      "description": "Both are fundamental triangle theorems: the law of cosines generalizes Pythagoras metrically, while Ceva's theorem characterizes concurrency of cevians — the law of cosines can be used to derive coordinate proofs of Ceva's theorem"
+      "description": "Both are fundamental triangle theorems: the law of cosines generalizes Pythagoras metrically, while Ceva's theorem characterizes concurrency of cevians \u2014 the law of cosines can be used to derive coordinate proofs of Ceva's theorem"
     },
     {
       "targetId": "triangle-angle-sum",
       "relationship": "foundational",
-      "description": "The angle sum property (180 degrees) is the most basic triangle theorem, while Ceva's theorem is a deeper structural result — both concern the fundamental geometry of triangles"
+      "description": "The angle sum property (180 degrees) is the most basic triangle theorem, while Ceva's theorem is a deeper structural result \u2014 both concern the fundamental geometry of triangles"
     },
     {
       "targetId": "feuerbachs-theorem",
       "relationship": "related",
-      "description": "Both are classical triangle geometry results: Ceva's theorem concerns cevian concurrency, while Feuerbach's theorem concerns the tangency of the nine-point circle and incircle — both reveal deep structure in triangle configurations"
+      "description": "Both are classical triangle geometry results: Ceva's theorem concerns cevian concurrency, while Feuerbach's theorem concerns the tangency of the nine-point circle and incircle \u2014 both reveal deep structure in triangle configurations"
     },
     {
       "targetId": "isosceles-triangle",
       "relationship": "foundational",
-      "description": "The isosceles triangle theorem is the simplest symmetry result in triangle geometry, while Ceva's theorem handles the general asymmetric case — both concern the interplay of vertices and sides"
+      "description": "The isosceles triangle theorem is the simplest symmetry result in triangle geometry, while Ceva's theorem handles the general asymmetric case \u2014 both concern the interplay of vertices and sides"
     }
   ],
   "relatedProofs": [

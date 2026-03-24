@@ -4,7 +4,7 @@
   "slug": "erdos-248",
   "description": "Are there infinitely many n such that the number of distinct prime divisors of n+k grows at most linearly in k for all k >= 1?",
   "meta": {
-    "author": "Tao and Teräväinen (2025)",
+    "author": "Tao and Ter\u00e4v\u00e4inen (2025)",
     "sourceUrl": "https://erdosproblems.com/248",
     "date": "2025",
     "status": "axiomatized",
@@ -36,7 +36,7 @@
       }
     ],
     "originalContributions": [
-      "Formal statement of Erdős #248 in Lean 4",
+      "Formal statement of Erd\u0151s #248 in Lean 4",
       "Custom prime omega function definition using primeFactors",
       "Verified examples: omega(1)=0, omega(2)=1, omega(6)=2, omega(30)=3",
       "Proof that omega(p)=1 for any prime p"
@@ -46,21 +46,21 @@
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #248 was posed by Erdős and Graham in their 1980 monograph 'Old and new problems and results in combinatorial number theory.' They asked whether there exist infinitely many integers n such that the prime omega function ω(n+k) grows at most linearly in k for all k >= 1.\n\nErdős and Graham famously wrote about this problem: 'we just know too little about sieves to be able to handle such a question' - referring to the collective knowledge of mathematics at the time. The problem remained open for 45 years.\n\nIn December 2025, Terence Tao and Joni Teräväinen resolved this problem affirmatively in their paper 'Quantitative correlations and some problems on prime factors of consecutive integers' (arXiv:2512.01739). They proved that there exists an absolute constant C > 0 such that for infinitely many n, ω(n+k) <= C*k for all k >= 1.",
-    "problemStatement": "**Problem**: Are there infinitely many integers $n$ such that for all $k \\geq 1$:\n$$\\omega(n+k) \\ll k$$\nwhere $\\omega(n)$ denotes the number of distinct prime divisors of $n$?\n\n**Answer**: YES — proved by Tao and Teräväinen (2025)\n\nMore precisely, there exists an absolute constant $C > 0$ such that the set\n$$\\{n \\in \\mathbb{N} : \\forall k \\geq 1, \\omega(n+k) \\leq Ck\\}$$\nis infinite.",
+    "historicalContext": "Erd\u0151s Problem #248 was posed by Erd\u0151s and Graham in their 1980 monograph 'Old and new problems and results in combinatorial number theory.' They asked whether there exist infinitely many integers n such that the prime omega function \u03c9(n+k) grows at most linearly in k for all k >= 1.\n\nErd\u0151s and Graham famously wrote about this problem: 'we just know too little about sieves to be able to handle such a question' - referring to the collective knowledge of mathematics at the time. The problem remained open for 45 years.\n\nIn December 2025, Terence Tao and Joni Ter\u00e4v\u00e4inen resolved this problem affirmatively in their paper 'Quantitative correlations and some problems on prime factors of consecutive integers' (arXiv:2512.01739). They proved that there exists an absolute constant C > 0 such that for infinitely many n, \u03c9(n+k) <= C*k for all k >= 1.",
+    "problemStatement": "**Problem**: Are there infinitely many integers $n$ such that for all $k \\geq 1$:\n$$\\omega(n+k) \\ll k$$\nwhere $\\omega(n)$ denotes the number of distinct prime divisors of $n$?\n\n**Answer**: YES \u2014 proved by Tao and Ter\u00e4v\u00e4inen (2025)\n\nMore precisely, there exists an absolute constant $C > 0$ such that the set\n$$\\{n \\in \\mathbb{N} : \\forall k \\geq 1, \\omega(n+k) \\leq Ck\\}$$\nis infinite.",
     "text": "Are there infinitely many n such that the number of distinct prime divisors of n+k grows at most linearly in k for all k >= 1?",
-    "proofStrategy": "We formalize the statement of Erdős #248 and state the main result as an axiom, since the proof requires:\n\n1. Deep results from sieve theory about correlations of multiplicative functions\n2. Quantitative bounds on how prime factors distribute among consecutive integers\n3. Sophisticated analytic techniques only recently developed\n\nThe proof by Tao-Teräväinen constructs infinitely many 'exceptional' starting points n where consecutive integers n+1, n+2, ... have unusually few prime factors. This is surprising because typically ω(n) ~ log log n for 'generic' integers.\n\nWe verify basic properties of the prime omega function and demonstrate small examples where the linear bound holds.",
+    "proofStrategy": "We formalize the statement of Erd\u0151s #248 and state the main result as an axiom, since the proof requires:\n\n1. Deep results from sieve theory about correlations of multiplicative functions\n2. Quantitative bounds on how prime factors distribute among consecutive integers\n3. Sophisticated analytic techniques only recently developed\n\nThe proof by Tao-Ter\u00e4v\u00e4inen constructs infinitely many 'exceptional' starting points n where consecutive integers n+1, n+2, ... have unusually few prime factors. This is surprising because typically \u03c9(n) ~ log log n for 'generic' integers.\n\nWe verify basic properties of the prime omega function and demonstrate small examples where the linear bound holds.",
     "keyInsights": [
-      "**Prime omega function**: ω(n) counts distinct prime divisors. For example, ω(12) = 2 since 12 = 2² × 3 has primes {2, 3}.",
-      "**Typical behavior**: For most integers, ω(n) ~ log log n by the Hardy-Ramanujan theorem. The condition ω(n+k) <= Ck is thus highly restrictive.",
+      "**Prime omega function**: \u03c9(n) counts distinct prime divisors. For example, \u03c9(12) = 2 since 12 = 2\u00b2 \u00d7 3 has primes {2, 3}.",
+      "**Typical behavior**: For most integers, \u03c9(n) ~ log log n by the Hardy-Ramanujan theorem. The condition \u03c9(n+k) <= Ck is thus highly restrictive.",
       "**Sieve theory connection**: The problem connects to how prime factors distribute in arithmetic progressions and consecutive integers.",
-      "**45-year gap**: The time between Erdős-Graham posing this (1980) and Tao-Teräväinen solving it (2025) shows how difficult sieve-theoretic questions can be.",
-      "**Verified examples**: We prove ω(p) = 1 for primes and verify concrete values like ω(30) = 3 (primes 2, 3, 5)."
+      "**45-year gap**: The time between Erd\u0151s-Graham posing this (1980) and Tao-Ter\u00e4v\u00e4inen solving it (2025) shows how difficult sieve-theoretic questions can be.",
+      "**Verified examples**: We prove \u03c9(p) = 1 for primes and verify concrete values like \u03c9(30) = 3 (primes 2, 3, 5)."
     ],
     "prerequisites": [
       "Prime factorization: $\\omega(n)$ counts distinct prime factors of $n$",
       "Hardy-Ramanujan theorem: $\\omega(n) \\sim \\log \\log n$ for most $n$",
-      "Erdős-Kac theorem: $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n}$ is normally distributed",
+      "Erd\u0151s-Kac theorem: $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n}$ is normally distributed",
       "Sieve methods: upper and lower bounds on sets defined by prime factor conditions"
     ]
   },
@@ -77,28 +77,28 @@
       "title": "Prime Omega Function",
       "startLine": 31,
       "endLine": 59,
-      "summary": "Definition of ω(n) as the cardinality of prime factors. Verified examples for small values."
+      "summary": "Definition of \u03c9(n) as the cardinality of prime factors. Verified examples for small values."
     },
     {
       "id": "main-definition",
       "title": "Smooth-Tail Integers",
       "startLine": 61,
       "endLine": 75,
-      "summary": "Definition of the set of integers n satisfying Erdős's linear growth condition."
+      "summary": "Definition of the set of integers n satisfying Erd\u0151s's linear growth condition."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem (Axiom)",
       "startLine": 76,
       "endLine": 92,
-      "summary": "Statement of Erdős #248: the set of smooth-tail integers is infinite. Axiomatized since proof requires deep sieve theory."
+      "summary": "Statement of Erd\u0151s #248: the set of smooth-tail integers is infinite. Axiomatized since proof requires deep sieve theory."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 93,
       "endLine": 115,
-      "summary": "Proof that ω(p) = 1 for primes, and verification of the smooth-tail condition for n=1 with small k."
+      "summary": "Proof that \u03c9(p) = 1 for primes, and verification of the smooth-tail condition for n=1 with small k."
     },
     {
       "id": "corollary",
@@ -109,13 +109,13 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #248, asking whether infinitely many integers n have the property that ω(n+k) grows at most linearly in k for all k >= 1. The answer is YES, proved by Tao and Teräväinen in 2025. We state this as an axiom since the proof requires sophisticated sieve methods, and verify basic properties including ω(p) = 1 for primes.",
+    "summary": "We formalize Erd\u0151s Problem #248, asking whether infinitely many integers n have the property that \u03c9(n+k) grows at most linearly in k for all k >= 1. The answer is YES, proved by Tao and Ter\u00e4v\u00e4inen in 2025. We state this as an axiom since the proof requires sophisticated sieve methods, and verify basic properties including \u03c9(p) = 1 for primes.",
     "implications": "This result demonstrates that while 'typical' integers have about log log n distinct prime factors, there exist infinitely many exceptional starting points where consecutive integers remain unusually 'smooth' (have few prime factors). The resolution after 45 years highlights advances in understanding correlations between multiplicative functions.",
     "openQuestions": [
-      "What is the optimal constant C in the bound ω(n+k) <= Ck?",
+      "What is the optimal constant C in the bound \u03c9(n+k) <= Ck?",
       "Can we characterize the density of smooth-tail integers?",
       "Are there effective bounds on how large n must be to satisfy the condition?",
-      "Can similar results be proved for the big omega function Ω(n) (counting prime factors with multiplicity)?"
+      "Can similar results be proved for the big omega function \u03a9(n) (counting prime factors with multiplicity)?"
     ]
   },
   "leanFile": {
@@ -130,44 +130,45 @@
     "lineCount": 133,
     "axiomCount": 1,
     "theoremCount": 11,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization gives meaning to ω(n) (the number of distinct prime factors). The problem asks about the joint distribution of ω(n), ω(n+1), ..., ω(n+k), which depends on the multiplicative structure guaranteed by the FTA"
+      "description": "Unique prime factorization gives meaning to \u03c9(n) (the number of distinct prime factors). The problem asks about the joint distribution of \u03c9(n), \u03c9(n+1), ..., \u03c9(n+k), which depends on the multiplicative structure guaranteed by the FTA"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes means ω(n) can grow without bound (for n with many small prime factors). The Hardy-Ramanujan theorem shows the typical growth is log log n, making the problem's linear bound in k a natural question"
+      "description": "The infinitude of primes means \u03c9(n) can grow without bound (for n with many small prime factors). The Hardy-Ramanujan theorem shows the typical growth is log log n, making the problem's linear bound in k a natural question"
     },
     {
       "targetId": "bounded-prime-gaps",
       "relationship": "related",
-      "description": "Both concern the local distribution of prime-related quantities: bounded prime gaps constrains p_{n+1} - p_n, while this problem constrains ω(n+k) - ω(n) for consecutive integers. Both use sieve methods and density arguments"
+      "description": "Both concern the local distribution of prime-related quantities: bounded prime gaps constrains p_{n+1} - p_n, while this problem constrains \u03c9(n+k) - \u03c9(n) for consecutive integers. Both use sieve methods and density arguments"
     },
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate ensures a prime in every interval (n, 2n], constraining the distribution of prime factors among consecutive integers. This affects the growth of ω(n+k) since integers near primes have fewer prime factors"
+      "description": "Bertrand's postulate ensures a prime in every interval (n, 2n], constraining the distribution of prime factors among consecutive integers. This affects the growth of \u03c9(n+k) since integers near primes have fewer prime factors"
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient φ(n) = n ∏_{p|n} (1 - 1/p) connects directly to ω(n): more prime factors mean smaller φ(n)/n. Erdős's 1935 paper studied the normal order of ω(p-1), linking prime factor counts to the structure of the totient function"
+      "description": "Euler's totient \u03c6(n) = n \u220f_{p|n} (1 - 1/p) connects directly to \u03c9(n): more prime factors mean smaller \u03c6(n)/n. Erd\u0151s's 1935 paper studied the normal order of \u03c9(p-1), linking prime factor counts to the structure of the totient function"
     }
   ],
   "references": [
     {
       "key": "Er35",
-      "citation": "Erdős, P., On the normal number of prime factors of p-1 and some related problems concerning Euler's φ-function, Quarterly Journal of Mathematics 6 (1935), 205–213.",
+      "citation": "Erd\u0151s, P., On the normal number of prime factors of p-1 and some related problems concerning Euler's \u03c6-function, Quarterly Journal of Mathematics 6 (1935), 205\u2013213.",
       "type": "paper"
     },
     {
       "key": "EK40",
-      "citation": "Erdős, P. and Kac, M., The Gaussian law of errors in the theory of additive number theoretic functions, American Journal of Mathematics 62(1) (1940), 738–742.",
+      "citation": "Erd\u0151s, P. and Kac, M., The Gaussian law of errors in the theory of additive number theoretic functions, American Journal of Mathematics 62(1) (1940), 738\u2013742.",
       "type": "paper"
     },
     {

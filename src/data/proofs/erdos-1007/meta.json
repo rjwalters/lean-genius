@@ -1,6 +1,6 @@
 {
   "id": "erdos-1007",
-  "title": "Erdős Problem #1007: Graph Dimension",
+  "title": "Erd\u0151s Problem #1007: Graph Dimension",
   "slug": "erdos-1007",
   "description": "What is the smallest number of edges in a graph with dimension 4? The answer is 9, achieved uniquely by K_{3,3}. Graph dimension is the minimum Euclidean dimension for unit-distance embedding.",
   "meta": {
@@ -27,15 +27,15 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The notion of graph dimension was introduced by Erdős, Harary, and Tutte. A graph has dimension d if it can be embedded in ℝᵈ with all edges as unit segments, but not in ℝᵈ⁻¹. Erdős posed this specific question to Soifer in January 1992, asking for the minimum edge count among 4-dimensional graphs.\n\nThe dimension ladder for complete graphs is natural: K₂ has dimension 1 (a single edge), K₃ has dimension 2 (equilateral triangle in the plane), K₄ has dimension 3 (regular tetrahedron). But dimension 4 breaks the pattern—the minimum is not K₅ but K_{3,3}, a bipartite graph with only 9 edges.\n\nHouse (2013) proved the minimum is 9 and that K_{3,3} is the unique achiever. Chaffee and Noble (2016) extended this to dimension 5, finding the minimum is 15 edges, achieved by both K₆ and K_{1,3,3}. The uniqueness at dimension 4 does not persist at higher dimensions.",
-    "problemStatement": "The dimension of a graph G is the minimal n such that G can be embedded in ℝⁿ with every edge as a unit line segment. What is the smallest number of edges in a graph with dimension 4?",
+    "historicalContext": "The notion of graph dimension was introduced by Erd\u0151s, Harary, and Tutte. A graph has dimension d if it can be embedded in \u211d\u1d48 with all edges as unit segments, but not in \u211d\u1d48\u207b\u00b9. Erd\u0151s posed this specific question to Soifer in January 1992, asking for the minimum edge count among 4-dimensional graphs.\n\nThe dimension ladder for complete graphs is natural: K\u2082 has dimension 1 (a single edge), K\u2083 has dimension 2 (equilateral triangle in the plane), K\u2084 has dimension 3 (regular tetrahedron). But dimension 4 breaks the pattern\u2014the minimum is not K\u2085 but K_{3,3}, a bipartite graph with only 9 edges.\n\nHouse (2013) proved the minimum is 9 and that K_{3,3} is the unique achiever. Chaffee and Noble (2016) extended this to dimension 5, finding the minimum is 15 edges, achieved by both K\u2086 and K_{1,3,3}. The uniqueness at dimension 4 does not persist at higher dimensions.",
+    "problemStatement": "The dimension of a graph G is the minimal n such that G can be embedded in \u211d\u207f with every edge as a unit line segment. What is the smallest number of edges in a graph with dimension 4?",
     "text": "What is the smallest number of edges in a graph with dimension 4? The answer is 9, achieved uniquely by K_{3,3}. Graph dimension is the minimum Euclidean dimension for unit-distance embedding.",
-    "proofStrategy": "House (2013) proved the minimum is 9 edges through careful analysis of unit distance constraints. The key insight is that K_{3,3} requires 4 dimensions because its bipartite structure creates distance constraints that cannot be satisfied in ℝ³. Any graph with fewer than 9 edges can be shown to embed in ℝ³.",
+    "proofStrategy": "House (2013) proved the minimum is 9 edges through careful analysis of unit distance constraints. The key insight is that K_{3,3} requires 4 dimensions because its bipartite structure creates distance constraints that cannot be satisfied in \u211d\u00b3. Any graph with fewer than 9 edges can be shown to embed in \u211d\u00b3.",
     "keyInsights": [
-      "K₂ has dimension 1, K₃ has dimension 2, K₄ has dimension 3",
+      "K\u2082 has dimension 1, K\u2083 has dimension 2, K\u2084 has dimension 3",
       "K_{3,3} with 9 edges is the UNIQUE minimum for dimension 4",
       "The bipartite structure of K_{3,3} creates rigid constraints forcing 4D",
-      "For dimension 5, the minimum is 15 edges (achieved by K₆ and K_{1,3,3})",
+      "For dimension 5, the minimum is 15 edges (achieved by K\u2086 and K_{1,3,3})",
       "Graph dimension connects combinatorics with Euclidean geometry"
     ],
     "prerequisites": [
@@ -50,7 +50,7 @@
       "title": "Problem Context and Imports",
       "startLine": 1,
       "endLine": 48,
-      "summary": "Module docstring and imports for Erdős Problem #1007 on graph dimension.",
+      "summary": "Module docstring and imports for Erd\u0151s Problem #1007 on graph dimension.",
       "mathContext": "The dimension of a graph $G$ is $\\min\\{d : G \\hookrightarrow \\mathbb{R}^d$ with all edges as unit segments$\\}$. Question: what is $\\min\\{|E(G)| : \\dim(G) = 4\\}$?"
     },
     {
@@ -72,10 +72,10 @@
     {
       "id": "known",
       "title": "Known Dimensions",
-      "summary": "Dimension results for K₃, K₄, and K_{3,3}",
+      "summary": "Dimension results for K\u2083, K\u2084, and K_{3,3}",
       "startLine": 89,
       "endLine": 100,
-      "mathContext": "Dimension results for K₃, K₄, and K_{3,3}"
+      "mathContext": "Dimension results for K\u2083, K\u2084, and K_{3,3}"
     },
     {
       "id": "main",
@@ -114,13 +114,14 @@
     "lineCount": 129,
     "axiomCount": 4,
     "theoremCount": 3,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-135",
       "relationship": "related",
-      "description": "Both are Erdős problems about geometric configurations: #135 concerns four points and five distances, while #1007 concerns minimum edges for unit-distance graph dimension"
+      "description": "Both are Erd\u0151s problems about geometric configurations: #135 concerns four points and five distances, while #1007 concerns minimum edges for unit-distance graph dimension"
     }
   ],
   "relatedProofs": [

@@ -56,9 +56,9 @@
   },
   "overview": {
     "historicalContext": "The Perfect Number Theorem spans over 2000 years of mathematical history:\n\n- **Euclid (300 BCE)**: In Elements Book IX, Proposition 36, Euclid proved that if 2^p - 1 is prime, then 2^(p-1)(2^p - 1) is perfect. This gave a recipe for generating perfect numbers from Mersenne primes.\n\n- **Marin Mersenne (1644)**: Compiled a list of primes p for which 2^p - 1 is prime. These 'Mersenne primes' are now named after him, though his list contained errors.\n\n- **Leonhard Euler (1747)**: Proved the converse - every EVEN perfect number must have Euclid's form. This completed the characterization of even perfect numbers.\n\n- **Present Day**: Whether odd perfect numbers exist remains one of the oldest unsolved problems in mathematics. If one exists, it must be astronomically large (> 10^1500) with very specific structural constraints.\n\nThe connection between perfect numbers and Mersenne primes means that discovering new Mersenne primes (via projects like GIMPS) yields new perfect numbers.",
-    "problemStatement": "A number n is *perfect* if it equals the sum of its proper divisors:\n$$n = \\sum_{d | n, d < n} d$$\n\nEquivalently, if $\\sigma(n) = 2n$ where $\\sigma$ is the sum-of-divisors function.\n\n**The Euclid-Euler Theorem**:\n\nA natural number n is even and perfect if and only if $n = 2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime.\n\n**Examples**:\n- 6 = 1 + 2 + 3 (p = 2, Mersenne prime 3)\n- 28 = 1 + 2 + 4 + 7 + 14 (p = 3, Mersenne prime 7)\n- 496 = 2^4 × 31 (p = 5, Mersenne prime 31)\n- 8128 = 2^6 × 127 (p = 7, Mersenne prime 127)",
+    "problemStatement": "A number n is *perfect* if it equals the sum of its proper divisors:\n$$n = \\sum_{d | n, d < n} d$$\n\nEquivalently, if $\\sigma(n) = 2n$ where $\\sigma$ is the sum-of-divisors function.\n\n**The Euclid-Euler Theorem**:\n\nA natural number n is even and perfect if and only if $n = 2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime.\n\n**Examples**:\n- 6 = 1 + 2 + 3 (p = 2, Mersenne prime 3)\n- 28 = 1 + 2 + 4 + 7 + 14 (p = 3, Mersenne prime 7)\n- 496 = 2^4 \u00d7 31 (p = 5, Mersenne prime 31)\n- 8128 = 2^6 \u00d7 127 (p = 7, Mersenne prime 127)",
     "text": "The Euclid-Euler theorem: a number is even and perfect if and only if it has the form 2^(p-1)(2^p - 1) where 2^p - 1 is a Mersenne prime.",
-    "proofStrategy": "**Euclid's Direction** (Mersenne prime → perfect):\n\nLet M = 2^p - 1 be a Mersenne prime. We show n = 2^(p-1) × M is perfect.\n\n1. Since gcd(2^(p-1), M) = 1, the sigma function is multiplicative:\n   σ(n) = σ(2^(p-1)) × σ(M)\n\n2. For powers of 2: σ(2^(p-1)) = 1 + 2 + ... + 2^(p-1) = 2^p - 1 = M\n\n3. For prime M: σ(M) = 1 + M = 2^p\n\n4. Therefore: σ(n) = M × 2^p = 2 × (2^(p-1) × M) = 2n\n\n**Euler's Direction** (even perfect → Mersenne form):\n\n1. Write n = 2^k × m where m is odd and k ≥ 1\n\n2. Since n is perfect: σ(n) = 2n = 2^(k+1) × m\n\n3. Multiplicativity: σ(n) = σ(2^k) × σ(m) = (2^(k+1) - 1) × σ(m)\n\n4. Comparing: (2^(k+1) - 1) × σ(m) = 2^(k+1) × m\n\n5. This forces m = 2^(k+1) - 1 and σ(m) = m + 1, meaning m is prime.\n\n6. Thus n = 2^k × (2^(k+1) - 1) with 2^(k+1) - 1 prime.",
+    "proofStrategy": "**Euclid's Direction** (Mersenne prime \u2192 perfect):\n\nLet M = 2^p - 1 be a Mersenne prime. We show n = 2^(p-1) \u00d7 M is perfect.\n\n1. Since gcd(2^(p-1), M) = 1, the sigma function is multiplicative:\n   \u03c3(n) = \u03c3(2^(p-1)) \u00d7 \u03c3(M)\n\n2. For powers of 2: \u03c3(2^(p-1)) = 1 + 2 + ... + 2^(p-1) = 2^p - 1 = M\n\n3. For prime M: \u03c3(M) = 1 + M = 2^p\n\n4. Therefore: \u03c3(n) = M \u00d7 2^p = 2 \u00d7 (2^(p-1) \u00d7 M) = 2n\n\n**Euler's Direction** (even perfect \u2192 Mersenne form):\n\n1. Write n = 2^k \u00d7 m where m is odd and k \u2265 1\n\n2. Since n is perfect: \u03c3(n) = 2n = 2^(k+1) \u00d7 m\n\n3. Multiplicativity: \u03c3(n) = \u03c3(2^k) \u00d7 \u03c3(m) = (2^(k+1) - 1) \u00d7 \u03c3(m)\n\n4. Comparing: (2^(k+1) - 1) \u00d7 \u03c3(m) = 2^(k+1) \u00d7 m\n\n5. This forces m = 2^(k+1) - 1 and \u03c3(m) = m + 1, meaning m is prime.\n\n6. Thus n = 2^k \u00d7 (2^(k+1) - 1) with 2^(k+1) - 1 prime.",
     "keyInsights": [
       "Perfect numbers are intimately connected to Mersenne primes via the sigma function",
       "The multiplicativity of sigma is the key algebraic property enabling the proof",
@@ -152,7 +152,8 @@
     "lineCount": 202,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -160,7 +161,7 @@
       "title": "Elements, Book IX, Proposition 36",
       "year": "~300 BCE",
       "venue": "Alexandria",
-      "note": "Proved that 2^(p-1)(2^p - 1) is perfect when 2^p - 1 is prime — the Euclid-Euler theorem for even perfect numbers"
+      "note": "Proved that 2^(p-1)(2^p - 1) is perfect when 2^p - 1 is prime \u2014 the Euclid-Euler theorem for even perfect numbers"
     },
     {
       "authors": "Dickson, Leonard E.",
@@ -173,15 +174,15 @@
       "authors": "Euler, Leonhard",
       "title": "De numeris amicabilibus",
       "year": "1849",
-      "venue": "Opera postuma 1, 85–100 (written c. 1747)",
+      "venue": "Opera postuma 1, 85\u2013100 (written c. 1747)",
       "note": "Proved the converse direction: every even perfect number has the Mersenne form 2^(p-1)(2^p - 1), completing the characterization begun by Euclid"
     },
     {
-      "authors": "Ochem, Pascal; Rao, Michaël",
+      "authors": "Ochem, Pascal; Rao, Micha\u00ebl",
       "title": "Odd perfect numbers are greater than 10^1500",
       "year": "2012",
-      "venue": "Mathematics of Computation 81(279), 1869–1877",
-      "note": "Current best lower bound on odd perfect numbers — if one exists, it exceeds 10^1500"
+      "venue": "Mathematics of Computation 81(279), 1869\u20131877",
+      "note": "Current best lower bound on odd perfect numbers \u2014 if one exists, it exceeds 10^1500"
     },
     {
       "authors": "Voight, John",
@@ -200,12 +201,12 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes is foundational, but the deeper question — whether infinitely many Mersenne primes $2^p - 1$ exist — remains open. Each new Mersenne prime yields a new even perfect number via the Euclid-Euler theorem. The Lenstra-Pomerance-Wagstaff conjecture predicts $e^\\gamma \\log 2 \\cdot \\log \\log x / \\log 2$ Mersenne primes below $x$"
+      "description": "The infinitude of primes is foundational, but the deeper question \u2014 whether infinitely many Mersenne primes $2^p - 1$ exist \u2014 remains open. Each new Mersenne prime yields a new even perfect number via the Euclid-Euler theorem. The Lenstra-Pomerance-Wagstaff conjecture predicts $e^\\gamma \\log 2 \\cdot \\log \\log x / \\log 2$ Mersenne primes below $x$"
     },
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime between $n$ and $2n$, but no analogous result is known for Mersenne primes. The distribution of Mersenne primes is far sparser and more mysterious than ordinary primes — the 51st known Mersenne prime has over 41 million digits"
+      "description": "Bertrand's postulate guarantees a prime between $n$ and $2n$, but no analogous result is known for Mersenne primes. The distribution of Mersenne primes is far sparser and more mysterious than ordinary primes \u2014 the 51st known Mersenne prime has over 41 million digits"
     },
     {
       "targetId": "fundamental-arithmetic",
@@ -225,7 +226,7 @@
     {
       "targetId": "wilsons-theorem",
       "relationship": "related",
-      "description": "Both are characterizations of primes — Wilson's theorem characterizes primes via factorial congruence, while the Euclid-Euler theorem characterizes even perfect numbers via Mersenne primes. The primality of $2^p - 1$ can be tested by the Lucas-Lehmer test, which is far more efficient than Wilson's factorial test"
+      "description": "Both are characterizations of primes \u2014 Wilson's theorem characterizes primes via factorial congruence, while the Euclid-Euler theorem characterizes even perfect numbers via Mersenne primes. The primality of $2^p - 1$ can be tested by the Lucas-Lehmer test, which is far more efficient than Wilson's factorial test"
     },
     {
       "targetId": "arithmetic-series",

@@ -1,8 +1,8 @@
 {
   "id": "erdos-786",
-  "title": "Erdős Problem #786: Multiplicative Cardinality Sets",
+  "title": "Erd\u0151s Problem #786: Multiplicative Cardinality Sets",
   "slug": "erdos-786",
-  "description": "For any ε > 0, is there a set A of density > 1-ε such that equal products from A must have equal numbers of factors? Selfridge achieved density 1/e - ε; whether arbitrarily high density is possible remains OPEN.",
+  "description": "For any \u03b5 > 0, is there a set A of density > 1-\u03b5 such that equal products from A must have equal numbers of factors? Selfridge achieved density 1/e - \u03b5; whether arbitrarily high density is possible remains OPEN.",
   "meta": {
     "author": "Selfridge (density 1/e), Ruzsa (upper bound)",
     "sourceUrl": "https://erdosproblems.com/786",
@@ -58,15 +58,15 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #786 was posed around 1965 and appears in several of Erdős's papers from 1965, 1969, and 1973. The problem asks about 'multiplicative cardinality sets' - sets where equal products must come from equal numbers of factors.\n\nThe simplest example is integers ≡ 2 (mod 4), which achieves density 1/4. Each such integer has exactly one factor of 2, so a product of k elements has exactly k factors of 2, forcing equal products to have equal factor counts.\n\nSelfridge constructed a more sophisticated example achieving density 1/e - ε for any ε > 0. His construction uses consecutive primes p₁ < ... < pₖ where the sum of reciprocals crosses 1, and takes integers divisible by exactly one of these primes.\n\nRuzsa reportedly proved an upper bound showing density 1 is impossible (size ≤ (1-c)N for some c > 0), but this proof was never published.",
-    "problemStatement": "**Erdős Problem #786**: For any $\\varepsilon > 0$, does there exist a set $A \\subset \\mathbb{N}$ with density $> 1 - \\varepsilon$ such that whenever\n$$a_1 \\cdot a_2 \\cdots a_r = b_1 \\cdot b_2 \\cdots b_s$$\nwith $a_i, b_j \\in A$, we must have $r = s$?\n\n**Status**: OPEN\n\n**Known Results**:\n- Integers $\\equiv 2 \\pmod{4}$: density $1/4$\n- Selfridge construction: density $1/e - \\varepsilon$ for any $\\varepsilon > 0$\n- Ruzsa (unpublished): maximum size $\\leq (1-c)N$ for some $c > 0$\n\n**Second Question**: Can we find $A \\subset \\{1,\\ldots,N\\}$ of size $\\geq (1-o(1))N$?",
-    "text": "For any ε > 0, is there a set A of density > 1-ε such that equal products from A must have equal numbers of factors? Selfridge achieved density 1/e - ε; whether arbitrarily high density is possible remains OPEN.",
-    "proofStrategy": "We formalize the problem and its known partial results:\n\n1. **Define MulCardSet**: Equal products must have equal factor counts\n2. **Define natural density**: Using Filter.Tendsto for limit as n → ∞\n3. **State the conjectures**: DensityConjecture and FiniteConjecture as Props\n4. **Axiomatize examples**: mod 4 residues (density 1/4) and Selfridge (density 1/e - ε)\n5. **State bounds**: Ruzsa's unpublished upper bound, log 2 lower bound\n6. **Verify examples**: Concrete mod 4 calculations via native_decide",
+    "historicalContext": "Erd\u0151s Problem #786 was posed around 1965 and appears in several of Erd\u0151s's papers from 1965, 1969, and 1973. The problem asks about 'multiplicative cardinality sets' - sets where equal products must come from equal numbers of factors.\n\nThe simplest example is integers \u2261 2 (mod 4), which achieves density 1/4. Each such integer has exactly one factor of 2, so a product of k elements has exactly k factors of 2, forcing equal products to have equal factor counts.\n\nSelfridge constructed a more sophisticated example achieving density 1/e - \u03b5 for any \u03b5 > 0. His construction uses consecutive primes p\u2081 < ... < p\u2096 where the sum of reciprocals crosses 1, and takes integers divisible by exactly one of these primes.\n\nRuzsa reportedly proved an upper bound showing density 1 is impossible (size \u2264 (1-c)N for some c > 0), but this proof was never published.",
+    "problemStatement": "**Erd\u0151s Problem #786**: For any $\\varepsilon > 0$, does there exist a set $A \\subset \\mathbb{N}$ with density $> 1 - \\varepsilon$ such that whenever\n$$a_1 \\cdot a_2 \\cdots a_r = b_1 \\cdot b_2 \\cdots b_s$$\nwith $a_i, b_j \\in A$, we must have $r = s$?\n\n**Status**: OPEN\n\n**Known Results**:\n- Integers $\\equiv 2 \\pmod{4}$: density $1/4$\n- Selfridge construction: density $1/e - \\varepsilon$ for any $\\varepsilon > 0$\n- Ruzsa (unpublished): maximum size $\\leq (1-c)N$ for some $c > 0$\n\n**Second Question**: Can we find $A \\subset \\{1,\\ldots,N\\}$ of size $\\geq (1-o(1))N$?",
+    "text": "For any \u03b5 > 0, is there a set A of density > 1-\u03b5 such that equal products from A must have equal numbers of factors? Selfridge achieved density 1/e - \u03b5; whether arbitrarily high density is possible remains OPEN.",
+    "proofStrategy": "We formalize the problem and its known partial results:\n\n1. **Define MulCardSet**: Equal products must have equal factor counts\n2. **Define natural density**: Using Filter.Tendsto for limit as n \u2192 \u221e\n3. **State the conjectures**: DensityConjecture and FiniteConjecture as Props\n4. **Axiomatize examples**: mod 4 residues (density 1/4) and Selfridge (density 1/e - \u03b5)\n5. **State bounds**: Ruzsa's unpublished upper bound, log 2 lower bound\n6. **Verify examples**: Concrete mod 4 calculations via native_decide",
     "keyInsights": [
-      "**The core constraint**: A multiplicative cardinality set forces factorization patterns to be unique. If a·b = c·d with all in A, then we must have 2 = 2 factors on each side.",
-      "**Why mod 4 works**: Integers ≡ 2 (mod 4) have exactly one factor of 2. A product of r such integers has exactly r factors of 2. So equal products require equal counts.",
-      "**Selfridge's clever construction**: Choose consecutive primes where ∑(1/pᵢ) crosses 1. Elements divisible by exactly one prime form a MulCardSet with density approaching 1/e.",
-      "**The 1/e barrier**: The density 1/e ≈ 0.368 appears naturally from the inclusion-exclusion formula for 'divisible by exactly one prime'. Can we break this barrier?",
+      "**The core constraint**: A multiplicative cardinality set forces factorization patterns to be unique. If a\u00b7b = c\u00b7d with all in A, then we must have 2 = 2 factors on each side.",
+      "**Why mod 4 works**: Integers \u2261 2 (mod 4) have exactly one factor of 2. A product of r such integers has exactly r factors of 2. So equal products require equal counts.",
+      "**Selfridge's clever construction**: Choose consecutive primes where \u2211(1/p\u1d62) crosses 1. Elements divisible by exactly one prime form a MulCardSet with density approaching 1/e.",
+      "**The 1/e barrier**: The density 1/e \u2248 0.368 appears naturally from the inclusion-exclusion formula for 'divisible by exactly one prime'. Can we break this barrier?",
       "**Ruzsa's claimed bound**: If density 1 were achievable, almost all integers would satisfy the property. Ruzsa's argument (never published) shows this leads to a contradiction."
     ],
     "prerequisites": [
@@ -109,7 +109,7 @@
       "title": "Known Examples",
       "startLine": 72,
       "endLine": 107,
-      "summary": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε)."
+      "summary": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - \u03b5)."
     },
     {
       "id": "bounds",
@@ -141,7 +141,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #786, the question of how dense a multiplicative cardinality set can be. The problem remains OPEN: Selfridge achieved density 1/e - ε using consecutive primes, but whether arbitrarily high density is achievable is unknown. Ruzsa claimed an upper bound showing density 1 is impossible, but his proof was never published.",
+    "summary": "We formalize Erd\u0151s Problem #786, the question of how dense a multiplicative cardinality set can be. The problem remains OPEN: Selfridge achieved density 1/e - \u03b5 using consecutive primes, but whether arbitrarily high density is achievable is unknown. Ruzsa claimed an upper bound showing density 1 is impossible, but his proof was never published.",
     "implications": "**Theoretical Significance**: This problem connects number theory and combinatorics:\n\n1. **Multiplicative structure**: Understanding which sets preserve factor count information\n**2. Prime distribution**: Selfridge's construction uses prime reciprocal sums\n3. **Density methods**: Techniques for proving density bounds on structured sets\n4. **Open research**: The gap between 1/e and (1-c) density remains unexplored.",
     "openQuestions": [
       "Can density > 1/e be achieved?",
@@ -170,19 +170,19 @@
   "references": [
     {
       "title": "On some problems of a statistical group-theory, I",
-      "author": "Erdős, P. and Turán, P.",
+      "author": "Erd\u0151s, P. and Tur\u00e1n, P.",
       "year": 1965,
       "description": "Early appearance of Problem #786 on multiplicative cardinality sets and their density"
     },
     {
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
-      "author": "Erdős, P. and Graham, R. L.",
+      "author": "Erd\u0151s, P. and Graham, R. L.",
       "year": 1980,
       "description": "Comprehensive discussion of the problem with Selfridge's density 1/e construction"
     },
     {
       "title": "On the distribution of the number of prime factors of sums a+b",
-      "author": "Erdős, P.",
+      "author": "Erd\u0151s, P.",
       "year": 1973,
       "description": "Further discussion of multiplicative structure problems including Ruzsa's unpublished upper bound"
     }
@@ -205,7 +205,8 @@
     "lineCount": 175,
     "axiomCount": 4,
     "theoremCount": 1,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   },
   "relatedProofs": [
     "erdos-437",

@@ -17,7 +17,7 @@
     ],
     "proofRepoPath": "Proofs/HurwitzTheorem.lean",
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Quaternion.normSq_mul",
@@ -274,15 +274,11 @@
     "namespace": "HurwitzTheorem",
     "lineCount": 1679,
     "axiomCount": 2,
-    "theoremCount": 30,
-    "definitionCount": 13
+    "theoremCount": 11,
+    "definitionCount": 13,
+    "lemmaCount": 19
   },
   "relatedProofs": [
-    "",
-    "",
-    "",
-    "",
-    "",
     "lagrange-four-squares",
     "fermat-two-squares",
     "euler-identity",

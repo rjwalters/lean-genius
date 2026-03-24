@@ -1,10 +1,10 @@
 {
   "id": "erdos-1138",
-  "title": "Erdős Problem #1138: Primes in Short Intervals and Maximal Gaps",
+  "title": "Erd\u0151s Problem #1138: Primes in Short Intervals and Maximal Gaps",
   "slug": "erdos-1138",
-  "description": "For x/2 < y < x and C > 1, if d is the maximal prime gap below x, is π(y + Cd) - π(y) ~ Cd / log y?",
+  "description": "For x/2 < y < x and C > 1, if d is the maximal prime gap below x, is \u03c0(y + Cd) - \u03c0(y) ~ Cd / log y?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1138",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1138Problem.lean",
@@ -74,16 +74,16 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1138 sits at the intersection of two of the deepest themes in analytic number theory: the distribution of primes in short intervals and the structure of maximal prime gaps. The prime number theorem, proved independently by Hadamard and de la Vallée Poussin in 1896, establishes that $\\pi(x) \\sim x/\\log x$, but understanding $\\pi(x+h) - \\pi(x)$ for short intervals $h = o(x)$ is far harder. Huxley (1972) showed unconditionally that the asymptotic $\\pi(x+h) - \\pi(x) \\sim h/\\log x$ holds for $h > x^{7/12}$, while under the Riemann Hypothesis one can take $h > x^{1/2+\\varepsilon}$.\n\nMeanwhile, the maximal prime gap $d(x) = \\max_{p_n < x}(p_{n+1} - p_n)$ is conjectured by Cramér (1936) to satisfy $d(x) \\sim (\\log x)^2$, based on a probabilistic model of the primes. The best unconditional result, due to Baker–Harman–Pintz (2001), gives a prime in every interval $[x, x + x^{0.525}]$, but this is enormously larger than $(\\log x)^2$. Erdős's question asks whether the prime counting function still behaves asymptotically correctly in intervals of length $Cd(x)$ — intervals potentially as short as $C(\\log x)^2$ — centered around arbitrary points $y \\in (x/2, x)$. This would require a dramatic strengthening of all known short-interval results.\n\nThe problem reflects Erdős's characteristic approach of posing questions that connect disparate areas: here, the combinatorial structure of prime gaps meets the analytic machinery of the prime number theorem.",
+    "historicalContext": "Erd\u0151s Problem #1138 sits at the intersection of two of the deepest themes in analytic number theory: the distribution of primes in short intervals and the structure of maximal prime gaps. The prime number theorem, proved independently by Hadamard and de la Vall\u00e9e Poussin in 1896, establishes that $\\pi(x) \\sim x/\\log x$, but understanding $\\pi(x+h) - \\pi(x)$ for short intervals $h = o(x)$ is far harder. Huxley (1972) showed unconditionally that the asymptotic $\\pi(x+h) - \\pi(x) \\sim h/\\log x$ holds for $h > x^{7/12}$, while under the Riemann Hypothesis one can take $h > x^{1/2+\\varepsilon}$.\n\nMeanwhile, the maximal prime gap $d(x) = \\max_{p_n < x}(p_{n+1} - p_n)$ is conjectured by Cram\u00e9r (1936) to satisfy $d(x) \\sim (\\log x)^2$, based on a probabilistic model of the primes. The best unconditional result, due to Baker\u2013Harman\u2013Pintz (2001), gives a prime in every interval $[x, x + x^{0.525}]$, but this is enormously larger than $(\\log x)^2$. Erd\u0151s's question asks whether the prime counting function still behaves asymptotically correctly in intervals of length $Cd(x)$ \u2014 intervals potentially as short as $C(\\log x)^2$ \u2014 centered around arbitrary points $y \\in (x/2, x)$. This would require a dramatic strengthening of all known short-interval results.\n\nThe problem reflects Erd\u0151s's characteristic approach of posing questions that connect disparate areas: here, the combinatorial structure of prime gaps meets the analytic machinery of the prime number theorem.",
     "problemStatement": "For $x/2 < y < x$ and $C > 1$, if $d = \\max_{p_n < x}(p_{n+1} - p_n)$ is the maximal prime gap below $x$, is it true that $\\pi(y + Cd) - \\pi(y) \\sim Cd / \\log y$ as $x \\to \\infty$?",
-    "text": "For x/2 < y < x and C > 1, if d is the maximal prime gap below x, is π(y + Cd) - π(y) ~ Cd / log y?",
-    "proofStrategy": "The formalization builds the necessary infrastructure in stages. First, the prime counting function $\\pi(n)$ is defined using `Finset.filter` over `Finset.range`, giving a computable definition. Interval counting $\\pi(b) - \\pi(a)$ and the maximal prime gap $d(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\}$ are then defined. Basic properties of $\\pi$ (monotonicity, values at 0, 1, 2, and trivial upper bounds) are proved. The conjecture itself is stated as an axiom using the $\\varepsilon$-formulation: for every $\\varepsilon > 0$, the ratio of the actual prime count to the expected count lies in $[1-\\varepsilon, 1+\\varepsilon]$ for sufficiently large $x$. Related results — Bertrand's postulate and Cramér's conjecture — are included as axioms to contextualize the problem.",
+    "text": "For x/2 < y < x and C > 1, if d is the maximal prime gap below x, is \u03c0(y + Cd) - \u03c0(y) ~ Cd / log y?",
+    "proofStrategy": "The formalization builds the necessary infrastructure in stages. First, the prime counting function $\\pi(n)$ is defined using `Finset.filter` over `Finset.range`, giving a computable definition. Interval counting $\\pi(b) - \\pi(a)$ and the maximal prime gap $d(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\}$ are then defined. Basic properties of $\\pi$ (monotonicity, values at 0, 1, 2, and trivial upper bounds) are proved. The conjecture itself is stated as an axiom using the $\\varepsilon$-formulation: for every $\\varepsilon > 0$, the ratio of the actual prime count to the expected count lies in $[1-\\varepsilon, 1+\\varepsilon]$ for sufficiently large $x$. Related results \u2014 Bertrand's postulate and Cram\u00e9r's conjecture \u2014 are included as axioms to contextualize the problem.",
     "keyInsights": [
-      "**Gap between conjecture and provability**: Cramér's conjecture predicts $d(x) \\sim (\\log x)^2$, but even under the Riemann Hypothesis, short interval PNT requires $h > x^{1/2+\\varepsilon}$. The gap between $(\\log x)^2$ and $x^{1/2+\\varepsilon}$ is astronomical, making this problem completely out of reach of current methods.",
+      "**Gap between conjecture and provability**: Cram\u00e9r's conjecture predicts $d(x) \\sim (\\log x)^2$, but even under the Riemann Hypothesis, short interval PNT requires $h > x^{1/2+\\varepsilon}$. The gap between $(\\log x)^2$ and $x^{1/2+\\varepsilon}$ is astronomical, making this problem completely out of reach of current methods.",
       "**Uniformity over the interval $(x/2, x)$**: The conjecture asks for the asymptotic to hold for *all* $y$ in the second half $(x/2, x)$, not just a typical $y$. This uniformity requirement is much stronger than an average-case statement and rules out approaches based on mean-value theorems alone.",
       "**The $\\varepsilon$-formulation captures asymptotic equivalence**: The Lean statement uses $(1-\\varepsilon) \\cdot Cd/\\log y \\le \\pi(y+Cd) - \\pi(y) \\le (1+\\varepsilon) \\cdot Cd/\\log y$ for all $\\varepsilon > 0$, which is the standard way to formalize $f \\sim g$ as $f/g \\to 1$ without division-by-zero issues.",
-      "**Bertrand's postulate as a weak baseline**: Bertrand's postulate guarantees a prime in $(n, 2n]$, an interval of length $n$. Erdős's conjecture asks for the expected prime count in intervals potentially as short as $C(\\log x)^2$ — exponentially shorter than what Bertrand provides.",
-      "**Cramér's probabilistic model**: Cramér modeled primes via independent random variables with $\\Pr[n \\text{ is prime}] = 1/\\log n$. Under this model, the maximal gap below $x$ is $(\\log x)^2$ with probability 1, and the short interval count obeys the PNT. Erdős's conjecture essentially asks whether the 'real' primes behave like Cramér's model at this fine scale."
+      "**Bertrand's postulate as a weak baseline**: Bertrand's postulate guarantees a prime in $(n, 2n]$, an interval of length $n$. Erd\u0151s's conjecture asks for the expected prime count in intervals potentially as short as $C(\\log x)^2$ \u2014 exponentially shorter than what Bertrand provides.",
+      "**Cram\u00e9r's probabilistic model**: Cram\u00e9r modeled primes via independent random variables with $\\Pr[n \\text{ is prime}] = 1/\\log n$. Under this model, the maximal gap below $x$ is $(\\log x)^2$ with probability 1, and the short interval count obeys the PNT. Erd\u0151s's conjecture essentially asks whether the 'real' primes behave like Cram\u00e9r's model at this fine scale."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -124,7 +124,7 @@
     },
     {
       "id": "erdos-conjecture",
-      "title": "The Erdős Conjecture (Problem 1138)",
+      "title": "The Erd\u0151s Conjecture (Problem 1138)",
       "startLine": 90,
       "endLine": 118,
       "summary": "States the main conjecture: for $C > 1$ and $\\varepsilon > 0$, there exists $N$ such that for all $x \\ge N$ and $y \\in (x/2, x)$, the prime count $\\pi(y + \\lfloor Cd \\rfloor) - \\pi(y)$ lies within $(1 \\pm \\varepsilon) \\cdot Cd / \\log y$. Declared as an axiom since this is an open problem."
@@ -134,15 +134,15 @@
       "title": "Related Known Results",
       "startLine": 119,
       "endLine": 135,
-      "summary": "States Bertrand's postulate (for $n \\ge 1$, there exists a prime in $(n, 2n]$) and Cramér's conjecture ($d(x) \\le (1+\\varepsilon)(\\log x)^2$ eventually) as axioms, providing context for the strength of Erdős's conjecture relative to known and conjectured bounds on prime gaps."
+      "summary": "States Bertrand's postulate (for $n \\ge 1$, there exists a prime in $(n, 2n]$) and Cram\u00e9r's conjecture ($d(x) \\le (1+\\varepsilon)(\\log x)^2$ eventually) as axioms, providing context for the strength of Erd\u0151s's conjecture relative to known and conjectured bounds on prime gaps."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1138, which asks whether the prime number theorem holds at the scale of maximal prime gaps. The infrastructure — prime counting via `Finset.filter`, maximal gaps via `sSup`, and the $\\varepsilon$-formulation of asymptotic equivalence — provides a clean Lean 4 framework for this deep open problem in analytic number theory.",
-    "implications": "**Theoretical Significance**: A positive resolution would imply that primes are remarkably well-distributed even at scales far below what current analytic methods can handle.\n\nIt would confirm aspects of Cramér's probabilistic model of the primes and have consequences for understanding the fine structure of prime gaps. A negative resolution would reveal unexpected irregularities in prime distribution at the $(\\log x)^2$ scale.",
+    "summary": "This formalization captures Erd\u0151s Problem #1138, which asks whether the prime number theorem holds at the scale of maximal prime gaps. The infrastructure \u2014 prime counting via `Finset.filter`, maximal gaps via `sSup`, and the $\\varepsilon$-formulation of asymptotic equivalence \u2014 provides a clean Lean 4 framework for this deep open problem in analytic number theory.",
+    "implications": "**Theoretical Significance**: A positive resolution would imply that primes are remarkably well-distributed even at scales far below what current analytic methods can handle.\n\nIt would confirm aspects of Cram\u00e9r's probabilistic model of the primes and have consequences for understanding the fine structure of prime gaps. A negative resolution would reveal unexpected irregularities in prime distribution at the $(\\log x)^2$ scale.",
     "openQuestions": [
       "Can the short interval prime number theorem be extended to intervals of length $(\\log x)^{2+\\varepsilon}$, bridging toward the conjectured $(\\log x)^2$ scale?",
-      "Does Maier's theorem (1985) — showing that $\\pi(x+h) - \\pi(x)$ deviates from $h/\\log x$ for certain $h$ around $(\\log x)^A$ — obstruct Erdős's conjecture, or does the maximal gap normalization avoid Maier's phenomenon?",
+      "Does Maier's theorem (1985) \u2014 showing that $\\pi(x+h) - \\pi(x)$ deviates from $h/\\log x$ for certain $h$ around $(\\log x)^A$ \u2014 obstruct Erd\u0151s's conjecture, or does the maximal gap normalization avoid Maier's phenomenon?",
       "RESOLVED: The sorry in `maxPrimeGap_le` has been proved by establishing that every prime gap $q - p \\le q \\le x$ and applying `csSup_le`."
     ]
   },
@@ -150,7 +150,7 @@
     {
       "targetId": "bertrands-postulate",
       "relationship": "strengthens",
-      "description": "Bertrand's postulate guarantees a prime in $(n, 2n]$; Erdős #1138 asks for the full asymptotic in intervals potentially as short as $C(\\log x)^2$"
+      "description": "Bertrand's postulate guarantees a prime in $(n, 2n]$; Erd\u0151s #1138 asks for the full asymptotic in intervals potentially as short as $C(\\log x)^2$"
     },
     {
       "targetId": "prime-number-theorem",
@@ -160,7 +160,7 @@
     {
       "targetId": "riemann-hypothesis",
       "relationship": "related",
-      "description": "Even assuming RH, short-interval PNT requires $h > x^{1/2+\\varepsilon}$, far larger than the conjectured $(\\log x)^2$ maximal gap. Resolving Erdős #1138 would require methods beyond RH."
+      "description": "Even assuming RH, short-interval PNT requires $h > x^{1/2+\\varepsilon}$, far larger than the conjectured $(\\log x)^2$ maximal gap. Resolving Erd\u0151s #1138 would require methods beyond RH."
     },
     {
       "targetId": "prime-reciprocal-divergence",
@@ -170,7 +170,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes is the most basic prerequisite; Erdős #1138 asks about the fine quantitative distribution of these infinitely many primes"
+      "description": "The infinitude of primes is the most basic prerequisite; Erd\u0151s #1138 asks about the fine quantitative distribution of these infinitely many primes"
     }
   ],
   "relatedProofs": [
@@ -197,6 +197,7 @@
     "lineCount": 238,
     "axiomCount": 3,
     "theoremCount": 20,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   }
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-1062",
-  "title": "Erdős Problem #1062: Maximum \"No Divides Two Others\" Sets",
+  "title": "Erd\u0151s Problem #1062: Maximum \"No Divides Two Others\" Sets",
   "slug": "erdos-1062",
-  "description": "Let f(n) = max |A| for A ⊆ {1,…,n} with no element dividing two distinct others. Lebensold: 0.6725n ≤ f(n) ≤ 0.6736n. Is lim f(n)/n irrational? OPEN.",
+  "description": "Let f(n) = max |A| for A \u2286 {1,\u2026,n} with no element dividing two distinct others. Lebensold: 0.6725n \u2264 f(n) \u2264 0.6736n. Is lim f(n)/n irrational? OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1062",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1062Problem.lean",
@@ -24,15 +24,15 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem appears as B24 in Richard Guy's *Unsolved Problems in Number Theory* (3rd ed., 2004) and originates from Erdős's extensive work on divisibility-restricted subsets of $\\{1,\\ldots,n\\}$. Kenneth Lebensold (1976, *Studies in Applied Mathematics*, Vol. 56, pp. 291–294) established the tight bounds $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$, narrowing the asymptotic density to an interval of width $0.0011$. The basic lower bound $f(n) \\geq \\lceil 2n/3 \\rceil$ was observed earlier using the interval $[m+1, 3m+2]$, where ratios stay below 3. The problem connects to Erdős's pioneering work on primitive sets with Besicovitch (1934) — sets where no element divides any other — and to Dilworth's theorem (1950) on antichains in partially ordered sets. The divisibility poset on $\\{1,\\ldots,n\\}$ forms a rich combinatorial structure where the NDTO condition defines a relaxed antichain: allowing one divisibility per element but forbidding two. Lichtman's 2022 proof of the Erdős primitive set conjecture (that primes maximize $\\sum 1/(a \\log a)$ over all primitive sets) renewed interest in divisibility-restricted extremal problems, though Lebensold's bounds for NDTO sets remain unimproved after nearly 50 years.",
+    "historicalContext": "This problem appears as B24 in Richard Guy's *Unsolved Problems in Number Theory* (3rd ed., 2004) and originates from Erd\u0151s's extensive work on divisibility-restricted subsets of $\\{1,\\ldots,n\\}$. Kenneth Lebensold (1976, *Studies in Applied Mathematics*, Vol. 56, pp. 291\u2013294) established the tight bounds $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$, narrowing the asymptotic density to an interval of width $0.0011$. The basic lower bound $f(n) \\geq \\lceil 2n/3 \\rceil$ was observed earlier using the interval $[m+1, 3m+2]$, where ratios stay below 3. The problem connects to Erd\u0151s's pioneering work on primitive sets with Besicovitch (1934) \u2014 sets where no element divides any other \u2014 and to Dilworth's theorem (1950) on antichains in partially ordered sets. The divisibility poset on $\\{1,\\ldots,n\\}$ forms a rich combinatorial structure where the NDTO condition defines a relaxed antichain: allowing one divisibility per element but forbidding two. Lichtman's 2022 proof of the Erd\u0151s primitive set conjecture (that primes maximize $\\sum 1/(a \\log a)$ over all primitive sets) renewed interest in divisibility-restricted extremal problems, though Lebensold's bounds for NDTO sets remain unimproved after nearly 50 years.",
     "problemStatement": "Let $f(n)$ be the maximum size of $A \\subseteq \\{1,\\ldots,n\\}$ such that no element of $A$ divides two distinct other elements of $A$. What is $\\lim_{n \\to \\infty} f(n)/n$? Is this limit irrational?",
-    "text": "Let f(n) = max |A| for A ⊆ {1,…,n} with no element dividing two distinct others. Lebensold: 0.6725n ≤ f(n) ≤ 0.6736n. Is lim f(n)/n irrational? OPEN.",
+    "text": "Let f(n) = max |A| for A \u2286 {1,\u2026,n} with no element dividing two distinct others. Lebensold: 0.6725n \u2264 f(n) \u2264 0.6736n. Is lim f(n)/n irrational? OPEN.",
     "proofStrategy": "The formalization defines `NoDividesTwoOthers` as the combinatorial predicate (no element divides two distinct others) and `maxNDTOSize` as the extremal function $f(n)$. The lower bound from the interval $[m+1, 3m+2]$ and Lebensold's refined bounds are axiomatized. The existence of the limiting density is stated, and `ErdosProblem1062` asks whether it is irrational. A comparison with primitive sets (`IsPrimitiveFinset`) shows the NDTO condition is strictly weaker, with a constructive proof for the implication and the $\\{2, 6, 9\\}$ counterexample for strictness.",
     "keyInsights": [
       "**Degree-bounded divisibility graph**: The NDTO condition is equivalent to requiring out-degree $\\leq 1$ in the divisibility graph on $A$, while primitive sets require out-degree $= 0$. This graph-theoretic view explains why NDTO allows linear-density sets while primitive sets have density 0",
       "**Near-optimal simple construction**: The interval $[m+1, 3m+2]$ achieves density $2/3 \\approx 0.667$, already within $0.7\\%$ of Lebensold's optimal lower bound $0.6725$. The difficulty in improving bounds lies in optimizing over the irregular divisibility structure beyond simple intervals",
       "**Remarkably tight bounds**: Lebensold's bounds $[0.6725, 0.6736]$ constrain the density to an interval of width $0.0011$, yet neither the exact value nor its rationality is known. If $\\lambda = p/q$ is rational, then $q \\geq 92$ is needed to fit within the interval",
-      "**Connection to Fekete's lemma**: The existence of $\\lim f(n)/n$ follows from subadditivity arguments — a recurring theme in extremal combinatorics where densities of forbidden-pattern-free sets are shown to exist via Fekete's lemma, even when computing the exact limit is intractable",
+      "**Connection to Fekete's lemma**: The existence of $\\lim f(n)/n$ follows from subadditivity arguments \u2014 a recurring theme in extremal combinatorics where densities of forbidden-pattern-free sets are shown to exist via Fekete's lemma, even when computing the exact limit is intractable",
       "**Primitive set comparison**: Besicovitch (1934) showed primitive sets in $[n]$ have density tending to 0, while NDTO sets achieve density $\\approx 0.67$. The single-divisibility relaxation from primitive to NDTO creates a dramatic jump from sublinear to linear set sizes"
     ],
     "prerequisites": [
@@ -96,13 +96,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 1062: the extremal theory of \"no divides two others\" subsets of $\\{1,\\ldots,n\\}$. The NDTO condition, extremal function $f(n)$, constructive lower bound, Lebensold's tight asymptotic bounds, the irrationality conjecture, and the comparison with primitive sets are all encoded. The only fully proved result is the implication Primitive $\\implies$ NDTO; all other bounds and the existence of the limiting density are axiomatized.",
+    "summary": "This formalization captures Erd\u0151s Problem 1062: the extremal theory of \"no divides two others\" subsets of $\\{1,\\ldots,n\\}$. The NDTO condition, extremal function $f(n)$, constructive lower bound, Lebensold's tight asymptotic bounds, the irrationality conjecture, and the comparison with primitive sets are all encoded. The only fully proved result is the implication Primitive $\\implies$ NDTO; all other bounds and the existence of the limiting density are axiomatized.",
     "implications": "**Theoretical Significance**: Resolution of the irrationality question would illuminate a fundamental phenomenon in extremal combinatorics: whether densities of divisibility-restricted sets are governed by rational or irrational constants.\n\nThe tight bounds $[0.6725, 0.6736]$ suggest the answer might require new techniques combining analytic number theory (to understand the divisibility structure of $[n]$) with combinatorial optimization. The recent progress on primitive sets (Lichtman 2022) may provide methodological inspiration.",
     "openQuestions": [
       "Is $\\lambda = \\lim f(n)/n$ irrational? No rational $p/q$ with small denominator fits within $[0.6725, 0.6736]$.",
       "Can Lebensold's 1976 bounds be improved with modern computational and analytic techniques? The interval width $0.0011$ has stood for nearly 50 years.",
       "What is the exact value of $\\lambda$? Is it expressible in terms of known constants (e.g., involving $\\log 2$, $\\log 3$, or other natural logarithms)?",
-      "How does the extremal function behave for the $k$-fold generalization: no element divides $k$ distinct others? The $k=1$ case is primitive sets (density 0), $k=2$ is NDTO (density $\\approx 0.67$) — what happens for $k=3, 4, \\ldots$?"
+      "How does the extremal function behave for the $k$-fold generalization: no element divides $k$ distinct others? The $k=1$ case is primitive sets (density 0), $k=2$ is NDTO (density $\\approx 0.67$) \u2014 what happens for $k=3, 4, \\ldots$?"
     ]
   },
   "relatedProofs": [
@@ -134,7 +134,8 @@
     "lineCount": 104,
     "axiomCount": 5,
     "theoremCount": 1,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -150,7 +151,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes shapes the structure of the divisibility poset on {1,...,n}. Primes contribute to the valid set since they can divide at most one other element in {1,...,n} that is also ≤ n (namely 2p, 3p, etc.)"
+      "description": "The infinitude of primes shapes the structure of the divisibility poset on {1,...,n}. Primes contribute to the valid set since they can divide at most one other element in {1,...,n} that is also \u2264 n (namely 2p, 3p, etc.)"
     },
     {
       "targetId": "partition-theorem",
@@ -160,28 +161,28 @@
     {
       "targetId": "derangements",
       "relationship": "thematic",
-      "description": "Both are extremal counting problems: derangements count permutations avoiding fixed points, while this problem maximizes subsets avoiding divisibility 'stars'. Both have asymptotic density results (derangements: 1/e, this problem: c ∈ [0.6725, 0.6736])"
+      "description": "Both are extremal counting problems: derangements count permutations avoiding fixed points, while this problem maximizes subsets avoiding divisibility 'stars'. Both have asymptotic density results (derangements: 1/e, this problem: c \u2208 [0.6725, 0.6736])"
     }
   ],
   "references": [
     {
       "key": "Le78",
-      "citation": "Lebensold, K., Disjoint divisibility conditions, Studies in Applied Mathematics 59(2) (1978), 151–164.",
+      "citation": "Lebensold, K., Disjoint divisibility conditions, Studies in Applied Mathematics 59(2) (1978), 151\u2013164.",
       "type": "paper"
     },
     {
       "key": "Di51",
-      "citation": "Dilworth, R.P., A decomposition theorem for partially ordered sets, Annals of Mathematics 51(1) (1950), 161–166.",
+      "citation": "Dilworth, R.P., A decomposition theorem for partially ordered sets, Annals of Mathematics 51(1) (1950), 161\u2013166.",
       "type": "paper"
     },
     {
       "key": "Er65",
-      "citation": "Erdős, P., Extremal problems in number theory, Proceedings of Symposia in Pure Mathematics 8 (1965), 181–189.",
+      "citation": "Erd\u0151s, P., Extremal problems in number theory, Proceedings of Symposia in Pure Mathematics 8 (1965), 181\u2013189.",
       "type": "paper"
     },
     {
       "key": "Sp28",
-      "citation": "Sperner, E., Ein Satz über Untermengen einer endlichen Menge, Mathematische Zeitschrift 27 (1928), 544–548.",
+      "citation": "Sperner, E., Ein Satz \u00fcber Untermengen einer endlichen Menge, Mathematische Zeitschrift 27 (1928), 544\u2013548.",
       "type": "paper"
     }
   ]

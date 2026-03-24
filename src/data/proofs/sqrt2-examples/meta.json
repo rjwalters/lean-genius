@@ -41,11 +41,11 @@
     "relatedProblems": [
       {
         "id": "sqrt2-irrational",
-        "relationship": "Companion proof about √2: this file demonstrates basic Lean tactics, while sqrt2-irrational proves the irrationality of √2 using those same techniques at a higher level"
+        "relationship": "Companion proof about \u221a2: this file demonstrates basic Lean tactics, while sqrt2-irrational proves the irrationality of \u221a2 using those same techniques at a higher level"
       },
       {
         "id": "sqrt2-from-axioms",
-        "relationship": "An alternative formalization of √2 properties built from first principles rather than Mathlib"
+        "relationship": "An alternative formalization of \u221a2 properties built from first principles rather than Mathlib"
       },
       {
         "id": "nth-root-irrational",
@@ -144,7 +144,7 @@
     }
   ],
   "conclusion": {
-    "summary": "These pedagogical examples demonstrate two fundamental modes of formal reasoning in Lean 4: tactic-driven computation for algebraic properties and backward logical deduction for propositional logic. Despite their simplicity, they showcase core techniques — case analysis, calculational proofs, and function application — that recur throughout advanced formalizations.",
+    "summary": "These pedagogical examples demonstrate two fundamental modes of formal reasoning in Lean 4: tactic-driven computation for algebraic properties and backward logical deduction for propositional logic. Despite their simplicity, they showcase core techniques \u2014 case analysis, calculational proofs, and function application \u2014 that recur throughout advanced formalizations.",
     "implications": "**Theoretical Significance**: The non-negativity of squares is a building block for ordering properties of integers and reals, underpinning results from the AM-GM inequality to the theory of quadratic forms.\n\nImplication transitivity is the logical foundation for proof composition, allowing complex arguments to be built from simpler lemmas. Mastering these basic tactics is essential for formalizing deeper results in Lean.",
     "openQuestions": [
       "Can square_nonneg be generalized to arbitrary linearly ordered rings in Lean without additional axioms?",
@@ -161,12 +161,10 @@
     "lineCount": 48,
     "axiomCount": 0,
     "theoremCount": 2,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "relatedProofs": [
-    "",
-    "",
-    "",
     "sqrt2-irrational",
     "sqrt2-from-axioms",
     "amgm-inequality"
@@ -177,7 +175,7 @@
       "title": "An Introduction to the Theory of Numbers",
       "year": "2008",
       "venue": "Oxford University Press, 6th edition",
-      "note": "Contains multiple proofs of the irrationality of √2 including the classic proof by contradiction"
+      "note": "Contains multiple proofs of the irrationality of \u221a2 including the classic proof by contradiction"
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-595",
-  "title": "Erdős Problem #595: Infinite Graphs and Countable Triangle-Free Decomposition",
+  "title": "Erd\u0151s Problem #595: Infinite Graphs and Countable Triangle-Free Decomposition",
   "slug": "erdos-595",
-  "description": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs? A fundamental question by Erdős and Hajnal about the chromatic structure of infinite graphs. OPEN, $250 prize.",
+  "description": "Is there an infinite graph G which contains no K\u2084 and is not the union of countably many triangle-free graphs? A fundamental question by Erd\u0151s and Hajnal about the chromatic structure of infinite graphs. OPEN, $250 prize.",
   "meta": {
-    "author": "Erdős-Hajnal",
+    "author": "Erd\u0151s-Hajnal",
     "sourceUrl": "https://erdosproblems.com/595",
     "date": "~1967",
     "status": "axiomatized",
@@ -54,27 +54,27 @@
       "erdos595_conjecture: formal statement of the open problem",
       "hasFiniteTriangleFreeCover: finite covering predicate",
       "folkman_finite_resistance axiom: Folkman (1970)",
-      "nesetril_rodl_finite_resistance axiom: Nešetřil-Rödl (1975)",
+      "nesetril_rodl_finite_resistance axiom: Ne\u0161et\u0159il-R\u00f6dl (1975)",
       "problem595_reformulated: alternative formalization",
-      "c4_free_countable_trees axiom: Erdős-Hajnal C₄-free result",
+      "c4_free_countable_trees axiom: Erd\u0151s-Hajnal C\u2084-free result",
       "finite_case_complete theorem: proved from Folkman",
-      "erdos_595_summary theorem: combines Folkman and C₄-free results"
+      "erdos_595_summary theorem: combines Folkman and C\u2084-free results"
     ],
     "axiomCount": 3,
     "lineCount": 229,
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem originated from Erdős and Hajnal around 1967, exploring the chromatic properties of infinite graphs. It asks whether a 'local' constraint (K₄-free) can coexist with 'global' resistance to decomposition into countably many triangle-free parts.\n\nThe finite case is completely solved: Folkman (1970) and Nešetřil-Rödl (1975) proved that for every n ≥ 1, there exists a K₄-free graph that cannot be covered by n triangle-free graphs. The jump to countably infinite covers introduces fundamentally new difficulties.\n\nThe problem connects to a broader family of questions about (G₁, G₂) decomposition pairs (Problem #596) and to Folkman numbers (Problem #582). Erdős offered a $250 prize, reflecting the problem's significance and difficulty.",
-    "problemStatement": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs?\n\n**Known Results:**\n- For every finite n, there exists a finite K₄-free graph not coverable by n triangle-free graphs (Folkman 1970, Nešetřil-Rödl 1975)\n- Every C₄-free graph IS a countable union of trees, hence countably coverable (Erdős-Hajnal)\n- The K₄-free countable case remains OPEN",
-    "text": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs? A fundamental question by Erdős and Hajnal about the chromatic structure of infinite graphs. OPEN, $250 prize.",
-    "proofStrategy": "The formalization defines cliques and covering for infinite graphs using Set.ncard. The conjecture is stated as erdos595_conjecture and equivalently as problem595_reformulated. Finite analogues are axiomatized via folkman_finite_resistance and nesetril_rodl_finite_resistance. The contrast result c4_free_countable_trees shows C₄-free graphs are coverable. The summary theorem erdos_595_summary combines Folkman's finite resistance with the C₄-free coverability result.",
+    "historicalContext": "This problem originated from Erd\u0151s and Hajnal around 1967, exploring the chromatic properties of infinite graphs. It asks whether a 'local' constraint (K\u2084-free) can coexist with 'global' resistance to decomposition into countably many triangle-free parts.\n\nThe finite case is completely solved: Folkman (1970) and Ne\u0161et\u0159il-R\u00f6dl (1975) proved that for every n \u2265 1, there exists a K\u2084-free graph that cannot be covered by n triangle-free graphs. The jump to countably infinite covers introduces fundamentally new difficulties.\n\nThe problem connects to a broader family of questions about (G\u2081, G\u2082) decomposition pairs (Problem #596) and to Folkman numbers (Problem #582). Erd\u0151s offered a $250 prize, reflecting the problem's significance and difficulty.",
+    "problemStatement": "Is there an infinite graph G which contains no K\u2084 and is not the union of countably many triangle-free graphs?\n\n**Known Results:**\n- For every finite n, there exists a finite K\u2084-free graph not coverable by n triangle-free graphs (Folkman 1970, Ne\u0161et\u0159il-R\u00f6dl 1975)\n- Every C\u2084-free graph IS a countable union of trees, hence countably coverable (Erd\u0151s-Hajnal)\n- The K\u2084-free countable case remains OPEN",
+    "text": "Is there an infinite graph G which contains no K\u2084 and is not the union of countably many triangle-free graphs? A fundamental question by Erd\u0151s and Hajnal about the chromatic structure of infinite graphs. OPEN, $250 prize.",
+    "proofStrategy": "The formalization defines cliques and covering for infinite graphs using Set.ncard. The conjecture is stated as erdos595_conjecture and equivalently as problem595_reformulated. Finite analogues are axiomatized via folkman_finite_resistance and nesetril_rodl_finite_resistance. The contrast result c4_free_countable_trees shows C\u2084-free graphs are coverable. The summary theorem erdos_595_summary combines Folkman's finite resistance with the C\u2084-free coverability result.",
     "keyInsights": [
-      "**Finite resistance does not imply countable resistance**: for each n, K₄-free graphs resist n-covers, but this doesn't extend to countable covers",
-      "**C₄-free graphs are coverable**: Erdős-Hajnal showed C₄-free graphs decompose into countably many trees",
-      "**Local vs global**: K₄-free is a 'local' constraint; countable non-coverability is 'global'",
-      "**Connection to Problem 596**: this is the (K₄, K₃) case of the general (G₁, G₂) decomposition question",
-      "**Compactness barrier**: The finite-to-infinite jump fails because compactness arguments don't apply — each finite graph's resistance to n-covers doesn't compose into resistance to ω-covers, a fundamental limitation of finitary Ramsey theory"
+      "**Finite resistance does not imply countable resistance**: for each n, K\u2084-free graphs resist n-covers, but this doesn't extend to countable covers",
+      "**C\u2084-free graphs are coverable**: Erd\u0151s-Hajnal showed C\u2084-free graphs decompose into countably many trees",
+      "**Local vs global**: K\u2084-free is a 'local' constraint; countable non-coverability is 'global'",
+      "**Connection to Problem 596**: this is the (K\u2084, K\u2083) case of the general (G\u2081, G\u2082) decomposition question",
+      "**Compactness barrier**: The finite-to-infinite jump fails because compactness arguments don't apply \u2014 each finite graph's resistance to n-covers doesn't compose into resistance to \u03c9-covers, a fundamental limitation of finitary Ramsey theory"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -113,7 +113,7 @@
       "startLine": 122,
       "endLine": 154,
       "summary": "hasFiniteTriangleFreeCover, folkman_finite_resistance, nesetril_rodl_finite_resistance",
-      "mathContext": "Finite case: every $K_4$-free graph on finitely many vertices has a finite triangle-free cover (Folkman 1970, Nešetřil-Rödl). Proved via Ramsey-type partition."
+      "mathContext": "Finite case: every $K_4$-free graph on finitely many vertices has a finite triangle-free cover (Folkman 1970, Ne\u0161et\u0159il-R\u00f6dl). Proved via Ramsey-type partition."
     },
     {
       "id": "infinite-gap",
@@ -128,7 +128,7 @@
       "title": "Related Results",
       "startLine": 179,
       "endLine": 192,
-      "summary": "c4_free_countable_trees axiom: C₄-free graphs are countably coverable",
+      "summary": "c4_free_countable_trees axiom: C\u2084-free graphs are countably coverable",
       "mathContext": "Related: $C_4$-free graphs (no 4-cycles) have countable covers by trees (axiomatized). Trees are triangle-free, so this is a stronger structural result for a different forbidden subgraph."
     },
     {
@@ -141,20 +141,20 @@
     }
   ],
   "conclusion": {
-    "summary": "Problem 595 remains one of the significant open problems in infinite graph theory. The $250 prize reflects its difficulty. The finite analogues are well-understood (Folkman 1970, Nešetřil-Rödl 1975), but the countable case requires fundamentally new ideas. The formalization captures the known results: finite resistance for all n, C₄-free coverability, and the precise conjecture statement.",
+    "summary": "Problem 595 remains one of the significant open problems in infinite graph theory. The $250 prize reflects its difficulty. The finite analogues are well-understood (Folkman 1970, Ne\u0161et\u0159il-R\u00f6dl 1975), but the countable case requires fundamentally new ideas. The formalization captures the known results: finite resistance for all n, C\u2084-free coverability, and the precise conjecture statement.",
     "implications": "A positive answer would demonstrate a deep structural difference between finite and countable decomposability. A negative answer would establish a powerful compactness-type result for graph coverings.",
     "openQuestions": [
-      "Does such an infinite K₄-free graph exist?",
+      "Does such an infinite K\u2084-free graph exist?",
       "Can probabilistic or algebraic methods construct an explicit example?",
       "What set-theoretic methods might be applicable?",
-      "What is the relationship to the general (G₁, G₂) question (Problem 596)?"
+      "What is the relationship to the general (G\u2081, G\u2082) question (Problem 596)?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey theory underpins the finite case: K₄-free finite graphs have finite triangle-free covers via Ramsey-type partition arguments"
+      "description": "Ramsey theory underpins the finite case: K\u2084-free finite graphs have finite triangle-free covers via Ramsey-type partition arguments"
     },
     {
       "targetId": "erdos-1155",
@@ -183,6 +183,7 @@
     "lineCount": 229,
     "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "lemmaCount": 0
   }
 }

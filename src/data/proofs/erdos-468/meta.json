@@ -2,9 +2,9 @@
   "id": "erdos-468",
   "title": "Partial Sums of Divisors",
   "slug": "erdos-468",
-  "description": "Let D_n = partial sums of divisors of n (excluding 1). How large is D_n \\ ⋃_{m<n} D_m? If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)? Status: OPEN.",
+  "description": "Let D_n = partial sums of divisors of n (excluding 1). How large is D_n \\ \u22c3_{m<n} D_m? If f(N) = min{n : N \u2208 D_n}, is f(N) = o(N)? Status: OPEN.",
   "meta": {
-    "author": "Erdős, Graham (1980)",
+    "author": "Erd\u0151s, Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/468",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos468Problem.lean",
@@ -27,15 +27,15 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' For each positive integer n, the set D_n consists of the cumulative sums of the divisors of n greater than 1, sorted in increasing order. For example, 6 has divisors 2, 3, 6, so D_6 = {2, 2+3, 2+3+6} = {2, 5, 11}.\n\nThe problem has two parts. First, how many elements of D_n are genuinely new — not appearing in any D_m for m < n? This asks about the rate at which the union ⋃_n D_n grows. Second, for a given target N, what is the smallest n such that N ∈ D_n? If this first-appearance function f(N) satisfies f(N) = o(N), then most partial sums arise from relatively small integers.\n\nThe problem connects several themes in number theory: the additive structure of divisor sets, the distribution of the sum-of-divisors function σ(n), and the combinatorics of ordered partitions. The OEIS sequences A167485, A387502, and A387503 track related quantities. Despite its elementary formulation, the problem remains completely open.",
-    "problemStatement": "Let D_n be the set of partial sums of divisors of n (excluding 1). (1) How many elements of D_n are new? (2) If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)?",
-    "text": "Let D_n = partial sums of divisors of n (excluding 1). How large is D_n \\ ⋃_{m<n} D_m? If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)? Status: OPEN.",
+    "historicalContext": "Erd\u0151s and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' For each positive integer n, the set D_n consists of the cumulative sums of the divisors of n greater than 1, sorted in increasing order. For example, 6 has divisors 2, 3, 6, so D_6 = {2, 2+3, 2+3+6} = {2, 5, 11}.\n\nThe problem has two parts. First, how many elements of D_n are genuinely new \u2014 not appearing in any D_m for m < n? This asks about the rate at which the union \u22c3_n D_n grows. Second, for a given target N, what is the smallest n such that N \u2208 D_n? If this first-appearance function f(N) satisfies f(N) = o(N), then most partial sums arise from relatively small integers.\n\nThe problem connects several themes in number theory: the additive structure of divisor sets, the distribution of the sum-of-divisors function \u03c3(n), and the combinatorics of ordered partitions. The OEIS sequences A167485, A387502, and A387503 track related quantities. Despite its elementary formulation, the problem remains completely open.",
+    "problemStatement": "Let D_n be the set of partial sums of divisors of n (excluding 1). (1) How many elements of D_n are new? (2) If f(N) = min{n : N \u2208 D_n}, is f(N) = o(N)?",
+    "text": "Let D_n = partial sums of divisors of n (excluding 1). How large is D_n \\ \u22c3_{m<n} D_m? If f(N) = min{n : N \u2208 D_n}, is f(N) = o(N)? Status: OPEN.",
     "proofStrategy": "The formalization constructs $D_n$ from `Nat.divisors` filtered to $d > 1$, sorted via `Finset.sort`, with prefix sums via `List.take` and `List.sum`. The first-appearance function $f(N) = \\inf\\{n : N \\in D_n\\}$ uses `sInf`. Both conjectures are axiomatized: the strong form ($f(N) = o(N)$ for all $N$) and the almost-all form (density of exceptions $\\to 0$). Boundary elements ($\\min = p_1(n)$, $\\max = \\sigma(n) - 1$) and examples ($D_6$, $D_{12}$) are also stated. All results are axioms (0 sorries).",
     "keyInsights": [
-      "**Cumulative sum construction**: $D_n = \\{d_1, d_1+d_2, \\ldots, \\sum_{i=1}^k d_i\\}$ where $1 < d_1 < \\cdots < d_k$ are divisors of $n$. The ordering is essential — different orderings yield different partial sum sets. We have $|D_n| = d(n) - 1$ where $d(n)$ is the divisor count.",
+      "**Cumulative sum construction**: $D_n = \\{d_1, d_1+d_2, \\ldots, \\sum_{i=1}^k d_i\\}$ where $1 < d_1 < \\cdots < d_k$ are divisors of $n$. The ordering is essential \u2014 different orderings yield different partial sum sets. We have $|D_n| = d(n) - 1$ where $d(n)$ is the divisor count.",
       "**Boundary anchoring**: $\\min(D_n) = p_1(n)$ (smallest prime factor) and $\\max(D_n) = \\sigma(n) - 1$ where $\\sigma(n) = \\sum_{d \\mid n} d$. This bounds $D_n \\subseteq [p_1(n),\\, \\sigma(n) - 1]$.",
       "**New elements exist**: Each $n \\geq 2$ contributes at least one new partial sum not in $\\bigcup_{m<n} D_m$. The rate of new element generation determines how quickly $\\bigcup_n D_n$ covers $\\mathbb{N}$.",
-      "**Sublinear first appearance**: $f(N) = o(N)$ would mean partial divisor sums cover $\\mathbb{N}$ efficiently — each $N$ arises from some $n \\ll N$. Highly composite numbers (large $d(n)$) generate many partial sums from a single $n$.",
+      "**Sublinear first appearance**: $f(N) = o(N)$ would mean partial divisor sums cover $\\mathbb{N}$ efficiently \u2014 each $N$ arises from some $n \\ll N$. Highly composite numbers (large $d(n)$) generate many partial sums from a single $n$.",
       "**Almost-all weakening**: $f(N) = o(N)$ for density-1 set of $N$ allows a measure-zero set of exceptions. This may be tractable via averaging: $\\sum_{N \\leq M} f(N)/N = o(M)$ would suffice."
     ],
     "mathlibDependencies": [
@@ -65,8 +65,8 @@
       "partialDivisorSums: D_n as Finset of cumulative sums",
       "previousPartialSums: union of all D_m for m < n",
       "newElements: D_n minus all previous sets",
-      "firstAppearance: f(N) = sInf {n : N ∈ D_n}",
-      "new_elements_exist: axiom that each n ≥ 2 has new elements",
+      "firstAppearance: f(N) = sInf {n : N \u2208 D_n}",
+      "new_elements_exist: axiom that each n \u2265 2 has new elements",
       "erdos_468_conjecture: f(N) = o(N) strong form",
       "erdos_468_almost_all: f(N) = o(N) almost-all form",
       "d6_example, d12_example: concrete computations",
@@ -75,11 +75,11 @@
     "relatedProofs": [
       {
         "id": "erdos-955",
-        "relationship": "Sum of proper divisors σ(n)−n — studies the same divisor function but takes total sums rather than partial sums"
+        "relationship": "Sum of proper divisors \u03c3(n)\u2212n \u2014 studies the same divisor function but takes total sums rather than partial sums"
       },
       {
         "id": "erdos-466",
-        "relationship": "Divisor-related combinatorial number theory from the same section of the Erdős–Graham monograph"
+        "relationship": "Divisor-related combinatorial number theory from the same section of the Erd\u0151s\u2013Graham monograph"
       }
     ],
     "prerequisites": [
@@ -130,7 +130,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 468 asks about partial sums of divisors: how many are new for each n, and how quickly does f(N) grow? Both questions remain open. The formalization captures the construction, examples, and both the strong and almost-all conjectures. 0 sorries.",
+    "summary": "Erd\u0151s Problem 468 asks about partial sums of divisors: how many are new for each n, and how quickly does f(N) grow? Both questions remain open. The formalization captures the construction, examples, and both the strong and almost-all conjectures. 0 sorries.",
     "implications": "Understanding partial divisor sums would shed light on the additive structure of divisor sets, connecting multiplicative number theory to additive combinatorics.",
     "openQuestions": [
       "How large is $|D_n \\setminus \\bigcup_{m<n} D_m|$ as a function of $n$? Does it grow like $d(n)$ or slower?",
@@ -149,7 +149,7 @@
     {
       "targetId": "erdos-444",
       "relationship": "related",
-      "description": "Both formalize properties of the divisor function τ(n); #444 studies τ-iteration while #468 studies partial sums of ordered divisors"
+      "description": "Both formalize properties of the divisor function \u03c4(n); #444 studies \u03c4-iteration while #468 studies partial sums of ordered divisors"
     }
   ],
   "relatedProofs": [
@@ -169,6 +169,7 @@
     "lineCount": 94,
     "axiomCount": 8,
     "theoremCount": 0,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "lemmaCount": 0
   }
 }

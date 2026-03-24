@@ -62,7 +62,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Szemerédi regularity lemma (1975/1978) is one of the most influential results in modern combinatorics. Endre Szemerédi first developed the regularity method as a tool within his proof that every dense subset of the integers contains arbitrarily long arithmetic progressions (1975), settling a conjecture of Erdős and Turán from 1936. The regularity lemma itself was then published separately in 1978, and rapidly became a cornerstone of extremal graph theory.\n\nThe key conceptual innovation was the notion of epsilon-regularity: a pair of vertex sets that behaves pseudorandomly in that all large sub-pairs have approximately the same edge density. This allowed Szemerédi to replace complicated dense graphs with simpler 'reduced graphs' that retain the essential combinatorial structure. The partition energy function, formalized here following the exposition of Komlós and Simonovits (1996), provides the potential argument that drives the regularity lemma: energy lies in $[0,1]$, increases by at least $\\varepsilon^5$ at each refinement step, and therefore the refinement process must terminate.\n\nThis core module extracts the shared definitions used by the full Szemerédi pipeline (regularity, counting, removal, and the main theorem on arithmetic progressions), preventing definition drift across files. The modularity mirrors the mathematical structure: the same definitions of edge density and epsilon-regularity appear in applications ranging from the triangle removal lemma (Ruzsa-Szemerédi 1978) to the Green-Tao theorem on primes in arithmetic progressions (2008).",
+    "historicalContext": "The Szemer\u00e9di regularity lemma (1975/1978) is one of the most influential results in modern combinatorics. Endre Szemer\u00e9di first developed the regularity method as a tool within his proof that every dense subset of the integers contains arbitrarily long arithmetic progressions (1975), settling a conjecture of Erd\u0151s and Tur\u00e1n from 1936. The regularity lemma itself was then published separately in 1978, and rapidly became a cornerstone of extremal graph theory.\n\nThe key conceptual innovation was the notion of epsilon-regularity: a pair of vertex sets that behaves pseudorandomly in that all large sub-pairs have approximately the same edge density. This allowed Szemer\u00e9di to replace complicated dense graphs with simpler 'reduced graphs' that retain the essential combinatorial structure. The partition energy function, formalized here following the exposition of Koml\u00f3s and Simonovits (1996), provides the potential argument that drives the regularity lemma: energy lies in $[0,1]$, increases by at least $\\varepsilon^5$ at each refinement step, and therefore the refinement process must terminate.\n\nThis core module extracts the shared definitions used by the full Szemer\u00e9di pipeline (regularity, counting, removal, and the main theorem on arithmetic progressions), preventing definition drift across files. The modularity mirrors the mathematical structure: the same definitions of edge density and epsilon-regularity appear in applications ranging from the triangle removal lemma (Ruzsa-Szemer\u00e9di 1978) to the Green-Tao theorem on primes in arithmetic progressions (2008).",
     "problemStatement": "Define the fundamental concepts for graph regularity:\n\n- **Edge density** $d(A,B) = |E(A,B)| / (|A| \\cdot |B|)$ between vertex subsets\n- **Epsilon-regular pair**: $(A,B)$ is $\\varepsilon$-regular if all large sub-pairs have density within $\\varepsilon$ of $d(A,B)$\n- **Regular partition**: at most $\\varepsilon \\binom{k}{2}$ pairs are irregular\n- **Partition energy**: $q(\\mathcal{P}) = \\sum_{i,j} \\frac{|P_i||P_j|}{n^2} d(P_i,P_j)^2$\n\nProve that edge density lies in $[0,1]$ and partition energy is non-negative.",
     "text": "Shared definitions and basic lemmas for the Szemeredi regularity pipeline: edge density, epsilon-regular pairs, regular partitions, and partition energy. Imported by both SzemerediRegularity and SzemerediCounting.",
     "proofStrategy": "The module provides definitions and three proved lemmas:\n\n1. **edgeDensity_nonneg**: By positivity of the numerator and denominator.\n2. **edgeDensity_le_one**: The number of edges between $A$ and $B$ is at most $|A| \\cdot |B|$ (every pair in the product can contribute at most one edge). Uses `Finset.card_filter_le` and `Finset.card_product` to bound the filtered edge count.\n3. **partitionEnergy_nonneg**: Each summand is a product of non-negative factors (cardinalities, squares). Uses `Finset.sum_nonneg` with term-by-term `mul_nonneg` and `sq_nonneg` arguments.",
@@ -71,7 +71,7 @@
       "Edge density bounds (0 to 1) are fundamental sanity checks used throughout the regularity pipeline",
       "Partition energy is the key potential function: bounded above by 1 and increasing with each refinement step, so at most $1/\\varepsilon^5$ refinements are possible",
       "The epsilon-regularity definition captures pseudorandomness: an epsilon-regular pair behaves like a random bipartite graph with density $d(A,B)$ for the purposes of counting subgraphs",
-      "The equitability condition in IsRegularPartition (parts differ in size by at most 1) is essential for the energy increment argument — without it, concentrating vertices in one part could defeat the potential function"
+      "The equitability condition in IsRegularPartition (parts differ in size by at most 1) is essential for the energy increment argument \u2014 without it, concentrating vertices in one part could defeat the potential function"
     ],
     "prerequisites": [
       "Graph theory (simple graphs, adjacency, vertex subsets)",
@@ -136,12 +136,12 @@
     {
       "targetId": "szemeredi-full",
       "relationship": "foundational",
-      "description": "The full Szemerédi theorem on arithmetic progressions depends on the regularity pipeline that begins with these core definitions"
+      "description": "The full Szemer\u00e9di theorem on arithmetic progressions depends on the regularity pipeline that begins with these core definitions"
     },
     {
       "targetId": "szemeredi-theorem",
       "relationship": "foundational",
-      "description": "The main Szemerédi theorem statement imports and uses the regularity infrastructure built on these definitions"
+      "description": "The main Szemer\u00e9di theorem statement imports and uses the regularity infrastructure built on these definitions"
     },
     {
       "targetId": "roth-theorem-k3",
@@ -155,13 +155,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This module provides the shared mathematical vocabulary for the Szemerédi regularity pipeline in 110 lines with 4 definitions and 3 proved lemmas (0 sorries, 0 axioms). All definitions are verified and basic properties (density bounds, energy non-negativity) are established.",
-    "implications": "**Theoretical Significance**: By centralizing edge density, epsilon-regularity, regular partitions, and partition energy in a single module, the full Szemerédi pipeline (regularity, counting, removal, and the main theorem) shares definitions without drift.\n\nThe partition energy potential function $q(\\mathcal{P}) \\in [0,1]$ with energy increment $\\geq \\varepsilon^5$ is the engine that drives the regularity lemma's termination argument — this module establishes its non-negativity, while the regularity module proves the increment and upper bound. The same definitions extend to applications far beyond Szemerédi's original theorem: the graph removal lemma, property testing, the hypergraph regularity lemma (Gowers 2007, Rödl-Skokan 2004), and the Green-Tao theorem on primes in arithmetic progressions.",
+    "summary": "This module provides the shared mathematical vocabulary for the Szemer\u00e9di regularity pipeline in 110 lines with 4 definitions and 3 proved lemmas (0 sorries, 0 axioms). All definitions are verified and basic properties (density bounds, energy non-negativity) are established.",
+    "implications": "**Theoretical Significance**: By centralizing edge density, epsilon-regularity, regular partitions, and partition energy in a single module, the full Szemer\u00e9di pipeline (regularity, counting, removal, and the main theorem) shares definitions without drift.\n\nThe partition energy potential function $q(\\mathcal{P}) \\in [0,1]$ with energy increment $\\geq \\varepsilon^5$ is the engine that drives the regularity lemma's termination argument \u2014 this module establishes its non-negativity, while the regularity module proves the increment and upper bound. The same definitions extend to applications far beyond Szemer\u00e9di's original theorem: the graph removal lemma, property testing, the hypergraph regularity lemma (Gowers 2007, R\u00f6dl-Skokan 2004), and the Green-Tao theorem on primes in arithmetic progressions.",
     "openQuestions": [
       "Formalize the energy increment lemma: if a partition has an irregular pair, the refinement increases energy by at least $\\varepsilon^5$",
       "Extend these definitions to the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy 2000), which achieves a regular partition where almost all pairs are very regular",
       "Generalize to hypergraph regularity (Gowers 2007), where epsilon-regularity requires conditions on $(k-1)$-uniform sub-hypergraphs rather than just pairs of vertex subsets",
-      "Formalize the algorithmic version: Alon-Duke-Lefmann-Rödl-Yuster (1994) showed the regularity partition can be found in polynomial time, giving a constructive version of Szemerédi's existential result"
+      "Formalize the algorithmic version: Alon-Duke-Lefmann-R\u00f6dl-Yuster (1994) showed the regularity partition can be found in polynomial time, giving a constructive version of Szemer\u00e9di's existential result"
     ]
   },
   "leanFile": {
@@ -175,32 +175,33 @@
     "lineCount": 110,
     "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "lemmaCount": 0
   },
   "references": [
     {
       "key": "Sz75",
-      "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arithmetica 27 (1975), 199–245.",
+      "citation": "Szemer\u00e9di, E., On sets of integers containing no k elements in arithmetic progression, Acta Arithmetica 27 (1975), 199\u2013245.",
       "type": "paper"
     },
     {
       "key": "KS96",
-      "citation": "Komlós, J. and Simonovits, M., Szemerédi's Regularity Lemma and its applications in graph theory, in: Combinatorics, Paul Erdős is Eighty, Vol. 2, Bolyai Society Mathematical Studies 2 (1996), 295–352.",
+      "citation": "Koml\u00f3s, J. and Simonovits, M., Szemer\u00e9di's Regularity Lemma and its applications in graph theory, in: Combinatorics, Paul Erd\u0151s is Eighty, Vol. 2, Bolyai Society Mathematical Studies 2 (1996), 295\u2013352.",
       "type": "paper"
     },
     {
       "key": "Sz78",
-      "citation": "Szemerédi, E., Regular partitions of graphs, in: Problèmes combinatoires et théorie des graphes (Colloq. Internat. CNRS, Orsay 1976), Colloq. Internat. CNRS 260 (1978), 399–401.",
+      "citation": "Szemer\u00e9di, E., Regular partitions of graphs, in: Probl\u00e8mes combinatoires et th\u00e9orie des graphes (Colloq. Internat. CNRS, Orsay 1976), Colloq. Internat. CNRS 260 (1978), 399\u2013401.",
       "type": "paper"
     },
     {
       "key": "Go10",
-      "citation": "Gowers, W.T., Decompositions, approximate structure, transference, and the Hahn-Banach theorem, Bulletin of the London Mathematical Society 42(4) (2010), 573–606.",
+      "citation": "Gowers, W.T., Decompositions, approximate structure, transference, and the Hahn-Banach theorem, Bulletin of the London Mathematical Society 42(4) (2010), 573\u2013606.",
       "type": "paper"
     },
     {
       "key": "Ta06",
-      "citation": "Tao, T., Szemerédi's regularity lemma revisited, Contributions to Discrete Mathematics 1(1) (2006), 8–28.",
+      "citation": "Tao, T., Szemer\u00e9di's regularity lemma revisited, Contributions to Discrete Mathematics 1(1) (2006), 8\u201328.",
       "type": "paper"
     }
   ],

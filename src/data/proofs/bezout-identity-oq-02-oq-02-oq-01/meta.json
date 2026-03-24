@@ -1,8 +1,8 @@
 {
   "id": "bezout-identity-oq-02-oq-02-oq-01",
-  "title": "Constructive Divisibility Algorithm via Bézout Coefficients",
+  "title": "Constructive Divisibility Algorithm via B\u00e9zout Coefficients",
   "slug": "bezout-identity-oq-02-oq-02-oq-01",
-  "description": "Given coprime a, b and proof that a ∣ b*c, constructively compute the explicit quotient q with a*q = c by combining the extended Euclidean algorithm with Bézout's identity. The core formula: if u*a + v*b = 1 and b*c = a*k, then q = u*c + v*k.",
+  "description": "Given coprime a, b and proof that a \u2223 b*c, constructively compute the explicit quotient q with a*q = c by combining the extended Euclidean algorithm with B\u00e9zout's identity. The core formula: if u*a + v*b = 1 and b*c = a*k, then q = u*c + v*k.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm",
@@ -27,7 +27,7 @@
       },
       {
         "theorem": "IsCoprime",
-        "description": "Coprimality via Bézout coefficients",
+        "description": "Coprimality via B\u00e9zout coefficients",
         "module": "Mathlib.RingTheory.Coprime.Basic"
       },
       {
@@ -36,7 +36,7 @@
         "module": "Mathlib.RingTheory.Coprime.Basic"
       },
       {
-        "theorem": "mul_left_cancel₀",
+        "theorem": "mul_left_cancel\u2080",
         "description": "Left cancellation in integral domains",
         "module": "Mathlib.Algebra.GroupWithZero.Basic"
       },
@@ -57,7 +57,7 @@
       }
     ],
     "originalContributions": [
-      "extGcd: Self-contained extended Euclidean algorithm with full correctness proofs (Bézout identity + GCD)",
+      "extGcd: Self-contained extended Euclidean algorithm with full correctness proofs (B\u00e9zout identity + GCD)",
       "quotient_formula: Core algebraic identity a*(u*c + v*k) = c proved by calc chain in any CommRing",
       "euclids_lemma_constructive: Euclid's lemma with explicit divisibility witness extraction",
       "constructive_div: Computable quotient function combining extGcd with the quotient formula",
@@ -69,7 +69,7 @@
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries. All 11 theorems and 2 definitions are proved from Mathlib with no custom axioms and no structure-encoded assumptions. The extended Euclidean algorithm (extGcd) is defined by well-founded recursion with termination proved via Nat.mod_lt.",
     "prerequisites": [
       "The Euclidean algorithm and GCD computation",
-      "Bézout's identity: au + bv = gcd(a,b)",
+      "B\u00e9zout's identity: au + bv = gcd(a,b)",
       "Coprimality and Euclid's lemma",
       "Commutative ring axioms and integral domains",
       "Lean 4 well-founded recursion and termination proofs"
@@ -99,7 +99,7 @@
       },
       {
         "id": "bezout-identity",
-        "relationship": "Root formalization: Bézout's identity au + bv = gcd(a,b), the foundation this entire chain builds upon"
+        "relationship": "Root formalization: B\u00e9zout's identity au + bv = gcd(a,b), the foundation this entire chain builds upon"
       },
       {
         "id": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
@@ -108,21 +108,21 @@
     ]
   },
   "overview": {
-    "historicalContext": "The **extended Euclidean algorithm** has roots in Euclid's *Elements* (~300 BCE, Book VII, Propositions 1-2), where the alternating subtraction method computes GCDs. The extension to computing Bézout coefficients was first published by **Bachet de Méziriac** in *Problèmes plaisants et délectables* (1624), well before Bézout's own treatise (1779). The Indian mathematician **Aryabhata** (5th century CE) independently described a similar algorithm (*kuṭṭaka*) for solving linear Diophantine equations.\n\nThe algorithm has $O(\\log \\min(a,b))$ bit complexity, making it one of the oldest known efficient algorithms. Knuth (1997) gives a thorough modern treatment, and the algorithm is foundational in computational number theory: it underlies RSA key generation (computing modular inverses), the Chinese Remainder Theorem, and continued fraction expansions.\n\nWhile Euclid's lemma (if $\\gcd(a,b) = 1$ and $a \\mid bc$, then $a \\mid c$, Elements VII.30) is classical, its **constructive content** — actually computing the quotient $c/a$ — is often overlooked in standard treatments. This formalization makes the construction explicit: given Bézout coefficients $u, v$ and a divisibility witness $k$, the quotient $q = uc + vk$ is extracted by a simple algebraic formula valid in any commutative ring. The core formula $q = uc + vk$ (where $ua + vb = 1$ and $bc = ak$) works in any commutative ring, and is instantiated over $\\mathbb{N}/\\mathbb{Z}$ via the extended GCD.",
-    "problemStatement": "**Open Question (bezout-identity-oq-02-oq-02-oq-01)**: Can the Bézout coefficients from the extended Euclidean algorithm be combined with Euclid's lemma to give a constructive, computable divisibility algorithm — producing explicit quotient witnesses?\n\n**Answer**: YES — the formula q = u*c + v*k (where u*a + v*b = 1 and b*c = a*k) is verified in any CommRing, then instantiated over ℕ/ℤ via the extended Euclidean algorithm.",
-    "text": "A fully verified constructive divisibility algorithm: given coprime a, b and proof that a | bc, computes the explicit quotient q = uc + vk using Bézout coefficients from the extended Euclidean algorithm. The formula works in any commutative ring and is instantiated over ℕ/ℤ. Zero sorries, zero axioms — a complete machine-checked proof.",
-    "proofStrategy": "The proof proceeds in three layers:\n\n**Layer 1 — Extended Euclidean Algorithm**: Define `extGcd` recursively with termination via `Nat.mod_lt`. Prove correctness: (a) it returns gcd(a,b) via `extGcd_gcd`, and (b) the Bézout identity a*x + b*y = gcd(a,b) via `extGcd_bezout` using `linear_combination`.\n\n**Layer 2 — Quotient Formula**: In any CommRing, prove `a*(u*c + v*k) = c` from `u*a + v*b = 1` and `b*c = a*k` via a calc chain: expand by ring, substitute a*k = b*c, factor out c, apply Bézout.\n\n**Layer 3 — Assembly**: Combine extGcd (providing u,v) with the quotient formula (providing correctness) to define `constructive_div` and prove `a * constructive_div(...) = c`.",
+    "historicalContext": "The **extended Euclidean algorithm** has roots in Euclid's *Elements* (~300 BCE, Book VII, Propositions 1-2), where the alternating subtraction method computes GCDs. The extension to computing B\u00e9zout coefficients was first published by **Bachet de M\u00e9ziriac** in *Probl\u00e8mes plaisants et d\u00e9lectables* (1624), well before B\u00e9zout's own treatise (1779). The Indian mathematician **Aryabhata** (5th century CE) independently described a similar algorithm (*ku\u1e6d\u1e6daka*) for solving linear Diophantine equations.\n\nThe algorithm has $O(\\log \\min(a,b))$ bit complexity, making it one of the oldest known efficient algorithms. Knuth (1997) gives a thorough modern treatment, and the algorithm is foundational in computational number theory: it underlies RSA key generation (computing modular inverses), the Chinese Remainder Theorem, and continued fraction expansions.\n\nWhile Euclid's lemma (if $\\gcd(a,b) = 1$ and $a \\mid bc$, then $a \\mid c$, Elements VII.30) is classical, its **constructive content** \u2014 actually computing the quotient $c/a$ \u2014 is often overlooked in standard treatments. This formalization makes the construction explicit: given B\u00e9zout coefficients $u, v$ and a divisibility witness $k$, the quotient $q = uc + vk$ is extracted by a simple algebraic formula valid in any commutative ring. The core formula $q = uc + vk$ (where $ua + vb = 1$ and $bc = ak$) works in any commutative ring, and is instantiated over $\\mathbb{N}/\\mathbb{Z}$ via the extended GCD.",
+    "problemStatement": "**Open Question (bezout-identity-oq-02-oq-02-oq-01)**: Can the B\u00e9zout coefficients from the extended Euclidean algorithm be combined with Euclid's lemma to give a constructive, computable divisibility algorithm \u2014 producing explicit quotient witnesses?\n\n**Answer**: YES \u2014 the formula q = u*c + v*k (where u*a + v*b = 1 and b*c = a*k) is verified in any CommRing, then instantiated over \u2115/\u2124 via the extended Euclidean algorithm.",
+    "text": "A fully verified constructive divisibility algorithm: given coprime a, b and proof that a | bc, computes the explicit quotient q = uc + vk using B\u00e9zout coefficients from the extended Euclidean algorithm. The formula works in any commutative ring and is instantiated over \u2115/\u2124. Zero sorries, zero axioms \u2014 a complete machine-checked proof.",
+    "proofStrategy": "The proof proceeds in three layers:\n\n**Layer 1 \u2014 Extended Euclidean Algorithm**: Define `extGcd` recursively with termination via `Nat.mod_lt`. Prove correctness: (a) it returns gcd(a,b) via `extGcd_gcd`, and (b) the B\u00e9zout identity a*x + b*y = gcd(a,b) via `extGcd_bezout` using `linear_combination`.\n\n**Layer 2 \u2014 Quotient Formula**: In any CommRing, prove `a*(u*c + v*k) = c` from `u*a + v*b = 1` and `b*c = a*k` via a calc chain: expand by ring, substitute a*k = b*c, factor out c, apply B\u00e9zout.\n\n**Layer 3 \u2014 Assembly**: Combine extGcd (providing u,v) with the quotient formula (providing correctness) to define `constructive_div` and prove `a * constructive_div(...) = c`.",
     "keyInsights": [
       "**The proof IS the algorithm**: The algebraic identity a*(u*c + v*k) = c is simultaneously a correctness proof and a quotient recipe.",
-      "**Ring-axiomatic generality**: The quotient formula works in ANY CommRing — the only ℕ-specific part is computing the Bézout coefficients.",
+      "**Ring-axiomatic generality**: The quotient formula works in ANY CommRing \u2014 the only \u2115-specific part is computing the B\u00e9zout coefficients.",
       "**Uniqueness comes free**: In an integral domain, the quotient is unique by left cancellation.",
       "**Computational verification**: native_decide confirms the extGcd implementation matches expected values for small inputs.",
       "**Agreement with Mathlib**: The abstract version reduces to Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming consistency.",
-      "**Historical algorithm-proof duality**: The kuṭṭaka algorithm (Aryabhata, 499 CE) and Bachet's extended algorithm (1624) are the same computation — this formalization shows that the 2300-year-old Euclidean algorithm already *contained* the constructive proof of Euclid's lemma, centuries before the abstract algebraic formulation"
+      "**Historical algorithm-proof duality**: The ku\u1e6d\u1e6daka algorithm (Aryabhata, 499 CE) and Bachet's extended algorithm (1624) are the same computation \u2014 this formalization shows that the 2300-year-old Euclidean algorithm already *contained* the constructive proof of Euclid's lemma, centuries before the abstract algebraic formulation"
     ],
     "prerequisites": [
       "The Euclidean algorithm and GCD computation",
-      "Bézout's identity: au + bv = gcd(a,b)",
+      "B\u00e9zout's identity: au + bv = gcd(a,b)",
       "Coprimality and Euclid's lemma",
       "Commutative ring axioms and integral domains",
       "Lean 4 well-founded recursion and termination proofs"
@@ -150,7 +150,7 @@
       "title": "Part I: The Extended Euclidean Algorithm",
       "startLine": 25,
       "endLine": 82,
-      "summary": "Self-contained extGcd implementation with extGcd_gcd (returns gcd via strong induction), extGcd_bezout (Bézout identity via linear_combination), and extGcd_correct (combined). Termination by Nat.mod_lt.",
+      "summary": "Self-contained extGcd implementation with extGcd_gcd (returns gcd via strong induction), extGcd_bezout (B\u00e9zout identity via linear_combination), and extGcd_correct (combined). Termination by Nat.mod_lt.",
       "mathContext": "Computes $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$. Recursion: $\\text{extGcd}(a, b+1)$ reduces via $a \\bmod (b+1) < b+1$."
     },
     {
@@ -163,7 +163,7 @@
     },
     {
       "id": "constructive-algorithm",
-      "title": "Part III: Constructive Algorithm for ℕ via extGcd",
+      "title": "Part III: Constructive Algorithm for \u2115 via extGcd",
       "startLine": 109,
       "endLine": 144,
       "summary": "constructive_div combines extGcd coefficients with divisibility witness. constructive_div_correct proves a*q = c. euclids_lemma_via_extGcd packages the result.",
@@ -174,7 +174,7 @@
       "title": "Part IV: Computational Verification",
       "startLine": 146,
       "endLine": 168,
-      "summary": "Seven native_decide examples verifying extGcd outputs correct GCD values and Bézout identities for (3,7), (5,7), (17,5), and (252,198).",
+      "summary": "Seven native_decide examples verifying extGcd outputs correct GCD values and B\u00e9zout identities for (3,7), (5,7), (17,5), and (252,198).",
       "mathContext": "E.g., $\\text{extGcd}(3,7) = (-2, 1, 1)$: $3(-2) + 7(1) = 1$. Also $\\text{extGcd}(252, 198) = (4, -5, 18)$."
     },
     {
@@ -182,7 +182,7 @@
       "title": "Part V: Quotient Uniqueness",
       "startLine": 170,
       "endLine": 180,
-      "summary": "constructive_quotient_unique: in an integral domain with a ≠ 0, the quotient is unique via mul_left_cancel₀.",
+      "summary": "constructive_quotient_unique: in an integral domain with a \u2260 0, the quotient is unique via mul_left_cancel\u2080.",
       "mathContext": "$a \\neq 0, \\; aq_1 = c = aq_2 \\implies q_1 = q_2$ by cancellation (no zero divisors)."
     },
     {
@@ -195,11 +195,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The answer is YES: Bézout coefficients from extGcd combine with the quotient formula to give a constructive divisibility algorithm. The explicit quotient $q = uc + vk$ is correct in any CommRing, computed over $\\mathbb{N}$ via the extended Euclidean algorithm, and unique in integral domains. Zero sorries.",
-    "implications": "**Constructive Number Theory**: This formalization completes the bezout-identity open question chain with a fully constructive algorithm, demonstrating that classical existence proofs in number theory often contain implicit algorithms extractable via the Curry-Howard correspondence. The formula $q = uc + vk$ is the computational content of Euclid's lemma — the 2300-year-old Euclidean algorithm already *contained* this constructive proof, centuries before the abstract algebraic formulation.\n\n**Ring-Axiomatic Generality**: The quotient formula works in ANY commutative ring, not just $\\mathbb{Z}$. This means the same identity applies to polynomial rings $F[x]$ (yielding constructive polynomial divisibility), Gaussian integers $\\mathbb{Z}[i]$ (relevant to Fermat's two-squares theorem), and any Bézout domain — any integral domain where every finitely generated ideal is principal. The only $\\mathbb{N}$-specific part is computing the Bézout coefficients via the extended Euclidean algorithm.\n\n**Cryptographic Applications**: The extended GCD provides modular inverses: when $\\gcd(a,b) = 1$, the Bézout coefficient $u$ satisfies $au \\equiv 1 \\pmod{b}$. This is the foundation of RSA key generation ($d = e^{-1} \\bmod \\varphi(n)$), Diffie-Hellman key exchange, and elliptic curve cryptography. The constructive algorithm formalized here is the exact computation that runs in every TLS handshake.\n\n**Formalization Architecture**: The three-layer architecture (algorithm → ring-theoretic formula → assembly over $\\mathbb{N}$) is a reusable pattern for constructive formalization: separate the computation engine from the algebraic correctness proof, then combine at the concrete type level. The `noncomputable` limitation in the original formulation was resolved in the child entry (see `bezout-identity-oq-02-oq-02-oq-01-oq-01`), showing that classical choice can always be eliminated when the underlying computation is decidable.\n\n**Proof Chain Significance**: This entry sits in a chain: Bézout's identity → Euclid's lemma → constructive quotient → computable quotient (child entry). The chain demonstrates how a single foundational identity propagates through increasingly concrete instantiations, each adding algorithmic content while preserving mathematical correctness.",
+    "summary": "The answer is YES: B\u00e9zout coefficients from extGcd combine with the quotient formula to give a constructive divisibility algorithm. The explicit quotient $q = uc + vk$ is correct in any CommRing, computed over $\\mathbb{N}$ via the extended Euclidean algorithm, and unique in integral domains. Zero sorries.",
+    "implications": "**Constructive Number Theory**: This formalization completes the bezout-identity open question chain with a fully constructive algorithm, demonstrating that classical existence proofs in number theory often contain implicit algorithms extractable via the Curry-Howard correspondence. The formula $q = uc + vk$ is the computational content of Euclid's lemma \u2014 the 2300-year-old Euclidean algorithm already *contained* this constructive proof, centuries before the abstract algebraic formulation.\n\n**Ring-Axiomatic Generality**: The quotient formula works in ANY commutative ring, not just $\\mathbb{Z}$. This means the same identity applies to polynomial rings $F[x]$ (yielding constructive polynomial divisibility), Gaussian integers $\\mathbb{Z}[i]$ (relevant to Fermat's two-squares theorem), and any B\u00e9zout domain \u2014 any integral domain where every finitely generated ideal is principal. The only $\\mathbb{N}$-specific part is computing the B\u00e9zout coefficients via the extended Euclidean algorithm.\n\n**Cryptographic Applications**: The extended GCD provides modular inverses: when $\\gcd(a,b) = 1$, the B\u00e9zout coefficient $u$ satisfies $au \\equiv 1 \\pmod{b}$. This is the foundation of RSA key generation ($d = e^{-1} \\bmod \\varphi(n)$), Diffie-Hellman key exchange, and elliptic curve cryptography. The constructive algorithm formalized here is the exact computation that runs in every TLS handshake.\n\n**Formalization Architecture**: The three-layer architecture (algorithm \u2192 ring-theoretic formula \u2192 assembly over $\\mathbb{N}$) is a reusable pattern for constructive formalization: separate the computation engine from the algebraic correctness proof, then combine at the concrete type level. The `noncomputable` limitation in the original formulation was resolved in the child entry (see `bezout-identity-oq-02-oq-02-oq-01-oq-01`), showing that classical choice can always be eliminated when the underlying computation is decidable.\n\n**Proof Chain Significance**: This entry sits in a chain: B\u00e9zout's identity \u2192 Euclid's lemma \u2192 constructive quotient \u2192 computable quotient (child entry). The chain demonstrates how a single foundational identity propagates through increasingly concrete instantiations, each adding algorithmic content while preserving mathematical correctness.",
     "openQuestions": [
       "**RESOLVED** (see bezout-identity-oq-02-oq-02-oq-01-oq-01): The noncomputable annotation was removed by replacing classical choice (`hdvd.choose`) with computable integer division (`b * c / a`), making the full algorithm executable.",
-      "Can the algorithm be extended to multivariate Bézout identities in polynomial rings?",
+      "Can the algorithm be extended to multivariate B\u00e9zout identities in polynomial rings?",
       "Can the complexity bound $O(\\log \\min(a,b))$ for extGcd be formalized in Lean?",
       "Can the quotient formula be generalized to non-commutative rings (e.g., matrix rings) where Euclid's lemma fails?"
     ]
@@ -208,7 +208,7 @@
     {
       "targetId": "bezout-identity",
       "relationship": "extends",
-      "description": "Root formalization of Bézout's identity; this entry extends it with a constructive divisibility algorithm using the Bézout coefficients"
+      "description": "Root formalization of B\u00e9zout's identity; this entry extends it with a constructive divisibility algorithm using the B\u00e9zout coefficients"
     },
     {
       "targetId": "bezout-identity-oq-02",
@@ -228,7 +228,7 @@
     {
       "targetId": "fermat-two-squares",
       "relationship": "related",
-      "description": "Fermat's two-squares theorem uses coprimality and descent arguments closely related to the Bézout-based divisibility machinery formalized here"
+      "description": "Fermat's two-squares theorem uses coprimality and descent arguments closely related to the B\u00e9zout-based divisibility machinery formalized here"
     },
     {
       "targetId": "bezout-identity-oq-02-oq-02",
@@ -238,42 +238,42 @@
     {
       "targetId": "gcd-algorithm",
       "relationship": "related",
-      "description": "Standard Euclidean algorithm for GCD computation. This entry implements the extended version that additionally returns Bézout coefficients"
+      "description": "Standard Euclidean algorithm for GCD computation. This entry implements the extended version that additionally returns B\u00e9zout coefficients"
     },
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "Unique prime factorization relies on Euclid's lemma (if p | ab and p prime, then p | a or p | b) — the constructive version here gives the explicit quotient"
+      "description": "Unique prime factorization relies on Euclid's lemma (if p | ab and p prime, then p | a or p | b) \u2014 the constructive version here gives the explicit quotient"
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$ uses coprimality as its hypothesis. The Bézout coefficient $u$ with $au + nv = 1$ is the modular inverse of $a$ mod $n$, directly connecting the constructive algorithm here to the group (ℤ/nℤ)* whose order is $\\varphi(n)$"
+      "description": "Euler's theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$ uses coprimality as its hypothesis. The B\u00e9zout coefficient $u$ with $au + nv = 1$ is the modular inverse of $a$ mod $n$, directly connecting the constructive algorithm here to the group (\u2124/n\u2124)* whose order is $\\varphi(n)$"
     },
     {
       "targetId": "chinese-remainder-non-coprime",
       "relationship": "complementary",
-      "description": "Extends CRT to non-coprime moduli, where Bézout's identity gives $\\gcd(m,n) = um + vn$ rather than $1 = um + vn$. The extended GCD from this file computes the same coefficients but the quotient formula requires the coprimality normalization $\\gcd = 1$"
+      "description": "Extends CRT to non-coprime moduli, where B\u00e9zout's identity gives $\\gcd(m,n) = um + vn$ rather than $1 = um + vn$. The extended GCD from this file computes the same coefficients but the quotient formula requires the coprimality normalization $\\gcd = 1$"
     },
     {
       "targetId": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ can be proved by pairing each $a \\in (ℤ/pℤ)^*$ with its modular inverse $a^{-1}$. The extended Euclidean algorithm constructively computes these inverses — the pairing argument is constructive when the inverse computation is"
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ can be proved by pairing each $a \\in (\u2124/p\u2124)^*$ with its modular inverse $a^{-1}$. The extended Euclidean algorithm constructively computes these inverses \u2014 the pairing argument is constructive when the inverse computation is"
     },
     {
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Gauss's quadratic reciprocity law concerns when $a$ is a square modulo $p$. The extended Euclidean algorithm provides the modular inverse needed to compute Legendre symbols and reduce quadratic congruences — the constructive machinery here underpins computational approaches to reciprocity"
+      "description": "Gauss's quadratic reciprocity law concerns when $a$ is a square modulo $p$. The extended Euclidean algorithm provides the modular inverse needed to compute Legendre symbols and reduce quadratic congruences \u2014 the constructive machinery here underpins computational approaches to reciprocity"
     },
     {
       "targetId": "primitive-roots",
       "relationship": "related",
-      "description": "Primitive roots generate the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^*$. The Bézout coefficient $u$ with $ua + pv = 1$ gives $a^{-1} \\bmod p$, directly connecting to the group structure: computing discrete logarithms and testing primitivity require modular inverse operations"
+      "description": "Primitive roots generate the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^*$. The B\u00e9zout coefficient $u$ with $ua + pv = 1$ gives $a^{-1} \\bmod p$, directly connecting to the group structure: computing discrete logarithms and testing primitivity require modular inverse operations"
     },
     {
       "targetId": "bezout-identity-oq-03",
       "relationship": "sibling",
-      "description": "Sibling open question from the Bézout identity chain, exploring different extensions of the core identity — together these entries map the space of constructive number-theoretic algorithms derivable from the extended Euclidean algorithm"
+      "description": "Sibling open question from the B\u00e9zout identity chain, exploring different extensions of the core identity \u2014 together these entries map the space of constructive number-theoretic algorithms derivable from the extended Euclidean algorithm"
     },
     {
       "targetId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
@@ -283,37 +283,37 @@
     {
       "targetId": "bezout-identity-oq-04",
       "relationship": "sibling",
-      "description": "Complete parametric solution set of linear Diophantine equations ax + by = c: solutions form a 1D lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ}. Extends the single-solution Bézout computation here to the full solution family, using the same extended GCD infrastructure"
+      "description": "Complete parametric solution set of linear Diophantine equations ax + by = c: solutions form a 1D lattice {(x\u2080 + (b/d)t, y\u2080 - (a/d)t) : t \u2208 \u2124}. Extends the single-solution B\u00e9zout computation here to the full solution family, using the same extended GCD infrastructure"
     },
     {
       "targetId": "bezout-identity-oq-02-oq-01",
       "relationship": "sibling",
-      "description": "Proves the Fundamental Theorem of Arithmetic from Euclid's lemma — a direct consumer of the constructive Euclid's lemma developed here. The proof chain Bézout → Euclid's lemma → unique factorization shows that the constructive quotient extraction formalized in this entry is a building block for the most fundamental theorem in number theory"
+      "description": "Proves the Fundamental Theorem of Arithmetic from Euclid's lemma \u2014 a direct consumer of the constructive Euclid's lemma developed here. The proof chain B\u00e9zout \u2192 Euclid's lemma \u2192 unique factorization shows that the constructive quotient extraction formalized in this entry is a building block for the most fundamental theorem in number theory"
     },
     {
       "targetId": "gcd-algorithm-oq-01",
       "relationship": "related",
-      "description": "Formalizes Lamé's theorem on worst-case Euclidean algorithm complexity: consecutive Fibonacci numbers achieve the worst case, giving O(log min(a,b)) steps. This quantifies the efficiency of the extended Euclidean algorithm used here to compute Bézout coefficients — the extGcd implementation inherits the same complexity bound"
+      "description": "Formalizes Lam\u00e9's theorem on worst-case Euclidean algorithm complexity: consecutive Fibonacci numbers achieve the worst case, giving O(log min(a,b)) steps. This quantifies the efficiency of the extended Euclidean algorithm used here to compute B\u00e9zout coefficients \u2014 the extGcd implementation inherits the same complexity bound"
     },
     {
       "targetId": "factor-remainder-theorem",
       "relationship": "related",
-      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) | p(x)$) is the polynomial ring analog of the divisibility machinery formalized here. Both use the division algorithm in their respective domains ($\\mathbb{Z}$ for Bézout, $F[x]$ for the factor theorem), and the extended Euclidean algorithm generalizes to polynomial GCD computation — the constructive quotient formula $q = uc + vk$ works identically in $F[x]$ since polynomial rings over fields are Euclidean domains"
+      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) | p(x)$) is the polynomial ring analog of the divisibility machinery formalized here. Both use the division algorithm in their respective domains ($\\mathbb{Z}$ for B\u00e9zout, $F[x]$ for the factor theorem), and the extended Euclidean algorithm generalizes to polynomial GCD computation \u2014 the constructive quotient formula $q = uc + vk$ works identically in $F[x]$ since polynomial rings over fields are Euclidean domains"
     },
     {
       "targetId": "bezout-identity-oq-03-oq-01",
       "relationship": "sibling",
-      "description": "The CRT ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ is constructed from the same Bézout coefficients computed by the extended Euclidean algorithm. The isomorphism maps $x \\mapsto (x \\bmod m, x \\bmod n)$ with inverse $a \\mapsto a_1 vn + a_2 um$ where $um + vn = 1$ — directly using the output of extGcd"
+      "description": "The CRT ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ is constructed from the same B\u00e9zout coefficients computed by the extended Euclidean algorithm. The isomorphism maps $x \\mapsto (x \\bmod m, x \\bmod n)$ with inverse $a \\mapsto a_1 vn + a_2 um$ where $um + vn = 1$ \u2014 directly using the output of extGcd"
     },
     {
       "targetId": "chinese-remainder-non-coprime-oq-01",
       "relationship": "related",
-      "description": "Computational efficiency improvements for CRT with non-coprime moduli parallel the constructive concerns of this entry: both focus on making number-theoretic existence results computationally effective. The non-coprime CRT uses $\\gcd(m,n) = um + vn$ (the general Bézout output, not just the coprime case) to canonicalize and compute solutions efficiently"
+      "description": "Computational efficiency improvements for CRT with non-coprime moduli parallel the constructive concerns of this entry: both focus on making number-theoretic existence results computationally effective. The non-coprime CRT uses $\\gcd(m,n) = um + vn$ (the general B\u00e9zout output, not just the coprime case) to canonicalize and compute solutions efficiently"
     },
     {
       "targetId": "kummer-theorem",
       "relationship": "related",
-      "description": "Kummer's theorem on $p$-adic valuations of binomial coefficients ($v_p(\\binom{m+n}{m}) = $ number of carries in base-$p$ addition) uses the same divisibility and GCD machinery formalized here. The extended Euclidean algorithm computes $p$-adic structure implicitly: the Bézout coefficients encode how prime factors distribute across coprime factorizations"
+      "description": "Kummer's theorem on $p$-adic valuations of binomial coefficients ($v_p(\\binom{m+n}{m}) = $ number of carries in base-$p$ addition) uses the same divisibility and GCD machinery formalized here. The extended Euclidean algorithm computes $p$-adic structure implicitly: the B\u00e9zout coefficients encode how prime factors distribute across coprime factorizations"
     }
   ],
   "relatedProofs": [
@@ -349,18 +349,18 @@
       "note": "The Euclidean algorithm for computing GCD (VII.1-2) and Euclid's lemma (VII.30): if p is prime and p | ab, then p | a or p | b"
     },
     {
-      "authors": "Bézout, Étienne",
-      "title": "Théorie générale des équations algébriques",
+      "authors": "B\u00e9zout, \u00c9tienne",
+      "title": "Th\u00e9orie g\u00e9n\u00e9rale des \u00e9quations alg\u00e9briques",
       "year": "1779",
       "venue": "Paris",
       "note": "Formalized the identity au + bv = gcd(a,b) that bears his name, though Bachet had described the computational method 155 years earlier"
     },
     {
-      "authors": "Bachet de Méziriac, Claude-Gaspard",
-      "title": "Problèmes plaisants et délectables qui se font par les nombres",
+      "authors": "Bachet de M\u00e9ziriac, Claude-Gaspard",
+      "title": "Probl\u00e8mes plaisants et d\u00e9lectables qui se font par les nombres",
       "year": "1624",
       "venue": "Lyon",
-      "note": "First published description of the extended Euclidean algorithm for computing Bézout coefficients, predating Bézout's own treatise by over a century"
+      "note": "First published description of the extended Euclidean algorithm for computing B\u00e9zout coefficients, predating B\u00e9zout's own treatise by over a century"
     },
     {
       "authors": "Knuth, Donald E.",
@@ -374,7 +374,7 @@
       "title": "Aryabhatiya, Ganitapada",
       "year": "499",
       "venue": "Classical Indian mathematics",
-      "note": "The kuṭṭaka (pulverizer) algorithm for solving linear Diophantine equations ax + by = c, independently equivalent to the extended Euclidean algorithm — shows the constructive content of Bézout's identity was recognized 1200 years before Bézout"
+      "note": "The ku\u1e6d\u1e6daka (pulverizer) algorithm for solving linear Diophantine equations ax + by = c, independently equivalent to the extended Euclidean algorithm \u2014 shows the constructive content of B\u00e9zout's identity was recognized 1200 years before B\u00e9zout"
     },
     {
       "authors": "Cohen, Henri",
@@ -384,18 +384,18 @@
       "note": "Standard reference for computational number theory algorithms including the extended Euclidean algorithm, its half-GCD variant, and applications to modular inverse computation and CRT reconstruction"
     },
     {
-      "authors": "Lamé, Gabriel",
+      "authors": "Lam\u00e9, Gabriel",
       "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers",
       "year": "1844",
-      "venue": "Comptes rendus de l'Académie des Sciences, vol. 19, pp. 867–870",
-      "note": "First proof that the Euclidean algorithm requires at most ⌊log_φ(b)⌋ + 1 divisions for inputs a > b, with consecutive Fibonacci numbers achieving the worst case. This established the first rigorous complexity bound for any algorithm, making it arguably the first result in computational complexity theory"
+      "venue": "Comptes rendus de l'Acad\u00e9mie des Sciences, vol. 19, pp. 867\u2013870",
+      "note": "First proof that the Euclidean algorithm requires at most \u230alog_\u03c6(b)\u230b + 1 divisions for inputs a > b, with consecutive Fibonacci numbers achieving the worst case. This established the first rigorous complexity bound for any algorithm, making it arguably the first result in computational complexity theory"
     },
     {
       "authors": "Hardy, G. H.; Wright, E. M.",
       "title": "An Introduction to the Theory of Numbers",
       "year": "2008",
       "venue": "Oxford University Press, 6th edition (revised by Heath-Brown and Silverman)",
-      "note": "Chapter 2 covers the Euclidean algorithm, Bézout's identity, and Euclid's lemma in classical form. Section 2.6 gives the constructive content implicit in the extended algorithm — the quotient formula formalized here makes Hardy and Wright's remark rigorous"
+      "note": "Chapter 2 covers the Euclidean algorithm, B\u00e9zout's identity, and Euclid's lemma in classical form. Section 2.6 gives the constructive content implicit in the extended algorithm \u2014 the quotient formula formalized here makes Hardy and Wright's remark rigorous"
     }
   ],
   "leanFile": {
@@ -409,6 +409,7 @@
     "lineCount": 200,
     "axiomCount": 0,
     "theoremCount": 11,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   }
 }

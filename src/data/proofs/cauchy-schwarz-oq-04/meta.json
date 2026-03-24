@@ -36,7 +36,7 @@
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
-        "theorem": "div_mul_cancel₀",
+        "theorem": "div_mul_cancel\u2080",
         "description": "Division-multiplication cancellation for nonzero divisor",
         "module": "Mathlib.Algebra.Order.Field.Basic"
       },
@@ -71,7 +71,7 @@
       "**Projection coefficient is canonical**: Any scalar c satisfying u = cv must equal projCoeff(u,v). This is proved by showing projCoeff(cv, v) = c for all scalars c.",
       "**Sign determines direction**: projCoeff > 0 when inner(u,v) > 0 (same direction), projCoeff < 0 when inner(u,v) < 0 (opposite direction). This geometric interpretation follows from the sign of the inner product divided by the positive quantity norm(v)^2.",
       "**Lagrange identity for finite sums**: The cross-term vanishing condition a_i*b_j = a_j*b_i is extracted from the identity sum_ij (a_i*b_j - a_j*b_i)^2 = 2*(sum a_i^2 * sum b_i^2 - (sum a_i*b_i)^2), giving the exact ratio a_i/b_i = sum(a*b)/sum(b^2) for all i.",
-      "**Bridge to OQ-03 (Hölder)**: The equality condition for Cauchy-Schwarz (p=q=2) is a special case of Hölder equality — the general case requires $f_i^p/g_i^q$ constant. At p=q=2 this reduces to proportionality $f_i/g_i = c$, unifying the geometric (projection) and analytic (Hölder) perspectives"
+      "**Bridge to OQ-03 (H\u00f6lder)**: The equality condition for Cauchy-Schwarz (p=q=2) is a special case of H\u00f6lder equality \u2014 the general case requires $f_i^p/g_i^q$ constant. At p=q=2 this reduces to proportionality $f_i/g_i = c$, unifying the geometric (projection) and analytic (H\u00f6lder) perspectives"
     ],
     "prerequisites": [
       "Mathematical analysis"
@@ -172,12 +172,13 @@
     "lineCount": 288,
     "axiomCount": 0,
     "theoremCount": 17,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "A.-L. Cauchy",
-      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "title": "Cours d'Analyse de l'\u00c9cole Royale Polytechnique",
       "year": "1821",
       "venue": "Paris",
       "note": "Original discrete inequality with equality case noted"

@@ -1,10 +1,10 @@
 {
   "id": "erdos-870",
-  "title": "Erdős Problem #870: Minimal Additive Bases",
+  "title": "Erd\u0151s Problem #870: Minimal Additive Bases",
   "slug": "erdos-870",
-  "description": "For k ≥ 3, if A is an additive basis of order k with r(n) ≥ c log n for large n, must A contain a minimal basis of order k? Known for k = 2 (Erdős-Nathanson 1979). Status: OPEN.",
+  "description": "For k \u2265 3, if A is an additive basis of order k with r(n) \u2265 c log n for large n, must A contain a minimal basis of order k? Known for k = 2 (Erd\u0151s-Nathanson 1979). Status: OPEN.",
   "meta": {
-    "author": "Erdős, Nathanson (1979), Härtter (1956)",
+    "author": "Erd\u0151s, Nathanson (1979), H\u00e4rtter (1956)",
     "sourceUrl": "https://erdosproblems.com/870",
     "date": "1979",
     "status": "formalized",
@@ -41,14 +41,14 @@
       }
     ],
     "originalContributions": [
-      "AdditiveSet type alias for Set ℕ",
+      "AdditiveSet type alias for Set \u2115",
       "KRepresentation structure for k-element sums",
       "representationCount function r_k(A, n)",
       "IsAdditiveBasis definition",
       "IsEssential definition for essential elements",
       "IsMinimalBasis definition",
       "ContainsMinimalBasis definition",
-      "HasLogarithmicGrowth condition r(n) ≥ c log n",
+      "HasLogarithmicGrowth condition r(n) \u2265 c log n",
       "SatisfiesENCondition for k = 2",
       "ErdosConjecture870 main conjecture",
       "hartter_nathanson_existence axiom",
@@ -68,17 +68,17 @@
     "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem asks about additive bases — sets A ⊆ N where every large integer is a sum of at most k elements from A. A minimal basis has no proper subset that is also a basis. Erdős and Nathanson (1979) proved that for k = 2, if representations grow logarithmically, the basis contains a minimal basis. Härtter (1956) and Nathanson (1974) showed that without growth conditions, bases may contain no minimal bases. The theory of additive bases originates with Waring's problem (1770) and Goldbach's conjecture (1742); Lagrange's four-square theorem (1770) shows the squares form a basis of order 4. The distinction between bases and minimal bases captures a fundamental redundancy phenomenon: most natural bases (squares, cubes, primes) are far from minimal.",
-    "problemStatement": "**Question:** For k ≥ 3, does there exist c = c(k) > 0 such that any additive basis A of order k with r(n) ≥ c log n for large n must contain a minimal basis of order k?\n\n**Status: OPEN**\n\nHere r(n) counts representations of n as sums of at most k elements from A.",
-    "text": "For k ≥ 3, if A is an additive basis of order k with r(n) ≥ c log n for large n, must A contain a minimal basis of order k? Known for k = 2 (Erdős-Nathanson 1979). Status: OPEN.",
-    "proofStrategy": "We formalize:\n\n1. **AdditiveSet, KRepresentation:** Basic structures for additive number theory\n2. **IsAdditiveBasis:** Definition of basis of order k\n3. **IsMinimalBasis:** Basis where every element is essential\n4. **HasLogarithmicGrowth:** The key condition r(n) ≥ c log n\n5. **Known results:** Erdős-Nathanson for k = 2, Härtter-Nathanson counterexamples\n6. **Main conjecture:** ErdosConjecture870 for k ≥ 3",
+    "historicalContext": "This problem asks about additive bases \u2014 sets A \u2286 N where every large integer is a sum of at most k elements from A. A minimal basis has no proper subset that is also a basis. Erd\u0151s and Nathanson (1979) proved that for k = 2, if representations grow logarithmically, the basis contains a minimal basis. H\u00e4rtter (1956) and Nathanson (1974) showed that without growth conditions, bases may contain no minimal bases. The theory of additive bases originates with Waring's problem (1770) and Goldbach's conjecture (1742); Lagrange's four-square theorem (1770) shows the squares form a basis of order 4. The distinction between bases and minimal bases captures a fundamental redundancy phenomenon: most natural bases (squares, cubes, primes) are far from minimal.",
+    "problemStatement": "**Question:** For k \u2265 3, does there exist c = c(k) > 0 such that any additive basis A of order k with r(n) \u2265 c log n for large n must contain a minimal basis of order k?\n\n**Status: OPEN**\n\nHere r(n) counts representations of n as sums of at most k elements from A.",
+    "text": "For k \u2265 3, if A is an additive basis of order k with r(n) \u2265 c log n for large n, must A contain a minimal basis of order k? Known for k = 2 (Erd\u0151s-Nathanson 1979). Status: OPEN.",
+    "proofStrategy": "We formalize:\n\n1. **AdditiveSet, KRepresentation:** Basic structures for additive number theory\n2. **IsAdditiveBasis:** Definition of basis of order k\n3. **IsMinimalBasis:** Basis where every element is essential\n4. **HasLogarithmicGrowth:** The key condition r(n) \u2265 c log n\n5. **Known results:** Erd\u0151s-Nathanson for k = 2, H\u00e4rtter-Nathanson counterexamples\n6. **Main conjecture:** ErdosConjecture870 for k \u2265 3",
     "keyInsights": [
-      "**Additive basis:** Every large n is a sum of ≤ k elements from A",
+      "**Additive basis:** Every large n is a sum of \u2264 k elements from A",
       "**Minimal basis:** No proper subset is also a basis",
-      "**The log threshold:** r(n) ≥ c log n forces structure",
-      "**k = 2 resolved:** Erdős-Nathanson 1979 proved the k = 2 case",
+      "**The log threshold:** r(n) \u2265 c log n forces structure",
+      "**k = 2 resolved:** Erd\u0151s-Nathanson 1979 proved the k = 2 case",
       "**Counterexamples exist:** Without log growth, minimal bases may not exist",
-      "**k ≥ 3 is OPEN:** The problem remains unresolved for higher orders"
+      "**k \u2265 3 is OPEN:** The problem remains unresolved for higher orders"
     ],
     "prerequisites": [
       "Elementary number theory (natural numbers, divisibility)",
@@ -113,7 +113,7 @@
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Härtter-Nathanson, Erdős-Nathanson theorems",
+      "summary": "H\u00e4rtter-Nathanson, Erd\u0151s-Nathanson theorems",
       "startLine": 116,
       "endLine": 144
     },
@@ -154,7 +154,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #870 asks whether additive bases with logarithmic representation growth must contain minimal bases. For k = 2, Erdős-Nathanson (1979) proved this is true. For k ≥ 3, the problem remains OPEN. The problem highlights the interplay between representation density and structural properties of additive bases.",
+    "summary": "Erd\u0151s Problem #870 asks whether additive bases with logarithmic representation growth must contain minimal bases. For k = 2, Erd\u0151s-Nathanson (1979) proved this is true. For k \u2265 3, the problem remains OPEN. The problem highlights the interplay between representation density and structural properties of additive bases.",
     "implications": "**Theoretical Significance**: **Additive Number Theory Connections:**\n\n1. **Minimal substructures:** When do combinatorial objects contain irreducible components?\n\n2. **Representation density:** The log n threshold marks a phase transition.\n\n**3. Waring's problem:** K-th powers form bases - do they contain minimal bases?\n\n4. **Sidon sets:** Extreme sparsity in representations.\n\n5. **Structural additive combinatorics:** Understanding the anatomy of additive bases.",
     "openQuestions": [
       "Does ErdosConjecture870 hold for k = 3?",
@@ -165,10 +165,10 @@
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80]"
     }
   ],
@@ -176,7 +176,7 @@
     {
       "targetId": "erdos-847",
       "relationship": "related",
-      "description": "Both are Erdős problems from the 800s family"
+      "description": "Both are Erd\u0151s problems from the 800s family"
     }
   ],
   "relatedProofs": [
@@ -198,7 +198,8 @@
     "namespace": "Erdos870",
     "lineCount": 323,
     "axiomCount": 7,
-    "theoremCount": 4,
-    "definitionCount": 17
+    "theoremCount": 3,
+    "definitionCount": 17,
+    "lemmaCount": 1
   }
 }

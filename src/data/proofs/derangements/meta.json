@@ -2,7 +2,7 @@
   "id": "derangements",
   "title": "The Derangements Formula",
   "slug": "derangements",
-  "description": "The number of permutations with no fixed points: D(n) = n! Σ(-1)^k/k!. The 'hat-check problem'.",
+  "description": "The number of permutations with no fixed points: D(n) = n! \u03a3(-1)^k/k!. The 'hat-check problem'.",
   "meta": {
     "author": "Montmort, Euler (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Derangement",
@@ -63,7 +63,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The derangement problem — also known as the 'problème des rencontres' (problem of coincidences) or the 'hat-check problem' — was first studied by Pierre Rémond de Montmort in his 1708 book 'Essay d'Analyse sur les Jeux de Hazard'. Montmort computed $D_n$ for small $n$ and conjectured the general formula. Nikolaus Bernoulli corresponded with Montmort about the problem, and Euler later derived the formula $D_n = n! \\sum (-1)^k/k!$ using inclusion-exclusion in 1751. The subfactorial notation $!n$ was introduced by William Allen Whitworth in 1878. The convergence $D_n/n! \\to 1/e$ is a celebrated result in combinatorial probability — it means that for large $n$, a random permutation has roughly a 36.79% chance of being a derangement, regardless of $n$. This is an early example of a 'universal' probability that doesn't depend on the problem size.",
+    "historicalContext": "The derangement problem \u2014 also known as the 'probl\u00e8me des rencontres' (problem of coincidences) or the 'hat-check problem' \u2014 was first studied by Pierre R\u00e9mond de Montmort in his 1708 book 'Essay d'Analyse sur les Jeux de Hazard'. Montmort computed $D_n$ for small $n$ and conjectured the general formula. Nikolaus Bernoulli corresponded with Montmort about the problem, and Euler later derived the formula $D_n = n! \\sum (-1)^k/k!$ using inclusion-exclusion in 1751. The subfactorial notation $!n$ was introduced by William Allen Whitworth in 1878. The convergence $D_n/n! \\to 1/e$ is a celebrated result in combinatorial probability \u2014 it means that for large $n$, a random permutation has roughly a 36.79% chance of being a derangement, regardless of $n$. This is an early example of a 'universal' probability that doesn't depend on the problem size.",
     "problemStatement": "**Derangements Formula (Wiedijk #88)**:\n\n$$D_n = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$\n\nRecurrence: $D_n = (n-1)(D_{n-1} + D_{n-2})$ with $D_0 = 1$, $D_1 = 0$.",
     "text": "A 227-line formalization of the derangement counting formula (Wiedijk #88) with 11 declarations, 0 sorries, 0 axioms. Uses Mathlib's `Combinatorics.Derangements` module: `derangements` defines the set $\\{\\sigma \\in S_n : \\forall i,\\, \\sigma(i) \\neq i\\}$, and `numDerangements` gives $D_n = n! \\sum_{k=0}^n (-1)^k/k!$. The closed form is via `numDerangements_sum` (ascending factorials) and the recurrence $D_n = (n-1)(D_{n-1} + D_{n-2})$ via `numDerangements_add_two`. Includes `derangement_probability_limit` ($D_n/n! \\to 1/e \\approx 0.3679$), concrete examples ($D_5 = 44$ via `native_decide`), and a proof that derangements do not form a subgroup (composition of derangements can have fixed points).",
     "proofStrategy": "The formalization uses Mathlib's `Combinatorics.Derangements` module, which defines the derangement set and the counting function `numDerangements`. The closed-form formula is provided by `numDerangements_sum` using ascending factorials. The recurrence `numDerangements_add_two` gives the efficient computational form. We add pedagogical wrappers, concrete examples verified by `native_decide`, and algebraic properties showing derangements do not form a subgroup.",
@@ -95,8 +95,8 @@
       "title": "Core Definition",
       "startLine": 55,
       "endLine": 75,
-      "summary": "Formal characterization: $f \\in \\text{derangements}(\\alpha) \\iff \\forall x, f(x) \\neq x$, equivalently `fixedPoints f = ∅`. Connects to `Equiv.Perm` and `Function.fixedPoints`.",
-      "mathContext": "A derangement is a permutation $\\sigma \\in S_n$ with no fixed points: $\\sigma(i) \\neq i$ for all $i$. In Lean: `f ∈ derangements α ↔ ∀ x, f x ≠ x`."
+      "summary": "Formal characterization: $f \\in \\text{derangements}(\\alpha) \\iff \\forall x, f(x) \\neq x$, equivalently `fixedPoints f = \u2205`. Connects to `Equiv.Perm` and `Function.fixedPoints`.",
+      "mathContext": "A derangement is a permutation $\\sigma \\in S_n$ with no fixed points: $\\sigma(i) \\neq i$ for all $i$. In Lean: `f \u2208 derangements \u03b1 \u2194 \u2200 x, f x \u2260 x`."
     },
     {
       "id": "recurrence",
@@ -111,7 +111,7 @@
       "title": "Closed-Form Formula",
       "startLine": 101,
       "endLine": 121,
-      "summary": "The sum formula $D_n = \\sum_{k=0}^n (-1)^k (k+1)^{\\overline{n-k}}$ via `numDerangements_sum` and cardinality results bridging `derangements α` with `numDerangements`.",
+      "summary": "The sum formula $D_n = \\sum_{k=0}^n (-1)^k (k+1)^{\\overline{n-k}}$ via `numDerangements_sum` and cardinality results bridging `derangements \u03b1` with `numDerangements`.",
       "mathContext": "Mathlib uses ascending factorials: $(k+1)^{\\overline{n-k}} = (k+1)(k+2)\\cdots n = n!/k!$. So $\\sum_{k=0}^n (-1)^k (k+1)^{\\overline{n-k}} = \\sum_{k=0}^n (-1)^k n!/k! = n! \\sum_{k=0}^n (-1)^k/k!$, recovering the classical formula. The `card_derangements_eq_numDerangements` bridge connects the set-cardinality definition to this numerical formula."
     },
     {
@@ -165,12 +165,12 @@
     {
       "targetId": "e-transcendental",
       "relationship": "related",
-      "description": "The derangement probability D_n/n! = ∑(-1)^k/k! converges to 1/e as n→∞ — the Taylor series of e^{-1} truncated at the n-th term. The transcendence of e means D_n/n! is never exactly 1/e for finite n"
+      "description": "The derangement probability D_n/n! = \u2211(-1)^k/k! converges to 1/e as n\u2192\u221e \u2014 the Taylor series of e^{-1} truncated at the n-th term. The transcendence of e means D_n/n! is never exactly 1/e for finite n"
     },
     {
       "targetId": "stirling-formula",
       "relationship": "related",
-      "description": "Stirling's approximation n! ≈ √(2πn)(n/e)^n combined with D_n ≈ n!/e gives D_n ≈ √(2πn)(n/e)^n/e — an asymptotic formula for derangement counts involving both π and e"
+      "description": "Stirling's approximation n! \u2248 \u221a(2\u03c0n)(n/e)^n combined with D_n \u2248 n!/e gives D_n \u2248 \u221a(2\u03c0n)(n/e)^n/e \u2014 an asymptotic formula for derangement counts involving both \u03c0 and e"
     },
     {
       "targetId": "buffons-needle",
@@ -185,7 +185,7 @@
   ],
   "conclusion": {
     "summary": "The derangements formula $D_n = n! \\sum (-1)^k/k!$ is verified using Mathlib's `Combinatorics.Derangements` module. The formalization includes the formal definition (no fixed points), the recurrence relation $D_{n+2} = (n+1)(D_n + D_{n+1})$, the closed-form sum, concrete examples, and algebraic properties. The connection to $1/e$ through the Taylor series truncation is the central mathematical insight.",
-    "implications": "**Theoretical Significance**: The derangements formula is foundational in combinatorial probability.\n\n**Broader Connections**: The convergence $D_n/n! \\to 1/e$ is an archetype of 'universal' probabilities in random combinatorics — the probability of a derangement stabilizes by $n = 5$ and is essentially independent of $n$ for large $n$. The inclusion-exclusion derivation serves as a pedagogical template for sieve methods in analytic combinatorics.",
+    "implications": "**Theoretical Significance**: The derangements formula is foundational in combinatorial probability.\n\n**Broader Connections**: The convergence $D_n/n! \\to 1/e$ is an archetype of 'universal' probabilities in random combinatorics \u2014 the probability of a derangement stabilizes by $n = 5$ and is essentially independent of $n$ for large $n$. The inclusion-exclusion derivation serves as a pedagogical template for sieve methods in analytic combinatorics.",
     "openQuestions": [
       "Can the convergence rate $|D_n/n! - 1/e| < 1/(n+1)!$ be formalized in Lean?",
       "Can the formalization be extended to partial derangements (permutations with exactly $k$ fixed points)?",
@@ -216,10 +216,10 @@
     },
     {
       "authors": "L. Euler",
-      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "title": "Calcul de la probabilit\u00e9 dans le jeu de rencontre",
       "year": "1751",
-      "venue": "Mémoires de l'Académie Royale des Sciences de Berlin",
-      "note": "Derived the inclusion-exclusion formula D(n) = n! Σ(-1)^k/k!"
+      "venue": "M\u00e9moires de l'Acad\u00e9mie Royale des Sciences de Berlin",
+      "note": "Derived the inclusion-exclusion formula D(n) = n! \u03a3(-1)^k/k!"
     },
     {
       "authors": "W. A. Whitworth",
@@ -262,6 +262,7 @@
     "lineCount": 227,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

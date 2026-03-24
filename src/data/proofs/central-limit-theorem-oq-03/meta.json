@@ -41,7 +41,7 @@
       "Gaussian stability under normalized convolution powers"
     ],
     "historicalContext": "The algebraic structure of probability distributions under convolution has been studied since L\u00e9vy (1925). Cram\u00e9r's theorem (1936) revealed that the Gaussian is 'indecomposable' in this structure, and the CLT can be interpreted as a convergence statement in the convolution monoid.",
-    "axiomCount": 15,
+    "axiomCount": 14,
     "lineCount": 241,
     "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -154,7 +154,8 @@
     "lineCount": 241,
     "axiomCount": 14,
     "theoremCount": 8,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "lemmaCount": 0
   },
   "references": [
     {

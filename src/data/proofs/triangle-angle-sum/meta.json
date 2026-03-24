@@ -2,7 +2,7 @@
   "id": "triangle-angle-sum",
   "title": "Sum of Angles of a Triangle",
   "slug": "triangle-angle-sum",
-  "description": "The sum of the interior angles of a triangle equals 180° (π radians). One of the most fundamental results in Euclidean geometry.",
+  "description": "The sum of the interior angles of a triangle equals 180\u00b0 (\u03c0 radians). One of the most fundamental results in Euclidean geometry.",
   "meta": {
     "author": "Euclid (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Sum_of_angles_of_a_triangle",
@@ -30,7 +30,7 @@
       },
       {
         "theorem": "EuclideanGeometry.angle_le_pi",
-        "description": "Each angle is at most π",
+        "description": "Each angle is at most \u03c0",
         "module": "Mathlib.Geometry.Euclidean.Triangle"
       }
     ],
@@ -48,16 +48,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The triangle angle sum theorem is one of the oldest results in all of mathematics. Euclid proved it as Proposition 32 of Book I of the *Elements* (c. 300 BCE) by constructing a line through one vertex parallel to the opposite side and using the alternate interior angle theorem. The proof depends critically on Euclid's fifth postulate (the parallel postulate), making this theorem a touchstone for the foundations of geometry.\n\nThe theorem's central role became apparent in the 19th century when mathematicians discovered non-Euclidean geometries. In 1823, János Bolyai and (independently) Nikolai Lobachevsky showed that if the parallel postulate is dropped, consistent geometries exist where the angle sum of a triangle is *less* than $\\pi$ (hyperbolic geometry). Bernhard Riemann's 1854 lecture described geometries where the sum *exceeds* $\\pi$ (elliptic/spherical geometry). The **angular defect** $\\pi - (\\alpha + \\beta + \\gamma)$ turned out to equal the integral of Gaussian curvature over the triangle's interior (the Gauss-Bonnet theorem), connecting this elementary result to deep differential geometry.\n\nThis is entry #27 on Freek Wiedijk's list of 100 greatest theorems. The formalization in Lean works in an abstract inner product space via Mathlib's `EuclideanGeometry.angle` function, which measures the angle at the middle point of three points in an affine space. The proof is a direct application of Mathlib's `angle_add_angle_add_angle_eq_pi`, with several original corollaries including the exterior angle theorem and the right triangle special case.",
-    "problemStatement": "**Triangle Angle Sum**:\n\nFor any triangle with vertices $p_1, p_2, p_3$ in a Euclidean space:\n$$\\angle p_1 p_2 p_3 + \\angle p_2 p_3 p_1 + \\angle p_3 p_1 p_2 = \\pi$$\n\nEquivalently, the interior angles sum to $180°$.",
-    "text": "The sum of the interior angles of a triangle equals 180° (π radians). One of the most fundamental results in Euclidean geometry.",
+    "historicalContext": "The triangle angle sum theorem is one of the oldest results in all of mathematics. Euclid proved it as Proposition 32 of Book I of the *Elements* (c. 300 BCE) by constructing a line through one vertex parallel to the opposite side and using the alternate interior angle theorem. The proof depends critically on Euclid's fifth postulate (the parallel postulate), making this theorem a touchstone for the foundations of geometry.\n\nThe theorem's central role became apparent in the 19th century when mathematicians discovered non-Euclidean geometries. In 1823, J\u00e1nos Bolyai and (independently) Nikolai Lobachevsky showed that if the parallel postulate is dropped, consistent geometries exist where the angle sum of a triangle is *less* than $\\pi$ (hyperbolic geometry). Bernhard Riemann's 1854 lecture described geometries where the sum *exceeds* $\\pi$ (elliptic/spherical geometry). The **angular defect** $\\pi - (\\alpha + \\beta + \\gamma)$ turned out to equal the integral of Gaussian curvature over the triangle's interior (the Gauss-Bonnet theorem), connecting this elementary result to deep differential geometry.\n\nThis is entry #27 on Freek Wiedijk's list of 100 greatest theorems. The formalization in Lean works in an abstract inner product space via Mathlib's `EuclideanGeometry.angle` function, which measures the angle at the middle point of three points in an affine space. The proof is a direct application of Mathlib's `angle_add_angle_add_angle_eq_pi`, with several original corollaries including the exterior angle theorem and the right triangle special case.",
+    "problemStatement": "**Triangle Angle Sum**:\n\nFor any triangle with vertices $p_1, p_2, p_3$ in a Euclidean space:\n$$\\angle p_1 p_2 p_3 + \\angle p_2 p_3 p_1 + \\angle p_3 p_1 p_2 = \\pi$$\n\nEquivalently, the interior angles sum to $180\u00b0$.",
+    "text": "The sum of the interior angles of a triangle equals 180\u00b0 (\u03c0 radians). One of the most fundamental results in Euclidean geometry.",
     "proofStrategy": "The main theorem is a direct application of Mathlib's `angle_add_angle_add_angle_eq_pi`, which works for any three points in a normed affine space with inner product, requiring only that two points differ from the first ($p_2 \\neq p_1$ and $p_3 \\neq p_1$).\n\nThe corollaries use `linarith` (linear arithmetic) to derive consequences:\n- **Third angle determination**: Since $\\alpha + \\beta + \\gamma = \\pi$, we get $\\gamma = \\pi - \\alpha - \\beta$\n- **Right triangle**: If $\\alpha = \\pi/2$, then $\\beta + \\gamma = \\pi/2$\n- **Exterior angle theorem**: $\\pi - \\alpha = \\beta + \\gamma$ (rearranging the sum)\n- **Degree conversion**: Multiplies both sides by $180/\\pi$ and simplifies with `field_simp`\n\nAll corollaries follow from the main identity by linear arithmetic, demonstrating how a single fundamental theorem generates an entire family of results.",
     "keyInsights": [
-      "**The parallel postulate is hidden here**: The angle sum being exactly $\\pi$ is equivalent to the parallel postulate. In hyperbolic geometry ($\\alpha + \\beta + \\gamma < \\pi$) and spherical geometry ($\\alpha + \\beta + \\gamma > \\pi$), this theorem fails — making it the simplest distinguishing property of Euclidean geometry",
+      "**The parallel postulate is hidden here**: The angle sum being exactly $\\pi$ is equivalent to the parallel postulate. In hyperbolic geometry ($\\alpha + \\beta + \\gamma < \\pi$) and spherical geometry ($\\alpha + \\beta + \\gamma > \\pi$), this theorem fails \u2014 making it the simplest distinguishing property of Euclidean geometry",
       "**Abstract affine spaces**: Mathlib proves this not just for $\\mathbb{R}^2$ but for any inner product space with an affine structure, covering $\\mathbb{R}^n$ for all $n \\geq 2$. The angle function uses the inner product to compute angles between vectors",
       "**Degenerate vs non-degenerate triangles**: The main theorem only requires $p_2 \\neq p_1$ and $p_3 \\neq p_1$, allowing collinear points. For non-degenerate triangles (all three vertices distinct), the result strengthens: each angle is strictly between $0$ and $\\pi$",
-      "**Linear arithmetic does the work**: All corollaries follow from $\\alpha + \\beta + \\gamma = \\pi$ by linear algebra — no geometric reasoning needed once the main identity is established. The `linarith` tactic automates this completely",
-      "**Angular defect and curvature**: The quantity $\\pi - (\\alpha + \\beta + \\gamma)$ is the *angular defect*, which equals the integral of Gaussian curvature over the triangle (Gauss-Bonnet theorem). For Euclidean space, curvature is zero, so the defect is zero — recovering our theorem"
+      "**Linear arithmetic does the work**: All corollaries follow from $\\alpha + \\beta + \\gamma = \\pi$ by linear algebra \u2014 no geometric reasoning needed once the main identity is established. The `linarith` tactic automates this completely",
+      "**Angular defect and curvature**: The quantity $\\pi - (\\alpha + \\beta + \\gamma)$ is the *angular defect*, which equals the integral of Gaussian curvature over the triangle (Gauss-Bonnet theorem). For Euclidean space, curvature is zero, so the defect is zero \u2014 recovering our theorem"
     ],
     "prerequisites": [
       "Geometry (Euclidean, combinatorial)"
@@ -76,64 +76,64 @@
       "title": "Namespace and Type Variables",
       "startLine": 47,
       "endLine": 52,
-      "summary": "Opens the EuclideanGeometry scope for the ∠ notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure."
+      "summary": "Opens the EuclideanGeometry scope for the \u2220 notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure."
     },
     {
       "id": "main-theorem",
       "title": "Main Triangle Angle Sum Theorem",
       "startLine": 54,
       "endLine": 66,
-      "summary": "The central result (Wiedijk #27): for p₂ ≠ p₁ and p₃ ≠ p₁, the three interior angles sum to π. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi."
+      "summary": "The central result (Wiedijk #27): for p\u2082 \u2260 p\u2081 and p\u2083 \u2260 p\u2081, the three interior angles sum to \u03c0. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi."
     },
     {
       "id": "distinct",
       "title": "Non-Degenerate Triangle Version",
       "startLine": 68,
       "endLine": 77,
-      "summary": "Reformulation requiring all three vertices to be pairwise distinct (p₁ ≠ p₂, p₂ ≠ p₃, p₃ ≠ p₁), closer to the classical statement for proper triangles."
+      "summary": "Reformulation requiring all three vertices to be pairwise distinct (p\u2081 \u2260 p\u2082, p\u2082 \u2260 p\u2083, p\u2083 \u2260 p\u2081), closer to the classical statement for proper triangles."
     },
     {
       "id": "bounds",
       "title": "Angle Bounds",
       "startLine": 79,
       "endLine": 89,
-      "summary": "Each interior angle satisfies 0 ≤ ∠ ≤ π, using Mathlib's angle_le_pi and angle_nonneg."
+      "summary": "Each interior angle satisfies 0 \u2264 \u2220 \u2264 \u03c0, using Mathlib's angle_le_pi and angle_nonneg."
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 91,
       "endLine": 115,
-      "summary": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than π in a non-degenerate triangle, and the sum of any two angles is less than π."
+      "summary": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than \u03c0 in a non-degenerate triangle, and the sum of any two angles is less than \u03c0."
     },
     {
       "id": "right-triangle",
       "title": "Right Triangle Special Case",
       "startLine": 117,
       "endLine": 126,
-      "summary": "In a right triangle (one angle = π/2), the two acute angles sum to π/2. Proved by substituting the right angle into the sum identity."
+      "summary": "In a right triangle (one angle = \u03c0/2), the two acute angles sum to \u03c0/2. Proved by substituting the right angle into the sum identity."
     },
     {
       "id": "exterior-angle",
       "title": "Exterior Angle Theorem",
       "startLine": 128,
       "endLine": 137,
-      "summary": "The exterior angle at a vertex (π minus the interior angle) equals the sum of the two remote interior angles."
+      "summary": "The exterior angle at a vertex (\u03c0 minus the interior angle) equals the sum of the two remote interior angles."
     },
     {
       "id": "degrees-summary",
       "title": "Degree Conversion and Verification",
       "startLine": 139,
       "endLine": 157,
-      "summary": "Converts the radian result to degrees: the sum equals 180°. Uses field_simp for the π cancellation. Concludes with #check verification of all main theorems."
+      "summary": "Converts the radian result to degrees: the sum equals 180\u00b0. Uses field_simp for the \u03c0 cancellation. Concludes with #check verification of all main theorems."
     }
   ],
   "conclusion": {
-    "summary": "This formalization verifies the triangle angle sum theorem (Wiedijk #27) and derives a rich family of corollaries: angle bounds, third angle determination, the right triangle property, the exterior angle theorem, and degree conversion. Working in an abstract inner product affine space, the result holds for all Euclidean spaces of dimension ≥ 2.",
+    "summary": "This formalization verifies the triangle angle sum theorem (Wiedijk #27) and derives a rich family of corollaries: angle bounds, third angle determination, the right triangle property, the exterior angle theorem, and degree conversion. Working in an abstract inner product affine space, the result holds for all Euclidean spaces of dimension \u2265 2.",
     "implications": "**Theoretical Significance**: The triangle angle sum theorem is the simplest characterization of Euclidean geometry and the starting point for understanding curvature.\n\nIts failure in non-Euclidean geometries (Bolyai-Lobachevsky, Riemann) sparked the revolution in differential geometry that led to general relativity. In education, it is typically the first 'non-trivial' theorem students encounter, making it an ideal gateway to formal proof.",
     "openQuestions": [
-      "Can Lean formalize the converse: if the angle sum of every triangle in a geometry equals π, must the geometry be Euclidean (i.e., satisfy the parallel postulate)?",
-      "Can the Gauss-Bonnet theorem be formalized in Lean, connecting the angular defect π - (α + β + γ) to the integral of Gaussian curvature?",
+      "Can Lean formalize the converse: if the angle sum of every triangle in a geometry equals \u03c0, must the geometry be Euclidean (i.e., satisfy the parallel postulate)?",
+      "Can the Gauss-Bonnet theorem be formalized in Lean, connecting the angular defect \u03c0 - (\u03b1 + \u03b2 + \u03b3) to the integral of Gaussian curvature?",
       "How does Mathlib's angle function handle degenerate cases (collinear points), and what is the angle sum for a 'triangle' with collinear vertices?"
     ]
   },
@@ -149,7 +149,8 @@
     "lineCount": 157,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -157,7 +158,7 @@
       "title": "Elements, Book I, Proposition 32",
       "year": "~300 BCE",
       "venue": "Alexandria",
-      "note": "Proof that the angles of a triangle sum to two right angles (180°) — one of the most fundamental results in Euclidean geometry"
+      "note": "Proof that the angles of a triangle sum to two right angles (180\u00b0) \u2014 one of the most fundamental results in Euclidean geometry"
     }
   ],
   "crossReferences": [
@@ -169,12 +170,12 @@
     {
       "targetId": "area-of-circle",
       "relationship": "related",
-      "description": "The angle sum of π radians connects to circular geometry: the area formula A = πr² arises from the same relationship between angles and arc length that underlies the triangle angle sum."
+      "description": "The angle sum of \u03c0 radians connects to circular geometry: the area formula A = \u03c0r\u00b2 arises from the same relationship between angles and arc length that underlies the triangle angle sum."
     },
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "extends",
-      "description": "Euler's formula V - E + F = 2 generalizes angle-sum properties to polyhedra: the angle defect at each vertex of a convex polyhedron sums to 4π (Descartes's theorem), a polyhedral analog of the triangle angle sum."
+      "description": "Euler's formula V - E + F = 2 generalizes angle-sum properties to polyhedra: the angle defect at each vertex of a convex polyhedron sums to 4\u03c0 (Descartes's theorem), a polyhedral analog of the triangle angle sum."
     }
   ],
   "relatedProofs": [

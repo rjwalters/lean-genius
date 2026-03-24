@@ -2,7 +2,7 @@
   "id": "pythagorean-triples",
   "title": "Formula for Pythagorean Triples",
   "slug": "pythagorean-triples",
-  "description": "All primitive Pythagorean triples (a,b,c) with a² + b² = c² are given by a = m² - n², b = 2mn, c = m² + n² for coprime m > n > 0.",
+  "description": "All primitive Pythagorean triples (a,b,c) with a\u00b2 + b\u00b2 = c\u00b2 are given by a = m\u00b2 - n\u00b2, b = 2mn, c = m\u00b2 + n\u00b2 for coprime m > n > 0.",
   "meta": {
     "author": "Ancient Babylonians (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_triple",
@@ -51,9 +51,9 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Pythagorean triple formula is one of the oldest results in mathematics, with roots stretching back nearly four millennia. The Plimpton 322 clay tablet (c. 1800 BCE), discovered in Iraq in 1922, contains a table of 15 Pythagorean triples including large examples like $(4601, 4800, 6649)$, demonstrating that Babylonian mathematicians understood the parametric generation of these triples long before Pythagoras.\n\nThe systematic study of the formula is traditionally attributed to Euclid, whose *Elements* (Book X, Lemma 1, c. 300 BCE) contains the first known proof that the parametric form $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ generates all primitive triples. Diophantus of Alexandria (c. 250 CE) further developed the theory in his *Arithmetica*, connecting it to rational points on the unit circle — the same geometric insight that underlies the modern proof.\n\nThe result appears as #23 on Freek Wiedijk's list of 100 greatest theorems, reflecting its foundational importance. The classification theorem connects number theory (coprimality, parity), algebra (polynomial identities), and geometry (the unit circle parametrization) in a single elegant statement. It also serves as the historical precursor to Fermat's Last Theorem: while $a^2 + b^2 = c^2$ has infinitely many integer solutions, Fermat conjectured (and Wiles proved in 1995) that $a^n + b^n = c^n$ has none for $n \\geq 3$.",
+    "historicalContext": "The Pythagorean triple formula is one of the oldest results in mathematics, with roots stretching back nearly four millennia. The Plimpton 322 clay tablet (c. 1800 BCE), discovered in Iraq in 1922, contains a table of 15 Pythagorean triples including large examples like $(4601, 4800, 6649)$, demonstrating that Babylonian mathematicians understood the parametric generation of these triples long before Pythagoras.\n\nThe systematic study of the formula is traditionally attributed to Euclid, whose *Elements* (Book X, Lemma 1, c. 300 BCE) contains the first known proof that the parametric form $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ generates all primitive triples. Diophantus of Alexandria (c. 250 CE) further developed the theory in his *Arithmetica*, connecting it to rational points on the unit circle \u2014 the same geometric insight that underlies the modern proof.\n\nThe result appears as #23 on Freek Wiedijk's list of 100 greatest theorems, reflecting its foundational importance. The classification theorem connects number theory (coprimality, parity), algebra (polynomial identities), and geometry (the unit circle parametrization) in a single elegant statement. It also serves as the historical precursor to Fermat's Last Theorem: while $a^2 + b^2 = c^2$ has infinitely many integer solutions, Fermat conjectured (and Wiles proved in 1995) that $a^n + b^n = c^n$ has none for $n \\geq 3$.",
     "problemStatement": "**Pythagorean Triples**:\n\nAll primitive Pythagorean triples have the form:\n- $a = m^2 - n^2$\n- $b = 2mn$\n- $c = m^2 + n^2$\n\nfor coprime $m > n > 0$ with $m - n$ odd.\n\nAll Pythagorean triples are scalar multiples $k \\cdot (a, b, c)$ of primitive triples.",
-    "text": "All primitive Pythagorean triples (a,b,c) with a² + b² = c² are given by a = m² - n², b = 2mn, c = m² + n² for coprime m > n > 0.",
+    "text": "All primitive Pythagorean triples (a,b,c) with a\u00b2 + b\u00b2 = c\u00b2 are given by a = m\u00b2 - n\u00b2, b = 2mn, c = m\u00b2 + n\u00b2 for coprime m > n > 0.",
     "proofStrategy": "The formalization takes a two-pronged approach, leveraging Mathlib's `PythagoreanTriple` module.\n\n**Classification direction** (every primitive triple has this form): The proof uses `isPrimitiveClassified_of_coprime`, which internally relies on the rational parametrization of the unit circle. A rational point $(p/q, r/s)$ on $x^2 + y^2 = 1$ corresponds to the intersection of a line through $(-1, 0)$ with slope $t = n/m$. Clearing denominators yields the parametric formula. The coprimality condition $\\gcd(x, y) = 1$ ensures primitivity.\n\n**Generation direction** (the formula always produces valid triples): This is verified purely algebraically via the `ring` tactic, which automatically proves the polynomial identity $(m^2 - n^2)^2 + (2mn)^2 = (m^2 + n^2)^2$.\n\nThe formalization also includes concrete verifications of five classical triples using `norm_num` and demonstrates that scaling preserves the Pythagorean property.",
     "keyInsights": [
       "**Rational circle parametrization**: The formula arises from intersecting lines of rational slope $t = n/m$ through $(-1, 0)$ with the unit circle $x^2 + y^2 = 1$. This geometric construction is the prototype for the 'rational parametrization' technique used throughout algebraic geometry",
@@ -129,28 +129,28 @@
       "title": "Non-primitive Triples and Summary",
       "startLine": 241,
       "endLine": 268,
-      "summary": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2×(3,4,5) and (9,12,15) = 3×(3,4,5), completing the classification."
+      "summary": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2\u00d7(3,4,5) and (9,12,15) = 3\u00d7(3,4,5), completing the classification."
     }
   ],
   "conclusion": {
     "summary": "This formalization provides the complete classification of Pythagorean triples (Wiedijk #23): every primitive triple arises from the parametric formula with coprime parameters of opposite parity, and every triple is a scalar multiple of a primitive one. The proof leverages Mathlib's PythagoreanTriple module for the deep classification theorems while providing original algebraic verifications and five concrete examples.",
-    "implications": "**Theoretical Significance**: The Pythagorean triple formula is the simplest non-trivial case of Diophantine analysis — classifying all integer solutions to a polynomial equation.\n\nThe same techniques (rational parametrization, coprimality reduction, parity arguments) extend to classifying integer points on conics, and the failure of these techniques for higher-degree equations motivated centuries of research culminating in Fermat's Last Theorem. In computational number theory, the parametric formula provides an efficient algorithm for generating all triples up to a given bound.",
+    "implications": "**Theoretical Significance**: The Pythagorean triple formula is the simplest non-trivial case of Diophantine analysis \u2014 classifying all integer solutions to a polynomial equation.\n\nThe same techniques (rational parametrization, coprimality reduction, parity arguments) extend to classifying integer points on conics, and the failure of these techniques for higher-degree equations motivated centuries of research culminating in Fermat's Last Theorem. In computational number theory, the parametric formula provides an efficient algorithm for generating all triples up to a given bound.",
     "openQuestions": [
-      "Can Lean verify the density result that the number of primitive Pythagorean triples with hypotenuse ≤ N is asymptotic to N/(2π)?",
-      "How does the Pythagorean triple formula generalize to Gaussian integers, where a² + b² = c² factors as (a + bi)(a - bi) = c²?",
-      "Can the rational circle parametrization approach be formalized in Lean for other Diophantine equations like x² + y² = p for primes p ≡ 1 (mod 4)?"
+      "Can Lean verify the density result that the number of primitive Pythagorean triples with hypotenuse \u2264 N is asymptotic to N/(2\u03c0)?",
+      "How does the Pythagorean triple formula generalize to Gaussian integers, where a\u00b2 + b\u00b2 = c\u00b2 factors as (a + bi)(a - bi) = c\u00b2?",
+      "Can the rational circle parametrization approach be formalized in Lean for other Diophantine equations like x\u00b2 + y\u00b2 = p for primes p \u2261 1 (mod 4)?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "fermats-last-theorem",
       "relationship": "extends",
-      "description": "FLT proves $a^n + b^n = c^n$ has no positive integer solutions for $n \\geq 3$. Pythagorean triples show the $n = 2$ case has infinitely many solutions — the complete parametrization here contrasts with FLT's impossibility."
+      "description": "FLT proves $a^n + b^n = c^n$ has no positive integer solutions for $n \\geq 3$. Pythagorean triples show the $n = 2$ case has infinitely many solutions \u2014 the complete parametrization here contrasts with FLT's impossibility."
     },
     {
       "targetId": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ is the geometric statement; this entry characterizes ALL integer solutions. The classification (m²-n², 2mn, m²+n²) is the number-theoretic complement to the geometric fact."
+      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ is the geometric statement; this entry characterizes ALL integer solutions. The classification (m\u00b2-n\u00b2, 2mn, m\u00b2+n\u00b2) is the number-theoretic complement to the geometric fact."
     },
     {
       "targetId": "sqrt2-irrational",
@@ -185,7 +185,8 @@
     "lineCount": 268,
     "axiomCount": 0,
     "theoremCount": 15,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -193,7 +194,7 @@
       "title": "Elements, Book X, Lemma 1 to Proposition 29",
       "year": "~300 BCE",
       "venue": "Alexandria",
-      "note": "Parametrization of Pythagorean triples: (m²-n², 2mn, m²+n²) for m > n > 0 coprime with opposite parity"
+      "note": "Parametrization of Pythagorean triples: (m\u00b2-n\u00b2, 2mn, m\u00b2+n\u00b2) for m > n > 0 coprime with opposite parity"
     }
   ]
 }

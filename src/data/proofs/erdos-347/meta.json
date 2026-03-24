@@ -1,10 +1,10 @@
 {
   "id": "erdos-347",
-  "title": "Erdős Problem #347: Complete Sequences with Ratio Tending to 2",
+  "title": "Erd\u0151s Problem #347: Complete Sequences with Ratio Tending to 2",
   "slug": "erdos-347",
   "description": "Is there a monotone integer sequence with ratio limit 2 such that every cofinite subsequence has subset sums of density 1? Solved affirmatively by ebarschkis (based on Tao-van Doorn ideas).",
   "meta": {
-    "author": "Erdős–Graham",
+    "author": "Erd\u0151s\u2013Graham",
     "sourceUrl": "https://erdosproblems.com/347",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos347Problem.lean",
@@ -25,7 +25,7 @@
     "lineCount": 93
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this in their 1980 monograph, asking about the interplay between multiplicative growth rates and additive completeness. The ratio limit 2 is the critical threshold for subset sum completeness: powers of 2 give every natural number via binary representation ($P(\\{1,2,4,8,\\ldots\\}) = \\mathbb{N}$), but small perturbations can destroy this. The question asks whether a sequence growing at rate 2 can be made 'robustly complete' — not just complete, but maintaining density-1 subset sums even after removing finitely many terms. This robustness requirement is much stronger than simple completeness and connects to the stability theory of additive representations. The problem was solved affirmatively by ebarschkis, building on ideas from Terence Tao and Wouter van Doorn. The construction carefully perturbs powers of 2 to create controlled redundancy: each integer has many different subset sum representations, so deleting finitely many terms still leaves enough representations to cover almost all integers.",
+    "historicalContext": "Erd\u0151s and Graham posed this in their 1980 monograph, asking about the interplay between multiplicative growth rates and additive completeness. The ratio limit 2 is the critical threshold for subset sum completeness: powers of 2 give every natural number via binary representation ($P(\\{1,2,4,8,\\ldots\\}) = \\mathbb{N}$), but small perturbations can destroy this. The question asks whether a sequence growing at rate 2 can be made 'robustly complete' \u2014 not just complete, but maintaining density-1 subset sums even after removing finitely many terms. This robustness requirement is much stronger than simple completeness and connects to the stability theory of additive representations. The problem was solved affirmatively by ebarschkis, building on ideas from Terence Tao and Wouter van Doorn. The construction carefully perturbs powers of 2 to create controlled redundancy: each integer has many different subset sum representations, so deleting finitely many terms still leaves enough representations to cover almost all integers.",
     "problemStatement": "Is there a sequence A = {a_1 <= a_2 <= ...} with lim a_{n+1}/a_n = 2 such that P(A') has density 1 for every cofinite subsequence A' of A?",
     "text": "Is there a monotone integer sequence with ratio limit 2 such that every cofinite subsequence has subset sums of density 1? Solved affirmatively by ebarschkis (based on Tao-van Doorn ideas).",
     "proofStrategy": "We formalize `subsetSums A` as the set of all finite subset sums, `HasDensity S delta` as the limit of the counting function ratio, `HasRatioLimit a r` as convergence of consecutive ratios, and `IsCofiniteSubseq` via strictly monotone injections with cofinite range. The main statement `ErdosProblem347` combines all conditions existentially, and `erdos347_affirmative` axiomatizes the positive answer. Basic algebraic properties of subset sums (zero membership, additive closure, monotonicity) are included.",
@@ -81,7 +81,7 @@
       "title": "Main Conjecture (Solved)",
       "startLine": 65,
       "endLine": 78,
-      "summary": "Erdős Problem 347: existential statement and affirmative axiom. Solved by ebarschkis (Tao-van Doorn ideas).",
+      "summary": "Erd\u0151s Problem 347: existential statement and affirmative axiom. Solved by ebarschkis (Tao-van Doorn ideas).",
       "mathContext": "$\\exists A: \\lim a_{n+1}/a_n = 2 \\wedge \\forall A' \\subseteq_{\\text{cof}} A,\\, \\text{HasDensity}(P(A'), 1)$. Answer: YES."
     },
     {
@@ -89,12 +89,12 @@
       "title": "Basic Properties",
       "startLine": 80,
       "endLine": 93,
-      "summary": "Zero in P(A), additive closure, and monotonicity of subset sums — the algebraic structure of P.",
+      "summary": "Zero in P(A), additive closure, and monotonicity of subset sums \u2014 the algebraic structure of P.",
       "mathContext": "$0 \\in P(A)$ (empty sum); $s \\in P(A),\\, a \\in A \\Rightarrow s + a \\in P(A)$; $A \\subseteq B \\Rightarrow P(A) \\subseteq P(B)$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #347 is solved: there exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has density-1 subset sums. The affirmative construction by ebarschkis (building on Tao and van Doorn) demonstrates that robust additive completeness is achievable at the critical growth rate 2.",
+    "summary": "Erd\u0151s Problem #347 is solved: there exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has density-1 subset sums. The affirmative construction by ebarschkis (building on Tao and van Doorn) demonstrates that robust additive completeness is achievable at the critical growth rate 2.",
     "implications": "**Theoretical Significance**: **Additive Completeness**: The result establishes that the critical ratio 2 admits robustly complete sequences, deepening the understanding of how multiplicative growth interacts with additive structure.\n\n**Formal Verification**: As a solved problem with a Lean-verified proof, it demonstrates the feasibility of formalizing combinatorial existence arguments. **Perturbation Theory**: The construction technique (controlled perturbation of geometric sequences) may apply to other problems about near-extremal sequences.",
     "openQuestions": [
       "What is the optimal error term for the density convergence rate?",
@@ -119,7 +119,8 @@
     "lineCount": 93,
     "axiomCount": 4,
     "theoremCount": 0,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -145,17 +146,17 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva",
+      "venue": "L'Enseignement Math\u00e9matique, Monograph no. 28, Geneva",
       "note": "Original source for Problem #347; comprehensive survey of complete sequences and subset sum problems"
     },
     {
       "authors": "Folkman, Jon",
       "title": "On the representation of integers as sums of distinct terms from a fixed sequence",
       "year": "1966",
-      "venue": "Canadian Journal of Mathematics, vol. 18, pp. 643–655",
+      "venue": "Canadian Journal of Mathematics, vol. 18, pp. 643\u2013655",
       "note": "Classical results on complete sequences and the relationship between growth rate and completeness"
     }
   ]

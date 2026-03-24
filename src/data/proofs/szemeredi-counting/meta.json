@@ -45,7 +45,7 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "prerequisites": [
-      "Szemerédi Regularity Lemma",
+      "Szemer\u00e9di Regularity Lemma",
       "Epsilon-regular pairs and edge density",
       "SimpleGraph and Finset in Mathlib",
       "Triangle counting and subgraph enumeration",
@@ -67,7 +67,7 @@
       "The quantitative tower-type bounds arise from the regularity lemma application; improving them is a major open problem"
     ],
     "prerequisites": [
-      "Szemerédi Regularity Lemma",
+      "Szemer\u00e9di Regularity Lemma",
       "Epsilon-regular pairs and edge density",
       "SimpleGraph and Finset in Mathlib",
       "Triangle counting and subgraph enumeration",
@@ -80,7 +80,7 @@
       "title": "Module Docstring and Imports",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Module docstring listing Parts I–III (counting lemma, triangle removal, graph removal), references to Ruzsa-Szemerédi (1978) and Komlós-Simonovits (1996). Imports Mathlib, `Proofs.SzemerediCore`, and `Proofs.SzemerediRegularity`. Opens `Classical`, declares variables for finite vertex type $V$.",
+      "summary": "Module docstring listing Parts I\u2013III (counting lemma, triangle removal, graph removal), references to Ruzsa-Szemer\u00e9di (1978) and Koml\u00f3s-Simonovits (1996). Imports Mathlib, `Proofs.SzemerediCore`, and `Proofs.SzemerediRegularity`. Opens `Classical`, declares variables for finite vertex type $V$.",
       "mathContext": "Setting: $G = (V, E)$ simple graph, $V$ finite with decidable equality. Depends on $\\varepsilon$-regularity from the regularity module."
     },
     {
@@ -128,7 +128,7 @@
       "title": "Quantitative Triangle Removal via Regularity",
       "startLine": 537,
       "endLine": 1196,
-      "summary": "The main quantitative result: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. **Fully proved.** Applies `regularity_with_finpartition` to get a Finpartition, removes edges from irregular and sparse pairs (h_irreg and h_sparse budget lemmas proved), then uses `counting_lemma` to show any remaining triangle yields many triangles — contradicting the $\\gamma n^3$ bound.",
+      "summary": "The main quantitative result: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. **Fully proved.** Applies `regularity_with_finpartition` to get a Finpartition, removes edges from irregular and sparse pairs (h_irreg and h_sparse budget lemmas proved), then uses `counting_lemma` to show any remaining triangle yields many triangles \u2014 contradicting the $\\gamma n^3$ bound.",
       "mathContext": "$\\forall \\delta > 0, \\exists \\gamma = \\gamma(\\delta, M(\\varepsilon))$: $T(G) \\leq \\gamma n^3$ implies $G$ can be made triangle-free by removing $\\leq \\delta n^2$ edges. The proof is constructive: $\\gamma$ depends on the regularity bound $M(\\varepsilon)$ and $\\varepsilon = \\delta/6$."
     }
   ],
@@ -186,24 +186,25 @@
     "lineCount": 1196,
     "axiomCount": 0,
     "theoremCount": 13,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   },
   "references": [
     {
       "key": "RS78",
-      "citation": "I. Z. Ruzsa and E. Szemerédi, Triple systems with no six points carrying three triangles, Combinatorics (Keszthely, 1976), Colloq. Math. Soc. János Bolyai 18 (1978), 939–945."
+      "citation": "I. Z. Ruzsa and E. Szemer\u00e9di, Triple systems with no six points carrying three triangles, Combinatorics (Keszthely, 1976), Colloq. Math. Soc. J\u00e1nos Bolyai 18 (1978), 939\u2013945."
     },
     {
       "key": "KS96",
-      "citation": "J. Komlós and M. Simonovits, Szemerédi's regularity lemma and its applications in graph theory, Combinatorics: Paul Erdős is Eighty, vol. 2, Bolyai Soc. Math. Studies 2, 1996, pp. 295–352."
+      "citation": "J. Koml\u00f3s and M. Simonovits, Szemer\u00e9di's regularity lemma and its applications in graph theory, Combinatorics: Paul Erd\u0151s is Eighty, vol. 2, Bolyai Soc. Math. Studies 2, 1996, pp. 295\u2013352."
     },
     {
       "key": "Fox11",
-      "citation": "J. Fox, A new proof of the graph removal lemma, Ann. of Math. (2) 174 (2011), 561–579."
+      "citation": "J. Fox, A new proof of the graph removal lemma, Ann. of Math. (2) 174 (2011), 561\u2013579."
     },
     {
       "key": "Sze78",
-      "citation": "E. Szemerédi, Regular partitions of graphs, Problèmes combinatoires et théorie des graphes (Orsay, 1976), Colloq. Internat. CNRS 260, Paris, 1978, pp. 399–401."
+      "citation": "E. Szemer\u00e9di, Regular partitions of graphs, Probl\u00e8mes combinatoires et th\u00e9orie des graphes (Orsay, 1976), Colloq. Internat. CNRS 260, Paris, 1978, pp. 399\u2013401."
     }
   ]
 }

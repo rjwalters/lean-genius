@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz",
   "title": "Cauchy-Schwarz Inequality",
   "slug": "cauchy-schwarz",
-  "description": "|⟨u,v⟩| ≤ ‖u‖·‖v‖. Fundamental to functional analysis and quantum mechanics.",
+  "description": "|\u27e8u,v\u27e9| \u2264 \u2016u\u2016\u00b7\u2016v\u2016. Fundamental to functional analysis and quantum mechanics.",
   "meta": {
     "author": "Cauchy, Schwarz (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
@@ -48,11 +48,11 @@
     "relatedProblems": [
       {
         "id": "cauchy-schwarz-integral",
-        "relationship": "The integral (Bunyakovsky-Schwarz) version extends Cauchy-Schwarz from finite sums to L² inner products: (∫fg)² ≤ (∫f²)(∫g²)"
+        "relationship": "The integral (Bunyakovsky-Schwarz) version extends Cauchy-Schwarz from finite sums to L\u00b2 inner products: (\u222bfg)\u00b2 \u2264 (\u222bf\u00b2)(\u222bg\u00b2)"
       },
       {
         "id": "triangle-inequality",
-        "relationship": "The triangle inequality ‖u+v‖ ≤ ‖u‖+‖v‖ is derived as a corollary of Cauchy-Schwarz in this formalization"
+        "relationship": "The triangle inequality \u2016u+v\u2016 \u2264 \u2016u\u2016+\u2016v\u2016 is derived as a corollary of Cauchy-Schwarz in this formalization"
       },
       {
         "id": "amgm-inequality",
@@ -64,7 +64,7 @@
       },
       {
         "id": "cauchy-schwarz-oq-03",
-        "relationship": "Sub-entry exploring generalizations such as Hölder's inequality"
+        "relationship": "Sub-entry exploring generalizations such as H\u00f6lder's inequality"
       },
       {
         "id": "cauchy-schwarz-oq-04",
@@ -101,7 +101,7 @@
       "summary": "Imports `InnerProductSpace.Basic`, `InnerProductSpace.PiL2` (for `EuclideanSpace`), `BigOperators.Ring.Finset` (for $\\sum$), and general tactics.",
       "startLine": 1,
       "endLine": 49,
-      "mathContext": "Provides `InnerProductSpace ℝ F` (real inner product spaces), `EuclideanSpace ℝ (Fin n)` ($\\mathbb{R}^n$ with standard inner product), and `∑` notation over finite sets."
+      "mathContext": "Provides `InnerProductSpace \u211d F` (real inner product spaces), `EuclideanSpace \u211d (Fin n)` ($\\mathbb{R}^n$ with standard inner product), and `\u2211` notation over finite sets."
     },
     {
       "id": "inner-product-form",
@@ -125,7 +125,7 @@
       "summary": "Proves $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ by embedding into `EuclideanSpace $\\mathbb{R}$ (Fin $n$)` and the non-squared form via `Real.sqrt_le_sqrt`.",
       "startLine": 116,
       "endLine": 157,
-      "mathContext": "$(\\sum_{i=1}^n a_ib_i)^2 \\leq (\\sum_{i=1}^n a_i^2)(\\sum_{i=1}^n b_i^2)$ — the classical Cauchy inequality for finite sums."
+      "mathContext": "$(\\sum_{i=1}^n a_ib_i)^2 \\leq (\\sum_{i=1}^n a_i^2)(\\sum_{i=1}^n b_i^2)$ \u2014 the classical Cauchy inequality for finite sums."
     },
     {
       "id": "equality",
@@ -133,7 +133,7 @@
       "summary": "Proves $|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c: u = cv$ for nonzero vectors, using `norm_inner_eq_norm_iff` and `inner_smul_left`.",
       "startLine": 159,
       "endLine": 179,
-      "mathContext": "$|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c \\in \\mathbb{R}: u = cv$ — equality iff vectors are collinear."
+      "mathContext": "$|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c \\in \\mathbb{R}: u = cv$ \u2014 equality iff vectors are collinear."
     },
     {
       "id": "examples",
@@ -163,22 +163,22 @@
     {
       "targetId": "cauchy-schwarz-integral",
       "relationship": "extends",
-      "description": "The Bunyakovsky-Schwarz integral inequality extends Cauchy-Schwarz from finite sums to L² inner products: (∫fg)² ≤ (∫f²)(∫g²). This formalization proves the measure-theoretic version."
+      "description": "The Bunyakovsky-Schwarz integral inequality extends Cauchy-Schwarz from finite sums to L\u00b2 inner products: (\u222bfg)\u00b2 \u2264 (\u222bf\u00b2)(\u222bg\u00b2). This formalization proves the measure-theoretic version."
     },
     {
       "targetId": "triangle-inequality",
       "relationship": "proves",
-      "description": "The triangle inequality ‖u+v‖ ≤ ‖u‖+‖v‖ is derived as a direct corollary of Cauchy-Schwarz in both formalizations, demonstrating the foundational role of Cauchy-Schwarz in normed space theory."
+      "description": "The triangle inequality \u2016u+v\u2016 \u2264 \u2016u\u2016+\u2016v\u2016 is derived as a direct corollary of Cauchy-Schwarz in both formalizations, demonstrating the foundational role of Cauchy-Schwarz in normed space theory."
     },
     {
       "targetId": "amgm-inequality",
       "relationship": "related",
-      "description": "AM-GM and Cauchy-Schwarz are the two most fundamental inequalities in analysis. Cauchy-Schwarz for n=2 can be derived from AM-GM applied to a²/b² + b²/a², and conversely."
+      "description": "AM-GM and Cauchy-Schwarz are the two most fundamental inequalities in analysis. Cauchy-Schwarz for n=2 can be derived from AM-GM applied to a\u00b2/b\u00b2 + b\u00b2/a\u00b2, and conversely."
     },
     {
       "targetId": "hurwitz-theorem",
       "relationship": "foundational",
-      "description": "Hurwitz's theorem on normed division algebras (ℝ, ℂ, ℍ, 𝕆) relies on the inner product space structure where Cauchy-Schwarz is the fundamental inequality."
+      "description": "Hurwitz's theorem on normed division algebras (\u211d, \u2102, \u210d, \ud835\udd46) relies on the inner product space structure where Cauchy-Schwarz is the fundamental inequality."
     },
     {
       "targetId": "yang-mills",
@@ -188,27 +188,27 @@
     {
       "targetId": "amgm-inequality-oq-03",
       "relationship": "related",
-      "description": "For equal weights, the power mean inequality M₁ ≤ M₂ is equivalent to Cauchy-Schwarz: (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ². Cauchy-Schwarz is the p=2 case of the general power mean monotonicity chain"
+      "description": "For equal weights, the power mean inequality M\u2081 \u2264 M\u2082 is equivalent to Cauchy-Schwarz: (\u2211w\u1d62z\u1d62)\u00b2 \u2264 \u2211w\u1d62z\u1d62\u00b2. Cauchy-Schwarz is the p=2 case of the general power mean monotonicity chain"
     },
     {
       "targetId": "amgm-inequality-oq-02",
       "relationship": "related",
-      "description": "The Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² is the key engine in the Maclaurin M₁²≥M₂ proof — directly connecting Cauchy-Schwarz to the elementary symmetric polynomial hierarchy"
+      "description": "The Cauchy-Schwarz sum n\u00b7\u2211x\u1d62\u00b2 \u2265 (\u2211x\u1d62)\u00b2 is the key engine in the Maclaurin M\u2081\u00b2\u2265M\u2082 proof \u2014 directly connecting Cauchy-Schwarz to the elementary symmetric polynomial hierarchy"
     },
     {
       "targetId": "cauchy-schwarz-oq-01",
       "relationship": "extended-by",
-      "description": "Extends Cauchy-Schwarz to complex inner product spaces using $|\\langle u,v \\rangle_{\\mathbb{C}}| \\leq \\|u\\|\\|v\\|$ — answering the open question about complex generalization"
+      "description": "Extends Cauchy-Schwarz to complex inner product spaces using $|\\langle u,v \\rangle_{\\mathbb{C}}| \\leq \\|u\\|\\|v\\|$ \u2014 answering the open question about complex generalization"
     },
     {
       "targetId": "cauchy-schwarz-oq-03",
       "relationship": "extended-by",
-      "description": "Hölder's inequality $|\\sum a_i b_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ for $1/p + 1/q = 1$ — Cauchy-Schwarz is the $p = q = 2$ case"
+      "description": "H\u00f6lder's inequality $|\\sum a_i b_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ for $1/p + 1/q = 1$ \u2014 Cauchy-Schwarz is the $p = q = 2$ case"
     },
     {
       "targetId": "cauchy-schwarz-oq-04",
       "relationship": "extended-by",
-      "description": "Strengthens the equality characterization to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ when $u = cv$ — answering the resolved open question"
+      "description": "Strengthens the equality characterization to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ when $u = cv$ \u2014 answering the resolved open question"
     },
     {
       "targetId": "pythagorean-theorem",
@@ -218,7 +218,7 @@
     {
       "targetId": "law-of-cosines",
       "relationship": "related",
-      "description": "The law of cosines $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u,v \\rangle$ gives the geometric interpretation of Cauchy-Schwarz: since $\\langle u,v \\rangle = \\|u\\|\\|v\\|\\cos\\theta$, the inequality $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ is equivalent to $|\\cos\\theta| \\leq 1$ — the fundamental bound on the angle between vectors"
+      "description": "The law of cosines $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u,v \\rangle$ gives the geometric interpretation of Cauchy-Schwarz: since $\\langle u,v \\rangle = \\|u\\|\\|v\\|\\cos\\theta$, the inequality $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ is equivalent to $|\\cos\\theta| \\leq 1$ \u2014 the fundamental bound on the angle between vectors"
     },
     {
       "targetId": "randomized-maxcut",
@@ -238,7 +238,7 @@
     {
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
-      "description": "Brouwer's fixed point theorem uses topological properties of the closed unit ball $\\{x : \\|x\\| \\leq 1\\}$, where the norm $\\|\\cdot\\|$ satisfies the triangle inequality derived from Cauchy-Schwarz. The inner product structure that Cauchy-Schwarz governs is what makes the unit ball convex and compact — the topological prerequisites for the fixed point theorem"
+      "description": "Brouwer's fixed point theorem uses topological properties of the closed unit ball $\\{x : \\|x\\| \\leq 1\\}$, where the norm $\\|\\cdot\\|$ satisfies the triangle inequality derived from Cauchy-Schwarz. The inner product structure that Cauchy-Schwarz governs is what makes the unit ball convex and compact \u2014 the topological prerequisites for the fixed point theorem"
     }
   ],
   "conclusion": {
@@ -247,7 +247,7 @@
     "openQuestions": [
       "Can the formalization be extended to complex inner product spaces using `inner_mul_le_norm_mul_norm`?",
       "[RESOLVED] The integral form (Bunyakovsky-Schwarz) has been formalized - see `cauchy-schwarz-integral` proof.",
-      "Can Hölder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for $p=q=2$?",
+      "Can H\u00f6lder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for $p=q=2$?",
       "[RESOLVED] The equality condition has been strengthened to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ - see `cauchy-schwarz-oq-04` proof."
     ]
   },
@@ -274,21 +274,21 @@
   "references": [
     {
       "authors": "A.-L. Cauchy",
-      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "title": "Cours d'Analyse de l'\u00c9cole Royale Polytechnique",
       "year": "1821",
       "venue": "Paris",
       "note": "First proof of the discrete (finite sum) version of the inequality"
     },
     {
       "authors": "V. Y. Bunyakovsky",
-      "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies",
+      "title": "Sur quelques in\u00e9galit\u00e9s concernant les int\u00e9grales ordinaires et les int\u00e9grales aux diff\u00e9rences finies",
       "year": "1859",
-      "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg",
+      "venue": "M\u00e9moires de l'Acad\u00e9mie Imp\u00e9riale des Sciences de St.-P\u00e9tersbourg",
       "note": "Extension to integrals"
     },
     {
       "authors": "H. A. Schwarz",
-      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
+      "title": "\u00dcber ein die Fl\u00e4chen kleinsten Fl\u00e4cheninhalts betreffendes Problem der Variationsrechnung",
       "year": "1885",
       "venue": "Acta Societatis Scientiarum Fennicae",
       "note": "Independent proof of the integral version"
@@ -313,6 +313,7 @@
     "lineCount": 231,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-246",
-  "title": "Erdős Problem #246: Completeness of {a^k b^l : k, l ≥ 0}",
+  "title": "Erd\u0151s Problem #246: Completeness of {a^k b^l : k, l \u2265 0}",
   "slug": "erdos-246",
-  "description": "Let (a, b) = 1. The set {a^k b^l : k, l ≥ 0} is complete — every sufficiently large integer is a sum of distinct elements from this set. YES (Birch 1959).",
+  "description": "Let (a, b) = 1. The set {a^k b^l : k, l \u2265 0} is complete \u2014 every sufficiently large integer is a sum of distinct elements from this set. YES (Birch 1959).",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/246",
     "date": "1959",
     "status": "axiomatized",
@@ -41,9 +41,9 @@
       }
     ],
     "originalContributions": [
-      "powerSet definition: {a^k b^l : k, l ≥ 0} for coprime a, b",
+      "powerSet definition: {a^k b^l : k, l \u2265 0} for coprime a, b",
       "isComplete definition: every large n is sum of distinct elements",
-      "isCompleteFrom definition: completeness from threshold N₀",
+      "isCompleteFrom definition: completeness from threshold N\u2080",
       "birch_theorem axiom: coprime power sets are complete",
       "birch_threshold_exists axiom: explicit threshold exists",
       "two_three_complete theorem: {2^k 3^l} is complete",
@@ -57,7 +57,7 @@
       "fibonacci definition and zeckendorf_completeness axiom",
       "powersOfTwo definition and completeness theorem",
       "completeness_criterion axiom: general criterion",
-      "single_powers_not_complete axiom: powers of a ≥ 3 not complete",
+      "single_powers_not_complete axiom: powers of a \u2265 3 not complete",
       "non_representable_density axiom: positive density of missing integers",
       "powerSetUpTo definition and power_set_counting axiom",
       "reciprocal_sum_bound axiom: sum of reciprocals bound",
@@ -69,16 +69,16 @@
     "assumptions": "19 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #246** asks about complete sequences — sets where every sufficiently large integer can be represented as a sum of distinct elements.\n\n**Historical Development:**\n- **Birch (1959):** Original proof that {a^k b^l : gcd(a,b)=1} is complete\n- **Cassels (1960):** General result implying completeness for logarithmically dense sets\n- **Davenport:** Observed that bounded l suffices\n- **Hegyvári (2000):** First explicit bound on l (quadruple exponential)\n- **Fang-Chen (2017):** Improved to triply exponential\n- **Yu (2024):** Can use only large summands (> n/(log n)^{1+o(1)})\n\n**Key Insight:** Two coprime bases generate enough distinct numbers that their logarithmic density suffices for completeness.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $(a, b) = 1$ with $a, b \\geq 2$. Is the set $\\{a^k b^l : k, l \\geq 0\\}$ complete?\n\nA set S is **complete** if every sufficiently large integer can be written as a sum of distinct elements from S.\n\n**Answer:** YES (Birch 1959)\n\n**Key Examples:**\n- {2^k · 3^l} is complete: elements are 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ...\n- Every large n = sum of distinct elements from this set\n\n**Extensions:**\n- Works even with l bounded (Davenport)\n- Explicit bounds: O(2^{2^{2^{max(a,b)}}}) by Fang-Chen\n- Large summands suffice: all > n/(log n)^{1+o(1)} (Yu 2024)",
-    "text": "Let (a, b) = 1. The set {a^k b^l : k, l ≥ 0} is complete — every sufficiently large integer is a sum of distinct elements from this set. YES (Birch 1959).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** Define powerSet(a,b) and completeness property.\n\n2. **Main Theorem:** Axiomatize Birch's result that coprime power sets are complete.\n\n3. **Generalizations:** Include Cassels' general criterion, Davenport's observation, and quantitative bounds.\n\n4. **Contrasts:** Show single-base powers (a ≥ 3) are not complete.\n\n5. **Related Sequences:** Fibonacci (Zeckendorf), powers of 2 (binary).\n\n6. **Algorithms:** Greedy representation eventually works.",
+    "historicalContext": "**Erd\u0151s Problem #246** asks about complete sequences \u2014 sets where every sufficiently large integer can be represented as a sum of distinct elements.\n\n**Historical Development:**\n- **Birch (1959):** Original proof that {a^k b^l : gcd(a,b)=1} is complete\n- **Cassels (1960):** General result implying completeness for logarithmically dense sets\n- **Davenport:** Observed that bounded l suffices\n- **Hegyv\u00e1ri (2000):** First explicit bound on l (quadruple exponential)\n- **Fang-Chen (2017):** Improved to triply exponential\n- **Yu (2024):** Can use only large summands (> n/(log n)^{1+o(1)})\n\n**Key Insight:** Two coprime bases generate enough distinct numbers that their logarithmic density suffices for completeness.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $(a, b) = 1$ with $a, b \\geq 2$. Is the set $\\{a^k b^l : k, l \\geq 0\\}$ complete?\n\nA set S is **complete** if every sufficiently large integer can be written as a sum of distinct elements from S.\n\n**Answer:** YES (Birch 1959)\n\n**Key Examples:**\n- {2^k \u00b7 3^l} is complete: elements are 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ...\n- Every large n = sum of distinct elements from this set\n\n**Extensions:**\n- Works even with l bounded (Davenport)\n- Explicit bounds: O(2^{2^{2^{max(a,b)}}}) by Fang-Chen\n- Large summands suffice: all > n/(log n)^{1+o(1)} (Yu 2024)",
+    "text": "Let (a, b) = 1. The set {a^k b^l : k, l \u2265 0} is complete \u2014 every sufficiently large integer is a sum of distinct elements from this set. YES (Birch 1959).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** Define powerSet(a,b) and completeness property.\n\n2. **Main Theorem:** Axiomatize Birch's result that coprime power sets are complete.\n\n3. **Generalizations:** Include Cassels' general criterion, Davenport's observation, and quantitative bounds.\n\n4. **Contrasts:** Show single-base powers (a \u2265 3) are not complete.\n\n5. **Related Sequences:** Fibonacci (Zeckendorf), powers of 2 (binary).\n\n6. **Algorithms:** Greedy representation eventually works.",
     "keyInsights": [
-      "**Logarithmic Density:** powerSet(a,b) has ~(log N)² elements up to N, which is enough for completeness.",
-      "**Coprimality Essential:** gcd(a,b) = 1 ensures distinct products a^k · b^l have distinct prime factorizations.",
-      "**Contrast with Single Base:** Powers of 3 alone (3, 9, 27, 81, ...) are NOT complete — many gaps exist.",
+      "**Logarithmic Density:** powerSet(a,b) has ~(log N)\u00b2 elements up to N, which is enough for completeness.",
+      "**Coprimality Essential:** gcd(a,b) = 1 ensures distinct products a^k \u00b7 b^l have distinct prime factorizations.",
+      "**Contrast with Single Base:** Powers of 3 alone (3, 9, 27, 81, ...) are NOT complete \u2014 many gaps exist.",
       "**Bounded Exponents:** Remarkably, only finitely many values of l are needed (Davenport).",
-      "**Quantitative Bounds:** The threshold drops from quadruple exponential (Hegyvári) to triply exponential (Fang-Chen).",
+      "**Quantitative Bounds:** The threshold drops from quadruple exponential (Hegyv\u00e1ri) to triply exponential (Fang-Chen).",
       "**Large Summands:** Yu (2024) shows we can avoid small summands entirely."
     ],
     "prerequisites": [
@@ -123,10 +123,10 @@
     {
       "id": "quantitative-bounds",
       "title": "Quantitative Bounds",
-      "summary": "Hegyvári and Fang-Chen bounds",
+      "summary": "Hegyv\u00e1ri and Fang-Chen bounds",
       "startLine": 125,
       "endLine": 139,
-      "mathContext": "Hegyvári (2000): $l \\leq 2^{2^{2^{2^{\\max(a,b)}}}}$. Fang-Chen (2017): $l \\leq 2^{2^{2^{\\max(a,b)}}}$."
+      "mathContext": "Hegyv\u00e1ri (2000): $l \\leq 2^{2^{2^{2^{\\max(a,b)}}}}$. Fang-Chen (2017): $l \\leq 2^{2^{2^{\\max(a,b)}}}$."
     },
     {
       "id": "yu-result",
@@ -165,12 +165,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #246 asks whether {a^k b^l : gcd(a,b) = 1, k,l ≥ 0} is a complete sequence. Birch (1959) proved YES: every sufficiently large integer is a sum of distinct elements from this set. Extensions include Cassels' general criterion, Davenport's bounded-l observation, and explicit bounds by Hegyvári and Fang-Chen.",
+    "summary": "Erd\u0151s Problem #246 asks whether {a^k b^l : gcd(a,b) = 1, k,l \u2265 0} is a complete sequence. Birch (1959) proved YES: every sufficiently large integer is a sum of distinct elements from this set. Extensions include Cassels' general criterion, Davenport's bounded-l observation, and explicit bounds by Hegyv\u00e1ri and Fang-Chen.",
     "implications": "**Theoretical Significance**: **Implications for Additive Combinatorics**\n\n1. **Complete Sequences:** Characterizes which multiplicatively-generated sets are complete.\n\n2. **Density Threshold:** Logarithmic density suffices for completeness (Cassels criterion).\n\n**3. Bounded Parameters:** Finite restrictions on parameters don't break completeness.\n\n4. **Algorithmic Aspects:** Greedy algorithms eventually produce valid representations.\n\n5. **Contrast Principle:** Single-base powers lack the diversity needed for completeness.",
     "openQuestions": [
       "What is the optimal bound on l in terms of a and b?",
       "Can the triply exponential bound of Fang-Chen be improved?",
-      "What is the exact threshold N₀ for small values of a, b?",
+      "What is the exact threshold N\u2080 for small values of a, b?",
       "Algorithmic question: fastest way to compute representation?",
       "Connection to Problem 254 and other completeness problems?"
     ]
@@ -188,7 +188,8 @@
     "lineCount": 266,
     "axiomCount": 19,
     "theoremCount": 3,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -199,7 +200,7 @@
     {
       "targetId": "bezout-identity",
       "relationship": "foundational",
-      "description": "Bézout's identity (sa + tb = 1 for coprime a,b) is central to Birch's proof: coprimality ensures that a^k b^l generates elements whose residues modulo any prime cover all possibilities, a key ingredient for completeness"
+      "description": "B\u00e9zout's identity (sa + tb = 1 for coprime a,b) is central to Birch's proof: coprimality ensures that a^k b^l generates elements whose residues modulo any prime cover all possibilities, a key ingredient for completeness"
     },
     {
       "targetId": "fundamental-arithmetic",
@@ -209,33 +210,33 @@
     {
       "targetId": "geometric-series",
       "relationship": "related",
-      "description": "Powers of 2 form the prototypical complete sequence (binary representation). The geometric growth rate 2^k means the partial sums 1 + 2 + 4 + ··· + 2^k = 2^{k+1} - 1 cover all integers — the Erdős problem asks whether mixing two geometric sequences (a^k and b^l) preserves this completeness"
+      "description": "Powers of 2 form the prototypical complete sequence (binary representation). The geometric growth rate 2^k means the partial sums 1 + 2 + 4 + \u00b7\u00b7\u00b7 + 2^k = 2^{k+1} - 1 cover all integers \u2014 the Erd\u0151s problem asks whether mixing two geometric sequences (a^k and b^l) preserves this completeness"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,b), the ~(log N)² elements up to N generate 2^{(log N)²} ≫ N subset sums, providing the combinatorial basis for completeness"
+      "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,b), the ~(log N)\u00b2 elements up to N generate 2^{(log N)\u00b2} \u226b N subset sums, providing the combinatorial basis for completeness"
     }
   ],
   "references": [
     {
       "key": "Bi59",
-      "citation": "Birch, B.J., Note on a problem of Erdős, Proceedings of the Cambridge Philosophical Society 55 (1959), 370–373.",
+      "citation": "Birch, B.J., Note on a problem of Erd\u0151s, Proceedings of the Cambridge Philosophical Society 55 (1959), 370\u2013373.",
       "type": "paper"
     },
     {
       "key": "Ca60",
-      "citation": "Cassels, J.W.S., On the representation of integers as the sums of distinct summands taken from a fixed set, Acta Scientiarum Mathematicarum (Szeged) 21 (1960), 111–124.",
+      "citation": "Cassels, J.W.S., On the representation of integers as the sums of distinct summands taken from a fixed set, Acta Scientiarum Mathematicarum (Szeged) 21 (1960), 111\u2013124.",
       "type": "paper"
     },
     {
       "key": "He00",
-      "citation": "Hegyvári, N., On representation problems in the additive number theory, Periodica Mathematica Hungarica 43(1–2) (2000), 145–155.",
+      "citation": "Hegyv\u00e1ri, N., On representation problems in the additive number theory, Periodica Mathematica Hungarica 43(1\u20132) (2000), 145\u2013155.",
       "type": "paper"
     },
     {
       "key": "FC17",
-      "citation": "Fang, J.-H. and Chen, Y.-G., On a problem of Erdős on integers of the form 2^k + p and related problems, Journal of Number Theory 185 (2017), 255–267.",
+      "citation": "Fang, J.-H. and Chen, Y.-G., On a problem of Erd\u0151s on integers of the form 2^k + p and related problems, Journal of Number Theory 185 (2017), 255\u2013267.",
       "type": "paper"
     },
     {

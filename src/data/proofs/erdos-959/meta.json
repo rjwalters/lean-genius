@@ -2,9 +2,9 @@
   "id": "erdos-959",
   "title": "Distance Frequency Gaps in Planar Point Sets",
   "slug": "erdos-959",
-  "description": "Estimate max(f(d₁) - f(d₂)) for n-point sets in ℝ², where f orders distance frequencies. Known: Ω(n log n). Conjectured: n^{1+c/log log n}.",
+  "description": "Estimate max(f(d\u2081) - f(d\u2082)) for n-point sets in \u211d\u00b2, where f orders distance frequencies. Known: \u03a9(n log n). Conjectured: n^{1+c/log log n}.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/959",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos959Problem.lean",
@@ -16,7 +16,7 @@
       "planar-point-sets"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 959,
     "erdosUrl": "https://erdosproblems.com/959",
     "erdosProblemStatus": "open",
@@ -27,15 +27,15 @@
     "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős studied the distribution of pairwise distances in planar point configurations extensively throughout his career. Among the many questions he raised, Problem 959 concerns not the count of distinct distances (as in the celebrated Erdős distinct distances problem, resolved by Guth and Katz in 2015) but rather the gap between the most frequent and second-most frequent distance in an n-point set.\n\nClemen, Dumitrescu, and Liu (2025) made the first substantial progress, proving that the maximum frequency gap can be as large as Ω(n log n) using explicit constructions. They further generalized the result to rank-r gaps: for 1 ≤ r ≤ log n, the gap between the r-th and (r+1)-th most frequent distances is Ω(n log n / r). This shows the frequency distribution is not flat even among the top-ranked distances.\n\nClemen, Dumitrescu, and Liu conjectured that the true order of the maximum frequency gap is n^{1+c/log log n} for some constant c > 0, which would be dramatically larger than n log n. This conjectured growth rate mirrors bounds appearing in other combinatorial geometry problems, such as the Elekes–Rónyai framework. The problem remains open.",
-    "problemStatement": "Estimate max(f(d₁) - f(d₂)) over all n-point sets in ℝ², where distances are ordered by frequency.",
-    "text": "Estimate max(f(d₁) - f(d₂)) for n-point sets in ℝ², where f orders distance frequencies. Known: Ω(n log n). Conjectured: n^{1+c/log log n}.",
-    "proofStrategy": "We define distFrequency counting unordered pairs at a given distance, distinctDistances, maxFrequency, secondFrequency, and frequencyGap. The main conjecture and stronger variant are stated existentially. The Clemen–Dumitrescu–Liu lower bound is an axiom. We also formalize the generalized rank-r gap and prove structural properties including nonneg and empty-set bounds.",
+    "historicalContext": "Erd\u0151s studied the distribution of pairwise distances in planar point configurations extensively throughout his career. Among the many questions he raised, Problem 959 concerns not the count of distinct distances (as in the celebrated Erd\u0151s distinct distances problem, resolved by Guth and Katz in 2015) but rather the gap between the most frequent and second-most frequent distance in an n-point set.\n\nClemen, Dumitrescu, and Liu (2025) made the first substantial progress, proving that the maximum frequency gap can be as large as \u03a9(n log n) using explicit constructions. They further generalized the result to rank-r gaps: for 1 \u2264 r \u2264 log n, the gap between the r-th and (r+1)-th most frequent distances is \u03a9(n log n / r). This shows the frequency distribution is not flat even among the top-ranked distances.\n\nClemen, Dumitrescu, and Liu conjectured that the true order of the maximum frequency gap is n^{1+c/log log n} for some constant c > 0, which would be dramatically larger than n log n. This conjectured growth rate mirrors bounds appearing in other combinatorial geometry problems, such as the Elekes\u2013R\u00f3nyai framework. The problem remains open.",
+    "problemStatement": "Estimate max(f(d\u2081) - f(d\u2082)) over all n-point sets in \u211d\u00b2, where distances are ordered by frequency.",
+    "text": "Estimate max(f(d\u2081) - f(d\u2082)) for n-point sets in \u211d\u00b2, where f orders distance frequencies. Known: \u03a9(n log n). Conjectured: n^{1+c/log log n}.",
+    "proofStrategy": "We define distFrequency counting unordered pairs at a given distance, distinctDistances, maxFrequency, secondFrequency, and frequencyGap. The main conjecture and stronger variant are stated existentially. The Clemen\u2013Dumitrescu\u2013Liu lower bound is an axiom. We also formalize the generalized rank-r gap and prove structural properties including nonneg and empty-set bounds.",
     "keyInsights": [
       "**Unordered pair counting**: Distance frequency counts unordered pairs (a,b) with dist(a,b) = d, dividing by 2 to avoid double-counting. This is the natural quantity from the perspective of distance geometry.",
-      "**Constructive lower bound**: The Ω(n log n) lower bound of Clemen–Dumitrescu–Liu uses explicit point configurations, not probabilistic arguments. The constructions exploit structured lattice-like arrangements.",
-      "**Superpolynomial conjecture**: The conjectured n^{1+c/log log n} bound is much stronger than n log n — it grows faster than any fixed polynomial n^{1+ε} but slower than n^2. This quasi-polynomial growth rate echoes similar bounds in incidence geometry.",
-      "**Rank-r generalization**: The gap between the r-th and (r+1)-th most frequent distances satisfies Ω(n log n / r) for r ≤ log n, showing that frequency inhomogeneity persists across all top ranks.",
+      "**Constructive lower bound**: The \u03a9(n log n) lower bound of Clemen\u2013Dumitrescu\u2013Liu uses explicit point configurations, not probabilistic arguments. The constructions exploit structured lattice-like arrangements.",
+      "**Superpolynomial conjecture**: The conjectured n^{1+c/log log n} bound is much stronger than n log n \u2014 it grows faster than any fixed polynomial n^{1+\u03b5} but slower than n^2. This quasi-polynomial growth rate echoes similar bounds in incidence geometry.",
+      "**Rank-r generalization**: The gap between the r-th and (r+1)-th most frequent distances satisfies \u03a9(n log n / r) for r \u2264 log n, showing that frequency inhomogeneity persists across all top ranks.",
       "**Total pair constraint**: The sum of all distance frequencies is at most n choose 2, so the average frequency is at most n(n-1)/(2k) where k is the number of distinct distances."
     ],
     "mathlibDependencies": [
@@ -49,13 +49,13 @@
       "distinctDistances: the set of positive distances realized",
       "maxFrequency, secondFrequency: top-two frequency extraction",
       "frequencyGap: difference between top two frequencies",
-      "ErdosProblem959: existential statement of Ω(n log n) frequency gap",
+      "ErdosProblem959: existential statement of \u03a9(n log n) frequency gap",
       "ErdosProblem959_strong: n^{1+c/log log n} conjecture",
       "frequencyGapR: generalized rank-r frequency gap",
       "clemen_dumitrescu_liu_general: rank-r generalization axiom",
       "distFrequency_nonneg: proved nonnegativity",
       "frequencyGap_empty: proved zero gap for empty sets",
-      "total_pairs: sum of frequencies ≤ n choose 2",
+      "total_pairs: sum of frequencies \u2264 n choose 2",
       "avg_frequency_bound: average frequency bound"
     ],
     "prerequisites": [
@@ -75,14 +75,14 @@
       "title": "Main Conjecture",
       "startLine": 48,
       "endLine": 55,
-      "summary": "States ErdosProblem959: existence of C > 0 with frequency gap ≥ C·n·log n for n-point sets."
+      "summary": "States ErdosProblem959: existence of C > 0 with frequency gap \u2265 C\u00b7n\u00b7log n for n-point sets."
     },
     {
       "id": "known",
       "title": "Known Lower Bound",
       "startLine": 57,
       "endLine": 63,
-      "summary": "Axiomatizes the Clemen–Dumitrescu–Liu (2025) result: Ω(n log n) lower bound on frequency gap."
+      "summary": "Axiomatizes the Clemen\u2013Dumitrescu\u2013Liu (2025) result: \u03a9(n log n) lower bound on frequency gap."
     },
     {
       "id": "strong",
@@ -103,21 +103,21 @@
       "title": "Generalized Frequency Gap",
       "startLine": 90,
       "endLine": 107,
-      "summary": "Defines frequencyGapR for rank-r gaps and states the CDL generalized bound Ω(n log n / r)."
+      "summary": "Defines frequencyGapR for rank-r gaps and states the CDL generalized bound \u03a9(n log n / r)."
     },
     {
       "id": "counting",
       "title": "Total Pair Count",
       "startLine": 109,
       "endLine": 122,
-      "summary": "States total_pairs (sum of frequencies ≤ n choose 2) and derives avg_frequency_bound."
+      "summary": "States total_pairs (sum of frequencies \u2264 n choose 2) and derives avg_frequency_bound."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 959 on distance frequency gaps, including the Clemen–Dumitrescu–Liu Ω(n log n) lower bound, the stronger n^{1+c/log log n} conjecture, rank-r generalizations, and structural counting bounds. 2 sorries remain for maxFreq_ge_second and total_pairs.",
-    "implications": "Resolution would advance understanding of distance distribution in planar point configurations, connecting to the broader program of Erdős distance problems including the solved distinct distances conjecture.",
+    "summary": "The formalization captures Erd\u0151s Problem 959 on distance frequency gaps, including the Clemen\u2013Dumitrescu\u2013Liu \u03a9(n log n) lower bound, the stronger n^{1+c/log log n} conjecture, rank-r generalizations, and structural counting bounds. 2 sorries remain for maxFreq_ge_second and total_pairs.",
+    "implications": "Resolution would advance understanding of distance distribution in planar point configurations, connecting to the broader program of Erd\u0151s distance problems including the solved distinct distances conjecture.",
     "openQuestions": [
-      "Is the Ω(n log n) lower bound tight, or can it be improved toward the conjectured n^{1+c/log log n}?",
+      "Is the \u03a9(n log n) lower bound tight, or can it be improved toward the conjectured n^{1+c/log log n}?",
       "Does the n^{1+c/log log n} conjecture hold, and what is the optimal constant c?",
       "What is the exact growth rate of max(f(d_r) - f(d_{r+1})) for general r?",
       "Can the frequency gap bounds be extended to point sets in higher dimensions?"
@@ -138,28 +138,29 @@
     "lineCount": 142,
     "axiomCount": 2,
     "theoremCount": 5,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-957",
       "relationship": "related",
-      "description": "Erdős problem #957 studies the product of extreme distance frequencies — a closely related combinatorial geometry problem asking about multiplicative rather than additive gaps in the distance frequency spectrum of planar point sets"
+      "description": "Erd\u0151s problem #957 studies the product of extreme distance frequencies \u2014 a closely related combinatorial geometry problem asking about multiplicative rather than additive gaps in the distance frequency spectrum of planar point sets"
     },
     {
       "targetId": "erdos-958",
       "relationship": "related",
-      "description": "Erdős problem #958 concerns distance multiplicities and point configurations — another variant of the distance frequency problem, asking how many times specific distances can occur"
+      "description": "Erd\u0151s problem #958 concerns distance multiplicities and point configurations \u2014 another variant of the distance frequency problem, asking how many times specific distances can occur"
     },
     {
       "targetId": "erdos-960",
       "relationship": "related",
-      "description": "Erdős problem #960 on ordinary lines and collinear Ramsey thresholds — a sibling combinatorial geometry problem in the same problem cluster studying structural properties of planar point sets"
+      "description": "Erd\u0151s problem #960 on ordinary lines and collinear Ramsey thresholds \u2014 a sibling combinatorial geometry problem in the same problem cluster studying structural properties of planar point sets"
     },
     {
       "targetId": "erdos-504",
       "relationship": "thematic",
-      "description": "Both are extremal problems on finite planar point configurations — #504 optimizes angles while #959 optimizes distance frequency gaps, but both use the interplay between metric structure and combinatorial counting"
+      "description": "Both are extremal problems on finite planar point configurations \u2014 #504 optimizes angles while #959 optimizes distance frequency gaps, but both use the interplay between metric structure and combinatorial counting"
     }
   ],
   "relatedProofs": [
@@ -170,25 +171,25 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On sets of distances of n points",
       "year": "1946",
-      "venue": "The American Mathematical Monthly 53(5), 248–250",
-      "note": "Foundational paper establishing the distinct distances problem: n points in the plane determine at least Ω(n/√(log n)) distinct distances"
+      "venue": "The American Mathematical Monthly 53(5), 248\u2013250",
+      "note": "Foundational paper establishing the distinct distances problem: n points in the plane determine at least \u03a9(n/\u221a(log n)) distinct distances"
     },
     {
       "authors": "Guth, Larry; Katz, Nets Hawk",
-      "title": "On the Erdős distinct distances problem in the plane",
+      "title": "On the Erd\u0151s distinct distances problem in the plane",
       "year": "2015",
-      "venue": "Annals of Mathematics 181(1), 155–190",
-      "note": "Nearly optimal Ω(n/log n) lower bound on distinct distances, resolving the Erdős conjecture up to logarithmic factors — the algebraic-geometric techniques developed here underpin modern distance frequency analysis"
+      "venue": "Annals of Mathematics 181(1), 155\u2013190",
+      "note": "Nearly optimal \u03a9(n/log n) lower bound on distinct distances, resolving the Erd\u0151s conjecture up to logarithmic factors \u2014 the algebraic-geometric techniques developed here underpin modern distance frequency analysis"
     },
     {
-      "authors": "Pach, János; Sharir, Micha",
+      "authors": "Pach, J\u00e1nos; Sharir, Micha",
       "title": "Repeated angles in the plane and related problems",
       "year": "1992",
-      "venue": "Journal of Combinatorial Theory, Series A 59(1), 12–22",
-      "note": "Studies repeated geometric configurations in point sets — the frequency analysis framework relevant to understanding distance frequency gaps"
+      "venue": "Journal of Combinatorial Theory, Series A 59(1), 12\u201322",
+      "note": "Studies repeated geometric configurations in point sets \u2014 the frequency analysis framework relevant to understanding distance frequency gaps"
     }
   ]
 }

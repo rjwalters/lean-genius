@@ -1,8 +1,8 @@
 {
   "id": "erdos-1102",
-  "title": "Erdős Problem #1102: Squarefree Properties P and Q",
+  "title": "Erd\u0151s Problem #1102: Squarefree Properties P and Q",
   "slug": "erdos-1102",
-  "description": "How fast must sequences with squarefree properties P or Q grow? van Doorn-Tao (2025) resolved this: P-sequences have density 0, Q-sequences have upper density at most 6/π².",
+  "description": "How fast must sequences with squarefree properties P or Q grow? van Doorn-Tao (2025) resolved this: P-sequences have density 0, Q-sequences have upper density at most 6/\u03c0\u00b2.",
   "meta": {
     "author": "van Doorn, Tao (2025)",
     "sourceUrl": "https://erdosproblems.com/1102",
@@ -43,23 +43,23 @@
       "Definition of properties P and Q for sequences",
       "Formalization of squarefree density bounds",
       "Statement of van Doorn-Tao results as axioms",
-      "Connection between squarefree numbers and π"
+      "Connection between squarefree numbers and \u03c0"
     ],
     "axiomCount": 5,
     "lineCount": 172,
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem 1102 was posed in 1981 and concerns the interplay between sequences and squarefree numbers. A number is squarefree if no prime square divides it—equivalently, all prime exponents in its factorization are 0 or 1.\n\nErdős defined two properties based on squarefree translates:\n- **Property P:** For every n ≥ 1, only finitely many elements a ∈ A have n + a squarefree\n- **Property Q:** Infinitely many n have n + a squarefree for all a < n in A\n\nThe density of squarefree numbers is 6/π² ≈ 0.608 (this equals 1/ζ(2)), and this constant plays a central role in the resolution.\n\nvan Doorn and Tao (2025) provided complete answers to Erdős's questions about growth rates, using techniques from analytic number theory and the distribution of squarefree numbers.",
-    "problemStatement": "A number is **squarefree** if not divisible by any perfect square > 1.\n\n**Property P:** For every n ≥ 1, only finitely many a ∈ A have n + a squarefree.\n\n**Property Q:** Infinitely many n have n + a squarefree for all a < n in A.\n\nHow fast must sequences A = {a₁ < a₂ < ···} with properties P or Q grow?\n\n**Answer (van Doorn-Tao 2025):**\n- P-sequences have density 0, but can decay arbitrarily slowly\n- Q-sequences have upper density ≤ 6/π², with equality achievable",
-    "text": "How fast must sequences with squarefree properties P or Q grow? van Doorn-Tao (2025) resolved this: P-sequences have density 0, Q-sequences have upper density at most 6/π².",
-    "proofStrategy": "The resolution uses deep results from analytic number theory:\n\n**Property P:** van Doorn-Tao show that aⱼ/j → ∞ for any P-sequence. The key is that for fixed n, the density of a with n + a squarefree is positive (close to 6/π²), so P-sequences must be sparse. However, for any function f → ∞, there exist P-sequences with aⱼ/j ≤ f(j).\n\n**Property Q:** The squarefree numbers themselves form an optimal Q-sequence with density 6/π². For any Q-sequence, considering random n shows the upper density cannot exceed 6/π² (the probability that n + a is squarefree for random a < n).\n\n**Special Sequences:** The sequences 2ⁿ ± 1 and n! ± 1 grow fast enough to have property Q. Whether they have property P remains open.",
+    "historicalContext": "Erd\u0151s Problem 1102 was posed in 1981 and concerns the interplay between sequences and squarefree numbers. A number is squarefree if no prime square divides it\u2014equivalently, all prime exponents in its factorization are 0 or 1.\n\nErd\u0151s defined two properties based on squarefree translates:\n- **Property P:** For every n \u2265 1, only finitely many elements a \u2208 A have n + a squarefree\n- **Property Q:** Infinitely many n have n + a squarefree for all a < n in A\n\nThe density of squarefree numbers is 6/\u03c0\u00b2 \u2248 0.608 (this equals 1/\u03b6(2)), and this constant plays a central role in the resolution.\n\nvan Doorn and Tao (2025) provided complete answers to Erd\u0151s's questions about growth rates, using techniques from analytic number theory and the distribution of squarefree numbers.",
+    "problemStatement": "A number is **squarefree** if not divisible by any perfect square > 1.\n\n**Property P:** For every n \u2265 1, only finitely many a \u2208 A have n + a squarefree.\n\n**Property Q:** Infinitely many n have n + a squarefree for all a < n in A.\n\nHow fast must sequences A = {a\u2081 < a\u2082 < \u00b7\u00b7\u00b7} with properties P or Q grow?\n\n**Answer (van Doorn-Tao 2025):**\n- P-sequences have density 0, but can decay arbitrarily slowly\n- Q-sequences have upper density \u2264 6/\u03c0\u00b2, with equality achievable",
+    "text": "How fast must sequences with squarefree properties P or Q grow? van Doorn-Tao (2025) resolved this: P-sequences have density 0, Q-sequences have upper density at most 6/\u03c0\u00b2.",
+    "proofStrategy": "The resolution uses deep results from analytic number theory:\n\n**Property P:** van Doorn-Tao show that a\u2c7c/j \u2192 \u221e for any P-sequence. The key is that for fixed n, the density of a with n + a squarefree is positive (close to 6/\u03c0\u00b2), so P-sequences must be sparse. However, for any function f \u2192 \u221e, there exist P-sequences with a\u2c7c/j \u2264 f(j).\n\n**Property Q:** The squarefree numbers themselves form an optimal Q-sequence with density 6/\u03c0\u00b2. For any Q-sequence, considering random n shows the upper density cannot exceed 6/\u03c0\u00b2 (the probability that n + a is squarefree for random a < n).\n\n**Special Sequences:** The sequences 2\u207f \u00b1 1 and n! \u00b1 1 grow fast enough to have property Q. Whether they have property P remains open.",
     "keyInsights": [
-      "**The magic constant 6/π²:** This is 1/ζ(2), the density of squarefree numbers, and appears as the optimal bound for Q-sequences.",
+      "**The magic constant 6/\u03c0\u00b2:** This is 1/\u03b6(2), the density of squarefree numbers, and appears as the optimal bound for Q-sequences.",
       "**Squarefree numbers:** Numbers not divisible by any square > 1. The sequence 1, 2, 3, 5, 6, 7, 10, 11, 13, 14, ... forms the canonical Q-sequence.",
       "**Property duality:** P means 'eventually few squarefree translates,' Q means 'often all translates are squarefree.' These capture opposite extremes.",
-      "**Slow decay:** P-sequences must have density 0, but can approach density 0 arbitrarily slowly—a subtle existence result.",
-      "**Open questions:** Do 2ⁿ - 1 or n! + 1 have property P? The fast growth makes this hard to determine."
+      "**Slow decay:** P-sequences must have density 0, but can approach density 0 arbitrarily slowly\u2014a subtle existence result.",
+      "**Open questions:** Do 2\u207f - 1 or n! + 1 have property P? The fast growth makes this hard to determine."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -101,16 +101,16 @@
       "title": "Special Sequences",
       "startLine": 154,
       "endLine": 171,
-      "summary": "Results for 2ⁿ ± 1 and n! ± 1."
+      "summary": "Results for 2\u207f \u00b1 1 and n! \u00b1 1."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 1102 about growth rates of sequences defined by squarefree properties. van Doorn and Tao's 2025 resolution shows P-sequences have density 0 (but can decay arbitrarily slowly) and Q-sequences have upper density at most 6/π² (achieved by the squarefree numbers themselves).",
-    "implications": "**Theoretical Significance**: The resolution connects several areas of number theory:\n\n1. **Squarefree density:** The constant 6/π² = 1/ζ(2) appears naturally as the optimal bound.\n\n**2. Analytic techniques:** The proofs use sieve methods and probabilistic arguments about squarefree numbers.\n\n3. **Existence vs. explicit construction:** P-sequences with slow decay exist but may be hard to construct explicitly.",
+    "summary": "This formalization captures Erd\u0151s Problem 1102 about growth rates of sequences defined by squarefree properties. van Doorn and Tao's 2025 resolution shows P-sequences have density 0 (but can decay arbitrarily slowly) and Q-sequences have upper density at most 6/\u03c0\u00b2 (achieved by the squarefree numbers themselves).",
+    "implications": "**Theoretical Significance**: The resolution connects several areas of number theory:\n\n1. **Squarefree density:** The constant 6/\u03c0\u00b2 = 1/\u03b6(2) appears naturally as the optimal bound.\n\n**2. Analytic techniques:** The proofs use sieve methods and probabilistic arguments about squarefree numbers.\n\n3. **Existence vs. explicit construction:** P-sequences with slow decay exist but may be hard to construct explicitly.",
     "openQuestions": [
-      "Do the sequences 2ⁿ - 1 have property P?",
-      "Do n! ± 1 have property P?",
-      "What can be said about properties P' and P'∞ for specific sequences?",
+      "Do the sequences 2\u207f - 1 have property P?",
+      "Do n! \u00b1 1 have property P?",
+      "What can be said about properties P' and P'\u221e for specific sequences?",
       "Are there algebraic conditions that guarantee property P?"
     ]
   },
@@ -118,32 +118,32 @@
     {
       "targetId": "erdos-1103",
       "relationship": "related",
-      "description": "Squarefree Sumsets (Erdős #1103) asks whether every sumset A + B contains a squarefree element, directly complementing Problem #1102's study of sequences defined by squarefree translate conditions"
+      "description": "Squarefree Sumsets (Erd\u0151s #1103) asks whether every sumset A + B contains a squarefree element, directly complementing Problem #1102's study of sequences defined by squarefree translate conditions"
     },
     {
       "targetId": "erdos-969",
       "relationship": "foundational",
-      "description": "Error Term in Squarefree Integer Counting (Erdős #969) concerns the precision of the squarefree density 6/π², which is the key constant appearing in the Q-sequence bound of Problem #1102"
+      "description": "Error Term in Squarefree Integer Counting (Erd\u0151s #969) concerns the precision of the squarefree density 6/\u03c0\u00b2, which is the key constant appearing in the Q-sequence bound of Problem #1102"
     },
     {
       "targetId": "erdos-208",
       "relationship": "related",
-      "description": "Gaps Between Squarefree Numbers (Erdős #208) studies the local distribution of squarefree integers; Problem #1102 relies on the global density of squarefree numbers (6/π²) and their distribution properties"
+      "description": "Gaps Between Squarefree Numbers (Erd\u0151s #208) studies the local distribution of squarefree integers; Problem #1102 relies on the global density of squarefree numbers (6/\u03c0\u00b2) and their distribution properties"
     },
     {
       "targetId": "erdos-378",
       "relationship": "related",
-      "description": "Density of Squarefree Binomial Coefficients (Erdős #378) asks whether infinitely many central binomial coefficients are squarefree, sharing the theme of squarefree density with Problem #1102"
+      "description": "Density of Squarefree Binomial Coefficients (Erd\u0151s #378) asks whether infinitely many central binomial coefficients are squarefree, sharing the theme of squarefree density with Problem #1102"
     },
     {
       "targetId": "erdos-11",
       "relationship": "related",
-      "description": "Squarefree + Power of 2 (Erdős #11) studies whether every integer can be written as the sum of a squarefree number and a power of 2, another instance of Erdős's recurring interest in squarefree translates"
+      "description": "Squarefree + Power of 2 (Erd\u0151s #11) studies whether every integer can be written as the sum of a squarefree number and a power of 2, another instance of Erd\u0151s's recurring interest in squarefree translates"
     },
     {
       "targetId": "basel-problem",
       "relationship": "foundational",
-      "description": "The Basel Problem establishes ζ(2) = π²/6, hence 1/ζ(2) = 6/π² is the density of squarefree integers — exactly the optimal bound for Q-sequences proved by van Doorn and Tao in Problem #1102"
+      "description": "The Basel Problem establishes \u03b6(2) = \u03c0\u00b2/6, hence 1/\u03b6(2) = 6/\u03c0\u00b2 is the density of squarefree integers \u2014 exactly the optimal bound for Q-sequences proved by van Doorn and Tao in Problem #1102"
     }
   ],
   "relatedProofs": [
@@ -160,35 +160,35 @@
       "title": "Squarefree properties P and Q",
       "year": "2025",
       "venue": "arXiv preprint",
-      "note": "Resolves Erdős Problem #1102: proves P-sequences have density 0 and Q-sequences have upper density at most 6/π², with the squarefree numbers themselves achieving the bound"
+      "note": "Resolves Erd\u0151s Problem #1102: proves P-sequences have density 0 and Q-sequences have upper density at most 6/\u03c0\u00b2, with the squarefree numbers themselves achieving the bound"
     },
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Problems and results in combinatorial number theory",
       "year": "1981",
-      "venue": "Journées Arithmétiques de Metz, Astérisque 94",
-      "note": "Original source where Erdős posed the questions about properties P and Q for sequences with squarefree translate conditions"
+      "venue": "Journ\u00e9es Arithm\u00e9tiques de Metz, Ast\u00e9risque 94",
+      "note": "Original source where Erd\u0151s posed the questions about properties P and Q for sequences with squarefree translate conditions"
     },
     {
       "authors": "Mirsky, Leon",
       "title": "On the frequency of pairs of square-free numbers with a given difference",
       "year": "1947",
-      "venue": "Bulletin of the American Mathematical Society, 53(10), 936–939",
-      "note": "Early foundational result on the distribution of squarefree numbers and pairs; the density 6/π² for squarefree integers was known classically and underpins the Q-bound"
+      "venue": "Bulletin of the American Mathematical Society, 53(10), 936\u2013939",
+      "note": "Early foundational result on the distribution of squarefree numbers and pairs; the density 6/\u03c0\u00b2 for squarefree integers was known classically and underpins the Q-bound"
     },
     {
       "authors": "Pappalardi, Francesco",
       "title": "A survey on k-freeness",
       "year": "2004",
-      "venue": "Number Theory, Ramanujan Mathematical Society Lecture Notes Series, Vol. 1, 71–88",
-      "note": "Survey covering density results for k-free (squarefree = 2-free) integers and their distribution, providing analytic background for the density 6/π² central to Problem #1102"
+      "venue": "Number Theory, Ramanujan Mathematical Society Lecture Notes Series, Vol. 1, 71\u201388",
+      "note": "Survey covering density results for k-free (squarefree = 2-free) integers and their distribution, providing analytic background for the density 6/\u03c0\u00b2 central to Problem #1102"
     },
     {
       "authors": "Granville, Andrew",
       "title": "ABC allows us to count squarefrees",
       "year": "1998",
-      "venue": "International Mathematics Research Notices, 1998(19), 991–1009",
-      "note": "Studies the density of squarefree values of polynomials, connecting sieve methods and analytic number theory to squarefree distribution — techniques closely related to the van Doorn–Tao proof"
+      "venue": "International Mathematics Research Notices, 1998(19), 991\u20131009",
+      "note": "Studies the density of squarefree values of polynomials, connecting sieve methods and analytic number theory to squarefree distribution \u2014 techniques closely related to the van Doorn\u2013Tao proof"
     }
   ],
   "leanFile": {
@@ -205,6 +205,7 @@
     "lineCount": 172,
     "axiomCount": 5,
     "theoremCount": 2,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   }
 }

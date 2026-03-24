@@ -54,16 +54,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Ernst Eduard Kummer proved this remarkable theorem in 1852, in a paper titled \"Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen\" (On the supplementary theorems to the general reciprocity laws). Kummer was investigating cyclotomic fields and needed to understand the divisibility properties of binomial coefficients.\n\nThe theorem reveals a surprising connection: the prime power dividing a binomial coefficient is completely determined by the pattern of carries in base-p addition. This bridges combinatorics (counting) with number theory (divisibility) through the arithmetic of positional numeral systems.\n\nKummer's work on cyclotomic fields and regular primes was part of his larger project to prove Fermat's Last Theorem for specific classes of primes — he proved FLT for all regular primes in 1850, and the divisibility properties of binomial coefficients were central to his criterion for regularity. The theorem has since found applications far beyond its original context: in p-adic analysis, combinatorial number theory, and even fractal geometry (the Sierpiński triangle arises from C(n,k) mod 2 via Kummer's carry criterion).",
-    "problemStatement": "**Kummer's Theorem (1852)**: For prime p and integers 0 ≤ k ≤ n, the multiplicity of p in C(n,k) equals the number of carries when adding k and n-k in base p.\n\n$$\\nu_p\\binom{n}{k} = \\#\\{\\text{carries when adding } k + (n-k) \\text{ in base } p\\}$$\n\nA carry at position i occurs when: $k \\mod p^i + (n-k) \\mod p^i \\geq p^i$",
+    "historicalContext": "Ernst Eduard Kummer proved this remarkable theorem in 1852, in a paper titled \"\u00dcber die Erg\u00e4nzungss\u00e4tze zu den allgemeinen Reciprocit\u00e4tsgesetzen\" (On the supplementary theorems to the general reciprocity laws). Kummer was investigating cyclotomic fields and needed to understand the divisibility properties of binomial coefficients.\n\nThe theorem reveals a surprising connection: the prime power dividing a binomial coefficient is completely determined by the pattern of carries in base-p addition. This bridges combinatorics (counting) with number theory (divisibility) through the arithmetic of positional numeral systems.\n\nKummer's work on cyclotomic fields and regular primes was part of his larger project to prove Fermat's Last Theorem for specific classes of primes \u2014 he proved FLT for all regular primes in 1850, and the divisibility properties of binomial coefficients were central to his criterion for regularity. The theorem has since found applications far beyond its original context: in p-adic analysis, combinatorial number theory, and even fractal geometry (the Sierpi\u0144ski triangle arises from C(n,k) mod 2 via Kummer's carry criterion).",
+    "problemStatement": "**Kummer's Theorem (1852)**: For prime p and integers 0 \u2264 k \u2264 n, the multiplicity of p in C(n,k) equals the number of carries when adding k and n-k in base p.\n\n$$\\nu_p\\binom{n}{k} = \\#\\{\\text{carries when adding } k + (n-k) \\text{ in base } p\\}$$\n\nA carry at position i occurs when: $k \\mod p^i + (n-k) \\mod p^i \\geq p^i$",
     "text": "The p-adic valuation of C(n,k) equals the number of carries when adding k and n-k in base p. A beautiful connection between combinatorics and positional numeral systems.",
     "proofStrategy": "The proof uses Mathlib's `Nat.Prime.multiplicity_choose` which directly establishes Kummer's theorem.\n\n**Key Insight**: A carry at position i when adding k and (n-k) in base p corresponds to a \"floor function gap\":\n$$\\left\\lfloor\\frac{n}{p^i}\\right\\rfloor < \\left\\lfloor\\frac{k}{p^i}\\right\\rfloor + \\left\\lfloor\\frac{n-k}{p^i}\\right\\rfloor$$\n\nThese gaps accumulate to give the total multiplicity via Legendre's formula:\n$$\\nu_p(n!) = \\sum_{i \\geq 1} \\left\\lfloor\\frac{n}{p^i}\\right\\rfloor$$\n\nSince $C(n,k) = \\frac{n!}{k!(n-k)!}$, the multiplicities subtract, and the carry positions are exactly where the floor function gaps occur.",
     "keyInsights": [
-      "A carry at position i means k mod p^i + (n-k) mod p^i ≥ p^i — a purely arithmetic condition that determines prime divisibility of a combinatorial quantity",
+      "A carry at position i means k mod p^i + (n-k) mod p^i \u2265 p^i \u2014 a purely arithmetic condition that determines prime divisibility of a combinatorial quantity",
       "The theorem bridges three mathematical domains: combinatorics (binomial coefficients), number theory (p-adic valuations), and positional arithmetic (carries in base-p addition)",
-      "Equivalent formulation: (p-1)·ν_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n) where S_p is digit sum — each carry 'costs' exactly p-1 in digit sum",
+      "Equivalent formulation: (p-1)\u00b7\u03bd_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n) where S_p is digit sum \u2014 each carry 'costs' exactly p-1 in digit sum",
       "Lucas' theorem (C(n,k) mod p = product of digit-wise binomials) follows: a carry at position i means k_i > n_i, making C(n_i, k_i) = 0",
-      "Kummer's theorem enables O(log_p n) computation of ν_p(C(n,k)) by carry counting, avoiding computation of the binomial coefficient itself — essential when C(n,k) has millions of digits"
+      "Kummer's theorem enables O(log_p n) computation of \u03bd_p(C(n,k)) by carry counting, avoiding computation of the binomial coefficient itself \u2014 essential when C(n,k) has millions of digits"
     ],
     "prerequisites": [
       "Binomial coefficients and Pascal's triangle",
@@ -127,7 +127,7 @@
       "title": "Digit Sum Formulation",
       "startLine": 156,
       "endLine": 170,
-      "summary": "The equivalent formula using digit sums: (p-1)·ν_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n).",
+      "summary": "The equivalent formula using digit sums: (p-1)\u00b7\u03bd_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n).",
       "mathContext": "Legendre-Kummer: $(p-1)\\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$. Each carry reduces the digit sum by $p-1$, so carries $= (S_p(k) + S_p(n-k) - S_p(n))/(p-1)$."
     },
     {
@@ -135,13 +135,13 @@
       "title": "Applications and Closing",
       "startLine": 172,
       "endLine": 191,
-      "summary": "Discusses computational, structural, and mathematical applications of Kummer's theorem: efficient $\\nu_p$ computation, Pascal's triangle mod $p$ (Sierpiński triangle), Catalan numbers, and generalizations to multinomials and $q$-analogs. Includes `#check` verification of the three main theorems.",
+      "summary": "Discusses computational, structural, and mathematical applications of Kummer's theorem: efficient $\\nu_p$ computation, Pascal's triangle mod $p$ (Sierpi\u0144ski triangle), Catalan numbers, and generalizations to multinomials and $q$-analogs. Includes `#check` verification of the three main theorems.",
       "mathContext": "Applications: (1) compute $\\nu_p\\binom{n}{k}$ in $O(\\log_p n)$ time via carry counting, (2) $\\binom{n}{k} \\not\\equiv 0 \\pmod{p} \\iff$ no carries $\\iff$ each digit of $k \\leq$ corresponding digit of $n$ (fractal structure of Pascal's triangle mod $p$)."
     }
   ],
   "conclusion": {
     "summary": "Kummer's theorem elegantly connects two seemingly unrelated areas: the divisibility properties of binomial coefficients and the arithmetic of positional numeral systems. The number of carries in a base-p addition completely determines the p-adic valuation of the corresponding binomial coefficient.\n\nThis formalization uses Mathlib's `Nat.Prime.multiplicity_choose` as the core theorem, then builds understanding through concrete examples and connections to related results like Lucas' theorem and Legendre's formula.",
-    "implications": "**Theoretical Significance**: **Computational Applications**\n\n1. **Efficient Computation**: Determine the exact power of p dividing C(n,k) by just counting carries—no need to compute C(n,k) itself (which can be astronomically large).\n\n2. **Pascal's Triangle mod p**: The pattern of p | C(n,k) creates fractal-like structures.\n\nFor p = 2, this is the famous Sierpiński triangle!\n\n**Theoretical Significance**\n\n1. **Lucas' Theorem**: Kummer's theorem explains *why* Lucas' theorem works: each digit-wise binomial coefficient contributes to the overall divisibility.\n\n2. **Catalan Numbers**: Similar techniques apply to Catalan numbers C_n = C(2n,n)/(n+1).\n\n3. **Binomial Coefficient Sequences**: Understanding divisibility patterns in rows and diagonals of Pascal's triangle.",
+    "implications": "**Theoretical Significance**: **Computational Applications**\n\n1. **Efficient Computation**: Determine the exact power of p dividing C(n,k) by just counting carries\u2014no need to compute C(n,k) itself (which can be astronomically large).\n\n2. **Pascal's Triangle mod p**: The pattern of p | C(n,k) creates fractal-like structures.\n\nFor p = 2, this is the famous Sierpi\u0144ski triangle!\n\n**Theoretical Significance**\n\n1. **Lucas' Theorem**: Kummer's theorem explains *why* Lucas' theorem works: each digit-wise binomial coefficient contributes to the overall divisibility.\n\n2. **Catalan Numbers**: Similar techniques apply to Catalan numbers C_n = C(2n,n)/(n+1).\n\n3. **Binomial Coefficient Sequences**: Understanding divisibility patterns in rows and diagonals of Pascal's triangle.",
     "openQuestions": [
       "What are the analogs of Kummer's theorem for multinomial coefficients?",
       "How does the theorem generalize to q-binomial coefficients?",
@@ -157,7 +157,7 @@
     {
       "targetId": "binomial-theorem-oq-01",
       "relationship": "related",
-      "description": "Both study properties of binomial coefficients — Kummer's theorem addresses divisibility while the binomial theorem addresses evaluation"
+      "description": "Both study properties of binomial coefficients \u2014 Kummer's theorem addresses divisibility while the binomial theorem addresses evaluation"
     }
   ],
   "relatedProofs": [
@@ -178,14 +178,15 @@
     "lineCount": 191,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "Kummer, Ernst Eduard",
-      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "title": "\u00dcber die Erg\u00e4nzungss\u00e4tze zu den allgemeinen Reciprocit\u00e4tsgesetzen",
       "year": "1852",
-      "venue": "Journal für die reine und angewandte Mathematik 44, 93–146",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik 44, 93\u2013146",
       "note": "Contains Kummer's theorem on the p-adic valuation of binomial coefficients in terms of carries in base-p addition"
     }
   ]

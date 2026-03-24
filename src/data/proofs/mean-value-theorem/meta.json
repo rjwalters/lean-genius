@@ -63,16 +63,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Mean Value Theorem (MVT) has roots in the work of several mathematicians across centuries. The special case where $f(a) = f(b)$ — now known as **Rolle's theorem** — was stated by Michel Rolle in 1691, though his proof was not rigorous by modern standards. The general form was first proved by **Joseph-Louis Lagrange** in his 1797 treatise *Théorie des fonctions analytiques*, where he used it to develop the theory of Taylor series without relying on infinitesimals. Lagrange's approach was revolutionary: rather than treating derivatives as ratios of infinitesimals (as Leibniz did) or as limits of difference quotients (as Cauchy would later), he defined them algebraically via the expansion coefficients of $f(x + h)$.\n\n**Augustin-Louis Cauchy** generalized the theorem in 1821 to relate the derivatives of two functions: $(g(b) - g(a))f'(c) = (f(b) - f(a))g'(c)$ for some $c \\in (a, b)$. This generalization is the key ingredient in proving **L'Hôpital's rule** for evaluating indeterminate forms. Cauchy also gave the first $\\varepsilon$-$\\delta$ proof of the standard MVT, establishing the rigorous foundation that modern analysis builds on. The theorem appears as #75 on Freek Wiedijk's list of 100 famous theorems formalized in proof assistants.\n\nThe Lean 4 formalization leverages Mathlib's calculus library, which provides `exists_deriv_eq_slope` (the standard MVT), `exists_hasDerivAt_eq_slope` (the `HasDerivAt` variant), and `exists_ratio_deriv_eq_ratio_slope` (Cauchy's generalization). The file wraps these Mathlib results with classical theorem statements and proves one original corollary: that a function with zero derivative on an interval is constant. This corollary, while elementary, is the engine behind the fundamental theorem of calculus's uniqueness clause — two antiderivatives of the same function differ by at most a constant.",
+    "historicalContext": "The Mean Value Theorem (MVT) has roots in the work of several mathematicians across centuries. The special case where $f(a) = f(b)$ \u2014 now known as **Rolle's theorem** \u2014 was stated by Michel Rolle in 1691, though his proof was not rigorous by modern standards. The general form was first proved by **Joseph-Louis Lagrange** in his 1797 treatise *Th\u00e9orie des fonctions analytiques*, where he used it to develop the theory of Taylor series without relying on infinitesimals. Lagrange's approach was revolutionary: rather than treating derivatives as ratios of infinitesimals (as Leibniz did) or as limits of difference quotients (as Cauchy would later), he defined them algebraically via the expansion coefficients of $f(x + h)$.\n\n**Augustin-Louis Cauchy** generalized the theorem in 1821 to relate the derivatives of two functions: $(g(b) - g(a))f'(c) = (f(b) - f(a))g'(c)$ for some $c \\in (a, b)$. This generalization is the key ingredient in proving **L'H\u00f4pital's rule** for evaluating indeterminate forms. Cauchy also gave the first $\\varepsilon$-$\\delta$ proof of the standard MVT, establishing the rigorous foundation that modern analysis builds on. The theorem appears as #75 on Freek Wiedijk's list of 100 famous theorems formalized in proof assistants.\n\nThe Lean 4 formalization leverages Mathlib's calculus library, which provides `exists_deriv_eq_slope` (the standard MVT), `exists_hasDerivAt_eq_slope` (the `HasDerivAt` variant), and `exists_ratio_deriv_eq_ratio_slope` (Cauchy's generalization). The file wraps these Mathlib results with classical theorem statements and proves one original corollary: that a function with zero derivative on an interval is constant. This corollary, while elementary, is the engine behind the fundamental theorem of calculus's uniqueness clause \u2014 two antiderivatives of the same function differ by at most a constant.",
     "problemStatement": "**Mean Value Theorem (Wiedijk #75)**:\n\nLet $f : \\mathbb{R} \\to \\mathbb{R}$ be continuous on $[a, b]$ and differentiable on $(a, b)$, with $a < b$. Then there exists $c \\in (a, b)$ such that:\n$$f'(c) = \\frac{f(b) - f(a)}{b - a}$$\n\n**Cauchy's Generalization**: For $f, g$ both continuous on $[a, b]$ and differentiable on $(a, b)$:\n$$\\exists c \\in (a, b): (g(b) - g(a)) \\cdot f'(c) = (f(b) - f(a)) \\cdot g'(c)$$",
     "text": "A 163-line formalization of the Mean Value Theorem (Wiedijk #75) with 11 declarations, 0 sorries, 0 axioms. Wraps Mathlib's `exists_deriv_eq_slope` (MVT via Rolle on auxiliary function $h(x) = f(x) - \\text{slope}\\cdot(x-a)$) as `mvt`, provides a `HasDerivAt` variant via `exists_hasDerivAt_eq_slope`, and Cauchy's generalization via `exists_ratio_deriv_eq_ratio_slope`. One original corollary: `constant_of_deriv_zero` (function with zero derivative is constant) proved by obtaining the MVT point $c$, substituting $f'(c)=0$, and closing with `field_simp` and `linarith`. Commentary connects to L'Hopital's rule and the FTC uniqueness clause.",
     "proofStrategy": "The formalization takes a wrapper approach, building on Mathlib's existing MVT infrastructure. The main theorem `mvt` is a direct application of `exists_deriv_eq_slope`, which internally proves MVT by applying Rolle's theorem to the auxiliary function $h(x) = f(x) - f(a) - \\frac{f(b) - f(a)}{b - a}(x - a)$: since $h(a) = h(b) = 0$, Rolle's theorem provides $c$ with $h'(c) = 0$, yielding $f'(c) = (f(b) - f(a))/(b - a)$. The `HasDerivAt` version wraps `exists_hasDerivAt_eq_slope` for use when derivatives are specified explicitly. Cauchy's MVT wraps `exists_ratio_deriv_eq_ratio_slope`. The only original proof is `constant_of_deriv_zero`, which obtains the MVT point $c$, substitutes the hypothesis $f'(c) = 0$, and uses `field_simp` and `linarith` to conclude $f(b) = f(a)$.",
     "keyInsights": [
       "**Rolle's theorem is the engine**: Every proof of MVT reduces to Rolle's theorem on an auxiliary function. The auxiliary function $h(x) = f(x) - L(x)$ (where $L$ is the secant line) satisfies $h(a) = h(b) = 0$, so Rolle guarantees $h'(c) = 0$, i.e., $f'(c) = L'(x) = (f(b) - f(a))/(b - a)$",
       "**Two derivative formalisms**: Mathlib offers both `deriv` (the derivative as a function $\\mathbb{R} \\to \\mathbb{R}$, defined to be 0 where the derivative doesn't exist) and `HasDerivAt` (a proposition asserting a specific derivative value at a point). The MVT is stated in both forms for maximum usability",
-      "**Cauchy's MVT avoids division**: The ratio form $(g(b) - g(a))f'(c) = (f(b) - f(a))g'(c)$ elegantly avoids dividing by $g'(c)$ or $g(b) - g(a)$, which might be zero. This multiplicative formulation is cleaner for formalization and is the form used in proving L'Hôpital's rule",
+      "**Cauchy's MVT avoids division**: The ratio form $(g(b) - g(a))f'(c) = (f(b) - f(a))g'(c)$ elegantly avoids dividing by $g'(c)$ or $g(b) - g(a)$, which might be zero. This multiplicative formulation is cleaner for formalization and is the form used in proving L'H\u00f4pital's rule",
       "**Zero derivative implies constant is a genuine proof**: Unlike the MVT wrappers (which are one-line applications of Mathlib lemmas), `constant_of_deriv_zero` is proved from scratch: obtain the MVT point, substitute the zero-derivative hypothesis, use `field_simp` to clear the denominator, and `linarith` to conclude equality",
-      "**The secant-tangent parallel is the geometric core**: MVT says that for any chord of a smooth curve, there is a point where the tangent is parallel. This is why MVT is sometimes called the 'tangent-chord theorem' — it connects local differential information (the tangent slope) to global finite-difference information (the secant slope)"
+      "**The secant-tangent parallel is the geometric core**: MVT says that for any chord of a smooth curve, there is a point where the tangent is parallel. This is why MVT is sometimes called the 'tangent-chord theorem' \u2014 it connects local differential information (the tangent slope) to global finite-difference information (the secant slope)"
     ],
     "prerequisites": [
       "Calculus and real analysis",
@@ -134,7 +134,7 @@
       "title": "Geometric Interpretation and Applications",
       "startLine": 130,
       "endLine": 155,
-      "summary": "Documentation section covering: geometric interpretation (tangent parallel to secant), and four key applications — L'Hôpital's rule, Taylor's theorem remainder, monotonicity testing, and uniqueness of antiderivatives."
+      "summary": "Documentation section covering: geometric interpretation (tangent parallel to secant), and four key applications \u2014 L'H\u00f4pital's rule, Taylor's theorem remainder, monotonicity testing, and uniqueness of antiderivatives."
     },
     {
       "id": "verification",
@@ -145,10 +145,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This 164-line formalization of the Mean Value Theorem (Wiedijk #75) provides three wrapper theorems around Mathlib's MVT infrastructure — Lagrange's MVT in both `deriv` and `HasDerivAt` forms, and Cauchy's generalized MVT — plus one original proof that zero derivative implies constant. With 0 sorries and clean Mathlib integration, it demonstrates how a well-developed library enables concise formalization of classical analysis results.",
-    "implications": "**Theoretical Significance**: The MVT is the workhorse of single-variable analysis. Its formalization in Lean 4 via Mathlib enables downstream formalizations of L'Hôpital's rule, Taylor's theorem, and monotonicity criteria.\n\nThe Cauchy generalization is particularly important: it is the key lemma in any rigorous proof of L'Hôpital's rule, which itself is one of the most-used tools in applied mathematics. The `constant_of_deriv_zero` corollary, while simple, is the formal engine behind the uniqueness clause of the fundamental theorem of calculus.",
+    "summary": "This 164-line formalization of the Mean Value Theorem (Wiedijk #75) provides three wrapper theorems around Mathlib's MVT infrastructure \u2014 Lagrange's MVT in both `deriv` and `HasDerivAt` forms, and Cauchy's generalized MVT \u2014 plus one original proof that zero derivative implies constant. With 0 sorries and clean Mathlib integration, it demonstrates how a well-developed library enables concise formalization of classical analysis results.",
+    "implications": "**Theoretical Significance**: The MVT is the workhorse of single-variable analysis. Its formalization in Lean 4 via Mathlib enables downstream formalizations of L'H\u00f4pital's rule, Taylor's theorem, and monotonicity criteria.\n\nThe Cauchy generalization is particularly important: it is the key lemma in any rigorous proof of L'H\u00f4pital's rule, which itself is one of the most-used tools in applied mathematics. The `constant_of_deriv_zero` corollary, while simple, is the formal engine behind the uniqueness clause of the fundamental theorem of calculus.",
     "openQuestions": [
-      "Can the formalization be extended to prove L'Hôpital's rule as a direct corollary of Cauchy's MVT?",
+      "Can the formalization be extended to prove L'H\u00f4pital's rule as a direct corollary of Cauchy's MVT?",
       "Is there a Mathlib-compatible formalization of the higher-order MVT (Taylor's theorem with Lagrange remainder)?",
       "[RESOLVED in MeanValueTheoremOQ03.lean] Can the MVT be generalized to vector-valued functions in Lean 4 (the mean value inequality replaces the equality)?",
       "What is the cleanest formalization of the fundamental theorem of calculus using constant_of_deriv_zero?"
@@ -157,7 +157,7 @@
   "references": [
     {
       "authors": "Cauchy, Augustin-Louis",
-      "title": "Résumé des leçons données à l'École royale polytechnique sur le calcul infinitésimal",
+      "title": "R\u00e9sum\u00e9 des le\u00e7ons donn\u00e9es \u00e0 l'\u00c9cole royale polytechnique sur le calcul infinit\u00e9simal",
       "year": "1823",
       "venue": "Paris: Debure",
       "note": "Contains the first rigorous statement and proof of the mean value theorem for derivatives"
@@ -187,7 +187,7 @@
     {
       "targetId": "cauchy-schwarz",
       "relationship": "related",
-      "description": "The Cauchy form of MVT ($\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$) is used in L'Hôpital's rule, which evaluates indeterminate forms. Cauchy-Schwarz and Cauchy's MVT both bear Cauchy's name and both provide bounds on ratios — Cauchy-Schwarz on $\\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ and Cauchy's MVT on $\\Delta f/\\Delta g$"
+      "description": "The Cauchy form of MVT ($\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$) is used in L'H\u00f4pital's rule, which evaluates indeterminate forms. Cauchy-Schwarz and Cauchy's MVT both bear Cauchy's name and both provide bounds on ratios \u2014 Cauchy-Schwarz on $\\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ and Cauchy's MVT on $\\Delta f/\\Delta g$"
     },
     {
       "targetId": "harmonic-divergence",
@@ -218,6 +218,7 @@
     "lineCount": 163,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

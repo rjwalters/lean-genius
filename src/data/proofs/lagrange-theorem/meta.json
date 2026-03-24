@@ -25,7 +25,7 @@
       },
       {
         "theorem": "Subgroup.card_mul_index",
-        "description": "Product formula |H| × [G:H] = |G|",
+        "description": "Product formula |H| \u00d7 [G:H] = |G|",
         "module": "Mathlib.GroupTheory.Index"
       },
       {
@@ -40,7 +40,7 @@
       },
       {
         "theorem": "ZMod.card_units_eq_totient",
-        "description": "|(ZMod p)ˣ| = φ(p)",
+        "description": "|(ZMod p)\u02e3| = \u03c6(p)",
         "module": "Mathlib.Data.ZMod.Basic"
       },
       {
@@ -65,7 +65,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Joseph-Louis Lagrange proved this theorem in 1771 in his *Reflexions sur la resolution algebrique des equations*, while studying permutation groups in connection with the solvability of polynomial equations by radicals. Lagrange observed that the number of 'values' (arrangements) of a rational function of the roots always divides $n!$, which is essentially the statement that subgroup orders divide the group order for symmetric groups. The theorem was not stated in the language of abstract groups (which didn't exist until the 1830s with Galois and later Cayley); Lagrange worked entirely with permutations. The abstract formulation emerged through the work of Galois (1832), Cayley (1854), and Jordan (1870). The coset-based proof — partitioning $G$ into translates $gH$ — is due to Dedekind. The theorem's converse is famously false: $A_4$ (order 12) has no subgroup of order 6, despite $6 | 12$. The Sylow theorems (1872) provide the best partial converse: subgroups of prime-power order $p^k | |G|$ always exist.",
+    "historicalContext": "Joseph-Louis Lagrange proved this theorem in 1771 in his *Reflexions sur la resolution algebrique des equations*, while studying permutation groups in connection with the solvability of polynomial equations by radicals. Lagrange observed that the number of 'values' (arrangements) of a rational function of the roots always divides $n!$, which is essentially the statement that subgroup orders divide the group order for symmetric groups. The theorem was not stated in the language of abstract groups (which didn't exist until the 1830s with Galois and later Cayley); Lagrange worked entirely with permutations. The abstract formulation emerged through the work of Galois (1832), Cayley (1854), and Jordan (1870). The coset-based proof \u2014 partitioning $G$ into translates $gH$ \u2014 is due to Dedekind. The theorem's converse is famously false: $A_4$ (order 12) has no subgroup of order 6, despite $6 | 12$. The Sylow theorems (1872) provide the best partial converse: subgroups of prime-power order $p^k | |G|$ always exist.",
     "problemStatement": "**Lagrange's Theorem**:\n\nFor a finite group $G$ and subgroup $H \\leq G$:\n$$|H| \\mid |G|$$\n\nEquivalently: $|G| = |H| \\cdot [G:H]$ where $[G:H]$ is the index (number of left cosets).",
     "text": "A 222-line formalization of Lagrange's Theorem (Wiedijk #71) with 22 declarations, 0 sorries, 0 axioms. Delegates the core divisibility $|H| \\mid |G|$ to Mathlib's `Subgroup.card_subgroup_dvd_card` (coset partition argument) and derives the product formula $|G| = |H| \\cdot [G:H]$ from `Subgroup.card_mul_index`. Corollaries include: element order divides group order via `orderOf_dvd_card` and cyclic subgroups, the exponentiation identity $g^{|G|} = 1$ (`pow_card_eq_one`), Fermat's little theorem as a special case for $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, Euler's theorem via `ZMod.pow_totient`, and the classification of prime-order groups as cyclic (`isCyclic_of_prime_card`). Uses `Nat.Totient` from Mathlib for the Euler corollary.",
     "proofStrategy": "The formalization delegates the core divisibility result to Mathlib's `Subgroup.card_subgroup_dvd_card`, which uses the coset partition argument. The product formula $|G| = |H| \\cdot [G:H]$ is derived from `Subgroup.card_mul_index`. Corollaries include: element order divides group order (via cyclic subgroups), the power-by-group-order identity $g^{|G|} = 1$, Fermat's little theorem as a special case for $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, and the classification of prime-order groups as cyclic.",
@@ -104,7 +104,7 @@
       "title": "Product Formula and Cosets",
       "startLine": 81,
       "endLine": 106,
-      "summary": "The quantitative version |G| = |H| × [G:H] via card_mul_index, plus intuitive explanation of how cosets partition G into equal-sized pieces.",
+      "summary": "The quantitative version |G| = |H| \u00d7 [G:H] via card_mul_index, plus intuitive explanation of how cosets partition G into equal-sized pieces.",
       "mathContext": "$|G| = |H| \\cdot [G:H]$ where $[G:H]$ counts left cosets. Coset partition: $g \\in gH$, cosets equal or disjoint, $|gH| = |H|$, $G = \\bigsqcup gH$."
     },
     {
@@ -120,7 +120,7 @@
       "title": "Fermat's Little Theorem",
       "startLine": 130,
       "endLine": 153,
-      "summary": "Derives a^(p-1) ≡ 1 (mod p) from Lagrange applied to (Z/pZ)×, connecting group theory to number theory via ZMod.card_units_eq_totient.",
+      "summary": "Derives a^(p-1) \u2261 1 (mod p) from Lagrange applied to (Z/pZ)\u00d7, connecting group theory to number theory via ZMod.card_units_eq_totient.",
       "mathContext": "$a^{p-1} \\equiv 1 \\pmod{p}$ via $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = \\phi(p) = p-1$ and `pow_card_eq_one`."
     },
     {
@@ -144,17 +144,17 @@
       "title": "Significance and Verification",
       "startLine": 200,
       "endLine": 222,
-      "summary": "Discussion of why Lagrange matters (structure constraints, counting, number theory, extensions), the false converse (A₄ counterexample), and type-checking of all exported theorems.",
+      "summary": "Discussion of why Lagrange matters (structure constraints, counting, number theory, extensions), the false converse (A\u2084 counterexample), and type-checking of all exported theorems.",
       "mathContext": "False converse: $6 \\mid 12 = |A_4|$ but $A_4$ has no subgroup of order 6. Sylow theorems provide partial converse for prime powers."
     }
   ],
   "conclusion": {
     "summary": "This formalization verifies Lagrange's Theorem (Wiedijk #71) with the core divisibility result, the product formula, and six corollaries: element order divides group order, power-by-group-order, Fermat's little theorem, index properties, prime-order simplicity, and prime-order cyclicity.",
-    "implications": "**Theoretical Significance**: Lagrange's theorem is the starting point for the structural theory of finite groups. It leads directly to the Sylow theorems (existence of p-subgroups), the orbit-stabilizer theorem (|G| = |Orb(x)| × |Stab(x)|), and the class equation.\n\nIn number theory, it yields Fermat's little theorem, Euler's theorem, and Wilson's theorem. In cryptography, the relationship between element orders and group orders underpins the security of RSA, Diffie-Hellman, and elliptic curve cryptography.",
+    "implications": "**Theoretical Significance**: Lagrange's theorem is the starting point for the structural theory of finite groups. It leads directly to the Sylow theorems (existence of p-subgroups), the orbit-stabilizer theorem (|G| = |Orb(x)| \u00d7 |Stab(x)|), and the class equation.\n\nIn number theory, it yields Fermat's little theorem, Euler's theorem, and Wilson's theorem. In cryptography, the relationship between element orders and group orders underpins the security of RSA, Diffie-Hellman, and elliptic curve cryptography.",
     "openQuestions": [
       "Can the Sylow theorems (partial converse of Lagrange) be formalized, showing that subgroups of order p^k exist for every prime power p^k dividing |G|?",
       "Can the orbit-stabilizer theorem be formalized as a generalization of Lagrange's theorem, with Lagrange recovered as the special case of the action of G on cosets of H?",
-      "Can Hall's theorem be formalized: for solvable groups, the full converse of Lagrange holds — subgroups of order n exist for every n dividing |G|?"
+      "Can Hall's theorem be formalized: for solvable groups, the full converse of Lagrange holds \u2014 subgroups of order n exist for every n dividing |G|?"
     ]
   },
   "crossReferences": [
@@ -166,7 +166,7 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "foundational",
-      "description": "Lagrange's theorem underpins the Abel-Ruffini analysis: |A₅| = 60 = 5!/2 (index 2 in S₅), and the derived series quotient orders determine solvability. Lagrange's original 1771 paper on permutations of polynomial roots was the precursor to Galois theory"
+      "description": "Lagrange's theorem underpins the Abel-Ruffini analysis: |A\u2085| = 60 = 5!/2 (index 2 in S\u2085), and the derived series quotient orders determine solvability. Lagrange's original 1771 paper on permutations of polynomial roots was the precursor to Galois theory"
     },
     {
       "targetId": "fermats-last-theorem",
@@ -186,17 +186,17 @@
     {
       "targetId": "euler-totient",
       "relationship": "extends",
-      "description": "Euler's theorem (a^φ(n) ≡ 1 mod n) is a direct corollary of Lagrange applied to (Z/nZ)× of order φ(n). The formalization derives Fermat's little theorem (the prime case); Euler's theorem is the general case"
+      "description": "Euler's theorem (a^\u03c6(n) \u2261 1 mod n) is a direct corollary of Lagrange applied to (Z/nZ)\u00d7 of order \u03c6(n). The formalization derives Fermat's little theorem (the prime case); Euler's theorem is the general case"
     },
     {
       "targetId": "angle-trisection",
       "relationship": "foundational",
-      "description": "The tower law for field extension degrees ([F_n:Q] = ∏[F_{i+1}:F_i] = 2^n) is a consequence of Lagrange's theorem on subgroup indices, underpinning the degree-divisibility argument for constructibility"
+      "description": "The tower law for field extension degrees ([F_n:Q] = \u220f[F_{i+1}:F_i] = 2^n) is a consequence of Lagrange's theorem on subgroup indices, underpinning the degree-divisibility argument for constructibility"
     },
     {
       "targetId": "inverse-galois",
       "relationship": "related",
-      "description": "Lagrange's original 1771 work on permutations of polynomial roots was the direct precursor to Galois theory. The Inverse Galois Problem asks which groups appear as Galois groups — Lagrange's theorem constrains which subgroups can appear in any finite group"
+      "description": "Lagrange's original 1771 work on permutations of polynomial roots was the direct precursor to Galois theory. The Inverse Galois Problem asks which groups appear as Galois groups \u2014 Lagrange's theorem constrains which subgroups can appear in any finite group"
     },
     {
       "targetId": "wilsons-theorem",
@@ -211,7 +211,7 @@
     {
       "targetId": "primitive-roots",
       "relationship": "related",
-      "description": "The existence of primitive roots modulo $p$ — generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — is a consequence of the structure theorem for finite abelian groups combined with Lagrange's theorem. By Lagrange, the polynomial $x^d - 1$ has at most $d$ roots in $\\mathbb{Z}/p\\mathbb{Z}$, which forces $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ to be cyclic"
+      "description": "The existence of primitive roots modulo $p$ \u2014 generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ \u2014 is a consequence of the structure theorem for finite abelian groups combined with Lagrange's theorem. By Lagrange, the polynomial $x^d - 1$ has at most $d$ roots in $\\mathbb{Z}/p\\mathbb{Z}$, which forces $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ to be cyclic"
     },
     {
       "targetId": "mathematical-induction",
@@ -243,10 +243,10 @@
   "references": [
     {
       "authors": "Lagrange, Joseph-Louis",
-      "title": "Réflexions sur la résolution algébrique des équations",
+      "title": "R\u00e9flexions sur la r\u00e9solution alg\u00e9brique des \u00e9quations",
       "year": "1771",
-      "venue": "Nouveaux Mémoires de l'Académie Royale des Sciences et Belles-Lettres de Berlin",
-      "note": "Original observation that the order of a permutation divides n! — precursor to the modern group-theoretic statement"
+      "venue": "Nouveaux M\u00e9moires de l'Acad\u00e9mie Royale des Sciences et Belles-Lettres de Berlin",
+      "note": "Original observation that the order of a permutation divides n! \u2014 precursor to the modern group-theoretic statement"
     },
     {
       "authors": "Wiedijk, Freek",
@@ -278,14 +278,14 @@
     },
     {
       "authors": "Sylow, Ludwig",
-      "title": "Théorèmes sur les groupes de substitutions",
+      "title": "Th\u00e9or\u00e8mes sur les groupes de substitutions",
       "year": "1872",
-      "venue": "Mathematische Annalen, vol. 5, pp. 584–594",
-      "note": "Proved that subgroups of prime-power order exist for every prime power dividing |G| — the principal partial converse to Lagrange's theorem"
+      "venue": "Mathematische Annalen, vol. 5, pp. 584\u2013594",
+      "note": "Proved that subgroups of prime-power order exist for every prime power dividing |G| \u2014 the principal partial converse to Lagrange's theorem"
     },
     {
       "authors": "Jordan, Camille",
-      "title": "Traité des substitutions et des équations algébriques",
+      "title": "Trait\u00e9 des substitutions et des \u00e9quations alg\u00e9briques",
       "year": "1870",
       "venue": "Gauthier-Villars, Paris",
       "note": "First systematic treatment of permutation groups, establishing the group-theoretic framework in which Lagrange's theorem is a foundational result"
@@ -311,6 +311,7 @@
     "lineCount": 222,
     "axiomCount": 0,
     "theoremCount": 11,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

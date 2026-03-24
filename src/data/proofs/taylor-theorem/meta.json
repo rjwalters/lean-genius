@@ -53,7 +53,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Taylor's theorem has a rich history spanning several centuries. James Gregory discovered the general idea of power series expansion around 1671, and Brook Taylor published his systematic treatment in *Methodus Incrementorum Directa et Inversa* in 1715, giving the result its name. Colin Maclaurin popularized the special case $a = 0$ (Maclaurin series) in his 1742 *Treatise of Fluxions*, though this was already implicit in Taylor's work.\n\nThe rigorous formulation with explicit remainder terms came much later. Joseph-Louis Lagrange introduced the remainder $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ in his 1797 *Théorie des fonctions analytiques*, providing the first tool for bounding approximation error. Augustin-Louis Cauchy developed an alternative remainder form $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{n!}(x-\\xi)^n(x-a)$ that is sometimes more convenient for analysis. Both forms rely on the Mean Value Theorem applied to a carefully constructed auxiliary function.\n\nTaylor's theorem is entry #35 on Freek Wiedijk's list of 100 greatest theorems. It is arguably the most widely applied theorem in all of mathematics: it underlies numerical computation (floating-point arithmetic, quadrature, ODE solvers), optimization (Newton's method uses the second-order Taylor expansion), physics (perturbation theory, linearization of nonlinear systems), and machine learning (gradient descent is first-order Taylor). The formal verification in Lean establishes both remainder forms with full generality.",
+    "historicalContext": "Taylor's theorem has a rich history spanning several centuries. James Gregory discovered the general idea of power series expansion around 1671, and Brook Taylor published his systematic treatment in *Methodus Incrementorum Directa et Inversa* in 1715, giving the result its name. Colin Maclaurin popularized the special case $a = 0$ (Maclaurin series) in his 1742 *Treatise of Fluxions*, though this was already implicit in Taylor's work.\n\nThe rigorous formulation with explicit remainder terms came much later. Joseph-Louis Lagrange introduced the remainder $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ in his 1797 *Th\u00e9orie des fonctions analytiques*, providing the first tool for bounding approximation error. Augustin-Louis Cauchy developed an alternative remainder form $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{n!}(x-\\xi)^n(x-a)$ that is sometimes more convenient for analysis. Both forms rely on the Mean Value Theorem applied to a carefully constructed auxiliary function.\n\nTaylor's theorem is entry #35 on Freek Wiedijk's list of 100 greatest theorems. It is arguably the most widely applied theorem in all of mathematics: it underlies numerical computation (floating-point arithmetic, quadrature, ODE solvers), optimization (Newton's method uses the second-order Taylor expansion), physics (perturbation theory, linearization of nonlinear systems), and machine learning (gradient descent is first-order Taylor). The formal verification in Lean establishes both remainder forms with full generality.",
     "problemStatement": "**Taylor's Theorem**:\n\nFor $f$ that is $(n+1)$-times continuously differentiable on $[a, x]$:\n\n$$f(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k + R_n(x)$$\n\n**Lagrange remainder**: $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ for some $\\xi \\in (a, x)$\n\n**Cauchy remainder**: $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{n!}(x-\\xi)^n(x-a)$ for some $\\xi \\in (a, x)$",
     "text": "A smooth function can be approximated by its Taylor polynomial, with explicit remainder terms (Lagrange and Cauchy forms).",
     "proofStrategy": "The formalization builds on Mathlib's `Analysis.Calculus.Taylor` module, which provides the core remainder theorems.\n\n**Lagrange remainder**: The proof establishes that $f$ is $n$-times differentiable (via `ContDiffOn.of_succ`) and that the $n$-th iterated derivative is differentiable on the open interval (via `differentiableOn_iteratedDerivWithin`). These hypotheses feed into `taylor_mean_remainder_lagrange`, which applies an extended Mean Value Theorem to an auxiliary function that captures the remainder.\n\n**Cauchy remainder**: Uses the same setup but applies `taylor_mean_remainder_cauchy`, which constructs a different auxiliary function yielding the Cauchy form.\n\n**Special cases**: The first-order case ($n = 0$) is shown to recover the Mean Value Theorem by simplifying the factorial and power terms. The second-order case ($n = 1$) gives the quadratic approximation used in optimization. Both require careful simplification with `simp` and `norm_cast`.\n\n**Error bounds**: The `taylor_remainder_bound` theorem provides a uniform bound when the $(n+1)$-th derivative is bounded, and `exists_taylor_remainder_bound` proves that such a bound always exists on compact intervals.",
@@ -89,42 +89,42 @@
       "title": "Taylor Polynomial Definition",
       "startLine": 58,
       "endLine": 70,
-      "summary": "Defines taylorPoly as a wrapper around Mathlib's taylorWithinEval, computing the degree-n Taylor polynomial of f at x₀ evaluated at x on the interval [x₀, x]."
+      "summary": "Defines taylorPoly as a wrapper around Mathlib's taylorWithinEval, computing the degree-n Taylor polynomial of f at x\u2080 evaluated at x on the interval [x\u2080, x]."
     },
     {
       "id": "lagrange",
       "title": "Lagrange Remainder Form",
       "startLine": 72,
       "endLine": 96,
-      "summary": "The main theorem: for (n+1)-times continuously differentiable f, there exists ξ ∈ (x₀, x) such that the remainder equals f^(n+1)(ξ) · (x-x₀)^(n+1) / (n+1)!. Proof establishes differentiability hypotheses for taylor_mean_remainder_lagrange."
+      "summary": "The main theorem: for (n+1)-times continuously differentiable f, there exists \u03be \u2208 (x\u2080, x) such that the remainder equals f^(n+1)(\u03be) \u00b7 (x-x\u2080)^(n+1) / (n+1)!. Proof establishes differentiability hypotheses for taylor_mean_remainder_lagrange."
     },
     {
       "id": "cauchy",
       "title": "Cauchy Remainder Form",
       "startLine": 98,
       "endLine": 121,
-      "summary": "Alternative remainder form: f^(n+1)(ξ) · (x-ξ)^n · (x-x₀) / n! for some ξ ∈ (x₀, x). Uses the same differentiability setup with taylor_mean_remainder_cauchy."
+      "summary": "Alternative remainder form: f^(n+1)(\u03be) \u00b7 (x-\u03be)^n \u00b7 (x-x\u2080) / n! for some \u03be \u2208 (x\u2080, x). Uses the same differentiability setup with taylor_mean_remainder_cauchy."
     },
     {
       "id": "bounds",
       "title": "Remainder Bounds",
       "startLine": 123,
       "endLine": 138,
-      "summary": "If the (n+1)-th derivative is bounded by C on [a,b], the remainder satisfies |f(x) - T_n(x)| ≤ C · (x-a)^(n+1) / n!. Direct application of taylor_mean_remainder_bound."
+      "summary": "If the (n+1)-th derivative is bounded by C on [a,b], the remainder satisfies |f(x) - T_n(x)| \u2264 C \u00b7 (x-a)^(n+1) / n!. Direct application of taylor_mean_remainder_bound."
     },
     {
       "id": "first-order",
       "title": "First-Order Taylor (Mean Value Theorem)",
       "startLine": 140,
       "endLine": 159,
-      "summary": "The n=0 specialization recovers the Mean Value Theorem: f(x) - f(x₀) = f'(ξ)(x - x₀). Proof simplifies factorial and power terms via simp."
+      "summary": "The n=0 specialization recovers the Mean Value Theorem: f(x) - f(x\u2080) = f'(\u03be)(x - x\u2080). Proof simplifies factorial and power terms via simp."
     },
     {
       "id": "second-order",
       "title": "Second-Order Taylor (Quadratic Approximation)",
       "startLine": 161,
       "endLine": 178,
-      "summary": "The n=1 specialization gives the quadratic approximation used in optimization: remainder equals f''(ξ)(x-x₀)²/2."
+      "summary": "The n=1 specialization gives the quadratic approximation used in optimization: remainder equals f''(\u03be)(x-x\u2080)\u00b2/2."
     },
     {
       "id": "existence-summary",
@@ -139,7 +139,7 @@
     "implications": "**Theoretical Significance**: Taylor's theorem is the theoretical foundation for virtually all of numerical analysis. Polynomial interpolation, numerical integration (Simpson's rule, Gaussian quadrature), and ODE solvers (Runge-Kutta methods) all derive their error bounds from Taylor remainder estimates.\n\nIn optimization, the second-order Taylor expansion justifies Newton's method and provides the basis for convergence analysis. The formal verification in Lean ensures that these foundational error bounds are mathematically rigorous.",
     "openQuestions": [
       "Can Lean formalize the multivariate Taylor theorem with remainder, which requires working with symmetric multilinear maps and multi-index notation?",
-      "How does the Taylor remainder interact with Lean's formalization of analytic functions — can we prove that the Taylor series of an analytic function converges to the function?",
+      "How does the Taylor remainder interact with Lean's formalization of analytic functions \u2014 can we prove that the Taylor series of an analytic function converges to the function?",
       "Can the Cauchy remainder form be used to formalize the proof that the Taylor series of $e^x$ converges everywhere, providing a fully verified computation of $e$?"
     ]
   },
@@ -157,7 +157,7 @@
     {
       "targetId": "binomial-theorem",
       "relationship": "related",
-      "description": "Newton's generalized binomial theorem $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$ is the Taylor series of $(1+x)^\\alpha$ at $x=0$ — the case where Taylor's theorem provides an exact infinite series for non-integer exponents."
+      "description": "Newton's generalized binomial theorem $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$ is the Taylor series of $(1+x)^\\alpha$ at $x=0$ \u2014 the case where Taylor's theorem provides an exact infinite series for non-integer exponents."
     },
     {
       "targetId": "e-transcendental",
@@ -167,7 +167,7 @@
     {
       "targetId": "basel-problem",
       "relationship": "related",
-      "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ — comparing Taylor coefficients yields the Basel sum."
+      "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ \u2014 comparing Taylor coefficients yields the Basel sum."
     }
   ],
   "relatedProofs": [
@@ -193,7 +193,8 @@
     "lineCount": 202,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "lemmaCount": 0
   },
   "references": [
     {

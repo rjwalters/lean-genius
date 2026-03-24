@@ -14,8 +14,8 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
-    "axiomCount": 25,
+    "sorries": 1,
+    "axiomCount": 21,
     "assumptions": "22 axiom declarations + 3 structure-encoded assumptions = 25 total. 21 former axiom declarations (algebraicRank, torsionSubgroup, localLFactor, conductor, LFunction, completedLFunction, rootNumber, analyticRank, realPeriod, regulator, shaOrder, tamagawaNumber, tamagawaProduct, torsionOrder, HasCM, NeronTateHeight, traceOfFrobenius, BSD_NumberField, BSD_AbelianVariety, regulatorValue, classNumber) converted to opaque \u2014 these are vocabulary declarations (type/constant definitions), not mathematical assumptions. Remaining 22 axioms encode proven BSD cases (rank 0 via Kolyvagin, rank 1 via Gross-Zagier, CM via Coates-Wiles), the Gross-Zagier formula, Hasse bound, specific curve data, congruent number results, parity conjecture, BSD generalizations, and more. Additionally, 3 structure-encoded assumptions: MordellWeilGroup.finitely_generated, GrossZagierData.gross_zagier, KolyvaginResult.sha_finite. The BSD conjecture itself remains open.",
     "mathlibDependencies": [
       {
@@ -640,16 +640,11 @@
     "namespace": "BirchSwinnertonDyer",
     "lineCount": 7437,
     "axiomCount": 21,
-    "theoremCount": 254,
-    "definitionCount": 143
+    "theoremCount": 251,
+    "definitionCount": 143,
+    "lemmaCount": 3
   },
-  "relatedProofs": [
-    "",
-    "",
-    "",
-    "",
-    ""
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": "Birch, Bryan J.; Swinnerton-Dyer, H.P.F.",

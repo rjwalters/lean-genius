@@ -53,7 +53,7 @@
     "prerequisites": [
       "Arithmetic progressions and their properties",
       "Series convergence and divergence (reciprocal sums)",
-      "Szemerédi's theorem (density version)",
+      "Szemer\u00e9di's theorem (density version)",
       "Basic Fourier analysis on finite groups (for Roth's method)",
       "Extremal combinatorics (Ramsey-type reasoning)"
     ],
@@ -75,7 +75,7 @@
     "prerequisites": [
       "Arithmetic progressions and their properties",
       "Series convergence and divergence (reciprocal sums)",
-      "Szemerédi's theorem (density version)",
+      "Szemer\u00e9di's theorem (density version)",
       "Basic Fourier analysis on finite groups (for Roth's method)",
       "Extremal combinatorics (Ramsey-type reasoning)"
     ]
@@ -153,22 +153,22 @@
     {
       "targetId": "erdos-26",
       "relationship": "related",
-      "description": "Problem #26 on thick sequences and Behrend sets directly concerns the AP-free constructions that provide lower bounds for $r_k(N)$. Behrend's sphere construction gives $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$, the main barrier to proving Erdős #3"
+      "description": "Problem #26 on thick sequences and Behrend sets directly concerns the AP-free constructions that provide lower bounds for $r_k(N)$. Behrend's sphere construction gives $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$, the main barrier to proving Erd\u0151s #3"
     },
     {
       "targetId": "erdos-2",
       "relationship": "related",
-      "description": "Both problems share the theme of density constraints in number theory. Covering systems (Problem #2) require $\\sum 1/n_i \\geq 1$, while Problem #3 concerns sets with $\\sum 1/n = \\infty$. Erdős posed both as fundamental questions about how arithmetic structure emerges from density"
+      "description": "Both problems share the theme of density constraints in number theory. Covering systems (Problem #2) require $\\sum 1/n_i \\geq 1$, while Problem #3 concerns sets with $\\sum 1/n = \\infty$. Erd\u0151s posed both as fundamental questions about how arithmetic structure emerges from density"
     },
     {
       "targetId": "erdos-1",
       "relationship": "related",
-      "description": "Problem #1 (distinct subset sums) and Problem #3 (APs in dense sets) are both foundational problems in additive combinatorics that Erdős posed early in his career. Both concern how combinatorial structure is forced by size: Problem #1 asks about subset sum structure, Problem #3 about arithmetic progression structure"
+      "description": "Problem #1 (distinct subset sums) and Problem #3 (APs in dense sets) are both foundational problems in additive combinatorics that Erd\u0151s posed early in his career. Both concern how combinatorial structure is forced by size: Problem #1 asks about subset sum structure, Problem #3 about arithmetic progression structure"
     },
     {
       "targetId": "erdos-28",
       "relationship": "related",
-      "description": "The Erdős-Turán conjecture on additive bases (Problem #28) asks about the representation function of bases of order 2. Both problems bear the name Erdős-Turán and concern how arithmetic structure (APs vs. representation counts) is forced by density conditions"
+      "description": "The Erd\u0151s-Tur\u00e1n conjecture on additive bases (Problem #28) asks about the representation function of bases of order 2. Both problems bear the name Erd\u0151s-Tur\u00e1n and concern how arithmetic structure (APs vs. representation counts) is forced by density conditions"
     },
     {
       "targetId": "arithmetic-series",
@@ -178,46 +178,46 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Turán, Paul",
+      "authors": "Erd\u0151s, Paul; Tur\u00e1n, Paul",
       "title": "On some sequences of integers",
       "year": "1936",
-      "venue": "Journal of the London Mathematical Society, vol. 11, no. 4, pp. 261–264",
+      "venue": "Journal of the London Mathematical Society, vol. 11, no. 4, pp. 261\u2013264",
       "note": "Original formulation of the conjecture that sets with divergent reciprocal sum contain arbitrarily long APs"
     },
     {
       "authors": "Roth, Klaus F.",
       "title": "On certain sets of integers",
       "year": "1953",
-      "venue": "Journal of the London Mathematical Society, vol. 28, pp. 104–109",
-      "note": "First proof that r_3(N) = o(N) using Fourier-analytic methods — the first breakthrough toward the conjecture"
+      "venue": "Journal of the London Mathematical Society, vol. 28, pp. 104\u2013109",
+      "note": "First proof that r_3(N) = o(N) using Fourier-analytic methods \u2014 the first breakthrough toward the conjecture"
     },
     {
-      "authors": "Szemerédi, Endre",
+      "authors": "Szemer\u00e9di, Endre",
       "title": "On sets of integers containing no k elements in arithmetic progression",
       "year": "1975",
-      "venue": "Acta Arithmetica, vol. 27, pp. 199–245",
+      "venue": "Acta Arithmetica, vol. 27, pp. 199\u2013245",
       "note": "Proved r_k(N) = o(N) for all k using the Regularity Lemma, establishing that sets of positive density contain all APs"
     },
     {
       "authors": "Green, Ben; Tao, Terence",
       "title": "The primes contain arbitrarily long arithmetic progressions",
       "year": "2008",
-      "venue": "Annals of Mathematics, vol. 167, no. 2, pp. 481–547",
-      "note": "Proved primes contain all APs using a transference principle — would follow immediately from Erdős #3 via Euler's sum 1/p = ∞"
+      "venue": "Annals of Mathematics, vol. 167, no. 2, pp. 481\u2013547",
+      "note": "Proved primes contain all APs using a transference principle \u2014 would follow immediately from Erd\u0151s #3 via Euler's sum 1/p = \u221e"
     },
     {
       "authors": "Kelley, Zander; Meka, Raghu",
       "title": "Strong bounds for 3-progressions",
       "year": "2023",
-      "venue": "Proceedings of the 55th STOC, pp. 933–941",
-      "note": "Achieved r_3(N) ≤ N/exp((log N)^{1/11}), nearly matching the Behrend lower bound"
+      "venue": "Proceedings of the 55th STOC, pp. 933\u2013941",
+      "note": "Achieved r_3(N) \u2264 N/exp((log N)^{1/11}), nearly matching the Behrend lower bound"
     },
     {
       "authors": "Behrend, Felix A.",
       "title": "On sets of integers which contain no three terms in arithmetical progression",
       "year": "1946",
-      "venue": "Proceedings of the National Academy of Sciences, vol. 32, no. 12, pp. 331–332",
-      "note": "Constructed AP-free sets of size N/exp(c√(log N)) using high-dimensional spheres — the main lower bound barrier"
+      "venue": "Proceedings of the National Academy of Sciences, vol. 32, no. 12, pp. 331\u2013332",
+      "note": "Constructed AP-free sets of size N/exp(c\u221a(log N)) using high-dimensional spheres \u2014 the main lower bound barrier"
     }
   ],
   "relatedProofs": [
@@ -241,6 +241,7 @@
     "lineCount": 214,
     "axiomCount": 9,
     "theoremCount": 3,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "lemmaCount": 0
   }
 }

@@ -66,7 +66,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The nine-point circle was discovered independently by Charles-Julien Brianchon and Jean-Victor Poncelet in 1821 and by Karl Wilhelm Feuerbach in 1822. Feuerbach's key contribution, proved in his 1822 treatise *Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks*, was that this circle is tangent to the inscribed circle and all three excircles of the triangle. The tangency point with the incircle is now called the Feuerbach point, and the theorem itself is #29 on Wiedijk's list of 100 greatest theorems.\n\nThe nine-point circle was further studied by Leonhard Euler (who established the Euler line through circumcenter, centroid, and orthocenter) and named by Olry Terquem in 1842 after proving it passes through all nine special points. The relationship N = (O + H)/2 connecting the nine-point center to the Euler line was established by Feuerbach and generalized by later mathematicians.\n\nThis module provides the complete definitional infrastructure using explicit coordinate geometry in R^2. The approach trades the elegance of synthetic proofs for computational verifiability: every step is a polynomial identity verified by field_simp + ring. The 3-4-5 right triangle serves as a numerical sanity check, confirming that all formulas are consistent and Feuerbach tangency holds (|NI| = |R/2 - r|).",
+    "historicalContext": "The nine-point circle was discovered independently by Charles-Julien Brianchon and Jean-Victor Poncelet in 1821 and by Karl Wilhelm Feuerbach in 1822. Feuerbach's key contribution, proved in his 1822 treatise *Eigenschaften einiger merkw\u00fcrdigen Punkte des geradlinigen Dreiecks*, was that this circle is tangent to the inscribed circle and all three excircles of the triangle. The tangency point with the incircle is now called the Feuerbach point, and the theorem itself is #29 on Wiedijk's list of 100 greatest theorems.\n\nThe nine-point circle was further studied by Leonhard Euler (who established the Euler line through circumcenter, centroid, and orthocenter) and named by Olry Terquem in 1842 after proving it passes through all nine special points. The relationship N = (O + H)/2 connecting the nine-point center to the Euler line was established by Feuerbach and generalized by later mathematicians.\n\nThis module provides the complete definitional infrastructure using explicit coordinate geometry in R^2. The approach trades the elegance of synthetic proofs for computational verifiability: every step is a polynomial identity verified by field_simp + ring. The 3-4-5 right triangle serves as a numerical sanity check, confirming that all formulas are consistent and Feuerbach tangency holds (|NI| = |R/2 - r|).",
     "problemStatement": "Provide the complete definitional and computational infrastructure for Feuerbach's Theorem:\n\n1. **Triangle structure**: Non-degenerate triangle in R^2 with side lengths, area, semiperimeter\n2. **Special points**: Circumcenter O, orthocenter H, centroid G, incenter I, excenters\n3. **Nine-point circle**: Center N = midpoint(O, H), radius R/2\n4. **Circle membership**: All 9 points (3 side midpoints, 3 Euler midpoints, 3 altitude feet) lie on the nine-point circle\n5. **Euler line**: G = (2O + H)/3\n6. **Tangency definitions**: Internal and external circle tangency\n7. **Numerical verification**: 3-4-5 right triangle as a concrete test case",
     "text": "Core definitions and infrastructure for Feuerbach's Theorem (Wiedijk #29): triangle geometry in R^2 with coordinate formulas for circumcenter, orthocenter, incenter, excircles, nine-point circle, and altitude feet. Proves all 9 special points lie on the nine-point circle (3 side midpoints, 3 Euler midpoints, 3 altitude feet) with the Euler line relation. Imported by FeuerbachsTheoremOQ01.",
     "proofStrategy": "The proofs use coordinate geometry with explicit formulas:\n\n1. **Circumcenter**: Computed via perpendicular bisector intersection. Equidistance proved via the perpendicular bisector condition (B-A) dot (B+A-2O) = 0, which is linear in O and verified by field_simp + ring after clearing the denominator.\n\n2. **Nine-point membership**: For each of the 9 points P, show dist(N, P) = R/2 by proving |P - N|^2 = |O - A|^2/4. The key lemma ninepoint_membership factors out the common proof structure: express P - N as half of some (O - V) vector, then use circumcenter equidistance.\n\n3. **Altitude feet**: The most computationally intensive proofs (maxHeartbeats 25,600,000). After unfolding the projection formula, clearing denominators (field_simp with circumcenter denom and side length sq), the result reduces to a polynomial identity verified by ring.\n\n4. **Numerical verification**: The 3-4-5 right triangle provides a concrete check: R = 5/2, r = 1, N = (3/4, 1), I = (1, 1), |NI| = 1/4 = |R/2 - r|, confirming Feuerbach tangency.",
@@ -198,8 +198,9 @@
     "namespace": "FeuerbachsTheorem",
     "lineCount": 687,
     "axiomCount": 0,
-    "theoremCount": 38,
-    "definitionCount": 35
+    "theoremCount": 23,
+    "definitionCount": 35,
+    "lemmaCount": 10
   },
   "references": [
     {
@@ -214,7 +215,7 @@
     },
     {
       "key": "BP21",
-      "citation": "Brianchon, C. J. and Poncelet, J. V. (1821). Recherches sur la détermination d'une hyperbole équilatère. Annales de Mathématiques, 11, 205-220.",
+      "citation": "Brianchon, C. J. and Poncelet, J. V. (1821). Recherches sur la d\u00e9termination d'une hyperbole \u00e9quilat\u00e8re. Annales de Math\u00e9matiques, 11, 205-220.",
       "type": "paper"
     }
   ],

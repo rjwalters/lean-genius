@@ -1,10 +1,10 @@
 {
   "id": "erdos-223",
-  "title": "Erdős Problem #223: Maximum Diameter Pairs (Vázsonyi's Conjecture)",
+  "title": "Erd\u0151s Problem #223: Maximum Diameter Pairs (V\u00e1zsonyi's Conjecture)",
   "slug": "erdos-223",
-  "description": "How many pairs of points can realize the diameter in an n-point configuration? f₂(n)=n, f₃(n)=2n-2, and f_d(n)~cn² for d≥4. Fully solved by Hopf-Pannwitz (1934), Grünbaum/Heppes/Strasziewicz (1956-57), Erdős (1960), and Swanepoel (2009).",
+  "description": "How many pairs of points can realize the diameter in an n-point configuration? f\u2082(n)=n, f\u2083(n)=2n-2, and f_d(n)~cn\u00b2 for d\u22654. Fully solved by Hopf-Pannwitz (1934), Gr\u00fcnbaum/Heppes/Strasziewicz (1956-57), Erd\u0151s (1960), and Swanepoel (2009).",
   "meta": {
-    "author": "Hopf-Pannwitz (1934), Grünbaum/Heppes/Strasziewicz (1956-57), Erdős (1960), Swanepoel (2009)",
+    "author": "Hopf-Pannwitz (1934), Gr\u00fcnbaum/Heppes/Strasziewicz (1956-57), Erd\u0151s (1960), Swanepoel (2009)",
     "sourceUrl": "https://erdosproblems.com/223",
     "date": "1934-2009",
     "status": "axiomatized",
@@ -47,12 +47,12 @@
       }
     ],
     "originalContributions": [
-      "PointConfig definition: Fin n → EuclideanSpace ℝ (Fin d)",
+      "PointConfig definition: Fin n \u2192 EuclideanSpace \u211d (Fin d)",
       "diameter and diameterPairs functions",
       "f function: max diameter pairs for dimension d, size n",
-      "hopf_pannwitz_1934 axiom: f₂(n) = n",
-      "three_dimensional_case axiom: f₃(n) = 2n - 2",
-      "erdos_1960 axiom: quadratic growth for d ≥ 4",
+      "hopf_pannwitz_1934 axiom: f\u2082(n) = n",
+      "three_dimensional_case axiom: f\u2083(n) = 2n - 2",
+      "erdos_1960 axiom: quadratic growth for d \u2265 4",
       "leadingCoefficient function: (p-1)/(2p)",
       "swanepoel_2009 axiom: exact formulas",
       "diameterGraph structure",
@@ -63,16 +63,16 @@
     "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #223: Maximum Diameter Pairs**\n\nThis problem, originally a conjecture of Vázsonyi, asks: in an n-point set with diameter 1, how many pairs can be at distance exactly 1?\n\n**Key History:**\n- Vázsonyi: Original conjecture\n- Hopf-Pannwitz (1934): Solved 2D case, f₂(n) = n\n- Grünbaum, Heppes, Strasziewicz (1956-57): Independently solved 3D, f₃(n) = 2n-2\n- Erdős (1960): Showed quadratic growth for d ≥ 4\n- Swanepoel (2009): Complete characterization with extremal configurations\n\n**Dimensional Transition:**\nThe most striking feature is the phase transition at d = 4: linear growth in 2D/3D becomes quadratic in 4D+.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet d ≥ 2 and n ≥ 2. Define f_d(n) as the maximum number of pairs at distance 1 in any n-point set A ⊆ ℝ^d with diameter 1.\n\n**Estimate f_d(n).**\n\n**Solution:**\n- d = 2: f₂(n) = n (regular polygon is extremal)\n- d = 3: f₃(n) = 2n - 2 (two polygons sharing a vertex)\n- d ≥ 4: f_d(n) = ((p-1)/(2p) + o(1))n² where p = ⌊d/2⌋",
-    "text": "How many pairs of points can realize the diameter in an n-point configuration? f₂(n)=n, f₃(n)=2n-2, and f_d(n)~cn² for d≥4. Fully solved by Hopf-Pannwitz (1934), Grünbaum/Heppes/Strasziewicz (1956-57), Erdős (1960), and Swanepoel (2009).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Configuration Setup:**\n   - PointConfig: Fin n → EuclideanSpace ℝ (Fin d)\n   - diameter: max pairwise distance\n   - diameterPairs: count of pairs at diameter distance\n\n2. **The Function f:**\n   - f d n: supremum of diameter pairs over valid configurations\n\n3. **Dimensional Cases:**\n   - hopf_pannwitz_1934: f 2 n = n\n   - three_dimensional_case: f 3 n = 2n - 2\n   - erdos_1960: quadratic bounds for d ≥ 4\n\n4. **Geometric Structure:**\n   - diameterGraph: SimpleGraph representing diameter pairs\n   - leadingCoefficient: (p-1)/(2p) for dimension d",
+    "historicalContext": "**Erd\u0151s Problem #223: Maximum Diameter Pairs**\n\nThis problem, originally a conjecture of V\u00e1zsonyi, asks: in an n-point set with diameter 1, how many pairs can be at distance exactly 1?\n\n**Key History:**\n- V\u00e1zsonyi: Original conjecture\n- Hopf-Pannwitz (1934): Solved 2D case, f\u2082(n) = n\n- Gr\u00fcnbaum, Heppes, Strasziewicz (1956-57): Independently solved 3D, f\u2083(n) = 2n-2\n- Erd\u0151s (1960): Showed quadratic growth for d \u2265 4\n- Swanepoel (2009): Complete characterization with extremal configurations\n\n**Dimensional Transition:**\nThe most striking feature is the phase transition at d = 4: linear growth in 2D/3D becomes quadratic in 4D+.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet d \u2265 2 and n \u2265 2. Define f_d(n) as the maximum number of pairs at distance 1 in any n-point set A \u2286 \u211d^d with diameter 1.\n\n**Estimate f_d(n).**\n\n**Solution:**\n- d = 2: f\u2082(n) = n (regular polygon is extremal)\n- d = 3: f\u2083(n) = 2n - 2 (two polygons sharing a vertex)\n- d \u2265 4: f_d(n) = ((p-1)/(2p) + o(1))n\u00b2 where p = \u230ad/2\u230b",
+    "text": "How many pairs of points can realize the diameter in an n-point configuration? f\u2082(n)=n, f\u2083(n)=2n-2, and f_d(n)~cn\u00b2 for d\u22654. Fully solved by Hopf-Pannwitz (1934), Gr\u00fcnbaum/Heppes/Strasziewicz (1956-57), Erd\u0151s (1960), and Swanepoel (2009).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Configuration Setup:**\n   - PointConfig: Fin n \u2192 EuclideanSpace \u211d (Fin d)\n   - diameter: max pairwise distance\n   - diameterPairs: count of pairs at diameter distance\n\n2. **The Function f:**\n   - f d n: supremum of diameter pairs over valid configurations\n\n3. **Dimensional Cases:**\n   - hopf_pannwitz_1934: f 2 n = n\n   - three_dimensional_case: f 3 n = 2n - 2\n   - erdos_1960: quadratic bounds for d \u2265 4\n\n4. **Geometric Structure:**\n   - diameterGraph: SimpleGraph representing diameter pairs\n   - leadingCoefficient: (p-1)/(2p) for dimension d",
     "keyInsights": [
       "**Phase Transition at d=4:** The jump from linear to quadratic growth is fundamental. In low dimensions, diameter pairs are constrained; in high dimensions, they can be densely packed.",
       "**Extremal Configurations:** In 2D, the regular polygon is optimal. In 3D, two regular polygons sharing a vertex. In 4D+, cross-polytope-like constructions.",
       "**Diameter Graph Structure:** Viewing diameter pairs as edges reveals the constraint: in 2D, max degree 2; in 3D, still restricted; in 4D+, much freer.",
-      "**The Coefficient (p-1)/(2p):** For p = ⌊d/2⌋, this approaches 1/2 as d → ∞. So asymptotically, we can have almost n²/4 diameter pairs.",
-      "**Swanepoel's Completion:** The 2009 paper gave exact formulas and explicit extremal configurations for all d ≥ 4 and large n."
+      "**The Coefficient (p-1)/(2p):** For p = \u230ad/2\u230b, this approaches 1/2 as d \u2192 \u221e. So asymptotically, we can have almost n\u00b2/4 diameter pairs.",
+      "**Swanepoel's Completion:** The 2009 paper gave exact formulas and explicit extremal configurations for all d \u2265 4 and large n."
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -103,21 +103,21 @@
     {
       "id": "two-dimensional",
       "title": "Two-Dimensional Case",
-      "summary": "Hopf-Pannwitz 1934: f₂(n) = n",
+      "summary": "Hopf-Pannwitz 1934: f\u2082(n) = n",
       "startLine": 86,
       "endLine": 106
     },
     {
       "id": "three-dimensional",
       "title": "Three-Dimensional Case",
-      "summary": "Grünbaum/Heppes/Strasziewicz: f₃(n) = 2n-2",
+      "summary": "Gr\u00fcnbaum/Heppes/Strasziewicz: f\u2083(n) = 2n-2",
       "startLine": 108,
       "endLine": 125
     },
     {
       "id": "higher-dimensional",
-      "title": "Higher Dimensions (Erdős 1960)",
-      "summary": "Quadratic growth for d ≥ 4",
+      "title": "Higher Dimensions (Erd\u0151s 1960)",
+      "summary": "Quadratic growth for d \u2265 4",
       "startLine": 127,
       "endLine": 146
     },
@@ -151,7 +151,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #223 asked for the maximum number of diameter pairs f_d(n) in n-point configurations. The answer depends dramatically on dimension: f₂(n) = n, f₃(n) = 2n - 2, and f_d(n) ~ cn² for d ≥ 4. This phase transition is one of the most striking phenomena in discrete geometry.",
+    "summary": "Erd\u0151s Problem #223 asked for the maximum number of diameter pairs f_d(n) in n-point configurations. The answer depends dramatically on dimension: f\u2082(n) = n, f\u2083(n) = 2n - 2, and f_d(n) ~ cn\u00b2 for d \u2265 4. This phase transition is one of the most striking phenomena in discrete geometry.",
     "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Discrete Geometry:** Fundamental extremal problem about point configurations\n\n2. **Graph Theory:** Diameter graphs have constrained structure in low dimensions\n\n**3. Convex Geometry:** Related to diameter problems for convex bodies\n\n4. **Coding Theory:** Connections to spherical codes and kissing numbers\n\n5. **Computational Geometry:** Algorithms for computing diameter graphs.",
     "openQuestions": [
       "Exact formulas for small n in each dimension?",
@@ -179,10 +179,10 @@
   ],
   "references": [
     {
-      "title": "Über eine Übertragung der Grubenmannschen Vermutung",
+      "title": "\u00dcber eine \u00dcbertragung der Grubenmannschen Vermutung",
       "author": "Hopf, H. and Pannwitz, E.",
       "year": 1934,
-      "description": "Original proof of the 2D case f₂(n) = n for maximum diameter pairs"
+      "description": "Original proof of the 2D case f\u2082(n) = n for maximum diameter pairs"
     },
     {
       "title": "The maximum number of unit distances among n points in dimension four",
@@ -192,7 +192,7 @@
     },
     {
       "title": "On sets of distances of n points",
-      "author": "Erdős, P.",
+      "author": "Erd\u0151s, P.",
       "year": 1960,
       "description": "Proved quadratic growth of f_d(n) for dimensions d >= 4"
     }
@@ -213,7 +213,8 @@
     "lineCount": 277,
     "axiomCount": 14,
     "theoremCount": 4,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "lemmaCount": 0
   },
   "relatedProofs": [
     "erdos-340",

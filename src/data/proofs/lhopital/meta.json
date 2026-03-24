@@ -46,7 +46,7 @@
     "axiomCount": 0,
     "lineCount": 155,
     "prerequisites": [
-      "Limits and indeterminate forms (0/0 and ∞/∞)",
+      "Limits and indeterminate forms (0/0 and \u221e/\u221e)",
       "Differentiability and the Cauchy Mean Value Theorem",
       "One-sided limits and limits at infinity",
       "Continuity and differentiability on open intervals",
@@ -55,19 +55,19 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Johann Bernoulli discovered this rule around 1694 as part of his work on infinitesimal calculus, and communicated it privately to Guillaume de l'Hôpital, a French marquis and amateur mathematician. L'Hôpital paid Bernoulli an annual retainer of 300 livres for exclusive rights to Bernoulli's results, and published the rule in his 1696 textbook *Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes* — the first calculus textbook ever printed. After l'Hôpital's death in 1704, Bernoulli publicly claimed credit, sparking one of mathematics' most famous priority disputes. The rule became central to 18th-century analysis: Euler extended it systematically in his *Introductio in analysin infinitorum* (1748), and Cauchy later placed it on rigorous foundations using his generalized Mean Value Theorem. Today the result is a standard tool in real analysis and appears as entry #64 on Wiedijk's list of 100 greatest theorems. Mathlib formalizes several variants covering right limits, left limits, and limits at infinity.",
+    "historicalContext": "Johann Bernoulli discovered this rule around 1694 as part of his work on infinitesimal calculus, and communicated it privately to Guillaume de l'H\u00f4pital, a French marquis and amateur mathematician. L'H\u00f4pital paid Bernoulli an annual retainer of 300 livres for exclusive rights to Bernoulli's results, and published the rule in his 1696 textbook *Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes* \u2014 the first calculus textbook ever printed. After l'H\u00f4pital's death in 1704, Bernoulli publicly claimed credit, sparking one of mathematics' most famous priority disputes. The rule became central to 18th-century analysis: Euler extended it systematically in his *Introductio in analysin infinitorum* (1748), and Cauchy later placed it on rigorous foundations using his generalized Mean Value Theorem. Today the result is a standard tool in real analysis and appears as entry #64 on Wiedijk's list of 100 greatest theorems. Mathlib formalizes several variants covering right limits, left limits, and limits at infinity.",
     "problemStatement": "**L'Hopital's Rule**:\n\nIf $f$ and $g$ are differentiable near $a$, and:\n1. Both $\\lim_{x \\to a} f(x) = 0$ and $\\lim_{x \\to a} g(x) = 0$ (the 0/0 form), or\n2. Both limits are $\\pm\\infty$ (the $\\infty/\\infty$ form)\n\nAnd if $\\lim_{x \\to a} \\frac{f'(x)}{g'(x)} = L$ exists, then:\n\n$$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)} = L$$",
     "text": "A fundamental technique for evaluating limits of indeterminate forms: if f(x)/g(x) approaches 0/0 or infinity/infinity, then the limit equals the limit of f'(x)/g'(x).",
     "proofStrategy": "The proof relies on the **Cauchy Mean Value Theorem**:\n\n1. **Cauchy MVT**: For differentiable $f, g$ on $(a, b)$:\n   $$\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(c)}{g'(c)}$$\n   for some $c \\in (a, b)$.\n\n2. **Apply to our setting**: For $x$ near $a$:\n   $$\\frac{f(x) - f(a)}{g(x) - g(a)} = \\frac{f(x) - 0}{g(x) - 0} = \\frac{f(x)}{g(x)}$$\n   equals $\\frac{f'(c_x)}{g'(c_x)}$ for some $c_x$ between $a$ and $x$.\n\n3. **Take the limit**: As $x \\to a$, we have $c_x \\to a$, so\n   $$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{c \\to a} \\frac{f'(c)}{g'(c)}$$",
     "keyInsights": [
       "The rule transforms $\\lim \\frac{f}{g}$ into $\\lim \\frac{f'}{g'}$, replacing a difficult limit with a (hopefully) easier one",
       "Can be applied repeatedly: if $\\frac{f'}{g'}$ is still $\\frac{0}{0}$, differentiate again to get $\\frac{f''}{g''}$",
-      "Works for limits at $\\pm\\infty$ via `Tendsto f atTop (𝓝 0)`, not just at finite points",
+      "Works for limits at $\\pm\\infty$ via `Tendsto f atTop (\ud835\udcdd 0)`, not just at finite points",
       "The underlying mechanism is Cauchy's Mean Value Theorem: $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$",
-      "The rule does NOT apply when $\\lim f'/g'$ fails to exist — even if $\\lim f/g$ exists (e.g., $f(x) = x + \\sin x$, $g(x) = x$)"
+      "The rule does NOT apply when $\\lim f'/g'$ fails to exist \u2014 even if $\\lim f/g$ exists (e.g., $f(x) = x + \\sin x$, $g(x) = x$)"
     ],
     "prerequisites": [
-      "Limits and indeterminate forms (0/0 and ∞/∞)",
+      "Limits and indeterminate forms (0/0 and \u221e/\u221e)",
       "Differentiability and the Cauchy Mean Value Theorem",
       "One-sided limits and limits at infinity",
       "Continuity and differentiability on open intervals",
@@ -130,7 +130,7 @@
     {
       "targetId": "taylor-theorem",
       "relationship": "related",
-      "description": "Taylor's theorem provides an alternative approach to evaluating limits by expanding functions in power series — often more efficient than repeated L'Hopital"
+      "description": "Taylor's theorem provides an alternative approach to evaluating limits by expanding functions in power series \u2014 often more efficient than repeated L'Hopital"
     },
     {
       "targetId": "leibniz-pi",
@@ -170,15 +170,16 @@
     "lineCount": 155,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "L'Hôpital, Guillaume de",
+      "authors": "L'H\u00f4pital, Guillaume de",
       "title": "Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes",
       "year": "1696",
       "venue": "Paris: Imprimerie Royale",
-      "note": "The first calculus textbook, containing L'Hôpital's rule — actually discovered by Johann Bernoulli and purchased by L'Hôpital"
+      "note": "The first calculus textbook, containing L'H\u00f4pital's rule \u2014 actually discovered by Johann Bernoulli and purchased by L'H\u00f4pital"
     }
   ]
 }

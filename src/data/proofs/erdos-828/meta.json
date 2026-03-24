@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 828,
     "erdosUrl": "https://erdosproblems.com/828",
     "erdosProblemStatus": "open",
@@ -78,7 +78,7 @@
       "totient_prime_pow_formula: proved from Nat.totient_prime_pow",
       "erdos_828_summary theorem"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 174,
     "assumptions": "1 axiom: totient_dvd_self_iff (deep characterization of when \u03c6(n) | n, not in Mathlib). 4 former axioms proved from Mathlib."
   },
@@ -167,9 +167,10 @@
     ],
     "namespace": "Erdos828",
     "lineCount": 174,
-    "axiomCount": 1,
-    "theoremCount": 7,
-    "definitionCount": 3
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {

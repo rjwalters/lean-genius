@@ -1,8 +1,8 @@
 {
   "id": "erdos-4",
-  "title": "Erdős Problem #4: Large Prime Gaps",
+  "title": "Erd\u0151s Problem #4: Large Prime Gaps",
   "slug": "erdos-4",
-  "description": "For any C > 0, are there infinitely many n with p_{n+1} - p_n > C·f(n) where f(n) involves iterated logs? SOLVED: YES (Maynard 2016, FGKT 2016).",
+  "description": "For any C > 0, are there infinitely many n with p_{n+1} - p_n > C\u00b7f(n) where f(n) involves iterated logs? SOLVED: YES (Maynard 2016, FGKT 2016).",
   "meta": {
     "author": "Ford-Green-Konyagin-Maynard-Tao",
     "erdosNumber": 4,
@@ -38,12 +38,12 @@
       },
       {
         "theorem": "Real.log",
-        "description": "Natural logarithm on ℝ, used for iterated logarithms lg, lg2, lg3, lg4",
+        "description": "Natural logarithm on \u211d, used for iterated logarithms lg, lg2, lg3, lg4",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "Filter.atTop",
-        "description": "Filter for asymptotic analysis, used in Cramér's conjecture and growth rate axioms",
+        "description": "Filter for asymptotic analysis, used in Cram\u00e9r's conjecture and growth rate axioms",
         "module": "Mathlib.Order.Filter.Basic"
       },
       {
@@ -58,20 +58,20 @@
       "Stated erdos_4_conjecture with universal quantifier over C > 0",
       "Axiomatized Rankin (1938), Maynard (2016), FGKT (2016), FGKMT (2018) results",
       "Axiomatized Baker-Harman-Pintz upper bound n^0.525",
-      "Defined Cramér's conjecture and Firoozbakht's conjecture as Prop",
+      "Defined Cram\u00e9r's conjecture and Firoozbakht's conjecture as Prop",
       "Proved erdos_4_solved via maynard_theorem"
     ],
     "axiomCount": 9,
     "assumptions": [
-      "rankin_theorem: ∃ C > 0, infinitely many gaps exceed C·f(n) (Rankin 1938)",
+      "rankin_theorem: \u2203 C > 0, infinitely many gaps exceed C\u00b7f(n) (Rankin 1938)",
       "maynard_theorem: erdos_4_conjecture holds (Maynard 2016)",
       "ford_green_konyagin_tao_theorem: erdos_4_conjecture holds (independent proof, FGKT 2016)",
       "fgkmt_improved_bound: improved Rankin constant (Ford-Green-Konyagin-Maynard-Tao 2018)",
       "baker_harman_pintz_upper_bound: g_n = O(n^0.525) (Baker-Harman-Pintz 2001)",
       "gap_0: primeGap(0) = 1",
-      "prime_gap_pos: primeGap(n) > 0 for n ≥ 1",
+      "prime_gap_pos: primeGap(n) > 0 for n \u2265 1",
       "average_gap_asymptotic: average prime gap ~ log n (from PNT)",
-      "erdos_function_growth: f(n) = o(log n) — sublogarithmic growth of Erdős function"
+      "erdos_function_growth: f(n) = o(log n) \u2014 sublogarithmic growth of Erd\u0151s function"
     ],
     "prerequisites": [
       "Analytic number theory: the Prime Number Theorem and its consequences",
@@ -95,7 +95,7 @@
     "relatedProblems": [
       {
         "id": "erdos-1",
-        "relationship": "Foundational Erdős problem on sumset structure; both concern extremal properties of integer sequences"
+        "relationship": "Foundational Erd\u0151s problem on sumset structure; both concern extremal properties of integer sequences"
       },
       {
         "id": "erdos-369",
@@ -130,7 +130,7 @@
     },
     {
       "id": "erdos-function",
-      "title": "The Erdős Function",
+      "title": "The Erd\u0151s Function",
       "summary": "**erdosFunction** = $(\\log\\log n \\cdot \\log\\log\\log\\log n)/(\\log\\log\\log n)^2 \\cdot \\log n$ and the simplified **rankinFunction**. Grows as $\\omega(\\log n)$ but $o((\\log n)^{1+\\varepsilon})$.",
       "mathContext": "$f(n) = \\frac{\\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n}{(\\log\\log\\log n)^2}$. Growth: $f(n) = \\omega(\\log n)$ but $f(n) = o((\\log n)^{1+\\varepsilon})$ for any $\\varepsilon > 0$.",
       "startLine": 53,
@@ -138,9 +138,9 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture (SOLVED)",
+      "title": "The Erd\u0151s Conjecture (SOLVED)",
       "summary": "**erdos_4_conjecture**: $\\forall C > 0$, infinitely many $g_n > C \\cdot f(n)$. The 'for all $C$' quantifier is the key strengthening over Rankin's 'exists $C$'.",
-      "mathContext": "Erdős conjecture: $\\forall C > 0, \\exists^\\infty n: g_n > C \\cdot f(n)$. The $\\forall C$ quantifier distinguishes this from Rankin's $\\exists C$.",
+      "mathContext": "Erd\u0151s conjecture: $\\forall C > 0, \\exists^\\infty n: g_n > C \\cdot f(n)$. The $\\forall C$ quantifier distinguishes this from Rankin's $\\exists C$.",
       "startLine": 71,
       "endLine": 80
     },
@@ -148,7 +148,7 @@
       "id": "historical-results",
       "title": "Historical Results: Rankin (1938)",
       "summary": "**rankin_theorem**: $\\exists C > 0$ (specifically $C = e^\\gamma/3$) achieving the bound. Stood for 75+ years without improvement to the constant.",
-      "mathContext": "Rankin (1938): $\\limsup g_n / f(n) \\geq e^\\gamma / 3 \\approx 0.593$. This constant was not improved for 75 years (Erdős offered \\$10,000 for any improvement).",
+      "mathContext": "Rankin (1938): $\\limsup g_n / f(n) \\geq e^\\gamma / 3 \\approx 0.593$. This constant was not improved for 75 years (Erd\u0151s offered \\$10,000 for any improvement).",
       "startLine": 82,
       "endLine": 96
     },
@@ -156,7 +156,7 @@
       "id": "breakthrough-2016",
       "title": "2016 Breakthrough: Maynard and FGKT",
       "summary": "**maynard_theorem** and **ford_green_konyagin_tao_theorem**: Two independent proofs for ALL $C > 0$. Maynard used multidimensional sieve weights; FGKT used probabilistic methods with hypergraph covering.",
-      "mathContext": "Maynard (2016) and FGKT (2016): $\\limsup g_n / f(n) = \\infty$, resolving Erdős's conjecture. Two independent proofs: multidimensional sieve weights vs. probabilistic hypergraph covering.",
+      "mathContext": "Maynard (2016) and FGKT (2016): $\\limsup g_n / f(n) = \\infty$, resolving Erd\u0151s's conjecture. Two independent proofs: multidimensional sieve weights vs. probabilistic hypergraph covering.",
       "startLine": 98,
       "endLine": 116
     },
@@ -172,15 +172,15 @@
       "id": "upper-bounds",
       "title": "Upper Bounds: Baker-Harman-Pintz (2001)",
       "summary": "**baker_harman_pintz_upper_bound**: $g_n \\leq n^{0.525}$ unconditionally. Under RH: $g_n \\ll p_n^{1/2} \\log p_n$. The gap to lower bounds remains enormous.",
-      "mathContext": "BHP (2001): $g_n \\leq p_n^{0.525}$ unconditionally. Under RH: $g_n \\ll p_n^{1/2} \\log p_n$ (Cramér 1920). Gap: lower bound $\\omega(\\log n)$ vs. upper bound $n^{0.525}$.",
+      "mathContext": "BHP (2001): $g_n \\leq p_n^{0.525}$ unconditionally. Under RH: $g_n \\ll p_n^{1/2} \\log p_n$ (Cram\u00e9r 1920). Gap: lower bound $\\omega(\\log n)$ vs. upper bound $n^{0.525}$.",
       "startLine": 134,
       "endLine": 147
     },
     {
       "id": "cramer-conjecture",
-      "title": "Cramér's Conjecture and Refinements",
-      "summary": "**cramer_conjecture**: $g_n = O((\\log p_n)^2)$ (OPEN). **Cramér-Granville**: lim sup = $2e^{-\\gamma} \\approx 1.1229$, correcting Cramér's original constant of 1.",
-      "mathContext": "Cramér (1936): $\\limsup g_n / (\\log p_n)^2 \\leq 1$ (OPEN). Granville's refinement: $\\limsup g_n / (\\log p_n)^2 = 2e^{-\\gamma} \\approx 1.1229$.",
+      "title": "Cram\u00e9r's Conjecture and Refinements",
+      "summary": "**cramer_conjecture**: $g_n = O((\\log p_n)^2)$ (OPEN). **Cram\u00e9r-Granville**: lim sup = $2e^{-\\gamma} \\approx 1.1229$, correcting Cram\u00e9r's original constant of 1.",
+      "mathContext": "Cram\u00e9r (1936): $\\limsup g_n / (\\log p_n)^2 \\leq 1$ (OPEN). Granville's refinement: $\\limsup g_n / (\\log p_n)^2 = 2e^{-\\gamma} \\approx 1.1229$.",
       "startLine": 149,
       "endLine": 166
     },
@@ -203,8 +203,8 @@
     {
       "id": "related-conjectures",
       "title": "Related Conjectures",
-      "summary": "**erdos_stronger_conjecture**: $g_n > (\\log n)^{1+c}$ for some $c > 0$ (Erdős's $\\$10{,}000$ prize, OPEN). **firoozbakht_conjecture**: $p_n^{1/n}$ strictly decreasing (OPEN, incompatible with the stronger conjecture).",
-      "mathContext": "Erdős \\$10K: $\\exists c > 0: g_n > (\\log n)^{1+c}$ infinitely often (OPEN). Firoozbakht: $p_n^{1/n}$ strictly decreasing (OPEN, implies $g_n < (\\log p_n)^2 - \\log p_n$).",
+      "summary": "**erdos_stronger_conjecture**: $g_n > (\\log n)^{1+c}$ for some $c > 0$ (Erd\u0151s's $\\$10{,}000$ prize, OPEN). **firoozbakht_conjecture**: $p_n^{1/n}$ strictly decreasing (OPEN, incompatible with the stronger conjecture).",
+      "mathContext": "Erd\u0151s \\$10K: $\\exists c > 0: g_n > (\\log n)^{1+c}$ infinitely often (OPEN). Firoozbakht: $p_n^{1/n}$ strictly decreasing (OPEN, implies $g_n < (\\log p_n)^2 - \\log p_n$).",
       "startLine": 194,
       "endLine": 215
     },
@@ -213,22 +213,22 @@
       "title": "Summary and References",
       "startLine": 216,
       "endLine": 243,
-      "summary": "Closing commentary summarizing the SOLVED status, key results from Rankin through FGKMT, and remaining open questions (Cramér's conjecture, growth rate $> (\\log n)^{1+c}$). Closes the Erdos4 namespace.",
-      "mathContext": "SOLVED: $\\forall C > 0$, infinitely many $n$ with $p_{n+1} - p_n > C \\cdot R(n)$ where $R(n)$ is the Rankin function. Remaining open: Cramér ($g_n \\sim (\\log p_n)^2$) and Erdős's $\\$10{,}000$ ($g_n > (\\log n)^{1+c}$)."
+      "summary": "Closing commentary summarizing the SOLVED status, key results from Rankin through FGKMT, and remaining open questions (Cram\u00e9r's conjecture, growth rate $> (\\log n)^{1+c}$). Closes the Erdos4 namespace.",
+      "mathContext": "SOLVED: $\\forall C > 0$, infinitely many $n$ with $p_{n+1} - p_n > C \\cdot R(n)$ where $R(n)$ is the Rankin function. Remaining open: Cram\u00e9r ($g_n \\sim (\\log p_n)^2$) and Erd\u0151s's $\\$10{,}000$ ($g_n > (\\log n)^{1+c}$)."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős Problem #4 is one of the most celebrated problems in prime number theory. The prime number theorem gives average gap $\\log n$ near $n$, but individual gaps can be much larger.\n\nRankin (1938) proved infinitely many gaps exceed $C \\cdot (\\log n)(\\log\\log n)(\\log\\log\\log\\log n)/(\\log\\log\\log n)^2$ for $C = e^\\gamma/3 \\approx 0.593$. His constant stood for 75 years. Erdős offered a $\\$10{,}000$ prize for gaps exceeding $(\\log n)^{1+c}$.\n\nIn 2014-2016, two independent breakthroughs resolved the problem for ALL $C > 0$: Maynard used multidimensional sieve weights, while Ford-Green-Konyagin-Tao used hypergraph covering lemmas. In 2018, all five combined techniques for a stronger bound.\n\nThe problem complements bounded gaps: Zhang (2013) and Maynard (2013) showed $\\liminf(p_{n+1}-p_n) < \\infty$ (small gaps exist), while Erdős #4 concerns $\\limsup(p_{n+1}-p_n)/\\log p_n = \\infty$ (large gaps exist). Cramér's conjecture ($\\sim (\\log p_n)^2$) and Granville's refinement ($\\sim 2e^{-\\gamma}(\\log p_n)^2$) predict the true maximum gap size.",
+    "historicalContext": "Erd\u0151s Problem #4 is one of the most celebrated problems in prime number theory. The prime number theorem gives average gap $\\log n$ near $n$, but individual gaps can be much larger.\n\nRankin (1938) proved infinitely many gaps exceed $C \\cdot (\\log n)(\\log\\log n)(\\log\\log\\log\\log n)/(\\log\\log\\log n)^2$ for $C = e^\\gamma/3 \\approx 0.593$. His constant stood for 75 years. Erd\u0151s offered a $\\$10{,}000$ prize for gaps exceeding $(\\log n)^{1+c}$.\n\nIn 2014-2016, two independent breakthroughs resolved the problem for ALL $C > 0$: Maynard used multidimensional sieve weights, while Ford-Green-Konyagin-Tao used hypergraph covering lemmas. In 2018, all five combined techniques for a stronger bound.\n\nThe problem complements bounded gaps: Zhang (2013) and Maynard (2013) showed $\\liminf(p_{n+1}-p_n) < \\infty$ (small gaps exist), while Erd\u0151s #4 concerns $\\limsup(p_{n+1}-p_n)/\\log p_n = \\infty$ (large gaps exist). Cram\u00e9r's conjecture ($\\sim (\\log p_n)^2$) and Granville's refinement ($\\sim 2e^{-\\gamma}(\\log p_n)^2$) predict the true maximum gap size.",
     "problemStatement": "Is it true that for any $C > 0$, there are infinitely many $n$ such that $p_{n+1} - p_n > C \\cdot \\frac{\\log\\log n \\cdot \\log\\log\\log\\log n}{(\\log\\log\\log n)^2} \\cdot \\log n$?",
-    "text": "Erdős Problem #4 asks whether prime gaps can exceed any constant multiple of Rankin's function log n · log log n · log log log log n / (log log log n)². Posed in the 1930s, it stood for 75 years until simultaneous solutions by Maynard and Ford-Green-Konyagin-Tao in 2016. The $10,000 prize for gaps exceeding (log n)^{1+c} remains open.",
-    "proofStrategy": "The formalization defines the $n$-th prime via `Nat.nth`, iterated logarithms, and the Erdős function. The conjecture is stated as a universally quantified proposition over $C > 0$. Rankin's theorem ($\\exists C$), Maynard's theorem ($\\forall C$), and the FGKT theorem (independent $\\forall C$) are axiomatized. The FGKMT improved bound, Baker-Harman-Pintz upper bound, Cramér's conjecture, and Firoozbakht's conjecture provide context. One sorry remains in the comparison theorem `improved_stronger`.",
+    "text": "Erd\u0151s Problem #4 asks whether prime gaps can exceed any constant multiple of Rankin's function log n \u00b7 log log n \u00b7 log log log log n / (log log log n)\u00b2. Posed in the 1930s, it stood for 75 years until simultaneous solutions by Maynard and Ford-Green-Konyagin-Tao in 2016. The $10,000 prize for gaps exceeding (log n)^{1+c} remains open.",
+    "proofStrategy": "The formalization defines the $n$-th prime via `Nat.nth`, iterated logarithms, and the Erd\u0151s function. The conjecture is stated as a universally quantified proposition over $C > 0$. Rankin's theorem ($\\exists C$), Maynard's theorem ($\\forall C$), and the FGKT theorem (independent $\\forall C$) are axiomatized. The FGKMT improved bound, Baker-Harman-Pintz upper bound, Cram\u00e9r's conjecture, and Firoozbakht's conjecture provide context. One sorry remains in the comparison theorem `improved_stronger`.",
     "keyInsights": [
-      "**75 years stuck**: Rankin's constant $C = e^\\gamma/3$ from 1938 was not improved until 2016 — the longest-standing result in prime gap theory",
+      "**75 years stuck**: Rankin's constant $C = e^\\gamma/3$ from 1938 was not improved until 2016 \u2014 the longest-standing result in prime gap theory",
       "**Two independent proofs**: Maynard (multidimensional sieve) and FGKT (probabilistic + additive combinatorics) solved it simultaneously, suggesting the problem was 'ripe'",
       "**Sieve revolution**: Maynard's approach uses the same multidimensional sieve that proved bounded gaps ($\\liminf g_n \\leq 246$), applied in reverse to prove unbounded gaps",
-      "**Upper-lower gap**: Current bounds span from $\\omega(\\log n \\cdot \\log\\log n / \\log\\log\\log n)$ (lower) to $O(n^{0.525})$ (upper) — an enormous range reflecting our ignorance about prime distribution",
-      "**$10,000 still open**: Erdős's stronger conjecture ($g_n > (\\log n)^{1+c}$) remains unresolved and would require fundamentally new ideas beyond current sieve methods",
-      "**Potential bound error**: The `improved_stronger` theorem (the file's only sorry) claims $f(n) \\leq f'(n)$ for $n \\geq 100$, but $\\log\\log\\log 100 \\approx 0.83 < 1$, so the inequality may fail at the stated threshold — the correct bound is $n \\geq e^{e^e} \\approx 3{,}814{,}279$. This is a candidate for correction and Aristotle proof search"
+      "**Upper-lower gap**: Current bounds span from $\\omega(\\log n \\cdot \\log\\log n / \\log\\log\\log n)$ (lower) to $O(n^{0.525})$ (upper) \u2014 an enormous range reflecting our ignorance about prime distribution",
+      "**$10,000 still open**: Erd\u0151s's stronger conjecture ($g_n > (\\log n)^{1+c}$) remains unresolved and would require fundamentally new ideas beyond current sieve methods",
+      "**Potential bound error**: The `improved_stronger` theorem (the file's only sorry) claims $f(n) \\leq f'(n)$ for $n \\geq 100$, but $\\log\\log\\log 100 \\approx 0.83 < 1$, so the inequality may fail at the stated threshold \u2014 the correct bound is $n \\geq e^{e^e} \\approx 3{,}814{,}279$. This is a candidate for correction and Aristotle proof search"
     ],
     "prerequisites": [
       "Analytic number theory: the Prime Number Theorem and its consequences",
@@ -239,12 +239,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #4 is SOLVED: for any $C > 0$, infinitely many prime gaps exceed $C$ times the Erdős function. Proved independently by Maynard and Ford-Green-Konyagin-Tao in 2016, with an improved bound by all five authors in 2018. This resolved a 75-year-old question about the growth rate of maximal prime gaps.",
-    "implications": "Prime gaps can far exceed the average gap of log n, with Rankin's amplification factor growing without bound — answering a question open since the 1930s. Maynard's multidimensional sieve techniques became fundamental tools in analytic number theory, leading to his Fields Medal-winning work on bounded gaps (p_{n+1} - p_n ≤ 246 infinitely often). The FGKT probabilistic hypergraph covering approach bridges combinatorics and analytic number theory, with applications to additive combinatorics and Ramsey theory. Under the Riemann Hypothesis, the maximum gap below x is O(√x log x), far below the unconditional (log x)² prediction — the gap between conditional and unconditional results remains a central mystery. The $10,000 prize for gaps exceeding (log n)^{1+c} remains open and would require fundamentally new ideas beyond current sieve methods",
+    "summary": "Erd\u0151s Problem #4 is SOLVED: for any $C > 0$, infinitely many prime gaps exceed $C$ times the Erd\u0151s function. Proved independently by Maynard and Ford-Green-Konyagin-Tao in 2016, with an improved bound by all five authors in 2018. This resolved a 75-year-old question about the growth rate of maximal prime gaps.",
+    "implications": "Prime gaps can far exceed the average gap of log n, with Rankin's amplification factor growing without bound \u2014 answering a question open since the 1930s. Maynard's multidimensional sieve techniques became fundamental tools in analytic number theory, leading to his Fields Medal-winning work on bounded gaps (p_{n+1} - p_n \u2264 246 infinitely often). The FGKT probabilistic hypergraph covering approach bridges combinatorics and analytic number theory, with applications to additive combinatorics and Ramsey theory. Under the Riemann Hypothesis, the maximum gap below x is O(\u221ax log x), far below the unconditional (log x)\u00b2 prediction \u2014 the gap between conditional and unconditional results remains a central mystery. The $10,000 prize for gaps exceeding (log n)^{1+c} remains open and would require fundamentally new ideas beyond current sieve methods",
     "openQuestions": [
-      "Erdős's $10,000 conjecture: Does p_{n+1} - p_n > (log n)^{1+c} hold for some c > 0 and infinitely many n?",
-      "Cramér's conjecture: Is p_{n+1} - p_n = O((log p_n)²)?",
-      "What is the true growth rate of the maximal prime gap G(x) = max_{p_n ≤ x} g_n?",
+      "Erd\u0151s's $10,000 conjecture: Does p_{n+1} - p_n > (log n)^{1+c} hold for some c > 0 and infinitely many n?",
+      "Cram\u00e9r's conjecture: Is p_{n+1} - p_n = O((log p_n)\u00b2)?",
+      "What is the true growth rate of the maximal prime gap G(x) = max_{p_n \u2264 x} g_n?",
       "Is Firoozbakht's conjecture (p_n^{1/n} strictly decreasing) true?",
       "Can the FGKMT bound be improved by another iterated-log factor?"
     ]
@@ -253,12 +253,12 @@
     {
       "targetId": "erdos-1",
       "relationship": "complement",
-      "description": "Erdős #1 concerns small gaps between primes (Bertrand's postulate), the complementary question to the large gaps studied here"
+      "description": "Erd\u0151s #1 concerns small gaps between primes (Bertrand's postulate), the complementary question to the large gaps studied here"
     },
     {
       "targetId": "erdos-369",
       "relationship": "related",
-      "description": "Erdős #369 on consecutive smooth numbers involves similar sieve techniques and prime factorization structure"
+      "description": "Erd\u0151s #369 on consecutive smooth numbers involves similar sieve techniques and prime factorization structure"
     },
     {
       "targetId": "bertrands-postulate",
@@ -273,7 +273,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes is a prerequisite for studying prime gaps — the problem only makes sense because there are infinitely many primes to have gaps between"
+      "description": "The infinitude of primes is a prerequisite for studying prime gaps \u2014 the problem only makes sense because there are infinitely many primes to have gaps between"
     },
     {
       "targetId": "bounded-prime-gaps",
@@ -288,12 +288,12 @@
     {
       "targetId": "erdos-5",
       "relationship": "related",
-      "description": "Erdős #5 asks about the set of limit points of $g_n / \\log p_n$ (normalized prime gaps). While #4 proves $\\limsup g_n / f(n) = \\infty$ for specific growth functions $f$, #5 asks for the full accumulation structure of the normalized gap sequence — a finer question about the distribution of prime gaps"
+      "description": "Erd\u0151s #5 asks about the set of limit points of $g_n / \\log p_n$ (normalized prime gaps). While #4 proves $\\limsup g_n / f(n) = \\infty$ for specific growth functions $f$, #5 asks for the full accumulation structure of the normalized gap sequence \u2014 a finer question about the distribution of prime gaps"
     },
     {
       "targetId": "erdos-6",
       "relationship": "related",
-      "description": "Erdős #6 studies related questions about prime gap statistics. Together #4, #5, and #6 form a cluster of Erdős problems probing different aspects of prime gap distribution: maximum size (#4), limit points of ratios (#5), and statistical behavior (#6)"
+      "description": "Erd\u0151s #6 studies related questions about prime gap statistics. Together #4, #5, and #6 form a cluster of Erd\u0151s problems probing different aspects of prime gap distribution: maximum size (#4), limit points of ratios (#5), and statistical behavior (#6)"
     },
     {
       "targetId": "bounded-prime-gaps-oq-03",
@@ -303,17 +303,17 @@
     {
       "targetId": "twin-primes-special",
       "relationship": "complementary",
-      "description": "Twin primes ($p_{n+1} - p_n = 2$) represent the smallest possible prime gap, while this entry concerns the largest. The twin prime conjecture ($\\liminf g_n = 2$) and Erdős #4 ($\\limsup g_n/f(n) = \\infty$) together would characterize the extreme oscillation of the prime gap sequence"
+      "description": "Twin primes ($p_{n+1} - p_n = 2$) represent the smallest possible prime gap, while this entry concerns the largest. The twin prime conjecture ($\\liminf g_n = 2$) and Erd\u0151s #4 ($\\limsup g_n/f(n) = \\infty$) together would characterize the extreme oscillation of the prime gap sequence"
     },
     {
       "targetId": "bounded-prime-gaps-oq-03-oq-01",
       "relationship": "complementary",
-      "description": "The k-tuple size and gap bounds entry formalizes how optimizing Selberg sieve weights in Maynard's multidimensional framework yields the specific bound $\\liminf g_n \\leq 246$. The same sieve technology — applied in reverse by Maynard for large gaps — is what resolved Erdős #4. The detailed analysis of admissible tuples and Bombieri-Vinogradov estimates in OQ-03-OQ-01 illuminates the technical machinery shared between the bounded and unbounded gap proofs"
+      "description": "The k-tuple size and gap bounds entry formalizes how optimizing Selberg sieve weights in Maynard's multidimensional framework yields the specific bound $\\liminf g_n \\leq 246$. The same sieve technology \u2014 applied in reverse by Maynard for large gaps \u2014 is what resolved Erd\u0151s #4. The detailed analysis of admissible tuples and Bombieri-Vinogradov estimates in OQ-03-OQ-01 illuminates the technical machinery shared between the bounded and unbounded gap proofs"
     },
     {
       "targetId": "erdos-3",
       "relationship": "related",
-      "description": "Erdős #3 (Green-Tao theorem on arithmetic progressions in primes) and #4 (large prime gaps) are complementary perspectives on prime distribution: Green-Tao shows primes contain long arithmetic progressions (a regularity property), while #4 shows prime gaps can be arbitrarily large relative to the average (an irregularity property). Both are deep results about the fine structure of the prime sequence beyond what the prime number theorem reveals"
+      "description": "Erd\u0151s #3 (Green-Tao theorem on arithmetic progressions in primes) and #4 (large prime gaps) are complementary perspectives on prime distribution: Green-Tao shows primes contain long arithmetic progressions (a regularity property), while #4 shows prime gaps can be arbitrarily large relative to the average (an irregularity property). Both are deep results about the fine structure of the prime sequence beyond what the prime number theorem reveals"
     }
   ],
   "relatedProofs": [
@@ -344,7 +344,8 @@
     "lineCount": 243,
     "axiomCount": 9,
     "theoremCount": 2,
-    "definitionCount": 16
+    "definitionCount": 16,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -352,42 +353,42 @@
       "title": "The difference between consecutive prime numbers",
       "year": "1938",
       "venue": "Journal of the London Mathematical Society 13, pp. 242-247",
-      "note": "Original lower bound with constant C = e^γ/3, unimproved for 75 years"
+      "note": "Original lower bound with constant C = e^\u03b3/3, unimproved for 75 years"
     },
     {
       "authors": "Maynard, James",
       "title": "Large gaps between primes",
       "year": "2016",
       "venue": "Annals of Mathematics 183, pp. 915-933",
-      "note": "Proved the full Erdős conjecture (∀ C > 0) using multidimensional sieve weights"
+      "note": "Proved the full Erd\u0151s conjecture (\u2200 C > 0) using multidimensional sieve weights"
     },
     {
       "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Tao, Terence",
       "title": "Large gaps between consecutive prime numbers",
       "year": "2016",
       "venue": "Annals of Mathematics 183, pp. 935-974",
-      "note": "Independent proof of the Erdős conjecture using probabilistic methods and hypergraph covering"
+      "note": "Independent proof of the Erd\u0151s conjecture using probabilistic methods and hypergraph covering"
     },
     {
       "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Maynard, James; Tao, Terence",
       "title": "Long gaps between primes",
       "year": "2018",
       "venue": "Journal of the American Mathematical Society 31, pp. 65-105",
-      "note": "Improved bound replacing (log log log n)² with log log log n, combining both teams' techniques"
+      "note": "Improved bound replacing (log log log n)\u00b2 with log log log n, combining both teams' techniques"
     },
     {
-      "authors": "Baker, Roger C.; Harman, Glyn; Pintz, János",
+      "authors": "Baker, Roger C.; Harman, Glyn; Pintz, J\u00e1nos",
       "title": "The difference between consecutive primes, II",
       "year": "2001",
       "venue": "Proceedings of the London Mathematical Society 83, pp. 532-562",
-      "note": "Best unconditional upper bound on prime gaps: g_n ≤ n^0.525"
+      "note": "Best unconditional upper bound on prime gaps: g_n \u2264 n^0.525"
     },
     {
-      "authors": "Cramér, Harald",
+      "authors": "Cram\u00e9r, Harald",
       "title": "On the order of magnitude of the difference between consecutive prime numbers",
       "year": "1936",
       "venue": "Acta Arithmetica 2, pp. 23-46",
-      "note": "Conjectured g_n = O((log p_n)²) based on a probabilistic model of primes"
+      "note": "Conjectured g_n = O((log p_n)\u00b2) based on a probabilistic model of primes"
     }
   ]
 }

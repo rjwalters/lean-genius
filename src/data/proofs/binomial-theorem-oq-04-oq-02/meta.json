@@ -2,7 +2,7 @@
   "id": "binomial-theorem-oq-04-oq-02",
   "title": "Vandermonde Identity: Algebraic Proof via Coefficient Comparison",
   "slug": "binomial-theorem-oq-04-oq-02",
-  "description": "Algebraic proof of Vandermonde's identity by comparing coefficients of X^r in (1+X)^(m+n) = (1+X)^m · (1+X)^n, using polynomial Cauchy product.",
+  "description": "Algebraic proof of Vandermonde's identity by comparing coefficients of X^r in (1+X)^(m+n) = (1+X)^m \u00b7 (1+X)^n, using polynomial Cauchy product.",
   "meta": {
     "author": "Vandermonde (1772), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
@@ -31,7 +31,7 @@
       },
       {
         "theorem": "pow_add",
-        "description": "Monoid exponent law a^(m+n) = a^m · a^n",
+        "description": "Monoid exponent law a^(m+n) = a^m \u00b7 a^n",
         "module": "Mathlib.Algebra.Group.Defs"
       },
       {
@@ -41,8 +41,8 @@
       }
     ],
     "originalContributions": [
-      "Exponent law: (1+X)^(m+n) = (1+X)^m · (1+X)^n in ℕ[X]",
-      "Vandermonde via antidiagonal: C(m+n,r) = Σ_{i+j=r} C(m,i)·C(n,j)",
+      "Exponent law: (1+X)^(m+n) = (1+X)^m \u00b7 (1+X)^n in \u2115[X]",
+      "Vandermonde via antidiagonal: C(m+n,r) = \u03a3_{i+j=r} C(m,i)\u00b7C(n,j)",
       "Cauchy product structure connecting polynomial multiplication to convolution",
       "Algebraic proof structure: coefficient comparison of exponent law",
       "Symmetry, special cases, Pascal's rule as corollaries"
@@ -54,13 +54,13 @@
         "proofId": "binomial-theorem",
         "title": "The Binomial Theorem",
         "relationship": "parent",
-        "note": "The binomial theorem (1+X)^n = Σ C(n,k) X^k provides the coefficient extraction that connects polynomial identities to combinatorial ones"
+        "note": "The binomial theorem (1+X)^n = \u03a3 C(n,k) X^k provides the coefficient extraction that connects polynomial identities to combinatorial ones"
       },
       {
         "proofId": "arithmetic-series-oq-02-oq-02",
         "title": "2D Hockey Stick Identity",
         "relationship": "related",
-        "note": "Uses the parallel Vandermonde identity Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1), a shifted variant of the standard Vandermonde"
+        "note": "Uses the parallel Vandermonde identity \u03a3_{i+j=n} C(i+a,a)\u00b7C(j+b,b) = C(n+a+b+1,a+b+1), a shifted variant of the standard Vandermonde"
       },
       {
         "proofId": "combinations-formula",
@@ -79,16 +79,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Vandermonde's identity $\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$ was published by Alexandre-Théophile Vandermonde in 1772, though instances appear in Chu Shih-Chieh's 'Precious Mirror of the Four Elements' (1303). The identity is one of the most fundamental in combinatorics, encoding the fact that choosing $r$ items from $m+n$ objects is equivalent to choosing some from the first $m$ and the rest from the last $n$. The algebraic proof via coefficient comparison — factoring $(1+X)^{m+n}$ as $(1+X)^m \\cdot (1+X)^n$ and equating coefficients of $X^r$ — is perhaps the most elegant approach, reducing the combinatorial identity to the monoid law $a^{m+n} = a^m \\cdot a^n$ and the Cauchy product formula for polynomial multiplication. This proof technique, sometimes called the 'generating function method', has become a standard tool in algebraic combinatorics.",
+    "historicalContext": "Vandermonde's identity $\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$ was published by Alexandre-Th\u00e9ophile Vandermonde in 1772, though instances appear in Chu Shih-Chieh's 'Precious Mirror of the Four Elements' (1303). The identity is one of the most fundamental in combinatorics, encoding the fact that choosing $r$ items from $m+n$ objects is equivalent to choosing some from the first $m$ and the rest from the last $n$. The algebraic proof via coefficient comparison \u2014 factoring $(1+X)^{m+n}$ as $(1+X)^m \\cdot (1+X)^n$ and equating coefficients of $X^r$ \u2014 is perhaps the most elegant approach, reducing the combinatorial identity to the monoid law $a^{m+n} = a^m \\cdot a^n$ and the Cauchy product formula for polynomial multiplication. This proof technique, sometimes called the 'generating function method', has become a standard tool in algebraic combinatorics.",
     "problemStatement": "**Vandermonde's Identity**: For all natural numbers $m$, $n$, $r$:\n$$\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i} \\cdot \\binom{n}{j}$$\n\nProved algebraically by comparing coefficients of $X^r$ in the polynomial identity $(1+X)^{m+n} = (1+X)^m \\cdot (1+X)^n$.",
-    "text": "Algebraic proof of Vandermonde's identity by comparing coefficients of X^r in (1+X)^(m+n) = (1+X)^m · (1+X)^n, using polynomial Cauchy product.",
+    "text": "Algebraic proof of Vandermonde's identity by comparing coefficients of X^r in (1+X)^(m+n) = (1+X)^m \u00b7 (1+X)^n, using polynomial Cauchy product.",
     "proofStrategy": "The proof has three layers: (1) The **exponent law** $(1+X)^{m+n} = (1+X)^m \\cdot (1+X)^n$ in the polynomial ring $\\mathbb{N}[X]$, via the general monoid law `pow_add`. (2) The **Cauchy product** formula $[X^r](f \\cdot g) = \\sum_{i+j=r} f_i \\cdot g_j$, which translates polynomial multiplication into a convolution sum. (3) **Coefficient comparison**: since $(1+X)^n$ has $r$-th coefficient $\\binom{n}{r}$, equating the two sides yields Vandermonde's identity. Mathlib's `Nat.add_choose_eq` provides the identity directly; the formalization shows how it arises from the polynomial algebra structure.",
     "keyInsights": [
-      "The entire proof reduces to three facts: the monoid exponent law, the Cauchy product formula, and coefficient extraction from (1+X)^n — all available in Mathlib.",
-      "Vandermonde's identity is the coefficient-level shadow of the exponent law in the polynomial ring ℕ[X] — a single algebraic identity encodes the entire combinatorial argument.",
-      "Symmetry (swapping m and n) follows from commutativity of addition, not from manipulating the sum — the algebraic proof makes symmetry trivial.",
+      "The entire proof reduces to three facts: the monoid exponent law, the Cauchy product formula, and coefficient extraction from (1+X)^n \u2014 all available in Mathlib.",
+      "Vandermonde's identity is the coefficient-level shadow of the exponent law in the polynomial ring \u2115[X] \u2014 a single algebraic identity encodes the entire combinatorial argument.",
+      "Symmetry (swapping m and n) follows from commutativity of addition, not from manipulating the sum \u2014 the algebraic proof makes symmetry trivial.",
       "Pascal's rule C(n+1, r+1) = C(n,r) + C(n, r+1) is the m=1 case of Vandermonde, unifying the recursive structure of Pascal's triangle with the convolution formula.",
-      "The self-convolution case m=n gives C(2n,r) = Σ C(n,i)·C(n,j), which for r=n yields the Chu-Vandermonde identity C(2n,n) = Σ C(n,k)², connecting to central binomial coefficients."
+      "The self-convolution case m=n gives C(2n,r) = \u03a3 C(n,i)\u00b7C(n,j), which for r=n yields the Chu-Vandermonde identity C(2n,n) = \u03a3 C(n,k)\u00b2, connecting to central binomial coefficients."
     ],
     "prerequisites": [
       "Combinatorics (counting, extremal problems)",
@@ -106,14 +106,14 @@
     {
       "id": "exponent-law",
       "title": "Exponent Law",
-      "summary": "The polynomial identity (1+X)^(m+n) = (1+X)^m · (1+X)^n, proved in one line via pow_add — the monoid exponent law applied to ℕ[X].",
+      "summary": "The polynomial identity (1+X)^(m+n) = (1+X)^m \u00b7 (1+X)^n, proved in one line via pow_add \u2014 the monoid exponent law applied to \u2115[X].",
       "startLine": 28,
       "endLine": 36
     },
     {
       "id": "vandermonde",
       "title": "Vandermonde's Identity",
-      "summary": "The antidiagonal convolution formula C(m+n,r) = Σ_{i+j=r} C(m,i)·C(n,j) via Nat.add_choose_eq, plus the symmetry theorem.",
+      "summary": "The antidiagonal convolution formula C(m+n,r) = \u03a3_{i+j=r} C(m,i)\u00b7C(n,j) via Nat.add_choose_eq, plus the symmetry theorem.",
       "startLine": 38,
       "endLine": 54
     },
@@ -127,7 +127,7 @@
     {
       "id": "corollaries",
       "title": "Corollaries",
-      "summary": "Equal parameters case C(2n,r) = Σ C(n,i)·C(n,j) and Pascal's rule as the m=1 specialization of Vandermonde.",
+      "summary": "Equal parameters case C(2n,r) = \u03a3 C(n,i)\u00b7C(n,j) and Pascal's rule as the m=1 specialization of Vandermonde.",
       "startLine": 79,
       "endLine": 92
     },
@@ -144,8 +144,8 @@
     "implications": "**Theoretical Significance**: Establishes the polynomial coefficient comparison technique as a reusable proof strategy for combinatorial identities in Lean 4.\n\nThe same method applies to any identity derivable from polynomial algebra: the q-binomial theorem, Lucas' theorem, and Dixon's identity all admit similar algebraic proofs. The formalization also validates that Mathlib's polynomial library is mature enough for generating-function-style arguments.",
     "openQuestions": [
       "Can the q-Vandermonde identity for Gaussian binomial coefficients be formalized using the same coefficient-comparison technique with q-polynomials?",
-      "Can the Lindström-Gessel-Viennot lemma (determinantal formula for non-intersecting lattice paths) be derived from this algebraic framework?",
-      "Can the Chu-Vandermonde identity C(2n,n) = Σ C(n,k)² be given a direct combinatorial proof (double-counting) alongside this algebraic one?",
+      "Can the Lindstr\u00f6m-Gessel-Viennot lemma (determinantal formula for non-intersecting lattice paths) be derived from this algebraic framework?",
+      "Can the Chu-Vandermonde identity C(2n,n) = \u03a3 C(n,k)\u00b2 be given a direct combinatorial proof (double-counting) alongside this algebraic one?",
       "Can the proof technique be automated: given a polynomial identity, automatically extract the coefficient-level combinatorial identity?"
     ]
   },
@@ -153,17 +153,17 @@
     {
       "targetId": "binomial-theorem-oq-04",
       "relationship": "extends",
-      "description": "Parent entry proving Vandermonde via Nat.add_choose_eq — this file provides the algebraic proof via polynomial coefficient comparison, a conceptually different approach"
+      "description": "Parent entry proving Vandermonde via Nat.add_choose_eq \u2014 this file provides the algebraic proof via polynomial coefficient comparison, a conceptually different approach"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "uses",
-      "description": "The coefficient extraction (1+X)^n has r-th coefficient C(n,r) is the binomial theorem — the algebraic proof of Vandermonde is essentially a consequence"
+      "description": "The coefficient extraction (1+X)^n has r-th coefficient C(n,r) is the binomial theorem \u2014 the algebraic proof of Vandermonde is essentially a consequence"
     },
     {
       "targetId": "combinations-formula",
       "relationship": "foundational",
-      "description": "The identity C(m+n,r) = Σ C(m,i)·C(n,j) is a convolution of binomial coefficients"
+      "description": "The identity C(m+n,r) = \u03a3 C(m,i)\u00b7C(n,j) is a convolution of binomial coefficients"
     }
   ],
   "relatedProofs": [
@@ -188,19 +188,20 @@
     "lineCount": 111,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
-      "authors": "Vandermonde, Alexandre-Théophile",
-      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "authors": "Vandermonde, Alexandre-Th\u00e9ophile",
+      "title": "M\u00e9moire sur des irrationnelles de diff\u00e9rens ordres avec une application au cercle",
       "year": "1772",
-      "venue": "Mémoires de l'Académie Royale des Sciences de Paris",
+      "venue": "M\u00e9moires de l'Acad\u00e9mie Royale des Sciences de Paris",
       "note": "First explicit statement of the convolution identity for binomial coefficients"
     },
     {
       "authors": "Chu, Shih-Chieh",
-      "title": "Precious Mirror of the Four Elements (四元玉鉴)",
+      "title": "Precious Mirror of the Four Elements (\u56db\u5143\u7389\u9274)",
       "year": "1303",
       "venue": "Yuan dynasty China",
       "note": "Contains early instances of the identity, predating Vandermonde by nearly 500 years"

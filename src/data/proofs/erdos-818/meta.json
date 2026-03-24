@@ -2,7 +2,7 @@
   "id": "erdos-818",
   "title": "Product Set Lower Bound for Small Sumsets",
   "slug": "erdos-818",
-  "description": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c·|A|²/log|A|.",
+  "description": "If |A+A| \u2264 K|A| (small sumset), is |AA| \u2265 |A|\u00b2/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| \u2265 c\u00b7|A|\u00b2/log|A|.",
   "meta": {
     "author": "Solymosi (2009)",
     "sourceUrl": "https://erdosproblems.com/818",
@@ -46,9 +46,9 @@
     ],
     "originalContributions": [
       "Formal definition of sumset and product set",
-      "Small sumset condition: |A+A| ≤ K·|A|",
+      "Small sumset condition: |A+A| \u2264 K\u00b7|A|",
       "Additive and multiplicative energy definitions",
-      "Solymosi's theorem: |AA| ≥ c·|A|²/log|A| when sumset small",
+      "Solymosi's theorem: |AA| \u2265 c\u00b7|A|\u00b2/log|A| when sumset small",
       "Proof sketch via energy bounds",
       "Connection to Problem 52 (original sum-product conjecture)"
     ],
@@ -65,9 +65,9 @@
     "assumptions": "10 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erdős-Szemerédi conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset is small, how large must the product set be? Solymosi's 2009 paper resolved this completely. The sum-product conjecture (1983) was proved in quantitative forms by Elekes (1997) using the Szemerédi-Trotter incidence theorem, and by Solymosi and others achieving exponent 4/3. The conditional question asks whether small additive structure forces large multiplicative structure, refining the unconditional sum-product estimates.",
-    "problemStatement": "Let A be a finite set of integers such that |A+A| ≤ K·|A| for some constant K. Is it true that |A·A| ≥ |A|²/(log|A|)^C for some constant C > 0?",
-    "text": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c·|A|²/log|A|.",
+    "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erd\u0151s-Szemer\u00e9di conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset is small, how large must the product set be? Solymosi's 2009 paper resolved this completely. The sum-product conjecture (1983) was proved in quantitative forms by Elekes (1997) using the Szemer\u00e9di-Trotter incidence theorem, and by Solymosi and others achieving exponent 4/3. The conditional question asks whether small additive structure forces large multiplicative structure, refining the unconditional sum-product estimates.",
+    "problemStatement": "Let A be a finite set of integers such that |A+A| \u2264 K\u00b7|A| for some constant K. Is it true that |A\u00b7A| \u2265 |A|\u00b2/(log|A|)^C for some constant C > 0?",
+    "text": "If |A+A| \u2264 K|A| (small sumset), is |AA| \u2265 |A|\u00b2/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| \u2265 c\u00b7|A|\u00b2/log|A|.",
     "proofStrategy": "The formalization defines sumsets, product sets, and the small sumset condition. Solymosi's theorem is stated as the main result, with the proof strategy outlined: bound multiplicative energy from below (Cauchy-Schwarz) and above (Solymosi's lemma), then combine to get the product set bound.",
     "keyInsights": [
       "Sets cannot have both strong additive AND multiplicative structure",
@@ -104,14 +104,14 @@
       "title": "The Original Conjecture",
       "startLine": 106,
       "endLine": 120,
-      "summary": "Erdős's question about product sets under small sumset hypothesis"
+      "summary": "Erd\u0151s's question about product sets under small sumset hypothesis"
     },
     {
       "id": "solymosi-theorem",
       "title": "Solymosi's Theorem",
       "startLine": 122,
       "endLine": 154,
-      "summary": "The main result: |AA| ≥ c·|A|²/log|A|"
+      "summary": "The main result: |AA| \u2265 c\u00b7|A|\u00b2/log|A|"
     },
     {
       "id": "multiplicative-energy",
@@ -150,20 +150,20 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #818 asked whether small sumsets force large product sets. Solymosi (2009) proved YES: if |A+A| ≤ K|A|, then |AA| ≥ c·|A|²/log|A|. This is a quantitative form of the sum-product dichotomy.",
+    "summary": "Erd\u0151s Problem #818 asked whether small sumsets force large product sets. Solymosi (2009) proved YES: if |A+A| \u2264 K|A|, then |AA| \u2265 c\u00b7|A|\u00b2/log|A|. This is a quantitative form of the sum-product dichotomy.",
     "implications": "This result shows the power of energy methods in additive combinatorics. By bounding multiplicative energy from both directions, one obtains strong structural information about product sets.",
     "openQuestions": [
-      "Can the log factor be improved to log^{1-ε}?",
+      "Can the log factor be improved to log^{1-\u03b5}?",
       "What is the optimal constant c in Solymosi's bound?",
       "Do analogous results hold in other groups or rings?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80] original formulation"
     }
   ],
@@ -171,7 +171,7 @@
     {
       "targetId": "erdos-801",
       "relationship": "related",
-      "description": "Both are Erdős problems from the 800s family of combinatorial number theory"
+      "description": "Both are Erd\u0151s problems from the 800s family of combinatorial number theory"
     }
   ],
   "relatedProofs": [
@@ -192,6 +192,7 @@
     "lineCount": 325,
     "axiomCount": 10,
     "theoremCount": 5,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   }
 }

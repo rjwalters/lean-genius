@@ -2,7 +2,7 @@
   "id": "bezout-identity-oq-04",
   "title": "GCD Structure: Complete Solution Set of Linear Diophantine Equations",
   "slug": "bezout-identity-oq-04",
-  "description": "The complete parametric structure of all integer solutions to ax + by = c: the solution set forms a 1D arithmetic lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ} where d = gcd(a,b). Includes three-variable Diophantine criterion, GCD minimality, and the ideal characterization of GCD.",
+  "description": "The complete parametric structure of all integer solutions to ax + by = c: the solution set forms a 1D arithmetic lattice {(x\u2080 + (b/d)t, y\u2080 - (a/d)t) : t \u2208 \u2124} where d = gcd(a,b). Includes three-variable Diophantine criterion, GCD minimality, and the ideal characterization of GCD.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity#Generalization",
@@ -23,7 +23,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Int.gcd_eq_gcd_ab",
-        "description": "Bézout identity: gcd(a,b) = a * gcdA(a,b) + b * gcdB(a,b)",
+        "description": "B\u00e9zout identity: gcd(a,b) = a * gcdA(a,b) + b * gcdB(a,b)",
         "module": "Mathlib.Data.Int.GCD"
       },
       {
@@ -33,44 +33,44 @@
       },
       {
         "theorem": "Int.ediv_eq_of_eq_mul_left",
-        "description": "a/c = b when a = c * b and c ≠ 0",
+        "description": "a/c = b when a = c * b and c \u2260 0",
         "module": "Mathlib.Data.Int.Order"
       },
       {
         "theorem": "isCoprime_zero_right",
-        "description": "IsCoprime a 0 ↔ IsUnit a",
+        "description": "IsCoprime a 0 \u2194 IsUnit a",
         "module": "Mathlib.RingTheory.Coprime.Basic"
       },
       {
-        "theorem": "mul_left_cancel₀",
-        "description": "Left cancellation: c ≠ 0, c * a = c * b → a = b",
+        "theorem": "mul_left_cancel\u2080",
+        "description": "Left cancellation: c \u2260 0, c * a = c * b \u2192 a = b",
         "module": "Mathlib.Algebra.Group.Basic"
       },
       {
         "theorem": "Nat.dvd_one",
-        "description": "n ∣ 1 ↔ n = 1 (for ℕ)",
+        "description": "n \u2223 1 \u2194 n = 1 (for \u2115)",
         "module": "Mathlib.Data.Nat.Defs"
       },
       {
         "theorem": "Nat.gcd_dvd_left / Nat.gcd_dvd_right",
-        "description": "GCD divides both arguments (ℕ version)",
+        "description": "GCD divides both arguments (\u2115 version)",
         "module": "Mathlib.Data.Nat.GCD.Basic"
       },
       {
         "theorem": "Nat.dvd_antisymm",
-        "description": "a ∣ b and b ∣ a → a = b (for ℕ)",
+        "description": "a \u2223 b and b \u2223 a \u2192 a = b (for \u2115)",
         "module": "Mathlib.Data.Nat.Order.Lemmas"
       }
     ],
     "originalContributions": [
-      "gcd_divides_linear_combination: (Int.gcd a b : ℤ) ∣ a*x + b*y for all x, y",
-      "coprime_linear_null_space: If gcd(a,b)=1 then ax+by=0 ↔ ∃t, x=bt ∧ y=-at (the null space is a 1D lattice)",
-      "diophantine_complete_parameterization: All solutions ax+by=c are {(x₀+(b/d)t, y₀-(a/d)t)} — the solution set is an arithmetic lattice",
-      "bezout_three: ∃x,y,z: ax+by+cz = gcd(gcd(a,b),c) (Bezout for three integers)",
-      "diophantine_three_solvable: ax+by+cz=k has solutions ↔ gcd(gcd(a,b),c) | k",
-      "gcd_eq_min_pos_linear_comb: gcd(a,b) is the minimum positive value of {ax+by : x,y ∈ ℤ}",
-      "gcd_achievable: gcd(a,b) is itself a linear combination — existence of Bezout representation",
-      "gcd_complete_characterization: d = gcd(a,b) ↔ d is achievable AND d divides all achievable values (ideal characterization)"
+      "gcd_divides_linear_combination: (Int.gcd a b : \u2124) \u2223 a*x + b*y for all x, y",
+      "coprime_linear_null_space: If gcd(a,b)=1 then ax+by=0 \u2194 \u2203t, x=bt \u2227 y=-at (the null space is a 1D lattice)",
+      "diophantine_complete_parameterization: All solutions ax+by=c are {(x\u2080+(b/d)t, y\u2080-(a/d)t)} \u2014 the solution set is an arithmetic lattice",
+      "bezout_three: \u2203x,y,z: ax+by+cz = gcd(gcd(a,b),c) (Bezout for three integers)",
+      "diophantine_three_solvable: ax+by+cz=k has solutions \u2194 gcd(gcd(a,b),c) | k",
+      "gcd_eq_min_pos_linear_comb: gcd(a,b) is the minimum positive value of {ax+by : x,y \u2208 \u2124}",
+      "gcd_achievable: gcd(a,b) is itself a linear combination \u2014 existence of Bezout representation",
+      "gcd_complete_characterization: d = gcd(a,b) \u2194 d is achievable AND d divides all achievable values (ideal characterization)"
     ],
     "dateAdded": "2026-02-25",
     "axiomCount": 0,
@@ -78,16 +78,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Bézout's identity** states that for any integers a, b, there exist x, y with ax + by = gcd(a, b). The deeper question — answered here — is: **what is the complete set of solutions to ax + by = c?**\n\nThe answer, known since at least the 19th century, is that solutions form a **1-dimensional arithmetic lattice**. If (x₀, y₀) is one solution, all solutions are parameterized by t ∈ ℤ as:\n  (x₀ + (b/d)t,  y₀ - (a/d)t)\nwhere d = gcd(a, b). This is sometimes called the **parametric solution** or **general solution** of the linear Diophantine equation.\n\nThe **GCD ideal characterization** — that d = gcd(a,b) iff d is the minimum positive linear combination and divides all linear combinations — connects the number-theoretic definition with the algebraic concept of an **ideal generator** in ℤ.",
-    "problemStatement": "**Open Question (bezout-identity-oq-04)**: Can the Diophantine solvability criterion from BezoutIdentity.lean be extended to fully characterize the GCD structure — not just *when* ax + by = c has solutions, but *all* solutions and their lattice structure?\n\n**Answer: YES**, in full generality.\n\n1. **Solution set structure**: All solutions form a 1D arithmetic lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ}\n2. **Null space**: When gcd(a,b) = 1, solutions to ax + by = 0 are exactly {(bt, -at) : t ∈ ℤ}\n3. **Three-variable extension**: ax + by + cz = k has solutions iff gcd(gcd(a,b), c) | k\n4. **GCD minimality**: gcd(a,b) is the smallest positive value in the ideal {ax + by}\n5. **Ideal characterization**: d = gcd(a,b) iff d achieves the ideal and divides everything in it",
-    "text": "The complete parametric structure of all integer solutions to ax + by = c: the solution set forms a 1D arithmetic lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ} where d = gcd(a,b). Includes three-variable Diophantine criterion, GCD minimality, and the ideal characterization of GCD.",
-    "proofStrategy": "The proof proceeds in three major stages:\n\n**Stage 1 (Null Space)**: `coprime_linear_null_space` — when gcd(a,b) = 1, characterize all (x,y) with ax + by = 0. The proof uses IsCoprime constructed from Bezout coefficients:\n- When b = 0: `IsCoprime a 0 ↔ IsUnit a` (isCoprime_zero_right) gives a = ±1, so x = 0 and any t = -a*y works.\n- When b ≠ 0: Direct Bezout argument shows b ∣ x with witness `u*m + v*x` where u,v are Bezout coefficients and a*x = b*m. Then x = b*t, and from b*(a*t + y) = 0 conclude y = -a*t.\n\n**Stage 2 (Complete Parameterization)**: `diophantine_complete_parameterization` — from one solution (x₀, y₀), derive all solutions. Let d = gcd(a,b), a' = a/d, b' = b/d. Then gcd(a',b') = 1 (proved via Bezout: d*(a'u + b'v) = d → a'u + b'v = 1, so gcd(a',b') ∣ 1). Apply coprime null space to the difference equation a'(x-x₀) + b'(y-y₀) = 0.\n\n**Stage 3 (GCD Ideal)**: Minimality (gcd is smallest positive combination) and ideal characterization (d = gcd iff d achieves the min and divides all). The ideal characterization uses double divisibility: gcd ∣ d (since d is achievable) and d ∣ gcd (since d divides all combinations, and gcd is achievable).",
+    "historicalContext": "**B\u00e9zout's identity** states that for any integers a, b, there exist x, y with ax + by = gcd(a, b). The deeper question \u2014 answered here \u2014 is: **what is the complete set of solutions to ax + by = c?**\n\nThe answer, known since at least the 19th century, is that solutions form a **1-dimensional arithmetic lattice**. If (x\u2080, y\u2080) is one solution, all solutions are parameterized by t \u2208 \u2124 as:\n  (x\u2080 + (b/d)t,  y\u2080 - (a/d)t)\nwhere d = gcd(a, b). This is sometimes called the **parametric solution** or **general solution** of the linear Diophantine equation.\n\nThe **GCD ideal characterization** \u2014 that d = gcd(a,b) iff d is the minimum positive linear combination and divides all linear combinations \u2014 connects the number-theoretic definition with the algebraic concept of an **ideal generator** in \u2124.",
+    "problemStatement": "**Open Question (bezout-identity-oq-04)**: Can the Diophantine solvability criterion from BezoutIdentity.lean be extended to fully characterize the GCD structure \u2014 not just *when* ax + by = c has solutions, but *all* solutions and their lattice structure?\n\n**Answer: YES**, in full generality.\n\n1. **Solution set structure**: All solutions form a 1D arithmetic lattice {(x\u2080 + (b/d)t, y\u2080 - (a/d)t) : t \u2208 \u2124}\n2. **Null space**: When gcd(a,b) = 1, solutions to ax + by = 0 are exactly {(bt, -at) : t \u2208 \u2124}\n3. **Three-variable extension**: ax + by + cz = k has solutions iff gcd(gcd(a,b), c) | k\n4. **GCD minimality**: gcd(a,b) is the smallest positive value in the ideal {ax + by}\n5. **Ideal characterization**: d = gcd(a,b) iff d achieves the ideal and divides everything in it",
+    "text": "The complete parametric structure of all integer solutions to ax + by = c: the solution set forms a 1D arithmetic lattice {(x\u2080 + (b/d)t, y\u2080 - (a/d)t) : t \u2208 \u2124} where d = gcd(a,b). Includes three-variable Diophantine criterion, GCD minimality, and the ideal characterization of GCD.",
+    "proofStrategy": "The proof proceeds in three major stages:\n\n**Stage 1 (Null Space)**: `coprime_linear_null_space` \u2014 when gcd(a,b) = 1, characterize all (x,y) with ax + by = 0. The proof uses IsCoprime constructed from Bezout coefficients:\n- When b = 0: `IsCoprime a 0 \u2194 IsUnit a` (isCoprime_zero_right) gives a = \u00b11, so x = 0 and any t = -a*y works.\n- When b \u2260 0: Direct Bezout argument shows b \u2223 x with witness `u*m + v*x` where u,v are Bezout coefficients and a*x = b*m. Then x = b*t, and from b*(a*t + y) = 0 conclude y = -a*t.\n\n**Stage 2 (Complete Parameterization)**: `diophantine_complete_parameterization` \u2014 from one solution (x\u2080, y\u2080), derive all solutions. Let d = gcd(a,b), a' = a/d, b' = b/d. Then gcd(a',b') = 1 (proved via Bezout: d*(a'u + b'v) = d \u2192 a'u + b'v = 1, so gcd(a',b') \u2223 1). Apply coprime null space to the difference equation a'(x-x\u2080) + b'(y-y\u2080) = 0.\n\n**Stage 3 (GCD Ideal)**: Minimality (gcd is smallest positive combination) and ideal characterization (d = gcd iff d achieves the min and divides all). The ideal characterization uses double divisibility: gcd \u2223 d (since d is achievable) and d \u2223 gcd (since d divides all combinations, and gcd is achievable).",
     "keyInsights": [
       "**The null space is the key**: All solution sets are translates of the null space {(bt, -at)} of the homogeneous equation ax + by = 0 (when gcd = 1).",
       "**Bezout without IsCoprime.comm**: The coprimality structure is used directly via Bezout coefficients, avoiding dot-notation issues with the IsCoprime def.",
-      "**gcd(a/d, b/d) = 1 via ideal**: Prove gcd(a',b') ∣ 1 by showing gcd(a',b') divides the Bezout combination a'*u + b'*v = 1, then use Nat.dvd_one.",
-      "**Three variables by induction on Bezout**: bezout_three reduces to two Bezout applications: gcd(a,b) = ax₀+by₀, then gcd(gcd(a,b),c) = gcd(a,b)*u + c*v, giving the three-variable combination.",
-      "**Ideal characterization = double divisibility**: d = gcd(a,b) iff (d achievable → gcd ∣ d) AND (d divides gcd → d ∣ gcd) → d = gcd by Nat.dvd_antisymm."
+      "**gcd(a/d, b/d) = 1 via ideal**: Prove gcd(a',b') \u2223 1 by showing gcd(a',b') divides the Bezout combination a'*u + b'*v = 1, then use Nat.dvd_one.",
+      "**Three variables by induction on Bezout**: bezout_three reduces to two Bezout applications: gcd(a,b) = ax\u2080+by\u2080, then gcd(gcd(a,b),c) = gcd(a,b)*u + c*v, giving the three-variable combination.",
+      "**Ideal characterization = double divisibility**: d = gcd(a,b) iff (d achievable \u2192 gcd \u2223 d) AND (d divides gcd \u2192 d \u2223 gcd) \u2192 d = gcd by Nat.dvd_antisymm."
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)"
@@ -99,68 +99,68 @@
       "title": "GCD Divides All Linear Combinations",
       "startLine": 50,
       "endLine": 55,
-      "summary": "gcd_divides_linear_combination: (Int.gcd a b : ℤ) ∣ a*x + b*y for any x, y. One-line proof: gcd | a and gcd | b, so gcd | a*x + b*y by dvd_add and dvd_mul_of_dvd_left. This is the structural fact that the ideal {ax+by} ⊆ gcd(a,b)·ℤ."
+      "summary": "gcd_divides_linear_combination: (Int.gcd a b : \u2124) \u2223 a*x + b*y for any x, y. One-line proof: gcd | a and gcd | b, so gcd | a*x + b*y by dvd_add and dvd_mul_of_dvd_left. This is the structural fact that the ideal {ax+by} \u2286 gcd(a,b)\u00b7\u2124."
     },
     {
       "id": "null-space",
       "title": "The Null Space: ax + by = 0 when gcd = 1",
       "startLine": 63,
       "endLine": 107,
-      "summary": "coprime_linear_null_space: when gcd(a,b)=1, ax+by=0 ↔ ∃t, x=bt ∧ y=-at. Proof: build IsCoprime from Bezout coefficients. Case b=0: isCoprime_zero_right gives IsUnit a (a=±1), so x=0, take t=-a*y. Case b≠0: Bezout witnesses give b∣x directly (x = u*(a*x)+v*b*x = u*(b*m)+v*b*x = b*(u*m+v*x)), then a*t+y=0 from b*(a*t+y)=0."
+      "summary": "coprime_linear_null_space: when gcd(a,b)=1, ax+by=0 \u2194 \u2203t, x=bt \u2227 y=-at. Proof: build IsCoprime from Bezout coefficients. Case b=0: isCoprime_zero_right gives IsUnit a (a=\u00b11), so x=0, take t=-a*y. Case b\u22600: Bezout witnesses give b\u2223x directly (x = u*(a*x)+v*b*x = u*(b*m)+v*b*x = b*(u*m+v*x)), then a*t+y=0 from b*(a*t+y)=0."
     },
     {
       "id": "complete-param",
       "title": "Complete Parametrization of All Solutions",
       "startLine": 112,
       "endLine": 183,
-      "summary": "diophantine_complete_parameterization: with d=gcd(a,b)>0 and one solution (x₀,y₀), all solutions are (x₀+(b/d)t, y₀-(a/d)t). Key steps: gcd(a/d, b/d)=1 proved via Nat.dvd_one (gcd divides Bezout combination = 1); reduce to null space of coprime equation; backward direction uses linear_combination h₀ + key*t where key: a*(b/d) = b*(a/d)."
+      "summary": "diophantine_complete_parameterization: with d=gcd(a,b)>0 and one solution (x\u2080,y\u2080), all solutions are (x\u2080+(b/d)t, y\u2080-(a/d)t). Key steps: gcd(a/d, b/d)=1 proved via Nat.dvd_one (gcd divides Bezout combination = 1); reduce to null space of coprime equation; backward direction uses linear_combination h\u2080 + key*t where key: a*(b/d) = b*(a/d)."
     },
     {
       "id": "three-variable",
       "title": "Three-Variable Diophantine Criterion",
       "startLine": 185,
       "endLine": 232,
-      "summary": "bezout_three: ∃x,y,z: ax+by+cz = gcd(gcd(a,b),c). Proof applies Bezout twice: get x₀,y₀ with gcd(a,b)=ax₀+by₀, then u,v with gcd(gcd(a,b),c)=gcd(a,b)*u+c*v. Solution: x=x₀*u, y=y₀*u, z=v. diophantine_three_solvable: ax+by+cz=k has solutions ↔ gcd(gcd(a,b),c) | k. Proves the criterion extends inductively to three variables."
+      "summary": "bezout_three: \u2203x,y,z: ax+by+cz = gcd(gcd(a,b),c). Proof applies Bezout twice: get x\u2080,y\u2080 with gcd(a,b)=ax\u2080+by\u2080, then u,v with gcd(gcd(a,b),c)=gcd(a,b)*u+c*v. Solution: x=x\u2080*u, y=y\u2080*u, z=v. diophantine_three_solvable: ax+by+cz=k has solutions \u2194 gcd(gcd(a,b),c) | k. Proves the criterion extends inductively to three variables."
     },
     {
       "id": "gcd-minimality",
       "title": "GCD as Minimum Positive Linear Combination",
       "startLine": 235,
       "endLine": 262,
-      "summary": "gcd_eq_min_pos_linear_comb: gcd(a,b) ≤ c for any positive c achievable as a*x+b*y (since gcd ∣ c and c > 0). gcd_achievable: gcd(a,b) is itself achievable via Nat.gcdA, Nat.gcdB and Nat.gcd_eq_gcd_ab. Together: gcd(a,b) is the minimum element of the positive linear combinations."
+      "summary": "gcd_eq_min_pos_linear_comb: gcd(a,b) \u2264 c for any positive c achievable as a*x+b*y (since gcd \u2223 c and c > 0). gcd_achievable: gcd(a,b) is itself achievable via Nat.gcdA, Nat.gcdB and Nat.gcd_eq_gcd_ab. Together: gcd(a,b) is the minimum element of the positive linear combinations."
     },
     {
       "id": "ideal-characterization",
       "title": "Complete GCD Ideal Characterization",
       "startLine": 265,
       "endLine": 299,
-      "summary": "gcd_complete_characterization: d = gcd(a,b) ↔ (d is achievable as ax+by) AND (d divides all achievable values). Forward: d | gcd (d divides Nat.gcdA,gcdB combination = gcd) and gcd | d (gcd divides the achieving combination = d), so d = gcd by Nat.dvd_antisymm. Backward: gcd_achievable and gcd divides all ax+by by gcd_divides_linear_combination."
+      "summary": "gcd_complete_characterization: d = gcd(a,b) \u2194 (d is achievable as ax+by) AND (d divides all achievable values). Forward: d | gcd (d divides Nat.gcdA,gcdB combination = gcd) and gcd | d (gcd divides the achieving combination = d), so d = gcd by Nat.dvd_antisymm. Backward: gcd_achievable and gcd divides all ax+by by gcd_divides_linear_combination."
     }
   ],
   "conclusion": {
-    "summary": "This formalization answers bezout-identity-oq-04 affirmatively: the Diophantine solvability criterion extends to a complete characterization of the solution lattice. All solutions to ax + by = c form the arithmetic progression {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ}. The GCD is characterized as the ideal generator of {ax + by : x,y ∈ ℤ}. Zero sorries.",
-    "implications": "Completes the bezout-identity family: BezoutIdentity → OQ02 (Euclid's Lemma) → OQ02-OQ01 (FTA) → OQ02-OQ02 (PID generalization) → OQ03 (CRT) → OQ04 (solution lattice + ideal structure). The parametric solution structure is the foundation for: integer programming (ILP feasibility and solution counting), lattice-based cryptography (LWE problem structure), and the algebraic structure of ℤ as a PID.",
+    "summary": "This formalization answers bezout-identity-oq-04 affirmatively: the Diophantine solvability criterion extends to a complete characterization of the solution lattice. All solutions to ax + by = c form the arithmetic progression {(x\u2080 + (b/d)t, y\u2080 - (a/d)t) : t \u2208 \u2124}. The GCD is characterized as the ideal generator of {ax + by : x,y \u2208 \u2124}. Zero sorries.",
+    "implications": "Completes the bezout-identity family: BezoutIdentity \u2192 OQ02 (Euclid's Lemma) \u2192 OQ02-OQ01 (FTA) \u2192 OQ02-OQ02 (PID generalization) \u2192 OQ03 (CRT) \u2192 OQ04 (solution lattice + ideal structure). The parametric solution structure is the foundation for: integer programming (ILP feasibility and solution counting), lattice-based cryptography (LWE problem structure), and the algebraic structure of \u2124 as a PID.",
     "openQuestions": [
-      "Can the parametric solution extend to systems of linear Diophantine equations (matrix form Ax = b over ℤ), characterizing the full solution lattice via the Smith Normal Form?",
+      "Can the parametric solution extend to systems of linear Diophantine equations (matrix form Ax = b over \u2124), characterizing the full solution lattice via the Smith Normal Form?",
       "Can gcd_complete_characterization be generalized to any PID using Mathlib's UniqueFactorizationDomain typeclass, replacing gcd with the gcd of a Euclidean domain?",
-      "Does the solution lattice structure have applications to the geometry of numbers (Minkowski's theorem) — can the number of solutions in a bounded region be estimated using lattice point counting?"
+      "Does the solution lattice structure have applications to the geometry of numbers (Minkowski's theorem) \u2014 can the number of solutions in a bounded region be estimated using lattice point counting?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "bezout-identity",
       "relationship": "extends",
-      "description": "Parent entry proving gcd = ax + by — this file extends from solvability criterion to complete parametric description of all solutions"
+      "description": "Parent entry proving gcd = ax + by \u2014 this file extends from solvability criterion to complete parametric description of all solutions"
     },
     {
       "targetId": "bezout-identity-oq-02-oq-01",
       "relationship": "sibling",
-      "description": "FTA from Euclid's lemma — both are deep consequences of Bézout: FTA gives unique factorization, this file gives solution lattice structure"
+      "description": "FTA from Euclid's lemma \u2014 both are deep consequences of B\u00e9zout: FTA gives unique factorization, this file gives solution lattice structure"
     },
     {
       "targetId": "bezout-identity-oq-03-oq-01",
       "relationship": "related",
-      "description": "CRT ring isomorphism — both characterize solution sets: CRT gives ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ, this file gives {(x₀+bt/d, y₀-at/d) : t ∈ ℤ} for Diophantine equations"
+      "description": "CRT ring isomorphism \u2014 both characterize solution sets: CRT gives \u2124/mn\u2124 \u2245 \u2124/m\u2124 \u00d7 \u2124/n\u2124, this file gives {(x\u2080+bt/d, y\u2080-at/d) : t \u2208 \u2124} for Diophantine equations"
     }
   ],
   "relatedProofs": [
@@ -182,6 +182,7 @@
     "lineCount": 349,
     "axiomCount": 0,
     "theoremCount": 8,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

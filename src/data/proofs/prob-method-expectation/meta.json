@@ -36,14 +36,14 @@
       }
     ],
     "originalContributions": [
-      "First moment principle: average exceeds threshold implies element exceeds threshold (ℚ, fully proved)",
-      "Dual first moment principle: average below threshold implies element below threshold (ℚ, fully proved)",
+      "First moment principle: average exceeds threshold implies element exceeds threshold (\u211a, fully proved)",
+      "Dual first moment principle: average below threshold implies element below threshold (\u211a, fully proved)",
       "Linearity of expectation for Finset sums (one-liner from Mathlib)",
-      "Expected monochromatic cliques non-negativity (ℚ, zpow)",
-      "Erdős 1947 Ramsey lower bound existence form",
-      "Probabilistic existence principle: sum < |S| implies zero element exists (ℕ)",
-      "Maximum exceeds average over finite sets (ℕ)",
-      "Minimum at most average over finite sets (ℕ)"
+      "Expected monochromatic cliques non-negativity (\u211a, zpow)",
+      "Erd\u0151s 1947 Ramsey lower bound existence form",
+      "Probabilistic existence principle: sum < |S| implies zero element exists (\u2115)",
+      "Maximum exceeds average over finite sets (\u2115)",
+      "Minimum at most average over finite sets (\u2115)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -91,7 +91,7 @@
       "title": "First Moment Principle",
       "startLine": 16,
       "endLine": 20,
-      "summary": "If the sum f(a) over a Finset s divided by |s| exceeds t, then some element a in s has f(a) > t. Uses ℚ (rationals) for exact arithmetic. Currently sorry'd — provable by contradiction using Finset.sum_le_sum.",
+      "summary": "If the sum f(a) over a Finset s divided by |s| exceeds t, then some element a in s has f(a) > t. Uses \u211a (rationals) for exact arithmetic. Currently sorry'd \u2014 provable by contradiction using Finset.sum_le_sum.",
       "mathContext": "$\\frac{\\sum_{a \\in s} f(a)}{|s|} > t \\implies \\exists a \\in s,\\; f(a) > t$"
     },
     {
@@ -99,7 +99,7 @@
       "title": "Linearity of Expectation",
       "startLine": 22,
       "endLine": 25,
-      "summary": "Linearity of expectation for Finset sums: the sum of (f + g) equals the sum of f plus the sum of g. Currently sorry'd — follows directly from Finset.sum_add_distrib in Mathlib.",
+      "summary": "Linearity of expectation for Finset sums: the sum of (f + g) equals the sum of f plus the sum of g. Currently sorry'd \u2014 follows directly from Finset.sum_add_distrib in Mathlib.",
       "mathContext": "$\\sum_{a \\in s} (f + g)(a) = \\sum_{a \\in s} f(a) + \\sum_{a \\in s} g(a)$"
     },
     {
@@ -107,7 +107,7 @@
       "title": "Expected Monochromatic Cliques",
       "startLine": 27,
       "endLine": 31,
-      "summary": "The expected number of monochromatic k-cliques in a random 2-coloring of K_n is C(n,k) · 2^(1-C(k,2)). Currently only states non-negativity of this expression (sorry'd). The full application would show this is < 1 when n < 2^(k/2).",
+      "summary": "The expected number of monochromatic k-cliques in a random 2-coloring of K_n is C(n,k) \u00b7 2^(1-C(k,2)). Currently only states non-negativity of this expression (sorry'd). The full application would show this is < 1 when n < 2^(k/2).",
       "mathContext": "$E[\\text{mono } K_k] = \\binom{n}{k} \\cdot 2^{1 - \\binom{k}{2}}$"
     },
     {
@@ -115,7 +115,7 @@
       "title": "Erdos Ramsey Lower Bound",
       "startLine": 33,
       "endLine": 38,
-      "summary": "Simplified version of Erdos's 1947 result: R(k,k) >= 2^(k/2). Currently sorry'd as an existential statement — the full proof would combine the expected monochromatic clique count with the first moment principle.",
+      "summary": "Simplified version of Erdos's 1947 result: R(k,k) >= 2^(k/2). Currently sorry'd as an existential statement \u2014 the full proof would combine the expected monochromatic clique count with the first moment principle.",
       "mathContext": "$R(k,k) \\geq 2^{k/2}$"
     }
   ],
@@ -147,7 +147,7 @@
     "openQuestions": [
       "Can this Finset-based framework extend to infinite probability spaces via Mathlib's MeasureTheory?",
       "What is the tightest Ramsey bound achievable via the first moment method alone?",
-      "Prove linearity_of_expectation using Finset.sum_add_distrib — likely a one-liner",
+      "Prove linearity_of_expectation using Finset.sum_add_distrib \u2014 likely a one-liner",
       "Can the expected_mono_cliques result be strengthened to show the count is < 1 for n < 2^(k/2)?"
     ]
   },
@@ -169,7 +169,8 @@
     "lineCount": 136,
     "axiomCount": 0,
     "theoremCount": 8,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {

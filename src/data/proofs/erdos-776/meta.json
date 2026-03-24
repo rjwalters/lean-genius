@@ -1,10 +1,10 @@
 {
   "id": "erdos-776",
-  "title": "Erdős Problem #776: Antichains with Set-Size Multiplicity",
+  "title": "Erd\u0151s Problem #776: Antichains with Set-Size Multiplicity",
   "slug": "erdos-776",
-  "description": "For r ≥ 2, how large must n be to guarantee an antichain in 2^{[n]} with n−3 distinct set sizes, each appearing ≥ r times? For r=1: max is n−2. For r>1: max is n−3 for large n.",
+  "description": "For r \u2265 2, how large must n be to guarantee an antichain in 2^{[n]} with n\u22123 distinct set sizes, each appearing \u2265 r times? For r=1: max is n\u22122. For r>1: max is n\u22123 for large n.",
   "meta": {
-    "author": "Erdős, Trotter",
+    "author": "Erd\u0151s, Trotter",
     "sourceUrl": "https://erdosproblems.com/776",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos776Problem.lean",
@@ -49,9 +49,9 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Trotter studied extremal problems on antichains in the Boolean lattice $2^{[n]}$, extending Sperner's celebrated 1928 theorem that the maximum antichain has size $\\binom{n}{\\lfloor n/2 \\rfloor}$. Problem 776 adds a *multiplicity constraint*: every occurring set size must appear at least $r$ times. For $r = 1$ (no constraint), Griggs showed in 1983 that an antichain can use at most $n - 2$ distinct set sizes for $n > 3$, since sizes $0$ and $n$ correspond to $\\{\\emptyset\\}$ and $\\{[n]\\}$ which are incomparable to nothing else non-trivially. For $r \\geq 2$, the constraint $\\binom{n}{k} \\geq r$ excludes the extreme layers $k \\in \\{0, 1, n-1, n\\}$ for small $r$ and more layers as $r$ grows. Erdős and Trotter showed the maximum drops to $n - 3$ for large $n$, but the precise threshold $N(r)$ remains open. This connects to the 'anatomy' of the Boolean lattice and the LYM inequality.",
+    "historicalContext": "Erd\u0151s and Trotter studied extremal problems on antichains in the Boolean lattice $2^{[n]}$, extending Sperner's celebrated 1928 theorem that the maximum antichain has size $\\binom{n}{\\lfloor n/2 \\rfloor}$. Problem 776 adds a *multiplicity constraint*: every occurring set size must appear at least $r$ times. For $r = 1$ (no constraint), Griggs showed in 1983 that an antichain can use at most $n - 2$ distinct set sizes for $n > 3$, since sizes $0$ and $n$ correspond to $\\{\\emptyset\\}$ and $\\{[n]\\}$ which are incomparable to nothing else non-trivially. For $r \\geq 2$, the constraint $\\binom{n}{k} \\geq r$ excludes the extreme layers $k \\in \\{0, 1, n-1, n\\}$ for small $r$ and more layers as $r$ grows. Erd\u0151s and Trotter showed the maximum drops to $n - 3$ for large $n$, but the precise threshold $N(r)$ remains open. This connects to the 'anatomy' of the Boolean lattice and the LYM inequality.",
     "problemStatement": "For $r \\geq 2$, determine the threshold $N(r)$ such that for all $n \\geq N(r)$, the maximum number of distinct set sizes in a multiplicity-$r$ antichain in $2^{[n]}$ is exactly $n - 3$.",
-    "text": "For r ≥ 2, how large must n be to guarantee an antichain in 2^{[n]} with n−3 distinct set sizes, each appearing ≥ r times? For r=1: max is n−2. For r>1: max is n−3 for large n.",
+    "text": "For r \u2265 2, how large must n be to guarantee an antichain in 2^{[n]} with n\u22123 distinct set sizes, each appearing \u2265 r times? For r=1: max is n\u22122. For r>1: max is n\u22123 for large n.",
     "proofStrategy": "The formalization defines subset families as `Finset (Finset (Fin n))`, antichains via pairwise non-containment, and `maxDistinctSizes` via `Finset.sup` over valid families. The theorem `erdos_trotter_exact` is *proved* from the axiomatized upper bound ($\\leq n-3$) and achievability ($\\geq n-3$) using `omega`. The threshold conjecture includes a minimality clause, and structural observations capture Sperner's theorem, the middle layer construction, and the size-variety tradeoff.",
     "keyInsights": [
       "For $r = 1$: the maximum is $n - 2$ distinct sizes (sizes $0$ and $n$ are mutually exclusive in antichains containing other sets, so at most one extreme size is usable, and Griggs showed exactly $n - 2$ is achievable)",
@@ -59,7 +59,7 @@
       "Sperner's theorem $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$ bounds the total family size, creating a tension: more distinct sizes require spreading sets across layers, but each layer contributes at most $\\binom{n}{k}$ sets",
       "The size-variety tradeoff $|\\mathcal{F}| \\geq r \\cdot d$ (where $d$ is the number of distinct sizes) combined with Sperner's bound gives $d \\leq \\binom{n}{\\lfloor n/2 \\rfloor}/r$, which for fixed $r$ is $\\Theta(2^n/\\sqrt{n})$, far above $n - 3$, so the real constraint comes from the antichain property, not the size bound",
       "The proof of `erdos_trotter_exact` takes $N = \\max(N_1, N_2)$ from the two axioms and uses `omega` to close the equality from $\\leq$ and $\\geq$, a clean example of the sandwich technique in extremal combinatorics",
-      "**Unimodality barrier**: The binomial coefficients $\\binom{n}{k}$ are unimodal (increasing then decreasing), so layers with $\\binom{n}{k} < r$ cluster at the extremes. For fixed $r$, exactly the outermost layers are excluded, and their count stabilizes once $n$ is large enough — this is why a finite threshold $N(r)$ exists"
+      "**Unimodality barrier**: The binomial coefficients $\\binom{n}{k}$ are unimodal (increasing then decreasing), so layers with $\\binom{n}{k} < r$ cluster at the extremes. For fixed $r$, exactly the outermost layers are excluded, and their count stabilizes once $n$ is large enough \u2014 this is why a finite threshold $N(r)$ exists"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -72,7 +72,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 27,
-      "summary": "Module docstring presenting Erdős Problem #776 on antichains with set-size multiplicity constraints. States the key results for $r = 1$ and $r > 1$, references Erdős–Trotter and Griggs. Imports `Finset.Basic`, `Finset.Powerset`, `Order.Antichain`, and `Tactic`. Opens the `Finset` namespace.",
+      "summary": "Module docstring presenting Erd\u0151s Problem #776 on antichains with set-size multiplicity constraints. States the key results for $r = 1$ and $r > 1$, references Erd\u0151s\u2013Trotter and Griggs. Imports `Finset.Basic`, `Finset.Powerset`, `Order.Antichain`, and `Tactic`. Opens the `Finset` namespace.",
       "mathContext": "Problem: for $r \\geq 2$, determine threshold $N(r)$ such that $\\forall n \\geq N(r)$, the max distinct sizes in a multiplicity-$r$ antichain in $2^{[n]}$ is $n - 3$. Key contrast: $r = 1 \\Rightarrow n - 2$, $r > 1 \\Rightarrow n - 3$."
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "id": "results",
-      "title": "Erdős-Trotter Results",
+      "title": "Erd\u0151s-Trotter Results",
       "startLine": 55,
       "endLine": 81,
       "summary": "Axiomatizes `erdos_trotter_r1` ($r = 1$: max is $n - 2$ for $n > 3$), `erdos_trotter_upper` ($r > 1$: max $\\leq n - 3$ for large $n$), and `erdos_trotter_achievable` ($r > 1$: max $\\geq n - 3$ for large $n$). Proves `erdos_trotter_exact` combining the bounds via `omega`.",
@@ -109,7 +109,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #776 is formalized with 5 definitions, 1 proved theorem, and 6 axioms. The theorem `erdos_trotter_exact` is genuinely proved from the upper and lower bound axioms. The open question is to determine the threshold $N(r)$ as a function of $r$, which would complete the characterization of multiplicity-constrained antichains.",
+    "summary": "Erd\u0151s Problem #776 is formalized with 5 definitions, 1 proved theorem, and 6 axioms. The theorem `erdos_trotter_exact` is genuinely proved from the upper and lower bound axioms. The open question is to determine the threshold $N(r)$ as a function of $r$, which would complete the characterization of multiplicity-constrained antichains.",
     "implications": "**Theoretical Significance**: Resolution would advance the extremal theory of antichains in Boolean lattices beyond classical Sperner-type results.\n\nThe threshold $N(r)$ likely depends on the growth of $\\binom{n}{k}$ near the extremes, connecting to concentration phenomena for binomial coefficients. A precise formula would extend the Griggs result ($r = 1$, max $= n - 2$) to the full multiplicity spectrum.",
     "openQuestions": [
       "What is the precise threshold $N(r)$ as a function of $r$? Is it polynomial, exponential, or something else?",
@@ -122,7 +122,7 @@
     {
       "targetId": "erdos-777",
       "relationship": "related",
-      "description": "Problem #777 studies comparable pairs in families of sets — the dual perspective to antichains, where Problem #776 forbids comparability"
+      "description": "Problem #777 studies comparable pairs in families of sets \u2014 the dual perspective to antichains, where Problem #776 forbids comparability"
     },
     {
       "targetId": "erdos-497",
@@ -166,6 +166,7 @@
     "lineCount": 118,
     "axiomCount": 8,
     "theoremCount": 1,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   }
 }

@@ -1,8 +1,8 @@
 {
   "id": "erdos-227",
-  "title": "Erdős Problem #227: Maximum Term vs Maximum Modulus",
+  "title": "Erd\u0151s Problem #227: Maximum Term vs Maximum Modulus",
   "slug": "erdos-227",
-  "description": "For an entire function f = Σaₙzⁿ, if lim μ(r)/M(r) exists (where μ(r) = max|aₙrⁿ| and M(r) = max|f(z)| on |z|=r), must it be 0? DISPROVED: Clunie-Hayman showed the limit can be any λ ∈ [0, 1/2].",
+  "description": "For an entire function f = \u03a3a\u2099z\u207f, if lim \u03bc(r)/M(r) exists (where \u03bc(r) = max|a\u2099r\u207f| and M(r) = max|f(z)| on |z|=r), must it be 0? DISPROVED: Clunie-Hayman showed the limit can be any \u03bb \u2208 [0, 1/2].",
   "meta": {
     "author": "Clunie-Hayman (1964)",
     "sourceUrl": "https://erdosproblems.com/227",
@@ -46,26 +46,26 @@
     ],
     "originalContributions": [
       "Formalized EntireFunction structure with power series coefficients",
-      "Defined maxTerm μ(r) and maxModulus M(r) functions",
+      "Defined maxTerm \u03bc(r) and maxModulus M(r) functions",
       "Stated Clunie's partial result for positive coefficients",
       "Captured Clunie-Hayman (1964) counterexample: limits fill [0, 1/2]",
-      "Proved original conjecture is false using λ = 1/4"
+      "Proved original conjecture is false using \u03bb = 1/4"
     ],
     "axiomCount": 8,
     "lineCount": 240,
     "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #227: Maximum Term vs Maximum Modulus**\n\nThis problem sits at the heart of classical entire function theory, a subject developed by Weierstrass, Hadamard, Borel, and Wiman in the late 19th and early 20th centuries. The two fundamental growth measures for an entire function $f(z) = \\sum a_n z^n$ are:\n\n- The **maximum term** $\\mu(r) = \\max_n |a_n| r^n$: the largest individual contribution at radius $r$\n- The **maximum modulus** $M(r) = \\max_{|z|=r} |f(z)|$: the actual largest value, accounting for cancellations\n\nWiman (1914) showed that $\\mu(r)/M(r) \\to 0$ for 'most' values of $r$ (outside an exceptional set of finite logarithmic measure). Erdős asked a sharper question: if the limit $\\lim_{r \\to \\infty} \\mu(r)/M(r)$ actually exists, must it be 0?\n\nClunie first proved this is true for functions with all non-negative coefficients — in this case, $M(r) = f(r) = \\sum a_n r^n$, and no cancellation occurs. But in 1964, Clunie and Hayman published their striking counterexample: for any $\\lambda \\in [0, 1/2]$, they constructed an entire function achieving $\\mu(r)/M(r) \\to \\lambda$. Their construction uses oscillating coefficients that create controlled cancellation on the circle $|z| = r$.\n\nThe upper bound $1/2$ is sharp and cannot be exceeded. This revealed that the behavior of entire functions with oscillating coefficients is fundamentally different from those with positive coefficients — a key theme in modern value distribution theory.\n\n**Related**: Erdős Problem #513 concerns similar questions about the growth of entire functions.",
+    "historicalContext": "**Erd\u0151s Problem #227: Maximum Term vs Maximum Modulus**\n\nThis problem sits at the heart of classical entire function theory, a subject developed by Weierstrass, Hadamard, Borel, and Wiman in the late 19th and early 20th centuries. The two fundamental growth measures for an entire function $f(z) = \\sum a_n z^n$ are:\n\n- The **maximum term** $\\mu(r) = \\max_n |a_n| r^n$: the largest individual contribution at radius $r$\n- The **maximum modulus** $M(r) = \\max_{|z|=r} |f(z)|$: the actual largest value, accounting for cancellations\n\nWiman (1914) showed that $\\mu(r)/M(r) \\to 0$ for 'most' values of $r$ (outside an exceptional set of finite logarithmic measure). Erd\u0151s asked a sharper question: if the limit $\\lim_{r \\to \\infty} \\mu(r)/M(r)$ actually exists, must it be 0?\n\nClunie first proved this is true for functions with all non-negative coefficients \u2014 in this case, $M(r) = f(r) = \\sum a_n r^n$, and no cancellation occurs. But in 1964, Clunie and Hayman published their striking counterexample: for any $\\lambda \\in [0, 1/2]$, they constructed an entire function achieving $\\mu(r)/M(r) \\to \\lambda$. Their construction uses oscillating coefficients that create controlled cancellation on the circle $|z| = r$.\n\nThe upper bound $1/2$ is sharp and cannot be exceeded. This revealed that the behavior of entire functions with oscillating coefficients is fundamentally different from those with positive coefficients \u2014 a key theme in modern value distribution theory.\n\n**Related**: Erd\u0151s Problem #513 concerns similar questions about the growth of entire functions.",
     "problemStatement": "Let $f = \\sum_{n=0}^{\\infty} a_n z^n$ be an entire function (not a polynomial). Define:\n- **Maximum term**: $\\mu(r) = \\max_n |a_n| r^n$\n- **Maximum modulus**: $M(r) = \\max_{|z|=r} |f(z)|$\n\n**Question**: If $\\lim_{r \\to \\infty} \\frac{\\mu(r)}{M(r)}$ exists, must it equal 0?\n\n**Answer**: NO.\n\n**Clunie-Hayman (1964)**: The limit can take any value in $[0, 1/2]$, and this interval is sharp.\n\n**Status**: SOLVED (DISPROVED)",
-    "text": "For an entire function f = Σaₙzⁿ, if lim μ(r)/M(r) exists (where μ(r) = max|aₙrⁿ| and M(r) = max|f(z)| on |z|=r), must it be 0? DISPROVED: Clunie-Hayman showed the limit can be any λ ∈ [0, 1/2].",
-    "proofStrategy": "**Formalization Approach**\n\n1. **EntireFunction Structure:** Power series coefficients with infinitely-many-nonzero guarantee, ensuring transcendence over polynomials\n\n2. **Growth Measures:** maxTerm as $\\sup_n |a_n| r^n$ and maxModulus as $\\sup_\\theta |f(r e^{i\\theta})|$, both defined via Lean's ⨆ (supremum)\n\n3. **Original Conjecture:** Formalized as a universal statement and then disproved\n\n4. **Clunie-Hayman Core:** Two axioms — existence of functions achieving any $\\lambda \\in [0, 1/2]$, and the upper bound $L \\le 1/2$ for any limit\n\n5. **Disproof Strategy:** Take $\\lambda = 1/4$ as a concrete counterexample; Lean's norm_num discharges $1/4 \\neq 0$\n\n6. **Supporting Theory:** Central index, order/type classification, normal functions, and the pathological-examples existence theorem provide the broader context\n\n7. **Complete Characterization:** AchievableLimits = Set.Icc 0 (1/2) proved via set extensionality",
+    "text": "For an entire function f = \u03a3a\u2099z\u207f, if lim \u03bc(r)/M(r) exists (where \u03bc(r) = max|a\u2099r\u207f| and M(r) = max|f(z)| on |z|=r), must it be 0? DISPROVED: Clunie-Hayman showed the limit can be any \u03bb \u2208 [0, 1/2].",
+    "proofStrategy": "**Formalization Approach**\n\n1. **EntireFunction Structure:** Power series coefficients with infinitely-many-nonzero guarantee, ensuring transcendence over polynomials\n\n2. **Growth Measures:** maxTerm as $\\sup_n |a_n| r^n$ and maxModulus as $\\sup_\\theta |f(r e^{i\\theta})|$, both defined via Lean's \u2a06 (supremum)\n\n3. **Original Conjecture:** Formalized as a universal statement and then disproved\n\n4. **Clunie-Hayman Core:** Two axioms \u2014 existence of functions achieving any $\\lambda \\in [0, 1/2]$, and the upper bound $L \\le 1/2$ for any limit\n\n5. **Disproof Strategy:** Take $\\lambda = 1/4$ as a concrete counterexample; Lean's norm_num discharges $1/4 \\neq 0$\n\n6. **Supporting Theory:** Central index, order/type classification, normal functions, and the pathological-examples existence theorem provide the broader context\n\n7. **Complete Characterization:** AchievableLimits = Set.Icc 0 (1/2) proved via set extensionality",
     "keyInsights": [
       "**Cancellation Creates Freedom:** The key mechanism is that oscillating signs in power series coefficients can create controlled cancellation on circles $|z| = r$, reducing $M(r)$ relative to $\\mu(r)$. With positive coefficients, the maximum modulus equals the sum of all terms and dominance of a single term becomes impossible",
       "**Sharp Interval [0, 1/2]:** The achievable limits form a closed interval, not just isolated values. The upper bound $1/2$ is fundamental: no matter how cleverly coefficients oscillate, the maximum modulus can never be reduced below twice the maximum term asymptotically",
       "**Infinite Order Required:** The counterexample functions necessarily have infinite order (grow faster than $\\exp(r^\\rho)$ for any $\\rho$). Functions of finite order, including all common entire functions, are 'normal' with $\\mu/M \\to 0$. This separates the pathological from the well-behaved",
-      "**Wiman's Exceptional Set:** Wiman showed $\\mu(r)/M(r) \\to 0$ outside an exceptional set of $r$-values. Erdős's question was whether, when the limit exists, the exceptional set could be avoided entirely. The answer is no: the Clunie-Hayman functions achieve a nonzero limit along all $r$",
-      "**Proof by Concrete Counterexample:** The Lean formalization elegantly disproves the conjecture by taking $\\lambda = 1/4 \\in (0, 1/2]$ and deriving $1/4 = 0$, a contradiction. The choice of $1/4$ is arbitrary — any $\\lambda \\in (0, 1/2]$ works"
+      "**Wiman's Exceptional Set:** Wiman showed $\\mu(r)/M(r) \\to 0$ outside an exceptional set of $r$-values. Erd\u0151s's question was whether, when the limit exists, the exceptional set could be avoided entirely. The answer is no: the Clunie-Hayman functions achieve a nonzero limit along all $r$",
+      "**Proof by Concrete Counterexample:** The Lean formalization elegantly disproves the conjecture by taking $\\lambda = 1/4 \\in (0, 1/2]$ and deriving $1/4 = 0$, a contradiction. The choice of $1/4$ is arbitrary \u2014 any $\\lambda \\in (0, 1/2]$ works"
     ],
     "prerequisites": [
       "Complex analysis: entire functions, power series $f(z) = \\sum a_n z^n$, maximum modulus principle",
@@ -78,7 +78,7 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Defines EntireFunction as a structure with power series coefficients and infinitely-many-nonzero guarantee. Defines maxTerm μ(r) = ⨆ₙ |aₙ|rⁿ, maxModulus M(r) = ⨆θ |f(re^{iθ})|, and their ratio termModulusRatio.",
+      "summary": "Defines EntireFunction as a structure with power series coefficients and infinitely-many-nonzero guarantee. Defines maxTerm \u03bc(r) = \u2a06\u2099 |a\u2099|r\u207f, maxModulus M(r) = \u2a06\u03b8 |f(re^{i\u03b8})|, and their ratio termModulusRatio.",
       "startLine": 34,
       "endLine": 56,
       "mathContext": "Entire function $f(z) = \\sum a_n z^n$. Maximum term: $\\mu(r) = \\max_n |a_n| r^n$. Maximum modulus: $M(r) = \\max_{|z|=r} |f(z)|$."
@@ -86,15 +86,15 @@
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
-      "summary": "Formalizes Erdős's conjecture as OriginalConjecture: if the limit of μ(r)/M(r) exists, it must be 0. Axiomatizes Clunie's partial result: the conjecture holds for functions with non-negative real coefficients (aₙ ≥ 0).",
+      "summary": "Formalizes Erd\u0151s's conjecture as OriginalConjecture: if the limit of \u03bc(r)/M(r) exists, it must be 0. Axiomatizes Clunie's partial result: the conjecture holds for functions with non-negative real coefficients (a\u2099 \u2265 0).",
       "startLine": 57,
       "endLine": 72,
-      "mathContext": "Erdős conjecture: $\\lim_{r \\to \\infty} \\mu(r)/M(r) = 0$ for all entire $f$ — i.e., the max term is negligible compared to the max modulus."
+      "mathContext": "Erd\u0151s conjecture: $\\lim_{r \\to \\infty} \\mu(r)/M(r) = 0$ for all entire $f$ \u2014 i.e., the max term is negligible compared to the max modulus."
     },
     {
       "id": "counterexample",
       "title": "Clunie-Hayman Counterexample",
-      "summary": "Axiomatizes the Clunie-Hayman 1964 result: for any λ ∈ [0, 1/2], there exists an entire function with μ(r)/M(r) → λ. Axiomatizes the sharp upper bound L ≤ 1/2. Proves original_conjecture_false by taking λ = 1/4 and deriving contradiction via norm_num.",
+      "summary": "Axiomatizes the Clunie-Hayman 1964 result: for any \u03bb \u2208 [0, 1/2], there exists an entire function with \u03bc(r)/M(r) \u2192 \u03bb. Axiomatizes the sharp upper bound L \u2264 1/2. Proves original_conjecture_false by taking \u03bb = 1/4 and deriving contradiction via norm_num.",
       "startLine": 73,
       "endLine": 99,
       "mathContext": "Clunie-Hayman (1964): counterexample. $\\forall \\lambda \\in [0, 1/2], \\exists f$ entire with $\\lim \\mu(r)/M(r) = \\lambda$. Disproves the conjecture."
@@ -110,7 +110,7 @@
     {
       "id": "central-index",
       "title": "Central Index",
-      "summary": "Defines centralIndex ν(r) as the index achieving the maximum term, via Classical.choose. Axiomatizes central_index_unbounded: ν(r) → ∞ as r → ∞, a consequence of transcendence.",
+      "summary": "Defines centralIndex \u03bd(r) as the index achieving the maximum term, via Classical.choose. Axiomatizes central_index_unbounded: \u03bd(r) \u2192 \u221e as r \u2192 \u221e, a consequence of transcendence.",
       "startLine": 126,
       "endLine": 139,
       "mathContext": "Central index: $\\nu(r) = \\arg\\max_n |a_n| r^n$ (the index achieving the max term). $\\nu(r)$ is non-decreasing and integer-valued."
@@ -118,7 +118,7 @@
     {
       "id": "asymptotics",
       "title": "Asymptotic Relations",
-      "summary": "Axiomatizes max_term_le_max_modulus: μ(r) ≤ M(r) for r > 0. Defines IsNormal as μ(r)/M(r) → 0. Proves positive_coeffs_normal (with sorry) connecting Clunie's result to the normality definition.",
+      "summary": "Axiomatizes max_term_le_max_modulus: \u03bc(r) \u2264 M(r) for r > 0. Defines IsNormal as \u03bc(r)/M(r) \u2192 0. Proves positive_coeffs_normal (with sorry) connecting Clunie's result to the normality definition.",
       "startLine": 140,
       "endLine": 161,
       "mathContext": "$\\mu(r) \\leq M(r)$ always (max term $\\leq$ sum of all terms). $f$ is normal if $\\mu(r)/M(r) \\to 0$ as $r \\to \\infty$."
@@ -126,7 +126,7 @@
     {
       "id": "order-type",
       "title": "Order and Type",
-      "summary": "Defines order ρ = inf{ρ' : M(r) ≤ C exp(r^{ρ'})} and typeOfOrder σ for finer growth classification. Axiomatizes order_zero_normal: functions of order 0 are normal, restricting counterexamples to infinite-order functions.",
+      "summary": "Defines order \u03c1 = inf{\u03c1' : M(r) \u2264 C exp(r^{\u03c1'})} and typeOfOrder \u03c3 for finer growth classification. Axiomatizes order_zero_normal: functions of order 0 are normal, restricting counterexamples to infinite-order functions.",
       "startLine": 162,
       "endLine": 179,
       "mathContext": "Order: $\\rho = \\inf\\{\\rho' : M(r) \\leq C e^{r^{\\rho'}}\\}$. Type: $\\sigma = \\limsup M(r) e^{-r^\\rho}$. Classification of growth rates."
@@ -134,7 +134,7 @@
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "Axiomatizes exp_is_normal: the exponential function (coefficients 1/n!) is normal. Axiomatizes pathological_examples_exist: for any λ ∈ (0, 1/2), there exist infinite-order functions achieving μ/M → λ.",
+      "summary": "Axiomatizes exp_is_normal: the exponential function (coefficients 1/n!) is normal. Axiomatizes pathological_examples_exist: for any \u03bb \u2208 (0, 1/2), there exist infinite-order functions achieving \u03bc/M \u2192 \u03bb.",
       "startLine": 180,
       "endLine": 198,
       "mathContext": "Example: $e^z$ (coefficients $1/n!$) is normal: $\\mu(r)/M(r) = r^{\\nu(r)}/\\nu(r)!/e^r \\to 0$. Order 1, type 1."
@@ -142,7 +142,7 @@
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
-      "summary": "Assembles erdos_227_statement: a three-part conjunction — conjecture is false, positive-coefficient case holds, achievable limits = [0, 1/2]. Proof chains the three component results.",
+      "summary": "Assembles erdos_227_statement: a three-part conjunction \u2014 conjecture is false, positive-coefficient case holds, achievable limits = [0, 1/2]. Proof chains the three component results.",
       "startLine": 199,
       "endLine": 218,
       "mathContext": "Main statement: (1) conjecture is FALSE, (2) achievable limits = $[0, 1/2]$, (3) key examples are classified."
@@ -157,21 +157,21 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #227 asked whether the limit of μ(r)/M(r) (maximum term over maximum modulus) must be 0 when it exists. Clunie and Hayman (1964) definitively disproved this by constructing entire functions where the limit can be any prescribed value λ ∈ [0, 1/2]. The upper bound 1/2 is sharp. The formalization captures this complete characterization in 240 lines of Lean 4, with the key theorem original_conjecture_false proved from the Clunie-Hayman axiom using λ = 1/4.",
-    "implications": "**Theoretical Significance**: **Connections to Entire Function Theory**\n\n1. **Wiman-Valiron Theory:** The result refined understanding of when entire functions can be approximated by their dominant term. Wiman's theorem says μ(r)/M(r) → 0 outside an exceptional set; the Clunie-Hayman result shows the exceptional set can dominate when the limit exists\n\n2. **Coefficient Sign Effects:** The dichotomy between positive and oscillating coefficients has parallels throughout analysis: random series with random signs behave differently from deterministic ones, and lacunary (gap) series have special properties\n\n**3. Value Distribution Theory:** The result connects to Nevanlinna theory and the distribution of zeros. Functions with μ/M → λ > 0 have unusual zero distributions that enable the controlled cancellation\n\n4. **Growth Classification:** The infinite-order requirement for counterexamples sharpened the classification of entire functions by growth. It showed that within finite-order classes, Erdős's intuition was correct\n\n5. **Modern Developments:** Recent work has extended these ideas to meromorphic functions, functions in several complex variables, and connections with random matrix theory where similar maximum-term phenomena arise.",
+    "summary": "Erd\u0151s Problem #227 asked whether the limit of \u03bc(r)/M(r) (maximum term over maximum modulus) must be 0 when it exists. Clunie and Hayman (1964) definitively disproved this by constructing entire functions where the limit can be any prescribed value \u03bb \u2208 [0, 1/2]. The upper bound 1/2 is sharp. The formalization captures this complete characterization in 240 lines of Lean 4, with the key theorem original_conjecture_false proved from the Clunie-Hayman axiom using \u03bb = 1/4.",
+    "implications": "**Theoretical Significance**: **Connections to Entire Function Theory**\n\n1. **Wiman-Valiron Theory:** The result refined understanding of when entire functions can be approximated by their dominant term. Wiman's theorem says \u03bc(r)/M(r) \u2192 0 outside an exceptional set; the Clunie-Hayman result shows the exceptional set can dominate when the limit exists\n\n2. **Coefficient Sign Effects:** The dichotomy between positive and oscillating coefficients has parallels throughout analysis: random series with random signs behave differently from deterministic ones, and lacunary (gap) series have special properties\n\n**3. Value Distribution Theory:** The result connects to Nevanlinna theory and the distribution of zeros. Functions with \u03bc/M \u2192 \u03bb > 0 have unusual zero distributions that enable the controlled cancellation\n\n4. **Growth Classification:** The infinite-order requirement for counterexamples sharpened the classification of entire functions by growth. It showed that within finite-order classes, Erd\u0151s's intuition was correct\n\n5. **Modern Developments:** Recent work has extended these ideas to meromorphic functions, functions in several complex variables, and connections with random matrix theory where similar maximum-term phenomena arise.",
     "openQuestions": [
-      "What is the precise structure of entire functions achieving the extremal limit λ = 1/2? Do they form a natural class with shared analytic properties?",
+      "What is the precise structure of entire functions achieving the extremal limit \u03bb = 1/2? Do they form a natural class with shared analytic properties?",
       "Can the Clunie-Hayman characterization be extended to meromorphic functions, where the ratio involves the Nevanlinna characteristic T(r) instead of M(r)?",
-      "For functions of finite positive order ρ > 0, what is the set of achievable limit inferior and limit superior values of μ(r)/M(r)?",
-      "Is there an effective version: given λ ∈ [0, 1/2], can one explicitly construct (rather than just prove existence of) an entire function achieving that limit?",
-      "What happens in several complex variables? For entire functions f : ℂⁿ → ℂ, does the analogous maximum-term-to-maximum-modulus ratio have a similar characterization?"
+      "For functions of finite positive order \u03c1 > 0, what is the set of achievable limit inferior and limit superior values of \u03bc(r)/M(r)?",
+      "Is there an effective version: given \u03bb \u2208 [0, 1/2], can one explicitly construct (rather than just prove existence of) an entire function achieving that limit?",
+      "What happens in several complex variables? For entire functions f : \u2102\u207f \u2192 \u2102, does the analogous maximum-term-to-maximum-modulus ratio have a similar characterization?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "Both concern the behavior of complex polynomials/entire functions. FTA guarantees roots for polynomials; Problem #227 studies how the dominant term of an entire function relates to its maximum modulus — both exploit the interplay between Taylor coefficients and function values"
+      "description": "Both concern the behavior of complex polynomials/entire functions. FTA guarantees roots for polynomials; Problem #227 studies how the dominant term of an entire function relates to its maximum modulus \u2014 both exploit the interplay between Taylor coefficients and function values"
     }
   ],
   "relatedProofs": [
@@ -195,6 +195,7 @@
     "lineCount": 240,
     "axiomCount": 8,
     "theoremCount": 5,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "lemmaCount": 0
   }
 }

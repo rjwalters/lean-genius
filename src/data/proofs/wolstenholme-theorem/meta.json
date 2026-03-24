@@ -31,7 +31,7 @@
       "Wolstenholme prime definition and examples"
     ],
     "dateAdded": "2025-12-31",
-    "axiomCount": 3,
+    "axiomCount": 2,
     "assumptions": "3 axiom declarations: wolstenholme_theorem (C(2p-1,p-1)=1 mod p^3), harmonic_divisibility (p^2 divides numerator of H_{p-1}), plus 1 structure-encoded assumption in the formalization",
     "lineCount": 220,
     "prerequisites": [
@@ -125,9 +125,10 @@
     ],
     "namespace": "WolstenholmeTheorem",
     "lineCount": 220,
-    "axiomCount": 3,
-    "theoremCount": 16,
-    "definitionCount": 6
+    "axiomCount": 2,
+    "theoremCount": 17,
+    "definitionCount": 6,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {

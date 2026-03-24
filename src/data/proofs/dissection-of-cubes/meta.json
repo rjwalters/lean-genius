@@ -18,7 +18,7 @@
       "wiedijk-100"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Finset.Nonempty",
@@ -69,12 +69,12 @@
     "assumptions": "2 axiom(s) and 2 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "The impossibility of dissecting a cube into smaller cubes of all different sizes was proved by J.E. Littlewood and included in his book 'A Mathematician's Miscellany' (1953) as an example of mathematical elegance. The proof requires no computation or algebraic manipulation — just geometric visualization and infinite descent.\n\nThe 2D analog has a completely different answer: a square CAN be dissected into squares of all different sizes. The first such 'squared square' was found by Brooks, Smith, Stone, and Tutte in 1940, using an ingenious connection to electrical network theory. The smallest 'simple perfect squared square' has 21 squares and side 112, found by Duijvestijn (1978).\n\nThe key geometric reason for the dimensional difference: in 3D, the smallest cube on any floor is completely surrounded by taller cubes on all 4 sides, forcing its top face to be a new interior floor. In 2D, a square can extend to the boundary wall, breaking the descent argument. The impossibility extends to all dimensions >= 3 and to rectangular boxes.",
+    "historicalContext": "The impossibility of dissecting a cube into smaller cubes of all different sizes was proved by J.E. Littlewood and included in his book 'A Mathematician's Miscellany' (1953) as an example of mathematical elegance. The proof requires no computation or algebraic manipulation \u2014 just geometric visualization and infinite descent.\n\nThe 2D analog has a completely different answer: a square CAN be dissected into squares of all different sizes. The first such 'squared square' was found by Brooks, Smith, Stone, and Tutte in 1940, using an ingenious connection to electrical network theory. The smallest 'simple perfect squared square' has 21 squares and side 112, found by Duijvestijn (1978).\n\nThe key geometric reason for the dimensional difference: in 3D, the smallest cube on any floor is completely surrounded by taller cubes on all 4 sides, forcing its top face to be a new interior floor. In 2D, a square can extend to the boundary wall, breaking the descent argument. The impossibility extends to all dimensions >= 3 and to rectangular boxes.",
     "problemStatement": "**Theorem (Littlewood)**: A cube cannot be dissected into a finite number of smaller cubes, all of different sizes.\n\nEquivalently: In any dissection of a cube into finitely many smaller cubes, at least two cubes must have the same size.\n\nThis is Wiedijk's 100 Theorems #82.",
-    "text": "This formalization proves that a cube cannot be dissected into finitely many smaller cubes all of different sizes — a result known as the impossibility of perfect cubed cube dissection. The proof uses Littlewood's infinite descent argument: consider the bottom face of the large cube, which must be tiled by the bottom faces of smaller cubes. The smallest such face is not against any wall (it would be surrounded by larger squares), so the cube above it creates a new smaller tiling problem on its top face, leading to an infinite descent.\n\nThe file establishes the contrast with 2D (perfect squared squares DO exist — the smallest has side 112 with 21 squares) and the connection to electrical network theory (squared rectangles correspond to planar resistor networks via the Smith diagram). Commentary discusses the generalization to higher dimensions and Brooks-Smith-Stone-Tutte's work connecting dissection problems to graph theory.",
-    "proofStrategy": "**Littlewood's Proof by Infinite Descent**:\n\n1. Consider the bottom face of the large cube, covered by smaller cubes\n2. Find the smallest cube touching the bottom — call it C (via `Finset.exists_min_image`)\n3. Since all sizes differ, C is surrounded by taller cubes on all sides\n4. C's top face becomes a new 'floor' at a higher level\n5. This floor is covered by cubes smaller than C\n6. Repeat: generates an infinite strictly decreasing sequence of cube sizes\n7. A strictly decreasing chain of length n requires n distinct cubes (injectivity via `Fintype.card_le_of_injective`)\n8. Take a chain of length card+1 > card — contradiction with finiteness (`omega`)",
+    "text": "This formalization proves that a cube cannot be dissected into finitely many smaller cubes all of different sizes \u2014 a result known as the impossibility of perfect cubed cube dissection. The proof uses Littlewood's infinite descent argument: consider the bottom face of the large cube, which must be tiled by the bottom faces of smaller cubes. The smallest such face is not against any wall (it would be surrounded by larger squares), so the cube above it creates a new smaller tiling problem on its top face, leading to an infinite descent.\n\nThe file establishes the contrast with 2D (perfect squared squares DO exist \u2014 the smallest has side 112 with 21 squares) and the connection to electrical network theory (squared rectangles correspond to planar resistor networks via the Smith diagram). Commentary discusses the generalization to higher dimensions and Brooks-Smith-Stone-Tutte's work connecting dissection problems to graph theory.",
+    "proofStrategy": "**Littlewood's Proof by Infinite Descent**:\n\n1. Consider the bottom face of the large cube, covered by smaller cubes\n2. Find the smallest cube touching the bottom \u2014 call it C (via `Finset.exists_min_image`)\n3. Since all sizes differ, C is surrounded by taller cubes on all sides\n4. C's top face becomes a new 'floor' at a higher level\n5. This floor is covered by cubes smaller than C\n6. Repeat: generates an infinite strictly decreasing sequence of cube sizes\n7. A strictly decreasing chain of length n requires n distinct cubes (injectivity via `Fintype.card_le_of_injective`)\n8. Take a chain of length card+1 > card \u2014 contradiction with finiteness (`omega`)",
     "keyInsights": [
-      "The infinite descent argument requires no computation — pure geometric reasoning",
+      "The infinite descent argument requires no computation \u2014 pure geometric reasoning",
       "The 2D case (squaring the square) IS possible because edge squares can reach the boundary, breaking the surrounding argument",
       "The key geometric step (3D surrounding) is axiomatized: the smallest cube on any floor has its top face as a new interior floor",
       "The proved `chain_length_bounded` lemma reduces the problem to pigeonhole: a strictly decreasing chain is injective, so its length is bounded by the number of cubes",
@@ -125,7 +125,7 @@
       "title": "The Main Theorem",
       "startLine": 258,
       "endLine": 298,
-      "summary": "dissection_of_cubes: ¬ allDifferentSizes (3 lines + omega). two_cubes_same_size: existential reformulation via by_contra + push_neg.",
+      "summary": "dissection_of_cubes: \u00ac allDifferentSizes (3 lines + omega). two_cubes_same_size: existential reformulation via by_contra + push_neg.",
       "mathContext": "Take chain of length $|\\text{cubes}| + 1 > |\\text{cubes}|$: contradicts `chain_length_bounded`. `omega` closes $n+1 \\leq n$."
     },
     {
@@ -138,8 +138,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Littlewood's proof elegantly shows that cube dissection into different-sized cubes is impossible through infinite descent. The smallest cube on any 'floor' creates a new floor above it with even smaller cubes, leading to infinitely many cubes — contradicting finiteness. The proof is remarkably short: the main theorem is just 3 lines of Lean + omega.",
-    "implications": "The 2D analog (squaring the square) IS possible — the first solution (1940) had 69 squares, the smallest simple one has 21 squares\nThe impossibility extends to all dimensions >= 3 and to rectangular boxes\nThe proof pattern (infinite descent via pigeonhole on chain length) appears in Erdős-Szekeres, Ramsey theory, and Dilworth's theorem\nThe axiomatized geometric covering step (smaller_cube_above) is the remaining gap — it requires formal 3D tiling theory",
+    "summary": "Littlewood's proof elegantly shows that cube dissection into different-sized cubes is impossible through infinite descent. The smallest cube on any 'floor' creates a new floor above it with even smaller cubes, leading to infinitely many cubes \u2014 contradicting finiteness. The proof is remarkably short: the main theorem is just 3 lines of Lean + omega.",
+    "implications": "The 2D analog (squaring the square) IS possible \u2014 the first solution (1940) had 69 squares, the smallest simple one has 21 squares\nThe impossibility extends to all dimensions >= 3 and to rectangular boxes\nThe proof pattern (infinite descent via pigeonhole on chain length) appears in Erd\u0151s-Szekeres, Ramsey theory, and Dilworth's theorem\nThe axiomatized geometric covering step (smaller_cube_above) is the remaining gap \u2014 it requires formal 3D tiling theory",
     "openQuestions": [
       "Minimum number of repeated sizes needed in a cube dissection",
       "Generalizations to other 3D shapes (e.g., can a tetrahedron be dissected into tetrahedra of all different sizes?)",
@@ -158,8 +158,9 @@
     "namespace": "DissectionOfCubes",
     "lineCount": 366,
     "axiomCount": 2,
-    "theoremCount": 7,
-    "definitionCount": 8
+    "theoremCount": 3,
+    "definitionCount": 8,
+    "lemmaCount": 4
   },
   "crossReferences": [
     {
@@ -176,16 +177,16 @@
   "references": [
     {
       "authors": "Dehn, Max",
-      "title": "Über die Zerlegung von Rechtecken in Rechtecke",
+      "title": "\u00dcber die Zerlegung von Rechtecken in Rechtecke",
       "year": "1903",
-      "venue": "Mathematische Annalen, vol. 57, pp. 314–332",
+      "venue": "Mathematische Annalen, vol. 57, pp. 314\u2013332",
       "note": "Early work on rectangle dissection that inspired the cube dissection problem"
     },
     {
       "authors": "Brooks, R. L.; Smith, C. A. B.; Stone, A. H.; Tutte, W. T.",
       "title": "The dissection of rectangles into squares",
       "year": "1940",
-      "venue": "Duke Mathematical Journal, vol. 7, no. 1, pp. 312–340",
+      "venue": "Duke Mathematical Journal, vol. 7, no. 1, pp. 312\u2013340",
       "note": "Pioneering work on squared rectangles using electrical network analogies, foundational for dissection theory"
     },
     {

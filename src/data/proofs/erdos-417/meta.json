@@ -1,10 +1,10 @@
 {
   "id": "erdos-417",
-  "title": "Erdős Problem #417: Counting Totient Values",
+  "title": "Erd\u0151s Problem #417: Counting Totient Values",
   "slug": "erdos-417",
   "description": "Does the limit V(x)/V'(x) exist, where V'(x) counts distinct totients from inputs at most x and V(x) counts all totient values at most x?",
   "meta": {
-    "author": "Erdős (1979, 1998)",
+    "author": "Erd\u0151s (1979, 1998)",
     "sourceUrl": "https://erdosproblems.com/417",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos417Problem.lean",
@@ -49,17 +49,17 @@
       "Formalized IsTotientValue predicate",
       "Stated three OPEN questions about V(x)/V'(x) ratio",
       "Proved 1 and p-1 (prime p) are totient values",
-      "Proved powers of 2 are totient values via φ(2^(k+1)) = 2^k",
+      "Proved powers of 2 are totient values via \u03c6(2^(k+1)) = 2^k",
       "Characterized odd numbers > 1 as non-totient values",
-      "Connected to Erdős Problem #416"
+      "Connected to Erd\u0151s Problem #416"
     ],
     "axiomCount": 3,
     "lineCount": 219,
     "assumptions": "3 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős first posed this problem in [Er79e], asking about two natural counting functions for Euler's totient values. Given the set of all totient values, one can count how many appear among outputs of small inputs ($V'(x)$) versus how many totient values exist up to $x$ regardless of input size ($V(x)$). The question is whether these two counts grow at comparable rates.\n\nThe problem was revisited in Erdős and Graham [ErGr80] in their influential monograph on combinatorial number theory. In [Er98], Erdős went further and conjectured that $V(x)/V'(x)$ may actually tend to infinity, suggesting that the vast majority of totient values at most $x$ come from inputs much larger than $x$. This would be a striking statement about the structure of the totient function's range.\n\nThe problem connects to deep results on totient value density. Pillai (1929) first showed $V(x) = o(x)$. Erdős (1935) proved $V(x) \\sim cx/\\log x$. Ford (1998) determined the precise asymptotics: $V(x) = \\frac{x}{\\log x} \\exp(C_1(\\log_3 x)^2 + C_2 \\log_3 x + C_3)$. However, the relationship between $V(x)$ and $V'(x)$ remains open, as it requires understanding the **smallest preimage function** $m^*(n) = \\min\\{m : \\varphi(m) = n\\}$. Related questions appear in Problem #416, which concerns the structure of the totient range more directly.",
-    "problemStatement": "Let $V'(x) = |\\{\\varphi(m) : 1 \\le m \\le x\\}|$ count the distinct totient values achievable from inputs at most $x$, and let $V(x) = |\\{n \\le x : n = \\varphi(m) \\text{ for some } m\\}|$ count all totient values at most $x$. Does $\\lim_{x \\to \\infty} V(x)/V'(x)$ exist? Is it $> 1$? Erdős conjectured it may be $\\infty$.",
+    "historicalContext": "Erd\u0151s first posed this problem in [Er79e], asking about two natural counting functions for Euler's totient values. Given the set of all totient values, one can count how many appear among outputs of small inputs ($V'(x)$) versus how many totient values exist up to $x$ regardless of input size ($V(x)$). The question is whether these two counts grow at comparable rates.\n\nThe problem was revisited in Erd\u0151s and Graham [ErGr80] in their influential monograph on combinatorial number theory. In [Er98], Erd\u0151s went further and conjectured that $V(x)/V'(x)$ may actually tend to infinity, suggesting that the vast majority of totient values at most $x$ come from inputs much larger than $x$. This would be a striking statement about the structure of the totient function's range.\n\nThe problem connects to deep results on totient value density. Pillai (1929) first showed $V(x) = o(x)$. Erd\u0151s (1935) proved $V(x) \\sim cx/\\log x$. Ford (1998) determined the precise asymptotics: $V(x) = \\frac{x}{\\log x} \\exp(C_1(\\log_3 x)^2 + C_2 \\log_3 x + C_3)$. However, the relationship between $V(x)$ and $V'(x)$ remains open, as it requires understanding the **smallest preimage function** $m^*(n) = \\min\\{m : \\varphi(m) = n\\}$. Related questions appear in Problem #416, which concerns the structure of the totient range more directly.",
+    "problemStatement": "Let $V'(x) = |\\{\\varphi(m) : 1 \\le m \\le x\\}|$ count the distinct totient values achievable from inputs at most $x$, and let $V(x) = |\\{n \\le x : n = \\varphi(m) \\text{ for some } m\\}|$ count all totient values at most $x$. Does $\\lim_{x \\to \\infty} V(x)/V'(x)$ exist? Is it $> 1$? Erd\u0151s conjectured it may be $\\infty$.",
     "text": "Does the limit V(x)/V'(x) exist, where V'(x) counts distinct totients from inputs at most x and V(x) counts all totient values at most x?",
     "proofStrategy": "The formalization defines both counting functions $V'(x)$ and $V(x)$ using `Finset` operations on the range of Mathlib's `Nat.totient`. The `IsTotientValue` predicate captures membership in the totient range. We prove the trivial inequality $V'(x) \\le V(x)$, characterize which numbers are totient values (odd numbers $> 1$ are excluded, all powers of 2 and prime predecessors are included), and state the three open questions using `Filter.Tendsto` for limits and `Filter.atTop` for asymptotic behavior.",
     "keyInsights": [
@@ -99,7 +99,7 @@
     {
       "id": "main-questions",
       "title": "The Main Questions",
-      "summary": "States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erdős's conjecture). All axiomatized.",
+      "summary": "States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erd\u0151s's conjecture). All axiomatized.",
       "startLine": 98,
       "endLine": 126
     },
@@ -133,12 +133,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #417 investigates the ratio $V(x)/V'(x)$ of two counting functions for totient values. $V'(x)$ counts distinct totients achievable from inputs at most $x$, while $V(x)$ counts all totient values at most $x$. The trivial bound $V'(x) \\le V(x)$ holds, but whether the ratio converges, exceeds 1, or tends to infinity as Erdős conjectured in 1998 remains completely open.",
+    "summary": "Erd\u0151s Problem #417 investigates the ratio $V(x)/V'(x)$ of two counting functions for totient values. $V'(x)$ counts distinct totients achievable from inputs at most $x$, while $V(x)$ counts all totient values at most $x$. The trivial bound $V'(x) \\le V(x)$ holds, but whether the ratio converges, exceeds 1, or tends to infinity as Erd\u0151s conjectured in 1998 remains completely open.",
     "implications": "Understanding this ratio would reveal how the totient function's range is generated: whether small inputs efficiently cover most totient values or whether most values arise from unexpectedly large preimages. A resolution would connect Ford's precise asymptotics for $V(x)$ with the distribution of the smallest preimage function $m^*(n)$, bridging multiplicative number theory with questions about preimage structure of arithmetic functions.",
     "openQuestions": [
       "Does $\\lim_{x \\to \\infty} V(x)/V'(x)$ exist?",
       "Is $V(x)/V'(x) > 1$ for all sufficiently large $x$?",
-      "Does $V(x)/V'(x) \\to \\infty$ as Erdős conjectured in [Er98]?",
+      "Does $V(x)/V'(x) \\to \\infty$ as Erd\u0151s conjectured in [Er98]?",
       "What are the precise asymptotics of $V'(x)$? Is $V'(x) = o(V(x))$?",
       "How does the smallest preimage function $m^*(n) = \\min\\{m : \\varphi(m) = n\\}$ distribute relative to $n$?"
     ]
@@ -152,12 +152,12 @@
     {
       "targetId": "euler-totient",
       "relationship": "foundational",
-      "description": "Foundational theorem for Euler's totient function φ(n) and its properties"
+      "description": "Foundational theorem for Euler's totient function \u03c6(n) and its properties"
     },
     {
       "targetId": "erdos-410",
       "relationship": "thematic",
-      "description": "Parallel Erdős problem on growth rates of multiplicative arithmetic functions (iterated sum of divisors)"
+      "description": "Parallel Erd\u0151s problem on growth rates of multiplicative arithmetic functions (iterated sum of divisors)"
     }
   ],
   "relatedProofs": [
@@ -182,6 +182,7 @@
     "lineCount": 219,
     "axiomCount": 3,
     "theoremCount": 7,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   }
 }

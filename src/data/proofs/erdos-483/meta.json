@@ -1,6 +1,6 @@
 {
   "id": "erdos-483",
-  "title": "Erdős Problem #483: Growth Rate of Schur Numbers",
+  "title": "Erd\u0151s Problem #483: Growth Rate of Schur Numbers",
   "slug": "erdos-483",
   "description": "Is f(k) < c^k for some c, where f(k) is the Schur number (min N forcing monochromatic a+b=c in k-coloring)? S(1)=2 and S(2)=5 proved from SchursTheorem. S(k) defined via Nat.find with monotonicity. Open.",
   "meta": {
@@ -48,7 +48,7 @@
       "schurNumber_spec, schurNumber_min: proved specification and minimality",
       "schurNumber_1 = 2: fully proved from upper/lower bounds",
       "schurNumber_2 = 5: fully proved using SchursTheorem infrastructure",
-      "schurNumber_pos: proved positivity for k ≥ 1",
+      "schurNumber_pos: proved positivity for k \u2265 1",
       "schurNumber_nondecreasing: proved monotonicity via color embedding",
       "erdos_483_conjecture: formal statement of the open problem"
     ],
@@ -93,7 +93,7 @@
       "title": "Structural Properties",
       "startLine": 133,
       "endLine": 167,
-      "summary": "Proves positivity (S(k) ≥ 1 for k ≥ 1) and monotonicity (k₁ ≤ k₂ ⟹ S(k₁) ≤ S(k₂)) via color embedding argument.",
+      "summary": "Proves positivity (S(k) \u2265 1 for k \u2265 1) and monotonicity (k\u2081 \u2264 k\u2082 \u27f9 S(k\u2081) \u2264 S(k\u2082)) via color embedding argument.",
       "mathContext": "$S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$: embed $k_1$ colors into $k_2$ colors via $\\text{Fin}\\, k_1 \\hookrightarrow \\text{Fin}\\, k_2$"
     },
     {
@@ -109,12 +109,12 @@
       "title": "Bounds and Conjecture",
       "startLine": 180,
       "endLine": 198,
-      "summary": "Axiomatizes exponential lower bound (S(k) ≥ C^k) and factorial upper bound (S(k) ≤ C·k!). States the open conjecture: S(k) < c^k?",
-      "mathContext": "$C_1^k \\leq S(k) \\leq C_2 \\cdot k!$ — is $S(k) < c^k$ for some $c$?"
+      "summary": "Axiomatizes exponential lower bound (S(k) \u2265 C^k) and factorial upper bound (S(k) \u2264 C\u00b7k!). States the open conjecture: S(k) < c^k?",
+      "mathContext": "$C_1^k \\leq S(k) \\leq C_2 \\cdot k!$ \u2014 is $S(k) < c^k$ for some $c$?"
     }
   ],
   "overview": {
-    "historicalContext": "**Erdős Problem #483: Growth Rate of Schur Numbers**\n\nSchur numbers are among the oldest quantitative objects in Ramsey theory.\n\n**Historical timeline:**\n- **Schur (1916):** Issai Schur proved that for every $k$, any $k$-coloring of $\\{1, \\ldots, N\\}$ must contain a monochromatic solution to $a + b = c$ if $N$ is large enough. His original motivation was a number-theoretic application: proving Fermat's Last Theorem modulo primes. The Schur number $S(k)$ is the minimum such $N$.\n- **Schur's original bounds:** $S(k) \\geq \\lfloor k! \\cdot e \\rfloor$ (lower) from an explicit sum-free coloring using modular arithmetic.\n- **Whitehead (1973):** Improved the upper bound to $S(k) \\leq \\lfloor(e - 1/24) \\cdot k!\\rfloor - 1$ via an inductive coloring argument, sharpening the factorial-type upper bound.\n- **Exact values:** $S(1)=2$ (trivial), $S(2)=5$ (elementary case analysis), $S(3)=14$ (moderate computation), $S(4)=45$ (extensive computation), $S(5)=161$ (Heule, 2017, using SAT solvers with a 2-petabyte proof certificate). $S(6)$ remains unknown.\n- **Modern lower bounds:** Constructions based on properties of $\\mathbb{Z}/p\\mathbb{Z}$ give $S(k) \\geq 89^{k/5}$, showing at least exponential growth.\n- **Erdős's question:** Is $S(k) < c^k$ for some constant $c$? This asks whether the factorial upper bound can be replaced by a mere exponential — a dramatic improvement that would fundamentally change our understanding of sum-free partition problems.",
+    "historicalContext": "**Erd\u0151s Problem #483: Growth Rate of Schur Numbers**\n\nSchur numbers are among the oldest quantitative objects in Ramsey theory.\n\n**Historical timeline:**\n- **Schur (1916):** Issai Schur proved that for every $k$, any $k$-coloring of $\\{1, \\ldots, N\\}$ must contain a monochromatic solution to $a + b = c$ if $N$ is large enough. His original motivation was a number-theoretic application: proving Fermat's Last Theorem modulo primes. The Schur number $S(k)$ is the minimum such $N$.\n- **Schur's original bounds:** $S(k) \\geq \\lfloor k! \\cdot e \\rfloor$ (lower) from an explicit sum-free coloring using modular arithmetic.\n- **Whitehead (1973):** Improved the upper bound to $S(k) \\leq \\lfloor(e - 1/24) \\cdot k!\\rfloor - 1$ via an inductive coloring argument, sharpening the factorial-type upper bound.\n- **Exact values:** $S(1)=2$ (trivial), $S(2)=5$ (elementary case analysis), $S(3)=14$ (moderate computation), $S(4)=45$ (extensive computation), $S(5)=161$ (Heule, 2017, using SAT solvers with a 2-petabyte proof certificate). $S(6)$ remains unknown.\n- **Modern lower bounds:** Constructions based on properties of $\\mathbb{Z}/p\\mathbb{Z}$ give $S(k) \\geq 89^{k/5}$, showing at least exponential growth.\n- **Erd\u0151s's question:** Is $S(k) < c^k$ for some constant $c$? This asks whether the factorial upper bound can be replaced by a mere exponential \u2014 a dramatic improvement that would fundamentally change our understanding of sum-free partition problems.",
     "problemStatement": "Is f(k) < c^k for some constant c > 0? That is, are the Schur numbers bounded by a simple exponential in the number of colors?",
     "text": "Is f(k) < c^k for some c, where f(k) is the Schur number (min N forcing monochromatic a+b=c in k-coloring)? S(1)=2 and S(2)=5 proved from SchursTheorem. S(k) defined via Nat.find with monotonicity. Open.",
     "proofStrategy": "We define schurNumber via Nat.find (not axiom), prove S(1)=2 and S(2)=5 from SchursTheorem, prove monotonicity, and axiomatize deep results (S(3)-S(5), bounds, conjecture).",
@@ -122,7 +122,7 @@
       "schurNumber is properly defined via Nat.find, not axiomatized",
       "S(1)=2 and S(2)=5 are fully proved using SchursTheorem infrastructure",
       "Schur numbers are non-decreasing via color embedding argument",
-      "The exponential lower bound ≈ 3.28^k vs factorial upper bound ≈ e·k! is the core gap",
+      "The exponential lower bound \u2248 3.28^k vs factorial upper bound \u2248 e\u00b7k! is the core gap",
       "Schur numbers are closely related to Ramsey numbers R(3,...,3) with k arguments"
     ],
     "prerequisites": [
@@ -134,7 +134,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #483 asks whether Schur numbers grow at most exponentially. S(1)=2 and S(2)=5 are fully proved, monotonicity established, with deep bounds and open conjecture axiomatized.",
+    "summary": "Erd\u0151s Problem #483 asks whether Schur numbers grow at most exponentially. S(1)=2 and S(2)=5 are fully proved, monotonicity established, with deep bounds and open conjecture axiomatized.",
     "implications": "**Theoretical Significance**: **Why this matters:**\n\n1. **Ramsey theory complexity:** Schur numbers measure the quantitative strength of partition regularity for the simplest equation $a+b=c$. Determining their growth rate is a benchmark for understanding how rapidly Ramsey-type thresholds grow.\n\n2. **Exponential vs factorial dichotomy:** Many Ramsey quantities grow at most exponentially (Hales-Jewett numbers, van der Waerden numbers for fixed $k$).\n\nIf Schur numbers also do, it suggests a universal exponential barrier. If they don't, it reveals a fundamentally different mechanism.\n\n3. **Sum-free set theory:** The lower bound comes from constructing large sum-free partitions, connecting to the broader study of sum-free subsets of $\\mathbb{Z}/p\\mathbb{Z}$ and Freiman's theorem.\n\n4. **Computational Ramsey theory:** The dramatic computational effort to determine $S(5)=161$ (SAT solving with petabyte certificates) shows the limits of brute force, motivating the search for structural understanding.",
     "openQuestions": [
       "Is f(k) < c^k for some constant c?",
@@ -146,7 +146,7 @@
   "references": [
     {
       "authors": "Schur, Issai",
-      "title": "Über die Kongruenz x^m + y^m ≡ z^m (mod p)",
+      "title": "\u00dcber die Kongruenz x^m + y^m \u2261 z^m (mod p)",
       "year": "1916",
       "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 25, pp. 114-117",
       "note": "Original proof that Schur numbers are finite; motivated by Fermat's Last Theorem mod p"
@@ -156,7 +156,7 @@
       "title": "The Ramsey number N(3,3,3,3;2)",
       "year": "1973",
       "venue": "Discrete Mathematics 4, pp. 389-396",
-      "note": "Upper bound S(k) ≤ ⌊(e - 1/24)k!⌋ - 1 via inductive argument"
+      "note": "Upper bound S(k) \u2264 \u230a(e - 1/24)k!\u230b - 1 via inductive argument"
     },
     {
       "authors": "Heule, Marijn J.H.",
@@ -209,6 +209,7 @@
     "lineCount": 198,
     "axiomCount": 6,
     "theoremCount": 12,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   }
 }

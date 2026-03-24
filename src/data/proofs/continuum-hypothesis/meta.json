@@ -19,7 +19,7 @@
       "hilbert"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.aleph",
@@ -43,7 +43,7 @@
     "lineCount": 366
   },
   "overview": {
-    "historicalContext": "Cantor first posed the Continuum Hypothesis in his 1878 paper *Ein Beitrag zur Mannigfaltigkeitslehre*, conjecturing that $2^{\\aleph_0} = \\aleph_1$ after proving the reals are uncountable (1873). Hilbert placed it as Problem #1 in his famous 1900 Paris address, calling it the most important open problem in mathematics. After decades of failed attempts, Gödel resolved half the question in 1940 by constructing the *Constructible Universe* L—a minimal model of ZFC in which CH holds—proving Con(ZFC) → Con(ZFC+CH). Cohen revolutionised logic in 1963 by inventing *forcing*, a general method for extending set-theoretic models, and used it to produce models where CH fails (Con(ZFC) → Con(ZFC+¬CH)). Cohen received the Fields Medal in 1966, the only one awarded for work in logic. Together, Gödel and Cohen showed CH is *independent* of ZFC—Hilbert's first problem was answered, but not by deciding its truth.",
+    "historicalContext": "Cantor first posed the Continuum Hypothesis in his 1878 paper *Ein Beitrag zur Mannigfaltigkeitslehre*, conjecturing that $2^{\\aleph_0} = \\aleph_1$ after proving the reals are uncountable (1873). Hilbert placed it as Problem #1 in his famous 1900 Paris address, calling it the most important open problem in mathematics. After decades of failed attempts, G\u00f6del resolved half the question in 1940 by constructing the *Constructible Universe* L\u2014a minimal model of ZFC in which CH holds\u2014proving Con(ZFC) \u2192 Con(ZFC+CH). Cohen revolutionised logic in 1963 by inventing *forcing*, a general method for extending set-theoretic models, and used it to produce models where CH fails (Con(ZFC) \u2192 Con(ZFC+\u00acCH)). Cohen received the Fields Medal in 1966, the only one awarded for work in logic. Together, G\u00f6del and Cohen showed CH is *independent* of ZFC\u2014Hilbert's first problem was answered, but not by deciding its truth.",
     "problemStatement": "**Continuum Hypothesis**: There is no set with cardinality strictly between aleph_0 (countable infinity) and 2^(aleph_0) (the continuum).\n\nEquivalently: |R| = aleph_1.\n\n**Independence**: CH can neither be proved nor disproved from ZFC axioms.",
     "text": "The Continuum Hypothesis is independent of ZFC set theory. Godel showed CH is consistent with ZFC; Cohen showed not-CH is also consistent.",
     "proofStrategy": "Model-theoretic: Godel's constructible universe L is a model of ZFC where CH holds. Cohen's forcing constructs a model where CH fails. Since both are consistent with ZFC, CH is independent.",
@@ -118,23 +118,24 @@
     "lineCount": 366,
     "axiomCount": 6,
     "theoremCount": 7,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "cantor-diagonalization",
       "relationship": "foundational",
-      "description": "Cantor's diagonal argument proves |ℕ| < |ℝ|, the starting point for CH. The continuum hypothesis asks whether any cardinality lies strictly between — proved independent by Gödel (1940) and Cohen (1963)"
+      "description": "Cantor's diagonal argument proves |\u2115| < |\u211d|, the starting point for CH. The continuum hypothesis asks whether any cardinality lies strictly between \u2014 proved independent by G\u00f6del (1940) and Cohen (1963)"
     },
     {
       "targetId": "cantors-theorem",
       "relationship": "foundational",
-      "description": "Cantor's theorem |S| < |P(S)| gives |ℕ| < |P(ℕ)| = |ℝ|. CH asserts this is the NEXT cardinal: ℵ₁ = 2^ℵ₀. The generalized CH (GCH) extends this to all infinite cardinals"
+      "description": "Cantor's theorem |S| < |P(S)| gives |\u2115| < |P(\u2115)| = |\u211d|. CH asserts this is the NEXT cardinal: \u2135\u2081 = 2^\u2135\u2080. The generalized CH (GCH) extends this to all infinite cardinals"
     },
     {
       "targetId": "godel-incompleteness",
       "relationship": "related",
-      "description": "Both reveal fundamental limitations of formal systems: Gödel's incompleteness shows ZFC cannot prove all arithmetic truths, and CH's independence shows ZFC cannot decide all set-theoretic questions. Gödel's constructible universe L (used in the consistency proof) connects both results"
+      "description": "Both reveal fundamental limitations of formal systems: G\u00f6del's incompleteness shows ZFC cannot prove all arithmetic truths, and CH's independence shows ZFC cannot decide all set-theoretic questions. G\u00f6del's constructible universe L (used in the consistency proof) connects both results"
     },
     {
       "targetId": "halting-problem",
@@ -144,7 +145,7 @@
     {
       "targetId": "schroeder-bernstein",
       "relationship": "related",
-      "description": "Schröder-Bernstein establishes cardinality equality from mutual injections. CH concerns the question of which cardinalities exist between ℵ₀ and 2^ℵ₀ — a question Schröder-Bernstein cannot answer"
+      "description": "Schr\u00f6der-Bernstein establishes cardinality equality from mutual injections. CH concerns the question of which cardinalities exist between \u2135\u2080 and 2^\u2135\u2080 \u2014 a question Schr\u00f6der-Bernstein cannot answer"
     }
   ],
   "relatedProofs": [
@@ -157,13 +158,13 @@
   "references": [
     {
       "authors": "Cantor, Georg",
-      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "title": "\u00dcber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
       "year": "1874",
-      "venue": "Journal für die reine und angewandte Mathematik 77, 258–262",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik 77, 258\u2013262",
       "note": "Cantor's proof that the reals are uncountable, motivating the continuum hypothesis"
     },
     {
-      "authors": "Gödel, Kurt",
+      "authors": "G\u00f6del, Kurt",
       "title": "The Consistency of the Continuum Hypothesis",
       "year": "1940",
       "venue": "Annals of Mathematics Studies 3, Princeton University Press",
@@ -173,8 +174,8 @@
       "authors": "Cohen, Paul J.",
       "title": "The Independence of the Continuum Hypothesis",
       "year": "1963",
-      "venue": "Proceedings of the National Academy of Sciences 50(6), 1143–1148",
-      "note": "Proved CH is independent of ZFC using the method of forcing — won the Fields Medal in 1966"
+      "venue": "Proceedings of the National Academy of Sciences 50(6), 1143\u20131148",
+      "note": "Proved CH is independent of ZFC using the method of forcing \u2014 won the Fields Medal in 1966"
     }
   ]
 }

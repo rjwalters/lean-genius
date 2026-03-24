@@ -1,8 +1,8 @@
 {
   "id": "erdos-235",
-  "title": "Erdős Problem #235: Gaps Between Coprime Integers",
+  "title": "Erd\u0151s Problem #235: Gaps Between Coprime Integers",
   "slug": "erdos-235",
-  "description": "Do gaps between integers coprime to Nₖ = 2·3·...·pₖ have a limiting distribution? YES - Hooley (1965) proved f(c) = 1 - e^{-c} (exponential distribution).",
+  "description": "Do gaps between integers coprime to N\u2096 = 2\u00b73\u00b7...\u00b7p\u2096 have a limiting distribution? YES - Hooley (1965) proved f(c) = 1 - e^{-c} (exponential distribution).",
   "meta": {
     "author": "Hooley (1965)",
     "sourceUrl": "https://erdosproblems.com/235",
@@ -43,7 +43,7 @@
     ],
     "originalContributions": [
       "nthPrime and primorial definitions",
-      "primorialTotient = φ(Nₖ)",
+      "primorialTotient = \u03c6(N\u2096)",
       "coprimeSet and coprimeSequence definitions",
       "gapSequence, averageGap, normalizedGap",
       "gapDistribution function f_k(c)",
@@ -60,13 +60,13 @@
     "assumptions": "11 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #235** was posed by Paul Erdős and Ronald Graham in connection with the distribution of integers coprime to highly composite numbers. The question asks whether the gaps between consecutive totatives of primorials $N_k = 2 \\cdot 3 \\cdots p_k$ have a limiting distribution when normalized by the average gap $N_k/\\varphi(N_k)$.\n\nChristopher Hooley, in his 1965 paper 'On the difference between consecutive numbers prime to n. II' (Mathematika 12, 171-185), proved the affirmative: the normalized gaps converge in distribution to $\\text{Exp}(1)$ with CDF $f(c) = 1 - e^{-c}$. Hooley's proof uses a sieve-theoretic approach, estimating the count of coprimes in short intervals via inclusion-exclusion.\n\nThe result connects to Mertens' third theorem (1874) via the average gap asymptotics: $N_k/\\varphi(N_k) \\sim e^\\gamma \\log p_k$, where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant. The appearance of the exponential distribution reflects a deep pseudo-randomness: sieved integers behave like a Poisson process with decreasing rate, and the memorylessness of the exponential captures the local independence of coprimality conditions for distinct primes.",
-    "problemStatement": "**Question:** Let Nₖ = 2·3·...·pₖ and {a₁ < a₂ < ... < a_{φ(Nₖ)}} be integers < Nₖ coprime to Nₖ. For c ≥ 0, does the limit of #{gaps ≤ c·avg}/φ(Nₖ) exist as k → ∞?\n\n**Answer: YES** (Hooley 1965)\n\nf(c) = 1 - e^{-c} (exponential CDF)",
-    "text": "Do gaps between integers coprime to Nₖ = 2·3·...·pₖ have a limiting distribution? YES - Hooley (1965) proved f(c) = 1 - e^{-c} (exponential distribution).",
-    "proofStrategy": "We formalize:\n\n1. **Primorials and totients:** Nₖ = ∏pᵢ, φ(Nₖ) = ∏(pᵢ-1)\n2. **Coprime sequences:** a₁ < a₂ < ... < a_{φ(Nₖ)}\n3. **Gap distribution:** f_k(c) = #{gaps ≤ c·avg}/φ(Nₖ)\n4. **Hooley's theorem:** f_k(c) → 1 - e^{-c}\n5. **Connections:** Mertens' theorem, Jacobsthal function",
+    "historicalContext": "**Erd\u0151s Problem #235** was posed by Paul Erd\u0151s and Ronald Graham in connection with the distribution of integers coprime to highly composite numbers. The question asks whether the gaps between consecutive totatives of primorials $N_k = 2 \\cdot 3 \\cdots p_k$ have a limiting distribution when normalized by the average gap $N_k/\\varphi(N_k)$.\n\nChristopher Hooley, in his 1965 paper 'On the difference between consecutive numbers prime to n. II' (Mathematika 12, 171-185), proved the affirmative: the normalized gaps converge in distribution to $\\text{Exp}(1)$ with CDF $f(c) = 1 - e^{-c}$. Hooley's proof uses a sieve-theoretic approach, estimating the count of coprimes in short intervals via inclusion-exclusion.\n\nThe result connects to Mertens' third theorem (1874) via the average gap asymptotics: $N_k/\\varphi(N_k) \\sim e^\\gamma \\log p_k$, where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant. The appearance of the exponential distribution reflects a deep pseudo-randomness: sieved integers behave like a Poisson process with decreasing rate, and the memorylessness of the exponential captures the local independence of coprimality conditions for distinct primes.",
+    "problemStatement": "**Question:** Let N\u2096 = 2\u00b73\u00b7...\u00b7p\u2096 and {a\u2081 < a\u2082 < ... < a_{\u03c6(N\u2096)}} be integers < N\u2096 coprime to N\u2096. For c \u2265 0, does the limit of #{gaps \u2264 c\u00b7avg}/\u03c6(N\u2096) exist as k \u2192 \u221e?\n\n**Answer: YES** (Hooley 1965)\n\nf(c) = 1 - e^{-c} (exponential CDF)",
+    "text": "Do gaps between integers coprime to N\u2096 = 2\u00b73\u00b7...\u00b7p\u2096 have a limiting distribution? YES - Hooley (1965) proved f(c) = 1 - e^{-c} (exponential distribution).",
+    "proofStrategy": "We formalize:\n\n1. **Primorials and totients:** N\u2096 = \u220fp\u1d62, \u03c6(N\u2096) = \u220f(p\u1d62-1)\n2. **Coprime sequences:** a\u2081 < a\u2082 < ... < a_{\u03c6(N\u2096)}\n3. **Gap distribution:** f_k(c) = #{gaps \u2264 c\u00b7avg}/\u03c6(N\u2096)\n4. **Hooley's theorem:** f_k(c) \u2192 1 - e^{-c}\n5. **Connections:** Mertens' theorem, Jacobsthal function",
     "keyInsights": [
-      "**Primorial:** Nₖ = 2·3·5·...·pₖ (product of first k primes)",
-      "**Average gap:** Nₖ/φ(Nₖ) ~ e^γ·log(pₖ) by Mertens",
+      "**Primorial:** N\u2096 = 2\u00b73\u00b75\u00b7...\u00b7p\u2096 (product of first k primes)",
+      "**Average gap:** N\u2096/\u03c6(N\u2096) ~ e^\u03b3\u00b7log(p\u2096) by Mertens",
       "**Exponential distribution:** Normalized gaps follow f(c) = 1 - e^{-c}",
       "**Memoryless property:** Exponential is the unique memoryless distribution",
       "**Uniform convergence:** Error is O(1/log k)"
@@ -101,7 +101,7 @@
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "summary": "Formalizes Erdős #235: there exists a continuous $f$ such that $f_k(c) \\to f(c)$ for all $c \\ge 0$ as $k \\to \\infty$.",
+      "summary": "Formalizes Erd\u0151s #235: there exists a continuous $f$ such that $f_k(c) \\to f(c)$ for all $c \\ge 0$ as $k \\to \\infty$.",
       "startLine": 153,
       "endLine": 165
     },
@@ -115,7 +115,7 @@
     {
       "id": "properties",
       "title": "Distribution Properties",
-      "summary": "Verifies $f(0) = 0$, $f(c) \\to 1$ as $c \\to \\infty$, median at $c = \\ln 2$, and mean normalized gap equals 1 — standard properties of $\\text{Exp}(1)$.",
+      "summary": "Verifies $f(0) = 0$, $f(c) \\to 1$ as $c \\to \\infty$, median at $c = \\ln 2$, and mean normalized gap equals 1 \u2014 standard properties of $\\text{Exp}(1)$.",
       "startLine": 201,
       "endLine": 232
     },
@@ -149,8 +149,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #235 asked whether gaps between integers coprime to primorials have a limiting distribution. Hooley (1965) proved the answer is YES, with f(c) = 1 - e^{-c} (exponential distribution). This connects to Mertens' theorem via the average gap asymptotics.",
-    "implications": "**Theoretical Significance**: **Number Theory Connections:**\n\n1. **Primorial structure:** Coprimes to Nₖ form a well-studied sequence.\n\n2. **Mertens' theorem:** Provides the average gap asymptotics via φ(Nₖ)/Nₖ.\n\n**3. Jacobsthal function:** Maximum gaps are of independent interest.\n\n4. **Sieve methods:** Techniques from prime gap theory apply here.\n\n5. **Probabilistic interpretation:** Normalized gaps behave like exponential random variables.",
+    "summary": "Erd\u0151s Problem #235 asked whether gaps between integers coprime to primorials have a limiting distribution. Hooley (1965) proved the answer is YES, with f(c) = 1 - e^{-c} (exponential distribution). This connects to Mertens' theorem via the average gap asymptotics.",
+    "implications": "**Theoretical Significance**: **Number Theory Connections:**\n\n1. **Primorial structure:** Coprimes to N\u2096 form a well-studied sequence.\n\n2. **Mertens' theorem:** Provides the average gap asymptotics via \u03c6(N\u2096)/N\u2096.\n\n**3. Jacobsthal function:** Maximum gaps are of independent interest.\n\n4. **Sieve methods:** Techniques from prime gap theory apply here.\n\n5. **Probabilistic interpretation:** Normalized gaps behave like exponential random variables.",
     "openQuestions": [
       "Higher moments of the gap distribution?",
       "Correlations between consecutive gaps?",
@@ -161,7 +161,7 @@
   "crossReferences": [
     {
       "relationship": "foundation",
-      "description": "The sum Σ(1/log x) ~ n/log n asymptotic and average gap growth both depend on the prime number theorem and Mertens' theorem.",
+      "description": "The sum \u03a3(1/log x) ~ n/log n asymptotic and average gap growth both depend on the prime number theorem and Mertens' theorem.",
       "targetId": "prime-number-theorem"
     }
   ],
@@ -184,9 +184,8 @@
     "lineCount": 336,
     "axiomCount": 11,
     "theoremCount": 8,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "lemmaCount": 0
   },
-  "relatedProofs": [
-    ""
-  ]
+  "relatedProofs": []
 }

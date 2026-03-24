@@ -1,10 +1,10 @@
 {
   "id": "erdos-1127",
-  "title": "Decomposing ℝⁿ into Sets with Distinct Distances",
+  "title": "Decomposing \u211d\u207f into Sets with Distinct Distances",
   "slug": "erdos-1127",
-  "description": "Can ℝⁿ be decomposed into countably many sets where all pairwise distances within each set are distinct? YES assuming the Continuum Hypothesis (Erdős-Kakutani 1943 for n=1, Davies 1972 for n=2, Kunen 1987 for all n). CH is necessary.",
+  "description": "Can \u211d\u207f be decomposed into countably many sets where all pairwise distances within each set are distinct? YES assuming the Continuum Hypothesis (Erd\u0151s-Kakutani 1943 for n=1, Davies 1972 for n=2, Kunen 1987 for all n). CH is necessary.",
   "meta": {
-    "author": "Erdős-Kakutani (1943), Davies (1972), Kunen (1987)",
+    "author": "Erd\u0151s-Kakutani (1943), Davies (1972), Kunen (1987)",
     "sourceUrl": "https://erdosproblems.com/1127",
     "date": "1987",
     "status": "axiomatized",
@@ -48,9 +48,9 @@
       "Lean formalization of distinct distances property",
       "Definition of countable decomposition",
       "Formalization of the Continuum Hypothesis",
-      "ℚ-linear independence definition",
-      "Axiomatization of Erdős-Kakutani, Davies, and Kunen theorems",
-      "Statement of Erdős-Hajnal necessity result"
+      "\u211a-linear independence definition",
+      "Axiomatization of Erd\u0151s-Kakutani, Davies, and Kunen theorems",
+      "Statement of Erd\u0151s-Hajnal necessity result"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 10,
@@ -58,15 +58,15 @@
     "lineCount": 309
   },
   "overview": {
-    "historicalContext": "This problem connects geometry to set theory in a surprising way. Erdős and Kakutani (1943) showed that for n=1, the decomposition exists if and only if the Continuum Hypothesis holds. Davies (1972) proved the n=2 case under CH, and Kunen (1987) proved it for all dimensions. Erdős and Hajnal showed that CH is necessary - without it, even finite partitions fail. The interplay between geometric decomposition problems and set-theoretic axioms is characteristic of mid-20th century descriptive set theory: the Axiom of Choice enables wild decompositions (as in the Banach-Tarski paradox), while the Continuum Hypothesis provides the precise combinatorial power needed to partition space into countably many sets each intersecting every line in at most 1 point.",
-    "problemStatement": "Can ℝⁿ be decomposed into countably many sets, such that within each set all pairwise distances are distinct?",
+    "historicalContext": "This problem connects geometry to set theory in a surprising way. Erd\u0151s and Kakutani (1943) showed that for n=1, the decomposition exists if and only if the Continuum Hypothesis holds. Davies (1972) proved the n=2 case under CH, and Kunen (1987) proved it for all dimensions. Erd\u0151s and Hajnal showed that CH is necessary - without it, even finite partitions fail. The interplay between geometric decomposition problems and set-theoretic axioms is characteristic of mid-20th century descriptive set theory: the Axiom of Choice enables wild decompositions (as in the Banach-Tarski paradox), while the Continuum Hypothesis provides the precise combinatorial power needed to partition space into countably many sets each intersecting every line in at most 1 point.",
+    "problemStatement": "Can \u211d\u207f be decomposed into countably many sets, such that within each set all pairwise distances are distinct?",
     "text": "Can \u211d\u207f be decomposed into countably many sets where all pairwise distances within each set are distinct? YES assuming the Continuum Hypothesis (Erd\u0151s-Kakutani 1943 for n=1, Davies 1972 for n=2, Kunen 1987 for all n). CH is necessary.",
-    "proofStrategy": "The formalization defines the distinct distances property, countable decomposition, and the Continuum Hypothesis. Key results are axiomatized: Erdős-Kakutani equivalence (CH ↔ ℝ = countable union of ℚ-linearly independent sets), Davies' theorem for n=2, Kunen's theorem for all n, and the Erdős-Hajnal necessity result.",
+    "proofStrategy": "The formalization defines the distinct distances property, countable decomposition, and the Continuum Hypothesis. Key results are axiomatized: Erd\u0151s-Kakutani equivalence (CH \u2194 \u211d = countable union of \u211a-linearly independent sets), Davies' theorem for n=2, Kunen's theorem for all n, and the Erd\u0151s-Hajnal necessity result.",
     "keyInsights": [
       "The answer is YES assuming the Continuum Hypothesis",
-      "Erdős-Kakutani: CH is EQUIVALENT to ℝ being a countable union of ℚ-linearly independent sets",
-      "ℚ-linear independence implies distinct pairwise distances",
-      "CH is NECESSARY: without it, even finite decomposition fails (Erdős-Hajnal)",
+      "Erd\u0151s-Kakutani: CH is EQUIVALENT to \u211d being a countable union of \u211a-linearly independent sets",
+      "\u211a-linear independence implies distinct pairwise distances",
+      "CH is NECESSARY: without it, even finite decomposition fails (Erd\u0151s-Hajnal)",
       "Beautiful connection between set theory, linear algebra, and geometry"
     ],
     "prerequisites": [
@@ -88,21 +88,21 @@
       "title": "The Main Question",
       "startLine": 84,
       "endLine": 101,
-      "summary": "Formal statement of Erdős Problem #1127"
+      "summary": "Formal statement of Erd\u0151s Problem #1127"
     },
     {
       "id": "continuum-hypothesis",
       "title": "Connection to the Continuum Hypothesis",
       "startLine": 103,
       "endLine": 123,
-      "summary": "Definition of CH and ℚ-linear independence"
+      "summary": "Definition of CH and \u211a-linear independence"
     },
     {
       "id": "erdos-kakutani",
-      "title": "The Erdős-Kakutani Theorem",
+      "title": "The Erd\u0151s-Kakutani Theorem",
       "startLine": 125,
       "endLine": 166,
-      "summary": "CH ↔ countable union of ℚ-linearly independent sets"
+      "summary": "CH \u2194 countable union of \u211a-linearly independent sets"
     },
     {
       "id": "davies-theorem",
@@ -123,7 +123,7 @@
       "title": "The Necessity of CH",
       "startLine": 189,
       "endLine": 220,
-      "summary": "Erdős-Hajnal: finite partition fails without CH"
+      "summary": "Erd\u0151s-Hajnal: finite partition fails without CH"
     },
     {
       "id": "summary",
@@ -134,7 +134,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1127 is SOLVED: ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, assuming the Continuum Hypothesis. This was proved progressively: Erdős-Kakutani for n=1, Davies for n=2, Kunen for all n. The CH is necessary (Erdős-Hajnal).",
+    "summary": "Erd\u0151s Problem #1127 is SOLVED: \u211d\u207f can be decomposed into countably many sets with distinct pairwise distances, assuming the Continuum Hypothesis. This was proved progressively: Erd\u0151s-Kakutani for n=1, Davies for n=2, Kunen for all n. The CH is necessary (Erd\u0151s-Hajnal).",
     "implications": "This result demonstrates a deep connection between the Continuum Hypothesis (a fundamental question in set theory) and geometric distance problems. It shows how questions about infinite sets can depend on set-theoretic axioms.",
     "openQuestions": [
       "What happens in models of ZFC where CH fails?",
@@ -146,32 +146,32 @@
     {
       "targetId": "continuum-hypothesis",
       "relationship": "foundational",
-      "description": "The Continuum Hypothesis is the central set-theoretic axiom on which the entire #1127 result depends. Erdős-Kakutani proved that CH is not merely sufficient but EQUIVALENT to ℝ being a countable union of ℚ-linearly independent sets — making this a rare case where an independence result (CH undecidable in ZFC) completely governs a geometric decomposition problem."
+      "description": "The Continuum Hypothesis is the central set-theoretic axiom on which the entire #1127 result depends. Erd\u0151s-Kakutani proved that CH is not merely sufficient but EQUIVALENT to \u211d being a countable union of \u211a-linearly independent sets \u2014 making this a rare case where an independence result (CH undecidable in ZFC) completely governs a geometric decomposition problem."
     },
     {
       "targetId": "cantors-theorem",
       "relationship": "thematic",
-      "description": "Cantor's theorem |S| < |P(S)| establishes the cardinal hierarchy that makes CH meaningful. The countable decomposition in #1127 exploits the gap between ℵ₀ and 2^ℵ₀ (the continuum): under CH these two cardinalities are adjacent (ℵ₁ = 2^ℵ₀), providing just enough transfinite structure to index the ℚ-linearly independent pieces."
+      "description": "Cantor's theorem |S| < |P(S)| establishes the cardinal hierarchy that makes CH meaningful. The countable decomposition in #1127 exploits the gap between \u2135\u2080 and 2^\u2135\u2080 (the continuum): under CH these two cardinalities are adjacent (\u2135\u2081 = 2^\u2135\u2080), providing just enough transfinite structure to index the \u211a-linearly independent pieces."
     },
     {
       "targetId": "erdos-1128",
       "relationship": "sibling-problem",
-      "description": "Both #1127 and #1128 are Erdős-Hajnal problems resolved through set-theoretic methods at the level of ℵ₁. #1128 asks whether ℵ₁³ → (ℵ₀)³₂ (disproved by Prikry-Mills 1978), while #1127 uses CH to partition ℝⁿ (cardinality 2^ℵ₀ = ℵ₁ under CH) into countably many geometrically structured sets. Both illustrate how cardinal arithmetic governs infinite combinatorics."
+      "description": "Both #1127 and #1128 are Erd\u0151s-Hajnal problems resolved through set-theoretic methods at the level of \u2135\u2081. #1128 asks whether \u2135\u2081\u00b3 \u2192 (\u2135\u2080)\u00b3\u2082 (disproved by Prikry-Mills 1978), while #1127 uses CH to partition \u211d\u207f (cardinality 2^\u2135\u2080 = \u2135\u2081 under CH) into countably many geometrically structured sets. Both illustrate how cardinal arithmetic governs infinite combinatorics."
     },
     {
       "targetId": "erdos-97",
       "relationship": "thematic",
-      "description": "Erdős #97 concerns equidistant vertices in convex polygons — the finite, purely geometric side of distance problems. #1127 takes distance constraints to the set-theoretic extreme: partitioning all of ℝⁿ (uncountable) into countably many pieces each with ALL pairwise distances distinct, a property qualitatively different from any finite geometric constraint."
+      "description": "Erd\u0151s #97 concerns equidistant vertices in convex polygons \u2014 the finite, purely geometric side of distance problems. #1127 takes distance constraints to the set-theoretic extreme: partitioning all of \u211d\u207f (uncountable) into countably many pieces each with ALL pairwise distances distinct, a property qualitatively different from any finite geometric constraint."
     },
     {
       "targetId": "cantor-diagonalization",
       "relationship": "foundational",
-      "description": "Cantor's diagonal argument establishes that ℝ is uncountable (|ℝ| = 2^ℵ₀ > ℵ₀). This is the reason the decomposition in #1127 is non-trivial: any countable cover of the uncountable space ℝⁿ must have uncountably many points in at least one piece, and the ℚ-linear independence argument is needed to control the distance structure of these uncountable pieces."
+      "description": "Cantor's diagonal argument establishes that \u211d is uncountable (|\u211d| = 2^\u2135\u2080 > \u2135\u2080). This is the reason the decomposition in #1127 is non-trivial: any countable cover of the uncountable space \u211d\u207f must have uncountably many points in at least one piece, and the \u211a-linear independence argument is needed to control the distance structure of these uncountable pieces."
     },
     {
       "targetId": "erdos-100",
       "relationship": "thematic",
-      "description": "Erdős #100 studies finite planar point sets with all pairwise distances being integers (restricted distance sets), while #1127 asks about decomposing all of ℝⁿ into countably many sets with ALL pairwise distances DISTINCT. Both problems impose global constraints on the distance set of a point configuration, but at radically different scales: finite geometry vs. transfinite set theory."
+      "description": "Erd\u0151s #100 studies finite planar point sets with all pairwise distances being integers (restricted distance sets), while #1127 asks about decomposing all of \u211d\u207f into countably many sets with ALL pairwise distances DISTINCT. Both problems impose global constraints on the distance set of a point configuration, but at radically different scales: finite geometry vs. transfinite set theory."
     }
   ],
   "relatedProofs": [
@@ -184,39 +184,39 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul and Kakutani, Shizuo",
+      "authors": "Erd\u0151s, Paul and Kakutani, Shizuo",
       "title": "On Non-Denumerable Graphs",
       "year": "1943",
-      "venue": "Bulletin of the American Mathematical Society 49(6), 457–461",
-      "note": "Original paper proving the n=1 case: ℝ is a countable union of ℚ-linearly independent sets if and only if the Continuum Hypothesis holds."
+      "venue": "Bulletin of the American Mathematical Society 49(6), 457\u2013461",
+      "note": "Original paper proving the n=1 case: \u211d is a countable union of \u211a-linearly independent sets if and only if the Continuum Hypothesis holds."
     },
     {
       "authors": "Davies, Roy O.",
       "title": "Partitioning the Plane into Denumerably Many Sets without Repeated Distances",
       "year": "1972",
-      "venue": "Proceedings of the Cambridge Philosophical Society 72, 179–183",
-      "note": "Extends the Erdős-Kakutani result from n=1 to n=2 (the plane), proving ℝ² can be decomposed into countably many sets with distinct pairwise distances assuming CH."
+      "venue": "Proceedings of the Cambridge Philosophical Society 72, 179\u2013183",
+      "note": "Extends the Erd\u0151s-Kakutani result from n=1 to n=2 (the plane), proving \u211d\u00b2 can be decomposed into countably many sets with distinct pairwise distances assuming CH."
     },
     {
       "authors": "Kunen, Kenneth",
       "title": "Partitioning Euclidean Space",
       "year": "1987",
-      "venue": "Mathematical Proceedings of the Cambridge Philosophical Society 102(3), 379–383",
-      "note": "Proves the full result for all dimensions n: under CH, ℝⁿ can be decomposed into countably many sets each with all pairwise distances distinct."
+      "venue": "Mathematical Proceedings of the Cambridge Philosophical Society 102(3), 379\u2013383",
+      "note": "Proves the full result for all dimensions n: under CH, \u211d\u207f can be decomposed into countably many sets each with all pairwise distances distinct."
     },
     {
-      "authors": "Erdős, Paul and Hajnal, András",
+      "authors": "Erd\u0151s, Paul and Hajnal, Andr\u00e1s",
       "title": "On Chromatic Number of Graphs and Set-Systems",
       "year": "1966",
-      "venue": "Acta Mathematica Hungarica 17(1–2), 61–99",
-      "note": "Contains the necessity result: without CH, even finite decompositions of ℝ into sets with distinct distances fail, demonstrating CH is not merely sufficient but necessary."
+      "venue": "Acta Mathematica Hungarica 17(1\u20132), 61\u201399",
+      "note": "Contains the necessity result: without CH, even finite decompositions of \u211d into sets with distinct distances fail, demonstrating CH is not merely sufficient but necessary."
     },
     {
-      "authors": "Komjáth, Péter",
-      "title": "The Erdős-Hajnal Problem List",
+      "authors": "Komj\u00e1th, P\u00e9ter",
+      "title": "The Erd\u0151s-Hajnal Problem List",
       "year": "2025",
       "venue": "Preprint (arXiv:2502.XXXXX)",
-      "note": "Modern survey documenting the status of Erdős-Hajnal combinatorics problems including #1127, with updated references and context for the set-theoretic methods involved."
+      "note": "Modern survey documenting the status of Erd\u0151s-Hajnal combinatorics problems including #1127, with updated references and context for the set-theoretic methods involved."
     }
   ],
   "leanFile": {
@@ -235,6 +235,7 @@
     "lineCount": 309,
     "axiomCount": 10,
     "theoremCount": 3,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "lemmaCount": 0
   }
 }

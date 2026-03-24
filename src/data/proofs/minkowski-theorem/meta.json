@@ -44,7 +44,7 @@
     "proofStrategy": "Consider the set S/2 (scaled by 1/2). By the pigeonhole principle applied to translates of S/2 by lattice vectors, two distinct lattice translates must overlap. Their difference gives a non-zero lattice point in S.",
     "keyInsights": [
       "The volume bound $2^n$ is sharp: the open cube $(-1,1)^n$ has volume exactly $2^n$ and contains no nonzero integer points",
-      "**Convexity** and **central symmetry** are both essential — convexity ensures midpoints stay in $S$, symmetry ensures $-x \\in S$ when $x \\in S$",
+      "**Convexity** and **central symmetry** are both essential \u2014 convexity ensures midpoints stay in $S$, symmetry ensures $-x \\in S$ when $x \\in S$",
       "The theorem generalizes to arbitrary lattices $L$ with the threshold $2^n \\cdot \\text{covol}(L)$, where $\\text{covol}(L) = |\\det(B)|$",
       "Foundation for the geometry of numbers, connecting volume-based existence proofs to Diophantine approximation and algebraic number theory",
       "**Blichfeldt's generalization**: if $\\text{vol}(S) > k \\cdot 2^n \\cdot \\text{covol}(L)$, then $S$ contains at least $k+1$ lattice points, recovering Minkowski as the $k=1$ case"
@@ -67,7 +67,7 @@
       "title": "Euclidean Space and Central Symmetry",
       "startLine": 101,
       "endLine": 131,
-      "summary": "Defines `EuclideanN n` as `EuclideanSpace ℝ (Fin n)` and `CentrallySymmetric` ($x \\in S \\Rightarrow -x \\in S$). Proves `origin_mem_of_symmetric_nonempty`: any nonempty symmetric convex set contains the origin, using the midpoint argument with weights $1/2$."
+      "summary": "Defines `EuclideanN n` as `EuclideanSpace \u211d (Fin n)` and `CentrallySymmetric` ($x \\in S \\Rightarrow -x \\in S$). Proves `origin_mem_of_symmetric_nonempty`: any nonempty symmetric convex set contains the origin, using the midpoint argument with weights $1/2$."
     },
     {
       "id": "lattice-defs",
@@ -142,7 +142,7 @@
     {
       "targetId": "area-of-circle",
       "relationship": "related",
-      "description": "The 2D application of Minkowski's theorem uses disks of area 2πp, connecting to the circle area formula A = πr²."
+      "description": "The 2D application of Minkowski's theorem uses disks of area 2\u03c0p, connecting to the circle area formula A = \u03c0r\u00b2."
     }
   ],
   "relatedProofs": [
@@ -171,7 +171,8 @@
     "lineCount": 453,
     "axiomCount": 1,
     "theoremCount": 9,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -179,7 +180,7 @@
       "title": "Geometrie der Zahlen",
       "year": "1896",
       "venue": "Leipzig: Teubner",
-      "note": "Founded the geometry of numbers — proved that a convex symmetric body of sufficient volume must contain a non-zero lattice point"
+      "note": "Founded the geometry of numbers \u2014 proved that a convex symmetric body of sufficient volume must contain a non-zero lattice point"
     }
   ]
 }

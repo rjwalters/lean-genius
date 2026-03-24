@@ -23,7 +23,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeCounting",
-        "description": "Prime counting function π(x)",
+        "description": "Prime counting function \u03c0(x)",
         "module": "Mathlib.NumberTheory.PrimeCounting"
       },
       {
@@ -33,7 +33,7 @@
       },
       {
         "theorem": "Real.log",
-        "description": "Natural logarithm on ℝ",
+        "description": "Natural logarithm on \u211d",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
@@ -44,7 +44,7 @@
     ],
     "originalContributions": [
       "Multiple equivalent formulations (ratio, asymptotic, error term, Li) with proved equivalences",
-      "Consequences: prime density → 0, nth prime ~ n ln n, Mertens sum, prime gaps",
+      "Consequences: prime density \u2192 0, nth prime ~ n ln n, Mertens sum, prime gaps",
       "Connection to Riemann Hypothesis via von Koch's conditional error bound",
       "Chebyshev's pre-PNT bounds as elementary comparison"
     ],
@@ -54,16 +54,16 @@
     "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798) and Gauss (1849, in the form π(x) ~ Li(x)), then proved independently by Hadamard and de la Vallée Poussin in 1896 using the non-vanishing of ζ(1+it). Erdős and Selberg gave an elementary proof in 1949. Avigad et al. provided the first formal proof in Isabelle (2004), and Kontorovich, Tao, et al. completed a full Lean 4 formalization (2024) in the PrimeNumberTheoremAnd project. The theorem was a major landmark in analytic number theory: Riemann's 1859 memoir introduced the zeta function and sketched the connection between its zeros and prime distribution, but the proof required controlling ζ on the entire critical strip Re(s) = 1, achieved by Hadamard's product formula and de la Vallée Poussin's zero-free region.",
-    "problemStatement": "**Theorem**: The prime counting function π(x) satisfies:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nEquivalently, π(x) ~ x/ln(x). The density of primes near x is approximately 1/ln(x), and the logarithmic integral Li(x) = ∫₂ˣ dt/ln t gives a substantially better numerical approximation.",
+    "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798) and Gauss (1849, in the form \u03c0(x) ~ Li(x)), then proved independently by Hadamard and de la Vall\u00e9e Poussin in 1896 using the non-vanishing of \u03b6(1+it). Erd\u0151s and Selberg gave an elementary proof in 1949. Avigad et al. provided the first formal proof in Isabelle (2004), and Kontorovich, Tao, et al. completed a full Lean 4 formalization (2024) in the PrimeNumberTheoremAnd project. The theorem was a major landmark in analytic number theory: Riemann's 1859 memoir introduced the zeta function and sketched the connection between its zeros and prime distribution, but the proof required controlling \u03b6 on the entire critical strip Re(s) = 1, achieved by Hadamard's product formula and de la Vall\u00e9e Poussin's zero-free region.",
+    "problemStatement": "**Theorem**: The prime counting function \u03c0(x) satisfies:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nEquivalently, \u03c0(x) ~ x/ln(x). The density of primes near x is approximately 1/ln(x), and the logarithmic integral Li(x) = \u222b\u2082\u02e3 dt/ln t gives a substantially better numerical approximation.",
     "text": "The prime counting function pi(x) is asymptotically equivalent to x/ln(x). This describes the distribution of prime numbers among positive integers.",
-    "proofStrategy": "The analytic proof (Hadamard, de la Vallée Poussin) establishes a zero-free region for ζ(s) on Re(s) = 1 using the identity 3 + 4cos(θ) + cos(2θ) ≥ 0, then applies Tauberian theorems to convert this analytic information into the asymptotic formula. The formalization axiomatizes PNT based on the PrimeNumberTheoremAnd project, then derives consequences and equivalent formulations.",
+    "proofStrategy": "The analytic proof (Hadamard, de la Vall\u00e9e Poussin) establishes a zero-free region for \u03b6(s) on Re(s) = 1 using the identity 3 + 4cos(\u03b8) + cos(2\u03b8) \u2265 0, then applies Tauberian theorems to convert this analytic information into the asymptotic formula. The formalization axiomatizes PNT based on the PrimeNumberTheoremAnd project, then derives consequences and equivalent formulations.",
     "keyInsights": [
-      "The distribution of primes is governed by the Riemann zeta function via Euler's product ζ(s) = Π_p(1−p⁻ˢ)⁻¹",
-      "Li(x) = ∫₂ˣ dt/ln(t) is a far better approximation than x/ln(x) — at 10⁹, Li is off by 1,701 vs x/ln x off by 2.6 million",
-      "The Riemann Hypothesis would give the optimal error term O(√x · log x) via von Koch's theorem",
-      "Chebyshev's bounds (1852) showed the limit, if it exists, must be 1 — 44 years before existence was proved",
-      "Four equivalent formulations — ratio, asymptotic, error term, Li — are all proved equivalent in the formalization"
+      "The distribution of primes is governed by the Riemann zeta function via Euler's product \u03b6(s) = \u03a0_p(1\u2212p\u207b\u02e2)\u207b\u00b9",
+      "Li(x) = \u222b\u2082\u02e3 dt/ln(t) is a far better approximation than x/ln(x) \u2014 at 10\u2079, Li is off by 1,701 vs x/ln x off by 2.6 million",
+      "The Riemann Hypothesis would give the optimal error term O(\u221ax \u00b7 log x) via von Koch's theorem",
+      "Chebyshev's bounds (1852) showed the limit, if it exists, must be 1 \u2014 44 years before existence was proved",
+      "Four equivalent formulations \u2014 ratio, asymptotic, error term, Li \u2014 are all proved equivalent in the formalization"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)",
@@ -76,14 +76,14 @@
       "title": "Basic Definitions",
       "startLine": 66,
       "endLine": 90,
-      "summary": "Defines primePi (via Mathlib's Nat.primeCounting), primeApprox (x/ln x), and logIntegral Li(x) = ∫₂ˣ dt/ln t."
+      "summary": "Defines primePi (via Mathlib's Nat.primeCounting), primeApprox (x/ln x), and logIntegral Li(x) = \u222b\u2082\u02e3 dt/ln t."
     },
     {
       "id": "main-theorem",
       "title": "The Prime Number Theorem",
       "startLine": 92,
       "endLine": 130,
-      "summary": "Four equivalent formulations: ratio (π·ln x/x → 1), asymptotic (π ~ x/ln x), error (π − x/ln x = o(x/ln x)), and Li form (π ~ Li)."
+      "summary": "Four equivalent formulations: ratio (\u03c0\u00b7ln x/x \u2192 1), asymptotic (\u03c0 ~ x/ln x), error (\u03c0 \u2212 x/ln x = o(x/ln x)), and Li form (\u03c0 ~ Li)."
     },
     {
       "id": "equivalences",
@@ -104,29 +104,29 @@
       "title": "Consequences of PNT",
       "startLine": 218,
       "endLine": 310,
-      "summary": "Prime density → 0, nth prime ~ n ln n, Mertens' sum of reciprocals ~ ln ln x, and prime gaps are sublinear."
+      "summary": "Prime density \u2192 0, nth prime ~ n ln n, Mertens' sum of reciprocals ~ ln ln x, and prime gaps are sublinear."
     },
     {
       "id": "rh-connection",
       "title": "Stronger Versions (Conditional on RH)",
       "startLine": 308,
       "endLine": 351,
-      "summary": "Riemann Hypothesis stated; von Koch's theorem gives |π(x)−Li(x)| = O(√x ln x) conditionally."
+      "summary": "Riemann Hypothesis stated; von Koch's theorem gives |\u03c0(x)\u2212Li(x)| = O(\u221ax ln x) conditionally."
     },
     {
       "id": "elementary-bounds",
       "title": "Elementary Bounds",
       "startLine": 353,
       "endLine": 410,
-      "summary": "Chebyshev's pre-PNT bounds (0.92 < π·ln x/x < 1.11), infinitude of primes, and Euler product connection."
+      "summary": "Chebyshev's pre-PNT bounds (0.92 < \u03c0\u00b7ln x/x < 1.11), infinitude of primes, and Euler product connection."
     }
   ],
   "conclusion": {
     "summary": "The Prime Number Theorem is one of the crowning achievements of 19th century mathematics, connecting the discrete world of primes to the continuous world of analysis through the Riemann zeta function. The formalization presents four equivalent formulations with axiomatized equivalences, derives key consequences, and connects to the Riemann Hypothesis.",
     "implications": "PNT is foundational for cryptography (RSA key generation relies on prime density estimates), computational number theory (primality testing algorithms), and modern analytic number theory. It motivates the Riemann Hypothesis and underpins results from Dirichlet's theorem to the Green-Tao theorem on primes in arithmetic progressions.",
     "openQuestions": [
-      "The Riemann Hypothesis: do all non-trivial zeros of ζ(s) have real part 1/2?",
-      "What is the true size of the error term |π(x) − Li(x)|? (Cramér's conjecture: O(√x · ln²x))",
+      "The Riemann Hypothesis: do all non-trivial zeros of \u03b6(s) have real part 1/2?",
+      "What is the true size of the error term |\u03c0(x) \u2212 Li(x)|? (Cram\u00e9r's conjecture: O(\u221ax \u00b7 ln\u00b2x))",
       "Can PNT be proved elementarily with error bounds matching the analytic proof?"
     ]
   },
@@ -134,17 +134,17 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "strengthens",
-      "description": "The PNT provides the quantitative density π(x) ~ x/ln(x) that strengthens Euclid's qualitative result that primes are infinite."
+      "description": "The PNT provides the quantitative density \u03c0(x) ~ x/ln(x) that strengthens Euclid's qualitative result that primes are infinite."
     },
     {
       "targetId": "riemann-hypothesis",
       "relationship": "related",
-      "description": "The Riemann Hypothesis implies the strongest known error term in the PNT: π(x) = Li(x) + O(√x log x)."
+      "description": "The Riemann Hypothesis implies the strongest known error term in the PNT: \u03c0(x) = Li(x) + O(\u221ax log x)."
     },
     {
       "targetId": "basel-problem",
       "relationship": "related",
-      "description": "Both concern the distribution of primes. The Basel problem ζ(2) = π²/6 is an early evaluation of the Riemann zeta function whose zeros control prime distribution."
+      "description": "Both concern the distribution of primes. The Basel problem \u03b6(2) = \u03c0\u00b2/6 is an early evaluation of the Riemann zeta function whose zeros control prime distribution."
     }
   ],
   "relatedProofs": [
@@ -156,24 +156,24 @@
   "references": [
     {
       "authors": "Hadamard, Jacques",
-      "title": "Sur la distribution des zéros de la fonction ζ(s) et ses conséquences arithmétiques",
+      "title": "Sur la distribution des z\u00e9ros de la fonction \u03b6(s) et ses cons\u00e9quences arithm\u00e9tiques",
       "year": "1896",
-      "venue": "Bulletin de la Société Mathématique de France 24, 199–220",
-      "note": "Independent proof (with de la Vallée Poussin) of the Prime Number Theorem: π(x) ~ x/ln(x)"
+      "venue": "Bulletin de la Soci\u00e9t\u00e9 Math\u00e9matique de France 24, 199\u2013220",
+      "note": "Independent proof (with de la Vall\u00e9e Poussin) of the Prime Number Theorem: \u03c0(x) ~ x/ln(x)"
     },
     {
-      "authors": "de la Vallée Poussin, Charles-Jean",
-      "title": "Recherches analytiques sur la théorie des nombres premiers",
+      "authors": "de la Vall\u00e9e Poussin, Charles-Jean",
+      "title": "Recherches analytiques sur la th\u00e9orie des nombres premiers",
       "year": "1896",
-      "venue": "Annales de la Société Scientifique de Bruxelles 20, 183–256",
-      "note": "Independent proof of PNT in the same year as Hadamard, using non-vanishing of ζ(1+it)"
+      "venue": "Annales de la Soci\u00e9t\u00e9 Scientifique de Bruxelles 20, 183\u2013256",
+      "note": "Independent proof of PNT in the same year as Hadamard, using non-vanishing of \u03b6(1+it)"
     },
     {
       "authors": "Selberg, Atle",
       "title": "An elementary proof of the prime-number theorem",
       "year": "1949",
-      "venue": "Annals of Mathematics 50(2), 305–313",
-      "note": "Elementary proof avoiding complex analysis — alongside Erdős's independent elementary proof"
+      "venue": "Annals of Mathematics 50(2), 305\u2013313",
+      "note": "Elementary proof avoiding complex analysis \u2014 alongside Erd\u0151s's independent elementary proof"
     }
   ],
   "leanFile": {
@@ -202,6 +202,7 @@
     "lineCount": 463,
     "axiomCount": 13,
     "theoremCount": 15,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "lemmaCount": 0
   }
 }

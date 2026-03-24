@@ -1,10 +1,10 @@
 {
   "id": "erdos-883",
-  "title": "Erdős Problem #883: Cycles in the Coprime Graph",
+  "title": "Erd\u0151s Problem #883: Cycles in the Coprime Graph",
   "slug": "erdos-883",
-  "description": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by Sárkőzy (1999). Question 1 remains open.",
+  "description": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by S\u00e1rk\u0151zy (1999). Question 1 remains open.",
   "meta": {
-    "author": "Erdős-Sárkőzy (1997), Sárkőzy (1999 solution to Q2)",
+    "author": "Erd\u0151s-S\u00e1rk\u0151zy (1997), S\u00e1rk\u0151zy (1999 solution to Q2)",
     "sourceUrl": "https://erdosproblems.com/883",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos883Problem.lean",
@@ -56,29 +56,29 @@
       "Graph theory: simple graphs, adjacency, subgraph structure",
       "Number theory: coprimality (gcd), divisibility, primes",
       "Combinatorics: inclusion-exclusion principle, pigeonhole principle",
-      "Extremal graph theory: Turán-type thresholds, triangle-free graphs",
+      "Extremal graph theory: Tur\u00e1n-type thresholds, triangle-free graphs",
       "Cycle theory: odd cycles, Hamiltonian-type conditions"
     ],
     "lineCount": 245,
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #883 studies cycle structure in the coprime graph on subsets of integers. Erdős-Sárkőzy (1997) proved odd cycles of length cn exist above the threshold. Sárkőzy (1999) solved Question 2 on tripartite subgraphs. The threshold floor(n/2) + floor(n/3) - floor(n/6) arises from inclusion-exclusion on multiples of 2 and 3. The coprimality graph on {1,...,n} connects integers with GCD 1, and its structure reflects multiplicative number theory through graph theory. The critical threshold mirrors the Euler product formula; understanding when such graphs contain long odd cycles connects to the Dirichlet density of integers coprime to a given set of primes.",
+    "historicalContext": "Erd\u0151s Problem #883 studies cycle structure in the coprime graph on subsets of integers. Erd\u0151s-S\u00e1rk\u0151zy (1997) proved odd cycles of length cn exist above the threshold. S\u00e1rk\u0151zy (1999) solved Question 2 on tripartite subgraphs. The threshold floor(n/2) + floor(n/3) - floor(n/6) arises from inclusion-exclusion on multiples of 2 and 3. The coprimality graph on {1,...,n} connects integers with GCD 1, and its structure reflects multiplicative number theory through graph theory. The critical threshold mirrors the Euler product formula; understanding when such graphs contain long odd cycles connects to the Dirichlet density of integers coprime to a given set of primes.",
     "problemStatement": "For A subset of {1,...,n}, let G(A) be the coprime graph. Question 1 (Open): If |A| > floor(n/2) + floor(n/3) - floor(n/6), does G(A) contain all odd cycles of length at most n/3 + 1? Question 2 (Solved): Does the same threshold guarantee a complete (1,l,l) tripartite subgraph?",
-    "text": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by Sárkőzy (1999). Question 1 remains open.",
-    "proofStrategy": "The formalization defines the coprime graph using SimpleGraph, the threshold via inclusion-exclusion, and the extremal set (multiples of 2 or 3). Erdős-Sárkőzy (odd cycles for cn) and Sárkőzy (tripartite subgraphs) are axiomatized. Three proved theorems: erdos_883_question_2_solved, erdos_883_partial, and erdos_883.",
+    "text": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by S\u00e1rk\u0151zy (1999). Question 1 remains open.",
+    "proofStrategy": "The formalization defines the coprime graph using SimpleGraph, the threshold via inclusion-exclusion, and the extremal set (multiples of 2 or 3). Erd\u0151s-S\u00e1rk\u0151zy (odd cycles for cn) and S\u00e1rk\u0151zy (tripartite subgraphs) are axiomatized. Three proved theorems: erdos_883_question_2_solved, erdos_883_partial, and erdos_883.",
     "keyInsights": [
       "Coprime graph: two integers are adjacent iff gcd = 1",
       "Threshold from inclusion-exclusion: multiples of 2 + multiples of 3 - multiples of 6",
       "Extremal set (multiples of 2 or 3) has size = threshold but no triangles",
-      "Above threshold, odd cycles of length proportional to n exist (Erdős-Sárkőzy)",
-      "Sárkőzy showed (1,l,l) tripartite subgraphs with l proportional to log n / log log n"
+      "Above threshold, odd cycles of length proportional to n exist (Erd\u0151s-S\u00e1rk\u0151zy)",
+      "S\u00e1rk\u0151zy showed (1,l,l) tripartite subgraphs with l proportional to log n / log log n"
     ],
     "prerequisites": [
       "Graph theory: simple graphs, adjacency, subgraph structure",
       "Number theory: coprimality (gcd), divisibility, primes",
       "Combinatorics: inclusion-exclusion principle, pigeonhole principle",
-      "Extremal graph theory: Turán-type thresholds, triangle-free graphs",
+      "Extremal graph theory: Tur\u00e1n-type thresholds, triangle-free graphs",
       "Cycle theory: odd cycles, Hamiltonian-type conditions"
     ]
   },
@@ -99,7 +99,7 @@
     },
     {
       "id": "erdos-sarkozy",
-      "title": "Part III: Erdős-Sárkőzy Theorem on Odd Cycles",
+      "title": "Part III: Erd\u0151s-S\u00e1rk\u0151zy Theorem on Odd Cycles",
       "startLine": 85,
       "endLine": 99,
       "summary": "Axiomatizes erdos_sarkozy_odd_cycles: above threshold, G(A) contains odd cycles of length at most cn."
@@ -113,7 +113,7 @@
     },
     {
       "id": "sarkozy-tripartite",
-      "title": "Part V: Sárkőzy's Theorem on Complete Tripartite Subgraphs",
+      "title": "Part V: S\u00e1rk\u0151zy's Theorem on Complete Tripartite Subgraphs",
       "startLine": 122,
       "endLine": 153,
       "summary": "Defines hasTripartite for (1,l,l) tripartite graphs. Axiomatizes sarkozy_tripartite: above threshold with l > 0."
@@ -141,21 +141,21 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #883 is PARTIALLY SOLVED. Question 1 (all odd cycles of length at most n/3 + 1) remains open, though Erdős-Sárkőzy proved cycles of length cn exist. Question 2 (tripartite subgraphs) was solved by Sárkőzy (1999).",
+    "summary": "Erd\u0151s Problem #883 is PARTIALLY SOLVED. Question 1 (all odd cycles of length at most n/3 + 1) remains open, though Erd\u0151s-S\u00e1rk\u0151zy proved cycles of length cn exist. Question 2 (tripartite subgraphs) was solved by S\u00e1rk\u0151zy (1999).",
     "implications": "The results connect number theory and extremal graph theory through coprimality. The coprime graph structure above the threshold exhibits rich subgraph structure.",
     "openQuestions": [
       "Does the specific constant 1/3 work for Question 1?",
-      "What is the optimal constant c in the Erdős-Sárkőzy theorem?",
+      "What is the optimal constant c in the Erd\u0151s-S\u00e1rk\u0151zy theorem?",
       "Can the log n / log log n bound for l be improved?",
       "Analogous problems for other arithmetic graphs?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80]"
     }
   ],
@@ -163,7 +163,7 @@
     {
       "targetId": "erdos-882",
       "relationship": "related",
-      "description": "Nearby Erdős problem in the combinatorial number theory collection"
+      "description": "Nearby Erd\u0151s problem in the combinatorial number theory collection"
     }
   ],
   "relatedProofs": [
@@ -186,6 +186,7 @@
     "lineCount": 245,
     "axiomCount": 8,
     "theoremCount": 4,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   }
 }

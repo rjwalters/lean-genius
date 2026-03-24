@@ -1,10 +1,10 @@
 {
   "id": "erdos-121",
-  "title": "Erdős Problem #121: Square-Free Products",
+  "title": "Erd\u0151s Problem #121: Square-Free Products",
   "slug": "erdos-121",
-  "description": "Let F_k(N) be the max size of A ⊆ {1,…,N} with no k-element product a perfect square. Conjecture F_{2k+1}(N) = (1-o(1))N. DISPROVED by Tao (2024): F_k(N) ≤ (1-c_k)N for k ≥ 4.",
+  "description": "Let F_k(N) be the max size of A \u2286 {1,\u2026,N} with no k-element product a perfect square. Conjecture F_{2k+1}(N) = (1-o(1))N. DISPROVED by Tao (2024): F_k(N) \u2264 (1-c_k)N for k \u2265 4.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/121",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos121Problem.lean",
@@ -25,16 +25,16 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős, Sós, and Sárközy studied the extremal function F_k(N), the maximum size of A ⊆ {1,...,N} with no k-element product of distinct elements forming a perfect square. They established F_2(N) ~ 6N/π² (exactly the squarefree integers, by Gegenbauer 1885), F_3(N) ~ N (full density), and F_4(N) = o(N) (density tending to zero). These results revealed a striking parity phenomenon: odd k appeared to allow near-full density while even k forced density to zero. Erdős conjectured this even/odd dichotomy persisted for all k, predicting F_{2k+1}(N) = (1−o(1))N for every k ≥ 1. The conjecture stood for decades until Tao's 2024 disproof: using the polynomial method and character sum estimates over finite fields, he showed F_k(N) ≤ (1−c_k)N for all k ≥ 4, definitively disproving the odd-k conjecture for k ≥ 5. The boundary between k = 3 (full density) and k = 4 (sub-full density) remains the central mystery.",
-    "problemStatement": "Is F_{2k+1}(N) = (1 - o(1))N for all k ≥ 1? Specifically, is F_5(N) = (1 - o(1))N?",
-    "text": "Let F_k(N) be the max size of A ⊆ {1,…,N} with no k-element product a perfect square. Conjecture F_{2k+1}(N) = (1-o(1))N. DISPROVED by Tao (2024): F_k(N) ≤ (1-c_k)N for k ≥ 4.",
+    "historicalContext": "Erd\u0151s, S\u00f3s, and S\u00e1rk\u00f6zy studied the extremal function F_k(N), the maximum size of A \u2286 {1,...,N} with no k-element product of distinct elements forming a perfect square. They established F_2(N) ~ 6N/\u03c0\u00b2 (exactly the squarefree integers, by Gegenbauer 1885), F_3(N) ~ N (full density), and F_4(N) = o(N) (density tending to zero). These results revealed a striking parity phenomenon: odd k appeared to allow near-full density while even k forced density to zero. Erd\u0151s conjectured this even/odd dichotomy persisted for all k, predicting F_{2k+1}(N) = (1\u2212o(1))N for every k \u2265 1. The conjecture stood for decades until Tao's 2024 disproof: using the polynomial method and character sum estimates over finite fields, he showed F_k(N) \u2264 (1\u2212c_k)N for all k \u2265 4, definitively disproving the odd-k conjecture for k \u2265 5. The boundary between k = 3 (full density) and k = 4 (sub-full density) remains the central mystery.",
+    "problemStatement": "Is F_{2k+1}(N) = (1 - o(1))N for all k \u2265 1? Specifically, is F_5(N) = (1 - o(1))N?",
+    "text": "Let F_k(N) be the max size of A \u2286 {1,\u2026,N} with no k-element product a perfect square. Conjecture F_{2k+1}(N) = (1-o(1))N. DISPROVED by Tao (2024): F_k(N) \u2264 (1-c_k)N for k \u2265 4.",
     "proofStrategy": "The formalization defines IsSquare, k-square-free sets, and F_k(N) via powerset filtration. Known asymptotics for k = 2, 3, 4 are axiomatised. The conjecture and Tao's disproof are both captured.",
     "keyInsights": [
-      "F_2(N) ~ 6N/π² (squarefree density), F_3(N) ~ N (full density)",
-      "F_4(N) = o(N) (Erdős), showing even-index products force density zero",
-      "Tao (2024) proved F_k(N) ≤ (1-c_k)N for all k ≥ 4, disproving the conjecture",
+      "F_2(N) ~ 6N/\u03c0\u00b2 (squarefree density), F_3(N) ~ N (full density)",
+      "F_4(N) = o(N) (Erd\u0151s), showing even-index products force density zero",
+      "Tao (2024) proved F_k(N) \u2264 (1-c_k)N for all k \u2265 4, disproving the conjecture",
       "The transition from full density to sub-full density happens between k=3 and k=4",
-      "The squarefree-part map embeds {1,...,N} into (ℤ/2ℤ)^r, reducing k-square-free sets to zero-sum-free subsets of an abelian group"
+      "The squarefree-part map embeds {1,...,N} into (\u2124/2\u2124)^r, reducing k-square-free sets to zero-sum-free subsets of an abelian group"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -53,21 +53,21 @@
       "title": "Known Results for Small k",
       "startLine": 39,
       "endLine": 60,
-      "summary": "F_2 ~ 6N/π², F_3 ~ N, F_4 = o(N): the known asymptotics for k = 2, 3, 4."
+      "summary": "F_2 ~ 6N/\u03c0\u00b2, F_3 ~ N, F_4 = o(N): the known asymptotics for k = 2, 3, 4."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (Disproved)",
       "startLine": 62,
       "endLine": 70,
-      "summary": "Erdős's conjecture F_{2k+1}(N) ~ N for all k ≥ 1."
+      "summary": "Erd\u0151s's conjecture F_{2k+1}(N) ~ N for all k \u2265 1."
     },
     {
       "id": "tao-disproof",
       "title": "Tao's Disproof (2024)",
       "startLine": 72,
       "endLine": 83,
-      "summary": "Tao proved F_k(N) ≤ (1-c_k)N for k ≥ 4, disproving the conjecture."
+      "summary": "Tao proved F_k(N) \u2264 (1-c_k)N for k \u2265 4, disproving the conjecture."
     },
     {
       "id": "monotonicity",
@@ -78,8 +78,8 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 121 on square-free products, including the original conjecture and Tao's 2024 disproof showing F_k(N) ≤ (1-c_k)N for k ≥ 4.",
-    "implications": "**Phase Transition in Multiplicative Combinatorics**\n\nTao's result reveals a sharp phase transition at $k = 3$:\n\n1. **$k \\leq 3$**: Full or near-full density. $F_2(N) \\sim 6N/\\pi^2$ (squarefree density), $F_3(N) \\sim N$.\n2. **$k \\geq 4$**: Density bounded away from 1: $F_k(N) \\leq (1-c_k)N$.\n3. **Even/odd dichotomy fails**: Erdős expected odd $k$ to allow full density. Tao showed this fails for $k \\geq 5$.\n4. **Zero-sum theory connection**: Via the squarefree-part map, $k$-square-free sets correspond to $k$-zero-sum-free subsets of $(\\mathbb{Z}/2\\mathbb{Z})^r$, connecting to the Davenport constant and Erdős-Ginzburg-Ziv theorem.",
+    "summary": "The formalization captures Erd\u0151s Problem 121 on square-free products, including the original conjecture and Tao's 2024 disproof showing F_k(N) \u2264 (1-c_k)N for k \u2265 4.",
+    "implications": "**Phase Transition in Multiplicative Combinatorics**\n\nTao's result reveals a sharp phase transition at $k = 3$:\n\n1. **$k \\leq 3$**: Full or near-full density. $F_2(N) \\sim 6N/\\pi^2$ (squarefree density), $F_3(N) \\sim N$.\n2. **$k \\geq 4$**: Density bounded away from 1: $F_k(N) \\leq (1-c_k)N$.\n3. **Even/odd dichotomy fails**: Erd\u0151s expected odd $k$ to allow full density. Tao showed this fails for $k \\geq 5$.\n4. **Zero-sum theory connection**: Via the squarefree-part map, $k$-square-free sets correspond to $k$-zero-sum-free subsets of $(\\mathbb{Z}/2\\mathbb{Z})^r$, connecting to the Davenport constant and Erd\u0151s-Ginzburg-Ziv theorem.",
     "openQuestions": [
       "What are the precise constants $c_k$ in Tao's bound $F_k(N) \\leq (1-c_k)N$? Is $c_k$ monotone increasing in $k$?",
       "What is the exact asymptotic of $F_5(N)/N$? Is there a closed-form limit analogous to $6/\\pi^2$ for $F_2$?",
@@ -99,7 +99,8 @@
     "lineCount": 96,
     "axiomCount": 7,
     "theoremCount": 0,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -129,21 +130,21 @@
       "title": "On product sets of arithmetic progressions",
       "year": "2024",
       "venue": "arXiv",
-      "note": "Disproved Erdős's conjecture by showing F_k(N) ≤ (1-c_k)N for all k ≥ 4, using the polynomial method and character sum estimates over finite fields"
+      "note": "Disproved Erd\u0151s's conjecture by showing F_k(N) \u2264 (1-c_k)N for all k \u2265 4, using the polynomial method and character sum estimates over finite fields"
     },
     {
-      "authors": "Erdős, Paul; Sárközy, András; Sós, Vera T.",
+      "authors": "Erd\u0151s, Paul; S\u00e1rk\u00f6zy, Andr\u00e1s; S\u00f3s, Vera T.",
       "title": "On product representations of powers, I",
       "year": "1995",
-      "venue": "European Journal of Combinatorics, vol. 16, pp. 567–588",
-      "note": "Established the foundational results: F_2 ~ 6N/π², F_3 ~ N, F_4 = o(N), and formulated the even/odd dichotomy conjecture that Tao later disproved"
+      "venue": "European Journal of Combinatorics, vol. 16, pp. 567\u2013588",
+      "note": "Established the foundational results: F_2 ~ 6N/\u03c0\u00b2, F_3 ~ N, F_4 = o(N), and formulated the even/odd dichotomy conjecture that Tao later disproved"
     },
     {
       "authors": "Gegenbauer, Leopold",
       "title": "Asymptotische Gesetze der Zahlentheorie",
       "year": "1885",
       "venue": "Denkschriften der Kaiserlichen Akademie der Wissenschaften",
-      "note": "First proof that the density of squarefree integers is 6/π² = 1/ζ(2), establishing the exact value of F_2(N)/N"
+      "note": "First proof that the density of squarefree integers is 6/\u03c0\u00b2 = 1/\u03b6(2), establishing the exact value of F_2(N)/N"
     }
   ]
 }

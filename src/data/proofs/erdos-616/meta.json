@@ -1,10 +1,10 @@
 {
   "id": "erdos-616",
-  "title": "Erdős Problem #616: Covering Numbers of Hypergraphs",
+  "title": "Erd\u0151s Problem #616: Covering Numbers of Hypergraphs",
   "slug": "erdos-616",
-  "description": "Determine the best constant t(r) such that if every subgraph on ≤ 3r-3 vertices of an r-uniform hypergraph has covering number ≤ 1, then the global covering number is ≤ t(r). Erdős-Hajnal-Tuza proved (3/16)r ≤ t(r) ≤ (1/5)r but the exact coefficient remains OPEN.",
+  "description": "Determine the best constant t(r) such that if every subgraph on \u2264 3r-3 vertices of an r-uniform hypergraph has covering number \u2264 1, then the global covering number is \u2264 t(r). Erd\u0151s-Hajnal-Tuza proved (3/16)r \u2264 t(r) \u2264 (1/5)r but the exact coefficient remains OPEN.",
   "meta": {
-    "author": "Erdős, Hajnal, Tuza",
+    "author": "Erd\u0151s, Hajnal, Tuza",
     "sourceUrl": "https://erdosproblems.com/616",
     "date": "1991",
     "status": "axiomatized",
@@ -75,30 +75,30 @@
     "relatedProblems": [
       {
         "id": "erdos-610",
-        "relationship": "Related Erdős problem on covering and transversal properties in hypergraphs"
+        "relationship": "Related Erd\u0151s problem on covering and transversal properties in hypergraphs"
       },
       {
         "id": "erdos-20",
-        "relationship": "The sunflower lemma (Erdős-Ko-Rado) uses similar structural arguments about hypergraph intersections"
+        "relationship": "The sunflower lemma (Erd\u0151s-Ko-Rado) uses similar structural arguments about hypergraph intersections"
       }
     ]
   },
   "overview": {
-    "historicalContext": "This problem originates from Erdős's extensive work on extremal hypergraph theory during the late 1980s and early 1990s. The covering number (transversal number) τ(G) is a fundamental parameter in combinatorial optimization, dual to the matching number by König-type theorems. The question of how local structure constrains global covering was formalized by Erdős, Hajnal, and Tuza in their 1991 paper 'Local constraints ensuring small representing sets' published in the *Journal of Combinatorial Theory, Series A* (vol. 58, pp. 78-84). The problem sits at the intersection of Helly-type combinatorics (where local intersection properties imply global ones) and extremal set theory. András Hajnal was Erdős's longtime collaborator on set-theoretic combinatorics, while Zsolt Tuza contributed deep expertise in hypergraph transversals. The problem is reminiscent of the classical Helly theorem (1923), which states that for convex sets in $\\mathbb{R}^d$, pairwise intersection in every $d+1$ sets implies a common point. Here the 'dimension' is replaced by the uniformity $r$, and the threshold $3r-3$ plays the role of $d+1$. The bounds $(3/16)r \\le t(r) \\le (1/5)r$ have stood unchanged since 1991, making this one of the more persistent open problems in extremal hypergraph theory.",
-    "problemStatement": "Let $r \\ge 3$. For an $r$-uniform hypergraph $G$, let $\\tau(G)$ denote the covering number — the minimum size of a vertex set intersecting every edge. Determine the best $t = t(r)$ such that: if every induced subhypergraph on at most $3r-3$ vertices has $\\tau \\le 1$ (i.e., has a vertex common to all its edges), then $\\tau(G) \\le t$. Erdős, Hajnal, and Tuza proved $\\frac{3}{16}r + \\frac{7}{8} \\le t(r) \\le \\frac{1}{5}r$.",
-    "text": "Determine the best constant t(r) such that if every subgraph on ≤ 3r-3 vertices of an r-uniform hypergraph has covering number ≤ 1, then the global covering number is ≤ t(r). Erdős-Hajnal-Tuza proved (3/16)r ≤ t(r) ≤ (1/5)r but the exact coefficient remains OPEN.",
-    "proofStrategy": "The problem remains OPEN: the exact value of $t(r)$ is unknown. The Lean formalization captures all key definitions ($r$-uniform hypergraph, covering set, covering number, induced subhypergraph, local covering condition) and axiomatizes the known bounds from Erdős-Hajnal-Tuza (1991). The lower bound $(3/16)r + 7/8$ is established via explicit constructions — carefully designed hypergraphs where edges locally always share a vertex but globally require many vertices to cover. The upper bound $(1/5)r$ is proved via a combinatorial counting argument showing that the local intersection property constrains the global edge structure enough to guarantee a small transversal. The only proved theorem in the file is `tau_one_iff_kernel`, establishing the equivalence between singleton covers and kernel vertices. The summary theorem combines both axiomatized bounds into a single statement using `linarith`.",
+    "historicalContext": "This problem originates from Erd\u0151s's extensive work on extremal hypergraph theory during the late 1980s and early 1990s. The covering number (transversal number) \u03c4(G) is a fundamental parameter in combinatorial optimization, dual to the matching number by K\u00f6nig-type theorems. The question of how local structure constrains global covering was formalized by Erd\u0151s, Hajnal, and Tuza in their 1991 paper 'Local constraints ensuring small representing sets' published in the *Journal of Combinatorial Theory, Series A* (vol. 58, pp. 78-84). The problem sits at the intersection of Helly-type combinatorics (where local intersection properties imply global ones) and extremal set theory. Andr\u00e1s Hajnal was Erd\u0151s's longtime collaborator on set-theoretic combinatorics, while Zsolt Tuza contributed deep expertise in hypergraph transversals. The problem is reminiscent of the classical Helly theorem (1923), which states that for convex sets in $\\mathbb{R}^d$, pairwise intersection in every $d+1$ sets implies a common point. Here the 'dimension' is replaced by the uniformity $r$, and the threshold $3r-3$ plays the role of $d+1$. The bounds $(3/16)r \\le t(r) \\le (1/5)r$ have stood unchanged since 1991, making this one of the more persistent open problems in extremal hypergraph theory.",
+    "problemStatement": "Let $r \\ge 3$. For an $r$-uniform hypergraph $G$, let $\\tau(G)$ denote the covering number \u2014 the minimum size of a vertex set intersecting every edge. Determine the best $t = t(r)$ such that: if every induced subhypergraph on at most $3r-3$ vertices has $\\tau \\le 1$ (i.e., has a vertex common to all its edges), then $\\tau(G) \\le t$. Erd\u0151s, Hajnal, and Tuza proved $\\frac{3}{16}r + \\frac{7}{8} \\le t(r) \\le \\frac{1}{5}r$.",
+    "text": "Determine the best constant t(r) such that if every subgraph on \u2264 3r-3 vertices of an r-uniform hypergraph has covering number \u2264 1, then the global covering number is \u2264 t(r). Erd\u0151s-Hajnal-Tuza proved (3/16)r \u2264 t(r) \u2264 (1/5)r but the exact coefficient remains OPEN.",
+    "proofStrategy": "The problem remains OPEN: the exact value of $t(r)$ is unknown. The Lean formalization captures all key definitions ($r$-uniform hypergraph, covering set, covering number, induced subhypergraph, local covering condition) and axiomatizes the known bounds from Erd\u0151s-Hajnal-Tuza (1991). The lower bound $(3/16)r + 7/8$ is established via explicit constructions \u2014 carefully designed hypergraphs where edges locally always share a vertex but globally require many vertices to cover. The upper bound $(1/5)r$ is proved via a combinatorial counting argument showing that the local intersection property constrains the global edge structure enough to guarantee a small transversal. The only proved theorem in the file is `tau_one_iff_kernel`, establishing the equivalence between singleton covers and kernel vertices. The summary theorem combines both axiomatized bounds into a single statement using `linarith`.",
     "keyInsights": [
-      "The local condition τ(G') ≤ 1 for small subhypergraphs means every small piece has a 'kernel' vertex — a vertex in every edge. This is a strong structural constraint that forces edges to cluster around common vertices locally.",
+      "The local condition \u03c4(G') \u2264 1 for small subhypergraphs means every small piece has a 'kernel' vertex \u2014 a vertex in every edge. This is a strong structural constraint that forces edges to cluster around common vertices locally.",
       "The threshold 3r-3 is precisely chosen so that at most 2 pairwise disjoint r-edges can fit within the vertex set. Three disjoint r-edges would need 3r > 3r-3 vertices, making the condition non-trivially constraining.",
       "The gap between the coefficients 3/16 = 0.1875 and 1/5 = 0.2 is only about 6.25%, making this an extremely tight extremal problem. Such narrow gaps are characteristic of problems where both bounds use nearly optimal techniques.",
       "The problem connects to Helly-type combinatorics: just as Helly's theorem derives global intersection from local intersection of convex sets, Problem #616 asks how local transversal structure bounds global transversal complexity in hypergraphs.",
-      "The fractional relaxation τ*(G) provides a natural intermediate: LP duality gives τ*(G) = ν*(G) (fractional matching number), and understanding the integrality gap τ/τ* under the local condition may be a path toward tightening the bounds."
+      "The fractional relaxation \u03c4*(G) provides a natural intermediate: LP duality gives \u03c4*(G) = \u03bd*(G) (fractional matching number), and understanding the integrality gap \u03c4/\u03c4* under the local condition may be a path toward tightening the bounds."
     ],
     "prerequisites": [
       "Hypergraph theory: $r$-uniform hypergraphs, covering numbers (minimum vertex cover), matching numbers",
       "Extremal combinatorics: Helly-type theorems and local-to-global properties",
-      "The sunflower lemma and Erdős-Ko-Rado theorem (structural tools for hypergraph analysis)",
+      "The sunflower lemma and Erd\u0151s-Ko-Rado theorem (structural tools for hypergraph analysis)",
       "Linear programming duality (fractional covering and matching provide bounds)"
     ]
   },
@@ -106,21 +106,21 @@
     {
       "id": "header-and-imports",
       "title": "Header, References, and Imports",
-      "summary": "Module docstring citing the Erdős-Hajnal-Tuza 1991 paper, plus Mathlib imports for Finset, Nat, Set, and Real",
+      "summary": "Module docstring citing the Erd\u0151s-Hajnal-Tuza 1991 paper, plus Mathlib imports for Finset, Nat, Set, and Real",
       "startLine": 1,
       "endLine": 40
     },
     {
       "id": "hypergraph-defs",
       "title": "Hypergraph Definitions",
-      "summary": "Core structures: UniformHypergraph (r-uniform edge collection), IsCoveringSet (transversal property), coveringNumber (τ via infimum), and inducedSubhypergraph (restriction to vertex subset)",
+      "summary": "Core structures: UniformHypergraph (r-uniform edge collection), IsCoveringSet (transversal property), coveringNumber (\u03c4 via infimum), and inducedSubhypergraph (restriction to vertex subset)",
       "startLine": 42,
       "endLine": 77
     },
     {
       "id": "local-condition",
       "title": "The Local Covering Condition",
-      "summary": "HasLocalCoveringBound predicate requiring τ(G[W]) ≤ 1 for all W with |W| ≤ k, plus the localThreshold function defining k = 3r-3",
+      "summary": "HasLocalCoveringBound predicate requiring \u03c4(G[W]) \u2264 1 for all W with |W| \u2264 k, plus the localThreshold function defining k = 3r-3",
       "startLine": 79,
       "endLine": 98
     },
@@ -133,7 +133,7 @@
     },
     {
       "id": "known-bounds",
-      "title": "Known Bounds: Erdős-Hajnal-Tuza 1991",
+      "title": "Known Bounds: Erd\u0151s-Hajnal-Tuza 1991",
       "summary": "Axiomatized lower bound (3/16)r + 7/8 via explicit constructions and upper bound (1/5)r via counting arguments, with coefficient definitions and consistency check",
       "startLine": 120,
       "endLine": 160
@@ -148,21 +148,21 @@
     {
       "id": "threshold-analysis",
       "title": "Why the Threshold 3r-3?",
-      "summary": "Structural analysis of why 3r-3 is the critical threshold: connection to disjoint edge packings, sunflower structures, and the Erdős-Ko-Rado framework",
+      "summary": "Structural analysis of why 3r-3 is the critical threshold: connection to disjoint edge packings, sunflower structures, and the Erd\u0151s-Ko-Rado framework",
       "startLine": 187,
       "endLine": 201
     },
     {
       "id": "equivalent-formulations",
       "title": "Equivalent Formulations: Kernel Property",
-      "summary": "HasKernel definition and the proved theorem tau_one_iff_kernel establishing that τ ≤ 1 is equivalent to having a vertex common to all edges",
+      "summary": "HasKernel definition and the proved theorem tau_one_iff_kernel establishing that \u03c4 \u2264 1 is equivalent to having a vertex common to all edges",
       "startLine": 203,
       "endLine": 228
     },
     {
       "id": "fractional-relaxation",
       "title": "Fractional Relaxation",
-      "summary": "Axiomatized fractional covering number τ*(G) as the LP relaxation, connecting to duality theory and integrality gap analysis",
+      "summary": "Axiomatized fractional covering number \u03c4*(G) as the LP relaxation, connecting to duality theory and integrality gap analysis",
       "startLine": 230,
       "endLine": 244
     },
@@ -175,31 +175,31 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #616 asks for the optimal function t(r) bounding the covering number of r-uniform hypergraphs satisfying a local intersection condition. The formalization captures the complete mathematical framework: r-uniform hypergraphs, covering numbers, induced subhypergraphs, and the local condition τ ≤ 1 for small subgraphs. The known bounds (3/16)r ≤ t(r) ≤ (1/5)r from Erdős-Hajnal-Tuza (1991) are axiomatized, and the kernel equivalence theorem provides the key structural insight connecting covering theory to intersection theory.",
+    "summary": "Erd\u0151s Problem #616 asks for the optimal function t(r) bounding the covering number of r-uniform hypergraphs satisfying a local intersection condition. The formalization captures the complete mathematical framework: r-uniform hypergraphs, covering numbers, induced subhypergraphs, and the local condition \u03c4 \u2264 1 for small subgraphs. The known bounds (3/16)r \u2264 t(r) \u2264 (1/5)r from Erd\u0151s-Hajnal-Tuza (1991) are axiomatized, and the kernel equivalence theorem provides the key structural insight connecting covering theory to intersection theory.",
     "implications": "**Theoretical Significance**: Understanding this local-to-global relationship has implications across combinatorial optimization (approximation algorithms for Set Cover benefit from structural bounds on transversals), probability (the probabilistic method used in the upper bound connects to random covering arguments), and theoretical computer science (hypergraph covering is fundamental to constraint satisfaction and database theory).\n\nThe problem exemplifies a broader theme in extremal combinatorics: how local constraints propagate to global structure, connecting to Helly-type theorems, Ramsey theory, and the regularity method.",
     "openQuestions": [
       "What is the exact asymptotic coefficient c where t(r) ~ cr? Is it 3/16, 1/5, or something in between?",
       "Can the lower bound construction be improved? The current (3/16)r + 7/8 construction may not be optimal.",
       "Can the upper bound argument be sharpened, perhaps via the polynomial method or algebraic techniques?",
-      "What is the structure of extremal hypergraphs achieving τ = t(r)? Are they unique up to isomorphism for large r?",
-      "How does the fractional covering number τ*(G) behave under the local condition? Does the integrality gap narrow?"
+      "What is the structure of extremal hypergraphs achieving \u03c4 = t(r)? Are they unique up to isomorphism for large r?",
+      "How does the fractional covering number \u03c4*(G) behave under the local condition? Does the integrality gap narrow?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory provides the broader framework for local-to-global combinatorial phenomena, paralleling the local covering condition in Erdős #616"
+      "description": "Ramsey theory provides the broader framework for local-to-global combinatorial phenomena, paralleling the local covering condition in Erd\u0151s #616"
     },
     {
       "targetId": "erdos-610",
       "relationship": "related",
-      "description": "Sister Erdős problem on covering and transversal properties of hypergraphs"
+      "description": "Sister Erd\u0151s problem on covering and transversal properties of hypergraphs"
     },
     {
       "targetId": "erdos-20",
       "relationship": "related",
-      "description": "The sunflower lemma (Erdős-Ko-Rado), whose structural insights about set intersections underlie the local covering condition"
+      "description": "The sunflower lemma (Erd\u0151s-Ko-Rado), whose structural insights about set intersections underlie the local covering condition"
     },
     {
       "targetId": "erdos-644",
@@ -219,7 +219,8 @@
     "lineCount": 286,
     "axiomCount": 4,
     "theoremCount": 3,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "lemmaCount": 0
   },
   "relatedProofs": [
     "ramseys-theorem",
@@ -229,18 +230,18 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Gallai, Tibor",
+      "authors": "Erd\u0151s, Paul; Gallai, Tibor",
       "title": "On the minimal number of vertices representing the edges of a graph",
       "year": "1961",
-      "venue": "Magyar Tud. Akad. Mat. Kutató Int. Közl. 6, pp. 181-203",
+      "venue": "Magyar Tud. Akad. Mat. Kutat\u00f3 Int. K\u00f6zl. 6, pp. 181-203",
       "note": "Foundational work on covering numbers (vertex covers / transversals) in graphs, establishing the framework extended to hypergraphs in Problem #616"
     },
     {
-      "authors": "Lovász, László",
+      "authors": "Lov\u00e1sz, L\u00e1szl\u00f3",
       "title": "On the ratio of optimal integral and fractional covers",
       "year": "1975",
       "venue": "Discrete Mathematics 13(4), pp. 383-390",
-      "note": "Establishes the relationship between integer and fractional covering numbers, proving τ(G) ≤ τ*(G) · (1 + ln(Δ)) where Δ is the maximum degree — a key tool for bounding covering numbers in hypergraphs"
+      "note": "Establishes the relationship between integer and fractional covering numbers, proving \u03c4(G) \u2264 \u03c4*(G) \u00b7 (1 + ln(\u0394)) where \u0394 is the maximum degree \u2014 a key tool for bounding covering numbers in hypergraphs"
     },
     {
       "authors": "Alon, Noga",

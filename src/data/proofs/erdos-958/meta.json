@@ -1,10 +1,10 @@
 {
   "id": "erdos-958",
-  "title": "Erdős Problem #958: Distance Multiplicities and Point Configurations",
+  "title": "Erd\u0151s Problem #958: Distance Multiplicities and Point Configurations",
   "slug": "erdos-958",
   "description": "Is it true that k = n-1 distinct distances with multiplicities {n-1,...,1} characterizes equidistant points on a line or circle? NO - other configurations exist (Clemen-Dumitrescu-Liu, 2025).",
   "meta": {
-    "author": "Clemen-Dumitrescu-Liu (2025 proof), Erdős (problem)",
+    "author": "Clemen-Dumitrescu-Liu (2025 proof), Erd\u0151s (problem)",
     "sourceUrl": "https://erdosproblems.com/958",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos958Problem.lean",
@@ -26,20 +26,20 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #958 asks whether a special distance multiplicity pattern — exactly n-1 distinct distances with multiplicities {n-1, n-2, ..., 1} — uniquely characterizes equidistant points on a line or circle. Erdős himself conjectured the answer was NO, predicting that other geometric configurations should also produce this pattern.\n\nThe problem remained open for decades until Clemen, Dumitrescu, and Liu resolved it in 2025. They constructed an elegant counterexample: take n-1 equidistant points on a sufficiently short arc of a unit circle and add the center of the circle. This n-point configuration satisfies the special multiplicity pattern but is neither equidistant on a line nor equidistant on a circle.\n\nThe result confirms Erdős's intuition and opens new questions about which geometric properties are actually characterized by distance multiplicity patterns. The arc-plus-center family provides infinitely many counterexamples for all n ≥ 4.",
-    "problemStatement": "Let A ⊂ ℝ² be a finite set of size n with k distinct distances and multiplicity function f. Is it true that k = n-1 and {f(dᵢ)} = {n-1,...,1} if and only if A is equidistant on a line or circle? Answer: NO.",
+    "historicalContext": "Erd\u0151s Problem #958 asks whether a special distance multiplicity pattern \u2014 exactly n-1 distinct distances with multiplicities {n-1, n-2, ..., 1} \u2014 uniquely characterizes equidistant points on a line or circle. Erd\u0151s himself conjectured the answer was NO, predicting that other geometric configurations should also produce this pattern.\n\nThe problem remained open for decades until Clemen, Dumitrescu, and Liu resolved it in 2025. They constructed an elegant counterexample: take n-1 equidistant points on a sufficiently short arc of a unit circle and add the center of the circle. This n-point configuration satisfies the special multiplicity pattern but is neither equidistant on a line nor equidistant on a circle.\n\nThe result confirms Erd\u0151s's intuition and opens new questions about which geometric properties are actually characterized by distance multiplicity patterns. The arc-plus-center family provides infinitely many counterexamples for all n \u2265 4.",
+    "problemStatement": "Let A \u2282 \u211d\u00b2 be a finite set of size n with k distinct distances and multiplicity function f. Is it true that k = n-1 and {f(d\u1d62)} = {n-1,...,1} if and only if A is equidistant on a line or circle? Answer: NO.",
     "text": "Is it true that k = n-1 distinct distances with multiplicities {n-1,...,1} characterizes equidistant points on a line or circle? NO - other configurations exist (Clemen-Dumitrescu-Liu, 2025).",
     "proofStrategy": "The formalization defines Point, distanceSet, multiplicity, multiplicityMultiset. Standard configurations (isEquidistantLine, isEquidistantCircle, isStandardConfig) and the special pattern (hasSpecialPattern) are defined. The FALSE conjecture (OriginalConjecture) is stated. The counterexample (isArcPlusCenter) and Clemen-Dumitrescu-Liu theorem are axiomatized. The summary theorem combines both results.",
     "keyInsights": [
       "Special pattern: k = n-1 distances with multiplicities {n-1, ..., 1}",
       "Standard configurations (equidistant on line/circle) satisfy this pattern",
-      "Arc + center configuration also satisfies it — the conjecture is FALSE",
-      "Erdős correctly predicted other configurations exist",
+      "Arc + center configuration also satisfies it \u2014 the conjecture is FALSE",
+      "Erd\u0151s correctly predicted other configurations exist",
       "Clemen-Dumitrescu-Liu (2025) proved the disproof with arc+center counterexamples",
       "The center has distance 1 to all arc points, giving the right multiplicity structure"
     ],
     "prerequisites": [
-      "Euclidean geometry in ℝ²",
+      "Euclidean geometry in \u211d\u00b2",
       "Distance functions and metric spaces",
       "Multisets and multiplicities",
       "Finite point configurations"
@@ -59,7 +59,7 @@
       "title": "Part I: Points and Distances",
       "startLine": 34,
       "endLine": 47,
-      "summary": "`Point := EuclideanSpace ℝ (Fin 2)` — the Euclidean plane via Mathlib's inner product space. `dist p q := ‖p - q‖` — standard Euclidean distance (noncomputable).",
+      "summary": "`Point := EuclideanSpace \u211d (Fin 2)` \u2014 the Euclidean plane via Mathlib's inner product space. `dist p q := \u2016p - q\u2016` \u2014 standard Euclidean distance (noncomputable).",
       "mathContext": "Points in $\\mathbb{R}^2$ with the standard Euclidean metric $d(p,q) = \\|p - q\\| = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$."
     },
     {
@@ -83,7 +83,7 @@
       "title": "Part IV: The Conjectured Characterization",
       "startLine": 105,
       "endLine": 127,
-      "summary": "`hasSpecialPattern A`: $|\\Delta(A)| = n-1$ and multiplicities form $\\{1, 2, \\ldots, n-1\\}$ (via `Multiset.range`). `OriginalConjecture`: `hasSpecialPattern A ↔ isStandardConfig A` for $|A| \\geq 3$. Marked FALSE.",
+      "summary": "`hasSpecialPattern A`: $|\\Delta(A)| = n-1$ and multiplicities form $\\{1, 2, \\ldots, n-1\\}$ (via `Multiset.range`). `OriginalConjecture`: `hasSpecialPattern A \u2194 isStandardConfig A` for $|A| \\geq 3$. Marked FALSE.",
       "mathContext": "The special pattern: exactly $n-1$ distinct distances with multiplicities forming a complete set $\\{1, 2, \\ldots, n-1\\}$. The conjecture asked whether this pattern uniquely characterizes the two classical configurations."
     },
     {
@@ -99,16 +99,16 @@
       "title": "Part VI: Summary Theorem",
       "startLine": 173,
       "endLine": 200,
-      "summary": "`erdos_958_summary`: combines `conjecture_disproved` and `clemen_dumitrescu_liu` into a single conjunction via anonymous constructor `⟨·, ·⟩`. Proves the original conjecture is false AND counterexamples exist for all $n \\geq 4$.",
+      "summary": "`erdos_958_summary`: combines `conjecture_disproved` and `clemen_dumitrescu_liu` into a single conjunction via anonymous constructor `\u27e8\u00b7, \u00b7\u27e9`. Proves the original conjecture is false AND counterexamples exist for all $n \\geq 4$.",
       "mathContext": "The proof term $\\langle\\text{conjecture\\_disproved}, \\text{clemen\\_dumitrescu\\_liu}\\rangle$ constructs the conjunction $\\neg\\text{OriginalConjecture} \\wedge \\forall n \\geq 4, \\exists A, \\ldots$ directly from its components."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #958 is SOLVED. The conjectured characterization (special distance pattern ⟺ equidistant on line or circle) is FALSE. Clemen, Dumitrescu, and Liu (2025) found counterexamples: equidistant points on a short arc of a unit circle plus the center satisfy the pattern but are not standard configurations.",
-    "implications": "**Distance Geometry and Combinatorial Geometry**\n\nThe disproof reveals that distance multiplicity patterns carry less geometric information than expected:\n\n1. **Non-uniqueness of multiplicity patterns**: The special pattern $\\{1, 2, \\ldots, n-1\\}$ does not uniquely determine the geometric configuration type. This contrasts with the distinct distances problem (Erdős 1946) where the minimum number of distinct distances *does* characterize lattice-like structures (proved by Guth-Katz 2015).\n\n2. **Arc+center as a new family**: The Clemen-Dumitrescu-Liu construction provides an infinite family of counterexamples (one for each $n \\geq 4$). The key geometric insight is that the center has distance exactly 1 to all arc points, creating a high-multiplicity distance that mimics the pattern of equidistant line/circle configurations.\n\n3. **Erdős's intuition confirmed**: Erdős predicted the conjecture was false — this was one of many instances where his combinatorial intuition about extremal configurations proved correct even decades before formal proofs were found.\n\n4. **Connection to Erdős distance problem**: The classical Erdős distance problem asks for the minimum number of distinct distances determined by $n$ points. The special pattern $k = n-1$ is near the maximum possible ($k \\leq \\binom{n}{2}$), so this problem concerns the *structured* end of the distance spectrum rather than the extremal minimum.",
+    "summary": "Erd\u0151s Problem #958 is SOLVED. The conjectured characterization (special distance pattern \u27fa equidistant on line or circle) is FALSE. Clemen, Dumitrescu, and Liu (2025) found counterexamples: equidistant points on a short arc of a unit circle plus the center satisfy the pattern but are not standard configurations.",
+    "implications": "**Distance Geometry and Combinatorial Geometry**\n\nThe disproof reveals that distance multiplicity patterns carry less geometric information than expected:\n\n1. **Non-uniqueness of multiplicity patterns**: The special pattern $\\{1, 2, \\ldots, n-1\\}$ does not uniquely determine the geometric configuration type. This contrasts with the distinct distances problem (Erd\u0151s 1946) where the minimum number of distinct distances *does* characterize lattice-like structures (proved by Guth-Katz 2015).\n\n2. **Arc+center as a new family**: The Clemen-Dumitrescu-Liu construction provides an infinite family of counterexamples (one for each $n \\geq 4$). The key geometric insight is that the center has distance exactly 1 to all arc points, creating a high-multiplicity distance that mimics the pattern of equidistant line/circle configurations.\n\n3. **Erd\u0151s's intuition confirmed**: Erd\u0151s predicted the conjecture was false \u2014 this was one of many instances where his combinatorial intuition about extremal configurations proved correct even decades before formal proofs were found.\n\n4. **Connection to Erd\u0151s distance problem**: The classical Erd\u0151s distance problem asks for the minimum number of distinct distances determined by $n$ points. The special pattern $k = n-1$ is near the maximum possible ($k \\leq \\binom{n}{2}$), so this problem concerns the *structured* end of the distance spectrum rather than the extremal minimum.",
     "openQuestions": [
       "Are there non-arc-center configurations that also satisfy the special pattern? Is the complete classification of such configurations achievable?",
-      "Do analogous results hold in $\\mathbb{R}^d$ for $d \\geq 3$? The arc+center construction is inherently 2-dimensional — do higher-dimensional counterexamples exist?",
+      "Do analogous results hold in $\\mathbb{R}^d$ for $d \\geq 3$? The arc+center construction is inherently 2-dimensional \u2014 do higher-dimensional counterexamples exist?",
       "For which multiplicity patterns $\\{m_1, \\ldots, m_k\\}$ does the pattern uniquely characterize the geometric configuration type? Is there a general theory?",
       "Can the axioms `clemen_dumitrescu_liu` and `conjecture_disproved` be reduced to a single constructive proof by explicitly building the arc+center configuration in Lean and verifying its properties?"
     ]
@@ -126,7 +126,8 @@
     "lineCount": 200,
     "axiomCount": 2,
     "theoremCount": 1,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -150,21 +151,21 @@
       "title": "On multiplicities of interpoint distances",
       "year": "2025",
       "venue": "arXiv:2505.04283",
-      "note": "Resolved Erdős Problem #958 by constructing arc+center counterexamples: n-1 equidistant points on a short circular arc plus the center satisfy the special multiplicity pattern but are not equidistant on a line or circle"
+      "note": "Resolved Erd\u0151s Problem #958 by constructing arc+center counterexamples: n-1 equidistant points on a short circular arc plus the center satisfy the special multiplicity pattern but are not equidistant on a line or circle"
     },
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On sets of distances of n points",
       "year": "1946",
-      "venue": "The American Mathematical Monthly, vol. 53, no. 5, pp. 248–250",
-      "note": "Foundational paper on the distinct distances problem: n points in the plane determine at least Ω(n/√(log n)) distinct distances. Problem #958 concerns configurations at the structured end of the spectrum (near-maximal distinct distances with special multiplicity pattern)"
+      "venue": "The American Mathematical Monthly, vol. 53, no. 5, pp. 248\u2013250",
+      "note": "Foundational paper on the distinct distances problem: n points in the plane determine at least \u03a9(n/\u221a(log n)) distinct distances. Problem #958 concerns configurations at the structured end of the spectrum (near-maximal distinct distances with special multiplicity pattern)"
     },
     {
       "authors": "Guth, Larry; Katz, Nets Hawk",
-      "title": "On the Erdős distinct distances problem in the plane",
+      "title": "On the Erd\u0151s distinct distances problem in the plane",
       "year": "2015",
-      "venue": "Annals of Mathematics, vol. 181, no. 2, pp. 155–190",
-      "note": "Proved the tight bound Ω(n/log n) for the Erdős distinct distances problem using polynomial partitioning. While this concerns the minimum number of distinct distances, Problem #958 concerns which multiplicity patterns characterize specific configurations"
+      "venue": "Annals of Mathematics, vol. 181, no. 2, pp. 155\u2013190",
+      "note": "Proved the tight bound \u03a9(n/log n) for the Erd\u0151s distinct distances problem using polynomial partitioning. While this concerns the minimum number of distinct distances, Problem #958 concerns which multiplicity patterns characterize specific configurations"
     }
   ]
 }

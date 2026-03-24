@@ -1,10 +1,10 @@
 {
   "id": "erdos-371",
-  "title": "Erdős #371: Density of P(n) < P(n+1)",
+  "title": "Erd\u0151s #371: Density of P(n) < P(n+1)",
   "slug": "erdos-371",
-  "description": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Teräväinen (2018).",
+  "description": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Ter\u00e4v\u00e4inen (2018).",
   "meta": {
-    "author": "Paul Erdős, Carl Pomerance, Joni Teräväinen, Terence Tao, Zhiwei Wang",
+    "author": "Paul Erd\u0151s, Carl Pomerance, Joni Ter\u00e4v\u00e4inen, Terence Tao, Zhiwei Wang",
     "sourceUrl": "https://erdosproblems.com/371",
     "date": "1978-2021",
     "status": "formalized",
@@ -17,7 +17,7 @@
       "analytic-number-theory"
     ],
     "badge": "wip",
-    "sorries": 16,
+    "sorries": 2,
     "erdosNumber": 371,
     "erdosUrl": "https://erdosproblems.com/371",
     "erdosProblemStatus": "solved",
@@ -26,16 +26,16 @@
     "assumptions": "12 axiom(s) and 16 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was conjectured by Erdős and Pomerance in 1978. They proved that both the set {n : P(n) < P(n+1)} and its complement have positive upper density, but couldn't establish the exact density. The problem attracted significant attention from analytic number theorists.\n\nTeräväinen (2018) proved that the logarithmic density is exactly 1/2. Tao and Teräväinen (2019) showed the asymptotic density is 1/2 at 'almost all scales'. Finally, Wang (2021) proved the full result (natural density = 1/2) conditionally on the Elliott-Halberstam conjecture for friable integers.\n\nThe best unconditional lower bound is due to Lü and Wang (2025), who proved that both sets have density at least 0.2017. The sequence of n with P(n) < P(n+1) is A070089 in OEIS.",
-    "problemStatement": "Let P(n) denote the largest prime factor of n. Show that the set {n : P(n) < P(n+1)} has natural density 1/2.\n\n**Status**: Conditionally SOLVED (Wang 2021 under Elliott-Halberstam); Logarithmically SOLVED (Teräväinen 2018)",
-    "text": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Teräväinen (2018).",
-    "proofStrategy": "We formalize the greatest prime factor function P(n), various notions of density (natural, logarithmic, at almost all scales), and the main sets. The key results are axiomatized: Erdős-Pomerance positive upper density, Teräväinen logarithmic density 1/2, Tao-Teräväinen almost all scales, and Wang's conditional full result. We also formalize the generalized problem with parameter α and its connection to the Dickman function.",
+    "historicalContext": "This problem was conjectured by Erd\u0151s and Pomerance in 1978. They proved that both the set {n : P(n) < P(n+1)} and its complement have positive upper density, but couldn't establish the exact density. The problem attracted significant attention from analytic number theorists.\n\nTer\u00e4v\u00e4inen (2018) proved that the logarithmic density is exactly 1/2. Tao and Ter\u00e4v\u00e4inen (2019) showed the asymptotic density is 1/2 at 'almost all scales'. Finally, Wang (2021) proved the full result (natural density = 1/2) conditionally on the Elliott-Halberstam conjecture for friable integers.\n\nThe best unconditional lower bound is due to L\u00fc and Wang (2025), who proved that both sets have density at least 0.2017. The sequence of n with P(n) < P(n+1) is A070089 in OEIS.",
+    "problemStatement": "Let P(n) denote the largest prime factor of n. Show that the set {n : P(n) < P(n+1)} has natural density 1/2.\n\n**Status**: Conditionally SOLVED (Wang 2021 under Elliott-Halberstam); Logarithmically SOLVED (Ter\u00e4v\u00e4inen 2018)",
+    "text": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Ter\u00e4v\u00e4inen (2018).",
+    "proofStrategy": "We formalize the greatest prime factor function P(n), various notions of density (natural, logarithmic, at almost all scales), and the main sets. The key results are axiomatized: Erd\u0151s-Pomerance positive upper density, Ter\u00e4v\u00e4inen logarithmic density 1/2, Tao-Ter\u00e4v\u00e4inen almost all scales, and Wang's conditional full result. We also formalize the generalized problem with parameter \u03b1 and its connection to the Dickman function.",
     "keyInsights": [
-      "**Density hierarchy**: The problem admits four progressively stronger results — positive upper density (Erdős-Pomerance 1978), lower density $\\ge 0.2017$ (Lü-Wang 2025), logarithmic density $= 1/2$ (Teräväinen 2018), and conditional natural density $= 1/2$ (Wang 2021). Each step requires fundamentally new techniques.",
+      "**Density hierarchy**: The problem admits four progressively stronger results \u2014 positive upper density (Erd\u0151s-Pomerance 1978), lower density $\\ge 0.2017$ (L\u00fc-Wang 2025), logarithmic density $= 1/2$ (Ter\u00e4v\u00e4inen 2018), and conditional natural density $= 1/2$ (Wang 2021). Each step requires fundamentally new techniques.",
       "**Symmetry argument**: For $\\alpha = 0$, the theoretical density $\\int_0^1 \\int_x^1 u(x)u(y)\\,dy\\,dx = 1/2$ by the symmetry $x \\leftrightarrow y$. The challenge is proving that the actual density equals this integral.",
       "**Elliott-Halberstam bottleneck**: Wang's proof reduces the problem to equidistribution of smooth numbers in arithmetic progressions at the $\\theta = 1$ level. The classical Bombieri-Vinogradov theorem gives $\\theta = 1/2$; reaching $\\theta = 1$ is conjectural.",
       "**Dickman function connection**: The density kernel $u(x) = x^{-1}\\rho(x^{-1}-1)$ links this problem to smooth number theory, where $\\Psi(x,y) \\sim x\\rho(\\log x/\\log y)$ counts $y$-smooth integers up to $x$.",
-      "**Binary correlations of multiplicative functions**: Teräväinen's breakthrough analyzed $\\sum_{n < x} f(n)g(n+1)$ for multiplicative $f, g$ encoding the $P(n)$ comparison. This technique generalizes to many problems about consecutive integers."
+      "**Binary correlations of multiplicative functions**: Ter\u00e4v\u00e4inen's breakthrough analyzed $\\sum_{n < x} f(n)g(n+1)$ for multiplicative $f, g$ encoding the $P(n)$ comparison. This technique generalizes to many problems about consecutive integers."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -82,7 +82,7 @@
       "summary": "Axiomatizes the foundational result: $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$. Both sets have positive upper density, establishing the density question as nontrivial.",
       "startLine": 107,
       "endLine": 118,
-      "mathContext": "Erdős-Pomerance (1978): $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$. Both sets have positive upper density."
+      "mathContext": "Erd\u0151s-Pomerance (1978): $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$. Both sets have positive upper density."
     },
     {
       "id": "lu-wang",
@@ -90,23 +90,23 @@
       "summary": "Axiomatizes the best unconditional bound: $\\underline{d}(S^+) \\ge 0.2017$ and $\\underline{d}(S^-) \\ge 0.2017$. This constrains the density to $[0.2017, 0.7983]$.",
       "startLine": 120,
       "endLine": 133,
-      "mathContext": "Lü-Wang (2025): $\\underline{d}(S^+) \\geq 0.2017$ and $\\underline{d}(S^-) \\geq 0.2017$. Best unconditional bound: $d \\in [0.2017, 0.7983]$."
+      "mathContext": "L\u00fc-Wang (2025): $\\underline{d}(S^+) \\geq 0.2017$ and $\\underline{d}(S^-) \\geq 0.2017$. Best unconditional bound: $d \\in [0.2017, 0.7983]$."
     },
     {
       "id": "teravanen",
       "title": "Teravanen (2018): Logarithmic Density",
-      "summary": "Axiomatizes Teräväinen's breakthrough: $\\delta(S^+) = 1/2$. The first result achieving the conjectured value, albeit in the weaker logarithmic density notion. Complement result `teravanen_complement` is sorry.",
+      "summary": "Axiomatizes Ter\u00e4v\u00e4inen's breakthrough: $\\delta(S^+) = 1/2$. The first result achieving the conjectured value, albeit in the weaker logarithmic density notion. Complement result `teravanen_complement` is sorry.",
       "startLine": 135,
       "endLine": 147,
-      "mathContext": "Teräväinen (2018): $\\delta(S^+) = 1/2$. Logarithmic density equals $1/2$, the first result achieving the conjectured value (in a weaker density notion)."
+      "mathContext": "Ter\u00e4v\u00e4inen (2018): $\\delta(S^+) = 1/2$. Logarithmic density equals $1/2$, the first result achieving the conjectured value (in a weaker density notion)."
     },
     {
       "id": "tao-teravanen",
       "title": "Tao-Teravanen (2019): Almost All Scales",
-      "summary": "Defines `DensityAtAlmostAllScales` requiring $|\\pi_{S^+}(x)/x - 1/2| < \\varepsilon$ outside an exceptional set $E$ of vanishing proportion. Axiomatizes the Tao-Teräväinen result for $S^+$.",
+      "summary": "Defines `DensityAtAlmostAllScales` requiring $|\\pi_{S^+}(x)/x - 1/2| < \\varepsilon$ outside an exceptional set $E$ of vanishing proportion. Axiomatizes the Tao-Ter\u00e4v\u00e4inen result for $S^+$.",
       "startLine": 149,
       "endLine": 162,
-      "mathContext": "Tao-Teräväinen (2019): $|\\pi_{S^+}(x)/x - 1/2| < \\varepsilon$ for all $x \\notin E$, where $|E \\cap [1,X]|/X \\to 0$. Density $1/2$ at almost all scales."
+      "mathContext": "Tao-Ter\u00e4v\u00e4inen (2019): $|\\pi_{S^+}(x)/x - 1/2| < \\varepsilon$ for all $x \\notin E$, where $|E \\cap [1,X]|/X \\to 0$. Density $1/2$ at almost all scales."
     },
     {
       "id": "wang",
@@ -127,7 +127,7 @@
     {
       "id": "generalized",
       "title": "Generalized Form with $\\alpha$",
-      "summary": "Defines $S_\\alpha = \\{n \\ge 2 : P(n+1) > P(n) \\cdot n^\\alpha\\}$ for $\\alpha \\in [0,1]$. Axiomatizes Teräväinen's generalized result: logarithmic density of $S_\\alpha$ exists for all $\\alpha$.",
+      "summary": "Defines $S_\\alpha = \\{n \\ge 2 : P(n+1) > P(n) \\cdot n^\\alpha\\}$ for $\\alpha \\in [0,1]$. Axiomatizes Ter\u00e4v\u00e4inen's generalized result: logarithmic density of $S_\\alpha$ exists for all $\\alpha$.",
       "startLine": 201,
       "endLine": 217,
       "mathContext": "$S_\\alpha = \\{n \\geq 2 : P(n+1) > P(n) \\cdot n^\\alpha\\}$ for $\\alpha \\in [0,1]$. At $\\alpha = 0$: $S_0 = S^+$. As $\\alpha$ increases, the condition becomes harder to satisfy."
@@ -151,7 +151,7 @@
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Defines formal connections to Erdős problems #372 (density of $\\{n : P(n)/P(n+1) < 1\\}$) and #928 (consecutive integers with shared prime factors).",
+      "summary": "Defines formal connections to Erd\u0151s problems #372 (density of $\\{n : P(n)/P(n+1) < 1\\}$) and #928 (consecutive integers with shared prime factors).",
       "startLine": 276,
       "endLine": 284,
       "mathContext": "Related: #372 (descending chains $P(n) > P(n+1) > P(n+2)$), #928 (consecutive integers with shared prime factors)."
@@ -166,11 +166,11 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #371 across 298 lines with 16 sorries and multiple axioms encoding deep analytic number theory results. The hierarchy of density results — positive upper density (1978), lower bound $\\ge 0.2017$ (2025), logarithmic density $= 1/2$ (2018), almost-all-scales (2019), conditional natural density (2021) — is cleanly formalized with progressively stronger density notions. The Dickman function connection provides the theoretical framework unifying the original and generalized problems.",
+    "summary": "This formalization captures Erd\u0151s Problem #371 across 298 lines with 16 sorries and multiple axioms encoding deep analytic number theory results. The hierarchy of density results \u2014 positive upper density (1978), lower bound $\\ge 0.2017$ (2025), logarithmic density $= 1/2$ (2018), almost-all-scales (2019), conditional natural density (2021) \u2014 is cleanly formalized with progressively stronger density notions. The Dickman function connection provides the theoretical framework unifying the original and generalized problems.",
     "implications": "**Theoretical Significance**: The conditional dependence on Elliott-Halberstam highlights how prime distribution conjectures propagate through multiplicative number theory.\n\nThe Dickman function's appearance connects this problem to the theory of smooth (friable) numbers, where $\\Psi(x,y) \\sim x\\rho(\\log x / \\log y)$ counts $y$-smooth integers up to $x$. Proving the unconditional result would likely require new tools for correlations of multiplicative functions at consecutive integers.",
     "openQuestions": [
-      "Prove $d(\\{n : P(n) < P(n+1)\\}) = 1/2$ unconditionally — the main remaining challenge. Currently $0.2017 \\le d \\le 0.7983$.",
-      "Improve the Lü-Wang lower bound beyond 0.2017. Can sieve-theoretic methods push this closer to 0.5?",
+      "Prove $d(\\{n : P(n) < P(n+1)\\}) = 1/2$ unconditionally \u2014 the main remaining challenge. Currently $0.2017 \\le d \\le 0.7983$.",
+      "Improve the L\u00fc-Wang lower bound beyond 0.2017. Can sieve-theoretic methods push this closer to 0.5?",
       "Compute the exact density $d_\\alpha = \\int_0^1 \\int_{x+\\alpha}^1 u(x)u(y)\\,dy\\,dx$ for specific $\\alpha > 0$ values.",
       "Extend to $k$-tuples: what is the density of $\\{n : P(n) < P(n+1) < \\cdots < P(n+k)\\}$ for $k \\ge 2$?"
     ]
@@ -194,12 +194,12 @@
     {
       "targetId": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "The Prime Number Theorem provides the foundational asymptotic π(x) ~ x/ln x underlying all density arguments about prime-related sets in this formalization"
+      "description": "The Prime Number Theorem provides the foundational asymptotic \u03c0(x) ~ x/ln x underlying all density arguments about prime-related sets in this formalization"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes ensures P(n) is well-defined for all n ≥ 2 and that the density questions are nontrivial — the set of primes dividing consecutive integers is always infinite"
+      "description": "The infinitude of primes ensures P(n) is well-defined for all n \u2265 2 and that the density questions are nontrivial \u2014 the set of primes dividing consecutive integers is always infinite"
     }
   ],
   "relatedProofs": [
@@ -225,6 +225,7 @@
     "lineCount": 371,
     "axiomCount": 12,
     "theoremCount": 18,
-    "definitionCount": 17
+    "definitionCount": 17,
+    "lemmaCount": 0
   }
 }

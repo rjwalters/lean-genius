@@ -65,14 +65,14 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Maximum Cut problem asks: given a graph, partition its vertices into two sets to maximize the number of edges crossing between them. This problem is NP-Complete, meaning no polynomial-time algorithm is known (and likely none exists).\n\nIn the 1970s, researchers began studying approximation algorithms—algorithms that don't find the optimal solution but guarantee a solution within some factor of optimal. The randomized algorithm presented here, which simply flips a fair coin for each vertex, was one of the earliest and simplest approximation algorithms discovered.\n\nRemarkably, this trivial algorithm achieves a 1/2-approximation: the expected cut size is at least half of the maximum possible. The proof uses linearity of expectation, a fundamental technique in probabilistic analysis that remains central to algorithm design today.\n\nIn 1994, Goemans and Williamson achieved a breakthrough with a 0.878-approximation using semidefinite programming. However, the simple randomized algorithm remains important for its elegance, efficiency, and as a teaching tool for probabilistic analysis.",
+    "historicalContext": "The Maximum Cut problem asks: given a graph, partition its vertices into two sets to maximize the number of edges crossing between them. This problem is NP-Complete, meaning no polynomial-time algorithm is known (and likely none exists).\n\nIn the 1970s, researchers began studying approximation algorithms\u2014algorithms that don't find the optimal solution but guarantee a solution within some factor of optimal. The randomized algorithm presented here, which simply flips a fair coin for each vertex, was one of the earliest and simplest approximation algorithms discovered.\n\nRemarkably, this trivial algorithm achieves a 1/2-approximation: the expected cut size is at least half of the maximum possible. The proof uses linearity of expectation, a fundamental technique in probabilistic analysis that remains central to algorithm design today.\n\nIn 1994, Goemans and Williamson achieved a breakthrough with a 0.878-approximation using semidefinite programming. However, the simple randomized algorithm remains important for its elegance, efficiency, and as a teaching tool for probabilistic analysis.",
     "problemStatement": "Given a graph $G = (V, E)$, a **cut** is a partition of vertices into two disjoint sets $A$ and $B$. The **cut value** is the number of edges with one endpoint in $A$ and one in $B$.\n\n$$\\text{MaxCut}(G) = \\max_{A \\subseteq V} |\\{(u,v) \\in E : u \\in A, v \\in V \\setminus A\\}|$$\n\nThe algorithm is remarkably simple: for each vertex $v$, independently flip a fair coin to decide whether $v \\in A$ or $v \\in B$.\n\nWe prove: $\\mathbb{E}[|C|] \\geq \\frac{1}{2} \\cdot \\text{MaxCut}(G)$",
-    "text": "Just flip a coin for each vertex — and you get at least half the maximum cut. This formalization proves the surprising $1/2$-approximation guarantee for the simplest possible MaxCut algorithm: assign each vertex to partition $A$ or $B$ uniformly at random. The proof decomposes the cut size into edge indicators $\\chi_e$, uses a toggle bijection to show $\\Pr[e \\in C] = 1/2$ for every edge, then applies linearity of expectation (which works even for dependent variables!) to get $\\mathbb{E}[|C|] = |E|/2 \\geq \\text{MaxCut}/2$. Despite the algorithm's trivial $O(n)$ runtime, no polynomial-time algorithm can beat the Goemans-Williamson $0.878$-ratio (assuming the Unique Games Conjecture).",
+    "text": "Just flip a coin for each vertex \u2014 and you get at least half the maximum cut. This formalization proves the surprising $1/2$-approximation guarantee for the simplest possible MaxCut algorithm: assign each vertex to partition $A$ or $B$ uniformly at random. The proof decomposes the cut size into edge indicators $\\chi_e$, uses a toggle bijection to show $\\Pr[e \\in C] = 1/2$ for every edge, then applies linearity of expectation (which works even for dependent variables!) to get $\\mathbb{E}[|C|] = |E|/2 \\geq \\text{MaxCut}/2$. Despite the algorithm's trivial $O(n)$ runtime, no polynomial-time algorithm can beat the Goemans-Williamson $0.878$-ratio (assuming the Unique Games Conjecture).",
     "proofStrategy": "The proof proceeds in six steps:\n\n1. **Indicator decomposition**: Express cut size as sum of edge indicators: $|C| = \\sum_{e \\in E} \\chi_e$ where $\\chi_e = 1$ if edge $e$ is cut\n\n2. **Count separating assignments**: Show that exactly half of all $2^{|V|}$ boolean assignments place any two distinct vertices in different partitions (via bijection with toggle operation)\n\n3. **Edge probability**: Derive $\\Pr[e \\in C] = 1/2$ for any edge from the counting lemma\n\n4. **Linearity of expectation**: $\\mathbb{E}[|C|] = \\mathbb{E}[\\sum \\chi_e] = \\sum \\mathbb{E}[\\chi_e] = \\sum \\frac{1}{2} = \\frac{|E|}{2}$\n\n5. **Upper bound**: Observe that $\\text{MaxCut} \\leq |E|$ (trivially)\n\n6. **Approximation guarantee**: Combine to get $\\mathbb{E}[|C|] = \\frac{|E|}{2} \\geq \\frac{\\text{MaxCut}}{2}$",
     "keyInsights": [
       "The Cut structure carries proof obligations (partition and disjointness), making invalid cuts unrepresentable in the type system.",
       "The toggle bijection is the combinatorial heart: flipping one vertex's assignment swaps 'same partition' and 'different partition' cases.",
-      "Linearity of expectation works even when random variables are dependent—we don't need edge independence!",
+      "Linearity of expectation works even when random variables are dependent\u2014we don't need edge independence!",
       "The proof is constructive: it doesn't just show a good cut exists, it shows the algorithm's expected performance.",
       "This 1/2-approximation is tight for the algorithm: a path graph achieves exactly this ratio."
     ],
@@ -159,8 +159,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization demonstrates how a trivial randomized algorithm—just flip coins!—achieves a provably good approximation for an NP-Complete problem. The proof elegantly combines combinatorics (the toggle bijection), probability (linearity of expectation), and graph theory (edge counting).\n\nThe Lean formalization makes every step rigorous: the Cut structure's proof obligations ensure valid partitions, the Sym2 type handles unordered edges correctly, and Mathlib's Finset operations provide the summation machinery.",
-    "implications": "**Algorithmic Impact**\n\nThis result illustrates a powerful paradigm in algorithm design: when optimal solutions are computationally intractable, randomization can provide efficient algorithms with provable guarantees. The 1/2-approximation means: for any graph, running this O(n) algorithm gives (in expectation) at least half the edges of the best possible cut.\n\n**Theoretical Significance**\n\n**1. Derandomization**\nThe probabilistic method shows good cuts exist. The method of conditional expectations can derandomize this into a deterministic 1/2-approximation.\n\n**2. Hardness**\nUnder the Unique Games Conjecture, no polynomial-time algorithm can achieve better than the Goemans-Williamson 0.878 ratio.\n\n**3. Linearity of expectation**\nThis technique—summing over indicator variables—is fundamental to probabilistic combinatorics and algorithm analysis.",
+    "summary": "This formalization demonstrates how a trivial randomized algorithm\u2014just flip coins!\u2014achieves a provably good approximation for an NP-Complete problem. The proof elegantly combines combinatorics (the toggle bijection), probability (linearity of expectation), and graph theory (edge counting).\n\nThe Lean formalization makes every step rigorous: the Cut structure's proof obligations ensure valid partitions, the Sym2 type handles unordered edges correctly, and Mathlib's Finset operations provide the summation machinery.",
+    "implications": "**Algorithmic Impact**\n\nThis result illustrates a powerful paradigm in algorithm design: when optimal solutions are computationally intractable, randomization can provide efficient algorithms with provable guarantees. The 1/2-approximation means: for any graph, running this O(n) algorithm gives (in expectation) at least half the edges of the best possible cut.\n\n**Theoretical Significance**\n\n**1. Derandomization**\nThe probabilistic method shows good cuts exist. The method of conditional expectations can derandomize this into a deterministic 1/2-approximation.\n\n**2. Hardness**\nUnder the Unique Games Conjecture, no polynomial-time algorithm can achieve better than the Goemans-Williamson 0.878 ratio.\n\n**3. Linearity of expectation**\nThis technique\u2014summing over indicator variables\u2014is fundamental to probabilistic combinatorics and algorithm analysis.",
     "openQuestions": [
       "Can we formalize the Goemans-Williamson 0.878-approximation using semidefinite programming in Lean?",
       "What about weighted MaxCut, where edges have different values?",
@@ -172,17 +172,17 @@
     {
       "targetId": "erdos-196",
       "relationship": "related",
-      "description": "Erdős problem on graph coloring — both concern extremal properties of graph partitions, with MaxCut seeking the largest bipartition and chromatic problems seeking the fewest colors"
+      "description": "Erd\u0151s problem on graph coloring \u2014 both concern extremal properties of graph partitions, with MaxCut seeking the largest bipartition and chromatic problems seeking the fewest colors"
     },
     {
       "targetId": "ramseys-theorem",
       "relationship": "thematic",
-      "description": "Ramsey theory guarantees monochromatic substructures in large graphs — the complementary perspective to MaxCut, which seeks to maximize bichromatic edges. Both use probabilistic arguments in their non-constructive proofs"
+      "description": "Ramsey theory guarantees monochromatic substructures in large graphs \u2014 the complementary perspective to MaxCut, which seeks to maximize bichromatic edges. Both use probabilistic arguments in their non-constructive proofs"
     },
     {
       "targetId": "birthday-problem",
       "relationship": "foundational",
-      "description": "The birthday problem illustrates probabilistic counting over combinatorial structures — the same linearity of expectation technique that powers the MaxCut approximation proof"
+      "description": "The birthday problem illustrates probabilistic counting over combinatorial structures \u2014 the same linearity of expectation technique that powers the MaxCut approximation proof"
     },
     {
       "targetId": "randomized-maxcut-oq-01",
@@ -192,7 +192,7 @@
     {
       "targetId": "halting-problem",
       "relationship": "thematic",
-      "description": "MaxCut is NP-Complete — its computational intractability motivates the approximation approach. The halting problem establishes fundamental computability limits that underpin the P vs NP question"
+      "description": "MaxCut is NP-Complete \u2014 its computational intractability motivates the approximation approach. The halting problem establishes fundamental computability limits that underpin the P vs NP question"
     }
   ],
   "relatedProofs": [
@@ -215,22 +215,23 @@
     "namespace": "Cut",
     "lineCount": 324,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 6
+    "theoremCount": 2,
+    "definitionCount": 6,
+    "lemmaCount": 4
   },
   "references": [
     {
       "authors": "Goemans, Michel X.; Williamson, David P.",
       "title": "Improved approximation algorithms for maximum cut and satisfiability problems using semidefinite programming",
       "year": "1995",
-      "venue": "Journal of the ACM 42(6), 1115–1145",
+      "venue": "Journal of the ACM 42(6), 1115\u20131145",
       "note": "The landmark 0.878-approximation algorithm for MAX-CUT using SDP relaxation"
     },
     {
       "authors": "Khot, Subhash; Kindler, Guy; Mossel, Elchanan; O'Donnell, Ryan",
       "title": "Optimal inapproximability results for MAX-CUT and other 2-variable CSPs",
       "year": "2007",
-      "venue": "SIAM Journal on Computing 37(1), 319–357",
+      "venue": "SIAM Journal on Computing 37(1), 319\u2013357",
       "note": "Proved that the Goemans-Williamson ratio is optimal assuming the Unique Games Conjecture"
     }
   ]

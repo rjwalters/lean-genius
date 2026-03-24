@@ -48,10 +48,10 @@
     "text": "A 204-line axiomatized formalization of Fermat's Last Theorem with 16 declarations, 0 sorries. Imports Mathlib's `FermatLastThm` (the statement $\\forall n \\geq 3, a^n + b^n = c^n \\Rightarrow abc = 0$), `FermatLastThm.Four` (the $n=4$ case proved by Fermat's descent), and `FermatLastThm.Three` (the $n=3$ case). The file provides `flt_statement` as a clean restatement, `flt_n4` and `flt_n3` as explicit instantiations, and `flt_reduces_to_primes` demonstrating the classical reduction. Axioms encode the modularity theorem (Wiles-Taylor) and its application via the Frey curve and Ribet's theorem. Commentary traces the proof strategy: Frey curve construction $y^2 = x(x-a^n)(x+b^n)$, semi-stability, Ribet's level-lowering, and the Taylor-Wiles patching method.",
     "proofStrategy": "Wiles' proof proceeds by contradiction through a remarkable chain of ideas:\n\n1. **ASSUME** a counterexample exists: $a^n + b^n = c^n$ with $n > 2$ and $a, b, c$ positive integers.\n\n2. **CONSTRUCT** the Frey curve: From this hypothetical solution, build the elliptic curve\n   $$E: y^2 = x(x - a^n)(x + b^n)$$\n   This curve has unusual properties: it is semi-stable with discriminant divisible by enormous prime powers.\n\n3. **APPLY RIBET'S THEOREM** (1986): The Frey curve, if it existed, would be modular but have a conductor too small to match any modular form. This is impossible.\n\n4. **PROVE MODULARITY**: Wiles proves that all semistable elliptic curves over $\\mathbb{Q}$ are modular (the Taniyama-Shimura-Weil conjecture for semistable curves).\n\n5. **CONTRADICTION**: The Frey curve must be modular (by step 4), but cannot be modular (by step 3). Therefore, no counterexample exists.\n\nThe bulk of Wiles' 100+ page proof establishes the modularity theorem. The Taylor-Wiles patching method, developed to fix the gap, has become a fundamental tool in modern number theory.",
     "keyInsights": [
-      "**Frey Curve:** A counterexample $a^n + b^n = c^n$ yields the elliptic curve $E: y^2 = x(x - a^n)(x + b^n)$ with discriminant $\\Delta \\sim (abc)^{2n}$ — a curve with 'impossibly' large conductor for its simple equation.",
+      "**Frey Curve:** A counterexample $a^n + b^n = c^n$ yields the elliptic curve $E: y^2 = x(x - a^n)(x + b^n)$ with discriminant $\\Delta \\sim (abc)^{2n}$ \u2014 a curve with 'impossibly' large conductor for its simple equation.",
       "**Modularity = Arithmetic-Analysis Bridge:** Every elliptic curve $E/\\mathbb{Q}$ is modular: its $L$-function equals that of a weight-2 newform $f$. This connects Diophantine equations (arithmetic) to automorphic forms (analysis).",
-      "**Ribet's Theorem:** If $a^n + b^n = c^n$, the Frey curve's Galois representation $\\bar{\\rho}_{E,p}$ would arise from a weight-2 form of level 2 — but no such form exists (the space $S_2(\\Gamma_0(2))$ is zero-dimensional). Contradiction.",
-      "**Galois Representations:** The $p$-torsion $E[p]$ gives a 2-dimensional $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$-representation. Modularity means this representation 'comes from' a modular form — the bridge between geometry and number theory.",
+      "**Ribet's Theorem:** If $a^n + b^n = c^n$, the Frey curve's Galois representation $\\bar{\\rho}_{E,p}$ would arise from a weight-2 form of level 2 \u2014 but no such form exists (the space $S_2(\\Gamma_0(2))$ is zero-dimensional). Contradiction.",
+      "**Galois Representations:** The $p$-torsion $E[p]$ gives a 2-dimensional $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$-representation. Modularity means this representation 'comes from' a modular form \u2014 the bridge between geometry and number theory.",
       "**Taylor-Wiles Patching:** Wiles' proof of modularity uses deformation theory: parameterize all Galois representations with fixed residual $\\bar{\\rho}$ and show the deformation ring $R$ equals the Hecke algebra $\\mathbb{T}$ ($R = \\mathbb{T}$ theorem). Patching constructs auxiliary primes to control Selmer groups.",
       "**Scope of Modularity:** Wiles proved modularity for semistable curves. The full modularity theorem (Breuil-Conrad-Diamond-Taylor, 2001) extends to ALL elliptic curves over $\\mathbb{Q}$."
     ],
@@ -121,7 +121,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "related",
-      "description": "The reduction to prime exponents relies on the structure of primes; FLT for n=4 and odd primes covers all n ≥ 3"
+      "description": "The reduction to prime exponents relies on the structure of primes; FLT for n=4 and odd primes covers all n \u2265 3"
     },
     {
       "targetId": "chinese-remainder-non-coprime",
@@ -136,7 +136,7 @@
     {
       "targetId": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "The Pythagorean theorem establishes $a^2 + b^2 = c^2$ — Fermat's Last Theorem generalizes this from $n=2$ (infinitely many solutions: Pythagorean triples) to $n \\geq 3$ (no solutions). The contrast between richness at $n=2$ and emptiness at $n \\geq 3$ is the core mystery"
+      "description": "The Pythagorean theorem establishes $a^2 + b^2 = c^2$ \u2014 Fermat's Last Theorem generalizes this from $n=2$ (infinitely many solutions: Pythagorean triples) to $n \\geq 3$ (no solutions). The contrast between richness at $n=2$ and emptiness at $n \\geq 3$ is the core mystery"
     },
     {
       "targetId": "abel-ruffini",
@@ -151,12 +151,12 @@
     {
       "targetId": "pythagorean-triples",
       "relationship": "complementary",
-      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT shows the analogous equation $a^n+b^n=c^n$ has NO positive integer solutions for $n \\geq 3$ — the transition from rich structure at $n=2$ to emptiness at $n=3$ is the theorem's content"
+      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT shows the analogous equation $a^n+b^n=c^n$ has NO positive integer solutions for $n \\geq 3$ \u2014 the transition from rich structure at $n=2$ to emptiness at $n=3$ is the theorem's content"
     },
     {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "FTA guarantees all algebraic numbers embed in $\\mathbb{C}$, providing the complex-analytic tools for Wiles's proof. Modular forms are complex-analytic objects, and Galois representations act on number fields embedded in $\\mathbb{C}$ — FTA ensures this algebraic/analytic bridge exists"
+      "description": "FTA guarantees all algebraic numbers embed in $\\mathbb{C}$, providing the complex-analytic tools for Wiles's proof. Modular forms are complex-analytic objects, and Galois representations act on number fields embedded in $\\mathbb{C}$ \u2014 FTA ensures this algebraic/analytic bridge exists"
     },
     {
       "targetId": "quadratic-reciprocity",
@@ -166,7 +166,7 @@
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ for irregular primes blocked Kummer's 1847 approach to FLT. FLT for regular primes succeeds because these rings retain unique factorization — illustrating that the arithmetic of number rings is the structural core of the problem"
+      "description": "The failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ for irregular primes blocked Kummer's 1847 approach to FLT. FLT for regular primes succeeds because these rings retain unique factorization \u2014 illustrating that the arithmetic of number rings is the structural core of the problem"
     },
     {
       "targetId": "godel-incompleteness",
@@ -176,7 +176,7 @@
     {
       "targetId": "euler-identity",
       "relationship": "related",
-      "description": "Wiles's proof uses modular forms with $q$-expansions $f(\\tau) = \\sum a_n e^{2\\pi i n \\tau}$ — directly using Euler's formula. The exponential map $e^{2\\pi i\\tau}$ bridges the additive structure of the upper half-plane and the multiplicative structure of modular forms, making Euler's identity essential infrastructure"
+      "description": "Wiles's proof uses modular forms with $q$-expansions $f(\\tau) = \\sum a_n e^{2\\pi i n \\tau}$ \u2014 directly using Euler's formula. The exponential map $e^{2\\pi i\\tau}$ bridges the additive structure of the upper half-plane and the multiplicative structure of modular forms, making Euler's identity essential infrastructure"
     },
     {
       "targetId": "hilbert-10",
@@ -238,14 +238,14 @@
       "title": "Modular Forms and Fermat's Last Theorem",
       "year": "1997",
       "venue": "Springer",
-      "note": "Comprehensive technical account of Wiles's proof, based on the 1995 Boston conference — the standard reference for the complete mathematical details of the modularity theorem and its application to FLT"
+      "note": "Comprehensive technical account of Wiles's proof, based on the 1995 Boston conference \u2014 the standard reference for the complete mathematical details of the modularity theorem and its application to FLT"
     },
     {
       "authors": "Kummer, Ernst",
-      "title": "Beweis des Fermat'schen Satzes der Unmöglichkeit von x^λ + y^λ = z^λ für eine unendliche Anzahl Primzahlen λ",
+      "title": "Beweis des Fermat'schen Satzes der Unm\u00f6glichkeit von x^\u03bb + y^\u03bb = z^\u03bb f\u00fcr eine unendliche Anzahl Primzahlen \u03bb",
       "year": "1847",
-      "venue": "Monatsberichte der Königlichen Preussischen Akademie der Wissenschaften zu Berlin, 132–141",
-      "note": "Proof of FLT for regular primes using ideal factorization in cyclotomic fields — the deepest 19th-century progress, which introduced ideal theory and motivated Dedekind's algebraic number theory"
+      "venue": "Monatsberichte der K\u00f6niglichen Preussischen Akademie der Wissenschaften zu Berlin, 132\u2013141",
+      "note": "Proof of FLT for regular primes using ideal factorization in cyclotomic fields \u2014 the deepest 19th-century progress, which introduced ideal theory and motivated Dedekind's algebraic number theory"
     }
   ],
   "leanFile": {
@@ -261,6 +261,7 @@
     "lineCount": 204,
     "axiomCount": 5,
     "theoremCount": 7,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

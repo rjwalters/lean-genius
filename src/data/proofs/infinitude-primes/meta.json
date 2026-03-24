@@ -51,12 +51,12 @@
     "historicalContext": "Euclid's theorem on the infinitude of primes appears as Proposition 20 in Book IX of his Elements, written around 300 BCE in Alexandria. This makes it one of the oldest theorems with a proof that is still taught essentially unchanged today.\n\nThe result answered a question that must have puzzled ancient mathematicians: the primes 2, 3, 5, 7, 11, 13... seem to thin out as numbers grow larger. Do they eventually stop? Euclid showed definitively that they do not.\n\nWhat makes this proof remarkable is its method. Rather than trying to find large primes directly (which is computationally hard even today), Euclid showed that assuming finitely many primes leads to a contradiction. This proof by contradiction became a template for countless mathematical arguments.\n\nThe theorem launched two millennia of investigation into prime distribution, from Euler's proof that $\\sum 1/p$ diverges, to the Prime Number Theorem (1896), to the still-unsolved Riemann Hypothesis.",
     "problemStatement": "Theorem (Euclid, c. 300 BCE): There are infinitely many prime numbers.\n\nModern formulation: for any natural number $n$, there exists a prime $p$ with $p > n$:\n\n$$\\forall n \\in \\mathbb{N}, \\exists p \\text{ prime such that } p > n$$\n\nEquivalently: the sequence of primes $2, 3, 5, 7, 11, 13, 17, 19, 23, \\ldots$ never terminates.",
     "text": "A 127-line formalization of Euclid's infinitude of primes (Wiedijk #11) with 12 declarations, 0 sorries, 0 axioms. The proof constructs $Q = n! + 1$ via `Nat.factorial`, applies `Nat.exists_prime_and_dvd` to obtain a prime divisor $p \\mid Q$, then derives $p > n$ by contradiction: if $p \\leq n$ then $p \\mid n!$ (via `Nat.dvd_factorial`) and $p \\mid (n!+1)$, so $p \\mid 1$, contradicting `Nat.Prime.one_lt`. The main theorem `euclid_infinitude_of_primes` states $\\forall n, \\exists p > n,\\, \\text{Nat.Prime}\\,p$. Includes a second proof `infinitude_via_set` showing the set of primes is infinite using `Set.Infinite`, and concrete examples verifying primes beyond 10, 100, and 1000.",
-    "proofStrategy": "Euclid's proof is a masterpiece of mathematical economy:\n\n1. Given any $n$, construct $Q = n! + 1$ (one more than $n$ factorial)\n2. Observe that $Q \\geq 2$, so $Q$ has at least one prime divisor $p$\n3. Key claim: This prime $p$ must satisfy $p > n$\n4. Proof by contradiction: Suppose $p \\leq n$\n   - Then $p$ appears in the product $1 \\times 2 \\times \\cdots \\times n = n!$\n   - So $p$ divides $n!$\n   - But $p$ also divides $Q = n! + 1$\n   - Therefore $p$ divides $(n! + 1) - n! = 1$\n   - Contradiction: No integer $\\geq 2$ can divide 1\n5. Conclusion: Our assumption was wrong, so $p > n$ ✓\n\nNote: Euclid's original proof used the product of the first $n$ primes plus 1, not $n! + 1$. The factorial version is a modern simplification that avoids needing to enumerate primes.",
+    "proofStrategy": "Euclid's proof is a masterpiece of mathematical economy:\n\n1. Given any $n$, construct $Q = n! + 1$ (one more than $n$ factorial)\n2. Observe that $Q \\geq 2$, so $Q$ has at least one prime divisor $p$\n3. Key claim: This prime $p$ must satisfy $p > n$\n4. Proof by contradiction: Suppose $p \\leq n$\n   - Then $p$ appears in the product $1 \\times 2 \\times \\cdots \\times n = n!$\n   - So $p$ divides $n!$\n   - But $p$ also divides $Q = n! + 1$\n   - Therefore $p$ divides $(n! + 1) - n! = 1$\n   - Contradiction: No integer $\\geq 2$ can divide 1\n5. Conclusion: Our assumption was wrong, so $p > n$ \u2713\n\nNote: Euclid's original proof used the product of the first $n$ primes plus 1, not $n! + 1$. The factorial version is a modern simplification that avoids needing to enumerate primes.",
     "keyInsights": [
-      "The factorial $n!$ is divisible by every positive integer from 1 to $n$—this is the engine of the proof",
+      "The factorial $n!$ is divisible by every positive integer from 1 to $n$\u2014this is the engine of the proof",
       "Adding 1 to any multiple of $p$ gives a number that is NOT divisible by $p$ (it leaves remainder 1)",
-      "The only positive divisor of 1 is 1 itself—no prime can divide 1",
-      "We never need to identify which prime exceeds $n$—existence is enough",
+      "The only positive divisor of 1 is 1 itself\u2014no prime can divide 1",
+      "We never need to identify which prime exceeds $n$\u2014existence is enough",
       "Euclid's original proof used $p_1 \\cdot p_2 \\cdots p_k + 1$ (product of listed primes plus 1); the factorial version avoids maintaining a prime list and works for any $n$"
     ],
     "prerequisites": [
@@ -80,7 +80,7 @@
       "title": "Key Lemmas",
       "startLine": 42,
       "endLine": 61,
-      "summary": "Three supporting lemmas: dvd_factorial (any k ≤ n divides n!), factorial_succ_ge_two (n! + 1 ≥ 2), and dvd_of_dvd_add_one (if p divides both a and a+1, then p divides 1).",
+      "summary": "Three supporting lemmas: dvd_factorial (any k \u2264 n divides n!), factorial_succ_ge_two (n! + 1 \u2265 2), and dvd_of_dvd_add_one (if p divides both a and a+1, then p divides 1).",
       "mathContext": "$k \\leq n \\implies k \\mid n!$; $n! + 1 \\geq 2$; $p \\mid a \\wedge p \\mid (a+1) \\implies p \\mid 1$. These three lemmas are the building blocks of Euclid's argument."
     },
     {
@@ -96,8 +96,8 @@
       "title": "Alternate Infinitude Statement",
       "startLine": 106,
       "endLine": 108,
-      "summary": "primes_infinite: an alias for unbounded_primes emphasizing the infinitude framing — for any bound n, a prime exceeding n exists.",
-      "mathContext": "`primes_infinite` := `unbounded_primes`: $\\forall n,\\, \\exists p$ prime, $p > n$ — equivalent to saying the set of primes is infinite"
+      "summary": "primes_infinite: an alias for unbounded_primes emphasizing the infinitude framing \u2014 for any bound n, a prime exceeding n exists.",
+      "mathContext": "`primes_infinite` := `unbounded_primes`: $\\forall n,\\, \\exists p$ prime, $p > n$ \u2014 equivalent to saying the set of primes is infinite"
     },
     {
       "id": "corollaries",
@@ -110,13 +110,13 @@
   ],
   "conclusion": {
     "summary": "This Lean formalization captures one of mathematics' most elegant arguments. The proof's power lies in its indirection: rather than constructing large primes (which is hard), we show that their non-existence leads to the absurdity of a prime dividing 1.\n\nThe construction $Q = n! + 1$ is ingenious. The factorial ensures that every 'small' prime divides $n!$, while the +1 shifts us to a number coprime to all of them. Whatever primes divide $Q$ must therefore be 'large'.\n\nThis formalization uses Mathlib's prime and factorial definitions, providing a clean and complete proof with no sorries.",
-    "implications": "**Theoretical Significance**: Euclid's theorem is the foundation for understanding prime distribution:\n\n1. Cryptographic Security — RSA, Diffie-Hellman, and elliptic curve cryptography all rely on the abundance of large primes. If primes were finite, modern encryption would be impossible.\n\n2.\n\nThe Prime Number Theorem — Proved in 1896 by Hadamard and de la Vallée Poussin: the number of primes below $n$ is approximately $n/\\ln(n)$. Primes thin out, but never vanish.\n\n3. Prime Gaps — How far apart can consecutive primes be? Gaps grow, but there's always another prime ahead.\n\n4. Open Problems — The Twin Prime Conjecture (infinitely many $p$ with $p+2$ prime), Goldbach's Conjecture (every even $n > 2$ is a sum of two primes), and the Riemann Hypothesis all extend Euclid's question.",
+    "implications": "**Theoretical Significance**: Euclid's theorem is the foundation for understanding prime distribution:\n\n1. Cryptographic Security \u2014 RSA, Diffie-Hellman, and elliptic curve cryptography all rely on the abundance of large primes. If primes were finite, modern encryption would be impossible.\n\n2.\n\nThe Prime Number Theorem \u2014 Proved in 1896 by Hadamard and de la Vall\u00e9e Poussin: the number of primes below $n$ is approximately $n/\\ln(n)$. Primes thin out, but never vanish.\n\n3. Prime Gaps \u2014 How far apart can consecutive primes be? Gaps grow, but there's always another prime ahead.\n\n4. Open Problems \u2014 The Twin Prime Conjecture (infinitely many $p$ with $p+2$ prime), Goldbach's Conjecture (every even $n > 2$ is a sum of two primes), and the Riemann Hypothesis all extend Euclid's question.",
     "openQuestions": [
       "Can we formalize Furstenberg's topological proof (1955)? Define a topology on $\\mathbb{Z}$ where arithmetic progressions $\\{a + nd\\}$ are open, show each $p\\mathbb{Z}$ is closed, and prove the complement of all $p\\mathbb{Z}$ is $\\{-1, 1\\}$ (non-empty), so finitely many primes cannot cover $\\mathbb{Z} \\setminus \\{-1,1\\}$.",
-      "The construction $n! + 1$ gives primes $> n$ but is hugely wasteful — e.g., $10! + 1 = 3628801 = 11 \\times 329891$, producing primes much larger than needed. Can we formalize tighter constructions, such as $p_1 p_2 \\cdots p_k + 1$ (Euclid's original), or Erdős's proof via the Bonse inequality, that give smaller witnesses?",
+      "The construction $n! + 1$ gives primes $> n$ but is hugely wasteful \u2014 e.g., $10! + 1 = 3628801 = 11 \\times 329891$, producing primes much larger than needed. Can we formalize tighter constructions, such as $p_1 p_2 \\cdots p_k + 1$ (Euclid's original), or Erd\u0151s's proof via the Bonse inequality, that give smaller witnesses?",
       "Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1$ then $\\{a, a+d, a+2d, \\ldots\\}$ contains infinitely many primes. Can we formalize the elementary proof (Selberg 1949) without L-functions, or must we use analytic methods?",
-      "Green-Tao theorem (2004): the primes contain arbitrarily long arithmetic progressions. This vastly extends Euclid — not only are primes infinite, they contain the same combinatorial structures as dense sets. Can any part of this be formalized?",
-      "Is $n! + 1$ ever prime? Known factorial primes include $1! + 1 = 2$, $2! + 1 = 3$, $3! + 1 = 7$, but $4! + 1 = 25 = 5^2$ is composite. It is unknown whether there are infinitely many $n$ with $n! + 1$ prime — a natural open problem arising directly from Euclid's construction."
+      "Green-Tao theorem (2004): the primes contain arbitrarily long arithmetic progressions. This vastly extends Euclid \u2014 not only are primes infinite, they contain the same combinatorial structures as dense sets. Can any part of this be formalized?",
+      "Is $n! + 1$ ever prime? Known factorial primes include $1! + 1 = 2$, $2! + 1 = 3$, $3! + 1 = 7$, but $4! + 1 = 25 = 5^2$ is composite. It is unknown whether there are infinitely many $n$ with $n! + 1$ prime \u2014 a natural open problem arising directly from Euclid's construction."
     ]
   },
   "references": [
@@ -125,14 +125,14 @@
       "title": "Elements, Book IX, Proposition 20",
       "year": "c. 300 BCE",
       "venue": "Classical geometry",
-      "note": "Original proof that there are infinitely many primes, using the construction p₁p₂...pₙ + 1"
+      "note": "Original proof that there are infinitely many primes, using the construction p\u2081p\u2082...p\u2099 + 1"
     },
     {
       "authors": "Euler, Leonhard",
       "title": "Variae observationes circa series infinitas",
       "year": "1737",
       "venue": "Commentarii academiae scientiarum Petropolitanae",
-      "note": "Proved the divergence of Σ 1/p (sum over primes), giving an analytic proof of infinitely many primes"
+      "note": "Proved the divergence of \u03a3 1/p (sum over primes), giving an analytic proof of infinitely many primes"
     },
     {
       "authors": "Hardy, G. H.; Wright, E. M.",
@@ -142,11 +142,11 @@
       "note": "Section 2.1 gives four proofs of the infinitude of primes including Euclid's, Euler's analytic proof, and proofs via Fermat numbers and Mersenne numbers"
     },
     {
-      "authors": "Aigner, Martin; Ziegler, Günter M.",
+      "authors": "Aigner, Martin; Ziegler, G\u00fcnter M.",
       "title": "Proofs from THE BOOK",
       "year": "1998",
       "venue": "Springer",
-      "note": "Chapter 1 presents six proofs of the infinitude of primes, calling it 'the first theorem in the BOOK' — includes Euclid's, Euler's, Goldbach's, Furstenberg's topological proof, and more"
+      "note": "Chapter 1 presents six proofs of the infinitude of primes, calling it 'the first theorem in the BOOK' \u2014 includes Euclid's, Euler's, Goldbach's, Furstenberg's topological proof, and more"
     }
   ],
   "crossReferences": [
@@ -168,27 +168,27 @@
     {
       "targetId": "prime-number-theorem",
       "relationship": "extends",
-      "description": "The PNT quantifies the infinitude: π(n) ~ n/ln(n), giving the asymptotic density of primes"
+      "description": "The PNT quantifies the infinitude: \u03c0(n) ~ n/ln(n), giving the asymptotic density of primes"
     },
     {
       "targetId": "prime-reciprocal-divergence",
       "relationship": "extends",
-      "description": "Euler's proof that Σ 1/p diverges gives an analytic proof of infinitely many primes and shows primes are 'denser' than perfect squares"
+      "description": "Euler's proof that \u03a3 1/p diverges gives an analytic proof of infinitely many primes and shows primes are 'denser' than perfect squares"
     },
     {
       "targetId": "dirichlets-theorem",
       "relationship": "extends",
-      "description": "Dirichlet's theorem shows infinitely many primes in arithmetic progressions a, a+d, a+2d, ... when gcd(a,d)=1 — a vast generalization of Euclid's result"
+      "description": "Dirichlet's theorem shows infinitely many primes in arithmetic progressions a, a+d, a+2d, ... when gcd(a,d)=1 \u2014 a vast generalization of Euclid's result"
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function φ(n) counts integers coprime to n; its relationship to primes via φ(p) = p-1 connects to the infinitude result"
+      "description": "Euler's totient function \u03c6(n) counts integers coprime to n; its relationship to primes via \u03c6(p) = p-1 connects to the infinitude result"
     },
     {
       "targetId": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem — $(p-1)! \\equiv -1 \\pmod{p}$ iff $p$ is prime — is the factorial-based primality criterion. Both results exploit the divisibility structure of factorials: the infinitude proof uses $k \\mid n!$ for $k \\leq n$ to show $n!+1$ avoids small prime factors, while Wilson's theorem uses the complete factorial $(p-1)!$ to characterize primes"
+      "description": "Wilson's theorem \u2014 $(p-1)! \\equiv -1 \\pmod{p}$ iff $p$ is prime \u2014 is the factorial-based primality criterion. Both results exploit the divisibility structure of factorials: the infinitude proof uses $k \\mid n!$ for $k \\leq n$ to show $n!+1$ avoids small prime factors, while Wilson's theorem uses the complete factorial $(p-1)!$ to characterize primes"
     },
     {
       "targetId": "sqrt2-irrational",
@@ -208,17 +208,17 @@
     {
       "targetId": "basel-problem",
       "relationship": "related",
-      "description": "Euler connected the Basel problem ($\\sum 1/n^2 = \\pi^2/6$) to primes via his product formula: $\\zeta(s) = \\sum 1/n^s = \\prod_p (1 - p^{-s})^{-1}$. This Euler product, valid because of unique prime factorization, converts the sum over integers into a product over primes — and the divergence of the product at $s = 1$ gives Euler's analytic proof of infinitely many primes"
+      "description": "Euler connected the Basel problem ($\\sum 1/n^2 = \\pi^2/6$) to primes via his product formula: $\\zeta(s) = \\sum 1/n^s = \\prod_p (1 - p^{-s})^{-1}$. This Euler product, valid because of unique prime factorization, converts the sum over integers into a product over primes \u2014 and the divergence of the product at $s = 1$ gives Euler's analytic proof of infinitely many primes"
     },
     {
       "targetId": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The GCD algorithm (Euclid's algorithm) is the computational tool underlying the proof: the key step $\\gcd(n!+1, p) = 1$ for all $p \\leq n$ relies on the fact that if $p \\mid n!$ and $p \\mid (n!+1)$, then $p \\mid 1$ — a divisibility argument at the heart of both the GCD algorithm and the infinitude proof"
+      "description": "The GCD algorithm (Euclid's algorithm) is the computational tool underlying the proof: the key step $\\gcd(n!+1, p) = 1$ for all $p \\leq n$ relies on the fact that if $p \\mid n!$ and $p \\mid (n!+1)$, then $p \\mid 1$ \u2014 a divisibility argument at the heart of both the GCD algorithm and the infinitude proof"
     },
     {
       "targetId": "mathematical-induction",
       "relationship": "foundational",
-      "description": "Euclid's proof uses a form of infinite descent: given any finite list of primes, construct a number not divisible by any of them, then find a prime factor — yielding a new prime. This constructive step, iterated, gives an inductively growing sequence of primes, demonstrating the well-ordering principle in action"
+      "description": "Euclid's proof uses a form of infinite descent: given any finite list of primes, construct a number not divisible by any of them, then find a prime factor \u2014 yielding a new prime. This constructive step, iterated, gives an inductively growing sequence of primes, demonstrating the well-ordering principle in action"
     }
   ],
   "relatedProofs": [
@@ -250,6 +250,7 @@
     "lineCount": 127,
     "axiomCount": 0,
     "theoremCount": 7,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

@@ -62,14 +62,14 @@
   "overview": {
     "historicalContext": "Dirichlet's theorem (1837) was the first use of analytic methods to prove results about the distribution of primes. While Euclid had proved there are infinitely many primes (c. 300 BCE), Dirichlet showed something far more refined: primes are equidistributed among arithmetic progressions.\n\nThe proof required Dirichlet to invent entirely new mathematical machinery: Dirichlet characters (group homomorphisms from (Z/qZ)* to C*) and L-functions (infinite series generalizing the Riemann zeta function). These tools became foundational for all of analytic number theory.\n\nThe key difficulty is proving that L(1, chi) is not zero for non-principal characters chi. For real characters, this requires showing the residue at s=1 is positive, which Dirichlet accomplished through careful analysis.",
     "problemStatement": "**Dirichlet's Theorem** (1837):\n\nFor any two positive coprime integers $a$ and $q$ (i.e., $\\gcd(a, q) = 1$), there are infinitely many prime numbers $p$ such that:\n$$p \\equiv a \\pmod{q}$$\n\nEquivalently, every arithmetic progression $a, a+q, a+2q, a+3q, \\ldots$ where $\\gcd(a,q) = 1$ contains infinitely many primes.\n\n**Examples:**\n- There are infinitely many primes of the form $4k+1$ (i.e., 5, 13, 17, 29, 37, ...)\n- There are infinitely many primes of the form $4k+3$ (i.e., 3, 7, 11, 19, 23, ...)\n- There are infinitely many primes of the form $6k+1$ (i.e., 7, 13, 19, 31, 37, ...)",
-    "text": "This formalization proves Dirichlet's theorem on primes in arithmetic progressions: for coprime a, q, there are infinitely many primes p ≡ a (mod q). The proof uses Dirichlet characters χ: (ℤ/qℤ)* → ℂ* and L-functions L(s, χ) = Σ χ(n)/n^s, with the key analytic input being the non-vanishing L(1, χ) ≠ 0 for non-principal characters (which prevents cancellation in the sum over primes).\n\nThe file axiomatizes the deep analytic components (character orthogonality, L-function non-vanishing) and derives the infinitude conclusion, the density result (primes equidistribute among residue classes), and special cases including primes ≡ 1 (mod 4) and primes ≡ 3 (mod 4). Commentary connects to the Chebotarev density theorem (the generalization to number fields), class field theory, and Linnik's theorem on the smallest prime in an arithmetic progression.",
+    "text": "This formalization proves Dirichlet's theorem on primes in arithmetic progressions: for coprime a, q, there are infinitely many primes p \u2261 a (mod q). The proof uses Dirichlet characters \u03c7: (\u2124/q\u2124)* \u2192 \u2102* and L-functions L(s, \u03c7) = \u03a3 \u03c7(n)/n^s, with the key analytic input being the non-vanishing L(1, \u03c7) \u2260 0 for non-principal characters (which prevents cancellation in the sum over primes).\n\nThe file axiomatizes the deep analytic components (character orthogonality, L-function non-vanishing) and derives the infinitude conclusion, the density result (primes equidistribute among residue classes), and special cases including primes \u2261 1 (mod 4) and primes \u2261 3 (mod 4). Commentary connects to the Chebotarev density theorem (the generalization to number fields), class field theory, and Linnik's theorem on the smallest prime in an arithmetic progression.",
     "proofStrategy": "Dirichlet's original proof uses analytic methods:\n\n**1. Dirichlet Characters**\nDefine characters chi: (Z/qZ)* -> C* as group homomorphisms, extended to all integers by setting chi(n) = 0 when gcd(n,q) > 1.\n\n**2. Dirichlet L-Functions**\nFor each character chi, define:\n$$L(s, \\chi) = \\sum_{n=1}^{\\infty} \\frac{\\chi(n)}{n^s}$$\n\nThese converge for Re(s) > 1 and can be analytically continued.\n\n**3. Orthogonality Relations**\nUsing character orthogonality:\n$$\\sum_{\\chi} \\chi(a)^{-1} \\log L(s, \\chi) = \\phi(q) \\sum_{p \\equiv a \\pmod q} \\frac{1}{p^s} + O(1)$$\n\n**4. Non-vanishing at s=1**\nThe key step: prove L(1, chi) is not zero for non-principal chi. As s -> 1+, the left side behaves like log(1/(s-1)), which diverges. This forces the sum over primes to diverge, proving infinitude.\n\n**5. Mathlib Implementation**\nMathlib provides a complete formal proof chain from L-function non-vanishing to the infinitude statement.",
     "keyInsights": [
       "Dirichlet characters are the key: multiplicative functions that 'detect' residue classes mod q",
       "L(1, chi) != 0 for non-principal chi is the heart of the proof - this is hard for real characters",
       "The proof gives equidistribution: primes are roughly equally distributed among the phi(q) coprime residue classes",
       "Mathlib's proof uses modern machinery: analytic continuation, Euler products, and functional equations",
-      "The special cases (primes 1 mod 4, 3 mod 4, etc.) serve as concrete instantiations — the 3 mod 4 case even admits an elementary proof via Euclid-style argument"
+      "The special cases (primes 1 mod 4, 3 mod 4, etc.) serve as concrete instantiations \u2014 the 3 mod 4 case even admits an elementary proof via Euclid-style argument"
     ],
     "prerequisites": [
       "Dirichlet characters and L-functions",
@@ -124,7 +124,7 @@
     {
       "targetId": "sophie-germain",
       "relationship": "related",
-      "description": "Sophie Germain primes > 3 satisfy p ≡ 5 (mod 6); Dirichlet's theorem guarantees infinitely many primes in this residue class"
+      "description": "Sophie Germain primes > 3 satisfy p \u2261 5 (mod 6); Dirichlet's theorem guarantees infinitely many primes in this residue class"
     },
     {
       "targetId": "infinitude-primes",
@@ -178,14 +178,15 @@
     "lineCount": 313,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "Dirichlet, Peter Gustav Lejeune",
-      "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält",
+      "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enth\u00e4lt",
       "year": "1837",
-      "venue": "Abhandlungen der Königlich Preußischen Akademie der Wissenschaften, 45–81",
+      "venue": "Abhandlungen der K\u00f6niglich Preu\u00dfischen Akademie der Wissenschaften, 45\u201381",
       "note": "Introduced L-functions and proved there are infinitely many primes in every coprime arithmetic progression"
     },
     {

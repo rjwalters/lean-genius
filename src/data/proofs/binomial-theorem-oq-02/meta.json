@@ -2,7 +2,7 @@
   "id": "binomial-theorem-oq-02",
   "title": "Multinomial Theorem as a Generalization of the Binomial Theorem",
   "slug": "binomial-theorem-oq-02",
-  "description": "Proves the multinomial theorem (∑ f(i))^n = ∑ multinomial(s,k) · ∏ f(i)^k(i) and shows the binomial theorem is the 2-variable special case.",
+  "description": "Proves the multinomial theorem (\u2211 f(i))^n = \u2211 multinomial(s,k) \u00b7 \u220f f(i)^k(i) and shows the binomial theorem is the 2-variable special case.",
   "meta": {
     "author": "Lean Genius Research Agent",
     "sourceUrl": "https://en.wikipedia.org/wiki/Multinomial_theorem",
@@ -20,12 +20,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_pow_eq_sum_piAntidiag",
-        "description": "The multinomial theorem: (∑ f(i))^n = ∑_{k:Σk=n} multinomial(s,k) · ∏ f(i)^k(i)",
+        "description": "The multinomial theorem: (\u2211 f(i))^n = \u2211_{k:\u03a3k=n} multinomial(s,k) \u00b7 \u220f f(i)^k(i)",
         "module": "Mathlib.Data.Nat.Choose.Multinomial"
       },
       {
         "theorem": "Nat.multinomial_insert",
-        "description": "Multinomial recurrence: multinomial(insert a s, k) = C(k(a)+Σ_{s}k, k(a)) · multinomial(s,k)",
+        "description": "Multinomial recurrence: multinomial(insert a s, k) = C(k(a)+\u03a3_{s}k, k(a)) \u00b7 multinomial(s,k)",
         "module": "Mathlib.Data.Nat.Choose.Multinomial"
       },
       {
@@ -35,7 +35,7 @@
       },
       {
         "theorem": "Nat.multinomial_spec",
-        "description": "Factorial formula: (∏ f(i)!) · multinomial(s, f) = (∑ f(i))!",
+        "description": "Factorial formula: (\u220f f(i)!) \u00b7 multinomial(s, f) = (\u2211 f(i))!",
         "module": "Mathlib.Data.Nat.Choose.Multinomial"
       },
       {
@@ -48,7 +48,7 @@
       "multinomial_theorem: Direct wrapper around Mathlib's Finset.sum_pow_eq_sum_piAntidiag",
       "multinomial_recurrence: The inductive step linking multinomial to binomial coefficients",
       "multinomial_eq_binomial: Two-variable case reduces to binomial coefficient",
-      "multinomial_total: Sum of all multinomials equals |s|^n, generalizing ∑ C(n,k) = 2^n",
+      "multinomial_total: Sum of all multinomials equals |s|^n, generalizing \u2211 C(n,k) = 2^n",
       "multinomial_inductive_structure: Shows how binomial theorem drives the multinomial induction",
       "multinomial_bool_form_eq_binomial: Bool-indexed multinomial form equals classical binomial expansion",
       "multinomial_triple: Three-way multinomial formula via recurrence",
@@ -60,16 +60,16 @@
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The **multinomial theorem** is a natural generalization of the binomial theorem, extending from two variables to any finite number. While the binomial theorem $(x+y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$ has been known since antiquity, the multinomial generalization appears prominently in the works of **Leibniz** and **Johann Bernoulli** in the 17th century.\n\nThe key insight is that expanding $(x_1 + x_2 + \\cdots + x_m)^n$ by distributing generates all monomials $x_1^{k_1} x_2^{k_2} \\cdots x_m^{k_m}$ with $k_1 + k_2 + \\cdots + k_m = n$. Each such monomial appears exactly $\\frac{n!}{k_1! k_2! \\cdots k_m!}$ times, which is the **multinomial coefficient**.\n\nThe formal connection to the binomial theorem is clean: the multinomial theorem for a 2-element set $\\{a, b\\}$ reduces exactly to the binomial theorem, with multinomial coefficients becoming binomial coefficients $\\binom{n}{k}$. Moreover, the proof proceeds by **induction on the number of variables**, using the binomial theorem at each step to split off one variable — making the binomial theorem literally the engine driving the multinomial proof.",
+    "historicalContext": "The **multinomial theorem** is a natural generalization of the binomial theorem, extending from two variables to any finite number. While the binomial theorem $(x+y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$ has been known since antiquity, the multinomial generalization appears prominently in the works of **Leibniz** and **Johann Bernoulli** in the 17th century.\n\nThe key insight is that expanding $(x_1 + x_2 + \\cdots + x_m)^n$ by distributing generates all monomials $x_1^{k_1} x_2^{k_2} \\cdots x_m^{k_m}$ with $k_1 + k_2 + \\cdots + k_m = n$. Each such monomial appears exactly $\\frac{n!}{k_1! k_2! \\cdots k_m!}$ times, which is the **multinomial coefficient**.\n\nThe formal connection to the binomial theorem is clean: the multinomial theorem for a 2-element set $\\{a, b\\}$ reduces exactly to the binomial theorem, with multinomial coefficients becoming binomial coefficients $\\binom{n}{k}$. Moreover, the proof proceeds by **induction on the number of variables**, using the binomial theorem at each step to split off one variable \u2014 making the binomial theorem literally the engine driving the multinomial proof.",
     "problemStatement": "**Open Question**: Can the multinomial theorem be formally proved as a generalization of the binomial theorem?\n\nThe multinomial theorem states: for any finite set $s$, function $f : s \\to R$ (with $R$ a commutative semiring), and $n \\in \\mathbb{N}$:\n$$\\left(\\sum_{i \\in s} f(i)\\right)^n = \\sum_{\\substack{k : s \\to \\mathbb{N} \\\\ \\sum k = n}} \\text{multinomial}(s, k) \\cdot \\prod_{i \\in s} f(i)^{k(i)}$$\n\nThis directly generalizes the binomial theorem: for $|s| = 2$, it reduces to $(x+y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$.",
-    "text": "Proves the multinomial theorem (∑ f(i))^n = ∑ multinomial(s,k) · ∏ f(i)^k(i) and shows the binomial theorem is the 2-variable special case.",
+    "text": "Proves the multinomial theorem (\u2211 f(i))^n = \u2211 multinomial(s,k) \u00b7 \u220f f(i)^k(i) and shows the binomial theorem is the 2-variable special case.",
     "proofStrategy": "The proof strategy has two parts:\n\n1. **Multinomial theorem via Mathlib**: Mathlib's `Finset.sum_pow_eq_sum_piAntidiag` provides the multinomial theorem directly. We wrap this as `multinomial_theorem` and derive corollaries from it.\n\n2. **The generalization connection**: The theorem `multinomial_bool_form_eq_binomial` proves the Bool-indexed multinomial sum equals the classical binomial expansion by: (a) applying the multinomial theorem to $\\{\\text{false}, \\text{true}\\}$ with the function `fun b => if b then y else x`; (b) simplifying the finite sum and product over a 2-element set using `sum_pair` and `prod_pair`; (c) using `h.symm.trans (binomial_theorem x y n)` to chain the equality through $(x+y)^n$.",
     "keyInsights": [
       "**Induction drives the generalization**: The multinomial theorem proof proceeds by induction on $|s|$. The inductive step uses the binomial theorem to split $(f(a) + \\sum_s f)^n$, then the induction hypothesis applies to $(\\sum_s f)^m$ for each $m \\leq n$. The key recurrence `multinomial_recurrence` (Nat.multinomial_insert) parallels Pascal's identity for binomial coefficients",
-      "**Linearity of the multinomial sum**: Setting all $f(i) = 1$ gives $|s|^n = \\sum_{k: \\Sigma k = n} \\text{multinomial}(s, k)$ — the total count of exponent distributions equals $|s|^n$. This generalizes $\\sum_{k=0}^n \\binom{n}{k} = 2^n$",
+      "**Linearity of the multinomial sum**: Setting all $f(i) = 1$ gives $|s|^n = \\sum_{k: \\Sigma k = n} \\text{multinomial}(s, k)$ \u2014 the total count of exponent distributions equals $|s|^n$. This generalizes $\\sum_{k=0}^n \\binom{n}{k} = 2^n$",
       "**The Bool-indexed form is the bridge**: The formal connection between multinomial and binomial is cleanest via $s = \\{\\text{false}, \\text{true}\\}$: `multinomial_bool_form_eq_binomial` shows the multinomial expansion over Bool equals the classical binomial sum. This is the precise statement that the multinomial theorem implies the binomial theorem",
-      "**Definitional reduction avoids Bool equality issues**: Instead of `if b = false then x else y` (which requires `true ≠ false` to evaluate symbolically), using `if b then y else x` reduces definitionally for Bool values, enabling clean `rfl`-level proofs in simp",
-      "**Multinomial coefficients telescope to factorials**: The recurrence `multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s, k)` applied $m$ times to reduce from $m$ variables to 0 yields a telescoping product that equals $n! / (k_1! \\cdots k_m!)$, the combinatorial formula for arrangements of a multiset. This makes the formal multinomial coefficient definition consistent with the combinatorial interpretation."
+      "**Definitional reduction avoids Bool equality issues**: Instead of `if b = false then x else y` (which requires `true \u2260 false` to evaluate symbolically), using `if b then y else x` reduces definitionally for Bool values, enabling clean `rfl`-level proofs in simp",
+      "**Multinomial coefficients telescope to factorials**: The recurrence `multinomial(insert a s, k) = C(k(a)+\u03a3k, k(a)) \u00b7 multinomial(s, k)` applied $m$ times to reduce from $m$ variables to 0 yields a telescoping product that equals $n! / (k_1! \\cdots k_m!)$, the combinatorial formula for arrangements of a multiset. This makes the formal multinomial coefficient definition consistent with the combinatorial interpretation."
     ],
     "prerequisites": [
       "Abstract algebra",
@@ -82,7 +82,7 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 4,
-      "summary": "Imports Mathlib.Data.Nat.Choose.Multinomial (multinomial coefficients and Finset.sum_pow_eq_sum_piAntidiag), Mathlib.Data.Nat.Choose.Sum (binomial theorem add_pow), Mathlib.Algebra.BigOperators.Ring.Finset (∑ notation), and Mathlib.Tactic."
+      "summary": "Imports Mathlib.Data.Nat.Choose.Multinomial (multinomial coefficients and Finset.sum_pow_eq_sum_piAntidiag), Mathlib.Data.Nat.Choose.Sum (binomial theorem add_pow), Mathlib.Algebra.BigOperators.Ring.Finset (\u2211 notation), and Mathlib.Tactic."
     },
     {
       "id": "module-docstring",
@@ -96,28 +96,28 @@
       "title": "Part 1: The Multinomial Theorem",
       "startLine": 52,
       "endLine": 69,
-      "summary": "multinomial_theorem: (∑ f(i))^n = ∑_{k:Σk=n} multinomial(s,k) · ∏ f(i)^k(i). Direct wrapper around Finset.sum_pow_eq_sum_piAntidiag. Works for any CommSemiring R and any finite type α."
+      "summary": "multinomial_theorem: (\u2211 f(i))^n = \u2211_{k:\u03a3k=n} multinomial(s,k) \u00b7 \u220f f(i)^k(i). Direct wrapper around Finset.sum_pow_eq_sum_piAntidiag. Works for any CommSemiring R and any finite type \u03b1."
     },
     {
       "id": "part2-coefficient-properties",
       "title": "Part 2: Multinomial Coefficient Properties",
       "startLine": 71,
       "endLine": 103,
-      "summary": "Four properties: multinomial_spec (factorial formula: ∏k(i)! · multinomial = (∑k(i))!), multinomial_recurrence (the key inductive step: multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s,k)), multinomial_eq_binomial (2-element case equals binomial coefficient), multinomial_pos (all multinomials are positive)."
+      "summary": "Four properties: multinomial_spec (factorial formula: \u220fk(i)! \u00b7 multinomial = (\u2211k(i))!), multinomial_recurrence (the key inductive step: multinomial(insert a s, k) = C(k(a)+\u03a3k, k(a)) \u00b7 multinomial(s,k)), multinomial_eq_binomial (2-element case equals binomial coefficient), multinomial_pos (all multinomials are positive)."
     },
     {
       "id": "part3-sum-identity",
       "title": "Part 3: The Sum Identity",
       "startLine": 105,
       "endLine": 116,
-      "summary": "multinomial_total: ∑_{k:Σk=n} multinomial(s,k) = |s|^n. Proved by applying the multinomial theorem to f ≡ 1, then simp with nsmul_eq_mul. Generalizes ∑ C(n,k) = 2^n."
+      "summary": "multinomial_total: \u2211_{k:\u03a3k=n} multinomial(s,k) = |s|^n. Proved by applying the multinomial theorem to f \u2261 1, then simp with nsmul_eq_mul. Generalizes \u2211 C(n,k) = 2^n."
     },
     {
       "id": "part4-binomial-theorem",
       "title": "Part 4: The Classical Binomial Theorem",
       "startLine": 118,
       "endLine": 131,
-      "summary": "Restates the binomial theorem (x+y)^n = ∑ C(n,k) x^k y^(n-k) as the 2-variable foundation. Also proves sum_binomial_eq_pow_two as a consequence."
+      "summary": "Restates the binomial theorem (x+y)^n = \u2211 C(n,k) x^k y^(n-k) as the 2-variable foundation. Also proves sum_binomial_eq_pow_two as a consequence."
     },
     {
       "id": "part5-inductive-connection",
@@ -138,22 +138,22 @@
       "title": "Part 7: Concrete Examples and Verification",
       "startLine": 194,
       "endLine": 226,
-      "summary": "Five native_decide verifications: C(3;1,1,1)=6, C(4;2,1,1)=12, C(6;2,2,2)=90, ∑multinomials(Fin3, 2)=9=3², ∑multinomials(Fin4, 3)=64=4³. Also trinomial square and cube proved by ring."
+      "summary": "Five native_decide verifications: C(3;1,1,1)=6, C(4;2,1,1)=12, C(6;2,2,2)=90, \u2211multinomials(Fin3, 2)=9=3\u00b2, \u2211multinomials(Fin4, 3)=64=4\u00b3. Also trinomial square and cube proved by ring."
     },
     {
       "id": "part8-special-formulas",
       "title": "Part 8: Special Value Formulas",
       "startLine": 228,
       "endLine": 250,
-      "summary": "binomial_sum_eq_pow2: ∑ C(n,k) = 2^n. multinomial_pair_choose: multinomial {a,b} f = C(f(a)+f(b), f(a)). multinomial_triple: Three-way formula via two binomial coefficients."
+      "summary": "binomial_sum_eq_pow2: \u2211 C(n,k) = 2^n. multinomial_pair_choose: multinomial {a,b} f = C(f(a)+f(b), f(a)). multinomial_triple: Three-way formula via two binomial coefficients."
     }
   ],
   "conclusion": {
     "summary": "This 280-line formalization confirms: YES, the multinomial theorem can be proved as a generalization of the binomial theorem. The proof uses Mathlib's Finset.sum_pow_eq_sum_piAntidiag as the core, with 8 named theorems covering the inductive structure, coefficient properties, the sum identity, and the explicit 2-variable connection. The file achieves 0 sorries and proves the multinomial theorem for arbitrary commutative semirings over arbitrary finite types.",
-    "implications": "**Theoretical Significance**: The multinomial theorem is fundamental to combinatorics (counting arrangements with repetition), algebra (polynomial ring computations), probability (multinomial distribution), and analysis (multivariate Taylor expansions).\n\nThe formal proof that it generalizes the binomial theorem establishes the clean hierarchical structure: binomial → multinomial → power series generalizations. The multinomial coefficient formula n!/(k₁!···kₘ!) unifies Pascal's triangle into a single multi-dimensional structure.",
+    "implications": "**Theoretical Significance**: The multinomial theorem is fundamental to combinatorics (counting arrangements with repetition), algebra (polynomial ring computations), probability (multinomial distribution), and analysis (multivariate Taylor expansions).\n\nThe formal proof that it generalizes the binomial theorem establishes the clean hierarchical structure: binomial \u2192 multinomial \u2192 power series generalizations. The multinomial coefficient formula n!/(k\u2081!\u00b7\u00b7\u00b7k\u2098!) unifies Pascal's triangle into a single multi-dimensional structure.",
     "openQuestions": [
       "Can the multinomial distribution and its moment-generating function be formally proved using this multinomial theorem infrastructure?",
-      "Is there a clean proof of the Vandermonde identity ∑_k C(m,k)C(n,r-k) = C(m+n,r) using multinomial coefficient identities?",
+      "Is there a clean proof of the Vandermonde identity \u2211_k C(m,k)C(n,r-k) = C(m+n,r) using multinomial coefficient identities?",
       "Can the q-multinomial theorem (quantum generalization) be formalized using Mathlib's q-analog infrastructure?",
       "Is there a direct Lean proof of the multinomial theorem by induction on |s| that avoids delegating to Finset.sum_pow_eq_sum_piAntidiag?"
     ],
@@ -163,17 +163,17 @@
     {
       "targetId": "binomial-theorem",
       "relationship": "extends",
-      "description": "The classical binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem proved here"
+      "description": "The classical binomial theorem (x+y)^n = \u03a3 C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem proved here"
     },
     {
       "targetId": "combinations-formula",
       "relationship": "foundational",
-      "description": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) is a special case of the multinomial coefficient n!/(k₁!···kₘ!)"
+      "description": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) is a special case of the multinomial coefficient n!/(k\u2081!\u00b7\u00b7\u00b7k\u2098!)"
     },
     {
       "targetId": "arithmetic-series-oq-02",
       "relationship": "related",
-      "description": "Both involve multi-index combinatorics: multinomial coefficients generalize binomial coefficients, while simplicial numbers generalize triangular numbers — both are diagonal entries of Pascal's simplex"
+      "description": "Both involve multi-index combinatorics: multinomial coefficients generalize binomial coefficients, while simplicial numbers generalize triangular numbers \u2014 both are diagonal entries of Pascal's simplex"
     }
   ],
   "relatedProofs": [
@@ -197,6 +197,7 @@
     "lineCount": 280,
     "axiomCount": 0,
     "theoremCount": 17,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   }
 }

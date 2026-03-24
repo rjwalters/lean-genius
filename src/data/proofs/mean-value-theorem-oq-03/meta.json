@@ -2,9 +2,9 @@
   "id": "mean-value-theorem-oq-03",
   "title": "Vector-Valued Mean Value Inequality",
   "slug": "mean-value-theorem-oq-03",
-  "description": "The classical MVT equality f'(c) = slope generalizes to the mean value inequality for vector-valued functions: ‖f(b) - f(a)‖ ≤ C·(b-a) when ‖f'(t)‖ ≤ C. Proves 17 theorems with 0 sorries covering the core inequality, scalar MVT as special case, circular counterexample, Lipschitz consequences, ODE uniqueness bounds, and Banach space generalizations.",
+  "description": "The classical MVT equality f'(c) = slope generalizes to the mean value inequality for vector-valued functions: \u2016f(b) - f(a)\u2016 \u2264 C\u00b7(b-a) when \u2016f'(t)\u2016 \u2264 C. Proves 17 theorems with 0 sorries covering the core inequality, scalar MVT as special case, circular counterexample, Lipschitz consequences, ODE uniqueness bounds, and Banach space generalizations.",
   "meta": {
-    "author": "Dieudonné, Lang (formalized in Lean 4 with Mathlib)",
+    "author": "Dieudonn\u00e9, Lang (formalized in Lean 4 with Mathlib)",
     "date": "1960",
     "status": "verified",
     "tags": [
@@ -26,12 +26,12 @@
     "mathlibDependencies": [
       {
         "theorem": "norm_image_sub_le_of_norm_deriv_le_segment'",
-        "description": "Vector-valued mean value inequality: ‖f(x)-f(a)‖ ≤ C·(x-a) when ‖f'‖ ≤ C on [a,b].",
+        "description": "Vector-valued mean value inequality: \u2016f(x)-f(a)\u2016 \u2264 C\u00b7(x-a) when \u2016f'\u2016 \u2264 C on [a,b].",
         "module": "Mathlib.Analysis.Calculus.MeanValue"
       },
       {
         "theorem": "exists_deriv_eq_slope",
-        "description": "Scalar MVT (Lagrange): ∃ c ∈ (a,b), f'(c) = (f(b)-f(a))/(b-a).",
+        "description": "Scalar MVT (Lagrange): \u2203 c \u2208 (a,b), f'(c) = (f(b)-f(a))/(b-a).",
         "module": "Mathlib.Analysis.Calculus.MeanValue"
       },
       {
@@ -41,7 +41,7 @@
       },
       {
         "theorem": "Convex.norm_image_sub_le_of_norm_fderivWithin_le",
-        "description": "Banach space MVT: ‖f(b)-f(a)‖ ≤ C·‖b-a‖ on convex sets.",
+        "description": "Banach space MVT: \u2016f(b)-f(a)\u2016 \u2264 C\u00b7\u2016b-a\u2016 on convex sets.",
         "module": "Mathlib.Analysis.Calculus.MeanValue"
       },
       {
@@ -67,7 +67,7 @@
       "Strict monotonicity from positive derivative (proved via scalar MVT)",
       "Antiderivative uniqueness: same derivative implies constant difference (proved via vector MVT)"
     ],
-    "historicalContext": "The classical Mean Value Theorem — that f'(c) = (f(b)-f(a))/(b-a) for some c ∈ (a,b) — was formulated by Lagrange (1801) building on earlier work by Rolle (1691). When analysis moved to vector-valued and Banach-space-valued functions in the 20th century, mathematicians discovered this equality form has no analogue: the intermediate value theorem, which underpins the scalar MVT, fails in higher dimensions. Dieudonné (1960) emphasized that the correct generalization is the mean value inequality ‖f(b)-f(a)‖ ≤ sup‖f'‖·(b-a). This inequality, though weaker than equality, suffices for all major applications: Lipschitz estimates, ODE uniqueness (Picard-Lindelöf), contraction mappings, and the implicit/inverse function theorems in Banach spaces.",
+    "historicalContext": "The classical Mean Value Theorem \u2014 that f'(c) = (f(b)-f(a))/(b-a) for some c \u2208 (a,b) \u2014 was formulated by Lagrange (1801) building on earlier work by Rolle (1691). When analysis moved to vector-valued and Banach-space-valued functions in the 20th century, mathematicians discovered this equality form has no analogue: the intermediate value theorem, which underpins the scalar MVT, fails in higher dimensions. Dieudonn\u00e9 (1960) emphasized that the correct generalization is the mean value inequality \u2016f(b)-f(a)\u2016 \u2264 sup\u2016f'\u2016\u00b7(b-a). This inequality, though weaker than equality, suffices for all major applications: Lipschitz estimates, ODE uniqueness (Picard-Lindel\u00f6f), contraction mappings, and the implicit/inverse function theorems in Banach spaces.",
     "dateAdded": "2026-03-06",
     "parentProof": "mean-value-theorem",
     "axiomCount": 0,
@@ -75,20 +75,20 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Mean Value Theorem has a rich 300-year history. **Rolle** (1691) proved the special case $f(a) = f(b) \\Rightarrow f'(c) = 0$. **Lagrange** (1801) generalized to $f'(c) = \\frac{f(b)-f(a)}{b-a}$. **Cauchy** (1823) gave the ratio form for parametric curves. When **Banach** (1932) and **Dieudonné** (1960) developed analysis in normed spaces, they discovered the equality form fails: circular motion $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1 \\neq 0$. The resolution is the **mean value inequality** $\\|f(b) - f(a)\\| \\leq C \\cdot (b-a)$, which Dieudonné called 'the correct form of the mean value theorem.' This inequality is strictly weaker than equality for $\\mathbb{R} \\to \\mathbb{R}$ but is the *only* form available for $\\mathbb{R} \\to E$ and $E \\to F$, and it suffices for all applications in nonlinear analysis.",
+    "historicalContext": "The Mean Value Theorem has a rich 300-year history. **Rolle** (1691) proved the special case $f(a) = f(b) \\Rightarrow f'(c) = 0$. **Lagrange** (1801) generalized to $f'(c) = \\frac{f(b)-f(a)}{b-a}$. **Cauchy** (1823) gave the ratio form for parametric curves. When **Banach** (1932) and **Dieudonn\u00e9** (1960) developed analysis in normed spaces, they discovered the equality form fails: circular motion $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1 \\neq 0$. The resolution is the **mean value inequality** $\\|f(b) - f(a)\\| \\leq C \\cdot (b-a)$, which Dieudonn\u00e9 called 'the correct form of the mean value theorem.' This inequality is strictly weaker than equality for $\\mathbb{R} \\to \\mathbb{R}$ but is the *only* form available for $\\mathbb{R} \\to E$ and $E \\to F$, and it suffices for all applications in nonlinear analysis.",
     "problemStatement": "**Open Question #3** from the MVT gallery: Generalize the mean value theorem to vector-valued functions $f : \\mathbb{R} \\to E$ where $E$ is a normed space. Show that the equality $f'(c) = \\text{slope}$ must be replaced by the inequality $\\|f(b) - f(a)\\| \\leq \\sup\\|f'\\| \\cdot (b-a)$, and develop consequences for Lipschitz continuity, ODE theory, and Banach spaces.",
-    "text": "The classical MVT equality f'(c) = slope generalizes to the mean value inequality for vector-valued functions: ‖f(b) - f(a)‖ ≤ C·(b-a) when ‖f'(t)‖ ≤ C. Proves 17 theorems with 0 sorries covering the core inequality, scalar MVT as special case, circular counterexample, Lipschitz consequences, ODE uniqueness bounds, and Banach space generalizations.",
-    "proofStrategy": "The formalization builds a comprehensive theory in five stages: (1) State the core mean value inequality by wrapping Mathlib's `norm_image_sub_le_of_norm_deriv_le_segment'`. (2) Show the scalar MVT as a special case and contrast it with the classical equality form from `exists_deriv_eq_slope`. (3) Provide the circular motion counterexample demonstrating why equality fails. (4) Derive consequences: Lipschitz continuity, zero-derivative-implies-constant, contraction bounds, displacement bounds, and ODE difference bounds. (5) Generalize to arbitrary Banach spaces $E \\to F$ using Fréchet derivatives and prove the constant-function theorem in this generality.",
+    "text": "The classical MVT equality f'(c) = slope generalizes to the mean value inequality for vector-valued functions: \u2016f(b) - f(a)\u2016 \u2264 C\u00b7(b-a) when \u2016f'(t)\u2016 \u2264 C. Proves 17 theorems with 0 sorries covering the core inequality, scalar MVT as special case, circular counterexample, Lipschitz consequences, ODE uniqueness bounds, and Banach space generalizations.",
+    "proofStrategy": "The formalization builds a comprehensive theory in five stages: (1) State the core mean value inequality by wrapping Mathlib's `norm_image_sub_le_of_norm_deriv_le_segment'`. (2) Show the scalar MVT as a special case and contrast it with the classical equality form from `exists_deriv_eq_slope`. (3) Provide the circular motion counterexample demonstrating why equality fails. (4) Derive consequences: Lipschitz continuity, zero-derivative-implies-constant, contraction bounds, displacement bounds, and ODE difference bounds. (5) Generalize to arbitrary Banach spaces $E \\to F$ using Fr\u00e9chet derivatives and prove the constant-function theorem in this generality.",
     "keyInsights": [
-      "**Equality → Inequality**: The scalar MVT $f'(c) = \\text{slope}$ uses the intermediate value theorem, which has no vector analogue. The inequality $\\|f(b)-f(a)\\| \\leq C(b-a)$ replaces IVT with the triangle inequality, which works in any normed space.",
+      "**Equality \u2192 Inequality**: The scalar MVT $f'(c) = \\text{slope}$ uses the intermediate value theorem, which has no vector analogue. The inequality $\\|f(b)-f(a)\\| \\leq C(b-a)$ replaces IVT with the triangle inequality, which works in any normed space.",
       "**Circular motion as canonical obstruction**: $f(t) = (\\cos t, \\sin t)$ returns to its starting point ($\\|f(2\\pi)-f(0)\\| = 0$) while $\\|f'(t)\\| = 1$ everywhere. No $c$ satisfies $f'(c) = 0$, proving the equality form is impossible for vector functions.",
       "**Zero derivative trick**: Setting $C = 0$ in the MVT inequality gives $\\|f(b)-f(a)\\| \\leq 0$, hence $f(b) = f(a)$. This proves the vector-valued constant-function theorem without the scalar MVT, using only the triangle inequality argument.",
-      "**ODE uniqueness via subtraction**: Applying the MVT inequality to $h = f - g$ with $\\|h'\\| \\leq q$ gives $\\|h(x)\\| \\leq q(x-a)$. This is the core of Picard-Lindelöf uniqueness: two solutions with close derivatives stay close.",
+      "**ODE uniqueness via subtraction**: Applying the MVT inequality to $h = f - g$ with $\\|h'\\| \\leq q$ gives $\\|h(x)\\| \\leq q(x-a)$. This is the core of Picard-Lindel\u00f6f uniqueness: two solutions with close derivatives stay close.",
       "**Scalar MVT still needed**: Despite the vector inequality being more general, the scalar equality $f'(c) = \\text{slope}$ is genuinely needed for strict monotonicity ($f' > 0 \\Rightarrow f$ increasing). The inequality only gives non-strict bounds."
     ],
     "prerequisites": [
       "Normed spaces and Banach spaces (NormedAddCommGroup, NormedSpace)",
-      "Derivatives: HasDerivWithinAt, DifferentiableOn, Fréchet derivative",
+      "Derivatives: HasDerivWithinAt, DifferentiableOn, Fr\u00e9chet derivative",
       "Lipschitz continuity (LipschitzOnWith, NNReal)",
       "Convex sets and intervals (Icc, Ico, Ioo)",
       "Parent proof: Mean Value Theorem (scalar version)"
@@ -140,14 +140,14 @@
     {
       "id": "banach-space",
       "title": "General Banach Space MVT",
-      "summary": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction mapping theorem.",
+      "summary": "For $f : E \\to F$ between normed spaces, Fr\u00e9chet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction mapping theorem.",
       "startLine": 239,
       "endLine": 271
     },
     {
       "id": "ode-uniqueness",
       "title": "ODE Difference Bound",
-      "summary": "For $f, g$ with $f(a) = g(a)$ and $\\|f'(t) - g'(t)\\| \\leq q$: $\\|f(x) - g(x)\\| \\leq q(x-a)$. Core argument behind Picard-Lindelöf uniqueness, applying MVT to $h = f - g$.",
+      "summary": "For $f, g$ with $f(a) = g(a)$ and $\\|f'(t) - g'(t)\\| \\leq q$: $\\|f(x) - g(x)\\| \\leq q(x-a)$. Core argument behind Picard-Lindel\u00f6f uniqueness, applying MVT to $h = f - g$.",
       "startLine": 273,
       "endLine": 305
     },
@@ -161,14 +161,14 @@
     {
       "id": "banach-extensions",
       "title": "Extended Banach Space Results",
-      "summary": "Three additional variants: Banach MVT with `DifferentiableAt`, with `HasFDerivWithinAt`, and zero Fréchet derivative implies constant. Plus Lipschitz from pointwise differentiability.",
+      "summary": "Three additional variants: Banach MVT with `DifferentiableAt`, with `HasFDerivWithinAt`, and zero Fr\u00e9chet derivative implies constant. Plus Lipschitz from pointwise differentiability.",
       "startLine": 389,
       "endLine": 461
     }
   ],
   "conclusion": {
     "summary": "Complete formalization of the vector-valued mean value inequality and its rich ecosystem of consequences, with 17 theorems and 0 sorries. All results either proved directly or delegated to Mathlib. Covers the core inequality, scalar specialization, canonical counterexample, Lipschitz theory, ODE bounds, and full Banach space generalizations.",
-    "implications": "**Theoretical Significance**: The mean value inequality is arguably the single most important tool in nonlinear analysis.\n\nThis formalization makes its consequences — Lipschitz estimates, ODE uniqueness, contraction bounds, constant-function theorems — available in Lean 4 for any normed or Banach space. The clear separation of scalar MVT (equality, uses IVT) from vector MVT (inequality, uses triangle inequality) illuminates why different proof techniques are needed and which results require which form.",
+    "implications": "**Theoretical Significance**: The mean value inequality is arguably the single most important tool in nonlinear analysis.\n\nThis formalization makes its consequences \u2014 Lipschitz estimates, ODE uniqueness, contraction bounds, constant-function theorems \u2014 available in Lean 4 for any normed or Banach space. The clear separation of scalar MVT (equality, uses IVT) from vector MVT (inequality, uses triangle inequality) illuminates why different proof techniques are needed and which results require which form.",
     "openQuestions": [
       "Can the mean value inequality be proved directly in Lean without Mathlib's norm_image_sub_le_of_norm_deriv_le_segment', using only the triangle inequality and Riemann integral estimates?",
       "Can the Gronwall inequality be formalized in Lean 4 as a generalization of the displacement bound?",
@@ -177,7 +177,7 @@
     "crossReferences": [
       {
         "proofId": "mean-value-theorem",
-        "relationship": "Parent proof — scalar Mean Value Theorem that this generalizes to vector-valued functions."
+        "relationship": "Parent proof \u2014 scalar Mean Value Theorem that this generalizes to vector-valued functions."
       }
     ]
   },
@@ -194,7 +194,8 @@
     "lineCount": 461,
     "axiomCount": 0,
     "theoremCount": 17,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -220,7 +221,7 @@
   ],
   "references": [
     {
-      "authors": "Jean Dieudonné",
+      "authors": "Jean Dieudonn\u00e9",
       "title": "Foundations of Modern Analysis",
       "year": "1960",
       "venue": "Academic Press",
@@ -242,7 +243,7 @@
     },
     {
       "authors": "Joseph-Louis Lagrange",
-      "title": "Leçons sur le calcul des fonctions",
+      "title": "Le\u00e7ons sur le calcul des fonctions",
       "year": "1801",
       "venue": "Paris",
       "note": "Original statement of the scalar mean value theorem (Lagrange's MVT)"

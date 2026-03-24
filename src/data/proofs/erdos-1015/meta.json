@@ -1,10 +1,10 @@
 {
   "id": "erdos-1015",
-  "title": "Erdős Problem #1015: Partitioning 2-Colored Complete Graphs",
+  "title": "Erd\u0151s Problem #1015: Partitioning 2-Colored Complete Graphs",
   "slug": "erdos-1015",
-  "description": "What is f(t), the minimum leftover vertices when partitioning any 2-colored Kₙ into vertex-disjoint monochromatic Kₜ's? Burr-Erdős-Spencer (1975) proved f(t) = R(t, t-1) + x where 0 ≤ x < t, showing f(t)^{1/t} → 4 (not 1) and f(t) is not O(t).",
+  "description": "What is f(t), the minimum leftover vertices when partitioning any 2-colored K\u2099 into vertex-disjoint monochromatic K\u209c's? Burr-Erd\u0151s-Spencer (1975) proved f(t) = R(t, t-1) + x where 0 \u2264 x < t, showing f(t)^{1/t} \u2192 4 (not 1) and f(t) is not O(t).",
   "meta": {
-    "author": "Burr-Erdős-Spencer (1975)",
+    "author": "Burr-Erd\u0151s-Spencer (1975)",
     "sourceUrl": "https://erdosproblems.com/1015",
     "date": "1975",
     "status": "axiomatized",
@@ -26,15 +26,15 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem lies at the intersection of Ramsey theory and graph partitioning—two pillars of combinatorics that grew from the same soil in the mid-20th century. Ramsey's theorem (1930) guarantees monochromatic cliques in any edge-coloring, but says nothing about how efficiently one can *pack* such cliques. Erdős posed the question: if we greedily tile a 2-colored $K_n$ with vertex-disjoint monochromatic copies of $K_t$, how many vertices must remain uncovered?\n\nThe first breakthrough came from Moon (1966), who proved $f(3) = 4$ for $n \\ge 8$: when packing monochromatic triangles in any 2-colored complete graph on 8 or more vertices, at most 4 vertices are left over. Moon's proof combined a careful case analysis of the red/blue degree sequence with an extremal argument about triangle-free subgraphs.\n\nErdős himself observed that $f(t) < R(t,t) \\le 4^t$ by a simple but elegant argument: the leftover vertices, together with their induced coloring, form a 2-colored complete graph containing no monochromatic $K_t$ (otherwise we could extend the partition). By definition, the size of such a graph is bounded by $R(t,t) - 1$. The upper bound $R(t,t) \\le \\binom{2t-2}{t-1} \\le 4^t$ is the classical Erdős-Szekeres (1935) result, proved by double induction on the Ramsey numbers.\n\nThis led Erdős to ask two more refined questions: (1) Does $f(t)^{1/t} \\to 1$, meaning the leftover grows subexponentially? (2) Is $f(t) = O(t)$, meaning linear growth? Both questions hoped that the $4^t$ Ramsey bound was a massive overestimate.\n\nBurr, Erdős, and Spencer (1975) settled both questions negatively with an exact formula. They proved that for $t \\ge 3$ and $n$ sufficiently large, $f(t) = R(t, t-1) + x$ where $0 \\le x < t$ is determined by $n \\pmod{t}$. The key shift is from the *diagonal* Ramsey number $R(t,t)$ to the *off-diagonal* $R(t, t-1)$: the leftover vertices can contain a monochromatic $K_{t-1}$ but not $K_t$, so the controlling quantity is $R(t, t-1)$, not $R(t,t)$. Since $R(t, t-1)$ still grows exponentially (at rate $\\sim 4^t / \\sqrt{t}$ by the Erdős-Szekeres recursion), we get $f(t)^{1/t} \\to 4$ and $f(t)$ is far from linear.\n\nThe Burr-Erdős-Spencer result exemplifies a common theme in Ramsey theory: the transition from crude exponential bounds to exact or near-exact formulas often requires replacing diagonal Ramsey numbers with off-diagonal ones. This pattern recurs in the Ramsey multiplicity problem, the Folkman number problem, and the Erdős-Hajnal conjecture.",
-    "problemStatement": "Let $f(t)$ be minimal such that, in any two-coloring of the edges of $K_n$, the vertices can be partitioned into vertex-disjoint monochromatic copies of $K_t$ (not necessarily the same color) with at most $f(t)$ vertices remaining. Estimate $f(t)$.\n\nSpecifically:\n1. Is $f(t)^{1/t} \\to 1$?\n2. Is $f(t) = O(t)$?\n\n**Status**: SOLVED — Burr, Erdős, Spencer (1975): $f(t) = R(t, t-1) + x$ with $0 \\le x < t$.",
-    "text": "What is f(t), the minimum leftover vertices when partitioning any 2-colored Kₙ into vertex-disjoint monochromatic Kₜ's? Burr-Erdős-Spencer (1975) proved f(t) = R(t, t-1) + x where 0 ≤ x < t, showing f(t)^{1/t} → 4 (not 1) and f(t) is not O(t).",
-    "proofStrategy": "The formalization takes a layered approach mirroring the historical development of the problem.\n\n**Layer 1 — Definitions (lines 45–85)**: The file builds up the combinatorial framework: `TwoColoring n` as a function $\\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$, symmetry constraints, monochromatic cliques via `isMonochromaticClique`, vertex-disjointness via `areDisjoint`, and the central `CliquePartition` structure bundling cliques, colors, size constraints, monochromaticity proofs, and disjointness into a single dependent type.\n\n**Layer 2 — The function $f(t)$ (lines 87–103)**: Three nested optimizations define $f(t)$ as a minimax: `minLeftover(c,t)` minimizes over partitions for a fixed coloring, `f_n(n,t)` maximizes over colorings for fixed $n$, and `f(t)` takes the supremum over all $n$.\n\n**Layer 3 — Results (lines 105–155)**: Moon's theorem $f(3) = 4$ is axiomatized, followed by Erdős's Ramsey bound $f(t) < R(t,t) \\le 4^t$, the Burr-Erdős-Spencer exact formula $f(t) = R(t, t-1) + x$, and the two asymptotic consequences: $f(t)^{1/t} \\to 4$ via `Filter.Tendsto` and $f(t) \\ne O(t)$ as a negated existential.\n\nAll deep results (Moon, Ramsey bounds, BES formula, asymptotics) are axiomatized since their proofs require substantial Ramsey-theoretic machinery not yet available in Mathlib.",
+    "historicalContext": "This problem lies at the intersection of Ramsey theory and graph partitioning\u2014two pillars of combinatorics that grew from the same soil in the mid-20th century. Ramsey's theorem (1930) guarantees monochromatic cliques in any edge-coloring, but says nothing about how efficiently one can *pack* such cliques. Erd\u0151s posed the question: if we greedily tile a 2-colored $K_n$ with vertex-disjoint monochromatic copies of $K_t$, how many vertices must remain uncovered?\n\nThe first breakthrough came from Moon (1966), who proved $f(3) = 4$ for $n \\ge 8$: when packing monochromatic triangles in any 2-colored complete graph on 8 or more vertices, at most 4 vertices are left over. Moon's proof combined a careful case analysis of the red/blue degree sequence with an extremal argument about triangle-free subgraphs.\n\nErd\u0151s himself observed that $f(t) < R(t,t) \\le 4^t$ by a simple but elegant argument: the leftover vertices, together with their induced coloring, form a 2-colored complete graph containing no monochromatic $K_t$ (otherwise we could extend the partition). By definition, the size of such a graph is bounded by $R(t,t) - 1$. The upper bound $R(t,t) \\le \\binom{2t-2}{t-1} \\le 4^t$ is the classical Erd\u0151s-Szekeres (1935) result, proved by double induction on the Ramsey numbers.\n\nThis led Erd\u0151s to ask two more refined questions: (1) Does $f(t)^{1/t} \\to 1$, meaning the leftover grows subexponentially? (2) Is $f(t) = O(t)$, meaning linear growth? Both questions hoped that the $4^t$ Ramsey bound was a massive overestimate.\n\nBurr, Erd\u0151s, and Spencer (1975) settled both questions negatively with an exact formula. They proved that for $t \\ge 3$ and $n$ sufficiently large, $f(t) = R(t, t-1) + x$ where $0 \\le x < t$ is determined by $n \\pmod{t}$. The key shift is from the *diagonal* Ramsey number $R(t,t)$ to the *off-diagonal* $R(t, t-1)$: the leftover vertices can contain a monochromatic $K_{t-1}$ but not $K_t$, so the controlling quantity is $R(t, t-1)$, not $R(t,t)$. Since $R(t, t-1)$ still grows exponentially (at rate $\\sim 4^t / \\sqrt{t}$ by the Erd\u0151s-Szekeres recursion), we get $f(t)^{1/t} \\to 4$ and $f(t)$ is far from linear.\n\nThe Burr-Erd\u0151s-Spencer result exemplifies a common theme in Ramsey theory: the transition from crude exponential bounds to exact or near-exact formulas often requires replacing diagonal Ramsey numbers with off-diagonal ones. This pattern recurs in the Ramsey multiplicity problem, the Folkman number problem, and the Erd\u0151s-Hajnal conjecture.",
+    "problemStatement": "Let $f(t)$ be minimal such that, in any two-coloring of the edges of $K_n$, the vertices can be partitioned into vertex-disjoint monochromatic copies of $K_t$ (not necessarily the same color) with at most $f(t)$ vertices remaining. Estimate $f(t)$.\n\nSpecifically:\n1. Is $f(t)^{1/t} \\to 1$?\n2. Is $f(t) = O(t)$?\n\n**Status**: SOLVED \u2014 Burr, Erd\u0151s, Spencer (1975): $f(t) = R(t, t-1) + x$ with $0 \\le x < t$.",
+    "text": "What is f(t), the minimum leftover vertices when partitioning any 2-colored K\u2099 into vertex-disjoint monochromatic K\u209c's? Burr-Erd\u0151s-Spencer (1975) proved f(t) = R(t, t-1) + x where 0 \u2264 x < t, showing f(t)^{1/t} \u2192 4 (not 1) and f(t) is not O(t).",
+    "proofStrategy": "The formalization takes a layered approach mirroring the historical development of the problem.\n\n**Layer 1 \u2014 Definitions (lines 45\u201385)**: The file builds up the combinatorial framework: `TwoColoring n` as a function $\\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$, symmetry constraints, monochromatic cliques via `isMonochromaticClique`, vertex-disjointness via `areDisjoint`, and the central `CliquePartition` structure bundling cliques, colors, size constraints, monochromaticity proofs, and disjointness into a single dependent type.\n\n**Layer 2 \u2014 The function $f(t)$ (lines 87\u2013103)**: Three nested optimizations define $f(t)$ as a minimax: `minLeftover(c,t)` minimizes over partitions for a fixed coloring, `f_n(n,t)` maximizes over colorings for fixed $n$, and `f(t)` takes the supremum over all $n$.\n\n**Layer 3 \u2014 Results (lines 105\u2013155)**: Moon's theorem $f(3) = 4$ is axiomatized, followed by Erd\u0151s's Ramsey bound $f(t) < R(t,t) \\le 4^t$, the Burr-Erd\u0151s-Spencer exact formula $f(t) = R(t, t-1) + x$, and the two asymptotic consequences: $f(t)^{1/t} \\to 4$ via `Filter.Tendsto` and $f(t) \\ne O(t)$ as a negated existential.\n\nAll deep results (Moon, Ramsey bounds, BES formula, asymptotics) are axiomatized since their proofs require substantial Ramsey-theoretic machinery not yet available in Mathlib.",
     "keyInsights": [
-      "**Off-diagonal Ramsey controls the answer**: The exact formula $f(t) = R(t, t-1) + x$ reveals that the leftover is governed by the *off-diagonal* Ramsey number $R(t, t-1)$, not the diagonal $R(t,t)$. The leftover vertices form a 2-colored complete graph avoiding monochromatic $K_t$, but they may contain $K_{t-1}$—so the relevant Ramsey threshold is $R(t, t-1)$.",
+      "**Off-diagonal Ramsey controls the answer**: The exact formula $f(t) = R(t, t-1) + x$ reveals that the leftover is governed by the *off-diagonal* Ramsey number $R(t, t-1)$, not the diagonal $R(t,t)$. The leftover vertices form a 2-colored complete graph avoiding monochromatic $K_t$, but they may contain $K_{t-1}$\u2014so the relevant Ramsey threshold is $R(t, t-1)$.",
       "**Moon's theorem as the base case**: $f(3) = 4$ is the first non-trivial instance of the BES formula. Since $R(3,2) = 3$, the formula gives $f(3) \\in \\{3, 4, 5\\}$, and Moon's proof pins it to exactly 4. The extremal colorings achieving this bound have a distinctive structure: a balanced Ramsey graph on 4 vertices embedded as the leftover.",
       "**The minimax structure is essential**: $f(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$ is a three-level optimization: Nature picks $n$, the adversary picks the coloring $c$, and we optimize the partition $P$. The BES result shows this stabilizes for large $n$, collapsing the first level. The formalization captures this via nested `sInf`/`sSup` over set-builder notation.",
-      "**Both Erdős questions answered negatively**: $f(t)^{1/t} \\to 4$ (not 1) and $f(t) \\ge 2^{\\Omega(t)}$ (not $O(t)$). The exponential growth comes from the Erdős probabilistic lower bound $R(t, t-1) \\ge 2^{(t-1)/2}$, showing the leftover is inherently exponential in $t$.",
+      "**Both Erd\u0151s questions answered negatively**: $f(t)^{1/t} \\to 4$ (not 1) and $f(t) \\ge 2^{\\Omega(t)}$ (not $O(t)$). The exponential growth comes from the Erd\u0151s probabilistic lower bound $R(t, t-1) \\ge 2^{(t-1)/2}$, showing the leftover is inherently exponential in $t$.",
       "**Modular correction from divisibility**: The term $x \\in \\{0, 1, \\ldots, t-1\\}$ in $f(t) = R(t,t-1) + x$ arises because each clique $K_t$ consumes exactly $t$ vertices. When $n - R(t,t-1) + 1$ is not divisible by $t$, the remainder determines $x$. This is a parity/divisibility phenomenon, not a Ramsey-theoretic one."
     ],
     "prerequisites": [
@@ -46,7 +46,7 @@
     {
       "id": "header",
       "title": "Problem Documentation and References",
-      "summary": "Module docstring documenting the problem statement, historical background (Moon 1966, Erdős, BES 1975), the exact formula $f(t) = R(t,t-1) + x$, and resolution of both Erdős questions. Imports Mathlib.",
+      "summary": "Module docstring documenting the problem statement, historical background (Moon 1966, Erd\u0151s, BES 1975), the exact formula $f(t) = R(t,t-1) + x$, and resolution of both Erd\u0151s questions. Imports Mathlib.",
       "startLine": 1,
       "endLine": 43
     },
@@ -80,14 +80,14 @@
     },
     {
       "id": "ramsey-bound",
-      "title": "Ramsey Numbers and Erdős Bound",
-      "summary": "Axiomatizes `ramseyNumber(s,t)` and Erdős's observations: $f(t) < R(t,t)$ (leftover avoids monochromatic $K_t$) and the crude bound $R(t,t) \\le 4^t$ from Erdős-Szekeres.",
+      "title": "Ramsey Numbers and Erd\u0151s Bound",
+      "summary": "Axiomatizes `ramseyNumber(s,t)` and Erd\u0151s's observations: $f(t) < R(t,t)$ (leftover avoids monochromatic $K_t$) and the crude bound $R(t,t) \\le 4^t$ from Erd\u0151s-Szekeres.",
       "startLine": 115,
       "endLine": 126
     },
     {
       "id": "exact-formula",
-      "title": "Burr-Erdős-Spencer Exact Formula",
+      "title": "Burr-Erd\u0151s-Spencer Exact Formula",
       "summary": "The main result axiomatized: $\\exists x < t: f(t) = R(t, t-1) + x$ for $t \\ge 3$. Includes both the lower bound $f(t) \\ge R(t, t-1)$ and upper bound $f(t) < R(t, t-1) + t$.",
       "startLine": 128,
       "endLine": 140
@@ -95,19 +95,19 @@
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
-      "summary": "Two consequences of the BES formula: the root limit $f(t)^{1/t} \\to 4$ (via `Filter.Tendsto`) answering Erdős's first question, and $f(t) \\ne O(t)$ (negated existential) answering the second.",
+      "summary": "Two consequences of the BES formula: the root limit $f(t)^{1/t} \\to 4$ (via `Filter.Tendsto`) answering Erd\u0151s's first question, and $f(t) \\ne O(t)$ (negated existential) answering the second.",
       "startLine": 142,
       "endLine": 155
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1015 on partitioning 2-colored complete graphs into monochromatic cliques. The 155-line Lean file builds a complete framework: from the definition of 2-colorings and the `CliquePartition` structure, through the three-level minimax definition of $f(t)$, to the axiomatized BES exact formula $f(t) = R(t, t-1) + x$ with $0 \\le x < t$. Both of Erdős's original questions are formally resolved: $f(t)^{1/t} \\to 4$ and $f(t) \\ne O(t)$, with 0 sorries and 8 axioms encoding the deep Ramsey-theoretic results.",
-    "implications": "**Theoretical Significance**: The Burr-Erdős-Spencer theorem has several important consequences and connections:\n\n1. **Ramsey multiplicity**: The BES formula shows that off-diagonal Ramsey numbers $R(t, t-1)$, not diagonal ones, control the clique packing problem. This insight informed later work on Ramsey multiplicity—counting the minimum number of monochromatic cliques rather than just finding one.\n\n2. **Algorithmic graph theory**: The problem of finding an optimal clique partition is computationally hard in general (subsuming graph coloring), but the BES theorem gives a precise target value.\n\nThis motivates approximation algorithms for monochromatic clique packing.\n\n3. **Regularity and packing**: The BES proof technique—analyzing leftover vertices as a Ramsey-type subgraph—anticipates the regularity method approach to graph packing problems developed by Szemerédi, Komlós, and others in the 1990s.\n\n4. **Multicolor generalizations**: The formalization axiomatizes the 2-color case. For $k \\ge 3$ colors, the analogous function $f_k(t)$ involves multicolor Ramsey numbers, and exact formulas remain open for most cases.",
+    "summary": "This formalization captures Erd\u0151s Problem #1015 on partitioning 2-colored complete graphs into monochromatic cliques. The 155-line Lean file builds a complete framework: from the definition of 2-colorings and the `CliquePartition` structure, through the three-level minimax definition of $f(t)$, to the axiomatized BES exact formula $f(t) = R(t, t-1) + x$ with $0 \\le x < t$. Both of Erd\u0151s's original questions are formally resolved: $f(t)^{1/t} \\to 4$ and $f(t) \\ne O(t)$, with 0 sorries and 8 axioms encoding the deep Ramsey-theoretic results.",
+    "implications": "**Theoretical Significance**: The Burr-Erd\u0151s-Spencer theorem has several important consequences and connections:\n\n1. **Ramsey multiplicity**: The BES formula shows that off-diagonal Ramsey numbers $R(t, t-1)$, not diagonal ones, control the clique packing problem. This insight informed later work on Ramsey multiplicity\u2014counting the minimum number of monochromatic cliques rather than just finding one.\n\n2. **Algorithmic graph theory**: The problem of finding an optimal clique partition is computationally hard in general (subsuming graph coloring), but the BES theorem gives a precise target value.\n\nThis motivates approximation algorithms for monochromatic clique packing.\n\n3. **Regularity and packing**: The BES proof technique\u2014analyzing leftover vertices as a Ramsey-type subgraph\u2014anticipates the regularity method approach to graph packing problems developed by Szemer\u00e9di, Koml\u00f3s, and others in the 1990s.\n\n4. **Multicolor generalizations**: The formalization axiomatizes the 2-color case. For $k \\ge 3$ colors, the analogous function $f_k(t)$ involves multicolor Ramsey numbers, and exact formulas remain open for most cases.",
     "openQuestions": [
       "What are the exact values of $f(t)$ for small $t \\ge 4$? Computing $f(4)$ requires knowing $R(4,3) = 9$, giving $f(4) \\in \\{9, 10, 11, 12\\}$.",
       "What is the computational complexity of finding an optimal monochromatic clique partition in a 2-colored $K_n$? Is it NP-hard, or does the BES structure provide polynomial-time algorithms?",
       "For $k \\ge 3$ colors, what is $f_k(t)$? The 2-color BES formula uses the off-diagonal $R(t, t-1)$; the multicolor analog likely involves multicolor Ramsey numbers $R_k(t, t-1, \\ldots)$.",
-      "Can the BES result be extended to hypergraph colorings—partitioning a 2-colored complete $r$-uniform hypergraph into monochromatic complete sub-hypergraphs?",
+      "Can the BES result be extended to hypergraph colorings\u2014partitioning a 2-colored complete $r$-uniform hypergraph into monochromatic complete sub-hypergraphs?",
       "Can any of the 8 axioms (Moon's theorem, Ramsey bounds, BES formula, asymptotics) be proved from Mathlib, reducing the axiom count?"
     ]
   },
@@ -120,22 +120,22 @@
     {
       "targetId": "erdos-1017",
       "relationship": "related",
-      "description": "Erdős Problem #1017 studies the minimum number of cliques needed to partition the *edges* of a graph, whereas #1015 partitions the *vertices* of a 2-colored complete graph into monochromatic cliques. Both problems require understanding clique partition numbers and the extremal graphs that force large leftover; the Erdős-Goodman-Pósa bound f(n,k) ≤ n²/4 uses similar counting arguments to those in the BES proof."
+      "description": "Erd\u0151s Problem #1017 studies the minimum number of cliques needed to partition the *edges* of a graph, whereas #1015 partitions the *vertices* of a 2-colored complete graph into monochromatic cliques. Both problems require understanding clique partition numbers and the extremal graphs that force large leftover; the Erd\u0151s-Goodman-P\u00f3sa bound f(n,k) \u2264 n\u00b2/4 uses similar counting arguments to those in the BES proof."
     },
     {
       "targetId": "erdos-1009",
       "relationship": "thematic",
-      "description": "Erdős Problem #1009 concerns edge-disjoint triangle packing near the Turán threshold. The packing/covering duality between vertex-disjoint clique partitions (#1015) and edge-disjoint triangle covers (#1009) is a recurring structural motif; both problems measure how far a graph is from being perfectly decomposable into cliques of a fixed size."
+      "description": "Erd\u0151s Problem #1009 concerns edge-disjoint triangle packing near the Tur\u00e1n threshold. The packing/covering duality between vertex-disjoint clique partitions (#1015) and edge-disjoint triangle covers (#1009) is a recurring structural motif; both problems measure how far a graph is from being perfectly decomposable into cliques of a fixed size."
     },
     {
       "targetId": "erdos-1010",
       "relationship": "complementary",
-      "description": "Erdős Problem #1010 quantifies triangle supersaturation: how many triangles must appear once the edge count exceeds the Turán threshold. Problem #1015 quantifies the leftover in vertex-disjoint monochromatic triangle (or t-clique) packings. Together they reflect two sides of extremal Ramsey-packing theory—what is forced by density versus what is forced by 2-coloring."
+      "description": "Erd\u0151s Problem #1010 quantifies triangle supersaturation: how many triangles must appear once the edge count exceeds the Tur\u00e1n threshold. Problem #1015 quantifies the leftover in vertex-disjoint monochromatic triangle (or t-clique) packings. Together they reflect two sides of extremal Ramsey-packing theory\u2014what is forced by density versus what is forced by 2-coloring."
     },
     {
       "targetId": "erdos-1012",
       "relationship": "thematic",
-      "description": "Erdős Problem #1012 studies long cycles in dense graphs via threshold edge-count conditions analogous to Ramsey bounds. The proof techniques—analyzing extremal configurations and using double-counting arguments on vertex degrees—overlap with the Burr-Erdős-Spencer approach to bounding f(t) via properties of the leftover subgraph."
+      "description": "Erd\u0151s Problem #1012 studies long cycles in dense graphs via threshold edge-count conditions analogous to Ramsey bounds. The proof techniques\u2014analyzing extremal configurations and using double-counting arguments on vertex degrees\u2014overlap with the Burr-Erd\u0151s-Spencer approach to bounding f(t) via properties of the leftover subgraph."
     }
   ],
   "relatedProofs": [
@@ -149,13 +149,13 @@
     {
       "authors": [
         "S. A. Burr",
-        "P. Erdős",
+        "P. Erd\u0151s",
         "J. H. Spencer"
       ],
       "title": "Ramsey theorems for multiple copies of graphs",
       "year": 1975,
       "venue": "Transactions of the American Mathematical Society",
-      "note": "The primary source. Proves the exact formula f(t) = R(t, t-1) + x with 0 ≤ x < t, resolving both Erdős questions about f(t)^{1/t} and the O(t) growth rate."
+      "note": "The primary source. Proves the exact formula f(t) = R(t, t-1) + x with 0 \u2264 x < t, resolving both Erd\u0151s questions about f(t)^{1/t} and the O(t) growth rate."
     },
     {
       "authors": [
@@ -164,17 +164,17 @@
       "title": "On sets of consistent arcs in a tournament",
       "year": 1966,
       "venue": "Canadian Mathematical Bulletin",
-      "note": "Establishes f(3) = 4—the base case of the BES formula. Moon's proof that at most 4 vertices remain when packing monochromatic triangles in any 2-colored K_n (n ≥ 8) motivated the general problem."
+      "note": "Establishes f(3) = 4\u2014the base case of the BES formula. Moon's proof that at most 4 vertices remain when packing monochromatic triangles in any 2-colored K_n (n \u2265 8) motivated the general problem."
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "G. Szekeres"
       ],
       "title": "A combinatorial problem in geometry",
       "year": 1935,
       "venue": "Compositio Mathematica",
-      "note": "Proves the classical upper bound R(s,t) ≤ C(s+t-2, s-1) ≤ 4^t via double induction, establishing the exponential growth that underlies f(t) < R(t,t) ≤ 4^t in the BES framework."
+      "note": "Proves the classical upper bound R(s,t) \u2264 C(s+t-2, s-1) \u2264 4^t via double induction, establishing the exponential growth that underlies f(t) < R(t,t) \u2264 4^t in the BES framework."
     },
     {
       "authors": [
@@ -194,7 +194,7 @@
       "title": "Ramsey Theory",
       "year": 1990,
       "venue": "John Wiley & Sons (2nd edition)",
-      "note": "Standard reference for Ramsey theory including diagonal and off-diagonal Ramsey numbers, the probabilistic lower bound R(t,t-1) ≥ 2^{(t-1)/2}, and the connection to clique partition problems."
+      "note": "Standard reference for Ramsey theory including diagonal and off-diagonal Ramsey numbers, the probabilistic lower bound R(t,t-1) \u2265 2^{(t-1)/2}, and the connection to clique partition problems."
     }
   ],
   "leanFile": {
@@ -208,6 +208,7 @@
     "lineCount": 158,
     "axiomCount": 10,
     "theoremCount": 0,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "lemmaCount": 0
   }
 }

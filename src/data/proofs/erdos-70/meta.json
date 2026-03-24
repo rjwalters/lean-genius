@@ -1,10 +1,10 @@
 {
   "id": "erdos-70",
-  "title": "Erdős Problem #70: Partition Calculus for the Continuum",
+  "title": "Erd\u0151s Problem #70: Partition Calculus for the Continuum",
   "slug": "erdos-70",
-  "description": "Let 𝔠 be the cardinality of the continuum, β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? OPEN.",
+  "description": "Let \ud835\udd20 be the cardinality of the continuum, \u03b2 be any countable ordinal, and 2 \u2264 n < \u03c9. Is it true that \ud835\udd20 \u2192 (\u03b2, n)\u2082\u00b3? OPEN.",
   "meta": {
-    "author": "Erdős-Rado",
+    "author": "Erd\u0151s-Rado",
     "sourceUrl": "https://erdosproblems.com/70",
     "date": "",
     "status": "axiomatized",
@@ -26,16 +26,16 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #70 belongs to partition calculus, the infinitary extension of Ramsey theory developed by Erdős and Rado in their foundational 1956 paper 'A partition calculus in set theory'. The arrow notation κ → (α, β)_k^n captures the idea that coloring n-element subsets of a κ-sized set forces monochromatic subsets of specified types. Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for 2 ≤ n < ω, establishing that the continuum satisfies non-trivial partition relations for 3-element subsets. The proof uses the stepping-up lemma, converting 2-dimensional partition relations to 3-dimensional ones at the cost of enlarging the ordinal parameter. The general case — whether 𝔠 → (β, n)₂³ holds for all countable ordinals β — remains completely open. This connects to deep questions about the combinatorial structure of the continuum. Under GCH, stronger partition relations hold, but the problem is formulated in ZFC. Todorčević's work on partition relations and Shelah's pcf theory have provided partial insights, but the gap between ω+n and arbitrary countable ordinals has not been bridged.",
-    "problemStatement": "Let 𝔠 be the cardinality of the continuum (= 2^ℵ₀), β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? That is, for any 2-coloring of 3-element subsets of a continuum-sized set, is there either a homogeneous set of order type β for color 0 or a homogeneous set of size n for color 1?",
-    "text": "Let 𝔠 be the cardinality of the continuum, β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? OPEN.",
-    "proofStrategy": "The formalization defines colorings of n-element subsets, homogeneous sets, order types, and the partition arrow notation κ → (α, m)₂³. The main conjecture is stated for all countable ordinals β. Special cases for β = ω, ω², and ω^ω are defined. The Erdős-Rado partial result is axiomatized. Monotonicity properties and countability proofs for ordinal arithmetic (ω+n, ω²) are proved from Mathlib's ordinal/cardinal API.",
+    "historicalContext": "Erd\u0151s Problem #70 belongs to partition calculus, the infinitary extension of Ramsey theory developed by Erd\u0151s and Rado in their foundational 1956 paper 'A partition calculus in set theory'. The arrow notation \u03ba \u2192 (\u03b1, \u03b2)_k^n captures the idea that coloring n-element subsets of a \u03ba-sized set forces monochromatic subsets of specified types. Erd\u0151s and Rado proved \ud835\udd20 \u2192 (\u03c9+n, 4)\u2082\u00b3 for 2 \u2264 n < \u03c9, establishing that the continuum satisfies non-trivial partition relations for 3-element subsets. The proof uses the stepping-up lemma, converting 2-dimensional partition relations to 3-dimensional ones at the cost of enlarging the ordinal parameter. The general case \u2014 whether \ud835\udd20 \u2192 (\u03b2, n)\u2082\u00b3 holds for all countable ordinals \u03b2 \u2014 remains completely open. This connects to deep questions about the combinatorial structure of the continuum. Under GCH, stronger partition relations hold, but the problem is formulated in ZFC. Todor\u010devi\u0107's work on partition relations and Shelah's pcf theory have provided partial insights, but the gap between \u03c9+n and arbitrary countable ordinals has not been bridged.",
+    "problemStatement": "Let \ud835\udd20 be the cardinality of the continuum (= 2^\u2135\u2080), \u03b2 be any countable ordinal, and 2 \u2264 n < \u03c9. Is it true that \ud835\udd20 \u2192 (\u03b2, n)\u2082\u00b3? That is, for any 2-coloring of 3-element subsets of a continuum-sized set, is there either a homogeneous set of order type \u03b2 for color 0 or a homogeneous set of size n for color 1?",
+    "text": "Let \ud835\udd20 be the cardinality of the continuum, \u03b2 be any countable ordinal, and 2 \u2264 n < \u03c9. Is it true that \ud835\udd20 \u2192 (\u03b2, n)\u2082\u00b3? OPEN.",
+    "proofStrategy": "The formalization defines colorings of n-element subsets, homogeneous sets, order types, and the partition arrow notation \u03ba \u2192 (\u03b1, m)\u2082\u00b3. The main conjecture is stated for all countable ordinals \u03b2. Special cases for \u03b2 = \u03c9, \u03c9\u00b2, and \u03c9^\u03c9 are defined. The Erd\u0151s-Rado partial result is axiomatized. Monotonicity properties and countability proofs for ordinal arithmetic (\u03c9+n, \u03c9\u00b2) are proved from Mathlib's ordinal/cardinal API.",
     "keyInsights": [
-      "**Erdős-Rado stepping-up**: $\\mathfrak{c} \\to (\\omega+n, 4)_2^3$ for $2 \\le n < \\omega$, proved by converting the 2-dimensional relation $\\mathfrak{c} \\to (\\omega, 3)_2^2$ to dimension 3 via the stepping-up lemma",
-      "**Gap at $\\omega^2$**: The Erdős-Rado result covers ordinals $\\omega + n$ but not $\\omega \\cdot 2$ or $\\omega^2$. Whether $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ holds is the first open case beyond their theorem",
+      "**Erd\u0151s-Rado stepping-up**: $\\mathfrak{c} \\to (\\omega+n, 4)_2^3$ for $2 \\le n < \\omega$, proved by converting the 2-dimensional relation $\\mathfrak{c} \\to (\\omega, 3)_2^2$ to dimension 3 via the stepping-up lemma",
+      "**Gap at $\\omega^2$**: The Erd\u0151s-Rado result covers ordinals $\\omega + n$ but not $\\omega \\cdot 2$ or $\\omega^2$. Whether $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ holds is the first open case beyond their theorem",
       "**Monotonicity**: Partition arrows are monotone: $\\kappa \\to (\\beta, m)_k^n$ and $\\alpha \\le \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$. Similarly for the finite parameter $m$",
       "**Ordinal arithmetic**: $\\omega + n$, $\\omega^2$, and $\\omega^\\omega$ are all countable, proved via $|\\omega + n| = \\aleph_0$, $|\\omega^2| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$",
-      "**Connection to CH**: Under GCH ($\\mathfrak{c} = \\aleph_1$), stronger partition relations hold by the Erdős-Rado theorem. The problem in ZFC alone is more delicate"
+      "**Connection to CH**: Under GCH ($\\mathfrak{c} = \\aleph_1$), stronger partition relations hold by the Erd\u0151s-Rado theorem. The problem in ZFC alone is more delicate"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -73,7 +73,7 @@
       "title": "Part III: Order Types",
       "startLine": 55,
       "endLine": 60,
-      "summary": "Defines `HasOrderTypeAtLeast S H α`: $|H| \\ge |\\alpha|$ (cardinal comparison). A simplified proxy for the full order-type condition $\\text{otp}(H) \\ge \\alpha$.",
+      "summary": "Defines `HasOrderTypeAtLeast S H \u03b1`: $|H| \\ge |\\alpha|$ (cardinal comparison). A simplified proxy for the full order-type condition $\\text{otp}(H) \\ge \\alpha$.",
       "mathContext": "$\\text{otp}(H) \\geq \\alpha$ simplified to cardinal: $|H| \\geq |\\alpha|$."
     },
     {
@@ -97,23 +97,23 @@
       "title": "Part VI: Countable Ordinals",
       "startLine": 85,
       "endLine": 99,
-      "summary": "Defines `IsCountableOrdinal α` as $|\\alpha| \\le \\aleph_0$. Proves $\\omega$ and all natural numbers are countable ordinals using `card_omega0` and `card_nat`.",
+      "summary": "Defines `IsCountableOrdinal \u03b1` as $|\\alpha| \\le \\aleph_0$. Proves $\\omega$ and all natural numbers are countable ordinals using `card_omega0` and `card_nat`.",
       "mathContext": "Countable ordinal: $|\\alpha| \\leq \\aleph_0$. Examples: $\\omega, \\omega+n, \\omega^2, \\omega^\\omega$."
     },
     {
       "id": "erdos-rado",
-      "title": "Part VII: Erdős-Rado Theorem",
+      "title": "Part VII: Erd\u0151s-Rado Theorem",
       "startLine": 101,
       "endLine": 112,
-      "summary": "Axiomatizes the Erdős-Rado partial result: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all $2 \\le n < \\omega$. This is the strongest known result toward the full conjecture.",
-      "mathContext": "Erdős-Rado: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all finite $n$ (stepping-up from Erdős-Dushnik-Miller)."
+      "summary": "Axiomatizes the Erd\u0151s-Rado partial result: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all $2 \\le n < \\omega$. This is the strongest known result toward the full conjecture.",
+      "mathContext": "Erd\u0151s-Rado: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all finite $n$ (stepping-up from Erd\u0151s-Dushnik-Miller)."
     },
     {
       "id": "main-conjecture",
       "title": "Part VIII: Main Conjecture (OPEN)",
       "startLine": 114,
       "endLine": 125,
-      "summary": "States `erdos_70_conjecture`: $\\forall \\beta$ countable, $\\forall n \\ge 2$, $\\mathfrak{c} \\to (\\beta, n)_2^3$. The full Erdős Problem #70, open for ordinals beyond $\\omega + n$.",
+      "summary": "States `erdos_70_conjecture`: $\\forall \\beta$ countable, $\\forall n \\ge 2$, $\\mathfrak{c} \\to (\\beta, n)_2^3$. The full Erd\u0151s Problem #70, open for ordinals beyond $\\omega + n$.",
       "mathContext": "$\\forall \\beta < \\omega_1, \\forall 2 \\leq n < \\omega: \\mathfrak{c} \\to (\\beta, n)_2^3$. OPEN for $\\beta \\geq \\omega^2$."
     },
     {
@@ -121,7 +121,7 @@
       "title": "Part IX: Special Cases",
       "startLine": 127,
       "endLine": 139,
-      "summary": "Defines conjectures for $\\beta = \\omega$, $\\beta = \\omega^2$, $\\beta = \\omega^\\omega$. The $\\omega$ case follows from Erdős-Rado; the $\\omega^2$ case is the first genuinely open instance.",
+      "summary": "Defines conjectures for $\\beta = \\omega$, $\\beta = \\omega^2$, $\\beta = \\omega^\\omega$. The $\\omega$ case follows from Erd\u0151s-Rado; the $\\omega^2$ case is the first genuinely open instance.",
       "mathContext": "$\\mathfrak{c} \\to (\\omega, n)_2^3$ (known), $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ (first open case)."
     },
     {
@@ -158,13 +158,13 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. The 226-line formalization captures colorings, homogeneous sets, partition arrows, the Erdős-Rado partial result, monotonicity, and countability proofs for ordinal arithmetic. Several properties are proved from Mathlib's API; deep results are axiomatized.",
+    "summary": "We formalize Erd\u0151s Problem #70, an OPEN problem in partition calculus asking whether \ud835\udd20 \u2192 (\u03b2, n)\u2082\u00b3 holds for all countable ordinals \u03b2 and 2 \u2264 n < \u03c9. The 226-line formalization captures colorings, homogeneous sets, partition arrows, the Erd\u0151s-Rado partial result, monotonicity, and countability proofs for ordinal arithmetic. Several properties are proved from Mathlib's API; deep results are axiomatized.",
     "implications": "**Theoretical Significance**: This problem connects infinite Ramsey theory to the combinatorial structure of the continuum.\n\nA positive answer would establish that the continuum satisfies strong partition properties for all countable ordinals. The problem may depend on set-theoretic axioms beyond ZFC, and its resolution could involve forcing, pcf theory, or new stepping-up techniques.",
     "openQuestions": [
-      "Does 𝔠 → (ω², n)₂³ hold? This is the first case beyond the Erdős-Rado theorem",
-      "Does 𝔠 → (ω^ω, n)₂³ hold? ω^ω is the supremum of ω, ω², ω³, ...",
+      "Does \ud835\udd20 \u2192 (\u03c9\u00b2, n)\u2082\u00b3 hold? This is the first case beyond the Erd\u0151s-Rado theorem",
+      "Does \ud835\udd20 \u2192 (\u03c9^\u03c9, n)\u2082\u00b3 hold? \u03c9^\u03c9 is the supremum of \u03c9, \u03c9\u00b2, \u03c9\u00b3, ...",
       "Is the answer independent of ZFC? Could forcing models separate the cases?",
-      "Can the stepping-up lemma be iterated to reach ordinals beyond ω + n?"
+      "Can the stepping-up lemma be iterated to reach ordinals beyond \u03c9 + n?"
     ]
   },
   "leanFile": {
@@ -180,7 +180,8 @@
     "lineCount": 225,
     "axiomCount": 5,
     "theoremCount": 6,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {

@@ -1,10 +1,10 @@
 {
   "id": "erdos-404",
-  "title": "Erdős Problem #404: Prime Power Divisibility of Factorial Sums",
+  "title": "Erd\u0151s Problem #404: Prime Power Divisibility of Factorial Sums",
   "slug": "erdos-404",
-  "description": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a? Let f(a, p) be the supremum. Lin proved f(2, 2) ≤ 254. OPEN.",
+  "description": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a? Let f(a, p) be the supremum. Lin proved f(2, 2) \u2264 254. OPEN.",
   "meta": {
-    "author": "Erdős-Graham (1980), Lin (1976)",
+    "author": "Erd\u0151s-Graham (1980), Lin (1976)",
     "sourceUrl": "https://erdosproblems.com/404",
     "date": "1980",
     "status": "axiomatized",
@@ -45,14 +45,14 @@
       "StrictIncSeq: strictly increasing sequence starting at a",
       "factorialSum: sum of factorials over a sequence",
       "dividesByPrimePower, divisiblePowers: prime power divisibility",
-      "f(a, p): supremum of achievable powers via sSup over ℕ∞",
+      "f(a, p): supremum of achievable powers via sSup over \u2115\u221e",
       "secondaryQuestion: unbounded v_p of partial factorial sums",
       "erdos404Conjecture: finiteness of f for all (a, p)",
-      "lin_bound axiom: f(2, 2) ≤ 254",
+      "lin_bound axiom: f(2, 2) \u2264 254",
       "lin_bound_meaning axiom: 2^255 never divides such sums",
       "legendreSum: Legendre's formula computation",
-      "legendre_formula axiom: v_p(n!) = Σ⌊n/p^i⌋",
-      "padic_val_factorial_asymp axiom: v_p(n!)/n → 1/(p-1)",
+      "legendre_formula axiom: v_p(n!) = \u03a3\u230an/p^i\u230b",
+      "padic_val_factorial_asymp axiom: v_p(n!)/n \u2192 1/(p-1)",
       "factorial_sum_mod axiom: modular structure of factorial sums",
       "factorial_sum_factored axiom: factorization of factorial sums",
       "Two proved examples by native_decide",
@@ -70,18 +70,18 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Prime Power Divisibility of Factorial Sums**\n\nThe interaction between prime divisibility and factorials has deep roots: Legendre's formula $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$ (1808) gives the exact $p$-adic valuation of $n!$, and Kummer's theorem (1852) extends this to binomial coefficients. Erdős and Graham posed Problem #404 in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*: for integers $a \\geq 1$ and primes $p$, define $f(a,p) = \\sup\\{k : p^k \\mid a_1! + \\cdots + a_n!$ for some $a = a_1 < \\cdots < a_n\\}$. Is $f(a,p)$ always finite?\n\n**Chronological Development:**\n- **1808 (Legendre):** Formula for $v_p(n!)$ — the foundational tool\n- **1976 (Lin):** Proved $f(2,2) \\leq 254$ — the only known concrete upper bound for any $(a,p)$ pair. Lin's argument used careful analysis of carries in $p$-adic addition of factorials\n- **1980 (Erdős–Graham):** Problem 404 posed formally, alongside the related Problem #403 on factorial sums modulo primes\n\nThe problem is surprisingly resistant because factorial sums can have cancellation patterns that concentrate $p$-adic valuation. The gap between the known lower bound $f(2,2) \\geq 3$ (from $2^3 \\mid 2! + 3!$) and Lin's upper bound of 254 illustrates how little is understood about the $p$-adic structure of factorial sums.",
-    "problemStatement": "For integers a ≥ 1 and primes p, let f(a, p) = sup{k : p^k | a₁! + ··· + aₙ! for some a = a₁ < ··· < aₙ}. For which (a, p) is f(a, p) finite? Secondary: does there exist p and {aᵢ} with v_p(Σ aᵢ!) → ∞? OPEN.",
-    "text": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a? Let f(a, p) be the supremum. Lin proved f(2, 2) ≤ 254. OPEN.",
+    "historicalContext": "**Prime Power Divisibility of Factorial Sums**\n\nThe interaction between prime divisibility and factorials has deep roots: Legendre's formula $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$ (1808) gives the exact $p$-adic valuation of $n!$, and Kummer's theorem (1852) extends this to binomial coefficients. Erd\u0151s and Graham posed Problem #404 in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*: for integers $a \\geq 1$ and primes $p$, define $f(a,p) = \\sup\\{k : p^k \\mid a_1! + \\cdots + a_n!$ for some $a = a_1 < \\cdots < a_n\\}$. Is $f(a,p)$ always finite?\n\n**Chronological Development:**\n- **1808 (Legendre):** Formula for $v_p(n!)$ \u2014 the foundational tool\n- **1976 (Lin):** Proved $f(2,2) \\leq 254$ \u2014 the only known concrete upper bound for any $(a,p)$ pair. Lin's argument used careful analysis of carries in $p$-adic addition of factorials\n- **1980 (Erd\u0151s\u2013Graham):** Problem 404 posed formally, alongside the related Problem #403 on factorial sums modulo primes\n\nThe problem is surprisingly resistant because factorial sums can have cancellation patterns that concentrate $p$-adic valuation. The gap between the known lower bound $f(2,2) \\geq 3$ (from $2^3 \\mid 2! + 3!$) and Lin's upper bound of 254 illustrates how little is understood about the $p$-adic structure of factorial sums.",
+    "problemStatement": "For integers a \u2265 1 and primes p, let f(a, p) = sup{k : p^k | a\u2081! + \u00b7\u00b7\u00b7 + a\u2099! for some a = a\u2081 < \u00b7\u00b7\u00b7 < a\u2099}. For which (a, p) is f(a, p) finite? Secondary: does there exist p and {a\u1d62} with v_p(\u03a3 a\u1d62!) \u2192 \u221e? OPEN.",
+    "text": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a? Let f(a, p) be the supremum. Lin proved f(2, 2) \u2264 254. OPEN.",
     "proofStrategy": "The formalization defines StrictIncSeq, factorialSum, dividesByPrimePower, and f(a, p). The main conjecture and secondary question are stated. Lin's bound is axiomatized. p-adic tools (Legendre's formula, asymptotics) and structural lemmas are included. Two concrete examples are proved by native_decide. The summary theorem proves the conjunction of Lin's bounds.",
     "keyInsights": [
-      "**Supremum formulation:** $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\}$ uses extended naturals, allowing $f(a,p) = \\infty$ when arbitrarily high powers are achievable — the conjecture asks if this never happens",
+      "**Supremum formulation:** $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\}$ uses extended naturals, allowing $f(a,p) = \\infty$ when arbitrarily high powers are achievable \u2014 the conjecture asks if this never happens",
       "**Only known bound:** Lin proved $f(2,2) \\leq 254$, meaning $2^{255}$ never divides any sum of factorials starting at $2!$. The gap $3 \\leq f(2,2) \\leq 254$ remains enormous",
       "**Legendre's formula governs individual terms:** $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor \\approx n/(p-1)$, so individual factorials have linearly growing $p$-adic valuations. The challenge is understanding what happens when they are summed",
       "**Factorization is the key tool:** $a_1! + a_2! = a_1!(1 + a_2!/a_1!)$, so $v_p$ of the sum splits into $v_p(a_1!)$ (known) plus $v_p(1 + a_2!/a_1!)$ (the mysterious part). The ratio $a_2!/a_1! = (a_1+1)(a_1+2)\\cdots a_2$ is a product of consecutive integers",
       "**Largest term dominates:** When $a_n \\gg a_{n-1}$, the sum $\\sum a_i! \\approx a_n!$ since $a_n!/a_{n-1}! \\to \\infty$. This means high $p$-adic valuation requires delicate balance between terms, not just large individual factorials",
-      "**Carries in $p$-adic addition:** The $p$-adic valuation of a sum depends on carry propagation in base-$p$ representation. Factorial sums can create long chains of carries, concentrating divisibility — but Lin showed this cannot continue indefinitely for $(2,2)$",
-      "**Computational irreducibility:** Unlike many Erdős problems, this one cannot be settled by checking finitely many cases. The supremum is over all possible strictly increasing sequences, an infinite search space"
+      "**Carries in $p$-adic addition:** The $p$-adic valuation of a sum depends on carry propagation in base-$p$ representation. Factorial sums can create long chains of carries, concentrating divisibility \u2014 but Lin showed this cannot continue indefinitely for $(2,2)$",
+      "**Computational irreducibility:** Unlike many Erd\u0151s problems, this one cannot be settled by checking finitely many cases. The supremum is over all possible strictly increasing sequences, an infinite search space"
     ],
     "prerequisites": [
       "p-adic valuation (padicValNat) and basic properties",
@@ -98,7 +98,7 @@
       "startLine": 30,
       "endLine": 48,
       "summary": "StrictIncSeq, factorialSum, dividesByPrimePower, f(a, p) = sSup",
-      "mathContext": "The function $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\text{ for some }a = a_1 < \\cdots < a_n\\}$ is defined using sSup over ℕ, allowing $f(a,p) = \\infty$ if arbitrarily high powers are achievable."
+      "mathContext": "The function $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\text{ for some }a = a_1 < \\cdots < a_n\\}$ is defined using sSup over \u2115, allowing $f(a,p) = \\infty$ if arbitrarily high powers are achievable."
     },
     {
       "id": "main-questions",
@@ -113,7 +113,7 @@
       "title": "Known Results",
       "startLine": 59,
       "endLine": 62,
-      "summary": "Lin's bound: f(2, 2) ≤ 254",
+      "summary": "Lin's bound: f(2, 2) \u2264 254",
       "mathContext": "Lin proved $f(2,2) \\leq 254$: no sum $2! + a_2! + \\cdots + a_n!$ with $2 < a_2 < \\cdots < a_n$ is divisible by $2^{255}$. Combined with $2^3 \\mid 2! + 3! = 8$, we have $3 \\leq f(2,2) \\leq 254$."
     },
     {
@@ -137,7 +137,7 @@
       "title": "Examples",
       "startLine": 83,
       "endLine": 87,
-      "summary": "Three proved examples: 2³ | 2!+3!, 3 | 1!+2!, and 3² | 1!+2!+3!",
+      "summary": "Three proved examples: 2\u00b3 | 2!+3!, 3 | 1!+2!, and 3\u00b2 | 1!+2!+3!",
       "mathContext": "$2! + 3! = 2 + 6 = 8 = 2^3$, so $v_2(2!+3!) = 3$. Also $1! + 2! = 3$, so $v_3 = 1$. And $1!+2!+3! = 9 = 3^2$. These are verified by `native_decide`."
     },
     {
@@ -146,32 +146,32 @@
       "startLine": 89,
       "endLine": 96,
       "summary": "Proved conjunction of Lin's bounds",
-      "mathContext": "The summary theorem packages $f(2,2) \\leq 254 \\wedge (\\forall s,\\; \\neg(2^{255} \\mid \\text{factorialSum}(s)))$ via ⟨lin_bound, lin_bound_meaning⟩."
+      "mathContext": "The summary theorem packages $f(2,2) \\leq 254 \\wedge (\\forall s,\\; \\neg(2^{255} \\mid \\text{factorialSum}(s)))$ via \u27e8lin_bound, lin_bound_meaning\u27e9."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #404 remains OPEN. It asks about the finiteness of f(a, p), the supremum of k such that p^k divides some factorial sum starting at a. Lin's bound f(2, 2) ≤ 254 is the main quantitative result.",
-    "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **$p$-adic analysis of combinatorial sums:** The problem asks how $p$-adic valuations interact with addition of factorials — a fundamental question about carries in $p$-adic arithmetic. Resolution would advance understanding of when algebraic cancellation concentrates divisibility.\n\n2. **Factorial number theory:** The connection between factorials and prime powers goes back to Legendre and Kummer. Problem #404 is a natural extension: instead of asking about $v_p(n!)$ (solved by Legendre), it asks about $v_p(\\sum a_i!)$ where the summation introduces new arithmetic structure.\n\n**3. Additive combinatorics in $\\mathbb{Z}_p$:** The problem can be viewed in the $p$-adic integers $\\mathbb{Z}_p$: high $v_p$ of a sum means the sum is close to 0 in the $p$-adic metric. So the question becomes: how close to 0 can a sum of factorial values get in $\\mathbb{Z}_p$?\n\n4. **Diophantine approximation analog:** The finiteness of $f(a,p)$ is analogous to irrationality measure questions — how well can 0 be approximated by factorial sums in the $p$-adic topology?\n\n5. **Connection to Problem #403:** The companion problem asks about $\\sum 1/a_i!$ being an integer, which is the archimedean (real) analog of the $p$-adic question in #404. Both probe the arithmetic of factorial sums from dual perspectives.",
+    "summary": "Erd\u0151s Problem #404 remains OPEN. It asks about the finiteness of f(a, p), the supremum of k such that p^k divides some factorial sum starting at a. Lin's bound f(2, 2) \u2264 254 is the main quantitative result.",
+    "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **$p$-adic analysis of combinatorial sums:** The problem asks how $p$-adic valuations interact with addition of factorials \u2014 a fundamental question about carries in $p$-adic arithmetic. Resolution would advance understanding of when algebraic cancellation concentrates divisibility.\n\n2. **Factorial number theory:** The connection between factorials and prime powers goes back to Legendre and Kummer. Problem #404 is a natural extension: instead of asking about $v_p(n!)$ (solved by Legendre), it asks about $v_p(\\sum a_i!)$ where the summation introduces new arithmetic structure.\n\n**3. Additive combinatorics in $\\mathbb{Z}_p$:** The problem can be viewed in the $p$-adic integers $\\mathbb{Z}_p$: high $v_p$ of a sum means the sum is close to 0 in the $p$-adic metric. So the question becomes: how close to 0 can a sum of factorial values get in $\\mathbb{Z}_p$?\n\n4. **Diophantine approximation analog:** The finiteness of $f(a,p)$ is analogous to irrationality measure questions \u2014 how well can 0 be approximated by factorial sums in the $p$-adic topology?\n\n5. **Connection to Problem #403:** The companion problem asks about $\\sum 1/a_i!$ being an integer, which is the archimedean (real) analog of the $p$-adic question in #404. Both probe the arithmetic of factorial sums from dual perspectives.",
     "openQuestions": [
       "Is f(a, p) finite for all a and primes p?",
       "What is the exact value of f(2, 2)?",
-      "Can v_p(Σ aᵢ!) → ∞ for some prime p and sequence?"
+      "Can v_p(\u03a3 a\u1d62!) \u2192 \u221e for some prime p and sequence?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80] original problem formulation"
     },
     {
       "authors": "Lin, Zhi-Wei",
-      "title": "On the finiteness of f(a,p) in Erdős's factorial divisibility problem",
+      "title": "On the finiteness of f(a,p) in Erd\u0151s's factorial divisibility problem",
       "year": "2023",
       "venue": "arXiv preprint",
-      "note": "Proved f(2,2) ≤ 254, the main quantitative result"
+      "note": "Proved f(2,2) \u2264 254, the main quantitative result"
     }
   ],
   "crossReferences": [
@@ -183,7 +183,7 @@
     {
       "targetId": "erdos-384",
       "relationship": "related",
-      "description": "Both involve prime divisibility of factorial/binomial quantities: #384 studies prime divisors of C(n,k), #404 studies p-adic valuation of Σ a_i!"
+      "description": "Both involve prime divisibility of factorial/binomial quantities: #384 studies prime divisors of C(n,k), #404 studies p-adic valuation of \u03a3 a_i!"
     }
   ],
   "relatedProofs": [
@@ -209,6 +209,7 @@
     "lineCount": 96,
     "axiomCount": 4,
     "theoremCount": 2,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "lemmaCount": 0
   }
 }

@@ -41,16 +41,16 @@
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Twin primes have fascinated mathematicians since antiquity. The ancient Greeks knew about pairs like (3,5), (5,7), (11,13), and the pattern seems to continue indefinitely, though primes become increasingly sparse.\n\nThe Twin Prime Conjecture—that there are infinitely many twin prime pairs—remains one of the most famous open problems in mathematics. While Zhang Yitang's 2013 breakthrough showed there are infinitely many primes differing by at most 70 million (later reduced to 246 by the Polymath project), the gap of exactly 2 remains elusive.\n\nThis formalization proves a structural result: twin primes greater than 3 must have a specific form, constraining where to search for them.",
-    "problemStatement": "**Definition**: A pair (p, p+2) is a **twin prime pair** if both p and p+2 are prime.\n\n**Examples**: (3,5), (5,7), (11,13), (17,19), (29,31), (41,43), ...\n\n**Structure Theorem**: For p > 3, if (p, p+2) are both prime, then p ≡ 5 (mod 6).\n\nEquivalently, twin prime pairs greater than (3,5) have the form (6k-1, 6k+1).",
+    "historicalContext": "Twin primes have fascinated mathematicians since antiquity. The ancient Greeks knew about pairs like (3,5), (5,7), (11,13), and the pattern seems to continue indefinitely, though primes become increasingly sparse.\n\nThe Twin Prime Conjecture\u2014that there are infinitely many twin prime pairs\u2014remains one of the most famous open problems in mathematics. While Zhang Yitang's 2013 breakthrough showed there are infinitely many primes differing by at most 70 million (later reduced to 246 by the Polymath project), the gap of exactly 2 remains elusive.\n\nThis formalization proves a structural result: twin primes greater than 3 must have a specific form, constraining where to search for them.",
+    "problemStatement": "**Definition**: A pair (p, p+2) is a **twin prime pair** if both p and p+2 are prime.\n\n**Examples**: (3,5), (5,7), (11,13), (17,19), (29,31), (41,43), ...\n\n**Structure Theorem**: For p > 3, if (p, p+2) are both prime, then p \u2261 5 (mod 6).\n\nEquivalently, twin prime pairs greater than (3,5) have the form (6k-1, 6k+1).",
     "text": "Twin prime pairs (p, p+2) where both are prime must have the form (6k-1, 6k+1) for p > 3. A structural theorem constraining where twin primes can occur.",
-    "proofStrategy": "The proof uses modular arithmetic modulo 6:\n\n1. **All primes > 3 are ≡ 1 or 5 (mod 6)**: Primes > 3 cannot be divisible by 2 or 3.\n\n2. **If p ≡ 1 (mod 6)**: Then p + 2 ≡ 3 (mod 6), meaning 3 divides p + 2. Since p > 3 implies p + 2 > 5 > 3, we have p + 2 composite—contradiction.\n\n3. **Therefore p ≡ 5 (mod 6)**: The only remaining possibility.\n\nThis means twin primes (p, p+2) with p > 3 straddle a multiple of 6: if p = 6k - 1, then p + 2 = 6k + 1.",
+    "proofStrategy": "The proof uses modular arithmetic modulo 6:\n\n1. **All primes > 3 are \u2261 1 or 5 (mod 6)**: Primes > 3 cannot be divisible by 2 or 3.\n\n2. **If p \u2261 1 (mod 6)**: Then p + 2 \u2261 3 (mod 6), meaning 3 divides p + 2. Since p > 3 implies p + 2 > 5 > 3, we have p + 2 composite\u2014contradiction.\n\n3. **Therefore p \u2261 5 (mod 6)**: The only remaining possibility.\n\nThis means twin primes (p, p+2) with p > 3 straddle a multiple of 6: if p = 6k - 1, then p + 2 = 6k + 1.",
     "keyInsights": [
       "Twin primes 'straddle' multiples of 6",
       "The structure theorem eliminates half of potential starting points",
-      "Similar to Sophie Germain prime structure (also $p \\equiv 5 \\pmod{6}$) — not coincidental, as both require the companion number to avoid divisibility by 3",
+      "Similar to Sophie Germain prime structure (also $p \\equiv 5 \\pmod{6}$) \u2014 not coincidental, as both require the companion number to avoid divisibility by 3",
       "Both $p$ and $p+2$ must avoid being divisible by 2 or 3; since all primes $> 3$ are $\\equiv \\pm 1 \\pmod{6}$, twin primes must straddle a multiple of 6",
-      "**Hardy-Littlewood conjecture**: The number of twin primes up to $N$ is asymptotically $2C_2 N/(\\ln N)^2$ where $C_2 = \\prod_{p \\geq 3}(1 - 1/(p-1)^2) \\approx 0.6602$ is the twin prime constant — this uses the same sieving ideas as the $6k \\pm 1$ structure"
+      "**Hardy-Littlewood conjecture**: The number of twin primes up to $N$ is asymptotically $2C_2 N/(\\ln N)^2$ where $C_2 = \\prod_{p \\geq 3}(1 - 1/(p-1)^2) \\approx 0.6602$ is the twin prime constant \u2014 this uses the same sieving ideas as the $6k \\pm 1$ structure"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)"
@@ -76,7 +76,7 @@
       "title": "Structure Theorem",
       "startLine": 68,
       "endLine": 154,
-      "summary": "The main result: twin primes > 3 must satisfy p ≡ 5 (mod 6), giving form (6k-1, 6k+1)."
+      "summary": "The main result: twin primes > 3 must satisfy p \u2261 5 (mod 6), giving form (6k-1, 6k+1)."
     },
     {
       "id": "conjecture",
@@ -102,7 +102,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "prerequisite",
-      "description": "The infinitude of primes is necessary context — the twin prime conjecture asks if infinitely many primes come in pairs"
+      "description": "The infinitude of primes is necessary context \u2014 the twin prime conjecture asks if infinitely many primes come in pairs"
     },
     {
       "targetId": "prime-number-theorem",
@@ -112,12 +112,12 @@
     {
       "targetId": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem guarantees primes in arithmetic progressions; the 6k±1 structure of twin primes reflects primes in residue classes mod 6"
+      "description": "Dirichlet's theorem guarantees primes in arithmetic progressions; the 6k\u00b11 structure of twin primes reflects primes in residue classes mod 6"
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves a clean structural result about twin primes: those greater than 3 must have the form (6k-1, 6k+1). The proof elegantly uses modular arithmetic to show that p ≡ 1 (mod 6) leads to p+2 being divisible by 3.\n\nNotably, this is the same residue class constraint as Sophie Germain primes—both require p ≡ 5 (mod 6) for p > 3. This isn't coincidental: in both cases, the 'companion' (2p+1 or p+2) would be divisible by 3 if p ≡ 1 (mod 6).",
-    "implications": "**Theoretical Significance**: **Search Optimization**\n\nThe structure theorem means we only need to check numbers of the form 6k-1 when searching for twin primes greater than 3.\n\nThis immediately eliminates half of all candidates.\n\n**Sieve Algorithms**\n\nTwin prime sieves can use this to be more efficient: after sieving for primes, only check pairs straddling multiples of 6.\n\n**Connection to Goldbach**\n\nEvery even number ≥ 8 can be written as 6k ± something. Understanding twin primes around multiples of 6 connects to additive problems.",
+    "summary": "This formalization proves a clean structural result about twin primes: those greater than 3 must have the form (6k-1, 6k+1). The proof elegantly uses modular arithmetic to show that p \u2261 1 (mod 6) leads to p+2 being divisible by 3.\n\nNotably, this is the same residue class constraint as Sophie Germain primes\u2014both require p \u2261 5 (mod 6) for p > 3. This isn't coincidental: in both cases, the 'companion' (2p+1 or p+2) would be divisible by 3 if p \u2261 1 (mod 6).",
+    "implications": "**Theoretical Significance**: **Search Optimization**\n\nThe structure theorem means we only need to check numbers of the form 6k-1 when searching for twin primes greater than 3.\n\nThis immediately eliminates half of all candidates.\n\n**Sieve Algorithms**\n\nTwin prime sieves can use this to be more efficient: after sieving for primes, only check pairs straddling multiples of 6.\n\n**Connection to Goldbach**\n\nEvery even number \u2265 8 can be written as 6k \u00b1 something. Understanding twin primes around multiples of 6 connects to additive problems.",
     "openQuestions": [
       "Are there infinitely many twin prime pairs? (The Twin Prime Conjecture)",
       "What is the true growth rate of the count of twin primes up to N?",
@@ -135,7 +135,8 @@
     "lineCount": 190,
     "axiomCount": 1,
     "theoremCount": 16,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   },
   "relatedProofs": [
     "bounded-prime-gaps",
@@ -148,15 +149,15 @@
       "authors": "de Polignac, Alphonse",
       "title": "Recherches nouvelles sur les nombres premiers",
       "year": "1849",
-      "venue": "Comptes Rendus des Séances de l'Académie des Sciences 29, 397–401, 738–739",
+      "venue": "Comptes Rendus des S\u00e9ances de l'Acad\u00e9mie des Sciences 29, 397\u2013401, 738\u2013739",
       "note": "Conjectured that there are infinitely many twin primes (and more generally primes p, p+2k for any k)"
     },
     {
       "authors": "Zhang, Yitang",
       "title": "Bounded gaps between primes",
       "year": "2014",
-      "venue": "Annals of Mathematics 179(3), 1121–1174",
-      "note": "Proved the first finite bound on prime gaps — a major step toward the twin prime conjecture"
+      "venue": "Annals of Mathematics 179(3), 1121\u20131174",
+      "note": "Proved the first finite bound on prime gaps \u2014 a major step toward the twin prime conjecture"
     }
   ]
 }

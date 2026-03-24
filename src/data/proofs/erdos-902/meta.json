@@ -1,10 +1,10 @@
 {
   "id": "erdos-902",
-  "title": "Erdős #902: Tournament Domination",
+  "title": "Erd\u0151s #902: Tournament Domination",
   "slug": "erdos-902",
-  "description": "Let f(n) be minimal such that there is a tournament on f(n) vertices such that every set of n vertices is dominated. Known: f(1)=3, f(2)=7, f(3)=19. Bounds: n·2^n ≪ f(n) ≪ n²·2^n.",
+  "description": "Let f(n) be minimal such that there is a tournament on f(n) vertices such that every set of n vertices is dominated. Known: f(1)=3, f(2)=7, f(3)=19. Bounds: n\u00b72^n \u226a f(n) \u226a n\u00b2\u00b72^n.",
   "meta": {
-    "author": "Paul Erdős, György Szekeres, Esther Szekeres",
+    "author": "Paul Erd\u0151s, Gy\u00f6rgy Szekeres, Esther Szekeres",
     "sourceUrl": "https://erdosproblems.com/902",
     "date": "1963",
     "status": "axiomatized",
@@ -24,7 +24,7 @@
     "prerequisites": [
       "Tournament (complete directed graph) definitions",
       "Domination in directed graphs",
-      "Probabilistic method (Erdős existence argument)",
+      "Probabilistic method (Erd\u0151s existence argument)",
       "Quadratic residues and finite fields",
       "Paley tournament construction",
       "Asymptotic analysis and big-O notation",
@@ -34,21 +34,21 @@
     "assumptions": "23 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős asked this question about tournament domination in 1963. The function f(n) gives the minimum tournament size where every n-set of vertices is dominated by some external vertex. Szekeres & Szekeres (1965) established the lower bound n·2^n. Only f(1)=3, f(2)=7, f(3)=19 are known exactly. Tournament domination connects to the theory of voting paradoxes and the study of doubly regular tournaments, as dominating sets correspond to candidates who can beat any committee in majority voting. The probabilistic method, pioneered by Erdős, shows that random tournaments satisfy domination properties with high probability, but the extremal question of minimizing tournament size is considerably harder.",
+    "historicalContext": "Erd\u0151s asked this question about tournament domination in 1963. The function f(n) gives the minimum tournament size where every n-set of vertices is dominated by some external vertex. Szekeres & Szekeres (1965) established the lower bound n\u00b72^n. Only f(1)=3, f(2)=7, f(3)=19 are known exactly. Tournament domination connects to the theory of voting paradoxes and the study of doubly regular tournaments, as dominating sets correspond to candidates who can beat any committee in majority voting. The probabilistic method, pioneered by Erd\u0151s, shows that random tournaments satisfy domination properties with high probability, but the extremal question of minimizing tournament size is considerably harder.",
     "problemStatement": "Let f(n) be minimal such that there is a tournament on f(n) vertices such that every set of n vertices is dominated by at least one other vertex. Estimate f(n).",
-    "text": "Let f(n) be minimal such that there is a tournament on f(n) vertices such that every set of n vertices is dominated. Known: f(1)=3, f(2)=7, f(3)=19. Bounds: n·2^n ≪ f(n) ≪ n²·2^n.",
-    "proofStrategy": "We formalize the tournament and domination definitions, the function f(n), known values f(1), f(2), f(3), Szekeres lower bound, Erdős upper bound, asymptotic behavior, Paley tournaments, quadratic residues, the probabilistic method, and connections to coding theory.",
+    "text": "Let f(n) be minimal such that there is a tournament on f(n) vertices such that every set of n vertices is dominated. Known: f(1)=3, f(2)=7, f(3)=19. Bounds: n\u00b72^n \u226a f(n) \u226a n\u00b2\u00b72^n.",
+    "proofStrategy": "We formalize the tournament and domination definitions, the function f(n), known values f(1), f(2), f(3), Szekeres lower bound, Erd\u0151s upper bound, asymptotic behavior, Paley tournaments, quadratic residues, the probabilistic method, and connections to coding theory.",
     "keyInsights": [
       "f(1) = 3 (rock-paper-scissors tournament)",
       "f(2) = 7 (Paley tournament of order 7)",
       "f(3) = 19 (exact value determined computationally)",
-      "Lower bound: f(n) ≥ c·n·2^n (Szekeres & Szekeres 1965)",
-      "Upper bound: f(n) ≤ C·n²·2^n (Erdős 1963, probabilistic)"
+      "Lower bound: f(n) \u2265 c\u00b7n\u00b72^n (Szekeres & Szekeres 1965)",
+      "Upper bound: f(n) \u2264 C\u00b7n\u00b2\u00b72^n (Erd\u0151s 1963, probabilistic)"
     ],
     "prerequisites": [
       "Tournament (complete directed graph) definitions",
       "Domination in directed graphs",
-      "Probabilistic method (Erdős existence argument)",
+      "Probabilistic method (Erd\u0151s existence argument)",
       "Quadratic residues and finite fields",
       "Paley tournament construction",
       "Asymptotic analysis and big-O notation",
@@ -87,14 +87,14 @@
     {
       "id": "lower-bound",
       "title": "Lower Bound",
-      "summary": "Szekeres & Szekeres (1965): f(n) ≥ c·n·2^n",
+      "summary": "Szekeres & Szekeres (1965): f(n) \u2265 c\u00b7n\u00b72^n",
       "startLine": 121,
       "endLine": 137
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
-      "summary": "Erdős (1963): f(n) ≤ C·n²·2^n",
+      "summary": "Erd\u0151s (1963): f(n) \u2264 C\u00b7n\u00b2\u00b72^n",
       "startLine": 139,
       "endLine": 150
     },
@@ -136,27 +136,27 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_902: combining Szekeres lower and Erdős upper bounds",
+      "summary": "erdos_902: combining Szekeres lower and Erd\u0151s upper bounds",
       "startLine": 217,
       "endLine": 237
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #902 on tournament domination. The function f(n) gives the minimum tournament size where every n-set is dominated. Known values are f(1)=3, f(2)=7, f(3)=19, with bounds n·2^n ≪ f(n) ≪ n²·2^n.",
+    "summary": "This formalization captures Erd\u0151s Problem #902 on tournament domination. The function f(n) gives the minimum tournament size where every n-set is dominated. Known values are f(1)=3, f(2)=7, f(3)=19, with bounds n\u00b72^n \u226a f(n) \u226a n\u00b2\u00b72^n.",
     "implications": "**Theoretical Significance**: The gap between the bounds suggests deep structure in extremal tournaments.\n\nPaley tournaments provide optimal constructions for certain orders. The problem connects to covering codes and the probabilistic method.",
     "openQuestions": [
       "What is the exact asymptotic growth of f(n)?",
-      "Can the upper bound be improved to f(n) ≪ n·2^n?",
+      "Can the upper bound be improved to f(n) \u226a n\u00b72^n?",
       "What is f(4)?",
       "Are Paley tournaments asymptotically optimal?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80]"
     }
   ],
@@ -164,7 +164,7 @@
     {
       "targetId": "erdos-901",
       "relationship": "related",
-      "description": "Nearby Erdős problem in the combinatorial number theory collection"
+      "description": "Nearby Erd\u0151s problem in the combinatorial number theory collection"
     }
   ],
   "relatedProofs": [
@@ -184,6 +184,7 @@
     "lineCount": 237,
     "axiomCount": 23,
     "theoremCount": 2,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "lemmaCount": 0
   }
 }

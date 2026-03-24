@@ -2,7 +2,7 @@
   "id": "euler-totient",
   "title": "Euler's Generalization of Fermat's Little Theorem",
   "slug": "euler-totient",
-  "description": "For coprime integers a and n, a^φ(n) ≡ 1 (mod n), where φ(n) is Euler's totient function. This generalizes Fermat's Little Theorem.",
+  "description": "For coprime integers a and n, a^\u03c6(n) \u2261 1 (mod n), where \u03c6(n) is Euler's totient function. This generalizes Fermat's Little Theorem.",
   "meta": {
     "author": "Euler (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_theorem",
@@ -26,12 +26,12 @@
       },
       {
         "theorem": "Nat.totient_prime",
-        "description": "φ(p) = p - 1 for prime p",
+        "description": "\u03c6(p) = p - 1 for prime p",
         "module": "Mathlib.Data.Nat.Totient"
       },
       {
         "theorem": "Nat.totient_prime_pow",
-        "description": "φ(p^k) = p^(k-1)(p-1)",
+        "description": "\u03c6(p^k) = p^(k-1)(p-1)",
         "module": "Mathlib.Data.Nat.Totient"
       },
       {
@@ -46,7 +46,7 @@
       "Fermat's full form a^p = a via ZMod.pow_card",
       "Totient value examples verified by rfl",
       "Euler's theorem examples verified by native_decide",
-      "Non-coprime counterexample (2^φ(4) ≠ 1 mod 4)",
+      "Non-coprime counterexample (2^\u03c6(4) \u2260 1 mod 4)",
       "Totient of prime power formula"
     ],
     "dateAdded": "2025-12-26",
@@ -61,14 +61,14 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**From Fermat to Euler to RSA**\n\n**Pierre de Fermat** stated his 'little theorem' $a^{p-1} \\equiv 1 \\pmod{p}$ for prime $p$ in a 1640 letter to Frénicle de Bessy, without proof. **Leonhard Euler** first proved it in 1736 and then generalized it in 1763 to arbitrary moduli: $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$, introducing the totient function $\\varphi(n)$.\n\n**The Group-Theoretic Proof**\n\nThe modern proof uses **Lagrange's theorem**: the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\varphi(n)$, so any element raised to the group order equals the identity. This elegant one-line proof, used in the formalization, replaced Euler's original inductive argument.\n\n**RSA Cryptography**\n\nEuler's theorem is the mathematical foundation of **RSA encryption** (Rivest-Shamir-Adleman, 1977). For primes $p, q$ with $n = pq$: $\\varphi(n) = (p-1)(q-1)$. Choosing $ed \\equiv 1 \\pmod{\\varphi(n)}$, the encryption $m \\mapsto m^e \\pmod{n}$ is inverted by $c \\mapsto c^d \\pmod{n}$ because $m^{ed} = m^{1+k\\varphi(n)} = m \\cdot (m^{\\varphi(n)})^k \\equiv m \\pmod{n}$.\n\nThis is #10 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",
+    "historicalContext": "**From Fermat to Euler to RSA**\n\n**Pierre de Fermat** stated his 'little theorem' $a^{p-1} \\equiv 1 \\pmod{p}$ for prime $p$ in a 1640 letter to Fr\u00e9nicle de Bessy, without proof. **Leonhard Euler** first proved it in 1736 and then generalized it in 1763 to arbitrary moduli: $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$, introducing the totient function $\\varphi(n)$.\n\n**The Group-Theoretic Proof**\n\nThe modern proof uses **Lagrange's theorem**: the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\varphi(n)$, so any element raised to the group order equals the identity. This elegant one-line proof, used in the formalization, replaced Euler's original inductive argument.\n\n**RSA Cryptography**\n\nEuler's theorem is the mathematical foundation of **RSA encryption** (Rivest-Shamir-Adleman, 1977). For primes $p, q$ with $n = pq$: $\\varphi(n) = (p-1)(q-1)$. Choosing $ed \\equiv 1 \\pmod{\\varphi(n)}$, the encryption $m \\mapsto m^e \\pmod{n}$ is inverted by $c \\mapsto c^d \\pmod{n}$ because $m^{ed} = m^{1+k\\varphi(n)} = m \\cdot (m^{\\varphi(n)})^k \\equiv m \\pmod{n}$.\n\nThis is #10 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",
     "problemStatement": "**Euler's Theorem**\n\nFor $n > 0$ and $\\gcd(a, n) = 1$:\n$$a^{\\varphi(n)} \\equiv 1 \\pmod{n}$$\n\nwhere $\\varphi(n) = |\\{k : 1 \\leq k \\leq n, \\gcd(k,n) = 1\\}|$ is Euler's totient function.\n\n**Fermat's Little Theorem** (special case): For prime $p$, $a^{p-1} \\equiv 1 \\pmod{p}$.",
-    "text": "For coprime integers a and n, a^φ(n) ≡ 1 (mod n), where φ(n) is Euler's totient function. This generalizes Fermat's Little Theorem.",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **Main theorem:** Apply `ZMod.pow_totient` — the group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\varphi(n)$, so $a^{\\varphi(n)} = 1$ by Lagrange.\n2. **Fermat corollary:** Substitute $\\varphi(p) = p-1$ (via `Nat.totient_prime`) into Euler's theorem.\n3. **Full Fermat:** Apply `ZMod.pow_card` for the unconditional form $a^p = a$ (valid even when $p \\mid a$).\n4. **Totient properties:** Prove $\\varphi(p) = p-1$ and $\\varphi(p^k) = p^{k-1}(p-1)$ from Mathlib.\n5. **Verification:** Concrete examples by `native_decide` and counterexample showing coprimality is essential.",
+    "text": "For coprime integers a and n, a^\u03c6(n) \u2261 1 (mod n), where \u03c6(n) is Euler's totient function. This generalizes Fermat's Little Theorem.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Main theorem:** Apply `ZMod.pow_totient` \u2014 the group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\varphi(n)$, so $a^{\\varphi(n)} = 1$ by Lagrange.\n2. **Fermat corollary:** Substitute $\\varphi(p) = p-1$ (via `Nat.totient_prime`) into Euler's theorem.\n3. **Full Fermat:** Apply `ZMod.pow_card` for the unconditional form $a^p = a$ (valid even when $p \\mid a$).\n4. **Totient properties:** Prove $\\varphi(p) = p-1$ and $\\varphi(p^k) = p^{k-1}(p-1)$ from Mathlib.\n5. **Verification:** Concrete examples by `native_decide` and counterexample showing coprimality is essential.",
     "keyInsights": [
       "**One-Line Proof:** Euler's theorem is a direct consequence of Lagrange's theorem applied to the unit group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ of order $\\varphi(n)$.",
       "**Fermat as Special Case:** Since $\\varphi(p) = p-1$ for prime $p$, Fermat's little theorem is literally Euler's theorem with $n = p$. The formalization derives it in 3 lines.",
-      "**Coprimality Is Essential:** The counterexample $2^{\\varphi(4)} \\equiv 0 \\not\\equiv 1 \\pmod{4}$ shows the `Units` hypothesis cannot be dropped — zero divisors in $\\mathbb{Z}/n\\mathbb{Z}$ are not in the group.",
+      "**Coprimality Is Essential:** The counterexample $2^{\\varphi(4)} \\equiv 0 \\not\\equiv 1 \\pmod{4}$ shows the `Units` hypothesis cannot be dropped \u2014 zero divisors in $\\mathbb{Z}/n\\mathbb{Z}$ are not in the group.",
       "**Full Fermat Form:** The unconditional $a^p = a$ (not just $a^{p-1} = 1$) works for all $a$, including $a \\equiv 0$. This uses the Frobenius endomorphism of finite fields.",
       "**RSA Foundation:** The encryption scheme $m \\mapsto m^e \\pmod{n}$, $c \\mapsto c^d \\pmod{n}$ with $ed \\equiv 1 \\pmod{\\varphi(n)}$ relies directly on Euler's theorem for correctness."
     ],
@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "The formalization presents Euler's theorem $a^{\\varphi(n)} = 1$ as a one-line consequence of Lagrange's theorem applied to the unit group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$. Fermat's little theorem is derived as a 3-line corollary via $\\varphi(p) = p-1$. The formalization includes totient function properties ($\\varphi(p) = p-1$, $\\varphi(p^k) = p^{k-1}(p-1)$), verified examples, and a counterexample demonstrating the coprimality requirement. All proofs are complete with zero sorries.",
-    "implications": "**Theoretical Significance**: **Implications and Applications**\n\n1. **RSA Cryptography:** Euler's theorem guarantees that RSA decryption inverts encryption: $m^{ed} \\equiv m \\pmod{n}$ when $ed \\equiv 1 \\pmod{\\varphi(n)}$.\n\n2. **Primality Testing:** Fermat's test checks if $a^{n-1} \\equiv 1 \\pmod{n}$.\n\nFailure implies $n$ is composite (but Carmichael numbers are false positives).\n\n3. **Discrete Logarithms:** The order of elements in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ divides $\\varphi(n)$, fundamental to Diffie-Hellman key exchange.\n\n4. **Chinese Remainder Theorem:** The multiplicativity $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n)=1$ connects Euler's theorem to CRT.\n\n5. **Mobius Inversion:** The identity $n = \\sum_{d \\mid n} \\varphi(d)$ connects the totient to Möbius inversion and the theory of arithmetic functions.",
+    "implications": "**Theoretical Significance**: **Implications and Applications**\n\n1. **RSA Cryptography:** Euler's theorem guarantees that RSA decryption inverts encryption: $m^{ed} \\equiv m \\pmod{n}$ when $ed \\equiv 1 \\pmod{\\varphi(n)}$.\n\n2. **Primality Testing:** Fermat's test checks if $a^{n-1} \\equiv 1 \\pmod{n}$.\n\nFailure implies $n$ is composite (but Carmichael numbers are false positives).\n\n3. **Discrete Logarithms:** The order of elements in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ divides $\\varphi(n)$, fundamental to Diffie-Hellman key exchange.\n\n4. **Chinese Remainder Theorem:** The multiplicativity $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n)=1$ connects Euler's theorem to CRT.\n\n5. **Mobius Inversion:** The identity $n = \\sum_{d \\mid n} \\varphi(d)$ connects the totient to M\u00f6bius inversion and the theory of arithmetic functions.",
     "openQuestions": [
       "Can the formalization include Carmichael's theorem ($a^{\\lambda(n)} \\equiv 1$ where $\\lambda$ is the Carmichael function)?",
       "Can the multiplicative property $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n) = 1$ be formalized?",
@@ -177,7 +177,8 @@
     "lineCount": 136,
     "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -185,13 +186,13 @@
       "title": "Theoremata circa residua ex divisione potestatum relicta",
       "year": "1763",
       "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae",
-      "note": "Original proof of a^φ(n) ≡ 1 (mod n) for coprime a, n"
+      "note": "Original proof of a^\u03c6(n) \u2261 1 (mod n) for coprime a, n"
     },
     {
       "authors": "P. de Fermat",
-      "title": "Letter to Frénicle de Bessy",
+      "title": "Letter to Fr\u00e9nicle de Bessy",
       "year": "1640",
-      "note": "Statement (without proof) of a^(p-1) ≡ 1 (mod p) for prime p"
+      "note": "Statement (without proof) of a^(p-1) \u2261 1 (mod p) for prime p"
     },
     {
       "authors": "R. Rivest, A. Shamir, L. Adleman",

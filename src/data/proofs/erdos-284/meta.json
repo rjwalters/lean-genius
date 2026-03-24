@@ -1,8 +1,8 @@
 {
   "id": "erdos-284",
-  "title": "Erdős Problem #284: Maximum First Denominator for Egyptian Fraction Representations of 1",
+  "title": "Erd\u0151s Problem #284: Maximum First Denominator for Egyptian Fraction Representations of 1",
   "slug": "erdos-284",
-  "description": "The maximum first denominator f(k) in a k-term Egyptian fraction representation of 1 satisfies f(k) = (1+o(1))·k/(e-1). Solved by Croot (2001).",
+  "description": "The maximum first denominator f(k) in a k-term Egyptian fraction representation of 1 satisfies f(k) = (1+o(1))\u00b7k/(e-1). Solved by Croot (2001).",
   "meta": {
     "author": "Croot (2001)",
     "sourceUrl": "https://erdosproblems.com/284",
@@ -65,16 +65,16 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #284 asks about the asymptotic behavior of Egyptian fraction decompositions of 1. An Egyptian fraction representation of 1 is an equation 1 = 1/n₁ + 1/n₂ + ... + 1/nₖ with distinct positive integers n₁ < n₂ < ... < nₖ. The function f(k) denotes the maximum possible first denominator n₁ in such a k-term representation.\n\nThe upper bound f(k) ≤ (1+o(1))·k/(e-1) follows from a simple counting argument: if the first denominator is u, the harmonic sum over [u, eu] is approximately 1 (since ∫₁ᵉ 1/x dx = 1), so we need about (e-1)u terms. Hence k ≥ (e-1-o(1))u, giving u ≤ (1+o(1))k/(e-1).\n\nThe matching lower bound was proved by Croot in 2001. He showed that for any N > 1, one can find distinct integers in the interval (N, eN] whose reciprocals sum to exactly 1. This constructive result implies f(k) ≥ (1-o(1))·k/(e-1), completing the asymptotic determination. The constant 1/(e-1) ≈ 0.582 arises from the integral identity ∫₁ᵉ 1/x dx = 1.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $f(k)$ be the maximal value of $n_1$ such that there exist $n_1 < n_2 < \\cdots < n_k$ with\n$$1 = \\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k}.$$\n\nIs it true that $f(k) = (1 + o(1)) \\cdot \\frac{k}{e-1}$?\n\n**Answer**: YES — proved by Croot (2001)",
-    "text": "The maximum first denominator f(k) in a k-term Egyptian fraction representation of 1 satisfies f(k) = (1+o(1))·k/(e-1). Solved by Croot (2001).",
-    "proofStrategy": "We formalize this by:\n\n1. **Egyptian fraction framework**: UnitFraction, IsEgyptianRep, RepresentsOne definitions\n2. **The function f(k)**: Axiomatized as the maximum first denominator\n3. **Upper bound**: Via harmonic series counting — trivial direction\n4. **Croot's theorem**: Constructive existence of representations in (N, eN]\n5. **Lower bound**: Consequence of Croot's result\n6. **Asymptotic formula**: f(k) = (1+o(1))·k/(e-1) combining both bounds\n7. **Example**: k=4 with 1 = 1/2 + 1/4 + 1/5 + 1/20",
+    "historicalContext": "Erd\u0151s Problem #284 asks about the asymptotic behavior of Egyptian fraction decompositions of 1. An Egyptian fraction representation of 1 is an equation 1 = 1/n\u2081 + 1/n\u2082 + ... + 1/n\u2096 with distinct positive integers n\u2081 < n\u2082 < ... < n\u2096. The function f(k) denotes the maximum possible first denominator n\u2081 in such a k-term representation.\n\nThe upper bound f(k) \u2264 (1+o(1))\u00b7k/(e-1) follows from a simple counting argument: if the first denominator is u, the harmonic sum over [u, eu] is approximately 1 (since \u222b\u2081\u1d49 1/x dx = 1), so we need about (e-1)u terms. Hence k \u2265 (e-1-o(1))u, giving u \u2264 (1+o(1))k/(e-1).\n\nThe matching lower bound was proved by Croot in 2001. He showed that for any N > 1, one can find distinct integers in the interval (N, eN] whose reciprocals sum to exactly 1. This constructive result implies f(k) \u2265 (1-o(1))\u00b7k/(e-1), completing the asymptotic determination. The constant 1/(e-1) \u2248 0.582 arises from the integral identity \u222b\u2081\u1d49 1/x dx = 1.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $f(k)$ be the maximal value of $n_1$ such that there exist $n_1 < n_2 < \\cdots < n_k$ with\n$$1 = \\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k}.$$\n\nIs it true that $f(k) = (1 + o(1)) \\cdot \\frac{k}{e-1}$?\n\n**Answer**: YES \u2014 proved by Croot (2001)",
+    "text": "The maximum first denominator f(k) in a k-term Egyptian fraction representation of 1 satisfies f(k) = (1+o(1))\u00b7k/(e-1). Solved by Croot (2001).",
+    "proofStrategy": "We formalize this by:\n\n1. **Egyptian fraction framework**: UnitFraction, IsEgyptianRep, RepresentsOne definitions\n2. **The function f(k)**: Axiomatized as the maximum first denominator\n3. **Upper bound**: Via harmonic series counting \u2014 trivial direction\n4. **Croot's theorem**: Constructive existence of representations in (N, eN]\n5. **Lower bound**: Consequence of Croot's result\n6. **Asymptotic formula**: f(k) = (1+o(1))\u00b7k/(e-1) combining both bounds\n7. **Example**: k=4 with 1 = 1/2 + 1/4 + 1/5 + 1/20",
     "keyInsights": [
-      "**The constant e-1**: The interval [N, eN] has multiplicative length e, and ∫_N^{eN} 1/x dx = 1, so its harmonic sum approximates 1",
-      "**Upper bound is trivial**: If n₁ = u, the interval [u, eu] has ~(e-1)u integers, so k ≥ (e-1)u",
+      "**The constant e-1**: The interval [N, eN] has multiplicative length e, and \u222b_N^{eN} 1/x dx = 1, so its harmonic sum approximates 1",
+      "**Upper bound is trivial**: If n\u2081 = u, the interval [u, eu] has ~(e-1)u integers, so k \u2265 (e-1)u",
       "**Croot's constructive proof**: Start with the full harmonic sum over (N, eN] (slightly > 1), then carefully remove terms to reach exactly 1",
       "**Egyptian fractions are ancient**: Representing rationals as sums of distinct unit fractions dates to ancient Egypt (Rhind papyrus ~1650 BC)",
-      "**Connection to harmonic series**: The asymptotic constant 1/(e-1) is entirely determined by the integral ∫₁ᵉ 1/x dx = 1"
+      "**Connection to harmonic series**: The asymptotic constant 1/(e-1) is entirely determined by the integral \u222b\u2081\u1d49 1/x dx = 1"
     ],
     "prerequisites": [
       "Egyptian fractions: representations of rationals as sums of distinct unit fractions $\\sum 1/n_i$",
@@ -96,7 +96,7 @@
       "title": "The Function f(k)",
       "startLine": 64,
       "endLine": 82,
-      "summary": "Axiomatized f(k) and well-definedness for k ≥ 2."
+      "summary": "Axiomatized f(k) and well-definedness for k \u2265 2."
     },
     {
       "id": "upper-bound",
@@ -128,7 +128,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #284 asks for the asymptotic behavior of f(k), the maximum first denominator in a k-term Egyptian fraction representation of 1. Croot (2001) proved f(k) = (1+o(1))·k/(e-1), where the constant arises from the harmonic series approximation to ∫₁ᵉ 1/x dx = 1.",
+    "summary": "Erd\u0151s Problem #284 asks for the asymptotic behavior of f(k), the maximum first denominator in a k-term Egyptian fraction representation of 1. Croot (2001) proved f(k) = (1+o(1))\u00b7k/(e-1), where the constant arises from the harmonic series approximation to \u222b\u2081\u1d49 1/x dx = 1.",
     "implications": "The result settles the asymptotic question completely. The constructive nature of Croot's proof (finding representations in short intervals) has applications to understanding the distribution of Egyptian fraction representations.",
     "openQuestions": [
       "Determine the second-order term in f(k) = k/(e-1) + ???",
@@ -152,18 +152,19 @@
     "lineCount": 194,
     "axiomCount": 9,
     "theoremCount": 2,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "harmonic-divergence",
       "relationship": "foundational",
-      "description": "The divergence of the harmonic series Σ 1/n is directly connected to Egyptian fractions: the greedy algorithm for writing 1 as a sum of unit fractions terminates precisely because partial harmonic sums grow without bound. The growth rate f(k) ≈ k/(e-1) relates to harmonic series asymptotics"
+      "description": "The divergence of the harmonic series \u03a3 1/n is directly connected to Egyptian fractions: the greedy algorithm for writing 1 as a sum of unit fractions terminates precisely because partial harmonic sums grow without bound. The growth rate f(k) \u2248 k/(e-1) relates to harmonic series asymptotics"
     },
     {
       "targetId": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function φ(n) appears in counting the number of reduced fractions with denominator ≤ n, which connects to the density of available denominators in Egyptian fraction representations"
+      "description": "Euler's totient function \u03c6(n) appears in counting the number of reduced fractions with denominator \u2264 n, which connects to the density of available denominators in Egyptian fraction representations"
     },
     {
       "targetId": "fundamental-arithmetic",
@@ -173,18 +174,18 @@
     {
       "targetId": "e-transcendental",
       "relationship": "thematic",
-      "description": "The constant e appears naturally in the solution f(k) = (1+o(1))·k/(e-1): this connects Egyptian fractions to the exponential function through the relation 1/(e-1) = Σ_{n≥1} 1/n! and related series identities"
+      "description": "The constant e appears naturally in the solution f(k) = (1+o(1))\u00b7k/(e-1): this connects Egyptian fractions to the exponential function through the relation 1/(e-1) = \u03a3_{n\u22651} 1/n! and related series identities"
     }
   ],
   "references": [
     {
       "key": "Cr01",
-      "citation": "Croot, E.S., On a coloring conjecture about unit fractions, Annals of Mathematics 157(2) (2003), 545–556.",
+      "citation": "Croot, E.S., On a coloring conjecture about unit fractions, Annals of Mathematics 157(2) (2003), 545\u2013556.",
       "type": "paper"
     },
     {
       "key": "Er50",
-      "citation": "Erdős, P., On a Diophantine equation, Proceedings of the National Academy of Sciences 36 (1950), 252–255.",
+      "citation": "Erd\u0151s, P., On a Diophantine equation, Proceedings of the National Academy of Sciences 36 (1950), 252\u2013255.",
       "type": "paper"
     },
     {
@@ -194,7 +195,7 @@
     },
     {
       "key": "GS55",
-      "citation": "Graham, R.L., On finite sums of unit fractions, Proceedings of the London Mathematical Society 14(3) (1964), 193–207.",
+      "citation": "Graham, R.L., On finite sums of unit fractions, Proceedings of the London Mathematical Society 14(3) (1964), 193\u2013207.",
       "type": "paper"
     }
   ],

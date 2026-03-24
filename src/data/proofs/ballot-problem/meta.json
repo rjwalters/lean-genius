@@ -74,7 +74,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus* of the French Academy of Sciences, and solved by Désiré André in the very next issue of the same journal. It asks: in an election where candidate A receives $p$ votes and candidate B receives $q$ votes (with $p > q$), what is the probability that A is ahead of B throughout the entire counting process?\n\nThe answer is the elegant formula $(p-q)/(p+q)$. André's proof introduced the **reflection principle** — a bijective argument that pairs each 'bad' vote sequence (where A falls behind or ties) with a reflected path. The reflection principle has since become one of the most powerful tools in enumerative combinatorics, applied to Catalan numbers, random walks, queueing theory, and financial mathematics.\n\nThe problem has a rich genealogy: it was studied independently by Émile Barbier (1887), rediscovered by Aeppli (1924), and generalized by Takács (1962) and others. William Feller popularized it in his classic textbook *An Introduction to Probability Theory and Its Applications* (1968), where it appears as a gateway to the theory of random walks and fluctuation theory.\n\nThe result appears as Theorem #30 in Wiedijk's Formalizing 100 Theorems list, and was formalized in Mathlib by Sébastien Gouëzel.",
+    "historicalContext": "The Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus* of the French Academy of Sciences, and solved by D\u00e9sir\u00e9 Andr\u00e9 in the very next issue of the same journal. It asks: in an election where candidate A receives $p$ votes and candidate B receives $q$ votes (with $p > q$), what is the probability that A is ahead of B throughout the entire counting process?\n\nThe answer is the elegant formula $(p-q)/(p+q)$. Andr\u00e9's proof introduced the **reflection principle** \u2014 a bijective argument that pairs each 'bad' vote sequence (where A falls behind or ties) with a reflected path. The reflection principle has since become one of the most powerful tools in enumerative combinatorics, applied to Catalan numbers, random walks, queueing theory, and financial mathematics.\n\nThe problem has a rich genealogy: it was studied independently by \u00c9mile Barbier (1887), rediscovered by Aeppli (1924), and generalized by Tak\u00e1cs (1962) and others. William Feller popularized it in his classic textbook *An Introduction to Probability Theory and Its Applications* (1968), where it appears as a gateway to the theory of random walks and fluctuation theory.\n\nThe result appears as Theorem #30 in Wiedijk's Formalizing 100 Theorems list, and was formalized in Mathlib by S\u00e9bastien Gou\u00ebzel.",
     "problemStatement": "**Theorem (Bertrand, 1887)**: In an election where candidate A receives p votes and candidate B receives q votes, with p > q, the probability that A leads B throughout the counting is:\n\n$$P = \\frac{p - q}{p + q}$$\n\nThis is Wiedijk's 100 Theorems #30.",
     "text": "A 255-line pedagogical wrapper around Mathlib's `Archive.Wiedijk100Theorems.BallotProblem` (Wiedijk #30) with 14 declarations, 0 sorries, 0 axioms. The proof models vote sequences as `List Int` of $+1$/$-1$ entries via `Ballot.countedSequence`, counts sequences where all partial sums are positive using `Ballot.staysPositive`, and derives the probability $(p-q)/(p+q)$ via conditional counting on `Finset`. The file provides `ballot_theorem` as a clean restatement, `ballot_probability_formula` connecting to `Rat` for exact computation, and concrete examples (`ballot_example_3_1` verifying $P = 1/2$ for $p=3, q=1$). Commentary sections explain the reflection principle, the lattice path interpretation, and connections to Catalan numbers and random walk theory.",
     "proofStrategy": "**The Reflection Principle**:\n\n1. Model vote counting as a path in a lattice (each vote moves the cumulative total up or down)\n2. 'A leads throughout' means the path never touches the x-axis after time 0\n3. Count 'bad' paths by reflecting them across the axis at their first touch point\n4. This creates a bijection with paths to a different endpoint\n5. The probability follows from counting good vs total paths",
@@ -82,7 +82,7 @@
       "The reflection principle provides a bijective proof that avoids complex recursion: each 'bad' path (where A ties or falls behind) corresponds bijectively to a path with swapped $+1/-1$ votes, ending at a different point.",
       "The formula $(p-q)/(p+q)$ emerges as a ratio of binomial coefficients: $\\frac{\\binom{p+q}{p} - \\binom{p+q}{q}}{\\binom{p+q}{p}} = \\frac{p-q}{p+q}$, where $\\binom{p+q}{q}$ counts the reflected 'bad' paths.",
       "The ballot problem connects to Catalan numbers: the number of paths from $(0,0)$ to $(2n, 0)$ that stay non-negative is the Catalan number $C_n = \\frac{1}{n+1}\\binom{2n}{n}$.",
-      "The Mathlib formalization models vote sequences as lists of integers, using `condCount` for conditional probability over finite sets — demonstrating how classical probability theory integrates with Lean's measure theory.",
+      "The Mathlib formalization models vote sequences as lists of integers, using `condCount` for conditional probability over finite sets \u2014 demonstrating how classical probability theory integrates with Lean's measure theory.",
       "Applications extend beyond voting: random walks staying positive, queues never emptying, stock prices above a barrier, and the Gambler's Ruin problem all reduce to variants of the ballot problem."
     ],
     "prerequisites": [
@@ -131,16 +131,16 @@
       "startLine": 216,
       "endLine": 249,
       "summary": "Detailed explanation of the bijective proof technique.",
-      "mathContext": "André's reflection bijection: for any 'bad' path (first touching $y=0$ at step $k$), reflect all votes before step $k$ ($+1 \\leftrightarrow -1$). This maps bad paths ending at $(p+q, p-q)$ bijectively to ALL paths ending at $(p+q, q-p)$. Count: $\\binom{p+q}{q}$ bad paths, so good paths $= \\binom{p+q}{p} - \\binom{p+q}{q}$."
+      "mathContext": "Andr\u00e9's reflection bijection: for any 'bad' path (first touching $y=0$ at step $k$), reflect all votes before step $k$ ($+1 \\leftrightarrow -1$). This maps bad paths ending at $(p+q, p-q)$ bijectively to ALL paths ending at $(p+q, q-p)$. Count: $\\binom{p+q}{q}$ bad paths, so good paths $= \\binom{p+q}{p} - \\binom{p+q}{q}$."
     }
   ],
   "conclusion": {
     "summary": "The Ballot Problem elegantly connects probability theory with combinatorics through the reflection principle. The formula (p-q)/(p+q) emerges naturally from counting lattice paths.",
     "implications": "**Applications:**\n\n**1. Random Walks**\nThe ballot problem is equivalent to asking when a random walk stays positive.\n\n**2. Queueing Theory**\nModels queues that never empty.\n\n**3. Financial Mathematics**\nStock prices staying above a barrier.\n\n**4. Catalan Numbers**\nConnected to the count of non-crossing paths.",
     "openQuestions": [
-      "Formalize the Cycle Lemma (Dvoretzky-Motzkin, 1947): among the n cyclic rotations of a lattice path from (0,0) to (n, k), exactly k of them stay strictly positive — a powerful generalization of the ballot problem",
-      "Formalize the continuous-time ballot problem via Brownian motion: for a Brownian bridge from 0 to x > 0 over [0,T], the probability of staying positive is x/√(2πT)",
-      "Prove the connection to Catalan numbers explicitly: for p = q = n, the number of non-negative lattice paths from (0,0) to (2n,0) is C_n = (1/(n+1))·C(2n,n)"
+      "Formalize the Cycle Lemma (Dvoretzky-Motzkin, 1947): among the n cyclic rotations of a lattice path from (0,0) to (n, k), exactly k of them stay strictly positive \u2014 a powerful generalization of the ballot problem",
+      "Formalize the continuous-time ballot problem via Brownian motion: for a Brownian bridge from 0 to x > 0 over [0,T], the probability of staying positive is x/\u221a(2\u03c0T)",
+      "Prove the connection to Catalan numbers explicitly: for p = q = n, the number of non-negative lattice paths from (0,0) to (2n,0) is C_n = (1/(n+1))\u00b7C(2n,n)"
     ]
   },
   "crossReferences": [
@@ -167,7 +167,7 @@
     {
       "targetId": "birthday-problem",
       "relationship": "related",
-      "description": "Both are classic probability problems solved by counting arguments over finite sample spaces — the birthday problem counts collisions in random assignments, the ballot problem counts lattice paths staying positive"
+      "description": "Both are classic probability problems solved by counting arguments over finite sample spaces \u2014 the birthday problem counts collisions in random assignments, the ballot problem counts lattice paths staying positive"
     },
     {
       "targetId": "ballot-problem-oq-01",
@@ -187,12 +187,12 @@
     {
       "targetId": "derangements",
       "relationship": "related",
-      "description": "Both are classical combinatorics problems solved by bijective counting: the ballot problem uses the reflection principle while derangements use inclusion-exclusion — both transform a counting constraint into a simpler enumeration"
+      "description": "Both are classical combinatorics problems solved by bijective counting: the ballot problem uses the reflection principle while derangements use inclusion-exclusion \u2014 both transform a counting constraint into a simpler enumeration"
     },
     {
       "targetId": "inclusion-exclusion",
       "relationship": "related",
-      "description": "Inclusion-exclusion is a complementary counting technique to the ballot problem's reflection principle — both reduce constrained counting to simpler enumerations, and some ballot problem proofs use inclusion-exclusion directly"
+      "description": "Inclusion-exclusion is a complementary counting technique to the ballot problem's reflection principle \u2014 both reduce constrained counting to simpler enumerations, and some ballot problem proofs use inclusion-exclusion directly"
     },
     {
       "targetId": "central-limit-theorem",
@@ -202,17 +202,17 @@
     {
       "targetId": "erdos-szekeres",
       "relationship": "related",
-      "description": "Both are combinatorial results solved by elegant counting arguments: the Erdős-Szekeres theorem (every sequence of length mn+1 has a monotone subsequence of length m+1 or n+1) uses the pigeonhole principle on lattice paths, while the ballot problem uses the reflection principle on lattice paths — both involve path-counting in grid diagrams"
+      "description": "Both are combinatorial results solved by elegant counting arguments: the Erd\u0151s-Szekeres theorem (every sequence of length mn+1 has a monotone subsequence of length m+1 or n+1) uses the pigeonhole principle on lattice paths, while the ballot problem uses the reflection principle on lattice paths \u2014 both involve path-counting in grid diagrams"
     },
     {
       "targetId": "ballot-problem-oq-01-oq-01",
       "relationship": "extended-by",
-      "description": "Formalizes the Discrete Intermediate Value Theorem for the Dvoretzky-Motzkin cycle lemma — a deeper combinatorial tool that generalizes the ballot problem's reflection principle to cyclic sequences"
+      "description": "Formalizes the Discrete Intermediate Value Theorem for the Dvoretzky-Motzkin cycle lemma \u2014 a deeper combinatorial tool that generalizes the ballot problem's reflection principle to cyclic sequences"
     },
     {
       "targetId": "ballot-problem-oq-03-oq-02",
       "relationship": "extended-by",
-      "description": "Extends ballot problem lattice path counting to the general $r \\times r$ Lindström-Gessel-Viennot determinant formula — the ballot problem is the $1 \\times 1$ case of the LGV lemma for non-intersecting lattice paths"
+      "description": "Extends ballot problem lattice path counting to the general $r \\times r$ Lindstr\u00f6m-Gessel-Viennot determinant formula \u2014 the ballot problem is the $1 \\times 1$ case of the LGV lemma for non-intersecting lattice paths"
     }
   ],
   "relatedProofs": [
@@ -234,17 +234,17 @@
   "references": [
     {
       "authors": "Bertrand, Joseph",
-      "title": "Solution d'un problème",
+      "title": "Solution d'un probl\u00e8me",
       "year": "1887",
-      "venue": "Comptes Rendus de l'Académie des Sciences, Paris 105",
+      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences, Paris 105",
       "note": "Original statement of the ballot problem"
     },
     {
-      "authors": "André, Désiré",
-      "title": "Solution directe du problème résolu par M. Bertrand",
+      "authors": "Andr\u00e9, D\u00e9sir\u00e9",
+      "title": "Solution directe du probl\u00e8me r\u00e9solu par M. Bertrand",
       "year": "1887",
-      "venue": "Comptes Rendus de l'Académie des Sciences, Paris 105",
-      "note": "First solution using the reflection principle — the celebrated bijective argument"
+      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences, Paris 105",
+      "note": "First solution using the reflection principle \u2014 the celebrated bijective argument"
     },
     {
       "authors": "Feller, William",
@@ -257,8 +257,8 @@
       "authors": "Renault, Marc",
       "title": "Four Proofs of the Ballot Theorem",
       "year": "2007",
-      "venue": "Mathematics Magazine 80(5): 345–352",
-      "note": "Survey of four distinct proof techniques for the ballot theorem: André's reflection, induction, cycle lemma, and direct counting"
+      "venue": "Mathematics Magazine 80(5): 345\u2013352",
+      "note": "Survey of four distinct proof techniques for the ballot theorem: Andr\u00e9's reflection, induction, cycle lemma, and direct counting"
     }
   ],
   "leanFile": {
@@ -275,7 +275,8 @@
     "namespace": "BallotProblem",
     "lineCount": 255,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 1
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "lemmaCount": 0
   }
 }

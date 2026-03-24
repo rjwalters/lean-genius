@@ -48,15 +48,15 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Intermediate Value Theorem (IVT) is one of the foundational results in real analysis, first rigorously stated by Bernard Bolzano in 1817. Bolzano's work was largely ignored in his time, and Augustin-Louis Cauchy independently presented a more complete treatment in 1821.\n\nHowever, both Bolzano's and Cauchy's proofs relied on properties of real numbers that weren't rigorously established until later. The theorem essentially requires the completeness of the real numbers - the property that every bounded set has a supremum. This was finally formalized by Richard Dedekind and Georg Cantor in the 1870s through their constructions of the real numbers from the rationals.\n\nThe IVT is intimately connected to the topological notion of connectedness: it expresses the fact that continuous images of connected sets are connected, and connected subsets of ℝ are intervals.",
+    "historicalContext": "The Intermediate Value Theorem (IVT) is one of the foundational results in real analysis, first rigorously stated by Bernard Bolzano in 1817. Bolzano's work was largely ignored in his time, and Augustin-Louis Cauchy independently presented a more complete treatment in 1821.\n\nHowever, both Bolzano's and Cauchy's proofs relied on properties of real numbers that weren't rigorously established until later. The theorem essentially requires the completeness of the real numbers - the property that every bounded set has a supremum. This was finally formalized by Richard Dedekind and Georg Cantor in the 1870s through their constructions of the real numbers from the rationals.\n\nThe IVT is intimately connected to the topological notion of connectedness: it expresses the fact that continuous images of connected sets are connected, and connected subsets of \u211d are intervals.",
     "problemStatement": "The Intermediate Value Theorem states:\n\nIf $f : \\mathbb{R} \\to \\mathbb{R}$ is continuous on the closed interval $[a, b]$, then for every value $c$ between $f(a)$ and $f(b)$, there exists some $x \\in [a, b]$ such that $f(x) = c$.\n\nMore precisely:\n$$\\forall c \\in [\\min(f(a), f(b)), \\max(f(a), f(b))], \\exists x \\in [a, b], f(x) = c$$\n\nAn important special case (Bolzano's theorem): If $f(a) < 0 < f(b)$, then there exists $x \\in (a, b)$ with $f(x) = 0$.",
     "text": "A continuous function on a closed interval attains every value between its endpoints: the foundational theorem connecting topology to analysis.",
-    "proofStrategy": "The modern proof relies on the topological characterization of the reals:\n\n1. **Connectedness of Intervals**: Closed intervals $[a, b]$ in $\\mathbb{R}$ are connected sets. This follows from the completeness of $\\mathbb{R}$ - any attempt to partition an interval into two non-empty separated sets fails because the supremum of one part must be in the closure of both.\n\n2. **Continuous Images Preserve Connectedness**: If $f$ is continuous and $S$ is connected, then $f(S)$ is connected. This is because the preimage of any separation would give a separation of $S$.\n\n3. **Connected Subsets of ℝ are Intervals**: Any connected subset of $\\mathbb{R}$ must be an interval. If $a$ and $b$ are in a connected set and $a < c < b$, then $c$ must also be in the set.\n\n4. **Conclusion**: Since $[a, b]$ is connected, $f([a, b])$ is connected, hence an interval containing $f(a)$ and $f(b)$. Therefore it contains all values between them.",
+    "proofStrategy": "The modern proof relies on the topological characterization of the reals:\n\n1. **Connectedness of Intervals**: Closed intervals $[a, b]$ in $\\mathbb{R}$ are connected sets. This follows from the completeness of $\\mathbb{R}$ - any attempt to partition an interval into two non-empty separated sets fails because the supremum of one part must be in the closure of both.\n\n2. **Continuous Images Preserve Connectedness**: If $f$ is continuous and $S$ is connected, then $f(S)$ is connected. This is because the preimage of any separation would give a separation of $S$.\n\n3. **Connected Subsets of \u211d are Intervals**: Any connected subset of $\\mathbb{R}$ must be an interval. If $a$ and $b$ are in a connected set and $a < c < b$, then $c$ must also be in the set.\n\n4. **Conclusion**: Since $[a, b]$ is connected, $f([a, b])$ is connected, hence an interval containing $f(a)$ and $f(b)$. Therefore it contains all values between them.",
     "keyInsights": [
-      "**Connectedness = No Jumping:** IVT says continuous images of connected sets are connected. Since $[a,b] \\subset \\mathbb{R}$ is connected and connected subsets of $\\mathbb{R}$ are intervals, $f([a,b])$ is an interval containing $f(a)$ and $f(b)$ — hence all values between them.",
+      "**Connectedness = No Jumping:** IVT says continuous images of connected sets are connected. Since $[a,b] \\subset \\mathbb{R}$ is connected and connected subsets of $\\mathbb{R}$ are intervals, $f([a,b])$ is an interval containing $f(a)$ and $f(b)$ \u2014 hence all values between them.",
       "**Completeness is Essential:** IVT fails over $\\mathbb{Q}$: $f(x) = x^2 - 2$ on $[0, 2] \\cap \\mathbb{Q}$ has $f(0) < 0 < f(2)$, but $\\sqrt{2} \\notin \\mathbb{Q}$. The theorem requires the least upper bound property of $\\mathbb{R}$.",
-      "**Existence Without Uniqueness:** $f(x) = c$ may have many solutions in $[a,b]$. The bisection method finds ONE root in $O(\\log(1/\\epsilon))$ steps by repeatedly halving the interval — the most robust root-finding algorithm.",
-      "**Bolzano's Theorem:** The special case $f(a) < 0 < f(b) \\Rightarrow \\exists x \\in (a,b),\\; f(x) = 0$ — the root-finding version. This is the foundation of numerical analysis: bisection, Newton's method, and Brent's method all exploit this existence guarantee.",
+      "**Existence Without Uniqueness:** $f(x) = c$ may have many solutions in $[a,b]$. The bisection method finds ONE root in $O(\\log(1/\\epsilon))$ steps by repeatedly halving the interval \u2014 the most robust root-finding algorithm.",
+      "**Bolzano's Theorem:** The special case $f(a) < 0 < f(b) \\Rightarrow \\exists x \\in (a,b),\\; f(x) = 0$ \u2014 the root-finding version. This is the foundation of numerical analysis: bisection, Newton's method, and Brent's method all exploit this existence guarantee.",
       "**Topological Generalization:** IVT holds for any continuous $f: X \\to Y$ where $X$ is connected and $Y$ is ordered. In Mathlib, `IsPreconnected.intermediate_value` captures this at full generality."
     ],
     "prerequisites": [
@@ -117,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "The Intermediate Value Theorem is a cornerstone of real analysis, expressing the intuitive idea that continuous functions cannot 'jump' over values. Our formalization demonstrates how naturally this classical result fits into modern type theory, with Lean's type system capturing the subtle conditions (continuity, interval endpoints) that make IVT valid.\n\nThe proof leverages Mathlib's powerful topology framework, using the connectedness of intervals and the preservation of connectedness under continuous maps. The key corollaries - Bolzano's theorem for root-finding and the fixed point theorem for interval maps - show the theorem's practical power.",
-    "implications": "The IVT has profound implications across mathematics:\n\n**1. Numerical Analysis**\nBolzano's theorem underlies the bisection method for finding roots: if f(a) and f(b) have opposite signs, repeatedly bisect to find a root to arbitrary precision.\n\n**2. Existence Theorems**\nIVT proves existence of solutions (nth roots exist, odd polynomials have roots) without computing them.\n\n**3. Fixed Point Theory**\nIf f : [a,b] → [a,b] is continuous, it has a fixed point. This generalizes to Brouwer's theorem in higher dimensions.\n\n**4. Topological Characterization**\nThe reals are characterized (among ordered fields) by having IVT hold for all continuous functions.\n\n**5. The Role of Completeness**\nIVT fails for ℚ: f(x) = x² - 2 is continuous on [1, 2] ⊂ ℚ with f(1) < 0 and f(2) > 0, but has no rational root.",
+    "implications": "The IVT has profound implications across mathematics:\n\n**1. Numerical Analysis**\nBolzano's theorem underlies the bisection method for finding roots: if f(a) and f(b) have opposite signs, repeatedly bisect to find a root to arbitrary precision.\n\n**2. Existence Theorems**\nIVT proves existence of solutions (nth roots exist, odd polynomials have roots) without computing them.\n\n**3. Fixed Point Theory**\nIf f : [a,b] \u2192 [a,b] is continuous, it has a fixed point. This generalizes to Brouwer's theorem in higher dimensions.\n\n**4. Topological Characterization**\nThe reals are characterized (among ordered fields) by having IVT hold for all continuous functions.\n\n**5. The Role of Completeness**\nIVT fails for \u211a: f(x) = x\u00b2 - 2 is continuous on [1, 2] \u2282 \u211a with f(1) < 0 and f(2) > 0, but has no rational root.",
     "openQuestions": [
       "How does IVT generalize to functions between arbitrary connected and ordered topological spaces?",
       "What is the constructive content of IVT, and can we compute x given c?",
@@ -139,7 +139,8 @@
     "lineCount": 221,
     "axiomCount": 0,
     "theoremCount": 12,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -150,7 +151,7 @@
     {
       "targetId": "borsuk-ulam",
       "relationship": "related",
-      "description": "The $n=1$ case of Borsuk-Ulam — every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$ — is equivalent to IVT applied to $g(\\theta) = f(\\theta) - f(\\theta + \\pi)$ on the circle. Borsuk-Ulam is the higher-dimensional generalization"
+      "description": "The $n=1$ case of Borsuk-Ulam \u2014 every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$ \u2014 is equivalent to IVT applied to $g(\\theta) = f(\\theta) - f(\\theta + \\pi)$ on the circle. Borsuk-Ulam is the higher-dimensional generalization"
     },
     {
       "targetId": "mean-value-theorem",
@@ -170,27 +171,27 @@
     {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "foundational",
-      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root because $\\lim_{x \\to \\pm\\infty} f(x) = \\pm\\infty$, so $f$ takes both positive and negative values — IVT gives a root. This is the minimal analytic prerequisite for FTA"
+      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root because $\\lim_{x \\to \\pm\\infty} f(x) = \\pm\\infty$, so $f$ takes both positive and negative values \u2014 IVT gives a root. This is the minimal analytic prerequisite for FTA"
     },
     {
       "targetId": "area-of-circle",
       "relationship": "related",
-      "description": "Archimedes' method of exhaustion — the ancient precursor to IVT — proved $A = \\pi r^2$ by showing the difference between area and $\\pi r^2$ is less than any positive quantity. IVT formalizes this type of continuity argument rigorously using the completeness of $\\mathbb{R}$"
+      "description": "Archimedes' method of exhaustion \u2014 the ancient precursor to IVT \u2014 proved $A = \\pi r^2$ by showing the difference between area and $\\pi r^2$ is less than any positive quantity. IVT formalizes this type of continuity argument rigorously using the completeness of $\\mathbb{R}$"
     },
     {
       "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "IVT guarantees that $\\cos(\\theta/3)$ exists for any angle $\\theta$ (as a real value between -1 and 1). The impossibility of angle trisection is not about existence of the value but about constructibility — $\\cos(20°)$ exists by IVT but is not constructible because its minimal polynomial has degree 3"
+      "description": "IVT guarantees that $\\cos(\\theta/3)$ exists for any angle $\\theta$ (as a real value between -1 and 1). The impossibility of angle trisection is not about existence of the value but about constructibility \u2014 $\\cos(20\u00b0)$ exists by IVT but is not constructible because its minimal polynomial has degree 3"
     },
     {
       "targetId": "schroeder-bernstein",
       "relationship": "thematic",
-      "description": "Both establish existence of 'intermediate' objects: IVT proves a continuous function attains all values between $f(a)$ and $f(b)$, while Schröder-Bernstein proves a bijection exists between sets with injections in both directions. Both are powerful existence theorems that avoid explicit construction"
+      "description": "Both establish existence of 'intermediate' objects: IVT proves a continuous function attains all values between $f(a)$ and $f(b)$, while Schr\u00f6der-Bernstein proves a bijection exists between sets with injections in both directions. Both are powerful existence theorems that avoid explicit construction"
     },
     {
       "targetId": "cantor-diagonalization",
       "relationship": "thematic",
-      "description": "IVT relies on the completeness of $\\mathbb{R}$ (which has uncountably many points, by Cantor's argument). Over $\\mathbb{Q}$ (countable), IVT fails: there are 'gaps' where intermediate values should exist but don't. Cantor's proof that $\\mathbb{R}$ is uncountable ensures that $\\mathbb{R}$ has 'no gaps' — the topological completeness that IVT requires"
+      "description": "IVT relies on the completeness of $\\mathbb{R}$ (which has uncountably many points, by Cantor's argument). Over $\\mathbb{Q}$ (countable), IVT fails: there are 'gaps' where intermediate values should exist but don't. Cantor's proof that $\\mathbb{R}$ is uncountable ensures that $\\mathbb{R}$ has 'no gaps' \u2014 the topological completeness that IVT requires"
     }
   ],
   "relatedProofs": [
@@ -208,7 +209,7 @@
   "references": [
     {
       "authors": "Bolzano, Bernard",
-      "title": "Rein analytischer Beweis des Lehrsatzes, dass zwischen je zwey Werthen, die ein entgegengesetztes Resultat gewähren, wenigstens eine reelle Wurzel der Gleichung liege",
+      "title": "Rein analytischer Beweis des Lehrsatzes, dass zwischen je zwey Werthen, die ein entgegengesetztes Resultat gew\u00e4hren, wenigstens eine reelle Wurzel der Gleichung liege",
       "year": "1817",
       "venue": "Prague",
       "note": "First rigorous proof of the intermediate value theorem using the completeness of the real numbers"

@@ -46,7 +46,7 @@
       "IsPuiseuxSeries predicate: common denominator condition on Hahn series exponents",
       "Newton polygon method for finding branches formalized as leadingExponentFromSlope",
       "Algebraic closure of Laurent series field axiomatized with explicit ramification index",
-      "Galois group Gal(Puiseux/Laurent) ≅ Ẑ described structurally",
+      "Galois group Gal(Puiseux/Laurent) \u2245 \u1e90 described structurally",
       "Characteristic zero requirement demonstrated via Artin-Schreier counterexample"
     ],
     "dateAdded": "2025-12-29",
@@ -56,14 +56,14 @@
   },
   "overview": {
     "historicalContext": "Newton discovered the algorithm for computing fractional power series roots of polynomials in 1676. Puiseux gave the first rigorous proof in 1850 that these series provide the algebraic closure of the Laurent series field, establishing that allowing fractional exponents suffices to solve all polynomial equations over formal power series (in characteristic 0). The study of algebraic curves via local parametrization goes back to Newton who introduced the Newton polygon method to compute the branches of an algebraic curve at a singular point. The formal algebraic closure result was refined in the 20th century by Hironaka and others in connection with resolution of singularities, and the characteristic-0 hypothesis is essential: in characteristic p, the Artin-Schreier phenomenon means p-th power extensions cannot be captured by Puiseux series.",
-    "problemStatement": "**Puiseux's Theorem** (Wiedijk #41): The field of Puiseux series K{{x}} = ⋃_{n≥1} K((x^{1/n})) over an algebraically closed field K of characteristic 0 is algebraically closed.\n\nEquivalently: every polynomial over the Laurent series field K((x)) has a root in the Puiseux series field, and K{{x}} is the algebraic closure of K((x)).",
+    "problemStatement": "**Puiseux's Theorem** (Wiedijk #41): The field of Puiseux series K{{x}} = \u22c3_{n\u22651} K((x^{1/n})) over an algebraically closed field K of characteristic 0 is algebraically closed.\n\nEquivalently: every polynomial over the Laurent series field K((x)) has a root in the Puiseux series field, and K{{x}} is the algebraic closure of K((x)).",
     "text": "The field of Puiseux series (fractional power series) is algebraically closed. This provides a concrete algebraic closure of the Laurent series field.",
-    "proofStrategy": "The Newton-Puiseux algorithm constructs roots by iterative refinement: (1) compute the Newton polygon — lower convex hull of coefficient valuations, (2) each edge with slope −p/q yields a leading exponent p/q, (3) the characteristic polynomial determines leading coefficients, (4) substitute and recurse to compute higher-order terms. Termination requires characteristic 0 to ensure the Newton polygon strictly improves at each step.",
+    "proofStrategy": "The Newton-Puiseux algorithm constructs roots by iterative refinement: (1) compute the Newton polygon \u2014 lower convex hull of coefficient valuations, (2) each edge with slope \u2212p/q yields a leading exponent p/q, (3) the characteristic polynomial determines leading coefficients, (4) substitute and recurse to compute higher-order terms. Termination requires characteristic 0 to ensure the Newton polygon strictly improves at each step.",
     "keyInsights": [
-      "Puiseux series are a concrete, constructive algebraic closure — unlike most algebraic closures which rely on Zorn's lemma",
+      "Puiseux series are a concrete, constructive algebraic closure \u2014 unlike most algebraic closures which rely on Zorn's lemma",
       "The Newton polygon encodes the structure of roots: slopes give leading exponents, edge lengths give multiplicities",
-      "The Galois group Gal(K{{x}}/K((x))) ≅ Ẑ (profinite integers) acting by roots of unity on fractional powers",
-      "The theorem fails in characteristic p due to Artin-Schreier extensions (Yᵖ − Y = f has no Puiseux root)",
+      "The Galois group Gal(K{{x}}/K((x))) \u2245 \u1e90 (profinite integers) acting by roots of unity on fractional powers",
+      "The theorem fails in characteristic p due to Artin-Schreier extensions (Y\u1d56 \u2212 Y = f has no Puiseux root)",
       "Essential for studying algebraic curves near singularities: each branch is parameterized by a Puiseux series"
     ],
     "prerequisites": [
@@ -77,7 +77,7 @@
       "title": "Puiseux Series via Hahn Series",
       "startLine": 101,
       "endLine": 143,
-      "summary": "Defines IsPuiseuxSeries as the common-denominator condition on HahnSeries ℚ K exponents, with illustrative examples of fractional powers."
+      "summary": "Defines IsPuiseuxSeries as the common-denominator condition on HahnSeries \u211a K exponents, with illustrative examples of fractional powers."
     },
     {
       "id": "algebraic-closure",
@@ -91,7 +91,7 @@
       "title": "Newton-Puiseux Algorithm",
       "startLine": 205,
       "endLine": 261,
-      "summary": "The constructive root-finding algorithm: Newton polygon → edge slopes → characteristic polynomial → substitution → recurse."
+      "summary": "The constructive root-finding algorithm: Newton polygon \u2192 edge slopes \u2192 characteristic polynomial \u2192 substitution \u2192 recurse."
     },
     {
       "id": "applications",
@@ -105,14 +105,14 @@
       "title": "Galois Group: Profinite Integers",
       "startLine": 322,
       "endLine": 344,
-      "summary": "Gal(K{{x}}/K((x))) ≅ Ẑ acts by x^{1/n} ↦ ζₙ · x^{1/n}; key example in infinite Galois theory."
+      "summary": "Gal(K{{x}}/K((x))) \u2245 \u1e90 acts by x^{1/n} \u21a6 \u03b6\u2099 \u00b7 x^{1/n}; key example in infinite Galois theory."
     },
     {
       "id": "calculations",
       "title": "Concrete Calculations",
       "startLine": 352,
       "endLine": 397,
-      "summary": "Worked examples: Y² = x (square root), Y² = x³ (cusp), Y³ = x (cube root) with Newton polygon analysis."
+      "summary": "Worked examples: Y\u00b2 = x (square root), Y\u00b2 = x\u00b3 (cusp), Y\u00b3 = x (cube root) with Newton polygon analysis."
     },
     {
       "id": "connections",
@@ -123,7 +123,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Puiseux's theorem provides a beautiful, explicit, and algorithmic algebraic closure for the Laurent series field — one of the few algebraic closures that can be described constructively. It bridges algebra (Galois theory with Gal ≅ Ẑ), analysis (convergent local expansions), and geometry (resolution of curve singularities).",
+    "summary": "Puiseux's theorem provides a beautiful, explicit, and algorithmic algebraic closure for the Laurent series field \u2014 one of the few algebraic closures that can be described constructively. It bridges algebra (Galois theory with Gal \u2245 \u1e90), analysis (convergent local expansions), and geometry (resolution of curve singularities).",
     "implications": "The theorem is fundamental to singularity theory in algebraic geometry, resolution of plane curve singularities, and the local study of algebraic varieties. Modern applications include computer algebra systems (symbolic root finding), tropical geometry (Newton polygon as tropicalization), and arithmetic geometry (local analysis over complete fields).",
     "openQuestions": [
       "What is the correct analogue of Puiseux's theorem in positive characteristic? (Requires Artin-Schreier-Witt theory)",
@@ -146,14 +146,15 @@
     "lineCount": 469,
     "axiomCount": 3,
     "theoremCount": 6,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "lemmaCount": 0
   },
   "references": [
     {
       "authors": "Puiseux, Victor Alexandre",
-      "title": "Recherches sur les fonctions algébriques",
+      "title": "Recherches sur les fonctions alg\u00e9briques",
       "year": "1850",
-      "venue": "Journal de Mathématiques Pures et Appliquées 15, 365–480",
+      "venue": "Journal de Math\u00e9matiques Pures et Appliqu\u00e9es 15, 365\u2013480",
       "note": "Proved that algebraic functions can be expanded as fractional power series (Puiseux series) near branch points"
     },
     {

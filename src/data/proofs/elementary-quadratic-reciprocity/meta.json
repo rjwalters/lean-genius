@@ -54,7 +54,7 @@
     "lineCount": 357,
     "prerequisites": [
       "Legendre symbol (a/p) and basic properties",
-      "Modular arithmetic and the group (Z/pZ)×",
+      "Modular arithmetic and the group (Z/pZ)\u00d7",
       "Floor function and integer division",
       "Lattice points and geometric counting"
     ],
@@ -74,7 +74,7 @@
     ],
     "prerequisites": [
       "Legendre symbol (a/p) and basic properties",
-      "Modular arithmetic and the group (Z/pZ)×",
+      "Modular arithmetic and the group (Z/pZ)\u00d7",
       "Floor function and integer division",
       "Lattice points and geometric counting"
     ]
@@ -147,7 +147,7 @@
   ],
   "conclusion": {
     "summary": "This file presents Eisenstein's 1844 elementary proof of quadratic reciprocity, formalized in Lean 4 using Mathlib's infrastructure. The proof chain is fully verified with zero sorries, proceeding from Gauss's Lemma through Eisenstein's floor function reformulation to the lattice point counting argument.",
-    "implications": "**Theoretical Significance**: The elementary proof demonstrates that one of number theory's deepest results can be established using only basic arithmetic and geometric counting.\n\n1. **Pedagogical value**: The clearest path from first principles to QR — only floor functions and lattice point counting are needed.\n2. **Historical significance**: Represents Eisenstein's 1844 simplification of Gauss's original proof (Gauss gave six proofs; this approach is the most accessible).\n3. **Proof technique**: Lattice point counting appears throughout analytic number theory — the same geometric idea underlies Minkowski's theorem on convex bodies.\n4. **Formalization insight**: Shows how Mathlib's Gauss-Eisenstein infrastructure supports multiple proof strategies for QR.",
+    "implications": "**Theoretical Significance**: The elementary proof demonstrates that one of number theory's deepest results can be established using only basic arithmetic and geometric counting.\n\n1. **Pedagogical value**: The clearest path from first principles to QR \u2014 only floor functions and lattice point counting are needed.\n2. **Historical significance**: Represents Eisenstein's 1844 simplification of Gauss's original proof (Gauss gave six proofs; this approach is the most accessible).\n3. **Proof technique**: Lattice point counting appears throughout analytic number theory \u2014 the same geometric idea underlies Minkowski's theorem on convex bodies.\n4. **Formalization insight**: Shows how Mathlib's Gauss-Eisenstein infrastructure supports multiple proof strategies for QR.",
     "openQuestions": [
       "Can Zolotarev's permutation-based proof be formalized in Lean 4?",
       "Can a Gauss sum proof be built using Mathlib's character infrastructure?",
@@ -167,24 +167,25 @@
     "namespace": "ElementaryQuadraticReciprocity",
     "lineCount": 357,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 0
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "The main quadratic reciprocity entry — this file provides an alternative elementary proof via Eisenstein's method, complementing the standard Gauss-sum approach"
+      "description": "The main quadratic reciprocity entry \u2014 this file provides an alternative elementary proof via Eisenstein's method, complementing the standard Gauss-sum approach"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "related",
-      "description": "Euler's proof of infinitely many primes uses the divergence of ∑1/p; Dirichlet extended this using quadratic characters (from QR) to prove infinitely many primes in arithmetic progressions"
+      "description": "Euler's proof of infinitely many primes uses the divergence of \u22111/p; Dirichlet extended this using quadratic characters (from QR) to prove infinitely many primes in arithmetic progressions"
     },
     {
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "Lagrange's theorem (subgroup order divides group order) underpins the structure of (ℤ/pℤ)× — the multiplicative group whose quadratic residue structure QR describes"
+      "description": "Lagrange's theorem (subgroup order divides group order) underpins the structure of (\u2124/p\u2124)\u00d7 \u2014 the multiplicative group whose quadratic residue structure QR describes"
     },
     {
       "targetId": "abel-ruffini",
@@ -216,7 +217,7 @@
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
       "venue": "Leipzig: Gerhard Fleischer",
-      "note": "Contains the first published proof of quadratic reciprocity (Articles 131–145) — Gauss called it the aureum theorema (golden theorem)"
+      "note": "Contains the first published proof of quadratic reciprocity (Articles 131\u2013145) \u2014 Gauss called it the aureum theorema (golden theorem)"
     },
     {
       "authors": "Lemmermeyer, Franz",

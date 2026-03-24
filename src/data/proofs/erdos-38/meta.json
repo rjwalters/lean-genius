@@ -1,10 +1,10 @@
 {
   "id": "erdos-38",
-  "title": "Erdős #38: Essential Components and Density Boosting",
+  "title": "Erd\u0151s #38: Essential Components and Density Boosting",
   "slug": "erdos-38",
-  "description": "Does there exist a set B that is NOT an additive basis but still has the density-boosting property: for any set A with Schnirelmann density α, some translate A ∪ (A+b) achieves density ≥ α + f(α)?",
+  "description": "Does there exist a set B that is NOT an additive basis but still has the density-boosting property: for any set A with Schnirelmann density \u03b1, some translate A \u222a (A+b) achieves density \u2265 \u03b1 + f(\u03b1)?",
   "meta": {
-    "author": "Erdős (posed), OPEN",
+    "author": "Erd\u0151s (posed), OPEN",
     "sourceUrl": "https://erdosproblems.com/38",
     "date": "1936",
     "status": "axiomatized",
@@ -32,15 +32,15 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem connects two fundamental concepts in additive combinatorics: Schnirelmann density and additive bases. Schnirelmann density σ(A) = inf_{N≥1} |A ∩ {1,...,N}|/N is a worst-case density measure, crucial in the study of additive number theory.\n\nErdős proved in 1936 that additive bases of order k have a specific density-boosting property with factor α(1-α)/(2k). Linnik in 1942 constructed an 'essential component' - a set that increases Schnirelmann density when added - that is NOT an additive basis.\n\nThis problem asks whether the stronger density-boosting property (improving counts for specific translates) can exist without being a basis. It probes the gap between 'essential components' and 'additive bases'.",
-    "problemStatement": "Does there exist B ⊆ ℕ which is NOT an additive basis, but for every set A with Schnirelmann density α and every N, there exists b ∈ B such that |(A ∪ (A+b)) ∩ {1,...,N}| ≥ (α + f(α))·N where f(α) > 0 for 0 < α < 1?\n\n**Status**: OPEN - neither existence nor non-existence proven.",
-    "text": "Does there exist a set B that is NOT an additive basis but still has the density-boosting property: for any set A with Schnirelmann density α, some translate A ∪ (A+b) achieves density ≥ α + f(α)?",
-    "proofStrategy": "The formalization defines:\n1. **Schnirelmann density** as the infimum of |A ∩ {1,...,N}|/N\n2. **Additive bases** of order k (every n is a sum of ≤k elements from B)\n3. **Density-boosting property** for translates A ∪ (A+b)\n\nWe axiomatize known results: Erdős's 1936 theorem (bases have the property), Linnik's 1942 construction (essential components exist that aren't bases), and the optimality of α(1-α) for B = ℕ.",
+    "historicalContext": "This problem connects two fundamental concepts in additive combinatorics: Schnirelmann density and additive bases. Schnirelmann density \u03c3(A) = inf_{N\u22651} |A \u2229 {1,...,N}|/N is a worst-case density measure, crucial in the study of additive number theory.\n\nErd\u0151s proved in 1936 that additive bases of order k have a specific density-boosting property with factor \u03b1(1-\u03b1)/(2k). Linnik in 1942 constructed an 'essential component' - a set that increases Schnirelmann density when added - that is NOT an additive basis.\n\nThis problem asks whether the stronger density-boosting property (improving counts for specific translates) can exist without being a basis. It probes the gap between 'essential components' and 'additive bases'.",
+    "problemStatement": "Does there exist B \u2286 \u2115 which is NOT an additive basis, but for every set A with Schnirelmann density \u03b1 and every N, there exists b \u2208 B such that |(A \u222a (A+b)) \u2229 {1,...,N}| \u2265 (\u03b1 + f(\u03b1))\u00b7N where f(\u03b1) > 0 for 0 < \u03b1 < 1?\n\n**Status**: OPEN - neither existence nor non-existence proven.",
+    "text": "Does there exist a set B that is NOT an additive basis but still has the density-boosting property: for any set A with Schnirelmann density \u03b1, some translate A \u222a (A+b) achieves density \u2265 \u03b1 + f(\u03b1)?",
+    "proofStrategy": "The formalization defines:\n1. **Schnirelmann density** as the infimum of |A \u2229 {1,...,N}|/N\n2. **Additive bases** of order k (every n is a sum of \u2264k elements from B)\n3. **Density-boosting property** for translates A \u222a (A+b)\n\nWe axiomatize known results: Erd\u0151s's 1936 theorem (bases have the property), Linnik's 1942 construction (essential components exist that aren't bases), and the optimality of \u03b1(1-\u03b1) for B = \u2115.",
     "keyInsights": [
       "**Schnirelmann density**: Unlike asymptotic density, it's the INFIMUM over initial segments - sensitive to early gaps",
-      "**Additive basis**: B is a basis of order k if every integer is a sum of ≤k elements from B (e.g., squares are order 4)",
+      "**Additive basis**: B is a basis of order k if every integer is a sum of \u2264k elements from B (e.g., squares are order 4)",
       "**Essential component**: Weaker than basis - just needs to increase density when added to any set",
-      "**The gap**: Erdős asks if the density-boost property (even stronger than essential) can hold without being a basis",
+      "**The gap**: Erd\u0151s asks if the density-boost property (even stronger than essential) can hold without being a basis",
       "**Known**: Bases have density-boost; some non-bases are essential components; unknown if non-bases can have density-boost"
     ],
     "prerequisites": [
@@ -77,22 +77,22 @@
       "title": "Main Problem",
       "startLine": 89,
       "endLine": 101,
-      "summary": "States Erdős Problem #38 formally"
+      "summary": "States Erd\u0151s Problem #38 formally"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 103,
       "endLine": 137,
-      "summary": "Erdős 1936, Linnik 1942, and random set optimality"
+      "summary": "Erd\u0151s 1936, Linnik 1942, and random set optimality"
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #38, which asks whether the density-boosting property for translates can exist without being an additive basis. The problem probes the gap between 'essential components' (which can fail to be bases) and the stronger translate-based density improvement.",
+    "summary": "We formalize Erd\u0151s Problem #38, which asks whether the density-boosting property for translates can exist without being an additive basis. The problem probes the gap between 'essential components' (which can fail to be bases) and the stronger translate-based density improvement.",
     "implications": "**Theoretical Significance**: This problem is fundamental to understanding the structure of additive bases.\n\nA positive answer would show that density-boosting is genuinely weaker than being a basis. A negative answer would give a new characterization of additive bases.",
     "openQuestions": [
       "Does the density-boosting property imply being an additive basis?",
-      "What is the optimal function f(α) for additive bases?",
+      "What is the optimal function f(\u03b1) for additive bases?",
       "Are there natural examples of essential components that fail density-boosting?"
     ]
   },
@@ -109,7 +109,8 @@
     "lineCount": 139,
     "axiomCount": 5,
     "theoremCount": 0,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
@@ -130,18 +131,18 @@
   ],
   "references": [
     {
-      "authors": "Plünnecke, Helmut",
-      "title": "Eigenschaften und Abschätzungen von Wirkungsfunktionen",
+      "authors": "Pl\u00fcnnecke, Helmut",
+      "title": "Eigenschaften und Absch\u00e4tzungen von Wirkungsfunktionen",
       "year": "1970",
-      "venue": "BMwF-GMD-22, Gesellschaft für Mathematik und Datenverarbeitung, Bonn",
-      "note": "Plünnecke's inequality on sumset growth, fundamental to density boosting theory"
+      "venue": "BMwF-GMD-22, Gesellschaft f\u00fcr Mathematik und Datenverarbeitung, Bonn",
+      "note": "Pl\u00fcnnecke's inequality on sumset growth, fundamental to density boosting theory"
     },
     {
       "authors": "Ruzsa, Imre Z.",
       "title": "An application of graph theory to additive number theory",
       "year": "1989",
-      "venue": "Scientia, Series A: Mathematics, vol. 3, pp. 97–109",
-      "note": "Simplified Plünnecke's approach, providing the modern framework for density boosting"
+      "venue": "Scientia, Series A: Mathematics, vol. 3, pp. 97\u2013109",
+      "note": "Simplified Pl\u00fcnnecke's approach, providing the modern framework for density boosting"
     }
   ],
   "relatedProofs": [

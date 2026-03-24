@@ -1,10 +1,10 @@
 {
   "id": "erdos-24",
-  "title": "Erdős Problem #24: Pentagons in Triangle-Free Graphs",
+  "title": "Erd\u0151s Problem #24: Pentagons in Triangle-Free Graphs",
   "slug": "erdos-24",
   "description": "Does every triangle-free graph on 5n vertices contain at most n^5 copies of C5? Yes! Proved independently by Grzesik (2012) and Hatami et al. (2013) using flag algebras.",
   "meta": {
-    "author": "Grzesik (2012), Hatami-Hladký-Král-Norine-Razborov (2013)",
+    "author": "Grzesik (2012), Hatami-Hladk\u00fd-Kr\u00e1l-Norine-Razborov (2013)",
     "sourceUrl": "https://erdosproblems.com/24",
     "date": "2012-2013",
     "status": "axiomatized",
@@ -46,23 +46,23 @@
       "Definition of IsC5Copy for cycle embeddings",
       "Construction of balancedBlowupC5: the extremal graph",
       "Axiomatization of Grzesik-Hatami pentagon theorem",
-      "Statement of Erdős's general conjecture for odd r-cycles"
+      "Statement of Erd\u0151s's general conjecture for odd r-cycles"
     ],
     "axiomCount": 6,
     "lineCount": 261,
     "prerequisites": [
       "Graph theory (cycles, triangle-free graphs)",
-      "Extremal graph theory (Turán-type problems)",
+      "Extremal graph theory (Tur\u00e1n-type problems)",
       "Ramsey theory",
       "Regularity method"
     ],
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #24, proposed in 1984, asks for the maximum number of 5-cycles (pentagons) in a triangle-free graph. The problem remained open for nearly three decades.\n\nEarly progress came from Győri, who proved an upper bound of 1.03n^5, later improved by Füredi. The breakthrough came in 2012 when Grzesik and independently Hatami, Hladký, Král, Norine, and Razborov proved the sharp bound using Razborov's flag algebras method.\n\nThe extremal graph is the balanced blow-up of C5: partition 5n vertices into 5 groups of n each, and connect groups according to the pentagon pattern. This construction achieves exactly n^5 copies of C5.\n\nErdős also asked a more general question: for odd r >= 5, if a graph on rn vertices has girth r (smallest odd cycle has length r), is the number of r-cycles at most n^r? This remains open for r > 5.",
+    "historicalContext": "Erd\u0151s Problem #24, proposed in 1984, asks for the maximum number of 5-cycles (pentagons) in a triangle-free graph. The problem remained open for nearly three decades.\n\nEarly progress came from Gy\u0151ri, who proved an upper bound of 1.03n^5, later improved by F\u00fcredi. The breakthrough came in 2012 when Grzesik and independently Hatami, Hladk\u00fd, Kr\u00e1l, Norine, and Razborov proved the sharp bound using Razborov's flag algebras method.\n\nThe extremal graph is the balanced blow-up of C5: partition 5n vertices into 5 groups of n each, and connect groups according to the pentagon pattern. This construction achieves exactly n^5 copies of C5.\n\nErd\u0151s also asked a more general question: for odd r >= 5, if a graph on rn vertices has girth r (smallest odd cycle has length r), is the number of r-cycles at most n^r? This remains open for r > 5.",
     "problemStatement": "Does every triangle-free graph on $5n$ vertices contain at most $n^5$ copies of $C_5$?\n\n**Status**: SOLVED (affirmative)\n\n**The Bound**: For any triangle-free graph $G$ on $5n$ vertices,\n$$|\\{\\text{copies of } C_5 \\text{ in } G\\}| \\leq n^5$$\n\n**Extremal Graph**: The balanced blow-up of $C_5$ achieves equality. This graph has 5 independent sets of $n$ vertices each, with edges following the pentagon pattern.",
     "text": "Does every triangle-free graph on 5n vertices contain at most n^5 copies of C5? Yes! Proved independently by Grzesik (2012) and Hatami et al. (2013) using flag algebras.",
-    "proofStrategy": "We formalize the problem and its solution:\n\n1. **Define triangle-free**: A graph is triangle-free if CliqueFree 3\n2. **Construct C5**: The 5-cycle with explicit adjacency relation\n3. **Define C5 copies**: Injective graph homomorphisms from C5 to G\n4. **Construct extremal graph**: balancedBlowupC5 n with 5n vertices\n5. **State main theorem**: countC5 G ≤ n^5 for triangle-free G on 5n vertices\n6. **Prove extremality**: balancedBlowupC5 achieves exactly n^5 copies\n7. **State generalization**: Erdős's conjecture for odd r-cycles",
+    "proofStrategy": "We formalize the problem and its solution:\n\n1. **Define triangle-free**: A graph is triangle-free if CliqueFree 3\n2. **Construct C5**: The 5-cycle with explicit adjacency relation\n3. **Define C5 copies**: Injective graph homomorphisms from C5 to G\n4. **Construct extremal graph**: balancedBlowupC5 n with 5n vertices\n5. **State main theorem**: countC5 G \u2264 n^5 for triangle-free G on 5n vertices\n6. **Prove extremality**: balancedBlowupC5 achieves exactly n^5 copies\n7. **State generalization**: Erd\u0151s's conjecture for odd r-cycles",
     "keyInsights": [
       "**Flag algebras**: The proof uses Razborov's flag algebras, a powerful method that converts extremal graph theory problems into semidefinite programs. The computer-assisted verification made the proof possible.",
       "**The extremal graph**: The balanced blow-up of C5 is the unique extremal graph. Vertices are partitioned into 5 groups following the pentagon adjacency pattern. Any deviation reduces the C5 count.",
@@ -72,7 +72,7 @@
     ],
     "prerequisites": [
       "Graph theory (cycles, triangle-free graphs)",
-      "Extremal graph theory (Turán-type problems)",
+      "Extremal graph theory (Tur\u00e1n-type problems)",
       "Ramsey theory",
       "Regularity method"
     ]
@@ -111,11 +111,11 @@
       "title": "Historical Progress",
       "startLine": 173,
       "endLine": 189,
-      "summary": "Győri's earlier 1.03n^5 bound."
+      "summary": "Gy\u0151ri's earlier 1.03n^5 bound."
     },
     {
       "id": "generalization",
-      "title": "Erdős's Generalization",
+      "title": "Erd\u0151s's Generalization",
       "startLine": 191,
       "endLine": 222,
       "summary": "General conjecture for odd r-cycles (open for r > 5)."
@@ -129,8 +129,8 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #24, the pentagon problem in triangle-free graphs. The problem is SOLVED: every triangle-free graph on 5n vertices contains at most n^5 copies of C5. The bound is tight, achieved by the balanced blow-up of C5. The proof uses Razborov's flag algebras, a computer-assisted method for extremal combinatorics.",
-    "implications": "**Theoretical Significance**: This result has several implications:\n\n1. **Flag algebras power**: Demonstrates that flag algebras can solve long-standing extremal problems\n**2. Unique extremal structure**: The pentagon blow-up is the only way to maximize C5 in triangle-free graphs\n3. **Template for generalizations**: Similar techniques may apply to other cycle-counting problems\n4. **Connection to Turán theory**: Extends classical extremal graph theory to subgraph counting.",
+    "summary": "We formalize Erd\u0151s Problem #24, the pentagon problem in triangle-free graphs. The problem is SOLVED: every triangle-free graph on 5n vertices contains at most n^5 copies of C5. The bound is tight, achieved by the balanced blow-up of C5. The proof uses Razborov's flag algebras, a computer-assisted method for extremal combinatorics.",
+    "implications": "**Theoretical Significance**: This result has several implications:\n\n1. **Flag algebras power**: Demonstrates that flag algebras can solve long-standing extremal problems\n**2. Unique extremal structure**: The pentagon blow-up is the only way to maximize C5 in triangle-free graphs\n3. **Template for generalizations**: Similar techniques may apply to other cycle-counting problems\n4. **Connection to Tur\u00e1n theory**: Extends classical extremal graph theory to subgraph counting.",
     "openQuestions": [
       "For odd r > 5, does girth-r on rn vertices imply at most n^r copies of Cr?",
       "What is the maximum C5 count for graphs with chromatic number k?",
@@ -153,18 +153,19 @@
     "lineCount": 261,
     "axiomCount": 6,
     "theoremCount": 4,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "lemmaCount": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-22",
       "relationship": "related",
-      "description": "Problem #22 (Ramsey-Turán for K₄) is another extremal problem about forbidden subgraphs in dense graphs. Both study the interaction between local constraints and global structure"
+      "description": "Problem #22 (Ramsey-Tur\u00e1n for K\u2084) is another extremal problem about forbidden subgraphs in dense graphs. Both study the interaction between local constraints and global structure"
     },
     {
       "targetId": "erdos-533",
       "relationship": "related",
-      "description": "Problem #533 concerns triangle-free subsets in dense graphs. Problem #24 studies pentagons (C₅) in triangle-free graphs — both involve forbidden subgraph constraints"
+      "description": "Problem #533 concerns triangle-free subsets in dense graphs. Problem #24 studies pentagons (C\u2085) in triangle-free graphs \u2014 both involve forbidden subgraph constraints"
     },
     {
       "targetId": "erdos-19",
@@ -174,17 +175,17 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Some new applications of probability methods to combinatorial analysis and graph theory",
       "year": "1975",
-      "venue": "Proceedings of the Fifth Southeastern Conference on Combinatorics, Congressus Numerantium, vol. 10, pp. 39–51",
+      "venue": "Proceedings of the Fifth Southeastern Conference on Combinatorics, Congressus Numerantium, vol. 10, pp. 39\u201351",
       "note": "Includes the original statement of problems about cycles in triangle-free graphs"
     },
     {
       "authors": "Kwan, Matthew; Sudakov, Benny; Tran, Tuan",
       "title": "Triangle-free graphs with few edges have large independence number",
       "year": "2020",
-      "venue": "Combinatorica, vol. 40, pp. 1407–1424",
+      "venue": "Combinatorica, vol. 40, pp. 1407\u20131424",
       "note": "Modern results on structure of triangle-free graphs relevant to Problem #24"
     }
   ],

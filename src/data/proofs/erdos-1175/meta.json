@@ -1,10 +1,10 @@
 {
   "id": "erdos-1175",
-  "title": "Erdős Problem #1175: Triangle-Free Subgraphs with Large Chromatic Number",
+  "title": "Erd\u0151s Problem #1175: Triangle-Free Subgraphs with Large Chromatic Number",
   "slug": "erdos-1175",
-  "description": "For each uncountable cardinal κ, does there exist λ such that every graph with χ(G) ≥ λ contains a triangle-free subgraph with χ ≥ κ? Shelah showed a negative answer is consistent with ZFC for κ = λ = ℵ₁. Open.",
+  "description": "For each uncountable cardinal \u03ba, does there exist \u03bb such that every graph with \u03c7(G) \u2265 \u03bb contains a triangle-free subgraph with \u03c7 \u2265 \u03ba? Shelah showed a negative answer is consistent with ZFC for \u03ba = \u03bb = \u2135\u2081. Open.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1175",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1175Problem.lean",
@@ -25,15 +25,15 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed Problem #1175 as part of his broader program on chromatic number and graph structure, asking whether large chromatic number forces the existence of triangle-free subgraphs with large chromatic number. The question sits at the intersection of infinite combinatorics and set theory. Mycielski (1955) showed that for every finite $k$, triangle-free graphs with $\\chi = k$ exist, via an iterative construction producing graphs $M_k$ on $3 \\cdot 2^{k-2} - 1$ vertices. Erdős (1959) proved the stronger result that for every $k \\geq 1$ and $g \\geq 3$, there exist finite graphs with girth $\\geq g$ and $\\chi \\geq k$, using the probabilistic method — one of its earliest applications. These results show the finite case of the conjecture holds (via Ramsey-type arguments), but the uncountable case is fundamentally different. Shelah proved that a negative answer is consistent with ZFC for $\\kappa = \\lambda = \\aleph_1$: there consistently exists a graph $G$ with $\\chi(G) = \\aleph_1$ whose every triangle-free induced subgraph has countable chromatic number. This uses sophisticated forcing techniques and demonstrates that the problem is genuinely set-theoretic — its answer may depend on which axioms of set theory one adopts beyond ZFC.",
+    "historicalContext": "Erd\u0151s posed Problem #1175 as part of his broader program on chromatic number and graph structure, asking whether large chromatic number forces the existence of triangle-free subgraphs with large chromatic number. The question sits at the intersection of infinite combinatorics and set theory. Mycielski (1955) showed that for every finite $k$, triangle-free graphs with $\\chi = k$ exist, via an iterative construction producing graphs $M_k$ on $3 \\cdot 2^{k-2} - 1$ vertices. Erd\u0151s (1959) proved the stronger result that for every $k \\geq 1$ and $g \\geq 3$, there exist finite graphs with girth $\\geq g$ and $\\chi \\geq k$, using the probabilistic method \u2014 one of its earliest applications. These results show the finite case of the conjecture holds (via Ramsey-type arguments), but the uncountable case is fundamentally different. Shelah proved that a negative answer is consistent with ZFC for $\\kappa = \\lambda = \\aleph_1$: there consistently exists a graph $G$ with $\\chi(G) = \\aleph_1$ whose every triangle-free induced subgraph has countable chromatic number. This uses sophisticated forcing techniques and demonstrates that the problem is genuinely set-theoretic \u2014 its answer may depend on which axioms of set theory one adopts beyond ZFC.",
     "problemStatement": "For each uncountable cardinal $\\kappa$, does there exist a cardinal $\\lambda$ such that every graph $G$ with $\\chi(G) \\geq \\lambda$ contains a triangle-free subgraph $H$ with $\\chi(H) \\geq \\kappa$?",
-    "text": "For each uncountable cardinal κ, does there exist λ such that every graph with χ(G) ≥ λ contains a triangle-free subgraph with χ ≥ κ? Shelah showed a negative answer is consistent with ZFC for κ = λ = ℵ₁. Open.",
-    "proofStrategy": "The formalization axiomatizes cardinal-indexed graph coloring (IsProperColoring, IsColorable, cardinalChromaticNumber) to handle uncountable chromatic numbers, avoiding universe issues inherent in defining infima over proper classes. Triangle-freeness and induced subgraphs use subtypes inheriting symmetry and irreflexivity. The main conjecture is stated universally over all types and graphs. Shelah's consistency result is encoded as an axiom (shelah_consistency) and used to derive shelah_implies_failure_at_aleph1 by contradiction. Positive results (Mycielski's theorem, finite case, Erdős 1959 existence) are axiomatized. A girth variant generalizes triangle-freeness to cycles of length $< g$.",
+    "text": "For each uncountable cardinal \u03ba, does there exist \u03bb such that every graph with \u03c7(G) \u2265 \u03bb contains a triangle-free subgraph with \u03c7 \u2265 \u03ba? Shelah showed a negative answer is consistent with ZFC for \u03ba = \u03bb = \u2135\u2081. Open.",
+    "proofStrategy": "The formalization axiomatizes cardinal-indexed graph coloring (IsProperColoring, IsColorable, cardinalChromaticNumber) to handle uncountable chromatic numbers, avoiding universe issues inherent in defining infima over proper classes. Triangle-freeness and induced subgraphs use subtypes inheriting symmetry and irreflexivity. The main conjecture is stated universally over all types and graphs. Shelah's consistency result is encoded as an axiom (shelah_consistency) and used to derive shelah_implies_failure_at_aleph1 by contradiction. Positive results (Mycielski's theorem, finite case, Erd\u0151s 1959 existence) are axiomatized. A girth variant generalizes triangle-freeness to cycles of length $< g$.",
     "keyInsights": [
       "The problem is **set-theoretically independent**: Shelah's forcing construction shows a negative answer is consistent with ZFC for $\\kappa = \\lambda = \\aleph_1$, meaning no proof or disproof from ZFC alone is possible at this parameter",
-      "The **finite-to-infinite gap** is the core difficulty: Ramsey theory and the Erdős-Hajnal theorem resolve the finite case, but these tools fail for uncountable cardinals where compactness arguments break down",
-      "The **girth variant** (replacing triangle-free with girth $\\geq g$) forms a natural hierarchy of increasingly difficult problems, since Erdős (1959) showed high-girth high-chromatic finite graphs exist by the probabilistic method",
-      "The **contradiction structure** of the Shelah proof is elegantly captured: if every $\\aleph_1$-chromatic graph had a triangle-free subgraph with $\\chi \\geq \\aleph_1$, Shelah's graph would too — but its triangle-free subgraphs all have $\\chi \\leq \\aleph_0 < \\aleph_1$",
+      "The **finite-to-infinite gap** is the core difficulty: Ramsey theory and the Erd\u0151s-Hajnal theorem resolve the finite case, but these tools fail for uncountable cardinals where compactness arguments break down",
+      "The **girth variant** (replacing triangle-free with girth $\\geq g$) forms a natural hierarchy of increasingly difficult problems, since Erd\u0151s (1959) showed high-girth high-chromatic finite graphs exist by the probabilistic method",
+      "The **contradiction structure** of the Shelah proof is elegantly captured: if every $\\aleph_1$-chromatic graph had a triangle-free subgraph with $\\chi \\geq \\aleph_1$, Shelah's graph would too \u2014 but its triangle-free subgraphs all have $\\chi \\leq \\aleph_0 < \\aleph_1$",
       "The **cardinal chromatic number** is axiomatized rather than defined as an infimum, sidestepping universe polymorphism and decidability issues that arise when minimizing over a potentially proper class of cardinals"
     ],
     "prerequisites": [
@@ -49,7 +49,7 @@
       "title": "Problem Context and Imports",
       "startLine": 1,
       "endLine": 28,
-      "summary": "Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency)."
+      "summary": "Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (\u2135\u2080, \u2135\u2081, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency)."
     },
     {
       "id": "coloring-defs",
@@ -63,46 +63,46 @@
       "title": "Triangle-Free Subgraphs",
       "startLine": 54,
       "endLine": 75,
-      "summary": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (∃ S with G[S] triangle-free and χ(G[S]) ≥ κ)."
+      "summary": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (\u2203 S with G[S] triangle-free and \u03c7(G[S]) \u2265 \u03ba)."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 77,
       "endLine": 92,
-      "summary": "States erdos1175: for each uncountable κ, ∃ λ such that ∀ G, χ(G) ≥ λ implies G has a triangle-free subgraph with χ ≥ κ. Universally quantified over all types V and graphs G."
+      "summary": "States erdos1175: for each uncountable \u03ba, \u2203 \u03bb such that \u2200 G, \u03c7(G) \u2265 \u03bb implies G has a triangle-free subgraph with \u03c7 \u2265 \u03ba. Universally quantified over all types V and graphs G."
     },
     {
       "id": "shelah-consistency",
       "title": "Shelah's Consistency Result",
       "startLine": 94,
       "endLine": 130,
-      "summary": "Axiomatizes Shelah's result: consistently ∃ G with χ(G) = ℵ₁ where every triangle-free induced subgraph has χ ≤ ℵ₀. The theorem shelah_implies_failure_at_aleph1 derives that λ = ℵ₁ fails for κ = ℵ₁ by contradiction."
+      "summary": "Axiomatizes Shelah's result: consistently \u2203 G with \u03c7(G) = \u2135\u2081 where every triangle-free induced subgraph has \u03c7 \u2264 \u2135\u2080. The theorem shelah_implies_failure_at_aleph1 derives that \u03bb = \u2135\u2081 fails for \u03ba = \u2135\u2081 by contradiction."
     },
     {
       "id": "finite-case",
       "title": "Finite Case and Mycielski",
       "startLine": 132,
       "endLine": 150,
-      "summary": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with χ ≥ k)."
+      "summary": "Two positive results: Mycielski's theorem (\u2200 k \u2265 1, \u2203 triangle-free G with \u03c7(G) = k) and the finite case of the conjecture (\u2200 finite k, \u2203 n such that \u03c7(G) \u2265 n implies G has triangle-free subgraph with \u03c7 \u2265 k)."
     },
     {
       "id": "girth-variant",
       "title": "Girth Variant",
       "startLine": 152,
       "endLine": 172,
-      "summary": "Generalizes triangle-freeness to girth ≥ g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g ≥ 4 and uncountable κ, ∃ λ with the analogous property."
+      "summary": "Generalizes triangle-freeness to girth \u2265 g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g \u2265 4 and uncountable \u03ba, \u2203 \u03bb with the analogous property."
     },
     {
       "id": "erdos-1959",
-      "title": "Erdős 1959 Existence and Summary",
+      "title": "Erd\u0151s 1959 Existence and Summary",
       "startLine": 174,
       "endLine": 202,
-      "summary": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175."
+      "summary": "Axiomatizes Erd\u0151s (1959): \u2200 k \u2265 1, g \u2265 3, \u2203 finite graph with girth \u2265 g and \u03c7 \u2265 k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full landscape of Erdős Problem #1175: cardinal-indexed graph coloring is axiomatized to handle uncountable chromatic numbers, the main conjecture is stated universally, Shelah's consistency result shows the problem is set-theoretically independent at $\\kappa = \\aleph_1$, positive results for finite cardinals are recorded (Mycielski, Erdős 1959), and a natural girth generalization is formalized.",
+    "summary": "This formalization captures the full landscape of Erd\u0151s Problem #1175: cardinal-indexed graph coloring is axiomatized to handle uncountable chromatic numbers, the main conjecture is stated universally, Shelah's consistency result shows the problem is set-theoretically independent at $\\kappa = \\aleph_1$, positive results for finite cardinals are recorded (Mycielski, Erd\u0151s 1959), and a natural girth generalization is formalized.",
     "implications": "**Theoretical Significance**: The set-theoretic independence demonstrated by Shelah's result places this problem in a fundamentally different category from most combinatorial questions.\n\nResolution for general uncountable $\\kappa$ would require either new forcing techniques or the discovery of additional set-theoretic axioms (beyond ZFC) that determine the answer. The girth variant hierarchy provides a rich family of related open questions.",
     "openQuestions": [
       "Is the conjecture true for $\\kappa = \\aleph_2$ (or any uncountable cardinal beyond $\\aleph_1$) under ZFC?",
@@ -115,17 +115,17 @@
     {
       "targetId": "erdos-1068",
       "relationship": "related",
-      "description": "Problem #1068 (countable infinitely-connected subgraphs) is a sibling problem in the Erdős-Hajnal program: both ask what structural properties are forced by uncountable chromatic number, using cardinal arithmetic and set-theoretic arguments"
+      "description": "Problem #1068 (countable infinitely-connected subgraphs) is a sibling problem in the Erd\u0151s-Hajnal program: both ask what structural properties are forced by uncountable chromatic number, using cardinal arithmetic and set-theoretic arguments"
     },
     {
       "targetId": "erdos-1013",
       "relationship": "related",
-      "description": "Problem #1013 (triangle-free chromatic threshold) studies the finite analog: the growth rate h₃(k), the minimum vertices in a triangle-free graph with χ = k. Both cite Mycielski's construction and Ramsey-type bounds"
+      "description": "Problem #1013 (triangle-free chromatic threshold) studies the finite analog: the growth rate h\u2083(k), the minimum vertices in a triangle-free graph with \u03c7 = k. Both cite Mycielski's construction and Ramsey-type bounds"
     },
     {
       "targetId": "erdos-1067",
       "relationship": "related",
-      "description": "Problem #1067 (infinitely connected subgraphs, DISPROVED) asks whether χ(G) = ℵ₁ forces an infinitely connected subgraph. Soukup's 2015 construction provides a negative answer, complementing Shelah's consistency result for #1175"
+      "description": "Problem #1067 (infinitely connected subgraphs, DISPROVED) asks whether \u03c7(G) = \u2135\u2081 forces an infinitely connected subgraph. Soukup's 2015 construction provides a negative answer, complementing Shelah's consistency result for #1175"
     },
     {
       "targetId": "erdos-1092",
@@ -135,7 +135,7 @@
     {
       "targetId": "four-color-theorem",
       "relationship": "context",
-      "description": "The Four Color Theorem provides foundational context: χ(G) ≤ 4 for planar graphs is a universal finite bound, contrasting with #1175 where uncountable chromatic numbers resist such structural control"
+      "description": "The Four Color Theorem provides foundational context: \u03c7(G) \u2264 4 for planar graphs is a universal finite bound, contrasting with #1175 where uncountable chromatic numbers resist such structural control"
     }
   ],
   "relatedProofs": [
@@ -159,6 +159,7 @@
     "lineCount": 202,
     "axiomCount": 6,
     "theoremCount": 2,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "lemmaCount": 0
   }
 }

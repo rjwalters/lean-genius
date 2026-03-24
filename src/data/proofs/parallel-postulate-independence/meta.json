@@ -38,16 +38,16 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "For over 2000 years — from Euclid (~300 BCE) through Ptolemy, Proclus, al-Haytham, Khayyam, Saccheri, Lambert, and Legendre — mathematicians tried to prove the Fifth Postulate from the other axioms. Bolyai and Lobachevsky independently developed hyperbolic geometry (1829-1832), and Beltrami (1868) proved its consistency by constructing models within Euclidean geometry. The independence follows by the soundness theorem: a model satisfying all axioms except the parallel postulate certifies it cannot be proved from the others. Klein (1871) and Poincaré (1882) gave further elegant models, and Hilbert (1899) provided the rigorous axiomatic framework. The discovery of non-Euclidean geometry was one of the most consequential events in the history of mathematics, reshaping the philosophy of mathematical truth and paving the way for Riemannian geometry and general relativity.",
-    "problemStatement": "**Theorem**: The parallel postulate (Playfair's axiom: through any point not on a line, exactly one parallel exists) is independent of neutral geometry axioms.\n\nThis means neither the postulate nor its negation can be proved from the other axioms. Independence is established model-theoretically: both a model satisfying the postulate (ℝ²) and a model violating it (Poincaré disk) exist.",
+    "historicalContext": "For over 2000 years \u2014 from Euclid (~300 BCE) through Ptolemy, Proclus, al-Haytham, Khayyam, Saccheri, Lambert, and Legendre \u2014 mathematicians tried to prove the Fifth Postulate from the other axioms. Bolyai and Lobachevsky independently developed hyperbolic geometry (1829-1832), and Beltrami (1868) proved its consistency by constructing models within Euclidean geometry. The independence follows by the soundness theorem: a model satisfying all axioms except the parallel postulate certifies it cannot be proved from the others. Klein (1871) and Poincar\u00e9 (1882) gave further elegant models, and Hilbert (1899) provided the rigorous axiomatic framework. The discovery of non-Euclidean geometry was one of the most consequential events in the history of mathematics, reshaping the philosophy of mathematical truth and paving the way for Riemannian geometry and general relativity.",
+    "problemStatement": "**Theorem**: The parallel postulate (Playfair's axiom: through any point not on a line, exactly one parallel exists) is independent of neutral geometry axioms.\n\nThis means neither the postulate nor its negation can be proved from the other axioms. Independence is established model-theoretically: both a model satisfying the postulate (\u211d\u00b2) and a model violating it (Poincar\u00e9 disk) exist.",
     "text": "Euclid's parallel postulate is independent of the other axioms of geometry. There exist consistent geometries (Euclidean and hyperbolic) that differ on this postulate.",
-    "proofStrategy": "Model-theoretic: construct two models of neutral geometry, one satisfying the parallel postulate (Euclidean plane ℝ²) and one violating it (Poincaré disk 𝔻 = {z ∈ ℂ : |z| < 1}). A key lemma (fully proved in Lean) shows the hyperbolic parallel property directly contradicts Playfair's axiom via uniqueness. Since both models satisfy neutral geometry but disagree on the parallel postulate, the postulate is independent by the soundness theorem.",
+    "proofStrategy": "Model-theoretic: construct two models of neutral geometry, one satisfying the parallel postulate (Euclidean plane \u211d\u00b2) and one violating it (Poincar\u00e9 disk \ud835\udd3b = {z \u2208 \u2102 : |z| < 1}). A key lemma (fully proved in Lean) shows the hyperbolic parallel property directly contradicts Playfair's axiom via uniqueness. Since both models satisfy neutral geometry but disagree on the parallel postulate, the postulate is independent by the soundness theorem.",
     "keyInsights": [
       "Independence is proved by exhibiting models that differ on the statement (soundness theorem contrapositive)",
-      "The Poincaré disk provides a concrete model of hyperbolic geometry with constant curvature K = −1",
+      "The Poincar\u00e9 disk provides a concrete model of hyperbolic geometry with constant curvature K = \u22121",
       "Non-Euclidean geometries are just as consistent as Euclidean geometry (relative consistency)",
-      "The key lemma is purely logical: ∃! (uniqueness) vs ∃ two distinct parallels yields immediate contradiction",
-      "Physical space's geometry is an empirical question — Einstein's general relativity uses non-Euclidean spacetime"
+      "The key lemma is purely logical: \u2203! (uniqueness) vs \u2203 two distinct parallels yields immediate contradiction",
+      "Physical space's geometry is an empirical question \u2014 Einstein's general relativity uses non-Euclidean spacetime"
     ],
     "prerequisites": [
       "Geometry (Euclidean, combinatorial)"
@@ -66,50 +66,50 @@
       "title": "Playfair's Axiom and Hyperbolic Alternative",
       "startLine": 77,
       "endLine": 96,
-      "summary": "Formalizes Playfair's axiom (∃! parallel) and the hyperbolic parallel property (∃ two distinct parallels)."
+      "summary": "Formalizes Playfair's axiom (\u2203! parallel) and the hyperbolic parallel property (\u2203 two distinct parallels)."
     },
     {
       "id": "neutral-geometry",
       "title": "Neutral (Absolute) Geometry",
       "startLine": 97,
       "endLine": 118,
-      "summary": "The common axioms shared by Euclidean and hyperbolic geometry — incidence, betweenness, congruence, continuity — omitting the parallel postulate."
+      "summary": "The common axioms shared by Euclidean and hyperbolic geometry \u2014 incidence, betweenness, congruence, continuity \u2014 omitting the parallel postulate."
     },
     {
       "id": "euclidean-model",
       "title": "The Euclidean Model",
       "startLine": 120,
       "endLine": 142,
-      "summary": "Axiomatizes the Euclidean plane ℝ² as a model satisfying neutral geometry plus the parallel postulate."
+      "summary": "Axiomatizes the Euclidean plane \u211d\u00b2 as a model satisfying neutral geometry plus the parallel postulate."
     },
     {
       "id": "poincare-model",
-      "title": "The Poincaré Disk Model",
+      "title": "The Poincar\u00e9 Disk Model",
       "startLine": 144,
       "endLine": 185,
-      "summary": "Axiomatizes the Poincaré disk as a model of neutral geometry satisfying the hyperbolic parallel property."
+      "summary": "Axiomatizes the Poincar\u00e9 disk as a model of neutral geometry satisfying the hyperbolic parallel property."
     },
     {
       "id": "key-theorems",
       "title": "Key Theorems",
       "startLine": 187,
       "endLine": 223,
-      "summary": "Proves that hyperbolic parallels contradict Playfair's axiom, and derives that the Poincaré disk violates the parallel postulate."
+      "summary": "Proves that hyperbolic parallels contradict Playfair's axiom, and derives that the Poincar\u00e9 disk violates the parallel postulate."
     },
     {
       "id": "independence",
       "title": "The Independence Theorem",
       "startLine": 225,
       "endLine": 260,
-      "summary": "Main result: exhibits both a model (ℝ²) and a countermodel (Poincaré disk) for the parallel postulate, establishing independence."
+      "summary": "Main result: exhibits both a model (\u211d\u00b2) and a countermodel (Poincar\u00e9 disk) for the parallel postulate, establishing independence."
     }
   ],
   "conclusion": {
     "summary": "The independence of the parallel postulate was one of the most important discoveries in mathematical history, resolving a 2000-year-old question and showing that alternative geometries are logically consistent. The proof uses the model-theoretic method: exhibit models that agree on base axioms but disagree on the target statement.",
-    "implications": "Non-Euclidean geometries are essential in physics (Einstein's general relativity uses curved spacetime), mathematics (hyperbolic geometry, Riemannian geometry, geometric group theory), and computer science (hyperbolic embeddings for hierarchical data). The independence proof methodology — constructing models and countermodels — became a template for later independence results, including Gödel and Cohen's work on the continuum hypothesis.",
+    "implications": "Non-Euclidean geometries are essential in physics (Einstein's general relativity uses curved spacetime), mathematics (hyperbolic geometry, Riemannian geometry, geometric group theory), and computer science (hyperbolic embeddings for hierarchical data). The independence proof methodology \u2014 constructing models and countermodels \u2014 became a template for later independence results, including G\u00f6del and Cohen's work on the continuum hypothesis.",
     "openQuestions": [
       "What is the large-scale geometry of the universe (flat, hyperbolic, or spherical)?",
-      "Can the full Poincaré disk model be formalized in Lean with verified neutral geometry axioms?",
+      "Can the full Poincar\u00e9 disk model be formalized in Lean with verified neutral geometry axioms?",
       "What other geometric axioms are independent of the standard systems?"
     ]
   },
@@ -133,7 +133,8 @@
     "lineCount": 314,
     "axiomCount": 7,
     "theoremCount": 3,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "lemmaCount": 0
   },
   "references": [
     {
@@ -141,7 +142,7 @@
       "title": "Geometrische Untersuchungen zur Theorie der Parallellinien",
       "year": "1840",
       "venue": "Berlin: Fincke",
-      "note": "Systematic development of hyperbolic geometry — first published proof that Euclid's parallel postulate is independent of the other axioms"
+      "note": "Systematic development of hyperbolic geometry \u2014 first published proof that Euclid's parallel postulate is independent of the other axioms"
     },
     {
       "authors": "Greenberg, Marvin Jay",
