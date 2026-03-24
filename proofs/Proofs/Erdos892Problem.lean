@@ -60,16 +60,56 @@ def ErdosProblem892 (b : ℕ → ℕ) : Prop :=
 ## Section IV: Necessary Conditions
 -/
 
+/-- Every element of a primitive sequence is ≥ 2.
+    If a(n) = 0, then any a(j) | 0, contradicting primitivity.
+    If a(n) = 1, then 1 | a(j), contradicting primitivity. -/
+theorem primitive_elements_ge_two (a : ℕ → ℕ)
+    (hprim : IsPrimitive a) : ∀ n, a n ≥ 2 := by
+  intro n
+  by_contra h
+  push_neg at h
+  have h1 : a n = 0 ∨ a n = 1 := by omega
+  rcases h1 with h0 | h1
+  · -- a n = 0: everything divides 0, contradicting primitivity
+    have := hprim (n + 1) n (by omega)
+    rw [h0] at this
+    exact this (dvd_zero _)
+  · -- a n = 1: one divides everything, contradicting primitivity
+    have := hprim n (n + 1) (by omega)
+    rw [h1] at this
+    exact this (one_dvd _)
+
+/-- Comparison lemma: if a(n) ≤ C · b(n) with a(n) ≥ 2, b(n) ≥ 2, and
+    a(n) ≥ 2C, then 1/(b(n) · log b(n)) ≤ 2C/(a(n) · log a(n)).
+    Key step in the comparison test argument. -/
+lemma reciprocal_log_comparison (a_n b_n C : ℕ) (hC : C > 0)
+    (hdom : a_n ≤ C * b_n) (ha : a_n ≥ 2) (hb : b_n ≥ 2)
+    (hlarge : a_n ≥ 2 * C) :
+    (1 : ℝ) / ((b_n : ℝ) * Real.log (b_n : ℝ))
+      ≤ 2 * C / ((a_n : ℝ) * Real.log (a_n : ℝ)) := by sorry
+
 /-- Erdős (1935): If a primitive sequence a satisfies a ≪ b, then
-Σ 1/(bₙ · log bₙ) converges. This is a necessary condition. -/
-axiom erdos_1935_necessary (b : ℕ → ℕ) :
+Σ 1/(bₙ · log bₙ) converges. This is a necessary condition.
+Proof: By `primitive_reciprocal_log_convergent`, Σ 1/(aₙ log aₙ) < ∞.
+Since aₙ ≤ C·bₙ, comparison gives 1/(bₙ log bₙ) ≤ 2C/(aₙ log aₙ)
+for large n. Splitting the sum at the threshold proves convergence. -/
+theorem erdos_1935_necessary (b : ℕ → ℕ) :
     (∃ a : ℕ → ℕ, IsStrictlyIncreasing a ∧ IsPrimitive a ∧
       IsDominatedBy a b) →
     ∃ S : ℝ, ∀ N : ℕ,
       ∑ n ∈ Finset.range N,
         if b n ≥ 2 then (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ))
         else 0
-      ≤ S
+      ≤ S := by
+  intro ⟨a, hinc, hprim, C, hCpos, hdom⟩
+  -- Step 1: All elements of a are ≥ 2
+  have hge := primitive_elements_ge_two a hprim
+  -- Step 2: Get convergence bound from Erdős 1935 for primitive sequences
+  obtain ⟨Sa, hSa⟩ := primitive_reciprocal_log_convergent a hprim hinc hge
+  -- Step 3: By comparison, Σ 1/(bₙ log bₙ) ≤ (finite head) + 2C · Sa
+  -- For n where a(n) ≥ 2C, the comparison lemma gives termwise bound.
+  -- For n where a(n) < 2C (finitely many by strict increase), bound directly.
+  sorry
 
 /-- Erdős–Sárközy–Szemerédi (1967): A stronger necessary condition.
 The partial reciprocal sums must grow slower than log x / √(log log x). -/
