@@ -4,7 +4,7 @@
     "proofId": "erdos-1155-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 16
+      "endLine": 21
     },
     "type": "concept",
     "title": "Module Header and Imports",
@@ -48,8 +48,8 @@
     "id": "ann-e1155-axioms",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 83,
-      "endLine": 107
+      "startLine": 77,
+      "endLine": 110
     },
     "type": "concept",
     "title": "Axiomatized f(n), BFL Bounds, and the Erd\u0151s Conjecture",
@@ -97,7 +97,7 @@
     "proofId": "erdos-1155-oq-01",
     "range": {
       "startLine": 185,
-      "endLine": 219
+      "endLine": 225
     },
     "type": "technique",
     "title": "Conjecture Decomposition into Independent Bounds",
@@ -165,12 +165,12 @@
     "id": "ann-e1155-small-values",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 261,
-      "endLine": 305
+      "startLine": 253,
+      "endLine": 310
     },
     "type": "concept",
     "title": "Small Values, Base Cases, and BFL Ratio Reformulation",
-    "content": "Establishes trivial bounds for small $n$: $f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$ from $f(n) \\leq n(n-1)/2$.\n\n`bfl_ratio_characterization` reformulates BFL as: the ratio $f(n)/n^{3/2}$ is eventually in $[n^{-\\varepsilon}, n^{\\varepsilon}]$, making the gap with the conjecture (constant bounds on the ratio) maximally transparent. This ratio formulation is the sharpest way to see the BFL-conjecture gap: BFL allows the ratio to drift to 0 or $\\infty$ at sub-polynomial speed, while the conjecture pins it between constants.",
+    "content": "Establishes trivial bounds for small $n$: $f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$ from $f(n) \\leq n(n-1)/2$.\n\n`bfl_ratio_characterization` reformulates BFL as: the ratio $f(n)/n^{3/2}$ is eventually in $[n^{-\\varepsilon}, n^{\\varepsilon}]$, making the gap with the conjecture (constant bounds on the ratio) maximally transparent. This ratio formulation is the sharpest way to see the BFL-conjecture gap: BFL allows the ratio to drift to 0 or $\\infty$ at sub-polynomial speed, while the conjecture pins it between constants.\n\nThe section concludes with the setup for §6 (sufficient conditions for the conjecture), transitioning from descriptive bounds to prescriptive criteria: what conditions on $f(n)/n^{3/2}$ would resolve the conjecture?",
     "mathContext": "Ratio reformulation: BFL $\\iff R(n) = f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually. The conjecture needs $R(n) \\in [c_1, c_2]$ with constants.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -213,12 +213,12 @@
     "id": "ann-e1155-lower-exponent",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 362,
-      "endLine": 370
+      "startLine": 356,
+      "endLine": 381
     },
     "type": "technique",
     "title": "Lower Exponent: f Exceeds Any Sub-3/2 Power",
-    "content": "`bfl_eventually_exceeds_power`: for any $\\alpha < 3/2$, eventually $n^\\alpha \\leq f(n)$. Proved by taking $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound. Special cases: $f$ is superlinear ($\\alpha = 1$) and grows faster than $n^{5/4}$.\n\nThis is the 'lower critical exponent' result: $f(n) = \\omega(n^\\alpha)$ for every $\\alpha < 3/2$, meaning no sub-$3/2$ power bound is eventually valid from above.\n\n**Physical interpretation:** The superlinearity ($f(n) \\gg n$) means the terminal graph is far from being a forest (which would have at most $n - 1$ edges). The $n^{5/4}$ case shows the process preserves significantly more structure than random edge-deletion models suggest. In the language of random graph processes, the terminal graph occupies a 'sweet spot' between sparse (tree-like) and dense (Tur\u00e1n-like) regimes, with the $n^{3/2}$ scaling reflecting the balance between triangle creation rate and deletion rate during the critical phase of the process.",
+    "content": "`bfl_eventually_exceeds_power`: for any $\\alpha < 3/2$, eventually $n^\\alpha \\leq f(n)$. Proved by taking $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound. Special cases: $f$ is superlinear ($\\alpha = 1$) and grows faster than $n^{5/4}$.\n\nThis is the 'lower critical exponent' result: $f(n) = \\omega(n^\\alpha)$ for every $\\alpha < 3/2$, meaning no sub-$3/2$ power bound is eventually valid from above.\n\n**Physical interpretation:** The superlinearity ($f(n) \\gg n$) means the terminal graph is far from being a forest (which would have at most $n - 1$ edges). The $n^{5/4}$ case shows the process preserves significantly more structure than random edge-deletion models suggest. In the language of random graph processes, the terminal graph occupies a 'sweet spot' between sparse (tree-like) and dense (Turán-like) regimes, with the $n^{3/2}$ scaling reflecting the balance between triangle creation rate and deletion rate during the critical phase of the process.\n\nThe section continues with the Mantel/Turán connection preamble, noting that the terminal graph is triangle-free and therefore subject to Mantel's extremal bound $f(n) \\leq \\lfloor n^2/4 \\rfloor$.",
     "mathContext": "For $\\alpha < 3/2$: take $\\varepsilon = 3/2 - \\alpha > 0$, then $n^{3/2 - \\varepsilon} = n^\\alpha \\leq f(n)$ eventually. This shows $f(n) = \\omega(n^\\alpha)$ for all $\\alpha < 3/2$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -261,7 +261,7 @@
     "id": "ann-e1155-hierarchy",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 411,
+      "startLine": 404,
       "endLine": 445
     },
     "type": "technique",
