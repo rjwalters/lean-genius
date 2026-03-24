@@ -27,7 +27,12 @@
         "relationship": "RH would sharpen PNT's error term from O(x·exp(-c√ln x)) to O(√x·ln x) — the zeros of ζ(s) control prime distribution"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime counting function π(x)",
+      "Riemann zeta function ζ(s)",
+      "asymptotic notation (big-O, little-o, ~)",
+      "Filter.Tendsto in Mathlib"
+    ]
   },
   {
     "id": "ann-prime-pi",
@@ -47,7 +52,12 @@
       "Chebyshev functions",
       "Mathlib.NumberTheory.PrimeCounting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.primeCounting (Mathlib.NumberTheory.PrimeCounting)",
+      "Nat.floor (⌊·⌋₊)",
+      "prime numbers",
+      "Finset.card"
+    ]
   },
   {
     "id": "ann-prime-approx",
@@ -66,7 +76,11 @@
       "logarithm",
       "partial function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.log (Mathlib.Analysis.SpecialFunctions.Log.Basic)",
+      "conditional expression (if/then/else) in Lean 4",
+      "natural logarithm ln x"
+    ]
   },
   {
     "id": "ann-li",
@@ -92,7 +106,12 @@
         "relationship": "The divergence of Σ 1/p (Euler) is a consequence of Li(x) → ∞; both reflect the logarithmic density of primes"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "intervalIntegral (Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic)",
+      "Real.log",
+      "asymptotic expansion via integration by parts",
+      "measure theory (MeasureTheory.Measure)"
+    ]
   },
   {
     "id": "ann-pnt-ratio",
@@ -112,7 +131,12 @@
       "atTop filter",
       "neighborhood filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto (Mathlib.Order.Filter.Basic)",
+      "Filter.atTop",
+      "nhds / 𝓝 (neighborhood filter)",
+      "Real.log"
+    ]
   },
   {
     "id": "ann-pnt-equiv",
@@ -132,7 +156,12 @@
       "big-O notation",
       "little-o notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotics.IsEquivalent (Mathlib.Analysis.Asymptotics.Defs)",
+      "Filter.atTop",
+      "asymptotic equivalence f ~ g",
+      "Asymptotics.IsLittleO"
+    ]
   },
   {
     "id": "ann-pnt-error",
@@ -152,7 +181,12 @@
       "Vinogradov",
       "Korobov"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotics.IsLittleO (Mathlib.Analysis.Asymptotics.Defs)",
+      "Asymptotics.IsEquivalent",
+      "little-o notation f = o(g)",
+      "Vinogradov-Korobov zero-free region"
+    ]
   },
   {
     "id": "ann-pnt-li",
@@ -172,7 +206,12 @@
       "asymptotic expansion",
       "transitivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotics.IsEquivalent",
+      "logIntegral (Li function)",
+      "transitivity of asymptotic equivalence",
+      "li_equiv_approx: Li(x) ~ x/ln x"
+    ]
   },
   {
     "id": "ann-equivalences",
@@ -192,7 +231,12 @@
       "von Mangoldt function",
       "Tauberian theorems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ratio_iff_equiv: PNT_Ratio ↔ PNT_Equiv",
+      "equiv_iff_error: PNT_Equiv ↔ PNT_Error",
+      "li_iff_equiv: PNT_Li ↔ PNT_Equiv",
+      "Chebyshev ψ-function ψ(x) ~ x"
+    ]
   },
   {
     "id": "ann-main-axiom",
@@ -218,7 +262,12 @@
         "relationship": "PNT uses the weakest form of zeta zero information (no zeros on Re(s)=1); RH asserts all zeros lie on Re(s)=1/2"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axiom primeNumberTheorem (PNT_Ratio)",
+      "complex analysis: Riemann zeta function ζ(s)",
+      "zero-free region: ζ(1+it) ≠ 0",
+      "Wiener-Ikehara / Newman Tauberian theorem"
+    ]
   },
   {
     "id": "ann-density",
@@ -243,7 +292,12 @@
         "relationship": "Euclid proved primes are infinite; this corollary shows their density nonetheless vanishes — they become ever sparser"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime_asymptotic: π(x) ~ x/ln x",
+      "Filter.Tendsto atTop (𝓝 0)",
+      "natural density",
+      "Real.log_tendsto_atTop"
+    ]
   },
   {
     "id": "ann-nth-prime",
@@ -269,7 +323,12 @@
         "relationship": "Bertrand's postulate (pₙ₊₁ < 2pₙ) gives a crude bound; PNT's inverse gives the precise asymptotics pₙ ~ n ln n"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.nth Nat.Prime (nth prime in Mathlib)",
+      "primeNumberTheorem (PNT ratio form)",
+      "asymptotic inversion",
+      "Rosser's theorem: pₙ > n ln n"
+    ]
   },
   {
     "id": "ann-mertens",
@@ -295,7 +354,12 @@
         "relationship": "Euler (1737) proved Σ 1/p diverges; Mertens (1874) quantified the rate as ln ln x + M"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime_asymptotic: π(x) ~ x/ln x",
+      "partial summation (Abel summation)",
+      "Real.log_log_tendsto",
+      "Finset.sum over primes"
+    ]
   },
   {
     "id": "ann-gaps",
@@ -321,7 +385,12 @@
         "relationship": "Bertrand's postulate gives gap < p (i.e., ε=1); PNT improves this to gap = o(p) for any ε>0"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primeNumberTheorem (PNT ratio form)",
+      "prime counting estimates: π(x) ~ x/ln x",
+      "average prime gap: x/π(x) ~ ln x",
+      "Baker-Harman-Pintz theorem"
+    ]
   },
   {
     "id": "ann-rh",
@@ -347,7 +416,12 @@
         "relationship": "The gallery's dedicated RH entry formalizes equivalent forms (Robin's inequality, explicit formula) and partial results"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Riemann zeta function ζ(s) for complex s",
+      "analytic continuation of ζ to ℂ \\ {1}",
+      "non-trivial zeros of ζ(s)",
+      "Millennium Prize Problems"
+    ]
   },
   {
     "id": "ann-von-koch",
@@ -367,7 +441,12 @@
       "Riemann Hypothesis",
       "square root cancellation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "RiemannHypothesis (axiom Prop)",
+      "logIntegral Li(x)",
+      "Riemann explicit formula: π(x) = Li(x) − Σ_ρ Li(x^ρ) + …",
+      "Real.sqrt"
+    ]
   },
   {
     "id": "ann-chebyshev",
@@ -393,7 +472,12 @@
         "relationship": "Erdős's 1932 proof of Bertrand's postulate uses Chebyshev-style analysis of binomial coefficient prime factorizations"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.centralBinom (central binomial coefficient)",
+      "Nat.factorization / multiplicity (p-adic valuation)",
+      "Legendre's formula: vₚ(n!) = Σ_{k≥1} ⌊n/pᵏ⌋",
+      "elementary number theory (no complex analysis)"
+    ]
   },
   {
     "id": "ann-euler-product",
@@ -423,7 +507,12 @@
         "relationship": "Euler's product at s=1 diverges (ζ has a pole), directly yielding Σ 1/p = ∞"
       }
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dirichlet series: Σ aₙ/nˢ",
+      "Euler product formula ζ(s) = Π_p(1−p⁻ˢ)⁻¹",
+      "von Mangoldt function Λ(n)",
+      "Nat.Prime.prime_def_minFac"
+    ]
   },
   {
     "id": "ann-numerical",
@@ -443,7 +532,12 @@
       "Littlewood's theorem",
       "approximation quality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primePi(x) values at powers of 10",
+      "primeApprox(x) = x/ln x",
+      "logIntegral Li(x)",
+      "Littlewood's oscillation theorem"
+    ]
   },
   {
     "id": "ann-prime-counting-axiom",
