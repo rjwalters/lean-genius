@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "proofId": "ballot-problem",
+  "reviewDate": "2026-03-23T14:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "C+",
+    "oneLiner": "Excellent pedagogical commentary on the ballot problem and reflection principle, but every formal theorem is a direct Mathlib re-export with zero original proof work.",
+    "tier": "B",
+    "tierJustification": "Borderline Tier B/D. The file provides no original mathematical reasoning -- all 7 public theorems are single-call Mathlib re-exports. However, the argument reordering (p,q vs q,p) and boilerplate instances provide minimal but real bridge work. The educational commentary is substantial but not formal content."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json overview.historicalContext and in-file commentary (lines 4-78, 191-249)",
+      "finding": "The historical and mathematical exposition is excellent. It correctly attributes the problem to Bertrand (1887), André's reflection principle (1887), and notes subsequent contributions by Barbier, Aeppli, Takács, and Feller. The reflection principle explanation (lines 216-249) is detailed, correct, and genuinely educational. The lattice path interpretation (lines 191-214) provides real mathematical context. The references (Bertrand, André, Feller, Renault) are well-chosen.",
+      "recommendation": "Preserve this commentary. It is the file's primary value."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Private instances, lines 86-91",
+      "finding": "The annotation (ann-namespace-setup) correctly identifies that Mathlib's Ballot module uses local instances for MeasurableSpace (List Z), requiring them to be recreated here. This is genuine Lean infrastructure work -- understanding why condCount fails without these instances requires real Lean expertise. The annotation explanation is clear and helpful.",
+      "recommendation": "No changes needed."
+    },
+    {
+      "severity": "major",
+      "category": "overclaim",
+      "location": "All public theorems (lines 119-166)",
+      "finding": "All 7 public theorems are single-call Mathlib re-exports with zero added reasoning: count_vote_sequences = count_countedSequence, vote_sequences_finite = countedSequence_finite, vote_sequences_nonempty = countedSequence_nonempty, ballot_theorem = ballot_problem q p h, ballot_theorem_real = ballot_problem' q p h, ballot_unanimous = ballot_edge p, ballot_tie = ballot_same p. The file presents itself as having 8 theorems (counting the private instance) but contains no original mathematical proof work.",
+      "recommendation": "The meta.json should be more explicit that this is a Mathlib showcase/guided tour, not an independent formalization. Consider adding a note like 'All theorems are re-exports of Mathlib's Archive.Wiedijk100Theorems.BallotProblem with pedagogical documentation' to the description."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json overview.text",
+      "finding": "The overview text mentions 'ballot_probability_formula connecting to Rat for exact computation' and 'concrete examples (ballot_example_3_1 verifying P = 1/2 for p=3, q=1)' -- but neither ballot_probability_formula nor ballot_example_3_1 exist in the Lean file. The overview describes theorems that were never written. This is a factual error that actively misleads readers about the file's contents.",
+      "recommendation": "Rewrite overview.text to accurately describe the actual file contents: 7 named re-exports, 5 unnamed norm_num examples, and 2 boilerplate instances."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json mathlibDependencies",
+      "finding": "Only 2 of 8 Mathlib lemmas used are listed (ballot_problem, countedSequence). Missing: ballot_problem', ballot_edge, ballot_same, count_countedSequence, countedSequence_finite, countedSequence_nonempty. Since every theorem IS a Mathlib call, the dependency list should be complete.",
+      "recommendation": "List all 8 Mathlib lemmas used, or note that the file is a complete re-export of the Ballot module."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "Lines 251-253 (#check commands)",
+      "finding": "Three #check debug commands left in production code.",
+      "recommendation": "Remove."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json originalContributions",
+      "finding": "All three listed 'original contributions' are editorial/prose work (pedagogical wrapper, lattice path interpretation, historical context), not formal mathematical contributions. While the meta.json is somewhat honest about this ('pedagogical wrapper'), the framing as 'contributions' alongside other gallery entries with genuine theorem proofs creates a misleading comparison.",
+      "recommendation": "Reframe as 'editorial contributions' or 'pedagogical additions' to distinguish from formal mathematical contributions in other gallery entries."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json sections",
+      "finding": "Lines 168-214 (concrete examples and lattice paths commentary) fall between sections. The 'edge-cases' section ends at line 166 and the 'reflection-principle' section starts at line 216, leaving a 48-line gap with no section assignment.",
+      "recommendation": "Add sections for 'Concrete Examples' (168-189) and 'Lattice Paths and Catalan Numbers' (191-214)."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite overview.text to remove references to non-existent theorems ballot_probability_formula and ballot_example_3_1. Accurately describe the actual file contents.",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Add explicit note to meta.json description that all formal theorems are re-exports of Mathlib's Archive.Wiedijk100Theorems.BallotProblem. The file's value is pedagogical, not mathematical.",
+      "status": "open"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Complete the mathlibDependencies list with all 8 Mathlib lemmas actually used (ballot_problem, ballot_problem', ballot_edge, ballot_same, count_countedSequence, countedSequence_finite, countedSequence_nonempty, countedSequence).",
+      "status": "open"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add missing sections for lines 168-189 (Concrete Examples) and 191-214 (Lattice Paths Commentary) to close the section coverage gap.",
+      "status": "open"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove #check debug lines at end of file (lines 251-253).",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 3,
+    "originalityAccuracy": 5,
+    "completeness": 9,
+    "framingPrecision": 5,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 6,
+    "overall": 6.2
+  },
+
+  "suggestedBestFraming": "A pedagogical guided tour of Mathlib's ballot problem formalization (Wiedijk #30), providing clear exposition of the reflection principle, lattice path interpretation, and historical context around Bertrand's 1887 result, with all formal theorems re-exported from Archive.Wiedijk100Theorems.BallotProblem."
+}
