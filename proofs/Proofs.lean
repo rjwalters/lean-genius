@@ -235,6 +235,7 @@ import Proofs.Erdos1006OQ03
 import Proofs.Erdos1006Problem
 import Proofs.Erdos1007OQ01
 import Proofs.Erdos1007OQ01Aristotle
+import Proofs.Erdos1007OQ01OQ01
 import Proofs.Erdos1007Problem
 import Proofs.Erdos1008Problem
 import Proofs.Erdos1008ProblemProvable
