@@ -250,6 +250,26 @@ theorem p5_ramsey_upper : cpq 5 1 ≤ (1 : ℚ) / 3 := by
   norm_num at h ⊢
   exact h
 
+/-- For p = 4: Ramsey bounds give c(4,1) ∈ [1/3, 2/5]. -/
+theorem p4_ramsey_lower : (1 : ℚ) / 3 ≤ cpq 4 1 := by
+  have h := cpq_lower_ramsey 4 (by omega)
+  norm_num at h ⊢; exact h
+
+theorem p4_ramsey_upper : cpq 4 1 ≤ (2 : ℚ) / 5 := by
+  have h := cpq_upper_ramsey 4 (by omega)
+  norm_num at h ⊢; exact h
+
+/-- For p = 3: cpq_strict already proves the FULL conjecture for p=3
+    (there is only one step: q goes from 1 to 2). -/
+theorem erdos667_holds_for_p3 :
+    ∀ q, 1 ≤ q → q < Nat.choose 2 2 + 1 → cpq 3 q < cpq 3 (q + 1) := by
+  intro q hq1 hq_lt
+  have hq_eq : q = 1 := by
+    have : Nat.choose 2 2 + 1 = 2 := by native_decide
+    omega
+  subst hq_eq
+  exact p3_strict
+
 /-
 ## Part VIII: The Main Conjecture (Erdos Problem 667)
 -/
