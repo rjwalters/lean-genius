@@ -12,12 +12,10 @@ Is f(N) ~ N^{1/3}?
 - Green, "The number of squares and B_h[g] sets" (2001)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Image
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
+
+open Classical in
+noncomputable section
 
 /-
 ## Section I: B₃ Sets
