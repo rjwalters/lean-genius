@@ -333,5 +333,67 @@
       "venue": "Wiley, 2nd edition",
       "note": "Chapter 16 covers the Gauss-Wantzel theorem with complete proofs connecting cyclotomic fields, Galois groups, and constructibility"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "angle-trisection",
+      "relationship": "extends",
+      "description": "Main impossibility proof for angle trisection; OQ02-OQ03 gives the complete constructibility characterization for regular polygons"
+    },
+    {
+      "id": "angle-trisection-oq-02",
+      "relationship": "extends",
+      "description": "OQ02 proves the Galois criterion (α constructible ↔ Gal is 2-group); OQ02-OQ03 applies it to cos(2π/n) to characterize constructible polygons"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "related",
+      "description": "The combinations formula underpins binomial coefficient computations; Euler's totient involves counting coprime residues, a related combinatorial object"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Proves natDegree | |Gal| via the tower law — the same structural argument that connects the Galois 2-group criterion to the degree criterion used here for cyclotomic polynomials"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both link impossibility results to Galois group structure: Abel-Ruffini via solvability (S₅ not solvable), Gauss-Wantzel via 2-groups ((ℤ/nℤ)* not always a 2-group)"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's work on constructible polygons was intimately connected to his work on quadratic reciprocity — both appear in Disquisitiones Arithmeticae (1801) and both involve the structure of (ℤ/nℤ)*"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "The cyclotomic Galois groups Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* are concrete realizations of finite abelian groups — the abelian case of the inverse Galois problem, resolved by Kronecker-Weber"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\varphi(n)$ is the central object: the Gauss-Wantzel theorem states that the regular $n$-gon is constructible $\\iff \\varphi(n) = 2^k$. The totient's multiplicativity ($\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$) and the formula $\\varphi(p^k) = p^{k-1}(p-1)$ are the arithmetic engine of the characterization"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. The Gauss-Wantzel proof uses: (1) the cyclotomic Galois group $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ has order $\\varphi(n)$, and (2) Gauss's construction of the 17-gon used the 2-group structure of $(\\mathbb{Z}/17\\mathbb{Z})^{\\times} \\cong \\mathbb{Z}/16\\mathbb{Z}$"
+    },
+    {
+      "id": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula expresses the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$ that generate cyclotomic extensions. The entire Gauss-Wantzel framework rests on $\\cos(2\\pi/n) = (\\zeta_n + \\zeta_n^{-1})/2$, connecting the geometric quantity (polygon vertex) to the algebraic quantity (cyclotomic field element)"
+    },
+    {
+      "id": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber theorem: every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field $\\mathbb{Q}(\\zeta_n)$. Since constructible numbers generate abelian extensions (2-groups are abelian), all constructible numbers lie in cyclotomic fields — the Gauss-Wantzel criterion determines exactly which cyclotomic fields contain the cosines needed for polygon construction"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law $[L:F] = [L:K] \\cdot [K:F]$ (a consequence of Lagrange's theorem) drives the key computation: $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = [\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] \\cdot [\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}]$, yielding $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$"
+    }
   ]
 }
