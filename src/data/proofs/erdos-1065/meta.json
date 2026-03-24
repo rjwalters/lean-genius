@@ -55,6 +55,7 @@
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: erdos_1065a (Set.Infinite for primes of the form 2^k·q + 1), erdos_1065b (Set.Infinite for primes of the form 2^k·3^l·q + 1). Both encode the open conjectures themselves.",
     "lineCount": 162,
+    "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
         "id": "erdos-1057",
@@ -71,7 +72,7 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 4,
+      "endLine": 5,
       "summary": "Imports Mathlib prime basics, finite set infrastructure, natural number arithmetic, and tactic framework.",
       "mathContext": "Uses `Nat.Prime`, `Set.Infinite`, `Set.Finite`, `Finset`, and decision procedures (`decide`, `norm_num`) from Mathlib."
     },
@@ -87,7 +88,7 @@
       "id": "definitions",
       "title": "Form Definitions",
       "startLine": 24,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Defines IsTwoTimePrimePlusOne (p = 2^k · q + 1) and IsTwoThreeTimePrimePlusOne (p = 2^k · 3^l · q + 1) predicates.",
       "mathContext": "$\\text{Form A}: p \\text{ prime} \\wedge \\exists q \\in \\mathbb{P}, k \\in \\mathbb{N}: p = 2^k q + 1$. $\\text{Form B}: p \\text{ prime} \\wedge \\exists q \\in \\mathbb{P}, k, l \\in \\mathbb{N}: p = 2^k \\cdot 3^l \\cdot q + 1$."
     },
@@ -95,7 +96,7 @@
       "id": "main-conjectures",
       "title": "Main Conjectures (OPEN)",
       "startLine": 34,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "States both variants of the infinitude conjecture as Set.Infinite axioms.",
       "mathContext": "Conjecture A: $|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P}, k: p = 2^k q + 1\\}| = \\infty$. Conjecture B: $|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P}, k, l: p = 2^k 3^l q + 1\\}| = \\infty$."
     },
@@ -111,7 +112,7 @@
       "id": "form-b-and-nonexample",
       "title": "Form B Separating Example and Non-Example",
       "startLine": 88,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Proves $61 = 2^2 \\cdot 3^1 \\cdot 5 + 1$ is Form B but not Form A (since $60 = 4 \\cdot 15$ and $15$ is not prime). Comments document the non-example $p = 37$: $36 = 2^2 \\cdot 3^2$ is $\\{2,3\\}$-smooth with no additional prime factor, so $37$ satisfies neither form.",
       "mathContext": "$61 - 1 = 60 = 2^2 \\cdot 3 \\cdot 5$: Form B witness $(q,k,l) = (5,2,1)$ but no Form A decomposition exists since $60/2^k$ for $k=0,1,2$ gives $60, 30, 15$ (all composite). $37 - 1 = 36 = 2^2 \\cdot 3^2$: completely $\\{2,3\\}$-smooth."
     },
@@ -119,7 +120,7 @@
       "id": "structural-theorems",
       "title": "Structural Theorems and Implications",
       "startLine": 106,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Proves Form A ⊆ Form B, safe primes ⊆ Form A, smooth structure of p−1, and Conjecture A ⇒ Conjecture B.",
       "mathContext": "$\\{\\text{safe primes}\\} \\subseteq \\{\\text{Form A}\\} \\subseteq \\{\\text{Form B}\\}$ via $k=1$ and $l=0$ specializations. Form A implies $\\omega(p-1) \\leq 2$. Uses `Set.Infinite.mono` for infinitude lifting."
     },
