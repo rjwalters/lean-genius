@@ -20,6 +20,21 @@
     "prerequisites": []
   },
   {
+    "id": "ann-support-invariance",
+    "proofId": "derangements-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 93
+    },
+    "type": "technique",
+    "title": "Support Invariance and Derangement Restriction",
+    "content": "Two key lemmas that enable the bijection. `support_mem_iff_smul_mem` proves the support is σ-invariant: x ∈ σ.support ↔ σ x ∈ σ.support. This is needed for `subtypePerm` which restricts σ to the subtype of support elements. `subtypePerm_of_support_is_derangement` then shows the restricted permutation is a derangement: every element of the support is moved (by definition of support), so the restriction has no fixed points. The `.symm` on the invariance proof is needed because Mathlib's `subtypePerm` takes `h : ∀ x, p (σ x) ↔ p x` (the reversed direction from what's natural).",
+    "mathContext": "$x \\in \\text{support}(\\sigma) \\iff \\sigma(x) \\in \\text{support}(\\sigma)$ (support is $\\sigma$-invariant). Therefore $\\sigma|_{\\text{support}(\\sigma)} \\in \\text{derangements}(\\text{support}(\\sigma))$, since $\\forall x \\in \\text{support}(\\sigma): \\sigma(x) \\neq x$.",
+    "significance": "supporting",
+    "relatedConcepts": ["support invariance", "subtypePerm", "derangement restriction", "Equiv.Perm.mem_support"],
+    "prerequisites": ["Equiv.Perm.support", "subtypePerm API"]
+  },
+  {
     "id": "ann-bijection",
     "proofId": "derangements-oq-02",
     "range": {
