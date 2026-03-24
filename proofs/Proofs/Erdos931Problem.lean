@@ -141,7 +141,7 @@ theorem prime_factor_is_prime (n k p : ℕ) (hp : p ∈ consecutivePrimeFactors 
 
 /-- A prime dividing one of the factors divides the product. -/
 theorem factor_prime_dvd_product (n k i : ℕ) (hi : i ∈ Finset.Icc 1 k)
-    (p : ℕ) (hp : p.Prime) (hdvd : p ∣ (n + i)) :
+    (p : ℕ) (_hp : p.Prime) (hdvd : p ∣ (n + i)) :
     p ∣ consecutiveProduct n k := by
   unfold consecutiveProduct
   exact dvd_trans hdvd (Finset.dvd_prod_of_mem _ hi)
@@ -194,6 +194,36 @@ axiom exists_prime_between_blocks (k₁ k₂ n₁ n₂ : ℕ)
 ## Problem Status
 -/
 
-def erdos_931_status : String := "OPEN"
+/-
+## Structural Lemmas
+-/
+
+/-- Among k consecutive integers starting from n+1, at least one is divisible by any d ≤ k.
+    This is because the interval [n+1, n+k] has length k, so contains ⌊(n+k)/d⌋ - ⌊n/d⌋
+    multiples of d, which is ≥ 1 when d ≤ k. -/
+theorem exists_multiple_in_block (d n k : ℕ) (hd : 0 < d) (hdk : d ≤ k) :
+    ∃ i, i ∈ Finset.Icc 1 k ∧ d ∣ (n + i) := by
+  -- The next multiple of d after n is n + (d - n % d)
+  have hmod : n % d < d := Nat.mod_lt n hd
+  set r := d - n % d with hr_def
+  have hr_pos : 0 < r := by omega
+  have hr_le : r ≤ d := by omega
+  use r
+  refine ⟨Finset.mem_Icc.mpr ⟨hr_pos, le_trans hr_le hdk⟩, ?_⟩
+  set q := n / d with hq_def
+  have hnd : d * q + n % d = n := Nat.div_add_mod n d
+  have h_sum : n % d + r = d := by omega
+  exact ⟨q + 1, by nlinarith⟩
+
+/-- Every prime p ≤ k is a prime factor of the consecutive product (n+1)···(n+k). -/
+theorem prime_le_k_mem_factors (n k p : ℕ) (hp : p.Prime) (hpk : p ≤ k) :
+    p ∈ consecutivePrimeFactors n k := by
+  obtain ⟨i, hi, hdvd⟩ := exists_multiple_in_block p n k hp.pos hpk
+  exact factor_prime_mem n k i hi p hp hdvd
+
+/-- For k ≥ 2, the product has at least 2 as a prime factor. -/
+theorem two_mem_factors (n k : ℕ) (hk : 2 ≤ k) :
+    2 ∈ consecutivePrimeFactors n k :=
+  prime_le_k_mem_factors n k 2 Nat.prime_two hk
 
 end Erdos931
