@@ -78,56 +78,64 @@
       "title": "Generalized Binomial Coefficient",
       "startLine": 18,
       "endLine": 28,
-      "summary": "Definition genBinom α k = ∏_{j∈range k} (α-j) / k! and basic properties: genBinom_zero (C(α,0)=1) and genBinom_one (C(α,1)=α)."
+      "summary": "Definition genBinom α k = ∏_{j∈range k} (α-j) / k! and basic properties: genBinom_zero (C(α,0)=1) and genBinom_one (C(α,1)=α).",
+      "mathContext": "$\\binom{\\alpha}{k} = \\frac{\\alpha(\\alpha-1)\\cdots(\\alpha-k+1)}{k!}$ for $\\alpha \\in \\mathbb{R}$, $k \\in \\mathbb{N}$."
     },
     {
       "id": "ode-recurrence",
       "title": "ODE Recurrence and Coefficient Uniqueness",
       "startLine": 29,
       "endLine": 51,
-      "summary": "Part I: ode_recurrence proves (k+1)·C(α,k+1) = (α-k)·C(α,k) from the falling factorial definition. genBinom_unique_from_ode shows this recurrence with C(α,0)=1 uniquely determines all coefficients, using mul_left_cancel₀ on the nonzero factor (k+1)."
+      "summary": "Part I: ode_recurrence proves (k+1)·C(α,k+1) = (α-k)·C(α,k) from the falling factorial definition. genBinom_unique_from_ode shows this recurrence with C(α,0)=1 uniquely determines all coefficients, using mul_left_cancel₀ on the nonzero factor (k+1).",
+      "mathContext": "$(k+1)\\binom{\\alpha}{k+1} = (\\alpha - k)\\binom{\\alpha}{k}$, the discrete ODE for generalized binomial coefficients."
     },
     {
       "id": "analytic-properties",
       "title": "Analytic Properties from Mathlib",
       "startLine": 52,
       "endLine": 57,
-      "summary": "Part II: binomial_series_analytic wraps Mathlib's Real.one_add_rpow_hasFPowerSeriesOnBall_zero, establishing that the generalized binomial series converges on the open unit ball."
+      "summary": "Part II: binomial_series_analytic wraps Mathlib's Real.one_add_rpow_hasFPowerSeriesOnBall_zero, establishing that the generalized binomial series converges on the open unit ball.",
+      "mathContext": "$\\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ converges for $|x| < 1$ (HasFPowerSeriesOnBall)."
     },
     {
       "id": "functional-equation",
       "title": "Functional Equation",
       "startLine": 62,
       "endLine": 74,
-      "summary": "Part III: rpow_add_exponents proves (1+x)^α·(1+x)^β = (1+x)^(α+β) for x > -1, with special cases rpow_zero_one and rpow_one_id."
+      "summary": "Part III: rpow_add_exponents proves (1+x)^α·(1+x)^β = (1+x)^(α+β) for x > -1, with special cases rpow_zero_one and rpow_one_id.",
+      "mathContext": "$(1+x)^\\alpha \\cdot (1+x)^\\beta = (1+x)^{\\alpha+\\beta}$ for $x > -1$."
     },
     {
       "id": "coefficient-ratio",
       "title": "Coefficient Ratio",
       "startLine": 75,
       "endLine": 84,
-      "summary": "Part IV: genBinom_ratio shows C(α,k+1)/C(α,k) = (α-k)/(k+1) when C(α,k) ≠ 0. This ratio test implies convergence radius 1."
+      "summary": "Part IV: genBinom_ratio shows C(α,k+1)/C(α,k) = (α-k)/(k+1) when C(α,k) ≠ 0. This ratio test implies convergence radius 1.",
+      "mathContext": "$\\frac{\\binom{\\alpha}{k+1}}{\\binom{\\alpha}{k}} = \\frac{\\alpha - k}{k+1} \\to -1$ as $k \\to \\infty$, giving radius of convergence 1."
     },
     {
       "id": "negation",
       "title": "Negation and Special Values",
       "startLine": 85,
       "endLine": 105,
-      "summary": "Part V: genBinom_zero_succ (C(0,k)=0 for k≥1) and genBinom_neg_one (C(-1,k)=(-1)^k), connecting to the geometric series."
+      "summary": "Part V: genBinom_zero_succ (C(0,k)=0 for k≥1) and genBinom_neg_one (C(-1,k)=(-1)^k), connecting to the geometric series.",
+      "mathContext": "$\\binom{0}{k} = 0$ for $k \\geq 1$; $\\binom{-1}{k} = (-1)^k$ giving $(1+x)^{-1} = \\sum (-x)^k$."
     },
     {
       "id": "absorption",
       "title": "Absorption Identity (Derivative Correspondence)",
       "startLine": 106,
       "endLine": 144,
-      "summary": "Part VI: The absorption identity α·C(α-1,k) = (k+1)·C(α,k+1), which is the coefficient-level statement of d/dx[(1+x)^α] = α(1+x)^(α-1). Proved by induction using the ODE recurrence for both α and α-1."
+      "summary": "Part VI: The absorption identity α·C(α-1,k) = (k+1)·C(α,k+1), which is the coefficient-level statement of d/dx[(1+x)^α] = α(1+x)^(α-1). Proved by induction using the ODE recurrence for both α and α-1.",
+      "mathContext": "$\\alpha \\binom{\\alpha-1}{k} = (k+1)\\binom{\\alpha}{k+1}$, i.e., $\\frac{d}{dx}(1+x)^\\alpha = \\alpha(1+x)^{\\alpha-1}$ at coefficient level."
     },
     {
       "id": "half-integer",
       "title": "Half-Integer Binomial Coefficients",
       "startLine": 145,
       "endLine": 220,
-      "summary": "Part VII: Concrete values C(1/2,0)=1, C(1/2,1)=1/2, C(1/2,2)=-1/8, C(1/2,3)=1/16 for the square root series. genBinom_half_ne_zero proves all C(1/2,k) are nonzero since 1/2 is never a natural number."
+      "summary": "Part VII: Concrete values C(1/2,0)=1, C(1/2,1)=1/2, C(1/2,2)=-1/8, C(1/2,3)=1/16 for the square root series. genBinom_half_ne_zero proves all C(1/2,k) are nonzero since 1/2 is never a natural number.",
+      "mathContext": "$\\sqrt{1+x} = 1 + \\frac{x}{2} - \\frac{x^2}{8} + \\frac{x^3}{16} - \\cdots$ with $\\binom{1/2}{k} \\neq 0$ for all $k$."
     }
   ],
   "conclusion": {
@@ -143,17 +151,29 @@
     {
       "targetId": "binomial-theorem-oq-01",
       "relationship": "extends",
-      "description": "Develops the analytic function theory perspective on Newton's theorem, complementing the algebraic approach in the parent proof."
+      "description": "Develops the analytic function theory perspective on Newton's theorem, complementing the algebraic approach in the parent proof"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "generalizes",
-      "description": "The standard binomial theorem for natural exponents is a special case where the infinite series terminates."
+      "description": "The standard binomial theorem for natural exponents is a special case where the generalized binomial series terminates (C(n,k)=0 for k>n when n∈ℕ)"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "The geometric series 1/(1+x) = Σ(-x)^k is the α=-1 case of Newton's generalized binomial theorem, since C(-1,k)=(-1)^k"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "The absorption identity α·C(α-1,k)=(k+1)·C(α,k+1) is the coefficient-level version of d/dx[(1+x)^α]=α(1+x)^(α-1), connecting power series differentiation to the FTC"
     }
   ],
   "relatedProofs": [
     "binomial-theorem",
-    "binomial-theorem-oq-01"
+    "binomial-theorem-oq-01",
+    "geometric-series",
+    "fundamental-theorem-calculus"
   ],
   "leanFile": {
     "imports": [
