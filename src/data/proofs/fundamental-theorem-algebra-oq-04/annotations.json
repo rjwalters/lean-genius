@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ann-fta-oq04-header",
+    "proofId": "fundamental-theorem-algebra-oq-04",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Overview: C as Unique Algebraic Closure",
+    "content": "The file proves seven results about the relationship between R and C: extension degree [C:R] = 2, algebraicity, algebraic closure, uniqueness via Steinitz, non-closure of R, the characteristic quadratic, and minimality via the tower law. The key insight is that Mathlib provides the heavy machinery (Complex.isAlgClosed, IsAlgClosure.equiv) and this proof assembles these into a comprehensive picture.",
+    "significance": "context"
+  },
+  {
+    "id": "ann-fta-oq04-finrank",
+    "proofId": "fundamental-theorem-algebra-oq-04",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "key-step",
+    "title": "Extension Degree [C:R] = 2",
+    "content": "The extension degree $[\\mathbb{C}:\\mathbb{R}] = 2$ follows from `Complex.finrank_real_complex`, which computes the dimension of $\\mathbb{C}$ as an $\\mathbb{R}$-vector space. The basis is $\\{1, i\\}$.",
+    "significance": "major"
+  },
+  {
+    "id": "ann-fta-oq04-algebraic",
+    "proofId": "fundamental-theorem-algebra-oq-04",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "key-step",
+    "title": "Finite Extension implies Algebraic",
+    "content": "Since $[\\mathbb{C}:\\mathbb{R}] = 2 < \\infty$, Mathlib's `Algebra.IsAlgebraic.of_finite` establishes that every complex number is algebraic over $\\mathbb{R}$. This is the bridge from linear algebra (finite dimension) to field theory (algebraicity).",
+    "significance": "major"
+  },
+  {
+    "id": "ann-fta-oq04-closure",
+    "proofId": "fundamental-theorem-algebra-oq-04",
+    "range": { "startLine": 72, "endLine": 75 },
+    "type": "key-step",
+    "title": "IsAlgClosure Instance",
+    "content": "Assembles the `IsAlgClosure R C` instance from two components: algebraic closure (`Complex.isAlgClosed` from Mathlib) and algebraicity over $\\mathbb{R}$ (from the finite extension argument). This is the central definition of the file.",
+    "significance": "major"
+  },
+  {
+    "id": "ann-fta-oq04-steinitz",
+    "proofId": "fundamental-theorem-algebra-oq-04",
+    "range": { "startLine": 84, "endLine": 88 },
+    "type": "key-step",
+    "title": "Steinitz Uniqueness",
+    "content": "The uniqueness theorem: any algebraic closure $L$ of $\\mathbb{R}$ is $\\mathbb{R}$-algebra isomorphic to $\\mathbb{C}$, via `IsAlgClosure.equiv`. This is Steinitz's 1910 result, which uses Zorn's lemma to extend embeddings of algebraic closures.",
+    "significance": "major"
+  },
+  {
+    "id": "ann-fta-oq04-tower",
+    "proofId": "fundamental-theorem-algebra-oq-04",
+    "range": { "startLine": 156, "endLine": 173 },
+    "type": "key-step",
+    "title": "No Intermediate Fields (Tower Law)",
+    "content": "Uses the tower law $[\\mathbb{C}:K] \\cdot [K:\\mathbb{R}] = [\\mathbb{C}:\\mathbb{R}] = 2$ to show any intermediate field $K$ has $[K:\\mathbb{R}] \\in \\{1, 2\\}$. The proof derives the upper bound from the multiplicative constraint and uses `interval_cases` to enumerate possibilities.",
+    "significance": "major"
+  }
+]
