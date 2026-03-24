@@ -21,7 +21,7 @@ Reference: https://erdosproblems.com/261
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
+import Mathlib.Data.Rat.Defs
 import Mathlib.Tactic
 
 /- ## Core Definitions -/
@@ -46,15 +46,33 @@ def IsRepresentable (n : ℕ) : Prop :=
 
 /- ## Known Results -/
 
-/-- Cusick's result: infinitely many n are representable -/
-axiom cusick_infinitely_many :
-  ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ IsRepresentable n
-
 /-- Borwein–Loring explicit family: n = 2^{m+1} − m − 2 is representable
     via the consecutive block {n+1, ..., n+m} -/
 axiom borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
   let n := 2 ^ (m + 1) - m - 2
   IsRepresentable n
+
+/-- For m ≥ 1, the Borwein-Loring value n = 2^{m+1} - m - 2 satisfies n ≥ m.
+    Follows from 2(m+1) ≤ 2^{m+1} (exponential dominates linear). -/
+private lemma borwein_loring_value_ge (m : ℕ) (_ : 1 ≤ m) :
+    m ≤ 2 ^ (m + 1) - m - 2 := by
+  have h1 : m < 2 ^ m := Nat.lt_two_pow_self
+  have h2 : 2 * (m + 1) ≤ 2 ^ (m + 1) := by
+    have : 2 * 2 ^ m = 2 ^ (m + 1) := by ring
+    omega
+  omega
+
+/-- Cusick's result: infinitely many n are representable.
+    Proved from Borwein-Loring: for any N, take m = max(N,1),
+    then n = 2^{m+1} - m - 2 ≥ m ≥ N. -/
+theorem cusick_infinitely_many :
+    ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ IsRepresentable n := by
+  intro N
+  set m := max N 1
+  have hm : 1 ≤ m := le_max_right N 1
+  refine ⟨2 ^ (m + 1) - m - 2, ?_, borwein_loring_family m hm⟩
+  calc N ≤ m := le_max_left N 1
+    _ ≤ 2 ^ (m + 1) - m - 2 := borwein_loring_value_ge m hm
 
 /-- Tengely–Ulas–Zygadło: all n ≤ 10000 are representable -/
 axiom tengely_ulas_zygadlo (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 10000) :
