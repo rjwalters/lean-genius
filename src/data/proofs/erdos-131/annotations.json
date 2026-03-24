@@ -96,10 +96,10 @@
     "id": "ann-131-implies",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 66,
-      "endLine": 77
+      "startLine": 95,
+      "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-dividing Implies Non-averaging",
     "content": "Every non-dividing set is non-averaging. The proof sketch: if $a = \\text{avg}(S)$, then $\\sum S = a \\cdot |S|$, so $a \\mid \\sum S$, contradicting the non-dividing property. The divisibility extraction from the rational equation remains a sorry.",
     "mathContext": "$a = \\frac{\\sum S}{|S|}$ in $\\mathbb{Q}$ $\\implies$ $\\sum S = a \\cdot |S|$ in $\\mathbb{N}$ $\\implies$ $a \\mid \\sum S$. The key step is lifting the $\\mathbb{Q}$-equation back to $\\mathbb{N}$-divisibility.",
@@ -119,8 +119,8 @@
     "id": "ann-131-f-def",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 81,
-      "endLine": 84
+      "startLine": 109,
+      "endLine": 111
     },
     "type": "definition",
     "title": "The Function F(N)",
@@ -142,10 +142,10 @@
     "id": "ann-131-monotonic",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 86,
-      "endLine": 89
+      "startLine": 114,
+      "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity of F",
     "content": "$F$ is monotone: $N \\leq M \\implies F(N) \\leq F(M)$. Any non-dividing subset of $\\{1,\\ldots,N\\}$ is also a subset of $\\{1,\\ldots,M\\}$ when $N \\leq M$.",
     "mathContext": "$N \\leq M \\implies \\{1,\\ldots,N\\} \\subseteq \\{1,\\ldots,M\\} \\implies$ every non-dividing $A \\subseteq [N]$ is a candidate in $[M]$, so $F(N) \\leq F(M)$.",
@@ -163,10 +163,10 @@
     "id": "ann-131-elrss",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 93,
-      "endLine": 96
+      "startLine": 128,
+      "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ELRSS Upper Bound (1999)",
     "content": "Erdős, Lev, Rauzy, Sandor, and Sarkozy (1999) proved $F(N) < 3\\sqrt{N} + 1$. This was the first strong upper bound, establishing $F(N) = O(\\sqrt{N})$ and showing the problem was tractable.",
     "mathContext": "$F(N) < 3\\sqrt{N} + 1$ for all $N \\geq 1$. The bound is tight up to constants: the $\\sqrt{N}$ exponent was later improved to $N^{1/4}$ by Pham-Zakharov.",
@@ -185,10 +185,10 @@
     "id": "ann-131-pham",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 98,
-      "endLine": 103
+      "startLine": 134,
+      "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pham-Zakharov Upper Bound (2024)",
     "content": "Pham and Zakharov (2024) proved $F(N) \\leq N^{1/4+o(1)}$. The key innovation was exploiting the connection to non-averaging sets: since non-dividing $\\implies$ non-averaging, any upper bound on non-averaging sets applies to non-dividing sets. This resolved the original question.",
     "mathContext": "$\\exists \\varepsilon(N) \\to 0: F(N) \\leq N^{1/4 + \\varepsilon(N)}$ for $N \\geq 2$. Formalized with explicit $\\varepsilon : \\mathbb{N} \\to \\mathbb{R}$ satisfying $|\\varepsilon(N)| < \\delta$ for all $N \\geq N_0(\\delta)$.",
@@ -208,10 +208,10 @@
     "id": "ann-131-resolved",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 105,
-      "endLine": 110
+      "startLine": 142,
+      "endLine": 170
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Original Question Resolved: NO",
     "content": "The original question 'Is $F(N) > N^{1/2-o(1)}$?' is answered NO. Since $N^{1/4+o(1)} < N^{1/2-\\varepsilon}$ for large $N$ and any $\\varepsilon > 0$, the Pham-Zakharov bound rules out $N^{1/2}$-type growth.",
     "mathContext": "$F(N) \\leq N^{1/4+o(1)}$ and $1/4 < 1/2 - \\varepsilon$ for small $\\varepsilon$, so $F(N) \\not> N^{1/2-o(1)}$.",
@@ -229,10 +229,10 @@
     "id": "ann-131-csaba",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 114,
-      "endLine": 117
+      "startLine": 175,
+      "endLine": 177
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Csaba Lower Bound",
     "content": "Csaba proved $F(N) \\gg N^{1/5}$: there exist non-dividing subsets of $\\{1,\\ldots,N\\}$ of size $\\geq c N^{1/5}$. This provides a polynomial lower bound but is much weaker than the $N^{1/4}$ upper bound.",
     "mathContext": "$\\exists c > 0: F(N) \\geq c \\cdot N^{1/5}$ for all $N \\geq 1$. The exponent $1/5$ is far from the upper bound exponent $1/4$.",
@@ -250,10 +250,10 @@
     "id": "ann-131-straus",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 119,
-      "endLine": 125
+      "startLine": 180,
+      "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Straus Lower Bound",
     "content": "Straus proved $F(N) > \\exp\\left((\\sqrt{2/\\ln 2} + o(1))\\sqrt{\\ln N}\\right)$ where $\\sqrt{2/\\ln 2} \\approx 1.699$. This is subexponential but superpolynomial in $\\log N$, disproving Erdős's original conjecture that $F(N) < (\\log N)^{O(1)}$.",
     "mathContext": "$F(N) > \\exp\\left(c\\sqrt{\\log N}\\right)$ with $c = \\sqrt{2/\\log 2} \\approx 1.699$. This grows faster than $(\\log N)^k$ for any $k$ but slower than $N^\\alpha$ for any $\\alpha > 0$.",
@@ -317,10 +317,10 @@
     "id": "ann-131-log-conjecture",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 148,
-      "endLine": 152
+      "startLine": 247,
+      "endLine": 308
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Original Conjecture Disproved",
     "content": "Erdős originally conjectured $F(N) < (\\log N)^{O(1)}$. Straus's construction disproved this: $\\exp(c\\sqrt{\\log N})$ grows faster than $(\\log N)^k$ for any $k$, since $c\\sqrt{\\log N} \\gg k \\log\\log N$.",
     "mathContext": "$\\exp(c\\sqrt{\\log N}) > (\\log N)^k$ for large $N$, since $c\\sqrt{\\log N} > k \\log\\log N$ as $\\sqrt{x}/\\log x \\to \\infty$.",
@@ -338,10 +338,10 @@
     "id": "ann-131-singleton",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 156,
-      "endLine": 166
+      "startLine": 313,
+      "endLine": 321
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singleton Non-Dividing (Verified)",
     "content": "Any singleton $\\{n\\}$ with $n \\geq 1$ is trivially non-dividing: $\\{n\\}\\setminus\\{n\\} = \\emptyset$ has no subset with $\\geq 2$ elements. This is fully verified in Lean using `Finset.subset_empty` and the cardinality contradiction.",
     "mathContext": "$|S| \\geq 2$ and $S \\subseteq \\{n\\} \\setminus \\{n\\} = \\emptyset$ is a contradiction, so the universal quantifier is vacuously true.",
@@ -361,8 +361,8 @@
     "id": "ann-131-g-def",
     "proofId": "erdos-131",
     "range": {
-      "startLine": 191,
-      "endLine": 194
+      "startLine": 395,
+      "endLine": 397
     },
     "type": "definition",
     "title": "Non-Averaging Function g(N)",
