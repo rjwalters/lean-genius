@@ -20,9 +20,9 @@
     "erdosUrl": "https://erdosproblems.com/1117",
     "erdosProblemStatus": "open",
     "badge": "axiom",
-    "axiomCount": 11,
-    "lineCount": 100,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "axiomCount": 5,
+    "lineCount": 106,
+    "assumptions": "5 axiom(s): nu_ge_one, herzog_piranian, erdos_1117_open, glucksam_pardo_simon_approximate, maxModulus_nondecreasing. Converted IsEntire/maxModulus/nu from axioms to defs; proved maxModulus_def, nu_def, nu_finite.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -203,9 +203,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 100,
-    "axiomCount": 11,
-    "theoremCount": 0,
+    "lineCount": 106,
+    "axiomCount": 5,
+    "theoremCount": 3,
     "definitionCount": 1
   }
 }

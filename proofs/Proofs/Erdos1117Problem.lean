@@ -19,39 +19,45 @@ The question is how ν(r) can grow.
 Reference: https://erdosproblems.com/1117
 -/
 
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Topology.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 
-/-- An entire function: a function ℂ → ℂ that is holomorphic on all of ℂ. -/
-axiom IsEntire (f : ℂ → ℂ) : Prop
+/-- An entire function: holomorphic (ℂ-differentiable) on all of ℂ.
+    Previously an axiom; now a proper definition using Mathlib's Differentiable. -/
+def IsEntire (f : ℂ → ℂ) : Prop := Differentiable ℂ f
 
 /-- f is a monomial: f(z) = c·z^n for some c ∈ ℂ and n ∈ ℕ. -/
 def IsMonomial (f : ℂ → ℂ) : Prop :=
   ∃ (c : ℂ) (n : ℕ), ∀ z : ℂ, f z = c * z ^ n
 
-/-- The maximum modulus M(r): max_{|z|=r} |f(z)|. -/
-axiom maxModulus (f : ℂ → ℂ) (r : ℝ) : ℝ
+/-- The maximum modulus M(r): sup_{|z|=r} |f(z)|.
+    Previously an axiom; now a proper definition. -/
+noncomputable def maxModulus (f : ℂ → ℂ) (r : ℝ) : ℝ :=
+  sSup {x : ℝ | ∃ z : ℂ, ‖z‖ = r ∧ x = ‖f z‖}
 
-/-- M(r) is the supremum of |f(z)| on |z| = r. -/
-axiom maxModulus_def (f : ℂ → ℂ) (r : ℝ) (hr : r > 0) :
-    maxModulus f r = sSup {x : ℝ | ∃ z : ℂ, Complex.abs z = r ∧ x = Complex.abs (f z)}
+/-- M(r) is the supremum of |f(z)| on |z| = r. Proved by definition. -/
+theorem maxModulus_def (f : ℂ → ℂ) (r : ℝ) (_hr : r > 0) :
+    maxModulus f r = sSup {x : ℝ | ∃ z : ℂ, ‖z‖ = r ∧ x = ‖f z‖} :=
+  rfl
 
 /-- ν(r): the number of points on |z| = r where |f(z)| = M(r).
-    For non-monomials, this is always finite (for each r). -/
-axiom nu (f : ℂ → ℂ) (r : ℝ) : ℕ
+    Previously an axiom; now a proper definition using Nat.card. -/
+noncomputable def nu (f : ℂ → ℂ) (r : ℝ) : ℕ :=
+  Nat.card {z : ℂ | ‖z‖ = r ∧ ‖f z‖ = maxModulus f r}
 
-/-- ν(r) counts the maximum modulus points on the circle of radius r. -/
-axiom nu_def (f : ℂ → ℂ) (r : ℝ) (hr : r > 0) :
-    nu f r = Nat.card {z : ℂ | Complex.abs z = r ∧ Complex.abs (f z) = maxModulus f r}
+/-- ν(r) counts the maximum modulus points on the circle of radius r. Proved by definition. -/
+theorem nu_def (f : ℂ → ℂ) (r : ℝ) (_hr : r > 0) :
+    nu f r = Nat.card {z : ℂ | ‖z‖ = r ∧ ‖f z‖ = maxModulus f r} :=
+  rfl
 
 /- ## Basic Properties -/
 
-/-- For a non-monomial entire function, ν(r) is finite for each r > 0. -/
-axiom nu_finite (f : ℂ → ℂ) (hent : IsEntire f) (hnm : ¬ IsMonomial f) (r : ℝ)
-    (hr : r > 0) : nu f r < ⊤
+/-- For a non-monomial entire function, ν(r) is finite for each r > 0.
+    Now trivially true since nu returns ℕ. Previously an axiom. -/
+theorem nu_finite (f : ℂ → ℂ) (_hent : IsEntire f) (_hnm : ¬ IsMonomial f) (r : ℝ)
+    (_hr : r > 0) : (nu f r : ℕ∞) < ⊤ :=
+  WithTop.coe_lt_top _
 
 /-- For a non-monomial entire function, ν(r) ≥ 1 for all r > 0
     (the maximum is always achieved on a compact set). -/
@@ -88,8 +94,8 @@ axiom glucksam_pardo_simon_approximate :
     ∃ f : ℂ → ℂ, IsEntire f ∧ ¬ IsMonomial f ∧
       ∀ ε : ℝ, ε > 0 → ∀ N : ℕ, ∃ R : ℝ, ∀ r : ℝ, r > R →
         ∃ (S : Finset ℂ), S.card ≥ N ∧
-          ∀ z ∈ S, Complex.abs z = r ∧
-            Complex.abs (f z) ≥ (1 - ε) * maxModulus f r
+          ∀ z ∈ S, ‖z‖ = r ∧
+            ‖f z‖ ≥ (1 - ε) * maxModulus f r
 
 /- ## Hadamard Three-Circles Context -/
 
