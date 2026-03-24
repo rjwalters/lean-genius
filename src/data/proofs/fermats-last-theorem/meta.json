@@ -5,6 +5,7 @@
   "description": "Fermat's Last Theorem: no positive integers $a, b, c$ satisfy $a^n + b^n = c^n$ for $n > 2$. Proved by Andrew Wiles (1995) via the modularity of semistable elliptic curves, settling a 358-year conjecture. Formalized in Lean 4 with 5 axioms encoding the key steps of the Frey-Ribet-Wiles proof chain (modularity theorem, level-lowering, Frey curve, Mazur torsion). Status: axiomatized.",
   "meta": {
     "author": "Andrew Wiles (1995), with Richard Taylor",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem",
     "date": "1995",
     "status": "axiomatized",
     "tags": [
@@ -241,6 +242,27 @@
       "year": "1847",
       "venue": "Monatsberichte der Königlichen Preussischen Akademie der Wissenschaften zu Berlin, 132–141",
       "note": "Proof of FLT for regular primes using ideal factorization in cyclotomic fields — the deepest 19th-century progress, which introduced ideal theory and motivated Dedekind's algebraic number theory"
+    },
+    {
+      "authors": "Ribet, Kenneth A.",
+      "title": "On modular representations of Gal(Q̄/Q) arising from modular forms",
+      "year": "1990",
+      "venue": "Inventiones Mathematicae 100(2): 431-476",
+      "note": "Proves the epsilon conjecture (now Ribet's theorem): if the Frey curve is modular, level-lowering forces it to correspond to a weight-2 form of level 2, which does not exist — the key link between modularity and FLT"
+    },
+    {
+      "authors": "Frey, Gerhard",
+      "title": "Links between stable elliptic curves and certain Diophantine equations",
+      "year": "1986",
+      "venue": "Annales Universitatis Saraviensis 1: 1-40",
+      "note": "Proposes the Frey curve construction: a counterexample to FLT yields a semistable elliptic curve whose properties would violate the Taniyama-Shimura-Weil conjecture"
+    },
+    {
+      "authors": "Breuil, Christophe; Conrad, Brian; Diamond, Fred; Taylor, Richard",
+      "title": "On the modularity of elliptic curves over Q: wild 3-adic exercises",
+      "year": "2001",
+      "venue": "Journal of the AMS 14(4): 843-939",
+      "note": "Completes the full modularity theorem: every elliptic curve over Q is modular, extending Wiles's result from semistable curves to all curves"
     }
   ],
   "leanFile": {
