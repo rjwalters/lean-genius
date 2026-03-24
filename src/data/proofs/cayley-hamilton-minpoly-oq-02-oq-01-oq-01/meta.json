@@ -103,56 +103,64 @@
       "title": "Conjugation Automorphism",
       "startLine": 19,
       "endLine": 53,
-      "summary": "Constructs conjAlgEquiv P : Matrix n n K ≃ₐ[K] Matrix n n K, the conjugation automorphism A ↦ P⁻¹AP with inverse A ↦ PAP⁻¹."
+      "summary": "Constructs conjAlgEquiv P : Matrix n n K ≃ₐ[K] Matrix n n K, the conjugation automorphism A ↦ P⁻¹AP with inverse A ↦ PAP⁻¹.",
+      "mathContext": "$\\text{conj}_P(A) = P^{-1}AP$ defines a $K$-algebra isomorphism since $(P^{-1}AP)(P^{-1}BP) = P^{-1}ABP$ and $P^{-1}(cA)P = cP^{-1}AP$."
     },
     {
       "id": "inner-automorphisms",
       "title": "Inner Automorphisms",
       "startLine": 54,
       "endLine": 83,
-      "summary": "Defines IsInnerAut and proves inner automorphisms form a group: conjAlgEquiv_isInner, isInnerAut_id, isInnerAut_symm, isInnerAut_trans."
+      "summary": "Defines IsInnerAut and proves inner automorphisms form a group: conjAlgEquiv_isInner, isInnerAut_id, isInnerAut_symm, isInnerAut_trans.",
+      "mathContext": "$\\text{Inn}(M_n(K)) = \\{\\text{conj}_P : P \\in \\text{GL}_n(K)\\}$ is a subgroup of $\\text{Aut}_K(M_n(K))$. Skolem-Noether will show $\\text{Inn} = \\text{Aut}$."
     },
     {
       "id": "skolem-noether-proof",
       "title": "Skolem-Noether Proof (Elementary Matrix Units)",
       "startLine": 84,
       "endLine": 280,
-      "summary": "Fully proves the Skolem-Noether theorem using elementary matrix units (no Artin-Wedderburn). Helper lemmas: stdBasis_entry, stdBasis_mul, f_mul, intertwine_prop, p_ne_zero, p_linearIndependent. Main theorem constructs an invertible P from linearly independent vectors p_j = φ(E_{j,i₀})·v₀ and proves φ = conj(P) by decomposing matrices as ∑ A_{ij}·E_{ij}."
+      "summary": "Fully proves the Skolem-Noether theorem using elementary matrix units (no Artin-Wedderburn). Helper lemmas: stdBasis_entry, stdBasis_mul, f_mul, intertwine_prop, p_ne_zero, p_linearIndependent. Main theorem constructs an invertible P from linearly independent vectors p_j = φ(E_{j,i₀})·v₀ and proves φ = conj(P) by decomposing matrices as ∑ A_{ij}·E_{ij}.",
+      "mathContext": "Key chain: $E_{ij} E_{kl} = \\delta_{jk} E_{il}$ $\\Rightarrow$ $\\varphi(E_{ij})\\varphi(E_{kl}) = \\delta_{jk}\\varphi(E_{il})$ $\\Rightarrow$ $\\varphi(E_{kk})$ acts as projection onto $p_k$ $\\Rightarrow$ $\\{p_j\\}$ linearly independent $\\Rightarrow$ $P = [p_0|\\cdots|p_{n-1}]$ invertible $\\Rightarrow$ $\\varphi = \\text{conj}_P$."
     },
     {
       "id": "consequences",
       "title": "Consequences",
       "startLine": 281,
       "endLine": 298,
-      "summary": "Derives exists_conjugating_matrix, surjection_units_to_aut (Aut = Inn), automorphism_preserves_minpoly, and aut_ext."
+      "summary": "Derives exists_conjugating_matrix, surjection_units_to_aut (Aut = Inn), automorphism_preserves_minpoly, and aut_ext.",
+      "mathContext": "$\\text{conj}: \\text{GL}_n(K) \\twoheadrightarrow \\text{Aut}_K(M_n(K))$ (surjective). $\\varphi(\\text{minpoly}_K(A)) = \\text{minpoly}_K(A)$ (invariance)."
     },
     {
       "id": "trivial-case",
       "title": "The Trivial Case n = 1",
       "startLine": 299,
       "endLine": 311,
-      "summary": "Proves Skolem-Noether for M₁(K) without the main theorem: every 1×1 matrix is scalar, so every automorphism of M₁(K) ≅ K is the identity."
+      "summary": "Proves Skolem-Noether for M₁(K) without the main theorem: every 1×1 matrix is scalar, so every automorphism of M₁(K) ≅ K is the identity.",
+      "mathContext": "$M_1(K) \\cong K$ as $K$-algebras. Every $K$-algebra endomorphism of $K$ is the identity (it fixes 1 and is $K$-linear)."
     },
     {
       "id": "matrix-unit-products",
       "title": "Matrix Unit Product Lemmas",
       "startLine": 347,
       "endLine": 387,
-      "summary": "Helper lemmas mul_eij_entry and eij_mul_entry for computing products A·E_{ij} and E_{ij}·A, extracting/placing columns and rows."
+      "summary": "Helper lemmas mul_eij_entry and eij_mul_entry for computing products A·E_{ij} and E_{ij}·A, extracting/placing columns and rows.",
+      "mathContext": "$(AE_{ij})_{kl} = A_{ki}\\delta_{jl}$ (extract column $i$, place in column $j$). $(E_{ij}A)_{kl} = \\delta_{ik}A_{jl}$ (extract row $j$, place in row $i$)."
     },
     {
       "id": "center",
       "title": "Center of Mₙ(K) = Scalar Matrices",
       "startLine": 388,
       "endLine": 452,
-      "summary": "Proves center_iff_scalar: a matrix commutes with all matrices iff it is a scalar multiple of I. Uses off_diagonal_vanish_of_center and diagonal_constant_of_center."
+      "summary": "Proves center_iff_scalar: a matrix commutes with all matrices iff it is a scalar multiple of I. Uses off_diagonal_vanish_of_center and diagonal_constant_of_center.",
+      "mathContext": "$\\text{Center}(M_n(K)) = \\{cI : c \\in K\\} \\cong K$. Proof: commuting with $E_{ij}$ ($i \\neq j$) kills off-diagonal entries; commuting with all $E_{ij}$ forces equal diagonal entries."
     },
     {
       "id": "pgl-structure",
       "title": "Conjugation Kernel and PGL Structure",
       "startLine": 453,
       "endLine": 570,
-      "summary": "Proves conjAlgEquiv_eq_iff_center (two units give same conjugation iff ratio is central) and conjAlgEquiv_eq_refl_iff (kernel = scalar matrices), establishing Aut_K(Mₙ(K)) ≅ PGLₙ(K)."
+      "summary": "Proves conjAlgEquiv_eq_iff_center (two units give same conjugation iff ratio is central) and conjAlgEquiv_eq_refl_iff (kernel = scalar matrices), establishing Aut_K(Mₙ(K)) ≅ PGLₙ(K).",
+      "mathContext": "$\\ker(\\text{conj}: \\text{GL}_n(K) \\to \\text{Aut}_K(M_n(K))) = K^* \\cdot I$. By first isomorphism theorem: $\\text{Aut}_K(M_n(K)) \\cong \\text{GL}_n(K) / K^* = \\text{PGL}_n(K)$."
     }
   ],
   "conclusion": {
