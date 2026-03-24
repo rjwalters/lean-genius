@@ -170,14 +170,26 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the constants $e$, $\\pi$, and $i$. The zeta values $\\zeta(2k) = (-1)^{k+1}(2\\pi)^{2k}B_{2k}/(2(2k)!)$ involve $\\pi$, linking even zeta values to the same transcendental constant in Euler's identity. The irrationality of odd zeta values like $\\zeta(5)$ remains open precisely because they lack such clean $\\pi$-based formulas"
+    },
+    {
+      "targetId": "basel-problem-oq-02",
+      "relationship": "related",
+      "description": "Sibling open question focusing on the transcendence of ALL odd zeta values and the full implication hierarchy (transcendence => irrationality => Apery + Rivoal + Zudilin); this entry focuses specifically on ζ(5) irrationality"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's theorem (π transcendental) is the key ingredient for even zeta transcendence (ζ(2k) = rational * π^(2k)); contrasts with the open status of odd zeta irrationality explored here"
     }
   ],
   "relatedProofs": [
     "basel-problem",
+    "basel-problem-oq-02",
     "riemann-hypothesis",
     "e-transcendental",
     "harmonic-divergence",
-    "euler-identity"
+    "euler-identity",
+    "pi-transcendental"
   ],
   "leanFile": {
     "imports": [
