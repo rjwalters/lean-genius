@@ -77,8 +77,8 @@
   "overview": {
     "historicalContext": "The classical ballot problem, posed by Joseph Bertrand in 1887, asks: if candidate A receives $p$ votes and candidate B receives $q < p$ votes, what is the probability that A leads throughout the count? Désiré André's reflection principle (1887) provided an elegant bijective proof, establishing $P = (p-q)/(p+q)$. This reflection argument became a cornerstone of combinatorial probability.\n\nBernt Lindström (1973) generalized the reflection principle to pairs of non-intersecting lattice paths, proving that the signed count of NI path pairs equals a 2×2 determinant of path counts. Ira Gessel and Gérard Viennot (1985) extended this to $r$-tuples of paths, yielding the LGV lemma: the signed count of non-intersecting path $r$-tuples equals the determinant of an $r \\times r$ matrix of individual path counts. The lemma has found applications in the theory of symmetric functions, plane partitions, and the counting of Standard Young Tableaux via the hook-length formula.",
     "problemStatement": "**Lindström-Gessel-Viennot Lemma (2×2 case)**:\nGiven sources A₁ = (0, a₁), A₂ = (0, a₂) with a₁ ≤ a₂, and targets B₁ = (m, b₁), B₂ = (m, b₂) with b₁ ≤ b₂, the count of non-intersecting path pairs equals:\n\n  niPairCount = C(m+b₁-a₁, m) · C(m+b₂-a₂, m) − C(m+b₁-a₂, m) · C(m+b₂-a₁, m)\n\n**Crossing Lemma** (proved): If y₁ < y₂ and y₁+n₁ > y₂+n₂, paths from (0,y₁) and (0,y₂) with n₁ and n₂ North steps respectively MUST share a lattice point.",
-    "text": "A comprehensive 2878-line formalization of lattice path combinatorics and the Lindström-Gessel-Viennot (LGV) lemma for 2×2 non-intersecting path pairs. Defines `pathType m n` (North-East lattice paths as `List Bool`) and proves $|\\text{pathType}(m,n)| = \\binom{m+n}{m}$ by induction. Derives the Catalan formula $C_n(n+1) = \\binom{2n}{n}$ via the absorption identity, the ballot formula $|\\text{ballotSeq}(p,q)| \\cdot (p+q) = (p-q) \\cdot \\binom{p+q}{p}$ by 1D reflection, and Vandermonde's identity from Mathlib. The Crossing Lemma (fully proved) shows paths starting at $y_1 < y_2$ but ending with $y_1 + n_1 > y_2 + n_2$ must intersect. Key infrastructure: `northBeforeEast`, `colEntry`, `splitAfterEast`, `swapTails` (Lindström involution), and `pathFlip` ($\\text{pathType}(m,n) \\simeq \\text{pathType}(n,m)$). The LGV lemma is proved for the $m=0$ case with the Catalan-Ballot unification $C_n = |\\text{ballotSeq}(n+1, n)|$ as a corollary. Fully verified: 0 sorries, 0 axioms.",
-    "proofStrategy": "**Lindström Involution Approach**:\n1. **Crossing Lemma** proves all 'crossing' path pairs (A₁→B₂, A₂→B₁) are intersecting when a₁ ≤ a₂ and b₁ ≤ b₂\n2. **Path Count Formula** gives |pathType m n| = C(m+n, m) by induction (Pascal's identity)\n3. **Lindström Involution**: For any intersecting identity pair (P₁:A₁→B₁, P₂:A₂→B₂), swap tails at first meeting column to get a crossing pair; this is a bijection by Crossing Lemma\n4. **Conclusion**: NI count = all identity - intersecting = all identity - all crossing = lgvDet\n\n**Status**: Crossing Lemma and path count formula fully proved. swapTails infrastructure added. Full involution proof (lgv_lemma_2x2) remains as a sorry.",
+    "text": "A comprehensive 2878-line formalization of lattice path combinatorics and the Lindström-Gessel-Viennot (LGV) lemma for 2×2 non-intersecting path pairs. Defines `pathType m n` (North-East lattice paths as `List Bool`) and proves $|\\text{pathType}(m,n)| = \\binom{m+n}{m}$ by induction. Derives the Catalan formula $C_n(n+1) = \\binom{2n}{n}$ via the absorption identity, the ballot formula $|\\text{ballotSeq}(p,q)| \\cdot (p+q) = (p-q) \\cdot \\binom{p+q}{p}$ by 1D reflection, and Vandermonde's identity from Mathlib. The Crossing Lemma (fully proved) shows paths starting at $y_1 < y_2$ but ending with $y_1 + n_1 > y_2 + n_2$ must intersect. Key infrastructure: `northBeforeEast`, `colEntry`, `splitAfterEast`, `swapTails` (Lindström involution), and `pathFlip` ($\\text{pathType}(m,n) \\simeq \\text{pathType}(n,m)$). The full 2x2 LGV lemma ($\\texttt{lgv\\_lemma\\_2x2}$) is proved via complement counting and the Lindström involution (dual injections on $\\texttt{swapAtPoint}$), with the Catalan-Ballot unification $C_n = |\\text{ballotSeq}(n+1, n)|$ as a corollary. Fully verified: 0 sorries, 0 axioms, 119 theorems across 2878 lines.",
+    "proofStrategy": "**Lindström Involution Approach**:\n1. **Crossing Lemma** proves all 'crossing' path pairs (A₁→B₂, A₂→B₁) are intersecting when a₁ ≤ a₂ and b₁ ≤ b₂\n2. **Path Count Formula** gives |pathType m n| = C(m+n, m) by induction (Pascal's identity)\n3. **Lindström Involution**: For any intersecting identity pair (P₁:A₁→B₁, P₂:A₂→B₂), swap tails at first meeting column to get a crossing pair; this is a bijection by Crossing Lemma\n4. **Conclusion**: NI count = all identity - intersecting = all identity - all crossing = lgvDet\n\n**Status**: Fully proved. The Crossing Lemma, path count formula, Lindström involution (via dual injections on swapAtPoint), and lgv_lemma_2x2 are all verified with 0 sorries.",
     "keyInsights": [
       "**Path Representation:** `northBeforeEast l k` gives the $y$-offset at the $k$-th East step, and `colEntry l k` = $y$-height at column $k$. This converts lattice paths into column-indexed sequences for inductive analysis.",
       "**Crossing Lemma (Inductive):** If paths are non-intersecting and $P_1$ enters column $k$ below $P_2$, then $P_1$ also enters column $k+1$ below $P_2$ (disjoint range argument). At column $m$, this contradicts the crossing destination condition.",
@@ -100,7 +100,7 @@
       "startLine": 62,
       "endLine": 106,
       "summary": "LPath as List Bool (false=East, true=North), eastSteps, northSteps, pathType subtype with Fintype instance via List.Vector equivalence.",
-      "mathContext": "LPath as List Bool (false=East, true=North), eastSteps, northSteps, pathType subtype with Fintype instance via List.Vector equivalence."
+      "mathContext": "A lattice path from $(0,y_0)$ to $(m, y_0+n)$ is encoded as a Boolean list of length $m+n$, where $\\texttt{false}$ is an East step and $\\texttt{true}$ is a North step. The subtype $\\texttt{pathType}\\, m\\, n$ restricts to lists with exactly $m$ East and $n$ North steps, and a $\\texttt{Fintype}$ instance (via $\\texttt{List.Vector}$ equivalence) enables cardinality computations."
     },
     {
       "id": "north-before-east",
@@ -108,7 +108,7 @@
       "startLine": 107,
       "endLine": 198,
       "summary": "northBeforeEast l k counts North steps before k-th East step. colEntry l k is the y-offset at column k. Key lemmas: monotonicity, northBeforeEast ≤ northSteps, colEntry ≤ northSteps.",
-      "mathContext": "northBeforeEast l k counts North steps before k-th East step. colEntry l k is the y-offset at column k. Key lemmas: monotonicity, northBeforeEast ≤ northSteps, colEntry ≤ northSteps."
+      "mathContext": "For a path $l$ with $m$ East steps, $\\texttt{northBeforeEast}(l,k)$ gives the number of North steps before the $k$-th East step, encoding the $y$-offset at column $k$. The derived function $\\texttt{colEntry}(l,k)$ satisfies $\\texttt{colEntry}(l,0) = 0$ and $\\texttt{colEntry}(l,k) \\leq \\texttt{colEntry}(l,k{+}1) \\leq \\texttt{northSteps}(l)$, enabling column-by-column inductive analysis of path geometry."
     },
     {
       "id": "non-intersecting",
@@ -116,7 +116,7 @@
       "startLine": 199,
       "endLine": 213,
       "summary": "colYRange: y-values visited at column x. finalRange: y-values at final column. NonIntersecting: column-wise disjoint y-ranges for two paths.",
-      "mathContext": "colYRange: y-values visited at column x. finalRange: y-values at final column. NonIntersecting: column-wise disjoint y-ranges for two paths."
+      "mathContext": "Two paths $P_1$ from $(0,y_1)$ and $P_2$ from $(0,y_2)$ are non-intersecting when the $y$-intervals $[y_i + \\text{colEntry}(l_i,x),\\, y_i + \\text{colEntry}(l_i,x{+}1)]$ are disjoint at every column $x < m$, and similarly for the final column range. This column-wise disjointness condition is the predicate that the Crossing Lemma negates."
     },
     {
       "id": "crossing-lemma",
@@ -124,7 +124,7 @@
       "startLine": 214,
       "endLine": 290,
       "summary": "FULLY PROVED: If y₁ < y₂ and y₂+n₂ < y₁+n₁, paths cannot be non-intersecting. Proof via column-by-column induction using nonIntersecting_entry_order (disjoint interval preservation).",
-      "mathContext": "FULLY PROVED: If y₁ < y₂ and y₂+n₂ < y₁+n₁, paths cannot be non-intersecting. Proof via column-by-column induction using nonIntersecting_entry_order (disjoint interval preservation)."
+      "mathContext": "The 2D Crossing Lemma: if $y_1 < y_2$ and $y_2 + n_2 < y_1 + n_1$ (paths cross in $y$-coordinate), then $\\neg\\text{NonIntersecting}(l_1, l_2, m, y_1, y_2)$. The proof inducts on columns: the helper $\\texttt{nonIntersecting\\_entry\\_order}$ shows disjoint column ranges force the lower path to stay below, contradicting the endpoint crossing condition at column $m$."
     },
     {
       "id": "path-count",
@@ -132,15 +132,15 @@
       "startLine": 291,
       "endLine": 394,
       "summary": "FULLY PROVED: |pathType m n| = C(m+n, m). pathSplitEquiv bijects pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n, giving Pascal's recurrence.",
-      "mathContext": "FULLY PROVED: |pathType m n| = C(m+n, m). pathSplitEquiv bijects pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n, giving Pascal's recurrence."
+      "mathContext": "$|\\texttt{pathType}(m,n)| = \\binom{m+n}{m}$. The bijection $\\texttt{pathSplitEquiv}$ decomposes $\\texttt{pathType}(m{+}1, n{+}1) \\simeq \\texttt{pathType}(m, n{+}1) \\oplus \\texttt{pathType}(m{+}1, n)$ by the first step (East or North), yielding Pascal's recurrence $\\binom{m+n+2}{m+1} = \\binom{m+n+1}{m} + \\binom{m+n+1}{m+1}$ on cardinalities."
     },
     {
       "id": "lgv-count",
       "title": "NI Pair Count and LGV Statement",
       "startLine": 395,
       "endLine": 425,
-      "summary": "niPairCount via Classical decidability. lgvDet 2×2 determinant. lgv_lemma_2x2 (sorry: needs Lindström involution bijection).",
-      "mathContext": "niPairCount via Classical decidability. lgvDet 2×2 determinant. lgv_lemma_2x2 (sorry: needs Lindström involution bijection)."
+      "summary": "niPairCount via Classical decidability. lgvDet 2×2 determinant. lgv_lemma_2x2 proved via complement counting plus Lindström involution bijection.",
+      "mathContext": "The non-intersecting pair count $\\texttt{niPairCount}$ uses classical decidability to count over $\\texttt{pathType}$ products. The LGV determinant $\\texttt{lgvDet} = \\binom{m+n_1}{m}\\binom{m+n_2}{m} - \\binom{m+n_1'}{m}\\binom{m+n_2'}{m}$ is proved equal to $\\texttt{niPairCount}$ via complement counting: total identity pairs minus intersecting identity pairs, where the Lindström involution bijects intersecting identity pairs with crossing pairs."
     },
     {
       "id": "vandermonde",
@@ -148,7 +148,7 @@
       "startLine": 426,
       "endLine": 437,
       "summary": "FULLY PROVED: C(m+n, r) = Σ C(m,k)*C(n,r-k) via Nat.add_choose_eq and Finset.Nat.sum_antidiagonal.",
-      "mathContext": "FULLY PROVED: C(m+n, r) = Σ C(m,k)*C(n,r-k) via Nat.add_choose_eq and Finset.Nat.sum_antidiagonal."
+      "mathContext": "Vandermonde's identity: $\\binom{m+n}{r} = \\sum_{k=0}^{r} \\binom{m}{k}\\binom{n}{r-k}$. Proved by invoking Mathlib's $\\texttt{Nat.add\\_choose\\_eq}$ and rewriting with $\\texttt{Finset.Nat.sum\\_antidiagonal}$. This identity has a lattice path interpretation: paths from $(0,0)$ to $(m+n, r)$ are partitioned by where they cross the column $x = m$."
     },
     {
       "id": "catalan",
@@ -156,7 +156,7 @@
       "startLine": 438,
       "endLine": 489,
       "summary": "FULLY PROVED: Catalan formula Cn(n)*(n+1) = C(2n,n) via absorption identity. Verified for n=0..6.",
-      "mathContext": "FULLY PROVED: Catalan formula Cn(n)*(n+1) = C(2n,n) via absorption identity. Verified for n=0..6."
+      "mathContext": "The $n$-th Catalan number $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ satisfies $C_n(n+1) = \\binom{2n}{n}$, i.e., $C_n = \\frac{1}{n+1}\\binom{2n}{n}$. Proved algebraically via the absorption identity $\\texttt{Nat.add\\_one\\_mul\\_choose\\_eq}$ and verified computationally for $n = 0, \\ldots, 6$ via $\\texttt{native\\_decide}$."
     },
     {
       "id": "ballot",
@@ -164,7 +164,7 @@
       "startLine": 490,
       "endLine": 571,
       "summary": "FULLY PROVED: ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p) via absorption identity. Verified for several (p,q) pairs. ballot_via_path_count: ballot = path count difference (1D reflection).",
-      "mathContext": "FULLY PROVED: ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p) via absorption identity. Verified for several (p,q) pairs. ballot_via_path_count: ballot = path count difference (1D reflection)."
+      "mathContext": "The ballot formula: $\\texttt{ballotSeqCount}(p,q) \\cdot (p+q) = (p-q) \\cdot \\binom{p+q}{p}$ for $q < p$. Proved using the same absorption identity technique as the Catalan section. The theorem $\\texttt{ballot\\_via\\_path\\_count}$ expresses the ballot count as a path count difference $\\binom{p+q}{p} - \\binom{p+q}{p+1}$, connecting the ballot problem to the 1D reflection principle."
     },
     {
       "id": "involution-infra",
@@ -172,7 +172,7 @@
       "startLine": 572,
       "endLine": 771,
       "summary": "splitAfterEast splits a path after k East steps. Key theorem: northSteps(prefix) = northBeforeEast l k. swapTails exchanges suffixes for the Lindström involution. lgvDet = 0 for same start/end degenerate cases.",
-      "mathContext": "splitAfterEast splits a path after k East steps. Key theorem: northSteps(prefix) = northBeforeEast l k. swapTails exchanges suffixes for the Lindström involution. lgvDet = 0 for same start/end degener"
+      "mathContext": "The function $\\texttt{splitAfterEast}(l, k)$ decomposes a path into prefix (up to the $k$-th East step) and suffix, with the key property $\\texttt{northSteps}(\\text{prefix}) = \\texttt{northBeforeEast}(l, k)$. The $\\texttt{swapTails}$ operation exchanges suffixes of two paths at a given column, forming the core of the Lindström sign-reversing involution. Degenerate cases (equal sources or equal targets) yield $\\texttt{lgvDet} = 0$."
     },
     {
       "id": "path-transposition",
@@ -180,7 +180,7 @@
       "startLine": 1083,
       "endLine": 1161,
       "summary": "FULLY PROVED: pathFlip bijection (East↔North swap) gives pathType m n ≃ pathType n m. Proves C(m+n,m) = C(m+n,n) via combinatorial path bijection.",
-      "mathContext": "FULLY PROVED: pathFlip bijection (East↔North swap) gives pathType m n ≃ pathType n m. Proves C(m+n,m) = C(m+n,n) via combinatorial path bijection."
+      "mathContext": "The map $\\texttt{pathFlip}(l) = \\texttt{map}(\\neg, l)$ swaps East and North steps, yielding an equivalence $\\texttt{pathType}(m,n) \\simeq \\texttt{pathType}(n,m)$. Involutivity ($\\texttt{pathFlip} \\circ \\texttt{pathFlip} = \\text{id}$) makes the $\\texttt{Equiv}$ construction direct. This gives a purely bijective proof of binomial symmetry $\\binom{m+n}{m} = \\binom{m+n}{n}$ without algebraic manipulation."
     },
     {
       "id": "lgv-det-algebra",
@@ -188,7 +188,7 @@
       "startLine": 1162,
       "endLine": 1189,
       "summary": "FULLY PROVED: LGV determinant antisymmetry (source/target swaps negate), non-negativity under proper ordering, double swap invariance.",
-      "mathContext": "FULLY PROVED: LGV determinant antisymmetry (source/target swaps negate), non-negativity under proper ordering, double swap invariance."
+      "mathContext": "Algebraic properties of $\\texttt{lgvDet}$: swapping sources negates the determinant ($\\texttt{lgvDet\\_swap\\_sources}$), swapping targets negates it ($\\texttt{lgvDet\\_swap\\_targets}$), and the double swap is invariant. Under proper ordering ($a_1 \\leq a_2$, $b_1 \\leq b_2$), the determinant is non-negative ($\\texttt{lgvDet\\_nonneg}$), since it counts non-intersecting path pairs."
     },
     {
       "id": "catalan-ballot-unification",
@@ -196,7 +196,7 @@
       "startLine": 1190,
       "endLine": 1215,
       "summary": "FULLY PROVED: Cn(n) = ballotSeqCount(n+1,n) unifying the two reflection-based formulas. catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n).",
-      "mathContext": "FULLY PROVED: Cn(n) = ballotSeqCount(n+1,n) unifying the two reflection-based formulas. catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n)."
+      "mathContext": "The identity $C_n = \\texttt{ballotSeqCount}(n{+}1, n)$ shows the $n$-th Catalan number counts ballot sequences where candidate $A$ (with $n{+}1$ votes) always leads candidate $B$ (with $n$ votes). Combined with the ballot formula, this yields $\\texttt{ballotSeqCount}(n{+}1,n) \\cdot (n{+}1) = \\binom{2n}{n}$, linking the Catalan division formula to the ballot theorem through a single algebraic identity."
     },
     {
       "id": "entry-gap-analysis",
@@ -204,12 +204,12 @@
       "startLine": 1215,
       "endLine": 2878,
       "summary": "FULLY PROVED: Entry gap framework (NI preserves positive gap, gap positive at all columns under NI + y₁<y₂). swapTails East step count preservation. Suffix North step count decomposition.",
-      "mathContext": "FULLY PROVED: Entry gap framework (NI preserves positive gap, gap positive at all columns under NI + y₁<y₂). swapTails East step count preservation. Suffix North step count decomposition."
+      "mathContext": "The entry gap $\\texttt{entryGap}(l_1, l_2, y_1, y_2, k) = (y_2 + \\text{colEntry}(l_2, k)) - (y_1 + \\text{colEntry}(l_1, k))$ measures path separation at each column. Under non-intersection with $y_1 < y_2$, the gap stays positive at all columns ($\\texttt{entryGap\\_pos\\_all}$). This section also proves $\\texttt{swapTails}$ preserves East step counts and decomposes suffix North steps, completing the infrastructure for the Lindström involution."
     }
   ],
   "conclusion": {
     "summary": "Comprehensive formalization of 2D lattice path combinatorics. Proves the Crossing Lemma, path count formula, Catalan numbers, ballot theorem, Vandermonde identity, binomial coefficient symmetry via path flip bijection, LGV determinant algebra, and Catalan-Ballot unification. The Lindström involution infrastructure is in place for the full LGV proof.",
-    "implications": "**Theoretical Significance**: **Applications:**\n1. **Combinatorics**: LGV lemma is the foundation for counting plane partitions, standard Young tableaux, and Aztec diamond tilings\n**2. Algebra**: Determinantal identities for Schur polynomials follow from LGV\n3. **Probability**: Ballot problem and Catalan numbers via lattice path bijections\n4. **Geometry**: Non-intersecting path counting generalizes to higher-dimensional reflection principles.",
+    "implications": "**Theoretical Significance and Applications:**\n1. **Combinatorics**: The LGV lemma is the foundation for counting plane partitions, standard Young tableaux, and Aztec diamond tilings\n2. **Algebra**: Determinantal identities for Schur polynomials follow from LGV\n3. **Probability**: The ballot problem and Catalan numbers are unified through lattice path bijections and the reflection principle\n4. **Geometry**: Non-intersecting path counting generalizes to higher-dimensional reflection principles\n5. **Formalization**: This 2878-line development demonstrates that substantial enumerative combinatorics (binomial identities, bijective proofs, sign-reversing involutions) can be machine-verified in Lean 4 with Mathlib",
     "openQuestions": [
       "Complete lgv_lemma_2x2: formalize the Lindström involution bijection (swapTails at first meeting column creates an involution between intersecting identity pairs and all crossing pairs)",
       "Extend to r×r LGV lemma for r > 2 paths using the general Lindström-Gessel-Viennot determinant",
@@ -249,6 +249,20 @@
     }
   ],
   "references": [
+    {
+      "authors": "Bertrand, Joseph",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, vol. 105, pp. 369",
+      "note": "Original statement of the ballot problem: if candidate A receives p votes and B receives q < p votes, the probability that A leads throughout the count is (p-q)/(p+q)"
+    },
+    {
+      "authors": "André, Désiré",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, vol. 105, pp. 436–437",
+      "note": "Introduced the reflection principle as a bijective proof technique for Bertrand's ballot problem, establishing the foundational method generalized in this formalization"
+    },
     {
       "authors": "Lindström, Bernt",
       "title": "On the vector representations of induced matroids",
@@ -296,8 +310,8 @@
     "namespace": "LatticePathLGV",
     "lineCount": 2878,
     "axiomCount": 0,
-    "theoremCount": 138,
-    "definitionCount": 31
+    "theoremCount": 119,
+    "definitionCount": 32
   },
   "relatedProofs": [
     {
