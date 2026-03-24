@@ -159,6 +159,21 @@
       "targetId": "fundamental-theorem-calculus",
       "relationship": "related",
       "description": "FTC connects differentiation and integration — the same Lebesgue integral framework that defines the $L^2$ inner product $\\langle f, g \\rangle = \\int fg\\,d\\mu$. Both theorems rely on Mathlib's Bochner integration infrastructure"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "extended-by",
+      "description": "Hölder's inequality $\\|fg\\|_1 \\leq \\|f\\|_p \\cdot \\|g\\|_q$ (for $1/p + 1/q = 1$) generalizes the integral Cauchy-Schwarz from $p = q = 2$ to arbitrary conjugate exponents. The $p = 2$ case recovers Cauchy-Schwarz exactly: $\\int |fg| \\leq (\\int |f|^2)^{1/2}(\\int |g|^2)^{1/2}$"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02",
+      "relationship": "extended-by",
+      "description": "The Minkowski integral inequality $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ is the $L^p$ triangle inequality. For $p = 2$, it follows directly from the integral Cauchy-Schwarz via expanding $\\|f+g\\|_2^2 = \\|f\\|_2^2 + 2\\langle f,g \\rangle + \\|g\\|_2^2 \\leq (\\|f\\|_2 + \\|g\\|_2)^2$"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-03",
+      "relationship": "extended-by",
+      "description": "Extends the integral Cauchy-Schwarz to complex-valued $L^2$ functions via a bridge theorem connecting the real and complex inner product space formulations. Completes the Cauchy-Schwarz development across real, complex, and abstract $\\text{RCLike}$ fields"
     }
   ],
   "relatedProofs": [
@@ -169,7 +184,10 @@
     "basel-problem",
     "triangle-inequality",
     "amgm-inequality-oq-03",
-    "fundamental-theorem-calculus"
+    "fundamental-theorem-calculus",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-02",
+    "cauchy-schwarz-integral-oq-03"
   ],
   "leanFile": {
     "imports": [
