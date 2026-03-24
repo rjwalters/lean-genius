@@ -41,8 +41,34 @@ def totientDivisors (a : ℤ) : Set ℕ :=
 
 /- ## Part II: Special Case a = 0 -/
 
+/-- Forward direction: φ(2^a · 3^b) | (2^a · 3^b) for a > 0.
+    Proof: φ(2^a) = 2^(a-1), and for b > 0, φ(3^b) = 2·3^(b-1).
+    So φ(2^a · 3^b) = 2^a · 3^(b-1) (or 2^(a-1) when b = 0), which divides n. -/
+theorem totient_dvd_two_three_pow (a : ℕ) (ha : 0 < a) (b : ℕ) :
+    totient (2 ^ a * 3 ^ b) ∣ 2 ^ a * 3 ^ b := by
+  rcases b.eq_zero_or_pos with rfl | hb
+  · -- b = 0: φ(2^a) = 2^(a-1) | 2^a
+    simp only [pow_zero, mul_one]
+    rw [Nat.totient_prime_pow Nat.prime_two ha]
+    norm_num
+    exact pow_dvd_pow 2 (Nat.pred_le a)
+  · -- b > 0: φ(2^a · 3^b) = 2^a · 3^(b-1) | 2^a · 3^b
+    have hcop : Nat.Coprime (2 ^ a) (3 ^ b) :=
+      Nat.Coprime.pow a b (by norm_num : Nat.Coprime 2 3)
+    have h2 : totient (2 ^ a) = 2 ^ (a - 1) := by
+      rw [Nat.totient_prime_pow Nat.prime_two ha]; simp
+    have h3 : totient (3 ^ b) = 3 ^ (b - 1) * 2 := by
+      rw [Nat.totient_prime_pow Nat.prime_three hb]
+    rw [Nat.totient_mul hcop, h2, h3]
+    -- Goal: 2^(a-1) * (3^(b-1) * 2) | 2^a * 3^b
+    suffices h : 2 ^ (a - 1) * (3 ^ (b - 1) * 2) = 2 ^ a * 3 ^ (b - 1) by
+      rw [h]; exact Nat.mul_dvd_mul_left _ (pow_dvd_pow 3 (Nat.pred_le b))
+    rw [mul_comm (3 ^ (b - 1)) 2, ← mul_assoc, ← pow_succ,
+        Nat.sub_add_cancel (show 1 ≤ a from by omega)]
+
 /-- Characterization: φ(n) | n iff n ≤ 1 or n = 2^a · 3^b for some a > 0.
-This is a non-trivial number-theoretic result not currently in Mathlib. -/
+    The forward direction (←) is proved above as totient_dvd_two_three_pow.
+    The backward direction (→) requires showing primes ≥ 5 can't divide n. -/
 axiom totient_dvd_self_iff (n : ℕ) :
     totient n ∣ n ↔ n ≤ 1 ∨ ∃ a > 0, ∃ b : ℕ, n = 2^a * 3^b
 
