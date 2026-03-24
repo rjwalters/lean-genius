@@ -139,6 +139,18 @@
       "Weighted mass points for angle bisectors: masses proportional to opposite side lengths"
     ]
   },
+  "references": [
+    {
+      "key": "Ce78",
+      "citation": "Ceva, G., De Lineis Rectis Se Invicem Secantibus Statica Constructio, Milan (1678). Original Ceva's theorem.",
+      "type": "book"
+    },
+    {
+      "key": "Ha97",
+      "citation": "Honsberger, R., Episodes in Nineteenth and Twentieth Century Euclidean Geometry, Mathematical Association of America (1995). Includes mass point geometry approach to Ceva's theorem.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",

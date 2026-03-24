@@ -147,6 +147,18 @@
       "For complex Lp spaces, does the same derivation work with the complex inner product form of CS?"
     ]
   },
+  "references": [
+    {
+      "key": "HLP52",
+      "citation": "Hardy, G.H., Littlewood, J.E., and Pólya, G., Inequalities, 2nd ed., Cambridge University Press (1952), Chapter 2. Classic reference for integral inequalities including Minkowski's inequality as a consequence of Cauchy-Schwarz.",
+      "type": "book"
+    },
+    {
+      "key": "Mi96",
+      "citation": "Minkowski, H., Geometrie der Zahlen, Teubner (1896). Original source for Minkowski's inequality in the context of the geometry of numbers.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Function.L2Space",

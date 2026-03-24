@@ -211,6 +211,18 @@
       "description": "Related gallery proof"
     }
   ],
+  "references": [
+    {
+      "key": "Va72",
+      "citation": "Vandermonde, A.-T., Mémoire sur des irrationnelles de différens ordres avec une application au cercle, Mémoires de l'Académie Royale des Sciences (1772). Original paper on what is now called Vandermonde's identity.",
+      "type": "paper"
+    },
+    {
+      "key": "GKP94",
+      "citation": "Graham, R.L., Knuth, D.E., and Patashnik, O., Concrete Mathematics, 2nd ed., Addison-Wesley (1994), Chapter 5. Standard reference for binomial coefficient identities including Vandermonde's convolution.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Basic",
