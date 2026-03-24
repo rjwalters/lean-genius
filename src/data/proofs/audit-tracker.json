@@ -7635,9 +7635,9 @@
       "agentId": "auditor-cycle-20-batch"
     },
     "erdos-884": {
-      "lastAudited": "2026-03-24T13:12:27Z",
-      "auditCount": 1,
-      "result": "clean",
+      "lastAudited": "2026-03-24T19:55:24Z",
+      "auditCount": 2,
+      "result": "issues-fixed",
       "agentId": "auditor-cycle-20-batch"
     },
     "erdos-885": {
@@ -9191,6 +9191,18 @@
     "erdos-1008-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-03-24T18:30:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "brouwer-fixed-point-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T19:56:38Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cramers-rule-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T19:57:18Z",
       "result": "clean",
       "issues": []
     }
