@@ -21,10 +21,9 @@
     "erdosNumber": 1072,
     "erdosUrl": "https://erdosproblems.com/1072",
     "erdosProblemStatus": "open",
-    "axiomCount": 11,
-    "lineCount": 113,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "axiomCount": 9,
+    "lineCount": 125,
+    "assumptions": "9 axiom(s). Proved: wilson_theorem (from Mathlib ZMod.wilsons_lemma) and f_le_pred (from Wilson). Removed wilson_prime_distinction (dubious claim). Remaining: 3 open conjectures + 4 small values + f_pos."
   },
   "overview": {
     "historicalContext": "Erdős, Hardy, and Subbarao posed this problem in their 2002 American Mathematical Monthly paper on problems involving factorials. The question builds directly on Wilson's theorem—proved by Lagrange in 1771 and named after John Wilson—which guarantees that $(p-1)! \\equiv -1 \\pmod{p}$ for every prime $p$. The natural follow-up is: can this congruence be achieved earlier? The function $f(p) = \\min\\{n \\geq 1 : n! \\equiv -1 \\pmod{p}\\}$ measures how early the Wilson congruence first appears. Computational evidence (OEIS A154554) shows that $f(p)$ is often much smaller than $p-1$: for instance $f(7) = 3$ since $3! + 1 = 7$, and $f(23) = 14$. Hardy and Subbarao conjectured that Wilson-maximal primes (where $f(p) = p-1$) have density zero among all primes, paralleling the sparsity conjectures for twin primes and Wilson primes. The problem also connects to Guy's *Unsolved Problems in Number Theory* (Problem A2) and to the broader Erdős program of understanding the arithmetic of factorials. The question about Wilson primes—primes $p$ with $p^2 \\mid (p-1)! + 1$—is a related but much harder condition; only three Wilson primes ($5, 13, 563$) are known despite searches to $5 \\times 10^{17}$.",
@@ -56,28 +55,28 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 28,
-      "endLine": 43,
+      "endLine": 42,
       "summary": "Defines `leastFactorialWilson` ($f(p) = \\inf\\{n > 0 : p \\mid n!+1\\}$) via `sInf` and `isWilsonMaximal` ($f(p) = p-1$). Both use noncomputable/classical definitions for the infimum."
     },
     {
       "id": "wilson-bound",
       "title": "Wilson's Theorem and Bounds",
       "startLine": 44,
-      "endLine": 59,
+      "endLine": 58,
       "summary": "Three axioms: Wilson's theorem ($p \\mid (p-1)!+1$), the upper bound $f(p) \\leq p-1$, and the lower bound $f(p) \\geq 1$ for $p \\geq 3$. Together these establish $f(p) \\in [1, p-1]$."
     },
     {
       "id": "main-questions",
       "title": "The Main Conjectures",
       "startLine": 60,
-      "endLine": 83,
+      "endLine": 82,
       "summary": "Axiomatizes both open questions: `erdos_1072a` (infinitely many Wilson-maximal primes via Set.Infinite) and `erdos_1072b` ($f(p)/p \\to 0$ for a density-1 set of primes). Also states the Hardy–Subbarao density-zero belief."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "startLine": 84,
-      "endLine": 104,
+      "endLine": 103,
       "summary": "Computed values: $f(2)=1$, $f(3)=2$, $f(5)=4$ (all maximal), and $f(7)=3$ (first non-maximal, since $3!+1=7$)."
     },
     {
@@ -222,9 +221,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 113,
-    "axiomCount": 11,
-    "theoremCount": 0,
+    "lineCount": 125,
+    "axiomCount": 9,
+    "theoremCount": 2,
     "definitionCount": 2
   }
 }
