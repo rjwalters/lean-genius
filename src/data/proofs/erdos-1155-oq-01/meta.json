@@ -117,18 +117,18 @@
     {
       "id": "bfl-sandwich",
       "title": "BFL Sandwich and Conjecture Implications",
-      "summary": "Combines BFL bounds into a sandwich n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. Proves the conjecture strictly implies BFL via constant-to-sub-polynomial reduction.",
+      "summary": "Combines BFL bounds into a sandwich n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. Proves the conjecture strictly implies BFL in both directions via constant-to-sub-polynomial reduction: a fixed constant $C$ is eventually dominated by $n^\\varepsilon$ for any $\\varepsilon > 0$.",
       "startLine": 104,
-      "endLine": 184,
+      "endLine": 183,
       "mathContext": "Conjecture $\\Longrightarrow$ BFL: $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ implies $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ since $c, C$ are constants absorbed by $n^{\\pm \\varepsilon}$."
     },
     {
       "id": "conjecture-decomposition",
-      "title": "Conjecture Decomposition",
-      "summary": "The full conjecture Θ(n^{3/2}) is equivalent to both one-sided bounds holding independently: O(n^{3/2}) AND Ω(n^{3/2}). Shows c ≤ C by contradiction.",
-      "startLine": 185,
+      "title": "Conjecture Decomposition into Independent Bounds",
+      "summary": "Defines `upper_theta_bound` ($O(n^{3/2})$) and `lower_theta_bound` ($\\Omega(n^{3/2})$) as independent conditions. Proves `conjecture_iff_both_bounds`: $f(n) = \\Theta(n^{3/2})$ iff both one-sided bounds hold. The non-trivial reverse direction shows $c \\leq C$ by contradiction: if $c > C$, the eventual bounds $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ with $n^{3/2} > 0$ force $c \\leq C$.",
+      "startLine": 184,
       "endLine": 219,
-      "mathContext": "$f(n) = \\Theta(n^{3/2}) \\iff f(n) = O(n^{3/2}) \\wedge f(n) = \\Omega(n^{3/2})$. Non-trivial: $c > C$ leads to $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$, contradiction."
+      "mathContext": "$f(n) = \\Theta(n^{3/2}) \\iff f(n) = O(n^{3/2}) \\wedge f(n) = \\Omega(n^{3/2})$. The $O$ and $\\Omega$ bounds can be pursued independently — proving either constitutes progress toward the full conjecture."
     },
     {
       "id": "exponent-characterization",
@@ -141,18 +141,18 @@
     {
       "id": "small-values-ratio",
       "title": "Small Values and BFL Ratio Reformulation",
-      "summary": "Base cases ($f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$) from the complete graph edge bound. Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds) maximally transparent.",
+      "summary": "Base cases ($f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$) from the complete graph edge bound $f(n) \\leq n(n-1)/2$. Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds on the ratio) maximally transparent.",
       "startLine": 253,
-      "endLine": 310,
+      "endLine": 304,
       "mathContext": "Base cases: $f(n) \\leq n(n-1)/2$ gives $f(0) \\leq 0$, $f(2) \\leq 1$. Ratio: $R(n) = f(n)/n^{3/2}$. BFL $\\iff R(n) \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$. Conjecture $\\iff R(n) \\in [c_1, c_2]$."
     },
     {
       "id": "sufficient-conditions",
       "title": "Sufficient Conditions for the Conjecture",
-      "summary": "If f(n)/n^{3/2} → L > 0, the conjecture holds with c₁ = L/2, c₂ = 3L/2. The weaker limsup/liminf boundedness condition also suffices.",
-      "startLine": 311,
+      "summary": "Two sufficient conditions: (1) `limit_implies_conjecture` — if $f(n)/n^{3/2} \\to L > 0$, the conjecture holds with $c_1 = L/2$, $c_2 = 3L/2$, using `Icc_mem_nhds` for the topological argument. (2) `limsup_liminf_implies_conjecture` — the weaker condition that $f(n)/n^{3/2}$ is eventually bounded between positive constants also suffices. Together these characterize the conjecture as a compactness condition on the ratio sequence.",
+      "startLine": 305,
       "endLine": 355,
-      "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices."
+      "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices. Implication chain: limit convergence $\\Rightarrow$ limsup/liminf bounded $\\Rightarrow$ Erdős conjecture $\\Rightarrow$ BFL."
     },
     {
       "id": "lower-exponent",
@@ -183,7 +183,7 @@
       "title": "Tightness and Ratio Characterization",
       "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually. Together they characterize the conjecture as a compactness condition on the ratio sequence in $(0, \\infty)$.",
       "startLine": 434,
-      "endLine": 489,
+      "endLine": 490,
       "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],
