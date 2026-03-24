@@ -4,11 +4,11 @@
     "proofId": "erdos-616",
     "range": {
       "startLine": 1,
-      "endLine": 33
+      "endLine": 40
     },
     "type": "context",
-    "title": "Problem Overview and References",
-    "content": "Erdős Problem #616 asks: for $r$-uniform hypergraphs, what is the best $t(r)$ such that local covering implies global covering?\n\n**The Setup:**\n- $r$-uniform hypergraph: every edge has exactly $r$ vertices\n- Covering number $\\tau(G)$: minimum vertices needed to hit all edges\n- Local condition: every subgraph on $\\le 3r-3$ vertices has $\\tau \\le 1$\n\n**Known Bounds (Erdős-Hajnal-Tuza 1991):**\n$\\frac{3}{16}r + \\frac{7}{8} \\le t(r) \\le \\frac{1}{5}r$\n\n**Status:** The gap between $0.1875r$ and $0.2r$ is OPEN.\n\nThe header references the 1991 paper by Erdős, Hajnal, and Tuza in *Journal of Combinatorial Theory, Series A* (vol. 58, pp. 78-84), one of Erdős's contributions to the systematic study of local-to-global phenomena in combinatorics.",
+    "title": "Problem Overview, References, and Imports",
+    "content": "Erdős Problem #616 asks: for $r$-uniform hypergraphs, what is the best $t(r)$ such that local covering implies global covering?\n\n**The Setup:**\n- $r$-uniform hypergraph: every edge has exactly $r$ vertices\n- Covering number $\\tau(G)$: minimum vertices needed to hit all edges\n- Local condition: every subgraph on $\\le 3r-3$ vertices has $\\tau \\le 1$\n\n**Known Bounds (Erdős-Hajnal-Tuza 1991):**\n$\\frac{3}{16}r + \\frac{7}{8} \\le t(r) \\le \\frac{1}{5}r$\n\n**Status:** The gap between $0.1875r$ and $0.2r$ is OPEN.\n\nThe header references the 1991 paper by Erdős, Hajnal, and Tuza in *Journal of Combinatorial Theory, Series A* (vol. 58, pp. 78-84), one of Erdős's contributions to the systematic study of local-to-global phenomena in combinatorics.\n\n**Imports:** The formalization depends on four Mathlib modules: `Nat.Basic` for natural number arithmetic, `Set.Basic` for set operations on vertex collections, `Finset.Basic` for finite sets representing hyperedges, and `Real.Basic` for real-valued bound expressions like $(3/16)r$. The proof lives in the `Erdos616` namespace.",
     "mathContext": "$\\tau(G) = \\min\\{|S| : S \\subseteq V,\\; S \\cap e \\ne \\emptyset \\text{ for all } e \\in E(G)\\}$. The problem asks for the optimal $t(r)$ satisfying: $\\tau(G'[W]) \\le 1$ for all $|W| \\le 3r-3$ $\\Rightarrow$ $\\tau(G) \\le t(r)$.",
     "significance": "key",
     "relatedConcepts": [
