@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T22:33:22.719Z",
-    "iteration": 6,
-    "focus": "Session 6: Proved systemLCM_coprime_eq_prod + foldl_lcm_eq_foldl_mul infrastructure",
+    "iteration": 5,
+    "focus": "Session 5: Fixed build failure (dvd_sub_of_mod_eq → Nat.modEq_iff_dvd). 0 sorries, 2 axioms.",
     "blockers": [],
-    "nextAction": "Use systemLCM_coprime_eq_prod to prove coprime_density_formula via CRT complement counting",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 6 proved key building block for coprime_density_formula axiom elimination: systemLCM = product for coprime moduli.",
+    "progressSummary": "PROGRESS: Fixed pre-existing build failure + corrected mathematically incorrect axiom. coverage_card_shift bijection direction fixed. max_density_coprime_case replaced with correct coprime_density_formula (1-∏(1-1/nᵢ) not Σ1/nᵢ). File compiles. 2 axioms remain.",
     "builtItems": [
       "Proved erdos_278_density_le_one (axiom → theorem) via csSup_le",
       "Fixed foldl_lcm_pos: updated List.mem_cons_self/mem_cons_of_mem to simp",
@@ -43,9 +43,7 @@
       "Proved mod_add_right helper: (x%n+y)%n = (x+y)%n",
       "Corrected max_density_coprime_case → coprime_density_formula with correct 1-∏(1-1/nᵢ) formula",
       "Added coprimeDensity definition and coprimeDensity_singleton theorem",
-      "Proved coprime_max_eq_min: for coprime moduli, max=min=coprimeDensity (from axiom)",
-      "PROVED foldl_lcm_eq_foldl_mul: for pairwise coprime lists, foldl lcm = foldl mul",
-      "PROVED systemLCM_coprime_eq_prod: for pairwise coprime moduli, systemLCM = Finset.prod id"
+      "Proved coprime_max_eq_min: for coprime moduli, max=min=coprimeDensity (from axiom)"
     ],
     "insights": [
       "erdos_278_open_question was trivially provable: maxCoverageDensity is sSup of densities, each ≤ 1",
@@ -57,9 +55,7 @@
       "CRITICAL: max_density_coprime_case axiom was INCORRECT. Stated Σ1/nᵢ but correct formula is 1-∏(1-1/nᵢ). For {2,3}: actual=2/3, not 5/6.",
       "coverage_card_shift proof had build failure: bijection functions were swapped and omega cant handle variable-modulus round-trips",
       "Fixed round-trips using Nat.div_add_mod decomposition + ring for Nat.add_mul_mod_self_left",
-      "For coprime moduli, CRT makes density invariant under residue choice: max=min=coprimeDensity",
-      "coprime_density_formula proof path: (1) systemLCM=prod [DONE], (2) CRT bijection, (3) complement counting ∏(nᵢ-1)",
-      "List.pairwise_iff_forall_ne missing in Mathlib - use pairwise_iff_getElem + Nodup"
+      "For coprime moduli, CRT makes density invariant under residue choice: max=min=coprimeDensity"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -82,17 +78,17 @@
     "mathlib": []
   },
   "started": "2026-01-12T22:33:22.719Z",
-  "lastUpdate": "2026-03-23T04:00:00Z",
+  "lastUpdate": "2026-03-13T07:52:17.045Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos278Problem.lean",
       "filename": "Erdos278Problem.lean",
-      "lineCount": 370,
-      "theoremCount": 10,
+      "lineCount": 292,
+      "theoremCount": 8,
       "axiomCount": 2,
-      "defCount": 7,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos278Problem.lean"
