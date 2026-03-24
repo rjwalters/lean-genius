@@ -3,14 +3,12 @@
   "proofId": "cramers-rule",
   "reviewDate": "2026-03-24T16:00:00Z",
   "reviewer": "peer-reviewer-1",
-
   "overallAssessment": {
     "grade": "B-",
     "oneLiner": "A well-organized pedagogical exposition of Cramer's Rule built almost entirely on Mathlib wrappers, with several factual errors in the overview narrative that must be corrected.",
     "tier": "B",
     "tierJustification": "The core theorem (cramers_rule) is a direct call to Matrix.mulVec_cramer. The file adds the invertible-determinant solution formula and a 2x2 field example, but the heavy lifting is done by Mathlib's adjugate infrastructure. This is a Mathlib-backed formalization, not an original proof."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -90,21 +88,20 @@
       "recommendation": "Low priority. Could be removed to tighten the file, but it does complete the 'linearity properties' section. Acceptable as-is for pedagogical completeness."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
       "description": "Fix factual errors in overview.text: (1) change 'Wiedijk #100' to 'Wiedijk #97', (2) remove false claims about 3x3 examples, native_decide, and norm_num, (3) remove false claim about existence and uniqueness coverage.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Reframe originalContributions to distinguish 'curated Mathlib results' from genuinely original work. The solution formula (cramers_rule_solution) and 2x2 example are the primary original items; the rest are pedagogical restatements of Mathlib lemmas.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
@@ -118,17 +115,16 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Strengthen or remove weak cross-references (cauchy-schwarz, fundamental-arithmetic). The cayley-hamilton references are excellent and should be preserved.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Fix theoremCount from 9 to 10 (to include the unnamed 2x2 example) or add clarifying note.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 4,
     "originalityAccuracy": 5,
@@ -138,6 +134,5 @@
     "internalConsistency": 5,
     "overall": 5.7
   },
-
   "suggestedBestFraming": "A pedagogical exposition of Cramer's Rule (Wiedijk #97) in Lean 4, assembling Mathlib's Matrix.cramer and adjugate infrastructure into a readable 161-line walkthrough of the component formula, main identity, adjugate connection, and transpose form, with an original bridge theorem deriving the explicit solution formula when det(A) is invertible."
 }
