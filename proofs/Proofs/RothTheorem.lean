@@ -1371,7 +1371,52 @@ private theorem density_increment_dirichlet {N : ℕ} (hN : 4 ≤ N)
       Nat.sqrt N ≤ M ∧ M < N ∧
       APFree B ∧
       (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
-  sorry
+  haveI : NeZero N := ⟨by omega⟩
+  have hN2 : 1 < N := by omega
+  -- Step 1: Get large Fourier coefficient
+  obtain ⟨r, hr, hfourier⟩ := fourier_large_coefficient hN2 A hAP delta hdelta hdensity
+  -- Step 2: Compute gcd and case split
+  set d := Nat.gcd (ZMod.val r) N
+  have hd_pos : 0 < d := Nat.pos_of_ne_zero (Nat.gcd_ne_zero_right (NeZero.ne N))
+  have hdN : d ∣ N := Nat.gcd_dvd_right _ _
+  have hd_dvd_r : d ∣ ZMod.val r := Nat.gcd_dvd_left _ _
+  have hval_pos : 0 < ZMod.val r := by
+    rw [Nat.pos_iff_ne_zero]; intro h; exact hr (by rwa [ZMod.val_eq_zero] at h)
+  have hd_lt_N : d < N := lt_of_le_of_lt (Nat.gcd_le_left N hval_pos) (ZMod.val_lt r)
+  set g := N / d
+  have hg_pos : 0 < g := Nat.div_pos (Nat.le_of_dvd (by omega) hdN) hd_pos
+  have hg_ge_two : 2 ≤ g := by
+    by_contra h; push_neg at h
+    have hg1 : g = 1 := by omega
+    have hgd : N / d * d = N := Nat.div_mul_cancel hdN
+    rw [show N / d = g from rfl, hg1, one_mul] at hgd; omega
+  have hgN : g ∣ N := Nat.div_dvd_of_dvd hdN
+  have hNg_eq : N / g = d := Nat.div_div_self hdN (by omega)
+  have hcompat : (N / g) ∣ ZMod.val r := hNg_eq ▸ hd_dvd_r
+  by_cases hd_large : Nat.sqrt N ≤ d
+  · -- CASE 1: gcd(val(r), N) ≥ √N → coset partition gives M = d ≥ √N
+    -- Apply coset density increment with this r
+    obtain ⟨j, hj, hdense⟩ := coset_density_increment hN2 A hAP delta hdelta hdensity
+      g hg_pos hgN r hr hfourier hcompat
+    have hM_pos : 0 < N / g := Nat.div_pos (Nat.le_of_dvd (by omega) hgN) hg_pos
+    have hM_lt_N : N / g < N := hNg_eq ▸ hd_lt_N
+    have hM_sqrt : Nat.sqrt N ≤ N / g := hNg_eq ▸ hd_large
+    have hMreal : (↑(N / g) : ℝ) = ↑N / ↑g :=
+      Nat.cast_div hgN (Nat.cast_ne_zero.mpr (by omega))
+    refine ⟨N / g, cosetRestrict A g hg_pos hgN j hj, hM_sqrt, hM_lt_N,
+      apFree_coset_restrict A hAP g hg_pos hgN j hj, ?_⟩
+    rw [hMreal]
+    calc (↑(cosetRestrict A g hg_pos hgN j hj).card : ℝ)
+        ≥ (delta + delta ^ 2 / 4) * (↑N / ↑g) := hdense
+      _ ≥ (delta + delta ^ 2 / 100) * (↑N / ↑g) := by
+          apply mul_le_mul_of_nonneg_right _ (by positivity)
+          nlinarith [sq_nonneg delta]
+  · -- CASE 2: gcd(val(r), N) < √N → need Dirichlet subprogression approach
+    -- Apply DirichletApproximation.dirichlet_approximation to
+    -- α = val(r)/N, Q = Nat.sqrt N. Get q ≤ Q with |qα - p| < 1/Q.
+    -- Subprogression partition with step q gives L = ⌊N/q⌋ ≥ √N pieces.
+    -- Approximate character constancy + density increment on densest piece.
+    sorry
 
 /-- Tower-of-squares threshold for Roth's theorem.
     roth_threshold 0 = 4, roth_threshold (k+1) = (roth_threshold k)².
