@@ -80,35 +80,40 @@
       "title": "Documentation and Context",
       "summary": "Module documentation describing the open question, proof strategies for both bounds (half-angle refinement and Niven integral), and references.",
       "startLine": 1,
-      "endLine": 27
+      "endLine": 27,
+      "mathContext": "Archimedes (~250 BCE) bounded $\\pi$ by inscribing and circumscribing regular 96-gons: $\\frac{223}{71} < \\pi < \\frac{22}{7}$. This gives $\\pi \\approx 3.14$ with an error less than $1/497 \\approx 0.002$. The bounds stood as the best known for over 400 years."
     },
     {
       "id": "bounds",
       "title": "Archimedes' Bounds (Fully Verified)",
       "summary": "Both bounds proved as theorems from Mathlib's pi_gt_d4 and pi_lt_d4: 223/71 < 3.1415 < π and π < 3.1416 < 22/7.",
       "startLine": 27,
-      "endLine": 46
+      "endLine": 46,
+      "mathContext": "Lower bound: $223/71 \\approx 3.14084 < 3.1415 < \\pi$ (via `pi_gt_d4`). Upper bound: $\\pi < 3.1416 < 22/7 \\approx 3.14286$ (via `pi_lt_d4`). Mathlib provides 4-decimal bounds on $\\pi$, which are more than sufficient for Archimedes' 3-decimal result."
     },
     {
       "id": "derived",
       "title": "Derived Results",
       "summary": "Six theorems: combined bounds, traditional formulations (3+10/71 and 3+1/7), exact gap computation (1/497), error bounds, and the 22/7 overestimate quantification (<3/1000).",
       "startLine": 47,
-      "endLine": 73
+      "endLine": 73,
+      "mathContext": "The gap between bounds: $22/7 - 223/71 = (22 \\cdot 71 - 223 \\cdot 7)/(7 \\cdot 71) = (1562 - 1561)/497 = 1/497 \\approx 0.00201$. Traditional forms: $3 + 10/71 < \\pi < 3 + 1/7$. The upper bound overestimates: $22/7 - \\pi < 3/1000$."
     },
     {
       "id": "polygon",
       "title": "General Inscribed Polygon Bound",
       "summary": "The fully formal theorem that n·sin(π/n) < π for all n ≥ 1, proved using Real.sin_lt and field_simp. Formalizes the geometric core of Archimedes' method.",
       "startLine": 74,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "A regular $n$-gon inscribed in a unit circle has perimeter $2n \\sin(\\pi/n)$, so the circle's circumference $2\\pi$ exceeds $2n \\sin(\\pi/n)$, giving $n \\sin(\\pi/n) < \\pi$. As $n \\to \\infty$, $n \\sin(\\pi/n) \\to \\pi$ (since $\\sin(x)/x \\to 1$). Archimedes used $n = 96$ to get his lower bound."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Packaging theorem bundling all three main results (bounds, gap, polygon bound) into a single statement for downstream use.",
       "startLine": 91,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "The bundled theorem: $223/71 < \\pi < 22/7$ $\\wedge$ $22/7 - 223/71 = 1/497$ $\\wedge$ $\\forall n \\geq 1,\\, n \\sin(\\pi/n) < \\pi$. This provides a single import point for downstream proofs needing Archimedes' bounds."
     }
   ],
   "conclusion": {
