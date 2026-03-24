@@ -313,20 +313,56 @@ theorem budanCount_eventually_zero (p : ℝ[X]) (hp : p ≠ 0) :
     ∃ M : ℝ, ∀ x, x > M → budanCount p x = 0 :=
   budanCount_large_axiom p hp
 
-/-- **Descartes' Rule from Budan's Theorem**
+/-- Every element of a finite multiset of reals is bounded above. -/
+private theorem multiset_bounded_above (s : Multiset ℝ) :
+    ∃ R : ℝ, ∀ r ∈ s, r ≤ R := by
+  induction s using Multiset.induction with
+  | empty => exact ⟨0, fun _ h => absurd h (Multiset.not_mem_zero _)⟩
+  | cons a s ih =>
+    obtain ⟨R, hR⟩ := ih
+    exact ⟨max a R, fun r hr => by
+      rcases Multiset.mem_cons.mp hr with rfl | hmem
+      · exact le_max_left r R
+      · exact le_trans (hR r hmem) (le_max_right a R)⟩
 
-Taking a = 0 and b large enough that V_p(b) = 0 and all positive roots
-are in (0, b], Budan gives: #positive_roots ≤ V_p(0). -/
 theorem descartes_from_budan (p : ℝ[X]) (hp : p ≠ 0) :
     ∃ B : ℝ, 0 < B ∧
       Multiset.card (p.roots.filter (0 < ·)) ≤ budanCount p 0 := by
   obtain ⟨M, hM⟩ := budanCount_eventually_zero p hp
-  -- Take B large enough for all positive roots and for V(B) = 0
-  use max 1 (M + 1)
+  obtain ⟨R, hR⟩ := multiset_bounded_above p.roots
+  set B := max 1 (max (M + 1) (R + 1)) with hB_def
+  use B
   refine ⟨by positivity, ?_⟩
-  -- The number of positive roots ≤ rootsInInterval p 0 B' for large B'
-  -- and rootsInInterval p 0 B' ≤ V(0) - V(B') = V(0) - 0 = V(0)
-  sorry
+  -- V(B) = 0 since B > M
+  have hBM : B > M := by
+    calc M < M + 1 := by linarith
+    _ ≤ max (M + 1) (R + 1) := le_max_left _ _
+    _ ≤ max 1 (max (M + 1) (R + 1)) := le_max_right _ _
+  have hVB : budanCount p B = 0 := hM B hBM
+  -- B > 0
+  have hB0 : (0 : ℝ) < B := by positivity
+  -- rootsInInterval p 0 B ≤ budanCount p 0 - budanCount p B = budanCount p 0
+  have hbound := budan_upper_bound p hp 0 B hB0
+  rw [hVB, Nat.sub_zero] at hbound
+  -- Suffices: card(roots.filter (0 < ·)) ≤ rootsInInterval p 0 B
+  suffices hsuff : Multiset.card (p.roots.filter (0 < ·)) ≤ rootsInInterval p 0 B by
+    linarith
+  -- rootsInInterval p 0 B = card(roots.filter (0 < · ∧ · ≤ B))
+  simp only [rootsInInterval, hp, ↓reduceIte]
+  -- The filter (0 < · ∧ · ≤ B) is a subset of filter (0 < ·) ... wait, it's the other way:
+  -- Every positive root r satisfies r ≤ R < R + 1 ≤ B, so the two filters are equal
+  suffices heq : p.roots.filter (fun r => 0 < r ∧ r ≤ B) = p.roots.filter (0 < ·) by
+    rw [heq]
+  apply Multiset.filter_congr
+  intro r hr
+  constructor
+  · exact fun ⟨h, _⟩ => h
+  · intro h
+    refine ⟨h, le_trans (hR r hr) ?_⟩
+    have : R ≤ R + 1 := by linarith
+    calc R ≤ R + 1 := this
+    _ ≤ max (M + 1) (R + 1) := le_max_right _ _
+    _ ≤ B := le_max_right _ _
 
 /-
 ## Part VIII: Connection to Coefficient Sign Variations
@@ -385,12 +421,62 @@ theorem iterDeriv_eval_zero (p : ℝ[X]) (k : ℕ) :
   rw [poly_eval_at_zero, iterDeriv_coeff]
   simp [Nat.descFactorial_self]
 
+/-- Pointwise positive scaling preserves sign changes.
+    If each w(i) > 0, then sign changes in [w(0)*a(0), w(1)*a(1), ...] =
+    sign changes in [a(0), a(1), ...]. -/
+private theorem signChangesInList_pos_scale {n : ℕ}
+    (a : ℕ → ℝ) (w : ℕ → ℝ) (hw : ∀ k, 0 < w k) :
+    signChangesInList ((List.range n).map (fun k => w k * a k)) =
+    signChangesInList ((List.range n).map a) := by
+  -- Key: filtering nonzero and mapping signs both agree under positive scaling
+  -- Strategy: show both sides produce the same ±1 sign list
+  simp only [signChangesInList]
+  -- The filter and sign-map on the scaled list equals that on the unscaled list
+  -- because w k > 0 preserves zero-ness and sign of each entry
+  suffices h : (((List.range n).map (fun k => w k * a k)).filter (· ≠ 0)
+      ).map (fun x => if x > 0 then (1 : ℤ) else -1) =
+      (((List.range n).map a).filter (· ≠ 0)
+      ).map (fun x => if x > 0 then (1 : ℤ) else -1) by
+    rw [h]
+  -- Inline: filtering and mapping on list of w(k)*a(k) vs a(k)
+  induction (List.range n) with
+  | nil => simp
+  | cons k ks ih =>
+    by_cases hak : a k = 0
+    · -- a k = 0 implies w k * a k = 0 too
+      -- Both (w k * 0) and 0 are filtered out, so reduce to ih
+      convert ih using 1 <;> simp [hak]
+    · -- a k ≠ 0 implies w k * a k ≠ 0, and they share the same sign
+      have hwak : w k * a k ≠ 0 := mul_ne_zero (ne_of_gt (hw k)) hak
+      -- Both filter_cons keep the head
+      -- After simp, goal should be: sign(wk*ak) :: tail = sign(ak) :: tail
+      -- The filter step keeps both entries; we need sign equality + ih
+      have hsign : (if w k * a k > 0 then (1 : ℤ) else -1) =
+          (if a k > 0 then (1 : ℤ) else -1) := by
+        by_cases hpos : a k > 0
+        · simp [mul_pos (hw k) hpos, hpos]
+        · push_neg at hpos
+          have han : a k < 0 := lt_of_le_of_ne hpos hak
+          have : w k * a k < 0 := mul_neg_of_pos_of_neg (hw k) han
+          simp [not_lt.mpr (le_of_lt this), not_lt.mpr (le_of_lt han)]
+      -- Convert the goal to match ih + hsign
+      convert congr_arg₂ List.cons hsign ih using 2 <;> simp [hwak, hak]
+
 /-- Since k! > 0, the sign of p⁽ᵏ⁾(0) equals the sign of aₖ.
     Therefore V_p(0) = signVariations of the coefficient sequence. -/
 theorem budanCount_zero_eq_coeff_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :
     budanCount p 0 = signChangesInList
       ((List.range (p.natDegree + 1)).map p.coeff) := by
-  sorry
+  simp only [budanCount, budanSequence]
+  -- Each entry: (iterDeriv p k).eval 0 = k! * p.coeff k
+  have hseq : (List.range (p.natDegree + 1)).map (fun k => (iterDeriv p k).eval 0) =
+      (List.range (p.natDegree + 1)).map (fun k => (k.factorial : ℝ) * p.coeff k) := by
+    apply List.map_congr_left
+    intro k _
+    exact iterDeriv_eval_zero p k
+  rw [hseq]
+  exact signChangesInList_pos_scale p.coeff (fun k => (k.factorial : ℝ))
+    (fun k => Nat.cast_pos.mpr (Nat.factorial_pos k))
 
 /-
 ## Part IX: Structural Theorems
@@ -412,11 +498,108 @@ theorem iterDeriv_C_mul (c : ℝ) (p : ℝ[X]) (k : ℕ) :
   | zero => simp
   | succ k ih => simp only [iterDeriv_succ, ih, derivative_C_mul]
 
+/-- Filtering zeros commutes with nonzero scaling. -/
+private theorem filter_nonzero_map_mul (l : List ℝ) (c : ℝ) (hc : c ≠ 0) :
+    (l.map (c * ·)).filter (· ≠ 0) = (l.filter (· ≠ 0)).map (c * ·) := by
+  induction l with
+  | nil => simp
+  | cons a t ih =>
+    by_cases ha : a = 0
+    · simp only [ha, mul_zero, List.map_cons]
+      simp only [List.filter_cons, ne_eq]
+      simp only [not_true_eq_false, decide_false, Bool.false_eq_true, ↓reduceIte]
+      exact ih
+    · have hca : c * a ≠ 0 := mul_ne_zero hc ha
+      simp only [List.map_cons, List.filter_cons, ne_eq]
+      simp only [hca, not_false_eq_true, decide_true, ↓reduceIte,
+        ha, List.map_cons]
+      rw [ih]
+
+/-- Negating all entries in a ±1 list preserves adjacent difference counts. -/
+private theorem countAdjacentDiffs_neg : ∀ (l : List ℤ),
+    countAdjacentDiffs (l.map (· * -1)) = countAdjacentDiffs l
+  | [] => by simp
+  | [_] => by simp
+  | a :: b :: rest => by
+    simp only [List.map_cons, countAdjacentDiffs, mul_neg_one]
+    have ih := countAdjacentDiffs_neg (b :: rest)
+    simp only [List.map_cons, mul_neg_one] at ih
+    rw [ih]
+    congr 1
+    simp only [ne_eq, neg_inj]
+
+/-- Sign mapping commutes with nonzero scaling: sign(c*x) determined by sign(c) and sign(x). -/
+private theorem signChangesInList_nonzero_filter_scale (l' : List ℝ) (c : ℝ) (hc : c ≠ 0)
+    (hl' : ∀ x ∈ l', x ≠ 0) :
+    countAdjacentDiffs (l'.map (fun x => if c * x > 0 then (1 : ℤ) else -1)) =
+    countAdjacentDiffs (l'.map (fun x => if x > 0 then (1 : ℤ) else -1)) := by
+  rcases lt_or_gt_of_ne hc with hc_neg | hc_pos
+  · -- c < 0: sign(c*x) = -sign(x), all signs flip, but diffs preserved
+    have hsign : ∀ x : ℝ, x ≠ 0 →
+        (if c * x > 0 then (1 : ℤ) else -1) = (if x > 0 then (1 : ℤ) else -1) * -1 := by
+      intro x hx
+      by_cases hxp : x > 0
+      · have : c * x < 0 := mul_neg_of_neg_of_pos hc_neg hxp
+        simp [not_lt.mpr (le_of_lt this), hxp]
+      · push_neg at hxp
+        have hxn : x < 0 := lt_of_le_of_ne hxp hx
+        have : c * x > 0 := mul_pos_of_neg_of_neg hc_neg hxn
+        simp [this, not_lt.mpr (le_of_lt hxn)]
+    -- Replace map with composition of sign and negate
+    have hmap : l'.map (fun x => if c * x > 0 then (1 : ℤ) else -1) =
+        (l'.map (fun x => if x > 0 then (1 : ℤ) else -1)).map (· * -1) := by
+      rw [List.map_map]
+      apply List.map_congr_left
+      intro x hx
+      exact hsign x (hl' x hx)
+    rw [hmap]
+    exact countAdjacentDiffs_neg _
+  · -- c > 0: sign(c*x) = sign(x)
+    congr 1
+    apply List.map_congr_left
+    intro x hx
+    have hx' := hl' x hx
+    by_cases hxp : x > 0
+    · have : c * x > 0 := mul_pos hc_pos hxp
+      simp [this, hxp]
+    · push_neg at hxp
+      have hxn : x < 0 := lt_of_le_of_ne hxp hx'
+      have : c * x < 0 := mul_neg_of_pos_of_neg hc_pos hxn
+      simp [not_lt.mpr (le_of_lt this), not_lt.mpr (le_of_lt hxn)]
+
+/-- Scaling by a nonzero constant preserves sign changes in a list. -/
+private theorem signChangesInList_map_mul (l : List ℝ) (c : ℝ) (hc : c ≠ 0) :
+    signChangesInList (l.map (c * ·)) = signChangesInList l := by
+  simp only [signChangesInList]
+  rw [filter_nonzero_map_mul l c hc]
+  -- After filtering, all remaining elements are nonzero
+  have hmem : ∀ x ∈ l.filter (· ≠ 0), x ≠ 0 := by
+    intro x hx
+    have := (List.mem_filter.mp hx).2
+    simpa using this
+  -- The sign map applied to (c * ·) on the filtered list
+  simp only [List.map_map]
+  exact signChangesInList_nonzero_filter_scale (l.filter (· ≠ 0)) c hc hmem
+
 /-- Scaling by a nonzero constant preserves the Budan count.
     Since (c·p)⁽ᵏ⁾ = c·p⁽ᵏ⁾ and c ≠ 0 preserves all signs. -/
 theorem budanCount_smul (p : ℝ[X]) (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
     budanCount (C c * p) x = budanCount p x := by
-  sorry
+  simp only [budanCount, budanSequence]
+  have hdeg : (C c * p).natDegree = p.natDegree := by
+    by_cases hp : p = 0
+    · simp [hp]
+    · exact Polynomial.natDegree_C_mul hc
+  rw [hdeg]
+  -- The sequence for C c * p is c times the sequence for p
+  have hseq : (List.range (p.natDegree + 1)).map (fun k => (iterDeriv (C c * p) k).eval x) =
+      ((List.range (p.natDegree + 1)).map (fun k => (iterDeriv p k).eval x)).map (c * ·) := by
+    rw [List.map_map]
+    apply List.map_congr_left
+    intro k _
+    simp [iterDeriv_C_mul, Polynomial.eval_mul, Polynomial.eval_C]
+  rw [hseq]
+  exact signChangesInList_map_mul _ c hc
 
 /-
 ## Part X: Root Count Additivity
@@ -497,6 +680,11 @@ noncomputable def budanChain (p : ℝ[X]) : PolyChain p.natDegree where
 /-- The Budan chain's variation equals budanCount. -/
 theorem chainVariation_budanChain (p : ℝ[X]) (x : ℝ) :
     chainVariation (budanChain p) x = budanCount p x := by
-  sorry -- Definitionally equal up to List.finRange ↔ List.range conversion
+  simp only [chainVariation, budanChain, budanCount, budanSequence]
+  congr 1
+  have : (List.finRange (p.natDegree + 1)).map (fun k : Fin _ => (iterDeriv p ↑k).eval x) =
+      ((List.finRange (p.natDegree + 1)).map Fin.val).map (fun k => (iterDeriv p k).eval x) := by
+    rw [List.map_map]; rfl
+  rw [this, List.map_coe_finRange_eq_range]
 
 end BudanTheorem
