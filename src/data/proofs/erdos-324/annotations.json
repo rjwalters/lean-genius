@@ -1,5 +1,27 @@
 [
   {
+    "id": "erdos-324-header",
+    "proofId": "erdos-324",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "type": "context",
+    "title": "Distinct Polynomial Pair Sums (OPEN)",
+    "content": "Module docstring for Erd\u0151s Problem #324: does there exist a polynomial $f(x) \\in \\mathbb{Z}[x]$ such that all sums $f(a) + f(b)$ for $a < b$ nonneg integers are distinct? It is conjectured that $f(x) = x^5$ works. The Lander-Parkin-Selfridge conjecture would imply $f(x) = x^n$ works for all $n \\geq 5$.",
+    "mathContext": "Erd\u0151s #324: $\\exists f \\in \\mathbb{Z}[x],\\; \\forall 0 \\leq a < b,\\; f(a) + f(b)$ are all distinct.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial pair sums",
+      "distinct sums",
+      "Lander-Parkin-Selfridge conjecture"
+    ],
+    "prerequisites": [
+      "polynomial evaluation",
+      "integer polynomials"
+    ]
+  },
+  {
     "id": "erdos-324-imports",
     "proofId": "erdos-324",
     "type": "concept",
@@ -8,9 +30,9 @@
       "endLine": 23
     },
     "title": "Imports and Setup",
-    "content": "Imports Polynomial.Basic and Polynomial.Eval for ℤ[X] and evaluation, Set.Function for Set.InjOn (injectivity on a subset), and standard Int/Nat libraries. Opens the Polynomial namespace for X notation.",
+    "content": "Imports Polynomial.Basic and Polynomial.Eval for \u2124[X] and evaluation, Set.Function for Set.InjOn (injectivity on a subset), and standard Int/Nat libraries. Opens the Polynomial namespace for X notation.",
     "significance": "supporting",
-    "mathContext": "The formalization uses Mathlib's polynomial ring ℤ[X] (Polynomial ℤ) with evaluation homomorphism eval : ℤ[X] → ℤ → ℤ. Set.InjOn captures injectivity restricted to a subset, which is exactly the distinct pair sums property.",
+    "mathContext": "The formalization uses Mathlib's polynomial ring \u2124[X] (Polynomial \u2124) with evaluation homomorphism eval : \u2124[X] \u2192 \u2124 \u2192 \u2124. Set.InjOn captures injectivity restricted to a subset, which is exactly the distinct pair sums property.",
     "relatedConcepts": [
       "polynomial evaluation",
       "injectivity",
@@ -27,13 +49,13 @@
     "proofId": "erdos-324",
     "type": "definition",
     "range": {
-      "startLine": 30,
-      "endLine": 31
+      "startLine": 29,
+      "endLine": 40
     },
     "title": "Pair Sum Function",
     "content": "pairSumFn f maps a pair (a, b) to f.eval(a) + f.eval(b). This is the fundamental function whose injectivity on ordered pairs defines the problem.",
     "significance": "key",
-    "mathContext": "Given f ∈ ℤ[X], the pair sum function S_f : ℕ × ℕ → ℤ is defined by S_f(a,b) = f(a) + f(b). The problem asks whether S_f can be injective on {(a,b) : a < b}. For f(x) = x^n, this becomes the question of whether a^n + b^n = c^n + d^n with a < b, c < d implies (a,b) = (c,d).",
+    "mathContext": "Given f \u2208 \u2124[X], the pair sum function S_f : \u2115 \u00d7 \u2115 \u2192 \u2124 is defined by S_f(a,b) = f(a) + f(b). The problem asks whether S_f can be injective on {(a,b) : a < b}. For f(x) = x^n, this becomes the question of whether a^n + b^n = c^n + d^n with a < b, c < d implies (a,b) = (c,d).",
     "relatedConcepts": [
       "polynomial evaluation",
       "additive combinatorics",
@@ -41,53 +63,8 @@
       "B_2 sequences"
     ],
     "prerequisites": [
-      "Polynomial ℤ",
+      "Polynomial \u2124",
       "eval homomorphism"
-    ]
-  },
-  {
-    "id": "erdos-324-orderedpairs",
-    "proofId": "erdos-324",
-    "type": "definition",
-    "range": {
-      "startLine": 34,
-      "endLine": 35
-    },
-    "title": "Ordered Pairs",
-    "content": "orderedPairs is the set {(a, b) ∈ ℕ × ℕ | a < b}, the domain on which we require injectivity of the pair sum function.",
-    "significance": "supporting",
-    "mathContext": "Restricting to a < b avoids trivial collisions from commutativity: f(a) + f(b) = f(b) + f(a). This is analogous to how Sidon sets (B₂ sets) consider unordered pairs {a, b} with a ≠ b.",
-    "relatedConcepts": [
-      "Sidon sets",
-      "B_2 sets",
-      "ordered pairs"
-    ],
-    "prerequisites": [
-      "Set (ℕ × ℕ)"
-    ]
-  },
-  {
-    "id": "erdos-324-hasdistinctpairsums",
-    "proofId": "erdos-324",
-    "type": "definition",
-    "range": {
-      "startLine": 39,
-      "endLine": 40
-    },
-    "title": "Distinct Pair Sums Property",
-    "content": "HasDistinctPairSums f holds when pairSumFn f is injective on orderedPairs, formalized as orderedPairs.InjOn (pairSumFn f). This is the central property of Erdős Problem #324.",
-    "significance": "key",
-    "mathContext": "The distinct pair sums property for f means: if f(a) + f(b) = f(c) + f(d) with a < b and c < d, then (a,b) = (c,d). Using Set.InjOn gives a clean Mathlib-compatible formulation. For monomial f(x) = x^n, this is equivalent to asking whether the set {a^n + b^n : a < b} has no repeated elements.",
-    "relatedConcepts": [
-      "Set.InjOn",
-      "injectivity",
-      "additive combinatorics",
-      "sum-free sets"
-    ],
-    "prerequisites": [
-      "pairSumFn",
-      "orderedPairs",
-      "Set.InjOn"
     ]
   },
   {
@@ -95,21 +72,21 @@
     "proofId": "erdos-324",
     "type": "definition",
     "range": {
-      "startLine": 48,
+      "startLine": 42,
       "endLine": 49
     },
-    "title": "Erdős Problem #324",
-    "content": "ErdosProblem324 asks whether there exists f ∈ ℤ[X] with HasDistinctPairSums f. Described by Erdős and Graham (1980) as 'very annoying.'",
+    "title": "Erd\u0151s Problem #324",
+    "content": "ErdosProblem324 asks whether there exists f \u2208 \u2124[X] with HasDistinctPairSums f. Described by Erd\u0151s and Graham (1980) as 'very annoying.'",
     "significance": "key",
-    "mathContext": "This is an open problem from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 53). The existential quantifier makes it a yes/no question: does any polynomial work? The quintic x⁵ is the prime candidate. No polynomial is known to satisfy this property.",
+    "mathContext": "This is an open problem from Erd\u0151s and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 53). The existential quantifier makes it a yes/no question: does any polynomial work? The quintic x\u2075 is the prime candidate. No polynomial is known to satisfy this property.",
     "relatedConcepts": [
       "open problems",
       "polynomial arithmetic",
-      "Erdős-Graham problems"
+      "Erd\u0151s-Graham problems"
     ],
     "prerequisites": [
       "HasDistinctPairSums",
-      "ℤ[X]"
+      "\u2124[X]"
     ]
   },
   {
@@ -117,13 +94,13 @@
     "proofId": "erdos-324",
     "type": "definition",
     "range": {
-      "startLine": 57,
+      "startLine": 51,
       "endLine": 58
     },
     "title": "Quintic Conjecture",
-    "content": "QuinticConjecture states HasDistinctPairSums (X ^ 5 : ℤ[X]): the polynomial f(x) = x⁵ has all pair sums a⁵ + b⁵ distinct for a < b.",
+    "content": "QuinticConjecture states HasDistinctPairSums (X ^ 5 : \u2124[X]): the polynomial f(x) = x\u2075 has all pair sums a\u2075 + b\u2075 distinct for a < b.",
     "significance": "key",
-    "mathContext": "The quintic is the simplest candidate because x^n fails for n ≤ 4. Computationally, no collision a⁵ + b⁵ = c⁵ + d⁵ with a < b, c < d has been found, despite extensive searches. The Lander-Parkin-Selfridge conjecture (1967) predicts no nontrivial solution to x₁^n + x₂^n = y₁^n + y₂^n for n ≥ 5, which would prove this.",
+    "mathContext": "The quintic is the simplest candidate because x^n fails for n \u2264 4. Computationally, no collision a\u2075 + b\u2075 = c\u2075 + d\u2075 with a < b, c < d has been found, despite extensive searches. The Lander-Parkin-Selfridge conjecture (1967) predicts no nontrivial solution to x\u2081^n + x\u2082^n = y\u2081^n + y\u2082^n for n \u2265 5, which would prove this.",
     "relatedConcepts": [
       "Lander-Parkin-Selfridge conjecture",
       "Waring's problem",
@@ -140,13 +117,13 @@
     "proofId": "erdos-324",
     "type": "technique",
     "range": {
-      "startLine": 61,
-      "endLine": 62
+      "startLine": 60,
+      "endLine": 67
     },
     "title": "Quintic Implies Main Problem",
-    "content": "quintic_implies_324 proves QuinticConjecture → ErdosProblem324 by exhibiting X^5 as the witness. This is fully proved (no sorry).",
+    "content": "quintic_implies_324 proves QuinticConjecture \u2192 ErdosProblem324 by exhibiting X^5 as the witness. This is fully proved (no sorry).",
     "significance": "key",
-    "mathContext": "The proof is a direct existential introduction: ⟨X ^ 5, h⟩. This simple step demonstrates that the quintic conjecture is strictly stronger than the main problem — it identifies a specific polynomial rather than just asserting existence. Any other polynomial with distinct pair sums would also suffice.",
+    "mathContext": "The proof is a direct existential introduction: \u27e8X ^ 5, h\u27e9. This simple step demonstrates that the quintic conjecture is strictly stronger than the main problem \u2014 it identifies a specific polynomial rather than just asserting existence. Any other polynomial with distinct pair sums would also suffice.",
     "relatedConcepts": [
       "existential witness",
       "constructive proof",
@@ -168,7 +145,7 @@
     "title": "Power Pair Sum Distinct",
     "content": "PowerPairSumDistinct n asks whether f(x) = x^n has distinct pair sums, generalizing the quintic conjecture to arbitrary exponents.",
     "significance": "key",
-    "mathContext": "This parametrized definition allows systematic study: PowerPairSumDistinct 5 = QuinticConjecture, while PowerPairSumDistinct n for n = 2,3,4 are known to be false. The conjecture is that PowerPairSumDistinct n holds for all n ≥ 5.",
+    "mathContext": "This parametrized definition allows systematic study: PowerPairSumDistinct 5 = QuinticConjecture, while PowerPairSumDistinct n for n = 2,3,4 are known to be false. The conjecture is that PowerPairSumDistinct n holds for all n \u2265 5.",
     "relatedConcepts": [
       "monomial polynomials",
       "power sums",
@@ -187,9 +164,9 @@
       "endLine": 76
     },
     "title": "LPS Implies Problem Solved",
-    "content": "lps_implies_power_distinct axiomatizes that if PowerPairSumDistinct n for all n ≥ 5, then ErdosProblem324 holds. This connects to the Lander-Parkin-Selfridge conjecture.",
+    "content": "lps_implies_power_distinct axiomatizes that if PowerPairSumDistinct n for all n \u2265 5, then ErdosProblem324 holds. This connects to the Lander-Parkin-Selfridge conjecture.",
     "significance": "key",
-    "mathContext": "The Lander-Parkin-Selfridge (LPS) conjecture (1967) states: if x₁^n + ... + x_k^n = y₁^n + ... + y_k^n with all positive integers, then 2k ≥ n. For k = 2 this means a^n + b^n = c^n + d^n has no nontrivial solutions for n ≥ 5. LPS is a vast generalization of Fermat's Last Theorem (k = 1 case).",
+    "mathContext": "The Lander-Parkin-Selfridge (LPS) conjecture (1967) states: if x\u2081^n + ... + x_k^n = y\u2081^n + ... + y_k^n with all positive integers, then 2k \u2265 n. For k = 2 this means a^n + b^n = c^n + d^n has no nontrivial solutions for n \u2265 5. LPS is a vast generalization of Fermat's Last Theorem (k = 1 case).",
     "relatedConcepts": [
       "Lander-Parkin-Selfridge conjecture",
       "Fermat's Last Theorem",
@@ -209,9 +186,9 @@
       "endLine": 79
     },
     "title": "Squares Fail",
-    "content": "squares_not_distinct axiomatizes ¬PowerPairSumDistinct 2: there exist a < b and c < d with a² + b² = c² + d² (e.g., 1² + 8² = 4² + 7² = 65).",
+    "content": "squares_not_distinct axiomatizes \u00acPowerPairSumDistinct 2: there exist a < b and c < d with a\u00b2 + b\u00b2 = c\u00b2 + d\u00b2 (e.g., 1\u00b2 + 8\u00b2 = 4\u00b2 + 7\u00b2 = 65).",
     "significance": "supporting",
-    "mathContext": "Numbers expressible as sums of two squares in multiple ways are well-studied. Fermat showed n = a² + b² iff all prime factors p ≡ 3 (mod 4) appear to even power. 65 = 5 × 13 has two such representations because both 5 and 13 are sums of two squares. The number of representations grows with the number of prime factors ≡ 1 (mod 4).",
+    "mathContext": "Numbers expressible as sums of two squares in multiple ways are well-studied. Fermat showed n = a\u00b2 + b\u00b2 iff all prime factors p \u2261 3 (mod 4) appear to even power. 65 = 5 \u00d7 13 has two such representations because both 5 and 13 are sums of two squares. The number of representations grows with the number of prime factors \u2261 1 (mod 4).",
     "relatedConcepts": [
       "sums of two squares",
       "Fermat's theorem on sums of squares",
@@ -230,9 +207,9 @@
       "endLine": 83
     },
     "title": "Cubes Fail: Taxicab Number 1729",
-    "content": "cubes_not_distinct axiomatizes ¬PowerPairSumDistinct 3: 1³ + 12³ = 9³ + 10³ = 1729, the Hardy-Ramanujan taxicab number.",
+    "content": "cubes_not_distinct axiomatizes \u00acPowerPairSumDistinct 3: 1\u00b3 + 12\u00b3 = 9\u00b3 + 10\u00b3 = 1729, the Hardy-Ramanujan taxicab number.",
     "significance": "supporting",
-    "mathContext": "1729 is the smallest taxicab number Ta(2): the smallest integer expressible as two distinct sums of two cubes. Hardy visited Ramanujan in hospital (1919) and mentioned riding in taxi 1729, calling it dull. Ramanujan immediately recognized it as 1³ + 12³ = 9³ + 10³. The general taxicab numbers Ta(n) (smallest number expressible as n sums of two cubes) grow rapidly.",
+    "mathContext": "1729 is the smallest taxicab number Ta(2): the smallest integer expressible as two distinct sums of two cubes. Hardy visited Ramanujan in hospital (1919) and mentioned riding in taxi 1729, calling it dull. Ramanujan immediately recognized it as 1\u00b3 + 12\u00b3 = 9\u00b3 + 10\u00b3. The general taxicab numbers Ta(n) (smallest number expressible as n sums of two cubes) grow rapidly.",
     "relatedConcepts": [
       "taxicab numbers",
       "Hardy-Ramanujan",
@@ -252,9 +229,9 @@
       "endLine": 87
     },
     "title": "Fourth Powers Fail",
-    "content": "quartics_not_distinct axiomatizes ¬PowerPairSumDistinct 4: Euler (1772) found equal sums of two fourth powers.",
+    "content": "quartics_not_distinct axiomatizes \u00acPowerPairSumDistinct 4: Euler (1772) found equal sums of two fourth powers.",
     "significance": "supporting",
-    "mathContext": "Euler discovered 59⁴ + 158⁴ = 133⁴ + 134⁴ = 635,318,657, disproving that fourth powers have distinct pair sums. More recently, Elkies (1988) found infinitely many solutions to a⁴ + b⁴ = c⁴ + d⁴, using elliptic curve methods. The smallest is 2,682,440⁴ + 15,365,639⁴ = 18,796,760⁴ + ... (Euler's example is smaller but not the standard Elkies form).",
+    "mathContext": "Euler discovered 59\u2074 + 158\u2074 = 133\u2074 + 134\u2074 = 635,318,657, disproving that fourth powers have distinct pair sums. More recently, Elkies (1988) found infinitely many solutions to a\u2074 + b\u2074 = c\u2074 + d\u2074, using elliptic curve methods. The smallest is 2,682,440\u2074 + 15,365,639\u2074 = 18,796,760\u2074 + ... (Euler's example is smaller but not the standard Elkies form).",
     "relatedConcepts": [
       "Euler's sum of powers conjecture",
       "fourth powers",
@@ -273,9 +250,9 @@
       "endLine": 95
     },
     "title": "Linear Polynomials Fail",
-    "content": "linear_not_distinct axiomatizes that no linear polynomial ax + b with a ≠ 0 has distinct pair sums.",
+    "content": "linear_not_distinct axiomatizes that no linear polynomial ax + b with a \u2260 0 has distinct pair sums.",
     "significance": "supporting",
-    "mathContext": "For f(x) = ax + b, we have f(a₁) + f(b₁) = a(a₁ + b₁) + 2b. So distinct pair sums requires a₁ + b₁ ≠ c₁ + d₁ for all ordered pairs. But among (0,3), (1,2), both sum to 3, giving a collision. In general, linear pair sums depend only on a + b, not on the individual values, so collisions are inevitable.",
+    "mathContext": "For f(x) = ax + b, we have f(a\u2081) + f(b\u2081) = a(a\u2081 + b\u2081) + 2b. So distinct pair sums requires a\u2081 + b\u2081 \u2260 c\u2081 + d\u2081 for all ordered pairs. But among (0,3), (1,2), both sum to 3, giving a collision. In general, linear pair sums depend only on a + b, not on the individual values, so collisions are inevitable.",
     "relatedConcepts": [
       "linear polynomials",
       "Schur's theorem",
@@ -296,9 +273,9 @@
       "endLine": 99
     },
     "title": "Minimum Degree at Least 5",
-    "content": "min_degree_for_distinct axiomatizes that any polynomial with distinct pair sums has natDegree ≥ 5, combining the failures for degrees 1-4.",
+    "content": "min_degree_for_distinct axiomatizes that any polynomial with distinct pair sums has natDegree \u2265 5, combining the failures for degrees 1-4.",
     "significance": "key",
-    "mathContext": "This is the sharp lower bound: degrees 1 (linear_not_distinct), 2 (squares), 3 (cubes), and 4 (quartics) all fail. Degree 0 (constant) trivially fails. So the first possible degree is 5, explaining why x⁵ is the natural candidate. The degree-5 threshold marks a phase transition in the arithmetic structure of power sums.",
+    "mathContext": "This is the sharp lower bound: degrees 1 (linear_not_distinct), 2 (squares), 3 (cubes), and 4 (quartics) all fail. Degree 0 (constant) trivially fails. So the first possible degree is 5, explaining why x\u2075 is the natural candidate. The degree-5 threshold marks a phase transition in the arithmetic structure of power sums.",
     "relatedConcepts": [
       "polynomial degree",
       "phase transition",
@@ -318,7 +295,7 @@
       "endLine": 109
     },
     "title": "Distinct Pair Sum Count",
-    "content": "distinctPairSumCount f N counts the number of distinct values of f(a) + f(b) for a < b ≤ N using Finset.filter and Finset.image.",
+    "content": "distinctPairSumCount f N counts the number of distinct values of f(a) + f(b) for a < b \u2264 N using Finset.filter and Finset.image.",
     "significance": "supporting",
     "mathContext": "For N + 1 values {0, ..., N}, there are C(N+1, 2) ordered pairs with a < b. The count of distinct pair sums is at most C(N+1, 2). Equality holds exactly when HasDistinctPairSums restricted to [0, N]. This connects to additive combinatorics: maximizing |A + A| subject to constraints on A.",
     "relatedConcepts": [
@@ -344,7 +321,7 @@
     "title": "Distinct Count Equals Binomial",
     "content": "distinct_count_eq_binomial axiomatizes that for f with distinct pair sums, distinctPairSumCount f N = C(N+1, 2) for all N.",
     "significance": "supporting",
-    "mathContext": "This is the maximal sumset property: if all pair sums are distinct, then the image of ordered pairs under the pair sum function has maximum cardinality C(N+1,2) = N(N+1)/2. Contrast with the Cauchy-Davenport theorem which gives lower bounds on |A + B| in ℤ/pℤ. Here we achieve the exact maximum, which is the strongest possible statement.",
+    "mathContext": "This is the maximal sumset property: if all pair sums are distinct, then the image of ordered pairs under the pair sum function has maximum cardinality C(N+1,2) = N(N+1)/2. Contrast with the Cauchy-Davenport theorem which gives lower bounds on |A + B| in \u2124/p\u2124. Here we achieve the exact maximum, which is the strongest possible statement.",
     "relatedConcepts": [
       "binomial coefficient",
       "Cauchy-Davenport theorem",
