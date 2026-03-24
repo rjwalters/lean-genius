@@ -2,7 +2,7 @@
   {
     "id": "erdos-1097-ann-header",
     "proofId": "erdos-1097",
-    "range": { "startLine": 1, "endLine": 37 },
+    "range": { "startLine": 1, "endLine": 34 },
     "type": "context",
     "title": "Problem Statement, References, and Imports",
     "content": "The module docstring sets up Erdős Problem #1097: estimating $|D(A)|$ for $n$-element sets $A \\subseteq \\mathbb{Z}$. The known bounds $n^{1.778} \\leq |D(A)| \\leq n^{11/6}$ and the conjectured $O(n^{3/2})$ are stated, along with the connection to Bourgain's sums-differences problem and the Kakeya conjecture. Three Mathlib imports provide tactics, finite sets, and real powers. The `open Finset` declaration enables direct use of `Finset.filter`, `Finset.image`, etc.",
@@ -50,11 +50,11 @@
   {
     "id": "erdos-1097-ann-bounds",
     "proofId": "erdos-1097",
-    "range": { "startLine": 56, "endLine": 90 },
+    "range": { "startLine": 56, "endLine": 92 },
     "type": "technique",
     "title": "Subset Bound, Cardinality, and Nonemptiness",
-    "content": "Three foundational facts proved without axioms: (1) `commonDiffFinset_subset`: $D(A) \\subseteq A - A$ via `filter_subset`. (2) `numCommonDiff_le_card_sq`: $|D(A)| \\leq |A|^2$ since $|A - A| \\leq |A|^2$. (3) `zero_mem_commonDiffFinset`: $0 \\in D(A)$ for nonempty $A$ (every element forms a trivial AP $a, a, a$), hence `numCommonDiff_pos`: $|D(A)| \\geq 1$.",
-    "mathContext": "$D(A) \\subseteq A - A \\implies |D(A)| \\leq |A - A| \\leq |A|^2$. Nonemptiness: $a \\in A \\implies a, a+0, a+2 \\cdot 0 \\in A$, so $0 \\in D(A)$.",
+    "content": "Foundational facts proved without axioms: (1) `commonDiffFinset_subset`: $D(A) \\subseteq A - A$ via `filter_subset`. (2) `numCommonDiff_le_card_sq`: $|D(A)| \\leq |A|^2$ since $|A - A| \\leq |A|^2$. (3) `zero_mem_commonDiffFinset`: $0 \\in D(A)$ for nonempty $A$ (every element forms a trivial AP $a, a, a$), hence `numCommonDiff_pos`: $|D(A)| \\geq 1$. (4) `commonDiffFinset_empty`: $D(\\emptyset) = \\emptyset$.",
+    "mathContext": "$D(A) \\subseteq A - A \\implies |D(A)| \\leq |A - A| \\leq |A|^2$. Nonemptiness: $a \\in A \\implies a, a+0, a+2 \\cdot 0 \\in A$, so $0 \\in D(A)$. Empty set: $D(\\emptyset) = \\emptyset$.",
     "significance": "supporting",
     "relatedConcepts": ["difference set bounds", "Finset.filter", "Plünnecke-Ruzsa inequality"],
     "prerequisites": ["Finset.card_filter_le", "Finset.card_product"]
@@ -62,11 +62,11 @@
   {
     "id": "erdos-1097-ann-small-sets",
     "proofId": "erdos-1097",
-    "range": { "startLine": 91, "endLine": 161 },
+    "range": { "startLine": 94, "endLine": 161 },
     "type": "technique",
-    "title": "Exact Computations for Small Sets and Monotonicity",
-    "content": "Exact computations: singletons have $|D(\\{a\\})| = 1$ (only $d = 0$). Pairs $\\{a, b\\}$ have $|D| \\geq 1$ (zero difference) — but not necessarily $|D| = 1$ since $b - a$ may or may not yield a 3-term AP. The `commonDiffFinset_mono` and `numCommonDiff_mono` theorems establish monotonicity: $A \\subseteq B \\implies D(A) \\subseteq D(B)$, proved by showing that any AP witness in $A$ is also a witness in $B$.",
-    "mathContext": "$|A| = 1 \\implies |D(A)| = 1$ (only trivial AP). Monotonicity: $A \\subseteq B \\implies D(A) \\subseteq D(B) \\implies |D(A)| \\leq |D(B)|$.",
+    "title": "Monotonicity, Small-Set Computations, and Symmetry",
+    "content": "The `commonDiffFinset_mono` and `numCommonDiff_mono` theorems establish monotonicity: $A \\subseteq B \\implies D(A) \\subseteq D(B)$, proved by showing that any AP witness in $A$ is also a witness in $B$. Also includes `neg_mem_commonDiffFinset` (Finset-level symmetry: $d \\in D(A) \\implies -d \\in D(A)$), tighter bound $|D(A)| \\leq |A - A|$, and exact computations for small sets: singletons have $D(\\{a\\}) = \\{0\\}$, pairs $D(\\{a,b\\}) = \\{0\\}$ (no non-trivial 3-AP in a 2-element set), and count monotonicity.",
+    "mathContext": "Monotonicity: $A \\subseteq B \\implies D(A) \\subseteq D(B) \\implies |D(A)| \\leq |D(B)|$. Symmetry: $d \\in D(A) \\implies -d \\in D(A)$. Small sets: $D(\\{a\\}) = \\{0\\}$, $D(\\{a,b\\}) = \\{0\\}$.",
     "significance": "supporting",
     "relatedConcepts": ["monotonicity", "subset preserving", "exact combinatorial computation"],
     "prerequisites": ["Finset.mem_filter", "Finset.Subset"]
