@@ -72,7 +72,7 @@
       "green-theorem",
       "research"
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 557,
     "prerequisites": [
       "Green's theorem: line integral to double integral",
@@ -81,7 +81,7 @@
       "Simply-connected planar regions (Type I and Type II)",
       "Partial derivatives and continuously differentiable functions"
     ],
-    "assumptions": "2 axiom declarations: greens_theorem_typeI (Green's theorem for Type I regions), disk_area_eq_pi (area of disk). See the Lean source for details.",
+    "assumptions": "3 axiom declarations: greens_theorem_typeI (Green's theorem for Type I regions), disk_area_eq_pi (area of disk). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -195,7 +195,7 @@
     ],
     "namespace": "GreensTheoremOQ03",
     "lineCount": 557,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "theoremCount": 31,
     "definitionCount": 12
   }

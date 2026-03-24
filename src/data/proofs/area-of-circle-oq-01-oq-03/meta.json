@@ -20,7 +20,7 @@
       "isoperimetric"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 5,
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_lt_four",
@@ -57,7 +57,7 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 1232,
-    "assumptions": "4 sorries remain in supporting lemmas: (1) parseval_periodic_real — Parseval's identity for periodic L² functions, (2) fourierCoeffOn_deriv_periodic — IBP for Fourier coefficients of periodic C¹ functions, (3) fourier_decomposition_periodic — full Fourier decomposition combining Parseval + IBP, (4) reparametrize_constant_speed — reparametrization of closed curves to constant speed. 0 axioms. The isoperimetric inequality itself and Wirtinger's inequality are fully proved from these 4 Fourier-analytic sorry lemmas.",
+    "assumptions": "5 sorries remain in supporting lemmas: (1) parseval_periodic_real — Parseval's identity for periodic L² functions, (2) fourierCoeffOn_deriv_periodic — IBP for Fourier coefficients of periodic C¹ functions, (3) fourier_decomposition_periodic — full Fourier decomposition combining Parseval + IBP, (4) reparametrize_constant_speed — reparametrization of closed curves to constant speed. 0 axioms. The isoperimetric inequality itself and Wirtinger's inequality are fully proved from these 4 Fourier-analytic sorry lemmas.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

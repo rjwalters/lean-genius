@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 1,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -44,7 +44,7 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 1596,
-    "assumptions": "No axioms. 1 sorry: density_increment_iter N=1 hard case (delta ∈ (0.99, 1]) — requires Dirichlet approximation to prevent descent reaching N=1 with high density. DirichletApproximation.lean is already proved.",
+    "assumptions": "No axioms. 2 sorry: density_increment_iter N=1 hard case (delta ∈ (0.99, 1]) — requires Dirichlet approximation to prevent descent reaching N=1 with high density. DirichletApproximation.lean is already proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

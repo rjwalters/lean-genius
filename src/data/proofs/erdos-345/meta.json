@@ -51,9 +51,9 @@
       "ErdosProblem345 conjecture statement",
       "threshold_mono_small axiom"
     ],
-    "axiomCount": 9,
+    "axiomCount": 11,
     "lineCount": 96,
-    "assumptions": "9 axioms: threshold, threshold_spec, threshold_minimal, threshold_powerSeq_1, threshold_squares, threshold_cubes, threshold_fourth, threshold_fifth, powerSeq_complete."
+    "assumptions": "11 axioms: threshold, threshold_spec, threshold_minimal, threshold_powerSeq_1, threshold_squares, threshold_cubes, threshold_fourth, threshold_fifth, powerSeq_complete."
   },
   "overview": {
     "historicalContext": "The notion of **complete sequences** — sets whose subset sums eventually cover all integers — was systematically studied by Erdős and Graham in their 1980 monograph. The **completeness threshold** $T(A)$ measures the onset of full representability. For the sequence of positive integers, $T(\\{n\\}) = 1$ trivially (binary representation). For squares, Sprague (1948) showed completeness, and the exact value $T(n^2) = 128$ was computed by Wright (1960s). Hilbert's resolution of **Waring's problem** (1909) guarantees that $k$-th power sequences are complete for all $k$, but the threshold $T(n^k)$ measures representability by **distinct** $k$-th powers, a finer and harder question. The exact values $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$ were determined by exhaustive computation. Despite the rapid growth, Erdős and Graham conjectured that the sequence $T(n^k)$ is **not eventually monotone** — that threshold reversals $T(n^k) > T(n^{k+1})$ occur infinitely often, perhaps at $k = 2^t$ for large $t$.",
@@ -177,7 +177,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 96,
-    "axiomCount": 9,
+    "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 4
   },
