@@ -10,7 +10,7 @@ Must there exist an infinite B ⊂ A such that A \ B is a basis of order k+1?
 
 Key Concepts:
 - A set A is an additive basis of order k if every sufficiently large n can be
-  written as a sum of at most k elements of A
+  written as a sum of at most k elements of A (with repetition)
 - A minimal basis cannot have any infinite subset removed while maintaining order k
 - The question asks if we can always increase the order by exactly 1 by removing
   some infinite subset
@@ -24,12 +24,9 @@ References:
 - https://erdosproblems.com/881
 -/
 
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
-open Set Finset
+open Set
 
 namespace Erdos881
 
@@ -39,10 +36,12 @@ namespace Erdos881
 **Asymptotic Additive Basis of Order k**
 
 A set A ⊂ ℕ is an asymptotic additive basis of order k if every sufficiently
-large natural number can be written as a sum of at most k elements from A.
+large natural number can be written as a sum of at most k elements from A
+(with repetition allowed, using Multiset).
 -/
 def IsAsymptoticAddBasisOfOrder (k : ℕ) (A : Set ℕ) : Prop :=
-  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → ∃ (s : Finset ℕ), ↑s ⊆ A ∧ s.card ≤ k ∧ s.sum id = n
+  ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
+    ∃ (s : Multiset ℕ), (∀ a ∈ s, a ∈ A) ∧ Multiset.card s ≤ k ∧ s.sum = n
 
 /-- Order 1 bases are exactly the sets containing all large enough integers. -/
 theorem order_one_basis (A : Set ℕ) :
@@ -50,25 +49,27 @@ theorem order_one_basis (A : Set ℕ) :
     ∃ N : ℕ, ∀ n : ℕ, n ≥ N → n ∈ A := by
   constructor
   · intro ⟨N, hN⟩
-    use N
+    -- Use max N 1 to ensure n ≥ 1, so the multiset can't be empty
+    use max N 1
     intro n hn
-    obtain ⟨s, hsA, hscard, hssum⟩ := hN n hn
-    -- s.card ≤ 1 and s.sum id = n ≥ N; if s empty, sum = 0 ≠ n (when n ≥ N ≥ 0)
-    -- But we need s nonempty to get card = 1
-    have hne : s.Nonempty := by
-      by_contra h
-      rw [Finset.not_nonempty_iff_eq_empty] at h
-      simp [h] at hssum
-    have hcard1 : s.card = 1 := by have := hne.card_pos; omega
-    rw [Finset.card_eq_one] at hcard1
-    obtain ⟨a, rfl⟩ := hcard1
-    simp only [Finset.sum_singleton, id] at hssum
+    have hn_N : n ≥ N := le_trans (le_max_left N 1) hn
+    have hn_pos : n ≥ 1 := le_trans (le_max_right N 1) hn
+    obtain ⟨s, hsA, hscard, hssum⟩ := hN n hn_N
+    have hne : s ≠ 0 := by
+      intro h; simp [h] at hssum; omega
+    have hpos : 0 < Multiset.card s := Multiset.card_pos.mpr hne
+    have hcard1 : Multiset.card s = 1 := by omega
+    obtain ⟨a, rfl⟩ := Multiset.card_eq_one.mp hcard1
+    simp at hssum
     rw [← hssum]
-    exact hsA (Finset.mem_coe.mpr (Finset.mem_singleton_self a))
+    exact hsA a (Multiset.mem_singleton_self a)
   · intro ⟨N, hN⟩
     use N
     intro n hn
-    exact ⟨{n}, by simp [hN n hn], by simp, by simp⟩
+    refine ⟨{n}, ?_, by simp, by simp⟩
+    intro a ha
+    simp at ha
+    rw [ha]; exact hN n hn
 
 /- ## Part II: Minimal Bases -/
 
@@ -89,45 +90,27 @@ def IsMinimalAsymptoticAddBasisOfOrder (k : ℕ) (A : Set ℕ) : Prop :=
 theorem finite_not_basis (k : ℕ) (A : Set ℕ) (hfin : A.Finite) :
     ¬IsAsymptoticAddBasisOfOrder k A := by
   intro ⟨N, hN⟩
-  -- If A is finite (possibly empty), bound the max element
-  by_cases hA_empty : A = ∅
-  · -- A is empty: no finset s with ↑s ⊆ ∅ can have sum = N (unless N = 0 and s = ∅)
-    obtain ⟨s, hsA, _, hssum⟩ := hN (N + 1) (by omega)
-    have : s = ∅ := by
-      by_contra hne
-      rw [Finset.ne_empty_iff_nonempty] at hne
-      obtain ⟨x, hx⟩ := hne
-      exact (hA_empty ▸ hsA (Finset.mem_coe.mpr hx) : x ∈ (∅ : Set ℕ))
-    simp [this] at hssum
-  · -- A is nonempty and finite
-    push_neg at hA_empty
-    have hA_ne : hfin.toFinset.Nonempty := by
-      rw [Finset.nonempty_iff_ne_empty]
-      intro h
-      apply hA_empty
-      ext x
-      simp only [Set.mem_empty_iff_false, iff_false]
-      intro hx
-      have := hfin.mem_toFinset.mpr hx
-      rw [h] at this
-      exact Finset.not_mem_empty _ this
-    -- Let M be the maximum element of A
-    let M := hfin.toFinset.max' hA_ne
-    -- For any s ⊆ A with s.card ≤ k, s.sum id ≤ k * M
-    have hbound : ∀ (s : Finset ℕ), ↑s ⊆ A → s.card ≤ k → s.sum id ≤ k * M := by
+  by_cases hne : A.Nonempty
+  · -- A is nonempty and finite: any multiset with elements from A has bounded sum
+    have hfin_ne : hfin.toFinset.Nonempty := hfin.toFinset_nonempty.mpr hne
+    let M := hfin.toFinset.max' hfin_ne
+    have hbound : ∀ (s : Multiset ℕ), (∀ a ∈ s, a ∈ A) → Multiset.card s ≤ k →
+        s.sum ≤ k * M := by
       intro s hsA hscard
-      calc s.sum id = s.sum (fun x => x) := by simp [Function.comp_id]
-        _ ≤ s.sum (fun _ => M) := by
-            apply Finset.sum_le_sum
-            intro x hx
-            have hxA : x ∈ A := hsA (Finset.mem_coe.mpr hx)
-            exact Finset.le_max' _ _ (hfin.mem_toFinset.mpr hxA)
-        _ = s.card * M := by simp [Finset.sum_const, Algebra.id.smul_eq_mul]
+      calc s.sum ≤ Multiset.card s • M :=
+              Multiset.sum_le_card_nsmul s M (fun x hx =>
+                Finset.le_max' _ _ (hfin.mem_toFinset.mpr (hsA x hx)))
+        _ = Multiset.card s * M := by ring
         _ ≤ k * M := Nat.mul_le_mul_right M hscard
-    -- Take n = max(N, k * M + 1): n ≥ N but s.sum id ≤ k * M < n
     obtain ⟨s, hsA, hscard, hssum⟩ := hN (max N (k * M + 1)) (le_max_left N _)
     have hle := hbound s hsA hscard
     omega
+  · -- A is empty: any valid multiset must be empty
+    rw [Set.not_nonempty_iff_eq_empty] at hne
+    obtain ⟨s, hsA, _, hssum⟩ := hN (N + 1) (by omega)
+    have : s = 0 := Multiset.eq_zero_of_forall_notMem
+      (fun a ha => absurd (hsA a ha) (hne ▸ Set.notMem_empty a))
+    simp [this] at hssum
 
 /-- A minimal basis must be infinite (since removing finite sets preserves basis property). -/
 theorem minimal_basis_infinite (k : ℕ) (A : Set ℕ) (hA : IsMinimalAsymptoticAddBasisOfOrder k A) :
@@ -181,10 +164,20 @@ theorem strong_implies_weak : erdos881Conjecture → erdos881Weak := by
 The set of perfect squares {n² : n ∈ ℕ} is a basis of order 4 by Lagrange's
 theorem (every positive integer is a sum of four squares).
 -/
-def squares : Set ℕ := {n | ∃ m : ℕ, n = m^2}
+def squares : Set ℕ := {n | ∃ m : ℕ, n = m ^ 2}
 
-/-- Lagrange's four-square theorem implies squares are a basis of order 4. -/
-axiom squares_basis_order_4 : IsAsymptoticAddBasisOfOrder 4 squares
+/-- Lagrange's four-square theorem implies squares are a basis of order 4.
+    Proved from Mathlib's `Nat.sum_four_squares`. -/
+theorem squares_basis_order_4 : IsAsymptoticAddBasisOfOrder 4 squares := by
+  use 0
+  intro n _
+  obtain ⟨a, b, c, d, h⟩ := Nat.sum_four_squares n
+  refine ⟨↑[a ^ 2, b ^ 2, c ^ 2, d ^ 2], ?_, ?_, ?_⟩
+  · intro x hx
+    simp only [Multiset.mem_coe, List.mem_cons, List.mem_nil_iff, or_false] at hx
+    rcases hx with rfl | rfl | rfl | rfl <;> exact ⟨_, rfl⟩
+  · simp
+  · simp [Multiset.sum_coe]; omega
 
 /--
 **Higher Powers and Waring's Problem**
@@ -192,7 +185,7 @@ axiom squares_basis_order_4 : IsAsymptoticAddBasisOfOrder 4 squares
 For k-th powers, Waring's problem gives bounds on the basis order.
 The set of k-th powers is a basis of order g(k).
 -/
-def powers (k : ℕ) : Set ℕ := {n | ∃ m : ℕ, n = m^k}
+def powers (k : ℕ) : Set ℕ := {n | ∃ m : ℕ, n = m ^ k}
 
 /- ## Part VI: Structural Properties -/
 
@@ -220,23 +213,9 @@ theorem basis_subset (A A' : Set ℕ) (k : ℕ) (hAA' : A ⊆ A') :
   use N
   intro n hn
   obtain ⟨s, hsA, hscard, hssum⟩ := hN n hn
-  exact ⟨s, fun x hx => hAA' (hsA hx), hscard, hssum⟩
+  exact ⟨s, fun x hx => hAA' (hsA x hx), hscard, hssum⟩
 
-/- ## Part VII: Why This Is Hard -/
-
-/--
-**The Challenge**
-
-The problem asks about a delicate balance:
-- Minimal bases are "tight" - they have no redundancy for their order
-- Yet we want to show there's always a way to remove elements to get
-  exactly one higher order (not two or more)
-
-This requires understanding the fine structure of additive bases and how
-their order changes under removal of infinite subsets.
--/
-
-/- ## Part VIII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #881: Summary**
@@ -247,11 +226,12 @@ B ⊆ A such that A \ B is a basis of order exactly k+1?
 **Status:** OPEN
 
 **Key Results:**
-- Additive basis of order k: every large n is a sum of ≤ k elements
+- Additive basis of order k: every large n is a sum of ≤ k elements (with repetition)
 - Minimal: no infinite subset can be removed without increasing order
 - The conjecture: order increases by exactly 1
 - Strong implies weak version (proved)
 - Monotonicity and subset properties (proved)
+- Squares are a basis of order 4 (proved from Lagrange via Mathlib)
 -/
 theorem erdos_881_summary :
     erdos881Conjecture ↔
