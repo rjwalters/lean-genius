@@ -236,5 +236,22 @@
       "relationship": "extended-by",
       "description": "Integration by parts for Fourier coefficients of periodic functions — the same IBP technique used in the circumference integration proof extends to computing the Fourier coefficients that arise when representing geometric quantities (like arc length and curvature) as trigonometric series"
     }
+  ],
+  "references": [
+    {
+      "key": "Ar87",
+      "citation": "Archimedes, Measurement of a Circle, c. 250 BCE. First rigorous proof that A = πr² by the method of exhaustion (inscribed and circumscribed polygons).",
+      "type": "paper"
+    },
+    {
+      "key": "Ap69",
+      "citation": "Apostol, T.M., Calculus, Vol. II, 2nd ed., Wiley (1969), Chapter 6. Standard treatment deriving area of a circle via integration.",
+      "type": "book"
+    },
+    {
+      "key": "SS03",
+      "citation": "Stein, E.M. and Shakarchi, R., Fourier Analysis, Princeton Lectures in Analysis I (2003), Chapter 1. Modern analysis perspective on geometric integration.",
+      "type": "book"
+    }
   ]
 }
