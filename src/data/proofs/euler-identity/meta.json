@@ -264,6 +264,16 @@
       "targetId": "stirling-formula",
       "relationship": "related",
       "description": "Stirling's formula $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ contains both $e$ and $\\pi$ — the same constants in Euler's identity $e^{i\\pi} + 1 = 0$. The $\\pi$ appears via the Gaussian integral (connected to $e^{i\\theta}$ through polar coordinates), and the $e$ appears as the base of the natural exponential — making Stirling's formula a real-analytic cousin of Euler's identity"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "foundational",
+      "description": "Fourier series $f(x) = \\sum_{n=-\\infty}^{\\infty} c_n e^{inx}$ are built entirely on Euler's formula $e^{ix} = \\cos x + i\\sin x$. The complex exponential basis $\\{e^{inx}\\}$ forms an orthonormal system in $L^2[-\\pi,\\pi]$ precisely because $\\int_{-\\pi}^{\\pi} e^{i(n-m)x} dx = 2\\pi\\delta_{nm}$ — a direct consequence of the periodicity $e^{2\\pi i} = 1$ from Euler's identity"
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends de Moivre's theorem to Chebyshev polynomials: $\\cos(n\\theta) = T_n(\\cos\\theta)$ and $\\sin(n\\theta) = \\sin\\theta \\cdot U_{n-1}(\\cos\\theta)$. These identities follow from Euler's formula by extracting real and imaginary parts of $(e^{i\\theta})^n = e^{in\\theta}$, connecting the exponential representation to classical polynomial identities"
     }
   ],
   "relatedProofs": [
@@ -279,6 +289,8 @@
     "fundamental-theorem-calculus",
     "gelfond-schneider",
     "de-moivre",
+    "de-moivre-oq-01",
+    "fourier-series",
     "quadratic-reciprocity",
     "stirling-formula"
   ],

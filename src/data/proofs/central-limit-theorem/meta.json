@@ -237,6 +237,16 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "The CLT proof via characteristic functions uses $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$, where $e^{itX} = \\cos(tX) + i\\sin(tX)$ (Euler's formula). The Gaussian characteristic function $\\varphi(t) = e^{-t^2/2}$ — the CLT's limit — is the real-valued case, connecting Euler's formula to the universality of the normal distribution"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "The Gnedenko-Kolmogorov domain of attraction theorem: classifies which distributions converge to each stable law $S_\\alpha$ under normalized sums. Generalizes the CLT's Gaussian convergence (the $\\alpha = 2$ case) to all stable distributions, answering when and how the CLT fails for heavy-tailed distributions"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "The Lévy-Khintchine representation: every infinitely divisible distribution has a unique triplet $(b, \\sigma^2, \\nu)$ decomposing it into drift, Gaussian component, and jump measure. The CLT's Gaussian limit corresponds to the pure Gaussian case $(0, \\sigma^2, 0)$, placing the CLT within the broader framework of infinitely divisible distributions and Lévy processes"
     }
   ],
   "relatedProofs": [
@@ -245,6 +255,8 @@
     "stirling-formula",
     "area-of-circle",
     "central-limit-theorem-oq-01",
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-02",
     "central-limit-theorem-oq-03",
     "cauchy-schwarz",
     "binomial-theorem",

@@ -122,11 +122,11 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Introduction",
+      "title": "Introduction and Setup",
       "startLine": 1,
-      "endLine": 21,
-      "summary": "Module docstring: theorem statement, approach (No-Retraction via axiom + ray construction), Mathlib dependencies (`Metric.closedBall`, `EuclideanSpace ℝ (Fin n)`), status (2 axioms for algebraic topology). `set_option linter.unusedVariables false`, `open Set Metric`, `namespace Brouwer`.",
-      "mathContext": "Statement: $\\forall f: B^n \\to B^n$ continuous ($n \\geq 1$), $\\exists x \\in B^n,\\; f(x) = x$. Two axioms: `no_retraction_axiom` (no continuous $r: B^n \\to S^{n-1}$ with $r|_{S^{n-1}} = \\text{id}$) and `retraction_construction` (fixed-point-free $\\Rightarrow$ retraction exists)."
+      "endLine": 53,
+      "summary": "Module docstring: theorem statement, approach (No-Retraction via axiom + ray construction), Mathlib dependencies (`Metric.closedBall`, `EuclideanSpace ℝ (Fin n)`), status (2 axioms for algebraic topology). Includes `set_option linter.unusedVariables false`, `open Set Metric`, `namespace Brouwer`, and the universe-polymorphic variable declaration `{n : ℕ} (hn : 1 ≤ n)` constraining the dimension to be at least 1.",
+      "mathContext": "Statement: $\\forall f: B^n \\to B^n$ continuous ($n \\geq 1$), $\\exists x \\in B^n,\\; f(x) = x$. Two axioms: `no_retraction_axiom` (no continuous $r: B^n \\to S^{n-1}$ with $r|_{S^{n-1}} = \\text{id}$) and `retraction_construction` (fixed-point-free $\\Rightarrow$ retraction exists). The constraint $n \\geq 1$ is essential: $B^0 = \\{0\\}$ is a single point, and the identity map is trivially fixed-point-preserving, but the interesting topology arises for $n \\geq 1$ where the boundary sphere $S^{n-1}$ is nonempty."
     },
     {
       "id": "topological-foundations",
