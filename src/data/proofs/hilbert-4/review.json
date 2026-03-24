@@ -3,14 +3,12 @@
   "proofId": "hilbert-4",
   "reviewDate": "2026-03-24T12:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "C",
     "oneLiner": "Well-structured pedagogical scaffold with good exposition, but multiple vacuous axioms and placeholder definitions undermine the formalization's mathematical value.",
     "tier": "C",
     "tierJustification": "Core results (Busemann classification, Minkowski geodesics, Hilbert geodesics, Hamel's theorem) are all axiomatized. Only 2 substantive proofs exist (triangle inequalities for Euclidean and taxicab norms). Several axioms and definitions are vacuous (conclude True or return 0), meaning less is actually formalized than the axiom count suggests."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -125,7 +123,6 @@
       "recommendation": "Enricher: Adjust section boundaries to match actual file structure, or add sections for Parts VI-IX."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -160,24 +157,23 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix ann-summary mathContext: change '1 sorry remaining' to accurate count (0 sorries, 6 axioms). Fix ann-geodesics to say 'axiomatized' not 'proof'. Update section summary for geodesics section.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "medium",
       "target": "enricher",
       "description": "Update meta.json: fix mathlibDependencies module paths, complete truncated relatedProofs description, qualify originalContributions for vacuous statements, adjust section line ranges.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-7",
       "priority": "low",
       "target": "enricher",
       "description": "Add note to assumptions field about which axioms are currently placeholder/vacuous pending proper formalization.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 4,
     "originalityAccuracy": 5,
@@ -187,6 +183,5 @@
     "internalConsistency": 4,
     "overall": 5.0
   },
-
   "suggestedBestFraming": "A pedagogical scaffold for Hilbert's 4th Problem that defines Minkowski, Hilbert, and Funk geometries and axiomatizes the key theorems (Busemann's classification, Hamel's 2D result), with proved triangle inequalities for Euclidean and taxicab norms; several axioms and definitions are currently placeholder (vacuous) and await proper formalization."
 }

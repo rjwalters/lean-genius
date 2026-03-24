@@ -17,7 +17,7 @@
       "wiedijk-100",
       "topology"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -29,8 +29,8 @@
     "originalContributions": [
       "Schlafli symbol characterization of Platonic solids",
       "Complete proof that (p-2)(q-2) < 4 characterizes all five Platonic solids",
-      "Derivation of V, E, F for each solid from Schlafli symbols",
-      "Verification of Euler's formula for all five solids",
+      "Computational verification of V, E, F for each solid (rfl/norm_num proofs)",
+      "Computational verification of Euler's formula V-E+F=2 for all five solids (rfl/norm_num)",
       "Proof of duality relationships between Platonic solids"
     ],
     "dateAdded": "2025-12-27",
@@ -39,9 +39,7 @@
     "prerequisites": [
       "Euler's formula for polyhedra: V - E + F = 2",
       "Schlafli symbols and regular polyhedra",
-      "Combinatorics of regular tilings and angle constraints",
-      "Symmetry groups of polyhedra and SO(3)",
-      "Classification of convex regular polyhedra"
+      "Combinatorics of regular tilings and angle constraints"
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
@@ -61,9 +59,7 @@
     "prerequisites": [
       "Euler's formula for polyhedra: V - E + F = 2",
       "Schlafli symbols and regular polyhedra",
-      "Combinatorics of regular tilings and angle constraints",
-      "Symmetry groups of polyhedra and SO(3)",
-      "Classification of convex regular polyhedra"
+      "Combinatorics of regular tilings and angle constraints"
     ]
   },
   "sections": [
@@ -126,7 +122,7 @@
   ],
   "conclusion": {
     "summary": "The classification of Platonic solids is a beautiful result combining geometry, combinatorics, and topology. The constraint 1/p + 1/q > 1/2 (equivalently (p-2)(q-2) < 4) precisely characterizes which regular polygonal faces can tile a sphere, yielding exactly five solutions.",
-    "implications": "**Theoretical Significance**: **Significance:**\n\n1. First complete classification of a family of geometric objects\n2.\n\nFoundation for understanding symmetry groups\n3. Deep connections to group theory (Platonic groups are finite subgroups of SO(3))\n4. Applications in chemistry (molecular structures), crystallography, and physics.",
+    "implications": "1. First complete classification of a family of geometric objects in mathematics (Euclid, c. 300 BCE)\n2. Foundation for understanding symmetry groups: the rotation groups of the five solids are exactly the finite subgroups of SO(3)\n3. Deep connections to group theory via Klein's 1884 classification of Platonic groups ($A_4$, $S_4$, $A_5$)\n4. Applications in chemistry (molecular orbital symmetry, fullerenes), crystallography (point groups), and physics (representations of finite groups)",
     "openQuestions": [
       "Extension to higher dimensions (regular polytopes)",
       "Classification of semi-regular (Archimedean) solids",
@@ -143,7 +139,7 @@
     "lineCount": 419,
     "axiomCount": 0,
     "theoremCount": 24,
-    "definitionCount": 10
+    "definitionCount": 12
   },
   "references": [
     {
@@ -169,8 +165,8 @@
     },
     {
       "targetId": "pythagorean-theorem",
-      "relationship": "foundational",
-      "description": "The Pythagorean theorem provides the metric relationships needed to construct the Platonic solids: the icosahedron and dodecahedron involve the golden ratio phi = (1+sqrt(5))/2, whose properties depend on Pythagorean relationships"
+      "relationship": "thematic",
+      "description": "The icosahedron and dodecahedron involve the golden ratio, connecting to Pythagorean relationships, but this proof does not use the Pythagorean theorem directly"
     },
     {
       "targetId": "four-color-theorem",

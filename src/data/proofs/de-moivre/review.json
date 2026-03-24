@@ -3,14 +3,12 @@
   "proofId": "de-moivre",
   "reviewDate": "2026-03-24T16:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B",
     "oneLiner": "Honest Mathlib-based formalization of De Moivre's theorem with good pedagogical framing, but the 'original contributions' claims overstate what the file actually proves and four of ten theorems are trivial instantiations.",
     "tier": "B",
     "tierJustification": "The core result (de_moivre) relies on Mathlib's Complex.exp_mul_I and Complex.exp_nat_mul, with the file providing coercion management, integer extensions, and a roots-of-unity connection. The badge 'mathlib' is honest. The file adds genuine value beyond raw Mathlib calls through the nth_root_of_unity_power theorem and the pedagogical structure, but does not contain deep original mathematical reasoning."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -90,45 +88,43 @@
       "recommendation": "Add a note like '(connection not formalized in this file)' or reference the companion files where the connection IS formalized."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "medium",
       "target": "enricher",
       "description": "Revise meta.json originalContributions to accurately reflect the file content: (1) rename 'Double and triple angle formula derivations' to 'Double and triple angle special cases (n=2, n=3)'; (2) reframe 'Extension to integer exponents' as 'Integer exponent formulation via Mathlib bridge'; (3) keep 'Roots of unity connection' as-is.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Revise keyInsights[2] ('Multiple-Angle Factory') to note that the real-valued extraction (cos 2theta = cos^2 - sin^2) is NOT proved in this file but is addressed in DeMoivreOQ01.lean.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Downgrade annotation significance for ann-exp-form and ann-double-triple from 'key' to 'supporting' to better distinguish the substantive theorems from trivial instantiations.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Remove Complex.cos_add and Complex.sin_add from the Lean docstring dependency list (line 35), or note they are used in companion files only.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Add '(not formalized in this file)' qualifier to the law-of-cosines and angle-trisection cross-references, or reference the companion files DeMoivreOQ01/OQ02 where the Chebyshev connection IS formalized.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 6,
     "originalityAccuracy": 6,
@@ -138,6 +134,5 @@
     "internalConsistency": 7,
     "overall": 6.8
   },
-
   "suggestedBestFraming": "Pedagogical formalization of De Moivre's theorem (Wiedijk #17) via Mathlib's exponential function API, extending to integer exponents and connecting to roots of unity, with the core proof reducing to Euler's formula and the exponential power rule."
 }
