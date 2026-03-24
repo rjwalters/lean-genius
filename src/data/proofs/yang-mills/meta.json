@@ -59,7 +59,7 @@
     "millenniumProblem": "yang-mills",
     "axiomCount": 0,
     "assumptions": "1 explicit axiom declaration: gaugeTransform (gauge-transformed field). ~15 structure-encoded assumptions in: CompactSimpleGaugeGroup (compact, connected, simple), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy), YangMillsAction (coupling_pos, action_nonneg), FieldStrength (antisymmetric), Instanton (action_formula, bogomolny_bound), EnergyMomentumTensor (symmetric, energy_density_nonneg, conservation). The Yang-Mills 4D mass gap conjecture remains OPEN.",
-    "lineCount": 28695,
+    "lineCount": 48,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -304,7 +304,7 @@
       "Matrix"
     ],
     "namespace": "YangMillsMassGap",
-    "lineCount": 28695,
+    "lineCount": 48,
     "axiomCount": 16,
     "theoremCount": 1818,
     "definitionCount": 260
