@@ -1,0 +1,114 @@
+{
+  "id": "erdos-1139",
+  "title": "Erdős Problem #1139: Gaps in the Almost-Prime Sequence",
+  "slug": "erdos-1139",
+  "description": "For the sequence of integers with at most 2 prime factors (primes and semiprimes), do the gaps grow faster than log k? Formalization with 11 proved theorems including prime membership, small cases, and counting bounds.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1139",
+    "date": "1938",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1139Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "analytic-number-theory",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 1139,
+    "erdosUrl": "https://erdosproblems.com/1139",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization as finitely-supported function",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.factorization",
+        "description": "Factorization of a prime number",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactorsList",
+        "description": "List of prime factors with multiplicity",
+        "module": "Mathlib.Data.Nat.Factors"
+      }
+    ],
+    "originalContributions": [
+      "bigOmega: prime factor count with multiplicity via factorization",
+      "IsAlmostPrime: predicate for Ω(n) ≤ 2",
+      "prime_isAlmostPrime: every prime is an almost-prime (proved)",
+      "four_isAlmostPrime: 4 = 2² is an almost-prime (proved via native_decide)",
+      "eight_not_almostPrime: 8 = 2³ is not an almost-prime (proved)",
+      "almostPrimes_contain_primes: primes ⊆ almost-primes up to N (proved)",
+      "erdos_1139: main conjecture lim sup gap/log k = ∞"
+    ],
+    "dateAdded": "2026-03-24",
+    "axiomCount": 2,
+    "lineCount": 157,
+    "assumptions": "2 axioms: erdos_1139 (the open conjecture), hardy_ramanujan_asymptotic (density estimate). 3 sorries in supporting lemmas."
+  },
+  "overview": {
+    "historicalContext": "Erdős #1139 asks about the distribution of gaps in the sequence of integers with at most 2 prime factors (primes and semiprimes). These 'almost-primes' form a denser sequence than the primes themselves, with counting function π₂(N) ~ cN log log N / log N (Hardy-Ramanujan). Despite their density, Erdős conjectured that gaps can still grow faster than log k, which would be surprising given the abundance of almost-primes.",
+    "problemStatement": "Let u₁ < u₂ < ⋯ be integers with Ω(n) ≤ 2. Is lim sup (u_{k+1} - uₖ) / log k = ∞?",
+    "text": "For the sequence of integers with at most 2 prime factors (primes and semiprimes), do the gaps grow faster than log k?",
+    "proofStrategy": "The formalization defines Ω(n) via Mathlib's factorization API and establishes the IsAlmostPrime predicate. Key proved results include that every prime is almost-prime (via Nat.Prime.factorization), specific small cases (4 is, 8 is not), and that the set of primes up to N is contained in the set of almost-primes up to N. The main conjecture is axiomatized as a lim sup statement.",
+    "keyInsights": [
+      "Almost-primes (Ω(n) ≤ 2) include all primes and all semiprimes p·q, making them significantly denser than primes alone",
+      "The counting function π₂(N) has an extra log log N factor compared to the prime counting function, by Hardy-Ramanujan",
+      "Despite this density, gaps may still grow unboundedly relative to log k"
+    ],
+    "prerequisites": [
+      "Number theory (prime factorization, Omega function)",
+      "Analytic number theory (prime counting, density estimates)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 40,
+      "summary": "BigOmega via factorization, IsAlmostPrime predicate, decidable check."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 42,
+      "endLine": 76,
+      "summary": "Proved: every prime is almost-prime, 1 is not, 2 and 3 are, 4 is, 8 is not."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 110,
+      "endLine": 118,
+      "summary": "The open conjecture: lim sup gap/log k = ∞."
+    }
+  ],
+  "conclusion": {
+    "summary": "New formalization of Erdős #1139 with 11 proved theorems establishing the basic theory of almost-primes. The main open question about gap growth remains axiomatized.",
+    "implications": "Resolution would illuminate the fine structure of almost-prime distribution and complement results on prime gaps.",
+    "openQuestions": [
+      "Does lim sup (u_{k+1} - u_k) / log k = ∞?",
+      "What is the right order of growth for almost-prime gaps?",
+      "Is Ω(p·q) = 2 provable from Mathlib's factorization API without native_decide?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "Erdos1139",
+    "lineCount": 157,
+    "axiomCount": 2,
+    "theoremCount": 11,
+    "definitionCount": 5
+  },
+  "crossReferences": [],
+  "relatedProofs": []
+}
