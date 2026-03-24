@@ -31,10 +31,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T05:00:00Z",
-    "iteration": 1,
-    "focus": "Full formalization with proved basic properties",
+    "iteration": 2,
+    "focus": "Session 2: Eliminated erdosRatio_le_one axiom (3→2), proved dvd_factorial + not_prime_factorial_add infrastructure",
     "blockers": [],
-    "nextAction": "Axiom reduction: prove erdosRatio_le_one and maxGap_tendsto_atTop from Mathlib",
+    "nextAction": "Prove maxGap_tendsto_atTop using factorial infrastructure + Nat.nth_surjective",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -42,12 +42,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created complete Lean 4 formalization of Erdős #1137. Proved 13 theorems about prime gaps (positivity, parity, specific values) from Mathlib. Stated main conjecture as axiom. Created full gallery entry with meta.json, annotations, and index.ts.",
+    "progressSummary": "PROGRESS: Session 2 eliminated erdosRatio_le_one axiom (3→2). Proved it from Finset.sup_le + Nat.mul_le_mul. Added dvd_factorial and not_prime_factorial_add infrastructure for future maxGap_tendsto_atTop proof.",
     "builtItems": [
       "proofs/Proofs/Erdos1137Problem.lean - 210 lines, 17 theorems, 3 axioms",
       "src/data/proofs/erdos-1137/ - complete gallery entry",
       "primeGap definition using Nat.nth enumeration",
-      "Parity proof: primeGap_even via eq_one_or_self_of_dvd + Nat.even_sub"
+      "Parity proof: primeGap_even via eq_one_or_self_of_dvd + Nat.even_sub",
+      "PROVED erdosRatio_le_one: ratio ≤ 1 (axiom → theorem via Finset.sup properties)",
+      "PROVED dvd_factorial: k | n! for 1 ≤ k ≤ n (by induction on n)",
+      "PROVED not_prime_factorial_add: n!+k is composite for 2 ≤ k ≤ n",
+      "Updated gallery metadata: axiomCount 3→2, theoremCount 17→20"
     ],
     "insights": [
       "d_0 = 1 is the unique odd prime gap (transition from even prime 2 to odd prime 3)",
@@ -55,17 +59,20 @@
       "The parity proof uses primality: if 2 | p_n then p_n = 2 by eq_one_or_self_of_dvd, but p_n ≥ 3 for n ≥ 1",
       "Nat.nth_count provides clean computation of small prime values from decidable primality checking",
       "The conjecture is fundamentally about correlation structure, not magnitude, of prime gaps",
-      "Cramér's probabilistic model predicts YES: consecutive gaps are approximately independent in the model"
+      "Cramér's probabilistic model predicts YES: consecutive gaps are approximately independent in the model",
+      "erdosRatio_le_one proof: key is Finset.sup_le + both factors ≤ maxGap x since n-1 < x when n < x",
+      "dvd_factorial proved by induction: if k = n+1 use dvd_mul_right, if k ≤ n use IH + dvd_mul_of_dvd_right",
+      "not_prime_factorial_add: k | (n!+k) and 2 ≤ k < n!+k contradicts primality via eq_one_or_self_of_dvd",
+      "Finset.le_sup needs explicit (f := primeGap) annotation when function is ambiguous in context"
     ],
     "mathlibGaps": [
       "No direct nth_prime_one theorem in Mathlib (proved via Nat.nth_count + decide)",
       "Nat.even_sub signature should be verified against current Mathlib version"
     ],
     "nextSteps": [
-      "Docker build to verify all proofs compile cleanly",
-      "Prove erdosRatio_le_one from Finset.sup properties (eliminate axiom)",
-      "Prove maxGap_tendsto_atTop from Bertrand's postulate (eliminate axiom)",
-      "Create Aristotle companion file for routine lemmas"
+      "Prove maxGap_tendsto_atTop: connect factorial composites to primeGap enumeration via Nat.nth properties",
+      "Need: exists_large_primeGap B ≥ 2 : ∃ n, primeGap n ≥ B (factorial composites → gap witness)",
+      "Key missing step: finding n such that nth Prime n ≤ B!+1 < nth Prime (n+1)"
     ],
     "markdown": "# Erdős #1137 - Knowledge Base\n\n## Problem Statement\n\nLet $d_n = p_{n+1} - p_n$, where $p_n$ is the $n$th prime. Is it true that\n$$\\frac{\\max_{n<x} d_n d_{n-1}}{(\\max_{n<x} d_n)^2} \\to 0$$\nas $x \\to \\infty$?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Reference**: [Va99, §1.2]\n\n**Tractability Score**: 6/10 (open conjecture, but basic properties provable)\n**Aristotle Suitable**: Partially (basic lemmas yes, main conjecture no)\n\n## Session 1 (2026-03-23, researcher-5)\n\n**Decision**: DEEP DIVE\n**Outcome**: Created complete formalization with 17 theorems proved\n\nKey results:\n- Defined primeGap, maxGap, erdosRatio\n- Proved gap positivity, parity, and specific values\n- Stated main conjecture as axiom\n- Created gallery entry\n\n## Tags\n\n- erdos\n- number-theory\n- prime-gaps\n- analytic-number-theory\n\n## Related Problems\n\n- Erdős #6 (Cramér's conjecture on maximal prime gaps)\n- PrimeGapBounds.lean (Bertrand postulate infrastructure)\n\n## References\n\n- [Va99] Varga (1999), Survey §1.2\n- Cramér, H. (1936). On the order of magnitude of the difference between consecutive prime numbers.\n- Google DeepMind formal-conjectures: FormalConjectures/ErdosProblems/1137.lean\n"
   },
@@ -98,7 +105,14 @@
     ]
   },
   "started": "2026-01-15T15:52:59.263Z",
-  "lastUpdate": "2026-03-23T05:30:00.000Z",
+  "lastUpdate": "2026-03-24T08:30:00Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "axiomCount": 2,
+      "lineCount": 271,
+      "theoremCount": 20
+    }
+  ]
 }
