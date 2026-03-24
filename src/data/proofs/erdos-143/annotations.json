@@ -12,11 +12,17 @@
     "mathContext": "The condition |kx - y| ≥ 1 for all k ≥ 1 and distinct x, y means no element can be within distance 1 of any positive integer multiple of another element.",
     "significance": "key",
     "relatedConcepts": [
-      "erdos",
-      "number-theory",
-      "density"
+      "Erdős problems",
+      "number theory",
+      "asymptotic density",
+      "primitive sets",
+      "Diophantine approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "series convergence",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e143-wellseparated",
@@ -31,11 +37,17 @@
     "mathContext": "Formally: A ⊆ (1, ∞), A is infinite and countable, and ∀ x ≠ y ∈ A, ∀ k ≥ 1: |kx - y| ≥ 1.\n\nThis generalizes the notion of primitive sets from integers to reals.",
     "significance": "key",
     "relatedConcepts": [
-      "primitive-sets",
-      "density",
-      "separation"
+      "primitive sets",
+      "asymptotic density",
+      "Diophantine approximation",
+      "lattice-free sets",
+      "multiplicative number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "metric spaces",
+      "Set.Ioi in Lean 4"
+    ]
   },
   {
     "id": "ann-e143-counting",
@@ -50,10 +62,15 @@
     "mathContext": "countingFn(A, x) = |A ∩ [1, x]| using Set.ncard for the cardinality of possibly infinite intersections.",
     "significance": "supporting",
     "relatedConcepts": [
-      "density",
-      "cardinality"
+      "counting function",
+      "set cardinality",
+      "asymptotic density",
+      "Set.ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.ncard for finite intersections",
+      "Set.Icc intervals"
+    ]
   },
   {
     "id": "ann-e143-conjecture-i",
@@ -69,10 +86,15 @@
     "significance": "key",
     "relatedConcepts": [
       "liminf",
-      "density",
-      "asymptotic"
+      "lower asymptotic density",
+      "Schnirelmann density",
+      "Filter.liminf"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.liminf",
+      "atTop filter",
+      "asymptotic density"
+    ]
   },
   {
     "id": "ann-e143-conjecture-ii",
@@ -87,11 +109,17 @@
     "mathContext": "The series ∑ 1/(n log n) over all integers diverges, but for sparse sets it may converge. The log x factor makes this stronger than asking about ∑ 1/x.",
     "significance": "key",
     "relatedConcepts": [
-      "summable",
-      "convergence",
-      "primitive-sets"
+      "Summable",
+      "series convergence",
+      "primitive sets",
+      "Erdős 1935 theorem",
+      "comparison test"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Summable in Lean 4",
+      "series convergence tests",
+      "Real.log"
+    ]
   },
   {
     "id": "ann-e143-conjecture-iii",
@@ -106,11 +134,16 @@
     "mathContext": "o(log n) means: for any ε > 0, eventually ∑_{x<n} 1/x < ε log n. Compare to the harmonic series where ∑_{k<n} 1/k ~ log n.",
     "significance": "key",
     "relatedConcepts": [
-      "little-o",
-      "harmonic-series",
-      "asymptotic"
+      "little-o notation",
+      "harmonic series",
+      "partial sums",
+      "KLL theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic notation",
+      "harmonic series divergence",
+      "Real.log"
+    ]
   },
   {
     "id": "ann-e143-kll",
@@ -125,11 +158,16 @@
     "mathContext": "The proof constructs a GCD graph where vertices are elements of A and edges connect elements whose GCD-like interactions are bounded. Graph-theoretic arguments then show the sum cannot grow too fast.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
-      "gcd-graphs",
-      "number-theory"
+      "axiomatization",
+      "GCD graphs",
+      "multiplicative number theory",
+      "Halász's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "GCD graph construction",
+      "multiplicative function bounds",
+      "graph chromatic number"
+    ]
   },
   {
     "id": "ann-e143-partial",
@@ -144,10 +182,14 @@
     "mathContext": "erdos_143_partial : WellSeparatedSet A → Conjecture_iii A follows directly from kll_theorem.",
     "significance": "supporting",
     "relatedConcepts": [
-      "application",
-      "kll-theorem"
+      "theorem application",
+      "KLL theorem",
+      "axiom instantiation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "kll_theorem axiom",
+      "WellSeparatedSet definition"
+    ]
   },
   {
     "id": "ann-e143-primitive",
@@ -163,29 +205,38 @@
     "significance": "supporting",
     "relatedConcepts": [
       "divisibility",
-      "primitive-sets",
-      "integers"
+      "primitive sets",
+      "Erdős 1935",
+      "Behrend density estimate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer divisibility",
+      "Nat.dvd",
+      "Set.Infinite"
+    ]
   },
   {
     "id": "ann-e143-erdos1935",
     "proofId": "erdos-143",
     "range": {
-      "startLine": 100,
-      "endLine": 102
+      "startLine": 114,
+      "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős 1935: Primitive Sets",
     "content": "Erdős's 1935 result was the original motivation: for **integer** primitive sets, the series ∑ 1/(n log n) converges.\n\nThe open question is whether this extends to real well-separated sets - Conjecture (ii).",
     "mathContext": "For primitive A ⊆ ℕ, Summable (λ n, 1/(n log n)) over n ∈ A. This was proven using elementary number theory.",
     "significance": "supporting",
     "relatedConcepts": [
-      "erdos",
-      "1935",
-      "primitive-sets",
-      "summable"
+      "Erdős 1935 theorem",
+      "primitive sets",
+      "Summable",
+      "Lichtman-Pomerance conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Summable in Lean 4",
+      "IsPrimitiveSet definition",
+      "Real.log"
+    ]
   }
 ]
