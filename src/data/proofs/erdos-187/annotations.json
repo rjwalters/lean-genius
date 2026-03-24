@@ -5,7 +5,7 @@
     "type": "concept",
     "range": {
       "startLine": 1,
-      "endLine": 16
+      "endLine": 23
     },
     "title": "Problem Overview",
     "content": "**Erdős Problem #187** asks for the optimal f(d): the maximum guaranteed length of a monochromatic arithmetic progression (AP) with common difference d in any 2-coloring of ℤ, for infinitely many d.\n\n**Status:** OPEN\n\n**Known:**\n- f(d) → ∞ (van der Waerden 1927)\n- f(d) ≤ (1+o(1))log₂ d (Beck 1980)\n\n**Gap:** No lower bound beyond f(d) → ∞ is known. The conjecture is f(d) = Θ(log d).",
@@ -29,7 +29,7 @@
     "type": "definition",
     "range": {
       "startLine": 24,
-      "endLine": 43
+      "endLine": 48
     },
     "title": "Colorings and Monochromatic APs",
     "content": "**`TwoColoring`** = ℕ → Fin 2. Each integer gets color 0 or 1.\n\n**`IsMonoAP χ a d k`**: the AP {a, a+d, a+2d, ..., a+(k-1)d} is monochromatic under χ (all same color).\n\n**`maxMonoAPLength χ d`**: supremum of k over all starting points a with IsMonoAP χ a d k.\n\n**`optAPBound d = f(d)`**: infimum of maxMonoAPLength χ d over all 2-colorings χ — the guaranteed minimum.\n\n**Design**: The minimax structure (inf over χ, sup over k and a) captures the worst-case guarantee.",
@@ -53,7 +53,7 @@
     "type": "technique",
     "range": {
       "startLine": 49,
-      "endLine": 51
+      "endLine": 52
     },
     "title": "Van der Waerden's Theorem Implication",
     "content": "**Axiom:** For any k₀, there exists d such that f(d) ≥ k₀ — equivalently, f(d) → ∞.\n\n**Origin:** Van der Waerden's 1927 theorem proves this by the Hales-Jewett compactness argument: any 2-coloring of {1,...,N} with N = W(2, k) contains a monochromatic k-AP. Taking d to be any common difference in this AP gives f(d) ≥ k.\n\n**Limitation:** The van der Waerden numbers W(2, k) are tower-type in k, so this gives no quantitative rate for f(d) as a function of d.",
@@ -77,7 +77,7 @@
     "type": "technique",
     "range": {
       "startLine": 53,
-      "endLine": 59
+      "endLine": 60
     },
     "title": "Beck's Upper Bound (1980)",
     "content": "**Axiom:** ∃ C, D₀ such that for all d ≥ D₀, f(d) ≤ C·(log₂ d + 1).\n\n**Proof sketch:** Beck constructs an explicit 2-coloring χ using a probabilistic/discrepancy argument. The key is to control the 'discrepancy' of the coloring on all APs with any fixed difference d simultaneously, bounding the longest monochromatic run to O(log d).\n\n**Significance:** The O(log d) bound is believed tight, but no matching lower bound exists.",
@@ -101,7 +101,7 @@
     "type": "technique",
     "range": {
       "startLine": 61,
-      "endLine": 66
+      "endLine": 69
     },
     "title": "Erdős's √2-Coloring Construction",
     "content": "**Axiom:** There exists a 2-coloring χ with optAPBound d ≪ d — specifically, the coloring χ(n) = ⌊√2·n⌋ mod 2.\n\n**Mechanism:** For any AP {a, a+d, ..., a+(k-1)d}, the values {√2·(a+id)} mod 1 are equidistributed by Weyl's theorem (since √2 is irrational). This means the coloring alternates rapidly, limiting the longest monochromatic run.\n\n**Historical role:** This was Erdős's own construction, predating Beck, showing the problem is non-trivial.",
