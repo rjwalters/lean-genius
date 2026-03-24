@@ -79,49 +79,56 @@
       "title": "Core Definitions",
       "startLine": 35,
       "endLine": 56,
-      "summary": "maxPrimePowerExp, S(n), S'(n) definitions for the main function."
+      "summary": "maxPrimePowerExp, S(n), S'(n) definitions for the main function.",
+      "mathContext": "$S(n) = \\inf_{1 \\le k < n} \\sup\\{s \\mid \\exists p \\text{ prime},\\ p^s \\mid \\binom{n}{k}\\}$"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 57,
       "endLine": 68,
-      "summary": "S(n) >= 1 for n >= 2, and S bounds any prime power dividing all C(n,k)."
+      "summary": "S(n) >= 1 for n >= 2, and S bounds any prime power dividing all C(n,k).",
+      "mathContext": "$S(n) \\ge 1$ for all $n \\ge 2$; if $p^s \\mid \\binom{n}{k}$ for all $1 \\le k < n$, then $s \\le S(n)$"
     },
     {
       "id": "witness-construction",
       "title": "The Key Construction",
       "startLine": 69,
       "endLine": 85,
-      "summary": "The witness sequence n_m = 3^{2^m} and the key divisibility lemma."
+      "summary": "The witness sequence n_m = 3^{2^m} and the key divisibility lemma.",
+      "mathContext": "$n_m = 3^{2^m}$; the key lemma: $3^m \\mid \\binom{3^{2^m}}{k}$ for all $1 \\le k < 3^{2^m}$"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 86,
       "endLine": 111,
-      "summary": "Verified divisibility for C(3,k) and C(9,k), showing 3 divides all but 9 doesn't."
+      "summary": "Verified divisibility for C(3,k) and C(9,k), showing 3 divides all but 9 doesn't.",
+      "mathContext": "$3 \\mid \\binom{9}{k}$ for all $1 \\le k \\le 8$, but $9 \\nmid \\binom{9}{3} = 84$"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 112,
       "endLine": 127,
-      "summary": "The solved theorem: limsup S(n) = infinity."
+      "summary": "The solved theorem: limsup S(n) = infinity.",
+      "mathContext": "$\\limsup_{n \\to \\infty} S(n) = \\infty$, equivalently $\\mathop{\\mathrm{atTop}}\\!.\\limsup(S\\,\\colon\\mathbb{N} \\to \\mathbb{N}^\\infty) = \\top$"
     },
     {
       "id": "comparison",
       "title": "Comparison with s(n)",
       "startLine": 128,
       "endLine": 147,
-      "summary": "The easier function s(n) with existential quantifier grows like log(n)."
+      "summary": "The easier function s(n) with existential quantifier grows like log(n).",
+      "mathContext": "$s(n) = \\sup_{1 \\le k < n} \\sup\\{s \\mid \\exists p \\text{ prime},\\ p^s \\mid \\binom{n}{k}\\} \\sim c \\log n$"
     },
     {
       "id": "lucas",
       "title": "Lucas' Theorem Connection",
       "startLine": 148,
       "endLine": 198,
-      "summary": "How Lucas' theorem on base-p digits explains the 3^{2^m} construction."
+      "summary": "How Lucas' theorem on base-p digits explains the 3^{2^m} construction.",
+      "mathContext": "Lucas: $\\binom{m}{n} \\equiv \\prod_i \\binom{m_i}{n_i} \\pmod{p}$ where $m = \\sum m_i p^i$, $n = \\sum n_i p^i$"
     }
   ],
   "conclusion": {
