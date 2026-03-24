@@ -185,6 +185,30 @@
   "relatedProofs": [
     "erdos-141",
     "erdos-971",
-    "erdos-1113"
+    "erdos-1113",
+    "infinitude-primes"
+  ],
+  "references": [
+    {
+      "authors": "Green, Ben; Tao, Terence",
+      "title": "The primes contain arbitrarily long arithmetic progressions",
+      "year": "2008",
+      "venue": "Annals of Mathematics, vol. 167, no. 2, pp. 481–547",
+      "note": "Proved the primes contain APs of every length — a key input for Problem #200 which asks about the longest AP of primes below N"
+    },
+    {
+      "authors": "Erdős, Paul; Turán, Pál",
+      "title": "On some sequences of integers",
+      "year": "1936",
+      "venue": "Journal of the London Mathematical Society, vol. 11, no. 4, pp. 261–264",
+      "note": "Early work on arithmetic progressions in dense sets, foreshadowing the Green-Tao theorem and motivating Problem #200"
+    },
+    {
+      "authors": "Erdős Problems",
+      "title": "Problem #200",
+      "year": "2024",
+      "venue": "https://erdosproblems.com/200",
+      "note": "Online catalog entry with current status and related problems"
+    }
   ]
 }

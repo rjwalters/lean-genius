@@ -164,6 +164,29 @@
     "euler-totient",
     "erdos-409"
   ],
+  "references": [
+    {
+      "authors": "Schoenberg, Isaac Jacob",
+      "title": "Über die asymptotische Verteilung reeller Zahlen mod 1",
+      "year": "1928",
+      "venue": "Mathematische Zeitschrift, vol. 28, pp. 171–199",
+      "note": "Introduced the distribution function f(c) = density of {n : φ(n)/n < c}, proving it is continuous and strictly increasing on [0,1]. This is the function whose singularity Problem #50 studies"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On the distribution function of additive functions",
+      "year": "1946",
+      "venue": "Annals of Mathematics, vol. 47, no. 1, pp. 1–20",
+      "note": "Proved Schoenberg's distribution function is purely singular (f' = 0 a.e.), the key known result axiomatized in this formalization. The $250 prize question asks whether this extends to 'everywhere it exists'"
+    },
+    {
+      "authors": "Erdős Problems",
+      "title": "Problem #50",
+      "year": "2024",
+      "venue": "https://erdosproblems.com/50",
+      "note": "Online catalog entry with $250 prize, current status (open), and related problems"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",
