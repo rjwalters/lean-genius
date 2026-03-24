@@ -2,7 +2,7 @@
   "id": "euler-polyhedral-formula-oq-02",
   "title": "Discrete Gauss-Bonnet: Curvature to Euler Characteristic",
   "slug": "euler-polyhedral-formula-oq-02",
-  "description": "Proves the discrete Gauss-Bonnet theorem connecting angular deficiency to topology: the total angular deficiency at vertices of a polyhedral surface equals 2πχ, where χ is the Euler characteristic. Includes Descartes' theorem for convex polyhedra (4π), genus generalization, curvature-topology correspondence, all five Platonic solid computations, and the classification of regular polyhedra. 37+ theorems, 0 sorries, 0 axioms.",
+  "description": "Proves the discrete Gauss-Bonnet theorem connecting angular deficiency to topology: the total angular deficiency at vertices of a polyhedral surface equals 2\u03c0\u03c7, where \u03c7 is the Euler characteristic. Includes Descartes' theorem for convex polyhedra (4\u03c0), genus generalization, curvature-topology correspondence, all five Platonic solid computations, and the classification of regular polyhedra. 37+ theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Descartes/Euler/Gauss/Bonnet (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%E2%80%93Bonnet_theorem#For_polyhedra",
@@ -24,16 +24,16 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_pos",
-        "description": "0 < π — positivity of pi",
+        "description": "0 < \u03c0 \u2014 positivity of pi",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
     "originalContributions": [
-      "Complete algebraic proof of discrete Gauss-Bonnet: Σ δ(v) = 2πχ via double-counting",
-      "Genus generalization for orientable surfaces: Σ δ(v) = 2π(2-2g)",
+      "Complete algebraic proof of discrete Gauss-Bonnet: \u03a3 \u03b4(v) = 2\u03c0\u03c7 via double-counting",
+      "Genus generalization for orientable surfaces: \u03a3 \u03b4(v) = 2\u03c0(2-2g)",
       "Full curvature-topology correspondence: sign of total curvature determines genus",
       "Platonic solid angular deficiency computations for all five solids",
-      "Classification of regular polyhedra from Schläfli curvature constraint"
+      "Classification of regular polyhedra from Schl\u00e4fli curvature constraint"
     ],
     "dateAdded": "2026-03-05",
     "axiomCount": 0,
@@ -41,16 +41,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Descartes discovered around 1630 that the total angular deficiency of a convex polyhedron equals 4π, though his work remained unpublished until 1860. Euler established V - E + F = 2 in 1758. Gauss (1827) and Bonnet (1848) developed the continuous version relating Gaussian curvature to topology: the Gauss-Bonnet theorem ∫∫ K dA = 2πχ. For polyhedral surfaces, curvature concentrates at vertices as angular deficiency, and the integral becomes a sum. The theorem was extended to all closed surfaces by von Dyck (1888) and to abstract Riemannian manifolds by Chern (1944-1945) using characteristic classes, making it a cornerstone of modern differential topology.",
-    "problemStatement": "**Theorem (Discrete Gauss-Bonnet)**: For a polyhedral surface with angular deficiency δ(v) = 2π − (sum of face angles at v) at each vertex v:\n\n$$\\sum_v \\delta(v) = 2\\pi \\chi$$\n\nwhere χ = V − E + F is the Euler characteristic. For convex polyhedra (χ = 2), this gives Descartes' theorem: Σ δ(v) = 4π.",
-    "text": "Proves the discrete Gauss-Bonnet theorem connecting angular deficiency to topology: the total angular deficiency at vertices of a polyhedral surface equals 2πχ, where χ is the Euler characteristic. Includes Descartes' theorem for convex polyhedra (4π), genus generalization, curvature-topology correspondence, all five Platonic solid computations, and the classification of regular polyhedra. 37+ theorems, 0 sorries, 0 axioms.",
-    "proofStrategy": "**Algebraic proof by double-counting**:\n\n1. Each face (p-gon) has interior angle sum (p−2)π\n2. Double counting: Σ p_F = 2E, so total face angles = (2E−2F)π\n3. Total deficiency: Σ δ(v) = 2πV − (2E−2F)π = 2π(V−E+F) = 2πχ\n\nThe proof is entirely combinatorial/algebraic — no differential geometry needed.",
+    "historicalContext": "Descartes discovered around 1630 that the total angular deficiency of a convex polyhedron equals 4\u03c0, though his work remained unpublished until 1860. Euler established V - E + F = 2 in 1758. Gauss (1827) and Bonnet (1848) developed the continuous version relating Gaussian curvature to topology: the Gauss-Bonnet theorem \u222b\u222b K dA = 2\u03c0\u03c7. For polyhedral surfaces, curvature concentrates at vertices as angular deficiency, and the integral becomes a sum. The theorem was extended to all closed surfaces by von Dyck (1888) and to abstract Riemannian manifolds by Chern (1944-1945) using characteristic classes, making it a cornerstone of modern differential topology.",
+    "problemStatement": "**Theorem (Discrete Gauss-Bonnet)**: For a polyhedral surface with angular deficiency \u03b4(v) = 2\u03c0 \u2212 (sum of face angles at v) at each vertex v:\n\n$$\\sum_v \\delta(v) = 2\\pi \\chi$$\n\nwhere \u03c7 = V \u2212 E + F is the Euler characteristic. For convex polyhedra (\u03c7 = 2), this gives Descartes' theorem: \u03a3 \u03b4(v) = 4\u03c0.",
+    "text": "Proves the discrete Gauss-Bonnet theorem connecting angular deficiency to topology: the total angular deficiency at vertices of a polyhedral surface equals 2\u03c0\u03c7, where \u03c7 is the Euler characteristic. Includes Descartes' theorem for convex polyhedra (4\u03c0), genus generalization, curvature-topology correspondence, all five Platonic solid computations, and the classification of regular polyhedra. 37+ theorems, 0 sorries, 0 axioms.",
+    "proofStrategy": "**Algebraic proof by double-counting**:\n\n1. Each face (p-gon) has interior angle sum (p\u22122)\u03c0\n2. Double counting: \u03a3 p_F = 2E, so total face angles = (2E\u22122F)\u03c0\n3. Total deficiency: \u03a3 \u03b4(v) = 2\u03c0V \u2212 (2E\u22122F)\u03c0 = 2\u03c0(V\u2212E+F) = 2\u03c0\u03c7\n\nThe proof is entirely combinatorial/algebraic \u2014 no differential geometry needed.",
     "keyInsights": [
       "The discrete Gauss-Bonnet theorem is purely algebraic: it follows from double-counting face-edge incidences and the polygon angle sum formula",
       "Total angular deficiency is a topological invariant: two surfaces with the same Euler characteristic have the same total deficiency, regardless of their geometric realization",
-      "The sign of total curvature determines the genus: positive → sphere (g=0), zero → torus (g=1), negative → higher genus (g≥2)",
-      "The Schläfli inequality 2p + 2q > pq from positive curvature limits regular polyhedra to exactly 5 types: {3,3}, {3,4}, {3,5}, {4,3}, {5,3}",
-      "For polyhedra, the continuous Gauss-Bonnet integral ∫∫ K dA reduces to the sum of vertex deficiencies because curvature is zero on faces and edges"
+      "The sign of total curvature determines the genus: positive \u2192 sphere (g=0), zero \u2192 torus (g=1), negative \u2192 higher genus (g\u22652)",
+      "The Schl\u00e4fli inequality 2p + 2q > pq from positive curvature limits regular polyhedra to exactly 5 types: {3,3}, {3,4}, {3,5}, {4,3}, {5,3}",
+      "For polyhedra, the continuous Gauss-Bonnet integral \u222b\u222b K dA reduces to the sum of vertex deficiencies because curvature is zero on faces and edges"
     ],
     "prerequisites": [
       "Point-set topology",
@@ -70,14 +70,14 @@
       "title": "The Discrete Gauss-Bonnet Theorem",
       "startLine": 73,
       "endLine": 108,
-      "summary": "Main theorem: Σδ(v) = 2πχ, with Descartes' special case."
+      "summary": "Main theorem: \u03a3\u03b4(v) = 2\u03c0\u03c7, with Descartes' special case."
     },
     {
       "id": "genus-generalization",
       "title": "Genus Generalization",
       "startLine": 110,
       "endLine": 145,
-      "summary": "Extension to orientable surfaces of genus g: Σδ(v) = 2π(2-2g)."
+      "summary": "Extension to orientable surfaces of genus g: \u03a3\u03b4(v) = 2\u03c0(2-2g)."
     },
     {
       "id": "curvature-topology",
@@ -98,7 +98,7 @@
       "title": "Regular Polyhedra Classification",
       "startLine": 420,
       "endLine": 465,
-      "summary": "Schläfli constraint limits regular polyhedra to exactly 5 types."
+      "summary": "Schl\u00e4fli constraint limits regular polyhedra to exactly 5 types."
     }
   ],
   "conclusion": {
@@ -127,7 +127,7 @@
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "extends",
-      "description": "Extends Euler's formula V-E+F=2 (Wiedijk #25) by interpreting it as a special case of the discrete Gauss-Bonnet theorem: total angular deficiency Σδ(v) = 2πχ"
+      "description": "Extends Euler's formula V-E+F=2 (Wiedijk #25) by interpreting it as a special case of the discrete Gauss-Bonnet theorem: total angular deficiency \u03a3\u03b4(v) = 2\u03c0\u03c7"
     },
     {
       "targetId": "euler-polyhedral-formula-oq-02-oq-01",
@@ -141,35 +141,29 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "euler-polyhedral-formula",
-      "relationship": "Base formalization of V-E+F=2; this OQ-02 interprets it as discrete Gauss-Bonnet and proves consequences for Platonic solid classification"
-    },
-    {
-      "id": "euler-polyhedral-formula-oq-02-oq-01",
-      "relationship": "Extension to smooth surfaces: the smooth Gauss-Bonnet ∫K dA = 2πχ, which this discrete version approximates as triangulations refine"
-    },
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-02-oq-01",
     "euler-polyhedral-formula",
     "euler-polyhedral-formula-oq-02-oq-01",
     "euler-polyhedral-formula-oq-01"
   ],
   "references": [
     {
-      "authors": "René Descartes",
+      "authors": "Ren\u00e9 Descartes",
       "title": "De Solidorum Elementis",
       "year": "ca. 1630",
       "venue": "Unpublished manuscript (rediscovered 1860)",
-      "note": "First statement that total angular deficiency of a convex polyhedron equals 4π (later recognized as a special case of Gauss-Bonnet)"
+      "note": "First statement that total angular deficiency of a convex polyhedron equals 4\u03c0 (later recognized as a special case of Gauss-Bonnet)"
     },
     {
       "authors": "Pierre Ossian Bonnet",
-      "title": "Mémoire sur la théorie générale des surfaces",
+      "title": "M\u00e9moire sur la th\u00e9orie g\u00e9n\u00e9rale des surfaces",
       "year": "1848",
-      "venue": "Journal de l'École Polytechnique",
-      "note": "Proved the integral formula ∫K dA = 2πχ for closed surfaces, extending Descartes' polyhedron result"
+      "venue": "Journal de l'\u00c9cole Polytechnique",
+      "note": "Proved the integral formula \u222bK dA = 2\u03c0\u03c7 for closed surfaces, extending Descartes' polyhedron result"
     },
     {
-      "authors": "Branko Grünbaum",
+      "authors": "Branko Gr\u00fcnbaum",
       "title": "Convex Polytopes",
       "year": "2003",
       "venue": "Springer, 2nd edition",

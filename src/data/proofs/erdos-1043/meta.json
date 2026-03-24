@@ -1,10 +1,10 @@
 {
   "id": "erdos-1043",
-  "title": "Erdős #1043: Polynomial Level Set Projections",
+  "title": "Erd\u0151s #1043: Polynomial Level Set Projections",
   "slug": "erdos-1043",
-  "description": "For a monic polynomial f, must some line's projection of {z : |f(z)| ≤ 1} have measure ≤ 2? NO (Pommerenke 1961): can be ≥ 2.386, but always ≤ 3.3.",
+  "description": "For a monic polynomial f, must some line's projection of {z : |f(z)| \u2264 1} have measure \u2264 2? NO (Pommerenke 1961): can be \u2265 2.386, but always \u2264 3.3.",
   "meta": {
-    "author": "Erdős, Herzog, Piranian (1958); Pommerenke (1961)",
+    "author": "Erd\u0151s, Herzog, Piranian (1958); Pommerenke (1961)",
     "sourceUrl": "https://erdosproblems.com/1043",
     "date": "1958-1961",
     "status": "formalized",
@@ -51,15 +51,15 @@
     "assumptions": "8 axiom(s) and 8 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Origins in Polynomial Geometry (1958)**\n\nErdős, Herzog, and Piranian posed this problem in their 1958 paper 'Metric properties of polynomials' (J. Analyse Math. 6, 125–148), studying how the level set $L_f = \\{z \\in \\mathbb{C} : |f(z)| \\le 1\\}$ of a monic polynomial spreads in the complex plane. For $f(z) = z^n$, the level set is the closed unit disk $\\overline{B}(0,1)$, whose projection onto any line has length exactly 2 (the diameter). They conjectured this measure of 2 might be universally achievable.\n\n**The Level Set Tradition**: These sets are **lemniscates**, named after the figure-eight curve $|z^2 - 1| = c$ studied by Jakob Bernoulli (1694). The arc length integral for Bernoulli's lemniscate was a catalyst for Euler's and Gauss's work on elliptic integrals. In potential theory, level sets of monic polynomials have logarithmic capacity 1, a normalization due to Fekete's transfinite diameter theorem (1923).\n\n**Pommerenke's Resolution (1961)**: Christian Pommerenke, in 'Über die analytische Kapazität' (Math. Ann. 144, 285–296), proved the conjecture **FALSE**: there exist monic polynomials where every projection has measure $\\ge 2.386$, so no direction achieves the disk's measure of 2. He also proved the positive result that every monic polynomial has some projection $\\le 3.3$. The exact value of the **Pommerenke constant** $\\mathcal{P} = \\sup_f \\inf_u \\mu(\\pi_u(L_f)) \\in [2.386, 3.3]$ remains unknown.",
-    "problemStatement": "Let f ∈ ℂ[x] be a monic non-constant polynomial. Consider the level set:\n\n$$ L_f = \\{z \\in \\mathbb{C} : |f(z)| \\leq 1\\} $$\n\nMust there exist a line ℓ such that the projection of $L_f$ onto ℓ has measure ≤ 2?\n\n**Answer**: NO (Pommerenke 1961)\n\n**Bounds**:\n- Some polynomials have all projections ≥ 2.386\n- Every polynomial has some projection ≤ 3.3",
-    "text": "For a monic polynomial f, must some line's projection of {z : |f(z)| ≤ 1} have measure ≤ 2? NO (Pommerenke 1961): can be ≥ 2.386, but always ≤ 3.3.",
-    "proofStrategy": "We formalize the problem by:\n\n1. **Level sets**: Define {z : |f(z)| ≤ r} for polynomials\n2. **Projections**: Map ℂ to ℝ via z ↦ Re(z · conj(u)) for unit vector u\n3. **Projection measure**: Length of the projected set\n4. **EHP conjecture**: The (false) claim that measure ≤ 2 is always achievable\n5. **Pommerenke's results**: Counterexample (≥ 2.386) and upper bound (≤ 3.3)\n\nThe key insight is that while f(z) = zⁿ gives a round disk, other polynomials can create elongated level sets that are 'wide' in every direction.",
+    "historicalContext": "**Origins in Polynomial Geometry (1958)**\n\nErd\u0151s, Herzog, and Piranian posed this problem in their 1958 paper 'Metric properties of polynomials' (J. Analyse Math. 6, 125\u2013148), studying how the level set $L_f = \\{z \\in \\mathbb{C} : |f(z)| \\le 1\\}$ of a monic polynomial spreads in the complex plane. For $f(z) = z^n$, the level set is the closed unit disk $\\overline{B}(0,1)$, whose projection onto any line has length exactly 2 (the diameter). They conjectured this measure of 2 might be universally achievable.\n\n**The Level Set Tradition**: These sets are **lemniscates**, named after the figure-eight curve $|z^2 - 1| = c$ studied by Jakob Bernoulli (1694). The arc length integral for Bernoulli's lemniscate was a catalyst for Euler's and Gauss's work on elliptic integrals. In potential theory, level sets of monic polynomials have logarithmic capacity 1, a normalization due to Fekete's transfinite diameter theorem (1923).\n\n**Pommerenke's Resolution (1961)**: Christian Pommerenke, in '\u00dcber die analytische Kapazit\u00e4t' (Math. Ann. 144, 285\u2013296), proved the conjecture **FALSE**: there exist monic polynomials where every projection has measure $\\ge 2.386$, so no direction achieves the disk's measure of 2. He also proved the positive result that every monic polynomial has some projection $\\le 3.3$. The exact value of the **Pommerenke constant** $\\mathcal{P} = \\sup_f \\inf_u \\mu(\\pi_u(L_f)) \\in [2.386, 3.3]$ remains unknown.",
+    "problemStatement": "Let f \u2208 \u2102[x] be a monic non-constant polynomial. Consider the level set:\n\n$$ L_f = \\{z \\in \\mathbb{C} : |f(z)| \\leq 1\\} $$\n\nMust there exist a line \u2113 such that the projection of $L_f$ onto \u2113 has measure \u2264 2?\n\n**Answer**: NO (Pommerenke 1961)\n\n**Bounds**:\n- Some polynomials have all projections \u2265 2.386\n- Every polynomial has some projection \u2264 3.3",
+    "text": "For a monic polynomial f, must some line's projection of {z : |f(z)| \u2264 1} have measure \u2264 2? NO (Pommerenke 1961): can be \u2265 2.386, but always \u2264 3.3.",
+    "proofStrategy": "We formalize the problem by:\n\n1. **Level sets**: Define {z : |f(z)| \u2264 r} for polynomials\n2. **Projections**: Map \u2102 to \u211d via z \u21a6 Re(z \u00b7 conj(u)) for unit vector u\n3. **Projection measure**: Length of the projected set\n4. **EHP conjecture**: The (false) claim that measure \u2264 2 is always achievable\n5. **Pommerenke's results**: Counterexample (\u2265 2.386) and upper bound (\u2264 3.3)\n\nThe key insight is that while f(z) = z\u207f gives a round disk, other polynomials can create elongated level sets that are 'wide' in every direction.",
     "keyInsights": [
-      "**Level sets (lemniscates)**: $L_f = \\{z : |f(z)| \\le 1\\}$ generalizes the unit disk — for $z^n$ it's a disk; for general monic polynomials it can be multi-lobed, non-convex, and even disconnected",
+      "**Level sets (lemniscates)**: $L_f = \\{z : |f(z)| \\le 1\\}$ generalizes the unit disk \u2014 for $z^n$ it's a disk; for general monic polynomials it can be multi-lobed, non-convex, and even disconnected",
       "**Projection measure**: The map $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$ projects $L_f$ onto a line; its Lebesgue measure $\\mu(\\pi_u(L_f))$ is the 'shadow length', always 2 for the unit disk by Cauchy's formula",
       "**Pommerenke's counterexample**: There exist monic polynomials where $\\mu(\\pi_u(L_f)) \\ge 2.386$ for ALL directions $u$, disproving the EHP conjecture that measure $\\le 2$ is always achievable",
-      "**Universal upper bound 3.3**: While 2 is not always achievable, Pommerenke proved $\\inf_u \\mu(\\pi_u(L_f)) \\le 3.3$ for all monic $f$ — the Pommerenke constant $\\mathcal{P} \\in [2.386, 3.3]$ remains unknown",
+      "**Universal upper bound 3.3**: While 2 is not always achievable, Pommerenke proved $\\inf_u \\mu(\\pi_u(L_f)) \\le 3.3$ for all monic $f$ \u2014 the Pommerenke constant $\\mathcal{P} \\in [2.386, 3.3]$ remains unknown",
       "**Capacity constraints**: The logarithmic capacity $\\operatorname{cap}(L_f) = 1$ for monic polynomials implies area $\\le \\pi$ and diameter $\\le 4$, bounding the projection measure from above"
     ],
     "prerequisites": [
@@ -155,8 +155,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1043 on polynomial level set projections. The answer is NO: Pommerenke showed that some polynomials have all projections ≥ 2.386. However, every monic polynomial has some projection ≤ 3.3.",
-    "implications": "The problem connects complex analysis (polynomials, potential theory) with geometric measure theory (projections, widths). The Pommerenke constant—the supremum of minimum projection measures—lies between 2.386 and 3.3, but its exact value is unknown.",
+    "summary": "This formalization captures Erd\u0151s Problem #1043 on polynomial level set projections. The answer is NO: Pommerenke showed that some polynomials have all projections \u2265 2.386. However, every monic polynomial has some projection \u2264 3.3.",
+    "implications": "The problem connects complex analysis (polynomials, potential theory) with geometric measure theory (projections, widths). The Pommerenke constant\u2014the supremum of minimum projection measures\u2014lies between 2.386 and 3.3, but its exact value is unknown.",
     "openQuestions": [
       "What is the exact value of the Pommerenke constant?",
       "Which polynomial achieves the supremum of min projection measures?",
@@ -188,30 +188,15 @@
     {
       "targetId": "erdos-509",
       "relationship": "related",
-      "description": "Asks whether {z : |f(z)| ≤ 1} can be covered by discs of total radius ≤ 2 (Cartan's lemma direction); the covering and projection perspectives on lemniscate 'spread' are closely dual to the EHP conjecture in #1043."
+      "description": "Asks whether {z : |f(z)| \u2264 1} can be covered by discs of total radius \u2264 2 (Cartan's lemma direction); the covering and projection perspectives on lemniscate 'spread' are closely dual to the EHP conjecture in #1043."
     }
   ],
   "relatedProofs": [
-    {
-      "targetId": "erdos-1042",
-      "description": "Connected Components of Polynomial Lemniscates — direct sibling in the EHP series on lemniscate geometry"
-    },
-    {
-      "targetId": "erdos-1044",
-      "description": "Boundary Length of Polynomial Level Sets — sibling problem measuring arc length instead of projection measure"
-    },
-    {
-      "targetId": "erdos-1040",
-      "description": "Transfinite Diameter and Sublevel Set Measure — related potential-theoretic framing of the same lemniscate family"
-    },
-    {
-      "targetId": "erdos-1046",
-      "description": "Lemniscate Containment in a Disc — Pommerenke's disc bound, key tool in the 3.3 upper-bound argument"
-    },
-    {
-      "targetId": "erdos-509",
-      "description": "Covering Polynomial Sublevel Sets with Discs — complementary covering approach to measuring lemniscate spread"
-    },
+    "erdos-1042",
+    "erdos-1044",
+    "erdos-1040",
+    "erdos-1046",
+    "erdos-509",
     "erdos-1042",
     "erdos-1044",
     "erdos-1040",
@@ -221,25 +206,25 @@
   "references": [
     {
       "key": "EHP1958",
-      "citation": "Erdős, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. J. Analyse Math. 6, 125–148.",
+      "citation": "Erd\u0151s, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. J. Analyse Math. 6, 125\u2013148.",
       "type": "paper",
       "doi": "10.1007/BF02790232"
     },
     {
       "key": "Pommerenke1959",
-      "citation": "Pommerenke, Ch. (1959). On some problems by Erdős, Herzog and Piranian. Michigan Math. J. 6(3), 221–225.",
+      "citation": "Pommerenke, Ch. (1959). On some problems by Erd\u0151s, Herzog and Piranian. Michigan Math. J. 6(3), 221\u2013225.",
       "type": "paper",
       "doi": "10.1307/mmj/1028998225"
     },
     {
       "key": "Pommerenke1961",
-      "citation": "Pommerenke, Ch. (1961). Über die analytische Kapazität. Arch. Math. 11, 270–277.",
+      "citation": "Pommerenke, Ch. (1961). \u00dcber die analytische Kapazit\u00e4t. Arch. Math. 11, 270\u2013277.",
       "type": "paper",
       "doi": "10.1007/BF01236942"
     },
     {
       "key": "Pommerenke1965",
-      "citation": "Pommerenke, Ch. (1965). On the derivative of a polynomial. Michigan Math. J. 12, 57–70.",
+      "citation": "Pommerenke, Ch. (1965). On the derivative of a polynomial. Michigan Math. J. 12, 57\u201370.",
       "type": "paper",
       "doi": "10.1307/mmj/1028999248"
     },

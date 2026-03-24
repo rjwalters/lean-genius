@@ -175,23 +175,7 @@
       "targetId": "isoperimetric-theorem"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "erdos-1044",
-      "relationship": "companion",
-      "description": "Problem #1044 (Boundary Length of Polynomial Level Sets) and #1045 both originate in the 1958 EHP paper. The lemniscate boundary length lower bound of 2 (proved by Tang) is the analytic complement to the distance-product upper bound proved by Pommerenke."
-    },
-    {
-      "target": "erdos-1046",
-      "relationship": "shared-technique",
-      "description": "Problem #1046 (Lemniscate Containment in a Disc) uses Pommerenke's potential-theory bound on the size of the sublevel set, which is the same framework used for the upper bound \u0394 \u2264 2^{Cn}\u00b7n^n in #1045."
-    },
-    {
-      "target": "erdos-1043",
-      "relationship": "shared-technique",
-      "description": "Problem #1043 (Polynomial Level Set Projections) involves the same 1961 Pommerenke work that produced the upper bound in #1045. Both use projection and width estimates for polynomial sublevel sets to derive extremal inequalities."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

@@ -177,26 +177,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "ramseys-theorem",
-      "title": "Ramsey's Theorem",
-      "connection": "The classical finite Ramsey theorem guarantees monochromatic cliques in any 2-coloring of edges. Problem #1128 tests whether an infinite analogue holds for product colorings at \u2135\u2081 \u2014 the negative answer (Prikry-Mills) shows the infinite case fundamentally differs."
-    },
-    {
-      "slug": "cantor-diagonalization-oq-02-oq-01",
-      "title": "\u03c9\u2081 Properties: Aleph Hierarchy, Regularity, and Cofinality",
-      "connection": "The Prikry-Mills construction in #1128 exploits the regularity and well-ordering structure of \u03c9\u2081. This proof establishes the foundational properties of \u03c9\u2081 (first uncountable ordinal) used throughout the partition-calculus arguments."
-    },
-    {
-      "slug": "erdos-118",
-      "title": "Erd\u0151s Problem #118: Partition Ordinals and Higher Cliques",
-      "connection": "Both problems study when ordinal Ramsey properties fail to transfer across dimensions or graph parameters. Problem #118 asks whether \u03b1 \u2192 (\u03b1,3)\u00b2 implies \u03b1 \u2192 (\u03b1,n)\u00b2 \u2014 an analogous question about the robustness of partition relations."
-    },
-    {
-      "slug": "erdos-590",
-      "title": "Erd\u0151s #590: Ordinal Ramsey Theory for \u03c9^\u03c9",
-      "connection": "Chang's theorem (\u03c9^\u03c9 \u2192 (\u03c9^\u03c9, 3)\u00b2) is a positive ordinal partition result contrasting with the negative result in #1128. Together they map out which infinite cardinals and ordinals admit Ramsey-type partition properties."
-    }
+    "ramseys-theorem",
+    "cantor-diagonalization-oq-02-oq-01",
+    "erdos-118",
+    "erdos-590"
   ],
   "references": [
     {

@@ -76,7 +76,12 @@
       "**Normal Hall subgroups are unique**: conjugacy ($K = gHg^{-1}$) plus normality ($gHg^{-1} = H$) forces $K = H$, the group-theoretic analogue of unique Sylow $p$-subgroups",
       "**Schur-Zassenhaus** handles normal Hall subgroups without solvability: $N \\trianglelefteq G$ with $\\gcd(|N|, [G:N]) = 1$ always has a complement $K$ with $NK = G$ and $N \\cap K = \\{1\\}$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abstract algebra",
+      "Group theory",
+      "Lagrange's theorem",
+      "Ring and field theory"
+    ]
   },
   "sections": [
     {

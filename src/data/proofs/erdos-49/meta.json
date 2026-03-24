@@ -147,18 +147,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "euler-totient",
-      "description": "Euler's theorem a^\u03c6(n) \u2261 1 (mod n) provides the classical context for the totient function that is maximized over in Problem #49."
-    },
-    {
-      "slug": "erdos-1003",
-      "description": "The question of when \u03c6(n) = \u03c6(n+1) is the collision counterpart to Problem #49's requirement of strict distinctness; resolved tools overlap."
-    },
-    {
-      "slug": "infinitude-primes",
-      "description": "Euclid's infinitude-of-primes result ensures the prime witness set grows without bound, making the asymptotic statement of Problem #49 non-vacuous."
-    }
+    "euler-totient",
+    "erdos-1003",
+    "infinitude-primes"
   ],
   "references": [
     {

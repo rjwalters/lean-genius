@@ -175,22 +175,22 @@
     {
       "targetId": "euler-totient",
       "relationship": "uses",
-      "description": "Euler's totient function φ(n) is one of the two arithmetic functions at the heart of this problem; the formalization imports Nat.totient from Mathlib and relies on its multiplicativity and prime-value formula."
+      "description": "Euler's totient function \u03c6(n) is one of the two arithmetic functions at the heart of this problem; the formalization imports Nat.totient from Mathlib and relies on its multiplicativity and prime-value formula."
     },
     {
       "targetId": "erdos-49",
       "relationship": "related",
-      "description": "Erdős #49 also studies sets defined by totient values and uses the same range Im(φ); understanding which values appear in Im(φ) is central to both problems."
+      "description": "Erd\u0151s #49 also studies sets defined by totient values and uses the same range Im(\u03c6); understanding which values appear in Im(\u03c6) is central to both problems."
     },
     {
       "targetId": "erdos-1003",
       "relationship": "related",
-      "description": "Erdős #1003 asks about consecutive equal totient values φ(n) = φ(n+1); the twin-prime construction used in erdos-48 (φ(p+2) = σ(p) = p+1 for twin primes) directly connects the two problems."
+      "description": "Erd\u0151s #1003 asks about consecutive equal totient values \u03c6(n) = \u03c6(n+1); the twin-prime construction used in erdos-48 (\u03c6(p+2) = \u03c3(p) = p+1 for twin primes) directly connects the two problems."
     },
     {
       "targetId": "erdos-1004",
       "relationship": "related",
-      "description": "Erdős #1004 studies the distribution of distinct consecutive totient values; the density and value-distribution techniques (EPS bounds) are closely related to the Garaev density improvement axiomatized here."
+      "description": "Erd\u0151s #1004 studies the distribution of distinct consecutive totient values; the density and value-distribution techniques (EPS bounds) are closely related to the Garaev density improvement axiomatized here."
     },
     {
       "targetId": "infinitude-primes",
@@ -200,25 +200,13 @@
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "uses",
-      "description": "Unique factorization is required for the multiplicativity of both φ and σ; the multiplicative structure exploited throughout the proof rests on the Fundamental Theorem of Arithmetic."
+      "description": "Unique factorization is required for the multiplicativity of both \u03c6 and \u03c3; the multiplicative structure exploited throughout the proof rests on the Fundamental Theorem of Arithmetic."
     }
   ],
   "relatedProofs": [
-    {
-      "targetId": "euler-totient",
-      "relationship": "uses",
-      "note": "φ(n) is one of the two central arithmetic functions; the formalization imports Nat.totient directly."
-    },
-    {
-      "targetId": "erdos-49",
-      "relationship": "related",
-      "note": "Both problems study the range Im(φ) and properties of totient values."
-    },
-    {
-      "targetId": "erdos-1003",
-      "relationship": "related",
-      "note": "Shares the twin-prime construction linking consecutive totient equalities to φ(p+2) = σ(p) = p+1."
-    },
+    "euler-totient",
+    "erdos-49",
+    "erdos-1003",
     "euler-totient",
     "erdos-49",
     "erdos-1003",
@@ -233,36 +221,36 @@
         "Florian Luca",
         "Carl Pomerance"
       ],
-      "title": "Common values of the arithmetic functions φ and σ",
+      "title": "Common values of the arithmetic functions \u03c6 and \u03c3",
       "venue": "Bulletin of the London Mathematical Society",
       "year": 2010,
       "volume": "42",
-      "pages": "478–488",
+      "pages": "478\u2013488",
       "doi": "10.1112/blms/bdq014",
-      "note": "Proves infinitely many pairs (n,m) with φ(n) = σ(m); the main result axiomatized as ford_luca_pomerance."
+      "note": "Proves infinitely many pairs (n,m) with \u03c6(n) = \u03c3(m); the main result axiomatized as ford_luca_pomerance."
     },
     {
       "authors": [
         "Moubariz Z. Garaev"
       ],
-      "title": "On the number of common values of the arithmetic functions φ and σ below x",
-      "venue": "Bulletin of the Belgian Mathematical Society – Simon Stevin",
+      "title": "On the number of common values of the arithmetic functions \u03c6 and \u03c3 below x",
+      "venue": "Bulletin of the Belgian Mathematical Society \u2013 Simon Stevin",
       "year": 2011,
       "volume": "18",
-      "pages": "373–380",
+      "pages": "373\u2013380",
       "doi": "10.36045/bbms/1313604464",
-      "note": "Improves density bounds to exp((log log x)^{ω(x)}) where ω(x) → ∞; axiomatized as garaev_improvement."
+      "note": "Improves density bounds to exp((log log x)^{\u03c9(x)}) where \u03c9(x) \u2192 \u221e; axiomatized as garaev_improvement."
     },
     {
       "authors": [
-        "Paul Erdős"
+        "Paul Erd\u0151s"
       ],
       "title": "Some remarks on number theory",
       "venue": "Riveon Lematematika (Israel)",
       "year": 1959,
       "volume": "9",
-      "pages": "45–48",
-      "note": "Original 1959 formulation [Er59c] of the problem asking about common values of φ and σ."
+      "pages": "45\u201348",
+      "note": "Original 1959 formulation [Er59c] of the problem asking about common values of \u03c6 and \u03c3."
     },
     {
       "authors": [
@@ -272,21 +260,21 @@
       "venue": "Ramanujan Journal",
       "year": 1998,
       "volume": "2",
-      "pages": "67–151",
+      "pages": "67\u2013151",
       "doi": "10.1023/A:1009761909132",
-      "note": "Comprehensive study of Im(φ) and its density; background for the value-distribution results used in the proof."
+      "note": "Comprehensive study of Im(\u03c6) and its density; background for the value-distribution results used in the proof."
     },
     {
       "authors": [
-        "Paul Erdős",
+        "Paul Erd\u0151s",
         "Carl Pomerance",
-        "András Sárközy"
+        "Andr\u00e1s S\u00e1rk\u00f6zy"
       ],
       "title": "On locally repeated values of certain arithmetic functions",
       "venue": "Journal of Number Theory",
       "year": 1987,
       "volume": "21",
-      "pages": "319–332",
+      "pages": "319\u2013332",
       "doi": "10.1016/0022-314X(85)90058-0",
       "note": "EPS (1987) density bounds for arithmetic functions; related to the Garaev improvement and value-distribution analysis."
     }

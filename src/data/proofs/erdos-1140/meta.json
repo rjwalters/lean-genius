@@ -179,26 +179,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-1141",
-      "title": "Erd\u0151s Problem #1141",
-      "relationship": "Direct companion problem: asks whether there are infinitely many n such that n - k\u00b2 is prime for all k coprime to n with k\u00b2 < n. Status: open with 41 known values up to 1722. The structural similarity to erdos-1140 makes the contrasting open/disproved status particularly striking."
-    },
-    {
-      "id": "erdos-1142",
-      "title": "Erd\u0151s Problem #1142",
-      "relationship": "Second companion problem: asks whether there are infinitely many n such that n - 2^k is prime for all 2^k < n. Status: open with 7 known values. Uses exponential shifts instead of quadratic ones; the analogous sieve arguments for finiteness do not apply because 2^k grows faster than 2x\u00b2."
-    },
-    {
-      "id": "erdos-1138",
-      "title": "Erd\u0151s Problem #1138: Primes in Short Intervals",
-      "relationship": "Concerns the maximal gap between consecutive primes and the density of primes in short intervals. The logarithmic rarity of primes (from PNT) underpins the erdos-1140 heuristic: as n grows, having all n - 2x\u00b2 simultaneously prime requires beating the PNT odds for O(\u221an) terms."
-    },
-    {
-      "id": "riemann-hypothesis",
-      "title": "Riemann Hypothesis",
-      "relationship": "The 'at most one exception' in the erdos-1140 n \u2261 3 (mod 4) case arises from the ineffectivity of Siegel's class number bound. If the Generalized Riemann Hypothesis holds, no Siegel zeros exist and the exception is eliminated entirely, making GRH directly relevant to the completeness of the solution set {2,5,7,13,31,61,181,199}."
-    }
+    "erdos-1141",
+    "erdos-1142",
+    "erdos-1138",
+    "riemann-hypothesis"
   ],
   "references": [
     {

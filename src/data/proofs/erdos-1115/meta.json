@@ -151,26 +151,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "erdos-1116",
-      "title": "Erd\u0151s Problem #1116: Extreme Value Distribution of Entire Functions",
-      "connection": "Both problems belong to Erd\u0151s's complex analysis cluster on the global geometry of entire functions; #1116 addresses value distribution while #1115 addresses escape-path geometry."
-    },
-    {
-      "slug": "erdos-1120",
-      "title": "Erd\u0151s Problem #1120: Shortest Path in Polynomial Sublevel Sets",
-      "connection": "Asks the analogue of #1115 for polynomials: minimum arc length to traverse a lemniscate from one boundary component to another, making it the polynomial special case of the escape-path problem."
-    },
-    {
-      "slug": "erdos-1118",
-      "title": "Erd\u0151s Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
-      "connection": "The winding of level curves \u2014 the mechanism that forces superlinear path length in #1115 \u2014 is governed by the measure and topology of superlevel sets studied in #1118."
-    },
-    {
-      "slug": "liouville-theorem",
-      "title": "Liouville's Theorem on Transcendental Numbers",
-      "connection": "Liouville's theorem on bounded entire functions provides the base case from which the theory of finite-order entire functions (central to #1115) is developed."
-    }
+    "erdos-1116",
+    "erdos-1120",
+    "erdos-1118",
+    "liouville-theorem"
   ],
   "references": [
     {

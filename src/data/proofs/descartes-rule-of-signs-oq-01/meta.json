@@ -2,9 +2,9 @@
   "id": "descartes-rule-of-signs-oq-01",
   "title": "Descartes' Rule of Signs: Parity Result and Exact Count (Open Question)",
   "slug": "descartes-rule-of-signs-oq-01",
-  "description": "Descartes' Rule of Signs (1637) states that the number of positive real roots of a polynomial (counted with multiplicity) is at most the number of sign variations in the coefficient sequence, and differs from it by an even number. The upper bound is now in Mathlib as `roots_countP_pos_le_signVariations`. The parity result — that the difference is always even — requires the Fundamental Theorem of Algebra plus analysis of complex conjugate pairs, and is not yet formalized in Mathlib.",
+  "description": "Descartes' Rule of Signs (1637) states that the number of positive real roots of a polynomial (counted with multiplicity) is at most the number of sign variations in the coefficient sequence, and differs from it by an even number. The upper bound is now in Mathlib as `roots_countP_pos_le_signVariations`. The parity result \u2014 that the difference is always even \u2014 requires the Fundamental Theorem of Algebra plus analysis of complex conjugate pairs, and is not yet formalized in Mathlib.",
   "meta": {
-    "author": "René Descartes (1637); Gauss (1826 proof); Mathlib 4.26.0 (upper bound only)",
+    "author": "Ren\u00e9 Descartes (1637); Gauss (1826 proof); Mathlib 4.26.0 (upper bound only)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs",
     "date": "1637",
     "status": "axiomatized",
@@ -24,7 +24,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.roots_countP_pos_le_signVariations",
-        "description": "The number of positive real roots ≤ number of sign variations in coefficient sequence",
+        "description": "The number of positive real roots \u2264 number of sign variations in coefficient sequence",
         "module": "Mathlib.Algebra.Polynomial.RuleOfSigns"
       },
       {
@@ -57,19 +57,19 @@
       "descartes_upper_bound: wraps Mathlib's roots_countP_pos_le_signVariations (0 axioms)",
       "signVariations_increase_by_pos_root: positive root insertion increases signVariations",
       "signVariations_neg_poly, signVariations_const_mul: invariance under negation and scaling",
-      "no_positive_roots_of_zero_variations: zero signVariations → zero positive roots",
-      "nonneg_coeffs_have_zero_variations: non-negative coefficients → zero signVariations",
+      "no_positive_roots_of_zero_variations: zero signVariations \u2192 zero positive roots",
+      "nonneg_coeffs_have_zero_variations: non-negative coefficients \u2192 zero signVariations",
       "negSubst definition: p(-X) via polynomial composition",
       "negSubst_eval, negSubst_negSubst, negSubst_ne_zero: basic negSubst lemmas",
-      "negative_root_iff_positive_of_negSubst: r < 0 is root of p ↔ -r > 0 is root of negSubst p",
+      "negative_root_iff_positive_of_negSubst: r < 0 is root of p \u2194 -r > 0 is root of negSubst p",
       "descartes_negative_roots: upper bound on negative roots via negSubst (0 sorries)",
       "signVariations_C_const: constant polynomial has 0 sign variations",
       "signVariations_X_sub_C: for (X - c) with c > 0, signVariations = 1",
       "descartes_tight_X_sub_C: tight bound for linear polynomials with positive root",
-      "descartes_parity AXIOM: signVariations ≡ positive_roots [MOD 2] (open in Mathlib)",
+      "descartes_parity AXIOM: signVariations \u2261 positive_roots [MOD 2] (open in Mathlib)",
       "descartes_rule_combined: upper bound + parity together (uses axiom)",
-      "one_sign_variation_one_positive_root: signVariations = 1 → exactly 1 positive root (uses parity)",
-      "descartes_mul_bound: signVariations(pq) ≤ signVariations(p) + signVariations(q)",
+      "one_sign_variation_one_positive_root: signVariations = 1 \u2192 exactly 1 positive root (uses parity)",
+      "descartes_mul_bound: signVariations(pq) \u2264 signVariations(p) + signVariations(q)",
       "zero_sv_no_positive_roots, positive_root_count_from_sv: summary theorems"
     ],
     "dateAdded": "2026-02-24",
@@ -78,15 +78,15 @@
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "René Descartes stated his rule in 'La Géométrie' (1637): the number of positive real roots of a polynomial is at most the number of sign changes in the coefficient sequence, and the difference is even. The statement was casual — Descartes only sketched it and later work revealed subtleties.\n\nGauss gave a rigorous proof in 1826 using the Fundamental Theorem of Algebra. The key insight: complex roots come in conjugate pairs, and tracking how each root (real positive, real negative, complex pair) affects the sign variation count gives the parity result.\n\nFourier (1820) and Sturm (1829) gave related but distinct theorems. Sturm's sequence directly counts exact roots; Descartes gives an upper bound plus parity.\n\nThe rule is Wiedijk's 100 Theorems #100 — among the most important mathematical results to formalize. Mathlib 4.26.0 formalizes the UPPER BOUND using `Polynomial.signVariations` and `roots_countP_pos_le_signVariations`. The PARITY RESULT (difference is even) is not yet in Mathlib.",
-    "problemStatement": "**Open Question (descartes-rule-of-signs-oq-01)**: Can we formalize the parity result of Descartes' Rule in Lean/Mathlib?\n\n**The full theorem (two parts)**:\n1. (Mathlib, proved) `p.roots.countP (0 < ·) ≤ p.signVariations`\n2. (Open) `p.signVariations ≡ p.roots.countP (0 < ·) [MOD 2]`\n\n**What IS known in Mathlib**:\n- Upper bound: `roots_countP_pos_le_signVariations` ✓\n- Sign variation definition via `List.destutter` ✓\n- How sign variations change under positive-root insertion ✓\n\n**What is MISSING from Mathlib**:\n- The parity result: formalizing that removing a positive root decreases sign variations by exactly 1 (and removing a complex conjugate pair by 0 or 2) requires careful induction on polynomial degree with the Fundamental Theorem of Algebra.",
-    "text": "Descartes' Rule of Signs (1637) states that the number of positive real roots of a polynomial (counted with multiplicity) is at most the number of sign variations in the coefficient sequence, and differs from it by an even number. The upper bound is now in Mathlib as `roots_countP_pos_le_signVariations`. The parity result — that the difference is always even — requires the Fundamental Theorem of Algebra plus analysis of complex conjugate pairs, and is not yet formalized in Mathlib.",
-    "proofStrategy": "**Part 1 — Zero Axioms Upper Bound** (proved): `descartes_upper_bound` directly invokes `Polynomial.roots_countP_pos_le_signVariations` from Mathlib. Zero axioms, zero sorries.\n\n**Part 2 — Sign Variation Arithmetic** (proved): Key infrastructure:\n- `signVariations_increase_by_pos_root`: multiplying by (X - r), r > 0, adds ≥ 1 variation (from Mathlib's `succ_signVariations_le_X_sub_C_mul`)\n- `signVariations_neg_poly`, `signVariations_const_mul`: sign variations are preserved under negation and positive scaling\n- `no_positive_roots_of_zero_variations`: zero sign variations → no positive roots (direct consequence)\n- `nonneg_coeffs_have_zero_variations`: all non-negative coefficients → zero variations\n\n**Part 3 — Negative Root Framework** (proved): The `negSubst` substitution p(-X) transforms negative roots to positive roots. `descartes_negative_roots` gives the analogous upper bound on negative roots.\n\n**Part 4 — Linear Case** (proved): For `X - C c` with c > 0, signVariations = 1 exactly. The tight bound `descartes_tight_X_sub_C` shows equality holds here.\n\n**Part 5 — Parity (axiomized)**: `descartes_parity` is axiomized as the core open challenge:\n```\nsignVariations p ≡ p.roots.countP (0 < ·) [MOD 2]\n```\nThis requires: (a) complex roots come in conjugate pairs, (b) tracking how root removal changes sign variations. The Fundamental Theorem of Algebra over ℂ would be needed, plus the fact that taking `p.roots.countP (0 < ·)` misses conjugate pairs. Currently formalized as an axiom.",
+    "historicalContext": "Ren\u00e9 Descartes stated his rule in 'La G\u00e9om\u00e9trie' (1637): the number of positive real roots of a polynomial is at most the number of sign changes in the coefficient sequence, and the difference is even. The statement was casual \u2014 Descartes only sketched it and later work revealed subtleties.\n\nGauss gave a rigorous proof in 1826 using the Fundamental Theorem of Algebra. The key insight: complex roots come in conjugate pairs, and tracking how each root (real positive, real negative, complex pair) affects the sign variation count gives the parity result.\n\nFourier (1820) and Sturm (1829) gave related but distinct theorems. Sturm's sequence directly counts exact roots; Descartes gives an upper bound plus parity.\n\nThe rule is Wiedijk's 100 Theorems #100 \u2014 among the most important mathematical results to formalize. Mathlib 4.26.0 formalizes the UPPER BOUND using `Polynomial.signVariations` and `roots_countP_pos_le_signVariations`. The PARITY RESULT (difference is even) is not yet in Mathlib.",
+    "problemStatement": "**Open Question (descartes-rule-of-signs-oq-01)**: Can we formalize the parity result of Descartes' Rule in Lean/Mathlib?\n\n**The full theorem (two parts)**:\n1. (Mathlib, proved) `p.roots.countP (0 < \u00b7) \u2264 p.signVariations`\n2. (Open) `p.signVariations \u2261 p.roots.countP (0 < \u00b7) [MOD 2]`\n\n**What IS known in Mathlib**:\n- Upper bound: `roots_countP_pos_le_signVariations` \u2713\n- Sign variation definition via `List.destutter` \u2713\n- How sign variations change under positive-root insertion \u2713\n\n**What is MISSING from Mathlib**:\n- The parity result: formalizing that removing a positive root decreases sign variations by exactly 1 (and removing a complex conjugate pair by 0 or 2) requires careful induction on polynomial degree with the Fundamental Theorem of Algebra.",
+    "text": "Descartes' Rule of Signs (1637) states that the number of positive real roots of a polynomial (counted with multiplicity) is at most the number of sign variations in the coefficient sequence, and differs from it by an even number. The upper bound is now in Mathlib as `roots_countP_pos_le_signVariations`. The parity result \u2014 that the difference is always even \u2014 requires the Fundamental Theorem of Algebra plus analysis of complex conjugate pairs, and is not yet formalized in Mathlib.",
+    "proofStrategy": "**Part 1 \u2014 Zero Axioms Upper Bound** (proved): `descartes_upper_bound` directly invokes `Polynomial.roots_countP_pos_le_signVariations` from Mathlib. Zero axioms, zero sorries.\n\n**Part 2 \u2014 Sign Variation Arithmetic** (proved): Key infrastructure:\n- `signVariations_increase_by_pos_root`: multiplying by (X - r), r > 0, adds \u2265 1 variation (from Mathlib's `succ_signVariations_le_X_sub_C_mul`)\n- `signVariations_neg_poly`, `signVariations_const_mul`: sign variations are preserved under negation and positive scaling\n- `no_positive_roots_of_zero_variations`: zero sign variations \u2192 no positive roots (direct consequence)\n- `nonneg_coeffs_have_zero_variations`: all non-negative coefficients \u2192 zero variations\n\n**Part 3 \u2014 Negative Root Framework** (proved): The `negSubst` substitution p(-X) transforms negative roots to positive roots. `descartes_negative_roots` gives the analogous upper bound on negative roots.\n\n**Part 4 \u2014 Linear Case** (proved): For `X - C c` with c > 0, signVariations = 1 exactly. The tight bound `descartes_tight_X_sub_C` shows equality holds here.\n\n**Part 5 \u2014 Parity (axiomized)**: `descartes_parity` is axiomized as the core open challenge:\n```\nsignVariations p \u2261 p.roots.countP (0 < \u00b7) [MOD 2]\n```\nThis requires: (a) complex roots come in conjugate pairs, (b) tracking how root removal changes sign variations. The Fundamental Theorem of Algebra over \u2102 would be needed, plus the fact that taking `p.roots.countP (0 < \u00b7)` misses conjugate pairs. Currently formalized as an axiom.",
     "keyInsights": [
-      "Mathlib's `Polynomial.signVariations` is defined via `List.destutter` on `(p.coeffs.support.sort ≤).map (SignType.sign ∘ p.coeff)` — it counts sign changes among NONZERO coefficients (zero coefficients are ignored). This is the correct classical definition.",
+      "Mathlib's `Polynomial.signVariations` is defined via `List.destutter` on `(p.coeffs.support.sort \u2264).map (SignType.sign \u2218 p.coeff)` \u2014 it counts sign changes among NONZERO coefficients (zero coefficients are ignored). This is the correct classical definition.",
       "The parity result requires: when we add a real positive root (X - r), sign variations increase by exactly 1 or 3 (odd). When we add a complex conjugate pair (with negative discriminant), variations increase by 0 or 2 (even). The total parity is preserved.",
-      "Key Mathlib gap: `succ_signVariations_le_X_sub_C_mul` gives the ≥ 1 increase for positive roots, but to prove parity we need the exact change (1, not 3) for simple roots — this requires deeper root-lifting theorems.",
-      "The negative root formulation via `negSubst p = p.comp (−X)` is elegant: `r < 0` is a root of `p` iff `−r > 0` is a root of `negSubst p`. This lets us apply the same machinery to negative roots.",
+      "Key Mathlib gap: `succ_signVariations_le_X_sub_C_mul` gives the \u2265 1 increase for positive roots, but to prove parity we need the exact change (1, not 3) for simple roots \u2014 this requires deeper root-lifting theorems.",
+      "The negative root formulation via `negSubst p = p.comp (\u2212X)` is elegant: `r < 0` is a root of `p` iff `\u2212r > 0` is a root of `negSubst p`. This lets us apply the same machinery to negative roots.",
       "For the combined rule (upper bound + parity), even the simplified statement `descartes_rule_combined` is useful: it gives exact count modulo 2, and `one_sign_variation_one_positive_root` derives the exact count 1 from signVariations = 1."
     ],
     "prerequisites": [
@@ -103,7 +103,7 @@
     },
     {
       "id": "upper-bound",
-      "title": "Part I: Upper Bound — Zero Axioms Version",
+      "title": "Part I: Upper Bound \u2014 Zero Axioms Version",
       "startLine": 56,
       "endLine": 95,
       "summary": "descartes_upper_bound: 0 axioms, directly from Mathlib. signVariations_zero_poly, signVariations_monomial'. signVariations_increase_by_pos_root, signVariations_neg_poly, signVariations_const_mul."
@@ -113,7 +113,7 @@
       "title": "Part II: Special Cases and Zero Variations",
       "startLine": 96,
       "endLine": 157,
-      "summary": "no_positive_roots_of_zero_variations: zero signVariations → no positive roots. nonneg_coeffs_have_zero_variations: all non-negative coefficients → zero sign variations."
+      "summary": "no_positive_roots_of_zero_variations: zero signVariations \u2192 no positive roots. nonneg_coeffs_have_zero_variations: all non-negative coefficients \u2192 zero sign variations."
     },
     {
       "id": "negative-roots",
@@ -134,17 +134,17 @@
       "title": "Part V: Parity Result (Open Problem) and Summary",
       "startLine": 356,
       "endLine": 445,
-      "summary": "descartes_parity AXIOM: signVariations ≡ positive_roots [MOD 2]. descartes_rule_combined: upper bound + parity. one_sign_variation_one_positive_root: signVariations=1 → exactly 1 positive root. descartes_mul_bound, zero_sv_no_positive_roots, positive_root_count_from_sv."
+      "summary": "descartes_parity AXIOM: signVariations \u2261 positive_roots [MOD 2]. descartes_rule_combined: upper bound + parity. one_sign_variation_one_positive_root: signVariations=1 \u2192 exactly 1 positive root. descartes_mul_bound, zero_sv_no_positive_roots, positive_root_count_from_sv."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures both the proved and open parts of Descartes' Rule. The upper bound is proved with zero axioms, zero sorries directly from Mathlib's `roots_countP_pos_le_signVariations`. The negative root framework via `negSubst p = p.comp(−X)` extends the result to negative roots. The parity result — that the difference between sign variations and positive root count is always even — is axiomized as the open challenge. The linear case is tight and proved exactly.",
-    "implications": "**Theoretical Significance**: **If the parity result were proved (formalized in Lean)**:\n\n**For exact root counting**: `one_sign_variation_one_positive_root` gives EXACT root count when signVariations = 1. Similarly, signVariations = 2 means exactly 0 or 2 positive roots. This makes Descartes' rule a practical tool for exact counting, not just bounds.\n\n**For Sturm's theorem comparison**: Sturm's sequence gives exact counts but requires computing a GCD chain.\n\nDescartes' parity result gives exact counts modulo 2 for free. Combined: if Sturm gives N roots and Descartes gives signVariations ≡ N [MOD 2], this is a consistency check.\n\n**For Mathlib**: The parity proof would require formalizing how complex conjugate root pairs affect sign variations — a beautiful algebraic argument that would enrich Mathlib's polynomial root theory.\n\n**For Wiedijk's 100 Theorems**: Currently #100 (Descartes' Rule) has only the upper bound in Mathlib. The full theorem (with parity) would complete the formalization.",
+    "summary": "This formalization captures both the proved and open parts of Descartes' Rule. The upper bound is proved with zero axioms, zero sorries directly from Mathlib's `roots_countP_pos_le_signVariations`. The negative root framework via `negSubst p = p.comp(\u2212X)` extends the result to negative roots. The parity result \u2014 that the difference between sign variations and positive root count is always even \u2014 is axiomized as the open challenge. The linear case is tight and proved exactly.",
+    "implications": "**Theoretical Significance**: **If the parity result were proved (formalized in Lean)**:\n\n**For exact root counting**: `one_sign_variation_one_positive_root` gives EXACT root count when signVariations = 1. Similarly, signVariations = 2 means exactly 0 or 2 positive roots. This makes Descartes' rule a practical tool for exact counting, not just bounds.\n\n**For Sturm's theorem comparison**: Sturm's sequence gives exact counts but requires computing a GCD chain.\n\nDescartes' parity result gives exact counts modulo 2 for free. Combined: if Sturm gives N roots and Descartes gives signVariations \u2261 N [MOD 2], this is a consistency check.\n\n**For Mathlib**: The parity proof would require formalizing how complex conjugate root pairs affect sign variations \u2014 a beautiful algebraic argument that would enrich Mathlib's polynomial root theory.\n\n**For Wiedijk's 100 Theorems**: Currently #100 (Descartes' Rule) has only the upper bound in Mathlib. The full theorem (with parity) would complete the formalization.",
     "openQuestions": [
       "Can the parity result be proved using Mathlib's existing complex root theory (Polynomial.aeval_complex_conj, etc.)?",
       "What is the minimal infrastructure needed: just the complex conjugate pairing, or also the exact sign variation change under each root type?",
       "Does Sturm's theorem (which gives exact counts) imply Descartes' parity as a corollary, or is a direct argument needed?",
-      "Can the proof be made constructive (using decidable instances for Polynomial.roots over ℝ via ℂ)?"
+      "Can the proof be made constructive (using decidable instances for Polynomial.roots over \u211d via \u2102)?"
     ]
   },
   "leanFile": {
@@ -183,31 +183,25 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "descartes-rule-of-signs",
-      "relationship": "Base formalization providing the upper bound; this OQ-01 adds the parity result and negative root framework"
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "The FTA guarantees complex roots come in conjugate pairs, which is the critical ingredient for the parity proof"
-    },
+    "descartes-rule-of-signs",
+    "fundamental-theorem-algebra",
     "descartes-rule-of-signs",
     "fundamental-theorem-algebra",
     "e-transcendental"
   ],
   "references": [
     {
-      "authors": "René Descartes",
-      "title": "La Géométrie",
+      "authors": "Ren\u00e9 Descartes",
+      "title": "La G\u00e9om\u00e9trie",
       "year": "1637",
-      "venue": "Appendix to Discours de la Méthode",
+      "venue": "Appendix to Discours de la M\u00e9thode",
       "note": "Original statement of the rule of signs"
     },
     {
       "authors": "Carl Friedrich Gauss",
       "title": "Beweis eines algebraischen Lehrsatzes",
       "year": "1826",
-      "venue": "Journal für die reine und angewandte Mathematik",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik",
       "note": "Rigorous proof using the Fundamental Theorem of Algebra, establishing the parity result"
     },
     {

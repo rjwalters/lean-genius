@@ -148,21 +148,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "ramseys-theorem",
-      "title": "Ramsey's Theorem",
-      "description": "The foundational result bounding $k(n,m)$ from below. The classical finite Ramsey theorem is the primary tool for establishing the lower bound $k(n,m) \\geq R(n,m)$ formalized in this entry."
-    },
-    {
-      "slug": "erdos-szekeres",
-      "title": "Erd\u0151s\u2013Szekeres Theorem",
-      "description": "Provides the exact answer to the directed path variant of Problem #112: any sequence of more than $(n-1)(m-1)$ distinct reals contains an increasing subsequence of length $m$ or a decreasing one of length $n$, which corresponds to a directed path rather than a transitive tournament."
-    },
-    {
-      "slug": "erdos-129",
-      "title": "Ramsey Numbers Avoiding Monochromatic Cliques",
-      "description": "Studies edge-coloring variants of Ramsey numbers closely related to the 3-color upper bound $k(n,m) \\leq R(n,m,m)$ established by Hunter's argument in Problem #112."
-    }
+    "ramseys-theorem",
+    "erdos-szekeres",
+    "erdos-129"
   ],
   "references": [
     {

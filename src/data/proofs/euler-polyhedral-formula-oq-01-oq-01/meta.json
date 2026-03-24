@@ -2,7 +2,7 @@
   "id": "euler-polyhedral-formula-oq-01-oq-01",
   "title": "Five Color Theorem via Kempe Chain Argument",
   "slug": "euler-polyhedral-formula-oq-01-oq-01",
-  "description": "Formalizes the Five Color Theorem for planar graphs using the Kempe chain recoloring argument, including formal definitions of color swaps via Equiv.swap, Kempe chain swap correctness proofs, and the K₅ non-planarity prerequisite.",
+  "description": "Formalizes the Five Color Theorem for planar graphs using the Kempe chain recoloring argument, including formal definitions of color swaps via Equiv.swap, Kempe chain swap correctness proofs, and the K\u2085 non-planarity prerequisite.",
   "meta": {
     "author": "Lean Genius Research Agent",
     "sourceUrl": "https://en.wikipedia.org/wiki/Five_color_theorem",
@@ -41,9 +41,9 @@
       "kempeSwap: localized Kempe chain swap with maximality-based correctness proof",
       "kempeSwap_proper_internal: Kempe chain swap preserves proper coloring across all edge cases",
       "KempeChain structure: formal definition of bichromatic connected components",
-      "five_color_theorem: complete structural proof with base case (≤5 vertices) and inductive skeleton",
+      "five_color_theorem: complete structural proof with base case (\u22645 vertices) and inductive skeleton",
       "Kempe chain algebraic properties: involutivity, commutativity, identity, chain membership lemmas",
-      "K₅ non-planarity and five-neighbor non-completeness as Five Color Theorem prerequisites"
+      "K\u2085 non-planarity and five-neighbor non-completeness as Five Color Theorem prerequisites"
     ],
     "dateAdded": "2026-03-06",
     "axiomCount": 4,
@@ -51,16 +51,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The **Five Color Theorem** states that every planar graph can be properly colored with at most 5 colors. It was first stated (as part of an attempt at the Four Color Theorem) by Alfred Kempe in 1879, who introduced the **Kempe chain** recoloring technique. Percy Heawood found the flaw in Kempe's four-color proof in 1890 but showed the five-color version was correct.\n\nThe Kempe chain argument proceeds by induction on vertices:\n1. Every planar graph has a vertex of degree ≤ 5 (from E ≤ 3V - 6)\n2. Remove it; color the rest by induction\n3. If degree ≤ 4: at most 4 colors used by neighbors, pick the 5th\n4. If degree = 5: K₅ is non-planar, so two neighbors are non-adjacent. Use a Kempe chain swap to reduce distinct neighbor colors to ≤ 4\n\nThis formalization proves all the combinatorial ingredients (color swap correctness, K₅ non-planarity, color counting) and axiomatizes only the planarity-specific infrastructure that Mathlib currently lacks (vertex deletion, Kempe chain separation).",
-    "problemStatement": "**Open Question**: Can the Five Color Theorem be fully formalized in Lean 4, including:\n1. Kempe chain definitions and swap correctness\n2. The complete inductive proof structure\n3. K₅ non-planarity as the key prerequisite\n4. Connection to Mathlib's SimpleGraph.Colorable",
-    "text": "Formalizes the Five Color Theorem for planar graphs using the Kempe chain recoloring argument, including formal definitions of color swaps via Equiv.swap, Kempe chain swap correctness proofs, and the K₅ non-planarity prerequisite.",
-    "proofStrategy": "The proof uses three key ingredients:\n\n1. **Color swap via Equiv.swap**: Define color transposition as composition with `Equiv.swap c₁ c₂`. Proper coloring preservation follows immediately from injectivity of the transposition.\n\n2. **Kempe chain swap**: Localize the swap to a maximal bichromatic connected component. Correctness uses a maximality condition: no boundary-crossing edges between chain and non-chain vertices of the same two colors.\n\n3. **Inductive structure**: Base case (≤5 vertices) uses `Fintype.equivFin` for distinct coloring. The degree ≤ 4 case is immediate (free color exists). The degree = 5 case uses K₅ non-planarity to find non-adjacent neighbors, then Kempe chain separation to reduce the color count.",
+    "historicalContext": "The **Five Color Theorem** states that every planar graph can be properly colored with at most 5 colors. It was first stated (as part of an attempt at the Four Color Theorem) by Alfred Kempe in 1879, who introduced the **Kempe chain** recoloring technique. Percy Heawood found the flaw in Kempe's four-color proof in 1890 but showed the five-color version was correct.\n\nThe Kempe chain argument proceeds by induction on vertices:\n1. Every planar graph has a vertex of degree \u2264 5 (from E \u2264 3V - 6)\n2. Remove it; color the rest by induction\n3. If degree \u2264 4: at most 4 colors used by neighbors, pick the 5th\n4. If degree = 5: K\u2085 is non-planar, so two neighbors are non-adjacent. Use a Kempe chain swap to reduce distinct neighbor colors to \u2264 4\n\nThis formalization proves all the combinatorial ingredients (color swap correctness, K\u2085 non-planarity, color counting) and axiomatizes only the planarity-specific infrastructure that Mathlib currently lacks (vertex deletion, Kempe chain separation).",
+    "problemStatement": "**Open Question**: Can the Five Color Theorem be fully formalized in Lean 4, including:\n1. Kempe chain definitions and swap correctness\n2. The complete inductive proof structure\n3. K\u2085 non-planarity as the key prerequisite\n4. Connection to Mathlib's SimpleGraph.Colorable",
+    "text": "Formalizes the Five Color Theorem for planar graphs using the Kempe chain recoloring argument, including formal definitions of color swaps via Equiv.swap, Kempe chain swap correctness proofs, and the K\u2085 non-planarity prerequisite.",
+    "proofStrategy": "The proof uses three key ingredients:\n\n1. **Color swap via Equiv.swap**: Define color transposition as composition with `Equiv.swap c\u2081 c\u2082`. Proper coloring preservation follows immediately from injectivity of the transposition.\n\n2. **Kempe chain swap**: Localize the swap to a maximal bichromatic connected component. Correctness uses a maximality condition: no boundary-crossing edges between chain and non-chain vertices of the same two colors.\n\n3. **Inductive structure**: Base case (\u22645 vertices) uses `Fintype.equivFin` for distinct coloring. The degree \u2264 4 case is immediate (free color exists). The degree = 5 case uses K\u2085 non-planarity to find non-adjacent neighbors, then Kempe chain separation to reduce the color count.",
     "keyInsights": [
       "**Equiv.swap makes color swap trivial**: Instead of manual case analysis on if-then-else, composing with Equiv.swap gives proper coloring preservation as a one-line proof via injectivity",
       "**Kempe chain maximality is the key correctness condition**: The swap preserves proper coloring because maximal bichromatic components have no boundary-crossing bichromatic edges",
-      "**K₅ non-planarity is the heart of the Five Color Theorem**: It guarantees that the 5 neighbors of a degree-5 vertex in a planar graph contain a non-adjacent pair, enabling the Kempe chain argument",
+      "**K\u2085 non-planarity is the heart of the Five Color Theorem**: It guarantees that the 5 neighbors of a degree-5 vertex in a planar graph contain a non-adjacent pair, enabling the Kempe chain argument",
       "**Mathlib's SimpleGraph API gap**: The main barrier to a fully axiom-free proof is vertex deletion with Fintype/DecidableRel preservation, not the mathematical argument itself",
-      "**Four vs Five Color**: The five color theorem uses essentially the same Kempe chain technique as the four color theorem, but avoids the massive case analysis — making it an ideal formalization target that captures the key ideas without combinatorial explosion"
+      "**Four vs Five Color**: The five color theorem uses essentially the same Kempe chain technique as the four color theorem, but avoids the massive case analysis \u2014 making it an ideal formalization target that captures the key ideas without combinatorial explosion"
     ],
     "prerequisites": [
       "Graph theory (vertices, edges, colorings)",
@@ -73,7 +73,7 @@
       "title": "Planar Graph Infrastructure",
       "startLine": 40,
       "endLine": 83,
-      "summary": "PlanarEmbedding structure with Euler formula axiom. edge_bound_planar (E ≤ 3V-6). exists_low_degree: every planar graph has vertex of degree ≤ 5 via handshaking lemma."
+      "summary": "PlanarEmbedding structure with Euler formula axiom. edge_bound_planar (E \u2264 3V-6). exists_low_degree: every planar graph has vertex of degree \u2264 5 via handshaking lemma."
     },
     {
       "id": "kempe-definitions",
@@ -94,25 +94,25 @@
       "title": "Five Color Theorem",
       "startLine": 275,
       "endLine": 340,
-      "summary": "five_color_theorem: complete structural proof. Base case via Fintype.equivFin. Inductive step uses low-degree vertex, K₅ non-planarity, Kempe chain separation. five_implies_six_colorable and planar_chromatic_le_five as corollaries."
+      "summary": "five_color_theorem: complete structural proof. Base case via Fintype.equivFin. Inductive step uses low-degree vertex, K\u2085 non-planarity, Kempe chain separation. five_implies_six_colorable and planar_chromatic_le_five as corollaries."
     },
     {
       "id": "kempe-properties",
       "title": "Kempe Chain Algebraic Properties",
       "startLine": 351,
       "endLine": 400,
-      "summary": "swapColors_self (self-swap is identity), swapColors_involutive (double swap), swapColors_comm (swap symmetry). kempeSwap properties: empty chain, outside chain, c₁→c₂, c₂→c₁."
+      "summary": "swapColors_self (self-swap is identity), swapColors_involutive (double swap), swapColors_comm (swap symmetry). kempeSwap properties: empty chain, outside chain, c\u2081\u2192c\u2082, c\u2082\u2192c\u2081."
     },
     {
       "id": "colorability",
       "title": "Graph Colorability Results",
       "startLine": 440,
       "endLine": 475,
-      "summary": "colorable_five_vertices: ≤5-vertex graphs are 5-colorable. colorable_card_vertices: n-vertex graphs are n-colorable. Hadwiger's conjecture connection."
+      "summary": "colorable_five_vertices: \u22645-vertex graphs are 5-colorable. colorable_card_vertices: n-vertex graphs are n-colorable. Hadwiger's conjecture connection."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves all combinatorial ingredients of the Five Color Theorem: Kempe chain swap correctness (via Equiv.swap), K₅ non-planarity, color counting arguments, and the complete inductive proof structure. The 4 axioms encode planarity-specific facts that Mathlib currently lacks (subgraph planarity, Kempe chain separation, vertex deletion). 0 sorries.",
+    "summary": "This formalization proves all combinatorial ingredients of the Five Color Theorem: Kempe chain swap correctness (via Equiv.swap), K\u2085 non-planarity, color counting arguments, and the complete inductive proof structure. The 4 axioms encode planarity-specific facts that Mathlib currently lacks (subgraph planarity, Kempe chain separation, vertex deletion). 0 sorries.",
     "implications": "**Theoretical Significance**: The Five Color Theorem sits between the elementary Six Color Theorem (fully proved in OQ-01) and the deep Four Color Theorem (requiring computer verification).\n\nThe Kempe chain technique formalized here is fundamental to graph coloring theory and is used in various generalizations. The Equiv.swap approach to color transpositions provides a clean, reusable pattern for future coloring formalizations.",
     "openQuestions": [
       "Can vertex deletion with Fintype preservation be formalized in Mathlib to eliminate the five_color_axiom?",
@@ -144,12 +144,12 @@
     {
       "targetId": "euler-polyhedral-formula-oq-01",
       "relationship": "extends",
-      "description": "Extends OQ-01 (Six Color Theorem via 5-degeneracy) to the Five Color Theorem, using the stronger Kempe chain recoloring argument that requires K₅ non-planarity"
+      "description": "Extends OQ-01 (Six Color Theorem via 5-degeneracy) to the Five Color Theorem, using the stronger Kempe chain recoloring argument that requires K\u2085 non-planarity"
     },
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "foundational",
-      "description": "Euler's formula V-E+F=2 gives the edge bound E ≤ 3V-6 that forces low-degree vertices (deg ≤ 5), which is the starting point of the Five Color Theorem proof"
+      "description": "Euler's formula V-E+F=2 gives the edge bound E \u2264 3V-6 that forces low-degree vertices (deg \u2264 5), which is the starting point of the Five Color Theorem proof"
     },
     {
       "targetId": "four-color-theorem",
@@ -158,14 +158,8 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "euler-polyhedral-formula-oq-01",
-      "relationship": "Parent: proves the Six Color Theorem via 5-degeneracy; this entry refines to Five Colors using Kempe chains and K₅ non-planarity"
-    },
-    {
-      "id": "four-color-theorem",
-      "relationship": "The definitive coloring result for planar graphs; the Kempe chain method formalized here is the key technique also underlying the Four Color Theorem proof"
-    },
+    "euler-polyhedral-formula-oq-01",
+    "four-color-theorem",
     "euler-polyhedral-formula-oq-01",
     "euler-polyhedral-formula",
     "four-color-theorem"

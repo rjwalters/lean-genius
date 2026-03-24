@@ -124,20 +124,7 @@
       "description": "Ramsey theory underpins extremal graph coloring: Ramsey numbers bound the graphs where chromatic constraints must be satisfied, providing context for the extremal behavior of f_r(n)"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "erdos-744",
-      "note": "Directly cited in the formalization: the connection between Problem #744 and #1092 is established via R\u00f6dl's construction"
-    },
-    {
-      "target": "erdos-58",
-      "note": "Both problems concern thresholds where local chromatic properties force global bounds; #58 is resolved while #1092 remains open"
-    },
-    {
-      "target": "szemeredi-regularity",
-      "note": "The regularity lemma represents the most powerful current tool for local-to-global graph structure arguments, making it the natural benchmark for the philosophy behind #1092"
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

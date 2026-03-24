@@ -178,26 +178,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "ramseys-theorem",
-      "title": "Ramsey's Theorem",
-      "connection": "Foundational result guaranteeing monochromatic cliques; provides the combinatorial backdrop against which minimum-degree forcing results for K_r are understood."
-    },
-    {
-      "slug": "erdos-1079",
-      "title": "Erd\u0151s Problem #1079: Tur\u00e1n Density in Neighborhoods",
-      "connection": "Shares the extremal-graph-theory framework of minimum degree / density thresholds for forcing dense substructures."
-    },
-    {
-      "slug": "erdos-1077",
-      "title": "Erd\u0151s Problem #1077: Balanced Subgraphs in Dense Graphs",
-      "connection": "Degree-regularity conditions for forcing specific subgraphs; directly parallel to the r-partite minimum-degree threshold studied in Problem #1078."
-    },
-    {
-      "slug": "erdos-1075",
-      "title": "Erd\u0151s Problem #1075: Dense Subgraphs in r-Uniform Hypergraphs",
-      "connection": "Hypergraph analogue of density-forcing results; the graph case (r = 2) reduces to problems of the type studied in Problem #1078."
-    }
+    "ramseys-theorem",
+    "erdos-1079",
+    "erdos-1077",
+    "erdos-1075"
   ],
   "references": [
     {

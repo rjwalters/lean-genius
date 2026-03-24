@@ -1,8 +1,8 @@
 {
   "id": "e-transcendental-oq-01",
-  "title": "Is e + π Transcendental? (Open Question)",
+  "title": "Is e + \u03c0 Transcendental? (Open Question)",
   "slug": "e-transcendental-oq-01",
-  "description": "Is the number e + π = 5.8598... transcendental? Despite both e (Hermite, 1873) and π (Lindemann, 1882) being individually transcendental, the transcendence of their sum remains one of the most tantalizing open problems in mathematics. We prove what IS known: at least one of e+π or e·π must be transcendental — a clean consequence of e's transcendence via the Vieta symmetric polynomial identity.",
+  "description": "Is the number e + \u03c0 = 5.8598... transcendental? Despite both e (Hermite, 1873) and \u03c0 (Lindemann, 1882) being individually transcendental, the transcendence of their sum remains one of the most tantalizing open problems in mathematics. We prove what IS known: at least one of e+\u03c0 or e\u00b7\u03c0 must be transcendental \u2014 a clean consequence of e's transcendence via the Vieta symmetric polynomial identity.",
   "meta": {
     "author": "Open (Hermite 1873, Lindemann 1882 for components; Nesterenko 1996 for related results)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Transcendental_number",
@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Transcendental",
-        "description": "Definition: x is transcendental over R if ¬ IsAlgebraic R x (no nonzero polynomial over R has x as root)",
+        "description": "Definition: x is transcendental over R if \u00ac IsAlgebraic R x (no nonzero polynomial over R has x as root)",
         "module": "Mathlib.RingTheory.Algebraic.Basic"
       },
       {
@@ -36,31 +36,31 @@
       },
       {
         "theorem": "Complex.Gamma",
-        "description": "The complex Gamma function Γ : ℂ → ℂ",
+        "description": "The complex Gamma function \u0393 : \u2102 \u2192 \u2102",
         "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
       },
       {
         "theorem": "MvPolynomial.aeval",
-        "description": "Multivariate polynomial evaluation — used to state Nesterenko's algebraic independence theorem",
+        "description": "Multivariate polynomial evaluation \u2014 used to state Nesterenko's algebraic independence theorem",
         "module": "Mathlib.RingTheory.MvPolynomial.Basic"
       }
     ],
     "originalContributions": [
-      "Theorem e_root_of_vieta_quadratic: e satisfies T² - (e+π)T + eπ = 0 (proved by ring)",
-      "Theorem pi_root_of_vieta_quadratic: π satisfies the same quadratic (proved by ring)",
+      "Theorem e_root_of_vieta_quadratic: e satisfies T\u00b2 - (e+\u03c0)T + e\u03c0 = 0 (proved by ring)",
+      "Theorem pi_root_of_vieta_quadratic: \u03c0 satisfies the same quadratic (proved by ring)",
       "Theorem algebraic_root_of_algebraic_quadratic: root of quadratic with algebraic coefficients is algebraic (PROVED via integral extension transitivity: use isAlgebraic_iff_isIntegral, Algebra.adjoin, Algebra.IsIntegral, and isIntegral_trans)",
-      "Theorem e_plus_pi_or_e_times_pi_transcendental: at least one of e+π, eπ is transcendental (proved from e's transcendence + Vieta identity)",
-      "Theorem sum_transcendental_if_prod_algebraic: if eπ algebraic, then e+π transcendental",
-      "Theorem prod_transcendental_if_sum_algebraic: if e+π algebraic, then eπ transcendental",
+      "Theorem e_plus_pi_or_e_times_pi_transcendental: at least one of e+\u03c0, e\u03c0 is transcendental (proved from e's transcendence + Vieta identity)",
+      "Theorem sum_transcendental_if_prod_algebraic: if e\u03c0 algebraic, then e+\u03c0 transcendental",
+      "Theorem prod_transcendental_if_sum_algebraic: if e+\u03c0 algebraic, then e\u03c0 transcendental",
       "Axioms: Schanuel's Conjecture (stated) and Nesterenko's Theorem (1996, stated)",
-      "Open conjectures: e+π transcendental, eπ transcendental, e+π irrational (all unknown)",
-      "gammaQuarter: noncomputable definition of Re(Γ(1/4)) for Nesterenko's theorem statement",
-      "pi_irrational_from_mathlib: π is irrational, derived directly from Mathlib's irrational_pi",
-      "e_pi_algebraicallyIndependent: definition — for all p ∈ MvPolynomial (Fin 2) ℚ, aeval [e, π] p = 0 → p = 0",
-      "e_plus_pi_transcendental_from_independence: algebraic independence of (e,π) → e+π is transcendental (polynomial lifting via aeval_algHom_apply)",
-      "e_times_pi_transcendental_from_independence: algebraic independence of (e,π) → e·π is transcendental",
-      "e_plus_pi_irrational_from_independence: algebraic independence of (e,π) → e+π is irrational",
-      "summary_independence_implies: combined theorem — algebraic independence implies all three results simultaneously"
+      "Open conjectures: e+\u03c0 transcendental, e\u03c0 transcendental, e+\u03c0 irrational (all unknown)",
+      "gammaQuarter: noncomputable definition of Re(\u0393(1/4)) for Nesterenko's theorem statement",
+      "pi_irrational_from_mathlib: \u03c0 is irrational, derived directly from Mathlib's irrational_pi",
+      "e_pi_algebraicallyIndependent: definition \u2014 for all p \u2208 MvPolynomial (Fin 2) \u211a, aeval [e, \u03c0] p = 0 \u2192 p = 0",
+      "e_plus_pi_transcendental_from_independence: algebraic independence of (e,\u03c0) \u2192 e+\u03c0 is transcendental (polynomial lifting via aeval_algHom_apply)",
+      "e_times_pi_transcendental_from_independence: algebraic independence of (e,\u03c0) \u2192 e\u00b7\u03c0 is transcendental",
+      "e_plus_pi_irrational_from_independence: algebraic independence of (e,\u03c0) \u2192 e+\u03c0 is irrational",
+      "summary_independence_implies: combined theorem \u2014 algebraic independence implies all three results simultaneously"
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 1,
@@ -68,17 +68,17 @@
     "assumptions": "1 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "In 1873, Charles Hermite proved that e is transcendental — the first proof that a 'naturally occurring' constant is not a root of any polynomial with integer coefficients. In 1882, Ferdinand von Lindemann extended the method to prove π is transcendental, finally settling the ancient problem of squaring the circle.\n\nYet despite knowing both e and π are transcendental, the arithmetic combination e + π = 5.8598... has resisted all attempts at classification for over 140 years. The difficulty is fundamental: our tools for proving transcendence (Hermite-Lindemann, Gelfond-Schneider, Baker's theorem) work by showing a number cannot satisfy ANY polynomial equation. For a sum like e + π, we'd need to show both e and π cannot conspire to produce an algebraic value — and current theory lacks the tools for this.\n\nThe best conditional result is Schanuel's Conjecture (1966), which if proven would immediately give that e and π are algebraically independent, hence e + π is transcendental. But Schanuel remains unproven despite decades of effort. In 1996, Yuri Nesterenko proved the spectacular result that π, e^π, and Γ(1/4) are algebraically independent — but this involves e^π ≈ 23.14, not e ≈ 2.71.",
-    "problemStatement": "**Open Question (e-transcendental-oq-01)**: Is e + π transcendental?\n\nThe value e + π ≈ 5.8598744820488... is well-defined, but its arithmetic nature is unknown.\n\n**What IS known**:\n- e is transcendental (Hermite 1873) ✓\n- π is transcendental (Lindemann 1882) ✓\n- e^π is transcendental (Gelfond-Schneider 1934) ✓\n- At least one of e+π, eπ is transcendental (elementary, proved here) ✓\n- π, e^π, Γ(1/4) are algebraically independent (Nesterenko 1996) ✓\n\n**Open** (unknown as of 2026):\n- Is e + π irrational? (?)\n- Is e + π transcendental? (?)\n- Is e · π transcendental? (?)\n- Are e and π algebraically independent? (? — follows from Schanuel's Conjecture)",
-    "text": "Is the number e + π = 5.8598... transcendental? Despite both e (Hermite, 1873) and π (Lindemann, 1882) being individually transcendental, the transcendence of their sum remains one of the most tantalizing open problems in mathematics. We prove what IS known: at least one of e+π or e·π must be transcendental — a clean consequence of e's transcendence via the Vieta symmetric polynomial identity.",
-    "proofStrategy": "We formalize the known partial results:\n\n**1. Vieta's Symmetric Polynomial Identity** (fully proved, no sorry):\nThe numbers e and π are the two roots of the monic quadratic\n  T² - (e+π)·T + (e·π) = 0\nThis follows from Vieta's formulas: for a quadratic with roots α, β,\n  T² - (α+β)T + αβ = (T-α)(T-β).\nSubstituting T = e: e² - (e+π)e + eπ = 0. This is proved by `ring`.\n\n**2. Algebraic Closure Lemma** (PROVED in Lean 4):\nIf s = e+π and p = eπ are both algebraic over ℚ, and x satisfies x² - sx + p = 0,\nthen x is algebraic over ℚ. Proved via: isAlgebraic_iff_isIntegral converts to integral,\nthen Algebra.adjoin ℚ {s, p} forms a subalgebra integral over ℚ (since s, p are integral),\nx is integral over this subalgebra (satisfies monic quadratic), then isIntegral_trans concludes.\n\n**3. Main Conditional Theorem** (proved using the above):\nAt least one of e+π or eπ is transcendental. Proof by contradiction:\n- Assume both are algebraic\n- Then e satisfies x² - (e+π)x + eπ = 0 with algebraic coefficients\n- By (2), e is algebraic — contradicting Hermite's theorem ✗\n\n**4. Open Conjectures** (sorry — genuinely open):\n- e + π transcendental: unknown\n- e · π transcendental: unknown\n- Irrationality of e + π: also unknown (surprising!)",
+    "historicalContext": "In 1873, Charles Hermite proved that e is transcendental \u2014 the first proof that a 'naturally occurring' constant is not a root of any polynomial with integer coefficients. In 1882, Ferdinand von Lindemann extended the method to prove \u03c0 is transcendental, finally settling the ancient problem of squaring the circle.\n\nYet despite knowing both e and \u03c0 are transcendental, the arithmetic combination e + \u03c0 = 5.8598... has resisted all attempts at classification for over 140 years. The difficulty is fundamental: our tools for proving transcendence (Hermite-Lindemann, Gelfond-Schneider, Baker's theorem) work by showing a number cannot satisfy ANY polynomial equation. For a sum like e + \u03c0, we'd need to show both e and \u03c0 cannot conspire to produce an algebraic value \u2014 and current theory lacks the tools for this.\n\nThe best conditional result is Schanuel's Conjecture (1966), which if proven would immediately give that e and \u03c0 are algebraically independent, hence e + \u03c0 is transcendental. But Schanuel remains unproven despite decades of effort. In 1996, Yuri Nesterenko proved the spectacular result that \u03c0, e^\u03c0, and \u0393(1/4) are algebraically independent \u2014 but this involves e^\u03c0 \u2248 23.14, not e \u2248 2.71.",
+    "problemStatement": "**Open Question (e-transcendental-oq-01)**: Is e + \u03c0 transcendental?\n\nThe value e + \u03c0 \u2248 5.8598744820488... is well-defined, but its arithmetic nature is unknown.\n\n**What IS known**:\n- e is transcendental (Hermite 1873) \u2713\n- \u03c0 is transcendental (Lindemann 1882) \u2713\n- e^\u03c0 is transcendental (Gelfond-Schneider 1934) \u2713\n- At least one of e+\u03c0, e\u03c0 is transcendental (elementary, proved here) \u2713\n- \u03c0, e^\u03c0, \u0393(1/4) are algebraically independent (Nesterenko 1996) \u2713\n\n**Open** (unknown as of 2026):\n- Is e + \u03c0 irrational? (?)\n- Is e + \u03c0 transcendental? (?)\n- Is e \u00b7 \u03c0 transcendental? (?)\n- Are e and \u03c0 algebraically independent? (? \u2014 follows from Schanuel's Conjecture)",
+    "text": "Is the number e + \u03c0 = 5.8598... transcendental? Despite both e (Hermite, 1873) and \u03c0 (Lindemann, 1882) being individually transcendental, the transcendence of their sum remains one of the most tantalizing open problems in mathematics. We prove what IS known: at least one of e+\u03c0 or e\u00b7\u03c0 must be transcendental \u2014 a clean consequence of e's transcendence via the Vieta symmetric polynomial identity.",
+    "proofStrategy": "We formalize the known partial results:\n\n**1. Vieta's Symmetric Polynomial Identity** (fully proved, no sorry):\nThe numbers e and \u03c0 are the two roots of the monic quadratic\n  T\u00b2 - (e+\u03c0)\u00b7T + (e\u00b7\u03c0) = 0\nThis follows from Vieta's formulas: for a quadratic with roots \u03b1, \u03b2,\n  T\u00b2 - (\u03b1+\u03b2)T + \u03b1\u03b2 = (T-\u03b1)(T-\u03b2).\nSubstituting T = e: e\u00b2 - (e+\u03c0)e + e\u03c0 = 0. This is proved by `ring`.\n\n**2. Algebraic Closure Lemma** (PROVED in Lean 4):\nIf s = e+\u03c0 and p = e\u03c0 are both algebraic over \u211a, and x satisfies x\u00b2 - sx + p = 0,\nthen x is algebraic over \u211a. Proved via: isAlgebraic_iff_isIntegral converts to integral,\nthen Algebra.adjoin \u211a {s, p} forms a subalgebra integral over \u211a (since s, p are integral),\nx is integral over this subalgebra (satisfies monic quadratic), then isIntegral_trans concludes.\n\n**3. Main Conditional Theorem** (proved using the above):\nAt least one of e+\u03c0 or e\u03c0 is transcendental. Proof by contradiction:\n- Assume both are algebraic\n- Then e satisfies x\u00b2 - (e+\u03c0)x + e\u03c0 = 0 with algebraic coefficients\n- By (2), e is algebraic \u2014 contradicting Hermite's theorem \u2717\n\n**4. Open Conjectures** (sorry \u2014 genuinely open):\n- e + \u03c0 transcendental: unknown\n- e \u00b7 \u03c0 transcendental: unknown\n- Irrationality of e + \u03c0: also unknown (surprising!)",
     "keyInsights": [
-      "The Vieta identity e² - (e+π)e + eπ = 0 is a provable ring identity — e and π are roots of the same quadratic with 'symmetric' coefficients",
-      "If both e+π and eπ were algebraic, then e would be algebraic over ℚ(e+π, eπ) ⊆ ℚ̄, making e algebraic — contradicting Hermite",
-      "The same argument works with π: if both are algebraic, π is also algebraic — contradicting Lindemann",
-      "Schanuel's Conjecture: if z₁,...,zₙ ∈ ℂ are ℚ-linearly independent, tr.deg ℚ(z₁,...,zₙ,e^z₁,...,e^zₙ)/ℚ ≥ n. Taking z₁=1, z₂=iπ gives tr.deg ℚ(π,e)/ℚ ≥ 2, i.e., e and π are algebraically independent",
-      "Nesterenko (1996): π, e^π, Γ(1/4) algebraically independent — the strongest unconditional transcendence result for classical constants",
-      "Even the IRRATIONALITY of e+π is open! If e+π = q ∈ ℚ, then π = q - e. This would require knowing that e and π differ by an irrational — not provable from current tools"
+      "The Vieta identity e\u00b2 - (e+\u03c0)e + e\u03c0 = 0 is a provable ring identity \u2014 e and \u03c0 are roots of the same quadratic with 'symmetric' coefficients",
+      "If both e+\u03c0 and e\u03c0 were algebraic, then e would be algebraic over \u211a(e+\u03c0, e\u03c0) \u2286 \u211a\u0304, making e algebraic \u2014 contradicting Hermite",
+      "The same argument works with \u03c0: if both are algebraic, \u03c0 is also algebraic \u2014 contradicting Lindemann",
+      "Schanuel's Conjecture: if z\u2081,...,z\u2099 \u2208 \u2102 are \u211a-linearly independent, tr.deg \u211a(z\u2081,...,z\u2099,e^z\u2081,...,e^z\u2099)/\u211a \u2265 n. Taking z\u2081=1, z\u2082=i\u03c0 gives tr.deg \u211a(\u03c0,e)/\u211a \u2265 2, i.e., e and \u03c0 are algebraically independent",
+      "Nesterenko (1996): \u03c0, e^\u03c0, \u0393(1/4) algebraically independent \u2014 the strongest unconditional transcendence result for classical constants",
+      "Even the IRRATIONALITY of e+\u03c0 is open! If e+\u03c0 = q \u2208 \u211a, then \u03c0 = q - e. This would require knowing that e and \u03c0 differ by an irrational \u2014 not provable from current tools"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility)",
@@ -91,21 +91,21 @@
       "title": "Problem Statement and Context",
       "startLine": 1,
       "endLine": 68,
-      "summary": "Overview of the e+π transcendence question, connection to Schanuel's Conjecture, Nesterenko's Theorem, and current status."
+      "summary": "Overview of the e+\u03c0 transcendence question, connection to Schanuel's Conjecture, Nesterenko's Theorem, and current status."
     },
     {
       "id": "foundational-axioms",
       "title": "Foundational Axioms",
       "startLine": 71,
       "endLine": 82,
-      "summary": "e and π are transcendental over ℚ (Hermite 1873, Lindemann 1882) — re-stated as axioms for self-containedness."
+      "summary": "e and \u03c0 are transcendental over \u211a (Hermite 1873, Lindemann 1882) \u2014 re-stated as axioms for self-containedness."
     },
     {
       "id": "vieta-identity",
       "title": "Symmetric Polynomial Identity (Vieta)",
       "startLine": 85,
       "endLine": 121,
-      "summary": "Fully proved: e and π are roots of T² - (e+π)T + eπ = 0. Proved by ring — no sorry, no axioms."
+      "summary": "Fully proved: e and \u03c0 are roots of T\u00b2 - (e+\u03c0)T + e\u03c0 = 0. Proved by ring \u2014 no sorry, no axioms."
     },
     {
       "id": "algebraic-closure",
@@ -119,42 +119,42 @@
       "title": "At Least One is Transcendental",
       "startLine": 152,
       "endLine": 189,
-      "summary": "Theorem: at least one of e+π, eπ is transcendental over ℚ. Proved by contradiction using Vieta identity + algebraic closure lemma + e's transcendence."
+      "summary": "Theorem: at least one of e+\u03c0, e\u03c0 is transcendental over \u211a. Proved by contradiction using Vieta identity + algebraic closure lemma + e's transcendence."
     },
     {
       "id": "consequences",
       "title": "Conditional Consequences",
       "startLine": 192,
       "endLine": 212,
-      "summary": "If eπ is algebraic, then e+π is transcendental. If e+π is algebraic, then eπ is transcendental."
+      "summary": "If e\u03c0 is algebraic, then e+\u03c0 is transcendental. If e+\u03c0 is algebraic, then e\u03c0 is transcendental."
     },
     {
       "id": "open-conjectures",
       "title": "The Open Conjectures",
       "startLine": 215,
       "endLine": 232,
-      "summary": "Three open conjectures with sorry: e+π transcendental, eπ transcendental, e+π irrational. All unknown as of 2026."
+      "summary": "Three open conjectures with sorry: e+\u03c0 transcendental, e\u03c0 transcendental, e+\u03c0 irrational. All unknown as of 2026."
     },
     {
       "id": "schanuel-nesterenko",
       "title": "Schanuel's Conjecture and Nesterenko's Theorem",
       "startLine": 235,
       "endLine": 275,
-      "summary": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: π, e^π, Γ(1/4) algebraically independent."
+      "summary": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: \u03c0, e^\u03c0, \u0393(1/4) algebraically independent."
     },
     {
       "id": "pi-irrationality",
-      "title": "π Irrationality from Mathlib",
+      "title": "\u03c0 Irrationality from Mathlib",
       "startLine": 380,
       "endLine": 395,
-      "summary": "Direct theorem: π is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational."
+      "summary": "Direct theorem: \u03c0 is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational."
     },
     {
       "id": "algebraic-independence",
       "title": "Algebraic Independence Framework",
       "startLine": 396,
       "endLine": 500,
-      "summary": "Definition of e_pi_algebraicallyIndependent (no nonzero polynomial in MvPolynomial (Fin 2) ℚ vanishes at [e, π]). Three conditional theorems proved: e+π transcendental, e·π transcendental, e+π irrational — all under the assumption that e and π are algebraically independent. Technique: polynomial lifting via Polynomial.aeval_algHom_apply."
+      "summary": "Definition of e_pi_algebraicallyIndependent (no nonzero polynomial in MvPolynomial (Fin 2) \u211a vanishes at [e, \u03c0]). Three conditional theorems proved: e+\u03c0 transcendental, e\u00b7\u03c0 transcendental, e+\u03c0 irrational \u2014 all under the assumption that e and \u03c0 are algebraically independent. Technique: polynomial lifting via Polynomial.aeval_algHom_apply."
     },
     {
       "id": "summary",
@@ -165,15 +165,15 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the current state of knowledge about e + π. The key provable result is `e_plus_pi_or_e_times_pi_transcendental`: at least one of e+π or eπ must be transcendental. The proof is elegant — it uses only the transcendence of e (Hermite 1873) and the Vieta symmetric polynomial identity. The main open conjecture (`e_plus_pi_transcendental`) carries a sorry reflecting its genuine unknown status.",
-    "implications": "**Theoretical Significance**: **If e + π is proved transcendental**:\n\n**For mathematics**: Would almost certainly require either a proof of Schanuel's Conjecture or a fundamentally new technique. Given Schanuel's depth, this would be a landmark result in transcendental number theory.\n\n**For Lean/Mathlib**: Would be a significant formalization milestone.\n\nThe proof would likely require `Algebra.IsAlgebraic.trans`, the algebraic closure, and new Mathlib lemmas about transcendence degree.\n\n**For related problems**: The same technique proving e+π transcendental might also give eπ, e^e, γ (Euler-Mascheroni) and other classical constants.\n\n**Schanuel's Conjecture scope**: Schanuel would simultaneously prove e+π, eπ, e^e, π^e, and infinitely many other combinations transcendental. It is considered one of the most ambitious conjectures in number theory.",
+    "summary": "This formalization captures the current state of knowledge about e + \u03c0. The key provable result is `e_plus_pi_or_e_times_pi_transcendental`: at least one of e+\u03c0 or e\u03c0 must be transcendental. The proof is elegant \u2014 it uses only the transcendence of e (Hermite 1873) and the Vieta symmetric polynomial identity. The main open conjecture (`e_plus_pi_transcendental`) carries a sorry reflecting its genuine unknown status.",
+    "implications": "**Theoretical Significance**: **If e + \u03c0 is proved transcendental**:\n\n**For mathematics**: Would almost certainly require either a proof of Schanuel's Conjecture or a fundamentally new technique. Given Schanuel's depth, this would be a landmark result in transcendental number theory.\n\n**For Lean/Mathlib**: Would be a significant formalization milestone.\n\nThe proof would likely require `Algebra.IsAlgebraic.trans`, the algebraic closure, and new Mathlib lemmas about transcendence degree.\n\n**For related problems**: The same technique proving e+\u03c0 transcendental might also give e\u03c0, e^e, \u03b3 (Euler-Mascheroni) and other classical constants.\n\n**Schanuel's Conjecture scope**: Schanuel would simultaneously prove e+\u03c0, e\u03c0, e^e, \u03c0^e, and infinitely many other combinations transcendental. It is considered one of the most ambitious conjectures in number theory.",
     "openQuestions": [
-      "Is e + π irrational? (Surprisingly open — not known even at this weaker level)",
-      "Is e · π transcendental?",
-      "Are e and π algebraically independent? (Would follow from Schanuel's Conjecture)",
+      "Is e + \u03c0 irrational? (Surprisingly open \u2014 not known even at this weaker level)",
+      "Is e \u00b7 \u03c0 transcendental?",
+      "Are e and \u03c0 algebraically independent? (Would follow from Schanuel's Conjecture)",
       "Is e^e transcendental?",
       "Can the remaining foundational axioms (e_transcendental_q, pi_transcendental_q) be proved from Mathlib once Lindemann-Weierstrass is formalized?",
-      "What is the transcendence degree of ℚ(e, π) over ℚ? (Expected: 2, but even transcendence degree ≥ 1 for ℚ(e+π) requires knowing e+π is transcendental)"
+      "What is the transcendence degree of \u211a(e, \u03c0) over \u211a? (Expected: 2, but even transcendence degree \u2265 1 for \u211a(e+\u03c0) requires knowing e+\u03c0 is transcendental)"
     ]
   },
   "leanFile": {
@@ -206,12 +206,12 @@
     {
       "targetId": "e-transcendental",
       "relationship": "extends",
-      "description": "Extends the base e-transcendental formalization to the open question of e+π, using Vieta's symmetric polynomial identity and the algebraic closure lemma"
+      "description": "Extends the base e-transcendental formalization to the open question of e+\u03c0, using Vieta's symmetric polynomial identity and the algebraic closure lemma"
     },
     {
       "targetId": "pi-transcendental",
       "relationship": "foundational",
-      "description": "π's transcendence (Lindemann 1882) is one of the two foundational facts; the open question is whether e+π (or eπ) inherits transcendence from its components"
+      "description": "\u03c0's transcendence (Lindemann 1882) is one of the two foundational facts; the open question is whether e+\u03c0 (or e\u03c0) inherits transcendence from its components"
     },
     {
       "targetId": "hermite-lindemann",
@@ -220,18 +220,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "e-transcendental",
-      "relationship": "Base formalization of e's transcendence (Hermite 1873); this OQ-01 investigates the open question of e+π"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "π's transcendence (Lindemann 1882); together with e-transcendental, provides the two foundational facts for the Vieta argument"
-    },
-    {
-      "id": "hermite-lindemann",
-      "relationship": "The Hermite-Lindemann-Weierstrass theorem, once fully formalized in Mathlib, would eliminate the foundational axioms in this entry"
-    },
+    "e-transcendental",
+    "pi-transcendental",
+    "hermite-lindemann",
     "e-transcendental",
     "pi-transcendental",
     "hermite-lindemann"
@@ -241,7 +232,7 @@
       "authors": "Charles Hermite",
       "title": "Sur la fonction exponentielle",
       "year": "1873",
-      "venue": "Comptes Rendus de l'Académie des Sciences",
+      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences",
       "note": "First proof of the transcendence of e"
     },
     {
@@ -249,14 +240,14 @@
       "title": "Modular functions and transcendence questions",
       "year": "1996",
       "venue": "Matematicheskii Sbornik",
-      "note": "Proved algebraic independence of π, e^π, and Γ(1/4) — the strongest unconditional transcendence result for classical constants"
+      "note": "Proved algebraic independence of \u03c0, e^\u03c0, and \u0393(1/4) \u2014 the strongest unconditional transcendence result for classical constants"
     },
     {
       "authors": "Serge Lang",
       "title": "Introduction to Transcendental Numbers",
       "year": "1966",
       "venue": "Addison-Wesley",
-      "note": "Standard reference for transcendental number theory including Schanuel's conjecture and its implications for e+π"
+      "note": "Standard reference for transcendental number theory including Schanuel's conjecture and its implications for e+\u03c0"
     }
   ]
 }

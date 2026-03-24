@@ -168,22 +168,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "erdos-926",
-      "relationship": "The H_k graph is G_k plus one central vertex; ex(n, G_k) \u2264 ex(n, H_k), so bounds for H_k apply to G_k. Problem 926 conjectures ex(n, H_k) \u226a n^{3/2}, the same threshold problem 1021 seeks to beat."
-    },
-    {
-      "slug": "erdos-572",
-      "relationship": "The even-cycle extremal lower bounds ex(n, C_{2k}) \u226b n^{1+1/k} (proved for k=3,5 by Benson 1966) tightly bracket the C_6 = G_3 case of problem 1021 from below."
-    },
-    {
-      "slug": "erdos-113",
-      "relationship": "Erd\u0151s-Simonovits's bipartite degeneracy conjecture (that ex(n,G) \u226a n^{3/2} iff G is 2-degenerate) is the broader context for why G_k (2-degenerate) should satisfy the sub-KST bound."
-    },
-    {
-      "slug": "erdos-1080",
-      "relationship": "Direct study of C_6 in bipartite graphs, closely related to the k=3 case of problem 1021 and the role of projective-plane constructions in achieving extremal bounds."
-    }
+    "erdos-926",
+    "erdos-572",
+    "erdos-113",
+    "erdos-1080"
   ],
   "references": [
     {

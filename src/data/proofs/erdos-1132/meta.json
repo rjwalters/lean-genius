@@ -181,16 +181,8 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "fourier-series",
-      "title": "Fourier Series",
-      "relationship": "Structural analogy: Fourier partial sums and Lagrange interpolants share the Lebesgue function as a common error amplification tool. The Dirichlet kernel in Fourier analysis plays a role analogous to Lagrange basis polynomials, and the (2/\u03c0)log(n) Lebesgue constant growth rate arises in both settings."
-    },
-    {
-      "slug": "lebesgue-measure",
-      "title": "Lebesgue Measure",
-      "relationship": "Essential prerequisite: the 'almost everywhere' assertion in Question 2 is a statement in Lebesgue measure theory. The formalization of Lebesgue measure underpins any rigorous treatment of the measure-zero exceptional set in #1132."
-    }
+    "fourier-series",
+    "lebesgue-measure"
   ],
   "references": [
     {

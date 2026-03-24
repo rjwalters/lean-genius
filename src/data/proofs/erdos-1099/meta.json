@@ -197,18 +197,8 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "bertrands-postulate",
-      "title": "Bertrand's Postulate",
-      "relationship": "contrast",
-      "description": "Bertrand's Postulate guarantees a prime between n and 2n, ensuring the worst-case divisor gap for primes is bounded by a factor of 2. This contrasts with Vose's construction: while primes have maximally bad divisor ratios (only divisors 1 and p), Vose found integers with all consecutive divisor ratios close to 1."
-    },
-    {
-      "slug": "erdos-728",
-      "title": "Erd\u0151s #728: Factorial Divisibility with Logarithmic Gap",
-      "relationship": "related",
-      "description": "Erd\u0151s #728 studies divisibility of n! and related factorial expressions. The role of n! and lcm{1,...,n} as candidate sequences with bounded h_\u03b1 is one of the main open directions from #1099. Both problems use factorial structure as a key tool."
-    }
+    "bertrands-postulate",
+    "erdos-728"
   ],
   "references": [
     {

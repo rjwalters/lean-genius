@@ -245,22 +245,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-65",
-      "relationship": "Problem #65 studies cycle length diversity in dense graphs via \u03a3 1/a\u1d62. Both involve Gy\u00e1rf\u00e1s's work on cycle structure and use the Liu-Montgomery even-cycle spectrum theorem as a central tool."
-    },
-    {
-      "id": "erdos-72",
-      "relationship": "Problem #72 asks about unavoidable cycle lengths for sparse sets A at high average degree \u2014 the direct generalization of #64's question about A = {4,8,16,...}."
-    },
-    {
-      "id": "erdos-1012",
-      "relationship": "Problem #1012 (Woodall) concerns long near-Hamiltonian cycles in dense graphs. Complementary to #64: dense-regime cycle forcing vs. sparse-regime power-of-two forcing."
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "The regularity lemma is the core analytic tool behind Liu-Montgomery's partial resolution of #64 for large minimum degree."
-    }
+    "erdos-65",
+    "erdos-72",
+    "erdos-1012",
+    "szemeredi-regularity"
   ],
   "references": [
     {

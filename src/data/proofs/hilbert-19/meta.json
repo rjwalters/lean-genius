@@ -60,7 +60,12 @@
       "Regularity is a 'local' property - only depends on local ellipticity",
       "For systems (not scalar equations), regularity can fail - De Giorgi's counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Functional analysis",
+      "Partial differential equations",
+      "Regularity theory",
+      "Sobolev spaces"
+    ]
   },
   "sections": [
     {
@@ -167,15 +172,15 @@
       "authors": "Hilbert, David",
       "title": "Mathematische Probleme",
       "year": "1900",
-      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu G\u00f6ttingen, 253\u2013297",
       "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
     },
     {
       "authors": "De Giorgi, Ennio",
-      "title": "Sulla differenziabilità e l'analiticità delle estremali degli integrali multipli regolari",
+      "title": "Sulla differenziabilit\u00e0 e l'analiticit\u00e0 delle estremali degli integrali multipli regolari",
       "year": "1957",
-      "venue": "Memorie della Accademia delle Scienze di Torino 3, 25–43",
-      "note": "Proved regularity of solutions to elliptic PDEs — a key result toward Hilbert's 19th problem"
+      "venue": "Memorie della Accademia delle Scienze di Torino 3, 25\u201343",
+      "note": "Proved regularity of solutions to elliptic PDEs \u2014 a key result toward Hilbert's 19th problem"
     }
   ]
 }

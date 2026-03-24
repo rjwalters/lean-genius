@@ -196,14 +196,6 @@
     }
   ],
   "relatedProofs": [
-    {
-      "proofId": "collatz-structured",
-      "relationship": "Provides Lean formalizations of Collatz sequences for structured values (powers of 2, specific small cases). Serves as a technical companion to the Collatz connection noted in #1134: both use inductive Lean definitions to capture closure properties of iteratively defined sets, and both encode affine dynamics (though Collatz is deterministic). The proof infrastructure \u2014 closure lemmas, example verification by rfl \u2014 mirrors the approach in #1134."
-    },
-    {
-      "proofId": "erdos-1123",
-      "relationship": "Studies Boolean algebras P(\u2115)/I modulo density-zero ideals, asking whether the density-zero ideal and log-density-zero ideal yield isomorphic quotients. Problem #1134 produces a concrete set A with lower density exactly 0 (not merely log-density 0), illustrating why these two ideals can behave differently. The formalization in #1123 uses the same `lowerDensity` infrastructure as #1134."
-    },
     "erdos-481",
     "erdos-1135",
     "erdos-1110",

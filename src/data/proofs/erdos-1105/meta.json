@@ -1,10 +1,10 @@
 {
   "id": "erdos-1105",
-  "title": "Erdős Problem #1105: Anti-Ramsey Numbers for Cycles and Paths",
+  "title": "Erd\u0151s Problem #1105: Anti-Ramsey Numbers for Cycles and Paths",
   "slug": "erdos-1105",
   "description": "Determine exact formulas for the anti-Ramsey numbers AR(n, C_k) and AR(n, P_k), where AR(n,G) is the maximum number of colors in a rainbow-G-free edge-coloring of K_n.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1105",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1105Problem.lean",
@@ -64,16 +64,16 @@
     "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős, Simonovits, and Sós introduced anti-Ramsey theory in their 1975 paper, asking for the maximum number of colors in an edge-coloring of K_n that avoids a rainbow (all-distinct-colors) copy of a given graph G.\n\nThe problem connects Ramsey theory (which minimizes colors to force monochromatic subgraphs) with extremal graph theory. While classical Ramsey theory asks 'how many colors before monochromatic H?', anti-Ramsey asks 'how many colors while avoiding rainbow H?'\n\nThe case AR(n, C_3) = n - 1 was proven in the original paper. The general cycle formula remains open, while the path formula has seen recent progress with Yuan's 2021 announcement.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\n**For cycles (C_k):** Is it true that\n$$\\mathrm{AR}(n, C_k) = \\left(\\frac{k-2}{2} + \\frac{1}{k-1}\\right)n + O(1)?$$\n\n**For paths (P_k):** If n ≥ k ≥ 5, is\n$$\\mathrm{AR}(n, P_k) = \\max\\left(\\binom{k-2}{2}+1, \\binom{\\ell-1}{2}+(\\ell-1)(n-\\ell+1)+\\epsilon\\right)$$\nwhere ℓ = ⌊(k-1)/2⌋, ε = 1 for odd k, ε = 2 for even k?\n\n**Definitions:**\n- AR(n,G) = max colors in a rainbow-G-free edge-coloring of K_n\n- Rainbow copy: all edges have distinct colors",
+    "historicalContext": "Erd\u0151s, Simonovits, and S\u00f3s introduced anti-Ramsey theory in their 1975 paper, asking for the maximum number of colors in an edge-coloring of K_n that avoids a rainbow (all-distinct-colors) copy of a given graph G.\n\nThe problem connects Ramsey theory (which minimizes colors to force monochromatic subgraphs) with extremal graph theory. While classical Ramsey theory asks 'how many colors before monochromatic H?', anti-Ramsey asks 'how many colors while avoiding rainbow H?'\n\nThe case AR(n, C_3) = n - 1 was proven in the original paper. The general cycle formula remains open, while the path formula has seen recent progress with Yuan's 2021 announcement.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\n**For cycles (C_k):** Is it true that\n$$\\mathrm{AR}(n, C_k) = \\left(\\frac{k-2}{2} + \\frac{1}{k-1}\\right)n + O(1)?$$\n\n**For paths (P_k):** If n \u2265 k \u2265 5, is\n$$\\mathrm{AR}(n, P_k) = \\max\\left(\\binom{k-2}{2}+1, \\binom{\\ell-1}{2}+(\\ell-1)(n-\\ell+1)+\\epsilon\\right)$$\nwhere \u2113 = \u230a(k-1)/2\u230b, \u03b5 = 1 for odd k, \u03b5 = 2 for even k?\n\n**Definitions:**\n- AR(n,G) = max colors in a rainbow-G-free edge-coloring of K_n\n- Rainbow copy: all edges have distinct colors",
     "text": "Determine exact formulas for the anti-Ramsey numbers AR(n, C_k) and AR(n, P_k), where AR(n,G) is the maximum number of colors in a rainbow-G-free edge-coloring of K_n.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Basics:** Define SimpleGraph as adjacency relation on Fin n, with CompleteGraph K_n\n\n2. **Paths and Cycles:** PathGraph P_k and CycleGraph C_k as specific structures\n\n3. **Embeddings:** GraphEmbedding structure for copies of H in K_n\n\n4. **Rainbow:** IsRainbow and AvoidsRainbow predicates\n\n5. **Anti-Ramsey:** antiRamsey n k H as supremum over valid colorings\n\n6. **Conjectures:** CycleConjecture (asymptotic) and PathConjecture (exact)",
     "keyInsights": [
       "**Anti-Ramsey vs Ramsey:** Opposite extremal questions - Ramsey minimizes colors to force monochromatic, anti-Ramsey maximizes to avoid rainbow",
       "**Cycle Formula:** Linear in n with coefficient (k-2)/2 + 1/(k-1), known exactly for k=3",
       "**Path Formula:** Explicit with two cases depending on n and k, involving binomial terms",
-      "**Turán Connection:** AR(n,H) ≥ ex(n,H) + 1 links to extremal graph theory",
-      "**Recent Progress:** Yuan (2021) announced full path formula proof for n ≥ k ≥ 5"
+      "**Tur\u00e1n Connection:** AR(n,H) \u2265 ex(n,H) + 1 links to extremal graph theory",
+      "**Recent Progress:** Yuan (2021) announced full path formula proof for n \u2265 k \u2265 5"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -134,7 +134,7 @@
     },
     {
       "id": "turan",
-      "title": "Connection to Turán Numbers",
+      "title": "Connection to Tur\u00e1n Numbers",
       "summary": "turan definition, ar_turan_lower",
       "startLine": 203,
       "endLine": 219
@@ -155,11 +155,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1105 asks for exact formulas for anti-Ramsey numbers AR(n, C_k) and AR(n, P_k). The cycle formula is conjectured to be linear in n with a specific coefficient depending on k. The path formula is an explicit maximum of two terms.",
-    "implications": "Understanding anti-Ramsey numbers illuminates the structure of rainbow-free colorings and connects Ramsey theory with extremal graph theory. The Turán connection shows AR(n,H) bounds are related to H-free graphs.",
+    "summary": "Erd\u0151s Problem #1105 asks for exact formulas for anti-Ramsey numbers AR(n, C_k) and AR(n, P_k). The cycle formula is conjectured to be linear in n with a specific coefficient depending on k. The path formula is an explicit maximum of two terms.",
+    "implications": "Understanding anti-Ramsey numbers illuminates the structure of rainbow-free colorings and connects Ramsey theory with extremal graph theory. The Tur\u00e1n connection shows AR(n,H) bounds are related to H-free graphs.",
     "openQuestions": [
-      "Is AR(n, C_k) = ((k-2)/2 + 1/(k-1))n + O(1) for all k ≥ 3?",
-      "Is the path formula exact for all n ≥ k ≥ 5?",
+      "Is AR(n, C_k) = ((k-2)/2 + 1/(k-1))n + O(1) for all k \u2265 3?",
+      "Is the path formula exact for all n \u2265 k \u2265 5?",
       "What are the exact O(1) constants in the cycle formula?",
       "How does AR(n, G) behave for general graphs G?",
       "What is the relationship between AR(n, G) and chromatic properties?"
@@ -174,45 +174,33 @@
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Both problems concern asymptotic behavior of extremal numbers in complete graphs. Erdős #1014 studies ratio convergence of classical Ramsey numbers R(k, l), while #1105 studies the linear growth rate of anti-Ramsey numbers AR(n, C_k)."
+      "description": "Both problems concern asymptotic behavior of extremal numbers in complete graphs. Erd\u0151s #1014 studies ratio convergence of classical Ramsey numbers R(k, l), while #1105 studies the linear growth rate of anti-Ramsey numbers AR(n, C_k)."
     },
     {
       "targetId": "erdos-129",
       "relationship": "related",
-      "description": "Erdős #129 studies edge-colorings of K_n avoiding monochromatic cliques, a classical Ramsey coloring problem. Anti-Ramsey #1105 studies the opposite extremal: maximizing colors in K_n while avoiding rainbow cycles, making both problems extremal edge-coloring questions on complete graphs."
+      "description": "Erd\u0151s #129 studies edge-colorings of K_n avoiding monochromatic cliques, a classical Ramsey coloring problem. Anti-Ramsey #1105 studies the opposite extremal: maximizing colors in K_n while avoiding rainbow cycles, making both problems extremal edge-coloring questions on complete graphs."
     },
     {
       "targetId": "erdos-1008",
       "relationship": "related",
-      "description": "Erdős #1008 studies extremal numbers for C₄-free subgraphs (Zarankiewicz-type). Problem #1105 studies anti-Ramsey numbers for cycles C_k. Both concern extremal properties of cycles in complete or dense graphs, and the Turán connection AR(n,H) ≥ ex(n,H)+1 links these two frameworks."
+      "description": "Erd\u0151s #1008 studies extremal numbers for C\u2084-free subgraphs (Zarankiewicz-type). Problem #1105 studies anti-Ramsey numbers for cycles C_k. Both concern extremal properties of cycles in complete or dense graphs, and the Tur\u00e1n connection AR(n,H) \u2265 ex(n,H)+1 links these two frameworks."
     },
     {
       "targetId": "erdos-1009",
       "relationship": "related",
-      "description": "Erdős #1009 establishes bounds for edge-disjoint triangles beyond the Turán number. The Turán connection is central to #1105 as well: the lower bound AR(n, H) ≥ ex(n, H) + 1 links anti-Ramsey numbers to Turán extremal numbers, so results in Turán theory directly inform anti-Ramsey bounds."
+      "description": "Erd\u0151s #1009 establishes bounds for edge-disjoint triangles beyond the Tur\u00e1n number. The Tur\u00e1n connection is central to #1105 as well: the lower bound AR(n, H) \u2265 ex(n, H) + 1 links anti-Ramsey numbers to Tur\u00e1n extremal numbers, so results in Tur\u00e1n theory directly inform anti-Ramsey bounds."
     },
     {
       "targetId": "erdos-1012",
       "relationship": "related",
-      "description": "Erdős #1012 studies long cycles in dense graphs from an extremal perspective. Problem #1105 studies anti-Ramsey numbers for cycles C_k and paths P_k. Both problems address extremal properties of cycles in dense graphs, with #1012 focusing on cycle length and #1105 on rainbow-free colorings."
+      "description": "Erd\u0151s #1012 studies long cycles in dense graphs from an extremal perspective. Problem #1105 studies anti-Ramsey numbers for cycles C_k and paths P_k. Both problems address extremal properties of cycles in dense graphs, with #1012 focusing on cycle length and #1105 on rainbow-free colorings."
     }
   ],
   "relatedProofs": [
-    {
-      "targetId": "ramseys-theorem",
-      "relationshipType": "dual",
-      "notes": "Anti-Ramsey theory (maximize colors, avoid rainbow H) is the dual of classical Ramsey theory (minimize colors, force monochromatic H). The two theories were explicitly contrasted by Erdős, Simonovits, and Sós in the founding 1975 paper."
-    },
-    {
-      "targetId": "erdos-1079",
-      "relationshipType": "technique",
-      "notes": "Turán density arguments appear in both. The Turán number ex(n, H) provides a lower bound for anti-Ramsey numbers via AR(n,H) ≥ ex(n,H)+1, connecting neighborhood Turán density (Erdős #1079) to anti-Ramsey bounds."
-    },
-    {
-      "targetId": "erdos-136",
-      "relationshipType": "technique",
-      "notes": "The Erdős-Gyárfás function f(n,4,5) concerns edge-colorings of K_n with local color constraints, a structural cousin of anti-Ramsey coloring. Both involve optimizing the number of colors in edge-colorings of complete graphs subject to subgraph color restrictions."
-    },
+    "ramseys-theorem",
+    "erdos-1079",
+    "erdos-136",
     "ramseys-theorem",
     "erdos-1014",
     "erdos-129",
@@ -223,16 +211,16 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "M. Simonovits",
-        "V. T. Sós"
+        "V. T. S\u00f3s"
       ],
       "title": "Anti-Ramsey theorems",
       "venue": "Infinite and Finite Sets (Colloq., Keszthely, 1973), Vol. II",
       "year": 1975,
-      "pages": "633–643",
+      "pages": "633\u2013643",
       "publisher": "North-Holland, Amsterdam",
-      "series": "Colloq. Math. Soc. János Bolyai, Vol. 10",
+      "series": "Colloq. Math. Soc. J\u00e1nos Bolyai, Vol. 10",
       "notes": "Founding paper of anti-Ramsey theory. Proves AR(n, C_3) = n - 1, introduces the general framework, and states the cycle formula conjecture."
     },
     {
@@ -245,7 +233,7 @@
       "year": 2012,
       "volume": 312,
       "issue": 5,
-      "pages": "933–937",
+      "pages": "933\u2013937",
       "doi": "10.1016/j.disc.2011.09.014",
       "notes": "Determines anti-Ramsey numbers for perfect matchings; the matching case provides context for the path and cycle cases studied in Problem #1105."
     },
@@ -270,7 +258,7 @@
       "venue": "arXiv preprint",
       "year": 2021,
       "arxivId": "2102.02456",
-      "notes": "Announced the complete determination of the anti-Ramsey number for paths AR(n, P_k) for n ≥ k ≥ 5, as referenced in the formalization via the yuan_path_announced axiom."
+      "notes": "Announced the complete determination of the anti-Ramsey number for paths AR(n, P_k) for n \u2265 k \u2265 5, as referenced in the formalization via the yuan_path_announced axiom."
     },
     {
       "authors": [
@@ -282,9 +270,9 @@
       "year": 2002,
       "volume": 22,
       "issue": 3,
-      "pages": "445–449",
+      "pages": "445\u2013449",
       "doi": "10.1007/s004930200023",
-      "notes": "Proves the anti-Ramsey theorem for cycles using the connection with Turán numbers, establishing that AR(n, C_k) = ex(n, C_{k-1}) + 1 in certain regimes."
+      "notes": "Proves the anti-Ramsey theorem for cycles using the connection with Tur\u00e1n numbers, establishing that AR(n, C_k) = ex(n, C_{k-1}) + 1 in certain regimes."
     }
   ],
   "leanFile": {

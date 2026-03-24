@@ -78,7 +78,12 @@
       "**The regularity chain** ABP $\\to$ Krylov-Safonov ($C^\\alpha$) $\\to$ Evans-Krylov ($C^{2,\\alpha}$) $\\to$ Schauder ($C^\\infty$) parallels but does not reduce to the De Giorgi-Nash-Moser theory \u2014 entirely different techniques (contact sets, doubling of variables) replace energy methods",
       "**Bellman equations** from stochastic optimal control automatically satisfy the convexity hypothesis ($\\sup$ of affine functions is convex), making Evans-Krylov directly applicable to the most important class of fully nonlinear PDEs in applications"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Functional analysis",
+      "Partial differential equations",
+      "Regularity theory",
+      "Sobolev spaces"
+    ]
   },
   "sections": [
     {

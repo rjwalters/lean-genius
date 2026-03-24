@@ -146,28 +146,7 @@
       "description": "The Chinese Remainder Theorem provides tools for constructing simultaneous congruence solutions. Multi-interval congruence conditions of the form $\\prod_{i=a_j}^{b_j-1} i \\equiv 1 \\pmod{p}$ can be analyzed via CRT when multiple primes are considered."
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "wilsons-theorem",
-      "note": "Directly invoked in the Wilson connection section; verified computationally for the solution primes $p = 11$ and $p = 17$."
-    },
-    {
-      "target": "primitive-roots",
-      "note": "The cyclic structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ underlies the algebra of interval products modulo $p$ and the existence of elements of order 1."
-    },
-    {
-      "target": "erdos-1058",
-      "note": "Companion problem on factorial residues modulo primes; Luca (2001) resolved the analogous finite case for $n!+1$."
-    },
-    {
-      "target": "erdos-1055",
-      "note": "Smooth-number classification of primes by $p+1$ factorization depth; smooth structure of $p-1$ constrains the multiplicative group relevant to interval products."
-    },
-    {
-      "target": "chinese-remainder-constructive",
-      "note": "CRT framework for simultaneous modular constraints, applicable when lifting local solutions to families of primes."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "key": "Er79",

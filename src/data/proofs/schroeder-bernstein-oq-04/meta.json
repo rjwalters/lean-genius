@@ -22,7 +22,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Finset.subset_union_left",
-        "description": "S ⊆ S ∪ T for finsets",
+        "description": "S \u2286 S \u222a T for finsets",
         "module": "Mathlib.Data.Finset.Basic"
       },
       {
@@ -44,7 +44,7 @@
     "originalContributions": [
       "Decidable orbit classification via iterated expansion from base set",
       "Pigeonhole-based stabilization proof for monotone Finset sequences",
-      "Full injectivity proof via cross-case contradiction (g∘f closure)",
+      "Full injectivity proof via cross-case contradiction (g\u2218f closure)",
       "Full surjectivity proof via decomposition lemma",
       "Constructive CBS bijection for Fintype types (20 theorems/definitions)"
     ],
@@ -53,15 +53,21 @@
     "lineCount": 314
   },
   "overview": {
-    "historicalContext": "The Schroeder-Bernstein theorem (1887-1898), independently proved by Dedekind, Schroeder, and Bernstein, states that mutual injections imply a bijection. The classical proof requires excluded middle to classify elements into orbit types (A, B, or C), making it inherently non-constructive.\n\nThis raises a natural question: for which classes of sets can we avoid excluded middle? For finite types, the answer is yes — chains terminate by pigeonhole, making orbit classification decidable. This was known folklore but rarely formalized.\n\nIn Lean 4/Mathlib, the standard CBS proof (`Function.Embedding.schroeder_bernstein`) is `noncomputable` because it uses `Classical.choice` for orbit classification. Our proof demonstrates that for `Fintype` types, the classification is fully computable.",
+    "historicalContext": "The Schroeder-Bernstein theorem (1887-1898), independently proved by Dedekind, Schroeder, and Bernstein, states that mutual injections imply a bijection. The classical proof requires excluded middle to classify elements into orbit types (A, B, or C), making it inherently non-constructive.\n\nThis raises a natural question: for which classes of sets can we avoid excluded middle? For finite types, the answer is yes \u2014 chains terminate by pigeonhole, making orbit classification decidable. This was known folklore but rarely formalized.\n\nIn Lean 4/Mathlib, the standard CBS proof (`Function.Embedding.schroeder_bernstein`) is `noncomputable` because it uses `Classical.choice` for orbit classification. Our proof demonstrates that for `Fintype` types, the classification is fully computable.",
     "problemStatement": "**Open Question (OQ-04)**: Are there effective (constructive) versions of the Cantor-Bernstein-Schroeder theorem for specific classes of sets?\n\n**Answer**: Yes. For `Fintype` types with `DecidableEq`, we construct a bijection from mutual injections with the orbit classification step being fully computable. The only non-constructive step is extracting the preimage (a Lean 4 artifact from Multiset quotients, not a mathematical limitation).\n\nKey ingredients:\n- **Base set**: $A_0 = \\{a \\in \\alpha \\mid a \\notin \\text{range}(g)\\}$\n- **Expansion**: $S_{n+1} = S_n \\cup (g \\circ f)(S_n)$\n- **Stabilization**: After $|\\alpha|$ steps, the sequence stabilizes (pigeonhole)\n- **Bijection**: $h(a) = f(a)$ if $a \\in S$, else $h(a) = g^{-1}(a)$",
     "proofStrategy": "The proof proceeds in four phases:\n\n1. **Reachable set construction**: Iterate $S \\mapsto S \\cup (g \\circ f)''(S)$ from the base set (elements not in range of $g$) for $|\\alpha|$ steps.\n\n2. **Stabilization**: The monotone cardinality sequence $|S_0| \\leq |S_1| \\leq \\ldots \\leq |\\alpha|$ must repeat within $|\\alpha|+1$ terms. Once two consecutive sets agree, the sequence is constant. This gives a fixed point: $\\text{expand}(S) = S$.\n\n3. **Decomposition**: Every reachable element is either in the base set or equals $g(f(a'))$ for some reachable $a'$. This follows by induction on the iteration depth.\n\n4. **Bijectivity**: Injectivity uses cross-case contradiction (if $a_1$ is reachable and $a_2$ is not, then $g(f(a_1)) = a_2$ would put $a_2$ in the reachable set by closure). Surjectivity uses the decomposition lemma to show that $g(b)$ cannot be reachable when no reachable element maps to $b$ via $f$.",
     "keyInsights": [
-      "**Orbit classification is decidable for finite types**: Membership in the reachable set (a `Finset`) is decidable by `Finset.decidableMem`. This is the core constructive contribution — classical CBS uses excluded middle precisely for this classification.",
+      "**Orbit classification is decidable for finite types**: Membership in the reachable set (a `Finset`) is decidable by `Finset.decidableMem`. This is the core constructive contribution \u2014 classical CBS uses excluded middle precisely for this classification.",
       "**Pigeonhole proves stabilization**: A non-decreasing sequence of naturals bounded by $N$ must repeat within $N+1$ terms. This gives the fixed-point property without needing lattice-theoretic fixed-point theorems.",
-      "**Cross-case contradiction for injectivity**: If reachable $a_1$ and non-reachable $a_2$ mapped to the same $b$, then $g(f(a_1)) = a_2$ by the preimage equation, but $g(f(a_1))$ is reachable by closure — contradiction.",
+      "**Cross-case contradiction for injectivity**: If reachable $a_1$ and non-reachable $a_2$ mapped to the same $b$, then $g(f(a_1)) = a_2$ by the preimage equation, but $g(f(a_1))$ is reachable by closure \u2014 contradiction.",
       "**Decomposition drives surjectivity**: For $b$ not in $f(S)$, the element $g(b)$ cannot be reachable. If it were in the base set, $g(b)$ would not be in range of $g$ (contradiction). If $g(b) = g(f(a'))$ for reachable $a'$, then $b = f(a')$ by injectivity (contradiction).",
       "**Lean 4 computability**: The `noncomputable` tag on the bijection is a Lean 4 artifact (extracting from `Multiset` quotients), not a mathematical limitation. The orbit classification itself requires only `DecidableEq` and `Fintype`."
+    ],
+    "prerequisites": [
+      "Cardinality and countability",
+      "Constructive mathematics",
+      "Decidability",
+      "Set theory basics"
     ]
   },
   "sections": [
@@ -84,7 +90,7 @@
       "title": "Stabilization via Pigeonhole",
       "startLine": 94,
       "endLine": 167,
-      "summary": "The key technical result: a non-decreasing bounded sequence of naturals must repeat, so the expansion stabilizes after $|\\alpha|$ steps. This gives `expand(reachableSet) = reachableSet` — the fixed-point property"
+      "summary": "The key technical result: a non-decreasing bounded sequence of naturals must repeat, so the expansion stabilizes after $|\\alpha|$ steps. This gives `expand(reachableSet) = reachableSet` \u2014 the fixed-point property"
     },
     {
       "id": "closure-decomposition",
@@ -98,7 +104,7 @@
       "title": "The Constructive CBS Bijection",
       "startLine": 221,
       "endLine": 240,
-      "summary": "Defines the bijection: $h(a) = f(a)$ if $a$ is reachable, else $h(a) = g^{-1}(a)$. The orbit classification (`a ∈ reachableSet`) is decidable; only the preimage extraction uses `Classical.choose`"
+      "summary": "Defines the bijection: $h(a) = f(a)$ if $a$ is reachable, else $h(a) = g^{-1}(a)$. The orbit classification (`a \u2208 reachableSet`) is decidable; only the preimage extraction uses `Classical.choose`"
     },
     {
       "id": "injectivity",
@@ -144,7 +150,7 @@
       "url": "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem"
     },
     {
-      "text": "Bernstein, F. (1898). Untersuchungen aus der Mengenlehre. PhD thesis, Georg-August-Universität Göttingen.",
+      "text": "Bernstein, F. (1898). Untersuchungen aus der Mengenlehre. PhD thesis, Georg-August-Universit\u00e4t G\u00f6ttingen.",
       "url": "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem"
     }
   ],
@@ -163,5 +169,8 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 3
-  }
+  },
+  "relatedProofs": [
+    "schroeder-bernstein"
+  ]
 }

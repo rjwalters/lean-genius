@@ -145,26 +145,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "erdos-803",
-      "title": "Erd\u0151s Problem #803: D-Balanced Subgraphs in Dense Graphs",
-      "relevance": "Near-duplicate problem: asks for D-balanced subgraphs in dense graphs with essentially the same setup as #1077 but under slightly different density hypotheses."
-    },
-    {
-      "slug": "erdos-82",
-      "title": "Erd\u0151s Problem #82: Regular Induced Subgraphs",
-      "relevance": "D=1 specialization: asks whether dense graphs must contain large induced regular subgraphs, the perfectly balanced limiting case of the D-balanced question."
-    },
-    {
-      "slug": "erdos-715",
-      "title": "Erd\u0151s Problem #715: Regular Subgraphs in Regular Graphs",
-      "relevance": "Studies the existence of regular subgraphs within regular host graphs, illuminating the structural constraints that balance the degree sequence."
-    },
-    {
-      "slug": "erdos-814",
-      "title": "Erd\u0151s Problem #814: Dense Graphs Contain Smaller Min-Degree-k Subgraphs",
-      "relevance": "Provides the minimum-degree lifting technique that anchors iterative regularization, a core component of the lower-bound proof for #1077."
-    }
+    "erdos-803",
+    "erdos-82",
+    "erdos-715",
+    "erdos-814"
   ],
   "references": [
     {

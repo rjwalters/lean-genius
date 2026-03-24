@@ -158,20 +158,7 @@
       "description": "Binomial coefficient estimates underpin the counting arguments in both the upper and lower bound proofs for H(n)."
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "ramseys-theorem",
-      "note": "Ramsey's theorem is the foundational result on unavoidable structure in edge-colorings; discrepancy theory can be viewed as a quantitative strengthening."
-    },
-    {
-      "target": "szemeredi-regularity",
-      "note": "Szemer\u00e9di's Regularity Lemma is the principal modern tool for converting discrepancy-type density information into structural results on graphs."
-    },
-    {
-      "target": "erdos-1025",
-      "note": "Companion problem on signed graph imbalance; proved with parallel Lean axiom structure."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

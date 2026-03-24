@@ -162,24 +162,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "szemeredi-theorem",
-      "slug": "szemeredi-theorem",
-      "title": "Szemer\u00e9di's Theorem (k=3 via Mathlib)",
-      "connection": "Both proofs define upper density via limsup of counting-function ratios and study what density forces on the additive structure of a set. The Szemer\u00e9di formalization provides the canonical template for density-based Lean proofs in this gallery."
-    },
-    {
-      "id": "erdos-656",
-      "slug": "erdos-656",
-      "title": "Erd\u0151s Problem #656: Density Version of Hindman's Theorem",
-      "connection": "Proved by the same authors (Kra\u2013Moreira\u2013Richter) using an extension of the techniques in Problem #109. The two results together constitute the main advances in density Ramsey theory for sumsets in the 2010s\u20132020s."
-    },
-    {
-      "id": "erdos-139",
-      "slug": "erdos-139",
-      "title": "Erd\u0151s #139: Szemer\u00e9di's Theorem",
-      "connection": "Szemer\u00e9di's theorem and the Moreira\u2013Richter\u2013Robertson theorem are the two central resolved cases of Erd\u0151s's programme showing that positive upper density forces additive structure; the Lean formalizations use matching density definitions."
-    }
+    "szemeredi-theorem",
+    "erdos-656",
+    "erdos-139"
   ],
   "references": [
     {

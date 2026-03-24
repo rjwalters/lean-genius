@@ -202,26 +202,11 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "lebesgue-measure",
-      "relationship": "Lebesgue measure is the obstruction: the Dubins-Hirsch-Karush theorem shows measurable translation-equidecomposition is impossible precisely because Lebesgue measure is translation-invariant"
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "The formula \u03c0r\u00b2 determines when a disk and square have equal area, which is the necessary condition for the circle-squaring problem to be well-posed"
-    },
-    {
-      "id": "borsuk-ulam",
-      "relationship": "Both are classical results in geometric topology where intuitive expectations fail: Borsuk-Ulam shows antipodal points must coincide under continuous maps, while circle-squaring shows non-measurable decompositions can achieve what measurable ones cannot"
-    },
-    {
-      "id": "erdos-1124-oq-01",
-      "relationship": "The natural follow-up open problem: given that ~10^50 pieces suffice, what is the minimum number needed for translation equidecomposition of a circle and equal-area square?"
-    },
-    {
-      "id": "erdos-1071",
-      "relationship": "Companion Erd\u0151s geometry problem about packing and decomposition in the plane, sharing the theme of extremal finite combinatorial geometry"
-    }
+    "lebesgue-measure",
+    "area-of-circle",
+    "borsuk-ulam",
+    "erdos-1124-oq-01",
+    "erdos-1071"
   ],
   "references": [
     {

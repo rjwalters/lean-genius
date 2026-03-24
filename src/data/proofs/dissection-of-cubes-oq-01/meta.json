@@ -2,7 +2,7 @@
   "id": "dissection-of-cubes-oq-01",
   "title": "Minimum Collision Number in Cube Dissections",
   "slug": "dissection-of-cubes-oq-01",
-  "description": "Every cube dissection must have ≥ 2 cubes sharing the same size (strengthening Wiedijk #82). This formalization proves the quantitative lower bound: the set of 'colliding cubes' in any nonempty dissection has cardinality ≥ 2. The open question is whether exactly 2 is achievable — whether a cube can be dissected with only one repeated size, all others distinct.",
+  "description": "Every cube dissection must have \u2265 2 cubes sharing the same size (strengthening Wiedijk #82). This formalization proves the quantitative lower bound: the set of 'colliding cubes' in any nonempty dissection has cardinality \u2265 2. The open question is whether exactly 2 is achievable \u2014 whether a cube can be dissected with only one repeated size, all others distinct.",
   "meta": {
     "author": "Littlewood / formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
@@ -47,7 +47,7 @@
       "every_dissection_has_collision: direct corollary of Wiedijk #82",
       "collision_class_at_least_two: proved via Finset.one_lt_card",
       "collidingCubes: noncomputable Finset of all cubes participating in any collision",
-      "at_least_two_colliding_cubes: quantitative lower bound (card ≥ 2) via Finset.card_pair",
+      "at_least_two_colliding_cubes: quantitative lower bound (card \u2265 2) via Finset.card_pair",
       "HasMinimalCollision: formal statement of the open question (collidingCubes.card = 2)",
       "Floor argument commentary: why Littlewood's cascade forces many collisions in practice"
     ],
@@ -57,12 +57,12 @@
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Littlewood's 1953 proof (Wiedijk #82) established that NO cube dissection can have all different sizes: in any finite partition of a cube into smaller cubes, at least two must share the same side length. The infinite descent argument — the smallest cube on any floor forces an ever-smaller cube above it — implies repeated sizes are unavoidable.\n\nThis raises a natural quantitative follow-up: exactly how many cubes must participate in size repetitions? The binary existence statement 'at least one collision pair' is equivalent to saying 'at least 2 cubes collide.' But in all known cube dissections, many more cubes share sizes. The question of whether exactly 2 is achievable remains open.\n\nBy contrast, the 2D analog (squaring the square) allows ALL different sizes. The smallest simple perfect squared square, found by Brooks–Smith–Stone–Tutte (1940), uses 21 squares with all different sizes. This dimensional gap makes the 3D minimum collision number especially intriguing.",
-    "problemStatement": "**Open Question**: Given that every cube dissection must have at least one repeated size (Wiedijk #82), what is the minimum number of cubes that must participate in size collisions?\n\n**Definitions**:\n- A 'collision pair' is two distinct cubes c₁, c₂ in the dissection with c₁.size = c₂.size\n- A cube 'collides' if some other cube in the dissection shares its size\n- collidingCubes(d) = { c ∈ d | ∃ c' ≠ c in d with c.size = c'.size }\n\n**Known**: collidingCubes(d).card ≥ 2 for any nonempty dissection d\n\n**Open**: Is there a valid dissection d with collidingCubes(d).card = 2? (exactly one repeated size, all others distinct)",
-    "text": "Every cube dissection must have ≥ 2 cubes sharing the same size (strengthening Wiedijk #82). This formalization proves the quantitative lower bound: the set of 'colliding cubes' in any nonempty dissection has cardinality ≥ 2. The open question is whether exactly 2 is achievable — whether a cube can be dissected with only one repeated size, all others distinct.",
-    "proofStrategy": "The lower bound proof proceeds in two steps:\n\n**Step 1** (every_dissection_has_collision): Every nonempty dissection has a collision pair. This follows directly from Wiedijk #82 (dissection_of_cubes): since no dissection has all different sizes, some two cubes must share a size. Pushing the negation gives an explicit pair.\n\n**Step 2** (at_least_two_colliding_cubes): If (c₁, c₂) is a collision pair, then BOTH c₁ and c₂ are in collidingCubes. So {c₁, c₂} ⊆ collidingCubes, and since c₁ ≠ c₂, the cardinality is ≥ 2. This uses Finset.card_pair and Finset.card_le_card.\n\nThe key insight is that in a collision pair, each cube witnesses the other's collision. This immediately gives TWO colliding cubes, not just one.",
+    "historicalContext": "Littlewood's 1953 proof (Wiedijk #82) established that NO cube dissection can have all different sizes: in any finite partition of a cube into smaller cubes, at least two must share the same side length. The infinite descent argument \u2014 the smallest cube on any floor forces an ever-smaller cube above it \u2014 implies repeated sizes are unavoidable.\n\nThis raises a natural quantitative follow-up: exactly how many cubes must participate in size repetitions? The binary existence statement 'at least one collision pair' is equivalent to saying 'at least 2 cubes collide.' But in all known cube dissections, many more cubes share sizes. The question of whether exactly 2 is achievable remains open.\n\nBy contrast, the 2D analog (squaring the square) allows ALL different sizes. The smallest simple perfect squared square, found by Brooks\u2013Smith\u2013Stone\u2013Tutte (1940), uses 21 squares with all different sizes. This dimensional gap makes the 3D minimum collision number especially intriguing.",
+    "problemStatement": "**Open Question**: Given that every cube dissection must have at least one repeated size (Wiedijk #82), what is the minimum number of cubes that must participate in size collisions?\n\n**Definitions**:\n- A 'collision pair' is two distinct cubes c\u2081, c\u2082 in the dissection with c\u2081.size = c\u2082.size\n- A cube 'collides' if some other cube in the dissection shares its size\n- collidingCubes(d) = { c \u2208 d | \u2203 c' \u2260 c in d with c.size = c'.size }\n\n**Known**: collidingCubes(d).card \u2265 2 for any nonempty dissection d\n\n**Open**: Is there a valid dissection d with collidingCubes(d).card = 2? (exactly one repeated size, all others distinct)",
+    "text": "Every cube dissection must have \u2265 2 cubes sharing the same size (strengthening Wiedijk #82). This formalization proves the quantitative lower bound: the set of 'colliding cubes' in any nonempty dissection has cardinality \u2265 2. The open question is whether exactly 2 is achievable \u2014 whether a cube can be dissected with only one repeated size, all others distinct.",
+    "proofStrategy": "The lower bound proof proceeds in two steps:\n\n**Step 1** (every_dissection_has_collision): Every nonempty dissection has a collision pair. This follows directly from Wiedijk #82 (dissection_of_cubes): since no dissection has all different sizes, some two cubes must share a size. Pushing the negation gives an explicit pair.\n\n**Step 2** (at_least_two_colliding_cubes): If (c\u2081, c\u2082) is a collision pair, then BOTH c\u2081 and c\u2082 are in collidingCubes. So {c\u2081, c\u2082} \u2286 collidingCubes, and since c\u2081 \u2260 c\u2082, the cardinality is \u2265 2. This uses Finset.card_pair and Finset.card_le_card.\n\nThe key insight is that in a collision pair, each cube witnesses the other's collision. This immediately gives TWO colliding cubes, not just one.",
     "keyInsights": [
-      "A collision pair (c₁, c₂) contributes TWO cubes to collidingCubes — both c₁ witnessing c₂ and c₂ witnessing c₁",
+      "A collision pair (c\u2081, c\u2082) contributes TWO cubes to collidingCubes \u2014 both c\u2081 witnessing c\u2082 and c\u2082 witnessing c\u2081",
       "collidingCubes uses Classical.decEq since equality of reals is not constructively decidable",
       "The lower bound 2 is tight in principle: HasMinimalCollision (collidingCubes.card = 2) is a formal open question",
       "Littlewood's cascade suggests in practice many more cubes must collide, but the formal lower bound stops at 2",
@@ -90,10 +90,10 @@
     },
     {
       "id": "quantitative-bound",
-      "title": "Quantitative Lower Bound: ≥ 2 Colliding Cubes",
+      "title": "Quantitative Lower Bound: \u2265 2 Colliding Cubes",
       "startLine": 111,
       "endLine": 151,
-      "summary": "The collidingCubes Finset and proof that card ≥ 2 via cardinality of a pair."
+      "summary": "The collidingCubes Finset and proof that card \u2265 2 via cardinality of a pair."
     },
     {
       "id": "open-question",
@@ -118,13 +118,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The key result is that every nonempty cube dissection has collidingCubes.card ≥ 2: at least two cubes must share a size. This strengthens Wiedijk #82 from 'there exists a collision' to 'at least 2 cubes participate'. The proof relies on extracting both cubes from the collision pair promised by the impossibility theorem.",
+    "summary": "The key result is that every nonempty cube dissection has collidingCubes.card \u2265 2: at least two cubes must share a size. This strengthens Wiedijk #82 from 'there exists a collision' to 'at least 2 cubes participate'. The proof relies on extracting both cubes from the collision pair promised by the impossibility theorem.",
     "implications": "**Theoretical Significance**: **Connection to the base theorem**: Wiedijk #82 says cube dissections can't be perfect (all-different sizes). This OQ studies how far from perfect they must be. A dissection with HasMinimalCollision would be 'almost perfect': only one repeated size, with all other cubes distinct.\n\n**Why 2 might not be achievable**: Littlewood's floor argument creates a geometric cascade.\n\nThe smallest cube on any floor forces even smaller cubes above it, and those force still smaller cubes, and so on. This cascade typically produces many size repetitions. Whether the cascade can be arranged to produce only one repeated size is the heart of the open question.\n\n**Formal limitation**: Our formalization uses covers_unit_cube : True as a placeholder for the actual geometric covering constraint. Resolving the open question would require formalizing the full 3D tiling geometry.",
     "openQuestions": [
       "Is HasMinimalCollision achievable? (Can collidingCubes.card = 2 for a valid dissection?)",
       "What is the actual minimum of collidingCubes.card over all valid dissections?",
-      "Can the volume constraint (∑ c.side³ = 1) be combined with disjointness to derive a better lower bound?",
-      "Does Littlewood's cascade imply a super-constant lower bound (e.g., ≥ log n for n-cube dissections)?"
+      "Can the volume constraint (\u2211 c.side\u00b3 = 1) be combined with disjointness to derive a better lower bound?",
+      "Does Littlewood's cascade imply a super-constant lower bound (e.g., \u2265 log n for n-cube dissections)?"
     ]
   },
   "leanFile": {
@@ -147,7 +147,7 @@
     {
       "targetId": "dissection-of-cubes",
       "relationship": "extends",
-      "description": "Extends the base impossibility result (Wiedijk #82: no perfect cube dissection) to a quantitative lower bound on the number of colliding cubes (≥ 2)"
+      "description": "Extends the base impossibility result (Wiedijk #82: no perfect cube dissection) to a quantitative lower bound on the number of colliding cubes (\u2265 2)"
     },
     {
       "targetId": "mathematical-induction",
@@ -161,10 +161,7 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "dissection-of-cubes",
-      "relationship": "Base formalization (Wiedijk #82) proving no perfect cube dissection exists; this OQ-01 strengthens it to give the minimum collision count"
-    },
+    "dissection-of-cubes",
     "dissection-of-cubes",
     "mathematical-induction",
     "euler-polyhedral-formula"

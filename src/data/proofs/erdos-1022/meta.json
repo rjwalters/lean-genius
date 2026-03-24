@@ -165,20 +165,7 @@
       "description": "Problem #562 on hypergraph Ramsey tower growth concerns r-uniform hypergraph Ramsey numbers, where r-colorings of complete hypergraphs are forced to contain monochromatic cliques. The tower-growth phenomenon arises from the difficulty of r-uniform hypergraph coloring, the same difficulty underlying Problem #1022's open cases for t \u2265 3."
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "prob-method-lovasz-local",
-      "description": "The Lov\u00e1sz Local Lemma formalizes the dependency-controlled probabilistic argument that is the natural tool for proving property B under sparseness conditions."
-    },
-    {
-      "target": "prob-method-applications",
-      "description": "Formalizes the classical first-moment probabilistic proof of property B for t-uniform families with fewer than 2^{t-1} sets \u2014 the global-count predecessor to Problem #1022's local sparseness condition."
-    },
-    {
-      "target": "erdos-836",
-      "description": "Uses the Erd\u0151s-Lov\u00e1sz 1975 Local Lemma in the context of intersecting hypergraphs with chromatic number 3, directly linking to the circle of results around Problem #1022."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

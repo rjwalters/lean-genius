@@ -40,12 +40,12 @@
       "euler_spanning: V-E+F=2 for all SpanningBuild graphs by structural induction",
       "buildPlanarGraph: constructs V-vertex planar graphs with exactly k non-tree edges",
       "platonic_spanning_euler: Euler formula for tetrahedron, cube, octahedron",
-      "planar_five_degenerate: E ≤ 3V-6 implies every planar graph is 5-degenerate",
+      "planar_five_degenerate: E \u2264 3V-6 implies every planar graph is 5-degenerate",
       "degenerate_colorable_aux: k-degenerate graph on n vertices is (k+1)-colorable",
       "six_colorable_from_degeneracy: planar graphs are 6-colorable",
       "LocalPlanarEmbedding: self-contained planar structure without hereditary axiom",
-      "local_edge_bound_planar: E ≤ 3V-6 from local embedding",
-      "local_k5_not_planar: K₅ non-planarity via Euler formula",
+      "local_edge_bound_planar: E \u2264 3V-6 from local embedding",
+      "local_k5_not_planar: K\u2085 non-planarity via Euler formula",
       "Six Color Theorem proper statement using Mathlib Colorable",
       "Heawood formula and toroidal/genus graph coloring bounds"
     ],
@@ -56,15 +56,15 @@
   },
   "overview": {
     "historicalContext": "**Euler's formula** $V - E + F = 2$ for connected planar graphs (equivalently, convex polyhedra) was first proved by Euler in 1758, though anticipated by Descartes. The formula has profound implications:\n\n- **Planarity**: $E \\leq 3V - 6$ and $E \\leq 2V - 4$ (bipartite), enabling planarity tests\n- **Coloring**: Average degree $< 6$ implies a vertex of degree $\\leq 5$, driving the Six Color Theorem and (via Kempe chains) the Five Color Theorem\n- **Topology**: For surfaces of genus $g$, $V - E + F = 2 - 2g$ (Euler characteristic)\n\nThe **Four Color Theorem** (1976, Appel-Haken; computer-verified by Gonthier 2005) shows planar graphs are actually 4-colorable, but the Six Color Theorem has an elegant elementary proof via degeneracy. The Five Color Theorem has a clean Kempe-chain proof.\n\nThis formalization extends the base `EulerPolyhedralFormula.lean` with deeper structural results: the spanning-tree construction of Euler's formula, graph degeneracy theory, and the Six Color Theorem.",
-    "problemStatement": "**Open Question**: Can planar graph embedding theory be formalized in Lean 4, including:\n1. The spanning tree proof of V-E+F=2\n2. Graph degeneracy (every planar graph is 5-degenerate)\n3. The Six Color Theorem as a consequence of degeneracy\n4. K₅ non-planarity via Euler's formula\n5. Coloring bounds for surfaces of higher genus",
+    "problemStatement": "**Open Question**: Can planar graph embedding theory be formalized in Lean 4, including:\n1. The spanning tree proof of V-E+F=2\n2. Graph degeneracy (every planar graph is 5-degenerate)\n3. The Six Color Theorem as a consequence of degeneracy\n4. K\u2085 non-planarity via Euler's formula\n5. Coloring bounds for surfaces of higher genus",
     "text": "Extends Euler's polyhedral formula V-E+F=2 to planar graph theory: spanning tree approach, graph degeneracy (5-degenerate), and the Six Color Theorem via degeneracy coloring.",
-    "proofStrategy": "The file uses three complementary approaches:\n\n1. **Inductive SpanningBuild**: An inductive type with constructors `single` (1 vertex), `addTreeEdge` (V+1, E+1, F unchanged), `addCycleEdge` (V, E+1, F+1). Euler formula $V-E+F=2$ follows by structural induction — each constructor preserves the invariant.\n\n2. **Arithmetic from edge bound**: Planarity gives $E \\leq 3V-6$. The handshaking lemma gives $\\sum \\deg = 2E < 6V$. By averaging, some vertex has degree $\\leq 5$. This is the key to degeneracy.\n\n3. **LocalPlanarEmbedding**: A self-contained structure axiomatizing planar embeddings without the `planar_hereditary` axiom that caused issues. K₅ non-planarity follows from edge bounds via Euler's formula.",
+    "proofStrategy": "The file uses three complementary approaches:\n\n1. **Inductive SpanningBuild**: An inductive type with constructors `single` (1 vertex), `addTreeEdge` (V+1, E+1, F unchanged), `addCycleEdge` (V, E+1, F+1). Euler formula $V-E+F=2$ follows by structural induction \u2014 each constructor preserves the invariant.\n\n2. **Arithmetic from edge bound**: Planarity gives $E \\leq 3V-6$. The handshaking lemma gives $\\sum \\deg = 2E < 6V$. By averaging, some vertex has degree $\\leq 5$. This is the key to degeneracy.\n\n3. **LocalPlanarEmbedding**: A self-contained structure axiomatizing planar embeddings without the `planar_hereditary` axiom that caused issues. K\u2085 non-planarity follows from edge bounds via Euler's formula.",
     "keyInsights": [
       "**SpanningBuild captures the essence of planarity**: The inductive type separates tree edges (no new face) from cycle edges (one new face), making Euler's formula trivial by structural induction",
-      "**5-degeneracy is stronger than having one low-degree vertex**: Every SUBGRAPH of a planar graph has a vertex of degree ≤ 5. This enables the greedy coloring argument for the Six Color Theorem",
-      "**LocalPlanarEmbedding avoids the hereditary axiom**: By building a local structure that embeds the Euler axiom directly, K₅ non-planarity can be proved without assuming planarity is hereditary",
-      "**The Heawood formula H(g) = ⌊(5+√(1+48g))/2⌋ bounds chromatic number for genus-g surfaces**: Formalized as arithmetic bounds on E ≤ 3V + 6g - 6 and degeneracy",
-      "**Double counting on faces unifies all edge bounds**: The theorem `face_edge_double_count` with parameter d (minimum face size) subsumes planar (d=3, E ≤ 3V-6), bipartite planar (d=4, E ≤ 2V-4), and high-girth planar (d=6, 2E ≤ 3V-6) bounds as special cases of a single arithmetic identity (d-2)E ≤ d(V-2)"
+      "**5-degeneracy is stronger than having one low-degree vertex**: Every SUBGRAPH of a planar graph has a vertex of degree \u2264 5. This enables the greedy coloring argument for the Six Color Theorem",
+      "**LocalPlanarEmbedding avoids the hereditary axiom**: By building a local structure that embeds the Euler axiom directly, K\u2085 non-planarity can be proved without assuming planarity is hereditary",
+      "**The Heawood formula H(g) = \u230a(5+\u221a(1+48g))/2\u230b bounds chromatic number for genus-g surfaces**: Formalized as arithmetic bounds on E \u2264 3V + 6g - 6 and degeneracy",
+      "**Double counting on faces unifies all edge bounds**: The theorem `face_edge_double_count` with parameter d (minimum face size) subsumes planar (d=3, E \u2264 3V-6), bipartite planar (d=4, E \u2264 2V-4), and high-girth planar (d=6, 2E \u2264 3V-6) bounds as special cases of a single arithmetic identity (d-2)E \u2264 d(V-2)"
     ],
     "prerequisites": [
       "Graph theory (vertices, edges, colorings)",
@@ -91,7 +91,7 @@
       "title": "Part 2: Graph Degeneracy",
       "startLine": 216,
       "endLine": 259,
-      "summary": "KDegenerate structure: every subgraph has a vertex of degree ≤ k. planar_five_degenerate: E ≤ 3V-6 implies 5-degeneracy. degeneracy_from_edge_bound: general k-degeneracy from 2E < (k+1)V."
+      "summary": "KDegenerate structure: every subgraph has a vertex of degree \u2264 k. planar_five_degenerate: E \u2264 3V-6 implies 5-degeneracy. degeneracy_from_edge_bound: general k-degeneracy from 2E < (k+1)V."
     },
     {
       "id": "part3-coloring",
@@ -112,38 +112,38 @@
       "title": "Part 5: Handshaking Lemma Consequences",
       "startLine": 335,
       "endLine": 384,
-      "summary": "avg_degree_lt_six: sum of degrees < 6V implies average degree < 6. exists_low_degree_vertex: every planar graph has a vertex of degree ≤ 5 (two proof variants)."
+      "summary": "avg_degree_lt_six: sum of degrees < 6V implies average degree < 6. exists_low_degree_vertex: every planar graph has a vertex of degree \u2264 5 (two proof variants)."
     },
     {
       "id": "part8-genus",
       "title": "Part 8: Genus and Non-Planarity Bounds",
       "startLine": 463,
       "endLine": 501,
-      "summary": "Edge bounds for genus-g surfaces: E ≤ 3V + 6g - 6. K₃,₃ and K₅ non-planarity from edge bounds. Euler characteristic for surfaces of genus g."
+      "summary": "Edge bounds for genus-g surfaces: E \u2264 3V + 6g - 6. K\u2083,\u2083 and K\u2085 non-planarity from edge bounds. Euler characteristic for surfaces of genus g."
     },
     {
       "id": "part9-heawood",
       "title": "Part 9: Heawood Number and Map Coloring",
       "startLine": 502,
       "endLine": 535,
-      "summary": "Heawood formula H(g) = ⌊(5+√(1+48g))/2⌋ as a chromatic bound for genus-g surfaces. Verified for torus (H(1)=7), double torus (H(2)=8). toroidal coloring bounds."
+      "summary": "Heawood formula H(g) = \u230a(5+\u221a(1+48g))/2\u230b as a chromatic bound for genus-g surfaces. Verified for torus (H(1)=7), double torus (H(2)=8). toroidal coloring bounds."
     },
     {
       "id": "part11-six-color",
       "title": "Part 11: Six Color Theorem",
       "startLine": 616,
       "endLine": 870,
-      "summary": "Full Six Color Theorem proof: LocalPlanarEmbedding structure with Euler axiom, local_edge_bound_planar (E≤3V-6), local_k5_not_planar (K₅ non-planar), exists_low_degree vertex in planar graphs, six_colorable_small, color_extension_step, and Six Color Theorem via Colorable predicate. Also: DegeneracyBuild ordering, kempe_prerequisite for Five Color Theorem."
+      "summary": "Full Six Color Theorem proof: LocalPlanarEmbedding structure with Euler axiom, local_edge_bound_planar (E\u22643V-6), local_k5_not_planar (K\u2085 non-planar), exists_low_degree vertex in planar graphs, six_colorable_small, color_extension_step, and Six Color Theorem via Colorable predicate. Also: DegeneracyBuild ordering, kempe_prerequisite for Five Color Theorem."
     }
   ],
   "conclusion": {
-    "summary": "This 903-line formalization extends Euler's polyhedral formula to full planar graph theory with 0 sorries and 0 axioms. The SpanningBuild inductive type provides a clean constructive proof of V-E+F=2. The Six Color Theorem is proved rigorously using LocalPlanarEmbedding (a self-contained Euler axiom structure) and degeneracy coloring. K₅ non-planarity, Heawood bounds for higher genus, and coloring bounds for special graph families are all established.",
+    "summary": "This 903-line formalization extends Euler's polyhedral formula to full planar graph theory with 0 sorries and 0 axioms. The SpanningBuild inductive type provides a clean constructive proof of V-E+F=2. The Six Color Theorem is proved rigorously using LocalPlanarEmbedding (a self-contained Euler axiom structure) and degeneracy coloring. K\u2085 non-planarity, Heawood bounds for higher genus, and coloring bounds for special graph families are all established.",
     "implications": "**Theoretical Significance**: The Euler formula and its consequences are foundational to topology (Euler characteristic, genus), combinatorics (graph coloring, planarity testing), and computer science (planar graph algorithms, VLSI routing).\n\nThe Six Color Theorem is the first step toward the Four Color Theorem (proven by computer in 1976). The degeneracy approach generalizes beautifully: k-degenerate graphs are (k+1)-colorable, giving coloring bounds for all surface families via the Heawood formula.",
     "openQuestions": [
       "Can the Five Color Theorem be fully proved using the Kempe chain argument formalized in Lean 4?",
       "Can the Four Color Theorem (Gonthier 2005 Coq proof) be re-formalized in Lean 4 / Mathlib?",
-      "Can the Heawood conjecture (chromatic number = Heawood number for genus ≥ 1) be formalized for all genera?",
-      "Can Kuratowski's theorem (planar iff no K₅ or K₃,₃ minor) be formalized using Mathlib's SimpleGraph API?"
+      "Can the Heawood conjecture (chromatic number = Heawood number for genus \u2265 1) be formalized for all genera?",
+      "Can Kuratowski's theorem (planar iff no K\u2085 or K\u2083,\u2083 minor) be formalized using Mathlib's SimpleGraph API?"
     ]
   },
   "leanFile": {
@@ -173,12 +173,12 @@
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "extends",
-      "description": "Extends the base Euler polyhedral formula V-E+F=2 to planar graph theory: spanning tree proof, 5-degeneracy, Six Color Theorem, Heawood bounds, and K₅ non-planarity"
+      "description": "Extends the base Euler polyhedral formula V-E+F=2 to planar graph theory: spanning tree proof, 5-degeneracy, Six Color Theorem, Heawood bounds, and K\u2085 non-planarity"
     },
     {
       "targetId": "euler-polyhedral-formula-oq-01-oq-01",
       "relationship": "foundational",
-      "description": "This OQ-01 (Six Color Theorem) is the parent for OQ-01-OQ-01 (Five Color Theorem); the 5-degeneracy and K₅ non-planarity results here are prerequisites for the Kempe chain argument"
+      "description": "This OQ-01 (Six Color Theorem) is the parent for OQ-01-OQ-01 (Five Color Theorem); the 5-degeneracy and K\u2085 non-planarity results here are prerequisites for the Kempe chain argument"
     },
     {
       "targetId": "four-color-theorem",
@@ -187,14 +187,8 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "euler-polyhedral-formula",
-      "relationship": "Base formalization of V-E+F=2; this OQ-01 develops the full planar graph theory including degeneracy, coloring, and genus bounds"
-    },
-    {
-      "id": "euler-polyhedral-formula-oq-02",
-      "relationship": "Companion discrete Gauss-Bonnet formalization; together they cover the combinatorial and geometric aspects of the Euler characteristic"
-    },
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-02",
     "euler-polyhedral-formula",
     "euler-polyhedral-formula-oq-01-oq-01",
     "four-color-theorem"

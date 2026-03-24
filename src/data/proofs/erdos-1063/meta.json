@@ -159,24 +159,7 @@
       "targetId": "erdos-1056"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "kummer-theorem",
-      "description": "Kummer's theorem is the p-adic lens through which the divisibility of C(n,k) by individual integers is understood. Every argument about which factors of n(n-1)\u00b7\u00b7\u00b7(n-k+1) divide C(n,k) ultimately relies on tracking carries in base-p representations."
-    },
-    {
-      "target": "bertrands-postulate",
-      "description": "Bertrand's postulate underpins the Erd\u0151s-Selfridge full-divisibility obstruction: the prime p between k and 2k (guaranteed by Bertrand) appears exactly once in {n,\u2026,n-k+1} for n in the relevant range, and its presence in k! only to the first power forces a divisibility failure."
-    },
-    {
-      "target": "prime-number-theorem",
-      "description": "The PNT controls the size of lcm(1,\u2026,m) = e^{\u03c8(m)} and thus pins down the exponential rate in Cambie's bound n_k \u2264 e^{(1+o(1))k}. Determining whether n_k has subexponential growth will require refining the connection between prime distribution and the lcm structure."
-    },
-    {
-      "target": "binomial-theorem",
-      "description": "The identity C(n,k) = n(n-1)\u00b7\u00b7\u00b7(n-k+1)/k! is the starting point. Problem #1063 investigates how many of the k consecutive factors in the numerator actually divide the resulting integer."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

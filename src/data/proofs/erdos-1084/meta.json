@@ -155,18 +155,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "kepler-conjecture",
-      "note": "The FCC packing (Hales 1998, Flyspeck 2014) is the conjectured optimal configuration achieving f\u2083(n) ~ 6n - \u0398(n^{2/3}). This gallery entry formalizes the infinite-volume sphere packing density; #1084 concerns the finite-n contact count for the same geometry."
-    },
-    {
-      "slug": "erdos-1085",
-      "note": "The unseparated unit distance problem. Removing the pairwise-distance \u2265 1 constraint transforms sphere-packing combinatorics into incidence geometry; the two Lean formalizations use the same SeparatedConfig / EuclideanSpace setup but diverge in the bound type (linear vs. superlinear in n)."
-    },
-    {
-      "slug": "erdos-1083",
-      "note": "Distinct distances in \u211d^d. The Lean formalization shares the EuclideanSpace \u211d (Fin d) type infrastructure and uses the same dimension-indexed counting framework, making it a natural companion for understanding the full geometry of distance distributions in high-dimensional point sets."
-    }
+    "kepler-conjecture",
+    "erdos-1085",
+    "erdos-1083"
   ],
   "references": [
     {

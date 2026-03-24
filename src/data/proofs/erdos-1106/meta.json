@@ -156,26 +156,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "partition-theorem",
-      "relationship": "foundational",
-      "description": "Euler's generating function approach to partitions establishes that p(n) is well-defined and grows sub-exponentially; the Hardy-Ramanujan asymptotic p(n) ~ (1/4n\u221a3)exp(\u03c0\u221a(2n/3)) refines this and is the analytic engine behind the proof that F(n) \u2192 \u221e."
-    },
-    {
-      "slug": "partition-theorem-oq-01",
-      "relationship": "extension",
-      "description": "The Rogers-Ramanujan identities and Ramanujan's congruences live in the same arithmetic theory of partitions; Ono's 2000 theorem that every prime divides p(n) for a positive density of n is a direct generalization of Ramanujan's classical congruences mod 5, 7, 11."
-    },
-    {
-      "slug": "erdos-890",
-      "relationship": "analogy",
-      "description": "The Erd\u0151s-Kac theorem gives the normal order of \u03c9(n) as log log n; Erd\u0151s #890 and #1106 both ask quantitative questions about \u03c9 on structured sequences, highlighting the contrast between typical behavior of \u03c9 and the much larger values forced by fast-growing products."
-    },
-    {
-      "slug": "bertrands-postulate",
-      "relationship": "prerequisite",
-      "description": "Prime gap estimates of Bertrand type feed into Tijdeman's argument that sequences with super-polynomial growth accumulate unboundedly many prime factors, the key step in proving F(n) \u2192 \u221e for the partition product."
-    }
+    "partition-theorem",
+    "partition-theorem-oq-01",
+    "erdos-890",
+    "bertrands-postulate"
   ],
   "references": [
     {

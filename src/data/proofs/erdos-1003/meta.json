@@ -174,23 +174,7 @@
       "targetId": "erdos-1053"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "euler-totient",
-      "relationship": "uses",
-      "description": "This formalization imports and uses Nat.totient from Mathlib, the same definition studied in the euler-totient proof entry."
-    },
-    {
-      "target": "erdos-1004",
-      "relationship": "sibling",
-      "description": "Both problems originate in the EPS 1987 paper and formalize complementary aspects of consecutive totient behavior: equal values (#1003) vs. distinct values (#1004)."
-    },
-    {
-      "target": "fundamental-arithmetic",
-      "relationship": "depends_on",
-      "description": "Computing \u03c6(15) = \u03c6(16) = 8 and the general totient product formula requires the prime factorization guaranteed by the fundamental theorem of arithmetic."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

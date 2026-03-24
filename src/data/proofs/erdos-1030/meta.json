@@ -189,28 +189,7 @@
       "targetId": "erdos-1031"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "ramseys-theorem",
-      "relation": "uses-result",
-      "note": "The Ramsey property definition and the fact that R(k,\u2113) is well-defined are inherited from the classical Ramsey theorem."
-    },
-    {
-      "target": "erdos-544",
-      "relation": "shares-technique",
-      "note": "Both #544 and #1030 analyze R(k+1,k) - R(k,k) using critical coloring arguments; #1030 relies on the BEFS bound that was motivated by the #544 framework."
-    },
-    {
-      "target": "erdos-1014",
-      "relation": "special-case-of",
-      "note": "The growth ratio result of #1030 is the j=1 instance of the more general R(k+j,k)/R(k,k) > 1+c_j question formalized in #1014."
-    },
-    {
-      "target": "erdos-1029",
-      "relation": "complementary-bound",
-      "note": "Diagonal bounds from #1029 (lower bound ~k\u00b72^{k/2}) feed into the ratio decomposition R(k+1,k)/R(k,k) = 1 + diff/R(k,k) used in #1030."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "key": "BEFS1989",

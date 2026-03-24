@@ -121,33 +121,7 @@
       "targetId": "prime-number-theorem"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "erdos-1065",
-      "strength": "strong",
-      "description": "Primes of the form 2^k \u00b7 q + 1 are a special case of class-1 and class-2 primes in the Erd\u0151s\u2013Selfridge classification. Resolving #1065 would directly imply infinitude of class-2 primes for specific factorization patterns."
-    },
-    {
-      "target": "erdos-1146",
-      "strength": "strong",
-      "description": "The 3-smooth numbers {2^m \u00b7 3^n} are precisely the numbers whose prime factors are at most 3. Class-1 primes p are those for which p+1 is 3-smooth, so the density and structure of this set is foundational to #1055."
-    },
-    {
-      "target": "bertrands-postulate",
-      "strength": "moderate",
-      "description": "Bertrand's postulate provides prime gap bounds used to establish existence of primes with specific successor factorizations, supporting the known computations of p_1 through p_5 in the classification."
-    },
-    {
-      "target": "prime-number-theorem",
-      "strength": "moderate",
-      "description": "The asymptotic n^{o(1)} density bound for class-r primes uses PNT combined with smooth number estimates; the PNT formalization provides infrastructure for this sparsity argument."
-    },
-    {
-      "target": "dirichlets-theorem",
-      "strength": "moderate",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions is invoked heuristically to argue each class should contain infinitely many primes, since the factorization constraint on p+1 restricts p to certain residue classes."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "key": "ErSe75",

@@ -150,26 +150,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "erdos-1039",
-      "title": "Erd\u0151s Problem #1039: Polynomial Lemniscate Disc Radius",
-      "relationship": "The lemniscate disc radius problem is the complex-plane analogue: it asks for the largest disc fitting inside {z: |f(z)| < 1}, while #1038 asks for the total real measure."
-    },
-    {
-      "slug": "erdos-1040",
-      "title": "Erd\u0151s Problem #1040: Transfinite Diameter and Sublevel Set Measure",
-      "relationship": "Directly generalizes #1038 to arbitrary root sets F using transfinite (logarithmic) capacity; the connection shows #1038's 2\u221a2 supremum is linked to the transfinite diameter of [-1,1]."
-    },
-    {
-      "slug": "erdos-1042",
-      "title": "Erd\u0151s Problem #1042: Connected Components of Polynomial Lemniscates",
-      "relationship": "Studies topological structure of {z: |f(z)| < 1}; understanding connected components informs how the real restriction {x : |f(x)| < 1} in #1038 is assembled."
-    },
-    {
-      "slug": "erdos-1044",
-      "title": "Erd\u0151s Problem #1044: Boundary Length of Polynomial Level Sets",
-      "relationship": "Complements #1038 by studying perimeter rather than area of polynomial sublevel sets, using related potential-theoretic techniques."
-    }
+    "erdos-1039",
+    "erdos-1040",
+    "erdos-1042",
+    "erdos-1044"
   ],
   "references": [
     {

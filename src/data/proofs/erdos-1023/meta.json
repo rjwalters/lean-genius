@@ -161,26 +161,11 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-447",
-      "description": "2-Union-Free Families (the problem from which #1023 follows via Hunter's observation)"
-    },
-    {
-      "id": "stirling-formula",
-      "description": "Stirling's Formula (provides the asymptotic expansion C(n,n/2) ~ \u221a(2/\u03c0) \u00b7 2^n/\u221an)"
-    },
-    {
-      "id": "erdos-703",
-      "description": "Forbidden r-Intersection Families (related extremal set-system problem using antichain/layer structure)"
-    },
-    {
-      "id": "erdos-1022",
-      "description": "Property B and Sparse Set Families (neighboring Erd\u0151s extremal set-family problem)"
-    },
-    {
-      "id": "binomial-theorem",
-      "description": "Binomial Theorem (foundational result for central binomial coefficient identities)"
-    }
+    "erdos-447",
+    "stirling-formula",
+    "erdos-703",
+    "erdos-1022",
+    "binomial-theorem"
   ],
   "references": [
     {

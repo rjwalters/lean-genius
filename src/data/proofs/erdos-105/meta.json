@@ -180,20 +180,7 @@
       "description": "Beck's counting argument establishing f(n) \u2265 cn is an instance of the first-moment (expectation) method: a random obstacle point lies on O(n) rich lines, so cn obstacles cover only O(cn\u00b2) rich lines, leaving some uncovered"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "erdos-211",
-      "note": "Erd\u0151s #211 formalizes Beck's theorem on lines determined by point sets \u2014 directly relevant to the positive result in #105 that linear-size obstacle sets cannot block all rich lines"
-    },
-    {
-      "target": "erdos-102",
-      "note": "Complementary incidence problem: #102 bounds collinear points given many rich lines, while #105 bounds how many obstacles block all rich lines"
-    },
-    {
-      "target": "ramseys-theorem",
-      "note": "Ramsey theory provides the extremal combinatorics background; Erd\u0151s's combinatorial geometry problems, including #105, draw on the same double-counting and extremal principles"
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

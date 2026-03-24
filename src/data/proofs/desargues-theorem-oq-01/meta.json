@@ -2,7 +2,7 @@
   "id": "desargues-theorem-oq-01",
   "title": "Desargues Over Any Ring: Algebraic Proof Without Sorries",
   "slug": "desargues-theorem-oq-01",
-  "description": "Can the full algebraic proof of Desargues's theorem be completed without sorries using Mathlib's linear algebra? YES — and it generalizes to any commutative ring K. This formalization defines a custom cross product (since Mathlib.LinearAlgebra.CrossProduct was deprecated in v4.26.0), proves the Lagrange cross product identity over K, and establishes Desargues's theorem in full generality: the forward direction over any CommRing K, the converse over any IntegralDomain K, and corollaries for ℚ, ℤ, 𝔽_p, and polynomial rings.",
+  "description": "Can the full algebraic proof of Desargues's theorem be completed without sorries using Mathlib's linear algebra? YES \u2014 and it generalizes to any commutative ring K. This formalization defines a custom cross product (since Mathlib.LinearAlgebra.CrossProduct was deprecated in v4.26.0), proves the Lagrange cross product identity over K, and establishes Desargues's theorem in full generality: the forward direction over any CommRing K, the converse over any IntegralDomain K, and corollaries for \u211a, \u2124, \ud835\udd3d_p, and polynomial rings.",
   "meta": {
     "author": "Girard Desargues (1639); algebraic generalization to commutative rings formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Desargues%27s_theorem",
@@ -25,7 +25,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Matrix.det",
-        "description": "3×3 matrix determinant for collinearity/concurrence conditions",
+        "description": "3\u00d73 matrix determinant for collinearity/concurrence conditions",
         "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
       },
       {
@@ -37,11 +37,11 @@
     "originalContributions": [
       "cross3: Custom 3D cross product over any CommRing K (bypasses deprecated Mathlib.LinearAlgebra.CrossProduct)",
       "threeVecMat_det_explicit: Explicit determinant expansion for 3-vector matrices over K",
-      "lagrange_cross_K: (a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d over any CommRing K",
-      "desargues_identity_K: det(P,Q,R) = det(AA',BB',CC')·det(A,B,C)·det(A',B',C') — the master algebraic identity",
-      "desargues_forward_K: Full forward direction (perspective from point → line) over any CommRing K",
+      "lagrange_cross_K: (a\u00d7b)\u00d7(c\u00d7d) = det(a,b,d)\u00b7c \u2212 det(a,b,c)\u00b7d over any CommRing K",
+      "desargues_identity_K: det(P,Q,R) = det(AA',BB',CC')\u00b7det(A,B,C)\u00b7det(A',B',C') \u2014 the master algebraic identity",
+      "desargues_forward_K: Full forward direction (perspective from point \u2192 line) over any CommRing K",
       "desargues_converse_K: Converse direction over any IntegralDomain K with non-degeneracy condition",
-      "Corollaries for ℚ, ℤ, ZMod p (finite fields), and Polynomial K without additional proof"
+      "Corollaries for \u211a, \u2124, ZMod p (finite fields), and Polynomial K without additional proof"
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
@@ -49,17 +49,17 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The original Desargues theorem formalization in this gallery (DesarguesTheorem.lean) relied on Mathlib.LinearAlgebra.CrossProduct, which was deprecated and removed in Mathlib v4.26.0. The open question was: can the proof be redone without this dependency, and can it be made more general?\n\nThis formalization answers both questions: YES, and the proof naturally generalizes from ℝ to any commutative ring K. The key insight is that the entire proof is a polynomial identity — no field properties, continuity, or topology are needed.",
-    "problemStatement": "**Open Question (OQ-01):** Can the full algebraic proof of Desargues's theorem be completed without sorries using Mathlib's linear algebra, without relying on the deprecated CrossProduct module?\n\n**Answer:** YES. Moreover, the proof generalizes to any commutative ring K:\n\n- **Forward direction** (over any CommRing K): If two triangles are perspective from a point, they are perspective from a line.\n- **Converse** (over any IntegralDomain K): If two non-degenerate triangles are perspective from a line, they are perspective from a point.\n\nThe non-degeneracy condition `det(A,B,C) · det(A',B',C') ≠ 0` is necessary: over a ring with zero divisors, the converse can fail.",
-    "text": "Can the full algebraic proof of Desargues's theorem be completed without sorries using Mathlib's linear algebra? YES — and it generalizes to any commutative ring K. This formalization defines a custom cross product (since Mathlib.LinearAlgebra.CrossProduct was deprecated in v4.26.0), proves the Lagrange cross product identity over K, and establishes Desargues's theorem in full generality: the forward direction over any CommRing K, the converse over any IntegralDomain K, and corollaries for ℚ, ℤ, 𝔽_p, and polynomial rings.",
-    "proofStrategy": "The proof proceeds through four algebraic steps, all verified by the `ring` tactic:\n\n**Step 1 (Lagrange Identity):** The custom cross product satisfies the vector quadruple product formula over any CommRing K:\n```\n(a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d\n```\nThis expresses intersection points P, Q, R as linear combinations of A', B', C':\n- P = det(A,B,B')·A' − det(A,B,A')·B'\n- Q = det(B,C,C')·B' − det(B,C,B')·C'\n- R = det(C,A,A')·C' − det(C,A,C')·A'\n\n**Step 2 (Multilinearity):** det(P,Q,R) factors as a scalar times det(A',B',C'):\n```\ndet(d₁A'−d₂B', d₃B'−d₄C', d₅C'−d₆A') = (d₁d₃d₅−d₂d₄d₆)·det(A',B',C')\n```\n\n**Step 3 (Core Identity):** The scalar factor connects to the perspectivity determinant:\n```\nd₁d₃d₅ − d₂d₄d₆ = det(A×A', B×B', C×C') · det(A,B,C)\n```\nThis is a degree-9 polynomial identity in 18 variables, proved by `ring`.\n\n**Conclusion:** Combining steps 1-3 gives the master identity:\n```\ndet(P,Q,R) = det(AA',BB',CC') · det(A,B,C) · det(A',B',C')\n```\nIf the triangles are perspective from a point, det(AA',BB',CC')=0, so det(P,Q,R)=0.",
+    "historicalContext": "The original Desargues theorem formalization in this gallery (DesarguesTheorem.lean) relied on Mathlib.LinearAlgebra.CrossProduct, which was deprecated and removed in Mathlib v4.26.0. The open question was: can the proof be redone without this dependency, and can it be made more general?\n\nThis formalization answers both questions: YES, and the proof naturally generalizes from \u211d to any commutative ring K. The key insight is that the entire proof is a polynomial identity \u2014 no field properties, continuity, or topology are needed.",
+    "problemStatement": "**Open Question (OQ-01):** Can the full algebraic proof of Desargues's theorem be completed without sorries using Mathlib's linear algebra, without relying on the deprecated CrossProduct module?\n\n**Answer:** YES. Moreover, the proof generalizes to any commutative ring K:\n\n- **Forward direction** (over any CommRing K): If two triangles are perspective from a point, they are perspective from a line.\n- **Converse** (over any IntegralDomain K): If two non-degenerate triangles are perspective from a line, they are perspective from a point.\n\nThe non-degeneracy condition `det(A,B,C) \u00b7 det(A',B',C') \u2260 0` is necessary: over a ring with zero divisors, the converse can fail.",
+    "text": "Can the full algebraic proof of Desargues's theorem be completed without sorries using Mathlib's linear algebra? YES \u2014 and it generalizes to any commutative ring K. This formalization defines a custom cross product (since Mathlib.LinearAlgebra.CrossProduct was deprecated in v4.26.0), proves the Lagrange cross product identity over K, and establishes Desargues's theorem in full generality: the forward direction over any CommRing K, the converse over any IntegralDomain K, and corollaries for \u211a, \u2124, \ud835\udd3d_p, and polynomial rings.",
+    "proofStrategy": "The proof proceeds through four algebraic steps, all verified by the `ring` tactic:\n\n**Step 1 (Lagrange Identity):** The custom cross product satisfies the vector quadruple product formula over any CommRing K:\n```\n(a\u00d7b)\u00d7(c\u00d7d) = det(a,b,d)\u00b7c \u2212 det(a,b,c)\u00b7d\n```\nThis expresses intersection points P, Q, R as linear combinations of A', B', C':\n- P = det(A,B,B')\u00b7A' \u2212 det(A,B,A')\u00b7B'\n- Q = det(B,C,C')\u00b7B' \u2212 det(B,C,B')\u00b7C'\n- R = det(C,A,A')\u00b7C' \u2212 det(C,A,C')\u00b7A'\n\n**Step 2 (Multilinearity):** det(P,Q,R) factors as a scalar times det(A',B',C'):\n```\ndet(d\u2081A'\u2212d\u2082B', d\u2083B'\u2212d\u2084C', d\u2085C'\u2212d\u2086A') = (d\u2081d\u2083d\u2085\u2212d\u2082d\u2084d\u2086)\u00b7det(A',B',C')\n```\n\n**Step 3 (Core Identity):** The scalar factor connects to the perspectivity determinant:\n```\nd\u2081d\u2083d\u2085 \u2212 d\u2082d\u2084d\u2086 = det(A\u00d7A', B\u00d7B', C\u00d7C') \u00b7 det(A,B,C)\n```\nThis is a degree-9 polynomial identity in 18 variables, proved by `ring`.\n\n**Conclusion:** Combining steps 1-3 gives the master identity:\n```\ndet(P,Q,R) = det(AA',BB',CC') \u00b7 det(A,B,C) \u00b7 det(A',B',C')\n```\nIf the triangles are perspective from a point, det(AA',BB',CC')=0, so det(P,Q,R)=0.",
     "keyInsights": [
-      "The entire proof is a polynomial identity — no field properties needed, works over any CommRing",
+      "The entire proof is a polynomial identity \u2014 no field properties needed, works over any CommRing",
       "Custom cross product definition bypasses the deprecated Mathlib.LinearAlgebra.CrossProduct module",
-      "The Lagrange identity (a×b)×(c×d) = det(a,b,d)c − det(a,b,c)d is the key geometric-algebraic bridge",
+      "The Lagrange identity (a\u00d7b)\u00d7(c\u00d7d) = det(a,b,d)c \u2212 det(a,b,c)d is the key geometric-algebraic bridge",
       "The core algebraic identity (degree-9 in 18 variables) is verified by Lean's ring tactic in ~400s with maxHeartbeats 400000000",
       "The converse requires IntegralDomain (no zero divisors) to cancel the non-degeneracy factor",
-      "Corollaries for ℚ, ℤ, 𝔽_p, and polynomial rings follow immediately with zero additional proof"
+      "Corollaries for \u211a, \u2124, \ud835\udd3d_p, and polynomial rings follow immediately with zero additional proof"
     ],
     "prerequisites": [
       "Linear algebra"
@@ -78,21 +78,21 @@
       "title": "Cross Product Setup Over K",
       "startLine": 45,
       "endLine": 66,
-      "summary": "Custom cross product definition for K³, with component lemmas and anticommutativity."
+      "summary": "Custom cross product definition for K\u00b3, with component lemmas and anticommutativity."
     },
     {
       "id": "determinant",
       "title": "Three-Vector Matrix Determinant",
       "startLine": 67,
       "endLine": 83,
-      "summary": "threeVecMat: rows as vectors, explicit 3×3 det expansion proved by ring."
+      "summary": "threeVecMat: rows as vectors, explicit 3\u00d73 det expansion proved by ring."
     },
     {
       "id": "lagrange",
       "title": "Lagrange Cross Product Identity",
       "startLine": 84,
       "endLine": 116,
-      "summary": "Key lemma: (a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d over any CommRing K."
+      "summary": "Key lemma: (a\u00d7b)\u00d7(c\u00d7d) = det(a,b,d)\u00b7c \u2212 det(a,b,c)\u00b7d over any CommRing K."
     },
     {
       "id": "collinearity",
@@ -106,7 +106,7 @@
       "title": "The Desargues Master Identity",
       "startLine": 127,
       "endLine": 200,
-      "summary": "det(P,Q,R) = det(AA',BB',CC')·det(A,B,C)·det(A',B',C') — three-step algebraic proof."
+      "summary": "det(P,Q,R) = det(AA',BB',CC')\u00b7det(A,B,C)\u00b7det(A',B',C') \u2014 three-step algebraic proof."
     },
     {
       "id": "main-theorems",
@@ -120,17 +120,17 @@
       "title": "Corollaries for Specific Rings",
       "startLine": 261,
       "endLine": 285,
-      "summary": "Immediate specializations to ℚ, ℤ, ZMod p, and polynomial rings."
+      "summary": "Immediate specializations to \u211a, \u2124, ZMod p, and polynomial rings."
     }
   ],
   "conclusion": {
     "summary": "The open question is answered affirmatively: the full algebraic proof of Desargues's theorem can be completed in Lean 4 without sorries, without the deprecated CrossProduct module, and moreover the proof generalizes to any commutative ring. The key ingredient is a custom cross product definition that bypasses the deprecated module, combined with the Lagrange identity which encodes intersection points as linear combinations.",
-    "implications": "**Theoretical Significance**: This formalization demonstrates that Desargues's theorem is fundamentally algebraic rather than geometric — it holds in any commutative ring where points are elements of a free module of rank 3.\n\nThis connects to the classical theorem that projective planes are Desarguesian if and only if they are coordinatizable by a division ring. The generalization to polynomial rings K[x] shows the theorem holds in infinite-dimensional algebraic geometry contexts.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates that Desargues's theorem is fundamentally algebraic rather than geometric \u2014 it holds in any commutative ring where points are elements of a free module of rank 3.\n\nThis connects to the classical theorem that projective planes are Desarguesian if and only if they are coordinatizable by a division ring. The generalization to polynomial rings K[x] shows the theorem holds in infinite-dimensional algebraic geometry contexts.",
     "openQuestions": [
       "Can we formalize non-Desarguesian projective planes in Lean to demonstrate when the theorem fails?",
       "What is the relationship between Desargues's theorem and the fundamental theorem of projective geometry in a formal setting?",
       "Can the proof be generalized to free modules of rank 3 over non-commutative rings (where the forward direction may still hold)?",
-      "How does this relate to Pappus's theorem, which implies Desargues in characteristic ≠ 2?"
+      "How does this relate to Pappus's theorem, which implies Desargues in characteristic \u2260 2?"
     ]
   },
   "leanFile": {
@@ -165,14 +165,8 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "desargues-theorem",
-      "relationship": "Base formalization that motivated this generalization; uses the deprecated CrossProduct module over ℝ"
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "Another classical geometry result formalized algebraically in Lean 4 using Mathlib's linear algebra infrastructure"
-    },
+    "desargues-theorem",
+    "pythagorean-theorem",
     "desargues-theorem",
     "desargues-theorem-oq-02",
     "desargues-theorem-oq-04"
@@ -180,7 +174,7 @@
   "references": [
     {
       "authors": "Girard Desargues",
-      "title": "Brouillon project d'une atteinte aux événemens des rencontres du Cône avec un Plan",
+      "title": "Brouillon project d'une atteinte aux \u00e9v\u00e9nemens des rencontres du C\u00f4ne avec un Plan",
       "year": "1639",
       "venue": "Self-published",
       "note": "Original statement of the theorem in the context of perspective drawing"

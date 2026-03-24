@@ -196,31 +196,11 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-940",
-      "title": "Erd\u0151s #940: Sums of r-Powerful Numbers",
-      "relevance": "Nearest relative: generalizes squarefull sums (r=2, p\u00b2|m) to r-powerful sums (p\u02b3|m). Shares the Baker-Br\u00fcdern (1994) result and the same density/asymptotic framework."
-    },
-    {
-      "id": "prime-number-theorem",
-      "title": "The Prime Number Theorem",
-      "relevance": "The PNT is the canonical example of a counting-function asymptotic with a log-power correction. The exponent \u03b1 = 1 \u2212 2^(\u22121/3) in A(x) ~ x/(log x)^\u03b1 mirrors the PNT structure and is derived with similar analytic techniques."
-    },
-    {
-      "id": "fermat-two-squares",
-      "title": "Fermat's Sum of Two Squares",
-      "relevance": "The Blomer-Granville proof reduces A(x) asymptotics to counting representations by binary quadratic forms, the same objects central to Fermat's theorem and its generalisations."
-    },
-    {
-      "id": "lagrange-four-squares",
-      "title": "Lagrange's Four Squares Theorem",
-      "relevance": "Both results ask: which integers are sums of structured numbers? Lagrange (squares) and Problem #1081 (squarefull) are complementary case studies in additive representation theory."
-    },
-    {
-      "id": "riemann-hypothesis",
-      "title": "The Riemann Hypothesis",
-      "relevance": "The constant c in S(x) ~ c\u221ax involves \u03b6(3/2)/\u03b6(3), and sharper error terms for A(x) are sensitive to zeta zero distribution, linking this problem to the central open question in analytic number theory."
-    }
+    "erdos-940",
+    "prime-number-theorem",
+    "fermat-two-squares",
+    "lagrange-four-squares",
+    "riemann-hypothesis"
   ],
   "references": [
     {

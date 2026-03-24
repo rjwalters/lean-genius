@@ -2,7 +2,7 @@
   "id": "divisibility-truncation-general",
   "title": "General Truncation Divisibility Rule",
   "slug": "divisibility-truncation-general",
-  "description": "A parametric theorem generalizing the truncation method to all divisors coprime to 10. Given any d coprime to 10 and an osculator c (satisfying d | 10c ∓ 1), we prove d | n ↔ d | (n/10 ± c·(n%10)). This single theorem subsumes the specific rules for 7, 11, 13, 17, 19, 23, 29, 31, 37, and all other primes coprime to 10.",
+  "description": "A parametric theorem generalizing the truncation method to all divisors coprime to 10. Given any d coprime to 10 and an osculator c (satisfying d | 10c \u2213 1), we prove d | n \u2194 d | (n/10 \u00b1 c\u00b7(n%10)). This single theorem subsumes the specific rules for 7, 11, 13, 17, 19, 23, 29, 31, 37, and all other primes coprime to 10.",
   "meta": {
     "status": "verified",
     "tags": [
@@ -39,10 +39,10 @@
       }
     ],
     "originalContributions": [
-      "General positive osculator theorem: d | n ↔ d | (n/10 + c*(n%10)) when d | 10c-1",
-      "General negative osculator theorem: d | n ↔ d | (n/10 - c*(n%10)) when d | 10c+1",
+      "General positive osculator theorem: d | n \u2194 d | (n/10 + c*(n%10)) when d | 10c-1",
+      "General negative osculator theorem: d | n \u2194 d | (n/10 - c*(n%10)) when d | 10c+1",
       "Unified proof using linear_combination for the key algebraic identity",
-      "11 concrete corollaries for d ∈ {3,7,9,11,13,17,19,23,29,31,37}",
+      "11 concrete corollaries for d \u2208 {3,7,9,11,13,17,19,23,29,31,37}",
       "Explicit osculator table with verification examples"
     ],
     "dateAdded": "2026-02-21",
@@ -53,13 +53,13 @@
   "overview": {
     "historicalContext": "Divisibility rules have been studied since antiquity. The rules for 3 and 9 (sum of digits), 11 (alternating sum), 7 and 13 (truncation methods) are classical results. The **truncation method** or **osculator method** is attributed to various 19th-century mathematicians including Kummer (1852) and Zuckerman (1948). The key insight is that for any integer $d$ coprime to 10, there exists a multiplicative inverse of 10 mod $d$, the **osculator**, connecting $d$-divisibility of $n$ to a simpler expression in $\\lfloor n/10 \\rfloor$ and $n \\bmod 10$. This single algebraic principle unifies dozens of seemingly ad-hoc pencil-and-paper tests into one parametric theorem, formalized in Lean 4 with `IsCoprime` and `linear_combination`.",
     "problemStatement": "Can the individual truncation rules for 7, 11, 13, 17, 19 be unified into a single parametric theorem?\n\nSpecifically: given d coprime to 10, is there a general rule of the form $d | n \\iff d | f(n/10, n\\%10)$ where $f$ depends only on $d$?\n\n**Answer: YES**, with two variants:\n- **Positive osculator** ($d | 10c - 1$): $d | n \\iff d | (n/10 + c \\cdot (n\\%10))$\n- **Negative osculator** ($d | 10c + 1$): $d | n \\iff d | (n/10 - c \\cdot (n\\%10))$",
-    "text": "A parametric theorem generalizing the truncation method to all divisors coprime to 10. Given any d coprime to 10 and an osculator c (satisfying d | 10c ∓ 1), we prove d | n ↔ d | (n/10 ± c·(n%10)). This single theorem subsumes the specific rules for 7, 11, 13, 17, 19, 23, 29, 31, 37, and all other primes coprime to 10.",
+    "text": "A parametric theorem generalizing the truncation method to all divisors coprime to 10. Given any d coprime to 10 and an osculator c (satisfying d | 10c \u2213 1), we prove d | n \u2194 d | (n/10 \u00b1 c\u00b7(n%10)). This single theorem subsumes the specific rules for 7, 11, 13, 17, 19, 23, 29, 31, 37, and all other primes coprime to 10.",
     "proofStrategy": "The key algebraic identity is:\n$$10 \\cdot (n/10 + c \\cdot (n\\%10)) = n + (10c - 1) \\cdot (n\\%10)$$\n\nWhen $d | (10c - 1)$, the term $(10c-1) \\cdot (n\\%10)$ is divisible by $d$, so:\n$$d | n \\iff d | n + (10c-1)(n\\%10) = 10 \\cdot (n/10 + c \\cdot (n\\%10))$$\n\nSince $\\gcd(d, 10) = 1$, divisibility by $d$ transfers through the factor 10:\n$$d | 10 \\cdot \\text{expr} \\iff d | \\text{expr}$$\n\nFormally: `IsCoprime.dvd_of_dvd_mul_left` handles this last step.\n\nThe negative osculator case is symmetric, with the identity:\n$$10 \\cdot (n/10 - c \\cdot (n\\%10)) = n - (10c + 1) \\cdot (n\\%10)$$",
     "keyInsights": [
       "The `linear_combination` tactic elegantly handles the algebraic identity: `linear_combination -hdiv` where `hdiv : n = 10*(n/10) + n%10`.",
       "The `IsCoprime` condition in Lean 4 provides exactly the right algebraic framework: coprimeness lets us cancel the factor of 10.",
-      "The positive osculator c satisfies 10c ≡ 1 (mod d), i.e., c is the multiplicative inverse of 10 mod d.",
-      "The negative osculator satisfies 10c ≡ -1 (mod d), i.e., c is the 'negative inverse' of 10 mod d.",
+      "The positive osculator c satisfies 10c \u2261 1 (mod d), i.e., c is the multiplicative inverse of 10 mod d.",
+      "The negative osculator satisfies 10c \u2261 -1 (mod d), i.e., c is the 'negative inverse' of 10 mod d.",
       "Every d coprime to 10 has both positive and negative osculators (they are multiplicative inverses of 10 and -10 respectively).",
       "The proof works uniformly for all d, not just primes."
     ],
@@ -80,14 +80,14 @@
       "title": "Positive Osculator Theorem",
       "startLine": 37,
       "endLine": 80,
-      "summary": "General theorem for d | n ↔ d | (n/10 + c*(n%10)) when d | 10c-1."
+      "summary": "General theorem for d | n \u2194 d | (n/10 + c*(n%10)) when d | 10c-1."
     },
     {
       "id": "negative-osculator",
       "title": "Negative Osculator Theorem",
       "startLine": 82,
       "endLine": 124,
-      "summary": "General theorem for d | n ↔ d | (n/10 - c*(n%10)) when d | 10c+1."
+      "summary": "General theorem for d | n \u2194 d | (n/10 - c*(n%10)) when d | 10c+1."
     },
     {
       "id": "corollaries",
@@ -112,7 +112,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The truncation method generalizes to a complete parametric framework. Two theorems (`truncation_pos` and `truncation_neg`) cover all cases: for any d coprime to 10, there exist osculator constants c (the multiplicative inverse of ±10 mod d) giving divisibility tests. The proof uses a single algebraic identity and the `IsCoprime` machinery of Mathlib.",
+    "summary": "The truncation method generalizes to a complete parametric framework. Two theorems (`truncation_pos` and `truncation_neg`) cover all cases: for any d coprime to 10, there exist osculator constants c (the multiplicative inverse of \u00b110 mod d) giving divisibility tests. The proof uses a single algebraic identity and the `IsCoprime` machinery of Mathlib.",
     "implications": "This unification has both mathematical and pedagogical value:\n- **Mathematical**: Shows the truncation method is not a collection of ad-hoc tricks but a single algebraic phenomenon.\n- **Computational**: Given any d coprime to 10, one can immediately compute the osculator and generate a divisibility test.\n- **Formal verification**: The parametric theorem is easier to maintain and extend than individual proofs.\n\nThe framework also extends to multi-digit truncation (the OQ-02 extension) and to arbitrary bases.",
     "openQuestions": [
       "ANSWERED (see divisibility-truncation-general-oq-01): The positive and negative osculator theorems merge into a single unified_osculator theorem. The negative case is the positive case with c negated.",
@@ -144,7 +144,7 @@
     },
     {
       "authors": "Herbert S. Zuckerman",
-      "title": "On the Number-Theoretic Functions ν(n) and Ω(n)",
+      "title": "On the Number-Theoretic Functions \u03bd(n) and \u03a9(n)",
       "year": "1948",
       "venue": "Bulletin of the American Mathematical Society",
       "note": "Early systematic treatment of the osculator (truncation) method for divisibility rules"
@@ -175,14 +175,8 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "divisibility-by-3-oq-01",
-      "relationship": "Companion that proves specific truncation rules; this entry provides the unifying parametric theorem answering the open question posed there"
-    },
-    {
-      "id": "divisibility-by-3",
-      "relationship": "Base formalization of divisibility-by-3; the digit-sum approach there is the d=3 case of the general osculator framework here"
-    },
+    "divisibility-by-3-oq-01",
+    "divisibility-by-3",
     "divisibility-by-3",
     "divisibility-by-3-oq-01",
     "chinese-remainder-constructive"

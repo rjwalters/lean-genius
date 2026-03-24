@@ -201,26 +201,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-1130",
-      "title": "Erd\u0151s Problem #1130: Lagrange Basis Function Sums",
-      "connection": "Directly related sibling problem about subinterval maxima of the Lebesgue function; both problems were resolved using the de Boor\u2013Pinkus equal-height characterization."
-    },
-    {
-      "id": "erdos-1131",
-      "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
-      "connection": "The L\u00b2 analog: minimizes \u222b \u03a3|l_k(x)|\u00b2 dx rather than the supremum. Legendre nodes (not Chebyshev) are near-optimal in L\u00b2, contrasting with the Chebyshev-optimal L\u221e result of #1129."
-    },
-    {
-      "id": "erdos-671",
-      "title": "Erd\u0151s Problem #671: Lagrange Interpolation Convergence",
-      "connection": "Asks whether interpolation at given nodes converges for all continuous functions; the Lebesgue constant growth rate proved in #1129 is the central obstruction to uniform convergence."
-    },
-    {
-      "id": "de-moivre-oq-02",
-      "title": "Chebyshev Polynomial Properties via De Moivre's Theorem",
-      "connection": "Formalizes the equioscillation and extremal properties of T_n(cos \u03b8) = cos(n\u03b8) that make Chebyshev nodes near-optimal for Lagrange interpolation."
-    }
+    "erdos-1130",
+    "erdos-1131",
+    "erdos-671",
+    "de-moivre-oq-02"
   ],
   "references": [
     {

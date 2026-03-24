@@ -2,7 +2,7 @@
   "id": "desargues-theorem-oq-02",
   "title": "Non-Desarguesian Planes: The Moulton Plane Counterexample",
   "slug": "desargues-theorem-oq-02",
-  "description": "How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails? YES — by constructing the Moulton plane, an affine plane where lines with negative slope bend at the y-axis, and exhibiting a concrete 6-point counterexample. Two triangles are perspective from a point O but their three side-intersection points are NOT Moulton-collinear, proving Desargues fails.",
+  "description": "How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails? YES \u2014 by constructing the Moulton plane, an affine plane where lines with negative slope bend at the y-axis, and exhibiting a concrete 6-point counterexample. Two triangles are perspective from a point O but their three side-intersection points are NOT Moulton-collinear, proving Desargues fails.",
   "meta": {
     "author": "Forest Ray Moulton (1902); formalization in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Moulton_plane",
@@ -28,9 +28,9 @@
       }
     ],
     "originalContributions": [
-      "MLine inductive type: standard, bent, and vertical Moulton lines over ℚ",
+      "MLine inductive type: standard, bent, and vertical Moulton lines over \u211a",
       "onLine incidence relation with piecewise slope doubling for negative-slope lines",
-      "Concrete counterexample: O=(-4,12), triangles ABC and A'B'C' with all vertices at x≤0",
+      "Concrete counterexample: O=(-4,12), triangles ABC and A'B'C' with all vertices at x\u22640",
       "Perspective from point: 9 incidence theorems showing AA', BB', CC' concurrent at O",
       "Moulton intersection beta=(6/11,38/11) shifted from Euclidean (1,7/2) by line CA bending",
       "not_moulton_collinear: exhaustive case analysis over all MLine types proves non-collinearity",
@@ -44,18 +44,21 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Girard Desargues stated his theorem around 1639 in the context of perspective drawing and projective geometry. The theorem — that two triangles in perspective from a point are also in perspective from a line — holds in every projective plane coordinatizable by a division ring, a result formalized in OQ-01 using cross-product algebra. Forest Ray Moulton (1902) constructed the first concrete counterexample: an affine plane with the same point set as $\\mathbb{R}^2$ but modified lines, where negative slopes double upon crossing the $y$-axis. This showed that Desargues's theorem is not a consequence of the incidence axioms alone — it depends on the algebraic structure of the coordinate system. The Hessenberg-Artin theorem (Karl Hessenberg 1905, Emil Artin 1957) later proved the converse: a projective plane is Desarguesian if and only if it is coordinatizable by a division ring. The Moulton plane thus occupies a central place in the classification of projective planes and serves as the canonical example in most modern textbooks on incidence geometry (e.g., Hartshorne's *Foundations of Projective Geometry*).",
-    "problemStatement": "**Open Question (OQ-02):** How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails?\n\n**Answer:** Construct the Moulton plane over ℚ with an explicit counterexample:\n- **Points:** ℚ × ℚ (rational coordinates)\n- **Lines:** Standard (slope ≥ 0), bent (slope < 0, doubles for x > 0), or vertical\n- **Counterexample:** Two triangles perspective from O = (-4, 12) whose side-intersections fail to be Moulton-collinear\n\nThe bending of line CA (slope -1/2 → -1 for x > 0) shifts one intersection point, breaking the alignment by 3/88.",
-    "text": "How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails? YES — by constructing the Moulton plane, an affine plane where lines with negative slope bend at the y-axis, and exhibiting a concrete 6-point counterexample. Two triangles are perspective from a point O but their three side-intersection points are NOT Moulton-collinear, proving Desargues fails.",
-    "proofStrategy": "The proof has three components:\n\n**1. Moulton Plane Definitions:** An inductive type `MLine` with three constructors (standard, bent, vertical) and a piecewise incidence relation `onLine` that doubles negative slopes for x > 0.\n\n**2. Counterexample Construction:** Six vertices forming two triangles, all at x ≤ 0 (so the perspectivity lines are unaffected by bending). The side line CA has slope -1/2, which becomes -1 for x > 0, shifting the intersection CA ∩ C'A' from (1, 7/2) to (6/11, 38/11).\n\n**3. Non-Collinearity Proof:** Exhaustive case analysis over all three MLine constructors shows no Moulton line passes through all three intersection points. The key arithmetic: any line through α=(-3,4) and γ=(-35,8) misses β=(6/11,38/11) — by 9/88 for standard lines and 3/88 for bent lines.",
+    "historicalContext": "Girard Desargues stated his theorem around 1639 in the context of perspective drawing and projective geometry. The theorem \u2014 that two triangles in perspective from a point are also in perspective from a line \u2014 holds in every projective plane coordinatizable by a division ring, a result formalized in OQ-01 using cross-product algebra. Forest Ray Moulton (1902) constructed the first concrete counterexample: an affine plane with the same point set as $\\mathbb{R}^2$ but modified lines, where negative slopes double upon crossing the $y$-axis. This showed that Desargues's theorem is not a consequence of the incidence axioms alone \u2014 it depends on the algebraic structure of the coordinate system. The Hessenberg-Artin theorem (Karl Hessenberg 1905, Emil Artin 1957) later proved the converse: a projective plane is Desarguesian if and only if it is coordinatizable by a division ring. The Moulton plane thus occupies a central place in the classification of projective planes and serves as the canonical example in most modern textbooks on incidence geometry (e.g., Hartshorne's *Foundations of Projective Geometry*).",
+    "problemStatement": "**Open Question (OQ-02):** How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails?\n\n**Answer:** Construct the Moulton plane over \u211a with an explicit counterexample:\n- **Points:** \u211a \u00d7 \u211a (rational coordinates)\n- **Lines:** Standard (slope \u2265 0), bent (slope < 0, doubles for x > 0), or vertical\n- **Counterexample:** Two triangles perspective from O = (-4, 12) whose side-intersections fail to be Moulton-collinear\n\nThe bending of line CA (slope -1/2 \u2192 -1 for x > 0) shifts one intersection point, breaking the alignment by 3/88.",
+    "text": "How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails? YES \u2014 by constructing the Moulton plane, an affine plane where lines with negative slope bend at the y-axis, and exhibiting a concrete 6-point counterexample. Two triangles are perspective from a point O but their three side-intersection points are NOT Moulton-collinear, proving Desargues fails.",
+    "proofStrategy": "The proof has three components:\n\n**1. Moulton Plane Definitions:** An inductive type `MLine` with three constructors (standard, bent, vertical) and a piecewise incidence relation `onLine` that doubles negative slopes for x > 0.\n\n**2. Counterexample Construction:** Six vertices forming two triangles, all at x \u2264 0 (so the perspectivity lines are unaffected by bending). The side line CA has slope -1/2, which becomes -1 for x > 0, shifting the intersection CA \u2229 C'A' from (1, 7/2) to (6/11, 38/11).\n\n**3. Non-Collinearity Proof:** Exhaustive case analysis over all three MLine constructors shows no Moulton line passes through all three intersection points. The key arithmetic: any line through \u03b1=(-3,4) and \u03b3=(-35,8) misses \u03b2=(6/11,38/11) \u2014 by 9/88 for standard lines and 3/88 for bent lines.",
     "keyInsights": [
-      "The Moulton plane has the same points as ℚ² but different lines, showing Desargues is a property of the incidence structure, not the point set",
-      "Only lines with negative slope are affected — the perspectivity lines (positive slope and vertical) work normally",
+      "The Moulton plane has the same points as \u211a\u00b2 but different lines, showing Desargues is a property of the incidence structure, not the point set",
+      "Only lines with negative slope are affected \u2014 the perspectivity lines (positive slope and vertical) work normally",
       "The counterexample is minimal: exactly one side line (CA) crosses the y-axis with negative slope, shifting one intersection point",
-      "Using ℚ instead of ℝ gives exact arithmetic verification via norm_num, with no approximation issues",
+      "Using \u211a instead of \u211d gives exact arithmetic verification via norm_num, with no approximation issues",
       "The gap 3/88 between the bent-line value and beta's y-coordinate is the precise obstruction to Desargues"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Incidence geometry",
+      "Projective geometry"
+    ]
   },
   "sections": [
     {
@@ -116,7 +119,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Moulton plane provides a concrete, computationally verified counterexample to Desargues's theorem in Lean 4. The formalization constructs the full Moulton incidence structure over ℚ, exhibits two perspective triangles whose side-intersections fail to be Moulton-collinear, and proves non-collinearity by exhaustive case analysis. All arithmetic is exact (no approximations) and verified by norm_num.",
+    "summary": "The Moulton plane provides a concrete, computationally verified counterexample to Desargues's theorem in Lean 4. The formalization constructs the full Moulton incidence structure over \u211a, exhibits two perspective triangles whose side-intersections fail to be Moulton-collinear, and proves non-collinearity by exhaustive case analysis. All arithmetic is exact (no approximations) and verified by norm_num.",
     "implications": "**Theoretical Significance**: Combined with OQ-01 (which proved Desargues over any CommRing using homogeneous coordinates), this OQ-02 result shows that Desargues's theorem is fundamentally about the algebraic structure of lines, not about points.\n\nThe standard projective plane's line structure (encoded by cross products and determinants) satisfies Desargues; the Moulton plane's bent-line structure does not. This connects to the classical result that a projective plane is Desarguesian if and only if it is coordinatizable by a division ring.",
     "openQuestions": [
       "What is the relationship between Desargues's theorem and the fundamental theorem of projective geometry in a formal setting?",
@@ -150,18 +153,12 @@
     {
       "targetId": "desargues-theorem-oq-04",
       "relationship": "related",
-      "description": "OQ-04 formalizes self-duality of Desargues's theorem; together these entries complete the classical picture (holds ↔ coordinatizable by division ring)"
+      "description": "OQ-04 formalizes self-duality of Desargues's theorem; together these entries complete the classical picture (holds \u2194 coordinatizable by division ring)"
     }
   ],
   "relatedProofs": [
-    {
-      "id": "four-color-theorem",
-      "relationship": "Another graph/geometry result requiring a concrete counterexample or computational verification to understand the limits of a theorem"
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "Both theorems depend critically on the algebraic structure of the underlying field or ring"
-    },
+    "four-color-theorem",
+    "fundamental-theorem-algebra",
     "desargues-theorem",
     "desargues-theorem-oq-01",
     "desargues-theorem-oq-04"

@@ -192,18 +192,7 @@
       "targetId": "erdos-122"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "erdos-1054",
-      "relationship": "technique",
-      "description": "Sum of smallest divisors uses Finset-based counting and asymptotic analysis with Filter.Tendsto, the same Lean infrastructure used in #1061's S(x) counting function"
-    },
-    {
-      "target": "erdos-252",
-      "relationship": "related",
-      "description": "Irrationality of divisor power sums explores \u03c3_k(n) = \u03a3_{d|n} d^k, the same family of arithmetic functions from which \u03c3 = \u03c3_1 is drawn"
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

@@ -2,9 +2,9 @@
   "id": "erdos-1097",
   "title": "Common Differences in Three-Term Arithmetic Progressions",
   "slug": "erdos-1097",
-  "description": "How many distinct common differences can occur in three-term APs within an n-element set? Conjectured O(n^{3/2}). Best bounds: n^{1.778} (Lemm) to n^{11/6} (Katz–Tao). Equivalent to Bourgain's sums-differences problem.",
+  "description": "How many distinct common differences can occur in three-term APs within an n-element set? Conjectured O(n^{3/2}). Best bounds: n^{1.778} (Lemm) to n^{11/6} (Katz\u2013Tao). Equivalent to Bourgain's sums-differences problem.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1097",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1097Problem.lean",
@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/1097",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n log n) lower bound), erdos_ruzsa_explicit (Ω(n^{4/3}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (Ω(n^{1.822}) DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
+    "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (\u03a9(n log n) lower bound), erdos_ruzsa_explicit (\u03a9(n^{4/3}) explicit lower bound), lemm_lower (\u03a9(n^{1.778}) best known lower bound), alphaevolve_improvement (\u03a9(n^{1.822}) DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
     "lineCount": 374,
     "leanFile": {
       "lineCount": 374,
@@ -39,7 +39,7 @@
     "relatedProblems": [
       {
         "id": "erdos-3",
-        "relationship": "Erdős's density conjecture for arithmetic progressions; both concern the structure of APs in dense integer sets"
+        "relationship": "Erd\u0151s's density conjecture for arithmetic progressions; both concern the structure of APs in dense integer sets"
       },
       {
         "id": "roth-theorem-k3",
@@ -48,16 +48,20 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an $n$-element set of integers $A$, how many distinct common differences can three-term arithmetic progressions in $A$ have?\n\nThe Erdős-Spencer probabilistic argument (random subsets of $\\{1,\\ldots,N\\}$) showed that $\\Omega(n^{3/2})$ is achievable. Bourgain connected the problem to the Kakeya conjecture, reformulating it via restricted sums and differences. In 1999, Katz and Tao established $O(n^{11/6})$ using Szemerédi-Trotter incidence geometry. Lemm improved the lower bound past $n^{1.778}$ in 2015, and in 2025 AlphaEvolve achieved a marginal further improvement. The gap $\\Omega(n^{1.778})$ vs $O(n^{11/6}) \\approx O(n^{1.833})$ remains open, with implications for the Kakeya conjecture and additive combinatorics.",
+    "historicalContext": "Erd\u0151s posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an $n$-element set of integers $A$, how many distinct common differences can three-term arithmetic progressions in $A$ have?\n\nThe Erd\u0151s-Spencer probabilistic argument (random subsets of $\\{1,\\ldots,N\\}$) showed that $\\Omega(n^{3/2})$ is achievable. Bourgain connected the problem to the Kakeya conjecture, reformulating it via restricted sums and differences. In 1999, Katz and Tao established $O(n^{11/6})$ using Szemer\u00e9di-Trotter incidence geometry. Lemm improved the lower bound past $n^{1.778}$ in 2015, and in 2025 AlphaEvolve achieved a marginal further improvement. The gap $\\Omega(n^{1.778})$ vs $O(n^{11/6}) \\approx O(n^{1.833})$ remains open, with implications for the Kakeya conjecture and additive combinatorics.",
     "problemStatement": "Let $A \\subseteq \\mathbb{Z}$ with $|A| = n$, and let $D(A) = \\{d : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Is $|D(A)| = O(n^{3/2})$?",
     "proofStrategy": "The formalization defines IsThreeAP and commonDifferences, then develops a comprehensive infrastructure of proven structural results: subset bounds, monotonicity, symmetry, translation invariance, and dilation covariance. The main conjecture and known bounds are stated as axioms. Bourgain's restricted sums-differences framework is formalized, and Chan's equivalence theorem connecting the two formulations is recorded. A summary theorem combines the bounds to capture the current state of knowledge: $1.778 < c^* \\le 11/6$.",
     "keyInsights": [
-      "The Erdős-Spencer probabilistic method gives Ω(n^{3/2}) common differences, matching the conjectured upper bound and establishing the combinatorial baseline",
+      "The Erd\u0151s-Spencer probabilistic method gives \u03a9(n^{3/2}) common differences, matching the conjectured upper bound and establishing the combinatorial baseline",
       "Katz-Tao's O(n^{11/6}) upper bound uses incidence geometry connecting discrete APs to line configurations in the plane, the same toolkit underlying Kakeya conjecture progress",
-      "Lemm's n^{1.778} lower bound broke through the n^{3/2} barrier, suggesting the true exponent may be strictly between 3/2 and 11/6 — potentially falsifying Erdős's original conjecture",
+      "Lemm's n^{1.778} lower bound broke through the n^{3/2} barrier, suggesting the true exponent may be strictly between 3/2 and 11/6 \u2014 potentially falsifying Erd\u0151s's original conjecture",
       "Chan's equivalence theorem shows the 3-AP exponent equals the Bourgain sums-differences exponent, unifying a discrete combinatorial problem with continuous harmonic analysis",
       "The formalization proves 14 infrastructure lemmas without axioms, including translation invariance D(A+c) = D(A), dilation covariance, negation symmetry, and exact computations for small sets",
       "The connection to the Kakeya conjecture means resolving this problem would impact fundamental questions in geometric measure theory about Besicovitch sets in R^n"
+    ],
+    "prerequisites": [
+      "Additive combinatorics",
+      "Arithmetic progressions"
     ]
   },
   "sections": [
@@ -66,7 +70,7 @@
       "title": "Imports and Module Documentation",
       "startLine": 1,
       "endLine": 34,
-      "summary": "Imports Mathlib.Tactic, Finset.Basic, and Pow.Real. Module docstring describes Problem #1097: common differences in 3-term APs, the $O(n^{3/2})$ conjecture, connections to Bourgain and Kakeya, and the full history of bounds from Erdős-Spencer through AlphaEvolve.",
+      "summary": "Imports Mathlib.Tactic, Finset.Basic, and Pow.Real. Module docstring describes Problem #1097: common differences in 3-term APs, the $O(n^{3/2})$ conjecture, connections to Bourgain and Kakeya, and the full history of bounds from Erd\u0151s-Spencer through AlphaEvolve.",
       "mathContext": "Problem: For $A \\subseteq \\mathbb{Z}$ with $|A| = n$, estimate $|D(A)| = |\\{d : \\exists a, a+d, a+2d \\in A\\}|$. Conjectured $O(n^{3/2})$, best bounds $\\Omega(n^{1.778})$ to $O(n^{11/6})$."
     },
     {
@@ -82,7 +86,7 @@
       "title": "Proven Infrastructure Lemmas",
       "startLine": 56,
       "endLine": 179,
-      "summary": "Fourteen fully-proven structural results: D(A) ⊆ A-A, |D(A)| ≤ |A|², 0 ∈ D(A) for nonempty A, monotonicity, negation symmetry, exact computations for singletons and pairs, and the connection between finite and set-level membership.",
+      "summary": "Fourteen fully-proven structural results: D(A) \u2286 A-A, |D(A)| \u2264 |A|\u00b2, 0 \u2208 D(A) for nonempty A, monotonicity, negation symmetry, exact computations for singletons and pairs, and the connection between finite and set-level membership.",
       "mathContext": "$D(A) \\subseteq A - A$ (difference set), $|D(A)| \\leq |A|^2$ (trivial), $0 \\in D(A)$ for $|A| \\geq 1$ (trivial AP). $D(\\{a\\}) = \\{0\\}$, $D(\\{a,b\\}) = \\{0, \\pm(b-a)\\}$."
     },
     {
@@ -90,7 +94,7 @@
       "title": "Structural Invariance Theorems",
       "startLine": 180,
       "endLine": 292,
-      "summary": "Translation invariance D(A+c) = D(A), dilation covariance (d ∈ D(A) implies cd ∈ D(cA)), negation closure as a set identity, symmetry iff, direct witness construction, and the concrete computation D({a,a+1,a+2}) = {-1,0,1}.",
+      "summary": "Translation invariance D(A+c) = D(A), dilation covariance (d \u2208 D(A) implies cd \u2208 D(cA)), negation closure as a set identity, symmetry iff, direct witness construction, and the concrete computation D({a,a+1,a+2}) = {-1,0,1}.",
       "mathContext": "$D(A + c) = D(A)$ (translation invariance). $d \\in D(A) \\implies cd \\in D(cA)$ (dilation). $D(A) = -D(A)$ (negation symmetry). $D(\\{a, a+1, a+2\\}) = \\{-1, 0, 1\\}$."
     },
     {
@@ -98,15 +102,15 @@
       "title": "Main Conjecture",
       "startLine": 293,
       "endLine": 301,
-      "summary": "States the O(n^{3/2}) conjecture: ∃C such that |D(A)| ≤ C·n^{3/2} for all n-element sets A ⊆ ℤ.",
-      "mathContext": "Conjecture: $\\exists C > 0,\\; \\forall A \\subseteq \\mathbb{Z},\\; |A| = n \\implies |D(A)| \\leq C \\cdot n^{3/2}$. Erdős conjectured the exponent $3/2$ is tight."
+      "summary": "States the O(n^{3/2}) conjecture: \u2203C such that |D(A)| \u2264 C\u00b7n^{3/2} for all n-element sets A \u2286 \u2124.",
+      "mathContext": "Conjecture: $\\exists C > 0,\\; \\forall A \\subseteq \\mathbb{Z},\\; |A| = n \\implies |D(A)| \\leq C \\cdot n^{3/2}$. Erd\u0151s conjectured the exponent $3/2$ is tight."
     },
     {
       "id": "upper-bound",
-      "title": "Katz–Tao Upper Bound",
+      "title": "Katz\u2013Tao Upper Bound",
       "startLine": 302,
       "endLine": 308,
-      "summary": "Axiomatizes the best known upper bound: f(n) ≤ C·n^{11/6} (Katz–Tao, 1999), the exponent 11/6 ≈ 1.833.",
+      "summary": "Axiomatizes the best known upper bound: f(n) \u2264 C\u00b7n^{11/6} (Katz\u2013Tao, 1999), the exponent 11/6 \u2248 1.833.",
       "mathContext": "$f(n) \\leq C \\cdot n^{11/6}$ (Katz-Tao 1999). The exponent $11/6 \\approx 1.833$ uses incidence geometry connecting APs to line arrangements."
     },
     {
@@ -114,8 +118,8 @@
       "title": "Lower Bounds",
       "startLine": 310,
       "endLine": 336,
-      "summary": "Axiomatizes four lower bounds: Erdős-Spencer (n^{3/2} probabilistic), Erdős-Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve (slight improvement on Lemm).",
-      "mathContext": "Erdős-Spencer: $f(n) \\geq c n^{3/2}$ (probabilistic). Erdős-Ruzsa: $f(n) \\geq n^{4/3}$ (explicit). Lemm: $f(n) \\geq n^{1.778}$ (best known). AlphaEvolve: $f(n) \\geq n^{1.822}$ (marginal improvement)."
+      "summary": "Axiomatizes four lower bounds: Erd\u0151s-Spencer (n^{3/2} probabilistic), Erd\u0151s-Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve (slight improvement on Lemm).",
+      "mathContext": "Erd\u0151s-Spencer: $f(n) \\geq c n^{3/2}$ (probabilistic). Erd\u0151s-Ruzsa: $f(n) \\geq n^{4/3}$ (explicit). Lemm: $f(n) \\geq n^{1.778}$ (best known). AlphaEvolve: $f(n) \\geq n^{1.822}$ (marginal improvement)."
     },
     {
       "id": "bourgain",
@@ -130,31 +134,31 @@
       "title": "Summary Theorem",
       "startLine": 366,
       "endLine": 374,
-      "summary": "Proves current_bounds_summary: 1.778 < c* ≤ 11/6 by combining lemm_lower and katz_tao_upper axioms. This is the only non-infrastructure theorem that is fully proved.",
+      "summary": "Proves current_bounds_summary: 1.778 < c* \u2264 11/6 by combining lemm_lower and katz_tao_upper axioms. This is the only non-infrastructure theorem that is fully proved.",
       "mathContext": "$1.778 < c^* \\leq 11/6$ where $c^* = \\sup\\{\\alpha : f(n) \\geq n^\\alpha\\}$. Proved from `lemm_lower` and `katz_tao_upper` axioms."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #1097 on common differences in 3-term APs, developing 14 proven infrastructure lemmas alongside axiomatized research bounds. Captures the O(n^{3/2}) conjecture, four lower bounds (Erdős-Spencer, Erdős-Ruzsa, Lemm, AlphaEvolve), the Katz-Tao upper bound, and the deep connection to Bourgain's sums-differences problem via Chan's equivalence.",
+    "summary": "Formalizes Erd\u0151s Problem #1097 on common differences in 3-term APs, developing 14 proven infrastructure lemmas alongside axiomatized research bounds. Captures the O(n^{3/2}) conjecture, four lower bounds (Erd\u0151s-Spencer, Erd\u0151s-Ruzsa, Lemm, AlphaEvolve), the Katz-Tao upper bound, and the deep connection to Bourgain's sums-differences problem via Chan's equivalence.",
     "implications": "Progress on this problem would directly impact the Kakeya conjecture through Bourgain's arithmetic approach and Chan's equivalence theorem. The 14 proven infrastructure lemmas (translation invariance, dilation covariance, symmetry) provide a reusable foundation for future Lean-based work in additive combinatorics. The gap between n^{1.778} and n^{11/6} remains one of the central open problems connecting discrete combinatorics to harmonic analysis and geometric measure theory. AI-assisted methods (AlphaEvolve) achieving marginal improvements suggests this problem is amenable to computational search, potentially yielding further bounds",
     "openQuestions": [
-      "Is the true exponent 3/2 as Erdős conjectured, or is Lemm's n^{1.778} closer to the truth?",
+      "Is the true exponent 3/2 as Erd\u0151s conjectured, or is Lemm's n^{1.778} closer to the truth?",
       "Can the Katz-Tao 11/6 upper bound be improved using recent decoupling techniques?",
-      "Does the connection to Kakeya yield progress in either direction — from geometry to combinatorics or vice versa?",
-      "Can the Erdős-Ruzsa explicit construction be improved to match the probabilistic n^{3/2} bound?",
-      "What is the correct exponent for higher-length arithmetic progressions (k-APs for k ≥ 4)?"
+      "Does the connection to Kakeya yield progress in either direction \u2014 from geometry to combinatorics or vice versa?",
+      "Can the Erd\u0151s-Ruzsa explicit construction be improved to match the probabilistic n^{3/2} bound?",
+      "What is the correct exponent for higher-length arithmetic progressions (k-APs for k \u2265 4)?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemerédi's theorem guarantees APs in dense sets; Erdős #1097 asks about the common differences that must appear in 3-term APs"
+      "description": "Szemer\u00e9di's theorem guarantees APs in dense sets; Erd\u0151s #1097 asks about the common differences that must appear in 3-term APs"
     },
     {
       "targetId": "erdos-3",
       "relationship": "related",
-      "description": "Erdős #3 concerns APs in primes; #1097 asks about APs in general n-element integer sets"
+      "description": "Erd\u0151s #3 concerns APs in primes; #1097 asks about APs in general n-element integer sets"
     },
     {
       "targetId": "arithmetic-series",
@@ -174,12 +178,12 @@
     {
       "targetId": "szemeredi-counting",
       "relationship": "related",
-      "description": "The counting lemma quantifies substructure (including APs) in regular pairs. Counting 3-APs by common difference is the key to bounding $|D(A)|$ — the counting lemma provides the tool for extracting structured counts from pseudorandom decompositions"
+      "description": "The counting lemma quantifies substructure (including APs) in regular pairs. Counting 3-APs by common difference is the key to bounding $|D(A)|$ \u2014 the counting lemma provides the tool for extracting structured counts from pseudorandom decompositions"
     },
     {
       "targetId": "szemeredi-full",
       "relationship": "related",
-      "description": "The full Szemerédi theorem guarantees $k$-term APs in dense sets for all $k$. This problem specializes to $k = 3$ but strengthens the conclusion: not just existence of 3-APs, but a lower bound on the number of distinct common differences they exhibit"
+      "description": "The full Szemer\u00e9di theorem guarantees $k$-term APs in dense sets for all $k$. This problem specializes to $k = 3$ but strengthens the conclusion: not just existence of 3-APs, but a lower bound on the number of distinct common differences they exhibit"
     },
     {
       "targetId": "erdos-1096",
@@ -189,12 +193,12 @@
     {
       "targetId": "prob-method-expectation",
       "relationship": "related",
-      "description": "The first moment method underlies the $\\Omega(n^{3/2})$ lower bound on common differences: a random subset of $\\{1,\\ldots,N\\}$ of size $n$ has expected $\\sim cn^3/N$ three-term APs, distributed over $\\sim N$ possible common differences. The pigeonhole principle then shows at least $\\sim n^3/N^2$ distinct common differences occur, which for optimal $N \\sim n^2$ gives $\\Omega(n)$ — but more sophisticated counting via the second moment or Cauchy-Schwarz improves this to $\\Omega(n^{3/2})$"
+      "description": "The first moment method underlies the $\\Omega(n^{3/2})$ lower bound on common differences: a random subset of $\\{1,\\ldots,N\\}$ of size $n$ has expected $\\sim cn^3/N$ three-term APs, distributed over $\\sim N$ possible common differences. The pigeonhole principle then shows at least $\\sim n^3/N^2$ distinct common differences occur, which for optimal $N \\sim n^2$ gives $\\Omega(n)$ \u2014 but more sophisticated counting via the second moment or Cauchy-Schwarz improves this to $\\Omega(n^{3/2})$"
     },
     {
       "targetId": "prob-method-second-moment",
       "relationship": "related",
-      "description": "The second moment method (Chebyshev/Paley-Zygmund inequalities) provides the concentration bounds needed to convert the first-moment lower bound on common differences into a high-probability statement. The Erdős-Spencer $\\Omega(n^{3/2})$ lower bound uses precisely this: the variance of the common-difference count in a random subset is controlled by the second moment, proving that the lower bound holds with positive probability"
+      "description": "The second moment method (Chebyshev/Paley-Zygmund inequalities) provides the concentration bounds needed to convert the first-moment lower bound on common differences into a high-probability statement. The Erd\u0151s-Spencer $\\Omega(n^{3/2})$ lower bound uses precisely this: the variance of the common-difference count in a random subset is controlled by the second moment, proving that the lower bound holds with positive probability"
     }
   ],
   "relatedProofs": [
@@ -240,18 +244,18 @@
       "note": "Connected the combinatorial problem to the Kakeya conjecture in geometric measure theory"
     },
     {
-      "authors": "Erdős, Paul; Spencer, Joel",
+      "authors": "Erd\u0151s, Paul; Spencer, Joel",
       "title": "Probabilistic Methods in Combinatorics",
       "year": "1974",
       "venue": "Academic Press",
-      "note": "Probabilistic argument giving the Ω(n^{3/2}) lower bound via random subsets"
+      "note": "Probabilistic argument giving the \u03a9(n^{3/2}) lower bound via random subsets"
     },
     {
       "authors": "Lemm, Matan",
       "title": "New lower bounds for the number of common differences in arithmetic progressions",
       "year": "2015",
       "venue": "arXiv:1512.02963",
-      "note": "Improved lower bound to Ω(n^{1.778}), surpassing the probabilistic barrier"
+      "note": "Improved lower bound to \u03a9(n^{1.778}), surpassing the probabilistic barrier"
     }
   ]
 }

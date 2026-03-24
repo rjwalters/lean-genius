@@ -213,21 +213,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "erdos-58",
-      "title": "Erd\u0151s Problem #58: Chromatic Number vs Odd Cycle Lengths",
-      "connection": "Establishes that the number of distinct odd cycle lengths controls \u03c7(G) (Gy\u00e1rf\u00e1s 1992), complementing #111's use of odd cycles as the measure of deviation from bipartiteness."
-    },
-    {
-      "slug": "erdos-62",
-      "title": "Erd\u0151s Problem #62: Common Subgraphs of Graphs with Chromatic Number \u2135\u2081",
-      "connection": "Investigates shared subgraph structure among \u03c7 = \u2135\u2081 graphs; the common-subgraph questions and the edge-deletion questions in #111 both arise from asking what local finite structure is forced by large chromatic number."
-    },
-    {
-      "slug": "ramseys-theorem",
-      "title": "Ramsey's Theorem",
-      "connection": "Ramsey-theoretic reasoning underlies the EHS construction: the n^(3/2) upper bound graph is built using probabilistic/Ramsey methods, and the lower bound uses the infinite Ramsey property of \u2135\u2081 graphs."
-    }
+    "erdos-58",
+    "erdos-62",
+    "ramseys-theorem"
   ],
   "references": [
     {

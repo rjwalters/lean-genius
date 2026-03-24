@@ -156,21 +156,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "erdos-208",
-      "title": "Erd\u0151s Problem #208: Gaps Between Squarefree Numbers",
-      "relationship": "The prime-squares sequence {p\u1d62\u00b2} is the central special case of Problem #1101: it has polynomial growth, so if it is good, that disproves the no-polynomial conjecture."
-    },
-    {
-      "slug": "prime-reciprocal-divergence",
-      "title": "Divergence of Prime Reciprocals",
-      "relationship": "Establishes that the full prime sequence does NOT satisfy \u03a31/u\u1d62 < \u221e, explaining why Erd\u0151s's existence proof uses all primes but Problem #1101 restricts to subsequences with convergent reciprocals."
-    },
-    {
-      "slug": "bounded-prime-gaps",
-      "title": "Bounded Prime Gaps (Zhang/Maynard-Tao/Polymath 8b)",
-      "relationship": "The 2013\u20132014 breakthrough on bounded prime gaps uses sieve methods closely related to the analytic machinery needed for Problem #1101's gap estimates."
-    }
+    "erdos-208",
+    "prime-reciprocal-divergence",
+    "bounded-prime-gaps"
   ],
   "references": [
     {

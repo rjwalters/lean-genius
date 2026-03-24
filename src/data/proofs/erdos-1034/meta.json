@@ -183,16 +183,7 @@
       "description": "Edge-disjoint triangle packing (#1009) and triangle neighborhood structure (#1034) both operate at the same $\\lfloor n^2/4 \\rfloor + k$ edge density. The Gy\u00f6ri packing result and the Ma-Tang neighborhood bound together constrain the combinatorial geometry of triangles just above the Tur\u00e1n threshold."
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "ramseys-theorem",
-      "relationship": "Ramsey's theorem provides the foundational framework for clique and triangle existence in dense graphs. The Tur\u00e1n threshold $n^2/4$ is the extremal boundary above which Ramsey-type arguments guarantee triangle structure, directly motivating the setting of #1034."
-    },
-    {
-      "target": "erdos-1011",
-      "relationship": "Triangles in graphs with high chromatic number (#1011) connects the Tur\u00e1n threshold to chromatic structure. The triangle-forcing threshold $f_r(n)$ studied there coincides with the $n^2/4$ boundary in #1034, linking neighborhood density to colorability."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

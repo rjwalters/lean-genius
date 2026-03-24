@@ -151,22 +151,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "slug": "erdos-1099",
-      "connection": "The companion problem about divisor ratio sums $h_\\alpha(n)$, originating in the same 1978 Erd\u0151s\u2013Hall paper. The two problems together give a comprehensive picture of how consecutive divisors relate: #1099 via weighted ratio sums, #1100 via coprime pair counts."
-    },
-    {
-      "slug": "bezout-identity",
-      "connection": "B\u00e9zout's identity characterizes coprimality ($\\gcd(a,b) = 1$) via the existence of integer linear combinations. The coprimality condition $\\gcd(d_i, d_{i+1}) = 1$ at the heart of #1100 is exactly the B\u00e9zout-coprimality relation between consecutive divisors."
-    },
-    {
-      "slug": "infinitude-primes",
-      "connection": "The trivial lower bound $\\tau^\\perp(n) \\geq \\omega(n)$ in #1100 depends on having at least $\\omega(n)$ distinct prime factors. Euclid's proof that there are infinitely many primes guarantees an unbounded supply of integers with large $\\omega(n)$, making the question of whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ non-vacuous."
-    },
-    {
-      "slug": "prime-number-theorem",
-      "connection": "Question 1 of #1100 asks whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ for almost all $n$. By the Hardy\u2013Ramanujan theorem (a consequence of PNT), $\\omega(n) \\approx \\log\\log n$ for almost all $n$, so this is equivalent to $\\tau^\\perp(n) \\gg \\log\\log n$. The PNT provides the asymptotic scale against which $\\tau^\\perp$ must be measured."
-    }
+    "erdos-1099",
+    "bezout-identity",
+    "infinitude-primes",
+    "prime-number-theorem"
   ],
   "references": [
     {

@@ -161,23 +161,7 @@
       "description": "Related via proof technique"
     }
   ],
-  "relatedProofs": [
-    {
-      "target": "roth-theorem-k3",
-      "relationship": "shared triangle-free theme",
-      "note": "Roth's theorem on 3-term arithmetic progressions is closely related in spirit: both problems concern how 'dense' or 'chromatic' a structure can be while forbidding triangles. Roth's theorem is the additive combinatorics analogue of the triangle-free chromatic threshold problem."
-    },
-    {
-      "target": "four-color-theorem",
-      "relationship": "chromatic number context",
-      "note": "The Four Color Theorem establishes an absolute chromatic number bound for planar graphs. Problem #1013 explores the opposite extreme: how high can the chromatic number go when only triangle-freeness is imposed? Together they bracket the landscape of graph coloring."
-    },
-    {
-      "target": "prob-method-lovasz-local",
-      "relationship": "related technique",
-      "note": "The Lov\u00e1sz Local Lemma provides an alternative to the first-moment method for constructing triangle-free graphs with controlled chromatic number. It is used in sharper versions of the probabilistic lower bounds for $h_3(k)$."
-    }
-  ],
+  "relatedProofs": [],
   "references": [
     {
       "authors": [

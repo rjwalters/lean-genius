@@ -21,7 +21,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.modEq_digits_sum",
-        "description": "b % d = 1 implies n ≡ (digits b n).sum [MOD d]",
+        "description": "b % d = 1 implies n \u2261 (digits b n).sum [MOD d]",
         "module": "Mathlib.Data.Nat.Digits"
       },
       {
@@ -31,7 +31,7 @@
       },
       {
         "theorem": "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
-        "description": "Coprime divisors multiply: d1|n ∧ d2|n → d1*d2|n",
+        "description": "Coprime divisors multiply: d1|n \u2227 d2|n \u2192 d1*d2|n",
         "module": "Mathlib.Data.Nat.GCD.Basic"
       }
     ],
@@ -43,7 +43,7 @@
       "Divisibility by 11 via truncation method (subtract 1x last digit)",
       "Divisibility by 17 via truncation method (subtract 5x last digit)",
       "Divisibility by 19 via truncation method (add 2x last digit)",
-      "Alternating 3-digit grouping observations for 7, 11, 13 (1001 = 7·11·13)",
+      "Alternating 3-digit grouping observations for 7, 11, 13 (1001 = 7\u00b711\u00b713)",
       "Casting out nines and threes for addition and multiplication",
       "Digital root definition with divisibility characterization",
       "8 coprime factorization rules (6, 12, 15, 18, 36, 45, 60, 90)",
@@ -55,13 +55,13 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Divisibility rules have been known since ancient times. This extension formalizes a comprehensive collection of such rules in Lean 4, going far beyond the basic divisibility-by-3 rule.\n\nThe rules fall into three families:\n1. **Last-k-digits rules**: When d divides the base power (e.g., 4|100), check the last k digits\n2. **Digit-sum rules**: When base ≡ 1 (mod d), check the digit sum\n3. **Truncation rules**: Reduce the number by removing a digit and adjusting (e.g., for 7 and 13)\n\nAll three families are unified through modular arithmetic.",
+    "historicalContext": "Divisibility rules have been known since ancient times. This extension formalizes a comprehensive collection of such rules in Lean 4, going far beyond the basic divisibility-by-3 rule.\n\nThe rules fall into three families:\n1. **Last-k-digits rules**: When d divides the base power (e.g., 4|100), check the last k digits\n2. **Digit-sum rules**: When base \u2261 1 (mod d), check the digit sum\n3. **Truncation rules**: Reduce the number by removing a digit and adjusting (e.g., for 7 and 13)\n\nAll three families are unified through modular arithmetic.",
     "problemStatement": "Formalize a comprehensive collection of divisibility rules:\n\n**Last-k-digits (general)**: If $d | M$, then $d | n \\iff d | (n \\bmod M)$\n\n**Digit-sum (general)**: If $b \\equiv 1 \\pmod{d}$, then $d | n \\iff d | \\text{(digits sum in base }b\\text{)}$\n\n**Truncation for 13**: $13 | n \\iff 13 | (\\lfloor n/10 \\rfloor + 4 \\cdot (n \\bmod 10))$\n\n**Coprime factorization**: If $\\gcd(d_1, d_2) = 1$, then $d_1 d_2 | n \\iff d_1 | n \\wedge d_2 | n$\n\n**Digital root**: $\\text{dr}(n) = 9 \\iff 9 | n$ (for $n > 0$); $3 | n \\iff 3 | \\text{dr}(n)$",
     "text": "A comprehensive collection of formally verified divisibility rules: general last-k-digits framework, power-of-2/5 generalizations, truncation methods for 7, 11, 13, 17, and 19, casting out nines/threes, digital root theory, and coprime factorization rules.",
-    "proofStrategy": "The proofs use three main techniques:\n\n1. **Modular arithmetic**: The general last-k-digits theorem follows from n = M·q + r, so if d|M then d|n iff d|r.\n\n2. **Mathlib's digit infrastructure**: Nat.modEq_digits_sum provides digit-sum congruences for any base-divisor pair where base ≡ 1 (mod d).\n\n3. **Integer lifting for truncation**: The divisibility-by-13 proof works in ℤ, using the identity 10(q + 4r) = n + 39r, then extracting divisibility via coprimality of 13 and 10.",
+    "proofStrategy": "The proofs use three main techniques:\n\n1. **Modular arithmetic**: The general last-k-digits theorem follows from n = M\u00b7q + r, so if d|M then d|n iff d|r.\n\n2. **Mathlib's digit infrastructure**: Nat.modEq_digits_sum provides digit-sum congruences for any base-divisor pair where base \u2261 1 (mod d).\n\n3. **Integer lifting for truncation**: The divisibility-by-13 proof works in \u2124, using the identity 10(q + 4r) = n + 39r, then extracting divisibility via coprimality of 13 and 10.",
     "keyInsights": [
-      "All last-k-digits rules are instances of one general theorem: d|M → (d|n ↔ d|(n%M))",
-      "Digit-sum rules work in any base b where b ≡ 1 (mod d), not just base 10",
+      "All last-k-digits rules are instances of one general theorem: d|M \u2192 (d|n \u2194 d|(n%M))",
+      "Digit-sum rules work in any base b where b \u2261 1 (mod d), not just base 10",
       "Truncation methods use a multiply-and-cancel trick: 10(q + cr) = n + (10c-1)r",
       "Digital root is characterized by mod 9 arithmetic with special case for multiples of 9",
       "Coprime factorization reduces composite divisibility to prime-power tests"
@@ -83,7 +83,7 @@
       "title": "Power-of-2 and Power-of-5 Theorems",
       "startLine": 97,
       "endLine": 118,
-      "summary": "General theorems: 2^k | n ↔ 2^k | (n mod 10^k), and similarly for 5^k."
+      "summary": "General theorems: 2^k | n \u2194 2^k | (n mod 10^k), and similarly for 5^k."
     },
     {
       "id": "truncation-13",
@@ -111,7 +111,7 @@
       "title": "Digital Root Theory",
       "startLine": 270,
       "endLine": 331,
-      "summary": "Digital root definition, bound ≤ 9, positivity, divisibility-by-9 characterization, and mod-3 property."
+      "summary": "Digital root definition, bound \u2264 9, positivity, divisibility-by-9 characterization, and mod-3 property."
     },
     {
       "id": "coprime-factorization",
@@ -139,7 +139,7 @@
       "title": "Alternating Digit Grouping",
       "startLine": 512,
       "endLine": 538,
-      "summary": "Observations about alternating 3-digit groups: 1001 = 7·11·13 implies 1000 ≡ -1 (mod 7, 11, 13)."
+      "summary": "Observations about alternating 3-digit groups: 1001 = 7\u00b711\u00b713 implies 1000 \u2261 -1 (mod 7, 11, 13)."
     },
     {
       "id": "summary",
@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "This extension provides a comprehensive, formally verified collection of divisibility rules covering three major families: last-k-digits, digit-sum, and truncation methods. Truncation rules are proved for all primes up to 19 coprime to 10 (7, 11, 13, 17, 19). All 50+ theorems are proved without sorry or axiom, building on Mathlib's digit and modular arithmetic infrastructure.",
-    "implications": "The proof demonstrates the power of unifying theorems:\n\n**1. One theorem, many rules**: The general last-k-digits theorem (d|M → d|n ↔ d|(n%M)) instantly gives all power-of-2 and power-of-5 rules.\n\n**2. Base-agnostic digit sums**: The digit-sum framework works in any base, giving rules for divisibility by 37, 99, 999, and more via base 1000/100.\n\n**3. Digital root theory**: The complete characterization of digital root connects elementary arithmetic to modular algebra.\n\n**4. Practical checking**: Casting out nines and coprime factorization provide verified foundations for mental arithmetic techniques.",
+    "implications": "The proof demonstrates the power of unifying theorems:\n\n**1. One theorem, many rules**: The general last-k-digits theorem (d|M \u2192 d|n \u2194 d|(n%M)) instantly gives all power-of-2 and power-of-5 rules.\n\n**2. Base-agnostic digit sums**: The digit-sum framework works in any base, giving rules for divisibility by 37, 99, 999, and more via base 1000/100.\n\n**3. Digital root theory**: The complete characterization of digital root connects elementary arithmetic to modular algebra.\n\n**4. Practical checking**: Casting out nines and coprime factorization provide verified foundations for mental arithmetic techniques.",
     "openQuestions": [
       "Can the truncation method be generalized to a single parametric theorem for arbitrary primes?",
       "Extend truncation coverage beyond 19 (23, 29, 31, 37, 41, 43)",
@@ -190,14 +190,8 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "divisibility-by-3",
-      "relationship": "Base formalization of the divisibility-by-3 rule; this OQ-01 generalizes to a comprehensive collection of rules for multiple divisors"
-    },
-    {
-      "id": "divisibility-truncation-general",
-      "relationship": "The general parametric truncation theorem that unifies the specific rules for 7, 11, 13, 17, 19 proved individually in this entry"
-    },
+    "divisibility-by-3",
+    "divisibility-truncation-general",
     "divisibility-by-3",
     "divisibility-truncation-general",
     "chinese-remainder-constructive"

@@ -276,26 +276,10 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "wilsons-theorem",
-      "relationship": "complementary primality test",
-      "description": "Wilson's theorem is a perfect but computationally impractical primality test; Fermat's test (which Carmichael numbers defeat) is fast but incomplete \u2014 these two results bound the landscape of congruence-based primality criteria."
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "generalizes Fermat test",
-      "description": "The Carmichael function $\\lambda(n)$ (least universal exponent) generalizes Euler's $\\phi(n)$; a number $n$ is Carmichael iff $\\lambda(n) \\mid n-1$, making Euler's totient function central to the structural characterization."
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "density benchmark",
-      "description": "Comparing $C(x)$ to $\\pi(x) \\sim x/\\log x$ quantifies how 'prime-like' Carmichael numbers are; the conjectured $C(x) = x^{1-o(1)}$ would make them far denser than primes on any fixed polynomial scale."
-    },
-    {
-      "id": "dirichlets-theorem",
-      "relationship": "key construction tool",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions is used in the AGP construction; finding sufficiently many primes $p$ with $(p-1) \\mid L$ for a suitable $L$ is the core step in building large sets of Carmichael numbers."
-    }
+    "wilsons-theorem",
+    "euler-totient",
+    "prime-number-theorem",
+    "dirichlets-theorem"
   ],
   "references": [
     {

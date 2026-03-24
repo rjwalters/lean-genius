@@ -80,7 +80,12 @@
       "**conv_lhs prevents unwanted rewrites**: When rewriting (-1) as cos(\u03c0), conv_lhs restricts the rewrite to the LHS, preventing the RHS (-1)^n from being affected.",
       "**field_simp for rational expressions**: The root theorem requires simplifying n \u00b7 ((2k+1)\u03c0/(2n)) = (2k+1)\u03c0/2, which field_simp handles after establishing n \u2260 0."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chebyshev polynomials",
+      "Complex numbers",
+      "De Moivre's theorem",
+      "Polynomial theory"
+    ]
   },
   "sections": [
     {
