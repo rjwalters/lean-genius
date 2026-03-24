@@ -5,6 +5,7 @@
   "description": "Frank Ramsey's foundational theorem in combinatorics: for any 2-coloring of the complete graph K_n with sufficiently large n, there exists a monochromatic clique.",
   "meta": {
     "author": "Frank P. Ramsey (formalized by LeanGenius)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ramsey%27s_theorem",
     "date": "1930",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/RamseysTheorem.lean",
@@ -58,7 +59,7 @@
   "overview": {
     "historicalContext": "Ramsey's theorem was proved by Frank Plumpton Ramsey in 1930, just before his untimely death at age 26. The theorem appeared in his paper 'On a Problem of Formal Logic' where he was investigating decision procedures for first-order logic.\n\nThe result spawned an entire branch of combinatorics now called Ramsey theory, which studies the emergence of order in sufficiently large structures. The guiding principle is that complete disorder is impossible—given enough elements, some regular pattern must appear.\n\nThe most famous special case is the 'party problem': at any party of 6 people, either 3 mutually know each other or 3 are mutual strangers. This corresponds to R(3,3) = 6.",
     "problemStatement": "Theorem (Ramsey, 1930): For any positive integers r and s, there exists a positive integer R(r,s) such that any 2-coloring of the edges of the complete graph K_{R(r,s)} contains either:\n- A red clique of size r (r vertices all pairwise connected by red edges), or\n- A blue clique of size s (s vertices all pairwise connected by blue edges)\n\nThe smallest such R(r,s) is called the Ramsey number.",
-    "text": "Frank Ramsey's foundational theorem in combinatorics: for any 2-coloring of the complete graph K_n with sufficiently large n, there exists a monochromatic clique.",
+    "text": "A 627-line formalization of Ramsey's theorem (Wiedijk #31) in Lean 4, providing a complete proof that for any $r, s \\geq 1$, any 2-coloring of $K_n$ with $n \\geq \\binom{r+s-2}{r-1}$ contains a red $K_r$ or blue $K_s$. The proof uses strong induction on $r + s$: base cases $R(1,s) = R(r,1) = 1$ and $R(2,s) = s$ are proved directly; the inductive step picks a vertex $v$, partitions the remaining vertices into red and blue neighborhoods, applies pigeonhole to find a large enough neighborhood, recurses on the subgraph, and extends the resulting clique by adding $v$. The formalization also includes a constructive lower bound $R(3,3) > 5$ via the pentagon ($C_5$) coloring of $K_5$ — both the red cycle and its blue complement are triangle-free, verified by exhaustive `fin_cases`. Combined with the upper bound $R(3,3) \\leq \\binom{4}{2} = 6$, this establishes $R(3,3) = 6$ exactly. One axiom encodes the multicolor extension. 24 theorems, 13 definitions, 0 sorries.",
     "proofStrategy": "The proof uses strong induction on r + s with the key recurrence:\n\nR(r,s) ≤ R(r-1,s) + R(r,s-1)\n\n1. Base cases: R(1,s) = R(r,1) = 1 (any single vertex forms a trivial clique)\n\n2. Inductive step for R(r,s):\n   - Assume we have R(r-1,s) and R(r,s-1) from the induction hypothesis\n   - Set n = R(r-1,s) + R(r,s-1)\n   - Pick any vertex v in K_n\n   - Partition remaining n-1 vertices by edge color to v:\n     * N_red = vertices connected to v by red edges\n     * N_blue = vertices connected to v by blue edges\n   - By pigeonhole: |N_red| ≥ R(r-1,s) or |N_blue| ≥ R(r,s-1)\n   - Case 1: If |N_red| ≥ R(r-1,s), find a red (r-1)-clique or blue s-clique in N_red\n     * Red (r-1)-clique extends with v to red r-clique\n     * Blue s-clique is already our answer\n   - Case 2: Symmetric argument with blue neighborhood\n\n3. The bound R(r,s) ≤ C(r+s-2, r-1) follows from Pascal's identity",
     "keyInsights": [
       "The pigeonhole principle: n-1 vertices partitioned into two sets means at least one is large enough",
@@ -173,11 +174,30 @@
       "relationship": "related",
       "description": "Binomial coefficient structure determines the Ramsey bound R(r,s) ≤ C(r+s-2, r-1)"
     }
+    ,
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The Ramsey bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ directly uses binomial coefficients, and the recurrence $R(r,s) \\leq R(r-1,s) + R(r,s-1)$ mirrors Pascal's identity $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$ — the same combinatorial structure underlying both results"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem is proved by strong induction on $r + s$, the same principle formalized in mathematical-induction. The inductive structure requires strong induction because the step from $R(r,s)$ uses both $R(r-1,s)$ and $R(r,s-1)$, not just the immediately preceding value"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdos-Szekeres theorem (every sequence of length $rs+1$ contains a monotone subsequence of length $r+1$ or $s+1$) can be proved via Ramsey's theorem applied to a 2-coloring where edges are colored by the relative order of sequence elements"
+    }
   ],
   "relatedProofs": [
     "prob-method-alteration",
     "pigeonhole-principle",
-    "kummer-theorem"
+    "kummer-theorem",
+    "binomial-theorem",
+    "mathematical-induction",
+    "erdos-szekeres"
   ],
   "conclusion": {
     "summary": "This Lean formalization provides a complete, constructive proof of Ramsey's theorem for 2-colorings. The proof carefully builds up from base cases through neighborhood partitions to the main inductive argument.\n\nThe key insight is that the pigeonhole principle forces one of the two neighborhoods to be large enough to apply the induction hypothesis. Clique extension then allows us to grow cliques by adding the central vertex.\n\nAll proofs are complete with no sorries, and the formalization is self-contained within the Ramsey namespace.",
@@ -222,6 +242,20 @@
       "year": "1990",
       "venue": "Wiley, 2nd edition",
       "note": "Standard reference for Ramsey theory including bounds, extensions, and applications"
+    },
+    {
+      "authors": "Erdos, Paul; Szekeres, George",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "venue": "Compositio Mathematica 2, 463-470",
+      "note": "Independent rediscovery of the Ramsey bound R(r,s) <= C(r+s-2, r-1) and its application to the Happy Ending problem — established the Erdos-Szekeres theorem as a consequence of Ramsey theory"
+    },
+    {
+      "authors": "Conlon, David; Fox, Jacob; Sudakov, Benny",
+      "title": "Recent developments in graph Ramsey theory",
+      "year": "2015",
+      "venue": "Surveys in Combinatorics, London Mathematical Society Lecture Note Series 424, 49-118",
+      "note": "Modern survey covering diagonal and off-diagonal Ramsey numbers, probabilistic and algebraic methods, and the breakthrough R(3,k) = Theta(k^2/log k) of Kim (1995) and Bohman-Keevash (2010)"
     }
   ]
 }
