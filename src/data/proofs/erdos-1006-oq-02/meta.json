@@ -76,42 +76,48 @@
       "title": "Robust Orientation Definitions",
       "startLine": 43,
       "endLine": 84,
-      "summary": "GraphOrientation structure (arc, covers, exclusive, respects), isAcyclic (rank-witness), hasDependentArc (rank-forcing), isRobustlyAcyclic (acyclic ∧ ¬dependent), admitsRobustAcyclicOrientation"
+      "summary": "GraphOrientation structure (arc, covers, exclusive, respects), isAcyclic (rank-witness), hasDependentArc (rank-forcing), isRobustlyAcyclic (acyclic ∧ ¬dependent), admitsRobustAcyclicOrientation",
+      "mathContext": "An orientation of $G$ assigns a direction to each edge. It is **acyclic** if there exists a rank function $r: V \\to \\mathbb{N}$ with $r(u) < r(v)$ for each arc $u \\to v$. An arc $(u,v)$ is **dependent** if the other arcs force $r(u) < r(v)$. **Robustly acyclic**: acyclic with no dependent arcs (reversing any single arc preserves acyclicity)."
     },
     {
       "id": "coloring-orientation",
       "title": "Coloring Orientation Construction",
       "startLine": 85,
       "endLine": 134,
-      "summary": "coloringOrientation: orient u→v when col(u) < col(v). Proved: coloringOrientation_acyclic (col.val as rank), coloringOrientation_no_dependent_arcs (rank contradicts dependency), colorable_admits_robust"
+      "summary": "coloringOrientation: orient u→v when col(u) < col(v). Proved: coloringOrientation_acyclic (col.val as rank), coloringOrientation_no_dependent_arcs (rank contradicts dependency), colorable_admits_robust",
+      "mathContext": "Given a proper coloring $c: V \\to \\{0,\\ldots,k-1\\}$, orient each edge $\\{u,v\\}$ as $u \\to v$ when $c(u) < c(v)$. This orientation is acyclic (the coloring values serve as a rank function) and has no dependent arcs (reversing $u \\to v$ preserves acyclicity since $c(v) > c(u)$ allows $v$ to have a valid rank above $u$)."
     },
     {
       "id": "ffllw",
       "title": "Fisher-Fraughnaugh-Langley-West Theorem (1997)",
       "startLine": 135,
       "endLine": 168,
-      "summary": "ffllw_chromatic_lt_girth_implies_robust: PROVED using colorable_of_fintype + coloring orientation. Stronger: every_finite_graph_has_robust — every finite graph admits a robust orientation (girth condition unused)."
+      "summary": "ffllw_chromatic_lt_girth_implies_robust: PROVED using colorable_of_fintype + coloring orientation. Stronger: every_finite_graph_has_robust — every finite graph admits a robust orientation (girth condition unused).",
+      "mathContext": "**FFLLW (1997)**: $\\chi(G) < \\text{girth}(G) \\Rightarrow G$ admits a robustly acyclic orientation. The proof: $\\chi(G)$-coloring gives a robust coloring orientation. An even stronger result holds for finite graphs: every finite graph admits a robust orientation (using a proper coloring with finitely many colors)."
     },
     {
       "id": "lower-bound-and-vacuousness",
       "title": "Lower Bound and Rank-Based Vacuousness",
       "startLine": 169,
       "endLine": 258,
-      "summary": "chromatic_lower_bound_for_non_robust: contrapositive proof. KEY OBSERVATION (line 189): rank-based isRobustlyAcyclic ≡ isAcyclic, so every finite graph admits rank-based robust orientation, making ¬admitsRobustAcyclicOrientation always False. Vacuously true theorems: minimum_chromatic_non_robust, triangle_free_non_robust_chromatic_bound, minimum_chromatic_lower_bound."
+      "summary": "chromatic_lower_bound_for_non_robust: contrapositive proof. KEY OBSERVATION (line 189): rank-based isRobustlyAcyclic ≡ isAcyclic, so every finite graph admits rank-based robust orientation, making ¬admitsRobustAcyclicOrientation always False. Vacuously true theorems: minimum_chromatic_non_robust, triangle_free_non_robust_chromatic_bound, minimum_chromatic_lower_bound.",
+      "mathContext": "**Lower bound**: $\\neg\\text{robust}(G) \\Rightarrow \\chi(G) \\geq \\text{girth}(G)$ (contrapositive of FFLLW). **Key subtlety**: with rank-based robustness, every acyclic orientation is trivially robust (the rank itself witnesses arc independence), so $\\neg\\text{admitsRobust}$ is vacuously False for all finite graphs. This motivates the classical definition in the next section."
     },
     {
       "id": "classical-definitions",
       "title": "Classical Robust Acyclicity: The Correct Definition",
       "startLine": 259,
       "endLine": 379,
-      "summary": "hasClassicallyDependentArc (arc (u,v) is dependent if others FORCE rank u < rank v, implying u→...→v path), isClassicallyRobust, admitsClassicalRobustOrientation. Proof k3_no_classical_robust: K₃ has no classical robust orientation — exhaustive case analysis over all 6 acyclic orientations of the triangle, each case showing a dependent arc."
+      "summary": "hasClassicallyDependentArc (arc (u,v) is dependent if others FORCE rank u < rank v, implying u→...→v path), isClassicallyRobust, admitsClassicalRobustOrientation. Proof k3_no_classical_robust: K₃ has no classical robust orientation — exhaustive case analysis over all 6 acyclic orientations of the triangle, each case showing a dependent arc.",
+      "mathContext": "An arc $u \\to v$ is **classically dependent** if the other arcs force $r(u) < r(v)$ for any rank function — i.e., there exists a directed path $u \\to \\cdots \\to v$ using other arcs. $K_3$ has no classical robust orientation: in any acyclic orientation of the triangle, one vertex is a source and one is a sink, and the source-to-sink arc is forced by the 2-step path."
     },
     {
       "id": "classical-witnesses",
       "title": "Classical Witnesses and FFLLW Classical",
       "startLine": 380,
       "endLine": 449,
-      "summary": "k3_egirth_eq_3 and k3_chromaticNumber_eq_3 (axioms). girth3_classical_witness: K₃ witnesses girth-3 case. ffllw_classical (axiom): classical lower bound — girth-g non-classically-robust graphs have χ ≥ g. Summary block: 15 proved theorems, 3 axioms, explanation of rank-based vs classical distinction."
+      "summary": "k3_egirth_eq_3 and k3_chromaticNumber_eq_3 (axioms). girth3_classical_witness: K₃ witnesses girth-3 case. ffllw_classical (axiom): classical lower bound — girth-g non-classically-robust graphs have χ ≥ g. Summary block: 15 proved theorems, 3 axioms, explanation of rank-based vs classical distinction.",
+      "mathContext": "Three axioms: $\\text{egirth}(K_3) = 3$, $\\chi(K_3) = 3$, and the classical FFLLW theorem. $K_3$ witnesses girth-3 tightness: $\\chi(K_3) = 3 = \\text{girth}(K_3)$ and $K_3$ has no classical robust orientation. Axiomatizing $\\chi(K_3)$ avoids computing with Mathlib's `chromaticNumber` which uses $\\text{sInf}$ over all colorings."
     }
   ],
   "conclusion": {
