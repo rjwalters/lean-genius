@@ -28,6 +28,20 @@ import Mathlib.Tactic
 def IsKSmooth (k m : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → p ∣ m → p ≤ k
 
+/-- IsKSmooth is decidable: for m = 0 it's false (all primes divide 0),
+    for m ≥ 1 we check finitely many prime factors via Nat.primeFactors. -/
+instance isKSmooth_decidable (k : ℕ) : DecidablePred (IsKSmooth k) := fun m =>
+  if hm : m = 0 then
+    isFalse (by
+      subst hm; intro h
+      obtain ⟨p, hpk, hp⟩ := Nat.exists_infinite_primes (k + 1)
+      exact absurd (h p hp (dvd_zero p)) (by omega))
+  else
+    decidable_of_iff (∀ p ∈ m.primeFactors, p ≤ k)
+      ⟨fun hf p hp hd => hf p (Nat.mem_primeFactors.mpr ⟨hp, hd, hm⟩),
+       fun h p hmem => by
+         obtain ⟨hp, hd, _⟩ := Nat.mem_primeFactors.mp hmem; exact h p hp hd⟩
+
 /-
 ## Section II: Deficiency
 -/
@@ -38,7 +52,7 @@ def NoSmallPrimeFactors (n k : ℕ) : Prop :=
 
 /-- The deficiency of C(n,k): the count of indices 0 ≤ i < k such that
 (n - i) is k-smooth. Defined when C(n,k) has no prime factor ≤ k. -/
-noncomputable def deficiency (n k : ℕ) : ℕ :=
+def deficiency (n k : ℕ) : ℕ :=
   Finset.card (Finset.filter (fun i => IsKSmooth k (n - i)) (Finset.range k))
 
 /-
@@ -67,15 +81,14 @@ def ErdosProblem1093 : Prop :=
 ## Section IV: Known Examples
 -/
 
-/-- C(7,3) = 35 has deficiency 1: primes dividing 35 are 5, 7 (both > 3),
-and among {7, 6, 5}, only 5 and 6 are 3-smooth (actually 7 is not). -/
-axiom deficiency_7_3 : deficiency 7 3 = 1
+/-- C(7,3) = 35 has deficiency 1: among {7, 6, 5}, only 6 is 3-smooth. -/
+theorem deficiency_7_3 : deficiency 7 3 = 1 := by native_decide
 
 /-- C(13,4) = 715 has deficiency 1. -/
-axiom deficiency_13_4 : deficiency 13 4 = 1
+theorem deficiency_13_4 : deficiency 13 4 = 1 := by native_decide
 
 /-- C(284,28) has the highest known deficiency: 9. -/
-axiom deficiency_284_28 : deficiency 284 28 = 9
+theorem deficiency_284_28 : deficiency 284 28 = 9 := by native_decide
 
 /-
 ## Section V: Upper Bound
