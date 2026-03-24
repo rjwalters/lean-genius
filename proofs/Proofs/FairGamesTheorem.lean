@@ -74,7 +74,7 @@ We use Mathlib's comprehensive martingale theory:
 
 ## Historical Notes
 
-- **1906**: Louis Bachelier applies fair game concepts to financial markets
+- **1900**: Louis Bachelier applies fair game concepts to financial markets
 - **1934**: Paul Lévy develops martingale theory
 - **1939**: Jean Ville coins the term "martingale"
 - **1953**: Joseph Doob proves the optional stopping theorem
