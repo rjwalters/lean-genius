@@ -57,9 +57,9 @@
       "Framework for studying lemniscate convexity and component geometry",
       "Positive results: single-root lemniscates are convex disks"
     ],
-    "axiomCount": 17,
-    "lineCount": 278,
-    "assumptions": "17 axioms: lemniscate_isClosed, lemniscate_isBounded, lemniscate_isCompact, and 14 more. See Lean source for complete statements.",
+    "axiomCount": 14,
+    "lineCount": 286,
+    "assumptions": "14 axioms: lemniscate_isClosed, lemniscate_isBounded, lemniscate_isCompact, and 11 more. Proved: pommerenkePolynomial_degree, goodmanPolynomial_monic, refereePolynomial_monic.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -298,9 +298,9 @@
       "Set"
     ],
     "namespace": "Erdos1047",
-    "lineCount": 278,
-    "axiomCount": 17,
-    "theoremCount": 4,
+    "lineCount": 286,
+    "axiomCount": 14,
+    "theoremCount": 7,
     "definitionCount": 13
   }
 }

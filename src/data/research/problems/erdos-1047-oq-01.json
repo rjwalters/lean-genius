@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated 3 axioms (17→14). Proved polynomial degree and monicity from Mathlib. Clean build.",
+    "builtItems": [
+      "Proved pommerenkePolynomial_degree: deg(X^k(X-a)) = k+1",
+      "Proved goodmanPolynomial_monic: (X²+1)(X-2)² is monic",
+      "Proved refereePolynomial_monic: X(X⁵-1) is monic"
+    ],
+    "insights": [
+      "pommerenkePolynomial_degree provable via natDegree_mul + natDegree_pow",
+      "Monic for product polynomials via Monic.mul and monic_X_pow_add_C/monic_X_sub_C",
+      "monic_X_pow_sub_C needs the exponent ≠ 0 proof",
+      "goodmanPolynomial_degree_pos harder: Monic.natDegree_pos needs p ≠ 1 which requires eval-based contradiction"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
