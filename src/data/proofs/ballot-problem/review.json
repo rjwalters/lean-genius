@@ -3,14 +3,12 @@
   "proofId": "ballot-problem",
   "reviewDate": "2026-03-23T19:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "C+",
     "oneLiner": "Excellent pedagogical commentary around zero original formal content — every theorem is a one-line Mathlib rename, but the exposition is genuinely helpful; marred by phantom theorem references and annotation inaccuracies.",
     "tier": "B",
     "tierJustification": "Tier B: Formalized using Mathlib. The file imports Archive.Wiedijk100Theorems.BallotProblem and wraps every theorem with a renamed identifier. All mathematical substance lives in Mathlib; the file contributes pedagogical infrastructure (commentary, examples, named aliases) and necessary boilerplate (MeasurableSpace instances)."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -90,49 +88,48 @@
       "recommendation": "Remove."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
       "description": "Fix overview.text: replace references to non-existent 'ballot_probability_formula' and 'ballot_example_3_1' with actual identifiers (ballot_theorem_real and unnamed norm_num examples). Describe the actual file contents accurately.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Reframe originalContributions to clearly distinguish prose/pedagogical contributions from formal Lean contributions. Current items are all commentary, not formalized content.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix prefix/suffix inconsistency in annotations.json ann-model: change to 'every nonempty suffix has positive sum' to match Mathlib's staysPositive definition.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Complete mathlibDependencies to list all Mathlib functions called: count_countedSequence, countedSequence_finite, countedSequence_nonempty, ballot_problem, ballot_problem', ballot_edge, ballot_same, staysPositive, countedSequence.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Add missing sections for Part V (Concrete Probability Values, lines 168-189) and Part VI (Lattice Paths and Catalan Numbers, lines 191-214).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "low",
       "target": "enricher",
       "description": "Add clarifying note to proofStrategy that the reflection principle implementation lives in Mathlib, not this file.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-7",
@@ -142,7 +139,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 3,
     "originalityAccuracy": 5,
@@ -152,6 +148,5 @@
     "internalConsistency": 6,
     "overall": 6.2
   },
-
   "suggestedBestFraming": "A pedagogical guided tour of Mathlib's ballot problem formalization (Wiedijk #30), providing clear exposition of the reflection principle, lattice path interpretation, and historical context around Bertrand's 1887 result, with all formal theorems re-exported from Archive.Wiedijk100Theorems.BallotProblem."
 }

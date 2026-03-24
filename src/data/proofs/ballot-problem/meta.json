@@ -22,19 +22,36 @@
     "mathlibDependencies": [
       {
         "theorem": "Ballot.ballot_problem",
-        "description": "The main ballot theorem",
+        "description": "The main ballot theorem: probability A leads throughout",
         "module": "Archive.Wiedijk100Theorems.BallotProblem"
       },
       {
         "theorem": "Ballot.countedSequence",
         "description": "Set of vote sequences with p votes for A and q for B",
         "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "Ballot.staysPositive",
+        "description": "Predicate: every nonempty suffix has positive sum",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "Ballot.ballot_problem'",
+        "description": "Auxiliary form of the ballot theorem used in the proof",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "Ballot.count_countedSequence",
+        "description": "Cardinality of countedSequence as C(p+q, p)",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
       }
     ],
     "originalContributions": [
-      "Pedagogical wrapper with clear explanation of the reflection principle",
-      "Connection to lattice path interpretation",
-      "Historical context and applications to random walks"
+      "ballot_theorem: clean restatement of Ballot.ballot_problem as a Rat-valued probability",
+      "ballot_theorem_real: ℝ-valued version of the ballot probability formula",
+      "ballot_unanimous: P = 1 when q = 0 (all votes for A)",
+      "ballot_tie: P = 0 when p = q (tied election)",
+      "Pedagogical commentary sections on the reflection principle, lattice paths, and Catalan numbers"
     ],
     "dateAdded": "2025-12-27",
     "prerequisites": [
@@ -65,8 +82,8 @@
   "overview": {
     "historicalContext": "The Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus* of the French Academy of Sciences, and solved by Désiré André in the very next issue of the same journal. It asks: in an election where candidate A receives $p$ votes and candidate B receives $q$ votes (with $p > q$), what is the probability that A is ahead of B throughout the entire counting process?\n\nThe answer is the elegant formula $(p-q)/(p+q)$. André's proof introduced the **reflection principle** — a bijective argument that pairs each 'bad' vote sequence (where A falls behind or ties) with a reflected path. The reflection principle has since become one of the most powerful tools in enumerative combinatorics, applied to Catalan numbers, random walks, queueing theory, and financial mathematics.\n\nThe problem has a rich genealogy: it was studied independently by Émile Barbier (1887), rediscovered by Aeppli (1924), and generalized by Takács (1962) and others. William Feller popularized it in his classic textbook *An Introduction to Probability Theory and Its Applications* (1968), where it appears as a gateway to the theory of random walks and fluctuation theory.\n\nThe result appears as Theorem #30 in Wiedijk's Formalizing 100 Theorems list, and was formalized in Mathlib by Sébastien Gouëzel.",
     "problemStatement": "**Theorem (Bertrand, 1887)**: In an election where candidate A receives p votes and candidate B receives q votes, with p > q, the probability that A leads B throughout the counting is:\n\n$$P = \\frac{p - q}{p + q}$$\n\nThis is Wiedijk's 100 Theorems #30.",
-    "text": "A 255-line pedagogical wrapper around Mathlib's `Archive.Wiedijk100Theorems.BallotProblem` (Wiedijk #30) with 14 declarations, 0 sorries, 0 axioms. The proof models vote sequences as `List Int` of $+1$/$-1$ entries via `Ballot.countedSequence`, counts sequences where all partial sums are positive using `Ballot.staysPositive`, and derives the probability $(p-q)/(p+q)$ via conditional counting on `Finset`. The file provides `ballot_theorem` as a clean restatement, `ballot_probability_formula` connecting to `Rat` for exact computation, and concrete examples (`ballot_example_3_1` verifying $P = 1/2$ for $p=3, q=1$). Commentary sections explain the reflection principle, the lattice path interpretation, and connections to Catalan numbers and random walk theory.",
-    "proofStrategy": "**The Reflection Principle**:\n\n1. Model vote counting as a path in a lattice (each vote moves the cumulative total up or down)\n2. 'A leads throughout' means the path never touches the x-axis after time 0\n3. Count 'bad' paths by reflecting them across the axis at their first touch point\n4. This creates a bijection with paths to a different endpoint\n5. The probability follows from counting good vs total paths",
+    "text": "A 255-line pedagogical wrapper around Mathlib's `Archive.Wiedijk100Theorems.BallotProblem` (Wiedijk #30) with 14 declarations, 0 sorries, 0 axioms. The proof models vote sequences as `List Int` of $+1$/$-1$ entries via `Ballot.countedSequence`, counts sequences where all partial sums are positive using `Ballot.staysPositive`, and derives the probability $(p-q)/(p+q)$ via conditional counting on `Finset`. The file provides `ballot_theorem` as a clean rational restatement and `ballot_theorem_real` as the `ℝ`-valued version. Concrete examples include `ballot_unanimous` ($P = 1$ when $q = 0$) and `ballot_tie` ($P = 0$ when $p = q$). Commentary sections explain the reflection principle, the lattice path interpretation, and connections to Catalan numbers and random walk theory.",
+    "proofStrategy": "**The Reflection Principle**:\n\n1. Model vote counting as a path in a lattice (each vote moves the cumulative total up or down)\n2. 'A leads throughout' means the path never touches the x-axis after time 0\n3. Count 'bad' paths by reflecting them across the axis at their first touch point\n4. This creates a bijection with paths to a different endpoint\n5. The probability follows from counting good vs total paths\n\n**Note**: The reflection principle implementation lives in Mathlib (`Archive.Wiedijk100Theorems.BallotProblem`), not in this file. This file wraps the Mathlib proof with pedagogical restatements and concrete examples.",
     "keyInsights": [
       "The reflection principle provides a bijective proof that avoids complex recursion: each 'bad' path (where A ties or falls behind) corresponds bijectively to a path with swapped $+1/-1$ votes, ending at a different point.",
       "The formula $(p-q)/(p+q)$ emerges as a ratio of binomial coefficients: $\\frac{\\binom{p+q}{p} - \\binom{p+q}{q}}{\\binom{p+q}{p}} = \\frac{p-q}{p+q}$, where $\\binom{p+q}{q}$ counts the reflected 'bad' paths.",
