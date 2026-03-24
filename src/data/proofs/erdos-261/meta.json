@@ -32,9 +32,9 @@
         "module": "Mathlib.Data.Rat.Basic"
       }
     ],
-    "axiomCount": 6,
+    "axiomCount": 5,
     "lineCount": 94,
-    "assumptions": "6 axioms: cusick_infinitely_many, borwein_loring_family, tengely_ulas_zygadlo, and 3 more. See Lean source for complete statements.",
+    "assumptions": "5 axioms encoding mathematical hypotheses. See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -113,7 +113,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 94,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 5
   },
