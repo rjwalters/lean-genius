@@ -51,7 +51,7 @@
     ],
     "axiomCount": 10,
     "lineCount": 86,
-    "assumptions": "10 axioms: sperner_theorem, middle_layer_antichain, dedekind_0, and 7 more. See Lean source for complete statements."
+    "assumptions": "10 axiom declarations: (1) sperner_theorem — every antichain F has |F| ≤ C(n, ⌊n/2⌋); (2) middle_layer_antichain — ∃ antichain of size C(n, ⌊n/2⌋); (3-7) dedekind_0 through dedekind_4 — D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168; (8) trivial_upper_bound — antichainCount(n) ≤ 2^{C(n,⌊n/2⌋)}; (9) kleitman_lower — ∀ ε>0, ∃ n₀, ∀ n≥n₀: (1-ε)·C(n,n/2) ≤ log₂(D(n)); (10) kleitman_upper — ∀ ε>0, ∃ n₀, ∀ n≥n₀: log₂(D(n)) ≤ (1+ε)·C(n,n/2)."
   },
   "overview": {
     "historicalContext": "Counting antichains in the power set of [n] is one of the oldest problems in combinatorics, going back to Dedekind (1897) who first studied monotone Boolean functions — equivalent to counting antichains. The sequence D(0) = 2, D(1) = 3, D(2) = 6, D(3) = 20, D(4) = 168, D(5) = 7581, ... (OEIS A000372) grows extremely rapidly, and computing even a single new term is a major computational feat. Pashkov and Shmulevich computed D(9) = 7,828,354 in 2023, a landmark calculation.\n\nSperner's theorem (1928) provides the key structural insight: the largest antichain in P([n]) has size C(n, ⌊n/2⌋), achieved by the middle layer. This immediately gives the trivial upper bound D(n) ≤ 2^{C(n, ⌊n/2⌋)}, since every antichain is a subset of all possible antichains and the middle layer dominates.\n\nKleitman (1969) proved the remarkable result that this trivial bound is essentially tight: log₂ D(n) = (1 + o(1)) · C(n, ⌊n/2⌋). His proof uses a correlation inequality showing that 'most' antichains concentrate near the middle layers. This resolved Erdős's question about the logarithmic order of D(n), though the exact second-order term remains unknown.",
@@ -76,40 +76,45 @@
       "title": "Antichains in P([n])",
       "startLine": 26,
       "endLine": 37,
-      "summary": "Defines IsAntichain for families in P(Fin n) and antichainCount as the total number of antichains."
+      "summary": "Defines IsAntichain for families in P(Fin n) and antichainCount as the total number of antichains.",
+      "mathContext": "IsAntichain: $\\forall A, B \\in F,\\, A \\subseteq B \\Rightarrow A = B$. antichainCount: $|\\{F \\subseteq \\mathcal{P}(\\text{Fin}\\,n) : \\text{IsAntichain}(F)\\}|$."
     },
     {
       "id": "sperner",
       "title": "Sperner's Theorem",
       "startLine": 38,
       "endLine": 49,
-      "summary": "Sperner's theorem: every antichain has size ≤ C(n, ⌊n/2⌋). The middle layer achieves this bound."
+      "summary": "Sperner's theorem: every antichain has size ≤ C(n, ⌊n/2⌋). The middle layer achieves this bound.",
+      "mathContext": "Sperner (1928): $|F| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$ for any antichain $F \\subseteq \\mathcal{P}([n])$. Proved via the LYM inequality $\\sum_{A \\in F} \\binom{n}{|A|}^{-1} \\leq 1$."
     },
     {
       "id": "small-values",
       "title": "Known Small Values",
       "startLine": 50,
       "endLine": 59,
-      "summary": "Dedekind numbers D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168 stated as axioms."
+      "summary": "Dedekind numbers D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168 stated as axioms.",
+      "mathContext": "OEIS A000372: $D(0)=2, D(1)=3, D(2)=6, D(3)=20, D(4)=168, D(5)=7581, D(6)=7828354, \\ldots$ Grows doubly exponentially: $\\log_2 D(n) \\sim \\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n \\sqrt{2/(\\pi n)}$."
     },
     {
       "id": "trivial-bound",
       "title": "Trivial Upper Bound",
       "startLine": 60,
       "endLine": 66,
-      "summary": "At most 2^{C(n, ⌊n/2⌋)} antichains exist, since every antichain is a subfamily of the middle layer's neighborhood."
+      "summary": "At most 2^{C(n, ⌊n/2⌋)} antichains exist, since every antichain is a subfamily of the middle layer's neighborhood.",
+      "mathContext": "$D(n) \\leq 2^{\\binom{n}{\\lfloor n/2 \\rfloor}}$. Each antichain is a subset of the $\\binom{n}{\\lfloor n/2 \\rfloor}$ sets in the middle layer, giving at most $2^{\\binom{n}{\\lfloor n/2 \\rfloor}}$ choices."
     },
     {
       "id": "kleitman",
       "title": "Kleitman's Theorem (Solved)",
       "startLine": 67,
       "endLine": 86,
-      "summary": "Kleitman (1969): log₂(antichainCount n) = (1+o(1))·C(n, ⌊n/2⌋). Both lower and upper asymptotic bounds stated, combined in ErdosProblem497."
+      "summary": "Kleitman (1969): log₂(antichainCount n) = (1+o(1))·C(n, ⌊n/2⌋). Both lower and upper asymptotic bounds stated, combined in ErdosProblem497.",
+      "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists n_0,\\, \\forall n \\geq n_0: (1-\\varepsilon)\\binom{n}{n/2} \\leq \\log_2 D(n) \\leq (1+\\varepsilon)\\binom{n}{n/2}$."
     }
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 497, solved by Kleitman (1969): the number of antichains in P([n]) is 2^{(1+o(1))·C(n, ⌊n/2⌋)}. This determines the logarithmic order of the Dedekind numbers, one of the oldest sequences in combinatorics.",
-    "implications": "Kleitman's result shows that 'most' antichains concentrate near the middle layers of the Boolean lattice. The result has applications to monotone Boolean function counting, lattice theory, and the study of hereditary properties in combinatorics.",
+    "implications": "**Theoretical Significance**: Kleitman's result reveals that the Boolean lattice $2^{[n]}$ has a rigid antichain structure: almost all antichains concentrate near the middle layer $\\binom{[n]}{\\lfloor n/2 \\rfloor}$. This is a manifestation of the 'sharp threshold' phenomenon in combinatorics — the transition from few antichains to many occurs abruptly at the middle layer.\n\n**Connections to Boolean Function Theory**: The Dedekind numbers D(n) also count the number of monotone Boolean functions on $\\{0,1\\}^n$ (equivalently, up-sets in the Boolean lattice). Kleitman's logarithmic-order determination is the foundation for studying the complexity of monotone circuit computation and the structure of monotone properties.\n\n**Lattice-Theoretic Generalization**: The problem generalizes to arbitrary finite posets: how many antichains exist in a given poset? Dilworth's theorem and the Bollobás set-pairs inequality provide partial answers, but the sharp asymptotic question remains open for most non-Boolean lattices (e.g., the divisibility lattice on $\\{1,\\ldots,N\\}$).\n\n**Second-Order Term**: While the logarithmic order is settled, the exact second-order term in $\\log_2 D(n) = \\binom{n}{\\lfloor n/2 \\rfloor} + O(\\cdot)$ is an important open problem. Korshunov (1981) obtained more precise estimates, but a complete asymptotic expansion remains elusive.",
     "openQuestions": [
       "What is the exact second-order term in log₂(D(n))?",
       "Can D(n) be computed efficiently for large n?",
@@ -137,12 +142,64 @@
     {
       "targetId": "erdos-1023",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: antichains, combinatorics"
+      "description": "Related Erdős problem on antichain and Sperner-type extremal set theory questions"
     },
     {
       "targetId": "erdos-776",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: antichains, combinatorics"
+      "description": "Related Erdős problem on extremal combinatorics of set families and antichain-like conditions"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n, ⌊n/2⌋) is the central quantity — it measures the width of the Boolean lattice and controls both the Sperner bound and the Dedekind number asymptotics"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "technique",
+      "description": "Kleitman's proof uses probabilistic/entropy arguments showing that random antichains concentrate near the middle layer. The first moment method gives the lower bound: random subfamilies of the middle layer are antichains with high probability"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "technique",
+      "description": "Stirling's approximation gives C(n, ⌊n/2⌋) ~ 2^n · √(2/(πn)), converting the Dedekind number asymptotics from binomial coefficient form to exponential form: log₂ D(n) ~ 2^n / √(πn/2)"
+    },
+    {
+      "targetId": "pigeonhole-principle",
+      "relationship": "foundational",
+      "description": "The pigeonhole principle underlies Sperner's theorem: in any antichain, the sets must be spread across different layers of the Boolean lattice, and the LYM inequality constrains this distribution"
+    }
+  ],
+  "references": [
+    {
+      "key": "Kl69",
+      "citation": "Kleitman, D.J., On Dedekind's problem: the number of monotone Boolean functions, Proceedings of the American Mathematical Society 21 (1969), 677–682.",
+      "type": "paper"
+    },
+    {
+      "key": "Sp28",
+      "citation": "Sperner, E., Ein Satz über Untermengen einer endlichen Menge, Mathematische Zeitschrift 27 (1928), 544–548.",
+      "type": "paper"
+    },
+    {
+      "key": "De97",
+      "citation": "Dedekind, R., Über Zerlegungen von Zahlen durch ihre größten gemeinsamen Teiler, in: Festschrift der Technischen Hochschule zu Braunschweig (1897), 1–40.",
+      "type": "paper"
+    },
+    {
+      "key": "Ko81",
+      "citation": "Korshunov, A.D., The number of monotone Boolean functions, Problemy Kibernetiki 38 (1981), 5–108. More precise asymptotic estimates for the Dedekind numbers.",
+      "type": "paper"
+    },
+    {
+      "key": "PS23",
+      "citation": "Pashkov, L. and Shmulevich, I., Computation of D(9), arXiv:2304.03039 (2023). Determined the 9th Dedekind number.",
+      "type": "paper"
+    },
+    {
+      "key": "Bol86",
+      "citation": "Bollobás, B., Combinatorics: Set Systems, Hypergraphs, Families of Vectors and Combinatorial Probability, Cambridge University Press (1986), Chapter 3.",
+      "type": "book"
     }
   ]
 }
