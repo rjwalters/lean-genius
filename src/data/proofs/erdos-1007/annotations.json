@@ -8,16 +8,18 @@
     },
     "type": "context",
     "title": "Problem Overview",
-    "content": "Erdős #1007 asks for the minimum edges in a 4-dimensional graph. Graph dimension is a geometric invariant: the smallest n such that the graph embeds in ℝⁿ with all edges having unit length. The answer is 9 edges, achieved uniquely by K_{3,3}. Erdős posed this question to Soifer in 1992.",
-    "mathContext": "Graph dimension connects combinatorial graph theory with Euclidean geometry through unit-distance embeddings. The problem of determining minimum edges for each dimension generalizes the study of regular simplices.",
+    "content": "Erdős #1007 asks for the minimum edges in a 4-dimensional graph. Graph dimension, introduced by Erdős, Harary, and Tutte (1965), is the smallest $n$ such that the graph embeds in $\\mathbb{R}^n$ with all edges having unit length. The answer is 9 edges, achieved uniquely by $K_{3,3}$. Erdős posed this question to Alexander Soifer in January 1992.\n\nThe module docstring provides full context: the dimension ladder ($K_2 \\to 1$, $K_3 \\to 2$, $K_4 \\to 3$), the surprising break at dimension 4 (the minimum is $K_{3,3}$, not $K_5$), House's (2013) resolution, and Chaffee-Noble's (2016) dimension-5 extension.",
+    "mathContext": "$\\dim(G) = \\min\\{d : G \\text{ embeds in } \\mathbb{R}^d \\text{ with all edges unit length}\\}$. The problem: find $e(4) = \\min\\{|E(G)| : \\dim(G) = 4\\}$. Answer: $e(4) = 9$, achieved uniquely by $K_{3,3}$.",
     "significance": "key",
     "relatedConcepts": [
-      "graph-dimension",
-      "unit-distance-embedding",
-      "bipartite-graphs"
+      "graph dimension",
+      "unit-distance embedding",
+      "bipartite graphs",
+      "distance geometry"
     ],
     "prerequisites": [
-      "number theory"
+      "graph theory (vertices, edges, bipartite graphs)",
+      "Euclidean distance in $\\mathbb{R}^n$"
     ]
   },
   {
@@ -29,16 +31,19 @@
     },
     "type": "definition",
     "title": "Unit Distance Embedding and Graph Dimension",
-    "content": "A unit distance embedding places vertices in ℝⁿ so every edge has Euclidean length exactly 1. The structure captures the embedding function and the distance constraint. We axiomatize that every finite graph has such an embedding in some dimension, then define graph dimension as the minimum such n via Nat.find.",
-    "mathContext": "The hasUnitEmbedding_exists axiom guarantees the well-definedness of graphDimension. In principle, any graph on n vertices embeds in ℝⁿ by placing vertices at appropriately scaled standard basis vectors.",
+    "content": "A unit distance embedding places vertices in $\\mathbb{R}^n$ so every edge has Euclidean length exactly 1. The `UnitDistanceEmbedding` structure captures the embedding function `embed : V → Fin n → ℝ` and the constraint `unit_edges` that $\\sqrt{\\sum_i (f(u)_i - f(v)_i)^2} = 1$ for all adjacent pairs.\n\nThe axiom `hasUnitEmbedding_exists` guarantees every finite graph admits a unit embedding in some dimension — in principle, $n$ vertices can always be embedded in $\\mathbb{R}^n$ using scaled standard basis vectors. This enables `graphDimension` to be defined as `Nat.find (hasUnitEmbedding_exists V adj)`, the minimum $d$ with a unit embedding.",
+    "mathContext": "$f: V \\to \\mathbb{R}^n$ with $\\|f(u) - f(v)\\|_2 = 1$ for all edges $(u,v)$. The axiom: $\\forall V\\,[\\text{Fintype}\\,V],\\, \\forall \\text{adj},\\, \\exists n,\\, \\text{hasUnitEmbedding}\\,V\\,\\text{adj}\\,n$. Then $\\dim(G) = \\text{Nat.find}(\\ldots)$.",
     "significance": "key",
     "relatedConcepts": [
-      "Euclidean-distance",
-      "embedding",
-      "Nat.find"
+      "Euclidean distance",
+      "unit-distance graph",
+      "Nat.find",
+      "rigidity theory"
     ],
     "prerequisites": [
-      "number theory"
+      "Euclidean geometry in $\\mathbb{R}^n$",
+      "Lean 4 structures and axioms",
+      "real-valued square roots"
     ]
   },
   {
@@ -50,16 +55,18 @@
     },
     "type": "definition",
     "title": "Complete Bipartite Graphs",
-    "content": "K_{m,n} is the complete bipartite graph: m vertices on one side, n on the other, with all m·n cross-edges present. We represent this on Fin m ⊕ Fin n, with adjacency between vertices from different sides. K_{3,3} has 3+3=6 vertices and 3×3=9 edges.",
-    "mathContext": "The bipartite structure is key: adjacency holds precisely between the two parts (Sum.inl and Sum.inr), never within a part.",
+    "content": "$K_{m,n}$ is the complete bipartite graph: $m$ vertices on one side, $n$ on the other, with all $m \\cdot n$ cross-edges present. The formalization represents the vertex set as `Fin m ⊕ Fin n` (disjoint union), with adjacency holding between different parts (`Sum.inl` and `Sum.inr`) and never within a part.\n\n$K_{3,3}$ has $3 + 3 = 6$ vertices and $3 \\times 3 = 9$ edges. The tautological theorem `completeBipartite_edge_count` states $m \\cdot n = m \\cdot n$ — a placeholder for the more substantive fact that the formalized adjacency relation produces exactly $mn$ edges.",
+    "mathContext": "$K_{m,n}$ on $\\text{Fin}\\,m \\oplus \\text{Fin}\\,n$: $\\text{adj}(\\text{inl}\\,i, \\text{inr}\\,j) = \\text{True}$, $\\text{adj}(\\text{inl}\\,i, \\text{inl}\\,j) = \\text{False}$. $|E(K_{3,3})| = 9$, $|V(K_{3,3})| = 6$.",
     "significance": "key",
     "relatedConcepts": [
-      "bipartite-graph",
-      "complete-bipartite",
-      "K33"
+      "bipartite graph",
+      "complete bipartite graph",
+      "Kuratowski's theorem",
+      "Sum type"
     ],
     "prerequisites": [
-      "number theory"
+      "graph theory (bipartite graphs)",
+      "Lean 4 sum types (⊕)"
     ]
   },
   {
@@ -71,16 +78,18 @@
     },
     "type": "technique",
     "title": "Known Dimensions",
-    "content": "The complete graphs form a dimension ladder: K₃ (triangle) embeds in the plane (dimension 2), K₄ (tetrahedron) requires 3D. These are regular simplices. K_{3,3} breaks the pattern - it is not complete but still needs 4 dimensions due to its rigid bipartite distance constraints.",
-    "mathContext": "These dimension results are axiomatized. The proofs for K₃ and K₄ follow from regular simplex constructions; K_{3,3} requires a more careful analysis of unit distance constraints.",
+    "content": "The complete graphs form a dimension ladder via regular simplex geometry: $K_3$ (equilateral triangle) embeds in $\\mathbb{R}^2$, $K_4$ (regular tetrahedron) in $\\mathbb{R}^3$. In general, the regular $n$-simplex has $n+1$ vertices at unit distance in $\\mathbb{R}^n$, so $\\dim(K_{n+1}) = n$.\n\n$K_{3,3}$ breaks this simplex pattern: it is not a complete graph, yet its dimension (4) exceeds what a 6-vertex complete graph $K_6$ would naively suggest ($\\dim(K_6) = 5$). The bipartite structure creates different distance constraints than the complete structure.",
+    "mathContext": "$\\dim(K_3) = 2$, $\\dim(K_4) = 3$, $\\dim(K_{n+1}) = n$ via regular $n$-simplex. $\\dim(K_{3,3}) = 4$ despite $|V(K_{3,3})| = 6$ — the bipartite structure reduces edges ($9 < \\binom{6}{2} = 15$) while maintaining high dimension.",
     "significance": "supporting",
     "relatedConcepts": [
-      "regular-simplex",
-      "complete-graph",
-      "dimension-ladder"
+      "regular simplex",
+      "complete graph",
+      "dimension ladder",
+      "distance geometry"
     ],
     "prerequisites": [
-      "number theory"
+      "Euclidean geometry (simplices)",
+      "graph theory (complete graphs)"
     ]
   },
   {
@@ -92,16 +101,18 @@
     },
     "type": "technique",
     "title": "Main Result: 9 Edges Minimum (House 2013)",
-    "content": "House (2013) proved two results: (1) every dimension-4 graph has at least 9 edges, and (2) K_{3,3} is the UNIQUE graph achieving this minimum. The uniqueness is remarkable - no other 9-edge graph has dimension 4, and no graph with 8 or fewer edges reaches dimension 4.",
-    "mathContext": "The min_edges_dimension_4 axiom states the lower bound, and k33_unique_minimum asserts uniqueness up to graph isomorphism via an equivalence of vertex sets.",
+    "content": "House (2013) proved two results, both axiomatized here:\n\n1. **Lower bound** (`min_edges_dimension_4`): Every graph with $\\dim(G) = 4$ has $|E(G)| \\geq 9$. The proof shows that graphs with 8 or fewer edges have enough degrees of freedom to admit unit-distance embeddings in $\\mathbb{R}^3$.\n\n2. **Uniqueness** (`k33_unique_minimum`): If $\\dim(G) = 4$ and $|E(G)| = 9$, then $G \\cong K_{3,3}$. This is formalized as the existence of an equivalence $f : V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3$ such that $\\text{adj}(u,v) \\iff \\text{completeBipartiteAdj}(f(u), f(v))$.\n\nThe proved theorem `k33_has_9_edges : 3 * 3 = 9` (by `norm_num`) verifies the edge count.",
+    "mathContext": "Axiom 1: $\\dim(G) = 4 \\Rightarrow |\\{(u,v) : \\text{adj}(u,v) \\land u < v\\}| \\geq 9$. Axiom 2: $\\dim(G) = 4 \\land |E(G)| = 9 \\Rightarrow \\exists f : V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3,\\, \\forall u\\,v,\\, \\text{adj}(u,v) \\iff \\text{completeBipartiteAdj}(f(u), f(v))$.",
     "significance": "key",
     "relatedConcepts": [
-      "minimum-edges",
-      "graph-isomorphism",
-      "uniqueness"
+      "extremal graph theory",
+      "graph isomorphism",
+      "uniqueness results",
+      "unit-distance rigidity"
     ],
     "prerequisites": [
-      "number theory"
+      "graph theory (edge counting, isomorphism)",
+      "Lean 4 equivalences (≃)"
     ]
   },
   {
@@ -109,20 +120,22 @@
     "proofId": "erdos-1007",
     "range": {
       "startLine": 123,
-      "endLine": 142
+      "endLine": 129
     },
     "type": "technique",
     "title": "Dimension 5 Extension (Chaffee-Noble 2016)",
-    "content": "Chaffee and Noble (2016) extended the analysis to dimension 5: the minimum is 15 edges, achieved by K₆ and K_{1,3,3}. Unlike dimension 4, the minimum is not unique - two non-isomorphic graphs achieve it. K₆ is complete with C(6,2)=15 edges; K_{1,3,3} is tripartite.",
-    "mathContext": "The dimension-5 result shows the increasing complexity: at dimension 4, uniqueness holds; at dimension 5, multiple minimizers exist. The general pattern for dimension d remains open.",
+    "content": "Chaffee and Noble (2016) extended the analysis to dimension 5: the minimum is 15 edges, achieved by both $K_6$ and the tripartite graph $K_{1,3,3}$. The axiom `min_edges_dimension_5` states the lower bound; the proved theorem `k6_has_15_edges : Nat.choose 6 2 = 15` (via `native_decide`) verifies the edge count of $K_6$.\n\nUnlike dimension 4, the minimizer at dimension 5 is not unique — two non-isomorphic graphs achieve it. This suggests the classification of minimum-edge $d$-dimensional graphs becomes increasingly complex with $d$.",
+    "mathContext": "Axiom: $\\dim(G) = 5 \\Rightarrow |E(G)| \\geq 15$. $|E(K_6)| = \\binom{6}{2} = 15$. $|E(K_{1,3,3})| = 1 \\cdot 3 + 1 \\cdot 3 + 3 \\cdot 3 = 15$. Both $K_6$ and $K_{1,3,3}$ achieve $\\dim = 5$ with 15 edges.",
     "significance": "key",
     "relatedConcepts": [
-      "dimension-5",
-      "K6",
-      "tripartite-graphs"
+      "dimension 5",
+      "complete graph K₆",
+      "tripartite graph",
+      "native_decide tactic"
     ],
     "prerequisites": [
-      "number theory"
+      "graph theory (multipartite graphs)",
+      "Nat.choose"
     ]
   }
 ]
