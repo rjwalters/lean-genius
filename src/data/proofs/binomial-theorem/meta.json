@@ -2,7 +2,7 @@
   "id": "binomial-theorem",
   "title": "The Binomial Theorem",
   "slug": "binomial-theorem",
-  "description": "(x + y)^n = Σ C(n,k) x^k y^(n-k). One of the most fundamental results in algebra and combinatorics.",
+  "description": "The Binomial Theorem (Wiedijk #44): $(x+y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$, formalized for arbitrary commutative semirings via Mathlib's `add_pow`. Includes coefficient sum ($\\sum \\binom{n}{k} = 2^n$), alternating sum, Pascal's identity, symmetry, and explicit expansions for $n=2,3$. 176 lines, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Al-Karaji, Newton (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_theorem",
