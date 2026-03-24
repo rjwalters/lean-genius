@@ -88,12 +88,9 @@ def erdos_5 : Prop :=
     More precisely: lim sup (p_{n+1} - p_n) / log(p_n) = ∞ -/
 axiom westzynthius_large_gaps : InfinityIsLimitPoint
 
-/-- **Erdős-Ricci**: The set S has positive Lebesgue measure.
-    The formal Lebesgue measure statement requires measure theory imports;
-    the existential structure is trivially satisfiable as a placeholder. -/
-theorem erdos_ricci_positive_measure : ∃ ε : ℝ, ε > 0 ∧
-  -- Informal: μ(S) > ε where μ is Lebesgue measure
-  True := ⟨1, by norm_num, trivial⟩
+/- **Erdős-Ricci (1954, 1956)**: The set S has positive Lebesgue measure.
+   Full measure-theoretic formalization requires MeasureTheory imports.
+   Subsumed by Merikoski's stronger density result below. -/
 
 /-- **Merikoski (2020s)**: At least 1/3 of [0, ∞) belongs to S.
     Also: S has bounded gaps (no "large holes").
@@ -355,6 +352,20 @@ theorem normalizedGap_nonneg (n : ℕ) : 0 ≤ normalizedGap n := by
     · apply Real.log_nonneg
       have : n ≥ 1 := Nat.one_le_iff_ne_zero.mpr h
       exact_mod_cast this
+
+/-- Westzynthius implies normalized gaps exceed any bound infinitely often.
+    For any C, there are infinitely many n with g(n) > C. -/
+theorem westzynthius_implies_frequently_large (C : ℝ) :
+    ∀ N : ℕ, ∃ n, N ≤ n ∧ normalizedGap n > C := by
+  obtain ⟨f, hf_mono, hf_tend⟩ := westzynthius_large_gaps
+  intro N
+  have hf_top : Tendsto f atTop atTop := hf_mono.tendsto_atTop
+  obtain ⟨K₁, hK₁⟩ := Filter.tendsto_atTop_atTop.mp hf_tend (C + 1)
+  obtain ⟨K₂, hK₂⟩ := Filter.tendsto_atTop_atTop.mp hf_top N
+  refine ⟨f (max K₁ K₂), hK₂ _ (le_max_right _ _), ?_⟩
+  have h := hK₁ (max K₁ K₂) (le_max_left _ _)
+  simp only [Function.comp_apply] at h
+  linarith
 
 /-- For n ≥ 2, the normalized gap is strictly positive:
     primeGap n > 0 and log n > 0. -/
