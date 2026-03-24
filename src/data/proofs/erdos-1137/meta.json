@@ -58,16 +58,18 @@
       "primeGap_zero/one/two/three: computed d_0=1, d_1=2, d_2=2, d_3=4",
       "nth_prime_not_even: for n ≥ 1, p_n is odd (via primality + ≥ 3)",
       "primeGap_even: for n ≥ 1, d_n is even (odd − odd)",
-      "primeGap_ge_two: for n ≥ 1, d_n ≥ 2 (even + positive)"
+      "primeGap_ge_two: for n ≥ 1, d_n ≥ 2 (even + positive)",
+      "primeGap_unbounded: for any B, ∃ n with primeGap n ≥ B (factorial argument + Nat.nth/count Galois connection)",
+      "maxGap_tendsto_atTop: max prime gap → ∞ (previously axiom, now PROVED from primeGap_unbounded)"
     ],
     "dateAdded": "2026-03-23",
-    "axiomCount": 2,
-    "lineCount": 271,
-    "assumptions": "2 axioms: erdos_1137 (the main open conjecture, ratio → 0), maxGap_tendsto_atTop (max gap → ∞, provable via factorial argument). erdosRatio_le_one PROVED from Finset.sup properties. Infrastructure: dvd_factorial, not_prime_factorial_add for future axiom elimination."
+    "axiomCount": 1,
+    "lineCount": 314,
+    "assumptions": "1 axiom: erdos_1137 (the main open conjecture, ratio → 0). All other results fully proved: maxGap_tendsto_atTop proved via factorial composites + Galois connection (Nat.nth/Nat.count), erdosRatio_le_one proved from Finset.sup properties."
   },
   "leanFile": {
     "path": "Proofs/Erdos1137Problem.lean",
-    "lineCount": 271,
+    "lineCount": 314,
     "namespace": "Erdos1137",
     "imports": [
       "Mathlib"
@@ -88,8 +90,8 @@
       "maxGap",
       "erdosRatio"
     ],
-    "axiomCount": 2,
-    "theoremCount": 20
+    "axiomCount": 1,
+    "theoremCount": 22
   },
   "crossReferences": [
     {
