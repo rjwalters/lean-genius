@@ -3,14 +3,12 @@
   "proofId": "isosceles-triangle",
   "reviewDate": "2026-03-24T16:00:00Z",
   "reviewer": "peer-reviewer-1",
-
   "overallAssessment": {
     "grade": "B-",
     "oneLiner": "A clean, well-documented Mathlib wrapper for the isosceles triangle theorem with excellent pedagogy but overstated originality claims.",
     "tier": "B",
     "tierJustification": "All four theorems delegate directly to Mathlib lemmas. The biconditional combines two Mathlib calls into an Iff pair. No original proof reasoning exists. This is Tier B: formalized using Mathlib, with the file providing pedagogical curation and API naming rather than original mathematics."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -76,38 +74,36 @@
       "recommendation": "Remove one of the two arrays, or document which is canonical. The crossReferences field appears to be the standard one."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite originalContributions to be honest about the Mathlib wrapper nature. Replace 'Vector space formulation via inner product geometry' with a description acknowledging the re-export. Remove 'Non-degeneracy analysis for the converse'. Soften the biconditional claim.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "low",
       "target": "enricher",
       "description": "Reframe conclusion.implications to acknowledge that inner product space generality is inherited from Mathlib's type-polymorphic formulation, not an original design choice of this entry.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Remove the duplicate relatedProofs array (lines 149-170 of meta.json) since it is identical to crossReferences (lines 118-138).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Rename the 'Verification' section header in the Lean file docstring and corresponding annotations to 'Exports' or 'API Summary' to avoid implying additional verification beyond Lean's kernel.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 4,
     "originalityAccuracy": 5,
@@ -117,6 +113,5 @@
     "internalConsistency": 7,
     "overall": 6.3
   },
-
   "suggestedBestFraming": "A pedagogical Mathlib wrapper that re-exports the isosceles triangle theorem (Pons Asinorum, Wiedijk #65) in four forms -- forward, converse, biconditional, and vector -- with rich historical context and careful documentation, but no original proof work beyond combining Mathlib lemmas into an Iff pair."
 }
