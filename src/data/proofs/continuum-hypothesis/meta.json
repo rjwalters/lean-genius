@@ -148,33 +148,6 @@
       "description": "Schröder-Bernstein establishes cardinality equality from mutual injections. CH concerns the question of which cardinalities exist between ℵ₀ and 2^ℵ₀ — a question Schröder-Bernstein cannot answer"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "cantor-diagonalization",
-      "relationship": "foundational",
-      "description": "Cantor's diagonal argument proves |ℕ| < |ℝ|, the starting point for CH. The continuum hypothesis asks whether any cardinality lies strictly between — proved independent by Gödel (1940) and Cohen (1963)"
-    },
-    {
-      "id": "cantors-theorem",
-      "relationship": "foundational",
-      "description": "Cantor's theorem |S| < |P(S)| gives |ℕ| < |P(ℕ)| = |ℝ|. CH asserts this is the NEXT cardinal: ℵ₁ = 2^ℵ₀. The generalized CH (GCH) extends this to all infinite cardinals"
-    },
-    {
-      "id": "godel-incompleteness",
-      "relationship": "related",
-      "description": "Both reveal fundamental limitations of formal systems: Gödel's incompleteness shows ZFC cannot prove all arithmetic truths, and CH's independence shows ZFC cannot decide all set-theoretic questions. Gödel's constructible universe L (used in the consistency proof) connects both results"
-    },
-    {
-      "id": "halting-problem",
-      "relationship": "thematic",
-      "description": "Both are undecidability results in their respective domains: the halting problem shows no algorithm decides all computation questions, CH's independence shows no ZFC proof decides the continuum's cardinality"
-    },
-    {
-      "id": "schroeder-bernstein",
-      "relationship": "related",
-      "description": "Schröder-Bernstein establishes cardinality equality from mutual injections. CH concerns the question of which cardinalities exist between ℵ₀ and 2^ℵ₀ — a question Schröder-Bernstein cannot answer"
-    }
-  ],
   "references": [
     {
       "authors": "Cantor, Georg",

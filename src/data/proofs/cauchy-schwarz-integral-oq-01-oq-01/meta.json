@@ -151,33 +151,6 @@
       "description": "Minkowski's inequality (Lp triangle inequality) is proved using Hölder's inequality; together they establish Lp as a normed space"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "cauchy-schwarz-integral-oq-01",
-      "relationship": "extends",
-      "description": "Parent proof: Hölder's inequality in the classical integral form — this file reformulates using Mathlib's eLpNorm (extended Lp norm) infrastructure"
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "foundational",
-      "description": "The integral Cauchy-Schwarz inequality is the p=q=2 special case of Hölder's inequality formalized here in eLpNorm form"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "foundational",
-      "description": "The discrete Cauchy-Schwarz inequality — ancestor of the Hölder inequality hierarchy, the counting measure special case"
-    },
-    {
-      "id": "amgm-inequality",
-      "relationship": "foundational",
-      "description": "Young's inequality (ab ≤ a^p/p + b^q/q) used in the Hölder proof is derived from the AM-GM inequality via convexity of exp"
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "related",
-      "description": "Minkowski's inequality (Lp triangle inequality) is proved using Hölder's inequality; together they establish Lp as a normed space"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Function.L2Space",

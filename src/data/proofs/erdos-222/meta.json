@@ -165,28 +165,6 @@
       "description": "Dirichlet's theorem on primes in arithmetic progressions (specifically $p \\equiv 1, 3 \\pmod{4}$) underlies both Fermat's criterion and the density computation"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The PNT gives density $\\sim 1/\\log x$ for primes; Landau's theorem gives density $\\sim c/\\sqrt{\\log x}$ for sums of two squares, making them denser than primes"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "The divergence of $\\sum 1/p$ implies primes are dense; similarly $\\sum_{n \\in S_2} 1/n$ diverges for sums of two squares, and the rate connects to Landau's constant"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The distribution of primes $p \\equiv 3 \\pmod{4}$ governs which integers are sums of two squares; the infinitude of such primes is essential"
-    },
-    {
-      "id": "dirichlets-theorem",
-      "relationship": "foundational",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions (specifically $p \\equiv 1, 3 \\pmod{4}$) underlies both Fermat's criterion and the density computation"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.SumTwoSquares",

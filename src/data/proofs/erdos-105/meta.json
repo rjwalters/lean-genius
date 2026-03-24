@@ -182,38 +182,6 @@
       "targetId": "prob-method-expectation"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-211",
-      "relationship": "Beck's theorem and the Szemerédi-Trotter incidence bound are the foundational positive results underpinning the lower bound f(n) ≥ cn in Erdős #105; both problems share the same incidence-geometry toolkit",
-      "description": ""
-    },
-    {
-      "id": "erdos-102",
-      "relationship": "Erdős #102 asks how many collinear points are forced when many rich lines exist — the dual perspective to #105, which asks how many obstacles are needed to block all rich lines of a given point set",
-      "description": ""
-    },
-    {
-      "id": "erdos-101",
-      "relationship": "Erdős #101 studies four-point collinearities in planar point sets; the collinearity and incidence-geometry techniques (counting rich lines, blocking arguments) are shared with #105",
-      "description": ""
-    },
-    {
-      "id": "erdos-104",
-      "relationship": "Erdős #104 on unit-circle incidences uses the same Szemerédi-Trotter style incidence bounds in a circles-vs-points setting, providing a direct analogue to the points-vs-lines framework of #105",
-      "description": ""
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "The Szemerédi regularity lemma is a structural tool underlying many incidence results; the Szemerédi-Trotter theorem axiomatized in #105 is in the same tradition of combinatorial structure theorems",
-      "description": ""
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "Beck's counting argument establishing f(n) ≥ cn is an instance of the first-moment (expectation) method: a random obstacle point lies on O(n) rich lines, so cn obstacles cover only O(cn²) rich lines, leaving some uncovered",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "authors": [

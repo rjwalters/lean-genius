@@ -159,28 +159,6 @@
       "description": "Schauder's fixed point theorem is used to prove existence of solutions to nonlinear boundary value problems by converting PDE existence into a fixed point problem in function spaces"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "hilbert-19",
-      "relationship": "related",
-      "description": "Problems 19 and 20 form a natural pair: Problem 20 establishes existence of solutions to boundary value problems via Lax-Milgram, while Problem 19 shows those solutions are smooth via De Giorgi-Nash-Moser regularity theory"
-    },
-    {
-      "id": "hilbert-22",
-      "relationship": "related",
-      "description": "The Dirichlet problem (central to Problem 20) connects to uniformization (Problem 22) through potential theory: solving boundary value problems on Riemann surfaces is key to the Perron method proof of the uniformization theorem"
-    },
-    {
-      "id": "navier-stokes",
-      "relationship": "related",
-      "description": "The Navier-Stokes equations are a nonlinear boundary value problem; the Lax-Milgram framework from Problem 20 provides existence for the linearized (Stokes) equations, but the full nonlinear problem remains open"
-    },
-    {
-      "id": "schauder-fixed-point",
-      "relationship": "related",
-      "description": "Schauder's fixed point theorem is used to prove existence of solutions to nonlinear boundary value problems by converting PDE existence into a fixed point problem in function spaces"
-    }
-  ],
   "references": [
     {
       "authors": "Hilbert, David",

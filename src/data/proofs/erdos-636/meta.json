@@ -221,33 +221,6 @@
       "description": "The binomial coefficient C(n,2) bounds the number of edges and appears in the signature (v,e) counting: for a v-vertex induced subgraph, e ranges from 0 to C(v,2)"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "The Ramsey condition (ω(G), α(G) ≤ C log n) is the defining hypothesis — Ramsey's theorem guarantees such graphs exist. This problem quantifies the induced subgraph complexity that Ramsey graphs must exhibit"
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "related",
-      "description": "Both are foundational Erdős problems in Ramsey theory: #1 concerns Ramsey numbers R(k,k), while #636 concerns structural properties (induced subgraph diversity) of Ramsey graphs"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "The regularity lemma provides pseudorandom decompositions relevant to analyzing induced subgraph structure in dense graphs; Ramsey graphs have density near 1/2 making regularity tools particularly applicable"
-    },
-    {
-      "id": "erdos-635",
-      "relationship": "related",
-      "description": "Adjacent Erdős problem in the same series on induced subgraph properties of Ramsey graphs"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "foundational",
-      "description": "The binomial coefficient C(n,2) bounds the number of edges and appears in the signature (v,e) counting: for a v-vertex induced subgraph, e ranges from 0 to C(v,2)"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

@@ -168,23 +168,6 @@
       "The entropy method in additive combinatorics (Tao, Ruzsa) uses the chain rule and subadditivity of entropy to prove sumset bounds like $|A + B| \\geq |A|^{1/2}|B|^{1/2}$. Can these combinatorial applications be formalized using the entropy infrastructure developed here?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "shannon-source-coding",
-      "relationship": "used-by",
-      "description": "Shannon entropy H(X) is the fundamental limit in the source coding theorem"
-    },
-    {
-      "id": "shannon-channel-coding",
-      "relationship": "used-by",
-      "description": "Mutual information I(X;Y), defined from entropy, determines channel capacity"
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "related",
-      "description": "The entropy method in combinatorics uses Shannon entropy with probabilistic method techniques"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

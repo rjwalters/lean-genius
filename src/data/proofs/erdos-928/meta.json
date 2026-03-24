@@ -202,22 +202,5 @@
     "axiomCount": 14,
     "theoremCount": 2,
     "definitionCount": 8
-  },
-  "relatedProofs": [
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "Both concern the distribution of primes in structured patterns — bounded gaps uses sieve methods and the Elliott-Halberstam conjecture, the same conjecture that Wang uses for Erdős #928",
-      "description": ""
-    },
-    {
-      "id": "erdos-1055",
-      "relationship": "Both study prime factorization structure of integers — #1055 classifies primes by P(p+1) factorization while #928 studies the density of smooth consecutive pairs",
-      "description": ""
-    },
-    {
-      "id": "erdos-10",
-      "relationship": "Both concern additive/multiplicative structure involving primes — #10 asks about sums of primes and powers of 2 while #928 concerns smooth number density",
-      "description": ""
-    }
-  ]
+  }
 }

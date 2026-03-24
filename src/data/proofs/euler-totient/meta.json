@@ -178,48 +178,6 @@
       "Can the identity $n = \\sum_{d \\mid n} \\varphi(d)$ be proved from Mathlib's partition-of-unity results?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "chinese-remainder-non-coprime",
-      "relationship": "related",
-      "description": "The Chinese Remainder Theorem gives the multiplicativity of Euler's totient: phi(mn) = phi(m)*phi(n) for coprime m,n, which is key to computing phi for arbitrary integers."
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "Euler's product formula phi(n) = n * prod(1 - 1/p) connects the totient function to the prime factorization of n, relating to the infinitude of primes."
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "The unique prime factorization from FTA is essential for computing phi(n) = n * prod(1 - 1/p) over the prime divisors of n."
-    },
-    {
-      "id": "gcd-algorithm",
-      "relationship": "related",
-      "description": "The GCD algorithm determines coprimality gcd(a,n) = 1, which is the hypothesis of Euler's theorem: a^phi(n) = 1 mod n."
-    },
-    {
-      "id": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's theorem $a^{\\varphi(n)} \\equiv 1$ both describe the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$. Wilson gives the product of all elements; Euler gives the exponent of any single element. For $n = p$ prime, $\\varphi(p) = p-1$, recovering Fermat's little theorem"
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "The Legendre symbol $(a/p)$ and quadratic residues are studied via $a^{(p-1)/2}$ (Euler's criterion), a direct consequence of Fermat's little theorem. Quadratic reciprocity relates Legendre symbols for different primes — built on the same modular arithmetic that Euler's theorem governs"
-    },
-    {
-      "id": "primitive-roots",
-      "relationship": "related",
-      "description": "A primitive root mod $n$ is a generator of $(\\mathbb{Z}/n\\mathbb{Z})^*$, which has order $\\varphi(n)$. The existence of primitive roots (for $n = 1, 2, 4, p^k, 2p^k$) is proved using Euler's theorem and the structure of cyclic groups"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The average order of $\\varphi(n)$ is $\\frac{6}{\\pi^2} n$ (a consequence of PNT and the Euler product $\\varphi(n)/n = \\prod(1-1/p)$). The connection $6/\\pi^2 = 1/\\zeta(2)$ links the totient function to the Basel problem and prime distribution"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.ZMod.Basic",

@@ -156,18 +156,6 @@
       "The Lean file contains 5 filler theorems proving `(1:ℕ)+1=2` with substantive docstrings — can these be replaced with actual formalizations (gambler's ruin probability, Doob's maximal inequality)?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "ballot-problem",
-      "relationship": "related",
-      "description": "The ballot problem studies first-passage times of random walks, which are stopping times for martingales — the Optional Stopping Theorem provides the framework for analyzing such hitting-time expectations"
-    },
-    {
-      "id": "law-of-large-numbers",
-      "relationship": "related",
-      "description": "LLN shows sample averages converge to the mean; the Optional Stopping Theorem shows that stopping strategies cannot exploit transient deviations from the mean in a fair game"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Probability.Martingale.OptionalStopping",

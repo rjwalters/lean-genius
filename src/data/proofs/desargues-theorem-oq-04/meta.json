@@ -247,22 +247,5 @@
       "venue": "Teubner",
       "note": "Axiomatic analysis of Desargues's theorem and its role in geometry"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "desargues-theorem-oq-01",
-      "relationship": "extends",
-      "description": "Builds on the algebraic cross-product framework introduced in OQ-01 (Desargues over any CommRing) to prove the self-duality principle"
-    },
-    {
-      "id": "desargues-theorem-oq-02",
-      "relationship": "complementary",
-      "description": "OQ-02 exhibits the Moulton plane where Desargues fails; this OQ-04 establishes self-duality in coordinatizable (Desarguesian) planes where it holds"
-    },
-    {
-      "id": "desargues-theorem",
-      "relationship": "extends",
-      "description": "The base Desargues formalization; this entry adds self-duality (collinear = concurrent by rfl in homogeneous coordinates) as a new structural insight"
-    }
   ]
 }

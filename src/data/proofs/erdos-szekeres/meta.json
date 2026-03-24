@@ -145,28 +145,6 @@
       "How does this generalize to higher dimensions (Ramsey numbers for hypergraphs)?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "generalization",
-      "description": "Ramsey's theorem generalizes the Erdős-Szekeres result: the ES theorem is a special case for ordered 2-colorings of pairs. The ES number $ES(r,s) = (r-1)(s-1)+1$ gives an exact Ramsey-type bound for monotone subsequences in linear orders"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "supports",
-      "description": "The binomial coefficient $\\binom{n}{2}$ counts the pairs in a sequence whose comparisons define the 2-coloring in the Ramsey-theoretic view. The pigeonhole argument implicitly uses that $(r-1)(s-1)+1$ pairs $(a_i, b_i)$ fit in a $(r-1) \\times (s-1)$ grid"
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "related",
-      "description": "Both are foundational Erdős results in combinatorics. The Erdős-Szekeres theorem on monotone subsequences and Problem #1 on Sidon sets both concern structure in sequences, with tight extremal bounds"
-    },
-    {
-      "id": "mathematical-induction",
-      "relationship": "foundational",
-      "description": "The alternative proof of the Erdős-Szekeres theorem uses strong induction: if the longest increasing subsequence has length $< r$ and the longest decreasing has length $< s$, partition by the first element and apply induction to the remaining subsequences"
-    }
-  ],
   "references": [
     {
       "authors": "Erdős, Paul; Szekeres, George",

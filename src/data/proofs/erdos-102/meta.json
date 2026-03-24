@@ -175,38 +175,6 @@
       "description": "Problem #100 on point sets with restricted distances and Problem #102 on rich lines both belong to Erdős's combinatorial geometry program of the 1970s–80s. Both ask how density conditions on geometric incidences constrain extremal substructures."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-101",
-      "relationship": "companion",
-      "description": "Problem #101 asks whether a planar point set with no 5 collinear points can have cn² four-point lines. The bridge theorem in this file shows that if h_c(n) → ∞ (Problem #102), then the four-point line count must be o(n²), directly resolving Problem #101 for the no-five-collinear case."
-    },
-    {
-      "id": "erdos-588",
-      "relationship": "generalizes",
-      "description": "Problem #588 studies k-rich lines (lines containing ≥ k points) in general position. Erdős #102 is the specialization to k = 4 with the density condition cn² lines, while #588 treats the general k and asks about the extremal configurations."
-    },
-    {
-      "id": "erdos-669",
-      "relationship": "related",
-      "description": "The Orchard Problem (#669) asks for the maximum number of 3-point lines among n points — the k = 3 analogue. The Szemerédi–Trotter bound appears in both problems, and the lattice constructions used in Hunter's counterexample to #102 are variants of orchard-optimal configurations."
-    },
-    {
-      "id": "desargues-theorem",
-      "relationship": "foundational",
-      "description": "Desargues's theorem characterizes collinearity in projective planes and underlies the algebraic structure of collinear point sets. The cross-product collinearity test used in this formalization is the affine analogue of the Desarguesian incidence relation."
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "thematic",
-      "description": "Szemerédi's theorem (on arithmetic progressions) and the Szemerédi–Trotter incidence theorem are distinct results by the same author. The incidence theorem is the key upper bound tool for Problem #102; the regularity lemma underlying both results connects discrete geometry to combinatorics."
-    },
-    {
-      "id": "erdos-100",
-      "relationship": "related",
-      "description": "Problem #100 on point sets with restricted distances and Problem #102 on rich lines both belong to Erdős's combinatorial geometry program of the 1970s–80s. Both ask how density conditions on geometric incidences constrain extremal substructures."
-    }
-  ],
   "references": [
     {
       "key": "ST83",

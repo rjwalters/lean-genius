@@ -173,33 +173,6 @@
       "description": "The infinitude of primes is the most basic prerequisite; Erdős #1138 asks about the fine quantitative distribution of these infinitely many primes"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "bertrands-postulate",
-      "relationship": "strengthens",
-      "description": "Bertrand's postulate guarantees a prime in $(n, 2n]$; Erdős #1138 asks for the full asymptotic in intervals potentially as short as $C(\\log x)^2$"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "extends",
-      "description": "The PNT gives $\\pi(x) \\sim x/\\log x$ globally; this problem asks for the analogous short-interval asymptotic $\\pi(y+h) - \\pi(y) \\sim h/\\log y$ at the maximal gap scale"
-    },
-    {
-      "id": "riemann-hypothesis",
-      "relationship": "related",
-      "description": "Even assuming RH, short-interval PNT requires $h > x^{1/2+\\varepsilon}$, far larger than the conjectured $(\\log x)^2$ maximal gap. Resolving Erdős #1138 would require methods beyond RH."
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "foundational",
-      "description": "The divergence of $\\sum 1/p$ quantifies the density of primes; prime gap questions probe the complementary question of how irregularly primes are spaced"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The infinitude of primes is the most basic prerequisite; Erdős #1138 asks about the fine quantitative distribution of these infinitely many primes"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

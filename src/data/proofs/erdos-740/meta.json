@@ -156,23 +156,6 @@
       "description": "The Four Color Theorem is the most famous result in graph coloring. Problem #740 extends chromatic number questions to the infinite setting."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-58",
-      "relationship": "related",
-      "description": "Erdős Problem #58 concerns chromatic number vs odd cycle lengths, a closely related question about how chromatic number interacts with cycle structure."
-    },
-    {
-      "id": "erdos-744",
-      "relationship": "related",
-      "description": "Erdős Problem #744 on critical graphs and bipartition explores related themes about graph structure and chromatic number."
-    },
-    {
-      "id": "four-color-theorem",
-      "relationship": "broader-context",
-      "description": "The Four Color Theorem is the most famous result in graph coloring. Problem #740 extends chromatic number questions to the infinite setting."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

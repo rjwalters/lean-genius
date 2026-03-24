@@ -154,33 +154,6 @@
       "Can the techniques extend to other factorial-based expressions?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "wilsons-theorem",
-      "relationship": "foundational",
-      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ ensures $p_k$ divides $(p_k - 1)! + 1$, providing the starting divisor that motivates the problem. Without Wilson's theorem, there would be no reason to expect $p_k$ to divide $n!+1$ for $n$ near $p_k$"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime between $n$ and $2n$, bounding prime gaps. The interval $[p_{k-1}, p_k)$ in Problem #1058 depends on how primes are spaced — Bertrand ensures these intervals have bounded length relative to $p_k$"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ underlies the growth-rate arguments in Luca's proof: the super-exponential growth of $n!$ forces $n!+1$ to have many prime factors for large $n$"
-    },
-    {
-      "id": "erdos-728-factorial-divisibility",
-      "relationship": "related",
-      "description": "Both concern the prime factorization structure of factorial-related expressions. Problem #728 studies divisibility properties of $n!$, while #1058 studies the prime factors of $n!+1$"
-    },
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "related",
-      "description": "Prime gap bounds determine the size of the intervals $[p_{k-1}, p_k)$ in which $n$ lies. Smaller gaps mean more values of $n$ fall between consecutive primes, affecting how many candidates satisfy the condition"
-    }
-  ],
   "references": [
     {
       "authors": "Luca, Florian",

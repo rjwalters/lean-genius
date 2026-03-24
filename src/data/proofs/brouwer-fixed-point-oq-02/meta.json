@@ -170,33 +170,6 @@
       "description": "BU-OQ-03 proves the axiom reduction BU → no-retraction → Brouwer FP — this file explores the computational side of the same fixed-point landscape"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "brouwer-fixed-point",
-      "relationship": "extends",
-      "description": "Base Brouwer fixed-point theorem — this file extends it by formalizing the computational complexity landscape: binary search optimality, contraction convergence rates, PPAD structure, and stability under perturbation"
-    },
-    {
-      "id": "borsuk-ulam",
-      "relationship": "related",
-      "description": "Borsuk-Ulam implies Brouwer FP via the no-retraction theorem — both are foundational topological fixed-point results, and this file's PPAD analysis connects to the computational complexity of BU-type search problems"
-    },
-    {
-      "id": "intermediate-value-theorem",
-      "relationship": "uses",
-      "description": "IVT provides the 1D fixed-point existence via exists_mem_Icc_isFixedPt_of_mapsTo — the binary search algorithm in this file exploits IVT's constructive nature to achieve O(log 1/ε) convergence"
-    },
-    {
-      "id": "schauder-fixed-point",
-      "relationship": "related",
-      "description": "Schauder extends Brouwer FP to infinite dimensions — this file's contraction mapping and Krasnoselskii-Mann iteration analyses connect to Schauder's broader fixed-point framework"
-    },
-    {
-      "id": "borsuk-ulam-oq-03",
-      "relationship": "related",
-      "description": "BU-OQ-03 proves the axiom reduction BU → no-retraction → Brouwer FP — this file explores the computational side of the same fixed-point landscape"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

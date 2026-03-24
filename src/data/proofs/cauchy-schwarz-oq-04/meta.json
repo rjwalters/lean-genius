@@ -164,18 +164,6 @@
       "Can the projection coefficient be connected to Mathlib's orthogonalProjection for Hilbert subspaces?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "extends",
-      "description": "Strengthens the base Cauchy-Schwarz equality characterization from 'exists c, u = cv' to the exact constant c = inner(u,v)/norm(v)^2."
-    },
-    {
-      "id": "cauchy-schwarz-oq-03",
-      "relationship": "related",
-      "description": "Both are open questions extending the base Cauchy-Schwarz formalization with deeper characterizations of the equality condition."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

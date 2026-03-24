@@ -182,32 +182,5 @@
       "relationship": "uses",
       "description": "The foundational theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ underlies the properties of $\\varphi$ used throughout #411"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-410",
-      "relationship": "sibling",
-      "description": "Both iterate arithmetic functions (φ vs σ) and study growth rates; #410 asks if $\\lim_{k \\to \\infty} \\sigma_k(n)^{1/k} = \\infty$"
-    },
-    {
-      "id": "erdos-412",
-      "relationship": "sibling",
-      "description": "Both study orbit dynamics of arithmetic function iterations; #412 asks whether iterated σ-sequences eventually merge"
-    },
-    {
-      "id": "erdos-413",
-      "relationship": "sibling",
-      "description": "Both study iterations $n \\mapsto n + f(n)$; #413 uses $f = \\omega$ (distinct prime factors) instead of $f = \\varphi$"
-    },
-    {
-      "id": "erdos-414",
-      "relationship": "sibling",
-      "description": "Both study arithmetic function iteration dynamics; #414 uses $h(n) = n + \\tau(n)$ and asks about orbit merging"
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "uses",
-      "description": "The foundational theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ underlies the properties of $\\varphi$ used throughout #411"
-    }
   ]
 }

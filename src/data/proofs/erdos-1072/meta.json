@@ -123,24 +123,6 @@
       "relationship": "Bertrand's postulate underpins prime distribution arguments used as context for #1072: knowing that primes are 'dense enough' is relevant to understanding whether Wilson-maximal primes can be infinite or must have zero density."
     }
   ],
-  "relatedProofs": [
-    {
-      "slug": "wilsons-theorem",
-      "description": "The classical theorem that $(n-1)! \\equiv -1 \\pmod{n}$ iff $n$ is prime; forms the upper bound $f(p) \\leq p-1$ central to Problem #1072."
-    },
-    {
-      "slug": "erdos-1073",
-      "description": "Counts composites $u$ dividing some $n!+1$; directly complements #1072 by extending the factorial divisibility question from primes to composites."
-    },
-    {
-      "slug": "erdos-1074",
-      "description": "Studies EHS numbers and Pillai primes via the same $n! \\equiv -1 \\pmod{p}$ congruence; co-authored by Erdős, Hardy, and Subbarao in the same 2002 paper."
-    },
-    {
-      "slug": "erdos-1059",
-      "description": "Asks whether infinitely many primes $p$ satisfy $p - k!$ composite for all valid $k$; related open problem about factorial-prime interactions from the same era."
-    }
-  ],
   "references": [
     {
       "authors": [

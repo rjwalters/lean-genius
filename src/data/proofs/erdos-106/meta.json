@@ -181,38 +181,6 @@
       "targetId": "borsuk-ulam"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-99",
-      "relationship": "Erdős Problem #99 asks whether minimal-diameter point sets with unit minimum distance must contain equilateral triangles — another packing optimality problem where Cauchy-Schwarz type arguments yield tight bounds on configurations.",
-      "description": ""
-    },
-    {
-      "id": "erdos-103",
-      "relationship": "Erdős Problem #103 counts incongruent optimal point configurations minimizing diameter, paralleling the question of how many combinatorially distinct optimal packings achieve f(k²) = k.",
-      "description": ""
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "The Cauchy-Schwarz inequality is the central analytic tool: (Σsᵢ)² ≤ n·Σsᵢ² ≤ n gives f(n) ≤ √n, tight at perfect squares. The entire conjecture concerns when this bound can be matched just beyond a perfect square.",
-      "description": ""
-    },
-    {
-      "id": "isoperimetric-theorem",
-      "relationship": "The isoperimetric theorem is the prototype extremal geometry result: asking which shape maximizes area for fixed perimeter. The square packing problem similarly asks which packing maximizes total side length under a containment constraint, exhibiting the same rigidity-at-extrema phenomenon.",
-      "description": ""
-    },
-    {
-      "id": "erdos-107",
-      "relationship": "The Happy Ending Problem (Erdős–Szekeres) is a foundational Erdős combinatorial geometry problem where exact thresholds are conjectured for finite configurations. Like Problem #106, it features a well-known lower bound construction (convex position) and a long-open matching upper bound.",
-      "description": ""
-    },
-    {
-      "id": "borsuk-ulam",
-      "relationship": "The Borsuk-Ulam theorem is a cornerstone of combinatorial topology applied to geometry. The axis-parallel BKU (2024) resolution of Problem #106 used topological and measure-theoretic techniques, placing the problem in the broader tradition of applying analytic tools to packing questions.",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "authors": [

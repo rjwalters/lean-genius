@@ -146,28 +146,6 @@
       "Derive the formula for the area of an isosceles triangle A = (b/4)*sqrt(4a^2 - b^2) as a corollary of Heron's formula combined with Pons Asinorum"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "The Pythagorean theorem characterizes right triangles via side lengths. An isosceles right triangle (45-45-90) combines both results: equal legs give equal base angles by Pons Asinorum, and the hypotenuse satisfies a^2 + a^2 = c^2."
-    },
-    {
-      "id": "triangle-angle-sum",
-      "relationship": "related",
-      "description": "The angle sum theorem (angles sum to pi) combined with Pons Asinorum determines the apex angle: if base angles are both beta, then alpha = pi - 2*beta. This fully determines isosceles triangle shape from one angle."
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "related",
-      "description": "The triangle inequality constrains side lengths. For isosceles triangles with equal sides a and base b, the constraint reduces to b < 2a, which is equivalent to the base angles being less than pi/2."
-    },
-    {
-      "id": "herons-formula",
-      "relationship": "related",
-      "description": "Heron's formula simplifies for isosceles triangles: with sides a, a, b, the semi-perimeter is s = a + b/2 and the area becomes (b/4)*sqrt(4a^2 - b^2), a direct consequence of Pons Asinorum symmetry."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Geometry.Euclidean.Triangle",

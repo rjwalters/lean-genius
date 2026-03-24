@@ -187,38 +187,6 @@
       "targetId": "erdos-104"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-99",
-      "relationship": "direct predecessor",
-      "description": "Erdős #99 asks whether minimal-diameter sets with separation ≥ 1 must contain a unit equilateral triangle for large n. Both problems study the structure of optimal-diameter point configurations and are closely related."
-    },
-    {
-      "id": "erdos-100",
-      "relationship": "sibling problem",
-      "description": "Erdős #100 studies point sets in ℝ² with all pairwise distances ≥ 1 and distinct distances separated by ≥ 1. Both problems impose minimum-separation constraints and ask about diameter growth."
-    },
-    {
-      "id": "erdos-90",
-      "relationship": "related problem",
-      "description": "The Unit Distance Problem (Erdős #90) asks for the maximum number of unit distances among n points in ℝ². The unit-distance graph structure underlies the hexagonal-lattice configurations central to #103."
-    },
-    {
-      "id": "erdos-106",
-      "relationship": "analogous packing problem",
-      "description": "Erdős #106 studies square packing with an optimization objective, asking how many incongruent packings achieve the optimum. Both #103 and #106 count optimal configurations up to congruence."
-    },
-    {
-      "id": "kepler-conjecture",
-      "relationship": "background result",
-      "description": "The Kepler Conjecture establishes that the face-centered cubic lattice maximizes sphere-packing density. The hexagonal lattice used in #103's asymptotic diameter estimates is the 2D analogue of this optimal packing."
-    },
-    {
-      "id": "erdos-104",
-      "relationship": "related incidence problem",
-      "description": "Erdős #104 counts unit circles through ≥ 3 points from an n-point set. The unit-circle incidence structure is dual to the minimum-separation constraints in #103."
-    }
-  ],
   "references": [
     {
       "key": "Er94b",

@@ -182,38 +182,6 @@
       "description": "Erdős #100 studies finite planar point sets with all pairwise distances being integers (restricted distance sets), while #1127 asks about decomposing all of ℝⁿ into countably many sets with ALL pairwise distances DISTINCT. Both problems impose global constraints on the distance set of a point configuration, but at radically different scales: finite geometry vs. transfinite set theory."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "continuum-hypothesis",
-      "relationship": "foundational",
-      "description": "The Continuum Hypothesis is the central set-theoretic axiom on which the entire #1127 result depends. Erdős-Kakutani proved that CH is not merely sufficient but EQUIVALENT to ℝ being a countable union of ℚ-linearly independent sets — making this a rare case where an independence result (CH undecidable in ZFC) completely governs a geometric decomposition problem."
-    },
-    {
-      "id": "cantors-theorem",
-      "relationship": "thematic",
-      "description": "Cantor's theorem |S| < |P(S)| establishes the cardinal hierarchy that makes CH meaningful. The countable decomposition in #1127 exploits the gap between ℵ₀ and 2^ℵ₀ (the continuum): under CH these two cardinalities are adjacent (ℵ₁ = 2^ℵ₀), providing just enough transfinite structure to index the ℚ-linearly independent pieces."
-    },
-    {
-      "id": "erdos-1128",
-      "relationship": "sibling-problem",
-      "description": "Both #1127 and #1128 are Erdős-Hajnal problems resolved through set-theoretic methods at the level of ℵ₁. #1128 asks whether ℵ₁³ → (ℵ₀)³₂ (disproved by Prikry-Mills 1978), while #1127 uses CH to partition ℝⁿ (cardinality 2^ℵ₀ = ℵ₁ under CH) into countably many geometrically structured sets. Both illustrate how cardinal arithmetic governs infinite combinatorics."
-    },
-    {
-      "id": "erdos-97",
-      "relationship": "thematic",
-      "description": "Erdős #97 concerns equidistant vertices in convex polygons — the finite, purely geometric side of distance problems. #1127 takes distance constraints to the set-theoretic extreme: partitioning all of ℝⁿ (uncountable) into countably many pieces each with ALL pairwise distances distinct, a property qualitatively different from any finite geometric constraint."
-    },
-    {
-      "id": "cantor-diagonalization",
-      "relationship": "foundational",
-      "description": "Cantor's diagonal argument establishes that ℝ is uncountable (|ℝ| = 2^ℵ₀ > ℵ₀). This is the reason the decomposition in #1127 is non-trivial: any countable cover of the uncountable space ℝⁿ must have uncountably many points in at least one piece, and the ℚ-linear independence argument is needed to control the distance structure of these uncountable pieces."
-    },
-    {
-      "id": "erdos-100",
-      "relationship": "thematic",
-      "description": "Erdős #100 studies finite planar point sets with all pairwise distances being integers (restricted distance sets), while #1127 asks about decomposing all of ℝⁿ into countably many sets with ALL pairwise distances DISTINCT. Both problems impose global constraints on the distance set of a point configuration, but at radically different scales: finite geometry vs. transfinite set theory."
-    }
-  ],
   "references": [
     {
       "authors": "Erdős, Paul and Kakutani, Shizuo",

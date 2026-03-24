@@ -167,38 +167,6 @@
       "Can the weight-product formula be used to give a new proof of the spherical Gauss-Bonnet theorem?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "cevas-theorem",
-      "relationship": "ancestor",
-      "description": "The classical (planar) Ceva theorem using length ratios — this file gives the spherical generalization using unit-vector weight parameters."
-    },
-    {
-      "id": "cevas-theorem-oq-02",
-      "relationship": "parent",
-      "description": "The parent open question on non-Euclidean Ceva formulations — this file answers OQ-02-OQ-01 specifically for unit-vector inner product spaces."
-    },
-    {
-      "id": "cevas-theorem-oq-02-oq-02",
-      "relationship": "sibling",
-      "description": "Sibling entry exploring another aspect of the non-Euclidean Ceva question from the same parent OQ-02."
-    },
-    {
-      "id": "cevas-theorem-oq-04",
-      "relationship": "sibling",
-      "description": "Another open question from Ceva's theorem exploring different directions — together these entries map the full landscape of Ceva generalizations."
-    },
-    {
-      "id": "law-of-cosines",
-      "relationship": "foundational",
-      "description": "The spherical law of cosines $\\cos c = \\cos a \\cos b + \\sin a \\sin b \\cos C$ is the fundamental identity relating angles and sides on the sphere. This entry's inner product computation $\\langle B, D \\rangle = (\\alpha + \\beta m)/n$ is the unit-vector version of the same geometric relationship."
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "The Pythagorean theorem and Ceva's theorem are both fundamental results about triangles that admit deep generalizations: Pythagoras to inner product spaces (via $\\|x+y\\|^2 = \\|x\\|^2 + \\|y\\|^2$ for orthogonal vectors), Ceva to spherical and projective geometry as formalized here."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.Basic",

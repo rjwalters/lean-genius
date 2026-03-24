@@ -198,33 +198,6 @@
       "description": "Both involve sums of reciprocals: the Basel problem evaluates $\\sum 1/n^2 = \\pi^2/6$, while Problem #300 concerns subsets $S$ with $\\sum_{n \\in S} 1/n = 1$. The harmonic series (divergence) is key to both: it explains why $\\pi$ appears in Basel and why $e$ appears here"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-310",
-      "relationship": "related",
-      "description": "Related Erdős problem on Egyptian fractions — shares the theme of unit fraction decompositions and the combinatorial constraints they impose on subsets of integers"
-    },
-    {
-      "id": "erdos-321",
-      "relationship": "related",
-      "description": "Related Erdős problem on subset sums of unit fractions — a different quantitative question about the same family of Egyptian fraction representations that drives Problem #300"
-    },
-    {
-      "id": "erdos-148",
-      "relationship": "related",
-      "description": "Related Erdős problem on unit fraction representations — another facet of the Egyptian fraction theory that underpins the difficulty of the unit sum-free condition"
-    },
-    {
-      "id": "e-transcendental",
-      "relationship": "related",
-      "description": "The constant $e$ appears in the answer $A(N) = (1-1/e+o(1))N$ through its connection to the harmonic series $\\sum 1/n \\approx \\ln N$. The transcendence of $e$ (proved by Hermite, 1873) means the optimal density $1-1/e$ is itself a transcendental number"
-    },
-    {
-      "id": "basel-problem",
-      "relationship": "related",
-      "description": "Both involve sums of reciprocals: the Basel problem evaluates $\\sum 1/n^2 = \\pi^2/6$, while Problem #300 concerns subsets $S$ with $\\sum_{n \\in S} 1/n = 1$. The harmonic series (divergence) is key to both: it explains why $\\pi$ appears in Basel and why $e$ appears here"
-    }
-  ],
   "references": [
     {
       "authors": "Erdős, Paul; Graham, Ronald L.",

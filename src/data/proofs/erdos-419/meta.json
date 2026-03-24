@@ -265,48 +265,6 @@
       "How quickly does the ratio approach each limit point along the relevant subsequences?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-415",
-      "relationship": "related-problem",
-      "description": "Also studies consecutive arithmetic function values. Erdős #415 examines ordering patterns of τ(n), τ(n+1), τ(n+2), while #419 studies the ratio of consecutive factorial divisor counts."
-    },
-    {
-      "id": "erdos-414",
-      "relationship": "related-problem",
-      "description": "Uses the same divisor function τ in the dynamical system h(n) = n + τ(n). Both problems explore how τ interacts with sequential structure."
-    },
-    {
-      "id": "kummer-theorem",
-      "relationship": "uses-same-technique",
-      "description": "Both use Legendre's formula and p-adic factorial analysis. Kummer's theorem counts carries in base-p addition via digit sums related to Legendre's formula."
-    },
-    {
-      "id": "erdos-728-factorial-divisibility",
-      "relationship": "uses-same-technique",
-      "description": "Both analyze factorial divisibility via p-adic valuations and Legendre's formula, studying how prime factorization of factorials determines divisibility properties."
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related-problem",
-      "description": "Stirling gives log(n!) ~ n log n; the asymptotics log τ(n!) ~ n log n / log log n involve an extra log log n factor from the prime structure of n!."
-    },
-    {
-      "id": "erdos-400",
-      "relationship": "related-problem",
-      "description": "Both study divisibility and growth properties of factorial-related quantities, exploring how the rich prime factorization of n! controls arithmetic functions."
-    },
-    {
-      "id": "dirichlets-theorem",
-      "relationship": "uses-result",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions guarantees infinitely many n+1 = pk for each fixed k, ensuring each limit point 1 + 1/k is achieved infinitely often."
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related-problem",
-      "description": "The prime number theorem underlies the density estimates for primes p with n+1 = pk, and Mertens' theorem (a consequence) explains the log log n factor in the τ(n!) asymptotics."
-    }
-  ],
   "references": [
     {
       "authors": "P. Erdős, R. L. Graham, A. Ivić, C. Pomerance",

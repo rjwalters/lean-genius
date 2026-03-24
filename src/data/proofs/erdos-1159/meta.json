@@ -136,23 +136,6 @@
       "description": "The Fano plane (order 2, the smallest projective plane) is a trivial case where C = 3 suffices"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-664",
-      "relationship": "strengthens",
-      "description": "Problem 664 generalizes to all pairwise balanced block designs, not just projective planes"
-    },
-    {
-      "id": "erdos-1104",
-      "relationship": "related",
-      "description": "Both use the probabilistic method as the primary tool and ask whether probabilistic bounds can be improved to constants"
-    },
-    {
-      "id": "fano-plane",
-      "relationship": "foundation",
-      "description": "The Fano plane (order 2, the smallest projective plane) is a trivial case where C = 3 suffices"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

@@ -171,32 +171,5 @@
       "relationship": "related",
       "description": "Both concern structural properties of graphs under extremal constraints"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "extends",
-      "description": "This problem concerns the growth rate of Ramsey numbers R(k,k), extending the basic Ramsey existence theorem"
-    },
-    {
-      "id": "prob-method-alteration",
-      "relationship": "related",
-      "description": "Erdős's 1947 probabilistic lower bound R(k,k) ≥ 2^{k/2} pioneered the probabilistic method formalized here"
-    },
-    {
-      "id": "prob-method-lovasz-local",
-      "relationship": "related",
-      "description": "The Lovász Local Lemma provides refined Ramsey bounds by handling dependencies in random graph coloring"
-    },
-    {
-      "id": "prob-method-second-moment",
-      "relationship": "related",
-      "description": "Second moment methods sharpen the probabilistic lower bounds for Ramsey numbers"
-    },
-    {
-      "id": "erdos-1009",
-      "relationship": "related",
-      "description": "Both concern structural properties of graphs under extremal constraints"
-    }
   ]
 }

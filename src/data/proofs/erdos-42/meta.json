@@ -200,27 +200,5 @@
       "venue": "Electronic Journal of Combinatorics, Dynamic Survey DS11",
       "note": "Comprehensive survey of Sidon set theory including structural results on difference sets"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-28",
-      "relationship": "related",
-      "description": "The Erdős-Turán conjecture on additive bases uses Sidon sets as the extremal case. Understanding Sidon set structure (via difference sets, as in #42) informs the broader question of representation functions"
-    },
-    {
-      "id": "erdos-39",
-      "relationship": "related",
-      "description": "Problem #39 asks about the growth rate of infinite Sidon sets, while Problem #42 concerns the structural compatibility of Sidon sets via their difference sets. Both explore fundamental constraints on Sidon set structure"
-    },
-    {
-      "id": "erdos-41",
-      "relationship": "extends",
-      "description": "Problem #41 on B_h sequence bounds generalizes the Sidon set density theory. The difference set structure studied in Problem #42 has natural B_h analogs"
-    },
-    {
-      "id": "erdos-44",
-      "relationship": "related",
-      "description": "Problem #44 asks about extending Sidon sets to near-optimal density. Both problems concern how individual Sidon sets can be related or combined — #42 via disjoint differences, #44 via extension"
-    }
   ]
 }

@@ -149,38 +149,6 @@
       "targetId": "chinese-remainder-constructive"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "wilsons-theorem",
-      "relationship": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is the primary structural obstruction in this problem: intervals cannot partition all of $\\{1, \\ldots, p-1\\}$, and the proof verifies Wilson's identity computationally for $p = 11$ and $p = 17$.",
-      "description": ""
-    },
-    {
-      "id": "erdos-1058",
-      "relationship": "Both problems concern factorial values modulo primes. Erdős #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1056 studies collisions among $n! \\bmod p$; both probe the residue distribution of the factorial function.",
-      "description": ""
-    },
-    {
-      "id": "primitive-roots",
-      "relationship": "The multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. A primitive root generates this group, giving the algebraic setting in which interval products $\\equiv 1$ must be understood as elements of order dividing $p-1$.",
-      "description": ""
-    },
-    {
-      "id": "erdos-1055",
-      "relationship": "Erdős #1055 classifies primes by the factorization depth of $p+1$ using smooth-number analysis. The smoothness of $p-1$ controls the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, which in turn constrains which products of consecutive integers can equal 1 modulo $p$.",
-      "description": ""
-    },
-    {
-      "id": "erdos-945",
-      "relationship": "Erdős #945 asks about consecutive integers with distinct divisor counts, sharing the theme of structured behavior in consecutive-integer ranges. Both problems seek patterns in how multiplicative properties vary across consecutive integers.",
-      "description": ""
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "The Chinese Remainder Theorem provides tools for constructing simultaneous congruence solutions. Multi-interval congruence conditions of the form $\\prod_{i=a_j}^{b_j-1} i \\equiv 1 \\pmod{p}$ can be analyzed via CRT when multiple primes are considered.",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "key": "Er79",

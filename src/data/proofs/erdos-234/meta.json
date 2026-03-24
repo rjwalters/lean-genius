@@ -151,23 +151,6 @@
       "What is the rate of convergence: how fast does $\\text{gapProportion}(N, c)$ approach $f(c)$, and does this depend on $c$?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "PNT provides the baseline: average prime gap is log p_n. Problem 234 asks about the distribution of gaps normalized by this average, making PNT the zeroth-order framework."
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate (a prime in [n,2n]) gives a crude upper bound on prime gaps: g_n < p_n. The normalized gap distribution studied here refines this to a precise statistical law."
-    },
-    {
-      "id": "twin-primes-special",
-      "relationship": "related",
-      "description": "Twin primes correspond to the smallest possible gap g_n = 2, i.e., f(c) near c = 2/log n -> 0. The twin prime conjecture is a special case of understanding the small-gap tail of the density f(c)."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

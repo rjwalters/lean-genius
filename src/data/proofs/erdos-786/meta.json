@@ -215,22 +215,5 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 5
-  },
-  "relatedProofs": [
-    {
-      "id": "erdos-437",
-      "relationship": "related",
-      "description": "Both study multiplicative structure of integer sets; #437 concerns square partial products while #786 concerns multiplicative cardinality (factor count uniqueness)"
-    },
-    {
-      "id": "erdos-841",
-      "relationship": "related",
-      "description": "Companion multiplicative structure problem; both investigate density limitations imposed by multiplicative constraints on integer sets"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "The prime number theorem underlies the density analysis of multiplicative cardinality sets, especially Selfridge's 1/e construction using prime reciprocal sums"
-    }
-  ]
+  }
 }

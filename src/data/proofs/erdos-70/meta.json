@@ -204,27 +204,5 @@
       "relationship": "related",
       "description": "CH (c = aleph_1) may affect the partition properties of c. The answer to Problem #70 could depend on whether CH holds, connecting partition calculus to set-theoretic independence results"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "Ramsey's theorem is the finite predecessor: every 2-coloring of k-subsets of a sufficiently large set has a monochromatic subset. Problem #70 extends this to infinite cardinals and ordinal-valued partition arrows"
-    },
-    {
-      "id": "cantor-diagonalization",
-      "relationship": "foundational",
-      "description": "Cantor's diagonal argument establishes the uncountability of the continuum, providing the cardinal c = 2^aleph_0 central to the partition arrow notation in Problem #70"
-    },
-    {
-      "id": "cantors-theorem",
-      "relationship": "foundational",
-      "description": "Cantor's theorem |P(X)| > |X| establishes the strict cardinal hierarchy. The continuum c = 2^aleph_0 is the first step beyond countable, and its partition properties are the subject of Problem #70"
-    },
-    {
-      "id": "continuum-hypothesis",
-      "relationship": "related",
-      "description": "CH (c = aleph_1) may affect the partition properties of c. The answer to Problem #70 could depend on whether CH holds, connecting partition calculus to set-theoretic independence results"
-    }
   ]
 }

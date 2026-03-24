@@ -153,18 +153,6 @@
       "description": "The Borsuk-Ulam theorem is a foundational result in algebraic topology, connecting to the broader study of topological properties of Euclidean space."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-909",
-      "relationship": "related",
-      "description": "Erdős Problem #909 on dimension of product spaces is another Erdős topology problem using set-theoretic methods."
-    },
-    {
-      "id": "borsuk-ulam",
-      "relationship": "broader-context",
-      "description": "The Borsuk-Ulam theorem is a foundational result in algebraic topology, connecting to the broader study of topological properties of Euclidean space."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

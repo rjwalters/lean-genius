@@ -174,23 +174,6 @@
       "targetId": "erdos-530"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1021",
-      "relationship": "related",
-      "description": "Erdős #1021 (extremal numbers for bipartite pair graphs G_k) studies related Turán-type extremal questions about forbidden subgraph densities."
-    },
-    {
-      "id": "erdos-1008",
-      "relationship": "related",
-      "description": "Erdős #1008 (C₄-free subgraphs with m^{2/3} edges) uses related extremal techniques including dependent random choice."
-    },
-    {
-      "id": "erdos-530",
-      "relationship": "related",
-      "description": "Erdős #530 (maximum Sidon subsets) studies analogous extremal problems in additive combinatorics, where the probabilistic deletion method parallels the matching conjecture approach."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

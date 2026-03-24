@@ -122,13 +122,6 @@
       "Should AbsolutelyContinuousOn be generalized to functions between normed spaces, or is the ℝ → ℝ case sufficient for Mathlib?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",

@@ -195,18 +195,6 @@
       "Higher-order asymptotics near the threshold?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-696",
-      "relationship": "related",
-      "description": "Problem #696 concerns chains of prime divisors with congruence conditions $d \\equiv 1 \\pmod{m}$. Both problems arise from Erdős's 1979 Astérisque paper and share the theme of understanding when congruence-constrained divisors sufficiently cover integers."
-    },
-    {
-      "id": "erdos-698",
-      "relationship": "related",
-      "description": "Adjacent problem in Erdős's collection. While #697 concerns divisor density with modular constraints, #698 addresses GCDs of binomial coefficients—both explore the fine structure of divisibility."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

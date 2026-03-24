@@ -135,23 +135,6 @@
       "description": "Uses lattice plaquette action and gauge invariance as foundation for the transfer matrix"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "yang-mills",
-      "relationship": "part-of",
-      "description": "Sub-module of the comprehensive Yang-Mills formalization"
-    },
-    {
-      "id": "yang-mills-lattice",
-      "relationship": "depends-on",
-      "description": "Uses lattice plaquette action and gauge invariance as foundation for the transfer matrix"
-    },
-    {
-      "id": "yang-mills-2d",
-      "relationship": "related",
-      "description": "The 2D mass gap from Migdal formula connects to the strong coupling transfer matrix computation"
-    }
-  ],
   "leanFile": {
     "lineCount": 28001,
     "structureCount": 365,

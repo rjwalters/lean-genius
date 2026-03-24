@@ -183,21 +183,6 @@
       "description": "Both entries concern properties of polynomials evaluated at specific constants; Descartes rule governs root counting while e-transcendental concerns the non-existence of polynomial relations"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "descartes-rule-of-signs",
-      "relationship": "Base formalization providing the upper bound; this OQ-01 adds the parity result and negative root framework",
-      "description": "Extends the base Descartes rule formalization by developing the parity conjecture, the negSubst framework for negative roots, and the linear tight-bound case"
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "The FTA guarantees complex roots come in conjugate pairs, which is the critical ingredient for the parity proof",
-      "description": "The Fundamental Theorem of Algebra (complex roots come in conjugate pairs) is the key tool needed to prove the parity result axiomatized here"
-    },
-    "descartes-rule-of-signs",
-    "fundamental-theorem-algebra",
-    "e-transcendental"
-  ],
   "references": [
     {
       "authors": "René Descartes",

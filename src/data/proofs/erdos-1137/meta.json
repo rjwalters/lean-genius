@@ -180,22 +180,5 @@
       "What is the behavior of the ratio under the Cramér–Granville model with the Maier correction factor?",
       "Is the conjecture equivalent to any known statement about the distribution of prime gaps in short intervals?"
     ]
-  },
-  "relatedProofs": [
-    {
-      "id": "prime-gap-bounds",
-      "relationship": "builds-on",
-      "description": "PrimeGapBounds.lean provides Bertrand-based prime counting bounds and the nth prime enumeration infrastructure used here."
-    },
-    {
-      "id": "erdos-6",
-      "relationship": "related-problem",
-      "description": "Erdős Problem #6 also concerns prime gaps — specifically Cramér's conjecture on maximal gaps being O((log p)²)."
-    },
-    {
-      "id": "erdos-1136",
-      "relationship": "adjacent-problem",
-      "description": "Consecutive Erdős problems; #1136 is about sum-free sets, #1137 about prime gap correlations."
-    }
-  ]
+  }
 }

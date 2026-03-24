@@ -191,13 +191,6 @@
       "Can the probabilistic argument be derandomized to give an explicit construction of ε-uniform sets of size (1+o(1)) log₂ N?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-543",
-      "relationship": "related-problem",
-      "description": "Problem #543 asks about spanning (f(N) = min k for random k-subset to represent every element). Problem #1179 is the stronger uniformity version; uniform_implies_spanning shows #1179 ⟹ #543"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Finset.Basic",

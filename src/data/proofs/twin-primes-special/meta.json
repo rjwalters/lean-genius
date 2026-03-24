@@ -138,28 +138,6 @@
     "theoremCount": 16,
     "definitionCount": 2
   },
-  "relatedProofs": [
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "related",
-      "description": "Zhang/Maynard-Tao proved lim inf of prime gaps is finite; the twin prime conjecture asks if this limit is 2"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "prerequisite",
-      "description": "The infinitude of primes is necessary context — the twin prime conjecture asks if infinitely many primes come in pairs"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The PNT gives the density of primes; the Hardy-Littlewood conjecture predicts twin prime density using a similar asymptotic framework"
-    },
-    {
-      "id": "dirichlets-theorem",
-      "relationship": "related",
-      "description": "Dirichlet's theorem guarantees primes in arithmetic progressions; the 6k±1 structure of twin primes reflects primes in residue classes mod 6"
-    }
-  ],
   "references": [
     {
       "authors": "de Polignac, Alphonse",

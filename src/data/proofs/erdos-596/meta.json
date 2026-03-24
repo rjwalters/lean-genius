@@ -243,58 +243,6 @@
       "description": "The Lovász Local Lemma is a key probabilistic tool for constructing colorings that avoid forbidden monochromatic subgraphs. It provides a general framework for establishing countable coloring properties by showing that local avoidance constraints can be simultaneously satisfied"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "Ramsey's theorem is the prototype result: any 2-coloring of $K_n$ for large $n$ contains a monochromatic $K_k$. Problem #596 generalizes this by asking about Ramsey-type partition results for forbidden subgraph classes rather than complete graphs"
-    },
-    {
-      "id": "erdos-595",
-      "relationship": "related",
-      "description": "Problem #595 asks specifically whether $(K_4, K_3)$ satisfies the dichotomy — a key test case for #596. Both are formalized with the same HasDichotomy framework"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "The Szemerédi regularity lemma provides tools for understanding the structure of dense graphs, which is relevant to proving Ramsey-type results in forbidden subgraph classes. Regularity-based arguments can establish the finite Ramsey property for certain pairs"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "related",
-      "description": "Both are classification problems in extremal combinatorics: Szemerédi's theorem classifies sets containing arithmetic progressions, while #596 classifies graph pairs with the Ramsey dichotomy"
-    },
-    {
-      "id": "erdos-544",
-      "relationship": "related",
-      "description": "Problem #544 studies consecutive Ramsey number differences, another question about the fine structure of Ramsey theory. Both problems probe the boundary behavior of Ramsey-type phenomena — #544 for Ramsey numbers themselves, #596 for the finite/countable coloring dichotomy"
-    },
-    {
-      "id": "erdos-1009",
-      "relationship": "related",
-      "description": "Problem #1009 concerns edge-disjoint triangles beyond the Turán threshold, connecting to the extremal graph theory that underlies the finite Ramsey property in #596. Both require understanding how dense a forbidden-subgraph-free graph can be before forced substructures emerge"
-    },
-    {
-      "id": "erdos-1010",
-      "relationship": "related",
-      "description": "Triangle supersaturation (#1010) is the quantitative backbone of Ramsey-type forcing: once edge density exceeds the Turán bound, the number of triangles grows superlinearly. This supersaturation phenomenon is analogous to the mechanism behind the finite Ramsey property in #596"
-    },
-    {
-      "id": "erdos-637",
-      "relationship": "related",
-      "description": "Problem #637 studies distinct degrees in induced subgraphs, a Ramsey-theoretic question about structural properties forced by graph density. Like #596, it asks what structural features are unavoidable in large graphs from a restricted class"
-    },
-    {
-      "id": "erdos-905",
-      "relationship": "related",
-      "description": "Edge-triangle multiplicity above the Turán threshold (#905) quantifies how many triangles share edges in dense graphs. This Turán-type extremal question connects to #596 through the study of how forbidden subgraph conditions control edge density and coloring behavior"
-    },
-    {
-      "id": "prob-method-lovasz-local",
-      "relationship": "technique",
-      "description": "The Lovász Local Lemma is a key probabilistic tool for constructing colorings that avoid forbidden monochromatic subgraphs. It provides a general framework for establishing countable coloring properties by showing that local avoidance constraints can be simultaneously satisfied"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

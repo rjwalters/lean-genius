@@ -189,23 +189,6 @@
       "description": "Area computation for circles relates to the 2D scissors congruence question. The Bolyai-Gerwien theorem shows all equal-area polygons are scissors congruent, contrasting with the 3D failure."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "euler-polyhedral-formula",
-      "relationship": "foundational",
-      "description": "Euler's polyhedral formula V − E + F = 2 provides the combinatorial foundation for polyhedra. The Dehn invariant uses edge data from the same combinatorial structure."
-    },
-    {
-      "id": "hilbert-10",
-      "relationship": "related",
-      "description": "Another Hilbert problem formalized in this gallery. Hilbert's 10th (MRDP theorem) was the last negative-answer Hilbert problem resolved, while #3 was the first."
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "broader-context",
-      "description": "Area computation for circles relates to the 2D scissors congruence question. The Bolyai-Gerwien theorem shows all equal-area polygons are scissors congruent, contrasting with the 3D failure."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",

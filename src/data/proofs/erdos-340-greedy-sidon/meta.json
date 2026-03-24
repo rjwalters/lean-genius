@@ -251,47 +251,5 @@
       "citation": "Tao, T. and Vu, V. (2006). Additive Combinatorics. Cambridge University Press, Chapter 6.",
       "type": "book"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-340",
-      "relationship": "extends",
-      "description": "This infrastructure module provides the full Sidon set library (definitions, closure, counting, bounds) for the main Erdos #340 problem entry"
-    },
-    {
-      "id": "erdos-44",
-      "relationship": "foundational",
-      "description": "Erdos #44 concerns Sidon sets (B2 sequences) — this module's IsSidon definition, subset closure, and counting infrastructure directly support that formalization"
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "thematic",
-      "description": "Both are foundational results in additive combinatorics: Erdos #1 (Erdos-Ginzburg-Ziv, zero-sum subsequences) constrains sums modulo n, while Sidon sets constrain pairwise sum distinctness"
-    },
-    {
-      "id": "roth-theorem-k3",
-      "relationship": "related",
-      "description": "Roth's theorem (dense sets contain 3-term APs) is complementary: Sidon sets constrain pairwise sums (additive energy zero), while AP-free sets constrain arithmetic structure. Both use density/counting arguments to derive upper bounds on set size"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "related",
-      "description": "Szemeredi's theorem (dense sets contain arbitrarily long APs) and Sidon theory represent dual aspects of additive combinatorics: Szemeredi limits how unstructured a dense set can be, while Sidon theory limits how dense an unstructured set can be"
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "related",
-      "description": "The probabilistic method shows random Sidon sets achieve density N^(1/2), near-optimal. This provides the comparison benchmark: Erdos conjectured the deterministic greedy achieves nearly the same N^(1/2-epsilon) density as random"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "foundational",
-      "description": "The bijection orderedPairsLt_card_via_choose uses C(n,2) = n(n-1)/2 via Finset.card_powersetCard. This binomial coefficient is the core counting tool for all Sidon set bounds in this module"
-    },
-    {
-      "id": "partition-theorem",
-      "relationship": "related",
-      "description": "Each element of the sumset A+A of a Sidon set has a unique representation a+b with a <= b — a partition-like uniqueness constraint that parallels the distinct-parts condition in partition theory"
-    }
   ]
 }

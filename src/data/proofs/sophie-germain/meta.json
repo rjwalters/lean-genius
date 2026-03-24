@@ -154,33 +154,6 @@
       "What is the longest known Cunningham chain of Sophie Germain primes?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "fermats-last-theorem",
-      "relationship": "related",
-      "description": "Sophie Germain's original motivation: she proved the first case of FLT holds for Sophie Germain prime exponents"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "Whether there are infinitely many Sophie Germain primes remains open, analogous to the infinitude of primes result"
-    },
-    {
-      "id": "twin-primes-special",
-      "relationship": "related",
-      "description": "The Sophie Germain prime conjecture is analogous to the twin prime conjecture — both ask about structured prime pairs"
-    },
-    {
-      "id": "dirichlets-theorem",
-      "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions provides the framework for understanding primes ≡ 5 (mod 6)"
-    },
-    {
-      "id": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem provides another primality criterion; safe primes have special properties under Wilson's characterization"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

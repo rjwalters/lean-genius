@@ -174,44 +174,6 @@
       "description": "Extends Buffon's needle to 3 dimensions: a needle dropped among parallel planes spaced $d$ apart has expected crossing count $L/(2d)$ — answering the open question about higher-dimensional generalizations"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "area-of-circle",
-      "relationship": "technique",
-      "description": "Both results fundamentally involve integrating trigonometric functions to connect geometry to π. The area of a circle (πr²) and Buffon's probability (2ℓ/πd) both arise from the integral of sine."
-    },
-    {
-      "id": "birthday-problem",
-      "relationship": "related",
-      "description": "Both are classic probability problems with surprising answers. The birthday problem shows coincidences are more likely than intuition suggests; Buffon's needle shows π governs geometric randomness."
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "related",
-      "description": "The transcendence of π (proved by Lindemann in 1882) means Buffon's probability 2ℓ/(πd) is always irrational for rational ℓ/d, connecting the needle problem to deep number theory."
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Both connect π to unexpected areas: Stirling's formula has √(2π) in factorial asymptotics, while Buffon has 2/π in crossing probability. Both reflect π's role as a universal constant in analysis."
-    },
-    {
-      "id": "buffons-needle-oq-01",
-      "relationship": "extended-by",
-      "description": "Generalizes Buffon's needle to the Buffon-Barbier smooth noodle theorem: for any $C^1$ curve of length $L$, the expected number of crossings with parallel lines spaced $d$ apart is $2L/(\\pi d)$ — answering the open question about the Cauchy-Crofton formula"
-    },
-    {
-      "id": "buffons-needle-oq-02",
-      "relationship": "extended-by",
-      "description": "Extends Buffon's needle to 3 dimensions: a needle dropped among parallel planes spaced $d$ apart has expected crossing count $L/(2d)$ — answering the open question about higher-dimensional generalizations"
-    },
-    "area-of-circle",
-    "birthday-problem",
-    "pi-transcendental",
-    "stirling-formula",
-    "buffons-needle-oq-01",
-    "buffons-needle-oq-02"
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Probability.ProbabilityMassFunction.Basic",

@@ -245,23 +245,6 @@
       "description": "Hyperbolic and spherical area formulas connect to circle area through the angular defect/excess: hyperbolic triangle area = pi - alpha - beta - gamma, with connections to hyperbolic disk area formulas."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "parent",
-      "description": "The original Euclidean Pythagorean theorem (a^2 + b^2 = c^2) that posed the open question answered by this non-Euclidean generalization."
-    },
-    {
-      "id": "law-of-cosines",
-      "relationship": "related",
-      "description": "The law of cosines generalizes the Pythagorean theorem to non-right triangles. Both the spherical and hyperbolic laws of cosines reduce to the Pythagorean form when the included angle is pi/2."
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "related",
-      "description": "Hyperbolic and spherical area formulas connect to circle area through the angular defect/excess: hyperbolic triangle area = pi - alpha - beta - gamma, with connections to hyperbolic disk area formulas."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",

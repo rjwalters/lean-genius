@@ -119,23 +119,6 @@
       "description": "The density $6/\\pi^2 = 1/\\zeta(2)$ for $F_2(N)$ (squarefree integers) connects directly to Euler's Basel problem: $\\zeta(2) = \\pi^2/6$. The squarefree density is the Euler product $\\prod_p (1 - 1/p^2) = 1/\\zeta(2)$"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The infinitude of primes underlies the squarefree-part decomposition: each integer $n$ factors uniquely as $n = \\text{sqf}(n) \\cdot m^2$ where $\\text{sqf}(n)$ is squarefree. The group $(\\mathbb{Z}/2\\mathbb{Z})^r$ that governs the $k$-square-free condition has rank $r = \\pi(N)$, the number of primes up to $N$"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization is essential: the squarefree-part map $\\text{sqf}(n) = \\prod_{p \\mid n, v_p(n) \\text{ odd}} p$ relies on the uniqueness of factorization. The $k$-square-free condition becomes a linear algebra problem over $\\mathbb{F}_2$ via the exponent vectors"
-    },
-    {
-      "id": "basel-problem",
-      "relationship": "related",
-      "description": "The density $6/\\pi^2 = 1/\\zeta(2)$ for $F_2(N)$ (squarefree integers) connects directly to Euler's Basel problem: $\\zeta(2) = \\pi^2/6$. The squarefree density is the Euler product $\\prod_p (1 - 1/p^2) = 1/\\zeta(2)$"
-    }
-  ],
   "references": [
     {
       "authors": "Tao, Terence",

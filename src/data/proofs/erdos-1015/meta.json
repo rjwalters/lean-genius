@@ -147,33 +147,6 @@
       "description": "Erdős Problem #1012 studies long cycles in dense graphs via threshold edge-count conditions analogous to Ramsey bounds. The proof techniques—analyzing extremal configurations and using double-counting arguments on vertex degrees—overlap with the Burr-Erdős-Spencer approach to bounding f(t) via properties of the leftover subgraph."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "Ramsey's theorem guarantees the existence of monochromatic cliques in any 2-colored complete graph, providing the theoretical foundation for the leftover function f(t). The off-diagonal Ramsey numbers R(t, t-1) that appear in the exact BES formula f(t) = R(t, t-1) + x are direct instances of the Ramsey-number framework formalized here."
-    },
-    {
-      "id": "erdos-1017",
-      "relationship": "related",
-      "description": "Erdős Problem #1017 studies the minimum number of cliques needed to partition the *edges* of a graph, whereas #1015 partitions the *vertices* of a 2-colored complete graph into monochromatic cliques. Both problems require understanding clique partition numbers and the extremal graphs that force large leftover; the Erdős-Goodman-Pósa bound f(n,k) ≤ n²/4 uses similar counting arguments to those in the BES proof."
-    },
-    {
-      "id": "erdos-1009",
-      "relationship": "thematic",
-      "description": "Erdős Problem #1009 concerns edge-disjoint triangle packing near the Turán threshold. The packing/covering duality between vertex-disjoint clique partitions (#1015) and edge-disjoint triangle covers (#1009) is a recurring structural motif; both problems measure how far a graph is from being perfectly decomposable into cliques of a fixed size."
-    },
-    {
-      "id": "erdos-1010",
-      "relationship": "complementary",
-      "description": "Erdős Problem #1010 quantifies triangle supersaturation: how many triangles must appear once the edge count exceeds the Turán threshold. Problem #1015 quantifies the leftover in vertex-disjoint monochromatic triangle (or t-clique) packings. Together they reflect two sides of extremal Ramsey-packing theory—what is forced by density versus what is forced by 2-coloring."
-    },
-    {
-      "id": "erdos-1012",
-      "relationship": "thematic",
-      "description": "Erdős Problem #1012 studies long cycles in dense graphs via threshold edge-count conditions analogous to Ramsey bounds. The proof techniques—analyzing extremal configurations and using double-counting arguments on vertex degrees—overlap with the Burr-Erdős-Spencer approach to bounding f(t) via properties of the leftover subgraph."
-    }
-  ],
   "references": [
     {
       "authors": [

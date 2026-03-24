@@ -232,58 +232,6 @@
       "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) \\mid p(x)$) underpins the crucial step `minpoly.dvd`: the minimal polynomial divides any polynomial vanishing at $\\alpha$, which yields $\\text{minpoly}(F, \\alpha) \\mid p$ in the tower law argument. The mutual divisibility of irreducible polynomials — the crux of showing $\\deg(\\text{minpoly}) = \\deg(p)$ — rests on this factorization principle"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "angle-trisection",
-      "relationship": "ancestor",
-      "description": "The original angle trisection impossibility proof using the degree criterion (deg 3 is not a power of 2). This file proves the Galois criterion implies the degree criterion, connecting the two approaches"
-    },
-    {
-      "id": "angle-trisection-oq-02",
-      "relationship": "parent",
-      "description": "The parent Galois-theoretic formalization with 6 axioms. This file eliminates 1 axiom (galois_2group_implies_degree_pow2) by proving it from Mathlib's tower law"
-    },
-    {
-      "id": "angle-trisection-oq-02-oq-03",
-      "relationship": "sibling",
-      "description": "Sibling open question on the Gauss-Wantzel theorem for regular polygon constructibility — also addresses axiom elimination from OQ-02 but via cyclotomic theory"
-    },
-    {
-      "id": "angle-trisection-oq-02-oq-03-oq-01",
-      "relationship": "related",
-      "description": "Bridges Gauss-Wantzel to Mathlib's cyclotomic infrastructure, paralleling this file's bridge between Galois groups and Mathlib's Polynomial.Gal"
-    },
-    {
-      "id": "inverse-galois",
-      "relationship": "related",
-      "description": "Comprehensive Galois group realizations (S₃, A₅, D₄, etc.) — the inverse direction of the Galois correspondence. Where this file asks 'what constraints does the Galois group impose?', inverse Galois asks 'which groups arise as Galois groups?'"
-    },
-    {
-      "id": "abel-ruffini",
-      "relationship": "related",
-      "description": "Both use Galois group structure to derive impossibility results: Abel-Ruffini shows non-solvable Galois groups block radical solutions, this file shows non-2-group Galois groups block constructibility"
-    },
-    {
-      "id": "lagrange-theorem",
-      "relationship": "foundational",
-      "description": "The tower law [L:F] = [L:K]·[K:F] — the multiplicativity of field extension degrees, a consequence of Lagrange's theorem — is the central proof technique: applied to F ⊂ F(α) ⊂ SplittingField(p) to derive natDegree | |Gal|"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "complementary",
-      "description": "The irrationality of $\\sqrt{2}$ is the simplest instance of the constructibility framework: $\\text{Gal}(x^2 - 2/\\mathbb{Q}) \\cong \\mathbb{Z}/2\\mathbb{Z}$ is a 2-group of order $2^1$, so $\\sqrt{2}$ is constructible. This file's tower law argument shows why: $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2 \\mid |\\text{Gal}| = 2$"
-    },
-    {
-      "id": "nth-root-irrational",
-      "relationship": "related",
-      "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ produces a degree-$n$ extension $[\\mathbb{Q}(\\sqrt[n]{m}):\\mathbb{Q}] = n$. By this file's result, $\\sqrt[n]{m}$ is constructible only if its Galois group is a 2-group — which fails for $n = 3$ since $\\text{Gal}(x^3 - m) \\cong S_3$ has order 6"
-    },
-    {
-      "id": "factor-remainder-theorem",
-      "relationship": "foundational",
-      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) \\mid p(x)$) underpins the crucial step `minpoly.dvd`: the minimal polynomial divides any polynomial vanishing at $\\alpha$, which yields $\\text{minpoly}(F, \\alpha) \\mid p$ in the tower law argument. The mutual divisibility of irreducible polynomials — the crux of showing $\\deg(\\text{minpoly}) = \\deg(p)$ — rests on this factorization principle"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib",

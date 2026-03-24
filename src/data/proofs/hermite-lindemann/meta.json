@@ -198,36 +198,6 @@
     "theoremCount": 1,
     "definitionCount": 1
   },
-  "relatedProofs": [
-    {
-      "id": "e-transcendental",
-      "relationship": "specializes",
-      "description": "The transcendence of $e$ (Wiedijk #67) is the $\\alpha = 1$ special case of Hermite-Lindemann; Hermite's 1873 proof was the first application"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "specializes",
-      "description": "The transcendence of $\\pi$ (Wiedijk #53) follows from Hermite-Lindemann via Euler's identity: $e^{i\\pi} = -1$ is algebraic, so $i\\pi$ must be transcendental"
-    },
-    {
-      "id": "angle-trisection",
-      "relationship": "related",
-      "description": "Both resolve classical impossibility problems via algebraic number theory; squaring the circle fails because $\\pi$ is transcendental (Hermite-Lindemann), angle trisection because some angles need degree-3 extensions"
-    },
-    {
-      "id": "gelfond-schneider",
-      "relationship": "related",
-      "description": "The Gelfond-Schneider theorem (1934) extends transcendence theory from exponentials to $\\alpha^\\beta$, using techniques inspired by Hermite-Lindemann"
-    },
-    "e-transcendental",
-    "pi-transcendental",
-    "euler-identity",
-    "gelfond-schneider",
-    "angle-trisection",
-    "liouville-theorem",
-    "abel-ruffini",
-    "sqrt2-irrational"
-  ],
   "references": [
     {
       "authors": "Hermite, Charles",

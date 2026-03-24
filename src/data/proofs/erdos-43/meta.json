@@ -208,28 +208,6 @@
       "targetId": "binomial-theorem"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-40",
-      "relationship": "Erdős #40 studies the representation function r_A(n) for B_2 sets (sets where every integer has at most one representation as a pairwise sum), directly connected to the density and structure theory underlying Problem #43",
-      "description": ""
-    },
-    {
-      "id": "erdos-41",
-      "relationship": "Erdős #41 asks about B_3 sequences (distinct triple sums), a natural generalization of B_2/Sidon sets; the density bound liminf |A∩{1,…,N}|/N^{1/3}=0 is the B_3 analogue of f(N)~√N for Sidon sets",
-      "description": ""
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "Erdős #1 (distinct subset sums, $500 prize) is a sibling extremal problem: both ask how large a set with a distinctness condition on its arithmetic structure can be, with the answer controlled by powers of 2 vs. √N",
-      "description": ""
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "The conjecture is stated entirely in terms of binomial coefficients C(|A|,2) and C(f(N),2); the binomial theorem and properties of C(n,2) = n(n-1)/2 are essential for interpreting the pair-counting bound",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "authors": [

@@ -187,22 +187,5 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 12
-  },
-  "relatedProofs": [
-    {
-      "id": "erdos-679",
-      "relationship": "related",
-      "description": "Both study prime factorization functions (ω and f/F) with unusual asymptotic behavior; #679 concerns the distribution of ω(n-k) while #878 studies unconventional additive functions of prime factorizations"
-    },
-    {
-      "id": "erdos-690",
-      "relationship": "related",
-      "description": "Both study fine structure of prime factor distributions; #690 examines k-th prime factor density while #878 defines new functions of the prime factorization"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "The prime number theorem provides the asymptotic context for understanding growth rates of f(n), F(n), and the behavior of H(x)"
-    }
-  ]
+  }
 }

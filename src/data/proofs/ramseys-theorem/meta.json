@@ -192,38 +192,6 @@
       "description": "The Erdos-Szekeres theorem (every sequence of length $rs+1$ contains a monotone subsequence of length $r+1$ or $s+1$) can be proved via Ramsey's theorem applied to a 2-coloring where edges are colored by the relative order of sequence elements"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "prob-method-alteration",
-      "relationship": "related",
-      "description": "The probabilistic lower bound on Ramsey numbers R(k,k) ≥ 2^{k/2} uses an alteration/expectation argument on random 2-colorings"
-    },
-    {
-      "id": "pigeonhole-principle",
-      "relationship": "depends-on",
-      "description": "The neighborhood partition step relies on pigeonhole: n-1 vertices split into two sets, so one has at least ⌈(n-1)/2⌉ elements"
-    },
-    {
-      "id": "kummer-theorem",
-      "relationship": "related",
-      "description": "Binomial coefficient structure determines the Ramsey bound R(r,s) ≤ C(r+s-2, r-1)"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "foundational",
-      "description": "The Ramsey bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ directly uses binomial coefficients, and the recurrence $R(r,s) \\leq R(r-1,s) + R(r,s-1)$ mirrors Pascal's identity $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$ — the same combinatorial structure underlying both results"
-    },
-    {
-      "id": "mathematical-induction",
-      "relationship": "foundational",
-      "description": "Ramsey's theorem is proved by strong induction on $r + s$, the same principle formalized in mathematical-induction. The inductive structure requires strong induction because the step from $R(r,s)$ uses both $R(r-1,s)$ and $R(r,s-1)$, not just the immediately preceding value"
-    },
-    {
-      "id": "erdos-szekeres",
-      "relationship": "related",
-      "description": "The Erdos-Szekeres theorem (every sequence of length $rs+1$ contains a monotone subsequence of length $r+1$ or $s+1$) can be proved via Ramsey's theorem applied to a 2-coloring where edges are colored by the relative order of sequence elements"
-    }
-  ],
   "conclusion": {
     "summary": "This Lean formalization provides a complete, constructive proof of Ramsey's theorem for 2-colorings. The proof carefully builds up from base cases through neighborhood partitions to the main inductive argument.\n\nThe key insight is that the pigeonhole principle forces one of the two neighborhoods to be large enough to apply the induction hypothesis. Clique extension then allows us to grow cliques by adding the central vertex.\n\nAll proofs are complete with no sorries, and the formalization is self-contained within the Ramsey namespace.",
     "implications": "**Theoretical Significance**: Ramsey's theorem has profound implications:\n\n1. Ramsey Theory — The theorem launched an entire field studying unavoidable patterns in large structures. Extensions include Hales-Jewett theorem, van der Waerden's theorem, and the Paris-Harrington theorem.\n\n2. Computational Complexity — Computing exact Ramsey numbers is notoriously difficult.\n\nWe know R(3,3)=6 and R(4,4)=18, but R(5,5) is only known to be between 43 and 48.\n\n3. Philosophical Implications — Ramsey theory shows that complete disorder is impossible. Given enough structure, patterns emerge regardless of how we try to avoid them.\n\n4. Applications — Ramsey theory has applications in algorithm design, communication complexity, and theoretical computer science.",

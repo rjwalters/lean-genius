@@ -156,22 +156,5 @@
       "How many distinct monotone-gap prime sequences exist beginning with a given prime?",
       "Can the problem be generalized to other arithmetic conditions on gaps (e.g., gaps forming an arithmetic progression)?"
     ]
-  },
-  "relatedProofs": [
-    {
-      "id": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "The PNT gives average prime gap ~ log p; Richter's bound relies on prime distribution estimates that ultimately flow from PNT-type results"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate bounds maximal prime gaps, providing context for how large gaps in monotone-gap sequences can be"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The infinitude of primes ensures that monotone-gap prime sequences can be constructed to arbitrary length"
-    }
-  ]
+  }
 }

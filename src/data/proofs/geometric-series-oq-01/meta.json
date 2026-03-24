@@ -216,28 +216,6 @@
       "description": "The Taylor series for $\\sin$ and $\\cos$ converge for all real $x$ (infinite radius of convergence), in sharp contrast to the geometric series which has finite radius $|r| < 1$. The factorial denominators in the Taylor coefficients ensure convergence everywhere, while the geometric series has constant coefficients $1$."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "geometric-series",
-      "relationship": "parent",
-      "description": "This entry investigates the boundary behavior at $|r| = 1$ for the geometric series $\\sum r^n$, which the parent entry proves converges to $1/(1-r)$ for $|r| < 1$. The parent provides the algebraic foundation (`mul_neg_geom_sum`) used throughout this proof."
-    },
-    {
-      "id": "geometric-series-oq-02",
-      "relationship": "sibling",
-      "description": "The Neumann series $(I-T)^{-1} = \\sum T^k$ generalizes the scalar geometric series to bounded operators. This entry treats the scalar boundary $|r| = 1$; the Neumann series entry extends to the operator setting where the spectral radius replaces $|r|$."
-    },
-    {
-      "id": "harmonic-divergence",
-      "relationship": "contrasts",
-      "description": "Both entries study divergent series, but through different mechanisms: the harmonic series $\\sum 1/n$ diverges despite terms tending to zero (they vanish too slowly), while the geometric series at $|r| = 1$ diverges because terms don't tend to zero at all. This illustrates the necessary-but-not-sufficient nature of the vanishing condition."
-    },
-    {
-      "id": "taylor-sincos-convergence",
-      "relationship": "related",
-      "description": "The Taylor series for $\\sin$ and $\\cos$ converge for all real $x$ (infinite radius of convergence), in sharp contrast to the geometric series which has finite radius $|r| < 1$. The factorial denominators in the Taylor coefficients ensure convergence everywhere, while the geometric series has constant coefficients $1$."
-    }
-  ],
   "leanFile": {
     "lineCount": 250,
     "structureCount": 0,

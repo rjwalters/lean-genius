@@ -181,13 +181,6 @@
       "description": "The problem concerns graphs with no large cliques or independent sets — precisely the regime where Ramsey theory applies"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "uses",
-      "description": "The problem concerns graphs with no large cliques or independent sets — precisely the regime where Ramsey theory applies"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

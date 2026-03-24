@@ -165,27 +165,5 @@
       "citation": "Sawhney, M., Solution to Erdős Problem 848: the maximum is N/25 for sufficiently large N, with extremal sets {n ≡ 7 (mod 25)} and {n ≡ 18 (mod 25)}.",
       "type": "paper"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The squarefree condition p² | ab+1 depends on the structure of primes dividing shifted products. The infinitude of primes ensures the density of squarefree numbers is exactly 6/π² = ∏(1 - 1/p²)"
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "related",
-      "description": "The mod-25 construction uses p = 5 with 5 ≡ 1 (mod 4), connecting to Fermat's theorem on primes representable as sums of two squares. Van Doorn's upper bound sums over primes p ≡ 1 (mod 4), exactly those for which x² ≡ -1 (mod p) has solutions"
-    },
-    {
-      "id": "elementary-quadratic-reciprocity",
-      "relationship": "related",
-      "description": "The quadratic residue structure — specifically, -1 is a square mod p iff p ≡ 1 (mod 4) — determines which primes p can have p² | ab+1 for elements in the extremal set. This is a direct application of quadratic reciprocity"
-    },
-    {
-      "id": "erdos-844",
-      "relationship": "sibling",
-      "description": "Erdős #844 studies the closely related problem where ab (not ab+1) must be non-squarefree. The shift by 1 changes the extremal structure entirely: #844's answer involves even numbers and non-squarefree odds, while #848's answer is governed by quadratic residues mod 25. Both are solved problems in the same family of extremal multiplicative number theory questions"
-    }
   ]
 }
