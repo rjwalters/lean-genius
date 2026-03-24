@@ -144,5 +144,52 @@
       "probabilistic combinatorics",
       "exponential bounds"
     ]
+  },
+  {
+    "id": "erdos-129-nomonoclique",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "title": "No Monochromatic Clique (All Colors)",
+    "content": "**NoMonoClique N r coloring S k**: the vertex set $S$ contains no monochromatic $K_k$ in ANY color. This universally quantifies AvoidsMono over all $r$ colors: $\\forall c \\in \\text{Fin}\\,r,\\, \\text{AvoidsMono}(S, k, c)$.\n\n**Comparison with classical Ramsey**: In the classical Ramsey number $R(s,t)$, we seek either a red $K_s$ or a blue $K_t$ — the goal is a monochromatic clique. Here, NoMonoClique requires the ABSENCE of monochromatic cliques in every color simultaneously. The Erdős-Gyárfás problem asks how many vertices are needed to guarantee such a set exists.\n\n**Multi-color aspect**: For $r$ colors, the avoidance must hold simultaneously across all $r$ — a conjunction that becomes easier to satisfy as $r$ grows (more colors means smaller monochromatic subgraphs). This is captured by the axiom hasRamseyAvoid_more_colors.",
+    "mathContext": "$\\text{NoMonoClique}(S, k) \\iff \\forall c \\in [r],\\, \\text{AvoidsMono}(S, k, c)$. A set $S$ avoids monochromatic $K_k$ in every color simultaneously.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "universal quantification over colors",
+      "anti-Ramsey property",
+      "AvoidsMono"
+    ],
+    "prerequisites": [
+      "AvoidsMono",
+      "Fin r (color type)",
+      "classical Ramsey theory"
+    ]
+  },
+  {
+    "id": "erdos-129-structural",
+    "proofId": "erdos-129",
+    "type": "concept",
+    "range": {
+      "startLine": 77,
+      "endLine": 97
+    },
+    "title": "Structural Properties of HasRamseyAvoid",
+    "content": "Five axiomatized structural properties that constrain $R(n;k,r)$:\n\n1. **Monotonicity in $N$** (`hasRamseyAvoid_mono`): If $K_N$ works, so does $K_M$ for $M \\geq N$, since the extra vertices can only help find large clique-free sets. This is the key property making $R(n;k,r)$ well-defined as a minimum.\n\n2. **Anti-monotonicity in $r$** (`hasRamseyAvoid_more_colors`): More colors make avoidance easier — with more colors, each color class is thinner, making monochromatic cliques harder to form. Formally: $R(n;k,r_1) \\geq R(n;k,r_2)$ when $r_1 \\leq r_2$.\n\n3. **Vacuity for $k \\leq 2$** (`hasRamseyAvoid_small_k`): When $k \\leq 2$, every vertex set trivially avoids monochromatic $K_k$ since a single edge cannot form a 2-clique in the avoidance sense. So $R(n;k,r) = n$ for $k \\leq 2$.\n\n4. **Singleton case** (`hasRamseyAvoid_one`): Any single vertex trivially avoids monochromatic $K_3$ — you need at least 3 vertices to form a triangle.\n\n5. **Empty set** (`hasRamseyAvoid_zero`): The empty set trivially avoids everything.\n\nThese properties are axiomatized rather than proved because their proofs require embedding and subset construction arguments that interact with the Finset API in non-trivial ways. All five are routine consequences of the definitions and could in principle be proved from Mathlib once the appropriate lemmas for Finset subset selection are available.",
+    "mathContext": "Structural properties: $N \\leq M \\Rightarrow R_N \\Rightarrow R_M$; $r_1 \\leq r_2 \\Rightarrow R_{r_1} \\Rightarrow R_{r_2}$; $k \\leq 2 \\Rightarrow$ trivial; $n = 0, 1 \\Rightarrow$ trivial. Together these constrain the Ramsey function $R(n;k,r)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "well-definedness of Ramsey numbers",
+      "boundary cases",
+      "Finset subset selection"
+    ],
+    "prerequisites": [
+      "HasRamseyAvoid definition",
+      "basic Finset operations",
+      "NoMonoClique"
+    ]
   }
 ]
