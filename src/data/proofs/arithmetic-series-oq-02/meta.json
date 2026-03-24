@@ -209,6 +209,11 @@
       "id": "arithmetic-series-oq-02-oq-02",
       "relationship": "extended-by",
       "description": "Sub-entry extending the simplicial number framework with additional results or applications"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The Hockey Stick Identity is proved by induction on n, using Pascal's recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) as the inductive step"
     }
   ],
   "leanFile": {
