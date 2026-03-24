@@ -15,20 +15,19 @@
       "steinitz-theorem",
       "wiedijk-100"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 207,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries. The algebraic closure property delegates to Mathlib's Complex.isAlgClosed; algebraicity follows from the finite extension degree [C:R] = 2; uniqueness uses IsAlgClosure.equiv (Steinitz theorem). All original contributions are fully machine-checked.",
     "originalContributions": [
-      "complex_algebraic_over_reals: proved C/R is algebraic via finite extension chain",
-      "complex_is_alg_closure: assembled IsAlgClosure instance combining algebraic closure + algebraicity",
-      "unique_algebraic_closure: Steinitz uniqueness for R via IsAlgClosure.equiv",
-      "reals_not_alg_closed: R is not algebraically closed (X^2+1 has no real root)",
-      "charQuad: characteristic real quadratic X^2 - 2Re(z)X + |z|^2 for any z in C",
-      "is_root_charQuad: every z in C satisfies its characteristic quadratic over R",
-      "no_intermediate_field: tower law argument showing no proper intermediate fields between R and C",
-      "closure_degree_is_two: combined statement [C:R]=2 and IsAlgClosure R C"
+      "reals_not_alg_closed: R is not algebraically closed (X^2+1 has no real root) — original proof",
+      "charQuad / is_root_charQuad: characteristic real quadratic and root proof — original",
+      "no_intermediate_field: tower law argument showing no proper intermediate fields — original",
+      "complex_algebraic_over_reals: C/R algebraic via Algebra.IsAlgebraic.of_finite — Mathlib bridge",
+      "complex_is_alg_closure: assembled IsAlgClosure instance — Mathlib bridge",
+      "unique_algebraic_closure: Steinitz uniqueness via IsAlgClosure.equiv — Mathlib delegation",
+      "finrank_complex_over_reals: [C:R]=2 via Complex.finrank_real_complex — Mathlib alias"
     ],
     "mathlibDependencies": [
       {
