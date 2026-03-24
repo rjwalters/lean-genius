@@ -139,22 +139,68 @@ theorem gapSet_ge_two {t : ℕ} {x : ℕ} (ht : t ∈ gapSet x) : t ≥ 2 := by
   rw [← hn3]
   exact primeGap_ge_two n hn1
 
--- ## Axiomatized r(x)
--- We axiomatize r(x) as the smallest even t >= 2 not appearing as a prime gap
--- for any p_n <= x. The existence is guaranteed since gapSet(x) is finite.
+-- ## Defining r(x) via Nat.find
 
-/-- r(x): smallest even integer >= 2 not in gapSet(x). -/
-axiom r (x : ℕ) : ℕ
+/-- nthPrime is bounded below by its index. -/
+theorem nthPrime_ge (n : ℕ) : n ≤ nthPrime n := by
+  induction n with
+  | zero => simp [nthPrime_zero]
+  | succ n ih =>
+    have hlt : nthPrime n < nthPrime (n + 1) :=
+      nthPrime_strictMono (Nat.lt_succ_self n)
+    omega
 
-/-- r(x) is even and at least 2. -/
-axiom r_even_pos (x : ℕ) (hx : x ≥ 3) : r x ≥ 2 ∧ r x % 2 = 0
+/-- gapSet(x) is finite: the image of a bounded index set under primeGap. -/
+theorem gapSet_finite (x : ℕ) : Set.Finite (gapSet x) := by
+  apply Set.Finite.subset ((Set.finite_Iio (x + 1)).image primeGap)
+  intro t ⟨n, _, hn2, hn3⟩
+  exact ⟨n, Set.mem_Iio.mpr (Nat.lt_succ_of_le (le_trans (nthPrime_ge n) hn2)), hn3⟩
 
-/-- r(x) is not a gap for any prime p_n <= x. -/
-axiom r_not_gap (x : ℕ) (hx : x ≥ 3) : r x ∉ gapSet x
+/-- There exists an even integer ≥ 2 not in gapSet(x). -/
+theorem exists_even_not_in_gapSet (x : ℕ) (_hx : x ≥ 3) :
+    ∃ t : ℕ, t ≥ 2 ∧ t % 2 = 0 ∧ t ∉ gapSet x := by
+  by_contra h
+  push_neg at h
+  -- h says all even t ≥ 2 are in gapSet(x), but gapSet(x) is finite
+  have h_range_inf : Set.Infinite (Set.range (fun k : ℕ => 2 * k + 2)) :=
+    Set.infinite_range_of_injective (fun a b hab => by omega)
+  have h_sub_gap : Set.range (fun k : ℕ => 2 * k + 2) ⊆ gapSet x := by
+    rintro _ ⟨k, rfl⟩
+    have h1 : 2 * k + 2 ≥ 2 := by omega
+    have h2 : (2 * k + 2) % 2 = 0 := by
+      rw [show 2 * k + 2 = 2 * (k + 1) from by ring]; exact Nat.mul_mod_right 2 _
+    exact h _ h1 h2
+  exact (h_range_inf.mono h_sub_gap) (gapSet_finite x)
 
-/-- r(x) is minimal: every even t with 2 <= t < r(x) is a gap for some p_n <= x. -/
-axiom r_minimal (x : ℕ) (hx : x ≥ 3) :
-  ∀ t : ℕ, 2 ≤ t → t < r x → t % 2 = 0 → t ∈ gapSet x
+noncomputable instance decidableMemGapSet (x t : ℕ) : Decidable (t ∈ gapSet x) :=
+  Classical.dec _
+
+/-- r(x): smallest even integer ≥ 2 not in gapSet(x).
+    DEFINED via Nat.find (previously axiomatized). Returns 2 for x < 3. -/
+noncomputable def r (x : ℕ) : ℕ :=
+  if hx : x ≥ 3 then Nat.find (exists_even_not_in_gapSet x hx) else 2
+
+private theorem r_unfold (x : ℕ) (hx : x ≥ 3) :
+    r x = Nat.find (exists_even_not_in_gapSet x hx) := dif_pos hx
+
+/-- r(x) is even and at least 2. PROVED from Nat.find_spec. -/
+theorem r_even_pos (x : ℕ) (hx : x ≥ 3) : r x ≥ 2 ∧ r x % 2 = 0 := by
+  rw [r_unfold x hx]
+  have h := Nat.find_spec (exists_even_not_in_gapSet x hx)
+  exact ⟨h.1, h.2.1⟩
+
+/-- r(x) is not a gap for any prime p_n ≤ x. PROVED from Nat.find_spec. -/
+theorem r_not_gap (x : ℕ) (hx : x ≥ 3) : r x ∉ gapSet x := by
+  rw [r_unfold x hx]; exact (Nat.find_spec (exists_even_not_in_gapSet x hx)).2.2
+
+/-- r(x) is minimal: every even t with 2 ≤ t < r(x) is in gapSet(x).
+    PROVED from Nat.find_min. -/
+theorem r_minimal (x : ℕ) (hx : x ≥ 3) :
+    ∀ t : ℕ, 2 ≤ t → t < r x → t % 2 = 0 → t ∈ gapSet x := by
+  intro t ht2 htlt hteven
+  rw [r_unfold x hx] at htlt
+  by_contra h
+  exact Nat.find_min (exists_even_not_in_gapSet x hx) htlt ⟨ht2, hteven, h⟩
 
 -- ## Proved Properties of r(x)
 
@@ -226,8 +272,7 @@ axiom cramer_conjecture_bound :
 - r_monotone (from axioms about r)
 - weak_implies_all_even_gaps (consequence of weak conjecture)
 
-**Axioms** (4 for r(x) characterization + 5 deep results):
-- r, r_even_pos, r_not_gap, r_minimal: axiomatize the well-defined function r(x)
+**Axioms** (5 deep results only):
 - r_upper_bound: trivial bound (provable with Bertrand infrastructure)
 - erdos_853_weak, erdos_853_strong: the OPEN conjectures
 - maynard_tao_bounded_gaps: deep result (Maynard-Tao 2014)

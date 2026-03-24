@@ -34,7 +34,13 @@
     "insights": [
       "r(x) is an opaque axiom function - should ideally be defined via Nat.find",
       "Deep axioms: maynard_tao_bounded_gaps, cramer_conjecture_bound not provable from Mathlib",
-      "r_upper_bound (r(x)<=x) might be provable if r was defined constructively"
+      "r_upper_bound (r(x)<=x) might be provable if r was defined constructively",
+      "r(x) can be DEFINED via Nat.find over even integers not in gapSet(x)",
+      "Need: nthPrime_ge (n <= nthPrime n), gapSet_finite (image of bounded set), exists_even_not_in_gapSet (infinite set minus finite)",
+      "r_even_pos, r_not_gap, r_minimal all follow from Nat.find_spec and Nat.find_min",
+      "Use Set.infinite_range_of_injective with f(k) = 2k+2 to show even numbers are infinite",
+      "For (2k+2) % 2 = 0, use Nat.mul_mod_right not omega",
+      "Need Classical.dec for Decidable (t in gapSet x)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
