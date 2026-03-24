@@ -128,6 +128,23 @@
       "description": "The twin prime conjecture is the k=2 case of this framework, asking whether D(2) = 2 is achievable infinitely often"
     }
   ],
+  "references": [
+    {
+      "key": "Ma15",
+      "citation": "Maynard, J., Small gaps between primes, Annals of Mathematics 181(1) (2015), 383-413. Independently developed the sieve method giving bounded prime gaps, achieving gap ≤ 600.",
+      "type": "paper"
+    },
+    {
+      "key": "P8b",
+      "citation": "Polymath, D.H.J. (Polymath 8b), Variants of the Selberg sieve, and bounded intervals containing many primes, Research in the Mathematical Sciences 1(12) (2014). Collaborative project that optimized the Maynard-Tao sieve to achieve the 246 bound.",
+      "type": "paper"
+    },
+    {
+      "key": "Zh14",
+      "citation": "Zhang, Y., Bounded gaps between primes, Annals of Mathematics 179(3) (2014), 1121-1174. The breakthrough proving bounded prime gaps exist (gap ≤ 70,000,000), later refined to 246 by Polymath 8b.",
+      "type": "paper"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",

@@ -148,6 +148,23 @@
       "Connection to kinematic formula and Hadwiger's theorem"
     ]
   },
+  "references": [
+    {
+      "key": "Bu77",
+      "citation": "Buffon, G.-L. L., Essai d'arithmétique morale, Supplément à l'Histoire Naturelle 4 (1777). Original Buffon's needle problem: probability of a needle of length L crossing parallel lines distance d apart.",
+      "type": "paper"
+    },
+    {
+      "key": "KR97",
+      "citation": "Klain, D.A. and Rota, G.-C., Introduction to Geometric Probability, Cambridge University Press (1997), Chapter 1. Modern treatment of Buffon's needle, noodle, and the connection to integral geometry.",
+      "type": "book"
+    },
+    {
+      "key": "Sa04",
+      "citation": "Santaló, L.A., Integral Geometry and Geometric Probability, 2nd ed., Cambridge University Press (2004). Definitive reference for the kinematic formula and higher-dimensional crossing probabilities underlying the Buffon noodle theorem.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
