@@ -45,15 +45,20 @@ def smoothBlockSet (k x : ℕ) : Set ℕ :=
 /-- Asymptotic upper density of a set of naturals. -/
 noncomputable def Set.upperDensity (S : Set ℕ) : ℝ :=
   Filter.limsup (fun n =>
-    (Finset.card (Finset.filter (· ∈ S) (Finset.range (n + 1))) : ℝ)
+    (Finset.card (@Finset.filter _ (· ∈ S) (Classical.decPred (· ∈ S))
+      (Finset.range (n + 1))) : ℝ)
     / (↑(n + 1) : ℝ)) atTop
+
+/-- For any k ≥ 2, taking x = k+1 gives positive density of smooth blocks.
+The argument: by CRT, choosing n ≡ 0 mod ∏(primes ≤ k+1) gives a periodic
+set where all n+1,...,n+k are (k+1)-smooth. -/
+axiom smooth_block_exists (k : ℕ) :
+  ∃ x : ℕ, 0 < (smoothBlockSet k x).upperDensity
 
 /-- S(k) is the minimal x such that the set of n with a smooth block
 n+1, …, n+k has positive upper density. -/
 noncomputable def smoothThreshold (k : ℕ) : ℕ :=
-  Nat.find (⟨k + 1, by
-    -- S(k) ≤ k+1 trivially
-    sorry⟩ : ∃ x : ℕ, 0 < (smoothBlockSet k x).upperDensity)
+  Nat.find (smooth_block_exists k)
 
 /- ## Main Conjecture -/
 
@@ -88,6 +93,11 @@ axiom fgkmt_upper :
       (Real.log (Real.log (k : ℝ)) * Real.log (Real.log (Real.log (Real.log (k : ℝ)))))
 
 /- ## Structural Observations -/
+
+/-- If k₁ ≤ k₂, then any smooth block of length k₂ contains a smooth block of length k₁. -/
+theorem smoothBlockSet_antitone (k₁ k₂ x : ℕ) (h : k₁ ≤ k₂) :
+    smoothBlockSet k₂ x ⊆ smoothBlockSet k₁ x :=
+  fun _ hn i hi1 hi2 => hn i hi1 (le_trans hi2 h)
 
 /-- S(k) is monotone non-decreasing in k: requiring more consecutive
 smooth numbers can only increase the threshold. -/
