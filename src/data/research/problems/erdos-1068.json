@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1068",
   "title": "Erdős #1068",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,24 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T14:38:41.571Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiom elimination: reduced 6→3 axioms",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Reduced axiom count from 6 to 3. Proved set_theoretic_sensitivity and bowler_pikhurko (True placeholders). Converted inf_connected_no_finite_separator from axiom to theorem with proof sketch (2 sorries: finiteness of bad paths set, vertex classification).",
+    "builtItems": [
+      "Proved set_theoretic_sensitivity (was axiom True → theorem trivial)",
+      "Proved bowler_pikhurko_simplified_construction (was axiom True → theorem trivial)",
+      "Partial proof of inf_connected_no_finite_separator (axiom→theorem with 2 sorries)"
+    ],
+    "insights": [
+      "inf_connected_no_finite_separator is provable from definitions via pigeonhole: infinitely many disjoint paths, finite separator blocks at most finitely many, so one path avoids S",
+      "Two axioms (set_theoretic_sensitivity, bowler_pikhurko) were documentation placeholders (axiom foo : True), safely eliminated",
+      "Remaining 3 axioms are genuinely deep: the open conjecture, Soukup 2015, and problem 1067 disproof"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove finiteness of bad paths set (each vertex of S blocks at most 1 path by internal disjointness)",
+      "Prove vertex classification (list element is endpoint or internal)",
+      "Consider Aristotle companion file for the 2 remaining sorries"
+    ],
     "markdown": "# Erdős #1068 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with chromatic number $\\aleph_1$ contain a countable subgraph which is infinitely connected?\n\n\n\nA question of Erd\\H{o}s and Hajnal. We say a graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.\n\nSee also [1067].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1067\n- Problem #1069\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErHa66\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
