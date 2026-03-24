@@ -41,9 +41,12 @@ namespace Erdos1150
 def IsLittlewoodPolynomial (p : Polynomial ℂ) : Prop :=
   ∀ i ≤ p.natDegree, p.coeff i = 1 ∨ p.coeff i = -1
 
-/-- The supremum of |P(z)| over the unit circle. -/
+/-- The supremum of |P(z)| over the unit circle.
+    Defined over the unit circle subtype for clean `ciSup_le` interaction. -/
 noncomputable def supNorm (p : Polynomial ℂ) : ℝ :=
-  ⨆ (z : ℂ) (_ : ‖z‖ = 1), ‖p.eval z‖
+  ⨆ (z : {z : ℂ // ‖z‖ = 1}), ‖p.eval z.1‖
+
+instance : Nonempty {z : ℂ // ‖z‖ = 1} := ⟨⟨1, norm_one⟩⟩
 
 /-
 ## The Main Conjecture
@@ -84,50 +87,66 @@ theorem parseval_bound_pos (n : ℕ) (hn : n ≥ 1) :
 ## Equivalent Formulation: No Ultraflat Littlewood Polynomials
 -/
 
-/-- A sequence of Littlewood polynomials is **ultraflat** if the ratio
-    max_{|z|=1}|P_n(z)| / √n → 1 as n → ∞. -/
+/-- A sequence of Littlewood polynomials is **ultraflat** if their degrees
+    tend to infinity and the ratio max_{|z|=1}|P_n(z)| / √(deg P_n) → 1.
+
+    Note: The degrees need not be exactly n — this allows subsequences,
+    which is the standard mathematical definition. The old definition
+    requiring `(P n).natDegree = n` for all n was too restrictive:
+    ¬Conjecture gives witnesses for infinitely many n (not all n),
+    making the backward direction of the equivalence unprovable. -/
 def IsUltraflat (P : ℕ → Polynomial ℂ) : Prop :=
   (∀ n, IsLittlewoodPolynomial (P n)) ∧
-  (∀ n, (P n).natDegree = n) ∧
-  Filter.Tendsto (fun n => supNorm (P n) / Real.sqrt n) atTop (nhds 1)
+  (Filter.Tendsto (fun n => (P n).natDegree) atTop atTop) ∧
+  Filter.Tendsto (fun n => supNorm (P n) / Real.sqrt ↑((P n).natDegree)) atTop (nhds 1)
 
 /-- **Forward direction (proved):**
-    If the conjecture holds (∃ c > 0 with max|P| > (1+c)√n eventually),
-    then no ultraflat Littlewood sequence exists.
+    If the conjecture holds, then no ultraflat Littlewood sequence exists.
 
-    Proof: If supNorm(P_n) > (1+c)√n eventually, then
-    supNorm(P_n)/√n > 1+c eventually, which contradicts
-    supNorm(P_n)/√n → 1. -/
+    Proof: The conjecture gives a lower bound (1+c)√(degree) for all Littlewood
+    polynomials of large degree. Since degrees → ∞ in an ultraflat sequence,
+    the bound eventually applies, giving ratio > 1+c. But the ultraflat condition
+    says ratio → 1, so eventually ratio < 1+c. Contradiction. -/
 theorem conjecture_implies_no_ultraflat :
     Erdos1150Conjecture → ∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P := by
-  intro ⟨c, hc, hev⟩ P ⟨hlit, hdeg, htend⟩
-  -- From the conjecture: eventually supNorm(P n) > (1+c)√n
-  -- Since P n has degree n and is Littlewood, eventually ratio > 1+c
-  have hev' : ∀ᶠ n in atTop, supNorm (P n) / Real.sqrt n > 1 + c := by
-    apply (hev.and (Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩)).mono
-    intro n ⟨hn, hn_pos⟩
-    have hspecial := hn (P n) (hdeg n) (hlit n)
-    have hsqrt_pos : (0 : ℝ) < Real.sqrt n := by
-      apply Real.sqrt_pos_of_pos; exact_mod_cast (show 0 < n by omega)
-    exact lt_div_iff₀ hsqrt_pos |>.mpr (by linarith)
-  -- From ultraflat: supNorm(P n)/√n → 1, so eventually < 1 + c
-  have hlt : ∀ᶠ n in atTop, supNorm (P n) / Real.sqrt n < 1 + c := by
+  intro ⟨c, hc, hev⟩ P ⟨hlit, hdeg_tend, htend⟩
+  -- Pull back the conjecture bound through the degree sequence
+  have hpull : ∀ᶠ n in atTop,
+      supNorm (P n) > (1 + c) * Real.sqrt ↑((P n).natDegree) :=
+    (hdeg_tend.eventually hev).mono fun n hn => hn (P n) rfl (hlit n)
+  -- Eventually degree > 0, so √degree > 0
+  have hdeg_pos : ∀ᶠ n in atTop, 0 < (P n).natDegree :=
+    hdeg_tend.eventually (Filter.eventually_atTop.mpr ⟨1, fun m hm => by omega⟩)
+  -- Therefore ratio > 1+c eventually
+  have hev' : ∀ᶠ n in atTop,
+      supNorm (P n) / Real.sqrt ↑((P n).natDegree) > 1 + c := by
+    apply (hpull.and hdeg_pos).mono
+    intro n ⟨hgt, hpos⟩
+    have hsqrt_pos : (0 : ℝ) < Real.sqrt ↑((P n).natDegree) :=
+      Real.sqrt_pos_of_pos (Nat.cast_pos.mpr hpos)
+    exact (lt_div_iff₀ hsqrt_pos).mpr (by linarith)
+  -- From ultraflat: ratio → 1, so eventually < 1+c
+  have hlt : ∀ᶠ n in atTop,
+      supNorm (P n) / Real.sqrt ↑((P n).natDegree) < 1 + c := by
     have hmem : Set.Iio (1 + c) ∈ nhds (1 : ℝ) := Iio_mem_nhds (by linarith)
-    exact Filter.Eventually.mono (htend hmem) fun n hn => hn
+    exact htend hmem
   -- Contradiction: eventually > 1+c AND eventually < 1+c
-  have hboth := hev'.and hlt
-  obtain ⟨n, hgt, hlt'⟩ := hboth.exists
+  obtain ⟨n, hgt, hlt'⟩ := (hev'.and hlt).exists
   linarith
 
 /-- **Backward direction (axiomatized):**
     If no ultraflat Littlewood sequence exists, then the conjecture holds.
 
-    Proof sketch: By contrapositive. If no c works, then for each k,
-    there exists n_k and a Littlewood P_k of degree n_k with
-    supNorm(P_k) ≤ (1+1/k)√n_k. Taking k → ∞ yields an ultraflat
-    sequence, contradicting the hypothesis.
+    Proof sketch (contrapositive): Assume ¬Conjecture. For each k ≥ 1,
+    the negation gives arbitrarily large n with a degree-n Littlewood P
+    satisfying supNorm(P) ≤ (1+1/k)√n. By dependent choice, extract a
+    strictly increasing sequence n₁ < n₂ < ... with corresponding
+    Littlewood P_k of degree n_k and supNorm(P_k)/√n_k ≤ 1+1/k.
+    Combined with Parseval (ratio ≥ √((n+1)/n) → 1), the squeeze theorem
+    gives ratio → 1, yielding an ultraflat sequence.
 
-    This requires countable choice and a careful diagonal argument. -/
+    This proof requires dependent choice, Filter.Frequently ↔ ¬Eventually,
+    and the squeeze theorem for Tendsto. -/
 axiom no_ultraflat_implies_conjecture :
     (∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P) → Erdos1150Conjecture
 
@@ -174,9 +193,8 @@ theorem bbmst_upper_bound_exists :
       supNorm p ≤ c₂ * Real.sqrt n := by
   obtain ⟨_, c₂, _, hc₂, hflat⟩ := bbmst_flat
   refine ⟨c₂, hc₂, hflat.mono fun n ⟨p, hdeg, hlit, hbound⟩ => ⟨p, hdeg, hlit, ?_⟩⟩
-  -- supNorm p = ⨆ z on unit circle of ‖p.eval z‖ ≤ c₂ * √n
-  -- since hbound z hz gives ‖p.eval z‖ ≤ c₂ * √n for each z on the unit circle
-  sorry -- supNorm p ≤ c₂√n from pointwise bound (ciSup API issue with ConditionallyCompleteLattice)
+  -- supNorm is iSup over unit circle subtype, so ciSup_le applies directly
+  exact ciSup_le fun z => (hbound z.1 z.2).2
 
 /-
 ## The Gap Between Flat and Ultraflat
@@ -231,7 +249,9 @@ ultraflat ±1 polynomials exist. Erdős conjectured they don't.
 
 **Proved in this file**:
 5. Conjecture ↔ no ultraflat ±1 sequences (forward direction proved,
-   backward direction axiomatized)
+   backward direction axiomatized). Uses subsequence-based ultraflat
+   definition (degrees → ∞, ratio → 1) for mathematical correctness.
+6. BBMST implies supNorm bound (proved from pointwise bound)
 -/
 theorem erdos_1150_summary :
     -- Parseval lower bound holds
