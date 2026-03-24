@@ -1,0 +1,113 @@
+{
+  "id": "erdos-1095-oq-01",
+  "title": "Erdős #1095 OQ01: Asymptotics of g(k) — Smooth Binomial Coefficients",
+  "slug": "erdos-1095-oq-01",
+  "description": "Is log g(k) ~ c·k/log k, where g(k) is the smallest n > k+1 with all prime factors of C(n,k) exceeding k?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1095",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1095OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "prime-factors",
+      "smooth-numbers",
+      "asymptotics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1095,
+    "erdosUrl": "https://erdosproblems.com/1095",
+    "erdosProblemStatus": "open",
+    "axiomCount": 4,
+    "lineCount": 148,
+    "assumptions": "4 axiom(s): gFunc definition and its 3 properties (existence, specification, minimality). 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "Erdős problem #1095 asks about g(k), the smallest n > k+1 such that the binomial coefficient C(n,k) has no prime factor ≤ k. Ecklund, Erdős, and Selfridge established initial bounds. Konyagin improved the lower bound to exp(c(log k)²). The conjecture that log g(k) ~ k/log k is supported by heuristic evidence from Sorenson, Sorenson, and Webster.",
+    "problemStatement": "Let g(k) > k+1 be the smallest n such that all prime factors of C(n,k) exceed k. Is log g(k) ~ c·k/log k for some constant c > 0?",
+    "text": "Is log g(k) asymptotically equivalent to c·k/log k for some constant c?",
+    "proofStrategy": "We axiomatize g(k) and prove structural properties: inheritance of the AllPrimesExceed predicate, monotonicity, connection to parity of binomial coefficients, and concrete computations. The main asymptotic conjecture is stated informally.",
+    "keyInsights": [
+      "**AllPrimesExceed predicate**: The core notion — all prime factors of m exceed k — is clean to formalize",
+      "**Even binomial coefficients**: For k ≥ 2, g(k) must produce odd C(n,k), severely constraining possible n",
+      "**Growth rate**: The conjecture places g(k) between polynomial and exponential growth",
+      "**Kummer's theorem connection**: C(n,k) is odd iff there are no carries in binary addition of k and n-k"
+    ],
+    "prerequisites": [
+      "Number theory basics",
+      "Prime factorization",
+      "Binomial coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Core Definitions",
+      "startLine": 30,
+      "endLine": 38,
+      "summary": "AllPrimesExceed predicate: no prime p ≤ k divides m"
+    },
+    {
+      "title": "g(k) Axiomatization",
+      "startLine": 40,
+      "endLine": 56,
+      "summary": "g(k) function with existence, specification, and minimality axioms"
+    },
+    {
+      "title": "Basic Lemmas",
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "AllPrimesExceed for 1, divisor inheritance, monotonicity, negation"
+    },
+    {
+      "title": "Even Binomial Coefficients",
+      "startLine": 84,
+      "endLine": 98,
+      "summary": "For k ≥ 2, C(n,k) must be odd at g(k)"
+    },
+    {
+      "title": "Concrete Computations",
+      "startLine": 100,
+      "endLine": 116,
+      "summary": "C(3,1)=3, C(6,2)=15, C(4,2)=6, C(5,2)=10"
+    },
+    {
+      "title": "Problem Statement",
+      "startLine": 130,
+      "endLine": 148,
+      "summary": "Open conjecture: log g(k) ~ c·k/log k"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the framework for Erdős problem #1095 OQ01 about the growth rate of g(k). We prove structural lemmas about the AllPrimesExceed predicate and connect it to parity of binomial coefficients.",
+    "implications": "A resolution of the conjecture would precisely characterize how rare it is for large binomial coefficients to avoid all small prime factors.",
+    "openQuestions": [
+      "Is log g(k) ~ c·k/log k for some constant c > 0?",
+      "What is the exact value of c if it exists?",
+      "Does g(k) < lcm(1,...,k) for large k?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Nat"],
+    "namespace": "Erdos1095OQ01",
+    "lineCount": 148,
+    "axiomCount": 4,
+    "theoremCount": 10,
+    "definitionCount": 2
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1095",
+      "relationship": "parent",
+      "description": "Open question derived from Erdős #1095 on g(k)"
+    }
+  ],
+  "relatedProofs": []
+}
