@@ -21,7 +21,7 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 1126,
     "erdosUrl": "https://erdosproblems.com/1126",
     "erdosProblemStatus": "solved",
@@ -60,11 +60,12 @@
       "derivation_at_one: d(1) = 0 (PROVED)",
       "derivation_sq: d(x²) = 2x·d(x) (PROVED)",
       "derivation_pow: Power rule d(xⁿ) = n·xⁿ⁻¹·d(x) (PROVED)",
-      "stability_paradigm_summary: Unified stability for Jensen and derivation equations"
+      "stability_paradigm_summary: Unified stability for Jensen and derivation equations",
+      "log_of_mul_is_additive: Logarithmic reduction of multiplicative to additive equation (PROVED)"
     ],
     "dateAdded": "2026-03-24",
     "axiomCount": 6,
-    "lineCount": 388,
+    "lineCount": 413,
     "assumptions": "6 axioms: almost_multiplicative_stability, almost_jensen_stability, almost_derivation_stability, continuous_derivation_is_zero, measurable_multiplicative_is_power, measurable_derivation_is_zero. These are known results from Ger (1979) and Járai (2005)."
   },
   "overview": {
@@ -157,7 +158,7 @@
       "Can the stability paradigm be extended to functional equations on locally compact groups beyond ℝ?",
       "What is the optimal null-set estimate: given an ε-null exceptional set, how small can the correction set be?",
       "Does stability hold for functional inequalities (e.g., almost sub-additive → sub-additive a.e.)?",
-      "Can the two remaining sorries (almost Jensen → almost additive, log-of-multiplicative-is-additive) be resolved using Mathlib's measure theory?"
+      "Can the remaining sorry (almost Jensen → almost additive) be resolved using Mathlib's Fubini theorem? (log_of_mul_is_additive has been proved)"
     ]
   },
   "relatedProofs": [
