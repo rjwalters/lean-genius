@@ -68,7 +68,60 @@ theorem covering_le_k (primes : Finset ℕ) (k : ℕ) :
     divisible by p, and at most ⌈k/p⌉. -/
 theorem single_prime_lower (p k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
     coveringFunction {p} k ≥ k / p := by
-  sorry
+  unfold coveringFunction coveredInInterval
+  simp only [Finset.mem_singleton, exists_eq_left]
+  rw [ge_iff_le]
+  -- Goal: k / p ≤ ⨅ a, (Ico a (a + k) |>.filter (p ∣ ·)).card
+  -- For all a, inject range(k/p) into multiples of p in [a, a+k)
+  -- via i ↦ (⌈a/p⌉ + i) * p where ⌈a/p⌉ = (a + (p-1)) / p
+  apply le_ciInf
+  intro a
+  have hp_pos : 0 < p := hp.pos
+  -- g maps i to the (⌈a/p⌉ + i)-th multiple of p
+  set g := fun i => ((a + (p - 1)) / p + i) * p
+  -- g is injective (cancel p > 0)
+  have hg_inj : Function.Injective g := by
+    intro i j hij; simp only [g] at hij
+    have := mul_right_cancel₀ hp_pos.ne' hij; omega
+  -- Image of range(k/p) under g lies in filter set
+  have hsub : (Finset.range (k / p)).image g ⊆
+      (Finset.Ico a (a + k)).filter (p ∣ ·) := by
+    intro n hn
+    simp only [Finset.mem_image, g] at hn
+    obtain ⟨i, hi, rfl⟩ := hn
+    rw [Finset.mem_range] at hi
+    rw [Finset.mem_filter, Finset.mem_Ico]
+    refine ⟨⟨?_, ?_⟩, dvd_mul_of_dvd_right (dvd_refl p) _⟩
+    · -- Lower bound: a ≤ ((a+(p-1))/p + i) * p
+      -- ⌈a/p⌉*p ≥ a by ceiling property, adding i only increases
+      have hceil_lb : a ≤ (a + (p - 1)) / p * p := by
+        have h1 := Nat.div_add_mod (a + (p - 1)) p
+        rw [mul_comm] at h1  -- p * (../p) → (../p) * p to match goal
+        have h2 := Nat.mod_lt (a + (p - 1)) hp_pos
+        omega
+      calc a ≤ (a + (p - 1)) / p * p := hceil_lb
+        _ ≤ ((a + (p - 1)) / p + i) * p :=
+            Nat.mul_le_mul_right p (Nat.le_add_right _ i)
+    · -- Upper bound: ((a+(p-1))/p + i) * p < a + k
+      -- ⌈a/p⌉*p < a+p, and (i+1)*p ≤ k, so ⌈a/p⌉*p + i*p < a + (i+1)*p ≤ a + k
+      have hik : (i + 1) * p ≤ k :=
+        le_trans (Nat.mul_le_mul_right p (by omega : i + 1 ≤ k / p))
+          (Nat.div_mul_le_self k p)
+      have hceil_ub : (a + (p - 1)) / p * p < a + p := by
+        have h1 := Nat.div_add_mod (a + (p - 1)) p
+        rw [mul_comm] at h1
+        have h2 := Nat.mod_lt (a + (p - 1)) hp_pos
+        omega
+      calc ((a + (p - 1)) / p + i) * p
+          = (a + (p - 1)) / p * p + i * p := by ring
+        _ < a + p + i * p := by linarith
+        _ = a + (i + 1) * p := by ring
+        _ ≤ a + k := by linarith
+  -- Conclude: k/p = |range(k/p)| = |image g| ≤ |filter|
+  calc k / p = (Finset.range (k / p)).card := (Finset.card_range _).symm
+    _ = ((Finset.range (k / p)).image g).card :=
+        (Finset.card_image_of_injective _ hg_inj).symm
+    _ ≤ ((Finset.Ico a (a + k)).filter (p ∣ ·)).card := Finset.card_le_card hsub
 
 theorem single_prime_upper (p k : ℕ) (hp : Nat.Prime p) :
     coveringFunction {p} k ≤ k / p + 1 := by
