@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-14T21:33:35.591Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination: proved 4 axioms from gyarfas_conjecture, fixed formalization bugs",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,17 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Proved pathGraph_isTriangleFree and starGraph_isTriangleFree. Fixed pre-existing bug in starGraph symm proof. Added compactness note to finite_implies_infinite_version. File: 3 theorems, 7 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated 4 axioms (7→2). Proved infinite_chrom_contains_paths, infinite_chrom_contains_stars, kierstead_penrice_radius2, scott_caterpillars from gyarfas_conjecture. Fixed buggy True→ hypothesis and duplicate statement. 9 theorems, 2 axioms, 0 sorries, 189 lines.",
     "builtItems": [
       "Proved pathGraph_isTriangleFree in Erdos738Problem.lean:81-92",
       "Proved starGraph_isTriangleFree in Erdos738Problem.lean:94-106",
-      "Fixed starGraph symm proof (pre-existing compile error)"
+      "Fixed starGraph symm proof (pre-existing compile error)",
+      "Proved infinite_chrom_contains_paths from gyarfas_conjecture",
+      "Proved infinite_chrom_contains_stars from gyarfas_conjecture",
+      "Proved kierstead_penrice_radius2 from gyarfas_conjecture (fixed True→ bug)",
+      "Proved scott_caterpillars from gyarfas_conjecture (fixed wrong conclusion)"
     ],
     "insights": [
       "pathGraph and starGraph triangle-freeness proved via Finset.card_eq_three extraction and omega on adjacency disjunctions",
       "starGraph symm proof had a latent bug using ▸ on ≠ (not an equality) - fixed to simple exact h",
       "finite_implies_infinite_version correctly invokes full conjecture but needs De Bruijn-Erdős compactness to use hfin properly",
-      "Gyárfás conjecture is OPEN - main axiom represents an unresolved problem in combinatorics"
+      "Gyárfás conjecture is OPEN - main axiom represents an unresolved problem in combinatorics",
+      "kierstead_penrice_radius2 had vacuous True→ hypothesis making it equivalent to full conjecture",
+      "scott_caterpillars conclusion was pathGraph n (duplicate of paths axiom) instead of caterpillar-specific",
+      "FiniteTree has no tree-checking predicate, so all partial results follow trivially from full conjecture",
+      "Remaining 2 axioms: gyarfas_conjecture (OPEN) and gyarfas_finite_version (OPEN, independent via compactness)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
