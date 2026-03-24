@@ -293,7 +293,7 @@
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ is essential for counting available primes in Cambie's bound. The number "
+      "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ is essential for counting available primes in Cambie's bound. The number of distinct GPF values below $n$ is $\\pi(n)$, and the PNT determines the growth rate of $g(n)$."
     },
     {
       "id": "erdos-1055",
@@ -313,12 +313,12 @@
     {
       "id": "erdos-4",
       "relationship": "related",
-      "description": "Both are solved Erdős problems involving prime distribution asymptotics. Erdős #4 (large prime gaps, solved by Maynard 2"
+      "description": "Both are solved Erdős problems involving prime distribution asymptotics. Erdős #4 (large prime gaps, solved by Maynard 2016) uses sieve methods that also appear in smooth number estimates underlying #648."
     },
     {
       "id": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "The divergence $\\sum_{p} 1/p = \\infty$ (Euler, 1737) implies the set of primes is dense enough to support arbitrarily lo"
+      "description": "The divergence $\\sum_{p} 1/p = \\infty$ (Euler, 1737) implies the set of primes is dense enough to support arbitrarily long GPF-descending sequences, consistent with $g(n) \\to \\infty$."
     }
   ]
 }

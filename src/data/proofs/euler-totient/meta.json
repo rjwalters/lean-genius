@@ -205,17 +205,17 @@
     {
       "id": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "The Legendre symbol $(a/p)$ and quadratic residues are studied via $a^{(p-1)/2}$ (Euler's criterion), a direct consequen"
+      "description": "The Legendre symbol $(a/p)$ and quadratic residues are studied via $a^{(p-1)/2}$ (Euler's criterion), a direct consequence of Fermat's little theorem. Quadratic reciprocity relates Legendre symbols for different primes — built on the same modular arithmetic that Euler's theorem governs"
     },
     {
       "id": "primitive-roots",
       "relationship": "related",
-      "description": "A primitive root mod $n$ is a generator of $(\\mathbb{Z}/n\\mathbb{Z})^*$, which has order $\\varphi(n)$. The existence of "
+      "description": "A primitive root mod $n$ is a generator of $(\\mathbb{Z}/n\\mathbb{Z})^*$, which has order $\\varphi(n)$. The existence of primitive roots (for $n = 1, 2, 4, p^k, 2p^k$) is proved using Euler's theorem and the structure of cyclic groups"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "The average order of $\\varphi(n)$ is $\\frac{6}{\\pi^2} n$ (a consequence of PNT and the Euler product $\\varphi(n)/n = \\pr"
+      "description": "The average order of $\\varphi(n)$ is $\\frac{6}{\\pi^2} n$ (a consequence of PNT and the Euler product $\\varphi(n)/n = \\prod(1-1/p)$). The connection $6/\\pi^2 = 1/\\zeta(2)$ links the totient function to the Basel problem and prime distribution"
     }
   ],
   "leanFile": {

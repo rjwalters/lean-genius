@@ -221,17 +221,17 @@
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The extremal construction uses products of primes from A with optimized exponents. The infinitude of primes guarantees a"
+      "description": "The extremal construction uses products of primes from A with optimized exponents. The infinitude of primes guarantees arbitrarily long products, which is essential for the $M_A(x) \\to \\infty$ conclusion"
     },
     {
       "id": "perfect-numbers",
       "relationship": "related",
-      "description": "Perfect numbers are extremal for the sum-of-divisors function $\\sigma(n) = 2n$. The generalized divisor function $\\tau_A"
+      "description": "Perfect numbers are extremal for the sum-of-divisors function $\\sigma(n) = 2n$. The generalized divisor function $\\tau_A(n)$ studied here extends the classical divisor function $\\tau(n)$ by restricting which prime factors contribute, connecting to the broader theory of multiplicative arithmetic functions including $\\sigma$"
     },
     {
       "id": "erdos-413",
       "relationship": "related",
-      "description": "Erdős #413 studies barriers for $\\omega(n)$ (distinct prime factor count). The generalized divisor function $\\tau_A(n)$ "
+      "description": "Erdős #413 studies barriers for $\\omega(n)$ (distinct prime factor count). The generalized divisor function $\\tau_A(n)$ depends on the prime factorization restricted to primes in $A$, so the distribution of $\\omega(n)$ for primes in $A$ directly influences the extremal behavior studied in #444"
     }
   ],
   "leanFile": {

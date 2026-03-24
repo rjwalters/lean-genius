@@ -266,7 +266,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Euclid's proof of infinite primes uses coprimality — Bézout provides the algebraic characterization gcd = 1 ⟺ ax + by = "
+      "description": "Euclid's proof of infinite primes uses coprimality — Bézout provides the algebraic characterization gcd = 1 ⟺ ax + by = 1 that underpins coprimality arguments"
     },
     {
       "id": "chinese-remainder-constructive",
@@ -276,7 +276,7 @@
     {
       "id": "lagrange-theorem",
       "relationship": "related",
-      "description": "Both are foundational to group/number theory: Lagrange's theorem constrains subgroup orders, while Bézout characterizes "
+      "description": "Both are foundational to group/number theory: Lagrange's theorem constrains subgroup orders, while Bézout characterizes when elements generate the full group ℤ/nℤ"
     },
     {
       "id": "bezout-identity-oq-02",
@@ -286,12 +286,12 @@
     {
       "id": "bezout-identity-oq-03",
       "relationship": "extended-by",
-      "description": "Constructs the Chinese Remainder Theorem via Bézout's identity for integers — from $\\gcd(m,n) = 1$ and $mx + ny = 1$, bu"
+      "description": "Constructs the Chinese Remainder Theorem via Bézout's identity for integers — from $\\gcd(m,n) = 1$ and $mx + ny = 1$, builds simultaneous solutions to systems of congruences"
     },
     {
       "id": "bezout-identity-oq-04",
       "relationship": "extended-by",
-      "description": "Characterizes the complete solution set of linear Diophantine equations $ax + by = c$: a particular solution (from Bézou"
+      "description": "Characterizes the complete solution set of linear Diophantine equations $ax + by = c$: a particular solution (from Bézout) plus the homogeneous solutions $(b/g)t, -(a/g)t$ where $g = \\gcd(a,b)$"
     }
   ],
   "references": [

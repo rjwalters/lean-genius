@@ -261,11 +261,13 @@
   "relatedProofs": [
     {
       "id": "euler-polyhedral-formula-oq-02",
-      "relationship": "Parent: discrete Gauss-Bonnet for polyhedra; this entry extends to smooth surfaces and proves 35+ consequences including Girard's formula and hairy ball theorem"
+      "relationship": "Parent: discrete Gauss-Bonnet for polyhedra; this entry extends to smooth surfaces and proves 35+ consequences including Girard's formula and hairy ball theorem",
+      "description": "Extends the discrete Gauss-Bonnet theorem (Σδ(v) = 2πχ for polyhedra) to the smooth case (∫K dA = 2πχ for Riemannian surfaces), plus Girard's formula, Poincaré-Hopf, and Morse theory"
     },
     {
       "id": "euler-polyhedral-formula",
-      "relationship": "The base Euler formula V-E+F=2 whose topological content (χ=2-2g) is the central quantity in both discrete and smooth Gauss-Bonnet"
+      "relationship": "The base Euler formula V-E+F=2 whose topological content (χ=2-2g) is the central quantity in both discrete and smooth Gauss-Bonnet",
+      "description": "The Euler characteristic χ = V-E+F=2 is the topological invariant that both the discrete and smooth Gauss-Bonnet theorems connect to curvature; the base formalization establishes this foundation"
     },
     "euler-polyhedral-formula-oq-02",
     "euler-polyhedral-formula",

@@ -224,17 +224,17 @@
     {
       "id": "isoperimetric-theorem",
       "relationship": "related",
-      "description": "The isoperimetric inequality $4\\pi A \\leq L^2$ can be proved using Green's theorem: the area $A = \\frac{1}{2}\\oint (x\\,d"
+      "description": "The isoperimetric inequality $4\\pi A \\leq L^2$ can be proved using Green's theorem: the area $A = \\frac{1}{2}\\oint (x\\,dy - y\\,dx)$ is a line integral (by Green's), and applying Cauchy-Schwarz to this parametric integral yields the isoperimetric bound. Equality holds for circles, connecting Green's theorem to the characterization of optimal shapes"
     },
     {
       "id": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "The Pythagorean theorem defines the Euclidean metric $ds^2 = dx^2 + dy^2$ underlying Green's theorem. The area element $"
+      "description": "The Pythagorean theorem defines the Euclidean metric $ds^2 = dx^2 + dy^2$ underlying Green's theorem. The area element $dA = dx\\,dy$ and the line element $ds = \\sqrt{dx^2 + dy^2}$ both derive from the Pythagorean distance, and the curl $\\partial Q/\\partial x - \\partial P/\\partial y$ is defined using partial derivatives in the Euclidean coordinate system"
     },
     {
       "id": "mean-value-theorem",
       "relationship": "foundational",
-      "description": "The mean value theorem is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to "
+      "description": "The mean value theorem is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to estimate the integral of partial derivatives over small rectangles, then takes limits. MVT also connects to the mean value property of harmonic functions, which follows from Green's theorem applied to $\\nabla^2 u = 0$"
     }
   ],
   "leanFile": {

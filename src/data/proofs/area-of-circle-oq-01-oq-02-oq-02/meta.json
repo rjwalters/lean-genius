@@ -196,7 +196,7 @@
     {
       "id": "area-of-circle-oq-01-oq-02-oq-01",
       "relationship": "sibling",
-      "description": "Sibling entry generalizing circumference integration to n-dimensional volume from surface area — both extend the parent'"
+      "description": "Sibling entry generalizing circumference integration to n-dimensional volume from surface area — both extend the parent's radial integration technique, with this file applying it to periodic function analysis via IBP and the sibling extending to higher-dimensional geometry"
     },
     {
       "id": "fourier-series",
@@ -206,17 +206,17 @@
     {
       "id": "isoperimetric-theorem",
       "relationship": "supports",
-      "description": "This IBP formula is a key analytical ingredient in the Fourier-analytic proof of the isoperimetric inequality $C^2 \\geq "
+      "description": "This IBP formula is a key analytical ingredient in the Fourier-analytic proof of the isoperimetric inequality $C^2 \\geq 4\\pi A$."
     },
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "Integration by parts is derived from the product rule and FTC — the IBP formula fourierCoeffOn_of_hasDerivAt used here i"
+      "description": "Integration by parts is derived from the product rule and FTC — the IBP formula fourierCoeffOn_of_hasDerivAt used here is Mathlib's formalization of this principle for interval integrals"
     },
     {
       "id": "fundamental-theorem-calculus-oq-01",
       "relationship": "related",
-      "description": "Integration by parts — the core technique in this proof — is a direct corollary of the product rule and FTC. The Fourier"
+      "description": "Integration by parts — the core technique in this proof — is a direct corollary of the product rule and FTC. The Fourier IBP formula specializes general IBP to the setting of exponential basis functions $e^{-int}$."
     }
   ],
   "leanFile": {

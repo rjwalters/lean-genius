@@ -221,7 +221,7 @@
     {
       "id": "erdos-368",
       "relationship": "related",
-      "description": "Erdős #368 studies the largest prime factor of n(n+1); if P+(n(n+1)) <= n^eps then both n and n+1 are smooth — exactly the k=2 case of #369"
+      "description": "Erdős #368 studies the largest prime factor of $n(n+1)$, directly related to the smoothness of consecutive integers. If $P^+(n(n+1)) \\leq n^\\varepsilon$, then both $n$ and $n+1$ are $n^\\varepsilon$-smooth — exactly the $k=2$ case of #369"
     },
     {
       "id": "erdos-4",
@@ -246,22 +246,22 @@
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime in (n, 2n). Erdős #369 asks a complementary question: are there consecutive comp"
+      "description": "Bertrand's postulate guarantees a prime in (n, 2n). Erdős #369 asks a complementary question: are there consecutive composite-like (smooth) numbers near n? Both concern the local distribution of numbers with extreme factorization properties"
     },
     {
       "id": "erdos-371",
       "relationship": "related",
-      "description": "Erdős #371 studies the density of integers where $P^+(n) < P^+(n+1)$ (the largest prime factor increases). Both #369 and"
+      "description": "Erdős #371 studies the density of integers where $P^+(n) < P^+(n+1)$ (the largest prime factor increases). Both #369 and #371 probe the multiplicative structure of consecutive integers: #369 asks for simultaneous smoothness, #371 asks for relative prime factor ordering"
     },
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes is foundational: smooth numbers are defined by having all prime factors below a threshold, and "
+      "description": "The infinitude of primes is foundational: smooth numbers are defined by having all prime factors below a threshold, and the distribution of primes (via PNT) governs the Dickman function $\\rho(u)$ that predicts smooth number density"
     },
     {
       "id": "stirling-formula",
       "relationship": "foundational",
-      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ is essential to the Dickman function analysis: the differential-"
+      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ is essential to the Dickman function analysis: the differential-delay equation $u\\rho'(u) = -\\rho(u-1)$ governing smooth number density requires precise factorial/gamma function asymptotics for its saddle-point analysis. The asymptotic $\\rho(u) \\sim u^{-u(1+o(1))}$ — which determines the density of $n^\\varepsilon$-smooth numbers — is derived via Laplace-type estimates that depend on Stirling's formula"
     }
   ],
   "leanFile": {

@@ -271,22 +271,22 @@
     {
       "id": "szemeredi-regularity",
       "relationship": "related",
-      "description": "Both are central results in combinatorial geometry/graph theory. Szemerédi's regularity lemma provides pseudorandom part"
+      "description": "Both are central results in combinatorial geometry/graph theory. Szemerédi's regularity lemma provides pseudorandom partition tools applicable to geometric incidence problems, which underlie bounds on distinct distances"
     },
     {
       "id": "borsuk-ulam",
       "relationship": "related",
-      "description": "The Borsuk-Ulam theorem is a key topological tool in combinatorial geometry: it implies that any continuous map $S^n \\to"
+      "description": "The Borsuk-Ulam theorem is a key topological tool in combinatorial geometry: it implies that any continuous map $S^n \\to \\mathbb{R}^n$ identifies antipodal points. In distance problems, topological methods complement algebraic and combinatorial approaches — the Borsuk conjecture on partitions of sets with diameter constraints is closely tied to distance set questions in high dimensions"
     },
     {
       "id": "minkowski-theorem",
       "relationship": "related",
-      "description": "Minkowski's theorem on convex bodies and lattice points provides geometric constraints in Euclidean space relevant to di"
+      "description": "Minkowski's theorem on convex bodies and lattice points provides geometric constraints in Euclidean space relevant to distance problems. The integer lattice $\\mathbb{Z}^d \\cap B(0,R)$ produces $O(R^d)$ points with controlled distance sets — the interplay between lattice structure and distance counting is central to constructing few-distance point configurations in high dimensions, which provide lower bounds on $g_d(n)$"
     },
     {
       "id": "isoperimetric-theorem",
       "relationship": "thematic",
-      "description": "Both concern fundamental geometric constraints in Euclidean space. The isoperimetric inequality (the sphere minimizes su"
+      "description": "Both concern fundamental geometric constraints in Euclidean space. The isoperimetric inequality (the sphere minimizes surface area for given volume) reveals the geometry of optimal shapes, while the distinct distances problem reveals the geometry of optimal point configurations. In high dimensions, concentration of measure (a consequence of isoperimetric theory) governs distance behavior: random points on $S^{d-1}$ have pairwise distances concentrating near $\\sqrt{2}$ as $d \\to \\infty$, explaining why few-distance configurations require careful algebraic construction rather than random placement"
     }
   ],
   "leanFile": {

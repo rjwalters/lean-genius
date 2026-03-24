@@ -373,12 +373,12 @@
     {
       "id": "lebesgue-measure",
       "relationship": "foundational",
-      "description": "The Lebesgue integral underlies all energy estimates in the Navier-Stokes analysis: enstrophy $E = \\int|\\omega|^2$, pali"
+      "description": "The Lebesgue integral underlies all energy estimates in the Navier-Stokes analysis: enstrophy $E = \\int|\\omega|^2$, palinstrophy $P = \\int|\\nabla\\omega|^2$, and the Sobolev embeddings that control solution regularity all require Lebesgue space theory"
     },
     {
       "id": "fourier-series",
       "relationship": "foundational",
-      "description": "Fourier analysis is central to the spectral gap arguments: the Faber-Krahn inequality $\\lambda_1 \\geq \\pi^2/(4R^2)$ rela"
+      "description": "Fourier analysis is central to the spectral gap arguments: the Faber-Krahn inequality $\\lambda_1 \\geq \\pi^2/(4R^2)$ relates the first Dirichlet eigenvalue to domain geometry, and the CKN critical threshold $2/\\pi^2$ emerges from the competition between stretching and viscous dissipation in Fourier space"
     }
   ],
   "leanFile": {

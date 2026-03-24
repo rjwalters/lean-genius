@@ -1,4 +1,4 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import tacticStatesJson from './tacticStates.json'
@@ -13,6 +13,7 @@ const meta = metaJson as unknown as {
   sections: ProofSection[]
   overview?: ProofOverview
   conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
 }
 
 export const boundedPrimeGapsOQ03Proof: Proof = {
@@ -25,6 +26,7 @@ export const boundedPrimeGapsOQ03Proof: Proof = {
   source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
 }
 
 export const boundedPrimeGapsOQ03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]

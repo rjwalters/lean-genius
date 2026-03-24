@@ -134,12 +134,12 @@
     {
       "id": "four-color-theorem",
       "relationship": "related",
-      "description": "Both concern structural properties of graph colorings. The four-color theorem constrains planar graph colorings; Erdős #"
+      "description": "Both concern structural properties of graph colorings. The four-color theorem constrains planar graph colorings; Erdős #1006 reveals that chromatic number — not girth — governs robust orientability."
     },
     {
       "id": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory and this problem share the theme of unavoidable structures: Ramsey shows large enough graphs must contain "
+      "description": "Ramsey theory and this problem share the theme of unavoidable structures: Ramsey shows large enough graphs must contain monochromatic substructures; the Nešetřil-Rödl disproof uses similar combinatorial constructions."
     },
     {
       "id": "erdos-1006-oq-02",
@@ -149,7 +149,7 @@
     {
       "id": "erdos-1008",
       "relationship": "related",
-      "description": "Both concern extremal graph theory with forbidden substructures: #1006 forbids short cycles (high girth) and asks about "
+      "description": "Both concern extremal graph theory with forbidden substructures: #1006 forbids short cycles (high girth) and asks about orientations; #1008 forbids $C_4$ and asks about maximum edges. The Erdős girth-chromatic-number theorem (1959) connects both via random constructions."
     },
     {
       "id": "erdos-1011",
@@ -159,7 +159,7 @@
     {
       "id": "randomized-maxcut",
       "relationship": "related",
-      "description": "Both use probabilistic arguments in graph theory: the Nešetřil-Rödl disproof relies on the probabilistic method (random "
+      "description": "Both use probabilistic arguments in graph theory: the Nešetřil-Rödl disproof relies on the probabilistic method (random graphs with high girth and high chromatic number), while randomized MaxCut uses randomized rounding — different probabilistic tools for graph optimization."
     }
   ],
   "references": [

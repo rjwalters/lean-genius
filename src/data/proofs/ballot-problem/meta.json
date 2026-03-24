@@ -270,27 +270,27 @@
     {
       "id": "derangements",
       "relationship": "related",
-      "description": "Both are classical combinatorics problems solved by bijective counting: the ballot problem uses the reflection principle"
+      "description": "Both are classical combinatorics problems solved by bijective counting: the ballot problem uses the reflection principle while derangements use inclusion-exclusion — both transform a counting constraint into a simpler enumeration"
     },
     {
       "id": "inclusion-exclusion",
       "relationship": "related",
-      "description": "Inclusion-exclusion is a complementary counting technique to the ballot problem's reflection principle — both reduce con"
+      "description": "Inclusion-exclusion is a complementary counting technique to the ballot problem's reflection principle — both reduce constrained counting to simpler enumerations, and some ballot problem proofs use inclusion-exclusion directly"
     },
     {
       "id": "central-limit-theorem",
       "relationship": "related",
-      "description": "The ballot problem concerns random walks with a bias (p > q votes), which in the limit connects to the central limit the"
+      "description": "The ballot problem concerns random walks with a bias (p > q votes), which in the limit connects to the central limit theorem: the vote-counting sequence is a biased random walk, and CLT describes its asymptotic distribution"
     },
     {
       "id": "ballot-problem-oq-01-oq-01",
       "relationship": "extended-by",
-      "description": "Formalizes the Discrete Intermediate Value Theorem for the Dvoretzky-Motzkin cycle lemma — a deeper combinatorial tool t"
+      "description": "Formalizes the Discrete Intermediate Value Theorem for the Dvoretzky-Motzkin cycle lemma — a deeper combinatorial tool that generalizes the ballot problem's reflection principle to cyclic sequences"
     },
     {
       "id": "ballot-problem-oq-03-oq-02",
       "relationship": "extended-by",
-      "description": "Extends ballot problem lattice path counting to the general $r \\times r$ Lindström-Gessel-Viennot determinant formula — "
+      "description": "Extends ballot problem lattice path counting to the general $r \\times r$ Lindström-Gessel-Viennot determinant formula — the ballot problem is the $1 \\times 1$ case of the LGV lemma for non-intersecting lattice paths"
     }
   ],
   "references": [

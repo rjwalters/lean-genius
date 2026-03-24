@@ -243,7 +243,7 @@
     {
       "id": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "The circle x²+y²=r² is defined by the Pythagorean relation — the equation underpinning the Lebesgue measure computation "
+      "description": "The circle x²+y²=r² is defined by the Pythagorean relation — the equation underpinning the Lebesgue measure computation of the disk's area"
     },
     {
       "id": "hermite-lindemann",
@@ -258,62 +258,62 @@
     {
       "id": "area-of-circle-oq-01",
       "relationship": "extended-by",
-      "description": "Derives the circumference formula $C = 2\\pi r$ via differentiation of the area $A = \\pi r^2$ with respect to $r$ — the i"
+      "description": "Derives the circumference formula $C = 2\\pi r$ via differentiation of the area $A = \\pi r^2$ with respect to $r$ — the infinitesimal shell argument that $dA/dr = C$ connects area and perimeter"
     },
     {
       "id": "area-of-circle-oq-03",
       "relationship": "extended-by",
-      "description": "Formalizes Archimedes' method of exhaustion directly: approximating the circle's area by inscribed and circumscribed reg"
+      "description": "Formalizes Archimedes' method of exhaustion directly: approximating the circle's area by inscribed and circumscribed regular polygons, providing the historical approach that this file's measure-theoretic proof subsumes"
     },
     {
       "id": "intermediate-value-theorem",
       "relationship": "foundational",
-      "description": "The intermediate value theorem underpins the continuity arguments needed for integration. Archimedes' method of exhausti"
+      "description": "The intermediate value theorem underpins the continuity arguments needed for integration. Archimedes' method of exhaustion is essentially a continuity argument — the area function $A(r) = \\pi r^2$ is continuous, and the method of exhaustion proves equalities by showing the difference can be made arbitrarily small"
     },
     {
       "id": "isoperimetric-theorem",
       "relationship": "complementary",
-      "description": "The isoperimetric inequality states that among all planar curves of fixed perimeter $L$, the circle encloses the maximum"
+      "description": "The isoperimetric inequality states that among all planar curves of fixed perimeter $L$, the circle encloses the maximum area $L^2/(4\\pi)$. This provides a variational characterization of the circle: $A = \\pi r^2$ is the maximum area achievable with perimeter $C = 2\\pi r$. Equality holds if and only if the curve is a circle, making the area formula a consequence of the isoperimetric optimality"
     },
     {
       "id": "area-of-circle-oq-01-oq-02",
       "relationship": "extended-by",
-      "description": "Derives the area formula by integrating circumference: $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$, showing the circle's a"
+      "description": "Derives the area formula by integrating circumference: $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$, showing the circle's area as the accumulation of concentric ring circumferences — a radial integration approach complementing the Cartesian disk-area proof"
     },
     {
       "id": "area-of-circle-oq-01-oq-03",
       "relationship": "extended-by",
-      "description": "The isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality iff the curve is a circle — the variational characterizatio"
+      "description": "The isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality iff the curve is a circle — the variational characterization showing the circle maximizes area for a given perimeter, connecting the area formula $\\pi r^2$ to the deep optimality of circular geometry"
     },
     {
       "id": "area-of-circle-oq-03-oq-02",
       "relationship": "extended-by",
-      "description": "Archimedes' bounds $223/71 < \\pi < 22/7$ via inscribed and circumscribed regular 96-gons — the computational complement "
+      "description": "Archimedes' bounds $223/71 < \\pi < 22/7$ via inscribed and circumscribed regular 96-gons — the computational complement to the area formula, providing the first rigorous numerical approximation of the constant $\\pi$ that appears in $A = \\pi r^2$"
     },
     {
       "id": "lebesgue-measure",
       "relationship": "foundational",
-      "description": "This proof formalizes area as Lebesgue measure $\\lambda^2$. The Lebesgue measure entry provides the measure-theoretic in"
+      "description": "This proof formalizes area as Lebesgue measure $\\lambda^2$. The Lebesgue measure entry provides the measure-theoretic infrastructure underpinning `MeasureTheory.volume` and the $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ that specializes to $\\pi r^2$ for $n=2$"
     },
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The annular ring derivation of $A = \\pi r^2$ is a direct application of the Fundamental Theorem of Calculus: $A(r) = \\in"
+      "description": "The annular ring derivation of $A = \\pi r^2$ is a direct application of the Fundamental Theorem of Calculus: $A(r) = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$, and the derivative relationship $A'(r) = C(r) = 2\\pi r$ is FTC in action. The measure-theoretic proof in this file uses Fubini's theorem (the higher-dimensional analog) rather than FTC directly, but the connection between area and circumference via differentiation is a central pedagogical theme"
     },
     {
       "id": "stirling-formula",
       "relationship": "related",
-      "description": "The general $n$-dimensional ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ that underpins this proof uses the Gamm"
+      "description": "The general $n$-dimensional ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ that underpins this proof uses the Gamma function $\\Gamma$, whose asymptotic behavior is governed by Stirling's formula $\\Gamma(n+1) \\sim \\sqrt{2\\pi n}(n/e)^n$. For the 2D case, $\\Gamma(2) = 1! = 1$ makes the formula simplest, but Stirling's approximation is essential for understanding the volume of high-dimensional balls (which shrinks to 0 as $n \\to \\infty$ — a counterintuitive consequence of the $\\Gamma$ denominator's factorial growth)"
     },
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "The transcendence of $e$ connects to the circle area formula through the Gaussian integral: $\\int_{-\\infty}^{\\infty} e^{"
+      "description": "The transcendence of $e$ connects to the circle area formula through the Gaussian integral: $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$, proved by squaring and converting to polar coordinates where the area element $r\\, dr\\, d\\theta$ derives from $A = \\pi r^2$. The appearance of both $e$ and $\\pi$ in this integral reflects their deep algebraic independence (both transcendental) and analytic interconnection via the complex exponential $e^{i\\theta}$"
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Euler's identity $e^{i\\pi} = -1$ connects to the circle area formula through the complex plane: this formalization uses "
+      "description": "Euler's identity $e^{i\\pi} = -1$ connects to the circle area formula through the complex plane: this formalization uses $\\mathbb{C}$ as its ambient space precisely because the unit circle $\\{z : |z| = 1\\}$ is parameterized by $e^{i\\theta}$ for $\\theta \\in [0, 2\\pi)$. The area enclosed by this exponential curve is $\\pi \\cdot 1^2 = \\pi$ (the `area_unit_disk` corollary). More deeply, $e^{i\\pi} = -1$ encodes the half-turn symmetry of the circle, and the appearance of $\\pi$ in both the area formula and the exponential reflects $\\pi$'s dual role as a geometric constant (area-to-radius-squared ratio) and an analytic period (half-period of $e^{i\\theta}$)"
     }
   ],
   "leanFile": {

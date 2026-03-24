@@ -218,12 +218,12 @@
     {
       "id": "area-of-circle-oq-01-oq-02",
       "relationship": "extends",
-      "description": "Parent entry proving A = ∫₀ʳ C(ρ) dρ for circles — this file generalizes from 2D to arbitrary dimension n, replacing πr²"
+      "description": "Parent entry proving A = ∫₀ʳ C(ρ) dρ for circles — this file generalizes from 2D to arbitrary dimension n, replacing πr² with ω_n·r^n"
     },
     {
       "id": "area-of-circle-oq-01",
       "relationship": "extends",
-      "description": "The circumference-from-area differentiation C = dA/dr is the 2D case of this file's n-dimensional derivative relation V'"
+      "description": "The circumference-from-area differentiation C = dA/dr is the 2D case of this file's n-dimensional derivative relation V'_n = S_n"
     },
     {
       "id": "area-of-circle",
@@ -243,7 +243,7 @@
     {
       "id": "area-of-circle-oq-01-oq-02-oq-02",
       "relationship": "sibling",
-      "description": "Sibling entry on integration by parts for Fourier coefficients — both extend the circumference integration approach from"
+      "description": "Sibling entry on integration by parts for Fourier coefficients — both extend the circumference integration approach from the parent entry, with this file generalizing to n dimensions and the sibling applying IBP to periodic function analysis"
     }
   ],
   "leanFile": {

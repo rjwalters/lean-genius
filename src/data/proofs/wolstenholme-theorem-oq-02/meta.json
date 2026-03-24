@@ -197,7 +197,7 @@
     {
       "id": "wolstenholme-theorem",
       "relationship": "extends",
-      "description": "Extends Wolstenholme's theorem ($\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for $p \\geq 5$) to study the stronger mod $p^4$ "
+      "description": "Extends Wolstenholme's theorem ($\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for $p \\geq 5$) to study the stronger mod $p^4$ condition defining Wolstenholme primes. Every WP satisfies the parent theorem as a divisibility consequence"
     },
     {
       "id": "wilsons-theorem",
@@ -212,7 +212,7 @@
     {
       "id": "kummer-theorem",
       "relationship": "related",
-      "description": "Kummer's theorem characterizes the $p$-adic valuation of binomial coefficients via base-$p$ carry counting. It provides "
+      "description": "Kummer's theorem characterizes the $p$-adic valuation of binomial coefficients via base-$p$ carry counting. It provides the theoretical framework for understanding when $p^k \\mid \\binom{n}{m}$, which is central to the Wolstenholme prime condition $p^4 \\mid \\binom{2p-1}{p-1} - 1$"
     }
   ],
   "references": [

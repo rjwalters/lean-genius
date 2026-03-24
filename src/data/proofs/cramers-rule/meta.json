@@ -191,7 +191,7 @@
     {
       "id": "cayley-hamilton",
       "relationship": "related",
-      "description": "The adjugate identity A * adj(A) = det(A) * I, central to Cramer's rule, is also the algebraic foundation of the Cayley-"
+      "description": "The adjugate identity A * adj(A) = det(A) * I, central to Cramer's rule, is also the algebraic foundation of the Cayley-Hamilton theorem. Both rely on the cofactor structure of determinants."
     },
     {
       "id": "cayley-hamilton-minpoly",
@@ -201,7 +201,7 @@
     {
       "id": "cauchy-schwarz",
       "relationship": "related",
-      "description": "Both are foundational linear algebra results formalized via Mathlib's abstract algebraic infrastructure. Cauchy-Schwarz "
+      "description": "Both are foundational linear algebra results formalized via Mathlib's abstract algebraic infrastructure. Cauchy-Schwarz works in inner product spaces while Cramer's rule works over commutative rings."
     },
     {
       "id": "fundamental-arithmetic",

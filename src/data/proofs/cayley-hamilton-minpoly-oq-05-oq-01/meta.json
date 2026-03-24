@@ -267,17 +267,17 @@
     {
       "id": "gcd-algorithm",
       "relationship": "uses-concept",
-      "description": "The Euclidean algorithm for polynomial GCD is the computational backbone of the Bezout identity used in the GCD annihila"
+      "description": "The Euclidean algorithm for polynomial GCD is the computational backbone of the Bezout identity used in the GCD annihilation lemma"
     },
     {
       "id": "cayley-hamilton-minpoly-oq-05",
       "relationship": "extends",
-      "description": "Parent entry on minimal polynomial reduction in K-algebras. This OQ-01 entry specializes the theory to matrices and prov"
+      "description": "Parent entry on minimal polynomial reduction in K-algebras. This OQ-01 entry specializes the theory to matrices and proves the key structural consequence: nonderogatory matrices have cyclic vectors"
     },
     {
       "id": "cayley-hamilton-minpoly-oq-02",
       "relationship": "related",
-      "description": "Similar matrices share the same minimal polynomial. Combined with the nonderogatory characterization, this shows the cyc"
+      "description": "Similar matrices share the same minimal polynomial. Combined with the nonderogatory characterization, this shows the cyclic vector property is a similarity invariant: if $M$ is nonderogatory, so is $P^{-1}MP$"
     }
   ],
   "references": [

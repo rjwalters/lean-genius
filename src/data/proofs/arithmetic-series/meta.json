@@ -220,12 +220,12 @@
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem generalizes finite sum identities: ∑C(n,k) = 2^n, while the arithmetic series ∑k = n(n+1)/2 is the "
+      "description": "The binomial theorem generalizes finite sum identities: ∑C(n,k) = 2^n, while the arithmetic series ∑k = n(n+1)/2 is the simplest non-trivial case of summing polynomial expressions"
     },
     {
       "id": "arithmetic-series-oq-02",
       "relationship": "extended-by",
-      "description": "Generalizes the arithmetic series to simplicial numbers and higher-dimensional arithmetic sums, extending $\\sum k = n(n+"
+      "description": "Generalizes the arithmetic series to simplicial numbers and higher-dimensional arithmetic sums, extending $\\sum k = n(n+1)/2$ to triangular, tetrahedral, and higher simplicial numbers"
     },
     {
       "id": "sum-of-kth-powers",
@@ -235,32 +235,32 @@
     {
       "id": "harmonic-divergence",
       "relationship": "complementary",
-      "description": "The harmonic series $\\sum 1/k$ diverges while the arithmetic series $\\sum k$ grows quadratically — contrasting behaviors"
+      "description": "The harmonic series $\\sum 1/k$ diverges while the arithmetic series $\\sum k$ grows quadratically — contrasting behaviors of the two most fundamental sequences: $k$ (unbounded terms, closed-form sum) vs $1/k$ (vanishing terms, no finite sum)"
     },
     {
       "id": "triangular-reciprocals",
       "relationship": "related",
-      "description": "The reciprocals of triangular numbers $T_n = n(n+1)/2$ telescope to give $\\sum 1/T_n = 2(1 - 1/(n+1))$ — connecting the "
+      "description": "The reciprocals of triangular numbers $T_n = n(n+1)/2$ telescope to give $\\sum 1/T_n = 2(1 - 1/(n+1))$ — connecting the arithmetic series formula directly to a convergent reciprocal sum via partial fractions"
     },
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "Euler's solution $\\sum 1/k^2 = \\pi^2/6$ extends the idea of summing natural number expressions from $\\sum k$ (polynomial"
+      "description": "Euler's solution $\\sum 1/k^2 = \\pi^2/6$ extends the idea of summing natural number expressions from $\\sum k$ (polynomial, closed-form) to $\\sum 1/k^2$ (convergent series, transcendental value) — both are instances of evaluating the Riemann zeta function at integers: $\\zeta(-1) = -1/12$ (regularized $\\sum k$) and $\\zeta(2) = \\pi^2/6$"
     },
     {
       "id": "pythagorean-theorem",
       "relationship": "related",
-      "description": "The sum-of-odd-numbers identity $1+3+5+\\cdots+(2n-1) = n^2$ was known to the Pythagoreans as the gnomon construction — e"
+      "description": "The sum-of-odd-numbers identity $1+3+5+\\cdots+(2n-1) = n^2$ was known to the Pythagoreans as the gnomon construction — each odd number forms an L-shaped border extending a square. This is arguably the oldest connection between arithmetic sums and geometry, predating Gauss by over two millennia"
     },
     {
       "id": "perfect-numbers",
       "relationship": "related",
-      "description": "Triangular numbers $T(n) = n(n+1)/2$ connect to perfect numbers via Euler's theorem: every even perfect number has the f"
+      "description": "Triangular numbers $T(n) = n(n+1)/2$ connect to perfect numbers via Euler's theorem: every even perfect number has the form $2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime. Since $2^{p-1}(2^p - 1) = T(2^p - 1)$, every even perfect number is a triangular number — a beautiful connection between summation formulas and number theory"
     },
     {
       "id": "arithmetic-series-oq-02-oq-02",
       "relationship": "extended-by",
-      "description": "The 2D hockey stick identity generalizes the arithmetic series sum to two-dimensional lattice sums, extending the one-di"
+      "description": "The 2D hockey stick identity generalizes the arithmetic series sum to two-dimensional lattice sums, extending the one-dimensional accumulation pattern $\\sum_{k=0}^n k = n(n+1)/2$ to the combinatorial identity $\\sum_{i=0}^{r} \\binom{n+i}{i} = \\binom{n+r+1}{r}$ — a higher-dimensional analog of Gauss's pairing trick"
     }
   ],
   "references": [

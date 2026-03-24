@@ -226,12 +226,12 @@
     {
       "id": "amgm-inequality",
       "relationship": "related",
-      "description": "AM-GM and Hölder are both proved via convexity arguments. Young's inequality $ab \\leq a^p/p + b^q/q$ (the engine behind "
+      "description": "AM-GM and Hölder are both proved via convexity arguments. Young's inequality $ab \\leq a^p/p + b^q/q$ (the engine behind Hölder) is itself a weighted AM-GM: the point $(a^p, b^q)$ lies above the secant line of the concave function $t \\mapsto t^{1/p}$ (resp. $t^{1/q}$)."
     },
     {
       "id": "triangle-inequality",
       "relationship": "related",
-      "description": "Hölder's inequality implies Minkowski's inequality (the triangle inequality for $L^p$ spaces): $\\|f+g\\|_p \\leq \\|f\\|_p +"
+      "description": "Hölder's inequality implies Minkowski's inequality (the triangle inequality for $L^p$ spaces): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$. The proof applies Hölder to $|f+g|^{p-1}$ paired with $f$ and $g$ separately."
     },
     {
       "id": "cauchy-schwarz-oq-03-oq-01",

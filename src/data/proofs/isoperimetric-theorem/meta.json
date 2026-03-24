@@ -210,32 +210,32 @@
     {
       "id": "picks-theorem",
       "relationship": "related",
-      "description": "Pick's theorem relates area to lattice points for polygons. Both results connect perimeter/boundary information to enclo"
+      "description": "Pick's theorem relates area to lattice points for polygons. Both results connect perimeter/boundary information to enclosed area, though in different settings (continuous vs discrete)."
     },
     {
       "id": "fourier-series",
       "relationship": "foundational",
-      "description": "Fourier series provide the analytical machinery for Hurwitz's proof: the curve is decomposed into Fourier modes, and the"
+      "description": "Fourier series provide the analytical machinery for Hurwitz's proof: the curve is decomposed into Fourier modes, and the isoperimetric deficit is expressed as a sum of squared coefficients."
     },
     {
       "id": "amgm-inequality",
       "relationship": "related",
-      "description": "The product-sum corollary of AM-GM (ab ≤ ((a+b)/2)²) proves the isoperimetric inequality for rectangles; the full theore"
+      "description": "The product-sum corollary of AM-GM (ab ≤ ((a+b)/2)²) proves the isoperimetric inequality for rectangles; the full theorem generalizes this to arbitrary curves."
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "foundational",
-      "description": "The Cauchy-Schwarz inequality is used in the parametric proof of the isoperimetric theorem: for a curve $(x(t), y(t))$ w"
+      "description": "The Cauchy-Schwarz inequality is used in the parametric proof of the isoperimetric theorem: for a curve $(x(t), y(t))$ with period $T$, the area $A = \\frac{1}{2}|\\oint (x\\,dy - y\\,dx)|$ is bounded by applying Cauchy-Schwarz to the Fourier coefficients, yielding $4\\pi A \\leq L^2$. The Wirtinger inequality (a consequence of Cauchy-Schwarz for Fourier series) is the key analytical step"
     },
     {
       "id": "greens-theorem",
       "relationship": "foundational",
-      "description": "Green's theorem converts the isoperimetric problem from a double integral (area) to a line integral: $A = \\frac{1}{2}\\oi"
+      "description": "Green's theorem converts the isoperimetric problem from a double integral (area) to a line integral: $A = \\frac{1}{2}\\oint_C (x\\,dy - y\\,dx)$. This representation is essential for all analytic proofs of the isoperimetric inequality, as it expresses area purely in terms of the boundary curve — the same boundary whose length $L$ appears in the inequality $4\\pi A \\leq L^2$"
     },
     {
       "id": "brouwer-fixed-point",
       "relationship": "thematic",
-      "description": "Both are fundamental results about convex bodies: the isoperimetric theorem characterizes the optimal shape (circle/sphe"
+      "description": "Both are fundamental results about convex bodies: the isoperimetric theorem characterizes the optimal shape (circle/sphere), while Brouwer's fixed point theorem guarantees fixed points for continuous maps on convex sets. Both use compactness arguments — the isoperimetric theorem via the direct method of calculus of variations, Brouwer via algebraic topology"
     }
   ],
   "references": [

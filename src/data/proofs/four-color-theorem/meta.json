@@ -177,7 +177,7 @@
     {
       "id": "euler-polyhedral-formula",
       "relationship": "foundational",
-      "description": "Euler's formula $V - E + F = 2$ for connected planar graphs is the starting point for the discharging method: assigning "
+      "description": "Euler's formula $V - E + F = 2$ for connected planar graphs is the starting point for the discharging method: assigning charge $6 - \\deg(v)$ to each vertex gives total charge $6V - 2E = 6(E - F + 2) - 2E = 12$ (using $2E \\geq 3F$). This positive total forces low-degree vertices to exist."
     },
     {
       "id": "konigsberg",
@@ -187,7 +187,7 @@
     {
       "id": "erdos-szekeres",
       "relationship": "related",
-      "description": "The Erdős-Szekeres theorem on monotone subsequences is another combinatorial result where the proof structure — showing "
+      "description": "The Erdős-Szekeres theorem on monotone subsequences is another combinatorial result where the proof structure — showing a finite set of configurations is unavoidable — parallels the Four Color Theorem's unavoidable set approach."
     }
   ],
   "references": [

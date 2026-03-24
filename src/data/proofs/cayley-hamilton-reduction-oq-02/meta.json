@@ -153,12 +153,12 @@
     {
       "id": "cayley-hamilton",
       "relationship": "foundational",
-      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is the key ingredient: χ_M(M) = 0 is "
+      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is the key ingredient: χ_M(M) = 0 is what enables minpoly.dvd to establish the divisibility μ_M | χ_M"
     },
     {
       "id": "cayley-hamilton-reduction",
       "relationship": "extends",
-      "description": "Parent proof establishing polynomial reduction modulo the characteristic polynomial. This OQ-02 extends the analysis by "
+      "description": "Parent proof establishing polynomial reduction modulo the characteristic polynomial. This OQ-02 extends the analysis by comparing reduction modulo minpoly vs charpoly and introducing non-derogatory matrices"
     },
     {
       "id": "cayley-hamilton-reduction-oq-01",

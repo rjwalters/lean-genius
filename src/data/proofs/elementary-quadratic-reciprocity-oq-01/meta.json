@@ -218,11 +218,13 @@
   "relatedProofs": [
     {
       "id": "quadratic-reciprocity",
-      "relationship": "Base formalization; this OQ-01 adds the Zolotarev permutation proof pathway alongside the existing Gauss/Eisenstein approach"
+      "relationship": "Base formalization; this OQ-01 adds the Zolotarev permutation proof pathway alongside the existing Gauss/Eisenstein approach",
+      "description": "Extends the base quadratic reciprocity formalization with Zolotarev's 1872 permutation-signature approach: the Legendre symbol equals the sign of the multiplication-by-a permutation on (ZMod p)ˣ"
     },
     {
       "id": "elementary-quadratic-reciprocity",
-      "relationship": "The elementary Eisenstein lattice-point proof; this OQ-01 provides the complementary Zolotarev permutation-signature approach"
+      "relationship": "The elementary Eisenstein lattice-point proof; this OQ-01 provides the complementary Zolotarev permutation-signature approach",
+      "description": "The elementary Eisenstein (lattice-point) proof of QR; this OQ-01 provides the complementary Zolotarev permutation approach, with both proof methods bundled in two_proof_methods"
     },
     "quadratic-reciprocity",
     "elementary-quadratic-reciprocity",

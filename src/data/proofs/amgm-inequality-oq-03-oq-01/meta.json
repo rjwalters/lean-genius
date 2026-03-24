@@ -238,22 +238,22 @@
     {
       "id": "triangle-inequality",
       "relationship": "related",
-      "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the"
+      "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the discrete mean hierarchy to normed space geometry"
     },
     {
       "id": "shannon-entropy",
       "relationship": "related",
-      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1"
+      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1}, the duality M_r(z) = M_{-r}(z⁻¹)⁻¹ translates to a duality on Rényi entropies — the negative power mean monotonicity here implies the corresponding Rényi entropy monotonicity for α > 1"
     },
     {
       "id": "mean-value-theorem",
       "relationship": "related",
-      "description": "The mean value theorem underpins the r→0 limit case: proving lim_{r→0} M_r = GM requires L'Hôpital's rule (which depends"
+      "description": "The mean value theorem underpins the r→0 limit case: proving lim_{r→0} M_r = GM requires L'Hôpital's rule (which depends on MVT). While this file handles only the r < 0 case, the mixed-sign crossing r < 0 < s ultimately depends on the r=0 bridge that MVT enables"
     },
     {
       "id": "sum-of-kth-powers",
       "relationship": "related",
-      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (p_k/n)^(1/k) for equal weights. The "
+      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (p_k/n)^(1/k) for equal weights. The duality M_r(z) = M_{-r}(z⁻¹)⁻¹ corresponds to the power sum identity p_{-k}(z) = p_k(z⁻¹)"
     }
   ],
   "references": [

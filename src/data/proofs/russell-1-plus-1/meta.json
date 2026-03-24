@@ -147,7 +147,7 @@
     {
       "id": "derangements",
       "relationship": "related",
-      "description": "Derangements formalizes combinatorial arithmetic over Lean's built-in `Nat`, directly built on the same `Nat.add` shown "
+      "description": "Derangements formalizes combinatorial arithmetic over Lean's built-in `Nat`, directly built on the same `Nat.add` shown here to be definitionally equivalent to `Peano.add`; the two entries together span elementary and advanced Nat reasoning"
     },
     {
       "id": "arithmetic-series",
@@ -162,7 +162,7 @@
     {
       "id": "sqrt2-irrational",
       "relationship": "related",
-      "description": "Both are classic entries in the gallery demonstrating that verified proofs of 'obvious' mathematical facts often reveal "
+      "description": "Both are classic entries in the gallery demonstrating that verified proofs of 'obvious' mathematical facts often reveal deep structural reasoning—here definitional equality, there proof by contradiction on rational squares"
     }
   ],
   "conclusion": {

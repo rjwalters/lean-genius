@@ -197,32 +197,32 @@
     {
       "id": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "Euler's proof that $\\sum 1/p$ diverges (1737) was the first quantitative result on prime distribution. PNT refines this:"
+      "description": "Euler's proof that $\\sum 1/p$ diverges (1737) was the first quantitative result on prime distribution. PNT refines this: $\\sum_{p \\leq x} 1/p \\sim \\ln\\ln x$, a consequence of $\\pi(x) \\sim x/\\ln x$ via partial summation"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) is an elementary consequence of PNT: $\\pi(2n) - \\pi(n) \\sim n/\\ln n "
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) is an elementary consequence of PNT: $\\pi(2n) - \\pi(n) \\sim n/\\ln n \\to \\infty$. Historically, Chebyshev's 1852 proof of Bertrand's postulate used proto-PNT techniques (bounds on $\\theta(x)$), and Erdős's 1932 elementary proof foreshadowed the Erdős-Selberg elementary proof of PNT (1949)"
     },
     {
       "id": "dirichlets-theorem",
       "relationship": "extends",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions ($\\exists$ infinitely many primes $\\equiv a \\pmod{q}$ when $\\gc"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions ($\\exists$ infinitely many primes $\\equiv a \\pmod{q}$ when $\\gcd(a,q)=1$) is strengthened by PNT in arithmetic progressions: $\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x)$, proving primes are equidistributed among residue classes"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function $\\varphi(n)$ appears in PNT for arithmetic progressions: $\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x"
+      "description": "Euler's totient function $\\varphi(n)$ appears in PNT for arithmetic progressions: $\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x)$. The totient also connects to prime distribution through the formula $\\varphi(n)/n = \\prod_{p | n}(1 - 1/p)$"
     },
     {
       "id": "stirling-formula",
       "relationship": "related",
-      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ and PNT are both asymptotic results about discrete sequences wit"
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ and PNT are both asymptotic results about discrete sequences with continuous approximations. The prime-counting analog of Stirling is $\\pi(x) \\sim \\text{Li}(x) = \\int_2^x dt/\\ln t$. Both involve the logarithm as the bridge between multiplicative and additive structure"
     },
     {
       "id": "fermats-last-theorem",
       "relationship": "related",
-      "description": "Both are landmark achievements in number theory. Wiles's proof of FLT (1995) uses the modularity of elliptic curves and "
+      "description": "Both are landmark achievements in number theory. Wiles's proof of FLT (1995) uses the modularity of elliptic curves and Galois representations — the same analytic number theory toolkit (L-functions, complex analysis) that underpins PNT. The connection between primes and modular forms runs deep through the Langlands program"
     }
   ],
   "references": [

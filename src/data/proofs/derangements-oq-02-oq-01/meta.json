@@ -175,17 +175,17 @@
     {
       "id": "derangements-oq-02",
       "relationship": "extends",
-      "description": "Direct parent: OQ-02 proves the partial derangement formula S(n,k) = C(n,k)·D(n-k) for Fin n. This OQ-01 generalizes to "
+      "description": "Direct parent: OQ-02 proves the partial derangement formula S(n,k) = C(n,k)·D(n-k) for Fin n. This OQ-01 generalizes to arbitrary Fintype α via transport"
     },
     {
       "id": "derangements-oq-03",
       "relationship": "related",
-      "description": "Sibling exploration of derangement theory, complementing this generalization with other aspects of the combinatorics of "
+      "description": "Sibling exploration of derangement theory, complementing this generalization with other aspects of the combinatorics of fixed-point-free permutations"
     },
     {
       "id": "inclusion-exclusion",
       "relationship": "foundational",
-      "description": "The inclusion-exclusion principle is the classical tool for counting derangements: D(n) = Σ(-1)^k C(n,k)(n-k)! = n! Σ(-1"
+      "description": "The inclusion-exclusion principle is the classical tool for counting derangements: D(n) = Σ(-1)^k C(n,k)(n-k)! = n! Σ(-1)^k/k!. The partial derangement formula S(n,k) similarly decomposes via inclusion-exclusion on the fixed-point set"
     },
     {
       "id": "binomial-theorem",
@@ -195,12 +195,12 @@
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) is used directly in the partial derangement formula S(n,k) = C(n,k)·D(n-"
+      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) is used directly in the partial derangement formula S(n,k) = C(n,k)·D(n-k) to count the number of ways to choose which k elements are fixed"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient φ(n) counts elements of (ℤ/nℤ)* coprime to n, paralleling how derangements count fixed-point-free permut"
+      "description": "Euler's totient φ(n) counts elements of (ℤ/nℤ)* coprime to n, paralleling how derangements count fixed-point-free permutations. Both involve counting elements of a finite group satisfying a constraint, and both use inclusion-exclusion in their classical proofs"
     }
   ],
   "references": [

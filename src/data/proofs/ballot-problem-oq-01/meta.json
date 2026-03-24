@@ -192,7 +192,7 @@
     {
       "id": "ballot-problem",
       "relationship": "extends",
-      "description": "Generalizes the classical ballot problem from 1-fold dominance (p>q always) to k-fold dominance (candidate A always has "
+      "description": "Generalizes the classical ballot problem from 1-fold dominance (p>q always) to k-fold dominance (candidate A always has ≥k× candidate B's votes at every stage)"
     },
     {
       "id": "ballot-problem-oq-02",
@@ -217,7 +217,7 @@
     {
       "id": "ballot-problem-oq-01-oq-01",
       "relationship": "extended-by",
-      "description": "Applies the Dvoretzky-Motzkin cycle lemma with a discrete intermediate value theorem to analyze ballot sequences — exten"
+      "description": "Applies the Dvoretzky-Motzkin cycle lemma with a discrete intermediate value theorem to analyze ballot sequences — extending the k-fold dominance criterion from this file with a rotational symmetry argument that counts favorable cyclic permutations"
     }
   ],
   "references": [

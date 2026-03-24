@@ -189,7 +189,7 @@
     {
       "id": "erdos-1",
       "relationship": "related",
-      "description": "Problem #1 (distinct subset sums) and Problem #47 (unit fraction subsets) are companion questions about what arithmetic "
+      "description": "Problem #1 (distinct subset sums) and Problem #47 (unit fraction subsets) are companion questions about what arithmetic structure is forced on dense sets. Both ask: given a density condition on a set A, must a specific subset-sum pattern appear? Problem #1 demands all subset sums be distinct (an avoidance property), while Problem #47 demands a specific target value of 1 (an achievement property). Both are resolved using the interplay between combinatorial density and additive structure."
     },
     {
       "id": "erdos-40",
@@ -209,7 +209,7 @@
     {
       "id": "szemeredi-regularity",
       "relationship": "technique",
-      "description": "The Szemerédi Regularity Lemma is a fundamental tool for analyzing dense subsets: it decomposes any graph (or subset of "
+      "description": "The Szemerédi Regularity Lemma is a fundamental tool for analyzing dense subsets: it decomposes any graph (or subset of integers) into pseudo-random parts. Bloom's 2021 proof of Problem #47 employs structural results about dense sets—related in spirit to regularity methods—to find unit fraction subsets. The regularity machinery formalised here provides the theoretical backdrop for understanding how density forces structure in combinatorial arguments."
     }
   ],
   "references": [

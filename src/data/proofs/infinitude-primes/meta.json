@@ -252,47 +252,47 @@
     {
       "id": "dirichlets-theorem",
       "relationship": "extends",
-      "description": "Dirichlet's theorem shows infinitely many primes in arithmetic progressions a, a+d, a+2d, ... when gcd(a,d)=1 — a vast g"
+      "description": "Dirichlet's theorem shows infinitely many primes in arithmetic progressions a, a+d, a+2d, ... when gcd(a,d)=1 — a vast generalization of Euclid's result"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function φ(n) counts integers coprime to n; its relationship to primes via φ(p) = p-1 connects to the in"
+      "description": "Euler's totient function φ(n) counts integers coprime to n; its relationship to primes via φ(p) = p-1 connects to the infinitude result"
     },
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem — $(p-1)! \\equiv -1 \\pmod{p}$ iff $p$ is prime — is the factorial-based primality criterion. Both resul"
+      "description": "Wilson's theorem — $(p-1)! \\equiv -1 \\pmod{p}$ iff $p$ is prime — is the factorial-based primality criterion. Both results exploit the divisibility structure of factorials: the infinitude proof uses $k \\mid n!$ for $k \\leq n$ to show $n!+1$ avoids small prime factors, while Wilson's theorem uses the complete factorial $(p-1)!$ to characterize primes"
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "thematic",
-      "description": "Both are foundational proofs by contradiction from ancient Greek mathematics: the irrationality of $\\sqrt{2}$ (attribute"
+      "description": "Both are foundational proofs by contradiction from ancient Greek mathematics: the irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans, c. 500 BCE) and the infinitude of primes (Euclid, c. 300 BCE) are among the earliest examples of rigorous impossibility/existence proofs, and both demonstrate the power of indirect reasoning"
     },
     {
       "id": "fermats-last-theorem",
       "relationship": "thematic",
-      "description": "Primes play a central role in FLT: Kummer's proof for regular primes (1847) was the deepest 19th-century progress, and W"
+      "description": "Primes play a central role in FLT: Kummer's proof for regular primes (1847) was the deepest 19th-century progress, and Wiles's proof (1995) uses the theory of Galois representations over prime fields. The unique factorization in $\\mathbb{Z}$ (a consequence of the infinitude and fundamental nature of primes) extends to $\\mathbb{Z}[\\zeta_p]$ for regular primes, which was Kummer's key insight"
     },
     {
       "id": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Gauss's quadratic reciprocity law governs which primes are squares modulo other primes: $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4"
+      "description": "Gauss's quadratic reciprocity law governs which primes are squares modulo other primes: $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$. The infinitude of primes ensures this law applies to infinitely many pairs, and Dirichlet's theorem (a generalization of Euclid's result) shows there are infinitely many primes in each residue class"
     },
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "Euler connected the Basel problem ($\\sum 1/n^2 = \\pi^2/6$) to primes via his product formula: $\\zeta(s) = \\sum 1/n^s = \\"
+      "description": "Euler connected the Basel problem ($\\sum 1/n^2 = \\pi^2/6$) to primes via his product formula: $\\zeta(s) = \\sum 1/n^s = \\prod_p (1 - p^{-s})^{-1}$. This Euler product, valid because of unique prime factorization, converts the sum over integers into a product over primes — and the divergence of the product at $s = 1$ gives Euler's analytic proof of infinitely many primes"
     },
     {
       "id": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The GCD algorithm (Euclid's algorithm) is the computational tool underlying the proof: the key step $\\gcd(n!+1, p) = 1$ "
+      "description": "The GCD algorithm (Euclid's algorithm) is the computational tool underlying the proof: the key step $\\gcd(n!+1, p) = 1$ for all $p \\leq n$ relies on the fact that if $p \\mid n!$ and $p \\mid (n!+1)$, then $p \\mid 1$ — a divisibility argument at the heart of both the GCD algorithm and the infinitude proof"
     },
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "Euclid's proof uses a form of infinite descent: given any finite list of primes, construct a number not divisible by any"
+      "description": "Euclid's proof uses a form of infinite descent: given any finite list of primes, construct a number not divisible by any of them, then find a prime factor — yielding a new prime. This constructive step, iterated, gives an inductively growing sequence of primes, demonstrating the well-ordering principle in action"
     }
   ],
   "leanFile": {

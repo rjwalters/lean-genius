@@ -173,7 +173,7 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey theory provides the backdrop for extremal graph problems: just as Ramsey numbers bound unavoidable monochromatic "
+      "description": "Ramsey theory provides the backdrop for extremal graph problems: just as Ramsey numbers bound unavoidable monochromatic cliques, Turán's theorem bounds unavoidable triangles. Györi's result extends this by quantifying how many edge-disjoint triangles are forced by edge density above the Turán threshold."
     },
     {
       "id": "erdos-1008",
@@ -193,12 +193,12 @@
     {
       "id": "szemeredi-regularity",
       "relationship": "complementary",
-      "description": "Szemerédi's Regularity Lemma is the primary modern tool for analyzing triangle structure in dense graphs. Györi's proof "
+      "description": "Szemerédi's Regularity Lemma is the primary modern tool for analyzing triangle structure in dense graphs. Györi's proof of the edge-disjoint triangle packing bound relies on regularity-type ideas; the Regularity Lemma generalizes these to arbitrary dense subgraph patterns via the triangle removal lemma."
     },
     {
       "id": "erdos-1",
       "relationship": "thematic",
-      "description": "Erdős Problem #1 is a central problem in Erdős's extremal combinatorics program. Like #1009, it exemplifies Erdős's appr"
+      "description": "Erdős Problem #1 is a central problem in Erdős's extremal combinatorics program. Like #1009, it exemplifies Erdős's approach of asking precise quantitative questions about forced combinatorial structure in dense or large discrete systems."
     }
   ],
   "references": [

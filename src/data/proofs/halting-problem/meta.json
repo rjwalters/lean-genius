@@ -177,7 +177,7 @@
     {
       "id": "hilbert-10",
       "relationship": "extends",
-      "description": "Matiyasevich's theorem (1970) reduces the halting problem to Diophantine equations: a set is recursively enumerable iff "
+      "description": "Matiyasevich's theorem (1970) reduces the halting problem to Diophantine equations: a set is recursively enumerable iff it is Diophantine. This means the undecidability of the halting problem implies no algorithm can decide whether arbitrary polynomial equations have integer solutions — resolving Hilbert's 10th problem negatively"
     },
     {
       "id": "abel-ruffini",
@@ -192,32 +192,32 @@
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "The proof that the halting problem is undecidable uses proof by contradiction (assume a halting oracle exists, then cons"
+      "description": "The proof that the halting problem is undecidable uses proof by contradiction (assume a halting oracle exists, then construct a paradoxical program). The construction relies on the recursive nature of programs — the ability of programs to call themselves — which is the computational analog of induction"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "Gödel numbering — encoding programs as natural numbers — relies on unique prime factorization to make the encoding injec"
+      "description": "Gödel numbering — encoding programs as natural numbers — relies on unique prime factorization to make the encoding injective. The halting problem's undecidability applies to any system that can enumerate programs, and the standard enumeration uses Gödel-style numbering based on the fundamental theorem of arithmetic"
     },
     {
       "id": "russell-1-plus-1",
       "relationship": "related",
-      "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and the halting problem use the same self-referential trick: construct an e"
+      "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and the halting problem use the same self-referential trick: construct an entity that contradicts its own classification. The halting problem asks 'does H(H) halt?' paralleling Russell's 'does R contain itself?' — both are diagonal arguments about self-application"
     },
     {
       "id": "continuum-hypothesis",
       "relationship": "thematic",
-      "description": "Both illustrate fundamental limits of formal methods: the halting problem shows some questions about programs are algori"
+      "description": "Both illustrate fundamental limits of formal methods: the halting problem shows some questions about programs are algorithmically undecidable, while CH shows some questions about sets are axiomatically independent. Both demonstrate that natural mathematical questions can fall outside the reach of specific formal frameworks"
     },
     {
       "id": "cantors-theorem",
       "relationship": "foundational",
-      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) is the prototype of the diagonal argument that Turing adapted for the haltin"
+      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) is the prototype of the diagonal argument that Turing adapted for the halting problem. The halting problem's proof constructs a 'paradoxical program' $D(x) = $ 'run forever if $H(x,x)$ says halt, else halt' — this is exactly Cantor's diagonal set $\\{x : x \\notin f(x)\\}$ applied to the halting oracle $H$"
     },
     {
       "id": "p-vs-np",
       "relationship": "related",
-      "description": "The halting problem proves absolute undecidability (no algorithm decides all instances), while P vs NP asks about effici"
+      "description": "The halting problem proves absolute undecidability (no algorithm decides all instances), while P vs NP asks about efficient decidability (can NP problems be solved in polynomial time?). The halting problem's diagonal argument shows some problems are not decidable at all; P $\\neq$ NP would show some decidable problems are not efficiently decidable — a finer gradation of computational impossibility"
     }
   ],
   "references": [

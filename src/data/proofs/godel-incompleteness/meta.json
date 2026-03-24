@@ -234,7 +234,7 @@
     {
       "id": "cantor-diagonalization",
       "relationship": "foundational",
-      "description": "Cantor's diagonal argument (1891) is the prototype for Gödel's technique: both construct objects that differ from every "
+      "description": "Cantor's diagonal argument (1891) is the prototype for Gödel's technique: both construct objects that differ from every member of a countable list. Gödel numbers encode formulas as integers, then the diagonal lemma produces a sentence about its own Gödel number"
     },
     {
       "id": "abel-ruffini",
@@ -254,42 +254,42 @@
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "Induction over natural numbers is the core reasoning principle that Gödel's system must be able to express. The incomple"
+      "description": "Induction over natural numbers is the core reasoning principle that Gödel's system must be able to express. The incompleteness theorem applies to any consistent system containing enough arithmetic to formalize induction"
     },
     {
       "id": "parallel-postulate-independence",
       "relationship": "related",
-      "description": "The independence of the parallel postulate from Euclid's other axioms (via non-Euclidean geometries) was an early exampl"
+      "description": "The independence of the parallel postulate from Euclid's other axioms (via non-Euclidean geometries) was an early example of independence results. Gödel's incompleteness generalizes this dramatically: for ANY sufficiently strong consistent system, there exist independent sentences — not just geometric axioms but arithmetic statements"
     },
     {
       "id": "russell-1-plus-1",
       "relationship": "related",
-      "description": "Russell and Whitehead's Principia Mathematica (1910-1913) attempted to derive all of mathematics from logical axioms — H"
+      "description": "Russell and Whitehead's Principia Mathematica (1910-1913) attempted to derive all of mathematics from logical axioms — Hilbert's program in action. Gödel's theorem showed that any such foundational system, if consistent, must be incomplete. The famous proof that 1+1=2 in PM illustrates the immense formal infrastructure that Gödel's theorem applies to"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Gödel numbering — the encoding of formulas as natural numbers — relies critically on the fundamental theorem of arithmet"
+      "description": "Gödel numbering — the encoding of formulas as natural numbers — relies critically on the fundamental theorem of arithmetic (unique prime factorization). Each formula is encoded as $\\prod p_i^{a_i}$ where primes index symbol positions and exponents encode symbols. Without unique factorization, Gödel numbers would be ambiguous and the self-referential construction would fail"
     },
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes ensures Gödel numbering never runs out: each position in a formula requires a new prime, so enc"
+      "description": "The infinitude of primes ensures Gödel numbering never runs out: each position in a formula requires a new prime, so encoding arbitrarily long formulas requires infinitely many primes. Euclid's theorem (c. 300 BCE) thus provides the basic number-theoretic infrastructure for Gödel's encoding (1931)"
     },
     {
       "id": "angle-trisection",
       "relationship": "thematic",
-      "description": "Both are impossibility results that resolved long-standing programs: Wantzel (1837) showed compass-straightedge cannot t"
+      "description": "Both are impossibility results that resolved long-standing programs: Wantzel (1837) showed compass-straightedge cannot trisect all angles, ending 2000 years of geometric attempts; Gödel (1931) showed no formal system can prove all arithmetic truths, ending Hilbert's program. Both shift the question from 'how?' to 'why not?'"
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "thematic",
-      "description": "The irrationality of $\\sqrt{2}$ and Gödel's incompleteness are both proved by contradiction and both reveal fundamental "
+      "description": "The irrationality of $\\sqrt{2}$ and Gödel's incompleteness are both proved by contradiction and both reveal fundamental limitations: $\\sqrt{2}$ cannot be expressed as $p/q$ (the rational framework is too narrow), and arithmetic truths cannot all be proved in a formal system (the formal framework is too narrow). Both show that natural-seeming 'complete' descriptions are inherently incomplete"
     },
     {
       "id": "cantors-theorem",
       "relationship": "foundational",
-      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) uses the same diagonal construction that Gödel adapted for incompleteness. G"
+      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) uses the same diagonal construction that Gödel adapted for incompleteness. Gödel's self-referential sentence 'this statement is unprovable' is the arithmetic analog of Cantor's diagonal set $\\{x : x \\notin f(x)\\}$ — both create paradoxes by negating a self-referential predicate along the diagonal. Lawvere's fixed-point theorem unifies both as instances of a single categorical principle"
     }
   ],
   "references": [

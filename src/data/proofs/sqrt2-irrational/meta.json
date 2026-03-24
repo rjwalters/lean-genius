@@ -188,7 +188,7 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "uses",
-      "description": "Unique prime factorization underlies the argument: if p² | a² then p | a, which requires that prime multiplicities in a²"
+      "description": "Unique prime factorization underlies the argument: if p² | a² then p | a, which requires that prime multiplicities in a² are always even"
     },
     {
       "id": "pythagorean-theorem",
@@ -208,37 +208,37 @@
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "Both are landmark results about the nature of specific numbers: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrational) is the weakest"
+      "description": "Both are landmark results about the nature of specific numbers: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrational) is the weakest expressibility barrier, while $e \\notin \\overline{\\mathbb{Q}}$ (transcendental) is strictly stronger. Together they illustrate the hierarchy: rational → algebraic irrational → transcendental"
     },
     {
       "id": "pi-transcendental",
       "relationship": "related",
-      "description": "The irrationality of $\\sqrt{2}$ and the transcendence of $\\pi$ bracket the expressibility hierarchy: $\\sqrt{2}$ is algeb"
+      "description": "The irrationality of $\\sqrt{2}$ and the transcendence of $\\pi$ bracket the expressibility hierarchy: $\\sqrt{2}$ is algebraic irrational (degree 2 over $\\mathbb{Q}$), while $\\pi$ is transcendental (not a root of any polynomial over $\\mathbb{Q}$). The diagonal of a unit square ($\\sqrt{2}$) is constructible; $\\sqrt{\\pi}$ is not"
     },
     {
       "id": "hermite-lindemann",
       "relationship": "extends",
-      "description": "Hermite-Lindemann ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is a vast generalization: it proves transcen"
+      "description": "Hermite-Lindemann ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is a vast generalization: it proves transcendence of $e$ and $\\pi$ simultaneously. The irrationality of $\\sqrt{2}$ (c. 500 BCE) was the historical starting point of this research program, which took over 2000 years to reach transcendence results"
     },
     {
       "id": "angle-trisection",
       "relationship": "complementary",
-      "description": "$\\sqrt{2}$ IS constructible (diagonal of a unit square) because $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2 = 2^1$. This cont"
+      "description": "$\\sqrt{2}$ IS constructible (diagonal of a unit square) because $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2 = 2^1$. This contrasts with $\\cos(20°)$ which is NOT constructible (degree 3 over $\\mathbb{Q}$). Both illustrate Wantzel's criterion: constructibility requires degree $2^n$"
     },
     {
       "id": "cantor-diagonalization",
       "relationship": "thematic",
-      "description": "Both prove that certain sets are 'too large' for a given description: $\\sqrt{2} \\notin \\mathbb{Q}$ shows irrationals exi"
+      "description": "Both prove that certain sets are 'too large' for a given description: $\\sqrt{2} \\notin \\mathbb{Q}$ shows irrationals exist, while Cantor proves the irrationals are uncountably many. The irrationality of $\\sqrt{2}$ is the first concrete witness; Cantor shows such numbers are the overwhelming majority"
     },
     {
       "id": "gelfond-schneider",
       "relationship": "extends",
-      "description": "Gelfond-Schneider proves $\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\bet"
+      "description": "Gelfond-Schneider proves $\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$. Since $\\sqrt{2}$ is algebraic irrational, $2^{\\sqrt{2}} = (\\sqrt{2})^{2\\sqrt{2}}$ is transcendental — connecting the simplest irrational ($\\sqrt{2}$) to transcendence theory"
     },
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "The proof by infinite descent (showing no smallest counterexample exists) is closely related to strong induction — both "
+      "description": "The proof by infinite descent (showing no smallest counterexample exists) is closely related to strong induction — both rely on the well-ordering of $\\mathbb{N}$. The irrationality proof uses descent: if $\\sqrt{2} = p/q$ in lowest terms, then derive a fraction with smaller denominator, contradicting minimality"
     }
   ],
   "references": [

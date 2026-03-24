@@ -169,7 +169,7 @@
     {
       "id": "prob-method-lovasz-local",
       "relationship": "related",
-      "description": "The Lovasz Local Lemma provides an alternative approach to sparse dependency structures that the alteration method also "
+      "description": "The Lovasz Local Lemma provides an alternative approach to sparse dependency structures that the alteration method also handles"
     },
     {
       "id": "prob-method-applications",
@@ -189,12 +189,12 @@
     {
       "id": "friendship-theorem",
       "relationship": "related",
-      "description": "The friendship theorem is a graph-theoretic existence/uniqueness result that, like the independent set bound here, conne"
+      "description": "The friendship theorem is a graph-theoretic existence/uniqueness result that, like the independent set bound here, connects structural properties of graphs to the existence of specific substructures — both are cornerstones of extremal graph theory"
     },
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "Binomial coefficients underpin the probability calculations in the alteration method: random subset selection with proba"
+      "description": "Binomial coefficients underpin the probability calculations in the alteration method: random subset selection with probability $p$ creates a binomially distributed vertex count, and the expected edge count within the subset uses $\\binom{d}{2} p^2$ style calculations"
     }
   ],
   "leanFile": {

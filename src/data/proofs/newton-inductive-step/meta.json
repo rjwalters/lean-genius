@@ -206,7 +206,7 @@
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem generates the coefficients C(m,k) that this module proves are log-concave. The absorption identity "
+      "description": "The binomial theorem generates the coefficients C(m,k) that this module proves are log-concave. The absorption identity k*C(m,k) = (m-k+1)*C(m,k-1) is a fundamental recurrence for binomial coefficients, closely related to Pascal's rule"
     },
     {
       "id": "binomial-theorem-oq-02",
@@ -216,7 +216,7 @@
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) underlies the absorption identity used throughout this proof: k*C(m,k) ="
+      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) underlies the absorption identity used throughout this proof: k*C(m,k) = (m-k+1)*C(m,k-1) follows directly from the factorial definition"
     }
   ]
 }

@@ -204,11 +204,13 @@
   "relatedProofs": [
     {
       "id": "divisibility-by-3",
-      "relationship": "Base formalization of the divisibility-by-3 rule; this OQ-01 generalizes to a comprehensive collection of rules for multiple divisors"
+      "relationship": "Base formalization of the divisibility-by-3 rule; this OQ-01 generalizes to a comprehensive collection of rules for multiple divisors",
+      "description": "Extends the base divisibility-by-3 formalization to a comprehensive collection covering truncation methods, digital root theory, and coprime factorization for all primes up to 19"
     },
     {
       "id": "divisibility-truncation-general",
-      "relationship": "The general parametric truncation theorem that unifies the specific rules for 7, 11, 13, 17, 19 proved individually in this entry"
+      "relationship": "The general parametric truncation theorem that unifies the specific rules for 7, 11, 13, 17, 19 proved individually in this entry",
+      "description": "The truncation methods for 7, 11, 13, 17, 19 proved individually here are unified into a single parametric theorem in divisibility-truncation-general"
     },
     "divisibility-by-3",
     "divisibility-truncation-general",

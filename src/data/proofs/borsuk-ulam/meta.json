@@ -254,12 +254,12 @@
     {
       "id": "prob-method-lovasz-local",
       "relationship": "related",
-      "description": "Lovász's 1978 proof of Kneser's conjecture used Borsuk-Ulam as the key topological ingredient, connecting the chromatic "
+      "description": "Lovász's 1978 proof of Kneser's conjecture used Borsuk-Ulam as the key topological ingredient, connecting the chromatic number of Kneser graphs to sphere connectivity. This launched the field of topological combinatorics that bridges Lovász's probabilistic/algebraic methods with topological fixed-point theory."
     },
     {
       "id": "schauder-fixed-point",
       "relationship": "related",
-      "description": "Schauder's theorem generalizes Brouwer's fixed point theorem to infinite dimensions. Since Borsuk-Ulam implies Brouwer, "
+      "description": "Schauder's theorem generalizes Brouwer's fixed point theorem to infinite dimensions. Since Borsuk-Ulam implies Brouwer, the chain Borsuk-Ulam → Brouwer → Schauder traces the progression from finite-dimensional topology to functional analysis."
     },
     {
       "id": "borsuk-ulam-oq-02",
@@ -269,22 +269,22 @@
     {
       "id": "borsuk-ulam-oq-03",
       "relationship": "extended-by",
-      "description": "Develops constructive versions of the Borsuk-Ulam theorem and equivalent formulations (Tucker's lemma, Lusternik-Schnire"
+      "description": "Develops constructive versions of the Borsuk-Ulam theorem and equivalent formulations (Tucker's lemma, Lusternik-Schnirelman) — addressing the open question about intuitionistic proofs"
     },
     {
       "id": "poincare-conjecture",
       "relationship": "thematic",
-      "description": "Both are landmark results in the topology of spheres. Borsuk-Ulam concerns the symmetry structure of $S^n$ (no odd map $"
+      "description": "Both are landmark results in the topology of spheres. Borsuk-Ulam concerns the symmetry structure of $S^n$ (no odd map $S^n \\to S^{n-1}$), while the Poincaré conjecture characterizes $S^3$ among 3-manifolds by its fundamental group. Both rely on homotopy-theoretic invariants ($\\pi_1$ for Borsuk-Ulam's covering space argument, the full homotopy type for Poincaré) and both were solved using deep analytic/topological methods"
     },
     {
       "id": "four-color-theorem",
       "relationship": "thematic",
-      "description": "Both connect topology to combinatorics. Borsuk-Ulam implies Kneser's conjecture on graph chromatic numbers via Lovász's "
+      "description": "Both connect topology to combinatorics. Borsuk-Ulam implies Kneser's conjecture on graph chromatic numbers via Lovász's 1978 proof, founding topological combinatorics. The four-color theorem concerns the chromatic number of planar graphs. Together they illustrate how topology constrains coloring: Borsuk-Ulam provides lower bounds ($\\chi(K(n,k)) \\geq n - 2k + 2$) while the four-color theorem provides an upper bound ($\\chi(G) \\leq 4$ for planar $G$)"
     },
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "Both use topological arguments about continuous maps on spheres. FTA can be proved via the winding number (degree theory"
+      "description": "Both use topological arguments about continuous maps on spheres. FTA can be proved via the winding number (degree theory on $S^1$), while Borsuk-Ulam uses degree theory on $S^n$. Both show that topological constraints (non-contractibility of spheres) force the existence of special points (roots, antipodal pairs)"
     }
   ],
   "leanFile": {

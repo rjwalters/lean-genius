@@ -217,7 +217,7 @@
     {
       "id": "erdos-544",
       "relationship": "direct-generalization",
-      "description": "Erdős Problem #544 asks about consecutive Ramsey number differences R(k+1,k) - R(k,k); #1030 asks whether this difference grows fast enough to push..."
+      "description": "Erdős Problem #544 asks about consecutive Ramsey number differences R(k+1,k) - R(k,k); #1030 asks whether this difference grows fast enough to push the ratio R(k+1,k)/R(k,k) above 1+c."
     },
     {
       "id": "erdos-1014",
@@ -227,12 +227,12 @@
     {
       "id": "erdos-1029",
       "relationship": "related-bound",
-      "description": "Erdős Problem #1029 concerns the diagonal growth rate R(k)/(k·2^{k/2}) → ∞; sharp bounds on R(k,k) are needed to convert the BEFS linear difference..."
+      "description": "Erdős Problem #1029 concerns the diagonal growth rate R(k)/(k·2^{k/2}) → ∞; sharp bounds on R(k,k) are needed to convert the BEFS linear difference bound into the ratio bound of #1030."
     },
     {
       "id": "erdos-1031",
       "relationship": "adjacent-problem",
-      "description": "Erdős Problem #1031 studies induced regular subgraphs in graphs with no large homogeneous sets — part of the broader Ramsey-theoretic program on gr..."
+      "description": "Erdős Problem #1031 studies induced regular subgraphs in graphs with no large homogeneous sets — part of the broader Ramsey-theoretic program on graph structure."
     }
   ],
   "references": [
