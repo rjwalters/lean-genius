@@ -64,7 +64,7 @@
   "overview": {
     "historicalContext": "Bertrand conjectured in 1845 that every interval (n, 2n] contains at least one prime. Chebyshev verified this in 1852, and Erdős gave an elegant elementary proof in 1932 using central binomial coefficients. But the deeper question is: how precisely are primes distributed in much shorter intervals? The Prime Number Theorem (PNT) gives π(x) ~ x/ln(x), predicting ~h/ln(x) primes in [x, x+h] for 'large' h. The question of how small h can be while guaranteeing a prime is one of the central problems in analytic number theory.",
     "problemStatement": "**Open Question**: What is the smallest θ such that every interval [x, x+x^θ] contains a prime for all sufficiently large x?\n\n**Known**: Baker-Harman-Pintz (2001) proved θ = 0.525 works.\n**Open**: Does θ < 1/2 work? Does θ → 0 work with a poly-log correction (Cramér's conjecture)? Does every [n², (n+1)²] contain a prime (Legendre's conjecture)?",
-    "text": "Bertrand's Postulate guarantees a prime in every (n, 2n], but how dense are primes in much shorter intervals? This formalization establishes a logarithmic lower bound π(n) ≥ log₂(n) from iterated Bertrand, surveys Baker-Harman-Pintz's x^0.525 record, and formally captures the open Cramér and Legendre conjectures.",
+    "text": "A 308-line formalization exploring prime density in short intervals beyond Bertrand's postulate. Defines `primeCountInInterval lo hi` as $\\pi(hi) - \\pi(lo)$ and proves $\\pi(2^m) \\geq m$ by iterating Bertrand (each doubling contributes at least one prime). This yields the logarithmic lower bound $\\pi(n) \\geq \\log_2(n)$ for $n \\geq 2$. Introduces `PrimeGapConjecture(\\theta)` — the assertion that every interval $[x, x + x^\\theta]$ contains a prime for $x \\geq 2$ — and proves it is monotone in $\\theta$. Three axioms capture deep results: Bertrand as $\\text{PrimeGapConjecture}(1)$, Baker-Harman-Pintz (2001) as $\\text{PrimeGapConjecture}(0.525)$, and Cramér's conjecture. Legendre's conjecture (prime between consecutive squares) follows from $\\text{PrimeGapConjecture}(1/2)$, which remains open.",
     "proofStrategy": "Start with Bertrand's Postulate (prime in (n, 2n]) and iterate: if π(n) counts primes up to n, then π(2n) ≥ π(n) + 1 by Bertrand. Iterating k times gives π(2^k * n) ≥ π(n) + k. Setting n=1 gives π(2^m) ≥ m. Since 2^(log₂ n) ≤ n, this yields the logarithmic bound π(n) ≥ log₂(n). The short-interval question (the open part) is then captured via axioms for Baker-Harman-Pintz, Cramér, and Legendre.",
     "keyInsights": [
       "Iterating Bertrand k times shows π(2^k * n) ≥ π(n) + k — a multiplicative density statement",
@@ -206,6 +206,36 @@
     "fundamental-arithmetic",
     "quadratic-reciprocity",
     "prime-reciprocal-divergence"
+  ],
+  "references": [
+    {
+      "authors": "Baker, Roger C.; Harman, Glyn; Pintz, János",
+      "title": "The difference between consecutive primes, II",
+      "year": "2001",
+      "venue": "Proceedings of the London Mathematical Society, vol. 83, no. 3, pp. 532–562",
+      "note": "Proved that every interval [x, x + x^0.525] contains a prime for sufficiently large x — the current record for short-interval prime gaps, using Harman's sieve"
+    },
+    {
+      "authors": "Cramér, Harald",
+      "title": "On the order of magnitude of the difference between consecutive prime numbers",
+      "year": "1936",
+      "venue": "Acta Arithmetica, vol. 2, pp. 23–46",
+      "note": "Conjectured that prime gaps satisfy p_{n+1} - p_n = O((log p_n)²) based on a probabilistic model of primes — still unproved and one of the central open problems in analytic number theory"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Beweis eines Satzes von Tschebyschef",
+      "year": "1932",
+      "venue": "Acta Scientiarum Mathematicarum (Szeged), vol. 5, pp. 194–198",
+      "note": "Elegant elementary proof of Bertrand's postulate using properties of central binomial coefficients — the starting point for this formalization's iterated argument"
+    },
+    {
+      "authors": "Maynard, James",
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 383–413",
+      "note": "Proved lim inf (p_{n+1} - p_n) ≤ 600 unconditionally and lim inf (p_{n+m} - p_n) < ∞ for every fixed m, showing bounded gaps between primes in any finite tuple"
+    }
   ],
   "leanFile": {
     "imports": [
