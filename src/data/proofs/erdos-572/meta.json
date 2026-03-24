@@ -81,49 +81,56 @@
       "title": "Graph-Theoretic Definitions",
       "summary": "hasCycleOfLength, isCycleFree, edgeCount definitions",
       "startLine": 43,
-      "endLine": 74
+      "endLine": 74,
+      "mathContext": "G \\text{ has a } C_k \\iff \\exists\\, v_0,\\dots,v_{k-1}\\text{ distinct}: v_i \\sim v_{(i+1)\\bmod k}"
     },
     {
       "id": "extremal-function",
       "title": "The Extremal Function",
       "summary": "exCycle definition: ex(n; C_{2k})",
       "startLine": 75,
-      "endLine": 89
+      "endLine": 89,
+      "mathContext": "\\mathrm{ex}(n; C_{2k}) = \\max\\{|E(G)| : |V(G)| = n,\\, G \\text{ is } C_{2k}\\text{-free}\\}"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "bondy_simonovits_upper, benson_k3, benson_k5, lazebnik_ustimenko_woldar axioms",
       "startLine": 90,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "c_1 n^{1+2/(3k-3+\\nu)} \\leq \\mathrm{ex}(n; C_{2k}) \\leq c_2 k n^{1+1/k},\\quad \\nu = [2 \\mid k]"
     },
     {
       "id": "the-conjecture",
       "title": "The Conjecture",
       "summary": "erdosConjectureLowerBound, erdos_572_k3, erdos_572_k5 theorems",
       "startLine": 144,
-      "endLine": 191
+      "endLine": 191,
+      "mathContext": "\\exists c > 0: \\mathrm{ex}(n; C_{2k}) \\geq c\\, n^{1+1/k} \\text{ for all } n \\geq 1"
     },
     {
       "id": "exponent-comparison",
       "title": "Comparison of Exponents",
       "summary": "luwExponent, conjecturedExponent, comparison theorems",
       "startLine": 192,
-      "endLine": 232
+      "endLine": 232,
+      "mathContext": "\\alpha_{\\mathrm{LUW}}(k) = 1 + \\frac{2}{3k-3+\\nu} \\leq 1 + \\frac{1}{k} = \\alpha_{\\mathrm{conj}}(k),\\quad \\text{with equality iff } k=3"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "erdos_klein_c4 for C_4, odd_cycle_extremal for odd cycles",
       "startLine": 233,
-      "endLine": 272
+      "endLine": 272,
+      "mathContext": "\\mathrm{ex}(n; C_4) \\sim \\tfrac{1}{2}n^{3/2};\\quad \\mathrm{ex}(n; C_{2k+1}) = \\lfloor n^2/4 \\rfloor"
     },
     {
       "id": "summary",
       "title": "Main Results Summary",
       "summary": "erdos_572_summary, best_known_lower_bounds theorems",
       "startLine": 273,
-      "endLine": 305
+      "endLine": 305,
+      "mathContext": "\\mathrm{ex}(n; C_6) \\geq c n^{4/3},\\; \\mathrm{ex}(n; C_{10}) \\geq c n^{6/5},\\; \\mathrm{ex}(n; C_{2k}) \\geq c n^{1+2/(3k-3+\\nu)}"
     }
   ],
   "conclusion": {

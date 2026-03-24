@@ -16,7 +16,12 @@
       "Prime factorization",
       "Short intervals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime",
+      "Nat.factorization",
+      "Prime factorization with multiplicity (Ω function)",
+      "Primorial: product of first k primes"
+    ]
   },
   {
     "id": "ann-e891-big-omega",
@@ -35,7 +40,12 @@
       "Arithmetic functions",
       "Little omega"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.factorization",
+      "Finsupp.sum",
+      "Nat.Prime",
+      "p-adic valuation (Nat.factorization applied to a prime)"
+    ]
   },
   {
     "id": "ann-e891-little-omega",
@@ -53,7 +63,12 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.factorization",
+      "Finsupp.support",
+      "Finset.card",
+      "Squarefree numbers (ω(n) = Ω(n) iff n is squarefree)"
+    ]
   },
   {
     "id": "ann-e891-nth-prime",
@@ -71,7 +86,12 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.nth",
+      "Nat.infinite_setOf_prime",
+      "Nat.nth_strictMono",
+      "Nat.nth_mem_of_infinite"
+    ]
   },
   {
     "id": "ann-e891-primorial",
@@ -90,7 +110,12 @@
       "Product of primes",
       "Smooth numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.prod",
+      "Finset.range",
+      "nthPrime (Nat.nth applied to the set of primes)",
+      "Finset.prod_pos"
+    ]
   },
   {
     "id": "ann-e891-has-many-factors",
@@ -108,7 +133,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bigOmega (Ω function counting prime factors with multiplicity)",
+      "primorial (product of first k primes)",
+      "Existential quantifier over a bounded interval",
+      "Nat.lt and Nat.le for interval membership"
+    ]
   },
   {
     "id": "ann-e891-conjecture",
@@ -126,7 +156,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "HasManyFactors predicate",
+      "primorial (product of first k primes)",
+      "Eventually (Filter.Eventually) / sufficiently large n",
+      "bigOmega (Ω function)"
+    ]
   },
   {
     "id": "ann-e891-k-equals-2",
@@ -144,7 +179,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primorialComp 2 = 6 (computable primorial)",
+      "bigOmega (Ω function)",
+      "HasManyFactorsComp predicate",
+      "native_decide for decidable computation over finite ranges"
+    ]
   },
   {
     "id": "ann-e891-examples",
@@ -162,7 +202,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide tactic for decidable propositions",
+      "bigOmega_eight / bigOmega_twelve (specific Ω value theorems)",
+      "HasManyFactorsComp with primorialComp",
+      "Nat.factorization and prime power decomposition"
+    ]
   },
   {
     "id": "ann-e891-schinzel",
@@ -180,7 +225,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pólya's theorem on unbounded gaps in k-smooth numbers",
+      "k-smooth numbers (isSmoothComp predicate)",
+      "bigOmega (Ω function counting prime factors with multiplicity)",
+      "schinzel_theorem_statement axiom (skipped-primorial interval)"
+    ]
   },
   {
     "id": "ann-e891-dicksons",
@@ -199,7 +249,12 @@
       "Prime constellations",
       "Hardy-Littlewood conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime and linear forms aᵢn + bᵢ",
+      "Set.Infinite for infinitely many simultaneous primes",
+      "No fixed prime divisor condition (admissibility of k-tuples)",
+      "Twin prime conjecture as the k=2 special case"
+    ]
   },
   {
     "id": "ann-e891-weisenberg",
@@ -217,7 +272,12 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "DicksonsConjecture definition",
+      "primorial (product of first k primes)",
+      "Set.Infinite for infinitely many counterexample starting points",
+      "weisenberg_conditional axiom (conditional on Dickson's conjecture)"
+    ]
   },
   {
     "id": "ann-e891-smooth",
@@ -236,7 +296,12 @@
       "Prime distribution"
     ],
     "mathContext": "See annotation content for formal details of smooth numbers and pólya's theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "isSmoothComp predicate (all prime factors ≤ bound)",
+      "Nat.Prime and divisibility",
+      "Pólya's theorem: limsup of gaps in k-smooth sequence is infinite",
+      "Nat.primeFactors and Finset membership"
+    ]
   },
   {
     "id": "ann-e891-summary",
@@ -254,6 +319,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ErdosProblem891 definition (main open conjecture)",
+      "schinzel_theorem_statement axiom (skipped-primorial weaker result)",
+      "weisenberg_conditional axiom (conditional sharpness of primorial threshold)",
+      "k2_verified_range (computational evidence for k = 2 case)"
+    ]
   }
 ]
