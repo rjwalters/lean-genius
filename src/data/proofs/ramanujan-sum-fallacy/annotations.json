@@ -49,7 +49,8 @@
     "relatedConcepts": [
       "natural numbers",
       "sequences"
-    ]
+    ],
+    "mathContext": "We define `naturals n = n + 1` to get the sequence $1, 2, 3, 4, \\ldots$ (offset by 1 because $\\mathbb{N}$ starts at 0 in Lean)."
   },
   {
     "id": "ann-false-claim",
@@ -135,7 +136,8 @@
     "relatedConcepts": [
       "divergence",
       "partial sums"
-    ]
+    ],
+    "mathContext": "The series $1-2+3-4+5-6+\\cdots$ also diverges."
   },
   {
     "id": "ann-shift-requires-summable",
@@ -168,7 +170,8 @@
     "relatedConcepts": [
       "type checking",
       "blocked proof"
-    ]
+    ],
+    "mathContext": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**."
   },
   {
     "id": "ann-unbounded",
@@ -236,7 +239,8 @@
     "relatedConcepts": [
       "second fallacy",
       "manipulation blocked"
-    ]
+    ],
+    "mathContext": "The second step uses the shift-and-add manipulation."
   },
   {
     "id": "ann-step3",
@@ -270,6 +274,7 @@
       "formal verification",
       "type safety",
       "mathematical rigor"
-    ]
+    ],
+    "mathContext": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1."
   }
 ]

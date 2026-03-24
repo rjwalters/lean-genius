@@ -14,7 +14,8 @@
       "prime gaps",
       "prime distribution",
       "number theory"
-    ]
+    ],
+    "mathContext": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime."
   },
   {
     "id": "ann-historical",
@@ -81,7 +82,8 @@
     "relatedConcepts": [
       "infinitude of primes",
       "Euclid's theorem"
-    ]
+    ],
+    "mathContext": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1."
   },
   {
     "id": "ann-erdos-proof",
@@ -114,7 +116,8 @@
     "relatedConcepts": [
       "constructive proofs",
       "explicit bounds"
-    ]
+    ],
+    "mathContext": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime."
   },
   {
     "id": "ann-pnt-connection",
