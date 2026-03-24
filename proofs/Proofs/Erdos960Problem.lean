@@ -106,7 +106,22 @@ theorem turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
 /-- The trivial upper bound: at most C(n,2) ordinary lines total. -/
 theorem trivial_bound (P : PointConfig) :
   ordinaryLineCount P ≤ P.n * (P.n - 1) / 2 := by
-  sorry -- TODO: needs offDiag card lemma (Finset.card_offDiag renamed in Mathlib 4.26)
+  unfold ordinaryLineCount
+  -- The filtered set is a subset of the off-diagonal pairs
+  have hsub : ((P.points ×ˢ P.points).filter
+    fun (pq : (ℕ × ℕ) × (ℕ × ℕ)) => pq.1 ≠ pq.2 ∧ IsOrdinaryLine P pq.1 pq.2) ⊆
+    P.points.offDiag := by
+    intro pq hpq
+    simp only [Finset.mem_filter, Finset.mem_product] at hpq
+    exact Finset.mem_offDiag.mpr ⟨hpq.1.1, hpq.1.2, hpq.2.1⟩
+  have hcard : P.points.offDiag.card = P.n * (P.n - 1) := by
+    rw [Finset.offDiag_card, P.card_eq]
+    rcases P.n with _ | m
+    · simp
+    · rw [Nat.succ_sub_one, Nat.mul_succ, Nat.add_sub_cancel]
+  calc ((P.points ×ˢ P.points).filter _).card / 2
+      ≤ P.points.offDiag.card / 2 := Nat.div_le_div_right (Finset.card_le_card hsub)
+    _ = P.n * (P.n - 1) / 2 := by rw [hcard]
 
 -- ## Part VII: Known Cases and Connections
 
@@ -142,16 +157,27 @@ theorem ordinary_pairs_count (r : ℕ) (_hr : r ≥ 2) :
 theorem linear_implies_littleo (r k : ℕ) (_hr : r ≥ 2) (_hk : k ≥ 2) :
     ErdosConjecture960_linear r k → ErdosConjecture960_littleo r k := by
   intro ⟨C, hC⟩ ε hε
-  use (((C : ℚ) / ε).ceil.toNat + 1)
+  use (⌈(C : ℚ) / ε⌉.toNat + 1)
   intro n hn
   have hCn := hC n
   -- threshold r k n ≤ C * n < ε * n * n for n large enough
   calc (threshold r k n : ℚ) ≤ ↑(C * n) := by exact_mod_cast hCn
     _ = (C : ℚ) * n := by push_cast; ring
     _ < ε * n * n := by
-        -- Need: C * n < ε * n * n, i.e., C < ε * n (when n > 0)
-        -- From hn: n ≥ ⌈C/ε⌉₊ + 1 > C/ε, so C/ε < n, hence C < ε * n
-        sorry
+        have hn1 : n ≥ 1 := by omega
+        have hn_pos : (0 : ℚ) < (n : ℚ) := by exact_mod_cast hn1
+        have hCε_nn : 0 ≤ ⌈(C : ℚ) / ε⌉ :=
+          Int.ceil_nonneg (div_nonneg (Nat.cast_nonneg C) hε.le)
+        -- n > C/ε: from hn, n ≥ ⌈C/ε⌉.toNat + 1 > ⌈C/ε⌉ ≥ C/ε
+        have h_n_gt_Cε : (C : ℚ) / ε < (n : ℚ) := by
+          have h2 : (n : ℤ) ≥ ⌈(C : ℚ) / ε⌉.toNat + 1 := by exact_mod_cast hn
+          rw [Int.toNat_of_nonneg hCε_nn] at h2
+          have h3 : (⌈(C : ℚ) / ε⌉ + 1 : ℚ) ≤ (n : ℚ) := by exact_mod_cast h2
+          linarith [Int.le_ceil ((C : ℚ) / ε)]
+        have hCε : (C : ℚ) < ε * (n : ℚ) := by
+          have h := mul_lt_mul_of_pos_right h_n_gt_Cε hε
+          rw [div_mul_cancel₀ _ (ne_of_gt hε)] at h; linarith
+        nlinarith
 
 -- ## Summary
 
