@@ -1,69 +1,134 @@
 [
   {
+    "id": "ann-oq03-header",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 1, "endLine": 59 },
+    "type": "context",
+    "title": "Module Header: Krylov Method for Minimal Polynomial",
+    "content": "The file formalizes the Krylov method for computing the minimal polynomial of an $n \\times n$ matrix $M$ over a field $K$ in $O(n^3)$ field operations. The method computes the sequence $v, Mv, M^2 v, \\ldots$ until linear dependence is detected, which occurs within $\\deg(\\mu_M) \\leq n$ steps. The dependence coefficients yield the minimal polynomial.\n\nImports four Mathlib modules: `Charpoly.Minpoly` (minimal polynomial theory, including $\\mu_M | \\chi_M$), `Charpoly.Basic` (characteristic polynomial degree equals dimension), `LinearIndependent.Basic` (linear independence), and `Tactic` (proof automation).\n\nThe file contains 12 theorems (9 proved, 3 with sorries in the polynomial-to-Krylov expansion chain) and 1 definition, organized into 9 parts covering the full Krylov method from definition through complexity analysis to optimality.",
+    "mathContext": "Krylov method: compute $v, Mv, M^2 v, \\ldots$ until $M^d v \\in \\text{span}\\{v, \\ldots, M^{d-1}v\\}$ at $d = \\deg(\\mu_M) \\leq n$. Total cost: $n \\times O(n^2) = O(n^3)$.",
+    "significance": "context",
+    "relatedConcepts": ["Krylov subspace method", "minimal polynomial", "computational linear algebra", "matrix algorithms"],
+    "prerequisites": ["linear algebra", "polynomial algebra", "Lean 4 and Mathlib"]
+  },
+  {
     "id": "ann-oq03-krylov-def",
     "proofId": "cayley-hamilton-minpoly-oq-03",
     "range": { "startLine": 57, "endLine": 69 },
     "type": "definition",
     "title": "Krylov Vector Definition",
-    "content": "The $k$-th **Krylov vector** is $v_k = M^k v$, where $M$ is the matrix and $v$ is a starting vector. Named after Alexei Krylov (1931), who introduced iterative subspace methods for computing characteristic polynomials. The sequence $\\{v, Mv, M^2v, \\ldots\\}$ is the fundamental object in iterative eigenvalue and minimal polynomial computation.",
-    "mathContext": "$\\text{krylovVec}(M, v, k) = M^k \\cdot v$",
+    "content": "The $k$-th **Krylov vector** is $v_k = M^k v$, where $M$ is the matrix and $v$ is a starting vector. Named after Alexei Krylov (1931), who introduced iterative subspace methods for computing eigenvalues of ship hull vibration equations. The sequence $\\{v, Mv, M^2v, \\ldots\\}$ spans the Krylov subspace $\\mathcal{K}_d(M, v) = \\text{span}\\{v, Mv, \\ldots, M^{d-1}v\\}$, the fundamental object in iterative eigenvalue and minimal polynomial computation.",
+    "mathContext": "$\\text{krylovVec}(M, v, k) = M^k \\cdot v$. The Krylov subspace: $\\mathcal{K}_d(M, v) = \\text{span}\\{v, Mv, \\ldots, M^{d-1}v\\}$.",
     "significance": "key",
-    "relatedConcepts": ["Krylov subspace", "power iteration", "Lanczos algorithm"]
+    "relatedConcepts": ["Krylov subspace", "power iteration", "Lanczos algorithm", "Arnoldi iteration"],
+    "prerequisites": ["matrix powers", "vector spaces"]
   },
   {
     "id": "ann-oq03-recurrence",
     "proofId": "cayley-hamilton-minpoly-oq-03",
     "range": { "startLine": 71, "endLine": 87 },
     "type": "technique",
-    "title": "Krylov Recurrence: O(n\u00b2) Per Step",
-    "content": "The recurrence $v_{k+1} = M \\cdot v_k$ avoids computing $M^k$ explicitly. Each step requires one matrix-vector product: $n^2$ multiplications and $n(n-1)$ additions, for $O(n^2)$ field operations. Compare with the naive approach of computing $M^k$ via matrix multiplication ($O(n^3)$ per power), which would give $O(n^4)$ total. The Krylov recurrence saves a factor of $n$.",
-    "mathContext": "$v_{k+1} = M \\cdot v_k$ requires $O(n^2)$ field operations",
+    "title": "Krylov Recurrence: O(n²) Per Step",
+    "content": "The recurrence $v_{k+1} = M \\cdot v_k$ avoids computing $M^k$ explicitly. Each step requires one matrix-vector product: $n^2$ multiplications and $n(n-1)$ additions, for $O(n^2)$ field operations. Compare with the naive approach of computing $M^k$ via matrix multiplication ($O(n^3)$ per power), which would give $O(n^4)$ total. The Krylov recurrence saves a factor of $n$.\n\nThe base case `krylovVec_zero` establishes $M^0 v = v$ (identity application), while `krylovVec_succ` proves $M^{k+1} v = M \\cdot (M^k v)$ using matrix power associativity.",
+    "mathContext": "$v_{k+1} = M \\cdot v_k$ requires $O(n^2)$ field operations. Base: $v_0 = v$. Step: $v_{k+1} = M v_k$.",
     "significance": "key",
     "relatedConcepts": ["matrix-vector product", "computational efficiency", "sparse matrix algorithms"],
-    "prerequisites": ["krylovVec definition"]
+    "prerequisites": ["krylovVec definition", "matrix power laws"]
+  },
+  {
+    "id": "ann-oq03-poly-eval",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 89, "endLine": 107 },
+    "type": "technique",
+    "title": "Polynomial Evaluation via Krylov Vectors (Sorry)",
+    "content": "States the key structural theorem: evaluating polynomial $p$ at matrix $M$ and applying to vector $v$ gives a linear combination of Krylov vectors with $p$'s coefficients: $(\\text{aeval}\\, M\\, p) \\cdot v = \\sum_i p_i \\cdot M^i v$. This is the bridge between polynomial algebra and linear algebra that makes the Krylov method work.\n\nThis theorem has a sorry (aeval_mulVec_eq_krylov_sum) and is the root of the dependency chain for the other sorries. The proof requires expanding polynomial evaluation at a matrix into a sum of matrix powers, then distributing the vector multiplication.",
+    "mathContext": "$p(M) \\cdot v = \\sum_{i=0}^{\\deg p} p_i \\cdot M^i v = \\sum_{i=0}^{\\deg p} p_i \\cdot \\text{krylovVec}(M, v, i)$. Status: sorry.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial evaluation", "aeval", "matrix polynomial", "linear combination"],
+    "prerequisites": ["polynomial algebra", "matrix algebra"]
   },
   {
     "id": "ann-oq03-annihilation",
     "proofId": "cayley-hamilton-minpoly-oq-03",
     "range": { "startLine": 109, "endLine": 126 },
-    "type": "result",
+    "type": "technique",
     "title": "Minimal Polynomial Annihilates Every Vector",
-    "content": "Since $\\mu_M(M) = 0$ as a matrix, applying to any vector gives $\\mu_M(M) \\cdot v = 0$. This is the foundational fact enabling the Krylov method: the minimal polynomial provides a universal relation among Krylov vectors. More generally, any polynomial $p$ with $p(M) = 0$ also satisfies $p(M) \\cdot v = 0$ for all $v$.",
-    "mathContext": "$\\mu_M(M) = 0 \\implies \\mu_M(M) \\cdot v = 0$ for all $v$",
+    "content": "Since $\\mu_M(M) = 0$ as a matrix (by definition of the minimal polynomial), applying to any vector gives $\\mu_M(M) \\cdot v = 0$. This is the foundational fact enabling the Krylov method: the minimal polynomial provides a universal relation among Krylov vectors. More generally, any polynomial $p$ with $p(M) = 0$ also satisfies $p(M) \\cdot v = 0$ for all $v$.\n\nThe proof uses Mathlib's `minpoly.aeval` (which gives $\\mu_M(M) = 0$) and the fact that the zero matrix maps every vector to zero.",
+    "mathContext": "$\\mu_M(M) = 0 \\implies \\mu_M(M) \\cdot v = 0$ for all $v \\in K^n$. More generally: $p(M) = 0 \\implies p(M) \\cdot v = 0$.",
     "significance": "key",
-    "relatedConcepts": ["annihilating polynomial", "Cayley-Hamilton theorem"]
+    "relatedConcepts": ["annihilating polynomial", "Cayley-Hamilton theorem", "minpoly.aeval"],
+    "prerequisites": ["minimal polynomial definition", "matrix-vector multiplication"]
   },
   {
     "id": "ann-oq03-termination",
     "proofId": "cayley-hamilton-minpoly-oq-03",
     "range": { "startLine": 128, "endLine": 157 },
-    "type": "result",
-    "title": "Krylov Termination Theorem",
-    "content": "The $d+1$ Krylov vectors $\\{v, Mv, \\ldots, M^d v\\}$ are linearly dependent, where $d = \\deg(\\mu_M)$. Proof: $\\mu_M$ is monic, so $\\mu_M = X^d + a_{d-1}X^{d-1} + \\cdots + a_0$. From $\\mu_M(M)v = 0$: $M^d v + a_{d-1} M^{d-1}v + \\cdots + a_0 v = 0$. The leading coefficient 1 is nonzero, making this a nontrivial linear relation.",
-    "mathContext": "$M^d v = -a_{d-1} M^{d-1}v - \\cdots - a_0 v$, a nontrivial dependence",
+    "type": "technique",
+    "title": "Krylov Termination Theorem (Sorry)",
+    "content": "The $d+1$ Krylov vectors $\\{v, Mv, \\ldots, M^d v\\}$ are linearly dependent, where $d = \\deg(\\mu_M)$. Proof sketch: $\\mu_M$ is monic of degree $d$, so $\\mu_M = X^d + a_{d-1}X^{d-1} + \\cdots + a_0$. From $\\mu_M(M)v = 0$: $M^d v + a_{d-1} M^{d-1}v + \\cdots + a_0 v = 0$. The leading coefficient 1 is nonzero, making this a nontrivial linear relation.\n\nThis theorem has a sorry that depends on the polynomial-Krylov expansion (aeval_mulVec_eq_krylov_sum). Once that is proved, the termination follows directly.",
+    "mathContext": "$\\mu_M(M) v = M^d v + a_{d-1} M^{d-1}v + \\cdots + a_0 v = 0$. Leading coefficient $1 \\neq 0$ gives nontrivial dependence among $\\{v, Mv, \\ldots, M^d v\\}$.",
     "significance": "key",
-    "relatedConcepts": ["linear dependence", "monic polynomial", "Krylov convergence"]
+    "relatedConcepts": ["linear dependence", "monic polynomial", "Krylov convergence"],
+    "prerequisites": ["annihilation theorem", "polynomial-Krylov expansion"]
+  },
+  {
+    "id": "ann-oq03-dimension",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 159, "endLine": 194 },
+    "type": "technique",
+    "title": "Krylov Dimension Bound",
+    "content": "Proves (modulo the termination theorem) that at most $\\deg(\\mu_M)$ Krylov vectors can be linearly independent. The argument: if $d+1$ vectors $\\{v, Mv, \\ldots, M^d v\\}$ are dependent (termination theorem), then any linearly independent subset has at most $d$ elements.\n\nThis is the key bound that limits the iteration count of the Krylov method. Combined with $\\deg(\\mu_M) \\leq n$ (from $\\mu_M | \\chi_M$ and $\\deg(\\chi_M) = n$), it gives the $O(n)$ iteration bound.",
+    "mathContext": "$\\dim \\mathcal{K}(M, v) \\leq \\deg(\\mu_M)$: at most $\\deg(\\mu_M)$ linearly independent Krylov vectors. Since $\\deg(\\mu_M) \\leq n$, this gives $\\leq n$ iterations.",
+    "significance": "supporting",
+    "relatedConcepts": ["linear independence", "dimension bound", "subspace dimension"],
+    "prerequisites": ["Krylov termination theorem"]
   },
   {
     "id": "ann-oq03-complexity",
     "proofId": "cayley-hamilton-minpoly-oq-03",
     "range": { "startLine": 196, "endLine": 224 },
-    "type": "result",
-    "title": "O(n\u00b3) Complexity Bound",
-    "content": "Combining the Krylov dimension bound (at most $\\deg(\\mu_M)$ independent vectors) with $\\deg(\\mu_M) \\leq n$ (from $\\mu_M | \\chi_M$ and $\\deg(\\chi_M) = n$) gives at most $n$ iterations. Each iteration costs $O(n^2)$ (one matrix-vector product). Total: $O(n^3)$ field operations. For **sparse** matrices with $s$ nonzero entries, each product costs $O(s)$ instead, giving $O(n \\cdot s)$ total (Wiedemann 1986).",
-    "mathContext": "$\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$, so $\\leq n$ iterations $\\times$ $O(n^2)$ each $= O(n^3)$",
+    "type": "technique",
+    "title": "O(n³) Complexity Bound",
+    "content": "Combines the Krylov dimension bound (at most $\\deg(\\mu_M)$ independent vectors) with $\\deg(\\mu_M) \\leq n$ (from $\\mu_M | \\chi_M$ and $\\deg(\\chi_M) = n$) to give at most $n$ iterations. Each iteration costs $O(n^2)$ (one matrix-vector product). Total: $O(n^3)$ field operations.\n\nThe proof of $\\deg(\\mu_M) \\leq n$ uses two Mathlib results: `Matrix.minpoly_dvd_charpoly` ($\\mu_M | \\chi_M$) and `Matrix.charpoly_natDegree_eq_dim` ($\\deg(\\chi_M) = n$), combined with `Polynomial.natDegree_le_of_dvd`.\n\nFor **sparse** matrices with $s$ nonzero entries, each product costs $O(s)$ instead of $O(n^2)$, giving $O(n \\cdot s)$ total (Wiedemann 1986). Keller-Gehrig (1985) achieved $O(n^\\omega)$ for dense matrices using matrix multiplication.",
+    "mathContext": "$\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$ (from $\\mu_M | \\chi_M$). Total: $\\leq n$ iterations $\\times O(n^2)$ each $= O(n^3)$. Sparse: $O(n \\cdot s)$.",
     "significance": "key",
-    "relatedConcepts": ["matrix algorithms", "Wiedemann algorithm", "sparse linear algebra"]
+    "relatedConcepts": ["matrix algorithms", "Wiedemann algorithm", "sparse linear algebra", "Keller-Gehrig algorithm"],
+    "prerequisites": ["Krylov dimension bound", "divisibility of polynomials"]
   },
   {
     "id": "ann-oq03-nonderogatory",
     "proofId": "cayley-hamilton-minpoly-oq-03",
     "range": { "startLine": 226, "endLine": 250 },
-    "type": "connection",
-    "title": "Optimality for Nonderogatory Matrices",
-    "content": "When $\\mu_M = \\chi_M$ (nonderogatory), a cyclic vector produces exactly $n$ linearly independent Krylov vectors before dependence at step $n$. The Krylov method then extracts all $n$ coefficients of $\\mu_M = \\chi_M$ in a single pass. No algorithm can do better: extracting $n$ coefficients requires $\\geq n$ matrix-vector products. This connects to OQ-04's characterization of nonderogatory matrices via cyclic vectors.",
-    "mathContext": "Nonderogatory: $\\mu_M = \\chi_M \\implies$ exactly $n$ independent Krylov vectors with a cyclic vector",
+    "type": "insight",
+    "title": "Optimality for Nonderogatory Matrices (Sorry)",
+    "content": "When $\\mu_M = \\chi_M$ (nonderogatory), a cyclic vector produces exactly $n$ linearly independent Krylov vectors before dependence at step $n$. The Krylov method then extracts all $n$ coefficients of $\\mu_M = \\chi_M$ in a single pass. No algorithm can do better: extracting $n$ coefficients requires $\\geq n$ matrix-vector products.\n\nThis result has a sorry (nonderogatory_krylov_optimal), needing a proof that a cyclic vector generates a linearly independent set $\\{v, Mv, \\ldots, M^{n-1}v\\}$. This connects to OQ-04's characterization of nonderogatory matrices via cyclic vectors.",
+    "mathContext": "Nonderogatory: $\\mu_M = \\chi_M \\implies$ exactly $n$ independent Krylov vectors with a cyclic vector. Optimal: $n$ matrix-vector products needed and sufficient.",
     "significance": "key",
-    "relatedConcepts": ["nonderogatory matrix", "cyclic vector", "companion matrix"]
+    "relatedConcepts": ["nonderogatory matrix", "cyclic vector", "companion matrix", "information-theoretic lower bound"],
+    "prerequisites": ["minimal polynomial", "characteristic polynomial", "cyclic vectors"]
+  },
+  {
+    "id": "ann-oq03-invariance",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 252, "endLine": 279 },
+    "type": "technique",
+    "title": "Krylov Subspace Invariance and Recurrence",
+    "content": "Two results establishing the practical structure of the Krylov method:\n\n1. **M-invariance** (`krylov_subspace_invariant`): $M \\cdot (M^k v) = M^{k+1} v$, so applying $M$ to a Krylov vector produces the next Krylov vector. This means the Krylov subspace is $M$-invariant: $M(\\mathcal{K}_d) \\subseteq \\mathcal{K}_{d+1}$.\n\n2. **Recurrence** (`krylov_recurrence`): Restates the same identity as the algorithmic recurrence $v_{k+1} = M v_k$, emphasizing its role in efficient computation.\n\nBoth proofs are one-liners using `krylovVec_succ`, reflecting the fact that this invariance is definitional.",
+    "mathContext": "$M \\cdot \\text{krylovVec}(M, v, k) = \\text{krylovVec}(M, v, k+1)$. The Krylov subspace is $M$-invariant: $M(\\mathcal{K}_d) \\subseteq \\mathcal{K}_{d+1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["M-invariant subspace", "recurrence relation", "iterative method"],
+    "prerequisites": ["krylovVec definition"]
+  },
+  {
+    "id": "ann-oq03-summary",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 281, "endLine": 326 },
+    "type": "context",
+    "title": "Algorithm Summary and Formalization Status",
+    "content": "Comprehensive documentation of the Krylov algorithm: input ($n \\times n$ matrix $M$, starting vector $v$), process (compute $v, Mv, \\ldots$ until dependence), termination guarantee ($\\leq n$ steps), and cost analysis ($O(n^3)$ total, $O(n^2)$ per step for dense, $O(s)$ per step for sparse with $s$ nonzeros).\n\nFormalization status: 9 theorems proved (krylovVec, recurrence, annihilation, degree bound, invariance, etc.) and 3 with sorries (polynomial-Krylov expansion, termination, nonderogatory optimality), all in a single dependency chain rooted at aeval_mulVec_eq_krylov_sum.",
+    "mathContext": "Algorithm: $O(n^3)$ field operations. 9 proved, 3 sorry. Dependency chain: aeval_mulVec_eq_krylov_sum $\\to$ krylov_dependent $\\to$ krylov_dimension $\\to$ iteration_bound.",
+    "significance": "context",
+    "relatedConcepts": ["algorithm summary", "formalization status", "sorry dependency chain"],
+    "prerequisites": ["all previous sections"]
   }
 ]
