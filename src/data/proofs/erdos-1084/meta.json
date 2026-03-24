@@ -18,9 +18,9 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1084",
     "erdosUrl": "https://erdosproblems.com/1084",
-    "axiomCount": 13,
-    "assumptions": "13 axiom declarations: maxUnitDistPairs (extremal function definition), f1_upper_bound (1D forest bound), f1_achievable (1D construction exists), f1_exact (f_1(n)=n-1), f2_upper_erdos (Erdos 3n-c*sqrt(n) bound), harborth_exact (2D exact formula), triangular_lattice_optimal (A2 lattice achieves max), f2_trivial_upper (f_2(n)<3n), f3_leading (3D leading coefficient 6), bezdek_reid_upper (3D n^{2/3} correction), erdos_1084_d3_conjecture (3D Theta(n^{2/3}) conjecture), fd_lower_general (general lower bound), fd_upper_general (Kabatyansky-Levenshtein upper bound)",
-    "lineCount": 198,
+    "axiomCount": 12,
+    "assumptions": "12 axiom declarations: maxUnitDistPairs (extremal function definition), f1_upper_bound (1D forest bound), f1_exact (f_1(n)=n-1), f2_upper_erdos (Erdos 3n-c*sqrt(n) bound), harborth_exact (2D exact formula), triangular_lattice_optimal (A2 lattice achieves max), f2_trivial_upper (f_2(n)<3n), f3_leading (3D leading coefficient 6), bezdek_reid_upper (3D n^{2/3} correction), erdos_1084_d3_conjecture (3D Theta(n^{2/3}) conjecture), fd_lower_general (general lower bound), fd_upper_general (Kabatyansky-Levenshtein upper bound). f1_achievable is now fully proved.",
+    "lineCount": 264,
     "badge": "axiom",
     "mathlib_version": "4.26.0"
   },
@@ -102,12 +102,12 @@
     "historicalContext": "Erdős introduced this problem in 1946, asking how many 'contacts' (unit-distance pairs) can occur among n non-overlapping unit spheres in ℝ^d. The problem connects sphere packing theory, the classical Newton–Gregory kissing number dispute (1694), and extremal graph theory. For d = 2, the kissing number τ(2) = 6 gives f₂(n) ≤ 3n; Harborth (1974) found the exact formula f₂(n) = ⌊3n - √(12n-3)⌋ using the triangular lattice A₂, one of the most elegant results in combinatorial geometry. For d = 3, Newton proved τ(3) = 12 (confirmed by Schütte–van der Waerden 1953), giving f₃(n) ~ 6n. Bezdek and Reid (2013) proved the n^{2/3} correction: f₃(n) < 6n - 0.926·n^{2/3}, establishing the surface-to-volume isoperimetric deficit for finite sphere packings. The matching lower bound remains open and is related to the Kepler conjecture (Hales 2005). In high dimensions, the Kabatyansky–Levenshtein bound (1978) gives τ(d) ≤ 2^{0.401d}, but the true behavior of f_d(n) for large d remains mysterious.",
     "problemStatement": "Estimate f_d(n), the maximum number of unit-distance pairs among n points in ℝ^d with pairwise distances ≥ 1.",
     "text": "Let f_d(n) be the maximum number of unit-distance pairs among n points in ℝ^d with all pairwise distances ≥ 1. For d=2, Harborth gave the exact formula. For d=3, Erdős conjectured f_3(n) = 6n - Θ(n^{2/3}). Status: OPEN (d ≥ 3).",
-    "proofStrategy": "The Lean formalization defines separated configurations and unit-distance pair counting in arbitrary dimension d. For d = 1, two key lemmas are fully machine-verified: the triangle lemma (unit neighbors must be on opposite sides) and the degree bound (at most 2 unit neighbors). These establish f₁(n) = n - 1. The d = 2 and d = 3 results are formalized as axioms capturing Harborth's formula, the Bezdek-Reid bound, and Erdős's conjecture. General dimension bounds use kissing number estimates.",
+    "proofStrategy": "The Lean formalization defines separated configurations and unit-distance pair counting in arbitrary dimension d. For d = 1, three theorems are machine-verified: the triangle lemma (unit neighbors must be on opposite sides), the degree bound (at most 2 unit neighbors), and the achievability theorem (the consecutive integer configuration {0,1,...,n-1} achieves exactly n-1 unit pairs, proved via an explicit bijection with Fin(n-1)). The d = 2 and d = 3 results are formalized as axioms capturing Harborth's formula, the Bezdek-Reid bound, and Erdős's conjecture. General dimension bounds use kissing number estimates.",
     "keyInsights": [
       "**Kissing number controls the leading coefficient**: $f_d(n) \\le \\tau(d) \\cdot n / 2$ by double-counting. Known values $\\tau(1) = 2$, $\\tau(2) = 6$, $\\tau(3) = 12$ give leading terms $n$, $3n$, $6n$",
       "**Harborth's formula** $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ encodes the boundary deficit of the hexagonal lattice — one of the few exact extremal results in combinatorial geometry",
       "**Isoperimetric exponent** $n^{2/3}$ in $d = 3$ reflects the surface-to-volume ratio: a ball of volume $n$ has surface area $\\Theta(n^{2/3})$, and surface spheres lose contacts",
-      "**Two machine-verified theorems** establish the 1D degree bound: the triangle lemma and the 3-neighbor impossibility, both proved by exhaustive case analysis in Lean 4",
+      "**Three machine-verified theorems** for d=1: the triangle lemma, the 3-neighbor impossibility, and the achievability of n-1 unit pairs via consecutive integers — establishing f₁(n) = n-1 constructively",
       "**Exponential gap** in general $d$: between $f_d(n) \\ge dn$ from $\\mathbb{Z}^d$ and $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky–Levenshtein — closing this is a major open problem"
     ],
     "prerequisites": [
@@ -195,9 +195,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 198,
-    "axiomCount": 13,
-    "theoremCount": 2,
+    "lineCount": 264,
+    "axiomCount": 12,
+    "theoremCount": 3,
     "definitionCount": 2
   }
 }
