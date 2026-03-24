@@ -57,14 +57,14 @@
       "Concrete examples: Ω(8) = 3, Ω(12) = 3, Ω(24) = 4",
       "example_interval_8_14: verified instance of the conjecture",
       "schinzel_theorem axiom: weaker result with modified primorial",
-      "dicksons_conjecture axiom: placeholder for Dickson's conjecture",
+      "DicksonsConjecture definition: proper formalization of Dickson's conjecture on simultaneous primality of linear forms",
       "weisenberg_conditional axiom: conditional counterexample",
       "isSmooth definition: k-smooth numbers",
       "polya_theorem axiom: gaps in smooth numbers are unbounded"
     ],
     "axiomCount": 4,
     "lineCount": 344,
-    "assumptions": "4 axioms: schinzel_theorem_statement, dicksons_conjecture, weisenberg_conditional, and 1 more. See Lean source for complete statements."
+    "assumptions": "4 axioms: erdos_891 (main open conjecture), schinzel_theorem_statement (Schinzel's weaker result), dicksons_conjecture (Dickson's conjecture, properly formalized as DicksonsConjecture), weisenberg_conditional (conditional counterexample using Dickson's). Note: primorialComp is only defined for k ≤ 5."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #891**\n\nThis problem was posed by Erdős and Selfridge in 1967 [ErSe67, p.430] and connects the distribution of prime factors to the structure of short intervals.\n\n**Key History:**\n- Erdős-Selfridge (1967): Original problem formulation\n- Schinzel: Proved a weaker version using Pólya's theorem on smooth numbers\n- Weisenberg: Showed conditional counterexample with interval length p₁···pₖ - 1\n\n**Mathematical Setting:**\nThe primorial p₁···pₖ (product of first k primes) gives natural interval lengths: 2, 6, 30, 210, 2310, ...\nThe question asks whether these specific lengths guarantee finding integers with many prime factors.\n\nThe problem remains open even for k = 2, asking whether every interval of 6 consecutive integers (for large n) contains a number with at least 3 prime factors.",
