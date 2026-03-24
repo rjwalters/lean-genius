@@ -7,7 +7,7 @@
     "author": "Grimm (1969 conjecture), Ramachandra-Shorey-Tijdeman (1975 partial)",
     "sourceUrl": "https://erdosproblems.com/375",
     "date": "1969",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos375Problem.lean",
     "tags": [
       "erdos",
@@ -58,9 +58,9 @@
       "Connection to prime gaps and Legendre's conjecture",
       "Hall's marriage theorem formulation"
     ],
-    "axiomCount": 8,
+    "axiomCount": 7,
     "lineCount": 336,
-    "assumptions": "8 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "assumptions": "7 axiom(s) and 5 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #375: Grimm's Conjecture**\n\nThis conjecture was originally posed by C.A. Grimm in 1969 in the American Mathematical Monthly. It connects prime factorization with combinatorial matching theory.\n\n**The Core Question:**\nGiven any interval of k consecutive composite numbers (a 'prime gap'), can we always assign a distinct prime divisor to each composite?\n\n**Historical Progress:**\n- 1969: Grimm poses conjecture, proves k << log n / log log n\n- 1970s: Erdos-Selfridge extend to k <= (1+o(1)) log n\n- 1975: Ramachandra-Shorey-Tijdeman prove k << (log n / log log n)^3\n\n**Significance:**\nThis is listed as problem B32 in Guy's Unsolved Problems in Number Theory. It remains one of the most intriguing open problems connecting prime gaps to matching theory.",
@@ -171,7 +171,7 @@
     ],
     "namespace": "Erdos375",
     "lineCount": 336,
-    "axiomCount": 8,
+    "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 9
   },
