@@ -7,7 +7,7 @@
     "author": "Descartes/Euler/Gauss/Bonnet (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%E2%80%93Bonnet_theorem#For_polyhedra",
     "date": "1630-1848",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "topology",
       "geometry",
@@ -19,7 +19,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/EulerPolyhedralOQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -36,9 +36,9 @@
       "Classification of regular polyhedra from Schläfli curvature constraint"
     ],
     "dateAdded": "2026-03-05",
-    "axiomCount": 0,
+    "axiomCount": 4,
     "lineCount": 507,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 sorries but 4 structure-encoded assumptions: PolyhedralSurface.euler (V-E+F=χ), PolyhedralSurface.angle_sum_identity, PolyhedralSurface.deficiency_sum, OrientableSurface.chi_genus (χ=2-2g). All 37+ consequence theorems are fully proved from these axiomatized foundations.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -120,7 +120,7 @@
     ],
     "namespace": "DiscreteGaussBonnet",
     "lineCount": 507,
-    "axiomCount": 0,
+    "axiomCount": 4,
     "theoremCount": 52,
     "definitionCount": 7
   },
