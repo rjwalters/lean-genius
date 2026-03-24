@@ -54,16 +54,16 @@
     "assumptions": "2 axioms: erdos_1139 (the open conjecture), hardy_ramanujan_asymptotic (density estimate). 3 sorries in supporting lemmas."
   },
   "overview": {
-    "historicalContext": "Erdős #1139 belongs to a family of questions about the fine structure of multiplicatively-defined sequences that Erdős studied throughout his career. The sequence of P₂-numbers (integers with Ω(n) ≤ 2) was first systematically studied by Landau (1909) and Hardy-Ramanujan (1917), who established that the counting function π₂(N) ~ cN log log N / log N. This makes P₂-numbers significantly denser than primes (by a factor of log log N), yet Erdős conjectured that their gaps can still grow faster than log k. The problem connects to Maier's 1985 theorem, which showed that prime gaps exhibit unexpected fluctuations beyond what the Cramér model predicts, suggesting similar irregularities might persist in denser subsequences. The problem remains open and is related to the broader question of how sieve-theoretic structure influences gap distribution.",
+    "historicalContext": "Erdős #1139 asks about the distribution of gaps in the sequence of integers with at most 2 prime factors (primes and semiprimes). The study of almost-primes dates to Viggo Brun's 1915 sieve work, which first established that the sum of reciprocals of twin primes converges — in contrast to the divergent sum over primes. The counting function for integers with at most $k$ prime factors was studied by Landau (1900) and refined by Ramanujan, Sathe (1953), and Selberg (1954), giving the asymptotic $\\pi_2(N) \\sim cN \\log \\log N / \\log N$. Despite the almost-primes being denser than the primes by a factor of $\\log \\log N$, Erdős conjectured that their gaps still grow faster than $\\log k$. This is surprising: for primes, Cramér's conjecture predicts gaps of order $(\\log p)^2$, and one might expect the denser almost-prime sequence to have comparatively tamer gaps. The problem connects to Maier's 1985 theorem showing irregularities in prime distribution that defeat simple probabilistic models, and to the Jacobsthal function measuring maximal gaps in sieved sequences.",
     "problemStatement": "Let u₁ < u₂ < ⋯ be integers with Ω(n) ≤ 2. Is lim sup (u_{k+1} - uₖ) / log k = ∞?",
     "text": "For the sequence of integers with at most 2 prime factors (primes and semiprimes), do the gaps grow faster than log k?",
     "proofStrategy": "The formalization defines Ω(n) via Mathlib's factorization API and establishes the IsAlmostPrime predicate. Key proved results include that every prime is almost-prime (via Nat.Prime.factorization), specific small cases (4 is, 8 is not), and that the set of primes up to N is contained in the set of almost-primes up to N. The main conjecture is axiomatized as a lim sup statement.",
     "keyInsights": [
-      "Almost-primes (Ω(n) ≤ 2) include all primes and all semiprimes p·q, making them significantly denser than primes alone — the extra log log N factor in π₂(N) comes from summing reciprocals of primes",
-      "The Landau-Ramanujan counting function π₂(N) ~ cN log log N / log N implies an average gap of order log N / log log N, which grows but slower than log N",
-      "Despite this density, gaps may still grow unboundedly relative to log k, which would show that local fluctuations override average behavior",
-      "The formalization uses two complementary representations of Ω(n): the noncomputable Finsupp-valued factorization for proofs, and the computable primeFactorsList for decidable checking via native_decide",
-      "Multiples of 8 (Ω ≥ 3) provide a structural mechanism for large gaps — the cube_gap_obstruction theorem formalizes this, showing that 8-divisible numbers in short intervals are excluded from the almost-prime sequence"
+      "Almost-primes (Ω(n) ≤ 2) include all primes and all semiprimes p·q, making them significantly denser than primes alone — the sequence has density ~cN log log N / log N versus ~N / log N for primes",
+      "The Landau-Ramanujan counting asymptotic shows almost-primes are denser than primes by a factor of log log N, yet the conjecture predicts their gaps are still unbounded relative to log k",
+      "Multiples of 8 are always excluded from the almost-prime sequence (since Ω(8k) ≥ 3), creating a structural source of gaps — the formalization exploits this via the cube_gap_obstruction theorem",
+      "The formalization bridges computable and propositional worlds: checkAlmostPrime (Bool) enables native_decide proofs, while IsAlmostPrime (Prop) supports mathematical reasoning — a recurring pattern in verified number theory",
+      "The problem sits at the intersection of sieve theory and probabilistic number theory: simple heuristics predict bounded gaps, but Maier-type irregularities suggest the truth is more subtle"
     ],
     "prerequisites": [
       "Number theory (prime factorization, Omega function)",
@@ -72,86 +72,78 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Problem Statement",
-      "startLine": 1,
-      "endLine": 23,
-      "summary": "Documentation of Erdős Problem #1139 and its open status, with the first terms of the almost-prime sequence.",
-      "mathContext": "The sequence $2, 3, 4, 5, 6, 7, 9, 10, 11, 13, 14, \\ldots$ of integers with $\\Omega(n) \\leq 2$."
-    },
-    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 25,
       "endLine": 39,
-      "summary": "Defines bigOmega via Mathlib's Finsupp factorization, the IsAlmostPrime predicate (n ≥ 2 ∧ Ω(n) ≤ 2), and a computable checkAlmostPrime using primeFactorsList.",
-      "mathContext": "$\\Omega(n) = \\sum_{p^a \\| n} a$, and $n$ is $P_2$ iff $n \\geq 2$ and $\\Omega(n) \\leq 2$."
+      "summary": "Defines $\\Omega(n)$ via Mathlib's factorization API and the IsAlmostPrime predicate ($n \\geq 2 \\land \\Omega(n) \\leq 2$), plus a decidable Boolean check for computation.",
+      "mathContext": "$\\Omega(n) = \\sum_p v_p(n)$; $\\text{IsAlmostPrime}(n) \\iff n \\geq 2 \\land \\Omega(n) \\leq 2$"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 41,
       "endLine": 74,
-      "summary": "Proves that every prime is almost-prime (Ω(p) = 1), 1 is not (n ≥ 2 required), 4 = 2² is (Ω = 2), and 8 = 2³ is not (Ω = 3). Uses native_decide for computational cases.",
-      "mathContext": "$\\Omega(p) = 1$ for primes, $\\Omega(4) = 2$, $\\Omega(8) = 3$."
+      "summary": "Proves membership and non-membership for small integers: every prime is almost-prime, 1 is excluded, 4 = 2² is in (via native_decide), and 8 = 2³ is out (Ω = 3).",
+      "mathContext": "$\\Omega(p) = 1$; $\\Omega(4) = 2$; $\\Omega(8) = 3$"
     },
     {
       "id": "enumeration",
-      "title": "Enumeration and Gaps",
+      "title": "Enumeration and Gap Definition",
       "startLine": 76,
       "endLine": 84,
-      "summary": "Defines almostPrimesUpTo N as the filtered Finset and the gap function almostPrimeGap (left as sorry due to the nontrivial enumeration formalization).",
-      "mathContext": "$\\pi_2(N) = |\\{n \\leq N : \\Omega(n) \\leq 2\\}|$, $g_k = u_{k+1} - u_k$."
+      "summary": "Defines the finite set of almost-primes up to N via Finset.filter and the gap function between consecutive terms (sorry — requires well-ordering).",
+      "mathContext": "$\\pi_2(N) = |\\{n \\leq N : \\Omega(n) \\leq 2\\}|$; $g_k = u_{k+1} - u_k$"
     },
     {
       "id": "structural-results",
-      "title": "Structural Results",
+      "title": "Structural Results on Semiprimes",
       "startLine": 86,
       "endLine": 105,
-      "summary": "Proves primes are a subset of almost-primes (corollary) and that the product of two primes is almost-prime (with sorry for the Ω-additivity step on products).",
-      "mathContext": "$p, q$ prime $\\Rightarrow$ $pq \\geq 4$ and $\\Omega(pq) = \\Omega(p) + \\Omega(q) = 2$."
+      "summary": "Proves pq ≥ 4 for prime products and that semiprimes are almost-primes (sorry on Ω(pq) = 2, needs factorization multiplicativity).",
+      "mathContext": "$p, q$ prime $\\Rightarrow pq \\geq 4$ and $\\Omega(pq) = 2$"
     },
     {
       "id": "counting",
-      "title": "Prime Containment",
+      "title": "Counting: Primes ⊆ Almost-Primes",
       "startLine": 107,
       "endLine": 117,
-      "summary": "Proves that all primes up to N belong to almostPrimesUpTo N, establishing π₂(N) ≥ π(N) and hence infinitely many almost-primes.",
-      "mathContext": "$\\{p \\leq N : p \\text{ prime}\\} \\subseteq \\{n \\leq N : \\Omega(n) \\leq 2\\}$."
+      "summary": "Proves the set of primes up to N is contained in almostPrimesUpTo N, giving $\\pi_2(N) \\geq \\pi(N)$ and hence infinitude of almost-primes.",
+      "mathContext": "$\\pi_2(N) \\geq \\pi(N) \\sim N/\\log N$"
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture",
+      "id": "main-conjecture",
+      "title": "The Main Conjecture (Open)",
       "startLine": 119,
       "endLine": 127,
-      "summary": "Axiomatizes the open conjecture: for every C > 0 and K, there exists k ≥ K with gap(k) > C·log(k), formalizing lim sup = ∞.",
-      "mathContext": "$\\forall C > 0,\\; \\forall K,\\; \\exists k \\geq K: u_{k+1} - u_k > C \\log k$."
+      "summary": "Axiomatizes the open conjecture: for every C > 0 and K, there exists k ≥ K with gap gₖ > C log k, i.e., lim sup gₖ/log k = ∞.",
+      "mathContext": "$\\forall C > 0,\\; \\forall K,\\; \\exists k \\geq K : g_k > C \\log k$"
     },
     {
       "id": "cube-gap",
       "title": "Gap Lower Bound from Consecutive Cubes",
       "startLine": 129,
       "endLine": 141,
-      "summary": "Shows that multiples of 8 between consecutive cubes are not almost-prime (Ω(8k) ≥ 3), providing a structural source of gaps in the almost-prime sequence.",
-      "mathContext": "If $8 \\mid m$ and $n^3 < m < (n+1)^3$, then $\\Omega(m) \\geq 3$, so $m$ is not a $P_2$-number."
+      "summary": "Shows that multiples of 8 between consecutive cubes cannot be almost-primes (Ω(8k) ≥ 3), giving a structural source of gaps in the sequence.",
+      "mathContext": "$8 \\mid m \\Rightarrow \\Omega(m) \\geq 3 > 2$"
     },
     {
       "id": "density",
-      "title": "Hardy-Ramanujan Asymptotic",
+      "title": "Hardy-Ramanujan Asymptotic Density",
       "startLine": 143,
       "endLine": 157,
-      "summary": "Axiomatizes the Landau-Ramanujan density estimate: π₂(X) ≥ c(1-ε)X log log X / log X for large X, establishing the asymptotic density of almost-primes.",
-      "mathContext": "$\\pi_2(X) \\sim c \\cdot \\frac{X \\log \\log X}{\\log X}$ as $X \\to \\infty$."
+      "summary": "Axiomatizes the Landau-Ramanujan counting asymptotic: π₂(N) ≥ c(1−ε)N log log N / log N for large N, quantifying almost-prime density.",
+      "mathContext": "$\\pi_2(N) \\sim cN \\log \\log N / \\log N$"
     }
   ],
   "conclusion": {
-    "summary": "Comprehensive formalization of Erdős #1139 with 11 proved theorems establishing the basic theory of P₂-numbers (almost-primes). The formalization covers core definitions, small-case verification, subset containment of primes, structural gap obstructions via cube intervals, and the Hardy-Ramanujan density axiom. The main conjecture about gap growth remains axiomatized.",
-    "implications": "A positive resolution would demonstrate that even sequences significantly denser than primes (by a factor of log log N) exhibit unbounded normalized gaps, suggesting a universal phenomenon in multiplicatively-defined sequences. This would complement Maier's theorem on prime gap fluctuations and connect to modern sieve-theoretic results on bounded gaps. The cube_gap_obstruction theorem provides a partial approach: if one could show enough multiples of highly composite numbers cluster in short intervals, the result would follow.",
+    "summary": "A new formalization of Erdős #1139 with 11 proved theorems establishing the basic theory of almost-primes via Mathlib's factorization API. The formalization covers definitions, small case verification, enumeration, semiprime inclusion, and a structural gap obstruction from divisibility by 8. The main conjecture (lim sup gₖ/log k = ∞) and the Hardy-Ramanujan density asymptotic remain axiomatized.",
+    "implications": "Resolution would illuminate the fine structure of almost-prime distribution and complement the extensive body of results on prime gaps (Cramér, Maier, Maynard-Tao). A positive answer would demonstrate that even in sequences much denser than the primes, irregular gaps persist — a phenomenon related to the failure of naive probabilistic models in analytic number theory. The formalization also contributes reusable definitions (bigOmega, IsAlmostPrime) that could support formalizations of other problems involving k-almost primes.",
     "openQuestions": [
-      "Does lim sup (u_{k+1} - u_k) / log k = ∞ for the P₂-sequence?",
-      "What is the precise order of growth for the maximal gap among almost-primes up to N?",
-      "Is Ω(p·q) = Ω(p) + Ω(q) provable from Mathlib's factorization API for coprime arguments without native_decide?",
-      "Does the analogous statement hold for P_k-numbers (Ω(n) ≤ k) for all k ≥ 2, and how does the gap growth depend on k?"
+      "Does lim sup (u_{k+1} - u_k) / log k = ∞? (the main open conjecture)",
+      "What is the correct order of growth for maximal almost-prime gaps — is it closer to (log k)² as in Cramér's conjecture for primes?",
+      "Can the cube_gap_obstruction approach be extended to produce explicit gap lower bounds of order log k?",
+      "Is Ω(p·q) = Ω(p) + Ω(q) = 2 provable from Mathlib's factorization_mul without native_decide?"
     ]
   },
   "leanFile": {
@@ -165,38 +157,36 @@
   },
   "crossReferences": [
     {
-      "target": "bounded-prime-gaps",
+      "targetId": "bounded-prime-gaps",
       "relationship": "complementary",
-      "description": "Bounded prime gaps (Zhang/Maynard-Tao) proves liminf p_{n+1} - p_n ≤ 246; erdos-1139 asks about lim sup for the denser almost-prime sequence"
+      "description": "The bounded prime gaps theorem (Zhang/Maynard-Tao) shows lim inf of prime gaps is finite. Problem #1139 asks the dual question for almost-primes: whether lim sup of gaps is infinite."
     },
     {
-      "target": "bertrands-postulate",
-      "relationship": "foundational",
-      "description": "Bertrand's postulate gives the classical prime gap bound p_{n+1} < 2p_n; the almost-prime analogue would give much tighter bounds due to higher density"
-    },
-    {
-      "target": "erdos-1137",
-      "relationship": "sibling",
-      "description": "Erdős #1137 studies consecutive prime gap products; both problems analyze the correlation structure of gaps in multiplicatively-defined sequences"
-    },
-    {
-      "target": "erdos-682",
+      "targetId": "erdos-1137",
       "relationship": "related",
-      "description": "Erdős #682 studies rough numbers between consecutive primes, using smallest prime factor p(m) — complementary to the big-Omega criterion used here"
+      "description": "Erdős #1137 concerns products of consecutive prime gaps — another problem probing the fine structure of gaps in number-theoretic sequences."
     },
     {
-      "target": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "Infinitude of primes is the base case; since primes ⊆ almost-primes, this formalization includes a proof that almost-primes are infinite"
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Erdős #1101 studies gaps in sieved integer sequences, a broader class that includes almost-primes as a special case."
+    },
+    {
+      "targetId": "erdos-222",
+      "relationship": "analogous",
+      "description": "Erdős #222 asks about gaps between sums of two squares — another dense sequence whose gap behavior is nontrivial despite large counting function."
+    },
+    {
+      "targetId": "erdos-218",
+      "relationship": "related",
+      "description": "Erdős #218 on prime gap densities explores the distributional behavior of prime gaps, providing context for the almost-prime gap question."
     }
   ],
   "relatedProofs": [
     "bounded-prime-gaps",
-    "bertrands-postulate",
     "erdos-1137",
-    "erdos-682",
-    "erdos-648",
-    "infinitude-primes",
-    "prime-gap-bounds"
+    "erdos-1101",
+    "erdos-222",
+    "erdos-218"
   ]
 }
