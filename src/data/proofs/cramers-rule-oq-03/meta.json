@@ -75,29 +75,49 @@
     }
   ],
   "overview": {
-    "historicalContext": "Cramer's Rule (1750) solves linear systems via determinants but requires commutativity. Gelfand and Retakh (1991, 1997) introduced quasideterminants for matrices over non-commutative rings, providing a framework that extends classical results. The quasideterminant of a matrix entry is defined via the Schur complement and satisfies analogues of determinantal identities.",
+    "historicalContext": "Gabriel Cramer published his rule in 1750 for solving $n \\times n$ linear systems via ratios of determinants, but the formula implicitly requires commutativity of the underlying ring. The question of extending determinantal methods to non-commutative settings was taken up by Dieudonn\u00e9 (1943), who defined a determinant over division rings via the Abelianization, and later by Gelfand and Retakh (1991, 1997), who introduced the theory of quasideterminants. For an $n \\times n$ matrix, there are $n^2$ quasideterminants (one per entry), each defined as the Schur complement of the complementary $(n-1) \\times (n-1)$ submatrix. These quasideterminants satisfy non-commutative analogues of row expansion, heredity, and Sylvester's identity. This formalization proves the $2 \\times 2$ case, which is the foundation for the inductive theory.",
     "problemStatement": "Can Cramer's Rule extend to non-commutative settings using quasideterminants?",
     "text": "For 2×2 systems Ax = b over a division ring D, the quasideterminant |A|₀₀ = a₀₀ - a₀₁·a₁₁⁻¹·a₁₀ provides an explicit solution formula.",
     "proofStrategy": "Define the solution via Gaussian elimination (back-substitution from row 2, then use quasideterminant for row 1). Prove correctness by verifying each row equation using left cancellation (a·a⁻¹ = 1). Prove uniqueness via kernel triviality (q·x = 0, q ≠ 0 ⟹ x = 0 in a division ring).",
     "keyInsights": [
-      "The quasideterminant is the Schur complement: |A|₀₀ = a₀₀ - a₀₁·a₁₁⁻¹·a₁₀",
-      "Non-commutativity means left and right cancellation must be carefully tracked",
-      "The solution formula uses left multiplication by inverses, matching the row structure of Ax = b",
-      "Over a commutative field, |A|₀₀ · a₁₁ = det(A), recovering the classical formula"
+      "The quasideterminant $|A|_{00} = a_{00} - a_{01} \\cdot a_{11}^{-1} \\cdot a_{10}$ is exactly the Schur complement of the $(1,1)$-entry, connecting linear system solving to block matrix inversion",
+      "Non-commutativity forces careful tracking of multiplication order: $a \\cdot b^{-1} \\cdot c \\neq a \\cdot c \\cdot b^{-1}$ in general, so left-vs-right cancellation is a proof concern throughout",
+      "The solution formula uses left multiplication by inverses ($|A|_{00}^{-1} \\cdot (\\ldots)$), matching the row structure $Ax = b$ where $A$ acts on the left; a right-action formulation $xA = b$ would require right quasideterminants",
+      "Over a commutative field, $|A|_{00} \\cdot a_{11} = \\det(A)$, so the quasideterminant solution reduces to the classical $x_i = \\det(A_i) / \\det(A)$ formula",
+      "Uniqueness follows from kernel triviality: the Gaussian-elimination proof that $|A|_{00} \\cdot x_0 = 0$ forces $x_0 = 0$ in a division ring (no zero divisors), a property that fails over general non-commutative rings"
     ],
     "prerequisites": [
-      "Linear algebra",
-      "Division rings (non-commutative)"
+      "Linear algebra (matrix-vector multiplication, determinants)",
+      "Abstract algebra (division rings, non-commutative multiplication)",
+      "Schur complements and block matrix theory"
     ]
   },
   "conclusion": {
-    "summary": "Cramer's Rule fully extends to 2×2 systems over division rings via quasideterminants. The formalization proves correctness, uniqueness, and commutative reduction with 0 sorries and 0 axioms.",
-    "implications": "This validates the Gelfand-Retakh quasideterminant framework as the correct non-commutative analogue of determinants for solving linear systems.",
+    "summary": "Cramer's Rule fully extends to $2 \\times 2$ systems over division rings via quasideterminants. The formalization proves correctness ($A \\cdot x = b$), uniqueness (kernel triviality), and commutative reduction ($|A|_{00} \\cdot a_{11} = \\det(A)$) with 0 sorries and 0 axioms -- a fully verified result.",
+    "implications": "This validates the Gelfand-Retakh quasideterminant framework as the correct non-commutative analogue of determinants. The kernel triviality argument demonstrates that division rings (no zero divisors) are the natural setting for unique solvability. The $2 \\times 2$ case is the inductive base for the general $n \\times n$ quasideterminant theory, where the $(i,j)$-quasideterminant is defined by Schur-complementing the $(n-1) \\times (n-1)$ submatrix obtained by deleting row $i$ and column $j$.",
     "openQuestions": [
-      "Can this be generalized to n×n matrices using the full quasideterminant theory?",
-      "What is the relationship between quasideterminants and the Dieudonné determinant?"
+      "Can this be generalized to $n \\times n$ matrices using the full quasideterminant theory and its heredity identities?",
+      "What is the precise relationship between quasideterminants and the Dieudonn\u00e9 determinant (which maps to the Abelianization $D^*/[D^*, D^*]$)?",
+      "Can the quasideterminant framework be formalized for matrices over more general non-commutative rings (e.g., Ore domains)?"
     ]
   },
+  "relatedProofs": [
+    {
+      "id": "cramers-rule",
+      "relationship": "parent",
+      "description": "Classical Cramer's Rule formalization over commutative fields"
+    },
+    {
+      "id": "cramers-rule-oq-01",
+      "relationship": "sibling",
+      "description": "First open question from Cramer's Rule: alternate formulations"
+    },
+    {
+      "id": "cramers-rule-oq-02",
+      "relationship": "sibling",
+      "description": "Second open question from Cramer's Rule"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.LinearAlgebra.Matrix.Adjugate",
