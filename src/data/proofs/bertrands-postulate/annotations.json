@@ -127,6 +127,49 @@
     "prerequisites": []
   },
   {
+    "id": "ann-corollaries-section",
+    "proofId": "bertrands-postulate",
+    "range": {
+      "startLine": 63,
+      "endLine": 76
+    },
+    "type": "technique",
+    "title": "Alternative Name and Existence Corollary",
+    "content": "`bertrand` provides an alias using Mathlib's `Nat.bertrand` (vs `Nat.exists_prime_lt_and_le_two_mul` in the main theorem). `exists_prime_between` is a trivial corollary repackaging the main theorem for the common use case $n \\geq 1$.\n\nHistorically, Bertrand conjectured this in 1845 based on checking primes up to 6,000,000. Chebyshev gave the first proof in 1852 using bounds on $\\theta(x) = \\sum_{p \\leq x} \\ln p$. Erdős gave a celebrated elementary proof in 1932 (at age 19) using properties of $\\binom{2n}{n}$.",
+    "mathContext": "Bertrand's postulate: $\\forall n \\geq 1, \\exists p \\text{ prime}, n < p \\leq 2n$. The PNT strengthens this: $\\pi(2n) - \\pi(n) \\sim n/\\ln n$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "bertrand_postulate"
+    ],
+    "relatedConcepts": [
+      "Chebyshev's theorem",
+      "Erdős's proof",
+      "central binomial coefficient"
+    ]
+  },
+  {
+    "id": "ann-no-largest-bertrand",
+    "proofId": "bertrands-postulate",
+    "range": {
+      "startLine": 99,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "No Largest Prime via Bertrand and Proof Architecture",
+    "content": "`no_largest_prime_via_bertrand` derives prime infinitude from Bertrand — much stronger than Euclid's theorem.\n\nThe commentary explains Erdős's proof architecture: large $n$ ($\\geq 512$) uses $\\binom{2n}{n}$ analysis (primes in $(n,2n]$ divide $\\binom{2n}{n}$, and growth bounds force their existence), while small $n$ ($< 512$) is verified computationally via a descending chain of known primes.",
+    "mathContext": "Erdős's key bound: $\\binom{2n}{n} \\geq 4^n/(2n+1)$ grows exponentially, but if no prime existed in $(n,2n]$, $\\binom{2n}{n}$ would be bounded by $\\prod_{p \\leq n} p^{\\lfloor \\log_p(2n) \\rfloor}$ — polynomial growth, yielding a contradiction for large $n$.",
+    "significance": "key",
+    "prerequisites": [
+      "primes_infinite_via_bertrand",
+      "central binomial coefficient"
+    ],
+    "relatedConcepts": [
+      "Erdős's proof style",
+      "central binomial coefficient",
+      "prime factorization bounds"
+    ]
+  },
+  {
     "id": "ann-pnt-connection",
     "proofId": "bertrands-postulate",
     "range": {
