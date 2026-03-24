@@ -65,7 +65,8 @@
       "The even/odd divide in zeta values is one of the starkest in number theory: complete understanding vs near-total mystery",
       "Rivoal's theorem is best formalized using Set.Infinite rather than quantified Finset bounds — cleaner and more compositional",
       "The full implication chain (transcendence → irrationality → all known results) is provable without sorry",
-      "Even-zeta transcendence needs: if π is transcendental, then π^n/q is transcendental for n ≥ 1, q ∈ ℚ×. This requires Mathlib's algebraic closure infrastructure."
+      "Even-zeta transcendence needs: if π is transcendental, then π^n/q is transcendental for n ≥ 1, q ∈ ℚ×. This requires Mathlib's algebraic closure infrastructure.",
+      "Zudilin's 4-way disjunction (one of ζ(5,7,9,11) irrational) is the tightest known finite explicit bound — improving it to a 3-way or 2-way disjunction remains open and would require fundamentally new ideas in Padé approximation"
     ],
     "prerequisites": [
       "Number theory (transcendence, irrationality, algebraic numbers)",
@@ -163,12 +164,24 @@
       "targetId": "e-transcendental",
       "relationship": "related",
       "description": "Both concern transcendence of fundamental constants — e's transcendence is proved while odd zeta transcendence remains open"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "uses",
+      "description": "Lindemann's theorem (π transcendental) is axiomatized here as the key ingredient for even-zeta transcendence"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Irrationality of √2 is the classical prototype for irrationality proofs — Apéry's proof of ζ(3) irrationality uses a far more sophisticated descendant of the same diophantine approximation tradition"
     }
   ],
   "relatedProofs": [
     "basel-problem",
     "basel-problem-oq-01",
-    "e-transcendental"
+    "e-transcendental",
+    "pi-transcendental",
+    "sqrt2-irrational"
   ],
   "leanFile": {
     "imports": [
