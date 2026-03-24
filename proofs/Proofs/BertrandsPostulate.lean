@@ -44,7 +44,7 @@ Bertrand's Postulate has numerous applications:
 - Foundation for stronger results like the Prime Number Theorem
 - Applications in combinatorics and algorithms requiring "nearby" primes
 
-## Wiedijk's 100 Theorems: #98
+## Wiedijk's 100 Theorems: #43
 -/
 
 namespace BertrandsPostulate
