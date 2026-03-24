@@ -35,7 +35,7 @@
     ],
     "originalContributions": [
       "Statement of Artin's theorem for multivariate polynomials over ℝ",
-      "Motzkin polynomial counterexample with non-negativity and non-SOS proofs",
+      "Motzkin polynomial definition with axiomatized non-negativity and non-SOS properties",
       "Robinson and Choi-Lam additional counterexamples",
       "Hilbert's 1888 classification of when PSD = polynomial-SOS",
       "Pfister's and Cassels' quantitative bounds on number of squares",
@@ -45,13 +45,24 @@
     "hilbertNumber": 17,
     "axiomCount": 10,
     "lineCount": 572,
-    "assumptions": "10 axioms: artin_hilbert17, artin_univariate_aux, motzkin_nonneg_aux, and 7 more. See Lean source for complete statements.",
+    "assumptions": [
+      "artin_hilbert17: Every PSD multivariate polynomial over R is a sum of squares of rational functions (Artin's theorem)",
+      "artin_univariate_aux: Every PSD univariate polynomial is a sum of squares of rational functions",
+      "motzkin_nonneg_aux: The Motzkin polynomial M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1 is non-negative everywhere (AM-GM)",
+      "motzkin_not_sos_polynomial_aux: The Motzkin polynomial is not a sum of squares of polynomials (degree analysis)",
+      "univariate_psd_is_sos_aux: Every PSD univariate polynomial is a sum of squares of polynomials (complex factorization)",
+      "quadratic_psd_is_sos_aux: Every PSD quadratic form is a sum of squares of polynomials (Gram matrix / Cholesky)",
+      "pfister_bound_aux: At most 2^n rational function squares needed for n-variable PSD polynomials (Pfister forms)",
+      "cassels_bound_bivariate_aux: At most 4 rational function squares needed for bivariate PSD polynomials",
+      "robinson_nonneg_aux: Robinson's polynomial is non-negative everywhere (Schur's inequality)",
+      "robinson_not_sos_aux: Robinson's polynomial is not a sum of squares of polynomials (homogeneous form analysis)"
+    ],
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Hilbert's 17th Problem emerged from a long investigation into the relationship between non-negativity and sums of squares. In 1888, Hilbert proved a remarkable non-constructive result: there exist non-negative polynomials that are not sums of squares of polynomials. He showed this happens in all but three exceptional cases — univariate polynomials, quadratic forms, and bivariate quartics — but gave no explicit example.\n\nIn his famous 1900 Paris lecture, Hilbert posed Problem 17: even if polynomial squares don't suffice, can every non-negative polynomial be written as a sum of squares of rational functions (quotients of polynomials)? This seemingly modest weakening turns out to be exactly right.\n\nEmil Artin resolved the problem affirmatively in 1927, as an application of his theory of formally real fields and real closures. The proof is a triumph of abstract algebra: if a non-negative polynomial were not a sum of squares of rational functions, one could construct an ordering of the function field making it negative, which contradicts non-negativity via the transfer principle for real closed fields.\n\nNearly 40 years after Hilbert's non-constructive existence proof, Theodore Motzkin (1967) gave the first explicit counterexample to polynomial SOS: M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is non-negative everywhere (by AM-GM) but cannot be decomposed as a sum of squared polynomials (by degree analysis). In the same year, Albrecht Pfister proved that at most 2^n rational function squares are needed for n-variable polynomials.",
     "problemStatement": "**Question:** If f is a polynomial with f(x) >= 0 for all x, is f a sum of squares?\n\n**Answer (Artin):** Yes, but as a sum of squares of rational functions. Motzkin's polynomial shows polynomials don't suffice.",
-    "text": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample).",
+    "text": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample). Note: of 11 proved theorems, 9 are one-line wrappers around axioms (e.g., theorem foo := foo_aux); the single genuine deduction is motzkin_sos_ratfunc, which combines motzkin_nonneg with artin_hilbert17.",
     "proofStrategy": "The formalization is structured in nine parts mirroring the mathematical landscape. Part I defines SOS and PSD predicates for univariate, multivariate, and rational function settings. Part II axiomatizes Artin's theorem using algebraMap to embed polynomials into rational function fields. Part III constructs the Motzkin polynomial as an MvPolynomial and axiomatizes its non-negativity and non-SOS properties, then derives its rational-SOS representation by applying Artin's theorem — the key deduction. Part IV axiomatizes Hilbert's 1888 classification (univariate and quadratic cases). Part V gives Pfister's 2^n bound and Cassels' bivariate specialization. Part VI discusses real closed fields. Parts VII-IX cover applications, additional counterexamples (Robinson, Choi-Lam), and a summary.",
     "keyInsights": [
       "The gap between non-negativity and being a sum of polynomial squares is fundamental: Hilbert proved it exists (1888), Motzkin exhibited it (1967), and Artin showed rational functions bridge it (1927)",
@@ -193,18 +204,18 @@
   "relatedProofs": [
     {
       "id": "fundamental-theorem-algebra",
-      "relationship": "The univariate case of Hilbert 17 relies on complex root factorization, which is a consequence of the fundamental theorem of algebra",
-      "description": ""
+      "relationship": "technical",
+      "description": "The univariate case of Hilbert 17 relies on complex root factorization, which is a consequence of the fundamental theorem of algebra"
     },
     {
       "id": "hilbert-10",
-      "relationship": "Fellow Hilbert problem — Problem 10 (Diophantine equations) involves polynomial decidability, while Problem 17 involves polynomial positivity",
-      "description": ""
+      "relationship": "thematic",
+      "description": "Fellow Hilbert problem — Problem 10 (Diophantine equations) involves polynomial decidability, while Problem 17 involves polynomial positivity"
     },
     {
       "id": "hilbert-16",
-      "relationship": "Adjacent Hilbert problem — Problem 16 (limit cycles) also concerns real polynomial geometry, specifically the topology of real algebraic curves",
-      "description": ""
+      "relationship": "thematic",
+      "description": "Adjacent Hilbert problem — Problem 16 (limit cycles) also concerns real polynomial geometry, specifically the topology of real algebraic curves"
     }
   ],
   "references": [
@@ -221,6 +232,20 @@
       "year": "1927",
       "venue": "Abhandlungen aus dem mathematischen Seminar der Universität Hamburg 5, 100–115",
       "note": "Proved every positive semidefinite rational function is a sum of squares of rational functions — solving Hilbert's 17th problem"
+    },
+    {
+      "authors": "Motzkin, Theodore S.",
+      "title": "The arithmetic-geometric inequality",
+      "year": "1967",
+      "venue": "Inequalities (Proceedings of a Symposium, Wright-Patterson AFB), Academic Press, 205–224",
+      "note": "First explicit example of a non-negative polynomial that is not a sum of squares of polynomials"
+    },
+    {
+      "authors": "Pfister, Albrecht",
+      "title": "Zur Darstellung definiter Funktionen als Summe von Quadraten",
+      "year": "1967",
+      "venue": "Inventiones Mathematicae 4, 229–237",
+      "note": "Proved that at most 2^n rational function squares suffice for n-variable PSD polynomials"
     }
   ]
 }
