@@ -69,4 +69,38 @@ theorem omega_choose_one (n : ℕ) : omega (n.choose 1) = omega n := by
   rw [Nat.choose_one_right]
 
 /-- `ω(n) = 0` iff `n ≤ 1`. -/
-axiom omega_eq_zero_iff (n : ℕ) : omega n = 0 ↔ n ≤ 1
+theorem omega_eq_zero_iff (n : ℕ) : omega n = 0 ↔ n ≤ 1 := by
+  simp only [omega, Finset.card_eq_zero]
+  constructor
+  · intro h
+    by_contra hn
+    push_neg at hn
+    -- n ≥ 2, so n has at least one prime factor
+    have hn2 : 2 ≤ n := hn
+    have := Nat.exists_prime_and_dvd (by omega : n ≠ 1)
+    obtain ⟨p, hp, hpn⟩ := this
+    have : p ∈ n.primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hpn, by omega⟩
+    rw [h] at this
+    exact Finset.notMem_empty p this
+  · intro h
+    interval_cases n <;> simp [Nat.primeFactors]
+
+/-- `ω(n) > 0` for `n ≥ 2`. -/
+theorem omega_pos_of_one_lt (n : ℕ) (hn : 1 < n) : 0 < omega n := by
+  by_contra h
+  push_neg at h
+  have := (omega_eq_zero_iff n).mp (Nat.le_zero.mp h)
+  omega
+
+/-- `ω(p) = 1` for a prime `p`. -/
+theorem omega_prime (p : ℕ) (hp : p.Prime) : omega p = 1 := by
+  unfold omega
+  have : p.primeFactors = {p} := by
+    ext q
+    simp only [Nat.mem_primeFactors, Finset.mem_singleton]
+    constructor
+    · intro ⟨hq, hqp, _⟩
+      exact (hp.eq_one_or_self_of_dvd q hqp).resolve_left (Nat.Prime.one_lt hq).ne'
+    · intro heq; rw [heq]
+      exact ⟨hp, dvd_refl p, hp.pos.ne'⟩
+  rw [this, Finset.card_singleton]
