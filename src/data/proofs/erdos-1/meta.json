@@ -215,7 +215,7 @@
     {
       "id": "erdos-28",
       "relationship": "related",
-      "description": "The Erdős-Turán conjecture on additive bases asks whether every basis of order 2 has unbounded representation function. "
+      "description": "The Erdős-Turán conjecture on additive bases asks whether every basis of order 2 has unbounded representation function. Both problems concern the structure of sumsets: Problem #1 asks when sums are distinct, Problem #28 asks when every integer has a representation. They bookend the extremes of additive combinatorics — unique representation vs. guaranteed representation"
     },
     {
       "id": "erdos-106",
@@ -240,22 +240,22 @@
     {
       "id": "erdos-867",
       "relationship": "related",
-      "description": "Consecutive sum-free sets concern sets avoiding the equation $a + b = c$. While Problem #1 requires all subset sums to b"
+      "description": "Consecutive sum-free sets concern sets avoiding the equation $a + b = c$. While Problem #1 requires all subset sums to be distinct (a much stronger condition), sum-free sets ask that no element is a sum of two others. Both explore constraints on how elements of a set can combine additively"
     },
     {
       "id": "erdos-1179",
       "relationship": "extends",
-      "description": "Uniform subset sum representations in abelian groups generalizes the distinct subset sums problem from $\\mathbb{Z}$ to a"
+      "description": "Uniform subset sum representations in abelian groups generalizes the distinct subset sums problem from $\\mathbb{Z}$ to arbitrary abelian groups. The fundamental question — when can subsets be distinguished by their sums — extends naturally from Erdős's original question about subsets of $\\{1, \\ldots, N\\}$"
     },
     {
       "id": "erdos-340-greedy-sidon",
       "relationship": "related",
-      "description": "Sidon sets ($B_2$ sequences) require all pairwise sums $a + b$ to be distinct. Distinct subset sums is the much stronger"
+      "description": "Sidon sets ($B_2$ sequences) require all pairwise sums $a + b$ to be distinct. Distinct subset sums is the much stronger requirement that all $2^n$ subset sums are distinct. Problem #340 studies greedy Sidon constructions, while Problem #1 asks about extremal sizes of the stronger distinct-subset-sum condition. Both are central to additive combinatorics"
     },
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial theorem gives $|\\mathcal{P}(A)| = 2^{|A|}$ (the number of subsets of an $n$-element set). This cardinality "
+      "description": "The binomial theorem gives $|\\mathcal{P}(A)| = 2^{|A|}$ (the number of subsets of an $n$-element set). This cardinality is the source of the exponential lower bound in Problem #1: if all $2^n$ subset sums are distinct non-negative integers in $\\{0, \\ldots, nN\\}$, then $nN \\geq 2^n - 1$, which drives the bound $N \\geq 2^{n-1}$"
     }
   ],
   "leanFile": {

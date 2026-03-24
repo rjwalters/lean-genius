@@ -244,7 +244,7 @@
     {
       "id": "perfect-numbers",
       "relationship": "related",
-      "description": "Perfect numbers satisfy σ(n) = 2n, the fixed-point equation for the 'excess' σ(n)/n. This file studies iterates σ_k(n); "
+      "description": "Perfect numbers satisfy σ(n) = 2n, the fixed-point equation for the 'excess' σ(n)/n. This file studies iterates σ_k(n); for perfect n, σ(n) = 2n so σ₂(n) = σ(2n), connecting iterates to the structure of perfect numbers"
     },
     {
       "id": "infinitude-primes",
@@ -254,7 +254,7 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization is essential: σ is multiplicative, so σ(n) = ∏ σ(p^a) where n = ∏ p^a. The formula σ(p^a) = ("
+      "description": "Unique prime factorization is essential: σ is multiplicative, so σ(n) = ∏ σ(p^a) where n = ∏ p^a. The formula σ(p^a) = (p^{a+1} - 1)/(p - 1) makes the function computable from the factorization"
     },
     {
       "id": "geometric-series",

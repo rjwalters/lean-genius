@@ -708,37 +708,37 @@
     {
       "id": "fermats-last-theorem",
       "relationship": "related",
-      "description": "Wiles's proof of FLT (1995) established the modularity of semistable elliptic curves over $\\mathbb{Q}$ — the same modula"
+      "description": "Wiles's proof of FLT (1995) established the modularity of semistable elliptic curves over $\\mathbb{Q}$ — the same modularity that is essential for BSD. The Taniyama-Shimura-Weil conjecture (now the modularity theorem, proved in full by Breuil-Conrad-Diamond-Taylor 2001) ensures that the L-function $L(E,s)$ in BSD has the analytic properties needed for the conjecture to make sense. FLT and BSD are thus siblings in the modularity framework"
     },
     {
       "id": "quadratic-reciprocity",
       "relationship": "foundational",
-      "description": "Quadratic reciprocity is the simplest case of Artin reciprocity, which in turn is the abelian case of the Langlands prog"
+      "description": "Quadratic reciprocity is the simplest case of Artin reciprocity, which in turn is the abelian case of the Langlands program. The L-function $L(E,s)$ in BSD is a degree-2 automorphic L-function, and the Langlands program predicts deep connections between such L-functions and automorphic forms — generalizing the quadratic reciprocity law from $\\text{GL}_1$ to $\\text{GL}_2$"
     },
     {
       "id": "pythagorean-theorem",
       "relationship": "related",
-      "description": "The congruent number problem — which integers are areas of right triangles with rational sides? — provides the most clas"
+      "description": "The congruent number problem — which integers are areas of right triangles with rational sides? — provides the most classical bridge from Pythagorean triples to BSD. A positive integer $n$ is congruent iff the elliptic curve $y^2 = x^3 - n^2 x$ has positive rank. This file formalizes the congruent number curve $E_{37}: y^2 = x^3 - 37^2 x$ and the Koblitz correspondence between rational right triangles and rational points on $E_n$"
     },
     {
       "id": "hodge-conjecture",
       "relationship": "related",
-      "description": "Fellow Millennium Prize Problem concerning algebraic geometry. The Hodge conjecture and BSD both involve deep connection"
+      "description": "Fellow Millennium Prize Problem concerning algebraic geometry. The Hodge conjecture and BSD both involve deep connections between algebraic and analytic/topological structures: Hodge asks when cohomology classes are algebraic, while BSD asks when the analytic rank equals the algebraic rank. Both are manifestations of the general principle that algebraic and analytic invariants of varieties should be closely related"
     },
     {
       "id": "poincare-conjecture",
       "relationship": "related",
-      "description": "Fellow Millennium Prize Problem, uniquely among the seven to have been solved (by Perelman, 2003). The Poincaré conjectu"
+      "description": "Fellow Millennium Prize Problem, uniquely among the seven to have been solved (by Perelman, 2003). The Poincaré conjecture (every simply connected closed 3-manifold is homeomorphic to $S^3$) was proved using Ricci flow, a geometric analysis technique — illustrating how the deepest problems in different areas of mathematics require fundamentally different approaches"
     },
     {
       "id": "navier-stokes",
       "relationship": "related",
-      "description": "Fellow Millennium Prize Problem concerning the existence and smoothness of solutions to the Navier-Stokes equations. Bot"
+      "description": "Fellow Millennium Prize Problem concerning the existence and smoothness of solutions to the Navier-Stokes equations. Both BSD and Navier-Stokes involve proving that analytic objects (L-functions / fluid velocity fields) have specific regularity properties, though the mathematical tools are entirely different (algebraic number theory vs PDE analysis)"
     },
     {
       "id": "yang-mills",
       "relationship": "related",
-      "description": "Fellow Millennium Prize Problem concerning the existence of a mass gap in quantum Yang-Mills theory. Both BSD and Yang-M"
+      "description": "Fellow Millennium Prize Problem concerning the existence of a mass gap in quantum Yang-Mills theory. Both BSD and Yang-Mills involve non-perturbative phenomena in their respective domains (arithmetic geometry / quantum field theory) that resist existing proof techniques"
     }
   ],
   "references": [

@@ -185,12 +185,39 @@
   ],
   "relatedProofs": [
     {
-      "target": "ramseys-theorem",
-      "relation": "Ramsey's Theorem underpins the extremal framework: K₄ forced by Simonovits is a Ramsey-type guaranteed complete subgraph. The connection between Turán-type theorems and Ramsey theory is foundational to Problem #1019's structure."
+      "id": "erdos-1010",
+      "relationship": "related",
+      "description": ""
     },
     {
-      "target": "erdos-szekeres",
-      "relation": "Erdős–Szekeres Theorem is an archetype for threshold arguments in combinatorics. The 1-edge tight threshold in #1019 echoes the precision of the Erdős-Szekeres bound."
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-1012",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-1014",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-1018",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-1020",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "related",
+      "description": ""
     }
   ],
   "references": [
@@ -200,7 +227,7 @@
       ],
       "title": "A method for solving extremal problems in graph theory, stability problems",
       "venue": "Theory of Graphs (Proc. Colloq., Tihany, 1966)",
-      "year": 1968,
+      "year": "1968",
       "pages": "279–319",
       "publisher": "Academic Press",
       "note": "Contains Simonovits's stability theorem and the PhD-thesis result resolving Problem #1019."
@@ -211,7 +238,7 @@
       ],
       "title": "On an extremal problem in graph theory",
       "venue": "Matematikai és Fizikai Lapok",
-      "year": 1941,
+      "year": "1941",
       "volume": 48,
       "pages": "436–452",
       "note": "Original Turán theorem establishing ex(n, K_r) and the Turán graph T(n,r-1); forms the ⌊n²/4⌋ baseline threshold in Problem #1019."
@@ -223,7 +250,7 @@
       ],
       "title": "A limit theorem in graph theory",
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
-      "year": 1966,
+      "year": "1966",
       "volume": 1,
       "pages": "51–57",
       "note": "Erdős-Simonovits stability theorem: near-extremal graphs are structurally close to the Turán graph. Direct precursor to the supersaturation regime studied in Problem #1019."
@@ -234,7 +261,7 @@
       ],
       "title": "Graph Theory",
       "venue": "Graduate Texts in Mathematics, vol. 173",
-      "year": 2017,
+      "year": "2017",
       "edition": "5th",
       "publisher": "Springer",
       "note": "Chapters 4 and 7 cover planar graphs (Euler's formula, Kuratowski's theorem), saturated planar graphs, and extremal graph theory; provides background for the planarity framework in the formalization."
@@ -245,7 +272,7 @@
       ],
       "title": "Extremal Graph Theory",
       "venue": "London Mathematical Society Monographs, vol. 11",
-      "year": 1978,
+      "year": "1978",
       "publisher": "Academic Press",
       "note": "Comprehensive treatment of Turán-type and supersaturation problems; includes the Erdős-Simonovits stability results and the supersaturation regime directly relevant to Problem #1019."
     },
@@ -256,7 +283,7 @@
       ],
       "title": "Supersaturated graphs and hypergraphs",
       "venue": "Combinatorica",
-      "year": 1983,
+      "year": "1983",
       "volume": 3,
       "pages": "181–192",
       "note": "General supersaturation framework: if ex(n, H) is exceeded by cn² edges, then the number of copies of H is Ω(n^{|V(H)|}). The supersaturation regime studied in Problem #1019 is a topological variant of this principle."
@@ -273,7 +300,7 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1019",
-    "lineCount": 316,
+    "lineCount": 349,
     "axiomCount": 8,
     "theoremCount": 8,
     "definitionCount": 19

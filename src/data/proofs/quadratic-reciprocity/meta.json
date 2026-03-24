@@ -205,7 +205,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "extends",
-      "description": "Quadratic reciprocity implies Dirichlet-style results on primes in arithmetic progressions: primes $p \\equiv 1 \\pmod{4}$"
+      "description": "Quadratic reciprocity implies Dirichlet-style results on primes in arithmetic progressions: primes $p \\equiv 1 \\pmod{4}$ vs $p \\equiv 3 \\pmod{4}$ behave differently as quadratic residues, connecting to Dirichlet's theorem on primes in progressions."
     },
     {
       "id": "abel-ruffini",
@@ -215,37 +215,37 @@
     {
       "id": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "The quadratic residues modulo $p$ form a subgroup of index 2 in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, with order $(p-1)/2$ "
+      "description": "The quadratic residues modulo $p$ form a subgroup of index 2 in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, with order $(p-1)/2$ by Lagrange's theorem. This index-2 structure (the kernel of the Legendre symbol homomorphism) is the group-theoretic foundation for reciprocity"
     },
     {
       "id": "fermats-last-theorem",
       "relationship": "foundational",
-      "description": "Quadratic reciprocity is the $n = 2$ case of Artin reciprocity, which Wiles's modularity theorem generalizes to 2-dimens"
+      "description": "Quadratic reciprocity is the $n = 2$ case of Artin reciprocity, which Wiles's modularity theorem generalizes to 2-dimensional Galois representations. The Langlands program, of which FLT is a consequence, seeks to extend reciprocity laws to all reductive groups — making QR the historical seed of the entire program"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization underpins the Legendre symbol: $(a/p)$ depends on $a$ only through its residue mod $p$, and t"
+      "description": "Unique prime factorization underpins the Legendre symbol: $(a/p)$ depends on $a$ only through its residue mod $p$, and the multiplicativity $(ab/p) = (a/p)(b/p)$ mirrors the multiplicativity of prime factorization. The Jacobi symbol extends this to composite moduli via the factorization of the modulus"
     },
     {
       "id": "primitive-roots",
       "relationship": "foundational",
-      "description": "The existence of primitive roots modulo $p$ proves $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. Quadratic"
+      "description": "The existence of primitive roots modulo $p$ proves $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. Quadratic residues are exactly the even powers of any primitive root $g$: $a \\equiv g^{2k}$ is a QR, $a \\equiv g^{2k+1}$ is a QNR. This cyclic structure makes the Legendre symbol a group homomorphism"
     },
     {
       "id": "kroneckers-jugendtraum",
       "relationship": "extends",
-      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is cyclotomic) generalizes quadratic reciprocity: QR determines"
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is cyclotomic) generalizes quadratic reciprocity: QR determines the splitting of primes in quadratic fields $\\mathbb{Q}(\\sqrt{d})$, while Kronecker-Weber determines splitting in all abelian extensions. Hilbert's 12th problem seeks the analogous result for arbitrary number fields"
     },
     {
       "id": "fermat-two-squares",
       "relationship": "related",
-      "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) is a direct application of quadratic reciprocit"
+      "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) is a direct application of quadratic reciprocity: $p \\equiv 1 \\pmod{4}$ means $-1$ is a quadratic residue mod $p$ (first supplementary law), so $x^2 \\equiv -1$ has a solution, which enables the descent argument producing $a^2 + b^2 = p$"
     },
     {
       "id": "hilbert-9-reciprocity",
       "relationship": "extends",
-      "description": "Hilbert's 9th problem asks for the most general reciprocity law in algebraic number fields. Quadratic reciprocity is the"
+      "description": "Hilbert's 9th problem asks for the most general reciprocity law in algebraic number fields. Quadratic reciprocity is the simplest non-trivial case; the full answer is Artin reciprocity (1927), which subsumes all abelian reciprocity laws. The non-abelian Langlands program seeks the ultimate generalization"
     }
   ],
   "leanFile": {

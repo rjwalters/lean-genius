@@ -266,37 +266,37 @@
     {
       "id": "infinitude-primes",
       "relationship": "thematic",
-      "description": "Both are existence proofs via contradiction: Euclid shows no finite list contains all primes (construct p₁···pₙ + 1), Ca"
+      "description": "Both are existence proofs via contradiction: Euclid shows no finite list contains all primes (construct p₁···pₙ + 1), Cantor shows no countable list contains all reals (construct the diagonal). The diagonal argument is the cardinality-theoretic analogue of Euclid's prime construction."
     },
     {
       "id": "cantor-diagonalization-oq-01",
       "relationship": "extended-by",
-      "description": "Explores the Continuum Hypothesis — whether there exists a cardinality strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|"
+      "description": "Explores the Continuum Hypothesis — whether there exists a cardinality strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Cantor's diagonalization proves $|\\mathbb{N}| < |\\mathbb{R}|$ but leaves the gap open; CH's independence from ZFC (Gödel 1938, Cohen 1963) shows this question cannot be settled by the standard axioms"
     },
     {
       "id": "cantor-diagonalization-oq-02",
       "relationship": "extended-by",
-      "description": "Establishes the cardinality of the set of countable ordinals $\\omega_1$, extending the diagonal argument's study of card"
+      "description": "Establishes the cardinality of the set of countable ordinals $\\omega_1$, extending the diagonal argument's study of cardinality beyond the natural numbers and reals to transfinite ordinals"
     },
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both belong to the impossibility proof tradition: Cantor proves no enumeration captures all reals (1891), Abel-Ruffini p"
+      "description": "Both belong to the impossibility proof tradition: Cantor proves no enumeration captures all reals (1891), Abel-Ruffini proves no radical formula captures all quintic roots (1824). Both show that natural-seeming operations (enumeration, radical extraction) have provable limitations — the targets 'outnumber' the tools"
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "thematic",
-      "description": "Both prove existence of 'unreachable' quantities: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrationals exist) is the earliest impos"
+      "description": "Both prove existence of 'unreachable' quantities: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrationals exist) is the earliest impossibility result, while Cantor's diagonal argument proves irrationals are uncountably many. The irrationality of $\\sqrt{2}$ provides a single witness; Cantor shows such numbers overwhelmingly dominate"
     },
     {
       "id": "hilbert-10",
       "relationship": "related",
-      "description": "Matiyasevich's theorem uses the diagonal argument's undecidability legacy: the halting problem (proved undecidable via d"
+      "description": "Matiyasevich's theorem uses the diagonal argument's undecidability legacy: the halting problem (proved undecidable via diagonalization) reduces to Diophantine solvability, making Hilbert's 10th problem undecidable. The chain runs: Cantor's diagonal → Turing's halting problem → Hilbert's 10th"
     },
     {
       "id": "russell-1-plus-1",
       "relationship": "related",
-      "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and Cantor's diagonal argument share the same logical structure: define an "
+      "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and Cantor's diagonal argument share the same logical structure: define an object by 'negating the diagonal' of a self-referential predicate. Russell's paradox (1901) was directly inspired by Cantor's work on cardinal arithmetic, applying the diagonal method to the 'set of all sets'"
     }
   ],
   "alternativeInterpretation": {

@@ -205,30 +205,30 @@
   ],
   "relatedProofs": [
     {
-      "targetId": "erdos-1042",
-      "description": "Connected Components of Polynomial Lemniscates — direct sibling in the EHP series on lemniscate geometry"
+      "id": "erdos-1042",
+      "relationship": "sibling",
+      "description": "Both problems study the geometry of polynomial lemniscates {z : |f(z)| < 1}; #1042 asks how many connected components such a level set can have, while #1043 asks how wide (in projection) those components are."
     },
     {
-      "targetId": "erdos-1044",
-      "description": "Boundary Length of Polynomial Level Sets — sibling problem measuring arc length instead of projection measure"
+      "id": "erdos-1044",
+      "relationship": "sibling",
+      "description": "Companion problem on boundary length of polynomial level sets; together #1043 (projection measure) and #1044 (boundary arc length) probe complementary geometric measurements of the same lemniscate family."
     },
     {
-      "targetId": "erdos-1040",
-      "description": "Transfinite Diameter and Sublevel Set Measure — related potential-theoretic framing of the same lemniscate family"
+      "id": "erdos-1040",
+      "relationship": "related",
+      "description": "Asks whether the infimum of sublevel set measures is determined by transfinite diameter alone; shares the potential-theoretic backdrop of capacity-1 lemniscates that underlies the 3.3 upper bound in #1043."
     },
     {
-      "targetId": "erdos-1046",
-      "description": "Lemniscate Containment in a Disc — Pommerenke's disc bound, key tool in the 3.3 upper-bound argument"
+      "id": "erdos-1046",
+      "relationship": "related",
+      "description": "Pommerenke's 1959 disc-containment theorem (if {|f(z)| < 1} is connected it fits in a disc of radius 2) is used in the proof of the 3.3 upper bound in #1043 and cites the same Pommerenke 1959 paper."
     },
     {
-      "targetId": "erdos-509",
-      "description": "Covering Polynomial Sublevel Sets with Discs — complementary covering approach to measuring lemniscate spread"
-    },
-    "erdos-1042",
-    "erdos-1044",
-    "erdos-1040",
-    "erdos-1046",
-    "erdos-509"
+      "id": "erdos-509",
+      "relationship": "related",
+      "description": "Asks whether {z : |f(z)| ≤ 1} can be covered by discs of total radius ≤ 2 (Cartan's lemma direction); the covering and projection perspectives on lemniscate 'spread' are closely dual to the EHP conjecture in #1043."
+    }
   ],
   "references": [
     {

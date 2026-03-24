@@ -266,17 +266,17 @@
     {
       "id": "stirling-formula",
       "relationship": "related",
-      "description": "Stirling's approximation n! ≈ √(2πn)(n/e)^n combined with D_n ≈ n!/e gives D_n ≈ √(2πn)(n/e)^n/e — an asymptotic formula"
+      "description": "Stirling's approximation n! ≈ √(2πn)(n/e)^n combined with D_n ≈ n!/e gives D_n ≈ √(2πn)(n/e)^n/e — an asymptotic formula for derangement counts involving both π and e"
     },
     {
       "id": "buffons-needle",
       "relationship": "related",
-      "description": "Both are classic probability problems where fundamental constants appear unexpectedly: Buffon's needle yields $2/\\pi$ fr"
+      "description": "Both are classic probability problems where fundamental constants appear unexpectedly: Buffon's needle yields $2/\\pi$ from geometric probability, while derangements yield $1/e$ from combinatorial probability. Both demonstrate that basic probabilistic experiments connect to deep analysis"
     },
     {
       "id": "birthday-problem",
       "relationship": "related",
-      "description": "Both are celebrated combinatorial probability problems with counterintuitive answers. The birthday problem counts collis"
+      "description": "Both are celebrated combinatorial probability problems with counterintuitive answers. The birthday problem counts collisions in random mappings while derangements count fixed-point-free permutations. Both exhibit rapid convergence to their limiting probabilities"
     }
   ],
   "leanFile": {

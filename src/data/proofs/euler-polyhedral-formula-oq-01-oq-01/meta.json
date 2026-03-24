@@ -161,11 +161,13 @@
   "relatedProofs": [
     {
       "id": "euler-polyhedral-formula-oq-01",
-      "relationship": "Parent: proves the Six Color Theorem via 5-degeneracy; this entry refines to Five Colors using Kempe chains and K₅ non-planarity"
+      "relationship": "Parent: proves the Six Color Theorem via 5-degeneracy; this entry refines to Five Colors using Kempe chains and K₅ non-planarity",
+      "description": "Extends OQ-01 (Six Color Theorem via 5-degeneracy) to the Five Color Theorem, using the stronger Kempe chain recoloring argument that requires K₅ non-planarity"
     },
     {
       "id": "four-color-theorem",
-      "relationship": "The definitive coloring result for planar graphs; the Kempe chain method formalized here is the key technique also underlying the Four Color Theorem proof"
+      "relationship": "The definitive coloring result for planar graphs; the Kempe chain method formalized here is the key technique also underlying the Four Color Theorem proof",
+      "description": "The Four Color Theorem is the sharp version of this result; the Kempe chain technique here is the same method Kempe incorrectly applied to four colors in 1879"
     },
     "euler-polyhedral-formula-oq-01",
     "euler-polyhedral-formula",

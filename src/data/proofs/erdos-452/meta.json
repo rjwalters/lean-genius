@@ -190,24 +190,24 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "prime-number-theorem",
-      "relationship": "The prime number theorem governs the density of primes in $[x, 2x]$ — approximately $x/\\log x$ primes — and hence the typical spacing between prime obstructions"
+      "relationship": "The prime number theorem governs the density of primes in $[x, 2x]$ — approximately $x/\\log x$ primes — and hence the typical spacing between prime obstructions",
+      "targetId": "prime-number-theorem"
     },
     {
-      "targetProofId": "prime-reciprocal-divergence",
-      "relationship": "The divergence $\\sum 1/p = \\infty$ underlies the Hardy–Ramanujan theorem: since small primes contribute to most factorizations, $\\omega(n) \\sim \\log\\log n$ follows from the additive structure of $\\sum_{p \\mid n} 1$"
+      "relationship": "The divergence $\\sum 1/p = \\infty$ underlies the Hardy–Ramanujan theorem: since small primes contribute to most factorizations, $\\omega(n) \\sim \\log\\log n$ follows from the additive structure of $\\sum_{p \\mid n} 1$",
+      "targetId": "prime-reciprocal-divergence"
     },
     {
-      "targetProofId": "infinitude-primes",
-      "relationship": "Euclid's theorem guarantees primes are dense enough to obstruct long valid intervals; the quantitative refinement via PNT determines how dense the obstructions are"
+      "relationship": "Euclid's theorem guarantees primes are dense enough to obstruct long valid intervals; the quantitative refinement via PNT determines how dense the obstructions are",
+      "targetId": "infinitude-primes"
     },
     {
-      "targetProofId": "bertrands-postulate",
-      "relationship": "Bertrand's postulate guarantees a prime in $[x, 2x]$, ensuring every valid interval in that range has a prime obstruction — the question is how close the prime must be"
+      "relationship": "Bertrand's postulate guarantees a prime in $[x, 2x]$, ensuring every valid interval in that range has a prime obstruction — the question is how close the prime must be",
+      "targetId": "bertrands-postulate"
     },
     {
-      "targetProofId": "erdos-222",
-      "relationship": "Both problems study the distribution of integers with special arithmetic properties in short intervals: #222 concerns sums of two squares, #452 concerns integers with many prime factors"
+      "relationship": "Both problems study the distribution of integers with special arithmetic properties in short intervals: #222 concerns sums of two squares, #452 concerns integers with many prime factors",
+      "targetId": "erdos-222"
     }
   ],
   "leanFile": {
@@ -230,29 +230,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "prime-number-theorem",
+      "relationship": "The prime number theorem governs the density of primes in $[x, 2x]$ — approximately $x/\\log x$ primes — and hence the typical spacing between prime obstructions",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "prime-reciprocal-divergence",
+      "relationship": "The divergence $\\sum 1/p = \\infty$ underlies the Hardy–Ramanujan theorem: since small primes contribute to most factorizations, $\\omega(n) \\sim \\log\\log n$ follows from the additive structure of $\\sum_{p \\mid n} 1$",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "infinitude-primes",
+      "relationship": "Euclid's theorem guarantees primes are dense enough to obstruct long valid intervals; the quantitative refinement via PNT determines how dense the obstructions are",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "bertrands-postulate",
+      "relationship": "Bertrand's postulate guarantees a prime in $[x, 2x]$, ensuring every valid interval in that range has a prime obstruction — the question is how close the prime must be",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-222",
+      "relationship": "Both problems study the distribution of integers with special arithmetic properties in short intervals: #222 concerns sums of two squares, #452 concerns integers with many prime factors",
+      "description": ""
     }
   ]
 }

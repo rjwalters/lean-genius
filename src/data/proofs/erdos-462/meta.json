@@ -163,12 +163,12 @@
     {
       "id": "erdos-461",
       "relationship": "related",
-      "description": "Both are short-interval equidistribution problems from the same section of Erdős-Graham: Problem #461 for smooth number "
+      "description": "Both are short-interval equidistribution problems from the same section of Erdős-Graham: Problem #461 for smooth number components, Problem #462 for least prime factor sums"
     },
     {
       "id": "erdos-463",
       "relationship": "related",
-      "description": "Both involve the least prime factor: Problem #463 studies composites near their least prime factor, using the same p(n) "
+      "description": "Both involve the least prime factor: Problem #463 studies composites near their least prime factor, using the same p(n) ≤ √n bound central to Problem #462"
     },
     {
       "id": "erdos-460",
@@ -178,7 +178,7 @@
     {
       "id": "prime-number-theorem",
       "relationship": "technique",
-      "description": "PNT is the paradigmatic equidistribution result; Problem #462 asks an analogous question for the least prime factor sum "
+      "description": "PNT is the paradigmatic equidistribution result; Problem #462 asks an analogous question for the least prime factor sum on its natural scale"
     }
   ],
   "references": [
@@ -186,15 +186,15 @@
       "key": "erdosgraham1980",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "author": "P. Erdős, R.L. Graham",
-      "year": 1980,
+      "year": "1980",
       "pages": "p.92"
     },
     {
       "key": "alladi-erdos1977",
       "title": "On an additive arithmetic function",
       "author": "K. Alladi, P. Erdős",
-      "year": 1977,
-      "journal": "Pacific Journal of Mathematics"
+      "year": "1977",
+      "venue": "Pacific Journal of Mathematics"
     }
   ]
 }

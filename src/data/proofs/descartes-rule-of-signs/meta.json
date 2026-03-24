@@ -183,7 +183,7 @@
     {
       "id": "mean-value-theorem",
       "relationship": "foundational",
-      "description": "Rolle's theorem (a special case of MVT) is the key lemma: between any two roots of $p(x)$, there exists a root of $p'(x)"
+      "description": "Rolle's theorem (a special case of MVT) is the key lemma: between any two roots of $p(x)$, there exists a root of $p'(x)$. This connects the root count of $p$ to the root count of $p'$, enabling the inductive proof"
     },
     {
       "id": "abel-ruffini",
@@ -198,7 +198,7 @@
     {
       "id": "sum-of-kth-powers",
       "relationship": "related",
-      "description": "Both are Wiedijk-100 results about polynomial structure: Faulhaber's formulas concern polynomial evaluation (power sums "
+      "description": "Both are Wiedijk-100 results about polynomial structure: Faulhaber's formulas concern polynomial evaluation (power sums as polynomials in $n$), while Descartes's rule concerns polynomial root counting — complementary perspectives on polynomial analysis"
     }
   ],
   "leanFile": {

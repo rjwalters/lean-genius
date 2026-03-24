@@ -63,7 +63,7 @@
     ],
     "dateAdded": "2026-03-14",
     "relatedProblems": [],
-    "lineCount": 21110,
+    "lineCount": 21111,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -264,7 +264,7 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 21110,
+    "lineCount": 21111,
     "axiomCount": 5,
     "theoremCount": 1009,
     "definitionCount": 104
@@ -331,7 +331,7 @@
     {
       "id": "poincare-conjecture",
       "relationship": "thematic",
-      "description": "Both are (former) Millennium Prize problems: Poincare was resolved by Perelman (2003) using Ricci flow (a PDE technique)"
+      "description": "Both are (former) Millennium Prize problems: Poincare was resolved by Perelman (2003) using Ricci flow (a PDE technique), while Navier-Stokes remains open — Ricci flow shares the nonlinear PDE regularity challenges of Navier-Stokes"
     },
     {
       "id": "hilbert-19",
@@ -346,7 +346,7 @@
     {
       "id": "birch-swinnerton-dyer",
       "relationship": "thematic",
-      "description": "Both are unsolved Clay Millennium Prize problems: BSD concerns L-functions of elliptic curves, while Navier-Stokes conce"
+      "description": "Both are unsolved Clay Millennium Prize problems: BSD concerns L-functions of elliptic curves, while Navier-Stokes concerns fluid dynamics — both represent frontier challenges in their respective fields"
     }
   ]
 }

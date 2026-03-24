@@ -186,12 +186,12 @@
     {
       "id": "area-of-circle-oq-01-oq-02-oq-01",
       "relationship": "extended-by",
-      "description": "Generalizes the circumference-to-area integration from 2D circles to n-dimensional spheres: $V_n(r) = \\int_0^r S_n(\\rho)"
+      "description": "Generalizes the circumference-to-area integration from 2D circles to n-dimensional spheres: $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$ where $S_n$ is the surface area of the n-sphere. The same radial integration technique that yields $\\pi r^2$ from $2\\pi r$ extends to derive volume formulas for spheres, hyperspheres, and higher-dimensional balls"
     },
     {
       "id": "area-of-circle-oq-01-oq-02-oq-02",
       "relationship": "extended-by",
-      "description": "Integration by parts for Fourier coefficients of periodic functions — the same IBP technique used in the circumference i"
+      "description": "Integration by parts for Fourier coefficients of periodic functions — the same IBP technique used in the circumference integration proof extends to computing the Fourier coefficients that arise when representing geometric quantities (like arc length and curvature) as trigonometric series"
     }
   ],
   "leanFile": {

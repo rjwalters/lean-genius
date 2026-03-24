@@ -214,17 +214,17 @@
     {
       "id": "szemeredi-regularity",
       "relationship": "related",
-      "description": "Szemerédi's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform)"
+      "description": "Szemerédi's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform), the hypergraph regularity lemma (Gowers, Rödl et al.) is a major tool for attacking hypergraph Turán problems like #500"
     },
     {
       "id": "erdos-1",
       "relationship": "related",
-      "description": "Erdős #1 (distinct subset sums) is another flagship Erdős problem in combinatorics. Both exemplify the characteristic Er"
+      "description": "Erdős #1 (distinct subset sums) is another flagship Erdős problem in combinatorics. Both exemplify the characteristic Erdős style: simple to state, extraordinarily difficult to resolve"
     },
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial coefficient C(n,3) normalizes the Turán density π(K₄³) = lim ex₃(n)/C(n,3). The combinatorial identity C(n,"
+      "description": "The binomial coefficient C(n,3) normalizes the Turán density π(K₄³) = lim ex₃(n)/C(n,3). The combinatorial identity C(n,3) = n(n-1)(n-2)/6 counts the total number of possible 3-edges"
     }
   ],
   "references": [
@@ -280,7 +280,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 108,
+    "lineCount": 107,
     "axiomCount": 13,
     "theoremCount": 0,
     "definitionCount": 4

@@ -206,7 +206,7 @@
     {
       "id": "continuum-hypothesis",
       "relationship": "extends",
-      "description": "Cantor's theorem shows |ℕ| < |P(ℕ)| = |ℝ|. The continuum hypothesis asks whether any cardinality lies strictly between —"
+      "description": "Cantor's theorem shows |ℕ| < |P(ℕ)| = |ℝ|. The continuum hypothesis asks whether any cardinality lies strictly between — proved independent by Gödel (1940) and Cohen (1963)"
     },
     {
       "id": "schroeder-bernstein",
@@ -221,32 +221,32 @@
     {
       "id": "cantors-theorem-oq-01",
       "relationship": "extended-by",
-      "description": "Investigates the cardinality of $\\mathcal{P}(\\mathbb{R})$ — iterated application of Cantor's theorem gives the tower $|\\"
+      "description": "Investigates the cardinality of $\\mathcal{P}(\\mathbb{R})$ — iterated application of Cantor's theorem gives the tower $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})| < \\cdots$, and the Continuum Hypothesis asks about gaps in this hierarchy"
     },
     {
       "id": "cantors-theorem-oq-02",
       "relationship": "extended-by",
-      "description": "Lawvere's fixed-point theorem provides a categorical generalization of Cantor's diagonal argument: in any cartesian clos"
+      "description": "Lawvere's fixed-point theorem provides a categorical generalization of Cantor's diagonal argument: in any cartesian closed category, if $Y^{Y^X}$ has a surjection from $X$, then every endomorphism of $Y$ has a fixed point — unifying Cantor's theorem, the halting problem, and Gödel incompleteness under one framework"
     },
     {
       "id": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "Godel's incompleteness theorem uses a self-referential construction structurally identical to Cantor's diagonal argument"
+      "description": "Godel's incompleteness theorem uses a self-referential construction structurally identical to Cantor's diagonal argument: the Godel sentence 'I am not provable' parallels the diagonal set 'I am not in my own image'. Lawvere's fixed-point theorem unifies both."
     },
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both are impossibility results proved by structural obstruction: Cantor shows no surjection to the power set via diagona"
+      "description": "Both are impossibility results proved by structural obstruction: Cantor shows no surjection to the power set via diagonalization, Abel-Ruffini shows no radical formula for quintics via non-solvability of $S_5$."
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Both establish fundamental structural properties of infinite mathematical objects. Euclid's proof that primes are infini"
+      "description": "Both establish fundamental structural properties of infinite mathematical objects. Euclid's proof that primes are infinite and Cantor's proof of uncountability are the two foundational results about the structure of infinity."
     },
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "The well-ordering principle (equivalent to induction, as formalized in mathematical-induction) provides the foundation f"
+      "description": "The well-ordering principle (equivalent to induction, as formalized in mathematical-induction) provides the foundation for ordinal and cardinal arithmetic that Cantor's theorem initiates. The transfinite induction principle generalizes mathematical induction to ordinals, enabling proofs about the cardinal hierarchy $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ that Cantor's theorem establishes"
     }
   ],
   "references": [

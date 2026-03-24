@@ -198,7 +198,7 @@
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "PNT gives $\\pi(x) \\sim x/\\log x$, establishing the density of primes. The primes form a primitive set (no prime divides "
+      "description": "PNT gives $\\pi(x) \\sim x/\\log x$, establishing the density of primes. The primes form a primitive set (no prime divides another prime), and Erdős's 1935 theorem implies $\\sum 1/(p \\log p)$ converges — the same type of series convergence conjectured for well-separated sets in conjecture (ii)"
     },
     {
       "id": "erdos-4",
@@ -208,27 +208,27 @@
     {
       "id": "erdos-36",
       "relationship": "related",
-      "description": "Both are Erdős problems about density constraints on number-theoretic sets. #36 concerns sets avoiding arithmetic progre"
+      "description": "Both are Erdős problems about density constraints on number-theoretic sets. #36 concerns sets avoiding arithmetic progressions, #143 concerns sets avoiding integer dilation proximity — both instantiate the general theme of structural constraints forcing sparseness"
     },
     {
       "id": "roth-theorem-k3",
       "relationship": "related",
-      "description": "Roth's theorem bounds the density of sets avoiding 3-term arithmetic progressions. Like #143, it shows that a combinator"
+      "description": "Roth's theorem bounds the density of sets avoiding 3-term arithmetic progressions. Like #143, it shows that a combinatorial constraint (no 3-AP vs no dilation proximity) forces sparseness. Both use analytic number theory techniques (Roth: Fourier analysis; KLL: GCD graphs and multiplicative functions)"
     },
     {
       "id": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemerédi's theorem (sets of positive upper density contain arbitrarily long arithmetic progressions) provides the parad"
+      "description": "Szemerédi's theorem (sets of positive upper density contain arbitrarily long arithmetic progressions) provides the paradigm for density-vs-structure results. Problem #143 asks a similar question: does the structural constraint of dilation-avoidance force zero density? The KLL result gives a partial answer"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate (there is always a prime between $n$ and $2n$) implies that primes have positive lower density in l"
+      "description": "Bertrand's postulate (there is always a prime between $n$ and $2n$) implies that primes have positive lower density in logarithmic scale. For well-separated sets, the open conjecture (i) asks whether the lower density must be zero — a much stronger sparseness condition than what primes satisfy"
     },
     {
       "id": "erdos-25",
       "relationship": "related",
-      "description": "Erdős #25 concerns the distribution of prime gaps. Both #25 and #143 study how number-theoretic constraints affect the s"
+      "description": "Erdős #25 concerns the distribution of prime gaps. Both #25 and #143 study how number-theoretic constraints affect the spacing and density of elements in structured sets"
     }
   ],
   "references": [

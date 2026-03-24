@@ -198,7 +198,7 @@
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "The combinatorial identity C(n+1,k+1) = C(n,k) + C(n,k+1) (Pascal's recurrence) is the key inductive step in the Hockey "
+      "description": "The combinatorial identity C(n+1,k+1) = C(n,k) + C(n,k+1) (Pascal's recurrence) is the key inductive step in the Hockey Stick Identity proof"
     },
     {
       "id": "sum-of-kth-powers",
@@ -213,7 +213,7 @@
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "The Hockey Stick Identity is proved by induction on n, using Pascal's recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) as the inductive step"
+      "description": "Both the hockey stick identity and the closed formulas are proved by mathematical induction on n — the hockey stick inductive step uses the Pascal recurrence, while the closed forms use nlinarith to discharge the nonlinear arithmetic goals"
     }
   ],
   "leanFile": {

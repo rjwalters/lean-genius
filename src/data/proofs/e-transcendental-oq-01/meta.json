@@ -234,15 +234,18 @@
   "relatedProofs": [
     {
       "id": "e-transcendental",
-      "relationship": "Base formalization of e's transcendence (Hermite 1873); this OQ-01 investigates the open question of e+π"
+      "relationship": "Base formalization of e's transcendence (Hermite 1873); this OQ-01 investigates the open question of e+π",
+      "description": "Extends the base e-transcendental formalization to the open question of e+π, using Vieta's symmetric polynomial identity and the algebraic closure lemma"
     },
     {
       "id": "pi-transcendental",
-      "relationship": "π's transcendence (Lindemann 1882); together with e-transcendental, provides the two foundational facts for the Vieta argument"
+      "relationship": "π's transcendence (Lindemann 1882); together with e-transcendental, provides the two foundational facts for the Vieta argument",
+      "description": "π's transcendence (Lindemann 1882) is one of the two foundational facts; the open question is whether e+π (or eπ) inherits transcendence from its components"
     },
     {
       "id": "hermite-lindemann",
-      "relationship": "The Hermite-Lindemann-Weierstrass theorem, once fully formalized in Mathlib, would eliminate the foundational axioms in this entry"
+      "relationship": "The Hermite-Lindemann-Weierstrass theorem, once fully formalized in Mathlib, would eliminate the foundational axioms in this entry",
+      "description": "The Hermite-Lindemann theorem underlies both e-transcendental and pi-transcendental; its formalization is the prerequisite for eliminating the foundational axioms in this entry"
     },
     "e-transcendental",
     "pi-transcendental",

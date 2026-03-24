@@ -248,12 +248,12 @@
     {
       "id": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The GCD algorithm tests coprimality gcd(a,b) = 1, the essential hypothesis of Birch's theorem. Without coprimality, the "
+      "description": "The GCD algorithm tests coprimality gcd(a,b) = 1, the essential hypothesis of Birch's theorem. Without coprimality, the set {a^k b^l} can have systematic divisibility patterns that prevent completeness"
     },
     {
       "id": "bezout-identity",
       "relationship": "foundational",
-      "description": "Bézout's identity (sa + tb = 1 for coprime a,b) is central to Birch's proof: coprimality ensures that a^k b^l generates "
+      "description": "Bézout's identity (sa + tb = 1 for coprime a,b) is central to Birch's proof: coprimality ensures that a^k b^l generates elements whose residues modulo any prime cover all possibilities, a key ingredient for completeness"
     },
     {
       "id": "fundamental-arithmetic",
@@ -268,7 +268,7 @@
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,"
+      "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,b), the ~(log N)² elements up to N generate 2^{(log N)²} ≫ N subset sums, providing the combinatorial basis for completeness"
     }
   ]
 }

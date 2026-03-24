@@ -28,7 +28,7 @@
       "Turán-type bounds"
     ],
     "axiomCount": 0,
-    "lineCount": 106,
+    "lineCount": 111,
     "assumptions": "None. All auxiliary theorems proved: hypercube_self_subgraph (identity embedding), complete_contains_hypercube (identity on complete graph), hypercube_one_is_edge (case analysis on Fin 2). Main conjecture stated as Prop definition (open problem).",
     "mathlib_version": "4.26.0"
   },
@@ -151,12 +151,12 @@
     {
       "id": "erdos-578",
       "relationship": "related",
-      "description": "Erdős #578 asks whether a random graph on 2^d vertices with edge probability 1/2 almost surely contains Q_d. Riordan (20"
+      "description": "Erdős #578 asks whether a random graph on 2^d vertices with edge probability 1/2 almost surely contains Q_d. Riordan (2000) answered YES. The probabilistic regime of #578 complements the deterministic minimum-degree regime of #1035."
     },
     {
       "id": "erdos-577",
       "relationship": "related",
-      "description": "Erdős #577 forces vertex-disjoint 4-cycles via a minimum-degree condition (δ ≥ n/2 on 4k vertices). Both #577 and #1035 "
+      "description": "Erdős #577 forces vertex-disjoint 4-cycles via a minimum-degree condition (δ ≥ n/2 on 4k vertices). Both #577 and #1035 use minimum-degree thresholds to force structured subgraphs, illustrating the general programme of degree-forcing spanning or near-spanning configurations."
     },
     {
       "id": "erdos-580",
@@ -166,12 +166,12 @@
     {
       "id": "erdos-1078",
       "relationship": "related",
-      "description": "Erdős #1078 determines the minimum-degree threshold that forces K_r in r-partite graphs (solved by Haxell 2001). Both #1"
+      "description": "Erdős #1078 determines the minimum-degree threshold that forces K_r in r-partite graphs (solved by Haxell 2001). Both #1078 and #1035 study minimum-degree conditions that force structured subgraphs, but #1078 targets cliques while #1035 targets hypercubes."
     },
     {
       "id": "erdos-1077",
       "relationship": "related",
-      "description": "Erdős #1077 (Balanced Subgraphs in Dense Graphs, Jiang-Longbrake 2025) asks for large balanced subgraphs in dense graphs"
+      "description": "Erdős #1077 (Balanced Subgraphs in Dense Graphs, Jiang-Longbrake 2025) asks for large balanced subgraphs in dense graphs. Together with #1035, it illustrates the broader theme of what structured subgraphs can be forced by density conditions in graphs with 2^n or near-2^n vertices."
     }
   ],
   "references": [
@@ -244,7 +244,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 106,
+    "lineCount": 111,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 7

@@ -240,7 +240,7 @@
     {
       "id": "erdos-1046",
       "relationship": "sibling",
-      "description": "Erdős #1046 asks whether a connected lemniscate L(f,1) is contained in a disc of radius 2, answered YES by Pommerenke (1"
+      "description": "Erdős #1046 asks whether a connected lemniscate L(f,1) is contained in a disc of radius 2, answered YES by Pommerenke (1959). Where #1048 studies diameter of components from below, #1046 studies containment from above — complementary geometric bounds on the same objects."
     },
     {
       "id": "erdos-1042",
@@ -250,27 +250,27 @@
     {
       "id": "erdos-1039",
       "relationship": "related",
-      "description": "Erdős #1039 asks for the radius of the largest inscribed disc in L(f,1) for polynomials with roots in the unit disc — a "
+      "description": "Erdős #1039 asks for the radius of the largest inscribed disc in L(f,1) for polynomials with roots in the unit disc — a finer geometric invariant than the diameter studied in #1048. Both use potential-theoretic techniques (logarithmic capacity bounds)."
     },
     {
       "id": "erdos-1041",
       "relationship": "related",
-      "description": "Erdős #1041 studies path lengths within lemniscate components connecting roots, complementing #1048's diameter analysis "
+      "description": "Erdős #1041 studies path lengths within lemniscate components connecting roots, complementing #1048's diameter analysis with metric connectivity questions about the same sublevel sets."
     },
     {
       "id": "erdos-1038",
       "relationship": "related",
-      "description": "Erdős #1038 studies the Lebesgue measure of polynomial sublevel sets {x : |f(x)| < 1} on the real line (solved: supremum"
+      "description": "Erdős #1038 studies the Lebesgue measure of polynomial sublevel sets {x : |f(x)| < 1} on the real line (solved: supremum = 2√2 by Tao 2025). Where #1048 studies diameter in ℂ, #1038 studies measure on ℝ — different geometric invariants of polynomial sublevel sets."
     },
     {
       "id": "erdos-1040",
       "relationship": "related",
-      "description": "Erdős #1040 asks whether the measure of L(f,1) is determined by the transfinite diameter of the root set — connecting to"
+      "description": "Erdős #1040 asks whether the measure of L(f,1) is determined by the transfinite diameter of the root set — connecting to the same potential-theoretic framework (logarithmic capacity, transfinite diameter) that underlies #1048's diameter bounds."
     },
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "foundational",
-      "description": "The Fundamental Theorem of Algebra guarantees that a degree-n monic polynomial has exactly n roots in ℂ (with multiplici"
+      "description": "The Fundamental Theorem of Algebra guarantees that a degree-n monic polynomial has exactly n roots in ℂ (with multiplicity). This underpins the entire lemniscate theory: the root count determines the maximum number of connected components, and the root distribution controls the lemniscate geometry."
     }
   ],
   "leanFile": {

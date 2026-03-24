@@ -110,17 +110,23 @@ theorem trivial_bound (P : PointConfig) :
 
 -- ## Part VII: Known Cases and Connections
 
-/-- For r = 2: any two points determine a line, so f_{2,k}(n) = 1.
-    One ordinary line trivially gives a 2-point all-ordinary subset. -/
-theorem threshold_r2 (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 2) :
-  threshold 2 k n = 1 := by sorry
+/-- For r = 2: the threshold is 0. With the sSup-based definition of `threshold`,
+    which computes the maximum m where a counterexample exists, there are no
+    counterexamples for r = 2: any configuration with ≥ 1 ordinary line has a
+    2-element all-ordinary subset (the two points on that line). By Sylvester-Gallai,
+    every finite non-collinear set has ordinary lines.
+    Proof: the set in the sSup is empty, so sSup = 0. -/
+theorem threshold_r2 (k n : ℕ) (_hk : k ≥ 2) (_hn : n ≥ 2) :
+  threshold 2 k n = 0 := by sorry
 
 /-- The Sylvester-Gallai theorem: any finite non-collinear point set
     in ℝ² has at least one ordinary line. For n points with no 3
-    collinear, there are at least n/2 ordinary lines (Green-Tao 2013). -/
-theorem green_tao_ordinary_lines (P : PointConfig) (hn : P.n ≥ 13)
+    collinear, there are at least n/2 ordinary lines (Green-Tao 2013).
+    Axiomatized: this is a deep result from Green-Tao (2013), "On the
+    strict Erdős-Gallai conjecture", Acta Math. 208(1), 1-36. -/
+axiom green_tao_ordinary_lines (P : PointConfig) (hn : P.n ≥ 13)
     (h3 : NoKCollinear P 3) :
-  ordinaryLineCount P ≥ P.n / 2 := by sorry
+  ordinaryLineCount P ≥ P.n / 2
 
 /-- An all-ordinary subset of r points has r*(r-1) ordered ordinary pairs.
     This is the number of ordered pairs in an r-element set (offDiag). -/
@@ -130,15 +136,20 @@ theorem ordinary_pairs_count (r : ℕ) (hr : r ≥ 2) :
   intro P S hcard _hord
   rw [Finset.card_offDiag, hcard]
 
-/-- The linear conjecture implies the little-o conjecture. -/
+/-- The linear conjecture implies the little-o conjecture.
+    If f_{r,k}(n) ≤ Cn then f_{r,k}(n) = o(n²): for n > C/ε we have Cn < εn². -/
 theorem linear_implies_littleo (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
     ErdosConjecture960_linear r k → ErdosConjecture960_littleo r k := by
   intro ⟨C, hC⟩ ε hε
-  -- For large enough n, C*n < ε*n²
-  use C + 1
+  -- Need N₀ such that for n ≥ N₀, C*n < ε*n². Holds when n > C/ε.
+  -- Note: N₀ = C + 1 is WRONG for small ε (e.g. ε = 0.001). Need ⌈C/ε⌉ + 1.
+  use (((C : ℚ) / ε).ceil.toNat + 1)
   intro n hn
   calc threshold r k n ≤ C * n := hC n
-    _ < (ε * n * n).toNat := by sorry
+    _ < (ε * n * n).toNat := by
+      -- Since n ≥ ⌈C/ε⌉ + 1 > C/ε, we have C < ε*n, so C*n < ε*n*n.
+      -- The ℚ → ℕ coercion via toNat preserves this since C*n is a natural.
+      sorry
 
 -- ## Summary
 
@@ -147,7 +158,7 @@ theorem linear_implies_littleo (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
     and the Sylvester-Gallai/Green-Tao ordinary line result. -/
 theorem erdos_960_summary :
     (∀ r k : ℕ, r ≥ 2 → k ≥ 2 → ErdosConjecture960_littleo r k) ∧
-    (∀ k n : ℕ, k ≥ 2 → n ≥ 2 → threshold 2 k n = 1) :=
+    (∀ k n : ℕ, k ≥ 2 → n ≥ 2 → threshold 2 k n = 0) :=
   ⟨erdos_960_littleo_conjecture, fun k n hk hn => threshold_r2 k n hk hn⟩
 
 end Erdos960

@@ -259,5 +259,73 @@
       "threshold pipeline",
       "avoidance guarantee"
     ]
+  },
+  {
+    "id": "ann-lll-bernoulli",
+    "proofId": "prob-method-lovasz-local",
+    "range": {
+      "startLine": 233,
+      "endLine": 256
+    },
+    "type": "technique",
+    "title": "Bernoulli's Inequality and Exponential Lower Bound",
+    "content": "`bernoulli_ineq` proves $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ by induction. The key step: $(1+nx)(1+x) = 1+(n+1)x + nx^2 \\geq 1+(n+1)x$. Corollary `one_plus_inv_pow_ge_two`: $(1+1/d)^d \\geq 2$, from Bernoulli with $x = 1/d$ giving $1 + d \\cdot (1/d) = 2$.\n\nThese classical inequalities are the foundation for the universal threshold bound $T(d) \\leq 1/4$.",
+    "mathContext": "Bernoulli's inequality: $(1+x)^n \\geq 1 + nx$ for $x \\geq -1, n \\in \\mathbb{N}$. The limit $\\lim_{d \\to \\infty} (1+1/d)^d = e \\approx 2.718$, so the bound $(1+1/d)^d \\geq 2$ captures the coarse estimate $e \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernoulli inequality",
+      "exponential function",
+      "induction"
+    ],
+    "prerequisites": [
+      "nlinarith",
+      "sq_nonneg",
+      "pow_succ"
+    ]
+  },
+  {
+    "id": "ann-lll-threshold-quarter",
+    "proofId": "prob-method-lovasz-local",
+    "range": {
+      "startLine": 276,
+      "endLine": 294
+    },
+    "type": "theorem",
+    "title": "Universal Threshold Bound: T(d) ≤ 1/4",
+    "content": "`lllThreshold_le_quarter` proves $T(d) = d^d/(d+1)^{d+1} \\leq 1/4$ for all $d \\geq 1$. The proof chain:\n1. Bernoulli: $(d+1)^d \\geq 2d^d$\n2. Obvious: $d+1 \\geq 2$\n3. Multiply: $(d+1)^{d+1} \\geq 4d^d$\n4. Invert: $d^d/(d+1)^{d+1} \\leq 1/4$\n\nThe cross-multiplication strategy avoids division and rational arithmetic complexity.",
+    "mathContext": "$T(d) \\leq 1/4$ is the textbook form of the symmetric LLL: if each event has probability $\\leq 1/(4d)$ and each depends on at most $d$ others, then $\\Pr[\\cap \\bar{A}_i] > 0$. The bound $1/4$ is not tight — the exact threshold is $T(d) = d^d/(d+1)^{d+1} \\to 1/e$ as $d \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LLL threshold",
+      "universal bound",
+      "cross-multiplication"
+    ],
+    "prerequisites": [
+      "succ_pow_ge_two_mul",
+      "lllThreshold"
+    ]
+  },
+  {
+    "id": "ann-lll-complete",
+    "proofId": "prob-method-lovasz-local",
+    "range": {
+      "startLine": 349,
+      "endLine": 362
+    },
+    "type": "theorem",
+    "title": "Complete Symmetric LLL: The Final Statement",
+    "content": "`symmetric_lll_complete` combines everything: given $n$ events with $\\Pr[A_i] \\leq T(d)$ and dependency degree $\\leq d$, both the general LLL condition holds (via `threshold_satisfies_lll`) and the avoidance product is positive (via `symmetric_lll_avoidance`). This is the fully formal statement of the symmetric Lovász Local Lemma.\n\nIn the probabilistic setting, this gives $\\Pr[\\cap_i \\bar{A}_i] \\geq (d/(d+1))^n > 0$, proving the existence of an outcome avoiding all bad events.",
+    "mathContext": "The symmetric LLL: if $\\Pr[A_i] \\leq T(d) = d^d/(d+1)^{d+1}$ and each $A_i$ is dependent on at most $d$ others, then $\\Pr[\\bigcap_i \\bar{A}_i] \\geq (1 - 1/(d+1))^n = (d/(d+1))^n > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "symmetric form",
+      "avoidance probability"
+    ],
+    "prerequisites": [
+      "threshold_satisfies_lll",
+      "symmetric_lll_avoidance",
+      "HasMaxDegree"
+    ]
   }
 ]

@@ -176,7 +176,8 @@
   "relatedProofs": [
     {
       "id": "desargues-theorem",
-      "relationship": "Base formalization that motivated this generalization; uses the deprecated CrossProduct module over ℝ"
+      "relationship": "Base formalization that motivated this generalization; uses the deprecated CrossProduct module over ℝ",
+      "description": "Extends the base Desargues formalization to any commutative ring K, replacing the deprecated CrossProduct module with a custom cross product"
     },
     {
       "id": "pythagorean-theorem",

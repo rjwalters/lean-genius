@@ -7,7 +7,7 @@ import v2Json from './versions/v2.json'
 
 // Version content mapping
 // Note: v1 doesn't have objection field, v2 does
-const v1 = v1Json as { description: string; overview: ProofOverview; conclusion: ProofConclusion }
+const v1 = v1Json as { description: string; overview: ProofOverview; conclusion: ProofConclusion, CrossReference }
 const v2 = v2Json as { description: string; overview: ProofOverview; conclusion: ProofConclusion; objection?: { verdict: string; summary: string; coreIssue?: string } }
 
 const versionContent: Record<string, VersionContent> = {
@@ -39,6 +39,7 @@ const meta = metaJson as {
   sections: ProofSection[]
   overview?: ProofOverview
   conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
 }
 
 export const navierStokesProof: Proof = {
@@ -51,6 +52,7 @@ export const navierStokesProof: Proof = {
   source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
 }
 
 export const navierStokesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]

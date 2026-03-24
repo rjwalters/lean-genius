@@ -1,4 +1,4 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 
@@ -6,6 +6,7 @@ const meta = metaJson as {
   id: string; title: string; slug: string; description: string
   meta: ProofMeta; sections: ProofSection[]
   overview?: ProofOverview; conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
 }
 
 const leanSource = () => import('../../../../proofs/Proofs/Erdos361Problem.lean?raw')
@@ -20,6 +21,7 @@ export const proof: Proof = {
   source: '',
   overview: meta.overview,
   conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
 }
 
 export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]

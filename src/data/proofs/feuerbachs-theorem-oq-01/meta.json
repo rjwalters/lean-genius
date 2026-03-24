@@ -246,11 +246,13 @@
   "relatedProofs": [
     {
       "id": "feuerbachs-theorem",
-      "relationship": "Parent formalization (Wiedijk #29) with 8 axiomatized distance relations; this OQ-01 proves all 8 axioms by coordinate computation, making the parent axiom-free"
+      "relationship": "Parent formalization (Wiedijk #29) with 8 axiomatized distance relations; this OQ-01 proves all 8 axioms by coordinate computation, making the parent axiom-free",
+      "description": "Eliminates all 8 axioms from the base Feuerbach formalization by proving the altitude-foot and Feuerbach distance relations via direct coordinate computation and the algebraic chain R²s² - σ = (Rs - 2A)²"
     },
     {
       "id": "feuerbachs-theorem-defs",
-      "relationship": "The shared definitions file for the Feuerbach formalization family: nine-point center, circumcircle, incircle, and excircle definitions"
+      "relationship": "The shared definitions file for the Feuerbach formalization family: nine-point center, circumcircle, incircle, and excircle definitions",
+      "description": "The shared definition file containing the nine-point center, incircle, excircles, and geometric infrastructure that this OQ-01 builds upon"
     },
     "feuerbachs-theorem",
     "feuerbachs-theorem-defs",

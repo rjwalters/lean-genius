@@ -229,22 +229,22 @@
     {
       "id": "pi-transcendental",
       "relationship": "related",
-      "description": "The roots of unity ζₙ = exp(2πi/n) involve π — this file uses cyclotomic properties of ζₙ, while π's transcendence (prov"
+      "description": "The roots of unity ζₙ = exp(2πi/n) involve π — this file uses cyclotomic properties of ζₙ, while π's transcendence (proved in the gallery) separately implies circle squaring is impossible"
     },
     {
       "id": "euler-totient",
       "relationship": "foundational",
-      "description": "Euler's totient function $\\phi(n) = |(\\mathbb{Z}/n\\mathbb{Z})^{\\times}|$ gives the degree $[\\mathbb{Q}(\\zeta_n):\\mathbb{"
+      "description": "Euler's totient function $\\phi(n) = |(\\mathbb{Z}/n\\mathbb{Z})^{\\times}|$ gives the degree $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\phi(n)$ and the order of the Galois group $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$. The Gauss-Wantzel criterion reduces to $\\phi(n) = 2^k$, making the totient function the bridge between number theory and constructibility"
     },
     {
       "id": "primitive-roots",
       "relationship": "foundational",
-      "description": "Primitive roots modulo primes establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. The cyclotomi"
+      "description": "Primitive roots modulo primes establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. The cyclotomic Galois group $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ used via `galCyclotomicEquivUnitsZMod` is a generalization of this cyclicity to composite moduli"
     },
     {
       "id": "euler-identity",
       "relationship": "foundational",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ is the $n = 2$ case of $\\zeta_n = e^{2\\pi i/n}$. This file's proof that $\\zeta_n = \\"
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ is the $n = 2$ case of $\\zeta_n = e^{2\\pi i/n}$. This file's proof that $\\zeta_n = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$ uses the same exponential-trigonometric bridge that underlies Euler's identity, extended to general roots of unity"
     }
   ],
   "references": [

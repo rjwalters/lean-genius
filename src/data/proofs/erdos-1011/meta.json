@@ -200,7 +200,7 @@
     {
       "id": "szemeredi-regularity",
       "relationship": "uses",
-      "description": "Szemerédi's Regularity Lemma is the principal tool in proving asymptotic Turán-type results; the Simonovits asymptotic f"
+      "description": "Szemerédi's Regularity Lemma is the principal tool in proving asymptotic Turán-type results; the Simonovits asymptotic for f_r(n) relies on regularity-based graph decompositions."
     }
   ],
   "references": [
@@ -209,7 +209,7 @@
         "P. Turán"
       ],
       "title": "On an extremal problem in graph theory",
-      "year": 1941,
+      "year": "1941",
       "venue": "Matematikai és Fizikai Lapok",
       "note": "Establishes Turán's theorem: every n-vertex triangle-free graph has at most ⌊n²/4⌋ edges, giving f_2(n) = ⌊n²/4⌋ + 1."
     },
@@ -219,7 +219,7 @@
         "T. Gallai"
       ],
       "title": "On the minimal number of vertices representing the edges of a graph",
-      "year": 1962,
+      "year": "1962",
       "venue": "Magyar Tudományos Akadémia Matematikai Kutató Intézetének Közleményei",
       "note": "Determines f_3(n) = ⌊(n-1)²/4⌋ + 2, the case of graphs with chromatic number ≥ 3."
     },
@@ -228,7 +228,7 @@
         "M. Simonovits"
       ],
       "title": "A method for solving extremal problems in graph theory",
-      "year": 1966,
+      "year": "1966",
       "venue": "Theory of Graphs (Proc. Colloq., Tihany, 1966)",
       "note": "Establishes the Simonovits asymptotic f_r(n) = n²/4 - g(r)n/2 + O(1) and introduces the key quantity g(r)."
     },
@@ -238,7 +238,7 @@
         "M. Illingworth"
       ],
       "title": "Triangles in graphs with forbidden subgraphs and large chromatic number",
-      "year": 2022,
+      "year": "2022",
       "venue": "arXiv preprint",
       "note": "Proves g(r) ≥ (1/2 - o(1))r² log r using χ-Ramsey techniques, establishing the current best lower bound."
     },
@@ -250,7 +250,7 @@
         "F. Pfender"
       ],
       "title": "Triangles in graphs with high chromatic number",
-      "year": 2025,
+      "year": "2025",
       "venue": "arXiv preprint",
       "note": "Proves g(r) ≤ (2 + o(1))r² log r, establishing the current best upper bound, building on new bounds for off-diagonal Ramsey numbers R(3,k)."
     }

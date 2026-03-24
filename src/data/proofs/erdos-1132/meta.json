@@ -66,8 +66,7 @@
       "erdos_max_theorem: maximum exceeds threshold"
     ],
     "axiomCount": 5,
-    "sorries": 1,
-    "lineCount": 278,
+    "lineCount": 277,
     "assumptions": "5 axioms: erdos_lower_bound, chebyshev_lebesgue_constant, bernstein_density_theorem, erdos_max_theorem, equidistant_exponential_growth. 1 sorry: lagrangeBasis_sum_eq_one (partition of unity). See Lean source for complete statements."
   },
   "overview": {
@@ -200,7 +199,7 @@
       ],
       "title": "Problems and Results on the Theory of Interpolation, II",
       "venue": "Acta Mathematica Academiae Scientiarum Hungaricae",
-      "year": 1961,
+      "year": "1961",
       "note": "Proves the lower bound Λₙ ≥ (2/π)log(n) − O(1) for the Lebesgue constant of any node sequence; this is the key quantitative result underlying both questions in Problem #1132."
     },
     {
@@ -209,7 +208,7 @@
       ],
       "title": "Sur la limitation des valeurs d'un polynôme P_n(x) de degré n sur tout un segment par ses valeurs en n+1 points du segment",
       "venue": "Izvestia Akademii Nauk SSSR",
-      "year": 1931,
+      "year": "1931",
       "note": "Establishes that the set of 'good' points x where Lₙ(x) grows like (2/π)log(n) is dense in (-1,1), the density result formalized as bernstein_density_theorem in this entry."
     },
     {
@@ -218,7 +217,7 @@
       ],
       "title": "An Introduction to the Approximation of Functions",
       "venue": "Blaisdell Publishing Company (reprinted Dover, 1981)",
-      "year": 1969,
+      "year": "1969",
       "note": "Classical graduate text covering Lebesgue functions, Lebesgue constants, Chebyshev nodes, and the (2/π)log(n) asymptotic in depth; standard reference for the background to Problem #1132."
     },
     {
@@ -227,7 +226,7 @@
       ],
       "title": "Introduction to Approximation Theory",
       "venue": "McGraw-Hill (reprinted AMS Chelsea, 1998)",
-      "year": 1966,
+      "year": "1966",
       "note": "Covers Chebyshev nodes, equidistant node instability (Runge phenomenon), and the optimality of Chebyshev interpolation in terms of Lebesgue constants, providing the context for the (2/π)log(n) lower bound."
     },
     {
@@ -236,7 +235,7 @@
       ],
       "title": "Lebesgue Functions for Polynomial Interpolation — A Survey",
       "venue": "Annals of Numerical Mathematics",
-      "year": 1997,
+      "year": "1997",
       "note": "Survey article covering known results on Lebesgue constants, growth rates, and extremal node sequences up to 1997; directly surveys the state of knowledge relevant to Problems #1129–#1133."
     }
   ],
@@ -253,7 +252,7 @@
       "Finset"
     ],
     "namespace": "Erdos1132",
-    "lineCount": 278,
+    "lineCount": 277,
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 11

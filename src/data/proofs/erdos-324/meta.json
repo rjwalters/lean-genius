@@ -114,58 +114,58 @@
   ],
   "crossReferences": [
     {
-      "targetProofId": "erdos-321",
       "relationship": "Both from Erdős-Graham (1980) on polynomial additive combinatorics",
       "sharedConcepts": [
         "polynomial arithmetic",
         "additive combinatorics"
-      ]
+      ],
+      "targetId": "erdos-321"
     },
     {
-      "targetProofId": "erdos-325",
       "relationship": "Adjacent Erdős problem on polynomial representations",
       "sharedConcepts": [
         "polynomial evaluation",
         "Erdős-Graham"
-      ]
+      ],
+      "targetId": "erdos-325"
     },
     {
-      "targetProofId": "erdos-332",
       "relationship": "Both involve additive structure of polynomial images",
       "sharedConcepts": [
         "additive combinatorics",
         "integer polynomials"
-      ]
+      ],
+      "targetId": "erdos-332"
     },
     {
-      "targetProofId": "lagrange-four-squares",
       "relationship": "Lagrange's theorem gives representation bounds; pair sums of squares relate to this",
       "sharedConcepts": [
         "sums of powers",
         "representation theory"
-      ]
+      ],
+      "targetId": "lagrange-four-squares"
     },
     {
-      "targetProofId": "cauchy-schwarz",
       "relationship": "Cauchy-Schwarz bounds additive energy, connected to distinct pair sum counting",
       "sharedConcepts": [
         "inequalities",
         "counting arguments"
-      ]
+      ],
+      "targetId": "cauchy-schwarz"
     }
   ],
   "references": [
     {
       "citation": "P. Erdős and R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory,' Monographies de L'Enseignement Mathématique 28, 1980, p. 53",
-      "relevance": "Original source of Problem #324"
+      "note": "Original source of Problem #324"
     },
     {
       "citation": "L. J. Lander, T. R. Parkin, and J. L. Selfridge, 'A Survey of Equal Sums of Like Powers,' Mathematics of Computation 21 (1967), 446-459",
-      "relevance": "The LPS conjecture that would resolve this problem for all n ≥ 5"
+      "note": "The LPS conjecture that would resolve this problem for all n ≥ 5"
     },
     {
       "citation": "G. H. Hardy and S. Ramanujan, 'Asymptotic formulae in combinatory analysis,' Proceedings of the London Mathematical Society 17 (1918), 75-115",
-      "relevance": "Context for the taxicab number 1729 = 1³ + 12³ = 9³ + 10³"
+      "note": "Context for the taxicab number 1729 = 1³ + 12³ = 9³ + 10³"
     }
   ],
   "conclusion": {
@@ -198,29 +198,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-321",
+      "relationship": "Both from Erdős-Graham (1980) on polynomial additive combinatorics",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-325",
+      "relationship": "Adjacent Erdős problem on polynomial representations",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-332",
+      "relationship": "Both involve additive structure of polynomial images",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "lagrange-four-squares",
+      "relationship": "Lagrange's theorem gives representation bounds; pair sums of squares relate to this",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "cauchy-schwarz",
+      "relationship": "Cauchy-Schwarz bounds additive energy, connected to distinct pair sum counting",
+      "description": ""
     }
   ]
 }

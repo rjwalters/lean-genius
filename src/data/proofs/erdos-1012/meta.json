@@ -162,7 +162,7 @@
     {
       "id": "erdos-1009",
       "relationship": "thematic",
-      "description": "Erdős #1009 studies edge-disjoint triangles in graphs just above the Turán threshold ⌊n²/4⌋ + k. This is analogous to #1"
+      "description": "Erdős #1009 studies edge-disjoint triangles in graphs just above the Turán threshold ⌊n²/4⌋ + k. This is analogous to #1012's study of long cycles forced by the threshold T(n,k). Both problems quantify how structure is forced by edge density in the same extremal graph-theoretic framework."
     },
     {
       "id": "erdos-1008",
@@ -172,7 +172,7 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey's theorem provides the combinatorial foundation underlying many extremal graph results. The compactness argument "
+      "description": "Ramsey's theorem provides the combinatorial foundation underlying many extremal graph results. The compactness argument Erdős used (1962) to prove f(k) exists for all k echoes Ramsey-type reasoning, and pancyclicity (all cycle lengths 3 to n−k) is a Ramsey-flavored completeness result for cycle structure."
     }
   ],
   "references": [
@@ -181,7 +181,7 @@
         "D. R. Woodall"
       ],
       "title": "Sufficient conditions for circuits in graphs",
-      "year": 1972,
+      "year": "1972",
       "venue": "Proceedings of the London Mathematical Society",
       "note": "The primary source: proves f(k) ≤ 2k+3 and the pancyclicity result from 3 to n−k, solving Erdős Problem #1012."
     },
@@ -190,7 +190,7 @@
         "J. A. Bondy"
       ],
       "title": "Pancyclic graphs I",
-      "year": 1971,
+      "year": "1971",
       "venue": "Journal of Combinatorial Theory, Series B",
       "note": "Introduces the pancyclicity concept, resolves the k=1 case (f(1)=1), and formulates Bondy's metaconjecture that Hamiltonian conditions imply pancyclicity—confirmed by Woodall for this setting."
     },
@@ -199,7 +199,7 @@
         "O. Ore"
       ],
       "title": "Note on Hamiltonian circuits",
-      "year": 1960,
+      "year": "1960",
       "venue": "American Mathematical Monthly",
       "note": "Proves the classical Ore condition: if deg(u)+deg(v) ≥ n for all non-adjacent u,v, then the graph is Hamiltonian. This is the k=0 case (f(0)=1) of Erdős Problem #1012."
     },
@@ -209,7 +209,7 @@
         "U. S. R. Murty"
       ],
       "title": "Graph Theory with Applications",
-      "year": 1976,
+      "year": "1976",
       "venue": "Macmillan Press",
       "note": "Standard reference for Hamiltonian graph theory, Ore's theorem, and the extremal results on long cycles and pancyclicity. Chapter 9 covers the cycle structure results relevant to this problem."
     },
@@ -218,7 +218,7 @@
         "B. Bollobás"
       ],
       "title": "Extremal Graph Theory",
-      "year": 1978,
+      "year": "1978",
       "venue": "Academic Press",
       "note": "Comprehensive treatment of Turán-type extremal problems and cycle forcing results, situating Woodall's theorem within the broader program of edge-threshold results for subgraph containment."
     }

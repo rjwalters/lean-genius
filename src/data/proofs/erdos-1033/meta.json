@@ -234,16 +234,29 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-905",
-      "note": "The edge-triangle multiplicity result (n/6 triangles per edge above Turán) provides the base from which Fan's lower bound (21/16)n is derived by summing degree contributions across triangles."
+      "id": "erdos-905",
+      "relationship": "foundational",
+      "description": "Erdős #905 establishes that every dense graph (above Turán threshold) has an edge in at least n/6 triangles. This codegree result is a prerequisite for understanding triangle degree-sum guarantees and underlies the book lemma used in related lower bound arguments."
     },
     {
-      "target": "erdos-1034",
-      "note": "Triangle neighbor problems and triangle degree-sum problems are the two main structural questions about triangles in dense graphs; their extremal constants (≈0.419 for neighbors, ≈1.464 for degree sums) are derived from similar nearly-bipartite constructions."
+      "id": "erdos-1034",
+      "relationship": "companion",
+      "description": "Erdős #1034 asks about triangle neighbor counts in dense graphs and is directly companion to #1033. Both probe the structure of triangles above the Turán threshold, with #1034 measuring neighborhood size and #1033 measuring degree sums of triangle vertices."
     },
     {
-      "target": "ramseys-theorem",
-      "note": "Triangle existence is the r=s=3 case of Ramsey's theorem; the Turán threshold n²/4 is the extremal edge count below which triangle-free graphs exist, placing h(n) in the broader Ramsey–Turán framework."
+      "id": "erdos-1032",
+      "relationship": "related",
+      "description": "Erdős #1032 studies 4-chromatic critical graphs with linear minimum degree, connecting the Turán-type threshold with chromatic criticality. Minimum degree conditions are closely tied to degree-sum phenomena in dense graphs."
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "context",
+      "description": "Ramsey's theorem guarantees clique or independent set structure in dense graphs. Triangle existence above the Turán threshold is the r=3 instance of Ramsey-type problems, and the degree-sum question refines the structural information forced by Ramsey thresholds."
+    },
+    {
+      "id": "erdos-1031",
+      "relationship": "related",
+      "description": "Erdős #1031 studies induced regular subgraphs in graphs below the Ramsey threshold. The interplay between degree regularity and extremal thresholds is shared with #1033's analysis of degree sums in triangles near the Turán threshold."
     }
   ],
   "references": [
@@ -254,7 +267,7 @@
       ],
       "title": "A note on the size of a chordal subgraph",
       "venue": "Congressus Numerantium",
-      "year": 1985,
+      "year": "1985",
       "note": "Original paper introducing h(n) and establishing both the upper bound 2(√3−1)n and an initial lower bound for the degree-sum problem."
     },
     {
@@ -264,7 +277,7 @@
       "title": "Degree sum for a triangle in a graph",
       "venue": "Journal of Graph Theory",
       "volume": "12",
-      "year": 1988,
+      "year": "1988",
       "pages": "249–263",
       "note": "Improves the lower bound to h(n) ≥ (21/16)n via careful degree-counting arguments in triangles above the Turán threshold."
     },
@@ -275,7 +288,7 @@
       "title": "On an extremal problem in graph theory",
       "venue": "Matematikai és Fizikai Lapok",
       "volume": "48",
-      "year": 1941,
+      "year": "1941",
       "pages": "436–452",
       "note": "Foundational result proving that every graph on n vertices with more than n²/4 edges contains a triangle, establishing the threshold that underlies the entire h(n) problem."
     },
@@ -285,7 +298,7 @@
       ],
       "title": "Extremal Graph Theory",
       "venue": "Academic Press, London",
-      "year": 1978,
+      "year": "1978",
       "note": "Comprehensive treatment of Turán-type problems, extremal thresholds, and degree-sum methods in graphs. Standard reference for the techniques used in proving bounds on h(n)."
     },
     {
@@ -297,7 +310,7 @@
       "title": "On a problem of K. Zarankiewicz",
       "venue": "Colloquium Mathematicum",
       "volume": "3",
-      "year": 1954,
+      "year": "1954",
       "pages": "50–57",
       "note": "Kővári–Sós–Turán theorem on bipartite subgraph densities; the nearly-bipartite structure of Turán graph T(n,2) that achieves the upper bound in the h(n) problem relies on bipartite extremal results from this line of work."
     }

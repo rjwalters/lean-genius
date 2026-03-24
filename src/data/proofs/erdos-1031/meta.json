@@ -174,20 +174,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-82",
-      "description": "The predecessor question on regular induced subgraphs without the non-Ramsey restriction."
+      "id": "erdos-82",
+      "relationship": "direct-generalization",
+      "description": ""
     },
     {
-      "target": "erdos-1036",
-      "description": "Distinct induced subgraphs in non-Ramsey graphs — the same Prömel-Rödl universality result applied to isomorphism-type diversity."
+      "id": "erdos-88",
+      "relationship": "related-topic",
+      "description": ""
     },
     {
-      "target": "erdos-88",
-      "description": "Induced subgraph structure in Ramsey graphs — the complementary setting to Problem #1031."
+      "id": "erdos-1036",
+      "relationship": "sibling-problem",
+      "description": ""
     },
     {
-      "target": "erdos-szekeres",
-      "description": "Foundational Ramsey-type theorem establishing the log n scale used throughout this problem."
+      "id": "erdos-1037",
+      "relationship": "sibling-problem",
+      "description": ""
+    },
+    {
+      "id": "erdos-1030",
+      "relationship": "related-topic",
+      "description": ""
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "foundational",
+      "description": ""
     }
   ],
   "references": [

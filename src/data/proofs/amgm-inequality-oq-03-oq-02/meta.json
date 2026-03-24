@@ -263,62 +263,62 @@
     {
       "id": "amgm-inequality-oq-03",
       "relationship": "extends",
-      "description": "Parent file with power mean definitions and monotonicity — this limit completes the continuous chain"
+      "description": "Parent file containing power mean definitions and positive/negative monotonicity — this file establishes the r=0 limit completing the continuous chain"
     },
     {
       "id": "amgm-inequality-oq-03-oq-01",
       "relationship": "related",
-      "description": "Negative power mean monotonicity — together with this limit, only the mixed-sign crossing remains"
+      "description": "Negative power mean monotonicity — together with this limit, only the mixed-sign crossing (r < 0 < s) remains"
     },
     {
       "id": "amgm-inequality",
       "relationship": "related",
-      "description": "AM-GM is the M₁ ≥ M₀ case; this limit shows M₀ = GM, giving AM ≥ GM"
+      "description": "AM-GM is the coarsest case M₁ ≥ M₀: the limit here shows M₀ = GM, giving AM ≥ GM"
     },
     {
       "id": "amgm-inequality-oq-02",
       "relationship": "related",
-      "description": "Maclaurin's inequalities give an alternative AM-GM chain via elementary symmetric polynomials"
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM — this limit result shows M₀ = GM, the same GM that Maclaurin's chain bounds from a different direction"
     },
     {
       "id": "lhopital",
       "relationship": "related",
-      "description": "Uses the same derivative-based approach: f(r)/r → f'(0) when f(0) = 0"
+      "description": "The limit uses the same derivative-based approach as L'Hopital's rule: f(r)/r → f'(0) when f(0) = 0, formalized via hasDerivAt_iff_tendsto_slope"
     },
     {
       "id": "shannon-entropy",
       "relationship": "related",
-      "description": "GM = exp(∑ wᵢ log zᵢ) involves the same weighted log-sum as Shannon entropy; Rényi entropy generalizes both via power means"
+      "description": "The geometric mean GM = exp(∑ wᵢ log zᵢ) involves the same weighted log-sum as Shannon entropy H = -∑ pᵢ log pᵢ — both are exponentials of weighted logarithmic expectations, and Rényi entropy generalizes both via the power mean"
     },
     {
       "id": "mean-value-theorem",
       "relationship": "foundational",
-      "description": "MVT underpins hasDerivAt_iff_tendsto_slope, the slope-to-derivative bridge central to this proof"
+      "description": "MVT underpins the derivative machinery used here: hasDerivAt_iff_tendsto_slope depends on the mean value theorem for the slope-to-derivative bridge that proves f(r)/r → f'(0)"
     },
     {
       "id": "triangle-inequality",
       "relationship": "related",
-      "description": "Power mean monotonicity (completed by this limit) implies Minkowski's inequality (L^p triangle inequality)"
+      "description": "Power mean monotonicity (completed by this limit bridge) implies Minkowski's inequality (the L^p triangle inequality) for p ≥ 1 — connecting the power mean family to normed space geometry"
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "related",
-      "description": "Cauchy-Schwarz is the M₁ ≤ M₂ case of power mean monotonicity"
+      "description": "Cauchy-Schwarz is the M₁ ≤ M₂ case of power mean monotonicity. The r→0 limit proved here bridges the negative and positive sides of the power mean chain, with Cauchy-Schwarz sitting at M₂ on the positive side"
     },
     {
       "id": "harmonic-divergence",
       "relationship": "related",
-      "description": "HM = M_{-1} uses reciprocal arithmetic; this limit bridges HM and AM via GM = M₀"
+      "description": "The harmonic mean HM = (∑ wᵢ/zᵢ)⁻¹ = M_{-1} is the r = -1 case of the power mean family. This limit result establishes M_0 = GM, bridging the gap between HM and AM in the chain HM ≤ GM ≤ AM. The harmonic series divergence proof formalizes the arithmetic of reciprocals that underpins the HM ≤ GM step via the inversion trick"
     },
     {
       "id": "taylor-theorem",
       "relationship": "foundational",
-      "description": "The f(r)/r → f'(0) technique is the first-order case of Taylor's theorem"
+      "description": "The derivative-based limit technique used here — f(r)/r → f'(0) when f(0) = 0 — is the first-order case of Taylor's theorem: f(r) = f(0) + f'(0)r + O(r²), so f(r)/r = f'(0) + O(r) → f'(0). Taylor's theorem provides the broader framework for understanding why the power mean limit works: the exp/log representation makes log M_r a smooth function of r whose Taylor expansion at r = 0 reveals the geometric mean as the leading coefficient"
     },
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "FTC establishes the HasDerivAt API connecting derivatives to difference quotient limits"
+      "description": "The calculus infrastructure underpinning this proof — HasDerivAt, chain rule composition, hasDerivAt_iff_tendsto_slope — ultimately rests on the Fundamental Theorem of Calculus connecting derivatives to limits of difference quotients. The FTC formalization establishes the API that makes the slope-to-derivative bridge possible"
     }
   ],
   "references": [

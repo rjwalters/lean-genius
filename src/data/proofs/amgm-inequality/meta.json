@@ -158,12 +158,12 @@
     {
       "id": "cauchy-schwarz-integral",
       "relationship": "extends",
-      "description": "The integral Cauchy-Schwarz inequality generalizes the discrete AM-GM to $L^2$ function spaces; AM-GM for two variables "
+      "description": "The integral Cauchy-Schwarz inequality generalizes the discrete AM-GM to $L^2$ function spaces; AM-GM for two variables is the key ingredient in proving the pointwise bound $fg \\leq (f^2+g^2)/2$ that underlies integral inequalities."
     },
     {
       "id": "isoperimetric-theorem",
       "relationship": "supports",
-      "description": "The product-sum corollary $ab \\leq ((a+b)/2)^2$ proves that among rectangles with fixed perimeter, the square maximizes "
+      "description": "The product-sum corollary $ab \\leq ((a+b)/2)^2$ proves that among rectangles with fixed perimeter, the square maximizes area — a special case of the isoperimetric principle."
     },
     {
       "id": "shannon-entropy",
@@ -188,12 +188,12 @@
     {
       "id": "amgm-inequality-oq-03-oq-01",
       "relationship": "parent",
-      "description": "Proves negative-exponent power mean monotonicity $M_r \\leq M_s$ for $r \\leq s < 0$, extending the AM-GM chain to the ful"
+      "description": "Proves negative-exponent power mean monotonicity $M_r \\leq M_s$ for $r \\leq s < 0$, extending the AM-GM chain to the full real line via the duality $M_r(z) = M_{-r}(z^{-1})^{-1}$."
     },
     {
       "id": "amgm-inequality-oq-03-oq-02",
       "relationship": "parent",
-      "description": "Proves $\\lim_{r \\to 0} M_r = \\text{GM}$: the geometric mean arises as the continuous limit of power means at $r=0$, comp"
+      "description": "Proves $\\lim_{r \\to 0} M_r = \\text{GM}$: the geometric mean arises as the continuous limit of power means at $r=0$, completing the chain $\\text{HM} = M_{-1} \\leq M_0 = \\text{GM} \\leq M_1 = \\text{AM}$."
     }
   ],
   "sections": [

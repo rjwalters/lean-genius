@@ -190,19 +190,35 @@
   ],
   "relatedProofs": [
     {
-      "proofId": "collatz-structured",
-      "relationship": "Provides Lean formalizations of Collatz sequences for structured values (powers of 2, specific small cases). Serves as a technical companion to the Collatz connection noted in #1134: both use inductive Lean definitions to capture closure properties of iteratively defined sets, and both encode affine dynamics (though Collatz is deterministic). The proof infrastructure — closure lemmas, example verification by rfl — mirrors the approach in #1134."
+      "id": "erdos-481",
+      "relationship": "Klarner's 1982 theorem on affine sequence iteration: for maps {x ↦ aᵢx + bᵢ} with Σ(1/aᵢ) > 1, iterating from {1} must produce repeated elements. Problem #1134 sits at the critical threshold Σ(1/mᵢ) = 1/2 + 1/3 + 1/6 = 1 where Klarner's semigroup theory yields only trivial density bounds, motivating the Crampin-Hilton refinement.",
+      "description": ""
     },
     {
-      "proofId": "erdos-1123",
-      "relationship": "Studies Boolean algebras P(ℕ)/I modulo density-zero ideals, asking whether the density-zero ideal and log-density-zero ideal yield isomorphic quotients. Problem #1134 produces a concrete set A with lower density exactly 0 (not merely log-density 0), illustrating why these two ideals can behave differently. The formalization in #1123 uses the same `lowerDensity` infrastructure as #1134."
+      "id": "erdos-1135",
+      "relationship": "The Collatz conjecture studies the orbit of every n under the deterministic map f(n) = n/2 or (3n+1)/2. Lagarias observed that Klarner's problems (including #1134) are structurally related: both concern iteration of piecewise affine maps on ℕ, with the key difference that Klarner's maps are applied non-deterministically (any map may be used), while Collatz applies maps based on parity.",
+      "description": ""
     },
-    "erdos-481",
-    "erdos-1135",
-    "erdos-1110",
-    "erdos-125",
-    "erdos-1146",
-    "erdos-845"
+    {
+      "id": "erdos-1110",
+      "relationship": "Concerns representability as sums of p^k q^l with p=2, q=3 — the same two primes that appear as primary multipliers in #1134 (maps x↦2x+1 and x↦3x+1). The 3-smooth structure and the factorization 6 = 2×3 underlie both problems: in #1134 the coincidence 6 = 2×3 enables the Crampin-Hilton trick, while in #1110 the interaction of powers of 2 and 3 governs which integers can be represented.",
+      "description": ""
+    },
+    {
+      "id": "erdos-125",
+      "relationship": "Asks whether a set defined by digit restrictions (base-3 digits ∈ {0,1} summed with base-4 digits ∈ {0,1}) has positive density. Known lower bound |A+B ∩ [1,x]| ≫ x^{0.9777} is qualitatively similar to #1134's exponent τ ≈ 0.9006 < 1. Both problems feature sets with sub-linear but super-polynomial growth where the density question turns on fine analytic estimates.",
+      "description": ""
+    },
+    {
+      "id": "erdos-1146",
+      "relationship": "Asks whether the 3-smooth numbers B = {2^m · 3^n} form an essential component (a set that boosts Schnirelmann density when added to any positive-density set). The counting function |B ∩ [1,N]| ~ C(log N)² places B exactly at Ruzsa's threshold. Problem #1134 uses the multiplicative structure of 2 and 3 in a complementary way: the factorization 6 = 2×3 among generating multipliers produces a sharp growth exponent, linking both problems to the arithmetic of 3-smooth numbers.",
+      "description": ""
+    },
+    {
+      "id": "erdos-845",
+      "relationship": "Studies sums of 3-smooth numbers b₁ < ... < bₜ with bounded ratio bₜ/b₁ ≤ C. The 3-smooth numbers {2^m · 3^n} are exactly the values reachable by iterating multiplication by 2 and 3 — a multiplicative analogue of the additive iteration in #1134. Disproval of #845 (all integers representable with C = 6) contrasts with #1134's result that the additive-affine orbit has density zero.",
+      "description": ""
+    }
   ],
   "references": [
     {
@@ -212,7 +228,7 @@
       ],
       "title": "Arithmetic properties of certain recursively defined sets",
       "venue": "Pacific Journal of Mathematics",
-      "year": 1974,
+      "year": "1974",
       "volume": "53",
       "pages": "445–463",
       "doi": "10.2140/pjm.1974.53.445",
@@ -225,7 +241,7 @@
       ],
       "title": "On the counting function for a certain recursively defined set",
       "venue": "Technical Report, University of Warwick",
-      "year": 1974,
+      "year": "1974",
       "notes": "Proves the sharp bound |A ∩ [1,X]| ≍ X^τ where τ ≈ 0.900626 is the root of the characteristic equation 6^{-s} + 3^{-s}/(1-2^{-s}) = 1. The key insight is that the factorization 6 = 2×3 among multipliers enables enumeration of compositions via a geometric series, breaking below the trivial Klarner-Rado bound. Axiomatized as `crampin_hilton_theorem` in the formalization."
     },
     {
@@ -234,7 +250,7 @@
       ],
       "title": "Unsolved Problems in Number Theory",
       "venue": "Springer-Verlag",
-      "year": 1983,
+      "year": "1983",
       "edition": "1st",
       "isbn": "978-0-387-90593-8",
       "notes": "Section E on sequences includes the open variant A' = ⟨0; 2x, 3x+2, 6x+3⟩ (Klarner's generalization), which remains unsolved. Guy's exposition brought wider attention to the Klarner-Rado framework and the difficulty of the boundary case Σ 1/mᵢ = 1. The open variant is formalized in the `open-variants` section of the Lean file."
@@ -245,7 +261,7 @@
       ],
       "title": "The 3x+1 Problem: An Annotated Bibliography (1963–1999)",
       "venue": "arXiv",
-      "year": 2004,
+      "year": "2004",
       "arxiv": "math/0309224",
       "notes": "Provides the authoritative survey connecting Klarner's problems to the Collatz (3x+1) conjecture. Lagarias explicitly notes that Klarner's sets and the Collatz orbit share the structure of non-deterministic affine iteration on ℕ, and that Problem #1134 originated with Klarner's work on semigroups generated by affine maps. Key reference for the historical context in the overview."
     },
@@ -255,7 +271,7 @@
       ],
       "title": "Arithmetic properties of certain recursively defined sets II",
       "venue": "Studies in Pure Mathematics (Birkhäuser)",
-      "year": 1983,
+      "year": "1983",
       "pages": "399–408",
       "notes": "Proves the eventual-repetition theorem for affine sequences with Σ(1/aᵢ) > 1 using free semigroup theory — the result formalized in erdos-481. Also establishes foundational properties of Klarner systems (semigroups generated by affine maps) that underlie the framework used in both #1134 and #481, including the connection between the Schur convexity of Σ mᵢ^{-s} and the boundary behavior at σ = 1."
     }

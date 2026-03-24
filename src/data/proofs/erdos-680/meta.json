@@ -275,7 +275,7 @@
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "The PNT $\\pi(x) \\sim x/\\ln x$ underlies both Cramér's conjecture and the expected density of primes near $n$. The prime "
+      "description": "The PNT $\\pi(x) \\sim x/\\ln x$ underlies both Cramér's conjecture and the expected density of primes near $n$. The prime gap reduction in #680 implicitly uses the PNT to estimate how far one must search for a prime."
     },
     {
       "id": "bertrands-postulate",
@@ -285,7 +285,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "The infinitude of primes (Euclid) is used directly in the formalization: `Nat.exists_infinite_primes (p + 1)` finds the "
+      "description": "The infinitude of primes (Euclid) is used directly in the formalization: `Nat.exists_infinite_primes (p + 1)` finds the next prime after $p$, enabling the definition of CramerConjecture."
     },
     {
       "id": "erdos-648",
@@ -295,7 +295,7 @@
     {
       "id": "erdos-1055",
       "relationship": "related",
-      "description": "Erdős #1055 classifies primes by smoothness of $p+1$, connecting to the least prime factor of $p + 1$. Both problems rel"
+      "description": "Erdős #1055 classifies primes by smoothness of $p+1$, connecting to the least prime factor of $p + 1$. Both problems relate to the distribution of prime factors of integers in structured positions."
     }
   ]
 }

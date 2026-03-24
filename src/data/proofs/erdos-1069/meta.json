@@ -187,16 +187,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "szemeredi-theorem",
-      "relationship": "Szemerédi's regularity lemma is a separate foundational result by the same author; the Szemerédi-Trotter theorem is an incidence geometry result, distinct from Szemerédi's theorem on arithmetic progressions."
+      "id": "erdos-89",
+      "relationship": "The distinct distances problem is closely linked: the Szemerédi-Trotter theorem is a key tool in the Guth-Katz proof of the near-optimal n/√(log n) distinct distances lower bound.",
+      "description": ""
     },
     {
-      "target": "erdos-669",
-      "relationship": "The Orchard Problem (k-point lines and F_k(n)) is a closely related extremal question about line multiplicities in n-point planar sets."
+      "id": "erdos-90",
+      "relationship": "The unit distance problem is bounded using incidence geometry; the Szemerédi-Trotter theorem provides the O(n^{4/3}) upper bound on unit-distance pairs.",
+      "description": ""
     },
     {
-      "target": "erdos-960",
-      "relationship": "Ordinary lines and collinear Ramsey thresholds generalize the ordinary-line counting that underpins the lower bound side of the k-rich lines problem."
+      "id": "erdos-52",
+      "relationship": "The Sum-Product Conjecture is proved (in characteristic 0) using the Szemerédi-Trotter theorem via the Elekes incidence argument, bounding |A+A|·|A·A|.",
+      "description": ""
+    },
+    {
+      "id": "erdos-211",
+      "relationship": "Beck's Theorem (lines formed by n points) is closely related: both results bound incidences and line multiplicities in planar point sets using crossing number methods.",
+      "description": ""
+    },
+    {
+      "id": "erdos-607",
+      "relationship": "Incidence signatures of point configurations directly study the distribution of incidence counts, the same combinatorial data captured by the k-rich lines bound.",
+      "description": ""
+    },
+    {
+      "id": "erdos-588",
+      "relationship": "k-Point lines in general position asks whether f_k(n) = o(n²) for k ≥ 4 — a refinement of the k-rich lines bound studied in this problem.",
+      "description": ""
     }
   ],
   "references": [
@@ -207,7 +225,7 @@
       ],
       "title": "Extremal problems in discrete geometry",
       "venue": "Combinatorica",
-      "year": 1983,
+      "year": "1983",
       "volume": "3",
       "pages": "381–392",
       "doi": "10.1007/BF02579194",
@@ -219,7 +237,7 @@
       ],
       "title": "Crossing numbers and hard Erdős problems in discrete geometry",
       "venue": "Combinatorics, Probability and Computing",
-      "year": 1997,
+      "year": "1997",
       "volume": "6",
       "pages": "353–358",
       "doi": "10.1017/S0963548397002976",
@@ -231,7 +249,7 @@
       ],
       "title": "On the number of sums and products",
       "venue": "Acta Arithmetica",
-      "year": 1997,
+      "year": "1997",
       "volume": "81",
       "pages": "365–367",
       "doi": "10.4064/aa-81-4-365-367",
@@ -243,7 +261,7 @@
       ],
       "title": "On the lattice property of the plane and some problems of Dirac, Motzkin, and Erdős in combinatorial geometry",
       "venue": "Combinatorica",
-      "year": 1983,
+      "year": "1983",
       "volume": "3",
       "pages": "281–297",
       "doi": "10.1007/BF02579184",
@@ -256,7 +274,7 @@
       ],
       "title": "On the Erdős distinct distances problem in the plane",
       "venue": "Annals of Mathematics",
-      "year": 2015,
+      "year": "2015",
       "volume": "181",
       "pages": "155–190",
       "doi": "10.4007/annals.2015.181.1.2",

@@ -183,7 +183,7 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey theory underpins the EGP proof: after greedily extracting triangles from a graph, the remainder is triangle-free "
+      "description": "Ramsey theory underpins the EGP proof: after greedily extracting triangles from a graph, the remainder is triangle-free and hence (by a Ramsey-style argument) bipartite, reducing the partition to individual edges bounded by ⌊n²/4⌋."
     },
     {
       "id": "erdos-1015",
@@ -198,7 +198,7 @@
     {
       "id": "erdos-500",
       "relationship": "thematic",
-      "description": "Erdős #500 studies Turán-type density questions for hypergraphs. The EGP bound ⌊n²/4⌋ equals the Turán number ex(n,K₃), "
+      "description": "Erdős #500 studies Turán-type density questions for hypergraphs. The EGP bound ⌊n²/4⌋ equals the Turán number ex(n,K₃), linking clique partition numbers to Turán density and making Problem #1017 part of the broader Turán extremal program."
     }
   ],
   "references": [
@@ -209,7 +209,7 @@
         "L. Pósa"
       ],
       "title": "The representation of a graph by set intersections",
-      "year": 1966,
+      "year": "1966",
       "venue": "Canadian Journal of Mathematics",
       "note": "Proves f(n,k) ≤ ⌊n²/4⌋ using only edges and triangles; establishes the completebbipartite extremal graph."
     },
@@ -219,7 +219,7 @@
         "B. Keszegh"
       ],
       "title": "On the number of edge-disjoint triangles in K₄-free graphs",
-      "year": 2017,
+      "year": "2017",
       "venue": "Combinatorica",
       "note": "Resolves the K₄-free case: a K₄-free graph with ⌊n²/4⌋+m edges contains m edge-disjoint triangles, giving f(n,k)=⌊n²/4⌋−m."
     },
@@ -228,7 +228,7 @@
         "L. Lovász"
       ],
       "title": "On covering of graphs",
-      "year": 1968,
+      "year": "1968",
       "venue": "Theory of Graphs (Proceedings of the Colloquium, Tihany, 1966)",
       "note": "Establishes the covering bound used as a comparison in Problem #1017: G is covered by ⌊n²/4⌋ − k + t cliques where t measures the triangle density."
     },
@@ -237,7 +237,7 @@
         "P. Turán"
       ],
       "title": "On an extremal problem in graph theory",
-      "year": 1941,
+      "year": "1941",
       "venue": "Matematikai és Fizikai Lapok",
       "note": "Turán's theorem implies ex(n,K₃)=⌊n²/4⌋, establishing that the EGP bound is tight and that K_{n/2,n/2} is the unique extremal graph."
     },
@@ -247,7 +247,7 @@
         "R. L. Graham"
       ],
       "title": "Erdős on Graphs: His Legacy of Unsolved Problems",
-      "year": 1998,
+      "year": "1998",
       "venue": "A K Peters/CRC Press",
       "note": "Surveys the broader context of clique partition and graph decomposition problems in Erdős's program, including Problem #1017 and related questions."
     }

@@ -204,7 +204,7 @@
     {
       "id": "erdos-16",
       "relationship": "related",
-      "description": "Both concern representations n = 2^k + m with restrictions on m: #16 asks for m prime (de Polignac), #205 asks for Ω(m) "
+      "description": "Both concern representations n = 2^k + m with restrictions on m: #16 asks for m prime (de Polignac), #205 asks for Ω(m) < log log m"
     },
     {
       "id": "prime-number-theorem",
@@ -229,12 +229,12 @@
     {
       "id": "chinese-remainder-constructive",
       "relationship": "uses",
-      "description": "The Chinese Remainder Theorem underlies the covering system construction: simultaneous congruences mod {3,5,7,13,17,241}"
+      "description": "The Chinese Remainder Theorem underlies the covering system construction: simultaneous congruences mod {3,5,7,13,17,241} produce the arithmetic progression of counterexamples"
     },
     {
       "id": "central-limit-theorem",
       "relationship": "related",
-      "description": "The Erdős-Kac theorem (axiomatized here) is a number-theoretic analogue of the CLT: Ω(n) is asymptotically Gaussian, par"
+      "description": "The Erdős-Kac theorem (axiomatized here) is a number-theoretic analogue of the CLT: Ω(n) is asymptotically Gaussian, paralleling the classical CLT for independent random variables"
     }
   ],
   "leanFile": {

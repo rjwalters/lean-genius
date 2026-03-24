@@ -277,7 +277,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "extends",
-      "description": "Infinitude of primes is the coarsest gap result (primes don't stop). Bounded prime gaps refines this to say consecutive "
+      "description": "Infinitude of primes is the coarsest gap result (primes don't stop). Bounded prime gaps refines this to say consecutive primes cluster: lim inf (p_{n+1} - p_n) ≤ 246"
     },
     {
       "id": "prime-gap-bounds",
@@ -287,22 +287,22 @@
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "PNT gives the average prime gap as log p, but bounded prime gaps shows the minimum gap is finite — primes are much more "
+      "description": "PNT gives the average prime gap as log p, but bounded prime gaps shows the minimum gap is finite — primes are much more clustered than PNT's average density suggests"
     },
     {
       "id": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "The divergence of ∑1/p (proved by Euler) shows primes have positive density in a logarithmic sense — bounded prime gaps "
+      "description": "The divergence of ∑1/p (proved by Euler) shows primes have positive density in a logarithmic sense — bounded prime gaps shows they cluster in an even stronger pointwise sense"
     },
     {
       "id": "riemann-hypothesis",
       "relationship": "related",
-      "description": "RH implies much stronger prime gap bounds (Cramér's conjecture: gaps O(log²p)) but remains unproved. Zhang's result is u"
+      "description": "RH implies much stronger prime gap bounds (Cramér's conjecture: gaps O(log²p)) but remains unproved. Zhang's result is unconditional and does not depend on RH — one of its most remarkable features"
     },
     {
       "id": "twin-primes-special",
       "relationship": "related",
-      "description": "The twin prime conjecture ($\\liminf g_n = 2$) is the ultimate target. This formalization shows $\\liminf g_n \\leq 246$ (P"
+      "description": "The twin prime conjecture ($\\liminf g_n = 2$) is the ultimate target. This formalization shows $\\liminf g_n \\leq 246$ (Polymath 8b) and $\\liminf g_n \\leq 12$ (conditional on Elliott-Halberstam). The Dickson conjecture for $\\{0,2\\}$ implies twin primes; the gap from 246 to 2 remains one of analytic number theory's deepest challenges"
     },
     {
       "id": "bounded-prime-gaps-oq-03",
@@ -312,12 +312,12 @@
     {
       "id": "dirichlets-theorem",
       "relationship": "foundational",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions is a prerequisite for the Bombieri-Vinogradov theorem, which is"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is a prerequisite for the Bombieri-Vinogradov theorem, which is the key input to Zhang's bounded gaps proof. The equidistribution of primes in residue classes is what makes sieve methods effective for detecting prime clusters"
     },
     {
       "id": "bounded-prime-gaps-oq-03-oq-01",
       "relationship": "extended-by",
-      "description": "Analyzes how the $k$-tuple size parameter affects the gap bound: the Polymath 8b bound 246 comes from optimizing over 50"
+      "description": "Analyzes how the $k$-tuple size parameter affects the gap bound: the Polymath 8b bound 246 comes from optimizing over 50-tuples, and this sub-entry explores whether larger tuples or different optimization strategies could improve the bound"
     }
   ],
   "leanFile": {

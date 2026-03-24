@@ -182,25 +182,25 @@
         "András Hajnal"
       ],
       "title": "On chromatic number of graphs and set-systems",
-      "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "volume": "17",
-      "year": 1966,
+      "year": "1966",
       "pages": "61–99",
       "doi": "10.1007/BF02020444",
-      "note": "Foundational Erdős–Hajnal paper establishing the program connecting chromatic number with structural graph properties; origin of the conjecture formalized in Problem 1068."
+      "note": "Foundational Erdős–Hajnal paper establishing the program connecting chromatic number with structural graph properties; origin of the conjecture formalized in Problem 1068.",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae"
     },
     {
       "authors": [
         "Lajos Soukup"
       ],
       "title": "A note on a problem of Erdős and Hajnal",
-      "journal": "Combinatorica",
       "volume": "35",
       "issue": "4",
-      "year": 2015,
+      "year": "2015",
       "pages": "497–511",
       "doi": "10.1007/s00439-014-0499-5",
-      "note": "Constructs in ZFC an uncountably chromatic graph where every uncountable vertex set is only finitely connected, disproving Problem 1067 and isolating Problem 1068 as the key open case."
+      "note": "Constructs in ZFC an uncountably chromatic graph where every uncountable vertex set is only finitely connected, disproving Problem 1067 and isolating Problem 1068 as the key open case.",
+      "venue": "Combinatorica"
     },
     {
       "authors": [
@@ -208,26 +208,26 @@
         "Eli Berger"
       ],
       "title": "Menger's theorem for infinite graphs",
-      "journal": "Inventiones Mathematicae",
       "volume": "176",
       "issue": "1",
-      "year": 2009,
+      "year": "2009",
       "pages": "1–62",
       "doi": "10.1007/s00222-008-0157-3",
-      "note": "Proves the infinite Menger theorem: infinite vertex-connectivity is equivalent to the absence of finite vertex separators. This characterization is used in the formalization's no-finite-separator axiom."
+      "note": "Proves the infinite Menger theorem: infinite vertex-connectivity is equivalent to the absence of finite vertex separators. This characterization is used in the formalization's no-finite-separator axiom.",
+      "venue": "Inventiones Mathematicae"
     },
     {
       "authors": [
         "Péter Komjáth"
       ],
       "title": "A note on set theory",
-      "journal": "Israel Journal of Mathematics",
       "volume": "196",
       "issue": "1",
-      "year": 2013,
+      "year": "2013",
       "pages": "67–76",
       "doi": "10.1007/s11856-012-0143-4",
-      "note": "Shows a related chromatic-connectivity question is independent of ZFC, indicating that Problem 1068 lies near the boundary of standard set theory and may depend on forcing axioms or diamond principles."
+      "note": "Shows a related chromatic-connectivity question is independent of ZFC, indicating that Problem 1068 lies near the boundary of standard set theory and may depend on forcing axioms or diamond principles.",
+      "venue": "Israel Journal of Mathematics"
     },
     {
       "authors": [
@@ -235,12 +235,12 @@
         "Max Pitz"
       ],
       "title": "A simplified construction of an uncountably chromatic graph with no uncountably connected subgraph",
-      "journal": "Electronic Journal of Combinatorics",
       "volume": "31",
       "issue": "1",
-      "year": 2024,
+      "year": "2024",
       "url": "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v31i1p8",
-      "note": "Simplifies Soukup's ladder-system construction using elementary ladder graphs; relevant for understanding the obstruction to uncountable infinitely connected subgraphs and the contrast with the countable case."
+      "note": "Simplifies Soukup's ladder-system construction using elementary ladder graphs; relevant for understanding the obstruction to uncountable infinitely connected subgraphs and the contrast with the countable case.",
+      "venue": "Electronic Journal of Combinatorics"
     }
   ],
   "leanFile": {
@@ -255,7 +255,7 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1068",
-    "lineCount": 241,
+    "lineCount": 268,
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 6,

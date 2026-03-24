@@ -192,17 +192,17 @@
     {
       "id": "chinese-remainder-constructive",
       "relationship": "related",
-      "description": "Constructive CRT providing an explicit solution algorithm for simultaneous congruences, complementing the abstract isomo"
+      "description": "Constructive CRT providing an explicit solution algorithm for simultaneous congruences, complementing the abstract isomorphism established here."
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$ is a direct corollary of the integer CRT"
+      "description": "Euler's totient function $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$ is a direct corollary of the integer CRT $(\\mathbb{Z}/mn\\mathbb{Z})^\\times \\cong (\\mathbb{Z}/m\\mathbb{Z})^\\times \\times (\\mathbb{Z}/n\\mathbb{Z})^\\times$, which is a special case of the ideal-theoretic CRT proved here."
     },
     {
       "id": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "The CRT underlies the proof of quadratic reciprocity via Gauss sums: decomposing $\\mathbb{Z}/p\\mathbb{Z}$-computations t"
+      "description": "The CRT underlies the proof of quadratic reciprocity via Gauss sums: decomposing $\\mathbb{Z}/p\\mathbb{Z}$-computations through the CRT isomorphism is a standard technique in algebraic number theory."
     }
   ],
   "leanFile": {

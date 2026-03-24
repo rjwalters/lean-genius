@@ -264,5 +264,72 @@
       "definitional-unfolding",
       "open-problem"
     ]
+  },
+  {
+    "id": "ann-e686-factorial-bounds",
+    "proofId": "erdos-686",
+    "range": {
+      "startLine": 176,
+      "endLine": 199
+    },
+    "type": "technique",
+    "title": "Product-Factorial Bounds and Shift Gap",
+    "content": "Three auxiliary lemmas establishing $P(n,k) \\geq k$:\n\n1. `consecutiveProduct_ge_factorial`: $P(n,k) \\geq k!$ from `product_binomial_relation` and $\\binom{n+k}{k} \\geq 1$\n2. `factorial_ge_self`: $k! \\geq k$ for $k \\geq 1$, by induction with case split on $m = 0$\n3. `shift_ge_gap`: the shifted index $n + (t+1)P(n,k) \\geq n + k$ when $k \\geq 2$, combining the bounds via `nlinarith`\n\nThe shift gap ensures the non-overlapping constraint $m \\geq n + k$ is satisfied, making the ratio formula valid.",
+    "mathContext": "$P(n,k) = k! \\binom{n+k}{k} \\geq k! \\geq k$ for $k \\geq 1$. Hence $(t+1) P(n,k) \\geq P(n,k) \\geq k$, giving $m = n + (t+1)P(n,k) \\geq n + k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial bounds",
+      "binomial coefficient",
+      "non-overlapping constraint"
+    ],
+    "prerequisites": [
+      "product_binomial_relation",
+      "Nat.choose_pos",
+      "Nat.factorial_succ"
+    ]
+  },
+  {
+    "id": "ann-e686-injectivity",
+    "proofId": "erdos-686",
+    "range": {
+      "startLine": 209,
+      "endLine": 216
+    },
+    "type": "theorem",
+    "title": "Consecutive Product Injectivity",
+    "content": "`consecutiveProduct_inj` proves $P(n_1, k) = P(n_2, k) \\Rightarrow n_1 = n_2$ for $k \\geq 1$. The proof is by contradiction: if $n_1 \\neq n_2$, then WLOG $n_1 < n_2$, and `numerator_gt_denominator` gives $P(n_2, k) > P(n_1, k)$, contradicting equality.\n\nThis is the key lemma enabling the infinitude proof: it ensures the function $t \\mapsto P(n + (t+1)P(n,k), k)$ is injective, so its values in the representable set are all distinct.",
+    "mathContext": "Strict monotonicity implies injectivity: $n_1 < n_2 \\Rightarrow \\prod_{i=0}^{k-1}(n_1+1+i) < \\prod_{i=0}^{k-1}(n_2+1+i)$ since each factor is strictly smaller. This is a standard argument for products of strictly increasing sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "injectivity from monotonicity",
+      "Nat.ne_of_gt",
+      "strict product inequality"
+    ],
+    "prerequisites": [
+      "numerator_gt_denominator"
+    ]
+  },
+  {
+    "id": "ann-e686-infinite-proved",
+    "proofId": "erdos-686",
+    "range": {
+      "startLine": 256,
+      "endLine": 283
+    },
+    "type": "theorem",
+    "title": "Representable Set Is Infinite (Now Proved)",
+    "content": "`representable_set_infinite` proves that for fixed $n, k$ with $k \\geq 2$, infinitely many integers arise as ratios of consecutive products. **This was previously axiomatized and is now fully proved.**\n\nThe proof constructs an injection $\\mathbb{N} \\hookrightarrow \\text{RepresentableSet}(n,k)$ via:\n- `repValue_mem`: each $t$ gives a valid representable integer\n- `repValue_injective`: distinct $t$ give distinct integers (via `consecutiveProduct_inj`)\n- `Set.infinite_range_of_injective`: injective map from $\\mathbb{N}$ implies infinite image",
+    "mathContext": "The injection: $t \\mapsto P(n + (t+1)P(n,k), k) / P(n,k)$. Injectivity chain: equal quotients $\\Rightarrow$ equal products $\\Rightarrow$ equal arguments $\\Rightarrow$ equal $t$. The key cancellation uses $P(n,k) > 0$ (from `consecutiveProduct_pos`) for the division step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.infinite_range_of_injective",
+      "injection from ℕ",
+      "previously axiomatized"
+    ],
+    "prerequisites": [
+      "repValue_mem",
+      "repValue_injective",
+      "consecutiveProduct_inj"
+    ]
   }
 ]

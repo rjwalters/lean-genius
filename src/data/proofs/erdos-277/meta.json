@@ -180,74 +180,74 @@
   ],
   "crossReferences": [
     {
-      "targetProofId": "erdos-273",
       "relationship": "Covering system cluster: #273 studies covering systems with prime-minus-one moduli, part of the same #273-#279 investigation",
       "sharedConcepts": [
         "covering systems",
         "moduli constraints",
         "congruence coverings"
-      ]
+      ],
+      "targetId": "erdos-273"
     },
     {
-      "targetProofId": "erdos-274",
       "relationship": "Herzog-Schönheim conjecture on exact coverings by cosets — the exact (partition) analogue of covering systems",
       "sharedConcepts": [
         "coset coverings",
         "exact covering systems",
         "moduli divisibility"
-      ]
+      ],
+      "targetId": "erdos-274"
     },
     {
-      "targetProofId": "erdos-275",
       "relationship": "Covering congruences problem, directly adjacent in Erdős's covering system cluster",
       "sharedConcepts": [
         "covering congruences",
         "moduli sets",
         "integer coverage"
-      ]
+      ],
+      "targetId": "erdos-275"
     },
     {
-      "targetProofId": "erdos-278",
       "relationship": "Maximum covering density of congruence systems — quantitative complement to #277's qualitative uncoverability result",
       "sharedConcepts": [
         "covering density",
         "reciprocal sum bounds",
         "moduli structure"
-      ]
+      ],
+      "targetId": "erdos-278"
     },
     {
-      "targetProofId": "euler-totient",
       "relationship": "Euler's totient connects to multiplicative functions and divisor structure central to abundancy analysis",
       "sharedConcepts": [
         "multiplicative arithmetic functions",
         "divisor structure",
         "Euler products"
-      ]
+      ],
+      "targetId": "euler-totient"
     },
     {
-      "targetProofId": "fundamental-arithmetic",
       "relationship": "Prime factorization underlies both the multiplicativity of σ and the structure of covering system moduli",
       "sharedConcepts": [
         "prime factorization",
         "divisors",
         "fundamental theorem"
-      ]
+      ],
+      "targetId": "fundamental-arithmetic"
     }
   ],
   "references": [
     {
       "citation": "Haight, J.A. (1979). 'Covering systems of congruences, a negative result.' Mathematika 26, 53-61.",
       "url": "https://doi.org/10.1112/S0025579300009566",
-      "relevance": "Original proof that for every c > 0, there exists n with σ(n) > cn but no covering system has all moduli dividing n"
+      "note": "Original proof that for every c > 0, there exists n with σ(n) > cn but no covering system has all moduli dividing n"
     },
     {
       "citation": "Erdős, P. and Graham, R.L. (1980). 'Old and New Problems and Results in Combinatorial Number Theory.' Monographie No. 28, L'Enseignement Mathématique.",
-      "relevance": "Monograph containing the systematic formulation of covering system problems including #277"
+      "note": "Monograph containing the systematic formulation of covering system problems including #277"
     },
     {
       "citation": "Hough, B. (2015). 'Solution of the minimum modulus problem for covering systems.' Annals of Mathematics 181(1), 361-382.",
       "url": "https://doi.org/10.4007/annals.2015.181.1.6",
-      "relevance": "Resolved Erdős's minimum modulus conjecture: every covering system with distinct moduli > 1 has minimum modulus at most 10^16"
+      "note": "Resolved Erdős's minimum modulus conjecture: every covering system with distinct moduli > 1 has minimum modulus at most 10^16"
     }
   ],
   "conclusion": {
@@ -281,29 +281,34 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-273",
+      "relationship": "Covering system cluster: #273 studies covering systems with prime-minus-one moduli, part of the same #273-#279 investigation",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-274",
+      "relationship": "Herzog-Schönheim conjecture on exact coverings by cosets — the exact (partition) analogue of covering systems",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-275",
+      "relationship": "Covering congruences problem, directly adjacent in Erdős's covering system cluster",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-278",
+      "relationship": "Maximum covering density of congruence systems — quantitative complement to #277's qualitative uncoverability result",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "euler-totient",
+      "relationship": "Euler's totient connects to multiplicative functions and divisor structure central to abundancy analysis",
+      "description": ""
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "Prime factorization underlies both the multiplicativity of σ and the structure of covering system moduli",
+      "description": ""
     }
   ]
 }

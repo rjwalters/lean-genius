@@ -168,19 +168,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "roth-theorem-k3",
-      "relationship": "shared triangle-free theme",
-      "note": "Roth's theorem on 3-term arithmetic progressions is closely related in spirit: both problems concern how 'dense' or 'chromatic' a structure can be while forbidding triangles. Roth's theorem is the additive combinatorics analogue of the triangle-free chromatic threshold problem."
+      "id": "erdos-1104",
+      "relationship": "dual problem",
+      "description": ""
     },
     {
-      "target": "four-color-theorem",
-      "relationship": "chromatic number context",
-      "note": "The Four Color Theorem establishes an absolute chromatic number bound for planar graphs. Problem #1013 explores the opposite extreme: how high can the chromatic number go when only triangle-freeness is imposed? Together they bracket the landscape of graph coloring."
+      "id": "erdos-920",
+      "relationship": "generalization",
+      "description": ""
     },
     {
-      "target": "prob-method-lovasz-local",
-      "relationship": "related technique",
-      "note": "The Lovász Local Lemma provides an alternative to the first-moment method for constructing triangle-free graphs with controlled chromatic number. It is used in sharper versions of the probabilistic lower bounds for $h_3(k)$."
+      "id": "erdos-1014",
+      "relationship": "structural analogy",
+      "description": ""
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "key tool",
+      "description": ""
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "proof technique",
+      "description": ""
+    },
+    {
+      "id": "prob-method-alteration",
+      "relationship": "proof technique",
+      "description": ""
     }
   ],
   "references": [
@@ -190,7 +205,7 @@
       ],
       "title": "Sur le coloriage des graphes",
       "venue": "Colloquium Mathematicum",
-      "year": 1955,
+      "year": "1955",
       "volume": "3",
       "pages": "161–162",
       "note": "The foundational paper proving that triangle-free graphs of arbitrarily high chromatic number exist via the Mycielski inductive construction. Proves $h_3(k) < \\infty$ for all $k$."
@@ -201,7 +216,7 @@
       ],
       "title": "A note on the independence number of triangle-free graphs",
       "venue": "Discrete Mathematics",
-      "year": 1983,
+      "year": "1983",
       "volume": "46",
       "issue": "1",
       "pages": "83–87",
@@ -215,7 +230,7 @@
       ],
       "title": "Some graph theoretic results associated with Ramsey's theorem",
       "venue": "Journal of Combinatorial Theory",
-      "year": 1968,
+      "year": "1968",
       "volume": "4",
       "issue": "2",
       "pages": "125–175",
@@ -229,7 +244,7 @@
       ],
       "title": "The Probabilistic Method",
       "venue": "Wiley-Interscience",
-      "year": 2016,
+      "year": "2016",
       "edition": "4th",
       "note": "The standard reference for the probabilistic method in combinatorics. Chapter 8 covers triangle-free graphs with high chromatic number, including the Mycielski construction, random graph constructions, and the connection to Ramsey numbers relevant to Problem #1013."
     },
@@ -240,7 +255,7 @@
       ],
       "title": "Correspondence coloring and its application to list-coloring planar graphs without cycles of lengths 4 to 8",
       "venue": "Journal of Combinatorial Theory, Series B",
-      "year": 2018,
+      "year": "2018",
       "volume": "129",
       "pages": "38–54",
       "doi": "10.1016/j.jctb.2017.09.001",
@@ -257,7 +272,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 121,
+    "lineCount": 159,
     "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 4

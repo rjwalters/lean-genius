@@ -171,6 +171,30 @@
       "startLine": 77,
       "endLine": 130,
       "summary": "Seven verified results: `primeCounting_pos` ($\\pi(n) > 0$ for $n \\geq 2$, witness: 2), `singleton_offset`, `empty_trivial`, `allOffsetsPrime_mono` (antitonicity), `primeDensityRatio_nonneg`, `finite_set_zero_density` (axiom), `erdos428_requires_infinite` (by contradiction via `linarith`)."
+    },
+    {
+      "id": "prime-counting-growth",
+      "title": "Prime Counting Growth",
+      "startLine": 131,
+      "endLine": 162,
+      "summary": "Proves `primeCounting_lt_of_prime` ($\\pi(p) > \\pi(N)$ for prime $p > N$), `primeCounting_tendsto_nat` ($\\pi(n) \\to \\infty$ by the infinitude of primes), and the real-valued variant `primeCounting_real_tendsto`. Uses `Nat.exists_infinite_primes` and `Filter.tendsto_atTop_atTop_of_monotone`.",
+      "mathContext": "The infinitude of primes $\\Rightarrow \\pi(n) \\to \\infty$: for any $M$, repeatedly apply Euclid's theorem to find primes $> N$, giving $\\pi(p) \\geq \\pi(N) + 1 > M$ for large enough $p$."
+    },
+    {
+      "id": "finite-density-zero",
+      "title": "Finite Sets Have Zero Prime Density",
+      "startLine": 163,
+      "endLine": 186,
+      "summary": "Proves `finite_set_zero_density`: a finite set $A$ has $\\liminf \\text{primeDensityRatio}(A, n) = 0$. The squeeze argument: $0 \\leq \\text{ratio} \\leq |A|/\\pi(n)$, and $|A|/\\pi(n) \\to 0$ since $\\pi(n) \\to \\infty$.",
+      "mathContext": "For finite $A$ with $|A| = M$: $|A \\cap [1,n]|/\\pi(n) \\leq M/\\pi(n) \\to 0$. This uses `squeeze_zero` and the prime counting divergence."
+    },
+    {
+      "id": "requires-infinite",
+      "title": "Problem #428 Requires an Infinite Set",
+      "startLine": 188,
+      "endLine": 196,
+      "summary": "Proves `erdos428_requires_infinite`: any set satisfying Problem #428 (positive prime density of all-prime offsets) must be infinite. By contradiction: a finite set has zero density (from `finite_set_zero_density`), contradicting the positive liminf.",
+      "mathContext": "The proof: if $A$ were finite, $\\liminf \\text{primeDensityRatio} = 0$ by the squeeze lemma, contradicting $\\liminf > 0$. So any solution $A$ must be infinite."
     }
   ],
   "conclusion": {

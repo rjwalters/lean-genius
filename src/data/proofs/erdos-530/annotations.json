@@ -198,5 +198,76 @@
       "IsSidon",
       "Finset.card"
     ]
+  },
+  {
+    "id": "erdos-530-ann-sum-injective",
+    "proofId": "erdos-530",
+    "range": {
+      "startLine": 179,
+      "endLine": 190
+    },
+    "type": "theorem",
+    "title": "Sidon Sum Injectivity",
+    "content": "`sidon_sum_injective` proves that the sum function $(a,b) \\mapsto a + b$ is injective on sorted pairs $\\{(a,b) \\in S \\times S : a \\leq b\\}$ when $S$ is Sidon. This is the core characterization: distinct sorted pairs give distinct sums. The proof unfolds the Sidon condition `hS` directly, using it to derive equality of pairs from equality of sums.",
+    "mathContext": "For a Sidon set $S$: $a + b = c + d$ with $a \\leq b, c \\leq d$ implies $(a,b) = (c,d)$. This is equivalent to the `IsSidon` definition. The injectivity immediately gives $|\\{a + b : a \\leq b, a,b \\in S\\}| = |\\{(a,b) : a \\leq b\\}|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.InjOn",
+      "sum function",
+      "Sidon property",
+      "sorted pairs"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "Finset.product",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "erdos-530-ann-sorted-pairs",
+    "proofId": "erdos-530",
+    "range": {
+      "startLine": 194,
+      "endLine": 257
+    },
+    "type": "technique",
+    "title": "Counting Sorted Pairs: $k(k+1)/2$",
+    "content": "`card_sorted_pairs` proves $|\\{(a,b) \\in S \\times S : a \\leq b\\}| = |S|(|S|+1)/2$. The proof is the longest in the file (~63 lines) and uses a three-part decomposition:\n\n1. **Decompose**: $\\{a \\leq b\\} = \\{a < b\\} \\cup \\{a = b\\}$ (disjoint)\n2. **Swap bijection**: $\\{a > b\\} \\cong \\{a < b\\}$ via $(a,b) \\mapsto (b,a)$, so $|\\text{gt}| = |\\text{lt}|$\n3. **Diagonal bijection**: $\\{a = b\\} \\cong S$ via $(a,a) \\mapsto a$, so $|\\text{eq}| = |S|$\n4. **Combine**: $|\\text{le}| + |\\text{gt}| = |S|^2$, so $2|\\text{le}| = |S|^2 + |S|$\n\nThe `omega` tactic handles the final arithmetic.",
+    "mathContext": "$|\\{(a,b) \\in S \\times S : a \\leq b\\}| = \\binom{|S|+1}{2} = \\frac{|S|(|S|+1)}{2}$. This is the number of multisets of size 2 from $S$ (pairs with repetition). The proof avoids binomial coefficients and works directly with Finset cardinalities.",
+    "significance": "key",
+    "relatedConcepts": [
+      "combinatorial counting",
+      "swap bijection",
+      "diagonal bijection",
+      "Finset.card_bij",
+      "triangle number"
+    ],
+    "prerequisites": [
+      "Finset.card_product",
+      "Finset.filter_card_add_filter_neg_card_eq_card",
+      "Finset.card_union_of_disjoint"
+    ]
+  },
+  {
+    "id": "erdos-530-ann-sidon-sum-proved",
+    "proofId": "erdos-530",
+    "range": {
+      "startLine": 264,
+      "endLine": 268
+    },
+    "type": "theorem",
+    "title": "Sidon Sum Count: Now Fully Proved",
+    "content": "`sidon_sum_count` proves that a Sidon set of size $k$ has exactly $k(k+1)/2$ distinct pairwise sums. This was **previously axiomatized** and is now derived from two lemmas: `sidon_sum_injective` (injectivity implies image size = domain size) and `card_sorted_pairs` (domain has $k(k+1)/2$ elements). The 2-line proof `rw [Finset.card_image_of_injOn ...]; exact card_sorted_pairs S` is a clean composition.\n\nThis result underpins the upper bound $\\ell(N) \\leq O(\\sqrt{N})$: if a Sidon set of size $k$ produces $k(k+1)/2$ distinct sums that must fit in the sumset of the ambient set, we get $k(k+1)/2 \\leq 2N-1$, hence $k \\leq O(\\sqrt{N})$.",
+    "mathContext": "$|\\{a + b : (a,b) \\in S \\times S, a \\leq b\\}| = k(k+1)/2$ where $k = |S|$. Since all sums lie in $[2\\min A, 2\\max A]$, we get $k(k+1)/2 \\leq |A + A| \\leq 2|A| - 1$ for $A \\supseteq S$, giving $k = O(\\sqrt{|A|})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_image_of_injOn",
+      "upper bound derivation",
+      "previously axiomatized result"
+    ],
+    "prerequisites": [
+      "sidon_sum_injective",
+      "card_sorted_pairs"
+    ]
   }
 ]

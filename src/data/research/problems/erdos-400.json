@@ -29,13 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM REDUCTION: 5→3 axioms. gExcess_nonneg and g2_binomial_connection converted from axioms to theorems. 3 sorries remain in helper lemmas (Finset.prod/sum manipulation for trivial tuple). Added factor_le_of_factorial_divides structural theorem.",
+    "progressSummary": "SESSION 3: Eliminated all 3 remaining sorries. File is now sorry-free: 5 theorems (all proved), 3 axioms (all deep), 0 sorries, 183 lines.",
     "builtItems": [
       "factor_le_of_factorial_divides: structural bound on tuple entries",
       "excess_set_bddAbove: BddAbove proof for the excess set (3 sorries in helper)",
       "zero_mem_excess_set: membership proof for trivial tuple (3 sorries in helper)",
       "gExcess_nonneg: PROVED (was axiom) — non-negativity of excess",
-      "g2_binomial_connection: PROVED (was axiom) — Fin 2 pair correspondence"
+      "g2_binomial_connection: PROVED (was axiom) — Fin 2 pair correspondence",
+      "excess_set_bddAbove: FULLY PROVED (was 1 sorry) — n=0 case via dvd_prod_of_mem",
+      "zero_mem_excess_set: FULLY PROVED (was 2 sorries) — prod_ite_eq/sum_ite_eq for trivial tuple",
+      "g2_binomial_connection backward direction: FIXED (was broken by Mathlib update)"
     ],
     "insights": [
       "Conjectures correctly stated as defs (good)",
@@ -43,7 +46,10 @@
       "5 axioms: gExcess_upper_bound (deep), gExcess_nonneg, g2_binomial_connection, g2_excess_characterization, average_g2_growth (deep)",
       "gExcess_nonneg proved: trivial tuple (n,0,...,0) has product n! and excess 0, le_csSup gives sSup ≥ 0",
       "g2_binomial_connection proved: Fin 2 ↔ (a,b) pair via Fin.prod_univ_two and Fin.sum_univ_two",
-      "factor_le_of_factorial_divides: if product of factorials divides n!, each a_i ≤ n (via factorial monotonicity)"
+      "factor_le_of_factorial_divides: if product of factorials divides n!, each a_i ≤ n (via factorial monotonicity)",
+      "All 3 sorries eliminated: excess_set_bddAbove (Finset.dvd_prod_of_mem + factorial bound), zero_mem_excess_set (prod_ite_eq/sum_ite_eq)",
+      "Fixed g2_binomial_connection backward direction (simp handles Matrix.cons_val automatically)",
+      "File now: 0 sorries, 5 theorems, 3 axioms (remaining 3 are deep: upper_bound, g2_characterization, average_growth)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -74,8 +80,8 @@
     {
       "path": "Proofs/Erdos400Problem.lean",
       "filename": "Erdos400Problem.lean",
-      "lineCount": 114,
-      "theoremCount": 0,
+      "lineCount": 183,
+      "theoremCount": 5,
       "axiomCount": 5,
       "defCount": 6,
       "sorryCount": 0,
