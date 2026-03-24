@@ -141,7 +141,7 @@
       "id": "applications",
       "title": "Part 7: Applications",
       "startLine": 238,
-      "endLine": 266,
+      "endLine": 265,
       "summary": "Comments describing three major applications: Ham Sandwich Theorem (n sets in R^n bisected by one hyperplane), Necklace Splitting (fair division with at most k cuts), and Kneser's Conjecture (graph chromatic number via Lovász's 1978 topological proof). Exports main theorems via #check.",
       "mathContext": "Ham Sandwich: $\\exists$ hyperplane bisecting $n$ sets in $\\mathbb{R}^n$. Kneser: $\\chi(K(n,k)) = n - 2k + 2$. Both follow from Borsuk-Ulam applied to suitably constructed continuous functions on spheres."
     }

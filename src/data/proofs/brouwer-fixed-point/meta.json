@@ -171,7 +171,7 @@
       "id": "applications",
       "title": "Part 6: Applications and 1D Example",
       "startLine": 204,
-      "endLine": 250,
+      "endLine": 249,
       "summary": "Docstring on applications (Nash equilibrium, Perron-Frobenius, differential equations, economics). Then a fully proved `example` showing the 1D case: for continuous $f: [0,1] \\to [0,1]$, `exists_mem_Icc_isFixedPt_of_mapsTo` gives a fixed point directly from Mathlib's IVT infrastructure. Closes namespace, exports `#check` for main theorems.",
       "mathContext": "1D case proved from Mathlib: $f: [0,1] \\to [0,1]$ continuous $\\Rightarrow \\exists c \\in [0,1],\\ f(c) = c$. Uses `exists_mem_Icc_isFixedPt_of_mapsTo` which applies IVT to $g(x) = f(x) - x$: $g(0) \\geq 0$, $g(1) \\leq 0$, so $g(c) = 0$ for some $c$."
     }

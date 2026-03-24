@@ -235,7 +235,7 @@
       "id": "general-framework",
       "title": "General Non-Constructibility Framework",
       "startLine": 332,
-      "endLine": 389,
+      "endLine": 383,
       "summary": "Part VIII: generalizes to any odd prime degree — proves `odd_prime_not_dvd_power_of_two` and `odd_prime_degree_not_constructible`, with specializations to degrees 5 and 7. Concluding summary.",
       "mathContext": "For any odd prime $p$: $p \\nmid 2$ (since $p > 2$), so by primality $p \\nmid 2^n$ by induction. Any number with minimal polynomial of odd prime degree is therefore not constructible. This extends the degree-3 argument to all odd primes."
     }

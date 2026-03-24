@@ -122,7 +122,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 267,
-      "endLine": 295,
+      "endLine": 294,
       "summary": "Combining unavoidability and reducibility to conclude: no minimal counterexample exists, so all planar graphs are 4-colorable.",
       "mathContext": "By contradiction: minimal counterexample $G$ must contain a reducible configuration (unavoidability), but then $G$ is 4-colorable (reducibility) — contradiction."
     },
@@ -130,7 +130,7 @@
       "id": "philosophical-implications",
       "title": "Philosophical Implications",
       "startLine": 297,
-      "endLine": 330,
+      "endLine": 294,
       "summary": "The debate over computer-assisted proofs: can we trust what we cannot humanly verify? How Gonthier's formalization addressed these concerns.",
       "mathContext": "The paradigm: from \"trust the computation\" (Appel-Haken) to \"trust the proof checker\" (Gonthier). Coq's kernel is small enough for human audit."
     }
