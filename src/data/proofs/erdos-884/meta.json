@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 884,
     "erdosUrl": "https://erdosproblems.com/884",
     "erdosProblemStatus": "open",
@@ -61,7 +61,7 @@
       "Examples: divisors of 6, prime divisors, prime case equality"
     ],
     "axiomCount": 9,
-    "assumptions": "9 axioms: divisorList_sorted, mem_divisorList_iff, consecutiveGap_pos, generalGap_pos, erdos_884 (main conjecture), divisors_6, divisors_prime, prime_case_equality, gap_lower_bound. 3 proved: allPairsSum_nonneg (sum_nonneg), consecutivePairsSum_nonneg (sum_nonneg), numDivisors_mul_coprime (Mathlib).",
+    "assumptions": "9 axioms: divisorList_sorted, mem_divisorList_iff, consecutiveGap_pos, generalGap_pos, erdos_884 (main conjecture), divisors_6, divisors_prime, prime_case_equality, gap_lower_bound. 2 proved: allPairsSum_nonneg (sum_nonneg), consecutivePairsSum_nonneg (sum_nonneg). 1 sorry: numDivisors_mul_coprime (Mathlib API breakage in v4.26.0).",
     "lineCount": 168
   },
   "overview": {
