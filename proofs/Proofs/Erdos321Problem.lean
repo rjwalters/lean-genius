@@ -125,9 +125,13 @@ axiom main_term_n_over_log_n :
 
 /-- **Erdős Problem #321** (OPEN): Determine the exact asymptotic
     behavior of R(N). The gap between the known upper and lower bounds
-    is essentially one iterated logarithm factor. -/
-axiom erdos_321_asymptotics :
-  ∃ f : ℕ → ℝ, ∀ N : ℕ, N ≥ 2 →
-    (maxDistinctReciprocal N : ℝ) = f N
+    is essentially one iterated logarithm factor.
+
+    Note: This existence statement is tautological — just take f = maxDistinctReciprocal.
+    The real problem is to find an explicit closed-form asymptotic for f. -/
+theorem erdos_321_asymptotics :
+    ∃ f : ℕ → ℝ, ∀ N : ℕ, N ≥ 2 →
+      (maxDistinctReciprocal N : ℝ) = f N :=
+  ⟨fun N => (maxDistinctReciprocal N : ℝ), fun _ _ => rfl⟩
 
 end Erdos321

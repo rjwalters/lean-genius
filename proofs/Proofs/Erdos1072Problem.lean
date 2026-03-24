@@ -19,11 +19,7 @@ all primes. OEIS: A154554.
 Reference: https://erdosproblems.com/1072
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Filter
 
@@ -43,13 +39,25 @@ def isWilsonMaximal (p : ℕ) : Prop :=
 /- ## Wilson's Theorem Gives the Upper Bound -/
 
 /-- Wilson's theorem: (p-1)! ≡ -1 (mod p) for prime p.
-    This ensures f(p) is well-defined and f(p) ≤ p - 1. -/
-axiom wilson_theorem (p : ℕ) (hp : p.Prime) :
-    p ∣ (p - 1).factorial + 1
+    This ensures f(p) is well-defined and f(p) ≤ p - 1.
+    Proved from Mathlib's ZMod.wilsons_lemma. -/
+theorem wilson_theorem (p : ℕ) (hp : p.Prime) :
+    p ∣ (p - 1).factorial + 1 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have h := ZMod.wilsons_lemma p
+  -- h : ((p - 1)! : ZMod p) = -1, so ((p-1)! + 1 : ZMod p) = 0
+  rw [← ZMod.natCast_zmod_eq_zero_iff_dvd]
+  have : ((p - 1).factorial + 1 : ZMod p) = ((p - 1).factorial : ZMod p) + 1 := by push_cast; ring
+  rw [this, h]
+  simp
 
-/-- The function f(p) is well-defined for primes: f(p) ≤ p - 1. -/
-axiom f_le_pred (p : ℕ) (hp : p.Prime) :
-    leastFactorialWilson p ≤ p - 1
+/-- The function f(p) is well-defined for primes: f(p) ≤ p - 1.
+    Follows from Wilson's theorem: (p-1) is in the defining set,
+    so sInf ≤ p - 1. -/
+theorem f_le_pred (p : ℕ) (hp : p.Prime) :
+    leastFactorialWilson p ≤ p - 1 := by
+  apply Nat.sInf_le
+  exact ⟨by have := hp.one_lt; omega, wilson_theorem p hp⟩
 
 /-- f(p) ≥ 1 for primes p ≥ 3 (since 1! + 1 = 2 is not
     divisible by primes ≥ 3). -/
@@ -104,10 +112,24 @@ axiom f_of_7 : leastFactorialWilson 7 = 3
 
 /- ## Connection to Wilson Primes -/
 
-/-- A Wilson prime is p with (p-1)! ≡ -1 (mod p²).
-    Known Wilson primes: 5, 13, 563. The Erdős–Hardy–Subbarao
-    problem is different: it asks about the LEAST n with n!≡-1,
-    not the strength of the Wilson congruence. -/
-axiom wilson_prime_distinction :
-    ∀ p, p.Prime → (p ^ 2 ∣ (p - 1).factorial + 1) →
-    isWilsonMaximal p
+-- Note: Wilson primes (p with p² | (p-1)!+1) are empirically maximal
+-- (f(p) = p-1 for known Wilson primes 5, 13, 563), but this is not
+-- proved in general. The Erdős problem concerns f(p), not the
+-- strength of the Wilson congruence.
+
+/-
+## Summary
+
+**Problem Status: OPEN**
+
+**Proved Theorems**:
+- wilson_theorem: (p-1)! ≡ -1 (mod p) from Mathlib's ZMod.wilsons_lemma [was axiom]
+- f_le_pred: f(p) ≤ p-1 from Wilson's theorem [was axiom]
+
+**Remaining Axioms (9)**:
+- f_pos: f(p) ≥ 1 for p ≥ 3 (provable but needs sInf reasoning)
+- erdos_1072a: infinitely many maximal primes (OPEN)
+- erdos_1072b: f(p)/p → 0 for almost all primes (OPEN)
+- hardy_subbarao_belief: maximal primes have density 0 (OPEN conjecture)
+- f_of_2, f_of_3, f_of_5, f_of_7: small values (provable, need sInf computation)
+-/

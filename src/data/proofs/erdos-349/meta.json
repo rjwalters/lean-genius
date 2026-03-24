@@ -28,9 +28,7 @@
     ],
     "axiomCount": 4,
     "badge": "axiom",
-    "assumptions": "4 axiom(s): golden_ratio_conjecture (open), graham_disjoint_segments (deep), floor_3_2_odd/even_infinitely (open). erdos_349_characterization proved (tautology).",
-    "mathlib_version": "4.26.0",
-    "lineCount": 102
+    "assumptions": "4 axiom(s): golden_ratio_conjecture (open), graham_disjoint_segments (deep), floor_3_2_odd/even_infinitely (open). erdos_349_characterization proved (tautology)."
   },
   "crossReferences": [
     {
@@ -189,20 +187,5 @@
     "erdos-346",
     "erdos-322",
     "erdos-267"
-  ],
-  "leanFile": {
-    "lineCount": 102,
-    "structureCount": 0,
-    "axiomCount": 4,
-    "theoremCount": 2,
-    "lemmaCount": 0,
-    "defCount": 3,
-    "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Int.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": []
-  }
+  ]
 }

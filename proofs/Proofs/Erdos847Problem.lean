@@ -27,10 +27,7 @@ References:
 - Related: Problems #774, #846
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.Finset.Card
+import Mathlib
 
 open Nat Set Finset
 
@@ -132,10 +129,14 @@ axiom enr_conjecture_false : ¬ENRConjecture
 
 /--
 **The counterexample:**
-An explicit (or constructive) example showing the conjecture fails.
+Derived from the negation of the conjecture by classical logic.
+¬(∀ A, Infinite A → ENR A → FiniteUnion A) gives ∃ A, ... ∧ ¬FiniteUnion A.
 -/
-axiom counterexample_exists :
-  ∃ A : Set ℕ, A.Infinite ∧ hasENRProperty A ∧ ¬isFiniteAPFreeUnion A
+theorem counterexample_exists :
+    ∃ A : Set ℕ, A.Infinite ∧ hasENRProperty A ∧ ¬isFiniteAPFreeUnion A := by
+  unfold ENRConjecture at enr_conjecture_false
+  push_neg at enr_conjecture_false
+  exact enr_conjecture_false
 
 /- ## Part V: Connection to Szemerédi's Theorem -/
 
@@ -182,12 +183,63 @@ Proof sketch: Given B ⊆ A with |B| = n, by pigeonhole there exists
 i such that |B ∩ parts(i)| ≥ n/k. This intersection is AP-free
 (subset of AP-free set) and has the required size.
 -/
+
+/-- Pigeonhole principle for Finsets: mapping B into Fin k, some fiber
+    has cardinality at least B.card / k. -/
+private theorem finset_pigeonhole {α : Type*} [DecidableEq α] (B : Finset α)
+    (k : ℕ) (hk : 0 < k) (f : α → Fin k) :
+    ∃ i : Fin k, B.card ≤ k * (B.filter (fun x => f x = i)).card := by
+  by_contra hall
+  push_neg at hall
+  have hsum : ∑ i : Fin k, (B.filter (fun x => f x = i)).card = B.card := by
+    rw [← Finset.card_biUnion]
+    · congr 1; ext x; simp [Finset.mem_biUnion, Finset.mem_filter]
+      exact ⟨fun hx => ⟨f x, hx, rfl⟩, fun ⟨_, hx, _⟩ => hx⟩
+    · intro i _ j _ hij x
+      simp [Finset.mem_filter]
+      intro _ hi hj; exact absurd (hi ▸ hj) fun h => hij (Fin.ext h)
+  have hlt : ∑ i : Fin k, k * (B.filter (fun x => f x = i)).card < k * B.card := by
+    apply Finset.sum_lt_sum
+    · intro i _; exact le_of_lt (hall i)
+    · exact ⟨⟨0, hk⟩, Finset.mem_univ _, hall ⟨0, hk⟩⟩
+  rw [← Finset.mul_sum] at hlt
+  omega
+
 theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (hk : k > 0)
     (parts : Fin k → Set ℕ)
     (hparts : ∀ i, isAPFree (parts i))
     (hunion : A = ⋃ i, parts i) :
     hasENRCondition A (1 / k) := by
-  sorry
+  have hkR : (0 : ℝ) < k := Nat.cast_pos.mpr hk
+  constructor
+  · exact div_pos one_pos hkR
+  · intro B hB
+    -- Every element of B is in some parts(i)
+    have hmem : ∀ x ∈ B, ∃ i : Fin k, x ∈ parts i := fun x hx =>
+      Set.mem_iUnion.mp (hunion ▸ hB (Finset.mem_coe.mpr hx))
+    classical
+    -- Assign each element of B to a part containing it
+    let assign : ℕ → Fin k :=
+      fun x => if h : x ∈ B then (hmem x h).choose else ⟨0, hk⟩
+    have hassign : ∀ x ∈ B, x ∈ parts (assign x) := by
+      intro x hx; simp only [assign, dif_pos hx]; exact (hmem x hx).choose_spec
+    -- By pigeonhole, some fiber has ≥ |B|/k elements
+    obtain ⟨i, hi⟩ := finset_pigeonhole B k hk assign
+    let C := B.filter (fun x => assign x = i)
+    -- C ⊆ B
+    have hCsub : (↑C : Set ℕ) ⊆ ↑B := by
+      intro x hx; exact Finset.mem_coe.mpr (Finset.mem_of_mem_filter x (Finset.mem_coe.mp hx))
+    -- C ⊆ parts i, so C is AP-free
+    have hCinParts : (↑C : Set ℕ) ⊆ parts i := by
+      intro x hx
+      have hxf := Finset.mem_coe.mp hx
+      have hxB := Finset.mem_of_mem_filter x hxf
+      have hxa := (Finset.mem_filter.mp hxf).2
+      rw [← hxa]; exact hassign x hxB
+    refine ⟨C, hCsub, isAPFree_subset (hparts i) hCinParts, ?_⟩
+    -- Show (1/k) * |B| ≤ |C|
+    rw [div_mul_eq_mul_div, one_mul, le_div_iff hkR]
+    exact_mod_cast hi
 
 /- ## Part VII: Related Problems -/
 
