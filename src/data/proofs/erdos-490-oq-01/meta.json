@@ -130,15 +130,23 @@
   "crossReferences": [
     {
       "targetId": "erdos-490",
-      "relationship": "Parent formalization of Erdős Problem #490; this OQ investigates the limit question for the normalized maximum product size"
+      "relationship": "parent",
+      "description": "Open question derived from Erdős #490; this OQ investigates the limit of the normalized maximum product size"
     },
     {
       "targetId": "infinitude-primes",
-      "relationship": "The prime construction for the lower bound uses primes in (N/2, N], whose density comes from the prime number theorem — a consequence of the infinitude of primes"
+      "relationship": "foundational",
+      "description": "The prime construction for the lower bound uses primes in (N/2, N], whose density comes from the prime number theorem"
     },
     {
       "targetId": "harmonic-divergence",
-      "relationship": "The divergence of the harmonic series is related to the density of primes (Euler's proof uses $\\sum 1/p = \\infty$), which underlies the $\\log N$ factor in Szemerédi's bound"
+      "relationship": "related",
+      "description": "The divergence of ∑ 1/p underlies the log N factor in Szemerédi's bound on distinct product pairs"
+    },
+    {
+      "targetId": "erdos-262",
+      "relationship": "related",
+      "description": "Erdős #262 on Sidon sets (distinct pairwise sums) is the additive analogue of the distinct products condition"
     }
   ],
   "references": [
@@ -147,7 +155,7 @@
       "title": "On a problem of P. Erdős",
       "year": "1976",
       "venue": "Journal of Number Theory, vol. 8, pp. 264–270",
-      "note": "Proved the upper bound |A||B| ≤ C·N²/log N for pairs with distinct products in {1,...,N}. The combinatorial argument exploits the multiplicative structure of integers to bound the number of valid pairs"
+      "note": "Proved the upper bound |A||B| ≤ C·N²/log N for pairs with distinct products in {1,...,N}"
     },
     {
       "authors": "Erdős, Paul",
@@ -161,7 +169,7 @@
       "title": "On sums and products of integers",
       "year": "1983",
       "venue": "Studies in Pure Mathematics, Birkhäuser, pp. 213–218",
-      "note": "Proved the sum-product inequality |A+A| + |A·A| ≥ |A|^{1+ε}, initiating the sum-product phenomenon that provides broader context for distinct product problems"
+      "note": "Proved the sum-product inequality |A+A| + |A·A| ≥ |A|^{1+ε}, providing broader context for distinct product problems"
     },
     {
       "authors": "Tao, Terence; Vu, Van",
@@ -172,20 +180,9 @@
     }
   ],
   "relatedProofs": [
-    {
-      "id": "erdos-490",
-      "relationship": "Parent formalization of Erdős Problem #490; this OQ investigates the limit question for the normalized maximum product size",
-      "description": ""
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "The prime construction for the lower bound uses primes in (N/2, N], whose density comes from the prime number theorem — a consequence of the infinitude of primes",
-      "description": ""
-    },
-    {
-      "id": "harmonic-divergence",
-      "relationship": "The divergence of the harmonic series is related to the density of primes (Euler's proof uses $\\sum 1/p = \\infty$), which underlies the $\\log N$ factor in Szemerédi's bound",
-      "description": ""
-    }
+    "erdos-490",
+    "infinitude-primes",
+    "harmonic-divergence",
+    "erdos-262"
   ]
 }
