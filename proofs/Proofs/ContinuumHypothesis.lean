@@ -75,17 +75,55 @@ def CH : Prop := continuum = aleph_one
     the naturals and the reals. -/
 def CH_alt : Prop := ∀ κ : Cardinal.{0}, ℵ₀ < κ → κ < continuum → False
 
-/-- **Axiom:** CH (𝔠 = ℵ₁) implies there is no cardinal strictly between ℵ₀ and 𝔠.
+/--
+**Proved: CH implies no cardinal strictly between ℵ₀ and 𝔠.**
 
-    If 𝔠 = ℵ₁ and ℵ₀ < κ < 𝔠, then ℵ₀ < κ < ℵ₁.
-    But ℵ₁ = Order.succ ℵ₀, so Order.lt_succ_iff gives κ ≤ ℵ₀, contradiction. -/
-axiom ch_implies_no_intermediate (h : CH) (κ : Cardinal.{0}) (hκ₀ : ℵ₀ < κ) (hκc : κ < continuum) : False
+If 𝔠 = ℵ₁ and ℵ₀ < κ < 𝔠, then ℵ₀ < κ < ℵ₁.
+But ℵ₁ = Order.succ ℵ₀, and Order.succ_le_of_lt gives Order.succ ℵ₀ ≤ κ,
+contradicting κ < Order.succ ℵ₀. Previously an axiom.
+-/
+theorem ch_implies_no_intermediate (h : CH) (κ : Cardinal.{0})
+    (hκ₀ : ℵ₀ < κ) (hκc : κ < continuum) : False := by
+  -- CH gives continuum = aleph_one
+  unfold CH at h
+  rw [h] at hκc  -- κ < aleph_one
+  -- Establish: aleph_one = Order.succ ℵ₀
+  have haleph1 : aleph_one = Order.succ ℵ₀ := by
+    show Cardinal.aleph 1 = Order.succ ℵ₀
+    rw [show (1 : Ordinal) = Order.succ 0 from by rw [Order.succ_eq_add_one, zero_add],
+        Cardinal.aleph_succ, Cardinal.aleph_zero]
+  rw [haleph1] at hκc  -- κ < Order.succ ℵ₀
+  -- But ℵ₀ < κ gives Order.succ ℵ₀ ≤ κ, contradiction
+  exact absurd hκc (not_lt.mpr (Order.succ_le_of_lt hκ₀))
 
-/-- **Axiom:** No intermediate cardinal between ℵ₀ and 𝔠 implies 𝔠 = ℵ₁.
+/--
+**Proved: No intermediate cardinal implies CH.**
 
-    If no κ exists strictly between ℵ₀ and 𝔠, and 𝔠 > ℵ₀ (by Cantor's theorem),
-    then 𝔠 must be the immediate successor of ℵ₀, which is ℵ₁. -/
-axiom no_intermediate_implies_ch (h : ∀ κ : Cardinal.{0}, ℵ₀ < κ → κ < continuum → False) : CH
+If no κ exists strictly between ℵ₀ and 𝔠, and 𝔠 > ℵ₀ (Cantor), then 𝔠 = ℵ₁.
+Proof: ℵ₁ ≤ 𝔠 (from Cantor + succ_le_of_lt), and ¬(ℵ₁ < 𝔠) (else ℵ₁ is intermediate).
+Previously an axiom.
+-/
+theorem no_intermediate_implies_ch
+    (h : ∀ κ : Cardinal.{0}, ℵ₀ < κ → κ < continuum → False) : CH := by
+  -- Goal: CH = (continuum = aleph_one)
+  unfold CH
+  -- Establish: aleph_one = Order.succ ℵ₀
+  have haleph1 : aleph_one = Order.succ ℵ₀ := by
+    show Cardinal.aleph 1 = Order.succ ℵ₀
+    rw [show (1 : Ordinal) = Order.succ 0 from by rw [Order.succ_eq_add_one, zero_add],
+        Cardinal.aleph_succ, Cardinal.aleph_zero]
+  -- ℵ₀ < continuum (Cantor's theorem)
+  have hcantor : ℵ₀ < continuum := by unfold continuum; exact Cardinal.cantor ℵ₀
+  -- aleph_one ≤ continuum (succ of ℵ₀ ≤ anything > ℵ₀)
+  have hle : aleph_one ≤ continuum := by
+    rw [haleph1]; exact Order.succ_le_of_lt hcantor
+  -- ¬(aleph_one < continuum), else aleph_one is between ℵ₀ and continuum
+  have hge : ¬(aleph_one < continuum) := by
+    intro hlt
+    have : ℵ₀ < aleph_one := by rw [haleph1]; exact Order.lt_succ ℵ₀
+    exact h aleph_one this hlt
+  -- Combine: continuum = aleph_one
+  exact le_antisymm (le_of_not_gt hge) hle
 
 /-- The two formulations of CH are equivalent. -/
 theorem ch_equiv_ch_alt : CH ↔ CH_alt := by

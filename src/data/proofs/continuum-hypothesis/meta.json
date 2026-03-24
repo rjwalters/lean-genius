@@ -38,9 +38,9 @@
       "Cohen's forcing approach outlined"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: ch_implies_no_intermediate (CH implies no cardinal between aleph_0 and continuum), no_intermediate_implies_ch (no intermediate cardinal implies CH), L_exists (constructible universe L exists as ZFC model), L_satisfies_CH (L satisfies CH), forcing_extension_exists (Cohen forcing extension exists), forcing_violates_CH (forcing model violates CH)",
-    "lineCount": 366,
+    "axiomCount": 4,
+    "assumptions": "4 axiom declarations: L_exists (constructible universe L exists as ZFC model), L_satisfies_CH (L satisfies CH), forcing_extension_exists (Cohen forcing extension exists), forcing_violates_CH (forcing model violates CH). Previously 6 axioms; ch_implies_no_intermediate and no_intermediate_implies_ch are now proved from Mathlib cardinal arithmetic.",
+    "lineCount": 404,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -116,9 +116,9 @@
       "Cardinal"
     ],
     "namespace": "ContinuumHypothesis",
-    "lineCount": 366,
-    "axiomCount": 6,
-    "theoremCount": 7,
+    "lineCount": 404,
+    "axiomCount": 4,
+    "theoremCount": 9,
     "definitionCount": 8
   },
   "crossReferences": [
