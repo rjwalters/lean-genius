@@ -16,12 +16,11 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T17:01:06.708Z",
+    "phase": "ORIENT",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Survey",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Check Mathlib set theory API",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +28,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEY: Set theory/infinite combinatorics. 4 axioms all deep (Hajnal free set theorem, GCH, overlap bounds). No easy eliminations — requires Mathlib cardinal arithmetic.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "All 4 axioms are deep set-theoretic results about singular cardinals",
+      "hajnal_free_set_theorem is a named result in infinitary combinatorics",
+      "gch_aleph_omega_strong_limit is a consequence of GCH",
+      "Problem concerns ℵ_ω which is singular — makes set theory harder"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Check if Mathlib has Cardinal.IsRegular and related API",
+      "GCH is independent of ZFC — axiom is appropriate"
+    ],
     "markdown": "# Erdős #1173 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -51,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T17:01:06.708Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-03-24T08:25:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -61,10 +68,9 @@
       "lineCount": 168,
       "theoremCount": 0,
       "axiomCount": 4,
-      "defCount": 11,
+      "defCount": 5,
       "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1173Problem.lean"
+      "isAristotle": false
     }
   ]
 }
