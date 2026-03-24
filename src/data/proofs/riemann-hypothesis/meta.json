@@ -4,6 +4,8 @@
   "slug": "riemann-hypothesis",
   "description": "A comprehensive formalization of the Riemann Hypothesis (6594 lines, 540+ proved theorems, 32 axioms, 0 sorries). States RH using Mathlib's zeta function, proves GRH→RH, establishes 14 equivalent formulations (K₁₀ network + BSY, Riesz, Báez-Duarte, Volchkov integral criteria) with 91 pairwise equivalences, shows ¬RH forces 4 distinct off-line zeros, moment growth rates, Selberg class, de Bruijn-Newman constant, random matrix theory, and arithmetic consequences.",
   "meta": {
+    "author": "Bernhard Riemann (1859); formalized by Lean Genius contributors",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Riemann_hypothesis",
     "status": "axiomatized",
     "tags": [
       "number-theory",
@@ -56,6 +58,12 @@
     "hilbertNumber": 8,
     "millenniumProblem": "riemann",
     "proofRepoPath": "Proofs/RiemannHypothesis.lean",
+    "prerequisites": [
+      "Complex analysis (meromorphic functions, analytic continuation)",
+      "Analytic number theory (Dirichlet series, prime counting function)",
+      "Functional analysis (Hilbert spaces, operator theory for Nyman-Beurling)",
+      "Algebraic number theory (L-functions, Galois representations for GRH)"
+    ],
     "mathlib_version": "4.26.0",
     "lineCount": 6594
   },
@@ -167,6 +175,27 @@
       "year": "1989",
       "venue": "Journal für die reine und angewandte Mathematik 399, 1–26",
       "note": "Best known proportion (41.28%) of zeros proved to lie on the critical line"
+    },
+    {
+      "authors": "Iwaniec, Henryk; Kowalski, Emmanuel",
+      "title": "Analytic Number Theory",
+      "year": "2004",
+      "venue": "AMS Colloquium Publications vol. 53",
+      "note": "Modern comprehensive treatment of the zeta function, L-functions, zero-free regions, and the connections between RH and prime distribution"
+    },
+    {
+      "authors": "Hardy, G.H.",
+      "title": "Sur les zéros de la fonction ζ(s) de Riemann",
+      "year": "1914",
+      "venue": "Comptes Rendus de l'Académie des Sciences 158: 1012-1014",
+      "note": "First proof that infinitely many zeros lie on the critical line Re(s) = 1/2"
+    },
+    {
+      "authors": "Bombieri, Enrico",
+      "title": "The Riemann Hypothesis",
+      "year": "2000",
+      "venue": "Clay Mathematics Institute Millennium Prize Problems",
+      "note": "Official problem statement for the $1 million Clay Millennium Prize, surveying the current state of knowledge and key equivalent formulations"
     }
   ],
   "conclusion": {
@@ -200,33 +229,11 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "Euler's identity connects e, i, π — the same constants that appear in the functional equation ξ(s) = ξ(1-s) of the completed zeta function"
-    }
-  ],
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "extends",
-      "description": "RH quantifies the distribution of primes beyond mere infinitude — it gives the optimal error term π(x) = Li(x) + O(√x log x), the sharpest form of the Prime Number Theorem"
     },
     {
-      "id": "basel-problem",
-      "relationship": "foundational",
-      "description": "The Basel identity ζ(2) = π²/6 is the first non-trivial value of the Riemann zeta function whose zeros are the subject of RH"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "extends",
-      "description": "RH implies the strongest form of PNT: π(x) = Li(x) + O(√x log x). PNT is equivalent to ζ(s) ≠ 0 on Re(s) = 1, while RH is the much stronger ζ(s) ≠ 0 for Re(s) > 1/2"
-    },
-    {
-      "id": "euler-identity",
+      "targetId": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "Euler's identity connects e, i, π — the same constants that appear in the functional equation ξ(s) = ξ(1-s) of the completed zeta function"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "description": "The divergence of $\\sum 1/p$ (Euler, 1737) was the first result using the Euler product $\\zeta(s) = \\prod (1-p^{-s})^{-1}$, establishing the analytic approach to prime distribution that RH completes"
     }
   ],
   "leanFile": {
