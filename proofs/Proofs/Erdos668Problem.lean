@@ -73,7 +73,7 @@ def areCongruent (S T : Finset Plane) : Prop :=
 theorem congruent_refl (S : Finset Plane) : areCongruent S S := by
   refine ⟨IsometryEquiv.refl Plane, fun p hp => ?_, fun q hq => ⟨q, hq, ?_⟩⟩
   · simpa using hp
-  · simp
+  · rfl
 
 /-- Congruence is symmetric. -/
 theorem congruent_symm {S T : Finset Plane} (h : areCongruent S T) :
@@ -108,7 +108,31 @@ theorem isUnitPair_of_isometry (φ : Plane ≃ᵢ Plane) {p q : Plane}
 theorem congruent_unitDistanceCount {S T : Finset Plane}
     (h : areCongruent S T) (hcard : S.card = T.card) :
     unitDistanceCount S = unitDistanceCount T := by
-  sorry
+  obtain ⟨φ, hST, hTS⟩ := h
+  unfold unitDistanceCount
+  suffices Set.ncard (unitDistancePairs S) = Set.ncard (unitDistancePairs T) by
+    rw [this]
+  -- The pair map (p, q) ↦ (φ p, φ q) is injective (since φ is an isometry equiv)
+  have hΦ_inj : Function.Injective (fun pq : Plane × Plane => (φ pq.1, φ pq.2)) := by
+    intro ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ heq
+    simp only [Prod.mk.injEq] at heq
+    exact Prod.ext (φ.injective heq.1) (φ.injective heq.2)
+  -- The pair map sends unitDistancePairs S onto unitDistancePairs T
+  have himg : (fun pq : Plane × Plane => (φ pq.1, φ pq.2)) '' unitDistancePairs S =
+      unitDistancePairs T := by
+    ext ⟨a, b⟩
+    simp only [Set.mem_image, Prod.exists, unitDistancePairs, Set.mem_setOf_eq, Prod.mk.injEq]
+    constructor
+    · rintro ⟨p, q, ⟨hp, hq, hne, hdist⟩, rfl, rfl⟩
+      exact ⟨hST p hp, hST q hq, fun h => hne (φ.injective h),
+        isUnitPair_of_isometry φ hdist⟩
+    · rintro ⟨ha, hb, hne, hdist⟩
+      obtain ⟨p, hp, rfl⟩ := hTS a ha
+      obtain ⟨q, hq, rfl⟩ := hTS b hb
+      refine ⟨p, q, ⟨hp, hq, fun hpq => hne (congrArg (⇑φ) hpq), ?_⟩, rfl, rfl⟩
+      unfold isUnitPair at hdist ⊢
+      rwa [← φ.dist_eq]
+  rw [← himg, Set.ncard_image_of_injective _ hΦ_inj]
 
 /-- Congruence preserves extremality. -/
 theorem congruent_preserves_extremal {S T : Finset Plane}
@@ -182,7 +206,10 @@ theorem erdos_668_summary :
       areCongruent S T) :=
   ⟨f_four, four_config_unique⟩
 
-/-- f(n) >= 1 for all n >= 1 (at least one extremal configuration exists). -/
+/-- f(n) >= 1 for all n >= 1 (at least one extremal configuration exists).
+    Proof requires both extremalConfigs_nonempty (axiom) and Set.Finite (extremalConfigs n)
+    (true but requires deep combinatorial geometry: finitely many extremal unit-distance
+    graphs exist for each n). Without finiteness, Set.ncard returns 0 for infinite sets. -/
 theorem f_pos (n : ℕ) (hn : n ≥ 1) : f n ≥ 1 := by
   sorry
 
