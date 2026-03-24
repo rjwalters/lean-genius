@@ -71,7 +71,9 @@
       "All five classical divisibility rules (7, 11, 13, 17, 19) are recovered from the single unified theorem."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Modular arithmetic ($\\mathbb{Z}/d\\mathbb{Z}$, multiplicative inverses)",
+      "Divisibility theory (coprimality, Bézout's identity)",
+      "Elementary number theory (division algorithm, digit extraction)"
     ]
   },
   "sections": [
@@ -80,49 +82,65 @@
       "title": "Imports and Algebraic Identity",
       "startLine": 16,
       "endLine": 29,
-      "summary": "Imports Mathlib digits and tactic libraries. Proves the key helper lemma div_mod_cast: n = 10*(n/10) + (n%10) cast to integers, using Nat.div_add_mod and omega."
+      "summary": "Imports Mathlib digits and tactic libraries. Proves the key helper lemma div_mod_cast: n = 10*(n/10) + (n%10) cast to integers, using Nat.div_add_mod and omega.",
+      "mathContext": "Helper: $n = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$ cast from $\\mathbb{N}$ to $\\mathbb{Z}$. Uses `Nat.div_add_mod` and `omega`."
     },
     {
       "id": "unified-theorem",
       "title": "The Unified Osculator Theorem",
       "startLine": 30,
       "endLine": 64,
-      "summary": "Single theorem: d | n <-> d | (n/10 + c*(n%10)) for any c with d | (10c - 1). Uses the identity 10*(n/10 + c*(n%10)) = n + (10c-1)*(n%10) and coprimality to transfer divisibility."
+      "summary": "Single theorem: d | n <-> d | (n/10 + c*(n%10)) for any c with d | (10c - 1). Uses the identity 10*(n/10 + c*(n%10)) = n + (10c-1)*(n%10) and coprimality to transfer divisibility.",
+      "mathContext": "$d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10))$ whenever $\\gcd(d, 10) = 1$ and $d \\mid (10c - 1)$. Key identity: $10(\\lfloor n/10 \\rfloor + c(n \\bmod 10)) = n + (10c-1)(n \\bmod 10)$."
     },
     {
       "id": "negative-case",
       "title": "Negative Osculator as Special Case",
       "startLine": 65,
       "endLine": 86,
-      "summary": "Derives the negative osculator rule from the unified theorem by substituting -c."
+      "summary": "Derives the negative osculator rule from the unified theorem by substituting -c.",
+      "mathContext": "If $d \\mid (10c_{\\text{neg}} + 1)$, then $10(-c_{\\text{neg}}) - 1 = -(10c_{\\text{neg}} + 1)$, so $d \\mid (10(-c_{\\text{neg}}) - 1)$. Applying the unified theorem with osculator $-c_{\\text{neg}}$ gives the negative rule as a one-line corollary."
     },
     {
       "id": "concrete-cases",
       "title": "Recovering Both Specific Cases",
       "startLine": 87,
       "endLine": 115,
-      "summary": "Instantiations for d=7, 11, 13, 17, 19 showing both positive and negative osculator rules."
+      "summary": "Instantiations for d=7, 11, 13, 17, 19 showing both positive and negative osculator rules.",
+      "mathContext": "Concrete examples: $d=7$ ($c_+ = 5$: $7 \\mid n \\iff 7 \\mid (\\lfloor n/10 \\rfloor + 5(n \\bmod 10))$; $c_- = -2$). $d=11$ ($c_+ = 10$; $c_- = -1$: the alternating-digit rule). $d=13$ ($c_+ = 4$; $c_- = -9$)."
     },
     {
       "id": "dual-relationship",
       "title": "Dual Osculator Relationship",
       "startLine": 116,
       "endLine": 145,
-      "summary": "Theorem: d | (c_pos + c_neg), with verification examples for d=7, 13, 17."
+      "summary": "Theorem: d | (c_pos + c_neg), with verification examples for d=7, 13, 17.",
+      "mathContext": "From $d \\mid (10c_+ - 1)$ and $d \\mid (10c_- + 1)$: $10(c_+ + c_-) = (10c_+ - 1) + (10c_- + 1)$, so $d \\mid 10(c_+ + c_-)$, and $\\gcd(d,10) = 1$ gives $d \\mid (c_+ + c_-)$. For $d=7$: $c_+ + c_- = 5 + 2 = 7$."
     },
     {
       "id": "sanity-checks",
       "title": "Sanity Checks",
       "startLine": 146,
       "endLine": 159,
-      "summary": "Numeric examples confirming the rules work."
+      "summary": "Numeric examples confirming the rules work.",
+      "mathContext": "Verification: $7 \\mid 371$ checked via osculator $c = 5$: $37 + 5 \\cdot 1 = 42 = 6 \\cdot 7$. All by `norm_num`."
     }
   ],
   "crossReferences": [
     {
       "targetId": "divisibility-truncation-general",
       "relationship": "extends",
-      "description": "Unifies the separate positive and negative osculator theorems from the parent proof into a single theorem with signed osculator"
+      "description": "Unifies the separate positive and negative osculator theorems from the parent proof into a single theorem with signed osculator $c \\in \\mathbb{Z}$, reducing two theorems to one"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity guarantees the existence of the osculator $c$: since $\\gcd(10, d) = 1$, there exist $s, t$ with $10s + dt = 1$, giving $c = s$ as the multiplicative inverse of 10 mod $d$"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the coprimality condition $\\gcd(d, 10) = 1$, which is necessary for the osculator to exist. Divisors sharing factors with 10 (i.e., multiples of 2 or 5) require the last-$k$-digits framework instead"
     }
   ],
   "conclusion": {
@@ -135,7 +153,9 @@
     ]
   },
   "relatedProofs": [
-    "divisibility-truncation-general"
+    "divisibility-truncation-general",
+    "bezout-identity",
+    "fundamental-arithmetic"
   ],
   "leanFile": {
     "imports": [
@@ -150,5 +170,28 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Ramaswami Aiyar, V.",
+      "title": "The Osculator",
+      "year": "1907",
+      "venue": "The Journal of the Indian Mathematical Club, vol. 1",
+      "note": "One of the earliest publications on osculator divisibility rules, introducing the systematic study of digit-based divisibility tests using modular multiplicative inverses"
+    },
+    {
+      "authors": "Gardner, Martin",
+      "title": "Mathematical Games: Tests for divisibility by 7 and the other digits",
+      "year": "1962",
+      "venue": "Scientific American, vol. 207, September 1962",
+      "note": "Popularized osculator divisibility rules for a general audience, including the rules for 7 (osculator 5), 11 (alternating-digit), 13, 17, and 19 that are formalized and unified in this proof"
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Standard reference for divisibility theory, modular arithmetic, and the extended Euclidean algorithm. Section 6.11 covers divisibility tests and their relationship to modular inverses"
+    }
+  ]
 }
