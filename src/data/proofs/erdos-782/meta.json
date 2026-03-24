@@ -178,5 +178,56 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 19
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern unavoidable structure in large combinatorial objects. Ramsey theory guarantees monochromatic substructures in colored sets, while this problem asks whether the perfect squares contain specific additive structures (quasi-progressions, combinatorial cubes)"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem guarantees arithmetic progressions in dense subsets of integers. The squares have density $\\sim n^{-1/2}$ (too sparse for Szemerédi to apply directly), but the question of quasi-progressions in squares asks whether a weaker structured pattern still appears"
+    },
+    {
+      "targetId": "erdos-781",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem in the same series on structured monochromatic/additive configurations in integer sequences"
+    },
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Nearby Erdős problem in the combinatorics series; both concern extremal properties of structured mathematical objects"
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "szemeredi-theorem",
+    "erdos-781",
+    "erdos-780"
+  ],
+  "references": [
+    {
+      "authors": "Brown, Tom C.; Erdős, Paul; Freedman, Allen R.",
+      "title": "Quasi-progressions and descending waves",
+      "year": "1990",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 53, pp. 81–95",
+      "note": "Introduced quasi-progressions and posed the question of whether perfect squares contain arbitrarily long quasi-progressions with uniform bound"
+    },
+    {
+      "authors": "Halberstam, Heini; Roth, Klaus F.",
+      "title": "Sequences",
+      "year": "1966",
+      "venue": "Oxford University Press (2nd edition, Springer 1983)",
+      "note": "Classical reference on additive structure of integer sequences including the density and additive properties of perfect squares"
+    },
+    {
+      "authors": "Bombieri, Enrico; Lang, Serge",
+      "title": "Diophantine approximation on abelian varieties",
+      "year": "1970",
+      "venue": "Inventiones Mathematicae",
+      "note": "The Bombieri-Lang conjecture on rational points of varieties of general type is connected to Q2 (combinatorial cubes in squares) via the algebraic geometry of the resulting Diophantine equations"
+    }
+  ]
 }
