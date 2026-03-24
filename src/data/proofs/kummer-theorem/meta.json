@@ -159,11 +159,29 @@
       "targetId": "binomial-theorem-oq-01",
       "relationship": "related",
       "description": "Both study properties of binomial coefficients — Kummer's theorem addresses divisibility while the binomial theorem addresses evaluation"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem generates the coefficients $\\binom{n}{k}$ whose $p$-adic valuations Kummer's theorem computes. Kummer counts carries in base-$p$ addition"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins $v_p(n)$, the $p$-adic valuation that Kummer's theorem evaluates for binomial coefficients"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Both concern modular arithmetic with primes. Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ connects Wilson's factorial congruence to Kummer's carry-counting"
     }
   ],
   "relatedProofs": [
     "erdos-776",
-    "binomial-theorem-oq-01"
+    "binomial-theorem-oq-01",
+    "binomial-theorem",
+    "fundamental-arithmetic",
+    "wilsons-theorem"
   ],
   "leanFile": {
     "imports": [
