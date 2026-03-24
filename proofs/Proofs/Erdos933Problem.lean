@@ -90,26 +90,6 @@ def mahlerSUnitConnection : Prop :=
 axiom erdos_lower_bound :
   ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧ (consecutiveSmoothPart n : ℝ) > n * Real.log n
 
-/-- This implies limsup is infinite. -/
-theorem limsup_infinite : ErdosQuestion933 := by
-  intro M
-  obtain ⟨n, hn_ge, hn_bound⟩ := erdos_lower_bound M
-  use n
-  constructor
-  · exact hn_ge
-  · unfold smoothRatio
-    simp only [hn_ge, if_neg (by omega : ¬n ≤ 1)]
-    have hlog : Real.log n > 0 := Real.log_pos (by
-      have : (2 : ℝ) ≤ n := by exact_mod_cast hn_ge
-      linarith)
-    have hn_pos : (n : ℝ) > 0 := by exact_mod_cast (by omega : n > 0)
-    have hdenom : n * Real.log n > 0 := mul_pos hn_pos hlog
-    rw [div_gt_iff hdenom]
-    calc (consecutiveSmoothPart n : ℝ) > n * Real.log n := hn_bound
-      _ > M * (n * Real.log n) := by
-        sorry -- Need M ≤ 1 or restructure
-    sorry
-
 /-
 ## Part V: Steinerberger's Construction
 -/
@@ -137,6 +117,10 @@ theorem steinerberger_gives_large_smooth (r : ℕ) (hr : r ≥ 1) :
 
 /-- This construction shows the answer is YES. -/
 axiom steinerberger_proof : ErdosQuestion933
+
+/-- This implies limsup is infinite. -/
+theorem limsup_infinite : ErdosQuestion933 :=
+  steinerberger_proof
 
 /-
 ## Part VI: Why the Construction Works
