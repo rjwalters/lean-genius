@@ -3,14 +3,12 @@
   "proofId": "ptolemys-theorem",
   "reviewDate": "2026-03-24T12:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "C+",
     "oneLiner": "Well-curated Mathlib wrapper with excellent pedagogy, but padded by duplicate theorems and lacking formal substance beyond the import",
     "tier": "B",
     "tierJustification": "Core theorem is entirely from Mathlib (one-liner call to mul_dist_add_mul_dist_eq_mul_dist_of_cospherical). File provides naming wrappers, trivial algebraic restatements, numerical examples, and extensive commentary. No original proof work."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -83,45 +81,43 @@
       "recommendation": "If the duplicate is removed (recommended), remove this annotation. If kept, change significance to 'supporting'."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
       "description": "Remove duplicate theorems: ptolemys_theorem_diagonals (identical to ptolemys_theorem) and diagonal_product_from_sides (identical to ptolemys_theorem_symmetric). Update meta.json theoremCount from 5 to 3, update conclusion.summary, and update sections accordingly.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions to honestly reflect pedagogical curation rather than mathematical contributions. Suggested: ['Pedagogical examples connecting Ptolemy to the Pythagorean theorem', 'Curated exposition of historical and mathematical context'].",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite conclusion.summary to accurately reflect 3 distinct theorem statements (not 5) and characterize the entry as a well-curated Mathlib wrapper rather than implying broader formal content.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Remove unused Vec2 abbreviation from Lean source (line 62), or add a concrete ℝ² example that uses it.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Restructure isosceles trapezoid docstring (lines 193-203) to lead with the correct computation rather than the failed assumption.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 4,
     "originalityAccuracy": 6,
@@ -131,6 +127,5 @@
     "internalConsistency": 7,
     "overall": 6.3
   },
-
   "suggestedBestFraming": "A pedagogical Mathlib wrapper that names and documents Ptolemy's theorem (Wiedijk #95) with numerical examples demonstrating the Pythagorean theorem as a special case, the square diagonal identity, and isosceles trapezoid diagonal computation."
 }

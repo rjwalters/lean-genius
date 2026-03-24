@@ -145,7 +145,7 @@
     "title": "Hat-Check Problem and Convergence",
     "content": "The classic formulation: $n$ people check hats, which are returned randomly. The probability no one gets their own hat is $D_n/n! \\to 1/e \\approx 0.3679$ as $n \\to \\infty$.",
     "mathContext": "This is one of the most celebrated results in combinatorial probability. The probability $P_n = D_n/n! = \\sum_{k=0}^n (-1)^k/k!$ converges to $e^{-1}$ exponentially fast — by $n = 10$, the probability matches $1/e$ to 6 decimal places. The result is a 'universal' probability: it does not depend on $n$ for large $n$. Montmort asked this question in 1708 in the context of card games ('jeu de treize'). The Poisson approximation explains why: the indicators $\\mathbf{1}_{\\sigma(i) = i}$ are nearly independent, and the number of fixed points converges to $\\text{Poisson}(1)$.",
-    "significance": "key",
+    "significance": "context",
     "relatedConcepts": [
       "probability of derangement",
       "convergence to $1/e$",
@@ -192,7 +192,7 @@
     "title": "Inclusion-Exclusion Derivation",
     "content": "Derives $D_n = n! \\sum_{k=0}^n (-1)^k/k!$ via inclusion-exclusion on fixed-point sets $A_i = \\{\\sigma \\in S_n : \\sigma(i) = i\\}$, using $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ and $\\binom{n}{k}$ choices.",
     "mathContext": "The key simplification is that $|A_{i_1} \\cap \\cdots \\cap A_{i_k}|$ depends only on $k$ (not on which elements are fixed), making the Bonferroni sum collapse: $D_n = \\sum_{k=0}^n (-1)^k \\binom{n}{k}(n-k)! = \\sum_{k=0}^n (-1)^k n!/k! = n! \\sum_{k=0}^n (-1)^k/k!$. This is the canonical example used to introduce inclusion-exclusion in combinatorics courses. The sieve argument generalizes to count permutations with exactly $j$ fixed points via the formula $\\binom{n}{j} D_{n-j}$.",
-    "significance": "key",
+    "significance": "context",
     "relatedConcepts": [
       "inclusion-exclusion principle",
       "Bonferroni inequalities",

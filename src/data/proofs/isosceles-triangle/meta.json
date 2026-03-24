@@ -37,9 +37,9 @@
       }
     ],
     "originalContributions": [
-      "Forward and converse directions combined into biconditional",
-      "Vector space formulation via inner product geometry",
-      "Non-degeneracy analysis for the converse"
+      "Pedagogical wrapper: re-exports Mathlib's EuclideanGeometry.dist_eq_iff_eq_of_dist_eq as the isosceles triangle theorem",
+      "Converse formulation (equal angles implies equal sides) via Mathlib bridge",
+      "Biconditional statement combining both directions"
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 65,
@@ -139,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "The isosceles triangle theorem (Pons Asinorum, Euclid I.5, Wiedijk #65) is fully formalized with zero sorries: the forward direction, converse with non-degeneracy condition, biconditional characterization, and a vector formulation in arbitrary inner product spaces. All proofs delegate to Mathlib's Euclidean geometry library.",
-    "implications": "**Theoretical Significance**: The formalization demonstrates that Pons Asinorum holds in any real inner product space — not just the Euclidean plane.\n\nThis generalization connects elementary geometry to functional analysis (Hilbert spaces) and physics (quantum state spaces). The biconditional form provides a complete algebraic characterization of isosceles triangles, useful in computational geometry and triangle classification algorithms.",
+    "implications": "The inner product space generality — working in any real inner product space, not just R^2 — is inherited from Mathlib's type-polymorphic EuclideanGeometry module, not an original design choice of this entry. The formalization serves as a clean pedagogical example of Mathlib's geometry API.",
     "openQuestions": [
       "Formalize Euclid's original proof (I.5) with auxiliary constructions and compare its complexity to Pappus's self-congruence argument",
       "Prove the isosceles triangle theorem in hyperbolic and spherical geometry, where the inner product space structure is unavailable",

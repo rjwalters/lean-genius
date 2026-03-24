@@ -3,14 +3,12 @@
   "proofId": "triangular-reciprocals",
   "reviewDate": "2026-03-24T00:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B+",
     "oneLiner": "A well-structured, fully verified formalization of Wiedijk #42 with genuine proof substance and good pedagogy, marred by a few metadata inaccuracies.",
     "tier": "A",
     "tierJustification": "Tier A: All 9 theorems are fully proved with no sorries, no axioms, and no structure-encoded assumptions. The main theorem (HasSum via epsilon-N), the finite telescoping induction, the summability comparison, and the triangular number connection all contain multi-step proofs with substantive Lean reasoning. This is a complete formalization, not an axiomatized scaffold."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -76,14 +74,13 @@
       "recommendation": "Consider more precise labels such as 'Induction-based telescoping proof (not using Finset.sum_range_sub)' and 'Manual comparison test with p-series bound.' These better distinguish the work from simple Mathlib wrapper calls."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "medium",
       "target": "enricher",
       "description": "Remove Finset.sum_range_sub from mathlibDependencies in meta.json. It is listed as a dependency but never used in any proof body -- the telescoping is done by manual induction. Update the Lean file docstring at line 44 to match.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
@@ -97,24 +94,23 @@
       "priority": "low",
       "target": "enricher",
       "description": "Update meta.json lineCount from 305 to 308 (both top-level and leanFile.lineCount). Update the examples section endLine from 305 to 308.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Soften the 'rare example' claim in annotations.json ann-main-theorem. Change 'a rare example of a completely explicit analytic proof in Lean' to 'a clean example of a fully explicit epsilon-N convergence argument in Lean.'",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Consider refining originalContributions labels in meta.json to better reflect that the telescoping is done by manual induction (not using Finset.sum_range_sub) and the comparison test manually establishes the bound.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 8,
     "originalityAccuracy": 7,
@@ -124,6 +120,5 @@
     "internalConsistency": 7,
     "overall": 7.7
   },
-
   "suggestedBestFraming": "A complete, sorry-free Lean 4 formalization of Wiedijk #42: the sum of reciprocals of triangular numbers equals 2. The proof constructs the telescoping identity by induction, establishes convergence via comparison with the p-series, and carries out an explicit epsilon-N limit argument, all building on Mathlib's infinite sum infrastructure."
 }

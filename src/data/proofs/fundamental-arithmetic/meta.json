@@ -41,8 +41,10 @@
       }
     ],
     "originalContributions": [
-      "Existence and uniqueness proofs",
-      "Pedagogical examples"
+      "Unified FTA statement combining existence and uniqueness",
+      "Coprime disjoint prime factors corollary (strongest original proof in file)",
+      "Pedagogical bridge theorems assembling Mathlib results",
+      "Concrete computational examples via native_decide"
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 80,
@@ -55,7 +57,7 @@
     "historicalContext": "The Fundamental Theorem of Arithmetic has roots in Euclid's *Elements* (c. 300 BCE): Book VII, Proposition 31 proves every composite number has a prime factor (existence), while Propositions 32 and Book IX, Proposition 14 establish key steps toward uniqueness. However, Euclid never stated the theorem explicitly. Carl Friedrich Gauss gave the first rigorous proof in §16 of his *Disquisitiones Arithmeticae* (1801), recognizing that uniqueness requires Euclid's Lemma ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) as a non-trivial ingredient. Ernst Zermelo (1934) gave an elegant proof using the well-ordering principle. The theorem fails in certain algebraic number rings — for example, in $\\mathbb{Z}[\\sqrt{-5}]$, $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ has two distinct factorizations into irreducibles. Kummer's introduction of 'ideal numbers' (1847) to restore unique factorization led to Dedekind's theory of ideals and ultimately to the algebraic concept of a **Unique Factorization Domain** (UFD). This is #80 on Freek Wiedijk's list of 100 theorems formalized in proof assistants.",
     "problemStatement": "**Fundamental Theorem of Arithmetic**:\n\nEvery integer $n > 1$ has a unique prime factorization:\n$$n = p_1^{a_1} \\cdot p_2^{a_2} \\cdots p_k^{a_k}$$\nwhere $p_1 < p_2 < \\cdots < p_k$ are primes and $a_i \\ge 1$.",
     "text": "Every integer > 1 is uniquely representable as a product of primes. The cornerstone of number theory.",
-    "proofStrategy": "Existence by strong induction on $n$: if $n$ is prime, done; otherwise $n = ab$ with $1 < a, b < n$, and induction gives factorizations of $a$ and $b$ which concatenate. Uniqueness follows from Euclid's Lemma (`Nat.Prime.dvd_mul`): two prime lists with the same product must be permutations. The formalization uses Mathlib's `Nat.primeFactorsList` for the canonical sorted factor list.",
+    "proofStrategy": "The strong induction and Euclid's Lemma proofs are inside Mathlib; this file assembles them into a combined existence-and-uniqueness statement with pedagogical value. Existence by strong induction on $n$: if $n$ is prime, done; otherwise $n = ab$ with $1 < a, b < n$, and induction gives factorizations of $a$ and $b$ which concatenate. Uniqueness follows from Euclid's Lemma (`Nat.Prime.dvd_mul`): two prime lists with the same product must be permutations. The formalization uses Mathlib's `Nat.primeFactorsList` for the canonical sorted factor list.",
     "keyInsights": [
       "**Euclid's Lemma** is the heart of uniqueness: $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ ensures that each prime in one factorization must appear in any other factorization of the same number",
       "The **algebraic generalization** — $\\mathbb{N}$ is a `UniqueFactorizationMonoid` — connects elementary number theory to abstract algebra, where UFDs include polynomial rings $K[x]$ and Gaussian integers $\\mathbb{Z}[i]$",
