@@ -13,7 +13,7 @@ f(n) ≥ ⌊log₂ n⌋.
 - A dissociated set of size k has 2^k distinct subset sums
 - Powers of 2 form a dissociated set (binary representation)
 
-Axiom count: 6 (was 7; proved log_base_gap)
+Axiom count: 5 (was 7; proved log_base_gap, dissociated_subset_sum_count)
 Sorry count: 0
 
 ## References
@@ -23,9 +23,10 @@ Sorry count: 0
 - <https://erdosproblems.com/963>
 -/
 
-import Mathlib.Combinatorics.Additive.Dissociated
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Nat.Log
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
@@ -44,10 +45,16 @@ noncomputable def maxDissociatedSize (n : ℕ) : ℕ :=
 
 /- ## Subset Sum Counting -/
 
-/-- A dissociated set of size k has exactly 2^k distinct subset sums. -/
-axiom dissociated_subset_sum_count :
+/-- **PROVED** (was axiom): A dissociated set of size k has exactly 2^k
+    distinct subset sums. The dissociated condition means the sum map is
+    injective on the powerset, so the image has cardinality 2^|B|. -/
+theorem dissociated_subset_sum_count :
   ∀ (B : Finset ℝ), (∀ S T : Finset ℝ, S ⊆ B → T ⊆ B → S.sum id = T.sum id → S = T) →
-    (Finset.image (fun S => S.sum id) B.powerset).card = 2 ^ B.card
+    (Finset.image (fun S => S.sum id) B.powerset).card = 2 ^ B.card := by
+  intro B hdiss
+  rw [Finset.card_image_of_injOn, Finset.card_powerset]
+  intro S hS T hT heq
+  exact hdiss S T (Finset.mem_powerset.mp hS) (Finset.mem_powerset.mp hT) heq
 
 /- ## Main Conjecture -/
 
@@ -85,45 +92,19 @@ theorem empty_dissociated (A : Finset ℝ) : IsDissociatedSubset A ∅ := by
     rw [Finset.subset_empty] at hS hT
     rw [hS, hT]
 
-/-- Any singleton subset is dissociated. -/
-theorem singleton_dissociated (A : Finset ℝ) (a : ℝ) (ha : a ∈ A) :
+/-- Any singleton {a} with a ≠ 0 is dissociated (subsets ∅ and {a}
+    have distinct sums 0 and a). -/
+theorem singleton_dissociated (A : Finset ℝ) (a : ℝ) (ha : a ∈ A) (ha0 : a ≠ 0) :
     IsDissociatedSubset A {a} := by
   constructor
   · exact Finset.singleton_subset_iff.mpr ha
   · intro S T hS hT hsum
-    ext x
-    simp only [Finset.mem_singleton] at hS hT ⊢
-    constructor
-    · intro hx
-      have := hS hx
-      rw [this] at hx ⊢
-      by_contra h
-      have hT_empty : T = ∅ := by
-        ext y
-        simp only [Finset.mem_empty, iff_false]
-        intro hy
-        exact h (hT hy)
-      rw [hT_empty] at hsum
-      simp [Finset.sum_singleton] at hsum
-      rw [Finset.subset_singleton_iff] at hS
-      cases hS with
-      | inl h_empty => rw [h_empty] at hx; exact (Finset.not_mem_empty x) hx
-      | inr h_eq => rw [h_eq] at hsum; simp at hsum
-    · intro hx
-      have := hT hx
-      rw [this] at hx ⊢
-      by_contra h
-      have hS_empty : S = ∅ := by
-        ext y
-        simp only [Finset.mem_empty, iff_false]
-        intro hy
-        exact h (hS hy)
-      rw [hS_empty] at hsum
-      simp [Finset.sum_singleton] at hsum
-      rw [Finset.subset_singleton_iff] at hT
-      cases hT with
-      | inl h_empty => rw [h_empty] at hx; exact (Finset.not_mem_empty x) hx
-      | inr h_eq => rw [h_eq] at hsum; simp at hsum
+    rw [Finset.subset_singleton_iff] at hS hT
+    rcases hS with rfl | rfl <;> rcases hT with rfl | rfl
+    · rfl
+    · simp at hsum; exfalso; exact ha0 hsum.symm
+    · simp at hsum; exfalso; exact ha0 hsum
+    · rfl
 
 /-- Powers of 2 form a dissociated set (binary representation uniqueness). -/
 axiom powers_of_two_dissociated :
@@ -135,8 +116,9 @@ axiom powers_of_two_dissociated :
 axiom maxDissociatedSize_mono :
   ∀ m n : ℕ, m ≤ n → maxDissociatedSize m ≤ maxDissociatedSize n
 
-/-- **PROVED** (was axiom): The gap between the greedy bound and the conjecture: log₂ vs log₃.
-    Since 2 ≤ 3, log₃ n ≤ log₂ n for all n. -/
+/-- **PROVED** (was axiom): The gap between the greedy bound and the
+    conjecture: log₂ vs log₃. Since 2 ≤ 3, log₃ n ≤ log₂ n for all n. -/
 theorem log_base_gap :
-    ∀ n : ℕ, n ≥ 2 → Nat.log 3 n ≤ Nat.log 2 n :=
-  fun n _ => Nat.log_anti_left (by omega) n
+    ∀ n : ℕ, n ≥ 2 → Nat.log 3 n ≤ Nat.log 2 n := by
+  intro n _
+  apply Nat.log_anti_left <;> omega
