@@ -72,7 +72,28 @@ theorem single_prime_lower (p k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
 
 theorem single_prime_upper (p k : ℕ) (hp : Nat.Prime p) :
     coveringFunction {p} k ≤ k / p + 1 := by
-  sorry
+  unfold coveringFunction
+  apply ciInf_le_of_le ⟨0, fun _ ⟨_, h⟩ => h ▸ Nat.zero_le _⟩ 0
+  unfold coveredInInterval
+  simp only [Nat.zero_add, Finset.mem_singleton, exists_eq_left]
+  -- Multiples of p in Ico 0 k: inject n ↦ n/p into range(k/p+1)
+  have h_inj : (Finset.Ico 0 k |>.filter (p ∣ ·) |>.image (· / p)) ⊆ Finset.range (k / p + 1) := by
+    intro m hm
+    rw [Finset.mem_image] at hm
+    obtain ⟨n, hn, rfl⟩ := hm
+    rw [Finset.mem_filter, Finset.mem_Ico] at hn
+    rw [Finset.mem_range]
+    exact Nat.lt_succ_of_le (Nat.div_le_div_right (by omega))
+  calc (Finset.Ico 0 k |>.filter (p ∣ ·)).card
+      ≤ ((Finset.range (k / p + 1)).image (· * p)).card := by
+        apply Finset.card_le_card; intro n hn
+        rw [Finset.mem_filter, Finset.mem_Ico] at hn
+        obtain ⟨⟨_, hn_lt⟩, ⟨m, rfl⟩⟩ := hn
+        rw [Finset.mem_image]
+        refine ⟨m, Finset.mem_range.mpr (Nat.lt_succ_of_le ?_), by ring⟩
+        exact (Nat.le_div_iff_mul_le hp.pos).mpr (le_of_lt (by linarith))
+    _ ≤ (Finset.range (k / p + 1)).card := Finset.card_image_le
+    _ = k / p + 1 := Finset.card_range _
 
 /-
 ## The Inclusion-Exclusion Bound
@@ -93,7 +114,23 @@ theorem expectedDensity_pos (primes : Finset ℕ) (hne : primes.Nonempty)
     0 < expectedDensity primes := by
   unfold expectedDensity
   simp only [sub_pos]
-  sorry -- Need Finset.prod_lt_one: each factor < 1, nonempty → product < 1
+  -- Each factor (1 - 1/p) satisfies 0 < f < 1 for primes p ≥ 2
+  have h_pos : ∀ p ∈ primes, (0 : ℝ) < 1 - 1 / (p : ℝ) := fun p hp => by
+    have hp_pos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast (hprime p hp).pos
+    have hp1 : (p : ℝ) > 1 := by exact_mod_cast (hprime p hp).one_lt
+    have : 1 / (p : ℝ) < 1 := by rw [div_lt_one hp_pos]; linarith
+    linarith
+  have h_le : ∀ p ∈ primes, 1 - 1 / (p : ℝ) ≤ 1 := fun p hp => by
+    linarith [div_pos one_pos (show (0:ℝ) < p from by exact_mod_cast (hprime p hp).pos)]
+  -- Split product as f(p₀) * ∏(rest), bound rest ≤ 1, deduce product ≤ f(p₀) < 1
+  obtain ⟨p₀, hp₀⟩ := hne
+  calc ∏ p ∈ primes, (1 - 1 / (p : ℝ))
+      = (1 - 1 / (p₀ : ℝ)) * ∏ p ∈ primes.erase p₀, (1 - 1 / (p : ℝ)) :=
+        (Finset.mul_prod_erase _ _ hp₀).symm
+    _ ≤ (1 - 1 / (p₀ : ℝ)) := mul_le_of_le_one_right (le_of_lt (h_pos p₀ hp₀))
+        (Finset.prod_le_one (fun p hp => le_of_lt (h_pos p (Finset.mem_of_mem_erase hp)))
+          (fun p hp => h_le p (Finset.mem_of_mem_erase hp)))
+    _ < 1 := by linarith [div_pos one_pos (show (0:ℝ) < p₀ from by exact_mod_cast (hprime p₀ hp₀).pos)]
 
 theorem expectedDensity_lt_one (primes : Finset ℕ) (hne : primes.Nonempty)
     (hprime : ∀ p ∈ primes, Nat.Prime p) :

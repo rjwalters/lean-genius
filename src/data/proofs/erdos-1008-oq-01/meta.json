@@ -1,0 +1,118 @@
+{
+  "id": "erdos-1008-oq-01",
+  "title": "Optimal Constants in the C\u2084-Free Subgraph Bound",
+  "slug": "erdos-1008-oq-01",
+  "description": "What are the optimal constants in the \u03a9(m^{2/3}) bound for C\u2084-free subgraphs? Formalizes the framework for the optimal constant question, proves the K_{2,2}=C\u2084 equivalence, and establishes structural properties of C\u2084-free graphs.",
+  "meta": {
+    "author": "Open Question (Erd\u0151s #1008)",
+    "sourceUrl": "https://erdosproblems.com/1008",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1008OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "cycles",
+      "subgraphs",
+      "zarankiewicz",
+      "constants",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 1008,
+    "erdosUrl": "https://erdosproblems.com/1008",
+    "erdosProblemStatus": "open-question",
+    "axiomCount": 2,
+    "lineCount": 296,
+    "assumptions": "Two axioms: folkman_upper_bound (c* \u2264 1, requires full KST formalization) and cfs_admissible_exists (Conlon-Fox-Sudakov main theorem). 15 theorems fully proved including K_{2,2}=C\u2084 equivalence and common neighbor uniqueness.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Conlon, Fox, and Sudakov (2014) proved that every graph with m edges has a C\u2084-free subgraph with \u03a9(m^{2/3}) edges. The exponent 2/3 is optimal by Folkman's counterexample K_{n,n\u00b2}. The open question is: what is the best constant c > 0 such that this holds with at least c\u00b7m^{2/3} edges?",
+    "problemStatement": "Determine the optimal constant c* > 0 such that every graph with m edges has a C\u2084-free subgraph with at least c*\u00b7m^{2/3} edges.",
+    "text": "What are the optimal constants in the \u03a9(m^{2/3}) bound for C\u2084-free subgraphs?",
+    "proofStrategy": "We formalize: (1) the K_{2,2}=C\u2084 equivalence connecting to the Zarankiewicz problem, (2) the optimal constant framework via IsAdmissibleConstant, (3) Folkman's upper bound c* \u2264 1, (4) the CFS lower bound c* > 0, and (5) structural properties of C\u2084-free graphs including the common neighbor uniqueness theorem.",
+    "keyInsights": [
+      "**K_{2,2} = C\u2084 Equivalence (Proved):** A graph contains a 4-cycle iff it contains K_{2,2}, linking C\u2084-freeness to the Zarankiewicz problem z(n; 2,2)",
+      "**Common Neighbor Uniqueness (Proved):** In a C\u2084-free graph, any two distinct vertices share at most one common neighbor -- the key structural constraint",
+      "**Folkman's Ratio:** (n\u00b3)^{2/3} = n\u00b2, showing the Folkman bound gives c* \u2264 1",
+      "**Hereditary C\u2084-freeness (Proved):** C\u2084-freeness passes to subgraphs, enabling the probabilistic approach"
+    ],
+    "prerequisites": [
+      "Graph theory (simple graphs, adjacency, subgraphs)",
+      "Extremal combinatorics (Zarankiewicz problem)",
+      "Real analysis (real powers, supremum)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "HasC4, IsC4Free, HasKst, edgeCount for simple graphs on finite vertex types",
+      "startLine": 40,
+      "endLine": 70
+    },
+    {
+      "id": "k22-c4",
+      "title": "K_{2,2} = C\u2084 Equivalence",
+      "summary": "Full proof of the K_{2,2} \u2194 C\u2084 equivalence with both directions and corollaries",
+      "startLine": 75,
+      "endLine": 140
+    },
+    {
+      "id": "constant-framework",
+      "title": "Optimal Constant Framework",
+      "summary": "IsAdmissibleConstant definition, optimalConstant as supremum",
+      "startLine": 142,
+      "endLine": 165
+    },
+    {
+      "id": "structural",
+      "title": "Structural Results",
+      "summary": "empty_isC4Free, c4free_of_subgraph, c4free_mono, c4free_common_neighbor_unique",
+      "startLine": 168,
+      "endLine": 280
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on the Optimal Constant",
+      "summary": "Folkman upper bound c* \u2264 1, CFS lower bound c* > 0",
+      "startLine": 190,
+      "endLine": 240
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the open question about optimal constants in the C\u2084-free subgraph bound. Proves 15 theorems including the K_{2,2}=C\u2084 equivalence, common neighbor uniqueness, and the Folkman ratio. Establishes 0 < c* \u2264 1 with two axioms for the deep results (Folkman upper bound and CFS existence).",
+    "implications": "The common neighbor uniqueness theorem is the key structural constraint that drives all upper bounds on C\u2084-free graphs. The optimal constant framework provides a precise target for future work.",
+    "openQuestions": [
+      "Determine the exact value of the optimal constant c* in (0, 1]",
+      "Is c* = 1/2 (matching the KST coefficient)?",
+      "What is the constant for K_{s,t}-free subgraphs with s,t > 2?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "parent",
+      "description": "This is an open question from Erd\u0151s Problem #1008 about C\u2084-free subgraphs",
+      "targetId": "erdos-1008"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-1008",
+      "relationship": "parent",
+      "description": "Parent problem: C\u2084-free subgraphs with \u03a9(m^{2/3}) edges"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["SimpleGraph", "Finset"],
+    "namespace": "Erdos1008OQ01",
+    "lineCount": 296,
+    "axiomCount": 2,
+    "theoremCount": 17,
+    "definitionCount": 8
+  }
+}
