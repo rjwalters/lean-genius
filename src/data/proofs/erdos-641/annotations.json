@@ -28,8 +28,8 @@
     "id": "ann-641-graph",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 40,
-      "endLine": 41
+      "startLine": 42,
+      "endLine": 42
     },
     "type": "definition",
     "title": "Graph",
@@ -49,8 +49,8 @@
     "id": "ann-641-coloring",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 43,
-      "endLine": 45
+      "startLine": 42,
+      "endLine": 42
     },
     "type": "definition",
     "title": "Proper Coloring",
@@ -116,8 +116,8 @@
     "id": "ann-641-cycle",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 61,
-      "endLine": 66
+      "startLine": 51,
+      "endLine": 55
     },
     "type": "definition",
     "title": "Cycle",
@@ -139,8 +139,8 @@
     "id": "ann-641-edge-disjoint",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 68,
-      "endLine": 71
+      "startLine": 58,
+      "endLine": 60
     },
     "type": "definition",
     "title": "Edge-Disjoint Cycles",
@@ -208,8 +208,8 @@
     "id": "ann-641-regular-subgraph",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 90,
-      "endLine": 95
+      "startLine": 80,
+      "endLine": 84
     },
     "type": "definition",
     "title": "Regular Subgraph",
@@ -231,10 +231,10 @@
     "id": "ann-641-equivalence",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 97,
-      "endLine": 101
+      "startLine": 87,
+      "endLine": 90
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Cycles ↔ Regular",
     "content": "**edge_disjoint_cycles_iff_regular**:\n\nk edge-disjoint cycles on same vertices ↔ 2k-regular subgraph.\n\nThis equivalence is why the problem reduces to finding regular subgraphs.",
     "significance": "key",
@@ -320,10 +320,10 @@
     "id": "ann-641-k2-false",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 138,
-      "endLine": 139
+      "startLine": 128,
+      "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k = 2 is FALSE",
     "content": "**case_k_2_false**: ¬Case_k_2\n\nThe k = 2 case is false, which implies the full conjecture is false.",
     "significance": "key",
@@ -342,10 +342,10 @@
     "id": "ann-641-jss",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 147,
-      "endLine": 154
+      "startLine": 138,
+      "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "JSS Counterexample",
     "content": "**jss_counterexample**: The Janzer-Steiner-Sudakov construction.\n\nFor all n ≥ 10, there exist graphs with:\n- χ ≥ c · (log log n)/(log log log n)\n- No 4-regular subgraph\n\nThis disproves the conjecture.",
     "significance": "key",
@@ -390,10 +390,10 @@
     "id": "ann-641-no-4-reg",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 160,
-      "endLine": 164
+      "startLine": 150,
+      "endLine": 153
     },
-    "type": "technique",
+    "type": "concept",
     "title": "No 4-Regular Subgraph",
     "content": "**jss_no_4_regular**: For n ≥ 10, the JSS graphs have:\n\n∀ S, ¬HasRegularSubgraph G 4 S\n\nNo subset of vertices induces a 4-regular subgraph.",
     "significance": "key",
@@ -412,10 +412,10 @@
     "id": "ann-641-disproof",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 172,
-      "endLine": 179
+      "startLine": 162,
+      "endLine": 168
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Main Disproof",
     "content": "**erdos_hajnal_false**: ¬ErdosHajnalConjecture\n\nThe Erdős-Hajnal conjecture is FALSE.\n\nProof: JSS gives graphs with arbitrarily high χ but no 4-regular subgraph.",
     "significance": "key",
@@ -435,10 +435,10 @@
     "id": "ann-641-main",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 181,
-      "endLine": 183
+      "startLine": 171,
+      "endLine": 172
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Erdős #641 DISPROVED",
     "content": "**erdos_641**: ¬ErdosHajnalConjecture\n\nErdős Problem #641 is DISPROVED.",
     "significance": "key",
@@ -455,10 +455,10 @@
     "id": "ann-641-odd-cycles",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 191,
-      "endLine": 196
+      "startLine": 181,
+      "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "High χ → Long Odd Cycles",
     "content": "**high_chi_long_odd_cycle**: A positive result.\n\nHigh chromatic number DOES force long odd cycles. This is true even though regular subgraphs are not forced.",
     "significance": "key",
@@ -478,10 +478,10 @@
     "id": "ann-641-gyarfas",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 198,
-      "endLine": 203
+      "startLine": 188,
+      "endLine": 192
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gyárfás Theorem",
     "content": "**gyarfas_theorem**: Another positive result.\n\nHigh χ implies either large clique number or long odd cycle.\n\nContrast: Regular subgraphs are NOT guaranteed.",
     "significance": "key",
@@ -502,10 +502,10 @@
     "id": "ann-641-kim",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 205,
-      "endLine": 209
+      "startLine": 195,
+      "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kim Bound",
     "content": "**kim_bound**: Triangle-free graphs have χ = O(√(n/log n)).\n\nShows that triangle-free graphs can have high chromatic number, relevant to understanding the counterexample.",
     "significance": "supporting",
@@ -595,10 +595,10 @@
     "id": "ann-641-construction",
     "proofId": "erdos-641",
     "range": {
-      "startLine": 238,
-      "endLine": 244
+      "startLine": 228,
+      "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "JSS Construction Technique",
     "content": "**jss_construction_technique**: The JSS construction uses random graphs with constraints.\n\nStart with G(n,p), remove edges to eliminate 4-regular subgraphs, show χ remains high.",
     "significance": "key",
