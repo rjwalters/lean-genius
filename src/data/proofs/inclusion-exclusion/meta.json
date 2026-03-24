@@ -51,9 +51,9 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The inclusion-exclusion principle was first formulated by Abraham de Moivre in 1718 for computing probabilities. It was later generalized by Daniel da Silva (1854) and Joseph Sylvester. The principle is fundamental in combinatorics, probability theory, and number theory (e.g., Euler's totient function uses inclusion-exclusion).\n\nThe basic idea addresses a common counting problem: when we add the sizes of two sets, elements in their intersection get counted twice. The principle systematically corrects for this overcounting.",
+    "historicalContext": "The inclusion-exclusion principle emerged gradually over two centuries. Abraham de Moivre stated the two-set case in *The Doctrine of Chances* (1718) while computing probabilities of card games. Leonhard Euler used a multi-set version in 1748 to derive his totient formula $\\phi(n) = n \\prod_{p \\mid n}(1 - 1/p)$, counting integers coprime to $n$ by alternately including and excluding multiples of each prime factor.\n\nThe general $n$-set formula was established independently by Daniel Augusto da Silva (1854) and James Joseph Sylvester (1883). Sylvester's formulation appeared in his work on combinatorial chemistry and is sometimes called the 'Sylvester sieve.' The principle is equivalent to Möbius inversion on the Boolean lattice $2^{[n]}$, a connection made explicit by Gian-Carlo Rota in his foundational 1964 paper, which unified inclusion-exclusion, the Euler totient, the chromatic polynomial, and the Möbius function under a single framework.\n\nIn number theory, the Legendre sieve and its refinements (Brun's sieve, the Selberg sieve) are inclusion-exclusion applied to prime counting. In probability, the Bonferroni inequalities $P(A_1 \\cup \\cdots \\cup A_n) \\leq \\sum P(A_i)$ and their refined alternating bounds are truncations of inclusion-exclusion, widely used in statistics and reliability theory.",
     "problemStatement": "**Two-Set Formula**: For finite sets A and B:\n\n$$|A \\cup B| = |A| + |B| - |A \\cap B|$$\n\n**Three-Set Formula**: For finite sets A, B, and C:\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\nThis is Wiedijk's 100 Theorems #96.",
-    "text": "The fundamental counting principle for unions of finite sets: |A ∪ B| = |A| + |B| - |A ∩ B|, and its generalization to three or more sets.",
+    "text": "A 218-line formalization of inclusion-exclusion (Wiedijk #96) with 7 theorems, 0 sorries, 0 axioms. The two-set formula $|A \\cup B| = |A| + |B| - |A \\cap B|$ is derived from Mathlib's additive identity `card_union_add_card_inter` via `omega`. The three-set formula is proved by applying two-set I-E twice with distributivity $(A \\cup B) \\cap C = (A \\cap C) \\cup (B \\cap C)$. Includes the disjoint union case, upper/lower bounds (Bonferroni), and the symmetric difference formula $|A \\triangle B| = |A| + |B| - 2|A \\cap B|$.",
     "proofStrategy": "**The Venn Diagram Intuition:**\n\nWhen counting |A ∪ B| by adding |A| and |B|:\n- Elements only in A are counted once (correct)\n- Elements only in B are counted once (correct)\n- Elements in A ∩ B are counted twice (overcounted!)\n\nSo we subtract |A ∩ B| to correct. For three sets, we:\n1. Add individual sets (overcount pairwise intersections)\n2. Subtract pairwise intersections (oversubtract triple intersection)\n3. Add back the triple intersection\n\nThe formalization uses Mathlib's `card_union_add_card_inter` identity and derives the classical subtraction form.",
     "keyInsights": [
       "**Additive form first**: The identity $|A \\cup B| + |A \\cap B| = |A| + |B|$ (Mathlib's `card_union_add_card_inter`) avoids natural number subtraction pitfalls. The classical $|A \\cup B| = |A| + |B| - |A \\cap B|$ is derived from it via `omega`.",
@@ -123,18 +123,46 @@
     "summary": "The inclusion-exclusion principle provides a systematic way to count elements in unions of sets by correcting for overcounting. The formalization uses Mathlib's additive identity and derives the classical subtraction form through careful handling of natural number arithmetic.",
     "implications": "**Theoretical Significance:**\n\n**1. Counting Theory**\nFoundation for counting problems involving overlapping sets.\n\n**2. Probability**\nExtends directly to probability measures on finite sample spaces.\n\n**3. Number Theory**\nEuler's totient function φ(n) uses inclusion-exclusion to count integers coprime to n.\n\n**Applications:**\n\n- Counting permutations with forbidden positions (derangements)\n- Computing probabilities of compound events\n- Combinatorial identities like Stirling numbers",
     "openQuestions": [
-      "What is the general n-set formula with formal induction?",
-      "How does this connect to Möbius inversion on posets?",
-      "What are efficient algorithms for computing inclusion-exclusion sums?"
+      "Formalize the general $n$-set inclusion-exclusion formula $|\\bigcup_{i=1}^n A_i| = \\sum_{k=1}^n (-1)^{k+1} \\sum_{|S|=k} |\\bigcap_{i \\in S} A_i|$ via induction on $n$, using Mathlib's `Finset.sum` and `Finset.powerset`",
+      "Formalize the connection to Möbius inversion on the Boolean lattice: inclusion-exclusion is the special case of $g(x) = \\sum_{y \\leq x} f(y) \\iff f(x) = \\sum_{y \\leq x} \\mu(y,x) g(y)$ with $\\mu(S,T) = (-1)^{|T \\setminus S|}$ on the poset $(2^{[n]}, \\subseteq)$",
+      "Formalize the Bonferroni inequalities: truncating inclusion-exclusion at odd terms gives upper bounds, at even terms gives lower bounds — i.e., $\\sum_{k=1}^{2m-1}$ overestimates and $\\sum_{k=1}^{2m}$ underestimates $|\\bigcup A_i|$"
     ]
   },
   "references": [
+    {
+      "authors": "de Moivre, Abraham",
+      "title": "The Doctrine of Chances",
+      "year": "1718",
+      "venue": "London (2nd edition 1738, 3rd edition 1756)",
+      "note": "First published statement of the two-set inclusion-exclusion principle for computing compound probabilities in card games"
+    },
     {
       "authors": "Rota, Gian-Carlo",
       "title": "On the Foundations of Combinatorial Theory I: Theory of Möbius Functions",
       "year": "1964",
       "venue": "Zeitschrift für Wahrscheinlichkeitstheorie, 2, pp. 340-368",
-      "note": "Generalized inclusion-exclusion to Möbius inversion on partially ordered sets, unifying combinatorial counting principles"
+      "note": "Foundational paper unifying inclusion-exclusion, Euler's totient, the chromatic polynomial, and the Möbius function as instances of Möbius inversion on posets"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Chapter 2 develops inclusion-exclusion from the Möbius function perspective with applications to permutations, surjections, and chromatic polynomials"
+    },
+    {
+      "authors": "Aigner, Martin; Ziegler, Günter M.",
+      "title": "Proofs from THE BOOK",
+      "year": "2018",
+      "venue": "Springer, 6th edition",
+      "note": "Chapter 25 presents elegant applications of inclusion-exclusion including the derangement formula and Euler's formula for lattice points"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The Principle of Inclusion/Exclusion is #96 on Wiedijk's list of 100 well-known mathematical theorems"
     }
   ],
   "crossReferences": [
