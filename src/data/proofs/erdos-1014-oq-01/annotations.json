@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-lower-bound-axiom",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "context",
+    "title": "Kim-Shearer Lower Bound Axiom",
+    "content": "Axiomatizes the Kim (1995) / Shearer (1995) lower bound: $R(3,l) \\geq c \\cdot l^2 / \\log l$ for some $c > 0$ and all sufficiently large $l$. This was improved by Mattheus-Verstraëte (2024) to $R(3,t) \\geq (1/4 - o(1)) \\cdot t^2 / \\log t$. The existential form ($\\exists c > 0, \\exists L_0$) is deliberately weaker than stating a specific constant, making the result robust to future improvements.",
+    "mathContext": "$\\exists c > 0,\\; \\exists L_0,\\; \\forall l > L_0: R(3,l) \\geq c \\cdot l^2 / \\log l$.",
+    "significance": "key",
+    "relatedConcepts": ["Kim's lower bound", "Shearer's bound", "Ramsey number asymptotics", "probabilistic method"],
+    "prerequisites": ["Ramsey numbers R(k,l)", "asymptotic notation"]
+  },
+  {
+    "id": "ann-increment-bound",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "key-step",
+    "title": "Linear Increment Bound from Recurrence",
+    "content": "The key structural lemma: $R(3, l+1) \\leq R(3, l) + (l+1)$. Derived by substituting $k = 3$ into the recurrence $R(k, l+1) \\leq R(k,l) + R(k-1, l+1)$ and using $R(2, l+1) = l+1$. This bounds the increment between consecutive Ramsey numbers linearly, while the values themselves grow as $\\Theta(l^2/\\log l)$. The disparity between increment and magnitude is what drives ratio convergence.",
+    "mathContext": "$R(3, l+1) - R(3, l) \\leq R(2, l+1) = l + 1 = O(l)$, while $R(3, l) = \\Theta(l^2 / \\log l)$.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey recurrence", "telescoping bound", "growth rate"],
+    "prerequisites": ["ramsey_recurrence", "ramsey_k2"]
+  },
+  {
+    "id": "ann-analysis-sorry",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 90, "endLine": 96 },
+    "type": "context",
+    "title": "Analysis Lemma (1 Sorry)",
+    "content": "States that $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ for sufficiently large $l$. The sorry is routine: simplify to $2 \\log l / (c \\cdot l) < \\varepsilon$ using $(l+1)/l \\leq 2$, then apply $\\log x = o(x)$ (Mathlib's `isLittleO_log_rpow_atTop` with exponent 1). This is the only sorry in the file.",
+    "mathContext": "$\\frac{(l+1) \\cdot \\log l}{c \\cdot l^2} \\leq \\frac{2 \\log l}{c \\cdot l} \\to 0$ as $l \\to \\infty$, since $\\log x = o(x)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["little-o notation", "logarithmic growth", "isLittleO_log_rpow_atTop"],
+    "prerequisites": ["real analysis", "asymptotic analysis", "Mathlib Filter.Eventually"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 110, "endLine": 167 },
+    "type": "technique",
+    "title": "Main Theorem: R(3,l+1)/R(3,l) → 1",
+    "content": "The main result, proved via a `calc` chain that squeezes the ratio to 1. The chain: (1) absolute value simplification using monotonicity ($R' \\geq R > 0$ gives $|R'/R - 1| = (R'-R)/R$), (2) increment bound ($\\leq (l+1)/R$), (3) lower bound substitution ($\\leq (l+1) \\cdot \\log l / (c \\cdot l^2)$), (4) analysis lemma ($< \\varepsilon$). The `field_simp` and `div_le_div` lemmas handle the algebraic manipulations, while `exact_mod_cast` bridges $\\mathbb{N}$ and $\\mathbb{R}$.",
+    "mathContext": "$|R(3,l+1)/R(3,l) - 1| = \\frac{R(3,l+1) - R(3,l)}{R(3,l)} \\leq \\frac{l+1}{R(3,l)} \\leq \\frac{(l+1) \\log l}{c \\cdot l^2} < \\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": ["squeeze theorem", "ratio convergence", "calc chain", "Nat/Real cast"],
+    "prerequisites": ["increment_bound", "R3_lower_bound", "eventually_ratio_small", "ramsey_monotone_right"]
+  },
+  {
+    "id": "ann-monotonicity-cast",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 134, "endLine": 136 },
+    "type": "technique",
+    "title": "Nat-to-Real Cast for Monotonicity",
+    "content": "Bridges the $\\mathbb{N}$ monotonicity axiom to $\\mathbb{R}$ using `Nat.cast_le`. This cast is essential because the main theorem works in $\\mathbb{R}$ (for division and absolute value) while the Ramsey axioms are stated over $\\mathbb{N}$. The `exact_mod_cast` tactic automates these coercions elsewhere in the proof.",
+    "mathContext": "$R(3,l) \\leq R(3,l+1)$ in $\\mathbb{N}$ $\\implies$ $(R(3,l) : \\mathbb{R}) \\leq (R(3,l+1) : \\mathbb{R})$ via `Nat.cast_le`.",
+    "significance": "technical",
+    "relatedConcepts": ["type coercion", "Nat.cast_le", "exact_mod_cast"],
+    "prerequisites": ["Lean 4 coercion system"]
+  }
+]

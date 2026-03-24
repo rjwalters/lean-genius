@@ -32,6 +32,11 @@
       "relationship": "extends",
       "description": "Resolves the k=3 case of the open question from Erdős #1014 parent formalization.",
       "targetId": "erdos-1014"
+    },
+    {
+      "relationship": "related",
+      "description": "Uses properties of Ramsey numbers (recurrence, monotonicity) that are consequences of Ramsey's theorem.",
+      "targetId": "ramseys-theorem"
     }
   ],
   "sections": [
@@ -69,7 +74,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erdős asked in 1971 whether R(k,l+1)/R(k,l) → 1 for fixed k ≥ 3. The widespread belief was that the known Θ(l²/log l) bounds for R(3,l) were insufficient because the constants in the upper and lower bounds differ. This formalization shows that the recurrence relation provides an independent constraint on the increment R(3,l+1) - R(3,l) ≤ l+1 that, combined with only the lower bound, yields ratio convergence.",
+    "historicalContext": "Erdős asked in 1971 whether $R(k, l+1)/R(k, l) \\to 1$ for fixed $k \\geq 3$. The question is intimately connected to the structure of Ramsey numbers, which have been studied since Ramsey's 1929 paper. For $k = 3$, the lower bound $R(3, l) \\geq c \\cdot l^2 / \\log l$ was established independently by Kim (1995) and Shearer (1995) using the probabilistic method, confirming the order of magnitude predicted by Erdős and Szekeres (1935). The upper bound $R(3, l) \\leq (1 + o(1)) l^2 / (2 \\log l)$ from Ajtai, Komlós, and Szemerédi (1980) shows $R(3, l) = \\Theta(l^2 / \\log l)$. The widespread belief was that these $\\Theta$-bounds were insufficient for ratio convergence because the leading constants differ. This formalization reveals that the recurrence relation — often overlooked in this context — provides an independent constraint on consecutive increments $R(3, l+1) - R(3, l) \\leq l+1$ that, combined with only the lower bound, yields ratio convergence without needing matched constants.",
     "problemStatement": "Prove R(3, l+1)/R(3, l) → 1 as l → ∞.",
     "text": "For k = 3, the Ramsey recurrence R(3,l+1) ≤ R(3,l) + R(2,l+1) = R(3,l) + (l+1) bounds the increment linearly. Combined with R(3,l) ≥ c·l²/log l (Kim-Shearer), this gives R(3,l+1)/R(3,l) - 1 ≤ O(log l / l) → 0.",
     "proofStrategy": "Squeeze theorem: monotonicity gives 1 ≤ R(3,l+1)/R(3,l), and the recurrence plus lower bound give R(3,l+1)/R(3,l) ≤ 1 + O(log l/l). The ratio is squeezed to 1.",
