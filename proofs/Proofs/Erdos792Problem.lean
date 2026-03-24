@@ -89,9 +89,13 @@ axiom f_asymptotic : Tendsto (fun n => (f n : ℝ) / n) atTop (nhds (1 / 3))
 
 -- Examples and Constructions
 
-/-- The interval [n, 2n-1] is sum-free since a + b ≥ 2n > 2n - 1 for a, b in the interval -/
-axiom interval_sum_free : ∀ n : ℕ, n ≥ 1 →
-  SumFreeFinset (Finset.Icc (n : ℤ) (2 * n - 1))
+/-- The interval [n, 2n-1] is sum-free since a + b ≥ 2n > 2n - 1 for a, b in the interval.
+    Proof: if a, b ∈ [n, 2n-1], then a+b ≥ 2n > 2n-1 ≥ c for any c ∈ [n, 2n-1]. -/
+theorem interval_sum_free : ∀ n : ℕ, n ≥ 1 →
+    SumFreeFinset (Finset.Icc (n : ℤ) (2 * n - 1)) := by
+  intro n hn a ha b hb c hc hab
+  simp [Finset.mem_Icc] at ha hb hc
+  omega
 
 /-- Middle-third construction: every finite set A has a sum-free subset of size ≥ |A|/3 -/
 axiom middle_third_construction : ∀ A : Finset ℤ,
