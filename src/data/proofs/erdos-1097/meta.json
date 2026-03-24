@@ -212,6 +212,39 @@
     ],
     "opens": [
       "Finset"
+    ],
+    "namespace": null,
+    "mainTheorems": [
+      {
+        "name": "ap_diff_subset",
+        "type": "proved",
+        "description": "D(B) ⊆ D(A) for B ⊆ A (monotonicity)"
+      },
+      {
+        "name": "ap_diff_translate",
+        "type": "proved",
+        "description": "D(A + c) = D(A) (translation invariance)"
+      },
+      {
+        "name": "katz_tao_upper",
+        "type": "axiom",
+        "description": "|D(A)| = O(n^{11/6}) (Katz-Tao 1999, incidence geometry)"
+      },
+      {
+        "name": "lemm_lower",
+        "type": "axiom",
+        "description": "|D(A)| = Ω(n^{1.778}) (Lemm 2015, best human lower bound)"
+      },
+      {
+        "name": "chan_equivalence",
+        "type": "axiom",
+        "description": "3-AP exponent = Bourgain sums-differences exponent"
+      },
+      {
+        "name": "current_knowledge",
+        "type": "proved",
+        "description": "Summary: critical exponent lies in (1.778, 11/6]"
+      }
     ]
   },
   "references": [
