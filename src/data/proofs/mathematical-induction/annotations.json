@@ -10,7 +10,7 @@
     "title": "The Foundation of Recursive Reasoning",
     "content": "Mathematical induction is the principle that allows us to prove statements about all natural numbers by:\n\n1. **Base Case**: Prove the statement holds for 0\n2. **Inductive Step**: Prove that if it holds for $n$, it holds for $n+1$\n\n$$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$$\n\nThis is Peano's fifth axiom, and it's what distinguishes the natural numbers from other structures.",
     "mathContext": "In Lean 4, `Nat` is defined as an inductive type with constructors `zero : Nat` and `succ : Nat → Nat`. The `Nat.rec` recursor is automatically generated and has the type signature: `Nat.rec : {motive : Nat → Sort u} → motive 0 → (∀ n, motive n → motive (n+1)) → ∀ n, motive n`. The induction principle is *definitionally* the recursor — there is no distinction in Lean's type theory between proving by induction and computing by recursion.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "natural numbers (ℕ)",
       "propositions and predicates in Lean",
@@ -64,7 +64,7 @@
     "title": "Weak Induction (Standard Form)",
     "content": "**Weak Induction**: The standard form of mathematical induction.\n\n```lean\ntheorem weak_induction (P : ℕ → Prop)\n    (base : P 0)\n    (step : ∀ n, P n → P (n + 1)) :\n    ∀ n, P n\n```\n\nThe proof uses Lean's `induction` tactic, which applies the `Nat.rec` recursor. This is the most common form of induction used in practice.",
     "mathContext": "In Lean 4, the `induction n with` tactic desugars to an application of `Nat.rec`. The `| zero => exact base` branch fills in the base case, and `| succ k ih => exact step k ih` fills in the inductive step with `ih : P k`. This is definitionally equal to `Nat.rec base step n`. Lean checks that the two constructors cover all cases of the `Nat` inductive type, giving totality. The `∀ n, P n` conclusion is a dependent function type `(n : ℕ) → P n`.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Lean 4 `induction` tactic",
       "dependent function types",
@@ -119,7 +119,7 @@
     "title": "Strong Induction (Complete Induction)",
     "content": "**Strong Induction**: Instead of assuming just $P(n)$, we assume $P(k)$ for **all** $k < n$.\n\n```lean\ntheorem strong_induction (P : ℕ → Prop)\n    (step : ∀ n, (∀ k, k < n → P k) → P n) :\n    ∀ n, P n\n```\n\n**Key insight**: The base case is implicit! When $n = 0$, the hypothesis '$\\forall k < 0, P(k)$' is vacuously true (there are no such $k$), so we must prove $P(0)$ directly.",
     "mathContext": "The Lean proof uses `Nat.strong_induction_on` from Mathlib, which has signature `Nat.strong_induction_on : ∀ {P : ℕ → Sort*} (n : ℕ), (∀ m, (∀ a, a < m → P a) → P m) → P n`. Internally, this is proved by weak induction on the auxiliary predicate `Q(n) := ∀ k < n, P k`, then extracting `P n` from `Q(n+1)`. The `step` function in strong induction takes a proof of `∀ k < n, P k` — when `n = 0`, this is the empty function (proof of `False.elim` applied to `Nat.not_lt_zero`), so `P 0` must still be established from the step alone using the vacuously true hypothesis.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Nat.strong_induction_on from Mathlib",
       "vacuous truth (∀ k < 0, P k)",
@@ -282,7 +282,7 @@
     "title": "The Well-Ordering Principle",
     "content": "**Well-Ordering Principle**: Every nonempty subset of $\\mathbb{N}$ has a least element.\n\nIn Lean, this is captured by `Nat.find`: given a decidable predicate $P$ and a proof that some $n$ satisfies $P$, `Nat.find` returns the smallest such $n$.\n\n```lean\ntheorem well_ordering (P : ℕ → Prop) [DecidablePred P]\n    (hne : ∃ n, P n) :\n    ∃ m, P m ∧ ∀ n, P n → m ≤ n\n```",
     "mathContext": "`Nat.find` in Lean has type `(h : ∃ n, P n) → ℕ` where `P` must be `DecidablePred`. It requires a proof of existence to return the minimum witness. `Nat.find_spec h : P (Nat.find h)` and `Nat.find_min' h : P n → Nat.find h ≤ n` provide the minimality. The `DecidablePred` typeclass constraint means the predicate must be computably decidable — this is necessary because `Nat.find` is implemented by linear search from 0. For non-computable predicates (requiring `Classical.choice`), one uses `Nat.find` with `Classical.decideEq` or works with `Nat.sInf` from order theory.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "DecidablePred typeclass",
       "Nat.find, Nat.find_spec, Nat.find_min' from Mathlib",

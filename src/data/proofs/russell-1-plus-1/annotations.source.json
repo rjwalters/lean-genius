@@ -29,7 +29,7 @@
     "title": "Peano Natural Numbers",
     "content": "The natural numbers are defined as an **inductive type** with exactly two constructors:\n\n1. `zero` \u2014 the base case, representing 0\n2. `succ` \u2014 the successor function, taking any natural to its successor\n\nThis is Peano's original insight: we don't need to say *what* numbers are, only *how they behave*. Zero exists, and every number has a successor. From these two building blocks, we get all of $\\mathbb{N}$.",
     "mathContext": "$\\mathbb{N} = \\{0, S(0), S(S(0)), S(S(S(0))), \\ldots\\}$. In Lean 4: `inductive \u2115 where | zero : \u2115 | succ : \u2115 \u2192 \u2115`. The two constructors are the *only* way to build a natural number; pattern matching on them is exhaustive and well-founded by structural recursion.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "inductive types",
       "Peano axioms",
@@ -71,7 +71,7 @@
     "title": "Recursive Definition of Addition",
     "content": "Addition is defined by **recursion on the second argument**. This follows Peano's original definition:\n\n1. **Base case:** $n + 0 = n$ (adding zero does nothing)\n2. **Recursive case:** $n + S(m) = S(n + m)$ (adding a successor means taking the successor of the sum)\n\nThe key insight is that every natural number is either zero or a successor, so these two cases cover all possibilities. The recursion is **well-founded** because the second argument strictly decreases.",
     "mathContext": "$n + 0 = n \\\\ n + S(m) = S(n + m)$. This is the *unique* function satisfying these equations by the universal property of the initial algebra $(\\mathbb{N}, 0, S)$. The recursion terminates because the second argument's constructor depth decreases at each step.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-peano-inductive"
     ],
@@ -93,7 +93,7 @@
     "title": "The Main Theorem",
     "content": "Here it is\u2014the theorem that launched a thousand memes. We claim that $1 + 1 = 2$, or more precisely, that `one + one = two` where these are our defined Peano naturals.\n\nThe proof will show that both sides compute to the same thing.",
     "mathContext": "$S(0) + S(0) = S(S(0))$. Expanding by the recursive case: $S(0) + S(0) = S(S(0) + 0)$. Then by the base case: $S(S(0) + 0) = S(S(0)) = 2$. Each step is a *definitional* reduction, so the kernel closes the proof without any runtime computation.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-add-definition",
       "ann-numeric-notation"
@@ -117,7 +117,7 @@
     "title": "Unfolding the Computation",
     "content": "The `unfold` tactic expands definitions, revealing the computation:\n\n1. `one + one` = `succ zero + succ zero`\n2. By the recursive case of `add`: `succ (succ zero + zero)`\n3. By the base case of `add`: `succ (succ zero)`\n4. Which is exactly `two`\n\nEach step is just applying a definition\u2014no axioms, no magic, just computation. The `rfl` at the end confirms that both sides are definitionally equal.",
     "mathContext": "$S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$. The `unfold` tactic makes each definitional step explicit: first expanding `one` and `two`, then applying the recursive and base cases of `add`. After unfolding, both sides are syntactically identical, so `rfl` closes the goal.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-main-theorem-statement"
     ],

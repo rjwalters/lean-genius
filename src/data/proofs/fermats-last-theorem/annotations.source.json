@@ -44,7 +44,7 @@
     "title": "FermatLastTheoremFor",
     "content": "Mathlib defines `FermatLastTheoremFor n` as: for all integers a, b, c, if all three are non-zero, then $a^n + b^n \\neq c^n$. This is the standard formulation excluding trivial solutions where any variable is zero.",
     "mathContext": "The formulation allows negative integers, which is equivalent to the positive integer statement. If $(-a)^n + b^n = c^n$ with a positive, we can rearrange to get a positive solution.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Diophantine equations",
       "integer solutions",
@@ -62,7 +62,7 @@
     "title": "The Frey Curve",
     "content": "The Frey curve is the key construction. Given a hypothetical counterexample $(a, b, c)$ with $a^p + b^p = c^p$, we build the elliptic curve $E: y^2 = x(x - a^p)(x + b^p)$. This curve has unusual arithmetic properties that lead to a contradiction.",
     "mathContext": "Gerhard Frey proposed in 1984 that such a curve would be \"too weird to exist\" - specifically, it would violate the Taniyama-Shimura conjecture about modularity. This brilliant insight connected Fermat to elliptic curves.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "elliptic curves",
       "Frey",
@@ -103,7 +103,7 @@
     "title": "The Modularity Theorem",
     "content": "**Wiles' Main Theorem**: Every semi-stable elliptic curve over $\\mathbb{Q}$ is modular. This means there exists a modular form $f$ of weight 2 such that $L(E, s) = L(f, s)$ - the L-functions match.",
     "mathContext": "Modularity connects geometry (elliptic curves) to analysis (modular forms). The L-function encodes how many points $E$ has over each finite field $\\mathbb{F}_p$. This deep connection is part of the Langlands program.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "modular forms",
       "L-functions",
@@ -122,7 +122,7 @@
     "title": "Ribet's Theorem (The Epsilon Conjecture)",
     "content": "**Ribet's Theorem (1986)**: If a Frey curve were modular, it would correspond to a cusp form of level 2. But there are no such forms! Therefore, Frey curves cannot be modular.",
     "mathContext": "Ribet proved what Serre had conjectured: the \"level-lowering\" property of Galois representations forces the Frey curve's modular form to have impossibly low level. This was the missing link between Taniyama-Shimura and Fermat.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-flt-frey",
       "ann-flt-modularity"
@@ -144,7 +144,7 @@
     "title": "The Beautiful Contradiction",
     "content": "The proof's logic is elegant:\n1. Assume a counterexample exists\n2. Build the Frey curve from it\n3. By Modularity, the curve IS modular\n4. By Ribet, the curve is NOT modular\n5. Contradiction - no counterexample exists",
     "mathContext": "This is proof by contradiction at a grand scale. The Frey curve's existence would require it to be both modular (Wiles) and non-modular (Ribet). Since this is impossible, the counterexample cannot exist.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-flt-modularity",
       "ann-flt-ribet"
@@ -223,7 +223,7 @@
     "title": "The Full Theorem",
     "content": "Combining n=4 (Fermat), n=3 (Euler), odd primes (Wiles), and reduction to primes, we get the full theorem: for all n ≥ 3, there are no positive integer solutions to $a^n + b^n = c^n$.",
     "mathContext": "The theorem is currently axiomatized in this formalization. The Lean FLT project at Imperial College London is working on a complete formalization of Wiles' proof.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-flt-four",
       "ann-flt-three",

@@ -44,7 +44,7 @@
     "title": "N-Square Identity Structure",
     "content": "An NSquareIdentity n consists of a bilinear multiplication 'mul' such that normSq(a) * normSq(b) = normSq(mul a b). This formalizes: 'the product of two sums of n squares is again a sum of n squares with bilinear coordinates'.",
     "mathContext": "This is the Lean encoding of the classical composition of quadratic forms problem studied by Hurwitz (1898). The bilinearity requirement is crucial -- without it, trivial identities exist for all n. The structure encodes the norm-multiplicativity that defines normed division algebras: |xy| = |x| * |y|.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["normed division algebra", "composition algebra", "quadratic form", "bilinear map"],
     "prerequisites": ["normSq", "Fin"]
   },
@@ -154,7 +154,7 @@
     "title": "Why n = 3 Fails: Setup and Orthonormality",
     "content": "Defines inner products <u,v> = sum_i u_i*v_i, standard basis e_i, and derives that the 9 vectors m_ij = mul(e_i, e_j) form orthonormal rows and columns. The cross product in R^3 has |a x b| = |a||b|sin(theta) != |a||b| for non-perpendicular vectors, giving intuition for the obstruction.",
     "mathContext": "The orthonormality of m_ij follows from substituting basis vectors into the norm-multiplicativity identity. Setting a = e_i, b = e_j gives ||m_ij|| = 1. Setting a = e_i + e_k gives the orthogonality <m_ij, m_kj> = 0 for i != k.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["inner product", "orthonormal basis", "cross product", "standard basis"],
     "prerequisites": ["NSquareIdentity", "normSq", "Fin 3"]
   },
@@ -170,7 +170,7 @@
     "title": "Parseval Identity in R^3",
     "content": "For any orthonormal basis {v1, v2, v3} of R^3: ||w||^2 = <w, v1>^2 + <w, v2>^2 + <w, v3>^2. Proved via the key lemma that a vector orthogonal to all three vectors of an orthonormal triple must be zero (using matrix invertibility).",
     "mathContext": "The Parseval identity is the finite-dimensional version of Parseval's theorem in Fourier analysis. In R^n, it states ||w||^2 = sum_i |<w, v_i>|^2 for any orthonormal basis. The proof uses the fact that a 3x3 matrix with orthonormal rows has determinant +/-1, hence is invertible.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Parseval theorem", "orthonormal basis", "matrix invertibility", "Fourier analysis"],
     "prerequisites": ["innerProd", "orthonormality of m_ij", "Matrix.det"]
   },
@@ -186,7 +186,7 @@
     "title": "The n = 3 Contradiction (Core Proof)",
     "content": "The core impossibility argument (no_three_square_identity_proof). The 9 unit vectors m_ij from a hypothetical 3-square identity satisfy overdetermined constraints: Parseval forces m_13 = +/-m_21 and m_23 = +/-m_11, but column-3 orthogonality <m_13, m_23> = 0 then requires <m_21, m_11> = 0 -- contradicting row orthogonality.",
     "mathContext": "This is an original ~370-line proof using purely algebraic/linear-algebraic methods. Most classical proofs of this impossibility use topology (parallelizability of spheres) or representation theory (Clifford algebras). The Parseval-based approach is more elementary and fully formalizable in Lean without topology libraries.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Parseval identity", "orthonormality constraints", "proof by contradiction"],
     "prerequisites": ["parseval_identity", "unit_ortho_pm_third", "bilinear_parseval"]
   },
@@ -202,7 +202,7 @@
     "title": "No 3-Square Identity Theorem",
     "content": "no_three_square_identity : forall f : NSquareIdentity 3, False. The definitive negative result: there is NO bilinear 3-square identity. Hamilton searched for 15 years (1828-1843) before realizing he needed 4 dimensions. Hurwitz (1898) proved this impossibility in full generality.",
     "mathContext": "This theorem explains why there is no 3-dimensional normed division algebra. The proof wraps the earlier no_three_square_identity_proof into a universal statement. Combined with the constructive identities for n = 1, 2, 4, 8, it establishes half of Hurwitz's theorem.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Hamilton's search for triplets", "normed division algebra", "impossibility proof"],
     "prerequisites": ["no_three_square_identity_proof"]
   },
@@ -218,7 +218,7 @@
     "title": "Admissible Dimensions",
     "content": "admissibleDimensions : Set N := {1, 2, 4, 8}. The set of dimensions for which n-square identities exist. These are exactly the dimensions of the four normed division algebras: R (1), C (2), H (4), O (8).",
     "mathContext": "These dimensions are all powers of 2, reflecting the Cayley-Dickson doubling construction. By Bott-Milnor and Kervaire (1958), they also correspond to the parallelizable spheres S^0, S^1, S^3, S^7. The fact that only these four dimensions work is one of the most surprising results in algebra.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Cayley-Dickson construction", "parallelizable spheres", "Bott-Milnor theorem"],
     "prerequisites": []
   },
@@ -234,7 +234,7 @@
     "title": "Hurwitz's Main Theorem",
     "content": "hurwitz_theorem: For n > 0, Nonempty(NSquareIdentity n) <-> n in {1, 2, 4, 8}. The complete biconditional. The forward direction is constructive: we built identities for each admissible n. The reverse direction uses hurwitz_only_if (axiomatized for the general case beyond n = 3).",
     "mathContext": "Hurwitz published this in 1898 in the Nachrichten der Gesellschaft der Wissenschaften zu Gottingen. The forward direction (only if) is the hard part: for n not in {1,2,4,8}, one must show no bilinear composition formula can exist. The n = 3 case is proved in full; the general case is axiomatized pending Clifford algebra machinery in Mathlib.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["composition algebras", "Hurwitz 1898", "biconditional", "Clifford algebras"],
     "prerequisites": ["identities_exist_for_admissible", "hurwitz_only_if", "no_three_square_identity"]
   },

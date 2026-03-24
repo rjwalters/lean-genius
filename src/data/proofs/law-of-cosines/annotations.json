@@ -10,7 +10,7 @@
     "title": "Generalizing Pythagoras",
     "content": "The **Law of Cosines** generalizes the Pythagorean theorem to all triangles, not just right triangles:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\nWhen $C = 90°$, we have $\\cos(90°) = 0$, so:\n$$c^2 = a^2 + b^2$$\n\nThis is precisely the Pythagorean theorem! The Law of Cosines adds a correction term $-2ab\\cos(C)$ that accounts for non-right angles.",
     "mathContext": "The Law of Cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ interpolates continuously between the degenerate case ($C = 0$, $c = |a-b|$), the right-angle case ($C = \\pi/2$, $c = \\sqrt{a^2+b^2}$), and the collinear case ($C = \\pi$, $c = a+b$). In Lean, this is formalized via inner product spaces: $c^2 = \\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$, with the cosine connection given by $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Euclidean geometry",
       "Pythagorean theorem",
@@ -38,7 +38,7 @@
     "title": "The Inner Product Form",
     "content": "**Law of Cosines** (Inner Product Form):\n\nFor any vectors $v$ and $w$ in an inner product space:\n\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$$\n\nThis is the fundamental algebraic identity. The inner product $\\langle v, w \\rangle$ equals $\\|v\\|\\|w\\|\\cos(\\theta)$ where $\\theta$ is the angle between the vectors.\n\nThe proof uses linearity and symmetry of the inner product.",
     "mathContext": "$\\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "real inner product spaces (InnerProductSpace)",
       "Mathlib.Analysis.InnerProductSpace.Basic",

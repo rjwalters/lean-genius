@@ -11,7 +11,7 @@
     "title": "Triangle Inequality (Absolute Value)",
     "content": "**The fundamental triangle inequality for real numbers: |x + y| ≤ |x| + |y|.**\n\nThis is the core result from which all other forms derive. The proof is a direct application of Mathlib's `abs_add` theorem.",
     "mathContext": "$|x + y| \\leq |x| + |y|$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "abs_add",
       "metric axioms"
@@ -29,7 +29,7 @@
     "title": "Reverse Triangle Inequality",
     "content": "**The reverse triangle inequality: | |x| - |y| | ≤ |x - y|.**\n\nWhile the standard triangle inequality gives an upper bound on |x + y|, this provides a lower bound. It shows that the absolute value function is Lipschitz continuous with constant 1.\n\nGeometrically: the difference in distances to the origin is at most the distance between the points.",
     "mathContext": "$\\big||x| - |y|\\big| \\leq |x - y|$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Lipschitz continuity",
       "abs_abs_sub_abs_le_abs_sub"
@@ -65,7 +65,7 @@
     "title": "Triangle Inequality (Metric Spaces)",
     "content": "**The most general form: dist(x, z) ≤ dist(x, y) + dist(y, z).**\n\nThis is one of the three axioms defining a metric space (along with non-negativity and symmetry). It captures the intuition that the direct path is never longer than a detour.\n\nMathlib's `dist_triangle` provides this for any PseudoMetricSpace.",
     "mathContext": "$d(x, z) \\leq d(x, y) + d(y, z)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "PseudoMetricSpace",
       "dist_triangle"

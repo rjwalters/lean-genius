@@ -10,7 +10,7 @@
     "title": "The Oldest Algorithm",
     "content": "The Euclidean algorithm is arguably the oldest non-trivial algorithm still in common use:\n\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\n**Why it matters**:\n- Over 2,300 years old (Euclid's Elements, c. 300 BCE)\n- Foundation of modern cryptography (RSA, Diffie-Hellman)\n- Remarkably efficient: O(log min(a, b)) steps\n- Extends to polynomials, Gaussian integers, and more\n\nThe algorithm terminates because $a \\mod b < b$, giving a strictly decreasing sequence.",
     "mathContext": "In Lean 4 / Mathlib, `Nat.gcd` is defined by well-founded recursion on `b`: `Nat.gcd a 0 = a` and `Nat.gcd a (b+1) = Nat.gcd (b+1) (a % (b+1))`. The key Mathlib theorems are `Nat.gcd_rec : Nat.gcd a b = Nat.gcd b (a % b)` and `Nat.gcd_dvd_left`, `Nat.gcd_dvd_right`, `Nat.dvd_gcd`. Termination follows from `Nat.mod_lt : 0 < b → a % b < b`, which provides the decreasing measure. Complexity: Lamé (1844) proved the step count is at most $5 \\lfloor \\log_{10}(\\min(a,b)) \\rfloor + 1$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "natural number divisibility",
       "modular arithmetic",
@@ -60,7 +60,7 @@
     "title": "The Euclidean Recurrence",
     "content": "**The Core Identity**:\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\nThis is the heart of the algorithm. The key insight is that common divisors are preserved:\n\n- If $d | a$ and $d | b$, then $d | (a \\mod b)$ since $a \\mod b = a - qb$\n- Conversely, if $d | b$ and $d | (a \\mod b)$, then $d | a$ since $a = qb + (a \\mod b)$\n\nThus the two pairs have exactly the same common divisors.",
     "mathContext": "In Lean: `theorem euclidean_recurrence (a : ℕ) {b : ℕ} (hb : b ≠ 0) : Nat.gcd a b = Nat.gcd b (a % b)`. The proof uses `Nat.gcd_comm` twice and `Nat.gcd_rec`. Key supporting fact: $a = \\lfloor a/b \\rfloor \\cdot b + (a \\bmod b)$, so any $d$ dividing $a$ and $b$ also divides $a - \\lfloor a/b \\rfloor \\cdot b = a \\bmod b$. The invariant `gcd (a, b) = gcd (b, a % b)` holds because both sides represent the same lattice meet in $(\\mathbb{N}, \\mid)$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "natural number divisibility",
       "modular arithmetic",
@@ -154,7 +154,7 @@
     "title": "GCD is the Greatest",
     "content": "**Correctness Property 2**: Any common divisor divides the GCD.\n\nIf $d \\mid a$ and $d \\mid b$, then $d \\mid \\gcd(a, b)$.\n\nThis means $\\gcd(a, b)$ is the *greatest* common divisor because every other common divisor must be smaller (since it divides the GCD).\n\n**Universal Property**: This characterizes GCD uniquely.",
     "mathContext": "In Lean: `Nat.dvd_gcd : d ∣ a → d ∣ b → d ∣ Nat.gcd a b`. Proof by induction: base case `d ∣ gcd a 0 = a` from `d ∣ a`; inductive step `d ∣ gcd a b = gcd b (a % b)` from `d ∣ b` and `d ∣ (a % b)` (which follows from `d ∣ a` and `d ∣ b` since `a % b = a - q * b`). Combined with `gcd_dvd_left/right`, this gives the universal property: $d \\mid \\gcd(a,b) \\iff d \\mid a \\land d \\mid b$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "natural number divisibility",
       "well-founded induction",
@@ -276,7 +276,7 @@
     "title": "Bezout's Identity",
     "content": "**Bezout's Identity**: For any $a, b \\in \\mathbb{N}$, there exist integers $x, y$ such that:\n\n$$\\gcd(a, b) = ax + by$$\n\nThe **extended Euclidean algorithm** computes these coefficients alongside the GCD.\n\n**Applications**:\n- Solving linear Diophantine equations $ax + by = c$\n- Computing modular multiplicative inverses\n- RSA key generation\n\n**Example**: $\\gcd(35, 15) = 5 = 35 \\cdot 1 + 15 \\cdot (-2)$",
     "mathContext": "In Lean: `theorem bezout_identity (a b : ℕ) : ∃ x y : ℤ, (Nat.gcd a b : ℤ) = a * x + b * y := ⟨Nat.gcdA a b, Nat.gcdB a b, Nat.gcd_eq_gcd_ab a b⟩`. The note to ℤ is crucial: Bezout coefficients can be negative (e.g., $\\gcd(3,5) = 5 \\cdot 2 + 3 \\cdot (-3) = 1$). In Mathlib, `Nat.gcdA` and `Nat.gcdB` are the extended Euclidean algorithm outputs. The identity $ax + by = 1$ for coprime $a, b$ gives the modular inverse: $ax \\equiv 1 \\pmod{b}$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "integer arithmetic (ℤ)",
       "extended Euclidean algorithm",

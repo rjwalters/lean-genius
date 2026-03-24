@@ -8,7 +8,7 @@
     "type": "concept",
     "title": "The Most Beautiful Equation",
     "content": "Euler's Identity $e^{i\\pi} + 1 = 0$ is often called the most beautiful equation in mathematics. It connects five fundamental constants that arise from completely different areas of mathematics:\n\n- **e** from calculus and continuous growth\n- **i** from algebra and complex numbers\n- **$\\pi$** from geometry and circles\n- **1** the multiplicative identity\n- **0** the additive identity\n\nThe fact that these five constants, discovered independently, combine so simply suggests a deep underlying unity in mathematics.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "fundamental constants",
       "mathematical beauty",
@@ -72,7 +72,7 @@
     "title": "Key Values at \u03c0",
     "content": "The proof hinges on two fundamental facts about trigonometric functions at $\\pi$ radians (180\u00b0):\n\n$$\\cos(\\pi) = -1$$\n$$\\sin(\\pi) = 0$$\n\nGeometrically: at angle $\\pi$, we're at the leftmost point of the unit circle, which is $(-1, 0)$.\n\nThese values follow from the unit circle definition of sine and cosine, where $\\cos(\\theta)$ is the x-coordinate and $\\sin(\\theta)$ is the y-coordinate.",
     "mathContext": "$(\\cos \\pi, \\sin \\pi) = (-1, 0)$; Lean: `Real.cos_pi : cos \u03c0 = -1`, `Real.sin_pi : sin \u03c0 = 0` from `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic`",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "unit circle",
       "radian measure",
@@ -93,7 +93,7 @@
     "title": "Euler's Formula",
     "content": "**Euler's Formula** states that for any real $x$:\n\n$$e^{ix} = \\cos(x) + i\\sin(x)$$\n\nThis is the real hero\u2014Euler's Identity is just the special case $x = \\pi$.\n\n**Three proof approaches:**\n1. **Taylor series**: Compare $e^{ix} = 1 + ix + (ix)^2/2! + ...$ with cosine and sine series\n2. **Differential equations**: Both $e^{ix}$ and $\\cos x + i\\sin x$ satisfy $y' = iy$ with $y(0) = 1$\n3. **Geometry**: Show that $e^{ix}$ traces the unit circle\n\n**Significance**: This formula unifies exponentials and trigonometry, explaining why $e^{i\\theta}$ appears in oscillations, waves, and rotations throughout physics.",
     "mathContext": "$e^{ix} = \\cos x + i \\sin x$ for $x \\in \\mathbb{R}$; Lean: `Complex.exp_mul_I : exp (\u2191x * I) = \u2191(cos x) + \u2191(sin x) * I`",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-complex-def",
       "ann-imaginary-unit",
@@ -119,7 +119,7 @@
     "title": "The Heart: e^(i\u03c0) = -1",
     "content": "The key step is showing $e^{i\\pi} = -1$:\n\n1. Apply Euler's formula: $e^{i\\pi} = \\cos(\\pi) + i\\sin(\\pi)$\n2. Substitute known values: $= -1 + i \\cdot 0$\n3. Simplify: $= -1$\n\nThis is often called the **exponential form** of Euler's Identity. Adding 1 to both sides gives the standard form $e^{i\\pi} + 1 = 0$.\n\nGeometrically: rotating by $\\pi$ radians (180\u00b0) takes you to the opposite point on the unit circle, which is $-1$.",
     "mathContext": "$e^{i\\pi} = -1$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-eulers-formula",
       "ann-trig-values"
@@ -142,7 +142,7 @@
     "title": "Euler's Identity: The Final Step",
     "content": "With $e^{i\\pi} = -1$ established, the identity follows immediately:\n\n$$e^{i\\pi} + 1 = -1 + 1 = 0$$\n\nIn Lean, we:\n1. Rewrite using `exp_i_pi_eq_neg_one`\n2. Unfold the complex number definitions\n3. Apply the arithmetic fact $-1 + 1 = 0$\n\nThe proof is almost anticlimactic\u2014the real work was in Euler's Formula.",
     "mathContext": "$e^{i\\pi} + 1 = 0$; in Lean: `theorem eulers_identity : Complex.exp (Real.pi * Complex.I) + 1 = 0` proved by `rw [exp_i_pi_eq_neg_one]; ring`",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-exp-i-pi"
     ],
