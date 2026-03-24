@@ -3,14 +3,12 @@
   "proofId": "godel-incompleteness",
   "reviewDate": "2026-03-24T12:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "D+",
     "oneLiner": "Excellent pedagogical commentary built on a formally vacuous foundation — every provability theorem is trivially true because Provable is defined as constantly False.",
     "tier": "C",
     "tierJustification": "Scaffold/axiomatized. The provability predicate is a placeholder (fun _ => False), making all incompleteness theorems vacuously true. The diagonal lemma proves ∃ γ, True. The Gödel sentence is hardcoded as ⟨42⟩. The formalization captures argument structure (first_incompleteness has the correct case split) but contains no substantive formal mathematics. The real value is in the commentary, not the code."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -97,7 +95,6 @@
       "recommendation": "Keep one canonical version (second_incompleteness) and remove the duplicates, or differentiate them by making the Löb-based derivation actually use Löb's theorem."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -111,14 +108,14 @@
       "priority": "high",
       "target": "enricher",
       "description": "Update meta.json description and overview to prominently flag that this is a pedagogical sketch with a placeholder provability predicate. The Lean file's own comments are honest about this; the gallery entry should be equally honest.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "high",
       "target": "enricher",
       "description": "Fix annotations.json: (1) ann-intro line 12: change 'SimpleGraph.Basic and Fintype.Basic' to 'Logic.Basic and Tactic', (2) ann-formula-type line 35: change 'opaque axiom Formula : Type' to 'structure Formula where code : Nat'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
@@ -139,7 +136,7 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix Lean docstring line 42: change '3 axioms (G_self_reference, derivability_conditions, lob_sentence_fixed_point)' to '2 axioms (derivability_conditions, lob_sentence_fixed_point)' since G_self_reference is a theorem.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-7",
@@ -153,10 +150,9 @@
       "priority": "low",
       "target": "enricher",
       "description": "Restructure meta.json originalContributions to distinguish 'argument structure demonstrated' from 'mathematically substantive content'. Add qualifiers noting that theorems are vacuously true due to the placeholder predicate.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 2,
     "originalityAccuracy": 4,
@@ -166,6 +162,5 @@
     "internalConsistency": 4,
     "overall": 4.2
   },
-
   "suggestedBestFraming": "A pedagogical scaffold illustrating the conceptual structure of Gödel's Incompleteness Theorems in Lean 4, with excellent mathematical commentary but a placeholder provability predicate (constantly False) that makes all formal theorems vacuously true — the value lies in the exposition, not the code."
 }

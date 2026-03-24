@@ -39,7 +39,7 @@ We also formalize the Hilbert-Bernays-Löb derivability conditions and Löb's th
 - `Mathlib.Tactic` : Standard tactic library
 
 **Formalization Notes:**
-- 0 sorries, 3 axioms (G_self_reference, derivability_conditions, lob_sentence_fixed_point)
+- 0 sorries, 2 axioms (derivability_conditions, lob_sentence_fixed_point)
 - The `Provable` predicate is a placeholder (constantly False)
 - Full formalization requires extensive machinery: formal syntax, Gödel
   numbering, primitive recursive functions, and representability theorems
