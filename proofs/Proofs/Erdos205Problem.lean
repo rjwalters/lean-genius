@@ -37,6 +37,7 @@
   - [x] Covering system formalization with de Polignac number verification
   - [x] Romanoff's theorem and Erdős covering obstruction (axiomatized)
   - [x] Hardy-Ramanujan average and Erdős-Kac concentration (axiomatized)
+  - [x] threshold_dominates_loglog PROVED from Mathlib (exp dominates polynomials)
 -/
 
 import Mathlib
@@ -132,10 +133,79 @@ axiom barreto_leeham_counterexample :
 
 /-- Auxiliary: the threshold function eventually dominates log log.
     √(log n / log log n) >> log log n for large n because:
-    √(log n / log log n) / log log n = √(log n) / (log log n)^{3/2} → ∞ -/
-axiom threshold_dominates_loglog :
+    √(log n / log log n) / log log n = √(log n) / (log log n)^{3/2} → ∞
+
+    Proof: from exp(u)/u³ → ∞ (Mathlib) composed with u = log log n, we get
+    log n / (log log n)³ → ∞. Then c²·log n > (log log n)³ implies
+    c·√(log n / log log n) > log log n by squaring both sides. -/
+theorem threshold_dominates_loglog :
   ∀ c : ℝ, c > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    c * thresholdFunction n > Real.log (Real.log n)
+    c * thresholdFunction n > Real.log (Real.log n) := by
+  intro c hc
+  -- Step 1: exp(u)/u³ → ∞ at ∞ (exponential dominates polynomials)
+  have h_tend := Real.tendsto_exp_div_pow_atTop 3
+  rw [Filter.tendsto_atTop_atTop] at h_tend
+  obtain ⟨u₀, hu₀⟩ := h_tend (1 / c ^ 2 + 1)
+  -- Step 2: log(log n) → ∞ (composition of three tendsto results)
+  have h_ll : Filter.Tendsto (fun n : ℕ => Real.log (Real.log (n : ℝ)))
+      Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
+  rw [Filter.tendsto_atTop_atTop] at h_ll
+  obtain ⟨N₁, hN₁⟩ := h_ll (max u₀ 1)
+  -- Step 3: Choose N₀ large enough
+  refine ⟨max N₁ 3, fun n hn => ?_⟩
+  have hn3 : 3 ≤ n := le_trans (le_max_right N₁ 3) hn
+  have hN₁n : N₁ ≤ n := le_trans (le_max_left N₁ 3) hn
+  have hll_bound := hN₁ n hN₁n
+  have hu_ge : u₀ ≤ Real.log (Real.log (n : ℝ)) :=
+    le_trans (le_max_left u₀ 1) hll_bound
+  have hu_pos : (0 : ℝ) < Real.log (Real.log (n : ℝ)) :=
+    lt_of_lt_of_le zero_lt_one (le_trans (le_max_right u₀ 1) hll_bound)
+  have hln_pos : (0 : ℝ) < Real.log (n : ℝ) :=
+    Real.log_pos (by exact_mod_cast (show 1 < n by omega))
+  -- Step 4: exp(log log n) / (log log n)³ ≥ 1/c² + 1
+  -- Since exp(log(log n)) = log n, this gives log n / (log log n)³ ≥ 1/c² + 1
+  have h_dom : 1 / c ^ 2 + 1 ≤ Real.log (n : ℝ) / Real.log (Real.log (n : ℝ)) ^ 3 := by
+    have h := hu₀ (Real.log (Real.log (n : ℝ))) hu_ge
+    rwa [Real.exp_log hln_pos] at h
+  -- Step 5: c² · log n > (log log n)³
+  have h_cu3 : Real.log (Real.log (n : ℝ)) ^ 3 < c ^ 2 * Real.log (n : ℝ) := by
+    by_contra h_not
+    push_neg at h_not
+    -- From h_dom: (1/c²+1)*u³ ≤ L, then c²*L ≥ (1+c²)*u³ > u³,
+    -- contradicting h_not: c²*L ≤ u³.
+    have hu3_pos : (0 : ℝ) < Real.log (Real.log (n : ℝ)) ^ 3 := by positivity
+    have hc2_pos : (0 : ℝ) < c ^ 2 := by positivity
+    have h_Lge : (1 / c ^ 2 + 1) * Real.log (Real.log (n : ℝ)) ^ 3 ≤ Real.log (n : ℝ) := by
+      have := mul_le_mul_of_nonneg_right h_dom (le_of_lt hu3_pos)
+      rwa [div_mul_cancel₀ (Real.log (n : ℝ)) (ne_of_gt hu3_pos)] at this
+    have h_c2Lge : (1 + c ^ 2) * Real.log (Real.log (n : ℝ)) ^ 3 ≤
+        c ^ 2 * Real.log (n : ℝ) := by
+      have hmul := mul_le_mul_of_nonneg_left h_Lge (le_of_lt hc2_pos)
+      have hsimp : c ^ 2 * ((1 / c ^ 2 + 1) * Real.log (Real.log (n : ℝ)) ^ 3) =
+          (1 + c ^ 2) * Real.log (Real.log (n : ℝ)) ^ 3 := by field_simp
+      linarith
+    linarith [mul_pos hc2_pos hu3_pos]
+  -- Step 6: c · √(log n / log log n) > log log n
+  unfold thresholdFunction
+  set u := Real.log (Real.log (n : ℝ))
+  set L := Real.log (n : ℝ)
+  have hq : 0 < L / u := div_pos hln_pos hu_pos
+  have hval : 0 < c * Real.sqrt (L / u) := mul_pos hc (Real.sqrt_pos.mpr hq)
+  -- Suffices to show (c · √(L/u))² > u² (since both sides positive)
+  suffices h_sq : u ^ 2 < (c * Real.sqrt (L / u)) ^ 2 by
+    by_contra h_neg
+    push_neg at h_neg
+    linarith [sq_le_sq' (show -u ≤ c * Real.sqrt (L / u) by linarith) h_neg]
+  rw [mul_pow, Real.sq_sqrt (le_of_lt hq)]
+  -- Goal: u² < c² * (L / u). Equivalent to u³ < c²L (multiply by u > 0)
+  by_contra h_not
+  push_neg at h_not
+  have : c ^ 2 * (L / u) * u ≤ u ^ 2 * u :=
+    mul_le_mul_of_nonneg_right h_not (le_of_lt hu_pos)
+  rw [show c ^ 2 * (L / u) * u = c ^ 2 * L from by field_simp,
+      show u ^ 2 * u = u ^ 3 from by ring] at this
+  linarith
 
 /-- The minimum omega remainder is a lower bound for any valid k.
     This follows from Finset.inf'_le: the infimum over a set is ≤ any element. -/
@@ -425,6 +495,8 @@ counterexamples to the conjecture.
 - bigOmega basic properties: Ω(1) = 0, Ω(p) = 1, Ω(p^k) = k, Ω(ab) = Ω(a) + Ω(b)
 - remainder_achieves_min: minOmegaRemainder is a valid lower bound (from Finset.inf')
 - loglog_mono_nat: log log is monotone for m ≥ 16
+- threshold_dominates_loglog: √(log n / log log n) >> log log n (from Mathlib's
+  Real.tendsto_exp_div_pow_atTop — exp dominates polynomials)
 - erdos_205_disproved: ¬Erdos205Conjecture (from axiomatized counterexample)
 - 12 concrete Ω computations via native_decide
 - Covering system verification: orders of 2 mod {3,5,7,13,17,241}
@@ -432,13 +504,12 @@ counterexamples to the conjecture.
 
 **Axioms** (deep results, not provable from Mathlib):
 - barreto_leeham_counterexample: existence of counterexample sequence
-- threshold_dominates_loglog: asymptotic growth comparison
 - romanoff_positive_density: positive density of 2^k + p representations
 - erdos_covering_obstruction: positive density of non-representable odds
 - average_omega_asymptotic: Hardy-Ramanujan average
 - omega_concentration: Erdős-Kac concentration
 
-**Total: ~85 declarations, 6 axioms (all deep analytic/number-theoretic results)**
+**Total: ~85 declarations, 5 axioms (all deep analytic/number-theoretic results)**
 -/
 
 end Erdos205

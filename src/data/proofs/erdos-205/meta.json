@@ -42,16 +42,21 @@
         "theorem": "Finset.inf'_le",
         "description": "Infimum over a nonempty finset is ≤ any element",
         "module": "Mathlib.Order.Finset"
+      },
+      {
+        "theorem": "Real.tendsto_exp_div_pow_atTop",
+        "description": "exp(x)/x^n → ∞ as x → ∞ (exponential dominates polynomials)",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
       }
     ],
     "originalContributions": [
-      "Eliminated 3 axioms (bigOmega_prime_pow, bigOmega_mul, remainder_achieves_min) via Mathlib APIs",
+      "Eliminated 4 axioms (bigOmega_prime_pow, bigOmega_mul, remainder_achieves_min, threshold_dominates_loglog) via Mathlib APIs",
       "Covering system formalization with Erdős modulus 5592405",
       "De Polignac number verification (127 and 149: all remainders composite)",
       "12 concrete Ω computations via native_decide",
       "Main disproof theorem erdos_205_disproved from axiomatized counterexample"
     ],
-    "axiomCount": 6,
+    "axiomCount": 5,
     "prerequisites": [
       "Prime factorization and the fundamental theorem of arithmetic",
       "The big-omega function Ω(n) (prime factor count with multiplicity)",
@@ -61,7 +66,7 @@
       "Hardy-Ramanujan and Erdős-Kac theorems on average/typical Ω(n)"
     ],
     "lineCount": 444,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The question of representing integers as $2^k + m$ with arithmetic restrictions on $m$ has roots stretching to de Polignac (1849), who conjectured every odd number is $2^k + p$ for some prime $p$. Romanoff (1934) proved a positive proportion of integers have the form $2^k + p$, establishing the first density result. Erdős (1950) dramatically showed de Polignac's conjecture fails: using covering systems — finite collections of congruence classes covering all integers — he constructed a positive density of odd counterexamples. The primes $\\{3, 5, 7, 13, 17, 241\\}$ whose orders of $2$ form a covering of $\\mathbb{Z}/24\\mathbb{Z}$ yield modulus $5{,}592{,}405$ such that every $n$ in a suitable arithmetic progression has all remainders $n - 2^k$ divisible by one of these primes. Crocker (1971) extended this to show infinitely many odd numbers fail $n = 2^a + 2^b + p$. Problem 205 asked whether the vastly weaker condition $\\Omega(m) < \\log\\log m$ — allowing $m$ to have many prime factors, just fewer than 'typical' — suffices for all large $n$. The Hardy-Ramanujan theorem (1917) shows $\\Omega(n) \\approx \\log\\log n$ on average, making this threshold natural. The Erdős-Kac theorem (1940) refined this to Gaussian concentration. Nevertheless, the conjecture was disproved in 2026: counterexamples exist where ALL remainders $n - 2^k$ have $\\Omega$ far exceeding $\\log\\log n$.",
@@ -141,11 +146,11 @@
       "title": "Summary and Status",
       "startLine": 406,
       "endLine": 444,
-      "summary": "Complete audit: 6 axioms (all deep analytic results), ~85 declarations, 0 sorries. Three axioms eliminated during formalization."
+      "summary": "Complete audit: 5 axioms (all deep analytic results), ~85 declarations, 0 sorries. Four axioms eliminated during formalization."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #205 is DISPROVED. The formalization proves ¬Erdos205Conjecture from axiomatized counterexample results, with 0 sorries and only 6 axioms (all deep analytic results). Three previously-axiomatized properties (Ω(p^k)=k, Ω(ab)=Ω(a)+Ω(b), and the Finset.inf' bound) are now proved from Mathlib.",
+    "summary": "Erdős Problem #205 is DISPROVED. The formalization proves ¬Erdos205Conjecture from axiomatized counterexample results, with 0 sorries and only 5 axioms (all deep analytic results). Four previously-axiomatized properties (Ω(p^k)=k, Ω(ab)=Ω(a)+Ω(b), Finset.inf' bound, threshold dominates loglog) are now proved from Mathlib.",
     "implications": "**Theoretical Significance**: Even the very weak bound $\\Omega(m) < \\log\\log m$ is insufficient to guarantee $2^k + m$ representations for all large integers. This is surprising because $\\Omega(n) \\approx \\log\\log n$ for 'almost all' $n$ by the Erdős-Kac theorem, so the condition excludes only atypically smooth numbers — yet the counterexamples force every remainder to be atypically rough.\n\nThe covering system technique, pioneered by Erdős for the $2^k + p$ case, extends to this more general setting. The result suggests a fundamental limitation of additive decomposition into powers of 2 and arithmetically constrained summands: the 'wrong' residue structure can force all remainders to have correlated, elevated prime factor counts.",
     "openQuestions": [
       "Do arbitrarily large ODD counterexamples exist? (Current construction uses n divisible by large powers of 2)",
@@ -212,7 +217,7 @@
     ],
     "namespace": "Erdos205",
     "lineCount": 444,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "theoremCount": 44,
     "definitionCount": 9
   },

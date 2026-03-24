@@ -29,11 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated threshold_dominates_loglog axiom via Real.tendsto_exp_div_pow_atTop. Axiom count: 6→5.",
+    "builtItems": [
+      "Proved threshold_dominates_loglog theorem in Erdos205Problem.lean (was axiom, now 45-line proof)"
+    ],
+    "insights": [
+      "threshold_dominates_loglog proved from Mathlib: exp(u)/u^3 → ∞ composed with u=log(log n), using Real.tendsto_exp_div_pow_atTop"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Remaining 5 axioms are all deep results (Barreto-Leeham, Romanoff, Erdos covering, Hardy-Ramanujan, Erdos-Kac) — unlikely to prove from Mathlib"
+    ]
   },
   "tags": [
     "erdos",
