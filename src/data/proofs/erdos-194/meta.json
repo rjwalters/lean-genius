@@ -65,7 +65,7 @@
     ],
     "axiomCount": 7,
     "lineCount": 314,
-    "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "7 axiom(s). No sorries."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #194**\n\nThis problem asks about the structure of orderings (enumerations) of the real numbers, specifically whether they must contain monotone arithmetic progressions.\n\n**The Question:**\nGiven any way of listing the real numbers in a sequence, must there exist three terms that form both an arithmetic progression and are monotone (increasing or decreasing) in the listing order?\n\n**Resolution:**\nArdal, Brown, and Jungic (2011) showed the surprising answer is NO. They constructed \"chaotic orderings\" of the rationals (and by extension, the reals) that contain no monotone 3-term arithmetic progressions. This disproves the natural intuition that dense sets must have such structures in any enumeration.",
