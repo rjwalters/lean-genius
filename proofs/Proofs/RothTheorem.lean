@@ -1222,7 +1222,7 @@ private theorem coset_density_increment {N : ℕ} [NeZero N] (hN : 1 < N)
     Proof: By fourier_large_coefficient, ∃ r ≠ 0 with |Â(r)| ≥ δ²N/2.
     Take g = N/gcd(val(r), N) as compatible coset step for χ_r.
     Apply coset_density_increment + apFree_coset_restrict. -/
-theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
+theorem density_increment_lemma {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
     ∃ (M : ℕ) (B : Finset (ZMod M)),
@@ -1230,40 +1230,29 @@ theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
       APFree B ∧
       (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
   haveI : NeZero N := ⟨by omega⟩
-  by_cases hN2 : 1 < N
-  · obtain ⟨r, hr, hfourier⟩ := fourier_large_coefficient hN2 A hAP delta hdelta hdensity
-    set d := Nat.gcd (ZMod.val r) N
-    have hd_pos : 0 < d := Nat.pos_of_ne_zero (Nat.gcd_ne_zero_right (NeZero.ne N))
-    have hdN : d ∣ N := Nat.gcd_dvd_right _ _
-    have hd_dvd_r : d ∣ ZMod.val r := Nat.gcd_dvd_left _ _
-    set g := N / d
-    have hg_pos : 0 < g := Nat.div_pos (Nat.le_of_dvd (by omega) hdN) hd_pos
-    have hgN : g ∣ N := Nat.div_dvd_of_dvd hdN
-    have hNg_eq : N / g = d := Nat.div_div_self hdN (by omega)
-    have hcompat : (N / g) ∣ ZMod.val r := hNg_eq ▸ hd_dvd_r
-    obtain ⟨j, hj, hdense⟩ := coset_density_increment hN2 A hAP delta hdelta hdensity
-      g hg_pos hgN r hr hfourier hcompat
-    have hM_pos : 0 < N / g := Nat.div_pos (Nat.le_of_dvd (by omega) hgN) hg_pos
-    have hMreal : (↑(N / g) : ℝ) = ↑N / ↑g :=
-      Nat.cast_div hgN (Nat.cast_ne_zero.mpr (by omega))
-    refine ⟨N / g, cosetRestrict A g hg_pos hgN j hj, hM_pos,
-      apFree_coset_restrict A hAP g hg_pos hgN j hj, ?_⟩
-    rw [hMreal]
-    calc (↑(cosetRestrict A g hg_pos hgN j hj).card : ℝ)
-        ≥ (delta + delta ^ 2 / 4) * (↑N / ↑g) := hdense
-      _ ≥ (delta + delta ^ 2 / 100) * (↑N / ↑g) := by
-          apply mul_le_mul_of_nonneg_right _ (by positivity)
-          nlinarith [sq_nonneg delta]
-  · -- N ≤ 1: with 0 < N, N = 1.
-    -- KNOWN GAP: density_increment_lemma requires the output density
-    -- delta + delta²/100 ≤ 1, which fails when delta > ~0.99 and N = 1.
-    -- In the main proof (roth_density_bound), this case is unreachable
-    -- when N₀ is chosen large enough, since the coset decomposition
-    -- gives M = gcd(val(r), N) which stays ≥ 2 for N ≥ N₀.
-    -- A proper fix requires either (a) adding 1 < N as a hypothesis
-    -- and adjusting the iteration chain, or (b) using Dirichlet
-    -- approximation to bound M from below.
-    sorry
+  obtain ⟨r, hr, hfourier⟩ := fourier_large_coefficient hN A hAP delta hdelta hdensity
+  set d := Nat.gcd (ZMod.val r) N
+  have hd_pos : 0 < d := Nat.pos_of_ne_zero (Nat.gcd_ne_zero_right (NeZero.ne N))
+  have hdN : d ∣ N := Nat.gcd_dvd_right _ _
+  have hd_dvd_r : d ∣ ZMod.val r := Nat.gcd_dvd_left _ _
+  set g := N / d
+  have hg_pos : 0 < g := Nat.div_pos (Nat.le_of_dvd (by omega) hdN) hd_pos
+  have hgN : g ∣ N := Nat.div_dvd_of_dvd hdN
+  have hNg_eq : N / g = d := Nat.div_div_self hdN (by omega)
+  have hcompat : (N / g) ∣ ZMod.val r := hNg_eq ▸ hd_dvd_r
+  obtain ⟨j, hj, hdense⟩ := coset_density_increment hN A hAP delta hdelta hdensity
+    g hg_pos hgN r hr hfourier hcompat
+  have hM_pos : 0 < N / g := Nat.div_pos (Nat.le_of_dvd (by omega) hgN) hg_pos
+  have hMreal : (↑(N / g) : ℝ) = ↑N / ↑g :=
+    Nat.cast_div hgN (Nat.cast_ne_zero.mpr (by omega))
+  refine ⟨N / g, cosetRestrict A g hg_pos hgN j hj, hM_pos,
+    apFree_coset_restrict A hAP g hg_pos hgN j hj, ?_⟩
+  rw [hMreal]
+  calc (↑(cosetRestrict A g hg_pos hgN j hj).card : ℝ)
+      ≥ (delta + delta ^ 2 / 4) * (↑N / ↑g) := hdense
+    _ ≥ (delta + delta ^ 2 / 100) * (↑N / ↑g) := by
+        apply mul_le_mul_of_nonneg_right _ (by positivity)
+        nlinarith [sq_nonneg delta]
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VI: ROTH'S THEOREM (MAIN RESULT)
@@ -1273,7 +1262,7 @@ theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     If there exists an AP-free set of density ≥ d in Z/NZ (with N > 0),
     then there exists an AP-free set of density ≥ d + d²/100 in some
     Z/MZ with 0 < M. -/
-theorem density_increment_step {N : ℕ} (hN : 0 < N) (d : ℝ) (hd : 0 < d)
+theorem density_increment_step {N : ℕ} (hN : 1 < N) (d : ℝ) (hd : 0 < d)
     (A : Finset (ZMod N)) (hAP : APFree A)
     (hdens : (A.card : ℝ) ≥ d * N) :
     ∃ (M : ℕ) (B : Finset (ZMod M)),
@@ -1288,7 +1277,7 @@ theorem density_increment_step {N : ℕ} (hN : 0 < N) (d : ℝ) (hd : 0 < d)
     so the increment d²/100 ≥ delta²/100. Thus after k steps, the total
     increment is at least k * delta²/100. -/
 theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
-    ∀ k : ℕ, ∀ N : ℕ, 0 < N →
+    ∀ k : ℕ, ∀ N : ℕ, 1 < N →
     ∀ A : Finset (ZMod N), APFree A →
     (A.card : ℝ) ≥ (delta + k * delta ^ 2 / 100) * N →
     ∃ (M : ℕ) (B : Finset (ZMod M)),
@@ -1313,60 +1302,145 @@ theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
         apply mul_le_mul_of_nonneg_right _ (Nat.cast_nonneg M)
         nlinarith
 
+/-- **Roth's Theorem (large density case)**: For delta > 2/3, any subset of
+    Z/NZ with N ≥ 3 and |A| ≥ delta * N contains a 3-term AP.
+    This follows directly from the counting lemma: AP-free sets have
+    at most 2N/3 elements.
+    Fully proved (no sorry). -/
+theorem roth_large_density {N : ℕ} (hN : 2 < N) (delta : ℝ)
+    (hdelta : delta > 2 / 3) (A : Finset (ZMod N))
+    (hdensity : (A.card : ℝ) ≥ delta * N) : ¬APFree A := by
+  haveI : NeZero N := ⟨by omega⟩
+  intro hAP
+  have h23 := apFree_card_le_two_thirds hN A hAP
+  -- h23 : 3 * A.card ≤ 2 * N
+  -- hdensity : A.card ≥ delta * N > (2/3) * N
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
+  have h1 : (A.card : ℝ) ≤ 2 * N / 3 := by
+    have : 3 * (A.card : ℝ) ≤ 2 * (N : ℝ) := by exact_mod_cast h23
+    linarith
+  have h2 : delta * N > 2 * N / 3 := by
+    have : delta * N > 2 / 3 * N := mul_lt_mul_of_pos_right hdelta hNpos
+    linarith
+  linarith
+
+/-- **Roth's Theorem (N = 2 case)**: For delta > 1/2, any subset of Z/2Z
+    with |A| ≥ delta * 2 contains a 3-term AP.
+    In Z/2Z, the only 2-element set {0,1} is not AP-free since
+    0 + 2*1 = 0 ∈ {0,1}. -/
+theorem roth_density_zmod2 (delta : ℝ) (hdelta : delta > 1 / 2)
+    (A : Finset (ZMod 2)) (hdensity : (A.card : ℝ) ≥ delta * 2) :
+    ¬APFree A := by
+  intro hAP
+  -- |A| ≥ delta * 2 > 1, so |A| ≥ 2 = card(ZMod 2), meaning A = univ
+  have hA2 : A.card ≥ 2 := by
+    have : (A.card : ℝ) > 1 := by linarith
+    exact_mod_cast (show (1 : ℝ) < A.card by linarith)
+  have hAuniv : A = Finset.univ := by
+    apply Finset.eq_univ_of_card
+    have : A.card ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+    simp [ZMod.card] at this ⊢; omega
+  -- In ZMod 2: a=0, d=1, a+d=1, a+2d=0. So {0,1} is not AP-free.
+  have : (1 : ZMod 2) ≠ 0 := by decide
+  exact hAP 0 1 this (by simp [hAuniv]) (by simp [hAuniv]) (by simp [hAuniv])
+
 /-- **Roth's Theorem**: r₃(N) = o(N).
     For every delta > 0, there exists N₀ such that for all N ≥ N₀, every
     subset A ⊆ Z/NZ with |A| ≥ delta * N contains a 3-term arithmetic
     progression.
 
-    The proof iterates the density increment: each time the set has no
-    3-AP, its density increases by at least delta²/100 on a subprogression.
-    After K = ⌈100/delta²⌉ steps, the density would exceed 1, contradicting
-    the fact that any subset of Z/MZ has at most M elements.
+    **Proof strategy**: Split into two cases.
+    - For delta > 2/3: the counting lemma (apFree_card_le_two_thirds) gives
+      |A| ≤ 2N/3 < delta * N, contradicting the density hypothesis. Fully proved.
+    - For delta ≤ 2/3: iterate the density increment. Each step gives a denser
+      AP-free set in Z/MZ with M > 0. After K = ⌈100/delta²⌉ steps, density > 1,
+      contradicting |B| ≤ M.
 
-    The universe size at step k satisfies M_k ≥ N^{1/2^k} (since each
-    step gives M ≥ √N), so we need N₀ large enough that N₀^{1/2^K} ≥ 1,
-    which holds for any N₀ ≥ 1. -/
+    **Known limitation**: The density increment chain requires 1 < N at each step.
+    The coset decomposition can produce M = gcd(val(r), N) = 1 for prime N,
+    at which point the chain propagates through ZMod 1 (trivially AP-free)
+    until the density formula exceeds 1. At the boundary step where
+    d_k ≤ 1 < d_{k+1} and M = 1, the chain cannot produce the next step.
+    A proper fix requires Dirichlet approximation to bound M ≥ √N, ensuring
+    M > 1 throughout the iteration. -/
 theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (hdelta1 : delta ≤ 1) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → ∀ A : Finset (ZMod N),
       (A.card : ℝ) ≥ delta * N → ¬APFree A := by
-  -- N₀ = 1 works: the argument applies for all N ≥ 1
-  refine ⟨1, fun N hN A hdensity hAP => ?_⟩
-  have hNpos : 0 < N := by omega
-  -- Iteration chain: after k density-increment steps, we get a set of
-  -- density ≥ delta + k * delta²/100 in some Z/MZ with M > 0
-  have chain : ∀ k : ℕ, ∃ (M : ℕ) (B : Finset (ZMod M)),
-      0 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (delta + ↑k * delta ^ 2 / 100) * ↑M := by
-    intro k
-    induction k with
-    | zero =>
-      simp only [Nat.cast_zero, zero_mul, zero_div, add_zero]
-      exact ⟨N, A, hNpos, hAP, hdensity⟩
-    | succ k ih =>
-      obtain ⟨M, B, hMpos, hBAP, hBdens⟩ := ih
-      obtain ⟨M', B', hM'pos, hB'AP, hB'dens⟩ :=
-        density_iteration delta hdelta k M hMpos B hBAP hBdens
-      refine ⟨M', B', hM'pos, hB'AP, ?_⟩
-      push_cast at hB'dens ⊢
+  -- Split on density threshold
+  by_cases hd23 : delta > 2 / 3
+  · -- Large density: counting lemma gives direct contradiction for N ≥ 3
+    refine ⟨3, fun N hN A hdensity hAP => ?_⟩
+    exact roth_large_density (by omega) delta hd23 A hdensity hAP
+  · -- Small density (delta ≤ 2/3): density increment chain
+    push_neg at hd23
+    refine ⟨2, fun N hN A hdensity hAP => ?_⟩
+    have hN2 : 1 < N := by omega
+    have hNpos : 0 < N := by omega
+    -- Iteration chain: after k density-increment steps, we get a set of
+    -- density ≥ delta + k * delta²/100 in some Z/MZ with M > 0
+    have chain : ∀ k : ℕ, ∃ (M : ℕ) (B : Finset (ZMod M)),
+        0 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (delta + ↑k * delta ^ 2 / 100) * ↑M := by
+      intro k
+      induction k with
+      | zero =>
+        simp only [Nat.cast_zero, zero_mul, zero_div, add_zero]
+        exact ⟨N, A, hNpos, hAP, hdensity⟩
+      | succ k ih =>
+        obtain ⟨M, B, hMpos, hBAP, hBdens⟩ := ih
+        -- d_k = delta + k * delta²/100
+        set d_k := delta + ↑k * delta ^ 2 / 100
+        -- If d_k > 1: |B| ≥ d_k * M > M ≥ |B|, contradiction → prove anything
+        by_cases hdk : d_k > 1
+        · exfalso
+          haveI : NeZero M := ⟨by omega⟩
+          have hMR : (0 : ℝ) < ↑M := Nat.cast_pos.mpr hMpos
+          have : (B.card : ℝ) > ↑M := by
+            calc (B.card : ℝ) ≥ d_k * ↑M := hBdens
+              _ > 1 * ↑M := mul_lt_mul_of_pos_right hdk hMR
+              _ = ↑M := one_mul _
+          linarith [card_le_nat_real B]
+        · push_neg at hdk -- d_k ≤ 1
+          by_cases hM2 : 1 < M
+          · -- M > 1: apply density_iteration (density_increment_lemma)
+            obtain ⟨M', B', hM'pos, hB'AP, hB'dens⟩ :=
+              density_iteration delta hdelta k M hM2 B hBAP hBdens
+            refine ⟨M', B', hM'pos, hB'AP, ?_⟩
+            push_cast at hB'dens ⊢
+            linarith
+          · -- M = 1: propagate through ZMod 1
+            have hM1 : M = 1 := by omega
+            subst hM1
+            -- |B| ≤ 1 (ZMod 1 has 1 element) and |B| ≥ d_k
+            have hBle : (B.card : ℝ) ≤ 1 := by
+              have := B.card_le_univ; simp [ZMod.card] at this; exact_mod_cast this
+            -- d_{k+1} = delta + (k+1) * delta²/100
+            -- If d_{k+1} ≤ 1: output (1, Finset.univ)
+            -- If d_{k+1} > 1: the chain can't produce a valid output, but
+            -- the hypothesis |B| ≥ d_k gives |B| ≤ 1, so d_k ≤ 1.
+            -- This edge case arises when the coset decomposition gives M = 1
+            -- (gcd(val(r), N) = 1 for prime N) and the formula density
+            -- crosses 1 while trapped in ZMod 1. Requires Dirichlet
+            -- approximation to bound M ≥ √N, ensuring M > 1 throughout.
+            sorry
+    -- Choose K large enough that delta + K * delta²/100 > 1
+    obtain ⟨K, hK⟩ := exists_nat_gt (100 / delta ^ 2)
+    obtain ⟨M, B, hMpos, _, hBdens⟩ := chain K
+    haveI : NeZero M := ⟨by omega⟩
+    -- Clear the denominator: 100/delta² < K implies 100 < K*delta²
+    have hd2 : delta ^ 2 > 0 := by positivity
+    have h_clear : (100 : ℝ) < ↑K * delta ^ 2 := by
+      have h1 : 100 / delta ^ 2 * delta ^ 2 < ↑K * delta ^ 2 :=
+        mul_lt_mul_of_pos_right hK hd2
+      have h2 : 100 / delta ^ 2 * delta ^ 2 = 100 := by field_simp
       linarith
-  -- Choose K large enough that delta + K * delta²/100 > 1
-  obtain ⟨K, hK⟩ := exists_nat_gt (100 / delta ^ 2)
-  obtain ⟨M, B, hMpos, _, hBdens⟩ := chain K
-  haveI : NeZero M := ⟨by omega⟩
-  -- Clear the denominator: 100/delta² < K implies 100 < K*delta²
-  have hd2 : delta ^ 2 > 0 := by positivity
-  have h_clear : (100 : ℝ) < ↑K * delta ^ 2 := by
-    have h1 : 100 / delta ^ 2 * delta ^ 2 < ↑K * delta ^ 2 :=
-      mul_lt_mul_of_pos_right hK hd2
-    have h2 : 100 / delta ^ 2 * delta ^ 2 = 100 := by field_simp
-    linarith
-  -- The density exceeds 1, so |B| > M
-  have hgt1 : delta + ↑K * delta ^ 2 / 100 > 1 := by linarith
-  have hMcast : (0 : ℝ) < ↑M := Nat.cast_pos.mpr hMpos
-  have hBgt : (B.card : ℝ) > ↑M := by
-    calc (B.card : ℝ) ≥ (delta + ↑K * delta ^ 2 / 100) * ↑M := hBdens
-      _ > 1 * ↑M := mul_lt_mul_of_pos_right hgt1 hMcast
-      _ = ↑M := one_mul _
-  -- But |B| ≤ M for any Finset of ZMod M — contradiction
-  linarith [card_le_nat_real B]
+    -- The density exceeds 1, so |B| > M
+    have hgt1 : delta + ↑K * delta ^ 2 / 100 > 1 := by linarith
+    have hMcast : (0 : ℝ) < ↑M := Nat.cast_pos.mpr hMpos
+    have hBgt : (B.card : ℝ) > ↑M := by
+      calc (B.card : ℝ) ≥ (delta + ↑K * delta ^ 2 / 100) * ↑M := hBdens
+        _ > 1 * ↑M := mul_lt_mul_of_pos_right hgt1 hMcast
+        _ = ↑M := one_mul _
+    -- But |B| ≤ M for any Finset of ZMod M — contradiction
+    linarith [card_le_nat_real B]
 
 end Szemeredi.Roth
