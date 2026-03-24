@@ -45,8 +45,7 @@ noncomputable def chromaticNumber (G : SimpleGraph (Fin n)) : ℕ :=
 /-- h₃(k): the smallest n such that there exists a triangle-free graph
     on n vertices with chromatic number ≥ k. -/
 noncomputable def triangleFreeChromThreshold (k : ℕ) : ℕ :=
-  sSup {m : ℕ | ∀ (n : ℕ) (G : SimpleGraph (Fin n)),
-    n < m → IsTriangleFree G → HasProperColoring G k}
+  sInf {n : ℕ | ∃ G : SimpleGraph (Fin n), IsTriangleFree G ∧ ¬HasProperColoring G (k - 1)}
 
 /- ## Main Conjecture -/
 
@@ -94,21 +93,89 @@ axiom graver_yackel_bound :
     (triangleFreeChromThreshold k : ℝ) ≥
       c * (k : ℝ) ^ 2 * Real.log k / Real.log (Real.log k)
 
+/- ## Helper Lemmas -/
+
+/-- Coloring monotonicity: k-colorable implies m-colorable for k ≤ m. -/
+private theorem coloring_le_mono {m : ℕ} (G : SimpleGraph (Fin m)) {j k : ℕ}
+    (hjk : j ≤ k) (h : HasProperColoring G j) : HasProperColoring G k := by
+  obtain ⟨f, hf⟩ := h
+  refine ⟨fun v => ⟨(f v).val, Nat.lt_of_lt_of_le (f v).isLt hjk⟩, fun u v hadj heq => ?_⟩
+  simp only [Fin.mk.injEq] at heq
+  exact hf u v hadj (Fin.val_injective heq)
+
+/-- Any graph on Fin 1 is triangle-free (only one vertex). -/
+private theorem fin1_triangle_free (G : SimpleGraph (Fin 1)) : IsTriangleFree G := by
+  intro ⟨a, b, _, hab, _, _, _⟩
+  exact absurd (Subsingleton.elim a b) hab
+
+/-- Any graph on Fin 1 is 1-colorable (no edges possible). -/
+private theorem fin1_one_colorable (G : SimpleGraph (Fin 1)) : HasProperColoring G 1 :=
+  ⟨fun _ => 0, fun u v hadj => absurd (Subsingleton.elim u v) hadj.ne⟩
+
+/-- Mycielski's construction: for each k ≥ 2, there exists a triangle-free
+    graph with chromatic number k. This proves h₃(k) is finite. -/
+axiom mycielski_construction :
+  ∀ k : ℕ, k ≥ 2 → ∃ n : ℕ, ∃ G : SimpleGraph (Fin n),
+    IsTriangleFree G ∧ ¬HasProperColoring G (k - 1)
+
+/-- The threshold set {n | ∃ TF graph on n vertices not (k-1)-colorable} is always nonempty. -/
+private lemma threshold_set_nonempty (k : ℕ) :
+    Set.Nonempty {n : ℕ | ∃ G : SimpleGraph (Fin n),
+      IsTriangleFree G ∧ ¬HasProperColoring G (k - 1)} := by
+  rcases k with _ | _ | k
+  · exact ⟨1, ⊥, fin1_triangle_free _, fun ⟨f, _⟩ => absurd (f 0).isLt (by omega)⟩
+  · exact ⟨1, ⊥, fin1_triangle_free _, fun ⟨f, _⟩ => absurd (f 0).isLt (by omega)⟩
+  · exact mycielski_construction (k + 2) (by omega)
+
 /- ## Structural Properties -/
 
 /-- Monotonicity: h₃ is non-decreasing. Higher chromatic number needs more vertices. -/
-axiom threshold_mono :
-  ∀ j k : ℕ, j ≤ k → triangleFreeChromThreshold j ≤ triangleFreeChromThreshold k
+theorem threshold_mono :
+    ∀ j k : ℕ, j ≤ k → triangleFreeChromThreshold j ≤ triangleFreeChromThreshold k := by
+  intro j k hjk
+  unfold triangleFreeChromThreshold
+  apply csInf_le_csInf (OrderBot.bddBelow _)
+  · exact threshold_set_nonempty k
+  · intro n ⟨G, hTF, hG⟩
+    exact ⟨G, hTF, fun hcolor => hG (coloring_le_mono G (by omega : j - 1 ≤ k - 1) hcolor)⟩
 
-/-- h₃(1) = 1: a single vertex has chromatic number 1 and is trivially triangle-free. -/
-axiom threshold_one :
-  triangleFreeChromThreshold 1 = 1
+/-- h₃(1) = 1: a single vertex graph has chromatic number 1 and is triangle-free. -/
+theorem threshold_one :
+    triangleFreeChromThreshold 1 = 1 := by
+  unfold triangleFreeChromThreshold
+  simp only [show (1 : ℕ) - 1 = 0 from rfl]
+  apply le_antisymm
+  · exact csInf_le (OrderBot.bddBelow _)
+      ⟨⊥, fin1_triangle_free _, fun ⟨f, _⟩ => absurd (f 0).isLt (by omega)⟩
+  · apply le_csInf (threshold_set_nonempty 1)
+    intro n ⟨_, _, hG⟩
+    rcases Nat.eq_zero_or_pos n with rfl | h_pos
+    · exact absurd ⟨Fin.elim0, fun v => v.elim0⟩ hG
+    · exact h_pos
 
-/-- h₃(2) = 1: any non-empty graph has chromatic number ≥ 2,
-    so a single vertex (χ = 1) suffices to block χ ≥ 2 on 1 vertex.
-    Actually h₃(2) = 2: need an edge (K₂) for χ = 2. -/
-axiom threshold_two :
-  triangleFreeChromThreshold 2 = 2
+/-- h₃(2) = 2: K₂ (a single edge) is the smallest triangle-free graph
+    with chromatic number ≥ 2. -/
+theorem threshold_two :
+    triangleFreeChromThreshold 2 = 2 := by
+  unfold triangleFreeChromThreshold
+  simp only [show (2 : ℕ) - 1 = 1 from rfl]
+  have h_tf : IsTriangleFree (⊤ : SimpleGraph (Fin 2)) := by
+    intro ⟨a, b, c, hab, _, hac, _, _, _⟩
+    fin_cases a <;> fin_cases b <;> fin_cases c <;> simp_all
+  have h_nc : ¬HasProperColoring (⊤ : SimpleGraph (Fin 2)) 1 := by
+    intro ⟨f, hf⟩
+    have hadj : (⊤ : SimpleGraph (Fin 2)).Adj 0 1 := by
+      show (0 : Fin 2) ≠ 1; decide
+    exact absurd (Subsingleton.elim (f 0) (f 1)) (hf 0 1 hadj)
+  apply le_antisymm
+  · exact csInf_le (OrderBot.bddBelow _) ⟨⊤, h_tf, h_nc⟩
+  · apply le_csInf (threshold_set_nonempty 2)
+    intro n ⟨G, _, hG⟩
+    by_contra h_lt
+    push_neg at h_lt
+    interval_cases n
+    · exact hG ⟨Fin.elim0, fun v => v.elim0⟩
+    · exact hG (fin1_one_colorable G)
 
 /-- h₃(3) = 5: the Mycielski graph M₃ (cycle C₅) has 5 vertices, is triangle-free,
     and has chromatic number 3. -/
@@ -119,12 +186,6 @@ axiom threshold_three :
     is triangle-free, with chromatic number 4. -/
 axiom threshold_four :
   triangleFreeChromThreshold 4 = 11
-
-/-- Mycielski's construction: for each k ≥ 2, there exists a triangle-free
-    graph with chromatic number k. This proves h₃(k) is finite. -/
-axiom mycielski_construction :
-  ∀ k : ℕ, k ≥ 2 → ∃ n : ℕ, ∃ G : SimpleGraph (Fin n),
-    IsTriangleFree G ∧ ¬HasProperColoring G (k - 1)
 
 /- ## Proved Results -/
 

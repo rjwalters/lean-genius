@@ -29,26 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed 2 incorrectly axiomatized conjectures, fixed logic bug in Graver-Yackel bound, added 5 structural theorems. Axioms: 11 → 9, theorems: 0 → 5.",
+    "progressSummary": "COMPLETED: Fixed definition bug (sSup→sInf, k→k-1), eliminated 3 axioms (threshold_mono, threshold_one, threshold_two now proved). Axioms: 9→6, theorems: 5→12.",
     "builtItems": [
       "trivial_n_coloring: any graph is n-colorable (proved)",
       "coloring_monotone: k-colorable implies (k+1)-colorable (proved)",
       "empty_graph_colorable, empty_graph_triangle_free, single_vertex_triangle_free (all proved)",
       "Fixed graver_yackel_bound logic bug (→ to ∧)",
-      "Converted 2 open conjectures from axioms to defs"
+      "Converted 2 open conjectures from axioms to defs",
+      "coloring_le_mono: generalized coloring monotonicity (proved)",
+      "fin1_triangle_free: graphs on 1 vertex are TF (proved)",
+      "fin1_one_colorable: graphs on 1 vertex are 1-colorable (proved)",
+      "threshold_set_nonempty: threshold set always nonempty (proved)",
+      "threshold_mono: h₃ monotonicity (was axiom, now proved)",
+      "threshold_one: h₃(1)=1 (was axiom, now proved)",
+      "threshold_two: h₃(2)=2 (was axiom, now proved)"
     ],
     "insights": [
       "Two open conjectures (asymptotic, ratio convergence) were incorrectly axiomatized — converted to defs",
       "graver_yackel_bound had a logic bug: used → instead of ∧, making it trivially true by picking c ≤ 0",
       "Any graph is n-colorable (one color per vertex) — basic structural fact proved",
       "Coloring is monotone: k-colorable implies (k+1)-colorable",
-      "triangleFreeChromThreshold definition uses sSup which may not behave well on ℕ — possible definitional issue for future work"
+      "triangleFreeChromThreshold definition uses sSup which may not behave well on ℕ — possible definitional issue for future work",
+      "triangleFreeChromThreshold had a definition bug: used HasProperColoring G k instead of k-1, causing value mismatch with axioms",
+      "Fixed definition to sInf-based formulation matching standard h₃(k)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Review triangleFreeChromThreshold definition (sSup on ℕ may not work correctly)",
-      "Try proving threshold_mono from the definition",
-      "Prove threshold_one computationally"
+      "Prove threshold_three (h₃(3)=5) by constructing C₅ explicitly",
+      "Prove threshold_four (h₃(4)=11) by constructing Grötzsch graph"
     ],
     "markdown": "# Erdős #1013 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Find an asymptotic for $h_3(k)$, and also prove\\[\\lim_{k\\to \\infty}\\frac{h_3(k+1)}{h_3(k)}=1.\\]\n\n\n\nIt is known that\\[\\frac{\\log k}{\\log\\log k}k^2 \\ll h_3(k) \\ll (\\log k)k^2.\\]The lower bound is due to Graver and Yackel \\cite{GrYa68}, the upper bound follows from Shearer's upper bound for $R(3,k)$ (see [165]).\n\nThe function $h_r(k)$ for $r\\geq 4$ is the subject of [920].\n\n\n\n\nReferences\n\n\n[GrYa68] Graver, Jack E. and Yackel, James, Some graph theoretic results associated with {R}amsey's\ntheorem. J. Combinatorial Theory (1968), 125--175.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #165\n- Problem #920\n- Problem #1012\n- Problem #1014\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er71\n- GrYa68\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -74,10 +82,10 @@
     {
       "path": "Proofs/Erdos1013Problem.lean",
       "filename": "Erdos1013Problem.lean",
-      "lineCount": 159,
-      "theoremCount": 5,
-      "axiomCount": 9,
-      "defCount": 4,
+      "lineCount": 220,
+      "theoremCount": 12,
+      "axiomCount": 6,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1013Problem.lean"
