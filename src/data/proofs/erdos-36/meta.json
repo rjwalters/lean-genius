@@ -92,7 +92,7 @@
       "startLine": 1,
       "endLine": 17,
       "summary": "Problem statement: partition {1,...,2N} into equal halves, minimize maximum overlap. Known bounds 0.379 < c < 0.381. Status: OPEN.",
-      "mathContext": "$c = \\lim M(N)/N$ with $0.379005 < c < 0.380876$."
+      "mathContext": "Partition $\\{1, \\ldots, 2N\\}$ into $A \\sqcup B$ with $|A| = |B| = N$. Define $M(N) = \\min_{(A,B)} \\max_k |\\{(a,b) : a - b = k\\}|$. The limit $c = \\lim_{N \\to \\infty} M(N)/N$ exists with $0.379005 < c < 0.380876$."
     },
     {
       "id": "imports",

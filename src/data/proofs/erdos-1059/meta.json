@@ -99,7 +99,7 @@
       "summary": "Problem statement, references (Guy [Gu04] Problem A2, OEIS A064152, erdosproblems.com), and Mathlib imports for primes, factorials, sets, and finite sets.",
       "startLine": 1,
       "endLine": 23,
-      "mathContext": "Imports `Nat.Prime`, `Nat.factorial`, `Set.Infinite`, `Finset` from Mathlib for the formalization."
+      "mathContext": "Imports `Nat.Prime` (primality predicate), `Nat.factorial` (factorial function and monotonicity lemmas), `Set.Infinite` (infinitary conjecture statement), `Finset` (finite set operations for `interval_cases`), and `Mathlib.Tactic` (for `decide`, `interval_cases`, `omega`, `push_neg`)."
     },
     {
       "id": "core-definitions",
@@ -110,12 +110,20 @@
       "mathContext": "$\\text{AllFact}(n) \\iff \\forall k, \\; k! < n \\implies \\neg(n-k!)\\text{.Prime} \\wedge n-k! \\geq 2$."
     },
     {
-      "id": "examples",
-      "title": "Verified Examples and Counterexample",
-      "summary": "Worked examples with explicit factorizations, then formal proofs. Factorial growth bounds (`factorial_lt_bound` for 101, `factorial_lt_bound_211` for 211) reduce the universal quantifier to finite case analysis via `by_contra` + `Nat.factorial_le` + `omega`. Proves $p = 101$ and $p = 211$ satisfy the property via `interval_cases` + `decide`, and $p = 89$ fails via $89 - 6 = 83$ prime.",
+      "id": "factorial-bounds",
+      "title": "Factorial Growth Bounds",
+      "summary": "Private lemmas `factorial_lt_bound` ($k! < 101 \\implies k \\leq 4$) and `factorial_lt_bound_211` ($k! < 211 \\implies k \\leq 5$) reduce the infinite universal quantifier to finite case analysis. Proof pattern: assume $k \\geq 5$ (or 6), use `Nat.factorial_le` for monotonicity ($m \\leq n \\implies m! \\leq n!$), compute $5! = 120 > 101$ (or $6! = 720 > 211$), derive contradiction via `omega`.",
       "startLine": 34,
+      "endLine": 69,
+      "mathContext": "$k! < n \\implies k \\leq \\lfloor \\Gamma^{-1}(n) \\rfloor$. For $n = 101$: $5! = 120 > 101$, so $k \\leq 4$. For $n = 211$: $6! = 720 > 211$, so $k \\leq 5$. General pattern exploits super-exponential growth: `Nat.factorial_le` gives $m \\leq n \\implies m! \\leq n!$."
+    },
+    {
+      "id": "verified-examples",
+      "title": "Verified Examples and Counterexample",
+      "summary": "`example_101` and `example_211`: after factorial bounds reduce to finite cases, `interval_cases` splits into $k \\in \\{0,1,2,3,4\\}$ (or $\\{0,\\ldots,5\\}$), `simp [Nat.factorial]` computes the subtraction, and `decide` verifies compositeness. `counterexample_89`: instantiate $k = 3$, show $89 - 6 = 83$ prime by `decide`, contradicting the universal claim.",
+      "startLine": 70,
       "endLine": 89,
-      "mathContext": "$101 - \\{1,1,2,6,24\\} = \\{100,100,99,95,77\\}$ all composite. $211 - \\{1,1,2,6,24,120\\} = \\{210,210,209,205,187,91\\}$ all composite. $89 - 6 = 83$ is prime (counterexample)."
+      "mathContext": "$101 - \\{0!,1!,2!,3!,4!\\} = \\{100,100,99,95,77\\}$ all composite. $211 - \\{0!,\\ldots,5!\\} = \\{210,210,209,205,187,91\\}$ all composite. $89 - 3! = 83$ prime $\\implies \\neg\\text{AllFact}(89)$."
     },
     {
       "id": "conjecture",

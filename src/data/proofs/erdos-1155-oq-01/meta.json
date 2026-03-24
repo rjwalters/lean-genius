@@ -145,50 +145,58 @@
     },
     {
       "id": "exponent-characterization",
-      "title": "Exponent Characterization and Small Values",
-      "summary": "Proves 3/2 is the exact critical exponent. f(n) = O(n^α) for all α > 3/2 but for no β < 3/2. Includes small-value bounds and ratio reformulation of BFL.",
-      "startLine": 226,
-      "endLine": 305,
-      "mathContext": "Critical exponent: $f(n) = O(n^\\alpha)$ for $\\alpha > 3/2$, $f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$. Ratio: $R(n) = f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$."
+      "title": "Exact Exponent Characterization",
+      "summary": "Proves 3/2 is the exact critical exponent via two theorems: `bfl_exponent_is_three_halves` ($f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$) and `bfl_lower_tight` ($f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$, by contradiction using the intermediate exponent trick).",
+      "startLine": 220,
+      "endLine": 252,
+      "mathContext": "Critical exponent: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. Upper: substitute $\\varepsilon = \\alpha - 3/2$ in BFL. Lower: assume $f(n) \\leq n^\\beta$, take $\\varepsilon' = (3/2 - \\beta)/2$, get $n^{3/2-\\varepsilon'} \\leq f(n) \\leq n^\\beta$ with $3/2 - \\varepsilon' > \\beta$, contradiction."
+    },
+    {
+      "id": "small-values-ratio",
+      "title": "Small Values and BFL Ratio Reformulation",
+      "summary": "Base cases ($f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$) from the complete graph edge bound. Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds) maximally transparent.",
+      "startLine": 254,
+      "endLine": 304,
+      "mathContext": "Base cases: $f(n) \\leq n(n-1)/2$ gives $f(0) \\leq 0$, $f(2) \\leq 1$. Ratio: $R(n) = f(n)/n^{3/2}$. BFL $\\iff R(n) \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$. Conjecture $\\iff R(n) \\in [c_1, c_2]$."
     },
     {
       "id": "sufficient-conditions",
       "title": "Sufficient Conditions for the Conjecture",
       "summary": "If f(n)/n^{3/2} → L > 0, the conjecture holds with c₁ = L/2, c₂ = 3L/2. The weaker limsup/liminf boundedness condition also suffices.",
-      "startLine": 311,
+      "startLine": 305,
       "endLine": 355,
       "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices."
     },
     {
       "id": "lower-exponent",
       "title": "Lower Exponent Characterization",
-      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Includes superlinear and n^{5/4} special cases.",
-      "startLine": 362,
+      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Proved by taking ε = 3/2 - α in the BFL lower bound. Includes physical interpretation: superlinearity (f(n) ≫ n) means the terminal graph is far from being a forest.",
+      "startLine": 356,
       "endLine": 370,
       "mathContext": "$\\forall \\alpha < 3/2: \\; n^\\alpha \\leq f(n)$ eventually. Take $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound."
     },
     {
       "id": "mantel-connection",
       "title": "Mantel/Turán Connection",
-      "summary": "Connects the triangle removal process to Mantel's theorem: the triangle-free terminal graph has at most n²/4 edges. BFL's n^{7/4} bound is strictly tighter.",
-      "startLine": 382,
+      "summary": "Connects the triangle removal process to Mantel's theorem: the triangle-free terminal graph has at most n²/4 edges. Axiomatizes this as `triangleRemoval_mantel_bound`. Proves `bfl_below_mantel_exponent`: BFL's $n^{7/4}$ bound (via $\\varepsilon = 1/4$) is vastly tighter than Mantel's $n^2/4$.",
+      "startLine": 371,
       "endLine": 403,
       "mathContext": "Mantel: $f(n) \\leq n^2/4$ (triangle-free). BFL: $f(n) \\leq n^{7/4}$. Hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$."
     },
     {
       "id": "hierarchy",
       "title": "Hierarchy of Bounds",
-      "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant.",
-      "startLine": 411,
-      "endLine": 445,
+      "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant. `hierarchy_conjecture_implies_bfl` combines the two one-sided implications. `hierarchy_bfl_implies_grable` shows $n^{3/2+\\varepsilon} \\leq n^{7/4+\\varepsilon}$ via the substitution $\\varepsilon' = 1/4 + \\varepsilon$.",
+      "startLine": 404,
+      "endLine": 433,
       "mathContext": "Strict hierarchy: $\\Theta(n^{3/2}) \\Longrightarrow n^{3/2 \\pm o(1)} \\Longrightarrow n^{7/4+o(1)}$. Each step relaxes the multiplicative constant control."
     },
     {
       "id": "tightness",
       "title": "Tightness and Ratio Characterization",
-      "summary": "Under the conjecture, the normalized ratio f(n)/n^{3/2} is eventually in [c₁, c₂]. Characterizes the conjecture as a compactness condition on the ratio sequence in (0, ∞).",
-      "startLine": 447,
-      "endLine": 489,
+      "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually. Together they characterize the conjecture as a compactness condition on the ratio sequence in $(0, \\infty)$.",
+      "startLine": 434,
+      "endLine": 490,
       "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],

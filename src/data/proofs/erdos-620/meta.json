@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Problem statement: for $K_4$-free graphs on $n$ vertices, how large must the largest triangle-free induced subgraph be? Defines $f(n)$ as the minimum over all $K_4$-free $G$ of the maximum triangle-free induced subgraph size. Lists historical bounds from Bollobás-Hind (1991) through Mubayi-Verstraete (2024).",
+      "mathContext": "$f(n) = \\min_{G \\in \\text{Free}(K_4)} \\max\\{|S| : G[S] \\text{ triangle-free}\\}$. Known: $n^{1/2}(\\log n)^{1/2}/(\\log\\log n) \\ll f(n) \\ll n^{1/2} \\log n$. The gap between $\\sqrt{n \\log n}$ and $\\sqrt{n} \\log n$ is the central open question."
+    },
+    {
       "id": "imports-setup",
       "title": "Imports and Setup",
       "startLine": 32,

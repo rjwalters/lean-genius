@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Problem statement (Erdős-Hajnal 1958): for $|X| = \\aleph_\\omega$ and $f : [X]^{<\\omega} \\to X$ with $f(A) \\notin A$, must there exist infinite independent $Y \\subseteq X$? Below $\\aleph_\\omega$: NO (Erdős-Hajnal). Erdős suggested possibly undecidable (1999).",
+      "mathContext": "$f : [X]^{<\\omega} \\to X$ is free if $f(A) \\notin A$ for all finite $A \\subseteq X$. $Y \\subseteq X$ is independent if $f(B) \\notin Y$ for all finite $B \\subseteq Y$. The threshold $\\aleph_\\omega$ (the first singular cardinal, $\\aleph_\\omega = \\sup_n \\aleph_n$, $\\mathrm{cof}(\\aleph_\\omega) = \\omega$) is critical."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports `Cardinal.Ordinal` for $\\aleph$ functions, `Cardinal.Cofinality` for $\\mathrm{cof}(\\kappa)$, and `Finset.Basic` for finite subset operations. Opens the `Cardinal` and `Set` namespaces.",

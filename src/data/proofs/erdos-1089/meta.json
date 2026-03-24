@@ -128,19 +128,19 @@
     },
     {
       "id": "lower",
-      "title": "Lower Bound: Cube Construction",
-      "summary": "Axiomatizes cubeVertices with 2^d vertices and ≤ d distinct distances. The sorry'd cube_lower_bound gives g_d(d+1) > 2^d. The general erdos_lower_bound axiomatizes g_d(n) ≥ c·d^{n-1}.",
+      "title": "Lower Bound: Cube Construction and Erdős Bound",
+      "summary": "Axiomatizes `cubeVertices` (a `Finset (Point d)` with $2^d$ elements and $\\leq d$ distinct distances) and the general `erdos_lower_bound`: $g_d(n) \\geq c \\cdot d^{n-1}$ for $n \\geq 2$. The `cube_lower_bound` ($g_d(d+1) > 2^d$) is sorry'd — proving it from the axiomatized cube requires showing no $(2^d)$-point set in $\\mathbb{R}^d$ has $d+1$ distinct distances, a nontrivial step.",
       "startLine": 99,
       "endLine": 122,
-      "mathContext": "$\\{0,1\\}^d$ has $2^d$ vertices with $|\\Delta| = d$ (distances $\\sqrt{1}, \\ldots, \\sqrt{d}$). Hence $g_d(d+1) > 2^d$. General: $g_d(n) \\geq c \\cdot d^{n-1}$ for fixed $n$."
+      "mathContext": "$\\{0,1\\}^d$ has $2^d$ vertices with $|\\Delta| = d$ (distances $\\sqrt{k}$ for $k = 1, \\ldots, d$). Hence $g_d(d+1) > 2^d$. General counting: $g_d(n) \\geq c \\cdot d^{n-1}$ for fixed $n \\geq 2$ (Erdős 1975)."
     },
     {
       "id": "upper",
       "title": "Upper Bound: Erdős-Straus",
-      "summary": "Axiomatizes the Erdős-Straus bound: g_d(n) ≤ c^{d^{1-b_n}} for constants c > 1, b_n > 0. This stretched-exponential upper bound creates a vast gap with the polynomial lower bound.",
+      "summary": "Axiomatizes the Erdős-Straus bound: $g_d(n) \\leq c^{d^{1-b_n}}$ for constants $c > 1, b_n > 0$. This stretched-exponential upper bound creates the vast gap with the polynomial lower bound — the central challenge of the problem.",
       "startLine": 124,
       "endLine": 133,
-      "mathContext": "$g_d(n) \\leq c^{d^{1-b_n}}$ for constants $c > 1, b_n > 0$. Gap: $d^{n-1} \\ll g_d(n) \\leq c^{d^{1-b_n}}$ (polynomial vs. stretched-exponential)."
+      "mathContext": "$g_d(n) \\leq c^{d^{1-b_n}}$ for constants $c > 1, 0 < b_n < 1$ depending on $n$. The gap: $c_1 \\cdot d^{n-1} \\leq g_d(n) \\leq c_2^{d^{1-b_n}}$ (polynomial vs. stretched-exponential in $d$). Whether the truth is polynomial or super-polynomial is wide open."
     },
     {
       "id": "conjecture",
@@ -290,6 +290,13 @@
       "year": "2008",
       "venue": "Combinatorica 28, pp. 113-125",
       "note": "Best known bounds for distinct distances in high dimensions using polynomial method techniques"
+    },
+    {
+      "authors": "Erdős, Paul; Straus, Ernst G.",
+      "title": "On the maximal number of pairwise orthogonal Latin squares of a given order",
+      "year": "1960",
+      "venue": "Journal of Combinatorial Theory",
+      "note": "Related combinatorial construction techniques; the Erdős-Straus stretched-exponential upper bound g_d(n) ≤ c^{d^{1-b_n}} appears in Erdős's subsequent work on high-dimensional distance problems"
     }
   ]
 }
