@@ -7,7 +7,7 @@
     "author": "Brown-Erdős-Freedman (1990), Alon-Spencer (1989)",
     "sourceUrl": "https://erdosproblems.com/781",
     "date": "1990",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos781Problem.lean",
     "tags": [
       "erdos",
@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/781",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -111,17 +111,24 @@
       "endLine": 137
     },
     {
-      "id": "disproof",
-      "title": "The Disproof",
-      "summary": "Proves `conjecture_disproved : ¬ErdosConjecture781` by contradiction: if $f(k) = k^2-k+1$, then `alon_spencer_cubic` gives $ck^3 \\leq f(k) = k^2-k+1$, impossible for large $k$ since $k^3 \\gg k^2$. The `sorry` encodes this growth comparison.",
+      "id": "specific-values-axioms",
+      "title": "Specific Value Axioms",
+      "summary": "Axiomatizes $f(1)=1$, $f(2)=2$, $f(3)=7$. These known small values are stated as axioms. Critically, $f(2)=2 \\neq 3 = 2^2-2+1$, so the conjecture already fails at $k=2$.",
       "startLine": 139,
       "endLine": 146
     },
     {
+      "id": "disproof",
+      "title": "The Disproof",
+      "summary": "Proves `conjecture_disproved : ¬ErdosConjecture781` completely (no sorry). The proof instantiates the conjecture at $k=2$, obtaining $f(2) = 3$, then rewrites with axiom `f_2 : f 2 = 2` to get $2 = 3$, closed by `omega`.",
+      "startLine": 148,
+      "endLine": 154
+    },
+    {
       "id": "specific-values",
       "title": "Specific Values and Formula Identity",
-      "summary": "Axiomatizes $f(1)=1$, $f(2)=2$, $f(3)=7$ and proves `small_k_correct` (their conjunction). Proves `conjecture_formula: k^2-k+1 = k(k-1)+1` by `ring`. Note: $f(2) = 2 \\neq 3 = 2^2-2+1$, so the conjecture fails even for $k=2$.",
-      "startLine": 148,
+      "summary": "Proves `small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7` (conjunction of the three axioms). Proves `conjecture_formula: k^2-k+1 = k(k-1)+1` by `ring`.",
+      "startLine": 156,
       "endLine": 168
     },
     {
@@ -177,7 +184,7 @@
     "lineCount": 258,
     "axiomCount": 12,
     "theoremCount": 5,
-    "definitionCount": 9
+    "definitionCount": 11
   },
   "crossReferences": [
     {
