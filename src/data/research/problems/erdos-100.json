@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T19:00:00Z",
-    "iteration": 2,
-    "focus": "Full formalization completed with Guth-Katz connection",
+    "iteration": 3,
+    "focus": "Session 3: Proved diam_is_integer (diameter is a positive integer). Updated gallery metadata 5→4 axioms. All axioms are deep results.",
     "blockers": [],
-    "nextAction": "Prove diam_ge_one sorry, or submit to Aristotle",
+    "nextAction": "All 4 axioms are deep mathematical results. Piepmeyer construction could be proved with explicit coordinates but requires finding them. Problem is well-formalized.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved distinctDistances_le_diam (5→4 axioms). Injection into {1,...,⌊diam⌋} via Nat.floor.",
+    "progressSummary": "PROGRESS: Session 3 proved diam_is_integer. File now has 11 theorems, 4 axioms (all deep), 0 sorries, 469 lines.",
     "builtItems": [
       "dist, dist_symm, dist_nonneg in Erdos100Problem.lean:38-53",
       "hasIntegerDistances, pairwiseDistances, numDistinctDistances in Erdos100Problem.lean:66-79",
@@ -39,7 +39,8 @@
       "piepmeyer_ratio_bound, strong_conjecture_fails_at_9 (PROVED) in Erdos100Problem.lean:257-273",
       "conjecture_implies_kanold (PROVED) in Erdos100Problem.lean:308-325",
       "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298",
-      "PROVED distinctDistances_le_diam: axiom→theorem via injection of pairwiseDistances into Finset.Icc 1 ⌊diam⌋ using Nat.floor_natCast injectivity"
+      "PROVED distinctDistances_le_diam: axiom→theorem via injection of pairwiseDistances into Finset.Icc 1 ⌊diam⌋ using Nat.floor_natCast injectivity",
+      "PROVED diam_is_integer: diameter of integer-distance set is a positive integer, via max of pairwiseDistances being a positive integer member"
     ],
     "insights": [
       "Key bridge: integer distances => distinct distances subset of {1,...,floor(diam)} => #distinct_dists <= diam",
@@ -48,7 +49,9 @@
       "Erdos-Anning theorem: infinite integer distance sets must be collinear (finite case fundamentally different)",
       "Gap between n/log n (known) and n (conjectured) is the central open question",
       "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle",
-      "distinctDistances_le_diam axiom IS PROVABLE: inject pairwiseDistances into {1,...,⌊diam⌋} via identity (distances are positive integers ≤ diam). Needs: (1) show each d∈pairwiseDistances is a positive integer via hasIntegerDistances, (2) build injection to Finset.Icc 1 ⌊diam⌋, (3) card bound + Nat.floor_le."
+      "distinctDistances_le_diam axiom IS PROVABLE: inject pairwiseDistances into {1,...,⌊diam⌋} via identity (distances are positive integers ≤ diam). Needs: (1) show each d∈pairwiseDistances is a positive integer via hasIntegerDistances, (2) build injection to Finset.Icc 1 ⌊diam⌋, (3) card bound + Nat.floor_le.",
+      "All 4 remaining axioms are deep results: kanold_bound (pigeonhole counting), guthKatz (polynomial partitioning), piepmeyer (explicit construction), erdos_anning (hyperbola argument). None provable from Mathlib.",
+      "Piepmeyer construction: 9 points with all pairwise distances in {1,2,3,4} and diameter <5. Would need exact coordinates from original paper to prove."
     ],
     "mathlibGaps": [
       "No Finset.offDiag_nonempty lemma found in Mathlib",
@@ -103,7 +106,7 @@
     ]
   },
   "started": "2026-01-23T08:04:56.538Z",
-  "lastUpdate": "2026-03-23T19:30:00Z",
+  "lastUpdate": "2026-03-23T03:30:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
