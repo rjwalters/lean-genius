@@ -277,8 +277,40 @@ For Σ 1/(n!-1), the -1 perturbation breaks the nice factorial structure.
 /-- The series without the -1 is the "e-sum". -/
 noncomputable def eRelatedSum : ℝ := ∑' n : ℕ, (1 : ℝ) / (n + 2).factorial
 
-/-- e - 1 - 1 = Σ_{n≥2} 1/n! -/
-axiom eRelatedSum_value : eRelatedSum = Real.exp 1 - 2
+/--
+**Proved: Σ_{n≥2} 1/n! = e - 2**
+
+The Taylor series for e is e = Σ_{n≥0} 1/n!. Peeling off the n=0 and n=1 terms
+(both equal to 1) gives Σ_{n≥2} 1/n! = e - 2.
+
+Previously an axiom; now proved from Mathlib's exponential series.
+-/
+theorem eRelatedSum_value : eRelatedSum = Real.exp 1 - 2 := by
+  unfold eRelatedSum
+  -- Define the exponential series term f(n) = 1/n!
+  set f : ℕ → ℝ := fun n => (1 : ℝ) / ↑(n.factorial) with hf_def
+  -- Step 1: exp 1 = Σ f(n) = Σ 1/n!
+  have exp_eq : Real.exp 1 = ∑' n, f n := by
+    rw [Real.exp_eq_exp_ℝ, NormedSpace.exp_eq_tsum (𝕂 := ℝ) (𝔸 := ℝ)]
+    apply tsum_congr; intro n
+    simp [f, smul_eq_mul, div_eq_mul_inv, mul_comm]
+  -- Step 2: Summability of 1/n!
+  have hsum : Summable f := by
+    exact (summable_pow_div_factorial (1 : ℝ)).congr fun n => by simp [f]
+  -- Step 3: Peel off n=0: Σ 1/n! = 1/0! + Σ 1/(n+1)!
+  have peel0 := hsum.tsum_eq_zero_add
+  -- Step 4: Summability of the shifted series
+  have hsum1 : Summable (fun n => f (n + 1)) := (summable_nat_add_iff 1).mpr hsum
+  -- Step 5: Peel off first term: Σ 1/(n+1)! = 1/1! + Σ 1/(n+2)!
+  have peel1 := hsum1.tsum_eq_zero_add
+  -- Step 6: f(0) = 1, f(1) = 1
+  have hf0 : f 0 = 1 := by simp [f, Nat.factorial]
+  have hf1 : f 1 = 1 := by simp [f, Nat.factorial]
+  -- Step 7: Σ f(n+2) = Σ 1/(n+2)! (the goal term)
+  have htail : ∑' n, f (n + 2) = ∑' n : ℕ, (1 : ℝ) / ↑((n + 2).factorial) :=
+    tsum_congr fun n => by simp [f]
+  -- Chain: exp 1 = f 0 + f 1 + Σ f(n+2) = 1 + 1 + eRelatedSum = 2 + eRelatedSum
+  linarith
 
 /-- The -1 perturbation makes a small but crucial difference. -/
 axiom perturbation_difference :
