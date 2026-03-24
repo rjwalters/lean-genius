@@ -1,7 +1,7 @@
 {
   "slug": "erdos-388",
   "title": "Erdős #388",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T02:35:40.567Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Eliminated 1 axiom (consecutiveProduct_eq_factorial_ratio) by proving the factorial identity via induction.",
+    "builtItems": [
+      "consecutiveProduct_eq_factorial_ratio: proved (m+1)(m+2)...(m+k) × m! = (m+k)! by induction"
+    ],
+    "insights": [
+      "consecutiveProduct_eq_factorial_ratio proved by induction on k. Key: split Icc 1 (n+1) = insert (n+1) (Icc 1 n), then use prod_insert and factorial_succ.",
+      "Remaining 3 axioms (erdos_388_conjecture, erdos_388_generalized, erdos_selfridge) are all deep results or the open conjecture."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "erdos_selfridge (1975 result) might be in Mathlib or provable, worth checking",
+      "The main conjecture and its generalization are open problems"
+    ],
     "markdown": "# Erdős #388 - Knowledge Base\n\n## Problem Statement\n\nCan one classify all solutions of&#x220F;1&#x2264;i&#x2264;k1(m1+i)=&#x220F;1&#x2264;j&#x2264;k2(m2+j)\" role=\"presentation\" style=\"text-align: center; position: relative;\">∏1≤i≤k1(m1+i)=∏1≤j≤k2(m2+j)∏1≤i≤k1(m1+i)=∏1≤j≤k2(m2+j)\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #363\n- Problem #931\n- Problem #387\n- Problem #389\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- ErGr80\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
