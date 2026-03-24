@@ -104,8 +104,9 @@ def Representable (N : ℕ) : Prop :=
 
 /-- Erdos Problem #686 (OPEN):
     Every integer N >= 2 can be expressed as a ratio of two products
-    of k consecutive integers with non-overlapping ranges. -/
-axiom erdos_686_conjecture : ∀ N ≥ 2, Representable N
+    of k consecutive integers with non-overlapping ranges.
+    Stated as a definition since this is an open conjecture. -/
+def Erdos686Conjecture : Prop := ∀ N ≥ 2, Representable N
 
 -- ## Part IV: Structural Properties
 
